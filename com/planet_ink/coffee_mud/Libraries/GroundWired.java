@@ -108,7 +108,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			if(I.displayText().indexOf(oldName)>0)
 				I.setDisplayText(CMStrings.replaceAll(I.displayText(), oldName, newName));
 			else
-				I.setDisplayText(newName+" is here.");
+				I.setDisplayText(_("@x1 is here.",newName));
 		}
 	}
 

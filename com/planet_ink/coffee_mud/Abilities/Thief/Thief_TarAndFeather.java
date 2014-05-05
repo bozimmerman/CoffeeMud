@@ -144,8 +144,8 @@ public class Thief_TarAndFeather extends ThiefSkill
 					}
 					I.setRawProperLocationBitmap(wearCode);
 					I.setRawWornCode(wearCode);
-					I.setName("a coating of tar and feathers");
-					I.setDisplayText("a pile of tar and feathers sits here.");
+					I.setName(_("a coating of tar and feathers"));
+					I.setDisplayText(_("a pile of tar and feathers sits here."));
 					I.basePhyStats().setSensesMask(PhyStats.SENSE_ITEMNOREMOVE);
 					I.phyStats().setSensesMask(PhyStats.SENSE_ITEMNOREMOVE);
 					I.setRawLogicalAnd(true);

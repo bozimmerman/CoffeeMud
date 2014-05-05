@@ -188,9 +188,9 @@ public class Paladin_SummonMount extends StdAbility
 		newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
 		newMOB.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
 		newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
-		newMOB.setName("a white horse");
-		newMOB.setDisplayText("a proud white horse stands here");
-		newMOB.setDescription("A proud and noble steed; albino white and immaculate.");
+		newMOB.setName(_("a white horse"));
+		newMOB.setDisplayText(_("a proud white horse stands here"));
+		newMOB.setDescription(_("A proud and noble steed; albino white and immaculate."));
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		ride.setRiderCapacity(4);
 		newMOB.recoverCharStats();

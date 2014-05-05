@@ -460,35 +460,35 @@ public class StdRace implements Race
 					case 1:
 					case 2:
 					case 3:
-					naturalWeapon.setName("a quick punch");
+					naturalWeapon.setName(_("a quick punch"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 					case 4:
-					naturalWeapon.setName("fingernails and teeth");
+					naturalWeapon.setName(_("fingernails and teeth"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
 					break;
 					case 5:
-					naturalWeapon.setName("an elbow");
+					naturalWeapon.setName(_("an elbow"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 					case 6:
-					naturalWeapon.setName("a backhand");
+					naturalWeapon.setName(_("a backhand"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 					case 7:
-					naturalWeapon.setName("a strong jab");
+					naturalWeapon.setName(_("a strong jab"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 					case 8:
-					naturalWeapon.setName("a stinging punch");
+					naturalWeapon.setName(_("a stinging punch"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 					case 9:
-					naturalWeapon.setName("a knee");
+					naturalWeapon.setName(_("a knee"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 					case 10:
-					naturalWeapon.setName("a head butt");
+					naturalWeapon.setName(_("a head butt"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 				}
@@ -552,10 +552,10 @@ public class StdRace implements Race
 		bodyI.setPlayerCorpse(!mob.isMonster());
 		bodyI.setTimeOfDeath(System.currentTimeMillis());
 		bodyI.setMobPKFlag(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL));
-		bodyI.setName("the body of "+mob.Name().replace('\'','`'));
+		bodyI.setName(_("the body of @x1",mob.Name().replace('\'','`')));
 		bodyI.setMobName(mob.Name().replace('\'','`'));
 		bodyI.setMobDescription(mob.description().replace('\'','`'));
-		bodyI.setDisplayText("the body of "+mob.Name().replace('\'','`')+" lies here.");
+		bodyI.setDisplayText(_("the body of @x1 lies here.",mob.Name().replace('\'','`')));
 		final Ability ageA=mob.fetchEffect("Age");
 		if(ageA!=null) bodyI.addNonUninvokableEffect(ageA);
 		if(room!=null)

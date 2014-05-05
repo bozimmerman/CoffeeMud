@@ -72,7 +72,7 @@ public class Spell_WallOfAir extends Spell
 			mob.location().show(mob,invoker,msg.tool(),CMMsg.MSG_OK_VISUAL,_("<S-NAME> fire(s) <O-NAME> at <T-NAME>.  The missile enters the wall of air."));
 			final MOB M=CMClass.getMOB("StdMOB");
 			M.setLocation(mob.location());
-			M.setName("The wall of air");
+			M.setName(_("The wall of air"));
 			M.setVictim(mob);
 			M.setAtRange(mob.rangeToTarget());
 			CMLib.combat().postWeaponDamage(M,mob,(Weapon)msg.tool(),true);
@@ -163,9 +163,9 @@ public class Spell_WallOfAir extends Spell
 			{
 				mob.location().send(mob,msg);
 				final Item I=CMClass.getItem("GenItem");
-				I.setName("a wall of air");
+				I.setName(_("a wall of air"));
 				I.setDisplayText("");
-				I.setDescription("The air is swirling dangerously.");
+				I.setDescription(_("The air is swirling dangerously."));
 				I.setMaterial(RawMaterial.RESOURCE_NOTHING);
 				CMLib.flags().setGettable(I,false);
 				I.recoverPhyStats();

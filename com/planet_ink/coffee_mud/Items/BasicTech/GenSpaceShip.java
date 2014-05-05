@@ -84,7 +84,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		{
 			area=CMClass.getAreaType("StdSpaceShip");
 			final String num=Double.toString(Math.random());
-			area.setName("UNNAMED_"+num.substring(num.indexOf('.')+1));
+			area.setName(_("UNNAMED_@x1",num.substring(num.indexOf('.')+1)));
 			area.setSavable(false);
 			area.setTheme(Area.THEME_TECHNOLOGY);
 			final Room R=CMClass.getLocale("MetalRoom");

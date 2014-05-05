@@ -176,8 +176,8 @@ public class Spell_BigMouth extends Spell
 		{
 			myStomach = CMClass.getLocale("StdRoom");
 			myStomach.setArea(CMLib.map().getRandomArea());
-			myStomach.setName("The Stomach of "+affected.name());
-			myStomach.setDescription("You are in the stomach of "+affected.name()+".  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been swallowed whole and are being digested.");
+			myStomach.setName(_("The Stomach of @x1",affected.name()));
+			myStomach.setDescription(_("You are in the stomach of @x1.  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been swallowed whole and are being digested.",affected.name()));
 		}
 		return myStomach;
 	}

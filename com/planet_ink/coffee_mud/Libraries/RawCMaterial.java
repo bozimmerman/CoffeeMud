@@ -682,24 +682,24 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			&&(I.rawSecretIdentity().length()>0))
 			{
 				I.setName(I.rawSecretIdentity());
-				I.setDisplayText(I.rawSecretIdentity()+" has been left here.");
+				I.setDisplayText(_("@x1 has been left here.",I.rawSecretIdentity()));
 			}
 			else
 			{
 				if(I instanceof Drink)
-					I.setName("some "+name);
+					I.setName(_("some @x1",name));
 				else
-					I.setName("a pound of "+name);
-				I.setDisplayText("some "+name+" sits here.");
+					I.setName(_("a pound of @x1",name));
+				I.setDisplayText(_("some @x1 sits here.",name));
 			}
 		}
 		else
 		{
 			if(I instanceof Drink)
-				I.setName("a "+I.basePhyStats().weight()+"# pool of "+name);
+				I.setName(_("a @x1# pool of @x2",""+I.basePhyStats().weight(),name));
 			else
-				I.setName("a "+I.basePhyStats().weight()+"# "+name+" bundle");
-			I.setDisplayText(I.name()+" is here.");
+				I.setName(_("a @x1# @x2 bundle",""+I.basePhyStats().weight(),name));
+			I.setDisplayText(_("@x1 is here.",I.name()));
 		}
 	}
 

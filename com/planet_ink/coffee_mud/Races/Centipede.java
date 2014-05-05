@@ -86,7 +86,7 @@ public class Centipede extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName("a deadly maw");
+			naturalWeapon.setName(_("a deadly maw"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 			naturalWeapon.setUsesRemaining(1000);
 			naturalWeapon.setWeaponType(Weapon.TYPE_NATURAL);

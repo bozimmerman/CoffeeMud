@@ -52,7 +52,7 @@ public class Thief_Listen extends ThiefSkill
 	protected MOB getInvisibleMOB()
 	{
 		final MOB mrInvisible=CMClass.getFactoryMOB();
-		mrInvisible.setName("Someone");
+		mrInvisible.setName(_("Someone"));
 		mrInvisible.basePhyStats().setDisposition(mrInvisible.basePhyStats().disposition()|PhyStats.IS_NOT_SEEN);
 		mrInvisible.phyStats().setDisposition(mrInvisible.phyStats().disposition()|PhyStats.IS_NOT_SEEN);
 		return mrInvisible;
@@ -61,7 +61,7 @@ public class Thief_Listen extends ThiefSkill
 	protected Item getInvisibleItem()
 	{
 		final Item mrInvisible=CMClass.getItem("StdItem");
-		mrInvisible.setName("Something");
+		mrInvisible.setName(_("Something"));
 		mrInvisible.basePhyStats().setDisposition(mrInvisible.basePhyStats().disposition()|PhyStats.IS_NOT_SEEN);
 		mrInvisible.phyStats().setDisposition(mrInvisible.phyStats().disposition()|PhyStats.IS_NOT_SEEN);
 		return mrInvisible;

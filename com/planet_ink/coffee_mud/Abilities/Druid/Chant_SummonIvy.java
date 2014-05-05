@@ -43,7 +43,7 @@ public class Chant_SummonIvy extends Chant_SummonPlants
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
 
-	public static Item buildIvy(MOB mob, Room room)
+	public Item buildIvy(MOB mob, Room room)
 	{
 		final Item newItem=CMClass.getItem("GenItem");
 		newItem.setMaterial(RawMaterial.RESOURCE_GREENS);
@@ -51,19 +51,19 @@ public class Chant_SummonIvy extends Chant_SummonPlants
 		{
 		case 1:
 		case 4:
-			newItem.setName("poison ivy");
-			newItem.setDisplayText("a lovely trifoliate is growing here.");
+			newItem.setName(_("poison ivy"));
+			newItem.setDisplayText(_("a lovely trifoliate is growing here."));
 			newItem.setDescription("");
 			break;
 		case 2:
-			newItem.setName("poison sumac");
-			newItem.setDisplayText("a small pinnately leafletted tree grows here");
+			newItem.setName(_("poison sumac"));
+			newItem.setDisplayText(_("a small pinnately leafletted tree grows here"));
 			newItem.setDescription("");
 			break;
 		case 3:
 		case 5:
-			newItem.setName("poison oak");
-			newItem.setDisplayText("a lovely wrinkled plant grows here");
+			newItem.setName(_("poison oak"));
+			newItem.setDisplayText(_("a lovely wrinkled plant grows here"));
 			newItem.setDescription("");
 			break;
 		}

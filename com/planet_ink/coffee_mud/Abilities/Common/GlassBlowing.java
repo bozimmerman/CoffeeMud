@@ -334,7 +334,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 		displayText=_("You are blowing @x1",buildingI.name());
 		verb=_("blowing @x1",buildingI.name());
 		playSound="fire.wav";
-		buildingI.setDisplayText(itemName+" lies here");
+		buildingI.setDisplayText(_("@x1 lies here",itemName));
 		buildingI.setDescription(itemName+". ");
 		buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));

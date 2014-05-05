@@ -76,9 +76,9 @@ public class Spell_ArcaneMark extends Spell
 			{
 				mob.location().send(mob,msg);
 				if(target.description().indexOf("Some markings on it say")>=0)
-					target.setDescription(target.description()+" Some other markings say `"+message+"`.");
+					target.setDescription(_("@x1 Some other markings say `@x2`.",target.description(),message));
 				else
-					target.setDescription(target.description()+" Some markings on it say `"+message+"`.");
+					target.setDescription(_("@x1 Some markings on it say `@x2`.",target.description(),message));
 			}
 
 		}

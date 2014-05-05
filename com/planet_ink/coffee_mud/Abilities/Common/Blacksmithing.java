@@ -364,7 +364,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		displayText=_("You are smithing @x1",buildingI.name());
 		verb=_("smithing @x1",buildingI.name());
 		playSound="tinktinktink2.wav";
-		buildingI.setDisplayText(itemName+" lies here");
+		buildingI.setDisplayText(_("@x1 lies here",itemName));
 		buildingI.setDescription(itemName+". ");
 		buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
@@ -379,9 +379,9 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		&&(statue!=null)
 		&&(statue.trim().length()>0))
 		{
-			buildingI.setName(itemName+" of "+statue.trim());
-			buildingI.setDisplayText(itemName+" of "+statue.trim()+" is here");
-			buildingI.setDescription(itemName+" of "+statue.trim()+". ");
+			buildingI.setName(_("@x1 of @x2",itemName,statue.trim()));
+			buildingI.setDisplayText(_("@x1 of @x2 is here",itemName,statue.trim()));
+			buildingI.setDescription(_("@x1 of @x2. ",itemName,statue.trim()));
 		}
 		else
 		if(buildingI instanceof Rideable)

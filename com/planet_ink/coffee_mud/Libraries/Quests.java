@@ -1485,13 +1485,13 @@ public class Quests extends StdLibrary implements QuestManager
 			{
 				M=(MOB)M.copyOf();
 				newMobs.add(M);
-				M.setName("A NEW "+M.ID().toUpperCase());
+				M.setName(_("A NEW @x1",M.ID().toUpperCase()));
 				choices.add(M);
 				choiceDescs.append(M.name()+", ");
 			}
 		}
 		final MOB canMOB=CMClass.getFactoryMOB();
-		canMOB.setName("CANCEL");
+		canMOB.setName(_("CANCEL"));
 		choiceDescs.append("CANCEL");
 		choices.addElement(canMOB);
 		String showName=showValue;
@@ -1554,14 +1554,14 @@ public class Quests extends StdLibrary implements QuestManager
 			if((I!=null)&&(I.isGeneric()))
 			{
 				newItems.add(I);
-				I.setName("A NEW "+I.ID().toUpperCase());
+				I.setName(_("A NEW @x1",I.ID().toUpperCase()));
 				choices.add(I);
 				choiceDescs.append(I.name()+", ");
 			}
 		}
 		choiceDescs.append("CANCEL");
 		final Item canItem=CMClass.getItem("StdItem");
-		canItem.setName("CANCEL");
+		canItem.setName(_("CANCEL"));
 		choices.add(canItem);
 		String showName=showValue;
 		if(baseI!=null) showName=CMLib.english().getContextName(choices,baseI);

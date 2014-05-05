@@ -157,8 +157,8 @@ public class Thief_Footlocks extends ThiefSkill
 		{
 			final Item foots=CMClass.getItem("GenItem");
 			foots.setRawWornCode(Wearable.WORN_FEET);
-			foots.setName("a pair of footlock blocks");
-			foots.setDisplayText("whats left of some footlocks");
+			foots.setName(_("a pair of footlock blocks"));
+			foots.setDisplayText(_("whats left of some footlocks"));
 			CMLib.flags().setRemovable(foots,false);
 			CMLib.flags().setDroppable(foots,false);
 			foots.setMaterial((wood!=null)?wood.material():RawMaterial.RESOURCE_WOOD);

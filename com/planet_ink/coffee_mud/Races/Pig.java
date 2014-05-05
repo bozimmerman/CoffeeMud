@@ -68,7 +68,7 @@ public class Pig extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName("a dangerous snout");
+			naturalWeapon.setName(_("a dangerous snout"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_LEATHER);
 			naturalWeapon.setUsesRemaining(1000);
 			naturalWeapon.setWeaponType(Weapon.TYPE_NATURAL);

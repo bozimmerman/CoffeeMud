@@ -98,7 +98,7 @@ public class Chant_DistantFungalGrowth extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final Item newItem=Chant_SummonFungus.buildFungus(mob,newRoom);
+				final Item newItem=new Chant_SummonFungus().buildFungus(mob,newRoom);
 				mob.tell(_("You feel a distant connection with @x1",newItem.name()));
 			}
 		}

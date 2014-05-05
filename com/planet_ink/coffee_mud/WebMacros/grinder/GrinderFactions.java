@@ -56,7 +56,7 @@ public class GrinderFactions {
 		String old;
 
 		old=httpReq.getUrlParameter("NAME");
-		F.setName(old==null?"NAME":old);
+		F.setName(old==null?("NAME"):old);
 
 		old=httpReq.getUrlParameter("SHOWINSCORE");
 		F.setShowInScore((old!=null)&&(old.equalsIgnoreCase("on")));

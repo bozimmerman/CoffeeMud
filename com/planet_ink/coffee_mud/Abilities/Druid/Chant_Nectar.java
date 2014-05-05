@@ -160,9 +160,9 @@ public class Chant_Nectar extends Chant
 			{
 				mob.location().send(mob,msg);
 				final Item newItem=CMClass.getItem("Spring");
-				newItem.setName("an enormous flower");
-				newItem.setDisplayText("an enormous flower is dripping with nectar");
-				newItem.setDescription("The closer you look, the more illusive the flower becomes.  There must be druid magic at work here!");
+				newItem.setName(_("an enormous flower"));
+				newItem.setDisplayText(_("an enormous flower is dripping with nectar"));
+				newItem.setDescription(_("The closer you look, the more illusive the flower becomes.  There must be druid magic at work here!"));
 				final Ability A=CMClass.getAbility("Poison_Liquor");
 				if(A!=null) newItem.addNonUninvokableEffect(A);
 

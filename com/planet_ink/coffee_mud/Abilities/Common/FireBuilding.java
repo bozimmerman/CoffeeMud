@@ -65,9 +65,9 @@ public class FireBuilding extends CommonSkill
 					{
 						final Item I=CMClass.getItem("GenItem");
 						I.basePhyStats().setWeight(50);
-						I.setName("a roaring campfire");
-						I.setDisplayText("A roaring campfire has been built here.");
-						I.setDescription("It consists of dry wood, burning.");
+						I.setName(_("a roaring campfire"));
+						I.setDisplayText(_("A roaring campfire has been built here."));
+						I.setDescription(_("It consists of dry wood, burning."));
 						I.recoverPhyStats();
 						I.setMaterial(RawMaterial.RESOURCE_WOOD);
 						mob.location().addItem(I);

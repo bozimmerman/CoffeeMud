@@ -389,8 +389,8 @@ public class GrinderRooms
 		else
 		{
 			newRoom=CMClass.getLocale("StdRoom");
-			newRoom.setDisplayText("Title of "+newRoomID);
-			newRoom.setDescription("Description of "+newRoomID);
+			newRoom.setDisplayText(CMLib.lang()._("Title of @x1",newRoomID));
+			newRoom.setDescription(CMLib.lang()._("Description of @x1",newRoomID));
 		}
 		newRoom.setRoomID(newRoomID);
 		newRoom.setArea(A);
@@ -434,8 +434,8 @@ public class GrinderRooms
 		{
 			R=CMClass.getLocale("StdRoom");
 			R.setRoomID(roomID);
-			R.setDisplayText("Title of "+R.roomID());
-			R.setDescription("Description of "+R.roomID());
+			R.setDisplayText(CMLib.lang()._("Title of @x1",R.roomID()));
+			R.setDescription(CMLib.lang()._("Description of @x1",R.roomID()));
 		}
 		R.setArea(A);
 		CMLib.database().DBCreateRoom(R);

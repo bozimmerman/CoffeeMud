@@ -168,8 +168,8 @@ public class Spell_FeignDeath extends Spell
 			if(deathRoom.okMessage(target,msg))
 			{
 				deathRoom.send(target,msg);
-				Body.setName("the body of "+target.name());
-				Body.setDisplayText("the body of "+target.name()+" lies here.");
+				Body.setName(_("the body of @x1",target.name()));
+				Body.setDisplayText(_("the body of @x1 lies here.",target.name()));
 				Body.basePhyStats().setWeight(target.phyStats().weight()+100);
 				Body.setSecretIdentity("FAKE");
 				deathRoom.addItem(Body,ItemPossessor.Expire.Monster_Body);

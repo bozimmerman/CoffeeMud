@@ -55,9 +55,9 @@ public class Spell_PolymorphSelf extends Spell
 		if(newRace!=null)
 		{
 			if(affected.name().indexOf(' ')>0)
-				affectableStats.setName(CMLib.english().startWithAorAn(newRace.name())+" called "+affected.name());
+				affectableStats.setName(_("@x1 called @x2",CMLib.english().startWithAorAn(newRace.name()),affected.name()));
 			else
-				affectableStats.setName(affected.name()+" the "+newRace.name());
+				affectableStats.setName(_("@x1 the @x2",affected.name(),newRace.name()));
 			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			newRace.setHeightWeight(affectableStats,'M');
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);

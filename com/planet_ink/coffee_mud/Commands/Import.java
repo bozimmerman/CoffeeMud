@@ -3880,7 +3880,7 @@ public class Import extends StdCommand
 					   I.setDescription("");
 					else
 					if(I.description().length()>0)
-						I.setDescription(I.description()+"%0D");
+						I.setDescription((I.description()+"%0D"));
 					eatLineSquiggle(objV);
 					boolean squiggleFound=false;
 					for(int y=0;y<objV.size();y++)
@@ -5144,7 +5144,7 @@ public class Import extends StdCommand
 					if(S3==null)
 					{
 						S3=(Social)CMClass.getCommon("DefaultSocial");
-						S3.setName(word+" SELF");
+						S3.setName(_("@x1 SELF",word));
 						CMLib.socials().addSocial(S3);
 						changing=false;
 					}
@@ -5333,7 +5333,7 @@ public class Import extends StdCommand
 				{
 					eatLineSquiggle(roomV);
 					eatLineSquiggle(roomV);
-					R.setDisplayText("Emptiness...");
+					R.setDisplayText(_("Emptiness..."));
 					R.setDescription("");
 				}
 				else
@@ -5672,12 +5672,12 @@ public class Import extends StdCommand
 						{
 							if(X.hasADoor())
 							{
-								X.setName("a door");
+								X.setName(_("a door"));
 								name="door";
 							}
 							else
 							{
-								X.setName("the ground");
+								X.setName(_("the ground"));
 								name="ground";
 							}
 						}
@@ -5898,7 +5898,7 @@ public class Import extends StdCommand
 									((ShopKeeper)M).addSoldType(ShopKeeper.DEAL_INVENTORYONLY);
 									((ShopKeeper)M).getShop().addStoreInventory(CMClass.getBasicItem("Parchment"),num,-1);
 									final Item journal2=CMClass.getBasicItem("GenJournal");
-									journal2.setName("the adventurers journal");
+									journal2.setName(_("the adventurers journal"));
 									journal2.setBaseValue(250);
 									journal2.recoverPhyStats();
 									journal2.text();
@@ -5909,11 +5909,11 @@ public class Import extends StdCommand
 								{
 									final Item arrows=CMClass.getBasicItem("GenAmmunition");
 									((Ammunition)arrows).setAmmunitionType("arrows");
-									arrows.setName("a pack of 20 arrows");
+									arrows.setName(_("a pack of 20 arrows"));
 									arrows.setUsesRemaining(20);
 									arrows.setBaseValue(50);
-									arrows.setDescription("They are sturdy and wooden, but probably not much use without a bow.");
-									arrows.setDisplayText("Some arrows have been left here.");
+									arrows.setDescription(_("They are sturdy and wooden, but probably not much use without a bow."));
+									arrows.setDisplayText(_("Some arrows have been left here."));
 									arrows.recoverPhyStats();
 									arrows.text();
 									((ShopKeeper)M).getShop().addStoreInventory(arrows,num,-1);
@@ -6201,7 +6201,7 @@ public class Import extends StdCommand
 								E.setDoorsNLocks(HasDoor,Open,DefaultsClosed,HasLock,Locked,DefaultsLocked);
 								if(E.hasADoor()&&E.name().equals("the ground"))
 								{
-									E.setName("a door");
+									E.setName(_("a door"));
 									E.setExitParams("door","close","open","a door, closed.");
 								}
 							}
@@ -6277,7 +6277,7 @@ public class Import extends StdCommand
 								if((testItem!=null)&&(testItem.description().equals(I.description())))
 									I.setDescription(description);
 								else
-									I.setDescription(I.description()+"%0D"+description);
+									I.setDescription(_("@x1%0D@x2",I.description(),description));
 								ei=ei-1;
 								break;
 							}

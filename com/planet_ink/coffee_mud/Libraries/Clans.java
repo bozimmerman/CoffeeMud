@@ -619,7 +619,7 @@ public class Clans extends StdLibrary implements ClanManager
 		P1.setID("APPLICANT");
 		P1.setRoleID(0);
 		P1.setRank(0);
-		P1.setName("Applicant");
+		P1.setName(_("Applicant"));
 		P1.setPluralName("Applicants");
 		P1.setMax(Integer.MAX_VALUE);
 		P1.setInnerMaskStr("");
@@ -629,7 +629,7 @@ public class Clans extends StdLibrary implements ClanManager
 		P2.setID("MEMBER");
 		P2.setRoleID(1);
 		P2.setRank(1);
-		P2.setName("Member");
+		P2.setName(_("Member"));
 		P2.setPluralName("Members");
 		P2.setMax(Integer.MAX_VALUE);
 		P2.setInnerMaskStr("");
@@ -651,7 +651,7 @@ public class Clans extends StdLibrary implements ClanManager
 
 		final ClanGovernment G=(ClanGovernment)CMClass.getCommon("DefaultClanGovernment");
 		G.setID(id);
-		G.setName("Sample Govt");
+		G.setName(_("Sample Govt"));
 		G.setCategory("");
 		G.setPositions(new ClanPosition[]{P1,P2});
 		G.setAutoRole(0);

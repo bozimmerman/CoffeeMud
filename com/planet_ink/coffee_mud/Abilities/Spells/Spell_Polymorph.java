@@ -54,9 +54,9 @@ public class Spell_Polymorph extends Spell
 		if((newRace!=null)&&(affected instanceof MOB))
 		{
 			if(affected.name().indexOf(' ')>0)
-				affectableStats.setName("a "+newRace.name()+" called "+affected.name());
+				affectableStats.setName(_("a @x1 called @x2",newRace.name(),affected.name()));
 			else
-				affectableStats.setName(affected.name()+" the "+newRace.name());
+				affectableStats.setName(_("@x1 the @x2",affected.name(),newRace.name()));
 			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			newRace.setHeightWeight(affectableStats,(char)((MOB)affected).charStats().getStat(CharStats.STAT_GENDER));
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);

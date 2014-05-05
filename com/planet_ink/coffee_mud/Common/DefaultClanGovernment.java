@@ -438,7 +438,7 @@ public class DefaultClanGovernment implements ClanGovernment
 		P.setID(positions.length+""+Math.random());
 		P.setRoleID(0);
 		P.setRank(highestRank);
-		P.setName("Unnamed");
+		P.setName(CMLib.lang()._("Unnamed"));
 		P.setPluralName("Unnameds");
 		P.setMax(Integer.MAX_VALUE);
 		P.setInnerMaskStr("");

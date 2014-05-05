@@ -181,9 +181,9 @@ public class Chant_SummonMount extends Chant
 		newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
 		newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
 		newMOB.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
-		newMOB.setName("a wild horse");
-		newMOB.setDisplayText("a wild horse stands here");
-		newMOB.setDescription("An untamed beast of the fields, tame only by magical means.");
+		newMOB.setName(_("a wild horse"));
+		newMOB.setDisplayText(_("a wild horse stands here"));
+		newMOB.setDescription(_("An untamed beast of the fields, tame only by magical means."));
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		ride.setRiderCapacity(1);
 		newMOB.recoverCharStats();

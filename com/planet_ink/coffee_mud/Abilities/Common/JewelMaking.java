@@ -593,12 +593,12 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			displayText=_("You are making @x1",buildingI.name());
 			verb=_("making @x1",buildingI.name());
 			playSound="tinktinktink.wav";
-			buildingI.setDisplayText(itemName+" lies here");
+			buildingI.setDisplayText(_("@x1 lies here",itemName));
 			if((data[1][FOUND_CODE]>0)
 			&&(((data[0][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
 			   ||((data[0][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL))
 			&&(((data[1][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PRECIOUS)))
-				buildingI.setDescription(itemName+" made of "+RawMaterial.CODES.NAME(data[0][FOUND_CODE]).toLowerCase()+".");
+				buildingI.setDescription(_("@x1 made of @x2.",itemName,RawMaterial.CODES.NAME(data[0][FOUND_CODE]).toLowerCase()));
 			else
 				buildingI.setDescription(itemName+". ");
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
@@ -627,9 +627,9 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			&&(statue!=null)
 			&&(statue.trim().length()>0))
 			{
-				buildingI.setName(itemName+" of "+statue.trim());
-				buildingI.setDisplayText(itemName+" of "+statue.trim()+" is here");
-				buildingI.setDescription(itemName+" of "+statue.trim()+". ");
+				buildingI.setName(_("@x1 of @x2",itemName,statue.trim()));
+				buildingI.setDisplayText(_("@x1 of @x2 is here",itemName,statue.trim()));
+				buildingI.setDescription(_("@x1 of @x2. ",itemName,statue.trim()));
 			}
 			if(bundling) buildingI.setBaseValue(lostValue);
 			buildingI.recoverPhyStats();

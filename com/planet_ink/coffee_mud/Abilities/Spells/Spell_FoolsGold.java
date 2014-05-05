@@ -89,16 +89,16 @@ public class Spell_FoolsGold extends Spell
 				switch(amount)
 				{
 				case 1:
-					gold.setName("a gold coin");
-					gold.setDisplayText("a gold coin sits here");
+					gold.setName(_("a gold coin"));
+					gold.setDisplayText(_("a gold coin sits here"));
 					break;
 				case 2:
-					gold.setName("two gold coins");
-					gold.setDisplayText("two gold coins sit here");
+					gold.setName(_("two gold coins"));
+					gold.setDisplayText(_("two gold coins sit here"));
 					break;
 				default:
-					gold.setName("a pile of "+amount+" gold coins");
-					gold.setDisplayText(gold.name()+" sit here");
+					gold.setName(_("a pile of @x1 gold coins",""+amount));
+					gold.setDisplayText(_("@x1 sit here",gold.name()));
 					break;
 				}
 				gold.basePhyStats().setWeight(0);

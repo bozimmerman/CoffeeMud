@@ -135,8 +135,8 @@ public class Trap_RoomPit extends StdTrap
 			myPitUp.setSavable(false);
 			myPitUp.setArea(target.location().getArea());
 			myPitUp.basePhyStats().setDisposition(myPitUp.basePhyStats().disposition()|PhyStats.IS_DARK);
-			myPitUp.setDisplayText("Inside a dark pit");
-			myPitUp.setDescription("The walls here are slick and tall.  The trap door is just above you.");
+			myPitUp.setDisplayText(_("Inside a dark pit"));
+			myPitUp.setDescription(_("The walls here are slick and tall.  The trap door is just above you."));
 			myPitUp.recoverPhyStats();
 
 			final Exit exit=CMClass.getExit("StdOpenDoorway");
@@ -145,8 +145,8 @@ public class Trap_RoomPit extends StdTrap
 			myPit.setRoomID("");
 			myPit.setArea(target.location().getArea());
 			myPit.basePhyStats().setDisposition(myPit.basePhyStats().disposition()|PhyStats.IS_DARK);
-			myPit.setDisplayText("Inside a dark pit");
-			myPit.setDescription("The walls here are slick and tall.  You can barely see the trap door well above you.");
+			myPit.setDisplayText(_("Inside a dark pit"));
+			myPit.setDescription(_("The walls here are slick and tall.  You can barely see the trap door well above you."));
 			myPit.setRawExit(Directions.UP,exit);
 			myPit.rawDoors()[Directions.UP]=myPitUp;
 			myPitUp.setRawExit(Directions.DOWN,exit);

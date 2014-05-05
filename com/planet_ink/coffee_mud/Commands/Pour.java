@@ -88,7 +88,7 @@ public class Pour extends StdCommand
 			((Drink)out).setLiquidHeld(999999);
 			((Drink)out).setLiquidRemaining(0);
 			out.setDisplayText("");
-			out.setName("out");
+			out.setName(_("out"));
 			msgStr=_("<S-NAME> pour(s) <O-NAME> <T-NAME>.");
 			mob.location().addItem(out,ItemPossessor.Expire.Resource);
 			fillThis=out;

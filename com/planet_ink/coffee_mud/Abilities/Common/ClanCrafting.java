@@ -361,7 +361,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		displayText=_("You are crafting @x1",buildingI.name());
 		playSound="sanding.wav";
 		verb=_("crafting @x1",buildingI.name());
-		buildingI.setDisplayText(itemName+" lies here");
+		buildingI.setDisplayText(_("@x1 lies here",itemName));
 		buildingI.setDescription(itemName+". ");
 		buildingI.basePhyStats().setWeight(amt1+amt2);
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));

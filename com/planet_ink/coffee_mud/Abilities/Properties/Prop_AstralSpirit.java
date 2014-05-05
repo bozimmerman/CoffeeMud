@@ -152,7 +152,7 @@ public class Prop_AstralSpirit extends Property
 		// can get them out of it.
 		affectableStats.setWeight(0);
 		affectableStats.setHeight(-1);
-		affectableStats.setName("The spirit of "+affected.name());
+		affectableStats.setName(_("The spirit of @x1",affected.name()));
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_INVISIBLE);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_NOT_SEEN);

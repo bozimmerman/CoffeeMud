@@ -224,9 +224,9 @@ public class Spell_FleshStone extends Spell
 					if(name.startsWith("A ")) name="a "+name.substring(2);
 					if(name.startsWith("An ")) name="an "+name.substring(3);
 					if(name.startsWith("The ")) name="the "+name.substring(4);
-					statue.setName("a statue of "+name);
-					statue.setDisplayText("a statue of "+name+" stands here.");
-					statue.setDescription("It`s a hard granite statue, which looks exactly like "+name+".");
+					statue.setName(_("a statue of @x1",name));
+					statue.setDisplayText(_("a statue of @x1 stands here.",name));
+					statue.setDescription(_("It`s a hard granite statue, which looks exactly like @x1.",name));
 					statue.setMaterial(RawMaterial.RESOURCE_GRANITE);
 					statue.basePhyStats().setWeight(2000);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> turn(s) into stone!!"));

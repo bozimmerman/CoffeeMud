@@ -120,65 +120,65 @@ public class Spell_FindFamiliar extends Spell
 		switch(choice)
 		{
 		case 0:
-			newMOB.setName("a dog");
-			newMOB.setDisplayText("a dog is sniffing around here");
-			newMOB.setDescription("She looks like a nice loyal companion.");
+			newMOB.setName(_("a dog"));
+			newMOB.setDisplayText(_("a dog is sniffing around here"));
+			newMOB.setDescription(_("She looks like a nice loyal companion."));
 			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'F');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Dog"));
 			break;
 		case 1:
-			newMOB.setName("a turtle");
-			newMOB.setDisplayText("a turtle is crawling around here");
-			newMOB.setDescription("Not very fast, but pretty cute.");
+			newMOB.setName(_("a turtle"));
+			newMOB.setDisplayText(_("a turtle is crawling around here"));
+			newMOB.setDescription(_("Not very fast, but pretty cute."));
 			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'F');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Turtle"));
 			break;
 		case 2:
-			newMOB.setName("a cat");
-			newMOB.setDisplayText("a cat is prowling around here");
-			newMOB.setDescription("She looks busy ignoring you.");
+			newMOB.setName(_("a cat"));
+			newMOB.setDisplayText(_("a cat is prowling around here"));
+			newMOB.setDescription(_("She looks busy ignoring you."));
 			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'F');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Cat"));
 			break;
 		case 3:
-			newMOB.setName("a bat");
-			newMOB.setDisplayText("a bat is flying around here");
-			newMOB.setDescription("The darn thing just won`t stay still!");
+			newMOB.setName(_("a bat"));
+			newMOB.setDisplayText(_("a bat is flying around here"));
+			newMOB.setDescription(_("The darn thing just won`t stay still!"));
 			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Bat"));
 			break;
 		case 4:
-			newMOB.setName("a rat");
-			newMOB.setDisplayText("a rat scurries nearby");
-			newMOB.setDescription("Such a cute, furry little guy!");
+			newMOB.setName(_("a rat"));
+			newMOB.setDisplayText(_("a rat scurries nearby"));
+			newMOB.setDescription(_("Such a cute, furry little guy!"));
 			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Rodent"));
 			break;
 		case 5:
-			newMOB.setName("a snake");
-			newMOB.setDisplayText("a snake is slithering around");
-			newMOB.setDescription("..red on yellow..., how did that go again?");
+			newMOB.setName(_("a snake"));
+			newMOB.setDisplayText(_("a snake is slithering around"));
+			newMOB.setDescription(_("..red on yellow..., how did that go again?"));
 			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Snake"));
 			break;
 		case 6:
-			newMOB.setName("an owl");
-			newMOB.setDisplayText("an owl is flying around here");
-			newMOB.setDescription("He looks wise beyond his years.");
+			newMOB.setName(_("an owl"));
+			newMOB.setDisplayText(_("an owl is flying around here"));
+			newMOB.setDescription(_("He looks wise beyond his years."));
 			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Owl"));
 			break;
 		case 7:
-			newMOB.setName("a rabbit");
-			newMOB.setDisplayText("a cute little rabbit is watching you");
-			newMOB.setDescription("Don`t blink, or she may twitch her nose.");
+			newMOB.setName(_("a rabbit"));
+			newMOB.setDisplayText(_("a cute little rabbit is watching you"));
+			newMOB.setDescription(_("Don`t blink, or she may twitch her nose."));
 			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'F');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Rabbit"));
 			break;
 		case 8:
-			newMOB.setName("a raven");
-			newMOB.setDisplayText("a raven is pearched nearby");
-			newMOB.setDescription("You think he`s watching you.");
+			newMOB.setName(_("a raven"));
+			newMOB.setDisplayText(_("a raven is pearched nearby"));
+			newMOB.setDescription(_("You think he`s watching you."));
 			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Raven"));
 			break;

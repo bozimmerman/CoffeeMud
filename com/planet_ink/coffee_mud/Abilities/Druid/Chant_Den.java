@@ -134,8 +134,8 @@ public class Chant_Den extends Chant
 				mob.location().send(mob,msg);
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("Your den, carefully covered, appears to the @x1!",Directions.getDirectionName(d)));
 				final Room newRoom=CMClass.getLocale("CaveRoom");
-				newRoom.setDisplayText("A musty den");
-				newRoom.setDescription("You are in a dark rocky den!");
+				newRoom.setDisplayText(_("A musty den"));
+				newRoom.setDescription(_("You are in a dark rocky den!"));
 				newRoom.setArea(mob.location().getArea());
 				mob.location().rawDoors()[d]=newRoom;
 				mob.location().setRawExit(d,CMClass.getExit("HiddenWalkway"));

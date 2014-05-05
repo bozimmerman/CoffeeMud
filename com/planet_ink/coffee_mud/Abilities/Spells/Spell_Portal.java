@@ -152,11 +152,11 @@ public class Spell_Portal extends Spell
 				mob.location().send(mob,msg);
 				newRoom.send(mob,msg2);
 				final Exit e=CMClass.getExit("GenExit");
-				e.setDescription("A swirling portal to somewhere");
-				e.setDisplayText("A swirling portal to somewhere");
+				e.setDescription(_("A swirling portal to somewhere"));
+				e.setDisplayText(_("A swirling portal to somewhere"));
 				e.setDoorsNLocks(false,true,false,false,false,false);
 				e.setExitParams("portal","close","open","closed.");
-				e.setName("a swirling portal");
+				e.setName(_("a swirling portal"));
 				final Ability A1=CMClass.getAbility("Prop_RoomView");
 				if(A1!=null)
 				{

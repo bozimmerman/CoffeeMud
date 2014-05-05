@@ -94,9 +94,9 @@ public class Cow extends StdMOB implements Drink
 		{
 			final Container container=(Container)msg.target();
 			final Item I=CMClass.getItem("GenLiquidResource");
-			I.setName("some milk");
-			I.setDisplayText("some milk has been left here.");
-			I.setDescription("It looks like milk");
+			I.setName(_("some milk"));
+			I.setDisplayText(_("some milk has been left here."));
+			I.setDescription(_("It looks like milk"));
 			I.setMaterial(RawMaterial.RESOURCE_MILK);
 			I.setBaseValue(RawMaterial.CODES.VALUE(RawMaterial.RESOURCE_MILK));
 			I.basePhyStats().setWeight(1);

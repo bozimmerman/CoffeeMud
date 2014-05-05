@@ -747,7 +747,7 @@ public class Reset extends StdCommand
 						final Exit E=R.getRawExit(d);
 						if((E!=null)&&E.hasADoor()&&E.name().equalsIgnoreCase("the ground"))
 						{
-							E.setName("a door");
+							E.setName(_("a door"));
 							E.setExitParams("door","close","open","a door, closed.");
 							changed=true;
 						}

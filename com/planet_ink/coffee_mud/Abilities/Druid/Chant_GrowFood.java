@@ -117,8 +117,8 @@ public class Chant_GrowFood extends Chant
 				newItem.setMaterial(material);
 				newItem.setBaseValue(1);
 				newItem.basePhyStats().setWeight(1);
-				newItem.setName("a pound of "+name);
-				newItem.setDisplayText("some "+name+" sits here.");
+				newItem.setName(_("a pound of @x1",name));
+				newItem.setDisplayText(_("some @x1 sits here.",name));
 				newItem.setDescription("");
 				CMLib.materials().addEffectsToResource(newItem);
 				newItem.recoverPhyStats();

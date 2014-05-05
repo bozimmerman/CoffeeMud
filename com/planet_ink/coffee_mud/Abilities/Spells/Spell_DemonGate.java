@@ -167,9 +167,9 @@ public class Spell_DemonGate extends Spell
 		newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
 		newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
 		newMOB.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
-		newMOB.setName("the great demonbeast");
-		newMOB.setDisplayText("a horrendous demonbeast is stalking around here");
-		newMOB.setDescription("Blood red skin with massive horns, and of course muscles in places you didn`t know existed.");
+		newMOB.setName(_("the great demonbeast"));
+		newMOB.setDisplayText(_("a horrendous demonbeast is stalking around here"));
+		newMOB.setDescription(_("Blood red skin with massive horns, and of course muscles in places you didn`t know existed."));
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		ride.setRiderCapacity(2);
 		newMOB.recoverCharStats();

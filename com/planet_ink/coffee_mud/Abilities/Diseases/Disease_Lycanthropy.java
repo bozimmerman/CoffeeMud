@@ -73,9 +73,9 @@ public class Disease_Lycanthropy extends Disease
 		if(lycanRace()!=null)
 		{
 			if(affected.name().indexOf(' ')>0)
-				affectableStats.setName("a "+lycanRace().name()+" called "+affected.name());
+				affectableStats.setName(_("a @x1 called @x2",lycanRace().name(),affected.name()));
 			else
-				affectableStats.setName(affected.name()+" the "+lycanRace().name());
+				affectableStats.setName(_("@x1 the @x2",affected.name(),lycanRace().name()));
 			lycanRace().setHeightWeight(affectableStats,'M');
 		}
 	}

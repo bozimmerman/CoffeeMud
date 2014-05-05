@@ -58,25 +58,25 @@ public class Spell_FakeFood extends Spell
 				final Food F=(Food)CMClass.getItem("GenFood");
 				switch(CMLib.dice().roll(1,5,0))
 				{
-				case 1: F.setName("a shiny apple");
-						F.setDisplayText("A shiny red apple sits here.");
-						F.setDescription("It looks tasty and crisp!");
+				case 1: F.setName(_("a shiny apple"));
+						F.setDisplayText(_("A shiny red apple sits here."));
+						F.setDescription(_("It looks tasty and crisp!"));
 						break;
-				case 2: F.setName("a nice peach");
-						F.setDisplayText("A nice peach sits here.");
-						F.setDescription("It looks tasty!");
+				case 2: F.setName(_("a nice peach"));
+						F.setDisplayText(_("A nice peach sits here."));
+						F.setDescription(_("It looks tasty!"));
 						break;
-				case 3: F.setName("a big pot pie");
-						F.setDisplayText("A big pot pie has been left here.");
-						F.setDescription("It sure looks good!");
+				case 3: F.setName(_("a big pot pie"));
+						F.setDisplayText(_("A big pot pie has been left here."));
+						F.setDescription(_("It sure looks good!"));
 						break;
-				case 4: F.setName("a juicy steak");
-						F.setDisplayText("A juicy steak has been left here.");
-						F.setDescription("It sure looks good!");
+				case 4: F.setName(_("a juicy steak"));
+						F.setDisplayText(_("A juicy steak has been left here."));
+						F.setDescription(_("It sure looks good!"));
 						break;
-				case 5: F.setName("a bit of food");
-						F.setDisplayText("A bit of food has been left here.");
-						F.setDescription("It sure looks good!");
+				case 5: F.setName(_("a bit of food"));
+						F.setDisplayText(_("A bit of food has been left here."));
+						F.setDescription(_("It sure looks good!"));
 						break;
 				}
 				F.setNourishment(0);

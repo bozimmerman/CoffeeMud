@@ -79,29 +79,29 @@ public class Thief_Graffiti extends ThiefSkill
 			{
 				mob.location().send(mob,msg);
 				final Item I=CMClass.getItem("GenWallpaper");
-				I.setName("Graffiti");
+				I.setName(_("Graffiti"));
 				CMLib.flags().setReadable(I,true);
 				I.recoverPhyStats();
 				I.setReadableText(str);
 				switch(CMLib.dice().roll(1,6,0))
 				{
 				case 1:
-					I.setDescription("Someone has scribbed some graffiti here.  Try reading it.");
+					I.setDescription(_("Someone has scribbed some graffiti here.  Try reading it."));
 					break;
 				case 2:
-					I.setDescription("A cryptic message has been written on the walls.  Try reading it.");
+					I.setDescription(_("A cryptic message has been written on the walls.  Try reading it."));
 					break;
 				case 3:
-					I.setDescription("Someone wrote a message here to read.");
+					I.setDescription(_("Someone wrote a message here to read."));
 					break;
 				case 4:
-					I.setDescription("A strange message is written here.  Read it.");
+					I.setDescription(_("A strange message is written here.  Read it."));
 					break;
 				case 5:
-					I.setDescription("This graffiti looks like it is in "+mob.name()+" handwriting.  Read it!");
+					I.setDescription(_("This graffiti looks like it is in @x1 handwriting.  Read it!",mob.name()));
 					break;
 				case 6:
-					I.setDescription("The wall is covered in graffiti.  You might want to read it.");
+					I.setDescription(_("The wall is covered in graffiti.  You might want to read it."));
 					break;
 				}
 				mob.location().addItem(I);

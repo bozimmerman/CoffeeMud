@@ -53,7 +53,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 		final Item newItem=CMClass.getBasicItem("GenItem");
 		final String name=CMLib.english().startWithAorAn(RawMaterial.CODES.NAME(code).toLowerCase()+" tree");
 		newItem.setName(name);
-		newItem.setDisplayText(newItem.name()+" grows here.");
+		newItem.setDisplayText(_("@x1 grows here.",newItem.name()));
 		newItem.setDescription("");
 		newItem.basePhyStats().setWeight(10000);
 		CMLib.flags().setGettable(newItem,false);

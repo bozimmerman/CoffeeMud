@@ -122,7 +122,7 @@ public class Prayer_Monolith extends Prayer
 				mob.location().show(mob,invoker,CMMsg.MSG_OK_VISUAL,_("<S-NAME> fire(s) @x1 at <T-NAME>.  The missile enters the monolith of air.",msg.tool().name()));
 				final MOB M=CMClass.getFactoryMOB();
 				M.setLocation(mob.location());
-				M.setName("The monolith of air");
+				M.setName(_("The monolith of air"));
 				M.setVictim(mob);
 				M.setAtRange(mob.rangeToTarget());
 				CMLib.combat().postWeaponDamage(M,mob,(Weapon)msg.tool(),true);
@@ -299,31 +299,31 @@ public class Prayer_Monolith extends Prayer
 			case TYP_EARTH:
 				amountRemaining=mob.baseState().getHitPoints()/6;
 				I=CMClass.getItem("GenItem");
-				I.setName("a monolith of stone");
-				I.setDisplayText("a monolith of stone has been erected here");
-				I.setDescription("The bricks are sold and sturdy.");
+				I.setName(_("a monolith of stone"));
+				I.setDisplayText(_("a monolith of stone has been erected here"));
+				I.setDescription(_("The bricks are sold and sturdy."));
 				I.setMaterial(RawMaterial.RESOURCE_STONE);
 				break;
 			case TYP_ICE:
 				amountRemaining=20;
 				I=CMClass.getItem("GenItem");
-				I.setName("a monolith of ice");
-				I.setDisplayText("a monolith of ice has been erected here");
-				I.setDescription("The ice is crystal clear.");
+				I.setName(_("a monolith of ice"));
+				I.setDisplayText(_("a monolith of ice has been erected here"));
+				I.setDescription(_("The ice is crystal clear."));
 				I.setMaterial(RawMaterial.RESOURCE_GLASS);
 				break;
 			case TYP_AIR:
 				I=CMClass.getItem("GenItem");
-				I.setName("a monolith of air");
+				I.setName(_("a monolith of air"));
 				I.setDisplayText("");
-				I.setDescription("The air is swirling dangerously.");
+				I.setDescription(_("The air is swirling dangerously."));
 				I.setMaterial(RawMaterial.RESOURCE_NOTHING);
 				break;
 			case TYP_FIRE:
 				I=CMClass.getItem("GenItem");
-				I.setName("a monolith of fire");
-				I.setDisplayText("a monolith of fire is burning here");
-				I.setDescription("The flames are high and hot.");
+				I.setName(_("a monolith of fire"));
+				I.setDisplayText(_("a monolith of fire is burning here"));
+				I.setDescription(_("The flames are high and hot."));
 				I.setMaterial(RawMaterial.RESOURCE_NOTHING);
 				I.basePhyStats().setDisposition(I.basePhyStats().disposition()|PhyStats.IS_LIGHTSOURCE);
 				break;

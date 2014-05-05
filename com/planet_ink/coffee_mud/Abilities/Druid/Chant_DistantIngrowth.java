@@ -98,13 +98,13 @@ public class Chant_DistantIngrowth extends Chant
 				Item newItem=null;
 				if((newRoom.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 				||(newRoom.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
-					newItem=Chant_SummonSeaweed.buildSeaweed(mob,newRoom);
+					newItem=new Chant_SummonSeaweed().buildSeaweed(mob,newRoom);
 				else
 				if((newRoom.domainType()==Room.DOMAIN_INDOORS_STONE)
 				||(newRoom.domainType()==Room.DOMAIN_INDOORS_WOOD))
-					newItem=Chant_SummonHouseplant.buildHouseplant(mob,newRoom);
+					newItem=new Chant_SummonHouseplant().buildHouseplant(mob,newRoom);
 				else
-					newItem=Chant_SummonPlants.buildPlant(mob,newRoom);
+					newItem=new Chant_SummonPlants().buildPlant(mob,newRoom);
 				mob.tell(_("You feel a distant connection with @x1",newItem.name()));
 			}
 		}

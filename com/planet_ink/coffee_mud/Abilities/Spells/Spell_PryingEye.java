@@ -154,8 +154,8 @@ public class Spell_PryingEye extends Spell
 				eyeM.basePhyStats().setLevel(1);
 				eyeM.basePhyStats().setDisposition(eyeM.basePhyStats().disposition() | PhyStats.IS_FLYING);
 				eyeM.basePhyStats().setSensesMask(eyeM.basePhyStats().sensesMask() | PhyStats.CAN_NOT_HEAR);
-				eyeM.setName("a floating eye");
-				eyeM.setDisplayText("a single eye floats around here");
+				eyeM.setName(_("a floating eye"));
+				eyeM.setDisplayText(_("a single eye floats around here"));
 				CMLib.factions().setAlignment(eyeM,Faction.Align.NEUTRAL);
 				eyeM.baseCharStats().setMyRace(CMClass.getRace("Unique"));
 				eyeM.baseCharStats().getMyRace().startRacing(eyeM,false);

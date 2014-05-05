@@ -155,7 +155,7 @@ public class Chant_PlantConstriction extends Chant
 		if(myPlant==null)
 		{
 			if(auto)
-				myPlant=Chant_SummonPlants.buildPlant(mob,mob.location());
+				myPlant=new Chant_SummonPlants().buildPlant(mob,mob.location());
 			else
 			{
 				mob.tell(_("There doesn't appear to be any of your plants here to choke with."));

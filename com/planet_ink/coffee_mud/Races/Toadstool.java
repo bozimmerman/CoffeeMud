@@ -81,7 +81,7 @@ public class Toadstool extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName("the toadstool shuffle");
+			naturalWeapon.setName(_("the toadstool shuffle"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_MUSHROOMS);
 			naturalWeapon.setUsesRemaining(1000);
 			naturalWeapon.setWeaponType(Weapon.TYPE_NATURAL);

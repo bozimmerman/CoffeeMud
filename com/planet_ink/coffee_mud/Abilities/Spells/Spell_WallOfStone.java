@@ -165,9 +165,9 @@ public class Spell_WallOfStone extends Spell
 				mob.location().send(mob,msg);
 				amountRemaining=mob.baseState().getHitPoints()/6;
 				final Item I=CMClass.getItem("GenItem");
-				I.setName("a wall of stone");
-				I.setDisplayText("a mighty wall of stone has been erected here");
-				I.setDescription("The bricks are sold and sturdy.");
+				I.setName(_("a wall of stone"));
+				I.setDisplayText(_("a mighty wall of stone has been erected here"));
+				I.setDescription(_("The bricks are sold and sturdy."));
 				I.setMaterial(RawMaterial.RESOURCE_STONE);
 				CMLib.flags().setGettable(I,false);
 				I.recoverPhyStats();

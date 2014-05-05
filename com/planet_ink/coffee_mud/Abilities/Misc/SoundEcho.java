@@ -56,7 +56,7 @@ public class SoundEcho extends StdAbility
 		bmob=CMClass.getMOB("StdMOB");
 		if(bmob!=null)
 		{
-			bmob.setName("Someone");
+			bmob.setName(_("Someone"));
 			bmob.basePhyStats().setSensesMask(PhyStats.CAN_NOT_SEE);
 			bmob.recoverPhyStats();
 		}

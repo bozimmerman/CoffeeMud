@@ -136,8 +136,8 @@ public class Chant_Treehouse extends Chant
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("A treehouse appears up in a nearby tree!"));
 				mob.location().clearSky();
 				final Room newRoom=CMClass.getLocale("WoodRoom");
-				newRoom.setDisplayText("A treehouse");
-				newRoom.setDescription("You are up in the treehouse. The view is great from up here!");
+				newRoom.setDisplayText(_("A treehouse"));
+				newRoom.setDescription(_("You are up in the treehouse. The view is great from up here!"));
 				newRoom.setArea(mob.location().getArea());
 				mob.location().rawDoors()[Directions.UP]=newRoom;
 				mob.location().setRawExit(Directions.UP,CMClass.getExit("ClimbableExit"));

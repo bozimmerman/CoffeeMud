@@ -97,12 +97,11 @@ public class Bleeding extends StdAbility implements HealthCondition
 			if((dir>=0)&&(R.findItem(null,"a trail of blood")==null))
 			{
 				final Item I=CMClass.getItem("GenFatWallpaper");
-				I.setName("A trail of blood");
+				I.setName(_("A trail of blood"));
 				if(lastDir>=0)
-					I.setDisplayText("A faint trail of blood leads from "
-						+Directions.getDirectionName(lastDir)+" to "+Directions.getDirectionName(dir)+".");
+					I.setDisplayText(_("A faint trail of blood leads from @x1 to @x2.",Directions.getDirectionName(lastDir),Directions.getDirectionName(dir)));
 				else
-					I.setDisplayText("A faint trail of blood leads "+Directions.getDirectionName(dir)+".");
+					I.setDisplayText(_("A faint trail of blood leads @x1.",Directions.getDirectionName(dir)));
 				I.phyStats().setDisposition(I.phyStats().disposition()|PhyStats.IS_HIDDEN|PhyStats.IS_UNSAVABLE);
 				I.setSecretIdentity(msg.source().Name()+"`s blood.");
 				R.addItem(I,ItemPossessor.Expire.Monster_EQ);

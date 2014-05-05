@@ -336,7 +336,7 @@ public class Emoter extends ActiveTicker
 				if(mob!=null)
 				{
 					if(CMLib.flags().isInTheGame(mob,false))
-						emoter.setName(name+" carried by "+mob.name());
+						emoter.setName(_("@x1 carried by @x2",name,mob.name()));
 					else
 						emoter=null;
 				}
@@ -362,7 +362,7 @@ public class Emoter extends ActiveTicker
 						final String inDir=((R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip))?
 								Directions.getShipInDirectionName(Directions.getOpDirectionCode(d)):
 									Directions.getInDirectionName(Directions.getOpDirectionCode(d));
-						emoter.setName("something "+inDir);
+						emoter.setName(_("something @x1",inDir));
 						emoteHere(R,emoter,emote,null,true);
 					}
 				}

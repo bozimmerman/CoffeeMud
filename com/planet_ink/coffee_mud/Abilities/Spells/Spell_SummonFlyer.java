@@ -164,9 +164,9 @@ public class Spell_SummonFlyer extends Spell
 		newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
 		newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
 		newMOB.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
-		newMOB.setName("a flying warhorse");
-		newMOB.setDisplayText("a warhorse with broad powerful wings stands here");
-		newMOB.setDescription("A ferocious, fleet of foot, flying friend.");
+		newMOB.setName(_("a flying warhorse"));
+		newMOB.setDisplayText(_("a warhorse with broad powerful wings stands here"));
+		newMOB.setDescription(_("A ferocious, fleet of foot, flying friend."));
 		ride.setRideBasis(Rideable.RIDEABLE_AIR);
 		ride.setRiderCapacity(2);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));

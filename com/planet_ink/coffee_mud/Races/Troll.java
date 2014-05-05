@@ -149,7 +149,7 @@ public class Troll extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName("huge clawed hands");
+			naturalWeapon.setName(_("huge clawed hands"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 			naturalWeapon.setUsesRemaining(1000);
 			naturalWeapon.setWeaponType(Weapon.TYPE_SLASHING);

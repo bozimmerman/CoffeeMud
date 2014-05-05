@@ -202,32 +202,32 @@ public class Chant_SaplingWorkers extends Chant
 		switch(CMLib.dice().roll(1,7,0))
 		{
 		case 1:
-			newMOB.setDisplayText(name+" has an eye for foraging.");
+			newMOB.setDisplayText(_("@x1 has an eye for foraging.",name));
 			A=CMClass.getAbility("Foraging");
 			start=true;
 			break;
 		case 2:
-			newMOB.setDisplayText(name+" is a humble farmer.");
+			newMOB.setDisplayText(_("@x1 is a humble farmer.",name));
 			A=CMClass.getAbility("Farming");
 			break;
 		case 3:
-			newMOB.setDisplayText(name+" is an accomplished tailor.");
+			newMOB.setDisplayText(_("@x1 is an accomplished tailor.",name));
 			A=CMClass.getAbility("Tailoring");
 			break;
 		case 4:
-			newMOB.setDisplayText(name+" has some leather tools.");
+			newMOB.setDisplayText(_("@x1 has some leather tools.",name));
 			A=CMClass.getAbility("LeatherWorking");
 			break;
 		case 5:
-			newMOB.setDisplayText(name+" is ready to butcher a corpse.");
+			newMOB.setDisplayText(_("@x1 is ready to butcher a corpse.",name));
 			A=CMClass.getAbility("Butchering");
 			break;
 		case 6:
-			newMOB.setDisplayText(name+" knows scrimshawing.");
+			newMOB.setDisplayText(_("@x1 knows scrimshawing.",name));
 			A=CMClass.getAbility("ScrimShaw");
 			break;
 		case 7:
-			newMOB.setDisplayText(name+" has some sculpting tools.");
+			newMOB.setDisplayText(_("@x1 has some sculpting tools.",name));
 			A=CMClass.getAbility("Sculpting");
 			break;
 		}

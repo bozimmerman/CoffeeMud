@@ -104,7 +104,7 @@ public class Mold extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName("a moldy surface");
+			naturalWeapon.setName(_("a moldy surface"));
 			naturalWeapon.setRanges(0,5);
 			naturalWeapon.setUsesRemaining(1000);
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BARLEY);

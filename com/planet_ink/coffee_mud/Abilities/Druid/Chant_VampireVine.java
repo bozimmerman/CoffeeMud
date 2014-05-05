@@ -81,7 +81,7 @@ public class Chant_VampireVine extends Chant_SummonVine
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Vine"));
 		final String name="a vampire vine";
 		newMOB.setName(name);
-		newMOB.setDisplayText(name+" looks enraged!");
+		newMOB.setDisplayText(_("@x1 looks enraged!",name));
 		newMOB.setDescription("");
 		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 		final Ability A=CMClass.getAbility("Fighter_Rescue");

@@ -82,46 +82,46 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 		return true;
 	}
 
-	public static Item buildHouseplant(MOB mob, Room room)
+	public Item buildHouseplant(MOB mob, Room room)
 	{
 		final Item newItem=CMClass.getItem("GenItem");
 		newItem.setMaterial(RawMaterial.RESOURCE_GREENS);
 		switch(CMLib.dice().roll(1,7,0))
 		{
 		case 1:
-			newItem.setName("a potted rose");
-			newItem.setDisplayText("a potted rose is here.");
+			newItem.setName(_("a potted rose"));
+			newItem.setDisplayText(_("a potted rose is here."));
 			newItem.setDescription("");
 			break;
 		case 2:
-			newItem.setName("a potted daisy");
-			newItem.setDisplayText("a potted daisy is here.");
+			newItem.setName(_("a potted daisy"));
+			newItem.setDisplayText(_("a potted daisy is here."));
 			newItem.setDescription("");
 			break;
 		case 3:
-			newItem.setName("a potted carnation");
-			newItem.setDisplayText("a potted white carnation is here");
+			newItem.setName(_("a potted carnation"));
+			newItem.setDisplayText(_("a potted white carnation is here"));
 			newItem.setDescription("");
 			break;
 		case 4:
-			newItem.setName("a potted sunflower");
-			newItem.setDisplayText("a potted sunflowers is here.");
-			newItem.setDescription("Happy flowers have little yellow blooms.");
+			newItem.setName(_("a potted sunflower"));
+			newItem.setDisplayText(_("a potted sunflowers is here."));
+			newItem.setDescription(_("Happy flowers have little yellow blooms."));
 			break;
 		case 5:
-			newItem.setName("a potted gladiola");
-			newItem.setDisplayText("a potted gladiola is here.");
+			newItem.setName(_("a potted gladiola"));
+			newItem.setDisplayText(_("a potted gladiola is here."));
 			newItem.setDescription("");
 			break;
 		case 6:
-			newItem.setName("a potted fern");
-			newItem.setDisplayText("a potted fern is here.");
-			newItem.setDescription("Like a tiny bush, this dark green plant is lovely.");
+			newItem.setName(_("a potted fern"));
+			newItem.setDisplayText(_("a potted fern is here."));
+			newItem.setDescription(_("Like a tiny bush, this dark green plant is lovely."));
 			break;
 		case 7:
-			newItem.setName("a potted patch of bluebonnets");
-			newItem.setDisplayText("a potted patch of bluebonnets is here.");
-			newItem.setDescription("Happy flowers with little blue and purple blooms.");
+			newItem.setName(_("a potted patch of bluebonnets"));
+			newItem.setDisplayText(_("a potted patch of bluebonnets is here."));
+			newItem.setDescription(_("Happy flowers with little blue and purple blooms."));
 			break;
 		}
 		newItem.setSecretIdentity(mob.Name());

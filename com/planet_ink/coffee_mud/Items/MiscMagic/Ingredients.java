@@ -55,8 +55,8 @@ public class Ingredients extends BagOfEndlessness
 		else
 			I=CMClass.getItem("GenResource");
 		I.setName(name);
-		I.setDisplayText(name+" has been left here.");
-		I.setDescription("It looks like "+name);
+		I.setDisplayText(_("@x1 has been left here.",name));
+		I.setDescription(_("It looks like @x1",name));
 		I.setMaterial(type);
 		I.setBaseValue(RawMaterial.CODES.VALUE(type));
 		I.basePhyStats().setWeight(1);

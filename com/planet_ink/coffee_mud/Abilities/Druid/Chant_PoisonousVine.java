@@ -59,7 +59,7 @@ public class Chant_PoisonousVine extends Chant_SummonVine
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Vine"));
 		final String name="a poisonous vine";
 		newMOB.setName(name);
-		newMOB.setDisplayText(name+" looks enraged!");
+		newMOB.setDisplayText(_("@x1 looks enraged!",name));
 		newMOB.setDescription("");
 		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 		Ability A=CMClass.getAbility("Fighter_Rescue");

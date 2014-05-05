@@ -144,7 +144,7 @@ public class CharGen extends StdCommand
 	{
 		final MOB mob=CMClass.getFactoryMOB();
 		CMLib.factions().setAlignment(mob,Faction.Align.NEUTRAL);
-		mob.setName("Average Joe");
+		mob.setName(_("Average Joe"));
 		if(player) mob.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
 		mob.baseCharStats().setMyRace(CMClass.getRace("Human"));
 		mob.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
@@ -426,7 +426,7 @@ public class CharGen extends StdCommand
 
 
 		c.A=CMClass.getAreaType("StdArea");
-		c.A.setName("UNKNOWNAREA");
+		c.A.setName(_("UNKNOWNAREA"));
 		CMLib.map().addArea(c.A);
 		c.allData=new int[c.classSet.size()][c.levelEnd-c.levelStart+1][17];
 		c.allSkills=new String[c.classSet.size()][c.levelEnd-c.levelStart+1][4];
@@ -553,7 +553,7 @@ public class CharGen extends StdCommand
 								final Behavior B2=CMClass.getBehavior("CombatAbilities");
 								M1.baseCharStats().setMyRace(humanR);
 								M1.basePhyStats().setLevel(level);
-								M1.setName("GOODGUY");
+								M1.setName(_("GOODGUY"));
 								M1.recoverCharStats();
 								M1.recoverPhyStats();
 								M1.setLocation(R);
@@ -577,7 +577,7 @@ public class CharGen extends StdCommand
 							{
 								M1=AverageClassMOB(null,level,C,1,false);
 								M1.baseCharStats().setMyRace(humanR);
-								M1.setName("GOODGUY");
+								M1.setName(_("GOODGUY"));
 								M1.recoverCharStats();
 								M1.recoverPhyStats();
 								M1.setLocation(R);
@@ -614,7 +614,7 @@ public class CharGen extends StdCommand
 							final Behavior B2=CMClass.getBehavior("CombatAbilities");
 							M2.baseCharStats().setMyRace(humanR);
 							M2.basePhyStats().setLevel(level);
-							M2.setName("BADGUY");
+							M2.setName(_("BADGUY"));
 							M2.recoverCharStats();
 							M2.recoverPhyStats();
 							M2.setLocation(R);

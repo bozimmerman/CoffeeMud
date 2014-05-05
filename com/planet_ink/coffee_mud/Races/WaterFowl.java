@@ -91,7 +91,7 @@ public class WaterFowl extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName("a menacing beak");
+			naturalWeapon.setName(_("a menacing beak"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 			naturalWeapon.setUsesRemaining(1000);
 			naturalWeapon.setWeaponType(Weapon.TYPE_NATURAL);

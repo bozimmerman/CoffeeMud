@@ -59,7 +59,7 @@ public class Prayer_AnimateGhost extends Prayer
 		final MOB newMOB=CMClass.getMOB("GenUndead");
 		newMOB.setName(race+((mob==null)?" poltergeist":" ghost"));
 		newMOB.setDescription(description);
-		newMOB.setDisplayText(newMOB.Name()+" is here");
+		newMOB.setDisplayText(_("@x1 is here",newMOB.Name()));
 		newMOB.basePhyStats().setLevel(level+(super.getX1Level(mob)*2)+super.getXLEVELLevel(mob));
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Spirit"));

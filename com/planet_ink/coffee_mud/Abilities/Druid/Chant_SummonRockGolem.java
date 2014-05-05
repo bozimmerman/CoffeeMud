@@ -142,9 +142,9 @@ public class Chant_SummonRockGolem extends Chant
 	{
 		final MOB newMOB=CMClass.getMOB("GenMOB");
 		newMOB.basePhyStats().setLevel(adjustedLevel(caster,0));
-		newMOB.setName("an golem of stone");
-		newMOB.setDisplayText("an stone golem lumbers around here.");
-		newMOB.setDescription("A large beast, made of rock and stone, with a hard stare.");
+		newMOB.setName(_("an golem of stone"));
+		newMOB.setDisplayText(_("an stone golem lumbers around here."));
+		newMOB.setDescription(_("A large beast, made of rock and stone, with a hard stare."));
 		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("StoneGolem"));
 		newMOB.recoverPhyStats();

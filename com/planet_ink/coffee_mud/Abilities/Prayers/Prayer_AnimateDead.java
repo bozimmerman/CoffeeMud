@@ -89,7 +89,7 @@ public class Prayer_AnimateDead extends Prayer
 			{
 				mob.location().send(mob,msg);
 				final MOB newMOB=CMClass.getMOB("GenUndead");
-				newMOB.setName(realName+" zombie");
+				newMOB.setName(_("@x1 zombie",realName));
 				newMOB.setDescription(description);
 				newMOB.setDisplayText("");
 				newMOB.basePhyStats().setLevel(body.phyStats().level()+((super.getX1Level(mob)+super.getXLEVELLevel(mob))/2));

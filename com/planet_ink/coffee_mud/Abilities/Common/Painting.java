@@ -248,8 +248,8 @@ public class Painting extends CommonSkill
 			if((paintingKeyWords!=null)&&(paintingDesc!=null))
 			{
 				building=CMClass.getItem("GenItem");
-				building.setName("a painting of "+paintingKeyWords);
-				building.setDisplayText("a painting of "+paintingKeyWords+" is here.");
+				building.setName(_("a painting of @x1",paintingKeyWords));
+				building.setDisplayText(_("a painting of @x1 is here.",paintingKeyWords));
 				building.setDescription(paintingDesc);
 				building.basePhyStats().setWeight(canvasI.basePhyStats().weight());
 				building.setBaseValue(canvasI.baseGoldValue()*(CMLib.dice().roll(1,5,0)));

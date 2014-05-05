@@ -86,8 +86,8 @@ public class Herbology extends CommonSkill
 					if(name.length()>0)
 						found.setName(name+" "+herb);
 					else
-						found.setName("some "+herb);
-					found.setDisplayText(found.Name()+" is here");
+						found.setName(_("some @x1",herb));
+					found.setDisplayText(_("@x1 is here",found.Name()));
 					found.setDescription("");
 					found.text();
 				}

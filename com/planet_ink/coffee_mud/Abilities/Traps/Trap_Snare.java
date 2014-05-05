@@ -99,7 +99,7 @@ public class Trap_Snare extends StdTrap
 				target.recoverPhyStats();
 				final Ability A=CMClass.getAbility("Thief_Bind");
 				final Item I=CMClass.getItem("StdItem");
-				I.setName("the snare");
+				I.setName(_("the snare"));
 				A.setAffectedOne(I);
 				A.invoke(invoker(),target,true,0);
 			}

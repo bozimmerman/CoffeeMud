@@ -81,40 +81,40 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 		return true;
 	}
 
-	public static Item buildFungus(MOB mob, Room room)
+	public Item buildFungus(MOB mob, Room room)
 	{
 		final Item newItem=CMClass.getItem("GenFoodResource");
 		newItem.setMaterial(RawMaterial.RESOURCE_MUSHROOMS);
 		switch(CMLib.dice().roll(1,6,0))
 		{
 		case 1:
-			newItem.setName("a mushroom");
-			newItem.setDisplayText("a mushroom is here.");
+			newItem.setName(_("a mushroom"));
+			newItem.setDisplayText(_("a mushroom is here."));
 			newItem.setDescription("");
 			break;
 		case 2:
-			newItem.setName("a shiitake mushroom");
-			newItem.setDisplayText("a shiitake mushroom grows here.");
+			newItem.setName(_("a shiitake mushroom"));
+			newItem.setDisplayText(_("a shiitake mushroom grows here."));
 			newItem.setDescription("");
 			break;
 		case 3:
-			newItem.setName("a cremini mushroom");
-			newItem.setDisplayText("a cremini mushroom grows here");
+			newItem.setName(_("a cremini mushroom"));
+			newItem.setDisplayText(_("a cremini mushroom grows here"));
 			newItem.setDescription("");
 			break;
 		case 4:
-			newItem.setName("a white mushroom");
-			newItem.setDisplayText("a white mushroom grows here.");
+			newItem.setName(_("a white mushroom"));
+			newItem.setDisplayText(_("a white mushroom grows here."));
 			newItem.setDescription("");
 			break;
 		case 5:
-			newItem.setName("a portabello mushroom");
-			newItem.setDisplayText("a portabello mushroom grows here.");
+			newItem.setName(_("a portabello mushroom"));
+			newItem.setDisplayText(_("a portabello mushroom grows here."));
 			newItem.setDescription("");
 			break;
 		case 6:
-			newItem.setName("a wood ear");
-			newItem.setDisplayText("a wood ear grows here.");
+			newItem.setName(_("a wood ear"));
+			newItem.setDisplayText(_("a wood ear grows here."));
 			newItem.setDescription("");
 			break;
 		}

@@ -466,9 +466,9 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 		if(!isFakeLimb)
 		{
 			limb=CMClass.getItem("GenLimb");
-			limb.setName("a "+gone);
+			limb.setName(_("a @x1",gone));
 			limb.basePhyStats().setAbility(1);
-			limb.setDisplayText("a bloody "+gone+" is sitting here.");
+			limb.setDisplayText(_("a bloody @x1 is sitting here.",gone));
 			if(target != null)
 				limb.setSecretIdentity(target.name()+"`s bloody "+gone+".");
 			int material=RawMaterial.RESOURCE_MEAT;

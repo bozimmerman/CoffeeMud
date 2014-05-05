@@ -335,7 +335,7 @@ public class LockSmith extends CraftingSkill
 		displayText=_("You are working on @x1@x2",(keyFlag?"a key for ":""),workingOn.name());
 		verb=_("working on @x1@x2",(keyFlag?"a key for ":""),workingOn.name());
 		playSound="drill.wav";
-		buildingI.setDisplayText(itemName+" lies here");
+		buildingI.setDisplayText(_("@x1 lies here",itemName));
 		buildingI.setDescription(itemName+". ");
 		buildingI.basePhyStats().setWeight(woodRequired);
 		buildingI.setBaseValue(1);

@@ -151,9 +151,9 @@ public class Chant_Treemorph extends Chant
 		if((treeForm!=null)&&(affected instanceof MOB))
 		{
 			if(affected.name().indexOf(' ')>0)
-				affectableStats.setName("a "+treeForm.name()+" called "+affected.name());
+				affectableStats.setName(_("a @x1 called @x2",treeForm.name(),affected.name()));
 			else
-				affectableStats.setName(affected.name()+" the "+treeForm.name());
+				affectableStats.setName(_("@x1 the @x2",affected.name(),treeForm.name()));
 			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			treeForm.setHeightWeight(affectableStats,'M');
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
@@ -235,9 +235,9 @@ public class Chant_Treemorph extends Chant
 					target.makePeace();
 					CMLib.commands().postStand(target,true);
 					tree=CMClass.getItem("GenItem");
-					tree.setName("a oak tree");
-					tree.setDisplayText("an oak tree that reminds you of "+target.name()+" is growing here.");
-					tree.setDescription("It`s a tall oak tree, which seems to remind you of "+target.name()+".");
+					tree.setName(_("a oak tree"));
+					tree.setDisplayText(_("an oak tree that reminds you of @x1 is growing here.",target.name()));
+					tree.setDescription(_("It`s a tall oak tree, which seems to remind you of @x1.",target.name()));
 					tree.setMaterial(RawMaterial.RESOURCE_OAK);
 					tree.basePhyStats().setWeight(5000);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> turn(s) into a tree!!"));

@@ -79,7 +79,7 @@ public class Wyvern extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName("huge talons");
+			naturalWeapon.setName(_("huge talons"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 			naturalWeapon.setUsesRemaining(1000);
 			naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);

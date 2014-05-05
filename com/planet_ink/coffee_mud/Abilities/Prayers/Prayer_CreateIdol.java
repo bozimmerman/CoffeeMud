@@ -146,7 +146,7 @@ public class Prayer_CreateIdol extends Prayer
 				newItem.setBaseValue(1);
 				final String name=CMLib.english().startWithAorAn(RawMaterial.CODES.NAME(material).toLowerCase()+" idol of "+mob.getWorshipCharID());
 				newItem.setName(name);
-				newItem.setDisplayText(name+" sits here.");
+				newItem.setDisplayText(_("@x1 sits here.",name));
 				newItem.basePhyStats().setDisposition(PhyStats.IS_EVIL);
 				newItem.basePhyStats().setWeight(10);
 				newItem.setMaterial(material);

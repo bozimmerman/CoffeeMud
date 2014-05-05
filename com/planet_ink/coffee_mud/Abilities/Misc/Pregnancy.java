@@ -271,7 +271,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 								babe.setClan(p.first.clanID(),p.first.getAutoPosition());
 							babe.setLiegeID(mob.getLiegeID());
 							babe.setDescription(desc);
-							babe.setDisplayText(name+" is here.");
+							babe.setDisplayText(_("@x1 is here.",name));
 							CMLib.beanCounter().clearZeroMoney(babe,null);
 							babe.baseCharStats().setMyRace(R);
 							babe.baseCharStats().setStat(CharStats.STAT_CHARISMA,10);
@@ -331,7 +331,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 								I.addNonUninvokableEffect((Ability)AGE.copyOf());
 							name=CMLib.english().startWithAorAn(R.makeMobName((char)babe.baseCharStats().getStat(CharStats.STAT_GENDER), 1)).toLowerCase();
 							I.setName(name);
-							I.setDisplayText(name+" is here.");
+							I.setDisplayText(_("@x1 is here.",name));
 							I.recoverPhyStats();
 							mob.location().addItem(I);
 							final Behavior B=CMClass.getBehavior("Emoter");

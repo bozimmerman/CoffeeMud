@@ -119,7 +119,7 @@ public class Chant_FungalBloom extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				target.setDescription("It seems to be getting puffier and puffier!");
+				target.setDescription(_("It seems to be getting puffier and puffier!"));
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 seems to be puffing up!",target.name()));
 				Ability A=CMClass.getAbility("Bomb_Poison");
 				A.setMiscText("Poison_Bloodboil");

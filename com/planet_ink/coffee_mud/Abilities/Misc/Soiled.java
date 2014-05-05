@@ -145,7 +145,7 @@ public class Soiled extends StdAbility
 				{
 					M=CMClass.getFactoryMOB();
 					M.setName(affected.name());
-					M.setDisplayText(affected.name()+" is here.");
+					M.setDisplayText(_("@x1 is here.",affected.name()));
 					M.setDescription("");
 					if(M.location()!=R)
 						M.setLocation(R);

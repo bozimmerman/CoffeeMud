@@ -84,7 +84,7 @@ public class ManScorpion extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName("some nasty pincers");
+			naturalWeapon.setName(_("some nasty pincers"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 			naturalWeapon.setUsesRemaining(1000);
 			naturalWeapon.setWeaponType(Weapon.TYPE_NATURAL);

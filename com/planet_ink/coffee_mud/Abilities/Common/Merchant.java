@@ -225,10 +225,10 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			staticMOB=CMClass.getMOB("StdMOB");
 			if((affected instanceof Room)
 			||(affected instanceof Exit))
-				staticMOB.setName("the shopkeeper");
+				staticMOB.setName(_("the shopkeeper"));
 			else
 			if(affected instanceof Area)
-				staticMOB.setName("the shop");
+				staticMOB.setName(_("the shop"));
 			else
 				staticMOB.setName(affected.Name());
 		}

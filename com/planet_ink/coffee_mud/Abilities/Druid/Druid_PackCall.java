@@ -210,7 +210,7 @@ public class Druid_PackCall extends StdAbility
 					final String raceName=D.getRaceName(level,MOBRaceCode).toLowerCase();
 					final String name=CMLib.english().startWithAorAn(raceName).toLowerCase();
 					newMOB.setName(name);
-					newMOB.setDisplayText("a loyal "+raceName+" is here");
+					newMOB.setDisplayText(_("a loyal @x1 is here",raceName));
 					newMOB.setDescription("");
 					newMOB.copyFactions(mob);
 					final Ability A=CMClass.getAbility("Fighter_Rescue");

@@ -90,9 +90,9 @@ public class Chant_PlantBed extends Chant
 				mob.location().send(mob,msg);
 				final Item newItem=CMClass.getItem("GenBed");
 				final Rideable newRide=(Rideable)newItem;
-				newItem.setName("a plant bed");
-				newItem.setDisplayText("A enormously comfortable pea-pod looks ready to sleep in.");
-				newItem.setDescription("The plant bed looks like a hollowed pea-pod with fern-like cushioning inside.  Looks like a nice place to take a nap in!");
+				newItem.setName(_("a plant bed"));
+				newItem.setDisplayText(_("A enormously comfortable pea-pod looks ready to sleep in."));
+				newItem.setDescription(_("The plant bed looks like a hollowed pea-pod with fern-like cushioning inside.  Looks like a nice place to take a nap in!"));
 				newRide.setRideBasis(Rideable.RIDEABLE_SLEEP);
 				newRide.setRiderCapacity(1);
 				newItem.setMaterial(RawMaterial.RESOURCE_HEMP);

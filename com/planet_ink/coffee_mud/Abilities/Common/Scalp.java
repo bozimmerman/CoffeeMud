@@ -86,15 +86,15 @@ public class Scalp extends CommonSkill
 						if((body.charStats()!=null)&&(body.charStats().getMyRace()!=null))
 							race=" "+body.charStats().getMyRace().name();
 						if(body.name().startsWith("the body"))
-							scalp.setName("the"+race+" scalp"+body.name().substring(8));
+							scalp.setName(_("the@x1 scalp@x2",race,body.name().substring(8)));
 						else
-							scalp.setName("a"+race+" scalp");
+							scalp.setName(_("a@x1 scalp",race));
 						if(body.displayText().startsWith("the body"))
-							scalp.setDisplayText("the"+race+" scalp"+body.displayText().substring(8));
+							scalp.setDisplayText(_("the@x1 scalp@x2",race,body.displayText().substring(8)));
 						else
-							scalp.setDisplayText("a"+race+" scalp sits here");
+							scalp.setDisplayText(_("a@x1 scalp sits here",race));
 						scalp.setBaseValue(1);
-						scalp.setDescription("This is the bloody top of that poor creatures head.");
+						scalp.setDescription(_("This is the bloody top of that poor creatures head."));
 						scalp.setMaterial(RawMaterial.RESOURCE_MEAT);
 						scalp.setSecretIdentity("This scalp was cut by "+mob.name()+".");
 						mob.location().addItem(scalp,ItemPossessor.Expire.Monster_EQ);

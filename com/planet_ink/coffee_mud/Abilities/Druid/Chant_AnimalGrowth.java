@@ -88,7 +88,7 @@ public class Chant_AnimalGrowth extends Chant
 			oldName=affected.Name().substring(4).trim();
 		else
 			oldName=affected.Name();
-		affectedStats.setName("An ENORMOUS "+oldName);
+		affectedStats.setName(_("An ENORMOUS @x1",oldName));
 	}
 
 	@Override

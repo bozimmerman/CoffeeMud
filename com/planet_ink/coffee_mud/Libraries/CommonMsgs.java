@@ -951,8 +951,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					l.setBaseValue(RawMaterial.CODES.VALUE(myResource));
 					l.basePhyStats().setWeight(1);
 					final String name=RawMaterial.CODES.NAME(myResource).toLowerCase();
-					l.setName("some "+name);
-					l.setDisplayText("some "+name+" sits here.");
+					l.setName(_("some @x1",name));
+					l.setDisplayText(_("some @x1 sits here.",name));
 					l.setDescription("");
 					CMLib.materials().addEffectsToResource(l);
 					l.recoverPhyStats();

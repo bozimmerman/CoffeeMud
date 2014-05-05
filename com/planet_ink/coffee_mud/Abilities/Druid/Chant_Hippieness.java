@@ -125,9 +125,9 @@ public class Chant_Hippieness extends Chant
 						final Item smoke=CMClass.getItem("GenResource");
 						if(smoke!=null)
 						{
-							smoke.setName("some smoke");
-							smoke.setDescription("Looks liefy and green.");
-							smoke.setDisplayText("some smoke is sitting here.");
+							smoke.setName(_("some smoke"));
+							smoke.setDescription(_("Looks liefy and green."));
+							smoke.setDisplayText(_("some smoke is sitting here."));
 							smoke.setMaterial(RawMaterial.RESOURCE_HEMP);
 							smoke.basePhyStats().setWeight(1);
 							smoke.setBaseValue(25);

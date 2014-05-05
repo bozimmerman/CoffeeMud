@@ -266,8 +266,8 @@ public class Spell_Meld extends Spell
 					final Armor gc=CMClass.getArmor("GenArmor");
 					gc.setMaterial(material);
 					gc.setName(newName);
-					gc.setDisplayText(newName+" sits here.");
-					gc.setDescription("It looks like someone melded "+itemOneName+" and "+itemTwoName);
+					gc.setDisplayText(_("@x1 sits here.",newName));
+					gc.setDescription(_("It looks like someone melded @x1 and @x2",itemOneName,itemTwoName));
 					gc.setSecretIdentity(itemOne.rawSecretIdentity()+", "+itemTwo.rawSecretIdentity());
 					gc.setBaseValue(itemOne.baseGoldValue()+itemTwo.baseGoldValue());
 					gc.basePhyStats().setWeight(itemOne.basePhyStats().weight()+itemTwo.basePhyStats().weight());
@@ -297,8 +297,8 @@ public class Spell_Meld extends Spell
 					final Weapon gc=CMClass.getWeapon("GenWeapon");
 					gc.setMaterial(material);
 					gc.setName(newName);
-					gc.setDisplayText(newName+" sits here.");
-					gc.setDescription("It looks like someone melded "+itemOneName+" and "+itemTwoName);
+					gc.setDisplayText(_("@x1 sits here.",newName));
+					gc.setDescription(_("It looks like someone melded @x1 and @x2",itemOneName,itemTwoName));
 					gc.setSecretIdentity(itemOne.rawSecretIdentity()+", "+itemTwo.rawSecretIdentity());
 					gc.setBaseValue(itemOne.baseGoldValue()+itemTwo.baseGoldValue());
 					gc.basePhyStats().setWeight(itemOne.basePhyStats().weight()+itemTwo.basePhyStats().weight());
@@ -345,8 +345,8 @@ public class Spell_Meld extends Spell
 					final Container gc=(Container)CMClass.getItem("GenContainer");
 					gc.setMaterial(material);
 					gc.setName(newName);
-					gc.setDisplayText(newName+" sits here.");
-					gc.setDescription("It looks like someone melded "+itemOneName+" and "+itemTwoName);
+					gc.setDisplayText(_("@x1 sits here.",newName));
+					gc.setDescription(_("It looks like someone melded @x1 and @x2",itemOneName,itemTwoName));
 					CMLib.flags().setGettable(gc,CMLib.flags().isGettable(itemOne)&&CMLib.flags().isGettable(itemTwo));
 					gc.setBaseValue(itemOne.baseGoldValue()+itemTwo.baseGoldValue());
 					gc.basePhyStats().setWeight(itemOne.basePhyStats().weight()+itemTwo.basePhyStats().weight());

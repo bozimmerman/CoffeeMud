@@ -384,8 +384,8 @@ public class Masonry extends CraftingSkill
 							{
 								final Room R2=CMClass.getLocale("UnderWater");
 								R2.setRoomID(R.getArea().getNewRoomID(R,Directions.DOWN));
-								R2.setDisplayText("Under the water");
-								R2.setDescription("You are swimming around under the water.");
+								R2.setDisplayText(_("Under the water"));
+								R2.setDescription(_("You are swimming around under the water."));
 								R2.setArea(R.getArea());
 								R2.rawDoors()[Directions.UP]=R;
 								R2.setRawExit(Directions.UP,CMClass.getExit("Open"));
@@ -470,12 +470,12 @@ public class Masonry extends CraftingSkill
 							room=CMLib.map().getRoom(room);
 							final Exit x=CMClass.getExit("GenExit");
 							final Exit x2=CMClass.getExit("GenExit");
-							x.setName("a portcullis");
-							x.setDescription("A portcullis lies this way.");
+							x.setName(_("a portcullis"));
+							x.setDescription(_("A portcullis lies this way."));
 							x.setExitParams("portcullis","lower","raise","A portcullis blocks your way.");
 							x.setDoorsNLocks(true,false,true,false,false,false);
-							x2.setName("a portcullis");
-							x2.setDescription("A portcullis lies this way.");
+							x2.setName(_("a portcullis"));
+							x2.setDescription(_("A portcullis lies this way."));
 							x2.setExitParams("portcullis","lower","raise","A portcullis blocks your way.");
 							x2.setDoorsNLocks(true,false,true,false,false,false);
 							room.setRawExit(dir,x);
@@ -495,10 +495,10 @@ public class Masonry extends CraftingSkill
 							room=CMLib.map().getRoom(room);
 							final Exit x=CMClass.getExit("GenExit");
 							final Exit x2=CMClass.getExit("GenExit");
-							x.setName("an archway");
-							x.setDescription("A majestic archway towers above you.");
-							x2.setName("an archway");
-							x2.setDescription("A majestic archway towers above you.");
+							x.setName(_("an archway"));
+							x.setDescription(_("A majestic archway towers above you."));
+							x2.setName(_("an archway"));
+							x2.setDescription(_("A majestic archway towers above you."));
 							room.setRawExit(dir,x);
 							if(room.rawDoors()[dir]!=null)
 							{

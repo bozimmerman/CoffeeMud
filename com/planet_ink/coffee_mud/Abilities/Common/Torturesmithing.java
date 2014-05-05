@@ -293,7 +293,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		displayText=_("You are making @x1",buildingI.name());
 		verb=_("making @x1",buildingI.name());
 		playSound="hammer.wav";
-		buildingI.setDisplayText(itemName+" lies here");
+		buildingI.setDisplayText(_("@x1 lies here",itemName));
 		buildingI.setDescription(itemName+". ");
 		buildingI.basePhyStats().setWeight(woodRequired);
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));

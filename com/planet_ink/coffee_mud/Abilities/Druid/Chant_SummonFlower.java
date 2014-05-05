@@ -69,35 +69,35 @@ public class Chant_SummonFlower extends Chant_SummonPlants
 			processing=false;
 		}
 	}
-	public static Item buildFlower(MOB mob, Room room)
+	public Item buildFlower(MOB mob, Room room)
 	{
 		final Item newItem=CMClass.getItem("GenItem");
 		newItem.setMaterial(RawMaterial.RESOURCE_GREENS);
 		switch(CMLib.dice().roll(1,5,0))
 		{
 		case 1:
-			newItem.setName("a red rose");
-			newItem.setDisplayText("a red rose is growing here.");
+			newItem.setName(_("a red rose"));
+			newItem.setDisplayText(_("a red rose is growing here."));
 			newItem.setDescription("");
 			break;
 		case 2:
-			newItem.setName("a nice daisy");
-			newItem.setDisplayText("a nice daisy is growing here.");
+			newItem.setName(_("a nice daisy"));
+			newItem.setDisplayText(_("a nice daisy is growing here."));
 			newItem.setDescription("");
 			break;
 		case 3:
-			newItem.setName("a white carnation");
-			newItem.setDisplayText("a beautiful white carnation is growing here");
+			newItem.setName(_("a white carnation"));
+			newItem.setDisplayText(_("a beautiful white carnation is growing here"));
 			newItem.setDescription("");
 			break;
 		case 4:
-			newItem.setName("a happy sunflower");
-			newItem.setDisplayText("a happy sunflower is growing here.");
-			newItem.setDescription("Happy flowers have little yellow blooms.");
+			newItem.setName(_("a happy sunflower"));
+			newItem.setDisplayText(_("a happy sunflower is growing here."));
+			newItem.setDescription(_("Happy flowers have little yellow blooms."));
 			break;
 		case 5:
-			newItem.setName("a lovely gladiola");
-			newItem.setDisplayText("a lovely gladiola is growing here.");
+			newItem.setName(_("a lovely gladiola"));
+			newItem.setDisplayText(_("a lovely gladiola is growing here."));
 			newItem.setDescription("");
 			break;
 		}

@@ -94,11 +94,11 @@ public class Prayer_UnholyArmament extends Prayer
 			if(pos==Wearable.WORN_WIELD)
 			{
 				I=CMClass.getWeapon("GenWeapon");
-				I.setName("an unholy blade");
-				I.setDisplayText("an wicked looking blade sits here.");
+				I.setName(_("an unholy blade"));
+				I.setDisplayText(_("an wicked looking blade sits here."));
 				((Weapon)I).setWeaponClassification(Weapon.CLASS_SWORD);
 				((Weapon)I).setWeaponType(Weapon.TYPE_SLASHING);
-				I.setDescription("Whatever made this sharp twisted thing couldn`t have been good..");
+				I.setDescription(_("Whatever made this sharp twisted thing couldn`t have been good.."));
 				I.basePhyStats().setLevel(mob.phyStats().level());
 				I.basePhyStats().setWeight(20);
 				I.setMaterial(RawMaterial.RESOURCE_MITHRIL);
@@ -112,9 +112,9 @@ public class Prayer_UnholyArmament extends Prayer
 			if(pos==Wearable.WORN_HELD)
 			{
 				I=CMClass.getArmor("GenShield");
-				I.setName("an unholy shield");
-				I.setDisplayText("an unholy shield sits here.");
-				I.setDescription("Whatever made this hideous shield couldn`t have been good.");
+				I.setName(_("an unholy shield"));
+				I.setDisplayText(_("an unholy shield sits here."));
+				I.setDescription(_("Whatever made this hideous shield couldn`t have been good."));
 				I.basePhyStats().setLevel(mob.phyStats().level());
 				I.basePhyStats().setWeight(20);
 				I.setMaterial(RawMaterial.RESOURCE_MITHRIL);
@@ -140,59 +140,59 @@ public class Prayer_UnholyArmament extends Prayer
 				I.setBaseValue(0);
 				if(pos==Wearable.WORN_TORSO)
 				{
-					I.setName("an unholy breast plate");
-					I.setDisplayText("a wicked looking breast plate sits here.");
-					I.setDescription("Whatever made this black spiked armor couldn`t have been good.");
+					I.setName(_("an unholy breast plate"));
+					I.setDisplayText(_("a wicked looking breast plate sits here."));
+					I.setDescription(_("Whatever made this black spiked armor couldn`t have been good."));
 				}
 				if(pos==Wearable.WORN_HEAD)
 				{
-					I.setName("an unholy helm");
-					I.setDisplayText("a wicked looking helmet sits here.");
-					I.setDescription("Whatever made this spiked helmet couldn`t have been good.");
+					I.setName(_("an unholy helm"));
+					I.setDisplayText(_("a wicked looking helmet sits here."));
+					I.setDescription(_("Whatever made this spiked helmet couldn`t have been good."));
 				}
 				if(pos==Wearable.WORN_ABOUT_BODY)
 				{
-					I.setName("an unholy cape");
-					I.setDisplayText("a torn black cape sits here.");
-					I.setDescription("Whatever made this cape couldn`t have been good.");
+					I.setName(_("an unholy cape"));
+					I.setDisplayText(_("a torn black cape sits here."));
+					I.setDescription(_("Whatever made this cape couldn`t have been good."));
 				}
 				if(pos==Wearable.WORN_ARMS)
 				{
-					I.setName("some unholy arm cannons");
-					I.setDisplayText("a pair of wicked looking arm cannons sit here.");
-					I.setDescription("Whatever made this couldn`t have been good.");
+					I.setName(_("some unholy arm cannons"));
+					I.setDisplayText(_("a pair of wicked looking arm cannons sit here."));
+					I.setDescription(_("Whatever made this couldn`t have been good."));
 				}
 				if((pos==Wearable.WORN_LEFT_WRIST)
 				||(pos==Wearable.WORN_RIGHT_WRIST))
 				{
 					numThatsOk=2;
-					I.setName("an unholy vambrace");
-					I.setDisplayText("a wicked looking spiked vambrace sit here.");
-					I.setDescription("Whatever made this twisted black metal couldn`t have been good.");
+					I.setName(_("an unholy vambrace"));
+					I.setDisplayText(_("a wicked looking spiked vambrace sit here."));
+					I.setDescription(_("Whatever made this twisted black metal couldn`t have been good."));
 				}
 				if(pos==Wearable.WORN_HANDS)
 				{
-					I.setName("a pair of unholy gauntlets");
-					I.setDisplayText("some wicked looking gauntlets sit here.");
-					I.setDescription("Whatever made this twisted black metal couldn`t have been good.");
+					I.setName(_("a pair of unholy gauntlets"));
+					I.setDisplayText(_("some wicked looking gauntlets sit here."));
+					I.setDescription(_("Whatever made this twisted black metal couldn`t have been good."));
 				}
 				if(pos==Wearable.WORN_WAIST)
 				{
-					I.setName("an unholy girdle");
-					I.setDisplayText("a wicked looking girdle sits here.");
-					I.setDescription("Whatever made this twisted black metal couldn`t have been good.");
+					I.setName(_("an unholy girdle"));
+					I.setDisplayText(_("a wicked looking girdle sits here."));
+					I.setDescription(_("Whatever made this twisted black metal couldn`t have been good."));
 				}
 				if(pos==Wearable.WORN_LEGS)
 				{
-					I.setName("a pair of unholy leg cannons");
-					I.setDisplayText("a wicked looking pair of leg cannons sits here.");
-					I.setDescription("Whatever made this twisted and spiked black metal couldn`t have been good.");
+					I.setName(_("a pair of unholy leg cannons"));
+					I.setDisplayText(_("a wicked looking pair of leg cannons sits here."));
+					I.setDescription(_("Whatever made this twisted and spiked black metal couldn`t have been good."));
 				}
 				if(pos==Wearable.WORN_FEET)
 				{
-					I.setName("a pair of unholy boots");
-					I.setDisplayText("a wicked looking pair of boots sits here.");
-					I.setDescription("Whatever made this pair of twisted and spiked black metal boots couldn`t have been good.");
+					I.setName(_("a pair of unholy boots"));
+					I.setDisplayText(_("a wicked looking pair of boots sits here."));
+					I.setDescription(_("Whatever made this pair of twisted and spiked black metal boots couldn`t have been good."));
 				}
 			}
 			Ability A=CMClass.getAbility("Prop_HaveZapper");

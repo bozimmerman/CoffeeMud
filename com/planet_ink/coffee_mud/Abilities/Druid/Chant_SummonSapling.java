@@ -202,7 +202,7 @@ public class Chant_SummonSapling extends Chant
 		String name=resourceName+" sapling";
 		name=CMLib.english().startWithAorAn(name).toLowerCase();
 		newMOB.setName(name);
-		newMOB.setDisplayText(name+" looks enraged!");
+		newMOB.setDisplayText(_("@x1 looks enraged!",name));
 		newMOB.setDescription("");
 		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 		final Ability A=CMClass.getAbility("Fighter_Rescue");

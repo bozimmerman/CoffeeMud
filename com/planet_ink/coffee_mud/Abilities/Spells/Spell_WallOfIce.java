@@ -178,9 +178,9 @@ public class Spell_WallOfIce extends Spell
 				mob.location().send(mob,msg);
 				amountRemaining=20;
 				final Item I=CMClass.getItem("GenItem");
-				I.setName("a wall of ice");
-				I.setDisplayText("a mighty wall of ice has been erected here");
-				I.setDescription("The ice is crystal clear.");
+				I.setName(_("a wall of ice"));
+				I.setDisplayText(_("a mighty wall of ice has been erected here"));
+				I.setDescription(_("The ice is crystal clear."));
 				I.setMaterial(RawMaterial.RESOURCE_GLASS);
 				CMLib.flags().setGettable(I,false);
 				I.recoverPhyStats();

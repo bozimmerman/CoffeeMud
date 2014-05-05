@@ -103,7 +103,7 @@ public class Chant_DistantGrowth extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final Item newItem=Chant_SummonPlants.buildPlant(mob,newRoom);
+				final Item newItem=new Chant_SummonPlants().buildPlant(mob,newRoom);
 				mob.tell(_("You feel a distant connection with @x1",newItem.name()));
 			}
 		}

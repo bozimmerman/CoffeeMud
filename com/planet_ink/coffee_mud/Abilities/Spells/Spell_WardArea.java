@@ -112,7 +112,7 @@ public class Spell_WardArea extends Spell implements Trap
 		else
 		{
 			final MOB newCaster=CMClass.getMOB("StdMOB");
-			newCaster.setName("the thin air");
+			newCaster.setName(_("the thin air"));
 			newCaster.setDescription(" ");
 			newCaster.setDisplayText(" ");
 			if(invoker()!=null)

@@ -269,10 +269,10 @@ public class Dragon extends StdMOB
 				Stomach = CMClass.getLocale("StdRoom");
 				if(Stomach!=null)
 				{
-					Stomach.setName("Dragon Stomach");
-					Stomach.setDisplayText("Dragon Stomach");
+					Stomach.setName(_("Dragon Stomach"));
+					Stomach.setDisplayText(_("Dragon Stomach"));
 					Stomach.setArea(location().getArea());
-					Stomach.setDescription("You are in the stomach of a dragon.  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.");
+					Stomach.setDescription(_("You are in the stomach of a dragon.  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested."));
 				}
 			}
 			if((--digestDown)<=0)

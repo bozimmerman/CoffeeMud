@@ -168,7 +168,7 @@ public class FieryRoom
 	private void dealDamage(MOB mob)
 	{
 		final MOB M=CMLib.map().getFactoryMOB(mob.location());
-		M.setName("fire");
+		M.setName(_("fire"));
 		CMLib.combat().postDamage(M, mob, null, directDamage, CMMsg.MASK_ALWAYS | CMMsg.MASK_MALICIOUS|CMMsg.TYP_FIRE, Weapon.TYPE_BURNING,
 							"The fire here <DAMAGE> <T-NAME>!");
 		M.destroy();
@@ -180,7 +180,7 @@ public class FieryRoom
 		if (target != null)
 		{
 			final MOB M=CMLib.map().getFactoryMOB(mob.location());
-			M.setName("fire");
+			M.setName(_("fire"));
 			switch (target.material() & RawMaterial.MATERIAL_MASK)
 			{
 				case RawMaterial.MATERIAL_GLASS:
@@ -217,7 +217,7 @@ public class FieryRoom
 	private static void roastRoom(Room which)
 	{
 		final MOB mob=CMLib.map().getFactoryMOB(which);
-		mob.setName("fire");
+		mob.setName(("fire"));
 		for(int i=0;i<which.numItems();i++)
 		{
 			final Item target=which.getItem(i);

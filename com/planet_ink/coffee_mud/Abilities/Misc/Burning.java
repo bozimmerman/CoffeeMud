@@ -150,8 +150,8 @@ public class Burning extends StdAbility
 						else
 						{
 							final Item ash=CMClass.getItem("GenResource");
-							ash.setName("some ash");
-							ash.setDisplayText("a small pile of ash is here");
+							ash.setName(_("some ash"));
+							ash.setDisplayText(_("a small pile of ash is here"));
 							ash.setMaterial(RawMaterial.RESOURCE_ASH);
 							ash.basePhyStats().setWeight(1);
 							ash.recoverPhyStats();

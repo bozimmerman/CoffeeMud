@@ -196,10 +196,10 @@ public class Taxidermy extends CraftingSkill
 		final String name=((DeadBody)I).mobName();
 		final String desc=((DeadBody)I).mobDescription();
 		I.setMaterial(data[0][FOUND_CODE]);
-		buildingI.setName("the stuffed body of "+name);
+		buildingI.setName(_("the stuffed body of @x1",name));
 		final CharStats C=(I instanceof DeadBody)?((DeadBody)I).charStats():null;
 		if((pose==null)||(C==null))
-			buildingI.setDisplayText("the stuffed body of "+name+" stands here");
+			buildingI.setDisplayText(_("the stuffed body of @x1 stands here",name));
 		else
 		{
 			pose=CMStrings.replaceAll(pose,"<S-NAME>",buildingI.name());

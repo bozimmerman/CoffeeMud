@@ -270,7 +270,7 @@ public class Spell_Wish extends Spell
 						if(isPlayer)
 						{
 							newMOB=CMClass.getMOB("GenMOB");
-							newMOB.setName("CopyOf"+foundThang.Name());
+							newMOB.setName(_("CopyOf@x1",foundThang.Name()));
 							newMOB.setDisplayText(((MOB) foundThang).displayText(mob));
 							newMOB.setDescription(foundThang.description());
 						}

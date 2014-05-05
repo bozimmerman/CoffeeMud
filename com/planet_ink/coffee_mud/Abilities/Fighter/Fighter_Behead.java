@@ -151,9 +151,9 @@ public class Fighter_Behead extends FighterSkill
 				CMLib.combat().postDamage(mob,target,ww,Integer.MAX_VALUE/2,CMMsg.MSG_WEAPONATTACK,ww.weaponClassification(),auto?"":"^F^<FIGHT^><S-NAME> rear(s) back and behead(s) <T-NAME>!^</FIGHT^>^?"+CMLib.protocol().msp("decap.wav",30));
 				mob.location().recoverRoomStats();
 				final Item limb=CMClass.getItem("GenLimb");
-				limb.setName(target.Name()+"`s head");
+				limb.setName(_("@x1`s head",target.Name()));
 				limb.basePhyStats().setAbility(1);
-				limb.setDisplayText("the bloody head of "+target.Name()+" is sitting here.");
+				limb.setDisplayText(_("the bloody head of @x1 is sitting here.",target.Name()));
 				limb.setSecretIdentity(target.name()+"`s bloody head.");
 				int material=RawMaterial.RESOURCE_MEAT;
 				for(int r=0;r<R.myResources().size();r++)

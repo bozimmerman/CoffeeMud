@@ -410,7 +410,7 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 			displayText=_("You are making @x1",buildingI.name());
 			playSound="scissor.wav";
 			verb=_("making @x1",buildingI.name());
-			buildingI.setDisplayText(itemName+" lies here");
+			buildingI.setDisplayText(_("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
 			final int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-1;

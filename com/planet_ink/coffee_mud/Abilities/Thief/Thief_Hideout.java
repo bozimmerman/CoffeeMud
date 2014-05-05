@@ -184,7 +184,7 @@ public class Thief_Hideout extends ThiefSkill
 			previousLocation=thisRoom;
 			shelter=CMClass.getLocale("HideoutShelter");
 			final Exit E=CMClass.getExit("OpenDescriptable");
-			E.setDisplayText("The way back to "+thisRoom.displayText(mob));
+			E.setDisplayText(_("The way back to @x1",thisRoom.displayText(mob)));
 			final int dir=CMLib.dice().roll(1, 4, -1);
 			shelter.setRawExit(dir, E);
 			shelter.rawDoors()[dir]=thisRoom;

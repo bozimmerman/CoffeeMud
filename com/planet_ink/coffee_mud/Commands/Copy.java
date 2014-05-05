@@ -333,7 +333,7 @@ public class Copy extends StdCommand
 				}
 				final Area newArea=(Area)E.copyOf();
 				while(CMLib.map().getArea(newArea.Name())!=null)
-					newArea.setName("Copy of "+newArea.Name());
+					newArea.setName(_("Copy of @x1",newArea.Name()));
 				newArea.setSavable(true);
 				if(!CMSecurity.isASysOp(mob))
 					newArea.addSubOp(mob.Name());

@@ -55,7 +55,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		final Item newItem=CMClass.getBasicItem("GenItem");
 		final String name=CMLib.english().startWithAorAn(RawMaterial.CODES.NAME(code).toLowerCase()+" tree");
 		newItem.setName(name);
-		newItem.setDisplayText(newItem.name()+" grows here.");
+		newItem.setDisplayText(_("@x1 grows here.",newItem.name()));
 		newItem.setDescription("");
 		final Chant_GrowOak newChant=new Chant_GrowOak();
 		newItem.basePhyStats().setLevel(10+newChant.getX1Level(mob));

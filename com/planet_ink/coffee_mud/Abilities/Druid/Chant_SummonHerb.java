@@ -77,8 +77,8 @@ public class Chant_SummonHerb extends Chant
 				for(int i=0;i<((adjustedLevel(mob,asLevel)/4)+1);i++)
 				{
 					final Food newItem=(Food)CMClass.getBasicItem("GenFoodResource");
-					newItem.setName("some herbs");
-					newItem.setDisplayText("Some herbs are growing here.");
+					newItem.setName(_("some herbs"));
+					newItem.setDisplayText(_("Some herbs are growing here."));
 					newItem.setDescription("");
 					newItem.setMaterial(RawMaterial.RESOURCE_HERBS);
 					newItem.setNourishment(1);

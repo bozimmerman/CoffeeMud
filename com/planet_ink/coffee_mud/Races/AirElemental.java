@@ -77,7 +77,7 @@ public class AirElemental extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName("a swirling gust");
+			naturalWeapon.setName(_("a swirling gust"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_ASH);
 			naturalWeapon.setUsesRemaining(1000);
 			naturalWeapon.setWeaponType(Weapon.TYPE_GASSING);

@@ -86,9 +86,9 @@ public class Prayer_Avatar extends Prayer
 		{
 			final MOB mob=(MOB)affected;
 			if(mob.getMyDeity()!=null)
-				affectedStats.setName(mob.name()+", the Avatar of "+mob.getMyDeity().name());
+				affectedStats.setName(_("@x1, the Avatar of @x2",mob.name(),mob.getMyDeity().name()));
 			else
-				affectedStats.setName(mob.name()+", the Avatar");
+				affectedStats.setName(_("@x1, the Avatar",mob.name()));
 		}
 	}
 

@@ -127,8 +127,8 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 	{
 		buildingI=CMClass.getItem("GenScroll");
 		((Scroll)buildingI).setSpellList(theSpell.ID());
-		buildingI.setName("a scroll of "+theSpell.name().toLowerCase());
-		buildingI.setDisplayText("a scroll of "+theSpell.name().toLowerCase()+" sits here.");
+		buildingI.setName(_("a scroll of @x1",theSpell.name().toLowerCase()));
+		buildingI.setDisplayText(_("a scroll of @x1 sits here.",theSpell.name().toLowerCase()));
 		buildingI.setDescription("");
 		buildingI.basePhyStats().setLevel(level);
 		buildingI.phyStats().setLevel(level);

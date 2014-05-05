@@ -451,8 +451,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			buildingI=CMClass.getItem("GenFood");
 			final Food food=(Food)buildingI;
 			buildingI.setName(((messedUp)?"burnt ":"")+finalDishName);
-			buildingI.setDisplayText("some "+((messedUp)?"burnt ":"")+finalDishName+" is here");
-			buildingI.setDescription("It looks "+((messedUp)?"burnt!":"good!"));
+			buildingI.setDisplayText(_("some @x1@x2 is here",((messedUp)?"burnt ":""),finalDishName));
+			buildingI.setDescription(_("It looks @x1",((messedUp)?"burnt!":"good!")));
 			food.setNourishment(0);
 			if(!messedUp)
 			{
@@ -523,8 +523,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			//building.setMiscText(cooking.text());
 			//building.recoverPhyStats();
 			buildingI.setName(((messedUp)?"spoiled ":"")+finalDishName);
-			buildingI.setDisplayText("some "+((messedUp)?"spoiled ":"")+finalDishName+" is here.");
-			buildingI.setDescription("It looks "+((messedUp)?"spoiled!":"good!"));
+			buildingI.setDisplayText(_("some @x1@x2 is here.",((messedUp)?"spoiled ":""),finalDishName));
+			buildingI.setDescription(_("It looks @x1",((messedUp)?"spoiled!":"good!")));
 			final Drink drink=(Drink)buildingI;
 			int liquidType=RawMaterial.RESOURCE_FRESHWATER;
 			if(contents!=null)
@@ -562,7 +562,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			buildingI=CMClass.getItem(foodType);
 			final String ruinWord=(buildingI instanceof Drink)?"spoiled ":"burnt ";
 			buildingI.setName(((messedUp)?ruinWord:"")+finalDishName);
-			buildingI.setDisplayText("some "+((messedUp)?ruinWord:"")+finalDishName+" is here");
+			buildingI.setDisplayText(_("some @x1@x2 is here",((messedUp)?ruinWord:""),finalDishName));
 			if(buildingI instanceof Drink)
 			{
 				final Drink drink=(Drink)buildingI;
@@ -606,7 +606,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			}
 			final String ruinWord=(buildingI instanceof Drink)?"spoiled ":"burnt ";
 			buildingI.setName(((messedUp)?ruinWord:"")+finalDishName);
-			buildingI.setDisplayText("some "+((messedUp)?ruinWord:"")+finalDishName+" is here");
+			buildingI.setDisplayText(_("some @x1@x2 is here",((messedUp)?ruinWord:""),finalDishName));
 			buildingI.basePhyStats().setWeight(buildingI.basePhyStats().weight()/finalAmount);
 			playSound=defaultFoodSound;
 		}

@@ -118,7 +118,7 @@ public class Prayer_Christen extends Prayer
 				mob.location().send(mob,msg);
 				final String oldName=target.Name();
 				target.setName(name);
-				target.setDisplayText(name+" is here.");
+				target.setDisplayText(_("@x1 is here.",name));
 				String txt=((CagedAnimal)target).cageText();
 				txt=CMStrings.replaceFirst(txt,"<NAME>"+oldName+"</NAME>","<NAME>"+name+"</NAME>");
 				txt=CMStrings.replaceFirst(txt,"<DISP>"+oldName,"<DISP>"+name);

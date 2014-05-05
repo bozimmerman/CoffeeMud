@@ -91,7 +91,7 @@ public class Plant extends Vine
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName("a nasty vine");
+			naturalWeapon.setName(_("a nasty vine"));
 			naturalWeapon.setRanges(0,3);
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 			naturalWeapon.setUsesRemaining(1000);

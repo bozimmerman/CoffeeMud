@@ -375,7 +375,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			displayText=_("You are cobbling @x1",buildingI.name());
 			verb=_("cobbling @x1",buildingI.name());
 			playSound="sanding.wav";
-			buildingI.setDisplayText(itemName+" lies here");
+			buildingI.setDisplayText(_("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));

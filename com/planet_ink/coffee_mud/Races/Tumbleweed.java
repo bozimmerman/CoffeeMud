@@ -117,7 +117,7 @@ public class Tumbleweed extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName("a rolling slam");
+			naturalWeapon.setName(_("a rolling slam"));
 			naturalWeapon.setRanges(0,2);
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_OAK);
 			naturalWeapon.setUsesRemaining(1000);

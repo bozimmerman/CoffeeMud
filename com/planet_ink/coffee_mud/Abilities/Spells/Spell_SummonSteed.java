@@ -162,33 +162,33 @@ public class Spell_SummonSteed extends Spell
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		if(level<4)
 		{
-			newMOB.setName("a pony");
-			newMOB.setDisplayText("a very pretty pony stands here");
-			newMOB.setDescription("She looks loyal, and oh so pretty.");
+			newMOB.setName(_("a pony"));
+			newMOB.setDisplayText(_("a very pretty pony stands here"));
+			newMOB.setDescription(_("She looks loyal, and oh so pretty."));
 			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'F');
 			ride.setRiderCapacity(1);
 		}
 		else
 		if(level<10)
 		{
-			newMOB.setName("a pack horse");
-			newMOB.setDisplayText("a sturdy pack horse stands here");
-			newMOB.setDescription("A strong and loyal beast, who looks like he`s seen his share of work.");
+			newMOB.setName(_("a pack horse"));
+			newMOB.setDisplayText(_("a sturdy pack horse stands here"));
+			newMOB.setDescription(_("A strong and loyal beast, who looks like he`s seen his share of work."));
 			ride.setRiderCapacity(2);
 		}
 		else
 		if(level<18)
 		{
-			newMOB.setName("a riding horse");
-			newMOB.setDisplayText("a loyal riding horse stands here");
-			newMOB.setDescription("A proud and noble companion; brown hair with a long black mane.");
+			newMOB.setName(_("a riding horse"));
+			newMOB.setDisplayText(_("a loyal riding horse stands here"));
+			newMOB.setDescription(_("A proud and noble companion; brown hair with a long black mane."));
 			ride.setRiderCapacity(2);
 		}
 		else
 		{
-			newMOB.setName("a warhorse");
-			newMOB.setDisplayText("a mighty warhorse stands here");
-			newMOB.setDescription("Ferocious, fleet of foot, and strong, a best of breed!");
+			newMOB.setName(_("a warhorse"));
+			newMOB.setDisplayText(_("a mighty warhorse stands here"));
+			newMOB.setDescription(_("Ferocious, fleet of foot, and strong, a best of breed!"));
 			ride.setRiderCapacity(3);
 		}
 		newMOB.recoverPhyStats();

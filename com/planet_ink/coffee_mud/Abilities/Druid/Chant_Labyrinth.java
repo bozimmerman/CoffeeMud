@@ -128,7 +128,7 @@ public class Chant_Labyrinth extends Chant
 				final Room newRoom=CMClass.getLocale("CaveMaze");
 				((GridLocale)newRoom).setXGridSize(10);
 				((GridLocale)newRoom).setYGridSize(10);
-				newRoom.setDisplayText("The Labyrinth");
+				newRoom.setDisplayText(_("The Labyrinth"));
 				newRoom.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));
 				final StringBuffer desc=new StringBuffer("");
 				desc.append("You are lost in dark twisting caverns.  The darkness covers you like a blanket. Every turn looks the same.");

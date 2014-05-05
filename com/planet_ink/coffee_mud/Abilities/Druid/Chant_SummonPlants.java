@@ -83,36 +83,36 @@ public class Chant_SummonPlants extends Chant
 			msg.addTrailerMsg(CMClass.getMsg(msg.source(),littlePlants,null,CMMsg.MSG_OK_VISUAL,CMMsg.MASK_ALWAYS|CMMsg.MSG_DEATH,CMMsg.NO_EFFECT,null));
 	}
 
-	public static Item buildPlant(MOB mob, Room room)
+	public Item buildPlant(MOB mob, Room room)
 	{
 		final Item newItem=CMClass.getItem("GenItem");
 		newItem.setMaterial(RawMaterial.RESOURCE_GREENS);
 		switch(CMLib.dice().roll(1,5,0))
 		{
 		case 1:
-			newItem.setName("some happy flowers");
-			newItem.setDisplayText("some happy flowers are growing here.");
-			newItem.setDescription("Happy flowers with little red and yellow blooms.");
+			newItem.setName(_("some happy flowers"));
+			newItem.setDisplayText(_("some happy flowers are growing here."));
+			newItem.setDescription(_("Happy flowers with little red and yellow blooms."));
 			break;
 		case 2:
-			newItem.setName("some happy weeds");
-			newItem.setDisplayText("some happy weeds are growing here.");
-			newItem.setDescription("Long stalked little plants with tiny bulbs on top.");
+			newItem.setName(_("some happy weeds"));
+			newItem.setDisplayText(_("some happy weeds are growing here."));
+			newItem.setDescription(_("Long stalked little plants with tiny bulbs on top."));
 			break;
 		case 3:
-			newItem.setName("a pretty fern");
-			newItem.setDisplayText("a pretty fern is growing here.");
-			newItem.setDescription("Like a tiny bush, this dark green plant is lovely.");
+			newItem.setName(_("a pretty fern"));
+			newItem.setDisplayText(_("a pretty fern is growing here."));
+			newItem.setDescription(_("Like a tiny bush, this dark green plant is lovely."));
 			break;
 		case 4:
-			newItem.setName("a patch of sunflowers");
-			newItem.setDisplayText("a patch of sunflowers is growing here.");
-			newItem.setDescription("Happy flowers with little yellow blooms.");
+			newItem.setName(_("a patch of sunflowers"));
+			newItem.setDisplayText(_("a patch of sunflowers is growing here."));
+			newItem.setDescription(_("Happy flowers with little yellow blooms."));
 			break;
 		case 5:
-			newItem.setName("a patch of bluebonnets");
-			newItem.setDisplayText("a patch of bluebonnets is growing here.");
-			newItem.setDescription("Happy flowers with little blue and purple blooms.");
+			newItem.setName(_("a patch of bluebonnets"));
+			newItem.setDisplayText(_("a patch of bluebonnets is growing here."));
+			newItem.setDescription(_("Happy flowers with little blue and purple blooms."));
 			break;
 		}
 		final Chant_SummonPlants newChant=new Chant_SummonPlants();

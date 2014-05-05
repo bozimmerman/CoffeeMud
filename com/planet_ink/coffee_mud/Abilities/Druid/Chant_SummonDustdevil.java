@@ -243,7 +243,7 @@ public class Chant_SummonDustdevil extends Chant
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("AirElemental"));
 		final String name="a dustdevil";
 		newMOB.setName(name);
-		newMOB.setDisplayText(name+" whirls around here");
+		newMOB.setDisplayText(_("@x1 whirls around here",name));
 		newMOB.setDescription("");
 		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 		newMOB.basePhyStats().setAbility(25);

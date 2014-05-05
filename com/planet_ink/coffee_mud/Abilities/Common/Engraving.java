@@ -71,7 +71,7 @@ public class Engraving extends CommonSkill
 					final int y=desc.lastIndexOf('`');
 					if((x>=0)&&(y>x))
 						desc=desc.substring(0,x);
-					found.setDescription(desc+" Engraved on it are the words `"+writing+"`.");
+					found.setDescription(_("@x1 Engraved on it are the words `@x2`.",desc,writing));
 				}
 			}
 		}

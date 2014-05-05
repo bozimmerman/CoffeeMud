@@ -436,7 +436,7 @@ public class Construction extends CraftingSkill
 							final Exit X=CMClass.getExit("GenExit");
 							if(doingCode==BUILD_SECRETDOOR)
 								X.basePhyStats().setDisposition(PhyStats.IS_HIDDEN);
-							X.setName("a door");
+							X.setName(_("a door"));
 							X.setDescription("");
 							X.setDisplayText("");
 							X.setOpenDelayTicks(9999);
@@ -465,7 +465,7 @@ public class Construction extends CraftingSkill
 						{
 							room=CMLib.map().getRoom(room);
 							final Exit X=CMClass.getExit("GenExit");
-							X.setName("a wooden gate");
+							X.setName(_("a wooden gate"));
 							X.setDescription("");
 							X.setDisplayText("");
 							X.setOpenDelayTicks(9999);

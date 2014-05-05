@@ -161,9 +161,9 @@ public class Chant_FurCoat extends Chant
 			{
 				mob.location().send(mob,msg);
 				theArmor=CMClass.getArmor("GenArmor");
-				theArmor.setName("a fur coat");
+				theArmor.setName(_("a fur coat"));
 				theArmor.setDisplayText("");
-				theArmor.setDescription("The coat is made of thick black fur.");
+				theArmor.setDescription(_("The coat is made of thick black fur."));
 				theArmor.setMaterial(RawMaterial.RESOURCE_FUR);
 				theArmor.basePhyStats().setArmor(2*CMLib.ableMapper().qualifyingClassLevel(mob,this));
 				final long wornCode=(Wearable.WORN_TORSO|Wearable.WORN_ARMS|Wearable.WORN_FEET|Wearable.WORN_WAIST|Wearable.WORN_LEGS);

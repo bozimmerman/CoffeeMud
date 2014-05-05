@@ -213,8 +213,8 @@ public class Spell_Phantasm extends Spell
 		newMOB.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
-		newMOB.setName("a ferocious "+R.name().toLowerCase());
-		newMOB.setDisplayText("a ferocious "+R.name().toLowerCase()+" is stalking around here");
+		newMOB.setName(_("a ferocious @x1",R.name().toLowerCase()));
+		newMOB.setDisplayText(_("a ferocious @x1 is stalking around here",R.name().toLowerCase()));
 		newMOB.setDescription("");
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();

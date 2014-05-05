@@ -152,7 +152,7 @@ public class Chant_PlantMaze extends Chant
 				String s=CMParms.parse(thePlants.name()).lastElement().toLowerCase();
 				if(!s.endsWith("s"))s=s+"s";
 				final String nos=s.substring(0,s.length()-1).toLowerCase();
-				newRoom.setDisplayText(CMStrings.capitalizeAndLower(nos)+" Maze");
+				newRoom.setDisplayText(_("@x1 Maze",CMStrings.capitalizeAndLower(nos)));
 				newRoom.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));
 				final StringBuffer desc=new StringBuffer("");
 				desc.append("This quaint glade is surrounded by tall "+s+".  A gentle breeze tosses leaves up into the air.");

@@ -71,9 +71,9 @@ public class Chant_Shamblermorph extends Chant
 		if((treeForm!=null)&&(affected instanceof MOB))
 		{
 			if(affected.name().indexOf(' ')>0)
-				affectableStats.setName("a shambling mound called "+affected.name());
+				affectableStats.setName(_("a shambling mound called @x1",affected.name()));
 			else
-				affectableStats.setName(affected.name()+" the shambling mound");
+				affectableStats.setName(_("@x1 the shambling mound",affected.name()));
 			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			treeForm.setHeightWeight(affectableStats,'M');
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);

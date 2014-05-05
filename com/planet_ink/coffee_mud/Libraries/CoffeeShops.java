@@ -1173,7 +1173,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 						((LandTitle)I).setLandPropertyID(R.Name());
 					if((((LandTitle)I).getOwnerName().length()>0)
 					&&(!I.Name().endsWith(" (Copy)")))
-						I.setName(I.Name()+" (Copy)");
+						I.setName(_("@x1 (Copy)",I.Name()));
 					I.text();
 					I.recoverPhyStats();
 					if((A.getOwnerName().length()==0)

@@ -206,11 +206,11 @@ public class Skill_Chirgury extends StdSkill
 						if(target instanceof MOB)
 							CMLib.combat().postDamage(mob,(MOB)target,this,amt*3,CMMsg.MASK_ALWAYS|CMMsg.TYP_DISEASE,-1,"The bleeding <DAMAGE> <T-NAME>!");
 					}
-					meat.setName("the "+parts[partCode][0].toString().toLowerCase()+" of "+target.Name());
+					meat.setName(_("the @x1 of @x2",parts[partCode][0].toString().toLowerCase(),target.Name()));
 					if((parts[partCode][0].toString().endsWith("S"))&&(!parts[partCode][0].toString().equalsIgnoreCase("PANCREAS")))
-						meat.setDisplayText("the "+parts[partCode][0].toString().toLowerCase()+" of "+target.Name()+" lie here.");
+						meat.setDisplayText(_("the @x1 of @x2 lie here.",parts[partCode][0].toString().toLowerCase(),target.Name()));
 					else
-						meat.setDisplayText("the "+parts[partCode][0].toString().toLowerCase()+" of "+target.Name()+" lies here.");
+						meat.setDisplayText(_("the @x1 of @x2 lies here.",parts[partCode][0].toString().toLowerCase(),target.Name()));
 					CMLib.materials().addEffectsToResource(meat);
 					meat.recoverPhyStats();
 					meat.text();
@@ -232,8 +232,8 @@ public class Skill_Chirgury extends StdSkill
 						target.delEffect(preg);
 						preg.setAffectedOne(null);
 						final DeadBody baby=(DeadBody)CMClass.getItem("GenCorpse");
-						baby.setName(target.Name()+"'s bloody fetus");
-						baby.setDisplayText(target.Name()+"'s bloody fetus is lying here.");
+						baby.setName(_("@x1's bloody fetus",target.Name()));
+						baby.setDisplayText(_("@x1's bloody fetus is lying here.",target.Name()));
 						baby.setTimeOfDeath(System.currentTimeMillis());
 						baby.setDestroyAfterLooting(false);
 						baby.setKillerName(mob.Name());
@@ -250,7 +250,7 @@ public class Skill_Chirgury extends StdSkill
 							baby.charStats().setStat(i,1);
 						baby.charStats().setMyRace(((MOB)target).charStats().getMyRace());
 						baby.recoverPhyStats();
-						baby.setDescription(CMStrings.capitalizeAndLower(baby.charStats().hisher())+" body parts can be faintly made out in the twisted and mangled flesh.");
+						baby.setDescription(_("@x1 body parts can be faintly made out in the twisted and mangled flesh.",CMStrings.capitalizeAndLower(baby.charStats().hisher())));
 						baby.setMobDescription(baby.description());
 						baby.text();
 						mob.location().addItem(baby,ItemPossessor.Expire.Player_Drop);

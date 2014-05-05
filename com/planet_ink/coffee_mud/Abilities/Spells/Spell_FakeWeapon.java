@@ -136,51 +136,51 @@ public class Spell_FakeWeapon extends Spell
 				switch(choice)
 				{
 				case 0:
-					weapon.setName("a fancy sword");
-					weapon.setDisplayText("a fancy sword sits here");
-					weapon.setDescription("looks fit to cut something up!");
+					weapon.setName(_("a fancy sword"));
+					weapon.setDisplayText(_("a fancy sword sits here"));
+					weapon.setDescription(_("looks fit to cut something up!"));
 					weapon.setWeaponClassification(Weapon.CLASS_SWORD);
 					weapon.setWeaponType(Weapon.TYPE_SLASHING);
 					break;
 				case 1:
-					weapon.setName("a sharp dagger");
-					weapon.setDisplayText("a sharp dagger sits here");
-					weapon.setDescription("looks fit to cut something up!");
+					weapon.setName(_("a sharp dagger"));
+					weapon.setDisplayText(_("a sharp dagger sits here"));
+					weapon.setDescription(_("looks fit to cut something up!"));
 					weapon.setWeaponClassification(Weapon.CLASS_DAGGER);
 					weapon.setWeaponType(Weapon.TYPE_PIERCING);
 					break;
 				case 2:
-					weapon.setName("a large mace");
-					weapon.setDisplayText("a large mace sits here");
-					weapon.setDescription("looks fit to whomp on something with!");
+					weapon.setName(_("a large mace"));
+					weapon.setDisplayText(_("a large mace sits here"));
+					weapon.setDescription(_("looks fit to whomp on something with!"));
 					weapon.setWeaponClassification(Weapon.CLASS_BLUNT);
 					weapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 				case 3:
-					weapon.setName("a quarterstaff");
-					weapon.setDisplayText("a quarterstaff sits here");
-					weapon.setDescription("looks like a reliable weapon");
+					weapon.setName(_("a quarterstaff"));
+					weapon.setDisplayText(_("a quarterstaff sits here"));
+					weapon.setDescription(_("looks like a reliable weapon"));
 					weapon.setWeaponClassification(Weapon.CLASS_STAFF);
 					weapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 				case 4:
-					weapon.setName("a deadly axe");
-					weapon.setDisplayText("a deadly axe sits here");
-					weapon.setDescription("looks fit to shop something up!");
+					weapon.setName(_("a deadly axe"));
+					weapon.setDisplayText(_("a deadly axe sits here"));
+					weapon.setDescription(_("looks fit to shop something up!"));
 					weapon.setWeaponClassification(Weapon.CLASS_AXE);
 					weapon.setWeaponType(Weapon.TYPE_SLASHING);
 					break;
 				case 5:
-					weapon.setName("a large hammer");
-					weapon.setDisplayText("a large hammer sits here");
-					weapon.setDescription("looks fit to pound something into a pulp!");
+					weapon.setName(_("a large hammer"));
+					weapon.setDisplayText(_("a large hammer sits here"));
+					weapon.setDescription(_("looks fit to pound something into a pulp!"));
 					weapon.setWeaponClassification(Weapon.CLASS_HAMMER);
 					weapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 				case 6:
-					weapon.setName("a large flail");
-					weapon.setDisplayText("a large flail sits here");
-					weapon.setDescription("looks fit to pound something into a pulp!");
+					weapon.setName(_("a large flail"));
+					weapon.setDisplayText(_("a large flail sits here"));
+					weapon.setDescription(_("looks fit to pound something into a pulp!"));
 					weapon.setWeaponClassification(Weapon.CLASS_FLAILED);
 					weapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;

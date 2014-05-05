@@ -44,35 +44,35 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 	@Override protected int canTargetCode(){return 0;}
 	protected boolean seaOk(){return true;}
 
-	public static Item buildSeaweed(MOB mob, Room room)
+	public Item buildSeaweed(MOB mob, Room room)
 	{
 		final Item newItem=CMClass.getItem("GenItem");
 		newItem.setMaterial(RawMaterial.RESOURCE_SEAWEED);
 		switch(CMLib.dice().roll(1,5,0))
 		{
 		case 1:
-			newItem.setName("some algae");
-			newItem.setDisplayText("some algae is here.");
+			newItem.setName(_("some algae"));
+			newItem.setDisplayText(_("some algae is here."));
 			newItem.setDescription("");
 			break;
 		case 2:
-			newItem.setName("some seaweed");
-			newItem.setDisplayText("some seaweed is here.");
+			newItem.setName(_("some seaweed"));
+			newItem.setDisplayText(_("some seaweed is here."));
 			newItem.setDescription("");
 			break;
 		case 3:
-			newItem.setName("some kelp");
-			newItem.setDisplayText("some kelp is here");
+			newItem.setName(_("some kelp"));
+			newItem.setDisplayText(_("some kelp is here"));
 			newItem.setDescription("");
 			break;
 		case 4:
-			newItem.setName("some coral");
-			newItem.setDisplayText("some coral is here.");
+			newItem.setName(_("some coral"));
+			newItem.setDisplayText(_("some coral is here."));
 			newItem.setDescription("");
 			break;
 		case 5:
-			newItem.setName("some sponge");
-			newItem.setDisplayText("some sponge is here.");
+			newItem.setName(_("some sponge"));
+			newItem.setDisplayText(_("some sponge is here."));
 			newItem.setDescription("");
 			break;
 		}

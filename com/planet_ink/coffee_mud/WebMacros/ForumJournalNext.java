@@ -62,7 +62,7 @@ public class ForumJournalNext extends StdWebMacro
 				guestM=CMClass.getFactoryMOB();
 				guestM.basePhyStats().setLevel(0);
 				guestM.phyStats().setLevel(0);
-				guestM.setName("guest");
+				guestM.setName(("guest"));
 			}
 			M=guestM;
 		}

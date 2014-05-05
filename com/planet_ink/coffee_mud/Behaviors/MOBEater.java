@@ -74,9 +74,9 @@ public class MOBEater extends ActiveTicker
 			lastKnownLocation=((MOB)forMe).location();
 			if(lastKnownLocation!=null)
 				Stomach.setArea(lastKnownLocation.getArea());
-			Stomach.setDisplayText("The Stomach of "+forMe.name());
-			Stomach.setName("the stomach of "+forMe.name());
-			Stomach.setDescription("You are in the stomach of "+forMe.name()+".  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.");
+			Stomach.setDisplayText(_("The Stomach of @x1",forMe.name()));
+			Stomach.setName(_("the stomach of @x1",forMe.name()));
+			Stomach.setDescription(_("You are in the stomach of @x1.  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.",forMe.name()));
 			Stomach.addNonUninvokableEffect(CMClass.getAbility("Prop_NoRecall"));
 			Stomach.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));
 		}

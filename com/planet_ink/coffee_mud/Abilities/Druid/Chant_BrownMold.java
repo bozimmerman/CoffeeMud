@@ -166,7 +166,7 @@ public class Chant_BrownMold extends Chant
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Mold"));
 		final String name="a brown mold";
 		newMOB.setName(name);
-		newMOB.setDisplayText(name+" looks scary!");
+		newMOB.setDisplayText(_("@x1 looks scary!",name));
 		newMOB.setDescription("");
 		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 		final Ability A=CMClass.getAbility("Fighter_Rescue");

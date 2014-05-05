@@ -113,7 +113,7 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 		final String startStr=_("<S-NAME> start(s) crafting @x1.",buildingI.name());
 		displayText=_("You are crafting @x1",buildingI.name());
 		verb=_("crafting @x1",buildingI.name());
-		buildingI.setDisplayText(itemName+" lies here");
+		buildingI.setDisplayText(_("@x1 lies here",itemName));
 		buildingI.setDescription(itemName+". ");
 		buildingI.basePhyStats().setWeight(woodRequired);
 		buildingI.setBaseValue(0);

@@ -1800,8 +1800,8 @@ public class Modify extends StdCommand
 
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			final Item I=CMClass.getItem("StdJournal");
-			I.setName("SYSTEM_NEWS");
-			I.setDescription("Enter `LIST NEWS [NUMBER]` to read an entry.%0D%0AEnter CREATE NEWS to add new entries. ");
+			I.setName(_("SYSTEM_NEWS"));
+			I.setDescription(_("Enter `LIST NEWS [NUMBER]` to read an entry.%0D%0AEnter CREATE NEWS to add new entries. "));
 			final CMMsg newMsg=CMClass.getMsg(mob,I,null,CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,null,CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,CMParms.combine(commands,2),CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,null);
 			if(mob.location().okMessage(mob,newMsg)&&I.okMessage(mob, newMsg))
 			{

@@ -92,7 +92,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 			}
 		}
 		this.setName(newName+".");
-		this.setDescription("Looks like "+newName+".");
+		this.setDescription(_("Looks like @x1.",newName));
 		//myMap=null;
 	}
 

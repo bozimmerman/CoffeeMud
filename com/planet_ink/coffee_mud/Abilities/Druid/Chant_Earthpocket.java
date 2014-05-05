@@ -182,9 +182,9 @@ public class Chant_Earthpocket extends Chant
 				pocket.basePhyStats().setSensesMask(PhyStats.SENSE_ITEMNOTGET);
 				pocket.basePhyStats().setWeight(0);
 				pocket.setMaterial(RawMaterial.RESOURCE_NOTHING);
-				pocket.setName("an earthpocket");
-				pocket.setDisplayText("an empty pitch-black pocket is in the wall here.");
-				pocket.setDescription("It looks like an endless black hole in the wall.  Very mystical.");
+				pocket.setName(_("an earthpocket"));
+				pocket.setDisplayText(_("an empty pitch-black pocket is in the wall here."));
+				pocket.setDescription(_("It looks like an endless black hole in the wall.  Very mystical."));
 				pocket.recoverPhyStats();
 				target.location().addItem(pocket);
 				beneficialAffect(mob,target,asLevel,CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH));

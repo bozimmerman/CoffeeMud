@@ -59,35 +59,35 @@ public class Spirit extends Undead
 					case 1:
 					case 2:
 					case 3:
-					naturalWeapon.setName("an invisible punch");
+					naturalWeapon.setName(_("an invisible punch"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BURSTING);
 					break;
 					case 4:
-					naturalWeapon.setName("an incorporal bite");
+					naturalWeapon.setName(_("an incorporal bite"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BURSTING);
 					break;
 					case 5:
-					naturalWeapon.setName("a fading elbow");
+					naturalWeapon.setName(_("a fading elbow"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BURSTING);
 					break;
 					case 6:
-					naturalWeapon.setName("a translucent backhand");
+					naturalWeapon.setName(_("a translucent backhand"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BURSTING);
 					break;
 					case 7:
-					naturalWeapon.setName("a strong ghostly jab");
+					naturalWeapon.setName(_("a strong ghostly jab"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BURSTING);
 					break;
 					case 8:
-					naturalWeapon.setName("a ghostly punch");
+					naturalWeapon.setName(_("a ghostly punch"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BURSTING);
 					break;
 					case 9:
-					naturalWeapon.setName("a translucent knee");
+					naturalWeapon.setName(_("a translucent knee"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BURSTING);
 					break;
 					case 10:
-					naturalWeapon.setName("an otherworldly slap");
+					naturalWeapon.setName(_("an otherworldly slap"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BURSTING);
 					break;
 				}

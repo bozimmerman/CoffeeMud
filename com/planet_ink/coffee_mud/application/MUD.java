@@ -1155,14 +1155,14 @@ public class MUD extends Thread implements MudHost
 					Log.sysOut("NO MAPPED ROOM?!  I'll make ya one!");
 					final String id="START";//New Area#0";
 					final Area newArea=CMClass.getAreaType("StdArea");
-					newArea.setName("New Area");
+					newArea.setName(CMLib.lang()._("New Area"));
 					CMLib.map().addArea(newArea);
 					CMLib.database().DBCreateArea(newArea);
 					final Room room=CMClass.getLocale("StdRoom");
 					room.setRoomID(id);
 					room.setArea(newArea);
-					room.setDisplayText("New Room");
-					room.setDescription("Brand new database room! You need to change this text with the MODIFY ROOM command.  If your character is not an Archon, pick up the book you see here and read it immediately!");
+					room.setDisplayText(CMLib.lang()._("New Room"));
+					room.setDescription(CMLib.lang()._("Brand new database room! You need to change this text with the MODIFY ROOM command.  If your character is not an Archon, pick up the book you see here and read it immediately!"));
 					CMLib.database().DBCreateRoom(room);
 					final Item I=CMClass.getMiscMagic("ManualArchon");
 					room.addItem(I);
@@ -1399,7 +1399,7 @@ public class MUD extends Thread implements MudHost
 	public static void main(String a[])
 	{
 		String nameID="";
-		Thread.currentThread().setName("MUD");
+		Thread.currentThread().setName(("MUD"));
 		final Vector<String> iniFiles=new Vector<String>();
 		if(a.length>0)
 		{

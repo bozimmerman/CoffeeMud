@@ -172,10 +172,10 @@ public class Spell_PhantomHound extends Spell
 			{
 				mob.location().send(mob,msg);
 				final MOB beast=CMClass.getMOB("GenMOB");
-				beast.setName("the phantom hound");
-				beast.setDisplayText("the phantom hound is here");
+				beast.setName(_("the phantom hound"));
+				beast.setDisplayText(_("the phantom hound is here"));
 				beast.setStartRoom(null);
-				beast.setDescription("This is the most ferocious beast you have ever seen.");
+				beast.setDescription(_("This is the most ferocious beast you have ever seen."));
 				beast.basePhyStats().setAttackAdjustment(mob.phyStats().attackAdjustment()+100);
 				beast.basePhyStats().setArmor(mob.basePhyStats().armor()-20);
 				beast.basePhyStats().setDamage(75);

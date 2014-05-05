@@ -79,7 +79,7 @@ public class Prayer_Behemoth extends Prayer
 	{
 		super.affectPhyStats(affected,affectedStats);
 		affectedStats.setHeight(affectedStats.height()*3);
-		affectedStats.setName("A BEHEMOTH "+affected.name().toUpperCase());
+		affectedStats.setName(_("A BEHEMOTH @x1",affected.name().toUpperCase()));
 		if(!(affected instanceof MOB))
 			affectedStats.setWeight(affectedStats.weight()*4);
 	}

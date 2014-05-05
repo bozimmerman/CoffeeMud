@@ -162,30 +162,30 @@ public class Prayer_SummonElemental extends Prayer
 		{
 		case 0:
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("EarthElemental"));
-			newMOB.setName("a hideous rock beast");
-			newMOB.setDisplayText("a hideous rock beast is stomping around here");
-			newMOB.setDescription("This enormous hunk of rock is roughly the shape of a humanoid.");
+			newMOB.setName(_("a hideous rock beast"));
+			newMOB.setDisplayText(_("a hideous rock beast is stomping around here"));
+			newMOB.setDescription(_("This enormous hunk of rock is roughly the shape of a humanoid."));
 			ride.setRiderCapacity(2);
 			break;
 		case 1:
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("FireElemental"));
-			newMOB.setName("a creature of flame and smoke");
-			newMOB.setDisplayText("a creature of flame and smoke is here");
-			newMOB.setDescription("This enormous burning ember is roughly the shape of a humanoid.");
+			newMOB.setName(_("a creature of flame and smoke"));
+			newMOB.setDisplayText(_("a creature of flame and smoke is here"));
+			newMOB.setDescription(_("This enormous burning ember is roughly the shape of a humanoid."));
 			ride.setRiderCapacity(0);
 			break;
 		case 2:
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("AirElemental"));
-			newMOB.setName("a swirling air elemental");
-			newMOB.setDisplayText("a swirling air elemental spins around here");
-			newMOB.setDescription("This enormous swirling code of air is roughly the shape of a humanoid.");
+			newMOB.setName(_("a swirling air elemental"));
+			newMOB.setDisplayText(_("a swirling air elemental spins around here"));
+			newMOB.setDescription(_("This enormous swirling code of air is roughly the shape of a humanoid."));
 			ride.setRiderCapacity(0);
 			break;
 		case 3:
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("WaterElemental"));
-			newMOB.setName("a hideous ice beast");
-			newMOB.setDisplayText("a hideous ice beast is stomping around here");
-			newMOB.setDescription("This enormous hunk of ice is roughly the shape of a humanoid.");
+			newMOB.setName(_("a hideous ice beast"));
+			newMOB.setDisplayText(_("a hideous ice beast is stomping around here"));
+			newMOB.setDescription(_("This enormous hunk of ice is roughly the shape of a humanoid."));
 			ride.setRiderCapacity(2);
 			break;
 		}

@@ -126,7 +126,7 @@ public class Chant_Treeform extends Chant
 		// it should consistantly put the mob into
 		// a sleeping state, so that nothing they do
 		// can get them out of it.
-		affectableStats.setName("a tree that reminds you of "+affected.name());
+		affectableStats.setName(_("a tree that reminds you of @x1",affected.name()));
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_HEAR);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SMELL);

@@ -87,23 +87,23 @@ public class Svirfneblin extends StdRace
 			outfitChoices=new Vector();
 			// Have to, since it requires use of special constructor
 			final Armor s1=CMClass.getArmor("GenShirt");
-			s1.setName("a small patchy scale tunic");
-			s1.setDisplayText("a small patchy scale tunic has been left here.");
-			s1.setDescription("This small tunic is made of bits and pieces of several scaley hides, it seems.  There are lots of tiny hidden compartments on it, and loops for hanging tools.");
+			s1.setName(_("a small patchy scale tunic"));
+			s1.setDisplayText(_("a small patchy scale tunic has been left here."));
+			s1.setDescription(_("This small tunic is made of bits and pieces of several scaley hides, it seems.  There are lots of tiny hidden compartments on it, and loops for hanging tools."));
 			s1.text();
 			outfitChoices.add(s1);
 
 			final Armor s2=CMClass.getArmor("GenShoes");
-			s2.setName("a pair of small scaley shoes");
-			s2.setDisplayText("a pair of small scaley shoes lie here.");
-			s2.setDescription("This pair of small scaley shoes appears to be a hodgepodge of scaley materials and workmanship.");
+			s2.setName(_("a pair of small scaley shoes"));
+			s2.setDisplayText(_("a pair of small scaley shoes lie here."));
+			s2.setDescription(_("This pair of small scaley shoes appears to be a hodgepodge of scaley materials and workmanship."));
 			s2.text();
 			outfitChoices.add(s2);
 
 			final Armor p1=CMClass.getArmor("GenPants");
-			p1.setName("a pair of small patchy scale pants");
-			p1.setDisplayText("a pair of small patchy scale pants lie here.");
-			p1.setDescription("This pair of small pants is made of bits and pieces of several scaley hides, it seems.  There are lots of tiny hidden compartments on it, and loops for hanging tools.");
+			p1.setName(_("a pair of small patchy scale pants"));
+			p1.setDisplayText(_("a pair of small patchy scale pants lie here."));
+			p1.setDescription(_("This pair of small pants is made of bits and pieces of several scaley hides, it seems.  There are lots of tiny hidden compartments on it, and loops for hanging tools."));
 			p1.text();
 			outfitChoices.add(p1);
 

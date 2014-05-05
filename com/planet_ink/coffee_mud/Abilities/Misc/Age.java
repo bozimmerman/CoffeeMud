@@ -279,7 +279,7 @@ public class Age extends StdAbility
 					{
 						final String name=CMLib.english().startWithAorAn(getMyRace().makeMobName((char)babe.baseCharStats().getStat(CharStats.STAT_GENDER), 3)).toLowerCase();
 						babe.setName(name);
-						babe.setDisplayText(name+" is here.");
+						babe.setDisplayText(_("@x1 is here.",name));
 					}
 					babe.baseCharStats().setStat(CharStats.STAT_CHARISMA,10);
 					babe.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,10);
@@ -509,7 +509,7 @@ public class Age extends StdAbility
 					{
 						final String name=CMLib.english().startWithAorAn(getMyRace().makeMobName((char)babe.baseCharStats().getStat(CharStats.STAT_GENDER), 4)).toLowerCase();
 						babe.setName(name);
-						babe.setDisplayText(name+" stands here.");
+						babe.setDisplayText(_("@x1 stands here.",name));
 					}
 					CMLib.database().DBDeleteData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text());
 					if(liege!=babe.amFollowing())
@@ -545,7 +545,7 @@ public class Age extends StdAbility
 					{
 						final String name=CMLib.english().startWithAorAn(getMyRace().makeMobName((char)babe.baseCharStats().getStat(CharStats.STAT_GENDER), 3)).toLowerCase();
 						babe.setName(name);
-						babe.setDisplayText(name+" is here.");
+						babe.setDisplayText(_("@x1 is here.",name));
 					}
 					babe.baseCharStats().setStat(CharStats.STAT_CHARISMA,10);
 					babe.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,10);
@@ -579,7 +579,7 @@ public class Age extends StdAbility
 				{
 					final String name=CMLib.english().startWithAorAn(getMyRace().makeMobName((char)babe.baseCharStats().getStat(CharStats.STAT_GENDER), 4)).toLowerCase();
 					babe.setName(name);
-					babe.setDisplayText(name+" stands here.");
+					babe.setDisplayText(_("@x1 stands here.",name));
 				}
 
 				babe.baseCharStats().setStat(CharStats.STAT_CHARISMA,10);
@@ -604,7 +604,7 @@ public class Age extends StdAbility
 				{
 					final String name=CMLib.english().startWithAorAn(getMyRace().makeMobName((char)babe.baseCharStats().getStat(CharStats.STAT_GENDER), 5)).toLowerCase();
 					babe.setName(name);
-					babe.setDisplayText(name+" stands here.");
+					babe.setDisplayText(_("@x1 stands here.",name));
 				}
 				babe.baseState().setHitPoints(20);
 				babe.baseState().setMana(25);

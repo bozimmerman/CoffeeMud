@@ -478,7 +478,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			startStr=_("<S-NAME> start(s) making @x1.",buildingI.name());
 			displayText=_("You are making @x1",buildingI.name());
 			verb=_("making @x1",buildingI.name());
-			buildingI.setDisplayText(itemName+" lies here");
+			buildingI.setDisplayText(_("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))*multiplier);

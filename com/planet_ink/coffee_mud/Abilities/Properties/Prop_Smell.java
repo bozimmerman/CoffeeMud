@@ -196,7 +196,7 @@ public class Prop_Smell extends Property
 								final String inDir=((R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip))?
 										Directions.getShipInDirectionName(Directions.getOpDirectionCode(d)):
 											Directions.getInDirectionName(Directions.getOpDirectionCode(d));
-								emoter.setName("something "+inDir);
+								emoter.setName(_("something @x1",inDir));
 								emoteHere(R,emoter,emote);
 							}
 						}

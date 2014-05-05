@@ -96,9 +96,9 @@ public class Prayer_AnimateMummy extends Prayer
 			{
 				mob.location().send(mob,msg);
 				final MOB newMOB=CMClass.getMOB("GenUndead");
-				newMOB.setName(race+" mummy");
+				newMOB.setName(_("@x1 mummy",race));
 				newMOB.setDescription(description);
-				newMOB.setDisplayText(race+" mummy is here");
+				newMOB.setDisplayText(_("@x1 mummy is here",race));
 				newMOB.basePhyStats().setLevel(19+(super.getX1Level(mob)*2)+super.getXLEVELLevel(mob));
 				newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));

@@ -348,7 +348,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			displayText=_("You are sculpting @x1",buildingI.name());
 			verb=_("sculpting @x1",buildingI.name());
 			playSound="metalbat.wav";
-			buildingI.setDisplayText(itemName+" lies here");
+			buildingI.setDisplayText(_("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
@@ -389,9 +389,9 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 				{
 					if((statue==null)||(statue.trim().length()==0))
 						statue=rest;
-					buildingI.setName(itemName+" of "+statue.trim());
-					buildingI.setDisplayText(itemName+" of "+statue.trim()+" is here");
-					buildingI.setDescription(itemName+" of "+statue.trim()+". ");
+					buildingI.setName(_("@x1 of @x2",itemName,statue.trim()));
+					buildingI.setDisplayText(_("@x1 of @x2 is here",itemName,statue.trim()));
+					buildingI.setDescription(_("@x1 of @x2. ",itemName,statue.trim()));
 				}
 			}
 			else
@@ -422,9 +422,9 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 					((Container)buildingI).setKeyName(Double.toString(Math.random()));
 					key=CMClass.getItem("GenKey");
 					((DoorKey)key).setKey(((Container)buildingI).keyName());
-					key.setName("a key");
-					key.setDisplayText("a small key sits here");
-					key.setDescription("looks like a key to "+buildingI.name());
+					key.setName(_("a key"));
+					key.setDisplayText(_("a small key sits here"));
+					key.setDescription(_("looks like a key to @x1",buildingI.name()));
 					key.recoverPhyStats();
 					key.text();
 				}

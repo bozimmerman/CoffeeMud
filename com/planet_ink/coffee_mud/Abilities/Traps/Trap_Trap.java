@@ -226,8 +226,8 @@ public class Trap_Trap extends StdAbility implements Trap
 				myPitUp.setSavable(false);
 				myPitUp.setArea(mob.location().getArea());
 				myPitUp.basePhyStats().setDisposition(myPitUp.basePhyStats().disposition()|PhyStats.IS_DARK);
-				myPitUp.setDisplayText("Inside a dark pit");
-				myPitUp.setDescription("The walls here are slick and tall.  The trap door is just above you.");
+				myPitUp.setDisplayText(_("Inside a dark pit"));
+				myPitUp.setDescription(_("The walls here are slick and tall.  The trap door is just above you."));
 				myPitUp.recoverPhyStats();
 
 				myPit=CMClass.getLocale("StdRoom");
@@ -235,8 +235,8 @@ public class Trap_Trap extends StdAbility implements Trap
 				myPit.setRoomID("");
 				myPit.setArea(mob.location().getArea());
 				myPit.basePhyStats().setDisposition(myPit.basePhyStats().disposition()|PhyStats.IS_DARK);
-				myPit.setDisplayText("Inside a dark pit");
-				myPit.setDescription("The walls here are slick and tall.  You can barely see the trap door well above you.");
+				myPit.setDisplayText(_("Inside a dark pit"));
+				myPit.setDescription(_("The walls here are slick and tall.  You can barely see the trap door well above you."));
 				myPit.setRawExit(Directions.UP,CMClass.getExit("StdOpenDoorway"));
 				myPit.rawDoors()[Directions.UP]=myPitUp;
 				myPitUp.recoverPhyStats();

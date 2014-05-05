@@ -199,8 +199,8 @@ public class GatheringSkill extends CommonSkill
 			commonTell(mob,_("You could not bundle @x1 due to @x2 being an invalid resource code.  Bug it!",name,""+foundResource));
 			return false;
 		}
-		I.setName("a "+amount+"# "+RawMaterial.CODES.NAME(foundResource).toLowerCase()+" bundle");
-		I.setDisplayText(I.name()+" is here.");
+		I.setName(_("a @x1# @x2 bundle",""+amount,RawMaterial.CODES.NAME(foundResource).toLowerCase()));
+		I.setDisplayText(_("@x1 is here.",I.name()));
 		I.basePhyStats().setWeight(amount);
 		if(R.show(mob,null,I,getActivityMessageType(),_("<S-NAME> create(s) <O-NAME>.")))
 		{

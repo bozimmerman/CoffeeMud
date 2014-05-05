@@ -62,7 +62,7 @@ public class Spell_Delay extends Spell
 		{
 			shooter = (Ability)shooter.copyOf();
 			final MOB newCaster=CMClass.getMOB("StdMOB");
-			newCaster.setName("the thin air");
+			newCaster.setName(_("the thin air"));
 			newCaster.setDescription(" ");
 			newCaster.setDisplayText(" ");
 			newCaster.basePhyStats().setLevel(invoker.phyStats().level()+(2*getXLEVELLevel(invoker)));

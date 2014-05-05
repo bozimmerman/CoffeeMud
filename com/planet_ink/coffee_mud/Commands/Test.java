@@ -213,11 +213,11 @@ public class Test extends StdCommand
 		R.recoverRoomStats();
 		mobs[0]=CMClass.getMOB("StdMOB");
 		mobs[0].baseCharStats().setMyRace(CMClass.getRace("Dwarf"));
-		mobs[0].setName("A Dwarf");
+		mobs[0].setName(_("A Dwarf"));
 		mobs[0].recoverCharStats();
 		backups[0]=(MOB)mobs[0].copyOf();
 		mobs[1]=CMClass.getMOB("StdMOB");
-		mobs[1].setName("A Human");
+		mobs[1].setName(_("A Human"));
 		mobs[1].baseCharStats().setMyRace(CMClass.getRace("Human"));
 		mobs[1].recoverCharStats();
 		backups[0]=(MOB)mobs[1].copyOf();
@@ -485,12 +485,12 @@ public class Test extends StdCommand
 			if(what.equalsIgnoreCase("scriptable"))
 			{
 				final Area A=CMClass.getAreaType("StdArea");
-				A.setName("UNKNOWNAREA");
+				A.setName(_("UNKNOWNAREA"));
 				final Room R=CMClass.getLocale("WoodRoom");
 				R.setRoomID("UNKNOWN1");
 				R.setArea(A);
 				final MOB M=CMClass.getMOB("GenShopkeeper");
-				M.setName("Shoppy");
+				M.setName(_("Shoppy"));
 				final ShopKeeper SK=(ShopKeeper)M;
 				Item I=CMClass.getWeapon("Dagger");
 				SK.getShop().addStoreInventory(I,10,5);
@@ -551,15 +551,15 @@ public class Test extends StdCommand
 			if(what.equalsIgnoreCase("horsedraggers"))
 			{
 				final MOB M=CMClass.getMOB("GenMOB");
-				M.setName("MrRider");
-				M.setDisplayText("MrRider is here");
+				M.setName(_("MrRider"));
+				M.setDisplayText(_("MrRider is here"));
 				final Behavior B=CMClass.getBehavior("Mobile");
 				B.setParms("min=1 max=1 chance=99 wander");
 				M.addBehavior(B);
 				M.bringToLife(mob.location(),true);
 				final MOB M2=CMClass.getMOB("GenRideable");
-				M2.setName("a pack horse");
-				M2.setDisplayText("a pack horse is here");
+				M2.setName(_("a pack horse"));
+				M2.setDisplayText(_("a pack horse is here"));
 				M2.bringToLife(mob.location(),true);
 				M.setRiding((Rideable)M2);
 				final Behavior B2=CMClass.getBehavior("Scriptable");

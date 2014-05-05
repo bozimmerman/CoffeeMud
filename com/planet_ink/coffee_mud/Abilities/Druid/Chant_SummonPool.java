@@ -94,9 +94,9 @@ public class Chant_SummonPool extends Chant
 					mob.tell(_("There's no such thing as a '@x1'.\n\r",itemID));
 					return false;
 				}
-				newItem.setName("a magical pool");
-				newItem.setDisplayText("a little magical pool flows here.");
-				newItem.setDescription("The pool is coming magically from the ground.  The water looks pure and clean.");
+				newItem.setName(_("a magical pool"));
+				newItem.setDisplayText(_("a little magical pool flows here."));
+				newItem.setDescription(_("The pool is coming magically from the ground.  The water looks pure and clean."));
 
 				mob.location().addItem(newItem);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 starts flowing here.",newItem.name()));

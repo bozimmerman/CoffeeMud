@@ -129,11 +129,11 @@ public class Prayer_Gateway extends Prayer
 				mob.location().send(mob,msg);
 				newRoom.send(mob,msg2);
 				final Exit e=CMClass.getExit("GenExit");
-				e.setDescription("A divine gateway to somewhere");
-				e.setDisplayText("A divine gateway to somewhere");
+				e.setDescription(_("A divine gateway to somewhere"));
+				e.setDisplayText(_("A divine gateway to somewhere"));
 				e.setDoorsNLocks(false,true,false,false,false,false);
 				e.setExitParams("gateway","close","open","closed.");
-				e.setName("a divine gateway");
+				e.setName(_("a divine gateway"));
 				mob.location().rawDoors()[Directions.GATE]=newRoom;
 				newRoom.rawDoors()[Directions.GATE]=mob.location();
 				mob.location().setRawExit(Directions.GATE,e);

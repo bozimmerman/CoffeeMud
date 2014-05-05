@@ -56,9 +56,9 @@ public class Prayer_AnimateSkeleton extends Prayer
 		else
 			description+="\n\rIt also looks dead.";
 		final MOB newMOB=CMClass.getMOB("GenUndead");
-		newMOB.setName(race+" skeleton");
+		newMOB.setName(_("@x1 skeleton",race));
 		newMOB.setDescription(description);
-		newMOB.setDisplayText(race+" skeleton is here");
+		newMOB.setDisplayText(_("@x1 skeleton is here",race));
 		newMOB.basePhyStats().setLevel(level+(super.getX1Level(mob)*2)+super.getXLEVELLevel(mob));
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Skeleton"));

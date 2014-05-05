@@ -100,7 +100,7 @@ public class Stone extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName("<S-HIS-HER> body");
+			naturalWeapon.setName(_("<S-HIS-HER> body"));
 			naturalWeapon.setRanges(0,3);
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_STONE);
 			naturalWeapon.setUsesRemaining(1000);

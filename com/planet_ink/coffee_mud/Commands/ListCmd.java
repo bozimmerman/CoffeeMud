@@ -2449,8 +2449,8 @@ public class ListCmd extends StdCommand
 	{
 		final String theRest=CMParms.combine(commands,1);
 		final Item I=CMClass.getItem("StdJournal");
-		I.setName("SYSTEM_NEWS");
-		I.setDescription("Enter `LIST NEWS [NUMBER]` to read an entry.%0D%0AEnter CREATE NEWS to add new entries. ");
+		I.setName(_("SYSTEM_NEWS"));
+		I.setDescription(_("Enter `LIST NEWS [NUMBER]` to read an entry.%0D%0AEnter CREATE NEWS to add new entries. "));
 		final CMMsg newMsg=CMClass.getMsg(mob,I,null,CMMsg.MSG_READ|CMMsg.MASK_ALWAYS,null,CMMsg.MSG_READ|CMMsg.MASK_ALWAYS,theRest,CMMsg.MSG_READ|CMMsg.MASK_ALWAYS,null);
 		if(mob.location().okMessage(mob,newMsg)&&(I.okMessage(mob, newMsg)))
 		{

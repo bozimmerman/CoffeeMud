@@ -148,9 +148,9 @@ public class Spell_WallOfFire extends Spell
 			{
 				mob.location().send(mob,msg);
 				final Item I=CMClass.getItem("GenItem");
-				I.setName("a wall of fire");
-				I.setDisplayText("a blazing wall of fire is burning here");
-				I.setDescription("The flames are high and hot.");
+				I.setName(_("a wall of fire"));
+				I.setDisplayText(_("a blazing wall of fire is burning here"));
+				I.setDescription(_("The flames are high and hot."));
 				I.setMaterial(RawMaterial.RESOURCE_NOTHING);
 				I.basePhyStats().setDisposition(I.basePhyStats().disposition()|PhyStats.IS_LIGHTSOURCE);
 				CMLib.flags().setGettable(I,false);

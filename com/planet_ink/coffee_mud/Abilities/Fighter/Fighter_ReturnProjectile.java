@@ -90,7 +90,7 @@ public class Fighter_ReturnProjectile extends FighterSkill
 					ammo=ammo.substring(0,ammo.length()-1);
 				ammo=CMLib.english().startWithAorAn(ammo);
 				neww.setName(ammo);
-				neww.setDisplayText(ammo+" sits here.");
+				neww.setDisplayText(_("@x1 sits here.",ammo));
 				neww.setUsesRemaining(1);
 				neww.setMaterial(((Weapon)w).material());
 				neww.setWeaponClassification(Weapon.CLASS_THROWN);

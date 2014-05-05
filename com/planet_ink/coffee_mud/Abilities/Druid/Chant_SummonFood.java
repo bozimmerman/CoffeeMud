@@ -79,9 +79,9 @@ public class Chant_SummonFood extends Chant
 				for(int i=0;i<((adjustedLevel(mob,asLevel)/4)+1);i++)
 				{
 					newItem=(Food)CMClass.getBasicItem("GenFoodResource");
-					newItem.setName("some "+RawMaterial.CODES.NAME(berryType).toLowerCase());
-					newItem.setDisplayText(CMStrings.capitalizeAndLower(newItem.name())+" are growing here.");
-					newItem.setDescription("These little berries look juicy and good.");
+					newItem.setName(_("some @x1",RawMaterial.CODES.NAME(berryType).toLowerCase()));
+					newItem.setDisplayText(_("@x1 are growing here.",CMStrings.capitalizeAndLower(newItem.name())));
+					newItem.setDescription(_("These little berries look juicy and good."));
 					newItem.setMaterial(berryType);
 					newItem.setNourishment(150+(10*super.getX1Level(mob)));
 					newItem.setBaseValue(1);

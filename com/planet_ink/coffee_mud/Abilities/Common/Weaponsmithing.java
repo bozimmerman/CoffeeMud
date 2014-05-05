@@ -413,7 +413,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			verb=_("smithing @x1",buildingI.name());
 			playSound="tinktinktink2.wav";
 			final int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-6;
-			buildingI.setDisplayText(itemName+" lies here");
+			buildingI.setDisplayText(_("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
 			buildingI.setBaseValue((CMath.s_int(foundRecipe.get(RCP_VALUE))/4)+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));

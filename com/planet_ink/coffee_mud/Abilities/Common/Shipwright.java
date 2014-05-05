@@ -340,7 +340,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			displayText=_("You are carving @x1",buildingI.name());
 			verb=_("carving @x1",buildingI.name());
 			playSound="saw.wav";
-			buildingI.setDisplayText(itemName+" lies here");
+			buildingI.setDisplayText(_("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));

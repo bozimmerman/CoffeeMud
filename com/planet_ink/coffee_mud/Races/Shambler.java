@@ -92,7 +92,7 @@ public class Shambler extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName("a horrible limb");
+			naturalWeapon.setName(_("a horrible limb"));
 			naturalWeapon.setRanges(0,1);
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_OAK);
 			naturalWeapon.setUsesRemaining(1000);
