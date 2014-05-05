@@ -256,6 +256,13 @@ public class StdAbility implements Ability
 		return CMLib.lang().fullSessionTranslation(str, xs);
 	}
 
+	public static String[] _i(final String[] str)
+	{
+		for(int i=0;i<str.length;i++)
+			str[i]=CMLib.lang().commandWordTranslation(str[i]);
+		return str;
+	}
+
 	protected int castingQuality(MOB mob, Physical target, int abstractQuality)
 	{
 		if((target!=null)&&(target.fetchEffect(ID())!=null))
