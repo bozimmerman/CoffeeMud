@@ -49,8 +49,8 @@ public class Bandaging extends CommonSkill implements MendingSkill
 	public Bandaging()
 	{
 		super();
-		displayText="You are bandaging...";
-		verb="bandaging";
+		displayText=_("You are bandaging...");
+		verb=_("bandaging");
 	}
 	@Override
 	public boolean supportsMending(Physical item)
@@ -115,7 +115,7 @@ public class Bandaging extends CommonSkill implements MendingSkill
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		verb="bandaging";
+		verb=_("bandaging");
 		bandaging=null;
 		final MOB target=super.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -130,7 +130,7 @@ public class Bandaging extends CommonSkill implements MendingSkill
 		messedUp=!proficiencyCheck(mob,0,auto);
 		int duration=3+(int)Math.round(10*(1.0-healthPct(target)))-getXLEVELLevel(mob);
 		if(duration<3) duration=3;
-		verb="bandaging "+target.name();
+		verb=_("bandaging @x1",target.name());
 		bandaging=target;
 		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,_("<S-NAME> begin(s) bandaging up <T-YOUPOSS> wounds."));
 		if(mob.location().okMessage(mob,msg))

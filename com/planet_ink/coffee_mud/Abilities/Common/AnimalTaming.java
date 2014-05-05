@@ -47,8 +47,8 @@ public class AnimalTaming extends CommonSkill
 	public AnimalTaming()
 	{
 		super();
-		displayText="You are taming...";
-		verb="taming";
+		displayText=_("You are taming...");
+		verb=_("taming");
 	}
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -141,7 +141,7 @@ public class AnimalTaming extends CommonSkill
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		verb="taming";
+		verb=_("taming");
 		taming=null;
 		Item cage=null;
 		final String str=CMParms.combine(commands,0);
@@ -210,7 +210,7 @@ public class AnimalTaming extends CommonSkill
 			return false;
 		messedUp=!proficiencyCheck(mob,-taming.phyStats().level()+(2*getXLEVELLevel(mob)),auto);
 		final int duration=getDuration(35,mob,taming.phyStats().level(),10);
-		verb="taming "+M.name();
+		verb=_("taming @x1",M.name());
 		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),_("<S-NAME> start(s) taming @x1.",M.name()));
 		if(mob.location().okMessage(mob,msg))
 		{

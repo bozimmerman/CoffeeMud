@@ -47,8 +47,8 @@ public class Shearing extends CommonSkill
 	public Shearing()
 	{
 		super();
-		displayText="You are shearing something...";
-		verb="shearing";
+		displayText=_("You are shearing something...");
+		verb=_("shearing");
 	}
 
 	protected int getDuration(MOB mob, int weight)
@@ -167,7 +167,7 @@ public class Shearing extends CommonSkill
 		{
 			mob.location().send(mob,msg);
 			sheep=target;
-			verb="shearing "+target.name();
+			verb=_("shearing @x1",target.name());
 			playSound="scissor.wav";
 			final int duration=getDuration(mob,target.phyStats().weight());
 			beneficialAffect(mob,mob,asLevel,duration);

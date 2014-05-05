@@ -39,7 +39,7 @@ public class Ranger_TrackAnimal extends StdAbility
 	@Override public String ID() { return "Ranger_TrackAnimal"; }
 	private final static String localizedName = CMLib.lang()._("Track Animal");
 	@Override public String name() { return localizedName; }
-	protected String displayText="(tracking an animal)";
+	protected String displayText=_("(tracking an animal)");
 	@Override public String displayText(){ return displayText;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -214,7 +214,7 @@ public class Ranger_TrackAnimal extends StdAbility
 				mob.location().send(mob,msg);
 				target.executeMsg(target,msg);
 				invoker=mob;
-				displayText="(tracking "+target.name()+")";
+				displayText=_("(tracking @x1)",target.name());
 				final Ranger_TrackAnimal newOne=(Ranger_TrackAnimal)this.copyOf();
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);

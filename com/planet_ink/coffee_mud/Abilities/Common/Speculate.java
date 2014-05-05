@@ -46,8 +46,8 @@ public class Speculate extends CommonSkill
 	public Speculate()
 	{
 		super();
-		displayText="You are speculating...";
-		verb="speculating";
+		displayText=_("You are speculating...");
+		verb=_("speculating");
 	}
 
 	@Override
@@ -118,7 +118,7 @@ public class Speculate extends CommonSkill
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		verb="speculating";
+		verb=_("speculating");
 		success=false;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

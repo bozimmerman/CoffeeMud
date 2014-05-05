@@ -53,7 +53,7 @@ public class Skill_Resistance extends StdSkill
 			if(newText.equalsIgnoreCase(CharStats.CODES.NAME(i))||newText.equalsIgnoreCase(CharStats.CODES.DESC(i)))
 				resistanceCode=i;
 		if(resistanceCode>0)
-			displayText="(Resistance to "+newText.trim().toLowerCase()+")";
+			displayText=_("(Resistance to @x1)",newText.trim().toLowerCase());
 	}
 
 	@Override

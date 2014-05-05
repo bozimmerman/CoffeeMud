@@ -38,7 +38,7 @@ public class Thief_Assassinate extends ThiefSkill
 	@Override public String ID() { return "Thief_Assassinate"; }
 	private final static String localizedName = CMLib.lang()._("Assassinate");
 	@Override public String name() { return localizedName; }
-	protected String displayText="(Tracking)";
+	protected String displayText=_("(Tracking)");
 	@Override public String displayText(){ return displayText;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -325,7 +325,7 @@ public class Thief_Assassinate extends ThiefSkill
 				mob.location().send(mob,msg);
 				tracking.executeMsg(tracking,msg);
 				invoker=mob;
-				displayText="(tracking "+tracking.name()+")";
+				displayText=_("(tracking @x1)",tracking.name());
 				final Thief_Assassinate newOne=(Thief_Assassinate)this.copyOf();
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);

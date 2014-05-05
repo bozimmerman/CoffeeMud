@@ -322,8 +322,8 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			startStr="<S-NAME> start(s) mending "+buildingI.name()+".";
-			displayText="You are mending "+buildingI.name();
-			verb="mending "+buildingI.name();
+			displayText=_("You are mending @x1",buildingI.name());
+			verb=_("mending @x1",buildingI.name());
 		}
 		else
 		if(str.equalsIgnoreCase("refit"))
@@ -353,8 +353,8 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			startStr="<S-NAME> start(s) refitting "+buildingI.name()+".";
-			displayText="You are refitting "+buildingI.name();
-			verb="refitting "+buildingI.name();
+			displayText=_("You are refitting @x1",buildingI.name());
+			verb=_("refitting @x1",buildingI.name());
 		}
 		else
 		{
@@ -429,9 +429,9 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 				itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);
 			startStr="<S-NAME> start(s) carving "+buildingI.name()+".";
-			displayText="You are carving "+buildingI.name();
+			displayText=_("You are carving @x1",buildingI.name());
 			playSound="sawing.wav";
-			verb="carving "+buildingI.name();
+			verb=_("carving @x1",buildingI.name());
 			buildingI.setDisplayText(itemName+" lies here");
 			buildingI.setDescription(itemName+". ");
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
@@ -532,9 +532,9 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		{
 			messedUp=false;
 			duration=1;
-			verb="bundling "+RawMaterial.CODES.NAME(buildingI.material()).toLowerCase();
+			verb=_("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
 			startStr="<S-NAME> start(s) "+verb+".";
-			displayText="You are "+verb;
+			displayText=_("You are @x1",verb);
 		}
 
 		if(parsedVars.autoGenerate>0)

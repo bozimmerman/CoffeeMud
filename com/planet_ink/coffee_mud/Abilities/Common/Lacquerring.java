@@ -48,8 +48,8 @@ public class Lacquerring extends CommonSkill
 	public Lacquerring()
 	{
 		super();
-		displayText="You are lacquering...";
-		verb="lacquering";
+		displayText=_("You are lacquering...");
+		verb=_("lacquering");
 	}
 
 	protected String fixColor(String name, String colorWord)
@@ -190,8 +190,8 @@ public class Lacquerring extends CommonSkill
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		verb="lacquering "+target.name()+" "+writing;
-		displayText="You are "+verb;
+		verb=_("lacquering @x1 @x2",target.name(),writing);
+		displayText=_("You are @x1",verb);
 		found=target;
 		if(darkFlag) writing=CMStrings.capitalizeAndLower(writing);
 		if(!proficiencyCheck(mob,0,auto)) writing="";

@@ -47,8 +47,8 @@ public class BodyPiercing extends CommonSkill
 	public BodyPiercing()
 	{
 		super();
-		displayText="You are piercing...";
-		verb="piercing";
+		displayText=_("You are piercing...");
+		verb=_("piercing");
 	}
 
 	@Override
@@ -192,8 +192,8 @@ public class BodyPiercing extends CommonSkill
 			writing=wearLocName+":Pierced "+wornName.toLowerCase();
 		else
 			writing=wearLocName+":A pierced "+wornName.toLowerCase();
-		verb="piercing "+target.name()+" on the "+wornName;
-		displayText="You are "+verb;
+		verb=_("piercing @x1 on the @x2",target.name(),wornName);
+		displayText=_("You are @x1",verb);
 		if(!proficiencyCheck(mob,0,auto)) writing="";
 		final int duration=getDuration(30,mob,1,6);
 		String msgStr="<S-NAME> start(s) piercing <T-NAMESELF> on the "+wornName.toLowerCase()+".";

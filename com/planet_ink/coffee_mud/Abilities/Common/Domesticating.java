@@ -47,8 +47,8 @@ public class Domesticating extends CommonSkill
 	public Domesticating()
 	{
 		super();
-		displayText="You are domesticating...";
-		verb="domesticating";
+		displayText=_("You are domesticating...");
+		verb=_("domesticating");
 	}
 
 	@Override
@@ -175,7 +175,7 @@ public class Domesticating extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		taming=M;
-		verb="domesticating "+M.name();
+		verb=_("domesticating @x1",M.name());
 		int levelDiff=taming.phyStats().level()-xlevel(mob);
 		if(levelDiff<0) levelDiff=0;
 		messedUp=!proficiencyCheck(mob,-(levelDiff*5),auto);

@@ -50,8 +50,8 @@ public class Drilling extends GatheringSkill
 	public Drilling()
 	{
 		super();
-		displayText="You are drilling...";
-		verb="drilling";
+		displayText=_("You are drilling...");
+		verb=_("drilling");
 	}
 
 	protected int getDuration(MOB mob, int level)
@@ -71,8 +71,8 @@ public class Drilling extends GatheringSkill
 				if(found!=null)
 				{
 					commonTell(mob,_("You have found some @x1!",foundShortName));
-					displayText="You are drilling out some "+foundShortName;
-					verb="drilling out some "+foundShortName;
+					displayText=_("You are drilling out some @x1",foundShortName);
+					verb=_("drilling out some @x1",foundShortName);
 					playSound="drill.wav";
 				}
 				else
@@ -191,7 +191,7 @@ public class Drilling extends GatheringSkill
 			}
 		}
 
-		verb="drilling";
+		verb=_("drilling");
 		found=null;
 		playSound=null;
 		if(!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_LIQUID,mob.location()))

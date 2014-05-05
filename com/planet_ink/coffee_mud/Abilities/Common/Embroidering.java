@@ -47,8 +47,8 @@ public class Embroidering extends CommonSkill
 	public Embroidering()
 	{
 		super();
-		displayText="You are embroidering...";
-		verb="embroidering";
+		displayText=_("You are embroidering...");
+		verb=_("embroidering");
 	}
 	@Override protected boolean canBeDoneSittingDown() { return true; }
 
@@ -111,8 +111,8 @@ public class Embroidering extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		writing=CMParms.combine(commands,0);
-		verb="embroidering on "+target.name();
-		displayText="You are "+verb;
+		verb=_("embroidering on @x1",target.name());
+		displayText=_("You are @x1",verb);
 		found=target;
 		if((!proficiencyCheck(mob,0,auto))||(!write.proficiencyCheck(mob,0,auto)))
 			writing="";

@@ -49,8 +49,8 @@ public class Taxidermy extends CraftingSkill
 	public Taxidermy()
 	{
 		super();
-		displayText="You are stuffing...";
-		verb="stuffing";
+		displayText=_("You are stuffing...");
+		verb=_("stuffing");
 	}
 
 	@Override
@@ -147,7 +147,7 @@ public class Taxidermy extends CraftingSkill
 			}
 		}
 
-		verb="stuffing";
+		verb=_("stuffing");
 		final String str=CMParms.combine(commands,0);
 		final Item I=mob.location().findItem(null,str);
 		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
@@ -211,8 +211,8 @@ public class Taxidermy extends CraftingSkill
 		buildingI.setDescription(desc);
 		buildingI.setSecretIdentity(getBrand(mob));
 		buildingI.recoverPhyStats();
-		displayText="You are stuffing "+I.name();
-		verb="stuffing "+I.name();
+		displayText=_("You are stuffing @x1",I.name());
+		verb=_("stuffing @x1",I.name());
 		playSound="scissor.wav";
 		final CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),_("<S-NAME> start(s) stuffing @x1.",I.name()));
 		if(mob.location().okMessage(mob,msg))

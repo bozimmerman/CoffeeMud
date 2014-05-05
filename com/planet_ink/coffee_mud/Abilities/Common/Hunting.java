@@ -48,8 +48,8 @@ public class Hunting extends CommonSkill
 	public Hunting()
 	{
 		super();
-		displayText="You are hunting...";
-		verb="hunting";
+		displayText=_("You are hunting...");
+		verb=_("hunting");
 	}
 
 	public Room nearByRoom()
@@ -132,8 +132,8 @@ public class Hunting extends CommonSkill
 				{
 					commonTell(mob,_("You have found some @x1 tracks!",foundShortName));
 					commonTell(mob,_("You need to find the @x1 nearby before the trail goes cold!",foundShortName));
-					displayText="You are hunting for "+found.name();
-					verb="hunting for "+found.name();
+					displayText=_("You are hunting for @x1",found.name());
+					verb=_("hunting for @x1",found.name());
 					found.basePhyStats().setLevel(mob.basePhyStats().level());
 					found.recoverPhyStats();
 					final Ability A=CMClass.getAbility("Prop_ModExperience");
@@ -201,7 +201,7 @@ public class Hunting extends CommonSkill
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		verb="hunting";
+		verb=_("hunting");
 		found=null;
 		activityRoom=null;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

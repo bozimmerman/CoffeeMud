@@ -47,8 +47,8 @@ public class PlantLore extends CommonSkill
 	public PlantLore()
 	{
 		super();
-		displayText="You are observing plant growth...";
-		verb="observing plant growths";
+		displayText=_("You are observing plant growth...");
+		verb=_("observing plant growths");
 	}
 
 	@Override
@@ -146,7 +146,7 @@ public class PlantLore extends CommonSkill
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		verb="observing plant growth";
+		verb=_("observing plant growth");
 		success=false;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

@@ -79,7 +79,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	public Cooking()
 	{
 		super();
-		displayText="You are "+cookWord()+"...";
+		displayText=_("You are @x1...",cookWord());
 		verb=cookWord();
 	}
 
@@ -140,7 +140,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			if(tickUp==0)
 			{
 				commonTell(mob,_("You start @x1 up some @x2.",cookWord(),finalDishName));
-				displayText="You are "+cookWord()+" "+finalDishName;
+				displayText=_("You are @x1 @x2",cookWord(),finalDishName);
 				verb=cookWord()+" "+finalDishName;
 			}
 		}

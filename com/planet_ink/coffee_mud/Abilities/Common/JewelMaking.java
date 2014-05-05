@@ -399,16 +399,16 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			{
 				beingDone.addElement(CMStrings.capitalizeAndLower(buildingI.name())+" is encrusted with bits of "+materialName+".");
 				startStr="<S-NAME> start(s) encrusting "+buildingI.name()+" with "+materialName+".";
-				displayText="You are encrusting "+buildingI.name()+" with "+materialName;
-				verb="encrusting "+buildingI.name()+" with bits of "+materialName;
+				displayText=_("You are encrusting @x1 with @x2",buildingI.name(),materialName);
+				verb=_("encrusting @x1 with bits of @x2",buildingI.name(),materialName);
 			}
 			else
 			{
 				materialName=CMLib.english().startWithAorAn(materialName).toLowerCase();
 				beingDone.addElement(CMStrings.capitalizeAndLower(buildingI.name())+" has "+materialName+" mounted on it.");
 				startStr="<S-NAME> start(s) mounting "+materialName+" onto "+buildingI.name()+".";
-				displayText="You are mounting "+materialName+" onto "+buildingI.name();
-				verb="mounting "+materialName+" onto "+buildingI.name();
+				displayText=_("You are mounting @x1 onto @x2",materialName,buildingI.name());
+				verb=_("mounting @x1 onto @x2",materialName,buildingI.name());
 			}
 			beingDone.addElement(jewelI);
 			messedUp=!proficiencyCheck(mob,0,auto);
@@ -440,8 +440,8 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			startStr="<S-NAME> start(s) mending "+buildingI.name()+".";
-			displayText="You are mending "+buildingI.name();
-			verb="mending "+buildingI.name();
+			displayText=_("You are mending @x1",buildingI.name());
+			verb=_("mending @x1",buildingI.name());
 		}
 		else
 		if(str.equalsIgnoreCase("refit"))
@@ -465,8 +465,8 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			startStr="<S-NAME> start(s) refitting "+buildingI.name()+".";
-			displayText="You are refitting "+buildingI.name();
-			verb="refitting "+buildingI.name();
+			displayText=_("You are refitting @x1",buildingI.name());
+			verb=_("refitting @x1",buildingI.name());
 		}
 		else
 		{
@@ -590,8 +590,8 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);
 			startStr="<S-NAME> start(s) making "+buildingI.name()+".";
-			displayText="You are making "+buildingI.name();
-			verb="making "+buildingI.name();
+			displayText=_("You are making @x1",buildingI.name());
+			verb=_("making @x1",buildingI.name());
 			playSound="tinktinktink.wav";
 			buildingI.setDisplayText(itemName+" lies here");
 			if((data[1][FOUND_CODE]>0)
@@ -644,9 +644,9 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 		{
 			messedUp=false;
 			duration=1;
-			verb="bundling "+RawMaterial.CODES.NAME(buildingI.material()).toLowerCase();
+			verb=_("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
 			startStr="<S-NAME> start(s) "+verb+".";
-			displayText="You are "+verb;
+			displayText=_("You are @x1",verb);
 		}
 
 		if(parsedVars.autoGenerate>0)

@@ -744,7 +744,7 @@ public class Masonry extends CraftingSkill
 				return false;
 			}
 			helping=true;
-			verb="helping "+targetMOB.name()+" with "+helpingAbility.name();
+			verb=_("helping @x1 with @x2",targetMOB.name(),helpingAbility.name());
 			startStr="<S-NAME> start(s) "+verb;
 			final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),startStr+".");
 			if(mob.location().okMessage(mob,msg))
@@ -1024,37 +1024,37 @@ public class Masonry extends CraftingSkill
 		switch(doingCode)
 		{
 		case BUILD_ROOF:
-			verb="building a frame and roof";
+			verb=_("building a frame and roof");
 			break;
 		case BUILD_POOL:
-			verb="building a pool";
+			verb=_("building a pool");
 			break;
 		case BUILD_WALL:
-			verb="building the "+Directions.getDirectionName(dir)+" wall";
+			verb=_("building the @x1 wall",Directions.getDirectionName(dir));
 			break;
 		case BUILD_ARCH:
-			verb="building the "+Directions.getDirectionName(dir)+" archway";
+			verb=_("building the @x1 archway",Directions.getDirectionName(dir));
 			break;
 		case BUILD_PORTCULIS:
-			verb="building the "+Directions.getDirectionName(dir)+" portcullis";
+			verb=_("building the @x1 portcullis",Directions.getDirectionName(dir));
 			break;
 		case BUILD_TITLE:
-			verb="giving this place a title";
+			verb=_("giving this place a title");
 			break;
 		case BUILD_DESC:
-			verb="giving this place a description";
+			verb=_("giving this place a description");
 			break;
 		case BUILD_MONUMENT:
-			verb="building a druidic monument";
+			verb=_("building a druidic monument");
 			break;
 		case BUILD_WINDOW:
-			verb="building a window "+Directions.getDirectionName(dir);
+			verb=_("building a window @x1",Directions.getDirectionName(dir));
 			break;
 		case BUILD_CRAWLWAY:
-			verb="building a crawlway "+Directions.getDirectionName(dir);
+			verb=_("building a crawlway @x1",Directions.getDirectionName(dir));
 			break;
 		case BUILD_STAIRS:
-			verb="building another floor";
+			verb=_("building another floor");
 			break;
 		case BUILD_DEMOLISH:
 		default:
@@ -1062,7 +1062,7 @@ public class Masonry extends CraftingSkill
 			{
 				if((mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
 				   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
-						verb="demolishing the pool";
+						verb=_("demolishing the pool");
 				else
 				if((mob.location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
 				   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
@@ -1078,12 +1078,12 @@ public class Masonry extends CraftingSkill
 				}
 				else
 				if(CMLib.law().isHomeRoomUpstairs(mob.location()))
-					verb="demolishing the room";
+					verb=_("demolishing the room");
 				else
-					verb="demolishing the roof";
+					verb=_("demolishing the roof");
 			}
 			else
-				verb="demolishing the "+Directions.getDirectionName(dir)+" wall";
+				verb=_("demolishing the @x1 wall",Directions.getDirectionName(dir));
 			break;
 		}
 		messedUp=!proficiencyCheck(mob,0,auto);

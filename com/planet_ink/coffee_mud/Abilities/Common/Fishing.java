@@ -48,8 +48,8 @@ public class Fishing extends GatheringSkill
 	public Fishing()
 	{
 		super();
-		displayText="You are fishing...";
-		verb="fishing";
+		displayText=_("You are fishing...");
+		verb=_("fishing");
 	}
 
 	protected int getDuration(MOB mob, int level)
@@ -145,7 +145,7 @@ public class Fishing extends GatheringSkill
 			commonTell(mob,_("The fishing doesn't look too good around here."));
 			return false;
 		}
-		verb="fishing";
+		verb=_("fishing");
 		found=null;
 		playSound="fishreel.wav";
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

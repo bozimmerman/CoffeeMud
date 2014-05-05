@@ -53,8 +53,8 @@ public class Herbology extends CommonSkill
 	public Herbology()
 	{
 		super();
-		displayText="You are evaluating...";
-		verb="evaluating";
+		displayText=_("You are evaluating...");
+		verb=_("evaluating");
 	}
 
 	@Override
@@ -126,8 +126,8 @@ public class Herbology extends CommonSkill
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		verb="studying "+target.name();
-		displayText="You are "+verb;
+		verb=_("studying @x1",target.name());
+		displayText=_("You are @x1",verb);
 		found=target;
 		messedUp=false;
 		if(!proficiencyCheck(mob,0,auto)) messedUp=true;

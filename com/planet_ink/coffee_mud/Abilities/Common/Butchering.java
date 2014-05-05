@@ -47,8 +47,8 @@ public class Butchering extends GatheringSkill
 	public Butchering()
 	{
 		super();
-		displayText="You are skinning and butchering something...";
-		verb="skinning and butchering";
+		displayText=_("You are skinning and butchering something...");
+		verb=_("skinning and butchering");
 	}
 
 	protected int getDuration(MOB mob, int weight)
@@ -172,7 +172,7 @@ public class Butchering extends GatheringSkill
 		{
 			mob.location().send(mob,msg);
 			body=(DeadBody)I;
-			verb="skinning and butchering "+I.name();
+			verb=_("skinning and butchering @x1",I.name());
 			playSound="ripping.wav";
 			final int duration=getDuration(mob,I.phyStats().weight());
 			beneficialAffect(mob,mob,asLevel,duration);

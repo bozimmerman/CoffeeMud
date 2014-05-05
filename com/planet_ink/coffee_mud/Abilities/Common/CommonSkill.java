@@ -54,13 +54,13 @@ public class CommonSkill extends StdAbility
 	protected boolean bundling=false;
 	public Ability helpingAbility=null;
 	protected volatile int tickUp=0;
-	protected String verb="working";
+	protected String verb=_("working");
 	protected String playSound=null;
 	protected int yield=baseYield();
 
 	protected int baseYield() { return 1; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected String displayText="(Doing something productive)";
+	protected String displayText=_("(Doing something productive)");
 	@Override public String displayText(){return displayText;}
 
 	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getCommonTrainCostFormula(ID()); }

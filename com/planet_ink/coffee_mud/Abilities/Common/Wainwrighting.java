@@ -298,8 +298,8 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 			itemName=CMLib.english().startWithAorAn(itemName);
 		buildingI.setName(itemName);
 		startStr="<S-NAME> start(s) building "+buildingI.name()+".";
-		displayText="You are building "+buildingI.name();
-		verb="building "+buildingI.name();
+		displayText=_("You are building @x1",buildingI.name());
+		verb=_("building @x1",buildingI.name());
 		playSound="hammer.wav";
 		buildingI.setDisplayText(itemName+" lies here");
 		buildingI.setDescription(itemName+". ");
@@ -356,9 +356,9 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 		{
 			messedUp=false;
 			duration=1;
-			verb="bundling "+RawMaterial.CODES.NAME(buildingI.material()).toLowerCase();
+			verb=_("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
 			startStr="<S-NAME> start(s) "+verb+".";
-			displayText="You are "+verb;
+			displayText=_("You are @x1",verb);
 		}
 
 		if(parsedVars.autoGenerate>0)

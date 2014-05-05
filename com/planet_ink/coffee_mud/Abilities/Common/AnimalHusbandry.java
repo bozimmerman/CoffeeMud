@@ -48,8 +48,8 @@ public class AnimalHusbandry extends CommonSkill
 	public AnimalHusbandry()
 	{
 		super();
-		displayText="You are, well, husbanding ...";
-		verb="husbanding";
+		displayText=_("You are, well, husbanding ...");
+		verb=_("husbanding");
 	}
 
 	@Override
@@ -147,8 +147,8 @@ public class AnimalHusbandry extends CommonSkill
 		if(super.checkStop(mob, commands))
 			return true;
 
-		verb="husbanding";
-		verb="taming";
+		verb=_("husbanding");
+		verb=_("taming");
 		husbanding=new MOB[2];
 		if(!CMLib.law().doesHavePriviledgesHere(mob, mob.location()))
 		{
@@ -235,7 +235,7 @@ public class AnimalHusbandry extends CommonSkill
 			return false;
 		messedUp=!proficiencyCheck(mob,-highestLevel+(2*getXLEVELLevel(mob)),auto);
 		final int duration=getDuration(55,mob,highestLevel,20);
-		verb="husbanding "+husbanding[0].name()+" to "+husbanding[1].name();
+		verb=_("husbanding @x1 to @x2",husbanding[0].name(),husbanding[1].name());
 		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),_("<S-NAME> start(s) @x1.",verb));
 		if(mob.location().okMessage(mob,msg))
 		{

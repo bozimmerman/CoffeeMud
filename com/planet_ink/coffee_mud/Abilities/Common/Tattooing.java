@@ -47,8 +47,8 @@ public class Tattooing extends CommonSkill
 	public Tattooing()
 	{
 		super();
-		displayText="You are tattooing...";
-		verb="tattooing";
+		displayText=_("You are tattooing...");
+		verb=_("tattooing");
 	}
 
 	@Override
@@ -177,8 +177,8 @@ public class Tattooing extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		writing=wornName.toUpperCase()+":A tattoo of "+message;
-		verb="tattooing "+target.name()+" on the "+wornName;
-		displayText="You are "+verb;
+		verb=_("tattooing @x1 on the @x2",target.name(),wornName);
+		displayText=_("You are @x1",verb);
 		if(!proficiencyCheck(mob,0,auto)) writing="";
 		final int duration=getDuration(35,mob,1,6);
 		String str="<S-NAME> start(s) tattooing "+message+" on <T-YOUPOSS> "+wornName.toLowerCase()+".";

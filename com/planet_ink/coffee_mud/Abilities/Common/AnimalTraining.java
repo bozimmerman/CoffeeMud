@@ -49,8 +49,8 @@ public class AnimalTraining extends CommonSkill
 	public AnimalTraining()
 	{
 		super();
-		displayText="You are taming...";
-		verb="taming";
+		displayText=_("You are taming...");
+		verb=_("taming");
 	}
 
 	@Override
@@ -137,7 +137,7 @@ public class AnimalTraining extends CommonSkill
 		if(super.checkStop(mob, commands))
 			return true;
 
-		verb="training";
+		verb=_("training");
 		taming=null;
 		Item cage=null;
 		final String[] skills={"WANDER", //0
@@ -258,7 +258,7 @@ public class AnimalTraining extends CommonSkill
 			return false;
 		messedUp=!proficiencyCheck(mob,-taming.phyStats().level()+(2*getXLEVELLevel(mob)),auto);
 		final int duration=getDuration(35,mob,taming.phyStats().level(),10);
-		verb="training "+M.name();
+		verb=_("training @x1",M.name());
 		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),_("<S-NAME> start(s) training @x1.",M.name()));
 		if(mob.location().okMessage(mob,msg))
 		{

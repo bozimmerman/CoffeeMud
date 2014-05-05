@@ -258,8 +258,8 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			startStr="<S-NAME> start(s) mending "+buildingI.name()+".";
-			displayText="You are mending "+buildingI.name();
-			verb="mending "+buildingI.name();
+			displayText=_("You are mending @x1",buildingI.name());
+			verb=_("mending @x1",buildingI.name());
 		}
 		else
 		{
@@ -351,8 +351,8 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);
 			startStr="<S-NAME> start(s) making "+buildingI.name()+".";
-			displayText="You are making "+buildingI.name();
-			verb="making "+buildingI.name();
+			displayText=_("You are making @x1",buildingI.name());
+			verb=_("making @x1",buildingI.name());
 			playSound="sanding.wav";
 			buildingI.setDisplayText(itemName+" lies here");
 			buildingI.setDescription(itemName+". ");
@@ -405,9 +405,9 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 		{
 			messedUp=false;
 			duration=1;
-			verb="bundling "+RawMaterial.CODES.NAME(buildingI.material()).toLowerCase();
+			verb=_("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
 			startStr="<S-NAME> start(s) "+verb+".";
-			displayText="You are "+verb;
+			displayText=_("You are @x1",verb);
 		}
 
 		if(parsedVars.autoGenerate>0)

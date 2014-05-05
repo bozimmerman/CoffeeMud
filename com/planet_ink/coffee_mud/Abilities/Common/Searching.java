@@ -55,8 +55,8 @@ public class Searching extends CommonSkill
 	public Searching()
 	{
 		super();
-		displayText="You are searching...";
-		verb="searching";
+		displayText=_("You are searching...");
+		verb=_("searching");
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class Searching extends CommonSkill
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		verb="searching";
+		verb=_("searching");
 		success=false;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

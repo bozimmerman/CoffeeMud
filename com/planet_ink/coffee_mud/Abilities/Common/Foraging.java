@@ -49,8 +49,8 @@ public class Foraging extends GatheringSkill
 	public Foraging()
 	{
 		super();
-		displayText="You are foraging...";
-		verb="foraging";
+		displayText=_("You are foraging...");
+		verb=_("foraging");
 	}
 
 	protected int getDuration(MOB mob, int level)
@@ -70,8 +70,8 @@ public class Foraging extends GatheringSkill
 				if(found!=null)
 				{
 					commonTell(mob,_("You have found some @x1!",foundShortName));
-					displayText="You are foraging for "+foundShortName;
-					verb="foraging for "+foundShortName;
+					displayText=_("You are foraging for @x1",foundShortName);
+					verb=_("foraging for @x1",foundShortName);
 				}
 				else
 				{
@@ -134,7 +134,7 @@ public class Foraging extends GatheringSkill
 			return false;
 		}
 
-		verb="foraging";
+		verb=_("foraging");
 		found=null;
 		if((!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_VEGETATION,mob.location()))
 		&&(!confirmPossibleMaterialLocation(RawMaterial.RESOURCE_HEMP,mob.location()))

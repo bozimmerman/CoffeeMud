@@ -1201,8 +1201,8 @@ public class CraftingSkill extends GatheringSkill
 		activity = CraftingActivity.LEARNING;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		displayText="You are deconstructing "+buildingI.name();
-		verb="deconstructing "+buildingI.name();
+		displayText=_("You are deconstructing @x1",buildingI.name());
+		verb=_("deconstructing @x1",buildingI.name());
 		messedUp=!proficiencyCheck(mob,0,auto);
 		final CMMsg msg=CMClass.getMsg(mob,buildingI,this,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> start(s) deconstructing and studying <T-NAMESELF>."));
 		if(mob.location().okMessage(mob,msg))

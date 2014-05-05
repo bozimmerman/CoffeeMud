@@ -261,8 +261,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			startStr="<S-NAME> start(s) mending "+buildingI.name()+".";
-			displayText="You are mending "+buildingI.name();
-			verb="mending "+buildingI.name();
+			displayText=_("You are mending @x1",buildingI.name());
+			verb=_("mending @x1",buildingI.name());
 		}
 		else
 		{
@@ -337,8 +337,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);
 			startStr="<S-NAME> start(s) carving "+buildingI.name()+".";
-			displayText="You are carving "+buildingI.name();
-			verb="carving "+buildingI.name();
+			displayText=_("You are carving @x1",buildingI.name());
+			verb=_("carving @x1",buildingI.name());
 			playSound="saw.wav";
 			buildingI.setDisplayText(itemName+" lies here");
 			buildingI.setDescription(itemName+". ");
@@ -379,9 +379,9 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		{
 			messedUp=false;
 			duration=1;
-			verb="bundling "+RawMaterial.CODES.NAME(buildingI.material()).toLowerCase();
+			verb=_("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
 			startStr="<S-NAME> start(s) "+verb+".";
-			displayText="You are "+verb;
+			displayText=_("You are @x1",verb);
 		}
 
 		if(parsedVars.autoGenerate>0)

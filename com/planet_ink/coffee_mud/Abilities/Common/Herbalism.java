@@ -77,8 +77,8 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			if(tickUp==0)
 			{
 				commonEmote(mob,"<S-NAME> start(s) brewing "+buildingI.name()+".");
-				displayText="You are brewing "+buildingI.name();
-				verb="brewing "+buildingI.name();
+				displayText=_("You are brewing @x1",buildingI.name());
+				verb=_("brewing @x1",buildingI.name());
 			}
 		}
 		return super.tick(ticking,tickID);

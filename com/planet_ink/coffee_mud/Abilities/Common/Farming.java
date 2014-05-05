@@ -50,8 +50,8 @@ public class Farming extends GatheringSkill
 	public Farming()
 	{
 		super();
-		displayText="You are planting...";
-		verb="planting";
+		displayText=_("You are planting...");
+		verb=_("planting");
 	}
 
 	protected int getDuration(MOB mob, int level)
@@ -157,7 +157,7 @@ public class Farming extends GatheringSkill
 			return false;
 		}
 
-		verb="planting";
+		verb=_("planting");
 		if((!auto)&&((mob.location().domainType()&Room.INDOORS)>0))
 		{
 			commonTell(mob,_("You can't plant anything indoors!"));
@@ -306,8 +306,8 @@ public class Farming extends GatheringSkill
 		mine.destroy();
 		final int duration=getDuration(mob,1);
 		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),_("<S-NAME> start(s) planting @x1.",foundShortName));
-		verb="planting "+foundShortName;
-		displayText="You are planting "+foundShortName;
+		verb=_("planting @x1",foundShortName);
+		displayText=_("You are planting @x1",foundShortName);
 		room=mob.location();
 		if(mob.location().okMessage(mob,msg))
 		{

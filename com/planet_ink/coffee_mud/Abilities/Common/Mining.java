@@ -49,8 +49,8 @@ public class Mining extends GatheringSkill
 	public Mining()
 	{
 		super();
-		displayText="You are mining...";
-		verb="mining";
+		displayText=_("You are mining...");
+		verb=_("mining");
 	}
 
 	protected int getDuration(MOB mob, int level)
@@ -70,8 +70,8 @@ public class Mining extends GatheringSkill
 				if(found!=null)
 				{
 					commonTell(mob,_("You have found a vein of @x1!",foundShortName));
-					displayText="You are mining "+foundShortName;
-					verb="mining "+foundShortName;
+					displayText=_("You are mining @x1",foundShortName);
+					verb=_("mining @x1",foundShortName);
 				}
 				else
 				{
@@ -131,7 +131,7 @@ public class Mining extends GatheringSkill
 				return super.bundle(mob,commands);
 			return false;
 		}
-		verb="mining";
+		verb=_("mining");
 		playSound="dig.wav";
 		found=null;
 		if((!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_PRECIOUS,mob.location()))

@@ -103,13 +103,13 @@ public class SignLanguage extends StdLanguage
 		String verb = "sign(s)";
 		switch(CMLib.dice().roll(1, 20, 0))
 		{
-		case 1: case 2: case 3: case 4: case 5: verb="gesture(s)"; break;
-		case 6: verb="wave(s)"; break;
-		case 7: case 8: verb="gesticulate(s)"; break;
-		case 9: verb="wave(s) <S-HIS-HER> fingers"; break;
-		case 10: verb="wiggle(s) <S-HIS-HER> hands"; break;
-		case 11: case 12: verb="wave(s) <S-HIS-HER> hands"; break;
-		case 13: verb="wiggle(s) <S-HIS-HER> fingers"; break;
+		case 1: case 2: case 3: case 4: case 5: verb=_("gesture(s)"); break;
+		case 6: verb=_("wave(s)"); break;
+		case 7: case 8: verb=_("gesticulate(s)"); break;
+		case 9: verb=_("wave(s) <S-HIS-HER> fingers"); break;
+		case 10: verb=_("wiggle(s) <S-HIS-HER> hands"); break;
+		case 11: case 12: verb=_("wave(s) <S-HIS-HER> hands"); break;
+		case 13: verb=_("wiggle(s) <S-HIS-HER> fingers"); break;
 		}
 		final String oldStartFullMsg = startFullMsg;
 		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "tell(s)", verb);

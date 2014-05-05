@@ -69,14 +69,14 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 				if((theSpell.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 				{
 					commonEmote(mob,"<S-NAME> start(s) praying for "+buildingI.name()+".");
-					displayText="You are praying for "+buildingI.name();
-					verb="praying for "+buildingI.name();
+					displayText=_("You are praying for @x1",buildingI.name());
+					verb=_("praying for @x1",buildingI.name());
 				}
 				else
 				{
 					commonEmote(mob,"<S-NAME> start(s) brewing "+buildingI.name()+".");
-					displayText="You are brewing "+buildingI.name();
-					verb="brewing "+buildingI.name();
+					displayText=_("You are brewing @x1",buildingI.name());
+					verb=_("brewing @x1",buildingI.name());
 					playSound="hotspring.wav";
 				}
 			}

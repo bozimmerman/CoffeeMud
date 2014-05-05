@@ -528,8 +528,8 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			startStr="<S-NAME> start(s) mending "+buildingI.name()+".";
-			displayText="You are mending "+buildingI.name();
-			verb="mending "+buildingI.name();
+			displayText=_("You are mending @x1",buildingI.name());
+			verb=_("mending @x1",buildingI.name());
 		}
 		else
 		if(str.equalsIgnoreCase("refit") && canRefitB.booleanValue())
@@ -559,8 +559,8 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			startStr="<S-NAME> start(s) refitting "+buildingI.name()+".";
-			displayText="You are refitting "+buildingI.name();
-			verb="refitting "+buildingI.name();
+			displayText=_("You are refitting @x1",buildingI.name());
+			verb=_("refitting @x1",buildingI.name());
 		}
 		else
 		{
@@ -637,7 +637,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 				itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);
 			startStr="<S-NAME> start(s) "+verbing+" "+buildingI.name()+".";
-			displayText="You are "+verbing+" "+buildingI.name();
+			displayText=_("You are @x1 @x2",verbing,buildingI.name());
 			playSound=(String)V(ID,V_SOND);
 			verb=verbing+" "+buildingI.name();
 			buildingI.setDisplayText(itemName+" lies here");
@@ -734,9 +734,9 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		{
 			messedUp=false;
 			duration=1;
-			verb="bundling "+RawMaterial.CODES.NAME(buildingI.material()).toLowerCase();
+			verb=_("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
 			startStr="<S-NAME> start(s) "+verb+".";
-			displayText="You are "+verb;
+			displayText=_("You are @x1",verb);
 		}
 
 		if(parsedVars.autoGenerate>0)

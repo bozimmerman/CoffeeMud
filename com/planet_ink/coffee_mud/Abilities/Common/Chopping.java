@@ -49,8 +49,8 @@ public class Chopping extends GatheringSkill
 	public Chopping()
 	{
 		super();
-		displayText="You are looking for a good tree...";
-		verb="looking";
+		displayText=_("You are looking for a good tree...");
+		verb=_("looking");
 	}
 
 	protected int getDuration(MOB mob, int level)
@@ -70,8 +70,8 @@ public class Chopping extends GatheringSkill
 				if(found!=null)
 				{
 					commonTell(mob,_("You have a good tree for @x1.",foundShortName));
-					displayText="You are chopping up "+foundShortName;
-					verb="chopping "+foundShortName;
+					displayText=_("You are chopping up @x1",foundShortName);
+					verb=_("chopping @x1",foundShortName);
 					playSound="chopping.wav";
 				}
 				else
@@ -134,7 +134,7 @@ public class Chopping extends GatheringSkill
 			return false;
 		}
 
-		verb="chopping";
+		verb=_("chopping");
 		playSound=null;
 		found=null;
 		if(!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_WOODEN,mob.location()))

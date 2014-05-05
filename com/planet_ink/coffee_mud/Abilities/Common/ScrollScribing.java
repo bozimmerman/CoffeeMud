@@ -65,8 +65,8 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			if(tickUp==0)
 			{
 				commonEmote(mob,"<S-NAME> start(s) scribing "+buildingI.name()+".");
-				displayText="You are scribing "+buildingI.name();
-				verb="scribing "+buildingI.name();
+				displayText=_("You are scribing @x1",buildingI.name());
+				verb=_("scribing @x1",buildingI.name());
 			}
 		}
 		return super.tick(ticking,tickID);

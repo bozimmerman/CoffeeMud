@@ -50,8 +50,8 @@ public class Engraving extends CommonSkill
 	public Engraving()
 	{
 		super();
-		displayText="You are engraving...";
-		verb="engraving";
+		displayText=_("You are engraving...");
+		verb=_("engraving");
 	}
 
 	@Override
@@ -137,8 +137,8 @@ public class Engraving extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		writing=CMParms.combine(commands,0);
-		verb="engraving on "+target.name();
-		displayText="You are "+verb;
+		verb=_("engraving on @x1",target.name());
+		displayText=_("You are @x1",verb);
 		found=target;
 		if((!proficiencyCheck(mob,0,auto))||(!write.proficiencyCheck(mob,0,auto)))
 			writing="";

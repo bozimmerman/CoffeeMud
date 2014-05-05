@@ -53,8 +53,8 @@ public class Dyeing extends CommonSkill
 	public Dyeing()
 	{
 		super();
-		displayText="You are dyeing...";
-		verb="dyeing";
+		displayText=_("You are dyeing...");
+		verb=_("dyeing");
 	}
 
 	protected String fixColor(String name, char colorChar, String colorWord)
@@ -195,8 +195,8 @@ public class Dyeing extends CommonSkill
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		verb="dyeing "+target.name()+" "+(darkFlag?"dark ":brightFlag?"bright ":lightFlag?"light ":"")+writing;
-		displayText="You are "+verb;
+		verb=_("dyeing @x1 @x2@x3",target.name(),(darkFlag?"dark ":brightFlag?"bright ":lightFlag?"light ":""),writing);
+		displayText=_("You are @x1",verb);
 		found=target;
 		if(darkFlag) writing=CMStrings.capitalizeAndLower(writing);
 		if(!proficiencyCheck(mob,0,auto))

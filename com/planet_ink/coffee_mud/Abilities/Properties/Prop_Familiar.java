@@ -37,7 +37,7 @@ public class Prop_Familiar extends Property
 {
 	@Override public String ID() { return "Prop_Familiar"; }
 	@Override public String name(){ return "Find Familiar Property";}
-	protected String displayText="Familiarity with an animal";
+	protected String displayText=_("Familiarity with an animal");
 	@Override public String displayText() {return displayText;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected final static int DOG=0;
@@ -227,7 +227,7 @@ public class Prop_Familiar extends Property
 		for(int i=0;i<names.length;i++)
 			if(newText.trim().equalsIgnoreCase(names[i]))
 			{ familiarType=i; break;}
-		displayText="(Familiarity with the "+names[familiarType]+")";
+		displayText=_("(Familiarity with the @x1)",names[familiarType]);
 	}
 
 	@Override

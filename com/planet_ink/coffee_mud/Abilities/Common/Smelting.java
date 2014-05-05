@@ -221,9 +221,9 @@ public class Smelting extends CraftingSkill
 		amountMaking+=amountMaking;
 		buildingI=(Item)CMLib.materials().makeResource(RawMaterial.CODES.GET(doneResourceCode),null,false,null);
 		startStr="<S-NAME> start(s) smelting "+doneResourceDesc.toLowerCase()+".";
-		displayText="You are smelting "+doneResourceDesc.toLowerCase();
+		displayText=_("You are smelting @x1",doneResourceDesc.toLowerCase());
 		playSound="sizzling.wav";
-		verb="smelting "+doneResourceDesc.toLowerCase();
+		verb=_("smelting @x1",doneResourceDesc.toLowerCase());
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 

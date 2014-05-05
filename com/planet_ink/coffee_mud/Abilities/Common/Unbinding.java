@@ -61,8 +61,8 @@ public class Unbinding extends CommonSkill
 				if((affects!=null)&&(affects.size()>0))
 				{
 					removing=affects.get(0);
-					displayText="You are removing "+removing.name()+" from "+found.name();
-					verb="removing "+removing.name()+" from "+found.name();
+					displayText=_("You are removing @x1 from @x2",removing.name(),found.name());
+					verb=_("removing @x1 from @x2",removing.name(),found.name());
 				}
 				else
 				{
@@ -146,7 +146,7 @@ public class Unbinding extends CommonSkill
 		}
 		final Ability A=affects.get(0);
 
-		verb="unbinding";
+		verb=_("unbinding");
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -158,8 +158,8 @@ public class Unbinding extends CommonSkill
 		{
 			mob.location().send(mob,msg);
 			found=target;
-			verb="unbinding "+found.name();
-			displayText="You are "+verb;
+			verb=_("unbinding @x1",found.name());
+			displayText=_("You are @x1",verb);
 			found=proficiencyCheck(mob,0,auto)?found:null;
 			beneficialAffect(mob,mob,asLevel,duration);
 		}

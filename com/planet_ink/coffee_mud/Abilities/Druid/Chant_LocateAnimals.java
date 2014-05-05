@@ -41,7 +41,7 @@ public class Chant_LocateAnimals extends Chant
 	private final static String localizedName = CMLib.lang()._("Locate Animals");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
-	protected String displayText="(Locating Animals)";
+	protected String displayText=_("(Locating Animals)");
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override public String displayText(){return displayText;}
 
@@ -182,7 +182,7 @@ public class Chant_LocateAnimals extends Chant
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
-				displayText="(seeking "+target.name()+")";
+				displayText=_("(seeking @x1)",target.name());
 				final Chant_LocateAnimals newOne=(Chant_LocateAnimals)this.copyOf();
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);

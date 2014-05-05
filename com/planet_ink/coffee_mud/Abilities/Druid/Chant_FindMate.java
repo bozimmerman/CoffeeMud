@@ -39,7 +39,7 @@ public class Chant_FindMate extends Chant
 	@Override public String ID() { return "Chant_FindMate"; }
 	private final static String localizedName = CMLib.lang()._("Find Mate");
 	@Override public String name() { return localizedName; }
-	protected String displayText="(Tracking a mate)";
+	protected String displayText=_("(Tracking a mate)");
 	@Override public String displayText(){ return displayText;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

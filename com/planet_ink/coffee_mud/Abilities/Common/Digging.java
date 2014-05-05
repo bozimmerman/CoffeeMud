@@ -49,8 +49,8 @@ public class Digging extends GatheringSkill
 	public Digging()
 	{
 		super();
-		displayText="You are digging for gems...";
-		verb="digging";
+		displayText=_("You are digging for gems...");
+		verb=_("digging");
 	}
 
 	protected int getDuration(MOB mob, int level)
@@ -70,8 +70,8 @@ public class Digging extends GatheringSkill
 				if(found!=null)
 				{
 					commonTell(mob,_("You have found some @x1!",foundShortName));
-					displayText="You are digging out "+foundShortName;
-					verb="digging out "+foundShortName;
+					displayText=_("You are digging out @x1",foundShortName);
+					verb=_("digging out @x1",foundShortName);
 					if((found.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PRECIOUS)
 						bumpTickDown(tickDown*2);
 				}
@@ -135,7 +135,7 @@ public class Digging extends GatheringSkill
 			return false;
 		}
 
-		verb="digging";
+		verb=_("digging");
 		playSound="dig.wav";
 		found=null;
 		if((!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_PRECIOUS,mob.location()))

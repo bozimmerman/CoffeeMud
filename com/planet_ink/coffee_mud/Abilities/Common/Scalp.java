@@ -48,8 +48,8 @@ public class Scalp extends CommonSkill
 	public Scalp()
 	{
 		super();
-		displayText="You are scalping something...";
-		verb="scalping";
+		displayText=_("You are scalping something...");
+		verb=_("scalping");
 	}
 
 	@Override
@@ -157,7 +157,7 @@ public class Scalp extends CommonSkill
 			mob.location().send(mob,msg);
 			I=(Item)msg.target();
 			body=(DeadBody)I;
-			verb="scalping "+I.name();
+			verb=_("scalping @x1",I.name());
 			playSound="ripping.wav";
 			int duration=(I.phyStats().weight()/(10+getXLEVELLevel(mob)));
 			if(duration<3) duration=3;

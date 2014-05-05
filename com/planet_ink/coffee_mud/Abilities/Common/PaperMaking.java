@@ -267,8 +267,8 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		itemName=CMLib.english().startWithAorAn(itemName);
 		buildingI.setName(itemName);
 		startStr="<S-NAME> start(s) making "+buildingI.name()+".";
-		displayText="You are making "+buildingI.name();
-		verb="making "+buildingI.name();
+		displayText=_("You are making @x1",buildingI.name());
+		verb=_("making @x1",buildingI.name());
 		playSound="crumple.wav";
 		buildingI.setDisplayText(itemName+" lies here");
 		buildingI.setDescription(itemName+". ");
@@ -304,7 +304,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 				buildingI.setDisplayText(itemName+" of "+statue.trim()+" is here");
 				buildingI.setDescription(itemName+" of "+statue.trim()+". ");
 			}
-			verb="making "+buildingI.name();
+			verb=_("making @x1",buildingI.name());
 		}
 
 		messedUp=!proficiencyCheck(mob,0,auto);

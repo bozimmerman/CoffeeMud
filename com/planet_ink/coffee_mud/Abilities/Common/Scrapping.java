@@ -54,8 +54,8 @@ public class Scrapping extends CommonSkill
 	public Scrapping()
 	{
 		super();
-		displayText="You are scrapping...";
-		verb="scrapping";
+		displayText=_("You are scrapping...");
+		verb=_("scrapping");
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public class Scrapping extends CommonSkill
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		verb="scrapping";
+		verb=_("scrapping");
 		final String str=CMParms.combine(commands,0);
 		final Item I=mob.location().findItem(null,str);
 		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))

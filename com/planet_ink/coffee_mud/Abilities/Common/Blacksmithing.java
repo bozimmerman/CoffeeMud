@@ -361,8 +361,8 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 			itemName=CMLib.english().startWithAorAn(itemName);
 		buildingI.setName(itemName);
 		startStr="<S-NAME> start(s) smithing "+buildingI.name()+".";
-		displayText="You are smithing "+buildingI.name();
-		verb="smithing "+buildingI.name();
+		displayText=_("You are smithing @x1",buildingI.name());
+		verb=_("smithing @x1",buildingI.name());
 		playSound="tinktinktink2.wav";
 		buildingI.setDisplayText(itemName+" lies here");
 		buildingI.setDescription(itemName+". ");
@@ -431,9 +431,9 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		{
 			messedUp=false;
 			duration=1;
-			verb="bundling "+RawMaterial.CODES.NAME(buildingI.material()).toLowerCase();
+			verb=_("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
 			startStr="<S-NAME> start(s) "+verb+".";
-			displayText="You are "+verb;
+			displayText=_("You are @x1",verb);
 		}
 
 		if(parsedVars.autoGenerate>0)
