@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class AutoAffects extends StdCommand
 {
-	private final String[] access={"AUTOAFFECTS","AUTOAFF","AAF"};
+	private final String[] access=_i(new String[]{"AUTOAFFECTS","AUTOAFF","AAF"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public String getAutoAffects(MOB viewerMOB, Physical P)

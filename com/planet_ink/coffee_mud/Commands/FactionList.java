@@ -36,7 +36,7 @@ public class FactionList extends StdCommand
 {
 	public FactionList(){}
 
-	private final String[] access={"FACTIONS","FAC"};
+	private final String[] access=_i(new String[]{"FACTIONS","FAC"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

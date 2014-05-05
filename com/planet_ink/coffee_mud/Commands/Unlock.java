@@ -36,7 +36,7 @@ public class Unlock extends StdCommand
 {
 	public Unlock(){}
 
-	private final String[] access={"UNLOCK","UNL","UN"};
+	private final String[] access=_i(new String[]{"UNLOCK","UNL","UN"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

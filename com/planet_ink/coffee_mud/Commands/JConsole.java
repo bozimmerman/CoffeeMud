@@ -42,7 +42,7 @@ public class JConsole extends StdCommand
 {
 	public JConsole(){}
 
-	private final String[] access={"JCONSOLE"};
+	private final String[] access=_i(new String[]{"JCONSOLE"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public static final Set<String> methH=new SHashSet<String>(ScriptingEngine.methods);

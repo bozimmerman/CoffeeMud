@@ -41,7 +41,7 @@ public class ListCmd extends StdCommand
 {
 	public ListCmd(){}
 
-	private final String[] access={"LIST"};
+	private final String[] access=_i(new String[]{"LIST"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public static class WorldFilter implements Filterer<Area>

@@ -40,7 +40,7 @@ public class Thief_MarkTrapped extends ThiefSkill
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"MARKTRAPPED"};
+	private static final String[] triggerStrings =_i(new String[] {"MARKTRAPPED"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DETRAP;}
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}

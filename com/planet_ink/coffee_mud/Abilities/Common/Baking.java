@@ -36,7 +36,7 @@ public class Baking extends Cooking
 	@Override public String ID() { return "Baking"; }
 	public final static String localizedName = CMLib.lang()._("Baking");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"BAKING","BAKE"};
+	private static final String[] triggerStrings =_i(new String[] {"BAKING","BAKE"});
 	@Override public String supportedResourceString(){return "MISC";}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String cookWordShort(){return "bake";}

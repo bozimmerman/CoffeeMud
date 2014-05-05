@@ -37,7 +37,7 @@ public class Announce extends StdCommand
 {
 	public Announce(){}
 
-	private final String[] access={"ANNOUNCE","ANNOUNCETO","ANNOUNCEMSG"};
+	private final String[] access=_i(new String[]{"ANNOUNCE","ANNOUNCETO","ANNOUNCEMSG"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public void sendAnnounce(MOB from, String announcement, Session S)

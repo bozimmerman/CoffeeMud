@@ -49,7 +49,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override public boolean putInCommandlist(){return false;}
-	private static final String[] triggerStrings = {"REGENERATE"};
+	private static final String[] triggerStrings =_i(new String[] {"REGENERATE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public boolean canBeUninvoked(){return false;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL;}

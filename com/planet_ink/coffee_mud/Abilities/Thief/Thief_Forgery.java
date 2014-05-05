@@ -42,7 +42,7 @@ public class Thief_Forgery extends ThiefSkill
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"FORGERY"};
+	private static final String[] triggerStrings =_i(new String[] {"FORGERY"});
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CALLIGRAPHY;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 

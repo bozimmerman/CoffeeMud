@@ -38,7 +38,7 @@ public class Go extends StdCommand
 {
 	public Go(){}
 
-	private final String[] access={"GO","WALK"};
+	private final String[] access=_i(new String[]{"GO","WALK"});
 	@Override public String[] getAccessWords(){return access;}
 
 	protected Command stander=null;

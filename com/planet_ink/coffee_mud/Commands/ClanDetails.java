@@ -37,7 +37,7 @@ public class ClanDetails extends StdCommand
 {
 	public ClanDetails(){}
 
-	private final String[] access={"CLANDETAILS","CLANPVPKILLS","CLANKILLS","CLAN"};
+	private final String[] access=_i(new String[]{"CLANDETAILS","CLANPVPKILLS","CLANKILLS","CLAN"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

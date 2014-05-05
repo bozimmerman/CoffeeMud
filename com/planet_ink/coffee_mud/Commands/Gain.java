@@ -36,7 +36,7 @@ public class Gain extends StdCommand
 {
 	public Gain(){}
 
-	private final String[] access={"GAIN"};
+	private final String[] access=_i(new String[]{"GAIN"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

@@ -36,7 +36,7 @@ public class Up extends Go
 {
 	public Up(){}
 
-	private final String[] access={"UP","U"};
+	private final String[] access=_i(new String[]{"UP","U"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

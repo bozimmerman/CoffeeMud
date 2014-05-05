@@ -41,7 +41,7 @@ public class Thief_FrameMark extends ThiefSkill
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"FRAME"};
+	private static final String[] triggerStrings =_i(new String[] {"FRAME"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int overrideMana(){return 50;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}

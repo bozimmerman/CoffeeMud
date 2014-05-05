@@ -40,7 +40,7 @@ public class Distilling extends Cooking
 	@Override public String ID() { return "Distilling"; }
 	public final static String localizedName = CMLib.lang()._("Distilling");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"DISTILLING"};
+	private static final String[] triggerStrings =_i(new String[] {"DISTILLING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String cookWordShort(){return "distill";}
 	@Override public String cookWord(){return "distilling";}

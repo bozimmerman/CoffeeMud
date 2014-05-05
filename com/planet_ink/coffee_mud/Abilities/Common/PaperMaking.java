@@ -43,7 +43,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 	@Override public String ID() { return "PaperMaking"; }
 	public final static String localizedName = CMLib.lang()._("Paper Making");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"PAPERMAKE","PAPERMAKING"};
+	private static final String[] triggerStrings =_i(new String[] {"PAPERMAKE","PAPERMAKING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "WOODEN|HEMP|SILK|CLOTH";}
 	@Override

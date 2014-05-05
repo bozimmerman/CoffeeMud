@@ -37,7 +37,7 @@ public class Thief_SlickCaltrops extends Thief_Caltrops
 	@Override public String ID() { return "Thief_SlickCaltrops"; }
 	public final static String localizedName = CMLib.lang()._("Slick Caltrops");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"SLICKCALTROPS"};
+	private static final String[] triggerStrings =_i(new String[] {"SLICKCALTROPS"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String caltropTypeName(){return "slick ";}
 	@Override

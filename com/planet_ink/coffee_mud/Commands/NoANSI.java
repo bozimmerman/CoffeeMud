@@ -36,7 +36,7 @@ public class NoANSI extends StdCommand
 {
 	public NoANSI(){}
 
-	private final String[] access={"NOANSI","NOCOLOR","NOCOLOUR"};
+	private final String[] access=_i(new String[]{"NOANSI","NOCOLOR","NOCOLOUR"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

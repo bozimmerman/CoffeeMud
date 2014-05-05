@@ -37,7 +37,7 @@ public class Sheath extends StdCommand
 {
 	public Sheath(){}
 
-	private final String[] access={"SHEATH"};
+	private final String[] access=_i(new String[]{"SHEATH"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public static Vector getSheaths(MOB mob)

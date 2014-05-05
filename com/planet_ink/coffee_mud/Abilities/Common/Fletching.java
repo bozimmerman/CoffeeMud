@@ -42,7 +42,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 	@Override public String ID() { return "Fletching"; }
 	public final static String localizedName = CMLib.lang()._("Fletching");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"FLETCH","FLETCHING"};
+	private static final String[] triggerStrings =_i(new String[] {"FLETCH","FLETCHING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "WOODEN";}
 	@Override

@@ -37,7 +37,7 @@ public class Undress extends StdCommand
 {
 	public Undress(){}
 
-	private final String[] access={"UNDRESS"};
+	private final String[] access=_i(new String[]{"UNDRESS"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

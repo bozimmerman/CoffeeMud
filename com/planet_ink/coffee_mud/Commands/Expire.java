@@ -165,7 +165,7 @@ public class Expire extends StdCommand
 		}
 	}
 
-	private final String[] access={"EXPIRE"};
+	private final String[] access=_i(new String[]{"EXPIRE"});
 	@Override public String[] getAccessWords(){return access;}
 
 

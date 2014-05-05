@@ -37,7 +37,7 @@ public class Shutdown extends StdCommand implements Tickable
 {
 	public Shutdown(){}
 
-	private final String[] access={"SHUTDOWN"};
+	private final String[] access=_i(new String[]{"SHUTDOWN"});
 	@Override public String[] getAccessWords(){return access;}
 	protected MOB shuttingDownMob=null;
 	protected long shuttingDownNextAnnounce=0;

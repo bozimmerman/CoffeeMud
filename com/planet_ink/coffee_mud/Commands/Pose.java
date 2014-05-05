@@ -36,7 +36,7 @@ public class Pose extends StdCommand
 {
 	public Pose(){}
 
-	private final String[] access={"POSE","NOPOSE"};
+	private final String[] access=_i(new String[]{"POSE","NOPOSE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

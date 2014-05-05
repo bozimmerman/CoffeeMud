@@ -42,7 +42,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 	@Override public String ID() { return "Weaponsmithing"; }
 	public final static String localizedName = CMLib.lang()._("Weaponsmithing");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"WEAPONSMITH","WEAPONSMITHING"};
+	private static final String[] triggerStrings =_i(new String[] {"WEAPONSMITH","WEAPONSMITHING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "METAL|MITHRIL";}
 	protected int displayColumns(){return 2;}

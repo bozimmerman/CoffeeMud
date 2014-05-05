@@ -38,7 +38,7 @@ public class Link extends At
 {
 	public Link(){}
 
-	private final String[] access={"LINK"};
+	private final String[] access=_i(new String[]{"LINK"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

@@ -36,7 +36,7 @@ public class Prompt extends StdCommand
 {
 	public Prompt(){}
 
-	private final String[] access={"PROMPT"};
+	private final String[] access=_i(new String[]{"PROMPT"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

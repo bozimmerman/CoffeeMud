@@ -44,7 +44,7 @@ public class AstroEngineering extends TechSkill
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected  int canTargetCode(){return CAN_ITEMS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"ASTROENGINEER","ASTROENGINEERING","ENGINEER","AE"};
+	private static final String[] triggerStrings =_i(new String[] {"ASTROENGINEER","ASTROENGINEERING","ENGINEER","AE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int usageType(){return USAGE_MOVEMENT;}
 

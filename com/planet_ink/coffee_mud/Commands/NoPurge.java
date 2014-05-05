@@ -36,7 +36,7 @@ public class NoPurge extends StdCommand
 {
 	public NoPurge(){}
 
-	private final String[] access={"NOPURGE"};
+	private final String[] access=_i(new String[]{"NOPURGE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

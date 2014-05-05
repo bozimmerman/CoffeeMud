@@ -43,7 +43,7 @@ public class Thief_Embezzle extends ThiefSkill
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings = {"EMBEZZLE"};
+	private static final String[] triggerStrings =_i(new String[] {"EMBEZZLE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_CRIMINAL; }
 	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}

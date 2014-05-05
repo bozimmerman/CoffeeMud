@@ -37,7 +37,7 @@ public class Activate extends StdCommand
 {
 	public Activate(){}
 
-	private final String[] access={"ACTIVATE","ACT","A",">"};
+	private final String[] access=_i(new String[]{"ACTIVATE","ACT","A",">"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

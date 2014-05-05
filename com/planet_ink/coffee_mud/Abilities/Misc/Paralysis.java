@@ -44,7 +44,7 @@ public class Paralysis extends StdAbility implements HealthCondition
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public boolean putInCommandlist(){return false;}
-	private static final String[] triggerStrings = {"PARALYZE"};
+	private static final String[] triggerStrings =_i(new String[] {"PARALYZE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_PARALYZING;}

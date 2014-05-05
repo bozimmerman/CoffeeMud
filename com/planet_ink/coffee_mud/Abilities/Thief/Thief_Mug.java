@@ -42,7 +42,7 @@ public class Thief_Mug extends ThiefSkill
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings = {"MUG"};
+	private static final String[] triggerStrings =_i(new String[] {"MUG"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int code=0;

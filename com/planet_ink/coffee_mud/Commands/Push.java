@@ -37,7 +37,7 @@ public class Push extends Go
 {
 	public Push(){}
 
-	private final String[] access={"PUSH"};
+	private final String[] access=_i(new String[]{"PUSH"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

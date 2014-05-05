@@ -41,7 +41,7 @@ public class Thief_Con extends ThiefSkill
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	private static final String[] triggerStrings = {"CON"};
+	private static final String[] triggerStrings =_i(new String[] {"CON"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
 	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE; }

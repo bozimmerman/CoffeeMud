@@ -42,7 +42,7 @@ public class Thief_Shadowstrike extends ThiefSkill
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	private static final String[] triggerStrings = {"SHADOWSTRIKE"};
+	private static final String[] triggerStrings =_i(new String[] {"SHADOWSTRIKE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_STEALTHY; }
 	@Override public int usageType(){return USAGE_MOVEMENT;}

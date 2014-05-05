@@ -41,7 +41,7 @@ import java.util.*;
 public class WillQualify  extends Skills
 {
 	public WillQualify() {}
-	private final String[] access={"WILLQUALIFY"};
+	private final String[] access=_i(new String[]{"WILLQUALIFY"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public StringBuffer getQualifiedAbilities(MOB viewerM,

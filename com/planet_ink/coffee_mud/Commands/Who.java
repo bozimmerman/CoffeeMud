@@ -37,7 +37,7 @@ public class Who extends StdCommand
 {
 	public Who(){}
 
-	private final String[] access={"WHO","WH"};
+	private final String[] access=_i(new String[]{"WHO","WH"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public int[] getShortColWidths(MOB seer)

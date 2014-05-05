@@ -36,7 +36,7 @@ public class LineWrap extends StdCommand
 {
 	public LineWrap(){}
 
-	private final String[] access={"LINEWRAP"};
+	private final String[] access=_i(new String[]{"LINEWRAP"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

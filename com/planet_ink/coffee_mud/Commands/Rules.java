@@ -36,7 +36,7 @@ public class Rules extends StdCommand
 {
 	public Rules(){}
 
-	private final String[] access={"RULES"};
+	private final String[] access=_i(new String[]{"RULES"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

@@ -37,7 +37,7 @@ public class AutoMap extends StdCommand
 {
 	public AutoMap(){}
 
-	private final String[] access={"AUTOMAP"};
+	private final String[] access=_i(new String[]{"AUTOMAP"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

@@ -42,7 +42,7 @@ public class Dance extends StdAbility
 	@Override public String displayText(){ return "("+danceOf()+")";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
-	private static final String[] triggerStrings = {"DANCE","DA"};
+	private static final String[] triggerStrings =_i(new String[] {"DANCE","DA"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SONG|Ability.DOMAIN_DANCING;}
 	@Override public int usageType(){return USAGE_MOVEMENT;}

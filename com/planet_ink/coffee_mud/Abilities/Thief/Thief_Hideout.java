@@ -43,7 +43,7 @@ public class Thief_Hideout extends ThiefSkill
 	@Override public String name(){return "Hideout";}
 	@Override public String displayText(){return "(In your hideout)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"HIDEOUT"};
+	private static final String[] triggerStrings =_i(new String[] {"HIDEOUT"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}

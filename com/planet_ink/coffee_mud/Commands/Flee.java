@@ -36,7 +36,7 @@ public class Flee extends Go
 {
 	public Flee(){}
 
-	private final String[] access={"FLEE"};
+	private final String[] access=_i(new String[]{"FLEE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

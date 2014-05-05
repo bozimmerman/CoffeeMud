@@ -44,7 +44,7 @@ public class Ranger_TrackAnimal extends StdAbility
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	private static final String[] triggerStrings = {"TRACKANIMAL"};
+	private static final String[] triggerStrings =_i(new String[] {"TRACKANIMAL"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_COMBATLORE;}
 	@Override public long flags(){return Ability.FLAG_TRACKING;}

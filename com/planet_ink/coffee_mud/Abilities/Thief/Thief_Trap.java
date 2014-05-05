@@ -42,7 +42,7 @@ public class Thief_Trap extends ThiefSkill
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_TRAPPING;}
-	private static final String[] triggerStrings = {"TRAP"};
+	private static final String[] triggerStrings =_i(new String[] {"TRAP"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 

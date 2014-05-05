@@ -38,7 +38,7 @@ public class Expertises extends StdCommand
 {
 	public Expertises(){}
 
-	private final String[] access={"EXPERTISES","EXPS"};
+	private final String[] access=_i(new String[]{"EXPERTISES","EXPS"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

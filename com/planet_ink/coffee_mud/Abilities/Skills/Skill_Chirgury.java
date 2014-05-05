@@ -42,7 +42,7 @@ public class Skill_Chirgury extends StdSkill
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"CHIRURGY"};
+	private static final String[] triggerStrings =_i(new String[] {"CHIRURGY"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
 	public static final Object[][] parts={{"FETUS"},

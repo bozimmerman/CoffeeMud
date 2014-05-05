@@ -41,7 +41,7 @@ public class Druid_ShapeShift extends StdAbility
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	private static final String[] triggerStrings = {"SHAPESHIFT"};
+	private static final String[] triggerStrings =_i(new String[] {"SHAPESHIFT"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

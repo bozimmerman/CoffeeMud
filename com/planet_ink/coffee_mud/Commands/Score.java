@@ -36,7 +36,7 @@ public class Score extends Affect
 {
 	public Score(){}
 
-	private final String[] access={"SCORE","SC"};
+	private final String[] access=_i(new String[]{"SCORE","SC"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public StringBuilder getScore(MOB mob){return getScore(mob,"");}

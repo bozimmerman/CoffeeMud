@@ -37,7 +37,7 @@ public class Poison_GoblinDrip extends Poison
 	@Override public String ID() { return "Poison_GoblinDrip"; }
 	public final static String localizedName = CMLib.lang()._("Goblin Drip");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"POISONDRIP"};
+	private static final String[] triggerStrings =_i(new String[] {"POISONDRIP"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	@Override protected int POISON_TICKS(){return 50;} // 0 means no adjustment!

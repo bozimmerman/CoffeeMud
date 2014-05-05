@@ -46,7 +46,7 @@ public class Fighter_Pin extends FighterSkill
 			return "(Pinning)";
 		return "(Pinned)";
 	}
-	private static final String[] triggerStrings = {"PIN"};
+	private static final String[] triggerStrings =_i(new String[] {"PIN"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return 0;}

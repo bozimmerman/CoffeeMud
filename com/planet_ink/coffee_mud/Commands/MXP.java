@@ -38,7 +38,7 @@ public class MXP extends StdCommand
 {
 	public MXP(){}
 
-	private final String[] access={"MXP"};
+	private final String[] access=_i(new String[]{"MXP"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

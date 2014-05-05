@@ -36,7 +36,7 @@ public class CharGen extends StdCommand
 {
 	public CharGen(){}
 
-	private final String[] access={"CHARGEN"};
+	private final String[] access=_i(new String[]{"CHARGEN"});
 	@Override public String[] getAccessWords(){return access;}
 
 	protected void equipPlayer(MOB M)

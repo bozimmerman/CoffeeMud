@@ -36,7 +36,7 @@ public class Fire extends StdCommand
 {
 	public Fire(){}
 
-	private final String[] access={"FIRE"};
+	private final String[] access=_i(new String[]{"FIRE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

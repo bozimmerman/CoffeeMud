@@ -36,7 +36,7 @@ public class WizInv extends StdCommand
 {
 	public WizInv(){}
 
-	private final String[] access={"WIZINVISIBLE","WIZINV","NOWIZINV"};
+	private final String[] access=_i(new String[]{"WIZINVISIBLE","WIZINV","NOWIZINV"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

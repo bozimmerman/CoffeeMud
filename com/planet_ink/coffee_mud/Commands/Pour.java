@@ -36,7 +36,7 @@ public class Pour extends StdCommand
 {
 	public Pour(){}
 
-	private final String[] access={"POUR"};
+	private final String[] access=_i(new String[]{"POUR"});
 	@Override public String[] getAccessWords(){return access;}
 
 	enum PourVerb{DEFAULT,INTO,ONTO,OUT}

@@ -42,7 +42,7 @@ public class Thief_TapRoom extends ThiefSkill
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return CAN_ROOMS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	private static final String[] triggerStrings = {"TAPROOM"};
+	private static final String[] triggerStrings =_i(new String[] {"TAPROOM"});
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}

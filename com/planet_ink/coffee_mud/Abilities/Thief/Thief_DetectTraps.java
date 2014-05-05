@@ -42,7 +42,7 @@ public class Thief_DetectTraps extends ThiefSkill
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){	return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
-	private static final String[] triggerStrings = {"CHECK"};
+	private static final String[] triggerStrings =_i(new String[] {"CHECK"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	protected Environmental lastChecked=null;
 

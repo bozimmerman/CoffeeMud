@@ -46,7 +46,7 @@ public class Thief_Espionage extends ThiefSkill
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	private static final String[] triggerStrings = {"ESPIONAGE"};
+	private static final String[] triggerStrings =_i(new String[] {"ESPIONAGE"});
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}

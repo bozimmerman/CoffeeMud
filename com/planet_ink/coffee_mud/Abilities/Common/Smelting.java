@@ -43,7 +43,7 @@ public class Smelting extends CraftingSkill
 	@Override public String ID() { return "Smelting"; }
 	public final static String localizedName = CMLib.lang()._("Smelting");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"SMELT","SMELTING"};
+	private static final String[] triggerStrings =_i(new String[] {"SMELT","SMELTING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "METAL|MITHRIL";}
 	public String parametersFormat(){ return "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\t\t\t\tRESOURCE_NAME\tRESOURCE_NAME";}

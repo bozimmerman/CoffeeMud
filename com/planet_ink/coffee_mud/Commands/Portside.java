@@ -36,7 +36,7 @@ public class Portside extends Go
 {
 	public Portside(){}
 
-	private final String[] access={"PORTSIDE","PORT"};
+	private final String[] access=_i(new String[]{"PORTSIDE","PORT"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

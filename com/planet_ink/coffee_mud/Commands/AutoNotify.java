@@ -38,7 +38,7 @@ public class AutoNotify extends StdCommand
 
 	public AutoNotify(){}
 
-	private final String[] access={"AUTONOTIFY"};
+	private final String[] access=_i(new String[]{"AUTONOTIFY"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

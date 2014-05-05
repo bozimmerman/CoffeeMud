@@ -38,7 +38,7 @@ public class Bandaging extends CommonSkill implements MendingSkill
 	@Override public String ID() { return "Bandaging"; }
 	public final static String localizedName = CMLib.lang()._("Bandaging");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"BANDAGE","BANDAGING"};
+	private static final String[] triggerStrings =_i(new String[] {"BANDAGE","BANDAGING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}

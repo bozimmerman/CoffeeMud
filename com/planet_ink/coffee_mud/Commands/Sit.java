@@ -36,7 +36,7 @@ public class Sit extends StdCommand
 {
 	public Sit(){}
 
-	private final String[] access={"SIT","REST","R"};
+	private final String[] access=_i(new String[]{"SIT","REST","R"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

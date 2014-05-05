@@ -37,7 +37,7 @@ public class Consider extends StdCommand
 {
 	public Consider(){}
 
-	private final String[] access={"CONSIDER","COS","CO"};
+	private final String[] access=_i(new String[]{"CONSIDER","COS","CO"});
 	@Override public String[] getAccessWords(){return access;}
 
 	private final static Class[][] internalParameters=new Class[][]{{MOB.class}};

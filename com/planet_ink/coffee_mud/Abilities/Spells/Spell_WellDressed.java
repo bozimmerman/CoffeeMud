@@ -43,7 +43,7 @@ public class Spell_WellDressed extends Spell
 	@Override public int classificationCode(){ return Ability.ACODE_SKILL;}
 	protected int dressCode=1;
 
-	private static final String[] triggerStrings = {"CAST"};
+	private static final String[] triggerStrings =_i(new String[] {"CAST"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	@Override

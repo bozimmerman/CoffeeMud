@@ -40,7 +40,7 @@ public class Power_SuperClimb extends SuperPower
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"CLIMB","SUPERCLIMB"};
+	private static final String[] triggerStrings =_i(new String[] {"CLIMB","SUPERCLIMB"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int usageType(){return USAGE_MANA|USAGE_MOVEMENT;}
 

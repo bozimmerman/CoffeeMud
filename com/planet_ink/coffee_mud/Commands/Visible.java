@@ -37,7 +37,7 @@ public class Visible extends StdCommand
 {
 	public Visible(){}
 
-	private final String[] access={"VISIBLE","VIS"};
+	private final String[] access=_i(new String[]{"VISIBLE","VIS"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public static java.util.List<Ability> returnOffensiveAffects(Physical fromMe)

@@ -40,7 +40,7 @@ public class Fighter_Rallycry extends FighterSkill
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Rally Cry)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	private static final String[] triggerStrings = {"RALLYCRY"};
+	private static final String[] triggerStrings =_i(new String[] {"RALLYCRY"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}

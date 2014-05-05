@@ -37,7 +37,7 @@ public class Pull extends Go
 {
 	public Pull(){}
 
-	private final String[] access={"PULL"};
+	private final String[] access=_i(new String[]{"PULL"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

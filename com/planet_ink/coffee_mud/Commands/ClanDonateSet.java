@@ -38,7 +38,7 @@ public class ClanDonateSet extends StdCommand
 {
 	public ClanDonateSet(){}
 
-	private final String[] access={"CLANDONATESET"};
+	private final String[] access=_i(new String[]{"CLANDONATESET"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

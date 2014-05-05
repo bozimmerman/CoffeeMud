@@ -38,7 +38,7 @@ public class ClanReject extends StdCommand
 {
 	public ClanReject(){}
 
-	private final String[] access={"CLANREJECT"};
+	private final String[] access=_i(new String[]{"CLANREJECT"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

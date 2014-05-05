@@ -38,7 +38,7 @@ public class Fishing extends GatheringSkill
 	@Override public String ID() { return "Fishing"; }
 	public final static String localizedName = CMLib.lang()._("Fishing");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"FISH"};
+	private static final String[] triggerStrings =_i(new String[] {"FISH"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}
 	@Override public String supportedResourceString(){return "FLESH";}

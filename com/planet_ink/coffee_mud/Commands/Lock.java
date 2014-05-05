@@ -36,7 +36,7 @@ public class Lock extends StdCommand
 {
 	public Lock(){}
 
-	private final String[] access={"LOCK","LOC"};
+	private final String[] access=_i(new String[]{"LOCK","LOC"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

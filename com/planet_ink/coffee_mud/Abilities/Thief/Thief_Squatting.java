@@ -43,7 +43,7 @@ public class Thief_Squatting extends ThiefSkill
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"SQUAT","SQUATTING"};
+	private static final String[] triggerStrings =_i(new String[] {"SQUAT","SQUATTING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	protected boolean failed=false;

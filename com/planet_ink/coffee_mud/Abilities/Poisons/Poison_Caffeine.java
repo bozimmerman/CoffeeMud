@@ -37,7 +37,7 @@ public class Poison_Caffeine extends Poison {
 	public final static String localizedName = CMLib.lang()._("Poison_Hyper");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(CAFFEINATED!!)";}
-	private static final String[] triggerStrings = {"POISONHYPER"};
+	private static final String[] triggerStrings =_i(new String[] {"POISONHYPER"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	@Override protected int POISON_TICKS(){return 30;} // 0 means no adjustment!

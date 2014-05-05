@@ -36,7 +36,7 @@ public class North extends Go
 {
 	public North(){}
 
-	private final String[] access={"NORTH","N"};
+	private final String[] access=_i(new String[]{"NORTH","N"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

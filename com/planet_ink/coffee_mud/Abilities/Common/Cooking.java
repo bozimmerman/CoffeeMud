@@ -42,7 +42,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	@Override public String ID() { return "Cooking"; }
 	public final static String localizedName = CMLib.lang()._("Cooking");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"COOK","COOKING"};
+	private static final String[] triggerStrings =_i(new String[] {"COOK","COOKING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	public String cookWordShort(){return "cook";}
 	public String cookWord(){return "cooking";}

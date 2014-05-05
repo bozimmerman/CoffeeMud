@@ -39,7 +39,7 @@ public class Fighter_Shrug extends FighterSkill
 	public final static String localizedName = CMLib.lang()._("Shrug Off");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Braced for a hit)";}
-	private static final String[] triggerStrings = {"BRACE"};
+	private static final String[] triggerStrings =_i(new String[] {"BRACE"});
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

@@ -42,7 +42,7 @@ public class Thief_SlipperyMind extends ThiefSkill
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"SLIPPERYMIND"};
+	private static final String[] triggerStrings =_i(new String[] {"SLIPPERYMIND"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	protected volatile LinkedList<Pair<Faction,Integer>> oldFactions=null;
 

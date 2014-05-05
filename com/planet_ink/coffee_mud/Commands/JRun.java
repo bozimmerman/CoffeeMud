@@ -38,7 +38,7 @@ public class JRun extends StdCommand
 {
 	public JRun(){}
 
-	private final String[] access={"JRUN"};
+	private final String[] access=_i(new String[]{"JRUN"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

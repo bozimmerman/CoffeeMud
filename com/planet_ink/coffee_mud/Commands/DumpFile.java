@@ -36,7 +36,7 @@ public class DumpFile extends StdCommand
 {
 	public DumpFile(){}
 
-	private final String[] access={"DUMPFILE"};
+	private final String[] access=_i(new String[]{"DUMPFILE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

@@ -46,7 +46,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 	@Override public boolean isAutoInvoked(){return true;}
 	@Override public boolean canBeUninvoked(){return false;}
 	@Override public int usageType(){return USAGE_MOVEMENT;}
-	private static final String[] triggerStrings = {"SMOKESIGNALS","SMOKESIGNAL"};
+	private static final String[] triggerStrings =_i(new String[] {"SMOKESIGNALS","SMOKESIGNAL"});
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 

@@ -38,7 +38,7 @@ public class AutoWeather extends StdCommand
 {
 	public AutoWeather(){}
 
-	private final String[] access={"AUTOWEATHER"};
+	private final String[] access=_i(new String[]{"AUTOWEATHER"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

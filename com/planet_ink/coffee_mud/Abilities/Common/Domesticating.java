@@ -38,7 +38,7 @@ public class Domesticating extends CommonSkill
 	@Override public String ID() { return "Domesticating"; }
 	public final static String localizedName = CMLib.lang()._("Domesticating");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"DOMESTICATE","DOMESTICATING"};
+	private static final String[] triggerStrings =_i(new String[] {"DOMESTICATE","DOMESTICATING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
 

@@ -38,7 +38,7 @@ public class SlaveTrading extends CommonSkill
 	@Override public String ID() { return "SlaveTrading"; }
 	public final static String localizedName = CMLib.lang()._("Slave Trading");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"SLAVETRADING","SLAVETRADE","SLAVESELL","SSELL"};
+	private static final String[] triggerStrings =_i(new String[] {"SLAVETRADING","SLAVETRADE","SLAVESELL","SSELL"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}

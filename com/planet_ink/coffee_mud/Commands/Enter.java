@@ -36,7 +36,7 @@ public class Enter extends Go
 {
 	public Enter(){}
 
-	private final String[] access={"ENTER","EN"};
+	private final String[] access=_i(new String[]{"ENTER","EN"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

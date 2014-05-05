@@ -37,7 +37,7 @@ public class I3Cmd extends StdCommand
 {
 	public I3Cmd(){}
 
-	private final String[] access={"I3"};
+	private final String[] access=_i(new String[]{"I3"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public void i3Error(MOB mob)

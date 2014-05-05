@@ -36,7 +36,7 @@ public class Eat extends StdCommand
 {
 	public Eat(){}
 
-	private final String[] access={"EAT"};
+	private final String[] access=_i(new String[]{"EAT"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

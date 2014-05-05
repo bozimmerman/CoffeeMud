@@ -37,7 +37,7 @@ public class Password extends StdCommand
 {
 	public Password(){}
 
-	private final String[] access={"PASSWORD"};
+	private final String[] access=_i(new String[]{"PASSWORD"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(final MOB mob, Vector commands, int metaFlags)

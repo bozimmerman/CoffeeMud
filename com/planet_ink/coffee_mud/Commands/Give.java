@@ -37,7 +37,7 @@ public class Give extends StdCommand
 {
 	public Give(){}
 
-	private final String[] access={"GIVE","GI"};
+	private final String[] access=_i(new String[]{"GIVE","GI"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

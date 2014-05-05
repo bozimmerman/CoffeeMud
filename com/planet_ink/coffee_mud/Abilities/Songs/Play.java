@@ -42,7 +42,7 @@ public class Play extends StdAbility
 	@Override public String displayText(){ return "("+songOf()+")";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
-	private static final String[] triggerStrings = {"PLAY","PL","PLA"};
+	private static final String[] triggerStrings =_i(new String[] {"PLAY","PL","PLA"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SONG|Ability.DOMAIN_PLAYING;}
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}

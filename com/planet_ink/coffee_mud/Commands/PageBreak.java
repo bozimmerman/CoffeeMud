@@ -36,7 +36,7 @@ public class PageBreak extends StdCommand
 {
 	public PageBreak(){}
 
-	private final String[] access={"PAGEBREAK"};
+	private final String[] access=_i(new String[]{"PAGEBREAK"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

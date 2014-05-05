@@ -41,7 +41,7 @@ public class Thief_PlantItem extends ThiefSkill
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
-	private static final String[] triggerStrings = {"PLANTITEM"};
+	private static final String[] triggerStrings =_i(new String[] {"PLANTITEM"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int code=0;

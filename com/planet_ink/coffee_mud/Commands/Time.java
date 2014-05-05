@@ -37,7 +37,7 @@ public class Time extends StdCommand
 {
 	public Time(){}
 
-	private final String[] access={"TIME","DATE"};
+	private final String[] access=_i(new String[]{"TIME","DATE"});
 	@Override public String[] getAccessWords(){return access;}
 
 

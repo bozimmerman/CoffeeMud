@@ -43,7 +43,7 @@ public class Thief_Flank extends ThiefSkill
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
-	private static final String[] triggerStrings = {"FLANK"};
+	private static final String[] triggerStrings =_i(new String[] {"FLANK"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int usageType(){return USAGE_MOVEMENT;}
 	protected MOB target=null;

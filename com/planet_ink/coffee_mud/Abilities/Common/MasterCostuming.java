@@ -40,7 +40,7 @@ public class MasterCostuming extends Costuming
 	@Override public String ID() { return "MasterCostuming"; }
 	public final static String localizedName = CMLib.lang()._("Master Costuming");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"MASTERCOSTUME","MCOSTUME","MCOSTUMING","MASTERCOSTUMING"};
+	private static final String[] triggerStrings =_i(new String[] {"MASTERCOSTUME","MCOSTUME","MCOSTUMING","MASTERCOSTUMING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String parametersFile(){ return "mastercostume.txt";}
 

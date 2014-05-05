@@ -42,7 +42,7 @@ public class Masonry extends CraftingSkill
 	@Override public String ID() { return "Masonry"; }
 	public final static String localizedName = CMLib.lang()._("Masonry");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"MASONRY"};
+	private static final String[] triggerStrings =_i(new String[] {"MASONRY"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "ROCK|STONE";}
 

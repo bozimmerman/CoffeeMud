@@ -36,7 +36,7 @@ public class Split extends StdCommand
 {
 	public Split(){}
 
-	private final String[] access={"SPLIT"};
+	private final String[] access=_i(new String[]{"SPLIT"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

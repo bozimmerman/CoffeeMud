@@ -38,7 +38,7 @@ public class AutoExits extends StdCommand
 {
 	public AutoExits(){}
 
-	private final String[] access={"AUTOEXITS"};
+	private final String[] access=_i(new String[]{"AUTOEXITS"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

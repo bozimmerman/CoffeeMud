@@ -36,7 +36,7 @@ public class Xml extends StdCommand
 {
 	public Xml(){}
 
-	private final String[] access={"XML"};
+	private final String[] access=_i(new String[]{"XML"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

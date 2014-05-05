@@ -44,7 +44,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 	@Override public String ID() { return "Herbalism"; }
 	public final static String localizedName = CMLib.lang()._("Herbalism");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"HERBALISM","HERBREW","HBREW"};
+	private static final String[] triggerStrings =_i(new String[] {"HERBALISM","HERBREW","HBREW"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
 	@Override

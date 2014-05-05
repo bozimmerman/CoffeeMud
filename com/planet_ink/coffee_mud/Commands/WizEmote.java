@@ -36,7 +36,7 @@ public class WizEmote extends StdCommand
 {
 	public WizEmote(){}
 
-	private final String[] access={"WIZEMOTE"};
+	private final String[] access=_i(new String[]{"WIZEMOTE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

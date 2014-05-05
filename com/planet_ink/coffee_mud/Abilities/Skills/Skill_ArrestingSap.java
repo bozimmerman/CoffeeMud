@@ -43,7 +43,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings = {"ASAP"};
+	private static final String[] triggerStrings =_i(new String[] {"ASAP"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	protected int enhancement=0;
 	@Override public int abilityCode(){return enhancement;}

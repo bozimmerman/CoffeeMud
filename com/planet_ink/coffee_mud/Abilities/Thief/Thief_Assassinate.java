@@ -43,7 +43,7 @@ public class Thief_Assassinate extends ThiefSkill
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	private static final String[] triggerStrings = {"ASSASSINATE"};
+	private static final String[] triggerStrings =_i(new String[] {"ASSASSINATE"});
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public long flags(){return Ability.FLAG_TRACKING;}

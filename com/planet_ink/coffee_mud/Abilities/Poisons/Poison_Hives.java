@@ -43,7 +43,7 @@ public class Poison_Hives extends Poison
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public boolean putInCommandlist(){return false;}
 
-	private static final String[] triggerStrings = {"POISONHIVES"};
+	private static final String[] triggerStrings =_i(new String[] {"POISONHIVES"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	@Override protected int POISON_TICKS(){return 60;} // 0 means no adjustment!

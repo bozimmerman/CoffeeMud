@@ -36,7 +36,7 @@ public class Compare extends StdCommand
 {
 	public Compare(){}
 
-	private final String[] access={"COMPARE","COMP"};
+	private final String[] access=_i(new String[]{"COMPARE","COMP"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

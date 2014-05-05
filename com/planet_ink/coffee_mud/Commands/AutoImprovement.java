@@ -38,7 +38,7 @@ public class AutoImprovement extends StdCommand
 {
 	public AutoImprovement(){}
 
-	private final String[] access={"AUTOIMPROVEMENT"};
+	private final String[] access=_i(new String[]{"AUTOIMPROVEMENT"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

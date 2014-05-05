@@ -36,7 +36,7 @@ public class Ver extends StdCommand
 {
 	public Ver(){}
 
-	private final String[] access={"VERSION","VER"};
+	private final String[] access=_i(new String[]{"VERSION","VER"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

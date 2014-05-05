@@ -43,7 +43,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	@Override protected int canTargetCode(){return Ability.CAN_EXITS;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_TRAPPING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"SETALARM"};
+	private static final String[] triggerStrings =_i(new String[] {"SETALARM"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	protected boolean sprung=false;

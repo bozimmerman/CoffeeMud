@@ -40,7 +40,7 @@ public class Email extends StdCommand
 {
 	public Email(){}
 
-	private final String[] access={"EMAIL"};
+	private final String[] access=_i(new String[]{"EMAIL"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

@@ -43,7 +43,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 	@Override public String ID() { return "ScrimShaw"; }
 	public final static String localizedName = CMLib.lang()._("Scrimshawing");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"SCRIM","SCRIMSHAWING"};
+	private static final String[] triggerStrings =_i(new String[] {"SCRIM","SCRIMSHAWING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "BONE";}
 	@Override

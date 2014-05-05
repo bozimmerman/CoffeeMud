@@ -29,7 +29,7 @@ public class Wealth extends Inventory
 {
 	public Wealth(){}
 
-	private final String[] access={"WEALTH"};
+	private final String[] access=_i(new String[]{"WEALTH"});
 	@Override public String[] getAccessWords(){return access;}
 
 

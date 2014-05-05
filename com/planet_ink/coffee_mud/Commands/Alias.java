@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Alias extends StdCommand
 {
-	private final String[] access={"ALIAS"};
+	private final String[] access=_i(new String[]{"ALIAS"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(final MOB mob, Vector commands, int metaFlags)

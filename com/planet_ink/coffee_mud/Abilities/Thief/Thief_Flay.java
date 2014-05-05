@@ -43,7 +43,7 @@ public class Thief_Flay extends ThiefSkill
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_LEGAL;}
-	private static final String[] triggerStrings = {"FLAY"};
+	private static final String[] triggerStrings =_i(new String[] {"FLAY"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int overrideMana(){return 100;}
 	@Override public int usageType(){return USAGE_MOVEMENT;}

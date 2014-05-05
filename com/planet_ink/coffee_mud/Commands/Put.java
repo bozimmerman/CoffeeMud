@@ -37,7 +37,7 @@ public class Put extends StdCommand
 {
 	public Put(){}
 
-	private final String[] access={"PUT","PU","P"};
+	private final String[] access=_i(new String[]{"PUT","PU","P"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public void putout(MOB mob, Vector commands, boolean quiet)

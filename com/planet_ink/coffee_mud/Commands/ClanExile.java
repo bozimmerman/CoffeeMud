@@ -38,7 +38,7 @@ public class ClanExile extends StdCommand
 {
 	public ClanExile(){}
 
-	private final String[] access={"CLANEXILE"};
+	private final String[] access=_i(new String[]{"CLANEXILE"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

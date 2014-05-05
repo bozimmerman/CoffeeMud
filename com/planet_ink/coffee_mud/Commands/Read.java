@@ -36,7 +36,7 @@ public class Read extends StdCommand
 {
 	public Read(){}
 
-	private final String[] access={"READ"};
+	private final String[] access=_i(new String[]{"READ"});
 	@Override public String[] getAccessWords(){return access;}
 
 	private final static Class[][] internalParameters=new Class[][]{{Environmental.class,String.class,Boolean.class}};

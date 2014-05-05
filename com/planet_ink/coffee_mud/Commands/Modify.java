@@ -39,7 +39,7 @@ public class Modify extends StdCommand
 {
 	public Modify(){}
 
-	private final String[] access={"MODIFY","MOD"};
+	private final String[] access=_i(new String[]{"MODIFY","MOD"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public void items(MOB mob, Vector commands)

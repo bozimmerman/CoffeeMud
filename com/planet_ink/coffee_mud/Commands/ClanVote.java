@@ -38,7 +38,7 @@ public class ClanVote extends StdCommand
 {
 	public ClanVote(){}
 
-	private final String[] access={"CLANVOTE"};
+	private final String[] access=_i(new String[]{"CLANVOTE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

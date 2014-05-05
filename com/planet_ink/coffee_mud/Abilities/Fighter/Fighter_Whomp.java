@@ -40,7 +40,7 @@ public class Fighter_Whomp extends FighterSkill implements HealthCondition
 	public final static String localizedName = CMLib.lang()._("Whomp");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(knocked out)";}
-	private static final String[] triggerStrings = {"WHOMP"};
+	private static final String[] triggerStrings =_i(new String[] {"WHOMP"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return 0;}

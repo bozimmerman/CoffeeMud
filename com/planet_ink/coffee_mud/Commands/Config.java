@@ -36,7 +36,7 @@ public class Config extends StdCommand
 {
 	public Config(){}
 
-	private final String[] access={"CONFIG","AUTO"};
+	private final String[] access=_i(new String[]{"CONFIG","AUTO"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

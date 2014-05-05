@@ -42,7 +42,7 @@ public class Thief_Kamikaze extends ThiefSkill
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	private static final String[] triggerStrings = {"KAMIKAZE"};
+	private static final String[] triggerStrings =_i(new String[] {"KAMIKAZE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;}

@@ -36,7 +36,7 @@ public class Deposit extends StdCommand
 {
 	public Deposit(){}
 
-	private final String[] access={"DEPOSIT"};
+	private final String[] access=_i(new String[]{"DEPOSIT"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

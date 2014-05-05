@@ -42,7 +42,7 @@ public class Skill_HandCuff extends StdSkill
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings = {"HANDCUFF","CUFF"};
+	private static final String[] triggerStrings =_i(new String[] {"HANDCUFF","CUFF"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_BINDING; }
 	@Override public long flags(){return Ability.FLAG_BINDING;}

@@ -42,7 +42,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 	@Override public String ID() { return "LeatherWorking"; }
 	public final static String localizedName = CMLib.lang()._("Leather Working");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"LEATHERWORK","LEATHERWORKING"};
+	private static final String[] triggerStrings =_i(new String[] {"LEATHERWORK","LEATHERWORKING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "LEATHER";}
 	@Override

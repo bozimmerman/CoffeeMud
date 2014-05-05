@@ -36,7 +36,7 @@ public class Songs  extends Skills
 {
 	public Songs(){}
 
-	private final String[] access={"SONGS"};
+	private final String[] access=_i(new String[]{"SONGS"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

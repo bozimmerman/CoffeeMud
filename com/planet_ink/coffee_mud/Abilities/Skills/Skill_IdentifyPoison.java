@@ -41,7 +41,7 @@ public class Skill_IdentifyPoison extends StdSkill
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"IDPOISON","IDENTIFYPOISON"};
+	private static final String[] triggerStrings =_i(new String[] {"IDPOISON","IDENTIFYPOISON"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_POISONING;}
 

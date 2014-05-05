@@ -42,7 +42,7 @@ public class Skill_TurnUndead extends StdSkill
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DEATHLORE;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings = {"TURN"};
+	private static final String[] triggerStrings =_i(new String[] {"TURN"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	@Override

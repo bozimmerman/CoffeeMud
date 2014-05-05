@@ -39,7 +39,7 @@ public class Fighter_Rescue extends FighterSkill
 	@Override public String ID() { return "Fighter_Rescue"; }
 	public final static String localizedName = CMLib.lang()._("Rescue");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"RESCUE","RES"};
+	private static final String[] triggerStrings =_i(new String[] {"RESCUE","RES"});
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return 0;}

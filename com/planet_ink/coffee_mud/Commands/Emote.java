@@ -37,7 +37,7 @@ public class Emote extends StdCommand
 {
 	public Emote(){}
 
-	private final String[] access={"EMOTE",",",";",":"};
+	private final String[] access=_i(new String[]{"EMOTE",",",";",":"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

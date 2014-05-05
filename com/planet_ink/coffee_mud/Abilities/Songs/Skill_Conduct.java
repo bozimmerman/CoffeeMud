@@ -40,7 +40,7 @@ public class Skill_Conduct extends BardSkill
 	@Override public String displayText(){ return "("+name()+")";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
-	private static final String[] triggerStrings = {"CONDUCT"};
+	private static final String[] triggerStrings =_i(new String[] {"CONDUCT"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_PLAYING;}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}

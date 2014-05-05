@@ -36,7 +36,7 @@ public class ANSI extends StdCommand
 {
 	public ANSI(){}
 
-	private final String[] access={"ANSI","COLOR","COLOUR"};
+	private final String[] access=_i(new String[]{"ANSI","COLOR","COLOUR"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

@@ -37,7 +37,7 @@ public class TickTock extends StdCommand
 {
 	public TickTock(){}
 
-	private final String[] access={"TICKTOCK"};
+	private final String[] access=_i(new String[]{"TICKTOCK"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

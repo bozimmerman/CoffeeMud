@@ -41,7 +41,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 	@Override public String ID() { return "ScrollScribing"; }
 	public final static String localizedName = CMLib.lang()._("Scroll Scribing");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"ENSCRIBE","SCROLLSCRIBE","SCROLLSCRIBING"};
+	private static final String[] triggerStrings =_i(new String[] {"ENSCRIBE","SCROLLSCRIBE","SCROLLSCRIBING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
 	@Override public String supportedResourceString(){return "MISC";}

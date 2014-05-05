@@ -45,7 +45,7 @@ public class Ranger_Track extends StdAbility
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	private static final String[] triggerStrings = {"TRACK"};
+	private static final String[] triggerStrings =_i(new String[] {"TRACK"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_COMBATLORE;}
 	@Override public long flags(){return Ability.FLAG_TRACKING;}

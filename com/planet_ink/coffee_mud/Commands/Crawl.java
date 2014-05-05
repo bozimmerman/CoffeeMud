@@ -36,7 +36,7 @@ public class Crawl extends Go
 {
 	public Crawl(){}
 
-	private final String[] access={"CRAWL","CR"};
+	private final String[] access=_i(new String[]{"CRAWL","CR"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

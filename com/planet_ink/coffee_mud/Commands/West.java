@@ -36,7 +36,7 @@ public class West extends Go
 {
 	public West(){}
 
-	private final String[] access={"WEST","W"};
+	private final String[] access=_i(new String[]{"WEST","W"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

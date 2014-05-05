@@ -46,7 +46,7 @@ public class Power_OctoGrapple extends SuperPower
 			return "(Grappling)";
 		return "(Grappled)";
 	}
-	private static final String[] triggerStrings = {"GRAPPLE"};
+	private static final String[] triggerStrings =_i(new String[] {"GRAPPLE"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return 0;}

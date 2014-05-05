@@ -42,7 +42,7 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 	@Override public String ID() { return "Tailoring"; }
 	public final static String localizedName = CMLib.lang()._("Tailoring");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"KNIT","TAILOR","TAILORING"};
+	private static final String[] triggerStrings =_i(new String[] {"KNIT","TAILOR","TAILORING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "CLOTH";}
 	@Override

@@ -56,6 +56,13 @@ public class StdCommand implements Command
 		return CMLib.lang().fullSessionTranslation(str, xs);
 	}
 	
+	public static String[] _i(final String[] str)
+	{
+		for(int i=0;i<str.length;i++)
+			str[i]=CMLib.lang().commandWordTranslation(str[i]);
+		return str;
+	}
+
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

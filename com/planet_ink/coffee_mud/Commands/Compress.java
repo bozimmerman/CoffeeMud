@@ -36,7 +36,7 @@ public class Compress extends StdCommand
 {
 	public Compress(){}
 
-	private final String[] access={"COMPRESS"};
+	private final String[] access=_i(new String[]{"COMPRESS"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

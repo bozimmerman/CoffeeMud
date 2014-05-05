@@ -37,7 +37,7 @@ public class Poison_Mindsap extends Poison
 	@Override public String ID() { return "Poison_Mindsap"; }
 	public final static String localizedName = CMLib.lang()._("Mindsap");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"POISONSAP"};
+	private static final String[] triggerStrings =_i(new String[] {"POISONSAP"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	@Override protected int POISON_TICKS(){return 50;} // 0 means no adjustment!

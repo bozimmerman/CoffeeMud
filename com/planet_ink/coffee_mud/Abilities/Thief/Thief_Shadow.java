@@ -45,7 +45,7 @@ public class Thief_Shadow extends ThiefSkill
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
-	private static final String[] triggerStrings = {"SHADOW"};
+	private static final String[] triggerStrings =_i(new String[] {"SHADOW"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	public MOB shadowing=null;
 	protected Room lastRoom=null;

@@ -42,7 +42,7 @@ public class Skill_Enslave extends StdSkill
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"ENSLAVE"};
+	private static final String[] triggerStrings =_i(new String[] {"ENSLAVE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String displayText(){ return "(Enslaved)";}
 	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_CRIMINAL; }

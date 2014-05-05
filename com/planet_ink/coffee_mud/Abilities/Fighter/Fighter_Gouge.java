@@ -44,7 +44,7 @@ public class Fighter_Gouge extends MonkSkill
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings = {"GOUGE"};
+	private static final String[] triggerStrings =_i(new String[] {"GOUGE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
 	@Override protected int overrideMana(){return 100;}

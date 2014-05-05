@@ -45,7 +45,7 @@ public class Ranger_Hide extends StdAbility
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	private static final String[] triggerStrings = {"WHIDE"};
+	private static final String[] triggerStrings =_i(new String[] {"WHIDE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_STEALTHY;}
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}

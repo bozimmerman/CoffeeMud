@@ -36,7 +36,7 @@ public class Open extends StdCommand
 {
 	public Open(){}
 
-	private final String[] access={"OPEN","OP","O"};
+	private final String[] access=_i(new String[]{"OPEN","OP","O"});
 	@Override public String[] getAccessWords(){return access;}
 
 	private final static Class[][] internalParameters=new Class[][]{{Environmental.class,Boolean.class}};

@@ -41,7 +41,7 @@ public class Fighter_Battlecry extends FighterSkill
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Battle Cry)";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	private static final String[] triggerStrings = {"BATTLECRY"};
+	private static final String[] triggerStrings =_i(new String[] {"BATTLECRY"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}

@@ -36,7 +36,7 @@ public class SocialsCmd extends StdCommand
 {
 	public SocialsCmd(){}
 
-	private final String[] access={"SOCIALS"};
+	private final String[] access=_i(new String[]{"SOCIALS"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

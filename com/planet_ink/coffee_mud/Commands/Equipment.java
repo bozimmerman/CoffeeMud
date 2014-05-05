@@ -37,7 +37,7 @@ public class Equipment extends StdCommand
 {
 	public Equipment(){}
 
-	private final String[] access={"EQUIPMENT","EQ","EQUIP"};
+	private final String[] access=_i(new String[]{"EQUIPMENT","EQ","EQUIP"});
 	@Override public String[] getAccessWords(){return access;}
 
 	private final static Class[][] internalParameters=new Class[][]{{MOB.class},{Boolean.class},{}};

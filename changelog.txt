@@ -18,7 +18,7 @@
       syntax with the AT (@) sign.  For example, mptransfer $n hassan@midgaard#3001
   16. New Fighter skill: Weapon Sharpening (for a small damage bonus)
   17. Containers of all sorts now expose modifiable "open delay ticks".
-  18. The session-translation part of localization has been redone.  A new command 'REPLACEEXTACT' and the new scheme should make CM much more localizeable in the future.
+  18. Localization has been amended, and partially redone.  See the FAQ for more info. The new scheme should make CM much more localizeable in the future.
    *. --- start of tech ---
   19. Ship Component Tech install skill (AstroEngineering) done-ish... like all tech, it's subject to change without notice.
    *. test way to reposition planets? esp relative to nearby ones (for moons I guess).

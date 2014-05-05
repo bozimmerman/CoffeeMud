@@ -36,7 +36,7 @@ public class Spells  extends Skills
 {
 	public Spells(){}
 
-	private final String[] access={"SPELLS","SP"};
+	private final String[] access=_i(new String[]{"SPELLS","SP"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

@@ -42,7 +42,7 @@ public class Druid_DruidicPass extends StdAbility
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(druidic passage)";}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	private static final String[] triggerStrings = {"PASS"};
+	private static final String[] triggerStrings =_i(new String[] {"PASS"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

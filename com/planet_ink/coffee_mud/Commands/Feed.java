@@ -37,7 +37,7 @@ public class Feed extends StdCommand
 {
 	public Feed(){}
 
-	private final String[] access={"FEED"};
+	private final String[] access=_i(new String[]{"FEED"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

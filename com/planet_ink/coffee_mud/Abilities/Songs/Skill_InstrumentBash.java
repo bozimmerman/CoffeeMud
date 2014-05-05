@@ -41,7 +41,7 @@ public class Skill_InstrumentBash extends BardSkill
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings = {"INSTRUMENTBASH","IBASH"};
+	private static final String[] triggerStrings =_i(new String[] {"INSTRUMENTBASH","IBASH"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
 	@Override public int usageType(){return USAGE_MOVEMENT;}

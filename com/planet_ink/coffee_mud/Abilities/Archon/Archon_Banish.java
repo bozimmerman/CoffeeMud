@@ -45,7 +45,7 @@ public class Archon_Banish extends ArchonSkill
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings = {"BANISH"};
+	private static final String[] triggerStrings =_i(new String[] {"BANISH"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARCHON;}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}

@@ -36,11 +36,11 @@ public class Say extends StdCommand
 {
 	public Say(){}
 
-	private final String[] access={"SAY",
+	private final String[] access=_i(new String[]{"SAY",
 							 "ASK",
 							 "`",
 							 "SA",
-							 "SAYTO"};
+							 "SAYTO"});
 	@Override public String[] getAccessWords(){return access;}
 
 	protected static final String[] impossibleTargets={

@@ -42,10 +42,12 @@ supports it?</a></li>
         <li><a href="#q02">Where do suggestions, questions, and bugs
 go?</a></li>
         <li><a href="#q03">Does CoffeeMud support Remorting?</a></li>
+        <li><a href="BuildersFAQ.html#q37">How can I localize CoffeeMud
+to translate it into other
+human languages?</a></li>
         <li><a href="#q04">Does CoffeeMud have a Building Port?</a></li>
         <li><a href="#q05">Does CoffeeMud have any other combat
-options
-besides normal, queue, and manual?</a></li>
+options?</a></li>
         <li><a href="#q06">What databases can CoffeeMud work with?</a></li>
         <li><a href="#q07">How do Clans work?</a></li>
         <li><a href="#q08">What does Hunger/Thirst/Fatigue affect?</a></li>
@@ -95,8 +97,6 @@ sell their raw gathered resources?</a></li>
         <li><a href="#q36">How can I have a
 command like ROM's "SCAN" for seeing in
 multiple rooms?</a></li>
-        <li><a href="#q37">How can I make CoffeeMud support other
-human languages?</a></li>
         <li><a href="#q38">How can I delete Classes I don't want?</a></li>
         <li><a href="#q39">How can I delete Player Races I don't want?</a></li>
       </ul>
@@ -169,22 +169,82 @@ Wizard' or something. In that class file:</p>
       <p>In that case, the player
 would have to have 30 levels in both
 "Wizard" and "Power Wizard" to qualify for the "Super Wizard" CharClass.</p>
+      <h3><a name="q37" id="q37">How can I localize CoffeeMud to
+translate it into other human languages?</a></h3>
+      <p>Getting CoffeeMud 100% translated will be difficult, but
+here's a quick way to get you the first 90% of the way there. &nbsp;</p>
+      <p>First, copy the input parser file <span
+ style="font-style: italic;">resources/parser_en_TX.properties</span>
+into the same folder will a different language name, such as <span
+ style="font-style: italic;">resources/parser_fr_CA.properties</span>
+for Canadian French. &nbsp;</p>
+      <p>Next copy the output translation file <span
+ style="font-style: italic;">resources/translation_en_TX.properties</span>
+and rename the copy, just like you did with the input parser file.</p>
+      <p>Open up coffeemud.ini file, find the entries for LANGUAGE= and
+COUNTRY= and change them accordingly.</p>
+      <p>Open up your copy of <span style="font-style: italic;">resources/parser_??_??.properties</span>
+and scroll down until you see [command-word-processor] and a line
+underneath it which says<span style="font-weight: bold;"> #autoignore
+9999</span>. &nbsp;Remove the hash mark # so that it says&nbsp;<span
+ style="font-weight: bold;">autoignore 9999</span>. &nbsp;Save the
+file, we will edit it again later.</p>
+      <p>Open up your copy of <span style="font-style: italic;">resources/translation_??_??.properties</span>
+and scroll down until you see [session-translation] and a line
+underneath it which says<span style="font-weight: bold;"> #autoignore
+9999</span>. &nbsp;Remove the hash mark # so that it says&nbsp;<span
+ style="font-weight: bold;">autoignore 9999</span>. &nbsp;Save the
+file, we will edit it again later.</p>
+      <p>Now log into your mud as your Archon and start entering
+commands.&nbsp;As you enter commands and do things, the parser and
+translation files will fill up with unlocalized strings that it
+encounters. &nbsp;Early versions of this deature won't capture EVERY
+string, only those designated as localizeable, but eventually every
+string will be handled. &nbsp;When you are satisfied you've seen every
+string and entered every command you want to localize, you can stop and
+let your users take care of the rest.</p>
+      <p>Last step (for now at least), is to re-open your parser and
+translation property files and find the two sections we modified
+earlier. &nbsp;You will see that those sections have been filled with a
+whole much of lines like this: <br />
+IGNOREWHOLE "You are now speaking @x1."<br />
+IGNOREWHOLE "WIMPY"<br />
+You want to change those lines to REPLACEEXACT commands, while being
+careful to maintain case sensitivity, like this:<br />
+REPLACEEXACT "You are now speaking @x1." WITH "Que vous parlez @x1."<br />
+REPLACEEXACT "WIMPY" WITH "MAUVIETTE"<br />
+      </p>
+      <p>You can keep the AUTOIGNORE 9999 command at the bottom of the
+list, and it will continue to add any new strings it encounters which
+were missed the first time around.<br />
+      </p>
+      <p>For everything that the above does not catch, CoffeeMud
+supports other languages through a translation
+system which utilizes regular expressions. &nbsp;Again, read through
+the files
+resources/parser_en_TX.properties and
+resources/translation_en_TX.properties. &nbsp;The former translates
+text entered by the user, the later translates text sent TO the user.
+&nbsp;Experimenting with these features will get you there, one phrase
+at a time.</p>
       <h3><a name="q04" id="q04">Does CoffeeMud have a
 Building Port?</a></h3>
       <p>No, there is no separate
 port for world content creation. All
 building tools are on-line realtime. It is easy to export and import
 areas, so you can run more than one copy. This can be essential if you
-are also making coding changes, which will often require reboots.</p>
+are also making coding changes, which can be activated more quickly by
+rebooting your mud than with online code reloads.</p>
       <h3><a name="q05" id="q05">Does CoffeeMud have any
 other combat
 options besides normal, queue, and manual?</a></h3>
-      <p>Not as part of the base
-code. However, Matthew
-(roguestar191@comcast.net), a member of the CoffeeMud Yahoo Group, has
-developed a patch that enables more flexibility in combat control. It
-can be found in the Files section at
-http://games.groups.yahoo.com/group/CoffeeMud/files/</p>
+      <p>Yes, CoffeeMud supports a turn-based combat system, though it
+could use some feedback. &nbsp;The way it work is that every player or
+mob that is in combat must wait their turn before they can perform
+actions. &nbsp;During their turn, any ticking effects (such as poisons
+or temporary shields) will resume ticking. &nbsp;Each player or mob can
+only perform as many actions as they have action points, which is as
+normal, though more painfully obvious when using the turn-based system.</p>
       <h3><a name="q06" id="q06">What databases can
 CoffeeMud work with?</a></h3>
       <p>Anything JDBC or ODBC
@@ -194,7 +254,10 @@ However, products like MySQL and HSQLDB make the system run much faster.</p>
       <h3><a name="q07" id="q07">How do Clans work?</a></h3>
       <p>First, you need to use
 the clancreate command to create a new
-clan. You have to get at least MINCLANMEMBERS amount of new members
+clan, during which you can give your clan a name, and decide how the
+officers will be structured (tyrannically all the way to
+democratically). You have to get at least MINCLANMEMBERS amount of new
+members
 before it will activate you (Set in the INI file). Activation means you
 will be visible in the listing, can buy land for the clan, can have
 clan bank accounts, and can hire mobs, as well as have politics with
@@ -287,7 +350,8 @@ Common Skills can use?</a></h3>
       <p>Make sure you create a
 GenResource, GenLiquidResource, or
 GenFoodResource item. Only items of this sort will be recognized as raw
-materials by the common skills.</p>
+materials by the common skills. &nbsp;This can be more easily be done
+by entering CREATE 100 CORN, etc..</p>
       <h3><a name="q15" id="q15">Why don't my aggressive
 mobs attack me?</a></h3>
       <p>Aggressive mobs don't
@@ -457,8 +521,9 @@ make this permanent across engine reboots.</p>
       <h3><a name="q31" id="q31">Does CoffeeMud have an
 Overland Map
 ability?</a></h3>
-      <p>Yes, there are two ways. The easiest is to set AWARERANGE in coffeemud.ini
-      to something higher than 0.  The other way is to check out the
+      <p>Yes, there are two ways. The easiest is to set AWARERANGE in
+coffeemud.ini to something higher than 0. The other way is to check out
+the
 Regional Awareness skill. It is restricted
 in the base distribution, but can easily be made generally available to
 all players.&nbsp;</p>
@@ -502,8 +567,10 @@ the mob for his services, and makes sure that the mob is saved at the
 players home.</p>
       <h3><a name="q35" id="q35">How can my players
 sell their raw gathered resources?</a></h3>
-      <p>Create a shopkeeper that sells hides, lumber, metal, rocks or some combination of those.  Next, if you like, use Shop Item Pricing to make resources
-      (-javaclass +GenResource +GenFoodResource +GetLiquidResource) more valuable than normal.</p>
+      <p>Create a shopkeeper that sells hides, lumber, metal, rocks or
+some combination of those. Next, if you like, use Shop Item Pricing to
+make resources (-javaclass +GenResource +GenFoodResource
++GetLiquidResource) more valuable than normal.</p>
       <h3><a name="q36" id="q36">How
 can I have a
 command like ROM's "SCAN" for seeing in
@@ -513,15 +580,6 @@ multiple rooms?</a></h3>
 &nbsp;Farsight lets them see into adjacent rooms. &nbsp;Regional
 Awareness lets them get see the gist of the entire outdoor area with
 little graphic characters.</p>
-      <h3><a name="q37" id="q37">How can I make CoffeeMud
-support other human languages?</a></h3>
-      <p>CoffeeMud supports other languages through a translation
-system which utilizes regular expressions. &nbsp;Check out the file
-resources/parser_en_TX.properties and
-resources/translation_en_TX.properties. &nbsp;The former translates
-text entered by the user, the later translates text sent TO the user.
-&nbsp;Experimenting with these features will get you there, one phrase
-at a time.</p>
       <h3><a name="q38" id="q36">How can I delete Player Classes I
 don't want?</a></h3>
       <p>From the MUDGrinder or Command Line, you simply need to modify

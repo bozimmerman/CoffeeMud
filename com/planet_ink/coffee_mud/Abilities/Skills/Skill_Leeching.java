@@ -42,7 +42,7 @@ public class Skill_Leeching extends StdSkill
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"LEECH","LEECHING"};
+	private static final String[] triggerStrings =_i(new String[] {"LEECH","LEECHING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
 

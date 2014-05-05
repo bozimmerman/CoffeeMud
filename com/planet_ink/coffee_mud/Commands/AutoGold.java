@@ -37,7 +37,7 @@ public class AutoGold extends StdCommand
 {
 	public AutoGold(){}
 
-	private final String[] access={"AUTOGOLD"};
+	private final String[] access=_i(new String[]{"AUTOGOLD"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

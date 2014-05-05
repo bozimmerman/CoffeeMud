@@ -42,7 +42,7 @@ public class Thief_Listen extends ThiefSkill
 	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
-	private static final String[] triggerStrings = {"LISTEN"};
+	private static final String[] triggerStrings =_i(new String[] {"LISTEN"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	protected Room sourceRoom=null;

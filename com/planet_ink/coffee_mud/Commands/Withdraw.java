@@ -36,7 +36,7 @@ public class Withdraw extends StdCommand
 {
 	public Withdraw(){}
 
-	private final String[] access={"WITHDRAW"};
+	private final String[] access=_i(new String[]{"WITHDRAW"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

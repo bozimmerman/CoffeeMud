@@ -37,7 +37,7 @@ public class Poison_Heartstopper extends Poison
 	@Override public String ID() { return "Poison_Heartstopper"; }
 	public final static String localizedName = CMLib.lang()._("Heartstopper");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"POISONSTOP"};
+	private static final String[] triggerStrings =_i(new String[] {"POISONSTOP"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	@Override protected int POISON_TICKS(){return 8;} // 0 means no adjustment!

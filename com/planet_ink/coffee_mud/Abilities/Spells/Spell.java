@@ -42,7 +42,7 @@ public class Spell extends StdAbility
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"CAST","CA","C"};
+	private static final String[] triggerStrings =_i(new String[] {"CAST","CA","C"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL;}
 

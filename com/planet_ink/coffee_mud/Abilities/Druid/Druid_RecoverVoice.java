@@ -43,7 +43,7 @@ public class Druid_RecoverVoice extends StdAbility
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
-	private static final String[] triggerStrings = {"VRECOVER","RECOVERVOICE"};
+	private static final String[] triggerStrings =_i(new String[] {"VRECOVER","RECOVERVOICE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS; }
 

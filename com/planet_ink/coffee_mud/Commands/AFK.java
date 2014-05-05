@@ -36,7 +36,7 @@ public class AFK extends StdCommand
 {
 	public AFK(){}
 
-	private final String[] access={"AFK"};
+	private final String[] access=_i(new String[]{"AFK"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

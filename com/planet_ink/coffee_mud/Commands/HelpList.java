@@ -36,7 +36,7 @@ public class HelpList extends StdCommand
 {
 	public HelpList(){}
 
-	private final String[] access={"HELPLIST","HLIST"};
+	private final String[] access=_i(new String[]{"HELPLIST","HLIST"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

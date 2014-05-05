@@ -43,7 +43,7 @@ public class Archon_Freeze extends ArchonSkill
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings = {"FREEZE"};
+	private static final String[] triggerStrings =_i(new String[] {"FREEZE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARCHON;}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}

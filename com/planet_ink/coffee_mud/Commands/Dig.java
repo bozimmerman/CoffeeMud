@@ -36,7 +36,7 @@ public class Dig extends StdCommand
 {
 	public Dig(){}
 
-	private final String[] access={"DIG"};
+	private final String[] access=_i(new String[]{"DIG"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public int getDiggingDepth(Item item)

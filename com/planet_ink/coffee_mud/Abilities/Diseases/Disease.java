@@ -42,7 +42,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 	@Override public String displayText(){ return "(a disease)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	private static final String[] triggerStrings = {"DISEASE"};
+	private static final String[] triggerStrings =_i(new String[] {"DISEASE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public boolean putInCommandlist(){return false;}

@@ -37,7 +37,7 @@ public class MasterDigging extends Digging
 	@Override public String ID() { return "MasterDigging"; }
 	public final static String localizedName = CMLib.lang()._("Master Gem Digging");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"MGDIG","MGDIGGING","MGEMDIGGING","MASTERGDIG","MASTERGDIGGING","MASTERGEMDIGGING"};
+	private static final String[] triggerStrings =_i(new String[] {"MGDIG","MGDIGGING","MGEMDIGGING","MASTERGDIG","MASTERGDIGGING","MASTERGEMDIGGING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	@Override

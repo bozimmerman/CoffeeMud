@@ -36,7 +36,7 @@ public class Ignore extends StdCommand
 {
 	public Ignore(){}
 
-	private final String[] access={"IGNORE"};
+	private final String[] access=_i(new String[]{"IGNORE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

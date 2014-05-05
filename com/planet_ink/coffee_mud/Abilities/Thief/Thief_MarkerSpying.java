@@ -44,7 +44,7 @@ public class Thief_MarkerSpying extends ThiefSkill
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	private static final String[] triggerStrings = {"MARKERSPYING","MARKSPY"};
+	private static final String[] triggerStrings =_i(new String[] {"MARKERSPYING","MARKSPY"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int code=0;

@@ -37,7 +37,7 @@ public class Group extends StdCommand
 {
 	public Group(){}
 
-	private final String[] access={"GROUP","GR"};
+	private final String[] access=_i(new String[]{"GROUP","GR"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public static StringBuffer showWhoLong(MOB seer, MOB who)

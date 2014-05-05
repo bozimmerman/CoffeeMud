@@ -37,7 +37,7 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Top extends StdCommand
 {
-	private final String[] access={"TOP"};
+	private final String[] access=_i(new String[]{"TOP"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

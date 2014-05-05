@@ -36,6 +36,6 @@ public class Firebreath extends Dragonbreath
 	@Override public String name() { return localizedName; }
 	@Override public String text(){return "fire";}
 	@Override public void setMiscText(String newText){super.setMiscText(text());}
-	private static final String[] triggerStrings = {"FIREBREATH"};
+	private static final String[] triggerStrings =_i(new String[] {"FIREBREATH"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 }

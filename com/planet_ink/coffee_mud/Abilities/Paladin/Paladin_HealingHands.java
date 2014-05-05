@@ -39,7 +39,7 @@ public class Paladin_HealingHands extends StdAbility
 	@Override public String ID() { return "Paladin_HealingHands"; }
 	public final static String localizedName = CMLib.lang()._("Healing Hands");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"HANDS"};
+	private static final String[] triggerStrings =_i(new String[] {"HANDS"});
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return 0;}

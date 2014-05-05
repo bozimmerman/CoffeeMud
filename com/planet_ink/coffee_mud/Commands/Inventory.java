@@ -36,7 +36,7 @@ public class Inventory extends StdCommand
 {
 	public Inventory(){}
 
-	private final String[] access={"INVENTORY","INV","I"};
+	private final String[] access=_i(new String[]{"INVENTORY","INV","I"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public static class InventoryList

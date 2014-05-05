@@ -40,7 +40,7 @@ public class Fighter_AutoBash extends FighterSkill
 	public final static String localizedName = CMLib.lang()._("AutoBash");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
-	private static final String[] triggerStrings = {"AUTOBASH"};
+	private static final String[] triggerStrings =_i(new String[] {"AUTOBASH"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

@@ -41,7 +41,7 @@ public class Thief_Shadowpass extends ThiefSkill
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"SHADOWPASS"};
+	private static final String[] triggerStrings =_i(new String[] {"SHADOWPASS"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int usageType(){return USAGE_MOVEMENT;}
 	@Override public long flags(){return Ability.FLAG_TRANSPORTING|super.flags();}

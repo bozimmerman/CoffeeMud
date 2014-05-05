@@ -36,7 +36,7 @@ public class OutFit extends StdCommand
 {
 	public OutFit(){}
 
-	private final String[] access={"OUTFIT"};
+	private final String[] access=_i(new String[]{"OUTFIT"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)

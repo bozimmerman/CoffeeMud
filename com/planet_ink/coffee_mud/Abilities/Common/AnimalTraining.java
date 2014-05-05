@@ -38,7 +38,7 @@ public class AnimalTraining extends CommonSkill
 	@Override public String ID() { return "AnimalTraining"; }
 	public final static String localizedName = CMLib.lang()._("Animal Training");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"ANIMALTRAINING"};
+	private static final String[] triggerStrings =_i(new String[] {"ANIMALTRAINING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
 

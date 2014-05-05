@@ -37,7 +37,7 @@ public class MasterShearing extends Shearing
 	@Override public String ID() { return "MasterShearing"; }
 	public final static String localizedName = CMLib.lang()._("Master Shearing");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"MSHEAR","MSHEARING","MASTERSHEAR","MASTERSHEARING"};
+	private static final String[] triggerStrings =_i(new String[] {"MSHEAR","MSHEARING","MASTERSHEAR","MASTERSHEARING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	@Override

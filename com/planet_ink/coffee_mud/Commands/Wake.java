@@ -36,7 +36,7 @@ public class Wake extends StdCommand
 {
 	public Wake(){}
 
-	private final String[] access={"WAKE"};
+	private final String[] access=_i(new String[]{"WAKE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

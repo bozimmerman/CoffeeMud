@@ -37,7 +37,7 @@ public class Fill extends StdCommand
 {
 	public Fill(){}
 
-	private final String[] access={"FILL"};
+	private final String[] access=_i(new String[]{"FILL"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

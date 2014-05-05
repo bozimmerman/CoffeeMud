@@ -42,7 +42,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_TRAPPING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings = {"CALTROPS"};
+	private static final String[] triggerStrings =_i(new String[] {"CALTROPS"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public String caltropTypeName(){return "";}

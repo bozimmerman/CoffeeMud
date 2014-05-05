@@ -39,7 +39,7 @@ public class BodyPiercing extends CommonSkill
 	@Override public String ID() { return "BodyPiercing"; }
 	public final static String localizedName = CMLib.lang()._("Body Piercing");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"BODYPIERCE","BODYPIERCING"};
+	private static final String[] triggerStrings =_i(new String[] {"BODYPIERCE","BODYPIERCING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
 	protected String writing="";

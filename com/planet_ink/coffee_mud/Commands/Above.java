@@ -36,7 +36,7 @@ public class Above extends Go
 {
 	public Above(){}
 
-	private final String[] access={"ABOVE"};
+	private final String[] access=_i(new String[]{"ABOVE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

@@ -40,7 +40,7 @@ public class Thief_Appraise extends ThiefSkill
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"APPRAISE"};
+	private static final String[] triggerStrings =_i(new String[] {"APPRAISE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
 	public int code=0;

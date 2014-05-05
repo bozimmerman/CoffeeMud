@@ -38,7 +38,7 @@ public class Kill extends StdCommand
 {
 	public Kill(){}
 
-	private final String[] access={"KILL","K","ATTACK"};
+	private final String[] access=_i(new String[]{"KILL","K","ATTACK"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

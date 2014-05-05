@@ -42,7 +42,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 	@Override public String ID() { return "Shipwright"; }
 	public final static String localizedName = CMLib.lang()._("Ship Building");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"SHIPBUILD","SHIPBUILDING","SHIPWRIGHT"};
+	private static final String[] triggerStrings =_i(new String[] {"SHIPBUILD","SHIPBUILDING","SHIPWRIGHT"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "WOODEN";}
 	@Override

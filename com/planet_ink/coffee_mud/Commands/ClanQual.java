@@ -38,7 +38,7 @@ public class ClanQual extends StdCommand
 {
 	public ClanQual(){}
 
-	private final String[] access={"CLANQUAL"};
+	private final String[] access=_i(new String[]{"CLANQUAL"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(final MOB mob, Vector commands, int metaFlags)

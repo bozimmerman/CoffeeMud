@@ -36,7 +36,7 @@ public class Description extends StdCommand
 {
 	public Description(){}
 
-	private final String[] access={"DESCRIPTION"};
+	private final String[] access=_i(new String[]{"DESCRIPTION"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

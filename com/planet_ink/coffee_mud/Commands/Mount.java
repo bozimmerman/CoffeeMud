@@ -36,7 +36,7 @@ public class Mount extends StdCommand
 {
 	public Mount(){}
 
-	private final String[] access={"MOUNT","BOARD","RIDE","M"};
+	private final String[] access=_i(new String[]{"MOUNT","BOARD","RIDE","M"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

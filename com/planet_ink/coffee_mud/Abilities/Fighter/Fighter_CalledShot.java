@@ -37,7 +37,7 @@ public class Fighter_CalledShot extends Fighter_CalledStrike
 	@Override public String ID() { return "Fighter_CalledShot"; }
 	public final static String localizedName = CMLib.lang()._("Called Shot");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"CALLEDSHOT"};
+	private static final String[] triggerStrings =_i(new String[] {"CALLEDSHOT"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	@Override

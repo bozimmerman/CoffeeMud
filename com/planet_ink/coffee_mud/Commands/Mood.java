@@ -36,7 +36,7 @@ public class Mood extends StdCommand
 {
 	public Mood(){}
 
-	private final String[] access={"MOOD"};
+	private final String[] access=_i(new String[]{"MOOD"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

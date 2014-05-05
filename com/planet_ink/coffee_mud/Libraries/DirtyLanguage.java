@@ -703,6 +703,13 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	}
 
 	@Override
+	public String commandWordTranslation(final String str)
+	{
+		final String commandStr=basicParser(str,"COMMAND-WORD-PROCESSOR",false,true);
+		return (commandStr==null)?str:commandStr;
+	}
+	
+	@Override
 	public String _(final String str, final String ... xs)
 	{
 		final String sessionStr=sessionTranslation(str);

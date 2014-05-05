@@ -39,7 +39,7 @@ public class ClanAssign extends StdCommand
 {
 	public ClanAssign(){}
 
-	private final String[] access={"CLANASSIGN"};
+	private final String[] access=_i(new String[]{"CLANASSIGN"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

@@ -36,6 +36,6 @@ public class Acidbreath extends Dragonbreath
 	@Override public String name() { return localizedName; }
 	@Override public String text(){return "acid";}
 	@Override public void setMiscText(String newText){super.setMiscText(text());}
-	private static final String[] triggerStrings = {"ACIDBREATH"};
+	private static final String[] triggerStrings =_i(new String[] {"ACIDBREATH"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 }

@@ -37,7 +37,7 @@ public class MasterButchering extends Butchering
 	@Override public String ID() { return "MasterButchering"; }
 	public final static String localizedName = CMLib.lang()._("Master Butchering");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"MBUTCHERING","MASTERBUTCHERING","MSKIN","MASTERSKIN"};
+	private static final String[] triggerStrings =_i(new String[] {"MBUTCHERING","MASTERBUTCHERING","MSKIN","MASTERSKIN"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	@Override

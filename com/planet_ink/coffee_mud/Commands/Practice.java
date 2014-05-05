@@ -36,7 +36,7 @@ public class Practice extends StdCommand
 {
 	public Practice(){}
 
-	private final String[] access={"PRACTICE","PRAC"};
+	private final String[] access=_i(new String[]{"PRACTICE","PRAC"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

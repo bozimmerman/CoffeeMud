@@ -37,7 +37,7 @@ public class Poison_Ghoultouch extends Poison
 	@Override public String ID() { return "Poison_Ghoultouch"; }
 	public final static String localizedName = CMLib.lang()._("Ghoultouch");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"POISONGHOUL"};
+	private static final String[] triggerStrings =_i(new String[] {"POISONGHOUL"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public long flags(){return Ability.FLAG_PARALYZING|Ability.FLAG_UNHOLY;}
 

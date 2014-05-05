@@ -44,7 +44,7 @@ public class Ranger_FindWater extends StdAbility
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	private static final String[] triggerStrings = {"FINDWATER"};
+	private static final String[] triggerStrings =_i(new String[] {"FINDWATER"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
 	@Override public long flags(){return Ability.FLAG_TRACKING;}

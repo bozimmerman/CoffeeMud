@@ -37,7 +37,7 @@ public class Logoff extends StdCommand
 {
 	public Logoff(){}
 
-	private final String[] access={"LOGOFF","LOGOUT"};
+	private final String[] access=_i(new String[]{"LOGOFF","LOGOUT"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

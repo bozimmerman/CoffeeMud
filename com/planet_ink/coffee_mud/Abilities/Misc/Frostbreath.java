@@ -35,6 +35,6 @@ public class Frostbreath extends Dragonbreath
 	public final static String localizedName = CMLib.lang()._("Frostbreath");
 	@Override public String name() { return localizedName; }
 	@Override public String text(){return "cold";}
-	private static final String[] triggerStrings = {"FROSTBREATH"};
+	private static final String[] triggerStrings =_i(new String[] {"FROSTBREATH"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 }

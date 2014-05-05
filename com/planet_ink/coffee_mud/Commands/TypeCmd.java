@@ -36,7 +36,7 @@ public class TypeCmd extends Go
 {
 	public TypeCmd(){}
 
-	private final String[] access={"TYPE","="};
+	private final String[] access=_i(new String[]{"TYPE","="});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

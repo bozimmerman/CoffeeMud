@@ -42,7 +42,7 @@ public class Thief_Sneak extends ThiefSkill
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
-	private static final String[] triggerStrings = {"SNEAK"};
+	private static final String[] triggerStrings =_i(new String[] {"SNEAK"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int usageType(){return USAGE_MOVEMENT;}
 

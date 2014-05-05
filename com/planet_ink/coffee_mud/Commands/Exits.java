@@ -36,7 +36,7 @@ public class Exits extends StdCommand
 {
 	public Exits(){}
 
-	private final String[] access={"EXITS","EX"};
+	private final String[] access=_i(new String[]{"EXITS","EX"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

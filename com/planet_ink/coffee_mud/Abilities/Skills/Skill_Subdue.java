@@ -42,7 +42,7 @@ public class Skill_Subdue extends StdSkill
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings = {"SUBDUE"};
+	private static final String[] triggerStrings =_i(new String[] {"SUBDUE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_EVASIVE;}
 	@Override public int usageType(){return USAGE_MOVEMENT;}

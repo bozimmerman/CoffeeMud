@@ -39,7 +39,7 @@ public class Inebriation extends Poison_Alcohol
 	@Override public String ID() { return "Inebriation"; }
 	public final static String localizedName = CMLib.lang()._("Inebriation");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"INEBRIATE"};
+	private static final String[] triggerStrings =_i(new String[] {"INEBRIATE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int alchoholContribution(){return 6;}
 }

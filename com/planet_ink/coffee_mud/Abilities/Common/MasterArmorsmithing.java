@@ -40,7 +40,7 @@ public class MasterArmorsmithing extends Armorsmithing implements ItemCraftor
 	@Override public String ID() { return "MasterArmorsmithing"; }
 	public final static String localizedName = CMLib.lang()._("Master Armorsmithing");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"MARMORSMITH","MASTERARMORSMITHING"};
+	private static final String[] triggerStrings =_i(new String[] {"MARMORSMITH","MASTERARMORSMITHING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	@Override public String parametersFile(){ return "masterarmorsmith.txt";}

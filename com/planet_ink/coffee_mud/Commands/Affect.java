@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings("rawtypes")
 public class Affect extends StdCommand
 {
-	private final String[] access={"AFFECTS","AFFECT","AFF","AF"};
+	private final String[] access=_i(new String[]{"AFFECTS","AFFECT","AFF","AF"});
 	@Override public String[] getAccessWords(){return access;}
 
 //	private final static Class[][] internalParameters=new Class[][]{{Physical.class}};

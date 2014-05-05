@@ -36,7 +36,7 @@ public class Rebuke extends StdCommand
 {
 	public Rebuke(){}
 
-	private final String[] access={"REBUKE"};
+	private final String[] access=_i(new String[]{"REBUKE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

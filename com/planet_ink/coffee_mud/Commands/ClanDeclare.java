@@ -37,7 +37,7 @@ public class ClanDeclare extends StdCommand
 {
 	public ClanDeclare(){}
 
-	private final String[] access={"CLANDECLARE"};
+	private final String[] access=_i(new String[]{"CLANDECLARE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

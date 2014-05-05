@@ -40,7 +40,7 @@ public class Skill_WildernessLore extends StdSkill
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"WILDERNESSLORE","WLORE"};
+	private static final String[] triggerStrings =_i(new String[] {"WILDERNESSLORE","WLORE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
 	@Override public int usageType(){return USAGE_MANA;}

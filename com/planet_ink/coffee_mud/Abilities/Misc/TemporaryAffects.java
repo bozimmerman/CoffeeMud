@@ -42,7 +42,7 @@ public class TemporaryAffects extends StdAbility
 	@Override protected int canAffectCode(){return CAN_MOBS | CAN_ITEMS | CAN_EXITS | CAN_ROOMS;}
 	@Override protected int canTargetCode(){return CAN_MOBS | CAN_ITEMS | CAN_EXITS | CAN_ROOMS;}
 	@Override public boolean putInCommandlist(){return false;}
-	private static final String[] triggerStrings = {"TEMPORARYAFFECTS"};
+	private static final String[] triggerStrings =_i(new String[] {"TEMPORARYAFFECTS"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_PROPERTY;}
 	protected boolean initialized=false;

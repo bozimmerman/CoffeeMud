@@ -38,7 +38,7 @@ public class Pause extends StdCommand
 {
 	public Pause(){}
 
-	private final String[] access={"PAUSE"};
+	private final String[] access=_i(new String[]{"PAUSE"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public boolean errorOut(MOB mob)

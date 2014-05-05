@@ -40,7 +40,7 @@ public class Fighter_LightningStrike extends MonkSkill
 	public final static String localizedName = CMLib.lang()._("Lightning Strike");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "(Exhausted)";}
-	private static final String[] triggerStrings = {"LIGHTNINGSTRIKE","LSTRIKE"};
+	private static final String[] triggerStrings =_i(new String[] {"LIGHTNINGSTRIKE","LSTRIKE"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return 0;}

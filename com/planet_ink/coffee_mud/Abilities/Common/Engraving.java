@@ -39,7 +39,7 @@ public class Engraving extends CommonSkill
 	@Override public String ID() { return "Engraving"; }
 	public final static String localizedName = CMLib.lang()._("Engraving");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings = {"ENGRAVE","ENGRAVING"};
+	private static final String[] triggerStrings =_i(new String[] {"ENGRAVE","ENGRAVING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CALLIGRAPHY; }
 

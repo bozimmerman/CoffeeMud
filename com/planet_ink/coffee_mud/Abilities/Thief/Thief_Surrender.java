@@ -42,7 +42,7 @@ public class Thief_Surrender extends ThiefSkill
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	private static final String[] triggerStrings = {"SURRENDER"};
+	private static final String[] triggerStrings =_i(new String[] {"SURRENDER"});
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_INFLUENTIAL;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 

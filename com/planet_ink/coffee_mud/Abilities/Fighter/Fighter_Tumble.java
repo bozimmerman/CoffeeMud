@@ -40,7 +40,7 @@ public class Fighter_Tumble extends FighterSkill
 	public final static String localizedName = CMLib.lang()._("Tumble");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "(Tumbling)";}
-	private static final String[] triggerStrings = {"TUMBLE"};
+	private static final String[] triggerStrings =_i(new String[] {"TUMBLE"});
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

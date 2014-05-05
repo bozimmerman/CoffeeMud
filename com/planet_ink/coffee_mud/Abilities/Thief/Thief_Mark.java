@@ -40,7 +40,7 @@ public class Thief_Mark extends ThiefSkill
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"MARK"};
+	private static final String[] triggerStrings =_i(new String[] {"MARK"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public boolean isAutoInvoked(){return true;}
 	@Override public boolean canBeUninvoked(){return false;}

@@ -38,7 +38,7 @@ public class ClanPremise extends StdCommand
 {
 	public ClanPremise(){}
 
-	private final String[] access={"CLANPREMISE"};
+	private final String[] access=_i(new String[]{"CLANPREMISE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(final MOB mob, Vector commands, int metaFlags)

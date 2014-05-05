@@ -41,7 +41,7 @@ public class Skill_Revoke extends StdSkill
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"REVOKE"};
+	private static final String[] triggerStrings =_i(new String[] {"REVOKE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}

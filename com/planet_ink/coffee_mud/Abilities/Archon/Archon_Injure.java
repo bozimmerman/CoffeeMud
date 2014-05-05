@@ -41,7 +41,7 @@ public class Archon_Injure extends ArchonSkill
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings = {"INJURE"};
+	private static final String[] triggerStrings =_i(new String[] {"INJURE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARCHON;}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}

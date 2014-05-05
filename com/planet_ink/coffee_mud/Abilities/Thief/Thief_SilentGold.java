@@ -44,7 +44,7 @@ public class Thief_SilentGold extends ThiefSkill
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	private static final String[] triggerStrings = {"SILENTGOLD"};
+	private static final String[] triggerStrings =_i(new String[] {"SILENTGOLD"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	private CMMsg lastMsg=null;
 

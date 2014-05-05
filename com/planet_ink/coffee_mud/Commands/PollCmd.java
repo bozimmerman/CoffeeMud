@@ -36,7 +36,7 @@ public class PollCmd extends StdCommand
 {
 	public PollCmd(){}
 
-	private final String[] access={"POLL"};
+	private final String[] access=_i(new String[]{"POLL"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
