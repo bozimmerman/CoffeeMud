@@ -136,7 +136,7 @@ public class Scavenger extends ActiveTicker
 			}
 			if(choices.size()==0) return true;
 			final Item I=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
-			if(I!=null)
+			if((I!=null)&&(CMLib.flags().isGettable(I)&&(CMLib.flags().canBeSeenBy(I, mob))))
 				mob.doCommand(new XVector("GET",I.Name()),Command.METAFLAG_FORCED);
 			choices.clear();
 			choices=null;
