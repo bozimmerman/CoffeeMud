@@ -95,7 +95,7 @@ public class Chant_WindColor extends Chant
 		return "";
 	}
 
-	public static String getWindColor(MOB mob, Room R)
+	public String getWindColor(MOB mob, Room R)
 	{
 		if((R==null)||(mob==null)) return "";
 		if(R.numInhabitants()==0) return "";
@@ -203,22 +203,22 @@ public class Chant_WindColor extends Chant
 			switch(levelCode)
 			{
 			case -1:
-				str.append("dull stripes of ");
+				str.append(_("dull stripes of "));
 				break;
 			case 0:
-				str.append("faded stripes of ");
+				str.append(_("faded stripes of "));
 				break;
 			case 1:
-				str.append("striped ");
+				str.append(_("striped "));
 				break;
 			case 2:
-				str.append("brightly striped ");
+				str.append(_("brightly striped "));
 				break;
 			case 3:
-				str.append("brilliant stripes of ");
+				str.append(_("brilliant stripes of "));
 				break;
 			case 4:
-				str.append("dazzling stripes of ");
+				str.append(_("dazzling stripes of "));
 				break;
 			}
 			break;
@@ -226,22 +226,22 @@ public class Chant_WindColor extends Chant
 			switch(levelCode)
 			{
 			case -1:
-				str.append("a swirl of dull ");
+				str.append(_("a swirl of dull "));
 				break;
 			case 0:
-				str.append("a swirl of faded ");
+				str.append(_("a swirl of faded "));
 				break;
 			case 1:
-				str.append("a swirl of ");
+				str.append(_("a swirl of "));
 				break;
 			case 2:
-				str.append("a bright swirl of ");
+				str.append(_("a bright swirl of "));
 				break;
 			case 3:
-				str.append("a swirl of brilliant ");
+				str.append(_("a swirl of brilliant "));
 				break;
 			case 4:
-				str.append("a swirl of dazzling ");
+				str.append(_("a swirl of dazzling "));
 				break;
 			}
 			break;
@@ -249,21 +249,21 @@ public class Chant_WindColor extends Chant
 			switch(levelCode)
 			{
 			case -1:
-				str.append("faded ");
+				str.append(_("faded "));
 				break;
 			case 0:
-				str.append("faded ");
+				str.append(_("faded "));
 				break;
 			case 1:
 				break;
 			case 2:
-				str.append("bright ");
+				str.append(_("bright "));
 				break;
 			case 3:
-				str.append("brilliant ");
+				str.append(_("brilliant "));
 				break;
 			case 4:
-				str.append("dazzling ");
+				str.append(_("dazzling "));
 				break;
 			}
 			break;
@@ -277,7 +277,7 @@ public class Chant_WindColor extends Chant
 		for(int i=0;i<V.size();i++)
 		{
 			final int x=((Integer)V.elementAt(i)).intValue();
-			if(i==V.size()-1) str.append("and "+getColor(x)+" ");
+			if(i==V.size()-1) str.append(_("and @x1 ",getColor(x)));
 			else
 			if(i>0) str.append(", "+getColor(x)+" ");
 			else str.append(getColor(x)+" ");

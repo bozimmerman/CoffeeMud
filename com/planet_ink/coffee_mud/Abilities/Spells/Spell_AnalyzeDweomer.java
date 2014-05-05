@@ -63,11 +63,11 @@ public class Spell_AnalyzeDweomer extends Spell
 				final StringBuffer str=new StringBuffer("");
 				if(target instanceof Armor)
 				{
-					str.append("It is a kind of armor.  ");
+					str.append(_("It is a kind of armor.  "));
 					if(!target.rawLogicalAnd())
-						str.append("It is worn on any one of the following: ");
+						str.append(_("It is worn on any one of the following: "));
 					else
-						str.append("It is worn on all of the following: ");
+						str.append(_("It is worn on all of the following: "));
 					final Wearable.CODES codes = Wearable.CODES.instance();
 					for(final long wornCode : codes.all())
 						if(wornCode!=Wearable.IN_INVENTORY)
@@ -79,57 +79,57 @@ public class Spell_AnalyzeDweomer extends Spell
 					str.append(".  ");
 				}
 				if((target instanceof Container)&&(((Container)target).capacity()>0))
-					str.append("It is a container.  ");
+					str.append(_("It is a container.  "));
 				if(target instanceof Coins)
-					str.append("It is currency. ");
+					str.append(_("It is currency. "));
 				if(target instanceof Drink)
-					str.append("You can drink it. ");
+					str.append(_("You can drink it. "));
 				if(target instanceof Food)
-					str.append("You can eat it.  ");
+					str.append(_("You can eat it.  "));
 				if(target instanceof Pill)
-					str.append("It is a magic pill.  ");
+					str.append(_("It is a magic pill.  "));
 				if(target instanceof Potion)
-					str.append("It is a magic potion.  ");
+					str.append(_("It is a magic potion.  "));
 				if(target instanceof Light)
-					str.append("It is a light source.  ");
+					str.append(_("It is a light source.  "));
 				if(target instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
-					str.append("It is a map.  ");
+					str.append(_("It is a map.  "));
 				if(target instanceof MiscMagic)
-					str.append("It has a magical aura.  ");
+					str.append(_("It has a magical aura.  "));
 				if(target instanceof Scroll)
-					str.append("It is a magic scroll.  ");
+					str.append(_("It is a magic scroll.  "));
 				if(target instanceof Wand)
-					str.append("It is a magic wand.  ");
+					str.append(_("It is a magic wand.  "));
 				if(target instanceof Electronics)
-					str.append("It is some sort of high technology.  ");
+					str.append(_("It is some sort of high technology.  "));
 				if(target instanceof InnKey)
-					str.append("It is an Inn key.  ");
+					str.append(_("It is an Inn key.  "));
 				else
 				if(target instanceof DoorKey)
-					str.append("It is a key.  ");
+					str.append(_("It is a key.  "));
 				if(target instanceof LandTitle)
-					str.append("It is a property title.  ");
+					str.append(_("It is a property title.  "));
 				if(target.isReadable())
-					str.append("It is readable.  ");
+					str.append(_("It is readable.  "));
 				if(target instanceof DeadBody)
-					str.append("It is a corpse of a "+((DeadBody)target).charStats().getMyRace().name()+".  ");
+					str.append(_("It is a corpse of a @x1.  ",((DeadBody)target).charStats().getMyRace().name()));
 				if(target instanceof Weapon)
 				{
 					final Weapon w=(Weapon)target;
-					str.append("It is a "+Weapon.CLASS_DESCS[w.weaponClassification()].toLowerCase()+" weapon.  ");
-					str.append("It does "+Weapon.TYPE_DESCS[w.weaponType()].toLowerCase()+" damage.  ");
+					str.append(_("It is a @x1 weapon.  ",Weapon.CLASS_DESCS[w.weaponClassification()].toLowerCase()));
+					str.append(_("It does @x1 damage.  ",Weapon.TYPE_DESCS[w.weaponType()].toLowerCase()));
 					if(w.minRange()>0)
-						str.append("It has a minimum range of "+w.minRange()+".  ");
+						str.append(_("It has a minimum range of @x1.  ",""+w.minRange()));
 					if(w.maxRange()>w.minRange())
-						str.append("It has a maximum range of "+w.maxRange()+".  ");
+						str.append(_("It has a maximum range of @x1.  ",""+w.maxRange()));
 				}
-				str.append("It is made of "+RawMaterial.CODES.NAME(target.material()).toLowerCase()+".  ");
+				str.append(_("It is made of @x1.  ",RawMaterial.CODES.NAME(target.material()).toLowerCase()));
 				final Command C=CMClass.getCommand("Affect");
 				try
 				{
 					final String affectStr=C.executeInternal(mob,0,target).toString();
 					if(affectStr.length()<5)
-						str.append("It is affected by: "+affectStr);
+						str.append(_("It is affected by: @x1",affectStr));
 				}
 				catch(final Exception e){}
 				if(mob.isMonster())

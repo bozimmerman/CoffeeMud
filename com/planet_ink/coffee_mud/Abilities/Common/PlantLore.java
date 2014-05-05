@@ -61,7 +61,7 @@ public class PlantLore extends CommonSkill
 			{
 				if(success==false)
 				{
-					final StringBuffer str=new StringBuffer("Your growth observation attempt failed.\n\r");
+					final StringBuffer str=new StringBuffer(_("Your growth observation attempt failed.\n\r"));
 					commonTell(mob,str.toString());
 					unInvoke();
 				}
@@ -107,7 +107,7 @@ public class PlantLore extends CommonSkill
 								continue;
 							final String resourceStr=RawMaterial.CODES.NAME(resource);
 							if(R==room)
-								str.append("You think this spot would be good for "+resourceStr.toLowerCase()+".\n\r");
+								str.append(_("You think this spot would be good for @x1.\n\r",resourceStr.toLowerCase()));
 							else
 							{
 								int isAdjacent=-1;
@@ -117,14 +117,14 @@ public class PlantLore extends CommonSkill
 									if(room2==R) isAdjacent=d;
 								}
 								if(isAdjacent>=0)
-									str.append("There looks like "+resourceStr.toLowerCase()+" "+Directions.getInDirectionName(isAdjacent)+".\n\r");
+									str.append(_("There looks like @x1 @x2.\n\r",resourceStr.toLowerCase(),Directions.getInDirectionName(isAdjacent)));
 								else
 								{
 									int d=CMLib.tracking().radiatesFromDir(R,V);
 									if(d>=0)
 									{
 										d=Directions.getOpDirectionCode(d);
-										str.append("There looks like "+resourceStr.toLowerCase()+" far "+Directions.getInDirectionName(d)+".\n\r");
+										str.append(_("There looks like @x1 far @x2.\n\r",resourceStr.toLowerCase(),Directions.getInDirectionName(d)));
 									}
 								}
 

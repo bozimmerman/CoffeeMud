@@ -75,7 +75,7 @@ public class Mining extends GatheringSkill
 				}
 				else
 				{
-					final StringBuffer str=new StringBuffer("You can't seem to find anything worth mining here.\n\r");
+					final StringBuffer str=new StringBuffer(_("You can't seem to find anything worth mining here.\n\r"));
 					commonTell(mob,str.toString());
 					unInvoke();
 				}

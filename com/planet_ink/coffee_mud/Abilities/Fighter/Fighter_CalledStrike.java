@@ -186,7 +186,7 @@ public class Fighter_CalledStrike extends FighterSkill
 		if(commands.size()<=0)
 		{
 			mob.tell(_("You must specify a body part to cut off."));
-			final StringBuffer str=new StringBuffer("Parts include: ");
+			final StringBuffer str=new StringBuffer(_("Parts include: "));
 			for(int i=0;i<remainingLimbList.size();i++)
 				str.append((remainingLimbList.get(i))+", ");
 			mob.tell(str.toString().substring(0,str.length()-2)+".");
@@ -211,7 +211,7 @@ public class Fighter_CalledStrike extends FighterSkill
 			if(gone.length()==0)
 			{
 				mob.tell(_("'@x1' is not a valid body part.",off));
-				final StringBuffer str=new StringBuffer("Parts include: ");
+				final StringBuffer str=new StringBuffer(_("Parts include: "));
 				for(int i=0;i<remainingLimbList.size();i++)
 					str.append((remainingLimbList.get(i))+", ");
 				mob.tell(str.toString().substring(0,str.length()-2)+".");

@@ -4583,7 +4583,7 @@ public class Import extends StdCommand
 					if(buf.charAt(0)=='#')
 						startDex=buf.indexOf(eoln)+eoln.length();
 					finalBuf.append("#AREA").append(eoln).append(buf.substring(startDex,wldDivDex)).append(eoln).append(eoln);
-					resetsStr="#RESETS"+eoln+buf.substring(wldDivDex+(eoln.length()*2))+eoln+eoln;
+					resetsStr=_("#RESETS@x1@x2@x3@x4",eoln,buf.substring(wldDivDex+(eoln.length()*2)),eoln,eoln);
 					areaFileName=baseAreaFileName+".wld";
 					CF=new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS);
 					buf=CF.text();

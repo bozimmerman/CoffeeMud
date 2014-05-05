@@ -47,7 +47,7 @@ public class Cloak extends StdCommand
 			commands.insertElementAt("OFF",1);
 		commands.removeElementAt(0);
 		final int abilityCode=PhyStats.IS_CLOAKED;
-		str="Prop_WizInvis";
+		str=_("Prop_WizInvis");
 		Ability A=mob.fetchEffect(str);
 		if(CMParms.combine(commands,0).trim().equalsIgnoreCase("OFF"))
 		{

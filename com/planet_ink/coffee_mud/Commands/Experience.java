@@ -37,25 +37,25 @@ public class Experience extends StdCommand
 		final StringBuffer msg=new StringBuffer("^N");
 
 		if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION)&&(mob.playerStats()!=null))
-			msg.append("Your account is Registered and Active until: "+CMLib.time().date2String(mob.playerStats().getAccountExpiration())+"!\n\r");
+			msg.append(_("Your account is Registered and Active until: @x1!\n\r",CMLib.time().date2String(mob.playerStats().getAccountExpiration())));
 
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
 		&&!mob.charStats().getCurrentClass().expless()
 		&&!mob.charStats().getMyRace().expless())
 		{
-			msg.append("\nYou have scored ^!"+mob.getExperience()+"^? experience points and have been online for ^!"+Math.round(CMath.div(mob.getAgeMinutes(),60.0))+"^? hours.\n\r");
+			msg.append(_("\nYou have scored ^!@x1^? experience points and have been online for ^!@x2^? hours.\n\r",""+mob.getExperience(),""+Math.round(CMath.div(mob.getAgeMinutes(),60.0))));
 			if((!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
 			&&(!mob.charStats().getCurrentClass().leveless())
 			&&(!mob.charStats().getMyRace().leveless()))
 			{
 				if((CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)>0)
 				&&(mob.basePhyStats().level()>CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)))
-					msg.append("You will not gain further levels through experience.\n\r");
+					msg.append(_("You will not gain further levels through experience.\n\r"));
 				else
 				if(mob.getExpNeededLevel()==Integer.MAX_VALUE)
-					msg.append("You will not gain further levels through experience.\n\r");
+					msg.append(_("You will not gain further levels through experience.\n\r"));
 				else
-					msg.append("You need ^!"+(mob.getExpNeededLevel())+"^? experience points to advance to the next level.\n\r");
+					msg.append(_("You need ^!@x1^? experience points to advance to the next level.\n\r",""+(mob.getExpNeededLevel())));
 			}
 		}
 

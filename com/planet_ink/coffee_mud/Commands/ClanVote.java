@@ -82,12 +82,10 @@ public class ClanVote extends StdCommand
 			if(voteNumStr.length()==0)
 			{
 				if(votesForYou.size()==0)
-					msg.append("Your "+C.getGovernmentName()+" does not have anything up for your vote.");
+					msg.append(_("Your @x1 does not have anything up for your vote.",C.getGovernmentName()));
 				else
 				{
-					msg.append(" "+CMStrings.padRight("#",3)
-							   +CMStrings.padRight(_("Status"),15)
-							   +"Command to execute\n\r");
+					msg.append(_(" @x1@x2Command to execute\n\r",CMStrings.padRight("#",3),CMStrings.padRight(_("Status"),15)));
 					for(int v=0;v<votesForYou.size();v++)
 					{
 						final Clan.ClanVote CV=(Clan.ClanVote)votesForYou.elementAt(v);
@@ -98,7 +96,7 @@ public class ClanVote extends StdCommand
 								  +CMStrings.padRight(((CV.voteStatus==Clan.VSTAT_STARTED)?(votesCast+" votes cast"):(Clan.VSTAT_DESCS[CV.voteStatus])),15)
 								  +CMStrings.padRight(CV.matter,55)+"\n\r");
 					}
-					msg.append("\n\rEnter CLANVOTE [#] to see details or place your vote.");
+					msg.append(_("\n\rEnter CLANVOTE [#] to see details or place your vote."));
 				}
 			}
 			else
@@ -108,7 +106,7 @@ public class ClanVote extends StdCommand
 				if((which>=0)&&(which<votesForYou.size()))
 					CV=(Clan.ClanVote)votesForYou.elementAt(which);
 				if(CV==null)
-					msg.append("That vote does not exist.  Use CLANVOTE to see a list.");
+					msg.append(_("That vote does not exist.  Use CLANVOTE to see a list."));
 				else
 				{
 					int yeas=0;
@@ -124,25 +122,25 @@ public class ClanVote extends StdCommand
 							else
 								nays++;
 						}
-					msg.append("Vote       : "+(which+1)+"\n\r");
-					msg.append("Started by : "+CV.voteStarter+"\n\r");
+					msg.append(_("Vote       : @x1\n\r",""+(which+1)));
+					msg.append(_("Started by : @x1\n\r",CV.voteStarter));
 					if(CV.voteStatus==Clan.VSTAT_STARTED)
-						msg.append("Started on : "+CMLib.time().date2String(CV.voteStarted)+"\n\r");
+						msg.append(_("Started on : @x1\n\r",CMLib.time().date2String(CV.voteStarted)));
 					else
-						msg.append("Ended on   : "+CMLib.time().date2String(CV.voteStarted)+"\n\r");
-					msg.append("Status     : "+Clan.VSTAT_DESCS[CV.voteStatus]+"\n\r");
+						msg.append(_("Ended on   : @x1\n\r",CMLib.time().date2String(CV.voteStarted)));
+					msg.append(_("Status     : @x1\n\r",Clan.VSTAT_DESCS[CV.voteStatus]));
 					switch(CV.voteStatus)
 					{
 					case Clan.VSTAT_STARTED:
-						msg.append("If passed, the following command would be executed:\n\r");
+						msg.append(_("If passed, the following command would be executed:\n\r"));
 						break;
 					case Clan.VSTAT_PASSED:
-						msg.append("Results    : "+yeas+" Yeas, "+nays+" Nays\n\r");
-						msg.append("The following command has been executed:\n\r");
+						msg.append(_("Results    : @x1 Yeas, @x2 Nays\n\r",""+yeas,""+nays));
+						msg.append(_("The following command has been executed:\n\r"));
 						break;
 					case Clan.VSTAT_FAILED:
-						msg.append("Results    : "+yeas+" Yeas, "+nays+" Nays\n\r");
-						msg.append("The following command will not be executed:\n\r");
+						msg.append(_("Results    : @x1 Yeas, @x2 Nays\n\r",""+yeas,""+nays));
+						msg.append(_("The following command will not be executed:\n\r"));
 						break;
 					}
 					msg.append(CV.matter+"\n\r");
@@ -170,14 +168,14 @@ public class ClanVote extends StdCommand
 							switch(answer.toUpperCase().charAt(0))
 							{
 							case 'Y':
-								msg.append("Your YEA vote is recorded.");
+								msg.append(_("Your YEA vote is recorded."));
 								CV.votes.addElement(mob.Name(),Boolean.TRUE);
 								updateVote=true;
 								yeas++;
 								break;
 							case 'N':
 								CV.votes.addElement(mob.Name(),Boolean.FALSE);
-								msg.append("Your NAY vote is recorded.");
+								msg.append(_("Your NAY vote is recorded."));
 								updateVote=true;
 								nays++;
 								break;
@@ -187,7 +185,7 @@ public class ClanVote extends StdCommand
 								{
 									C.delVote(CV);
 									CMLib.clans().clanAnnounce(mob,"A prior vote for "+C.getGovernmentName()+" "+C.clanID()+" has been deleted.");
-									msg.append("The vote has been deleted.");
+									msg.append(_("The vote has been deleted."));
 									updateVote=true;
 								}
 								break;

@@ -402,7 +402,7 @@ public class GModify extends StdCommand
 		sortEnumeratedList(CMClass.locales(),allKnownFields,allFieldsMsg);
 
 		allKnownFields.addElement("REJUV");
-		allFieldsMsg.append("REJUV ");
+		allFieldsMsg.append(_("REJUV "));
 		use=onfields;
 		final Vector newSet=new Vector();
 		StringBuffer s=new StringBuffer("");

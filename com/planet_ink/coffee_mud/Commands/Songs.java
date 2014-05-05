@@ -52,7 +52,7 @@ public class Songs  extends Skills
 		domainName[0]="";
 		level[0]=-1;
 		parseDomainInfo(mob,commands,new XVector(Integer.valueOf(Ability.ACODE_SONG)),level,domain,domainName);
-		msg.append("\n\r^HYour "+domainName[0].replace('_',' ')+"songs:^? "+getAbilities(mob,mob,Ability.ACODE_SONG,domain[0],true,level[0]));
+		msg.append(_("\n\r^HYour @x1songs:^? @x2",domainName[0].replace('_',' '),getAbilities(mob,mob,Ability.ACODE_SONG,domain[0],true,level[0]).toString()));
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());
 		return false;

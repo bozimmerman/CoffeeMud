@@ -235,7 +235,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 				allFlag=true;
 				mask="";
 			}
-			final StringBuffer buf=new StringBuffer("Potions you know how to brew:\n\r");
+			final StringBuffer buf=new StringBuffer(_("Potions you know how to brew:\n\r"));
 			buf.append(CMStrings.padRight(_("Spell"),cols[0])+" "+CMStrings.padRight(_("Spell"),cols[0])+" "+CMStrings.padRight(_("Spell"),cols[0]));
 			int toggler=1;
 			final int toggleTop=3;

@@ -479,7 +479,7 @@ public class Where extends StdCommand
 			}
 			final StringBuffer msg=new StringBuffer("You are currently in: ^H"+mob.location().getArea().name()+"^?\n\r");
 			if((!CMSecurity.isDisabled(CMSecurity.DisFlag.ROOMVISITS))&&(mob.playerStats()!=null))
-				msg.append("You have explored "+mob.playerStats().percentVisited(mob,mob.location().getArea())+"% of this area and "+mob.playerStats().percentVisited(mob,null)+"% of the world.\n\r");
+				msg.append(_("You have explored @x1% of this area and @x2% of the world.\n\r",""+mob.playerStats().percentVisited(mob,mob.location().getArea()),""+mob.playerStats().percentVisited(mob,null)));
 			final DVector scores=new DVector(2);
 			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
@@ -505,7 +505,7 @@ public class Where extends StdCommand
 					}
 				}
 			}
-			msg.append("\n\r^HThe best areas for you to try appear to be: ^?\n\r\n\r");
+			msg.append(_("\n\r^HThe best areas for you to try appear to be: ^?\n\r\n\r"));
 			msg.append("^x"+CMStrings.padRight(_("Area Name"),35)+CMStrings.padRight(_("Level"),6)+CMStrings.padRight(_("Alignment"),20)+CMStrings.padRight(_("Pop"),10)+"^.^?\n\r");
 			for(int i=scores.size()-1;((i>=0)&&(i>=(scores.size()-15)));i--)
 			{
@@ -519,7 +519,7 @@ public class Where extends StdCommand
 				   .append(CMStrings.padRight(Integer.toString(A.getAreaIStats()[Area.Stats.POPULATION.ordinal()]),10))
 				   .append("\n\r");
 			}
-			msg.append("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?");
+			msg.append(_("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?"));
 			if(!mob.isMonster())
 				mob.session().colorOnlyPrintln(msg.toString()+"\n\r");
 		}

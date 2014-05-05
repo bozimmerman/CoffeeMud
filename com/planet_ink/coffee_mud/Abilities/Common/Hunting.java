@@ -144,12 +144,12 @@ public class Hunting extends CommonSkill
 				}
 				else
 				{
-					final StringBuffer str=new StringBuffer("You can't seem to find any game around here.\n\r");
+					final StringBuffer str=new StringBuffer(_("You can't seem to find any game around here.\n\r"));
 					final int d=lookingFor(RawMaterial.MATERIAL_FLESH,mob.location());
 					if(d<0)
-						str.append("You might try elsewhere.");
+						str.append(_("You might try elsewhere."));
 					else
-						str.append("You might try "+Directions.getInDirectionName(d)+".");
+						str.append(_("You might try @x1.",Directions.getInDirectionName(d)));
 					commonTell(mob,str.toString());
 					unInvoke();
 				}

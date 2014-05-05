@@ -212,7 +212,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 					ListingLibrary.ColFixer.fixColWidth(20,mob.session()),
 					ListingLibrary.ColFixer.fixColWidth(3,mob.session())
 				};
-			final StringBuffer buf=new StringBuffer(CMStrings.padRight(_("Item"),cols[0])+" "+CMStrings.padRight(_("Lvl"),cols[1])+" Stone required\n\r");
+			final StringBuffer buf=new StringBuffer(_("@x1 @x2 Stone required\n\r",CMStrings.padRight(_("Item"),cols[0]),CMStrings.padRight(_("Lvl"),cols[1])));
 			for(int r=0;r<recipes.size();r++)
 			{
 				final List<String> V=recipes.get(r);

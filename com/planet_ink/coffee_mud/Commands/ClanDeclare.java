@@ -146,7 +146,7 @@ public class ClanDeclare extends StdCommand
 			}
 			else
 			{
-				msg.append("You aren't in the right position to declare relationships with your "+C.getGovernmentName()+".");
+				msg.append(_("You aren't in the right position to declare relationships with your @x1.",C.getGovernmentName()));
 			}
 		}
 		else

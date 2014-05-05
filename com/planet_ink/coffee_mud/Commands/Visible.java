@@ -68,7 +68,7 @@ public class Visible extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		final String str="Prop_WizInvis";
+		final String str=_("Prop_WizInvis");
 		final Ability A=mob.fetchEffect(str);
 		boolean didSomething=false;
 		if(A!=null)

@@ -908,7 +908,7 @@ public class Spell_Wish extends Spell
 						if((amountToLose>0)&&(mob.baseCharStats().getStat(trait)>amountToLose))
 						{
 							mob.baseCharStats().setStat(trait,mob.baseCharStats().getStat(trait)-amountToLose);
-							str.append("\n\rYou lost "+amountToLose+" points of "+CharStats.CODES.DESC(trait).toLowerCase()+".");
+							str.append(_("\n\rYou lost @x1 points of @x2.",""+amountToLose,CharStats.CODES.DESC(trait).toLowerCase()));
 						}
 					}
 					mob.tell(str.toString()+"\n\r");

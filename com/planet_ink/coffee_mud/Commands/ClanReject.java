@@ -110,17 +110,17 @@ public class ClanReject extends StdCommand
 				}
 				else
 				{
-					msg.append(memberStr+" isn't a member of your "+C.getGovernmentName()+".");
+					msg.append(_("@x1 isn't a member of your @x2.",memberStr,C.getGovernmentName()));
 				}
 			}
 			else
 			{
-			  msg.append("You aren't in the right position to reject applicants to your "+C.getGovernmentName()+".");
+			  msg.append(_("You aren't in the right position to reject applicants to your @x1.",C.getGovernmentName()));
 			}
 		}
 		else
 		{
-			msg.append("You haven't specified which applicant you are rejecting.");
+			msg.append(_("You haven't specified which applicant you are rejecting."));
 		}
 		mob.tell(msg.toString());
 		return false;

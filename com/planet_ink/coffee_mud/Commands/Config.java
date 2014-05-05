@@ -53,7 +53,7 @@ public class Config extends StdCommand
 			msg.append(CMStrings.padRight(MOB.AUTODESC[i],15)+": ");
 			boolean set=CMath.isSet(mob.getBitmap(),i);
 			if(MOB.AUTOREV[i]) set=!set;
-			msg.append(set?"ON":"OFF");
+			msg.append(set?_("ON"):_("OFF"));
 			msg.append("\n\r");
 		}
 		if(mob.playerStats()!=null)

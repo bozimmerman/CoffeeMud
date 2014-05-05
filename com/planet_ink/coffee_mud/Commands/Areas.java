@@ -186,7 +186,7 @@ public class Areas extends StdCommand
 			}
 			msg.append(CMStrings.padRight((String)areasVec.elementAt(i),colWidth)+"^N");
 		}
-		msg.append("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?");
+		msg.append(_("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?"));
 		if((mob!=null)&&(!mob.isMonster()))
 			mob.session().colorOnlyPrintln(msg.toString());
 		return false;

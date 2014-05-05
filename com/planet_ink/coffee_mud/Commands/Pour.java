@@ -89,7 +89,7 @@ public class Pour extends StdCommand
 			((Drink)out).setLiquidRemaining(0);
 			out.setDisplayText("");
 			out.setName("out");
-			msgStr="<S-NAME> pour(s) <O-NAME> <T-NAME>.";
+			msgStr=_("<S-NAME> pour(s) <O-NAME> <T-NAME>.");
 			mob.location().addItem(out,ItemPossessor.Expire.Resource);
 			fillThis=out;
 		}
@@ -113,9 +113,9 @@ public class Pour extends StdCommand
 			if((verb==PourVerb.ONTO)&&(fillThis instanceof Drink))
 				verb=PourVerb.INTO;
 			if(verb==PourVerb.ONTO)
-				msgStr="<S-NAME> pour(s) <O-NAME> onto <T-NAME>.";
+				msgStr=_("<S-NAME> pour(s) <O-NAME> onto <T-NAME>.");
 			else
-				msgStr="<S-NAME> pour(s) <O-NAME> into <T-NAME>.";
+				msgStr=_("<S-NAME> pour(s) <O-NAME> into <T-NAME>.");
 		}
 
 		final CMMsg fillMsg=CMClass.getMsg(mob,fillThis,fillFromThis,(verb==PourVerb.ONTO)?CMMsg.MSG_POUR:CMMsg.MSG_FILL,msgStr);

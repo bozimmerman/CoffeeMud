@@ -80,18 +80,18 @@ public class Spell_DetectScrying extends Spell
 				if(target.session()!=null)
 					for(final Session S1 : CMLib.sessions().localOnlineIterable())
 						if(target.session().isBeingSnoopedBy(S1))
-							str.append(S1.mob().name()+" is snooping on <T-NAME>.  ");
+							str.append(_("@x1 is snooping on <T-NAME>.  ",S1.mob().name()));
 				Ability A=target.fetchEffect("Spell_Scry");
 				if((A!=null)&&(A.invoker()!=null))
-					str.append(A.invoker().name()+" is scrying on <T-NAME>.");
+					str.append(_("@x1 is scrying on <T-NAME>.",A.invoker().name()));
 				A=target.fetchEffect("Spell_Claireaudience");
 				if((A!=null)&&(A.invoker()!=null))
-					str.append(A.invoker().name()+" is listening to <T-NAME>.");
+					str.append(_("@x1 is listening to <T-NAME>.",A.invoker().name()));
 				A=target.fetchEffect("Spell_Clairevoyance");
 				if((A!=null)&&(A.invoker()!=null))
-					str.append(A.invoker().name()+" is watching <T-NAME>.");
+					str.append(_("@x1 is watching <T-NAME>.",A.invoker().name()));
 				if(str.length()==0)
-					str.append("There doesn't seem to be anyone scrying on <T-NAME>.");
+					str.append(_("There doesn't seem to be anyone scrying on <T-NAME>."));
 				CMLib.commands().postSay(mob,target,str.toString(),false,false);
 			}
 		}

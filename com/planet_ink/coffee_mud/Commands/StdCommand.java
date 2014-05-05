@@ -112,13 +112,13 @@ public class StdCommand implements Command
 			}
 		}
 		final StringBuilder str=new StringBuilder("");
-		str.append("Illegal arguments. Sent: ");
+		str.append(_("Illegal arguments. Sent: "));
 		for(final Object o : args)
 			if(o==null)
-				str.append("null ");
+				str.append(_("null "));
 			else
 				str.append(o.getClass().getSimpleName()).append(" ");
-		str.append(". Correct: ");
+		str.append(_(". Correct: "));
 		for (final Class[] element : fmt)
 			for(final Class c : element)
 				str.append(c.getSimpleName()).append(" ");

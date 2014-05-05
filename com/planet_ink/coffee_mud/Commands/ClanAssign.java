@@ -163,17 +163,17 @@ public class ClanAssign extends StdCommand
 				}
 				else
 				{
-					msg.append(memberStr+" isn't a member of your "+C.getGovernmentName()+".");
+					msg.append(_("@x1 isn't a member of your @x2.",memberStr,C.getGovernmentName()));
 				}
 			}
 			else
 			{
-				msg.append("You aren't in the right position to assign anyone in your "+C.getGovernmentName()+".");
+				msg.append(_("You aren't in the right position to assign anyone in your @x1.",C.getGovernmentName()));
 			}
 		}
 		else
 		{
-			msg.append("You haven't specified which member you are assigning a new role to.");
+			msg.append(_("You haven't specified which member you are assigning a new role to."));
 		}
 		mob.tell(msg.toString());
 		return false;

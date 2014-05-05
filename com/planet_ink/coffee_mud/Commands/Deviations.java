@@ -221,7 +221,7 @@ public class Deviations extends StdCommand
 		else
 			check.addElement(E);
 		final StringBuffer str=new StringBuffer("");
-		str.append("Deviations Report:\n\r");
+		str.append(_("Deviations Report:\n\r"));
 		final StringBuffer itemResults = new StringBuffer();
 		final StringBuffer mobResults = new StringBuffer();
 		for(int c=0;c<check.size();c++)

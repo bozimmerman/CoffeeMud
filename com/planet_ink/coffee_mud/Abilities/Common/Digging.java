@@ -77,7 +77,7 @@ public class Digging extends GatheringSkill
 				}
 				else
 				{
-					final StringBuffer str=new StringBuffer("You can't seem to find anything worth digging up here.\n\r");
+					final StringBuffer str=new StringBuffer(_("You can't seem to find anything worth digging up here.\n\r"));
 					commonTell(mob,str.toString());
 					unInvoke();
 				}

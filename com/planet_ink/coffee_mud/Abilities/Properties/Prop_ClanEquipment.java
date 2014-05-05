@@ -107,7 +107,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 	public String accountForYourself()
 	{
 		// My slightly complicated way of showing the clan effect when ID'd
-		final StringBuffer id=new StringBuffer(clanType+" "+clanName+" Bonus: ");
+		final StringBuffer id=new StringBuffer(_("@x1 @x2 Bonus: ",clanType,clanName));
 		if((affected instanceof Weapon)&&(!(affected instanceof Wand))&&(TypeOfEffect<1000))
 		{
 			id.append("Does "+(1*PowerLevel)+"-"+(6*PowerLevel)+" additional "+type.toLowerCase()+" damage.");

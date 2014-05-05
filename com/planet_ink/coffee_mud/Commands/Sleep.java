@@ -68,7 +68,7 @@ public class Sleep extends StdCommand
 		if(E instanceof Rideable)
 			mountStr="<S-NAME> "+((Rideable)E).mountString(CMMsg.TYP_SLEEP,mob)+" <T-NAME>.";
 		else
-			mountStr="<S-NAME> sleep(s) on <T-NAME>.";
+			mountStr=_("<S-NAME> sleep(s) on <T-NAME>.");
 		String sourceMountStr=null;
 		if(!CMLib.flags().canBeSeenBy(E,mob))
 			sourceMountStr=mountStr;

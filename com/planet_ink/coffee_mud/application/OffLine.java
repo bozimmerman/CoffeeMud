@@ -74,26 +74,26 @@ public class OffLine extends Thread implements MudHost
 
 	public static void fatalStartupError(Thread t, int type)
 	{
-		String str=null;
+		String errorInternal=null;
 		switch(type)
 		{
 		case 1:
-			str="ERROR: initHost() will not run without properties. Exiting.";
+			errorInternal="ERROR: initHost() will not run without properties. Exiting.";
 			break;
 		case 2:
 			break;
 		case 3:
 			break;
 		case 4:
-			str="Fatal exception. Exiting.";
+			errorInternal="Fatal exception. Exiting.";
 			break;
 		case 5:
-			str="OffLine Server did not start. Exiting.";
+			errorInternal="OffLine Server did not start. Exiting.";
 			break;
 		default:
 			break;
 		}
-		System.out.println(str);
+		System.out.println(errorInternal);
 		CMLib.killThread(t,500,1);
 	}
 

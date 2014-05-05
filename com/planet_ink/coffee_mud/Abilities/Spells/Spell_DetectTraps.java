@@ -80,7 +80,7 @@ public class Spell_DetectTraps extends Spell
 			final List<Item> V=C.getContents();
 			for(int v=0;v<V.size();v++)
 				if(trapCheck(V.get(v)).length()>0)
-					msg.append(C.name()+" contains something trapped.");
+					msg.append(_("@x1 contains something trapped.",C.name()));
 		}
 		else
 		if((P instanceof Item)&&(CMLib.flags().canBeSeenBy(P,mob)))

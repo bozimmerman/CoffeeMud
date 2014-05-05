@@ -120,17 +120,17 @@ public class ClanExile extends StdCommand
 				}
 				else
 				{
-					msg.append(memberStr+" isn't a member of your "+C.getGovernmentName()+".");
+					msg.append(_("@x1 isn't a member of your @x2.",memberStr,C.getGovernmentName()));
 				}
 			}
 			else
 			{
-				msg.append("You aren't in the right position to exile anyone from your "+C.getGovernmentName()+".");
+				msg.append(_("You aren't in the right position to exile anyone from your @x1.",C.getGovernmentName()));
 			}
 		}
 		else
 		{
-			msg.append("You haven't specified which member you are exiling.");
+			msg.append(_("You haven't specified which member you are exiling."));
 		}
 		mob.tell(msg.toString());
 		return false;

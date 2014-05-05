@@ -89,7 +89,7 @@ public class TypeCmd extends Go
 		final String enterWhat=CMParms.combine(commands,1);
 		if(typeIntoThis!=null)
 		{
-			final String enterStr="^W<S-NAME> enter(s) '"+enterWhat+"' into <T-NAME>.^?";
+			final String enterStr=_("^W<S-NAME> enter(s) '@x1' into <T-NAME>.^?",enterWhat);
 			final CMMsg msg=CMClass.getMsg(mob,typeIntoThis,null,CMMsg.MSG_WRITE,enterStr,CMMsg.MSG_WRITE,enterWhat,CMMsg.MSG_WRITE,null);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);

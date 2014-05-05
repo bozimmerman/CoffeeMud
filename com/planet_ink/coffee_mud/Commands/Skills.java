@@ -195,10 +195,10 @@ public class Skills extends StdCommand
 				msg.append(thisLine);
 		}
 		if(msg.length()==0)
-			msg.append("^!None!^?");
+			msg.append(_("^!None!^?"));
 		else
 		if(addQualLine)
-			msg.append("\n\r\n\rUse QUALIFY to see additional skills you can GAIN.");
+			msg.append(_("\n\r\n\rUse QUALIFY to see additional skills you can GAIN."));
 		return msg;
 	}
 
@@ -228,7 +228,7 @@ public class Skills extends StdCommand
 				V.setElementAt(Integer.valueOf(((Integer)V.elementAt(v)).intValue()+domain[0]),v);
 		}
 		if((domain[0]>=0)||(qual.length()==0))
-			msg.append("\n\r^HYour "+domainName[0].replace('_',' ')+"skills:^? "+getAbilities(mob,mob,V,mask,true,level[0]));
+			msg.append(_("\n\r^HYour @x1skills:^? @x2",domainName[0].replace('_',' '),getAbilities(mob,mob,V,mask,true,level[0]).toString()));
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());
 		return false;

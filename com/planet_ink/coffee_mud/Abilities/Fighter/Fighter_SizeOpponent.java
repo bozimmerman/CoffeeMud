@@ -67,10 +67,8 @@ public class Fighter_SizeOpponent extends FighterSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final StringBuffer buf=new StringBuffer(target.name(mob)+" looks to have "+target.curState().getHitPoints()+" out of "+target.maxState().getHitPoints()+" hit points.\n\r");
-				buf.append(target.charStats().HeShe()+" looks like "+target.charStats().heshe()+" is "
-						+CMStrings.removeColors(CMLib.combat().fightingProwessStr(target))
-						+" and is "+CMStrings.removeColors(CMLib.combat().armorStr(target))+".");
+				final StringBuffer buf=new StringBuffer(_("@x1 looks to have @x2 out of @x3 hit points.\n\r",target.name(mob),""+target.curState().getHitPoints(),""+target.maxState().getHitPoints()));
+				buf.append(_("@x1 looks like @x2 is @x3 and is @x4.",target.charStats().HeShe(),target.charStats().heshe(),CMStrings.removeColors(CMLib.combat().fightingProwessStr(target)),CMStrings.removeColors(CMLib.combat().armorStr(target))));
 				mob.tell(buf.toString());
 			}
 		}

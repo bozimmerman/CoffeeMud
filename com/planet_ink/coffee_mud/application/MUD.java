@@ -889,29 +889,29 @@ public class MUD extends Thread implements MudHost
 
 		public void fatalStartupError(Thread t, int type)
 		{
-			String str=null;
+			String errorInternal=null;
 			switch(type)
 			{
 			case 1:
-				str="ERROR: initHost() will not run without properties. Exiting.";
+				errorInternal="ERROR: initHost() will not run without properties. Exiting.";
 				break;
 			case 2:
-				str="Map is empty?! Exiting.";
+				errorInternal="Map is empty?! Exiting.";
 				break;
 			case 3:
-				str="Database init failed. Exiting.";
+				errorInternal="Database init failed. Exiting.";
 				break;
 			case 4:
-				str="Fatal exception. Exiting.";
+				errorInternal="Fatal exception. Exiting.";
 				break;
 			case 5:
-				str="MUD Server did not start. Exiting.";
+				errorInternal="MUD Server did not start. Exiting.";
 				break;
 			default:
-				str="Fatal error loading classes.  Make sure you start up coffeemud from the directory containing the class files.";
+				errorInternal="Fatal error loading classes.  Make sure you start up coffeemud from the directory containing the class files.";
 				break;
 			}
-			Log.errOut(Thread.currentThread().getName(),str);
+			Log.errOut(Thread.currentThread().getName(),errorInternal);
 			bringDown=true;
 
 			CMProps.setBoolAllVar(CMProps.Bool.MUDSHUTTINGDOWN,true);

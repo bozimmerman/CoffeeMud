@@ -87,9 +87,9 @@ public class Thief_SenseLaw extends ThiefSkill
 				{
 					final MOB M=(MOB)V.elementAt(l);
 					if(CMLib.flags().canBeSeenBy(M,mob))
-						buf.append(M.name(mob)+" is an officer of the law.  ");
+						buf.append(_("@x1 is an officer of the law.  ",M.name(mob)));
 					else
-						buf.append("There is an officer of the law here.  ");
+						buf.append(_("There is an officer of the law here.  "));
 				}
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
@@ -99,7 +99,7 @@ public class Thief_SenseLaw extends ThiefSkill
 					{
 						V=getLawMen(mob.location().getArea(),R,B);
 						if((V!=null)&&(V.size()>0))
-							buf.append("There is an officer of the law "+Directions.getInDirectionName(d)+".  ");
+							buf.append(_("There is an officer of the law @x1.  ",Directions.getInDirectionName(d)));
 					}
 				}
 				if((buf.length()>0)

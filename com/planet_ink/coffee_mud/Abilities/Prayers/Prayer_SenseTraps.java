@@ -106,7 +106,7 @@ public class Prayer_SenseTraps extends Prayer
 			final List<Item> V=C.getContents();
 			for(int v=0;v<V.size();v++)
 				if(trapCheck(V.get(v)).length()>0)
-					msg.append(C.name()+" contains something trapped.\n");
+					msg.append(_("@x1 contains something trapped.\n",C.name()));
 		}
 		else
 		if((P instanceof Item)&&(CMLib.flags().canBeSeenBy(P,mob)))

@@ -1714,7 +1714,7 @@ public class ListCmd extends StdCommand
 			final Area A=(Area)a.nextElement();
 			msg.append(CMStrings.padRight(A.Name(),COL_LEN)+": ");
 			if(A.getSubOpList().length()==0)
-				msg.append("No Area staff defined.\n\r");
+				msg.append(_("No Area staff defined.\n\r"));
 			else
 				msg.append(A.getSubOpList()+"\n\r");
 		}
@@ -1734,11 +1734,11 @@ public class ListCmd extends StdCommand
 					{
 						final Room R2=R.rawDoors()[d];
 						if((R2!=null)&&(R2.rawDoors()[Directions.getOpDirectionCode(d)]!=R))
-							str.append(CMStrings.padRight(R.roomID(),30)+": "+Directions.getDirectionName(d)+" to "+R2.roomID()+"\n\r");
+							str.append(_("@x1: @x2 to @x3\n\r",CMStrings.padRight(R.roomID(),30),Directions.getDirectionName(d),R2.roomID()));
 					}
 			}
 		}catch(final NoSuchElementException e){}
-		if(str.length()==0) str.append("None!");
+		if(str.length()==0) str.append(_("None!"));
 		if(CMParms.combine(commands,1).equalsIgnoreCase("log"))
 			Log.rawSysOut(str.toString());
 		return str.toString();
@@ -1758,11 +1758,11 @@ public class ListCmd extends StdCommand
 					final Room R2=R.rawDoors()[d];
 					final Exit E2=R.getRawExit(d);
 					if((R2==null)&&(E2!=null))
-						str.append(CMStrings.padRight(R.roomID(),30)+": "+Directions.getDirectionName(d)+" to "+E2.temporaryDoorLink()+" ("+E2.displayText()+")\n\r");
+						str.append(_("@x1: @x2 to @x3 (@x4)\n\r",CMStrings.padRight(R.roomID(),30),Directions.getDirectionName(d),E2.temporaryDoorLink(),E2.displayText()));
 				}
 			}
 		}catch(final NoSuchElementException e){}
-		if(str.length()==0) str.append("None!");
+		if(str.length()==0) str.append(_("None!"));
 		if(CMParms.combine(commands,1).equalsIgnoreCase("log"))
 			Log.rawSysOut(str.toString());
 		return str.toString();
@@ -1859,7 +1859,7 @@ public class ListCmd extends StdCommand
 		final StringBuilder str = new StringBuilder("");
 		if(rest.trim().length()==0)
 		{
-			str.append("Common Skills with editable recipes: ");
+			str.append(_("Common Skills with editable recipes: "));
 			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			{
 				final Ability A=e.nextElement();
@@ -1881,10 +1881,10 @@ public class ListCmd extends StdCommand
 		{
 			final Ability A=CMClass.findAbility(rest,Ability.ACODE_COMMON_SKILL,-1,false);
 			if(A==null)
-				str.append("Ability '"+rest+"' does not exist -- try list recipes");
+				str.append(_("Ability '@x1' does not exist -- try list recipes",rest));
 			else
 			if(!(A instanceof ItemCraftor))
-				str.append("Ability '"+A.ID()+"' is not a proper ability -- try list recipes");
+				str.append(_("Ability '@x1' is not a proper ability -- try list recipes",A.ID()));
 			else
 			{
 				final ItemCraftor iA = (ItemCraftor)A;
@@ -1892,7 +1892,7 @@ public class ListCmd extends StdCommand
 				||(iA.parametersFormat().length()==0)
 				||(iA.parametersFile()==null)
 				||(iA.parametersFile().length()==0))
-					str.append("Ability '"+A.ID()+"' is not editable -- try list recipes");
+					str.append(_("Ability '@x1' is not editable -- try list recipes",A.ID()));
 				else
 					str.append(CMLib.ableParms().getRecipeList(iA));
 			}
@@ -1911,13 +1911,13 @@ public class ListCmd extends StdCommand
 		||commands.get(2).toString().equals("?")
 		||commands.get(2).toString().equals("help"))
 		{
-			str.append("List what in space? Try one of the following:\n\r");
-			str.append("LIST SPACE ALL - List everything in space everywhere!!\n\r");
-			str.append("LIST SPACE WITHIN [DISTANCE] - List within distance of current planet.\n\r");
-			str.append("LIST SPACE AROUND [X],[Y],[Z] - List all within 1 solar system of coords.\n\r");
-			str.append("LIST SPACE AROUND [NAME] - List all within 1 solar system of named object.\n\r");
-			str.append("LIST SPACE AROUND [NAME] WITHIN [DISTANCE] - List all within [distance] of named object.\n\r");
-			str.append("\n\r[DISTANCE] can be in DM (decameters), KM (kilometers), AU (astro units), or SU (solar system units.\n\r");
+			str.append(_("List what in space? Try one of the following:\n\r"));
+			str.append(_("LIST SPACE ALL - List everything in space everywhere!!\n\r"));
+			str.append(_("LIST SPACE WITHIN [DISTANCE] - List within distance of current planet.\n\r"));
+			str.append(_("LIST SPACE AROUND [X],[Y],[Z] - List all within 1 solar system of coords.\n\r"));
+			str.append(_("LIST SPACE AROUND [NAME] - List all within 1 solar system of named object.\n\r"));
+			str.append(_("LIST SPACE AROUND [NAME] WITHIN [DISTANCE] - List all within [distance] of named object.\n\r"));
+			str.append(_("\n\r[DISTANCE] can be in DM (decameters), KM (kilometers), AU (astro units), or SU (solar system units.\n\r"));
 			return str.toString();
 		}
 		//TODO: finish!
@@ -1966,7 +1966,7 @@ public class ListCmd extends StdCommand
 		str.append(CMStrings.padRight(_("Val"),COL_LEN3)+" ");
 		str.append(CMStrings.padRight(_("Freq"),COL_LEN4)+" ");
 		str.append(CMStrings.padRight(_("Str"),COL_LEN5)+" ");
-		str.append("Locales\n\r");
+		str.append(_("Locales\n\r"));
 		for(final int i : RawMaterial.CODES.ALL())
 		{
 			final String resourceName=CMStrings.capitalizeAndLower(RawMaterial.CODES.NAME(i).toLowerCase());
@@ -2225,10 +2225,10 @@ public class ListCmd extends StdCommand
 				final Poll P=i.next();
 				str.append(CMStrings.padRight(""+v,2)+": "+P.getName());
 				if(!CMath.bset(P.getFlags(),Poll.FLAG_ACTIVE))
-					str.append(" (inactive)");
+					str.append(_(" (inactive)"));
 				else
 				if(P.getExpiration()>0)
-					str.append(" (expires: "+CMLib.time().date2String(P.getExpiration())+")");
+					str.append(_(" (expires: @x1)",CMLib.time().date2String(P.getExpiration())));
 				str.append("\n\r");
 			}
 			mob.tell(str.toString());
@@ -2568,7 +2568,7 @@ public class ListCmd extends StdCommand
 		final StringBuffer str=new StringBuffer("");
 		for(final String key : CMLib.tech().getMakeRegisteredKeys())
 		{
-			str.append("Registered key: "+key+" : "+(CMLib.tech().isCurrentActive(key)?"Activated":"Suspended")+"\n\r");
+			str.append(_("Registered key: @x1 : @x2\n\r",key,(CMLib.tech().isCurrentActive(key)?"Activated":"Suspended")));
 			str.append(CMStrings.padRight(_("Name"), 30)).append(" ");
 			str.append(CMStrings.padRight(_("Room"), 30)).append(" ");
 			str.append("\n\r");
@@ -2582,7 +2582,7 @@ public class ListCmd extends StdCommand
 			str.append("\n\r");
 		}
 		if(str.length()==0)
-			str.append("No electronics found.\n\r");
+			str.append(_("No electronics found.\n\r"));
 		if(mob.session()!=null)
 			mob.session().rawPrint(str.toString());
 	}
@@ -2850,7 +2850,7 @@ public class ListCmd extends StdCommand
 					{
 						str.append(V.get(v));
 						if(v==(V.size()-2))
-							str.append(", or ");
+							str.append(_(", or "));
 						else
 						if(v<(V.size()-1))
 							str.append(", ");

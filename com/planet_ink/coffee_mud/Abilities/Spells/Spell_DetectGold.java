@@ -67,12 +67,12 @@ public class Spell_DetectGold extends Spell
 		{
 			if((I.material()==RawMaterial.RESOURCE_GOLD)
 			&&(CMLib.flags().canBeSeenBy(I,mob)))
-				msg.append(I.name(mob)+" glows golden.\n\r");
+				msg.append(_("@x1 glows golden.\n\r",I.name(mob)));
 		}
 		else
 		if((I.container()!=null)&&(I.container().container()==container))
 			if(msg.toString().indexOf(I.container().name()+" contains some sort of gold.")<0)
-				msg.append(I.container().name()+" contains some sort of gold.\n\r");
+				msg.append(_("@x1 contains some sort of gold.\n\r",I.container().name()));
 		return msg.toString();
 	}
 	public String metalHere(MOB mob, Environmental E, Item container)

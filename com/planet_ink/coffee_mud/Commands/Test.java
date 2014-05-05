@@ -361,21 +361,21 @@ public class Test extends StdCommand
 					final StringBuilder str=new StringBuilder("level: "+level+"\n\r");
 					int[] resp;
 					resp=recoverMath(level,stat,stat,stat-4,stat,/*Hun*/false,/*Thirs*/false,/*Fatig*/false,/*Sleep*/false,/*Sit*/false,/*Fly*/false,/*Swim*/false);
-					str.append("standing: hpticks="+(hp/resp[0])+",  manaticks="+(mana/resp[1])+",  moveticks="+(move/resp[2])+"\n\r");
+					str.append(_("standing: hpticks=@x1,  manaticks=@x2,  moveticks=@x3\n\r",""+(hp/resp[0]),""+(mana/resp[1]),""+(move/resp[2])));
 					resp=recoverMath(level,stat,stat,stat-4,stat,/*Hun*/true,/*Thirs*/false,/*Fatig*/false,/*Sleep*/false,/*Sit*/false,/*Fly*/false,/*Swim*/false);
-					str.append("hungry: hpticks="+(hp/resp[0])+",  manaticks="+(mana/resp[1])+",  moveticks="+(move/resp[2])+"\n\r");
+					str.append(_("hungry: hpticks=@x1,  manaticks=@x2,  moveticks=@x3\n\r",""+(hp/resp[0]),""+(mana/resp[1]),""+(move/resp[2])));
 					resp=recoverMath(level,stat,stat,stat-4,stat,/*Hun*/false,/*Thirs*/true,/*Fatig*/false,/*Sleep*/false,/*Sit*/false,/*Fly*/false,/*Swim*/false);
-					str.append("thirsty: hpticks="+(hp/resp[0])+",  manaticks="+(mana/resp[1])+",  moveticks="+(move/resp[2])+"\n\r");
+					str.append(_("thirsty: hpticks=@x1,  manaticks=@x2,  moveticks=@x3\n\r",""+(hp/resp[0]),""+(mana/resp[1]),""+(move/resp[2])));
 					resp=recoverMath(level,stat,stat,stat-4,stat,/*Hun*/false,/*Thirs*/false,/*Fatig*/true,/*Sleep*/false,/*Sit*/false,/*Fly*/false,/*Swim*/false);
-					str.append("fatigued: hpticks="+(hp/resp[0])+",  manaticks="+(mana/resp[1])+",  moveticks="+(move/resp[2])+"\n\r");
+					str.append(_("fatigued: hpticks=@x1,  manaticks=@x2,  moveticks=@x3\n\r",""+(hp/resp[0]),""+(mana/resp[1]),""+(move/resp[2])));
 					resp=recoverMath(level,stat,stat,stat-4,stat,/*Hun*/false,/*Thirs*/false,/*Fatig*/false,/*Sleep*/true,/*Sit*/false,/*Fly*/false,/*Swim*/false);
-					str.append("sleep: hpticks="+(hp/resp[0])+",  manaticks="+(mana/resp[1])+",  moveticks="+(move/resp[2])+"\n\r");
+					str.append(_("sleep: hpticks=@x1,  manaticks=@x2,  moveticks=@x3\n\r",""+(hp/resp[0]),""+(mana/resp[1]),""+(move/resp[2])));
 					resp=recoverMath(level,stat,stat,stat-4,stat,/*Hun*/false,/*Thirs*/false,/*Fatig*/false,/*Sleep*/false,/*Sit*/true,/*Fly*/false,/*Swim*/false);
-					str.append("sitting: hpticks="+(hp/resp[0])+",  manaticks="+(mana/resp[1])+",  moveticks="+(move/resp[2])+"\n\r");
+					str.append(_("sitting: hpticks=@x1,  manaticks=@x2,  moveticks=@x3\n\r",""+(hp/resp[0]),""+(mana/resp[1]),""+(move/resp[2])));
 					resp=recoverMath(level,stat,stat,stat-4,stat,/*Hun*/false,/*Thirs*/false,/*Fatig*/false,/*Sleep*/false,/*Sit*/false,/*Fly*/true,/*Swim*/false);
-					str.append("flying: hpticks="+(hp/resp[0])+",  manaticks="+(mana/resp[1])+",  moveticks="+(move/resp[2])+"\n\r");
+					str.append(_("flying: hpticks=@x1,  manaticks=@x2,  moveticks=@x3\n\r",""+(hp/resp[0]),""+(mana/resp[1]),""+(move/resp[2])));
 					resp=recoverMath(level,stat,stat,stat-4,stat,/*Hun*/false,/*Thirs*/false,/*Fatig*/false,/*Sleep*/false,/*Sit*/false,/*Fly*/false,/*Swim*/true);
-					str.append("swimming: hpticks="+(hp/resp[0])+",  manaticks="+(mana/resp[1])+",  moveticks="+(move/resp[2])+"\n\r");
+					str.append(_("swimming: hpticks=@x1,  manaticks=@x2,  moveticks=@x3\n\r",""+(hp/resp[0]),""+(mana/resp[1]),""+(move/resp[2])));
 					str.append("\n\r");
 					mob.tell(str.toString());
 				}
@@ -912,17 +912,17 @@ public class Test extends StdCommand
 			{
 				final StringBuffer str=new StringBuffer("");
 				if(CMath.bset(metaFlags,Command.METAFLAG_AS))
-					str.append(" AS ");
+					str.append(_(" AS "));
 				if(CMath.bset(metaFlags,Command.METAFLAG_FORCED))
-					str.append(" FORCED ");
+					str.append(_(" FORCED "));
 				if(CMath.bset(metaFlags,Command.METAFLAG_MPFORCED))
-					str.append(" MPFORCED ");
+					str.append(_(" MPFORCED "));
 				if(CMath.bset(metaFlags,Command.METAFLAG_ORDER))
-					str.append(" ORDERED ");
+					str.append(_(" ORDERED "));
 				if(CMath.bset(metaFlags,Command.METAFLAG_POSSESSED))
-					str.append(" POSSESSED ");
+					str.append(_(" POSSESSED "));
 				if(CMath.bset(metaFlags,Command.METAFLAG_SNOOPED))
-					str.append(" SNOOPED ");
+					str.append(_(" SNOOPED "));
 				mob.tell(str.toString());
 			}
 			if(what.equalsIgnoreCase("cmparms")||what.equalsIgnoreCase("all"))
@@ -1581,7 +1581,7 @@ public class Test extends StdCommand
 			}
 			if((what.equalsIgnoreCase("all"))||(what.equalsIgnoreCase("escapefilterbug")))
 			{
-				String str=ColorLibrary.COLOR_GREY+ColorLibrary.COLOR_BGGREEN+"^<CHANNEL \"TEST\"^>You TEST 'message'^</CHANNEL^>^N^.";
+				String str=_("@x1@x2^<CHANNEL \"TEST\"^>You TEST 'message'^</CHANNEL^>^N^.",ColorLibrary.COLOR_GREY,ColorLibrary.COLOR_BGGREEN);
 				str=CMLib.coffeeFilter().fullOutFilter(mob.session(), mob, mob, null, null, str, false);
 				str=CMLib.coffeeFilter().fullOutFilter(mob.session(), mob, mob, null, null, str, false);
 				str=CMLib.coffeeFilter().fullOutFilter(mob.session(), mob, mob, null, null, str, false);

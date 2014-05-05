@@ -232,7 +232,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 					}
 				}
 			}
-			buf.append("\n\rSome items may require additional material.");
+			buf.append(_("\n\rSome items may require additional material."));
 			commonTell(mob,buf.toString());
 			enhanceList(mob);
 			return true;

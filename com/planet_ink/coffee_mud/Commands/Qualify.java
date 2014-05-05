@@ -115,7 +115,7 @@ public class Qualify  extends Skills
 			if(thisLine.length()>0)
 			{
 				if(msg.length()==0)
-					msg.append("\n\r^N[^HLvl^?] Name                Requires     [^HLvl^?] Name                Requires\n\r");
+					msg.append(_("\n\r^N[^HLvl^?] Name                Requires     [^HLvl^?] Name                Requires\n\r"));
 				msg.append(thisLine);
 			}
 		}
@@ -224,7 +224,7 @@ public class Qualify  extends Skills
 			{
 				if(showAll)
 				{
-					msg.append("\n\r^HExpertises:^?\n\r");
+					msg.append(_("\n\r^HExpertises:^?\n\r"));
 					ExpertiseLibrary.ExpertiseDefinition def=null;
 					int col=0;
 					final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,mob);
@@ -301,11 +301,11 @@ public class Qualify  extends Skills
 			{
 				final AbilityMapper.AbilityLimits limits = CMLib.ableMapper().getCommonSkillRemainders(mob);
 				if(limits.commonSkills < Integer.MAX_VALUE/2)
-					msg.append("\n\r^HYou may learn ^w"+limits.commonSkills+"^H more common skills.^N");
+					msg.append(_("\n\r^HYou may learn ^w@x1^H more common skills.^N",""+limits.commonSkills));
 				if(limits.craftingSkills < Integer.MAX_VALUE/2)
-					msg.append("\n\r^HYou may learn ^w"+limits.craftingSkills+"^H more crafting skills.^N");
+					msg.append(_("\n\r^HYou may learn ^w@x1^H more crafting skills.^N",""+limits.craftingSkills));
 				if(limits.nonCraftingSkills < Integer.MAX_VALUE/2)
-					msg.append("\n\r^HYou may learn ^w"+limits.nonCraftingSkills+"^H more non-crafting common skills.^N");
+					msg.append(_("\n\r^HYou may learn ^w@x1^H more non-crafting common skills.^N",""+limits.nonCraftingSkills));
 				mob.session().wraplessPrintln(_("^!You now qualify for the following unknown abilities:^?@x1",msg.toString()));
 				mob.tell(_("\n\rUse the GAIN command with your teacher to gain new skills, spells, and expertises."));
 				if(classesFound)

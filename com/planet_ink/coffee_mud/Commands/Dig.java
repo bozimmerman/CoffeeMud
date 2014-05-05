@@ -87,7 +87,7 @@ public class Dig extends StdCommand
 				return false;
 			}
 
-			final String msgStr="<S-NAME> start(s) digging a hole with <O-NAME>.";
+			final String msgStr=_("<S-NAME> start(s) digging a hole with <O-NAME>.");
 			Item I=mob.fetchWieldedItem();
 			if(I==null)  I=mob.myNaturalWeapon();
 			final CMMsg msg=CMClass.getMsg(mob,mob.location(),I,CMMsg.MSG_DIG,msgStr);
@@ -100,7 +100,7 @@ public class Dig extends StdCommand
 		else
 		if((secondsElapsed % 8)==0)
 		{
-			final String msgStr="<S-NAME> continue(s) digging a hole with <O-NAME>.";
+			final String msgStr=_("<S-NAME> continue(s) digging a hole with <O-NAME>.");
 			Item I=mob.fetchWieldedItem();
 			if(I==null)  I=mob.myNaturalWeapon();
 			final CMMsg msg=CMClass.getMsg(mob,mob.location(),I,CMMsg.MSG_DIG,msgStr);

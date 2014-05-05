@@ -86,11 +86,11 @@ public class Druid_KnowPlants extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				final StringBuffer str=new StringBuffer("");
-				str.append(I.name(mob)+" is a kind of "+RawMaterial.CODES.NAME(I.material()).toLowerCase()+".  ");
+				str.append(_("@x1 is a kind of @x2.  ",I.name(mob),RawMaterial.CODES.NAME(I.material()).toLowerCase()));
 				if(isPlant(I))
-					str.append("It was summoned by "+I.rawSecretIdentity()+".");
+					str.append(_("It was summoned by @x1.",I.rawSecretIdentity()));
 				else
-					str.append("It is either processed by hand, or grown wild.");
+					str.append(_("It is either processed by hand, or grown wild."));
 				mob.tell(str.toString());
 			}
 		}

@@ -97,7 +97,7 @@ public class Chant_DistantWindColor extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final String msg2=Chant_WindColor.getWindColor(mob,newRoom);
+				final String msg2=new Chant_WindColor().getWindColor(mob,newRoom);
 				if(msg2.length()==0)
 					mob.tell(_("The winds at @x1 are clear.",newRoom.displayText(mob)));
 				else

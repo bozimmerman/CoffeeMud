@@ -121,17 +121,17 @@ public class ClanAccept extends StdCommand
 				}
 				else
 				{
-					msg.append(memberStr+" isn't an applicant of your "+C.getGovernmentName()+".");
+					msg.append(_("@x1 isn't an applicant of your @x2.",memberStr,C.getGovernmentName()));
 				}
 			}
 			else
 			{
-				msg.append("You aren't in the right position to accept members into your "+C.getGovernmentName()+".");
+				msg.append(_("You aren't in the right position to accept members into your @x1.",C.getGovernmentName()));
 			}
 		}
 		else
 		{
-			msg.append("You haven't specified which applicant you are accepting.");
+			msg.append(_("You haven't specified which applicant you are accepting."));
 		}
 		mob.tell(msg.toString());
 		return false;

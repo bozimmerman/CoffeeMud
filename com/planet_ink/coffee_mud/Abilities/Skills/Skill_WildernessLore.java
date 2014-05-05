@@ -131,7 +131,7 @@ public class Skill_WildernessLore extends StdSkill
 			final int derivedClimate=room.getClimateType();
 			if(derivedClimate!=Places.CLIMASK_NORMAL)
 			{
-				final StringBuffer str=new StringBuffer("It is unusually ");
+				final StringBuffer str=new StringBuffer(_("It is unusually "));
 				final List<String> conditions=new Vector<String>();
 				if(CMath.bset(derivedClimate, Places.CLIMASK_WET))
 					conditions.add("wet");
@@ -144,7 +144,7 @@ public class Skill_WildernessLore extends StdSkill
 				if(CMath.bset(derivedClimate, Places.CLIMASK_WINDY))
 					conditions.add("windy");
 				str.append(CMLib.english().toEnglishStringList(conditions.toArray(new String[0])));
-				str.append(" here.");
+				str.append(_(" here."));
 				mob.tell(str.toString());
 			}
 		}

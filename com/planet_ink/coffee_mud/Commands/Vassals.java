@@ -52,7 +52,7 @@ public class Vassals extends StdCommand
 		str.append(CMStrings.padRight(_("Class"),10)+" ");
 		str.append(CMStrings.padRight(_("Lvl"),4)+" ");
 		str.append(CMStrings.padRight(_("Exp/Lvl"),17));
-		str.append("] Character name\n\r");
+		str.append(_("] Character name\n\r"));
 		for(PlayerLibrary.ThinPlayer tM : players)
 		{
 			final MOB M=CMLib.players().getPlayer(tM.name);

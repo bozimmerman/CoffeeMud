@@ -268,7 +268,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 				allFlag=true;
 				mask="";
 			}
-			final StringBuffer buf=new StringBuffer("Item <S-NAME> <S-IS-ARE> skilled at carving:\n\r");
+			final StringBuffer buf=new StringBuffer(_("Item <S-NAME> <S-IS-ARE> skilled at carving:\n\r"));
 			int toggler=1;
 			final int toggleTop=2;
 			for(int r=0;r<toggleTop;r++)

@@ -85,7 +85,7 @@ public class Thief_IdentifyBombs extends ThiefSkill
 						helpProficiency((MOB)affected, 0);
 						affected.recoverPhyStats();
 					}
-					msg.append(C.name()+" contains a bomb.");
+					msg.append(_("@x1 contains a bomb.",C.name()));
 				}
 		}
 		else

@@ -42,23 +42,23 @@ public class Wear extends StdCommand
 
 	public boolean wear(MOB mob, Item item, int locationIndex, boolean quiet)
 	{
-		String str="<S-NAME> put(s) on <T-NAME>.";
+		String str=_("<S-NAME> put(s) on <T-NAME>.");
 		int msgType=CMMsg.MSG_WEAR;
 		if(item.rawProperLocationBitmap()==Wearable.WORN_HELD)
 		{
-			str="<S-NAME> hold(s) <T-NAME>.";
+			str=_("<S-NAME> hold(s) <T-NAME>.");
 			msgType=CMMsg.MSG_HOLD;
 		}
 		else
 		if((item.rawProperLocationBitmap()==Wearable.WORN_WIELD)
 		||(item.rawProperLocationBitmap()==(Wearable.WORN_HELD|Wearable.WORN_WIELD)))
 		{
-			str="<S-NAME> wield(s) <T-NAME>.";
+			str=_("<S-NAME> wield(s) <T-NAME>.");
 			msgType=CMMsg.MSG_WIELD;
 		}
 		else
 		if(locationIndex!=0)
-			str="<S-NAME> put(s) <T-NAME> on <S-HIS-HER> "+Wearable.CODES.NAME(locationIndex).toLowerCase()+".";
+			str=_("<S-NAME> put(s) <T-NAME> on <S-HIS-HER> @x1.",Wearable.CODES.NAME(locationIndex).toLowerCase());
 		final CMMsg newMsg=CMClass.getMsg(mob,item,null,msgType,quiet?null:str);
 		newMsg.setValue(locationIndex);
 		if(mob.location().okMessage(mob,newMsg))

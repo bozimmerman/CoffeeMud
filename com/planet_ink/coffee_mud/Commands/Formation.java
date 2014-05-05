@@ -53,9 +53,9 @@ public class Formation extends StdCommand
 				if(done[i]!=null)
 				{
 					if(i==0)
-						str.append("^xfront  - ^.^?");
+						str.append(_("^xfront  - ^.^?"));
 					else
-						str.append("^xrow +"+i+" - ^.^?");
+						str.append(_("^xrow +@x1 - ^.^?",""+i));
 					for(int i2=0;i2<done[i].size();i2++)
 						str.append(((i2>0)?", ":"")+done[i].get(i2).name());
 					str.append("\n\r");

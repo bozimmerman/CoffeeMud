@@ -343,7 +343,7 @@ public class Stat  extends Skills
 		&&((String)commands.firstElement()).equals("?"))
 		{
 			final StringBuilder msg = new StringBuilder("STAT allows the following options: \n\r");
-			msg.append("[MOB/PLAYER NAME], [NUMBER] [DAYS/WEEKS/MONTHS], ");
+			msg.append(_("[MOB/PLAYER NAME], [NUMBER] [DAYS/WEEKS/MONTHS], "));
 			for (final String[] element : ABLETYPE_DESCS)
 				msg.append(element[0]+", ");
 			msg.append(CMParms.toStringList(Ability.ACODE_DESCS));
@@ -458,7 +458,7 @@ public class Stat  extends Skills
 		else
 		if(ableTypes==ABLETYPE_QUESTWINS)
 		{
-			str.append("Quests won:");
+			str.append(_("Quests won:"));
 			final StringBuffer won=new StringBuffer("");
 			for(int q=0;q<CMLib.quests().numQuests();q++)
 			{
@@ -475,7 +475,7 @@ public class Stat  extends Skills
 		else
 		if(ableTypes==ABLETYPE_TITLES)
 		{
-			str.append("Titles:");
+			str.append(_("Titles:"));
 			final StringBuffer ttl=new StringBuffer("");
 			if(target.playerStats()!=null)
 				for(int t=0;t<target.playerStats().getTitles().size();t++)
@@ -492,17 +492,17 @@ public class Stat  extends Skills
 		else
 		if(ableTypes==ABLETYPE_SCRIPTS)
 		{
-			str.append("Scripts covered:\n\r");
+			str.append(_("Scripts covered:\n\r"));
 			int q=1;
 			for(final Enumeration<ScriptingEngine> e=target.scripts();e.hasMoreElements();q++)
 			{
 				final ScriptingEngine SE=e.nextElement();
-				str.append("Script #"+q+"\n\r");
-				str.append("Quest: "+SE.defaultQuestName()+"\n\r");
-				str.append("Savable: "+SE.isSavable()+"\n\r");
-				str.append("Scope: "+SE.getVarScope()+"\n\r");
-				str.append("Vars: "+SE.getLocalVarXML()+"\n\r");
-				str.append("Script: "+SE.getScript()+"\n\r");
+				str.append(_("Script #@x1\n\r",""+q));
+				str.append(_("Quest: @x1\n\r",SE.defaultQuestName()));
+				str.append(_("Savable: @x1\n\r",""+SE.isSavable()));
+				str.append(_("Scope: @x1\n\r",SE.getVarScope()));
+				str.append(_("Vars: @x1\n\r",SE.getLocalVarXML()));
+				str.append(_("Script: @x1\n\r",SE.getScript()));
 				str.append("\n\r");
 			}
 			str.append("\n\r");
@@ -510,7 +510,7 @@ public class Stat  extends Skills
 		else
 		if(ableTypes==ABLETYPE_TATTOOS)
 		{
-			str.append("Tattoos:");
+			str.append(_("Tattoos:"));
 			for(final Enumeration<MOB.Tattoo> e=target.tattoos();e.hasMoreElements();)
 				str.append(" "+e.nextElement().tattooName+",");
 			str.deleteCharAt(str.length()-1);
@@ -519,7 +519,7 @@ public class Stat  extends Skills
 		else
 		if(ableTypes==ABLETYPE_FACTIONS)
 		{
-			str.append("Factions:\n\r");
+			str.append(_("Factions:\n\r"));
 			for(final Enumeration<String> f=target.fetchFactions();f.hasMoreElements();)
 			{
 				final Faction F=CMLib.factions().getFaction(f.nextElement());
@@ -532,9 +532,9 @@ public class Stat  extends Skills
 		if(ableTypes==ABLETYPE_WORLDEXPLORED)
 		{
 			if(target.playerStats()!=null)
-				str.append(target.name()+" has explored "+mob.playerStats().percentVisited(mob,null)+"% of the world.\n\r");
+				str.append(_("@x1 has explored @x2% of the world.\n\r",target.name(),""+mob.playerStats().percentVisited(mob,null)));
 			else
-				str.append("Exploration data is not kept on mobs.\n\r");
+				str.append(_("Exploration data is not kept on mobs.\n\r"));
 		}
 		else
 		if(ableTypes==ABLETYPE_AREASEXPLORED)
@@ -550,7 +550,7 @@ public class Stat  extends Skills
 				str=new StringBuilder(str.toString().substring(0,str.toString().length()-2)+"\n\r");
 			}
 			else
-				str.append("Exploration data is not kept on mobs.\n\r");
+				str.append(_("Exploration data is not kept on mobs.\n\r"));
 		}
 		else
 		if(ableTypes==ABLETYPE_ROOMSEXPLORED)
@@ -566,12 +566,12 @@ public class Stat  extends Skills
 				str=new StringBuilder(str.toString().substring(0,str.toString().length()-2)+"\n\r");
 			}
 			else
-				str.append("Exploration data is not kept on mobs.\n\r");
+				str.append(_("Exploration data is not kept on mobs.\n\r"));
 		}
 		else
 		if(ableTypes==ABLETYPE_COMBAT)
 		{
-			str.append("Combat summary:\n\r\n\r");
+			str.append(_("Combat summary:\n\r\n\r"));
 			final MOB M=CMClass.getMOB("StdMOB");
 			M.setBaseCharStats((CharStats)target.baseCharStats().copyOf());
 			M.setBasePhyStats((PhyStats)target.basePhyStats().copyOf());

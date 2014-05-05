@@ -63,7 +63,7 @@ public class Spell_SpyingStone extends Spell
 				final StringBuilder str=new StringBuilder("");
 				for(final String m : msgs)
 					str.append(m).append("\n\r");
-				if(str.length()==0) str.append("Nothing!");
+				if(str.length()==0) str.append(_("Nothing!"));
 				room.showHappens(CMMsg.MSG_SPEAK, affected,_("^S<S-NAME> grow(s) a mouth and say(s) '^N@x1^S'^N",str.toString()));
 				msgs.clear();
 			}

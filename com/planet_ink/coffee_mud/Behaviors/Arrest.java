@@ -87,14 +87,14 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public void DebugLogLostConvicts(String lead, LegalWarrant W, MOB officer)
 	{
 		final StringBuilder errLogMsg=new StringBuilder("");
-		errLogMsg.append(!W.criminal().location().isInhabitant(officer)?"AE1 ":"");
-		errLogMsg.append(W.criminal().amDead()?"AE2 ":"");
-		errLogMsg.append(!CMLib.flags().aliveAwakeMobile(W.criminal(),true)?"AE3 ":"");
-		errLogMsg.append(!CMLib.flags().isInTheGame(W.criminal(),true)?"AE4 ":"");
-		errLogMsg.append(W.crime().equalsIgnoreCase("pardoned")?"AE5 ":"");
-		errLogMsg.append(!((W.travelAttemptTime()==0)||((System.currentTimeMillis()-W.travelAttemptTime())<(5*60*1000)))?"AE6 ":"");
-		errLogMsg.append(!CMLib.flags().aliveAwakeMobile(officer,true)?"AE7 ":"");
-		errLogMsg.append(!CMLib.flags().isBound(W.criminal())?"AE8 ":"");
+		errLogMsg.append(!W.criminal().location().isInhabitant(officer)?_("AE1 "):"");
+		errLogMsg.append(W.criminal().amDead()?_("AE2 "):"");
+		errLogMsg.append(!CMLib.flags().aliveAwakeMobile(W.criminal(),true)?_("AE3 "):"");
+		errLogMsg.append(!CMLib.flags().isInTheGame(W.criminal(),true)?_("AE4 "):"");
+		errLogMsg.append(W.crime().equalsIgnoreCase("pardoned")?_("AE5 "):"");
+		errLogMsg.append(!((W.travelAttemptTime()==0)||((System.currentTimeMillis()-W.travelAttemptTime())<(5*60*1000)))?_("AE6 "):"");
+		errLogMsg.append(!CMLib.flags().aliveAwakeMobile(officer,true)?_("AE7 "):"");
+		errLogMsg.append(!CMLib.flags().isBound(W.criminal())?_("AE8 "):"");
 		if(CMSecurity.isDebugging(DbgFlag.ARREST)) Log.debugOut("Arrest",lead+errLogMsg.toString());
 	}
 
@@ -859,12 +859,12 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			if(W!=null)
 			{
 				if(w==0)
-					msg.append("for "+fixCharge(W));
+					msg.append(_("for @x1",fixCharge(W)));
 				else
 				if(laws.getWarrant(mob,w+1)==null)
-					msg.append(", and for "+fixCharge(W));
+					msg.append(_(", and for @x1",fixCharge(W)));
 				else
-					msg.append(", for "+fixCharge(W));
+					msg.append(_(", for @x1",fixCharge(W)));
 			}
 		}
 		return msg.toString();
@@ -1084,14 +1084,14 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			{
 			if((judge==null)&&(officer!=null)) judge=officer;
 			final StringBuffer str=new StringBuffer("");
-			str.append(criminal.name()+", you are in trouble for "+restOfCharges(laws,criminal)+".  ");
+			str.append(_("@x1, you are in trouble for @x2.  ",criminal.name(),restOfCharges(laws,criminal)));
 			for(int w2=0;w2<relevantCrimes.size();w2++)
 			{
 				final LegalWarrant W2=(LegalWarrant)relevantCrimes.elementAt(w2);
 				if(W2.criminal()==criminal)
 				{
 					if(W2.witness()!=null)
-						str.append("The charge of "+fixCharge(W2)+" was witnessed by "+W2.witness().name()+".  ");
+						str.append(_("The charge of @x1 was witnessed by @x2.  ",fixCharge(W2),W2.witness().name()));
 					if((W2.warnMsg()!=null)&&(W2.warnMsg().length()>0))
 						str.append(W2.warnMsg()+"  ");
 					if((W2.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0)&&(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE)))
@@ -1108,14 +1108,14 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			{
 			if((judge==null)&&(officer!=null)) judge=officer;
 			final StringBuffer str=new StringBuffer("");
-			str.append(criminal.name()+", you are in trouble for "+restOfCharges(laws,criminal)+".  ");
+			str.append(_("@x1, you are in trouble for @x2.  ",criminal.name(),restOfCharges(laws,criminal)));
 			for(int w2=0;w2<relevantCrimes.size();w2++)
 			{
 				final LegalWarrant W2=(LegalWarrant)relevantCrimes.elementAt(w2);
 				if(W2.criminal()==criminal)
 				{
 					if(W2.witness()!=null)
-						str.append("The charge of "+fixCharge(W2)+" was witnessed by "+W2.witness().name()+".  ");
+						str.append(_("The charge of @x1 was witnessed by @x2.  ",fixCharge(W2),W2.witness().name()));
 					if((W2.warnMsg()!=null)&&(W2.warnMsg().length()>0))
 						str.append(W2.warnMsg()+"  ");
 					if((W2.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0)&&(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE)))

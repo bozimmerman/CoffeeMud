@@ -67,12 +67,12 @@ public class Spell_DetectWater extends Spell
 			if(((I instanceof Drink))
 			&&(((Drink)I).containsDrink())
 			&&(CMLib.flags().canBeSeenBy(I,mob)))
-				msg.append(I.name(mob)+" contains some sort of liquid.\n\r");
+				msg.append(_("@x1 contains some sort of liquid.\n\r",I.name(mob)));
 		}
 		else
 		if((I.container()!=null)&&(I.container().container()==container))
 			if(msg.toString().indexOf(I.container().name()+" contains some sort of liquid.")<0)
-				msg.append(I.container().name()+" contains some sort of liquid.\n\r");
+				msg.append(_("@x1 contains some sort of liquid.\n\r",I.container().name()));
 		return msg.toString();
 	}
 	public String waterHere(MOB mob, Environmental E, Item container)
@@ -86,20 +86,20 @@ public class Spell_DetectWater extends Spell
 			||(room.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
 			||(room.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
 			||(room.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
-				msg.append("Your liquid senses are saturated.  This is a very wet place.\n\r");
+				msg.append(_("Your liquid senses are saturated.  This is a very wet place.\n\r"));
 			else
 			if(CMath.bset(room.getClimateType(),Places.CLIMASK_WET))
-				msg.append("Your liquid senses are saturated.  This is a damp place.\n\r");
+				msg.append(_("Your liquid senses are saturated.  This is a damp place.\n\r"));
 			else
 			if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_RAIN)
 			||(room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_THUNDERSTORM))
-				msg.append("It is raining here! Your liquid senses are saturated!\n\r");
+				msg.append(_("It is raining here! Your liquid senses are saturated!\n\r"));
 			else
 			if(room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_HAIL)
-				msg.append("It is hailing here! Your liquid senses are saturated!\n\r");
+				msg.append(_("It is hailing here! Your liquid senses are saturated!\n\r"));
 			else
 			if(room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_SNOW)
-				msg.append("It is snowing here! Your liquid senses are saturated!\n\r");
+				msg.append(_("It is snowing here! Your liquid senses are saturated!\n\r"));
 			else
 			{
 				for(int i=0;i<room.numItems();i++)

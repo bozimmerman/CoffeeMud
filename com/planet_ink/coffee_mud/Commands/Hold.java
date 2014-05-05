@@ -58,12 +58,12 @@ public class Hold extends StdCommand
 			{
 				final Item item=items.get(i);
 				int msgType=CMMsg.MSG_HOLD;
-				String str="<S-NAME> hold(s) <T-NAME>.";
+				String str=_("<S-NAME> hold(s) <T-NAME>.");
 				if((mob.freeWearPositions(Wearable.WORN_WIELD,(short)0,(short)0)>0)
 				&&((item.rawProperLocationBitmap()==Wearable.WORN_WIELD)
 				||(item.rawProperLocationBitmap()==(Wearable.WORN_HELD|Wearable.WORN_WIELD))))
 				{
-					str="<S-NAME> wield(s) <T-NAME>.";
+					str=_("<S-NAME> wield(s) <T-NAME>.");
 					msgType=CMMsg.MSG_WIELD;
 				}
 				final CMMsg newMsg=CMClass.getMsg(mob,item,null,msgType,str);

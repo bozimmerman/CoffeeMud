@@ -120,27 +120,27 @@ public class ClanApply extends StdCommand
 						}
 						else
 						{
-							msg.append("This "+C.getGovernmentName()+" already has the maximum number of members ("+numMembers+"/"+maxMembers+") and can not accept new applicants.");
+							msg.append(_("This @x1 already has the maximum number of members (@x2/@x3) and can not accept new applicants.",C.getGovernmentName(),""+numMembers,""+maxMembers));
 						}
 					}
 					else
 					{
-						msg.append("You must be at least level "+CMProps.getIntVar(CMProps.Int.MINCLANLEVEL)+" to join a clan.");
+						msg.append(_("You must be at least level @x1 to join a clan.",""+CMProps.getIntVar(CMProps.Int.MINCLANLEVEL)));
 					}
 				}
 				else
 				{
-					msg.append("You are not of the right qualities to join "+C.clanID()+". Use CLANDETAILS \""+C.clanID()+"\" for more information.");
+					msg.append(_("You are not of the right qualities to join @x1. Use CLANDETAILS \"@x2\" for more information.",C.clanID(),C.clanID()));
 				}
 			}
 			else
 			{
-				msg.append("There is no clan named "+clanName+".");
+				msg.append(_("There is no clan named @x1.",clanName));
 			}
 		}
 		else
 		{
-			msg.append("You haven't specified which clan you are applying to.");
+			msg.append(_("You haven't specified which clan you are applying to."));
 		}
 		mob.tell(msg.toString());
 		return false;

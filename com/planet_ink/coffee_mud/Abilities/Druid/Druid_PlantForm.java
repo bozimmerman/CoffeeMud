@@ -240,7 +240,7 @@ public class Druid_PlantForm extends StdAbility
 		final String choice=(mob.isMonster()||(commands.size()==0))?getRaceName(classLevel-1):CMParms.combine(commands,0);
 		if(choice.trim().length()>0)
 		{
-			final StringBuffer buf=new StringBuffer("Plant Forms:\n\r");
+			final StringBuffer buf=new StringBuffer(_("Plant Forms:\n\r"));
 			final Vector choices=new Vector();
 			for(int i=0;i<classLevel;i++)
 			{

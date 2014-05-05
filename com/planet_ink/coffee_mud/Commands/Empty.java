@@ -130,7 +130,7 @@ public class Empty extends Drop
 			addendumStr="."+(++addendum);
 		}
 
-		String str="<S-NAME> empt(ys) <T-NAME>";
+		String str=_("<S-NAME> empt(ys) <T-NAME>");
 		if(target instanceof Room) str+=" here.";
 		else
 		if(target instanceof MOB) str+=".";

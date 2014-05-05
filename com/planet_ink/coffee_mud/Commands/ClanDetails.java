@@ -62,13 +62,13 @@ public class ClanDetails extends StdCommand
 				}
 			}
 			if(foundClan==null)
-				msg.append("No clan was found by the name of '"+clanName+"'.\n\r");
+				msg.append(_("No clan was found by the name of '@x1'.\n\r",clanName));
 			else
 			if((subCommand.length()>4)&&("CLANPVPKILLS".startsWith(subCommand)))
 			{
 				if(mob.getClanRole(foundClan.clanID())==null)
 				{
-					msg.append("You are not a member of "+foundClan.name()+".\n\r");
+					msg.append(_("You are not a member of @x1.\n\r",foundClan.name()));
 				}
 				else
 				{
@@ -88,10 +88,10 @@ public class ClanDetails extends StdCommand
 						}
 					});
 					if(topKillers.size()==0)
-						msg.append("There have not been any rival clan playerkills...\n\r");
+						msg.append(_("There have not been any rival clan playerkills...\n\r"));
 					else
 					{
-						msg.append("^XTop ranked rival clan playerkillers of "+foundClan.name()+"^?^.\n\r\n\r");
+						msg.append(_("^XTop ranked rival clan playerkillers of @x1^?^.\n\r\n\r",foundClan.name()));
 						topKillers.clear();
 						final List<String> reverseList = new ArrayList<String>();
 						for(int x=0;x<killerArray.length;x++)
@@ -108,7 +108,7 @@ public class ClanDetails extends StdCommand
 			{
 				if(mob.getClanRole(foundClan.clanID())==null)
 				{
-					msg.append("You are not a member of "+foundClan.name()+".\n\r");
+					msg.append(_("You are not a member of @x1.\n\r",foundClan.name()));
 				}
 				else
 				{
@@ -128,10 +128,10 @@ public class ClanDetails extends StdCommand
 						}
 					});
 					if(topKillers.size()==0)
-						msg.append("There have not been any rival clan kills...\n\r");
+						msg.append(_("There have not been any rival clan kills...\n\r"));
 					else
 					{
-						msg.append("^XTop ranked rival clan killers of "+foundClan.name()+"^?^.\n\r\n\r");
+						msg.append(_("^XTop ranked rival clan killers of @x1^?^.\n\r\n\r",foundClan.name()));
 						topKillers.clear();
 						final List<String> reverseList = new ArrayList<String>();
 						for(int x=0;x<killerArray.length;x++)
@@ -150,13 +150,13 @@ public class ClanDetails extends StdCommand
 				if((p!=null)&&(mob.clans().iterator().next().first!=p.first))
 				{
 					mob.setClan(foundClan.clanID(), mob.getClanRole(foundClan.clanID()).second.intValue());
-					msg.append("\n\rYour default clan is now "+p.first.getName()+".");
+					msg.append(_("\n\rYour default clan is now @x1.",p.first.getName()));
 				}
 			}
 		}
 		else
 		{
-			msg.append("You need to specify which clan you would like details on. Try 'CLANLIST'.\n\r");
+			msg.append(_("You need to specify which clan you would like details on. Try 'CLANLIST'.\n\r"));
 		}
 		mob.tell(msg.toString());
 		return false;

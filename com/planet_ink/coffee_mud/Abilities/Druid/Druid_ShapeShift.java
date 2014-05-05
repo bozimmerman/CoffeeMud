@@ -287,7 +287,7 @@ public class Druid_ShapeShift extends StdAbility
 				{
 				if(!mob.session().confirm(_("You have not yet chosen your form, would you like to now (Y/n)?"),_("Y")))
 					return false;
-				final StringBuffer str=new StringBuffer("Choose from the following:\n\r");
+				final StringBuffer str=new StringBuffer(_("Choose from the following:\n\r"));
 				final StringBuffer choices=new StringBuffer("");
 				for(int i=0;i<forms.length;i++)
 				{
@@ -297,7 +297,7 @@ public class Druid_ShapeShift extends StdAbility
 						choices.append(""+(i+1));
 					}
 				}
-				str.append("Please select: ");
+				str.append(_("Please select: "));
 				final String choice=mob.session().choose(str.toString(),choices.toString(),"");
 				myRaceCode=CMath.s_int(choice)-1;
 				}catch(final Exception e){}

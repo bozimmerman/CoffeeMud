@@ -347,7 +347,7 @@ public class StdCharClass implements CharClass
 		{
 			if(i>0) str.append(", ");
 			if(i==raceList.length-1)
-				str.append("or ");
+				str.append(_("or "));
 			str.append(CMStrings.capitalizeAndLower(raceList[i]));
 		}
 		return str;
@@ -391,30 +391,30 @@ public class StdCharClass implements CharClass
 		for(final int i : CharStats.CODES.BASE())
 			if(maxStatAdjustments()[i]!=0)
 				str.append(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i))+" ("+(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+maxStatAdjustments()[i])+"), ");
-		str.append("Others ("+CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+")");
+		str.append(_("Others (@x1)",""+CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)));
 		return str.toString();
 	}
 	@Override
 	public String getPracticeDesc()
 	{
 		final StringBuilder str=new StringBuilder("");
-		str.append(getPracsFirstLevel()+" +(Wisdom/6)");
+		str.append(_("@x1 +(Wisdom/6)",""+getPracsFirstLevel()));
 		if(getBonusPracLevel()>0)
 			str.append("+"+getBonusPracLevel());
 		else
 		if(getBonusPracLevel()<0)
 			str.append(""+getBonusPracLevel());
-		return str.toString()+" per level";
+		return str.toString()+_(" per level");
 	}
 	@Override
 	public String getTrainDesc()
 	{
-		return getTrainsFirstLevel()+" +1 per level";
+		return getTrainsFirstLevel()+_(" +1 per level");
 	}
 	@Override
 	public String getDamageDesc()
 	{
-		return "+1 damage per "+getLevelsPerBonusDamage()+" level(s)";
+		return _("+1 damage per @x1 level(s)",""+getLevelsPerBonusDamage());
 	}
 
 	@Override
@@ -489,7 +489,7 @@ public class StdCharClass implements CharClass
 		else
 		if(getBonusAttackLevel()<0)
 			str.append(""+getBonusAttackLevel());
-		str.append(" per level");
+		str.append(_(" per level"));
 		return str.toString();
 	}
 

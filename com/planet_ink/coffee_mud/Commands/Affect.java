@@ -51,62 +51,62 @@ public class Affect extends StdCommand
 			else
 			{
 				final int x=(int)(mob.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT);
-				if(x<=1) msg.append("^!You could use a bath.^?\n\r");
+				if(x<=1) msg.append(_("^!You could use a bath.^?\n\r"));
 				else
-				if(x<=3) msg.append("^!You could really use a bath.^?\n\r");
+				if(x<=3) msg.append(_("^!You could really use a bath.^?\n\r"));
 				else
-				if(x<=7) msg.append("^!You need to bathe, soon.^?\n\r");
+				if(x<=7) msg.append(_("^!You need to bathe, soon.^?\n\r"));
 				else
-				if(x<15) msg.append("^!You desperately need to bathe.^?\n\r");
-				else msg.append("^!Your stench is horrendous! Bathe dammit!^?\n\r");
+				if(x<15) msg.append(_("^!You desperately need to bathe.^?\n\r"));
+				else msg.append(_("^!Your stench is horrendous! Bathe dammit!^?\n\r"));
 			}
 		}
 
 		if(CMLib.flags().isBound(mob))
-			msg.append("^!You are bound.^?\n\r");
+			msg.append(_("^!You are bound.^?\n\r"));
 
 		// dont do falling -- the flag doubles for drowning/treading water anyway.
 		//if(CMLib.flags().isFalling(mob))
-		//    msg.append("^!You are falling!!!^?\n\r");
+		//    msg.append(_("^!You are falling!!!^?\n\r"));
 		//else
 		if(CMLib.flags().isSleeping(mob))
-			msg.append("^!You are sleeping.^?\n\r");
+			msg.append(_("^!You are sleeping.^?\n\r"));
 		else
 		if(CMLib.flags().isSitting(mob))
-			msg.append("^!You are resting.^?\n\r");
+			msg.append(_("^!You are resting.^?\n\r"));
 		else
 		if(CMLib.flags().isSwimmingInWater(mob))
-			msg.append("^!You are swimming.^?\n\r");
+			msg.append(_("^!You are swimming.^?\n\r"));
 		else
 		if(CMLib.flags().isClimbing(mob))
-			msg.append("^!You are climbing.^?\n\r");
+			msg.append(_("^!You are climbing.^?\n\r"));
 		else
 		if(CMLib.flags().isFlying(mob))
-			msg.append("^!You are flying.^?\n\r");
+			msg.append(_("^!You are flying.^?\n\r"));
 		else
-			msg.append("^!You are standing.^?\n\r");
+			msg.append(_("^!You are standing.^?\n\r"));
 
 		if(mob.riding()!=null)
-			msg.append("^!You are "+mob.riding().stateString(mob)+" "+mob.riding().name()+".^?\n\r");
+			msg.append(_("^!You are @x1 @x2.^?\n\r",mob.riding().stateString(mob),mob.riding().name()));
 
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL))
-			msg.append("^!Your playerkill flag is on.^?\n\r");
+			msg.append(_("^!Your playerkill flag is on.^?\n\r"));
 
 		if(CMLib.flags().isInvisible(mob))
-			msg.append("^!You are invisible.^?\n\r");
+			msg.append(_("^!You are invisible.^?\n\r"));
 		if(CMLib.flags().isHidden(mob))
-			msg.append("^!You are hidden.^?\n\r");// ("+CMLib.flags().getHideScore(mob)+").^?\n\r");
+			msg.append(_("^!You are hidden.^?\n\r"));// ("+CMLib.flags().getHideScore(mob)+").^?\n\r");
 		if(CMLib.flags().isSneaking(mob))
-			msg.append("^!You are sneaking.^?\n\r");
+			msg.append(_("^!You are sneaking.^?\n\r"));
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_QUIET))
-			msg.append("^!You are in QUIET mode.^?\n\r");
+			msg.append(_("^!You are in QUIET mode.^?\n\r"));
 
 		if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS)
-			msg.append("^!You are fatigued.^?\n\r");
+			msg.append(_("^!You are fatigued.^?\n\r"));
 		if(mob.curState().getHunger()<1)
-			msg.append("^!You are hungry.^?\n\r");
+			msg.append(_("^!You are hungry.^?\n\r"));
 		if(mob.curState().getThirst()<1)
-			msg.append("^!You are thirsty.^?\n\r");
+			msg.append(_("^!You are thirsty.^?\n\r"));
 		return msg.toString();
 	}
 

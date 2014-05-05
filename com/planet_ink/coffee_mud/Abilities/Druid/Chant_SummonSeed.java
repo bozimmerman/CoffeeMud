@@ -55,7 +55,7 @@ public class Chant_SummonSeed extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final String s=CMParms.combine(commands,0);
-		final StringBuffer buf=new StringBuffer("Seed types known:\n\r");
+		final StringBuffer buf=new StringBuffer(_("Seed types known:\n\r"));
 		int material=0;
 		String foundShortName=null;
 		int col=0;

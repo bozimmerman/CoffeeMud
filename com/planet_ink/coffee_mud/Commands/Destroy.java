@@ -794,7 +794,7 @@ public class Destroy extends StdCommand
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The happiness of all mankind has just increased!"));
 	}
 
-	public static boolean destroyItem(MOB mob, Environmental dropThis, boolean quiet, boolean optimize)
+	public boolean destroyItem(MOB mob, Environmental dropThis, boolean quiet, boolean optimize)
 	{
 		String msgstr=null;
 		final int material=(dropThis instanceof Item)?((Item)dropThis).material():-1;
@@ -802,13 +802,13 @@ public class Destroy extends StdCommand
 		switch(material&RawMaterial.MATERIAL_MASK)
 		{
 		case RawMaterial.MATERIAL_LIQUID:
-			msgstr="<S-NAME> pour(s) out <T-NAME>.";
+			msgstr=_("<S-NAME> pour(s) out <T-NAME>.");
 			break;
 		case RawMaterial.MATERIAL_PAPER:
-			msgstr="<S-NAME> tear(s) up <T-NAME>.";
+			msgstr=_("<S-NAME> tear(s) up <T-NAME>.");
 			break;
 		case RawMaterial.MATERIAL_GLASS:
-			msgstr="<S-NAME> smash(es) <T-NAME>.";
+			msgstr=_("<S-NAME> smash(es) <T-NAME>.");
 			break;
 		default:
 			return false;

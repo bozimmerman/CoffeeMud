@@ -122,7 +122,7 @@ public class Taxidermy extends CraftingSkill
 		String pose=null;
 		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
 		{
-			final StringBuffer str=new StringBuffer("^xTaxidermy Poses^?^.\n");
+			final StringBuffer str=new StringBuffer(_("^xTaxidermy Poses^?^.\n"));
 			for(int p=0;p<POSES.size();p++)
 			{
 				final List<String> PP=POSES.get(p);

@@ -70,7 +70,7 @@ public class Fishing extends GatheringSkill
 					commonTell(mob,_("You got a tug on the line!"));
 				else
 				{
-					final StringBuffer str=new StringBuffer("Nothing is biting around here.\n\r");
+					final StringBuffer str=new StringBuffer(_("Nothing is biting around here.\n\r"));
 					commonTell(mob,str.toString());
 					unInvoke();
 				}

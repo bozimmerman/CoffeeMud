@@ -275,12 +275,12 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 				allFlag=true;
 				mask="";
 			}
-			final StringBuffer buf=new StringBuffer("Weapons <S-NAME> <S-IS-ARE> skilled at making:\n\r");
+			final StringBuffer buf=new StringBuffer(_("Weapons <S-NAME> <S-IS-ARE> skilled at making:\n\r"));
 			int toggler=1;
 			final int toggleTop=displayColumns();
 			final int itemWidth=ListingLibrary.ColFixer.fixColWidth((78/toggleTop)-9,mob.session());
 			for(int r=0;r<toggleTop;r++)
-				buf.append(CMStrings.padRight(_("Item"),itemWidth)+" Lvl "+CMStrings.padRight(_("Amt"),3)+((r<(toggleTop-1)?" ":"")));
+				buf.append(_("@x1 Lvl @x2@x3",CMStrings.padRight(_("Item"),itemWidth),CMStrings.padRight(_("Amt"),3),((r<(toggleTop-1)?" ":""))));
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{

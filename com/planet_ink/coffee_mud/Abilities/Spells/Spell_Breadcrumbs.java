@@ -60,7 +60,7 @@ public class Spell_Breadcrumbs extends Spell
 	@Override
 	public String displayText()
 	{
-		final StringBuffer str=new StringBuffer("(Breadcrumb Trail: ");
+		final StringBuffer str=new StringBuffer(_("(Breadcrumb Trail: "));
 		if(trail!=null)
 		synchronized(trail)
 		{
@@ -79,7 +79,7 @@ public class Spell_Breadcrumbs extends Spell
 					if(dir>=0)
 						str.append(Directions.getDirectionName(dir)+" ");
 					else
-						str.append("Unknown ");
+						str.append(_("Unknown "));
 				}
 				lastRoom=R;
 			}

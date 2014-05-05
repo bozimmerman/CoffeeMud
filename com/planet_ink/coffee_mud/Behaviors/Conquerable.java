@@ -101,45 +101,45 @@ public class Conquerable extends Arrest
 		if((totalControlPoints<0)&&(myArea!=null))
 			recalculateControlPoints(myArea);
 		if((holdingClan.length()==0)||(totalControlPoints<0))
-			str.append("Area '"+myArea.name()+"' is not currently controlled by any clan.\n\r");
+			str.append(_("Area '@x1' is not currently controlled by any clan.\n\r",myArea.name()));
 		else
 		{
 			final Clan C=CMLib.clans().getClan(holdingClan);
 			if(C!=null)
 			{
 				if(isFullyControlled())
-					str.append("Area '"+myArea.name()+"' is controlled by "+C.getGovernmentName()+" "+C.name()+".\n\r");
+					str.append(_("Area '@x1' is controlled by @x2 @x3.\n\r",myArea.name(),C.getGovernmentName(),C.name()));
 				else
 				{
-					str.append("Area '"+myArea.name()+"' is occupied by "+C.getGovernmentName()+" "+C.name()+".\n\r");
+					str.append(_("Area '@x1' is occupied by @x2 @x3.\n\r",myArea.name(),C.getGovernmentName(),C.name()));
 					final long remain=CONTROLTIME-(System.currentTimeMillis()-conquestDate);
 					final String remainStr=myArea.getTimeObj().deriveEllapsedTimeString(remain);
-					str.append("Full control will automatically be achieved in "+remainStr+".\n\r");
+					str.append(_("Full control will automatically be achieved in @x1.\n\r",remainStr));
 				}
 
 				if(C.isLoyaltyThroughItems())
 				{
 					final int pts=calcItemControlPoints(myArea);
 					final int chance=calcRevoltChance(myArea);
-					str.append(C.name()+" has handed out clan items here for "+pts+" loyalty points.\n\r");
-					str.append("There is currently a "+chance+"% chance of revolt here.\n\r");
+					str.append(_("@x1 has handed out clan items here for @x2 loyalty points.\n\r",C.name(),""+pts));
+					str.append(_("There is currently a @x1% chance of revolt here.\n\r",""+chance));
 				}
 			}
 			else
 			{
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST)) Log.debugOut("Conquest",holdingClan+" has laid waste to "+myArea.name()+".");
 				endClanRule();
-				str.append("This area is laid waste by "+holdingClan+".\n\r");
+				str.append(_("This area is laid waste by @x1.\n\r",holdingClan));
 			}
 		}
 		if((totalControlPoints<0)&&(myArea!=null))
 			recalculateControlPoints(myArea);
 		if(totalControlPoints<0)
-			str.append("This area has not yet calculated its required control points.\n\r");
+			str.append(_("This area has not yet calculated its required control points.\n\r"));
 		else
-			str.append("This area requires "+totalControlPoints+" points to control.\n\r");
+			str.append(_("This area requires @x1 points to control.\n\r",""+totalControlPoints));
 		if(clanControlPoints.size()==0)
-			str.append("There are no control points won at present by any clan.\n\r");
+			str.append(_("There are no control points won at present by any clan.\n\r"));
 		synchronized(clanControlPoints)
 		{
 			for(int i=0;i<clanControlPoints.size();i++)
@@ -148,7 +148,7 @@ public class Conquerable extends Arrest
 				final int[] ic=(int[])clanControlPoints.elementAt(i,2);
 				final Clan C=CMLib.clans().getClan(clanID);
 				if((C!=null)&&(C.getGovernment().isConquestEnabled()))
-					str.append(C.getGovernmentName()+" "+C.name()+" has "+ic[0]+" control points.\n\r");
+					str.append(_("@x1 @x2 has @x3 control points.\n\r",C.getGovernmentName(),C.name(),""+ic[0]));
 			}
 		}
 		return str.toString();

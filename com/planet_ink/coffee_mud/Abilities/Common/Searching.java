@@ -69,7 +69,7 @@ public class Searching extends CommonSkill
 			{
 				if(success==false)
 				{
-					final StringBuffer str=new StringBuffer("You get distracted from your search.\n\r");
+					final StringBuffer str=new StringBuffer(_("You get distracted from your search.\n\r"));
 					commonTell(mob,str.toString());
 					unInvoke();
 					return super.tick(ticking,tickID);

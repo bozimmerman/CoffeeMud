@@ -75,7 +75,7 @@ public class Skill_Juggle extends BardSkill
 	{
 		if(juggles.size()>0)
 		{
-			final StringBuffer str=new StringBuffer("(Juggling: ");
+			final StringBuffer str=new StringBuffer(_("(Juggling: "));
 			final SVector<Item> V=juggles.copyOf();
 			for(int i=0;i<V.size();i++)
 			{

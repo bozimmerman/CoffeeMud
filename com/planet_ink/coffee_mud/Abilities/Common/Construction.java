@@ -655,7 +655,7 @@ public class Construction extends CraftingSkill
 		if(("LIST").startsWith(str.toUpperCase()))
 		{
 			final String mask=CMParms.combine(commands,1);
-			final StringBuffer buf=new StringBuffer(CMStrings.padRight(_("Item"),colWidth)+" Wood required\n\r");
+			final StringBuffer buf=new StringBuffer(_("@x1 Wood required\n\r",CMStrings.padRight(_("Item"),colWidth)));
 			for(int r=0;r<data.length;r++)
 			{
 				if(((r!=BUILD_SECRETDOOR)||(mob.charStats().getCurrentClass().baseClass().equals("Thief")))

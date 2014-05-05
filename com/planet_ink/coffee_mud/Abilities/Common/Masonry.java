@@ -687,7 +687,7 @@ public class Masonry extends CraftingSkill
 		{
 			final String mask=CMParms.combine(commands,1);
 			final int colWidth=ListingLibrary.ColFixer.fixColWidth(20,mob.session());
-			final StringBuffer buf=new StringBuffer(CMStrings.padRight(_("Item"),colWidth)+" Stone required\n\r");
+			final StringBuffer buf=new StringBuffer(_("@x1 Stone required\n\r",CMStrings.padRight(_("Item"),colWidth)));
 			for(int r=0;r<data.length;r++)
 			{
 				if(((r!=BUILD_MONUMENT)
@@ -698,7 +698,7 @@ public class Masonry extends CraftingSkill
 					final int woodRequired=adjustWoodRequired(CMath.s_int(data[r][DAT_WOOD]),mob);
 					buf.append(CMStrings.padRight(data[r][DAT_NAME],colWidth)+" "+woodRequired);
 					if(doingCode==BUILD_PORTCULIS)
-						buf.append(" metal");
+						buf.append(_(" metal"));
 					buf.append("\n\r");
 				}
 			}

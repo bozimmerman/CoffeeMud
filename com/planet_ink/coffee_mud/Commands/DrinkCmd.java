@@ -65,12 +65,12 @@ public class DrinkCmd extends StdCommand
 				return false;
 			}
 		}
-		String str="<S-NAME> take(s) a drink from <T-NAMESELF>.";
+		String str=_("<S-NAME> take(s) a drink from <T-NAMESELF>.");
 		Environmental tool=null;
 		if((thisThang instanceof Drink)
 		&&(((Drink)thisThang).liquidRemaining()>0)
 		&&(((Drink)thisThang).liquidType()!=RawMaterial.RESOURCE_FRESHWATER))
-			str="<S-NAME> take(s) a drink of "+RawMaterial.CODES.NAME(((Drink)thisThang).liquidType()).toLowerCase()+" from <T-NAMESELF>.";
+			str=_("<S-NAME> take(s) a drink of @x1 from <T-NAMESELF>.",RawMaterial.CODES.NAME(((Drink)thisThang).liquidType()).toLowerCase());
 		else
 		if(thisThang instanceof Container)
 		{
@@ -82,7 +82,7 @@ public class DrinkCmd extends StdCommand
 				{
 					tool=thisThang;
 					thisThang=I;
-					str="<S-NAME> take(s) a drink of <T-NAMESELF> from <O-NAMESELF>.";
+					str=_("<S-NAME> take(s) a drink of <T-NAMESELF> from <O-NAMESELF>.");
 					break;
 				}
 			}

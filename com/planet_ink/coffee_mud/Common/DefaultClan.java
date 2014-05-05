@@ -635,46 +635,48 @@ public class DefaultClan implements Clan
 		final boolean sysmsgs=(mob!=null)&&CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS);
 		final LinkedList<CMath.CompiledOperation> form = govt().getXPCalculationFormula();
 		final double nextLevelXP = CMath.parseMathExpression(form, new double[]{getClanLevel()}, 0.0);
-		msg.append("^x"+getGovernmentName()+" Profile   :^.^N "+clanID()+"\n\r"
-				  +"-----------------------------------------------------------------\n\r"
-				  +getPremise()+"\n\r"
-				  +"-----------------------------------------------------------------\n\r"
-				  +"^xLevel           :^.^N "+getClanLevel()+((member||sysmsgs)?("                      (Next at ^w"+nextLevelXP+"^Nxp)\n\r"):"\n\r")
-				  +"^xType            :^.^N "+CMStrings.capitalizeAndLower(govt().getName())+"\n\r");
+		msg.append(_("^x@x1 Profile   :^.^N @x2\n\r"
+				+ "-----------------------------------------------------------------\n\r"
+				+ "@x3\n\r"
+				+ "-----------------------------------------------------------------\n\r"
+				+ "^xLevel           :^.^N @x4"+ ((member||sysmsgs)?("                      (Next at ^w@x5^Nxp)\n\r"):"\n\r")
+				+ "^xType            :^.^N @x6\n\r",
+				getGovernmentName(),clanID(),getPremise(),""+getClanLevel(),""+nextLevelXP,
+				CMStrings.capitalizeAndLower(govt().getName())));
 		if(getAcceptanceSettings().length()>0)
 		{
-			msg.append("^xQualifications  :^.^N "+CMLib.masking().maskDesc(getAcceptanceSettings())+"\n\r");
+			msg.append(_("^xQualifications  :^.^N @x1\n\r",CMLib.masking().maskDesc(getAcceptanceSettings())));
 			if(getBasicRequirementMask().length()>0)
-				msg.append("^x           Plus :^.^N "+CMLib.masking().maskDesc(getBasicRequirementMask())+"\n\r");
+				msg.append(_("^x           Plus :^.^N @x1\n\r",CMLib.masking().maskDesc(getBasicRequirementMask())));
 		}
 		else
 		if(getBasicRequirementMask().length()>0)
-			msg.append("^xQualifications  :^.^N "+CMLib.masking().maskDesc(getBasicRequirementMask())+"\n\r");
+			msg.append(_("^xQualifications  :^.^N @x1\n\r",CMLib.masking().maskDesc(getBasicRequirementMask())));
 		else
-			msg.append("^xQualifications  :^.^N Anyone may apply\n\r");
+			msg.append(_("^xQualifications  :^.^N Anyone may apply\n\r"));
 		final CharClass clanC=getClanClassC();
-		if(clanC!=null) msg.append("^xClass           :^.^N "+clanC.name()+"\n\r");
-		msg.append("^xExp. Tax Rate   :^.^N "+((int)Math.round(getTaxes()*100))+"%\n\r");
+		if(clanC!=null) msg.append(_("^xClass           :^.^N @x1\n\r",clanC.name()));
+		msg.append(_("^xExp. Tax Rate   :^.^N @x1%\n\r",""+((int)Math.round(getTaxes()*100))));
 		if(member||sysmsgs)
 		{
-			msg.append("^xExperience Pts. :^.^N "+getExp()+"\n\r");
+			msg.append(_("^xExperience Pts. :^.^N @x1\n\r",""+getExp()));
 			if(getMorgue().length()>0)
 			{
 				final Room R=CMLib.map().getRoom(getMorgue());
 				if(R!=null)
-					msg.append("^xMorgue          :^.^N "+R.displayText(mob)+"\n\r");
+					msg.append(_("^xMorgue          :^.^N @x1\n\r",R.displayText(mob)));
 			}
 			if(getDonation().length()>0)
 			{
 				final Room R=CMLib.map().getRoom(getDonation());
 				if(R!=null)
-					msg.append("^xDonations       :^.^N "+R.displayText(mob)+"\n\r");
+					msg.append(_("^xDonations       :^.^N @x1\n\r",R.displayText(mob)));
 			}
 			if(getRecall().length()>0)
 			{
 				final Room R=CMLib.map().getRoom(getRecall());
 				if(R!=null)
-					msg.append("^xRecall          :^.^N "+R.displayText(mob)+"\n\r");
+					msg.append(_("^xRecall          :^.^N @x1\n\r",R.displayText(mob)));
 			}
 		}
 		final List<MemberRecord> members=getMemberList();
@@ -693,7 +695,7 @@ public class DefaultClan implements Clan
 				sortedPositions.add(topRankedPos);
 			}
 		}
-		msg.append("^xTotal Members   :^.^N "+members.size()+"\n\r");
+		msg.append(_("^xTotal Members   :^.^N @x1\n\r",""+members.size()));
 		if(CMLib.clans().numClans()>1)
 		{
 			msg.append("-----------------------------------------------------------------\n\r");
@@ -740,7 +742,7 @@ public class DefaultClan implements Clan
 		if(control.size()>0)
 		{
 			msg.append("-----------------------------------------------------------------\n\r");
-			msg.append("^xClan Controlled Areas (% revolt):^.^N\n\r");
+			msg.append(_("^xClan Controlled Areas (% revolt):^.^N\n\r"));
 			Collections.sort(control);
 			int col=0;
 			final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,mob);
@@ -766,7 +768,7 @@ public class DefaultClan implements Clan
 		if((CMLib.clans().trophySystemActive())&&(getTrophies()!=0))
 		{
 			msg.append("-----------------------------------------------------------------\n\r");
-			msg.append("^xTrophies awarded:^.^N\n\r");
+			msg.append(_("^xTrophies awarded:^.^N\n\r"));
 			for(final Trophy t : Trophy.values())
 				if(CMath.bset(getTrophies(),t.flagNum()))
 				{
@@ -780,13 +782,13 @@ public class DefaultClan implements Clan
 						case PlayerKills: msg.append("("+getCurrentClanKills(null)+") "); break;
 						case MemberLevel: { msg.append("("+filterMedianLevel(getFullMemberList())+") "); break; }
 					}
-					msg.append(" Prize: "+CMLib.clans().translatePrize(t)+"\n\r");
+					msg.append(_(" Prize: @x1\n\r",CMLib.clans().translatePrize(t)));
 				}
 		}
 		if(((p!=null)&&(getAuthority(p.second.intValue(),Function.CLAN_BENEFITS)!=Clan.Authority.CAN_NOT_DO))||sysmsgs)
 		{
 			msg.append("-----------------------------------------------------------------\n\r");
-			msg.append("^xClan Level Benefits:^.^N\n\r");
+			msg.append(_("^xClan Level Benefits:^.^N\n\r"));
 			final List<AbilityMapper.AbilityMapping> abilities=CMLib.ableMapper().getUpToLevelListings(govt().getName(),getClanLevel(),true,false);
 			if(abilities.size()>0)
 			{
@@ -807,6 +809,11 @@ public class DefaultClan implements Clan
 		return msg.toString();
 	}
 
+	public String _(final String str, final String ... xs)
+	{
+		return CMLib.lang().fullSessionTranslation(str, xs);
+	}
+	
 	@Override public String getGovernmentName() { return CMStrings.capitalizeAndLower(govt().getName());}
 
 	@Override

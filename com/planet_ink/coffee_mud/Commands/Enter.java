@@ -65,7 +65,7 @@ public class Enter extends Go
 				&&(mob.phyStats().height()<=0)
 				&&(mob.phyStats().weight()<=0))
 				{
-					final String enterStr="<S-NAME> enter(s) <T-NAME>.";
+					final String enterStr=_("<S-NAME> enter(s) <T-NAME>.");
 					final CMMsg msg=CMClass.getMsg(mob,enterThis,null,CMMsg.MSG_SIT,enterStr);
 					if(mob.location().okMessage(mob,msg))
 						mob.location().send(mob,msg);

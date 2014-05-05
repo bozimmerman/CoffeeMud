@@ -107,16 +107,16 @@ public class Mount extends StdCommand
 		if(recipient instanceof Rideable)
 		{
 			if(RI!=null)
-				mountStr="<S-NAME> mount(s) <O-NAME> onto <T-NAMESELF>.";
+				mountStr=_("<S-NAME> mount(s) <O-NAME> onto <T-NAMESELF>.");
 			else
 				mountStr="<S-NAME> "+((Rideable)recipient).mountString(CMMsg.TYP_MOUNT,mob)+" <T-NAMESELF>.";
 		}
 		else
 		{
 			if(RI!=null)
-				mountStr="<S-NAME> mount(s) <O-NAME> to <T-NAMESELF>.";
+				mountStr=_("<S-NAME> mount(s) <O-NAME> to <T-NAMESELF>.");
 			else
-				mountStr="<S-NAME> mount(s) <T-NAMESELF>.";
+				mountStr=_("<S-NAME> mount(s) <T-NAMESELF>.");
 		}
 		final CMMsg msg=CMClass.getMsg(mob,recipient,RI,CMMsg.MSG_MOUNT,mountStr);
 		if(mob.location().okMessage(mob,msg))

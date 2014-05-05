@@ -175,7 +175,7 @@ public class Chant_FindPlant extends Chant
 		final String s=CMParms.combine(commands,0);
 		if(s.equalsIgnoreCase("LIST"))
 		{
-			final StringBuffer msg=new StringBuffer("You may search for any of the following: ");
+			final StringBuffer msg=new StringBuffer(_("You may search for any of the following: "));
 			for(int i=0;i<allOkResources().size();i++)
 				msg.append(RawMaterial.CODES.NAME(((Integer)allOkResources().elementAt(i)).intValue()).toLowerCase()+", ");
 			mob.tell(msg.substring(0,msg.length()-2));

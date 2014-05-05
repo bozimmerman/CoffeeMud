@@ -68,7 +68,7 @@ public class Chant_GrowFood extends Chant
 		final String s=CMParms.combine(commands,0);
 
 		int col=0;
-		final StringBuffer buf=new StringBuffer("Food types known:\n\r");
+		final StringBuffer buf=new StringBuffer(_("Food types known:\n\r"));
 		final List<Integer> codes = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_VEGETATION);
 		for(final Integer code : codes)
 			if(!CMParms.contains(Chant_SummonSeed.NON_SEEDS,code))

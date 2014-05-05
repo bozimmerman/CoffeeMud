@@ -664,9 +664,9 @@ public class DefaultClanGovernment implements ClanGovernment
 			return null;
 		if(helpStr==null)
 		{
-			final StringBuilder str=new StringBuilder("\n\rOrganization type: "+getName()+"\n\r\n\r");
+			final StringBuilder str=new StringBuilder(CMLib.lang()._("\n\rOrganization type: "+getName()+"\n\r\n\r"));
 			str.append(getLongDesc()).append("\n\r");
-			str.append("\n\rAuthority Chart:\n\r\n\r");
+			str.append(CMLib.lang()._("\n\rAuthority Chart:\n\r\n\r"));
 			final List<ClanPosition> showablePositions=new Vector<ClanPosition>();
 			for(final ClanPosition P : getPositions())
 			{
@@ -773,7 +773,7 @@ public class DefaultClanGovernment implements ClanGovernment
 			if((clanAbilityLevels!=null)&&(clanEffectLevels!=null)
 			&&(clanAbilityLevels.length>0)&&(clanEffectLevels.length>0))
 			{
-				str.append("\n\rBenefits per Clan Level:\n\r");
+				str.append(CMLib.lang()._("\n\rBenefits per Clan Level:\n\r"));
 				int maxLevel=-1;
 				for(final int x : clanEffectLevels) if(x>maxLevel) maxLevel=x;
 				for(final int x : clanAbilityLevels) if(x>maxLevel) maxLevel=x;
@@ -789,7 +789,7 @@ public class DefaultClanGovernment implements ClanGovernment
 								A.setMiscText(clanEffectParms[x]);
 								String desc=A.accountForYourself();
 								if((desc==null)||(desc.length()==0))
-									desc="Members gain the following effect: "+A.name();
+									desc=CMLib.lang()._("Members gain the following effect: @x1",A.name());
 								levelBenefits.add(desc);
 							}
 						}
@@ -800,13 +800,13 @@ public class DefaultClanGovernment implements ClanGovernment
 							if(A!=null)
 							{
 								if(clanAbilityQuals[x])
-									levelBenefits.add("Members qualify for: "+A.name());
+									levelBenefits.add(CMLib.lang()._("Members qualify for: @x1",A.name()));
 								else
-									levelBenefits.add("Members automatically gain: "+A.name());
+									levelBenefits.add(CMLib.lang()._("Members automatically gain: @x1",A.name()));
 							}
 						}
 					for(final String bene : levelBenefits)
-						str.append("Level "+l+": "+bene+"\n\r");
+						str.append(CMLib.lang()._("Level @x1: @x2\n\r",""+l,bene));
 				}
 			}
 			helpStr=str.toString();

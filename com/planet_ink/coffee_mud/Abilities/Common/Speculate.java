@@ -60,7 +60,7 @@ public class Speculate extends CommonSkill
 			{
 				if(success==false)
 				{
-					final StringBuffer str=new StringBuffer("Your speculate attempt failed.\n\r");
+					final StringBuffer str=new StringBuffer(_("Your speculate attempt failed.\n\r"));
 					commonTell(mob,str.toString());
 					unInvoke();
 				}
@@ -86,7 +86,7 @@ public class Speculate extends CommonSkill
 					{
 						final StringBuffer str=new StringBuffer("");
 						String resourceStr=RawMaterial.CODES.NAME(resource);
-						str.append("You think this spot would be good for "+resourceStr.toLowerCase()+".\n\r");
+						str.append(_("You think this spot would be good for @x1.\n\r",resourceStr.toLowerCase()));
 						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 						{
 							final Room room2=room.getRoomInDir(d);
@@ -98,7 +98,7 @@ public class Speculate extends CommonSkill
 								if(RawMaterial.CODES.IS_VALID(resource))
 								{
 									resourceStr=RawMaterial.CODES.NAME(resource);
-									str.append("There looks like "+resourceStr.toLowerCase()+" "+Directions.getInDirectionName(d)+".\n\r");
+									str.append(_("There looks like @x1 @x2.\n\r",resourceStr.toLowerCase(),Directions.getInDirectionName(d)));
 								}
 							}
 						}

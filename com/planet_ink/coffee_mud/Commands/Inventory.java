@@ -87,12 +87,12 @@ public class Inventory extends StdCommand
 		return lst;
 	}
 
-	protected static String getShowableMoney(InventoryList list)
+	protected String getShowableMoney(InventoryList list)
 	{
 		final StringBuilder msg=new StringBuilder("");
 		if(list.moneyItems.size()>0)
 		{
-			msg.append("\n\r^HMoney:^N\n\r");
+			msg.append(_("\n\r^HMoney:^N\n\r"));
 			Item I=null;
 			for(final Enumeration e=list.moneyItems.keys();e.hasMoreElements();)
 			{
@@ -117,7 +117,7 @@ public class Inventory extends StdCommand
 		return msg.toString();
 	}
 
-	public static StringBuilder getInventory(MOB seer, MOB mob, String mask)
+	public StringBuilder getInventory(MOB seer, MOB mob, String mask)
 	{
 		final StringBuilder msg=new StringBuilder("");
 		final InventoryList list = fetchInventory(seer,mob);
@@ -149,16 +149,16 @@ public class Inventory extends StdCommand
 		if((list.viewItems.size()==0)&&(list.moneyItems.size()==0))
 		{
 			if((mask!=null)&&(mask.trim().length()>0))
-				msg.append("(nothing like that you can see right now)");
+				msg.append(_("(nothing like that you can see right now)"));
 			else
-				msg.append("(nothing you can see right now)");
+				msg.append(_("(nothing you can see right now)"));
 		}
 		else
 		{
 			if(list.viewItems.size()>0)
 				msg.append(CMLib.lister().lister(seer,list.viewItems,true,"MItem","",false,CMath.bset(seer.getBitmap(),MOB.ATT_COMPRESS)));
 			if(list.foundButUnseen)
-				msg.append("(stuff you can't see right now)");
+				msg.append(_("(stuff you can't see right now)"));
 
 			msg.append(getShowableMoney(list));
 		}

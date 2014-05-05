@@ -66,7 +66,7 @@ public class Unbinding extends CommonSkill
 				}
 				else
 				{
-					final StringBuffer str=new StringBuffer("You can't seem to remove any of the bindings.\n\r");
+					final StringBuffer str=new StringBuffer(_("You can't seem to remove any of the bindings.\n\r"));
 					commonTell(mob,str.toString());
 					unInvoke();
 				}

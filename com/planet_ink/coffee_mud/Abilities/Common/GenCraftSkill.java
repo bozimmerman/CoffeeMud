@@ -475,7 +475,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 				allFlag=true;
 				mask="";
 			}
-			final StringBuffer buf=new StringBuffer("Item <S-NAME> <S-IS-ARE> skilled at "+verbing+":\n\r");
+			final StringBuffer buf=new StringBuffer(_("Item <S-NAME> <S-IS-ARE> skilled at @x1:\n\r",verbing));
 			int toggler=1;
 			final int toggleTop=2;
 			final int[] cols={

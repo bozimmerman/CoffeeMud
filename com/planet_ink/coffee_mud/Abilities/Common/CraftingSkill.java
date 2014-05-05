@@ -767,9 +767,9 @@ public class CraftingSkill extends GatheringSkill
 		}
 		final StringBuffer buf=new StringBuffer("");
 		if(scanning==mob)
-			buf.append("The following items could use some "+name()+":\n\r");
+			buf.append(_("The following items could use some @x1:\n\r",name()));
 		else
-			buf.append("The following items on "+scanning.name()+" could use some "+name()+":\n\r");
+			buf.append(_("The following items on @x1 could use some @x2:\n\r",scanning.name(),name()));
 		for(int i=0;i<allStuff.size();i++)
 		{
 			final Item I=(Item)allStuff.elementAt(i);

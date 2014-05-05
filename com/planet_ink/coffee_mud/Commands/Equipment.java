@@ -42,7 +42,7 @@ public class Equipment extends StdCommand
 
 	private final static Class[][] internalParameters=new Class[][]{{MOB.class},{Boolean.class},{}};
 
-	public static StringBuilder getEquipment(MOB seer, MOB mob, boolean allPlaces)
+	public StringBuilder getEquipment(MOB seer, MOB mob, boolean allPlaces)
 	{
 		final StringBuilder msg=new StringBuilder("");
 		if(CMLib.flags().isSleeping(seer))
@@ -183,22 +183,20 @@ public class Equipment extends StdCommand
 								if(!allPlaces) name=CMStrings.ellipse(name,wrap);
 								if(wornCode==Wearable.WORN_HELD)
 								{
-									if(msg.length()==0) msg.append("nothing.");
+									if(msg.length()==0) msg.append(_("nothing."));
 									if(mob==seer)
-										msg.append("\n\rHolding ^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer).toString().trim()+"^N");
+										msg.append(_("\n\rHolding ^<EItem^>@x1^</EItem^>@x2^N",name,CMLib.flags().colorCodes(thisItem,seer).toString().trim()));
 									else
-										msg.append("\n\r" + mob.charStats().HeShe() + " is holding " +
-												 name.trim() + CMLib.flags().colorCodes(thisItem, seer).toString().trim() + "^N.");
+										msg.append(_("\n\r@x1 is holding @x2@x3^N.",mob.charStats().HeShe(),name.trim(),CMLib.flags().colorCodes(thisItem, seer).toString().trim()));
 								}
 								else
 								if(wornCode==Wearable.WORN_WIELD)
 								{
-									if(msg.length()==0) msg.append("nothing.");
+									if(msg.length()==0) msg.append(_("nothing."));
 									if(mob==seer)
-										msg.append("\n\rWielding ^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer).toString().trim()+"^N.");
+										msg.append(_("\n\rWielding ^<EItem^>@x1^</EItem^>@x2^N.",name,CMLib.flags().colorCodes(thisItem,seer).toString().trim()));
 									else
-										msg.append("\n\r" + mob.charStats().HeShe() + " is wielding " +
-												 name.trim() + CMLib.flags().colorCodes(thisItem, seer).toString().trim() + "^N.");
+										msg.append(_("\n\r@x1 is wielding @x2@x3^N.",mob.charStats().HeShe(),name.trim(),CMLib.flags().colorCodes(thisItem, seer).toString().trim()));
 								}
 								else
 								{
@@ -222,7 +220,7 @@ public class Equipment extends StdCommand
 						else
 						if(seer==mob)
 						{
-							msg.append(header+"(something you can`t see)"+CMLib.flags().colorCodes(thisItem,seer).toString().trim()+"^?\n\r");
+							msg.append(_("@x1(something you can`t see)@x2^?\n\r",header,CMLib.flags().colorCodes(thisItem,seer).toString().trim()));
 							shownThisLoc++;
 						}
 					}
@@ -272,7 +270,7 @@ public class Equipment extends StdCommand
 		}
 		if(msg.length()==0)
 		{
-			msg.append("^!(nothing)^?\n\r");
+			msg.append(_("^!(nothing)^?\n\r"));
 		}
 		else
 		{

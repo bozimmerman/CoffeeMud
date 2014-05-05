@@ -172,7 +172,7 @@ public class GenCharClass extends StdCharClass
 		final StringBuffer str=new StringBuffer("");
 		if((disallowedWeaponClasses(null)!=null)&&(disallowedWeaponClasses(null).size()>0))
 		{
-			str.append("The following weapon types may not be used: ");
+			str.append(_("The following weapon types may not be used: "));
 			for(final Iterator i=disallowedWeaponClasses(null).iterator();i.hasNext();)
 			{
 				final Integer I=(Integer)i.next();
@@ -182,7 +182,7 @@ public class GenCharClass extends StdCharClass
 		}
 		if((requiredWeaponMaterials()!=null)&&(requiredWeaponMaterials().size()>0))
 		{
-			str.append("Requires using weapons made of the following materials: ");
+			str.append(_("Requires using weapons made of the following materials: "));
 			for(final Iterator i=requiredWeaponMaterials().iterator();i.hasNext();)
 			{
 				final Integer I=(Integer)i.next();
@@ -191,7 +191,7 @@ public class GenCharClass extends StdCharClass
 			str.append(".  ");
 		}
 
-		if(str.length()==0) str.append("No limitations.");
+		if(str.length()==0) str.append(_("No limitations."));
 		return str.toString().trim();
 	}
 

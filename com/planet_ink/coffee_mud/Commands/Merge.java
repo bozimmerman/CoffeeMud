@@ -342,7 +342,7 @@ public class Merge extends StdCommand
 		}
 
 		allKnownFields.add("REJUV");
-		allFieldsMsg.append("REJUV ");
+		allFieldsMsg.append(_("REJUV "));
 
 		for(int i=0;i<commands.size();i++)
 		{

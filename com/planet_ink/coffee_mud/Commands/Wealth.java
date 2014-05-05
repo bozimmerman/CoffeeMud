@@ -33,12 +33,12 @@ public class Wealth extends Inventory
 	@Override public String[] getAccessWords(){return access;}
 
 
-	public static StringBuilder getInventory(MOB seer, MOB mob, String mask)
+	public StringBuilder getInventory(MOB seer, MOB mob, String mask)
 	{
 		final StringBuilder msg=new StringBuilder("");
 		final InventoryList list = fetchInventory(seer,mob);
 		if(list.moneyItems.size()==0)
-			msg.append("\n\r^HMoney:^N None!\n\r");
+			msg.append(_("\n\r^HMoney:^N None!\n\r"));
 		else
 			msg.append(getShowableMoney(list));
 		return msg;

@@ -178,7 +178,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 				allFlag=true;
 				mask="";
 			}
-			final StringBuffer buf=new StringBuffer(CMStrings.padRight(_("Item"),16)+" Lvl Material required\n\r");
+			final StringBuffer buf=new StringBuffer(_("@x1 Lvl Material required\n\r",CMStrings.padRight(_("Item"),16)));
 			for(int r=0;r<recipes.size();r++)
 			{
 				final List<String> V=recipes.get(r);
