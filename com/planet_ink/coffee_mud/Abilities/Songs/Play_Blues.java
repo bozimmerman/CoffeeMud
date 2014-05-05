@@ -40,7 +40,7 @@ public class Play_Blues extends Play
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected boolean maliciousButNotAggressiveFlag(){return true;}
-	@Override protected String songOf(){return "the "+name();}
+	@Override protected String songOf(){return _("the Blues");}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

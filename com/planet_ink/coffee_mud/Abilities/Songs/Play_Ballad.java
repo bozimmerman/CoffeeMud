@@ -39,7 +39,7 @@ public class Play_Ballad extends Play
 	private final static String localizedName = CMLib.lang()._("Ballad");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected String songOf(){return "a "+name();}
+	@Override protected String songOf(){return CMLib.english().startWithAorAn(name());}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)

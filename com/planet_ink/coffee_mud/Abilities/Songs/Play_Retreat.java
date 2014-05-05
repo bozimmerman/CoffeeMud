@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -42,7 +41,7 @@ public class Play_Retreat extends Play
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected boolean persistantSong(){return false;}
-	@Override protected String songOf(){return "a "+name();}
+	@Override protected String songOf(){return CMLib.english().startWithAorAn(name());}
 	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return true;}
 	int directionCode=-1;
 

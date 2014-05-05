@@ -45,7 +45,7 @@ public class Song_Ode extends Song
 	protected String song=null;
 	protected Hashtable songs=null;
 	protected StringBuffer trail=null;
-	@Override protected String songOf(){ return "Ode"+((whom==null)?"":" to "+whom.name())+"";}
+	@Override protected String songOf(){ return (whom==null)?_("Ode"):(_("Ode to ")+whom.name());}
 	@Override protected boolean skipStandardSongTick(){return (song==null);}
 	protected static final Hashtable cmds=new Hashtable();
 	protected static final String[][] stuff={

@@ -42,7 +42,7 @@ public class Play_Dirge extends Play
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected boolean persistantSong(){return false;}
 	@Override protected boolean skipStandardSongTick(){return true;}
-	@Override protected String songOf(){return "a "+name();}
+	@Override protected String songOf(){return CMLib.english().startWithAorAn(name());}
 	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 	@Override protected boolean skipStandardSongInvoke(){return true;}
 

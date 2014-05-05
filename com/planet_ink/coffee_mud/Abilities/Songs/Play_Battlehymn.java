@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -39,7 +38,7 @@ public class Play_Battlehymn extends Play
 	private final static String localizedName = CMLib.lang()._("Battlehymn");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected String songOf(){return "a "+name();}
+	@Override protected String songOf(){return CMLib.english().startWithAorAn(name());}
 
 	protected int timesTicking=0;
 

@@ -40,7 +40,7 @@ public class Play_Tribal extends Play
 	private final static String localizedName = CMLib.lang()._("Tribal");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected String songOf(){return name()+" Music";}
+	@Override protected String songOf(){return _("Tribal Music");}
 	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
 	@Override
