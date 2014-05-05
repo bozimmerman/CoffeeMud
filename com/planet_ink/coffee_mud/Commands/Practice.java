@@ -50,10 +50,15 @@ public class Practice extends StdCommand
 		commands.removeElementAt(0);
 
 		MOB teacher=null;
+		boolean triedTeacher=false;
 		if(commands.size()>1)
 		{
 			teacher=mob.location().fetchInhabitant((String)commands.lastElement());
-			if(teacher!=null) commands.removeElementAt(commands.size()-1);
+			if(teacher!=null)
+			{
+				triedTeacher=true;
+				commands.removeElementAt(commands.size()-1);
+			}
 		}
 
 		final String abilityName=CMParms.combine(commands,0);
@@ -69,21 +74,25 @@ public class Practice extends StdCommand
 			}
 		}
 
-		if((teacher==null)||(!CMLib.flags().canBeSeenBy(teacher,mob)))
-		{
-			mob.tell(_("That person doesn't seem to be here."));
-			return false;
-		}
-
 		final Ability myAbility=mob.findAbility(abilityName);
 		if(myAbility==null)
 		{
 			mob.tell(_("You don't seem to know @x1.",abilityName));
 			return false;
 		}
+		
+		if((teacher==null)||(!CMLib.flags().canBeSeenBy(teacher,mob)))
+		{
+			if(triedTeacher)
+				mob.tell(_("That person doesn't seem to be here."));
+			else
+				mob.tell(_("There doesn't seem to be a teacher to practice with here."));
+			return false;
+		}
+
 		if(!myAbility.isSavable())
 		{
-			mob.tell(_("@x1 cannot be practiced, as it is a native skill.",abilityName));
+			mob.tell(_("@x1 cannot be practiced, as it is a native skill.",myAbility.name()));
 			return false;
 		}
 
