@@ -74,17 +74,17 @@ public class ChannelWhoReply extends Packet {
 	@Override
 	public String toString()
 	{
-		String str = "({\"chan-who-reply\",5,\"" + I3Server.getMudName() +
+		String cmd = "({\"chan-who-reply\",5,\"" + I3Server.getMudName() +
 				 "\",0,\"" + target_mud + "\",\"" + target_name + "\",\"" + channel + "\",({";
 		int i;
 
 		for(i=0; i<who.size(); i++)
 		{
 			final String nom = (String)who.elementAt(0);
-			str += "\"" + nom + "\",";
+			cmd += "\"" + nom + "\",";
 		}
-		str += "}),})";
-		return str;
+		cmd += "}),})";
+		return cmd;
 
 	}
 }

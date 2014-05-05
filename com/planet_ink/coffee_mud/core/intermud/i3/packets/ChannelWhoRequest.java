@@ -68,8 +68,8 @@ public class ChannelWhoRequest extends Packet {
 	@Override
 	public String toString()
 	{
-		final String str="({\"chan-who-req\",5,\"" + I3Server.getMudName() +
+		final String cmd="({\"chan-who-req\",5,\"" + I3Server.getMudName() +
 			   "\",\"" + sender_name + "\",\"" + target_mud + "\",0,\"" + channel + "\",})";
-		return str;
+		return cmd;
 	}
 }

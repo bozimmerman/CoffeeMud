@@ -42,10 +42,10 @@ public class MiniJSON
 		}
 	}
 
-	public static String toJSONString(final String str)
+	public static String toJSONString(final String value)
 	{
 		final StringBuilder strBldr=new StringBuilder("");
-		for(final char c : str.toCharArray())
+		for(final char c : value.toCharArray())
 		{
 			switch(c)
 			{
@@ -140,55 +140,55 @@ public class MiniJSON
 			return o == NULL;
 		}
 
-		public void appendJSONString(final StringBuilder str, Object obj)
+		public void appendJSONString(final StringBuilder value, Object obj)
 		{
 			if(obj instanceof String)
 			{
-				str.append("\"").append(toJSONString((String)obj)).append("\"");
+				value.append("\"").append(toJSONString((String)obj)).append("\"");
 			}
 			else
 			if(obj == NULL)
 			{
-				str.append("null");
+				value.append("null");
 			}
 			else
 			if(obj instanceof Object[])
 			{
-				str.append("[");
+				value.append("[");
 				final Object[] array=(Object[])obj;
 				for(int i=0; i<array.length; i++)
 				{
 					if(i>0)
-						str.append(",");
-					appendJSONString(str, array[i]);
+						value.append(",");
+					appendJSONString(value, array[i]);
 				}
-				str.append("]");
+				value.append("]");
 			}
 			else
 			if(obj != null)
 			{
-				str.append(obj.toString());
+				value.append(obj.toString());
 			}
 		}
 
 		@Override
 		public String toString()
 		{
-			final StringBuilder str = new StringBuilder("");
-			str.append("{");
+			final StringBuilder value = new StringBuilder("");
+			value.append("{");
 			for(final Iterator<String> k = keySet().iterator(); k.hasNext();)
 			{
 				final String keyVar = k.next();
-				str.append("\"").append(toJSONString(keyVar)).append("\":");
+				value.append("\"").append(toJSONString(keyVar)).append("\":");
 				final Object obj = get(keyVar);
-				appendJSONString(str, obj);
+				appendJSONString(value, obj);
 				if(k.hasNext())
 				{
-					str.append(",");
+					value.append(",");
 				}
 			}
-			str.append("}");
-			return str.toString();
+			value.append("}");
+			return value.toString();
 		}
 
 	}
@@ -308,7 +308,7 @@ public class MiniJSON
 
 	private String parseString(char[] doc, int[] index) throws MJSONException
 	{
-		final StringBuilder str=new StringBuilder("");
+		final StringBuilder value=new StringBuilder("");
 		if(doc[index[0]]!='\"')
 		{
 			throw new MJSONException("Expectged quote at: "+doc[index[0]]);
@@ -318,7 +318,7 @@ public class MiniJSON
 		{
 			final char c=doc[index[0]];
 			if(c=='\"')
-				return str.toString();
+				return value.toString();
 			else
 			if(c=='\\')
 			{
@@ -330,13 +330,13 @@ public class MiniJSON
 				case '\"':
 				case '\\':
 				case '/':
-					str.append(doc[index[0]]);
+					value.append(doc[index[0]]);
 					break;
-				case 'b': str.append('\b'); break;
-				case 'f': str.append('\f'); break;
-				case 'n': str.append('\n'); break;
-				case 'r': str.append('\r'); break;
-				case 't': str.append('\t'); break;
+				case 'b': value.append('\b'); break;
+				case 'f': value.append('\f'); break;
+				case 'n': value.append('\n'); break;
+				case 'r': value.append('\r'); break;
+				case 't': value.append('\t'); break;
 				case 'u':
 				{
 					if(index[0] >= doc.length-5)
@@ -348,7 +348,7 @@ public class MiniJSON
 					hexBuf[3] = getByteFromHex(doc,++index[0]);
 					try
 					{
-						str.append(new String(hexBuf, "Cp1251"));
+						value.append(new String(hexBuf, "Cp1251"));
 					}
 					catch (final UnsupportedEncodingException e)
 					{
@@ -361,7 +361,7 @@ public class MiniJSON
 				}
 			}
 			else
-				str.append(c);
+				value.append(c);
 			index[0]++;
 		}
 		throw new MJSONException("Unfinished string at "+index[0]);

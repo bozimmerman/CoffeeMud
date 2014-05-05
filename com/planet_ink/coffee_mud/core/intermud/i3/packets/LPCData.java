@@ -35,16 +35,16 @@ import java.util.Vector;
  */
 @SuppressWarnings({"unchecked","rawtypes"})
 public class LPCData {
-	static public Object getLPCData(String str) throws I3Exception {
-		return getLPCData(str, false);
+	static public Object getLPCData(String cmd) throws I3Exception {
+		return getLPCData(cmd, false);
 	}
 
-	static public Object getLPCData(String str, boolean flag) throws I3Exception {
+	static public Object getLPCData(String cmd, boolean flag) throws I3Exception {
 		final Vector data = new Vector(2);
 
 		data.addElement(null);
 		data.addElement("");
-		if( str == null )
+		if( cmd == null )
 		{
 			if( ! flag )
 			{
@@ -52,8 +52,8 @@ public class LPCData {
 			}
 			return data;
 		}
-		str = str.trim();
-		if( str.length() < 1 )
+		cmd = cmd.trim();
+		if( cmd.length() < 1 )
 		{
 			if( !flag )
 			{
@@ -61,11 +61,11 @@ public class LPCData {
 			}
 			return data;
 		}
-		else if( str.length() == 1 )
+		else if( cmd.length() == 1 )
 		{
 			try
 			{
-				final int x = Integer.parseInt(str);
+				final int x = Integer.parseInt(cmd);
 
 				if( !flag )
 				{
@@ -76,47 +76,47 @@ public class LPCData {
 			}
 			catch( final NumberFormatException e )
 			{
-				throw new I3Exception("Invalid LPC Data in string: " + str);
+				throw new I3Exception("Invalid LPC Data in string: " + cmd);
 			}
 		}
-		if( str.charAt(0) == '(' )
+		if( cmd.charAt(0) == '(' )
 		{
-			switch(str.charAt(1))
+			switch(cmd.charAt(1))
 			{
 				case '{':
 				{
 					final Vector v = new Vector();
 
-					str = str.substring(2, str.length());
-					while( str.charAt(0) != '}' )
+					cmd = cmd.substring(2, cmd.length());
+					while( cmd.charAt(0) != '}' )
 					{
-						final Vector tmp = (Vector)getLPCData(str, true);
+						final Vector tmp = (Vector)getLPCData(cmd, true);
 
 						v.addElement(tmp.elementAt(0));
-						str = ((String)tmp.elementAt(1)).trim();
-						if( str.length() < 1 || (str.charAt(0) != ',' && str.charAt(0) != '}') )
+						cmd = ((String)tmp.elementAt(1)).trim();
+						if( cmd.length() < 1 || (cmd.charAt(0) != ',' && cmd.charAt(0) != '}') )
 						{
-							throw new I3Exception("Invalid LPC Data in string: " + str);
+							throw new I3Exception("Invalid LPC Data in string: " + cmd);
 						}
-						else if( str.charAt(0) == ',' )
+						else if( cmd.charAt(0) == ',' )
 						{
-							str = str.substring(1, str.length());
-							str = str.trim();
+							cmd = cmd.substring(1, cmd.length());
+							cmd = cmd.trim();
 						}
 					}
-					if( str.charAt(1) != ')' )
+					if( cmd.charAt(1) != ')' )
 					{
-						str = str.substring(2, str.length());
-						str = str.trim();
-						if( str.charAt(0) != ')' )
+						cmd = cmd.substring(2, cmd.length());
+						cmd = cmd.trim();
+						if( cmd.charAt(0) != ')' )
 						{
 							throw new I3Exception("Illegal array terminator.");
 						}
-						data.setElementAt(str.substring(1, str.length()), 1);
+						data.setElementAt(cmd.substring(1, cmd.length()), 1);
 					}
 					else
 					{
-						data.setElementAt(str.substring(2,str.length()), 1);
+						data.setElementAt(cmd.substring(2,cmd.length()), 1);
 					}
 					if( !flag ) return v;
 					data.setElementAt(v, 0);
@@ -127,45 +127,45 @@ public class LPCData {
 				{
 					final Hashtable h = new Hashtable();
 
-					str = str.substring(2, str.length());
-					while( str.charAt(0) != ']' )
+					cmd = cmd.substring(2, cmd.length());
+					while( cmd.charAt(0) != ']' )
 					{
-						Vector tmp = (Vector)getLPCData(str, true);
+						Vector tmp = (Vector)getLPCData(cmd, true);
 						Object key, value;
 
-						str = (String)tmp.elementAt(1);
-						str = str.trim();
-						if( str.charAt(0) != ':' )
+						cmd = (String)tmp.elementAt(1);
+						cmd = cmd.trim();
+						if( cmd.charAt(0) != ':' )
 						{
-							throw new I3Exception("Invalid mapping format1: " + str);
+							throw new I3Exception("Invalid mapping format1: " + cmd);
 						}
-						str = str.substring(1, str.length());
+						cmd = cmd.substring(1, cmd.length());
 						key = tmp.elementAt(0);
-						tmp = (Vector)getLPCData(str, true);
+						tmp = (Vector)getLPCData(cmd, true);
 						value = tmp.elementAt(0);
-						str = (String)tmp.elementAt(1);
+						cmd = (String)tmp.elementAt(1);
 						h.put(key, value);
-						str = str.trim();
-						if( str.charAt(0) != ',' && str.charAt(0) != ']' )
+						cmd = cmd.trim();
+						if( cmd.charAt(0) != ',' && cmd.charAt(0) != ']' )
 						{
-							throw new I3Exception("Invalid mapping format2: " + str);
+							throw new I3Exception("Invalid mapping format2: " + cmd);
 						}
-						else if( str.charAt(0) != ']' )
+						else if( cmd.charAt(0) != ']' )
 						{
-							str = str.substring(1, str.length());
-							str = str.trim();
+							cmd = cmd.substring(1, cmd.length());
+							cmd = cmd.trim();
 						}
 					}
-					if( str.charAt(1) != ')' )
+					if( cmd.charAt(1) != ')' )
 					{
-						str = str.substring(2, str.length()).trim();
-						if( str.charAt(0) != ')' )
+						cmd = cmd.substring(2, cmd.length()).trim();
+						if( cmd.charAt(0) != ')' )
 						{
-							throw new I3Exception("Invalid mapping format3: " + str);
+							throw new I3Exception("Invalid mapping format3: " + cmd);
 						}
-						data.setElementAt(str.substring(1, str.length()).trim(), 1);
+						data.setElementAt(cmd.substring(1, cmd.length()).trim(), 1);
 					}
-					else data.setElementAt(str.substring(2, str.length()).trim(), 1);
+					else data.setElementAt(cmd.substring(2, cmd.length()).trim(), 1);
 					if( !flag )
 					{
 						return h;
@@ -175,23 +175,23 @@ public class LPCData {
 				}
 
 				default:
-				throw new I3Exception("Invalid LPC Data in string: " + str);
+				throw new I3Exception("Invalid LPC Data in string: " + cmd);
 			}
 		}
-		else if( str.charAt(0) == '"' )
+		else if( cmd.charAt(0) == '"' )
 		{
 			int x=1;
 			final StringBuffer in=new StringBuffer("");
 			char c='\0';
-			while(x<str.length())
+			while(x<cmd.length())
 			{
-				c=str.charAt(x);
-				switch(str.charAt(x))
+				c=cmd.charAt(x);
+				switch(cmd.charAt(x))
 				{
 				case '\\':
-					if((x+1)<str.length())
+					if((x+1)<cmd.length())
 					{
-						in.append(str.charAt(x+1));
+						in.append(cmd.charAt(x+1));
 						x++;
 					}
 					else
@@ -201,7 +201,7 @@ public class LPCData {
 				case '"':
 					if( !flag ) return in.toString();
 					data.setElementAt(in.toString(),0);
-					data.setElementAt(str.substring(x+1),1);
+					data.setElementAt(cmd.substring(x+1),1);
 					return data;
 				default:
 					in.append(c);
@@ -214,35 +214,35 @@ public class LPCData {
 			data.setElementAt("",1);
 			return data;
 		}
-		else if( Character.isDigit(str.charAt(0)) || str.charAt(0) == '-' )
+		else if( Character.isDigit(cmd.charAt(0)) || cmd.charAt(0) == '-' )
 		{
 			String tmp;
 			int x;
-			if( str.length() > 1 && str.startsWith("0x" ) )
+			if( cmd.length() > 1 && cmd.startsWith("0x" ) )
 			{
 				tmp = "0x";
-				str = str.substring(2, str.length());
+				cmd = cmd.substring(2, cmd.length());
 			}
-			else if( str.length() > 1 && str.startsWith("-") )
+			else if( cmd.length() > 1 && cmd.startsWith("-") )
 			{
 				tmp = "-";
-				str = str.substring(1, str.length());
+				cmd = cmd.substring(1, cmd.length());
 			}
 			else
 			{
 				tmp = "";
 			}
-			while( !str.equals("") && (Character.isDigit(str.charAt(0))) )
+			while( !cmd.equals("") && (Character.isDigit(cmd.charAt(0))) )
 			{
-				tmp += str.charAt(0);
-			  //  tmp += str.substring(0, 1);
-				if( str.length() > 1 )
+				tmp += cmd.charAt(0);
+			  //  tmp += cmd.substring(0, 1);
+				if( cmd.length() > 1 )
 				{
-					str = str.substring(1, str.length());
+					cmd = cmd.substring(1, cmd.length());
 				}
 				else
 				{
-					str = "";
+					cmd = "";
 				}
 			}
 			try
@@ -253,11 +253,11 @@ public class LPCData {
 			{
 				throw new I3Exception("Invalid number format: " + tmp);
 			}
-			if((str.length()>1)&&(str.charAt(0)=='.'))
+			if((cmd.length()>1)&&(cmd.charAt(0)=='.'))
 			{
-				str=str.substring(1);
-				while((str.length()>0)&&(Character.isDigit(str.charAt(0))))
-					str=str.substring(1);
+				cmd=cmd.substring(1);
+				while((cmd.length()>0)&&(Character.isDigit(cmd.charAt(0))))
+					cmd=cmd.substring(1);
 			}
 			if( !flag )
 			{
@@ -265,7 +265,7 @@ public class LPCData {
 			}
 
 			data.setElementAt(Integer.valueOf(x), 0);
-			data.setElementAt(str, 1);
+			data.setElementAt(cmd, 1);
 			return data;
 		}
 		throw new I3Exception("Gobbledygook in string.");

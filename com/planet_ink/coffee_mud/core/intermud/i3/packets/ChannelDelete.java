@@ -79,9 +79,9 @@ public class ChannelDelete extends Packet  {
 	public String toString()
 	{
 		final NameServer n = Intermud.getNameServer();
-		final String str=
+		final String cmd=
 			 "({\"channel-remove\",5,\"" + I3Server.getMudName() + "\",\"" +
 			   sender_name + "\",\""+n.name+"\",0,\"" + channel + "\",})";
-		return str;
+		return cmd;
 	}
 }

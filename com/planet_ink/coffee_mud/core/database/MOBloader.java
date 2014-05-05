@@ -998,8 +998,8 @@ public class MOBloader
 			if((thisItem!=null)&&(!done.contains(""+thisItem))&&(thisItem.isSavable()))
 			{
 				CMLib.catalog().updateCatalogIntegrity(thisItem);
-				final String str=getDBItemUpdateString(mob,thisItem);
-				strings.add(new DBPreparedBatchEntry(str,thisItem.text()+" "));
+				final String sql=getDBItemUpdateString(mob,thisItem);
+				strings.add(new DBPreparedBatchEntry(sql,thisItem.text()+" "));
 				done.add(""+thisItem);
 			}
 		}
@@ -1036,11 +1036,11 @@ public class MOBloader
 				{
 					CMLib.catalog().updateCatalogIntegrity(thisItem);
 					final Item cont=thisItem.ultimateContainer(null);
-					final String str=getDBItemUpdateString(mob,thisItem);
+					final String sql=getDBItemUpdateString(mob,thisItem);
 					final String roomID=((cont.owner()==null)&&(thisItem instanceof SpaceShip)&&(CMLib.map().isObjectInSpace((SpaceShip)thisItem)))?
 							("SPACE."+CMParms.toStringList(((SpaceShip)thisItem).coordinates())):CMLib.map().getExtendedRoomID((Room)cont.owner());
 					final String text="<ROOM ID=\""+roomID+"\" EXPIRE="+thisItem.expirationDate()+" />"+thisItem.text();
-					strings.add(new DBPreparedBatchEntry(str,text));
+					strings.add(new DBPreparedBatchEntry(sql,text));
 					done.add(""+thisItem);
 				}
 			}
@@ -1189,10 +1189,10 @@ public class MOBloader
 			if((thisMOB!=null)&&(thisMOB.isMonster())&&(!thisMOB.isPossessing()))
 			{
 				CMLib.catalog().updateCatalogIntegrity(thisMOB);
-				final String str="INSERT INTO CMCHFO (CMUSERID, CMFONM, CMFOID, CMFOTX, CMFOLV, CMFOAB"
+				final String sql="INSERT INTO CMCHFO (CMUSERID, CMFONM, CMFOID, CMFOTX, CMFOLV, CMFOAB"
 				+") values ('"+mob.Name()+"',"+f+",'"+CMClass.classID(thisMOB)+"',?,"
 				+thisMOB.basePhyStats().level()+","+thisMOB.basePhyStats().ability()+")";
-				statements.add(new DBPreparedBatchEntry(str,thisMOB.text()+" "));
+				statements.add(new DBPreparedBatchEntry(sql,thisMOB.text()+" "));
 			}
 		}
 		DB.updateWithClobs(statements);
@@ -1293,9 +1293,9 @@ public class MOBloader
 					if((effectA.isSavable())&&(!effectA.canBeUninvoked())&&(!effectA.isAutoInvoked())) proficiency=proficiency-200;
 				}
 				H.add(thisAbility.ID());
-				final String str="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
+				final String sql="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
 				+") values ('"+mob.Name()+"','"+thisAbility.ID()+"',"+proficiency+",?)";
-				statements.add(new DBPreparedBatchEntry(str,thisAbility.text()));
+				statements.add(new DBPreparedBatchEntry(sql,thisAbility.text()));
 			}
 		}
 		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
@@ -1303,9 +1303,9 @@ public class MOBloader
 			final Ability A=a.nextElement();
 			if((A!=null)&&(!H.contains(A.ID()))&&(A.isSavable())&&(!A.canBeUninvoked()))
 			{
-				final String str="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
+				final String sql="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
 				+") values ('"+mob.Name()+"','"+A.ID()+"',"+Integer.MAX_VALUE+",?)";
-				statements.add(new DBPreparedBatchEntry(str,A.text()));
+				statements.add(new DBPreparedBatchEntry(sql,A.text()));
 			}
 		}
 		for(final Enumeration<Behavior> e=mob.behaviors();e.hasMoreElements();)
@@ -1313,19 +1313,19 @@ public class MOBloader
 			final Behavior B=e.nextElement();
 			if((B!=null)&&(B.isSavable()))
 			{
-				final String str="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
+				final String sql="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
 				+") values ('"+mob.Name()+"','"+B.ID()+"',"+(Integer.MIN_VALUE+1)+",?"
 				+")";
-				statements.add(new DBPreparedBatchEntry(str,B.getParms()));
+				statements.add(new DBPreparedBatchEntry(sql,B.getParms()));
 			}
 		}
 		final String scriptStuff = CMLib.coffeeMaker().getGenScripts(mob,true);
 		if(scriptStuff.length()>0)
 		{
-			final String str="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
+			final String sql="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
 			+") values ('"+mob.Name()+"','ScriptingEngine',"+(Integer.MIN_VALUE+1)+",?"
 			+")";
-			statements.add(new DBPreparedBatchEntry(str,scriptStuff));
+			statements.add(new DBPreparedBatchEntry(sql,scriptStuff));
 		}
 
 		DB.updateWithClobs(statements);

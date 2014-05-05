@@ -50,18 +50,18 @@ public class ChannelPacket extends Packet  {
 		super(v);
 		try
 		{
-			final String str = (String)v.elementAt(0);
+			final String cmd = (String)v.elementAt(0);
 
 			channel = (String)v.elementAt(6);
 			channel = Intermud.getLocalChannel(channel);
-			if( str.equals("channel-e") )
+			if( cmd.equals("channel-e") )
 			{
 				type = Packet.CHAN_EMOTE;
 				sender_visible_name = (String)v.elementAt(7);
 				message = (String)v.elementAt(8);
 			}
 			else
-			if( str.equals("channel-t") )
+			if( cmd.equals("channel-t") )
 			{
 				type = Packet.CHAN_TARGET;
 				target_mud=(String)v.elementAt(7);
@@ -109,22 +109,22 @@ public class ChannelPacket extends Packet  {
 	@Override
 	public String toString()
 	{
-		String str=null;
+		String cmd=null;
 		if(type==CHAN_TARGET)
-			 str="({\"channel-t\",5,\"" + I3Server.getMudName() + "\",\"" +
+			 cmd="({\"channel-t\",5,\"" + I3Server.getMudName() + "\",\"" +
 			 sender_name + "\",0,0,\"" + channel + "\",\"" +
 			 target_mud + "\",\"" + target_name + "\",\"" +
 			 message + "\",\"" + message_target + "\",\"" +
 			 sender_visible_name + "\",\"" + target_visible_name + "\",})";
 		else
 		if(type==CHAN_EMOTE)
-			 str="({\"channel-e\",5,\"" + I3Server.getMudName() + "\",\"" +
+			 cmd="({\"channel-e\",5,\"" + I3Server.getMudName() + "\",\"" +
 			 sender_name + "\",0,0,\"" + channel + "\",\"" +
 			 sender_visible_name + "\",\"" + message + "\",})";
 		else
-			 str="({\"channel-m\",5,\"" + I3Server.getMudName() + "\",\"" +
+			 cmd="({\"channel-m\",5,\"" + I3Server.getMudName() + "\",\"" +
 			   sender_name + "\",0,0,\"" + channel + "\",\"" +
 			   sender_visible_name + "\",\"" + message + "\",})";
-		return str;
+		return cmd;
 	}
 }

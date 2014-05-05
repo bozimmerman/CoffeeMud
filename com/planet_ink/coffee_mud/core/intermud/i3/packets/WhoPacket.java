@@ -74,7 +74,7 @@ public class WhoPacket extends Packet {
 				   "\",\"" + sender_name + "\",\"" + target_mud +
 				   "\",0,})";
 		}
-		String str = "({\"who-reply\",5,\"" + I3Server.getMudName() +
+		String cmd = "({\"who-reply\",5,\"" + I3Server.getMudName() +
 				 "\",0,\"" + target_mud + "\",\"" + target_name + "\",({";
 		int i;
 
@@ -85,9 +85,9 @@ public class WhoPacket extends Packet {
 			final int idle = ((Integer)v.elementAt(1)).intValue();
 			final String xtra = (String)v.elementAt(2);
 
-			str += "({\"" + nom + "\"," + idle + ",\"" + xtra + "\",}),";
+			cmd += "({\"" + nom + "\"," + idle + ",\"" + xtra + "\",}),";
 		}
-		str += "}),})";
-		return str;
+		cmd += "}),})";
+		return cmd;
 	}
 }

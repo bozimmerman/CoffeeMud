@@ -89,22 +89,22 @@ public class FingerReply extends Packet {
 	@Override
 	public String toString()
 	{
-		String str = "({\"finger-reply\",5,\"" + I3Server.getMudName() +
+		String cmd = "({\"finger-reply\",5,\"" + I3Server.getMudName() +
 				 "\",0,\"" + target_mud + "\",\"" + target_name + "\",";
 		final String[] responses={ visible_name, title, real_name, e_mail,
 							loginout_time, idle_time, ip_time, extra };
 		for(final String nom : responses)
 		{
 			if(nom.length()==0)
-				str += "0,";
+				cmd += "0,";
 			else
 			if(CMath.isNumber(nom))
-				str += "" + nom + ",";
+				cmd += "" + nom + ",";
 			else
-				str += "\"" + nom + "\",";
+				cmd += "\"" + nom + "\",";
 		}
-		str += "})";
-		return str;
+		cmd += "})";
+		return cmd;
 
 	}
 }

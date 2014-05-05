@@ -74,9 +74,9 @@ public class LocateQueryPacket extends Packet {
 	@Override
 	public String toString()
 	{
-		final String str="({\"locate-req\",5,\"" + I3Server.getMudName() +
+		final String cmd="({\"locate-req\",5,\"" + I3Server.getMudName() +
 			   "\",\"" + sender_name + "\",0,0,\"" +
 			   user_name + "\",})";
-		return str;
+		return cmd;
 	}
 }

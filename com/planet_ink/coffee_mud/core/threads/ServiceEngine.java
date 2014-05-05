@@ -1144,29 +1144,29 @@ public class ServiceEngine implements ThreadEngine
 							insertOrderDeathInOrder(orderedDeaths,0,"LOCKED GROUP "+almostTock.getName()+": "+almostTock.getStatus()+": NULL @"+CMLib.time().date2String(tickClient.getLastStartTime())+", tickID "+tickClient.getTickID(),almostTock);
 						else
 						{
-							StringBuffer str=null;
+							StringBuffer logError=null;
 							final long code=ticker.getTickStatus();
 							final String codeWord=getTickStatusSummary(ticker);
-							String msg=null;
+							String log=null;
 							if(ticker instanceof Environmental)
-								str=new StringBuffer("LOCKED GROUP "+almostTock.getName()+": "+almostTock.getStatus()+": "+ticker.name()+" ("+((Environmental)ticker).ID()+") @"+CMLib.time().date2String(tickClient.getLastStartTime())+", status("+code+" ("+codeWord+"), tickID "+tickClient.getTickID());
+								logError=new StringBuffer("LOCKED GROUP "+almostTock.getName()+": "+almostTock.getStatus()+": "+ticker.name()+" ("+((Environmental)ticker).ID()+") @"+CMLib.time().date2String(tickClient.getLastStartTime())+", status("+code+" ("+codeWord+"), tickID "+tickClient.getTickID());
 							else
-								str=new StringBuffer("LOCKED GROUP "+almostTock.getName()+": "+almostTock.getStatus()+": "+ticker.name()+", status ("+code+"/"+codeWord+") @"+CMLib.time().date2String(tickClient.getLastStartTime())+", tickID "+tickClient.getTickID());
+								logError=new StringBuffer("LOCKED GROUP "+almostTock.getName()+": "+almostTock.getStatus()+": "+ticker.name()+", status ("+code+"/"+codeWord+") @"+CMLib.time().date2String(tickClient.getLastStartTime())+", tickID "+tickClient.getTickID());
 
 							if((ticker instanceof MOB)&&(((MOB)ticker).location()!=null))
-								msg=str.toString()+" in "+((MOB)ticker).location().roomID();
+								log=logError.toString()+" in "+((MOB)ticker).location().roomID();
 							else
 							if((ticker instanceof Item)&&(((Item)ticker).owner()!=null)&&(((Item)ticker).owner() instanceof Room))
-								msg=str.toString()+" in "+((Room)((Item)ticker).owner()).roomID();
+								log=logError.toString()+" in "+((Room)((Item)ticker).owner()).roomID();
 							else
 							if((ticker instanceof Item)&&(((Item)ticker).owner()!=null)&&(((Item)ticker).owner() instanceof MOB))
-								msg=str.toString()+" owned by "+((MOB)((Item)ticker).owner()).name();
+								log=logError.toString()+" owned by "+((MOB)((Item)ticker).owner()).name();
 							else
 							if(ticker instanceof Room)
-								msg=str.toString()+" is "+((Room)ticker).roomID();
+								log=logError.toString()+" is "+((Room)ticker).roomID();
 							else
-								msg=str.toString();
-							insertOrderDeathInOrder(orderedDeaths,tickClient.getLastStartTime(),msg,almostTock);
+								log=logError.toString();
+							insertOrderDeathInOrder(orderedDeaths,tickClient.getLastStartTime(),log,almostTock);
 						}
 					}
 					// no isDEBUGGING check -- just always let her rip.

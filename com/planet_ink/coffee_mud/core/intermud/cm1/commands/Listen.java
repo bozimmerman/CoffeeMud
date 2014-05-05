@@ -168,22 +168,22 @@ public class Listen extends CM1Command
 					return "LOGOUT "+msg.source().Name();
 			default:
 			{
-				final StringBuilder str=new StringBuilder("");
-				str.append('\"').append(msg.source().Name()).append('\"').append(' ');
-				str.append(minorDesc(msg.sourceMinor())).append(' ');
+				final StringBuilder cmd=new StringBuilder("");
+				cmd.append('\"').append(msg.source().Name()).append('\"').append(' ');
+				cmd.append(minorDesc(msg.sourceMinor())).append(' ');
 				if(msg.target()!=null)
-					str.append('\"').append(msg.target().Name()).append('\"').append(' ');
+					cmd.append('\"').append(msg.target().Name()).append('\"').append(' ');
 				else
-					str.append("NULL ");
-				str.append(minorDesc(msg.targetMinor())).append(' ');
+					cmd.append("NULL ");
+				cmd.append(minorDesc(msg.targetMinor())).append(' ');
 				if(msg.tool()!=null)
-					str.append('\"').append(msg.tool().Name()).append('\"').append(' ');
+					cmd.append('\"').append(msg.tool().Name()).append('\"').append(' ');
 				else
-					str.append("NULL ");
-				str.append(minorDesc(msg.othersMinor())).append(' ');
-				str.append(Integer.toString(msg.value())).append(' ');
-				str.append(CMStrings.removeColors(CMLib.coffeeFilter().fullOutFilter(null, CMLib.map().deity(), msg.source(), msg.target(), msg.tool(), msg.othersMessage(), false)));
-				return str.toString();
+					cmd.append("NULL ");
+				cmd.append(minorDesc(msg.othersMinor())).append(' ');
+				cmd.append(Integer.toString(msg.value())).append(' ');
+				cmd.append(CMStrings.removeColors(CMLib.coffeeFilter().fullOutFilter(null, CMLib.map().deity(), msg.source(), msg.target(), msg.tool(), msg.othersMessage(), false)));
+				return cmd.toString();
 			}
 			}
 		}

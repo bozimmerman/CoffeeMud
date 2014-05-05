@@ -66,8 +66,8 @@ public class FingerRequest extends Packet
 	@Override
 	public String toString()
 	{
-		final String str="({\"finger-req\",5,\"" + I3Server.getMudName() +
+		final String cmd="({\"finger-req\",5,\"" + I3Server.getMudName() +
 			   "\",\"" + sender_name + "\",\"" + target_mud + "\",0,\"" + target_name + "\",})";
-		return str;
+		return cmd;
 	}
 }

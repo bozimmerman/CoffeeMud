@@ -107,9 +107,9 @@ public class Packet {
 		}
 	}
 
-	public String convertString(String str)
+	public String convertString(String cmd)
 	{
-		final StringBuffer b = new StringBuffer(str);
+		final StringBuffer b = new StringBuffer(cmd);
 		int i = 0;
 
 		while( i < b.length() )

@@ -121,9 +121,9 @@ public class JournalLoader
 		try
 		{
 			D=DB.DBFetch(); // add max and count to fakedb
-			String str="SELECT CMUPTM FROM CMJRNL WHERE CMJRNL='"+Journal+"' AND CMUPTM > " + olderTime;
-			if(to != null) str +=" AND CMTONM='"+to+"'";
-			final ResultSet R=D.query(str);
+			String sql="SELECT CMUPTM FROM CMJRNL WHERE CMJRNL='"+Journal+"' AND CMUPTM > " + olderTime;
+			if(to != null) sql +=" AND CMTONM='"+to+"'";
+			final ResultSet R=D.query(sql);
 			while(R.next())
 			{
 				newest[1]++;
@@ -234,28 +234,28 @@ public class JournalLoader
 		try
 		{
 			D=DB.DBFetch();
-			String str="SELECT * FROM CMJRNL WHERE";
+			String sql="SELECT * FROM CMJRNL WHERE";
 			if(newerDate==0)
-				str+=" CMUPTM > 0"; // <0 are the meta msgs
+				sql+=" CMUPTM > 0"; // <0 are the meta msgs
 			else
 			if((parent==null)||(parent.length()>0))
-				str+=" CMUPTM > " + newerDate;
+				sql+=" CMUPTM > " + newerDate;
 			else
-				str+=" CMUPTM < " + newerDate;
+				sql+=" CMUPTM < " + newerDate;
 
 			if((Journal!=null)&&(Journal.length()>0))
-				str += " AND CMJRNL='"+Journal+"'";
+				sql += " AND CMJRNL='"+Journal+"'";
 			if(parent != null)
-				str += " AND CMPART='"+parent+"'";
+				sql += " AND CMPART='"+parent+"'";
 			if(searching)
-				str += " AND (CMSUBJ LIKE '%"+searchStr+"%' OR CMMSGT LIKE '%"+searchStr+"%')";
-			str += " ORDER BY CMUPTM";
+				sql += " AND (CMSUBJ LIKE '%"+searchStr+"%' OR CMMSGT LIKE '%"+searchStr+"%')";
+			sql += " ORDER BY CMUPTM";
 			if((parent==null)||(parent.length()>0))
-				str += " ASC";
+				sql += " ASC";
 			else
-				str += " DESC";
+				sql += " DESC";
 
-			final ResultSet R=D.query(str);
+			final ResultSet R=D.query(sql);
 			int cardinal=0;
 			JournalsLibrary.JournalEntry entry;
 			final Map<String,JournalsLibrary.JournalEntry> parentKeysDone=new HashMap<String,JournalsLibrary.JournalEntry>();
@@ -286,7 +286,7 @@ public class JournalLoader
 				entry.cardinal = ++cardinal;
 				journal.addElement(entry);
 			}
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader","Query ("+journal.size()+"): "+str);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader","Query ("+journal.size()+"): "+sql);
 			if((journal.size()>0)&&(parent!=null)) // set last entry -- make sure its not stucky
 			{
 				journal.lastElement().isLastEntry=true;
@@ -324,12 +324,12 @@ public class JournalLoader
 		try
 		{
 			D=DB.DBFetch();
-			String str="SELECT * FROM CMJRNL WHERE CMJRNL='"+Journal+"'";
-			str += " AND (CMSUBJ LIKE '%"+searchStr+"%' OR CMMSGT LIKE '%"+searchStr+"%')";
-			str += " ORDER BY CMUPTM";
-			str += " ASC";
+			String sql="SELECT * FROM CMJRNL WHERE CMJRNL='"+Journal+"'";
+			sql += " AND (CMSUBJ LIKE '%"+searchStr+"%' OR CMMSGT LIKE '%"+searchStr+"%')";
+			sql += " ORDER BY CMUPTM";
+			sql += " ASC";
 
-			final ResultSet R=D.query(str);
+			final ResultSet R=D.query(sql);
 			int cardinal=0;
 			JournalsLibrary.JournalEntry entry;
 			while(R.next())
@@ -338,7 +338,7 @@ public class JournalLoader
 				entry.cardinal = ++cardinal;
 				journal.addElement(entry);
 			}
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader","Query ("+journal.size()+"): "+str);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader","Query ("+journal.size()+"): "+sql);
 			if((journal.size()>0)&&(!R.next()))
 				journal.lastElement().isLastEntry=true;
 		}
@@ -364,10 +364,10 @@ public class JournalLoader
 		try
 		{
 			D=DB.DBFetch();
-			String str="SELECT * FROM CMJRNL WHERE CMUPTM > " + olderDate;
-			if(Journal!=null) str +=" AND CMJRNL='"+Journal+"'";
-			if(to != null) str +=" AND CMTONM='"+to+"'";
-			final ResultSet R=D.query(str);
+			String sql="SELECT * FROM CMJRNL WHERE CMUPTM > " + olderDate;
+			if(Journal!=null) sql +=" AND CMJRNL='"+Journal+"'";
+			if(to != null) sql +=" AND CMTONM='"+to+"'";
+			final ResultSet R=D.query(sql);
 			int cardinal=0;
 			while(R.next())
 			{
@@ -402,8 +402,8 @@ public class JournalLoader
 			try
 			{
 				D=DB.DBFetch();
-				final String str="SELECT * FROM CMJRNL WHERE CMJRNL='"+Journal+"'";
-				final ResultSet R=D.query(str);
+				final String sql="SELECT * FROM CMJRNL WHERE CMJRNL='"+Journal+"'";
+				final ResultSet R=D.query(sql);
 				int cardinal=0;
 				while(R.next())
 				{
@@ -438,8 +438,8 @@ public class JournalLoader
 			try
 			{
 				D=DB.DBFetch();
-				final String str="SELECT * FROM CMJRNL WHERE CMJKEY='"+Key+"' AND CMJRNL='"+Journal+"'";
-				final ResultSet R=D.query(str);
+				final String sql="SELECT * FROM CMJRNL WHERE CMJKEY='"+Key+"' AND CMJRNL='"+Journal+"'";
+				final ResultSet R=D.query(sql);
 				if(R.next())
 				{
 					final JournalsLibrary.JournalEntry entry = DBReadJournalEntry(R);
@@ -565,8 +565,8 @@ public class JournalLoader
 			final Vector<String> deletableEntriesV=new Vector<String>();
 			final Vector<String[]> notifiableParentsV=new Vector<String[]>();
 			//Resources.submitResource("JOURNAL_"+Journal);
-			final String str="SELECT * FROM CMJRNL WHERE CMTONM='"+name+"'";
-			final ResultSet R=D.query(str);
+			final String sql="SELECT * FROM CMJRNL WHERE CMTONM='"+name+"'";
+			final ResultSet R=D.query(sql);
 			while(R.next())
 			{
 				final String journalName=R.getString("CMJRNL");

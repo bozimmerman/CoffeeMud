@@ -61,13 +61,13 @@ public interface ImudServices {
 	 * the local name for that channel.
 	 * Example:
 	 * <PRE>
-	 * if( str.equals("imud_code") ) return "intercre";
+	 * if( cmd.equals("imud_code") ) return "intercre";
 	 * </PRE>
-	 * @param str the remote name of the desired channel
+	 * @param cmd the remote name of the desired channel
 	 * @return the local channel name for a remote channel
 	 * @see #getRemoteChannel
 	 */
-	public abstract String getLocalChannel(String str);
+	public abstract String getLocalChannel(String cmd);
 
 	/**
 	 * @return the software name and version
@@ -81,10 +81,10 @@ public interface ImudServices {
 
 	/**
 	 * Returns the mask of a remote channel
-	 * @param str the remote channel
+	 * @param cmd the remote channel
 	 * @return the mask;
 	 */
-	public String getRemoteMask(String str);
+	public String getRemoteMask(String cmd);
 
 	/**
 	 * Add a new channel
@@ -123,10 +123,10 @@ public interface ImudServices {
 	 * channel name.
 	 * Example:
 	 * <PRE>
-	 * if( str.equals("intercre") ) return "imud_code";
+	 * if( cmd.equals("intercre") ) return "imud_code";
 	 * </PRE>
-	 * @param str the local name of the desired channel
+	 * @param cmd the local name of the desired channel
 	 * @return the remote name of the specified local channel
 	 */
-	public abstract String getRemoteChannel(String str);
+	public abstract String getRemoteChannel(String cmd);
 }

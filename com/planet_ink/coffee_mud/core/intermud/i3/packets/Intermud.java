@@ -452,10 +452,10 @@ public class Intermud implements Runnable, Persistent, Serializable
 			I3Exception e;
 
 			e = new I3Exception(msg);
-			final String str=e.getMessage();
-			if(str!=null)
+			final String cmd=e.getMessage();
+			if(cmd!=null)
 			{
-				Log.errOut("InterMud","276-"+str);
+				Log.errOut("InterMud","276-"+cmd);
 			}
 		}
 		else
@@ -601,7 +601,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 				}
 			}
 
-			String str;
+			String cmd;
 
 			try
 			{
@@ -654,12 +654,12 @@ public class Intermud implements Runnable, Persistent, Serializable
 						continue;
 					}
 				}
-				str=new String(tmp);
+				cmd=new String(tmp);
 			}
 			catch( final java.io.IOException e )
 			{
 				data = null;
-				str = null;
+				cmd = null;
 				connected = false;
 				try { Thread.sleep(1200); }
 				catch (final InterruptedException ee)
@@ -678,8 +678,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 			try
 			{
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.I3))
-					Log.sysOut("Intermud","Receiving: "+str);
-				final Object o=LPCData.getLPCData(str);
+					Log.sysOut("Intermud","Receiving: "+cmd);
+				final Object o=LPCData.getLPCData(cmd);
 				if(o instanceof Vector)
 					data=(Vector)o;
 				else
@@ -937,15 +937,15 @@ public class Intermud implements Runnable, Persistent, Serializable
 	}
 
 	// Send a formatted mud mode packet to the router
-	private void send(String str)
+	private void send(String cmd)
 	{
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.I3))
-			Log.sysOut("Intermud","Sending: "+str);
+			Log.sysOut("Intermud","Sending: "+cmd);
 		try
 		{
 			// Remove non-printables, as required by the I3 specification
 			// (Contributed by David Green <green@couchpotato.net>)
-			final byte[] packet = str.getBytes("ISO-8859-1");
+			final byte[] packet = cmd.getBytes("ISO-8859-1");
 			for (int i = 0; i < packet.length; i++)
 			{
 				// 160 is a non-breaking space. We'll consider that "printable".
@@ -1115,18 +1115,18 @@ public class Intermud implements Runnable, Persistent, Serializable
 	private String getMudNameFor(String mud)
 	{
 		mud = mud.toLowerCase().replace('.', ' ');
-		for(final String str : muds.getMuds().keySet())
+		for(final String cmd : muds.getMuds().keySet())
 		{
-			if( mud.equalsIgnoreCase(str) )
+			if( mud.equalsIgnoreCase(cmd) )
 			{
-				return str;
+				return cmd;
 			}
 		}
-		for(final String str : muds.getMuds().keySet())
+		for(final String cmd : muds.getMuds().keySet())
 		{
-			if( CMLib.english().containsString(str,mud) )
+			if( CMLib.english().containsString(cmd,mud) )
 			{
-				return str;
+				return cmd;
 			}
 		}
 		return null;

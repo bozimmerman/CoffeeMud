@@ -84,10 +84,10 @@ public class ErrorPacket extends Packet
 	@Override
 	public String toString()
 	{
-		final String str = "({\"error\",5,\"" + I3Server.getMudName() +
+		final String cmd = "({\"error\",5,\"" + I3Server.getMudName() +
 				 "\",0,\"" + target_mud + "\",\"" + target_name + "\"," +
 				 "\""+error_code+"\",\""+error_message+"\","+packetStr+",})";
-		return str;
+		return cmd;
 
 	}
 }

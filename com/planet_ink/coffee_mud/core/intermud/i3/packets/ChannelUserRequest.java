@@ -66,8 +66,8 @@ public class ChannelUserRequest extends Packet {
 	@Override
 	public String toString()
 	{
-		final String str="({\"chan-user-req\",5,\"" + I3Server.getMudName() +
+		final String cmd="({\"chan-user-req\",5,\"" + I3Server.getMudName() +
 			   "\",0,\"" + target_mud + "\",0,\"" + userToRequest + "\",})";
-		return str;
+		return cmd;
 	}
 }
