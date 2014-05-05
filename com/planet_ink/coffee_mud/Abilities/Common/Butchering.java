@@ -70,7 +70,7 @@ public class Butchering extends GatheringSkill
 				if((body!=null)&&(!aborted))
 				{
 					if(failed)
-						commonTell(mob,"You messed up your butchering completely.");
+						commonTell(mob,_("You messed up your butchering completely."));
 					else
 					{
 						mob.location().show(mob,null,body,getActivityMessageType(),_("<S-NAME> manage(s) to skin and chop up <O-NAME>."));
@@ -154,13 +154,13 @@ public class Butchering extends GatheringSkill
 		   ||((DeadBody)I).playerCorpse()
 		   ||(((DeadBody)I).charStats().getMyRace()==null))
 		{
-			commonTell(mob,"You can't butcher "+I.name(mob)+".");
+			commonTell(mob,_("You can't butcher @x1.",I.name(mob)));
 			return false;
 		}
 		final List<RawMaterial> resources=((DeadBody)I).charStats().getMyRace().myResources();
 		if((resources==null)||(resources.size()==0))
 		{
-			commonTell(mob,"There doesn't appear to be any good parts on "+I.name(mob)+".");
+			commonTell(mob,_("There doesn't appear to be any good parts on @x1.",I.name(mob)));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

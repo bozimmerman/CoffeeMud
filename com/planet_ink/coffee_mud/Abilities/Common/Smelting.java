@@ -114,7 +114,7 @@ public class Smelting extends CraftingSkill
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,0);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \"smelt list\" for a list, or \"smelt stop\" to cancel.");
+			commonTell(mob,_("Make what? Enter \"smelt list\" for a list, or \"smelt stop\" to cancel."));
 			return false;
 		}
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
@@ -183,7 +183,7 @@ public class Smelting extends CraftingSkill
 		}
 		if(foundRecipe==null)
 		{
-			commonTell(mob,"You don't know how to make '"+recipeName+"'.  Try \"smelt list\" for a list.");
+			commonTell(mob,_("You don't know how to make '@x1'.  Try \"smelt list\" for a list.",recipeName));
 			return false;
 		}
 		final String doneResourceDesc=foundRecipe.get(RCP_FINALNAME);
@@ -194,19 +194,19 @@ public class Smelting extends CraftingSkill
 		final int doneResourceCode=RawMaterial.CODES.FIND_IgnoreCase(doneResourceDesc);
 		if((resourceCode1<0)||(resourceCode2<0)||(doneResourceCode<0))
 		{
-			commonTell(mob,"CoffeeMud error in this alloy.  Please let your local Archon know.");
+			commonTell(mob,_("CoffeeMud error in this alloy.  Please let your local Archon know."));
 			return false;
 		}
 		final int amountResource1=CMLib.materials().findNumberOfResource(mob.location(),RawMaterial.CODES.GET(resourceCode1));
 		final int amountResource2=CMLib.materials().findNumberOfResource(mob.location(),RawMaterial.CODES.GET(resourceCode2));
 		if(amountResource1==0)
 		{
-			commonTell(mob,"There is no "+resourceDesc1+" here to make "+doneResourceDesc+" from.  It might need to be put down first.");
+			commonTell(mob,_("There is no @x1 here to make @x2 from.  It might need to be put down first.",resourceDesc1,doneResourceDesc));
 			return false;
 		}
 		if(amountResource2==0)
 		{
-			commonTell(mob,"There is no "+resourceDesc2+" here to make "+doneResourceDesc+" from.  It might need to be put down first.");
+			commonTell(mob,_("There is no @x1 here to make @x2 from.  It might need to be put down first.",resourceDesc2,doneResourceDesc));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

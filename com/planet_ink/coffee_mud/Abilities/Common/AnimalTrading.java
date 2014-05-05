@@ -58,7 +58,7 @@ public class AnimalTrading extends CommonSkill
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Sell what?");
+			commonTell(mob,_("Sell what?"));
 			return false;
 		}
 
@@ -68,17 +68,17 @@ public class AnimalTrading extends CommonSkill
 		{
 			if(!CMLib.flags().canBeSeenBy(M,mob))
 			{
-				commonTell(mob,"You don't see anyone called '"+str+"' here.");
+				commonTell(mob,_("You don't see anyone called '@x1' here.",str));
 				return false;
 			}
 			if((!M.isMonster())||(!CMLib.flags().isAnimalIntelligence(M)))
 			{
-				commonTell(mob,"You can't sell "+M.name(mob)+".");
+				commonTell(mob,_("You can't sell @x1.",M.name(mob)));
 				return false;
 			}
 			if((CMLib.flags().canMove(M))&&(!CMLib.flags().isBoundOrHeld(M)))
 			{
-				commonTell(mob,M.name(mob)+" doesn't seem willing to cooperate.  You need to bind the animal before you can sell it.");
+				commonTell(mob,_("@x1 doesn't seem willing to cooperate.  You need to bind the animal before you can sell it.",M.name(mob)));
 				return false;
 			}
 			taming=M;
@@ -118,13 +118,13 @@ public class AnimalTrading extends CommonSkill
 			}
 			if(cage==null)
 			{
-				commonTell(mob,"You don't see anyone called '"+str+"' here.");
+				commonTell(mob,_("You don't see anyone called '@x1' here.",str));
 				return false;
 			}
 			taming=mob.location().fetchFromMOBRoomFavorsItems(mob,cage,CMParms.combine(commands,0),Wearable.FILTER_ANY);
 			if((taming==null)||(!CMLib.flags().canBeSeenBy(taming,mob))||(!(taming instanceof CagedAnimal)))
 			{
-				commonTell(mob,"You don't see any creatures in "+cage.name()+" called '"+CMParms.combine(commands,0)+"'.");
+				commonTell(mob,_("You don't see any creatures in @x1 called '@x2'.",cage.name(),CMParms.combine(commands,0)));
 				return false;
 			}
 			M=((CagedAnimal)taming).unCageMe();

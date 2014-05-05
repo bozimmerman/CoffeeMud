@@ -66,7 +66,7 @@ public class Fishing extends GatheringSkill
 			if(tickUp==6)
 			{
 				if(found!=null)
-					commonTell(mob,"You got a tug on the line!");
+					commonTell(mob,_("You got a tug on the line!"));
 				else
 				{
 					final StringBuffer str=new StringBuffer("Nothing is biting around here.\n\r");
@@ -141,7 +141,7 @@ public class Fishing extends GatheringSkill
 		}
 		if(!maybeFish)
 		{
-			commonTell(mob,"The fishing doesn't look too good around here.");
+			commonTell(mob,_("The fishing doesn't look too good around here."));
 			return false;
 		}
 		verb="fishing";

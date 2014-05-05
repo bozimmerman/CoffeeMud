@@ -51,7 +51,7 @@ public class SlaveTrading extends CommonSkill
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Sell whom?");
+			commonTell(mob,_("Sell whom?"));
 			return false;
 		}
 
@@ -61,22 +61,22 @@ public class SlaveTrading extends CommonSkill
 		{
 			if(!CMLib.flags().canBeSeenBy(M,mob))
 			{
-				commonTell(mob,"You don't see anyone called '"+str+"' here.");
+				commonTell(mob,_("You don't see anyone called '@x1' here.",str));
 				return false;
 			}
 			if(!M.isMonster())
 			{
-				commonTell(mob,M,null,"You can't sell <T-NAME> as a slave.");
+				commonTell(mob,M,null,_("You can't sell <T-NAME> as a slave."));
 				return false;
 			}
 			if(CMLib.flags().isAnimalIntelligence(M))
 			{
-				commonTell(mob,M,null,"You can't sell <T-NAME> as a slave.  Animals are not slaves.");
+				commonTell(mob,M,null,_("You can't sell <T-NAME> as a slave.  Animals are not slaves."));
 				return false;
 			}
 			if((M.fetchEffect("Skill_Enslave")==null)||(!M.fetchEffect("Skill_Enslave").text().equals(mob.Name())))
 			{
-				commonTell(mob,M,null,"<T-NAME> do(es)n't seem to be your slave.");
+				commonTell(mob,M,null,_("<T-NAME> do(es)n't seem to be your slave."));
 				return false;
 			}
 		}

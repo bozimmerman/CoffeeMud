@@ -69,7 +69,7 @@ public class Drilling extends GatheringSkill
 			{
 				if(found!=null)
 				{
-					commonTell(mob,"You have found some "+foundShortName+"!");
+					commonTell(mob,_("You have found some @x1!",foundShortName));
 					displayText="You are drilling out some "+foundShortName;
 					verb="drilling out some "+foundShortName;
 					playSound="drill.wav";
@@ -159,13 +159,13 @@ public class Drilling extends GatheringSkill
 		if((!(I instanceof Container))
 		||(((Container)I).capacity()<=((Container)I).phyStats().weight()))
 		{
-			commonTell(mob,I.name(mob)+" doesn't look like it can hold anything.");
+			commonTell(mob,_("@x1 doesn't look like it can hold anything.",I.name(mob)));
 			return false;
 		}
 		final int resourceType=mob.location().myResource();
 		if((!(I instanceof Drink))||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
 		{
-			commonTell(mob,I.name(mob)+" doesn't look like it can hold a liquid.");
+			commonTell(mob,_("@x1 doesn't look like it can hold a liquid.",I.name(mob)));
 			return false;
 		}
 		final List<Item> V=((Container)I).getContents();
@@ -178,14 +178,14 @@ public class Drilling extends GatheringSkill
 				{
 					if(I2.material()!=resourceType)
 					{
-						commonTell(mob,I.name(mob)+" needs to have the "+I2.name(mob)+" removed first.");
+						commonTell(mob,_("@x1 needs to have the @x2 removed first.",I.name(mob),I2.name(mob)));
 						return false;
 					}
 				}
 			}
 			if(((Drink)I).liquidRemaining()>0)
 			{
-				commonTell(mob,"You need to empty "+I.name(mob)+" first.");
+				commonTell(mob,_("You need to empty @x1 first.",I.name(mob)));
 				return false;
 			}
 		}
@@ -195,7 +195,7 @@ public class Drilling extends GatheringSkill
 		playSound=null;
 		if(!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_LIQUID,mob.location()))
 		{
-			commonTell(mob,"You don't think this is a good place to drill.");
+			commonTell(mob,_("You don't think this is a good place to drill."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

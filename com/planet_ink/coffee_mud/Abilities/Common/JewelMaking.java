@@ -237,7 +237,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 		||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
-				commonTell(mob,"That's not an jewelworked item.");
+				commonTell(mob,_("That's not an jewelworked item."));
 			return false;
 		}
 		return true;
@@ -265,7 +265,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \"jewel list\" for a list.  You may also enter jewel encrust <gem name> <item name>, jewel mount <gem name> <item name>, jewel refit <item name>, jewel learn <item>, jewel scan, jewel mend <item name>, or jewel stop to cancel.");
+			commonTell(mob,_("Make what? Enter \"jewel list\" for a list.  You may also enter jewel encrust <gem name> <item name>, jewel mount <gem name> <item name>, jewel refit <item name>, jewel learn <item>, jewel scan, jewel mend <item name>, or jewel stop to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -340,7 +340,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			final String word=str.toLowerCase();
 			if(commands.size()<3)
 			{
-				commonTell(mob,CMStrings.capitalizeAndLower(word)+" what jewel onto what item?");
+				commonTell(mob,_("@x1 what jewel onto what item?",CMStrings.capitalizeAndLower(word)));
 				return false;
 			}
 			final Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
@@ -355,25 +355,25 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			final Environmental thangE=mob.location().fetchFromMOBRoomFavorsItems(mob,null,rest,Wearable.FILTER_UNWORNONLY);
 			if((jewelE==null)||(!CMLib.flags().canBeSeenBy(jewelE,mob)))
 			{
-				commonTell(mob,"You don't see any '"+jewel+"' here.");
+				commonTell(mob,_("You don't see any '@x1' here.",jewel));
 				return false;
 			}
 			if((thangE==null)||(!CMLib.flags().canBeSeenBy(thangE,mob)))
 			{
-				commonTell(mob,"You don't see any '"+rest+"' here.");
+				commonTell(mob,_("You don't see any '@x1' here.",rest));
 				return false;
 			}
 			if((!(jewelE instanceof RawMaterial))||(!(jewelE instanceof Item))
 			   ||(((((Item)jewelE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PRECIOUS)
 				  &&((((Item)jewelE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_GLASS)))
 			{
-				commonTell(mob,"A "+jewelE.name()+" is not suitable to "+word+" on anything.");
+				commonTell(mob,_("A @x1 is not suitable to @x2 on anything.",jewelE.name(),word));
 				return false;
 			}
 			final Item jewelI=(Item)CMLib.materials().unbundle((Item)jewelE,1,null);
 			if(jewelI==null)
 			{
-				commonTell(mob,jewelE.name()+" is not pure enough to be "+word+"ed with.  You will need to use a gathered one.");
+				commonTell(mob,_("@x1 is not pure enough to be @x2ed with.  You will need to use a gathered one.",jewelE.name(),word));
 				return false;
 			}
 			if((!(thangE instanceof Item))
@@ -386,7 +386,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				  &&((((Item)thangE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
 				  &&((((Item)thangE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER)))
 			{
-				commonTell(mob,"A "+thangE.name()+" is not suitable to be "+word+"ed on.");
+				commonTell(mob,_("A @x1 is not suitable to be @x2ed on.",thangE.name(),word));
 				return false;
 			}
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -457,7 +457,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				return false;
 			if(buildingI.phyStats().height()==0)
 			{
-				commonTell(mob,buildingI.name(mob)+" is already the right size.");
+				commonTell(mob,_("@x1 is already the right size.",buildingI.name(mob)));
 				return false;
 			}
 			activity = CraftingActivity.REFITTING;
@@ -507,7 +507,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"jewel list\" for a list.");
+				commonTell(mob,_("You don't know how to make a '@x1'.  Try \"jewel list\" for a list.",recipeName));
 				return false;
 			}
 			misctype=foundRecipe.get(RCP_MISCTYPE);
@@ -574,7 +574,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(buildingI==null)
 			{
-				commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
+				commonTell(mob,_("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);

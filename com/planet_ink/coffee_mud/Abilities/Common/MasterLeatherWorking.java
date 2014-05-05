@@ -198,7 +198,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 		if((!(E instanceof Item))||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
-				commonTell(mob,"That's not a master leatherworked item.");
+				commonTell(mob,_("That's not a master leatherworked item."));
 			return false;
 		}
 		return true;
@@ -273,7 +273,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \"mleatherwork list\" for a list, \"mleatherwork refit <item>\" to resize, \"mleatherwork learn <item>\", \"mleatherwork scan\", \"mleatherwork mend <item>\", or \"mleatherwork stop\" to cancel.");
+			commonTell(mob,_("Make what? Enter \"mleatherwork list\" for a list, \"mleatherwork refit <item>\" to resize, \"mleatherwork learn <item>\", \"mleatherwork scan\", \"mleatherwork mend <item>\", or \"mleatherwork stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -373,17 +373,17 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			if(buildingI==null) return false;
 			if((buildingI.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER)
 			{
-				commonTell(mob,"That's not made of leather.  That can't be refitted.");
+				commonTell(mob,_("That's not made of leather.  That can't be refitted."));
 				return false;
 			}
 			if(!(buildingI instanceof Armor))
 			{
-				commonTell(mob,"You don't know how to refit that sort of thing.");
+				commonTell(mob,_("You don't know how to refit that sort of thing."));
 				return false;
 			}
 			if(buildingI.phyStats().height()==0)
 			{
-				commonTell(mob,buildingI.name(mob)+" is already the right size.");
+				commonTell(mob,_("@x1 is already the right size.",buildingI.name(mob)));
 				return false;
 			}
 			activity = CraftingActivity.REFITTING;
@@ -427,7 +427,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"mleatherwork list\" for a list.");
+				commonTell(mob,_("You don't know how to make a '@x1'.  Try \"mleatherwork list\" for a list.",recipeName));
 				return false;
 			}
 
@@ -461,7 +461,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(buildingI==null)
 			{
-				commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
+				commonTell(mob,_("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
 				return false;
 			}
 			duration=getDuration(multiplier*CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,30,4);

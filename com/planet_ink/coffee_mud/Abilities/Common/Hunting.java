@@ -129,8 +129,8 @@ public class Hunting extends CommonSkill
 			{
 				if(found!=null)
 				{
-					commonTell(mob,"You have found some "+foundShortName+" tracks!");
-					commonTell(mob,"You need to find the "+foundShortName+" nearby before the trail goes cold!");
+					commonTell(mob,_("You have found some @x1 tracks!",foundShortName));
+					commonTell(mob,_("You need to find the @x1 nearby before the trail goes cold!",foundShortName));
 					displayText="You are hunting for "+found.name();
 					verb="hunting for "+found.name();
 					found.basePhyStats().setLevel(mob.basePhyStats().level());

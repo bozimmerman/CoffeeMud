@@ -301,9 +301,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 			}
 		}
 		if(extras.length()>0)
-			commonTell(mob,"You can use your expertises to enhance this skill by " +
-					 "prepending one or more of the following words to the name " +
-					 "of the item you wish to craft: "+extras.substring(0,extras.length()-2)+".");
+			commonTell(mob,_("You can use your expertises to enhance this skill by prepending one or more of the following words to the name of the item you wish to craft: @x1.",extras.substring(0,extras.length()-2)));
 	}
 
 	public List<ExpertiseLibrary.ExpertiseDefinition> getAllThisSkillsDefinitions()
@@ -486,7 +484,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				case TYPE_DURACRAFT:
 				{
 					if(!(item instanceof Armor))
-						commonTell(mob,def.data[stage]+" only applies to armor.");
+						commonTell(mob,_("@x1 only applies to armor.",def.data[stage]));
 					else
 					switch(stage)
 					{
@@ -539,7 +537,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				case TYPE_LTHLCRAFT:
 				{
 					if(!(item instanceof Weapon))
-						commonTell(mob,def.data[stage]+" only applies to weapons.");
+						commonTell(mob,_("@x1 only applies to weapons.",def.data[stage]));
 					else
 					switch(stage)
 					{
@@ -569,7 +567,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				case TYPE_CNTRCRAFT:
 				{
 					if(!(item instanceof Weapon))
-						commonTell(mob,def.data[stage]+" only applies to weapons.");
+						commonTell(mob,_("@x1 only applies to weapons.",def.data[stage]));
 					else
 					switch(stage)
 					{

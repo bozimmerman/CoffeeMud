@@ -269,7 +269,7 @@ public class CommonSkill extends StdAbility
 		}
 		if((fire==null)||(!mob.location().isContent(fire)))
 		{
-			commonTell(mob,"A fire will need to be built first.");
+			commonTell(mob,_("A fire will need to be built first."));
 			return null;
 		}
 		return fire;
@@ -530,12 +530,12 @@ public class CommonSkill extends StdAbility
 
 		if(!CMLib.flags().canBeSeenBy(mob.location(),mob))
 		{
-			commonTell(mob,"<S-NAME> can't see to do that!");
+			commonTell(mob,_("<S-NAME> can't see to do that!"));
 			return false;
 		}
 		if((CMLib.flags().isSitting(mob)&&(!canBeDoneSittingDown()))||CMLib.flags().isSleeping(mob))
 		{
-			commonTell(mob,"You need to stand up!");
+			commonTell(mob,_("You need to stand up!"));
 			return false;
 		}
 		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)

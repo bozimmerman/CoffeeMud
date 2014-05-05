@@ -211,7 +211,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
-				commonTell(mob,"That's not a carpentry item.");
+				commonTell(mob,_("That's not a carpentry item."));
 			return false;
 		}
 		return true;
@@ -236,7 +236,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Carve what? Enter \"carve list\" for a list, \"carve refit <item>\" to resize shoes or armor, \"carve learn <item>\", \"carve scan\", \"carve mend <item>\", or \"carve stop\" to cancel.");
+			commonTell(mob,_("Carve what? Enter \"carve list\" for a list, \"carve refit <item>\" to resize shoes or armor, \"carve learn <item>\", \"carve scan\", \"carve mend <item>\", or \"carve stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -335,17 +335,17 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			if(buildingI==null) return false;
 			if((buildingI.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
 			{
-				commonTell(mob,"That's not made of wood.  That can't be refitted.");
+				commonTell(mob,_("That's not made of wood.  That can't be refitted."));
 				return false;
 			}
 			if(!(buildingI instanceof Armor))
 			{
-				commonTell(mob,"You don't know how to refit that sort of thing.");
+				commonTell(mob,_("You don't know how to refit that sort of thing."));
 				return false;
 			}
 			if(buildingI.phyStats().height()==0)
 			{
-				commonTell(mob,buildingI.name(mob)+" is already the right size.");
+				commonTell(mob,_("@x1 is already the right size.",buildingI.name(mob)));
 				return false;
 			}
 			activity = CraftingActivity.REFITTING;
@@ -386,7 +386,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,"You don't know how to carve a '"+recipeName+"'.  Try \"carve list\" for a list.");
+				commonTell(mob,_("You don't know how to carve a '@x1'.  Try \"carve list\" for a list.",recipeName));
 				return false;
 			}
 
@@ -417,7 +417,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(buildingI==null)
 			{
-				commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
+				commonTell(mob,_("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);

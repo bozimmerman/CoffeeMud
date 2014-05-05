@@ -132,7 +132,7 @@ public class PlantLore extends CommonSkill
 						commonTell(mob,str.toString());
 					}
 					else
-						commonTell(mob,"You don't find any good plant life around here.");
+						commonTell(mob,_("You don't find any good plant life around here."));
 				}
 			}
 		}

@@ -67,7 +67,7 @@ public class MasterWeaponsmithing extends Weaponsmithing implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \"mweaponsmith list\" for a list, \"mweaponsmith scan\", \"mweaponsmith learn <item>\", \"mweaponsmith mend <item>\", or \"mweaponsmith stop\" to cancel.");
+			commonTell(mob,_("Make what? Enter \"mweaponsmith list\" for a list, \"mweaponsmith scan\", \"mweaponsmith learn <item>\", \"mweaponsmith mend <item>\", or \"mweaponsmith stop\" to cancel."));
 			return false;
 		}
 		if(parsedVars.autoGenerate>0)

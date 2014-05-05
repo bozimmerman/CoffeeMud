@@ -93,7 +93,7 @@ public class Bandaging extends CommonSkill implements MendingSkill
 				if((bandaging!=null)&&(!aborted))
 				{
 					if((messedUp)||(bandaging==null))
-						commonTell(mob,"You've failed to bandage "+bandaging.name()+"!");
+						commonTell(mob,_("You've failed to bandage @x1!",bandaging.name()));
 					else
 					{
 						Ability A=bandaging.fetchEffect("Bleeding");
@@ -121,7 +121,7 @@ public class Bandaging extends CommonSkill implements MendingSkill
 		if((target.fetchEffect("Bleeding")==null)
 		&&(target.fetchEffect("Injury")==null))
 		{
-			super.commonTell(mob,target,null,"<T-NAME> <T-IS-ARE> not bleeding or injured!");
+			super.commonTell(mob,target,null,_("<T-NAME> <T-IS-ARE> not bleeding or injured!"));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

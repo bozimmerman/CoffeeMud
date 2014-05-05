@@ -62,7 +62,7 @@ public class Engraving extends CommonSkill
 			{
 				final MOB mob=(MOB)affected;
 				if(writing.length()==0)
-					commonTell(mob,"You mess up your engraving.");
+					commonTell(mob,_("You mess up your engraving."));
 				else
 				{
 					String desc=found.description();
@@ -84,7 +84,7 @@ public class Engraving extends CommonSkill
 			return true;
 		if(commands.size()<2)
 		{
-			commonTell(mob,"You must specify what you want to engrave onto, and what words to engrave on it.");
+			commonTell(mob,_("You must specify what you want to engrave onto, and what words to engrave on it."));
 			return false;
 		}
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.firstElement());
@@ -102,14 +102,14 @@ public class Engraving extends CommonSkill
 				}
 				if(!ok)
 				{
-					commonTell(mob,"You aren't allowed to work on '"+((String)commands.firstElement())+"'.");
+					commonTell(mob,_("You aren't allowed to work on '@x1'.",((String)commands.firstElement())));
 					return false;
 				}
 			}
 		}
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTell(mob,"You don't seem to have a '"+((String)commands.firstElement())+"'.");
+			commonTell(mob,_("You don't seem to have a '@x1'.",((String)commands.firstElement())));
 			return false;
 		}
 		commands.remove(commands.firstElement());
@@ -117,7 +117,7 @@ public class Engraving extends CommonSkill
 		final Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)
 		{
-			commonTell(mob,"You must know how to write to engrave.");
+			commonTell(mob,_("You must know how to write to engrave."));
 			return false;
 		}
 
@@ -130,7 +130,7 @@ public class Engraving extends CommonSkill
 			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL))
 		||(!target.isGeneric()))
 		{
-			commonTell(mob,"You can't engrave onto that material.");
+			commonTell(mob,_("You can't engrave onto that material."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

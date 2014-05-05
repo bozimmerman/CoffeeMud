@@ -85,7 +85,7 @@ public class Scrapping extends CommonSkill
 				if((found!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonTell(mob,"You've messed up scrapping "+oldItemName+"!");
+						commonTell(mob,_("You've messed up scrapping @x1!",oldItemName));
 					else
 					{
 						amount=amount*abilityCode();
@@ -116,7 +116,7 @@ public class Scrapping extends CommonSkill
 		final Item I=mob.location().findItem(null,str);
 		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
 		{
-			commonTell(mob,"You don't see anything called '"+str+"' here.");
+			commonTell(mob,_("You don't see anything called '@x1' here.",str));
 			return false;
 		}
 		boolean okMaterial=true;
@@ -133,19 +133,19 @@ public class Scrapping extends CommonSkill
 		}
 		if(!okMaterial)
 		{
-			commonTell(mob,"You don't know how to scrap "+I.name(mob)+".");
+			commonTell(mob,_("You don't know how to scrap @x1.",I.name(mob)));
 			return false;
 		}
 
 		if(I instanceof RawMaterial)
 		{
-			commonTell(mob,I.name(mob)+" already looks like scrap.");
+			commonTell(mob,_("@x1 already looks like scrap.",I.name(mob)));
 			return false;
 		}
 
 		if(CMLib.flags().enchanted(I))
 		{
-			commonTell(mob,I.name(mob)+" is enchanted, and can't be scrapped.");
+			commonTell(mob,_("@x1 is enchanted, and can't be scrapped.",I.name(mob)));
 			return false;
 		}
 
@@ -173,14 +173,14 @@ public class Scrapping extends CommonSkill
 			final Item I2=mob.location().getItem(i);
 			if((I2.container()!=null)&&(V.contains(I2.container())))
 			{
-				commonTell(mob,"You need to remove the contents of "+I2.name(mob)+" first.");
+				commonTell(mob,_("You need to remove the contents of @x1 first.",I2.name(mob)));
 				return false;
 			}
 		}
 		amount=totalWeight/5;
 		if(amount<1)
 		{
-			commonTell(mob,"You don't have enough here to get anything from.");
+			commonTell(mob,_("You don't have enough here to get anything from."));
 			return false;
 		}
 		fireRequired=false;

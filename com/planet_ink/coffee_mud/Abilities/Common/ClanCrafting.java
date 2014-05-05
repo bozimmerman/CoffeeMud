@@ -147,7 +147,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \"clancraft list\" for a list, or \"clancraft stop\" to cancel.");
+			commonTell(mob,_("Make what? Enter \"clancraft list\" for a list, or \"clancraft stop\" to cancel."));
 			return false;
 		}
 		String clanTypeName="Clan";
@@ -265,7 +265,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		}
 		if(foundRecipe==null)
 		{
-			commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"clancraft list\" for a list.");
+			commonTell(mob,_("You don't know how to make a '@x1'.  Try \"clancraft list\" for a list.",recipeName));
 			return false;
 		}
 
@@ -305,7 +305,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			final Ability A=CMClass.findAbility(reqskill.trim());
 			if((A!=null)&&(mob.fetchAbility(A.ID())==null))
 			{
-				commonTell(mob,"You need to know "+A.name()+" to craft this item.");
+				commonTell(mob,_("You need to know @x1 to craft this item.",A.name()));
 				return false;
 			}
 		}
@@ -320,7 +320,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 		if(buildingI==null)
 		{
-			commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
+			commonTell(mob,_("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
 			return false;
 		}
 
@@ -342,12 +342,12 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			final Area A2=CMLib.law().getLegalObject(mob.location().getArea());
 			if((B==null)||(A2==null))
 			{
-				commonTell(mob,"This area is controlled by the Archons -- you can't build that here.");
+				commonTell(mob,_("This area is controlled by the Archons -- you can't build that here."));
 				return false;
 			}
 			if((B.rulingOrganization().length()==0)||(mob.getClanRole(B.rulingOrganization())==null))
 			{
-				commonTell(mob,"This area is not controlled by your clan -- you can't build that here.");
+				commonTell(mob,_("This area is not controlled by your clan -- you can't build that here."));
 				return false;
 			}
 

@@ -138,7 +138,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			else
 			if(tickUp==0)
 			{
-				commonTell(mob,"You start "+cookWord()+" up some "+finalDishName+".");
+				commonTell(mob,_("You start @x1 up some @x2.",cookWord(),finalDishName));
 				displayText="You are "+cookWord()+" "+finalDishName;
 				verb=cookWord()+" "+finalDishName;
 			}
@@ -747,20 +747,20 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 					}
 				}
 			}
-			commonTell(mob,buf.toString()+"\n\rIngredients beginning with the ~ character are optional additives.");
+			commonTell(mob,_("@x1\n\rIngredients beginning with the ~ character are optional additives.",buf.toString()));
 			return true;
 		}
 		final Item possibleContainer=possibleContainer(mob,commands,true,Wearable.FILTER_UNWORNONLY);
 		final Item target=getTarget(mob,mob.location(),givenTarget,possibleContainer,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null)
 		{
-			commonTell(mob,"The syntax for this skill is "+triggerStrings()[0]+" [CONTAINER]");
+			commonTell(mob,_("The syntax for this skill is @x1 [CONTAINER]",triggerStrings()[0]));
 			return false;
 		}
 
 		if(!(target instanceof Container))
 		{
-			commonTell(mob,"There's nothing in "+target.name(mob)+" to "+cookWordShort()+"!");
+			commonTell(mob,_("There's nothing in @x1 to @x2!",target.name(mob),cookWordShort()));
 			return false;
 		}
 		for(int a=0;a<mob.numEffects();a++)
@@ -768,18 +768,18 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			final Ability A=mob.fetchEffect(a);
 			if((A instanceof Cooking) && (((Cooking)A).cookingPot==target))
 			{
-				commonTell(mob,"That is already in use.");
+				commonTell(mob,_("That is already in use."));
 				return false;
 			}
 		}
 		if(!isMineForCooking(mob,(Container)target))
 		{
-			commonTell(mob,"You probably need to pick that up first.");
+			commonTell(mob,_("You probably need to pick that up first."));
 			return false;
 		}
 		if(!meetsLidRequirements(mob,(Container)target))
 		{
-			commonTell(mob,"You need a closeable container to bake that in, and you need to close it to begin.");
+			commonTell(mob,_("You need a closeable container to bake that in, and you need to close it to begin."));
 			return false;
 		}
 		switch(target.material()&RawMaterial.MATERIAL_MASK)
@@ -791,7 +791,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		case RawMaterial.MATERIAL_PRECIOUS:
 			break;
 		default:
-			commonTell(mob,target.name(mob)+" is not suitable to "+cookWordShort()+" in.");
+			commonTell(mob,_("@x1 is not suitable to @x2 in.",target.name(mob),cookWordShort()));
 			return false;
 		}
 
@@ -839,7 +839,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		{
 			if(closeRecipes.size()==0)
 			{
-				commonTell(mob,"You don't know how to make anything out of those ingredients.  Have you tried LIST as a parameter?");
+				commonTell(mob,_("You don't know how to make anything out of those ingredients.  Have you tried LIST as a parameter?"));
 				return false;
 			}
 			for(int vr=0;vr<closeRecipes.size();vr++)

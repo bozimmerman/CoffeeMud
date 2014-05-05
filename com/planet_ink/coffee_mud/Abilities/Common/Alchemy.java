@@ -138,7 +138,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+buildingI.name()+".");
 						else
 						if(oldName.length()>0)
-							commonTell(mob,"Something went wrong! "+(Character.toUpperCase(oldName.charAt(0))+oldName.substring(1))+" explodes!");
+							commonTell(mob,_("Something went wrong! @x1 explodes!",(Character.toUpperCase(oldName.charAt(0))+oldName.substring(1))));
 						buildingI.destroy();
 					}
 					else
@@ -217,7 +217,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,0);
 		if(commands.size()<1)
 		{
-			commonTell(mob,"Brew what? Enter \"brew list\" for a list, or \"brew stop\" to cancel.");
+			commonTell(mob,_("Brew what? Enter \"brew list\" for a list, or \"brew stop\" to cancel."));
 			return false;
 		}
 		final int[] cols={
@@ -272,27 +272,27 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			if(buildingI==null) return false;
 			if(!mob.isMine(buildingI))
 			{
-				commonTell(mob,"You'll need to pick that up first.");
+				commonTell(mob,_("You'll need to pick that up first."));
 				return false;
 			}
 			if(!(buildingI instanceof Container))
 			{
-				commonTell(mob,"There's nothing in "+buildingI.name(mob)+" to brew!");
+				commonTell(mob,_("There's nothing in @x1 to brew!",buildingI.name(mob)));
 				return false;
 			}
 			if(!(buildingI instanceof Drink))
 			{
-				commonTell(mob,"You can't drink out of a "+buildingI.name(mob)+".");
+				commonTell(mob,_("You can't drink out of a @x1.",buildingI.name(mob)));
 				return false;
 			}
 			if(((Drink)buildingI).liquidRemaining()==0)
 			{
-				commonTell(mob,"The "+buildingI.name(mob)+" contains no liquid base.  Water is probably fine.");
+				commonTell(mob,_("The @x1 contains no liquid base.  Water is probably fine.",buildingI.name(mob)));
 				return false;
 			}
 			if(buildingI.material()!=RawMaterial.RESOURCE_GLASS)
 			{
-				commonTell(mob,"You can only brew into glass containers.");
+				commonTell(mob,_("You can only brew into glass containers."));
 				return false;
 			}
 			activity = CraftingActivity.CRAFTING;
@@ -319,7 +319,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			}
 			if(theSpell==null)
 			{
-				commonTell(mob,"You don't know how to brew '"+recipeName+"'.  Try \"brew list\" for a list.");
+				commonTell(mob,_("You don't know how to brew '@x1'.  Try \"brew list\" for a list.",recipeName));
 				return false;
 			}
 			int experienceToLose=10;
@@ -348,7 +348,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 					found=true;
 					if(V.size()>0)
 					{
-						commonTell(mob,"The extraneous stuff from the "+buildingI.name(mob)+" must be removed before starting.");
+						commonTell(mob,_("The extraneous stuff from the @x1 must be removed before starting.",buildingI.name(mob)));
 						return false;
 					}
 				}
@@ -360,13 +360,13 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 						found=true;
 					else
 					{
-						commonTell(mob,"The "+I.name(mob)+" must be removed from the "+buildingI.name(mob)+" before starting.");
+						commonTell(mob,_("The @x1 must be removed from the @x2 before starting.",I.name(mob),buildingI.name(mob)));
 						return false;
 					}
 				}
 				if(!found)
 				{
-					commonTell(mob,"This potion requires "+ingredient+".  Please place some inside the "+buildingI.name(mob)+" and try again.");
+					commonTell(mob,_("This potion requires @x1.  Please place some inside the @x2 and try again.",ingredient,buildingI.name(mob)));
 					return false;
 				}
 			}
@@ -378,7 +378,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			playSound=null;
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 			CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
-			commonTell(mob,"You lose "+experienceToLose+" experience points for the effort.");
+			commonTell(mob,_("You lose @x1 experience points for the effort.",""+experienceToLose));
 			oldName=buildingI.name();
 			buildingI.destroy();
 			buildingI=buildItem(theSpell, theSpellLevel);

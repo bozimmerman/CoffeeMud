@@ -87,7 +87,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 					if(messedUp)
 					{
 						if(oldName.length()>0)
-							commonTell(mob,"Something went wrong! "+(Character.toUpperCase(oldName.charAt(0))+oldName.substring(1))+" explodes!");
+							commonTell(mob,_("Something went wrong! @x1 explodes!",(Character.toUpperCase(oldName.charAt(0))+oldName.substring(1))));
 					}
 					else
 						mob.addItem(buildingI);
@@ -163,7 +163,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,0);
 		if(commands.size()<1)
 		{
-			commonTell(mob,"Enscribe what? Enter \"enscribe list\" for a list, or \"enscribe stop\" to cancel.");
+			commonTell(mob,_("Enscribe what? Enter \"enscribe list\" for a list, or \"enscribe stop\" to cancel."));
 			return false;
 		}
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
@@ -216,22 +216,22 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			if(buildingI==null) return false;
 			if(!mob.isMine(buildingI))
 			{
-				commonTell(mob,"You'll need to pick that up first.");
+				commonTell(mob,_("You'll need to pick that up first."));
 				return false;
 			}
 			if(!CMath.bset(buildingI.material(),RawMaterial.MATERIAL_PAPER))
 			{
-				commonTell(mob,buildingI.name(mob)+" isn't even made of paper!");
+				commonTell(mob,_("@x1 isn't even made of paper!",buildingI.name(mob)));
 				return false;
 			}
 			if(!(buildingI instanceof Scroll))
 			{
-				commonTell(mob,"There's can't enscribe magic on "+buildingI.name(mob)+"!");
+				commonTell(mob,_("There's can't enscribe magic on @x1!",buildingI.name(mob)));
 				return false;
 			}
 			if(((Scroll)buildingI).getSpells().size()>0)
 			{
-				commonTell(mob,"You can only scribe on blank scrolls.");
+				commonTell(mob,_("You can only scribe on blank scrolls."));
 				return false;
 			}
 			final String recipeName=CMParms.combine(commands,0);
@@ -257,7 +257,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			}
 			if(theSpell==null)
 			{
-				commonTell(mob,"You don't know how to enscribe '"+recipeName+"'.  Try \"enscribe list\" for a list.");
+				commonTell(mob,_("You don't know how to enscribe '@x1'.  Try \"enscribe list\" for a list.",recipeName));
 				return false;
 			}
 			int experienceToLose=10;
@@ -288,7 +288,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			playSound=null;
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 			CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
-			commonTell(mob,"You lose "+experienceToLose+" experience points for the effort.");
+			commonTell(mob,_("You lose @x1 experience points for the effort.",""+experienceToLose));
 			oldName=buildingI.name();
 			buildingI.destroy();
 			buildingI=buildItem(theSpell, theSpellLevel);

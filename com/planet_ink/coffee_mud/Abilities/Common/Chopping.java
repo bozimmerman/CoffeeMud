@@ -68,7 +68,7 @@ public class Chopping extends GatheringSkill
 			{
 				if(found!=null)
 				{
-					commonTell(mob,"You have a good tree for "+foundShortName+".");
+					commonTell(mob,_("You have a good tree for @x1.",foundShortName));
 					displayText="You are chopping up "+foundShortName;
 					verb="chopping "+foundShortName;
 					playSound="chopping.wav";
@@ -138,7 +138,7 @@ public class Chopping extends GatheringSkill
 		found=null;
 		if(!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_WOODEN,mob.location()))
 		{
-			commonTell(mob,"You can't find anything to chop here.");
+			commonTell(mob,_("You can't find anything to chop here."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

@@ -68,7 +68,7 @@ public class Mining extends GatheringSkill
 			{
 				if(found!=null)
 				{
-					commonTell(mob,"You have found a vein of "+foundShortName+"!");
+					commonTell(mob,_("You have found a vein of @x1!",foundShortName));
 					displayText="You are mining "+foundShortName;
 					verb="mining "+foundShortName;
 				}
@@ -140,7 +140,7 @@ public class Mining extends GatheringSkill
 		&&(!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_METAL,mob.location()))
 		&&(!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_MITHRIL,mob.location())))
 		{
-			commonTell(mob,"You don't think this is a good place to mine.");
+			commonTell(mob,_("You don't think this is a good place to mine."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

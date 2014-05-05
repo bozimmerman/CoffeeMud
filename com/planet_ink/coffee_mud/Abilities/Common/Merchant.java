@@ -477,7 +477,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	{
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Market what? Enter \"market list\" for a list or \"market item value\" to sell something.");
+			commonTell(mob,_("Market what? Enter \"market list\" for a list or \"market item value\" to sell something."));
 			return false;
 		}
 		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
@@ -492,14 +492,14 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		{
 			if(commands.size()==1)
 			{
-				commonTell(mob,"Remove what item from the marketing list?");
+				commonTell(mob,_("Remove what item from the marketing list?"));
 				return false;
 			}
 			final String itemName=CMParms.combine(commands,1);
 			Item I=(Item)getShop().removeStock(itemName,mob);
 			if(I==null)
 			{
-				commonTell(mob,"'"+itemName+"' is not on the list.");
+				commonTell(mob,_("'@x1' is not on the list.",itemName));
 				return false;
 			}
 			final String iname=I.name();
@@ -567,13 +567,13 @@ public class Merchant extends CommonSkill implements ShopKeeper
 
 		if(V.size()==0)
 		{
-			commonTell(mob,"You don't seem to be carrying '"+itemName+"'.");
+			commonTell(mob,_("You don't seem to be carrying '@x1'.",itemName));
 			return false;
 		}
 
 		if((getShop().numberInStock(target)<=0)&&(val<=0))
 		{
-			commonTell(mob,"You failed to specify a price for '"+itemName+"'.");
+			commonTell(mob,_("You failed to specify a price for '@x1'.",itemName));
 			return false;
 		}
 
@@ -582,7 +582,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 
 		if(!proficiencyCheck(mob,0,auto))
 		{
-			commonTell(mob,target,null,"You fail to put <T-NAME> up for sale.");
+			commonTell(mob,target,null,_("You fail to put <T-NAME> up for sale."));
 			return false;
 		}
 

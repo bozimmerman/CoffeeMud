@@ -68,7 +68,7 @@ public class Foraging extends GatheringSkill
 			{
 				if(found!=null)
 				{
-					commonTell(mob,"You have found some "+foundShortName+"!");
+					commonTell(mob,_("You have found some @x1!",foundShortName));
 					displayText="You are foraging for "+foundShortName;
 					verb="foraging for "+foundShortName;
 				}
@@ -140,7 +140,7 @@ public class Foraging extends GatheringSkill
 		&&(!confirmPossibleMaterialLocation(RawMaterial.RESOURCE_SILK,mob.location()))
 		&&(!confirmPossibleMaterialLocation(RawMaterial.RESOURCE_COTTON,mob.location())))
 		{
-			commonTell(mob,"You don't think this is a good place to forage.");
+			commonTell(mob,_("You don't think this is a good place to forage."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

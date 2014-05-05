@@ -94,10 +94,10 @@ public class AnimalHusbandry extends CommonSkill
 					final MOB husbandM=husbanding[0];
 					final MOB wifeM=husbanding[1];
 					if((husbandM==null)||(wifeM==null))
-						commonTell(mob,"You've failed to husband properly...");
+						commonTell(mob,_("You've failed to husband properly..."));
 					else
 					if(wifeM.fetchEffect("Pregnancy")!=null)
-						commonTell(mob,wifeM.name()+" is already pregnant.");
+						commonTell(mob,_("@x1 is already pregnant.",wifeM.name()));
 					else
 					{
 						final Social S=CMLib.socials().fetchSocial("MATE", wifeM, true);
@@ -151,12 +151,12 @@ public class AnimalHusbandry extends CommonSkill
 		husbanding=new MOB[2];
 		if(!CMLib.law().doesHavePriviledgesHere(mob, mob.location()))
 		{
-			commonTell(mob,"You need to be in your own pasture to do this.");
+			commonTell(mob,_("You need to be in your own pasture to do this."));
 			return false;
 		}
 		if(commands.size()<2)
 		{
-			commonTell(mob,"Which animals should I husband here?");
+			commonTell(mob,_("Which animals should I husband here?"));
 			return false;
 		}
 		final String[] names=new String[]{(String)commands.get(0),CMParms.combine(commands,1)};
@@ -166,41 +166,41 @@ public class AnimalHusbandry extends CommonSkill
 			final MOB M=mob.location().fetchInhabitant(name);
 			if(M==null)
 			{
-				commonTell(mob,"You don't see anyone called '"+name+"' here.");
+				commonTell(mob,_("You don't see anyone called '@x1' here.",name));
 				return false;
 			}
 			else
 			{
 				if(!CMLib.flags().canBeSeenBy(M,mob))
 				{
-					commonTell(mob,"You don't see anyone called '"+name+"' here.");
+					commonTell(mob,_("You don't see anyone called '@x1' here.",name));
 					return false;
 				}
 				if((!M.isMonster())||(!CMLib.flags().isAnimalIntelligence(M)))
 				{
-					commonTell(mob,"You can't use "+M.name(mob)+".");
+					commonTell(mob,_("You can't use @x1.",M.name(mob)));
 					return false;
 				}
 				if(M.fetchEffect("Pregnancy")!=null)
 				{
-					commonTell(mob,M.name(mob)+" is already pregnant.");
+					commonTell(mob,_("@x1 is already pregnant.",M.name(mob)));
 					return false;
 				}
 				if(!M.charStats().getMyRace().canBreedWith(M.charStats().getMyRace()))
 				{
-					commonTell(mob,"You can't use "+M.name(mob)+".");
+					commonTell(mob,_("You can't use @x1.",M.name(mob)));
 					return false;
 				}
 				if((!CMLib.flags().canMove(M))||(CMLib.flags().isBoundOrHeld(M)))
 				{
-					commonTell(mob,M.name(mob)+" doesn't seem willing to cooperate.");
+					commonTell(mob,_("@x1 doesn't seem willing to cooperate.",M.name(mob)));
 					return false;
 				}
 				if(M.charStats().getStat(CharStats.STAT_GENDER)=='M')
 				{
 					if(husbanding[0]!=null)
 					{
-						commonTell(mob,"You can't use two males!");
+						commonTell(mob,_("You can't use two males!"));
 						return false;
 					}
 					husbanding[0]=M;
@@ -210,19 +210,19 @@ public class AnimalHusbandry extends CommonSkill
 				{
 					if(!M.isGeneric())
 					{
-						commonTell(mob,"I'm sorry, "+M.name(mob)+" just won't work out as a mother.");
+						commonTell(mob,_("I'm sorry, @x1 just won't work out as a mother.",M.name(mob)));
 						return false;
 					}
 					if(husbanding[1]!=null)
 					{
-						commonTell(mob,"You can't use two females!");
+						commonTell(mob,_("You can't use two females!"));
 						return false;
 					}
 					husbanding[1]=M;
 				}
 				else
 				{
-					commonTell(mob,"You can't use "+M.name(mob)+" -- it's neuter!");
+					commonTell(mob,_("You can't use @x1 -- it's neuter!",M.name(mob)));
 					return false;
 				}
 				if(M.phyStats().level()>highestLevel)

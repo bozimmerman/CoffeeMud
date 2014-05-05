@@ -60,7 +60,7 @@ public class Embroidering extends CommonSkill
 			{
 				final MOB mob=(MOB)affected;
 				if(writing.length()==0)
-					commonTell(mob,"You mess up your embroidery.");
+					commonTell(mob,_("You mess up your embroidery."));
 				else
 				{
 					String desc=found.description();
@@ -82,13 +82,13 @@ public class Embroidering extends CommonSkill
 			return true;
 		if(commands.size()<2)
 		{
-			commonTell(mob,"You must specify what you want to embroider onto, and what words to embroider on it.");
+			commonTell(mob,_("You must specify what you want to embroider onto, and what words to embroider on it."));
 			return false;
 		}
 		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.firstElement());
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTell(mob,"You don't seem to have a '"+((String)commands.firstElement())+"'.");
+			commonTell(mob,_("You don't seem to have a '@x1'.",((String)commands.firstElement())));
 			return false;
 		}
 		commands.remove(commands.firstElement());
@@ -96,7 +96,7 @@ public class Embroidering extends CommonSkill
 		final Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)
 		{
-			commonTell(mob,"You must know how to write to embroider.");
+			commonTell(mob,_("You must know how to write to embroider."));
 			return false;
 		}
 
@@ -104,7 +104,7 @@ public class Embroidering extends CommonSkill
 			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER))
 		||(!target.isGeneric()))
 		{
-			commonTell(mob,"You can't embroider onto that material.");
+			commonTell(mob,_("You can't embroider onto that material."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

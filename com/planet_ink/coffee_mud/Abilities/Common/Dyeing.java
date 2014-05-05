@@ -145,13 +145,13 @@ public class Dyeing extends CommonSkill
 			return true;
 		if(commands.size()<2)
 		{
-			commonTell(mob,"You must specify what you want to dye, and color to dye it.");
+			commonTell(mob,_("You must specify what you want to dye, and color to dye it."));
 			return false;
 		}
 		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.firstElement());
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTell(mob,"You don't seem to have a '"+((String)commands.firstElement())+"'.");
+			commonTell(mob,_("You don't seem to have a '@x1'.",((String)commands.firstElement())));
 			return false;
 		}
 		commands.remove(commands.firstElement());
@@ -163,7 +163,7 @@ public class Dyeing extends CommonSkill
 			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER))
 		||(!target.isGeneric()))
 		{
-			commonTell(mob,"You can't dye that material.");
+			commonTell(mob,_("You can't dye that material."));
 			return false;
 		}
 		writing=CMParms.combine(commands,0).toLowerCase();
@@ -189,7 +189,7 @@ public class Dyeing extends CommonSkill
 		}
 		if((" white green blue red yellow cyan purple ".indexOf(" "+writing.trim()+" ")<0)||(writing.trim().indexOf(' ')>=0))
 		{
-			commonTell(mob,"You can't dye anything '"+writing+"'.  Try white, green, blue, red, yellow, cyan, or purple. You can also prefix the colors with the word 'dark', 'light', or 'bright'.");
+			commonTell(mob,_("You can't dye anything '@x1'.  Try white, green, blue, red, yellow, cyan, or purple. You can also prefix the colors with the word 'dark', 'light', or 'bright'.",writing));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

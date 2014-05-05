@@ -73,7 +73,7 @@ public class Scalp extends CommonSkill
 				if((body!=null)&&(!aborted))
 				{
 					if((failed)||(!mob.location().isContent(body)))
-						commonTell(mob,"You messed up your scalping completely.");
+						commonTell(mob,_("You messed up your scalping completely."));
 					else
 					{
 						mob.location().show(mob,null,body,getActivityMessageType(),_("<S-NAME> manage(s) to scalp <O-NAME>."));
@@ -138,12 +138,12 @@ public class Scalp extends CommonSkill
 		   ||(((DeadBody)I).charStats().getMyRace()==null)
 		   ||(((DeadBody)I).charStats().getMyRace().bodyMask()[Race.BODY_HEAD]==0))
 		{
-			commonTell(mob,"You can't scalp "+I.name(mob)+".");
+			commonTell(mob,_("You can't scalp @x1.",I.name(mob)));
 			return false;
 		}
 		if(lastSoManyScalps.contains(I))
 		{
-			commonTell(mob,I.name(mob)+" has already been scalped.");
+			commonTell(mob,_("@x1 has already been scalped.",I.name(mob)));
 			return false;
 
 		}

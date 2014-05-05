@@ -132,7 +132,7 @@ public class Lacquerring extends CommonSkill
 			return true;
 		if(commands.size()<2)
 		{
-			commonTell(mob,"You must specify what you want to lacquer, and the color to lacquer it in.");
+			commonTell(mob,_("You must specify what you want to lacquer, and the color to lacquer it in."));
 			return false;
 		}
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.firstElement());
@@ -150,14 +150,14 @@ public class Lacquerring extends CommonSkill
 				}
 				if(!ok)
 				{
-					commonTell(mob,"You aren't allowed to work on '"+((String)commands.firstElement())+"'.");
+					commonTell(mob,_("You aren't allowed to work on '@x1'.",((String)commands.firstElement())));
 					return false;
 				}
 			}
 		}
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTell(mob,"You don't seem to have a '"+((String)commands.firstElement())+"'.");
+			commonTell(mob,_("You don't seem to have a '@x1'.",((String)commands.firstElement())));
 			return false;
 		}
 		commands.remove(commands.firstElement());
@@ -171,7 +171,7 @@ public class Lacquerring extends CommonSkill
 			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN))
 		||(!target.isGeneric()))
 		{
-			commonTell(mob,"You can't lacquer that material.");
+			commonTell(mob,_("You can't lacquer that material."));
 			return false;
 		}
 
@@ -184,7 +184,7 @@ public class Lacquerring extends CommonSkill
 		}
 		if((" white green blue red yellow cyan purple ".indexOf(" "+writing.trim()+" ")<0)||(writing.trim().indexOf(' ')>=0))
 		{
-			commonTell(mob,"You can't lacquer anything '"+writing+"'.  Try white, green, blue, red, yellow, cyan, or purple. You can also prefix the colors with the word 'dark'.");
+			commonTell(mob,_("You can't lacquer anything '@x1'.  Try white, green, blue, red, yellow, cyan, or purple. You can also prefix the colors with the word 'dark'.",writing));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

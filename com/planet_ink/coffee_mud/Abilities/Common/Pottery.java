@@ -186,7 +186,7 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \"pot list\" for a list, \"pot learn <item>\" to gain recipes, or \"pot stop\" to cancel.");
+			commonTell(mob,_("Make what? Enter \"pot list\" for a list, \"pot learn <item>\" to gain recipes, or \"pot stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -267,7 +267,7 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		}
 		if(foundRecipe==null)
 		{
-			commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"pot list\" for a list.");
+			commonTell(mob,_("You don't know how to make a '@x1'.  Try \"pot list\" for a list.",recipeName));
 			return false;
 		}
 
@@ -297,7 +297,7 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 		if(buildingI==null)
 		{
-			commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
+			commonTell(mob,_("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
 			return false;
 		}
 		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);

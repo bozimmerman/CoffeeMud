@@ -68,7 +68,7 @@ public class Digging extends GatheringSkill
 			{
 				if(found!=null)
 				{
-					commonTell(mob,"You have found some "+foundShortName+"!");
+					commonTell(mob,_("You have found some @x1!",foundShortName));
 					displayText="You are digging out "+foundShortName;
 					verb="digging out "+foundShortName;
 					if((found.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PRECIOUS)
@@ -142,7 +142,7 @@ public class Digging extends GatheringSkill
 		&&(!confirmPossibleMaterialLocation(RawMaterial.RESOURCE_SAND,mob.location()))
 		&&(!confirmPossibleMaterialLocation(RawMaterial.RESOURCE_STONE,mob.location())))
 		{
-			commonTell(mob,"You don't think this is a good place to dig for gems.");
+			commonTell(mob,_("You don't think this is a good place to dig for gems."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

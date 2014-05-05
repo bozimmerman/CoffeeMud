@@ -89,7 +89,7 @@ public class Tattooing extends CommonSkill
 	{
 		if(commands.size()<3)
 		{
-			commonTell(mob,"You must specify whom you want to tattoo, what body part to tattoo, and what the tattoo looks like. Use 'REMOVE' as the description to remove a tattoo.");
+			commonTell(mob,_("You must specify whom you want to tattoo, what body part to tattoo, and what the tattoo looks like. Use 'REMOVE' as the description to remove a tattoo."));
 			return false;
 		}
 		final String whom=(String)commands.firstElement();
@@ -126,7 +126,7 @@ public class Tattooing extends CommonSkill
 		}
 		if(partNum<0)
 		{
-			commonTell(mob,"'"+part+"' is not a valid location.  Valid locations include: "+allParts.toString().substring(2));
+			commonTell(mob,_("'@x1' is not a valid location.  Valid locations include: @x2",part,allParts.toString().substring(2)));
 			return false;
 		}
 		final long wornCode=codes.get(partNum);
@@ -137,12 +137,12 @@ public class Tattooing extends CommonSkill
 
 		if(target.getWearPositions(wornCode)<=0)
 		{
-			commonTell(mob,"That location is not available for tattooing.");
+			commonTell(mob,_("That location is not available for tattooing."));
 			return false;
 		}
 		if(target.freeWearPositions(wornCode,(short)(Short.MIN_VALUE+1),(short)0)<=0)
 		{
-			commonTell(mob,"That location is currently covered by something.");
+			commonTell(mob,_("That location is currently covered by something."));
 			return false;
 		}
 
@@ -162,14 +162,14 @@ public class Tattooing extends CommonSkill
 		{
 			if(tatToRemove==null)
 			{
-				commonTell(mob,"There is no tattoo there to remove.");
+				commonTell(mob,_("There is no tattoo there to remove."));
 				return false;
 			}
 		}
 		else
 		if(numTattsDone>=target.getWearPositions(codes.get(partNum)))
 		{
-			commonTell(mob,"That location is already completely decorated.");
+			commonTell(mob,_("That location is already completely decorated."));
 			return false;
 		}
 

@@ -99,7 +99,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 							buildingI.destroy();
 						}
 						else
-							commonTell(mob,"<S-NAME> mess(es) up sculpting "+buildingI.name(mob)+".");
+							commonTell(mob,_("<S-NAME> mess(es) up sculpting @x1.",buildingI.name(mob)));
 					}
 					else
 					{
@@ -155,7 +155,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 		if((IE.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK)
 		{
 			if(!quiet)
-				commonTell(mob,"That's not made of stone.  That can't be mended.");
+				commonTell(mob,_("That's not made of stone.  That can't be mended."));
 			return false;
 		}
 		return true;
@@ -181,7 +181,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Sculpt what? Enter \"sculpt list\" for a list, \"sculpt scan\", \"sculpt learn <item>\", \"sculpt mend <item>\", or \"sculpt stop\" to cancel.");
+			commonTell(mob,_("Sculpt what? Enter \"sculpt list\" for a list, \"sculpt scan\", \"sculpt learn <item>\", \"sculpt mend <item>\", or \"sculpt stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -307,7 +307,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,"You don't know how to sculpt a '"+recipeName+"'.  Try \"sculpt list\" for a list.");
+				commonTell(mob,_("You don't know how to sculpt a '@x1'.  Try \"sculpt list\" for a list.",recipeName));
 				return false;
 			}
 
@@ -333,7 +333,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(buildingI==null)
 			{
-				commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
+				commonTell(mob,_("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
@@ -442,7 +442,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			if((!CMLib.flags().isGettable(buildingI))
 			&&(!CMLib.law().doesOwnThisProperty(mob,mob.location())))
 			{
-				commonTell(mob,"You are not allowed to build that here.");
+				commonTell(mob,_("You are not allowed to build that here."));
 				return false;
 			}
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

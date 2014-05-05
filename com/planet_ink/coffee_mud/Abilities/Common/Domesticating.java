@@ -78,11 +78,11 @@ public class Domesticating extends CommonSkill
 				if((taming!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonTell(mob,"You've failed to domesticate "+taming.name()+"!");
+						commonTell(mob,_("You've failed to domesticate @x1!",taming.name()));
 					else
 					{
 						if(taming.amFollowing()==mob)
-							commonTell(mob,taming.name()+" is already domesticated.");
+							commonTell(mob,_("@x1 is already domesticated.",taming.name()));
 						else
 						{
 							CMLib.commands().postFollow(taming,mob,true);
@@ -113,29 +113,29 @@ public class Domesticating extends CommonSkill
 		final MOB M=mob.location().fetchInhabitant(str);
 		if((M==null)||(!CMLib.flags().canBeSeenBy(M,mob)))
 		{
-			commonTell(mob,"You don't see anyone called '"+str+"' here.");
+			commonTell(mob,_("You don't see anyone called '@x1' here.",str));
 			return false;
 		}
 		if(!M.isMonster())
 		{
 			if(newName!=null)
-				commonTell(mob,M,null,"You can't name <T-NAME>.");
+				commonTell(mob,M,null,_("You can't name <T-NAME>."));
 			else
-				commonTell(mob,M,null,"You can't domesticate <T-NAME>.");
+				commonTell(mob,M,null,_("You can't domesticate <T-NAME>."));
 			return false;
 		}
 		if(!CMLib.flags().isAnimalIntelligence(M))
 		{
 			if(newName!=null)
-				commonTell(mob,M,null,"You can't name <T-NAME>.");
+				commonTell(mob,M,null,_("You can't name <T-NAME>."));
 			else
-				commonTell(mob,M,null,"You don't know how to domesticate <T-NAME>.");
+				commonTell(mob,M,null,_("You don't know how to domesticate <T-NAME>."));
 			return false;
 		}
 		final String theName=newName;
 		if((newName!=null)&&(M.amFollowing()==null))
 		{
-			commonTell(mob,"You can only name someones pet.");
+			commonTell(mob,_("You can only name someones pet."));
 			return false;
 		}
 		else

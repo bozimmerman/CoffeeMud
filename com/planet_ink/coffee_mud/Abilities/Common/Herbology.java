@@ -65,7 +65,7 @@ public class Herbology extends CommonSkill
 			{
 				final MOB mob=(MOB)affected;
 				if(messedUp)
-					commonTell(mob,"You lose your concentration on "+found.name()+".");
+					commonTell(mob,_("You lose your concentration on @x1.",found.name()));
 				else
 				{
 					final List<String> herbList=Resources.getFileLineVector(Resources.getFileResource("skills/herbology.txt",true));
@@ -79,7 +79,7 @@ public class Herbology extends CommonSkill
 						found.setSecretIdentity("");
 					}
 
-					commonTell(mob,found.name()+" appears to be "+herb+".");
+					commonTell(mob,_("@x1 appears to be @x2.",found.name(),herb));
 					String name=found.Name();
 					name=name.substring(0,name.length()-5).trim();
 					if(name.length()>0)
@@ -103,13 +103,13 @@ public class Herbology extends CommonSkill
 			return true;
 		if(commands.size()<1)
 		{
-			commonTell(mob,"You must specify what herb you want to identify.");
+			commonTell(mob,_("You must specify what herb you want to identify."));
 			return false;
 		}
 		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,CMParms.combine(commands,0));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTell(mob,"You don't seem to have a '"+((String)commands.firstElement())+"'.");
+			commonTell(mob,_("You don't seem to have a '@x1'.",((String)commands.firstElement())));
 			return false;
 		}
 		commands.remove(commands.firstElement());
@@ -120,7 +120,7 @@ public class Herbology extends CommonSkill
 		||(!(target instanceof RawMaterial))
 		||(!target.isGeneric()))
 		{
-			commonTell(mob,"You can only identify unknown herbs.");
+			commonTell(mob,_("You can only identify unknown herbs."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

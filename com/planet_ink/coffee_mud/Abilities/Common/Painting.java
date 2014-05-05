@@ -69,7 +69,7 @@ public class Painting extends CommonSkill
 				if((building!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonTell(mob,"<S-NAME> mess(es) up painting "+building.name()+".");
+						commonTell(mob,_("<S-NAME> mess(es) up painting @x1.",building.name()));
 					else
 						mob.location().addItem(building,ItemPossessor.Expire.Player_Drop);
 				}
@@ -87,7 +87,7 @@ public class Painting extends CommonSkill
 			return true;
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Paint on what? Enter \"paint [canvas name]\" or paint \"wall\".");
+			commonTell(mob,_("Paint on what? Enter \"paint [canvas name]\" or paint \"wall\"."));
 			return false;
 		}
 		String paintingKeyWords=null;
@@ -124,7 +124,7 @@ public class Painting extends CommonSkill
 			S=mob.amFollowing().session();
 		if(S==null)
 		{
-			commonTell(mob,"I can't work! I need a player to follow!");
+			commonTell(mob,_("I can't work! I need a player to follow!"));
 			return false;
 		}
 
@@ -133,7 +133,7 @@ public class Painting extends CommonSkill
 		{
 			if(!CMLib.law().doesOwnThisProperty(mob,mob.location()))
 			{
-				commonTell(mob,"You need the owners permission to paint the walls here.");
+				commonTell(mob,_("You need the owners permission to paint the walls here."));
 				return false;
 			}
 		}
@@ -142,7 +142,7 @@ public class Painting extends CommonSkill
 			canvasI=mob.location().findItem(null,str);
 			if((canvasI==null)||(!CMLib.flags().canBeSeenBy(canvasI,mob)))
 			{
-				commonTell(mob,"You don't see any canvases called '"+str+"' sitting here.");
+				commonTell(mob,_("You don't see any canvases called '@x1' sitting here.",str));
 				return false;
 			}
 			if((canvasI.material()!=RawMaterial.RESOURCE_COTTON)
@@ -150,7 +150,7 @@ public class Painting extends CommonSkill
 			&&(!canvasI.Name().toUpperCase().endsWith("CANVAS"))
 			&&(!canvasI.Name().toUpperCase().endsWith("SILKSCREEN")))
 			{
-				commonTell(mob,"You cannot paint on '"+str+"'.");
+				commonTell(mob,_("You cannot paint on '@x1'.",str));
 				return false;
 			}
 		}

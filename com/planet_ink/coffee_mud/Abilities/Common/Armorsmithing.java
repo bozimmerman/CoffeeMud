@@ -186,7 +186,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 		||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
-				commonTell(mob,"That's not "+CMLib.english().startWithAorAn(Name().toLowerCase())+" item.");
+				commonTell(mob,_("That's not @x1 item.",CMLib.english().startWithAorAn(Name().toLowerCase())));
 			return false;
 		}
 		return true;
@@ -212,7 +212,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \"armorsmith list\" for a list, \"armorsmith refit <item>\" to resize, \"armorsmith learn <item>\", \"armorsmith scan\", \"armorsmith mend <item>\", or \"armorsmith stop\" to cancel.");
+			commonTell(mob,_("Make what? Enter \"armorsmith list\" for a list, \"armorsmith refit <item>\" to resize, \"armorsmith learn <item>\", \"armorsmith scan\", \"armorsmith mend <item>\", or \"armorsmith stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -315,17 +315,17 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			if(((buildingI.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)
 			&&((buildingI.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL))
 			{
-				commonTell(mob,"That's not made of metal.  That can't be refitted.");
+				commonTell(mob,_("That's not made of metal.  That can't be refitted."));
 				return false;
 			}
 			if(!(buildingI instanceof Armor))
 			{
-				commonTell(mob,"You don't know how to refit that sort of thing.");
+				commonTell(mob,_("You don't know how to refit that sort of thing."));
 				return false;
 			}
 			if(buildingI.phyStats().height()==0)
 			{
-				commonTell(mob,buildingI.name(mob)+" is already the right size.");
+				commonTell(mob,_("@x1 is already the right size.",buildingI.name(mob)));
 				return false;
 			}
 			activity = CraftingActivity.REFITTING;
@@ -368,7 +368,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"armorsmith list\" for a list.");
+				commonTell(mob,_("You don't know how to make a '@x1'.  Try \"armorsmith list\" for a list.",recipeName));
 				return false;
 			}
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
@@ -399,7 +399,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(buildingI==null)
 			{
-				commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
+				commonTell(mob,_("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),6);

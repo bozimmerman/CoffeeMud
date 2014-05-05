@@ -240,41 +240,41 @@ public class Masonry extends CraftingSkill
 					switch(doingCode)
 					{
 					case BUILD_ROOF:
-						commonTell(mob,"You've ruined the frame and roof!");
+						commonTell(mob,_("You've ruined the frame and roof!"));
 						break;
 					case BUILD_WALL:
-						commonTell(mob,"You've ruined the wall!");
+						commonTell(mob,_("You've ruined the wall!"));
 						break;
 					case BUILD_ARCH:
-						commonTell(mob,"You've ruined the archway!");
+						commonTell(mob,_("You've ruined the archway!"));
 						break;
 					case BUILD_PORTCULIS:
-						commonTell(mob,"You've ruined the portcullis!");
+						commonTell(mob,_("You've ruined the portcullis!"));
 						break;
 					case BUILD_TITLE:
-						commonTell(mob,"You've ruined the titling!");
+						commonTell(mob,_("You've ruined the titling!"));
 						break;
 					case BUILD_DESC:
-						commonTell(mob,"You've ruined the describing!");
+						commonTell(mob,_("You've ruined the describing!"));
 						break;
 					case BUILD_MONUMENT:
-						commonTell(mob,"You've ruined the druidic monument!");
+						commonTell(mob,_("You've ruined the druidic monument!"));
 						break;
 					case BUILD_WINDOW:
-						commonTell(mob,"You've ruined the window!");
+						commonTell(mob,_("You've ruined the window!"));
 						break;
 					case BUILD_POOL:
-						commonTell(mob,"You've ruined the pool!");
+						commonTell(mob,_("You've ruined the pool!"));
 						break;
 					case BUILD_CRAWLWAY:
-						commonTell(mob,"You've ruined the crawlway!");
+						commonTell(mob,_("You've ruined the crawlway!"));
 						break;
 					case BUILD_STAIRS:
-						commonTell(mob,"You've ruined the stairs!");
+						commonTell(mob,_("You've ruined the stairs!"));
 						break;
 					case BUILD_DEMOLISH:
 					default:
-						commonTell(mob,"You've failed to demolish!");
+						commonTell(mob,_("You've failed to demolish!"));
 						break;
 					}
 					else
@@ -429,7 +429,7 @@ public class Masonry extends CraftingSkill
 							upRoom.setRoomID(room.getArea().getNewRoomID(room,Directions.UP));
 							if(upRoom.roomID().length()==0)
 							{
-								commonTell(mob,"You've failed to build the stairs!");
+								commonTell(mob,_("You've failed to build the stairs!"));
 								break;
 							}
 							upRoom.setArea(room.getArea());
@@ -678,7 +678,7 @@ public class Masonry extends CraftingSkill
 			return true;
 		if(commands.size()==0)
 		{
-			commonTell(mob,"What kind of masonry, where? Try Masonry list.");
+			commonTell(mob,_("What kind of masonry, where? Try Masonry list."));
 			return false;
 		}
 		final String str=(String)commands.elementAt(0);
@@ -728,13 +728,13 @@ public class Masonry extends CraftingSkill
 			if(targetMOB==null) return false;
 			if(targetMOB==mob)
 			{
-				commonTell(mob,"You can not do that.");
+				commonTell(mob,_("You can not do that."));
 				return false;
 			}
 			helpingAbility=targetMOB.fetchEffect(ID());
 			if(helpingAbility==null)
 			{
-				commonTell(mob,targetMOB.Name()+" is not building anything.");
+				commonTell(mob,_("@x1 is not building anything.",targetMOB.Name()));
 				return false;
 			}
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -765,7 +765,7 @@ public class Masonry extends CraftingSkill
 		}
 		if(doingCode<0)
 		{
-			commonTell(mob,"'"+firstWord+"' is not a valid masonry project.  Try LIST.");
+			commonTell(mob,_("'@x1' is not a valid masonry project.  Try LIST.",firstWord));
 			return false;
 		}
 		final String dirName=(String)commands.lastElement();
@@ -776,22 +776,22 @@ public class Masonry extends CraftingSkill
 			final Room upRoom=mob.location().getRoomInDir(Directions.UP);
 			if(isHomePeerRoom(upRoom))
 			{
-				commonTell(mob,"You need to demolish the upstairs rooms first.");
+				commonTell(mob,_("You need to demolish the upstairs rooms first."));
 				return false;
 			}
 			if(mob.location().domainType() == Room.DOMAIN_INDOORS_CAVE)
 			{
-				commonTell(mob,"A cave can not have its roof demolished.");
+				commonTell(mob,_("A cave can not have its roof demolished."));
 				return false;
 			}
 			if(!CMath.bset(mob.location().domainType(), Room.INDOORS))
 			{
-				commonTell(mob,"There is no ceiling here!");
+				commonTell(mob,_("There is no ceiling here!"));
 				return false;
 			}
 			if(CMLib.law().isHomeRoomUpstairs(mob.location()))
 			{
-				commonTell(mob,"You can't demolish upstairs ceilings.  Try demolishing the room.");
+				commonTell(mob,_("You can't demolish upstairs ceilings.  Try demolishing the room."));
 				return false;
 			}
 			dir=-1;
@@ -804,17 +804,17 @@ public class Masonry extends CraftingSkill
 			&&(title!=null)
 			&&(title.getOwnerName().length()>0))
 			{
-				commonTell(mob,"You can't demolish property you don't own.");
+				commonTell(mob,_("You can't demolish property you don't own."));
 				return false;
 			}
 			if((title==null)||(!title.allowsExpansionConstruction()))
 			{
-				commonTell(mob,"You aren't permitted to demolish this room.");
+				commonTell(mob,_("You aren't permitted to demolish this room."));
 				return false;
 			}
 			if(!CMLib.law().isHomeRoomUpstairs(mob.location()))
 			{
-				commonTell(mob,"You can only demolish upstairs rooms.  You might try just demolishing the ceiling/roof?");
+				commonTell(mob,_("You can only demolish upstairs rooms.  You might try just demolishing the ceiling/roof?"));
 				return false;
 			}
 			int numAdjacentProperties=0;
@@ -838,7 +838,7 @@ public class Masonry extends CraftingSkill
 		if(((dir<0)||(dir==Directions.UP)||(dir==Directions.DOWN))
 		&&(CMath.s_int(data[doingCode][DAT_REQDIR])==1))
 		{
-			commonTell(mob,"A valid direction in which to build must also be specified.");
+			commonTell(mob,_("A valid direction in which to build must also be specified."));
 			return false;
 		}
 
@@ -846,7 +846,7 @@ public class Masonry extends CraftingSkill
 		&&(dir>=0)
 		&&(mob.location().getExitInDir(dir)==null))
 		{
-			commonTell(mob,"There is a wall that way that needs to be demolished first.");
+			commonTell(mob,_("There is a wall that way that needs to be demolished first."));
 			return false;
 		}
 
@@ -855,14 +855,14 @@ public class Masonry extends CraftingSkill
 		if(((mob.location().domainType()&Room.INDOORS)==0)
 		&&(data[doingCode][DAT_ROOF].equals("1")))
 		{
-			commonTell(mob,"That can only be built after a roof, which includes the frame.");
+			commonTell(mob,_("That can only be built after a roof, which includes the frame."));
 			return false;
 		}
 		else
 		if(((mob.location().domainType()&Room.INDOORS)>0)
 		   &&(data[doingCode][DAT_ROOF].equals("2")))
 		{
-			commonTell(mob,"That can only be built outdoors!");
+			commonTell(mob,_("That can only be built outdoors!"));
 			return false;
 		}
 
@@ -871,17 +871,17 @@ public class Masonry extends CraftingSkill
 			final LandTitle title=CMLib.law().getLandTitle(mob.location());
 			if((title==null)||(!title.allowsExpansionConstruction()))
 			{
-				commonTell(mob,"You are not permitted to build stairs here.");
+				commonTell(mob,_("You are not permitted to build stairs here."));
 				return false;
 			}
 			if(!CMath.bset(mob.location().domainType(), Room.INDOORS))
 			{
-				commonTell(mob,"You need to build a ceiling (or roof) first!");
+				commonTell(mob,_("You need to build a ceiling (or roof) first!"));
 				return false;
 			}
 			if((mob.location().getRoomInDir(Directions.UP)!=null)||(mob.location().rawDoors()[Directions.UP]!=null))
 			{
-				commonTell(mob,"There are already stairs here.");
+				commonTell(mob,_("There are already stairs here."));
 				return false;
 			}
 		}
@@ -891,12 +891,12 @@ public class Masonry extends CraftingSkill
 			final Room nextRoom=mob.location().getRoomInDir(dir);
 			if((nextRoom!=null)&&(CMLib.law().getLandTitle(nextRoom)==null))
 			{
-				commonTell(mob,"You can not build a wall blocking off the main entrance!");
+				commonTell(mob,_("You can not build a wall blocking off the main entrance!"));
 				return false;
 			}
 			if(mob.location().getExitInDir(dir)==null)
 			{
-				commonTell(mob,"There is already a wall in that direction!");
+				commonTell(mob,_("There is already a wall in that direction!"));
 				return false;
 			}
 		}
@@ -907,7 +907,7 @@ public class Masonry extends CraftingSkill
 			final Exit exitRoom=mob.location().getExitInDir(Directions.DOWN);
 			if((nextRoom!=null)||(exitRoom!=null))
 			{
-				commonTell(mob,"You may not build a pool here!");
+				commonTell(mob,_("You may not build a pool here!"));
 				return false;
 			}
 		}
@@ -917,7 +917,7 @@ public class Masonry extends CraftingSkill
 			final String title=CMParms.combine(commands,1);
 			if(title.length()==0)
 			{
-				commonTell(mob,"A title must be specified.");
+				commonTell(mob,_("A title must be specified."));
 				return false;
 			}
 			final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
@@ -927,7 +927,7 @@ public class Masonry extends CraftingSkill
 				final Room R=CMLib.map().getRoom(room2);
 				if(R.displayText(mob).equalsIgnoreCase(title))
 				{
-					commonTell(mob,"That title has already been taken.  Choose another.");
+					commonTell(mob,_("That title has already been taken.  Choose another."));
 					return false;
 				}
 			}
@@ -938,7 +938,7 @@ public class Masonry extends CraftingSkill
 		{
 			if(commands.size()<3)
 			{
-				commonTell(mob,"You must specify an exit direction or the word room, followed by a description for it.");
+				commonTell(mob,_("You must specify an exit direction or the word room, followed by a description for it."));
 				return false;
 			}
 			if(Directions.getGoodDirectionCode((String)commands.elementAt(1))>=0)
@@ -946,7 +946,7 @@ public class Masonry extends CraftingSkill
 				dir=Directions.getGoodDirectionCode((String)commands.elementAt(1));
 				if(mob.location().getExitInDir(dir)==null)
 				{
-					commonTell(mob,"There is no exit "+Directions.getInDirectionName(dir)+" to describe.");
+					commonTell(mob,_("There is no exit @x1 to describe.",Directions.getInDirectionName(dir)));
 					return false;
 				}
 				workingOn=dir;
@@ -955,7 +955,7 @@ public class Masonry extends CraftingSkill
 			else
 			if(!((String)commands.elementAt(1)).equalsIgnoreCase("room"))
 			{
-				commonTell(mob,"'"+((String)commands.elementAt(1))+"' is neither the word room, nor an exit direction.");
+				commonTell(mob,_("'@x1' is neither the word room, nor an exit direction.",((String)commands.elementAt(1))));
 				return false;
 			}
 			else
@@ -964,7 +964,7 @@ public class Masonry extends CraftingSkill
 			final String title=CMParms.combine(commands,1);
 			if(title.length()==0)
 			{
-				commonTell(mob,"A description must be specified.");
+				commonTell(mob,_("A description must be specified."));
 				return false;
 			}
 			designDescription=title;
@@ -1009,7 +1009,7 @@ public class Masonry extends CraftingSkill
 		}
 		if(!canBuild)
 		{
-			commonTell(mob,"You'll need the permission of the owner to do that.");
+			commonTell(mob,_("You'll need the permission of the owner to do that."));
 			return false;
 		}
 
@@ -1066,13 +1066,13 @@ public class Masonry extends CraftingSkill
 				if((mob.location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
 				   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
 				{
-					commonTell(mob,null,null,"You must demolish a pool from above.");
+					commonTell(mob,null,null,_("You must demolish a pool from above."));
 					return false;
 				}
 				else
 				if(mob.location().domainType()!=Room.DOMAIN_INDOORS_STONE)
 				{
-					commonTell(mob,null,null,"There are no stone constructs to demolish here!");
+					commonTell(mob,null,null,_("There are no stone constructs to demolish here!"));
 					return false;
 				}
 				else

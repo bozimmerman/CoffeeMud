@@ -61,7 +61,7 @@ public class LockSmith extends CraftingSkill
 				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonTell(mob,"You've ruined "+buildingI.name(mob)+"!");
+						commonTell(mob,_("You've ruined @x1!",buildingI.name(mob)));
 					else
 					if(!delock)
 						dropAWinner(mob,buildingI);
@@ -95,7 +95,7 @@ public class LockSmith extends CraftingSkill
 			final MOB mob=(MOB)affected;
 			if((workingOn instanceof Container) && (mob.location()!=CMLib.map().roomLocation(workingOn)))
 			{
-				commonTell(mob,"You've stopped "+verb+".");
+				commonTell(mob,_("You've stopped @x1.",verb));
 				buildingI=null;
 				unInvoke();
 				return super.tick(ticking, tickID);
@@ -119,9 +119,9 @@ public class LockSmith extends CraftingSkill
 							if((messedUp)||(dir<0))
 							{
 								if(delock)
-									commonTell(mob,"You've failed to remove the lock.");
+									commonTell(mob,_("You've failed to remove the lock."));
 								else
-									commonTell(mob,"You've ruined the lock.");
+									commonTell(mob,_("You've ruined the lock."));
 								buildingI=null;
 								unInvoke();
 							}
@@ -162,9 +162,9 @@ public class LockSmith extends CraftingSkill
 							if(messedUp)
 							{
 								if(delock)
-									commonTell(mob,"You've failed to remove the lock.");
+									commonTell(mob,_("You've failed to remove the lock."));
 								else
-									commonTell(mob,"You've ruined the lock.");
+									commonTell(mob,_("You've ruined the lock."));
 								buildingI=null;
 								unInvoke();
 							}
@@ -194,7 +194,7 @@ public class LockSmith extends CraftingSkill
 		if((commands.size()==0)
 		||(CMParms.combine(commands,0).equalsIgnoreCase("list")))
 		{
-			commonTell(mob,"Locksmith what or where? Enter the name of a container or door direction. Put the word \"boltlock\" in front of the door direction to make a one-way lock.  Put the word \"delock\" in front of the door direction to remove the locks.");
+			commonTell(mob,_("Locksmith what or where? Enter the name of a container or door direction. Put the word \"boltlock\" in front of the door direction to make a one-way lock.  Put the word \"delock\" in front of the door direction to remove the locks."));
 			return false;
 		}
 		keyCode=""+Math.random();
@@ -227,19 +227,19 @@ public class LockSmith extends CraftingSkill
 
 		if((workingOn==null)||(!CMLib.flags().canBeSeenBy(workingOn,mob)))
 		{
-			commonTell(mob,"You don't see a '"+recipeName+"' here.");
+			commonTell(mob,_("You don't see a '@x1' here.",recipeName));
 			return false;
 		}
 		if(workingOn instanceof Exit)
 		{
 			if(!((Exit)workingOn).hasADoor())
 			{
-				commonTell(mob,"There is no door in that direction.");
+				commonTell(mob,_("There is no door in that direction."));
 				return false;
 			}
 			if(!workingOn.isGeneric())
 			{
-				commonTell(mob,"That door isn't built right -- it can't be modified.");
+				commonTell(mob,_("That door isn't built right -- it can't be modified."));
 				return false;
 			}
 			if(!ldelock)
@@ -255,7 +255,7 @@ public class LockSmith extends CraftingSkill
 			&&((otherRoom==null)
 				||(!CMLib.law().doesOwnThisProperty(mob,otherRoom))))
 			{
-				commonTell(mob,"You'll need the permission of the owner to do that.");
+				commonTell(mob,_("You'll need the permission of the owner to do that."));
 				return false;
 			}
 		}
@@ -264,12 +264,12 @@ public class LockSmith extends CraftingSkill
 		{
 			if(!((Container)workingOn).hasALid())
 			{
-				commonTell(mob,"That doesn't have a lid.");
+				commonTell(mob,_("That doesn't have a lid."));
 				return false;
 			}
 			if(!workingOn.isGeneric())
 			{
-				commonTell(mob,"That just isn't built right -- it can't be modified.");
+				commonTell(mob,_("That just isn't built right -- it can't be modified."));
 				return false;
 			}
 			if(!ldelock)
@@ -283,13 +283,13 @@ public class LockSmith extends CraftingSkill
 			&&(!CMLib.flags().isGettable((Container)workingOn))
 			&&(!CMLib.law().doesHavePriviledgesHere(mob,mob.location())))
 			{
-				commonTell(mob,"You'll need the permission of the owner of this place to do that.");
+				commonTell(mob,_("You'll need the permission of the owner of this place to do that."));
 				return false;
 			}
 		}
 		else
 		{
-			commonTell(mob,"You can't put a lock on that.");
+			commonTell(mob,_("You can't put a lock on that."));
 			return false;
 		}
 
@@ -323,7 +323,7 @@ public class LockSmith extends CraftingSkill
 		buildingI=getBuilding(workingOn);
 		if(buildingI==null)
 		{
-			commonTell(mob,"There's no such thing as a GenKey!!!");
+			commonTell(mob,_("There's no such thing as a GenKey!!!"));
 			return false;
 		}
 		if((makeResource>=0)&&(buildingI!=null)) buildingI.setMaterial(makeResource);
