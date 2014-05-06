@@ -21,8 +21,8 @@
   18. Localization has been amended, and partially redone.  See the FAQ for more info. The new scheme should make CM much more localizeable in the future.
    *. --- FYI Tech Stuff ---
   19. Ship Component Tech install skill (AstroEngineering) done-ish... like all tech, it's subject to change without notice.
-   *. test way to reposition planets? esp relative to nearby ones (for moons I guess).
-   *. ability to list objects in space.
+  20. Area editor for planets now includes space positioning editors, including relative positioning calculators.
+  21. List command now includes SPACE, SPACESHIPS, SPACESHIPAREAS, MOONS, PLANETS, and STARS 
    *. create space objects, esp stars.  planets should be thin areas, solar systems are triggered to load when players fly near enough.  
    *. Modify space objects. Ability to move them relative to each other would be cool...  
    *. Destroy space objects.
@@ -40,6 +40,7 @@
    *. finish main ship software for controlling all this stuff
    *. add electronics to guides, how to make a ship, details about tech
    *. add electronics to MG
+   *. add spaceobject stuff to MG
    *. --- end of tech ---
    *. retest private libs, private dbtables, private classes, private area objects, private players
    *. OLC for players?  Play with PennMush more. Port 4201

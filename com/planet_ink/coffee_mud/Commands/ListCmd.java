@@ -1904,10 +1904,35 @@ public class ListCmd extends StdCommand
 		return CMParms.toStringList(RawMaterial.Material.values());
 	}
 	
+	private enum SpaceFilterCode {SPACE, BODIES, MOONS, STARS, SHIPS}
+	
 	public String listSpace(MOB mob, Vector commands)
 	{
 		StringBuilder str=new StringBuilder("");
+		String listWhat=commands.get(1).toString().toUpperCase().trim();
+		Filterer<CMObject> filter=null;
+		for(final SpaceFilterCode code : SpaceFilterCode.values())
+			if(code.toString().toUpperCase().startsWith(listWhat))
+			{
+				filter=new Filterer<CMObject>(){
+					@Override public boolean passesFilter(CMObject obj)
+					{
+						switch(code)
+						{
+						case SPACE: return true;
+						case BODIES: return (obj instanceof Area) && (!(obj instanceof SpaceShip));
+						case SHIPS: return obj instanceof SpaceShip;
+						case STARS: return false; //TODO: fix!
+						case MOONS: return false; //TODO: fix!
+						}
+						return false;
+					}
+				};
+				break;
+			}
+		
 		if((commands.size()<=2)
+		||(filter==null)
 		||commands.get(2).toString().equals("?")
 		||commands.get(2).toString().equals("help"))
 		{
@@ -1918,7 +1943,12 @@ public class ListCmd extends StdCommand
 			str.append(_("LIST SPACE AROUND [NAME] - List all within 1 solar system of named object.\n\r"));
 			str.append(_("LIST SPACE AROUND [NAME] WITHIN [DISTANCE] - List all within [distance] of named object.\n\r"));
 			str.append(_("\n\r[DISTANCE] can be in DM (decameters), KM (kilometers), AU (astro units), or SU (solar system units.\n\r"));
+			str.append(_("Instead of LIST SPACE you can also specify BODIES, MOONS, STARS, or SPACESHIPS.\n\r"));
 			return str.toString();
+		}
+		else
+		{
+			
 		}
 		//TODO: finish!
 		return str.toString();
@@ -2003,11 +2033,11 @@ public class ListCmd extends StdCommand
 	public List<String> getMyCmdWords(MOB mob)
 	{
 		final Vector<String> V=new Vector<String>();
-		for (final ListCmdEntry cmd : SECURITY_LISTMAP)
+		for (final ListCmdEntry cmd : ListCmdEntry.values())
 		{
 			if((CMSecurity.isAllowedContainsAny(mob, cmd.flags))
 			||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
-				V.addElement(cmd.cmd);
+				V.addElement(cmd.cmd[0]);
 		}
 		for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 		{
@@ -2019,18 +2049,22 @@ public class ListCmd extends StdCommand
 		return V;
 	}
 
-	public int getMyCmdCode(MOB mob, String s)
+	public ListCmdEntry getMyCmd(MOB mob, String s)
 	{
 		s=s.toUpperCase().trim();
-		for(int i=0;i<SECURITY_LISTMAP.length;i++)
+		for(final ListCmdEntry cmd : ListCmdEntry.values())
 		{
-			final ListCmdEntry cmd=SECURITY_LISTMAP[i];
-			if(cmd.cmd.startsWith(s))
-				if((CMSecurity.isAllowedContainsAny(mob, cmd.flags))
-				||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
+			for(int i2=0;i2<cmd.cmd.length;i2++)
+			{
+				if(cmd.cmd[i2].startsWith(s))
 				{
-					return i;
+					if((CMSecurity.isAllowedContainsAny(mob, cmd.flags))
+					||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
+					{
+						return cmd;
+					}
 				}
+			}
 		}
 		for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 		{
@@ -2038,20 +2072,19 @@ public class ListCmd extends StdCommand
 			if(((CMJ.NAME()+"S").startsWith(s)||CMJ.NAME().equals(s)||CMJ.NAME().replace('_', ' ').equals(s))
 			&&((CMSecurity.isJournalAccessAllowed(mob,CMJ.NAME()))
 				||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN)))
-					return 29;
+					return ListCmdEntry.COMMANDJOURNAL;
 		}
-		return -1;
+		return null;
 	}
 
-	public int getAnyCode(MOB mob)
+	public ListCmdEntry getAnyCmd(MOB mob)
 	{
-		for(int i=0;i<SECURITY_LISTMAP.length;i++)
+		for(final ListCmdEntry cmd : ListCmdEntry.values())
 		{
-			final ListCmdEntry cmd=SECURITY_LISTMAP[i];
 			if((CMSecurity.isAllowedContainsAny(mob, cmd.flags))
 			||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
 			{
-				return i;
+				return cmd;
 			}
 		}
 		for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
@@ -2059,9 +2092,9 @@ public class ListCmd extends StdCommand
 			final JournalsLibrary.CommandJournal CMJ=e.nextElement();
 			if((CMSecurity.isJournalAccessAllowed(mob,CMJ.NAME()))
 			||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
-				return 29;
+				return ListCmdEntry.COMMANDJOURNAL;
 		}
-		return -1;
+		return null;
 	}
 
 	public String listComponents(Session viewerS)
@@ -2337,96 +2370,99 @@ public class ListCmd extends StdCommand
 		log.close();
 	}
 
-	private static class ListCmdEntry
+	public enum ListCmdEntry
 	{
-		public String 			   cmd;
+		UNLINKEDEXITS("UNLINKEDEXITS",new SecFlag[]{SecFlag.CMDEXITS,SecFlag.CMDROOMS,SecFlag.CMDAREAS}),
+		ITEMS("ITEMS",new SecFlag[]{SecFlag.CMDITEMS}),
+		ARMOR("ARMOR",new SecFlag[]{SecFlag.CMDITEMS}),
+		ENVRESOURCES("ENVRESOURCES",new SecFlag[]{SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS}),
+		WEAPONS("WEAPONS",new SecFlag[]{SecFlag.CMDITEMS}),
+		MOBS("MOBS",new SecFlag[]{SecFlag.CMDMOBS}),
+		ROOMS("ROOMS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
+		AREA("AREA",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
+		LOCALES("LOCALES",new SecFlag[]{SecFlag.CMDROOMS}),
+		BEHAVIORS("BEHAVIORS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
+		EXITS("EXITS",new SecFlag[]{SecFlag.CMDEXITS}),
+		RACES("RACES",new SecFlag[]{SecFlag.CMDRACES,SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS}),
+		CLASSES("CLASSES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDCLASSES}),
+		STAFF("STAFF",new SecFlag[]{SecFlag.CMDAREAS}),
+		SPELLS("SPELLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
+		SONGS("SONGS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
+		PRAYERS("PRAYERS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
+		PROPERTIES("PROPERTIES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
+		THIEFSKILLS("THIEFSKILLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
+		COMMON("COMMON",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
+		JOURNALS("JOURNALS",new SecFlag[]{SecFlag.JOURNALS}),
+		SKILLS("SKILLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
+		QUESTS("QUESTS",new SecFlag[]{SecFlag.CMDQUESTS}),
+		DISEASES("DISEASES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
+		POISONS("POISONS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
+		TICKS("TICKS",new SecFlag[]{SecFlag.LISTADMIN}),
+		MAGIC("MAGIC",new SecFlag[]{SecFlag.CMDITEMS}),
+		TECH("TECH",new SecFlag[]{SecFlag.CMDITEMS}),
+		CLANITEMS("CLANITEMS",new SecFlag[]{SecFlag.CMDITEMS,SecFlag.CMDCLANS}),
+		COMMANDJOURNAL("COMMANDJOURNAL",new SecFlag[]{}), // blank, but used!
+		REALESTATE("REALESTATE",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
+		NOPURGE("NOPURGE",new SecFlag[]{SecFlag.NOPURGE}),
+		BANNED("BANNED",new SecFlag[]{SecFlag.BAN}),
+		RACECATS("RACECATS",new SecFlag[]{SecFlag.CMDRACES,SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS}),
+		LOG("LOG",new SecFlag[]{SecFlag.LISTADMIN}),
+		USERS("USERS",new SecFlag[]{SecFlag.CMDPLAYERS,SecFlag.STAT}),
+		LINKAGES("LINKAGES",new SecFlag[]{SecFlag.CMDAREAS}),
+		REPORTS("REPORTS",new SecFlag[]{SecFlag.LISTADMIN}),
+		THREADS("THREADS",new SecFlag[]{SecFlag.LISTADMIN}),
+		RESOURCES("RESOURCES",new SecFlag[]{SecFlag.LOADUNLOAD}),
+		ONEWAYDOORS("ONEWAYDOORS",new SecFlag[]{SecFlag.CMDEXITS,SecFlag.CMDROOMS,SecFlag.CMDAREAS}),
+		CHANTS("CHANTS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
+		SUPERPOWERS(new String[]{"SUPERPOWERS","POWERS"},new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
+		COMPONENTS("COMPONENTS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.COMPONENTS}),
+		EXPERTISES("EXPERTISES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.EXPERTISES}),
+		FACTIONS("FACTIONS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDFACTIONS}),
+		MATERIALS("MATERIALS",new SecFlag[]{SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS}),
+		OBJCOUNTERS("OBJCOUNTERS",new SecFlag[]{SecFlag.LISTADMIN}),
+		POLLS("POLLS",new SecFlag[]{SecFlag.POLLS,SecFlag.LISTADMIN}),
+		CONTENTS("CONTENTS",new SecFlag[]{SecFlag.CMDROOMS,SecFlag.CMDITEMS,SecFlag.CMDMOBS,SecFlag.CMDAREAS}),
+		EXPIRES("EXPIRES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
+		TITLES("TITLES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.TITLES}),
+		AREARESOURCES("AREARESOURCES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
+		CONQUERED("CONQUERED",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
+		HOLIDAYS("HOLIDAYS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
+		RECIPES("RECIPES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDRECIPES}),
+		HELPFILEREQUESTS("HELPFILEREQUESTS",new SecFlag[]{SecFlag.LISTADMIN}),
+		SCRIPTS("SCRIPTS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
+		ACCOUNTS("ACCOUNTS",new SecFlag[]{SecFlag.CMDPLAYERS,SecFlag.STAT}),
+		GOVERNMENTS("GOVERNMENTS",new SecFlag[]{SecFlag.CMDCLANS}),
+		CLANS("CLANS",new SecFlag[]{SecFlag.CMDCLANS}),
+		DEBUGFLAG("DEBUGFLAG",new SecFlag[]{SecFlag.LISTADMIN}),
+		DISABLEFLAG("DISABLEFLAG",new SecFlag[]{SecFlag.LISTADMIN}),
+		ALLQUALIFYS("ALLQUALIFYS",new SecFlag[]{SecFlag.CMDABILITIES,SecFlag.LISTADMIN}),
+		NEWS("NEWS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.JOURNALS,SecFlag.NEWS}),
+		AREAS("AREAS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
+		SESSIONS("SESSIONS",new SecFlag[]{SecFlag.SESSIONS}),
+		WORLD("WORLD",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
+		PLANETS("PLANETS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
+		SPACESHIPAREAS("SPACESHIPAREAS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
+		CURRENTS("CURRENTS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS,SecFlag.CMDMOBS}),
+		MANUFACTURERS("MANUFACTURERS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDITEMS}),
+		TECHSKILLS("TECHSKILLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
+		SOFTWARE("SOFTWARE",new SecFlag[]{SecFlag.CMDITEMS}),
+		EXPIRED("EXPIRED",new SecFlag[]{SecFlag.CMDPLAYERS}),
+		SPACE(new String[]{"SPACE","BODIES","MOONS","STARS","SPACESHIPS"},new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
+		SQL("SQL",new SecFlag[]{SecFlag.CMDDATABASE})
+		;
+		public String[]			   cmd;
 		public CMSecurity.SecGroup flags;
-		public ListCmdEntry(String cmd, SecFlag[] flags)
+		private ListCmdEntry(String cmd, SecFlag[] flags)
+		{
+			this.cmd=new String[]{cmd};
+			this.flags=new CMSecurity.SecGroup(flags);
+		}
+		private ListCmdEntry(String[] cmd, SecFlag[] flags)
 		{
 			this.cmd=cmd;
 			this.flags=new CMSecurity.SecGroup(flags);
 		}
-
 	}
-
-	public final static ListCmdEntry[] SECURITY_LISTMAP={
-		/*00*/new ListCmdEntry("UNLINKEDEXITS",new SecFlag[]{SecFlag.CMDEXITS,SecFlag.CMDROOMS,SecFlag.CMDAREAS}),
-		/*01*/new ListCmdEntry("ITEMS",new SecFlag[]{SecFlag.CMDITEMS}),
-		/*02*/new ListCmdEntry("ARMOR",new SecFlag[]{SecFlag.CMDITEMS}),
-		/*03*/new ListCmdEntry("ENVRESOURCES",new SecFlag[]{SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS}),
-		/*04*/new ListCmdEntry("WEAPONS",new SecFlag[]{SecFlag.CMDITEMS}),
-		/*05*/new ListCmdEntry("MOBS",new SecFlag[]{SecFlag.CMDMOBS}),
-		/*06*/new ListCmdEntry("ROOMS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
-		/*07*/new ListCmdEntry("AREA",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
-		/*08*/new ListCmdEntry("LOCALES",new SecFlag[]{SecFlag.CMDROOMS}),
-		/*09*/new ListCmdEntry("BEHAVIORS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
-		/*10*/new ListCmdEntry("EXITS",new SecFlag[]{SecFlag.CMDEXITS}),
-		/*11*/new ListCmdEntry("RACES",new SecFlag[]{SecFlag.CMDRACES,SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS}),
-		/*12*/new ListCmdEntry("CLASSES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDCLASSES}),
-		/*13*/new ListCmdEntry("STAFF",new SecFlag[]{SecFlag.CMDAREAS}),
-		/*14*/new ListCmdEntry("SPELLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
-		/*15*/new ListCmdEntry("SONGS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
-		/*16*/new ListCmdEntry("PRAYERS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
-		/*17*/new ListCmdEntry("PROPERTIES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
-		/*18*/new ListCmdEntry("THIEFSKILLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
-		/*19*/new ListCmdEntry("COMMON",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
-		/*20*/new ListCmdEntry("JOURNALS",new SecFlag[]{SecFlag.JOURNALS}),
-		/*21*/new ListCmdEntry("SKILLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
-		/*22*/new ListCmdEntry("QUESTS",new SecFlag[]{SecFlag.CMDQUESTS}),
-		/*23*/new ListCmdEntry("DISEASES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
-		/*24*/new ListCmdEntry("POISONS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
-		/*25*/new ListCmdEntry("TICKS",new SecFlag[]{SecFlag.LISTADMIN}),
-		/*26*/new ListCmdEntry("MAGIC",new SecFlag[]{SecFlag.CMDITEMS}),
-		/*27*/new ListCmdEntry("TECH",new SecFlag[]{SecFlag.CMDITEMS}),
-		/*28*/new ListCmdEntry("CLANITEMS",new SecFlag[]{SecFlag.CMDITEMS,SecFlag.CMDCLANS}),
-		/*29*/new ListCmdEntry("COMMANDJOURNAL",new SecFlag[]{}), // blank, but used!
-		/*30*/new ListCmdEntry("REALESTATE",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
-		/*31*/new ListCmdEntry("NOPURGE",new SecFlag[]{SecFlag.NOPURGE}),
-		/*32*/new ListCmdEntry("BANNED",new SecFlag[]{SecFlag.BAN}),
-		/*33*/new ListCmdEntry("RACECATS",new SecFlag[]{SecFlag.CMDRACES,SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS}),
-		/*34*/new ListCmdEntry("LOG",new SecFlag[]{SecFlag.LISTADMIN}),
-		/*35*/new ListCmdEntry("USERS",new SecFlag[]{SecFlag.CMDPLAYERS,SecFlag.STAT}),
-		/*36*/new ListCmdEntry("LINKAGES",new SecFlag[]{SecFlag.CMDAREAS}),
-		/*37*/new ListCmdEntry("REPORTS",new SecFlag[]{SecFlag.LISTADMIN}),
-		/*38*/new ListCmdEntry("THREADS",new SecFlag[]{SecFlag.LISTADMIN}),
-		/*39*/new ListCmdEntry("RESOURCES",new SecFlag[]{SecFlag.LOADUNLOAD}),
-		/*40*/new ListCmdEntry("ONEWAYDOORS",new SecFlag[]{SecFlag.CMDEXITS,SecFlag.CMDROOMS,SecFlag.CMDAREAS}),
-		/*41*/new ListCmdEntry("CHANTS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
-		/*42*/new ListCmdEntry("POWERS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
-		/*43*/new ListCmdEntry("SUPERPOWERS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
-		/*44*/new ListCmdEntry("COMPONENTS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.COMPONENTS}),
-		/*45*/new ListCmdEntry("EXPERTISES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.EXPERTISES}),
-		/*46*/new ListCmdEntry("FACTIONS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDFACTIONS}),
-		/*47*/new ListCmdEntry("MATERIALS",new SecFlag[]{SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS}),
-		/*48*/new ListCmdEntry("OBJCOUNTERS",new SecFlag[]{SecFlag.LISTADMIN}),
-		/*49*/new ListCmdEntry("POLLS",new SecFlag[]{SecFlag.POLLS,SecFlag.LISTADMIN}),
-		/*50*/new ListCmdEntry("CONTENTS",new SecFlag[]{SecFlag.CMDROOMS,SecFlag.CMDITEMS,SecFlag.CMDMOBS,SecFlag.CMDAREAS}),
-		/*51*/new ListCmdEntry("EXPIRES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
-		/*52*/new ListCmdEntry("TITLES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.TITLES}),
-		/*53*/new ListCmdEntry("AREARESOURCES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
-		/*54*/new ListCmdEntry("CONQUERED",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
-		/*55*/new ListCmdEntry("HOLIDAYS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
-		/*56*/new ListCmdEntry("RECIPES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDRECIPES}),
-		/*57*/new ListCmdEntry("HELPFILEREQUESTS",new SecFlag[]{SecFlag.LISTADMIN}),
-		/*58*/new ListCmdEntry("SCRIPTS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
-		/*59*/new ListCmdEntry("ACCOUNTS",new SecFlag[]{SecFlag.CMDPLAYERS,SecFlag.STAT}),
-		/*60*/new ListCmdEntry("GOVERNMENTS",new SecFlag[]{SecFlag.CMDCLANS}),
-		/*61*/new ListCmdEntry("CLANS",new SecFlag[]{SecFlag.CMDCLANS}),
-		/*62*/new ListCmdEntry("DEBUGFLAG",new SecFlag[]{SecFlag.LISTADMIN}),
-		/*63*/new ListCmdEntry("DISABLEFLAG",new SecFlag[]{SecFlag.LISTADMIN}),
-		/*64*/new ListCmdEntry("ALLQUALIFYS",new SecFlag[]{SecFlag.CMDABILITIES,SecFlag.LISTADMIN}),
-		/*65*/new ListCmdEntry("NEWS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.JOURNALS,SecFlag.NEWS}),
-		/*66*/new ListCmdEntry("AREAS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
-		/*67*/new ListCmdEntry("SESSIONS",new SecFlag[]{SecFlag.SESSIONS}),
-		/*68*/new ListCmdEntry("WORLD",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
-		/*69*/new ListCmdEntry("PLANETS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
-		/*70*/new ListCmdEntry("CURRENTS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS,SecFlag.CMDMOBS}),
-		/*71*/new ListCmdEntry("MANUFACTURERS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDITEMS}),
-		/*72*/new ListCmdEntry("TECHSKILLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
-		/*73*/new ListCmdEntry("SOFTWARE",new SecFlag[]{SecFlag.CMDITEMS}),
-		/*74*/new ListCmdEntry("EXPIRED",new SecFlag[]{SecFlag.CMDPLAYERS}),
-		/*75*/new ListCmdEntry("SPACE",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS})
-	};
 
 	public boolean pause(Session sess)
 	{
@@ -2832,12 +2868,8 @@ public class ListCmd extends StdCommand
 
 		final String listWord=((String)commands.firstElement()).toUpperCase();
 		String rest=(commands.size()>1)?rest=CMParms.combine(commands,1):"";
-		int code;
-		if(listWord.equalsIgnoreCase("sql")&&CMSecurity.isASysOp(mob))
-			code=999;
-		else
-			code=getMyCmdCode(mob, listWord);
-		if((code<0)||(listWord.length()==0))
+		ListCmdEntry code=getMyCmd(mob, listWord);
+		if((code==null)||(listWord.length()==0))
 		{
 			final List<String> V=getMyCmdWords(mob);
 			if(V.size()==0)
@@ -2861,38 +2893,38 @@ public class ListCmd extends StdCommand
 		}
 		switch(code)
 		{
-		case 0:	s.wraplessPrintln(unlinkedExits(mob.session(),commands)); break;
-		case 1: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.basicItems()).toString()); break;
-		case 2: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.armor()).toString()); break;
-		case 3: s.wraplessPrintln(listEnvResources(mob.session(),rest)); break;
-		case 4: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.weapons()).toString()); break;
-		case 5: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.mobTypes()).toString()); break;
-		case 6: s.wraplessPrintln(roomDetails(mob.session(),mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
-		case 7: s.wraplessPrintln(roomTypes(mob,mob.location().getArea().getMetroMap(),mob.location(),commands).toString()); break;
-		case 8: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.locales()).toString()); break;
-		case 9: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.behaviors()).toString()); break;
-		case 10: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.exits()).toString()); break;
-		case 11: s.wraplessPrintln(listRaces(s,CMClass.races(),rest).toString()); break;
-		case 12: s.wraplessPrintln(listCharClasses(s,CMClass.charClasses(),rest.equalsIgnoreCase("SHORT")).toString()); break;
-		case 13: s.wraplessPrintln(listSubOps(mob.session()).toString()); break;
-		case 14: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_SPELL).toString()); break;
-		case 15: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_SONG).toString()); break;
-		case 16: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_PRAYER).toString()); break;
-		case 17: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_PROPERTY).toString()); break;
-		case 18: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_THIEF_SKILL).toString()); break;
-		case 19: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_COMMON_SKILL).toString()); break;
-		case 20: s.println(listJournals(mob.session()).toString()); break;
-		case 21: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_SKILL).toString()); break;
-		case 22: s.println(listQuests(mob.session()).toString()); break;
-		case 23: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_DISEASE).toString()); break;
-		case 24: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_POISON).toString()); break;
-		case 25: s.println(listTicks(mob.session(),CMParms.combine(commands,1)).toString()); break;
-		case 26: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.miscMagic()).toString()); break;
-		case 27: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.tech()).toString()); break;
-		case 28: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.clanItems()).toString()); break;
-		case 29: s.println(journalList(mob.session(),listWord).toString()); break;
-		case 30: s.wraplessPrintln(roomPropertyDetails(mob.session(),mob.location().getArea(),rest).toString()); break;
-		case 31:
+		case UNLINKEDEXITS:	s.wraplessPrintln(unlinkedExits(mob.session(),commands)); break;
+		case ITEMS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.basicItems()).toString()); break;
+		case ARMOR: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.armor()).toString()); break;
+		case ENVRESOURCES: s.wraplessPrintln(listEnvResources(mob.session(),rest)); break;
+		case WEAPONS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.weapons()).toString()); break;
+		case MOBS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.mobTypes()).toString()); break;
+		case ROOMS: s.wraplessPrintln(roomDetails(mob.session(),mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
+		case AREA: s.wraplessPrintln(roomTypes(mob,mob.location().getArea().getMetroMap(),mob.location(),commands).toString()); break;
+		case LOCALES: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.locales()).toString()); break;
+		case BEHAVIORS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.behaviors()).toString()); break;
+		case EXITS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.exits()).toString()); break;
+		case RACES: s.wraplessPrintln(listRaces(s,CMClass.races(),rest).toString()); break;
+		case CLASSES: s.wraplessPrintln(listCharClasses(s,CMClass.charClasses(),rest.equalsIgnoreCase("SHORT")).toString()); break;
+		case STAFF: s.wraplessPrintln(listSubOps(mob.session()).toString()); break;
+		case SPELLS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_SPELL).toString()); break;
+		case SONGS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_SONG).toString()); break;
+		case PRAYERS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_PRAYER).toString()); break;
+		case PROPERTIES: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_PROPERTY).toString()); break;
+		case THIEFSKILLS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_THIEF_SKILL).toString()); break;
+		case COMMON: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_COMMON_SKILL).toString()); break;
+		case JOURNALS: s.println(listJournals(mob.session()).toString()); break;
+		case SKILLS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_SKILL).toString()); break;
+		case QUESTS: s.println(listQuests(mob.session()).toString()); break;
+		case DISEASES: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_DISEASE).toString()); break;
+		case POISONS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_POISON).toString()); break;
+		case TICKS: s.println(listTicks(mob.session(),CMParms.combine(commands,1)).toString()); break;
+		case MAGIC: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.miscMagic()).toString()); break;
+		case TECH: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.tech()).toString()); break;
+		case CLANITEMS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.clanItems()).toString()); break;
+		case COMMANDJOURNAL: s.println(journalList(mob.session(),listWord).toString()); break;
+		case REALESTATE: s.wraplessPrintln(roomPropertyDetails(mob.session(),mob.location().getArea(),rest).toString()); break;
+		case NOPURGE:
 		{
 			final StringBuilder str=new StringBuilder("\n\rProtected players:\n\r");
 			final List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
@@ -2902,7 +2934,7 @@ public class ListCmd extends StdCommand
 			s.wraplessPrintln(str.toString());
 			break;
 		}
-		case 32:
+		case BANNED:
 		{
 			final StringBuilder str=new StringBuilder("\n\rBanned names/ips:\n\r");
 			final List<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
@@ -2912,54 +2944,55 @@ public class ListCmd extends StdCommand
 			s.wraplessPrintln(str.toString());
 			break;
 		}
-		case 33: s.wraplessPrintln(listRaceCats(s,CMClass.races(),rest.equalsIgnoreCase("SHORT")).toString()); break;
-		case 34: listLog(mob,commands); break;
-		case 35: listUsers(mob.session(),mob,commands); break;
-		case 36: s.println(listLinkages(mob.session(),mob,rest).toString()); break;
-		case 37: s.println(listReports(mob.session(),mob).toString()); break;
-		case 38: s.println(listThreads(mob.session(),mob,CMParms.combine(commands,1).equalsIgnoreCase("SHORT")).toString()); break;
-		case 39: s.println(listResources(mob,CMParms.combine(commands,1))); break;
-		case 40: s.wraplessPrintln(reallyFindOneWays(mob.session(),commands)); break;
-		case 41: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_CHANT).toString()); break;
-		case 42:
-		case 43: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_SUPERPOWER).toString()); break;
-		case 44: s.wraplessPrintln(listComponents(mob.session())); break;
-		case 45: s.wraplessPrintln(listExpertises(mob.session())); break;
-		case 46: s.wraplessPrintln(CMLib.factions().listFactions()); break;
-		case 47: s.wraplessPrintln(listMaterials()); break;
-		case 48: s.println("\n\r^xCounter Report: NO LONGER AVAILABLE^.^N\n\r"); break;//+CMClass.getCounterReport()); break;
-		case 49: listPolls(mob,commands); break;
-		case 50: s.wraplessPrintln(listContent(mob,commands).toString()); break;
-		case 51: s.wraplessPrintln(roomExpires(mob.session(),mob.location().getArea().getProperMap(),mob.location()).toString()); break;
-		case 52: s.wraplessPrintln(listTitles(mob.session())); break;
-		case 53: s.wraplessPrintln(roomResources(mob.session(),mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
-		case 54: s.wraplessPrintln(areaConquests(mob.session(),CMLib.map().areas()).toString()); break;
-		case 55: s.wraplessPrintln(CMLib.quests().listHolidays(mob.location().getArea(),CMParms.combine(commands,1))); break;
-		case 56: s.wraplessPrintln(listRecipes(mob,CMParms.combine(commands,1))); break;
-		case 57: s.wraplessPrint(listHelpFileRequests(mob,CMParms.combine(commands,1))); break;
-		case 58: s.wraplessPrintln(listScripts(mob.session(),mob,commands).toString()); break;
-		case 59: listAccounts(mob.session(),mob,commands); break;
-		case 60: s.wraplessPrintln(listClanGovernments(mob.session(),commands)); break;
-		case 61: s.wraplessPrintln(listClans(mob.session(),commands)); break;
-		case 62: s.println("\n\r^xDebug Settings: ^?^.^N\n\r"+CMParms.toStringList(new XVector<CMSecurity.DbgFlag>(CMSecurity.getDebugEnum()))+"\n\r"); break;
-		case 63: s.println("\n\r^xDisable Settings: ^?^.^N\n\r"+CMParms.toStringList(new XVector<CMSecurity.DisFlag>(CMSecurity.getDisablesEnum()))+"\n\r"); break;
-		case 64: s.wraplessPrintln(listAllQualifies(mob.session(),commands).toString()); break;
-		case 65: listNews(mob,commands); break;
-		case 66: listAreas(mob, commands, WorldMap.mundaneAreaFilter); break;
-		case 67: { listSessions(mob,commands); break; }
-		case 68: listAreas(mob, commands, new WorldFilter(mob.location())); break;
-		case 69: listAreas(mob, commands, WorldMap.planetsAreaFilter); break;
-		case 70: listCurrents(mob, commands); break;
-		case 71: listManufacturers(mob, commands); break;
-		case 72: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_TECH).toString()); break;
-		case 73: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.tech(new Filterer<Electronics>()
-		{
-						@Override public boolean passesFilter(Electronics obj) { return obj instanceof Software; }
-					})).toString());
+		case RACECATS: s.wraplessPrintln(listRaceCats(s,CMClass.races(),rest.equalsIgnoreCase("SHORT")).toString()); break;
+		case LOG: listLog(mob,commands); break;
+		case USERS: listUsers(mob.session(),mob,commands); break;
+		case LINKAGES: s.println(listLinkages(mob.session(),mob,rest).toString()); break;
+		case REPORTS: s.println(listReports(mob.session(),mob).toString()); break;
+		case THREADS: s.println(listThreads(mob.session(),mob,CMParms.combine(commands,1).equalsIgnoreCase("SHORT")).toString()); break;
+		case RESOURCES: s.println(listResources(mob,CMParms.combine(commands,1))); break;
+		case ONEWAYDOORS: s.wraplessPrintln(reallyFindOneWays(mob.session(),commands)); break;
+		case CHANTS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_CHANT).toString()); break;
+		case SUPERPOWERS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_SUPERPOWER).toString()); break;
+		case COMPONENTS: s.wraplessPrintln(listComponents(mob.session())); break;
+		case EXPERTISES: s.wraplessPrintln(listExpertises(mob.session())); break;
+		case FACTIONS: s.wraplessPrintln(CMLib.factions().listFactions()); break;
+		case MATERIALS: s.wraplessPrintln(listMaterials()); break;
+		case OBJCOUNTERS: s.println("\n\r^xCounter Report: NO LONGER AVAILABLE^.^N\n\r"); break;//+CMClass.getCounterReport()); break;
+		case POLLS: listPolls(mob,commands); break;
+		case CONTENTS: s.wraplessPrintln(listContent(mob,commands).toString()); break;
+		case EXPIRES: s.wraplessPrintln(roomExpires(mob.session(),mob.location().getArea().getProperMap(),mob.location()).toString()); break;
+		case TITLES: s.wraplessPrintln(listTitles(mob.session())); break;
+		case AREARESOURCES: s.wraplessPrintln(roomResources(mob.session(),mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
+		case CONQUERED: s.wraplessPrintln(areaConquests(mob.session(),CMLib.map().areas()).toString()); break;
+		case HOLIDAYS: s.wraplessPrintln(CMLib.quests().listHolidays(mob.location().getArea(),CMParms.combine(commands,1))); break;
+		case RECIPES: s.wraplessPrintln(listRecipes(mob,CMParms.combine(commands,1))); break;
+		case HELPFILEREQUESTS: s.wraplessPrint(listHelpFileRequests(mob,CMParms.combine(commands,1))); break;
+		case SCRIPTS: s.wraplessPrintln(listScripts(mob.session(),mob,commands).toString()); break;
+		case ACCOUNTS: listAccounts(mob.session(),mob,commands); break;
+		case GOVERNMENTS: s.wraplessPrintln(listClanGovernments(mob.session(),commands)); break;
+		case CLANS: s.wraplessPrintln(listClans(mob.session(),commands)); break;
+		case DEBUGFLAG: s.println("\n\r^xDebug Settings: ^?^.^N\n\r"+CMParms.toStringList(new XVector<CMSecurity.DbgFlag>(CMSecurity.getDebugEnum()))+"\n\r"); break;
+		case DISABLEFLAG: s.println("\n\r^xDisable Settings: ^?^.^N\n\r"+CMParms.toStringList(new XVector<CMSecurity.DisFlag>(CMSecurity.getDisablesEnum()))+"\n\r"); break;
+		case ALLQUALIFYS: s.wraplessPrintln(listAllQualifies(mob.session(),commands).toString()); break;
+		case NEWS: listNews(mob,commands); break;
+		case AREAS: listAreas(mob, commands, WorldMap.mundaneAreaFilter); break;
+		case SESSIONS: { listSessions(mob,commands); break; }
+		case WORLD: listAreas(mob, commands, new WorldFilter(mob.location())); break;
+		case PLANETS: listAreas(mob, commands, WorldMap.planetsAreaFilter); break;
+		case SPACESHIPAREAS: listAreas(mob, commands, WorldMap.spaceShipsAreaFilter); break;
+		case CURRENTS: listCurrents(mob, commands); break;
+		case MANUFACTURERS: listManufacturers(mob, commands); break;
+		case TECHSKILLS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_TECH).toString()); break;
+		case SOFTWARE: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.tech(new Filterer<Electronics>()
+				{
+					@Override public boolean passesFilter(Electronics obj) { return obj instanceof Software; }
+				})).toString());
 				break;
-		case 74: s.wraplessPrintln(listExpired(mob)); break;
-		case 75: s.wraplessPrintln(listSpace(mob,commands)); break;
-		case 999: listSql(mob,rest); break;
+		case EXPIRED: s.wraplessPrintln(listExpired(mob)); break;
+		case SPACE: s.wraplessPrintln(listSpace(mob,commands).toString()); 
+				break;
+		case SQL: listSql(mob,rest); break;
 		default:
 			s.println("List broke?!");
 			break;
@@ -2975,7 +3008,7 @@ public class ListCmd extends StdCommand
 		String forWhat=null;
 		if(commands.size()==0)
 		{
-			if(getAnyCode(mob)>=0)
+			if(getAnyCmd(mob)!=null)
 			{
 				archonlist(mob,commands);
 				return false;
@@ -3007,7 +3040,7 @@ public class ListCmd extends StdCommand
 			&&(CMLib.flags().canBeSeenBy(shopkeeper,mob)))
 				V.add(shopkeeper);
 			else
-			if(getAnyCode(mob)>=0)
+			if(getAnyCmd(mob)!=null)
 			{
 				archonlist(mob,origCommands);
 				return false;

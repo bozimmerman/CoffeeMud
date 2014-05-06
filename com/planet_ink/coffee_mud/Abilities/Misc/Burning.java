@@ -269,8 +269,7 @@ public class Burning extends StdAbility
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if((affected!=null)
-		&&(affected instanceof Item)
+		if((affected instanceof Item)
 		&&(msg.amITarget(affected))
 		&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL)))
 		{
@@ -302,11 +301,8 @@ public class Burning extends StdAbility
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected!=null)
-		&&(affected instanceof Item)
-		&&(msg.tool()!=null)
+		if((affected instanceof Item)
 		&&(msg.tool()==affected)
-		&&(msg.target()!=null)
 		&&(msg.target() instanceof Container)
 		&&(msg.targetMinor()==CMMsg.TYP_PUT))
 		{

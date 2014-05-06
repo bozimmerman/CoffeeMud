@@ -1819,7 +1819,7 @@ public class Modify extends StdCommand
 		else
 		if(commandType.equals("SQL"))
 		{
-			if(!CMSecurity.isASysOp(mob)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDDATABASE)) return errorOut(mob);
 			try
 			{
 				final String sql=CMParms.combine(commands,2);
