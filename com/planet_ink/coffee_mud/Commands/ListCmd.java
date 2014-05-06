@@ -1928,13 +1928,33 @@ public class ListCmd extends StdCommand
 		return type;
 	}
 	
+	private String shortenNumber(long number, int len)
+	{
+		String s=""+number;
+		char c='d';
+		while(s.length()>len)
+		{
+			number=Math.round(number/1000);
+			switch(c)
+			{
+			case 'd': c='k'; break;
+			case 'k': c='m'; break;
+			case 'm': c='b'; break;
+			case 'b': c='t'; break;
+			case 't': c='q'; break;
+			}
+			s=""+number+Character.toString(c);
+		}
+		return s;
+	}
+	
 	public String listSpace(MOB mob, Vector commands)
 	{
 		final Session viewerS=mob.session();
 		if(viewerS==null)
 			return "";
 		StringBuilder str=new StringBuilder("");
-		String listWhat=commands.get(1).toString().toUpperCase().trim();
+		String listWhat=commands.get(0).toString().toUpperCase().trim();
 		Filterer<SpaceObject> filter=null;
 		for(final SpaceFilterCode code : SpaceFilterCode.values())
 			if(code.toString().toUpperCase().startsWith(listWhat))
@@ -1956,10 +1976,10 @@ public class ListCmd extends StdCommand
 				break;
 			}
 		
-		if((commands.size()<=2)
+		if((commands.size()<=1)
 		||(filter==null)
-		||commands.get(2).toString().equals("?")
-		||commands.get(2).toString().equals(_("help")))
+		||commands.get(1).toString().equals("?")
+		||commands.get(1).toString().equals(_("help")))
 		{
 			str.append(_("List what in space? Try one of the following:\n\r"));
 			str.append(_("LIST SPACE ALL - List everything in space everywhere!!\n\r"));
@@ -1975,7 +1995,7 @@ public class ListCmd extends StdCommand
 		for(Enumeration<SpaceObject> objEnum=CMLib.map().getSpaceObjects();objEnum.hasMoreElements();)
 		{
 			final SpaceObject obj=objEnum.nextElement();
-			if((filter!=null)&&(!filter.passesFilter(obj)))
+			if(!filter.passesFilter(obj))
 				continue;
 			objs.add(obj);
 		}
@@ -1984,7 +2004,7 @@ public class ListCmd extends StdCommand
 		Long withinDistance=null;
 		long[] centerPoint=null;
 		final SpaceObject SO=CMLib.map().getSpaceObject(mob, false);
-		for(int i=2;i<commands.size();i++)
+		for(int i=1;i<commands.size();i++)
 		{
 			String s=((String)commands.get(i)).toUpperCase();
 			if(_("ALL").startsWith(s))
@@ -2161,7 +2181,7 @@ public class ListCmd extends StdCommand
 					centerPoint=new long[]{0,0,0};
 			}
 			if(withinDistance==null)
-				withinDistance=Long.valueOf(SpaceObject.Distance.GalaxyRadius.dm);
+				withinDistance=Long.valueOf(SpaceObject.Distance.SolarSystemRadius.dm+1000000);
 			final List<SpaceObject> objs2=CMLib.map().getSpaceObjectsWithin(centerPoint, 0, withinDistance.longValue());
 			for(final Iterator<SpaceObject> i=objs.iterator();i.hasNext();)
 			{
@@ -2172,11 +2192,11 @@ public class ListCmd extends StdCommand
 		}
 		
 		final int COL_LEN1, COL_LEN2, COL_LEN3, COL_LEN4, COL_LEN5;
-		str.append(CMStrings.padRight(_("Type"),COL_LEN1=ListingLibrary.ColFixer.fixColWidth(5.0,viewerS))+" ");
-		str.append(CMStrings.padRight(_("Radius"),COL_LEN2=ListingLibrary.ColFixer.fixColWidth(10.0,viewerS))+" ");
-		str.append(CMStrings.padRight(_("Coordinates"),COL_LEN3=ListingLibrary.ColFixer.fixColWidth(20.0,viewerS))+" ");
+		str.append(CMStrings.padRight(_("Typ"),COL_LEN1=ListingLibrary.ColFixer.fixColWidth(3.0,viewerS))+" ");
+		str.append(CMStrings.padRight(_("Radius"),COL_LEN2=ListingLibrary.ColFixer.fixColWidth(7.0,viewerS))+" ");
+		str.append(CMStrings.padRight(_("Coordinates"),COL_LEN3=ListingLibrary.ColFixer.fixColWidth(25.0,viewerS))+" ");
 		str.append(CMStrings.padRight(_("Speed"),COL_LEN4=ListingLibrary.ColFixer.fixColWidth(10.0,viewerS))+" ");
-		str.append(CMStrings.padRight(_("Mass"),COL_LEN5=ListingLibrary.ColFixer.fixColWidth(10.0,viewerS))+" ");
+		str.append(CMStrings.padRight(_("Mass"),COL_LEN5=ListingLibrary.ColFixer.fixColWidth(7.0,viewerS))+" ");
 		str.append(_("Name\n\r"));
 		for(SpaceObject obj : objs)
 		{
@@ -2184,7 +2204,7 @@ public class ListCmd extends StdCommand
 			str.append(CMStrings.padRight(CMLib.english().sizeDescShort(obj.radius()),COL_LEN2)+" ");
 			str.append(CMStrings.padRight(CMLib.english().coordDescShort(obj.coordinates()),COL_LEN3)+" ");
 			str.append(CMStrings.padRight(CMLib.english().speedDescShort(obj.speed()),COL_LEN4)+" ");
-			str.append(CMStrings.padRight(""+obj.getMass(),COL_LEN5)+" ");
+			str.append(CMStrings.padRight(shortenNumber(obj.getMass(),COL_LEN5),COL_LEN5)+" ");
 			str.append(obj.name()+"\n\r");
 		}
 		return str.toString();
@@ -2677,13 +2697,13 @@ public class ListCmd extends StdCommand
 		SESSIONS("SESSIONS",new SecFlag[]{SecFlag.SESSIONS}),
 		WORLD("WORLD",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
 		PLANETS("PLANETS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
+		SPACE(new String[]{"SPACE","BODIES","MOONS","STARS","SPACESHIPS"},new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
 		SPACESHIPAREAS("SPACESHIPAREAS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
 		CURRENTS("CURRENTS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS,SecFlag.CMDMOBS}),
 		MANUFACTURERS("MANUFACTURERS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDITEMS}),
 		TECHSKILLS("TECHSKILLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		SOFTWARE("SOFTWARE",new SecFlag[]{SecFlag.CMDITEMS}),
 		EXPIRED("EXPIRED",new SecFlag[]{SecFlag.CMDPLAYERS}),
-		SPACE(new String[]{"SPACE","BODIES","MOONS","STARS","SPACESHIPS"},new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
 		SQL("SQL",new SecFlag[]{SecFlag.CMDDATABASE})
 		;
 		public String[]			   cmd;
