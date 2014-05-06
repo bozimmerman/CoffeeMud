@@ -896,7 +896,7 @@ public interface CharStats extends CMCommon, Modifiable
 		 * Returns an array of the numeric codes for all base stats
 		 * @return an array of the numeric codes for all base stats
 		 */
-		public static int[] BASE() { return c().baseStatCodes;}
+		public static int[] BASECODES() { return c().baseStatCodes;}
 
 		/**
 		 * Returns the name of all base stats
@@ -948,7 +948,7 @@ public interface CharStats extends CMCommon, Modifiable
 		 * Returns an array of the numeric codes for all max stats
 		 * @return an array of the numeric codes for all max stats
 		 */
-		public static int[] MAX() { return c().maxStatCodes;}
+		public static int[] MAXCODES() { return c().maxStatCodes;}
 		/**
 		 * Returns an array of the numeric codes for all max stats
 		 * @return an array of the numeric codes for all max stats
@@ -968,7 +968,7 @@ public interface CharStats extends CMCommon, Modifiable
 		 * Returns an array of the numeric codes for all stats
 		 * @return an array of the numeric codes for all stats
 		 */
-		public static int[] ALL() { return c().allStatCodes;}
+		public static int[] ALLCODES() { return c().allStatCodes;}
 		/**
 		 * Returns an array of the numeric codes for all stats
 		 * @return an array of the numeric codes for all stats
