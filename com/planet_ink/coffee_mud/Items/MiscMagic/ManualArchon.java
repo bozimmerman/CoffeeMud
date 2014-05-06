@@ -77,7 +77,7 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 					{
 						mob.setSession(null);
 
-						for(final int i : CharStats.CODES.BASE())
+						for(final int i : CharStats.CODES.BASECODES())
 							mob.baseCharStats().setStat(i,25);
 						if((!mob.isMonster())&&(mob.soulMate()==null))
 							CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_CLASSCHANGE);

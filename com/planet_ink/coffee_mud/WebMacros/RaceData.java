@@ -151,7 +151,7 @@ public class RaceData extends StdWebMacro
 		}
 		else
 		{
-			for(final int i : CharStats.CODES.ALL())
+			for(final int i : CharStats.CODES.ALLCODES())
 				if(CMath.s_int(E.getStat(CharStats.CODES.NAME(i)))!=0)
 					theclasses.addElement(CharStats.CODES.NAME(i),E.getStat(CharStats.CODES.NAME(i)));
 		}
@@ -173,7 +173,7 @@ public class RaceData extends StdWebMacro
 		str.append("<TR><TD WIDTH=35%>");
 		str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME="+c+"CSTATS"+(theclasses.size()+1)+">");
 		str.append("<OPTION SELECTED VALUE=\"\">Select a stat");
-		for(final int i : CharStats.CODES.ALL())
+		for(final int i : CharStats.CODES.ALLCODES())
 			if(!theclasses.contains(CharStats.CODES.NAME(i)))
 				str.append("<OPTION VALUE=\""+CharStats.CODES.NAME(i)+"\">"+CharStats.CODES.DESC(i));
 		str.append("</SELECT>");

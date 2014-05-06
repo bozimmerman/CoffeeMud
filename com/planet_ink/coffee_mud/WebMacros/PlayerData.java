@@ -380,7 +380,7 @@ public class PlayerData extends StdWebMacro
 					str.append((set?"ON":"OFF")+",");
 				}
 			}
-			for(final int i : CharStats.CODES.ALL())
+			for(final int i : CharStats.CODES.ALLCODES())
 			{
 				final String stat=CharStats.CODES.NAME(i);
 				if(!stat.equalsIgnoreCase("GENDER"))
@@ -400,7 +400,7 @@ public class PlayerData extends StdWebMacro
 					}
 				}
 			}
-			for(final int i : CharStats.CODES.ALL())
+			for(final int i : CharStats.CODES.ALLCODES())
 			{
 				final String stat=CharStats.CODES.NAME(i);
 				if(!stat.equalsIgnoreCase("GENDER"))

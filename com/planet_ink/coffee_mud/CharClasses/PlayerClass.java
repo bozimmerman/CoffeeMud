@@ -48,7 +48,7 @@ public class PlayerClass extends StdCharClass
 	public PlayerClass()
 	{
 		super();
-		for(final int i: CharStats.CODES.BASE())
+		for(final int i: CharStats.CODES.BASECODES())
 			maxStatAdj[i]=7;
 	}
 

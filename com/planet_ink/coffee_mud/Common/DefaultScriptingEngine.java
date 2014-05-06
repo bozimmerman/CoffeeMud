@@ -1549,7 +1549,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if((!found)&&(E instanceof MOB))
 		{
 			final MOB M=(MOB)E;
-			for(final int i : CharStats.CODES.ALL())
+			for(final int i : CharStats.CODES.ALLCODES())
 				if(CharStats.CODES.NAME(i).equalsIgnoreCase(arg2)||CharStats.CODES.DESC(i).equalsIgnoreCase(arg2))
 				{
 					val=""+M.charStats().getStat(CharStats.CODES.NAME(i)); //yes, this is right
@@ -1644,7 +1644,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			if(!found)
 			{
 				final MOB M=(MOB)E;
-				for(final int i : CharStats.CODES.ALL())
+				for(final int i : CharStats.CODES.ALLCODES())
 					if(CharStats.CODES.NAME(i).equalsIgnoreCase(arg2)||CharStats.CODES.DESC(i).equalsIgnoreCase(arg2))
 					{
 						val=""+M.charStats().getStat(CharStats.CODES.NAME(i));
@@ -6739,7 +6739,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if((!found)&&(newTarget instanceof MOB))
 					{
 						final MOB M=(MOB)newTarget;
-						for(final int i : CharStats.CODES.ALL())
+						for(final int i : CharStats.CODES.ALLCODES())
 							if(CharStats.CODES.NAME(i).equalsIgnoreCase(arg2)||CharStats.CODES.DESC(i).equalsIgnoreCase(arg2))
 							{
 								if(arg3.equals("++")) arg3=""+(M.baseCharStats().getStat(i)+1);
@@ -6942,7 +6942,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(!found)
 						{
 							final MOB M=(MOB)newTarget;
-							for(final int i : CharStats.CODES.ALL())
+							for(final int i : CharStats.CODES.ALLCODES())
 							{
 								if(CharStats.CODES.NAME(i).equalsIgnoreCase(arg2)||CharStats.CODES.DESC(i).equalsIgnoreCase(arg2))
 								{

@@ -84,7 +84,7 @@ public class DefaultCharStats implements CharStats
 	{
 		if((def>Short.MAX_VALUE)||(def<Short.MIN_VALUE))
 			Log.errOut("Value out of range",new CMException("Value out of range: "+def+" for all"));
-		for(final int i : CharStats.CODES.BASE())
+		for(final int i : CharStats.CODES.BASECODES())
 			stats[i]=(short)def;
 	}
 	@Override
@@ -92,7 +92,7 @@ public class DefaultCharStats implements CharStats
 	{
 		if((def>Short.MAX_VALUE)||(def<Short.MIN_VALUE))
 			Log.errOut("Value out of range",new CMException("Value out of range: "+def+" for all"));
-		for(final int i: CharStats.CODES.ALL())
+		for(final int i: CharStats.CODES.ALLCODES())
 			stats[i]=(short)def;
 		unwearableBitmap=0;
 	}
@@ -854,7 +854,7 @@ public class DefaultCharStats implements CharStats
 	public int getCode(String abilityName)
 	{
 		final String[] DESCS = CODES.DESCS();
-		for(final int i : CharStats.CODES.ALL())
+		for(final int i : CharStats.CODES.ALLCODES())
 			if(DESCS[i].startsWith(abilityName))
 				return i;
 		return -1;
@@ -869,7 +869,7 @@ public class DefaultCharStats implements CharStats
 		if(dex>=0) return Integer.toString(getStat(dex));
 
 		final String[] DESCS=CODES.DESCS();
-		for(final int i : CharStats.CODES.ALL())
+		for(final int i : CharStats.CODES.ALLCODES())
 			if(DESCS[i].startsWith(abilityName))
 				return Integer.toString(getStat(i));
 		return null;
@@ -884,7 +884,7 @@ public class DefaultCharStats implements CharStats
 		if(dex>=0)
 			setStat(dex,CMath.s_parseIntExpression(val));
 		else
-		for(final int i : CharStats.CODES.ALL())
+		for(final int i : CharStats.CODES.ALLCODES())
 			if(CODES.DESC(i).startsWith(code))
 			{
 				setStat(dex,CMath.s_parseIntExpression(val));

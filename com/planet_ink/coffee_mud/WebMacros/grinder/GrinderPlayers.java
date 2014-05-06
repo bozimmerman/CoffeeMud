@@ -371,7 +371,7 @@ public class GrinderPlayers extends GrinderMobs
 					M.setBitmap((int)CMath.unsetb(M.getBitmap(),CMath.pow(2,i)));
 			}
 		}
-		for(final int i : CharStats.CODES.ALL())
+		for(final int i : CharStats.CODES.ALLCODES())
 		{
 			final CharStats C=M.charStats();
 			final String stat=CharStats.CODES.NAME(i);
@@ -386,7 +386,7 @@ public class GrinderPlayers extends GrinderMobs
 					C.setStat(i,old.charAt(0));
 			}
 		}
-		for(final int i : CharStats.CODES.ALL())
+		for(final int i : CharStats.CODES.ALLCODES())
 		{
 			final CharStats C=M.baseCharStats();
 			final String stat=CharStats.CODES.NAME(i);

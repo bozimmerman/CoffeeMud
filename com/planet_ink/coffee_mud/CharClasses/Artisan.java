@@ -54,7 +54,7 @@ public class Artisan extends StdCharClass
 	public Artisan()
 	{
 		super();
-		for(final int i : CharStats.CODES.BASE())
+		for(final int i : CharStats.CODES.BASECODES())
 			maxStatAdj[i]=4;
 	}
 	@Override

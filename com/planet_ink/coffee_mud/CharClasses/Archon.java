@@ -43,7 +43,7 @@ public class Archon extends StdCharClass
 	public Archon()
 	{
 		super();
-		for(final int i : CharStats.CODES.BASE())
+		for(final int i : CharStats.CODES.BASECODES())
 			maxStatAdj[i]=7;
 	}
 	@Override

@@ -127,7 +127,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			charStatsV.addElement(new Character('R'));
 			charStatsV.addElement(CMClass.getRace(val));
 		}
-		for(final int i : CharStats.CODES.BASE())
+		for(final int i : CharStats.CODES.BASECODES())
 		{
 			final String name = CMStrings.limit(CharStats.CODES.NAME(i).toLowerCase(),3);
 			addIfPlussed(parameters[0],name,i,charStatsV);

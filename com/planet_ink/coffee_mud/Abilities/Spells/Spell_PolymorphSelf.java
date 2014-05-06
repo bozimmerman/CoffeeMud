@@ -140,18 +140,18 @@ public class Spell_PolymorphSelf extends Spell
 			return false;
 
 		int mobStatTotal=0;
-		for(final int s: CharStats.CODES.BASE())
+		for(final int s: CharStats.CODES.BASECODES())
 			mobStatTotal+=mob.baseCharStats().getStat(s);
 
 		final MOB fakeMOB=CMClass.getFactoryMOB();
-		for(final int s: CharStats.CODES.BASE())
+		for(final int s: CharStats.CODES.BASECODES())
 			fakeMOB.baseCharStats().setStat(s,mob.baseCharStats().getStat(s));
 		fakeMOB.baseCharStats().setMyRace(R);
 		fakeMOB.recoverCharStats();
 		fakeMOB.recoverPhyStats();
 		fakeMOB.recoverMaxState();
 		int fakeStatTotal=0;
-		for(final int s: CharStats.CODES.BASE())
+		for(final int s: CharStats.CODES.BASECODES())
 			fakeStatTotal+=fakeMOB.charStats().getStat(s);
 
 		fakeMOB.destroy();

@@ -297,10 +297,10 @@ public class GenCharClass extends StdCharClass
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
 		if(adjStats!=null)
-			for(final int i: CharStats.CODES.ALL())
+			for(final int i: CharStats.CODES.ALLCODES())
 				affectableStats.setStat(i,affectableStats.getStat(i)+adjStats.getStat(i));
 		if(setStats!=null)
-			for(final int i: CharStats.CODES.ALL())
+			for(final int i: CharStats.CODES.ALLCODES())
 				if(setStats.getStat(i)!=0)
 					affectableStats.setStat(i,setStats.getStat(i));
 		if(statBuddy!=null)

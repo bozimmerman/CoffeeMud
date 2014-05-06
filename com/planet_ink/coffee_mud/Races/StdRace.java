@@ -835,7 +835,7 @@ public class StdRace implements Race
 		affectCharStats(fakeMOB,S1);
 		affectCharStats(fakeMOB,S2);
 		affectCharStats(fakeMOB,S3);
-		for(final int i: CharStats.CODES.ALL())
+		for(final int i: CharStats.CODES.ALLCODES())
 			if(i!=CharStats.STAT_AGE)
 			{
 				if(CharStats.CODES.isBASE(i))
@@ -1070,7 +1070,7 @@ public class StdRace implements Race
 		final CharStats ADJSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
 		ADJSTAT.setAllValues(0);
 
-		for(final int i: CharStats.CODES.ALL())
+		for(final int i: CharStats.CODES.ALLCODES())
 		{
 			if(CharStats.CODES.isBASE(i))
 			{
@@ -1340,7 +1340,7 @@ public class StdRace implements Race
 			mob2.recoverCharStats();
 			mob2.recoverPhyStats();
 			mob2.recoverMaxState();
-			for(final int c: CharStats.CODES.ALL())
+			for(final int c: CharStats.CODES.ALLCODES())
 			{
 				final int oldStat=mob2.charStats().getStat(c);
 				final int newStat=mob.charStats().getStat(c);

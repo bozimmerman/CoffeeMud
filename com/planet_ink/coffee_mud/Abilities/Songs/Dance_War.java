@@ -68,7 +68,7 @@ public class Dance_War extends Dance
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(invoker==null) return;
-		for(final int i : CharStats.CODES.BASE())
+		for(final int i : CharStats.CODES.BASECODES())
 			affectableStats.setStat(i,affectableStats.getStat(i)+2);
 	}
 }

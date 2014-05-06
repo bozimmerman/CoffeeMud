@@ -429,7 +429,7 @@ public class Age extends StdAbility
 					newMan.baseState().setMovement(CMProps.getIntVar(CMProps.Int.STARTMOVE));
 					newMan.baseCharStats().getMyRace().setHeightWeight(newMan.basePhyStats(),(char)newMan.baseCharStats().getStat(CharStats.STAT_GENDER));
 					final int baseStat=(CMProps.getIntVar(CMProps.Int.BASEMINSTAT)+CMProps.getIntVar(CMProps.Int.BASEMAXSTAT))/2;
-					for(int  i : CharStats.CODES.BASE())
+					for(int  i : CharStats.CODES.BASECODES())
 						newMan.baseCharStats().setStat(i,baseStat);
 					if(highestParentLevel>=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))
 						for(int i=0;i<highestLegacyLevel+1;i++)
@@ -452,7 +452,7 @@ public class Age extends StdAbility
 						newMan.moveItemTo(babe.getItem(i));
 					CMLib.utensils().outfit(newMan,newMan.baseCharStats().getMyRace().outfit(newMan));
 					CMLib.utensils().outfit(newMan,newMan.baseCharStats().getCurrentClass().outfit(newMan));
-					for(final int i : CharStats.CODES.BASE())
+					for(final int i : CharStats.CODES.BASECODES())
 					{
 						if(newMan.baseCharStats().getStat(i)<CMProps.getIntVar(CMProps.Int.BASEMAXSTAT))
 							newMan.baseCharStats().setStat(i,newMan.baseCharStats().getStat(i)+bonusPoints);

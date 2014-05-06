@@ -177,7 +177,7 @@ public class Dragon extends StdMOB
 
 
 		// ===== Dragons get tougher with age
-		for(final int i : CharStats.CODES.BASE())
+		for(final int i : CharStats.CODES.BASECODES())
 			baseCharStats().setStat(i,13 + (DragonAge()*2));
 		baseCharStats().setMyRace(CMClass.getRace("Dragon"));
 		baseCharStats().getMyRace().startRacing(this,false);

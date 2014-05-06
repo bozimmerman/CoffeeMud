@@ -148,7 +148,7 @@ public class CharGen extends StdCommand
 		if(player) mob.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
 		mob.baseCharStats().setMyRace(CMClass.getRace("Human"));
 		mob.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
-		for(final int i : CharStats.CODES.BASE())
+		for(final int i : CharStats.CODES.BASECODES())
 			mob.baseCharStats().setStat(i,10);
 		mob.baseCharStats().setStat(CharStats.STAT_STRENGTH,11);
 		mob.baseCharStats().setStat(CharStats.STAT_WISDOM,11);
@@ -174,7 +174,7 @@ public class CharGen extends StdCommand
 			{
 				int stat=-1;
 				int bestDiff=0;
-				for(final int i: CharStats.CODES.BASE())
+				for(final int i: CharStats.CODES.BASECODES())
 				{
 					final int base = max + mob.charStats().getStat(CharStats.CODES.toMAXBASE(i));
 					final int diff = base - mob.baseCharStats().getStat(i);
@@ -210,7 +210,7 @@ public class CharGen extends StdCommand
 
 	public void averageout(MOB avgMob, int tries)
 	{
-		for(final int i : CharStats.CODES.BASE())
+		for(final int i : CharStats.CODES.BASECODES())
 			avgMob.baseCharStats().setStat(i,(int)Math.round(CMath.div(avgMob.baseCharStats().getStat(i),tries)));
 		avgMob.basePhyStats().setArmor((int)Math.round(CMath.div(avgMob.basePhyStats().armor(),tries)));
 		avgMob.baseState().setHitPoints((int)Math.round(CMath.div(avgMob.baseState().getHitPoints(),tries)));
@@ -225,7 +225,7 @@ public class CharGen extends StdCommand
 
 	public void addHimIn(MOB avgMob, MOB mob2)
 	{
-		for(final int i : CharStats.CODES.BASE())
+		for(final int i : CharStats.CODES.BASECODES())
 			avgMob.baseCharStats().setStat(i,avgMob.baseCharStats().getStat(i)+mob2.baseCharStats().getStat(i));
 		avgMob.basePhyStats().setArmor(avgMob.basePhyStats().armor()+mob2.basePhyStats().armor());
 		avgMob.baseState().setHitPoints(avgMob.baseState().getHitPoints()+mob2.baseState().getHitPoints());

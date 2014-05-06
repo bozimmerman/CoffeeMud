@@ -728,7 +728,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				if(CMLib.dice().rollPercentage()<10)
 				{
 					final int max=CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
-					for(final int i: CharStats.CODES.MAX())
+					for(final int i: CharStats.CODES.MAXCODES())
 						if((max+mob.charStats().getStat(i))<=0)
 						{
 							mob.tell(_("Your max @x1 has fallen below 1!",CharStats.CODES.DESC(CharStats.CODES.toMAXBASE(i)).toLowerCase()));

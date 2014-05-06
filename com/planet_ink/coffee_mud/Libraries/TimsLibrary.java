@@ -168,7 +168,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			final int sen=CMParms.getParmPlus(newText,"sen");
 			if(sen!=0) level+=5;
 			level+=(int)Math.round(5.0*CMParms.getParmDoublePlus(newText,"spe"));
-			for(final int i : CharStats.CODES.BASE())
+			for(final int i : CharStats.CODES.BASECODES())
 			{
 				final int stat=CMParms.getParmPlus(newText,CMStrings.limit(CharStats.CODES.NAME(i),3).toLowerCase());
 				final int max=CMParms.getParmPlus(newText,("max"+(CMStrings.limit(CharStats.CODES.NAME(i),3).toLowerCase())));
@@ -995,7 +995,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			final int sen=CMParms.getParmPlus(newText,"sen");
 			if(sen!=0) level+=10;
 			level+=(int)Math.round(5.0*CMParms.getParmDoublePlus(newText,"spe"));
-			for(final int i: CharStats.CODES.BASE())
+			for(final int i: CharStats.CODES.BASECODES())
 			{
 				final int stat=CMParms.getParmPlus(newText,CMStrings.limit(CharStats.CODES.NAME(i),3).toLowerCase());
 				final int max=CMParms.getParmPlus(newText,("max"+(CMStrings.limit(CharStats.CODES.NAME(i),3).toLowerCase())));

@@ -88,7 +88,7 @@ public class Prop_ReqStat extends Property implements TriggeredAffect
 		if(CMLib.flags().isSneaking(mob)&&(!noSneak))
 			return true;
 		int[] comp=null;
-		for(final int c : CharStats.CODES.ALL())
+		for(final int c : CharStats.CODES.ALLCODES())
 		{
 			comp=CMParms.getParmCompare(text(),CharStats.CODES.NAME(c),mob.charStats().getStat(c));
 			if(comp[1]<0)

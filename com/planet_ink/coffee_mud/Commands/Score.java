@@ -150,7 +150,7 @@ public class Score extends Affect
 			if(parm.equalsIgnoreCase("BASE")) 
 				CT=mob.baseCharStats();
 			msg.append("^N^!");
-			for(final int i : CharStats.CODES.BASE())
+			for(final int i : CharStats.CODES.BASECODES())
 				msg.append(CMStrings.padRight("^<HELP^>" + CMStrings.capitalizeAndLower(CharStats.CODES.NAME(i))+"^</HELP^>",15)
 						+": "
 						+CMStrings.padRight(Integer.toString(CT.getStat(i)),2)

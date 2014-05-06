@@ -62,7 +62,7 @@ public class MOBReSave extends ActiveTicker
 	{
 		super.setParms(newParms);
 		startStats=(CharStats)CMClass.getCommon("DefaultCharStats");
-		for(final int c: CharStats.CODES.ALL())
+		for(final int c: CharStats.CODES.ALLCODES())
 			startStats.setStat(c,CMParms.getParmInt(parms,CharStats.CODES.ABBR(c),-1));
 	}
 
@@ -73,7 +73,7 @@ public class MOBReSave extends ActiveTicker
 		final MOB M=(MOB)host.get();
 		if(M==null) return super.getParms();
 		final StringBuffer rebuiltParms=new StringBuffer(super.rebuildParms());
-		for(final int c: CharStats.CODES.ALL())
+		for(final int c: CharStats.CODES.ALLCODES())
 			rebuiltParms.append(" "+CharStats.CODES.ABBR(c)+"="+M.baseCharStats().getStat(c));
 		return rebuiltParms.toString();
 	}
@@ -97,7 +97,7 @@ public class MOBReSave extends ActiveTicker
 			{
 				synchronized(startStats)
 				{
-					for(final int c: CharStats.CODES.ALL())
+					for(final int c: CharStats.CODES.ALLCODES())
 						if(startStats.getStat(c)>0)
 							mob.baseCharStats().setStat(c,startStats.getStat(c));
 					startStats=null;

@@ -59,15 +59,15 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 		int points = CMProps.getIntVar(CMProps.Int.MAXSTAT);
 		// Make sure there are enough points
-		if (points < ((basemin + 1) * CharStats.CODES.BASE().length))
-			points = (basemin + 1) * CharStats.CODES.BASE().length;
+		if (points < ((basemin + 1) * CharStats.CODES.BASECODES().length))
+			points = (basemin + 1) * CharStats.CODES.BASECODES().length;
 
 		// Make sure there aren't too many points
-		if (points > (basemax - 1) * CharStats.CODES.BASE().length)
-				points = (basemax - 1) * CharStats.CODES.BASE().length;
+		if (points > (basemax - 1) * CharStats.CODES.BASECODES().length)
+				points = (basemax - 1) * CharStats.CODES.BASECODES().length;
 
 		// Subtract stat minimums from point total to get distributable points
-		return points - (basemin * CharStats.CODES.BASE().length);
+		return points - (basemin * CharStats.CODES.BASECODES().length);
 	}
 
 	@Override
@@ -75,13 +75,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	{
 		final int basemax = CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
 
-		final int[] stats=new int[CharStats.CODES.BASE().length];
+		final int[] stats=new int[CharStats.CODES.BASECODES().length];
 		for(int i=0;i<stats.length;i++)
-			stats[i]=C.getStat(CharStats.CODES.BASE()[i]);
+			stats[i]=C.getStat(CharStats.CODES.BASECODES()[i]);
 
 		while (pointsLeft > 0)
 		{
-			final int whichNum = CMLib.dice().roll(1,CharStats.CODES.BASE().length,-1);
+			final int whichNum = CMLib.dice().roll(1,CharStats.CODES.BASECODES().length,-1);
 			if(stats[whichNum]<basemax)
 			{
 				stats[whichNum]++;
@@ -90,7 +90,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 
 		for(int i=0;i<stats.length;i++)
-			C.setStat(CharStats.CODES.BASE()[i],stats[i]);
+			C.setStat(CharStats.CODES.BASECODES()[i],stats[i]);
 	}
 
 	@Override
@@ -440,7 +440,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	{
 		final StringBuilder list = new StringBuilder("");
 		int highestAttribute=-1;
-		for(final int attrib : CharStats.CODES.BASE())
+		for(final int attrib : CharStats.CODES.BASECODES())
 			if((highestAttribute<0)
 			||(mob.baseCharStats().getStat(attrib)>mob.baseCharStats().getStat(highestAttribute)))
 				highestAttribute=attrib;
@@ -2280,8 +2280,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			mob.baseCharStats().setAllBaseValues(CMProps.getIntVar(CMProps.Int.STARTSTAT));
 			for(int i=0;i<bonusPoints;i++)
 			{
-				final int randStat=CMLib.dice().roll(1, CharStats.CODES.BASE().length, -1);
-				mob.baseCharStats().setStat(CharStats.CODES.BASE()[randStat], mob.baseCharStats().getStat(CharStats.CODES.BASE()[randStat])+1);
+				final int randStat=CMLib.dice().roll(1, CharStats.CODES.BASECODES().length, -1);
+				mob.baseCharStats().setStat(CharStats.CODES.BASECODES()[randStat], mob.baseCharStats().getStat(CharStats.CODES.BASECODES()[randStat])+1);
 			}
 			mob.recoverCharStats();
 			loginObj.state=LoginState.CHARCR_STATDONE;
@@ -2293,8 +2293,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			session.println(null,null,null,"\n\r\n\r"+introText.toString());
 
 			loginObj.statPoints = getTotalStatPoints()+bonusPoints;
-			for(int i=0;i<CharStats.CODES.BASE().length;i++)
-				mob.baseCharStats().setStat(CharStats.CODES.BASE()[i],CMProps.getIntVar(CMProps.Int.BASEMINSTAT));
+			for(int i=0;i<CharStats.CODES.BASECODES().length;i++)
+				mob.baseCharStats().setStat(CharStats.CODES.BASECODES()[i],CMProps.getIntVar(CMProps.Int.BASEMINSTAT));
 			mob.recoverCharStats();
 			loginObj.state=LoginState.CHARCR_STATSTART;
 		}
@@ -2307,8 +2307,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		final MOB mob=loginObj.mob;
 		if(loginObj.baseStats==null)
 			loginObj.baseStats = (CharStats)mob.baseCharStats().copyOf();
-		final List<String> validStats = new ArrayList<String>(CharStats.CODES.BASE().length);
-		for(final int i : CharStats.CODES.BASE())
+		final List<String> validStats = new ArrayList<String>(CharStats.CODES.BASECODES().length);
+		for(final int i : CharStats.CODES.BASECODES())
 			validStats.add(CMStrings.capitalizeAndLower(CharStats.CODES.NAME(i)));
 		List<CharClass> qualifyingClassListV=new Vector<CharClass>(1);
 		final boolean randomRoll = CMProps.getIntVar(CMProps.Int.STARTSTAT) == 0;
@@ -2327,7 +2327,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			final StringBuffer statstr=new StringBuffer("Your current stats are: \n\r");
 			final CharStats CT=mob.baseCharStats();
 			int total=0;
-			for(final int i : CharStats.CODES.BASE())
+			for(final int i : CharStats.CODES.BASECODES())
 			{
 				total += CT.getStat(i);
 				statstr.append("^H"+CMStrings.padRight(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i)),15)
@@ -2467,8 +2467,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			if(remove)
 				statPointsChange=-1;
 
-			final List<String> validStats = new ArrayList<String>(CharStats.CODES.BASE().length);
-			for(final int i : CharStats.CODES.BASE())
+			final List<String> validStats = new ArrayList<String>(CharStats.CODES.BASECODES().length);
+			for(final int i : CharStats.CODES.BASECODES())
 				validStats.add(CMStrings.capitalizeAndLower(CharStats.CODES.NAME(i)));
 			final int statCode = CharStats.CODES.findWhole(prompt, false);
 			if((statCode < 0)||(!validStats.contains(CMStrings.capitalizeAndLower(CharStats.CODES.NAME(statCode)))))

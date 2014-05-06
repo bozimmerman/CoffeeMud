@@ -60,9 +60,9 @@ public class Prayer_Benediction extends Prayer
 		for(int c=0;c<mob.charStats().numClasses();c++)
 			mob.charStats().getMyClass(c).affectCharStats(mob,chk);
 		int num=0;
-		for(final int i: CharStats.CODES.MAX())
+		for(final int i: CharStats.CODES.MAXCODES())
 			if(chk.getStat(i)>0) num++;
-		for(final int i: CharStats.CODES.BASE())
+		for(final int i: CharStats.CODES.BASECODES())
 			if(chk.getStat(CharStats.CODES.toMAXBASE(i))>0)
 				affectableStats.setStat(i,affectableStats.getStat(i)+(pts/num));
 	}

@@ -48,7 +48,7 @@ public class Train extends StdCommand
 		V.addElement("MOVEMENT");
 		V.addElement("GAIN");
 		V.addElement("PRACTICES");
-		for(final int i: CharStats.CODES.BASE())
+		for(final int i: CharStats.CODES.BASECODES())
 			V.add(CharStats.CODES.DESC(i));
 		for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 		{
@@ -82,7 +82,7 @@ public class Train extends StdCommand
 
 		final String abilityName=CMParms.combine(commands,0).toUpperCase();
 		final StringBuffer thingsToTrainFor=new StringBuffer("");
-		for(final int i: CharStats.CODES.BASE())
+		for(final int i: CharStats.CODES.BASECODES())
 			thingsToTrainFor.append(CharStats.CODES.DESC(i)+", ");
 
 		int trainsRequired=1;

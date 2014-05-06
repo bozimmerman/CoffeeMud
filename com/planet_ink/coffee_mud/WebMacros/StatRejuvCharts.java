@@ -97,7 +97,7 @@ public class StatRejuvCharts extends StdWebMacro
 			buf.append("<TD><B>LVL "+level+"</B></TD>");
 			for(int stats=4;stats<=25;stats++)
 			{
-				for(final int c: CharStats.CODES.BASE())
+				for(final int c: CharStats.CODES.BASECODES())
 					mob.baseCharStats().setStat(c,stats);
 				mob.recoverCharStats();
 				mob.basePhyStats().setLevel(level);

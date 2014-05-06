@@ -388,7 +388,7 @@ public class StdCharClass implements CharClass
 	public String getMaxStatDesc()
 	{
 		final StringBuilder str=new StringBuilder("");
-		for(final int i : CharStats.CODES.BASE())
+		for(final int i : CharStats.CODES.BASECODES())
 			if(maxStatAdjustments()[i]!=0)
 				str.append(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i))+" ("+(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+maxStatAdjustments()[i])+"), ");
 		str.append(_("Others (@x1)",""+CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)));
@@ -733,7 +733,7 @@ public class StdCharClass implements CharClass
 		affectCharStats(fakeMOB,S1);
 		affectCharStats(fakeMOB,S2);
 		affectCharStats(fakeMOB,S3);
-		for(final int i: CharStats.CODES.ALL())
+		for(final int i: CharStats.CODES.ALLCODES())
 			if(i!=CharStats.STAT_AGE)
 			{
 				if(CharStats.CODES.isBASE(i))
@@ -905,7 +905,7 @@ public class StdCharClass implements CharClass
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
 		if(affectableStats.getCurrentClass().ID().equals(ID()))
-		for(final int i: CharStats.CODES.MAX())
+		for(final int i: CharStats.CODES.MAXCODES())
 			affectableStats.setStat(i,affectableStats.getStat(i)+maxStatAdjustments()[i]+maxStatAdjustments()[CharStats.CODES.toMAXBASE(i)]);
 	}
 

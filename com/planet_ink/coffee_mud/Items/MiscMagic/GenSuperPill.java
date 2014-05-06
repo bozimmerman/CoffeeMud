@@ -154,7 +154,7 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 			mob.baseCharStats().setMyRace(CMClass.getRace(val));
 			mob.baseCharStats().getMyRace().startRacing(mob,false);
 		}
-		for(final int i : CharStats.CODES.BASE())
+		for(final int i : CharStats.CODES.BASECODES())
 		{
 			mob.baseCharStats().setStat(i,mob.baseCharStats().getStat(i)+CMParms.getParmPlus(readableText,CMStrings.limit(CharStats.CODES.NAME(i).toLowerCase(),3)));
 			final int max = CharStats.CODES.toMAXBASE(i);

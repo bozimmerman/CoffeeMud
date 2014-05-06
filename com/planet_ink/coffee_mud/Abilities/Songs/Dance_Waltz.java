@@ -54,9 +54,9 @@ public class Dance_Waltz extends Dance
 			classLevel++;
 
 			for(int i=0;i<classLevel;i++)
-				statadd[CharStats.CODES.BASE()[CMLib.dice().roll(1,CharStats.CODES.BASE().length,-1)]]+=3;
+				statadd[CharStats.CODES.BASECODES()[CMLib.dice().roll(1,CharStats.CODES.BASECODES().length,-1)]]+=3;
 		}
-		for(final int i: CharStats.CODES.BASE())
+		for(final int i: CharStats.CODES.BASECODES())
 			affectedStats.setStat(i,affectedStats.getStat(i)+statadd[i]);
 	}
 

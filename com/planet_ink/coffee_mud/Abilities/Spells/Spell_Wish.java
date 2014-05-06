@@ -901,7 +901,7 @@ public class Spell_Wish extends Spell
 					CMLib.leveler().unLevel(mob);
 					mob.setExperience(CMLib.leveler().getLevelExperience(mob.basePhyStats().level()-1));
 					final StringBuffer str=new StringBuffer("");
-					for(final int trait: CharStats.CODES.BASE())
+					for(final int trait: CharStats.CODES.BASECODES())
 					{
 						final int newVal=C.maxStatAdjustments()[trait];
 						final int amountToLose=oldC.maxStatAdjustments()[trait]-newVal;
@@ -982,7 +982,7 @@ public class Spell_Wish extends Spell
 
 			// attributes will be hairy
 			int foundAttribute=-1;
-			for(final int attributes : CharStats.CODES.ALL())
+			for(final int attributes : CharStats.CODES.ALLCODES())
 			{
 				if(CMLib.english().containsString(myWish,CharStats.CODES.DESC(attributes)))
 				{	foundAttribute=attributes; break;}

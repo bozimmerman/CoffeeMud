@@ -223,7 +223,7 @@ public class CombatAbilities extends StdBehavior
 				final CharClass C=mob.charStats().getCurrentClass();
 				final int[] stats=C.maxStatAdjustments();
 				int numStats=0;
-				for(final int stat : CharStats.CODES.BASE())
+				for(final int stat : CharStats.CODES.BASECODES())
 					if(stats[stat]!=0)
 						numStats++;
 				if(numStats==0) return;
@@ -232,7 +232,7 @@ public class CombatAbilities extends StdBehavior
 					numPoints=5+((mob.phyStats().level()-5)/8);
 				numPoints=numPoints/numStats;
 				final StringBuilder parm=new StringBuilder("");
-				for(final int stat : CharStats.CODES.BASE())
+				for(final int stat : CharStats.CODES.BASECODES())
 					if(stats[stat]!=0)
 						parm.append(CMStrings.limit(CharStats.CODES.NAME(stat),3)).append("=").append(numPoints).append(" ");
 				if(parm.length()>0)

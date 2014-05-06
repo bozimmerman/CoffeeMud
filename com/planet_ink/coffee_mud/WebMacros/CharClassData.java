@@ -434,7 +434,7 @@ public class CharClassData extends StdWebMacro
 					String old=httpReq.getUrlParameter("ATTATT");
 					if(old==null) old=""+C.getAttackAttribute();
 					if(CMath.s_int(old)<0) old="0";
-					for(final int i : CharStats.CODES.BASE())
+					for(final int i : CharStats.CODES.BASECODES())
 						str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i)));
 					str.append(", ");
 				}

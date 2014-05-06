@@ -244,9 +244,9 @@ public class Skill_Chirgury extends StdSkill
 						baby.setPlayerCorpse(false);
 						baby.basePhyStats().setWeight(1);
 						baby.charStats().setStat(CharStats.STAT_GENDER,(CMLib.dice().rollPercentage()>50)?'F':'M');
-						for(final int i: CharStats.CODES.BASE())
+						for(final int i: CharStats.CODES.BASECODES())
 							baby.charStats().setStat(i,1);
-						for(final int i: CharStats.CODES.MAX())
+						for(final int i: CharStats.CODES.MAXCODES())
 							baby.charStats().setStat(i,1);
 						baby.charStats().setMyRace(((MOB)target).charStats().getMyRace());
 						baby.recoverPhyStats();
