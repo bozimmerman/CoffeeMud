@@ -233,6 +233,41 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 	
 	@Override
+	public Long parseSpaceDistance(String dist)
+	{
+		if(dist==null)
+			return null;
+		dist=dist.trim();
+		int digits=-1;
+		if((dist.length()>0)&&(dist.charAt(0)=='-'))
+			digits++;
+		while((digits<dist.length()-1)&&(Character.isDigit(dist.charAt(digits+1))))
+			digits++;
+		if(digits<0)
+			return null;
+		Long value=Long.valueOf(dist.substring(0,digits+1));
+		String unit=dist.substring(digits+1).trim();
+		if(unit.length()==0)
+			return value;
+		SpaceObject.Distance distUnit=(SpaceObject.Distance)CMath.s_valueOf(SpaceObject.Distance.class, unit);
+		if(distUnit==null)
+			for(SpaceObject.Distance d : SpaceObject.Distance.values())
+				if(d.abbr.equalsIgnoreCase(unit))
+					distUnit=d;
+		if(distUnit==null)
+			for(SpaceObject.Distance d : SpaceObject.Distance.values())
+				if(d.name().equalsIgnoreCase(unit))
+					distUnit=d;
+		if(distUnit==null)
+			for(SpaceObject.Distance d : SpaceObject.Distance.values())
+				if(unit.toLowerCase().startsWith(d.name().toLowerCase()))
+					distUnit=d;
+		if(distUnit==null)
+			return null;
+		return new Long(value.longValue() * distUnit.dm);
+	}
+	
+	@Override
 	public String getFirstWord(final String str)
 	{
 		int i=0;

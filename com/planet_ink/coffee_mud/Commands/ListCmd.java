@@ -545,7 +545,10 @@ public class ListCmd extends StdCommand
 	}
 
 	public StringBuilder roomResources(Session viewerS, Vector these, Room likeRoom)
-	{return roomResources(viewerS, these.elements(),likeRoom);}
+	{
+		return roomResources(viewerS, these.elements(),likeRoom);
+	}
+	
 	public StringBuilder roomResources(Session viewerS, Enumeration these, Room likeRoom)
 	{
 		final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(30.0,viewerS);
@@ -1906,24 +1909,46 @@ public class ListCmd extends StdCommand
 	
 	private enum SpaceFilterCode {SPACE, BODIES, MOONS, STARS, SHIPS}
 	
+	public String getSpaceObjectType(final SpaceObject obj)
+	{
+		final String type;
+		if((obj instanceof Physical) && (!(obj instanceof SpaceShip)) && CMLib.flags().isOnFire((Physical)obj))
+			type="Star";
+		else
+		if(obj instanceof SpaceShip)
+			type="Ship";
+		else
+		if((obj instanceof Area) && (!(obj instanceof SpaceShip)) && (obj.radius() > (SpaceObject.Distance.MoonRadius.dm+10000L)))
+			type="Planet";
+		else
+		if((obj instanceof Area) && (!(obj instanceof SpaceShip)) && (obj.radius() <= (SpaceObject.Distance.MoonRadius.dm+10000L)))
+			type="Moon";
+		else
+			type="Obj.";
+		return type;
+	}
+	
 	public String listSpace(MOB mob, Vector commands)
 	{
+		final Session viewerS=mob.session();
+		if(viewerS==null)
+			return "";
 		StringBuilder str=new StringBuilder("");
 		String listWhat=commands.get(1).toString().toUpperCase().trim();
-		Filterer<CMObject> filter=null;
+		Filterer<SpaceObject> filter=null;
 		for(final SpaceFilterCode code : SpaceFilterCode.values())
 			if(code.toString().toUpperCase().startsWith(listWhat))
 			{
-				filter=new Filterer<CMObject>(){
-					@Override public boolean passesFilter(CMObject obj)
+				filter=new Filterer<SpaceObject>(){
+					@Override public boolean passesFilter(SpaceObject obj)
 					{
 						switch(code)
 						{
 						case SPACE: return true;
-						case BODIES: return (obj instanceof Area) && (!(obj instanceof SpaceShip));
-						case SHIPS: return obj instanceof SpaceShip;
-						case STARS: return false; //TODO: fix!
-						case MOONS: return false; //TODO: fix!
+						case BODIES: return (obj instanceof Area) && (!(obj instanceof SpaceShip)) && (obj.radius() > (SpaceObject.Distance.MoonRadius.dm+10000L));
+						case SHIPS: return (obj instanceof SpaceShip);
+						case STARS: return (obj instanceof Physical) && (!(obj instanceof SpaceShip)) && CMLib.flags().isOnFire((Physical)obj);
+						case MOONS: return (obj instanceof Area) && (!(obj instanceof SpaceShip)) && (obj.radius() <= (SpaceObject.Distance.MoonRadius.dm+10000L));
 						}
 						return false;
 					}
@@ -1934,7 +1959,7 @@ public class ListCmd extends StdCommand
 		if((commands.size()<=2)
 		||(filter==null)
 		||commands.get(2).toString().equals("?")
-		||commands.get(2).toString().equals("help"))
+		||commands.get(2).toString().equals(_("help")))
 		{
 			str.append(_("List what in space? Try one of the following:\n\r"));
 			str.append(_("LIST SPACE ALL - List everything in space everywhere!!\n\r"));
@@ -1946,11 +1971,222 @@ public class ListCmd extends StdCommand
 			str.append(_("Instead of LIST SPACE you can also specify BODIES, MOONS, STARS, or SPACESHIPS.\n\r"));
 			return str.toString();
 		}
-		else
+		final List<SpaceObject> objs=new ArrayList<SpaceObject>();
+		for(Enumeration<SpaceObject> objEnum=CMLib.map().getSpaceObjects();objEnum.hasMoreElements();)
 		{
-			
+			final SpaceObject obj=objEnum.nextElement();
+			if((filter!=null)&&(!filter.passesFilter(obj)))
+				continue;
+			objs.add(obj);
 		}
-		//TODO: finish!
+		final String[] keywords=CMLib.lang().sessionTranslation(new String[]{"ALL","WITHIN","DISTANCE"});
+		final String[] sortcols=CMLib.lang().sessionTranslation(new String[]{"TYPE","RADIUS","COORDINATES","SPEED","MASS","NAME","COORDSX","COORDSY","COORDSZ"});
+		Long withinDistance=null;
+		long[] centerPoint=null;
+		final SpaceObject SO=CMLib.map().getSpaceObject(mob, false);
+		for(int i=2;i<commands.size();i++)
+		{
+			String s=((String)commands.get(i)).toUpperCase();
+			if(_("ALL").startsWith(s))
+				continue;
+			else
+			if(_("AROUND").startsWith(s))
+			{
+				if(i<commands.size()-1)
+				{
+					i++;
+					int end=i;
+					while((end<commands.size()-1)&&(!CMStrings.contains(keywords, commands.get(end).toString().toUpperCase())))
+						end++;
+					if(end==i)
+					{
+						return _("\n\rBad AROUND parm: '@x1' -- no coordinates or object specified.\n\r","");
+					}
+					else
+					{
+						String around=CMParms.combine(commands,i,end);
+						List<String> listStr=CMParms.parseCommas(around,true);
+						long[] coords=null;
+						if(listStr.size()==3)
+						{
+							long[] valL=new long[3];
+							for(int x=0;x<3;x++)
+							{
+								Long newValue=CMLib.english().parseSpaceDistance(listStr.get(x));
+								if(newValue==null)
+									break;
+								else
+								{
+									valL[i]=newValue.longValue();
+									if(i==2) coords=valL;
+								}
+							}
+						}
+						if(coords==null)
+						{
+							SpaceObject SO2=CMLib.map().findSpaceObject(around, true);
+							if(SO2==null)
+								SO2=CMLib.map().findSpaceObject(around, true);
+							if(SO2!=null)
+								coords=SO2.coordinates();
+						}
+						if(coords==null)
+						{
+							return _("\n\rBad AROUND parm: '@x1' -- bad coordinates or object specified.\n\r",around);
+						}
+						centerPoint=coords;
+						i=end-1;
+					}
+				}
+				else
+				{
+					return _("\n\rBad AROUND parm: '@x1' -- no coordinates or object specified.\n\r","");
+				}
+			}
+			else
+			if(_("WITHIN").startsWith(s))
+			{
+				if(i<commands.size()-1)
+				{
+					i++;
+					int end=i;
+					while((end<commands.size()-1)&&(!CMStrings.contains(keywords, commands.get(end).toString().toUpperCase())))
+						end++;
+					if(end==i)
+					{
+						return _("\n\rBad WITHIN parm: '@x1' -- no valid distance specified.\n\r","");
+					}
+					else
+					{
+						String within=CMParms.combine(commands,i,end);
+						Long distance=CMLib.english().parseSpaceDistance(within);
+						if(distance==null)
+						{
+							return _("\n\rBad WITHIN parm: '@x1' -- no valid distance specified.\n\r",within);
+						}
+						withinDistance=distance;
+						i=end-1;
+					}
+				}
+				else
+				{
+					return _("\n\rBad WITHIN parm: '@x1' -- no distance specified.\n\r","");
+				}
+			}
+			else
+			if(_("ORDERBY").startsWith(s))
+			{
+				if(i<commands.size()-1)
+				{
+					i++;
+					s=(String)commands.get(i);
+					int end=i;
+					while((end<commands.size()-1)&&(CMStrings.contains(sortcols, commands.get(end).toString().toUpperCase())))
+						end++;
+					if(end==i)
+					{
+						return _("\n\rBad ORDERBY parm: '@x1' ORDERBY -- no column specified.  Try @x2.\n\r",commands.get(i).toString(),CMParms.toStringList(sortcols));
+					}
+					for(int x=end-1;x>=i;x--)
+					{
+						final int[][] b=new int[][]{{0,1,2}};
+						int dex=CMParms.indexOf(sortcols, commands.get(x).toString().toUpperCase());
+						switch(dex)
+						{
+						case 0: Collections.sort(objs, new Comparator<SpaceObject>(){
+							@Override public int compare(SpaceObject o1, SpaceObject o2)
+							{
+								return getSpaceObjectType(o1).compareTo(getSpaceObjectType(o2));
+							}});
+							break;
+						case 1: Collections.sort(objs, new Comparator<SpaceObject>(){
+							@Override public int compare(SpaceObject o1, SpaceObject o2)
+							{
+								return Long.valueOf(o1==null?0:o1.radius()).compareTo(Long.valueOf(o2==null?0:o2.radius()));
+							}});
+							break;
+						case 3: Collections.sort(objs, new Comparator<SpaceObject>(){
+							@Override public int compare(SpaceObject o1, SpaceObject o2)
+							{
+								return Long.valueOf(o1==null?0:o1.speed()).compareTo(Long.valueOf(o2==null?0:o2.speed()));
+							}});
+							break;
+						case 4: Collections.sort(objs, new Comparator<SpaceObject>(){
+							@Override public int compare(SpaceObject o1, SpaceObject o2)
+							{
+								return Long.valueOf(o1==null?0:o1.getMass()).compareTo(Long.valueOf(o2==null?0:o2.getMass()));
+							}});
+							break;
+						case 5: Collections.sort(objs, new Comparator<SpaceObject>(){
+							@Override public int compare(SpaceObject o1, SpaceObject o2)
+							{
+								return (o1==null?"":o1.name()).compareToIgnoreCase(o2==null?"":o2.name());
+							}});
+							break;
+						case 8: b[0]=new int[]{2,0,1}; 
+							//$FALL-THROUGH$
+						case 7: if(x==7) b[0]=new int[]{1,2,0}; 
+							//$FALL-THROUGH$
+						case 6: 
+							//$FALL-THROUGH$
+						case 2: Collections.sort(objs, new Comparator<SpaceObject>(){
+							@Override public int compare(SpaceObject o1, SpaceObject o2)
+							{
+								int i=Long.valueOf(o1==null?Long.MIN_VALUE:o1.coordinates()[b[0][0]]).compareTo(Long.valueOf(o2==null?Long.MIN_VALUE:o2.coordinates()[b[0][0]]));
+								if(i!=0)
+									i=Long.valueOf(o1==null?Long.MIN_VALUE:o1.coordinates()[b[0][1]]).compareTo(Long.valueOf(o2==null?Long.MIN_VALUE:o2.coordinates()[b[0][1]]));
+								if(i!=0)
+									i=Long.valueOf(o1==null?Long.MIN_VALUE:o1.coordinates()[b[0][2]]).compareTo(Long.valueOf(o2==null?Long.MIN_VALUE:o2.coordinates()[b[0][2]]));
+								return i;
+							}});
+							break;
+						}
+					}
+					i=end-1;
+				}
+				else
+				{
+					return _("\n\rBad ORDERBY parm: '@x1' ORDERBY -- no column specified.  Try @x2.\n\r","",CMParms.toStringList(sortcols));
+				}
+			}
+		}
+		
+		if((centerPoint!=null)||(withinDistance!=null))
+		{
+			if(centerPoint==null)
+			{
+				if(SO!=null)
+					centerPoint=SO.coordinates();
+				else
+					centerPoint=new long[]{0,0,0};
+			}
+			if(withinDistance==null)
+				withinDistance=Long.valueOf(SpaceObject.Distance.GalaxyRadius.dm);
+			final List<SpaceObject> objs2=CMLib.map().getSpaceObjectsWithin(centerPoint, 0, withinDistance.longValue());
+			for(final Iterator<SpaceObject> i=objs.iterator();i.hasNext();)
+			{
+				final SpaceObject obj=i.next();
+				if(!objs2.contains(obj))
+					i.remove();
+			}
+		}
+		
+		final int COL_LEN1, COL_LEN2, COL_LEN3, COL_LEN4, COL_LEN5;
+		str.append(CMStrings.padRight(_("Type"),COL_LEN1=ListingLibrary.ColFixer.fixColWidth(5.0,viewerS))+" ");
+		str.append(CMStrings.padRight(_("Radius"),COL_LEN2=ListingLibrary.ColFixer.fixColWidth(10.0,viewerS))+" ");
+		str.append(CMStrings.padRight(_("Coordinates"),COL_LEN3=ListingLibrary.ColFixer.fixColWidth(20.0,viewerS))+" ");
+		str.append(CMStrings.padRight(_("Speed"),COL_LEN4=ListingLibrary.ColFixer.fixColWidth(10.0,viewerS))+" ");
+		str.append(CMStrings.padRight(_("Mass"),COL_LEN5=ListingLibrary.ColFixer.fixColWidth(10.0,viewerS))+" ");
+		str.append(_("Name\n\r"));
+		for(SpaceObject obj : objs)
+		{
+			str.append(CMStrings.padRight(getSpaceObjectType(obj),COL_LEN1)+" ");
+			str.append(CMStrings.padRight(CMLib.english().sizeDescShort(obj.radius()),COL_LEN2)+" ");
+			str.append(CMStrings.padRight(CMLib.english().coordDescShort(obj.coordinates()),COL_LEN3)+" ");
+			str.append(CMStrings.padRight(CMLib.english().speedDescShort(obj.speed()),COL_LEN4)+" ");
+			str.append(CMStrings.padRight(""+obj.getMass(),COL_LEN5)+" ");
+			str.append(obj.name()+"\n\r");
+		}
 		return str.toString();
 	}
 

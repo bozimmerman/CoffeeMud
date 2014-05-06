@@ -140,6 +140,7 @@ public interface WorldMap extends CMLibrary
 	public void delObjectInSpace(SpaceObject O);
 	public void addObjectToSpace(SpaceObject O, long[] coords);
 	public long getDistanceFrom(SpaceObject O1, SpaceObject O2);
+	public long getDistanceFrom(final long[] coord1, final long[] coord2);
 	public double[] getDirection(SpaceObject FROM, SpaceObject TO);
 	public long[] getLocation(long[] oldLocation, double[] direction, long distance);
 	public void moveSpaceObject(SpaceObject O);
@@ -148,6 +149,7 @@ public interface WorldMap extends CMLibrary
 	public Enumeration<SpaceObject> getSpaceObjects();
 	public Enumeration<Entry<SpaceObject, List<WeakReference<TrackingVector<SpaceObject>>>>>  getSpaceObjectEntries();
 	public List<SpaceObject> getSpaceObjectsWithin(SpaceObject ofObj, long minDistance, long maxDistance);
+	public List<SpaceObject> getSpaceObjectsWithin(final long[] centerCoordinates, long minDistance, long maxDistance);
 	public SpaceObject findSpaceObject(String s, boolean exactOnly);
 
 	/************************************************************************/

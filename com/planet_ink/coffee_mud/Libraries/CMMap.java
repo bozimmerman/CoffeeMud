@@ -346,11 +346,17 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
+	public long getDistanceFrom(final long[] coord1, final long[] coord2)
+	{
+		return Math.round(Math.sqrt(CMath.mul((coord1[0]-coord2[0]),(coord1[0]-coord2[0]))
+									+CMath.mul((coord1[1]-coord2[1]),(coord1[1]-coord2[1]))
+									+CMath.mul((coord1[2]-coord2[2]),(coord1[2]-coord2[2]))));
+	}
+	
+	@Override
 	public long getDistanceFrom(SpaceObject O1, SpaceObject O2)
 	{
-		return Math.round(Math.sqrt(CMath.mul((O1.coordinates()[0]-O2.coordinates()[0]),(O1.coordinates()[0]-O2.coordinates()[0]))
-									+CMath.mul((O1.coordinates()[1]-O2.coordinates()[1]),(O1.coordinates()[1]-O2.coordinates()[1]))
-									+CMath.mul((O1.coordinates()[2]-O2.coordinates()[2]),(O1.coordinates()[2]-O2.coordinates()[2]))));
+		return getDistanceFrom(O1.coordinates(),O2.coordinates());
 	}
 
 	protected static void moveSpaceObject(SpaceObject O, double[] newDirection, long newAccelleration)
@@ -536,6 +542,29 @@ public class CMMap extends StdLibrary implements WorldMap
 		return this.space.objectEntries(); 
 	}
 
+	@Override
+	public List<SpaceObject> getSpaceObjectsWithin(final long[] centerCoordinates, long minDistance, long maxDistance)
+	{
+		final List<SpaceObject> within=new Vector<SpaceObject>(1);
+		if((centerCoordinates==null)||(centerCoordinates.length!=3))
+			return within;
+		synchronized(space)
+		{
+			space.query(within, new BoundedObject.BoundedCube(centerCoordinates, maxDistance));
+		}
+		if(within.size()<=1)
+			return within;
+		for (final SpaceObject o : within)
+		{
+			final long dist=getDistanceFrom(o.coordinates(),centerCoordinates);
+			if((dist>=minDistance)&&(dist<=maxDistance))
+			{
+				within.add(o);
+			}
+		}
+		return within;
+	}
+	
 	@Override
 	public List<SpaceObject> getSpaceObjectsWithin(final SpaceObject ofObj, long minDistance, long maxDistance)
 	{

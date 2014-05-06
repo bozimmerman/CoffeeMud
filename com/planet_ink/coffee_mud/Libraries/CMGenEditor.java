@@ -4563,40 +4563,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		E.setDirectionFromCore(newDir);
 	}
 
-	protected Long parseSpaceDistance(String dist)
-	{
-		if(dist==null)
-			return null;
-		dist=dist.trim();
-		int digits=-1;
-		if((dist.length()>0)&&(dist.charAt(0)=='-'))
-			digits++;
-		while((digits<dist.length()-1)&&(Character.isDigit(dist.charAt(digits+1))))
-			digits++;
-		if(digits<0)
-			return null;
-		Long value=Long.valueOf(dist.substring(0,digits+1));
-		String unit=dist.substring(digits+1).trim();
-		if(unit.length()==0)
-			return value;
-		SpaceObject.Distance distUnit=(SpaceObject.Distance)CMath.s_valueOf(SpaceObject.Distance.class, unit);
-		if(distUnit==null)
-			for(SpaceObject.Distance d : SpaceObject.Distance.values())
-				if(d.abbr.equalsIgnoreCase(unit))
-					distUnit=d;
-		if(distUnit==null)
-			for(SpaceObject.Distance d : SpaceObject.Distance.values())
-				if(d.name().equalsIgnoreCase(unit))
-					distUnit=d;
-		if(distUnit==null)
-			for(SpaceObject.Distance d : SpaceObject.Distance.values())
-				if(unit.toLowerCase().startsWith(d.name().toLowerCase()))
-					distUnit=d;
-		if(distUnit==null)
-			return null;
-		return new Long(value.longValue() * distUnit.dm);
-	}
-	
 	public void genSpaceStuff(MOB mob, SpaceObject E, int showNumber, int showFlag) throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -4621,7 +4587,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.tell(_("(unchanged)"));
 				break;
 			}
-			Long newValue=parseSpaceDistance(val);
+			Long newValue=CMLib.english().parseSpaceDistance(val);
 			if((newValue==null)||(newValue.longValue()<0))
 				mob.tell(_("Unknown radius: '@x1', valid units include: @x2.",val,SpaceObject.Distance.getAbbrList()));
 			else
@@ -4672,7 +4638,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				
 				String distStr=CMParms.combine(tokens,0,x);
 				String objName=CMParms.combine(tokens,x+1);
-				Long dist=parseSpaceDistance(distStr);
+				Long dist=CMLib.english().parseSpaceDistance(distStr);
 				if(dist==null)
 				{
 					mob.tell(_("Unknown distance:")+" '"+distStr+"'. "+coordHelp2);
@@ -4702,7 +4668,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				Long[] valL=new Long[3];
 				for(int i=0;i<3;i++)
 				{
-					Long newValue=parseSpaceDistance(valsL.get(i));
+					Long newValue=CMLib.english().parseSpaceDistance(valsL.get(i));
 					if(newValue==null)
 					{
 						mob.tell(_("Unknown coord: '@x1'. @x2",valsL.get(i),coordHelp2));
@@ -4734,7 +4700,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				val=val.substring(0,val.length()-4);
 			if(val.trim().toLowerCase().endsWith("/second"))
 				val=val.substring(0,val.length()-7);
-			Long newValue=parseSpaceDistance(val);
+			Long newValue=CMLib.english().parseSpaceDistance(val);
 			if((newValue==null)||(newValue.longValue()<0))
 				mob.tell(_("Unknown speed/sec: '@x1', valid units include: @x2.",val,SpaceObject.Distance.getAbbrList()));
 			else

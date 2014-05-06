@@ -92,4 +92,5 @@ public interface EnglishParsing extends CMLibrary
 	public String coordDescShort(long[] coords);
 	public String speedDescShort(long speed);
 	public String directionDescShort(double[] dir);
+	public Long parseSpaceDistance(String dist);
 }
