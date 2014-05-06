@@ -180,7 +180,7 @@ public interface WorldMap extends CMLibrary
 		@Override
 		public boolean passesFilter(Area obj)
 		{
-			return (obj instanceof SpaceObject) && (!(obj instanceof SpaceShip)) && (obj instanceof Area);
+			return (obj instanceof SpaceObject) && (!(obj instanceof SpaceShip));
 		}
 	};
 
