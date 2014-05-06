@@ -4743,7 +4743,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				break;
 			}
 		}
-		while((mob!=null)&&(mob.session()!=null)&&(!mob.session().isStopped()))
+		while((mob!=null)&&(mob.session()!=null)&&(!mob.session().isStopped())&&(E.speed()>0))
 		{
 			String val=mob.session().prompt(_("@x1. Direction in Space (ENTER=@x2): ",""+showNumber,(CMLib.english().directionDescShort(E.direction()))));
 			if((val==null)||(val.trim().length()==0))
