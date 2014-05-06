@@ -79,9 +79,9 @@ public class Logoff extends StdCommand
 								if((R!=null)&&(R.okMessage(mob,msg)))
 								{
 									CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_QUIT, CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,null));
-									session.logout(true);
+									session.logout(true); // this should call prelogout and later loginlogoutthread to cause msg SEND
+									CMLib.commands().monitorGlobalMessage(R, msg);
 								}
-								CMLib.commands().monitorGlobalMessage(R, msg);
 							}
 						}
 					});

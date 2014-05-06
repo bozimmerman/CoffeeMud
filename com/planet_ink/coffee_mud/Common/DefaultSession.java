@@ -1815,15 +1815,16 @@ public class DefaultSession implements Session
 	{
 		setKillFlag(true);
 		setStatus(SessionStatus.LOGOUT5);
+		if(dropSession)
+		{
+			preLogout(mob);
+		}
 		if(removeMOB)
 		{
 			removeMOBFromGame(false);
 		}
 		if(dropSession)
-		{
-			preLogout(mob);
 			logoutFinal();
-		}
 		if(killThread)
 		{
 			Thread killThisThread=null;
@@ -1930,6 +1931,16 @@ public class DefaultSession implements Session
 		if(M==null)
 			return;
 		final boolean inTheGame=CMLib.flags().isInTheGame(M,true);
+		if(inTheGame && (M.location()!=null))
+		{
+			List<Room> rooms=new ArrayList<Room>(1);
+			rooms.add(M.location());
+			for(MOB M2 : M.getGroupMembers(new HashSet<MOB>()))
+				if((M2.location()!=null)&&(!rooms.contains(M2.location())))
+					rooms.add(M2.location());
+			for(Room R : rooms)
+				R.send(M, CMClass.getMsg(mob, CMMsg.MSG_QUIT, null));
+		}
 
 		while((getLastPKFight()>0)
 		&&((System.currentTimeMillis()-getLastPKFight())<(2*60*1000))
