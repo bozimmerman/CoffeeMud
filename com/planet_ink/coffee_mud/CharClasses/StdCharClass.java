@@ -244,8 +244,7 @@ public class StdCharClass implements CharClass
 		{
 			if(!quiet)
 			{
-				final StringBuilder str=new StringBuilder("You need to be a ").append(getRaceList(raceList)).append("to be a "+name()+".");
-				mob.tell(str.toString());
+				mob.tell(_("You need to be a @x1 to be a @x2.",getRaceList(raceList).toString(),name()));
 			}
 			return false;
 		}
