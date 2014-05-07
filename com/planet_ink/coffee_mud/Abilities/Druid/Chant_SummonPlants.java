@@ -59,10 +59,13 @@ public class Chant_SummonPlants extends Chant
 		if(canBeUninvoked())
 		{
 			final Item plants=littlePlants; // protects against uninvoke loops!
-			littlePlants=null;
-			plants.destroy();
-			PlantsLocation.recoverRoomStats();
-			PlantsLocation=null;
+			if(plants!=null)
+			{
+				littlePlants=null;
+				plants.destroy();
+				PlantsLocation.recoverRoomStats();
+				PlantsLocation=null;
+			}
 		}
 	}
 
