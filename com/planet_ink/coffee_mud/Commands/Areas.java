@@ -48,6 +48,7 @@ public class Areas extends StdCommand
 		Enumeration<Area> a=CMLib.map().areas();
 		int addStat=-1;
 		String append="";
+		int numCols=3;
 
 		for(int i=1;i<commands.size();i++)
 		{
@@ -97,6 +98,25 @@ public class Areas extends StdCommand
 				i--;
 			}
 			else
+			if(s.toUpperCase().startsWith("SORT=AUTH"))
+			{
+				final TreeSet<Area> levelSorted=new TreeSet<Area>(new Comparator<Area>()
+				{
+					@Override
+					public int compare(Area arg0, Area arg1)
+					{
+						return arg0.getAuthorID().compareTo(arg1.getAuthorID());
+					}
+				});
+				for(;a.hasMoreElements();) levelSorted.add(a.nextElement());
+				a=new IteratorEnumeration<Area>(levelSorted.iterator());
+				append = " (sorted by author)";
+				commands.remove(i);
+				addStat=-999;
+				numCols=2;
+				i--;
+			}
+			else
 			if(s.toUpperCase().startsWith("SORT="))
 			{
 				int statVal=-1;
@@ -137,13 +157,14 @@ public class Areas extends StdCommand
 		}
 		final Vector areasVec=new Vector();
 		final boolean sysop=(mob!=null)&&CMSecurity.isASysOp(mob);
-		final int colWidth=ListingLibrary.ColFixer.fixColWidth(22.0,mob);
+		final int colWidth=ListingLibrary.ColFixer.fixColWidth(66.0/numCols,mob);
 		for(;a.hasMoreElements();)
 		{
 			final Area A=a.nextElement();
 			if(CMLib.flags().canAccess(mob,A)&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD))&&(!(A instanceof SpaceObject)))
 			{
-				final String levelStr = (addStat>=0?(Integer.toString(A.getAreaIStats()[addStat])+":"):"");
+				String levelStr = (addStat>=0?(Integer.toString(A.getAreaIStats()[addStat])+":"):"");
+				if(addStat==-999) levelStr=CMStrings.padRight(A.getAuthorID(),10)+":";
 				String name=levelStr+((!CMLib.flags().isHidden(A))?" "+A.name():"("+A.name()+")");
 				if(sysop)
 				switch(A.getAreaState())
@@ -179,7 +200,7 @@ public class Areas extends StdCommand
 		int col=0;
 		for(int i=0;i<areasVec.size();i++)
 		{
-			if((++col)>3)
+			if((++col)>numCols)
 			{
 				msg.append("\n\r");
 				col=1;
