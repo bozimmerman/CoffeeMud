@@ -36,7 +36,8 @@ import java.util.*;
 public class Shaman extends Cleric
 {
 	@Override public String ID(){return "Shaman";}
-	@Override public String name(){return "Shaman";}
+	private final static String localizedStaticName = CMLib.lang()._("Shaman");
+	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return "Cleric";}
 	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_NEUTRALCLERIC;}

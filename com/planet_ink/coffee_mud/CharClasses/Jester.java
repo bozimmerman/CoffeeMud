@@ -37,7 +37,8 @@ import java.util.*;
 public class Jester extends StdCharClass
 {
 	@Override public String ID(){return "Jester";}
-	@Override public String name(){return "Jester";}
+	private final static String localizedStaticName = CMLib.lang()._("Jester");
+	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return "Bard";}
 	@Override public int getBonusPracLevel(){return 1;}
 	@Override public int getBonusAttackLevel(){return 0;}

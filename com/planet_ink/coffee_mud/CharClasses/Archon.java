@@ -36,7 +36,8 @@ import java.util.*;
 public class Archon extends StdCharClass
 {
 	@Override public String ID(){return "Archon";}
-	@Override public String name(){return "Archon";}
+	private final static String localizedStaticName = CMLib.lang()._("Archon");
+	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return ID();}
 	@Override public boolean leveless(){return true;}
 

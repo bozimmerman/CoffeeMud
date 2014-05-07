@@ -33,7 +33,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Trapper extends Thief
 {
 	@Override public String ID(){return "Trapper";}
-	@Override public String name(){return "Trapper";}
+	private final static String localizedStaticName = CMLib.lang()._("Trapper");
+	@Override public String name() { return localizedStaticName; }
 
 	public Trapper()
 	{

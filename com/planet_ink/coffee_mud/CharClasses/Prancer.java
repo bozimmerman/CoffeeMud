@@ -37,7 +37,8 @@ import java.util.*;
 public class Prancer extends StdCharClass
 {
 	@Override public String ID(){return "Prancer";}
-	@Override public String name(){return "Dancer";}
+	private final static String localizedStaticName = CMLib.lang()._("Dancer");
+	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return "Bard";}
 	@Override public String getMovementFormula(){return "18*((@x2<@x3)/18)"; }
 	@Override public int getBonusPracLevel(){return 1;}

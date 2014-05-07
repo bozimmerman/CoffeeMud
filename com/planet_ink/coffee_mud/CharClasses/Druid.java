@@ -38,7 +38,8 @@ import java.util.*;
 public class Druid extends StdCharClass
 {
 	@Override public String ID(){return "Druid";}
-	@Override public String name(){return "Druid";}
+	private final static String localizedStaticName = CMLib.lang()._("Druid");
+	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return ID();}
 	@Override public int getBonusPracLevel(){return 2;}
 	@Override public int getBonusAttackLevel(){return 0;}

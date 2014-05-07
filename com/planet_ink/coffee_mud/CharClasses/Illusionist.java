@@ -33,7 +33,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Illusionist extends SpecialistMage
 {
 	@Override public String ID(){return "Illusionist";}
-	@Override public String name(){return "Illusionist";}
+	private final static String localizedStaticName = CMLib.lang()._("Illusionist");
+	@Override public String name() { return localizedStaticName; }
 	@Override public int domain(){return Ability.DOMAIN_ILLUSION;}
 	@Override public int opposed(){return Ability.DOMAIN_DIVINATION;}
 	@Override public int availabilityCode(){return Area.THEME_FANTASY;}

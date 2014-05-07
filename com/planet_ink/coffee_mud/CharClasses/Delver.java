@@ -38,7 +38,8 @@ import java.util.*;
 public class Delver extends StdCharClass
 {
 	@Override public String ID(){return "Delver";}
-	@Override public String name(){return "Delver";}
+	private final static String localizedStaticName = CMLib.lang()._("Delver");
+	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return "Druid";}
 	@Override public int getBonusPracLevel(){return 2;}
 	@Override public int getBonusAttackLevel(){return 0;}

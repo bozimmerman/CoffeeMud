@@ -37,7 +37,8 @@ import java.util.*;
 public class Purist extends Cleric
 {
 	@Override public String ID(){return "Purist";}
-	@Override public String name(){return "Purist";}
+	private final static String localizedStaticName = CMLib.lang()._("Purist");
+	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return "Cleric";}
 	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_GOODCLERIC;}

@@ -38,7 +38,8 @@ import java.util.*;
 public class Necromancer extends Cleric
 {
 	@Override public String ID(){return "Necromancer";}
-	@Override public String name(){return "Necromancer";}
+	private final static String localizedStaticName = CMLib.lang()._("Necromancer");
+	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return "Cleric";}
 	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_EVILCLERIC;}

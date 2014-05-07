@@ -37,7 +37,8 @@ import java.util.*;
 public class SkyWatcher extends StdCharClass
 {
 	@Override public String ID(){return "SkyWatcher";}
-	@Override public String name(){return "SkyWatcher";}
+	private final static String localizedStaticName = CMLib.lang()._("SkyWatcher");
+	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return "Druid";}
 	@Override public int getBonusPracLevel(){return 2;}
 	@Override public int getBonusAttackLevel(){return 0;}

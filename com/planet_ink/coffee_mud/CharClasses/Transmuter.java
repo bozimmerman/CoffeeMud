@@ -33,7 +33,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Transmuter extends SpecialistMage
 {
 	@Override public String ID(){return "Transmuter";}
-	@Override public String name(){return "Transmuter";}
+	private final static String localizedStaticName = CMLib.lang()._("Transmuter");
+	@Override public String name() { return localizedStaticName; }
 	@Override public int domain(){return Ability.DOMAIN_TRANSMUTATION;}
 	@Override public int opposed(){return Ability.DOMAIN_CONJURATION;}
 	@Override public int availabilityCode(){return Area.THEME_FANTASY;}

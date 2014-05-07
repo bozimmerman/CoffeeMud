@@ -38,7 +38,8 @@ import java.util.*;
 public class Gaian extends StdCharClass
 {
 	@Override public String ID(){return "Gaian";}
-	@Override public String name(){return "Gaian";}
+	private final static String localizedStaticName = CMLib.lang()._("Gaian");
+	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return "Druid";}
 	@Override public int getBonusPracLevel(){return 2;}
 	@Override public int getBonusAttackLevel(){return 0;}

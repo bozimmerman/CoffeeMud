@@ -38,7 +38,8 @@ import java.util.*;
 public class PlayerClass extends StdCharClass
 {
 	@Override public String ID(){return "PlayerClass";}
-	@Override public String name(){return "PlayerClass";}
+	private final static String localizedStaticName = CMLib.lang()._("PlayerClass");
+	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return ID();}
 	@Override public boolean showThinQualifyList(){return true;}
 	private static boolean abilitiesLoaded=false;

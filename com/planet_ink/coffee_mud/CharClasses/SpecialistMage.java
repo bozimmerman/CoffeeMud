@@ -35,7 +35,8 @@ import java.util.*;
 public class SpecialistMage extends Mage
 {
 	@Override public String ID(){return "SpecialistMage";}
-	@Override public String name(){return "Specialist Mage";}
+	private final static String localizedStaticName = CMLib.lang()._("Specialist Mage");
+	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return "Mage";}
 	public int domain(){return Ability.DOMAIN_ABJURATION;}
 	public int opposed(){return Ability.DOMAIN_ENCHANTMENT;}

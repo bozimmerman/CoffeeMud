@@ -36,7 +36,8 @@ import java.util.*;
 public class Monk extends StdCharClass
 {
 	@Override public String ID(){return "Monk";}
-	@Override public String name(){return "Monk";}
+	private final static String localizedStaticName = CMLib.lang()._("Monk");
+	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return "Fighter";}
 	@Override public int getBonusPracLevel(){return -1;}
 	@Override public int getBonusAttackLevel(){return 1;}

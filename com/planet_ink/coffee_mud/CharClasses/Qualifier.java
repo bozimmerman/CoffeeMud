@@ -36,7 +36,8 @@ import java.util.*;
 public class Qualifier extends StdCharClass
 {
 	@Override public String ID(){return "Qualifier";}
-	@Override public String name(){return "Qualifier";}
+	private final static String localizedStaticName = CMLib.lang()._("Qualifier");
+	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return ID();}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}

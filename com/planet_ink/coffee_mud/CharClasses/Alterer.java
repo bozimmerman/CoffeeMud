@@ -33,7 +33,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Alterer extends SpecialistMage
 {
 	@Override public String ID(){return "Alterer";}
-	@Override public String name(){return "Alterer";}
+	private final static String localizedStaticName = CMLib.lang()._("Alterer");
+	@Override public String name() { return localizedStaticName; }
 	@Override public int domain(){return Ability.DOMAIN_ALTERATION;}
 	@Override public int opposed(){return Ability.DOMAIN_EVOCATION;}
 	@Override public int availabilityCode(){return Area.THEME_FANTASY;}

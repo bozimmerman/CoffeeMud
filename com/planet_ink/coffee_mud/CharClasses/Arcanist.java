@@ -35,7 +35,8 @@ import java.util.*;
 public class Arcanist extends Thief
 {
 	@Override public String ID(){return "Arcanist";}
-	@Override public String name(){return "Arcanist";}
+	private final static String localizedStaticName = CMLib.lang()._("Arcanist");
+	@Override public String name() { return localizedStaticName; }
 	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 	@Override public String getManaFormula(){return "((@x4<@x5)/5)+(1*(1?3))"; }
 

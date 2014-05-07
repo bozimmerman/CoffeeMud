@@ -33,7 +33,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Enchanter extends SpecialistMage
 {
 	@Override public String ID(){return "Enchanter";}
-	@Override public String name(){return "Enchanter";}
+	private final static String localizedStaticName = CMLib.lang()._("Enchanter");
+	@Override public String name() { return localizedStaticName; }
 	@Override public int domain(){return Ability.DOMAIN_ENCHANTMENT;}
 	@Override public int opposed(){return Ability.DOMAIN_ABJURATION;}
 	@Override public int availabilityCode(){return Area.THEME_FANTASY;}

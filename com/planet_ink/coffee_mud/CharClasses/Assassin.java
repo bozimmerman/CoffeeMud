@@ -34,7 +34,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Assassin extends Thief
 {
 	@Override public String ID(){return "Assassin";}
-	@Override public String name(){return "Assassin";}
+	private final static String localizedStaticName = CMLib.lang()._("Assassin");
+	@Override public String name() { return localizedStaticName; }
 	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	@Override public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }

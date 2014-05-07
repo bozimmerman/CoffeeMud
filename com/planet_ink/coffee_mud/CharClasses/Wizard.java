@@ -36,7 +36,8 @@ import java.util.*;
 public class Wizard extends Mage
 {
 	@Override public String ID(){return "Wizard";}
-	@Override public String name(){return "Wizard";}
+	private final static String localizedStaticName = CMLib.lang()._("Wizard");
+	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return "Mage";}
 	@Override protected boolean grantSomeSpells(){return false;}
 

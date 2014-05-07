@@ -40,7 +40,8 @@ import java.util.*;
 public class StdCharClass implements CharClass
 {
 	@Override public String ID(){return "StdCharClass";}
-	@Override public String name(){return "mob";}
+	private final static String localizedStaticName = CMLib.lang()._("mob");
+	@Override public String name() { return localizedStaticName; }
 
 	@Override public String name(int classLevel){return name();}
 	@Override public String baseClass(){return ID();}

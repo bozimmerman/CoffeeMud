@@ -36,7 +36,8 @@ import java.util.*;
 public class Oracle extends Cleric
 {
 	@Override public String ID(){return "Oracle";}
-	@Override public String name(){return "Oracle";}
+	private final static String localizedStaticName = CMLib.lang()._("Oracle");
+	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return "Cleric";}
 	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_GOODCLERIC;}

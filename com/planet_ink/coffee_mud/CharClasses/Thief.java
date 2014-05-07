@@ -37,7 +37,8 @@ import java.util.*;
 public class Thief extends StdCharClass
 {
 	@Override public String ID(){return "Thief";}
-	@Override public String name(){return "Thief";}
+	private final static String localizedStaticName = CMLib.lang()._("Thief");
+	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return "Thief";}
 	@Override public int getBonusPracLevel(){return 1;}
 	@Override public int getBonusAttackLevel(){return 0;}
