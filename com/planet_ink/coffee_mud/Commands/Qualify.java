@@ -300,10 +300,16 @@ public class Qualify  extends Skills
 			if(!mob.isMonster())
 			{
 				final AbilityMapper.AbilityLimits limits = CMLib.ableMapper().getCommonSkillRemainders(mob);
+				if(limits.commonSkills<0)
+					limits.commonSkills=0;
 				if(limits.commonSkills < Integer.MAX_VALUE/2)
 					msg.append(_("\n\r^HYou may learn ^w@x1^H more common skills.^N",""+limits.commonSkills));
+				if(limits.craftingSkills<0)
+					limits.commonSkills=0;
 				if(limits.craftingSkills < Integer.MAX_VALUE/2)
 					msg.append(_("\n\r^HYou may learn ^w@x1^H more crafting skills.^N",""+limits.craftingSkills));
+				if(limits.nonCraftingSkills<0)
+					limits.nonCraftingSkills=0;
 				if(limits.nonCraftingSkills < Integer.MAX_VALUE/2)
 					msg.append(_("\n\r^HYou may learn ^w@x1^H more non-crafting common skills.^N",""+limits.nonCraftingSkills));
 				mob.session().wraplessPrintln(_("^!You now qualify for the following unknown abilities:^?@x1",msg.toString()));
