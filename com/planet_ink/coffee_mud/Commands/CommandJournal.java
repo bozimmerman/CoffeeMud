@@ -185,9 +185,9 @@ public class CommandJournal extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if((commands==null)||(commands.size()==1))
+		if((commands==null)||(commands.size()<2))
 		{
-			mob.tell(_("@x1 what??!?!",(commands==null)?"":commands.get(1).toString()));
+			mob.tell(_("@x1 what??!?!",((commands==null)||(commands.size()==0))?"":commands.get(0).toString()));
 			return false;
 		}
 		JournalsLibrary.CommandJournal journal=null;
