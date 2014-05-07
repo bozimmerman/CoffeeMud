@@ -1,16 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
   <meta name="generator" content="HTML Tidy, see www.w3.org" />
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Builders FAQ</title>
-  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
-<!-- Modified by Josh Mueller, 2006-05-05, fix valiadation problems, add index, hyperlink questions, remove duplicates, and fix spelling errors -->
-</head>
+  
+  <title>Builders FAQ</title><link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix valiadation problems, add index, hyperlink questions, remove duplicates, and fix spelling errors --></head>
+
 <body>
 <center>
-<table style="width: 1018px; height: 6401px;" border="1"
- bordercolor="gray" cellpadding="10" cellspacing="0">
+<table style="width: 1018px; height: 6401px;" border="1" bordercolor="gray" cellpadding="10" cellspacing="0">
   <tbody>
     <tr>
       <td colspan="2" align="left" bgcolor="#dfdfdf" width="100%">
@@ -173,27 +170,22 @@ would have to have 30 levels in both
 translate it into other human languages?</a></h3>
       <p>Getting CoffeeMud 100% translated will be difficult, but
 here's a quick way to get you the first 90% of the way there. &nbsp;</p>
-      <p>First, copy the input parser file <span
- style="font-style: italic;">resources/parser_en_TX.properties</span>
-into the same folder will a different language name, such as <span
- style="font-style: italic;">resources/parser_fr_CA.properties</span>
+      <p>First, copy the input parser file <span style="font-style: italic;">resources/parser_en_TX.properties</span>
+into the same folder will a different language name, such as <span style="font-style: italic;">resources/parser_fr_CA.properties</span>
 for Canadian French. &nbsp;</p>
-      <p>Next copy the output translation file <span
- style="font-style: italic;">resources/translation_en_TX.properties</span>
+      <p>Next copy the output translation file <span style="font-style: italic;">resources/translation_en_TX.properties</span>
 and rename the copy, just like you did with the input parser file.</p>
       <p>Open up coffeemud.ini file, find the entries for LANGUAGE= and
 COUNTRY= and change them accordingly.</p>
       <p>Open up your copy of <span style="font-style: italic;">resources/parser_??_??.properties</span>
 and scroll down until you see [command-word-processor] and a line
 underneath it which says<span style="font-weight: bold;"> #autoignore
-9999</span>. &nbsp;Remove the hash mark # so that it says&nbsp;<span
- style="font-weight: bold;">autoignore 9999</span>. &nbsp;Save the
+9999</span>. &nbsp;Remove the hash mark # so that it says&nbsp;<span style="font-weight: bold;">autoignore 9999</span>. &nbsp;Save the
 file, we will edit it again later.</p>
       <p>Open up your copy of <span style="font-style: italic;">resources/translation_??_??.properties</span>
 and scroll down until you see [session-translation] and a line
 underneath it which says<span style="font-weight: bold;"> #autoignore
-9999</span>. &nbsp;Remove the hash mark # so that it says&nbsp;<span
- style="font-weight: bold;">autoignore 9999</span>. &nbsp;Save the
+9999</span>. &nbsp;Remove the hash mark # so that it says&nbsp;<span style="font-weight: bold;">autoignore 9999</span>. &nbsp;Save the
 file, we will edit it again later.</p>
       <p>Now log into your mud as your Archon and start entering
 commands.&nbsp;As you enter commands and do things, the parser and
@@ -216,7 +208,10 @@ REPLACEEXACT "WIMPY" WITH "MAUVIETTE"<br />
       </p>
       <p>You can keep the AUTOIGNORE 9999 command at the bottom of the
 list, and it will continue to add any new strings it encounters which
-were missed the first time around.<br />
+were missed the first time around.</p><p>After
+this, it gets easy, but tedious -- you'll need to localize all the
+faction files (alignment.ini), all the help files, text files,
+lists.ini, and all the other loose files.<br />
       </p>
       <p>For everything that the above does not catch, CoffeeMud
 supports other languages through a translation
@@ -311,8 +306,7 @@ talk/answer
 questions?</a></h3>
       <p>Luckily, a great document
 has already been provided for the
-useful things which can be accomplished with the MudChat behavior. <a
- href="MudChat.html">Here it is.</a></p>
+useful things which can be accomplished with the MudChat behavior. <a href="MudChat.html">Here it is.</a></p>
       <h3><a name="q11" id="q11">How do player Tattoos work?</a></h3>
       <p>Tattoo's are intended to
 act as miscellaneous flags which
@@ -599,5 +593,4 @@ available, or available only from skills.</p>
   </tbody>
 </table>
 </center>
-</body>
-</html>
+</body></html>
