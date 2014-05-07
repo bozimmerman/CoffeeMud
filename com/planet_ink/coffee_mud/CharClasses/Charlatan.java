@@ -278,8 +278,7 @@ public class Charlatan extends StdCharClass
 			{
 				final Ability A=choices.get(a);
 				final int lql=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
-				if((mob.fetchAbility(A.ID())!=null)
-				||((lql!=classLevel)&&(lql!=classLevel-1)&&(classLevel>=25)))
+				if((lql!=classLevel)&&(lql!=classLevel-1)&&(classLevel<25))
 					choices.remove(a);
 			}
 			if(choices.size()==0)
