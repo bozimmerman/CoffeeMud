@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.BasicTech;
+package com.planet_ink.coffee_mud.Items.Basic;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -123,7 +123,7 @@ public class GenSpaceBody extends StdSpaceBody
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenElecItem)) return false;
+		if(!(E instanceof StdSpaceBody)) return false;
 		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)
 			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))
