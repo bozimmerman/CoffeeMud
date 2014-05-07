@@ -187,7 +187,7 @@ public class CommandJournal extends StdCommand
 	{
 		if((commands==null)||(commands.size()==1))
 		{
-			mob.tell(_("!!!!!"));
+			mob.tell(_("@x1 what??!?!",commands.get(1).toString()));
 			return false;
 		}
 		JournalsLibrary.CommandJournal journal=null;
