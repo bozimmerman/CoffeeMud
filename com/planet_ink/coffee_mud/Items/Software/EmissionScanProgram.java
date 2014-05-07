@@ -87,12 +87,12 @@ public class EmissionScanProgram extends GenSoftware
 			if(dirBuilder.charAt(d)=='S')
 			{
 				if(numDone==0)
-					str.append(" inside a ship");
+					str.append(_(" inside a ship"));
 				else
 				if(numDone<numTotal-1)
-					str.append(", inside a ship");
+					str.append(_(", inside a ship"));
 				else
-					str.append(", and then inside a ship");
+					str.append(_(", and then inside a ship"));
 				numDone++;
 				continue;
 			}
@@ -146,9 +146,9 @@ public class EmissionScanProgram extends GenSoftware
 						if(roomsDone.size()==1)
 						{
 							if(CMLib.flags().canBeSeenBy(M, viewerM))
-								str.append("Something on "+M.name(viewerM));
+								str.append(_("Something on @x1",M.name(viewerM)));
 							else
-								str.append("Something on someone");
+								str.append(_("Something on someone"));
 						}
 						else
 							str.append("Something");
@@ -174,9 +174,9 @@ public class EmissionScanProgram extends GenSoftware
 						if((C!=null)&&(C!=I))
 						{
 							if(CMLib.flags().canBeSeenBy(C, viewerM))
-								str.append("Something in "+C.name(viewerM));
+								str.append(_("Something in @x1",C.name(viewerM)));
 							else
-								str.append("Something inside something else");
+								str.append(_("Something inside something else"));
 						}
 						else
 						if(CMLib.flags().canBeSeenBy(I, viewerM))

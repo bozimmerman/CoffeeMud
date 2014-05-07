@@ -45,16 +45,18 @@ public class Report extends Skills
 		if(commands.size()<2)
 		{
 			final StringBuffer buf=new StringBuffer(
-								"say \"I have "+mob.curState().getHitPoints()
-							   +"/"+mob.maxState().getHitPoints()+" hit points, "
-							   +mob.curState().getMana()+"/"+mob.maxState().getMana()
-							   +" mana, "+mob.curState().getMovement()
-							   +"/"+mob.maxState().getMovement()+" move");
+								_("say \"I have @x1/@x2 hit points, @x3/@x4 mana, @x5/@x6 move",
+									""+mob.curState().getHitPoints(),
+									""+mob.maxState().getHitPoints(),
+									""+mob.curState().getMana(),
+									""+mob.maxState().getMana(),
+									""+mob.curState().getMovement(),
+									""+mob.maxState().getMovement()));
 			if((!CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
 			&&!mob.charStats().getCurrentClass().expless()
 			&&!mob.charStats().getMyRace().expless()
 			&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))
-			   buf.append(", and need "+mob.getExpNeededLevel()+" to level");
+			   buf.append(_(", and need @x1 to level",""+mob.getExpNeededLevel()));
 			buf.append(".\"");
 			final Command C=CMClass.getCommand("Say");
 			if(C!=null) C.execute(mob,CMParms.parse(buf.toString()),metaFlags);

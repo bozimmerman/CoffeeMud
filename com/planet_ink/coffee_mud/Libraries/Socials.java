@@ -370,7 +370,7 @@ public class Socials extends StdLibrary implements SocialsList
 			while((pickNewSocial)&&(mob.session()!=null)&&(!mob.session().isStopped()))
 			{
 				pickNewSocial=false;
-				final StringBuffer str=new StringBuffer("\n\rSelect a target:\n\r");
+				final StringBuffer str=new StringBuffer(_("\n\rSelect a target:\n\r"));
 				int selection=-1;
 				for(int v=0;v<socials.size();v++)
 				{
@@ -406,7 +406,7 @@ public class Socials extends StdLibrary implements SocialsList
 					}
 					str.append((v+1)+") "+S.Name().substring(x+1).toUpperCase().trim()+"\n\r");
 				}
-				str.append((socials.size()+1)+") Add a new target\n\r");
+				str.append(_("@x1) Add a new target\n\r",""+(socials.size()+1)));
 				String s=null;
 				if((rest.length()>0)&&(selection<0))
 					selection=(socials.size()+1);

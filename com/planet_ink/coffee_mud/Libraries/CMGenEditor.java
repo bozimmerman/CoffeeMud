@@ -157,7 +157,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
 		String newName="?";
-		final String promptStr="Enter a value to add/remove"+(help!=null?" (?)":"")+"\n\r:";
+		final String promptStr=_("Enter a value to add/remove@x1\n\r:",(help!=null?" (?)":""));
 		final String oldOldVal=oldVal;
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
@@ -250,7 +250,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mob.tell(showNumber+". "+FieldDisp+": '"+showVal+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
 		String newName="?";
-		final String promptStr="Enter a new value "+(emptyOK?"(or NULL)":"")+(help!=null?" (?)":"")+"\n\r:";
+		final String promptStr=_("Enter a new value @x1@x2\n\r:",(emptyOK?"(or NULL)":""),(help!=null?" (?)":""));
 		while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			newName=mob.session().prompt(promptStr,"");
@@ -4570,7 +4570,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			final StringBuffer buf=new StringBuffer();
 			buf.append(showNumber+". ");
-			buf.append("Radius: "+CMLib.english().sizeDescShort(E.radius())+", Coords in space: "+CMLib.english().coordDescShort(E.coordinates())+"\n\r");
+			buf.append(_("Radius: @x1, Coords in space: @x2\n\r",CMLib.english().sizeDescShort(E.radius()),CMLib.english().coordDescShort(E.coordinates())));
 			buf.append(showNumber+". Moving: ");
 			if(E.speed()<=0)
 				buf.append("no");
@@ -4744,9 +4744,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			final StringBuffer buf=new StringBuffer(showNumber+". ");
 			if(!logicalAnd[0])
-				buf.append("Wear on any one of: ");
+				buf.append(_("Wear on any one of: "));
 			else
-				buf.append("Worn on all of: ");
+				buf.append(_("Worn on all of: "));
 			final Wearable.CODES codes = Wearable.CODES.instance();
 			for(int l=1;l<codes.all().length;l++)
 			{
@@ -5011,7 +5011,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 			if(newName.equalsIgnoreCase("?"))
 			{
-				final StringBuffer str=new StringBuffer("Valid values: \n\r");
+				final StringBuffer str=new StringBuffer(_("Valid values: \n\r"));
 				for (final String element : Race.GENFLAG_DESCS)
 					str.append(element+"\n\r");
 				mob.tell(str.toString());
@@ -5057,7 +5057,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 			if(newName.equalsIgnoreCase("?"))
 			{
-				final StringBuffer str=new StringBuffer("Valid values: \n\r");
+				final StringBuffer str=new StringBuffer(_("Valid values: \n\r"));
 				for(final String name : codes.names())
 					str.append(name+" ");
 				mob.tell(str.toString());
@@ -5086,7 +5086,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 			if(newName.equalsIgnoreCase("?"))
 			{
-				final StringBuffer str=new StringBuffer("Valid values: \n\r");
+				final StringBuffer str=new StringBuffer(_("Valid values: \n\r"));
 				for(int i=0;i<Area.THEME_PHRASE_EXT.length;i++)
 					str.append(i+") "+Area.THEME_PHRASE_EXT[i]+"\n\r");
 				mob.tell(str.toString());
@@ -5114,7 +5114,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 			if(newName.equalsIgnoreCase("?"))
 			{
-				final StringBuffer str=new StringBuffer("Valid values: \n\r");
+				final StringBuffer str=new StringBuffer(_("Valid values: \n\r"));
 				for(int i=0;i<Area.THEME_PHRASE_EXT.length;i++)
 					str.append(i+") "+Area.THEME_PHRASE_EXT[i]+"\n\r");
 				mob.tell(str.toString());
@@ -5153,7 +5153,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			if(!found)
 			{
-				final StringBuffer str=new StringBuffer("That category does not exist.  Valid categories include: ");
+				final StringBuffer str=new StringBuffer(_("That category does not exist.  Valid categories include: "));
 				final HashSet<String> H=new HashSet<String>();
 				for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 				{
@@ -5189,7 +5189,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				R2=null;
 			if(R2==null)
 			{
-				final StringBuffer str=new StringBuffer("That race name is invalid or is generic.  Valid races include: ");
+				final StringBuffer str=new StringBuffer(_("That race name is invalid or is generic.  Valid races include: "));
 				for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 				{
 					final Race R=r.nextElement();
@@ -5223,7 +5223,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				C2=null;
 			if(C2==null)
 			{
-				final StringBuffer str=new StringBuffer("That char class name is invalid or is generic.  Valid char classes include: ");
+				final StringBuffer str=new StringBuffer(_("That char class name is invalid or is generic.  Valid char classes include: "));
 				for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 				{
 					final CharClass C=c.nextElement();
@@ -5318,7 +5318,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				{ partNum=i; break;}
 			if(partNum<0)
 			{
-				final StringBuffer str=new StringBuffer("That body part is invalid.  Valid parts include: ");
+				final StringBuffer str=new StringBuffer(_("That body part is invalid.  Valid parts include: "));
 				for (final String element : Race.BODYPARTSTR)
 					str.append(element+", ");
 				mob.tell(str.toString().substring(0,str.length()-2)+".");
@@ -5360,7 +5360,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					{ partName=S.getStatCodes()[i]; break;}
 				if(partName==null)
 				{
-					final StringBuffer str=new StringBuffer("That stat is invalid.  Valid stats include: ");
+					final StringBuffer str=new StringBuffer(_("That stat is invalid.  Valid stats include: "));
 					for(int i=0;i<S.getStatCodes().length;i++)
 						str.append(S.getStatCodes()[i]+", ");
 					mob.tell(str.toString().substring(0,str.length()-2)+".");
@@ -5441,7 +5441,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					{ partName=S.getStatCodes()[i]; break;}
 				if(partName==null)
 				{
-					final StringBuffer str=new StringBuffer("That stat is invalid.  Valid stats include: ");
+					final StringBuffer str=new StringBuffer(_("That stat is invalid.  Valid stats include: "));
 					for(int i=0;i<S.getStatCodes().length;i++)
 						str.append(S.getStatCodes()[i]+", ");
 					mob.tell(str.toString().substring(0,str.length()-2)+".");
@@ -5498,7 +5498,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					{ partNum=i; break;}
 				if(partNum<0)
 				{
-					final StringBuffer str=new StringBuffer("That stat is invalid.  Valid stats include: ");
+					final StringBuffer str=new StringBuffer(_("That stat is invalid.  Valid stats include: "));
 					for(final int i : CharStats.CODES.ALLCODES())
 						str.append(CharStats.CODES.DESC(i)+", ");
 					mob.tell(str.toString().substring(0,str.length()-2)+".");
@@ -5570,7 +5570,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						{ partName=S.getStatCodes()[i]; break;}
 				if(partName==null)
 				{
-					final StringBuffer str=new StringBuffer("That stat is invalid.  Valid stats include: ");
+					final StringBuffer str=new StringBuffer(_("That stat is invalid.  Valid stats include: "));
 					for(int i=0;i<S.getStatCodes().length;i++)
 						str.append(S.getStatCodes()[i]+", ");
 					mob.tell(str.toString().substring(0,str.length()-2)+".");
@@ -5651,7 +5651,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					{ partName=S.getStatCodes()[i]; break;}
 				if(partName==null)
 				{
-					final StringBuffer str=new StringBuffer("That stat is invalid.  Valid stats include: ");
+					final StringBuffer str=new StringBuffer(_("That stat is invalid.  Valid stats include: "));
 					for(int i=0;i<S.getStatCodes().length;i++)
 						str.append(S.getStatCodes()[i]+", ");
 					mob.tell(str.toString().substring(0,str.length()-2)+".");
@@ -5708,7 +5708,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					{ partNum=i; break;}
 				if(partNum<0)
 				{
-					final StringBuffer str=new StringBuffer("That stat is invalid.  Valid stats include: ");
+					final StringBuffer str=new StringBuffer(_("That stat is invalid.  Valid stats include: "));
 					for(final int i : CharStats.CODES.ALLCODES())
 						str.append(CharStats.CODES.DESC(i)+", ");
 					mob.tell(str.toString().substring(0,str.length()-2)+".");
@@ -6873,7 +6873,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		String list = CMParms.toStringList(me.getPositions());
 		mob.tell(_("@x1. Positions: @x2",""+showNumber,list));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		final String promptStr="Enter a position ID to edit/remove or ADD\n\r:";
+		final String promptStr=_("Enter a position ID to edit/remove or ADD\n\r:");
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			final String word=mob.session().prompt(promptStr,"");
@@ -7059,7 +7059,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.tell(_("@x1. Hashed words: @x2",""+showNumber,me.getStat("HASHEDWORDS")));
 				if((showFlag==showNumber)||(showFlag<=-999))
 				{
-					final String promptStr="Enter a word definition to add or remove\n\r:";
+					final String promptStr=_("Enter a word definition to add or remove\n\r:");
 					while((mob.session()!=null)&&(!mob.session().isStopped()))
 					{
 						String word=mob.session().prompt(promptStr,"");
@@ -7127,7 +7127,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.tell(_("@x1. Raw materials: @x2",""+showNumber,me.getStat("MATLIST")));
 				if((showFlag==showNumber)||(showFlag<=-999))
 				{
-					final String promptStr="Enter a material or resource to add or remove (?)\n\r:";
+					final String promptStr=_("Enter a material or resource to add or remove (?)\n\r:");
 					while((mob.session()!=null)&&(!mob.session().isStopped()))
 					{
 						final String word=mob.session().prompt(promptStr,"");

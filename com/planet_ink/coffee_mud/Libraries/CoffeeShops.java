@@ -117,15 +117,15 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	{
 		final StringBuffer str=new StringBuffer("");
 		if(E==null) return str.toString();
-		str.append("Interested in "+E.name()+"?");
-		str.append(" Here is some information for you:");
+		str.append(_("Interested in @x1?",E.name()));
+		str.append(_(" Here is some information for you:"));
 		if(E instanceof Physical)
 			str.append("\n\rLevel      : "+((Physical)E).phyStats().level());
 		if(E instanceof Item)
 		{
 			final Item I=(Item)E;
 			str.append("\n\rMaterial   : "+CMStrings.capitalizeAndLower(RawMaterial.CODES.NAME(I.material()).toLowerCase()));
-			str.append("\n\rWeight     : "+I.phyStats().weight()+" pounds");
+			str.append(_("\n\rWeight     : @x1 pounds",""+I.phyStats().weight()));
 			if(I instanceof Weapon)
 			{
 				str.append("\n\rWeap. Type : "+CMStrings.capitalizeAndLower(Weapon.TYPE_DESCS[((Weapon)I).weaponType()]));
@@ -134,7 +134,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			else
 			if(I instanceof Armor)
 			{
-				str.append("\n\rWear Info  : Worn on ");
+				str.append(_("\n\rWear Info  : Worn on "));
 				final Wearable.CODES codes = Wearable.CODES.instance();
 				for(final long wornCode : codes.all())
 					if(wornCode != Wearable.IN_INVENTORY)

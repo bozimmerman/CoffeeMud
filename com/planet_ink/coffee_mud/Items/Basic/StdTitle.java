@@ -307,7 +307,7 @@ public class StdTitle extends StdItem implements LandTitle
 				||(((SK.isSold(ShopKeeper.DEAL_POSTMAN))||(SK.isSold(ShopKeeper.DEAL_CLANPOSTMAN)))
 						&&(!A.getOwnerName().equals(msg.source().Name()))))
 				{
-					final String str="I'm sorry, '"+msg.tool().Name()+" is not for sale.  It already belongs to "+A.getOwnerName()+".  It should be destroyed.";
+					final String str=_("I'm sorry, '@x1 is not for sale.  It already belongs to @x2.  It should be destroyed.",msg.tool().Name(),A.getOwnerName());
 					if(((MOB)msg.target()).isMonster())
 						CMLib.commands().postSay((MOB)msg.target(),msg.source(),str,false,false);
 					else
@@ -332,7 +332,7 @@ public class StdTitle extends StdItem implements LandTitle
 				&&(!((msg.source().isMarriedToLiege())&&(A.getOwnerName().equals(msg.source().getLiegeID()))))
 				&&(msg.source().getClanRole(A.getOwnerName())==null))))
 			{
-				final String str="I'm sorry, '"+msg.tool().Name()+" must be destroyed.";
+				final String str=_("I'm sorry, '@x1 must be destroyed.",msg.tool().Name());
 				if(((MOB)msg.target()).isMonster())
 					CMLib.commands().postSay((MOB)msg.target(),msg.source(),str,false,false);
 				else

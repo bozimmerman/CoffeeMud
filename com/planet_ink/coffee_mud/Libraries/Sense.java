@@ -1591,23 +1591,23 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(!CMLib.flags().canMove(mob))
 			str.append("can't move, ");
 		if(CMLib.flags().canSeeBonusItems(mob))
-			str.append("detect magic, ");
+			str.append(_("detect magic, "));
 		if(CMLib.flags().canSeeEvil(mob))
-			str.append("detect evil, ");
+			str.append(_("detect evil, "));
 		if(CMLib.flags().canSeeGood(mob))
-			str.append("detect good, ");
+			str.append(_("detect good, "));
 		if(CMLib.flags().canSeeHidden(mob))
 			str.append("see hidden, ");
 		if(CMLib.flags().canSeeInDark(mob))
-			str.append("darkvision, ");
+			str.append(_("darkvision, "));
 		if(CMLib.flags().canSeeInfrared(mob))
-			str.append("infravision, ");
+			str.append(_("infravision, "));
 		if(CMLib.flags().canSeeInvisible(mob))
-			str.append("see invisible, ");
+			str.append(_("see invisible, "));
 		if(CMLib.flags().canSeeMetal(mob))
-			str.append("metalvision, ");
+			str.append(_("metalvision, "));
 		if(CMLib.flags().canSeeSneakers(mob))
-			str.append("see sneaking, ");
+			str.append(_("see sneaking, "));
 		if(!CMLib.flags().canSmell(mob))
 			str.append("can't smell, ");
 		if(!CMLib.flags().canSpeak(mob))

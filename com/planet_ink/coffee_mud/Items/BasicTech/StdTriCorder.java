@@ -104,7 +104,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 		final StringBuilder str=new StringBuilder("");
 		str.append("\n\r");
 		if(!activated())
-			str.append("The screen is blank.  Try activating/booting it first.");
+			str.append(_("The screen is blank.  Try activating/booting it first."));
 		else
 		{
 			final List<Software> software=getSoftware();
@@ -126,16 +126,16 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 				}
 				if(isInternal)
 				{
-					str.append("\n\rEnter \"<\" to return to the previous menu.");
+					str.append(_("\n\rEnter \"<\" to return to the previous menu."));
 				}
 				else
 				if(software.size()>0)
 				{
-					str.append("\n\rType in a command:");
+					str.append(_("\n\rType in a command:"));
 				}
 				else
 				{
-					str.append("\n\rThis system is ready to receive software.");
+					str.append(_("\n\rThis system is ready to receive software."));
 				}
 			}
 		}

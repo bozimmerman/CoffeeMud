@@ -1294,21 +1294,21 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(!acct.isSet(PlayerAccount.FLAG_ACCOUNTMENUSOFF))
 		{
 			buf.append(" ^XAccount Menu^.^N\n\r");
-			buf.append(" ^XL^.^w)^Hist characters\n\r");
+			buf.append(_(" ^XL^.^w)^Hist characters\n\r"));
 			buf.append(" ^XN^.^w)^Hew character\n\r");
 			if(acct.isSet(PlayerAccount.FLAG_CANEXPORT))
 			{
-				buf.append(" ^XI^.^w)^Hmport character\n\r");
-				buf.append(" ^XE^.^w)^Hxport character\n\r");
+				buf.append(_(" ^XI^.^w)^Hmport character\n\r"));
+				buf.append(_(" ^XE^.^w)^Hxport character\n\r"));
 			}
-			buf.append(" ^XD^.^w)^Helete/Retire character\n\r");
+			buf.append(_(" ^XD^.^w)^Helete/Retire character\n\r"));
 			buf.append(" ^XH^.^w)^Help\n\r");
 			buf.append(" ^XM^.^w)^Henu OFF\n\r");
-			buf.append(" ^XP^.^w)^Hassword change\n\r");
+			buf.append(_(" ^XP^.^w)^Hassword change\n\r"));
 			if(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("DISABLE"))
 				buf.append(" ^XE^.^w)^Hmail change\n\r");
 			buf.append(" ^XQ^.^w)^Huit (logout)\n\r");
-			buf.append("\n\r^H ^w(^HEnter your character name to login^w)^H");
+			buf.append(_("\n\r^H ^w(^HEnter your character name to login^w)^H"));
 			session.println(buf.toString());
 			buf.setLength(0);
 		}
@@ -1454,7 +1454,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 			else
 			{
-				final String promptStr=acct.isSet(PlayerAccount.FLAG_ACCOUNTMENUSOFF)?"Turn menus back on (y/N)?":"Turn menus off (y/N)?";
+				final String promptStr=acct.isSet(PlayerAccount.FLAG_ACCOUNTMENUSOFF)?_("Turn menus back on (y/N)?"):"Turn menus off (y/N)?";
 				session.promptPrint(promptStr);
 				loginObj.state=LoginState.ACCTMENU_CONFIRMCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
@@ -2324,7 +2324,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(!randomRoll || (qualifyingClassListV.size()>0)||CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 		{
 			final int max=CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
-			final StringBuffer statstr=new StringBuffer("Your current stats are: \n\r");
+			final StringBuffer statstr=new StringBuffer(_("Your current stats are: \n\r"));
 			final CharStats CT=mob.baseCharStats();
 			int total=0;
 			for(final int i : CharStats.CODES.BASECODES())

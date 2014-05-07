@@ -51,11 +51,14 @@ public class Prompt extends StdCommand
 			sess.rawPrintln(_("Your prompt is currently set at:\n\r@x1",pstats.getPrompt()));
 		else
 		{
-			final String str=CMParms.combine(commands,1);
+			String str=CMParms.combine(commands,1);
+			String showStr=str;
 			if(("DEFAULT").startsWith(str.toUpperCase()))
-				pstats.setPrompt("");
-			else
-			if(sess.confirm(_("Change your prompt to: @x1, are you sure (Y/n)?",str),_("Y")))
+			{
+				str="";
+				showStr=CMProps.getVar(CMProps.Str.DEFAULTPROMPT);
+			}
+			if(sess.confirm(_("Change your prompt to: @x1, are you sure (Y/n)?",showStr),_("Y")))
 			{
 				pstats.setPrompt(str);
 				sess.rawPrintln(_("Your prompt is currently now set at:\n\r@x1",pstats.getPrompt()));

@@ -262,7 +262,7 @@ public class Factions extends StdLibrary implements FactionManager
 		final StringBuffer msg=new StringBuffer();
 		msg.append("\n\r^.^N");
 		msg.append("+--------------------------------+-----------------------------------------+\n\r");
-		msg.append("| ^HFaction Name^N                   | ^HFaction INI Source File (Faction ID)^N    |\n\r");
+		msg.append(_("| ^HFaction Name^N                   | ^HFaction INI Source File (Faction ID)^N    |\n\r"));
 		msg.append("+--------------------------------+-----------------------------------------+\n\r");
 		for(final Enumeration<Faction> e=factionSet.elements();e.hasMoreElements();)
 		{

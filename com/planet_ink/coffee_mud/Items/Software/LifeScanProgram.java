@@ -88,12 +88,12 @@ public class LifeScanProgram extends GenSoftware
 			if(dirBuilder.charAt(d)=='S')
 			{
 				if(numDone==0)
-					str.append(" inside a ship");
+					str.append(_(" inside a ship"));
 				else
 				if(numDone<numTotal-1)
-					str.append(", inside a ship");
+					str.append(_(", inside a ship"));
 				else
-					str.append(", and then inside a ship");
+					str.append(_(", and then inside a ship"));
 				numDone++;
 				continue;
 			}

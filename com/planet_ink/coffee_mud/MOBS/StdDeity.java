@@ -200,80 +200,80 @@ public class StdDeity extends StdMOB implements Deity
 			switch(DT.triggerCode)
 			{
 			case TRIGGER_SAY:
-				buf.append("the player should say '"+DT.parm1.toLowerCase()+"'");
+				buf.append(_("the player should say '@x1'",DT.parm1.toLowerCase()));
 				break;
 			case TRIGGER_READING:
 				if(DT.parm1.equals("0"))
-					buf.append("the player should read something");
+					buf.append(_("the player should read something"));
 				else
-					buf.append("the player should read '"+DT.parm1.toLowerCase()+"'");
+					buf.append(_("the player should read '@x1'",DT.parm1.toLowerCase()));
 				break;
 			case TRIGGER_TIME:
-				buf.append("the hour of the day is "+DT.parm1.toLowerCase()+"");
+				buf.append(_("the hour of the day is @x1",DT.parm1.toLowerCase()));
 				break;
 			case TRIGGER_PUTTHING:
-				buf.append("the player should put "+DT.parm1.toLowerCase()+" in "+DT.parm2.toLowerCase());
+				buf.append(_("the player should put @x1 in @x2",DT.parm1.toLowerCase(),DT.parm2.toLowerCase()));
 				break;
 			case TRIGGER_BURNTHING:
-				buf.append("the player should burn "+DT.parm1.toLowerCase());
+				buf.append(_("the player should burn @x1",DT.parm1.toLowerCase()));
 				break;
 			case TRIGGER_DRINK:
-				buf.append("the player should drink "+DT.parm1.toLowerCase());
+				buf.append(_("the player should drink @x1",DT.parm1.toLowerCase()));
 				break;
 			case TRIGGER_EAT:
-				buf.append("the player should eat "+DT.parm1.toLowerCase());
+				buf.append(_("the player should eat @x1",DT.parm1.toLowerCase()));
 				break;
 			case TRIGGER_INROOM:
 				{
 				if(DT.parm1.equalsIgnoreCase("holy")
 				||DT.parm1.equalsIgnoreCase("unholy")
 				||DT.parm1.equalsIgnoreCase("balance"))
-					buf.append("the player should be in the deities room of infused "+DT.parm1.toLowerCase()+"-ness.");
+					buf.append(_("the player should be in the deities room of infused @x1-ness.",DT.parm1.toLowerCase()));
 				else
 				{
 					final Room R=CMLib.map().getRoom(DT.parm1);
 					if(R==null)
-						buf.append("the player should be in some unknown place");
+						buf.append(_("the player should be in some unknown place"));
 					else
-						buf.append("the player should be in '"+R.displayText(null)+"'");
+						buf.append(_("the player should be in '@x1'",R.displayText(null)));
 				}
 				}
 				break;
 			case TRIGGER_RIDING:
-				buf.append("the player should be on "+DT.parm1.toLowerCase());
+				buf.append(_("the player should be on @x1",DT.parm1.toLowerCase()));
 				break;
 			case TRIGGER_CAST:
 				{
 				final Ability A=CMClass.findAbility(DT.parm1);
 				if(A==null)
-					buf.append("the player should cast '"+DT.parm1+"'");
+					buf.append(_("the player should cast '@x1'",DT.parm1));
 				else
-					buf.append("the player should cast '"+A.name()+"'");
+					buf.append(_("the player should cast '@x1'",A.name()));
 				}
 				break;
 			case TRIGGER_EMOTE:
-				buf.append("the player should emote '"+DT.parm1.toLowerCase()+"'");
+				buf.append(_("the player should emote '@x1'",DT.parm1.toLowerCase()));
 				break;
 			case TRIGGER_RANDOM:
 				buf.append(DT.parm1+"% of the time");
 				break;
 			case TRIGGER_WAIT:
-				buf.append("wait "+((CMath.s_int(DT.parm1)*CMProps.getTickMillis())/1000)+" seconds");
+				buf.append(_("wait @x1 seconds",""+((CMath.s_int(DT.parm1)*CMProps.getTickMillis())/1000)));
 				break;
 			case TRIGGER_YOUSAY:
-				buf.append("then you will automatically say '"+DT.parm1.toLowerCase()+"'");
+				buf.append(_("then you will automatically say '@x1'",DT.parm1.toLowerCase()));
 				break;
 			case TRIGGER_OTHERSAY:
-				buf.append("then all others will say '"+DT.parm1.toLowerCase()+"'");
+				buf.append(_("then all others will say '@x1'",DT.parm1.toLowerCase()));
 				break;
 			case TRIGGER_ALLSAY:
-				buf.append("then all will say '"+DT.parm1.toLowerCase()+"'");
+				buf.append(_("then all will say '@x1'",DT.parm1.toLowerCase()));
 				break;
 			case TRIGGER_CHECK:
 				buf.append(CMLib.masking().maskDesc(DT.parm1));
 				break;
 			case TRIGGER_PUTVALUE:
-				buf.append("the player should put an item worth at least "+DT.parm1.toLowerCase()+" in "+DT.parm2.toLowerCase());
+				buf.append(_("the player should put an item worth at least @x1 in @x2",DT.parm1.toLowerCase(),DT.parm2.toLowerCase()));
 				break;
 			case TRIGGER_PUTMATERIAL:
 				{
@@ -286,7 +286,7 @@ public class StdDeity extends StdMOB implements Deity
 					else
 					if(RawMaterial.CODES.IS_VALID(t))
 						material=RawMaterial.CODES.NAME(t).toLowerCase();
-					buf.append("the player puts an item made of "+material+" in "+DT.parm2.toLowerCase());
+					buf.append(_("the player puts an item made of @x1 in @x2",material,DT.parm2.toLowerCase()));
 				}
 				break;
 			case TRIGGER_BURNMATERIAL:
@@ -300,20 +300,20 @@ public class StdDeity extends StdMOB implements Deity
 					else
 					if(RawMaterial.CODES.IS_VALID(t))
 						material=RawMaterial.CODES.NAME(t).toLowerCase();
-					buf.append("the player should burn an item made of "+material);
+					buf.append(_("the player should burn an item made of @x1",material));
 				}
 				break;
 			case TRIGGER_BURNVALUE:
-				buf.append("the player should burn an item worth at least "+DT.parm1.toLowerCase());
+				buf.append(_("the player should burn an item worth at least @x1",DT.parm1.toLowerCase()));
 				break;
 			case TRIGGER_SITTING:
-				buf.append("the player should sit down");
+				buf.append(_("the player should sit down"));
 				break;
 			case TRIGGER_STANDING:
-				buf.append("the player should stand up");
+				buf.append(_("the player should stand up"));
 				break;
 			case TRIGGER_SLEEPING:
-				buf.append("the player should go to sleep");
+				buf.append(_("the player should go to sleep"));
 				break;
 			}
 		}

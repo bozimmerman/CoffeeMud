@@ -517,7 +517,7 @@ public class StdJournal extends StdItem
 				buf.append((StringBuffer)selections.elementAt(v));
 			}
 			if(notify)
-				buf.append("\n\rUse READ ALL [JOURNAL] to see missing entries.");
+				buf.append(_("\n\rUse READ ALL [JOURNAL] to see missing entries."));
 		}
 		else
 		{

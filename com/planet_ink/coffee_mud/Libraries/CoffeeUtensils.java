@@ -1206,16 +1206,16 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				case 'H': { buf.append("^<MaxHp^>"+mob.maxState().getHitPoints()+"^</MaxHp^>"); c++; break;}
 				case 'I': {   if((CMLib.flags().isCloaked(mob))
 							  &&(((mob.phyStats().disposition()&PhyStats.IS_NOT_SEEN)!=0)))
-								  buf.append("Wizinvisible");
+								  buf.append(_("Wizinvisible"));
 							  else
 							  if(CMLib.flags().isCloaked(mob))
 								  buf.append("Cloaked");
 							  else
 							  if(!CMLib.flags().isSeen(mob))
-								  buf.append("Undetectable");
+								  buf.append(_("Undetectable"));
 							  else
 							  if(CMLib.flags().isInvisible(mob)&&CMLib.flags().isHidden(mob))
-								  buf.append("Hidden/Invisible");
+								  buf.append(_("Hidden/Invisible"));
 							  else
 							  if(CMLib.flags().isInvisible(mob))
 								  buf.append("Invisible");

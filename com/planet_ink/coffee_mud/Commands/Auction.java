@@ -253,7 +253,7 @@ public class Auction extends Channel implements Tickable
 			final StringBuffer buf=new StringBuffer("");
 			if((liveData.auctioningI!=null)&&(liveData.auctioningM!=null))
 			{
-				buf.append("\n\r^HCurrent *live* auction: ^N\n\r");
+				buf.append(_("\n\r^HCurrent *live* auction: ^N\n\r"));
 				buf.append(liveAuctionStatus()+"\n\r");
 			}
 			else

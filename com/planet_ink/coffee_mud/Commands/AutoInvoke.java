@@ -66,7 +66,7 @@ public class AutoInvoke extends StdCommand
 				effects.addElement(A.ID());
 		}
 
-		final StringBuffer str=new StringBuffer("^xAuto-invoking abilities:^?^.\n\r^N");
+		final StringBuffer str=new StringBuffer(_("^xAuto-invoking abilities:^?^.\n\r^N"));
 		int col=0;
 		for(int a=0;a<abilities.size();a++)
 		{

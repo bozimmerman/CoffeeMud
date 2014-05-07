@@ -51,7 +51,7 @@ public class Ignore extends StdCommand
 				mob.tell(_("You have no names on your ignore list.  Use IGNORE ADD to add more."));
 			else
 			{
-				final StringBuffer str=new StringBuffer("You are ignoring: ");
+				final StringBuffer str=new StringBuffer(_("You are ignoring: "));
 				for (final Object element : h)
 					str.append(((String)element)+" ");
 				mob.tell(str.toString());

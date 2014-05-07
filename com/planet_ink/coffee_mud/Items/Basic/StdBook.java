@@ -199,7 +199,7 @@ public class StdBook extends StdItem
 		final List<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(Journal);
 		if((which<0)||(journal==null)||(which>=journal.size()))
 		{
-			buf.append("\n\rTable of Contents\n\r");
+			buf.append(_("\n\rTable of Contents\n\r"));
 			buf.append("-------------------------------------------------------------------------\n\r");
 			if(journal==null)
 			{
@@ -262,7 +262,7 @@ public class StdBook extends StdItem
 				buf.append((StringBuffer)selections.elementAt(v));
 			}
 			if(notify)
-				buf.append("\n\rUse READ ALL [BOOK] to see missing chapters.");
+				buf.append(_("\n\rUse READ ALL [BOOK] to see missing chapters."));
 		}
 		else
 		{

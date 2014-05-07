@@ -144,7 +144,7 @@ public class ForumInfo extends StdWebMacro
 		{
 			if((stats.imagePath==null)
 			||(stats.imagePath.trim().length()==0))
-				str.append( "images/lilcm.jpg").append(", ");
+				str.append( _("images/lilcm.jpg")).append(", ");
 			else
 				str.append( ""+stats.threads).append(", ");
 		}

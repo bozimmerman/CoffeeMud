@@ -52,7 +52,7 @@ public class Friends extends StdCommand
 				mob.tell(_("You have no friends listed.  Use FRIENDS ADD to add more."));
 			else
 			{
-				final StringBuffer str=new StringBuffer("Your listed friends are: ");
+				final StringBuffer str=new StringBuffer(_("Your listed friends are: "));
 				for (final Object element : h)
 					str.append(((String)element)+" ");
 				mob.tell(str.toString());

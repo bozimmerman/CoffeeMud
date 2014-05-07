@@ -1038,7 +1038,7 @@ public class ListCmd extends StdCommand
 				}
 			}
 			if(numMobs>0)
-				buf.append(numMobs+" mobs\t"+(totalLevels/numMobs)+" avg levels\t");
+				buf.append(_("@x1 mobs\t@x2 avg levels\t",""+numMobs,""+(totalLevels/numMobs)));
 			if((numMobs>0)&&(useFaction!=null)&&(CMLib.factions().getFaction(useFaction.factionID())!=null))
 				buf.append((totalAlignment/numMobs)+" avg "+useFaction.name());
 			if(linkedGroups.size()>0)
@@ -1049,7 +1049,7 @@ public class ListCmd extends StdCommand
 			}
 			buf.append("\t"+ext.toString()+"\n\r");
 		}
-		buf.append("There were "+areaLinkGroups.size()+" area groups:");
+		buf.append(_("There were @x1 area groups:",""+areaLinkGroups.size()));
 		for(int g=areaLinkGroups.size()-1;g>=0;g--)
 		{
 			if(areaLinkGroups.get(g).size()==0)
@@ -1068,7 +1068,7 @@ public class ListCmd extends StdCommand
 
 		}
 		buf.append("\n\r");
-		buf.append("Small Group Areas:\t"+unlinkedGroups.toString());
+		buf.append(_("Small Group Areas:\t@x1",unlinkedGroups.toString()));
 		Log.sysOut("Lister",buf.toString());
 		return buf;
 	}
@@ -1113,35 +1113,35 @@ public class ListCmd extends StdCommand
 		}catch(final Exception e){}
 		final StringBuilder buf=new StringBuilder("");
 		final long totalTime=System.currentTimeMillis()-CMSecurity.getStartTime();
-		buf.append("The system has been running for ^H"+CMLib.english().returnTime(totalTime,0)+"^?.\n\r");
+		buf.append(_("The system has been running for ^H@x1^?.\n\r",""+CMLib.english().returnTime(totalTime,0)));
 		final long free=Runtime.getRuntime().freeMemory()/1024;
 		final long total=Runtime.getRuntime().totalMemory()/1024;
-		buf.append("The system is utilizing ^H"+(total-free)+"^?kb out of ^H"+total+"^?kb.\n\r");
-		buf.append("\n\r^xTickables report:^.^N\n\r");
+		buf.append(_("The system is utilizing ^H@x1^?kb out of ^H@x2^?kb.\n\r",""+(total-free),""+total));
+		buf.append(_("\n\r^xTickables report:^.^N\n\r"));
 		final String totalTickers=CMLib.threads().systemReport("totalTickers");
 		final String tickGroupSize=CMLib.threads().systemReport("TICKGROUPSIZE");
 		final long totalMillis=CMath.s_long(CMLib.threads().systemReport("totalMillis"));
 		final long totalTicks=CMath.s_long(CMLib.threads().systemReport("totalTicks"));
-		buf.append("There are ^H"+totalTickers+"^? ticking objects in ^H"+tickGroupSize+"^? groups.\n\r");
-		buf.append("The ticking objects have consumed: ^H"+CMLib.english().returnTime(totalMillis,totalTicks)+"^?.\n\r");
+		buf.append(_("There are ^H@x1^? ticking objects in ^H@x2^? groups.\n\r",totalTickers,tickGroupSize));
+		buf.append(_("The ticking objects have consumed: ^H@x1^?.\n\r",CMLib.english().returnTime(totalMillis,totalTicks)));
 		/*
 		String topGroupNumber=CMLib.threads().systemReport("topGroupNumber");
 		long topGroupMillis=CMath.s_long(CMLib.threads().systemReport("topGroupMillis"));
 		long topGroupTicks=CMath.s_long(CMLib.threads().systemReport("topGroupTicks"));
 		long topObjectMillis=CMath.s_long(CMLib.threads().systemReport("topObjectMillis"));
 		long topObjectTicks=CMath.s_long(CMLib.threads().systemReport("topObjectTicks"));
-		buf.append("The most active group, #^H"+topGroupNumber+"^?, has consumed: ^H"+CMLib.english().returnTime(topGroupMillis,topGroupTicks)+"^?.\n\r");
+		buf.append(_("The most active group, #^H@x1^?, has consumed: ^H@x2^?.\n\r",topGroupNumber,CMLib.english().returnTime(topGroupMillis,topGroupTicks)));
 		String topObjectClient=CMLib.threads().systemReport("topObjectClient");
 		String topObjectGroup=CMLib.threads().systemReport("topObjectGroup");
 		if(topObjectClient.length()>0)
 		{
-			buf.append("The most active object has been '^H"+topObjectClient+"^?', from group #^H"+topObjectGroup+"^?.\n\r");
-			buf.append("That object has consumed: ^H"+CMLib.english().returnTime(topObjectMillis,topObjectTicks)+"^?.\n\r");
+			buf.append(_("The most active object has been '^H@x1^?', from group #^H@x2^?.\n\r",topObjectClient,topObjectGroup));
+			buf.append(_("That object has consumed: ^H@x1^?.\n\r",CMLib.english().returnTime(topObjectMillis,topObjectTicks)));
 		}
 		*/
 		buf.append("\n\r");
-		buf.append("^xServices report:^.^N\n\r");
-		buf.append("There are ^H"+CMLib.threads().systemReport("numactivethreads")+"^? active out of ^H"+CMLib.threads().systemReport("numthreads")+"^? live worker threads.\n\r");
+		buf.append(_("^xServices report:^.^N\n\r"));
+		buf.append(_("There are ^H@x1^? active out of ^H@x2^? live worker threads.\n\r",CMLib.threads().systemReport("numactivethreads"),CMLib.threads().systemReport("numthreads")));
 		int threadNum=0;
 		String threadName=CMLib.threads().systemReport("Thread"+threadNum+"name");
 		while(threadName.trim().length()>0)
@@ -1154,19 +1154,19 @@ public class ListCmd extends StdCommand
 			threadName=CMLib.threads().systemReport("Thread"+threadNum+"name");
 		}
 		buf.append("\n\r");
-		buf.append("^xSession report:^.^N\n\r");
+		buf.append(_("^xSession report:^.^N\n\r"));
 		final long totalMOBMillis=CMath.s_long(CMLib.threads().systemReport("totalMOBMillis"));
 		final long totalMOBTicks=CMath.s_long(CMLib.threads().systemReport("totalMOBTicks"));
-		buf.append("There are ^H"+CMLib.sessions().getCountLocalOnline()+"^? ticking players logged on.\n\r");
-		buf.append("The ticking players have consumed: ^H"+CMLib.english().returnTime(totalMOBMillis,totalMOBTicks)+"^?.\n\r");
+		buf.append(_("There are ^H@x1^? ticking players logged on.\n\r",""+CMLib.sessions().getCountLocalOnline()));
+		buf.append(_("The ticking players have consumed: ^H@x1^?.\n\r",""+CMLib.english().returnTime(totalMOBMillis,totalMOBTicks)));
 		/*
 		long topMOBMillis=CMath.s_long(CMLib.threads().systemReport("topMOBMillis"));
 		long topMOBTicks=CMath.s_long(CMLib.threads().systemReport("topMOBTicks"));
 		String topMOBClient=CMLib.threads().systemReport("topMOBClient");
 		if(topMOBClient.length()>0)
 		{
-			buf.append("The most active mob has been '^H"+topMOBClient+"^?'\n\r");
-			buf.append("That mob has consumed: ^H"+CMLib.english().returnTime(topMOBMillis,topMOBTicks)+"^?.\n\r");
+			buf.append(_("The most active mob has been '^H@x1^?'\n\r",topMOBClient));
+			buf.append(_("That mob has consumed: ^H@x1^?.\n\r",CMLib.english().returnTime(topMOBMillis,topMOBTicks)));
 		}
 		*/
 		return buf;
@@ -1519,7 +1519,7 @@ public class ListCmd extends StdCommand
 	{
 		final StringBuilder buf=new StringBuilder("");
 		if(CMLib.quests().numQuests()==0)
-			buf.append("No quests loaded.");
+			buf.append(_("No quests loaded."));
 		else
 		{
 			buf.append("\n\r^xQuest Report:^.^N\n\r");
@@ -1539,7 +1539,7 @@ public class ListCmd extends StdCommand
 							minsLeft="(Eternal)";
 
 						if(Q.isCopy())
-							buf.append("copy running "+minsLeft);
+							buf.append(_("copy running @x1",minsLeft));
 						else
 							buf.append("running "+minsLeft);
 					}
@@ -1554,12 +1554,12 @@ public class ListCmd extends StdCommand
 						{
 							min=min*CMProps.getTickMillis();
 							if(min>60000)
-								buf.append("waiting ("+(min/60000)+" minutes left)");
+								buf.append(_("waiting (@x1 minutes left)",""+(min/60000)));
 							else
-								buf.append("waiting ("+(min/1000)+" seconds left)");
+								buf.append(_("waiting (@x1 seconds left)",""+(min/1000)));
 						}
 						else
-							buf.append("waiting ("+min+" minutes left)");
+							buf.append(_("waiting (@x1 minutes left)",""+min));
 					}
 					else
 						buf.append("loaded");
@@ -1576,7 +1576,7 @@ public class ListCmd extends StdCommand
 		final List<String> journals=CMLib.database().DBReadJournals();
 
 		if(journals.size()==0)
-			buf.append("No journals exits.");
+			buf.append(_("No journals exits."));
 		else
 		{
 			final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(5.0,viewerS);
@@ -2219,15 +2219,15 @@ public class ListCmd extends StdCommand
 			final List<String> l=CMLib.login().getExpiredList();
 			if(l.size()>0)
 			{
-				buf.append("\n\rThere are currently "+l.size()+" expired "+theWord+"s.\n\r");
+				buf.append(_("\n\rThere are currently @x1 expired @x2s.\n\r",""+l.size(),theWord));
 				buf.append(CMLib.lister().reallyList2Cols(mob,new IteratorEnumeration<String>(l.iterator())).toString());
-				buf.append("\n\r\n\rUse EXPIRE command to alter them.^?^.\n\r");
+				buf.append(_("\n\r\n\rUse EXPIRE command to alter them.^?^.\n\r"));
 			}
 			else
-				buf.append("\n\rThere are no expired "+theWord+"s at this time.\n\r");
+				buf.append(_("\n\rThere are no expired @x1s at this time.\n\r",theWord));
 		}
 		else
-			buf.append("\n\rAccount expiration system is not enabled on this mud.\n\r");
+			buf.append(_("\n\rAccount expiration system is not enabled on this mud.\n\r"));
 		return buf.toString();
 	}
 
@@ -2461,7 +2461,7 @@ public class ListCmd extends StdCommand
 			if(R.roomID().length()==0) continue;
 			set=CMLib.database().DBReadRoomData(CMLib.map().getExtendedRoomID(R),false);
 			if((set==null)||(set.size()==0))
-				buf.append("'"+CMLib.map().getExtendedRoomID(R)+"' could not be read from the database!\n\r");
+				buf.append(_("'@x1' could not be read from the database!\n\r",CMLib.map().getExtendedRoomID(R)));
 			else
 			{
 				TR=set.entrySet().iterator().next().getValue();

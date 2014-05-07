@@ -42,7 +42,7 @@ public class Config extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		final StringBuffer msg=new StringBuffer("^HYour configuration flags:^?\n\r");
+		final StringBuffer msg=new StringBuffer(_("^HYour configuration flags:^?\n\r"));
 		for(int i=0;i<MOB.AUTODESC.length;i++)
 		{
 			if((MOB.AUTODESC[i].equalsIgnoreCase("SYSMSGS"))&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SYSMSGS))))

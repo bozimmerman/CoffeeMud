@@ -82,7 +82,7 @@ public class HealthScanProgram extends GenSoftware
 		str.append(M.name(viewerM)+" is a "+genderName+" "+M.charStats().getMyRace().name()+".\n\r");
 		final String age=CMLib.flags().getAge(M);
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.ALL_AGEING))
-			str.append("Biological age: "+age+".\n\r");
+			str.append(_("Biological age: @x1.\n\r",age));
 		str.append("Health: "+CMath.toPct(M.curState().getHitPoints()/M.maxState().getHitPoints())
 				+"  "+CMStrings.removeColors(M.healthText(viewerM))+"\n\r");
 		final List<Ability> diseases=CMLib.flags().domainAffects(M, Ability.ACODE_DISEASE);
@@ -94,10 +94,10 @@ public class HealthScanProgram extends GenSoftware
 				str.append(CMath.appendNumAppendage(((DiseaseAffect)A).difficultyLevel())).append(" level");
 				spreadBits=CMath.getAllBitsSet(((DiseaseAffect)A).spreadBitmap());
 			}
-			str.append(A.name()+" has been detected");
+			str.append(_("@x1 has been detected",A.name()));
 			if(spreadBits.length>0)
 			{
-				str.append(", which is spread by: ");
+				str.append(_(", which is spread by: "));
 				final List<String> spreadList=new ArrayList<String>();
 				for(final int i : spreadBits)
 					spreadList.add(DiseaseAffect.SPREAD_DESCS[i]);

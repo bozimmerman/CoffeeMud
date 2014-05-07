@@ -810,7 +810,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 					else
 					{
 						StringBuffer str=new StringBuffer("");
-						str.append("\n\rItems in your postal box here:\n\r");
+						str.append(_("\n\rItems in your postal box here:\n\r"));
 						str.append("^x[COD     ][From           ][Sent           ][Item                        ]^.^N");
 						mob.tell(str.toString());
 						for(int i=0;i<V.size();i++)
@@ -836,12 +836,12 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 					}
 					final StringBuffer str=new StringBuffer("\n\r^N");
 					if(codCharge)
-						str.append("* COD charges above include all shipping costs.\n\r");
-					str.append("* This branch charges minimum "+CMLib.beanCounter().nameCurrencyShort(this,minimumPostage())+" postage for first pound.\n\r");
-					str.append("* An additional "+CMLib.beanCounter().nameCurrencyShort(this,postagePerPound())+" per pound is charged for packages.\n\r");
-					str.append("* A charge of "+CMLib.beanCounter().nameCurrencyShort(this,holdFeePerPound())+" per pound per month is charged for holding.\n\r");
+						str.append(_("* COD charges above include all shipping costs.\n\r"));
+					str.append(_("* This branch charges minimum @x1 postage for first pound.\n\r",CMLib.beanCounter().nameCurrencyShort(this,minimumPostage())));
+					str.append(_("* An additional @x1 per pound is charged for packages.\n\r",CMLib.beanCounter().nameCurrencyShort(this,postagePerPound())));
+					str.append(_("* A charge of @x1 per pound per month is charged for holding.\n\r",CMLib.beanCounter().nameCurrencyShort(this,holdFeePerPound())));
 					str.append("* To forward your mail, 'say \""+name()+"\" \"forward <areaname>\"'.\n\r");
-					str.append("* To close your box, 'say \""+name()+"\" close'.\n\r");
+					str.append(_("* To close your box, 'say \"@x1\" close'.\n\r",name()));
 					mob.tell(str.toString());
 				}
 				return;
@@ -948,11 +948,11 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 					}
 					final StringBuffer str=new StringBuffer("");
 					if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
-						str.append(CMStrings.capitalizeFirstLetter(senderName)+" does not have a postal box at this branch, I'm afraid.");
+						str.append(_("@x1 does not have a postal box at this branch, I'm afraid.",CMStrings.capitalizeFirstLetter(senderName)));
 					else
-						str.append("You don't have a postal box at this branch, I'm afraid.");
+						str.append(_("You don't have a postal box at this branch, I'm afraid."));
 					if(postalChain().length()>0)
-						str.append("\n\rThis branch is part of the "+postalChain()+" postal chain.");
+						str.append(_("\n\rThis branch is part of the @x1 postal chain.",postalChain()));
 					CMLib.commands().postSay(this,mob,str.toString()+"^T",true,false);
 					mob.tell(_("Use 'say \"@x1\" open' to open a box here@x2",name(),((feeForNewBox()<=0.0)?".":(" for "+CMLib.beanCounter().nameCurrencyShort(this,feeForNewBox())+"."))));
 					return false;

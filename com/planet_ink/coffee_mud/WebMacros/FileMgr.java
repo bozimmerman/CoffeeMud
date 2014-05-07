@@ -144,9 +144,9 @@ public class FileMgr extends StdWebMacro
 						if(dF.canVFSEquiv())
 						{
 							if(!dF.deleteVFS())
-								returnMsg.append("File `::"+last+"` not deleted -- error!  ");
+								returnMsg.append(_("File `::@x1` not deleted -- error!  ",last));
 							else
-								returnMsg.append("File `::"+last+"` successfully deleted");
+								returnMsg.append(_("File `::@x1` successfully deleted",last));
 						}
 					}
 					if(!parms.containsKey("LOCAL") && !parms.containsKey("BOTH"))
@@ -155,21 +155,21 @@ public class FileMgr extends StdWebMacro
 						if(dF.canLocalEquiv())
 						{
 							if(!dF.deleteLocal())
-								returnMsg.append("File `//"+last+"` not deleted -- error!  ");
+								returnMsg.append(_("File `//@x1` not deleted -- error!  ",last));
 							else
-								returnMsg.append("File `//"+last+"` successfully deleted");
+								returnMsg.append(_("File `//@x1` successfully deleted",last));
 						}
 					}
 					*/
 					if((!F.canWrite())
 					||(!F.saveText(s)))
-						returnMsg.append("File `"+prefix+last+"` not updated -- error!");
+						returnMsg.append(_("File `@x1@x2` not updated -- error!",prefix,last));
 					if(parms.containsKey("BOTH"))
 					{
 						F=new CMFile("//"+filePath+file,M);
 						if((!F.canWrite())
 						||(!F.saveText(s)))
-							returnMsg.append("File `//"+last+"` not updated -- error!");
+							returnMsg.append(_("File `//@x1` not updated -- error!",last));
 					}
 					if(returnMsg.length()>0) return returnMsg.toString();
 				}

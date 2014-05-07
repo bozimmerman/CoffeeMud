@@ -323,7 +323,7 @@ public class StdLawBook extends StdItem
 							}
 						}
 					}
-					msg.append("\n\rSelect a sentence ("+oldSentence+"): ");
+					msg.append(_("\n\rSelect a sentence (@x1): ",oldSentence));
 					String t=mob.session().prompt(msg.toString(),oldSentence);
 					for (final String element : Law.PUNISHMENT_DESCS)
 					{
@@ -341,7 +341,7 @@ public class StdLawBook extends StdItem
 					{
 						while(t==null)
 						{
-							msg=new StringBuffer("Sentence Flags ( ");
+							msg=new StringBuffer(_("Sentence Flags ( "));
 							for (final String element : Law.PUNISHMENTMASK_DESCS)
 							{
 								String sentence=element;
@@ -355,7 +355,7 @@ public class StdLawBook extends StdItem
 								if(t.equalsIgnoreCase(oldSentence)) continue;
 								oldFlags.append(t+((String)V2.elementAt(v,2))+" ");
 							}
-							msg.append("\n\rSelect a flag to toggle or RETURN ("+oldFlags+"): ");
+							msg.append(_("\n\rSelect a flag to toggle or RETURN (@x1): ",oldFlags.toString()));
 							int selectedMask=-1;
 							t=mob.session().prompt(msg.toString(),"");
 							if(t.length()==0) break;
@@ -852,7 +852,7 @@ public class StdLawBook extends StdItem
 			String item="";
 			final List<String> V=CMParms.parseSemicolons(S,false);
 			if((S.length()==0)||(V.size()==0))
-				str.append("Not defined");
+				str.append(_("Not defined"));
 			else
 			{
 				room=V.get(0);

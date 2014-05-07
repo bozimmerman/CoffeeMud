@@ -206,7 +206,7 @@ public class MOTD extends StdCommand
 							mymsgs++;
 					}
 					if(mymsgs>0)
-						buf.append("\n\r^ZYou have mail waiting. Enter 'EMAIL BOX' to read.^?^.\n\r");
+						buf.append(_("\n\r^ZYou have mail waiting. Enter 'EMAIL BOX' to read.^?^.\n\r"));
 				}
 
 				if((CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDPLAYERS))
@@ -215,8 +215,8 @@ public class MOTD extends StdCommand
 					final List<String> l=CMLib.login().getExpiredList();
 					if(l.size()>0)
 					{
-						buf.append("\n\r^XThere are currently "+l.size()+" expired "+((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)?"accounts":"characters"));
-						buf.append(".  Enter LIST EXPIRED to view them.^?^.\n\r");
+						buf.append(_("\n\r^XThere are currently @x1 expired "+((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)?"accounts":"characters"),""+l.size()));
+						buf.append(_(".  Enter LIST EXPIRED to view them.^?^.\n\r"));
 					}
 				}
 
@@ -225,13 +225,13 @@ public class MOTD extends StdCommand
 					if(buf.length()>0)
 					{
 						if(qQVec.size()>0)
-							buf.append("\n\r^HYou are on "+qQVec.size()+" quest(s).  Enter QUESTS to see them!.^?^.\n\r");
+							buf.append(_("\n\r^HYou are on @x1 quest(s).  Enter QUESTS to see them!.^?^.\n\r",""+qQVec.size()));
 						mob.session().wraplessPrintln("\n\r--------------------------------------\n\r"+buf.toString());
 						if(pause){ mob.session().prompt(_("\n\rPress ENTER: "),10000); mob.session().println("\n\r");}
 					}
 					else
 					if(qQVec.size()>0)
-						buf.append("\n\r^HYou are on "+qQVec.size()+" quest(s).  Enter QUESTS to see them!.^?^.\n\r");
+						buf.append(_("\n\r^HYou are on @x1 quest(s).  Enter QUESTS to see them!.^?^.\n\r",""+qQVec.size()));
 					else
 					if(CMParms.combine(commands,1).equalsIgnoreCase("AGAIN"))
 						mob.session().println(_("No @x1 to re-read.",what));

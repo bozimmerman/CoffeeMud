@@ -42,7 +42,7 @@ public class FactionList extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		final StringBuffer msg=new StringBuffer("\n\r^HFaction Standings:^?^N\n\r");
+		final StringBuffer msg=new StringBuffer(_("\n\r^HFaction Standings:^?^N\n\r"));
 		boolean none=true;
 		final XVector<String> list=new XVector<String>(mob.fetchFactions());
 		list.sort();

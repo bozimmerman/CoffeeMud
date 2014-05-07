@@ -23,7 +23,6 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-
 import com.planet_ink.coffee_mud.core.exceptions.*;
 
 import java.io.File;
@@ -522,5 +521,10 @@ public class StdWebMacro implements WebMacro
 		for(final Pair<String,String> P : requestParsed)
 			requestParms.put(P.first,P.second);
 		return requestParms;
+	}
+	
+	public String _(final String str, final String ... xs)
+	{
+		return CMLib.lang().fullSessionTranslation(str, xs);
 	}
 }

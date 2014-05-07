@@ -477,7 +477,7 @@ public class Where extends StdCommand
 					whereAdd(alignVec,A,alignDiff);
 				}
 			}
-			final StringBuffer msg=new StringBuffer("You are currently in: ^H"+mob.location().getArea().name()+"^?\n\r");
+			final StringBuffer msg=new StringBuffer(_("You are currently in: ^H@x1^?\n\r",mob.location().getArea().name()));
 			if((!CMSecurity.isDisabled(CMSecurity.DisFlag.ROOMVISITS))&&(mob.playerStats()!=null))
 				msg.append(_("You have explored @x1% of this area and @x2% of the world.\n\r",""+mob.playerStats().percentVisited(mob,mob.location().getArea()),""+mob.playerStats().percentVisited(mob,null)));
 			final DVector scores=new DVector(2);

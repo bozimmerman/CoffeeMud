@@ -56,7 +56,7 @@ public class ColorSet extends StdCommand
 			if(what.indexOf('|')>0)
 			{
 				what=what.substring(what.indexOf('|')+1);
-				buf.append("^N=background, foreground=");
+				buf.append(_("^N=background, foreground="));
 			}
 			else
 				what=null;
@@ -177,7 +177,7 @@ public class ColorSet extends StdCommand
 					buf.append(colorDescription(clookup[0][theSet[num][1].charAt(0)]));
 					if(theSet[num][1].charAt(0)!='Q')
 					{
-						buf.append("^N\n\rAvailable Colors: ");
+						buf.append(_("^N\n\rAvailable Colors: "));
 						for(int ii=0;ii<ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS.length;ii++)
 						{
 							if(ii>0) buf.append(", ");
@@ -204,7 +204,7 @@ public class ColorSet extends StdCommand
 					}
 					else
 					{
-						buf.append("^N\n\r\n\rAvailable Background Colors: ");
+						buf.append(_("^N\n\r\n\rAvailable Background Colors: "));
 						boolean first=true;
 						for(int ii=0;ii<ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS.length;ii++)
 							if(Character.isUpperCase(ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii].charAt(0)))
@@ -215,7 +215,7 @@ public class ColorSet extends StdCommand
 								else
 									buf.append("^"+ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii]+CMStrings.capitalizeAndLower(ColorLibrary.COLOR_ALLCOLORNAMES[ii]));
 							}
-						buf.append("^N\n\rAvailable Foreground Colors: ");
+						buf.append(_("^N\n\rAvailable Foreground Colors: "));
 						first=true;
 						for(int ii=0;ii<ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS.length;ii++)
 							if(Character.isLowerCase(ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[ii].charAt(0)))

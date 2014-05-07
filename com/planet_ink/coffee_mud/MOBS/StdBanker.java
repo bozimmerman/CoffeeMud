@@ -645,7 +645,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 
 					final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(34.0,mob);
 					StringBuffer str=new StringBuffer("");
-					str.append("\n\rAccount balance at '"+bankChain()+"'.\n\r");
+					str.append(_("\n\rAccount balance at '@x1'.\n\r",bankChain()));
 					final String c="^x[Item                              ] ";
 					str.append(c+c+"^.^N\n\r");
 					int colNum=0;
@@ -688,24 +688,19 @@ public class StdBanker extends StdShopKeeper implements Banker
 						final double dueAmount=debt.amt;
 						final long timeRemaining=debtDueAt-System.currentTimeMillis();
 						if(timeRemaining>0)
-							str.append("\n\r"
-									+((isSold(ShopKeeper.DEAL_CLANBANKER))?CMStrings.capitalizeFirstLetter(listerName):"You")
-									+" owe ^H"+CMLib.beanCounter().nameCurrencyLong(this,dueAmount)+"^? in debt.\n\r"
-									+"Monthly interest is "+(intRate*100.0)+"%.  "
-									+"The loan must be paid in full in "
-									+(timeRemaining/timeInterval())+" months.");
+							str.append(_("\n\r@x1 owe ^H@x2^? in debt.\n\rMonthly interest is @x3%.  The loan must be paid in full in @x4 months.",((isSold(ShopKeeper.DEAL_CLANBANKER))?CMStrings.capitalizeFirstLetter(listerName):_("You")),CMLib.beanCounter().nameCurrencyLong(this,dueAmount),""+(intRate*100.0),""+(timeRemaining/timeInterval())));
 					}
 					if(coinInterest!=0.0)
 					{
 						final double cci=CMath.mul(Math.abs(coinInterest),100.0);
 						final String ci=((coinInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
-						str.append("\n\rThey "+ci+"monthly on money deposited here.");
+						str.append(_("\n\rThey @x1monthly on money deposited here.",ci));
 					}
 					if(itemInterest!=0.0)
 					{
 						final double cci=CMath.mul(Math.abs(itemInterest),100.0);
 						final String ci=((itemInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
-						str.append("\n\rThey "+ci+"monthly on items deposited here.");
+						str.append(_("\n\rThey @x1monthly on items deposited here.",ci));
 					}
 					mob.tell(str.toString()+"^T");
 				}
@@ -887,9 +882,9 @@ public class StdBanker extends StdShopKeeper implements Banker
 				{
 					final StringBuffer str=new StringBuffer("");
 					if(isSold(ShopKeeper.DEAL_CLANBANKER))
-						str.append(CMStrings.capitalizeFirstLetter(withdrawerName)+" does not have an account with us, I'm afraid.");
+						str.append(_("@x1 does not have an account with us, I'm afraid.",CMStrings.capitalizeFirstLetter(withdrawerName)));
 					else
-						str.append("You don't have an account with us, I'm afraid.");
+						str.append(_("You don't have an account with us, I'm afraid."));
 					CMLib.commands().postSay(this,mob,str.toString()+"^T",true,false);
 					return false;
 				}
@@ -898,9 +893,9 @@ public class StdBanker extends StdShopKeeper implements Banker
 				{
 					final StringBuffer str=new StringBuffer("");
 					if(isSold(ShopKeeper.DEAL_CLANBANKER))
-						str.append(CMStrings.capitalizeFirstLetter(withdrawerName)+" already has a "+CMLib.beanCounter().nameCurrencyShort(this,debt)+" loan out with us.");
+						str.append(_("@x1 already has a @x2 loan out with us.",CMStrings.capitalizeFirstLetter(withdrawerName),CMLib.beanCounter().nameCurrencyShort(this,debt)));
 					else
-						str.append("You already have a "+CMLib.beanCounter().nameCurrencyShort(this,debt)+" loan out with us.");
+						str.append(_("You already have a @x1 loan out with us.",CMLib.beanCounter().nameCurrencyShort(this,debt)));
 					CMLib.commands().postSay(this,mob,str.toString()+"^T",true,false);
 					return false;
 				}
@@ -912,8 +907,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						str.append(CMStrings.capitalizeFirstLetter(withdrawerName)+" ");
 					else
 						str.append("You ");
-					str.append("will need to deposit enough items with us as collateral.  You'll need items worth "
-							+CMLib.beanCounter().nameCurrencyShort(this,collateralRemaining)+" more to qualify.");
+					str.append(_("will need to deposit enough items with us as collateral.  You'll need items worth @x1 more to qualify.",CMLib.beanCounter().nameCurrencyShort(this,collateralRemaining)));
 					CMLib.commands().postSay(this,mob,str.toString()+"^T",true,false);
 					return false;
 				}
@@ -933,23 +927,23 @@ public class StdBanker extends StdShopKeeper implements Banker
 				{
 					final StringBuffer str=new StringBuffer("");
 					if(isSold(ShopKeeper.DEAL_CLANBANKER))
-						str.append(CMStrings.capitalizeFirstLetter(listerName)+" does not have an account with us, I'm afraid.");
+						str.append(_("@x1 does not have an account with us, I'm afraid.",CMStrings.capitalizeFirstLetter(listerName)));
 					else
-						str.append("You don't have an account with us, I'm afraid.");
+						str.append(_("You don't have an account with us, I'm afraid."));
 					if(coinInterest!=0.0)
 					{
 						final double cci=CMath.mul(Math.abs(coinInterest),100.0);
 						final String ci=((coinInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
-						str.append("\n\rWe "+ci+"monthly on money deposited here.");
+						str.append(_("\n\rWe @x1monthly on money deposited here.",ci));
 					}
 					if(itemInterest!=0.0)
 					{
 						final double cci=CMath.mul(Math.abs(itemInterest),100.0);
 						final String ci=((itemInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
-						str.append("\n\rWe "+ci+"monthly on items kept with us.");
+						str.append(_("\n\rWe @x1monthly on items kept with us.",ci));
 					}
 					if(bankChain().length()>0)
-						str.append("\n\rI am a banker for "+bankChain()+".");
+						str.append(_("\n\rI am a banker for @x1.",bankChain()));
 					CMLib.commands().postSay(this,mob,str.toString()+"^T",true,false);
 					return false;
 				}

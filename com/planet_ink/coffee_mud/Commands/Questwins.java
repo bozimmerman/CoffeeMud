@@ -59,7 +59,7 @@ public class Questwins extends StdCommand
 				}
 			}
 			Collections.sort(qVec);
-			final StringBuffer msg=new StringBuffer("^HQuests you are listed as having won:^?^N\n\r");
+			final StringBuffer msg=new StringBuffer(_("^HQuests you are listed as having won:^?^N\n\r"));
 			for(int i=0;i<qVec.size();i++)
 				msg.append(((String)qVec.elementAt(i))+"^N\n\r");
 			if(!mob.isMonster())
@@ -121,7 +121,7 @@ public class Questwins extends StdCommand
 					qVec.addElement(name);
 			}
 			Collections.sort(qVec);
-			final StringBuffer msg=new StringBuffer("^HQuests you are listed as having accepted:^?^N\n\r");
+			final StringBuffer msg=new StringBuffer(_("^HQuests you are listed as having accepted:^?^N\n\r"));
 			for(int i=0;i<qVec.size();i++)
 				msg.append((qVec.elementAt(i))+"^N\n\r");
 			if(!mob.isMonster())

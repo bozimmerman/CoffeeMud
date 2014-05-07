@@ -1216,7 +1216,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						str.append("\n\rAmount: <INPUT TYPE=TEXT SIZE=3 NAME="+fieldName+"_AMOUNT VALUE=\""+(type!=0?"":value)+"\"  ONKEYDOWN=\"document.RESOURCES."+fieldName+"_WHICH[0].checked=true;\">");
 						str.append("\n\r<BR>");
 						str.append("<INPUT TYPE=RADIO NAME="+fieldName+"_WHICH "+(type==1?"CHECKED ":"")+"VALUE=\"COMPONENT\">");
-						str.append("\n\rSkill Components:");
+						str.append(_("\n\rSkill Components:"));
 						str.append("\n\r<SELECT NAME="+fieldName+"_COMPONENT ONCHANGE=\"document.RESOURCES."+fieldName+"_WHICH[1].checked=true;\">");
 						str.append("<OPTION VALUE=\"0\"");
 						if((type!=1)||(value.length()==0)||(value.equalsIgnoreCase("0")))

@@ -192,7 +192,7 @@ public class Quests extends StdLibrary implements QuestManager
 		String areaName=A.Name().toUpperCase().trim();
 		if(otherParms.equalsIgnoreCase("ALL"))
 			areaName=null;
-		final StringBuffer str=new StringBuffer("^xDefined Quest Holidays^?\n\r");
+		final StringBuffer str=new StringBuffer(_("^xDefined Quest Holidays^?\n\r"));
 		List<String> line=null;
 		String var=null;
 		List<String> V=null;

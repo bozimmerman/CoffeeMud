@@ -915,18 +915,21 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		final StringBuilder buf=new StringBuilder("");
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 		{
-			buf.append(item.ID()+"\n\rRejuv : "+item.basePhyStats().rejuv()
-							+"\n\rType  : "+item.ID()
-							+"\n\rUses  : "+item.usesRemaining()
-							+"\n\rHeight: "+item.basePhyStats().height()
-							+"\n\rAbilty: "+item.basePhyStats().ability()
-							+"\n\rLevel : "+item.basePhyStats().level()
-							+"\n\rExpire: "+dispossessionTimeLeftString(item)
-							+((item instanceof Container)?("\n\rCapac.: "+((Container)item).capacity()):"")
-							+"\n\rMisc  : "+item.text().length()+"\n\r"+item.text());
+			buf.append(_("@x1\n\rRejuv : @x2\n\rType  : @x3\n\rUses  : @x4\n\rHeight: @x5\n\rAbilty: @x6\n\rLevel : @x7\n\rExpire: @x8@x9\n\rMisc  : @x10\n\r@x11",
+					item.ID(),
+					""+item.basePhyStats().rejuv(),
+					item.ID(),
+					""+item.usesRemaining(),
+					""+item.basePhyStats().height(),
+					""+item.basePhyStats().ability(),
+					""+item.basePhyStats().level(),
+					dispossessionTimeLeftString(item),
+					((item instanceof Container)?(_("\n\rCapac.: ")+((Container)item).capacity()):""),
+					""+item.text().length(),
+					item.text()));
 		}
 		if(item.description(mob).length()==0)
-			buf.append("You don't see anything special about "+item.name());
+			buf.append(_("You don't see anything special about @x1",item.name()));
 		else
 			buf.append(item.description(mob));
 		if((msg.targetMinor()==CMMsg.TYP_EXAMINE)&&(!item.ID().endsWith("Wallpaper")))

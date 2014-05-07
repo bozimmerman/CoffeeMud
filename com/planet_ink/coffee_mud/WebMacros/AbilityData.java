@@ -657,7 +657,7 @@ public class AbilityData extends StdWebMacro
 					final int min=A.minRange();
 					final int max=A.maxRange();
 					if(min+max==0)
-						str.append("Touch, or not applicable, ");
+						str.append(_("Touch, or not applicable, "));
 					else
 					{
 						if(min==0)
@@ -678,14 +678,14 @@ public class AbilityData extends StdWebMacro
 						break;
 					case Ability.QUALITY_BENEFICIAL_OTHERS:
 					case Ability.QUALITY_BENEFICIAL_SELF:
-						str.append("Always Beneficial, ");
+						str.append(_("Always Beneficial, "));
 						break;
 					case Ability.QUALITY_OK_OTHERS:
 					case Ability.QUALITY_OK_SELF:
-						str.append("Sometimes Beneficial, ");
+						str.append(_("Sometimes Beneficial, "));
 						break;
 					case Ability.QUALITY_INDIFFERENT:
-						str.append("Circumstantial, ");
+						str.append(_("Circumstantial, "));
 						break;
 					}
 				}
@@ -694,7 +694,7 @@ public class AbilityData extends StdWebMacro
 					if(A.isAutoInvoked())
 						str.append("Automatic, ");
 					else
-						str.append("Requires invocation, ");
+						str.append(_("Requires invocation, "));
 				}
 				if(parms.containsKey("TARGET"))
 				{
@@ -708,7 +708,7 @@ public class AbilityData extends StdWebMacro
 						break;
 					case Ability.QUALITY_BENEFICIAL_OTHERS:
 					case Ability.QUALITY_OK_OTHERS:
-						str.append("Caster or others, ");
+						str.append(_("Caster or others, "));
 						break;
 					case Ability.QUALITY_BENEFICIAL_SELF:
 					case Ability.QUALITY_OK_SELF:
