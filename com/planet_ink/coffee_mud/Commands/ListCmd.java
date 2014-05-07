@@ -1912,7 +1912,7 @@ public class ListCmd extends StdCommand
 	public String getSpaceObjectType(final SpaceObject obj)
 	{
 		final String type;
-		if((obj instanceof Physical) && (!(obj instanceof SpaceShip)) && CMLib.flags().isOnFire((Physical)obj))
+		if((obj instanceof Physical) && (!(obj instanceof SpaceShip)) && CMLib.flags().isLightSource(((Physical)obj)))
 			type="Star";
 		else
 		if(obj instanceof SpaceShip)
