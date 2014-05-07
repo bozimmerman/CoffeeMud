@@ -249,6 +249,7 @@ public class Charlatan extends StdCharClass
 			int maxSkills=classLevel/2;
 
 			// now only give one, for current level, respecting alignment!
+			// first, get a list of all skills you don't qualify for that you MIGHT have gained or will gain
 			final List<Ability> choices=new Vector<Ability>();
 			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
@@ -257,7 +258,6 @@ public class Charlatan extends StdCharClass
 				if((CMLib.ableMapper().qualifyingLevel(mob,A)<=0)
 				&&(lql<25)
 				&&(lql>0)
-				&&(mob.fetchAbility(ID())==null)
 				&&(!CMLib.ableMapper().getSecretSkill(A.ID()))
 				&&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
 				&&(CMLib.ableMapper().availableToTheme(A.ID(),Area.THEME_FANTASY,true))
@@ -266,19 +266,24 @@ public class Charlatan extends StdCharClass
 				&&(A.isAutoInvoked()||((A.triggerStrings()!=null)&&(A.triggerStrings().length>0))))
 					choices.add(A);
 			}
+			
+			// now count those you already have
 			for(int a=choices.size()-1;a>=0;a--)
 			{
 				final Ability A=choices.get(a);
 				if(mob.fetchAbility(A.ID())!=null)
 					maxSkills--;
 			}
-			if(maxSkills<1)
+			if(maxSkills<1) // if that reduced you to 0, you are done.
 				return;
+			// now eliminate those you already have, and those that are
+			// above your level, if you are <25
 			for(int a=choices.size()-1;a>=0;a--)
 			{
 				final Ability A=choices.get(a);
 				final int lql=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
-				if((lql!=classLevel)&&(lql!=classLevel-1)&&(classLevel<25))
+				if((mob.fetchAbility(ID())!=null)
+				||((lql!=classLevel)&&(lql!=classLevel-1)&&(classLevel<25)))
 					choices.remove(a);
 			}
 			if(choices.size()==0)
