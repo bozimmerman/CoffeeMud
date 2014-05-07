@@ -60,6 +60,7 @@ public class StdRoom implements Room
 	protected boolean		amDestroyed=false;
 	protected boolean		skyedYet=false;
 	protected volatile short combatTurnMobIndex=0;
+	protected volatile short roomRecoverMarker=0;
 	protected SVector<Ability>			affects=null;
 	protected SVector<Behavior>			behaviors=null;
 	protected SVector<ScriptingEngine>	scripts=null;
@@ -1091,8 +1092,7 @@ public class StdRoom implements Room
 		}
 	};
 
-	@Override
-	public void recoverRoomStats()
+	private void reallyRecoverRoomStats()
 	{
 		recoverPhyStats();
 		eachInhabitant(recoverRoomStatsInhabitantApplicable);
@@ -1100,6 +1100,28 @@ public class StdRoom implements Room
 			if(X!=null)
 				X.recoverPhyStats();
 		eachItem(recoverRoomStatsItemApplicable);
+	}
+	
+	@Override
+	public void recoverRoomStats()
+	{
+		if(roomRecoverMarker>0)
+		{
+			roomRecoverMarker++;
+			return;
+		}
+		roomRecoverMarker++;
+		try
+		{
+			reallyRecoverRoomStats();
+			roomRecoverMarker--;
+			if(roomRecoverMarker>0)
+				reallyRecoverRoomStats();
+		}
+		finally
+		{
+			roomRecoverMarker=0;
+		}
 	}
 
 	@Override
