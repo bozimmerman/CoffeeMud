@@ -24,6 +24,7 @@
   20. Area editor for planets now includes space positioning editors, including relative positioning calculators.
   21. List command now includes SPACE, SPACESHIPS, SPACESHIPAREAS, MOONS, PLANETS, and STARS 
   22. Create/Modify/Destroy can now be used to create and alter objects in outer space.
+  23. Several new "shortcut" item and area types for space: moon, gasgiant, star, dwarfstar, massivestar, planet, moonlet, asteroid, etc.
    *. MoneyChanger/Banker behavior to discount currency by its distant origin (farther planet is from origin of currency, less its worth).
    *. personal scanner/tricorder software: mineral scanner, computer interface (with ship perhaps?)!
    *. entry systems for ships (default entry key card, voice code, identifying scanner)
@@ -36,7 +37,7 @@
    *. make ship dampeners
    *. engines should have max turn thrust, different from max thrust
    *. finish main ship software for controlling all this stuff
-   *. add electronics to guides, how to make a ship, details about tech
+   *. add electronics to guides, how to make a ship, how to build space, etc, details about tech
    *. add electronics to MG
    *. add spaceobject stuff to MG
    *. --- end of tech ---
