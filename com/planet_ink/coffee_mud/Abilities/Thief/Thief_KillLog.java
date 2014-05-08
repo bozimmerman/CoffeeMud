@@ -225,7 +225,7 @@ public class Thief_KillLog extends ThiefSkill
 				final int kills=CMath.s_int(one[3]);
 				if(total>0)
 					pct=(int)Math.round((CMath.div(kills,total)*100.0));
-				str.append(CMStrings.padRight(one[0],cols[0])+CMStrings.padRight(one[1],cols[1])+pct+"%\n\r");
+				str.append(CMStrings.padRight(CMStrings.removeColors(one[0]),cols[0])+CMStrings.padRight(one[1],cols[1])+pct+"%\n\r");
 			}
 			if(mob.session()!=null)
 				mob.session().rawPrintln(str.toString());
