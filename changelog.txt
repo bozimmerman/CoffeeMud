@@ -40,6 +40,7 @@
    *. add electronics to guides, how to make a ship, how to build space, etc, details about tech
    *. add electronics to MG
    *. add spaceobject stuff to MG
+   *. add spaceobject mapper system to MG
    *. --- end of tech ---
    *. retest private libs, private dbtables, private classes, private area objects, private players
    *. OLC for players?  Play with PennMush more. Port 4201
