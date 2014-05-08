@@ -309,7 +309,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		final String[] prideStats=libXML.getValFromPieces(xml, "PRIDESTATS").split(";");
 		final Pair<Long,int[]>[] finalPrideStats = CMLib.players().parsePrideStats(nextPeriods, prideStats);
 		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
-			if(period.ordinal()>finalPrideStats.length)
+			if(period.ordinal()<finalPrideStats.length)
 			{
 				this.prideExpireTime[period.ordinal()]=finalPrideStats[period.ordinal()].first.longValue();
 				this.prideStats[period.ordinal()]=finalPrideStats[period.ordinal()].second;
