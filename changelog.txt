@@ -25,7 +25,7 @@
   21. List command now includes SPACE, SPACESHIPS, SPACESHIPAREAS, MOONS, PLANETS, and STARS 
   22. Create/Modify/Destroy can now be used to create and alter objects in outer space.
   23. Several new "shortcut" item and area types for space: moon, gasgiant, star, dwarfstar, massivestar, planet, moonlet, asteroid, etc.
-   *. MoneyChanger/Banker behavior to discount currency by its distant origin (farther planet is from origin of currency, less its worth).
+  24. MoneyChanger behavior can now discount currency by its distant origin (farther planet is from origin of currency, less its worth).
    *. personal scanner/tricorder software: mineral scanner, computer interface (with ship perhaps?)!
    *. entry systems for ships (default entry key card, voice code, identifying scanner)
    *. make ship sensor systems

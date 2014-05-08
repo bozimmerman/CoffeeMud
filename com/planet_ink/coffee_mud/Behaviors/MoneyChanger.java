@@ -31,13 +31,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class MoneyChanger extends StdBehavior
 {
 	@Override public String ID(){return "MoneyChanger";}
 
-	public Hashtable rates=new Hashtable();
-	public double cut=0.05;
+	protected Map<String,Double> rates=new Hashtable<String,Double>();
+	protected double spaceMaxCut=0.0;
+	protected long spaceMaxDistance=SpaceObject.Distance.GalaxyRadius.dm;
+	protected double cut=0.05;
+	private boolean complainedAboutSpaceError=false;
+	
 
 	@Override
 	public String accountForYourself()
@@ -50,16 +53,96 @@ public class MoneyChanger extends StdBehavior
 	{
 		if(forMe==null) return;
 		if(!(forMe instanceof MOB)) return;
+		// i suppose this is for accepting heavy loads of coin
 		((MOB)forMe).baseCharStats().setStat(CharStats.STAT_STRENGTH,100);
 		super.startBehavior(forMe);
 	}
 
+	protected final Map<String,Double> getRatesFor(final Environmental affecting, String currency)
+	{
+		if(spaceMaxCut<=0.0)
+			return rates;
+		currency=currency.toUpperCase();
+		if(rates.containsKey(currency))
+			return rates;
+		String myCurrency=CMLib.beanCounter().getCurrency(affecting);
+		if(myCurrency.equalsIgnoreCase(currency))
+		{
+			rates.put(currency, Double.valueOf(cut));
+			return rates;
+		}
+		SpaceObject homeO=CMLib.map().getSpaceObject(affecting, false);
+		if(homeO!=null)
+		{
+			myCurrency=CMLib.beanCounter().getCurrency(homeO);
+			if(myCurrency.equalsIgnoreCase(currency))
+			{
+				rates.put(currency, Double.valueOf(cut));
+				return rates;
+			}
+		}
+		else
+		{
+			// no space object, wtf? this SHOULD fail
+			if(!complainedAboutSpaceError)
+			{
+				complainedAboutSpaceError=true;
+				Log.errOut("MoneyChanger",affecting.Name()+" is not on a planet, so space rates cannot apply!");
+			}
+			return rates;
+		}
+		for(Enumeration<Area> a=CMLib.map().spaceAreas();a.hasMoreElements();)
+		{
+			Area A=a.nextElement();
+			if((A!=null)&&(A!=homeO))
+			{
+				myCurrency=CMLib.beanCounter().getCurrency(A);
+				if(myCurrency.equalsIgnoreCase(currency))
+				{
+					SpaceObject oA=(SpaceObject)A;
+					long distance=CMLib.map().getDistanceFrom(homeO, oA);
+					if((distance<0)||(distance>spaceMaxDistance))
+					{
+						rates.put(currency, Double.valueOf(spaceMaxCut));
+					}
+					else
+					{
+						double pct=CMath.div(distance, spaceMaxDistance);
+						double amt=spaceMaxCut*pct;
+						if(amt < cut)
+							amt=cut;
+						rates.put(currency, Double.valueOf(cut));
+					}
+					return rates;
+				}
+			}
+		}
+		
+		return rates;
+	}
+	
+	protected boolean doIExchangeThisCurrency(final Environmental affecting, final String currency)
+	{
+		final Map<String,Double> rates=getRatesFor(affecting, currency);
+		return ((rates.size()>0)&&(!rates.containsKey(currency.toUpperCase())));
+	}
+	
+	protected double getMyCut(final Environmental affecting, final String currency)
+	{
+		final Map<String,Double> rates=getRatesFor(affecting,currency);
+		if((rates.size()>0)&&(rates.containsKey(currency.toUpperCase())))
+			return rates.get(currency.toUpperCase()).doubleValue();
+		return cut;
+	}
+	
 	@Override
 	public void setParms(String newParm)
 	{
 		super.setParms(newParm);
 		rates.clear();
 		cut=0.05;
+		spaceMaxCut=0.0;
+		spaceMaxDistance=SpaceObject.Distance.GalaxyRadius.dm;
 		newParm=newParm.toUpperCase();
 		int x=newParm.indexOf('=');
 		while(x>0)
@@ -93,13 +176,18 @@ public class MoneyChanger extends StdBehavior
 							newParm="";
 						if(parm.equalsIgnoreCase("default"))
 							parm="";
+						if(parm.equalsIgnoreCase("spacemaxcut"))
+							spaceMaxCut=val/100.0;
+						else
+						if(parm.equalsIgnoreCase("spacemaxdistance"))
+							spaceMaxDistance=Math.round(CMath.mul(SpaceObject.Distance.GalaxyRadius.dm, val/100.0));
+						else
 						if(parm.equalsIgnoreCase("cut"))
 							cut=val/100.0;
 						else
 							rates.put(parm,Double.valueOf(val/100.0));
 					}
 				}
-
 			}
 			x=newParm.indexOf('=');
 		}
@@ -126,16 +214,14 @@ public class MoneyChanger extends StdBehavior
 				return false;
 			}
 			else
-			if(((rates.size()>0)&&(!rates.containsKey(((Coins)msg.tool()).getCurrency().toUpperCase()))))
+			if(!doIExchangeThisCurrency(affecting,((Coins)msg.tool()).getCurrency()))
 			{
 				CMLib.commands().postSay(observer,source,_("I'm sorry, I don't accept that kind of currency."),true,false);
 				return false;
 			}
 			double value=((Coins)msg.tool()).getTotalValue();
-			double takeCut=cut;
 			final String currency=((Coins)msg.tool()).getCurrency().toUpperCase();
-			if((rates.size()>0)&&(rates.containsKey(currency)))
-				takeCut=((Double)rates.get(currency)).doubleValue();
+			double takeCut=getMyCut(affecting,currency);
 			double amountToTake=CMLib.beanCounter().abbreviatedRePrice(observer,value*takeCut);
 			if((amountToTake>0.0)&&(amountToTake<CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer))))
 				amountToTake=CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer));
@@ -169,10 +255,8 @@ public class MoneyChanger extends StdBehavior
 			&&(CMLib.flags().canBeSeenBy(observer,source)))
 			{
 				double value=((Coins)msg.tool()).getTotalValue();
-				double takeCut=cut;
 				final String currency=((Coins)msg.tool()).getCurrency().toUpperCase();
-				if((rates.size()>0)&&(rates.containsKey(currency)))
-					takeCut=((Double)rates.get(currency)).doubleValue();
+				double takeCut=getMyCut(affecting,currency);
 				double amountToTake=CMLib.beanCounter().abbreviatedRePrice(observer,value*takeCut);
 				if((amountToTake>0.0)&&(amountToTake<CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer))))
 					amountToTake=CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer));
