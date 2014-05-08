@@ -23,9 +23,7 @@
   19. Ship Component Tech install skill (AstroEngineering) done-ish... like all tech, it's subject to change without notice.
   20. Area editor for planets now includes space positioning editors, including relative positioning calculators.
   21. List command now includes SPACE, SPACESHIPS, SPACESHIPAREAS, MOONS, PLANETS, and STARS 
-   *. create space objects, esp stars.  planets should be thin areas, solar systems are triggered to load when players fly near enough.  
-   *. Modify space objects. Ability to move them relative to each other would be cool...  
-   *. Destroy space objects.
+  22. Create/Modify/Destroy can now be used to create and alter objects in outer space.
    *. MoneyChanger/Banker behavior to discount currency by its distant origin (farther planet is from origin of currency, less its worth).
    *. personal scanner/tricorder software: mineral scanner, computer interface (with ship perhaps?)!
    *. entry systems for ships (default entry key card, voice code, identifying scanner)

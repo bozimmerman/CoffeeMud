@@ -66,6 +66,7 @@ public interface DatabaseEngine extends CMLibrary
 
 	public void DBUpdateFollowers(MOB mob);
 	public void DBReadCatalogs();
+	public void DBReadSpace();
 	public void DBReadContent(String roomID, Room thisRoom, boolean makeLive);
 	public Area DBReadArea(Area A);
 	public Map<String, Room> DBReadRoomData(String roomID, boolean reportStatus);

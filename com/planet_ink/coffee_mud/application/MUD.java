@@ -1139,6 +1139,8 @@ public class MUD extends Thread implements MudHost
 				Log.sysOut(Thread.currentThread().getName(),"Loading map...");
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading rooms....");
 				CMLib.database().DBReadAllRooms(null);
+				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading space....");
+				CMLib.database().DBReadSpace();
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: preparing map....");
 				Log.sysOut(Thread.currentThread().getName(),"Preparing map...");
 				CMLib.database().DBReadArtifacts();
@@ -1149,6 +1151,8 @@ public class MUD extends Thread implements MudHost
 					A.fillInAreaRooms();
 				}
 				Log.sysOut(Thread.currentThread().getName(),"Mapped rooms      : "+CMLib.map().numRooms()+" in "+CMLib.map().numAreas()+" areas");
+				if(CMLib.map().numSpaceObjects()>0)
+					Log.sysOut(Thread.currentThread().getName(),"Space objects     : "+CMLib.map().numSpaceObjects());
 
 				if(!CMLib.map().roomIDs().hasMoreElements())
 				{

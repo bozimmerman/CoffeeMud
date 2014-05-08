@@ -173,6 +173,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	@Override
 	public void destroy()
 	{
+		CMLib.map().delObjectInSpace(this);
 		CMLib.map().registerWorldObjectDestroyed(this,null,this);
 		phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 		spaceSource=null;

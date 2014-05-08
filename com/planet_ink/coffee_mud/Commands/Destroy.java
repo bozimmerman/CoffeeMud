@@ -462,22 +462,39 @@ public class Destroy extends StdCommand
 		Item deadItem=null;
 		deadItem=(srchRoom==null)?null:srchRoom.findItem(srchContainer,itemID);
 		if((!allFlag)&&(deadItem==null)) deadItem=(srchMob==null)?null:srchMob.findItem(null,itemID);
+		if(deadItem==null)
+		{
+			Environmental E=CMLib.map().findSpaceObject(itemID,true);
+			if(!(E instanceof Item))
+				E=CMLib.map().findSpaceObject(itemID,false);
+			if(E instanceof Item)
+				deadItem=(Item)E;
+		}
 		while(deadItem!=null)
 		{
 			mob.location().recoverRoomStats();
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("@x1 disintegrates!",deadItem.name()));
 			doneSomething=true;
 			Log.sysOut("Items",mob.Name()+" destroyed item "+deadItem.name()+".");
-			if(srchMob!=null)
-				deadItem.setOwner(srchMob);
+			if(deadItem instanceof SpaceObject)
+			{
+				CMLib.database().DBDeleteItem("SPACE", deadItem);
+				deadItem.destroy();
+				deadItem=null;
+			}
 			else
-			if(srchRoom!=null)
-				deadItem.setOwner(srchRoom);
-			deadItem.destroy();
-			mob.location().delItem(deadItem);
-			deadItem=null;
-			if(!allFlag) deadItem=(srchMob==null)?null:srchMob.findItem(null,itemID);
-			if(deadItem==null) deadItem=(srchRoom==null)?null:srchRoom.findItem(null,itemID);
+			{
+				if(srchMob!=null)
+					deadItem.setOwner(srchMob);
+				else
+				if(srchRoom!=null)
+					deadItem.setOwner(srchRoom);
+				deadItem.destroy();
+				mob.location().delItem(deadItem);
+				deadItem=null;
+				if(!allFlag) deadItem=(srchMob==null)?null:srchMob.findItem(null,itemID);
+				if(deadItem==null) deadItem=(srchRoom==null)?null:srchRoom.findItem(null,itemID);
+			}
 			if(!allFlag) break;
 		}
 		if(!doneSomething)
@@ -1488,6 +1505,16 @@ public class Destroy extends StdCommand
 					if(CMLib.socials().fetchSocial(allWord,true)!=null)
 					{
 						commands.insertElementAt("SOCIAL",1);
+						execute(mob,commands,metaFlags);
+					}
+					else
+					if((thang=CMLib.map().findSpaceObject(allWord,true))!=null)
+					{
+						if(thang instanceof Area)
+							commands.insertElementAt("AREA",1);
+						else
+						if(thang instanceof Item)
+							commands.insertElementAt("ITEM",1);
 						execute(mob,commands,metaFlags);
 					}
 					else

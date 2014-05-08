@@ -231,6 +231,8 @@ public class DBInterface implements DatabaseEngine
 
 	@Override public void DBReadCatalogs() {RoomLoader.DBReadCatalogs();}
 
+	@Override public void DBReadSpace() {RoomLoader.DBReadSpace();}
+	
 	@Override
 	public void DBReadContent(String roomID, Room thisRoom, boolean makeLive)
 	{RoomLoader.DBReadContent(roomID,thisRoom, null,null,false,makeLive);}

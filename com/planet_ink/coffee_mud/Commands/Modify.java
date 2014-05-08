@@ -108,6 +108,14 @@ public class Modify extends StdCommand
 		}
 		if(modItem==null)
 		{
+			Environmental E=CMLib.map().findSpaceObject(itemID,true);
+			if(!(E instanceof Item))
+				E=CMLib.map().findSpaceObject(itemID,false);
+			if(E instanceof Item)
+				modItem=(Item)E;
+		}
+		if(modItem==null)
+		{
 			mob.tell(_("I don't see '@x1 here.\n\r",itemID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
@@ -199,7 +207,13 @@ public class Modify extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 		}
 		if(!copyItem.sameAs(modItem))
+		{
 			Log.sysOut("Items",mob.Name()+" modified item "+modItem.ID()+".");
+			if(modItem instanceof SpaceObject)
+			{
+				CMLib.database().DBUpdateItem("SPACE", modItem);
+			}
+		}
 		copyItem.destroy();
 	}
 
@@ -2059,6 +2073,32 @@ public class Modify extends StdCommand
 			if(CMLib.socials().fetchSocial(allWord,true)!=null)
 			{
 				commands.insertElementAt("SOCIAL",1);
+				execute(mob,commands,metaFlags);
+			}
+			else
+			if((thang=CMLib.map().findSpaceObject(allWord,true))!=null)
+			{
+				if(thang instanceof Area)
+					commands.insertElementAt("AREA",1);
+				else
+				if(thang instanceof Item)
+					commands.insertElementAt("ITEM",1);
+				execute(mob,commands,metaFlags);
+			}
+			else
+			if((thang=CMLib.map().findArea(allWord))!=null)
+			{
+				commands.insertElementAt("AREA",1);
+				execute(mob,commands,metaFlags);
+			}
+			else
+			if((thang=CMLib.map().findSpaceObject(allWord,false))!=null)
+			{
+				if(thang instanceof Area)
+					commands.insertElementAt("AREA",1);
+				else
+				if(thang instanceof Item)
+					commands.insertElementAt("ITEM",1);
 				execute(mob,commands,metaFlags);
 			}
 			else

@@ -40,7 +40,7 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 	protected static double[]	emptyDirection	= new double[2];
 
 	protected long[]	coordinates	= new long[3];
-	protected long		radius		= SpaceObject.Distance.PlanetRadius.dm;
+	protected long		radius;
 
 	public StdPlanet()
 	{
@@ -48,6 +48,8 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 
 		myClock = (TimeClock)CMClass.getCommon("DefaultTimeClock");
 		coordinates=new long[]{Math.round(Long.MAX_VALUE*Math.random()),Math.round(Long.MAX_VALUE*Math.random()),Math.round(Long.MAX_VALUE*Math.random())};
+		Random random=new Random(System.currentTimeMillis());
+		radius=SpaceObject.Distance.PlanetRadius.dm + (random.nextLong() % (SpaceObject.Distance.PlanetRadius.dm / 20));
 	}
 
 	@Override public long[] coordinates(){return coordinates;}

@@ -2220,7 +2220,7 @@ public class CMClass extends ClassLoader
 			else
 			{
 				c.races=loadVectorListToObj(prefix+"Races/",page.getStr("RACES"),CMObjectType.RACE.ancestorName);
-				Log.sysOut(Thread.currentThread().getName(),"Races loaded      : "+c.races.size());
+				//Log.sysOut(Thread.currentThread().getName(),"Races loaded      : "+c.races.size());
 			}
 			if(c.races.size()==0) return false;
 
@@ -2229,7 +2229,7 @@ public class CMClass extends ClassLoader
 			else
 			{
 				c.charClasses=loadVectorListToObj(prefix+"CharClasses/",page.getStr("CHARCLASSES"),CMObjectType.CHARCLASS.ancestorName);
-				Log.sysOut(Thread.currentThread().getName(),"Classes loaded    : "+c.charClasses.size());
+				//Log.sysOut(Thread.currentThread().getName(),"Classes loaded    : "+c.charClasses.size());
 			}
 			if(c.charClasses.size()==0) return false;
 
@@ -2494,6 +2494,7 @@ public class CMClass extends ClassLoader
 			}
 		if((tCode==MudHost.MAIN_HOST)||(CMProps.isPrivateToMe("RACE")))
 		{
+			int numRaces=c.races.size();
 			for(int r=0;r<c.races.size();r++)
 			{
 				final Race R=c.races.elementAt(r);
@@ -2503,7 +2504,6 @@ public class CMClass extends ClassLoader
 			final List<DatabaseEngine.AckRecord> genRaces=CMLib.database().DBReadRaces();
 			if(genRaces.size()>0)
 			{
-				int loaded=0;
 				for(int r=0;r<genRaces.size();r++)
 				{
 					final Race GR=(Race)getRace("GenRace").copyOf();
@@ -2511,15 +2511,15 @@ public class CMClass extends ClassLoader
 					if(!GR.ID().equals("GenRace"))
 					{
 						addRace(GR);
-						loaded++;
+						numRaces++;
 					}
 				}
-				if(loaded>0)
-					Log.sysOut(Thread.currentThread().getName(),"GenRaces loaded   : "+loaded);
 			}
+			Log.sysOut(Thread.currentThread().getName(),"Races loaded      : "+numRaces);
 		}
 		if((tCode==MudHost.MAIN_HOST)||(CMProps.isPrivateToMe("CHARCLASS")))
 		{
+			int numCharClasses=c.charClasses.size();
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: reading genClasses");
 			final List<DatabaseEngine.AckRecord> genClasses=CMLib.database().DBReadClasses();
 			if(genClasses.size()>0)
@@ -2532,12 +2532,11 @@ public class CMClass extends ClassLoader
 					if(!CR.ID().equals("GenCharClass"))
 					{
 						addCharClass(CR);
-						loaded++;
+						numCharClasses++;
 					}
 				}
-				if(loaded>0)
-					Log.sysOut(Thread.currentThread().getName(),"GenClasses loaded : "+loaded);
 			}
+			Log.sysOut(Thread.currentThread().getName(),"Classes loaded    : "+numCharClasses);
 		}
 		CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: initializing classes");
 		c.intializeClasses();

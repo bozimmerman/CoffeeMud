@@ -568,7 +568,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public List<SpaceObject> getSpaceObjectsWithin(final SpaceObject ofObj, long minDistance, long maxDistance)
 	{
-		final List<SpaceObject> within=new Vector<SpaceObject>(1);
+		final List<SpaceObject> within=new ArrayList<SpaceObject>(1);
 		if(ofObj==null)
 			return within;
 		synchronized(space)
@@ -577,15 +577,14 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		if(within.size()<=1)
 			return within;
-		for (final SpaceObject o : within)
+		for (final Iterator<SpaceObject> o=within.iterator();o.hasNext();)
 		{
-			if(o!=ofObj)
+			SpaceObject O=o.next();
+			if(O!=ofObj)
 			{
-				final long dist=getDistanceFrom(o,ofObj);
-				if((dist>=minDistance)&&(dist<=maxDistance))
-				{
-					within.add(o);
-				}
+				final long dist=getDistanceFrom(O,ofObj);
+				if((dist>=minDistance)&&(dist>maxDistance))
+					o.remove();
 			}
 		}
 		Collections.sort(within, new Comparator<SpaceObject>()
@@ -2424,6 +2423,13 @@ public class CMMap extends StdLibrary implements WorldMap
 		return false;
 	}
 
+	@Override
+	public int numSpaceObjects()
+	{
+		return space.count();
+	}
+
+	
 	protected boolean isAScriptHost(final Area area, final PhysicalAgent host)
 	{
 		if(area == null) return false;

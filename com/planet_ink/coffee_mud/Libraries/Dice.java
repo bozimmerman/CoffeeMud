@@ -95,6 +95,34 @@ public class Dice extends StdLibrary implements DiceLibrary
 		return roll(r,d,p);
 	}
 
+	public long plusOrMinus(final long range)
+	{
+		final long l=randomizer.nextLong() % range;
+		return randomizer.nextBoolean()?l:-l;
+	}
+	
+	public int plusOrMinus(final int range)
+	{
+		final int l=randomizer.nextInt() % range;
+		return randomizer.nextBoolean()?l:-l;
+	}
+	
+	public int inRange(final int min, final int max)
+	{
+		if(max<=min) 
+			return min;
+		int l=randomizer.nextInt() % ((max-min)+1);
+		return min+l;
+	}
+	
+	public long inRange(final long min, final long max)
+	{
+		if(max<=min) 
+			return min;
+		long l=randomizer.nextLong() % ((max-min)+1);
+		return min+l;
+	}
+	
 	@Override
 	public Object doublePick(Object[][] set)
 	{

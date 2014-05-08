@@ -50,7 +50,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	// showNumber should always be a valid number no less than 1
 	// showFlag should be a valid number for editing, or -1 for skipping
 
-
 	@Override
 	public void promptStatInt(MOB mob, Modifiable E, int showNumber, int showFlag, String FieldDisp, String Field)
 	throws IOException
@@ -4589,7 +4588,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			Long newValue=CMLib.english().parseSpaceDistance(val);
 			if((newValue==null)||(newValue.longValue()<0))
-				mob.tell(_("Unknown radius: '@x1', valid units include: @x2.",val,SpaceObject.Distance.getAbbrList()));
+				mob.tell(_("Unknown radius: '@x1', valid units include: @x2.",val,SpaceObject.Distance.getFullList()));
 			else
 			{
 				E.setRadius(newValue.longValue());
@@ -4600,7 +4599,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				+ _("1. 3 distances: '[X],[Y],[Z]', positive or negative.")+"\n\r"
 				+ _("2. Relative distance: '[X] FROM [name of another space object]', in random direction.")+"\n\r"
 				+ _("3. Relative distance: '[X] FROM [name of another space object] TOWARD [Y],[Z]', where Y,Z are a direction in degrees.");
-		final String coordHelp2="Valid distance units include: "+SpaceObject.Distance.getFullList()+".";
+		final String coordHelp2=_("Valid distance units include: @x1.",SpaceObject.Distance.getFullList());
 		while((mob!=null)&&(mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			String val=mob.session().prompt(_("@x1. Coordinates in Space (ENTER=@x2): ",""+showNumber,(CMLib.english().coordDescShort(E.coordinates()))));
@@ -7429,6 +7428,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genValue(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
 			genDisposition(mob,me.basePhyStats(),++showNumber,showFlag);
+			if(me instanceof SpaceObject)
+			{
+				SpaceObject spaceArea=(SpaceObject)me;
+				genSpaceStuff(mob,spaceArea,++showNumber,showFlag);
+			}
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			if(me instanceof LandTitle)

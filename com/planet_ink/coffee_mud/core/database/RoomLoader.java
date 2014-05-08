@@ -708,6 +708,11 @@ public class RoomLoader
 		DBReadContent("CATALOG_ITEMS",null,null,null,true,false);
 	}
 
+	public void DBReadSpace()
+	{
+		DBReadContent("SPACE",null,null,null,true,false);
+	}
+
 	public void DBReadContent(String thisRoomID, Room thisRoom, Map<String, Room> rooms, RoomnumberSet unloadedRooms, boolean setStatus, boolean makeLive)
 	{
 		final boolean debug=Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMPOP));
@@ -721,6 +726,7 @@ public class RoomLoader
 		Hashtable<MOB, String> mobRides=null;
 
 		final boolean catalog=((thisRoomID!=null)&&(thisRoomID.startsWith("CATALOG_")));
+		final boolean space=((thisRoomID!=null)&&(thisRoomID.equals("SPACE")));
 
 		DBConnection D=null;
 		// now grab the items
@@ -739,6 +745,8 @@ public class RoomLoader
 				if((unloadedRooms!=null)&&(unloadedRooms.contains(roomID)))
 					continue;
 				if((!catalog)&&(roomID.startsWith("CATALOG_")))
+					continue;
+				if((!space)&&(roomID.startsWith("SPACE")))
 					continue;
 				itemNums=stuff.itemNums.get("NUMSFOR"+roomID.toUpperCase());
 				if(itemNums==null)
@@ -793,6 +801,10 @@ public class RoomLoader
 						}
 						else
 							newItem.setMiscText(DBConnections.getResQuietly(R,"CMITTX"));
+						if(newItem instanceof SpaceObject)
+						{
+							CMLib.map().addObjectToSpace((SpaceObject)newItem, ((SpaceObject) newItem).coordinates());
+						}
 						newItem.basePhyStats().setRejuv((int)DBConnections.getLongRes(R,"CMITRE"));
 						newItem.setUsesRemaining((int)DBConnections.getLongRes(R,"CMITUR"));
 						newItem.basePhyStats().setLevel((int)DBConnections.getLongRes(R,"CMITLV"));
@@ -831,6 +843,8 @@ public class RoomLoader
 				if((unloadedRooms!=null)&&(unloadedRooms.contains(roomID)))
 					continue;
 				if((!catalog)&&(roomID.startsWith("CATALOG_")))
+					continue;
+				if((!space) && roomID.equals("SPACE"))
 					continue;
 				final String NUMID=DBConnections.getRes(R,"CMCHNM");
 				final String MOBID=DBConnections.getRes(R,"CMCHID");
@@ -894,6 +908,10 @@ public class RoomLoader
 						final String ride=DBConnections.getRes(R,"CMCHRI");
 						if((ride!=null)&&(ride.length()>0))
 							mobRides.put(newMOB,ride);
+						if(newMOB instanceof SpaceObject)
+						{
+							CMLib.map().addObjectToSpace((SpaceObject)newMOB, ((SpaceObject) newMOB).coordinates());
+						}
 						newMOB.recoverCharStats();
 						newMOB.recoverPhyStats();
 						newMOB.recoverMaxState();

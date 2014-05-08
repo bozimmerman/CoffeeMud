@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Libraries.interfaces;
+package com.planet_ink.coffee_mud.Items.Basic;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -13,7 +13,9 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
+
 /*
    Copyright 2000-2014 Bo Zimmerman
 
@@ -29,27 +31,21 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface DiceLibrary extends CMLibrary
+public class Star extends GenSpaceBody
 {
-	public boolean normalizeAndRollLess(int score);
-	public int normalizeBy5(int score);
-	public int rollHP(int level, int code);
-	public int getHPCode(String str);
-	public int getHPCode(int roll, int dice, int plus);
-	public int[] getHPBreakup(int level, int code);
-	public int roll(int number, int die, int modifier);
-	public Object pick(Object[] set, Object not);
-	public Object pick(Object[] set);
-	public int pick(int[] set, int not);
-	public int pick(int[] set);
-	public Object doublePick(Object[][] set);
-	public Object pick(List<? extends Object> set);
-	public int rollPercentage();
-	public int rollNormalDistribution(int number, int die, int modifier);
-	public int rollLow(int number, int die, int modifier);
-	public Random getRandomizer();
-	public long plusOrMinus(final long range);
-	public int plusOrMinus(final int range);
-	public int inRange(final int min, final int max);
-	public long inRange(final long min, final long max);
+	@Override public String ID(){	return "Star";}
+	
+	public Star()
+	{
+		super();
+		setName("unknown star");
+		setDisplayText("an unknown star is shining here");
+		setDescription("it`s very bright");
+		coordinates=new long[]{Math.round(Long.MAX_VALUE*Math.random()),Math.round(Long.MAX_VALUE*Math.random()),Math.round(Long.MAX_VALUE*Math.random())};
+		Random random=new Random(System.currentTimeMillis());
+		radius=SpaceObject.Distance.StarGRadius.dm + (random.nextLong() % Math.round(CMath.mul(SpaceObject.Distance.StarGRadius.dm,0.30)));
+		basePhyStats().setDisposition(PhyStats.IS_LIGHTSOURCE|PhyStats.IS_GLOWING);
+		recoverPhyStats();
+		this.setMaterial(RawMaterial.RESOURCE_HYDROGEN);
+	}
 }

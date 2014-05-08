@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 import java.io.IOException;
 
@@ -121,16 +120,82 @@ public class Create extends StdCommand
 		Log.sysOut("Exits",mob.location().roomID()+" exits changed by "+mob.Name()+".");
 	}
 
-	public void polls(MOB mob, Vector commands)
+	private long[] makeSpaceLocation(MOB mob, SpaceObject newItem, String rest)
 	{
+		List<String> utokens=CMParms.parseSpaces(rest.toUpperCase(),true);
+		final String distErrorMsg=_("Valid distance units include: @x1.",SpaceObject.Distance.getFullList());
+		int x;
+		if(((x=utokens.indexOf("FROM"))>0)&&(x<utokens.size()-1))
+		{
+			double[] direction=new double[]{Math.toRadians(CMLib.dice().roll(1, 360, -1)),Math.toRadians(CMLib.dice().roll(1,180,-1))};
+			String distStr=CMParms.combine(utokens,0,x);
+			String objName=CMParms.combine(utokens,x+1);
+			Long dist=CMLib.english().parseSpaceDistance(distStr);
+			if(dist==null)
+			{
+				mob.tell(_("Unknown distance for space object @x1:",newItem.ID())+" '"+distStr+"'. \n\r"+distErrorMsg);
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
+				return null;
+			}
+			SpaceObject O=null;
+			if(objName.trim().length()>0)
+			{
+				O=CMLib.map().findSpaceObject(objName, true);
+				if(O==null)
+					O=CMLib.map().findSpaceObject(objName, false);
+			}
+			if(O==null)
+			{
+				mob.tell(_("Unknown relative space object")+" '"+objName+"'.\n\r");
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
+				return null;
+			}
+			rest=CMParms.toStringList(CMLib.map().getLocation(O.coordinates(), direction, dist.longValue()));
+		}
+		List<String> valsL=CMParms.parseCommas(rest,true);
+		if(valsL.size()!=3)
+		{
+			mob.tell(_("Unknown location for space object @x1:",newItem.ID())+": '"+rest+"'. "+_("The format for coordinates is 3 distances from core, comma delimited, or [DISTANCE] FROM [PLACE]\n\r"+distErrorMsg));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
+			return null;
+		}
+		else
+		{
+			boolean fail=true;
+			Long[] valL=new Long[3];
+			for(int i=0;i<3;i++)
+			{
+				Long newValue=CMLib.english().parseSpaceDistance(valsL.get(i));
+				if(newValue==null)
+				{
+					mob.tell(_("Unknown coord: '@x2'. @x3 for space object @x1:",newItem.ID(),valsL.get(i),distErrorMsg));
+					break;
+				}
+				else
+				{
+					valL[i]=newValue;
+					if(i==2) fail=false;
+				}
+			}
+			if(!fail)
+			{
+				return new long[]{valL[0].longValue(),valL[1].longValue(),valL[2].longValue()};
+			}
+			else
+			{
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
+				return null;
+			}
+		}
 	}
-
-	public void items(MOB mob, Vector commands)
-		throws IOException
+	
+	public void items(MOB mob, Vector commands) throws IOException
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE ITEM [ITEM NAME](@ room/[MOB NAME])\n\r"));
+			mob.tell(_("You have failed to specify the proper fields.\n\r"
+					+ "The format for normal items is CREATE ITEM [ITEM NAME](@ room/[MOB NAME])\n\r"
+					+ "The format for space items is CREATE ITEM [ITEM NAME](@ [COORDS]/[DISTANCE] FROM [SPACE OBJ])\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
@@ -138,31 +203,20 @@ public class Create extends StdCommand
 		String itemID=CMParms.combine(commands,2);
 		Environmental dest=mob.location();
 		Container setContainer=null;
-		final int x=itemID.indexOf('@');
+		String rest="";
+		long [] coordinates=new long[]{
+			CMLib.dice().getRandomizer().nextLong(),
+			CMLib.dice().getRandomizer().nextLong(),
+			CMLib.dice().getRandomizer().nextLong()
+		};
+		
+		int x=itemID.indexOf('@');
 		if(x>0)
 		{
-			final String rest=itemID.substring(x+1).trim();
+			rest=itemID.substring(x+1).trim();
 			itemID=itemID.substring(0,x).trim();
-			if((!rest.equalsIgnoreCase("room"))
-			&&(rest.length()>0))
-			{
-				final MOB M=mob.location().fetchInhabitant(rest);
-				if(M==null)
-				{
-					final Item I = mob.location().findItem(null, rest);
-					if(I instanceof Container)
-						setContainer=(Container)I;
-					else
-					{
-						mob.tell(_("MOB or Container '@x1' not found.",rest));
-						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
-						return;
-					}
-				}
-				else
-					dest=M;
-			}
 		}
+		
 		Item newItem=CMClass.getItem(itemID);
 		if((newItem==null)&&(CMLib.english().numPossibleGold(null,itemID)>0))
 		{
@@ -186,16 +240,68 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-
+		
 		if((newItem instanceof ArchonOnly)
 		&&(!CMSecurity.isASysOp(mob)))
 		{
 			mob.tell(_("NO!"));
 			return;
 		}
+		
+		if(x>0)
+		{
+			if(newItem instanceof SpaceObject)
+			{
+				coordinates=makeSpaceLocation(mob,(SpaceObject)newItem,rest);
+				if(coordinates==null)
+				{
+					return;
+				}
+			}
+			else
+			if((!rest.equalsIgnoreCase("room"))
+			&&(rest.length()>0))
+			{
+				final MOB M=mob.location().fetchInhabitant(rest);
+				if(M==null)
+				{
+					final Item I = mob.location().findItem(null, rest);
+					if(I instanceof Container)
+						setContainer=(Container)I;
+					else
+					{
+						mob.tell(_("MOB or Container '@x1' not found.",rest));
+						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
+						return;
+					}
+				}
+				else
+					dest=M;
+			}
+		}
+		else
+		if(newItem instanceof SpaceObject)
+		{
+			int i=21;
+			while((--i>0)&&(CMLib.map().getSpaceObjectsWithin(coordinates, 0, SpaceObject.Distance.SolarSystemDiameter.dm).size()>0))
+			{
+				coordinates=new long[]{
+					CMLib.dice().getRandomizer().nextLong(),
+					CMLib.dice().getRandomizer().nextLong(),
+					CMLib.dice().getRandomizer().nextLong()
+				};
+			}
+		}
+	
 
 		if(newItem.subjectToWearAndTear())
 			newItem.setUsesRemaining(100);
+		if(newItem instanceof SpaceObject)
+		{
+			CMLib.map().addObjectToSpace(((SpaceObject)newItem), coordinates);
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 appears in the sky.",newItem.name()));
+		}
+		else
 		if(dest instanceof Room)
 		{
 			((Room)dest).addItem(newItem);
@@ -212,6 +318,10 @@ public class Create extends StdCommand
 
 		if((newItem.isGeneric())&&(doGenerica))
 			CMLib.genEd().genMiscSet(mob,newItem);
+		if(newItem instanceof SpaceObject)
+		{
+			CMLib.database().DBCreateThisItem("SPACE", newItem);
+		}
 		mob.location().recoverRoomStats();
 		Log.sysOut("Items",mob.Name()+" created item "+newItem.ID()+".");
 	}
@@ -502,11 +612,27 @@ public class Create extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is CREATE AREA [AREA NAME]\n\r"));
+			mob.tell(_("You have failed to specify the proper fields.\n\r"
+					+ "The format for normal areas is CREATE AREA [AREA NAME]\n\r"
+					+ "The format for space areas is CREATE AREA [AREA NAME] (@ [COORDS] / [DISTANCE] FROM [SPACE OBJECT]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		final String areaName=CMParms.combine(commands,2);
+		String areaName=CMParms.combine(commands,2);
+		long [] coordinates=new long[]{
+			CMLib.dice().getRandomizer().nextLong(),
+			CMLib.dice().getRandomizer().nextLong(),
+			CMLib.dice().getRandomizer().nextLong()
+		};
+			
+		int x=areaName.indexOf('@');
+		String spaceCoords="";
+		if(x>0)
+		{
+			spaceCoords=areaName.substring(x+1).trim();
+			areaName=areaName.substring(0,x).trim();
+		}
+		
 		Area A=CMLib.map().getArea(areaName);
 		if(A!=null)
 		{
@@ -514,11 +640,13 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
 			return;
 		}
+		
 		String areaType="";
 		int tries=0;
+		String defaultArea=(spaceCoords.length()>0)?"Planet":"StdArea";
 		while((areaType.length()==0)&&((++tries)<10))
 		{
-			areaType=mob.session().prompt(_("Enter an area type to create (default=StdArea): "),_("StdArea"));
+			areaType=mob.session().prompt(_("Enter an area type to create (default=@x1): ",defaultArea),defaultArea);
 			if(CMClass.getAreaType(areaType)==null)
 			{
 				mob.session().println(_("Invalid area type! Valid ones are:"));
@@ -526,13 +654,26 @@ public class Create extends StdCommand
 				areaType="";
 			}
 		}
-		if(areaType.length()==0) areaType="StdArea";
+		if(areaType.length()==0) 
+			areaType=defaultArea;
 		A=CMClass.getAreaType(areaType);
+		if(A instanceof SpaceObject)
+		{
+			if(spaceCoords.length()>0)
+			{
+				coordinates=makeSpaceLocation(mob,(SpaceObject)A,spaceCoords);
+				if(coordinates==null)
+				{
+					return;
+				}
+			}
+			CMLib.map().addObjectToSpace(((SpaceObject)A), coordinates);
+		}
 		A.setName(areaName);
 		CMLib.map().addArea(A);
 		CMLib.database().DBCreateArea(A);
 
-		final Room R=CMClass.getLocale("StdRoom");
+		final Room R=CMClass.getLocale((A instanceof SpaceObject)?"SpacePort":"StdRoom");
 		R.setRoomID(A.getNewRoomID(R,-1));
 		R.setArea(A);
 		R.setDisplayText(CMClass.classID(R)+"-"+R.roomID());
@@ -1265,7 +1406,7 @@ public class Create extends StdCommand
 			}
 			Environmental E=null;
 			E=CMClass.getItem(allWord);
-			if(((E!=null)&&(E instanceof Item))
+			if((E instanceof Item)
 			||(CMLib.english().numPossibleGold(null,allWord)>0)
 			||(CMLib.catalog().getCatalogItem(allWord)!=null))
 			{
@@ -1275,7 +1416,7 @@ public class Create extends StdCommand
 			else
 			{
 				E=CMClass.getMOB(allWord);
-				if(((E!=null)&&(E instanceof MOB))
+				if((E instanceof MOB)
 				||(CMLib.catalog().getCatalogMob(allWord)!=null))
 				{
 					commands.insertElementAt("MOB",1);
@@ -1352,6 +1493,14 @@ public class Create extends StdCommand
 				}
 				else
 				{
+					E=CMClass.getItem(firstWord);
+					if((E instanceof Item)
+					||(CMLib.english().numPossibleGold(null,firstWord)>0)
+					||(CMLib.catalog().getCatalogItem(firstWord)!=null))
+					{
+						commands.insertElementAt("ITEM",1);
+						return execute(mob,commands,metaFlags);
+					}
 					mob.tell(_("\n\rYou cannot create a '@x1'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, COMPONENT, GOVERNMENT, MANUFACTURER, HOLIDAY, CLAN, RACE, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, CLASS, POLL, USER, DEBUGFLAG, NEWS, DISABLEFLAG, ROOM.",commandType));
 					return false;
 				}

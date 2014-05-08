@@ -38,7 +38,7 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 	@Override public String ID(){	return "StdSpaceBody";}
 
 	protected long[]		coordinates	= new long[3];
-	protected long			radius		= SpaceObject.Distance.StarBRadius.dm;
+	protected long			radius;
 	protected double[]		direction	= new double[2];
 	protected long 			speed		= 0;
 	protected SpaceObject	spaceSource = null;
@@ -49,10 +49,18 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 		super();
 		setName("a thing in space");
 		setDisplayText("a thing is floating in space");
+		Random random=new Random(System.currentTimeMillis());
+		radius=SpaceObject.Distance.Kilometer.dm + (random.nextLong() % (SpaceObject.Distance.Kilometer.dm / 2));
 		basePhyStats().setWeight(100);
 		basePhyStats().setLevel(1);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STONE);
+	}
+
+	public void destroy()
+	{
+		CMLib.map().delObjectInSpace(this);
+		super.destroy();
 	}
 	
 	@Override
@@ -64,7 +72,7 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 	@Override
 	public long[] coordinates()
 	{
-		return coordinates();
+		return coordinates;
 	}
 
 	@Override
