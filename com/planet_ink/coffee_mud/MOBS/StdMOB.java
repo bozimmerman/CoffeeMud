@@ -1070,7 +1070,7 @@ public class StdMOB implements MOB
 		{
 			location().delInhabitant(this);
 			if ((session() != null) && (!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
-				location().show(this, null, CMMsg.MSG_OK_ACTION, _("<S-NAME> vanish(es) in a puff of smoke."));
+				location().showOthers(this, null, CMMsg.MSG_OK_ACTION, _("<S-NAME> vanish(es) in a puff of smoke."));
 		}
 		if(playerStats!=null)
 			CMLib.players().changePlayersLocation(this,null);
