@@ -1931,7 +1931,10 @@ public class DefaultSession implements Session
 		if(M==null)
 			return;
 		final boolean inTheGame=CMLib.flags().isInTheGame(M,true);
-		if(inTheGame && (M.location()!=null)&&(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
+		if(inTheGame 
+		&& (M.location()!=null)
+		&&((!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+			||(CMLib.sessions().getCountLocalOnline()>1)))
 		{
 			List<Room> rooms=new ArrayList<Room>(1);
 			rooms.add(M.location());
