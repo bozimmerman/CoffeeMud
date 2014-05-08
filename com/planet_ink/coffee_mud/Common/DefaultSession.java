@@ -1931,7 +1931,7 @@ public class DefaultSession implements Session
 		if(M==null)
 			return;
 		final boolean inTheGame=CMLib.flags().isInTheGame(M,true);
-		if(inTheGame && (M.location()!=null))
+		if(inTheGame && (M.location()!=null)&&(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
 		{
 			List<Room> rooms=new ArrayList<Room>(1);
 			rooms.add(M.location());
@@ -1939,7 +1939,13 @@ public class DefaultSession implements Session
 				if((M2.location()!=null)&&(!rooms.contains(M2.location())))
 					rooms.add(M2.location());
 			for(Room R : rooms)
-				R.send(M, CMClass.getMsg(mob, CMMsg.MSG_QUIT, null));
+			{
+				try
+				{
+					R.send(M, CMClass.getMsg(mob, CMMsg.MSG_QUIT, null));
+				}
+				catch(Throwable t) { /* and eat it */ }
+			}
 		}
 
 		while((getLastPKFight()>0)
