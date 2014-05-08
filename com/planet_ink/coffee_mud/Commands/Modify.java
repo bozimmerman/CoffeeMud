@@ -2078,17 +2078,23 @@ public class Modify extends StdCommand
 			else
 			if((thang=CMLib.map().findSpaceObject(allWord,true))!=null)
 			{
+				commands=new Vector();
+				commands.addElement("MODIFY");
 				if(thang instanceof Area)
-					commands.insertElementAt("AREA",1);
+					commands.addElement("AREA");
 				else
 				if(thang instanceof Item)
-					commands.insertElementAt("ITEM",1);
+					commands.addElement("ITEM");
+				commands.addElement(allWord);
 				execute(mob,commands,metaFlags);
 			}
 			else
 			if((thang=CMLib.map().findArea(allWord))!=null)
 			{
-				commands.insertElementAt("AREA",1);
+				commands=new Vector();
+				commands.addElement("MODIFY");
+				commands.addElement("AREA");
+				commands.addElement(allWord);
 				execute(mob,commands,metaFlags);
 			}
 			else
