@@ -261,6 +261,24 @@ public class GModify extends StdCommand
 				field=(String)changes.elementAt(i,1);
 				value=(String)changes.elementAt(i,3);
 				codes=((Integer)changes.elementAt(i,4)).intValue();
+				if(field.equalsIgnoreCase("DESTROY"))
+				{
+					if(CMath.s_bool(value))
+					{
+						if(E instanceof Room)
+						{
+							Log.sysOut("GMODIFY","Room "+CMLib.map().getExtendedRoomID((Room)E)+" was DESTROYED by "+mob.Name()+"!");
+							CMLib.map().obliterateRoom((Room)E);
+						}
+						else
+						{
+							Log.sysOut("GMODIFY",E.Name()+" in "+room.roomID()+" was DESTROYED by "+mob.Name()+"!");
+							E.destroy();
+						}
+						return true;
+					}
+					continue;
+				}
 				if(noisy) gmodifydebugtell(mob,E.name()+" wants to change "+field+" value "+getStat(E,field)+" to "+value+"/"+(!getStat(E,field).equals(value)));
 				if(CMath.bset(codes,FLAG_SUBSTRING))
 				{
@@ -402,7 +420,9 @@ public class GModify extends StdCommand
 		sortEnumeratedList(CMClass.locales(),allKnownFields,allFieldsMsg);
 
 		allKnownFields.addElement("REJUV");
-		allFieldsMsg.append(_("REJUV "));
+		allFieldsMsg.append("REJUV ");
+		allKnownFields.addElement("DESTROY");
+		allFieldsMsg.append("DESTROY ");
 		use=onfields;
 		final Vector newSet=new Vector();
 		StringBuffer s=new StringBuffer("");
@@ -636,23 +656,26 @@ public class GModify extends StdCommand
 					{
 						if(tryModfy(mob,R,M,changes,onfields,noisy))
 							savemobs=true;
-						for(int i=0;i<M.numItems();i++)
+						if(!M.amDestroyed())
 						{
-							final Item I=M.getItem(i);
-							if((I!=null)&&(tryModfy(mob,R,I,changes,onfields,noisy)))
-								savemobs=true;
-						}
-						final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
-						if(SK!=null)
-						{
-							for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+							for(int i=0;i<M.numItems();i++)
 							{
-								final Environmental E2=i.next();
-								if(E2 instanceof Item)
+								final Item I=M.getItem(i);
+								if((I!=null)&&(tryModfy(mob,R,I,changes,onfields,noisy)))
+									savemobs=true;
+							}
+							final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
+							if(SK!=null)
+							{
+								for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 								{
-									final Item I=(Item)E2;
-									if(tryModfy(mob,R,I,changes,onfields,noisy))
-										savemobs=true;
+									final Environmental E2=i.next();
+									if(E2 instanceof Item)
+									{
+										final Item I=(Item)E2;
+										if(tryModfy(mob,R,I,changes,onfields,noisy))
+											savemobs=true;
+									}
 								}
 							}
 						}
