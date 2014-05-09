@@ -187,7 +187,8 @@ public class Skills extends StdCommand
 						col=1;
 					}
 					thisLine.append("^N[^H"+CMStrings.padRight(Integer.toString(A.proficiency()),COL_LEN1)
-									+"%^?]^N "
+									+"%^?]^N"
+									+" "//+(A.isAutoInvoked()?"^H.^N":" ")
 									+CMStrings.padRight("^<HELP^>"+A.name()+"^</HELP^>",(col==3)?COL_LEN2:COL_LEN3));
 				}
 			}
@@ -198,7 +199,7 @@ public class Skills extends StdCommand
 			msg.append(_("^!None!^?"));
 		else
 		if(addQualLine)
-			msg.append(_("\n\r\n\rUse QUALIFY to see additional skills you can GAIN."));
+			msg.append(_("\n\r\n\rUse QUALIFY to see additional skills you can GAIN."));// ^H.^N = passive/auto-invoked."));
 		return msg;
 	}
 
