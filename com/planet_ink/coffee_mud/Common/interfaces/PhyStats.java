@@ -537,6 +537,8 @@ public interface PhyStats extends CMCommon, Modifiable
 	public final static int IS_CATALOGED=1048576;
 	/** a bit setting, as from disposition(), flagging this object as being unattackable */
 	public final static int IS_UNATTACKABLE=2097152;
+	/** a bit setting, as from disposition(), flagging this object as a custom word for the above*/
+	public final static int IS_CUSTOM=4194304;
 
 
 	/** STAT codes, indexed by the 2nd root of the various IS_ disposition() bitmasks */
@@ -561,7 +563,8 @@ public interface PhyStats extends CMCommon, Modifiable
 										   "ISCLOAKED",
 										   "ISUNSAVABLE",
 										   "ISCATALOGED",
-										   "ISUNATTACKABLE"};
+										   "ISUNATTACKABLE",
+										   "ISCUSTOM"};
 
 	/** Descriptions, indexed by the 2nd root of the various IS_ disposition() bitmasks */
 	public static final String[] IS_DESCS= {"Is never seen",
@@ -585,7 +588,8 @@ public interface PhyStats extends CMCommon, Modifiable
 											"Is Cloaked",
 											"Is never saved",
 											"Is cataloged",
-											"Is unattackable"};
+											"Is unattackable",
+											"Is something"};
 
 	/** Descriptive verbs, indexed by the 2nd root of the various IS_ disposition() bitmasks */
 	public static final String[] IS_VERBS= {"Causes Nondetectability",
@@ -610,5 +614,6 @@ public interface PhyStats extends CMCommon, Modifiable
 											"Causes disappearance",
 											"Causes unsavability",
 											"Created from a template",
-											"Prevents attackability"};
+											"Prevents attackability",
+											"Causes something..."};
 }
