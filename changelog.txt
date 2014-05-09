@@ -19,13 +19,14 @@
   16. New Fighter skill: Weapon Sharpening (for a small damage bonus)
   17. Containers of all sorts now expose modifiable "open delay ticks".
   18. Localization has been amended, and partially redone.  See the FAQ for more info. The new scheme should make CM much more localizeable in the future.
+  19. GMODIFY now supports change=destroy=true to obliterate objects matched!
    *. --- FYI Tech Stuff ---
-  19. Ship Component Tech install skill (AstroEngineering) done-ish... like all tech, it's subject to change without notice.
-  20. Area editor for planets now includes space positioning editors, including relative positioning calculators.
-  21. List command now includes SPACE, SPACESHIPS, SPACESHIPAREAS, MOONS, PLANETS, and STARS 
-  22. Create/Modify/Destroy can now be used to create and alter objects in outer space.
-  23. Several new "shortcut" item and area types for space: moon, gasgiant, star, dwarfstar, massivestar, planet, moonlet, asteroid, etc.
-  24. MoneyChanger behavior can now discount currency by its distant origin (farther planet is from origin of currency, less its worth).
+  . Ship Component Tech install skill (AstroEngineering) done-ish... like all tech, it's subject to change without notice.
+  . Area editor for planets now includes space positioning editors, including relative positioning calculators.
+  . List command now includes SPACE, SPACESHIPS, SPACESHIPAREAS, MOONS, PLANETS, and STARS 
+  . Create/Modify/Destroy can now be used to create and alter objects in outer space.
+  . Several new "shortcut" item and area types for space: moon, gasgiant, star, dwarfstar, massivestar, planet, moonlet, asteroid, etc.
+  . MoneyChanger behavior can now discount currency by its distant origin (farther planet is from origin of currency, less its worth).
    *. personal scanner/tricorder software: mineral scanner, computer interface (with ship perhaps?)!
    *. entry systems for ships (default entry key card, voice code, identifying scanner)
    *. make ship sensor systems
