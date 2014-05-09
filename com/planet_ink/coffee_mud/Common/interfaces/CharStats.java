@@ -584,7 +584,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @return the name of the age category for this mob
 	 */
 	public String ageName();
-
+	
 	/** string array of abbreviations of each stat code, ordered by numeric value */
 	public static final String[] DEFAULT_STAT_ABBR=
 	{

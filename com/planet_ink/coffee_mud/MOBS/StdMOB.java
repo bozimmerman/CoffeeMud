@@ -1619,20 +1619,19 @@ public class StdMOB implements MOB
 			else
 				sendBack = new StringBuffer(titledName());
 			sendBack.append(" ");
-			sendBack.append(CMLib.flags().dispositionString(this, CMFlagLibrary.flag_is));
-			sendBack.append(" here");
+			sendBack.append(_(CMLib.flags().dispositionString(this, CMFlagLibrary.flag_is)+" here"));
 			if (riding() != null)
 			{
 				sendBack.append(" " + riding().stateString(this) + " ");
 				if (riding() == viewerMob)
-					sendBack.append("YOU");
+					sendBack.append(_("YOU"));
 				else
 				if (!CMLib.flags().canBeSeenBy(riding(), viewerMob))
 				{
 					if (riding() instanceof Item)
-						sendBack.append("something");
+						sendBack.append(_("something"));
 					else
-						sendBack.append("someone");
+						sendBack.append(_("someone"));
 				}
 				else
 					sendBack.append(riding().name());
@@ -1662,9 +1661,9 @@ public class StdMOB implements MOB
 						if (!CMLib.flags().canBeSeenBy(riding(), viewerMob))
 						{
 							if (riding() instanceof Item)
-								sendBack.append("something");
+								sendBack.append(_("something"));
 							else
-								sendBack.append("someone");
+								sendBack.append(_("someone"));
 						}
 						else
 							sendBack.append(rider.name());
@@ -1674,12 +1673,11 @@ public class StdMOB implements MOB
 			}
 			if ((isInCombat()) && (CMLib.flags().canMove(this)) && (!CMLib.flags().isSleeping(this)))
 			{
-				sendBack.append(" fighting ");
 				if (getVictim() == viewerMob)
-					sendBack.append("YOU");
+					sendBack.append(_(" fighting YOU"));
 				else
 				if (!CMLib.flags().canBeSeenBy(getVictim(), viewerMob))
-					sendBack.append("someone");
+					sendBack.append(_(" fighting someone"));
 				else
 					sendBack.append(getVictim().name());
 			}
@@ -1688,7 +1686,7 @@ public class StdMOB implements MOB
 				final List<MOB> whoseAhead = CMLib.combat().getFormationFollowed(this);
 				if ((whoseAhead != null) && (whoseAhead.size() > 0))
 				{
-					sendBack.append(", behind ");
+					sendBack.append(_(", behind "));
 					for (int v = 0; v < whoseAhead.size(); v++)
 					{
 						final MOB ahead = whoseAhead.get(v);
@@ -1696,13 +1694,13 @@ public class StdMOB implements MOB
 						{
 							sendBack.append(", ");
 							if (v == whoseAhead.size() - 1)
-								sendBack.append("and ");
+								sendBack.append(_("and "));
 						}
 						if (ahead == viewerMob)
-							sendBack.append("you");
+							sendBack.append(_("you"));
 						else
 						if (!CMLib.flags().canBeSeenBy(ahead, viewerMob))
-							sendBack.append("someone");
+							sendBack.append(_("someone"));
 						else
 							sendBack.append(ahead.name());
 					}

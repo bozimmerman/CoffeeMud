@@ -1027,6 +1027,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			if(flag_msgType!=flag_is)
 				type="crawls";
 			else
+			if(seen instanceof MOB)
+				type="sits";
+			else
 				type="sits";
 		}
 		else
