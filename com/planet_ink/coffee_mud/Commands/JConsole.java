@@ -94,6 +94,7 @@ public class JConsole extends StdCommand
 			final InputCallback IC[]=new InputCallback[1];
 			final boolean[] addMode=new boolean[1];
 			final StringBuilder inpBuilder=new StringBuilder("");
+			myScope.c.tick(mob, Tickable.TICKID_MOB); // set lastknownlocation
 			IC[0]=new InputCallback(InputCallback.Type.PROMPT)
 			{
 				@Override public void showPrompt() { session.print(addMode[0]?".":">"); }
@@ -151,16 +152,28 @@ public class JConsole extends StdCommand
 		@Override public String getClassName(){ return "JScriptEvent";}
 		static final long serialVersionUID=4223;
 		final MOB mob;
-		final ScriptingEngine c;
+		final public ScriptingEngine c;
 		final Object[] objs=new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
-		public MOB mob(){return mob;}
+		
+		public MOB mob()
+		{
+			return mob;
+		}
+		
 		public void setVar(String host, String var, String value)
 		{
 			c.setVar(host,var.toUpperCase(),value);
 		}
 		public String getVar(String host, String var)
-		{ return c.getVar(host,var);}
-		public String toJavaString(Object O){return Context.toString(O);}
+		{ 
+			return c.getVar(host,var);
+		}
+		
+		public String toJavaString(Object O)
+		{
+			return Context.toString(O);
+		}
+		
 		@Override
 		public Object get(final String name, Scriptable start)
 		{
@@ -239,6 +252,7 @@ public class JConsole extends StdCommand
 		{
 			c=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
 			this.mob=mob;
+			c.tick(mob, Tickable.TICKID_MOB); // this sets lastknownlocation
 		}
 	}
 
