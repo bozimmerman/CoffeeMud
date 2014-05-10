@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -159,6 +158,7 @@ public class Prop_AstralSpirit extends Property
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 		affectableStats.setDisposition(affectableStats.disposition()&~PhyStats.IS_SITTING);
 		affectableStats.setDisposition(affectableStats.disposition()&~PhyStats.IS_SLEEPING);
+		affectableStats.setDisposition(affectableStats.disposition()&~PhyStats.IS_CUSTOM);
 		affectableStats.setSensesMask(affectableStats.sensesMask()&~PhyStats.CAN_NOT_MOVE);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SPEAK);
 	}

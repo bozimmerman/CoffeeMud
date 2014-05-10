@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -189,7 +188,7 @@ public class WeatherAffects extends PuddleMaker
 			&&(CMLib.dice().rollPercentage()>((msg.source().charStats().getStat(CharStats.STAT_DEXTERITY)*3)+25)))
 			{
 				int oldDisposition=msg.source().basePhyStats().disposition();
-				oldDisposition=oldDisposition&(~(PhyStats.IS_SLEEPING|PhyStats.IS_SNEAKING|PhyStats.IS_SITTING));
+				oldDisposition=oldDisposition&(~(PhyStats.IS_SLEEPING|PhyStats.IS_SNEAKING|PhyStats.IS_SITTING|PhyStats.IS_CUSTOM));
 				msg.source().basePhyStats().setDisposition(oldDisposition|PhyStats.IS_SITTING);
 				msg.source().recoverPhyStats();
 				R.show(msg.source(),null,CMMsg.MSG_OK_ACTION,_("^W<S-NAME> slip(s) on the @x1 ground.^?",what));

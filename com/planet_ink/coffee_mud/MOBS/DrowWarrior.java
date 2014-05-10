@@ -269,8 +269,8 @@ public class DrowWarrior extends DrowElf
 
 	public boolean checkStatus()
 	{
-		if(phyStats().disposition() == PhyStats.IS_SITTING)
-			phyStats().setDisposition(phyStats().disposition() - PhyStats.IS_SITTING);
+		if(CMLib.flags().isSitting(this))
+			phyStats().setDisposition(CMath.unsetb(phyStats().disposition(),PhyStats.IS_SITTING|PhyStats.IS_CUSTOM));
 		this.location().show(this, null, CMMsg.MSG_NOISYMOVEMENT, _("<S-NAME> stand(s) up, ready for more combat."));
 
 		return true;

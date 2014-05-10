@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!-- ----------------------------------------------------------------------------
+Copyright 2013-2014 Bo Zimmerman
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+--------------------------------------------------------------------------------
+
+See example.xml for details.
+-->
+<AREADATA>
+
+<STRING load="/resources/randareas/inc_roomruns.xml" />
+<STRING load="/resources/randareas/inc_adjectives.xml" />
+<STRING load="/resources/randareas/inc_streetnames.xml" />
+
+
+
+<AREA id="maze_dungeon" layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;forest;goblins;orcs;trolls;town;random">
+	<NAME>$areaname</NAME><SIZE>$areasize</SIZE>
+	<CLASS select="any-1"><CLASS condition="$areatype!=''">$areatype</CLASS><CLASS condition="$areatype=''">StdArea</CLASS></CLASS>
+	<ROOM id="other_rooms" insert="hallway_rooms,interior_rooms,leaf_rooms" />
+	<BEHAVIOR select="all" id="dungeon_behaviors">
+		<BEHAVIOR condition="$theme='kobolds' or $theme='goblins'" class="RandomTraps" parms="mintraps=1 maxtraps=$AREA_SIZE/2 rooms=Y exits=Y" />
+		<BEHAVIOR condition="$theme='random'" class="RandomTraps" parms="mintraps=1 maxtraps=3 rooms=Y exits=Y" />
+		<BEHAVIOR condition="$theme='town'" class="Arrest" parms="laws.ini;OFFICERS=&quot;\&quot;$__officertype\&quot;&quot; JUDGE=&quot;\&quot;$__chieftype\&quot;&quot;"/>
+	</BEHAVIOR>
+</AREA>
+
+
+</AREADATA>

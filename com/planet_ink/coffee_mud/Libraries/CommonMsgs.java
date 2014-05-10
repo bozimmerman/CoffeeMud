@@ -512,7 +512,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	{
 		final MOB sittingmob=msg.source();
 		int oldDisposition=sittingmob.basePhyStats().disposition();
-		oldDisposition=oldDisposition&(~(PhyStats.IS_SLEEPING|PhyStats.IS_SNEAKING|PhyStats.IS_SITTING));
+		oldDisposition=oldDisposition&(~(PhyStats.IS_SLEEPING|PhyStats.IS_SNEAKING|PhyStats.IS_SITTING|PhyStats.IS_CUSTOM));
 		sittingmob.basePhyStats().setDisposition(oldDisposition|PhyStats.IS_SITTING);
 		sittingmob.recoverPhyStats();
 		sittingmob.recoverCharStats();
@@ -524,7 +524,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	{
 		final MOB sleepingmob=msg.source();
 		int oldDisposition=sleepingmob.basePhyStats().disposition();
-		oldDisposition=oldDisposition&(~(PhyStats.IS_SLEEPING|PhyStats.IS_SNEAKING|PhyStats.IS_SITTING));
+		oldDisposition=oldDisposition&(~(PhyStats.IS_SLEEPING|PhyStats.IS_SNEAKING|PhyStats.IS_SITTING|PhyStats.IS_CUSTOM));
 		sleepingmob.basePhyStats().setDisposition(oldDisposition|PhyStats.IS_SLEEPING);
 		sleepingmob.recoverPhyStats();
 		sleepingmob.recoverCharStats();
@@ -536,7 +536,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	{
 		final MOB standingmob=msg.source();
 		int oldDisposition=standingmob.basePhyStats().disposition();
-		oldDisposition=oldDisposition&(~(PhyStats.IS_SLEEPING|PhyStats.IS_SNEAKING|PhyStats.IS_SITTING));
+		oldDisposition=oldDisposition&(~(PhyStats.IS_SLEEPING|PhyStats.IS_SNEAKING|PhyStats.IS_SITTING|PhyStats.IS_CUSTOM));
 		standingmob.basePhyStats().setDisposition(oldDisposition);
 		standingmob.recoverPhyStats();
 		standingmob.recoverCharStats();

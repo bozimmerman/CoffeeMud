@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -310,7 +309,7 @@ public class Drowness extends StdBehavior
 	public boolean checkStatus(MOB mob)
 	{
 		if(CMLib.flags().isSitting(mob))
-			mob.phyStats().setDisposition(mob.phyStats().disposition() - PhyStats.IS_SITTING);
+			mob.phyStats().setDisposition(CMath.unsetb(mob.phyStats().disposition(),PhyStats.IS_SITTING|PhyStats.IS_CUSTOM));
 		mob.location().show(mob, null, CMMsg.MSG_QUIETMOVEMENT, _("<S-NAME> stand(s) up, ready for more combat."));
 
 		return true;

@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -979,8 +978,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			}
 			body.delEffect(body.fetchEffect("Age")); // so misskids doesn't record it
 			body.destroy();
-			rejuvedMOB.basePhyStats().setDisposition(CMath.unsetb(rejuvedMOB.basePhyStats().disposition(),PhyStats.IS_SITTING));
-			rejuvedMOB.phyStats().setDisposition(CMath.unsetb(rejuvedMOB.basePhyStats().disposition(),PhyStats.IS_SITTING));
+			rejuvedMOB.basePhyStats().setDisposition(CMath.unsetb(rejuvedMOB.basePhyStats().disposition(),PhyStats.IS_SITTING|PhyStats.IS_CUSTOM));
+			rejuvedMOB.phyStats().setDisposition(CMath.unsetb(rejuvedMOB.basePhyStats().disposition(),PhyStats.IS_SITTING|PhyStats.IS_CUSTOM));
 			rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> get(s) up!"));
 			corpseRoom.recoverRoomStats();
 			final Vector<String> whatsToDo=CMParms.parse(CMProps.getVar(CMProps.Str.PLAYERDEATH));
