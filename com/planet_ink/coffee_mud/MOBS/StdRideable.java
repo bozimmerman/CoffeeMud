@@ -488,7 +488,7 @@ public class StdRideable extends StdMOB implements Rideable
 
 			{
 				final MOB targ=(MOB)msg.target();
-				tell("You can't attack "+targ.name(this)+" right now.");
+				tell(_("You can't attack @x1 right now.",targ.name(this)));
 				if(getVictim()==targ) setVictim(null);
 				if(targ.getVictim()==this) targ.setVictim(null);
 				return false;

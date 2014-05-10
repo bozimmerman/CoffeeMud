@@ -47,8 +47,6 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	protected final List<WeakReference<MsgMonitor>>
 			globalMonitors = new SLinkedList<WeakReference<MsgMonitor>>();
 
-	protected String unknownCommand(){return "Huh?";}
-	protected String unknownInvoke(){return "You don't know how to @x1 that.";}
 	protected Ability awarenessA=null;
 
 	@Override
@@ -56,14 +54,22 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	{
 		if(mob==null) return false;
 		final Room R=mob.location();
-		String msgStr=unknownCommand();
-		if(R==null){ mob.tell(msgStr); return false;}
+		String msgStr;
+		if(R==null)
+		{ 
+			mob.tell(_("Huh?")); 
+			return false;
+		}
 		if(command.size()>0)
 		{
 			final String word=CMLib.english().getAnEvokeWord(mob,command.get(0));
 			if(word!=null)
-				msgStr=CMStrings.replaceAll(unknownInvoke(),"@x1",word.toLowerCase());
+				msgStr=_("You don't know how to @x1 that.",word.toLowerCase());
+			else
+				msgStr=_("Huh?");
 		}
+		else
+			msgStr=_("Huh?");
 		final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_HUH,msgStr,CMParms.combine(command,0),null);
 		if(!R.okMessage(mob,msg)) return false;
 		R.send(mob,msg);
@@ -425,7 +431,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		else
 		if(!isPrivate)
 		{
-			final String str="<S-NAME> say(s) '"+text+"'"+((target==null)?"^</SAY^>":" to <T-NAMESELF>.^</SAY^>^?");
+			final String str=_("<S-NAME> say(s) '@x1'"+((target==null)?"^</SAY^>":" to <T-NAMESELF>.^</SAY^>^?"),text);
 			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors((target==null)?mob.name(target):target.name(mob))+"\"^>"+str,"^T^<SAY \""
 					+CMStrings.removeColors(mob.name(target))+"\"^>"+str,"^T^<SAY \""+CMStrings.removeColors(mob.name(target))+"\"^>"+str);
 			gmcpSaySend("say",mob, target, msg);
@@ -519,6 +525,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		sittingmob.recoverMaxState();
 		sittingmob.tell(sittingmob,msg.target(),msg.tool(),msg.sourceMessage());
 	}
+	
 	@Override
 	public void handleSleep(CMMsg msg)
 	{
@@ -531,6 +538,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		sleepingmob.recoverMaxState();
 		sleepingmob.tell(sleepingmob,msg.target(),msg.tool(),msg.sourceMessage());
 	}
+	
 	@Override
 	public void handleStand(CMMsg msg)
 	{
