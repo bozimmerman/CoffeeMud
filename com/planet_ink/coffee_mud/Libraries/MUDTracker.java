@@ -842,12 +842,12 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		if((mob.riding()!=null)&&(mob.riding().mobileRideBasis()))
 		{
 			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> ride(s) @x1 in from @x2.",mob.riding().name(),otherDirectionName));
-			leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,((flee)?"You flee "+directionName+".":null),leaveCode,null,leaveCode,((flee)?"<S-NAME> flee(s) with "+mob.riding().name()+" "+directionName+".":"<S-NAME> ride(s) "+mob.riding().name()+" "+directionName+"."));
+			leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,((flee)?_("You flee @x1.",directionName):null),leaveCode,null,leaveCode,_(((flee)?"<S-NAME> flee(s) with ":"<S-NAME> ride(s) ")+"@x1 @x2.",mob.riding().name()+" "+directionName+"."));
 		}
 		else
 		{
-			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> @x1 from @x2.",CMLib.flags().dispositionString(mob,CMFlagLibrary.flag_arrives),otherDirectionName));
-			leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,((flee)?"You flee "+directionName+".":null),leaveCode,null,leaveCode,((flee)?"<S-NAME> flee(s) "+directionName+".":"<S-NAME> "+CMLib.flags().dispositionString(mob,CMFlagLibrary.flag_leaves)+" "+directionName+"."));
+			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> "+CMLib.flags().dispositionString(mob,CMFlagLibrary.flag_arrives)+" from @x1.",otherDirectionName));
+			leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,((flee)?"You flee "+directionName+".":null),leaveCode,null,leaveCode,((flee)?_("<S-NAME> flee(s) @x1.",directionName):_("<S-NAME> "+CMLib.flags().dispositionString(mob,CMFlagLibrary.flag_leaves)+" @x1.",directionName)));
 		}
 		final boolean gotoAllowed=(!mob.isMonster()) && CMSecurity.isAllowed(mob,destRoom,CMSecurity.SecFlag.GOTO);
 		if((exit==null)&&(!gotoAllowed))
