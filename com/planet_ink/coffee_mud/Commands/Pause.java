@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.threads.CMRunnable;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -13,7 +14,6 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-
 
 import java.util.*;
 import java.io.IOException;
@@ -61,7 +61,7 @@ public class Pause extends StdCommand
 					mob.tell(_("You are not allowed to pause all objects."));
 				else
 				{
-					CMLib.threads().suspendAll();
+					CMLib.threads().suspendAll(new CMRunnable[]{mob.session()});
 					mob.tell(_("All objects have been suspended. Enter PAUSE again to resume."));
 				}
 			}

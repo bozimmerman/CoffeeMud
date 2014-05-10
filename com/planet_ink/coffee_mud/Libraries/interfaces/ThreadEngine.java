@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.threads.CMRunnable;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -13,6 +14,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 /*
    Copyright 2000-2014 Bo Zimmerman
@@ -40,7 +42,7 @@ public interface ThreadEngine extends CMLibrary, Runnable
 	public void resumeTicking(Tickable E, int tickID);
 	public void suspendResumeRecurse(CMObject O, boolean skipEmbeddedAreas, boolean suspend);
 	public boolean isSuspended(Tickable E, int tickID);
-	public void suspendAll();
+	public void suspendAll(CMRunnable[] exceptRs);
 	public void resumeAll();
 	public boolean isAllSuspended();
 	public void clearDebri(Room room, int taskCode);

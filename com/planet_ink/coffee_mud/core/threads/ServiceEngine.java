@@ -46,14 +46,15 @@ public class ServiceEngine implements ThreadEngine
 	private static final long LONG_TICK_TIMEOUT  = (120*TimeManager.MILI_MINUTE);
 
 
-	private Thread  					 drivingThread=null;
-	private TickClient 					 supportClient=null;
-	protected SLinkedList<TickableGroup> allTicks=new SLinkedList<TickableGroup>();
-	private boolean 					 isSuspended=false;
-	private int 						 max_objects_per_thread=0;
-	private CMThreadPoolExecutor[]		 threadPools=new CMThreadPoolExecutor[256];
-	private volatile long				 globalTickID=0;
-	private final long 					 globalStartTime=System.currentTimeMillis();
+	private Thread  					drivingThread=null;
+	private TickClient 					supportClient=null;
+	protected SLinkedList<TickableGroup>allTicks=new SLinkedList<TickableGroup>();
+	private boolean 					isSuspended=false;
+	private int 						max_objects_per_thread=0;
+	private CMThreadPoolExecutor[]		threadPools=new CMThreadPoolExecutor[256];
+	private volatile long				globalTickID=0;
+	private final long 					globalStartTime=System.currentTimeMillis();
+	private volatile CMRunnable[]		unsuspendedRunnables=null;
 
 	@Override public String ID(){return "ServiceEngine";}
 	@Override public String name() { return ID();}
@@ -264,11 +265,33 @@ public class ServiceEngine implements ThreadEngine
 		return false;
 	}
 
-	@Override public boolean isAllSuspended(){return isSuspended;}
-	@Override public void suspendAll(){isSuspended=true;}
-	@Override public void resumeAll(){isSuspended=false;}
-	@Override public void suspendTicking(Tickable E, int tickID){suspendResumeTicking(E,tickID,true);}
-	@Override public void resumeTicking(Tickable E, int tickID){suspendResumeTicking(E,tickID,false);}
+	@Override public boolean isAllSuspended()
+	{
+		return isSuspended;
+	}
+	
+	@Override public void suspendAll(CMRunnable[] exceptRs)
+	{
+		unsuspendedRunnables=exceptRs;
+		isSuspended=true;
+	}
+	
+	@Override public void resumeAll()
+	{
+		unsuspendedRunnables=null;
+		isSuspended=false;
+	}
+	
+	@Override public void suspendTicking(Tickable E, int tickID)
+	{
+		suspendResumeTicking(E,tickID,true);
+	}
+	
+	@Override public void resumeTicking(Tickable E, int tickID)
+	{
+		suspendResumeTicking(E,tickID,false);
+	}
+	
 	protected boolean suspendResumeTicking(Tickable E, int tickID, boolean suspend)
 	{
 		for(final Iterator<TickableGroup> e=tickGroups();e.hasNext();)
@@ -1240,7 +1263,22 @@ public class ServiceEngine implements ThreadEngine
 			try
 			{
 				while(isAllSuspended() && (!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
-					Thread.sleep(2000);
+				{
+					if((unsuspendedRunnables!=null)&&(unsuspendedRunnables.length>0))
+					{
+						Thread.sleep(100);
+						for(CMRunnable runnable : unsuspendedRunnables)
+						{
+							try {
+								runnable.run();
+							} catch(Exception e) {
+								Log.errOut(e);
+							}
+						}
+					}
+					else
+						Thread.sleep(2000);
+				}
 				final long now=System.currentTimeMillis();
 				globalTickID = (now - globalStartTime) / CMProps.getTickMillis();
 				long nextWake=System.currentTimeMillis() + 3600000;

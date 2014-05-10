@@ -370,7 +370,7 @@ public class MUD extends Thread implements MudHost
 	{
 		CMProps.setBoolAllVar(CMProps.Bool.MUDSTARTED,false);
 		CMProps.setBoolAllVar(CMProps.Bool.MUDSHUTTINGDOWN,true);
-		serviceEngine.suspendAll();
+		serviceEngine.suspendAll(null);
 		if(S!=null)S.print(CMLib.lang()._("Closing MUD listeners to new connections..."));
 		for(int i=0;i<CMLib.hosts().size();i++)
 			CMLib.hosts().get(i).setAcceptConnections(false);
