@@ -29,6 +29,7 @@
   . Create/Modify/Destroy can now be used to create and alter objects in outer space.
   . Several new "shortcut" item and area types for space: moon, gasgiant, star, dwarfstar, massivestar, planet, moonlet, asteroid, etc.
   . MoneyChanger behavior can now discount currency by its distant origin (farther planet is from origin of currency, less its worth).
+   *. finish the dadgum engine thrust adjustment!
    *. personal scanner/tricorder software: mineral scanner, computer interface (with ship perhaps?)!
    *. entry systems for ships (default entry key card, voice code, identifying scanner)
    *. make ship sensor systems
@@ -38,7 +39,6 @@
    *. make ship torpedo launchers and torpedo containers
    *. make ship impulse and warp engines
    *. make ship dampeners
-   *. engines should have max turn thrust, different from max thrust
    *. finish main ship software for controlling all this stuff
    *. add electronics to guides, how to make a ship, how to build space, etc, details about tech
    *. add electronics to MG
