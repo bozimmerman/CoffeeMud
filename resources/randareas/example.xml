@@ -220,6 +220,7 @@ Optional details: (See Archon's Guide)
 "RACE","LEVEL","NAME","DISPLAY","DESCRIPTION","MONEY","ALIGNMENT", "DISPOSITION","SENSES",
 "ARMOR","DAMAGE","ATTACK","SPEED","TATTS","EXPS","IMG","FACTIONS","VARMONEY"
 (plus or minus others depending upon class)
+The "RACE" detail can be the name of a race, or resolve to a RACE tag, see below.
 
 ----------------------------------------
 Item Basic tags:
@@ -264,6 +265,23 @@ Required detail: "class"
 Optional Objects: "AFFECT","BEHAVIOR", "CLASS","NAME","DISPLAY","DESCRIPTION","DOOR",
 "LEVEL","ABILITY","ISREADABLE","AFFBEHAV","DISPOSITION", "READABLETEXT","HASADOOR",
 "DEFCLOSED","HASALOCK","DEFLOCKED",	"KEYNAME"
+
+----------------------------------------
+Race tags:
+Required detail: "class", "name"
+Optional Objects: "CAT","VWEIGHT","BWEIGHT","VHEIGHT","FHEIGHT","MHEIGHT","AVAIL","LEAVE",
+"NUMRABLE","GETRABLE<number>","GETRABLEPROF<number>","GETRABLEQUAL<number>","GETRABLELVL<number>",
+"NUMCABLE<number>","GETCABLE<number>","GETCABLEPROF<number>","BODYKILL","AGING", "HELP"
+"NUMREFF","GETREFF<number>","GETREFFPARM<number>","GETREFFLVL<number>","BREATHES","ARRIVE",
+"HEALTHRACE","BODY","WEAPONRACE","DISFLAGS","EVENTRACE",
+
+Special Optional Objects:
+"WEAR" - either a bitmask number, or wear locations names set equal to true to forbid, 
+	or false to allow, e.g (mouth=true back=false left_wrist=false)
+"ESTATS","ASTATS","CSTATS","ASTATE","STARTASTATE" - either a | delimited stat list, 
+	or a series of var=value, e.g. (STRENGTH=5 HITS=2 ATTACK=2 etc..)
+"NUMRSC","NUMOFT" - the name of an item tag or tags to designate the race resources and outfit respectively.
+"WEAPONCLASS" - the name of an item tag or tags from which the race natural weapon is chosen
 
 ----------------------------------------
 Faction tags:

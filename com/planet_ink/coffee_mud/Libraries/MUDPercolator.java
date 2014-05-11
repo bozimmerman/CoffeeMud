@@ -786,6 +786,56 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return list;
 	}
 
+	protected boolean fillIgnoreMultiStatCode(Modifiable E, List<String> ignoreStats, String defPrefix, String[] stats, XMLLibrary.XMLpiece piece, Map<String,Object> defined)
+	{
+		String value = null;
+		if((!ignoreStats.contains(stats[0].toUpperCase().trim()))
+		&&((value=fillOutStatCode(E,ignoreStats,defPrefix,stats[0],piece,defined))!=null))
+		{
+			final int num=CMath.s_int(value);
+			for(int n=0;n<num;n++)
+			{
+				for(int t=1;t<stats.length;t++)
+				{
+					value = findOptionalString(E,ignoreStats,defPrefix,stats[t]+n,piece,defined);
+					if(value != null)
+						E.setStat(stats[t]+n, value);
+				}
+			}
+			if(num>0)
+			{
+				for(String stat : stats)
+					ignoreStats.add(stat.toUpperCase().trim());
+			}
+			return num>0;
+		}
+		return false;
+	}
+
+	protected boolean fillIgnoreItemStatCodes(Modifiable E, List<String> ignoreStats, String defPrefix, String[] stats, XMLLibrary.XMLpiece piece, Map<String,Object> defined)
+	throws CMException
+	{
+		if(stats.length==3)
+		{
+			String tag = findOptionalString(E,ignoreStats,"RACE_",stats[0].toUpperCase().trim(),piece,defined);
+			if((tag!=null)&&(defined.get(tag.toUpperCase()) instanceof XMLLibrary.XMLpiece))
+			{
+				List<Item> items=findItems((XMLLibrary.XMLpiece)defined.get(tag.toUpperCase()), defined);
+				E.setStat(stats[0], ""+items.size());
+				for(int i=0;i<items.size();i++)
+				{
+					Item I=items.get(CMLib.dice().roll(1, items.size(),-1));
+					E.setStat(stats[1]+i, I.ID());
+					E.setStat(stats[2]+i, I.text());
+				}
+				for(String stat : stats)
+					ignoreStats.add(stat.toUpperCase().trim());
+				return true;
+			}
+		}
+		return false;
+	}
+
 	protected String fillOutStatCode(Modifiable E, List<String> ignoreStats, String defPrefix, String stat, XMLLibrary.XMLpiece piece, Map<String,Object> defined)
 	{
 		String value = null;
@@ -931,7 +981,13 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		value = fillOutStatCode(M,ignoreStats,"MOB_","RACE",piece,defined);
 		if(value != null)
 		{
-			final Race R=CMClass.getRace(value);
+			Race R=CMClass.getRace(value);
+			if(R==null)
+			{
+				final List<Race> races=findRaces(piece, defined);
+				if(races.size()>0)
+					R=races.get(CMLib.dice().roll(1, races.size(), -1));
+			}
 			if(R!=null)
 				R.setHeightWeight(M.basePhyStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
 		}
@@ -1580,6 +1636,26 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return V;
 	}
 
+	protected List<Race> findRaces(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
+	{
+		final List<Race> V = new Vector<Race>();
+		final String tagName="RACE";
+		final List<XMLLibrary.XMLpiece> choices = getAllChoices(null,null,null,tagName, piece, defined,true);
+		if((choices==null)||(choices.size()==0)) return V;
+		for(int c=0;c<choices.size();c++)
+		{
+			final XMLLibrary.XMLpiece valPiece = choices.get(c);
+			if(valPiece.parms.containsKey("VALIDATE") && !testCondition(CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(valPiece.parms,"VALIDATE")),valPiece, defined))
+				continue;
+			defineReward(null,null,null,valPiece,null,defined);
+			final Set<String> definedSet=getPrevouslyDefined(defined,tagName+"_");
+			final Race R=buildGenRace(valPiece,defined);
+			V.add(R);
+			clearNewlyDefined(defined, definedSet, tagName+"_");
+		}
+		return V;
+	}
+
 	protected Ability buildAbility(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
 		final String classID = findString("class",piece,defined);
@@ -1602,6 +1678,42 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(value != null)
 			B.setParms(value);
 		return B;
+	}
+
+	protected Race buildGenRace(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
+	{
+		final String classID = findString("class",piece,defined);
+		Race R=CMClass.getRace(classID);
+		if( R != null)
+			return R;
+		R=(Race)CMClass.getRace("GenRace").copyOf();
+		int numStatsFound=0;
+		for(String stat : R.getStatCodes())
+			if(findOptionalString(null, null, null, stat, piece, defined)!=null)
+				numStatsFound++;
+		if(numStatsFound<5)
+			throw new CMException("Too few fields to build race on classID '"+classID+"', Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
+		R.setRacialParms("<RACE><ID>"+CMStrings.capitalizeAndLower(classID)+"</ID><NAME>"+CMStrings.capitalizeAndLower(classID)+"</NAME></RACE>");
+		CMClass.addRace(R);
+		addDefinition("RACE_CLASS",R.ID(),defined); // define so we can mess with it
+		R.setStat("NAME", findString("name",piece,defined));
+		addDefinition("RACE_NAME",R.name(),defined); // define so we can mess with it
+		final List<String> ignoreStats=new XVector<String>(new String[]{"CLASS","NAME"});
+		fillIgnoreItemStatCodes(R,ignoreStats,"RACE_",new String[]{"WEAPONCLASS","WEAPONCLASS","WEAPONXML"},piece,defined);
+		fillIgnoreItemStatCodes(R,ignoreStats,"RACE_",new String[]{"NUMRSC","GETRSCID","GETRSCPARM"},piece,defined);
+		fillIgnoreItemStatCodes(R,ignoreStats,"RACE_",new String[]{"NUMOFT","GETOFTID","GETOFTPARM"},piece,defined);
+		fillIgnoreMultiStatCode(R,ignoreStats,"RACE_",new String[]{"NUMRABLE","GETRABLE","GETRABLEPROF","GETRABLEQUAL","GETRABLELVL"},piece,defined);
+		fillIgnoreMultiStatCode(R,ignoreStats,"RACE_",new String[]{"NUMCABLE","GETCABLE","GETCABLEPROF"},piece,defined);
+		fillIgnoreMultiStatCode(R,ignoreStats,"RACE_",new String[]{"NUMREFF","GETREFF","GETREFFPARM","GETREFFLVL"},piece,defined);
+		fillOutStatCodes(R,ignoreStats,"RACE_",piece,defined);
+		/*
+			"ID","NAME","CAT","WEAR","VWEIGHT","BWEIGHT","VHEIGHT","FHEIGHT","MHEIGHT","AVAIL","LEAVE","ARRIVE","HEALTHRACE","BODY","ESTATS","ASTATS","CSTATS","ASTATE",
+			"NUMRSC","GETRSCID","GETRSCPARM","WEAPONCLASS","WEAPONXML","NUMRABLE","GETRABLE","GETRABLEPROF","GETRABLEQUAL","GETRABLELVL","NUMCABLE","GETCABLE","GETCABLEPROF",
+			"NUMOFT","GETOFTID","GETOFTPARM","BODYKILL","NUMREFF","GETREFF","GETREFFPARM","GETREFFLVL","AGING","DISFLAGS","STARTASTATE","EVENTRACE","WEAPONRACE", "HELP",
+			"BREATHES"
+		 */
+		CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+		return R;
 	}
 
 	protected void addDefinition(String definition, String value, Map<String,Object> defined)

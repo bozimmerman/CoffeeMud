@@ -429,16 +429,36 @@ public class GenRace extends StdRace
 				bodyMask()[v]=CMath.s_int(V.get(v));
 		adjPStats=null;
 		final String eStats=CMLib.xml().getValFromPieces(raceData,"ESTATS");
-		if(eStats.length()>0){ adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats"); adjPStats.setAllValues(0); CMLib.coffeeMaker().setPhyStats(adjPStats,eStats);}
+		if(eStats.length()>0)
+		{
+			adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+			adjPStats.setAllValues(0);
+			CMLib.coffeeMaker().setPhyStats(adjPStats,eStats);
+		}
 		adjStats=null;
 		final String aStats=CMLib.xml().getValFromPieces(raceData,"ASTATS");
-		if(aStats.length()>0){ adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); adjStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(adjStats,aStats);}
+		if(aStats.length()>0)
+		{
+			adjStats=(CharStats)CMClass.getCommon("DefaultCharStats");
+			adjStats.setAllValues(0);
+			CMLib.coffeeMaker().setCharStats(adjStats,aStats);
+		}
 		setStats=null;
 		final String cStats=CMLib.xml().getValFromPieces(raceData,"CSTATS");
-		if(cStats.length()>0){ setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); setStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(setStats,cStats);}
+		if(cStats.length()>0)
+		{
+			setStats=(CharStats)CMClass.getCommon("DefaultCharStats");
+			setStats.setAllValues(0);
+			CMLib.coffeeMaker().setCharStats(setStats,cStats);
+		}
 		adjState=null;
 		final String aState=CMLib.xml().getValFromPieces(raceData,"ASTATE");
-		if(aState.length()>0){ adjState=(CharState)CMClass.getCommon("DefaultCharState"); adjState.setAllValues(0); CMLib.coffeeMaker().setCharState(adjState,aState);}
+		if(aState.length()>0)
+		{
+			adjState=(CharState)CMClass.getCommon("DefaultCharState");
+			adjState.setAllValues(0);
+			CMLib.coffeeMaker().setCharState(adjState,aState);
+		}
 		startAdjState=null;
 		disableFlags=CMLib.xml().getIntFromPieces(raceData,"DISFLAGS");
 		final String saState=CMLib.xml().getValFromPieces(raceData,"STARTASTATE");
@@ -697,6 +717,16 @@ public class GenRace extends StdRace
 		}
 	}
 
+	private void setBaseStat(String val, Modifiable C)
+	{
+		for(String stat : C.getStatCodes())
+		{
+			String statVal=CMParms.getParmStr(val, stat, "");
+			if((statVal!=null)&&(statVal.length()>0))
+				C.setStat(stat, statVal);
+		}
+	}
+	
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -713,7 +743,24 @@ public class GenRace extends StdRace
 		case 0: ID=val; break;
 		case 1: name=val; break;
 		case 2: racialCategory=val; break;
-		case 3: forbiddenWornBits=CMath.s_long(val); break;
+		case 3:
+		{
+			if(CMath.isLong(val))
+				forbiddenWornBits=CMath.s_long(val);
+			else
+			if(val.indexOf('=')>0)
+			{
+				forbiddenWornBits=0;
+				for(int i=1;i<Wearable.DEFAULT_WORN_DESCS.length;i++)
+				{
+					String s=CMParms.getParmStr(val, Wearable.DEFAULT_WORN_DESCS[i].toUpperCase().replace(' ','_'), "");
+					if((s!=null)&&(s.length()>0)&&(CMath.isBool(s)))
+						if(CMath.s_bool(s))
+							forbiddenWornBits=CMath.setb(forbiddenWornBits, 2^(i-1));
+				}
+			}
+			break;
+		}
 		case 4: weightVariance=CMath.s_parseIntExpression(val); break;
 		case 5: lightestWeight=CMath.s_parseIntExpression(val); break;
 		case 6: heightVariance=CMath.s_parseIntExpression(val); break;
@@ -735,153 +782,303 @@ public class GenRace extends StdRace
 		case 13:
 		{
 			final List<String> V=CMParms.parseSemicolons(val,false);
-			for(int v=0;v<V.size();v++)
-				if(v<bodyMask().length)
-					bodyMask()[v]=CMath.s_int(V.get(v));
+			if(V.size()>1)
+			{
+				for(int v=0;v<V.size();v++)
+					if(v<bodyMask().length)
+						bodyMask()[v]=CMath.s_int(V.get(v));
+			}
+			else
+			if(val.indexOf('=')>0)
+			{
+				for(int b=0;b<BODYPARTSTR.length;b++)
+				{
+					final int numPart=CMParms.getParmInt(val, BODYPARTSTR[b], Integer.MIN_VALUE);
+					if(numPart!=Integer.MIN_VALUE)
+						bodyMask()[numPart]=numPart;
+				}
+			}
 			break;
 		}
-		case 14: adjPStats=null;clrStatChgDesc();if(val.length()>0){adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats"); adjPStats.setAllValues(0); CMLib.coffeeMaker().setPhyStats(adjPStats,val);}break;
-		case 15: adjStats=null;clrStatChgDesc();if(val.length()>0){adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); adjStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(adjStats,val);}break;
-		case 16: setStats=null;clrStatChgDesc();if(val.length()>0){setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); setStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(setStats,val);}break;
-		case 17: adjState=null;clrStatChgDesc();if(val.length()>0){adjState=(CharState)CMClass.getCommon("DefaultCharState"); adjState.setAllValues(0); CMLib.coffeeMaker().setCharState(adjState,val);}break;
-		case 18: if(CMath.s_int(val)==0) resourceChoices=null; else resourceChoices=new Vector(CMath.s_int(val)); break;
-		case 19: {   if(resourceChoices==null) resourceChoices=new Vector();
-					 final Item I=CMClass.getItem(val);
-					 if(I instanceof RawMaterial)
-					 {
-						 if(num>=resourceChoices.size())
-							resourceChoices.add((RawMaterial)I);
-						 else
-							resourceChoices.set(num,(RawMaterial)I);
-					 }
-					 break;
-				 }
-		case 20: {
-					 if((resourceChoices!=null)&&(num<resourceChoices.size()))
-					 {
-						final Item I=resourceChoices.elementAt(num);
-						I.setMiscText(val);
-						I.recoverPhyStats();
-					 }
-					 break;
-				 }
-		case 21: naturalWeapon=null;
-				 if(val.length()>0) naturalWeapon=CMClass.getWeapon(val);
-				 break;
-		case 22: if(naturalWeapon!=null)
+		case 14:
 		{
-					 naturalWeapon.setMiscText(val);
-					 naturalWeapon.recoverPhyStats();
-				 }
-				 break;
-		case 23: racialAbilityMap=null;
-				 if(CMath.s_int(val)==0)
-				 {
-					 racialAbilityNames=null;
-					 racialAbilityProficiencies=null;
-					 racialAbilityQuals=null;
-					 racialAbilityLevels=null;
-				 }
-				 else
-				 {
-					 racialAbilityNames=new String[CMath.s_int(val)];
-					 racialAbilityProficiencies=new int[CMath.s_int(val)];
-					 racialAbilityQuals=new boolean[CMath.s_int(val)];
-					 racialAbilityLevels=new int[CMath.s_int(val)];
-				 }
-				 break;
-		case 24: {   if(racialAbilityNames==null) racialAbilityNames=new String[num+1];
-					 racialAbilityNames[num]=val;
-					 break;
-				 }
-		case 25: {   if(racialAbilityProficiencies==null) racialAbilityProficiencies=new int[num+1];
-					 racialAbilityProficiencies[num]=CMath.s_parseIntExpression(val);
-					 break;
-				 }
-		case 26: {   if(racialAbilityQuals==null) racialAbilityQuals=new boolean[num+1];
-					 racialAbilityQuals[num]=CMath.s_bool(val);
-					 break;
-				 }
-		case 27: {   if(racialAbilityLevels==null) racialAbilityLevels=new int[num+1];
-					 racialAbilityLevels[num]=CMath.s_parseIntExpression(val);
-					 break;
-				 }
-		case 28: if(CMath.s_int(val)==0)
+			adjPStats=null;
+			clrStatChgDesc();
+			if(val.length()>0)
+			{
+				adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats"); 
+				adjPStats.setAllValues(0);
+				if((val.indexOf('=')>0)&&(val.indexOf('|')<0))
+					setBaseStat(val, adjPStats);
+				else
+					CMLib.coffeeMaker().setPhyStats(adjPStats,val);
+			}
+			break;
+		}
+		case 15:
 		{
-					 culturalAbilityNames=null;
-					 culturalAbilityProficiencies=null;
-				 }
-				 else
-				 {
-					 culturalAbilityNames=new String[CMath.s_int(val)];
-					 culturalAbilityProficiencies=new int[CMath.s_int(val)];
-				 }
-				 break;
-		case 29: {   if(culturalAbilityNames==null) culturalAbilityNames=new String[num+1];
-					 culturalAbilityNames[num]=val;
-					 break;
-				 }
-		case 30: {   if(culturalAbilityProficiencies==null) culturalAbilityProficiencies=new int[num+1];
-					 culturalAbilityProficiencies[num]=CMath.s_int(val);
-					 break;
-				 }
-		case 31: if(CMath.s_int(val)==0) outfitChoices=null; else outfitChoices=new Vector(CMath.s_int(val)); break;
-		case 32: {   if(outfitChoices==null) outfitChoices=new Vector();
-					 if(num>=outfitChoices.size())
-						outfitChoices.add(CMClass.getItem(val));
-					 else
-						outfitChoices.set(num,CMClass.getItem(val));
-					 break;
-				 }
-		case 33: {   if((outfitChoices!=null)&&(num<outfitChoices.size()))
-					 {
-						final Item I=outfitChoices.get(num);
-						I.setMiscText(val);
-						I.recoverPhyStats();
-					 }
-					 break;
-				 }
+			adjStats=null;
+			clrStatChgDesc();
+			if(val.length()>0)
+			{
+				adjStats=(CharStats)CMClass.getCommon("DefaultCharStats");
+				adjStats.setAllValues(0);
+				if((val.indexOf('=')>0)&&(val.indexOf('|')<0))
+					setBaseStat(val, adjStats);
+				else
+					CMLib.coffeeMaker().setCharStats(adjStats,val);
+			}
+			break;
+		}
+		case 16:
+		{
+			setStats=null;
+			clrStatChgDesc();
+			if(val.length()>0)
+			{
+				setStats=(CharStats)CMClass.getCommon("DefaultCharStats");
+				setStats.setAllValues(0);
+				if((val.indexOf('=')>0)&&(val.indexOf('|')<0))
+					setBaseStat(val, setStats);
+				else
+					CMLib.coffeeMaker().setCharStats(setStats,val);
+			}
+			break;
+		}
+		case 17:
+		{
+			adjState=null;
+			clrStatChgDesc();
+			if(val.length()>0)
+			{
+				adjState=(CharState)CMClass.getCommon("DefaultCharState");
+				adjState.setAllValues(0);
+				if((val.indexOf('=')>0)&&(val.indexOf('|')<0))
+					setBaseStat(val, adjState);
+				else
+					CMLib.coffeeMaker().setCharState(adjState,val);
+			}
+			break;
+		}
+		case 18:
+		{
+			if(CMath.s_int(val)==0) 
+				resourceChoices=null; 
+			else 
+				resourceChoices=new Vector(CMath.s_int(val)); 
+			break;
+		}
+		case 19: 
+		{
+			if(resourceChoices==null) 
+				resourceChoices=new Vector();
+			final Item I=CMClass.getItem(val);
+			if(I instanceof RawMaterial)
+			{
+				if(num>=resourceChoices.size())
+					resourceChoices.add((RawMaterial)I);
+				else
+					resourceChoices.set(num,(RawMaterial)I);
+			}
+			break;
+		}
+		case 20:
+		{
+			if((resourceChoices!=null)&&(num<resourceChoices.size()))
+			{
+				final Item I=resourceChoices.elementAt(num);
+				I.setMiscText(val);
+				I.recoverPhyStats();
+			}
+			break;
+		}
+		case 21:
+		{
+			naturalWeapon=null;
+			if(val.length()>0) 
+				naturalWeapon=CMClass.getWeapon(val);
+			break;
+		}
+		case 22:
+		{
+			if(naturalWeapon!=null)
+			{
+				naturalWeapon.setMiscText(val);
+				naturalWeapon.recoverPhyStats();
+			}
+			break;
+		}
+		case 23:
+		{
+			racialAbilityMap=null;
+			if(CMath.s_int(val)==0)
+			{
+				racialAbilityNames=null;
+				racialAbilityProficiencies=null;
+				racialAbilityQuals=null;
+				racialAbilityLevels=null;
+			}
+			else
+			{
+				racialAbilityNames=new String[CMath.s_int(val)];
+				racialAbilityProficiencies=new int[CMath.s_int(val)];
+				racialAbilityQuals=new boolean[CMath.s_int(val)];
+				racialAbilityLevels=new int[CMath.s_int(val)];
+			}
+			break;
+		}
+		case 24:
+		{
+			if(racialAbilityNames==null) 
+				racialAbilityNames=new String[num+1];
+			racialAbilityNames[num]=val;
+			break;
+		}
+		case 25: 
+		{
+			if(racialAbilityProficiencies==null)
+				racialAbilityProficiencies=new int[num+1];
+			racialAbilityProficiencies[num]=CMath.s_parseIntExpression(val);
+			break;
+		}
+		case 26:
+		{
+			if(racialAbilityQuals==null) 
+				racialAbilityQuals=new boolean[num+1];
+			racialAbilityQuals[num]=CMath.s_bool(val);
+			break;
+		}
+		case 27:
+		{
+			if(racialAbilityLevels==null)
+				racialAbilityLevels=new int[num+1];
+			racialAbilityLevels[num]=CMath.s_parseIntExpression(val);
+			break;
+		}
+		case 28:
+		{
+			if(CMath.s_int(val)==0)
+			{
+				culturalAbilityNames=null;
+				culturalAbilityProficiencies=null;
+			}
+			else
+			{
+				culturalAbilityNames=new String[CMath.s_int(val)];
+				culturalAbilityProficiencies=new int[CMath.s_int(val)];
+			}
+			break;
+		}
+		case 29:
+		{
+			if(culturalAbilityNames==null)
+				culturalAbilityNames=new String[num+1];
+			culturalAbilityNames[num]=val;
+			break;
+		}
+		case 30:
+		{
+			if(culturalAbilityProficiencies==null)
+				culturalAbilityProficiencies=new int[num+1];
+			culturalAbilityProficiencies[num]=CMath.s_int(val);
+			break;
+		}
+		case 31:
+		{
+			if(CMath.s_int(val)==0) 
+				outfitChoices=null; 
+			else 
+				outfitChoices=new Vector(CMath.s_int(val)); 
+			break;
+		}
+		case 32:
+		{
+			if(outfitChoices==null)
+				outfitChoices=new Vector();
+			if(num>=outfitChoices.size())
+				outfitChoices.add(CMClass.getItem(val));
+			else
+				outfitChoices.set(num,CMClass.getItem(val));
+			break;
+		}
+		case 33:
+		{
+			if((outfitChoices!=null)&&(num<outfitChoices.size()))
+			{
+				final Item I=outfitChoices.get(num);
+				I.setMiscText(val);
+				I.recoverPhyStats();
+			}
+			break;
+		}
 		case 34: destroyBodyAfterUse=CMath.s_bool(val); break;
-		case 35: racialEffectMap=null;
-				 if(CMath.s_int(val)==0)
-				 {
-					 racialEffectNames=null;
-					 racialEffectParms=null;
-					 racialEffectLevels=null;
-				 }
-				 else
-				 {
-					 racialEffectNames=new String[CMath.s_int(val)];
-					 racialEffectParms=new String[CMath.s_int(val)];
-					 racialEffectLevels=new int[CMath.s_int(val)];
-				 }
-				 break;
-		case 36: {   if(racialEffectNames==null) racialEffectNames=new String[num+1];
-					 racialEffectNames[num]=val;
-					 break;
-				 }
-		case 37: {   if(racialEffectParms==null) racialEffectParms=new String[num+1];
-					 racialEffectParms[num]=val;
-					 break;
-				 }
-		case 38: {   if(racialEffectLevels==null) racialEffectLevels=new int[num+1];
-					 racialEffectLevels[num]=CMath.s_int(val);
-					 break;
-				 }
-		case 39: {
-					final List<String> aV=CMParms.parseCommas(val,true);
-					for(int v=0;v<aV.size();v++)
-					{
-						final int x=CMath.s_int(aV.get(v));
-						if(x<0)
-							getAgingChart()[v]=Integer.MAX_VALUE;
-						else
-							getAgingChart()[v]=x;
-					}
-					break;
-				 }
+		case 35:
+		{
+			racialEffectMap=null;
+			if(CMath.s_int(val)==0)
+			{
+				racialEffectNames=null;
+				racialEffectParms=null;
+				racialEffectLevels=null;
+			}
+			else
+			{
+				racialEffectNames=new String[CMath.s_int(val)];
+				racialEffectParms=new String[CMath.s_int(val)];
+				racialEffectLevels=new int[CMath.s_int(val)];
+			}
+			break;
+		}
+		case 36:
+		{
+			if(racialEffectNames==null)
+				racialEffectNames=new String[num+1];
+			racialEffectNames[num]=val;
+			break;
+		}
+		case 37:
+		{
+			if(racialEffectParms==null)
+				racialEffectParms=new String[num+1];
+			racialEffectParms[num]=val;
+			break;
+		}
+		case 38:
+		{
+			if(racialEffectLevels==null) 
+				racialEffectLevels=new int[num+1];
+			racialEffectLevels[num]=CMath.s_int(val);
+			break;
+		}
+		case 39:
+		{
+			final List<String> aV=CMParms.parseCommas(val,true);
+			for(int v=0;v<aV.size();v++)
+			{
+				final int x=CMath.s_int(aV.get(v));
+				if(x<0)
+					getAgingChart()[v]=Integer.MAX_VALUE;
+				else
+					getAgingChart()[v]=x;
+			}
+			break;
+		}
 		case 40: disableFlags=CMath.s_int(val); break;
-		case 41: startAdjState=null;clrStatChgDesc();if(val.length()>0){startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0); CMLib.coffeeMaker().setCharState(startAdjState,val);}break;
+		case 41:
+		{
+			startAdjState=null;
+			clrStatChgDesc();
+			if(val.length()>0)
+			{
+				startAdjState=(CharState)CMClass.getCommon("DefaultCharState");
+				startAdjState.setAllValues(0);
+				if((val.indexOf('=')>0)&&(val.indexOf('|')<0))
+					setBaseStat(val, startAdjState);
+				else
+					CMLib.coffeeMaker().setCharState(startAdjState,val);
+			}
+			break;
+		}
 		case 42:
 		{
 			eventBuddy=CMClass.getRace(val);

@@ -323,6 +323,7 @@ public interface RawMaterial extends Item
 	public final static int RESOURCE_HYDROGEN=MATERIAL_GAS|183;
 	public final static int RESOURCE_FLOURINE=MATERIAL_GAS|184;
 	public final static int RESOURCE_NITROGEN=MATERIAL_GAS|185;
+	public final static int RESOURCE_CHLORINE=MATERIAL_GAS|186;
 	public final static int RESOURCE_MASK=255;
 
 
@@ -519,7 +520,8 @@ public interface RawMaterial extends Item
 		OXYGEN(RESOURCE_OXYGEN,10,100,0,0,"","",null),
 		HYDROGEN(RESOURCE_HYDROGEN,20,100,0,0,"","",null),
 		FLOURINE(RESOURCE_FLOURINE,60,40,0,0,"strong pungent smell","",null),
-		NITROGEN(RESOURCE_NITROGEN,10,100,0,0,"","",null)
+		NITROGEN(RESOURCE_NITROGEN,10,100,0,0,"","",null),
+		CHLORINE(RESOURCE_CHLORINE,10,100,0,0,"strong acidic smell","",null)
 		;
 		public final int code, value, frequency, hardness, bouancy;
 		public final String smell, effect, desc;
