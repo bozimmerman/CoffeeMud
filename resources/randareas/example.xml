@@ -3262,8 +3262,8 @@ Required details: "id" "value"
 	</STRING>
 </STRING>
 
-<MOB id="forest_mob" select="any-1" requires="level_range=int">
-	<MOB id="forest_mobs" select="all" requires="level_range=int">
+<MOB id="forest_mob" select="any-1" requires="level_range=int,aggrochance=int">
+	<MOB id="forest_mobs" select="all" requires="level_range=int,aggrochance=int">
 		<MOB class="genmob" copyof="Bee" level="$level_range - 2" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
 		<MOB class="genmob" copyof="Doe" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
 		<MOB class="genmob" copyof="Deer" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>

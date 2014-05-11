@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -414,15 +415,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 
 	protected String getVarHost(Environmental E,
-							 String rawHost,
-							 MOB source,
-							 Environmental target,
-							 PhysicalAgent scripted,
-							 MOB monster,
-							 Item primaryItem,
-							 Item secondaryItem,
-							 String msg,
-							 Object[] tmp)
+								String rawHost,
+								MOB source,
+								Environmental target,
+								PhysicalAgent scripted,
+								MOB monster,
+								Item primaryItem,
+								Item secondaryItem,
+								String msg,
+								Object[] tmp)
 	{
 		if(!rawHost.equals("*"))
 		{
@@ -468,7 +469,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	public String getVar(Environmental E, String rawHost, String var, MOB source, Environmental target,
 						 PhysicalAgent scripted, MOB monster, Item primaryItem, Item secondaryItem, String msg,
 						 Object[] tmp)
-	{ return getVar(getVarHost(E,rawHost,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp),var); }
+	{
+		return getVar(getVarHost(E,rawHost,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp),var);
+	}
 
 	@Override
 	public String getVar(String host, String var)
@@ -818,24 +821,114 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			logError(scripted,"XMLLOAD","?","Unknown XML file: '"+filename+"' in "+thangName);
 			return null;
 		}
-		if(buf.substring(0,20).indexOf("<MOBS>")<0)
+		final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(buf.toString());
+		monsters=new Vector<PhysicalAgent>();
+		if(xml!=null)
+		{
+			if(CMLib.xml().getContentsFromPieces(xml,"MOBS")!=null)
+			{
+				final String error=CMLib.coffeeMaker().addMOBsFromXML(xml,monsters,null);
+				if(error.length()>0)
+				{
+					logError(scripted,"XMLLOAD","?","Error in XML file: '"+filename+"'");
+					return null;
+				}
+				if(monsters.size()<=0)
+				{
+					logError(scripted,"XMLLOAD","?","Empty XML file: '"+filename+"'");
+					return null;
+				}
+				Resources.submitResource("RANDOMMONSTERS-"+filename,monsters);
+			}
+			else
+			{
+				logError(scripted,"XMLLOAD","?","No MOBs in XML file: '"+filename+"' in "+thangName);
+				return null;
+			}
+		}
+		else
 		{
 			logError(scripted,"XMLLOAD","?","Invalid XML file: '"+filename+"' in "+thangName);
 			return null;
 		}
-		monsters=new Vector();
-		final String error=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),monsters,null);
-		if(error.length()>0)
+		return monsters;
+	}
+
+	protected List<PhysicalAgent> generateMobsFromFile(Environmental scripted, String filename, String tagName, String rest)
+	{
+		filename=filename.trim();
+		List monsters=(List)Resources.getResource("RANDOMGENMONSTERS-"+filename+"."+tagName+"-"+rest);
+		if(monsters!=null) return monsters;
+		final StringBuffer buf=getResourceFileData(filename, true);
+		String thangName="null";
+		final Room R=CMLib.map().roomLocation(scripted);
+		if(R!=null)
+			thangName=scripted.name()+" at "+CMLib.map().getExtendedRoomID((Room)scripted);
+		else
+		if(scripted!=null)
+			thangName=scripted.name();
+		if((buf==null)||(buf.length()<20))
 		{
-			logError(scripted,"XMLLOAD","?","Error in XML file: '"+filename+"'");
+			logError(scripted,"XMLLOAD","?","Unknown XML file: '"+filename+"' in "+thangName);
 			return null;
 		}
-		if(monsters.size()<=0)
+		final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(buf.toString());
+		monsters=new Vector<PhysicalAgent>();
+		if(xml!=null)
 		{
-			logError(scripted,"XMLLOAD","?","Empty XML file: '"+filename+"'");
+			if(CMLib.xml().getContentsFromPieces(xml,"AREADATA")!=null)
+			{
+				final Hashtable definedIDs = new Hashtable();
+				final Map<String,String> eqParms=new HashMap<String,String>();
+				eqParms.putAll(CMParms.parseEQParms(rest.trim()));
+				final String idName=tagName.toUpperCase();
+				try
+				{
+					CMLib.percolator().buildDefinedIDSet(xml,definedIDs);
+					if((!(definedIDs.get(idName) instanceof XMLLibrary.XMLpiece))
+					||(!((XMLLibrary.XMLpiece)definedIDs.get(idName)).tag.equalsIgnoreCase("MOB")))
+					{
+						logError(scripted,"XMLLOAD","?","Non-MOB tag '"+idName+"' for XML file: '"+filename+"' in "+thangName);
+						return null;
+					}
+					final XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)definedIDs.get(idName);
+					definedIDs.putAll(eqParms);
+					try
+					{
+						CMLib.percolator().checkRequirements(piece, definedIDs);
+					}
+					catch(final CMException cme)
+					{
+						logError(scripted,"XMLLOAD","?","Required ids for "+idName+" were missing for XML file: '"+filename+"' in "+thangName+": "+cme.getMessage());
+						return null;
+					}
+					CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
+					CMLib.percolator().defineReward(null, null, null, piece, piece.value,definedIDs);
+					monsters.addAll(CMLib.percolator().findMobs(piece, definedIDs));
+					if(monsters.size()<=0)
+					{
+						logError(scripted,"XMLLOAD","?","Empty XML file: '"+filename+"'");
+						return null;
+					}
+					Resources.submitResource("RANDOMGENMONSTERS-"+filename+"."+tagName+"-"+rest,monsters);
+				}
+				catch(final CMException cex)
+				{
+					logError(scripted,"XMLLOAD","?","Unable to generate "+idName+" from XML file: '"+filename+"' in "+thangName+": "+cex.getMessage());
+					return null;
+				}
+			}
+			else
+			{
+				logError(scripted,"XMLLOAD","?","Invalid GEN XML file: '"+filename+"' in "+thangName);
+				return null;
+			}
+		}
+		else
+		{
+			logError(scripted,"XMLLOAD","?","Empty or Invalid XML file: '"+filename+"' in "+thangName);
 			return null;
 		}
-		Resources.submitResource("RANDOMMONSTERS-"+filename,monsters);
 		return monsters;
 	}
 
@@ -857,24 +950,114 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			logError(scripted,"XMLLOAD","?","Unknown XML file: '"+filename+"' in "+thangName);
 			return null;
 		}
-		if(buf.substring(0,20).indexOf("<ITEMS>")<0)
+		items=new Vector<PhysicalAgent>();
+		final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(buf.toString());
+		if(xml!=null)
 		{
-			logError(scripted,"XMLLOAD","?","Invalid XML file: '"+filename+"' in "+thangName);
+			if(CMLib.xml().getContentsFromPieces(xml,"ITEMS")!=null)
+			{
+				final String error=CMLib.coffeeMaker().addItemsFromXML(buf.toString(),items,null);
+				if(error.length()>0)
+				{
+					logError(scripted,"XMLLOAD","?","Error in XML file: '"+filename+"' in "+thangName);
+					return null;
+				}
+				if(items.size()<=0)
+				{
+					logError(scripted,"XMLLOAD","?","Empty XML file: '"+filename+"'");
+					return null;
+				}
+				Resources.submitResource("RANDOMITEMS-"+filename,items);
+			}
+			else
+			{
+				logError(scripted,"XMLLOAD","?","No ITEMS in XML file: '"+filename+"' in "+thangName);
+				return null;
+			}
+		}
+		else
+		{
+			logError(scripted,"XMLLOAD","?","Empty or invalid XML file: '"+filename+"' in "+thangName);
 			return null;
 		}
-		items=new Vector();
-		final String error=CMLib.coffeeMaker().addItemsFromXML(buf.toString(),items,null);
-		if(error.length()>0)
+		return items;
+	}
+
+	protected List<PhysicalAgent> generateItemsFromFile(Environmental scripted, String filename, String tagName, String rest)
+	{
+		filename=filename.trim();
+		List items=(List)Resources.getResource("RANDOMGENITEMS-"+filename+"."+tagName+"-"+rest);
+		if(items!=null) return items;
+		final StringBuffer buf=getResourceFileData(filename, true);
+		String thangName="null";
+		final Room R=CMLib.map().roomLocation(scripted);
+		if(R!=null)
+			thangName=scripted.name()+" at "+CMLib.map().getExtendedRoomID((Room)scripted);
+		else
+		if(scripted!=null)
+			thangName=scripted.name();
+		if((buf==null)||(buf.length()<20))
 		{
-			logError(scripted,"XMLLOAD","?","Error in XML file: '"+filename+"'");
+			logError(scripted,"XMLLOAD","?","Unknown XML file: '"+filename+"' in "+thangName);
 			return null;
 		}
-		if(items.size()<=0)
+		items=new Vector<PhysicalAgent>();
+		final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(buf.toString());
+		if(xml!=null)
 		{
-			logError(scripted,"XMLLOAD","?","Empty XML file: '"+filename+"'");
+			if(CMLib.xml().getContentsFromPieces(xml,"AREADATA")!=null)
+			{
+				final Hashtable definedIDs = new Hashtable();
+				final Map<String,String> eqParms=new HashMap<String,String>();
+				eqParms.putAll(CMParms.parseEQParms(rest.trim()));
+				final String idName=tagName.toUpperCase();
+				try
+				{
+					CMLib.percolator().buildDefinedIDSet(xml,definedIDs);
+					if((!(definedIDs.get(idName) instanceof XMLLibrary.XMLpiece))
+					||(!((XMLLibrary.XMLpiece)definedIDs.get(idName)).tag.equalsIgnoreCase("ITEM")))
+					{
+						logError(scripted,"XMLLOAD","?","Non-ITEM tag '"+idName+"' for XML file: '"+filename+"' in "+thangName);
+						return null;
+					}
+					final XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)definedIDs.get(idName);
+					definedIDs.putAll(eqParms);
+					try
+					{
+						CMLib.percolator().checkRequirements(piece, definedIDs);
+					}
+					catch(final CMException cme)
+					{
+						logError(scripted,"XMLLOAD","?","Required ids for "+idName+" were missing for XML file: '"+filename+"' in "+thangName+": "+cme.getMessage());
+						return null;
+					}
+					CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
+					CMLib.percolator().defineReward(null, null, null, piece, piece.value,definedIDs);
+					items.addAll(CMLib.percolator().findItems(piece, definedIDs));
+					if(items.size()<=0)
+					{
+						logError(scripted,"XMLLOAD","?","Empty XML file: '"+filename+"' in "+thangName);
+						return null;
+					}
+					Resources.submitResource("RANDOMGENITEMS-"+filename+"."+tagName+"-"+rest,items);
+				}
+				catch(final CMException cex)
+				{
+					logError(scripted,"XMLLOAD","?","Unable to generate "+idName+" from XML file: '"+filename+"' in "+thangName+": "+cex.getMessage());
+					return null;
+				}
+			}
+			else
+			{
+				logError(scripted,"XMLLOAD","?","Not a GEN XML file: '"+filename+"' in "+thangName);
+				return null;
+			}
+		}
+		else
+		{
+			logError(scripted,"XMLLOAD","?","Empty or Invalid XML file: '"+filename+"' in "+thangName);
 			return null;
 		}
-		Resources.submitResource("RANDOMITEMS-"+filename,items);
 		return items;
 	}
 
@@ -895,6 +1078,40 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(V!=null)
 				{
 					final String name=CMParms.getPastBitClean(thisName,1);
+					if(name.equalsIgnoreCase("ALL"))
+						OBJS=V;
+					else
+					if(name.equalsIgnoreCase("ANY"))
+					{
+						if(V.size()>0)
+							areaThing=(Environmental)V.get(CMLib.dice().roll(1,V.size(),-1));
+					}
+					else
+					{
+						areaThing=CMLib.english().fetchEnvironmental(V,name,true);
+						if(areaThing==null)
+							areaThing=CMLib.english().fetchEnvironmental(V,name,false);
+					}
+				}
+			}
+			catch(final Exception e){}
+		}
+		else
+		if(thisName.toUpperCase().trim().startsWith("FROMGENFILE "))
+		{
+			try
+			{
+				List V=null;
+				final String filename=CMParms.getCleanBit(thisName, 1);
+				final String name=CMParms.getCleanBit(thisName, 2);
+				final String tagName=CMParms.getCleanBit(thisName, 3);
+				final String theRest=CMParms.getPastBitClean(thisName,3);
+				if(mob)
+					V=generateMobsFromFile(null,filename, tagName, theRest);
+				else
+					V=generateItemsFromFile(null,filename, tagName, theRest);
+				if(V!=null)
+				{
 					if(name.equalsIgnoreCase("ALL"))
 						OBJS=V;
 					else
@@ -1118,10 +1335,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		{
 			str=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,str);
 			Environmental E=lastKnownLocation.fetchFromRoomFavorMOBs(null,str);
-			if(E==null) E=lastKnownLocation.fetchFromMOBRoomFavorsItems(monster,null,str,Wearable.FILTER_ANY);
-			if(E==null) E=lastKnownLocation.findItem(str);
-			if((E==null)&&(monster!=null)) E=monster.findItem(str);
-			if(E==null) E=CMLib.players().getPlayer(str);
+			if(E==null) 
+				E=lastKnownLocation.fetchFromMOBRoomFavorsItems(monster,null,str,Wearable.FILTER_ANY);
+			if(E==null) 
+				E=lastKnownLocation.findItem(str);
+			if((E==null)&&(monster!=null)) 
+				E=monster.findItem(str);
+			if(E==null) 
+				E=CMLib.players().getPlayer(str);
 			if(E instanceof PhysicalAgent)
 				return (PhysicalAgent)E;
 		}
@@ -7359,7 +7580,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 6: // mpoload
 			{
 				// if not mob
-				if((scripted instanceof MOB)&&(monster != null))
+				Physical addHere;
+				if(scripted instanceof MOB)
+					addHere=monster;
+				else
+				if(scripted instanceof Item)
+					addHere=((Item)scripted).owner();
+				else
+				if(scripted instanceof Room)
+					addHere=scripted;
+				else
+					addHere=lastKnownLocation;
+				if(addHere!=null)
 				{
 					if(tt==null)
 					{
@@ -7388,7 +7620,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final String currency=CMLib.english().numPossibleGoldCurrency(scripted,name);
 						final double denom=CMLib.english().numPossibleGoldDenomination(scripted,currency,name);
 						final Coins C=CMLib.beanCounter().makeCurrency(currency,denom,coins);
-						monster.addItem(C);
+						if(addHere instanceof MOB)
+							((MOB)addHere).addItem(C);
+						else
+						if(addHere instanceof Room)
+							((Room)addHere).addItem(C, Expire.Monster_EQ);
 						C.putCoinsBack();
 					}
 					else
@@ -7399,7 +7635,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(m!=null)
 							Is.addElement(m);
 						else
-							findSomethingCalledThis(name,(MOB)scripted,lastKnownLocation,Is,false);
+							findSomethingCalledThis(name,monster,lastKnownLocation,Is,false);
 						for(int i=0;i<Is.size();i++)
 						{
 							if(Is.elementAt(i) instanceof Item)
@@ -7416,15 +7652,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									if(container instanceof Room)
 										((Room)container.owner()).addItem(m,ItemPossessor.Expire.Player_Drop);
 									else
-										monster.addItem(m);
+									if(addHere instanceof MOB)
+										((MOB)addHere).addItem(m);
+									else
+									if(addHere instanceof Room)
+										((Room)addHere).addItem(m, Expire.Monster_EQ);
 									lastLoaded=m;
 								}
 							}
 						}
+						if(addHere instanceof MOB)
+						{
+							((MOB)addHere).recoverCharStats();
+							((MOB)addHere).recoverMaxState();
+						}
+						addHere.recoverPhyStats();
 						lastKnownLocation.recoverRoomStats();
-						monster.recoverCharStats();
-						monster.recoverPhyStats();
-						monster.recoverMaxState();
 					}
 				}
 				break;

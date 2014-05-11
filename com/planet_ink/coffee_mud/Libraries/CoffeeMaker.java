@@ -1636,11 +1636,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	}
 
 	@Override
-	public String addItemsFromXML(String xmlBuffer,
-								  List<Item> addHere,
-								  Session S)
+	public String addItemsFromXML(List<XMLpiece> xml, List<Item> addHere, Session S)
 	{
-		final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(xmlBuffer);
 		if(xml==null) return unpackErr("Items","null 'xml'");
 		final List<XMLLibrary.XMLpiece> iV=CMLib.xml().getContentsFromPieces(xml,"ITEMS");
 		if(iV==null) return unpackErr("Items","null 'iV'");
@@ -1666,6 +1663,41 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			addHere.add(newItem);
 		}
 		return "";
+	}
+	
+	@Override
+	public String addMOBsFromXML(List<XMLpiece> xml, List<MOB> addHere, Session S)
+	{
+		if(xml==null) return unpackErr("MOBs","null 'xml'");
+		final List<XMLLibrary.XMLpiece> mV=CMLib.xml().getContentsFromPieces(xml,"MOBS");
+		if(mV==null) return unpackErr("MOBs","null 'mV'");
+		for(int m=0;m<mV.size();m++)
+		{
+			final XMLLibrary.XMLpiece mblk=mV.get(m);
+			if((!mblk.tag.equalsIgnoreCase("MOB"))||(mblk.contents==null))
+				return unpackErr("MOBs","bad 'mblk'");
+			final String mClass=CMLib.xml().getValFromPieces(mblk.contents,"MCLAS");
+			final MOB newMOB=CMClass.getMOB(mClass);
+			if(newMOB==null) return unpackErr("MOBs","null 'mClass': "+mClass);
+			final String text=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(mblk.contents,"MTEXT"));
+			newMOB.setMiscText(text);
+			newMOB.basePhyStats().setLevel(CMLib.xml().getIntFromPieces(mblk.contents,"MLEVL"));
+			newMOB.basePhyStats().setAbility(CMLib.xml().getIntFromPieces(mblk.contents,"MABLE"));
+			newMOB.basePhyStats().setRejuv(CMLib.xml().getIntFromPieces(mblk.contents,"MREJV"));
+			newMOB.recoverCharStats();
+			newMOB.recoverPhyStats();
+			newMOB.recoverMaxState();
+			newMOB.resetToMaxState();
+			addHere.add(newMOB);
+		}
+		return "";
+	}
+	
+	@Override
+	public String addItemsFromXML(String xmlBuffer, List<Item> addHere, Session S)
+	{
+		final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(xmlBuffer);
+		return addItemsFromXML(xml, addHere, S);
 	}
 
 	@Override
@@ -1693,34 +1725,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 
 	@Override
-	public String addMOBsFromXML(String xmlBuffer,
-								 List<MOB> addHere,
-								 Session S)
+	public String addMOBsFromXML(String xmlBuffer, List<MOB> addHere, Session S)
 	{
 		final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(xmlBuffer);
-		if(xml==null) return unpackErr("MOBs","null 'xml'");
-		final List<XMLLibrary.XMLpiece> mV=CMLib.xml().getContentsFromPieces(xml,"MOBS");
-		if(mV==null) return unpackErr("MOBs","null 'mV'");
-		for(int m=0;m<mV.size();m++)
-		{
-			final XMLLibrary.XMLpiece mblk=mV.get(m);
-			if((!mblk.tag.equalsIgnoreCase("MOB"))||(mblk.contents==null))
-				return unpackErr("MOBs","bad 'mblk'");
-			final String mClass=CMLib.xml().getValFromPieces(mblk.contents,"MCLAS");
-			final MOB newMOB=CMClass.getMOB(mClass);
-			if(newMOB==null) return unpackErr("MOBs","null 'mClass': "+mClass);
-			final String text=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(mblk.contents,"MTEXT"));
-			newMOB.setMiscText(text);
-			newMOB.basePhyStats().setLevel(CMLib.xml().getIntFromPieces(mblk.contents,"MLEVL"));
-			newMOB.basePhyStats().setAbility(CMLib.xml().getIntFromPieces(mblk.contents,"MABLE"));
-			newMOB.basePhyStats().setRejuv(CMLib.xml().getIntFromPieces(mblk.contents,"MREJV"));
-			newMOB.recoverCharStats();
-			newMOB.recoverPhyStats();
-			newMOB.recoverMaxState();
-			newMOB.resetToMaxState();
-			addHere.add(newMOB);
-		}
-		return "";
+		return addMOBsFromXML(xml, addHere, S);
 	}
 
 	@Override

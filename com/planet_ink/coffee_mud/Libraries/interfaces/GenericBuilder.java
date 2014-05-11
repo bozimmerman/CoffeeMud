@@ -86,6 +86,8 @@ public interface GenericBuilder extends CMLibrary
 	public StringBuffer getUniqueItemXML(Item item, int type, Map<String,List<Item>> found, Set<String> files);
 	public String addItemsFromXML(String xmlBuffer, List<Item> addHere, Session S);
 	public String addMOBsFromXML(String xmlBuffer, List<MOB> addHere, Session S);
+	public String addItemsFromXML(List<XMLpiece> xml, List<Item> addHere, Session S);
+	public String addMOBsFromXML(List<XMLpiece> xml, List<MOB> addHere, Session S);
 	public MOB getMobFromXML(String xmlBuffer);
 	public Item getItemFromXML(String xmlBuffer);
 	// TYPE= 0=item, 1=weapon, 2=armor

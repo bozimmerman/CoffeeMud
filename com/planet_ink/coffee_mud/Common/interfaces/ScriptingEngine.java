@@ -648,6 +648,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		"MPPOSSESS", // 79
 		"MPSPEAK", // 80
 		"MPSETCLAN", // 81
+		"MPRLOAD", // 82
 	};
 
 	/** a list of some some extra stat codes for mobs*/

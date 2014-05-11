@@ -1,9 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
   <meta name="generator" content="HTML Tidy, see www.w3.org" />
-  
-  <title>Scripting in CoffeeMud 5.8</title><link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head>
-
+  <title>Scripting in CoffeeMud 5.8</title>
+  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
+<!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog -->
+</head>
 <body>
 <center>
 <table border="1" cellpadding="10" cellspacing="0" width="90%">
@@ -276,7 +278,8 @@ LOAD command, which specifies a text file containing the script. The
 syntax for this is as follows:</p>
       <pre>load=path/file name<br /></pre>
       <p>The starting path for the
-Scriptable behavior is the <span style="font-family: monospace; font-weight: bold;">/resources/</span>
+Scriptable behavior is the <span
+ style="font-family: monospace; font-weight: bold;">/resources/</span>
 directory in your CoffeeMud package. Any further paths will branch from
 that directory. The file specified is a text file containing the
 script. You can also specify more than one script in the Scriptable
@@ -337,7 +340,8 @@ MPSETINTERNAL
 command to change default global triggering behavior.</p>
       <p>These docs borrow heavily
 from the nicely written MOBPROG
-Tutorial at: <a href="http://www.pandapub.com/tutorial/MobprogTutorial.htm">http://www.pandapub.com/tutorial/MobprogTutorial.htm</a>.</p>
+Tutorial at: <a
+ href="http://www.pandapub.com/tutorial/MobprogTutorial.htm">http://www.pandapub.com/tutorial/MobprogTutorial.htm</a>.</p>
       <h3><a name="all_greet_prog">all_greet_prog</a></h3>
       <p>Usage:</p>
       <pre>all_greet_prog [integer percentage]<br /></pre>
@@ -479,7 +483,7 @@ this your larger sum bribe_progs will never be triggered.</p>
       <p>This type of mobprog is
 triggered by buying an item from a
 shopkeeper. If the item being bought has any of the keywords of the
-buy_prog, the prog is triggered. If there is a &#8216;p' placed
+buy_prog, the prog is triggered. If there is a &lsquo;p' placed
 before
 the keyword list, the keywords of the item must exactly match that of
 the buy_prog. If there is not, then any item with any of the keywords
@@ -506,7 +510,7 @@ sort of item is bought.</p>
 have more than one buy_prog on a mob.
 Generally it is best not to have buy_progs with the same keywords in
 them, unless they are a buy_prog p with different keyword lists but
-some of the same keywords &#8211; for example a buy_prog p apple
+some of the same keywords &ndash; for example a buy_prog p apple
 red
 juicy and a buy_prog p apple red poisoned.</p>
       <h3><a name="channel_prog">channel_prog</a></h3>
@@ -658,7 +662,7 @@ you like.</p>
       <p>This type of mobprog is
 triggered eating or drinking from an
 object. If the object used matches the keywords of the consume_prog,
-the prog is triggered. If there is a &#8216;p' placed before the
+the prog is triggered. If there is a &lsquo;p' placed before the
 keyword list, the keywords of the object must exactly match that of the
 consume_prog. If there is not, then any object with any of the keywords
 in the list in it will trigger it. If a consume_prog all is used, then
@@ -684,7 +688,7 @@ object is ate or drank.</p>
 have more than one consume_prog on a
 mob. Generally it is best not to have consume_progs with the same
 keywords in them, unless they are a consume_prog p with different
-keyword lists but some of the same keywords &#8211; for example a
+keyword lists but some of the same keywords &ndash; for example a
 consume_prog p apple red juicy and a consume_prog p apple red poisoned.</p>
       <h3><a name="damage_prog">damage_prog</a></h3>
       <p>Usage:</p>
@@ -752,7 +756,7 @@ elapsed.</p>
       <p>This type of mobprog is
 triggered by dropping an object. If
 the object dropped matches the keywords of the drop_prog, the prog is
-triggered. If there is a &#8216;p' placed before the keyword list,
+triggered. If there is a &lsquo;p' placed before the keyword list,
 the
 keywords of the object must exactly match that of the drop_prog. If
 there is not, then any object with any of the keywords in the list in
@@ -779,7 +783,7 @@ object is dropped.</p>
 have more than one drop_prog on a mob.
 Generally it is best not to have drop_progs with the same keywords in
 them, unless they are a drop_prog p with different keyword lists but
-some of the same keywords &#8211; for example a drop_prog p apple
+some of the same keywords &ndash; for example a drop_prog p apple
 red
 juicy and a drop_prog p apple red poisoned.</p>
       <h3><a name="entry_prog">entry_prog</a></h3>
@@ -916,7 +920,7 @@ when called by MPCALLFUNC.</p>
       <p>This type of mobprog is
 triggered by getting an object. If the
 object picked up matches the keywords of the get_prog, the prog is
-triggered. If there is a &#8216;p' placed before the keyword list,
+triggered. If there is a &lsquo;p' placed before the keyword list,
 the
 keywords of the object must exactly match that of the get_prog. If
 there is not, then any object with any of the keywords in the list in
@@ -943,7 +947,7 @@ object is picked up.</p>
 have more than one get_prog on a mob.
 Generally it is best not to have get_progs with the same keywords in
 them, unless they are a get_prog p with different keyword lists but
-some of the same keywords &#8211; for example a get_prog p apple
+some of the same keywords &ndash; for example a get_prog p apple
 red
 juicy and a get_prog p apple red poisoned.</p>
       <h3><a name="give_prog">give_prog</a></h3>
@@ -952,7 +956,7 @@ juicy and a get_prog p apple red poisoned.</p>
       <p>This type of mobprog is
 triggered by the mob being given an
 object. If the object given to the mob matches the keywords of the
-give_prog, the prog is triggered. If there is a &#8216;p' placed
+give_prog, the prog is triggered. If there is a &lsquo;p' placed
 before
 the keyword list, the keywords of the object must exactly match that of
 the give_prog. If there is not, then any object with any of the
@@ -980,7 +984,7 @@ object is given to the mob.</p>
 have more than one give_prog on a mob.
 Generally it is best not to have give_progs with the same keywords in
 them, unless they are a give_prog p with different keyword lists but
-some of the same keywords &#8211; for example a give_prog p apple
+some of the same keywords &ndash; for example a give_prog p apple
 red
 juicy and a give_prog p apple red poisoned.</p>
       <p>SPECIAL NOTES: More often
@@ -1296,7 +1300,7 @@ the quest 'that quest'.</p>
       <p>This type of mobprog is
 triggered by putting something in a
 container. If the container being used matches the keywords of the
-put_prog, the prog is triggered. If there is a &#8216;p' placed
+put_prog, the prog is triggered. If there is a &lsquo;p' placed
 before
 the keyword list, the keywords of the object must exactly match that of
 the put_prog. If there is not, then any container with any of the
@@ -1309,7 +1313,8 @@ behavior, and has a variety of uses.</p>
       <p>This will trigger if the
 container used has any of the
 keywords chest, bag, or drawer. This means that it would be
-triggered by putting something into a chest, an awful bag, or even an chester drawers.</p>
+triggered by putting something into a chest, an awful bag, or even an
+chester drawers.</p>
       <pre>put_prog p a large wooden chest<br /></pre>
       <p>This
 will trigger if the
@@ -1325,7 +1330,7 @@ container is used.</p>
 have more than one put_prog on a mob.
 Generally it is best not to have put_progs with the same keywords in
 them, unless they are a put_prog p with different keyword lists but
-some of the same keywords &#8211; for example a put_prog p apple
+some of the same keywords &ndash; for example a put_prog p apple
 red
 juicy and a put_prog p apple red poisoned.</p>
       <h3><a name="rand_prog">rand_prog</a></h3>
@@ -1397,7 +1402,7 @@ regmask_progs, so do not try to use them; it won't work.</p>
       <p>This type of mobprog is
 triggered by removing an object. If
 the object removed matches the keywords of the remove_prog, the prog is
-triggered. If there is a &#8216;p' placed before the keyword list,
+triggered. If there is a &lsquo;p' placed before the keyword list,
 the
 keywords of the object must exactly match that of the remove_prog. If
 there is not, then any object with any of the keywords in the list in
@@ -1424,7 +1429,7 @@ object is removed.</p>
 have more than one remove_prog on a
 mob. Generally it is best not to have remove_progs with the same
 keywords in them, unless they are a remove_prog p with different
-keyword lists but some of the same keywords &#8211; for example a
+keyword lists but some of the same keywords &ndash; for example a
 remove_prog p apple red juicy and a remove_prog p apple red poisoned.</p>
       <h3><a name="sell_prog">sell_prog</a></h3>
       <p>Usage:</p>
@@ -1432,7 +1437,7 @@ remove_prog p apple red juicy and a remove_prog p apple red poisoned.</p>
       <p>This type of mobprog is
 triggered by selling an item to a
 shopkeeper. If the item being sold has any of the keywords of the
-sell_prog, the prog is triggered. If there is a &#8216;p' placed
+sell_prog, the prog is triggered. If there is a &lsquo;p' placed
 before
 the keyword list, the keywords of the item must exactly match that of
 the sell_prog. If there is not, then any item with any of the keywords
@@ -1459,7 +1464,7 @@ sort of item is sold.</p>
 have more than one sell_prog on a mob.
 Generally it is best not to have sell_progs with the same keywords in
 them, unless they are a sell_prog p with different keyword lists but
-some of the same keywords &#8211; for example a sell_prog p apple
+some of the same keywords &ndash; for example a sell_prog p apple
 red
 juicy and a sell_prog p apple red poisoned.</p>
       <h3><a name="social_prog">social_prog</a></h3>
@@ -1490,7 +1495,7 @@ keyword of ALL will trigger on any speech. This type of mobprog is
 useful for setting up internal quests, giving out background
 information to people exploring your zone, or setting up passwords that
 must be spoken. This type of prog can also be used to have a mob
-trigger itself if you want to have multiple connected progs &#8211;
+trigger itself if you want to have multiple connected progs &ndash;
 see
 complex progs for details. Note that this kind of mobprog is only
 triggered by someone using the say command.</p>
@@ -1567,7 +1572,7 @@ unlock_prog p door gate and a unlock_prog p door to the gate.</p>
       <p>This type of mobprog is
 triggered by wearing, wielding, or
 holding an item. If the object worn matches the keywords of the
-wear_prog, the prog is triggered. If there is a &#8216;p' placed
+wear_prog, the prog is triggered. If there is a &lsquo;p' placed
 before
 the keyword list, the keywords of the object must exactly match that of
 the wear_prog. If there is not, then any object with any of the
@@ -1594,7 +1599,7 @@ object is worn.</p>
 have more than one wear_prog on a mob.
 Generally it is best not to have wear_progs with the same keywords in
 them, unless they are a wear_prog p with different keyword lists but
-some of the same keywords &#8211; for example a wear_prog p apple
+some of the same keywords &ndash; for example a wear_prog p apple
 red
 juicy and a wear_prog p apple red poisoned.</p>
       <h2><a name="codes">Scripting Codes</a></h2>
@@ -2612,11 +2617,13 @@ equivalent switch statement to the above:
       <pre>switch $%VAR($i MYVAR)%<br />case 'value1'<br />[commands1]<br />case 'value2'<br />[commands2]<br />case 'value3'<br />[commands3]<br />default<br />[commands4]<br />endswitch<br /><br /></pre>
 In the above <span style="font-weight: bold;">switch</span>
 statement,
-we declare the value we wish to check after the key word <span style="font-weight: bold;">switch</span>,
+we declare the value we wish to check after the key word <span
+ style="font-weight: bold;">switch</span>,
 which is the value of the
 variable $i MYVAR. In the ensueing <span style="font-weight: bold;">case</span>
 statements, we declare what we want the value of $i MYVAR to be equal
-to in order for the commands which follow the <span style="font-weight: bold;">case</span>
+to in order for the commands which follow the <span
+ style="font-weight: bold;">case</span>
 statement to be executed. Each <span style="font-weight: bold;">case</span>
 statement defines its own value
 which $i MYVAR must be equal to in order for its following commands to
@@ -2690,7 +2697,8 @@ Scriptable/MOBPROG language described in this document. You should read
 the JavaScripting section of the CoffeeMud <a href="Programming.html">Programming
 Guide</a> for more information, as
 well as the following web sites
-which discuss the usage and syntax of the Javascript language itself: <a href="http://www.mozilla.org/js/">http://www.mozilla.org/js/</a>
+which discuss the usage and syntax of the Javascript language itself: <a
+ href="http://www.mozilla.org/js/">http://www.mozilla.org/js/</a>
 and <a href="http://www.mozilla.org/rhino/">http://www.mozilla.org/rhino/</a>.</p>
       <p>Even though the languages are very different, you will still
 be able to use all of the MOBPROG commands, functions, and even the
@@ -2992,9 +3000,9 @@ background noise to a mob, to allowing the mob to express itself safely
 as if speaking. The mpecho command does not set off speech_progs,
 although it does set off act_progs.</p>
       <p>EXAMPLES:</p>
-      <pre>mpecho $i says, &#8216;Hey how's it going?'<br />mpecho A blast of strong wind rushes into the room suddenly!<br />mpecho $i hisses, &#8216;So, $n, you've come to face me&#8230;'<br />mpecho A dagger flashes into $i's hand, and $j snickers softly.<br /></pre>
+      <pre>mpecho $i says, &lsquo;Hey how's it going?'<br />mpecho A blast of strong wind rushes into the room suddenly!<br />mpecho $i hisses, &lsquo;So, $n, you've come to face me&hellip;'<br />mpecho A dagger flashes into $i's hand, and $j snickers softly.<br /></pre>
       <p>SPECIAL NOTES: Using
-mpecho $i says, &#8216;blah' is a safe
+mpecho $i says, &lsquo;blah' is a safe
 way to have a mob talk. Anytime you want to have a mob say something,
 you should use this, unless you want it to trigger speech_progs. Also,
 remember that whatever is mpechoed is seen be everyone in the room
@@ -3116,7 +3124,7 @@ specific action which triggers an act_prog.</p>
 that whatever you force something to
 do, it needs to be typed out exactly as if they were typing the command
 themselves. That means if you want a player, for example, to be forced
-to cast &#8216;heal serious' on your mob, you need to make sure you
+to cast &lsquo;heal serious' on your mob, you need to make sure you
 observe the double-quote rule for word groupings, as opposed to the
 single quote rule for mobprog commands.</p>
       <h3><a name="mpgoto">mpgoto</a></h3>
@@ -3326,7 +3334,7 @@ comes up with a practical use for
 this command in an actual script, please let me know!</p>
       <h3><a name="mpmload">mpmload</a></h3>
       <p>Usage:</p>
-      <pre>mpmload [mob name]<br />mpmload fromfile [cmare filename] [mob name]<br />mpmload fromfile [cmare filename] any<br /></pre>
+      <pre>mpmload [mob name]<br />mpmload fromfile [cmare filename] [mob name]<br />mpmload fromfile [cmare filename] any<br />mpoload fromgenfile [random-gen xml filename] [mob name] [mob tag name] [id=value]...</pre>
       <p>This command loads the
 mob designated by name into the room.
 If you want the mob loaded somewhere besides the room the mpmloading
@@ -3336,10 +3344,18 @@ command. This command is useful for loading mobs to assist the calling
 mob in combat, load in-zone quest mobs, etc. The mob of that name will
 be searched for throughout the map, so if you want to make sure the mob
 is available for this command, he should be carefully hidden. The
-fromfile syntax will allow you to load a mob from a cmare file created
-using the Archon EXPORT MOBS command.</p>
+      <span style="font-weight: bold;">fromfile</span> syntax will
+allow you to load a mob from a cmare file created
+using the Archon EXPORT MOBS command. The <span
+ style="font-weight: bold;">fromgenfile</span> syntax will allow you to
+generate a random mob from
+a random-generation formatted xml file, with the&nbsp;mob
+name&nbsp;followed by
+the&nbsp;mob tag to search for, with optional id=value definitions
+after
+the item tag.</p>
       <p>EXAMPLES:</p>
-      <pre>mpmload the nasty bat<br />mpmload fromfile mymobs.cmare the nasty bat<br />mpmload fromfile mymobs.cmare any<br /></pre>
+      <pre>mpmload the nasty bat<br />mpmload fromfile mymobs.cmare the nasty bat<br />mpmload fromfile mymobs.cmare any<br />mpmload fromgenfile /resources/randareas/example.xml bee forest_mobs level_range=10 aggrochance=1<br /></pre>
       <p>SPECIAL NOTES: Remember
 that this newly loaded mob may not
 have interacted with the world just yet, so having your mob, for
@@ -3377,7 +3393,7 @@ prevent a greet_prog from firing for an entire group, or in cases where
 someone leaves and re-enters very quickly.</p>
       <h3><a name="mpoload">mpoload</a></h3>
       <p>Usage:</p>
-      <pre>mpoload [item name]<br />mpoload fromfile [cmare filename] [item name]<br />mpoload fromfile [cmare filename] any<br />mpoload [item name] into [container name]<br /></pre>
+      <pre>mpoload [item name]<br />mpoload fromfile [cmare filename] [item name]<br />mpoload fromfile [cmare filename] any<br />mpoload [item name] into [container name]<br />mpoload fromgenfile [random-gen xml filename] [item name] [item tag name] [id=value]...<br /></pre>
       <p>This command loads an
 item of the designated name into the
 inventory of the mob. If you want to load an item into a room, you must
@@ -3388,18 +3404,22 @@ portals, etc. It has many, many uses. The item of that name will be
 searched for throughout the map, so if you want to make sure the item
 is available for this command, it should be carefully hidden. The <b>fromfile</b>
 syntax will allow you to load an item from a cmare file created using
-the Archon EXPORT ITEMS command The <b>into</b>
+the Archon EXPORT ITEMS command. The <span style="font-weight: bold;">fromgenfile</span>
+syntax will allow you to generate a random item from a
+random-generation formatted xml file, with the item name&nbsp;followed
+by the item tag to search for, with optional id=value definitions after
+the item tag. Finally, the <b>into</b>
 syntax will allow you
 to load the item into a pre-existing container, even if the container
 is in the room.</p>
       <p>EXAMPLES:</p>
-      <pre>mpoload the baseball bat<br />mpoload fromfile myitems.cmare the baseball bat<br />mpoload fromfile myitems.cmare any<br />mpoload fromfile myitems.cmare any into wooden chest<br /></pre>
+      <pre>mpoload the baseball bat<br />mpoload fromfile myitems.cmare the baseball bat<br />mpoload fromfile myitems.cmare any<br />mpoload fromfile myitems.cmare any into wooden chest<br />mpoload fromgenfile /resources/randareas/example.xml any dungeon_junk level_range=10 theme=random<br /></pre>
       <p>SPECIAL NOTES: You can do
 a lot with this command. There is no
 max on items loaded in this way, so keep that in mind.</p>
       <h3><a name="mpoloadroom">mpoloadroom</a></h3>
       <p>Usage:</p>
-      <pre>mpoloadroom [item name]<br />mpoloadroom fromfile [cmare filename] [item name]<br />mpoloadroom fromfile [cmare filename] any<br />mpoloadroom [item name] into [container name]<br /></pre>
+      <pre>mpoloadroom [item name]<br />mpoloadroom fromfile [cmare filename] [item name]<br />mpoloadroom fromfile [cmare filename] any<br />mpoloadroom [item name] into [container name]<br />mpoloadroom fromgenfile [random-gen xml filename] [item name] [item tag name] [id=value]...<br /></pre>
       <p>This command loads an
 item of the designated name into the
 same room as the mob. If you want to load an item into a mobs
@@ -3411,7 +3431,13 @@ will be searched for throughout the map, so if you want to make sure
 the item is available for this command, it should be carefully hidden.
 The <b>fromfile</b>
 syntax will allow you to load an item from a cmare
-file created using the Archon EXPORT ITEMS command. The <b>into</b>
+file created using the Archon EXPORT ITEMS command. The <span
+ style="font-weight: bold;">fromgenfile</span> syntax will allow you to
+generate a random item from
+a random-generation formatted xml file, with the item
+name&nbsp;followed by
+the item tag to search for, with optional id=value definitions after
+the item tag. Finally, the <b>into</b>
 syntax will allow you to load the item into a pre-existing container in
 the room.</p>
       <p>SPECIAL NOTES: You can do
@@ -4018,7 +4044,7 @@ want to have truly unique and intelligent scripts.</p>
       <p>These operators are found
 in many of the functions below. Here
 are their meanings:</p>
-      <pre>== This operator means &#8216;equal to'<br />!= This operator means &#8216;not equal to'<br />&gt; This operator means &#8216;greater than'<br />&lt; This operator means &#8216;less than'<br />&gt;= This operator means &#8216;equal or greater than'<br />&lt;= This operator means &#8216;equal or less than'<br /></pre>
+      <pre>== This operator means &lsquo;equal to'<br />!= This operator means &lsquo;not equal to'<br />&gt; This operator means &lsquo;greater than'<br />&lt; This operator means &lsquo;less than'<br />&gt;= This operator means &lsquo;equal or greater than'<br />&lt;= This operator means &lsquo;equal or less than'<br /></pre>
       <h3><a name="affected">affected</a></h3>
       <p>Usage:</p>
       <pre>affected(character spellid)<br /></pre>
@@ -4334,8 +4360,10 @@ given name (or rider).</p>
       <span style="font-family: monospace;">if
 iscontent($o 'a dagger')</span><br style="font-family: monospace;" />
       <span style="font-family: monospace;">&nbsp;
-mpecho This means the container $o contains a dagger.</span><br style="font-family: monospace;" />
-      <span style="font-family: monospace;">else</span><br style="font-family: monospace;" />
+mpecho This means the container $o contains a dagger.</span><br
+ style="font-family: monospace;" />
+      <span style="font-family: monospace;">else</span><br
+ style="font-family: monospace;" />
       <span style="font-family: monospace;">&nbsp; mpecho The container
 $o is not a container, or does not
 contain a dagger.</span><br style="font-family: monospace;" />
@@ -5000,8 +5028,10 @@ nearby',&nbsp;'waist',&nbsp;'legs',&nbsp;'eyes',&nbsp;'ears',&nbsp;'body',&nbsp;
       <span style="font-family: monospace;">if
 wornon($n feet 'purple shoes')</span><br style="font-family: monospace;" />
       <span style="font-family: monospace;">&nbsp;
-&nbsp;mpecho The actor is wearing a purple shoes on his feet.</span><br style="font-family: monospace;" />
-      <span style="font-family: monospace;">else</span><br style="font-family: monospace;" />
+&nbsp;mpecho The actor is wearing a purple shoes on his feet.</span><br
+ style="font-family: monospace;" />
+      <span style="font-family: monospace;">else</span><br
+ style="font-family: monospace;" />
       <span style="font-family: monospace;">&nbsp; &nbsp;mpecho The
 actor is not wearing purple shoes on
 his feet.</span><br style="font-family: monospace;" />
@@ -5012,4 +5042,5 @@ his feet.</span><br style="font-family: monospace;" />
   </tbody>
 </table>
 </center>
-</body></html>
+</body>
+</html>
