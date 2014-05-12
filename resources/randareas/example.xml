@@ -130,6 +130,9 @@ example: ${tagname}. When embedded in this way, the tagname may be preceeded by 
 force to all-uppercase, "l:" to force all-lowercase, "p:" to force plural, or "c:" to
 force to be capitalized (first letter upper, rest lower).
 
+Special Tag values:
+$SYSTEM_RANDOM_NAME:[NUMX]-[NUMY] generate a random name with between NUMX and NUMY syllables.
+
 Objects:
 Each basic tag type may contain other basic tag types to help define them.  For instance,
 room tags may contain mob and item tags.
@@ -269,6 +272,7 @@ Optional Objects: "AFFECT","BEHAVIOR", "CLASS","NAME","DISPLAY","DESCRIPTION","D
 ----------------------------------------
 Race tags:
 Required detail: "class", "name"
+Warning: Generating a custom race will add the race to your database!
 Optional Objects: "CAT","VWEIGHT","BWEIGHT","VHEIGHT","FHEIGHT","MHEIGHT","AVAIL","LEAVE",
 "NUMRABLE","GETRABLE<number>","GETRABLEPROF<number>","GETRABLEQUAL<number>","GETRABLELVL<number>",
 "NUMCABLE<number>","GETCABLE<number>","GETCABLEPROF<number>","BODYKILL","AGING", "HELP"

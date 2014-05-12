@@ -1797,6 +1797,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	public String findString(Modifiable E, List<String> ignoreStats, String defPrefix, String tagName, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
 		tagName=tagName.toUpperCase().trim();
+		
+		if(tagName.startsWith("SYSTEM_RANDOM_NAME:"))
+		{
+			String[] split=tagName.substring(19).split("-");
+			if((split.length==2)&&(CMath.isInteger(split[0]))&&(CMath.isInteger(split[1])))
+				return CMLib.login().generateRandomName(CMath.s_int(split[0]), CMath.s_int(split[1]));
+			throw new CMException("Bad random name range in '"+tagName+"' on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
+		}
 		final String asParm = CMLib.xml().getParmValue(piece.parms,tagName);
 		if(asParm != null) return strFilter(E,ignoreStats,defPrefix,asParm,piece, defined);
 
