@@ -399,12 +399,12 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		{
 			if((msg.targetMinor()==CMMsg.TYP_OPEN)||(msg.targetMinor()==CMMsg.TYP_CLOSE)||(msg.targetMinor()==CMMsg.TYP_LOCK)||(msg.targetMinor()==CMMsg.TYP_UNLOCK))
 			{
-				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", "a hatch on <T-NAME>"));
-				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", "a hatch on <T-NAMESELF>"));
-				msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", "a hatch on <T-NAME>"));
-				msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", "a hatch on <T-NAMESELF>"));
-				msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", "a hatch on <T-NAME>"));
-				msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", "a hatch on <T-NAMESELF>"));
+				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", _("a hatch on <T-NAME>")));
+				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", _("a hatch on <T-NAMESELF>")));
+				msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", _("a hatch on <T-NAME>")));
+				msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", _("a hatch on <T-NAMESELF>")));
+				msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", _("a hatch on <T-NAME>")));
+				msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", _("a hatch on <T-NAMESELF>")));
 			}
 		}
 		return true;
