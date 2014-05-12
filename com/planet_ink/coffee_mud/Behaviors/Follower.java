@@ -37,6 +37,7 @@ public class Follower extends ActiveTicker
 	@Override public String ID(){return "Follower";}
 	@Override protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS;}
 	protected boolean realFollow=false;
+	protected boolean noFollowers=false;
 	protected boolean inventory=false;
 	protected int lastNumPeople=-1;
 	protected Room lastRoom=null;
@@ -61,6 +62,7 @@ public class Follower extends ActiveTicker
 		super.setParms(newParms);
 		final Vector<String> V=CMParms.parse(newParms.toUpperCase());
 		realFollow=V.contains("GROUP");
+		noFollowers=V.contains("NOFOLLOWERS");
 		inventory=V.contains("INVENTORY")||V.contains("INV");
 	}
 
@@ -176,10 +178,12 @@ public class Follower extends ActiveTicker
 				return true;
 			if(!canFreelyBehaveNormal(ticking))
 				return true;
+			final MOB mob=(MOB)ticking;
+			final Room room=mob.location();
+			if((noFollowers)&&(mob.numFollowers()>0))
+				return true;
 			if(realFollow)
 			{
-				final MOB mob=(MOB)ticking;
-				final Room room=mob.location();
 				if(mob.amFollowing()==null)
 				{
 					final MOB M=pickRandomMOBHere(mob,room);
@@ -190,13 +194,11 @@ public class Follower extends ActiveTicker
 			else
 			if(direction>=0)
 			{
-				final MOB mob=(MOB)ticking;
-				final Room thisRoom=mob.location();
-				final Room otherRoom=thisRoom.getRoomInDir(direction);
+				final Room otherRoom=room.getRoomInDir(direction);
 
 				if(otherRoom!=null)
 				{
-					if(!otherRoom.getArea().Name().equals(thisRoom.getArea().Name()))
+					if(!otherRoom.getArea().Name().equals(room.getArea().Name()))
 						direction=-1;
 				}
 				else
@@ -206,12 +208,12 @@ public class Follower extends ActiveTicker
 					return true;
 
 				boolean move=true;
-				for(int m=0;m<thisRoom.numInhabitants();m++)
+				for(int m=0;m<room.numInhabitants();m++)
 				{
-					final MOB inhab=thisRoom.fetchInhabitant(m);
+					final MOB inhab=room.fetchInhabitant(m);
 					if((inhab!=null)
-					&&(CMSecurity.isAllowed(inhab,thisRoom,CMSecurity.SecFlag.CMDMOBS)
-					   ||CMSecurity.isAllowed(inhab,thisRoom,CMSecurity.SecFlag.CMDROOMS)))
+					&&(CMSecurity.isAllowed(inhab,room,CMSecurity.SecFlag.CMDMOBS)
+					   ||CMSecurity.isAllowed(inhab,room,CMSecurity.SecFlag.CMDROOMS)))
 						move=false;
 				}
 				if(move)
