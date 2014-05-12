@@ -467,6 +467,16 @@ public class Test extends StdCommand
 				mob.tell(_("Picked @x1/@x2 rooms in this area.",""+(num-numNull),""+num));
 			}
 			else
+			if(what.equalsIgnoreCase("randomnames"))
+			{
+				final int num=CMath.s_int(CMParms.combine(commands,2));
+				StringBuilder str=new StringBuilder("");
+				for(int i=0;i<num;i++)
+					str.append(CMLib.login().generateRandomName(3, 8)).append(", ");
+				if(mob.session()!=null)
+					mob.session().rawPrint(str.toString()+"\n");
+			}
+			else
 			if(what.equalsIgnoreCase("edrecipe"))
 			{
 				final boolean save = CMParms.combine(commands,2).equalsIgnoreCase("save");
