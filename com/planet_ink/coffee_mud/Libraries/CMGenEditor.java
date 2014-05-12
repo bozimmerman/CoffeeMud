@@ -726,7 +726,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		final String currencyName=A.getCurrency().length()==0?"Default":A.getCurrency();
-		mob.tell(_("@x1. Currency: '@x2'.",""+showNumber,currencyName));
+		if(mob.session()!=null)
+			mob.session().colorOnlyPrintln(_("@x1. Currency: '@x2'.",""+showNumber,currencyName));
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		final String newName=mob.session().prompt(_("Enter a new one or 'DEFAULT'\n\r:"),"");
 		if(newName.length()>0)

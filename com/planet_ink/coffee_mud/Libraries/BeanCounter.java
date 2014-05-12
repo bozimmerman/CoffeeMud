@@ -49,7 +49,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		String code=currency.toUpperCase().trim();
 		final int x=code.indexOf('=');
 		if(x>=0) code=code.substring(0,x).trim();
-		if((code.length()>0)&&(currencies.containsKey(code)))
+		if(currencies.containsKey(code))
 		{
 			allCurrencyNames.removeElement(code);
 			currencies.remove(code);

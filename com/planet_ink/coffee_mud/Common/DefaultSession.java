@@ -992,7 +992,7 @@ public class DefaultSession implements Session
 	@Override
 	public void colorOnlyPrintln(String msg)
 	{
-		colorOnlyPrint(msg,false);
+		colorOnlyPrint(msg+"\n\r",false);
 	}
 	@Override
 	public void colorOnlyPrintln(String msg, boolean noCache)
