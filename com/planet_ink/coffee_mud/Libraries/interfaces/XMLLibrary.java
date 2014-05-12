@@ -364,6 +364,11 @@ public interface XMLLibrary extends CMLibrary
 		public int innerEnd=-1;
 		public int outerEnd=-1;
 
+		public XMLpiece()
+		{
+			
+		}
+		
 		public XMLpiece(String tag, String value)
 		{
 			this.tag=tag.toUpperCase().trim();

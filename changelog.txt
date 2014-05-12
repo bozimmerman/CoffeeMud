@@ -29,7 +29,7 @@
   . Create/Modify/Destroy can now be used to create and alter objects in outer space.
   . Several new "shortcut" item and area types for space: moon, gasgiant, star, dwarfstar, massivestar, planet, moonlet, asteroid, etc.
   . MoneyChanger behavior can now discount currency by its distant origin (farther planet is from origin of currency, less its worth).
-   *. finish the dadgum engine thrust adjustment!
+   *. finish the dadgum engine thrust adjustment! in GenSpaceShip
    *. personal scanner/tricorder software: mineral scanner, computer interface (with ship perhaps?)!
    *. entry systems for ships (default entry key card, voice code, identifying scanner)
    *. make ship sensor systems

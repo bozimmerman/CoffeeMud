@@ -2524,7 +2524,6 @@ public class CMClass extends ClassLoader
 			final List<DatabaseEngine.AckRecord> genClasses=CMLib.database().DBReadClasses();
 			if(genClasses.size()>0)
 			{
-				int loaded=0;
 				for(int r=0;r<genClasses.size();r++)
 				{
 					final CharClass CR=(CharClass)(CMClass.getCharClass("GenCharClass").copyOf());
