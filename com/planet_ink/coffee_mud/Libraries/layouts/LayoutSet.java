@@ -129,7 +129,7 @@ public class LayoutSet
 			LayoutNode nn = getNextNode(n, Directions.EAST);
 			if(nn==null) nn=makeNextNode(n, Directions.EAST);
 			n.crossLink(nn);
-			nn.flagRun(LayoutRuns.ns);
+			nn.flagRun(LayoutRuns.ew);
 			n=nn;
 		}
 		n.flag(LayoutFlags.corner);
@@ -142,7 +142,7 @@ public class LayoutSet
 			LayoutNode nn = getNextNode(n, Directions.EAST);
 			if(nn==null) nn=makeNextNode(n, Directions.EAST);
 			n.crossLink(nn);
-			nn.flagRun(LayoutRuns.ns);
+			nn.flagRun(LayoutRuns.ew);
 			n=nn;
 		}
 		n.flag(LayoutFlags.corner);

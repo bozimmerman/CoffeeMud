@@ -1,0 +1,662 @@
+<!--  
+   Copyright 2013-2014 Bo Zimmerman
+
+   Licensed under the Apache License</STRING><STRING>Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+	   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing</STRING><STRING>software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND</STRING><STRING>either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!--  include file full of town-specific tags -->
+
+<ROOM id="prison_leaf_rooms">
+	<ROOM select="all" condition="$theme='prison' or $theme='random'">
+		<ROOM class="CaveRoom">
+			<TITLE>(a(n)) $adj_nasty prison cell</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in (a(n)) $adj_nasty prison cell.</DESCRIPTION>
+					<DESCRIPTION>You are in (a(n)) $adj_nasty cell for common prisoners.</DESCRIPTION>
+					<DESCRIPTION>You`re inside (a(n)) $adj_nasty prisoner`s holding cell.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_nasty prison cell.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_nasty cell for common prisoners.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_nasty prisoner`s holding cell.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_prison_exit_desc</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname cellkey" />
+			<MOB select="repeat-1?2" insert="dungeon_prisoner" />
+			<AFFECT class="Prop_NoRecall" /> <AFFECT class="Prop_NoSummon" /> <AFFECT class="Prop_NoTeleportOut" />
+			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a large $adj_nasty cage</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in (a(n)) $adj_phys_size_large $adj_nasty prison cell.</DESCRIPTION>
+					<DESCRIPTION>You are in (a(n)) $adj_phys_size_large crowded $adj_nasty cell for common prisoners.</DESCRIPTION>
+					<DESCRIPTION>You`re inside (a(n)) $adj_phys_size_large $adj_nasty prisoner`s holding cell.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size_large $adj_nasty prison cell.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size_large crowded $adj_nasty cell for common prisoners.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size_large $adj_nasty prisoner`s holding cell.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The $adj_nasty barred walls hold everything in.</DESCRIPTION>
+					<DESCRIPTION>Open $adj_nasty bars are anchored into the floor and ceiling.</DESCRIPTION>
+					<DESCRIPTION>The $adj_nasty bars make this room like a cage.</DESCRIPTION>
+					<DESCRIPTION>A set of $adj_nasty bars surround you.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_prison_exit_desc</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="LockedGate" text="$areaname cellkey" />
+			<MOB select="repeat-2?5" insert="dungeon_prisoner" />
+			<AFFECT class="Prop_NoRecall" /> <AFFECT class="Prop_NoSummon" /> <AFFECT class="Prop_NoTeleportOut" />
+			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>(a(n)) $adj_nasty solitary cell</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are in (a(n)) $adj_phys_size_small $adj_nasty solitary cell.</DESCRIPTION>
+					<DESCRIPTION>You are in (a(n)) $adj_phys_size_small $adj_nasty cell for solitary confinement.</DESCRIPTION>
+					<DESCRIPTION>You`re inside (a(n)) $adj_phys_size_small $adj_nasty solitary prisoner`s holding cell.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size_small $adj_nasty solitary cell.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size_small $adj_nasty cell for solitary confinement.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size_small $adj_nasty solitary prisoner`s holding cell.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Everything here is totally $adj_dark.</DESCRIPTION>
+					<DESCRIPTION>This room is completely $adj_dark.</DESCRIPTION>
+					<DESCRIPTION>This $adj_dark room is $adj_scary_feeling.</DESCRIPTION>
+					<DESCRIPTION>Life here is $adj_dark and $adj_phys_size_small.</DESCRIPTION>
+					<DESCRIPTION>This room is $adj_dark and $adj_phys_size_small.</DESCRIPTION>
+					<DESCRIPTION>This $adj_scary_feeling is $adj_dark room.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_prison_exit_desc</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname cellkey" />
+			<MOB select="any-1" insert="dungeon_prisoner" />
+			<AFFECT class="Prop_NoRecall" /> <AFFECT class="Prop_NoSummon" /> <AFFECT class="Prop_NoTeleportOut" />
+			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+		</ROOM>
+		<ROOM class="StoneRoom" condition="$__luxuryCell&lt;2" define="__luxuryCell+=1">
+			<TITLE>a private $adj_fancy cell</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are in (a(n)) $adj_phys_size_large $adj_light solitary cell for discerning tastes.</DESCRIPTION>
+					<DESCRIPTION>You are in (a(n)) $adj_phys_size_large $adj_light cell for solitary enjoyment.</DESCRIPTION>
+					<DESCRIPTION>You`re inside (a(n)) $adj_phys_size_large $adj_light solitary prisoner`s holding apartment.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size_large $adj_light solitary cell for prisoners of wealth.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size_large $adj_light cell for solitary refinement.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size_large $adj_light solitary prisoner`s holding suite.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Everything here is totally $adj_light.</DESCRIPTION>
+					<DESCRIPTION>This room is completely $adj_light.</DESCRIPTION>
+					<DESCRIPTION>This $adj_light room is $adj_fancy.</DESCRIPTION>
+					<DESCRIPTION>Life here is $adj_light and $adj_fancy.</DESCRIPTION>
+					<DESCRIPTION>This room is $adj_light and $adj_fancy.</DESCRIPTION>
+					<DESCRIPTION>This $adj_fancy room is $adj_light.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_prison_exit_desc</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname luxurykey" />
+			<MOB class="GenMob" like="dungeon_prisoner" level="$level_range" race="$_prisoner_races" name="$fantasy_name" display="$glitzy_prisoner_disp" />
+			<AFFECT class="Prop_NoRecall" /> <AFFECT class="Prop_NoSummon" /> <AFFECT class="Prop_NoTeleportOut" />
+			<STRING id="glitzy_prisoner_disp" select="any-1">
+				<STRING>$MOB_NAME is enjoying a confined rest.</STRING>
+				<STRING>$MOB_NAME is a prisoner of luxury.</STRING>
+				<STRING>$MOB_NAME is not resisting a rest.</STRING>
+				<STRING>$MOB_NAME is a prisoner with deep pockets.</STRING>
+				<STRING>$MOB_NAME has the best cell sold.</STRING>
+				<STRING>$MOB_NAME has the best punishment money can buy.</STRING>
+			</STRING>
+			<ITEM class="GenBed"  name="(a(n)) $adj_fancy bed" display="$ITEM_NAME is made here"  isgettable="false" />
+			<ITEM class="GenChair" name="(a(n)) $adj_fancy chair" display="$ITEM_NAME is waiting to be rested upon" isgettable="false" />
+			<ITEM select="any-2">
+				<ITEM class="GenFountain" name="(a(n)) $adj_fancy fountain" display="$ITEM_NAME has been built here" isgettable="false" />
+				<ITEM class="GenMirror" name="a mirror" display="a mirror is for gazing in" />
+				<ITEM class="GenTub"  name="(a(n)) $adj_fancy tub" display="$ITEM_NAME is here"  isgettable="false"/>
+				<ITEM class="GenTable" name="(a(n)) $adj_fancy table" display="$ITEM_NAME is here"  isgettable="false"/>
+				<ITEM class="GenPiano" name="(a(n)) $adj_fancy piano" display="$ITEM_NAME is here"  isgettable="false"/>
+				<ITEM class="GenPipe" name="(a(n)) $adj_fancy pipe" display="$ITEM_NAME has been put aside for a moment" />
+				<ITEM class="GenCigar" name="(a(n)) $adj_fancy cigar" display="$ITEM_NAME is here waiting to be enjoyed." />
+			</ITEM>
+			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+		</ROOM>
+		<ROOM class="CaveRoom" condition="$__torturechamber&lt;1" define="__torturechamber+=1">
+			<TITLE>(a(n)) $adj_scary_feeling torture chamber</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in (a(n)) $adj_nasty torture chamber.</DESCRIPTION>
+					<DESCRIPTION>You are in (a(n)) $adj_nasty cell room obviously meant for pain.</DESCRIPTION>
+					<DESCRIPTION>You`re inside (a(n)) $adj_nasty chamber of torture and pain.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_nasty torture chamber.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_nasty chamber of torture and pain.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_nasty room obviously meant for pain.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Just the sight of this $adj_scary_feeling room makes you talk.</DESCRIPTION>
+					<DESCRIPTION>All manner of $adj_scary_feeling instruments for human suffering abound here.</DESCRIPTION>
+					<DESCRIPTION>This $adj_nasty room of suffering makes you feel $adj_scary_feeling.</DESCRIPTION>
+					<DESCRIPTION>You feel $adj_scary_feeling just standing in this place.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_prison_exit_desc</DESCRIPTION>
+			</DESCRIPTION>
+			<MOB class="GenMob" like="dungeon_prisonguard" level="$level_range" race="$_prisoner_races" name="Dr. $fantasy_name" display="$torture_prisonguard_disp" />
+			<ITEM select="any-2">
+				<ITEM class="metacraft:Whipping Post"/>
+				<ITEM class="metacraft:Torture Bed" isgettable="false"/>
+				<ITEM class="metacraft:Stockade" isgettable="false"/>
+				<ITEM class="metacraft:Gallows" isgettable="false"/>
+				<ITEM class="metacraft:Torture Rack" isgettable="false"/>
+				<ITEM class="metacraft:Spanish watercloth"/>
+				<ITEM class="metacraft:Garucha Gallows" isgettable="false"/>
+				<ITEM class="metacraft:Garotte Bed" isgettable="false"/>
+				<ITEM class="metacraft:Brank Helmet"/>
+				<ITEM class="metacraft:The Machine" isgettable="false"/>
+			</ITEM>
+			<STRING id="torture_prisonguard_disp" select="any-1">
+				<STRING>$MOB_NAME is enjoying his work here.</STRING>
+				<STRING>$MOB_NAME wants to get on your nerves.</STRING>
+				<STRING>$MOB_NAME is ready for you.</STRING>
+				<STRING>$MOB_NAME is tidying up for the next guest.</STRING>
+				<STRING>$MOB_NAME is curious about how you feel.</STRING>
+			</STRING>
+			<EXIT select="pick-1">
+				<EXIT pickweight=1 class="GenDoor" DISPOSITION="ISHIDDEN"/>
+				<EXIT pickweight=2 class="GenDoor"/>
+			</EXIT>
+			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+		</ROOM>
+		<ROOM class="CaveRoom" condition="$__pitroom&lt;2" define="__pitroom+=1">
+			<TITLE>(a(n)) $adj_nasty pit</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in (a(n)) $adj_nasty pit.</DESCRIPTION>
+					<DESCRIPTION>You are in (a(n)) $adj_nasty pit.</DESCRIPTION>
+					<DESCRIPTION>You`re inside (a(n)) $adj_nasty pit.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_nasty pit.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Its little more than a great hole surrounded by a metal cage.</DESCRIPTION>
+					<DESCRIPTION>It is a great caged hole for prisoners.</DESCRIPTION>
+					<DESCRIPTION>A pit holds prisoners in a large hole surrounded by bars.</DESCRIPTION>
+					<DESCRIPTION>A great hole surrounded by bars holds in the prisoners.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_prison_exit_desc</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname cellkey" />
+			<MOB select="repeat-1?3" insert="dungeon_prisoner" />
+			<AFFECT class="Prop_NoRecall" /> <AFFECT class="Prop_NoSummon" /> <AFFECT class="Prop_NoTeleportOut" />
+			<EXIT class="Gate" />
+			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+		</ROOM>
+		<ROOM class="CaveRoom" condition="$__latrine&lt;2" define="__latrine+=1">
+			<TITLE>(a(n)) $adj_nasty latrine</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing knee deep in (a(n)) $adj_nasty latrine.</DESCRIPTION>
+					<DESCRIPTION>You are in (a(n)) $adj_nasty latrine.</DESCRIPTION>
+					<DESCRIPTION>You`re inside (a(n)) $adj_nasty latrine.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_nasty latrine.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You now realize what happens to all the waste generated here.</DESCRIPTION>
+					<DESCRIPTION>This is where all the waste is dumped.</DESCRIPTION>
+					<DESCRIPTION>The waste and filth of the prisoners and guards is all dumped here.</DESCRIPTION>
+					<DESCRIPTION>This must be where the waste from the prisoners is dumped.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You did not want to know about that, but now you do.</DESCRIPTION>
+					<DESCRIPTION>You realize now how offal that information is.</DESCRIPTION>
+					<DESCRIPTION>You probably didn`t need to know that.</DESCRIPTION>
+					<DESCRIPTION>This is not what you were looking for.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$random_badsmell</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_prison_exit_desc</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="Door" />
+			<MOB select="repeat-1?2" insert="dungeon_prisonguard" />
+			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a guard station</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in a guard station.</DESCRIPTION>
+					<DESCRIPTION>You are in a guard station.</DESCRIPTION>
+					<DESCRIPTION>You`re inside a guard station.</DESCRIPTION>
+					<DESCRIPTION>This is a guard station.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION>The exit is to the $roomexits_desc_long</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="Door" />
+			<MOB select="repeat-2?5" insert="dungeon_prisonguard" />
+			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+		</ROOM>
+		<ROOM class="CaveRoom" condition="$__wardenroom&lt;2" define="__wardenroom+=1">
+			<TITLE>the wardens office</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in the wardens office.</DESCRIPTION>
+					<DESCRIPTION>You are in the wardens office.</DESCRIPTION>
+					<DESCRIPTION>You`re inside the wardens office.</DESCRIPTION>
+					<DESCRIPTION>This is the wardens office.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Is this really where commands are given, or simply the best hiding place?</DESCRIPTION>
+					<DESCRIPTION>You aren`t sure if this place is the control center, or the controlled center.</DESCRIPTION>
+					<DESCRIPTION>Looking around, you still aren`t sure where the people in charge are.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The bad smells here are either from the garbage, or the cowardice.</DESCRIPTION>
+					<DESCRIPTION>The garbage strewn around in here reminds you that you`ve seen nicer cells than this.</DESCRIPTION>
+					<DESCRIPTION>It`s not clean, and it`s not orderly.  A lot like the rest of the prison.</DESCRIPTION>
+					<DESCRIPTION>This room is dominated by garbage and disorder, and that`s just the warden!</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION>The exit is to the $roomexits_desc_long</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="Door" />
+			<MOB select="repeat-2?5" insert="dungeon_prisonguard" />
+			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<MOB class="GenMob" level="(1.20 * ($level_range)) + 1" id="prison_warden" race="$_humanoid_races" gender="$anygender">
+				<NAME>Warden $fantasy_name</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name stands around.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name cowers in the corder.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is short, but in charge.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is doing paperwork.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is watching you impatiently.</DISPLAY>
+					<DISPLAY pickweight="3">$mob_name is trying to seem in control.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>0?10000</ALIGNMENT>
+				<ABILITY select="all">
+					<ABILITY condition="1?3=1" class="Skill_Trip" />
+					<ABILITY condition="1?3=1" class="Skill_Dirt" />
+					<ABILITY condition="1?3=1" class="Skill_Disarm" />
+					<ABILITY condition="1?3=1" class="Thief_Distract" />
+				</ABILITY>
+				<BEHAVIOR select="all">
+					<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+					<BEHAVIOR class="MudChat" parms="" />
+					<BEHAVIOR condition="1?2=1"  class="BrotherHelper" parms="" />
+					<BEHAVIOR class="CombatAbilities" parms="" />
+					<BEHAVIOR class="ObjectGuardian" parms="" />
+				</BEHAVIOR>
+				<ITEM select="pick-1?3">
+					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
+						<NAME select="any-1"><NAME>(a(n)) $adj_fancy wardens hat</NAME><NAME>(a(n)) $adj_fancy wardens hat</NAME></NAME>
+						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>COTTON</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
+					</ITEM>
+					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" capacity=100 containtypes="DAGGERS,ONE-HANDED WEAPONS,SWORDS,OTHER WEAPONS">
+						<NAME select="any-1"><NAME>(a(n)) $adj_fancy weapon belt</NAME><NAME>(a(n)) $adj_fancy weapon belt</NAME></NAME>
+						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>SILVER</MATERIAL><PROPERWORN>WAIST</PROPERWORN>
+					</ITEM>
+					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
+						<NAME select="any-1"><NAME>a pair of $adj_fancy warden shoes</NAME><NAME>a pair of $adj_fancy warden shoes</NAME></NAME>
+						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>DRAGONSCALES</MATERIAL><PROPERWORN>FEET</PROPERWORN>
+					</ITEM>
+				</ITEM>
+				<ITEM select="pick-1">
+					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+						<NAME>(a(n)) $adj_fancy nightstick</NAME>
+						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<MATERIAL>GOLD</MATERIAL>
+						<WEAPONCLASS>BLUNT</WEAPONCLASS>
+						<WEAPONTYPE>BASHING</WEAPONTYPE>
+					</ITEM>
+				</ITEM>
+				<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			</MOB>
+			<ITEM class="GenChair"  name="(a(n)) $adj_fancy chair" display="$ITEM_NAME is here"  isgettable="false"/>
+			<ITEM class="GenTable"  name="(a(n)) $adj_fancy desk" display="$ITEM_NAME is here"  isgettable="false"/>
+			<ITEM class="GenContainer" name="The wardens chest" display="The wardens chest is here" HASLID="true" HASLOCK="false">
+				<CONTENT>
+					<ITEM select="any-5" insert="dungeon_treasure_items" />
+				</CONTENT>
+				<AFFECT condition="1?3=1" class="Prop_Hidden" />
+			</ITEM>
+		</ROOM>
+		<ROOM class="CaveRoom" condition="$__laundry&lt;2" define="__laundry+=1">
+			<TITLE>the laundry room</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You have found the laundry room.</DESCRIPTION>
+					<DESCRIPTION>You are in the laundry room.</DESCRIPTION>
+					<DESCRIPTION>You`re inside a laundry room.</DESCRIPTION>
+					<DESCRIPTION>This is the laundry room.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>It`s hot and dank in here.</DESCRIPTION>
+					<DESCRIPTION>Steam floats like a fog in here.</DESCRIPTION>
+					<DESCRIPTION>The humid smells assault your nose.</DESCRIPTION>
+					<DESCRIPTION>Your clothes stick to your skin from the humidity.</DESCRIPTION>
+					<DESCRIPTION>It`s extremely humid here.</DESCRIPTION>
+					<DESCRIPTION>It`s stinks of mold and soap in here.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The less time spent here, the better.</DESCRIPTION>
+					<DESCRIPTION>Maybe you should keep your visit here brief.</DESCRIPTION>
+					<DESCRIPTION>You would really rather just leave.</DESCRIPTION>
+					<DESCRIPTION>This is probably the highlight of the whole place.</DESCRIPTION>
+					<DESCRIPTION>You realize it probably doesn`t get better than this room.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION>The exit is to the $roomexits_desc_long</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="Door" />
+			<MOB select="repeat-2?5" insert="dungeon_prisoner" />
+			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<ITEM select="repeat-3">
+				<ITEM class="GenTub" name="a laundry tub" display="$item_name sits here">
+					<CONTENT>
+						<ITEM select="any-1" insert="any_tailoring_item" />
+						<ITEM select="any-1" insert="any_tailoring_item" />
+						<ITEM select="any-1" insert="any_tailoring_item" />
+						<ITEM select="any-1" insert="any_tailoring_item" />
+						<ITEM select="any-1" insert="any_tailoring_item" />
+					</CONTENT>
+				</ITEM>
+			</ITEM>
+		</ROOM>
+	</ROOM>
+</ROOM>
+
+<MOB id="prison_mobs" select="all" condition="$theme='prison' or $theme='random'">
+	<MOB class="GenMob" level="$level_range" id="dungeon_prisoner" race="$_prisoner_races" gender="$anygender">
+		<NAME>(a(n)) $_prisoner_races prisoner</NAME>
+		<DISPLAY select="pick-1">
+			<DISPLAY pickweight="1">$mob_name sneaks towards you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name charges at you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is trying to escape.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is scavenging for food.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is trying to hide from you.</DISPLAY>
+			<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+		</DISPLAY>
+		<ALIGNMENT>-10000?0</ALIGNMENT>
+		<ABILITY select="all">
+			<ABILITY condition="1?3=1" class="Skill_Trip" />
+			<ABILITY condition="1?3=1" class="Skill_Dirt" />
+			<ABILITY condition="1?3=1" class="Skill_Disarm" />
+			<ABILITY condition="1?3=1" class="Thief_Distract" />
+		</ABILITY>
+		<BEHAVIOR select="all">
+			<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
+			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+			<BEHAVIOR class="MudChat" parms="" />
+			<BEHAVIOR class="Thiefness" parms="" />
+			<BEHAVIOR condition="1?2=1"  class="BrotherHelper" parms="" />
+			<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
+			<BEHAVIOR class="Scavenger" parms="" />
+		</BEHAVIOR>
+		<ITEM select="all">
+			<ITEM class="GenArmor" LEVEL="$mob_level">
+				<NAME>(a(n)) $adj_colored_color prisoner`s jumpsuit</NAME>
+				<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>COTTON</MATERIAL>
+				<PROPERWORN>TORSO,ARMS,LEGS</PROPERWORN><WORNAND>true</WORNAND>
+			</ITEM>
+			<ITEM select="pick-1">
+				<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+					<NAME>a sharp $adj_wooden_ragged stick</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>OAK</MATERIAL>
+					<WEAPONCLASS>DAGGER</WEAPONCLASS>
+					<WEAPONTYPE>PIERCING</WEAPONTYPE>
+				</ITEM>
+				<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+					<NAME>(a(n)) $adj_metal_ragged lead pipe</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>LEAD</MATERIAL>
+					<WEAPONCLASS>BLUNT</WEAPONCLASS>
+					<WEAPONTYPE>BASHING</WEAPONTYPE>
+				</ITEM>
+				<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+					<NAME>(a(n)) $adj_metal_ragged shank</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<WEAPONCLASS>DAGGER</WEAPONCLASS>
+					<WEAPONTYPE>PIERCING</WEAPONTYPE>
+					<MATERIAL>IRON</MATERIAL>
+				</ITEM>
+			</ITEM>
+		</ITEM>
+		<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+	</MOB>
+	<MOB class="GenUndead" level="$level_range" id="dungeon_spirit" race="Spirit" gender="$anygender" condition="($theme!='prison') or (1?3=1)">
+		<NAME>a dead prisoners spirit</NAME>
+		<DISPLAY select="pick-1">
+			<DISPLAY pickweight="1">$mob_name whisps towards you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name wants your soul.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is trying to escape.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name doesn`t know it`s dead.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+			<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+		</DISPLAY>
+		<ALIGNMENT>-10000?0</ALIGNMENT>
+		<ABILITY select="all">
+			<ABILITY condition="1?3=1" class="Undead_ColdTouch" />
+			<ABILITY condition="1?3=1" class="Undead_WeakEnergyDrain" />
+			<ABILITY condition="1?3=1 and $mob_level&gt;20" class="Undead_EnergyDrain" />
+			<ABILITY condition="1?3=1" class="Undead_LifeDrain" />
+			<ABILITY condition="1?3=1" class="Thief_Distract" />
+		</ABILITY>
+		<BEHAVIOR select="all">
+			<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
+			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+			<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
+		</BEHAVIOR>
+		<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+	</MOB>
+	<MOB class="GenMob" level="$level_range" id="dungeon_prisonguard" race="$_humanoid_races" gender="$anygender">
+		<NAME>(a(n)) $_humanoid_races prison guard</NAME>
+		<DISPLAY select="pick-1">
+			<DISPLAY pickweight="1">$mob_name marches towards you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name charges at you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is keeping order here.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+		    <DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+		</DISPLAY>
+		<ALIGNMENT>0?10000</ALIGNMENT>
+		<ABILITY select="all">
+			<ABILITY class="Thief_Sap" />
+		</ABILITY>
+		<BEHAVIOR select="all">
+			<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
+			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+			<BEHAVIOR class="MudChat" parms="" />
+			<BEHAVIOR class="Fighterness" parms="" />
+			<BEHAVIOR condition="1?2=1"  class="BrotherHelper" parms="" />
+			<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
+			<BEHAVIOR class="Scavenger" parms="" />
+		</BEHAVIOR>
+		<ITEM select="all">
+			<ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname cellkey" name="a jail key" material="iron" validate="1?10=1 or (1?2=1 and $__maincellkey&lt;2)" define="__maincellkey+=1"/>
+			<ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname luxurykey"  name="a golden jail key" material="gold" validate="1?10=1 or (1?2=1 and $__goldcellkey&lt;1)" define="__goldcellkey+=1"/>
+			<ITEM class="GenShield" LEVEL="$mob_level" material="OAK" name="a wooden shield" display="a wooden shield sits here"/>
+			<ITEM select="any-1?4">
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME>$mob_name`s helmet</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>IRON</MATERIAL>
+					<PROPERWORN>HEAD,HELD</PROPERWORN><WORNAND>false</WORNAND>
+				</ITEM>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME>$mob_name`s armor</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>IRON</MATERIAL>
+					<PROPERWORN>TORSO,HELD</PROPERWORN><WORNAND>false</WORNAND>
+				</ITEM>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME>$mob_name`s armguards</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>IRON</MATERIAL>
+					<PROPERWORN>ARMS,HELD</PROPERWORN><WORNAND>false</WORNAND>
+				</ITEM>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME>$mob_name`s boots</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>IRON</MATERIAL>
+					<PROPERWORN>FEET,HELD</PROPERWORN><WORNAND>false</WORNAND>
+				</ITEM>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME>$mob_name`s legguards</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>IRON</MATERIAL>
+					<PROPERWORN>LEGS,HELD</PROPERWORN><WORNAND>false</WORNAND>
+				</ITEM>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME>$mob_name`s gloves</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>LEATHER</MATERIAL>
+					<PROPERWORN>HANDS,HELD</PROPERWORN><WORNAND>false</WORNAND>
+				</ITEM>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME>$mob_name`s belt</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>LEATHER</MATERIAL>
+					<PROPERWORN>WAIST,HELD</PROPERWORN><WORNAND>false</WORNAND>
+				</ITEM>
+			</ITEM>
+			<ITEM select="pick-1">
+				<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+					<NAME>(a(n)) $adj_wooden_ragged nightstick</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>OAK</MATERIAL>
+					<WEAPONCLASS>BLUNT</WEAPONCLASS>
+					<WEAPONTYPE>PIERCING</WEAPONTYPE>
+				</ITEM>
+				<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+					<NAME>(a(n)) $adj_metal_ragged sword</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>IRON</MATERIAL>
+					<WEAPONCLASS>SWORD</WEAPONCLASS>
+					<WEAPONTYPE>SLASHING</WEAPONTYPE>
+				</ITEM>
+			</ITEM>
+		</ITEM>
+		<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+	</MOB>
+</MOB>
+
+<ITEM id="prison_junk" select="all" condition="$theme='prison' or $theme='random'">
+	<ITEM class="GenItem" name="some $adj_metal_broken handcuffs scraps" display="$item_name were discarded here" material="IRON" level="$level_range" />
+	<ITEM class="GenWeapon" name="a $adj_wooden_broken night stick" display="$item_name is lying here" material="WOOD" level="$level_range" attack="-10" damage="1"/>
+	<ITEM class="GenResource" name="the bones of a dead prisoner" display="$item_name rest here" material="BONE" level="$level_range" weight="10" />
+	<ITEM class="GenItem" name="some prayer beads" display="a string of prayer beads lie here" material="BONE" level="$level_range" weight=1 />
+	<ITEM class="GenItem" name="a melted wax clob" display="$item_name lies here" material="WAX" level="$level_range" weight=1 />
+	<ITEM class="GenItem" name="a makeshift noose" display="$item_name lies here" material="HEMP" level="$level_range" weight=3 />
+	<ITEM class="GenEmptyDrink" name="a small bottle" display="$item_name lies here" material="GLASS" level="$level_range" liquidheld=100 weight=3 />
+	<ITEM class="GenItem" name="(a(n)) ${l:item_material} file" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 />
+	<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} shank" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3  damage="1"/>
+	<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken cigar box" display="$item_name is sitting here" material="$any_wood" level="$level_range"  weight=1/>
+	<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken wardens hat"  display="$item_name lies here" material="$any_cheap_cloth" level="$level_range"  weight=1/>
+	<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken laundry sack"  display="$item_name lies here" material="$any_cheap_cloth" level="$level_range"  weight=1/>
+	<ITEM class="GenItem" name="(a(n)) ${l:item_material} chisel" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 />
+	<ITEM class="GenItem" name="a twisted ${l:item_material} wire noose" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 />
+	<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken sheet" display="$item_name lies here" material="$any_cheap_cloth" level="$level_range"  weight=1/>
+	<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken ${l:item_material} rag" display="$item_name lies here" material="$any_cheap_cloth" level="$level_range"  weight=1/>
+	<ITEM class="GenItem" name="A locket with (a(n)) $adj_metal_broken chain" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 />
+	<ITEM class="GenItem" name="(a(n)) ${l:item_material} tooth" display="$item_name is here" material="$any_metal" level="$level_range" weight=1 />
+	<ITEM class="GenFood" name="a dead cockroach"  display="$item_name lies here" material="MEAT" level="$level_range"  weight=1 nourishment=1 />
+	<ITEM class="GenLiquidResource" name="a pool of blood"  display="$item_name is here" material="BLOOD" level="$level_range"  weight=1 LIQUIDHELD=1 />
+	<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} handaxe" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 />
+	<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken wooden crown" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
+	<ITEM class="metacraft:any-Cooking < $level_range" name="some rotten $item_name" display="$item_name sits here" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
+	<ITEM class="metacraft:any-Baking < $level_range" name="some rotten $item_name" display="$item_name sits here" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
+	<ITEM class="GenWeapon" name="(a(n)) $adj_wooden_broken makeshift wooden sword" display="$item_name lies here" material="$any_wood" level="$level_range" weight=3 damage="1"/>
+	<ITEM class="GenItem" name="a pair of deer horns" display="$item_name lie here" material="BONE" level="$level_range" weight=1 />
+	<ITEM class="GenItem" name="(a(n)) $adj_metal_broken door handle" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range" />
+	<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken ${l:item_material} handle" display="$item_name is sitting here" material="$any_wood" level="$level_range"  weight=1/>
+	<ITEM class="GenItem" name="a pile of bottle corks" display="$item_name are here" material="OAK" level="$level_range" weight=1 />
+	<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} pipe" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 damage="2"/>
+	<ITEM class="GenItem" name="a small pile of rat skulls" display="$item_name are here" material="BONE" level="$level_range" weight=1 />
+	<ITEM class="GenItem" name="a stick of white chalk" display="$item_name lies here" material="STONE" level="$level_range" weight=1 />
+	<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} door lock" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range" />
+	<ITEM class="metacraft:any-Cooking < $level_range" name="some half-eaten $item_name covered in mold" display="$item_name sits here" weight=1 description="Its been here awhile."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
+	<ITEM class="metacraft:any-Baking < $level_range" name="some half-eaten $item_name covered in mold" display="$item_name sits here" weight=1 description="Its been here awhile."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
+	<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} religious trinket" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 />
+	<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken ${l:item_material} religious symbol" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
+	<ITEM class="GenLimb" name="a glass eye" display="$item_name lies here" material="GLASS" level="$level_range" weight=1 />
+	<ITEM class="GenItem" name="$any_plural_digit $any_humanoid_race fingers on a $adj_metal_broken chain" display="$item_name lie here" material="$any_cheap_metal" level="$level_range" weight=1 />
+	<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken clothespin" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
+	<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken leather ball" display="$item_name lies here" material="LEATHER" level="$level_range" weight=1 />
+	<ITEM class="GenItem" name="(a(n)) $adj_metal_broken belt buckle" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range"  weight=1/>
+	<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} sewing needle" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range"  weight=1/>
+	<ITEM class="GenLimb" name="a mummified $any_humanoid_race foot" display="$item_name lies here" material="MEAT" level="$level_range" weight=1 />
+	<ITEM class="GenLimb" name="a mummified $any_mammal_race leg" display="$item_name lies here" material="MEAT" level="$level_range" weight=1 />
+	<ITEM class="GenItem" name="a strand of ${l:item_material} string" display="$item_name lies here" material="$any_cheap_cloth" level="$level_range" weight=1 />
+	<ITEM class="GenItem" name="(a(n)) whittled $adj_wooden_broken ${l:item_material} stick" display="$item_name is sitting here" material="$any_wood" level="$level_range"  weight=1/>
+	<ITEM class="GenItem" name="a smooth stone" display="$item_name lies here" material="STONE" level="$level_range" weight=1 />
+	<ITEM class="GenItem" name="a dyed $adj_colored_color rock" display="$item_name lies here" material="STONE" level="$level_range" weight=1 />
+	<ITEM class="GenItem" name="a dyed $adj_colored_color ${l:item_material} stick" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
+	<ITEM class="GenItem" name="(a(n)) ${l:item_material} puzzle piece" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
+	<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken pot" display="$item_name is sitting here" material="$any_wood" level="$level_range"  weight=1/>
+	<ITEM class="GenPlayingCard" name="a playing card" ability="0?62" />
+	<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken $any_avian_race feather" display="$item_name lies here" material="FEATHERS" level="$level_range" weight=1 />
+	<ITEM class="GenKey" name="(a(n)) $adj_metal_broken ${l:item_material} key" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 READABLETEXT="opensnothing"/>
+	<ITEM class="GenItem" name="a cherished locke of $any_humanoid_race hair" display="$item_name lies here" material="MEAT" level="$level_range" weight=1 />
+	<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken toothpick" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
+	<ITEM class="GenItem" name="a bit of bloody ${l:item_material}" display="$item_name lies here" material="$any_cheap_cloth" level="$level_range" weight=1 />
+	<ITEM class="GenItem" name="(a(n)) $adj_metal_broken pully" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range" />
+	<ITEM class="GenItem" name="(a(n)) $any_humanoid_race finger bone" display="$item_name lie here" material="BONE" level="$level_range" weight=1 />
+	<ITEM class="GenItem" name="(a(n)) $any_humanoid_race skull" display="$item_name lie here" material="BONE" level="$level_range" weight=1 />
+	<ITEM class="GenReadable" name="a slip of paper" display="$item_name lies here" material="PAPER" level="$level_range" weight=1 description="There`s something written on it." READABLETEXT="see $fantasy_name"/>
+	<ITEM class="GenWeapon" name="a bloody ${l:item_material} nail" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 damage="1"/>
+	<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken axe handle" display="$item_name is sitting here" material="$any_wood" level="$level_range" />
+	<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken bloody chew-toy" display="$item_name is here" material="$any_wood" level="$level_range" weight=1 />
+	<ITEM class="GenItem" name="a rusty $adj_metal_broken horse shoe" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1/>
+	<ITEM class="GenItem" name="a dirty comb" display="$item_name lie here" material="$any_cheap_metal" level="$level_range" weight=1 />
+	<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} table leg" display="$item_name lies here" material="$any_wood" level="$level_range" weight=3 damage="1"/>
+	<ITEM class="metacraft:any-Weaponsmithing < $level_range" name="(a(n)) $adj_metal_broken rusted $item_name" display="$item_name lies here" damage=1  attack=-10 affbehav="<BEHAVES /><AFFECS />" />
+	<ITEM class="metacraft:any-Armorsmithing < $level_range" name="(a(n)) $adj_metal_broken rusted $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" />
+	<ITEM class="metacraft:any-MasterWeaponsmithing < $level_range" name="(a(n)) $adj_metal_broken rusted $item_name" display="$item_name lies here" damage=1 attack=-10 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
+	<ITEM class="metacraft:any-MasterArmorsmithing < $level_range" name="(a(n)) $adj_metal_broken rusted $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
+</ITEM>
+	
+<STRING id="dungeon_prison_exit_desc" select="any-1">
+	<STRING id="dungeon_prison_exit_descs" select="all">
+		<STRING>The exit is to the $roomexits_desc_long.</STRING>
+		<STRING>The way out of here is $roomexits_desc_long.</STRING>
+		<STRING>The exit to the $roomexits_desc_long is the only way out.</STRING>
+		<STRING>The only way out of here is $roomexits_desc_long.</STRING>
+		<STRING>Escape is to the $roomexits_desc_long.</STRING>
+	</STRING>
+</STRING>
+
+<STRING id="_prisoner_races" select="any-1" insert="any_prisoner_race" define="_prisoner_races" />
+
+<STRING id="any_prisoner_race" select="any-1">
+	<STRING>Human</STRING>
+	<STRING>Dwarf</STRING>
+	<STRING>Elf</STRING>
+	<STRING>Ogre</STRING>
+	<STRING>Halfling</STRING>
+	<STRING>Goblin</STRING>
+</STRING>
+
+<STRING id="prison_random_blurbs">
+	<STRING>You are certain you just heard (a(n)) $adj_scary_feeling scream coming from somewhere.</STRING>
+	<STRING>You can hear the $adj_scary_feeling sounds of human suffering.</STRING>
+	<STRING>You hear $adj_scary_feeling tortured screams in the distance.</STRING>
+	<STRING>You hear $adj_scary_feeling screams of suffering in the distance.</STRING>
+	<STRING>You hear $adj_scary_feeling sounds coming from all around you.</STRING>
+	<STRING>You hear $adj_scary_feeling sounds coming from all around you.</STRING>
+	<STRING>You wonder if an execution occurred here.</STRING>
+</STRING>
+
+
