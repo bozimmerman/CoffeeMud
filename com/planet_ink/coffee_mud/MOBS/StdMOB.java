@@ -1679,7 +1679,7 @@ public class StdMOB implements MOB
 				if (!CMLib.flags().canBeSeenBy(getVictim(), viewerMob))
 					sendBack.append(_(" fighting someone"));
 				else
-					sendBack.append(getVictim().name());
+					sendBack.append(_(" fighting @x1",getVictim().name()));
 			}
 			if ((amFollowing() != null) && (amFollowing().fetchFollowerOrder(this) > 0))
 			{

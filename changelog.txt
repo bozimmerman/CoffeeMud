@@ -31,8 +31,11 @@
   . Several new "shortcut" item and area types for space: moon, gasgiant, star, dwarfstar, massivestar, planet, moonlet, asteroid, etc.
   . MoneyChanger behavior can now discount currency by its distant origin (farther planet is from origin of currency, less its worth).
    *. finish the dadgum engine thrust adjustment! in GenSpaceShip
+   *. interacting items of diff tech level might damage each other
    *. personal scanner/tricorder software: mineral scanner, computer interface (with ship perhaps?)!
    *. entry systems for ships (default entry key card, voice code, identifying scanner)
+   *. work on automatic component values
+   *. make sure shopkeeper item techlevels watch the master tech level
    *. make ship sensor systems
    *. make tractor beam system -- esp important for pirates!
    *. make ship shield systems murder motel again -- some good against phasers, some torpedos, some lasers
@@ -45,6 +48,7 @@
    *. add electronics to MG
    *. add spaceobject stuff to MG
    *. add spaceobject mapper system to MG
+   *. keep reviewing and updating the GameOverview.html doc
    *. --- end of tech ---
    *. retest private libs, private dbtables, private classes, private area objects, private players
    *. OLC for players?  Play with PennMush more. Port 4201

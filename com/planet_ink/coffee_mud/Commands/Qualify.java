@@ -305,7 +305,7 @@ public class Qualify  extends Skills
 				if(limits.commonSkills < Integer.MAX_VALUE/2)
 					msg.append(_("\n\r^HYou may learn ^w@x1^H more common skills.^N",""+limits.commonSkills));
 				if(limits.craftingSkills<0)
-					limits.commonSkills=0;
+					limits.craftingSkills=0;
 				if(limits.craftingSkills < Integer.MAX_VALUE/2)
 					msg.append(_("\n\r^HYou may learn ^w@x1^H more crafting skills.^N",""+limits.craftingSkills));
 				if(limits.nonCraftingSkills<0)

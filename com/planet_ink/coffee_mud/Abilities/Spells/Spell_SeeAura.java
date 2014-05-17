@@ -47,7 +47,11 @@ public class Spell_SeeAura extends Spell
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		if(target==mob) return false;
+		if(target==mob)
+		{
+			mob.tell(_("Um, you could just enter SCORE."));
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

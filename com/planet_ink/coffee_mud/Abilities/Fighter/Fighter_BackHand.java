@@ -64,8 +64,6 @@ public class Fighter_BackHand extends MonkSkill
 			&&(mob.location()!=null)
 			&&(!anyWeapons(mob)))
 			{
-				if(CMLib.dice().rollPercentage()>95)
-					helpProficiency(mob, 0);
 				MOB elligibleTarget=null;
 				for(int m=0;m<mob.location().numInhabitants();m++)
 				{
@@ -92,6 +90,8 @@ public class Fighter_BackHand extends MonkSkill
 						naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 						naturalWeapon.recoverPhyStats();
 					}
+					if(CMLib.dice().rollPercentage()>95)
+						helpProficiency(mob, 0);
 					final MOB prevVictim=mob.getVictim();
 					CMLib.combat().postAttack(mob,elligibleTarget,naturalWeapon);
 					if((prevVictim!=mob.getVictim())&&(elligibleTarget==mob.getVictim())&&((prevVictim==null)||(!prevVictim.amDead())))
