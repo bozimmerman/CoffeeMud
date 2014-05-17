@@ -611,7 +611,7 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public void dumpThreadGroup(Session viewerS, StringBuilder lines,ThreadGroup tGroup, boolean ignoreZeroTickThreads)
+	protected void dumpThreadGroup(Session viewerS, StringBuilder lines,ThreadGroup tGroup, boolean ignoreZeroTickThreads, boolean extend)
 	{
 		final int ac = tGroup.activeCount();
 		final int agc = tGroup.activeGroupCount();
@@ -653,6 +653,9 @@ public class ListCmd extends StdCommand
 					if(CMClass.classID(R).length()>0)
 						summary=CMClass.classID(R);
 					else
+					if(extend)
+						summary=tArray[i].toString();
+					else
 						summary="";
 				}
 				lines.append(summary+"\n\r");
@@ -665,14 +668,14 @@ public class ListCmd extends StdCommand
 			for (int i = 0; i<agc; ++i)
 			{
 				if (tgArray[i] != null)
-					dumpThreadGroup(viewerS,lines,tgArray[i],ignoreZeroTickThreads);
+					dumpThreadGroup(viewerS,lines,tgArray[i],ignoreZeroTickThreads,extend);
 			}
 			lines.append("}\n\r");
 		}
 	}
 
 
-	public StringBuilder listThreads(Session viewerS, MOB mob, boolean ignoreZeroTickThreads)
+	public StringBuilder listThreads(Session viewerS, MOB mob, boolean ignoreZeroTickThreads, boolean extend)
 	{
 		final StringBuilder lines=new StringBuilder("^xStatus|Name                 ^.^?\n\r");
 		try
@@ -681,7 +684,7 @@ public class ListCmd extends StdCommand
 			while (topTG != null && topTG.getParent() != null)
 				topTG = topTG.getParent();
 			if (topTG != null)
-				dumpThreadGroup(viewerS,lines,topTG,ignoreZeroTickThreads);
+				dumpThreadGroup(viewerS,lines,topTG,ignoreZeroTickThreads, extend);
 
 		}
 		catch (final Exception e)
@@ -3200,12 +3203,12 @@ public class ListCmd extends StdCommand
 			s.wraplessPrintln(str.toString());
 			break;
 		}
-		case RACECATS: s.wraplessPrintln(listRaceCats(s,CMClass.races(),rest.equalsIgnoreCase("SHORT")).toString()); break;
+		case RACECATS: s.wraplessPrintln(listRaceCats(s,CMClass.races(),CMParms.containsIgnoreCase(commands,"SHORT")).toString()); break;
 		case LOG: listLog(mob,commands); break;
 		case USERS: listUsers(mob.session(),mob,commands); break;
 		case LINKAGES: s.println(listLinkages(mob.session(),mob,rest).toString()); break;
 		case REPORTS: s.println(listReports(mob.session(),mob).toString()); break;
-		case THREADS: s.println(listThreads(mob.session(),mob,CMParms.combine(commands,1).equalsIgnoreCase("SHORT")).toString()); break;
+		case THREADS: s.println(listThreads(mob.session(),mob,CMParms.containsIgnoreCase(commands,"SHORT"),CMParms.containsIgnoreCase(commands,"EXTEND")).toString()); break;
 		case RESOURCES: s.println(listResources(mob,CMParms.combine(commands,1))); break;
 		case ONEWAYDOORS: s.wraplessPrintln(reallyFindOneWays(mob.session(),commands)); break;
 		case CHANTS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_CHANT).toString()); break;

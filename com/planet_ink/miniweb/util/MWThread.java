@@ -42,4 +42,13 @@ public class MWThread extends Thread
 	{
 		return config;
 	}
+	
+	public String toString()
+	{
+		final StringBuilder dump = new StringBuilder("");
+		final java.lang.StackTraceElement[] s=getStackTrace();
+		for (final StackTraceElement element : s)
+			dump.append(element.getClassName()+": "+element.getMethodName()+"("+element.getFileName()+": "+element.getLineNumber()+") | ");
+		return dump.toString();
+	}
 }
