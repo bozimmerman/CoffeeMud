@@ -72,7 +72,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			request.getRequestObjects().put("SYSTEM_HTTP_STATUS_INFO", status.description());
 		}
 		final long[] systemStartTime=new long[]{System.currentTimeMillis()};
-		if(pageFile.getParent()!=null)
+		if((pageFile.getParent()!=null)&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))&&(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
 		{
 			final Clan mappedClan = CMLib.clans().getWebPathClan(pageFile.getParent());
 			if(mappedClan!=null)
