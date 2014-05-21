@@ -328,7 +328,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 							// if destroyed, break
 						}
 						else
-						if((cO instanceof Area)
+						if(((cO instanceof Area)||(cO.getMass() > (SpaceObject.MULTIPLIER_PLANET_MASS/4)))
 						&&((CMLib.map().getDistanceFrom(O, cO)-cO.radius())<=(cO.radius()*SpaceObject.MULTIPLIER_GRAVITY_RADIUS)))
 						{
 							final double[] oldDirection=O.direction(); // gravity is not thrust, so no direction change
