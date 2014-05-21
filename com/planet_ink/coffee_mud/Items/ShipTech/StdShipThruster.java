@@ -134,7 +134,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		}
 		else
 		{
-			final String code=Technical.TechCommand.COMPONANTFAILURE.makeCommand(TechType.SHIP_ENGINE, "Failure:_"+me.name().replace(' ','_')+":_insufficient_fuel.");
+			final String code=Technical.TechCommand.COMPONENTFAILURE.makeCommand(TechType.SHIP_ENGINE, "Failure:_"+me.name().replace(' ','_')+":_insufficient_fuel.");
 			for(final Iterator<Electronics.Computer> c=CMLib.tech().getComputers(circuitKey);c.hasNext();)
 			{
 				final Electronics.Computer C=c.next();
@@ -210,7 +210,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 					else
 					if(me.okMessage(msg.source(), msg2))
 						me.executeMsg(msg.source(), msg2);
-					final String code=Technical.TechCommand.COMPONANTFAILURE.makeCommand(TechType.SHIP_ENGINE, "Failure: "+me.name()+": insufficient_fuel.");
+					final String code=Technical.TechCommand.COMPONENTFAILURE.makeCommand(TechType.SHIP_ENGINE, "Failure: "+me.name()+": insufficient_fuel.");
 					for(final Iterator<Electronics.Computer> c=CMLib.tech().getComputers(circuitKey);c.hasNext();)
 					{
 						final Electronics.Computer C=c.next();

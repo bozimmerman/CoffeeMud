@@ -74,7 +74,7 @@ public interface Technical
 	{
 		THRUST(ShipEngine.ThrustPort.class, Integer.class),
 		ACCELLLERATION(ShipEngine.ThrustPort.class, Integer.class, Long.class),
-		COMPONANTFAILURE(Technical.TechType.class, String[].class),
+		COMPONENTFAILURE(Technical.TechType.class, String[].class),
 		AIRREFRESH(Double.class,Integer.class),
 		;
 		private final Class<?>[] parms;

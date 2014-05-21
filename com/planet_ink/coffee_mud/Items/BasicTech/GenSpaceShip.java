@@ -443,20 +443,11 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 							case FORWARD: break;
 							case AFT:
 							{
-								//TODO: apply inertial dampeners and OML
-								//TODO: gravity is separate
-								//TODO: inertial dampeners are separate?
 								//force equation in air= A=((thrust / (m * inertial dampener <= 1 ))-1)*(1- OML))
 								//force equation in space= A=(thrust / (m * inertial dampener <= 1 )
+								final double inAirFactor=true?(1.0-getOMLCoeff()):1.0;
+								CMLib.map().moveSpaceObject(this,facing(),Math.round((((double)amount/(double)getMass())-1.0)*inAirFactor));
 
-								// remember you are moving in a direction, but facing a different one.
-								/*
-								int mass=getMass();
-								double ke1=0.5*(velocity*velocity); // *mass
-								double ke2=0.5*(amount*amount); // *mass
-								direction()[0]+=Math.sin(ke1/ke2);
-								*/
-								//TODO: how does the dir affect velocity and direction given thrust and facing?
 								break;
 							}
 							}

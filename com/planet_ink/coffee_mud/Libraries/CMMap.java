@@ -359,7 +359,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		return getDistanceFrom(O1.coordinates(),O2.coordinates());
 	}
 
-	protected static void moveSpaceObject(SpaceObject O, double[] newDirection, long newAccelleration)
+	@Override
+	public void moveSpaceObject(SpaceObject O, double[] newDirection, long newAccelleration)
 	{
 		final double directionYaw = O.direction()[0];
 		double directionPitch = O.direction()[1];
