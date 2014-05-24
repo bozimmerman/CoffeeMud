@@ -7383,6 +7383,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			if(mob.isMonster()) return;
 			int showNumber=0;
+			if(showFlag<0)
+				mob.tell(_("*. Class: @x1",me.ID()));
 			genName(mob,me,++showNumber,showFlag);
 			genDisplayText(mob,me,++showNumber,showFlag);
 			genDescription(mob,me,++showNumber,showFlag);
@@ -7467,6 +7469,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
 			int showNumber=0;
+			if(showFlag<0)
+				mob.tell(_("*. Class: @x1",me.ID()));
 			genName(mob,me,++showNumber,showFlag);
 			genDisplayText(mob,me,++showNumber,showFlag);
 			genDescription(mob,me,++showNumber,showFlag);
@@ -7551,6 +7555,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
 			int showNumber=0;
+			if(showFlag<0)
+				mob.tell(_("*. Class: @x1",me.ID()));
 			genName(mob,me,++showNumber,showFlag);
 			genDisplayText(mob,me,++showNumber,showFlag);
 			genDescription(mob,me,++showNumber,showFlag);
@@ -7605,6 +7611,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
 			int showNumber=0;
+			if(showFlag<0)
+				mob.tell(_("*. Class: @x1",me.ID()));
 			genName(mob,me,++showNumber,showFlag);
 			genDescription(mob,me,++showNumber,showFlag);
 			genReadable1(mob,me,++showNumber,showFlag);
@@ -7638,6 +7646,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
 			int showNumber=0;
+			if(showFlag<0)
+				mob.tell(_("*. Class: @x1",me.ID()));
 			genName(mob,me,++showNumber,showFlag);
 			genDisplayText(mob,me,++showNumber,showFlag);
 			genDescription(mob,me,++showNumber,showFlag);
@@ -7682,6 +7692,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
 			int showNumber=0;
+			if(showFlag<0)
+				mob.tell(_("*. Class: @x1",me.ID()));
 			genName(mob,me,++showNumber,showFlag);
 			genDisplayText(mob,me,++showNumber,showFlag);
 			genDescription(mob,me,++showNumber,showFlag);
@@ -7777,6 +7789,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
 			int showNumber=0;
+			if(showFlag<0)
+				mob.tell(_("*. Class: @x1",me.ID()));
 			genName(mob,me,++showNumber,showFlag);
 			genDisplayText(mob,me,++showNumber,showFlag);
 			genDescription(mob,me,++showNumber,showFlag);
@@ -7852,6 +7866,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
 			int showNumber=0;
+			if(showFlag<0)
+				mob.tell(_("*. Class: @x1",me.ID()));
 			genName(mob,me,++showNumber,showFlag);
 			genDisplayText(mob,me,++showNumber,showFlag);
 			genDescription(mob,me,++showNumber,showFlag);
@@ -7915,6 +7931,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
 			int showNumber=0;
+			if(showFlag<0)
+				mob.tell(_("*. Class: @x1",me.ID()));
 			genName(mob,me,++showNumber,showFlag);
 			genDisplayText(mob,me,++showNumber,showFlag);
 			genDescription(mob,me,++showNumber,showFlag);
@@ -7962,6 +7980,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
 			int showNumber=0;
+			if(showFlag<0)
+				mob.tell(_("*. Class: @x1",me.ID()));
 			genName(mob,me,++showNumber,showFlag);
 			genDisplayText(mob,me,++showNumber,showFlag);
 			genDescription(mob,me,++showNumber,showFlag);
@@ -8035,6 +8055,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
 			int showNumber=0;
+			if(showFlag<0)
+				mob.tell(_("*. Class: @x1",me.ID()));
 			genName(mob,me,++showNumber,showFlag);
 			genDisplayText(mob,me,++showNumber,showFlag);
 			genDescription(mob,me,++showNumber,showFlag);
@@ -8505,6 +8527,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
 			int showNumber=0;
+			if(showFlag<0)
+				mob.tell(_("*. Class: @x1",me.ID()));
 			genName(mob,me,++showNumber,showFlag);
 			genDisplayText(mob,me,++showNumber,showFlag);
 			genDescription(mob,me,++showNumber,showFlag);
@@ -8706,6 +8730,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while(!ok)
 		{
 			int showNumber=0;
+			if(showFlag<0)
+				mob.tell(_("*. Class: @x1",thang.ID()));
 			genLevel(mob,thang,++showNumber,showFlag);
 			genAbility(mob,thang,++showNumber,showFlag);
 			genRejuv(mob,thang,++showNumber,showFlag);
@@ -8731,6 +8757,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while(!ok)
 		{
 			int showNumber=0;
+			if(showFlag<0)
+				mob.tell(_("*. Class: @x1",thang.ID()));
 			genLevel(mob,thang,++showNumber,showFlag);
 			genAbility(mob,thang,++showNumber,showFlag);
 			genRejuv(mob,thang,++showNumber,showFlag);
@@ -8757,7 +8785,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while(!ok)
 		{
 			int showNumber=0;
-			mob.tell(_("*. Class: @x1",myArea.ID()));
+			if(showFlag<0)
+				mob.tell(_("*. Class: @x1",myArea.ID()));
 			genName(mob,myArea,++showNumber,showFlag);
 			if(myArea instanceof SpaceShip)
 				genDisplayText(mob,myArea,++showNumber,showFlag);
