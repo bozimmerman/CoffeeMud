@@ -331,11 +331,9 @@ public class GroundWired extends StdLibrary implements TechLibrary
 						if(((cO instanceof Area)||(cO.getMass() > (SpaceObject.MULTIPLIER_PLANET_MASS/4)))
 						&&((CMLib.map().getDistanceFrom(O, cO)-cO.radius())<=(cO.radius()*SpaceObject.MULTIPLIER_GRAVITY_RADIUS)))
 						{
-							final double[] oldDirection=O.direction(); // gravity is not thrust, so no direction change
 							final double[] directionTo=CMLib.map().getDirection(O, cO);
 							CMLib.map().moveSpaceObject(O, directionTo, SpaceObject.ACCELLERATION_G);
 							//TODO: if direction is now mostly in the direction of gravity, consider landing.
-							O.setDirection(oldDirection);
 							//TODO: gravity
 						}
 						//TODO: we might also have a landing, or something near one...
