@@ -38,7 +38,7 @@ import java.util.logging.Logger;
 public class Log extends java.util.logging.Logger
 {
 	/** final date format for headers */
-	public static final SimpleDateFormat dateFormat=new SimpleDateFormat("yyyyMMdd.HHmm.ss");
+	private static final SimpleDateFormat dateFormat=new SimpleDateFormat("yyyyMMdd.HHmm.ss");
 
 	/** SPACES for headers */
 	private static final String SPACES="                                                                                                ";
@@ -55,7 +55,11 @@ public class Log extends java.util.logging.Logger
 	private final Map<PrintWriter,long[]> WRITTEN	= new Hashtable<PrintWriter,long[]>();
 	private static final Type[] TYPE_LEVEL_MAP  = new Type[1001];
 
-	public static enum Target { ON, OFF, BOTH, FILE, OWNFILE }
+	/**
+	 * The internally used targets for a log
+	 * @author BZ
+	 */
+	private static enum Target { ON, OFF, BOTH, FILE, OWNFILE }
 
 	private static class Conf
 	{
@@ -66,7 +70,24 @@ public class Log extends java.util.logging.Logger
 		{ this.target=target; this.maxLevel=maxLevel; this.maxLogs=maxLogs; this.maxLines=maxLines; this.maxBytes=maxBytes;}
 	}
 
-	public static enum Type { error, help, debug, info, warning, kills, combat, access;
+	/**
+	 * The various log types supported by this logger.  When using the native interface, think of them
+	 * as separate channels that can be independenly directed.  When using the java Logger, they are
+	 * arbitrarily assigned.  Typically info, warning, debug, and error are most used, with the others
+	 * being for special cases.
+	 * @author BZ
+	 *
+	 */
+	public static enum Type 
+	{ 
+		error, 
+		help, 
+		debug, 
+		info, 
+		warning, 
+		kills, 
+		combat, 
+		access;
 		final String sixChars;
 		private Type() { sixChars=(this.toString()+SPACES).substring(0,5)+" "; }
 		public final String getSixChars() { return sixChars; }
@@ -84,6 +105,13 @@ public class Log extends java.util.logging.Logger
 			else if(i<=Level.SEVERE.intValue()) TYPE_LEVEL_MAP[i]=Type.error;
 	}
 
+	/**
+	 * Constructor for a log object.  Will assign the constructed logger to the 
+	 * current thread group by taking the first character of the thread group
+	 * name as its code.  If all threadgroups have same first character, they will
+	 * all share a log object.  Either way, this needs to be called to construct
+	 * the first logger.
+	 */
 	public Log()
 	{
 		super("log",null);
@@ -91,8 +119,28 @@ public class Log extends java.util.logging.Logger
 		if(logs[threadCode]==null)
 			logs[threadCode]=this;
 	}
-	private static final Log l(){ return logs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
-	public static final Log l(char threadCode){return logs[threadCode];}
+	
+	private static final Log l()
+	{ 
+		return logs[Thread.currentThread().getThreadGroup().getName().charAt(0)];
+	}
+	
+	/**
+	 * Returns the log object for the given threadgroup code, or null if unassigned.
+	 * @param threadCode the threadgroup code to check
+	 * @return the Log object, or null
+	 */
+	public static final Log l(char threadCode)
+	{
+		return logs[threadCode];
+	}
+
+	/**
+	 * Returns a Log object for the current thread group.  If one is not assigned,
+	 * it will be instantiated, thus guarenteeing that a Log object always returns
+	 * from this method.
+	 * @return a Log object
+	 */
 	public static final Log instance()
 	{
 		Log log=l();
@@ -100,12 +148,24 @@ public class Log extends java.util.logging.Logger
 			log=new Log();
 		return log;
 	}
+	
+	/**
+	 * Forces the creation of a new, unconfigured Log object for the current thread group.
+	 * @return the new Log object
+	 */
 	public static final Log newInstance()
 	{
 		final char threadCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		logs[threadCode]=new Log();
 		return l();
 	}
+	
+	/**
+	 * Forces the current thread group to share a Log object with the one at the given
+	 * threadcode.  The one at the threadcode should already have been created before
+	 * calling.
+	 * @param threadCode the threadcode with an existing log
+	 */
 	public static final void shareWith(final char threadCode)
 	{
 		final char tc=Thread.currentThread().getThreadGroup().getName().charAt(0);
@@ -149,12 +209,22 @@ public class Log extends java.util.logging.Logger
 		catch(final java.lang.NumberFormatException e){ return 0;}
 	}
 
-
+	/**
+	 * Given a local logging type, returns true if the writer for that
+	 * type is on.
+	 * @param type the local logging type
+	 * @return true if on, false otherwise
+	 */
 	private final boolean isWriterOn(final Type type)
 	{
 		return getTarget(type) != Target.OFF;
 	}
 
+	/**
+	 * Given a log type, return the default log file name or null.
+	 * @param type the local log type
+	 * @return the name of the default filename, or null is NA
+	 */
 	public final String getLogFilename(final Type type)
 	{
 		switch(getTarget(type))
@@ -475,9 +545,21 @@ public class Log extends java.util.logging.Logger
 		}
 	}
 
+	/**
+	 * A rolling log reader interface for streaming in a log a line at a time.
+	 * @author BZ
+	 *
+	 */
 	public static interface LogReader
 	{
+		/**
+		 * Returns the next full line of the log
+		 * @return the next full line of the log
+		 */
 		public String nextLine();
+		/**
+		 * Tells the reader you are done.
+		 */
 		public void close();
 	}
 
@@ -607,52 +689,557 @@ public class Log extends java.util.logging.Logger
 		return header.toString();
 	}
 
-	public static final void infoOut(final String Out) { infoOut(Thread.currentThread().getName(),Out); }
-	public static final void sysOut(final String Out){ infoOut(Out); }
-	public static final void debugOut(final String Out){ debugOut(Thread.currentThread().getName(),Out); }
-	public static final void errOut(final String Out){ errOut(Thread.currentThread().getName(),Out); }
-	public static final void warnOut(final String Out){ warnOut(Thread.currentThread().getName(),Out); }
-	public static final void helpOut(final String Out) { helpOut(Thread.currentThread().getName(),Out); }
-	public static final void killsOut(final String Out) { killsOut(Thread.currentThread().getName(),Out); }
-	public static final void combatOut(final String Out) { combatOut(Thread.currentThread().getName(),Out); }
-	public static final void accessOut(final String Out) { accessOut(Thread.currentThread().getName(),Out); }
-	public static final void sysOut(final String Module, final String Message){ infoOut(Module,Message);}
-	public static final void infoOut(final String Module, final String Message){ l().standardOut(Type.info,Module,Message,Integer.MIN_VALUE);}
-	public static final void errOut(final String Module, final String Message){ l().standardOut(Type.error,Module,Message,Integer.MIN_VALUE);}
-	public static final void warnOut(final String Module, final String Message){ l().standardOut(Type.warning,Module,Message,Integer.MIN_VALUE);}
-	public static final void debugOut(final String Module, final String Message){ l().standardOut(Type.debug,Module,Message,Integer.MIN_VALUE);}
-	public static final void helpOut(final String Module, final String Message){ l().standardOut(Type.help,Module,Message,Integer.MIN_VALUE);}
-	public static final void killsOut(final String Module, final String Message){ l().standardOut(Type.kills,Module,Message,Integer.MIN_VALUE);}
-	public static final void combatOut(final String Module, final String Message){ l().standardOut(Type.combat,Module,Message,Integer.MIN_VALUE);}
-	public static final void accessOut(final String Module, final String Message){ l().standardOut(Type.access,Module,Message,Integer.MIN_VALUE);}
-	public static final void debugOut(final String Module, final Throwable e){ l().shortExOut(Type.debug,Module,Integer.MIN_VALUE,e);}
-	public static final void errOut(final String Module, final Throwable e){ l().standardExOut(Type.error,Module,Integer.MIN_VALUE,e);}
-	public static final void warnOut(final String Module, final Throwable e){ l().standardExOut(Type.error,Module,Integer.MIN_VALUE,e);}
-	public static final void debugOut(final Throwable e){ l().shortExOut(Type.debug,Thread.currentThread().getName(),Integer.MIN_VALUE,e);}
-	public static final void errOut(final Throwable e){ l().standardExOut(Type.error,Thread.currentThread().getName(),Integer.MIN_VALUE,e);}
-	public static final void warnOut(final Throwable e){ l().standardExOut(Type.error,Thread.currentThread().getName(),Integer.MIN_VALUE,e);}
-	public static final void rawSysOut(final String Message){l().rawStandardOut(Type.info,Message,Integer.MIN_VALUE);}
-	public static final void infoOut(final String Out, final int priority) { infoOut(Thread.currentThread().getName(),Out,priority); }
-	public static final void sysOut(final String Out, final int priority){ infoOut(Out,priority); }
-	public static final void debugOut(final String Out, final int priority){ debugOut(Thread.currentThread().getName(),Out,priority); }
-	public static final void errOut(final String Out, final int priority){ errOut(Thread.currentThread().getName(),Out,priority); }
-	public static final void warnOut(final String Out, final int priority){ warnOut(Thread.currentThread().getName(),Out,priority); }
-	public static final void helpOut(final String Out, final int priority) { helpOut(Thread.currentThread().getName(),Out,priority); }
-	public static final void killsOut(final String Out, final int priority) { killsOut(Thread.currentThread().getName(),Out,priority); }
-	public static final void combatOut(final String Out, final int priority) { combatOut(Thread.currentThread().getName(),Out,priority); }
-	public static final void infoOut(final String Module, final String Message, final int priority){ l().standardOut(Type.info,Module,Message,priority);}
-	public static final void sysOut(final String Out, final String Message, final int priority){ infoOut(Out,Message);}
-	public static final void errOut(final String Module, final String Message, final int priority){ l().standardOut(Type.error,Module,Message,priority);}
-	public static final void warnOut(final String Module, final String Message, final int priority){ l().standardOut(Type.warning,Module,Message,priority);}
-	public static final void debugOut(final String Module, final String Message, final int priority){ l().standardOut(Type.debug,Module,Message,priority);}
-	public static final void helpOut(final String Module, final String Message, final int priority){ l().standardOut(Type.help,Module,Message,priority);}
-	public static final void killsOut(final String Module, final String Message, final int priority){ l().standardOut(Type.kills,Module,Message,priority);}
-	public static final void combatOut(final String Module, final String Message, final int priority){ l().standardOut(Type.combat,Module,Message,priority);}
-	public static final void accessOut(final String Module, final String Message, final int priority){ l().standardOut(Type.access,Module,Message,priority);}
-	public static final void debugOut(final String Module, final int priority, final Exception e){ l().shortExOut(Type.debug,Module,priority,e);}
-	public static final void errOut(final String Module, final int priority, final Throwable e){ l().standardExOut(Type.error,Module,priority,e);}
-	public static final void warnOut(final String Module, final int priority, final Throwable e){ l().standardExOut(Type.error,Module,priority,e);}
-	public static final void rawSysOut(final String Message, final int priority){l().rawStandardOut(Type.info,Message,priority);}
+	/**
+	* Sends the given message to the info channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no module name is given, the module name is set to the current thread name.
+ 	* Since no priority is given, priority is set to lowest possible.
+	* @param Out The message to print
+	*/
+	public static final void infoOut(final String Out) 
+	{ 
+		infoOut(Thread.currentThread().getName(),Out); 
+	}
+
+	/**
+	* Sends the given message to the info channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no module name is given, the module name is set to the current thread name.
+ 	* Since no priority is given, priority is set to lowest possible.
+	* @param Out The message to print
+	*/
+	public static final void sysOut(final String Out)
+	{ 
+		infoOut(Out); 
+	}
+
+	/**
+	* Sends the given message to the debug channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no module name is given, the module name is set to the current thread name.
+ 	* Since no priority is given, priority is set to lowest possible.
+	* @param Out The message to print
+	*/
+	public static final void debugOut(final String Out)
+	{ 
+		debugOut(Thread.currentThread().getName(),Out); 
+	}
+
+	/**
+	* Sends the given message to the error channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no module name is given, the module name is set to the current thread name.
+ 	* Since no priority is given, priority is set to lowest possible.
+	* @param Out The message to print
+	*/
+	public static final void errOut(final String Out)
+	{ 
+		errOut(Thread.currentThread().getName(),Out); 
+	}
+
+	/**
+	* Sends the given message to the warning channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no module name is given, the module name is set to the current thread name.
+ 	* Since no priority is given, priority is set to lowest possible.
+	* @param Out The message to print
+	*/
+	public static final void warnOut(final String Out)
+	{ 
+		warnOut(Thread.currentThread().getName(),Out); 
+	}
+
+	/**
+	* Sends the given message to the help channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no module name is given, the module name is set to the current thread name.
+ 	* Since no priority is given, priority is set to lowest possible.
+	* @param Out The message to print
+	*/
+	public static final void helpOut(final String Out) 
+	{ 
+		helpOut(Thread.currentThread().getName(),Out); 
+	}
+
+	/**
+	* Sends the given message to the killlog channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no module name is given, the module name is set to the current thread name.
+ 	* Since no priority is given, priority is set to lowest possible.
+	* @param Out The message to print
+	*/
+	public static final void killsOut(final String Out) 
+	{ 
+		killsOut(Thread.currentThread().getName(),Out); 
+	}
+
+	/**
+	* Sends the given message to the combatlog channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no module name is given, the module name is set to the current thread name.
+ 	* Since no priority is given, priority is set to lowest possible.
+	* @param Out The message to print
+	*/
+	public static final void combatOut(final String Out) 
+	{ 
+		combatOut(Thread.currentThread().getName(),Out); 
+	}
+
+	/**
+	* Sends the given message to the access channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no module name is given, the module name is set to the current thread name.
+ 	* Since no priority is given, priority is set to lowest possible.
+	* @param Out The message to print
+	*/
+	public static final void accessOut(final String Out) 
+	{ 
+		accessOut(Thread.currentThread().getName(),Out); 
+	}
+
+	/**
+	* Sends the given message to the info channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no priority is given, priority is set to lowest possible.
+	* @param Module The module name to prefix the message with
+	* @param Out The message to print
+	*/
+	public static final void sysOut(final String Module, final String Message)
+	{ 
+		infoOut(Module,Message);
+	}
+
+	/**
+	* Sends the given message to the info channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no priority is given, priority is set to lowest possible.
+	* @param Module The module name to prefix the message with
+	* @param Out The message to print
+	*/
+	public static final void infoOut(final String Module, final String Message)
+	{ 
+		l().standardOut(Type.info,Module,Message,Integer.MIN_VALUE);
+	}
+
+	/**
+	* Sends the given message to the error channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no priority is given, priority is set to lowest possible.
+	* @param Module The module name to prefix the message with
+	* @param Out The message to print
+	*/
+	public static final void errOut(final String Module, final String Message)
+	{ 
+		l().standardOut(Type.error,Module,Message,Integer.MIN_VALUE);
+	}
+
+	/**
+	* Sends the given message to the warning channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no priority is given, priority is set to lowest possible.
+	* @param Module The module name to prefix the message with
+	* @param Out The message to print
+	*/
+	public static final void warnOut(final String Module, final String Message)
+	{ 
+		l().standardOut(Type.warning,Module,Message,Integer.MIN_VALUE);
+	}
+
+	/**
+	* Sends the given message to the debug channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no priority is given, priority is set to lowest possible.
+	* @param Module The module name to prefix the message with
+	* @param Out The message to print
+	*/
+	public static final void debugOut(final String Module, final String Message)
+	{ 
+		l().standardOut(Type.debug,Module,Message,Integer.MIN_VALUE);
+	}
+
+	/**
+	* Sends the given message to the help channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no priority is given, priority is set to lowest possible.
+	* @param Module The module name to prefix the message with
+	* @param Out The message to print
+	*/
+	public static final void helpOut(final String Module, final String Message)
+	{ 
+		l().standardOut(Type.help,Module,Message,Integer.MIN_VALUE);
+	}
+
+	/**
+	* Sends the given message to the killlog channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no priority is given, priority is set to lowest possible.
+	* @param Module The module name to prefix the message with
+	* @param Out The message to print
+	*/
+	public static final void killsOut(final String Module, final String Message)
+	{ 
+		l().standardOut(Type.kills,Module,Message,Integer.MIN_VALUE);
+	}
+
+	/**
+	* Sends the given message to the combat channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no priority is given, priority is set to lowest possible.
+	* @param Module The module name to prefix the message with
+	* @param Out The message to print
+	*/
+	public static final void combatOut(final String Module, final String Message)
+	{ 
+		l().standardOut(Type.combat,Module,Message,Integer.MIN_VALUE);
+	}
+
+	/**
+	* Sends the given message to the access channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no priority is given, priority is set to lowest possible.
+	* @param Module The module name to prefix the message with
+	* @param Out The message to print
+	*/
+	public static final void accessOut(final String Module, final String Message)
+	{ 
+		l().standardOut(Type.access,Module,Message,Integer.MIN_VALUE);
+	}
+
+	/**
+	* Sends the given exception to the debug channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no priority is given, priority is set to lowest possible.
+	* @param Module The module name to prefix the message with
+	* @param e The exception to send out the stack and message of
+	*/
+	public static final void debugOut(final String Module, final Throwable e)
+	{ 
+		l().shortExOut(Type.debug,Module,Integer.MIN_VALUE,e);
+	}
+
+	/**
+	* Sends the given exception to the error channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no priority is given, priority is set to lowest possible.
+	* @param Module The module name to prefix the message with
+	* @param e The exception to send out the stack and message of
+	*/
+	public static final void errOut(final String Module, final Throwable e)
+	{ 
+		l().standardExOut(Type.error,Module,Integer.MIN_VALUE,e);
+	}
+
+	/**
+	* Sends the given exception to the warning channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no priority is given, priority is set to lowest possible.
+	* @param Module The module name to prefix the message with
+	* @param e The exception to send out the stack and message of
+	*/
+	public static final void warnOut(final String Module, final Throwable e)
+	{ 
+		l().standardExOut(Type.error,Module,Integer.MIN_VALUE,e);
+	}
+
+	/**
+	* Sends the given exception to the debug channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no module name is given, the module name is set to the current thread name.
+ 	* Since no priority is given, priority is set to lowest possible.
+	* @param e The exception to send out the stack and message of
+	*/
+	public static final void debugOut(final Throwable e)
+	{ 
+		l().shortExOut(Type.debug,Thread.currentThread().getName(),Integer.MIN_VALUE,e);
+	}
+
+	/**
+	* Sends the given exception to the error channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no module name is given, the module name is set to the current thread name.
+ 	* Since no priority is given, priority is set to lowest possible.
+	* @param e The exception to send out the stack and message of
+	*/
+	public static final void errOut(final Throwable e)
+	{ 
+		l().standardExOut(Type.error,Thread.currentThread().getName(),Integer.MIN_VALUE,e);
+	}
+	
+	/**
+	* Sends the given exception to the warning channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no module name is given, the module name is set to the current thread name.
+ 	* Since no priority is given, priority is set to lowest possible.
+	* @param e The exception to send out the stack and message of
+	*/
+	public static final void warnOut(final Throwable e)
+	{ 
+		l().standardExOut(Type.error,Thread.currentThread().getName(),Integer.MIN_VALUE,e);
+	}
+	
+	/**
+	 * Sends the given line to the info channel, if appropriate to do so,
+	 * whether its to System.out, a file, both, or neither.
+	 * No module, timestamp, nothing .. just raw OUT.
+	 * Since no priority is given, the lowest possible is assigned.
+	 * @param Message the message to send exactly as-is.
+	 */
+	public static final void rawSysOut(final String Message)
+	{
+		l().rawStandardOut(Type.info,Message,Integer.MIN_VALUE);
+	}
+	
+	/**
+	* Sends the given message to the info channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no module name is given, the module name is set to the current thread name.
+	* @param Out the base message to send to the log
+	* @param priority the priority level to give to this message
+	*/
+	public static final void infoOut(final String Out, final int priority) 
+	{ 
+		infoOut(Thread.currentThread().getName(),Out,priority); 
+	}
+	
+	/**
+	* Sends the given message to the info channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no module name is given, the module name is set to the current thread name.
+	* @param Out the base message to send to the log
+	* @param priority the priority level to give to this message
+	*/
+	public static final void sysOut(final String Out, final int priority)
+	{ 
+		infoOut(Out,priority); 
+	}
+	
+	/**
+	* Sends the given message to the debug channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no module name is given, the module name is set to the current thread name.
+	* @param Out the base message to send to the log
+	* @param priority the priority level to give to this message
+	*/
+	public static final void debugOut(final String Out, final int priority)
+	{ 
+		debugOut(Thread.currentThread().getName(),Out,priority); 
+	}
+	
+	/**
+	* Sends the given message to the error channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no module name is given, the module name is set to the current thread name.
+	* @param Out the base message to send to the log
+	* @param priority the priority level to give to this message
+	*/
+	public static final void errOut(final String Out, final int priority)
+	{ 
+		errOut(Thread.currentThread().getName(),Out,priority); 
+	}
+	
+	/**
+	* Sends the given message to the warning channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no module name is given, the module name is set to the current thread name.
+	* @param Out the base message to send to the log
+	* @param priority the priority level to give to this message
+	*/
+	public static final void warnOut(final String Out, final int priority)
+	{ 
+		warnOut(Thread.currentThread().getName(),Out,priority); 
+	}
+	
+	/**
+	* Sends the given message to the help channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no module name is given, the module name is set to the current thread name.
+	* @param Out the base message to send to the log
+	* @param priority the priority level to give to this message
+	*/
+	public static final void helpOut(final String Out, final int priority) 
+	{ 
+		helpOut(Thread.currentThread().getName(),Out,priority); 
+	}
+	
+	/**
+	* Sends the given message to the killlog channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no module name is given, the module name is set to the current thread name.
+	* @param Out the base message to send to the log
+	* @param priority the priority level to give to this message
+	*/
+	public static final void killsOut(final String Out, final int priority) 
+	{ 
+		killsOut(Thread.currentThread().getName(),Out,priority); 
+	}
+	
+	/**
+	* Sends the given message to the combatlog channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+ 	* Since no module name is given, the module name is set to the current thread name.
+	* @param Out the base message to send to the log
+	* @param priority the priority level to give to this message
+	*/
+	public static final void combatOut(final String Out, final int priority) 
+	{ 
+		combatOut(Thread.currentThread().getName(),Out,priority); 
+	}
+	
+	/**
+	* Sends the given message to the info channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+	* @param Module the module name to prefix the main message with
+	* @param Out the base message to send to the log
+	* @param priority the priority level to give to this message
+	*/
+	public static final void infoOut(final String Module, final String Message, final int priority)
+	{ 
+		l().standardOut(Type.info,Module,Message,priority);
+	}
+	
+	/**
+	* Sends the given message to the info channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+	* @param Module the module name to prefix the main message with
+	* @param Out the base message to send to the log
+	* @param priority the priority level to give to this message
+	*/
+	public static final void sysOut(final String Out, final String Message, final int priority)
+	{ 
+		infoOut(Out,Message);
+	}
+	
+	/**
+	* Sends the given message to the error channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+	* @param Module the module name to prefix the main message with
+	* @param Out the base message to send to the log
+	* @param priority the priority level to give to this message
+	*/
+	public static final void errOut(final String Module, final String Message, final int priority)
+	{ 
+		l().standardOut(Type.error,Module,Message,priority);
+	}
+	
+	/**
+	* Sends the given message to the warning channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+	* @param Module the module name to prefix the main message with
+	* @param Out the base message to send to the log
+	* @param priority the priority level to give to this message
+	*/
+	public static final void warnOut(final String Module, final String Message, final int priority)
+	{ 
+		l().standardOut(Type.warning,Module,Message,priority);
+	}
+	
+	/**
+	* Sends the given message to the debug channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+	* @param Module the module name to prefix the main message with
+	* @param Out the base message to send to the log
+	* @param priority the priority level to give to this message
+	*/
+	public static final void debugOut(final String Module, final String Message, final int priority)
+	{ 
+		l().standardOut(Type.debug,Module,Message,priority);
+	}
+	
+	/**
+	* Sends the given message to the help channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+	* @param Module the module name to prefix the main message with
+	* @param Out the base message to send to the log
+	* @param priority the priority level to give to this message
+	*/
+	public static final void helpOut(final String Module, final String Message, final int priority)
+	{ 
+		l().standardOut(Type.help,Module,Message,priority);
+	}
+	
+	/**
+	* Sends the given message to the killlog channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+	* @param Module the module name to prefix the main message with
+	* @param Out the base message to send to the log
+	* @param priority the priority level to give to this message
+	*/
+	public static final void killsOut(final String Module, final String Message, final int priority)
+	{ 
+		l().standardOut(Type.kills,Module,Message,priority);
+	}
+	
+	/**
+	* Sends the given message to the combatlog channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+	* @param Module the module name to prefix the main message with
+	* @param Out the base message to send to the log
+	* @param priority the priority level to give to this message
+	*/
+	public static final void combatOut(final String Module, final String Message, final int priority)
+	{ 
+		l().standardOut(Type.combat,Module,Message,priority);
+	}
+	
+	/**
+	* Sends the given message to the access channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+	* @param Module the module name to prefix the main message with
+	* @param Out the base message to send to the log
+	* @param priority the priority level to give to this message
+	*/
+	public static final void accessOut(final String Module, final String Message, final int priority)
+	{ 
+		l().standardOut(Type.access,Module,Message,priority);
+	}
+	
+	/**
+	* Sends the given exception to the debug channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+	* @param Module the module name to prefix the main message with
+	* @param e the exception to send the stack trace and message of
+	* @param priority the priority level to give to this message
+	*/
+	public static final void debugOut(final String Module, final int priority, final Exception e)
+	{ 
+		l().shortExOut(Type.debug,Module,priority,e);
+	}
+	
+	/**
+	* Sends the given exception to the error channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+	* @param Module the module name to prefix the main message with
+	* @param e the exception to send the stack trace and message of
+	* @param priority the priority level to give to this message
+	*/
+	public static final void errOut(final String Module, final int priority, final Throwable e)
+	{ 
+		l().standardExOut(Type.error,Module,priority,e);
+	}
+	
+	/**
+	* Sends the given exception to the warning channel log, if appropriate to do so,
+	* whether its to System.out, a file, both, or neither.
+	* @param Module the module name to prefix the main message with
+	* @param e the exception to send the stack trace and message of
+	* @param priority the priority level to give to this message
+	*/
+	public static final void warnOut(final String Module, final int priority, final Throwable e)
+	{ 
+		l().standardExOut(Type.error,Module,priority,e);
+	}
+	
+	/**
+	 * Sends the given line to the info channel, if appropriate to do so,
+	 * whether its to System.out, a file, both, or neither.
+	 * No module, timestamp, nothing .. just raw OUT.
+	 * @param Message the message to send exactly as-is.
+	 * @param priority the priority to assign to this line of text
+	 */
+	public static final void rawSysOut(final String Message, final int priority)
+	{
+		l().rawStandardOut(Type.info,Message,priority);
+	}
 
 	/**
 	* Handles long exception logging entries.  Sends them to System.out,
@@ -802,22 +1389,172 @@ public class Log extends java.util.logging.Logger
 		fileOutWriter=null;
 	}
 
-	public static final boolean errorChannelOn() { return l().isWriterOn(Type.error);}
-	public static final boolean helpChannelOn() { return l().isWriterOn(Type.help);}
-	public static final boolean debugChannelOn() { return l().isWriterOn(Type.debug);}
-	public static final boolean infoChannelOn() { return l().isWriterOn(Type.info);}
-	public static final boolean warnChannelOn() { return l().isWriterOn(Type.warning);}
-	public static final boolean killsChannelOn() { return l().isWriterOn(Type.kills);}
-	public static final boolean combatChannelOn() { return l().isWriterOn(Type.combat);}
-	public static final boolean accessChannelOn() { return l().isWriterOn(Type.access);}
-	public static final boolean errorChannelAt(int priority) { final Log l=l(); return l.getWriter(Type.error,l.getConfig(Type.error),priority)!=null;}
-	public static final boolean helpChannelAt(int priority) { final Log l=l(); return l.getWriter(Type.help,l.getConfig(Type.help),priority)!=null;}
-	public static final boolean debugChannelAt(int priority) { final Log l=l(); return l.getWriter(Type.debug,l.getConfig(Type.debug),priority)!=null;}
-	public static final boolean infoChannelAt(int priority) { final Log l=l(); return l.getWriter(Type.info,l.getConfig(Type.info),priority)!=null;}
-	public static final boolean warnChannelAt(int priority) { final Log l=l(); return l.getWriter(Type.warning,l.getConfig(Type.warning),priority)!=null;}
-	public static final boolean killsChannelAt(int priority) { final Log l=l(); return l.getWriter(Type.kills,l.getConfig(Type.kills),priority)!=null;}
-	public static final boolean combatChannelAt(int priority) { final Log l=l(); return l.getWriter(Type.combat,l.getConfig(Type.combat),priority)!=null;}
-	public static final boolean accessChannelAt(int priority) { final Log l=l(); return l.getWriter(Type.access,l.getConfig(Type.access),priority)!=null;}
+	/**
+	 * Returns whether error channel writer is allocated for current thread.
+	 * @return whether error channel writer is allocated for current thread.
+	 */
+	public static final boolean errorChannelOn() 
+	{ 
+		return l().isWriterOn(Type.error);
+	}
+	
+	/**
+	 * Returns whether help channel writer is allocated for current thread.
+	 * @return whether help channel writer is allocated for current thread.
+	 */
+	public static final boolean helpChannelOn() 
+	{ 
+		return l().isWriterOn(Type.help);
+	}
+	
+	/**
+	 * Returns whether debug channel writer is allocated for current thread.
+	 * @return whether debug channel writer is allocated for current thread.
+	 */
+	public static final boolean debugChannelOn() 
+	{ 
+		return l().isWriterOn(Type.debug);
+	}
+	
+	/**
+	 * Returns whether info channel writer is allocated for current thread.
+	 * @return whether info channel writer is allocated for current thread.
+	 */
+	public static final boolean infoChannelOn() 
+	{ 
+		return l().isWriterOn(Type.info);
+	}
+	
+	/**
+	 * Returns whether warning channel writer is allocated for current thread.
+	 * @return whether warning channel writer is allocated for current thread.
+	 */
+	public static final boolean warnChannelOn() 
+	{ 
+		return l().isWriterOn(Type.warning);
+	}
+	
+	/**
+	 * Returns whether kill-log channel writer is allocated for current thread.
+	 * @return whether kill-log channel writer is allocated for current thread.
+	 */
+	public static final boolean killsChannelOn() 
+	{ 
+		return l().isWriterOn(Type.kills);
+	}
+	
+	/**
+	 * Returns whether combat-log channel writer is allocated for current thread.
+	 * @return whether combat-log channel writer is allocated for current thread.
+	 */
+	public static final boolean combatChannelOn() 
+	{ 
+		return l().isWriterOn(Type.combat);
+	}
+	
+	/**
+	 * Returns whether access-log channel writer is allocated for current thread.
+	 * @return whether access-log channel writer is allocated for current thread.
+	 */
+	public static final boolean accessChannelOn() 
+	{ 
+		return l().isWriterOn(Type.access);
+	}
+	
+	/**
+	 * Returns whether error channel writer is allocated for current thread for given priority.
+	 * @param priority priority level to check for writer at
+	 * @return whether error channel writer is allocated for current thread for given priority.
+	 */
+	public static final boolean errorChannelAt(int priority) 
+	{ 
+		final Log l=l(); 
+		return l.getWriter(Type.error,l.getConfig(Type.error),priority)!=null;
+	}
+	
+	
+	/**
+	 * Returns whether help channel writer is allocated for current thread for given priority.
+	 * @param priority priority level to check for writer at
+	 * @return whether help channel writer is allocated for current thread for given priority.
+	 */
+	public static final boolean helpChannelAt(int priority) 
+	{ 
+		final Log l=l(); 
+		return l.getWriter(Type.help,l.getConfig(Type.help),priority)!=null;
+	}
+	
+	
+	/**
+	 * Returns whether debug channel writer is allocated for current thread for given priority.
+	 * @param priority priority level to check for writer at
+	 * @return whether debug channel writer is allocated for current thread for given priority.
+	 */
+	public static final boolean debugChannelAt(int priority) 
+	{ 
+		final Log l=l(); 
+		return l.getWriter(Type.debug,l.getConfig(Type.debug),priority)!=null;
+	}
+	
+	
+	/**
+	 * Returns whether info channel writer is allocated for current thread for given priority.
+	 * @param priority priority level to check for writer at
+	 * @return whether info channel writer is allocated for current thread for given priority.
+	 */
+	public static final boolean infoChannelAt(int priority) 
+	{
+		final Log l=l();
+		return l.getWriter(Type.info,l.getConfig(Type.info),priority)!=null;
+	}
+	
+	
+	/**
+	 * Returns whether warning channel writer is allocated for current thread for given priority.
+	 * @param priority priority level to check for writer at
+	 * @return whether warning channel writer is allocated for current thread for given priority.
+	 */
+	public static final boolean warnChannelAt(int priority) 
+	{ 
+		final Log l=l(); 
+		return l.getWriter(Type.warning,l.getConfig(Type.warning),priority)!=null;
+	}
+	
+	
+	/**
+	 * Returns whether kill-log channel writer is allocated for current thread for given priority.
+	 * @param priority priority level to check for writer at
+	 * @return whether kill-log channel writer is allocated for current thread for given priority.
+	 */
+	public static final boolean killsChannelAt(int priority) 
+	{
+		final Log l=l(); 
+		return l.getWriter(Type.kills,l.getConfig(Type.kills),priority)!=null;
+	}
+	
+	
+	/**
+	 * Returns whether combat-log channel writer is allocated for current thread for given priority.
+	 * @param priority priority level to check for writer at
+	 * @return whether combat-log channel writer is allocated for current thread for given priority.
+	 */
+	public static final boolean combatChannelAt(int priority) 
+	{
+		final Log l=l();
+		return l.getWriter(Type.combat,l.getConfig(Type.combat),priority)!=null;
+	}
+	
+	
+	/**
+	 * Returns whether access-log channel writer is allocated for current thread for given priority.
+	 * @param priority priority level to check for writer at
+	 * @return whether access-log channel writer is allocated for current thread for given priority.
+	 */
+	public static final boolean accessChannelAt(int priority) 
+	{
+		final Log l=l();
+		return l.getWriter(Type.access,l.getConfig(Type.access),priority)!=null;
+	}
 
 	/** totally optional, this is the list of maskable error message types.  Useful for internet apps */
 	private final static String[] maskErrMsgs={
@@ -834,6 +1571,11 @@ public class Log extends java.util.logging.Logger
 		"protocol not available"
 	};
 
+	/**
+	 * Combine an array of arbitrary objects to a comma-delimited list of strings
+	 * @param os the objects
+	 * @return the string
+	 */
 	private String toStringList(Object[] os)
 	{
 		if(os==null) return "";
@@ -845,6 +1587,12 @@ public class Log extends java.util.logging.Logger
 		return str.toString();
 	}
 
+	/**
+	 * Returns either the part of the given string after a final '.', or the current thread name
+	 * if no . available.
+	 * @param sourceClass the string to look for a . in
+	 * @return the module name
+	 */
 	private String toModuleName(String sourceClass)
 	{
 		if((sourceClass!=null)&&(sourceClass.length()>0)&&(sourceClass.indexOf('.')>=0))
@@ -853,6 +1601,12 @@ public class Log extends java.util.logging.Logger
 			return Thread.currentThread().getName();
 	}
 
+	/**
+	 * Given the log level from the java Log interface, return
+	 * the local cmlog type.
+	 * @param level the java Log level to translate
+	 * @return the local log type
+	 */
 	private static final Type getTypeFromLevel(final Level level)
 	{
 		try
