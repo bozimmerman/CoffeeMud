@@ -322,19 +322,19 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				for(final SpaceObject cO : cOs)
 					if(cO != O)
 					{
-						if(cO.getBounds().intersects(cube))
-						{
-							//TODO: we have a collision! or landing
-							// if destroyed, break
-						}
-						else
 						if(((cO instanceof Area)||(cO.getMass() > (SpaceObject.MULTIPLIER_PLANET_MASS/4)))
-						&&((CMLib.map().getDistanceFrom(O, cO)-cO.radius())<=(cO.radius()*SpaceObject.MULTIPLIER_GRAVITY_RADIUS)))
+						&&((CMLib.map().getDistanceFrom(O, cO)-cO.radius())<=(cO.radius()*SpaceObject.MULTIPLIER_GRAVITY_RADIUS))
+						&&(!cO.getBounds().intersects(cube)))
 						{
 							final double[] directionTo=CMLib.map().getDirection(O, cO);
 							CMLib.map().moveSpaceObject(O, directionTo, SpaceObject.ACCELLERATION_G);
 							//TODO: if direction is now mostly in the direction of gravity, consider landing.
 							//TODO: gravity
+						}
+						if(cO.getBounds().intersects(cube))
+						{
+							//TODO: we have a collision! or landing
+							// if destroyed, break
 						}
 						//TODO: we might also have a landing, or something near one...
 						// maybe good to use the entryset<o,list> so you always have
