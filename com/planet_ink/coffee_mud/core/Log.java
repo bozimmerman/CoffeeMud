@@ -120,6 +120,10 @@ public class Log extends java.util.logging.Logger
 			logs[threadCode]=this;
 	}
 	
+	/**
+	 * Returns the log object for the current threadgroup, or null if unassigned.
+	 * @return the Log object, or null
+	 */
 	private static final Log l()
 	{ 
 		return logs[Thread.currentThread().getThreadGroup().getName().charAt(0)];
