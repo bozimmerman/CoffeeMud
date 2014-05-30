@@ -135,6 +135,20 @@ public class Disease_Obesity extends Disease
 						setFatAmountChange(-change);
 				}
 			}
+			if((mob.curState().adjTicksHungry(false) >= CMProps.getTicksPerMudHour())
+			&&((lastLoss<0)||((System.currentTimeMillis()-lastLoss)>10000)))
+			{
+				lastLoss=System.currentTimeMillis();
+				final int change=CMLib.dice().roll(1,3,0);
+				final int fat=amountOfFat();
+				if(fat>=0)
+				{
+					if(fat<change)
+						setFatAmountChange(-fat);
+					else
+						setFatAmountChange(-change);
+				}
+			}
 			if(amountOfFat()<=0)
 				unInvoke();
 		}

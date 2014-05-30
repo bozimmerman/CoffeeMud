@@ -1527,6 +1527,11 @@ public class CMProps extends Properties
 		return p().MILLIS_PER_MUDHOUR;
 	}
 
+	public static final long getTicksPerMudHour()
+	{
+		return p().MILLIS_PER_MUDHOUR / p().TIME_TICK;
+	}
+
 	public static final long getTicksPerMinute()
 	{
 		return p().TICKS_PER_RLMIN;
