@@ -182,8 +182,10 @@ public class Bard extends StdCharClass
 			final MOB mob=msg.source();
 			final Physical hostP=(Physical)host;
 			if(((R.roomID().length()>0)
-			||((R.getGridParent()!=null)&&(R.getGridParent().roomID().length()>0)))
-			&&(!msg.source().playerStats().hasVisited(R)))
+				||((R.getGridParent()!=null)&&(R.getGridParent().roomID().length()>0)))
+			&&(!CMath.bset(R.getArea().flags(),Area.FLAG_INSTANCE_CHILD))
+			&&(!msg.source().playerStats().hasVisited(R))
+			)
 			{
 				final Area A=R.getArea();
 				MOB M=null;
