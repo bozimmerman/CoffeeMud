@@ -23,6 +23,8 @@
   20. Scriptable MPOLOAD, MPMLOAD, and MPOLOADROOM can now source from a autogen-formatted xml file (such as those for the GENERATE) command.
   21. Random generation system (GENERATE command) now supports random races! See example.xml for more details.
   22. Follower behavior has new flag: NOFOLLOWERS
+  23. Obesity can now also be cured by simple starvation.
+  
    *. --- FYI Tech Stuff ---
   . Ship Component Tech install skill (AstroEngineering) done-ish... like all tech, it's subject to change without notice.
   . Area editor for planets now includes space positioning editors, including relative positioning calculators.
