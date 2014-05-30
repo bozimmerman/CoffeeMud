@@ -62,7 +62,9 @@ public class Areas extends StdCommand
 			else
 			if(s.toUpperCase().startsWith("SORT=REV"))
 			{
-				final TreeSet<Area> levelSorted=new TreeSet<Area>(new Comparator<Area>()
+				final List<Area> levelSorted=new ArrayList<Area>();
+				for(;a.hasMoreElements();) levelSorted.add(a.nextElement());
+				Collections.sort(levelSorted, new Comparator<Area>()
 				{
 					@Override
 					public int compare(Area arg0, Area arg1)
@@ -70,7 +72,6 @@ public class Areas extends StdCommand
 						return arg1.Name().compareTo(arg0.Name());
 					}
 				});
-				for(;a.hasMoreElements();) levelSorted.add(a.nextElement());
 				a=new IteratorEnumeration<Area>(levelSorted.iterator());
 				append = " (sorted by name, reverse)";
 				commands.remove(i);
@@ -79,7 +80,9 @@ public class Areas extends StdCommand
 			else
 			if(s.toUpperCase().startsWith("SORT=LEV"))
 			{
-				final TreeSet<Area> levelSorted=new TreeSet<Area>(new Comparator<Area>()
+				final List<Area> levelSorted=new ArrayList<Area>();
+				for(;a.hasMoreElements();) levelSorted.add(a.nextElement());
+				Collections.sort(levelSorted, new Comparator<Area>()
 				{
 					@Override
 					public int compare(Area arg0, Area arg1)
@@ -90,7 +93,6 @@ public class Areas extends StdCommand
 						return Integer.valueOf(lvl1).compareTo(Integer.valueOf(lvl2));
 					}
 				});
-				for(;a.hasMoreElements();) levelSorted.add(a.nextElement());
 				a=new IteratorEnumeration<Area>(levelSorted.iterator());
 				append = " (sorted by level)";
 				addStat=Stats.MED_LEVEL.ordinal();
@@ -100,7 +102,9 @@ public class Areas extends StdCommand
 			else
 			if(s.toUpperCase().startsWith("SORT=AUTH"))
 			{
-				final TreeSet<Area> levelSorted=new TreeSet<Area>(new Comparator<Area>()
+				final List<Area> levelSorted=new ArrayList<Area>();
+				for(;a.hasMoreElements();) levelSorted.add(a.nextElement());
+				Collections.sort(levelSorted, new Comparator<Area>()
 				{
 					@Override
 					public int compare(Area arg0, Area arg1)
@@ -108,7 +112,6 @@ public class Areas extends StdCommand
 						return arg0.getAuthorID().compareTo(arg1.getAuthorID());
 					}
 				});
-				for(;a.hasMoreElements();) levelSorted.add(a.nextElement());
 				a=new IteratorEnumeration<Area>(levelSorted.iterator());
 				append = " (sorted by author)";
 				commands.remove(i);
@@ -129,7 +132,9 @@ public class Areas extends StdCommand
 					return false;
 				}
 				final int sortStat=statVal;
-				final TreeSet<Area> levelSorted=new TreeSet<Area>(new Comparator<Area>()
+				final List<Area> levelSorted=new ArrayList<Area>();
+				for(;a.hasMoreElements();) levelSorted.add(a.nextElement());
+				Collections.sort(levelSorted, new Comparator<Area>()
 				{
 					@Override
 					public int compare(Area arg0, Area arg1)
@@ -140,7 +145,6 @@ public class Areas extends StdCommand
 						return Integer.valueOf(lvl1).compareTo(Integer.valueOf(lvl2));
 					}
 				});
-				for(;a.hasMoreElements();) levelSorted.add(a.nextElement());
 				a=new IteratorEnumeration<Area>(levelSorted.iterator());
 				append = " (sorted by "+Area.Stats.values()[statVal].name().toLowerCase()+")";
 				addStat=sortStat;

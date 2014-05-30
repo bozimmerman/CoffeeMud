@@ -125,7 +125,11 @@ public class Bard extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Song_Ode",true);
 	}
 
-	@Override public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host,mob,victim,amount,5.0);}
+	@Override public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount)
+	{ 
+		return Bard.bardAdjustExperienceGain(host,mob,victim,amount,5.0);
+	}
+	
 	public static int bardAdjustExperienceGain(MOB host, MOB mob, MOB victim, int amount, double rate)
 	{
 		double theAmount=amount;
