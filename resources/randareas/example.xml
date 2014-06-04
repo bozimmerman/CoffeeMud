@@ -340,6 +340,7 @@ Required details: "id" "value"
 	<string condition="$theme='goblins' or $theme='random'" define="nasty_race_name">goblin</string>
 	<string condition="$theme='orcs' or $theme='random'" define="nasty_race_name">orc</string>
 	<string condition="$theme='trolls' or $theme='random'" define="nasty_race_name">troll</string>
+	<string condition="$theme!='goblins' and $theme!='orcs' and $theme!='trolls' and $theme!='kobolds' and $theme!='random'" define="nasty_race_name">kobold</string>
 </STRING>
 
 <STRING id="_dungeon_tunnelword" define="_dungeon_tunnelword" select="any-1">
