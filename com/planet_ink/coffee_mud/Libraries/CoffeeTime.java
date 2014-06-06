@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.text.*;
 import java.util.*;
 import java.util.concurrent.*;
@@ -577,6 +578,31 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		return str.append(time+(shortest?"ms":" milliseconds")).toString().trim();
 	}
 
+	@Override
+	public String date2BestShortEllapsedTime(long t)
+	{
+		t=t/1000;
+		if(t>60)
+		{
+			t=t/60;
+			if(t>120)
+			{
+				t=t/60;
+				if(t>48)
+				{
+					t=t/24;
+					return t+"d";
+				}
+				else
+					return t+"h";
+			}
+			else
+				return t+"m";
+		}
+		else
+			return t+"s";
+	}
+	
 	@Override
 	public String date2SmartEllapsedTime(long time, boolean shortest)
 	{

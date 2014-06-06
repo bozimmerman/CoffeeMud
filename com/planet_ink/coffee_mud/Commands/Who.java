@@ -99,26 +99,7 @@ public class Who extends StdCommand
 		else
 			name=(who.Name().equals(who.name())?who.titledName():who.name());
 		if((who.session()!=null)&&(who.session().isAfk()))
-		{
-			long t=(who.session().getIdleMillis()/1000);
-			String s=t+"s";
-			if(t>600)
-			{
-				t=t/60;
-				s=t+"m";
-				if(t>120)
-				{
-					t=t/60;
-					s=t+"h";
-					if(t>48)
-					{
-						t=t/24;
-						s=t+"d";
-					}
-				}
-			}
-			name=name+(" (idle: "+s+")");
-		}
+			name=name+(" (idle: "+CMLib.time().date2BestShortEllapsedTime(who.session().getIdleMillis())+")");
 		msg.append("] "+CMStrings.padRight(name,colWidths[3]));
 		msg.append("\n\r");
 		return msg;

@@ -258,6 +258,14 @@ public interface TimeManager extends CMLibrary
 	public String date2EllapsedTime(long time, TimeUnit minUnit, boolean shortest);
 
 	/**
+	 * Picks the single best representation of the given ellapsed time, 
+	 * from seconds to minutes to hours to days, and returns the correct
+	 * amount along with the single letter suffix
+	 * @param t time in milliseconds
+	 * @return ellapsed time approximation.
+	 */
+	public String date2BestShortEllapsedTime(long t);
+	/**
 	 * Converts a given number of milliseconds,
 	 * into a number of rl years, months, days,
 	 * hours, minutes, and seconds.  If in short form,
