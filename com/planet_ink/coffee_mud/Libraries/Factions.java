@@ -135,14 +135,19 @@ public class Factions extends StdLibrary implements FactionManager
 			if(!hashedFactionRanges.containsKey(UniqueCodeName))
 				hashedFactionRanges.put(UniqueCodeName,FR);
 		}
-		addFaction(F);
-		return F;
+		return addFaction(F) ? F : null;
 	}
 
 	@Override
-	public void addFaction(Faction F)
+	public boolean addFaction(Faction F)
 	{
-		factionSet.put(F.factionID().toUpperCase().trim(),F);
+		if(F!=null)
+		{
+			F.disable(CMSecurity.isFactionDisabled(F.factionID().toUpperCase().trim()));
+			factionSet.put(F.factionID().toUpperCase().trim(),F);
+			return !F.isDisabled();
+		}
+		return false;
 	}
 
 	@Override
@@ -173,18 +178,19 @@ public class Factions extends StdLibrary implements FactionManager
 	{
 		if(factionID==null) return null;
 		Faction F=factionSet.get(factionID.toUpperCase());
+		if((F==null)&&(!factionID.toLowerCase().endsWith(".ini")))
+		{
+			F=getFaction(factionID+".ini");
+		}
 		if(F!=null)
 		{
+			if(F.isDisabled())
+				return null;
 			if(!F.amDestroyed())
 				return F;
 			factionSet.remove(F.factionID().toUpperCase());
 			Resources.removeResource(F.factionID());
 			return null;
-		}
-		if(!factionID.toLowerCase().endsWith(".ini"))
-		{
-			F=getFaction(factionID+".ini");
-			if(F!=null) return F;
 		}
 		final CMFile f=new CMFile(Resources.makeFileResourceName(makeFactionFilename(factionID)),null,CMFile.FLAG_LOGERRORS);
 		if(!f.exists()) return null;
@@ -385,8 +391,7 @@ public class Factions extends StdLibrary implements FactionManager
 		F.setInternalFlags(F.getInternalFlags() | Faction.IFLAG_IGNOREAUTO);
 		F.setInternalFlags(F.getInternalFlags() | Faction.IFLAG_NEVERSAVE);
 		F.setInternalFlags(F.getInternalFlags() | Faction.IFLAG_CUSTOMTICK);
-		factionSet.put(factionID,F);
-		return F;
+		return addFaction(F) ? F : null;
 	}
 
 	public Faction[] getSpecialFactions(MOB mob, Room R)

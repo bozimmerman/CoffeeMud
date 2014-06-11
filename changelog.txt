@@ -24,6 +24,7 @@
   21. Random generation system (GENERATE command) now supports random races! See example.xml for more details.
   22. Follower behavior has new flag: NOFOLLOWERS
   23. Obesity can now also be cured by simple starvation.
+  24. Can now disable factions that have already been spread amongst the mobs using DISABLE= entry in coffeemud.ini file.
   
    *. --- FYI Tech Stuff ---
   . Ship Component Tech install skill (AstroEngineering) done-ish... like all tech, it's subject to change without notice.

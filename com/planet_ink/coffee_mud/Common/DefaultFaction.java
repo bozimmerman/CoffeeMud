@@ -59,6 +59,7 @@ public class DefaultFaction implements Faction, MsgListener
 	protected long  	 internalFlagBitmap=0;
 	protected String	 experienceFlag="";
 	protected boolean    useLightReactions=false;
+	protected boolean    isDisabled=false;
 	protected boolean    showInScore=false;
 	protected boolean    showInSpecialReported=false;
 	protected boolean    showInEditor=false;
@@ -97,6 +98,8 @@ public class DefaultFaction implements Faction, MsgListener
 	@Override public int middle(){return middle;}
 	@Override public int difference(){return difference;}
 	@Override public int maximum(){return maximum;}
+	@Override public boolean isDisabled(){ return isDisabled; }
+	@Override public void disable(boolean truefalse) { isDisabled = truefalse; }
 	public int highest(){return highest;}
 	public int lowest(){return lowest;}
 	@Override public String experienceFlag(){return experienceFlag;}

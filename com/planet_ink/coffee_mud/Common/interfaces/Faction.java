@@ -133,6 +133,22 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	public boolean isPreLoaded();
 
 	/**
+	 * Returns true if this faction is presently specified in the coffeemud ini
+	 * file entry "DISABLE", thereby designating that this faction is currently
+	 * disabled.  See also {@link #disable(boolean)}
+	 * @return true if its disabled, false otherwise.
+	 */
+	public boolean isDisabled();
+
+	/**
+	 * Disables this faction, as if it had been added to the DISABLE= entry in the
+	 * coffeemud.ini file.  See also {@link #isDisabled()}
+	 * @param disable true to disable, false otherwise
+	 * @return true if its disabled, false otherwise.
+	 */
+	public void disable(boolean truefalse);
+
+	/**
 	 * Returns the given value faction value, as a percent from average of the
 	 * range values of this faction.
 	 * @param faction the faction value to convert to a percent

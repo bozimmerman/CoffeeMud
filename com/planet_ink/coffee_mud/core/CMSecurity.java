@@ -55,6 +55,7 @@ public class CMSecurity
 {
 	protected final static Set<DisFlag> 	disVars 		 = new HashSet<DisFlag>();
 	protected final static Set<String>  	cmdDisVars  	 = new HashSet<String>();
+	protected final static Set<String>  	facDisVars  	 = new HashSet<String>();
 	protected final static Set<String>  	ablDisVars  	 = new HashSet<String>();
 	protected final static Set<String>  	expDisVars  	 = new HashSet<String>();
 	protected final static Set<DbgFlag> 	dbgVars 		 = new HashSet<DbgFlag>();
@@ -666,6 +667,11 @@ public class CMSecurity
 		return ablDisVars.contains(ID);
 	}
 
+	public static final boolean isFactionDisabled(final String ID)
+	{
+		return facDisVars.contains(ID);
+	}
+
 	public static final boolean isExpertiseDisabled(final String ID)
 	{
 		return expDisVars.contains(ID);
@@ -675,7 +681,7 @@ public class CMSecurity
 	{
 		final Set<String> set;
 		String flag = anyFlag.toUpperCase().trim();
-		if(flag.startsWith("ABILITY_")||flag.startsWith("EXPERTISE_")||flag.startsWith("COMMAND_"))
+		if(flag.startsWith("ABILITY_")||flag.startsWith("EXPERTISE_")||flag.startsWith("COMMAND_")||flag.startsWith("FACTION_"))
 			flag=flag.substring(flag.indexOf('_')+1);
 		else
 		{
@@ -691,7 +697,7 @@ public class CMSecurity
 		if(CMLib.expertises().getDefinition(flag)!=null)
 			set=expDisVars;
 		else
-			return false;
+			set=facDisVars;
 		return set.contains(flag);
 	}
 
@@ -706,6 +712,9 @@ public class CMSecurity
 			else
 			if(var.startsWith("ABILITY_"))
 				ablDisVars.add(var.substring(8));
+			else
+			if(var.startsWith("FACTION_"))
+				facDisVars.add(var.substring(8));
 			else
 			if(var.startsWith("EXPERTISE_"))
 				expDisVars.add(var.substring(10));
@@ -724,7 +733,7 @@ public class CMSecurity
 	{
 		final Set<String> set;
 		String flag = anyFlag.toUpperCase().trim();
-		if(flag.startsWith("ABILITY_")||flag.startsWith("EXPERTISE_")||flag.startsWith("COMMAND_"))
+		if(flag.startsWith("ABILITY_")||flag.startsWith("EXPERTISE_")||flag.startsWith("COMMAND_")||flag.startsWith("FACTION_"))
 			flag=flag.substring(flag.indexOf('_')+1);
 		else
 		{
@@ -743,6 +752,9 @@ public class CMSecurity
 		else
 		if(CMLib.expertises().getDefinition(flag)!=null)
 			set=expDisVars;
+		else
+		if((flag != null)&&(flag.length()>0))
+			set=facDisVars;
 		else
 			return false;
 		if((flag!=null)&&(delete)&&(set.size()>0))
