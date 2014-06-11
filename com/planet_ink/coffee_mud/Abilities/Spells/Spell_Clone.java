@@ -69,6 +69,7 @@ public class Spell_Clone extends Spell
 		}
 	}
 	
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((!this.unInvoked)&&(invoker!=null))
