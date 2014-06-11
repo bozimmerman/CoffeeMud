@@ -52,7 +52,7 @@ public class Spell_Clone extends Spell
 		super.executeMsg(myHost,msg);
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-			if((msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
+			if((msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing())||msg.amISource(invoker))
 			&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 			{
 				unInvoke();
@@ -67,6 +67,19 @@ public class Spell_Clone extends Spell
 				}
 			}
 		}
+	}
+	
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if((!this.unInvoked)&&(invoker!=null))
+		{
+			if((!CMLib.flags().isInTheGame(invoker, false))
+			||(invoker.amDead())
+			||(invoker.amDestroyed())
+			||((affected!=null)&&(affected instanceof MOB)&&(invoker.location()!=((MOB)affected).location())))
+				unInvoke();
+		}
+		return super.tick(ticking, tickID);
 	}
 
 	@Override
