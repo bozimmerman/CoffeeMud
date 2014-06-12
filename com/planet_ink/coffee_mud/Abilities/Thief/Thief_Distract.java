@@ -63,6 +63,8 @@ public class Thief_Distract extends ThiefSkill
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
+		final MOB invoker=this.invoker;
+		final Physical affected=this.affected;
 		if((affected==null)||(!(affected instanceof MOB))||(invoker==null))
 			return true;
 
