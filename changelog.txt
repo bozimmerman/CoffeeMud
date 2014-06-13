@@ -1,4 +1,4 @@
-# Build 5.8.2 Release ?/??/2014
+# Build 5.8.2 Release 6/13/2014
    0. Database Schema Updated! Run DBUpgrade, OR manually alter table CMCHCL to add CMCLSTS (see appropriate schema file)
    1. CM1Server has "FILE" command now for directory browsing/manipulation
    2. GenAbility additions: can now alter default duration of effect skills, and whether the damage/healing/extra casts happen periodically.
