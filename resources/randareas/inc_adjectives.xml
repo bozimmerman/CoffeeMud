@@ -53,7 +53,7 @@
 	<STRING>barricaded</STRING>
 </STRING>
 
-<STRING id="adj_dense_forest" select="any-1">
+<STRING id="adj_densedark_words" select="any-1">
 	<STRING>dense</STRING>
 	<STRING>deep</STRING>
 	<STRING>dark</STRING>
@@ -298,7 +298,7 @@
 	<STRING>voiceless</STRING><STRING>whispering</STRING>
 </STRING>
 
-<STRING id="adj_forestwords" select="any-1">
+<STRING id="adj_creepywords" select="any-1">
 	<STRING>dank</STRING>
 	<STRING>quiet</STRING>
 	<STRING>still</STRING>

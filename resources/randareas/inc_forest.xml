@@ -37,9 +37,9 @@
 				<STRING condition="$_forest_path_roomtype=1">${c:adj_phys_size_tall} trees curve over the $_forest_path_type like a canopy, blocking out most of the sky. </STRING>
 				<STRING condition="$_forest_path_roomtype=1">The trees are light enough here to make it easy to find your way along the $_forest_path_type. </STRING>
 				<STRING condition="$_forest_path_roomtype=0">The trees of $areaname are $adj_large and green, $adj_cramped together in $adj_impassable walls. </STRING>
-				<STRING condition="$_forest_path_roomtype=0">You $verb_forest_tread your way through the $noun_forest_brush of the $adj_dense_forest forest. </STRING>
+				<STRING condition="$_forest_path_roomtype=0">You $verb_forest_tread your way through the $noun_forest_brush of the $adj_densedark_words forest. </STRING>
 				<STRING condition="$_forest_path_roomtype=0">The forest surrounds you, $adj_cramped ${any_tree}s making some directions $adj_impassable. </STRING>
-				<STRING condition="$_forest_path_roomtype=0">You feel a $noun_wind blow through the $adj_phys_size_tall trees of the $adj_dense_forest forest. </STRING>
+				<STRING condition="$_forest_path_roomtype=0">You feel a $noun_wind blow through the $adj_phys_size_tall trees of the $adj_densedark_words forest. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING condition="$_forest_path_roomtype=1">The $_forest_path_type continues $roomrun_desc_long.</STRING>
@@ -47,7 +47,7 @@
 				<STRING condition="$_forest_path_roomtype=1">The $_forest_path_type runs $roomrun_desc_long.</STRING>
 				<STRING condition="$_forest_path_roomtype=1">The faint $_forest_path_type goes $roomrun_desc_long.</STRING>
 				<STRING condition="$_forest_path_roomtype=0">It looks like you might pick your way $roomexits_desc_long.</STRING>
-				<STRING condition="$_forest_path_roomtype=0">Openings in the $adj_dense_forest $noun_forest_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING condition="$_forest_path_roomtype=0">Openings in the $adj_densedark_words $noun_forest_brush can be seen $roomexits_desc_long.</STRING>
 				<STRING condition="$_forest_path_roomtype=0">You can $verb_forest_tread on through $roomexits_desc_long.</STRING>
 				<STRING condition="$_forest_path_roomtype=0">You can continue $roomexits_desc_long.</STRING>
 			</STRING>
@@ -65,7 +65,7 @@
 	<ROOM class="Woods" id="forest_interior_room" condition="$theme='forest' or $theme='random'">
 		<TITLE>
 			<TITLE>$forest_path_prefix $forest_nouns</TITLE>
-			<TITLE>$adj_forestwords $forest_path_prefix $forest_nouns</TITLE>
+			<TITLE>$adj_creepywords $forest_path_prefix $forest_nouns</TITLE>
 		</TITLE>
 		<DESCRIPTION>$forest_interior_desc</DESCRIPTION>
 		<STRING id="forest_interior_desc" select="all">
@@ -77,13 +77,13 @@
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING>The $adj_large green trees of $areaname are $adj_cramped in $adj_impassable walls. </STRING>
-				<STRING>You $verb_forest_tread your way through the $noun_forest_brush of the $adj_dense_forest forest. </STRING>
+				<STRING>You $verb_forest_tread your way through the $noun_forest_brush of the $adj_densedark_words forest. </STRING>
 				<STRING>The forest surrounds you, $adj_cramped ${any_tree}s making some directions $adj_impassable. </STRING>
-				<STRING>You feel a $noun_wind blow through the $adj_phys_size_tall trees of the $adj_dense_forest forest. </STRING>
+				<STRING>You feel a $noun_wind blow through the $adj_phys_size_tall trees of the $adj_densedark_words forest. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING>It looks like you might pick your way $roomexits_desc_long.</STRING>
-				<STRING>Openings in the $adj_dense_forest $noun_forest_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING>Openings in the $adj_densedark_words $noun_forest_brush can be seen $roomexits_desc_long.</STRING>
 				<STRING>You can $verb_forest_tread on through $roomexits_desc_long.</STRING>
 				<STRING>You can continue $roomexits_desc_long.</STRING>
 			</STRING>
@@ -189,8 +189,8 @@
 <STRING id="_forest_path_name" select="any-1" define="_forest_path_name">
 	<STRING pickweight=2 define="_forest_path_roomtype=1">$forest_path_prefix $_forest_path_type</STRING>
 	<STRING pickweight=2 define="_forest_path_roomtype=0">$forest_path_prefix $forest_nouns</STRING>
-	<STRING pickweight=1 define="_forest_path_roomtype=1">$adj_forestwords $forest_path_prefix $_forest_path_type</STRING>
-	<STRING pickweight=1 define="_forest_path_roomtype=0">$adj_forestwords $forest_path_prefix $forest_nouns</STRING>
+	<STRING pickweight=1 define="_forest_path_roomtype=1">$adj_creepywords $forest_path_prefix $_forest_path_type</STRING>
+	<STRING pickweight=1 define="_forest_path_roomtype=0">$adj_creepywords $forest_path_prefix $forest_nouns</STRING>
 </STRING>
 
 <STRING id="forest_path_prefix" select="any-1">

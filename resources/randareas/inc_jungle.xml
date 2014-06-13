@@ -1,0 +1,217 @@
+<!--  
+   Copyright 2013-2014 Bo Zimmerman
+
+   Licensed under the Apache License</STRING><STRING>Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+	   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing</STRING><STRING>software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND</STRING><STRING>either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!--  include file full of jungle-specific tags -->
+
+<ROOM id="jungle_street_rooms">
+	<ROOM class="Jungle" id="jungle_street_room" condition="$theme='jungle' or $theme='random'">
+		<TITLE>(a(n)) $_jungle_path_name</TITLE>
+		<DESCRIPTION>$jungle_street_desc</DESCRIPTION>
+		<STRING id="jungle_street_desc" select="all">
+			<STRING select="any-1" action="PREPEND">
+				<STRING condition="$_jungle_path_roomtype=1">You are walking along (a(n)) ${l:_jungle_path_name}. </STRING>
+				<STRING condition="$_jungle_path_roomtype=1">You are on (a(n)) ${l:_jungle_path_name}. </STRING>
+				<STRING condition="$_jungle_path_roomtype=1">The ${l:_jungle_path_name} goes through the $jungle_nouns. </STRING>
+				<STRING condition="$_jungle_path_roomtype=1">(A(n)) ${l:_jungle_path_name} runs through the $jungle_nouns. </STRING>
+				<STRING condition="$_jungle_path_roomtype=1">You are traipsing through (a(n)) ${l:_jungle_path_name}. </STRING>
+				<STRING condition="$_jungle_path_roomtype=0">You are lost in (a(n)) ${l:_jungle_path_name}. </STRING>
+				<STRING condition="$_jungle_path_roomtype=0">You are deep in (a(n)) ${l:_jungle_path_name}. </STRING>
+				<STRING condition="$_jungle_path_roomtype=0">The ${l:_jungle_path_name} surrounds you. </STRING>
+				<STRING condition="$_jungle_path_roomtype=0">The ${l:_jungle_path_name} is all around you. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING condition="$_jungle_path_roomtype=1">The $_jungle_path_type is lined by $adj_phys_size_tall trees. Several ${l:any_wood} trees are growing into the path. </STRING>
+				<STRING condition="$_jungle_path_roomtype=1">Tracks in the $adj_soft_ground ground make the $_jungle_path_type easier to follow here. </STRING>
+				<STRING condition="$_jungle_path_roomtype=1">${c:adj_phys_size_tall} trees curve over the $_jungle_path_type like a canopy, blocking out most of the sky. </STRING>
+				<STRING condition="$_jungle_path_roomtype=1">The trees are light enough here to make it easy to find your way along the $_jungle_path_type. </STRING>
+				<STRING condition="$_jungle_path_roomtype=0">The trees of $areaname are $adj_large and green, $adj_cramped together in $adj_impassable walls. </STRING>
+				<STRING condition="$_jungle_path_roomtype=0">You $verb_jungle_tread your way through the $noun_jungle_brush of the $adj_densedark_words jungle. </STRING>
+				<STRING condition="$_jungle_path_roomtype=0">The jungle surrounds you, $adj_cramped ${any_tree}s making some directions $adj_impassable. </STRING>
+				<STRING condition="$_jungle_path_roomtype=0">You feel a $noun_jungle_wind blow through the $adj_phys_size_tall trees of the $adj_densedark_words jungle. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING condition="$_jungle_path_roomtype=1">The $_jungle_path_type continues $roomrun_desc_long.</STRING>
+				<STRING condition="$_jungle_path_roomtype=1">Beneath the long shadows you can see the $_jungle_path_type running $roomrun_desc_long.</STRING>
+				<STRING condition="$_jungle_path_roomtype=1">The $_jungle_path_type runs $roomrun_desc_long.</STRING>
+				<STRING condition="$_jungle_path_roomtype=1">The faint $_jungle_path_type goes $roomrun_desc_long.</STRING>
+				<STRING condition="$_jungle_path_roomtype=0">It looks like you might pick your way $roomexits_desc_long.</STRING>
+				<STRING condition="$_jungle_path_roomtype=0">Openings in the $adj_densedark_words $noun_jungle_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING condition="$_jungle_path_roomtype=0">You can $verb_jungle_tread on through $roomexits_desc_long.</STRING>
+				<STRING condition="$_jungle_path_roomtype=0">You can continue $roomexits_desc_long.</STRING>
+			</STRING>
+		</STRING>
+		<EXIT class="Open" />
+		<MOB condition="1?2=1" select="any-1" insert="jungle_mobs" />
+	</ROOM>
+</ROOM>
+
+<ROOM id="jungle_interior_rooms">
+	<ROOM class="Jungle" like="jungle_street_room" condition="$theme='jungle' or $theme='random'" />
+</ROOM>
+
+<ROOM id="jungle_leaf_rooms">
+	<ROOM class="Jungle" id="jungle_interior_room" condition="$theme='jungle' or $theme='random'">
+		<TITLE>
+			<TITLE>$jungle_path_prefix $jungle_nouns</TITLE>
+			<TITLE>$adj_creepywords $jungle_path_prefix $jungle_nouns</TITLE>
+		</TITLE>
+		<DESCRIPTION>$jungle_interior_desc</DESCRIPTION>
+		<STRING id="jungle_interior_desc" select="all">
+			<STRING select="any-1" action="PREPEND">
+				<STRING>A thick copse in ${l:room_title}. </STRING>
+				<STRING>A dense corner of ${l:room_title}. </STRING>
+				<STRING>The ${jungle_nouns} surrounds you. </STRING>
+				<STRING>The ${jungle_nouns} is all around you. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING>The $adj_large green trees of $areaname are $adj_cramped in $adj_impassable walls. </STRING>
+				<STRING>You $verb_jungle_tread your way through the $noun_jungle_brush of the $adj_densedark_words jungle. </STRING>
+				<STRING>The jungle surrounds you, $adj_cramped ${any_tree}s making some directions $adj_impassable. </STRING>
+				<STRING>You feel a $noun_wind blow through the $adj_phys_size_tall trees of the $adj_densedark_words jungle. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING>It looks like you might pick your way $roomexits_desc_long.</STRING>
+				<STRING>Openings in the $adj_densedark_words $noun_jungle_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING>You can $verb_jungle_tread on through $roomexits_desc_long.</STRING>
+				<STRING>You can continue $roomexits_desc_long.</STRING>
+			</STRING>
+		</STRING>
+		<EXIT class="Open" />
+		<MOB condition="$__defined_jungle_faerie&lt;1" define="__defined_jungle_faerie+=1" like="jungle_faerie_mob" />
+		<MOB condition="1?2=1" select="any-1" insert="jungle_mobs">
+			<MOB id="jungle_faerie_mob" class="genmob" level="$level_range + 3" gender="$anygender" race="Faerie">
+				<NAME>(a(n)) $adj_primary_colored_color faerie</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name flitters around you.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+					<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>-3000?3000</ALIGNMENT>
+				<ABILITY select="all">
+					<ABILITY condition="1?3=1" class="Skill_Trip" />
+					<ABILITY condition="1?3=1" class="Skill_Dirt" />
+					<ABILITY condition="1?3=1" class="Skill_Disarm" />
+					<ABILITY condition="1?3=1" class="Spell_FaerieFire" />
+					<ABILITY condition="1?3=1" class="Chant_Barkskin" />
+					<ABILITY condition="1?3=1" class="Chant_Thorns" />
+				</ABILITY>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="MudChat" parms="" />
+					<BEHAVIOR class="Thiefness" parms="" />
+					<BEHAVIOR class="Scavenger" parms="" />
+					<BEHAVIOR CLASS="Mobile" />
+					<BEHAVIOR CLASS="BrotherHelper" />
+					<BEHAVIOR CLASS="ObjectGuardian" />
+				</BEHAVIOR>
+				<ITEM select="all">
+					<ITEM class="GenArmor" LEVEL="$mob_level">
+						<NAME>faerie garb</NAME>
+						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<MATERIAL>COTTON</MATERIAL>
+						<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
+					</ITEM>
+					<ITEM class="GenWand" name="a faerie wand" level="$mob_level" readabletext="$wand_faerie_spell_choices" />
+					<ITEM select="any-2" insert="dungeon_treasure_items" />
+					<STRING id="wand_faerie_spell_choices" select="any-1">
+						<STRING>Spell_MagicMissile</STRING><STRING>Spell_Sleep</STRING><STRING>Spell_BurningHands</STRING><STRING>Spell_Frost</STRING><STRING>Spell_AcidArrow</STRING>
+					</STRING>
+				</ITEM>
+			</MOB>
+		</MOB>
+		<ITEM condition="1?4=1" select="any-1">
+			<ITEM class="GenContainer" name="A $adj_wooden_ragged chest" display="$item_name is here" HASLID="true" HASLOCK="false">
+				<CONTENT>
+					<ITEM select="any-5" insert="dungeon_treasure_items" />
+				</CONTENT>
+				<AFFECT class="Prop_Hidden" />
+			</ITEM>
+		</ITEM>
+	</ROOM>
+</ROOM>
+	
+<MOB id="jungle_mob" select="any-1" requires="level_range=int,aggrochance=int">
+	<MOB id="jungle_mobs" select="all" requires="level_range=int,aggrochance=int">
+		<MOB class="genmob" copyof="Chimp" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Monkey" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="CommonBat" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Pig" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Rat" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Parakeet" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="LargeBat" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Jaguar" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Lizard" level="$level_range - 2" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Tiger" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Troll" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Panther" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Ape" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Python" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Crocodile" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+	</MOB>
+</MOB>
+
+<STRING id="noun_jungle_brush" select="any-1">
+    <STRING>thicket</STRING>
+    <STRING>underbrush</STRING>
+    <STRING>brush<STRING>
+    <STRING>brushwood<STRING>
+    <STRING>bush<STRING>
+    <STRING>underwood<STRING>
+    <STRING>undergrowth<STRING>
+</STRING>
+
+<STRING id="noun_jungle_wind" select="any-1">
+    <STRING>wind</STRING>
+    <STRING>breeze</STRING>
+    <STRING>gust<STRING>
+    <STRING>draft<STRING>
+</STRING>
+
+<STRING id="verb_jungle_tread" select="any-1">
+    <STRING>stomp</STRING>
+    <STRING>underbrush</STRING>
+    <STRING>trample<STRING>
+    <STRING>tread<STRING>
+    <STRING>walk<STRING>
+    <STRING>push<STRING>
+</STRING>
+
+<STRING id="_jungle_path_name" select="any-1" define="_jungle_path_name">
+	<STRING pickweight=2 define="_jungle_path_roomtype=1">$jungle_path_prefix $_jungle_path_type</STRING>
+	<STRING pickweight=2 define="_jungle_path_roomtype=0">$jungle_path_prefix $jungle_nouns</STRING>
+	<STRING pickweight=1 define="_jungle_path_roomtype=1">$adj_creepywords $jungle_path_prefix $_jungle_path_type</STRING>
+	<STRING pickweight=1 define="_jungle_path_roomtype=0">$adj_creepywords $jungle_path_prefix $jungle_nouns</STRING>
+</STRING>
+
+<STRING id="jungle_path_prefix" select="any-1">
+	<string>jungle</string><string>wooded</string><string>jungleed</string><string>woody</string>
+	<string>sylvan</string><string>shady</string><string>tree-lined</string><string>clear</string>
+	<string>thick</string><string>light</string><string>deep</string>
+</STRING>
+
+<STRING id="jungle_nouns" select="any-1">
+	<string>jungle</string><string>woods</string><string>woodlands</string><string>timberlands</string>
+	<string>greenwood</string><string>thicket</string><string>growth</string><string>wildwood</string>
+</STRING>
+
+<STRING id="_jungle_path_type" define="_jungle_path_type" insert="jungle_stuff_type" select="any-1">
+	<string>path</string><string>trail</string><string>pathway</string><string>way</string>
+	<string>footpath</string><string>beaten path</string>
+</STRING>
+
+<STRING id="jungle_stuff_type" select="any-1">
+	<string>path</string><string>trail</string><string>pathway</string><string>way</string>
+	<string>footpath</string><string>beaten path</string>
+</STRING>
+
