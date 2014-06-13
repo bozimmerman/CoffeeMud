@@ -359,8 +359,6 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					for(final String key : getAutoGenVariables().keySet())
 						if(key.equalsIgnoreCase("AREA_ID")||key.equalsIgnoreCase("AREA_IDS")||key.equalsIgnoreCase("AREAID")||key.equalsIgnoreCase("AREAIDS"))
 							idChoices.addAll(CMParms.parseCommas(getAutoGenVariables().get(key),true));
-//TODO: fix this
-//FIXME: this can select an area tag with inserts that don't resolve to isolated (real) areas.
 					if(idChoices.size()==0)
 					{
 						for(final Object key : definedIDs.keySet())
@@ -369,9 +367,30 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 							if((key instanceof String)
 							&&(val instanceof XMLLibrary.XMLpiece)
 							&&(((XMLLibrary.XMLpiece)val).tag.equalsIgnoreCase("area")))
-								idChoices.add((String)key);
+							{
+								final XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)val; 
+								final String inserter = CMLib.xml().getParmValue(piece.parms,"INSERT");
+								if(inserter!=null)
+								{
+									final List<String> V=CMParms.parseCommas(inserter,true);
+									for(int v=0;v<V.size();v++)
+									{
+										String s = V.get(v);
+										if(s.startsWith("$")) s=s.substring(1).trim();
+										final XMLLibrary.XMLpiece insertPiece =(XMLLibrary.XMLpiece)definedIDs.get(s.toUpperCase().trim());
+										if(insertPiece == null)
+											continue;
+										if(insertPiece.tag.equalsIgnoreCase("area"))
+											if(!idChoices.contains(s.toUpperCase().trim()))
+												idChoices.add(s.toUpperCase().trim());
+									}
+								}
+								else
+									idChoices.add((String)key);
+							}
 						}
 					}
+
 					if(idChoices.size()>0)
 						idName=idChoices.get(CMLib.dice().roll(1, idChoices.size(), -1)).toUpperCase().trim();
 

@@ -1311,7 +1311,8 @@ public class StdArea implements Area
 			Collections.sort(levelRanges);
 			Collections.sort(alignRanges);
 			statData[Area.Stats.MED_LEVEL.ordinal()]=levelRanges.get((int)Math.round(Math.floor(CMath.div(levelRanges.size(),2.0)))).intValue();
-			statData[Area.Stats.MED_ALIGNMENT.ordinal()]=alignRanges.get((int)Math.round(Math.floor(CMath.div(alignRanges.size(),2.0)))).intValue();
+			if(alignRanges.size()>0)
+				statData[Area.Stats.MED_ALIGNMENT.ordinal()]=alignRanges.get((int)Math.round(Math.floor(CMath.div(alignRanges.size(),2.0)))).intValue();
 			statData[Area.Stats.AVG_LEVEL.ordinal()]=(int)Math.round(CMath.div(statData[Area.Stats.TOTAL_LEVELS.ordinal()],statData[Area.Stats.POPULATION.ordinal()]));
 			statData[Area.Stats.AVG_ALIGNMENT.ordinal()]=(int)Math.round(((double)totalAlignments)/((double)statData[Area.Stats.POPULATION.ordinal()]));
 		}
