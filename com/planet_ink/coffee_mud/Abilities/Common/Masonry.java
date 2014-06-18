@@ -872,7 +872,7 @@ public class Masonry extends CraftingSkill
 			final LandTitle title=CMLib.law().getLandTitle(mob.location());
 			if((title==null)||(!title.allowsExpansionConstruction()))
 			{
-				commonTell(mob,_("You are not permitted to build stairs here."));
+				commonTell(mob,_("The title here does not permit the building of stairs."));
 				return false;
 			}
 			if(!CMath.bset(mob.location().domainType(), Room.INDOORS))
