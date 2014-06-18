@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -66,6 +65,27 @@ public class Chant_FurCoat extends Chant
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> fur coat vanishes."));
 	}
 
+	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+		if((affected!=null)&&(affected instanceof MOB))
+		{
+			if((msg.amISource((MOB)affected))||msg.amISource(invoker))
+			{
+				if(msg.sourceMinor()==CMMsg.TYP_QUIT)
+				{
+					unInvoke();
+					if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
+				}
+				else
+				if(msg.sourceMinor()==CMMsg.TYP_DEATH)
+				{
+					unInvoke();
+				}
+			}
+		}
+	}
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
