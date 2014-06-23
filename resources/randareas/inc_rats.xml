@@ -147,14 +147,14 @@
 		</DESCRIPTION>			
 		<MOB class="GenMob" level="$level_range" id="rats_dragon" race="Dragon" gender="F">
 			<NAME select="all">
-				<NAME condition="$mob_level<10">a hatchling $dragoncolor dragon</NAME>
-				<NAME condition="$mob_level<20 and $mob_level>=10">a very young $dragoncolor dragon</NAME>
-				<NAME condition="$mob_level<30 and $mob_level>=20">a young $dragoncolor dragon</NAME>
-				<NAME condition="$mob_level<40 and $mob_level>=30">a subadult $dragoncolor dragon</NAME>
-				<NAME condition="$mob_level<70 and $mob_level>=40">an adult $dragoncolor dragon</NAME>
-				<NAME condition="$mob_level<80 and $mob_level>=70">an old $dragoncolor dragon</NAME>
-				<NAME condition="$mob_level<85 and $mob_level>=80">a very old $dragoncolor dragon</NAME>
-				<NAME condition="$mob_level>=85">a ancient $dragoncolor dragon</NAME>
+				<NAME condition="$mob_level<10">a hatchling $rats_dragoncolor dragon</NAME>
+				<NAME condition="$mob_level<20 and $mob_level>=10">a very young $rats_dragoncolor dragon</NAME>
+				<NAME condition="$mob_level<30 and $mob_level>=20">a young $rats_dragoncolor dragon</NAME>
+				<NAME condition="$mob_level<40 and $mob_level>=30">a subadult $rats_dragoncolor dragon</NAME>
+				<NAME condition="$mob_level<70 and $mob_level>=40">an adult $rats_dragoncolor dragon</NAME>
+				<NAME condition="$mob_level<80 and $mob_level>=70">an old $rats_dragoncolor dragon</NAME>
+				<NAME condition="$mob_level<85 and $mob_level>=80">a very old $rats_dragoncolor dragon</NAME>
+				<NAME condition="$mob_level>=85">a ancient $rats_dragoncolor dragon</NAME>
 			</NAME>
 			<DISPLAY>$mob_name is guarding her brood.</DISPLAY>
 			<DESCRIPTION>$mob_name is majestic, but simply being in its presence makes you uneasy.</DESCRIPTION>
@@ -200,14 +200,14 @@
 		</DESCRIPTION>			
 		<MOB class="GenMob" level="(1.20 * ($level_range)) + 1" id="rats_dragon" race="Dragon" gender="$anygender">
 			<NAME select="all">
-				<NAME condition="$mob_level<10">a hatchling $dragoncolor dragon</NAME>
-				<NAME condition="$mob_level<20 and $mob_level>=10">a very young $dragoncolor dragon</NAME>
-				<NAME condition="$mob_level<30 and $mob_level>=20">a young $dragoncolor dragon</NAME>
-				<NAME condition="$mob_level<40 and $mob_level>=30">a subadult $dragoncolor dragon</NAME>
-				<NAME condition="$mob_level<70 and $mob_level>=40">an adult $dragoncolor dragon</NAME>
-				<NAME condition="$mob_level<80 and $mob_level>=70">an old $dragoncolor dragon</NAME>
-				<NAME condition="$mob_level<85 and $mob_level>=80">a very old $dragoncolor dragon</NAME>
-				<NAME condition="$mob_level>=85">a ancient $dragoncolor dragon</NAME>
+				<NAME condition="$mob_level<10">a hatchling $rats_dragoncolor dragon</NAME>
+				<NAME condition="$mob_level<20 and $mob_level>=10">a very young $rats_dragoncolor dragon</NAME>
+				<NAME condition="$mob_level<30 and $mob_level>=20">a young $rats_dragoncolor dragon</NAME>
+				<NAME condition="$mob_level<40 and $mob_level>=30">a subadult $rats_dragoncolor dragon</NAME>
+				<NAME condition="$mob_level<70 and $mob_level>=40">an adult $rats_dragoncolor dragon</NAME>
+				<NAME condition="$mob_level<80 and $mob_level>=70">an old $rats_dragoncolor dragon</NAME>
+				<NAME condition="$mob_level<85 and $mob_level>=80">a very old $rats_dragoncolor dragon</NAME>
+				<NAME condition="$mob_level>=85">a ancient $rats_dragoncolor dragon</NAME>
 			</NAME>
 			<DISPLAY>$mob_name watches you intently.</DISPLAY>
 			<DESCRIPTION>$mob_name is majestic, but simply being in its presence makes you uneasy.</DESCRIPTION>
@@ -694,7 +694,7 @@
 	<ITEM class="metacraft:any-MasterArmorsmithing < $level_range" name="(a(n)) $adj_metal_broken $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
 </ITEM>
 
-<STRING id="dragoncolor" select="pick-1">
+<STRING id="rats_dragoncolor" select="pick-1" define="rats_dragoncolor">
 	<STRING pickweight=2 define="dragon_alignment=-10000">white</STRING>
 	<STRING pickweight=2 define="dragon_alignment=-10000">black</STRING>
 	<STRING pickweight=2 define="dragon_alignment=-10000">blue</STRING>
