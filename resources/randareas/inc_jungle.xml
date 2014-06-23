@@ -21,11 +21,11 @@
 		<DESCRIPTION>$jungle_street_desc</DESCRIPTION>
 		<STRING id="jungle_street_desc" select="all">
 			<STRING select="any-1" action="PREPEND">
-				<STRING condition="$_jungle_path_roomtype=1">You are walking along (a(n)) ${l:_jungle_path_name}. </STRING>
+				<STRING condition="$_jungle_path_roomtype=1">You are working your way along (a(n)) ${l:_jungle_path_name}. </STRING>
 				<STRING condition="$_jungle_path_roomtype=1">You are on (a(n)) ${l:_jungle_path_name}. </STRING>
 				<STRING condition="$_jungle_path_roomtype=1">The ${l:_jungle_path_name} goes through the $jungle_nouns. </STRING>
 				<STRING condition="$_jungle_path_roomtype=1">(A(n)) ${l:_jungle_path_name} runs through the $jungle_nouns. </STRING>
-				<STRING condition="$_jungle_path_roomtype=1">You are traipsing through (a(n)) ${l:_jungle_path_name}. </STRING>
+				<STRING condition="$_jungle_path_roomtype=1">You are inching your way through (a(n)) ${l:_jungle_path_name}. </STRING>
 				<STRING condition="$_jungle_path_roomtype=0">You are lost in (a(n)) ${l:_jungle_path_name}. </STRING>
 				<STRING condition="$_jungle_path_roomtype=0">You are deep in (a(n)) ${l:_jungle_path_name}. </STRING>
 				<STRING condition="$_jungle_path_roomtype=0">The ${l:_jungle_path_name} surrounds you. </STRING>
@@ -76,7 +76,7 @@
 				<STRING>The ${jungle_nouns} is all around you. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
-				<STRING>The $adj_large green trees of $areaname are $adj_cramped in $adj_impassable walls. </STRING>
+				<STRING>The $adj_large overgrown folliage of $areaname are $adj_cramped in $adj_impassable walls. </STRING>
 				<STRING>You $verb_jungle_tread your way through the $noun_jungle_brush of the $adj_densedark_words jungle. </STRING>
 				<STRING>The jungle surrounds you, $adj_cramped ${any_tree}s making some directions $adj_impassable. </STRING>
 				<STRING>You feel a $noun_wind blow through the $adj_phys_size_tall trees of the $adj_densedark_words jungle. </STRING>
@@ -166,24 +166,31 @@
     <STRING>underbrush</STRING>
     <STRING>brush<STRING>
     <STRING>brushwood<STRING>
-    <STRING>bush<STRING>
+    <STRING>overgrowth<STRING>
     <STRING>underwood<STRING>
     <STRING>undergrowth<STRING>
 </STRING>
 
+<STRING id="noun_jungle_wind_adj" select="any-1">
+    <STRING>steamy</STRING>
+    <STRING>stifling</STRING>
+    <STRING>humid<STRING>
+    <STRING>hot<STRING>
+</STRING>
+
 <STRING id="noun_jungle_wind" select="any-1">
-    <STRING>wind</STRING>
-    <STRING>breeze</STRING>
-    <STRING>gust<STRING>
-    <STRING>draft<STRING>
+    <STRING>$noun_jungle_wind_adj wind</STRING>
+    <STRING>$noun_jungle_wind_adj breeze</STRING>
+    <STRING>$noun_jungle_wind_adj air<STRING>
+    <STRING>$noun_jungle_wind_adj draft<STRING>
 </STRING>
 
 <STRING id="verb_jungle_tread" select="any-1">
     <STRING>stomp</STRING>
-    <STRING>underbrush</STRING>
+    <STRING>work</STRING>
     <STRING>trample<STRING>
     <STRING>tread<STRING>
-    <STRING>walk<STRING>
+    <STRING>cut<STRING>
     <STRING>push<STRING>
 </STRING>
 
@@ -195,23 +202,17 @@
 </STRING>
 
 <STRING id="jungle_path_prefix" select="any-1">
-	<string>jungle</string><string>wooded</string><string>jungleed</string><string>woody</string>
-	<string>sylvan</string><string>shady</string><string>tree-lined</string><string>clear</string>
-	<string>thick</string><string>light</string><string>deep</string>
+	<string>jungle</string><string>overgrown</string><string>jungly</string><string>dense</string>
+	<string>shady</string><string>vine-covered</string><string>thick</string><string>lush</string>
+	<string>deep</string>
 </STRING>
 
 <STRING id="jungle_nouns" select="any-1">
-	<string>jungle</string><string>woods</string><string>woodlands</string><string>timberlands</string>
-	<string>greenwood</string><string>thicket</string><string>growth</string><string>wildwood</string>
+	<string>jungle</string><string>tropical forest</string><string>rain forest</string><string>tangle</string>
+	<string>morass</string><string>undergrowth</string><string>growth</string><string>thicket</string>
 </STRING>
 
-<STRING id="_jungle_path_type" define="_jungle_path_type" insert="jungle_stuff_type" select="any-1">
+<STRING id="_jungle_path_type" define="_jungle_path_type" select="any-1">
 	<string>path</string><string>trail</string><string>pathway</string><string>way</string>
-	<string>footpath</string><string>beaten path</string>
+	<string>game trail</string>
 </STRING>
-
-<STRING id="jungle_stuff_type" select="any-1">
-	<string>path</string><string>trail</string><string>pathway</string><string>way</string>
-	<string>footpath</string><string>beaten path</string>
-</STRING>
-

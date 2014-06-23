@@ -179,7 +179,6 @@
 
 <STRING id="verb_forest_tread" select="any-1">
     <STRING>stomp</STRING>
-    <STRING>underbrush</STRING>
     <STRING>trample<STRING>
     <STRING>tread<STRING>
     <STRING>walk<STRING>

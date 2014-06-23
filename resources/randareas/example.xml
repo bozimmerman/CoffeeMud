@@ -1607,11 +1607,6 @@ Required details: "id" "value"
 	</ITEM>
 </ITEM>
 
-<!-- 
-TODO: mundane items
-http://oldguardgamingaccoutrements.blogspot.com/2009/03/100-item-list-of-random-objects-for.html
-http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
--->
 <ITEM id="dungeon_mundane_items" select="all" requires="level_range=int">
 	<ITEM class="metacraft:any-Weaponsmithing < $level_range" />
 	<ITEM class="metacraft:any-Armorsmithing < $level_range" />

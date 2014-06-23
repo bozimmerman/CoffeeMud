@@ -60,6 +60,15 @@
 	<STRING>thick</STRING>
 </STRING>
 
+<STRING id="adj_dense" select="any-1">
+	<STRING>dense</STRING>
+	<STRING>murky</STRING>
+	<STRING>cramped</STRING>
+	<STRING>tightly packed</STRING>
+	<STRING>impenetrable</STRING>
+	<STRING>thick</STRING>
+</STRING>
+
 <STRING id="adj_phys_size_small" select="any-1">
 	<STRING id="adj_phys_size_small_values">
 		<STRING>narrow</STRING>
