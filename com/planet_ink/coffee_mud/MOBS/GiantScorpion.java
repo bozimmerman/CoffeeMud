@@ -52,6 +52,7 @@ public class GiantScorpion extends StdMOB
 		basePhyStats().setWeight(1000 + Math.abs(randomizer.nextInt() % 550));
 
 
+		baseCharStats().setMyRace(CMClass.getRace("GiantScorpion"));
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,5 + Math.abs(randomizer.nextInt() % 3));
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,13);
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,9);
@@ -70,6 +71,9 @@ public class GiantScorpion extends StdMOB
 		resetToMaxState();
 		recoverPhyStats();
 		recoverCharStats();
+
+		if(numAllAbilities()>0)
+			addBehavior(CMClass.getBehavior("CombatAbilities"));
 	}
 
 

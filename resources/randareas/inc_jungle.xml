@@ -149,6 +149,7 @@
 		<MOB class="genmob" copyof="Monkey" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
 		<MOB class="genmob" copyof="CommonBat" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
 		<MOB class="genmob" copyof="Pig" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Frog" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
 		<MOB class="genmob" copyof="Rat" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
 		<MOB class="genmob" copyof="Parakeet" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
 		<MOB class="genmob" copyof="LargeBat" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
