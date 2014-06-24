@@ -235,6 +235,7 @@ public class Chant_SummonAnimal extends Chant
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.setLocation(caster.location());
 		newMOB.basePhyStats().setLevel(level);
+		newMOB.basePhyStats().setAbility(11);
 		CMLib.leveler().fillOutMOB(newMOB,newMOB.basePhyStats().level());
 		newMOB.setMoney(0);
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
