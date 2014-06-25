@@ -137,9 +137,7 @@
 </ROOM>
 	
 <STRING id="desert_dragoncolor" select="pick-1" define="desert_dragoncolor">
-	<STRING pickweight=2 define="dragon_alignment=-10000">black</STRING>
-	<STRING pickweight=1 define="dragon_alignment=-10000">blue</STRING>
-	<STRING pickweight=2 define="dragon_alignment=-10000">green</STRING>
+	<STRING pickweight=2 define="dragon_alignment=-10000">blue</STRING>
 	<STRING pickweight=1 define="dragon_alignment=-10000">red</STRING>
 </STRING>
 
