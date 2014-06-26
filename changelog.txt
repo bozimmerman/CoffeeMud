@@ -1,5 +1,6 @@
 # Build 5.8.3 Release ??/??/2014
    1. New GENERATEable themes in /resources/randreas/example.xml: forest, jungle
+   *. finish landing detector, and set in-air flag for spaceships
    *. finish the dadgum engine thrust adjustment! in GenSpaceShip
    *. interacting items of diff tech level might damage each other
    *. personal scanner/tricorder software: mineral scanner, computer interface (with ship perhaps?)!
