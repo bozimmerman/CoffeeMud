@@ -171,26 +171,28 @@
 </STRING>
 
 <STRING id="noun_desert_wind_adj" select="any-1">
-    <STRING>steamy</STRING>
-    <STRING>stifling</STRING>
-    <STRING>humid<STRING>
+    <STRING>stinging</STRING>
+    <STRING>scouring</STRING>
+    <STRING>scratchy<STRING>
     <STRING>hot<STRING>
+    <STRING>burning<STRING>
+    <STRING>dry<STRING>
 </STRING>
 
 <STRING id="noun_desert_wind" select="any-1">
     <STRING>$noun_desert_wind_adj wind</STRING>
     <STRING>$noun_desert_wind_adj breeze</STRING>
     <STRING>$noun_desert_wind_adj air<STRING>
-    <STRING>$noun_desert_wind_adj draft<STRING>
 </STRING>
 
 <STRING id="verb_desert_tread" select="any-1">
-    <STRING>stomp</STRING>
+    <STRING>drag</STRING>
     <STRING>work</STRING>
     <STRING>trample<STRING>
     <STRING>tread<STRING>
-    <STRING>cut<STRING>
-    <STRING>push<STRING>
+    <STRING>stomp<STRING>
+    <STRING>walk<STRING>
+    <STRING>shuffle<STRING>
 </STRING>
 
 <STRING id="_desert_path_name" select="any-1" define="_desert_path_name">
@@ -201,17 +203,17 @@
 </STRING>
 
 <STRING id="desert_path_prefix" select="any-1">
-	<string>desert</string><string>overgrown</string><string>jungly</string><string>dense</string>
-	<string>shady</string><string>vine-covered</string><string>thick</string><string>lush</string>
-	<string>deep</string>
+	<string>sandy</string><string>scorching</string><string>dry</string>
+	<string>arid</string><string>hot</string><string>prickly</string><string>forsaken</string>
+	<string>desolate</string><string>bare</string><string>parched</string>
 </STRING>
 
 <STRING id="desert_nouns" select="any-1">
-	<string>desert</string><string>tropical forest</string><string>rain forest</string><string>tangle</string>
-	<string>morass</string><string>undergrowth</string><string>growth</string><string>thicket</string>
+	<string>desert</string><string>dunes</string><string>sands</string><string>plains</string>
+	<string>badlands</string><string>wilderness</string><string>dust bowl</string><string>plateau</string>
 </STRING>
 
 <STRING id="_desert_path_type" define="_desert_path_type" select="any-1">
-	<string>path</string><string>trail</string><string>pathway</string><string>way</string>
-	<string>game trail</string>
+	<string>path</string><string>tracks</string><string>pathway</string><string>way</string>
+	<string>direction</string>
 </STRING>
