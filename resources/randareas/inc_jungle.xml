@@ -165,8 +165,8 @@
 <STRING id="noun_jungle_brush" select="any-1">
     <STRING>thicket</STRING>
     <STRING>underbrush</STRING>
+    <STRING>vines<STRING>
     <STRING>brush<STRING>
-    <STRING>brushwood<STRING>
     <STRING>overgrowth<STRING>
     <STRING>underwood<STRING>
     <STRING>undergrowth<STRING>
