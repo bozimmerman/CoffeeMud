@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
 
+import com.planet_ink.miniweb.http.MultiPartData;
 import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.WebMacros.grinder.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -382,9 +383,17 @@ public class MUDGrinder extends StdWebMacro
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			String file=httpReq.getUrlParameter("FILE");
-			if(file==null) file="";
-			final byte[] bufBytes=(byte[])httpReq.getRequestObjects().get("FILE");
+			byte[] bufBytes=null;
+			String file="";
+			for(final MultiPartData d : httpReq.getMultiParts())
+			{
+				if((d.getVariables().containsKey("filename"))&&(d.getData()!=null))
+				{
+					bufBytes=d.getData();
+					file=d.getVariables().get("filename");
+					break;
+				}
+			}
 			if((file.length()==0)||(bufBytes==null)||(bufBytes.length==0))
 				return "That file was empty.";
 			boolean deleteIfExists=false;
