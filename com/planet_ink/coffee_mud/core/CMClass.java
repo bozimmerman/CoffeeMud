@@ -1649,19 +1649,25 @@ public class CMClass extends ClassLoader
 		while(x>=0)
 		{
 			String path=requestedPathList.substring(0,x).trim();
-			if((subDir!=null)&&(subDir.length()>0))
-				path+=subDir;
 			requestedPathList=requestedPathList.substring(x+1).trim();
 			if(path.equalsIgnoreCase("%default%"))
 				loadListToObj(v,defaultPath, ancestorC1, quiet);
 			else
+			{
+				if((subDir!=null)&&(subDir.length()>0))
+					path+=subDir;
 				loadListToObj(v,path,ancestorC1, quiet);
+			}
 			x=requestedPathList.indexOf(';');
 		}
 		if(requestedPathList.equalsIgnoreCase("%default%"))
 			loadListToObj(v,defaultPath, ancestorC1, quiet);
 		else
+		{
+			if((subDir!=null)&&(subDir.length()>0))
+				requestedPathList+=subDir;
 			loadListToObj(v,requestedPathList,ancestorC1, quiet);
+		}
 		return v;
 	}
 
