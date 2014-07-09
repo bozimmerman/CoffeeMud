@@ -299,7 +299,6 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 
 	protected void adjustTopPrideStats(final List<Pair<String,Integer>>[][] topWhat, final String name, final AccountStats.PrideStat stat, final AccountStats astats)
 	{
-		final long now=System.currentTimeMillis();
 		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 		{
 			final List<Pair<String,Integer>> top=topWhat[period.ordinal()][stat.ordinal()];
@@ -307,16 +306,6 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				continue;
 			synchronized(top)
 			{
-				if((period!=TimeClock.TimePeriod.ALLTIME)&&(now > topPrideExpiration[period.ordinal()]))
-				{
-					topPrideExpiration[period.ordinal()] = period.nextPeriod();
-					top.clear();
-					final List<Pair<String,Integer>> topA=(topWhat==topPlayers)?topAccounts[period.ordinal()][stat.ordinal()]:topPlayers[period.ordinal()][stat.ordinal()];
-					if(topA!=null)
-					{
-						topA.clear();
-					}
-				}
 				final int pVal=astats.getPrideStat(period, stat);
 				if(pVal <= 0)
 					removePrideStat(top,name,0);
@@ -1080,6 +1069,38 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 							savePlayers();
 						setThreadStatus(serviceClient,"not saving players");
 					}
+					setThreadStatus(serviceClient,"expiring top metrics");
+					final long now=System.currentTimeMillis();
+					List<Pair<String,Integer>> top;
+					for(final AccountStats.PrideStat stat : AccountStats.PrideStat.values())
+					{
+						for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
+						{
+							if(period == TimeClock.TimePeriod.ALLTIME)
+								continue;
+							if(now > topPrideExpiration[period.ordinal()])
+							{
+								topPrideExpiration[period.ordinal()] = period.nextPeriod();
+								top=topAccounts[period.ordinal()][stat.ordinal()];
+								if(top!=null)
+								{
+									synchronized(top)
+									{
+										top.clear();
+									}
+								}
+								top=topPlayers[period.ordinal()][stat.ordinal()];
+								if(top!=null)
+								{
+									synchronized(top)
+									{
+										top.clear();
+									}
+								}
+							}
+						}
+					}
+					setThreadStatus(serviceClient,"not doing anything");
 				}
 			}
 		}
