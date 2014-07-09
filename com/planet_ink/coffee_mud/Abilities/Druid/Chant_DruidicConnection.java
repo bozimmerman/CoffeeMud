@@ -177,8 +177,7 @@ public class Chant_DruidicConnection extends Chant
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
+			// affected area. 
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("This area seems connected to <S-NAME>."):_("^S<S-NAME> chant(s), establishing a natural connection with this area.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
