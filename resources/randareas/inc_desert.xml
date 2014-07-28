@@ -161,13 +161,13 @@
 </MOB>
 
 <STRING id="noun_desert_brush" select="any-1">
-    <STRING>thicket</STRING>
-    <STRING>underbrush</STRING>
+    <STRING>sandscape</STRING>
+    <STRING>dunes</STRING>
+    <STRING>scrub<STRING>
     <STRING>brush<STRING>
-    <STRING>brushwood<STRING>
-    <STRING>overgrowth<STRING>
-    <STRING>underwood<STRING>
-    <STRING>undergrowth<STRING>
+    <STRING>cacti<STRING>
+    <STRING>desertscape<STRING>
+    <STRING>desert<STRING>
 </STRING>
 
 <STRING id="noun_desert_wind_adj" select="any-1">
