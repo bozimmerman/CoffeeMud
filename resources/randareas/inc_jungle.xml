@@ -79,7 +79,7 @@
 				<STRING>The $adj_large overgrown folliage of $areaname are $adj_cramped in $adj_impassable walls. </STRING>
 				<STRING>You $verb_jungle_tread your way through the $noun_jungle_brush of the $adj_densedark_words jungle. </STRING>
 				<STRING>The jungle surrounds you, $adj_cramped ${any_tree}s making some directions $adj_impassable. </STRING>
-				<STRING>You feel a $noun_wind blow through the $adj_phys_size_tall trees of the $adj_densedark_words jungle. </STRING>
+				<STRING>You feel a very slight $noun_jungle_wind waft through the $adj_phys_size_tall trees of the $adj_densedark_words jungle. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING>It looks like you might pick your way $roomexits_desc_long.</STRING>

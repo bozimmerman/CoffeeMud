@@ -43,6 +43,14 @@
 	<STRING>open</STRING>
 </STRING>
 
+<STRING id="adj_soft_sands" select="any-1">
+	<STRING>soft</STRING>
+	<STRING>grainy</STRING>
+	<STRING>loose</STRING>
+	<STRING>disturbed</STRING>
+	<STRING>open</STRING>
+</STRING>
+
 <STRING id="adj_impassable" select="any-1">
 	<STRING>unpassable</STRING>
 	<STRING>impassable</STRING>
@@ -67,6 +75,15 @@
 	<STRING>tightly packed</STRING>
 	<STRING>impenetrable</STRING>
 	<STRING>thick</STRING>
+</STRING>
+
+<STRING id="adj_sparse" select="any-1">
+	<STRING>sparse</STRING>
+	<STRING>scant</STRING>
+	<STRING>scarce</STRING>
+	<STRING>meager</STRING>
+	<STRING>limited</STRING>
+	<STRING>thin</STRING>
 </STRING>
 
 <STRING id="adj_phys_size_small" select="any-1">

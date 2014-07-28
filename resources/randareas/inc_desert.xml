@@ -32,22 +32,22 @@
 				<STRING condition="$_desert_path_roomtype=0">The ${l:_desert_path_name} is all around you. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
-				<STRING condition="$_desert_path_roomtype=1">The $_desert_path_type is crossed by $adj_dense vines and plants. Trees surround you. </STRING>
-				<STRING condition="$_desert_path_roomtype=1">Tracks in the $adj_soft_ground ground make the $_desert_path_type easier to follow here. </STRING>
-				<STRING condition="$_desert_path_roomtype=1">${c:adj_phys_size_tall} trees curve over the $_desert_path_type like a canopy, blocking out most of the sky. </STRING>
-				<STRING condition="$_desert_path_roomtype=1">The foliage is light enough here to make it easy to find your way along the $_desert_path_type. </STRING>
-				<STRING condition="$_desert_path_roomtype=0">The foliage of $areaname are $adj_large and green, $adj_cramped together in $adj_impassable walls. </STRING>
-				<STRING condition="$_desert_path_roomtype=0">You $verb_desert_tread your way through the $noun_desert_brush of the $adj_densedark_words desert. </STRING>
-				<STRING condition="$_desert_path_roomtype=0">The desert surrounds you, $adj_cramped ${any_tree}s making some directions $adj_impassable. </STRING>
-				<STRING condition="$_desert_path_roomtype=0">You feel a $noun_desert_wind blow through the $adj_dense foliage of the $adj_densedark_words desert. </STRING>
+				<STRING condition="$_desert_path_roomtype=1">The $_desert_path_type is crossed by $adj_sparse cacti and plants. Desolation otherwise surrounds you. </STRING>
+				<STRING condition="$_desert_path_roomtype=1">Tracks in the $adj_soft_sands sands make the $_desert_path_type easier to follow here. </STRING>
+				<STRING condition="$_desert_path_roomtype=1">${c:adj_phys_size_tall} dunes curve around the $_desert_path_type like a wall. </STRING>
+				<STRING condition="$_desert_path_roomtype=1">The plant life here is $adj_sparse enough here to make the $_desert_path_type desolate and dead. </STRING>
+				<STRING condition="$_desert_path_roomtype=0">The sands of $areaname are $adj_phys_size_large and gold, dunes rise in $adj_impassable walls. </STRING>
+				<STRING condition="$_desert_path_roomtype=0">You $verb_desert_tread your way through the $noun_desert_brush of the $adj_sparse desert. </STRING>
+				<STRING condition="$_desert_path_roomtype=0">The desert surrounds you, $adj_sparse cacti making some directions prickly and $adj_impassable. </STRING>
+				<STRING condition="$_desert_path_roomtype=0">You feel a $noun_desert_wind blow around the $adj_sparse plants of the desert. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING condition="$_desert_path_roomtype=1">The $_desert_path_type continues $roomrun_desc_long.</STRING>
-				<STRING condition="$_desert_path_roomtype=1">Beneath the long shadows you can see the $_desert_path_type running $roomrun_desc_long.</STRING>
+				<STRING condition="$_desert_path_roomtype=1">Beneath the narrow shadows of the dunes you can see the $_desert_path_type running $roomrun_desc_long.</STRING>
 				<STRING condition="$_desert_path_roomtype=1">The $_desert_path_type runs $roomrun_desc_long.</STRING>
 				<STRING condition="$_desert_path_roomtype=1">The faint $_desert_path_type goes $roomrun_desc_long.</STRING>
 				<STRING condition="$_desert_path_roomtype=0">It looks like you might pick your way $roomexits_desc_long.</STRING>
-				<STRING condition="$_desert_path_roomtype=0">Openings in the $adj_densedark_words $noun_desert_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING condition="$_desert_path_roomtype=0">Openings in the $adj_sparse $noun_desert_brush can be seen $roomexits_desc_long.</STRING>
 				<STRING condition="$_desert_path_roomtype=0">You can $verb_desert_tread on through $roomexits_desc_long.</STRING>
 				<STRING condition="$_desert_path_roomtype=0">You can continue $roomexits_desc_long.</STRING>
 			</STRING>
@@ -65,25 +65,24 @@
 	<ROOM class="Desert" id="desert_interior_room" condition="$theme='desert' or $theme='random'">
 		<TITLE>
 			<TITLE>$desert_path_prefix $desert_nouns</TITLE>
-			<TITLE>$adj_creepywords $desert_path_prefix $desert_nouns</TITLE>
 		</TITLE>
 		<DESCRIPTION>$desert_interior_desc</DESCRIPTION>
 		<STRING id="desert_interior_desc" select="all">
 			<STRING select="any-1" action="PREPEND">
-				<STRING>A thick copse in ${l:room_title}. </STRING>
-				<STRING>A dense corner of ${l:room_title}. </STRING>
+				<STRING>You find yourself by a $adj_sparse copse of plants in the ${l:room_title}. </STRING>
+				<STRING>You are in a corner of the ${l:room_title}. </STRING>
 				<STRING>The ${desert_nouns} surrounds you. </STRING>
 				<STRING>The ${desert_nouns} is all around you. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
-				<STRING>The $adj_large overgrown folliage of $areaname are $adj_cramped in $adj_impassable walls. </STRING>
-				<STRING>You $verb_desert_tread your way through the $noun_desert_brush of the $adj_densedark_words desert. </STRING>
-				<STRING>The desert surrounds you, $adj_cramped ${any_tree}s making some directions $adj_impassable. </STRING>
-				<STRING>You feel a $noun_wind blow through the $adj_phys_size_tall trees of the $adj_densedark_words desert. </STRING>
+				<STRING>The $adj_large dunes of $areaname are $adj_cramped around you in $adj_impassable walls. </STRING>
+				<STRING>You $verb_desert_tread your way through the $noun_desert_brush of the desert. </STRING>
+				<STRING>The desert surrounds you, ${adj_phys_size_tall} $adj_cramped dunes making some directions $adj_impassable. </STRING>
+				<STRING>You feel a $noun_desert_wind blow over the $adj_phys_size_tall dunes of the $noun_desert_wind_adj desert. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING>It looks like you might pick your way $roomexits_desc_long.</STRING>
-				<STRING>Openings in the $adj_densedark_words $noun_desert_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING>Openings in the $noun_desert_brush can be seen $roomexits_desc_long.</STRING>
 				<STRING>You can $verb_desert_tread on through $roomexits_desc_long.</STRING>
 				<STRING>You can continue $roomexits_desc_long.</STRING>
 			</STRING>
@@ -214,6 +213,6 @@
 </STRING>
 
 <STRING id="_desert_path_type" define="_desert_path_type" select="any-1">
-	<string>path</string><string>tracks</string><string>pathway</string><string>way</string>
-	<string>direction</string>
+	<string>path</string><string>desert</string><string>pathway</string><string>dune</string>
+	<string>valley</string>
 </STRING>
