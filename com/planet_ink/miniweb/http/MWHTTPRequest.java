@@ -835,15 +835,22 @@ public class MWHTTPRequest implements HTTPRequest
 				final int equalDex = urlParm.indexOf('=');
 				final String key;
 				final String value;
-				if(equalDex < 0)
+				try
 				{
-					key=URLDecoder.decode(urlParm,"UTF-8");
-					value="";
+					if(equalDex < 0)
+					{
+						key=URLDecoder.decode(urlParm,"UTF-8");
+						value="";
+					}
+					else
+					{
+						key=URLDecoder.decode(urlParm.substring(0,equalDex),"UTF-8");
+						value=URLDecoder.decode(urlParm.substring(equalDex+1),"UTF-8");
+					}
 				}
-				else
+				catch(java.lang.IllegalArgumentException ile)
 				{
-					key=URLDecoder.decode(urlParm.substring(0,equalDex),"UTF-8");
-					value=URLDecoder.decode(urlParm.substring(equalDex+1),"UTF-8");
+					throw HTTPException.standardException(HTTPStatus.S400_BAD_REQUEST);
 				}
 				if(urlParmsFound.containsKey(key) && !overwriteDups)
 				{
