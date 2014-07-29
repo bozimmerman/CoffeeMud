@@ -210,10 +210,10 @@
 
 <STRING id="desert_nouns" select="any-1">
 	<string>desert</string><string>dunes</string><string>sands</string><string>plains</string>
-	<string>badlands</string><string>wilderness</string><string>dust bowl</string><string>plateau</string>
+	<string>badlands</string><string>range</string><string>miles</string><string>dust bowl</string><string>plateau</string>
 </STRING>
 
 <STRING id="_desert_path_type" define="_desert_path_type" select="any-1">
 	<string>path</string><string>desert</string><string>pathway</string><string>dune</string>
-	<string>valley</string>
+	<string>valley</string><string>stretch</string>
 </STRING>
