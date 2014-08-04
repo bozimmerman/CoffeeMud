@@ -409,4 +409,22 @@ public class DefaultSocial implements Social
 	@Override public String rawImage(){return "";}
 	@Override public void setImage(String newImage){}
 	@Override public boolean isGeneric(){return false;}
+	
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getSocialActionCost(baseName(), 0.0);
+	}
+	@Override
+	public double combatActionsCost(MOB mob, List<String> cmds)
+	{
+		return CMProps.getSocialCombatActionCost(baseName(), 0.0);
+	}
+	@Override
+	public double checkedActionsCost(final MOB mob, final List<String> cmds)
+	{
+		if(mob!=null)
+			return mob.isInCombat() ? combatActionsCost(mob,cmds) : actionsCost(mob,cmds);
+		return actionsCost(mob,cmds);
+	}
 }

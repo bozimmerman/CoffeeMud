@@ -46,8 +46,8 @@ public class Skill_Swim extends StdSkill
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS; }
 	@Override public int usageType(){return USAGE_MOVEMENT;}
-	@Override public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getActionSkillCost(ID(),CMath.greater(CMath.div(CMProps.getIntVar(CMProps.Int.DEFABLETIME),50.0),1.0));}
-	@Override public double combatCastingTime(final MOB mob, final List<String> cmds){return CMProps.getCombatActionSkillCost(ID(),CMath.greater(CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMABLETIME),50.0),1.0));}
+	@Override public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getSkillActionCost(ID(),CMath.greater(CMath.div(CMProps.getIntVar(CMProps.Int.DEFABLETIME),50.0),1.0));}
+	@Override public double combatCastingTime(final MOB mob, final List<String> cmds){return CMProps.getSkillCombatActionCost(ID(),CMath.greater(CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMABLETIME),50.0),1.0));}
 
 	public boolean placeToSwim(Room r2)
 	{

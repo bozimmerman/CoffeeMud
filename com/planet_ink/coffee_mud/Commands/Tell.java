@@ -141,7 +141,7 @@ public class Tell extends StdCommand
 		return false;
 	}
 	// the reason this is not 0ed is because of combat -- we want the players to use SAY, and pay for it when coordinating.
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
 	@Override public boolean canBeOrdered(){return false;}
 
 

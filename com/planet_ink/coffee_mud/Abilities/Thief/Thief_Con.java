@@ -46,7 +46,7 @@ public class Thief_Con extends ThiefSkill
 	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
 	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE; }
 	protected MOB lastChecked=null;
-	@Override public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getActionSkillCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFABLETIME),20.0));}
+	@Override public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getSkillActionCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFABLETIME),20.0));}
 	@Override
 	public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
 	{

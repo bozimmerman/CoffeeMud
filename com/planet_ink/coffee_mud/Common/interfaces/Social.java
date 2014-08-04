@@ -13,22 +13,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-/*
-Copyright 2000-2014 Bo Zimmerman
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-	http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
-
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -303,4 +289,41 @@ public interface Social extends Environmental, CMCommon
 							 Vector commands,
 							 String I3channelName,
 							 boolean makeTarget);
+
+	/**
+	 * Returns the number of actions required to completely
+	 * activate this social. A value of 0.0 means perform
+	 * instantly.  This method only applies when the user
+	 * is not in combat.
+	 * @see Social#combatActionsCost(MOB, List)
+	 * @see Social#checkedActionsCost(MOB, List)
+	 * @param mob the mob executing the social, if any
+	 * @param cmds the parameters to be passed to the social, if any
+	 * @return the number of player free actions required to do this
+	 */
+	public double actionsCost(final MOB mob, final List<String> cmds);
+	/**
+	 * Returns the number of actions required to completely
+	 * activate this social. A value of 0.0 means perform
+	 * instantly.  This method only applies when the user
+	 * is fighting in social.
+	 * @see Social#actionsCost(MOB, List)
+	 * @see Social#checkedActionsCost(MOB, List)
+	 * @param mob the mob executing the social, if any
+	 * @param cmds the parameters to be passed to the social, if any
+	 * @return the number of player free actions required to do this
+	 */
+	public double combatActionsCost(final MOB mob, final List<String> cmds);
+	/**
+	 * Returns the number of actions required to completely
+	 * activate this social. A value of 0.0 means perform
+	 * instantly.  This method only should check whether the
+	 * user is in combat and return a proper value.
+	 * @see Social#combatActionsCost(MOB, List)
+	 * @see Social#actionsCost(MOB, List)
+	 * @param mob the mob executing the social, if any
+	 * @param cmds the parameters to be passed to the social, if any
+	 * @return the number of player free actions required to do this
+	 */
+	public double checkedActionsCost(final MOB mob, final List<String> cmds);
 }

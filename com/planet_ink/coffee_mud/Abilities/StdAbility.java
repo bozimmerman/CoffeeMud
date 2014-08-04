@@ -99,13 +99,13 @@ public class StdAbility implements Ability
 	@Override
 	public double castingTime(final MOB mob, final List<String> cmds)
 	{
-		return CMProps.getActionSkillCost(ID());
+		return CMProps.getSkillActionCost(ID());
 	}
 
 	@Override
 	public double combatCastingTime(final MOB mob, final List<String> cmds)
 	{
-		return CMProps.getCombatActionSkillCost(ID());
+		return CMProps.getSkillCombatActionCost(ID());
 	}
 
 	@Override

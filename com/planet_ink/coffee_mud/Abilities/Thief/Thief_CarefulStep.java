@@ -40,8 +40,8 @@ public class Thief_CarefulStep extends ThiefSkill
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
-	@Override public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getActionSkillCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFABLETIME),50.0));}
-	@Override public double combatCastingTime(final MOB mob, final List<String> cmds){return CMProps.getCombatActionSkillCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMABLETIME),50.0));}
+	@Override public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getSkillActionCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFABLETIME),50.0));}
+	@Override public double combatCastingTime(final MOB mob, final List<String> cmds){return CMProps.getSkillCombatActionCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMABLETIME),50.0));}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings =_i(new String[] {"CARESTEP","CAREFULSTEP"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

@@ -1976,6 +1976,9 @@ public class StdMOB implements MOB
 			if (command instanceof Ability)
 				tickDelay = ((Ability) command).checkedCastingCost(this, commands);
 			else
+			if (command instanceof Social)
+				tickDelay = ((Social) command).checkedActionsCost(this, commands);
+			else
 				tickDelay = 1.0;
 		}
 		return tickDelay;

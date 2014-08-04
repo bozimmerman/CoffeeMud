@@ -240,6 +240,8 @@ public class CMProps extends Properties
 		MAXWORKERTHREADS,
 		DUELTICKDOWN,
 		BASEMINSTAT,
+		DEFSOCTIME,
+		DEFCOMSOCTIME,
 	}
 
 	public static enum Bool {
@@ -356,6 +358,8 @@ public class CMProps extends Properties
 	protected final Map<String,Double>	skillComActionCostExceptions=new HashMap<String,Double>();
 	protected final Map<String,Double>	cmdActionCostExceptions		=new HashMap<String,Double>();
 	protected final Map<String,Double>	cmdComActionCostExceptions	=new HashMap<String,Double>();
+	protected final Map<String,Double>	socActionCostExceptions		=new HashMap<String,Double>();
+	protected final Map<String,Double>	socComActionCostExceptions	=new HashMap<String,Double>();
 	protected final PairVector<String,Long> newusersByIP=new PairVector<String,Long>();
 	protected final Map<String,ThreadGroup> privateSet=new HashMap<String,ThreadGroup>();
 	protected final Map<String,ExpertiseLibrary.SkillCostDefinition> commonCost  =new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
@@ -596,7 +600,7 @@ public class CMProps extends Properties
 		}
 	}
 
-	public static final double getActionCost(final String ID, final double defaultValue)
+	public static final double getCommandActionCost(final String ID, final double defaultValue)
 	{
 		final Map<String,Double> overrides=p().cmdActionCostExceptions;
 		final String uID=ID.toUpperCase();
@@ -605,7 +609,7 @@ public class CMProps extends Properties
 		return defaultValue;
 	}
 
-	public static final double getCombatActionCost(final String ID, final double defaultValue)
+	public static final double getCommandCombatActionCost(final String ID, final double defaultValue)
 	{
 		final Map<String,Double> overrides=p().cmdComActionCostExceptions;
 		final String uID=ID.toUpperCase();
@@ -614,17 +618,17 @@ public class CMProps extends Properties
 		return defaultValue;
 	}
 
-	public static final double getActionCost(final String ID)
+	public static final double getCommandActionCost(final String ID)
 	{
-		return getActionCost(ID,CMath.div(getIntVar(Int.DEFCMDTIME),100.0));
+		return getCommandActionCost(ID,CMath.div(getIntVar(Int.DEFCMDTIME),100.0));
 	}
 
-	public static final double getCombatActionCost(final String ID)
+	public static final double getCommandCombatActionCost(final String ID)
 	{
-		return getCombatActionCost(ID,CMath.div(getIntVar(Int.DEFCOMCMDTIME),100.0));
+		return getCommandCombatActionCost(ID,CMath.div(getIntVar(Int.DEFCOMCMDTIME),100.0));
 	}
 
-	public static final double getActionSkillCost(final String ID, final double defaultValue)
+	public static final double getSkillActionCost(final String ID, final double defaultValue)
 	{
 		final Map<String,Double> overrides=p().skillActionCostExceptions;
 		final String uID=ID.toUpperCase();
@@ -633,7 +637,7 @@ public class CMProps extends Properties
 		return defaultValue;
 	}
 
-	public static final double getCombatActionSkillCost(final String ID, final double defaultValue)
+	public static final double getSkillCombatActionCost(final String ID, final double defaultValue)
 	{
 		final Map<String,Double> overrides=p().skillComActionCostExceptions;
 		final String uID=ID.toUpperCase();
@@ -642,14 +646,42 @@ public class CMProps extends Properties
 		return defaultValue;
 	}
 
-	public static final double getActionSkillCost(final String ID)
+	public static final double getSkillActionCost(final String ID)
 	{
-		return getActionSkillCost(ID,CMath.div(getIntVar(Int.DEFABLETIME),100.0));
+		return getSkillActionCost(ID,CMath.div(getIntVar(Int.DEFABLETIME),100.0));
 	}
 
-	public static final double getCombatActionSkillCost(final String ID)
+	public static final double getSkillCombatActionCost(final String ID)
 	{
-		return getCombatActionSkillCost(ID,CMath.div(getIntVar(Int.DEFCOMABLETIME),100.0));
+		return getSkillCombatActionCost(ID,CMath.div(getIntVar(Int.DEFCOMABLETIME),100.0));
+	}
+
+	public static final double getSocialActionCost(final String baseName, final double defaultValue)
+	{
+		final Map<String,Double> overrides=p().socActionCostExceptions;
+		final String uID=baseName.toUpperCase();
+		if(overrides.containsKey(uID))
+			return overrides.get(uID).doubleValue();
+		return defaultValue;
+	}
+
+	public static final double getSocialCombatActionCost(final String baseName, final double defaultValue)
+	{
+		final Map<String,Double> overrides=p().socComActionCostExceptions;
+		final String uID=baseName.toUpperCase();
+		if(overrides.containsKey(uID))
+			return overrides.get(uID).doubleValue();
+		return defaultValue;
+	}
+
+	public static final double getSocialActionCost(final String baseName)
+	{
+		return getSocialActionCost(baseName,CMath.div(getIntVar(Int.DEFSOCTIME),100.0));
+	}
+
+	public static final double getSocialCombatActionCost(final String baseName)
+	{
+		return getSocialCombatActionCost(baseName,CMath.div(getIntVar(Int.DEFCOMSOCTIME),100.0));
 	}
 
 	public static final int getPKillLevelDiff(){return p().pkillLevelDiff;}
@@ -1292,6 +1324,8 @@ public class CMProps extends Properties
 		setIntVar(Int.DEFCOMCMDTIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFCOMCMDTIME"),p().cmdComActionCostExceptions)*100.0));
 		setIntVar(Int.DEFABLETIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFABLETIME"),p().skillActionCostExceptions)*100.0));
 		setIntVar(Int.DEFCOMABLETIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFCOMABLETIME"),p().skillComActionCostExceptions)*100.0));
+		setIntVar(Int.DEFSOCTIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFSOCTIME"),p().socActionCostExceptions)*100.0));
+		setIntVar(Int.DEFCOMSOCTIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFCOMSOCTIME"),p().socComActionCostExceptions)*100.0));
 		setIntVar(Int.MANACOST,(int)CMProps.setExceptionCosts(getStr("MANACOST"),p().skillMaxManaExceptions));
 		setIntVar(Int.MANAMINCOST,(int)CMProps.setExceptionCosts(getStr("MANAMINCOST"),p().skillMinManaExceptions));
 		setIntVar(Int.EDITORTYPE,0);

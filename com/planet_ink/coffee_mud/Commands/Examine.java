@@ -120,7 +120,7 @@ public class Examine extends StdCommand
 		}
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
 	@Override public double actionsCost(MOB mob, List<String> cmds){return 1.0;}
 	@Override public boolean canBeOrdered(){return true;}
 }

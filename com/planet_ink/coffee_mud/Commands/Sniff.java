@@ -92,7 +92,7 @@ public class Sniff extends StdCommand
 		}
 		return false;
 	}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
 	@Override public double combatActionsCost(MOB mob, List<String> cmds){return 0.25;}
 	@Override public boolean canBeOrdered(){return true;}
 

@@ -195,7 +195,7 @@ public class Go extends StdCommand
 		double cost=CMath.div(CMProps.getIntVar(CMProps.Int.DEFCMDTIME),100.0);
 		if((mob!=null)&&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTORUN)))
 			cost /= 4.0;
-		return CMProps.getActionCost(ID(), cost);
+		return CMProps.getCommandActionCost(ID(), cost);
 	}
 
 	@Override public boolean canBeOrdered(){return true;}

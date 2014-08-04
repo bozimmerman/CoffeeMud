@@ -44,12 +44,12 @@ public class Run extends Go
 	@Override
 	public double actionsCost(final MOB mob, final List<String> cmds)
 	{
-		return CMProps.getActionCost(ID(), CMath.div(CMProps.getIntVar(CMProps.Int.DEFCMDTIME),400.0));
+		return CMProps.getCommandActionCost(ID(), CMath.div(CMProps.getIntVar(CMProps.Int.DEFCMDTIME),400.0));
 	}
 	@Override
 	public double combatActionsCost(MOB mob, List<String> cmds)
 	{
-		return CMProps.getCombatActionCost(ID(), CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMCMDTIME),400.0));
+		return CMProps.getCommandCombatActionCost(ID(), CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMCMDTIME),400.0));
 	}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

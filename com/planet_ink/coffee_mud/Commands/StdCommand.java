@@ -129,12 +129,12 @@ public class StdCommand implements Command
 	@Override
 	public double actionsCost(final MOB mob, final List<String> cmds)
 	{
-		return CMProps.getActionCost(ID(), 0.0);
+		return CMProps.getCommandActionCost(ID(), 0.0);
 	}
 	@Override
 	public double combatActionsCost(MOB mob, List<String> cmds)
 	{
-		return CMProps.getCombatActionCost(ID(), 0.0);
+		return CMProps.getCommandCombatActionCost(ID(), 0.0);
 	}
 	@Override
 	public double checkedActionsCost(final MOB mob, final List<String> cmds)

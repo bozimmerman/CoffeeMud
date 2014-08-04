@@ -188,5 +188,5 @@ public class Channel extends StdCommand
 
 
 	@Override public boolean canBeOrdered(){return true;}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
 }

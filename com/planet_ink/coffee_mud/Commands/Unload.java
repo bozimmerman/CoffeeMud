@@ -379,6 +379,6 @@ public class Unload extends StdCommand
 
 	@Override public boolean canBeOrdered(){return true;}
 	@Override public boolean securityCheck(MOB mob){return super.securityCheck(mob);}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
 }

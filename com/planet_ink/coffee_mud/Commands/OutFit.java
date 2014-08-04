@@ -76,12 +76,12 @@ public class OutFit extends StdCommand
 	@Override
 	public double combatActionsCost(final MOB mob, final List<String> cmds)
 	{
-		return CMProps.getCombatActionCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMCMDTIME),25.0));
+		return CMProps.getCommandCombatActionCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMCMDTIME),25.0));
 	}
 	@Override
 	public double actionsCost(MOB mob, List<String> cmds)
 	{
-		return CMProps.getActionCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFCMDTIME),25.0));
+		return CMProps.getCommandActionCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFCMDTIME),25.0));
 	}
 	@Override public boolean canBeOrdered(){return false;}
 

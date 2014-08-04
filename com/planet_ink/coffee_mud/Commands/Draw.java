@@ -220,7 +220,7 @@ public class Draw extends Get
 		}
 		return false;
 	}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
+	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
 	@Override public boolean canBeOrdered(){return true;}
 
 

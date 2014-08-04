@@ -216,12 +216,12 @@ public class Sheath extends StdCommand
 	@Override
 	public double actionsCost(final MOB mob, final List<String> cmds)
 	{
-		return CMProps.getActionCost(ID(), CMath.div(CMProps.getIntVar(CMProps.Int.DEFCMDTIME),200.0));
+		return CMProps.getCommandActionCost(ID(), CMath.div(CMProps.getIntVar(CMProps.Int.DEFCMDTIME),200.0));
 	}
 	@Override
 	public double combatActionsCost(MOB mob, List<String> cmds)
 	{
-		return CMProps.getCombatActionCost(ID(), CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMCMDTIME),200.0));
+		return CMProps.getCommandCombatActionCost(ID(), CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMCMDTIME),200.0));
 	}
 	@Override public boolean canBeOrdered(){return true;}
 

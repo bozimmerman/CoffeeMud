@@ -79,12 +79,12 @@ public class Crawl extends Go
 	@Override
 	public double actionsCost(final MOB mob, final List<String> cmds)
 	{
-		return CMProps.getActionCost(ID(), CMath.greater(CMath.div(CMProps.getIntVar(CMProps.Int.DEFCMDTIME),50.0),1.0));
+		return CMProps.getCommandActionCost(ID(), CMath.greater(CMath.div(CMProps.getIntVar(CMProps.Int.DEFCMDTIME),50.0),1.0));
 	}
 	@Override
 	public double combatActionsCost(MOB mob, List<String> cmds)
 	{
-		return CMProps.getCombatActionCost(ID(), CMath.greater(CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMCMDTIME),50.0),2.0));
+		return CMProps.getCommandCombatActionCost(ID(), CMath.greater(CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMCMDTIME),50.0),2.0));
 	}
 	@Override public boolean canBeOrdered(){return true;}
 
