@@ -85,7 +85,7 @@ public class StdCharClass implements CharClass
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[0];
 	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 	@Override public CMObject newInstance(){return this;}
-	@Override public String getStartingMoney() { return "12 gold bits"; }
+	@Override public String getStartingMoney() { return ""; }
 
 	protected String getShortAttackAttribute() { return CharStats.CODES.SHORTNAME(getAttackAttribute()); }
 
