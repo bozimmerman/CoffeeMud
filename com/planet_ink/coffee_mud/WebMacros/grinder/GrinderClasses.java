@@ -156,6 +156,8 @@ public class GrinderClasses
 		C.setStat("MAXNCS",(old==null)?"0":old);
 		old=httpReq.getUrlParameter("MAXCRS");
 		C.setStat("MAXCRS",(old==null)?"0":old);
+		old=httpReq.getUrlParameter("MONEY");
+		C.setStat("MONEY",(old==null)?"":old);
 		old=httpReq.getUrlParameter("MAXCMS");
 		C.setStat("MAXCMS",(old==null)?"0":old);
 		old=httpReq.getUrlParameter("MAXLGS");

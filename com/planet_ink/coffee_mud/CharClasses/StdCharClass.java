@@ -85,6 +85,7 @@ public class StdCharClass implements CharClass
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[0];
 	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 	@Override public CMObject newInstance(){return this;}
+	@Override public String getStartingMoney() { return "12 gold bits"; }
 
 	protected String getShortAttackAttribute() { return CharStats.CODES.SHORTNAME(getAttackAttribute()); }
 
@@ -690,6 +691,7 @@ public class StdCharClass implements CharClass
 		CR.setStat("HELP",""+CMLib.help().getHelpText(name(),null,false));
 		CR.setStat("MAXNCS",""+maxNonCraftingSkills());
 		CR.setStat("MAXCRS",""+maxCraftingSkills());
+		CR.setStat("MONEY", getStartingMoney());
 		CR.setStat("MAXCMS",""+maxCommonSkills());
 		CR.setStat("SUBRUL", ""+getSubClassRule().toString());
 		CR.setStat("MAXLGS",""+maxLanguages());

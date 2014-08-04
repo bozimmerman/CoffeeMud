@@ -2833,6 +2833,16 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		mob.setStartRoom(getDefaultStartRoom(mob));
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.ALL_AGEING))
 			mob.baseCharStats().setStat(CharStats.STAT_AGE,mob.playerStats().initializeBirthday(0,mob.baseCharStats().getMyRace()));
+		final String startingMoney=mob.baseCharStats().getCurrentClass().getStartingMoney();
+		if((startingMoney!=null)&&(startingMoney.trim().length()>0))
+		{
+			String currency=CMLib.english().numPossibleGoldCurrency(mob,startingMoney);
+			if(currency.length()==0) currency=CMLib.beanCounter().getCurrency(mob);
+			final double denomination=CMLib.english().numPossibleGoldDenomination(null,currency,startingMoney);
+			final long num=CMLib.english().numPossibleGold(null,startingMoney);
+			if((num>0)&&(denomination>0.0)&&(currency!=null))
+				CMLib.beanCounter().giveSomeoneMoney(mob, currency, denomination * num);
+		}
 
 		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"newchardone.txt",null,CMFile.FLAG_LOGERRORS).text();
 		try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(final Exception ex){}
@@ -3501,7 +3511,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return randomNameConsonants;
 	}
 
-	public String generateRandomName(int minSyllable, int maxSyllable)
+	@Override
+    public String generateRandomName(int minSyllable, int maxSyllable)
 	{
 		final StringBuilder name=new StringBuilder("");
 		final DiceLibrary dice=CMLib.dice();

@@ -6791,6 +6791,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genWeaponRestr(mob,me,++showNumber,showFlag,"Weapon Restr.","NUMWEP","GETWEP");
 			genWeaponMaterials(mob,me,++showNumber,showFlag,"Weapon Materials","NUMWMAT","GETWMAT");
 			genOutfit(mob,me,++showNumber,showFlag);
+			promptStatStr(mob,me,++showNumber,showFlag,"Starting Money","MONEY");
 			genClassBuddy(mob,me,++showNumber,showFlag,"Stat-Modifying Class","STATCLASS");
 			genClassBuddy(mob,me,++showNumber,showFlag,"Special Events Class","EVENTCLASS");
 			promptStatChoices(mob,me,null,++showNumber,showFlag,"Sub Class Switch Rule","SUBRUL", CMParms.toStringArray(CharClass.SubClassRule.values()));

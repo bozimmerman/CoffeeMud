@@ -466,6 +466,12 @@ public class CharClassData extends StdWebMacro
 					if(CMath.s_int(old)<=0) old="Unlimited";
 					str.append(old+", ");
 				}
+				if(parms.containsKey("MONEY"))
+				{
+					String old=httpReq.getUrlParameter("MONEY");
+					if(old==null) old=C.getStartingMoney();
+					str.append(old+", ");
+				}
 				if(parms.containsKey("MAXCMS"))
 				{
 					String old=httpReq.getUrlParameter("MAXCMS");

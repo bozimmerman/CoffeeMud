@@ -465,6 +465,14 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	public String getMaxStatDesc();
 
 	/**
+	 * Returns a text string for amount of money for characters
+	 * starting as this character.  Can be a number, or something
+	 * like "485 gold".
+	 * @return a text string for starting money.
+	 */
+	public String getStartingMoney();
+
+	/**
 	 * Returns the highest class level that can be achieved
 	 * by a player who has this class.  Once this level is
 	 * reached, the class behaves as it is were levelless.

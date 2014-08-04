@@ -364,6 +364,10 @@
             <TD><SELECT NAME=SUBRUL>@CharClassData?SUBRUL@</SELECT></TD>
         </TR>
         <TR>
+            <TD><FONT COLOR=YELLOW>Starting Money: </FONT></TD>
+            <TD><INPUT TYPE=TEXT SIZE=50 NAME=MONEY VALUE="@CharClassData?MONEY@"></TD>
+        </TR>
+        <TR>
             <TD><FONT COLOR=YELLOW>Help Entry: </FONT></TD>
             <TD><TEXTAREA ROWS=10 COLS=55 NAME=GENHELP>@CharClassData?GENHELP@</TEXTAREA></TD>
         </TR>

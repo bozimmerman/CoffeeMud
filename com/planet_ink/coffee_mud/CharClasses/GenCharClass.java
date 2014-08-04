@@ -105,10 +105,12 @@ public class GenCharClass extends StdCharClass
 	protected CharClass statBuddy=null;
 	protected CharClass eventBuddy=null;
 	protected int disableFlags=0;
+	protected String startingMoney="";
 	@Override public boolean raceless(){return (disableFlags&CharClass.GENFLAG_NORACE)==CharClass.GENFLAG_NORACE;}
 	@Override public boolean leveless(){return (disableFlags&CharClass.GENFLAG_NOLEVELS)==CharClass.GENFLAG_NOLEVELS;}
 	@Override public boolean expless(){return (disableFlags&CharClass.GENFLAG_NOEXP)==CharClass.GENFLAG_NOEXP;}
 	@Override public boolean showThinQualifyList(){return (disableFlags&CharClass.GENFLAG_THINQUALLIST)==CharClass.GENFLAG_THINQUALLIST;}
+	@Override public String getStartingMoney() { return startingMoney; }
 
 	//protected Vector outfitChoices=null; from stdcharclass -- but don't forget them!
 	protected List<String>[] securityGroups=new List[0];
@@ -448,6 +450,7 @@ public class GenCharClass extends StdCharClass
 			str.append(CMLib.xml().convertXMLtoTag("SSET"+i,CMParms.combineWithQuotes(securityGroups[i],0)));
 			str.append(CMLib.xml().convertXMLtoTag("SSETLEVEL"+i,securityGroupLevels[i].intValue()));
 		}
+		str.append(CMLib.xml().convertXMLtoTag("MONEY",startingMoney));
 		str.append(CMLib.xml().convertXMLtoTag("ARMORMINOR",""+requiredArmorSourceMinor));
 		str.append(CMLib.xml().convertXMLtoTag("STATCLASS",getCharClassLocatorID(statBuddy)));
 		str.append(CMLib.xml().convertXMLtoTag("EVENTCLASS",getCharClassLocatorID(eventBuddy)));
@@ -684,6 +687,8 @@ public class GenCharClass extends StdCharClass
 		securityGroupCache.clear();
 
 		requiredArmorSourceMinor=CMLib.xml().getIntFromPieces(classData,"ARMORMINOR");
+		startingMoney=CMLib.xml().getValFromPieces(classData,"MONEY");
+		if(startingMoney==null) startingMoney="";
 		setStat("STATCLASS",CMLib.xml().getValFromPieces(classData,"STATCLASS"));
 		setStat("EVENTCLASS",CMLib.xml().getValFromPieces(classData,"EVENTCLASS"));
 		xtraValues=CMProps.getExtraStatCodesHolder(this);
@@ -724,7 +729,8 @@ public class GenCharClass extends StdCharClass
 									 "STARTASTATE","NUMNAME","NAMELEVEL","NUMSSET","SSET",
 									 "SSETLEVEL","NUMWMAT","GETWMAT","ARMORMINOR","STATCLASS",
 									 "EVENTCLASS","GETCABLEPREQ","GETCABLEMASK","HELP","LEVELCAP",
-									 "GETCABLEMAXP","MAXNCS","MAXCRS","MAXCMS","MAXLGS","GETSTATMIN"
+									 "GETCABLEMAXP","MAXNCS","MAXCRS","MAXCMS","MAXLGS","GETSTATMIN",
+									 "MONEY"
 									 };
 
 	@Override
@@ -809,6 +815,7 @@ public class GenCharClass extends StdCharClass
 		case 58: return ""+maxCommonSkills;
 		case 59: return ""+maxLanguages;
 		case 60: return getMinimumStatRequirements()[num].second.toString();
+		case 61: return startingMoney;
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -1021,6 +1028,7 @@ public class GenCharClass extends StdCharClass
 		case 58: maxCommonSkills=CMath.s_int(val); break;
 		case 59: maxLanguages=CMath.s_int(val); break;
 		case 60: minimumStatRequirements[num].second=Integer.valueOf(CMath.s_int(val)); break;
+		case 61: startingMoney=val; break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
