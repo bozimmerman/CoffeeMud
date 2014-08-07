@@ -415,7 +415,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean isDeadlyOrMaliciousEffect(final PhysicalAgent P)
 	{
 		if(P==null) return false;
-		if(CMLib.flags().flaggedBehaviors(P, Behavior.FLAG_POTENTIALLYAUTODEATHING).size()>0)
+		if(flaggedBehaviors(P, Behavior.FLAG_POTENTIALLYAUTODEATHING).size()>0)
 			return true;
 		if(isTrapped(P))
 			return true;
@@ -441,7 +441,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean isPossiblyAggressive(MOB M)
 	{
 		if(M==null) return false;
-		final List<Behavior> V=CMLib.flags().flaggedBehaviors(M,Behavior.FLAG_POTENTIALLYAGGRESSIVE);
+		final List<Behavior> V=flaggedBehaviors(M,Behavior.FLAG_POTENTIALLYAGGRESSIVE);
 		return ((V==null)||(V.size()==0))? false:true;
 	}
 
@@ -449,7 +449,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean isAggressiveTo(MOB M, MOB toM)
 	{
 		if((M==null)||(toM==null)) return false;
-		final List<Behavior> V=CMLib.flags().flaggedBehaviors(M,Behavior.FLAG_POTENTIALLYAGGRESSIVE);
+		final List<Behavior> V=flaggedBehaviors(M,Behavior.FLAG_POTENTIALLYAGGRESSIVE);
 		if((V==null)||(V.size()==0)) return false;
 		for(final Behavior B : V)
 			if(B.grantsAggressivenessTo(toM))
@@ -1546,37 +1546,37 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public String describeDisposition(MOB mob)
 	{
 		final StringBuilder str=new StringBuilder("");
-		if(CMLib.flags().isClimbing(mob))
+		if(isClimbing(mob))
 			str.append("climbing, ");
 		if((mob.phyStats().disposition()&PhyStats.IS_EVIL)>0)
 			str.append("evil, ");
-		if(CMLib.flags().isFalling(mob))
+		if(isFalling(mob))
 			str.append("falling, ");
-		if(CMLib.flags().isBound(mob))
+		if(isBound(mob))
 			str.append("bound, ");
-		if(CMLib.flags().isFlying(mob))
+		if(isFlying(mob))
 			str.append("flies, ");
 		if((mob.phyStats().disposition()&PhyStats.IS_GOOD)>0)
 			str.append("good, ");
-		if(CMLib.flags().isHidden(mob))
+		if(isHidden(mob))
 			str.append("hidden, ");
-		if(CMLib.flags().isInDark(mob))
+		if(isInDark(mob))
 			str.append("darkness, ");
-		if(CMLib.flags().isInvisible(mob))
+		if(isInvisible(mob))
 			str.append("invisible, ");
-		if(CMLib.flags().isGlowing(mob))
+		if(isGlowing(mob))
 			str.append("glowing, ");
-		if(CMLib.flags().isCloaked(mob))
+		if(isCloaked(mob))
 			str.append("cloaked, ");
-		if(!CMLib.flags().isSeen(mob))
+		if(!isSeen(mob))
 			str.append("unseeable, ");
-		if(CMLib.flags().isSitting(mob))
+		if(isSitting(mob))
 			str.append("crawls, ");
-		if(CMLib.flags().isSleeping(mob))
+		if(isSleeping(mob))
 			str.append("sleepy, ");
-		if(CMLib.flags().isSneaking(mob))
+		if(isSneaking(mob))
 			str.append("sneaks, ");
-		if(CMLib.flags().isSwimming(mob))
+		if(isSwimming(mob))
 			str.append("swims, ");
 		if(str.toString().endsWith(", "))
 			return str.toString().substring(0,str.length()-2);
@@ -1587,35 +1587,35 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public String describeSenses(MOB mob)
 	{
 		final StringBuilder str=new StringBuilder("");
-		if(!CMLib.flags().canHear(mob))
+		if(!canHear(mob))
 			str.append("deaf, ");
-		if(!CMLib.flags().canSee(mob))
+		if(!canSee(mob))
 			str.append("blind, ");
-		if(!CMLib.flags().canMove(mob))
+		if(!canMove(mob))
 			str.append("can't move, ");
-		if(CMLib.flags().canSeeBonusItems(mob))
+		if(canSeeBonusItems(mob))
 			str.append(_("detect magic, "));
-		if(CMLib.flags().canSeeEvil(mob))
+		if(canSeeEvil(mob))
 			str.append(_("detect evil, "));
-		if(CMLib.flags().canSeeGood(mob))
+		if(canSeeGood(mob))
 			str.append(_("detect good, "));
-		if(CMLib.flags().canSeeHidden(mob))
+		if(canSeeHidden(mob))
 			str.append("see hidden, ");
-		if(CMLib.flags().canSeeInDark(mob))
+		if(canSeeInDark(mob))
 			str.append(_("darkvision, "));
-		if(CMLib.flags().canSeeInfrared(mob))
+		if(canSeeInfrared(mob))
 			str.append(_("infravision, "));
-		if(CMLib.flags().canSeeInvisible(mob))
+		if(canSeeInvisible(mob))
 			str.append(_("see invisible, "));
-		if(CMLib.flags().canSeeMetal(mob))
+		if(canSeeMetal(mob))
 			str.append(_("metalvision, "));
-		if(CMLib.flags().canSeeSneakers(mob))
+		if(canSeeSneakers(mob))
 			str.append(_("see sneaking, "));
-		if(!CMLib.flags().canSmell(mob))
+		if(!canSmell(mob))
 			str.append("can't smell, ");
-		if(!CMLib.flags().canSpeak(mob))
+		if(!canSpeak(mob))
 			str.append("can't speak, ");
-		if(!CMLib.flags().canTaste(mob))
+		if(!canTaste(mob))
 			str.append("can't eat, ");
 		if(str.toString().endsWith(", "))
 			return str.toString().substring(0,str.length()-2);

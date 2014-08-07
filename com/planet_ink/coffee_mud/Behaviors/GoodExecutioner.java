@@ -14,8 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -68,8 +66,12 @@ public class GoodExecutioner  extends StdBehavior
 			if(CMLib.flags().isBoundOrHeld(M)) return false;
 			if(((!M.isMonster())&&(!doPlayers)))
 				return false;
-			if(CMLib.flags().isPossiblyAggressive(M))
-				return true;
+			final List<Behavior> V=CMLib.flags().flaggedBehaviors(M,Behavior.FLAG_POTENTIALLYAGGRESSIVE);
+			if((V!=null)
+			&&((V.size()>1)
+				||((V.size()==1)&&(!V.get(0).ID().equals(ID())))))
+					return true;
+			
 			return ((CMLib.flags().isEvil(M))||(M.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Thief")));
 		}
 		finally{ norecurse=false;}

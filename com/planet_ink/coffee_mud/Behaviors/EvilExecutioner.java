@@ -66,7 +66,7 @@ public class EvilExecutioner  extends StdBehavior
 		for(final Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
 		{
 			final Behavior B=e.nextElement();
-			if((B!=null)&&(B.grantsAggressivenessTo(M)))
+			if((B!=null)&&(B!=this)&&(B.grantsAggressivenessTo(M)))
 				return true;
 		}
 		return ((CMLib.flags().isGood(M))||(M.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Paladin")));
