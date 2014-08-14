@@ -2,6 +2,7 @@
    1. New GENERATEable themes in /resources/randreas/example.xml: forest, jungle, desert
    2. Generic Character Classes now support starting money values. (Standard support requires code).
    3. Socials action cost can now be controlled and tweeked from ini file/control panel.
+   *. so much to do....
    *. finish landing detector, and set in-air flag for spaceships
    *. finish the dadgum engine thrust adjustment! in GenSpaceShip
    *. interacting items of diff tech level might damage each other
