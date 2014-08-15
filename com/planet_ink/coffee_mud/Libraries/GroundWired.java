@@ -308,9 +308,10 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			final SpaceObject O=o.nextElement();
 			if(!(O instanceof Area))
 			{
-				if((O instanceof SpaceShip)
-				&&(((SpaceShip)O).getShipArea()!=null)
-				&&(((SpaceShip)O).getShipArea().getAreaState()!=Area.State.ACTIVE))
+				final SpaceShip S=(O instanceof SpaceShip)?(SpaceShip)O:null;
+				if((S!=null)
+				&&(S.getShipArea()!=null)
+				&&(S.getShipArea().getAreaState()!=Area.State.ACTIVE))
 					continue;
 				BoundedCube cube=O.getBounds();
 				if(O.speed()>0)
@@ -324,27 +325,54 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					{
 						if(cO.getBounds().intersects(cube))
 						{
-							//TODO: we have a collision! or landing
-							// if destroyed, break
+							if(S!=null)
+							{
+								if((S.speed() <= SpaceObject.ACCELLERATION_DAMAGED)
+								&&(cO instanceof Area))
+								{
+									long shortestDistance=Long.MAX_VALUE;
+									LocationRoom LR = null;
+									for(final Enumeration<Room> r=((Area)cO).getMetroMap();r.hasMoreElements();)
+									{
+										final Room R2=r.nextElement();
+										if((R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+										&&(R2 instanceof LocationRoom))
+										{
+											long distanceFrom=CMLib.map().getDistanceFrom(O.coordinates(), LR.coordinates());
+											if(distanceFrom<shortestDistance)
+											{
+												shortestDistance=distanceFrom;
+												LR=(LocationRoom)R2;
+											}
+										}
+									}
+									if(LR!=null)
+									{
+										S.dockHere(LR);
+										//TODO: send a message! End speed, set location and so forth
+									}
+									else
+									{
+										//TODO: send landing notice, ensure not in bounds...
+									}
+								}
+								else
+								{
+									//TODO: send a collision message!
+								}
+							}
+							else
+							{
+								//TODO: send a collision message? Do nothing?
+							}
 						}
 						else
 						if(((cO instanceof Area)||(cO.getMass() > (SpaceObject.MULTIPLIER_PLANET_MASS/4)))
-						&&((CMLib.map().getDistanceFrom(O, cO)-cO.radius())<=(cO.radius()*SpaceObject.MULTIPLIER_GRAVITY_RADIUS)))
+						&&(CMLib.map().getDistanceFrom(O, cO)-cO.radius())<=(cO.radius()*SpaceObject.MULTIPLIER_GRAVITY_RADIUS))
 						{
 							final double[] directionTo=CMLib.map().getDirection(O, cO);
 							CMLib.map().moveSpaceObject(O, directionTo, SpaceObject.ACCELLERATION_G);
-							final double[] directionGoing=O.direction();
-							final long planetRadius = cO.radius();
-							//TODO: if direction is now mostly in the direction of gravity, consider landing.
-							//use planet radius to find a range of angles that constitutes "toward" the 
-							//planet.  If direction right, and distance below ship radius, then it happened.
-							//If it happened, and speed is too high, register a crash, otherwise, a landing.  
 						}
-						//TODO: we might also have a landing, or something near one...
-						// maybe good to use the entryset<o,list> so you always have
-						// the nearby things.
-						// when moving ships, collisions are better if you are looking
-						// in a radius that includes the speed.
 					}
 			}
 		}
