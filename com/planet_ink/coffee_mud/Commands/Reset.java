@@ -408,6 +408,62 @@ public class Reset extends StdCommand
 				mob.tell(_("Can't reset that trait -- as its not defined."));
 		}
 		else
+		if(s.equalsIgnoreCase("roomids")&&(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDROOMS)))
+		{
+			final Area A=mob.location().getArea();
+			boolean somethingDone=false;
+			int number=0;
+			for(final Enumeration e=A.getCompleteMap();e.hasMoreElements();)
+			{
+				Room R=(Room)e.nextElement();
+				if((R.roomID().length()>0)&&(CMLib.map().getRoom(A.Name()+"#"+(number++))!=null))
+				{
+					mob.tell(_("Can't renumber rooms -- a number is too low."));
+					somethingDone=true;
+					break;
+				}
+			}
+			number=0;
+			if(!somethingDone)
+			for(final Enumeration e=A.getCompleteMap();e.hasMoreElements();)
+			{
+				Room R=(Room)e.nextElement();
+				synchronized(("SYNC"+R.roomID()).intern())
+				{
+					R=CMLib.map().getRoom(R);
+					if(R.roomID().length()>0)
+					{
+						final String oldID=R.roomID();
+						R.setRoomID(A.Name()+"#"+(number++));
+						CMLib.database().DBReCreate(R,oldID);
+						try
+						{
+							for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+							{
+								Room R2=(Room)r.nextElement();
+								R2=CMLib.map().getRoom(R2);
+								if(R2!=R)
+								for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+									if(R2.rawDoors()[d]==R)
+									{
+										CMLib.database().DBUpdateExits(R2);
+										break;
+									}
+							}
+						}catch(final NoSuchElementException nse){}
+						if(R instanceof GridLocale)
+							R.getArea().fillInAreaRoom(R);
+						somethingDone=true;
+						mob.tell(_("Room @x1 changed to @x2.",oldID,R.roomID()));
+					}
+				}
+			}
+			if(!somethingDone)
+				mob.tell(_("No rooms were found which needed renaming."));
+			else
+				mob.tell(_("Done renumbering rooms."));
+		}
+		else
 		if(s.equalsIgnoreCase("arearoomids")&&(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDROOMS)))
 		{
 			final Area A=mob.location().getArea();
