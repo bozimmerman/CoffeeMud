@@ -388,7 +388,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		val.absoluteGoldPrice=CMath.mul(prejudiceFactor,val.absoluteGoldPrice);
 
 		// the price is 200% at 0 charisma, and 100% at 35
-		if(seller.isMonster())
+		if(seller.isMonster() && (!CMLib.flags().isGolem(seller)))
 			val.absoluteGoldPrice=val.absoluteGoldPrice
 								 +val.absoluteGoldPrice
 								 -CMath.mul(val.absoluteGoldPrice,CMath.div(buyer.charStats().getStat(CharStats.STAT_CHARISMA),35.0));
