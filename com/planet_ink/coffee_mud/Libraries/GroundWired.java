@@ -322,25 +322,27 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				for(final SpaceObject cO : cOs)
 					if(cO != O)
 					{
-						if(((cO instanceof Area)||(cO.getMass() > (SpaceObject.MULTIPLIER_PLANET_MASS/4)))
-						&&((CMLib.map().getDistanceFrom(O, cO)-cO.radius())<=(cO.radius()*SpaceObject.MULTIPLIER_GRAVITY_RADIUS))
-						&&(!cO.getBounds().intersects(cube)))
-						{
-							final double[] directionTo=CMLib.map().getDirection(O, cO);
-							CMLib.map().moveSpaceObject(O, directionTo, SpaceObject.ACCELLERATION_G);
-							//TODO: if direction is now mostly in the direction of gravity, consider landing.
-							//TODO: gravity
-						}
 						if(cO.getBounds().intersects(cube))
 						{
 							//TODO: we have a collision! or landing
 							// if destroyed, break
 						}
+						else
+						if(((cO instanceof Area)||(cO.getMass() > (SpaceObject.MULTIPLIER_PLANET_MASS/4)))
+						&&((CMLib.map().getDistanceFrom(O, cO)-cO.radius())<=(cO.radius()*SpaceObject.MULTIPLIER_GRAVITY_RADIUS)))
+						{
+							final double[] directionTo=CMLib.map().getDirection(O, cO);
+							CMLib.map().moveSpaceObject(O, directionTo, SpaceObject.ACCELLERATION_G);
+							final double[] directionGoing=O.direction();
+							final long planetRadius = cO.radius();
+							//TODO: if direction is now mostly in the direction of gravity, consider landing.
+							//use planet radius to find a range of angles that constitutes "toward" the 
+							//planet.  If direction right, and distance below ship radius, then it happened.
+							//If it happened, and speed is too high, register a crash, otherwise, a landing.  
+						}
 						//TODO: we might also have a landing, or something near one...
 						// maybe good to use the entryset<o,list> so you always have
 						// the nearby things.
-						// this is important because this needs to do gravity also.
-						// do gravity first.
 						// when moving ships, collisions are better if you are looking
 						// in a radius that includes the speed.
 					}
