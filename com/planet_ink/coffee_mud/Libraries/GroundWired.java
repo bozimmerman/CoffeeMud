@@ -314,64 +314,32 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				&&(S.getShipArea().getAreaState()!=Area.State.ACTIVE))
 					continue;
 				BoundedCube cube=O.getBounds();
-				if(O.speed()>0)
+				final long speed=O.speed();
+				if(speed>0)
 				{
 					CMLib.map().moveSpaceObject(O);
-					cube=cube.expand(O.direction(),O.speed());
+					cube=cube.expand(O.direction(),speed);
 				}
 				final List<SpaceObject> cOs=CMLib.map().getSpaceObjectsWithin(O, 0, SpaceObject.Distance.LightMinute.dm);
 				for(final SpaceObject cO : cOs)
 					if(cO != O)
 					{
-						if(cO.getBounds().intersects(cube))
-						{
-							if(S!=null)
-							{
-								if((S.speed() <= SpaceObject.ACCELLERATION_DAMAGED)
-								&&(cO instanceof Area))
-								{
-									long shortestDistance=Long.MAX_VALUE;
-									LocationRoom LR = null;
-									for(final Enumeration<Room> r=((Area)cO).getMetroMap();r.hasMoreElements();)
-									{
-										final Room R2=r.nextElement();
-										if((R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-										&&(R2 instanceof LocationRoom))
-										{
-											long distanceFrom=CMLib.map().getDistanceFrom(O.coordinates(), LR.coordinates());
-											if(distanceFrom<shortestDistance)
-											{
-												shortestDistance=distanceFrom;
-												LR=(LocationRoom)R2;
-											}
-										}
-									}
-									if(LR!=null)
-									{
-										S.dockHere(LR);
-										//TODO: send a message! End speed, set location and so forth
-									}
-									else
-									{
-										//TODO: send landing notice, ensure not in bounds...
-									}
-								}
-								else
-								{
-									//TODO: send a collision message!
-								}
-							}
-							else
-							{
-								//TODO: send a collision message? Do nothing?
-							}
-						}
-						else
 						if(((cO instanceof Area)||(cO.getMass() > (SpaceObject.MULTIPLIER_PLANET_MASS/4)))
 						&&(CMLib.map().getDistanceFrom(O, cO)-cO.radius())<=(cO.radius()*SpaceObject.MULTIPLIER_GRAVITY_RADIUS))
 						{
 							final double[] directionTo=CMLib.map().getDirection(O, cO);
-							CMLib.map().moveSpaceObject(O, directionTo, SpaceObject.ACCELLERATION_G);
+							CMLib.map().moveSpaceObject(O, directionTo, SpaceObject.ACCELLERATION_G); // can this cause slip-through?
+							cube=cube.expand(directionTo,SpaceObject.ACCELLERATION_G);
+						}
+						if(cO.getBounds().intersects(cube))
+						{
+							final MOB host=CMLib.map().deity();
+							CMMsg msg=CMClass.getMsg(host, O, cO, CMMsg.MSG_COLLISION, null);
+							if(O.okMessage(host, msg))
+								O.executeMsg(host, msg);
+							CMMsg msg2=CMClass.getMsg(host, cO, O, CMMsg.MSG_COLLISION, null);
+							if(cO.okMessage(host, msg2))
+								cO.executeMsg(host, msg2);
 						}
 					}
 			}

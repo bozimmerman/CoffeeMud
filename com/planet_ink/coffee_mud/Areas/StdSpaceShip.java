@@ -550,6 +550,35 @@ public class StdSpaceShip implements Area, SpaceShip
 				}
 				break;
 			case CMMsg.TYP_COLLISION:
+				if((speed() <= SpaceObject.ACCELLERATION_DAMAGED)
+				&&(msg.tool() instanceof Area))
+				{
+					long shortestDistance=Long.MAX_VALUE;
+					LocationRoom LR = null;
+					for(final Enumeration<Room> r=((Area)msg.tool()).getMetroMap();r.hasMoreElements();)
+					{
+						final Room R2=r.nextElement();
+						if((R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+						&&(R2 instanceof LocationRoom))
+						{
+							long distanceFrom=CMLib.map().getDistanceFrom(coordinates(), ((LocationRoom)R2).coordinates());
+							if(distanceFrom<shortestDistance)
+							{
+								shortestDistance=distanceFrom;
+								LR=(LocationRoom)R2;
+							}
+						}
+					}
+					if(LR!=null)
+					{
+						dockHere(LR);
+						//TODO: End speed, set location and so forth
+					}
+					else
+					{
+						//TODO: landing notice, ensure not in bounds...
+					}
+				}
 				//TODO: lots -- figure out what got damaged, for one!
 				break;
 			}

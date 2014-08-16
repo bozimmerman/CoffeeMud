@@ -123,7 +123,7 @@
 			<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
 			<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
 		</DISPLAY>
-	<DESCRIPTION>$mob_name is majestic, but simply being in its presence makes you uneasy.</DESCRIPTION>
+	<DESCRIPTION>$mob_name is dangerous, scaly, sharp, and terrifying.</DESCRIPTION>
 	<BEHAVIOR select="all">
 		<BEHAVIOR condition="$mob_level>=40" class="MOBEater" parms="" />
 		<BEHAVIOR class="CombatAbilities" parms="" />
