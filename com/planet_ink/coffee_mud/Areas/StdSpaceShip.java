@@ -517,33 +517,41 @@ public class StdSpaceShip implements Area, SpaceShip
 
 		if(msg.amITarget(this))
 		{
-			if((msg.targetMinor()==CMMsg.TYP_ACTIVATE)&&(CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+			switch(msg.targetMinor())
 			{
-				final String[] parts=msg.targetMessage().split(" ");
-				final TechCommand command=TechCommand.findCommand(parts);
-				if(command!=null)
+			case CMMsg.TYP_ACTIVATE:
+				if(CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
 				{
-					final Object[] parms=command.confirmAndTranslate(parts);
-					if(parms!=null)
+					final String[] parts=msg.targetMessage().split(" ");
+					final TechCommand command=TechCommand.findCommand(parts);
+					if(command!=null)
 					{
-						if((command==Technical.TechCommand.AIRREFRESH)&&(staleAirList.size()>0))
+						final Object[] parms=command.confirmAndTranslate(parts);
+						if(parms!=null)
 						{
-							final double pct=((Double)parms[0]).doubleValue();
-							final int atmoResource=((Integer)parms[1]).intValue();
-							int numToClear=(int)Math.round(CMath.mul(staleAirList.size(),pct));
-							while((numToClear>0)&&(staleAirList.size()>0))
+							if((command==Technical.TechCommand.AIRREFRESH)&&(staleAirList.size()>0))
 							{
-								final String roomID=staleAirList.iterator().next();
-								staleAirList.remove(roomID);
-								changeRoomAir(getRoom(roomID),null,atmoResource);
-								numToClear--;
+								final double pct=((Double)parms[0]).doubleValue();
+								final int atmoResource=((Integer)parms[1]).intValue();
+								int numToClear=(int)Math.round(CMath.mul(staleAirList.size(),pct));
+								while((numToClear>0)&&(staleAirList.size()>0))
+								{
+									final String roomID=staleAirList.iterator().next();
+									staleAirList.remove(roomID);
+									changeRoomAir(getRoom(roomID),null,atmoResource);
+									numToClear--;
+								}
+								changeRoomAir(getRandomMetroRoom(),null,atmoResource);
+								for(final Pair<Room,Integer> p  : shipExitCache)
+									changeRoomAir(p.first,null,atmoResource);
 							}
-							changeRoomAir(getRandomMetroRoom(),null,atmoResource);
-							for(final Pair<Room,Integer> p  : shipExitCache)
-								changeRoomAir(p.first,null,atmoResource);
 						}
 					}
 				}
+				break;
+			case CMMsg.TYP_COLLISION:
+				//TODO: lots -- figure out what got damaged, for one!
+				break;
 			}
 		}
 	}
