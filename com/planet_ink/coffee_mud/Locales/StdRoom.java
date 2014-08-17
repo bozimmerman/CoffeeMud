@@ -1947,22 +1947,54 @@ public class StdRoom implements Room
 	@Override
 	public void addItem(Item item, Expire expire)
 	{
-		addItem(item);
-		if(expire == null) expire=Expire.Never;
+		if(expire == null)
+		{
+			expire=Expire.Never;
+		}
 		int numMins = 0;
 		switch(expire)
 		{
-		case Monster_EQ: numMins = CMProps.getIntVar(CMProps.Int.EXPIRE_MONSTER_EQ); break;
-		case Monster_Body: numMins = CMProps.getIntVar(CMProps.Int.EXPIRE_MONSTER_BODY); break;
-		case Player_Body: numMins = CMProps.getIntVar(CMProps.Int.EXPIRE_PLAYER_BODY); break;
-		case Player_Drop: numMins = CMProps.getIntVar(CMProps.Int.EXPIRE_PLAYER_DROP); break;
-		case Resource: numMins = CMProps.getIntVar(CMProps.Int.EXPIRE_RESOURCE); break;
-		case Never: break;
+		case Monster_EQ: 
+			addItem(item);
+			numMins = CMProps.getIntVar(CMProps.Int.EXPIRE_MONSTER_EQ); 
+			break;
+		case Monster_Body: 
+			insertItemUpTop(item);
+			numMins = CMProps.getIntVar(CMProps.Int.EXPIRE_MONSTER_BODY); 
+			break;
+		case Player_Body: 
+			insertItemUpTop(item);
+			numMins = CMProps.getIntVar(CMProps.Int.EXPIRE_PLAYER_BODY); 
+			break;
+		case Player_Drop: 
+			addItem(item);
+			numMins = CMProps.getIntVar(CMProps.Int.EXPIRE_PLAYER_DROP); 
+			break;
+		case Resource: 
+			addItem(item);
+			numMins = CMProps.getIntVar(CMProps.Int.EXPIRE_RESOURCE); 
+			break;
+		case Never: 
+			addItem(item);
+			break;
 		}
 		if(numMins==0)
 			item.setExpirationDate(0);
 		else
 			item.setExpirationDate(System.currentTimeMillis()+(numMins * TimeManager.MILI_MINUTE));
+	}
+
+	protected void insertItemUpTop(Item item)
+	{
+		if((item!=null)&&(!item.amDestroyed()))
+		{
+			item.setOwner(this);
+			if(contents.size()>0)
+				contents.add(0,item);
+			else
+				contents.add(item);
+			item.recoverPhyStats();
+		}
 	}
 
 	@Override
