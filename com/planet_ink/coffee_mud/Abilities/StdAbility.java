@@ -1254,7 +1254,8 @@ public class StdAbility implements Ability
 		if((mob!=null)
 		&&(mob.session()!=null)
 		&&(mob.soulMate()==null)
-		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COMPONENTS)))
+		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COMPONENTS))
+		)
 		{
 			final Vector<AbilityComponent> componentsRequirements=(Vector<AbilityComponent>)CMLib.ableMapper().getAbilityComponentMap().get(ID().toUpperCase());
 			if(componentsRequirements!=null)
