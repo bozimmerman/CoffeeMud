@@ -60,8 +60,6 @@ public class MoneyChanger extends StdBehavior
 
 	protected final Map<String,Double> getRatesFor(final Environmental affecting, String currency)
 	{
-		if(spaceMaxCut<=0.0)
-			return rates;
 		currency=currency.toUpperCase();
 		if(rates.containsKey(currency))
 			return rates;
@@ -71,6 +69,8 @@ public class MoneyChanger extends StdBehavior
 			rates.put(currency, Double.valueOf(cut));
 			return rates;
 		}
+		if(spaceMaxCut<=0.0)
+			return rates;
 		SpaceObject homeO=CMLib.map().getSpaceObject(affecting, false);
 		if(homeO!=null)
 		{
