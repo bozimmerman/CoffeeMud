@@ -1,0 +1,219 @@
+<!--  
+   Copyright 2013-2014 Bo Zimmerman
+
+   Licensed under the Apache License</STRING><STRING>Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+	   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing</STRING><STRING>software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND</STRING><STRING>either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!--  include file full of rocky-specific tags -->
+
+<ROOM id="rocky_street_rooms">
+	<ROOM class="Mountains" id="rocky_street_room" condition="$theme='rocky' or $theme='random'">
+		<TITLE>(a(n)) $_rocky_path_name</TITLE>
+		<DESCRIPTION>$rocky_street_desc</DESCRIPTION>
+		<STRING id="rocky_street_desc" select="all">
+			<STRING select="any-1" action="PREPEND">
+				<STRING condition="$_rocky_path_roomtype=1">You are working your way along (a(n)) ${l:_rocky_path_name}. </STRING>
+				<STRING condition="$_rocky_path_roomtype=1">You are on (a(n)) ${l:_rocky_path_name}. </STRING>
+				<STRING condition="$_rocky_path_roomtype=1">The ${l:_rocky_path_name} goes through the $rocky_nouns. </STRING>
+				<STRING condition="$_rocky_path_roomtype=1">(A(n)) ${l:_rocky_path_name} runs through the $rocky_nouns. </STRING>
+				<STRING condition="$_rocky_path_roomtype=1">You are inching your way through (a(n)) ${l:_rocky_path_name}. </STRING>
+				<STRING condition="$_rocky_path_roomtype=0">You are lost in (a(n)) ${l:_rocky_path_name}. </STRING>
+				<STRING condition="$_rocky_path_roomtype=0">You are deep in (a(n)) ${l:_rocky_path_name}. </STRING>
+				<STRING condition="$_rocky_path_roomtype=0">The ${l:_rocky_path_name} surrounds you. </STRING>
+				<STRING condition="$_rocky_path_roomtype=0">The ${l:_rocky_path_name} is all around you. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING condition="$_rocky_path_roomtype=1">The $_rocky_path_type is crossed by $adj_sparse cacti and plants. Desolation otherwise surrounds you. </STRING>
+				<STRING condition="$_rocky_path_roomtype=1">Tracks in the $adj_soft_sands sands make the $_rocky_path_type easier to follow here. </STRING>
+				<STRING condition="$_rocky_path_roomtype=1">${c:adj_phys_size_tall} dunes curve around the $_rocky_path_type like a wall. </STRING>
+				<STRING condition="$_rocky_path_roomtype=1">The plant life here is $adj_sparse enough here to make the $_rocky_path_type desolate and dead. </STRING>
+				<STRING condition="$_rocky_path_roomtype=0">The sands of $areaname are $adj_phys_size_large and gold, dunes rise in $adj_impassable walls. </STRING>
+				<STRING condition="$_rocky_path_roomtype=0">You $verb_rocky_tread your way through the $noun_rocky_brush of the $adj_sparse desert. </STRING>
+				<STRING condition="$_rocky_path_roomtype=0">The desert surrounds you, $adj_sparse cacti making some directions prickly and $adj_impassable. </STRING>
+				<STRING condition="$_rocky_path_roomtype=0">You feel a $noun_rocky_wind blow around the $adj_sparse plants of the desert. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING condition="$_rocky_path_roomtype=1">The $_rocky_path_type continues $roomrun_desc_long.</STRING>
+				<STRING condition="$_rocky_path_roomtype=1">Beneath the narrow shadows of the dunes you can see the $_rocky_path_type running $roomrun_desc_long.</STRING>
+				<STRING condition="$_rocky_path_roomtype=1">The $_rocky_path_type runs $roomrun_desc_long.</STRING>
+				<STRING condition="$_rocky_path_roomtype=1">The faint $_rocky_path_type goes $roomrun_desc_long.</STRING>
+				<STRING condition="$_rocky_path_roomtype=0">It looks like you might pick your way $roomexits_desc_long.</STRING>
+				<STRING condition="$_rocky_path_roomtype=0">Openings in the $adj_sparse $noun_rocky_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING condition="$_rocky_path_roomtype=0">You can $verb_rocky_tread on through $roomexits_desc_long.</STRING>
+				<STRING condition="$_rocky_path_roomtype=0">You can continue $roomexits_desc_long.</STRING>
+			</STRING>
+		</STRING>
+		<EXIT class="Open" />
+		<MOB condition="1?2=1" select="any-1" insert="rocky_mobs" />
+	</ROOM>
+</ROOM>
+
+<ROOM id="rocky_interior_rooms">
+	<ROOM class="Mountains" like="rocky_street_room" condition="$theme='rocky' or $theme='random'" />
+</ROOM>
+
+<ROOM id="rocky_leaf_rooms">
+	<ROOM class="Mountains" id="rocky_interior_room" condition="$theme='rocky' or $theme='random'">
+		<TITLE>
+			<TITLE>$rocky_path_prefix $rocky_nouns</TITLE>
+		</TITLE>
+		<DESCRIPTION>$rocky_interior_desc</DESCRIPTION>
+		<STRING id="rocky_interior_desc" select="all">
+			<STRING select="any-1" action="PREPEND">
+				<STRING>You find yourself by a $adj_sparse copse of plants in the ${l:room_title}. </STRING>
+				<STRING>You are in a corner of the ${l:room_title}. </STRING>
+				<STRING>The ${rocky_nouns} surrounds you. </STRING>
+				<STRING>The ${rocky_nouns} is all around you. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING>The $adj_large dunes of $areaname are $adj_cramped around you in $adj_impassable walls. </STRING>
+				<STRING>You $verb_rocky_tread your way through the $noun_rocky_brush of the desert. </STRING>
+				<STRING>The desert surrounds you, ${adj_phys_size_tall} $adj_cramped dunes making some directions $adj_impassable. </STRING>
+				<STRING>You feel a $noun_rocky_wind blow over the $adj_phys_size_tall dunes of the $noun_rocky_wind_adj desert. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING>It looks like you might pick your way $roomexits_desc_long.</STRING>
+				<STRING>Openings in the $noun_rocky_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING>You can $verb_rocky_tread on through $roomexits_desc_long.</STRING>
+				<STRING>You can continue $roomexits_desc_long.</STRING>
+			</STRING>
+		</STRING>
+		<EXIT class="Open" />
+		<MOB condition="$__defined_rocky_dragon&lt;1" define="__defined_rocky_dragon+=1" like="rocky_dragon_mob" />
+		<MOB condition="1?2=1" select="any-1" insert="rocky_mobs" />
+		<ITEM condition="1?4=1" select="any-1">
+			<ITEM class="GenContainer" name="A $adj_wooden_ragged chest" display="$item_name is here" HASLID="true" HASLOCK="false">
+				<CONTENT>
+					<ITEM select="any-5" insert="dungeon_treasure_items" />
+				</CONTENT>
+				<AFFECT class="Prop_Hidden" />
+			</ITEM>
+		</ITEM>
+	</ROOM>
+</ROOM>
+	
+<MOB class="GenMob" level="$level_range" id="rocky_dragon_mob" race="Dragon" gender="$anygender">
+	<NAME select="all">
+		<NAME condition="$mob_level<10">a hatchling $rocky_dragoncolor dragon</NAME>
+		<NAME condition="$mob_level<20 and $mob_level>=10">a very young $rocky_dragoncolor dragon</NAME>
+		<NAME condition="$mob_level<30 and $mob_level>=20">a young $rocky_dragoncolor dragon</NAME>
+		<NAME condition="$mob_level<40 and $mob_level>=30">a subadult $rocky_dragoncolor dragon</NAME>
+		<NAME condition="$mob_level<70 and $mob_level>=40">an adult $rocky_dragoncolor dragon</NAME>
+		<NAME condition="$mob_level<80 and $mob_level>=70">an old $rocky_dragoncolor dragon</NAME>
+		<NAME condition="$mob_level<85 and $mob_level>=80">a very old $rocky_dragoncolor dragon</NAME>
+		<NAME condition="$mob_level>=85">a ancient $rocky_dragoncolor dragon</NAME>
+	</NAME>
+		<DISPLAY select="pick-1">
+			<DISPLAY pickweight="1">$mob_name hovers over you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+			<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+		</DISPLAY>
+	<DESCRIPTION>$mob_name strikes terror in your very bones.</DESCRIPTION>
+	<BEHAVIOR select="all">
+		<BEHAVIOR condition="$mob_level>=40" class="MOBEater" parms="" />
+		<BEHAVIOR class="CombatAbilities" parms="" />
+		<BEHAVIOR class="ObjectGuardian" parms="" />
+	</BEHAVIOR>
+	<ABILITY select="all">
+		<ABILITY condition="$mob_level>=10" class="Skill_Trip" parms="" />
+		<ABILITY condition="$mob_level>=20" class="Dragonbreath" parms="" />
+		<ABILITY condition="$mob_level>=30" class="Spell_DetectInvisible" parms="" />
+		<ABILITY condition="$mob_level>=40" class="Spell_Fear" parms="" />
+		<ABILITY condition="$mob_level>=50" class="Spell_Hold" parms="" />
+		<ABILITY condition="$mob_level>=60" class="Spell_Slow" parms="" />
+		<ABILITY condition="$mob_level>=70" class="Spell_GravitySlam" parms="" />
+		<ABILITY condition="$mob_level>=80" class="Spell_SpellTurning" parms="" />
+		<ABILITY condition="$mob_level>=90" class="Spell_ResistSlashing" parms="" />
+	</ABILITY>
+</MOB>
+		
+<STRING id="rocky_dragoncolor" select="pick-1" define="rocky_dragoncolor">
+	<STRING pickweight=2 define="dragon_alignment=-10000">blue</STRING>
+	<STRING pickweight=1 define="dragon_alignment=-10000">red</STRING>
+</STRING>
+
+<MOB id="rocky_mob" select="any-1" requires="level_range=int,aggrochance=int">
+	<MOB id="rocky_mobs" select="all" requires="level_range=int,aggrochance=int">
+		<MOB class="genmob" copyof="Lizard" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Lizard" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Vulture" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Rabbit" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Rat" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Toad" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Spider" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Scorpion" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Zombie" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Rattlesnake" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Scorpion" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Rattlesnake" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="GiantScorpion" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Cobra" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+	</MOB>
+</MOB>
+
+<STRING id="noun_rocky_brush" select="any-1">
+    <STRING>sandscape</STRING>
+    <STRING>dunes</STRING>
+    <STRING>scrub<STRING>
+    <STRING>brush<STRING>
+    <STRING>cacti<STRING>
+    <STRING>desertscape<STRING>
+    <STRING>desert<STRING>
+</STRING>
+
+<STRING id="noun_rocky_wind_adj" select="any-1">
+    <STRING>stinging</STRING>
+    <STRING>scouring</STRING>
+    <STRING>scratchy<STRING>
+    <STRING>hot<STRING>
+    <STRING>burning<STRING>
+    <STRING>dry<STRING>
+</STRING>
+
+<STRING id="noun_rocky_wind" select="any-1">
+    <STRING>$noun_rocky_wind_adj wind</STRING>
+    <STRING>$noun_rocky_wind_adj breeze</STRING>
+    <STRING>$noun_rocky_wind_adj air<STRING>
+</STRING>
+
+<STRING id="verb_rocky_tread" select="any-1">
+    <STRING>drag</STRING>
+    <STRING>work</STRING>
+    <STRING>trample<STRING>
+    <STRING>tread<STRING>
+    <STRING>stomp<STRING>
+    <STRING>walk<STRING>
+    <STRING>shuffle<STRING>
+</STRING>
+
+<STRING id="_rocky_path_name" select="any-1" define="_rocky_path_name">
+	<STRING pickweight=2 define="_rocky_path_roomtype=1">$rocky_path_prefix $_rocky_path_type</STRING>
+	<STRING pickweight=2 define="_rocky_path_roomtype=0">$rocky_path_prefix $rocky_nouns</STRING>
+	<STRING pickweight=1 define="_rocky_path_roomtype=1">$adj_creepywords $rocky_path_prefix $_rocky_path_type</STRING>
+	<STRING pickweight=1 define="_rocky_path_roomtype=0">$adj_creepywords $rocky_path_prefix $rocky_nouns</STRING>
+</STRING>
+
+<STRING id="rocky_path_prefix" select="any-1">
+	<string>sandy</string><string>scorching</string><string>dry</string>
+	<string>arid</string><string>hot</string><string>prickly</string><string>forsaken</string>
+	<string>desolate</string><string>bare</string><string>parched</string>
+</STRING>
+
+<STRING id="rocky_nouns" select="any-1">
+	<string>desert</string><string>dunes</string><string>sands</string><string>plains</string>
+	<string>badlands</string><string>range</string><string>miles</string><string>dust bowl</string><string>plateau</string>
+</STRING>
+
+<STRING id="_rocky_path_type" define="_rocky_path_type" select="any-1">
+	<string>path</string><string>desert</string><string>pathway</string><string>dune</string>
+	<string>valley</string><string>stretch</string>
+</STRING>

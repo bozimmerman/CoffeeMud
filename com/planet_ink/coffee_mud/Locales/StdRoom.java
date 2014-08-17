@@ -790,7 +790,7 @@ public class StdRoom implements Room
 			{
 				if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
 					recoverRoomStats();
-				if(msg.source().playerStats()!=null)
+				if((msg.source().playerStats()!=null)&&(msg.source().soulMate()==null))
 				{
 					if(msg.source().playerStats().addRoomVisit(this))
 						CMLib.players().bumpPrideStat(msg.source(),AccountStats.PrideStat.ROOMS_EXPLORED, 1);

@@ -229,7 +229,7 @@ public class Bard extends StdCharClass
 					if(CMLib.leveler().postExperience((MOB)host,null,null,xpGain,true))
 						msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang()._("^HYou have discovered a new pub, you gain @x1 experience.^?",""+xpGain),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 				}
-				if(!mob.playerStats().hasVisited(A))
+				if((!mob.playerStats().hasVisited(A))&&(mob.soulMate()==null))
 				{
 					if(mob.playerStats().addRoomVisit(R))
 						CMLib.players().bumpPrideStat(mob,AccountStats.PrideStat.ROOMS_EXPLORED,1);
