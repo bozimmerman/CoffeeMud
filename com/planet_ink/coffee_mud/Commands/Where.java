@@ -507,9 +507,22 @@ public class Where extends StdCommand
 			}
 			msg.append(_("\n\r^HThe best areas for you to try appear to be: ^?\n\r\n\r"));
 			msg.append("^x"+CMStrings.padRight(_("Area Name"),35)+CMStrings.padRight(_("Level"),6)+CMStrings.padRight(_("Alignment"),20)+CMStrings.padRight(_("Pop"),10)+"^.^?\n\r");
+			final List<Area> finalScoreList = new ArrayList<Area>();
 			for(int i=scores.size()-1;((i>=0)&&(i>=(scores.size()-15)));i--)
+				finalScoreList.add((Area)scores.elementAt(i,1));
+			final int mobLevel=mob.phyStats().level();
+			Collections.sort(finalScoreList,new Comparator<Area>(){
+				@Override
+				public int compare(Area o1, Area o2)
+				{
+					final int lvlDiff1=Math.abs(mobLevel - o1.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()]);
+					final int lvlDiff2=Math.abs(mobLevel - o2.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()]);
+					return lvlDiff1==lvlDiff2?0:(lvlDiff1>lvlDiff2)?1:-1;
+				}
+				
+			});
+			for(Area A : finalScoreList)
 			{
-				final Area A=(Area)scores.elementAt(i,1);
 				final int lvl=A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
 				final int align=A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()];
 
