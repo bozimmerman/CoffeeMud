@@ -1487,7 +1487,7 @@ public class Create extends StdCommand
 						final Vector V=(Vector)commands.clone();
 						V.remove(2);
 						for(int i=0;i<num;i++)
-							if(!execute(mob,V,metaFlags))
+							if((!execute(mob,V,metaFlags))||(!CMLib.flags().isInTheGame(mob, true)))
 								return false;
 					}
 				}

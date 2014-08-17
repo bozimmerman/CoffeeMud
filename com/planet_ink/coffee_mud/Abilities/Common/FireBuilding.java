@@ -48,6 +48,7 @@ public class FireBuilding extends CommonSkill
 	protected boolean failed=false;
 
 	@Override protected boolean canBeDoneSittingDown() { return true; }
+	@Override protected boolean allowedInTheDark() { return true; }
 
 	@Override
 	public void unInvoke()

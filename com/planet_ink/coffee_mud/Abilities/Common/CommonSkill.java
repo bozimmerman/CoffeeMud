@@ -70,6 +70,8 @@ public class CommonSkill extends StdAbility
 
 	@Override public int usageType(){return USAGE_MOVEMENT;}
 
+	protected boolean allowedInTheDark() { return false; }
+	
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
 
@@ -529,7 +531,7 @@ public class CommonSkill extends StdAbility
 			return false;
 		}
 
-		if(!CMLib.flags().canBeSeenBy(mob.location(),mob))
+		if((!allowedInTheDark())&&(!CMLib.flags().canBeSeenBy(mob.location(),mob)))
 		{
 			commonTell(mob,_("<S-NAME> can't see to do that!"));
 			return false;

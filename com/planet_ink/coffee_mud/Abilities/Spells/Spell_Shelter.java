@@ -120,6 +120,7 @@ public class Spell_Shelter extends Spell
 		if(((msg.sourceMinor()==CMMsg.TYP_QUIT)
 			||(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
 			||((msg.targetMinor()==CMMsg.TYP_EXPIRE)&&(msg.target()==shelter))
+			||(msg.sourceMinor()==CMMsg.TYP_DEATH)
 			||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
 		&&(shelter!=null)
 		&&(shelter.isInhabitant(msg.source())))

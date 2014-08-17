@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -121,6 +120,7 @@ public class Thief_Hideout extends ThiefSkill
 	{
 		if(((msg.sourceMinor()==CMMsg.TYP_QUIT)
 			||(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+			||(msg.sourceMinor()==CMMsg.TYP_DEATH)
 			||((msg.targetMinor()==CMMsg.TYP_EXPIRE)&&(msg.target()==shelter))
 			||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
 		&&(shelter!=null)
