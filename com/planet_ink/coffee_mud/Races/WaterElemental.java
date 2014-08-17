@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -137,6 +136,18 @@ public class WaterElemental extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect condition.^N";
 	}
+	
+	@Override 
+	public DeadBody getCorpseContainer(MOB mob, Room room)
+	{
+		final DeadBody body = super.getCorpseContainer(mob, room);
+		if(body != null)
+		{
+			body.setMaterial(RawMaterial.RESOURCE_FRESHWATER);
+		}
+		return body;
+	}
+	
 	@Override
 	public List<RawMaterial> myResources()
 	{

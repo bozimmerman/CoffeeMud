@@ -190,6 +190,18 @@ public class Stone extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect condition.^N";
 	}
+	
+	@Override 
+	public DeadBody getCorpseContainer(MOB mob, Room room)
+	{
+		final DeadBody body = super.getCorpseContainer(mob, room);
+		if(body != null)
+		{
+			body.setMaterial(RawMaterial.RESOURCE_STONE);
+		}
+		return body;
+	}
+	
 	@Override
 	public List<RawMaterial> myResources()
 	{

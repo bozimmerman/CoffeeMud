@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -63,6 +62,17 @@ public class Jelly extends Unique
 		return naturalWeapon;
 	}
 
+	@Override 
+	public DeadBody getCorpseContainer(MOB mob, Room room)
+	{
+		final DeadBody body = super.getCorpseContainer(mob, room);
+		if(body != null)
+		{
+			body.setMaterial(RawMaterial.RESOURCE_BLOOD);
+		}
+		return body;
+	}
+	
 	@Override
 	public List<RawMaterial> myResources()
 	{
@@ -76,6 +86,7 @@ public class Jelly extends Unique
 		}
 		return resources;
 	}
+
 	@Override
 	public String makeMobName(char gender, int age)
 	{

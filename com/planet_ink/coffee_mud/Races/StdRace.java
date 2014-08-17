@@ -44,7 +44,7 @@ public class StdRace implements Race
 	protected static final int[] breatheWaterArray = new int[]{ RawMaterial.RESOURCE_FRESHWATER, RawMaterial.RESOURCE_SALTWATER };
 	protected static final int[] breatheAirWaterArray = new int[]{ RawMaterial.RESOURCE_AIR, RawMaterial.RESOURCE_FRESHWATER, RawMaterial.RESOURCE_SALTWATER };
 
-	private final int[]   	   agingChart={0,1,3,15,35,53,70,74,78};
+	private final int[]	   agingChart={0,1,3,15,35,53,70,74,78};
 	protected String	   baseStatChgDesc = null;
 	protected String	   sensesChgDesc = null;
 	protected String	   dispChgDesc = null;
@@ -60,8 +60,6 @@ public class StdRace implements Race
 						   racialEffectMap=null;
 
 	@Override public String   	name(){ return "StdRace"; }
-	protected int   	practicesAtFirstLevel(){return 0;}
-	protected int   	trainsAtFirstLevel(){return 0;}
 	@Override public int  		shortestMale(){return 24;}
 	@Override public int  		shortestFemale(){return 24;}
 	@Override public int  		heightVariance(){return 5;}
@@ -76,6 +74,9 @@ public class StdRace implements Race
 	@Override public int[]		bodyMask(){return parts;}
 	@Override public int[]		getAgingChart(){return agingChart;}
 	@Override public int[]		getBreathables() { return breatheAirArray; }
+	
+	protected int   	practicesAtFirstLevel(){return 0;}
+	protected int   	trainsAtFirstLevel(){return 0;}
 	protected String[]  racialEffectNames(){return null;}
 	protected int[] 	racialEffectLevels(){return null;}
 	protected String[]  racialEffectParms(){return null;}

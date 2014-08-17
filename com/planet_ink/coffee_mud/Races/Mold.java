@@ -162,6 +162,31 @@ public class Mold extends StdRace
 		return makeMobName('N',Race.AGE_MATURE);
 	}
 
+	@Override 
+	public DeadBody getCorpseContainer(MOB mob, Room room)
+	{
+		final DeadBody body = super.getCorpseContainer(mob, room);
+		if(body != null)
+		{
+			body.setMaterial(RawMaterial.RESOURCE_HERBS);
+		}
+		return body;
+	}
+	
+	@Override
+	public List<RawMaterial> myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+				("a palm-full of "+name().toLowerCase(),RawMaterial.RESOURCE_HERBS));
+			}
+		}
+		return resources;
+	}
+	
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{

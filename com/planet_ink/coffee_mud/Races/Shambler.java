@@ -138,6 +138,18 @@ public class Shambler extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect condition.^N";
 	}
+	
+	@Override 
+	public DeadBody getCorpseContainer(MOB mob, Room room)
+	{
+		final DeadBody body = super.getCorpseContainer(mob, room);
+		if(body != null)
+		{
+			body.setMaterial(RawMaterial.RESOURCE_GREENS);
+		}
+		return body;
+	}
+	
 	@Override
 	public List<RawMaterial> myResources()
 	{
@@ -147,7 +159,7 @@ public class Shambler extends StdRace
 			{
 				for(int i=0;i<3;i++)
 				resources.addElement(makeResource
-					("a pile of vegetation",RawMaterial.RESOURCE_VINE));
+					("a pile of vegetation",RawMaterial.RESOURCE_GREENS));
 			}
 		}
 		return resources;

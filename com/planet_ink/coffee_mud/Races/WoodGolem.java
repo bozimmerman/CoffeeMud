@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -115,6 +114,18 @@ public class WoodGolem extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect condition.^N";
 	}
+	
+	@Override 
+	public DeadBody getCorpseContainer(MOB mob, Room room)
+	{
+		final DeadBody body = super.getCorpseContainer(mob, room);
+		if(body != null)
+		{
+			body.setMaterial(RawMaterial.RESOURCE_WOOD);
+		}
+		return body;
+	}
+	
 	@Override
 	public List<RawMaterial> myResources()
 	{
@@ -123,7 +134,7 @@ public class WoodGolem extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("a pound of oak",RawMaterial.RESOURCE_OAK));
+					("a pound of wood",RawMaterial.RESOURCE_WOOD));
 				resources.addElement(makeResource
 					("essence of golem",RawMaterial.RESOURCE_BLOOD));
 			}
