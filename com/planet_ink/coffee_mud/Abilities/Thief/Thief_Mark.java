@@ -69,6 +69,18 @@ public class Thief_Mark extends ThiefSkill
 			ticks=0;
 			setMiscText("");
 		}
+		else
+		if((msg.target()==mark)
+		&&(msg.source()==invoker)
+		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
+		&&(CMLib.flags().canBeSeenBy(mark,msg.source())))
+		{
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,
+										  CMMsg.MSG_OK_VISUAL,_("\n\r^x@x1 is your mark.^?^.\n\r",mark.name(msg.source())),
+										  CMMsg.NO_EFFECT,null,
+										  CMMsg.NO_EFFECT,null));
+		}
+		
 		super.executeMsg(myHost,msg);
 	}
 

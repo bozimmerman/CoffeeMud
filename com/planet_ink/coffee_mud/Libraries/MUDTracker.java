@@ -968,15 +968,28 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 							final String inDir=((thisRoom instanceof SpaceShip)||(thisRoom.getArea() instanceof SpaceShip))?
 									Directions.getShipDirectionName(directionCode):Directions.getDirectionName(directionCode);
 							follower.tell(_("You follow @x1 @x2.",mob.name(follower),inDir));
-							if(!move(follower,directionCode,false,false,false,false, running))
+							boolean tryStand=false;
+							if(CMLib.flags().isSitting(mob))
 							{
-								//follower.setFollowing(null);
+								if(CMLib.flags().isSitting(follower))
+									tryStand=true;
+								else
+								{
+									final CMMsg msg=CMClass.getMsg(follower,null,null,CMMsg.MSG_SIT,null);
+									if((thisRoom.okMessage(mob,msg))
+									&&(!CMLib.flags().isSitting(follower)))
+									{
+										thisRoom.send(mob,msg);
+										tryStand=true;
+									}
+								}
 							}
+							if(move(follower,directionCode,false,false,false,false, running)
+							&&(tryStand))
+								CMLib.commands().postStand(follower, true);
 						}
 					}
 				}
-				//else
-				//	follower.setFollowing(null);
 			}
 		}
 		if((leaveTrailersSoFar!=null)&&(leaveMsg.target() instanceof Room))
