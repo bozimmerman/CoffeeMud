@@ -59,6 +59,7 @@ public class Chant_DruidicConnection extends Chant
 			unInvoke();
 			return false;
 		}
+
 		final long ellapsed=System.currentTimeMillis()-lastTime;
 		if(affected instanceof Area)
 		{
@@ -123,6 +124,7 @@ public class Chant_DruidicConnection extends Chant
 						I.destroy();
 				}
 			}
+			invoker.delEffect(this);
 			invoker.tell(_("You have destroyed your connection with @x1!",affected.name()));
 			for(final Enumeration e=((Area)affected).getMetroMap();e.hasMoreElements();)
 				((Room)e.nextElement()).recoverRoomStats();
@@ -189,6 +191,8 @@ public class Chant_DruidicConnection extends Chant
 					A.setSavable(false);
 					A.makeLongLasting();
 					A.lastTime=System.currentTimeMillis();
+					mob.addEffect(A);
+					A.setAffectedOne(target);
 					for(final Enumeration e=target.getMetroMap();e.hasMoreElements();)
 						((Room)e.nextElement()).recoverRoomStats();
 				}
