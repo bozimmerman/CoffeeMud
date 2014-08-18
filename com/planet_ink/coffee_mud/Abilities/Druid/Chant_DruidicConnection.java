@@ -106,6 +106,7 @@ public class Chant_DruidicConnection extends Chant
 	@Override
 	public void unInvoke()
 	{
+		final MOB invoker=this.invoker;
 		if((canBeUninvoked())&&(invoker!=null)&&(affected instanceof Area))
 		{
 			final Vector V=Druid_MyPlants.myAreaPlantRooms(invoker,(Area)affected);
@@ -124,12 +125,15 @@ public class Chant_DruidicConnection extends Chant
 						I.destroy();
 				}
 			}
-			invoker.delEffect(this);
 			invoker.tell(_("You have destroyed your connection with @x1!",affected.name()));
 			for(final Enumeration e=((Area)affected).getMetroMap();e.hasMoreElements();)
 				((Room)e.nextElement()).recoverRoomStats();
 		}
 		super.unInvoke();
+		if(invoker != null)
+		{
+			invoker.delEffect(this);
+		}
 	}
 
 	@Override
