@@ -691,7 +691,8 @@ public class StdItem implements Item
 	@Override
 	public void setContainer(Container newContainer)
 	{
-		if(newContainer!=this)
+		if((newContainer!=this)
+		&&((newContainer==null)||(newContainer.container()!=this)))
 			myContainer=newContainer;
 	}
 
