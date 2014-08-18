@@ -717,6 +717,9 @@ public class StdItem implements Item
 	{
 		if(!CMLib.flags().isSavable(this))
 			return false;
+		if(myContainer==this)
+			setContainer(null);
+		else
 		if(container()!=null)
 			return container().isSavable();
 		return true;
