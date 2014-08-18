@@ -21,7 +21,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.miniweb.interfaces.HTTPRequest;
+import com.planet_ink.coffee_web.interfaces.HTTPRequest;
 
 
 /*

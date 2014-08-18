@@ -1,6 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries;
 
-import com.planet_ink.miniweb.interfaces.*;
+import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityParameters.AbilityParmEditor;

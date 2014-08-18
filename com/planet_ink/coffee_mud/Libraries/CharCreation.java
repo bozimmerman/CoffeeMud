@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-import com.planet_ink.miniweb.util.MWThread;
+import com.planet_ink.coffee_web.util.CWThread;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -610,9 +610,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			rpt.append("\t"); rpt.append(host.getHost());
 			rpt.append("\r\n"); rpt.append("PORT");
 			rpt.append("\t"); rpt.append(Integer.toString(host.getPort()));
-			if(Thread.currentThread() instanceof MWThread)
+			if(Thread.currentThread() instanceof CWThread)
 			{
-				final String webServerPort=Integer.toString(((MWThread)Thread.currentThread()).getConfig().getHttpListenPorts()[0]);
+				final String webServerPort=Integer.toString(((CWThread)Thread.currentThread()).getConfig().getHttpListenPorts()[0]);
 				rpt.append("\r\n"); rpt.append("WEBSITE");
 				rpt.append("\t"); rpt.append(("http://"+host.getHost()+":"+webServerPort));
 			}

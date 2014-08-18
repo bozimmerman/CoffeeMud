@@ -1,6 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros.grinder;
 
-import com.planet_ink.miniweb.interfaces.*;
+import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;

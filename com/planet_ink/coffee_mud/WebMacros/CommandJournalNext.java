@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.WebMacros;
 
-import com.planet_ink.miniweb.interfaces.*;
-import com.planet_ink.miniweb.util.MWThread;
+import com.planet_ink.coffee_web.interfaces.*;
+import com.planet_ink.coffee_web.util.CWThread;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -51,8 +51,8 @@ public class CommandJournalNext extends StdWebMacro
 		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 		String lastID="";
 		boolean allJournals=false;
-		if((Thread.currentThread() instanceof MWThread)
-		&&CMath.s_bool(((MWThread)Thread.currentThread()).getConfig().getMiscProp("ADMIN"))
+		if((Thread.currentThread() instanceof CWThread)
+		&&CMath.s_bool(((CWThread)Thread.currentThread()).getConfig().getMiscProp("ADMIN"))
 		&&parms.containsKey("ALLCOMMANDJOURNALS"))
 			allJournals=true;
 		for(final Enumeration<JournalsLibrary.CommandJournal> i=CMLib.journals().commandJournals();i.hasMoreElements();)

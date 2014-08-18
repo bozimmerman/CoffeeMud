@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.WebMacros;
 
-import com.planet_ink.miniweb.http.MIMEType;
-import com.planet_ink.miniweb.interfaces.*;
+import com.planet_ink.coffee_web.http.MIMEType;
+import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;

@@ -13,11 +13,11 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-import com.planet_ink.miniweb.http.HTTPException;
-import com.planet_ink.miniweb.http.HTTPMethod;
-import com.planet_ink.miniweb.http.MultiPartData;
-import com.planet_ink.miniweb.interfaces.*;
-import com.planet_ink.miniweb.util.MWThread;
+import com.planet_ink.coffee_web.http.HTTPException;
+import com.planet_ink.coffee_web.http.HTTPMethod;
+import com.planet_ink.coffee_web.http.MultiPartData;
+import com.planet_ink.coffee_web.interfaces.*;
+import com.planet_ink.coffee_web.util.CWThread;
 
 import java.io.InputStream;
 import java.net.InetAddress;

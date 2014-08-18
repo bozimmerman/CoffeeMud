@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.WebMacros;
 
-import com.planet_ink.miniweb.interfaces.*;
-import com.planet_ink.miniweb.util.MWThread;
+import com.planet_ink.coffee_web.interfaces.*;
+import com.planet_ink.coffee_web.util.CWThread;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -49,8 +49,8 @@ public class ChannelNext extends StdWebMacro
 		}
 		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 		boolean allChannels=false;
-		if((Thread.currentThread() instanceof MWThread)
-		&&CMath.s_bool(((MWThread)Thread.currentThread()).getConfig().getMiscProp("ADMIN"))
+		if((Thread.currentThread() instanceof CWThread)
+		&&CMath.s_bool(((CWThread)Thread.currentThread()).getConfig().getMiscProp("ADMIN"))
 		&&parms.containsKey("ALLCHANNELS"))
 			allChannels=true;
 		String lastID="";

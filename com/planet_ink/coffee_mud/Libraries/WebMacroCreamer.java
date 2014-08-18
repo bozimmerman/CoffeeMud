@@ -18,17 +18,17 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.WebMacros.interfaces.WebMacro;
-import com.planet_ink.miniweb.http.HTTPException;
-import com.planet_ink.miniweb.http.HTTPMethod;
-import com.planet_ink.miniweb.http.HTTPStatus;
-import com.planet_ink.miniweb.http.MultiPartData;
-import com.planet_ink.miniweb.interfaces.HTTPRequest;
-import com.planet_ink.miniweb.interfaces.SimpleServlet;
-import com.planet_ink.miniweb.interfaces.SimpleServletRequest;
-import com.planet_ink.miniweb.interfaces.SimpleServletResponse;
-import com.planet_ink.miniweb.server.MiniWebServer;
-import com.planet_ink.miniweb.util.MWThread;
-import com.planet_ink.miniweb.util.MiniWebConfig;
+import com.planet_ink.coffee_web.http.HTTPException;
+import com.planet_ink.coffee_web.http.HTTPMethod;
+import com.planet_ink.coffee_web.http.HTTPStatus;
+import com.planet_ink.coffee_web.http.MultiPartData;
+import com.planet_ink.coffee_web.interfaces.HTTPRequest;
+import com.planet_ink.coffee_web.interfaces.SimpleServlet;
+import com.planet_ink.coffee_web.interfaces.SimpleServletRequest;
+import com.planet_ink.coffee_web.interfaces.SimpleServletResponse;
+import com.planet_ink.coffee_web.server.WebServer;
+import com.planet_ink.coffee_web.util.CWThread;
+import com.planet_ink.coffee_web.util.CWConfig;
 
 import java.io.File;
 import java.io.IOException;
@@ -65,7 +65,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 	@Override public String ID(){return "WebMacroCreamer";}
 
 	@Override
-	public ByteBuffer convertOutput(MiniWebConfig config, HTTPRequest request, File pageFile, HTTPStatus status, ByteBuffer buffer) throws HTTPException {
+	public ByteBuffer convertOutput(CWConfig config, HTTPRequest request, File pageFile, HTTPStatus status, ByteBuffer buffer) throws HTTPException {
 		if(request.getRequestObjects().get("SYSTEM_HTTP_STATUS")==null)
 		{
 			request.getRequestObjects().put("SYSTEM_HTTP_STATUS", Integer.toString(status.getStatusCode()));
@@ -219,8 +219,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		String redirectTo = null;
 		final boolean debugMacros=CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPMACROS);
 		boolean isAdminServer=false;
-		if(Thread.currentThread() instanceof MWThread)
-			isAdminServer=CMath.s_bool(((MWThread)Thread.currentThread()).getConfig().getMiscProp("ADMIN"));
+		if(Thread.currentThread() instanceof CWThread)
+			isAdminServer=CMath.s_bool(((CWThread)Thread.currentThread()).getConfig().getMiscProp("ADMIN"));
 		if((!isAdminServer)
 		&&(processStartTime[0]>0)
 		&&(System.currentTimeMillis()-processStartTime[0])>(120*1000))

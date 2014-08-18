@@ -14,8 +14,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-import com.planet_ink.miniweb.interfaces.HTTPOutputConverter;
-import com.planet_ink.miniweb.interfaces.HTTPRequest;
+import com.planet_ink.coffee_web.interfaces.HTTPOutputConverter;
+import com.planet_ink.coffee_web.interfaces.HTTPRequest;
 
 import java.util.*;
 /*

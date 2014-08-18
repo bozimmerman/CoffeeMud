@@ -8,7 +8,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.Room;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.database.DBConnections;
 import com.planet_ink.coffee_mud.core.interfaces.MudHost;
-import com.planet_ink.miniweb.interfaces.FileManager;
+import com.planet_ink.coffee_web.interfaces.FileManager;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -1879,7 +1879,7 @@ public class CMFile extends File
 	@Override public String toString() { return this.getAbsolutePath(); }
 
 	/**
-	 * FileManager handler for CMFile, used by MiniWebServer
+	 * FileManager handler for CMFile, used by WebServer
 	 * @author Bo Zimmerman
 	 */
 	public static class CMFileManager implements FileManager

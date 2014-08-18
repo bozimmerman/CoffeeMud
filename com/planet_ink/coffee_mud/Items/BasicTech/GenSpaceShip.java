@@ -461,8 +461,6 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 								break;
 							case AFT:
 							{
-								//force equation in air= A=((thrust / (m * inertial dampener <= 1 ))-1)*(1- OML))
-								//force equation in space= A=(thrust / (m * inertial dampener <= 1 )
 								final double inAirFactor=inAirFlag.booleanValue()?(1.0-getOMLCoeff()):1.0;
 								CMLib.map().moveSpaceObject(this,facing(),Math.round((((double)amount/(double)getMass())-1.0)*inAirFactor));
 								break;

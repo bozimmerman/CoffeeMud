@@ -1,8 +1,8 @@
 package com.planet_ink.coffee_mud.WebMacros;
 
-import com.planet_ink.miniweb.interfaces.*;
-import com.planet_ink.miniweb.util.MWThread;
-import com.planet_ink.miniweb.util.MiniWebConfig;
+import com.planet_ink.coffee_web.interfaces.*;
+import com.planet_ink.coffee_web.util.CWThread;
+import com.planet_ink.coffee_web.util.CWConfig;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
@@ -172,10 +172,10 @@ public class ControlPanel extends StdWebMacro
 				return "";
 			final String value=parms.get("VALUE");
 			final DbgFlag flag = CMSecurity.setDebugVar(field,((value!=null)&&(value.equalsIgnoreCase("on"))));
-			if((Thread.currentThread() instanceof MWThread)
+			if((Thread.currentThread() instanceof CWThread)
 			&&((flag==DbgFlag.HTTPACCESS)||(flag==DbgFlag.HTTPREQ)))
 			{
-				final MiniWebConfig config=((MWThread)Thread.currentThread()).getConfig();
+				final CWConfig config=((CWThread)Thread.currentThread()).getConfig();
 				if(CMSecurity.isDebugging(DbgFlag.HTTPREQ))
 					config.setDebugFlag(CMProps.instance().getStr("DBGMSGS"));
 				if(CMSecurity.isDebugging(DbgFlag.HTTPACCESS))

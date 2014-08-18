@@ -1,6 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros.grinder;
 
-import com.planet_ink.miniweb.interfaces.*;
+import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.WebMacros.AreaData;
 import com.planet_ink.coffee_mud.WebMacros.ExitData;
 import com.planet_ink.coffee_mud.WebMacros.MobData;

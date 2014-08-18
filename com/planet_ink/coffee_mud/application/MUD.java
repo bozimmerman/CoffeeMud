@@ -27,10 +27,10 @@ import com.planet_ink.coffee_mud.core.intermud.cm1.CM1Server;
 import com.planet_ink.coffee_mud.core.intermud.i3.IMudInterface;
 import com.planet_ink.coffee_mud.core.intermud.imc2.IMC2Driver;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.I3Server;
-import com.planet_ink.miniweb.http.MIMEType;
-import com.planet_ink.miniweb.interfaces.FileManager;
-import com.planet_ink.miniweb.server.MiniWebServer;
-import com.planet_ink.miniweb.util.MiniWebConfig;
+import com.planet_ink.coffee_web.http.MIMEType;
+import com.planet_ink.coffee_web.interfaces.FileManager;
+import com.planet_ink.coffee_web.server.WebServer;
+import com.planet_ink.coffee_web.util.CWConfig;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -81,7 +81,7 @@ public class MUD extends Thread implements MudHost
 	private static String				execExternalCommand	= null;
 	private static I3Server				i3server			= null;
 	private static IMC2Driver			imc2server			= null;
-	private static List<MiniWebServer>	webServers			= new Vector<MiniWebServer>();
+	private static List<WebServer>		webServers			= new Vector<WebServer>();
 	private static SMTPserver			smtpServerThread	= null;
 	private static List<String> 		autoblocked			= new Vector<String>();
 	private static List<DBConnector>	databases			= new Vector<DBConnector>();
@@ -603,7 +603,7 @@ public class MUD extends Thread implements MudHost
 
 		for(int i=0;i<webServers.size();i++)
 		{
-			final MiniWebServer webServerThread=webServers.get(i);
+			final WebServer webServerThread=webServers.get(i);
 			CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down web server "+webServerThread.getName()+"...");
 			webServerThread.close();
 			Log.sysOut(Thread.currentThread().getName(),"Web server "+webServerThread.getName()+" stopped.");
@@ -1037,15 +1037,15 @@ public class MUD extends Thread implements MudHost
 						final StringBuffer commonProps=new CMFile("web/common.ini", null, CMFile.FLAG_LOGERRORS).text();
 						final StringBuffer finalProps=new CMFile("web/"+serverName+".ini", null, CMFile.FLAG_LOGERRORS).text();
 						commonProps.append("\n").append(finalProps.toString());
-						final MiniWebConfig config=new MiniWebConfig();
+						final CWConfig config=new CWConfig();
 						config.setFileManager(new CMFile.CMFileManager());
-						MiniWebServer.initConfig(config, Log.instance(), new ByteArrayInputStream(commonProps.toString().getBytes()));
+						WebServer.initConfig(config, Log.instance(), new ByteArrayInputStream(commonProps.toString().getBytes()));
 						if(CMSecurity.isDebugging(DbgFlag.HTTPREQ))
 							config.setDebugFlag(page.getStr("DBGMSGS"));
 						if(CMSecurity.isDebugging(DbgFlag.HTTPACCESS))
 							config.setAccessLogFlag(page.getStr("ACCMSGS"));
-						final MiniWebServer webServer=new MiniWebServer(serverName+Thread.currentThread().getThreadGroup().getName().charAt(0),config);
-						config.setMiniWebServer(webServer);
+						final WebServer webServer=new WebServer(serverName+Thread.currentThread().getThreadGroup().getName().charAt(0),config);
+						config.setCoffeeWebServer(webServer);
 						webServer.start();
 						webServers.add(webServer);
 					}

@@ -1,12 +1,12 @@
 package com.planet_ink.coffee_mud.WebMacros;
 
-import com.planet_ink.miniweb.http.HTTPException;
-import com.planet_ink.miniweb.http.HTTPMethod;
-import com.planet_ink.miniweb.http.MIMEType;
-import com.planet_ink.miniweb.http.MultiPartData;
-import com.planet_ink.miniweb.interfaces.*;
-import com.planet_ink.miniweb.util.MWThread;
-import com.planet_ink.miniweb.util.MiniWebConfig;
+import com.planet_ink.coffee_web.http.HTTPException;
+import com.planet_ink.coffee_web.http.HTTPMethod;
+import com.planet_ink.coffee_web.http.MIMEType;
+import com.planet_ink.coffee_web.http.MultiPartData;
+import com.planet_ink.coffee_web.interfaces.*;
+import com.planet_ink.coffee_web.util.CWThread;
+import com.planet_ink.coffee_web.util.CWConfig;
 import com.planet_ink.coffee_mud.WebMacros.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -429,9 +429,9 @@ public class StdWebMacro implements WebMacro
 
 	protected byte[] getHTTPFileData(final HTTPRequest httpReq, final String file) throws HTTPException
 	{
-		if(Thread.currentThread() instanceof MWThread)
+		if(Thread.currentThread() instanceof CWThread)
 		{
-			final MiniWebConfig config=((MWThread)Thread.currentThread()).getConfig();
+			final CWConfig config=((CWThread)Thread.currentThread()).getConfig();
 			final HTTPRequest newReq=new HTTPRequest()
 			{
 				final Hashtable<String,String> params=new XHashtable<String,String>(httpReq.getUrlParametersCopy());
@@ -467,12 +467,12 @@ public class StdWebMacro implements WebMacro
 
 	protected File grabFile(final HTTPRequest httpReq, String filename)
 	{
-		if(Thread.currentThread() instanceof MWThread)
+		if(Thread.currentThread() instanceof CWThread)
 		{
 			filename=filename.replace(File.separatorChar,'/');
 			if (!filename.startsWith("/")) filename = '/' + filename;
 			final String file=filename;
-			final MiniWebConfig config=((MWThread)Thread.currentThread()).getConfig();
+			final CWConfig config=((CWThread)Thread.currentThread()).getConfig();
 			final HTTPRequest newReq=new HTTPRequest()
 			{
 				public final Hashtable<String,String> params=new XHashtable<String,String>(httpReq.getUrlParametersCopy());
