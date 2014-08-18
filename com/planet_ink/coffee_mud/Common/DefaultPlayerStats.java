@@ -247,8 +247,8 @@ public class DefaultPlayerStats implements PlayerStats
 	@Override
 	public void setWrap(int newWrap)
 	{
-		if(newWrap > 254)
-			newWrap=254;
+		if(newWrap > CMStrings.SPACES.length())
+			newWrap=CMStrings.SPACES.length();
 		wrap=newWrap;
 	}
 
