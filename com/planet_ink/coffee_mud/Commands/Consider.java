@@ -199,7 +199,7 @@ public class Consider extends StdCommand
 		if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
 			target=mob;
 		if(target==null)
-			target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,targetName,Wearable.FILTER_ANY);
+			target=mob.location().fetchFromMOBRoomFavorsMOBs(mob,null,targetName,Wearable.FILTER_ANY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell(_("I don't see '@x1' here.",targetName));
