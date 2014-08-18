@@ -43,6 +43,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	@Override public String ID(){return "Arrest";}
 	@Override public long flags(){return Behavior.FLAG_LEGALBEHAVIOR;}
 	@Override protected int canImproveCode(){return Behavior.CAN_AREAS;}
+	protected String lastAreaName=null;
 
 	protected boolean loadAttempt=false;
 	protected Hashtable finesAssessed=new Hashtable();
@@ -86,7 +87,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public void DebugLogLostConvicts(String lead, LegalWarrant W, MOB officer)
 	{
-		final StringBuilder errLogMsg=new StringBuilder("");
+		final StringBuilder errLogMsg=new StringBuilder("("+lastAreaName+"): ");
 		errLogMsg.append(!W.criminal().location().isInhabitant(officer)?_("AE1 "):"");
 		errLogMsg.append(W.criminal().amDead()?_("AE2 "):"");
 		errLogMsg.append(!CMLib.flags().aliveAwakeMobile(W.criminal(),true)?_("AE3 "):"");
@@ -686,7 +687,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		final Set<MOB> H=W.criminal().getGroupMembers(new HashSet<MOB>());
 		if((W.witness()!=null)&&W.witness().amDead())
 		{
-			if(debugging) Log.debugOut("ARREST", "Witness is DEAD!");
+			if(debugging) Log.debugOut("ARREST", "("+lastAreaName+"): "+W.crime()+" Witness ("+W.witness().Name()+") is DEAD!");
 			return false;
 		}
 		if(W.arrestingOfficer()!=null)
@@ -699,18 +700,18 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 		if((W.witness()!=null)&&H.contains(W.witness()))
 		{
-			if(debugging) Log.debugOut("ARREST", "Witness is a friend of the accused!");
+			if(debugging) Log.debugOut("ARREST", "("+lastAreaName+"): "+W.crime()+" Witness ("+W.witness().Name()+") is a friend of the accused!");
 			return false;
 		}
 		if((W.victim()!=null)&&(H.contains(W.victim())))
 		{
-			if(debugging) Log.debugOut("ARREST", "Victim is a friend of the accused!");
+			if(debugging) Log.debugOut("ARREST", "("+lastAreaName+"): "+W.crime()+" Victim ("+W.victim().Name()+") is a friend of the accused!");
 			return false;
 		}
 		// crimes expire after three real days
 		if((W.lastOffense()>0)&&((System.currentTimeMillis()-W.lastOffense())>EXPIRATION_MILLIS))
 		{
-			if(debugging) Log.debugOut("ARREST","Crime has expired: "+W.lastOffense());
+			if(debugging) Log.debugOut("ARREST","("+lastAreaName+"): "+W.crime()+" Crime has expired: "+W.lastOffense());
 			return false;
 		}
 		return true;
@@ -1076,7 +1077,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		final Vector relevantCrimes=getRelevantWarrants(laws.warrants(),W,criminal);
 		if(CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SKIPTRIAL))
 			judge=officer;
-		if(debugging)Log.debugOut("Arrest",criminal.Name()+" judged for "+W.crime()+" has base action "+W.punishment()+", and final judgement "+highestCrimeAction(laws,W,W.criminal()));
+		if(debugging)Log.debugOut("Arrest","("+lastAreaName+"): "+W.crime()+" "+criminal.Name()+" judged for "+W.crime()+" has base action "+W.punishment()+", and final judgement "+highestCrimeAction(laws,W,W.criminal()));
 		boolean totallyDone=false;
 		switch(highestCrimeAction(laws,W,W.criminal())&Law.PUNISHMENT_MASK)
 		{
@@ -1256,7 +1257,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		{
 			W.setState(Law.STATE_DETAINING);
 			if(officer!=null)W.setArrestingOfficer(A,officer);
-			if(debugging)Log.debugOut("Arrest","Putting the above crime into a detain state, officer="+(W.arrestingOfficer()!=null)+".");
+			if(debugging)Log.debugOut("Arrest","("+lastAreaName+"): "+W.crime()+" Putting the above crime into a detain state, officer="+(W.arrestingOfficer()!=null)+".");
 			return false;
 		}
 		return totallyDone;
@@ -1275,17 +1276,20 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	{
 		if(mob.amDead())
 		{
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST)) Log.debugOut("ARREST",mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+" * IS DEAD!");
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST)) 
+				Log.debugOut("ARREST","("+lastAreaName+"): "+mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+" * IS DEAD!");
 			return false;
 		}
 		if(mob.location()==null)
 		{
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST)) Log.debugOut("ARREST",mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Accused is not here.");
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST)) 
+				Log.debugOut("ARREST","("+lastAreaName+"): "+mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Accused is not here.");
 			return false;
 		}
 		if((myArea!=null)&&(!myArea.inMyMetroArea(mob.location().getArea())))
 		{
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST)) Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Accused is not in the area.");
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST)) 
+				Log.debugOut("ARREST","("+lastAreaName+"): "+mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Accused is not in the area.");
 			return false;
 		}
 
@@ -1293,7 +1297,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		||(isTheJudge(laws,mob))
 		||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ABOVELAW))
 		{
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST)) Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Accused is an officer ("+isAnyKindOfOfficer(laws,mob)+"), judge ("+isTheJudge(laws,mob)+"), or above the law ("+CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ABOVELAW)+").");
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST)) 
+				Log.debugOut("ARREST","("+lastAreaName+"): "+mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Accused is an officer ("+isAnyKindOfOfficer(laws,mob)+"), judge ("+isTheJudge(laws,mob)+"), or above the law ("+CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ABOVELAW)+").");
 			return false;
 		}
 
@@ -1307,7 +1312,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			victim=(MOB)target;
 		if(mob==victim)
 		{
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST)) Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Accused and victim are the same.");
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST)) 
+				Log.debugOut("ARREST","("+lastAreaName+"): "+mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Accused and victim are the same.");
 			return false;
 		}
 
@@ -1326,7 +1332,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					if((witness!=null)&&(witness.location()!=mob.location()))
 					{
 						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST))
-							Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Witness required, but not present.");
+							Log.debugOut("ARREST","("+lastAreaName+"): "+mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Witness required, but not present.");
 					   return false;
 					}
 				}
@@ -1338,7 +1344,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						if(str.startsWith("!"))
 						{
 							if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST))
-								Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* In combat, but shouldn't be!");
+								Log.debugOut("ARREST","("+lastAreaName+"): "+mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* In combat, but shouldn't be!");
 							return false;
 						}
 					}
@@ -1346,7 +1352,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						if(!str.startsWith("!"))
 						{
 							if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST))
-								Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Not in combat, but should be!");
+								Log.debugOut("ARREST","("+lastAreaName+"): "+mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Not in combat, but should be!");
 							return false;
 						}
 
@@ -1361,7 +1367,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						if(str.startsWith("!"))
 						{
 							if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST))
-								Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Not recently, but is!");
+								Log.debugOut("ARREST","("+lastAreaName+"): "+mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Not recently, but is!");
 							return false;
 						}
 					}
@@ -1369,7 +1375,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						if(!str.startsWith("!"))
 						{
 							if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST))
-								Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Recently required, but it isn't!");
+								Log.debugOut("ARREST","("+lastAreaName+"): "+mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Recently required, but it isn't!");
 							return false;
 						}
 				}
@@ -1378,7 +1384,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		if((requiresWitness)&&(witness==null))
 		{
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST))
-				Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Witness required, and none present: .");
+				Log.debugOut("ARREST","("+lastAreaName+"): "+mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Witness required, and none present: .");
 			return false;
 		}
 
@@ -1398,7 +1404,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						if(str.startsWith("!"))
 						{
 							if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST))
-								Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Shouldn't be indoors, but is!");
+								Log.debugOut("ARREST","("+lastAreaName+"): "+mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Shouldn't be indoors, but is!");
 							return false;
 						}
 					}
@@ -1406,7 +1412,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						if(!str.startsWith("!"))
 						{
 							if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST))
-								Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Should be indoors, but isn't!");
+								Log.debugOut("ARREST","("+lastAreaName+"): "+mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Should be indoors, but isn't!");
 							return false;
 						}
 					aCrime=true;
@@ -1418,13 +1424,13 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						if(str.startsWith("!"))
 						{
 							if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST))
-								Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Should not be home, but is!");
+								Log.debugOut("ARREST","("+lastAreaName+"): "+mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Should not be home, but is!");
 							return false;
 						}
 					if(!str.startsWith("!"))
 					{
 						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST))
-							Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Should be home, but is not!");
+							Log.debugOut("ARREST","("+lastAreaName+"): "+mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Should be home, but is not!");
 						return false;
 					}
 					aCrime=true;
@@ -1433,7 +1439,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				if(str.startsWith("!")&&(CMLib.english().containsString(display,str.substring(1))))
 				{
 					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST))
-						Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Should not be at '"+str.substring(1)+"', but is!");
+						Log.debugOut("ARREST","("+lastAreaName+"): "+mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Should not be at '"+str.substring(1)+"', but is!");
 					return false;
 				}
 				else
@@ -1443,7 +1449,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			if(!aCrime)
 			{
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST))
-					Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Crime flag failure!");
+					Log.debugOut("ARREST","("+lastAreaName+"): "+mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Crime flag failure!");
 				return false;
 			}
 		}
@@ -1454,7 +1460,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			if(!CMLib.masking().maskCheck(laws.getMessage(Law.MSG_PROTECTEDMASK),victim,false))
 			{
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST))
-					Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Victim is not a protected race!");
+					Log.debugOut("ARREST","("+lastAreaName+"): "+mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Victim is not a protected race!");
 				return false;
 			}
 		}
@@ -1468,7 +1474,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			&&(W.crime().equals(crime)))
 			{
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST))
-					Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Warrant already exists.");
+					Log.debugOut("ARREST","("+lastAreaName+"): "+mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Warrant already exists.");
 				return false;
 			}
 		}
@@ -1528,13 +1534,13 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		&&((W.witness()==null)||CMLib.flags().canBeSeenBy(W.criminal(),W.witness())))
 		{
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST))
-				Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Warrant filled out.");
+				Log.debugOut("ARREST","("+lastAreaName+"): "+mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Warrant filled out.");
 			if(!addWarrant(laws,W))
 				return false;
 		}
 		else
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST))
-			Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Warrant fails the is a crime check.");
+			Log.debugOut("ARREST","("+lastAreaName+"): "+mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Warrant fails the is a crime check.");
 		return true;
 	}
 
@@ -1639,6 +1645,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		final Law laws=getLaws(affecting,false);
 		if(!laws.lawIsActivated()) return;
 		if(msg.source()==null) return;
+		if (lastAreaName == null) lastAreaName = myArea.Name();
 
 		// the archons pardon
 		if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
@@ -1987,7 +1994,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		{
 			if((W.criminal()==null)||(W.criminal().location()==null))
 			{
-				if(debugging) Log.debugOut("Arrest","Tick: "+W.crime()+": Criminal or Location is null. Skipping.");
+				if(debugging) Log.debugOut("Arrest","("+lastAreaName+"): Tick: "+W.crime()+": Criminal or Location is null. Skipping.");
 				continue;
 			}
 
@@ -2005,7 +2012,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				W.setOffenses(W.offenses()+1);
 				laws.oldWarrants().add(W);
 				laws.warrants().remove(W);
-				if(debugging) Log.debugOut("Arrest","Tick: "+W.crime()+": No longer a crime.");
+				if(debugging) Log.debugOut("Arrest","("+lastAreaName+"): Tick: "+W.crime()+": No longer a crime.");
 				continue;
 			}
 
@@ -2022,7 +2029,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					continue;
 				handled.add(W.criminal().Name()+"/"+W.crime());
 			}
-			if(debugging) Log.debugOut("Arrest","Tick: Handling "+W.crime()+" for "+W.criminal().Name()+": State "+W.state());
+			if(debugging) Log.debugOut("Arrest","("+lastAreaName+"): Tick: Handling "+W.crime()+" for "+W.criminal().Name()+": State "+W.state());
 
 			processWarrant(myArea, laws, W, debugging);
 		}
