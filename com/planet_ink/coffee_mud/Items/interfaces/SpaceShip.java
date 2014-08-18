@@ -29,6 +29,11 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A Space Ship, which is a space object that's dockable and can change direction.
+ * @author Bo Zimmerman
+ *
+ */
 public interface SpaceShip extends SpaceObject
 {
 	/**
