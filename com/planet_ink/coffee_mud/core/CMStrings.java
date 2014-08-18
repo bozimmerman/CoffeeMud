@@ -36,7 +36,7 @@ public class CMStrings
 	private static CMStrings inst=new CMStrings();
 	public final static CMStrings instance(){return inst;}
 
-	public final static String SPACES=repeat(" ",255);
+	public final static String SPACES=repeat(" ",1024);
 
 	public final static String repeat(final String str1, final int times)
 	{
