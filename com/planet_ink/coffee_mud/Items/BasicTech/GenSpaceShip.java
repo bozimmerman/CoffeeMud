@@ -56,6 +56,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	public long 			speed			= 0;
 	protected SpaceObject	spaceTarget 	= null;
 	protected double[]		facing			= new double[2];
+	protected Boolean		inAirFlag		= Boolean.FALSE;
 
 	public GenSpaceShip()
 	{
@@ -97,6 +98,14 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		return area;
 	}
 
+	@Override
+	public Boolean getSetAirFlag(final Boolean setInAirFlag)
+	{
+		if((setInAirFlag != null) && (setInAirFlag != this.inAirFlag))
+			this.inAirFlag = setInAirFlag;
+		return this.inAirFlag;
+	}
+	
 	@Override
 	public void setShipArea(String xml)
 	{
@@ -436,18 +445,26 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 							//long specificImpulse=((Long)parms[2]).longValue();
 							switch(dir)
 							{
-							case STARBOARD: facing[0]-=amount; break;
-							case PORT: facing[0]+=amount; break;
-							case DORSEL: facing[1]-=amount; break;
-							case VENTRAL: facing[1]+=amount; break;
-							case FORWARD: break;
+							case STARBOARD: 
+								facing[0]-=amount; 
+								break;
+							case PORT: 
+								facing[0]+=amount; 
+								break;
+							case DORSEL: 
+								facing[1]-=amount; 
+								break;
+							case VENTRAL: 
+								facing[1]+=amount; 
+								break;
+							case FORWARD: 
+								break;
 							case AFT:
 							{
 								//force equation in air= A=((thrust / (m * inertial dampener <= 1 ))-1)*(1- OML))
 								//force equation in space= A=(thrust / (m * inertial dampener <= 1 )
-								final double inAirFactor=true?(1.0-getOMLCoeff()):1.0;
+								final double inAirFactor=inAirFlag.booleanValue()?(1.0-getOMLCoeff()):1.0;
 								CMLib.map().moveSpaceObject(this,facing(),Math.round((((double)amount/(double)getMass())-1.0)*inAirFactor));
-
 								break;
 							}
 							}

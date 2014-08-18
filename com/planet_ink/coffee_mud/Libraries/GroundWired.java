@@ -320,6 +320,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					CMLib.map().moveSpaceObject(O);
 					cube=cube.expand(O.direction(),speed);
 				}
+				Boolean inAirFlag = Boolean.FALSE;
 				final List<SpaceObject> cOs=CMLib.map().getSpaceObjectsWithin(O, 0, SpaceObject.Distance.LightMinute.dm);
 				for(final SpaceObject cO : cOs)
 					if(cO != O)
@@ -330,6 +331,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 							final double[] directionTo=CMLib.map().getDirection(O, cO);
 							CMLib.map().moveSpaceObject(O, directionTo, SpaceObject.ACCELLERATION_G); // can this cause slip-through?
 							cube=cube.expand(directionTo,SpaceObject.ACCELLERATION_G);
+							inAirFlag = Boolean.TRUE;
 						}
 						if(cO.getBounds().intersects(cube))
 						{
@@ -342,6 +344,10 @@ public class GroundWired extends StdLibrary implements TechLibrary
 								cO.executeMsg(host, msg2);
 						}
 					}
+				if(S!=null)
+				{
+					S.getSetAirFlag(inAirFlag);
+				}
 			}
 		}
 	}

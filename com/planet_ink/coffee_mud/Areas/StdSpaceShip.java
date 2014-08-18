@@ -132,6 +132,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	@Override public void setSpeed(long v) { if (shipItem!=null) shipItem.setSpeed(v); }
 	@Override public SpaceObject knownTarget() { return (shipItem!=null)?shipItem.knownTarget():null; }
 	@Override public void setKnownTarget(SpaceObject O) { if (shipItem!=null) shipItem.setKnownTarget(O); }
+	@Override public Boolean getSetAirFlag(final Boolean setInAirFlag) { return (shipItem != null) ? shipItem.getSetAirFlag(setInAirFlag) : Boolean.FALSE; }
 
 	@Override
 	public BoundedCube getBounds()
