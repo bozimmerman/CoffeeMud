@@ -229,7 +229,7 @@ public class Where extends StdCommand
 									if((E!=null)
 									&&((who.length()==0)
 											||((E.Name().length()>0)&&(CMLib.english().containsString(E.Name(),who)))
-											||((E.doorName().length()>0)&& CMLib.english().containsString(E.doorName(),who))
+											||(E.hasADoor() && (E.doorName().length()>0)&& CMLib.english().containsString(E.doorName(),who))
 											||(CMLib.english().containsString(E.viewableText(mob,R).toString(),who))))
 									{
 										lines.append("^!"+CMStrings.padRight(Directions.getDirectionName(d),17)+"^N| ");
