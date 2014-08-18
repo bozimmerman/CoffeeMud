@@ -2339,7 +2339,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	public CompiledZapperMask maskCompile(final String text)
 	{
 		final Vector<CompiledZapperMaskEntry> buf=new Vector<CompiledZapperMaskEntry>();
-		if(text.trim().length()==0) return new CompiledZapperMask(new boolean[]{false,false},buf.toArray(new CompiledZapperMaskEntry[0]));
+		if((text==null)||(text.trim().length()==0)) 
+			return new CompiledZapperMask(new boolean[]{false,false},buf.toArray(new CompiledZapperMaskEntry[0]));
 		final Map<String,Integer> zapCodes=getMaskCodes();
 		final Vector<String> V=CMParms.parse(text.toUpperCase());
 		boolean buildItemFlag=false;
