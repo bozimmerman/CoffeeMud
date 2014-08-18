@@ -1182,7 +1182,8 @@ public class DefaultSession implements Session
 			{
 				terminalWidth = ((suboptionData[0] << 8) | suboptionData[1])-2;
 				terminalHeight = (suboptionData[2] << 8) | suboptionData[3];
-				if(terminalWidth > 254) terminalWidth=254;
+				if(terminalWidth > CMStrings.SPACES.length()) 
+					terminalWidth=CMStrings.SPACES.length();
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
 					Log.debugOut("For suboption "+Session.TELNET_DESCS[optionCode]+", got: "+terminalWidth+"x"+terminalHeight);
 			}
