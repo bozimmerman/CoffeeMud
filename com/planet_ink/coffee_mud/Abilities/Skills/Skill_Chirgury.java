@@ -94,11 +94,14 @@ public class Skill_Chirgury extends StdSkill
 			return false;
 		}
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY,false,true);
-		if(target==null) return false;
+		if(target==null) 
+			return false;
 
 		CharStats C=null;
-		if(target instanceof MOB) C=((MOB)target).charStats();
-		if(target instanceof DeadBody) C=((DeadBody)target).charStats();
+		if(target instanceof MOB) 
+			C=((MOB)target).charStats();
+		if(target instanceof DeadBody) 
+			C=((DeadBody)target).charStats();
 
 		if((partSet[1] instanceof Integer)
 		&&(C!=null) && (C.getMyRace().bodyMask()[((Integer)partSet[1]).intValue()]<=0))

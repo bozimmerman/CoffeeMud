@@ -1474,7 +1474,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			I=R.getItem(i);
 			if((I!=null)
 			&&((I.expirationDate()!=0)
-					||((I instanceof DeadBody)&&(((DeadBody)I).playerCorpse()))))
+				||((I instanceof DeadBody)&&(((DeadBody)I).playerCorpse()))))
 				return false;
 		}
 		for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)

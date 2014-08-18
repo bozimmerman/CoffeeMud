@@ -367,9 +367,8 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 			}
 			else
 			if ((target instanceof DeadBody)
-				&& (((Item)target).owner() != null)
-				&& (((Item)target).owner() instanceof Room))
-				{
+			&& (((Item)target).owner() instanceof Room))
+			{
 				((Room)((Item)target).owner()).showHappens(CMMsg.MSG_OK_VISUAL, _("^G@x1's @x2 miraculously regrows!!^?",target.name(),gone));
 			}
 		}

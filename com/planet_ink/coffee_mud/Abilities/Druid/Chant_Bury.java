@@ -51,8 +51,7 @@ public class Chant_Bury extends Chant
 		for(int i=0;i<R.numItems();i++)
 		{
 			final Item I=R.getItem(i);
-			if((I!=null)
-			&&(I instanceof DeadBody)
+			if((I instanceof DeadBody)
 			&&(!((DeadBody)I).playerCorpse())
 			&&(((DeadBody)I).mobName().length()>0))
 				return I;

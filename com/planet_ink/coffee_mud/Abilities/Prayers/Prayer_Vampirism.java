@@ -162,16 +162,14 @@ public class Prayer_Vampirism extends Prayer
 				for(int i=0;i<M.location().numItems();i++)
 				{
 					final Item I=M.location().getItem(i);
-					if((I!=null)
-					&&(I instanceof DeadBody)
+					if((I instanceof DeadBody)
 					&&(I.container()==null)
 					&&(((DeadBody)I).charStats()!=null)
 					&&(((DeadBody)I).charStats().getMyRace()!=null)
 					&&(raceWithBlood(((DeadBody)I).charStats().getMyRace())))
 						B=(DeadBody)I;
 					else
-					if((I!=null)
-					&&(I instanceof Drink)
+					if((I instanceof Drink)
 					&&(I.container()==null)
 					&&((I.material()==RawMaterial.RESOURCE_BLOOD)||(((Drink)I).liquidType()==RawMaterial.RESOURCE_BLOOD)))
 						D=(Drink)I;

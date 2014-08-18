@@ -63,8 +63,7 @@ public class Chant_SummonFlyTrap extends Chant
 				for(int r=0;r<R.numItems();r++)
 				{
 					final Item I=R.getItem(r);
-					if((I!=null)
-					&&(I instanceof DeadBody)
+					if((I instanceof DeadBody)
 					&&(((DeadBody)I).charStats()!=null)
 					&&(((DeadBody)I).charStats().getMyRace()!=null))
 					{

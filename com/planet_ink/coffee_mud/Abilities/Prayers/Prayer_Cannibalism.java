@@ -125,15 +125,13 @@ public class Prayer_Cannibalism extends Prayer
 				for(int i=0;i<M.location().numItems();i++)
 				{
 					final Item I=M.location().getItem(i);
-					if((I!=null)
-					&&(I instanceof DeadBody)
+					if((I instanceof DeadBody)
 					&&(I.container()==null)
 					&&(((DeadBody)I).charStats()!=null)
 					&&(((DeadBody)I).charStats().getMyRace()==M.charStats().getMyRace()))
 						B=(DeadBody)I;
 					else
-					if((I!=null)
-					&&(I instanceof Food)
+					if((I instanceof Food)
 					&&(I.container()==null)
 					&&((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH)
 					&&(CMLib.english().containsString(I.Name(),M.charStats().getMyRace().name())))

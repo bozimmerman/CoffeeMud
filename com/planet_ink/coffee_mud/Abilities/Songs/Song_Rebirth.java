@@ -83,8 +83,7 @@ public class Song_Rebirth extends Song
 					while(i<R.numItems())
 					{
 						final Item body=R.getItem(i);
-						if((body!=null)
-						&&(body instanceof DeadBody)
+						if((body instanceof DeadBody)
 						&&(((DeadBody)body).playerCorpse())
 						&&(((DeadBody)body).mobName().length()>0))
 						{

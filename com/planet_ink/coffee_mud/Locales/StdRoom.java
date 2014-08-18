@@ -894,13 +894,14 @@ public class StdRoom implements Room
 			synchronized(("SYNC"+roomID()).intern())
 			{
 				final LinkedList<DeadBody> deadBodies=new LinkedList<DeadBody>();
-				eachItem(new EachApplicable<Item>(){ @Override
-				public final void apply(final Item I)
-				{
-					if((I instanceof DeadBody)
-					&&(((DeadBody)I).playerCorpse()))
-						deadBodies.add((DeadBody)I);
-				} });
+				eachItem(new EachApplicable<Item>(){ 
+					@Override public final void apply(final Item I)
+					{
+						if((I instanceof DeadBody)
+						&&(((DeadBody)I).playerCorpse()))
+							deadBodies.add((DeadBody)I);
+					} 
+				});
 				for(final DeadBody D : deadBodies)
 				{
 					MOB M=CMLib.players().getLoadPlayer(D.mobName());
@@ -952,12 +953,13 @@ public class StdRoom implements Room
 					}
 					if(CMSecurity.isSaveFlag("ROOMITEMS"))
 					{
-						eachItem(new EachApplicable<Item>(){ @Override
-						public final void apply(final Item I)
-						{
-							if(I instanceof DeadBody)
-								bodies.add(I);
-						} });
+						eachItem(new EachApplicable<Item>(){ 
+							@Override public final void apply(final Item I)
+							{
+								if(I instanceof DeadBody)
+									bodies.add(I);
+							}
+						});
 						for(int i=0;i<bodies.size();i++)
 							((Item)bodies.elementAt(i)).destroy();
 						CMLib.database().DBUpdateItems(this);

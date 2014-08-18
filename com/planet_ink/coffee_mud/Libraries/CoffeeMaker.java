@@ -546,7 +546,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				text.append(CMLib.xml().convertXMLtoTag("MPKILL",""+((DeadBody)E).mobPKFlag()));
 				if(((DeadBody)E).savedMOB()!=null)
 					text.append("<MOBS>"+getMobXML(((DeadBody)E).savedMOB())+"</MOBS>");
-				if(((DeadBody)E).killingTool()==null) text.append("<KLTOOL />");
+				if(((DeadBody)E).killingTool()==null) 
+					text.append("<KLTOOL />");
 				else
 				{
 					text.append("<KLTOOL>");

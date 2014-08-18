@@ -2494,7 +2494,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					@Override
 					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
-						if(!(I instanceof DeadBody)) return "";
+						if(!(I instanceof DeadBody)) 
+							return "";
 						String pose=I.displayText();
 						pose=CMStrings.replaceAll(pose,I.name(),"<S-NAME>");
 						pose=CMStrings.replaceWord(pose,"himself"," <S-HIM-HERSELF>");

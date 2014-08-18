@@ -120,8 +120,7 @@ public class Scalp extends CommonSkill
 			for(int i=0;i<mob.location().numItems();i++)
 			{
 				final Item I2=mob.location().getItem(i);
-				if((I2!=null)
-				&&(I2 instanceof DeadBody)
+				if((I2 instanceof DeadBody)
 				&&(CMLib.flags().canBeSeenBy(I2,mob))
 				&&(I2.container()==null))
 				{

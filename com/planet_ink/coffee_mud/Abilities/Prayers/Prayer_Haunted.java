@@ -77,8 +77,7 @@ public class Prayer_Haunted extends Prayer
 			for(int i=0;i<R.numItems();i++)
 			{
 				final Item I=R.getItem(i);
-				if((I!=null)
-				&&(I instanceof DeadBody)
+				if((I instanceof DeadBody)
 				&&(I.container()==null)
 				&&(!((DeadBody)I).playerCorpse())
 				&&(((DeadBody)I).mobName().length()>0))

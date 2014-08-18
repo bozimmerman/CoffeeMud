@@ -136,8 +136,7 @@ public class Butchering extends GatheringSkill
 			for(int i=0;i<mob.location().numItems();i++)
 			{
 				final Item I2=mob.location().getItem(i);
-				if((I2!=null)
-				&&(I2 instanceof DeadBody)
+				if((I2 instanceof DeadBody)
 				&&(CMLib.flags().canBeSeenBy(I2,mob))
 				&&(I2.container()==null))
 				{
@@ -149,7 +148,8 @@ public class Butchering extends GatheringSkill
 		else
 			I=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 
-		if(I==null) return false;
+		if(I==null) 
+			return false;
 		if((!(I instanceof DeadBody))
 		   ||(((DeadBody)I).charStats()==null)
 		   ||((DeadBody)I).playerCorpse()

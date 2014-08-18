@@ -81,7 +81,7 @@ public class Prayer_DemonicConsumption extends Prayer
 					for(int i=0;i<R.numItems();i++)
 					{
 						final Item I=R.getItem(i);
-						if((I!=null)&&(I instanceof DeadBody)&&(I.container()==null))
+						if((I instanceof DeadBody)&&(I.container()==null))
 							oldBodies.add((DeadBody)I);
 					}
 
@@ -104,7 +104,9 @@ public class Prayer_DemonicConsumption extends Prayer
 						for(int i=0;i<R.numItems();i++)
 						{
 							final Item I=R.getItem(i);
-							if((I!=null)&&(I instanceof DeadBody)&&(I.container()==null)&&(!oldBodies.contains(I))
+							if((I instanceof DeadBody)
+							&&(I.container()==null)
+							&&(!oldBodies.contains(I))
 							&&(!((DeadBody)I).playerCorpse()))
 							{
 								I.destroy();

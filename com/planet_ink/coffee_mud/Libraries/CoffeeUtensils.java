@@ -534,7 +534,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			thisContainer.basePhyStats().setDisposition(thisContainer.basePhyStats().disposition()&((int)PhyStats.ALLMASK-PhyStats.IS_HIDDEN));
 		mob.delItem(thisContainer);
 		thisContainer.unWear();
-		if(!bodyFlag) bodyFlag=(thisContainer instanceof DeadBody);
+		if(!bodyFlag) 
+			bodyFlag=(thisContainer instanceof DeadBody);
 		if(bodyFlag)
 		{
 			room.addItem(thisContainer);

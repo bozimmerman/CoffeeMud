@@ -298,12 +298,14 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 										for(int i=0;i<R.numItems();i++)
 										{
 											final Item I=R.getItem(i);
-											if((I!=null)
-											&&(I instanceof DeadBody)
+											if((I instanceof DeadBody)
 											&&(I.container()==null)
 											&&(((DeadBody)I).mobName().equals(targ.Name()))
 											&&(!((DeadBody)I).playerCorpse()))
+											{
 												corpseI=(DeadBody)I;
+												break;
+											}
 										}
 										if(corpseI!=null)
 										{
