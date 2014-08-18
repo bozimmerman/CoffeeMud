@@ -785,7 +785,7 @@ public class DefaultPlayerStats implements PlayerStats
 		str=xmlLib.getValFromPieces(xml,"WRAP");
 		if(debug) Log.debugOut("WRAP="+str);
 		if(CMath.isInteger(str))
-			wrap=CMath.s_int(str);
+			setWrap(CMath.s_int(str));
 		str=xmlLib.getValFromPieces(xml,"PAGEBREAK");
 		if(debug) Log.debugOut("PAGEBREAK="+str);
 		if(CMath.isInteger(str))
@@ -1205,7 +1205,7 @@ public class DefaultPlayerStats implements PlayerStats
 		case 13: tranpoofout=val; break;
 		case 14: announceMsg=val; break;
 		case 15: notes=val; break;
-		case 16: wrap=CMath.s_int(val); break;
+		case 16: setWrap(CMath.s_int(val)); break;
 		case 17: setBirthday(val); break;
 		case 18: accountExpires=CMath.s_long(val); break;
 		case 19: { introductions.clear(); introductions.addAll(getHashFrom(val)); break; }
