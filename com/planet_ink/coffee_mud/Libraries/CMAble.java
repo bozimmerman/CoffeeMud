@@ -52,63 +52,63 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	protected Map<String,int[]> 		hardOverrideCache			= new Hashtable<String,int[]>();
 
 	@Override
-	public void addCharAbilityMapping(String ID,
-									  int qualLevel,
-									  String abilityID,
-									  boolean autoGain)
-	{ addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",autoGain,false,new Vector(),""); }
+	public AbilityMapping addCharAbilityMapping(String ID,
+												int qualLevel,
+												String abilityID,
+												boolean autoGain)
+	{ return addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",autoGain,false,new Vector(),""); }
 	@Override
-	public void addCharAbilityMapping(String ID,
-									  int qualLevel,
-									  String abilityID,
-									  boolean autoGain,
-									  String extraMasks)
-	{ addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",autoGain,false,new Vector(),extraMasks); }
+	public AbilityMapping addCharAbilityMapping(String ID,
+												int qualLevel,
+												String abilityID,
+												boolean autoGain,
+												String extraMasks)
+	{ return addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",autoGain,false,new Vector(),extraMasks); }
 	@Override
-	public void addCharAbilityMapping(String ID,
-									  int qualLevel,
-									  String abilityID,
-									  boolean autoGain,
-									  List<String> skillPreReqs)
-	{ addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",autoGain,false,skillPreReqs,""); }
+	public AbilityMapping addCharAbilityMapping(String ID,
+												int qualLevel,
+												String abilityID,
+												boolean autoGain,
+												List<String> skillPreReqs)
+	{ return addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",autoGain,false,skillPreReqs,""); }
 	@Override
-	public void addCharAbilityMapping(String ID,
-									  int qualLevel,
-									  String abilityID,
-									  boolean autoGain,
-									  List<String> skillPreReqs,
-									  String extraMasks)
-	{ addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",autoGain,false,skillPreReqs,extraMasks); }
+	public AbilityMapping addCharAbilityMapping(String ID,
+												int qualLevel,
+												String abilityID,
+												boolean autoGain,
+												List<String> skillPreReqs,
+												String extraMasks)
+	{ return addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",autoGain,false,skillPreReqs,extraMasks); }
 	@Override
-	public void addCharAbilityMapping(String ID,
-									  int qualLevel,
-									  String abilityID,
-									  int defaultProficiency,
-									  String defParm,
-									  boolean autoGain)
-	{ addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defParm,autoGain,false,new Vector(),""); }
-	public void addCharAbilityMapping(String ID,
-									  int qualLevel,
-									  String abilityID,
-									  int defaultProficiency,
-									  String defParm,
-									  boolean autoGain,
-									  String extraMasks)
-	{ addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defParm,autoGain,false,new Vector(),extraMasks); }
+	public AbilityMapping addCharAbilityMapping(String ID,
+												int qualLevel,
+												String abilityID,
+												int defaultProficiency,
+												String defParm,
+												boolean autoGain)
+	{ return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defParm,autoGain,false,new Vector(),""); }
+	public AbilityMapping addCharAbilityMapping(String ID,
+												int qualLevel,
+												String abilityID,
+												int defaultProficiency,
+												String defParm,
+												boolean autoGain,
+												String extraMasks)
+	{ return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defParm,autoGain,false,new Vector(),extraMasks); }
 	@Override
-	public void addCharAbilityMapping(String ID,
-									  int qualLevel,
-									  String abilityID,
-									  int defaultProficiency,
-									  boolean autoGain)
-	{ addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,"",autoGain,false,new Vector(),""); }
-	public void addCharAbilityMapping(String ID,
-									  int qualLevel,
-									  String abilityID,
-									  int defaultProficiency,
-									  boolean autoGain,
-									  String extraMasks)
-	{ addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,"",autoGain,false,new Vector(),extraMasks); }
+	public AbilityMapping addCharAbilityMapping(String ID,
+												int qualLevel,
+												String abilityID,
+												int defaultProficiency,
+												boolean autoGain)
+	{ return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,"",autoGain,false,new Vector(),""); }
+	public AbilityMapping addCharAbilityMapping(String ID,
+												int qualLevel,
+												String abilityID,
+												int defaultProficiency,
+												boolean autoGain,
+												String extraMasks)
+	{ return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,"",autoGain,false,new Vector(),extraMasks); }
 
 	@Override
 	public int numMappedAbilities()
@@ -117,16 +117,18 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	}
 
 	@Override
-	public void delCharAbilityMapping(String ID, String abilityID)
+	public AbilityMapping delCharAbilityMapping(String ID, String abilityID)
 	{
 		if(completeAbleMap.containsKey(ID))
 		{
 			final Map<String, AbilityMapping> ableMap = completeAbleMap.get(ID);
 			if(ableMap.containsKey(abilityID))
-				ableMap.remove(abilityID);
+				return ableMap.remove(abilityID);
 		}
 		final Map<String,AbilityMapping> revT=reverseAbilityMap.get(abilityID);
-		if(revT!=null) revT.remove(ID);
+		if(revT!=null) 
+			return revT.remove(ID);
+		return null;
 	}
 	@Override
 	public void delCharMappings(String ID)
@@ -169,60 +171,60 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	}
 
 	@Override
-	public void addCharAbilityMapping(String ID,
-									  int qualLevel,
-									  String abilityID,
-									  int defaultProficiency,
-									  String defaultParam,
-									  boolean autoGain,
-									  boolean secret)
-	{ addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret,new Vector(),"");}
+	public AbilityMapping addCharAbilityMapping(String ID,
+												int qualLevel,
+												String abilityID,
+												int defaultProficiency,
+												String defaultParam,
+												boolean autoGain,
+												boolean secret)
+	{ return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret,new Vector(),"");}
 
-	public void addCharAbilityMapping(String ID,
-									  int qualLevel,
-									  String abilityID,
-									  int defaultProficiency,
-									  String defaultParam,
-									  boolean autoGain,
-									  boolean secret,
-									  String extraMasks)
-	{ addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret,new Vector(),extraMasks);}
+	public AbilityMapping addCharAbilityMapping(String ID,
+												int qualLevel,
+												String abilityID,
+												int defaultProficiency,
+												String defaultParam,
+												boolean autoGain,
+												boolean secret,
+												String extraMasks)
+	{ return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret,new Vector(),extraMasks);}
 
-
-	@Override
-	public void addCharAbilityMapping(String ID,
-									  int qualLevel,
-									  String abilityID,
-									  int defaultProficiency,
-									  String defaultParam,
-									  boolean autoGain,
-									  boolean secret,
-									  List<String> preReqSkillsList,
-									  String extraMask)
-	{ addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret,preReqSkillsList,extraMask,null);}
-
-	public void addCharAbilityMapping(String ID,
-									  int qualLevel,
-									  String abilityID,
-									  int defaultProficiency,
-									  int maxProficiency,
-									  String defaultParam,
-									  boolean autoGain,
-									  boolean secret)
-	{ addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,new Vector(),"");}
-	public void addCharAbilityMapping(String ID,
-									  int qualLevel,
-									  String abilityID,
-									  int defaultProficiency,
-									  int maxProficiency,
-									  String defaultParam,
-									  boolean autoGain,
-									  boolean secret,
-									  String extraMasks)
-	{ addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,new Vector(),extraMasks);}
 
 	@Override
-	public void addDynaAbilityMapping(String ID,
+	public AbilityMapping addCharAbilityMapping(String ID,
+												int qualLevel,
+												String abilityID,
+												int defaultProficiency,
+												String defaultParam,
+												boolean autoGain,
+												boolean secret,
+												List<String> preReqSkillsList,
+												String extraMask)
+	{ return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret,preReqSkillsList,extraMask,null);}
+
+	public AbilityMapping addCharAbilityMapping(String ID,
+												int qualLevel,
+												String abilityID,
+												int defaultProficiency,
+												int maxProficiency,
+												String defaultParam,
+												boolean autoGain,
+												boolean secret)
+	{ return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,new Vector(),"");}
+	public AbilityMapping addCharAbilityMapping(String ID,
+												int qualLevel,
+												String abilityID,
+												int defaultProficiency,
+												int maxProficiency,
+												String defaultParam,
+												boolean autoGain,
+												boolean secret,
+												String extraMasks)
+	{ return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,new Vector(),extraMasks);}
+
+	@Override
+	public AbilityMapping addDynaAbilityMapping(String ID,
 									  int qualLevel,
 									  String abilityID,
 									  int defaultProficiency,
@@ -231,7 +233,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 									  boolean secret)
 	{
 		delCharAbilityMapping(ID,abilityID);
-		if(CMSecurity.isAbilityDisabled(ID.toUpperCase())) return;
+		if(CMSecurity.isAbilityDisabled(ID.toUpperCase())) return null;
 		Map<String, AbilityMapping> ableMap=completeAbleMap.get(ID);
 		if(ableMap == null)
 		{
@@ -240,19 +242,20 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		final AbilityMapping able = makeAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret, false,new Vector(),"",null);
 		addClassAbility(abilityID,ableMap,able);
+		return able;
 	}
 
-	public void addCharAbilityMapping(String ID,
-									  int qualLevel,
-									  String abilityID,
-									  int defaultProficiency,
-									  int maxProficiency,
-									  String defaultParam,
-									  boolean autoGain,
-									  boolean secret,
-									  List<String> preReqSkillsList,
-									  String extraMask)
-	{ addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,preReqSkillsList,extraMask,null);}
+	public AbilityMapping addCharAbilityMapping(String ID,
+												int qualLevel,
+												String abilityID,
+												int defaultProficiency,
+												int maxProficiency,
+												String defaultParam,
+												boolean autoGain,
+												boolean secret,
+												List<String> preReqSkillsList,
+												String extraMask)
+	{ return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,preReqSkillsList,extraMask,null);}
 
 
 	@Override
@@ -390,20 +393,21 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	}
 
 	@Override
-	public void addCharAbilityMapping(String ID,
-									  int qualLevel,
-									  String abilityID,
-									  int defaultProficiency,
-									  int maxProficiency,
-									  String defaultParam,
-									  boolean autoGain,
-									  boolean secret,
-									  List<String> preReqSkillsList,
-									  String extraMask,
-									  Integer[] costOverrides)
+	public AbilityMapping addCharAbilityMapping(String ID,
+												int qualLevel,
+												String abilityID,
+												int defaultProficiency,
+												int maxProficiency,
+												String defaultParam,
+												boolean autoGain,
+												boolean secret,
+												List<String> preReqSkillsList,
+												String extraMask,
+												Integer[] costOverrides)
 	{
 		delCharAbilityMapping(ID,abilityID);
-		if(CMSecurity.isAbilityDisabled(ID.toUpperCase())) return;
+		if(CMSecurity.isAbilityDisabled(ID.toUpperCase())) 
+			return null;
 		Map<String, AbilityMapping> ableMap=completeAbleMap.get(ID);
 		if(ableMap == null)
 		{
@@ -413,6 +417,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		final AbilityMapping able = makeAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,false,preReqSkillsList,extraMask,costOverrides);
 		addClassAbility(abilityID,ableMap,able);
+		return able;
 	}
 
 	@Override

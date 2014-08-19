@@ -413,12 +413,29 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	public ClanPosition getPosition(String pos);
 
 	/**
+	 * returns clan position by the given role id
+	 * @param roleID the role id to look for
+	 * @return the position role id goes to
+	 */
+	public ClanPosition findPositionRole(Integer roleID);
+
+	/**
+	 * returns clan position based on role id, or some part
+	 * of its id or name.
+	 * @param pos the role id, name, or id
+	 * @return the clan position the pos goes to
+	 */
+	public ClanPosition findPositionRole(String pos);
+	
+	/**
 	 * Return the list of abilities owned by someone
 	 * who is part of a clan of the given level.
+	 * @param mob the mob enabled
+	 * @param clan the clan the abilities come from
 	 * @param level clan level
 	 * @return list of abilities
 	 */
-	public SearchIDList<Ability> getClanLevelAbilities(Integer level);
+	public SearchIDList<Ability> getClanLevelAbilities(MOB mob, Clan clan, Integer level);
 
 	/**
 	 * Return the list of effects owned by someone

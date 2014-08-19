@@ -3,6 +3,7 @@
    2. Generic Character Classes now support starting money values. (Standard support requires code).
    3. Socials action cost can now be controlled and tweeked from ini file/control panel.
    4. (Internal) MiniWebServer renamed to CoffeeWebServer -- so many path/name changes
+   *. Finish editors for, and then Test Clan Role-based effects/abilities.
    *. finish the dadgum engine thrust adjustment! in GenSpaceShip
    *. finish collision management, against space ships at least.
    *. interacting items of diff tech level might damage each other

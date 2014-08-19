@@ -103,7 +103,7 @@ public class MOBTeacher extends CombatAbilities
 		}
 		for(final ClanGovernment G : CMLib.clans().getStockGovernments())
 		{
-			G.getClanLevelAbilities(Integer.valueOf(Integer.MAX_VALUE));
+			G.getClanLevelAbilities(null,null,Integer.valueOf(Integer.MAX_VALUE));
 			for(final Enumeration<AbilityMapping> m= CMLib.ableMapper().getClassAbles(G.getName(), false);m.hasMoreElements();)
 			{
 				final AbilityMapping M=m.nextElement();

@@ -98,17 +98,20 @@ public class DefaultClanGovernment implements ClanGovernment
 	public LinkedList<CMath.CompiledOperation> xpCalculationFormula = CMath.compileMathExpression(DEFAULT_XP_FORMULA);
 
 	// derived and internal vars
-	protected Map<Integer,SearchIDList<Ability>>
-						clanAbilityMap			=null;
-	protected Map<Integer,SearchIDList<Ability>>
-						clanEffectMap			=null;
-	protected String[] 	clanEffectNames			=null;
-	protected int[] 	clanEffectLevels		=null;
-	protected String[] 	clanEffectParms			=null;
-	protected String[] 	clanAbilityNames		=null;
-	protected int[] 	clanAbilityLevels		=null;
-	protected int[] 	clanAbilityProficiencies=null;
-	protected boolean[] clanAbilityQuals		=null;
+	protected Map<Integer,Map<Integer,SearchIDList<Ability>>>
+							clanAbilityMap			=null;
+	protected String[]		clanEffectNames			=null;
+	protected int[]			clanEffectLevels		=null;
+	protected String[]		clanEffectParms			=null;
+	protected Set<Integer>[]clanEffectRoles			=null;
+	
+	protected Map<Integer,Map<Integer,SearchIDList<Ability>>>
+							clanEffectMap			=null;
+	protected String[]		clanAbilityNames		=null;
+	protected int[]			clanAbilityLevels		=null;
+	protected int[]			clanAbilityProficiencies=null;
+	protected boolean[]		clanAbilityQuals		=null;
+	protected Set<Integer>[]clanAbilityRoles		=null;
 
 	/** return a new instance of the object*/
 	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultClanGovernment();}}
@@ -409,6 +412,45 @@ public class DefaultClanGovernment implements ClanGovernment
 				return P;
 		return null;
 	}
+	
+	@Override
+	public ClanPosition findPositionRole(String pos)
+	{
+		if(pos==null) return null;
+		pos=pos.trim();
+		if(CMath.isInteger(pos))
+		{
+			int ipos=CMath.s_int(pos);
+			for(final ClanPosition P : positions)
+				if(P.getRoleID() == ipos)
+					return P;
+		}
+		for(final ClanPosition P : positions)
+			if(P.getID().equalsIgnoreCase(pos))
+				return P;
+		for(final ClanPosition P : positions)
+			if(P.getName().equalsIgnoreCase(pos))
+				return P;
+		for(final ClanPosition P : positions)
+			if(P.getID().toUpperCase().startsWith(pos.toUpperCase()))
+				return P;
+		for(final ClanPosition P : positions)
+			if(P.getName().toUpperCase().startsWith(pos.toUpperCase()))
+				return P;
+		return null;
+	}
+	
+	@Override
+	public ClanPosition findPositionRole(Integer roleID)
+	{
+		if(roleID==null) return null;
+		final int ipos=roleID.intValue();
+		for(final ClanPosition P : positions)
+			if(P.getRoleID() == ipos)
+				return P;
+		return null;
+	}
+	
 	@Override
 	public void delPosition(ClanPosition pos)
 	{
@@ -417,6 +459,7 @@ public class DefaultClanGovernment implements ClanGovernment
 			if(P!=pos) newPos.add(P);
 		positions=newPos.toArray(new ClanPosition[0]);
 	}
+
 	@Override
 	public ClanPosition addPosition()
 	{
@@ -459,7 +502,7 @@ public class DefaultClanGovernment implements ClanGovernment
 		AUTOPROMOTEBY,VOTEFUNCS,LONGDESC,XPLEVELFORMULA,
 		NUMRABLE,GETRABLE,GETRABLEPROF,GETRABLEQUAL,GETRABLELVL,
 		NUMREFF,GETREFF,GETREFFPARM,GETREFFLVL,CATEGORY,ISRIVALROUS,
-		ENTRYSCRIPT,EXITSCRIPT
+		ENTRYSCRIPT,EXITSCRIPT,GETREFFROLE,GETRABLEROLE
 	}
 
 	@Override public String[] getStatCodes() { return CMParms.toStringArray(GOVT_STAT_CODES.values());}
@@ -518,16 +561,19 @@ public class DefaultClanGovernment implements ClanGovernment
 		case GETRABLEPROF: return (clanAbilityProficiencies==null)?"0":(""+clanAbilityProficiencies[num]);
 		case GETRABLEQUAL: return (clanAbilityQuals==null)?"false":(""+clanAbilityQuals[num]);
 		case GETRABLELVL: return (clanAbilityLevels==null)?"0":(""+clanAbilityLevels[num]);
+		case GETRABLEROLE: return (clanAbilityRoles==null)?"":(CMParms.toStringList(clanAbilityRoles[num]));
 		case NUMREFF: return (clanEffectNames==null)?"0":(""+clanEffectNames.length);
 		case GETREFF: return (clanEffectNames==null)?"":(""+clanEffectNames[num]);
 		case GETREFFPARM: return (clanEffectParms==null)?"0":(""+clanEffectParms[num]);
 		case GETREFFLVL: return (clanEffectLevels==null)?"0":(""+clanEffectLevels[num]);
+		case GETREFFROLE: return (clanEffectRoles==null)?"":(CMParms.toStringList(clanEffectRoles[num]));
 		case CATEGORY: return category;
 		default: Log.errOut("Clan","getStat:Unhandled:"+stat.toString()); break;
 		}
 		return "";
 	}
 	@Override public boolean isStat(String code) { return getStatIndex(code)!=null;}
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -630,12 +676,14 @@ public class DefaultClanGovernment implements ClanGovernment
 					 clanEffectNames=null;
 					 clanEffectParms=null;
 					 clanEffectLevels=null;
+					 clanEffectRoles=null;
 				 }
 				 else
 				 {
 					 clanEffectNames=new String[CMath.s_int(val)];
 					 clanEffectParms=new String[CMath.s_int(val)];
 					 clanEffectLevels=new int[CMath.s_int(val)];
+					 clanEffectRoles=new Set[CMath.s_int(val)];
 				 }
 				 break;
 		case GETREFF:
@@ -648,9 +696,35 @@ public class DefaultClanGovernment implements ClanGovernment
 					 clanEffectParms[num]=val;
 					 break;
 				 }
+		case GETREFFROLE:
+				 {   if(clanEffectRoles==null) clanEffectRoles=new Set[num+1];
+				 	 final List<String> partsList=CMParms.parseCommas(val,true);
+				 	 final Set<Integer> roleSet=new HashSet<Integer>();
+				 	 for(final String part : partsList)
+				 	 {
+				 		 final ClanPosition P=findPositionRole(part);
+				 		 if(P!=null)
+				 			 roleSet.add(Integer.valueOf(P.getRoleID()));
+				 	 }
+					 clanEffectRoles[num]=roleSet;
+					 break;
+				 }
 		case GETREFFLVL:
 		 		 {   if(clanEffectLevels==null) clanEffectLevels=new int[num+1];
 					 clanEffectLevels[num]=CMath.s_int(val);
+					 break;
+				 }
+		case GETRABLEROLE:
+				 {   if(clanAbilityRoles==null) clanAbilityRoles=new Set[num+1];
+				 	 final List<String> partsList=CMParms.parseCommas(val,true);
+				 	 final Set<Integer> roleSet=new HashSet<Integer>();
+				 	 for(final String part : partsList)
+				 	 {
+				 		 final ClanPosition P=findPositionRole(part);
+				 		 if(P!=null)
+				 			 roleSet.add(Integer.valueOf(P.getRoleID()));
+				 	 }
+				 	clanAbilityRoles[num]=roleSet;
 					 break;
 				 }
 		default: Log.errOut("Clan","setStat:Unhandled:"+stat.toString()); break;
@@ -786,10 +860,25 @@ public class DefaultClanGovernment implements ClanGovernment
 							final Ability A=CMClass.getAbility(clanEffectNames[x]);
 							if(A!=null)
 							{
+								final String roleNames;
+								final Set<Integer> roleSet=clanEffectRoles[x];
+								if((roleSet!=null)&&(roleSet.size()>0))
+								{
+									final List<String> roleList=new ArrayList<String>();
+									for(final Integer posI : roleSet)
+									{
+										final ClanPosition P=findPositionRole(posI);
+										if(P!=null)
+											roleList.add(CMStrings.capitalizeAndLower(P.getName()));
+									}
+									roleNames=CMLib.english().toEnglishStringList(roleList);
+								}
+								else
+									roleNames=CMLib.lang()._("Members");
 								A.setMiscText(clanEffectParms[x]);
 								String desc=A.accountForYourself();
 								if((desc==null)||(desc.length()==0))
-									desc=CMLib.lang()._("Members gain the following effect: @x1",A.name());
+									desc=CMLib.lang()._("@x1 gain the following effect: @x2",roleNames,A.name());
 								levelBenefits.add(desc);
 							}
 						}
@@ -799,10 +888,25 @@ public class DefaultClanGovernment implements ClanGovernment
 							final Ability A=CMClass.getAbility(clanAbilityNames[x]);
 							if(A!=null)
 							{
-								if(clanAbilityQuals[x])
-									levelBenefits.add(CMLib.lang()._("Members qualify for: @x1",A.name()));
+								final String roleNames;
+								final Set<Integer> roleSet=clanAbilityRoles[x];
+								if((roleSet!=null)&&(roleSet.size()>0))
+								{
+									final List<String> roleList=new ArrayList<String>();
+									for(final Integer posI : roleSet)
+									{
+										final ClanPosition P=findPositionRole(posI);
+										if(P!=null)
+											roleList.add(CMStrings.capitalizeAndLower(P.getName()));
+									}
+									roleNames=CMLib.english().toEnglishStringList(roleList);
+								}
 								else
-									levelBenefits.add(CMLib.lang()._("Members automatically gain: @x1",A.name()));
+									roleNames=CMLib.lang()._("Members");
+								if(clanAbilityQuals[x])
+									levelBenefits.add(CMLib.lang()._("@x1 qualify for: @x2",roleNames,A.name()));
+								else
+									levelBenefits.add(CMLib.lang()._("@x1 automatically gain: @x2",roleNames,A.name()));
 							}
 						}
 					for(final String bene : levelBenefits)
@@ -815,22 +919,24 @@ public class DefaultClanGovernment implements ClanGovernment
 	}
 
 	@Override
-	public SearchIDList<Ability> getClanLevelAbilities(Integer level)
+	public SearchIDList<Ability> getClanLevelAbilities(MOB mob, Clan clan, Integer level)
 	{
 		final String clanGvtID=name;
 		if((clanAbilityMap==null)
 		&&(clanAbilityNames!=null)
 		&&(clanAbilityLevels!=null)
+		&&(clanAbilityRoles!=null)
 		&&(clanAbilityProficiencies!=null)
 		&&(clanAbilityQuals!=null))
 		{
 			CMLib.ableMapper().delCharMappings(ID()); // necessary for a "clean start"
-			clanAbilityMap=new Hashtable<Integer,SearchIDList<Ability>>();
+			clanAbilityMap=new Hashtable<Integer,Map<Integer,SearchIDList<Ability>>>();
 			for(int i=0;i<clanAbilityNames.length;i++)
 			{
 				final Ability A=CMClass.getAbility(clanAbilityNames[i]);
 				if(A!=null)
 				{
+					final AbilityMapper.AbilityMapping ableMap=
 					CMLib.ableMapper().addDynaAbilityMapping(clanGvtID,
 															 clanAbilityLevels[i],
 															 A.ID(),
@@ -838,19 +944,42 @@ public class DefaultClanGovernment implements ClanGovernment
 															 "",
 															 !clanAbilityQuals[i],
 															 false);
+					if(ableMap != null)
+					{
+						for(Integer I : clanAbilityRoles[i])
+							ableMap.extFields.put(I.toString(), I.toString());
+					}
 				}
 			}
 		}
-		if(clanAbilityMap==null) return emptyIDs;
-		if(level==null) level=Integer.valueOf(Integer.MAX_VALUE);
-		if(clanAbilityMap.containsKey(level))
-			return clanAbilityMap.get(level);
+		final Integer mobClanRole;
+		if((mob==null)||(clan==null))
+			mobClanRole=Integer.valueOf(Integer.MAX_VALUE);
+		else
+		{
+			final Pair<Clan,Integer> mobClanRolePair=mob.getClanRole(clan.clanID());
+			if(mobClanRolePair == null)
+				mobClanRole=Integer.valueOf(Integer.MAX_VALUE);
+			else
+				return emptyIDs;
+		}
+		if(level==null) 
+			level=Integer.valueOf(Integer.MAX_VALUE);
+		final Map<Integer,SearchIDList<Ability>> subClanAbilityMap=clanAbilityMap.get(level);
+		if(subClanAbilityMap==null) 
+			return emptyIDs;
+		if(subClanAbilityMap.containsKey(mobClanRole))
+			return subClanAbilityMap.get(mobClanRole);
 		final List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(clanGvtID,level.intValue(),true,true);
 		final CMUniqSortSVec<Ability> finalV=new CMUniqSortSVec<Ability>();
 		for(final AbilityMapper.AbilityMapping able : V)
 		{
 			final Ability A=CMClass.getAbility(able.abilityID);
-			if(A!=null)
+			if((A!=null)
+			&&((mobClanRole==null)
+			 ||(mobClanRole.intValue()==Integer.MAX_VALUE)
+			 ||(able.extFields.size()==0)
+			 ||(able.extFields.containsKey(mobClanRole.toString()))))
 			{
 				A.setProficiency(CMLib.ableMapper().getDefaultProficiency(clanGvtID,false,A.ID()));
 				A.setSavable(false);
@@ -859,11 +988,11 @@ public class DefaultClanGovernment implements ClanGovernment
 			}
 		}
 		finalV.trimToSize();
-		clanAbilityMap.put(level,finalV);
+		subClanAbilityMap.put(mobClanRole,finalV);
 		return finalV;
 	}
 
-	public List<Ability> getClanLevelEffectsList(final MOB mob, final Integer level)
+	public List<Ability> getClanLevelEffectsList(Integer mobClanRole, Integer level)
 	{
 		if(clanEffectNames==null)
 			return empty;
@@ -871,22 +1000,44 @@ public class DefaultClanGovernment implements ClanGovernment
 		if((clanEffectMap==null)
 		&&(clanEffectNames!=null)
 		&&(clanEffectLevels!=null)
+		&&(clanEffectRoles!=null)
 		&&(clanEffectParms!=null))
-			clanEffectMap=new Hashtable<Integer,SearchIDList<Ability>>();
+			clanEffectMap=new Hashtable<Integer,Map<Integer,SearchIDList<Ability>>>();
 
-		if(clanEffectMap==null) return empty;
+		if(clanEffectMap==null) 
+			return empty;
 
-		if(clanEffectMap.containsKey(level))
-			return clanEffectMap.get(level);
+		if(mobClanRole==null)
+			mobClanRole = Integer.valueOf(Integer.MAX_VALUE);
+		
+		if(level==null)
+			level = Integer.valueOf(Integer.MAX_VALUE);
+
+		Map<Integer,SearchIDList<Ability>> subClanEffectMap=clanEffectMap.get(level);
+		if(subClanEffectMap == null)
+		{
+			subClanEffectMap = new Hashtable<Integer,SearchIDList<Ability>>();
+			clanEffectMap.put(level, subClanEffectMap);
+		}
+		
+		if(subClanEffectMap.containsKey(mobClanRole))
+			return subClanEffectMap.get(mobClanRole);
+
 		final CMSortSVec<Ability> finalV = new CMSortSVec<Ability>();
 		for(int v=0;v<clanEffectLevels.length;v++)
 		{
 			if((clanEffectLevels[v]<=level.intValue())
 			&&(clanEffectNames.length>v)
-			&&(clanEffectParms.length>v))
+			&&(clanEffectParms.length>v)
+			&&(clanEffectRoles.length>v))
 			{
+				final Set<Integer> clanRolesMap=clanEffectRoles[v];
 				final Ability A=CMClass.getAbility(clanEffectNames[v]);
-				if(A!=null)
+				if((A!=null)
+				&&((clanRolesMap==null)
+				 ||(clanRolesMap.size()==0)
+				 ||(mobClanRole.intValue()==Integer.MAX_VALUE))
+				 ||(clanRolesMap.contains(mobClanRole)))
 				{
 					// mob was set to null here to make the cache map actually relevant .. see caching below
 					A.setProficiency(CMLib.ableMapper().getMaxProficiency((MOB)null, true, A.ID()));
@@ -898,7 +1049,7 @@ public class DefaultClanGovernment implements ClanGovernment
 			}
 		}
 		finalV.trimToSize();
-		clanEffectMap.put(level,finalV);
+		subClanEffectMap.put(mobClanRole,finalV);
 		return finalV;
 	}
 
@@ -917,13 +1068,28 @@ public class DefaultClanGovernment implements ClanGovernment
 				}
 			});
 	}
+	
+	private Integer getMobClanRoleOrNull(final MOB mob, final Clan clan)
+	{
+		if((mob!=null)&&(clan!=null))
+		{
+			final Pair<Clan,Integer> mobClanRolePair=mob.getClanRole(clan.clanID());
+			if(mobClanRolePair != null)
+				return mobClanRolePair.second;
+			else
+				return null;
+		}
+		else
+			return null;
+	}
 
 	@Override
 	public ChameleonList<Ability> getClanLevelEffects(final MOB mob, final Clan clan, final Integer level)
 	{
 		if(level == null) return getEmptyClanLevelEffects(mob, clan);
 		final DefaultClanGovernment myGovt = this;
-		final List<Ability> myList=getClanLevelEffectsList(mob, level);
+		final Integer mobClanRole=getMobClanRoleOrNull(mob, clan);
+		final List<Ability> myList=getClanLevelEffectsList(mobClanRole, level);
 		final List<Ability> finalV=new Vector<Ability>(myList.size());
 		for(final Ability A : myList)
 		{
@@ -951,10 +1117,13 @@ public class DefaultClanGovernment implements ClanGovernment
 					@Override
 					public boolean isDeprecated()
 					{
-						if((mob.amDestroyed())||(clan==null)||(mob.getClanRole(clan.clanID())==null))
+						if((mob.amDestroyed())||(clan==null))
+							return true;
+						final Integer mobClanRole=getMobClanRoleOrNull(mob, clan);
+						if(mobClanRole==null)
 							return true;
 						if((clan.getGovernment() != myGovt)
-						|| (getClanLevelEffectsList(mob, Integer.valueOf(clan.getClanLevel())) != oldReferenceListRef.get()))
+						|| (getClanLevelEffectsList(mobClanRole, Integer.valueOf(clan.getClanLevel())) != oldReferenceListRef.get()))
 							return true;
 						return false;
 					}

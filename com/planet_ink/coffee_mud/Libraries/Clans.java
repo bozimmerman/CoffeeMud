@@ -836,7 +836,7 @@ public class Clans extends StdLibrary implements ClanManager
 			str.append(indt(2)).append("<DEITYBASIS>").append(gvt.isConquestByWorship()).append("</DEITYBASIS>\n");
 		}
 		str.append(indt(1)).append("</CONQUEST>\n");
-		gvt.getClanLevelAbilities(Integer.valueOf(Integer.MAX_VALUE));
+		gvt.getClanLevelAbilities(null,null,Integer.valueOf(Integer.MAX_VALUE));
 		final Enumeration<AbilityMapping> m= CMLib.ableMapper().getClassAbles(gvt.getName(), false);
 		if(!m.hasMoreElements())
 			str.append(indt(1)).append("<ABILITIES />\n");
@@ -846,7 +846,21 @@ public class Clans extends StdLibrary implements ClanManager
 			for(;m.hasMoreElements();)
 			{
 				final AbilityMapping map=m.nextElement();
-				str.append(indt(2)).append("<ABILITY ID=\""+map.abilityID+"\" PROFF="+map.defaultProficiency+" LEVEL="+map.qualLevel+" QUALIFYONLY="+(!map.autoGain)+" />\n");
+				final String addExt;
+				if(map.extFields.size()>0)
+				{
+					final List<String> posNames=new ArrayList<String>();
+					for(String I : map.extFields.keySet())
+					{
+						final ClanPosition P=gvt.findPositionRole(I);
+						if(P!=null)
+							posNames.add(P.getID());
+					}
+					addExt="ROLES=\""+CMParms.toStringList(posNames)+"\" ";
+				}
+				else
+					addExt="";
+				str.append(indt(2)).append("<ABILITY ID=\""+map.abilityID+"\" PROFF="+map.defaultProficiency+" LEVEL="+map.qualLevel+" QUALIFYONLY="+(!map.autoGain)+" "+addExt+"/>\n");
 			}
 			str.append(indt(1)).append("</ABILITIES>\n");
 		}
@@ -860,7 +874,22 @@ public class Clans extends StdLibrary implements ClanManager
 			{
 				final Ability A=effectList.get(a);
 				final int lvl = CMath.s_int(gvt.getStat("GETREFFLVL"+a));
-				str.append(indt(2)).append("<EFFECT ID=\""+A.ID()+"\" LEVEL="+lvl+" PARMS=\""+CMLib.xml().parseOutAngleBrackets(A.text())+"\" />\n");
+				final String roleList=gvt.getStat("GETREFFROLE"+a);
+				final String addExt;
+				if(roleList.trim().length()>0)
+				{
+					final List<String> posNames=new ArrayList<String>();
+					for(String I : CMParms.parseCommas(roleList,true))
+					{
+						final ClanPosition P=gvt.findPositionRole(I);
+						if(P!=null)
+							posNames.add(P.getID());
+					}
+					addExt="ROLES=\""+CMParms.toStringList(posNames)+"\" ";
+				}
+				else
+					addExt="";
+				str.append(indt(2)).append("<EFFECT ID=\""+A.ID()+"\" LEVEL="+lvl+" PARMS=\""+CMLib.xml().parseOutAngleBrackets(A.text())+"\" "+addExt+"/>\n");
 			}
 			str.append(indt(1)).append("</EFFECTS>\n");
 		}
@@ -1088,6 +1117,7 @@ public class Clans extends StdLibrary implements ClanManager
 					G.setStat("GETRABLEPROF"+x, able.parms.get("PROFF"));
 					G.setStat("GETRABLEQUAL"+x, able.parms.get("QUALIFYONLY"));
 					G.setStat("GETRABLELVL"+x, able.parms.get("LEVEL"));
+					G.setStat("GETRABLEROLE"+x, able.parms.get("ROLES"));
 				}
 			}
 			final XMLLibrary.XMLpiece effectsTag = CMLib.xml().getPieceFromPieces(clanTypePieceTag.contents, "EFFECTS");
@@ -1100,6 +1130,7 @@ public class Clans extends StdLibrary implements ClanManager
 					G.setStat("GETREFF"+x, able.parms.get("ID"));
 					G.setStat("GETREFFPARM"+x, CMLib.xml().restoreAngleBrackets(able.parms.get("PARMS")));
 					G.setStat("GETREFFLVL"+x, able.parms.get("LEVEL"));
+					G.setStat("GETREFFROLE"+x, able.parms.get("ROLES"));
 				}
 			}
 			governments.add(G);

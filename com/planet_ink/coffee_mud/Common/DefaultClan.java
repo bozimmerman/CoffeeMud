@@ -1569,7 +1569,7 @@ public class DefaultClan implements Clan
 	{
 		final Pair<Clan,Integer> p=(mob!=null)?mob.getClanRole(clanID()):null;
 		if((mob==null)||((p!=null)&&(getAuthority(p.second.intValue(),Function.CLAN_BENEFITS)!=Clan.Authority.CAN_NOT_DO)))
-			return govt().getClanLevelAbilities(Integer.valueOf(getClanLevel()));
+			return govt().getClanLevelAbilities(mob,this,Integer.valueOf(getClanLevel()));
 		return emptyAbles;
 	}
 

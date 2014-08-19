@@ -359,12 +359,12 @@ public class ClanGovernmentData extends StdWebMacro
 			}
 			if(parms.containsKey("RABLE"))
 			{
-				G.getClanLevelAbilities(Integer.valueOf(Integer.MAX_VALUE));
+				G.getClanLevelAbilities(null,null,Integer.valueOf(Integer.MAX_VALUE));
 				final Enumeration<AbilityMapping> m= CMLib.ableMapper().getClassAbles(G.ID(), false);
 				final List<Ability> abilities = new LinkedList<Ability>();
 				for(;m.hasMoreElements();)
 					abilities.add(CMClass.getAbility(m.nextElement().abilityID));
-				str.append(RaceData.dynAbilities(G.getClanLevelAbilities(Integer.valueOf(1000)),G.ID(),G,httpReq,parms,0,parms.get("FONT"))+", ");
+				str.append(RaceData.dynAbilities(G.getClanLevelAbilities(null,null,Integer.valueOf(1000)),G.ID(),G,httpReq,parms,0,parms.get("FONT"))+", ");
 			}
 			if(parms.containsKey("REFFS"))
 				str.append(RaceData.dynEffects(G.ID(),G.getClanLevelEffects(null, null, Integer.valueOf(Integer.MAX_VALUE)),G,httpReq,parms,0,parms.get("FONT"))+", ");

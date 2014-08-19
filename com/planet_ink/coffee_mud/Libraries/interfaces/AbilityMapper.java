@@ -81,6 +81,7 @@ public interface AbilityMapper extends CMLibrary
 		public String originalSkillPreReqList="";
 		public Integer[] costOverrides=new Integer[COST_NUM];
 		public boolean allQualifyFlag=false;
+		public Map<String,String> extFields=new Hashtable<String,String>(1);
 		public AbilityMapping(String id){ ID=id;}
 		public AbilityMapping copyOf()
 		{
@@ -93,23 +94,23 @@ public interface AbilityMapper extends CMLibrary
 		}
 	}
 
-	public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, boolean autoGain);
-	public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, boolean autoGain, List<String> preReqSkillsList);
-	public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, boolean autoGain, String extraMasks);
-	public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, boolean autoGain, List<String> preReqSkillsList, String extraMasks);
-	public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, String defParm, boolean autoGain);
-	public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, boolean autoGain);
-	public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency,
+	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, boolean autoGain);
+	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, boolean autoGain, List<String> preReqSkillsList);
+	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, boolean autoGain, String extraMasks);
+	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, boolean autoGain, List<String> preReqSkillsList, String extraMasks);
+	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, String defParm, boolean autoGain);
+	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, boolean autoGain);
+	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency,
 									  String defaultParam, boolean autoGain, boolean secret);
-	public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency,
+	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency,
 									  String defaultParam, boolean autoGain, boolean secret,
 									  List<String> preReqSkillsList, String extraMask);
-	public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency,
+	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency,
 									  int maxProficiency, String defaultParam, boolean autoGain, boolean secret,
 									  List<String> preReqSkillsList, String extraMask, Integer[] costOverrides);
-	public void addDynaAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency,
+	public AbilityMapping addDynaAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency,
 			  						  String defaultParam, boolean autoGain, boolean secret);
-	public void delCharAbilityMapping(String ID, String abilityID);
+	public AbilityMapping delCharAbilityMapping(String ID, String abilityID);
 
 	public void addPreRequisites(String ID, List<String> preReqSkillsList, String extraMask);
 	public void delCharMappings(String ID);
