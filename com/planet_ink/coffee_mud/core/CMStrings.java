@@ -36,7 +36,7 @@ public class CMStrings
 	private static CMStrings inst=new CMStrings();
 	public final static CMStrings instance(){return inst;}
 
-	public final static String SPACES=repeat(" ",1024);
+	public final static String SPACES=repeat(' ',1024);
 
 	public final static String repeat(final String str1, final int times)
 	{
@@ -45,6 +45,16 @@ public class CMStrings
 		for(int i=0;i<times;i++)
 			str.append(str1);
 		return str.toString();
+	}
+
+	public final static String repeat(final char chr1, final int times)
+	{
+		if(times<=0) return "";
+		final byte[] buf=new byte[times];
+		if(Character.charCount(chr1)>1)
+			return repeat(Character.toString(chr1), times);
+		Arrays.fill(buf, (byte)chr1);
+		return new String(buf);
 	}
 
 	public final static boolean isUpperCase(final String str)
