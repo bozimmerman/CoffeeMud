@@ -337,7 +337,7 @@ public class Catalog extends StdCommand
 					list.append(CMStrings.padRight("#",3));
 					list.append(CMStrings.padRight(_("Name"),34)+" ");
 					list.append(CMStrings.padRight("#",3));
-					list.append("\n\r"+CMStrings.repeat("-",78)+"\n\r");
+					list.append("\n\r"+CMStrings.repeat('-',78)+"\n\r");
 					final String[] names=CMLib.catalog().getCatalogMobNames(cat);
 					for (final String name : names)
 					{
@@ -372,7 +372,7 @@ public class Catalog extends StdCommand
 					list.append(CMStrings.padRight("#",3)+" ");
 					list.append(CMStrings.padRight(_("Rate"),6)+" ");
 					list.append(CMStrings.padRight(_("Mask"),31)+" ");
-					list.append("\n\r"+CMStrings.repeat("-",78)+"\n\r");
+					list.append("\n\r"+CMStrings.repeat('-',78)+"\n\r");
 					final String[] names=CMLib.catalog().getCatalogItemNames(cat);
 					for (final String name : names)
 					{

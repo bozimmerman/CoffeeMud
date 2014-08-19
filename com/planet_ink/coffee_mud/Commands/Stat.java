@@ -141,7 +141,7 @@ public class Stat  extends Skills
 						 +CMStrings.padRight(_("CLAS"),5)
 						 +CMStrings.padRight(_("PURG"),5)
 						 +CMStrings.padRight(_("MARR"),5)+"\n\r");
-		table.append(CMStrings.repeat("-",75)+"\n\r");
+		table.append(CMStrings.repeat('-',75)+"\n\r");
 		final Calendar C=Calendar.getInstance();
 		C.set(Calendar.HOUR_OF_DAY,23);
 		C.set(Calendar.MINUTE,59);

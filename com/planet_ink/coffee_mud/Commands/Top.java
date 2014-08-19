@@ -66,7 +66,7 @@ public class Top extends StdCommand
 		final StringBuilder str=new StringBuilder();
 		final int width=ColFixer.fixColWidth(72, mob)/3;
 		final int nameWidth=width - (width/3)-3;
-		final String slashes=CMStrings.repeat("=", width);
+		final String slashes=CMStrings.repeat('=', width);
 		for(final TimePeriod period : new TimePeriod[]{TimePeriod.ALLTIME,TimePeriod.MONTH})
 		{
 			final String desc=(period==TimePeriod.ALLTIME)?"All Time":"This Month";

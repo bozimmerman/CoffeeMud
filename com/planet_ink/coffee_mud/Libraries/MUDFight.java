@@ -1175,7 +1175,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		return (armor<0)?CMProps.getListFileValue(CMProps.ListFile.ARMOR_DESCS,0):(
 			   (armor>=ARMOR_CEILING)?
 					   CMProps.getListFileValue(CMProps.ListFile.ARMOR_DESCS,numArmorDescs-1)
-					   +(CMStrings.repeat("!",(armor-ARMOR_CEILING)/100))
+					   +(CMStrings.repeat('!',(armor-ARMOR_CEILING)/100))
 					   +"^. ("+armor+")"
 										:
 					   (CMProps.getListFileValue(CMProps.ListFile.ARMOR_DESCS,(int)Math.round(Math.floor(CMath.mul(CMath.div(armor,ARMOR_CEILING),numArmorDescs))))
@@ -1192,7 +1192,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			   (prowess>=PROWESS_CEILING)
 										 ?
 								 CMProps.getListFileValue(CMProps.ListFile.PROWESS_DESCS,numProwessDescs-1)
-								 +(CMStrings.repeat("!",(prowess-PROWESS_CEILING)/100))+"^. ("+prowess+")"
+								 +(CMStrings.repeat('!',(prowess-PROWESS_CEILING)/100))+"^. ("+prowess+")"
 										 :
 								 (CMProps.getListFileValue(CMProps.ListFile.PROWESS_DESCS,(int)Math.round(Math.floor(CMath.mul(CMath.div(prowess,PROWESS_CEILING),numProwessDescs))))
 								 +"^. ("+prowess+")"));

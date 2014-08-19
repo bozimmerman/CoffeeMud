@@ -6517,7 +6517,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 			}
 			final String header=showNumber+". Class Abilities: ";
-			final String spaces=CMStrings.repeat(" ",2+(""+showNumber).length());
+			final String spaces=CMStrings.repeat(' ',2+(""+showNumber).length());
 			parts.append("\n\r");
 			parts.append(spaces+CMStrings.padRight(_("Lvl"),3)+" "
 							   +CMStrings.padRight(_("Skill"),25)+" "

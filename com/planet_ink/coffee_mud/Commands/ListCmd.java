@@ -1397,7 +1397,7 @@ public class ListCmd extends StdCommand
 				if(notYet)
 					notYet=false;
 				else
-					head.append(CMStrings.repeat(" ", len));
+					head.append(CMStrings.repeat(' ', len));
 				head.append(s);
 				head.append("\n\r");
 			}
@@ -2826,7 +2826,7 @@ public class ListCmd extends StdCommand
 		str.append(CMStrings.padRight(_("Eff."), 4)).append(" ");
 		str.append(CMStrings.padRight(_("Rel."), 4));
 		str.append("\n\r");
-		str.append(CMStrings.repeat("-", 75)).append("\n\r");
+		str.append(CMStrings.repeat('-', 75)).append("\n\r");
 		final List<Manufacturer> l=new XVector<Manufacturer>(CMLib.tech().manufacterers());
 		Collections.sort(l,new Comparator<Manufacturer>()
 		{
@@ -2867,7 +2867,7 @@ public class ListCmd extends StdCommand
 			str.append(CMStrings.padRight(_("Name"), 30)).append(" ");
 			str.append(CMStrings.padRight(_("Room"), 30)).append(" ");
 			str.append("\n\r");
-			str.append(CMStrings.repeat("-", 75)).append("\n\r");
+			str.append(CMStrings.repeat('-', 75)).append("\n\r");
 			for(final Electronics e : CMLib.tech().getMakeRegisteredElectronics(key))
 			{
 				str.append(CMStrings.padRight(e.Name(), 30)).append(" ");
