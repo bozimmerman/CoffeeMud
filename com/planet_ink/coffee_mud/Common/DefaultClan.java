@@ -1576,13 +1576,13 @@ public class DefaultClan implements Clan
 	@Override
 	public int numClanEffects(MOB mob)
 	{
-		return govt().getClanLevelEffectsSize(mob, Integer.valueOf(getClanLevel()));
+		return govt().getClanLevelEffects(mob, this, Integer.valueOf(getClanLevel())).size();
 	}
 
 	@Override
 	public ChameleonList<Ability> clanEffects(MOB mob)
 	{
-		return govt().getClanLevelEffects(mob,this,Integer.valueOf(getClanLevel()));
+		return govt().getClanLevelEffects(mob,this, Integer.valueOf(getClanLevel()));
 	}
 
 	@Override

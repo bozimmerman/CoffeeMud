@@ -902,12 +902,6 @@ public class DefaultClanGovernment implements ClanGovernment
 		return finalV;
 	}
 
-	@Override
-	public int getClanLevelEffectsSize(final MOB mob, final Integer level)
-	{
-		return getClanLevelEffectsList(mob, level).size();
-	}
-
 	public ChameleonList<Ability> getEmptyClanLevelEffects(final MOB mob, final Clan clan)
 	{
 		return new ChameleonList<Ability>(empty,
