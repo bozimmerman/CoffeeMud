@@ -1448,6 +1448,15 @@ public class CMParms
 		return s.toString();
 	}
 
+	public final static String toCMObjectStringList(final CMObject[] e)
+	{
+		if((e==null)||(e.length==0)) return "";
+		final StringBuilder s=new StringBuilder();
+		for(CMObject o : e)
+			s.append(", "+o.ID());
+		return s.substring(2);
+	}
+
 	public final static String toCMObjectStringList(final Iterator<? extends CMObject> e)
 	{
 		if(!e.hasNext()) return "";

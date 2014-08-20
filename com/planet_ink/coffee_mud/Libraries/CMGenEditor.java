@@ -6226,13 +6226,30 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				final Ability A=CMClass.getAbility(E.getStat("GETRABLE"+v));
 				if(A!=null)
 				{
-					parts.append("("+A.ID()+"/"+E.getStat("GETRABLELVL"+v)+"/"+E.getStat("GETRABLEQUAL"+v)+"/"+E.getStat("GETRABLEPROF"+v)+"), ");
+					parts.append("("+A.ID()+"/"+E.getStat("GETRABLELVL"+v)+"/"+E.getStat("GETRABLEQUAL"+v)+"/"+E.getStat("GETRABLEPROF"+v));
+					if(CMParms.contains(E.getStatCodes(),"GETRABLEROLE") && (E instanceof ClanGovernment))
+					{
+						final List<String> roleIdsList=CMParms.parseCommas(E.getStat("GETRABLEROLE"+v), true);
+						final List<String> roleNamesList=new ArrayList<String>(roleIdsList.size());
+						for(String roleId : roleIdsList)
+						{
+							ClanPosition P=((ClanGovernment)E).findPositionRole(roleId);
+							if(P!=null)
+								roleNamesList.add(P.getID());
+						}
+						parts.append("/"+CMParms.toStringList(roleNamesList)+"), ");
+					}
+					else
+						parts.append("), ");
 					ables.addElement(A);
-					data.addElement(A.ID()+";"+E.getStat("GETRABLELVL"+v)+";"+E.getStat("GETRABLEQUAL"+v)+";"+E.getStat("GETRABLEPROF"+v));
+					data.addElement(A.ID()+";"+E.getStat("GETRABLELVL"+v)+";"+E.getStat("GETRABLEQUAL"+v)+";"+E.getStat("GETRABLEPROF"+v)+";"+E.getStat("GETRABLEROLE"+v));
 				}
 			}
 			if(parts.toString().endsWith(", "))
-			{parts.deleteCharAt(parts.length()-1);parts.deleteCharAt(parts.length()-1);}
+			{
+				parts.deleteCharAt(parts.length()-1);
+				parts.deleteCharAt(parts.length()-1);
+			}
 			mob.tell(_("@x1. @x2 Abilities: @x3.",""+showNumber,typeName,parts.toString()));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			final String newName=mob.session().prompt(_("Enter an ability name to add or remove (?)\n\r:"),"");
@@ -6244,7 +6261,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				int partNum=-1;
 				for(int i=0;i<ables.size();i++)
 					if(CMLib.english().containsString(ables.elementAt(i).ID(),newName))
-					{ partNum=i; break;}
+					{ 
+						partNum=i; 
+						break;
+					}
 				boolean updateList=false;
 				if(partNum<0)
 				{
@@ -6267,7 +6287,44 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						else
 							str.append("true;");
 						final String prof=mob.session().prompt(_("Enter the (perm) proficiency level (100): "),"100");
-						str.append((""+CMath.s_int(prof)));
+						str.append((""+CMath.s_int(prof))+";");
+						String roles="";
+						if((CMParms.contains(E.getStatCodes(),"GETRABLEROLE"))&&(E instanceof ClanGovernment))
+						{
+							boolean repeat=true;
+							while(repeat && (mob.session()!=null)&&(!mob.session().isStopped()))
+							{
+								final String s=mob.session().prompt(_("Enter one or more roles to restrict this to (?): "),"");
+								if(s.trim().equalsIgnoreCase("?"))
+									mob.tell(_("Roles: ")+CMParms.toCMObjectStringList(((ClanGovernment)E).getPositions()));
+								else
+								if(s.trim().length()==0)
+									break;
+								else
+								{
+									StringBuilder finalListBuilder=new StringBuilder("");
+									List<String> newRoleList=CMParms.parseCommas(s,true);
+									for(String nr : newRoleList)
+									{
+										ClanPosition P=((ClanGovernment)E).findPositionRole(nr);
+										if(P==null)
+										{
+											mob.tell(_("'@x1' is not a valid position. The list is comma-delimited.  Try ?"));
+											finalListBuilder.setLength(0);
+											break;
+										}
+										else
+											finalListBuilder.append(", ").append(P.getRoleID());
+									}
+									if(finalListBuilder.length()>2)
+									{
+										roles=finalListBuilder.substring(2);
+										break;
+									}
+								}
+							}
+						}
+						str.append(roles+";");
 						data.addElement(str.toString());
 						ables.addElement(A);
 						mob.tell(_("@x1 added.",A.name()));
@@ -6295,6 +6352,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						E.setStat("GETRABLELVL"+i,(V.get(1)));
 						E.setStat("GETRABLEQUAL"+i,(V.get(2)));
 						E.setStat("GETRABLEPROF"+i,(V.get(3)));
+						if(CMParms.contains(E.getStatCodes(),"GETRABLEROLE")&&(V.size()>4))
+							E.setStat("GETRABLEROLE"+i,(V.get(4)));
 					}
 				}
 			}
@@ -6321,15 +6380,34 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				final Ability A=CMClass.getAbility(E.getStat("GETREFF"+v));
 				if(A!=null)
 				{
-					parts.append("("+A.ID()+"/"+E.getStat("GETREFFLVL"+v)+"/"+E.getStat("GETREFFPARM"+v)+"), ");
+					parts.append("("+A.ID()+"/"+E.getStat("GETREFFLVL"+v)+"/"+E.getStat("GETREFFPARM"+v));
+					StringBuilder roles=new StringBuilder("");
+					if((E instanceof ClanGovernment)&&(CMParms.contains(E.getStatCodes(), "GETREFFROLE")))
+					{
+						roles.append("/");
+						final List<String> roleIdsList=CMParms.parseCommas(E.getStat("GETREFFROLE"+v), true);
+						final List<String> roleNamesList=new ArrayList<String>(roleIdsList.size());
+						for(String roleId : roleIdsList)
+						{
+							ClanPosition P=((ClanGovernment)E).findPositionRole(roleId);
+							if(P!=null)
+								roleNamesList.add(P.getID());
+						}
+						roles.append(CMParms.toStringList(roleNamesList));
+					}
+					parts.append(roles.toString()+"), ");
 					ables.addElement(A);
-					data.addElement(A.ID()+"~"+E.getStat("GETREFFLVL"+v)+"~"+E.getStat("GETREFFPARM"+v));
+					data.addElement(A.ID()+"~"+E.getStat("GETREFFLVL"+v)+"~"+E.getStat("GETREFFPARM"+v)+"~"+E.getStat("GETREFFROLE"+v));
 				}
 			}
 			if(parts.toString().endsWith(", "))
-			{parts.deleteCharAt(parts.length()-1);parts.deleteCharAt(parts.length()-1);}
+			{
+				parts.deleteCharAt(parts.length()-1);
+				parts.deleteCharAt(parts.length()-1);
+			}
 			mob.tell(_("@x1. @x2 Effects: @x3.",""+showNumber,typeName,parts.toString()));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999)) 
+				return;
 			final String newName=mob.session().prompt(_("Enter an effect name to add or remove\n\r:"),"");
 			if(newName.equalsIgnoreCase("?"))
 				mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),-1).toString());
@@ -6339,7 +6417,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				int partNum=-1;
 				for(int i=0;i<ables.size();i++)
 					if(CMLib.english().containsString(ables.elementAt(i).ID(),newName))
-					{ partNum=i; break;}
+					{ 
+						partNum=i; 
+						break;
+					}
 				boolean updateList=false;
 				if(partNum<0)
 				{
@@ -6352,7 +6433,44 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						final String level=mob.session().prompt(_("Enter the @x1 level to gain this effect (1): ",levelName),"1");
 						str.append((""+CMath.s_int(level))+"~");
 						final String prof=mob.session().prompt(_("Enter any parameters: "),"");
-						str.append(""+prof);
+						str.append(""+prof+"~");
+						String roles="";
+						if((CMParms.contains(E.getStatCodes(),"GETREFFROLE"))&&(E instanceof ClanGovernment))
+						{
+							boolean repeat=true;
+							while(repeat && (mob.session()!=null)&&(!mob.session().isStopped()))
+							{
+								final String s=mob.session().prompt(_("Enter one or more roles to restrict this to (?): "),"");
+								if(s.trim().equalsIgnoreCase("?"))
+									mob.tell(_("Roles: ")+CMParms.toCMObjectStringList(((ClanGovernment)E).getPositions()));
+								else
+								if(s.trim().length()==0)
+									break;
+								else
+								{
+									StringBuilder finalListBuilder=new StringBuilder("");
+									List<String> newRoleList=CMParms.parseCommas(s,true);
+									for(String nr : newRoleList)
+									{
+										ClanPosition P=((ClanGovernment)E).findPositionRole(nr);
+										if(P==null)
+										{
+											mob.tell(_("'@x1' is not a valid position. The list is comma-delimited.  Try ?"));
+											finalListBuilder.setLength(0);
+											break;
+										}
+										else
+											finalListBuilder.append(", ").append(P.getRoleID());
+									}
+									if(finalListBuilder.length()>2)
+									{
+										roles=finalListBuilder.substring(2);
+										break;
+									}
+								}
+							}
+						}
+						str.append(roles+"~");
 						data.addElement(str.toString());
 						ables.addElement(A);
 						mob.tell(_("@x1 added.",A.name()));
@@ -6379,6 +6497,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						E.setStat("GETREFF"+i,V.get(0));
 						E.setStat("GETREFFLVL"+i,V.get(1));
 						E.setStat("GETREFFPARM"+i,V.get(2));
+						if((CMParms.contains(E.getStatCodes(),"GETREFFROLE"))&&(V.size()>3))
+							E.setStat("GETREFFROLE"+i,V.get(3));
 					}
 				}
 			}

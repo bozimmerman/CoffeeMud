@@ -640,6 +640,7 @@ public class DefaultClanGovernment implements ClanGovernment
 					 clanAbilityProficiencies=null;
 					 clanAbilityQuals=null;
 					 clanAbilityLevels=null;
+					 clanAbilityRoles=null;
 				 }
 				 else
 				 {
@@ -647,6 +648,7 @@ public class DefaultClanGovernment implements ClanGovernment
 					 clanAbilityProficiencies=new int[CMath.s_int(val)];
 					 clanAbilityQuals=new boolean[CMath.s_int(val)];
 					 clanAbilityLevels=new int[CMath.s_int(val)];
+					 clanAbilityRoles=new Set[CMath.s_int(val)];
 				 }
 				 break;
 		case GETRABLE:
@@ -667,6 +669,19 @@ public class DefaultClanGovernment implements ClanGovernment
 		case GETRABLELVL:
 				 {   if(clanAbilityLevels==null) clanAbilityLevels=new int[num+1];
 					 clanAbilityLevels[num]=CMath.s_parseIntExpression(val);
+					 break;
+				 }
+		case GETRABLEROLE:
+				 {   if(clanAbilityRoles==null) clanAbilityRoles=new Set[num+1];
+				 	 final List<String> partsList=CMParms.parseCommas(val,true);
+				 	 final Set<Integer> roleSet=new HashSet<Integer>();
+				 	 for(final String part : partsList)
+				 	 {
+				 		 final ClanPosition P=findPositionRole(part);
+				 		 if(P!=null)
+				 			 roleSet.add(Integer.valueOf(P.getRoleID()));
+				 	 }
+				 	 clanAbilityRoles[num]=roleSet;
 					 break;
 				 }
 		case NUMREFF:
@@ -712,19 +727,6 @@ public class DefaultClanGovernment implements ClanGovernment
 		case GETREFFLVL:
 		 		 {   if(clanEffectLevels==null) clanEffectLevels=new int[num+1];
 					 clanEffectLevels[num]=CMath.s_int(val);
-					 break;
-				 }
-		case GETRABLEROLE:
-				 {   if(clanAbilityRoles==null) clanAbilityRoles=new Set[num+1];
-				 	 final List<String> partsList=CMParms.parseCommas(val,true);
-				 	 final Set<Integer> roleSet=new HashSet<Integer>();
-				 	 for(final String part : partsList)
-				 	 {
-				 		 final ClanPosition P=findPositionRole(part);
-				 		 if(P!=null)
-				 			 roleSet.add(Integer.valueOf(P.getRoleID()));
-				 	 }
-				 	clanAbilityRoles[num]=roleSet;
 					 break;
 				 }
 		default: Log.errOut("Clan","setStat:Unhandled:"+stat.toString()); break;
@@ -952,6 +954,8 @@ public class DefaultClanGovernment implements ClanGovernment
 				}
 			}
 		}
+		if(clanAbilityMap==null)
+			return emptyIDs;
 		final Integer mobClanRole;
 		if((mob==null)||(clan==null))
 			mobClanRole=Integer.valueOf(Integer.MAX_VALUE);

@@ -356,6 +356,7 @@ public class RaceData extends StdWebMacro
 	{
 		final StringBuffer str=new StringBuffer("");
 		final QuadVector<String,String,String,String> theclasses=new QuadVector<String,String,String,String>();
+		boolean supportsRoles=CMParms.contains(obj.getStatCodes(), "GETRABLEROLE");
 		if(httpReq.isUrlParameter("RABLES1"))
 		{
 			int num=1;
@@ -447,6 +448,7 @@ public class RaceData extends StdWebMacro
 	{
 		final StringBuffer str=new StringBuffer("");
 		final TriadVector<String,String,String> theclasses=new TriadVector<String,String,String>();
+		boolean supportsRoles=CMParms.contains(obj.getStatCodes(), "GETREFFROLE");
 		if(httpReq.isUrlParameter("REFFS1"))
 		{
 			int num=1;
