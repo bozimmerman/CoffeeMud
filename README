@@ -9,14 +9,16 @@ and learn how to do content building.
 
 Informational web sites:
 
-Development Home Page:             http://www.coffeemud.org
-Support forums:                    http://groups.yahoo.com/group/coffeemud
-Sourceforge site:                  http://sourceforge.net/projects/coffeemud
-Facebook Group                     http://www.facebook.com/groups/115679705136630
-"Home" playtest site:              http://www.coffeemud.net
-Select Old and New versions:       ftp://ftp.zimmers.net/pub/projects/coffeemud
-SVN repository (1.0 to Present):   svn://coffeemud.net/public/CoffeeMud
-GIT repository (5.1 to Present):   https://github.com/bozimmerman/CoffeeMud
+Development Home Page:     http://www.coffeemud.org
+Support forums:            http://groups.yahoo.com/group/coffeemud
+Facebook Group             http://www.facebook.com/groups/115679705136630
+"Home" playtest site:      http://www.coffeemud.net
+Select distribution pkgs:  ftp://ftp.zimmers.net/pub/projects/coffeemud
+Sourceforge site:          http://sourceforge.net/projects/coffeemud
+SVN repository:            svn://coffeemud.net/public/CoffeeMud
+GIT repository @github:    https://github.com/bozimmerman/CoffeeMud
+GIT repository @google:    https://code.google.com/p/coffeemud/
+GIT repository @bitbucket: https://bitbucket.org/bozimmerman/coffeemud
 
 Files in this directory:
 
