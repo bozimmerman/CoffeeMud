@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZap
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 /*
    Copyright 2000-2014 Bo Zimmerman
@@ -2533,38 +2534,62 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 80: // +security
 				case 79: // -security
-				{
-					final String plusMinus=(entryType.intValue()==80)?"+":"-";
-					final Vector<CMSecurity.SecFlag> parms=new Vector<CMSecurity.SecFlag>();
-					for(int v2=v+1;v2<V.size();v2++)
 					{
-						final String str2=V.elementAt(v2);
-						if(zapCodes.containsKey(str2))
+						final String plusMinus=(entryType.intValue()==80)?"+":"-";
+						final Vector<CMSecurity.SecFlag> parms=new Vector<CMSecurity.SecFlag>();
+						for(int v2=v+1;v2<V.size();v2++)
 						{
-							v=v2-1;
-							break;
-						}
-						else
-						if(str2.startsWith(plusMinus))
-						{
-							final CMSecurity.SecFlag flag=(CMSecurity.SecFlag)CMath.s_valueOf(CMSecurity.SecFlag.class,str2.substring(1).toUpperCase().trim().replace(' ','_'));
-							if(flag == null)
-								Log.errOut("MUDZapper","Illegal security flag '"+str2);
+							final String str2=V.elementAt(v2);
+							if(zapCodes.containsKey(str2))
+							{
+								v=v2-1;
+								break;
+							}
 							else
-								parms.addElement(flag);
+							if(str2.startsWith(plusMinus))
+							{
+								final CMSecurity.SecFlag flag=(CMSecurity.SecFlag)CMath.s_valueOf(CMSecurity.SecFlag.class,str2.substring(1).toUpperCase().trim().replace(' ','_'));
+								if(flag == null)
+									Log.errOut("MUDZapper","Illegal security flag '"+str2);
+								else
+									parms.addElement(flag);
+							}
+							v=V.size();
 						}
-						v=V.size();
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new CMSecurity.SecFlag[0])));
+						break;
 					}
-					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new CMSecurity.SecFlag[0])));
+				case 14: // -Clan
+					{
+						final Vector<Object> parms=new Vector<Object>();
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.elementAt(v2);
+							if(zapCodes.containsKey(str2))
+							{
+								v=v2-1;
+								break;
+							}
+							else
+							if(str2.startsWith("+"))
+							{
+								int x;
+								if(((x=str2.lastIndexOf('('))>0)&&(str2.endsWith(")")))
+									parms.addElement(new Pair<String,String>(str2.substring(1,x),str2.substring(x+1,str2.length()-1)));
+								else
+									parms.addElement(str2.substring(1));
+							}
+							v=V.size();
+						}
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+					}
 					break;
-				}
 				case 7: // -Tattoos
 				case 31: // -Area
 					buildRoomFlag=true;
 				//$FALL-THROUGH$
 				case 120: // -Mood
 				case 81: // -expertise
-				case 14: // -Clan
 				case 44: // -Deity
 				case 9: // -Names
 				case 113: // -Questwin
@@ -2614,13 +2639,37 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 					break;
 				}
+				case 15: // +Clan
+					{
+						final Vector<Object> parms=new Vector<Object>();
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.elementAt(v2);
+							if(zapCodes.containsKey(str2))
+							{
+								v=v2-1;
+								break;
+							}
+							else
+							if(str2.startsWith("-"))
+							{
+								int x;
+								if(((x=str2.indexOf('('))>0)&&(str2.endsWith(")")))
+									parms.addElement(new Pair<String,String>(str2.substring(1,x),str2.substring(x+1,str2.length()-1)));
+								else
+									parms.addElement(str2.substring(1));
+							}
+							v=V.size();
+						}
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
+					}
+					break;
 				case 8: // +Tattoos
 				case 32: // +Area
 					buildRoomFlag=true;
 				//$FALL-THROUGH$
 				case 121: // +Mood
 				case 82: // +expertise
-				case 15: // +Clan
 				case 45: // +Deity
 				case 16: // +Names
 				case 114: // +Questwin
@@ -3291,6 +3340,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	}
 
 	@Override public boolean maskCheck(final String text, final Environmental E, final boolean actual){ return maskCheck(getPreCompiledMask(text),E,actual);}
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean maskCheck(final CompiledZapperMask cset, final Environmental E, final boolean actual)
 	{
@@ -3686,16 +3736,62 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					{
 						final String clanID=((ClanItem)E).clanID();
 						for(final Object o : entry.parms)
-							if(clanID.equalsIgnoreCase((String)o))
-							{ found=true; break;}
+							if(o instanceof String)
+							{
+								if((clanID.equalsIgnoreCase((String)o))
+								||(((String)o).equals("*")))
+								{ 
+									found=true; 
+									break;
+								}
+							}
+							else
+							if(o instanceof Pair)
+							{
+								if(clanID.equalsIgnoreCase(((Pair<String,String>)o).first)
+								||((((Pair<String,String>)o).first).equals("*")))
+								{ 
+									found=true; 
+									break;
+								}
+							}
 					}
 					else
 					if(E instanceof MOB)
 						for(final Pair<Clan,Integer> c : ((MOB)E).clans())
 						{
 							for(final Object o : entry.parms)
-								if(c.first.clanID().equalsIgnoreCase((String)o))
-								{ found=true; break;}
+								if(o instanceof String)
+								{
+									if(c.first.clanID().equalsIgnoreCase((String)o)
+									||(((String)o).equals("*")))
+									{ 
+										found=true; 
+										break;
+									}
+								}
+								else
+								if(o instanceof Pair)
+								{
+									if(c.first.clanID().equalsIgnoreCase(((Pair<String,String>)o).first)
+									||((((Pair<String,String>)o).first).equals("*")))
+									{ 
+										if((((Pair<String,String>)o).second).equals("*"))
+										{
+											found=true; 
+											break;
+										}
+										else
+										{
+											ClanPosition cP=c.first.getGovernment().getPosition(((Pair<String,String>)o).second);
+											if((cP==null)||(cP.getRoleID()==c.second.intValue()))
+											{
+												found=true; 
+												break;
+											}
+										}
+									}
+								}
 						}
 					if(!found) return false;
 				}
@@ -3705,16 +3801,47 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				{
 					final String clanID=((ClanItem)E).clanID();
 					for(final Object o : entry.parms)
-						if(clanID.equalsIgnoreCase((String)o))
-							return false;
+						if(o instanceof String)
+						{
+							if((clanID.equalsIgnoreCase((String)o))
+							||(((String)o).equals("*")))
+								return false;
+						}
+						else
+						if(o instanceof Pair)
+						{
+							if(clanID.equalsIgnoreCase(((Pair<String,String>)o).first)
+							||((((Pair<String,String>)o).first).equals("*")))
+								return false;
+						}
 				}
 				else
 				if(E instanceof MOB)
 					for(final Pair<Clan,Integer> c : ((MOB)E).clans())
 					{
 						for(final Object o : entry.parms)
-							if(c.first.clanID().equalsIgnoreCase((String)o))
-								return false;
+							if(o instanceof String)
+							{
+								if(c.first.clanID().equalsIgnoreCase((String)o)
+								||(((String)o).equals("*")))
+									return false;
+							}
+							else
+							if(o instanceof Pair)
+							{
+								if(c.first.clanID().equalsIgnoreCase(((Pair<String,String>)o).first)
+								||((((Pair<String,String>)o).first).equals("*")))
+								{ 
+									if((((Pair<String,String>)o).second).equals("*"))
+										return false;
+									else
+									{
+										ClanPosition cP=c.first.getGovernment().getPosition(((Pair<String,String>)o).second);
+										if((cP!=null)&&(cP.getRoleID()==c.second.intValue()))
+											return false;
+									}
+								}
+							}
 					}
 				break;
 			case 49: // +material
