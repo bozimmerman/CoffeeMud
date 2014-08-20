@@ -938,6 +938,17 @@ public class DefaultClanGovernment implements ClanGovernment
 				final Ability A=CMClass.getAbility(clanAbilityNames[i]);
 				if(A!=null)
 				{
+					String extraMask;
+					if(clanAbilityRoles[i].size()>0)
+					{
+						extraMask="-CLAN \""+clanGvtID+"(";
+						for(Integer I : clanAbilityRoles[i])
+							extraMask=extraMask+I.toString()+" ";
+						extraMask=extraMask.trim()+")\"";
+					}
+					else
+						extraMask="-CLAN \""+clanGvtID+"\"";
+						
 					final AbilityMapper.AbilityMapping ableMap=
 					CMLib.ableMapper().addDynaAbilityMapping(clanGvtID,
 															 clanAbilityLevels[i],
@@ -945,7 +956,8 @@ public class DefaultClanGovernment implements ClanGovernment
 															 clanAbilityProficiencies[i],
 															 "",
 															 !clanAbilityQuals[i],
-															 false);
+															 false,
+															 extraMask);
 					if(ableMap != null)
 					{
 						for(Integer I : clanAbilityRoles[i])

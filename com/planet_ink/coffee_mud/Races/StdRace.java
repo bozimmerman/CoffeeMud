@@ -1232,7 +1232,8 @@ public class StdRace implements Race
 											 racialAbilityProficiencies()[i],
 											 "",
 											 !racialAbilityQuals()[i],
-											 false);
+											 false,
+											 "");
 			}
 		}
 		if(racialAbilityMap==null) return emptyIDs;

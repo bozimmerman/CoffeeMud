@@ -109,7 +109,7 @@ public interface AbilityMapper extends CMLibrary
 									  int maxProficiency, String defaultParam, boolean autoGain, boolean secret,
 									  List<String> preReqSkillsList, String extraMask, Integer[] costOverrides);
 	public AbilityMapping addDynaAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency,
-			  						  String defaultParam, boolean autoGain, boolean secret);
+			  						  String defaultParam, boolean autoGain, boolean secret, String extraMask);
 	public AbilityMapping delCharAbilityMapping(String ID, String abilityID);
 
 	public void addPreRequisites(String ID, List<String> preReqSkillsList, String extraMask);

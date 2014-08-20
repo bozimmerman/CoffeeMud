@@ -230,7 +230,8 @@ public class CMAble extends StdLibrary implements AbilityMapper
 									  int defaultProficiency,
 									  String defaultParam,
 									  boolean autoGain,
-									  boolean secret)
+									  boolean secret,
+									  String extraMask)
 	{
 		delCharAbilityMapping(ID,abilityID);
 		if(CMSecurity.isAbilityDisabled(ID.toUpperCase())) return null;
@@ -240,7 +241,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			ableMap=new SHashtable<String,AbilityMapping>();
 			completeAbleMap.put(ID,ableMap);
 		}
-		final AbilityMapping able = makeAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret, false,new Vector(),"",null);
+		final AbilityMapping able = makeAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret, false,new Vector(),extraMask,null);
 		addClassAbility(abilityID,ableMap,able);
 		return able;
 	}
