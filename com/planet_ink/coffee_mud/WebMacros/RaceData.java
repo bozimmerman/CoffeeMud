@@ -436,6 +436,12 @@ public class RaceData extends StdWebMacro
 			str.append("<INPUT TYPE=CHECKBOX NAME=RABQUA"+(i+1)+" "+(theclasses.elementAt(i).third.equalsIgnoreCase("on")?"CHECKED":"")+">"+font+"Qualify Only</B></FONT></I>");
 			str.append("</TD>");
 			str.append("</TR>");
+			if(supportsRoles)
+			{
+				str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=3>");
+				str.append(font+"Roles:</B></FONT> <INPUT TYPE=TEXT NAME=RABROL"+(i+1)+" VALUE=\""+theclasses.elementAt(i).fifth+"\" SIZE=60 MAXLENGTH=100>");
+				str.append("</TD></TR>");
+			}
 		}
 		str.append("<TR><TD WIDTH=35%>");
 		str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=RABLES"+(theclasses.size()+1)+">");
@@ -460,6 +466,12 @@ public class RaceData extends StdWebMacro
 		str.append("<INPUT TYPE=CHECKBOX NAME=RABQUA"+(theclasses.size()+1)+" >"+font+"Qualify Only</B></I></FONT>");
 		str.append("</TD>");
 		str.append("</TR>");
+		if(supportsRoles)
+		{
+			str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=2>");
+			str.append(font+"Roles:</B></FONT> <INPUT TYPE=TEXT NAME=REFROL"+(theclasses.size()+1)+" VALUE=\"\" SIZE=60 MAXLENGTH=100>");
+			str.append("</TD></TR>");
+		}
 		str.append("</TABLE>");
 		return str;
 	}
@@ -539,6 +551,12 @@ public class RaceData extends StdWebMacro
 			str.append("<INPUT TYPE=TEXT NAME=REFPRM"+(i+1)+" VALUE=\""+theclasses.elementAt(i).second+"\" SIZE=25>");
 			str.append("</TD>");
 			str.append("</TR>");
+			if(supportsRoles)
+			{
+				str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=2>");
+				str.append(font+"Roles:</B></FONT> <INPUT TYPE=TEXT NAME=REFROL"+(i+1)+" VALUE=\""+theclasses.elementAt(i).fourth+"\" SIZE=60 MAXLENGTH=100>");
+				str.append("</TD></TR>");
+			}
 		}
 		str.append("<TR><TD WIDTH=35%>");
 		str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=REFFS"+(theclasses.size()+1)+">");
@@ -557,6 +575,12 @@ public class RaceData extends StdWebMacro
 		str.append("<INPUT TYPE=TEXT NAME=REFPRM"+(theclasses.size()+1)+" VALUE=\"\" SIZE=25>");
 		str.append("</TD>");
 		str.append("</TR>");
+		if(supportsRoles)
+		{
+			str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=2>");
+			str.append(font+"Roles:</B></FONT> <INPUT TYPE=TEXT NAME=REFROL"+(theclasses.size()+1)+" VALUE=\"\" SIZE=60 MAXLENGTH=100>");
+			str.append("</TD></TR>");
+		}
 		str.append("</TABLE>");
 		return str;
 	}
