@@ -87,9 +87,11 @@ public class DefaultClanGovernment implements ClanGovernment
 	/**  Whether this is the default government  */
 	public boolean	isDefault 		 = false;
 	/** The list of ClanPosition objects for each holdable position in this government */
-	public ClanPosition[] 			positions;
+	public ClanPosition[] 				positions;
 	/** Whether an unfilled topRole is automatically filled by those who meet its innermask  */
-	public Clan.AutoPromoteFlag 	autoPromoteBy;
+	public Clan.AutoPromoteFlag 		autoPromoteBy;
+	/** A fast-lookup cache for positions */
+	protected Map<Object,ClanPosition>	positionMap=new Hashtable<Object,ClanPosition>();
 
 	// derived variable
 	public static final SearchIDList<Ability>  emptyIDs = new CMUniqSortSVec<Ability>(1);
@@ -346,6 +348,7 @@ public class DefaultClanGovernment implements ClanGovernment
 	@Override
 	public void setPositions(ClanPosition[] positions)
 	{
+		this.positionMap.clear();
 		this.positions = positions;
 	}
 	@Override
@@ -418,36 +421,59 @@ public class DefaultClanGovernment implements ClanGovernment
 	{
 		if(pos==null) return null;
 		pos=pos.trim();
+		if(positionMap.containsKey(pos))
+			return positionMap.get(pos);
 		if(CMath.isInteger(pos))
 		{
 			int ipos=CMath.s_int(pos);
 			for(final ClanPosition P : positions)
 				if(P.getRoleID() == ipos)
+				{
+					positionMap.put(pos,P);
 					return P;
+				}
 		}
 		for(final ClanPosition P : positions)
 			if(P.getID().equalsIgnoreCase(pos))
+			{
+				positionMap.put(pos,P);
 				return P;
+			}
 		for(final ClanPosition P : positions)
 			if(P.getName().equalsIgnoreCase(pos))
+			{
+				positionMap.put(pos,P);
 				return P;
+			}
 		for(final ClanPosition P : positions)
 			if(P.getID().toUpperCase().startsWith(pos.toUpperCase()))
+			{
+				positionMap.put(pos,P);
 				return P;
+			}
 		for(final ClanPosition P : positions)
 			if(P.getName().toUpperCase().startsWith(pos.toUpperCase()))
+			{
+				positionMap.put(pos,P);
 				return P;
+			}
 		return null;
 	}
 	
 	@Override
 	public ClanPosition findPositionRole(Integer roleID)
 	{
-		if(roleID==null) return null;
+		if(roleID==null) 
+			return null;
+		if(positionMap.containsKey(roleID))
+			return positionMap.get(roleID);
 		final int ipos=roleID.intValue();
 		for(final ClanPosition P : positions)
 			if(P.getRoleID() == ipos)
+			{
+				positionMap.put(roleID,P);
 				return P;
+			}
 		return null;
 	}
 	
@@ -458,6 +484,7 @@ public class DefaultClanGovernment implements ClanGovernment
 		for(final ClanPosition P : positions)
 			if(P!=pos) newPos.add(P);
 		positions=newPos.toArray(new ClanPosition[0]);
+		positionMap.clear();
 	}
 
 	@Override
@@ -494,6 +521,7 @@ public class DefaultClanGovernment implements ClanGovernment
 				P.setRoleID(i);
 				break;
 			}
+		positionMap.clear();
 		return P;
 	}
 	private static enum GOVT_STAT_CODES {
