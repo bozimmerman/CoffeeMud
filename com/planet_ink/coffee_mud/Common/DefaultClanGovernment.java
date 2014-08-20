@@ -941,13 +941,19 @@ public class DefaultClanGovernment implements ClanGovernment
 					String extraMask;
 					if(clanAbilityRoles[i].size()>0)
 					{
-						extraMask="-CLAN \""+clanGvtID+"(";
+						extraMask="-CLAN \"+*(";
 						for(Integer I : clanAbilityRoles[i])
-							extraMask=extraMask+I.toString()+" ";
+						{
+							ClanPosition P=this.findPositionRole(I);
+							if(P==null)
+								extraMask=extraMask+I.toString()+" ";
+							else
+								extraMask=extraMask+P.getID()+" ";
+						}
 						extraMask=extraMask.trim()+")\"";
 					}
 					else
-						extraMask="-CLAN \""+clanGvtID+"\"";
+						extraMask="";
 						
 					final AbilityMapper.AbilityMapping ableMap=
 					CMLib.ableMapper().addDynaAbilityMapping(clanGvtID,

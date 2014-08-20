@@ -1012,10 +1012,10 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			ids.add(cStats.getMyRace().ID());
 		for(final Pair<Clan,Integer> c : studentM.clans())
 		{
-			final int qualClanlevel=getQualifyingLevel(c.first.getGovernmentName(),false,AID);
+			final int qualClanlevel=getQualifyingLevel(c.first.getGovernment().getName(),false,AID);
 			if((qualClanlevel>=0)&&(c.first.getClanLevel()>=qualClanlevel))
 			{
-				final String gvtName=c.first.getGovernmentName();
+				final String gvtName=c.first.getGovernment().getName();
 				if(!ids.contains(gvtName))
 					ids.add(gvtName);
 			}
@@ -1103,7 +1103,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		for(final Pair<Clan,Integer> c : studentM.clans())
 		{
-			final int clanLevel=getQualifyingLevel(c.first.getGovernmentName(),false,A.ID());
+			final int clanLevel=getQualifyingLevel(c.first.getGovernment().getName(),false,A.ID());
 			if((clanLevel>=0)
 			&&(c.first.getClanLevel()>=clanLevel)
 			&&((charLevel-clanLevel)>greatestDiff))
@@ -1144,7 +1144,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			greatestDiff=charLevel-raceLevel;
 		for(final Pair<Clan,Integer> c : studentM.clans())
 		{
-			final int clanLevel=getQualifyingLevel(c.first.getGovernmentName(),false,A.ID());
+			final int clanLevel=getQualifyingLevel(c.first.getGovernment().getName(),false,A.ID());
 			if((clanLevel>=0)
 			&&(c.first.getClanLevel()>=clanLevel)
 			&&((charLevel-clanLevel)>greatestDiff))
@@ -1180,7 +1180,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			theClass=studentM.charStats().getMyRace();
 		for(final Pair<Clan,Integer> c : studentM.clans())
 		{
-			final int clanLevel=getQualifyingLevel(c.first.getGovernmentName(),false,A.ID());
+			final int clanLevel=getQualifyingLevel(c.first.getGovernment().getName(),false,A.ID());
 			if((clanLevel>=0)&&(c.first.getClanLevel()>=clanLevel)&&(theLevel>clanLevel))
 			{
 				theClass=c.first.getGovernment();
@@ -1204,7 +1204,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			return true;
 		for(final Pair<Clan,Integer> c : studentM.clans())
 		{
-			level=getQualifyingLevel(c.first.getGovernmentName(),false,A.ID());
+			level=getQualifyingLevel(c.first.getGovernment().getName(),false,A.ID());
 			if((level>=0)&&(c.first.getClanLevel()>=level))
 				return true;
 		}
@@ -1225,7 +1225,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	{
 		for(final Pair<Clan,Integer> c : studentM.clans())
 		{
-			final int level=getQualifyingLevel(c.first.getGovernmentName(),false,A.ID());
+			final int level=getQualifyingLevel(c.first.getGovernment().getName(),false,A.ID());
 			if((level>=0)&&(c.first.getClanLevel()>=level))
 				return true;
 		}
@@ -1345,7 +1345,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			return true;
 		for(final Pair<Clan,Integer> c : studentM.clans())
 		{
-			level=getQualifyingLevel(c.first.getGovernmentName(),false,abilityID);
+			level=getQualifyingLevel(c.first.getGovernment().getName(),false,abilityID);
 			if((level>=0)
 			&&(c.first.getClanLevel()>=level))
 				return true;
@@ -1455,9 +1455,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
 
 		for(final Pair<Clan,Integer> c : mob.clans())
 		{
-			if(completeAbleMap.containsKey(c.first.getGovernmentName()))
+			if(completeAbleMap.containsKey(c.first.getGovernment().getName()))
 			{
-				final Map<String,AbilityMapping> ableMap=completeAbleMap.get(c.first.getGovernmentName());
+				final Map<String,AbilityMapping> ableMap=completeAbleMap.get(c.first.getGovernment().getName());
 				if(ableMap.containsKey(abilityID))
 					list.add(ableMap.get(abilityID));
 			}
