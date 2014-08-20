@@ -872,7 +872,8 @@ public class Clans extends StdLibrary implements ClanManager
 			str.append(indt(1)).append("<EFFECTS>\n");
 			for(int a=0;a<effectList.size();a++)
 			{
-				final Ability A=effectList.get(a);
+				final String ableID=gvt.getStat("GETREFF"+a);
+				final String ableParm=gvt.getStat("GETREFFPARM"+a);
 				final int lvl = CMath.s_int(gvt.getStat("GETREFFLVL"+a));
 				final String roleList=gvt.getStat("GETREFFROLE"+a);
 				final String addExt;
@@ -889,7 +890,7 @@ public class Clans extends StdLibrary implements ClanManager
 				}
 				else
 					addExt="";
-				str.append(indt(2)).append("<EFFECT ID=\""+A.ID()+"\" LEVEL="+lvl+" PARMS=\""+CMLib.xml().parseOutAngleBrackets(A.text())+"\" "+addExt+"/>\n");
+				str.append(indt(2)).append("<EFFECT ID=\""+ableID+"\" LEVEL="+lvl+" PARMS=\""+CMLib.xml().parseOutAngleBrackets(ableParm)+"\" "+addExt+"/>\n");
 			}
 			str.append(indt(1)).append("</EFFECTS>\n");
 		}

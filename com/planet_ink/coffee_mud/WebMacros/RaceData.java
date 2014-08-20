@@ -420,7 +420,7 @@ public class RaceData extends StdWebMacro
 		for(int i=0;i<theclasses.size();i++)
 		{
 			final String theclass=theclasses.elementAt(i).first;
-			str.append("<TR><TD WIDTH=35%>");
+			str.append("<TR><TD COLSPAN=4><TABLE BORDER=0 WIDTH=100% CELLSPACING=0 CELLPADDING=0><TR><TD WIDTH=35%>");
 			str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=RABLES"+(i+1)+">");
 			str.append("<OPTION VALUE=\"\">Delete!");
 			str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
@@ -439,11 +439,12 @@ public class RaceData extends StdWebMacro
 			if(supportsRoles)
 			{
 				str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=3>");
-				str.append(font+"Roles:</B></FONT> <INPUT TYPE=TEXT NAME=RABROL"+(i+1)+" VALUE=\""+theclasses.elementAt(i).fifth+"\" SIZE=60 MAXLENGTH=100>");
+				str.append(font+"Roles:</B></FONT> <INPUT TYPE=TEXT NAME=RABROL"+(i+1)+" VALUE=\""+theclasses.elementAt(i).fifth+"\" SIZE=40 MAXLENGTH=100>");
 				str.append("</TD></TR>");
 			}
+			str.append("</TABLE></TD></TR>");
 		}
-		str.append("<TR><TD WIDTH=35%>");
+		str.append("<TR><TD COLSPAN=4><TABLE BORDER=0 WIDTH=100% CELLSPACING=0 CELLPADDING=0><TR><TD WIDTH=35%>");
 		str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=RABLES"+(theclasses.size()+1)+">");
 		str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
 		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
@@ -468,10 +469,11 @@ public class RaceData extends StdWebMacro
 		str.append("</TR>");
 		if(supportsRoles)
 		{
-			str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=2>");
-			str.append(font+"Roles:</B></FONT> <INPUT TYPE=TEXT NAME=REFROL"+(theclasses.size()+1)+" VALUE=\"\" SIZE=60 MAXLENGTH=100>");
+			str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=3>");
+			str.append(font+"Roles:</B></FONT> <INPUT TYPE=TEXT NAME=RABROL"+(theclasses.size()+1)+" VALUE=\"\" SIZE=40 MAXLENGTH=100>");
 			str.append("</TD></TR>");
 		}
+		str.append("</TABLE></TD></TR>");
 		str.append("</TABLE>");
 		return str;
 	}
@@ -509,28 +511,26 @@ public class RaceData extends StdWebMacro
 		{
 			for(int a=0;a<ables.size();a++)
 			{
-				final Ability A=ables.get(a);
-				if(A!=null)
+				final String ableID=obj.getStat("GETREFF"+a);
+				final String ableParm=obj.getStat("GETREFFPARM"+a);
+				final int qualifyingLevel = CMath.s_int(obj.getStat("GETREFFLVL"+a));
+				String roles=null;
+				final String roleList=obj.getStat("GETREFFROLE"+a);
+				if(supportsRoles && (obj instanceof ClanGovernment)&&(roleList!=null)&&(roleList.length()>0))
 				{
-					final int qualifyingLevel = CMath.s_int(obj.getStat("GETREFFLVL"+a));
-					String roles=null;
-					final String roleList=obj.getStat("GETREFFROLE"+a);
-					if(supportsRoles && (obj instanceof ClanGovernment)&&(roleList!=null)&&(roleList.length()>0))
+					roles="";
+					for(String key : CMParms.parseCommas(roleList,true))
 					{
-						roles="";
-						for(String key : CMParms.parseCommas(roleList,true))
-						{
-							ClanPosition P=((ClanGovernment)obj).findPositionRole(key);
-							if(P!=null)
-								roles+=", "+P.getID();
-						}
-						if(roles.length()>2)
-							roles=roles.substring(2);
+						ClanPosition P=((ClanGovernment)obj).findPositionRole(key);
+						if(P!=null)
+							roles+=", "+P.getID();
 					}
-					if(roles==null) 
-						roles="";
-					theclasses.addElement(A.ID(),A.text(),qualifyingLevel+"",roles);
+					if(roles.length()>2)
+						roles=roles.substring(2);
 				}
+				if(roles==null) 
+					roles="";
+				theclasses.addElement(ableID,ableParm,qualifyingLevel+"",roles);
 			}
 		}
 		if(font==null) font="<FONT COLOR=WHITE><B>";
@@ -538,7 +538,7 @@ public class RaceData extends StdWebMacro
 		for(int i=0;i<theclasses.size();i++)
 		{
 			final String theclass=theclasses.elementAt(i).first;
-			str.append("<TR><TD WIDTH=35%>");
+			str.append("<TR><TD COLSPAN=3><TABLE BORDER=0 WIDTH=100% CELLSPACING=0 CELLPADDING=0><TR><TD WIDTH=35%>");
 			str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=REFFS"+(i+1)+">");
 			str.append("<OPTION VALUE=\"\">Delete!");
 			str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
@@ -554,11 +554,12 @@ public class RaceData extends StdWebMacro
 			if(supportsRoles)
 			{
 				str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=2>");
-				str.append(font+"Roles:</B></FONT> <INPUT TYPE=TEXT NAME=REFROL"+(i+1)+" VALUE=\""+theclasses.elementAt(i).fourth+"\" SIZE=60 MAXLENGTH=100>");
+				str.append(font+"Roles:</B></FONT> <INPUT TYPE=TEXT NAME=REFROL"+(i+1)+" VALUE=\""+theclasses.elementAt(i).fourth+"\" SIZE=40 MAXLENGTH=100>");
 				str.append("</TD></TR>");
 			}
+			str.append("</TABLE></TD></TR>");
 		}
-		str.append("<TR><TD WIDTH=35%>");
+		str.append("<TR><TD COLSPAN=3><TABLE BORDER=0 WIDTH=100% CELLSPACING=0 CELLPADDING=0><TR><TD WIDTH=35%>");
 		str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=REFFS"+(theclasses.size()+1)+">");
 		str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
 		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
@@ -578,9 +579,10 @@ public class RaceData extends StdWebMacro
 		if(supportsRoles)
 		{
 			str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=2>");
-			str.append(font+"Roles:</B></FONT> <INPUT TYPE=TEXT NAME=REFROL"+(theclasses.size()+1)+" VALUE=\"\" SIZE=60 MAXLENGTH=100>");
+			str.append(font+"Roles:</B></FONT> <INPUT TYPE=TEXT NAME=REFROL"+(theclasses.size()+1)+" VALUE=\"\" SIZE=40 MAXLENGTH=100>");
 			str.append("</TD></TR>");
 		}
+		str.append("</TABLE></TD></TR>");
 		str.append("</TABLE>");
 		return str;
 	}

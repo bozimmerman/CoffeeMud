@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -359,15 +360,10 @@ public class ClanGovernmentData extends StdWebMacro
 			}
 			if(parms.containsKey("RABLE"))
 			{
-				G.getClanLevelAbilities(null,null,Integer.valueOf(Integer.MAX_VALUE));
-				final Enumeration<AbilityMapping> m= CMLib.ableMapper().getClassAbles(G.ID(), false);
-				final List<Ability> abilities = new LinkedList<Ability>();
-				for(;m.hasMoreElements();)
-					abilities.add(CMClass.getAbility(m.nextElement().abilityID));
-				str.append(RaceData.dynAbilities(G.getClanLevelAbilities(null,null,Integer.valueOf(1000)),G.ID(),G,httpReq,parms,0,parms.get("FONT"))+", ");
+				str.append(RaceData.dynAbilities(G.getClanLevelAbilities(null,null,Integer.valueOf(Integer.MAX_VALUE)),G.getName(),G,httpReq,parms,1,parms.get("FONT"))+", ");
 			}
 			if(parms.containsKey("REFFS"))
-				str.append(RaceData.dynEffects(G.ID(),G.getClanLevelEffects(null, null, Integer.valueOf(Integer.MAX_VALUE)),G,httpReq,parms,0,parms.get("FONT"))+", ");
+				str.append(RaceData.dynEffects(G.getName(),G.getClanLevelEffects(null, null, Integer.valueOf(Integer.MAX_VALUE)),G,httpReq,parms,1,parms.get("FONT"))+", ");
 
 			String strstr=str.toString();
 			if(strstr.endsWith(", "))

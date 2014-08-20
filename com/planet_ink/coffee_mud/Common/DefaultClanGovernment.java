@@ -931,7 +931,7 @@ public class DefaultClanGovernment implements ClanGovernment
 		&&(clanAbilityProficiencies!=null)
 		&&(clanAbilityQuals!=null))
 		{
-			CMLib.ableMapper().delCharMappings(ID()); // necessary for a "clean start"
+			CMLib.ableMapper().delCharMappings(clanGvtID); // necessary for a "clean start"
 			clanAbilityMap=new Hashtable<Integer,Map<Integer,SearchIDList<Ability>>>();
 			for(int i=0;i<clanAbilityNames.length;i++)
 			{
@@ -963,18 +963,21 @@ public class DefaultClanGovernment implements ClanGovernment
 		{
 			final Pair<Clan,Integer> mobClanRolePair=mob.getClanRole(clan.clanID());
 			if(mobClanRolePair == null)
-				mobClanRole=Integer.valueOf(Integer.MAX_VALUE);
-			else
 				return emptyIDs;
+			else
+				mobClanRole=mobClanRolePair.second;
 		}
 		if(level==null) 
 			level=Integer.valueOf(Integer.MAX_VALUE);
-		final Map<Integer,SearchIDList<Ability>> subClanAbilityMap=clanAbilityMap.get(level);
+		Map<Integer,SearchIDList<Ability>> subClanAbilityMap=clanAbilityMap.get(level);
 		if(subClanAbilityMap==null) 
-			return emptyIDs;
+		{
+			subClanAbilityMap=new Hashtable<Integer,SearchIDList<Ability>>();
+			clanAbilityMap.put(level, subClanAbilityMap);
+		}
 		if(subClanAbilityMap.containsKey(mobClanRole))
 			return subClanAbilityMap.get(mobClanRole);
-		final List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(clanGvtID,level.intValue(),true,true);
+		final List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(clanGvtID,level.intValue(),true,((mob!=null)&&(clan!=null)));
 		final CMUniqSortSVec<Ability> finalV=new CMUniqSortSVec<Ability>();
 		for(final AbilityMapper.AbilityMapping able : V)
 		{
