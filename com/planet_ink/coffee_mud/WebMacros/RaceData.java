@@ -355,8 +355,8 @@ public class RaceData extends StdWebMacro
 	public static StringBuffer dynAbilities(List<Ability> ables, String ID, Modifiable obj, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
 	{
 		final StringBuffer str=new StringBuffer("");
-		final QuadVector<String,String,String,String> theclasses=new QuadVector<String,String,String,String>();
-		boolean supportsRoles=CMParms.contains(obj.getStatCodes(), "GETRABLEROLE");
+		final QuintVector<String,String,String,String,String> theclasses=new QuintVector<String,String,String,String,String>();
+		final boolean supportsRoles=CMParms.contains(obj.getStatCodes(), "GETRABLEROLE");
 		if(httpReq.isUrlParameter("RABLES1"))
 		{
 			int num=1;
@@ -371,7 +371,12 @@ public class RaceData extends StdWebMacro
 					if(qual==null) qual="";
 					String levl=httpReq.getUrlParameter("RABLVL"+num);
 					if(levl==null) levl="0";
-					theclasses.addElement(behav,prof,qual,levl);
+					String roles=null;
+					if(supportsRoles)
+						roles=httpReq.getUrlParameter("RABROL"+num);
+					if(roles==null) 
+						roles="";
+					theclasses.addElement(behav,prof,qual,levl,roles);
 				}
 				num++;
 				behav=httpReq.getUrlParameter("RABLES"+num);
@@ -388,9 +393,25 @@ public class RaceData extends StdWebMacro
 			{
 				if((A!=null)&&(!cables.containsFirst(A.ID())))
 				{
-					final boolean defaultGain = CMLib.ableMapper().getDefaultGain(ID, false, A.ID());
-					final int qualifyingLevel = CMLib.ableMapper().getQualifyingLevel(ID, false,A.ID()) ;
-					theclasses.addElement(A.ID(),A.proficiency()+"",defaultGain?"":"on",qualifyingLevel+"");
+					AbilityMapper.AbilityMapping ableMap=CMLib.ableMapper().getAbleMap(ID, A.ID());
+					final boolean defaultGain = ableMap.autoGain;
+					final int qualifyingLevel = ableMap.qualLevel;
+					String roles=null;
+					if(supportsRoles && (obj instanceof ClanGovernment))
+					{
+						roles="";
+						for(String key : ableMap.extFields.keySet())
+						{
+							ClanPosition P=((ClanGovernment)obj).findPositionRole(key);
+							if(P!=null)
+								roles+=", "+P.getID();
+						}
+						if(roles.length()>2)
+							roles=roles.substring(2);
+					}
+					if(roles==null) 
+						roles="";
+					theclasses.addElement(A.ID(),A.proficiency()+"",defaultGain?"":"on",qualifyingLevel+"",roles);
 				}
 			}
 		}
@@ -447,7 +468,7 @@ public class RaceData extends StdWebMacro
 	public static StringBuffer dynEffects(String ID, List<Ability> ables, Modifiable obj, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
 	{
 		final StringBuffer str=new StringBuffer("");
-		final TriadVector<String,String,String> theclasses=new TriadVector<String,String,String>();
+		final QuadVector<String,String,String,String> theclasses=new QuadVector<String,String,String,String>();
 		boolean supportsRoles=CMParms.contains(obj.getStatCodes(), "GETREFFROLE");
 		if(httpReq.isUrlParameter("REFFS1"))
 		{
@@ -461,7 +482,12 @@ public class RaceData extends StdWebMacro
 					if(parm==null) parm="";
 					String levl=httpReq.getUrlParameter("REFLVL"+num);
 					if(levl==null) levl="0";
-					theclasses.addElement(behav,parm,levl);
+					String roles=null;
+					if(supportsRoles)
+						roles=httpReq.getUrlParameter("REFROL"+num);
+					if(roles==null) 
+						roles="";
+					theclasses.addElement(behav,parm,levl,roles);
 				}
 				num++;
 				behav=httpReq.getUrlParameter("REFFS"+num);
@@ -475,7 +501,23 @@ public class RaceData extends StdWebMacro
 				if(A!=null)
 				{
 					final int qualifyingLevel = CMath.s_int(obj.getStat("GETREFFLVL"+a));
-					theclasses.addElement(A.ID(),A.text(),qualifyingLevel+"");
+					String roles=null;
+					final String roleList=obj.getStat("GETREFFROLE"+a);
+					if(supportsRoles && (obj instanceof ClanGovernment)&&(roleList!=null)&&(roleList.length()>0))
+					{
+						roles="";
+						for(String key : CMParms.parseCommas(roleList,true))
+						{
+							ClanPosition P=((ClanGovernment)obj).findPositionRole(key);
+							if(P!=null)
+								roles+=", "+P.getID();
+						}
+						if(roles.length()>2)
+							roles=roles.substring(2);
+					}
+					if(roles==null) 
+						roles="";
+					theclasses.addElement(A.ID(),A.text(),qualifyingLevel+"",roles);
 				}
 			}
 		}

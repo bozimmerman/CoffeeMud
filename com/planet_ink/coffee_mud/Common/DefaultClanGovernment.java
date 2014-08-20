@@ -1040,8 +1040,8 @@ public class DefaultClanGovernment implements ClanGovernment
 				if((A!=null)
 				&&((clanRolesMap==null)
 				 ||(clanRolesMap.size()==0)
-				 ||(mobClanRole.intValue()==Integer.MAX_VALUE))
-				 ||(clanRolesMap.contains(mobClanRole)))
+				 ||(mobClanRole.intValue()==Integer.MAX_VALUE)
+				 ||(clanRolesMap.contains(mobClanRole))))
 				{
 					// mob was set to null here to make the cache map actually relevant .. see caching below
 					A.setProficiency(CMLib.ableMapper().getMaxProficiency((MOB)null, true, A.ID()));
