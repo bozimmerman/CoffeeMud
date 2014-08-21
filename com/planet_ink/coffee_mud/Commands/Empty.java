@@ -56,17 +56,23 @@ public class Empty extends Drop
 		if(commands.size()>1)
 		{
 			final String s=(String)commands.lastElement();
-			if(s.equalsIgnoreCase("here")) target=mob.location();
+			if(s.equalsIgnoreCase("here")) 
+				target=mob.location();
 			else
-			if(s.equalsIgnoreCase("me")) target=mob;
+			if(s.equalsIgnoreCase("me")) 
+				target=mob;
 			else
-			if(s.equalsIgnoreCase("self")) target=mob;
+			if(s.equalsIgnoreCase("self")) 
+				target=mob;
 			else
-			if("INVENTORY".startsWith(s.toUpperCase())) target=mob;
+			if("INVENTORY".startsWith(s.toUpperCase())) 
+				target=mob;
 			else
-			if(s.equalsIgnoreCase("floor")) target=mob.location();
+			if(s.equalsIgnoreCase("floor")) 
+				target=mob.location();
 			else
-			if(s.equalsIgnoreCase("ground")) target=mob.location();
+			if(s.equalsIgnoreCase("ground")) 
+				target=mob.location();
 			else
 			{
 				target=CMLib.english().possibleContainer(mob,commands,false,Wearable.FILTER_UNWORNONLY);
@@ -90,8 +96,16 @@ public class Empty extends Drop
 
 		whatToDrop=CMParms.combine(commands,0);
 		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
-		if(whatToDrop.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(4);}
-		if(whatToDrop.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(0,whatToDrop.length()-4);}
+		if(whatToDrop.toUpperCase().startsWith("ALL."))
+		{ 
+			allFlag=true; 
+			whatToDrop="ALL "+whatToDrop.substring(4);
+		}
+		if(whatToDrop.toUpperCase().endsWith(".ALL"))
+		{ 
+			allFlag=true; 
+			whatToDrop="ALL "+whatToDrop.substring(0,whatToDrop.length()-4);
+		}
 		int addendum=1;
 		String addendumStr="";
 		Drink drink=null;
