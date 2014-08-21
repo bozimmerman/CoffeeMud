@@ -479,7 +479,7 @@ public class RaceData extends StdWebMacro
 	}
 
 
-	public static StringBuffer dynEffects(String ID, List<Ability> ables, Modifiable obj, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
+	public static StringBuffer dynEffects(String ID, Modifiable obj, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
 	{
 		final StringBuffer str=new StringBuffer("");
 		final QuadVector<String,String,String,String> theclasses=new QuadVector<String,String,String,String>();
@@ -509,7 +509,8 @@ public class RaceData extends StdWebMacro
 		}
 		else
 		{
-			for(int a=0;a<ables.size();a++)
+			final int numAbles=CMath.s_int(obj.getStat("NUMREFF"));
+			for(int a=0;a<numAbles;a++)
 			{
 				final String ableID=obj.getStat("GETREFF"+a);
 				final String ableParm=obj.getStat("GETREFFPARM"+a);
@@ -883,7 +884,7 @@ public class RaceData extends StdWebMacro
 				if(parms.containsKey("RABLE"))
 					str.append(dynAbilities(R.racialAbilities(null),R.ID(),R,httpReq,parms,0,parms.get("FONT"))+", ");
 				if(parms.containsKey("REFFS"))
-					str.append(dynEffects(R.ID(),R.racialEffects(null),R,httpReq,parms,0,parms.get("FONT"))+", ");
+					str.append(dynEffects(R.ID(),R,httpReq,parms,0,parms.get("FONT"))+", ");
 				if(parms.containsKey("CABLE"))
 					str.append(cabilities(R,httpReq,parms,0,parms.get("FONT"))+", ");
 				if(parms.containsKey("WEARID"))

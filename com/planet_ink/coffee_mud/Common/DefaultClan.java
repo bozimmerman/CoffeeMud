@@ -630,8 +630,10 @@ public class DefaultClan implements Clan
 	public String getDetail(MOB mob)
 	{
 		final StringBuffer msg=new StringBuffer("");
-		final Pair<Clan,Integer> p=(mob!=null)?(mob.getClanRole(clanID())):null;
-		final boolean member=(mob!=null)&&(p!=null)&&(getAuthority(p.second.intValue(),Function.LIST_MEMBERS)!=Authority.CAN_NOT_DO);
+		final Pair<Clan,Integer> mobClanRole=(mob!=null)?(mob.getClanRole(clanID())):null;
+		final boolean member=(mob!=null)
+							&&(mobClanRole!=null)
+							&&(getAuthority(mobClanRole.second.intValue(),Function.LIST_MEMBERS)!=Authority.CAN_NOT_DO);
 		final boolean sysmsgs=(mob!=null)&&CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS);
 		final LinkedList<CMath.CompiledOperation> form = govt().getXPCalculationFormula();
 		final double nextLevelXP = CMath.parseMathExpression(form, new double[]{getClanLevel()}, 0.0);
@@ -725,9 +727,9 @@ public class DefaultClan implements Clan
 							  +"^x"+CMStrings.padRight(CMStrings.capitalizeAndLower(pos.getPluralName()),16)
 							  +":^.^N "+crewList(members, pos.getRoleID())+"\n\r");
 				}
-			if((p!=null)
+			if((mobClanRole!=null)
 			&&(govt().getAutoRole()!=govt().getAcceptPos())
-			&&((getAuthority(p.second.intValue(),Function.ACCEPT)!=Clan.Authority.CAN_NOT_DO)||sysmsgs))
+			&&((getAuthority(mobClanRole.second.intValue(),Function.ACCEPT)!=Clan.Authority.CAN_NOT_DO)||sysmsgs))
 			{
 				final ClanPosition pos=govt().getPositions()[getAutoPosition()];
 				msg.append("-----------------------------------------------------------------\n\r"
@@ -785,7 +787,7 @@ public class DefaultClan implements Clan
 					msg.append(_(" Prize: @x1\n\r",CMLib.clans().translatePrize(t)));
 				}
 		}
-		if(((p!=null)&&(getAuthority(p.second.intValue(),Function.CLAN_BENEFITS)!=Clan.Authority.CAN_NOT_DO))||sysmsgs)
+		if(((mobClanRole!=null)&&(getAuthority(mobClanRole.second.intValue(),Function.CLAN_BENEFITS)!=Clan.Authority.CAN_NOT_DO))||sysmsgs)
 		{
 			msg.append("-----------------------------------------------------------------\n\r");
 			msg.append(_("^xClan Level Benefits:^.^N\n\r"));
@@ -797,14 +799,36 @@ public class DefaultClan implements Clan
 				{
 					final Ability A=CMClass.getAbility(aMap.abilityID);
 					if(A!=null)
-						names.add(A.name()+(aMap.autoGain?"":"(q)"));
+					{
+						if((aMap.extFields.size()==0)
+						||(mobClanRole==null)
+						||(sysmsgs)
+						||(aMap.extFields.containsKey(mobClanRole.second.toString())))
+							names.add(A.name()+(aMap.autoGain?"":"(q)")+((aMap.extFields.size()>0)?"*":""));
+					}
 				}
 				msg.append(CMLib.lister().makeColumns(mob,names,null,3));
 				msg.append("\n\r");
 			}
-			final List<Ability> effects = clanEffects(null);
-			for(final Ability A : effects)
-				msg.append(A.accountForYourself()).append("\n\r");
+			final int numReff=CMath.s_int(govt().getStat("NUMREFF"));
+			for(int i=0;i<numReff;i++)
+			{
+				final String ableName=govt().getStat("GETREFF"+i);
+				final String ableText=govt().getStat("GETREFFPARM"+i);
+				final int ableLvl=CMath.s_int(govt().getStat("GETREFFLVL"+i));
+				final List<String> ableRoles=CMParms.parseCommas(govt().getStat("GETREFFROLE"+i),true);
+				final Ability A=CMClass.getAbility(ableName);
+				if((A!=null)
+				&&(ableLvl<=this.clanLevel)
+				&&((ableRoles.size()==0)
+					||(mobClanRole==null)
+					||(sysmsgs)
+					||(ableRoles.contains(mobClanRole.second.toString()))))
+				{
+					A.setMiscText(ableText);
+					msg.append(A.accountForYourself()).append("\n\r");
+				}
+			}
 		}
 		return msg.toString();
 	}

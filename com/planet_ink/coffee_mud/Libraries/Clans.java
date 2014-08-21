@@ -864,13 +864,13 @@ public class Clans extends StdLibrary implements ClanManager
 			}
 			str.append(indt(1)).append("</ABILITIES>\n");
 		}
-		final List<Ability> effectList = gvt.getClanLevelEffects(null, null, Integer.valueOf(Integer.MAX_VALUE));
-		if(effectList.size()==0)
+		final int numEffects=CMath.s_int(gvt.getStat("NUMREFF"));
+		if(numEffects==0)
 			str.append(indt(1)).append("<EFFECTS />\n");
 		else
 		{
 			str.append(indt(1)).append("<EFFECTS>\n");
-			for(int a=0;a<effectList.size();a++)
+			for(int a=0;a<numEffects;a++)
 			{
 				final String ableID=gvt.getStat("GETREFF"+a);
 				final String ableParm=gvt.getStat("GETREFFPARM"+a);

@@ -363,7 +363,7 @@ public class ClanGovernmentData extends StdWebMacro
 				str.append(RaceData.dynAbilities(G.getClanLevelAbilities(null,null,Integer.valueOf(Integer.MAX_VALUE)),G.getName(),G,httpReq,parms,1,parms.get("FONT"))+", ");
 			}
 			if(parms.containsKey("REFFS"))
-				str.append(RaceData.dynEffects(G.getName(),G.getClanLevelEffects(null, null, Integer.valueOf(Integer.MAX_VALUE)),G,httpReq,parms,1,parms.get("FONT"))+", ");
+				str.append(RaceData.dynEffects(G.getName(),G,httpReq,parms,1,parms.get("FONT"))+", ");
 
 			String strstr=str.toString();
 			if(strstr.endsWith(", "))
