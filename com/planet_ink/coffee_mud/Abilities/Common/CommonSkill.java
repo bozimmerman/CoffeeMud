@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -302,7 +301,9 @@ public class CommonSkill extends StdAbility
 		else
 		{
 			consumed=25;
-			final int diff=CMLib.ableMapper().qualifyingClassLevel(mob,this)+super.getXLOWCOSTLevel(mob)-CMLib.ableMapper().qualifyingLevel(mob,this);
+			final int lvl=CMLib.ableMapper().qualifyingClassLevel(mob,this)+super.getXLOWCOSTLevel(mob);
+			final int lowest=CMLib.ableMapper().qualifyingLevel(mob,this);
+			final int diff=lvl-lowest;
 			Integer[] costOverrides=null;
 			if(!ignoreClassOverride)
 				costOverrides=CMLib.ableMapper().getCostOverrides(mob,ID());
@@ -316,12 +317,32 @@ public class CommonSkill extends StdAbility
 			case 5: consumed=8; break;
 			default: consumed=5; break;
 			}
-			if(overrideMana()>=0) consumed=overrideMana();
+			final int maxOverride=CMProps.getMaxManaException(ID());
+			if(maxOverride!=Short.MIN_VALUE)
+			{
+				if(maxOverride<0) 
+					consumed=consumed+lowest;
+				else
+				if(consumed > maxOverride)
+					consumed=maxOverride;
+			}
+			final int minOverride=CMProps.getMinManaException(ID());
+			if(minOverride!=Short.MIN_VALUE)
+			{
+				if(minOverride<0)
+					consumed=(lowest<5)?5:lowest; 
+				else
+				if(consumed<minOverride)
+					consumed=minOverride;
+			}
+			if(overrideMana()>=0) 
+				consumed=overrideMana();
 			minimum=5;
 			if((costOverrides!=null)&&(costOverrides[AbilityMapper.AbilityMapping.COST_MANA]!=null))
 			{
 				consumed=costOverrides[AbilityMapper.AbilityMapping.COST_MANA].intValue();
-				if((consumed<minimum)&&(consumed>=0)) minimum=consumed;
+				if((consumed<minimum)&&(consumed>=0)) 
+					minimum=consumed;
 			}
 		}
 		final int[] usageCost=buildCostArray(mob,consumed,minimum);

@@ -1062,33 +1062,45 @@ public class StdAbility implements Ability
 				if((qualifyingLevel>=0)&&(classLevel>=qualifyingLevel))
 				{
 					diff+=(classLevel-qualifyingLevel);
-					if(qualifyingLevel<lowest) lowest=qualifyingLevel;
+					if(qualifyingLevel<lowest) 
+						lowest=qualifyingLevel;
 				}
 			}
 			if(lowest==Integer.MAX_VALUE)
 			{
 				lowest=CMLib.ableMapper().lowestQualifyingLevel(ID());
-				if(lowest<0) lowest=0;
+				if(lowest<0) 
+					lowest=0;
 			}
 
 			Integer[] costOverrides=null;
 			if(!ignoreClassOverride)
 				costOverrides=CMLib.ableMapper().getCostOverrides(mob,ID());
 			consumed=CMProps.getMaxManaException(ID());
-			if(consumed==Short.MIN_VALUE) consumed=CMProps.getIntVar(CMProps.Int.MANACOST);
-			if(consumed<0) consumed=(50+lowest);
+			if(consumed==Short.MIN_VALUE) 
+				consumed=CMProps.getIntVar(CMProps.Int.MANACOST);
+			if(consumed<0) 
+				consumed=(50+lowest);
 			minimum=CMProps.getMinManaException(ID());
 			if(minimum==Short.MIN_VALUE)
 				minimum=CMProps.getIntVar(CMProps.Int.MANAMINCOST);
-			if(minimum<0){ minimum=lowest; if(minimum<5) minimum=5;}
-			if(diff>0) consumed=(consumed - (consumed /10 * diff));
+			if(minimum<0)
+			{ 
+				minimum=lowest; 
+				if(minimum<5) 
+					minimum=5;
+			}
+			if(diff>0) 
+				consumed=(consumed - (consumed /10 * diff));
 			if(consumed<minimum)
 				consumed=minimum;
-			if(overrideMana()>=0) consumed=overrideMana();
+			if(overrideMana()>=0) 
+				consumed=overrideMana();
 			if((costOverrides!=null)&&(costOverrides[AbilityMapper.AbilityMapping.COST_MANA]!=null))
 			{
 				consumed=costOverrides[AbilityMapper.AbilityMapping.COST_MANA].intValue();
-				if((consumed<minimum)&&(consumed>=0)) minimum=consumed;
+				if((consumed<minimum)&&(consumed>=0)) 
+					minimum=consumed;
 			}
 		}
 		final int[] usageCost=buildCostArray(mob,consumed,minimum);
