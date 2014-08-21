@@ -131,11 +131,29 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		}
 	}
 
-	@Override public String keyName() { return readableText;}
-	@Override public void setKeyName(String newKeyName) { readableText=newKeyName;}
+	@Override 
+	public String keyName() 
+	{ 
+		return readableText;
+	}
+	
+	@Override 
+	public void setKeyName(String newKeyName) 
+	{ 
+		readableText=newKeyName;
+	}
 
-	@Override public String readableText(){return readableText;}
-	@Override public void setReadableText(String text){readableText=text;}
+	@Override 
+	public String readableText()
+	{
+		return readableText;
+	}
+	
+	@Override 
+	public void setReadableText(String text)
+	{
+		readableText=text;
+	}
 
 	@Override
 	public String text()
@@ -214,11 +232,38 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	@Override public int powerNeeds(){return 0;}
 	@Override public void setPowerRemaining(long remaining){}
 	@Override public void activate(boolean truefalse){}
-	@Override public boolean activated(){return true;}
-	@Override public int techLevel() { return phyStats().ability();}
-	@Override public void setTechLevel(int lvl) { basePhyStats.setAbility(lvl); recoverPhyStats(); }
-	@Override public String getManufacturerName() { return manufacturer; }
-	@Override public void setManufacturerName(String name) { cachedManufact=null; if(name!=null) manufacturer=name; }
+	
+	@Override 
+	public boolean activated()
+	{
+		return true;
+	}
+	
+	@Override 
+	public int techLevel() 
+	{ 
+		return phyStats().ability();
+	}
+	
+	@Override 
+	public void setTechLevel(int lvl) 
+	{ 
+		basePhyStats.setAbility(lvl); recoverPhyStats(); 
+	}
+	
+	@Override 
+	public String getManufacturerName() 
+	{ 
+		return manufacturer; 
+	}
+	
+	@Override 
+	public void setManufacturerName(String name) 
+	{ 
+		cachedManufact=null; 
+		if(name!=null) 
+			manufacturer=name; 
+	}
 
 	@Override public long getMass()
 	{
@@ -237,23 +282,80 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		return cachedManufact;
 	}
 
-	@Override public long[] coordinates(){return coordinates;}
-	@Override public double[] direction(){return direction;}
-	@Override public double roll() { return roll; }
-	@Override public void setRoll(double dir) { roll =dir; }
-	@Override public double[] facing() { return facing; }
-	@Override public void setFacing(double[] dir) { if(dir!=null) this.facing=dir; }
-	@Override public SpaceObject knownTarget(){return spaceTarget;}
-	@Override public void setKnownTarget(SpaceObject O){spaceTarget=O;}
-	@Override public void setCoords(long[] coords)
+	@Override 
+	public long[] coordinates()
+	{
+		return coordinates;
+	}
+	
+	@Override 
+	public double[] direction()
+	{
+		return direction;
+	}
+	
+	@Override 
+	public double roll() 
+	{ 
+		return roll; 
+	}
+	
+	@Override 
+	public void setRoll(double dir) 
+	{ 
+		roll =dir; 
+	}
+	
+	@Override 
+	public double[] facing() 
+	{ 
+		return facing; 
+	}
+	
+	@Override 
+	public void setFacing(double[] dir) 
+	{ 
+		if(dir!=null) 
+			this.facing=dir; 
+	}
+	
+	@Override 
+	public SpaceObject knownTarget()
+	{
+		return spaceTarget;
+	}
+	
+	@Override 
+	public void setKnownTarget(SpaceObject O)
+	{
+		spaceTarget=O;
+	}
+	
+	@Override 
+	public void setCoords(long[] coords)
 	{
 		if((coords!=null)&&(coords.length==3))
 			CMLib.map().moveSpaceObject(this,coords);
 	}
-	@Override public void setDirection(double[] dir){if(dir!=null) direction=dir;}
-	@Override public long speed(){return speed;}
-	@Override public void setSpeed(long v){speed=v;}
-
+	
+	@Override 
+	public void setDirection(double[] dir)
+	{
+		if(dir!=null) 
+			direction=dir;
+	}
+	
+	@Override 
+	public long speed()
+	{
+		return speed;
+	}
+	
+	@Override 
+	public void setSpeed(long v)
+	{
+		speed=v;
+	}
 
 	@Override
 	public SpaceObject knownSource()
@@ -352,20 +454,46 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		return null;
 	}
 
-	@Override public int getPrice() { return price; }
-	@Override public void setPrice(int price) { this.price=price; }
-	@Override public String getOwnerName() { return owner; }
-	@Override public void setOwnerName(String owner) { this.owner=owner;}
+	@Override 
+	public int getPrice() 
+	{ 
+		return price; 
+	}
+	
+	@Override 
+	public void setPrice(int price) 
+	{ 
+		this.price=price; 
+	}
+	
+	@Override 
+	public String getOwnerName() 
+	{ 
+		return owner; 
+	}
+	
+	@Override 
+	public void setOwnerName(String owner) 
+	{ 
+		this.owner=owner;
+	}
+	
 	@Override
 	public CMObject getOwnerObject()
 	{
 		final String owner=getOwnerName();
-		if(owner.length()==0) return null;
+		if(owner.length()==0) 
+			return null;
 		final Clan C=CMLib.clans().getClan(owner);
-		if(C!=null) return C;
+		if(C!=null) 
+			return C;
 		return CMLib.players().getLoadPlayer(owner);
 	}
-	@Override public String getTitleID() { return this.toString(); }
+	
+	@Override public String getTitleID() 
+	{ 
+		return this.toString(); 
+	}
 
 	@Override
 	public void renameSpaceShip(String newName)
@@ -376,7 +504,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			final Room oldEntry=getDestinationRoom();
 			final String oldName=area.Name();
 			String registryNum=area.getBlurbFlag("REGISTRY");
-			if(registryNum==null) registryNum="";
+			if(registryNum==null) 
+				registryNum="";
 			((SpaceShip)area).renameSpaceShip(newName);
 			CMLib.tech().unregisterElectronics(null, oldName+registryNum);
 			registryNum=Double.toString(Math.random());
