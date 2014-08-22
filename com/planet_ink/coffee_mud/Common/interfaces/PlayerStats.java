@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -414,11 +415,12 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#getAgeMinutes()
 	 * @see com.planet_ink.coffee_mud.Races.interfaces.Race
 	 *
+	 * @param clock the local clock to use for month/day calculations
 	 * @param ageHours the number of hours the player played
 	 * @param R the players Race
 	 * @return the players new age, in mud-years
 	 */
-	public int initializeBirthday(int ageHours, Race R);
+	public int initializeBirthday(TimeClock clock, int ageHours, Race R);
 
 	/**
 	 * Returns a 2-dimensional integer array with the players birth
@@ -709,6 +711,16 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	 */
 	public int getLegacyLevel(String category);
 
+
+	/** Constant for day of birthday, as from {@link PlayerStats#getBirthday()} */
+	public static final int BIRTHDEX_DAY = 0;
+	/** Constant for month of birthday, as from {@link PlayerStats#getBirthday()} */
+	public static final int BIRTHDEX_MONTH = 1;
+	/** Constant for year of birthday, as from {@link PlayerStats#getBirthday()} */
+	public static final int BIRTHDEX_YEAR = 2;
+	/** Constant for year of last known birthday, as from {@link PlayerStats#getBirthday()} */
+	public static final int BIRTHDEX_LASTYEARCELEBRATED = 3;
+	
 	/** Constant for private messenging, means the last private msg was a SAYTO */
 	public static final int REPLY_SAY=0;
 	/** Constant for private messenging, means the last private msg was a YELL */

@@ -680,10 +680,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			final int currYear=clock.getYear();
 			final int month=clock.getMonth();
 			final int day=clock.getDayOfMonth();
-			final int bday=birthDay[0];
-			final int bmonth=birthDay[1];
-			while((currYear>birthDay[3])
-			||((currYear==birthDay[3])&&((month>bmonth)||((month==bmonth)&&(day>=bday)))))
+			final int bday=birthDay[PlayerStats.BIRTHDEX_DAY];
+			final int bmonth=birthDay[PlayerStats.BIRTHDEX_MONTH];
+			while((currYear>birthDay[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED])
+			||((currYear==birthDay[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED])&&((month>bmonth)||((month==bmonth)&&(day>=bday)))))
 			{
 				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMMORT))
 				{
@@ -696,12 +696,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				}
 				else
 				{
-					birthDay[2]++;
+					birthDay[PlayerStats.BIRTHDEX_YEAR]++;
 				}
 				if(CMSecurity.isDisabled(CMSecurity.DisFlag.SLOW_AGEING)||(birthDay[3]==currYear))
-					birthDay[3]++;
+					birthDay[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED]++;
 				else
-					birthDay[3]=currYear;
+					birthDay[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED]=currYear;
 			}
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMMORT))
 			{

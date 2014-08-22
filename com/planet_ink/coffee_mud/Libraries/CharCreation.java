@@ -2832,7 +2832,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		CMLib.utensils().outfit(mob,mob.baseCharStats().getCurrentClass().outfit(mob));
 		mob.setStartRoom(getDefaultStartRoom(mob));
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.ALL_AGEING))
-			mob.baseCharStats().setStat(CharStats.STAT_AGE,mob.playerStats().initializeBirthday(0,mob.baseCharStats().getMyRace()));
+			mob.baseCharStats().setStat(CharStats.STAT_AGE,mob.playerStats().initializeBirthday(CMLib.time().localClock(mob.getStartRoom()),0,mob.baseCharStats().getMyRace()));
 		final String startingMoney=mob.baseCharStats().getCurrentClass().getStartingMoney();
 		if((startingMoney!=null)&&(startingMoney.trim().length()>0))
 		{

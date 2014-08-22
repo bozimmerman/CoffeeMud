@@ -2043,7 +2043,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				{
 					E.baseCharStats().setStat(num,CMath.s_int(newVal));
 					if((num==CharStats.STAT_AGE)&&(E.playerStats()!=null)&&(E.playerStats().getBirthday()!=null))
-						E.playerStats().getBirthday()[2]=CMLib.time().globalClock().getYear()-CMath.s_int(newVal);
+						E.playerStats().getBirthday()[PlayerStats.BIRTHDEX_YEAR]=CMLib.time().globalClock().getYear()-CMath.s_int(newVal);
 				}
 				else
 					mob.tell(_("(no change)"));

@@ -4980,7 +4980,7 @@ public class Import extends StdCommand
 						M.setLocation(mob.location());
 					if(M.playerStats().getBirthday()==null)
 					{
-						M.baseCharStats().setStat(CharStats.STAT_AGE,M.playerStats().initializeBirthday((int)Math.round(CMath.div(M.getAgeMinutes(),60.0)),M.baseCharStats().getMyRace()));
+						M.baseCharStats().setStat(CharStats.STAT_AGE,M.playerStats().initializeBirthday(CMLib.time().localClock(mob.getStartRoom()),(int)Math.round(CMath.div(M.getAgeMinutes(),60.0)),M.baseCharStats().getMyRace()));
 						M.recoverCharStats();
 					}
 					CMLib.database().DBUpdatePlayer(M);

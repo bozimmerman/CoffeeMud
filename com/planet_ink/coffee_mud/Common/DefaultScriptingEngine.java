@@ -2578,9 +2578,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						 final int month=CMLib.time().globalClock().getMonth();
 						 final int day=CMLib.time().globalClock().getDayOfMonth();
-						 final int bday=mob.playerStats().getBirthday()[0];
-						 final int bmonth=mob.playerStats().getBirthday()[1];
-						 if((CMLib.time().globalClock().getYear()>mob.playerStats().getBirthday()[3])
+						 final int bday=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
+						 final int bmonth=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
+						 if((CMLib.time().globalClock().getYear()>mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED])
 						 &&((month==bmonth)&&(day==bday)))
 							 returnable=true;
 						 else
@@ -4902,8 +4902,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final int day=C.getDayOfMonth();
 					final int month=C.getMonth();
 					int year=C.getYear();
-					final int bday=mob.playerStats().getBirthday()[0];
-					final int bmonth=mob.playerStats().getBirthday()[1];
+					final int bday=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
+					final int bmonth=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
 					if((month>bmonth)||((month==bmonth)&&(day>bday)))
 						year++;
 

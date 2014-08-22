@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.io.IOException;
 import java.util.*;
 
@@ -418,7 +417,7 @@ public class Age extends StdAbility
 					newMan.playerStats().setLastDateTime(System.currentTimeMillis());
 					if(newMan.playerStats().getBirthday()==null)
 					{
-						int newAge=newMan.playerStats().initializeBirthday(ellapsed*15,newMan.baseCharStats().getMyRace());
+						int newAge=newMan.playerStats().initializeBirthday(CMLib.time().localClock(R),ellapsed*15,newMan.baseCharStats().getMyRace());
 						if((newAge<0)||(newAge>newMan.baseCharStats().getMyRace().getAgingChart()[Race.AGE_MIDDLEAGED]))
 							newAge=newMan.baseCharStats().getMyRace().getAgingChart()[Race.AGE_MIDDLEAGED];
 						newMan.baseCharStats().setStat(CharStats.STAT_AGE,newAge);

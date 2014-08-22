@@ -54,8 +54,8 @@ public class Time extends StdCommand
 			final int day=C.getDayOfMonth();
 			final int month=C.getMonth();
 			int year=C.getYear();
-			final int bday=mob.playerStats().getBirthday()[0];
-			final int bmonth=mob.playerStats().getBirthday()[1];
+			final int bday=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
+			final int bmonth=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
 			if((month>bmonth)||((month==bmonth)&&(day>bday)))
 				year++;
 

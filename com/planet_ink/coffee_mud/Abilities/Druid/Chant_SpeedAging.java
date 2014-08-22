@@ -148,13 +148,13 @@ public class Chant_SpeedAging extends Chant
 						int months=(int)Math.round(CMath.mul(aging-Math.floor(aging),monthsInYear));
 						if((years<=0)&&(months==0))
 							months++;
-						M.playerStats().getBirthday()[2]-=years;
-						M.playerStats().getBirthday()[1]-=months;
-						if(M.playerStats().getBirthday()[1]<1)
+						M.playerStats().getBirthday()[PlayerStats.BIRTHDEX_YEAR]-=years;
+						M.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH]-=months;
+						if(M.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH]<1)
 						{
-							M.playerStats().getBirthday()[2]--;
+							M.playerStats().getBirthday()[PlayerStats.BIRTHDEX_YEAR]--;
 							years++;
-							M.playerStats().getBirthday()[1]=monthsInYear+M.playerStats().getBirthday()[1];
+							M.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH]=monthsInYear+M.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
 						}
 						M.baseCharStats().setStat(CharStats.STAT_AGE,M.baseCharStats().getStat(CharStats.STAT_AGE)+years);
 					}

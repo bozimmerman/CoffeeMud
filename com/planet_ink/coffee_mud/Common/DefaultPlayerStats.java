@@ -564,14 +564,15 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public int initializeBirthday(int ageHours, Race R)
+	public int initializeBirthday(TimeClock clock, int ageHours, Race R)
 	{
+		if(clock == null)
+			clock=CMLib.time().globalClock();
 		birthday=new int[4];
-		final TimeClock C=CMLib.time().globalClock();
-		birthday[0]=C.getDayOfMonth();
-		birthday[1]=C.getMonth();
-		birthday[2]=C.getYear();
-		birthday[3]=C.getYear();
+		birthday[0]=clock.getDayOfMonth();
+		birthday[1]=clock.getMonth();
+		birthday[2]=clock.getYear();
+		birthday[3]=clock.getYear();
 		while(ageHours>15)
 		{
 			birthday[2]-=1;
@@ -579,14 +580,14 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 		if(ageHours>0)
 		{
-			birthday[1]=CMLib.dice().roll(1,C.getMonthsInYear(),0);
-			birthday[0]=CMLib.dice().roll(1,C.getDaysInMonth(),0);
+			birthday[1]=CMLib.dice().roll(1,clock.getMonthsInYear(),0);
+			birthday[0]=CMLib.dice().roll(1,clock.getDaysInMonth(),0);
 		}
-		final int month=C.getMonth();
-		final int day=C.getDayOfMonth();
+		final int month=clock.getMonth();
+		final int day=clock.getDayOfMonth();
 		if((month<birthday[1])||((month==birthday[1])&&(birthday[0]<day)))
-			return (R.getAgingChart()[Race.AGE_YOUNGADULT]+C.getYear()-birthday[2])-1;
-		return (R.getAgingChart()[Race.AGE_YOUNGADULT]+C.getYear()-birthday[2]);
+			return (R.getAgingChart()[Race.AGE_YOUNGADULT]+clock.getYear()-birthday[2])-1;
+		return (R.getAgingChart()[Race.AGE_YOUNGADULT]+clock.getYear()-birthday[2]);
 	}
 
 	protected String getPrivateList(Set<String> h)

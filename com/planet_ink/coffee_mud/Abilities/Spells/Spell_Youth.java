@@ -91,11 +91,11 @@ public class Spell_Youth extends Spell
 					if(target.playerStats()!=null)
 					{
 						final TimeClock C=CMLib.time().globalClock();
-						target.playerStats().getBirthday()[2]=C.getYear()-age;
+						target.playerStats().getBirthday()[PlayerStats.BIRTHDEX_YEAR]=C.getYear()-age;
 						final int day=C.getDayOfMonth();
 						final int month=C.getMonth();
-						final int bday=mob.playerStats().getBirthday()[0];
-						final int bmonth=mob.playerStats().getBirthday()[1];
+						final int bday=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
+						final int bmonth=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
 						if((month<bmonth)||((month==bmonth)&&(day<bday)))
 							age--;
 						target.baseCharStats().setStat(CharStats.STAT_AGE,age);
