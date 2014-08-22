@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 
@@ -331,7 +332,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		if(data== null) return 0.0;
 		if(getStartRoom()==null) return 0.0;
 		double amt=0.0;
-		final TimeClock TC=(getStartRoom()==null)?CMLib.time().globalClock():getStartRoom().getArea().getTimeObj();
+		final TimeClock TC=CMLib.time().localClock(getStartRoom());
 		final long time=System.currentTimeMillis()-CMath.s_long(data.time);
 		final long millisPerMudMonth=TC.getDaysInMonth()*CMProps.getMillisPerMudHour()*TC.getHoursInDay();
 		if(time<=0) return amt;
@@ -802,8 +803,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 						}
 					}
 
-					TimeClock C=CMLib.time().globalClock();
-					if(getStartRoom()!=null) C=getStartRoom().getArea().getTimeObj();
+					TimeClock C=CMLib.time().localClock(getStartRoom());
 					boolean codCharge=false;
 					if(V.size()==0)
 						mob.tell(_("\n\rYour postal box is presently empty."));

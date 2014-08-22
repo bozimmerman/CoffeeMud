@@ -14,8 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -90,7 +88,7 @@ public class Spell_Youth extends Spell
 						age=(int)Math.round(CMath.div(chart[cat]+chart[cat-1],2.0));
 					if(target.playerStats()!=null)
 					{
-						final TimeClock C=CMLib.time().globalClock();
+						final TimeClock C=CMLib.time().localClock(target.getStartRoom());
 						target.playerStats().getBirthday()[PlayerStats.BIRTHDEX_YEAR]=C.getYear()-age;
 						final int day=C.getDayOfMonth();
 						final int month=C.getMonth();

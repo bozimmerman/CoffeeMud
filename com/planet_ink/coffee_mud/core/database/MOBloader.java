@@ -137,19 +137,21 @@ public class MOBloader
 						pstats.initializeBirthday(CMLib.time().localClock(mob.getStartRoom()),(int)Math.round(CMath.div(mob.getAgeMinutes(),60.0)),stats.getMyRace()));
 				
 				// check for a messed up/reset birthday and fix it
-				if((pstats.getBirthday()[PlayerStats.BIRTHDEX_MONTH]==1)
-				&&(pstats.getBirthday()[PlayerStats.BIRTHDEX_DAY]==1)
-				&&(pstats.getBirthday()[PlayerStats.BIRTHDEX_YEAR]==1))
+				if(pstats.getBirthday()[PlayerStats.BIRTHDEX_YEAR]==1)
 				{
-					final TimeClock C=CMLib.time().localClock(mob.getStartRoom());
-					final int age = mob.baseCharStats().getStat(CharStats.STAT_AGE);
-					if((age > 1)&&(C.getYear() > age))
+					if((pstats.getBirthday()[PlayerStats.BIRTHDEX_MONTH]==1)
+					&&(pstats.getBirthday()[PlayerStats.BIRTHDEX_DAY]==1))
 					{
-						pstats.initializeBirthday(C,(int)Math.round(CMath.div(mob.getAgeMinutes(),60.0)),stats.getMyRace());
-						pstats.getBirthday()[PlayerStats.BIRTHDEX_YEAR]=C.getYear()-age;
-						pstats.getBirthday()[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED]=C.getYear();
+						final TimeClock C=CMLib.time().localClock(mob.getStartRoom());
+						final int age = mob.baseCharStats().getStat(CharStats.STAT_AGE);
+						if((age > 1)&&(C.getYear() > age))
+						{
+							pstats.initializeBirthday(C,(int)Math.round(CMath.div(mob.getAgeMinutes(),60.0)),stats.getMyRace());
+							pstats.getBirthday()[PlayerStats.BIRTHDEX_YEAR]=C.getYear()-age;
+							pstats.getBirthday()[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED]=C.getYear();
+						}
+						Log.warnOut("MOBloader","Reset the birthday of player '"+mob.Name()+"' (Might have been holdover from being first-year player)");
 					}
-					Log.warnOut("MOBloader","Reset the birthday of player '"+mob.Name()+"' (Might have been holdover from being first-year player)");
 				}
 				mob.setImage(CMLib.xml().returnXMLValue(buf,"IMG"));
 				final List<XMLLibrary.XMLpiece> CleanXML=CMLib.xml().parseAllXML(DBConnections.getRes(R,"CMMXML"));

@@ -49,12 +49,13 @@ public class Pregnancy extends StdAbility implements HealthCondition
 		final int x=text().indexOf('/');
 		if(x>0)
 		{
+			final TimeClock C=CMLib.time().localClock(affected);
 			final int y=text().indexOf('/',x+1);
 			if(y<0) return "";
 			final long start=CMath.s_long(text().substring(0,x));
 			final long divisor=CMProps.getTickMillis()*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
 			final long days=(System.currentTimeMillis()-start)/divisor; // down to days;
-			final long months=days/CMLib.time().globalClock().getDaysInMonth();
+			final long months=days/C.getDaysInMonth();
 			if(days<1)
 				return "less than 1 day pregnant";
 			else
@@ -200,11 +201,12 @@ public class Pregnancy extends StdAbility implements HealthCondition
 				final int y=text().indexOf('/',x+1);
 				if(y>x)
 				{
+					final TimeClock C=CMLib.time().localClock(mob.getStartRoom());
 					final int z=text().indexOf('/',y+1);
 					final long end=CMath.s_long(text().substring(x+1,y));
 					final long divisor=CMProps.getTickMillis()*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
 					daysRemaining=(end-System.currentTimeMillis())/divisor; // down to days
-					monthsRemaining=daysRemaining/CMLib.time().globalClock().getDaysInMonth(); // down to months
+					monthsRemaining=daysRemaining/C.getDaysInMonth(); // down to months
 					if(CMLib.dice().roll(1,200,0)==1)
 					{
 						final Ability A=CMClass.getAbility("Mood");
@@ -403,8 +405,9 @@ public class Pregnancy extends StdAbility implements HealthCondition
 		long start=System.currentTimeMillis();
 		final Race R=target.charStats().getMyRace();
 		long tickspermudmonth=CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
-		tickspermudmonth=tickspermudmonth*CMLib.time().globalClock().getDaysInMonth();
-		int birthmonths=(int)Math.round(CMath.mul((R.getAgingChart()[1]-R.getAgingChart()[0])*CMLib.time().globalClock().getMonthsInYear(),0.75));
+		final TimeClock C=CMLib.time().localClock(target.getStartRoom());
+		tickspermudmonth=tickspermudmonth*C.getDaysInMonth();
+		int birthmonths=(int)Math.round(CMath.mul((R.getAgingChart()[1]-R.getAgingChart()[0])*C.getMonthsInYear(),0.75));
 		if(birthmonths<=0) birthmonths=5;
 		final long ticksperbirthperiod=tickspermudmonth*birthmonths;
 		final long millisperbirthperiod=ticksperbirthperiod*CMProps.getTickMillis();

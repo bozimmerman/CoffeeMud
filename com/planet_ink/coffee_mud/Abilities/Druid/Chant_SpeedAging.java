@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -142,9 +141,10 @@ public class Chant_SpeedAging extends Chant
 					else
 					if((M.playerStats()!=null) && (M.playerStats().getBirthday()!=null))
 					{
+						final TimeClock C=CMLib.time().localClock(M.getStartRoom());
 						final double aging=CMath.mul(M.baseCharStats().getStat(CharStats.STAT_AGE),.10);
 						int years=(int)Math.round(Math.floor(aging));
-						final int monthsInYear=CMLib.time().globalClock().getMonthsInYear();
+						final int monthsInYear=C.getMonthsInYear();
 						int months=(int)Math.round(CMath.mul(aging-Math.floor(aging),monthsInYear));
 						if((years<=0)&&(months==0))
 							months++;
