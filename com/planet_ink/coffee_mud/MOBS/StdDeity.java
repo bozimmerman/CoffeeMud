@@ -760,8 +760,8 @@ public class StdDeity extends StdMOB implements Deity
 							{
 								if(System.currentTimeMillis()>(trigTimes.get(msg.source().Name()).longValue()+(CMath.s_int(DT.parm1)*CMProps.getTickMillis())))
 								{
-								   yup=true;
-								   waitingFor.remove(msg.source());
+									yup=true;
+									waitingFor.remove(msg.source());
 								}
 								else
 								{
@@ -1332,7 +1332,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			try
 			{
-				executeMsg(this,CMClass.getMsg(M,null,null,CMMsg.MSG_OK_VISUAL,null));
+				executeMsg(M,CMClass.getMsg(M,null,null,CMMsg.MSG_OK_VISUAL,null));
 			}catch(final Exception e){}
 		}
 		waitingFor.clear();
