@@ -1332,7 +1332,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			try
 			{
-				executeMsg(M,CMClass.getMsg(M,null,null,CMMsg.MSG_OK_VISUAL,null));
+				executeMsg(this,CMClass.getMsg(M,null,null,CMMsg.MSG_OK_VISUAL,null));
 			}catch(final Exception e){}
 		}
 		waitingFor.clear();
