@@ -163,26 +163,26 @@
 <STRING id="noun_forest_brush" select="any-1">
     <STRING>thicket</STRING>
     <STRING>underbrush</STRING>
-    <STRING>brush<STRING>
-    <STRING>brushwood<STRING>
-    <STRING>bush<STRING>
-    <STRING>underwood<STRING>
-    <STRING>undergrowth<STRING>
+    <STRING>brush</STRING>
+    <STRING>brushwood</STRING>
+    <STRING>bush</STRING>
+    <STRING>underwood</STRING>
+    <STRING>undergrowth</STRING>
 </STRING>
 
 <STRING id="noun_forest_wind" select="any-1">
     <STRING>wind</STRING>
     <STRING>breeze</STRING>
-    <STRING>gust<STRING>
-    <STRING>draft<STRING>
+    <STRING>gust</STRING>
+    <STRING>draft</STRING>
 </STRING>
 
 <STRING id="verb_forest_tread" select="any-1">
     <STRING>stomp</STRING>
-    <STRING>trample<STRING>
-    <STRING>tread<STRING>
-    <STRING>walk<STRING>
-    <STRING>push<STRING>
+    <STRING>trample</STRING>
+    <STRING>tread</STRING>
+    <STRING>walk</STRING>
+    <STRING>push</STRING>
 </STRING>
 
 <STRING id="_forest_path_name" select="any-1" define="_forest_path_name">

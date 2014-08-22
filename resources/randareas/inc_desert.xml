@@ -163,36 +163,36 @@
 <STRING id="noun_desert_brush" select="any-1">
     <STRING>sandscape</STRING>
     <STRING>dunes</STRING>
-    <STRING>scrub<STRING>
-    <STRING>brush<STRING>
-    <STRING>cacti<STRING>
-    <STRING>desertscape<STRING>
-    <STRING>desert<STRING>
+    <STRING>scrub</STRING>
+    <STRING>brush</STRING>
+    <STRING>cacti</STRING>
+    <STRING>desertscape</STRING>
+    <STRING>desert</STRING>
 </STRING>
 
 <STRING id="noun_desert_wind_adj" select="any-1">
     <STRING>stinging</STRING>
     <STRING>scouring</STRING>
-    <STRING>scratchy<STRING>
-    <STRING>hot<STRING>
-    <STRING>burning<STRING>
-    <STRING>dry<STRING>
+    <STRING>scratchy</STRING>
+    <STRING>hot</STRING>
+    <STRING>burning</STRING>
+    <STRING>dry</STRING>
 </STRING>
 
 <STRING id="noun_desert_wind" select="any-1">
     <STRING>$noun_desert_wind_adj wind</STRING>
     <STRING>$noun_desert_wind_adj breeze</STRING>
-    <STRING>$noun_desert_wind_adj air<STRING>
+    <STRING>$noun_desert_wind_adj air</STRING>
 </STRING>
 
 <STRING id="verb_desert_tread" select="any-1">
     <STRING>drag</STRING>
     <STRING>work</STRING>
-    <STRING>trample<STRING>
-    <STRING>tread<STRING>
-    <STRING>stomp<STRING>
-    <STRING>walk<STRING>
-    <STRING>shuffle<STRING>
+    <STRING>trample</STRING>
+    <STRING>tread</STRING>
+    <STRING>stomp</STRING>
+    <STRING>walk</STRING>
+    <STRING>shuffle</STRING>
 </STRING>
 
 <STRING id="_desert_path_name" select="any-1" define="_desert_path_name">

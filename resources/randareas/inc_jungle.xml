@@ -166,34 +166,34 @@
 <STRING id="noun_jungle_brush" select="any-1">
     <STRING>thicket</STRING>
     <STRING>underbrush</STRING>
-    <STRING>vines<STRING>
-    <STRING>brush<STRING>
-    <STRING>overgrowth<STRING>
-    <STRING>underwood<STRING>
-    <STRING>undergrowth<STRING>
+    <STRING>vines</STRING>
+    <STRING>brush</STRING>
+    <STRING>overgrowth</STRING>
+    <STRING>underwood</STRING>
+    <STRING>undergrowth</STRING>
 </STRING>
 
 <STRING id="noun_jungle_wind_adj" select="any-1">
     <STRING>steamy</STRING>
     <STRING>stifling</STRING>
-    <STRING>humid<STRING>
-    <STRING>hot<STRING>
+    <STRING>humid</STRING>
+    <STRING>hot</STRING>
 </STRING>
 
 <STRING id="noun_jungle_wind" select="any-1">
     <STRING>$noun_jungle_wind_adj wind</STRING>
     <STRING>$noun_jungle_wind_adj breeze</STRING>
-    <STRING>$noun_jungle_wind_adj air<STRING>
-    <STRING>$noun_jungle_wind_adj draft<STRING>
+    <STRING>$noun_jungle_wind_adj air</STRING>
+    <STRING>$noun_jungle_wind_adj draft</STRING>
 </STRING>
 
 <STRING id="verb_jungle_tread" select="any-1">
     <STRING>stomp</STRING>
     <STRING>work</STRING>
-    <STRING>trample<STRING>
-    <STRING>tread<STRING>
-    <STRING>cut<STRING>
-    <STRING>push<STRING>
+    <STRING>trample</STRING>
+    <STRING>tread</STRING>
+    <STRING>cut</STRING>
+    <STRING>push</STRING>
 </STRING>
 
 <STRING id="_jungle_path_name" select="any-1" define="_jungle_path_name">
