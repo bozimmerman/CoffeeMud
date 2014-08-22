@@ -457,17 +457,39 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			if(!messedUp)
 			{
 				boolean timesTwo=false;
-				if(contents!=null)
-				for(int v=0;v<contents.size();v++)
+				if((contents!=null)&&(contents.size()>0))
 				{
-					final Item I=contents.get(v);
-					if((I.material()==RawMaterial.RESOURCE_HERBS)&&(honorHerbs()))
-						timesTwo=true;
-					else
-					if(I instanceof Food)
-						food.setNourishment(food.nourishment()+(((Food)I).nourishment()+((Food)I).nourishment()));
-					else
-						food.setNourishment(food.nourishment()+10);
+					for(int v=0;v<contents.size();v++)
+					{
+						final Item I=contents.get(v);
+						if((I.material()==RawMaterial.RESOURCE_HERBS)&&(honorHerbs()))
+							timesTwo=true;
+						else
+						if(I instanceof Food)
+							food.setNourishment(food.nourishment()+(((Food)I).nourishment()+((Food)I).nourishment()));
+						else
+							food.setNourishment(food.nourishment()+10);
+					}
+				}
+				else
+				{
+					for(int vr=RCP_MAININGR;vr<finalRecipe.size();vr+=2)
+					{
+						final String ingredient=finalRecipe.get(vr).toUpperCase();
+						if(ingredient.length()>0)
+						{
+							int amount=1;
+							if(vr<finalRecipe.size()-1)
+								amount=CMath.s_int(finalRecipe.get(vr+1));
+							if(amount==0) 
+								amount=1;
+							if(amount<0) 
+								amount=amount*-1;
+							if(ingredient.equalsIgnoreCase("water"))
+								continue;
+							food.setNourishment(food.nourishment()+(100*amount));
+						}
+					}
 				}
 				if(timesTwo) food.setNourishment(food.nourishment()*2);
 				if(food.nourishment()>300)
