@@ -95,6 +95,9 @@ public class Spell_Shatter extends Spell
 
 		if((target==null)&&(mobTarget!=null))
 			target=getTarget(mobTarget,mobTarget.location(),givenTarget,commands,Wearable.FILTER_ANY);
+		else
+		if((target==null)&&(mobTarget==null))
+			target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 
 		if(target==null) return false;
 		Room R=CMLib.map().roomLocation(target);
@@ -147,7 +150,13 @@ public class Spell_Shatter extends Spell
 						damage=0;
 						break;
 					}
-					target.setUsesRemaining(target.usesRemaining()-damage);
+					if((damage>0)&&(target.subjectToWearAndTear()))
+						target.setUsesRemaining(target.usesRemaining()-damage);
+					else
+					{
+						R.show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> seems otherwise unaffected."));
+						return true;
+					}
 					if(target.usesRemaining()>0)
 						target.recoverPhyStats();
 					else
