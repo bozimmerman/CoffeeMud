@@ -485,7 +485,15 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 								amount=1;
 							if(amount<0) 
 								amount=amount*-1;
-							if(ingredient.equalsIgnoreCase("water"))
+							if(ingredient.equalsIgnoreCase("water")||ingredient.equalsIgnoreCase("milk"))
+								continue;
+							if(ingredient.equalsIgnoreCase("herbs"))
+							{
+								timesTwo=true;
+								continue;
+							}
+							int resourceCode=RawMaterial.CODES.FIND_IgnoreCase(ingredient);
+							if((resourceCode >0)&&((resourceCode&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
 								continue;
 							food.setNourishment(food.nourishment()+(100*amount));
 						}
