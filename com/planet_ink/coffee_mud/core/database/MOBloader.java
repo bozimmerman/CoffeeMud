@@ -139,18 +139,19 @@ public class MOBloader
 				// check for a messed up/reset birthday and fix it
 				if(pstats.getBirthday()[PlayerStats.BIRTHDEX_YEAR]==1)
 				{
+					final TimeClock C=CMLib.time().localClock(mob.getStartRoom());
+					final int age = mob.baseCharStats().getStat(CharStats.STAT_AGE);
 					if((pstats.getBirthday()[PlayerStats.BIRTHDEX_MONTH]==1)
 					&&(pstats.getBirthday()[PlayerStats.BIRTHDEX_DAY]==1))
 					{
-						final TimeClock C=CMLib.time().localClock(mob.getStartRoom());
-						final int age = mob.baseCharStats().getStat(CharStats.STAT_AGE);
 						if((age > 1)&&(C.getYear() > age))
-						{
 							pstats.initializeBirthday(C,(int)Math.round(CMath.div(mob.getAgeMinutes(),60.0)),stats.getMyRace());
-							pstats.getBirthday()[PlayerStats.BIRTHDEX_YEAR]=C.getYear()-age;
-							pstats.getBirthday()[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED]=C.getYear();
-						}
 						Log.warnOut("MOBloader","Reset the birthday of player '"+mob.Name()+"' (Might have been holdover from being first-year player)");
+					}
+					if((age > 1)&&(C.getYear() > age))
+					{
+						pstats.getBirthday()[PlayerStats.BIRTHDEX_YEAR]=C.getYear()-age;
+						pstats.getBirthday()[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED]=C.getYear();
 					}
 				}
 				mob.setImage(CMLib.xml().returnXMLValue(buf,"IMG"));
