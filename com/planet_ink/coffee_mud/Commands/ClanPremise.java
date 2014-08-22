@@ -107,7 +107,7 @@ public class ClanPremise extends StdCommand
 	{
 		C.setPremise(premise);
 		C.update();
-		CMLib.clans().clanAnnounce(mob,"The premise of "+C.getGovernmentName()+" "+C.clanID()+" has been changed.");
+		CMLib.clans().clanAnnounce(mob,_("The premise of @x1 @x2 has been changed.",C.getGovernmentName(),C.clanID()));
 	}
 
 

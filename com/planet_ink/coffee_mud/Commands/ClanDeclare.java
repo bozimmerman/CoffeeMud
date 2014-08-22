@@ -138,7 +138,7 @@ public class ClanDeclare extends StdCommand
 				commands.add(rel);
 				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.DECLARE,true))
 				{
-					CMLib.clans().clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" has declared "+CMStrings.capitalizeAndLower(Clan.REL_STATES[newRole].toLowerCase())+" "+C2.name()+".");
+					CMLib.clans().clanAnnounce(mob,_("The @x1 @x2 has declared @x3 @x4.",C.getGovernmentName(),C.clanID(),CMStrings.capitalizeAndLower(Clan.REL_STATES[newRole].toLowerCase()),C2.name()));
 					C.setClanRelations(C2.clanID(),newRole,System.currentTimeMillis());
 					C.update();
 					return false;

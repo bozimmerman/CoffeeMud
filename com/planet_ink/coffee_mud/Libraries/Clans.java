@@ -1296,7 +1296,7 @@ public class Clans extends StdLibrary implements ClanManager
 					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.Members.flagNum())))
 					{
 						C.setTrophies(C.getTrophies()-Trophy.Members.flagNum());
-						C.clanAnnounce("The "+C.getGovernmentName()+" "+C.name()+" has lost control of the trophy for "+Trophy.Members.description+".");
+						C.clanAnnounce(_("The @x1 @x2 has lost control of the trophy for @x3.",C.getGovernmentName(),C.name(),Trophy.Members.description));
 					}
 				}
 			}
@@ -1329,7 +1329,7 @@ public class Clans extends StdLibrary implements ClanManager
 					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.MemberLevel.flagNum())))
 					{
 						C.setTrophies(C.getTrophies()-Trophy.MemberLevel.flagNum());
-						C.clanAnnounce("The "+C.getGovernmentName()+" "+C.name()+" has lost control of the trophy for "+Trophy.MemberLevel.description+".");
+						C.clanAnnounce(_("The @x1 @x2 has lost control of the trophy for @x3.",C.getGovernmentName(),C.name(),Trophy.MemberLevel.description));
 					}
 				}
 			}
@@ -1357,7 +1357,7 @@ public class Clans extends StdLibrary implements ClanManager
 					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.Experience.flagNum())))
 					{
 						C.setTrophies(C.getTrophies()-Trophy.Experience.flagNum());
-						C.clanAnnounce("The "+C.getGovernmentName()+" "+C.name()+" has lost control of the trophy for "+Trophy.Experience.description+".");
+						C.clanAnnounce(_("The @x1 @x2 has lost control of the trophy for @x3.",C.getGovernmentName(),C.name(),Trophy.Experience.description));
 					}
 				}
 			}
@@ -1387,7 +1387,7 @@ public class Clans extends StdLibrary implements ClanManager
 					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.PlayerKills.flagNum())))
 					{
 						C.setTrophies(C.getTrophies()-Trophy.PlayerKills.flagNum());
-						C.clanAnnounce("The "+C.getGovernmentName()+" "+C.name()+" has lost control of the trophy for "+Trophy.PlayerKills.description+".");
+						C.clanAnnounce(_("The @x1 @x2 has lost control of the trophy for @x3.",C.getGovernmentName(),C.name(),Trophy.PlayerKills.description));
 					}
 				}
 			}
@@ -1443,7 +1443,7 @@ public class Clans extends StdLibrary implements ClanManager
 					&&(CMath.bset(C.getTrophies(),Trophy.Areas.flagNum())))
 					{
 						C.setTrophies(C.getTrophies()-Trophy.Areas.flagNum());
-						C.clanAnnounce("The "+C.getGovernmentName()+" "+C.name()+" has lost control of the trophy for "+Trophy.Areas.description+".");
+						C.clanAnnounce(_("The @x1 @x2 has lost control of the trophy for @x3.",C.getGovernmentName(),C.name(),Trophy.Areas.description));
 					}
 				}
 				if((winnerMostControlPointsC!=null)
@@ -1463,7 +1463,7 @@ public class Clans extends StdLibrary implements ClanManager
 					&&(CMath.bset(C.getTrophies(),Trophy.Points.flagNum())))
 					{
 						C.setTrophies(C.getTrophies()-Trophy.Points.flagNum());
-						C.clanAnnounce("The "+C.getGovernmentName()+" "+C.name()+" has lost control of the trophy for "+Trophy.Points.description+".");
+						C.clanAnnounce(_("The @x1 @x2 has lost control of the trophy for @x3.",C.getGovernmentName(),C.name(),Trophy.Points.description));
 					}
 				}
 			}

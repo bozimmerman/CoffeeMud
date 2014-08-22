@@ -184,7 +184,7 @@ public class ClanVote extends StdCommand
 								&&(mob.session().confirm(_("This will cancel this entire vote, are you sure (N/y)?"),_("N"))))
 								{
 									C.delVote(CV);
-									CMLib.clans().clanAnnounce(mob,"A prior vote for "+C.getGovernmentName()+" "+C.clanID()+" has been deleted.");
+									CMLib.clans().clanAnnounce(mob,_("A prior vote for @x1 @x2 has been deleted.",C.getGovernmentName(),C.clanID()));
 									msg.append(_("The vote has been deleted."));
 									updateVote=true;
 								}

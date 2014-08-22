@@ -133,7 +133,7 @@ public class ClanQual extends StdCommand
 	{
 		C.setAcceptanceSettings(qualMask);
 		C.update();
-		CMLib.clans().clanAnnounce(mob,"The qualifications of "+C.getGovernmentName()+" "+C.clanID()+" have been changed.");
+		CMLib.clans().clanAnnounce(mob,_("The qualifications of @x1 @x2 have been changed.",C.getGovernmentName(),C.clanID()));
 	}
 
 	@Override public boolean canBeOrdered(){return false;}

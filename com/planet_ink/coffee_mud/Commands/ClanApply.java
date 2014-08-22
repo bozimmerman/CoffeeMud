@@ -98,7 +98,7 @@ public class ClanApply extends StdCommand
 							if((newRole.second.intValue()!=C.getGovernment().getAcceptPos())
 							&&(newRole.second.intValue()==C.getGovernment().getAutoRole()))
 							{
-								CMLib.clans().clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" has a new Applicant: "+mob.Name());
+								CMLib.clans().clanAnnounce(mob,_("The @x1 @x2 has a new Applicant: @x3",C.getGovernmentName(),C.clanID(),mob.Name()));
 								mob.tell(_("You have successfully applied for membership in clan @x1.  Your application will be reviewed by management.  Use SCORE to check for a change in status.",C.clanID()));
 							}
 							else
@@ -114,7 +114,7 @@ public class ClanApply extends StdCommand
 									S.dequeResponses();
 									S.tick(mob,Tickable.TICKID_MOB);
 								}
-								CMLib.clans().clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" has a new member: "+mob.Name());
+								CMLib.clans().clanAnnounce(mob,_("The @x1 @x2 has a new member: @x3",C.getGovernmentName(),C.clanID(),mob.Name()));
 								mob.tell(_("You have successfully joined @x1.  Use CLANDETAILS for information.",C.clanID()));
 							}
 						}

@@ -189,7 +189,7 @@ public class ClanCreate extends StdCommand
 												newClan.create();
 												CMLib.database().DBUpdateClanMembership(mob.Name(),newClan.getName(),newRoleID);
 												newClan.updateClanPrivileges(mob);
-												CMLib.clans().clanAnnounce(mob, "The "+newClan.getGovernmentName()+" "+newClan.clanID()+" is online and can now accept applicants.");
+												CMLib.clans().clanAnnounce(mob, _("The @x1 @x2 is online and can now accept applicants.",newClan.getGovernmentName(),newClan.clanID()));
 											}
 										};
 										session.prompt(IC[0]);

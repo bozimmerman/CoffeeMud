@@ -84,7 +84,7 @@ public class ClanResign extends StdCommand
 							S.dequeResponses();
 							S.tick(mob,Tickable.TICKID_MOB);
 						}
-						CMLib.clans().clanAnnounce(mob,"Member resigned from "+C.getGovernmentName()+" "+C.name()+": "+mob.Name());
+						CMLib.clans().clanAnnounce(mob,_("Member resigned from @x1 @x2: @x3",C.getGovernmentName(),C.name(),mob.Name()));
 						C.delMember(mob);
 					}
 				}
