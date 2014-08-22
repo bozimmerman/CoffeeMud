@@ -109,14 +109,14 @@
 
 <MOB class="GenMob" level="$level_range" id="jungle_dragon_mob" race="Dragon" gender="$anygender">
 	<NAME select="all">
-		<NAME condition="$mob_level<10">a hatchling $jungle_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level<20 and $mob_level>=10">a very young $jungle_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level<30 and $mob_level>=20">a young $jungle_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level<40 and $mob_level>=30">a subadult $jungle_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level<70 and $mob_level>=40">an adult $jungle_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level<80 and $mob_level>=70">an old $jungle_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level<85 and $mob_level>=80">a very old $jungle_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level>=85">a ancient $jungle_dragoncolor dragon</NAME>
+		<NAME condition="$mob_level&lt;10">a hatchling $jungle_dragoncolor dragon</NAME>
+		<NAME condition="$mob_level&lt;20 and $mob_level&gt;=10">a very young $jungle_dragoncolor dragon</NAME>
+		<NAME condition="$mob_level&lt;30 and $mob_level&gt;=20">a young $jungle_dragoncolor dragon</NAME>
+		<NAME condition="$mob_level&lt;40 and $mob_level&gt;=30">a subadult $jungle_dragoncolor dragon</NAME>
+		<NAME condition="$mob_level&lt;70 and $mob_level&gt;=40">an adult $jungle_dragoncolor dragon</NAME>
+		<NAME condition="$mob_level&lt;80 and $mob_level&gt;=70">an old $jungle_dragoncolor dragon</NAME>
+		<NAME condition="$mob_level&lt;85 and $mob_level&gt;=80">a very old $jungle_dragoncolor dragon</NAME>
+		<NAME condition="$mob_level&gt;=85">a ancient $jungle_dragoncolor dragon</NAME>
 	</NAME>
 		<DISPLAY select="pick-1">
 			<DISPLAY pickweight="1">$mob_name leaps towards you.</DISPLAY>
@@ -125,20 +125,20 @@
 		</DISPLAY>
 	<DESCRIPTION>$mob_name is dangerous, scaly, sharp, and terrifying.</DESCRIPTION>
 	<BEHAVIOR select="all">
-		<BEHAVIOR condition="$mob_level>=40" class="MOBEater" parms="" />
+		<BEHAVIOR condition="$mob_level&gt;=40" class="MOBEater" parms="" />
 		<BEHAVIOR class="CombatAbilities" parms="" />
 		<BEHAVIOR class="ObjectGuardian" parms="" />
 	</BEHAVIOR>
 	<ABILITY select="all">
-		<ABILITY condition="$mob_level>=10" class="Skill_Trip" parms="" />
-		<ABILITY condition="$mob_level>=20" class="Dragonbreath" parms="" />
-		<ABILITY condition="$mob_level>=30" class="Spell_DetectInvisible" parms="" />
-		<ABILITY condition="$mob_level>=40" class="Spell_Fear" parms="" />
-		<ABILITY condition="$mob_level>=50" class="Spell_Hold" parms="" />
-		<ABILITY condition="$mob_level>=60" class="Spell_Slow" parms="" />
-		<ABILITY condition="$mob_level>=70" class="Spell_GravitySlam" parms="" />
-		<ABILITY condition="$mob_level>=80" class="Spell_SpellTurning" parms="" />
-		<ABILITY condition="$mob_level>=90" class="Spell_ResistSlashing" parms="" />
+		<ABILITY condition="$mob_level&gt;=10" class="Skill_Trip" parms="" />
+		<ABILITY condition="$mob_level&gt;=20" class="Dragonbreath" parms="" />
+		<ABILITY condition="$mob_level&gt;=30" class="Spell_DetectInvisible" parms="" />
+		<ABILITY condition="$mob_level&gt;=40" class="Spell_Fear" parms="" />
+		<ABILITY condition="$mob_level&gt;=50" class="Spell_Hold" parms="" />
+		<ABILITY condition="$mob_level&gt;=60" class="Spell_Slow" parms="" />
+		<ABILITY condition="$mob_level&gt;=70" class="Spell_GravitySlam" parms="" />
+		<ABILITY condition="$mob_level&gt;=80" class="Spell_SpellTurning" parms="" />
+		<ABILITY condition="$mob_level&gt;=90" class="Spell_ResistSlashing" parms="" />
 	</ABILITY>
 </MOB>
 		
