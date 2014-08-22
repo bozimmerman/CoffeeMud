@@ -555,51 +555,97 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 
 		if(msg.amITarget(this))
 		{
-			if((msg.targetMinor()==CMMsg.TYP_GET)&&(msg.tool() instanceof ShopKeeper))
-				transferOwnership(msg.source());
-			else
-			if((msg.targetMinor()==CMMsg.TYP_ACTIVATE)&&(CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))&&(msg.targetMessage()!=null))
+			switch(msg.targetMinor())
 			{
-				final String[] parts=msg.targetMessage().split(" ");
-				final TechCommand command=TechCommand.findCommand(parts);
-				if(command!=null)
+			case CMMsg.TYP_GET:
+				if(msg.tool() instanceof ShopKeeper)
+					transferOwnership(msg.source());
+				break;
+			case CMMsg.TYP_ACTIVATE:
+				if((CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))&&(msg.targetMessage()!=null))
 				{
-					final Object[] parms=command.confirmAndTranslate(parts);
-					if(parms!=null)
+					final String[] parts=msg.targetMessage().split(" ");
+					final TechCommand command=TechCommand.findCommand(parts);
+					if(command!=null)
 					{
-						if(command==Technical.TechCommand.ACCELLLERATION)
+						final Object[] parms=command.confirmAndTranslate(parts);
+						if(parms!=null)
 						{
-							final ThrustPort dir=(ThrustPort)parms[0];
-							final int amount=((Integer)parms[1]).intValue();
-							//long specificImpulse=((Long)parms[2]).longValue();
-							switch(dir)
+							if(command==Technical.TechCommand.ACCELLLERATION)
 							{
-							case STARBOARD: 
-								facing[0]-=amount; 
-								break;
-							case PORT: 
-								facing[0]+=amount; 
-								break;
-							case DORSEL: 
-								facing[1]-=amount; 
-								break;
-							case VENTRAL: 
-								facing[1]+=amount; 
-								break;
-							case FORWARD: 
-								break;
-							case AFT:
-							{
-								final double inAirFactor=inAirFlag.booleanValue()?(1.0-getOMLCoeff()):1.0;
-								CMLib.map().moveSpaceObject(this,facing(),Math.round((((double)amount/(double)getMass())-1.0)*inAirFactor));
-								break;
+								final ThrustPort dir=(ThrustPort)parms[0];
+								final int amount=((Integer)parms[1]).intValue();
+								//long specificImpulse=((Long)parms[2]).longValue();
+								switch(dir)
+								{
+								case STARBOARD: 
+									facing[0]-=amount; 
+									break;
+								case PORT: 
+									facing[0]+=amount; 
+									break;
+								case DORSEL: 
+									facing[1]-=amount; 
+									break;
+								case VENTRAL: 
+									facing[1]+=amount; 
+									break;
+								case FORWARD: 
+									break;
+								case AFT:
+								{
+									// this will move it, but will also update speed and direction -- all good!
+									final double inAirFactor=inAirFlag.booleanValue()?(1.0-getOMLCoeff()):1.0;
+									CMLib.map().moveSpaceObject(this,facing(),Math.round((((double)amount/(double)getMass())-1.0)*inAirFactor));
+									break;
+								}
+								}
+								facing[0]=facing[0]%(2*Math.PI);
+								facing[1]=facing[1]%(2*Math.PI);
 							}
-							}
-							facing[0]=facing[0]%(2*Math.PI);
-							facing[1]=facing[1]%(2*Math.PI);
 						}
 					}
 				}
+				break;
+			case CMMsg.TYP_COLLISION:
+				if((speed() <= SpaceObject.ACCELLERATION_DAMAGED)
+				&&(msg.tool() instanceof Area))
+				{
+					long shortestDistance=Long.MAX_VALUE;
+					LocationRoom LR = null;
+					for(final Enumeration<Room> r=((Area)msg.tool()).getMetroMap();r.hasMoreElements();)
+					{
+						final Room R2=r.nextElement();
+						if((R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+						&&(R2 instanceof LocationRoom))
+						{
+							long distanceFrom=CMLib.map().getDistanceFrom(coordinates(), ((LocationRoom)R2).coordinates());
+							if(distanceFrom<shortestDistance)
+							{
+								shortestDistance=distanceFrom;
+								LR=(LocationRoom)R2;
+							}
+						}
+					}
+					if(LR!=null)
+					{
+						dockHere(LR);
+						//TODO: End speed, set location and so forth
+					}
+					else
+					{
+						//TODO: landing notice, ensure not in bounds...
+					}
+				}
+				else
+				if(msg.tool() instanceof SpaceObject)
+				{
+					// we've been -- hit?
+					//TODO: add the speeds of both things * mass to calculate kenetic damage
+					
+				}
+				//TODO: lots -- figure out what got damaged, for one!
+				break;
 			}
 		}
 		else
