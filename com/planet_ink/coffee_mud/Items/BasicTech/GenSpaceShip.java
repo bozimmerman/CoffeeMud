@@ -573,6 +573,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 						{
 							if(command==Technical.TechCommand.ACCELLLERATION)
 							{
+								if(getIsDocked()!=null)
+									unDock(true);
 								final ThrustPort dir=(ThrustPort)parms[0];
 								final int amount=((Integer)parms[1]).intValue();
 								//long specificImpulse=((Long)parms[2]).longValue();
@@ -630,7 +632,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 					if(LR!=null)
 					{
 						dockHere(LR);
-						//TODO: End speed, set location and so forth
+						//TODO: End speed, set location and so forth -- 
+						//accelleration must stop, or we'll just undock again
 					}
 					else
 					{
