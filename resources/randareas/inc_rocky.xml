@@ -76,7 +76,7 @@
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING>The $adj_large dunes of $areaname are $adj_cramped around you in $adj_impassable walls. </STRING>
-				<STRING>You $verb_rocky_tread your way through the $noun_rocky_brush of the desert. </STRING>
+				<STRING>You $verb_rocky_tread your way through the $noun_rocky_brush of the ${rocky_nouns}. </STRING>
 				<STRING>The desert surrounds you, ${adj_phys_size_tall} $adj_cramped dunes making some directions $adj_impassable. </STRING>
 				<STRING>You feel a $noun_rocky_wind blow over the $adj_phys_size_tall dunes of the $noun_rocky_wind_adj desert. </STRING>
 			</STRING>
@@ -171,28 +171,31 @@
 </STRING>
 
 <STRING id="noun_rocky_wind_adj" select="any-1">
-    <STRING>stinging</STRING>
+    <STRING>brisk</STRING>
     <STRING>scouring</STRING>
-    <STRING>scratchy</STRING>
-    <STRING>hot</STRING>
-    <STRING>burning</STRING>
-    <STRING>dry</STRING>
+    <STRING>bracing</STRING>
+    <STRING>crisp</STRING>
+    <STRING>invigorating</STRING>
+    <STRING>fresh</STRING>
+    <STRING>clean</STRING>
+    <STRING>chilly</STRING>
+    <STRING>nippy</STRING>
 </STRING>
 
 <STRING id="noun_rocky_wind" select="any-1">
     <STRING>$noun_rocky_wind_adj wind</STRING>
     <STRING>$noun_rocky_wind_adj breeze</STRING>
-    <STRING>$noun_rocky_wind_adj air</STRING>
+    <STRING>$noun_rocky_wind_adj gust of air</STRING>
 </STRING>
 
 <STRING id="verb_rocky_tread" select="any-1">
-    <STRING>drag</STRING>
+    <STRING>stumble</STRING>
     <STRING>work</STRING>
-    <STRING>trample</STRING>
+    <STRING>stagger</STRING>
     <STRING>tread</STRING>
-    <STRING>stomp</STRING>
+    <STRING>climb</STRING>
     <STRING>walk</STRING>
-    <STRING>shuffle</STRING>
+    <STRING>continue</STRING>
 </STRING>
 
 <STRING id="_rocky_path_name" select="any-1" define="_rocky_path_name">
@@ -203,17 +206,21 @@
 </STRING>
 
 <STRING id="rocky_path_prefix" select="any-1">
-	<string>sandy</string><string>scorching</string><string>dry</string>
-	<string>arid</string><string>hot</string><string>prickly</string><string>forsaken</string>
-	<string>desolate</string><string>bare</string><string>parched</string>
+	<string>hard</string><string>rough</string><string>steep</string>
+	<string>stony</string><string>pebbly</string><string>shingly</string><string>rough</string>
+	<string>bumpy</string><string>craggy</string><string>mountainous</string>
+	<string>precarious</string><string>problematic</string><string>unstable</string>
 </STRING>
 
 <STRING id="rocky_nouns" select="any-1">
-	<string>desert</string><string>dunes</string><string>sands</string><string>plains</string>
-	<string>badlands</string><string>range</string><string>miles</string><string>dust bowl</string><string>plateau</string>
+	<string>mountains</string><string>hills</string><string>stepps</string><string>rocks</string>
+	<string>crags</string><string>range</string><string>cliffs</string><string>ridge</string><string>plateau</string>
+	<string>height</string><string>peaks</string><string>escarpment</string><string>tor</string>
+	<string>badlands</string>
 </STRING>
 
 <STRING id="_rocky_path_type" define="_rocky_path_type" select="any-1">
-	<string>path</string><string>desert</string><string>pathway</string><string>dune</string>
-	<string>valley</string><string>stretch</string>
+	<string>path</string><string>steps</string><string>pathway</string><string>trail</string>
+	<string>footpath</string><string>track</string><string>alley</string><string>passage</string>
+	<string>route</string>
 </STRING>

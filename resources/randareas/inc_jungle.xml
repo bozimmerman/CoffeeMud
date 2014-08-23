@@ -212,6 +212,7 @@
 <STRING id="jungle_nouns" select="any-1">
 	<string>jungle</string><string>tropical forest</string><string>rain forest</string><string>tangle</string>
 	<string>morass</string><string>undergrowth</string><string>growth</string><string>thicket</string>
+	<string>boscage</string>
 </STRING>
 
 <STRING id="_jungle_path_type" define="_jungle_path_type" select="any-1">

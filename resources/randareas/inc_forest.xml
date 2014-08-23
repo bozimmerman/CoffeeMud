@@ -201,6 +201,7 @@
 <STRING id="forest_nouns" select="any-1">
 	<string>forest</string><string>woods</string><string>woodlands</string><string>timberlands</string>
 	<string>greenwood</string><string>thicket</string><string>growth</string><string>wildwood</string>
+	<string>sticks</string>
 </STRING>
 
 <STRING id="_forest_path_type" define="_forest_path_type" insert="forest_stuff_type" select="any-1">
