@@ -69,7 +69,7 @@
 		<DESCRIPTION>$rocky_interior_desc</DESCRIPTION>
 		<STRING id="rocky_interior_desc" select="all">
 			<STRING select="any-1" action="PREPEND">
-				<STRING>You find yourself by a $adj_sparse copse of plants in the ${l:room_title}. </STRING>
+				<STRING>You find yourself by a $adj_sparse copse of trees in the ${l:room_title}. </STRING>
 				<STRING>You are in a corner of the ${l:room_title}. </STRING>
 				<STRING>The ${rocky_nouns} surrounds you. </STRING>
 				<STRING>The ${rocky_nouns} is all around you. </STRING>
@@ -77,7 +77,7 @@
 			<STRING select="any-1" action="APPEND">
 				<STRING>The $adj_large dunes of $areaname are $adj_cramped around you in $adj_impassable walls. </STRING>
 				<STRING>You $verb_rocky_tread your way through the $noun_rocky_brush of the ${rocky_nouns}. </STRING>
-				<STRING>The desert surrounds you, ${adj_phys_size_tall} $adj_cramped dunes making some directions $adj_impassable. </STRING>
+				<STRING>The desert surrounds you, ${adj_phys_size_tall} dunes making some directions $adj_impassable. </STRING>
 				<STRING>You feel a $noun_rocky_wind blow over the $adj_phys_size_tall dunes of the $noun_rocky_wind_adj desert. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
@@ -101,25 +101,24 @@
 	</ROOM>
 </ROOM>
 	
-<MOB class="GenMob" level="$level_range" id="rocky_dragon_mob" race="Dragon" gender="$anygender">
+<MOB class="GenMob" level="$level_range" id="rocky_giant_mob" race="Dragon" gender="$anygender">
 	<NAME select="all">
-		<NAME condition="$mob_level<10">a hatchling $rocky_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level<20 and $mob_level>=10">a very young $rocky_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level<30 and $mob_level>=20">a young $rocky_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level<40 and $mob_level>=30">a subadult $rocky_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level<70 and $mob_level>=40">an adult $rocky_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level<80 and $mob_level>=70">an old $rocky_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level<85 and $mob_level>=80">a very old $rocky_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level>=85">a ancient $rocky_dragoncolor dragon</NAME>
+		<NAME condition="$mob_level<10">a toddler storm giant</NAME>
+		<NAME condition="$mob_level<20 and $mob_level>=10">a very young storm giant</NAME>
+		<NAME condition="$mob_level<30 and $mob_level>=20">a young storm giant</NAME>
+		<NAME condition="$mob_level<40 and $mob_level>=30">a subadult storm giant</NAME>
+		<NAME condition="$mob_level<70 and $mob_level>=40">an adult storm giant</NAME>
+		<NAME condition="$mob_level<80 and $mob_level>=70">a great storm giant</NAME>
+		<NAME condition="$mob_level<85 and $mob_level>=80">an enormous storm giant</NAME>
+		<NAME condition="$mob_level>=85">a monstrous storm giant</NAME>
 	</NAME>
 		<DISPLAY select="pick-1">
-			<DISPLAY pickweight="1">$mob_name hovers over you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name towers over you.</DISPLAY>
 			<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
 			<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
 		</DISPLAY>
 	<DESCRIPTION>$mob_name strikes terror in your very bones.</DESCRIPTION>
 	<BEHAVIOR select="all">
-		<BEHAVIOR condition="$mob_level>=40" class="MOBEater" parms="" />
 		<BEHAVIOR class="CombatAbilities" parms="" />
 		<BEHAVIOR class="ObjectGuardian" parms="" />
 	</BEHAVIOR>
@@ -136,38 +135,36 @@
 	</ABILITY>
 </MOB>
 		
-<STRING id="rocky_dragoncolor" select="pick-1" define="rocky_dragoncolor">
-	<STRING pickweight=2 define="dragon_alignment=-10000">blue</STRING>
-	<STRING pickweight=1 define="dragon_alignment=-10000">red</STRING>
-</STRING>
-
 <MOB id="rocky_mob" select="any-1" requires="level_range=int,aggrochance=int">
 	<MOB id="rocky_mobs" select="all" requires="level_range=int,aggrochance=int">
-		<MOB class="genmob" copyof="Lizard" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
-		<MOB class="genmob" copyof="Lizard" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
-		<MOB class="genmob" copyof="Vulture" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
-		<MOB class="genmob" copyof="Rabbit" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
-		<MOB class="genmob" copyof="Rat" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
-		<MOB class="genmob" copyof="Toad" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
-		<MOB class="genmob" copyof="Spider" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
-		<MOB class="genmob" copyof="Scorpion" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
-		<MOB class="genmob" copyof="Zombie" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
-		<MOB class="genmob" copyof="Rattlesnake" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
-		<MOB class="genmob" copyof="Scorpion" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
-		<MOB class="genmob" copyof="Rattlesnake" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
-		<MOB class="genmob" copyof="GiantScorpion" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
-		<MOB class="genmob" copyof="Cobra" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+        <MOB class="genmob" copyof="Hornet" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+        <MOB class="genmob" copyof="Spider" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+        <MOB class="genmob" copyof="Bee" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+        <MOB class="genmob" copyof="Lizard" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+        <MOB class="genmob" copyof="Rat" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+        <MOB class="genmob" copyof="Rabbit" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+        <MOB class="genmob" copyof="Deer" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+        <MOB class="genmob" copyof="BlackBear" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+        <MOB class="genmob" copyof="Goat" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+        <MOB class="genmob" copyof="Goat" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+        <MOB class="genmob" copyof="Vulture" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+        <MOB class="genmob" copyof="Falcon" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+        <MOB class="genmob" copyof="WildEagle" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+        <MOB class="genmob" copyof="HillGiant" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+        <MOB class="genmob" copyof="MountainLion" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+        <MOB class="genmob" copyof="Sheep" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+        <MOB class="genmob" copyof="Coyote" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
 	</MOB>
 </MOB>
 
 <STRING id="noun_rocky_brush" select="any-1">
-    <STRING>sandscape</STRING>
-    <STRING>dunes</STRING>
-    <STRING>scrub</STRING>
-    <STRING>brush</STRING>
-    <STRING>cacti</STRING>
-    <STRING>desertscape</STRING>
-    <STRING>desert</STRING>
+    <STRING>rocks</STRING>
+    <STRING>crags</STRING>
+    <STRING>rockscape</STRING>
+    <STRING>jutting stones</STRING>
+    <STRING>evergreens</STRING>
+    <STRING>hills</STRING>
+    <STRING>boulders</STRING>
 </STRING>
 
 <STRING id="noun_rocky_wind_adj" select="any-1">
@@ -192,7 +189,7 @@
     <STRING>stumble</STRING>
     <STRING>work</STRING>
     <STRING>stagger</STRING>
-    <STRING>tread</STRING>
+    <STRING>pull</STRING>
     <STRING>climb</STRING>
     <STRING>walk</STRING>
     <STRING>continue</STRING>

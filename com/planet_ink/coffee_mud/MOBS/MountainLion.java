@@ -31,26 +31,33 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Sheep extends StdMOB
+public class MountainLion extends StdMOB
 {
-	@Override public String ID(){return "Sheep";}
-	public Sheep()
+	@Override public String ID(){return "MountainLion";}
+	public MountainLion()
 	{
 		super();
-		username="a sheep";
-		setDescription("It looks warm in that big fluffy coat of wool, but is nervous that you are so close.");
-		setDisplayText("A sheep has wandered away from the herd.");
+		final Random randomizer = new Random(System.currentTimeMillis());
+
+		username="a lion";
+		setDescription("Mountain Lions have sleek tan fur and watchful eyes.");
+		setDisplayText("A mountain lion watches you.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
-		setWimpHitPoint(0);
+		basePhyStats.setWeight(130 + Math.abs(randomizer.nextInt() % 55));
 
-		basePhyStats().setDamage(1);
-		basePhyStats().setSpeed(1.0);
-		basePhyStats().setAbility(0);
-		basePhyStats().setLevel(1);
-		basePhyStats().setArmor(90);
-		baseCharStats().setMyRace(CMClass.getRace("Sheep"));
+
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
+		baseCharStats().setStat(CharStats.STAT_STRENGTH,13);
+		baseCharStats().setStat(CharStats.STAT_DEXTERITY,17);
+		baseCharStats().setMyRace(CMClass.getRace("GreatCat"));
 		baseCharStats().getMyRace().startRacing(this,false);
+
+		basePhyStats().setDamage(10);
+		basePhyStats().setSpeed(2.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(5);
+		basePhyStats().setArmor(80);
 
 		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 

@@ -31,15 +31,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Sheep extends StdMOB
+public class Goat extends StdMOB
 {
-	@Override public String ID(){return "Sheep";}
-	public Sheep()
+	@Override public String ID(){return "Goat";}
+	public Goat()
 	{
 		super();
-		username="a sheep";
-		setDescription("It looks warm in that big fluffy coat of wool, but is nervous that you are so close.");
-		setDisplayText("A sheep has wandered away from the herd.");
+		username="a goat";
+		setDescription("Nimble and lively, it has short hair and dangeous looking hooves and horns.");
+		setDisplayText("A goat makes his way nimbly.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
@@ -49,7 +49,7 @@ public class Sheep extends StdMOB
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(1);
 		basePhyStats().setArmor(90);
-		baseCharStats().setMyRace(CMClass.getRace("Sheep"));
+		baseCharStats().setMyRace(CMClass.getRace("Goat"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
 		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
