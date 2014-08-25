@@ -1,3 +1,4 @@
+flysting	DRINK	Poison_Sting	1	SOME INSECT GUTS	1	WATER	1										
 beesting	DRINK	Poison_BeeSting	1	SOME INSECT GUTS	1	LEMONS	1										
 bloodboil	DRINK	Poison_Bloodboil	5	SOME UNDEAD BLOOD	1	WATER	1	LEMONS	1								
 peppersauce	DRINK	Poison_Peppersauce	7	PEPPERS	1	WATER	1										
