@@ -103,14 +103,14 @@
 	
 <MOB class="GenMob" level="$level_range" id="desert_dragon_mob" race="Dragon" gender="$anygender">
 	<NAME select="all">
-		<NAME condition="$mob_level&lt;10">a hatchling $desert_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level&lt;20 and $mob_level&gt;=10">a very young $desert_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level&lt;30 and $mob_level&gt;=20">a young $desert_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level&lt;40 and $mob_level&gt;=30">a subadult $desert_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level&lt;70 and $mob_level&gt;=40">an adult $desert_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level&lt;80 and $mob_level&gt;=70">an old $desert_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level&lt;85 and $mob_level&gt;=80">a very old $desert_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level&gt;=85">a ancient $desert_dragoncolor dragon</NAME>
+		<NAME condition="$mob_level&lt;10">a hatchling blue dragon</NAME>
+		<NAME condition="$mob_level&lt;20 and $mob_level&gt;=10">a very young blue dragon</NAME>
+		<NAME condition="$mob_level&lt;30 and $mob_level&gt;=20">a young blue dragon</NAME>
+		<NAME condition="$mob_level&lt;40 and $mob_level&gt;=30">a subadult blue dragon</NAME>
+		<NAME condition="$mob_level&lt;70 and $mob_level&gt;=40">an adult blue dragon</NAME>
+		<NAME condition="$mob_level&lt;80 and $mob_level&gt;=70">an old blue dragon</NAME>
+		<NAME condition="$mob_level&lt;85 and $mob_level&gt;=80">a very old blue dragon</NAME>
+		<NAME condition="$mob_level&gt;=85">a ancient blue dragon</NAME>
 	</NAME>
 		<DISPLAY select="pick-1">
 			<DISPLAY pickweight="1">$mob_name leaps towards you.</DISPLAY>
@@ -136,11 +136,6 @@
 	</ABILITY>
 </MOB>
 		
-<STRING id="desert_dragoncolor" select="pick-1" define="desert_dragoncolor">
-	<STRING pickweight=2 define="dragon_alignment=-10000">blue</STRING>
-	<STRING pickweight=1 define="dragon_alignment=-10000">red</STRING>
-</STRING>
-
 <MOB id="desert_mob" select="any-1" requires="level_range=int,aggrochance=int">
 	<MOB id="desert_mobs" select="all" requires="level_range=int,aggrochance=int">
 		<MOB class="genmob" copyof="Lizard" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>

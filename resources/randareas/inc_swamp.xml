@@ -1,0 +1,216 @@
+<!--  
+   Copyright 2013-2014 Bo Zimmerman
+
+   Licensed under the Apache License</STRING><STRING>Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+	   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing</STRING><STRING>software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND</STRING><STRING>either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!--  include file full of swamp-specific tags -->
+
+<ROOM id="swamp_street_rooms">
+	<ROOM class="Swamp" id="swamp_street_room" condition="$theme='swamp' or $theme='random'">
+		<TITLE>(a(n)) $_swamp_path_name</TITLE>
+		<DESCRIPTION>$swamp_street_desc</DESCRIPTION>
+		<STRING id="swamp_street_desc" select="all">
+			<STRING select="any-1" action="PREPEND">
+				<STRING condition="$_swamp_path_roomtype=1">You are working your way along (a(n)) ${l:_swamp_path_name}. </STRING>
+				<STRING condition="$_swamp_path_roomtype=1">You are on (a(n)) ${l:_swamp_path_name}. </STRING>
+				<STRING condition="$_swamp_path_roomtype=1">The ${l:_swamp_path_name} goes through the $swamp_nouns. </STRING>
+				<STRING condition="$_swamp_path_roomtype=1">(A(n)) ${l:_swamp_path_name} runs through the $swamp_nouns. </STRING>
+				<STRING condition="$_swamp_path_roomtype=1">You are inching your way through (a(n)) ${l:_swamp_path_name}. </STRING>
+				<STRING condition="$_swamp_path_roomtype=0">You are lost in (a(n)) ${l:_swamp_path_name}. </STRING>
+				<STRING condition="$_swamp_path_roomtype=0">You are deep in (a(n)) ${l:_swamp_path_name}. </STRING>
+				<STRING condition="$_swamp_path_roomtype=0">The ${l:_swamp_path_name} surrounds you. </STRING>
+				<STRING condition="$_swamp_path_roomtype=0">The ${l:_swamp_path_name} is all around you. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING condition="$_swamp_path_roomtype=1">The $_swamp_path_type is crossed by $adj_dense vines and plants. Trees surround you. </STRING>
+				<STRING condition="$_swamp_path_roomtype=1">Tracks in the $adj_soft_ground ground make the $_swamp_path_type easier to follow here. </STRING>
+				<STRING condition="$_swamp_path_roomtype=1">${c:adj_phys_size_tall} trees curve over the $_swamp_path_type like a canopy, blocking out most of the sky. </STRING>
+				<STRING condition="$_swamp_path_roomtype=1">The foliage is light enough here to make it easy to find your way along the $_swamp_path_type. </STRING>
+				<STRING condition="$_swamp_path_roomtype=0">The foliage of $areaname are $adj_large and green, $adj_cramped together in $adj_impassable walls. </STRING>
+				<STRING condition="$_swamp_path_roomtype=0">You $verb_swamp_tread your way through the $noun_swamp_brush of the $adj_densedark_words swamp. </STRING>
+				<STRING condition="$_swamp_path_roomtype=0">The swamp surrounds you, $adj_cramped ${any_tree}s making some directions $adj_impassable. </STRING>
+				<STRING condition="$_swamp_path_roomtype=0">You feel a $noun_swamp_wind blow through the $adj_dense foliage of the $adj_densedark_words swamp. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING condition="$_swamp_path_roomtype=1">The $_swamp_path_type continues $roomrun_desc_long.</STRING>
+				<STRING condition="$_swamp_path_roomtype=1">Beneath the long shadows you can see the $_swamp_path_type running $roomrun_desc_long.</STRING>
+				<STRING condition="$_swamp_path_roomtype=1">The $_swamp_path_type runs $roomrun_desc_long.</STRING>
+				<STRING condition="$_swamp_path_roomtype=1">The faint $_swamp_path_type goes $roomrun_desc_long.</STRING>
+				<STRING condition="$_swamp_path_roomtype=0">It looks like you might pick your way $roomexits_desc_long.</STRING>
+				<STRING condition="$_swamp_path_roomtype=0">Openings in the $adj_densedark_words $noun_swamp_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING condition="$_swamp_path_roomtype=0">You can $verb_swamp_tread on through $roomexits_desc_long.</STRING>
+				<STRING condition="$_swamp_path_roomtype=0">You can continue $roomexits_desc_long.</STRING>
+			</STRING>
+		</STRING>
+		<EXIT class="Open" />
+		<MOB condition="1?2=1" select="any-1" insert="swamp_mobs" />
+	</ROOM>
+</ROOM>
+
+<ROOM id="swamp_interior_rooms">
+	<ROOM class="Swamp" like="swamp_street_room" condition="$theme='swamp' or $theme='random'" />
+</ROOM>
+
+<ROOM id="swamp_leaf_rooms">
+	<ROOM class="Swamp" id="swamp_interior_room" condition="$theme='swamp' or $theme='random'">
+		<TITLE>
+			<TITLE>$swamp_path_prefix $swamp_nouns</TITLE>
+			<TITLE>$adj_creepywords $swamp_path_prefix $swamp_nouns</TITLE>
+		</TITLE>
+		<DESCRIPTION>$swamp_interior_desc</DESCRIPTION>
+		<STRING id="swamp_interior_desc" select="all">
+			<STRING select="any-1" action="PREPEND">
+				<STRING>A thick copse in ${l:room_title}. </STRING>
+				<STRING>A dense corner of ${l:room_title}. </STRING>
+				<STRING>The ${swamp_nouns} surrounds you. </STRING>
+				<STRING>The ${swamp_nouns} is all around you. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING>The $adj_large overgrown folliage of $areaname are $adj_cramped in $adj_impassable walls. </STRING>
+				<STRING>You $verb_swamp_tread your way through the $noun_swamp_brush of the $adj_densedark_words swamp. </STRING>
+				<STRING>The swamp surrounds you, $adj_cramped ${any_tree}s making some directions $adj_impassable. </STRING>
+				<STRING>You feel a very slight $noun_swamp_wind waft through the $adj_phys_size_tall trees of the $adj_densedark_words swamp. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING>It looks like you might pick your way $roomexits_desc_long.</STRING>
+				<STRING>Openings in the $adj_densedark_words $noun_swamp_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING>You can $verb_swamp_tread on through $roomexits_desc_long.</STRING>
+				<STRING>You can continue $roomexits_desc_long.</STRING>
+			</STRING>
+		</STRING>
+		<EXIT class="Open" />
+		<MOB condition="$__defined_swamp_dragon&lt;1" define="__defined_swamp_dragon+=1" like="swamp_dragon_mob" />
+		<MOB condition="1?2=1" select="any-1" insert="swamp_mobs" />
+		<ITEM condition="1?4=1" select="any-1">
+			<ITEM class="GenContainer" name="A $adj_wooden_ragged chest" display="$item_name is here" HASLID="true" HASLOCK="$trueorfalse">
+				<CONTENT>
+					<ITEM select="any-5" insert="dungeon_treasure_items" />
+				</CONTENT>
+				<AFFECT class="Prop_Hidden" />
+			</ITEM>
+		</ITEM>
+	</ROOM>
+</ROOM>
+	
+<MOB class="GenMob" level="$level_range" id="swamp_dragon_mob" race="Dragon" gender="$anygender">
+	<NAME select="all">
+		<NAME condition="$mob_level&lt;10">a hatchling black dragon</NAME>
+		<NAME condition="$mob_level&lt;20 and $mob_level&gt;=10">a very young black dragon</NAME>
+		<NAME condition="$mob_level&lt;30 and $mob_level&gt;=20">a young black dragon</NAME>
+		<NAME condition="$mob_level&lt;40 and $mob_level&gt;=30">a subadult black dragon</NAME>
+		<NAME condition="$mob_level&lt;70 and $mob_level&gt;=40">an adult black dragon</NAME>
+		<NAME condition="$mob_level&lt;80 and $mob_level&gt;=70">an old black dragon</NAME>
+		<NAME condition="$mob_level&lt;85 and $mob_level&gt;=80">a very old black dragon</NAME>
+		<NAME condition="$mob_level&gt;=85">a ancient black dragon</NAME>
+	</NAME>
+		<DISPLAY select="pick-1">
+			<DISPLAY pickweight="1">$mob_name leaps towards you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+			<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+		</DISPLAY>
+	<DESCRIPTION>$mob_name is dangerous, scaly, sharp, and terrifying.</DESCRIPTION>
+	<BEHAVIOR select="all">
+		<BEHAVIOR condition="$mob_level&gt;=40" class="MOBEater" parms="" />
+		<BEHAVIOR class="CombatAbilities" parms="" />
+		<BEHAVIOR class="ObjectGuardian" parms="" />
+	</BEHAVIOR>
+	<ABILITY select="all">
+		<ABILITY condition="$mob_level&gt;=10" class="Skill_Trip" parms="" />
+		<ABILITY condition="$mob_level&gt;=20" class="Dragonbreath" parms="" />
+		<ABILITY condition="$mob_level&gt;=30" class="Spell_DetectInvisible" parms="" />
+		<ABILITY condition="$mob_level&gt;=40" class="Spell_Fear" parms="" />
+		<ABILITY condition="$mob_level&gt;=50" class="Spell_Hold" parms="" />
+		<ABILITY condition="$mob_level&gt;=60" class="Spell_Slow" parms="" />
+		<ABILITY condition="$mob_level&gt;=70" class="Spell_GravitySlam" parms="" />
+		<ABILITY condition="$mob_level&gt;=80" class="Spell_SpellTurning" parms="" />
+		<ABILITY condition="$mob_level&gt;=90" class="Spell_ResistSlashing" parms="" />
+	</ABILITY>
+</MOB>
+		
+<MOB id="swamp_mob" select="any-1" requires="level_range=int,aggrochance=int">
+	<MOB id="swamp_mobs" select="all" requires="level_range=int,aggrochance=int">
+		<MOB class="genmob" copyof="Chimp" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Monkey" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="CommonBat" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Pig" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Frog" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Rat" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Parakeet" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="LargeBat" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Jaguar" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Lizard" level="$level_range - 2" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Tiger" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Troll" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Panther" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Ape" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Python" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Crocodile" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+	</MOB>
+</MOB>
+
+<STRING id="noun_swamp_brush" select="any-1">
+    <STRING>thicket</STRING>
+    <STRING>underbrush</STRING>
+    <STRING>vines</STRING>
+    <STRING>brush</STRING>
+    <STRING>overgrowth</STRING>
+    <STRING>underwood</STRING>
+    <STRING>undergrowth</STRING>
+</STRING>
+
+<STRING id="noun_swamp_wind_adj" select="any-1">
+    <STRING>steamy</STRING>
+    <STRING>stifling</STRING>
+    <STRING>humid</STRING>
+    <STRING>hot</STRING>
+</STRING>
+
+<STRING id="noun_swamp_wind" select="any-1">
+    <STRING>$noun_swamp_wind_adj wind</STRING>
+    <STRING>$noun_swamp_wind_adj breeze</STRING>
+    <STRING>$noun_swamp_wind_adj air</STRING>
+    <STRING>$noun_swamp_wind_adj draft</STRING>
+</STRING>
+
+<STRING id="verb_swamp_tread" select="any-1">
+    <STRING>stomp</STRING>
+    <STRING>work</STRING>
+    <STRING>trample</STRING>
+    <STRING>tread</STRING>
+    <STRING>slosh</STRING>
+    <STRING>push</STRING>
+</STRING>
+
+<STRING id="_swamp_path_name" select="any-1" define="_swamp_path_name">
+	<STRING pickweight=2 define="_swamp_path_roomtype=1">$swamp_path_prefix $_swamp_path_type</STRING>
+	<STRING pickweight=2 define="_swamp_path_roomtype=0">$swamp_path_prefix $swamp_nouns</STRING>
+	<STRING pickweight=1 define="_swamp_path_roomtype=1">$adj_creepywords $swamp_path_prefix $_swamp_path_type</STRING>
+	<STRING pickweight=1 define="_swamp_path_roomtype=0">$adj_creepywords $swamp_path_prefix $swamp_nouns</STRING>
+</STRING>
+
+<STRING id="swamp_path_prefix" select="any-1">
+	<string>swamp</string><string>overgrown</string><string>swampy</string><string>dense</string>
+	<string>shady</string><string>vine-covered</string><string>thick</string><string>soaked</string>
+	<string>deep</string>
+</STRING>
+
+<STRING id="swamp_nouns" select="any-1">
+	<string>swamp</string><string>tropical forest</string><string>rain forest</string><string>tangle</string>
+	<string>morass</string><string>undergrowth</string><string>growth</string><string>thicket</string>
+	<string>boscage</string>
+</STRING>
+
+<STRING id="_swamp_path_type" define="_swamp_path_type" select="any-1">
+	<string>path</string><string>trail</string><string>pathway</string><string>way</string>
+	<string>game trail</string>
+</STRING>

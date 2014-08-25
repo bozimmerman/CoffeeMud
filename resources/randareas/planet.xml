@@ -45,6 +45,8 @@ See example.xml for details.
 	<STRING pickweight=5>rocky</STRING>
 	<STRING pickweight=5>jungle</STRING>
 	<STRING pickweight=5>swamp</STRING>
+	<STRING pickweight=5>snow</STRING>
+	<STRING pickweight=5>plains</STRING>
 	<STRING pickweight=5>ruins</STRING>
 	<STRING pickweight=4>ocean</STRING>
 	<STRING pickweight=1>western</STRING>

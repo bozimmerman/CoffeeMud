@@ -102,21 +102,16 @@
 	</ROOM>
 </ROOM>
 	
-<STRING id="jungle_dragoncolor" select="pick-1" define="jungle_dragoncolor">
-	<STRING pickweight=2 define="dragon_alignment=-10000">black</STRING>
-	<STRING pickweight=1 define="dragon_alignment=-10000">green</STRING>
-</STRING>
-
 <MOB class="GenMob" level="$level_range" id="jungle_dragon_mob" race="Dragon" gender="$anygender">
 	<NAME select="all">
-		<NAME condition="$mob_level&lt;10">a hatchling $jungle_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level&lt;20 and $mob_level&gt;=10">a very young $jungle_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level&lt;30 and $mob_level&gt;=20">a young $jungle_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level&lt;40 and $mob_level&gt;=30">a subadult $jungle_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level&lt;70 and $mob_level&gt;=40">an adult $jungle_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level&lt;80 and $mob_level&gt;=70">an old $jungle_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level&lt;85 and $mob_level&gt;=80">a very old $jungle_dragoncolor dragon</NAME>
-		<NAME condition="$mob_level&gt;=85">a ancient $jungle_dragoncolor dragon</NAME>
+		<NAME condition="$mob_level&lt;10">a hatchling green dragon</NAME>
+		<NAME condition="$mob_level&lt;20 and $mob_level&gt;=10">a very young green dragon</NAME>
+		<NAME condition="$mob_level&lt;30 and $mob_level&gt;=20">a young green dragon</NAME>
+		<NAME condition="$mob_level&lt;40 and $mob_level&gt;=30">a subadult green dragon</NAME>
+		<NAME condition="$mob_level&lt;70 and $mob_level&gt;=40">an adult green dragon</NAME>
+		<NAME condition="$mob_level&lt;80 and $mob_level&gt;=70">an old green dragon</NAME>
+		<NAME condition="$mob_level&lt;85 and $mob_level&gt;=80">a very old green dragon</NAME>
+		<NAME condition="$mob_level&gt;=85">a ancient green dragon</NAME>
 	</NAME>
 		<DISPLAY select="pick-1">
 			<DISPLAY pickweight="1">$mob_name leaps towards you.</DISPLAY>
