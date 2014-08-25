@@ -85,6 +85,23 @@
 	<STRING>thick</STRING>
 </STRING>
 
+<STRING id="adj_dried" select="any-1">
+	<STRING>dried</STRING>
+	<STRING>parched</STRING>
+	<STRING>dehydrated</STRING>
+	<STRING>arid</STRING>
+	<STRING>droughty</STRING>
+</STRING>
+
+<STRING id="adj_dryhard" select="any-1">
+	<STRING>dry</STRING>
+	<STRING>hard</STRING>
+	<STRING>bare</STRING>
+	<STRING>simple</STRING>
+	<STRING>flat</STRING>
+	<STRING>dehydrated</STRING>
+</STRING>
+
 <STRING id="adj_sparse" select="any-1">
 	<STRING>sparse</STRING>
 	<STRING>scant</STRING>
