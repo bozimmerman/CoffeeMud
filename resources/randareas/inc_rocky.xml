@@ -16,7 +16,7 @@
 <!--  include file full of rocky-specific tags -->
 
 <ROOM id="rocky_street_rooms">
-	<ROOM class="Mountains" id="rocky_street_room" condition="$theme='rocky' or $theme='random'">
+	<ROOM class="Mountains" id="rocky_street_room" condition="$theme='mountains' or $theme='random'">
 		<TITLE>(a(n)) $_rocky_path_name</TITLE>
 		<DESCRIPTION>$rocky_street_desc</DESCRIPTION>
 		<STRING id="rocky_street_desc" select="all">
@@ -25,25 +25,25 @@
 				<STRING condition="$_rocky_path_roomtype=1">You are on (a(n)) ${l:_rocky_path_name}. </STRING>
 				<STRING condition="$_rocky_path_roomtype=1">The ${l:_rocky_path_name} goes through the $rocky_nouns. </STRING>
 				<STRING condition="$_rocky_path_roomtype=1">(A(n)) ${l:_rocky_path_name} runs through the $rocky_nouns. </STRING>
-				<STRING condition="$_rocky_path_roomtype=1">You are inching your way through (a(n)) ${l:_rocky_path_name}. </STRING>
-				<STRING condition="$_rocky_path_roomtype=0">You are lost in (a(n)) ${l:_rocky_path_name}. </STRING>
-				<STRING condition="$_rocky_path_roomtype=0">You are deep in (a(n)) ${l:_rocky_path_name}. </STRING>
+				<STRING condition="$_rocky_path_roomtype=1">You are making your way through (a(n)) ${l:_rocky_path_name}. </STRING>
+				<STRING condition="$_rocky_path_roomtype=0">You are lost in the ${l:_rocky_path_name}. </STRING>
+				<STRING condition="$_rocky_path_roomtype=0">You are deep in the ${l:_rocky_path_name}. </STRING>
 				<STRING condition="$_rocky_path_roomtype=0">The ${l:_rocky_path_name} surrounds you. </STRING>
 				<STRING condition="$_rocky_path_roomtype=0">The ${l:_rocky_path_name} is all around you. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
-				<STRING condition="$_rocky_path_roomtype=1">The $_rocky_path_type is crossed by $adj_sparse cacti and plants. Desolation otherwise surrounds you. </STRING>
-				<STRING condition="$_rocky_path_roomtype=1">Tracks in the $adj_soft_sands sands make the $_rocky_path_type easier to follow here. </STRING>
-				<STRING condition="$_rocky_path_roomtype=1">${c:adj_phys_size_tall} dunes curve around the $_rocky_path_type like a wall. </STRING>
-				<STRING condition="$_rocky_path_roomtype=1">The plant life here is $adj_sparse enough here to make the $_rocky_path_type desolate and dead. </STRING>
-				<STRING condition="$_rocky_path_roomtype=0">The sands of $areaname are $adj_phys_size_large and gold, dunes rise in $adj_impassable walls. </STRING>
-				<STRING condition="$_rocky_path_roomtype=0">You $verb_rocky_tread your way through the $noun_rocky_brush of the $adj_sparse desert. </STRING>
-				<STRING condition="$_rocky_path_roomtype=0">The desert surrounds you, $adj_sparse cacti making some directions prickly and $adj_impassable. </STRING>
-				<STRING condition="$_rocky_path_roomtype=0">You feel a $noun_rocky_wind blow around the $adj_sparse plants of the desert. </STRING>
+				<STRING condition="$_rocky_path_roomtype=1">The $_rocky_path_type is dotted by $adj_sparse trees and plants.</STRING>
+				<STRING condition="$_rocky_path_roomtype=1">${c:noun_tracks} in the $adj_hard_rockys ground make the $_rocky_path_type easier to follow here. </STRING>
+				<STRING condition="$_rocky_path_roomtype=1">${c:adj_phys_size_tall} stone formations curve around the $_rocky_path_type like a wall. </STRING>
+				<STRING condition="$_rocky_path_roomtype=1">The plant life here is $adj_sparse enough to make the $_rocky_path_type desolate and dead. </STRING>
+				<STRING condition="$_rocky_path_roomtype=0">The peaks of $areaname are $adj_phys_size_large, cliffs rising in $adj_impassable walls. </STRING>
+				<STRING condition="$_rocky_path_roomtype=0">You $verb_rocky_tread your way through the $noun_rocky_brush of the $adj_sparse mountains. </STRING>
+				<STRING condition="$_rocky_path_roomtype=0">The mountains surrounds you, $adj_sparse $adj_hard_rockys terrain making some directions $adj_impassable. </STRING>
+				<STRING condition="$_rocky_path_roomtype=0">You feel a $noun_rocky_wind blow around the $adj_sparse evergreens of the mountains. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING condition="$_rocky_path_roomtype=1">The $_rocky_path_type continues $roomrun_desc_long.</STRING>
-				<STRING condition="$_rocky_path_roomtype=1">Beneath the narrow shadows of the dunes you can see the $_rocky_path_type running $roomrun_desc_long.</STRING>
+				<STRING condition="$_rocky_path_roomtype=1">Beneath the shadows of the peaks you can see the $_rocky_path_type running $roomrun_desc_long.</STRING>
 				<STRING condition="$_rocky_path_roomtype=1">The $_rocky_path_type runs $roomrun_desc_long.</STRING>
 				<STRING condition="$_rocky_path_roomtype=1">The faint $_rocky_path_type goes $roomrun_desc_long.</STRING>
 				<STRING condition="$_rocky_path_roomtype=0">It looks like you might pick your way $roomexits_desc_long.</STRING>
@@ -58,27 +58,27 @@
 </ROOM>
 
 <ROOM id="rocky_interior_rooms">
-	<ROOM class="Mountains" like="rocky_street_room" condition="$theme='rocky' or $theme='random'" />
+	<ROOM class="Mountains" like="rocky_street_room" condition="$theme='mountains' or $theme='random'" />
 </ROOM>
 
 <ROOM id="rocky_leaf_rooms">
-	<ROOM class="Mountains" id="rocky_interior_room" condition="$theme='rocky' or $theme='random'">
+	<ROOM class="Mountains" id="rocky_interior_room" condition="$theme='mountains' or $theme='random'">
 		<TITLE>
 			<TITLE>$rocky_path_prefix $rocky_nouns</TITLE>
 		</TITLE>
 		<DESCRIPTION>$rocky_interior_desc</DESCRIPTION>
 		<STRING id="rocky_interior_desc" select="all">
 			<STRING select="any-1" action="PREPEND">
-				<STRING>You find yourself by a $adj_sparse copse of trees in the ${l:room_title}. </STRING>
+				<STRING>You find yourself by a $adj_sparse copse of evergreens in the ${l:room_title}. </STRING>
 				<STRING>You are in a corner of the ${l:room_title}. </STRING>
 				<STRING>The ${rocky_nouns} surrounds you. </STRING>
 				<STRING>The ${rocky_nouns} is all around you. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
-				<STRING>The $adj_large dunes of $areaname are $adj_cramped around you in $adj_impassable walls. </STRING>
+				<STRING>The $adj_large peaks of $areaname are all around you in $adj_impassable walls. </STRING>
 				<STRING>You $verb_rocky_tread your way through the $noun_rocky_brush of the ${rocky_nouns}. </STRING>
-				<STRING>The desert surrounds you, ${adj_phys_size_tall} dunes making some directions $adj_impassable. </STRING>
-				<STRING>You feel a $noun_rocky_wind blow over the $adj_phys_size_tall dunes of the $noun_rocky_wind_adj desert. </STRING>
+				<STRING>The mountains surrounds you, ${adj_phys_size_tall} cliffs making some directions $adj_impassable. </STRING>
+				<STRING>You feel a $noun_rocky_wind blow over the $adj_phys_size_tall peaks. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING>It looks like you might pick your way $roomexits_desc_long.</STRING>
@@ -88,7 +88,7 @@
 			</STRING>
 		</STRING>
 		<EXIT class="Open" />
-		<MOB condition="$__defined_rocky_dragon&lt;1" define="__defined_rocky_dragon+=1" like="rocky_dragon_mob" />
+		<MOB condition="$__defined_rocky_giant&lt;1" define="__defined_rocky_giant+=1" like="rocky_giant_mob" />
 		<MOB condition="1?2=1" select="any-1" insert="rocky_mobs" />
 		<ITEM condition="1?4=1" select="any-1">
 			<ITEM class="GenContainer" name="A $adj_wooden_ragged chest" display="$item_name is here" HASLID="true" HASLOCK="false">
@@ -101,7 +101,7 @@
 	</ROOM>
 </ROOM>
 	
-<MOB class="GenMob" level="$level_range" id="rocky_giant_mob" race="Dragon" gender="$anygender">
+<MOB class="GenMob" level="$level_range" id="rocky_giant_mob" race="Giant" gender="$anygender">
 	<NAME select="all">
 		<NAME condition="$mob_level<10">a toddler storm giant</NAME>
 		<NAME condition="$mob_level<20 and $mob_level>=10">a very young storm giant</NAME>
@@ -112,29 +112,30 @@
 		<NAME condition="$mob_level<85 and $mob_level>=80">an enormous storm giant</NAME>
 		<NAME condition="$mob_level>=85">a monstrous storm giant</NAME>
 	</NAME>
-		<DISPLAY select="pick-1">
-			<DISPLAY pickweight="1">$mob_name towers over you.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
-			<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
-		</DISPLAY>
-	<DESCRIPTION>$mob_name strikes terror in your very bones.</DESCRIPTION>
+	<DISPLAY select="pick-1">
+		<DISPLAY pickweight="1">$mob_name towers over you.</DISPLAY>
+		<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+		<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+	</DISPLAY>
+	<DESCRIPTION>$mob_name strikes terror in your soul.</DESCRIPTION>
 	<BEHAVIOR select="all">
 		<BEHAVIOR class="CombatAbilities" parms="" />
 		<BEHAVIOR class="ObjectGuardian" parms="" />
 	</BEHAVIOR>
+	<AFFECT class="Spell_ResistCold" parms="" />
 	<ABILITY select="all">
-		<ABILITY condition="$mob_level>=10" class="Skill_Trip" parms="" />
-		<ABILITY condition="$mob_level>=20" class="Dragonbreath" parms="" />
-		<ABILITY condition="$mob_level>=30" class="Spell_DetectInvisible" parms="" />
-		<ABILITY condition="$mob_level>=40" class="Spell_Fear" parms="" />
-		<ABILITY condition="$mob_level>=50" class="Spell_Hold" parms="" />
-		<ABILITY condition="$mob_level>=60" class="Spell_Slow" parms="" />
-		<ABILITY condition="$mob_level>=70" class="Spell_GravitySlam" parms="" />
-		<ABILITY condition="$mob_level>=80" class="Spell_SpellTurning" parms="" />
-		<ABILITY condition="$mob_level>=90" class="Spell_ResistSlashing" parms="" />
+		<ABILITY condition="$mob_level>=10" class="Spell_Frost" parms="" />
+		<ABILITY condition="$mob_level>=20" class="Chant_SummonRain" parms="" />
+		<ABILITY condition="$mob_level>=30" class="Spell_Lightning" parms="" />
+		<ABILITY condition="$mob_level>=40" class="Chant_Boulderbash" parms="" />
+		<ABILITY condition="$mob_level>=50" class="Spell_ChainLightening" parms="" />
+		<ABILITY condition="$mob_level>=60" class="Chant_FeelCold" parms="" />
+		<ABILITY condition="$mob_level>=70" class="Chant_SummonTornado" parms="" />
+		<ABILITY condition="$mob_level>=80" class="Chant_SummonRockGolem" parms="" />
+		<ABILITY condition="$mob_level>=90" class="Chant_FeelElectricity" parms="" />
 	</ABILITY>
 </MOB>
-		
+
 <MOB id="rocky_mob" select="any-1" requires="level_range=int,aggrochance=int">
 	<MOB id="rocky_mobs" select="all" requires="level_range=int,aggrochance=int">
         <MOB class="genmob" copyof="Hornet" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
@@ -183,6 +184,12 @@
     <STRING>$noun_rocky_wind_adj wind</STRING>
     <STRING>$noun_rocky_wind_adj breeze</STRING>
     <STRING>$noun_rocky_wind_adj gust of air</STRING>
+</STRING>
+
+<STRING id="noun_tracks" select="any-1">
+    <STRING>tracks</STRING>
+    <STRING>traces</STRING>
+    <STRING>marks</STRING>
 </STRING>
 
 <STRING id="verb_rocky_tread" select="any-1">

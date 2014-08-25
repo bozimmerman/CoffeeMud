@@ -51,6 +51,14 @@
 	<STRING>open</STRING>
 </STRING>
 
+<STRING id="adj_hard_rockys" select="any-1">
+	<STRING>hard</STRING>
+	<STRING>rocky</STRING>
+	<STRING>harsh</STRING>
+	<STRING>broken</STRING>
+	<STRING>bumpy</STRING>
+</STRING>
+
 <STRING id="adj_impassable" select="any-1">
 	<STRING>unpassable</STRING>
 	<STRING>impassable</STRING>
@@ -102,6 +110,14 @@
 		<STRING>towering</STRING>
 		<STRING>lofty</STRING>
 		<STRING>giant</STRING>
+	</STRING>
+</STRING>
+
+<STRING id="adj_phy_size_towering" select="any-1">
+	<STRING id="adj_phy_size_towering_values">
+		<STRING>high</STRING><STRING>tall</STRING><STRING>lofty</STRING><STRING>soaring</STRING><STRING>sky-high</STRING>
+		<STRING>multistory</STRING><STRING>giant</STRING><STRING>gigantic</STRING><STRING>enormous</STRING><STRING>huge</STRING>
+		<STRING>ginormous</STRING>
 	</STRING>
 </STRING>
 
