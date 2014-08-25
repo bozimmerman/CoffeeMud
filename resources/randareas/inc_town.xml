@@ -1385,3 +1385,7 @@
 	<ALIGNMENT>0?10000</ALIGNMENT>
 </MOB>
 
+<STRING id="smithywords" select="any-1"><STRING>hammer</STRING><STRING>anvil</STRING><STRING>forge</STRING><STRING>fire</STRING><STRING>steel</STRING></STRING>
+<STRING id="weaponsmithywords" select="any-1"><STRING>sword</STRING><STRING>axe</STRING><STRING>mace</STRING><STRING>arms</STRING><STRING>spear</STRING><STRING>dagger</STRING></STRING>
+<STRING id="armorsmithywords" select="any-1"><STRING>shield</STRING><STRING>armor</STRING><STRING>bracer</STRING><STRING>chain</STRING><STRING>plate</STRING></STRING>
+

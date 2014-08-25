@@ -91,7 +91,7 @@
 		<MOB condition="$__defined_rocky_giant&lt;1" define="__defined_rocky_giant+=1" like="rocky_giant_mob" />
 		<MOB condition="1?2=1" select="any-1" insert="rocky_mobs" />
 		<ITEM condition="1?4=1" select="any-1">
-			<ITEM class="GenContainer" name="A $adj_wooden_ragged chest" display="$item_name is here" HASLID="true" HASLOCK="false">
+			<ITEM class="GenContainer" name="A $adj_wooden_ragged chest" display="$item_name is here" HASLID="true" HASLOCK="$trueorfalse">
 				<CONTENT>
 					<ITEM select="any-5" insert="dungeon_treasure_items" />
 				</CONTENT>
