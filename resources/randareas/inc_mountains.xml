@@ -15,81 +15,81 @@
 -->
 <!--  include file full of rocky-specific tags -->
 
-<ROOM id="rocky_street_rooms">
-	<ROOM class="Mountains" id="rocky_street_room" condition="$theme='mountains' or $theme='random'">
-		<TITLE>(a(n)) $_rocky_path_name</TITLE>
-		<DESCRIPTION>$rocky_street_desc</DESCRIPTION>
-		<STRING id="rocky_street_desc" select="all">
+<ROOM id="mountain_street_rooms">
+	<ROOM class="Mountains" id="mountain_street_room" condition="$theme='mountains' or $theme='random'">
+		<TITLE>(a(n)) $_mountain_path_name</TITLE>
+		<DESCRIPTION>$mountain_street_desc</DESCRIPTION>
+		<STRING id="mountain_street_desc" select="all">
 			<STRING select="any-1" action="PREPEND">
-				<STRING condition="$_rocky_path_roomtype=1">You are working your way along (a(n)) ${l:_rocky_path_name}. </STRING>
-				<STRING condition="$_rocky_path_roomtype=1">You are on (a(n)) ${l:_rocky_path_name}. </STRING>
-				<STRING condition="$_rocky_path_roomtype=1">The ${l:_rocky_path_name} goes through the $rocky_nouns. </STRING>
-				<STRING condition="$_rocky_path_roomtype=1">(A(n)) ${l:_rocky_path_name} runs through the $rocky_nouns. </STRING>
-				<STRING condition="$_rocky_path_roomtype=1">You are making your way through (a(n)) ${l:_rocky_path_name}. </STRING>
-				<STRING condition="$_rocky_path_roomtype=0">You are lost in the ${l:_rocky_path_name}. </STRING>
-				<STRING condition="$_rocky_path_roomtype=0">You are deep in the ${l:_rocky_path_name}. </STRING>
-				<STRING condition="$_rocky_path_roomtype=0">The ${l:_rocky_path_name} surrounds you. </STRING>
-				<STRING condition="$_rocky_path_roomtype=0">The ${l:_rocky_path_name} is all around you. </STRING>
+				<STRING condition="$_mountain_path_roomtype=1">You are working your way along (a(n)) ${l:_mountain_path_name}. </STRING>
+				<STRING condition="$_mountain_path_roomtype=1">You are on (a(n)) ${l:_mountain_path_name}. </STRING>
+				<STRING condition="$_mountain_path_roomtype=1">The ${l:_mountain_path_name} goes through the $mountain_nouns. </STRING>
+				<STRING condition="$_mountain_path_roomtype=1">(A(n)) ${l:_mountain_path_name} runs through the $mountain_nouns. </STRING>
+				<STRING condition="$_mountain_path_roomtype=1">You are making your way through (a(n)) ${l:_mountain_path_name}. </STRING>
+				<STRING condition="$_mountain_path_roomtype=0">You are lost in the ${l:_mountain_path_name}. </STRING>
+				<STRING condition="$_mountain_path_roomtype=0">You are deep in the ${l:_mountain_path_name}. </STRING>
+				<STRING condition="$_mountain_path_roomtype=0">The ${l:_mountain_path_name} surrounds you. </STRING>
+				<STRING condition="$_mountain_path_roomtype=0">The ${l:_mountain_path_name} is all around you. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
-				<STRING condition="$_rocky_path_roomtype=1">The $_rocky_path_type is dotted by $adj_sparse trees and plants.</STRING>
-				<STRING condition="$_rocky_path_roomtype=1">${c:noun_tracks} in the $adj_hard_rockys ground make the $_rocky_path_type easier to follow here. </STRING>
-				<STRING condition="$_rocky_path_roomtype=1">${c:adj_phys_size_tall} stone formations curve around the $_rocky_path_type like a wall. </STRING>
-				<STRING condition="$_rocky_path_roomtype=1">The plant life here is $adj_sparse enough to make the $_rocky_path_type desolate and dead. </STRING>
-				<STRING condition="$_rocky_path_roomtype=0">The peaks of $areaname are $adj_phys_size_large, cliffs rising in $adj_impassable walls. </STRING>
-				<STRING condition="$_rocky_path_roomtype=0">You $verb_rocky_tread your way through the $noun_rocky_brush of the $adj_sparse mountains. </STRING>
-				<STRING condition="$_rocky_path_roomtype=0">The mountains surrounds you, $adj_sparse $adj_hard_rockys terrain making some directions $adj_impassable. </STRING>
-				<STRING condition="$_rocky_path_roomtype=0">You feel a $noun_rocky_wind blow around the $adj_sparse evergreens of the mountains. </STRING>
+				<STRING condition="$_mountain_path_roomtype=1">The $_mountain_path_type is dotted by $adj_sparse trees and plants.</STRING>
+				<STRING condition="$_mountain_path_roomtype=1">${c:noun_tracks} in the $adj_hard_rockys ground make the $_mountain_path_type easier to follow here. </STRING>
+				<STRING condition="$_mountain_path_roomtype=1">${c:adj_phys_size_tall} stone formations curve around the $_mountain_path_type like a wall. </STRING>
+				<STRING condition="$_mountain_path_roomtype=1">The plant life here is $adj_sparse enough to make the $_mountain_path_type desolate and dead. </STRING>
+				<STRING condition="$_mountain_path_roomtype=0">The peaks of $areaname are $adj_phys_size_large, cliffs rising in $adj_impassable walls. </STRING>
+				<STRING condition="$_mountain_path_roomtype=0">You $verb_mountain_tread your way through the $noun_mountain_brush of the $adj_sparse mountains. </STRING>
+				<STRING condition="$_mountain_path_roomtype=0">The mountains surrounds you, $adj_sparse $adj_hard_rockys terrain making some directions $adj_impassable. </STRING>
+				<STRING condition="$_mountain_path_roomtype=0">You feel a $noun_mountain_wind blow around the $adj_sparse evergreens of the mountains. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
-				<STRING condition="$_rocky_path_roomtype=1">The $_rocky_path_type continues $roomrun_desc_long.</STRING>
-				<STRING condition="$_rocky_path_roomtype=1">Beneath the shadows of the peaks you can see the $_rocky_path_type running $roomrun_desc_long.</STRING>
-				<STRING condition="$_rocky_path_roomtype=1">The $_rocky_path_type runs $roomrun_desc_long.</STRING>
-				<STRING condition="$_rocky_path_roomtype=1">The faint $_rocky_path_type goes $roomrun_desc_long.</STRING>
-				<STRING condition="$_rocky_path_roomtype=0">It looks like you might pick your way $roomexits_desc_long.</STRING>
-				<STRING condition="$_rocky_path_roomtype=0">Openings in the $adj_sparse $noun_rocky_brush can be seen $roomexits_desc_long.</STRING>
-				<STRING condition="$_rocky_path_roomtype=0">You can $verb_rocky_tread on through $roomexits_desc_long.</STRING>
-				<STRING condition="$_rocky_path_roomtype=0">You can continue $roomexits_desc_long.</STRING>
+				<STRING condition="$_mountain_path_roomtype=1">The $_mountain_path_type continues $roomrun_desc_long.</STRING>
+				<STRING condition="$_mountain_path_roomtype=1">Beneath the shadows of the peaks you can see the $_mountain_path_type running $roomrun_desc_long.</STRING>
+				<STRING condition="$_mountain_path_roomtype=1">The $_mountain_path_type runs $roomrun_desc_long.</STRING>
+				<STRING condition="$_mountain_path_roomtype=1">The faint $_mountain_path_type goes $roomrun_desc_long.</STRING>
+				<STRING condition="$_mountain_path_roomtype=0">It looks like you might pick your way $roomexits_desc_long.</STRING>
+				<STRING condition="$_mountain_path_roomtype=0">Openings in the $adj_sparse $noun_mountain_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING condition="$_mountain_path_roomtype=0">You can $verb_mountain_tread on through $roomexits_desc_long.</STRING>
+				<STRING condition="$_mountain_path_roomtype=0">You can continue $roomexits_desc_long.</STRING>
 			</STRING>
 		</STRING>
 		<EXIT class="Open" />
-		<MOB condition="1?2=1" select="any-1" insert="rocky_mobs" />
+		<MOB condition="1?2=1" select="any-1" insert="mountain_mobs" />
 	</ROOM>
 </ROOM>
 
-<ROOM id="rocky_interior_rooms">
-	<ROOM class="Mountains" like="rocky_street_room" condition="$theme='mountains' or $theme='random'" />
+<ROOM id="mountain_interior_rooms">
+	<ROOM class="Mountains" like="mountain_street_room" condition="$theme='mountains' or $theme='random'" />
 </ROOM>
 
-<ROOM id="rocky_leaf_rooms">
-	<ROOM class="Mountains" id="rocky_interior_room" condition="$theme='mountains' or $theme='random'">
+<ROOM id="mountain_leaf_rooms">
+	<ROOM class="Mountains" id="mountain_interior_room" condition="$theme='mountains' or $theme='random'">
 		<TITLE>
-			<TITLE>$rocky_path_prefix $rocky_nouns</TITLE>
+			<TITLE>$mountain_path_prefix $mountain_nouns</TITLE>
 		</TITLE>
-		<DESCRIPTION>$rocky_interior_desc</DESCRIPTION>
-		<STRING id="rocky_interior_desc" select="all">
+		<DESCRIPTION>$mountain_interior_desc</DESCRIPTION>
+		<STRING id="mountain_interior_desc" select="all">
 			<STRING select="any-1" action="PREPEND">
 				<STRING>You find yourself by a $adj_sparse copse of evergreens in the ${l:room_title}. </STRING>
 				<STRING>You are in a corner of the ${l:room_title}. </STRING>
-				<STRING>The ${rocky_nouns} surrounds you. </STRING>
-				<STRING>The ${rocky_nouns} is all around you. </STRING>
+				<STRING>The ${mountain_nouns} surrounds you. </STRING>
+				<STRING>The ${mountain_nouns} is all around you. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING>The $adj_large peaks of $areaname are all around you in $adj_impassable walls. </STRING>
-				<STRING>You $verb_rocky_tread your way through the $noun_rocky_brush of the ${rocky_nouns}. </STRING>
+				<STRING>You $verb_mountain_tread your way through the $noun_mountain_brush of the ${mountain_nouns}. </STRING>
 				<STRING>The mountains surrounds you, ${adj_phys_size_tall} cliffs making some directions $adj_impassable. </STRING>
-				<STRING>You feel a $noun_rocky_wind blow over the $adj_phys_size_tall peaks. </STRING>
+				<STRING>You feel a $noun_mountain_wind blow over the $adj_phys_size_tall peaks. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING>It looks like you might pick your way $roomexits_desc_long.</STRING>
-				<STRING>Openings in the $noun_rocky_brush can be seen $roomexits_desc_long.</STRING>
-				<STRING>You can $verb_rocky_tread on through $roomexits_desc_long.</STRING>
+				<STRING>Openings in the $noun_mountain_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING>You can $verb_mountain_tread on through $roomexits_desc_long.</STRING>
 				<STRING>You can continue $roomexits_desc_long.</STRING>
 			</STRING>
 		</STRING>
 		<EXIT class="Open" />
-		<MOB condition="$__defined_rocky_giant&lt;1" define="__defined_rocky_giant+=1" like="rocky_giant_mob" />
-		<MOB condition="1?2=1" select="any-1" insert="rocky_mobs" />
+		<MOB condition="$__defined_mountain_giant&lt;1" define="__defined_mountain_giant+=1" like="mountain_giant_mob" />
+		<MOB condition="1?2=1" select="any-1" insert="mountain_mobs" />
 		<ITEM condition="1?4=1" select="any-1">
 			<ITEM class="GenContainer" name="A $adj_wooden_ragged chest" display="$item_name is here" HASLID="true" HASLOCK="$trueorfalse">
 				<CONTENT>
@@ -101,7 +101,7 @@
 	</ROOM>
 </ROOM>
 	
-<MOB class="GenMob" level="$level_range" id="rocky_giant_mob" race="Giant" gender="$anygender">
+<MOB class="GenMob" level="$level_range" id="mountain_giant_mob" race="Giant" gender="$anygender">
 	<NAME select="all">
 		<NAME condition="$mob_level<10">a toddler storm giant</NAME>
 		<NAME condition="$mob_level<20 and $mob_level>=10">a very young storm giant</NAME>
@@ -136,8 +136,8 @@
 	</ABILITY>
 </MOB>
 
-<MOB id="rocky_mob" select="any-1" requires="level_range=int,aggrochance=int">
-	<MOB id="rocky_mobs" select="all" requires="level_range=int,aggrochance=int">
+<MOB id="mountain_mob" select="any-1" requires="level_range=int,aggrochance=int">
+	<MOB id="mountain_mobs" select="all" requires="level_range=int,aggrochance=int">
         <MOB class="genmob" copyof="Hornet" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
         <MOB class="genmob" copyof="Spider" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
         <MOB class="genmob" copyof="Bee" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
@@ -158,7 +158,7 @@
 	</MOB>
 </MOB>
 
-<STRING id="noun_rocky_brush" select="any-1">
+<STRING id="noun_mountain_brush" select="any-1">
     <STRING>rocks</STRING>
     <STRING>crags</STRING>
     <STRING>rockscape</STRING>
@@ -168,7 +168,7 @@
     <STRING>boulders</STRING>
 </STRING>
 
-<STRING id="noun_rocky_wind_adj" select="any-1">
+<STRING id="noun_mountain_wind_adj" select="any-1">
     <STRING>brisk</STRING>
     <STRING>scouring</STRING>
     <STRING>bracing</STRING>
@@ -180,10 +180,10 @@
     <STRING>nippy</STRING>
 </STRING>
 
-<STRING id="noun_rocky_wind" select="any-1">
-    <STRING>$noun_rocky_wind_adj wind</STRING>
-    <STRING>$noun_rocky_wind_adj breeze</STRING>
-    <STRING>$noun_rocky_wind_adj gust of air</STRING>
+<STRING id="noun_mountain_wind" select="any-1">
+    <STRING>$noun_mountain_wind_adj wind</STRING>
+    <STRING>$noun_mountain_wind_adj breeze</STRING>
+    <STRING>$noun_mountain_wind_adj gust of air</STRING>
 </STRING>
 
 <STRING id="noun_tracks" select="any-1">
@@ -192,7 +192,7 @@
     <STRING>marks</STRING>
 </STRING>
 
-<STRING id="verb_rocky_tread" select="any-1">
+<STRING id="verb_mountain_tread" select="any-1">
     <STRING>stumble</STRING>
     <STRING>work</STRING>
     <STRING>stagger</STRING>
@@ -202,28 +202,28 @@
     <STRING>continue</STRING>
 </STRING>
 
-<STRING id="_rocky_path_name" select="any-1" define="_rocky_path_name">
-	<STRING pickweight=2 define="_rocky_path_roomtype=1">$rocky_path_prefix $_rocky_path_type</STRING>
-	<STRING pickweight=2 define="_rocky_path_roomtype=0">$rocky_path_prefix $rocky_nouns</STRING>
-	<STRING pickweight=1 define="_rocky_path_roomtype=1">$adj_creepywords $rocky_path_prefix $_rocky_path_type</STRING>
-	<STRING pickweight=1 define="_rocky_path_roomtype=0">$adj_creepywords $rocky_path_prefix $rocky_nouns</STRING>
+<STRING id="_mountain_path_name" select="any-1" define="_mountain_path_name">
+	<STRING pickweight=2 define="_mountain_path_roomtype=1">$mountain_path_prefix $_mountain_path_type</STRING>
+	<STRING pickweight=2 define="_mountain_path_roomtype=0">$mountain_path_prefix $mountain_nouns</STRING>
+	<STRING pickweight=1 define="_mountain_path_roomtype=1">$adj_creepywords $mountain_path_prefix $_mountain_path_type</STRING>
+	<STRING pickweight=1 define="_mountain_path_roomtype=0">$adj_creepywords $mountain_path_prefix $mountain_nouns</STRING>
 </STRING>
 
-<STRING id="rocky_path_prefix" select="any-1">
+<STRING id="mountain_path_prefix" select="any-1">
 	<string>hard</string><string>rough</string><string>steep</string>
 	<string>stony</string><string>pebbly</string><string>shingly</string><string>rough</string>
 	<string>bumpy</string><string>craggy</string><string>mountainous</string>
 	<string>precarious</string><string>problematic</string><string>unstable</string>
 </STRING>
 
-<STRING id="rocky_nouns" select="any-1">
+<STRING id="mountain_nouns" select="any-1">
 	<string>mountains</string><string>hills</string><string>stepps</string><string>rocks</string>
 	<string>crags</string><string>range</string><string>cliffs</string><string>ridge</string><string>plateau</string>
 	<string>height</string><string>peaks</string><string>escarpment</string><string>tor</string>
 	<string>badlands</string>
 </STRING>
 
-<STRING id="_rocky_path_type" define="_rocky_path_type" select="any-1">
+<STRING id="_mountain_path_type" define="_mountain_path_type" select="any-1">
 	<string>path</string><string>steps</string><string>pathway</string><string>trail</string>
 	<string>footpath</string><string>track</string><string>alley</string><string>passage</string>
 	<string>route</string>

@@ -305,7 +305,7 @@ Required details: "id" "value"
 <STRING load="/resources/randareas/inc_prison.xml" />
 <STRING load="/resources/randareas/inc_rats.xml" />
 <STRING load="/resources/randareas/inc_desert.xml" />
-<STRING load="/resources/randareas/inc_rocky.xml" />
+<STRING load="/resources/randareas/inc_mountains.xml" />
 
 <AREA id="maze_dungeon" layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;forest;mountains;jungle;desert;goblins;orcs;trolls;town;random">
 	<NAME>$areaname</NAME><SIZE>$areasize</SIZE>
@@ -355,7 +355,7 @@ Required details: "id" "value"
 	<STRING>passageway</STRING>
 </STRING>
 
-<ROOM id="hallway_rooms" select="pick-1" insert="forest_street_rooms,rocky_street_rooms,jungle_street_rooms,desert_street_rooms,town_street_rooms" condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
+<ROOM id="hallway_rooms" select="pick-1" insert="forest_street_rooms,mountain_street_rooms,jungle_street_rooms,desert_street_rooms,town_street_rooms" condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
 	<ROOM class="CaveRoom" pickweight="5" condition="$theme!='town' and $theme!='forest' and $theme!='mountains' and $theme!='jungle' and $theme!='desert'">
 		<TITLE>$a_streetprefix $_dungeon_hallways_street_name</TITLE>
 		<STRING id="_dungeon_crawlways_street_name" define="_dungeon_crawlways_street_name" select="any-1">
@@ -416,7 +416,7 @@ Required details: "id" "value"
 	</ROOM>
 </ROOM>
 
-<ROOM id="interior_rooms" insert="town_interior_rooms,jungle_interior_rooms,desert_interior_rooms,forest_interior_rooms,rocky_interior_rooms" select="any-1" condition="$roomtag_nodetype='interior' or $roomtag_nodetype='square'">
+<ROOM id="interior_rooms" insert="town_interior_rooms,jungle_interior_rooms,desert_interior_rooms,forest_interior_rooms,mountain_interior_rooms" select="any-1" condition="$roomtag_nodetype='interior' or $roomtag_nodetype='square'">
 	<ROOM class="CaveRoom" condition="$theme!='town' and $theme!='forest' and $theme!='mountains' and $theme!='jungle' and $theme!='desert'">
 		<TITLE>$a_streetprefix $_dungeon_hallways_street_name</TITLE>
 		<DESCRIPTION>$dungeon_interior_desc</DESCRIPTION>
@@ -440,7 +440,7 @@ Required details: "id" "value"
 	<STRING select="all" insert="dungeon_other_exits" action="APPEND" />
 </STRING>
 
-<ROOM id="leaf_rooms" select="any-1" insert="forest_leaf_rooms,rocky_leaf_rooms,jungle_leaf_rooms,desert_leaf_rooms,town_leaf_rooms,prison_leaf_rooms,rats_leaf_rooms" condition="$roomtag_nodetype='leaf'">
+<ROOM id="leaf_rooms" select="any-1" insert="forest_leaf_rooms,mountain_leaf_rooms,jungle_leaf_rooms,desert_leaf_rooms,town_leaf_rooms,prison_leaf_rooms,rats_leaf_rooms" condition="$roomtag_nodetype='leaf'">
 	<ROOM select="all" condition="$theme='kobolds' or $theme='goblins' or $theme='orcs' or $theme='trolls' or $theme='random'">
 		<ROOM class="CaveRoom" predefine="nasty_picked_race=${l:nasty_race_name}">
 			<TITLE>a $nasty_picked_race nursury</TITLE>
