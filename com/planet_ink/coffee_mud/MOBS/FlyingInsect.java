@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
+
 /*
    Copyright 2000-2014 Bo Zimmerman
 
@@ -31,45 +32,55 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Hornet extends StdMOB
+public class FlyingInsect extends StdMOB
 {
-	@Override public String ID(){return "Hornet";}
-	public Hornet()
+	@Override public String ID(){return "FlyingInsect";}
+
+	public FlyingInsect()
 	{
 		super();
+		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a hornet";
-		setDescription("It\\`s a small mean flying insect with a nasty stinger on its butt.");
-		setDisplayText("A hornet flits around here.");
+		username="a flying insect";
+		setDescription("The small flying bug is too tiny to tell whether it bites or stings.");
+		setDisplayText("A flying insect flits around.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
-		basePhyStats.setWeight(1);
 		setWimpHitPoint(2);
 
-		addBehavior(CMClass.getBehavior("Follower"));
-		addBehavior(CMClass.getBehavior("CombatAbilities"));
-		basePhyStats().setDamage(1);
+		basePhyStats().setWeight(Math.abs(randomizer.nextInt() % 2));
+
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
-		basePhyStats().setDisposition(PhyStats.IS_FLYING);
-		basePhyStats().setAbility(0);
-		basePhyStats().setLevel(1);
-		basePhyStats().setArmor(80);
-
+		baseCharStats().setStat(CharStats.STAT_STRENGTH,1);
+		baseCharStats().setStat(CharStats.STAT_DEXTERITY,15);
 		baseCharStats().setMyRace(CMClass.getRace("Insect"));
 		baseCharStats().getMyRace().startRacing(this,false);
+
+		basePhyStats().setDamage(10);
+		basePhyStats().setSpeed(1.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(1);
+		basePhyStats().setArmor(90);
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_FLYING);
+
 		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
+
 		final Ability A=CMClass.getAbility("Poison_Sting");
 		if(A!=null)
 		{
 			A.setProficiency(100);
 			addAbility(A);
 		}
+		
+		addBehavior(CMClass.getBehavior("Mobile"));
 
 		recoverMaxState();
 		resetToMaxState();
 		recoverPhyStats();
 		recoverCharStats();
-	}
 
+		if(numAllAbilities()>0)
+			addBehavior(CMClass.getBehavior("CombatAbilities"));
+	}
 }

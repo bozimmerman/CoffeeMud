@@ -31,40 +31,40 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Hornet extends StdMOB
+public class Beaver extends StdMOB
 {
-	@Override public String ID(){return "Hornet";}
-	public Hornet()
+	@Override public String ID(){return "Beaver";}
+	public Beaver()
 	{
 		super();
+		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a hornet";
-		setDescription("It\\`s a small mean flying insect with a nasty stinger on its butt.");
-		setDisplayText("A hornet flits around here.");
+		username="a beaver";
+		setDescription("It\\`s a small rodent with a large tail and sharp teeth.");
+		setDisplayText("A beaver is hard at work.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
-		basePhyStats.setWeight(1);
+		basePhyStats.setWeight(20 + Math.abs(randomizer.nextInt() % 55));
 		setWimpHitPoint(2);
 
-		addBehavior(CMClass.getBehavior("Follower"));
-		addBehavior(CMClass.getBehavior("CombatAbilities"));
-		basePhyStats().setDamage(1);
+		basePhyStats().setDamage(4);
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
-		basePhyStats().setDisposition(PhyStats.IS_FLYING);
+
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(1);
-		basePhyStats().setArmor(80);
+		basePhyStats().setArmor(90);
 
-		baseCharStats().setMyRace(CMClass.getRace("Insect"));
-		baseCharStats().getMyRace().startRacing(this,false);
-		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
-		final Ability A=CMClass.getAbility("Poison_Sting");
+		final Ability A=CMClass.getAbility("Chopping");
 		if(A!=null)
 		{
 			A.setProficiency(100);
 			addAbility(A);
 		}
+		
+		baseCharStats().setMyRace(CMClass.getRace("GiantRat"));
+		baseCharStats().getMyRace().startRacing(this,false);
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

@@ -32,12 +32,12 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Poison_BeeSting extends Poison
+public class Poison_Sting extends Poison
 {
-	@Override public String ID() { return "Poison_BeeSting"; }
-	private final static String localizedName = CMLib.lang()._("Bee Sting");
+	@Override public String ID() { return "Poison_Sting"; }
+	private final static String localizedName = CMLib.lang()._("Sting");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"POISONBEESTING"});
+	private static final String[] triggerStrings =_i(new String[] {"POISONSTING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	@Override protected int POISON_TICKS(){return 10;} // 0 means no adjustment!
@@ -53,10 +53,7 @@ public class Poison_BeeSting extends Poison
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-1);
-		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)-1);
 		if(affectableStats.getStat(CharStats.STAT_CONSTITUTION)<=0)
 			affectableStats.setStat(CharStats.STAT_CONSTITUTION,1);
-		if(affectableStats.getStat(CharStats.STAT_STRENGTH)<=0)
-			affectableStats.setStat(CharStats.STAT_STRENGTH,1);
 	}
 }
