@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class FrozenPlains extends Plains
 {
 	@Override public String ID(){return "FrozenPlains";}
@@ -45,6 +44,6 @@ public class FrozenPlains extends Plains
 
 	public static final Integer[] resourceList={
 		Integer.valueOf(RawMaterial.RESOURCE_FUR)};
-	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
+	public static final List<Integer> roomResources=new Vector<Integer>(Arrays.asList(resourceList));
 	@Override public List<Integer> resourceChoices(){return Plains.roomResources;}
 }

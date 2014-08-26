@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class HillsThinGrid extends StdThinGrid
 {
 	@Override public String ID(){return "HillsThinGrid";}

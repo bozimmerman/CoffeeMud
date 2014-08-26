@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Plains extends StdRoom
 {
 	@Override public String ID(){return "Plains";}
@@ -70,6 +69,6 @@ public class Plains extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_FEATHERS),
 		Integer.valueOf(RawMaterial.RESOURCE_LEATHER),
 		Integer.valueOf(RawMaterial.RESOURCE_WOOL)};
-	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
+	public static final List<Integer> roomResources=new Vector<Integer>(Arrays.asList(resourceList));
 	@Override public List<Integer> resourceChoices(){return Plains.roomResources;}
 }

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class WetCaveMaze extends StdMaze
 {
 	@Override public String ID(){return "WetCaveMaze";}

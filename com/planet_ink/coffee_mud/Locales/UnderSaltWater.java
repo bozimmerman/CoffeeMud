@@ -29,7 +29,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class UnderSaltWater extends UnderWater
 {
 	@Override public String ID(){return "UnderSaltWater";}
@@ -51,6 +50,6 @@ public class UnderSaltWater extends UnderWater
 		Integer.valueOf(RawMaterial.RESOURCE_CLAY),
 		Integer.valueOf(RawMaterial.RESOURCE_PEARL),
 		Integer.valueOf(RawMaterial.RESOURCE_LIMESTONE)};
-	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
+	public static final List<Integer> roomResources=new Vector<Integer>(Arrays.asList(resourceList));
 	@Override public List<Integer> resourceChoices(){return UnderWater.roomResources;}
 }
