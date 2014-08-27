@@ -31,35 +31,34 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Duck extends StdMOB
+public class Cougar extends StdMOB
 {
-	@Override public String ID(){return "Duck";}
-	public Duck()
+	@Override public String ID(){return "Cougar";}
+	public Cougar()
 	{
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a duck";
-		setDescription("It\\`s a small duck with orange webbed feet and a wagging tail.");
-		setDisplayText("A duck waddles here.");
+		username="a cougar";
+		setDescription("Cougar are sleek powerful cats with long deadly claws.");
+		setDisplayText("A cougar prowls you.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
-		basePhyStats.setWeight(5 + Math.abs(randomizer.nextInt() % 10));
-		setWimpHitPoint(2);
+		basePhyStats.setWeight(100 + Math.abs(randomizer.nextInt() % 55));
 
-		addBehavior(CMClass.getBehavior("Follower"));
-		addBehavior(CMClass.getBehavior("MudChat"));
-
-		basePhyStats().setDamage(4);
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
-
-		basePhyStats().setAbility(0);
-		basePhyStats().setLevel(1);
-		basePhyStats().setArmor(90);
-
-		baseCharStats().setMyRace(CMClass.getRace("WaterFowl"));
+		baseCharStats().setStat(CharStats.STAT_STRENGTH,13);
+		baseCharStats().setStat(CharStats.STAT_DEXTERITY,17);
+		baseCharStats().setMyRace(CMClass.getRace("GreatCat"));
 		baseCharStats().getMyRace().startRacing(this,false);
+
+		basePhyStats().setDamage(10);
+		basePhyStats().setSpeed(2.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(5);
+		basePhyStats().setArmor(80);
+
 		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();

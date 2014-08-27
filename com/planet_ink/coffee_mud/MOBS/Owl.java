@@ -31,35 +31,37 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Duck extends StdMOB
+public class Owl extends StdMOB
 {
-	@Override public String ID(){return "Duck";}
-	public Duck()
+	@Override public String ID(){return "Owl";}
+	public Owl()
 	{
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a duck";
-		setDescription("It\\`s a small duck with orange webbed feet and a wagging tail.");
-		setDisplayText("A duck waddles here.");
+		username="an owl";
+		setDescription("a hunting bird with a round face, small beak, and watchful eyes.");
+		setDisplayText("An owl watches nearby.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
-		basePhyStats.setWeight(5 + Math.abs(randomizer.nextInt() % 10));
-		setWimpHitPoint(2);
+		setWimpHitPoint(0);
 
-		addBehavior(CMClass.getBehavior("Follower"));
-		addBehavior(CMClass.getBehavior("MudChat"));
+		basePhyStats.setWeight(1 + Math.abs(randomizer.nextInt() % 6));
 
-		basePhyStats().setDamage(4);
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
+		baseCharStats().setStat(CharStats.STAT_STRENGTH,5);
+		baseCharStats().setStat(CharStats.STAT_DEXTERITY,17);
 
+		basePhyStats().setDamage(1);
+		basePhyStats().setSpeed(3.0);
 		basePhyStats().setAbility(0);
-		basePhyStats().setLevel(1);
+		basePhyStats().setLevel(2);
 		basePhyStats().setArmor(90);
-
-		baseCharStats().setMyRace(CMClass.getRace("WaterFowl"));
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_FLYING);
+		baseCharStats().setMyRace(CMClass.getRace("Owl"));
 		baseCharStats().getMyRace().startRacing(this,false);
+
 		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();

@@ -35,7 +35,7 @@
 				<STRING condition="$_mountain_path_roomtype=1">The $_mountain_path_type is dotted by $adj_sparse trees and plants.</STRING>
 				<STRING condition="$_mountain_path_roomtype=1">${c:noun_tracks} in the $adj_hard_rockys ground make the $_mountain_path_type easier to follow here. </STRING>
 				<STRING condition="$_mountain_path_roomtype=1">${c:adj_phys_size_tall} stone formations curve around the $_mountain_path_type like a wall. </STRING>
-				<STRING condition="$_mountain_path_roomtype=1">The plant life here is $adj_sparse enough to make the $_mountain_path_type desolate and dead. </STRING>
+				<STRING condition="$_mountain_path_roomtype=1">The plant life here is $adj_sparse enough to make the $_mountain_path_type $adj_desolate and dead. </STRING>
 				<STRING condition="$_mountain_path_roomtype=0">The peaks of $areaname are $adj_phys_size_large, cliffs rising in $adj_impassable walls. </STRING>
 				<STRING condition="$_mountain_path_roomtype=0">You $verb_mountain_tread your way through the $noun_mountain_brush of the $adj_sparse mountains. </STRING>
 				<STRING condition="$_mountain_path_roomtype=0">The mountains surrounds you, $adj_sparse $adj_hard_rockys terrain making some directions $adj_impassable. </STRING>
@@ -176,23 +176,23 @@
 
 <MOB id="mountain_mob" select="any-1" requires="level_range=int,aggrochance=int">
 	<MOB id="mountain_mobs" select="all" requires="level_range=int,aggrochance=int">
-        <MOB class="genmob" copyof="Hornet" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
-        <MOB class="genmob" copyof="Spider" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
-        <MOB class="genmob" copyof="Bee" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
-        <MOB class="genmob" copyof="Lizard" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
-        <MOB class="genmob" copyof="Rat" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
-        <MOB class="genmob" copyof="Rabbit" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+        <MOB class="genmob" copyof="Hornet" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+        <MOB class="genmob" copyof="Spider" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+        <MOB class="genmob" copyof="Bee" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+        <MOB class="genmob" copyof="Lizard" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+        <MOB class="genmob" copyof="Rat" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+        <MOB class="genmob" copyof="Rabbit" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
         <MOB class="genmob" copyof="Deer" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
         <MOB class="genmob" copyof="BlackBear" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
-        <MOB class="genmob" copyof="Goat" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
-        <MOB class="genmob" copyof="Goat" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
-        <MOB class="genmob" copyof="Vulture" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
-        <MOB class="genmob" copyof="Falcon" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
-        <MOB class="genmob" copyof="WildEagle" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
-        <MOB class="genmob" copyof="HillGiant" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
-        <MOB class="genmob" copyof="MountainLion" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
-        <MOB class="genmob" copyof="Sheep" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
-        <MOB class="genmob" copyof="Coyote" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+        <MOB class="genmob" copyof="Goat" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+        <MOB class="genmob" copyof="Goat" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+        <MOB class="genmob" copyof="Vulture" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+        <MOB class="genmob" copyof="Falcon" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+        <MOB class="genmob" copyof="WildEagle" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+        <MOB class="genmob" copyof="HillGiant" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+        <MOB class="genmob" copyof="MountainLion" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+        <MOB class="genmob" copyof="Sheep" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+        <MOB class="genmob" copyof="Coyote" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
 	</MOB>
 </MOB>
 

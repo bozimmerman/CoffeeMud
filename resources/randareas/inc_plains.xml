@@ -1,0 +1,231 @@
+<!--  
+   Copyright 2013-2014 Bo Zimmerman
+
+   Licensed under the Apache License</STRING><STRING>Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+	   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing</STRING><STRING>software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND</STRING><STRING>either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!--  include file full of show plains-specific tags -->
+
+<ROOM id="plains_street_rooms">
+	<ROOM class="IcePlains" id="plains_street_room" condition="$theme='plains' or $theme='random'">
+		<TITLE>(a(n)) $_plains_path_name</TITLE>
+		<DESCRIPTION>$plains_street_desc</DESCRIPTION>
+		<STRING id="plains_street_desc" select="all">
+			<STRING select="any-1" action="PREPEND">
+				<STRING condition="$_plains_path_roomtype=1">You are working your way along (a(n)) ${l:_plains_path_name}. </STRING>
+				<STRING condition="$_plains_path_roomtype=1">You are on (a(n)) ${l:_plains_path_name}. </STRING>
+				<STRING condition="$_plains_path_roomtype=1">The ${l:_plains_path_name} goes through the $plains_nouns. </STRING>
+				<STRING condition="$_plains_path_roomtype=1">(A(n)) ${l:_plains_path_name} runs through the $plains_nouns. </STRING>
+				<STRING condition="$_plains_path_roomtype=1">You are inching your way through (a(n)) ${l:_plains_path_name}. </STRING>
+				<STRING condition="$_plains_path_roomtype=0">You are lost in (a(n)) ${l:_plains_path_name}. </STRING>
+				<STRING condition="$_plains_path_roomtype=0">You are deep in (a(n)) ${l:_plains_path_name}. </STRING>
+				<STRING condition="$_plains_path_roomtype=0">The ${l:_plains_path_name} surrounds you. </STRING>
+				<STRING condition="$_plains_path_roomtype=0">The ${l:_plains_path_name} is all around you. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING condition="$_plains_path_roomtype=1">The $_plains_path_type is crossed by $adj_sparse trees and plants. ${c:adj_desolate} plains otherwise surrounds you. </STRING>
+				<STRING condition="$_plains_path_roomtype=1">Tracks in the $adj_soft_sands plains make the $_plains_path_type easier to follow here. </STRING>
+				<STRING condition="$_plains_path_roomtype=1">${c:adj_phys_size_tall} plains banks curve around the $_plains_path_type like a wall. </STRING>
+				<STRING condition="$_plains_path_roomtype=1">The plant life here is $adj_sparse enough here to make the $_plains_path_type $adj_desolate and dead. </STRING>
+				<STRING condition="$_plains_path_roomtype=0">The plains banks of $areaname are $adj_phys_size_large and white, rising in $adj_impassable walls. </STRING>
+				<STRING condition="$_plains_path_roomtype=0">You $verb_plains_tread your way through the $noun_plains_brush of the $adj_sparse grassy plains. </STRING>
+				<STRING condition="$_plains_path_roomtype=0">The grassy plains surrounds you, $adj_sparse trees making some directions $adj_impassable. </STRING>
+				<STRING condition="$_plains_path_roomtype=0">You feel a $noun_plains_wind blow around the $adj_sparse plants of the grassy plains. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING condition="$_plains_path_roomtype=1">The $_plains_path_type continues $roomrun_desc_long.</STRING>
+				<STRING condition="$_plains_path_roomtype=1">Beneath the broad shadows of the grassy banks you can see the $_plains_path_type running $roomrun_desc_long.</STRING>
+				<STRING condition="$_plains_path_roomtype=1">The $_plains_path_type runs $roomrun_desc_long.</STRING>
+				<STRING condition="$_plains_path_roomtype=1">The faint $_plains_path_type goes $roomrun_desc_long.</STRING>
+				<STRING condition="$_plains_path_roomtype=0">It looks like you might pick your way $roomexits_desc_long.</STRING>
+				<STRING condition="$_plains_path_roomtype=0">Openings in the $adj_sparse $noun_plains_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING condition="$_plains_path_roomtype=0">You can $verb_plains_tread on through $roomexits_desc_long.</STRING>
+				<STRING condition="$_plains_path_roomtype=0">You can continue $roomexits_desc_long.</STRING>
+			</STRING>
+		</STRING>
+		<EXIT class="Open" />
+		<MOB condition="1?2=1" select="any-1" insert="plains_mobs" />
+	</ROOM>
+</ROOM>
+
+<ROOM id="plains_interior_rooms">
+	<ROOM class="IcePlains" like="plains_street_room" condition="$theme='plains' or $theme='random'" />
+</ROOM>
+
+<ROOM id="plains_leaf_rooms">
+	<ROOM class="IcePlains" id="plains_interior_room" condition="$theme='plains' or $theme='random'">
+		<TITLE>
+			<TITLE>$plains_path_prefix $plains_nouns</TITLE>
+		</TITLE>
+		<DESCRIPTION>$plains_interior_desc</DESCRIPTION>
+		<STRING id="plains_interior_desc" select="all">
+			<STRING select="any-1" action="PREPEND">
+				<STRING>You find yourself by a $adj_sparse copse of trees in the ${l:room_title}. </STRING>
+				<STRING>You are in a corner of the ${l:room_title}. </STRING>
+				<STRING>The ${plains_nouns} surrounds you. </STRING>
+				<STRING>The ${plains_nouns} is all around you. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING>The $adj_large grassy banks of $areaname are $adj_cramped around you in $adj_impassable walls. </STRING>
+				<STRING>You $verb_plains_tread your way through the $noun_plains_brush of the grassy plains. </STRING>
+				<STRING>The grassy plains surrounds you, ${adj_phys_size_tall} $adj_cramped grassy banks making some directions $adj_impassable. </STRING>
+				<STRING>You feel a $noun_plains_wind blow over the $adj_phys_size_tall grassy banks of the $noun_plains_wind_adj grassy plains. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING>It looks like you might pick your way $roomexits_desc_long.</STRING>
+				<STRING>Openings in the $noun_plains_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING>You can $verb_plains_tread on through $roomexits_desc_long.</STRING>
+				<STRING>You can continue $roomexits_desc_long.</STRING>
+			</STRING>
+		</STRING>
+		<EXIT class="Open" />
+		<MOB condition="$__defined_plains_dragon&lt;1" define="__defined_plains_dragon+=1" like="plains_dragon_mob" />
+		<MOB condition="1?2=1" select="any-1" insert="plains_mobs" />
+		<ITEM condition="1?4=1" select="any-1">
+			<ITEM class="GenContainer" name="A $adj_wooden_ragged chest" display="$item_name is here" HASLID="true" HASLOCK="$trueorfalse">
+				<CONTENT>
+					<ITEM select="any-5" insert="dungeon_treasure_items" />
+				</CONTENT>
+				<AFFECT class="Prop_Hidden" />
+			</ITEM>
+		</ITEM>
+	</ROOM>
+</ROOM>
+	
+<MOB class="GenMob" level="$level_range" id="plains_dragon_mob" race="Dragon" gender="$anygender">
+	<NAME select="all">
+		<NAME condition="$mob_level&lt;10">a hatchling white dragon</NAME>
+		<NAME condition="$mob_level&lt;20 and $mob_level&gt;=10">a very young white dragon</NAME>
+		<NAME condition="$mob_level&lt;30 and $mob_level&gt;=20">a young white dragon</NAME>
+		<NAME condition="$mob_level&lt;40 and $mob_level&gt;=30">a subadult white dragon</NAME>
+		<NAME condition="$mob_level&lt;70 and $mob_level&gt;=40">an adult white dragon</NAME>
+		<NAME condition="$mob_level&lt;80 and $mob_level&gt;=70">an old white dragon</NAME>
+		<NAME condition="$mob_level&lt;85 and $mob_level&gt;=80">a very old white dragon</NAME>
+		<NAME condition="$mob_level&gt;=85">a ancient white dragon</NAME>
+	</NAME>
+		<DISPLAY select="pick-1">
+			<DISPLAY pickweight="1">$mob_name leaps towards you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+			<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+		</DISPLAY>
+	<DESCRIPTION>$mob_name strikes terror in your very bones.</DESCRIPTION>
+	<BEHAVIOR select="all">
+		<BEHAVIOR condition="$mob_level&gt;=40" class="MOBEater" parms="" />
+		<BEHAVIOR class="CombatAbilities" parms="" />
+		<BEHAVIOR class="ObjectGuardian" parms="" />
+	</BEHAVIOR>
+	<ABILITY select="all">
+		<ABILITY condition="$mob_level&gt;=10" class="Skill_Trip" parms="" />
+		<ABILITY condition="$mob_level&gt;=20" class="Dragonbreath" parms="" />
+		<ABILITY condition="$mob_level&gt;=30" class="Spell_DetectInvisible" parms="" />
+		<ABILITY condition="$mob_level&gt;=40" class="Spell_Fear" parms="" />
+		<ABILITY condition="$mob_level&gt;=50" class="Spell_Hold" parms="" />
+		<ABILITY condition="$mob_level&gt;=60" class="Spell_Slow" parms="" />
+		<ABILITY condition="$mob_level&gt;=70" class="Spell_GravitySlam" parms="" />
+		<ABILITY condition="$mob_level&gt;=80" class="Spell_SpellTurning" parms="" />
+		<ABILITY condition="$mob_level&gt;=90" class="Spell_ResistSlashing" parms="" />
+	</ABILITY>
+</MOB>
+		
+<MOB id="plains_mob" select="any-1" requires="level_range=int,aggrochance=int">
+	<MOB id="plains_mobs" select="all" requires="level_range=int,aggrochance=int">
+		<MOB class="genmob" copyof="Owl" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Raven" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Hawk" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Deer" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Rabbit" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Cow" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Chicken" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Horse" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Buffalo" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Elephant" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Doe" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Buck" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Bee" level="$level_range - 2" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Fox" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Gnoll" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Falcon" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Wolf" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Rattlesnake" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Centaur" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Lion" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Cheetah" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+	</MOB>
+</MOB>
+
+<STRING id="noun_plains_brush" select="any-1">
+    <STRING>thicket</STRING>
+    <STRING>underbrush</STRING>
+    <STRING>brush</STRING>
+    <STRING>brushwood</STRING>
+    <STRING>bush</STRING>
+    <STRING>shrubbery</STRING>
+    <STRING>hedges</STRING>
+    
+    <STRING>banks</STRING>
+    <STRING>scrub</STRING>
+    <STRING>brush</STRING>
+    <STRING>trees</STRING>
+    <STRING>underbrush</STRING>
+    <STRING>grassy plains</STRING>
+    <STRING>undergrowth</STRING>
+</STRING>
+
+<STRING id="noun_plains_wind_adj" select="any-1">
+    <STRING>springy</STRING>
+    <STRING>fresh</STRING>
+    <STRING>clear</STRING>
+    <STRING>cool</STRING>
+    <STRING>brisk</STRING>
+    <STRING>delightful</STRING>
+</STRING>
+
+<STRING id="noun_plains_wind" select="any-1">
+    <STRING>$noun_plains_wind_adj wind</STRING>
+    <STRING>$noun_plains_wind_adj breeze</STRING>
+    <STRING>$noun_plains_wind_adj air</STRING>
+</STRING>
+
+<STRING id="verb_plains_tread" select="any-1">
+    <STRING>work</STRING>
+    <STRING>trample</STRING>
+    <STRING>tread</STRING>
+    <STRING>stomp</STRING>
+    <STRING>walk</STRING>
+    <STRING>step</STRING>
+</STRING>
+
+<STRING id="_plains_path_name" select="any-1" define="_plains_path_name">
+	<STRING pickweight=2 define="_plains_path_roomtype=1">$plains_path_prefix $_plains_path_type</STRING>
+	<STRING pickweight=2 define="_plains_path_roomtype=0">$plains_path_prefix $plains_nouns</STRING>
+	<STRING pickweight=1 define="_plains_path_roomtype=1">$adj_creepywords $plains_path_prefix $_plains_path_type</STRING>
+	<STRING pickweight=1 define="_plains_path_roomtype=0">$adj_creepywords $plains_path_prefix $plains_nouns</STRING>
+</STRING>
+
+<STRING id="plains_path_prefix" select="any-1">
+	<string>grassy</string><string>lush</string><string>green</string>
+	<string>leafy</string><string>flourishing</string><string>wild</string>
+	<string>natural</string><string>spring</string><string>overrun</string>
+	<string>overgrown</string><string>savage</string><string>abundant</string>
+	<string>brushy</string><string>foliated</string><string>sunny</string>
+</STRING>
+
+<STRING id="plains_nouns" select="any-1">
+	<string>plains</string><string>grassland</string><string>prairie</string><string>flatlands</string>
+	<string>lowlands</string><string>pasture</string><string>savanna</string><string>steppe</string>
+	<string>meadow</string><string>savanna</string><string>fields</string>
+</STRING>
+
+<STRING id="_plains_path_type" define="_plains_path_type" select="any-1">
+	<string>path</string><string>trail</string><string>pathway</string><string>way</string>
+	<string>footpath</string><string>game trail</string>
+</STRING>

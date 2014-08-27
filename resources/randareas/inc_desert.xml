@@ -32,10 +32,10 @@
 				<STRING condition="$_desert_path_roomtype=0">The ${l:_desert_path_name} is all around you. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
-				<STRING condition="$_desert_path_roomtype=1">The $_desert_path_type is crossed by $adj_sparse cacti and plants. Desolation otherwise surrounds you. </STRING>
+				<STRING condition="$_desert_path_roomtype=1">The $_desert_path_type is crossed by $adj_sparse cacti and plants. ${c:adj_desolate} sands otherwise surrounds you. </STRING>
 				<STRING condition="$_desert_path_roomtype=1">Tracks in the $adj_soft_sands sands make the $_desert_path_type easier to follow here. </STRING>
 				<STRING condition="$_desert_path_roomtype=1">${c:adj_phys_size_tall} dunes curve around the $_desert_path_type like a wall. </STRING>
-				<STRING condition="$_desert_path_roomtype=1">The plant life here is $adj_sparse enough here to make the $_desert_path_type desolate and dead. </STRING>
+				<STRING condition="$_desert_path_roomtype=1">The plant life here is $adj_sparse enough here to make the $_desert_path_type $adj_desolate and dead. </STRING>
 				<STRING condition="$_desert_path_roomtype=0">The sands of $areaname are $adj_phys_size_large and gold, dunes rise in $adj_impassable walls. </STRING>
 				<STRING condition="$_desert_path_roomtype=0">You $verb_desert_tread your way through the $noun_desert_brush of the $adj_sparse desert. </STRING>
 				<STRING condition="$_desert_path_roomtype=0">The desert surrounds you, $adj_sparse cacti making some directions prickly and $adj_impassable. </STRING>

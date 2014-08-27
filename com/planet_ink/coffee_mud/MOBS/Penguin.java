@@ -31,20 +31,20 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Duck extends StdMOB
+public class Penguin extends StdMOB
 {
-	@Override public String ID(){return "Duck";}
-	public Duck()
+	@Override public String ID(){return "Penguin";}
+	public Penguin()
 	{
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a duck";
-		setDescription("It\\`s a small duck with orange webbed feet and a wagging tail.");
-		setDisplayText("A duck waddles here.");
+		username="a penguin";
+		setDescription("It\\`s a short flightless bird with webbed feet and a short wagging tail.");
+		setDisplayText("A penguin waddles here.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
-		basePhyStats.setWeight(5 + Math.abs(randomizer.nextInt() % 10));
+		basePhyStats.setWeight(30 + Math.abs(randomizer.nextInt() % 55));
 		setWimpHitPoint(2);
 
 		addBehavior(CMClass.getBehavior("Follower"));
@@ -58,7 +58,7 @@ public class Duck extends StdMOB
 		basePhyStats().setLevel(1);
 		basePhyStats().setArmor(90);
 
-		baseCharStats().setMyRace(CMClass.getRace("WaterFowl"));
+		baseCharStats().setMyRace(CMClass.getRace("Penguin"));
 		baseCharStats().getMyRace().startRacing(this,false);
 		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 

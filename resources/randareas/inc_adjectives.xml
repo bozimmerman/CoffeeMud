@@ -51,6 +51,14 @@
 	<STRING>open</STRING>
 </STRING>
 
+<STRING id="adj_desolate" select="any-1">
+	<STRING>desolate</STRING>
+	<STRING>bleak</STRING>
+	<STRING>stark</STRING>
+	<STRING>barren</STRING>
+	<STRING>sterile</STRING>
+</STRING>
+
 <STRING id="adj_hard_rockys" select="any-1">
 	<STRING>hard</STRING>
 	<STRING>rocky</STRING>

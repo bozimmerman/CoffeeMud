@@ -31,35 +31,36 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Duck extends StdMOB
+public class DireWolf extends StdMOB
 {
-	@Override public String ID(){return "Duck";}
-	public Duck()
+	@Override public String ID(){return "DireWolf";}
+	public DireWolf()
 	{
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a duck";
-		setDescription("It\\`s a small duck with orange webbed feet and a wagging tail.");
-		setDisplayText("A duck waddles here.");
+		username="a dire wolf";
+		setDescription("An over-sized powerful wolf with grey fur and red eyes.");
+		setDisplayText("A dire wolf growls and walks toward you.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
-		basePhyStats.setWeight(5 + Math.abs(randomizer.nextInt() % 10));
-		setWimpHitPoint(2);
+		setWimpHitPoint(0);
 
-		addBehavior(CMClass.getBehavior("Follower"));
-		addBehavior(CMClass.getBehavior("MudChat"));
+		basePhyStats.setWeight(80 + Math.abs(randomizer.nextInt() % 55));
 
-		basePhyStats().setDamage(4);
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
-
-		basePhyStats().setAbility(0);
-		basePhyStats().setLevel(1);
-		basePhyStats().setArmor(90);
-
-		baseCharStats().setMyRace(CMClass.getRace("WaterFowl"));
+		baseCharStats().setStat(CharStats.STAT_STRENGTH,15);
+		baseCharStats().setStat(CharStats.STAT_DEXTERITY,14);
+		baseCharStats().setMyRace(CMClass.getRace("DireWolf"));
 		baseCharStats().getMyRace().startRacing(this,false);
+
+		basePhyStats().setDamage(6);
+		basePhyStats().setSpeed(1.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(4);
+		basePhyStats().setArmor(80);
+
 		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();

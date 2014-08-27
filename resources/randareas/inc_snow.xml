@@ -1,0 +1,220 @@
+<!--  
+   Copyright 2013-2014 Bo Zimmerman
+
+   Licensed under the Apache License</STRING><STRING>Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+	   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing</STRING><STRING>software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND</STRING><STRING>either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!--  include file full of show plains-specific tags -->
+
+<ROOM id="snow_street_rooms">
+	<ROOM class="IcePlains" id="snow_street_room" condition="$theme='snow' or $theme='random'">
+		<TITLE>(a(n)) $_snow_path_name</TITLE>
+		<DESCRIPTION>$snow_street_desc</DESCRIPTION>
+		<STRING id="snow_street_desc" select="all">
+			<STRING select="any-1" action="PREPEND">
+				<STRING condition="$_snow_path_roomtype=1">You are working your way along (a(n)) ${l:_snow_path_name}. </STRING>
+				<STRING condition="$_snow_path_roomtype=1">You are on (a(n)) ${l:_snow_path_name}. </STRING>
+				<STRING condition="$_snow_path_roomtype=1">The ${l:_snow_path_name} goes through the $snow_nouns. </STRING>
+				<STRING condition="$_snow_path_roomtype=1">(A(n)) ${l:_snow_path_name} runs through the $snow_nouns. </STRING>
+				<STRING condition="$_snow_path_roomtype=1">You are inching your way through (a(n)) ${l:_snow_path_name}. </STRING>
+				<STRING condition="$_snow_path_roomtype=0">You are lost in (a(n)) ${l:_snow_path_name}. </STRING>
+				<STRING condition="$_snow_path_roomtype=0">You are deep in (a(n)) ${l:_snow_path_name}. </STRING>
+				<STRING condition="$_snow_path_roomtype=0">The ${l:_snow_path_name} surrounds you. </STRING>
+				<STRING condition="$_snow_path_roomtype=0">The ${l:_snow_path_name} is all around you. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING condition="$_snow_path_roomtype=1">The $_snow_path_type is crossed by $adj_sparse trees and plants. ${c:adj_desolate} snow otherwise surrounds you. </STRING>
+				<STRING condition="$_snow_path_roomtype=1">Tracks in the $adj_soft_sands snows make the $_snow_path_type easier to follow here. </STRING>
+				<STRING condition="$_snow_path_roomtype=1">${c:adj_phys_size_tall} snow banks curve around the $_snow_path_type like a wall. </STRING>
+				<STRING condition="$_snow_path_roomtype=1">The plant life here is $adj_sparse enough here to make the $_snow_path_type $adj_desolate and dead. </STRING>
+				<STRING condition="$_snow_path_roomtype=0">The snow banks of $areaname are $adj_phys_size_large and white, rising in $adj_impassable walls. </STRING>
+				<STRING condition="$_snow_path_roomtype=0">You $verb_snow_tread your way through the $noun_snow_brush of the $adj_sparse snow plains. </STRING>
+				<STRING condition="$_snow_path_roomtype=0">The snow plains surrounds you, $adj_sparse trees making some directions $adj_impassable. </STRING>
+				<STRING condition="$_snow_path_roomtype=0">You feel a $noun_snow_wind blow around the $adj_sparse plants of the snow plains. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING condition="$_snow_path_roomtype=1">The $_snow_path_type continues $roomrun_desc_long.</STRING>
+				<STRING condition="$_snow_path_roomtype=1">Beneath the broad shadows of the snow banks you can see the $_snow_path_type running $roomrun_desc_long.</STRING>
+				<STRING condition="$_snow_path_roomtype=1">The $_snow_path_type runs $roomrun_desc_long.</STRING>
+				<STRING condition="$_snow_path_roomtype=1">The faint $_snow_path_type goes $roomrun_desc_long.</STRING>
+				<STRING condition="$_snow_path_roomtype=0">It looks like you might pick your way $roomexits_desc_long.</STRING>
+				<STRING condition="$_snow_path_roomtype=0">Openings in the $adj_sparse $noun_snow_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING condition="$_snow_path_roomtype=0">You can $verb_snow_tread on through $roomexits_desc_long.</STRING>
+				<STRING condition="$_snow_path_roomtype=0">You can continue $roomexits_desc_long.</STRING>
+			</STRING>
+		</STRING>
+		<EXIT class="Open" />
+		<MOB condition="1?2=1" select="any-1" insert="snow_mobs" />
+	</ROOM>
+</ROOM>
+
+<ROOM id="snow_interior_rooms">
+	<ROOM class="IcePlains" like="snow_street_room" condition="$theme='snow' or $theme='random'" />
+</ROOM>
+
+<ROOM id="snow_leaf_rooms">
+	<ROOM class="IcePlains" id="snow_interior_room" condition="$theme='snow' or $theme='random'">
+		<TITLE>
+			<TITLE>$snow_path_prefix $snow_nouns</TITLE>
+		</TITLE>
+		<DESCRIPTION>$snow_interior_desc</DESCRIPTION>
+		<STRING id="snow_interior_desc" select="all">
+			<STRING select="any-1" action="PREPEND">
+				<STRING>You find yourself by a $adj_sparse copse of trees in the ${l:room_title}. </STRING>
+				<STRING>You are in a corner of the ${l:room_title}. </STRING>
+				<STRING>The ${snow_nouns} surrounds you. </STRING>
+				<STRING>The ${snow_nouns} is all around you. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING>The $adj_large snow banks of $areaname are $adj_cramped around you in $adj_impassable walls. </STRING>
+				<STRING>You $verb_snow_tread your way through the $noun_snow_brush of the snow plains. </STRING>
+				<STRING>The snow plains surrounds you, ${adj_phys_size_tall} $adj_cramped snow banks making some directions $adj_impassable. </STRING>
+				<STRING>You feel a $noun_snow_wind blow over the $adj_phys_size_tall snow banks of the $noun_snow_wind_adj snow plains. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING>It looks like you might pick your way $roomexits_desc_long.</STRING>
+				<STRING>Openings in the $noun_snow_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING>You can $verb_snow_tread on through $roomexits_desc_long.</STRING>
+				<STRING>You can continue $roomexits_desc_long.</STRING>
+			</STRING>
+		</STRING>
+		<EXIT class="Open" />
+		<MOB condition="$__defined_snow_dragon&lt;1" define="__defined_snow_dragon+=1" like="snow_dragon_mob" />
+		<MOB condition="1?2=1" select="any-1" insert="snow_mobs" />
+		<ITEM condition="1?4=1" select="any-1">
+			<ITEM class="GenContainer" name="A $adj_wooden_ragged chest" display="$item_name is here" HASLID="true" HASLOCK="$trueorfalse">
+				<CONTENT>
+					<ITEM select="any-5" insert="dungeon_treasure_items" />
+				</CONTENT>
+				<AFFECT class="Prop_Hidden" />
+			</ITEM>
+		</ITEM>
+	</ROOM>
+</ROOM>
+	
+<MOB class="GenMob" level="$level_range" id="snow_dragon_mob" race="Dragon" gender="$anygender">
+	<NAME select="all">
+		<NAME condition="$mob_level&lt;10">a hatchling white dragon</NAME>
+		<NAME condition="$mob_level&lt;20 and $mob_level&gt;=10">a very young white dragon</NAME>
+		<NAME condition="$mob_level&lt;30 and $mob_level&gt;=20">a young white dragon</NAME>
+		<NAME condition="$mob_level&lt;40 and $mob_level&gt;=30">a subadult white dragon</NAME>
+		<NAME condition="$mob_level&lt;70 and $mob_level&gt;=40">an adult white dragon</NAME>
+		<NAME condition="$mob_level&lt;80 and $mob_level&gt;=70">an old white dragon</NAME>
+		<NAME condition="$mob_level&lt;85 and $mob_level&gt;=80">a very old white dragon</NAME>
+		<NAME condition="$mob_level&gt;=85">a ancient white dragon</NAME>
+	</NAME>
+		<DISPLAY select="pick-1">
+			<DISPLAY pickweight="1">$mob_name leaps towards you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+			<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+		</DISPLAY>
+	<DESCRIPTION>$mob_name strikes terror in your very bones.</DESCRIPTION>
+	<BEHAVIOR select="all">
+		<BEHAVIOR condition="$mob_level&gt;=40" class="MOBEater" parms="" />
+		<BEHAVIOR class="CombatAbilities" parms="" />
+		<BEHAVIOR class="ObjectGuardian" parms="" />
+	</BEHAVIOR>
+	<ABILITY select="all">
+		<ABILITY condition="$mob_level&gt;=10" class="Skill_Trip" parms="" />
+		<ABILITY condition="$mob_level&gt;=20" class="Dragonbreath" parms="" />
+		<ABILITY condition="$mob_level&gt;=30" class="Spell_DetectInvisible" parms="" />
+		<ABILITY condition="$mob_level&gt;=40" class="Spell_Fear" parms="" />
+		<ABILITY condition="$mob_level&gt;=50" class="Spell_Hold" parms="" />
+		<ABILITY condition="$mob_level&gt;=60" class="Spell_Slow" parms="" />
+		<ABILITY condition="$mob_level&gt;=70" class="Spell_GravitySlam" parms="" />
+		<ABILITY condition="$mob_level&gt;=80" class="Spell_SpellTurning" parms="" />
+		<ABILITY condition="$mob_level&gt;=90" class="Spell_ResistSlashing" parms="" />
+	</ABILITY>
+</MOB>
+		
+<MOB id="snow_mob" select="any-1" requires="level_range=int,aggrochance=int">
+	<MOB id="snow_mobs" select="all" requires="level_range=int,aggrochance=int">
+		<MOB class="genmob" copyof="WildEagle" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Falcon" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Deer" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Penguin" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Penguin" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Beaver" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Rabbit" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Squirrel" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Buffalo" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Sheep" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
+		<MOB class="genmob" copyof="Fox" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Spider" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Cougar" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Buck" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="WhiteBear" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="WhiteBear" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="DireWolf" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Wolverine" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="FrostGiant" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+	</MOB>
+</MOB>
+
+<STRING id="noun_snow_brush" select="any-1">
+    <STRING>banks</STRING>
+    <STRING>scrub</STRING>
+    <STRING>brush</STRING>
+    <STRING>trees</STRING>
+    <STRING>underbrush</STRING>
+    <STRING>snow plains</STRING>
+    <STRING>undergrowth</STRING>
+</STRING>
+
+<STRING id="noun_snow_wind_adj" select="any-1">
+    <STRING>stinging</STRING>
+    <STRING>slushy</STRING>
+    <STRING>freezing</STRING>
+    <STRING>cold</STRING>
+    <STRING>brisk</STRING>
+    <STRING>wet</STRING>
+</STRING>
+
+<STRING id="noun_snow_wind" select="any-1">
+    <STRING>$noun_snow_wind_adj wind</STRING>
+    <STRING>$noun_snow_wind_adj breeze</STRING>
+    <STRING>$noun_snow_wind_adj air</STRING>
+</STRING>
+
+<STRING id="verb_snow_tread" select="any-1">
+    <STRING>work</STRING>
+    <STRING>trample</STRING>
+    <STRING>tread</STRING>
+    <STRING>stomp</STRING>
+    <STRING>walk</STRING>
+    <STRING>shuffle</STRING>
+</STRING>
+
+<STRING id="_snow_path_name" select="any-1" define="_snow_path_name">
+	<STRING pickweight=2 define="_snow_path_roomtype=1">$snow_path_prefix $_snow_path_type</STRING>
+	<STRING pickweight=2 define="_snow_path_roomtype=0">$snow_path_prefix $snow_nouns</STRING>
+	<STRING pickweight=1 define="_snow_path_roomtype=1">$adj_creepywords $snow_path_prefix $_snow_path_type</STRING>
+	<STRING pickweight=1 define="_snow_path_roomtype=0">$adj_creepywords $snow_path_prefix $snow_nouns</STRING>
+</STRING>
+
+<STRING id="snow_path_prefix" select="any-1">
+	<string>snowy</string><string>freezing</string><string>slushy</string>
+	<string>icy</string><string>cold</string><string>frosty</string><string>frigid</string>
+	<string>glacial</string><string>wintry</string><string>frozen</string><string>chilly</string>
+	<string>ice-capped</string><string>frigid</string><string>biting</string>
+</STRING>
+
+<STRING id="snow_nouns" select="any-1">
+	<string>snow plains</string><string>snow banks</string><string>tundra</string><string>plains</string>
+	<string>badlands</string><string>range</string><string>miles</string><string>forest</string>
+	<string>plateau</string><string>wastes</string><string>barrens</string>
+</STRING>
+
+<STRING id="_snow_path_type" define="_snow_path_type" select="any-1">
+	<string>path</string><string>trail</string><string>pathway</string><string>way</string>
+	<string>footpath</string><string>game trail</string>
+</STRING>

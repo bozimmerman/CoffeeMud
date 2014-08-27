@@ -31,37 +31,53 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Duck extends StdMOB
+public class FrostGiant extends StdMOB
 {
-	@Override public String ID(){return "Duck";}
-	public Duck()
+	@Override public String ID(){return "FrostGiant";}
+	public FrostGiant()
 	{
 		super();
-		final Random randomizer = new Random(System.currentTimeMillis());
-
-		username="a duck";
-		setDescription("It\\`s a small duck with orange webbed feet and a wagging tail.");
-		setDisplayText("A duck waddles here.");
-		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
+		username="a frost giant";
+		setDescription("A tall blueish humanoid standing about 16 feet tall and very smelly.");
+		setDisplayText("A frost giant looks down at you.");
+		CMLib.factions().setAlignment(this,Faction.Align.EVIL);
 		setMoney(0);
-		basePhyStats.setWeight(5 + Math.abs(randomizer.nextInt() % 10));
-		setWimpHitPoint(2);
+		basePhyStats.setWeight(3500 + CMLib.dice().roll(1, 1000, 0));
 
-		addBehavior(CMClass.getBehavior("Follower"));
-		addBehavior(CMClass.getBehavior("MudChat"));
 
-		basePhyStats().setDamage(4);
-
-		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
-
-		basePhyStats().setAbility(0);
-		basePhyStats().setLevel(1);
-		basePhyStats().setArmor(90);
-
-		baseCharStats().setMyRace(CMClass.getRace("WaterFowl"));
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,10 + CMLib.dice().roll(1, 6, 0));
+		baseCharStats().setStat(CharStats.STAT_STRENGTH,29);
+		baseCharStats().setStat(CharStats.STAT_DEXTERITY,9);
+		baseCharStats().setMyRace(CMClass.getRace("Giant"));
 		baseCharStats().getMyRace().startRacing(this,false);
+
+		basePhyStats().setDamage(19);
+		basePhyStats().setSpeed(1.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(12);
+		basePhyStats().setArmor(0);
+
 		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
+		Ability A=CMClass.getAbility("Immunities");
+		if(A!=null)
+		{
+			A.setMiscText("COLD");
+			addNonUninvokableEffect(A);
+		}
+		A=CMClass.getAbility("Chant_FeelHeat");
+		if(A!=null)
+			addNonUninvokableEffect(A);
+		
+		addBehavior(CMClass.getBehavior("Aggressive"));
+
+		Weapon w=CMClass.getWeapon("BattleAxe");
+		if(w!=null)
+		{
+			w.wearAt(Wearable.WORN_WIELD);
+			this.addItem(w);
+		}
+		
 		recoverMaxState();
 		resetToMaxState();
 		recoverPhyStats();
