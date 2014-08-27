@@ -47,10 +47,10 @@ public class Wyvern extends StdRace
 	private final int[]culturalAbilityProficiencies={50};
 	@Override protected String[] culturalAbilityNames(){return culturalAbilityNames;}
 	@Override protected int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
-	private final String[]racialAbilityNames={"WingFlying"};
-	private final int[]racialAbilityLevels={1};
-	private final int[]racialAbilityProficiencies={100};
-	private final boolean[]racialAbilityQuals={false};
+	private final String[]racialAbilityNames={"WingFlying","Poison_Sting"};
+	private final int[]racialAbilityLevels={1,1};
+	private final int[]racialAbilityProficiencies={100,100};
+	private final boolean[]racialAbilityQuals={false,false};
 	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
 	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
 	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}

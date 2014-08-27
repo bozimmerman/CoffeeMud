@@ -68,8 +68,4 @@ public class AngryCitizen extends StdMOB
 		recoverPhyStats();
 		recoverCharStats();
 	}
-
-
-
-
 }

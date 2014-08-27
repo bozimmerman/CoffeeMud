@@ -77,7 +77,6 @@ public class Centipede extends StdMOB
 		recoverPhyStats();
 		recoverCharStats();
 
-		if(numAllAbilities()>0)
-			addBehavior(CMClass.getBehavior("CombatAbilities"));
+		addBehavior(CMClass.getBehavior("CombatAbilities"));
 	}
 }

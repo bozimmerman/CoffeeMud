@@ -31,25 +31,25 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Centaur extends StdMOB
+public class Naga extends StdMOB
 {
-	@Override public String ID(){return "Centaur";}
-	public Centaur()
+	@Override public String ID(){return "Naga";}
+	public Naga()
 	{
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a centaur";
-		setDescription("A creature whose upper body is that of a man, and lower body that of a horse.");
-		setDisplayText("A centaur gallops around...");
-		CMLib.factions().setAlignment(this,Faction.Align.GOOD);
-		setMoney(200);
-		basePhyStats.setWeight(600 + Math.abs(randomizer.nextInt() % 101));
+		username="a naga";
+		setDescription("A serpent whose upper body is that of a man, and lower body that of a snake.");
+		setDisplayText("A naga is here");
+		CMLib.factions().setAlignment(this,Faction.Align.EVIL);
+		setMoney(20);
+		basePhyStats.setWeight(100 + Math.abs(randomizer.nextInt() % 101));
 
-		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,5 + Math.abs(randomizer.nextInt() % 6));
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,13 + Math.abs(randomizer.nextInt() % 6));
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,12 + Math.abs(randomizer.nextInt() % 6));
-		baseCharStats().setStat(CharStats.STAT_DEXTERITY,9 + Math.abs(randomizer.nextInt() % 6));
-		baseCharStats().setMyRace(CMClass.getRace("Centaur"));
+		baseCharStats().setStat(CharStats.STAT_DEXTERITY,15 + Math.abs(randomizer.nextInt() % 6));
+		baseCharStats().setMyRace(CMClass.getRace("Naga"));
 
 		basePhyStats().setDamage(7);
 		basePhyStats().setSpeed(2.0);

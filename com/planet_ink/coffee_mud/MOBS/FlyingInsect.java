@@ -74,13 +74,12 @@ public class FlyingInsect extends StdMOB
 		}
 		
 		addBehavior(CMClass.getBehavior("Mobile"));
+		addBehavior(CMClass.getBehavior("CombatAbilities"));
 
 		recoverMaxState();
 		resetToMaxState();
 		recoverPhyStats();
 		recoverCharStats();
 
-		if(numAllAbilities()>0)
-			addBehavior(CMClass.getBehavior("CombatAbilities"));
 	}
 }

@@ -16,37 +16,37 @@
 <!--  include file full of show plains-specific tags -->
 
 <ROOM id="plains_street_rooms">
-	<ROOM class="IcePlains" id="plains_street_room" condition="$theme='plains' or $theme='random'">
+	<ROOM class="Plains" id="plains_street_room" condition="$theme='plains' or $theme='random'">
 		<TITLE>(a(n)) $_plains_path_name</TITLE>
 		<DESCRIPTION>$plains_street_desc</DESCRIPTION>
 		<STRING id="plains_street_desc" select="all">
 			<STRING select="any-1" action="PREPEND">
-				<STRING condition="$_plains_path_roomtype=1">You are working your way along (a(n)) ${l:_plains_path_name}. </STRING>
+				<STRING condition="$_plains_path_roomtype=1">You are making your way along (a(n)) ${l:_plains_path_name}. </STRING>
 				<STRING condition="$_plains_path_roomtype=1">You are on (a(n)) ${l:_plains_path_name}. </STRING>
 				<STRING condition="$_plains_path_roomtype=1">The ${l:_plains_path_name} goes through the $plains_nouns. </STRING>
 				<STRING condition="$_plains_path_roomtype=1">(A(n)) ${l:_plains_path_name} runs through the $plains_nouns. </STRING>
-				<STRING condition="$_plains_path_roomtype=1">You are inching your way through (a(n)) ${l:_plains_path_name}. </STRING>
-				<STRING condition="$_plains_path_roomtype=0">You are lost in (a(n)) ${l:_plains_path_name}. </STRING>
+				<STRING condition="$_plains_path_roomtype=1">You are working your way through (a(n)) ${l:_plains_path_name}. </STRING>
+				<STRING condition="$_plains_path_roomtype=0">You are well into (a(n)) ${l:_plains_path_name}. </STRING>
 				<STRING condition="$_plains_path_roomtype=0">You are deep in (a(n)) ${l:_plains_path_name}. </STRING>
 				<STRING condition="$_plains_path_roomtype=0">The ${l:_plains_path_name} surrounds you. </STRING>
 				<STRING condition="$_plains_path_roomtype=0">The ${l:_plains_path_name} is all around you. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
-				<STRING condition="$_plains_path_roomtype=1">The $_plains_path_type is crossed by $adj_sparse trees and plants. ${c:adj_desolate} plains otherwise surrounds you. </STRING>
-				<STRING condition="$_plains_path_roomtype=1">Tracks in the $adj_soft_sands plains make the $_plains_path_type easier to follow here. </STRING>
-				<STRING condition="$_plains_path_roomtype=1">${c:adj_phys_size_tall} plains banks curve around the $_plains_path_type like a wall. </STRING>
-				<STRING condition="$_plains_path_roomtype=1">The plant life here is $adj_sparse enough here to make the $_plains_path_type $adj_desolate and dead. </STRING>
-				<STRING condition="$_plains_path_roomtype=0">The plains banks of $areaname are $adj_phys_size_large and white, rising in $adj_impassable walls. </STRING>
-				<STRING condition="$_plains_path_roomtype=0">You $verb_plains_tread your way through the $noun_plains_brush of the $adj_sparse grassy plains. </STRING>
+				<STRING condition="$_plains_path_roomtype=1">The $_plains_path_type is crossed by $adj_sparse trees and plants. ${c:adj_brightwords} plains otherwise surrounds you. </STRING>
+				<STRING condition="$_plains_path_roomtype=1">Tracks in the $adj_soft_ground ground make the $_plains_path_type easier to follow here. </STRING>
+				<STRING condition="$_plains_path_roomtype=1">${c:adj_phys_size_tall} hills curve around the $_plains_path_type like a wall. </STRING>
+				<STRING condition="$_plains_path_roomtype=1">The $adj_lush plant life here is $adj_plentiful enough here to make the $_plains_path_type green. </STRING>
+				<STRING condition="$_plains_path_roomtype=0">The plains and hills of $areaname are $adj_phys_size_large and green, rising in $adj_impassable walls. </STRING>
+				<STRING condition="$_plains_path_roomtype=0">You $verb_plains_tread your way through the $noun_plains_brush of the $adj_lush $plains_path_prefix plains. </STRING>
 				<STRING condition="$_plains_path_roomtype=0">The grassy plains surrounds you, $adj_sparse trees making some directions $adj_impassable. </STRING>
-				<STRING condition="$_plains_path_roomtype=0">You feel a $noun_plains_wind blow around the $adj_sparse plants of the grassy plains. </STRING>
+				<STRING condition="$_plains_path_roomtype=0">You feel a $noun_plains_wind blow across the $plains_path_prefix plains. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING condition="$_plains_path_roomtype=1">The $_plains_path_type continues $roomrun_desc_long.</STRING>
-				<STRING condition="$_plains_path_roomtype=1">Beneath the broad shadows of the grassy banks you can see the $_plains_path_type running $roomrun_desc_long.</STRING>
+				<STRING condition="$_plains_path_roomtype=1">Beneath the broad shadows of the grassy hills you can see the $_plains_path_type running $roomrun_desc_long.</STRING>
 				<STRING condition="$_plains_path_roomtype=1">The $_plains_path_type runs $roomrun_desc_long.</STRING>
 				<STRING condition="$_plains_path_roomtype=1">The faint $_plains_path_type goes $roomrun_desc_long.</STRING>
-				<STRING condition="$_plains_path_roomtype=0">It looks like you might pick your way $roomexits_desc_long.</STRING>
+				<STRING condition="$_plains_path_roomtype=0">It looks like you might be able to head $roomexits_desc_long.</STRING>
 				<STRING condition="$_plains_path_roomtype=0">Openings in the $adj_sparse $noun_plains_brush can be seen $roomexits_desc_long.</STRING>
 				<STRING condition="$_plains_path_roomtype=0">You can $verb_plains_tread on through $roomexits_desc_long.</STRING>
 				<STRING condition="$_plains_path_roomtype=0">You can continue $roomexits_desc_long.</STRING>
@@ -58,11 +58,11 @@
 </ROOM>
 
 <ROOM id="plains_interior_rooms">
-	<ROOM class="IcePlains" like="plains_street_room" condition="$theme='plains' or $theme='random'" />
+	<ROOM class="Plains" like="plains_street_room" condition="$theme='plains' or $theme='random'" />
 </ROOM>
 
 <ROOM id="plains_leaf_rooms">
-	<ROOM class="IcePlains" id="plains_interior_room" condition="$theme='plains' or $theme='random'">
+	<ROOM class="Plains" id="plains_interior_room" condition="$theme='plains' or $theme='random'">
 		<TITLE>
 			<TITLE>$plains_path_prefix $plains_nouns</TITLE>
 		</TITLE>
@@ -75,10 +75,10 @@
 				<STRING>The ${plains_nouns} is all around you. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
-				<STRING>The $adj_large grassy banks of $areaname are $adj_cramped around you in $adj_impassable walls. </STRING>
-				<STRING>You $verb_plains_tread your way through the $noun_plains_brush of the grassy plains. </STRING>
-				<STRING>The grassy plains surrounds you, ${adj_phys_size_tall} $adj_cramped grassy banks making some directions $adj_impassable. </STRING>
-				<STRING>You feel a $noun_plains_wind blow over the $adj_phys_size_tall grassy banks of the $noun_plains_wind_adj grassy plains. </STRING>
+				<STRING>The $adj_large grassy hills of $areaname are $adj_cramped around you in $adj_impassable walls. </STRING>
+				<STRING>You $verb_plains_tread your way through the $noun_plains_brush of the $plains_path_prefix plains. </STRING>
+				<STRING>The $plains_path_prefix plains surrounds you, ${adj_phys_size_tall} $adj_cramped hills making some directions $adj_impassable. </STRING>
+				<STRING>You feel a $noun_plains_wind blow over the $plains_path_prefix hills of the $noun_plains_wind_adj plains. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING>It looks like you might pick your way $roomexits_desc_long.</STRING>
@@ -103,14 +103,14 @@
 	
 <MOB class="GenMob" level="$level_range" id="plains_dragon_mob" race="Dragon" gender="$anygender">
 	<NAME select="all">
-		<NAME condition="$mob_level&lt;10">a hatchling white dragon</NAME>
-		<NAME condition="$mob_level&lt;20 and $mob_level&gt;=10">a very young white dragon</NAME>
-		<NAME condition="$mob_level&lt;30 and $mob_level&gt;=20">a young white dragon</NAME>
-		<NAME condition="$mob_level&lt;40 and $mob_level&gt;=30">a subadult white dragon</NAME>
-		<NAME condition="$mob_level&lt;70 and $mob_level&gt;=40">an adult white dragon</NAME>
-		<NAME condition="$mob_level&lt;80 and $mob_level&gt;=70">an old white dragon</NAME>
-		<NAME condition="$mob_level&lt;85 and $mob_level&gt;=80">a very old white dragon</NAME>
-		<NAME condition="$mob_level&gt;=85">a ancient white dragon</NAME>
+		<NAME condition="$mob_level&lt;10">a hatchling red dragon</NAME>
+		<NAME condition="$mob_level&lt;20 and $mob_level&gt;=10">a very young red dragon</NAME>
+		<NAME condition="$mob_level&lt;30 and $mob_level&gt;=20">a young red dragon</NAME>
+		<NAME condition="$mob_level&lt;40 and $mob_level&gt;=30">a subadult red dragon</NAME>
+		<NAME condition="$mob_level&lt;70 and $mob_level&gt;=40">an adult red dragon</NAME>
+		<NAME condition="$mob_level&lt;80 and $mob_level&gt;=70">an old red dragon</NAME>
+		<NAME condition="$mob_level&lt;85 and $mob_level&gt;=80">a very old red dragon</NAME>
+		<NAME condition="$mob_level&gt;=85">a ancient red dragon</NAME>
 	</NAME>
 		<DISPLAY select="pick-1">
 			<DISPLAY pickweight="1">$mob_name leaps towards you.</DISPLAY>
@@ -170,14 +170,6 @@
     <STRING>bush</STRING>
     <STRING>shrubbery</STRING>
     <STRING>hedges</STRING>
-    
-    <STRING>banks</STRING>
-    <STRING>scrub</STRING>
-    <STRING>brush</STRING>
-    <STRING>trees</STRING>
-    <STRING>underbrush</STRING>
-    <STRING>grassy plains</STRING>
-    <STRING>undergrowth</STRING>
 </STRING>
 
 <STRING id="noun_plains_wind_adj" select="any-1">
@@ -207,8 +199,8 @@
 <STRING id="_plains_path_name" select="any-1" define="_plains_path_name">
 	<STRING pickweight=2 define="_plains_path_roomtype=1">$plains_path_prefix $_plains_path_type</STRING>
 	<STRING pickweight=2 define="_plains_path_roomtype=0">$plains_path_prefix $plains_nouns</STRING>
-	<STRING pickweight=1 define="_plains_path_roomtype=1">$adj_creepywords $plains_path_prefix $_plains_path_type</STRING>
-	<STRING pickweight=1 define="_plains_path_roomtype=0">$adj_creepywords $plains_path_prefix $plains_nouns</STRING>
+	<STRING pickweight=1 define="_plains_path_roomtype=1">$adj_brightwords $plains_path_prefix $_plains_path_type</STRING>
+	<STRING pickweight=1 define="_plains_path_roomtype=0">$adj_brightwords $plains_path_prefix $plains_nouns</STRING>
 </STRING>
 
 <STRING id="plains_path_prefix" select="any-1">

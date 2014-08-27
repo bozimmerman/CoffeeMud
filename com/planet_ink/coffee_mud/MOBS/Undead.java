@@ -58,7 +58,7 @@ public class Undead extends StdMOB
 
 		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
-		addAbility(CMClass.getAbility("Skill_AllBreathing"));
+		addNonUninvokableEffect(CMClass.getAbility("Skill_AllBreathing"));
 
 		recoverMaxState();
 		resetToMaxState();

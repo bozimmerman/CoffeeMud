@@ -299,6 +299,7 @@ Required details: "id" "value"
 <STRING load="/resources/randareas/inc_fantasynames.xml" />
 
 <STRING load="/resources/randareas/inc_forest.xml" />
+<STRING load="/resources/randareas/inc_plains.xml" />
 <STRING load="/resources/randareas/inc_snow.xml" />
 <STRING load="/resources/randareas/inc_jungle.xml" />
 <STRING load="/resources/randareas/inc_swamp.xml" />
@@ -308,7 +309,7 @@ Required details: "id" "value"
 <STRING load="/resources/randareas/inc_desert.xml" />
 <STRING load="/resources/randareas/inc_mountains.xml" />
 
-<AREA id="maze_dungeon" layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;forest;snow;mountains;jungle;swamp;desert;goblins;orcs;trolls;town;random">
+<AREA id="maze_dungeon" layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;forest;plains;snow;mountains;jungle;swamp;desert;goblins;orcs;trolls;town;random">
 	<NAME>$areaname</NAME><SIZE>$areasize</SIZE>
 	<CLASS select="any-1"><CLASS condition="$areatype!=''">$areatype</CLASS><CLASS condition="$areatype=''">StdArea</CLASS></CLASS>
 	<ROOM id="other_rooms" insert="hallway_rooms,interior_rooms,leaf_rooms" />
@@ -318,15 +319,15 @@ Required details: "id" "value"
 		<BEHAVIOR condition="$theme='town'" class="Arrest" parms="laws.ini;OFFICERS=&quot;\&quot;$__officertype\&quot;&quot; JUDGE=&quot;\&quot;$__chieftype\&quot;&quot;"/>
 	</BEHAVIOR>
 </AREA>
-<AREA id="grid_dungeon" like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;mountains;forest;snow;jungle;swamp;desert;goblins;orcs;trolls;town;random" >
+<AREA id="grid_dungeon" like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;mountains;forest;plains;snow;jungle;swamp;desert;goblins;orcs;trolls;town;random" >
 </AREA>
-<AREA id="square_dungeon" like="maze_dungeon" layout="BOXCITYSQUARE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;mountains;forest;snow;swamp;jungle;desert;goblins;orcs;trolls;town;random" >
+<AREA id="square_dungeon" like="maze_dungeon" layout="BOXCITYSQUARE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;mountains;forest;plains;snow;swamp;jungle;desert;goblins;orcs;trolls;town;random" >
 </AREA>
-<AREA id="box_dungeon" like="maze_dungeon" layout="BOXCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;mountains;forest;snow;jungle;swamp;desert;goblins;orcs;trolls;town;random" >
+<AREA id="box_dungeon" like="maze_dungeon" layout="BOXCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;mountains;forest;plains;snow;jungle;swamp;desert;goblins;orcs;trolls;town;random" >
 </AREA>
-<AREA id="cross_dungeon" like="maze_dungeon" layout="CROSS" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;mountains;forest;snow;jungle;swamp;desert;goblins;orcs;trolls;town;random" >
+<AREA id="cross_dungeon" like="maze_dungeon" layout="CROSS" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;mountains;forest;plains;snow;jungle;swamp;desert;goblins;orcs;trolls;town;random" >
 </AREA>
-<AREA id="tree_dungeon" like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;mountains;forest;snow;jungle;swamp;desert;goblins;orcs;trolls;town;random" >
+<AREA id="tree_dungeon" like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;mountains;forest;plains;snow;jungle;swamp;desert;goblins;orcs;trolls;town;random" >
 </AREA>
 
 <AREA id="random_dungeon" select="any" requires="areaname=$" condition="$theme!='town'"
@@ -340,7 +341,7 @@ Required details: "id" "value"
 </string>
 
 <string id="__iswilderness" define="__iswilderness" select="all">
-	<string condition="$theme='forest' or $theme='snow' or $theme='mountains' or $theme='jungle' or $theme='swamp' or $theme='desert'">true</string>
+	<string condition="$theme='forest' or $theme='snow' or $theme='plains' or $theme='mountains' or $theme='jungle' or $theme='swamp' or $theme='desert'">true</string>
 	<string></string>
 </string>
 
@@ -349,11 +350,14 @@ Required details: "id" "value"
 <string id="randomtheme" select="any-1">
 	<string condition="$theme!=''">$theme</string>
 	<string select="all" condition="$theme=''">
-		<string>prison</string><string>rats</string><string>kobolds</string><string>forest</string>
-		<string>jungle</string><string>desert</string><string>goblins</string><string>orcs</string>
-		<string>trolls</string><string>random</string><string>mountains</string><string>swamp</string>
-		<string>snow</string>
+		<string>prison</string><string>rats</string><string>kobolds</string><string>goblins</string>
+		<string>orcs</string><string>trolls</string><string>random</string>
+		<string>mountains</string><string>swamp</string><string>snow</string><string>plains</string>
+		<string>forest</string><string>desert</string><string>jungle</string>
 	</string>
+</string>
+
+<string id="movemeback">
 </string>
 
 <STRING id="nasty_race_name" select="any-1">
@@ -372,7 +376,7 @@ Required details: "id" "value"
 	<STRING>passageway</STRING>
 </STRING>
 
-<ROOM id="hallway_rooms" select="pick-1" insert="snow_street_rooms,forest_street_rooms,mountain_street_rooms,jungle_street_rooms,swamp_street_rooms,desert_street_rooms,town_street_rooms" 
+<ROOM id="hallway_rooms" select="pick-1" insert="snow_street_rooms,plains_street_rooms,forest_street_rooms,mountain_street_rooms,jungle_street_rooms,swamp_street_rooms,desert_street_rooms,town_street_rooms" 
 	condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
 	<ROOM class="CaveRoom" pickweight="5" condition="$__isdungeontype='true'">
 		<TITLE>$a_streetprefix $_dungeon_hallways_street_name</TITLE>
@@ -434,7 +438,7 @@ Required details: "id" "value"
 	</ROOM>
 </ROOM>
 
-<ROOM id="interior_rooms" insert="town_interior_rooms,jungle_interior_rooms,swamp_interior_rooms,desert_interior_rooms,snow_interior_rooms,forest_interior_rooms,mountain_interior_rooms" 
+<ROOM id="interior_rooms" insert="town_interior_rooms,jungle_interior_rooms,swamp_interior_rooms,desert_interior_rooms,snow_interior_rooms,plains_interior_rooms,forest_interior_rooms,mountain_interior_rooms" 
 	select="any-1" condition="$roomtag_nodetype='interior' or $roomtag_nodetype='square'">
 	<ROOM class="CaveRoom" condition="$__isdungeontype='true'">
 		<TITLE>$a_streetprefix $_dungeon_hallways_street_name</TITLE>
@@ -459,7 +463,7 @@ Required details: "id" "value"
 	<STRING select="all" insert="dungeon_other_exits" action="APPEND" />
 </STRING>
 
-<ROOM id="leaf_rooms" select="any-1" insert="snow_leaf_rooms,forest_leaf_rooms,mountain_leaf_rooms,jungle_leaf_rooms,swamp_leaf_rooms,desert_leaf_rooms,town_leaf_rooms,prison_leaf_rooms,rats_leaf_rooms" condition="$roomtag_nodetype='leaf'">
+<ROOM id="leaf_rooms" select="any-1" insert="snow_leaf_rooms,plains_leaf_rooms,forest_leaf_rooms,mountain_leaf_rooms,jungle_leaf_rooms,swamp_leaf_rooms,desert_leaf_rooms,town_leaf_rooms,prison_leaf_rooms,rats_leaf_rooms" condition="$roomtag_nodetype='leaf'">
 	<ROOM select="all" condition="$theme='kobolds' or $theme='goblins' or $theme='orcs' or $theme='trolls' or $theme='random'">
 		<ROOM class="CaveRoom" predefine="nasty_picked_race=${l:nasty_race_name}">
 			<TITLE>a $nasty_picked_race nursury</TITLE>
@@ -1481,7 +1485,7 @@ Required details: "id" "value"
 
 <ITEM id="all_random_junk" select="all" insert="dungeon_junk" predefine="level_range=99,theme=random" />
 
-<ITEM id="dungeon_junk" select="all" insert="prison_junk,rats_junk" requires="level_range=int,theme=prison;rats;mountains;forest;snow;jungle;swamp;desert;kobolds;orcs;trolls;goblins;random">
+<ITEM id="dungeon_junk" select="all" insert="prison_junk,rats_junk" requires="level_range=int">
 	<ITEM select="all" condition="$theme='trolls' or $theme='random'">
 		<ITEM class="GenItem" name="some $adj_metal_broken armor scraps" display="$item_name are sitting here" material="$any_cheap_metal" level="$level_range" />
 		<ITEM class="GenResource" name="the bones of a dead aventurer" display="$item_name rest here" material="BONE" level="$level_range" weight="10" />

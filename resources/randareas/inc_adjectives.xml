@@ -119,6 +119,15 @@
 	<STRING>thin</STRING>
 </STRING>
 
+<STRING id="adj_plentiful" select="any-1">
+	<STRING>plentiful</STRING>
+	<STRING>abundant</STRING>
+	<STRING>profuse</STRING>
+	<STRING>copious</STRING>
+	<STRING>ample</STRING>
+	<STRING>bountiful</STRING>
+</STRING>
+
 <STRING id="adj_phys_size_small" select="any-1">
 	<STRING id="adj_phys_size_small_values">
 		<STRING>narrow</STRING>
@@ -378,6 +387,18 @@
 	<STRING>dim</STRING>
 </STRING>
 
+<STRING id="adj_brightwords" select="any-1">
+	<STRING>bright</STRING>
+	<STRING>quiet</STRING>
+	<STRING>sunny</STRING>
+	<STRING>light</STRING>
+	<STRING>blooming</STRING>
+	<STRING>cheerful</STRING>
+	<STRING>happy</STRING>
+	<STRING>cheery</STRING>
+	<STRING>delightful</STRING>
+</STRING>
+
 <STRING id="adj_mustydark" select="any-1">
 	<STRING id="adj_mustydark_values">
 		<STRING>dank</STRING>
@@ -462,6 +483,12 @@
 	<STRING>handsome</STRING><STRING>lofty</STRING><STRING>modest</STRING><STRING>modular</STRING>
 	<STRING>palatial</STRING><STRING>prefabricated</STRING><STRING>rambling</STRING><STRING>secure</STRING>
 	<STRING>split-level</STRING><STRING>sprawling</STRING><STRING>unfurnished</STRING><STRING>vaulted</STRING>
+</STRING>
+
+<STRING id="adj_lush" select="any-1">
+	<STRING>lush</STRING>
+	<STRING>rich</STRING>
+	<STRING>fertile</STRING>
 </STRING>
 
 <STRING id="adj_fancy" select="any-1">

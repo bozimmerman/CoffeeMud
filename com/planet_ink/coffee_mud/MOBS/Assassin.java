@@ -99,6 +99,7 @@ public class Assassin extends GenMob
 		resetToMaxState();
 		recoverPhyStats();
 		recoverCharStats();
+		addBehavior(CMClass.getBehavior("CombatAbilities"));
 	}
 
 }
