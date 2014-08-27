@@ -42,7 +42,7 @@ See example.xml for details.
 	<STRING pickweight=9>city</STRING>
 	<STRING pickweight=5>forest</STRING>
 	<STRING pickweight=5>desert</STRING>
-	<STRING pickweight=5>rocky</STRING>
+	<STRING pickweight=5>mountains</STRING>
 	<STRING pickweight=5>jungle</STRING>
 	<STRING pickweight=5>swamp</STRING>
 	<STRING pickweight=5>snow</STRING>
