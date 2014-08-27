@@ -22,6 +22,16 @@ See example.xml for details.
 <STRING load="/resources/randareas/inc_roomruns.xml" />
 <STRING load="/resources/randareas/inc_adjectives.xml" />
 <STRING load="/resources/randareas/inc_streetnames.xml" />
+<STRING load="/resources/randareas/inc_fantasynames.xml" />
+
+<STRING load="/resources/randareas/inc_forest.xml" />
+<STRING load="/resources/randareas/inc_plains.xml" />
+<STRING load="/resources/randareas/inc_snow.xml" />
+<STRING load="/resources/randareas/inc_jungle.xml" />
+<STRING load="/resources/randareas/inc_swamp.xml" />
+<STRING load="/resources/randareas/inc_mountains.xml" />
+<STRING load="/resources/randareas/inc_desert.xml" />
+<STRING load="/resources/randareas/inc_town.xml" />
 
 <AREA id="random_planet_area" layout="$randomlayout" requires="areaname=$,areasize=int,racename=$" predefine="theme=$randomtheme,level_range=1">
 	<NAME>$areaname</NAME><SIZE>$areasize</SIZE><ATMOSPHERE>$randomatmo</ATMOSPHERE>

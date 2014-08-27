@@ -303,11 +303,11 @@ Required details: "id" "value"
 <STRING load="/resources/randareas/inc_snow.xml" />
 <STRING load="/resources/randareas/inc_jungle.xml" />
 <STRING load="/resources/randareas/inc_swamp.xml" />
+<STRING load="/resources/randareas/inc_mountains.xml" />
+<STRING load="/resources/randareas/inc_desert.xml" />
 <STRING load="/resources/randareas/inc_town.xml" />
 <STRING load="/resources/randareas/inc_prison.xml" />
 <STRING load="/resources/randareas/inc_rats.xml" />
-<STRING load="/resources/randareas/inc_desert.xml" />
-<STRING load="/resources/randareas/inc_mountains.xml" />
 
 <AREA id="maze_dungeon" layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;forest;plains;snow;mountains;jungle;swamp;desert;goblins;orcs;trolls;town;random">
 	<NAME>$areaname</NAME><SIZE>$areasize</SIZE>
