@@ -404,7 +404,7 @@ public interface XMLLibrary extends CMLibrary
 			final StringBuilder str=new StringBuilder("");
 			str.append("<").append(tag);
 			for(final String parm : parms.keySet())
-				str.append(" ").append(parm).append("=\"").append(parms.get(parms)).append("\"");
+				str.append(" ").append(parm).append("=\"").append(parms.get(parm)).append("\"");
 			str.append(">").append(value).append("</").append(tag).append(">");
 			return str.toString();
 		}

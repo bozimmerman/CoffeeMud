@@ -37,9 +37,9 @@
 				<STRING condition="$_jungle_path_roomtype=1">${c:adj_phys_size_tall} trees curve over the $_jungle_path_type like a canopy, blocking out most of the sky. </STRING>
 				<STRING condition="$_jungle_path_roomtype=1">The foliage is light enough here to make it easy to find your way along the $_jungle_path_type. </STRING>
 				<STRING condition="$_jungle_path_roomtype=0">The foliage of $areaname are $adj_large and green, $adj_cramped together in $adj_impassable walls. </STRING>
-				<STRING condition="$_jungle_path_roomtype=0">You $verb_jungle_tread your way through the $noun_jungle_brush of the $adj_densedark_words jungle. </STRING>
+				<STRING condition="$_jungle_path_roomtype=0">You $verb_jungle_tread your way through the $noun_jungle_brush of the $adj_densedark_word jungle. </STRING>
 				<STRING condition="$_jungle_path_roomtype=0">The jungle surrounds you, $adj_cramped ${any_tree}s making some directions $adj_impassable. </STRING>
-				<STRING condition="$_jungle_path_roomtype=0">You feel a $noun_jungle_wind blow through the $adj_dense foliage of the $adj_densedark_words jungle. </STRING>
+				<STRING condition="$_jungle_path_roomtype=0">You feel a $noun_jungle_wind blow through the $adj_dense foliage of the $adj_densedark_word jungle. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING condition="$_jungle_path_roomtype=1">The $_jungle_path_type continues $roomrun_desc_long.</STRING>
@@ -47,7 +47,7 @@
 				<STRING condition="$_jungle_path_roomtype=1">The $_jungle_path_type runs $roomrun_desc_long.</STRING>
 				<STRING condition="$_jungle_path_roomtype=1">The faint $_jungle_path_type goes $roomrun_desc_long.</STRING>
 				<STRING condition="$_jungle_path_roomtype=0">It looks like you might pick your way $roomexits_desc_long.</STRING>
-				<STRING condition="$_jungle_path_roomtype=0">Openings in the $adj_densedark_words $noun_jungle_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING condition="$_jungle_path_roomtype=0">Openings in the $adj_densedark_word $noun_jungle_brush can be seen $roomexits_desc_long.</STRING>
 				<STRING condition="$_jungle_path_roomtype=0">You can $verb_jungle_tread on through $roomexits_desc_long.</STRING>
 				<STRING condition="$_jungle_path_roomtype=0">You can continue $roomexits_desc_long.</STRING>
 			</STRING>
@@ -77,13 +77,13 @@
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING>The $adj_large overgrown folliage of $areaname are $adj_cramped in $adj_impassable walls. </STRING>
-				<STRING>You $verb_jungle_tread your way through the $noun_jungle_brush of the $adj_densedark_words jungle. </STRING>
+				<STRING>You $verb_jungle_tread your way through the $noun_jungle_brush of the $adj_densedark_word jungle. </STRING>
 				<STRING>The jungle surrounds you, $adj_cramped ${any_tree}s making some directions $adj_impassable. </STRING>
-				<STRING>You feel a very slight $noun_jungle_wind waft through the $adj_phys_size_tall trees of the $adj_densedark_words jungle. </STRING>
+				<STRING>You feel a very slight $noun_jungle_wind waft through the $adj_phys_size_tall trees of the $adj_densedark_word jungle. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING>It looks like you might pick your way $roomexits_desc_long.</STRING>
-				<STRING>Openings in the $adj_densedark_words $noun_jungle_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING>Openings in the $adj_densedark_word $noun_jungle_brush can be seen $roomexits_desc_long.</STRING>
 				<STRING>You can $verb_jungle_tread on through $roomexits_desc_long.</STRING>
 				<STRING>You can continue $roomexits_desc_long.</STRING>
 			</STRING>

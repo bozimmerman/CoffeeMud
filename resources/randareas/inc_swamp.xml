@@ -34,20 +34,20 @@
 			<STRING select="any-1" action="APPEND">
 				<STRING condition="$_swamp_path_roomtype=1">The $_swamp_path_type is crossed by $adj_dense reeds and plants. ${c:adj_sparse} trees are all around. </STRING>
 				<STRING condition="$_swamp_path_roomtype=1">The $adj_soft_ground ground make the $_swamp_path_type easier to follow here. </STRING>
-				<STRING condition="$_swamp_path_roomtype=1">${c:adj_sparse} ${adj_phys_size_tall} trees curve over the $_swamp_path_type muck, the $adj_densedark_words air suffocating you. </STRING>
+				<STRING condition="$_swamp_path_roomtype=1">${c:adj_sparse} ${adj_phys_size_tall} trees curve over the $_swamp_path_type muck, the $adj_densedark_word air suffocating you. </STRING>
 				<STRING condition="$_swamp_path_roomtype=1">The bog is $adj_dryhard enough here to make it easy to $verb_swamp_tread your way along the $_swamp_path_type. </STRING>
 				<STRING condition="$_swamp_path_roomtype=0">The reeds and trees of $areaname are $adj_large and lush here, $adj_cramped together in $adj_impassable walls. </STRING>
-				<STRING condition="$_swamp_path_roomtype=0">You $verb_swamp_tread your way through the $noun_swamp_brush of the $adj_densedark_words swamp. </STRING>
+				<STRING condition="$_swamp_path_roomtype=0">You $verb_swamp_tread your way through the $noun_swamp_brush of the $adj_densedark_word swamp. </STRING>
 				<STRING condition="$_swamp_path_roomtype=0">The swamp surrounds you, $adj_cramped ${any_tree}s and weeds making some directions $adj_impassable. </STRING>
-				<STRING condition="$_swamp_path_roomtype=0">You feel a $noun_swamp_wind blow over the bog of the $adj_densedark_words swamp. </STRING>
+				<STRING condition="$_swamp_path_roomtype=0">You feel a $noun_swamp_wind blow over the bog of the $adj_densedark_word swamp. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING condition="$_swamp_path_roomtype=1">The $_swamp_path_type continues $roomrun_desc_long.</STRING>
-				<STRING condition="$_swamp_path_roomtype=1">Through the $adj_densedark_words air you can see the $_swamp_path_type running $roomrun_desc_long.</STRING>
+				<STRING condition="$_swamp_path_roomtype=1">Through the $adj_densedark_word air you can see the $_swamp_path_type running $roomrun_desc_long.</STRING>
 				<STRING condition="$_swamp_path_roomtype=1">The $_swamp_path_type runs $roomrun_desc_long.</STRING>
 				<STRING condition="$_swamp_path_roomtype=1">The faint $_swamp_path_type goes $roomrun_desc_long.</STRING>
 				<STRING condition="$_swamp_path_roomtype=0">It looks like you might pick your way $roomexits_desc_long.</STRING>
-				<STRING condition="$_swamp_path_roomtype=0">Openings in the $adj_densedark_words $noun_swamp_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING condition="$_swamp_path_roomtype=0">Openings in the $adj_densedark_word $noun_swamp_brush can be seen $roomexits_desc_long.</STRING>
 				<STRING condition="$_swamp_path_roomtype=0">You can $verb_swamp_tread on through $roomexits_desc_long.</STRING>
 				<STRING condition="$_swamp_path_roomtype=0">You can continue $roomexits_desc_long.</STRING>
 			</STRING>
@@ -70,20 +70,20 @@
 		<DESCRIPTION>$swamp_interior_desc</DESCRIPTION>
 		<STRING id="swamp_interior_desc" select="all">
 			<STRING select="any-1" action="PREPEND">
-				<STRING>A $adj_densedark_words patch of foliage in ${l:room_title}. </STRING>
+				<STRING>A $adj_densedark_word patch of foliage in ${l:room_title}. </STRING>
 				<STRING>A  $adj_densedark_word corner of ${l:room_title}. </STRING>
 				<STRING>The ${swamp_nouns} surrounds you. </STRING>
 				<STRING>The ${swamp_nouns} is all around you. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING>The $adj_large overgrown foliage of $areaname are $adj_cramped in $adj_impassable walls. </STRING>
-				<STRING>You $verb_swamp_tread your way through the $noun_swamp_brush of the $adj_densedark_words swamp. </STRING>
+				<STRING>You $verb_swamp_tread your way through the $noun_swamp_brush of the $adj_densedark_word swamp. </STRING>
 				<STRING>The swamp surrounds you, $adj_cramped ${any_tree}s and reeds making some directions $adj_impassable. </STRING>
-				<STRING>You feel a very slight $noun_swamp_wind waft through the bog of the $adj_densedark_words swamp. </STRING>
+				<STRING>You feel a very slight $noun_swamp_wind waft through the bog of the $adj_densedark_word swamp. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING>It looks like you might pick your way $roomexits_desc_long.</STRING>
-				<STRING>Openings in the $adj_densedark_words $noun_swamp_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING>Openings in the $adj_densedark_word $noun_swamp_brush can be seen $roomexits_desc_long.</STRING>
 				<STRING>You can $verb_swamp_tread on through $roomexits_desc_long.</STRING>
 				<STRING>You can continue $roomexits_desc_long.</STRING>
 			</STRING>

@@ -77,7 +77,7 @@
 	<STRING>barricaded</STRING>
 </STRING>
 
-<STRING id="adj_densedark_words" select="any-1">
+<STRING id="adj_densedark_word" select="any-1">
 	<STRING>dense</STRING>
 	<STRING>deep</STRING>
 	<STRING>dark</STRING>

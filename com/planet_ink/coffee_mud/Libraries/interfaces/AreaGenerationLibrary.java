@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Libraries.layouts.AbstractLayout;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 /*
    Copyright 2000-2014 Bo Zimmerman
@@ -46,7 +47,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 	public LayoutManager getLayoutManager(String named);
 	public void defineReward(Modifiable E, List<String> ignoreStats, String defPrefix, XMLLibrary.XMLpiece piece, String value, Map<String,Object> defined) throws CMException;
 	public void preDefineReward(Modifiable E, List<String> ignoreStats, String defPrefix, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException;
-	public XMLLibrary.XMLpiece processLikeParm(String tagName, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException;
+	public List<XMLpiece> getAllChoices(String tagName, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException;
 
 	public static interface LayoutManager
 	{

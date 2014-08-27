@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
 import com.planet_ink.coffee_mud.MOBS.GenShopkeeper;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -433,30 +434,32 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 						definedIDs.put("LEVEL_RANGE", (msg.source().basePhyStats().level()-3)+"?"+(msg.source().basePhyStats().level()+3));
 					if(!definedIDs.containsKey("AGGROCHANCE"))
 						definedIDs.put("AGGROCHANCE", ""+msg.source().basePhyStats().level());
-					XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)definedIDs.get(idName);
+					try
+					{
+						XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)definedIDs.get(idName);
+						final List<XMLpiece> pieces = CMLib.percolator().getAllChoices(piece.tag, piece, definedIDs);
+						if(pieces.size()>0)
+							piece=pieces.get(CMLib.dice().roll(1, pieces.size(), -1));
 //TODO: fix this
 //FIXME: this can maybe pick town.
-					if(!definedIDs.containsKey("THEME"))
-					{
-						final Map<String,String> unfilled = CMLib.percolator().getUnfilledRequirements(definedIDs,piece);
-						final List<String> themes = CMParms.parseCommas(unfilled.get("THEME"), true);
-						if(themes.size()>0)
-							definedIDs.put("THEME", themes.get(CMLib.dice().roll(1, themes.size(), -1)).toUpperCase().trim());
-					}
-					try
-					{
-						CMLib.percolator().checkRequirements(piece, definedIDs);
-					}
-					catch(final CMException cme)
-					{
-						msg.source().tell(_("Required ids for @x1 were missing: @x2",idName,cme.getMessage()));
-						return false;
-					}
-					for(final MOB M : myGroup)
-						M.tell(_("^x------------------------------------------------------\n\rPreparing to enter @x1, please stand by...\n\r------------------------------------------------------^N^.",Name()));
-					try
-					{
-						piece=CMLib.percolator().processLikeParm("AREA", piece, definedIDs);
+						if(!definedIDs.containsKey("THEME"))
+						{
+							final Map<String,String> unfilled = CMLib.percolator().getUnfilledRequirements(definedIDs,piece);
+							final List<String> themes = CMParms.parseCommas(unfilled.get("THEME"), true);
+							if(themes.size()>0)
+								definedIDs.put("THEME", themes.get(CMLib.dice().roll(1, themes.size(), -1)).toUpperCase().trim());
+						}
+						try
+						{
+							CMLib.percolator().checkRequirements(piece, definedIDs);
+						}
+						catch(final CMException cme)
+						{
+							msg.source().tell(_("Required ids for @x1 were missing: @x2",idName,cme.getMessage()));
+							return false;
+						}
+						for(final MOB M : myGroup)
+							M.tell(_("^x------------------------------------------------------\n\rPreparing to enter @x1, please stand by...\n\r------------------------------------------------------^N^.",Name()));
 						if(!CMLib.percolator().fillInArea(piece, definedIDs, newA, direction))
 						{
 							msg.source().tell(_("Failed to enter the new area.  Try again later."));
