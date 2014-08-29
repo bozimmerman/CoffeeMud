@@ -132,6 +132,15 @@ force to be capitalized (first letter upper, rest lower).
 
 Special Tag values:
 $SYSTEM_RANDOM_NAME:[NUMX]-[NUMY] generate a random name with between NUMX and NUMY syllables.
+$STAT:[STATNAME] embed the value from another stat on the same object.  STATs are things like
+  NAME, DISPLAY, DESCRIPTION, etc...
+$STAT:[PATH]:[TO]:[ANOTHER]:[OBJECT]:[STATNAME} embed the value from another objects stat, potentially
+  in a different room. Where path-to-another-object may be: ROOM to refer to the room containing
+  the object, NORTH,SOUTH,EAST,WEST,UP,DOWN,NORTHEAST..etc.. to specify a room in a specific 
+  direction, ANYROOM to specify any room connected to this one, MOB to specify any mob in the
+  room, ITEM to specify any item in the room.  For example a string such as
+  "To the east is the residence of ${STAT:ROOM:EAST:MOB:NAME}" would embed the name of a mob
+  in a room to the east of the current room.
 
 Objects:
 Each basic tag type may contain other basic tag types to help define them.  For instance,
