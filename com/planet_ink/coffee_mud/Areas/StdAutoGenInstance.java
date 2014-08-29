@@ -465,6 +465,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 							msg.source().tell(_("Failed to enter the new area.  Try again later."));
 							return false;
 						}
+						CMLib.percolator().satisfyPostProcess(definedIDs);
 					}
 					catch(final CMException cme)
 					{

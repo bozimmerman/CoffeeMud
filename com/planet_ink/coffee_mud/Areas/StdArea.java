@@ -1982,7 +1982,8 @@ public class StdArea implements Area
 												  "INVRESETRATE",
 												  "IGNOREMASK",
 												  "PRICEMASKS",
-												  "ATMOSPHERE"
+												  "ATMOSPHERE",
+												  "AUTHOR"
 												  };
 	private static String[] codes=null;
 	
@@ -2016,6 +2017,7 @@ public class StdArea implements Area
 		case 10: return ignoreMask();
 		case 11: return CMParms.toStringList(itemPricingAdjustments());
 		case 12: return ""+getAtmosphereCode();
+		case 13: return getAuthorID();
 		default: return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
@@ -2065,6 +2067,7 @@ public class StdArea implements Area
 				setAtmosphere(matCode);
 			break;
 		}
+		case 13: setAuthorID(val); break;
 		default: CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val); break;
 		}
 	}

@@ -186,7 +186,7 @@ public class Generate extends StdCommand
 			{
 				CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
 				CMLib.percolator().defineReward(null, null, null, piece, piece.value,definedIDs);
-				final String s=CMLib.percolator().findString("STRING", piece, definedIDs);
+				final String s=CMLib.percolator().findStringAlways("STRING", piece, definedIDs);
 				if(s!=null)
 					V.addElement(s);
 				break;
@@ -221,6 +221,7 @@ public class Generate extends StdCommand
 			default:
 				break;
 			}
+			CMLib.percolator().satisfyPostProcess(definedIDs);
 		}
 		catch(final CMException cex)
 		{
