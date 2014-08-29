@@ -186,7 +186,7 @@ public class Generate extends StdCommand
 			{
 				CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
 				CMLib.percolator().defineReward(null, null, null, piece, piece.value,definedIDs);
-				final String s=CMLib.percolator().findStringAlways("STRING", piece, definedIDs);
+				final String s=CMLib.percolator().findString("STRING", piece, definedIDs);
 				if(s!=null)
 					V.addElement(s);
 				break;
@@ -194,6 +194,8 @@ public class Generate extends StdCommand
 			case AREA:
 				CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
 				CMLib.percolator().defineReward(null, null, null, piece, piece.value,definedIDs);
+				definedIDs.put("ROOMTAG_NODEGATEEXIT", Directions.getDirectionName(Directions.getOpDirectionCode(direction)));
+				definedIDs.put("ROOMTAG_GATEEXITROOM", mob.location());
 				final Area A=CMLib.percolator().findArea(piece, definedIDs, direction);
 				if(A!=null)
 					V.addElement(A);
@@ -208,6 +210,8 @@ public class Generate extends StdCommand
 				final Exit[] exits=new Exit[Directions.NUM_DIRECTIONS()];
 				CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
 				CMLib.percolator().defineReward(null, null, null, piece, piece.value,definedIDs);
+				definedIDs.put("ROOMTAG_NODEGATEEXIT", Directions.getDirectionName(Directions.getOpDirectionCode(direction)));
+				definedIDs.put("ROOMTAG_GATEEXITROOM", mob.location());
 				final Room R=CMLib.percolator().buildRoom(piece, definedIDs, exits, direction);
 				if(R!=null)
 					V.addElement(R);
@@ -221,67 +225,75 @@ public class Generate extends StdCommand
 			default:
 				break;
 			}
-			CMLib.percolator().satisfyPostProcess(definedIDs);
-		}
-		catch(final CMException cex)
-		{
-			mob.tell(_("Unable to generate: @x1",cex.getMessage()));
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
-				Log.debugOut("Generate",cex);
-			return false;
-		}
-		if(V.size()==0)
-			mob.tell(_("Nothing generated."));
-		else
-		for(int v=0;v<V.size();v++)
-			if(V.elementAt(v) instanceof MOB)
-			{
-				((MOB)V.elementAt(v)).bringToLife(mob.location(),true);
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 appears.",((MOB)V.elementAt(v)).name()));
-				Log.sysOut("Generate",mob.Name()+" generated mob "+((MOB)V.elementAt(v)).name());
-			}
+			if(V.size()==0)
+				mob.tell(_("Nothing generated."));
 			else
-			if(V.elementAt(v) instanceof Item)
+			for(int v=0;v<V.size();v++)
 			{
-				mob.location().addItem((Item)V.elementAt(v));
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 appears.",((Item)V.elementAt(v)).name()));
-				Log.sysOut("Generate",mob.Name()+" generated item "+((Item)V.elementAt(v)).name());
-			}
-			else
-			if(V.elementAt(v) instanceof String)
-				mob.tell((String)V.elementAt(v));
-			else
-			if(V.elementAt(v) instanceof Room)
-			{
-				final Room R=(Room)V.elementAt(v);
-				createNewPlace(mob,mob.location(),R,direction);
-				CMLib.database().DBCreateRoom(R);
-				CMLib.database().DBUpdateExits(R);
-				CMLib.database().DBUpdateItems(R);
-				CMLib.database().DBUpdateMOBs(R);
-				Log.sysOut("Generate",mob.Name()+" generated room "+R.roomID());
-			}
-			else
-			if(V.elementAt(v) instanceof Area)
-			{
-				final Area A=(Area)V.elementAt(v);
-				CMLib.map().addArea(A);
-				CMLib.database().DBCreateArea(A);
-				Room R=A.getRoom(A.Name()+"#0");
-				if(R==null) R=A.getFilledProperMap().nextElement();
-				createNewPlace(mob,mob.location(),R,direction);
-				mob.tell(_("Saving remaining rooms for area '@x1'...",A.name()));
-				for(final Enumeration e=A.getFilledProperMap();e.hasMoreElements();)
+				if(V.elementAt(v) instanceof MOB)
 				{
-					R=(Room)e.nextElement();
+					((MOB)V.elementAt(v)).bringToLife(mob.location(),true);
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 appears.",((MOB)V.elementAt(v)).name()));
+					CMLib.percolator().postProcess(definedIDs);
+					Log.sysOut("Generate",mob.Name()+" generated mob "+((MOB)V.elementAt(v)).name());
+				}
+				else
+				if(V.elementAt(v) instanceof Item)
+				{
+					mob.location().addItem((Item)V.elementAt(v));
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 appears.",((Item)V.elementAt(v)).name()));
+					CMLib.percolator().postProcess(definedIDs);
+					Log.sysOut("Generate",mob.Name()+" generated item "+((Item)V.elementAt(v)).name());
+				}
+				else
+				if(V.elementAt(v) instanceof String)
+				{
+					CMLib.percolator().postProcess(definedIDs);
+					mob.tell((String)V.elementAt(v));
+				}
+				else
+				if(V.elementAt(v) instanceof Room)
+				{
+					final Room R=(Room)V.elementAt(v);
+					createNewPlace(mob,mob.location(),R,direction);
+					CMLib.percolator().postProcess(definedIDs);
 					CMLib.database().DBCreateRoom(R);
 					CMLib.database().DBUpdateExits(R);
 					CMLib.database().DBUpdateItems(R);
 					CMLib.database().DBUpdateMOBs(R);
+					Log.sysOut("Generate",mob.Name()+" generated room "+R.roomID());
 				}
-				mob.tell(_("Done saving remaining rooms for area '@x1'",A.name()));
-				Log.sysOut("Generate",mob.Name()+" generated area "+A.name());
+				else
+				if(V.elementAt(v) instanceof Area)
+				{
+					final Area A=(Area)V.elementAt(v);
+					CMLib.map().addArea(A);
+					CMLib.database().DBCreateArea(A);
+					Room R=A.getRoom(A.Name()+"#0");
+					if(R==null) R=A.getFilledProperMap().nextElement();
+					createNewPlace(mob,mob.location(),R,direction);
+					CMLib.percolator().postProcess(definedIDs);
+					mob.tell(_("Saving remaining rooms for area '@x1'...",A.name()));
+					for(final Enumeration e=A.getFilledProperMap();e.hasMoreElements();)
+					{
+						R=(Room)e.nextElement();
+						CMLib.database().DBCreateRoom(R);
+						CMLib.database().DBUpdateExits(R);
+						CMLib.database().DBUpdateItems(R);
+						CMLib.database().DBUpdateMOBs(R);
+					}
+					mob.tell(_("Done saving remaining rooms for area '@x1'",A.name()));
+					Log.sysOut("Generate",mob.Name()+" generated area "+A.name());
+				}
 			}
+		}
+		catch(final CMException cex)
+		{
+			mob.tell(_("Unable to fully generate: @x1",cex.getMessage()));
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
+				Log.debugOut("Generate",cex);
+			return false;
+		}
 		Log.sysOut("Generate",finalLog);
 		return true;
 	}

@@ -706,3 +706,14 @@
 	<STRING pickweight=1 define="dragon_alignment=10000">silver</STRING>
 	<STRING pickweight=1 define="dragon_alignment=10000">gold</STRING>
 </STRING>
+
+<STRING id="dungeon_leaf_exit" select="any-1">
+	<STRING id="dungeon_leaf_exits" select="all">
+		<STRING>The exit is to the $roomexits_desc_long.</STRING>
+		<STRING>The way out of here is $roomexits_desc_long.</STRING>
+		<STRING>The exit to the $roomexits_desc_long is the only way out.</STRING>
+		<STRING>The only way out of here is $roomexits_desc_long.</STRING>
+		<STRING condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</STRING>
+	</STRING>
+</STRING>
+

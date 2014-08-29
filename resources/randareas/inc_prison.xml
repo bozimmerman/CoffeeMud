@@ -635,6 +635,7 @@
 		<STRING>The exit to the $roomexits_desc_long is the only way out.</STRING>
 		<STRING>The only way out of here is $roomexits_desc_long.</STRING>
 		<STRING>Escape is to the $roomexits_desc_long.</STRING>
+		<STRING condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</STRING>
 	</STRING>
 </STRING>
 

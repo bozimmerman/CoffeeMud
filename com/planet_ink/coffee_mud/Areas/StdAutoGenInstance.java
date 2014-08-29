@@ -460,12 +460,14 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 						}
 						for(final MOB M : myGroup)
 							M.tell(_("^x------------------------------------------------------\n\rPreparing to enter @x1, please stand by...\n\r------------------------------------------------------^N^.",Name()));
+						definedIDs.put("ROOMTAG_NODEGATEEXIT", Directions.getDirectionName(Directions.getOpDirectionCode(direction)));
+						definedIDs.put("ROOMTAG_GATEEXITROOM", msg.source().location());
 						if(!CMLib.percolator().fillInArea(piece, definedIDs, newA, direction))
 						{
 							msg.source().tell(_("Failed to enter the new area.  Try again later."));
 							return false;
 						}
-						CMLib.percolator().satisfyPostProcess(definedIDs);
+						CMLib.percolator().postProcess(definedIDs);
 					}
 					catch(final CMException cme)
 					{

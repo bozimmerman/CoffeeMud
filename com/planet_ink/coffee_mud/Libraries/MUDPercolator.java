@@ -162,7 +162,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				final String val = findString(E,ignoreStats,defPrefix,tagName,piece,defined);
 				E.setStat(statName, val);
 				if((defPrefix!=null)&&(defPrefix.length()>0))
-					addDefinition(defPrefix+defPrefix,val,defined);
+					addDefinition(defPrefix+tagName,val,defined);
 				return val;
 			}
 		});
@@ -235,7 +235,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void satisfyPostProcess(final Map<String,Object> defined) throws CMException
+	public void postProcess(final Map<String,Object> defined) throws CMException
 	{
 		final List<PostProcessAttempt> posties=(List<PostProcessAttempt>)defined.get(MUDPercolator.POST_PROCESSING_STAT_SETS);
 		if(posties == null)
@@ -522,6 +522,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		Map<String,Object> groupDefined = groupDefinitions.get(magicGroup);
 		final Room magicRoom = processRoom(A,direction,piece,magicRoomNode,groupDefined);
+		for(Map<String,Object> otherDefineds : groupDefinitions.values())
+		{
+			otherDefineds.remove("ROOMTAG_NODEGATEEXIT");
+			otherDefineds.remove("ROOMTAG_GATEEXITROOM");
+		}
 
 		//now generate the rooms and add them to the area
 		for(final List<LayoutNode> group : roomGroups)
@@ -656,6 +661,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		R.setArea(A);
 		A.addProperRoom(R);
 		node.setRoom(R);
+		groupDefined.remove("ROOMTAG_NODEGATEEXIT");
+		groupDefined.remove("ROOMTAG_GATEEXITROOM");
 		for(final LayoutTags key : node.tags().keySet())
 			groupDefined.remove("ROOMTAG_"+key.toString().toUpperCase());
 		for(final Integer linkDir : node.links().keySet())
@@ -1960,6 +1967,29 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				return CMLib.login().generateRandomName(CMath.s_int(split[0]), CMath.s_int(split[1]));
 			throw new CMException("Bad random name range in '"+tagName+"' on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
 		}
+		else
+		if(tagName.equals("ROOM_AREAGATE"))
+		{
+			if(E instanceof Environmental)
+			{
+				final Room R=CMLib.map().roomLocation((Environmental)E);
+				if(R!=null)
+				{
+					boolean foundOne=false;
+					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+					{
+						final Room R2=R.getRoomInDir(d);
+						foundOne=(R2!=null) || foundOne;
+						if((R2!=null) && (R2.roomID().length()>0) && (R.getArea()!=R2.getArea()))
+							return Directions.getDirectionName(d);
+					}
+					if(!foundOne)
+						throw new PostProcessException("No exits at all on on object "+R.roomID()+" in variable '"+tagName+"'");
+				}
+			}
+			return "";
+		}
+		
 		final String asParm = CMLib.xml().getParmValue(piece.parms,tagName);
 		if(asParm != null) return strFilter(E,ignoreStats,defPrefix,asParm,piece, defined);
 
@@ -2437,7 +2467,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					throw new CMException("Invalid math expression '$"+expression+"' in str '"+str+"'");
 			}
 			else
-			if(V.var.toUpperCase().startsWith("STAT:") && (E!=null) && (E.isStat(V.var.substring(5))))
+			if(V.var.toUpperCase().startsWith("STAT:") && (E!=null))
 			{
 				final String[] parts=V.var.toUpperCase().split(":");
 				if(E instanceof Environmental)
@@ -2489,6 +2519,27 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							E3=R.getItem(CMLib.dice().roll(1, R.numItems(), -1));
 						}
 						else
+						if(parts[p].equals("AREAGATE"))
+						{
+							if(R==null)
+								throw new PostProcessException("Unkown room on object "+E2.ID()+" in variable '"+V.var+"'");
+							final List<Room> dirs=new ArrayList<Room>();
+							for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+							{
+								final Room R2=R.getRoomInDir(d);
+								if((R2!=null) && (R2.roomID().length()>0) && (R.getArea()!=R2.getArea()))
+									dirs.add(R.getRoomInDir(d));
+							}
+							if(dirs.size()==0)
+							{
+								if(defined.get("ROOMTAG_GATEEXITROOM") instanceof Room)
+									dirs.add((Room)defined.get("ROOMTAG_GATEEXITROOM"));
+								if(dirs.size()==0)
+									throw new PostProcessException("No areagates on object "+E2.ID()+" in variable '"+V.var+"'");
+							}
+							E3=dirs.get(CMLib.dice().roll(1, dirs.size(), -1));
+						}
+						else
 							throw new PostProcessException("Unkown stat code '"+parts[p]+"' on object "+E2.ID()+" in variable '"+V.var+"'");
 						if(E3==null)
 							throw new PostProcessException("Unkown '"+parts[p]+"' on object "+E2.ID()+" in variable '"+V.var+"'");
@@ -2497,7 +2548,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					}
 					E=E2;
 				}
-				val=E.getStat(parts[parts.length-1]);
+				if (E.isStat(parts[parts.length-1]))
+					val=E.getStat(parts[parts.length-1]);
+				else
+					throw new CMException("Unkown stat code '"+parts[parts.length-1]+"' on object "+E+" in variable '"+V.var+"'");
 			}
 			else
 				val = defined.get(V.var.toUpperCase().trim());
@@ -2548,7 +2602,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	}
 
 	@Override
-	public String findStringAlways(String tagName, XMLpiece piece, Map<String, Object> defined) throws CMException
+	public String findString(String tagName, XMLpiece piece, Map<String, Object> defined) throws CMException
+	{
+		return findStringAlways(null,null,null,tagName,piece,defined);
+	}
+	
+	protected String findStringAlways(String tagName, XMLpiece piece, Map<String, Object> defined) throws CMException
 	{
 		return findStringAlways(null,null,null,tagName,piece,defined);
 	}

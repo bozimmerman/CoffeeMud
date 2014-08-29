@@ -20,6 +20,7 @@
 		<TITLE>(a(n)) $_forest_path_name</TITLE>
 		<DESCRIPTION>$forest_street_desc</DESCRIPTION>
 		<STRING id="forest_street_desc" select="all">
+			<STRING action="PREPEND" condition="$ROOMTAG_NODEGATEEXIT != ''">You are at the entrance to $areaname. ${c:STAT:AREAGATE:DISPLAY} is to the ${l:ROOMTAG_NODEGATEEXIT}. </STRING>
 			<STRING select="any-1" action="PREPEND">
 				<STRING condition="$_forest_path_roomtype=1">You are walking along (a(n)) ${l:_forest_path_name}. </STRING>
 				<STRING condition="$_forest_path_roomtype=1">You are on (a(n)) ${l:_forest_path_name}. </STRING>
@@ -86,6 +87,8 @@
 				<STRING>Openings in the $adj_densedark_word $noun_forest_brush can be seen $roomexits_desc_long.</STRING>
 				<STRING>You can $verb_forest_tread on through $roomexits_desc_long.</STRING>
 				<STRING>You can continue $roomexits_desc_long.</STRING>
+				<STRING condition="$roomtag_nodetype='leaf'">It looks like you might pick your way $roomexits_desc_long to ${l:STAT:ANYROOM:DISPLAY}.</STRING>
+				<STRING condition="$roomtag_nodetype='leaf'">You can $verb_forest_tread on through $roomexits_desc_long to ${l:STAT:ANYROOM:DISPLAY}.</STRING>
 			</STRING>
 		</STRING>
 		<EXIT class="Open" />

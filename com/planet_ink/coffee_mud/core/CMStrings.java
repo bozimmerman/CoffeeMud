@@ -1422,41 +1422,62 @@ public class CMStrings
 	{
 		if ((token == null)||(token.length()==0))
 			return null;
-		if (token.startsWith("\""))
-			return StringExpToken.token(STRING_EXP_TOKEN_STRCONST, token.substring(1, token.length() - 1));
-		if (token.startsWith("\'"))
-			return StringExpToken.token(STRING_EXP_TOKEN_STRCONST, token.substring(1, token.length() - 1));
-		if (token.startsWith("`"))
-			return StringExpToken.token(STRING_EXP_TOKEN_STRCONST, token.substring(1, token.length() - 1));
-		if (token.equals("("))
-			return StringExpToken.token(STRING_EXP_TOKEN_OPENPAREN, token);
-		if (token.equals(")"))
-			return StringExpToken.token(STRING_EXP_TOKEN_CLOSEPAREN, token);
-		if (token.equalsIgnoreCase("IN"))
-			return StringExpToken.token(STRING_EXP_TOKEN_EVALUATOR, token);
-		if (token.equals("+")||token.equals("-")||token.equals("*")||token.equals("/")||token.equals("?"))
-			return StringExpToken.token(STRING_EXP_TOKEN_COMBINER, token);
-		if (token.equals("!")||token.equalsIgnoreCase("NOT"))
-			return StringExpToken.token(STRING_EXP_TOKEN_NOT, token);
-		if(Character.isDigit(token.charAt(0)))
-			return StringExpToken.token(STRING_EXP_TOKEN_NUMCONST, token);
-		if (token.startsWith("$"))
+		switch(token.charAt(0))
 		{
-			token = token.substring(1);
-			Object value = variables.get(token);
-			if(!(value instanceof String))
-				value = variables.get(token.toUpperCase().trim());
-			if((value == null)&&(emptyVars))
-				value="";
-			else
-			if(!(value instanceof String))
-				throw new Exception("Undefined variable found: $" + token);
-			if((value.toString().length()>0)&&(!CMath.isNumber(value.toString())))
-				return StringExpToken.token(STRING_EXP_TOKEN_STRCONST, value.toString());
-			return StringExpToken.token(STRING_EXP_TOKEN_UKNCONST, value.toString());
+			case '\"':
+				return StringExpToken.token(STRING_EXP_TOKEN_STRCONST, token.substring(1, token.length() - 1));
+			case '\'':
+				return StringExpToken.token(STRING_EXP_TOKEN_STRCONST, token.substring(1, token.length() - 1));
+			case '`':
+				return StringExpToken.token(STRING_EXP_TOKEN_STRCONST, token.substring(1, token.length() - 1));
+			case '(':
+				if(token.length()==1)
+					return StringExpToken.token(STRING_EXP_TOKEN_OPENPAREN, token);
+				break;
+			case ')':
+				if(token.length()==1)
+					return StringExpToken.token(STRING_EXP_TOKEN_CLOSEPAREN, token);
+				break;
+			case 'I':
+				if (token.equalsIgnoreCase("IN"))
+					return StringExpToken.token(STRING_EXP_TOKEN_EVALUATOR, token);
+				break;
+			case '+': case '-': case '*': case '/': case '?':
+				if(token.length()==1)
+					return StringExpToken.token(STRING_EXP_TOKEN_COMBINER, token);
+				break;
+			case '!':
+				if(token.length()==1)
+					return StringExpToken.token(STRING_EXP_TOKEN_NOT, token);
+				break;
+			case 'N':
+				if (token.equalsIgnoreCase("NOT"))
+					return StringExpToken.token(STRING_EXP_TOKEN_NOT, token);
+				break;
+			case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':  
+				return StringExpToken.token(STRING_EXP_TOKEN_NUMCONST, token);
+			case '$':
+			{
+				token = token.substring(1);
+				Object value = variables.get(token);
+				if(!(value instanceof String))
+					value = variables.get(token.toUpperCase().trim());
+				if((value == null)&&(emptyVars))
+					value="";
+				else
+				if(!(value instanceof String))
+					throw new Exception("Undefined variable found: $" + token);
+				if((value.toString().length()>0)&&(!CMath.isNumber(value.toString())))
+					return StringExpToken.token(STRING_EXP_TOKEN_STRCONST, value.toString());
+				return StringExpToken.token(STRING_EXP_TOKEN_UKNCONST, value.toString());
+			}
+			case '_': case '|': case '&':
+				return StringExpToken.token(STRING_EXP_TOKEN_WORD, token);
+			default:
+				if (Character.isLetterOrDigit(token.charAt(0)))
+					return StringExpToken.token(STRING_EXP_TOKEN_WORD, token);
+				break;
 		}
-		if ((token.charAt(0) == '_') || (Character.isLetterOrDigit(token.charAt(0))) || (token.charAt(0) == '|') || (token.charAt(0) == '&'))
-			return StringExpToken.token(STRING_EXP_TOKEN_WORD, token);
 		return StringExpToken.token(STRING_EXP_TOKEN_EVALUATOR, token);
 	}
 
@@ -1599,39 +1620,43 @@ public class CMStrings
 		}
 		final StringExpToken result=new StringExpToken();
 		result.type=STRING_EXP_TOKEN_NUMCONST;
-		if(token.value.equals("+"))
+		if(token.value.length()==1)
 		{
-			index[0] = i[0];
-			result.numValue=leftValue.numValue + rightValue.numValue;
-			return result;
-		}
-		else
-		if(token.value.equals("-"))
-		{
-			index[0] = i[0];
-			result.numValue=leftValue.numValue - rightValue.numValue;
-			return result;
-		}
-		else
-		if(token.value.equals("*"))
-		{
-			index[0] = i[0];
-			result.numValue=leftValue.numValue * rightValue.numValue;
-			return result;
-		}
-		else
-		if(token.value.equals("/"))
-		{
-			index[0] = i[0];
-			result.numValue=leftValue.numValue / rightValue.numValue;
-			return result;
-		}
-		else
-		if(token.value.equals("?"))
-		{
-			index[0] = i[0];
-			result.numValue=Math.round((Math.random() * (rightValue.numValue-leftValue.numValue)) + leftValue.numValue);
-			return result;
+			switch(token.value.charAt(0))
+			{
+			case '+':
+			{
+				index[0] = i[0];
+				result.numValue=leftValue.numValue + rightValue.numValue;
+				return result;
+			}
+			case '-':
+			{
+				index[0] = i[0];
+				result.numValue=leftValue.numValue - rightValue.numValue;
+				return result;
+			}
+			case '*':
+			{
+				index[0] = i[0];
+				result.numValue=leftValue.numValue * rightValue.numValue;
+				return result;
+			}
+			case '/':
+			{
+				index[0] = i[0];
+				result.numValue=leftValue.numValue / rightValue.numValue;
+				return result;
+			}
+			case '?':
+			{
+				index[0] = i[0];
+				result.numValue=Math.round((Math.random() * (rightValue.numValue-leftValue.numValue)) + leftValue.numValue);
+				return result;
+			}
+			default:
+				throw new Exception("Unknown math combiner "+token.value);
+			}
 		}
 		else
 			throw new Exception("Unknown math combiner "+token.value);
@@ -1698,27 +1723,87 @@ public class CMStrings
 			compare = Double.valueOf(leftValue.value).compareTo(Double.valueOf(rightValue.value));
 		}
 		final Boolean result;
-		if (token.value.equals(">"))
-			result = new Boolean(compare > 0);
-		else if (token.value.equals(">="))
-			result = new Boolean(compare >= 0);
-		else if (token.value.equals("<"))
-			result = new Boolean(compare < 0);
-		else if (token.value.equals("<="))
-			result = new Boolean(compare <= 0);
-		else if (token.value.equals("="))
-			result = new Boolean(compare == 0);
-		else if (token.value.equals("!="))
-			result = new Boolean(compare != 0);
-		else if (token.value.equals("<>"))
-			result = new Boolean(compare != 0);
-		else if (token.value.equals("><"))
-			result = new Boolean(compare != 0);
-		else
-		if (token.value.equalsIgnoreCase("IN"))
-			result = new Boolean(rightValue.value.toUpperCase().indexOf(leftValue.value.toUpperCase())>=0);
-		else
+		switch(token.value.charAt(0))
+		{
+		case '>':
+			if(token.value.length()==1)
+				result = new Boolean(compare > 0);
+			else 
+			switch(token.value.charAt(1))
+			{
+			case '=':
+				result = new Boolean(compare >= 0);
+				break;
+			case '<':
+				result = new Boolean(compare != 0);
+				break;
+			default:
+				return null;
+			}
+			break;
+		case '<':
+			if(token.value.length()==1)
+				result = new Boolean(compare < 0);
+			else 
+			switch(token.value.charAt(1))
+			{
+			case '=':
+				result = new Boolean(compare <= 0);
+				break;
+			case '>':
+				result = new Boolean(compare != 0);
+				break;
+			default:
+				return null;
+			}
+			break;
+		case '=':
+			if(token.value.length()==1)
+				result = new Boolean(compare == 0);
+			else
+			switch(token.value.charAt(1))
+			{
+			case '=':
+				result = new Boolean(compare == 0);
+				break;
+			case '<':
+				result = new Boolean(compare <= 0);
+				break;
+			case '>':
+				result = new Boolean(compare >= 0);
+				break;
+			default:
+				return null;
+			}
+			break;
+		case '!':
+			if(token.value.length()==1)
+				return null;
+			else
+			switch(token.value.charAt(1))
+			{
+			case '=':
+				result = new Boolean(compare != 0);
+				break;
+			case '<':
+				result = new Boolean(compare > 0);
+				break;
+			case '>':
+				result = new Boolean(compare < 0);
+				break;
+			default:
+				return null;
+			}
+			break;
+		case 'I': case 'i':
+			if (token.value.equalsIgnoreCase("IN"))
+				result = new Boolean(rightValue.value.toUpperCase().indexOf(leftValue.value.toUpperCase())>=0);
+			else
+				return null;
+			break;
+		default:
 			return null;
+		}
 		index[0] = i[0];
 		return result;
 	}
@@ -1770,18 +1855,35 @@ public class CMStrings
 		if (rightExpression == null)
 			return null;
 		final Boolean result;
-		if (token.value.equalsIgnoreCase("AND"))
+		switch(token.value.charAt(0))
+		{
+		case 'a': case 'A':
+			if (token.value.equalsIgnoreCase("AND"))
+				result = new Boolean(leftExpression.booleanValue() && rightExpression.booleanValue());
+			else
+				throw new Exception("Parse Exception: Illegal expression evaluation combiner: " + token.value);
+			break;
+		case '&':
 			result = new Boolean(leftExpression.booleanValue() && rightExpression.booleanValue());
-		else if (token.value.startsWith("&"))
-			result = new Boolean(leftExpression.booleanValue() && rightExpression.booleanValue());
-		else if (token.value.startsWith("|"))
+			break;
+		case '|':
 			result = new Boolean(leftExpression.booleanValue() || rightExpression.booleanValue());
-		else if (token.value.equalsIgnoreCase("OR"))
-			result = new Boolean(leftExpression.booleanValue() || rightExpression.booleanValue());
-		else if (token.value.equalsIgnoreCase("XOR"))
-			result = new Boolean(leftExpression.booleanValue() != rightExpression.booleanValue());
-		else
+			break;
+		case 'O': case 'o':
+			if (token.value.equalsIgnoreCase("OR"))
+				result = new Boolean(leftExpression.booleanValue() || rightExpression.booleanValue());
+			else
+				throw new Exception("Parse Exception: Illegal expression evaluation combiner: " + token.value);
+			break;
+		case 'X': case 'x':
+			if (token.value.equalsIgnoreCase("XOR"))
+				result = new Boolean(leftExpression.booleanValue() != rightExpression.booleanValue());
+			else
+				throw new Exception("Parse Exception: Illegal expression evaluation combiner: " + token.value);
+			break;
+		default:
 			throw new Exception("Parse Exception: Illegal expression evaluation combiner: " + token.value);
+		}
 		index[0] = i[0];
 		return result;
 	}
@@ -1799,7 +1901,8 @@ public class CMStrings
 		if(tokens.size()==0) return true;
 		i = new int[]{ 0 };
 		final Boolean value = matchExpression(tokens, i, variables);
-		if (value == null) throw new Exception("Parse error on following statement: " + expression);
+		if (value == null) 
+			throw new Exception("Parse error on following statement: " + expression);
 		return value.booleanValue();
 	}
 

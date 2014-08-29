@@ -905,7 +905,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
 					CMLib.percolator().defineReward(null, null, null, piece, piece.value,definedIDs);
 					monsters.addAll(CMLib.percolator().findMobs(piece, definedIDs));
-					CMLib.percolator().satisfyPostProcess(definedIDs);
+					CMLib.percolator().postProcess(definedIDs);
 					if(monsters.size()<=0)
 					{
 						logError(scripted,"XMLLOAD","?","Empty XML file: '"+filename+"'");
@@ -1035,7 +1035,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
 					CMLib.percolator().defineReward(null, null, null, piece, piece.value,definedIDs);
 					items.addAll(CMLib.percolator().findItems(piece, definedIDs));
-					CMLib.percolator().satisfyPostProcess(definedIDs);
+					CMLib.percolator().postProcess(definedIDs);
 					if(items.size()<=0)
 					{
 						logError(scripted,"XMLLOAD","?","Empty XML file: '"+filename+"' in "+thangName);
