@@ -70,7 +70,7 @@ public class ApartmentLayout extends AbstractLayout
 		{
 			final java.util.List<LayoutNode> hallways=new ArrayList<LayoutNode>();
 			hallways.add(n);
-			n.flagGateExit(dir);
+			//n.flagGateExit(dir);
 			lSet.use(n,LayoutTypes.street);
 			n.flag(LayoutFlags.gate);
 			n.flag(LayoutFlags.tee);

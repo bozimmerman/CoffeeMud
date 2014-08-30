@@ -111,7 +111,7 @@ public class TreeLayout extends AbstractLayout
 		progress.add(root);
 		lSet.use(root.currNode,LayoutTypes.street);
 		root.currNode.flag(LayoutFlags.gate);
-		root.currNode.flagGateExit(dir);
+		//root.currNode.flagGateExit(dir);
 		root.currNode.flagRun(AbstractLayout.getRunDirection(dir));
 
 		while(lSet.spaceAvailable())

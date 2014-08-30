@@ -143,11 +143,6 @@ public class DefaultLayoutNode implements LayoutNode
 		tags.put(LayoutTags.NODEEXITS,buf.toString());
 	}
 	@Override
-	public void flagGateExit(int dir)
-	{
-		tags.put(LayoutTags.NODEGATEEXIT,Directions.getDirectionChar(dir).toLowerCase());
-	}
-	@Override
 	public void reType(LayoutTypes type)
 	{
 		tags.put(LayoutTags.NODETYPE,type.toString());

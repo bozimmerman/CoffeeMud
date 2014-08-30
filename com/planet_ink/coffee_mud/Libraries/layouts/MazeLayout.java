@@ -80,7 +80,7 @@ public class MazeLayout extends AbstractLayout
 		}
 		if(n!=null)
 		{
-			n.flagGateExit(dir);
+			//n.flagGateExit(dir);
 			lSet.use(n,LayoutTypes.street);
 			n.flag(LayoutFlags.gate);
 			fillMaze(lSet,n,diameter+plusX,diameter);
