@@ -1553,7 +1553,7 @@ Required details: "id" "value"
 		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken hatchet handle" display="$item_name is sitting here" material="$any_wood" level="$level_range" />
 		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken baby rattle" display="$item_name is here" material="$any_wood" level="$level_range" weight=1 />
 		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken horse shoe" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1/>
-		<ITEM class="GenItem" name="a bloody comb" display="$item_name lie here" material="$ramdom_cheap_metal" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="a bloody comb" display="$item_name lie here" material="$random_cheap_metal" level="$level_range" weight=1 />
 		<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} chair leg" display="$item_name lies here" material="$any_wood" level="$level_range" weight=3 damage="1"/>
 		<ITEM class="metacraft:any-Weaponsmithing < $level_range" name="(a(n)) $adj_metal_broken $item_name" display="$item_name lies here" damage=1  attack=-10 affbehav="<BEHAVES /><AFFECS />" />
 		<ITEM class="metacraft:any-Armorsmithing < $level_range" name="(a(n)) $adj_metal_broken $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" />
