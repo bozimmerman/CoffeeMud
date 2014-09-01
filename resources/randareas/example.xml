@@ -138,10 +138,11 @@ $STAT:[PATH]:[TO]:[ANOTHER]:[OBJECT]:[STATNAME} embed the value from another obj
   in a different room. Where path-to-another-object may be: ROOM to refer to the room containing
   the object, NORTH,SOUTH,EAST,WEST,UP,DOWN,NORTHEAST..etc.. to specify a room in a specific 
   direction, ANYROOM to specify any room connected to this one, MOB to specify any mob in the
-  room, ITEM to specify any item in the room, or AREAGATE to specify a connecting room outside the area.
-  For example a string such as:
+  room, ITEM to specify any item in the room, AREA to specify the area object, or AREAGATE 
+  to specify a connecting room outside the area.  For example a string such as:
   "To the east is the residence of ${STAT:ROOM:EAST:MOB:NAME}" 
     would embed the name of a mob in a room to the east of the current room.
+  This command may internally cause post-processing if necessary, and so is almost guarenteed.
 
 Objects:
 Each basic tag type may contain other basic tag types to help define them.  For instance,

@@ -2625,6 +2625,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						if(parts[p].equals("ROOM"))
 							E3=CMLib.map().roomLocation(E2);
 						else
+						if(parts[p].equals("AREA"))
+							E3=CMLib.map().areaLocation(E2);
+						else
 						if(Directions.getDirectionCode(parts[p])>0)
 						{
 							if(R==null)
