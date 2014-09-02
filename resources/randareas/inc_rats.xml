@@ -145,7 +145,7 @@
 			<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
 			<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
 		</DESCRIPTION>			
-		<MOB class="GenMob" level="$level_range" id="rats_dragon" race="Dragon" gender="F">
+		<MOB class="GenMob" level="$level_range" id="rats_momma_dragon" race="Dragon" gender="F">
 			<NAME select="all">
 				<NAME condition="$mob_level<10">a hatchling $rats_dragoncolor dragon</NAME>
 				<NAME condition="$mob_level<20 and $mob_level>=10">a very young $rats_dragoncolor dragon</NAME>
@@ -198,7 +198,7 @@
 			</DESCRIPTION>
 			<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
 		</DESCRIPTION>			
-		<MOB class="GenMob" level="(1.20 * ($level_range)) + 1" id="rats_dragon" race="Dragon" gender="$anygender">
+		<MOB class="GenMob" level="(1.20 * ($level_range)) + 1" id="rats_boss_dragon" race="Dragon" gender="$anygender">
 			<NAME select="all">
 				<NAME condition="$mob_level<10">a hatchling $rats_dragoncolor dragon</NAME>
 				<NAME condition="$mob_level<20 and $mob_level>=10">a very young $rats_dragoncolor dragon</NAME>

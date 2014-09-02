@@ -103,6 +103,9 @@ Any tag may contain zero or more of the following meta-attributes:
           selecting among the choices.
           ** Where you see X above, this may be a number, or a math formula or
           math expression. (see mud help on math formulas/math expressions)
+"merge"   this parameter is required if two tags with the same ID are included in
+          the same xml document.  It permits some of the tag parameters, and all of
+          the content tags, to be merged together into a single referenced tag.
 "pickweight" A helper attribute for the "select" attribute, when a "pick" value is
           used by the select attribute.  See "select" attribute above.
 "action"  used by string-type choices to inform the engine on how to combine the 

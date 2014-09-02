@@ -104,7 +104,7 @@
 			<DESCRIPTION select="any-1">
 				<DESCRIPTION>Patrons sit around talking and enjoying their meals.</DESCRIPTION>
 			</DESCRIPTION>
-			<DESCRIPTION id="store_sign_descs" select="any-1">
+			<DESCRIPTION select="any-1">
 				<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
 				<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
 			</DESCRIPTION>
@@ -174,7 +174,7 @@
 				<DESCRIPTION>The smell of smoke and stale alcohol make the place reek.</DESCRIPTION>
 				<DESCRIPTION>Lots of $adj_drunk people are smoking, drinking, and staggering around.</DESCRIPTION>
 			</DESCRIPTION>
-			<DESCRIPTION id="store_sign_descs" select="any-1">
+			<DESCRIPTION select="any-1">
 				<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
 				<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
 				<DESCRIPTION>A sign is posted by the bar.</DESCRIPTION>
@@ -245,7 +245,7 @@
 					<DESCRIPTION>This whole place is $adj_light, $adj_noisy and $adj_feeling_good.</DESCRIPTION>
 					<DESCRIPTION>This $adj_feeling_good place seems $adj_light and $adj_quiet.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION id="store_sign_descs" select="any-1">
+				<DESCRIPTION select="any-1">
 					<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
 					<DESCRIPTION>A sign is posted by the front desk.</DESCRIPTION>
 					<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
@@ -345,7 +345,7 @@
 				<DESCRIPTION>Services to the gods are held here for the devoted, and in between is healing for the sick.</DESCRIPTION>
 				<DESCRIPTION>People gather here for healing and devotion services night and day.</DESCRIPTION>
 			</DESCRIPTION>
-			<DESCRIPTION id="store_sign_descs" select="any-1">
+			<DESCRIPTION select="any-1">
 				<DESCRIPTION>An ornate sign is posted on the wall.</DESCRIPTION>
 				<DESCRIPTION>A holy sign is hanging above the alter.</DESCRIPTION>
 			</DESCRIPTION>
@@ -467,7 +467,13 @@
 					<DESCRIPTION>The shop seems decorated rather exoticly for such mundane wares.</DESCRIPTION>
 				</DESCRIPTION>
 			</DESCRIPTION>
-			<DESCRIPTION select="any-1" insert="store_sign_descs" />
+			<DESCRIPTION select="any-1">
+				<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
+				<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
+				<DESCRIPTION>A sign is posted by the counter.</DESCRIPTION>
+				<DESCRIPTION>A sign is posted on the counter.</DESCRIPTION>
+				<DESCRIPTION>A sign is hanging above the counter.</DESCRIPTION>
+			</DESCRIPTION>
 			<DESCRIPTION select="any-1">
 				<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
 				<DESCRIPTION>The street is $roomexits_desc_long.</DESCRIPTION>
@@ -663,7 +669,7 @@
 				<DESCRIPTION>Through the smell and jumble you can see feed bags and other vitals on the hay covered floor.</DESCRIPTION>
 				<DESCRIPTION>Everything a growing animal needs is scattered around here, with various implements you can only guess about hanging on the walls.</DESCRIPTION>
 			</DESCRIPTION>
-			<DESCRIPTION id="store_sign_descs" select="any-1">
+			<DESCRIPTION select="any-1">
 				<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
 				<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
 			</DESCRIPTION>
@@ -739,7 +745,7 @@
 				<DESCRIPTION>Nannies are here chasing $adj_lots of children around has they enjoy their $noun_fun.</DESCRIPTION>
 				<DESCRIPTION>${c:adj_lots} of children run around having $noun_fun.</DESCRIPTION>
 			</DESCRIPTION>
-			<DESCRIPTION id="store_sign_descs" select="any-1">
+			<DESCRIPTION select="any-1">
 				<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
 				<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
 			</DESCRIPTION>
@@ -811,7 +817,7 @@
 				<DESCRIPTION>${c:adj_subdued} art and the $adj_conservative furnishings adorn the room.</DESCRIPTION>
 			</DESCRIPTION>
 			<DESCRIPTION>Tasteful banners of all the clans are hung from the ceiling.</DESCRIPTION>
-			<DESCRIPTION id="store_sign_descs" select="any-1">
+			<DESCRIPTION select="any-1">
 				<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
 				<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
 				<DESCRIPTION>A sign is posted by the counter.</DESCRIPTION>
@@ -946,7 +952,7 @@
 				<DESCRIPTION>People talking and walking around view and discuss the lots.  Other people shout bids to the auctioneer.</DESCRIPTION>
 				<DESCRIPTION>Bustling folks examine and discuss the upcoming lots while attentive people shout bits to the auctioneer.</DESCRIPTION>
 			</DESCRIPTION>
-			<DESCRIPTION id="store_sign_descs" select="any-1">
+			<DESCRIPTION select="any-1">
 				<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
 				<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
 				<DESCRIPTION>A sign is posted by the counter.</DESCRIPTION>
@@ -1022,7 +1028,7 @@
 				<DESCRIPTION>Several large crates have been pried open by curious postal workers.</DESCRIPTION>
 				<DESCRIPTION>For a slight fee, the postmaster will see that your letter is delivered promptly.</DESCRIPTION>
 			</DESCRIPTION>
-			<DESCRIPTION id="store_sign_descs" select="any-1">
+			<DESCRIPTION select="any-1">
 				<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
 				<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
 				<DESCRIPTION>A sign is posted by the counter.</DESCRIPTION>
@@ -1104,7 +1110,7 @@
 				<DESCRIPTION>${c:adj_conservative} and $adj_subdued tapestries, paintings and furnishings adorn the room.</DESCRIPTION>
 				<DESCRIPTION>The $adj_subdued art and tapestries, and the $adj_conservative furnishings adorn the room.</DESCRIPTION>
 			</DESCRIPTION>
-			<DESCRIPTION id="store_sign_descs" select="any-1">
+			<DESCRIPTION select="any-1">
 				<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
 				<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
 				<DESCRIPTION>A sign is posted by the counter.</DESCRIPTION>
@@ -1206,7 +1212,7 @@
 				<DESCRIPTION>${c:adj_personality} students busily learning their craft.</DESCRIPTION>
 				<DESCRIPTION>All over the room, ${c:adj_personality} students train at the feet of ${adj_personality} teachers.</DESCRIPTION>
 			</DESCRIPTION>
-			<DESCRIPTION id="store_sign_descs" select="any-1">
+			<DESCRIPTION select="any-1">
 				<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
 				<DESCRIPTION>A sign is hanging above the exit.</DESCRIPTION>
 				<DESCRIPTION>A sign is posted by the exit.</DESCRIPTION>

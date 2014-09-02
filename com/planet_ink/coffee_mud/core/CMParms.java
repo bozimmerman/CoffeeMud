@@ -26,6 +26,26 @@ public class CMParms
 	private CMParms(){super();}
 	private static CMParms inst=new CMParms();
 	public final static CMParms instance(){return inst;}
+	
+	public final static CMParms createDelimiter(final char[] chars)
+	{
+		final boolean[] delims=new boolean[256];
+		for(char c : chars)
+			delims[(byte)c]=true;
+		return new CMParms()
+		{
+			@Override
+			public boolean isDelimiter(final char c)
+			{
+				return delims[(byte)c];
+			}
+		};
+	}
+	
+	public boolean isDelimiter(final char c)
+	{
+		return Character.isWhitespace(c);
+	}
 
 	public final static String combine(final List<?> commands)
 	{
@@ -804,7 +824,28 @@ public class CMParms
 		return h;
 	}
 
+	public final static String combineEQParms(final Map<String,String> parms, final char delimiter)
+	{
+		final StringBuilder str=new StringBuilder("");
+		for(final String key : parms.keySet())
+		{
+			final String val=parms.get(key);
+			if(val.indexOf(' ')>0)
+				str.append(key).append("=\"").append(parms.get(key)).append('\"').append(delimiter);
+			else
+				str.append(key).append('=').append(parms.get(key)).append(delimiter);
+		}
+		if(str.length()==0)
+			return "";
+		return str.substring(0,str.length()-1);
+	}
+	
 	public final static Map<String,String> parseEQParms(final String parms)
+	{
+		return parseEQParms(parms,instance());
+	}
+	
+	public final static Map<String,String> parseEQParms(final String parms, final CMParms delimiterCheck)
 	{
 		final Map<String,String> h=new Hashtable<String,String>();
 		int state=0;
@@ -833,7 +874,7 @@ public class CMParms
 					state=2;
 				}
 				else
-				if(Character.isWhitespace(c))
+				if(delimiterCheck.isDelimiter(c))
 				{
 					parmName=str.substring(start,x).toUpperCase().trim();
 					start=x;
@@ -851,7 +892,7 @@ public class CMParms
 				{ // do nothing, this is a do-over
 				}
 				else
-				if(!Character.isWhitespace(c))
+				if(!delimiterCheck.isDelimiter(c))
 				{
 					lastWasWhitespace=false;
 					state=4;
@@ -894,7 +935,7 @@ public class CMParms
 					parmName=null;
 				}
 				else
-				if(Character.isWhitespace(c))
+				if(delimiterCheck.isDelimiter(c))
 					lastWasWhitespace=true;
 				else
 				if(lastWasWhitespace)

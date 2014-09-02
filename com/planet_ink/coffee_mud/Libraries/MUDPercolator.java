@@ -74,12 +74,78 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	public void buildDefinedIDSet(List<XMLpiece> xmlRoot, Map<String,Object> defined)
 	{
 		if(xmlRoot==null) return;
+		final Set<String> upperKeywords=new XHashSet<String>(new String[]{"INT","INTEGER","$","STRING","ANY","DOUBLE","#","NUMBER"});
+		final CMParms delim=CMParms.createDelimiter(new char[]{' ','\t',',','\r','\n'});
 		for(int v=0;v<xmlRoot.size();v++)
 		{
 			final XMLLibrary.XMLpiece piece = xmlRoot.get(v);
 			final String id = CMLib.xml().getParmValue(piece.parms,"ID");
 			if((id!=null)&&(id.length()>0))
-				defined.put(id.toUpperCase().trim(),piece);
+			{
+				final Object o=defined.get(id.toUpperCase());
+				if(o != null)
+				{
+					if(!(o instanceof XMLLibrary.XMLpiece))
+						Log.errOut("Duplicate ID: "+id+" (first tag did not resolve to a complex piece -- it wins.)");
+					else
+					if(((piece.parms==null)||(!piece.parms.containsKey("MERGE")))
+					||(((XMLLibrary.XMLpiece)o).parms==null)
+					||(!((XMLLibrary.XMLpiece)o).parms.containsKey("MERGE")))
+						Log.errOut("Duplicate ID: "+id+" (no MERGE tag found to permit this operation -- first tag wins.)");
+					else
+					{
+						final XMLLibrary.XMLpiece src=piece;
+						final XMLLibrary.XMLpiece tgt=(XMLLibrary.XMLpiece)o;
+						if(!src.tag.equalsIgnoreCase(tgt.tag))
+							Log.errOut("Unable to merge tags with ID: "+id+", they are of different types.");
+						else
+						for(final String parm : src.parms.keySet())
+						{
+							if(!tgt.parms.containsKey(parm))
+								tgt.parms.put(parm,src.parms.get(parm));
+							else
+							if(tgt.parms.get(parm).equalsIgnoreCase(src.parms.get(parm))||parm.equalsIgnoreCase("ID"))
+							{ /* do nothing -- nothing to do */}
+							else
+							if(parm.equalsIgnoreCase("REQUIRES"))
+							{
+								final Map<String,String> srcParms=CMParms.parseEQParms(src.parms.get(parm), delim);
+								final Map<String,String> tgtParms=CMParms.parseEQParms(tgt.parms.get(parm), delim);
+								for(final String srcKey : srcParms.keySet())
+								{
+									final String srcVal=srcParms.get(srcKey);
+									final String tgtVal=tgtParms.get(srcKey);
+									if(tgtVal == null)
+										tgtParms.put(srcKey, srcVal);
+									else
+									if(upperKeywords.contains(srcVal.toUpperCase()))
+									{
+										if(!srcVal.equalsIgnoreCase(tgtVal))
+											Log.errOut("Unable to merge REQUIRES parm on tags with ID: "+id+", mismatch in requirements for '"+srcKey+"'.");
+									}
+									else
+									if(upperKeywords.contains(tgtVal.toUpperCase()))
+										Log.errOut("Unable to merge REQUIRES parm on tags with ID: "+id+", mismatch in requirements for '"+srcKey+"'.");
+									else
+										tgtParms.put(srcKey,srcVal+";"+tgtVal);
+								}
+								tgt.parms.put("REQUIRES", CMParms.combineEQParms(tgtParms, ','));
+							}
+							else
+							if(parm.equalsIgnoreCase("CONDITION")||parm.equalsIgnoreCase("VALIDATE"))
+								tgt.parms.put(parm, tgt.parms.get(parm)+" and "+src.parms.get(parm));
+							else
+							if(parm.equalsIgnoreCase("INSERT")||parm.equalsIgnoreCase("DEFINE")||parm.equalsIgnoreCase("PREDEFINE"))
+								tgt.parms.put(parm, tgt.parms.get(parm)+","+src.parms.get(parm));
+							else
+								Log.errOut("Unable to merge SELECT parm on tags with ID: "+id+".");
+						}
+						tgt.contents.addAll(src.contents);
+					}
+				}
+				else
+					defined.put(id.toUpperCase().trim(),piece);
+			}
 			final String load = CMLib.xml().getParmValue(piece.parms,"LOAD");
 			if((load!=null)&&(load.length()>0))
 			{
