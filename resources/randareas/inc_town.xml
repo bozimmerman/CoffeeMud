@@ -15,7 +15,18 @@
 -->
 <!--  include file full of town-specific tags -->
 
-<ROOM id="town_street_rooms">
+<AREA id="maze_dungeon" merge=true layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=town">
+	<BEHAVIOR condition="$theme='town'" class="Arrest" parms="laws.ini;OFFICERS=&quot;\&quot;$__officertype\&quot;&quot; JUDGE=&quot;\&quot;$__chieftype\&quot;&quot;"/>
+</AREA>
+<AREA id="grid_dungeon" merge=true like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=town" />
+<AREA id="square_dungeon" merge=true like="maze_dungeon" layout="BOXCITYSQUARE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=town" />
+<AREA id="box_dungeon" merge=true like="maze_dungeon" layout="BOXCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=town" />
+<AREA id="cross_dungeon" merge=true like="maze_dungeon" layout="CROSS" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=town" />
+<AREA id="tree_dungeon" merge=true like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=town" />
+
+<AREA id="random_dungeon" merge=true select="any" requires="areaname=$" condition="$theme!='town'" />
+
+<ROOM id="hallway_rooms" merge=true select="pick-1" condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
 	<ROOM id="town_street_room" class="Road" pickweight="1" condition="$theme='town'">
 		<TITLE>$a_streetprefix $_street_name</TITLE>
 		<DESCRIPTION>
@@ -27,7 +38,7 @@
 	</ROOM>
 </ROOM>
 
-<ROOM id="town_interior_rooms">
+<ROOM id="interior_rooms" merge=true select="any-1" condition="$roomtag_nodetype='interior' or $roomtag_nodetype='square'">
 	<ROOM class="Road" condition="$theme='town' and $roomtag_nodetype='square'">
 		<TITLE>$a_streetprefix $_square_name</TITLE>
 		<DESCRIPTION></DESCRIPTION>
@@ -42,1223 +53,1225 @@
 	</ROOM>
 </ROOM>
 
-<ROOM select="all" id="town_leaf_rooms" condition="$theme='town' or $theme='random'">
-	<ROOM id="town_home" class="WoodRoom"  condition="$__townthird &gt; 5" define="__townhome+=1,patronname=$fantasy_name">
-		<TITLE select="any-1">
-			<TITLE>${c:patronname}'s house</TITLE>
-			<TITLE>${c:patronname}'s home</TITLE>
-			<TITLE>A house</TITLE>
-			<TITLE>The ${c:patronname} house</TITLE>
-		</TITLE>
-		<DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>This is a simple townperson's home.</DESCRIPTION>
-				<DESCRIPTION>This is the home of the ${c:patronname} family.</DESCRIPTION>
-				<DESCRIPTION>This is the house of ${c:patronname}.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>The furnishings are sparse and ${adj_useful}.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
-			</DESCRIPTION>
-		</DESCRIPTION>
-		<EXIT class="GenDoor" defclosed="true" />
-		<MOB class="GenMob" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender">
-			<NAME>${c:patronname}</NAME>
-			<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
-			<ALIGNMENT>0?10000</ALIGNMENT>
-			<BEHAVIOR select="all">
-				<BEHAVIOR class="MudChat" parms="" />
-			</BEHAVIOR>
-			<ITEM class="GenArmor" LEVEL="$mob_level">
-				<NAME select="any-1"><NAME>a clothes</NAME></NAME>
-				<DISPLAY>$item_name has been left here"</DISPLAY>
-				<MATERIAL>COTTON</MATERIAL>
-				<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
-			</ITEM>
-		</MOB>
-		<ITEM select="all">
-			<ITEM class="GenBed"  name="a bed" display="$ITEM_NAME is made here"  isgettable="false" />
-			<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here with chairs around it." isgettable="false" />
-		</ITEM>
-	</ROOM>
-	
-	<ROOM id="town_cafe" class="WoodRoom"  condition="$__townthird &gt; 5" define="__towncafe+=1,patronname=$fantasy_name">
-		<TITLE select="any-1">
-			<TITLE>${c:patronname}'s Cafe</TITLE>
-			<TITLE>${c:patronname}'s Diner</TITLE>
-			<TITLE>The ${c:street_name_1} ${c:street_name_2}</TITLE>
-		</TITLE>
-		<DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>This is a $adj_noisy $adj_phys_size_large diner.</DESCRIPTION>
-				<DESCRIPTION>This is a $adj_noisy $adj_phys_size_small hole-in-the-wall cafe.</DESCRIPTION>
-				<DESCRIPTION>This dive is $adj_phys_size_small and $adj_noisy.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>${c:any_wood} tables are lined neatly here.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>Patrons sit around talking and enjoying their meals.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
-				<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
-			</DESCRIPTION>
-		</DESCRIPTION>
-		<EXIT class="GenDoor" defclosed="false" />
-		<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is up for sale `buy [itemname]` to get something, or `view [itemname]` to get more information." />
-		<MOB class="GenShopKeeper" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" whatisell="inventory only">
-			<NAME>${c:patronname}</NAME>
-			<DISPLAY select="pick-1">
-				<DISPLAY pickweight="1">$mob_name will take your order now.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is taking food orders.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is cleaning the tables.</DISPLAY>
-			</DISPLAY>
-			<ALIGNMENT>0?10000</ALIGNMENT>
-			<BEHAVIOR select="all">
-				<BEHAVIOR class="MudChat" parms="" />
-				<BEHAVIOR class="Fighterness" parms="" />
-				<BEHAVIOR class="CommonSpeaker" parms="" />
-			</BEHAVIOR>
-			<ITEM class="GenArmor" LEVEL="$mob_level">
-				<NAME select="any-1"><NAME>a cook`s apron</NAME></NAME>
-				<DISPLAY>$item_name has been left here"</DISPLAY>
-				<MATERIAL>COTTON</MATERIAL>
-				<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
-			</ITEM>
-			<ITEM class="GenWeapon" LEVEL="$mob_level">
-				<NAME>a rolling pin</NAME>
-				<DISPLAY>$item_name has been left here"</DISPLAY>
-				<MATERIAL>OAK</MATERIAL>
-				<WEAPONCLASS>BLUNT</WEAPONCLASS>
-				<WEAPONTYPE>BASHING</WEAPONTYPE>
-			</ITEM>
-			<SHOPINVENTORY number=300 price="$item_level">
-				<ITEM select="all" insert="any_baking_item,any_cooking_item,any_foodprep_item,any_baking_item,any_cooking_item,any_foodprep_item,any_baking_item,any_cooking_item,any_foodprep_item" />
-			</SHOPINVENTORY>
-		</MOB>
-		<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
-		<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
-		<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
-		<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
-		<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
-	</ROOM>
-	
-	<ROOM id="town_bar" class="WoodRoom"  condition="$__townthird &gt; 5" define="__townbar+=1,patronname=$fantasy_name">
-		<TITLE select="any-1">
-			<TITLE>${c:patronname}'s Bar</TITLE>
-			<TITLE>${c:patronname}'s Pub</TITLE>
-			<TITLE>The ${c:street_name_1} ${c:street_name_2}</TITLE>
-		</TITLE>
-		<DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>This is a $adj_noisy $adj_phys_size_large pub.</DESCRIPTION>
-				<DESCRIPTION>This is a $adj_noisy $adj_phys_size_small hole-in-the-wall bar.</DESCRIPTION>
-				<DESCRIPTION>This dive is $adj_phys_size_small and $adj_noisy.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>Tables are scattered around the room, with the bar proper in the back.</DESCRIPTION>
-				<DESCRIPTION>Tall $any_wood stools line the long bar, with a few scattered tables and chairs around.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>People stand around here talking, shouting, and getting really $adj_drunk.</DESCRIPTION>
-				<DESCRIPTION>The smell of smoke and stale alcohol make the place reek.</DESCRIPTION>
-				<DESCRIPTION>Lots of $adj_drunk people are smoking, drinking, and staggering around.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
-				<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
-				<DESCRIPTION>A sign is posted by the bar.</DESCRIPTION>
-				<DESCRIPTION>A sign is posted on the bar.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
-			</DESCRIPTION>
-		</DESCRIPTION>
-		<EXIT class="GenDoor" defclosed="false" />
-		<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is up for sale `buy [itemname]` to get something, or `view [itemname]` to get more information." />
-		<MOB class="GenShopKeeper" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" whatisell="inventory only">
-			<NAME>${c:patronname}</NAME>
-			<DISPLAY select="pick-1">
-				<DISPLAY pickweight="1">$mob_name will take your order now.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is taking drink orders.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is cleaning the bar.</DISPLAY>
-			</DISPLAY>
-			<ALIGNMENT>0?10000</ALIGNMENT>
-			<BEHAVIOR select="all">
-				<BEHAVIOR class="MudChat" parms="" />
-				<BEHAVIOR class="CommonSpeaker" parms="" />
-				<BEHAVIOR class="Fighterness" parms="" />
-				<BEHAVIOR class="CommonSpeaker" parms="" />
-			</BEHAVIOR>
-			<ITEM class="GenArmor" LEVEL="$mob_level">
-				<NAME select="any-1"><NAME>a bartender`s apron</NAME></NAME>
-				<DISPLAY>$item_name has been left here"</DISPLAY>
-				<MATERIAL>COTTON</MATERIAL>
-				<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
-			</ITEM>
-			<ITEM class="GenWeapon" LEVEL="$mob_level">
-				<NAME>an lime peeler</NAME>
-				<DISPLAY>$item_name has been left here"</DISPLAY>
-				<MATERIAL>IRON</MATERIAL>
-				<WEAPONCLASS>DAGGER</WEAPONCLASS>
-				<WEAPONTYPE>PIERCING</WEAPONTYPE>
-			</ITEM>
-			<SHOPINVENTORY number=300 price="$item_level">
-				<ITEM select="all" insert="any_distilling_item,any_distilling_item,any_distilling_item,any_distilling_item,any_distilling_item," />
-			</SHOPINVENTORY>
-		</MOB>
-		<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
-		<ITEM class="GenTable" name="the bar" MOBSHELD=20 display="$ITEM_NAME is here" isgettable="false" />
-	</ROOM>
-
-	<ROOM id="town_inn" layout="APARTMENT" size=10 condition="$__towninn&lt;1 and $__numshoptypes_all &gt; 10 and $__townsecond &gt; 5" define="__towninn+=1,__townthird+=1">
-		<ROOM id="town_inn_desk" class="WoodRoom"  condition="($__towninndesk&lt;1) and ('gate' in $ROOMTAG_NODEFLAGS)" define="__towninndesk+=1">
+<ROOM id="leaf_rooms" merge=true select="any-1" condition="$roomtag_nodetype='leaf'">
+	<ROOM select="all" id="town_leaf_rooms" condition="$theme='town' or $theme='random'">
+		<ROOM id="town_home" class="WoodRoom"  condition="$__townthird &gt; 5" define="__townhome+=1,patronname=$fantasy_name">
 			<TITLE select="any-1">
-				<TITLE>The ${c:areaname} INN</TITLE>
-				<TITLE>${c:areaname} INN</TITLE>
-				<TITLE>The INN</TITLE>
+				<TITLE>${c:patronname}'s house</TITLE>
+				<TITLE>${c:patronname}'s home</TITLE>
+				<TITLE>A house</TITLE>
+				<TITLE>The ${c:patronname} house</TITLE>
 			</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>This is the $adj_tidy $adj_fancy ${c:areaname} INN.</DESCRIPTION>
-					<DESCRIPTION>This is the $adj_cozy $adj_fancy ${c:areaname} INN.</DESCRIPTION>
-					<DESCRIPTION>The ${c:areaname} INN is $adj_cozy and $adj_fancy.</DESCRIPTION>
-					<DESCRIPTION>The ${c:areaname} INN is $adj_fancy.</DESCRIPTION>
+					<DESCRIPTION>This is a simple townperson's home.</DESCRIPTION>
+					<DESCRIPTION>This is the home of the ${c:patronname} family.</DESCRIPTION>
+					<DESCRIPTION>This is the house of ${c:patronname}.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>Everything about this $adj_feeling_good place is $adj_light and $adj_quiet.</DESCRIPTION>
-					<DESCRIPTION>This $adj_feeling_good place seems completely $adj_light and $adj_quiet.</DESCRIPTION>
-					<DESCRIPTION>This $adj_light and $adj_quiet place is quite $adj_feeling_good.</DESCRIPTION>
-					<DESCRIPTION>The atmosphere of the place is $adj_light, $adj_quiet and $adj_feeling_good.</DESCRIPTION>
-					<DESCRIPTION>This whole place is $adj_light, $adj_noisy and $adj_feeling_good.</DESCRIPTION>
-					<DESCRIPTION>This $adj_feeling_good place seems $adj_light and $adj_quiet.</DESCRIPTION>
+					<DESCRIPTION>The furnishings are sparse and ${adj_useful}.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
-					<DESCRIPTION>A sign is posted by the front desk.</DESCRIPTION>
-					<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION>The hallway to the rooms is beyond the front desk. $desc_exits</DESCRIPTION>
 			</DESCRIPTION>
-			<EXIT class="GenDoor" defclosed="false" condition="$ROOMLINK_DIR = $ROOMTAG_NODEGATEEXIT" />
-			<EXIT class="Open" condition="$ROOMLINK_DIR != $ROOMTAG_NODEGATEEXIT" />
-			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what rooms are available, `buy [keyname]` to get a room key, after which just find the right room and let yourself in." />
-			<MOB class="GenShopKeeper" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" WHATISELL="INNKEEPER">
-				<NAME>Innkeeper ${c:fantasy_name}</NAME>
-				<DISPLAY select="pick-1">
-					<DISPLAY pickweight="1">$mob_name looks bored.</DISPLAY>
-					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
-					<DISPLAY pickweight="1">$mob_name has rooms available.</DISPLAY>
-					<DISPLAY pickweight="1">$mob_name welcomes you.</DISPLAY>
-				</DISPLAY>
+			<EXIT class="GenDoor" defclosed="true" />
+			<MOB class="GenMob" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender">
+				<NAME>${c:patronname}</NAME>
+				<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
 				<ALIGNMENT>0?10000</ALIGNMENT>
 				<BEHAVIOR select="all">
-					<BEHAVIOR class="CommonSpeaker" parms="" />
 					<BEHAVIOR class="MudChat" parms="" />
-					<BEHAVIOR class="Fighterness" parms="" />
 				</BEHAVIOR>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
-					<NAME select="any-1"><NAME>a conservative suit</NAME></NAME>
+					<NAME select="any-1"><NAME>a clothes</NAME></NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
-				<ITEM class="GenWeapon" LEVEL="$mob_level" WORNAND="true">
-					<NAME>a broom</NAME>
+			</MOB>
+			<ITEM select="all">
+				<ITEM class="GenBed"  name="a bed" display="$ITEM_NAME is made here"  isgettable="false" />
+				<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here with chairs around it." isgettable="false" />
+			</ITEM>
+		</ROOM>
+		
+		<ROOM id="town_cafe" class="WoodRoom"  condition="$__townthird &gt; 5" define="__towncafe+=1,patronname=$fantasy_name">
+			<TITLE select="any-1">
+				<TITLE>${c:patronname}'s Cafe</TITLE>
+				<TITLE>${c:patronname}'s Diner</TITLE>
+				<TITLE>The ${c:street_name_1} ${c:street_name_2}</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>This is a $adj_noisy $adj_phys_size_large diner.</DESCRIPTION>
+					<DESCRIPTION>This is a $adj_noisy $adj_phys_size_small hole-in-the-wall cafe.</DESCRIPTION>
+					<DESCRIPTION>This dive is $adj_phys_size_small and $adj_noisy.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>${c:any_wood} tables are lined neatly here.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Patrons sit around talking and enjoying their meals.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
+				</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="GenDoor" defclosed="false" />
+			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is up for sale `buy [itemname]` to get something, or `view [itemname]` to get more information." />
+			<MOB class="GenShopKeeper" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" whatisell="inventory only">
+				<NAME>${c:patronname}</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name will take your order now.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is taking food orders.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is cleaning the tables.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>0?10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="MudChat" parms="" />
+					<BEHAVIOR class="Fighterness" parms="" />
+					<BEHAVIOR class="CommonSpeaker" parms="" />
+				</BEHAVIOR>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME select="any-1"><NAME>a cook`s apron</NAME></NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>COTTON</MATERIAL>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
+				</ITEM>
+				<ITEM class="GenWeapon" LEVEL="$mob_level">
+					<NAME>a rolling pin</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>OAK</MATERIAL>
+					<WEAPONCLASS>BLUNT</WEAPONCLASS>
+					<WEAPONTYPE>BASHING</WEAPONTYPE>
+				</ITEM>
+				<SHOPINVENTORY number=300 price="$item_level">
+					<ITEM select="all" insert="any_baking_item,any_cooking_item,any_foodprep_item,any_baking_item,any_cooking_item,any_foodprep_item,any_baking_item,any_cooking_item,any_foodprep_item" />
+				</SHOPINVENTORY>
+			</MOB>
+			<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
+			<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
+			<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
+			<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
+			<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
+		</ROOM>
+		
+		<ROOM id="town_bar" class="WoodRoom"  condition="$__townthird &gt; 5" define="__townbar+=1,patronname=$fantasy_name">
+			<TITLE select="any-1">
+				<TITLE>${c:patronname}'s Bar</TITLE>
+				<TITLE>${c:patronname}'s Pub</TITLE>
+				<TITLE>The ${c:street_name_1} ${c:street_name_2}</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>This is a $adj_noisy $adj_phys_size_large pub.</DESCRIPTION>
+					<DESCRIPTION>This is a $adj_noisy $adj_phys_size_small hole-in-the-wall bar.</DESCRIPTION>
+					<DESCRIPTION>This dive is $adj_phys_size_small and $adj_noisy.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Tables are scattered around the room, with the bar proper in the back.</DESCRIPTION>
+					<DESCRIPTION>Tall $any_wood stools line the long bar, with a few scattered tables and chairs around.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>People stand around here talking, shouting, and getting really $adj_drunk.</DESCRIPTION>
+					<DESCRIPTION>The smell of smoke and stale alcohol make the place reek.</DESCRIPTION>
+					<DESCRIPTION>Lots of $adj_drunk people are smoking, drinking, and staggering around.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted by the bar.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted on the bar.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
+				</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="GenDoor" defclosed="false" />
+			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is up for sale `buy [itemname]` to get something, or `view [itemname]` to get more information." />
+			<MOB class="GenShopKeeper" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" whatisell="inventory only">
+				<NAME>${c:patronname}</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name will take your order now.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is taking drink orders.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is cleaning the bar.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>0?10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="MudChat" parms="" />
+					<BEHAVIOR class="CommonSpeaker" parms="" />
+					<BEHAVIOR class="Fighterness" parms="" />
+					<BEHAVIOR class="CommonSpeaker" parms="" />
+				</BEHAVIOR>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME select="any-1"><NAME>a bartender`s apron</NAME></NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>COTTON</MATERIAL>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
+				</ITEM>
+				<ITEM class="GenWeapon" LEVEL="$mob_level">
+					<NAME>an lime peeler</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>IRON</MATERIAL>
+					<WEAPONCLASS>DAGGER</WEAPONCLASS>
+					<WEAPONTYPE>PIERCING</WEAPONTYPE>
+				</ITEM>
+				<SHOPINVENTORY number=300 price="$item_level">
+					<ITEM select="all" insert="any_distilling_item,any_distilling_item,any_distilling_item,any_distilling_item,any_distilling_item," />
+				</SHOPINVENTORY>
+			</MOB>
+			<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
+			<ITEM class="GenTable" name="the bar" MOBSHELD=20 display="$ITEM_NAME is here" isgettable="false" />
+		</ROOM>
+	
+		<ROOM id="town_inn" layout="APARTMENT" size=10 condition="$__towninn&lt;1 and $__numshoptypes_all &gt; 10 and $__townsecond &gt; 5" define="__towninn+=1,__townthird+=1">
+			<ROOM id="town_inn_desk" class="WoodRoom"  condition="($__towninndesk&lt;1) and ('gate' in $ROOMTAG_NODEFLAGS)" define="__towninndesk+=1">
+				<TITLE select="any-1">
+					<TITLE>The ${c:areaname} INN</TITLE>
+					<TITLE>${c:areaname} INN</TITLE>
+					<TITLE>The INN</TITLE>
+				</TITLE>
+				<DESCRIPTION>
+					<DESCRIPTION select="any-1">
+						<DESCRIPTION>This is the $adj_tidy $adj_fancy ${c:areaname} INN.</DESCRIPTION>
+						<DESCRIPTION>This is the $adj_cozy $adj_fancy ${c:areaname} INN.</DESCRIPTION>
+						<DESCRIPTION>The ${c:areaname} INN is $adj_cozy and $adj_fancy.</DESCRIPTION>
+						<DESCRIPTION>The ${c:areaname} INN is $adj_fancy.</DESCRIPTION>
+					</DESCRIPTION>
+					<DESCRIPTION select="any-1">
+						<DESCRIPTION>Everything about this $adj_feeling_good place is $adj_light and $adj_quiet.</DESCRIPTION>
+						<DESCRIPTION>This $adj_feeling_good place seems completely $adj_light and $adj_quiet.</DESCRIPTION>
+						<DESCRIPTION>This $adj_light and $adj_quiet place is quite $adj_feeling_good.</DESCRIPTION>
+						<DESCRIPTION>The atmosphere of the place is $adj_light, $adj_quiet and $adj_feeling_good.</DESCRIPTION>
+						<DESCRIPTION>This whole place is $adj_light, $adj_noisy and $adj_feeling_good.</DESCRIPTION>
+						<DESCRIPTION>This $adj_feeling_good place seems $adj_light and $adj_quiet.</DESCRIPTION>
+					</DESCRIPTION>
+					<DESCRIPTION select="any-1">
+						<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
+						<DESCRIPTION>A sign is posted by the front desk.</DESCRIPTION>
+						<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
+					</DESCRIPTION>
+					<DESCRIPTION>The hallway to the rooms is beyond the front desk. $desc_exits</DESCRIPTION>
+				</DESCRIPTION>
+				<EXIT class="GenDoor" defclosed="false" condition="$ROOMLINK_DIR = $ROOMTAG_NODEGATEEXIT" />
+				<EXIT class="Open" condition="$ROOMLINK_DIR != $ROOMTAG_NODEGATEEXIT" />
+				<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what rooms are available, `buy [keyname]` to get a room key, after which just find the right room and let yourself in." />
+				<MOB class="GenShopKeeper" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" WHATISELL="INNKEEPER">
+					<NAME>Innkeeper ${c:fantasy_name}</NAME>
+					<DISPLAY select="pick-1">
+						<DISPLAY pickweight="1">$mob_name looks bored.</DISPLAY>
+						<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+						<DISPLAY pickweight="1">$mob_name has rooms available.</DISPLAY>
+						<DISPLAY pickweight="1">$mob_name welcomes you.</DISPLAY>
+					</DISPLAY>
+					<ALIGNMENT>0?10000</ALIGNMENT>
+					<BEHAVIOR select="all">
+						<BEHAVIOR class="CommonSpeaker" parms="" />
+						<BEHAVIOR class="MudChat" parms="" />
+						<BEHAVIOR class="Fighterness" parms="" />
+					</BEHAVIOR>
+					<ITEM class="GenArmor" LEVEL="$mob_level">
+						<NAME select="any-1"><NAME>a conservative suit</NAME></NAME>
+						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<MATERIAL>COTTON</MATERIAL>
+						<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
+					</ITEM>
+					<ITEM class="GenWeapon" LEVEL="$mob_level" WORNAND="true">
+						<NAME>a broom</NAME>
+						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<MATERIAL>WOOD</MATERIAL>
+						<WEAPONCLASS>STAFF</WEAPONCLASS>
+						<WEAPONTYPE>BASHING</WEAPONTYPE>
+					</ITEM>
+					<SHOPINVENTORY>
+						<ITEM select="repeat-$AREA_NUMLEAFS">
+							<ITEM class="StdInnKey" />
+						</ITEM>
+					</SHOPINVENTORY>
+				</MOB>
+			</ROOM>
+			<ROOM class="WoodRoom"  condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
+				<TITLE>$a_streetprefix $roomrun_desc hallway</TITLE>
+				<DESCRIPTION>
+					<DESCRIPTION select="any-1" action="PREPEND">
+						<DESCRIPTION>You stand in (a(n)) $adj_any $noun_hallway that runs $roomrun_desc_long.</DESCRIPTION> 
+						<DESCRIPTION>This $adj_any $noun_hallway runs steeply $roomrun_desc_long.</DESCRIPTION> 
+						<DESCRIPTION>You are in (a(n)) $adj_any $noun_hallway running $roomrun_desc_long.</DESCRIPTION> 
+						<DESCRIPTION>This $adj_any $noun_hallway runs $roomrun_desc_long.</DESCRIPTION> 
+						<DESCRIPTION>You are walking through (a(n)) $adj_any $noun_hallway running $roomrun_desc_long.</DESCRIPTION>
+						<DESCRIPTION>This $adj_any $noun_hallway heads $roomrun_desc_long.</DESCRIPTION>
+					</DESCRIPTION>
+					<DESCRIPTION select="all" action="APPEND" insert="desc_exits" />
+				</DESCRIPTION>
+				<EXIT class="Open" />
+			</ROOM>
+			<ROOM class="WoodRoom"  condition="$roomtag_nodetype='leaf'" define="__innroomnumber+=1">
+				<TITLE>Room number $__innroomnumber</TITLE>
+				<DESCRIPTION>$desc_exits</DESCRIPTION>
+				<EXIT class="GenDoor" hasalock="true" deflocked="true" level="$level_range" keyname="INN$__innroomnumber" />
+				<ITEM class="GenBed"  name="a bed" display="$ITEM_NAME is made here"  isgettable="false" />
+				<ITEM class="GenChair" name="a chair" display="$ITEM_NAME is waiting to be rested upon" isgettable="false" />
+				<ITEM class="GenMirror" name="a mirror" display="$ITEM_NAME is on the wall." description="You see yourself." isgettable="false" />
+				<ITEM class="GenTub"  name="a tub" display="$ITEM_NAME is here" isgettable="false" />
+				<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
+				<ITEM class="GenContainer" name="a trunk" display="$ITEM_NAME sits at the foot of the bed" HASLID="true" />
+			</ROOM>
+		</ROOM>
+		
+		<ROOM id="town_temple" class="WoodRoom"  condition="$__towntemple&lt;1 and $__numshoptypes_all &gt; 10 and $__townsecond &gt; 5" define="__towntemple+=1,__townthird+=1">
+			<TITLE select="any-1">
+				<TITLE>The Temple of ${c:areaname}</TITLE>
+				<TITLE>${c:areaname} Temple</TITLE>
+				<TITLE>The Temple</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>This is the $adj_sactified  ${c:areaname} temple of the gods.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} temple of the gods is $adj_sactified.</DESCRIPTION>
+					<DESCRIPTION>Your are in the $adj_sactified ${c:areaname} temple of the gods.</DESCRIPTION>
+					<DESCRIPTION>Your are in the $adj_sactified temple of the gods.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Everything about this $adj_light sanctuary is $adj_fancy and $adj_beautiful.</DESCRIPTION>
+					<DESCRIPTION>This $adj_light building seems completely $adj_fancy and $adj_beautiful.</DESCRIPTION>
+					<DESCRIPTION>This $adj_fancy and $adj_beautiful church is quite $adj_light.</DESCRIPTION>
+					<DESCRIPTION>The atmosphere of the sanctuary is $adj_fancy, $adj_beautiful and $adj_light.</DESCRIPTION>
+					<DESCRIPTION>This whole barn is $adj_ragged, $adj_beautiful and $adj_light.</DESCRIPTION>
+					<DESCRIPTION>This $adj_light church seems $adj_fancy and $adj_beautiful.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Worshippers gather here to show their devotion to the gods and get aid.</DESCRIPTION>
+					<DESCRIPTION>Those sick in body and spirit gather here to show devotion to the gods.</DESCRIPTION>
+					<DESCRIPTION>Those devoted to the gods come here to kneel in prayer and seek healing.</DESCRIPTION>
+					<DESCRIPTION>Services to the gods are held here for the devoted, and in between is healing for the sick.</DESCRIPTION>
+					<DESCRIPTION>People gather here for healing and devotion services night and day.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>An ornate sign is posted on the wall.</DESCRIPTION>
+					<DESCRIPTION>A holy sign is hanging above the alter.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
+				</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="GenDoor" defclosed="false" />
+			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what spells are available, `buy [spellname]` to have a spell cast on you." />
+			<MOB class="GenShopKeeper" level="($level_range) * 1.05 > 30" race="$_humanoid_races" gender="$anygender" whatisell="caster">
+				<NAME select="pick-1">
+					<NAME>${c:fantasy_name}</NAME>
+					<NAME>Priest ${c:fantasy_name}</NAME>
+					<NAME>Cleric ${c:fantasy_name}</NAME>
+					<NAME>Ibn ${c:fantasy_name}</NAME>
+					<NAME>Friar ${c:fantasy_name}</NAME>
+				</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name is ready to tend your wounds.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name welcomes you.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>0?10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="Healer" />
+					<BEHAVIOR class="CommonSpeaker" parms="" />
+					<BEHAVIOR class="Clericness" parms="" />
+				</BEHAVIOR>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME select="any-1"><NAME>a healer`s robe</NAME></NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>COTTON</MATERIAL>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
+				</ITEM>
+				<ITEM class="GenWeapon" LEVEL="$mob_level">
+					<NAME>a holy sceptor</NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY>
 					<MATERIAL>WOOD</MATERIAL>
-					<WEAPONCLASS>STAFF</WEAPONCLASS>
+					<WEAPONCLASS>BLUNT</WEAPONCLASS>
 					<WEAPONTYPE>BASHING</WEAPONTYPE>
 				</ITEM>
 				<SHOPINVENTORY>
-					<ITEM select="repeat-$AREA_NUMLEAFS">
-						<ITEM class="StdInnKey" />
+					<ABILITY class="Prayer_CureDisease" number=1000/>
+					<ABILITY class="Prayer_Heal" number=1000/>
+					<ABILITY class="Prayer_Bless" number=1000/>
+					<ABILITY class="Prayer_RemovePoison" number=1000/>
+					<ABILITY class="Prayer_CureBlindness" number=1000/>
+					<ABILITY class="Prayer_CureDeafness" number=1000/>
+					<ABILITY class="Prayer_RestoreVoice" number=1000/>
+					<ABILITY class="Prayer_RestoreSmell" number=1000/>
+					<ABILITY class="Prayer_Restoration" number=1000/>
+					<ABILITY class="Prayer_RemoveCurse" number=1000/>
+				</SHOPINVENTORY>
+			</MOB>
+			<ITEM class="GenContainer" LEVEL="1" isgettable="false" capacity=100000 hasalid=false>
+				<NAME>the sacrificial pit</NAME>
+				<DISPLAY>$item_name sits here"</DISPLAY>
+				<MATERIAL>STONE</MATERIAL>
+				<AFFECT class="Prop_Trashcan"></AFFECT>
+			</ITEM>
+			<ITEM class="GenFountain" LEVEL="$mob_level" isgettable="false" liquidheld=1000000 hasalid=false>
+				<NAME>a fountain</NAME>
+				<DISPLAY>$item_name flows from the wall</DISPLAY>
+				<MATERIAL>STONE</MATERIAL>
+			</ITEM>
+		</ROOM>
+		<ROOM id="town_shop" class="WoodRoom" condition="$__numshoptypes_all &lt;=10" define="shoptype=$next_shop_type,patronname=$fantasy_name">
+			<TITLE select="pick-1">
+				<TITLE pickweight=1>${c:patronname}`s ${c:shoptype} Shop</TITLE>
+				<TITLE pickweight=1>${c:patronname}`s ${c:shoptype} Store</TITLE>
+				<TITLE pickweight=2 condition="$shoptype='weapon'">The ${c:smithywords} and ${c:weaponsmithywords}</TITLE> 
+				<TITLE pickweight=2 condition="$shoptype='armor'">The ${c:smithywords} and ${c:armorsmithywords}</TITLE> 
+				<TITLE pickweight=1 condition="$shoptype='general'">${c:patronname}`s Dry Goods</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>This is the $adj_tidy $adj_phys_size_large $shoptype shop of $patronname.</DESCRIPTION>
+					<DESCRIPTION>This is the $adj_tidy $shoptype shop of $patronname.</DESCRIPTION>
+					<DESCRIPTION>This is the $adj_tidy $adj_phys_size_small $shoptype shop of $patronname.</DESCRIPTION>
+					<DESCRIPTION>The $shoptype shop of $patronname is $adj_tidy and $adj_phys_size_large.</DESCRIPTION>
+					<DESCRIPTION>The $shoptype shop of $patronname is $adj_phys_size_small and $adj_tidy.</DESCRIPTION>
+					<DESCRIPTION>The $shoptype shop of $patronname is $adj_tidy.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>${c:pshoptypes} line shelves and racks throughout the store.</DESCRIPTION>
+					<DESCRIPTION>${c:pshoptypes} are stacked on shelves and racks all over the place.</DESCRIPTION>
+					<DESCRIPTION>${c:pshoptypes} are lined on shelves and racks behind the counter.</DESCRIPTION>
+					<DESCRIPTION>${c:pshoptypes} are piled on tables and counters around the store.</DESCRIPTION>
+					<DESCRIPTION>Shelves and racks all around the store are full of $pshoptypes.</DESCRIPTION>
+					<DESCRIPTION>Shelves and racks all around the store are lined with $pshoptypes.</DESCRIPTION>
+					<DESCRIPTION>Shelves and racks all around the store are piled with $pshoptypes.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION select="any-1" condition="$shoptype='weapon' or $shoptype='armor'">
+						<DESCRIPTION>Smoke from the $adj_burning forge stings your eyes.</DESCRIPTION>
+						<DESCRIPTION>A smoking forge in the back is bright with fire.</DESCRIPTION>
+						<DESCRIPTION>The $adj_burning heat from a forge lights the room.</DESCRIPTION>
+						<DESCRIPTION>The $adj_light store is lit from a adj_burning forge.</DESCRIPTION>
+						<DESCRIPTION>A $adj_burning forge can be seen in the back.</DESCRIPTION>
+					</DESCRIPTION>
+					<DESCRIPTION select="any-1" condition="$shoptype='food'">
+						<DESCRIPTION>Sweat and spicy spells from the ovens float around the room.</DESCRIPTION>
+						<DESCRIPTION>A thin layer of flour coats the floor.</DESCRIPTION>
+						<DESCRIPTION>Delicious smells can be detected from the cooking area.</DESCRIPTION>
+						<DESCRIPTION>Your mouth begins to water just being here.</DESCRIPTION>
+						<DESCRIPTION>You can almost taste all the great smells in here.</DESCRIPTION>
+					</DESCRIPTION>
+					<DESCRIPTION select="any-1" condition="$shoptype!='weapon' and $shoptype!='armor' and $shoptype!='food'">
+						<DESCRIPTION>Tools, workbenches, and other clutter make it hard to get around.</DESCRIPTION>
+						<DESCRIPTION>Price tags seem to hang off everything.  Is this a garage sale?</DESCRIPTION>
+						<DESCRIPTION>You feel like this probably a honest place to shop.</DESCRIPTION>
+						<DESCRIPTION>The way the light catches the merchandise makes your wallet feel heavier.</DESCRIPTION>
+						<DESCRIPTION>There`s so much here you feel you could probably spend all day.</DESCRIPTION>
+						<DESCRIPTION>You don`t suppose this place gets visitors every day.</DESCRIPTION>
+						<DESCRIPTION>By the footprints on the floor, you guess this place sees lots of patrons.</DESCRIPTION>
+						<DESCRIPTION>The store is quaint and rustic, and it appears everything is bad on-premises.</DESCRIPTION>
+						<DESCRIPTION>The shop seems decorated rather exoticly for such mundane wares.</DESCRIPTION>
+					</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted by the counter.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted on the counter.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the counter.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>When you`re done shopping, the exit is $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
+				</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="GenDoor" defclosed="false">
+				<AFFECT class="Prop_ClosedDayNight" />
+			</EXIT>
+			<AFFECT class="Prop_ClosedDayNight" />
+			<MOB class="GenShopKeeper" level="($level_range) * 1.05" id="shop_patron" whatisell="$wshoptype" race="$_humanoid_races" gender="$anygender" prejudice="SELL=1.0 ; BUY=2.0">
+				<NAME>$patronname</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name is ready to serve.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>0?10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="MudChat" parms="" />
+					<BEHAVIOR class="Scavenger" parms="" />
+					<BEHAVIOR class="Fighterness" parms=""  condition="$shoptype!='potion' and $shoptype!='magic' and $shoptype!='jewelry'"/>
+					<BEHAVIOR class="Mageness" parms=""  condition="$shoptype='potion' or $shoptype='magic' or $shoptype='jewelry'"/>
+					<BEHAVIOR class="CommonSpeaker" parms="" />
+				</BEHAVIOR>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME select="any-1"><NAME>(a(n)) apron</NAME></NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>COTTON</MATERIAL>
+					<PROPERWORN>WAIST,LEGS</PROPERWORN><WORNAND>true</WORNAND>
+					<LAYER>4</LAYER>
+				</ITEM>
+				<ITEM class="GenWeapon" LEVEL="$mob_level">
+					<NAME>(a(n)) ${shoptype}working tool</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>IRON</MATERIAL>
+					<WEAPONCLASS>DAGGER</WEAPONCLASS>
+					<WEAPONTYPE>PIERCING</WEAPONTYPE>
+				</ITEM>
+				<SHOPINVENTORY select="all">
+					<ITEM select="all" condition="$shoptype='weapon'">
+						<ITEM class="metacraft:all-weaponsmithing<$mob_level" material="$any_cheap_metal" number=20/>
+						<ITEM class="metacraft:all-masterweaponsmithing<$mob_level" material="$any_cheap_metal" number=20/>
+					</ITEM>
+					<ITEM select="all" condition="$shoptype='armor'">
+						<ITEM class="metacraft:all-armorsmithing<$mob_level" material="$any_cheap_metal" number=20/>
+						<ITEM class="metacraft:all-masterarmorsmithing<$mob_level" material="$any_cheap_metal" number=20/>
+					</ITEM>
+					<ITEM select="all" condition="$shoptype='magic'">
+						<ITEM class="metacraft:all-glassblowing<$mob_level=GenWand" number=20/>
+						<ITEM class="metacraft:all-blacksmithing<$mob_level=GenWand" material="$any_cheap_metal" number=20/>
+						<ITEM class="metacraft:any-scrollscribing < $level_range" number=20 price="$item_level * 100"/>
+						<ITEM class="metacraft:any-scrollscribing < $level_range" number=20 price="$item_level * 100"/>
+						<ITEM class="metacraft:any-scrollscribing < $level_range" number=20 price="$item_level * 100"/>
+						<ITEM class="metacraft:any-scrollscribing < $level_range" number=20 price="$item_level * 100"/>
+						<ITEM class="metacraft:any-scrollscribing < $level_range" number=20 price="$item_level * 100"/>
+						<ITEM class="metacraft:any-alchemy < $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-alchemy < $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-alchemy < $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-alchemy < $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-alchemy < $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-herbalism < $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-herbalism < $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-herbalism < $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-herbalism < $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-herbalism < $level_range" number=20 price="$item_level * 10"/>
+					</ITEM>
+					<ITEM select="all" condition="$shoptype='jewelry'">
+						<ITEM class="metacraft:all-jewelmaking<$mob_level" material="$any_cheap_metal" number=20/>
+					</ITEM>
+					<MOB select="all" condition="$shoptype='pet'">
+						<MOB class="Monkey" number=20/><MOB class="Dog" number=20/><MOB class="Fox" number=20/><MOB class="Duck" number=20/><MOB class="Falcon" number=20/><MOB class="Bee" number=20/>
+						<MOB class="Tiger" number=20/><MOB class="Rat" number=20/><MOB class="Puppy" number=20/><MOB class="Pig" number=20/><MOB class="Lizard" number=20/><MOB class="Lion" number=20/>
+					</MOB>
+					<ITEM select="all" condition="$shoptype='potion'">
+					    <ITEM select="repeat-40">
+							<ITEM class="metacraft:any-alchemy<$mob_level" number=200 price="$item_level * 9"/>
+						</ITEM>
+					    <ITEM select="repeat-40">
+							<ITEM class="metacraft:any-herbalism<$mob_level" number=200 price="$item_level * 9"/>
+					    </ITEM>
+					</ITEM>
+					<ITEM select="all" condition="$shoptype='general'">
+						<ITEM class="metacraft:all-leatherworking<$mob_level=GenContainer=GenDrink" material="leather" number=20/>
+						<ITEM class="metacraft:all-masterleatherworking<$mob_level=GenContainer=GenDrink" material="leather" number=20/>
+						<ITEM class="metacraft:all-blacksmithing<$mob_level=GenContainer=GenDrink=LightSource=GenRideable" material="$any_cheap_metal" number=20/>
+						<ITEM class="metacraft:all-weaving<$mob_level=GenContainer=GenRideable" material="hemp" number=20/>
+						<ITEM class="metacraft:all-glassblowing<$mob_level" number=20/>
+						<ITEM class="metacraft:all-pottery<$mob_level" material="clay" number=20/>
+					</ITEM>
+					<ITEM select="all" condition="$shoptype='leather'">
+						<ITEM class="metacraft:all-leatherworking<$mob_level=GenArmor=GenWeapon" material="leather" number=20/>
+						<ITEM class="metacraft:all-masterleatherworking<$mob_level=GenArmor=GenWeapon" material="leather" number=20/>
+					</ITEM>
+					<ITEM select="all" condition="$shoptype='wood'">
+						<ITEM class="metacraft:all-carpentry<$mob_level=GenWeapon=GenArmor=GenContainer" material="$any_wood" number=20/>
+						<ITEM class="metacraft:all-fletching<$mob_level" material="$any_wood" number=20/>
+						<ITEM class="metacraft:all-cobbler<$mob_level" material="$any_wood" number=20/>
+					</ITEM>
+					<ITEM select="all" condition="$shoptype='tailor'">
+						<ITEM class="metacraft:all-tailoring<$mob_level" material="$any_cheap_cloth" number=20/>
+						<ITEM class="metacraft:all-mastertailoring<$mob_level" material="$any_cheap_cloth" number=20/>
+						<ITEM class="metacraft:all-weaving<$mob_level=GenArmor=GenWeapon" material="hemp" number=20/>
+					</ITEM>
+					<ITEM select="all" condition="$shoptype='food'">
+						<ITEM class="metacraft:all-cooking<$mob_level" number=20 price="$item_level * 2"/>
+						<ITEM class="metacraft:all-mastercooking<$mob_level" number=20 price="$item_level * 2"/>
+						<ITEM class="metacraft:all-baking<$mob_level" number=20 price="$item_level * 2"/>
+						<ITEM class="metacraft:all-masterbaking<$mob_level" number=20 price="$item_level * 2"/>
 					</ITEM>
 				</SHOPINVENTORY>
 			</MOB>
+			<ITEM class="GenWallpaper" name="a sign" isreadable="true" readableText="Use `list` to see what is for sale, `view [itemname]` to see more information, `buy [itemname]` to buy something, `value [itemname]` to value your item, or `sell [itemname]` to try to sell something of yours." />
+			<ITEM class="GenFountain" LEVEL="$mob_level" isgettable="false" liquidheld=1000000 hasalid=false condition="$shoptype='food'">
+				<NAME>a drinking fountain</NAME>
+				<DISPLAY>$item_name flows from the wall"</DISPLAY>
+				<MATERIAL>STONE</MATERIAL>
+			</ITEM>
 		</ROOM>
-		<ROOM class="WoodRoom"  condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
-			<TITLE>$a_streetprefix $roomrun_desc hallway</TITLE>
+		<ROOM id="town_park" class="WoodsGrid" condition="$__townpark&lt;1 and $__numshoptypes_all &gt; 10 and $__townsecond &gt; 5" define="__townpark+=1,__townthird+=1" xsize="3?5" ysize="3?5">
+			<TITLE select="any-1">
+				<TITLE>The ${c:areaname} Park</TITLE>
+				<TITLE>${c:areaname} Park</TITLE>
+				<TITLE>The Park</TITLE>
+			</TITLE>
 			<DESCRIPTION>
-				<DESCRIPTION select="any-1" action="PREPEND">
-					<DESCRIPTION>You stand in (a(n)) $adj_any $noun_hallway that runs $roomrun_desc_long.</DESCRIPTION> 
-					<DESCRIPTION>This $adj_any $noun_hallway runs steeply $roomrun_desc_long.</DESCRIPTION> 
-					<DESCRIPTION>You are in (a(n)) $adj_any $noun_hallway running $roomrun_desc_long.</DESCRIPTION> 
-					<DESCRIPTION>This $adj_any $noun_hallway runs $roomrun_desc_long.</DESCRIPTION> 
-					<DESCRIPTION>You are walking through (a(n)) $adj_any $noun_hallway running $roomrun_desc_long.</DESCRIPTION>
-					<DESCRIPTION>This $adj_any $noun_hallway heads $roomrun_desc_long.</DESCRIPTION>
-				</DESCRIPTION>
-				<DESCRIPTION select="all" action="APPEND" insert="desc_exits" />
+				You are wandering around the ${c:areaname} park. Seeing the sky through the trees makes you feel glorious. ${c:adj_beautiful} trees and shrubs surround you at every step.
+				&lt;P&gt;
+				You are strolling through ${c:areaname} park. The sky above and the fresh air do you good. ${c:adj_beautiful} trees and shrubs surround you at every step.
+				&lt;P&gt;
+				You are walking around in ${c:areaname} park. There doesn't appear to be any clear paths through the trees.
+				&lt;P&gt;
+				You are in ${c:areaname} park. There are $adj_lots of trees and $adj_lots of bushes and $adj_lots of grass and dirt underfoot.
+				&lt;P&gt;
+				You are in ${c:areaname} park. There are $adj_lots of trees and $adj_lots of bushes. Also, there is $adj_lots of grass and dirt underfoot.
+				&lt;P&gt;
+				You are in ${c:areaname} park. There are $adj_lots of trees and $adj_lots of bushes.  There is $adj_lots of grass and dirt underfoot.
+				&lt;P&gt;
+				You are in ${c:areaname} park. There are $adj_lots of trees and $adj_lots of bushes.  Grass and dirt are underfoot.
+				&lt;P&gt;
+				You are walking around in ${c:areaname} park. The sky through the trees makes you feel $adj_feeling_good. There is $adj_lots of grass and dirt underfoot.
+				&lt;P&gt;
+				You are strolling through ${c:areaname} park. ${c:adj_beautiful} trees and shrubs surround you at every step.
+				&lt;P&gt;
+				You are wandering around the ${c:areaname} park. ${c:adj_beautiful} trees and shrubs surround you at every step.
+				&lt;P&gt;
+				You are walking around in ${c:areaname} park. There are $adj_lots of trees and $adj_lots of bushes and $adj_lots of grass and dirt underfoot.  There is also $adj_lots of fresh air.
+				&lt;P&gt;
+				You are walking around in ${c:areaname} park. ${c:adj_beautiful} trees and shrubs surround you at every step.
+				&lt;P&gt;
+				You are walking around in ${c:areaname} park. You feel like you could wander around here forever.
+				&lt;P&gt;
 			</DESCRIPTION>
 			<EXIT class="Open" />
+			<MOB select="repeat-15">
+				<MOB class="genmob" copyof="Bee"><BEHAVIOR CLASS="Mobile" /></MOB>
+				<MOB class="genmob" copyof="Doe"><BEHAVIOR CLASS="Mobile" /></MOB>
+				<MOB class="genmob" copyof="Fox"><BEHAVIOR CLASS="Mobile" /></MOB>
+				<MOB class="genmob" copyof="Duck"><BEHAVIOR CLASS="Mobile" /></MOB>
+				<MOB class="genmob" copyof="Rabbit"><BEHAVIOR CLASS="Mobile" /></MOB>
+				<MOB class="genmob" copyof="Squirrel"><BEHAVIOR CLASS="Mobile" /></MOB>
+			</MOB>
 		</ROOM>
-		<ROOM class="WoodRoom"  condition="$roomtag_nodetype='leaf'" define="__innroomnumber+=1">
-			<TITLE>Room number $__innroomnumber</TITLE>
-			<DESCRIPTION>$desc_exits</DESCRIPTION>
-			<EXIT class="GenDoor" hasalock="true" deflocked="true" level="$level_range" keyname="INN$__innroomnumber" />
-			<ITEM class="GenBed"  name="a bed" display="$ITEM_NAME is made here"  isgettable="false" />
-			<ITEM class="GenChair" name="a chair" display="$ITEM_NAME is waiting to be rested upon" isgettable="false" />
-			<ITEM class="GenMirror" name="a mirror" display="$ITEM_NAME is on the wall." description="You see yourself." isgettable="false" />
-			<ITEM class="GenTub"  name="a tub" display="$ITEM_NAME is here" isgettable="false" />
-			<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
-			<ITEM class="GenContainer" name="a trunk" display="$ITEM_NAME sits at the foot of the bed" HASLID="true" />
+		<ROOM id="town_stables" class="WoodRoom"  condition="$__townstables&lt;1 and $__numshoptypes_all &gt; 10 and $__townsecond &gt; 5" define="__townstables+=1,__townthird+=1">
+			<TITLE select="any-1">
+				<TITLE>The ${c:areaname} Stables</TITLE>
+				<TITLE>${c:areaname} Stables</TITLE>
+				<TITLE>The Stables</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>This is the $adj_untidy $adj_filthy ${c:areaname} Stables.</DESCRIPTION>
+					<DESCRIPTION>This is the $adj_filthy $adj_phys_size_small ${c:areaname} Stables.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Stables is $adj_phys_size_small and $adj_filthy.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Stables is $adj_filthy.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Everything about this $adj_untidy barn is $adj_ragged and $adj_smelly.</DESCRIPTION>
+					<DESCRIPTION>This $adj_untidy barn seems completely $adj_ragged and $adj_smelly.</DESCRIPTION>
+					<DESCRIPTION>This $adj_ragged and $adj_smelly barn is quite $adj_untidy.</DESCRIPTION>
+					<DESCRIPTION>The atmosphere of the barn is $adj_ragged, $adj_smelly and $adj_untidy.</DESCRIPTION>
+					<DESCRIPTION>This whole barn is $adj_ragged, $adj_smelly and $adj_untidy.</DESCRIPTION>
+					<DESCRIPTION>This $adj_untidy barn seems $adj_ragged and $adj_smelly.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Mounts can be both purchased and housed here, for a fee.</DESCRIPTION>
+					<DESCRIPTION>You can both purchase mounts here, and stable them for a time.</DESCRIPTION>
+					<DESCRIPTION>There are are horses for sale, and stables for rent to house your own mounts.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Straw covers the floor, and bags of feed sit near a water trough.</DESCRIPTION>
+					<DESCRIPTION>The floor is covered in a bed of straw.  Feed bags, water buckets, and other tools hang on the walls.</DESCRIPTION>
+					<DESCRIPTION>Through the smell and jumble you can see feed bags and other vitals on the hay covered floor.</DESCRIPTION>
+					<DESCRIPTION>Everything a growing animal needs is scattered around here, with various implements you can only guess about hanging on the walls.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
+				</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="GenDoor" defclosed="false" />
+			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is in your account, `buy [itemname]` to acquire a horse, `borrow [amount]` to borrow money." />
+			<MOB class="GenShopKeeper" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" WHATISELL="PETS">
+				<NAME>Stable-Master ${c:fantasy_name}</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name is here working.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name welcomes you.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>0?10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="Nanny" parms="RATE=1.0 NAME=&quot;${c:areaname} Stables&quot; WATCHES=&quot;mounts,wagons,followers&quot;" />
+					<BEHAVIOR class="Fighterness" parms="" />
+					<BEHAVIOR class="CommonSpeaker" parms="" />
+				</BEHAVIOR>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME select="any-1"><NAME>a stablehand`s uniform</NAME></NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>COTTON</MATERIAL>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
+				</ITEM>
+				<ITEM class="GenWeapon" LEVEL="$mob_level">
+					<NAME>a shovel</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>WOOD</MATERIAL>
+					<WEAPONCLASS>POLEARM</WEAPONCLASS>
+					<WEAPONTYPE>SLASHING</WEAPONTYPE>
+				</ITEM>
+				<SHOPINVENTORY>
+					<ITEM class="GenRideable" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
+					<ITEM class="GenRideable" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
+					<ITEM class="GenRideable" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
+					<ITEM class="GenRideable" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
+					<ITEM class="GenRideable" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
+				</SHOPINVENTORY>
+			</MOB>
 		</ROOM>
-	</ROOM>
-	
-	<ROOM id="town_temple" class="WoodRoom"  condition="$__towntemple&lt;1 and $__numshoptypes_all &gt; 10 and $__townsecond &gt; 5" define="__towntemple+=1,__townthird+=1">
-		<TITLE select="any-1">
-			<TITLE>The Temple of ${c:areaname}</TITLE>
-			<TITLE>${c:areaname} Temple</TITLE>
-			<TITLE>The Temple</TITLE>
-		</TITLE>
-		<DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>This is the $adj_sactified  ${c:areaname} temple of the gods.</DESCRIPTION>
-				<DESCRIPTION>The ${c:areaname} temple of the gods is $adj_sactified.</DESCRIPTION>
-				<DESCRIPTION>Your are in the $adj_sactified ${c:areaname} temple of the gods.</DESCRIPTION>
-				<DESCRIPTION>Your are in the $adj_sactified temple of the gods.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>Everything about this $adj_light sanctuary is $adj_fancy and $adj_beautiful.</DESCRIPTION>
-				<DESCRIPTION>This $adj_light building seems completely $adj_fancy and $adj_beautiful.</DESCRIPTION>
-				<DESCRIPTION>This $adj_fancy and $adj_beautiful church is quite $adj_light.</DESCRIPTION>
-				<DESCRIPTION>The atmosphere of the sanctuary is $adj_fancy, $adj_beautiful and $adj_light.</DESCRIPTION>
-				<DESCRIPTION>This whole barn is $adj_ragged, $adj_beautiful and $adj_light.</DESCRIPTION>
-				<DESCRIPTION>This $adj_light church seems $adj_fancy and $adj_beautiful.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>Worshippers gather here to show their devotion to the gods and get aid.</DESCRIPTION>
-				<DESCRIPTION>Those sick in body and spirit gather here to show devotion to the gods.</DESCRIPTION>
-				<DESCRIPTION>Those devoted to the gods come here to kneel in prayer and seek healing.</DESCRIPTION>
-				<DESCRIPTION>Services to the gods are held here for the devoted, and in between is healing for the sick.</DESCRIPTION>
-				<DESCRIPTION>People gather here for healing and devotion services night and day.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>An ornate sign is posted on the wall.</DESCRIPTION>
-				<DESCRIPTION>A holy sign is hanging above the alter.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
-			</DESCRIPTION>
-		</DESCRIPTION>
-		<EXIT class="GenDoor" defclosed="false" />
-		<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what spells are available, `buy [spellname]` to have a spell cast on you." />
-		<MOB class="GenShopKeeper" level="($level_range) * 1.05 > 30" race="$_humanoid_races" gender="$anygender" whatisell="caster">
-			<NAME select="pick-1">
-				<NAME>${c:fantasy_name}</NAME>
-				<NAME>Priest ${c:fantasy_name}</NAME>
-				<NAME>Cleric ${c:fantasy_name}</NAME>
-				<NAME>Ibn ${c:fantasy_name}</NAME>
-				<NAME>Friar ${c:fantasy_name}</NAME>
-			</NAME>
-			<DISPLAY select="pick-1">
-				<DISPLAY pickweight="1">$mob_name is ready to tend your wounds.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name welcomes you.</DISPLAY>
-			</DISPLAY>
-			<ALIGNMENT>0?10000</ALIGNMENT>
-			<BEHAVIOR select="all">
-				<BEHAVIOR class="Healer" />
-				<BEHAVIOR class="CommonSpeaker" parms="" />
-				<BEHAVIOR class="Clericness" parms="" />
-			</BEHAVIOR>
-			<ITEM class="GenArmor" LEVEL="$mob_level">
-				<NAME select="any-1"><NAME>a healer`s robe</NAME></NAME>
-				<DISPLAY>$item_name has been left here"</DISPLAY>
-				<MATERIAL>COTTON</MATERIAL>
-				<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
-			</ITEM>
-			<ITEM class="GenWeapon" LEVEL="$mob_level">
-				<NAME>a holy sceptor</NAME>
-				<DISPLAY>$item_name has been left here"</DISPLAY>
-				<MATERIAL>WOOD</MATERIAL>
-				<WEAPONCLASS>BLUNT</WEAPONCLASS>
-				<WEAPONTYPE>BASHING</WEAPONTYPE>
-			</ITEM>
-			<SHOPINVENTORY>
-				<ABILITY class="Prayer_CureDisease" number=1000/>
-				<ABILITY class="Prayer_Heal" number=1000/>
-				<ABILITY class="Prayer_Bless" number=1000/>
-				<ABILITY class="Prayer_RemovePoison" number=1000/>
-				<ABILITY class="Prayer_CureBlindness" number=1000/>
-				<ABILITY class="Prayer_CureDeafness" number=1000/>
-				<ABILITY class="Prayer_RestoreVoice" number=1000/>
-				<ABILITY class="Prayer_RestoreSmell" number=1000/>
-				<ABILITY class="Prayer_Restoration" number=1000/>
-				<ABILITY class="Prayer_RemoveCurse" number=1000/>
-			</SHOPINVENTORY>
-		</MOB>
-		<ITEM class="GenContainer" LEVEL="1" isgettable="false" capacity=100000 hasalid=false>
-			<NAME>the sacrificial pit</NAME>
-			<DISPLAY>$item_name sits here"</DISPLAY>
-			<MATERIAL>STONE</MATERIAL>
-			<AFFECT class="Prop_Trashcan"></AFFECT>
-		</ITEM>
-		<ITEM class="GenFountain" LEVEL="$mob_level" isgettable="false" liquidheld=1000000 hasalid=false>
-			<NAME>a fountain</NAME>
-			<DISPLAY>$item_name flows from the wall</DISPLAY>
-			<MATERIAL>STONE</MATERIAL>
-		</ITEM>
-	</ROOM>
-	<ROOM id="town_shop" class="WoodRoom" condition="$__numshoptypes_all &lt;=10" define="shoptype=$next_shop_type,patronname=$fantasy_name">
-		<TITLE select="pick-1">
-			<TITLE pickweight=1>${c:patronname}`s ${c:shoptype} Shop</TITLE>
-			<TITLE pickweight=1>${c:patronname}`s ${c:shoptype} Store</TITLE>
-			<TITLE pickweight=2 condition="$shoptype='weapon'">The ${c:smithywords} and ${c:weaponsmithywords}</TITLE> 
-			<TITLE pickweight=2 condition="$shoptype='armor'">The ${c:smithywords} and ${c:armorsmithywords}</TITLE> 
-			<TITLE pickweight=1 condition="$shoptype='general'">${c:patronname}`s Dry Goods</TITLE>
-		</TITLE>
-		<DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>This is the $adj_tidy $adj_phys_size_large $shoptype shop of $patronname.</DESCRIPTION>
-				<DESCRIPTION>This is the $adj_tidy $shoptype shop of $patronname.</DESCRIPTION>
-				<DESCRIPTION>This is the $adj_tidy $adj_phys_size_small $shoptype shop of $patronname.</DESCRIPTION>
-				<DESCRIPTION>The $shoptype shop of $patronname is $adj_tidy and $adj_phys_size_large.</DESCRIPTION>
-				<DESCRIPTION>The $shoptype shop of $patronname is $adj_phys_size_small and $adj_tidy.</DESCRIPTION>
-				<DESCRIPTION>The $shoptype shop of $patronname is $adj_tidy.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>${c:pshoptypes} line shelves and racks throughout the store.</DESCRIPTION>
-				<DESCRIPTION>${c:pshoptypes} are stacked on shelves and racks all over the place.</DESCRIPTION>
-				<DESCRIPTION>${c:pshoptypes} are lined on shelves and racks behind the counter.</DESCRIPTION>
-				<DESCRIPTION>${c:pshoptypes} are piled on tables and counters around the store.</DESCRIPTION>
-				<DESCRIPTION>Shelves and racks all around the store are full of $pshoptypes.</DESCRIPTION>
-				<DESCRIPTION>Shelves and racks all around the store are lined with $pshoptypes.</DESCRIPTION>
-				<DESCRIPTION>Shelves and racks all around the store are piled with $pshoptypes.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION select="any-1" condition="$shoptype='weapon' or $shoptype='armor'">
-					<DESCRIPTION>Smoke from the $adj_burning forge stings your eyes.</DESCRIPTION>
-					<DESCRIPTION>A smoking forge in the back is bright with fire.</DESCRIPTION>
-					<DESCRIPTION>The $adj_burning heat from a forge lights the room.</DESCRIPTION>
-					<DESCRIPTION>The $adj_light store is lit from a adj_burning forge.</DESCRIPTION>
-					<DESCRIPTION>A $adj_burning forge can be seen in the back.</DESCRIPTION>
+		<ROOM id="town_daycare" class="WoodRoom"  condition="$__towndaycare&lt;1 and $__numshoptypes_all &gt; 10 and $__townsecond &gt; 5" define="__towndaycare+=1,__townthird+=1">
+			<TITLE select="any-1">
+				<TITLE>The ${c:areaname} Day Care</TITLE>
+				<TITLE>${c:areaname} ${c:adj_happy} Day Care</TITLE>
+				<TITLE>The Day Care</TITLE>
+				<TITLE>The ${c:adj_happy} Day Care</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>This is the $adj_untidy $adj_happy ${c:areaname} Day Care.</DESCRIPTION>
+					<DESCRIPTION>This is the $adj_happy $adj_phys_size_small ${c:areaname} Day Care.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Day Care is $adj_phys_size_small and $adj_happy.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Day Care is $adj_happy.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1" condition="$shoptype='food'">
-					<DESCRIPTION>Sweat and spicy spells from the ovens float around the room.</DESCRIPTION>
-					<DESCRIPTION>A thin layer of flour coats the floor.</DESCRIPTION>
-					<DESCRIPTION>Delicious smells can be detected from the cooking area.</DESCRIPTION>
-					<DESCRIPTION>Your mouth begins to water just being here.</DESCRIPTION>
-					<DESCRIPTION>You can almost taste all the great smells in here.</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Everything about this $adj_feeling_good room is $adj_light and $adj_noisy.</DESCRIPTION>
+					<DESCRIPTION>This $adj_feeling_good room seems completely $adj_light and $adj_noisy.</DESCRIPTION>
+					<DESCRIPTION>This $adj_light and $adj_noisy room is quite $adj_feeling_good.</DESCRIPTION>
+					<DESCRIPTION>The atmosphere of the room is $adj_light, $adj_noisy and $adj_feeling_good.</DESCRIPTION>
+					<DESCRIPTION>This whole room is $adj_light, $adj_noisy and $adj_feeling_good.</DESCRIPTION>
+					<DESCRIPTION>This $adj_feeling_good room seems $adj_light and $adj_noisy.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1" condition="$shoptype!='weapon' and $shoptype!='armor' and $shoptype!='food'">
-					<DESCRIPTION>Tools, workbenches, and other clutter make it hard to get around.</DESCRIPTION>
-					<DESCRIPTION>Price tags seem to hang off everything.  Is this a garage sale?</DESCRIPTION>
-					<DESCRIPTION>You feel like this probably a honest place to shop.</DESCRIPTION>
-					<DESCRIPTION>The way the light catches the merchandise makes your wallet feel heavier.</DESCRIPTION>
-					<DESCRIPTION>There`s so much here you feel you could probably spend all day.</DESCRIPTION>
-					<DESCRIPTION>You don`t suppose this place gets visitors every day.</DESCRIPTION>
-					<DESCRIPTION>By the footprints on the floor, you guess this place sees lots of patrons.</DESCRIPTION>
-					<DESCRIPTION>The store is quaint and rustic, and it appears everything is bad on-premises.</DESCRIPTION>
-					<DESCRIPTION>The shop seems decorated rather exoticly for such mundane wares.</DESCRIPTION>
+				<DESCRIPTION>The walls are all painted $adj_colored_color and toys are scattered on the $adj_untidy floor.</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Everything from the furnishings, to the stuff, to the toddlers scream $noun_fun.</DESCRIPTION>
+					<DESCRIPTION>Children full of $noun_fun bounce around here.</DESCRIPTION>
+					<DESCRIPTION>Nannies are here chasing $adj_lots of children around has they enjoy their $noun_fun.</DESCRIPTION>
+					<DESCRIPTION>${c:adj_lots} of children run around having $noun_fun.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
 				</DESCRIPTION>
 			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
-				<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
-				<DESCRIPTION>A sign is posted by the counter.</DESCRIPTION>
-				<DESCRIPTION>A sign is posted on the counter.</DESCRIPTION>
-				<DESCRIPTION>A sign is hanging above the counter.</DESCRIPTION>
+			<EXIT class="GenDoor" defclosed="false" />
+			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is in your account, `deposit [itemname]` to deposit and item or money, `withdraw [itemname]` to remove an item or money, `borrow [amount]` to borrow money." />
+			<MOB class="GenMob" level="($level_range) * 1.05" race="$_humanoid_races" gender="F">
+				<NAME>Nanny ${c:fantasy_name}</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name is exhausted.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is running around yelling.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name welcomes you.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>0?10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="MudChat" parms="" />
+					<BEHAVIOR class="Nanny" parms="" />
+					<BEHAVIOR class="Fighterness" parms="" />
+					<BEHAVIOR class="CommonSpeaker" parms="" />
+				</BEHAVIOR>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME select="any-1"><NAME>a nanny`s uniform</NAME></NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>COTTON</MATERIAL>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
+				</ITEM>
+				<ITEM class="GenWeapon" LEVEL="$mob_level">
+					<NAME>a ruler</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>WOOD</MATERIAL>
+					<WEAPONCLASS>BLUNT</WEAPONCLASS>
+					<WEAPONTYPE>BASHING</WEAPONTYPE>
+				</ITEM>
+			</MOB>
+		</ROOM>
+		<ROOM id="town_clanbank" class="WoodRoom"  condition="$__townclanbank&lt;1 and $__numshoptypes_all &gt; 10 and $__townsecond &gt; 5" define="__townclanbank+=1,__townthird+=1">
+			<TITLE select="any-1">
+				<TITLE>The ${c:areaname} Clan Bank</TITLE>
+				<TITLE>${c:areaname} Clan Bank and Trust</TITLE>
+				<TITLE>The Clan Bank</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>This is the $adj_tidy $adj_phys_size_large ${c:areaname} Clan Bank.</DESCRIPTION>
+					<DESCRIPTION>This is the $adj_tidy $adj_phys_size_small ${c:areaname} Clan Bank.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Clan Bank is $adj_phys_size_small and $adj_tidy.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Clan Bank is $adj_tidy.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Everything about this $adj_fancy building is $adj_light and $adj_quiet.</DESCRIPTION>
+					<DESCRIPTION>This $adj_fancy building seems completely $adj_light and $adj_quiet.</DESCRIPTION>
+					<DESCRIPTION>This $adj_light and $adj_quiet building is quite $adj_fancy.</DESCRIPTION>
+					<DESCRIPTION>The atmosphere of the building is $adj_light, $adj_quiet and $adj_fancy.</DESCRIPTION>
+					<DESCRIPTION>This whole building is $adj_light, $adj_quiet and $adj_fancy.</DESCRIPTION>
+					<DESCRIPTION>This $adj_fancy building seems $adj_light and $adj_fancy.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION>A long counter divides the room in half, and ropes keep the long lines of people in order.</DESCRIPTION>
+				<DESCRIPTION>Like most banks,</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>the furnishings and decore here is very $adj_conservative and $adj_subdued.</DESCRIPTION>
+					<DESCRIPTION>the art and furniture here is $adj_conservative and $adj_subdued.</DESCRIPTION>
+					<DESCRIPTION>${c:adj_conservative} and $adj_subdued art and furnishings adorn the room.</DESCRIPTION>
+					<DESCRIPTION>${c:adj_subdued} art and the $adj_conservative furnishings adorn the room.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION>Tasteful banners of all the clans are hung from the ceiling.</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted by the counter.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted on the counter.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the counter.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
+				</DESCRIPTION>
 			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION>The street is $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION>When you`re done shopping, the exit is $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
-			</DESCRIPTION>
-		</DESCRIPTION>
-		<EXIT class="GenDoor" defclosed="false">
+			<EXIT class="GenDoor" defclosed="false">
+				<AFFECT class="Prop_ClosedDayNight" />
+			</EXIT>
+			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is in your account, `deposit [itemname]` to deposit and item or money, `withdraw [itemname]` to remove an item or money, `borrow [amount]` to borrow money." />
 			<AFFECT class="Prop_ClosedDayNight" />
-		</EXIT>
-		<AFFECT class="Prop_ClosedDayNight" />
-		<MOB class="GenShopKeeper" level="($level_range) * 1.05" id="shop_patron" whatisell="$wshoptype" race="$_humanoid_races" gender="$anygender" prejudice="SELL=1.0 ; BUY=2.0">
-			<NAME>$patronname</NAME>
-			<DISPLAY select="pick-1">
-				<DISPLAY pickweight="1">$mob_name is ready to serve.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
-			</DISPLAY>
-			<ALIGNMENT>0?10000</ALIGNMENT>
-			<BEHAVIOR select="all">
-				<BEHAVIOR class="MudChat" parms="" />
-				<BEHAVIOR class="Scavenger" parms="" />
-				<BEHAVIOR class="Fighterness" parms=""  condition="$shoptype!='potion' and $shoptype!='magic' and $shoptype!='jewelry'"/>
-				<BEHAVIOR class="Mageness" parms=""  condition="$shoptype='potion' or $shoptype='magic' or $shoptype='jewelry'"/>
-				<BEHAVIOR class="CommonSpeaker" parms="" />
-			</BEHAVIOR>
-			<ITEM class="GenArmor" LEVEL="$mob_level">
-				<NAME select="any-1"><NAME>(a(n)) apron</NAME></NAME>
-				<DISPLAY>$item_name has been left here"</DISPLAY>
-				<MATERIAL>COTTON</MATERIAL>
-				<PROPERWORN>WAIST,LEGS</PROPERWORN><WORNAND>true</WORNAND>
-				<LAYER>4</LAYER>
-			</ITEM>
-			<ITEM class="GenWeapon" LEVEL="$mob_level">
-				<NAME>(a(n)) ${shoptype}working tool</NAME>
-				<DISPLAY>$item_name has been left here"</DISPLAY>
-				<MATERIAL>IRON</MATERIAL>
-				<WEAPONCLASS>DAGGER</WEAPONCLASS>
-				<WEAPONTYPE>PIERCING</WEAPONTYPE>
-			</ITEM>
-			<SHOPINVENTORY select="all">
-				<ITEM select="all" condition="$shoptype='weapon'">
-					<ITEM class="metacraft:all-weaponsmithing<$mob_level" material="$any_cheap_metal" number=20/>
-					<ITEM class="metacraft:all-masterweaponsmithing<$mob_level" material="$any_cheap_metal" number=20/>
+			<MOB class="GenBanker" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" WHATISELL="CLAN BANKER">
+				<NAME>Bank clerk ${c:fantasy_name}</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name is here to serve.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here, looking dapper.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>0?10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="MudChat" parms="" />
+					<BEHAVIOR class="Scavenger" parms="" />
+					<BEHAVIOR class="Fighterness" parms="" />
+				</BEHAVIOR>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME select="any-1"><NAME>a conservative uniform</NAME></NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>COTTON</MATERIAL>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
-				<ITEM select="all" condition="$shoptype='armor'">
-					<ITEM class="metacraft:all-armorsmithing<$mob_level" material="$any_cheap_metal" number=20/>
-					<ITEM class="metacraft:all-masterarmorsmithing<$mob_level" material="$any_cheap_metal" number=20/>
+				<ITEM class="GenWeapon" LEVEL="$mob_level">
+					<NAME>a money clip</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>IRON</MATERIAL>
+					<WEAPONCLASS>DAGGER</WEAPONCLASS>
+					<WEAPONTYPE>PIERCING</WEAPONTYPE>
 				</ITEM>
-				<ITEM select="all" condition="$shoptype='magic'">
-					<ITEM class="metacraft:all-glassblowing<$mob_level=GenWand" number=20/>
-					<ITEM class="metacraft:all-blacksmithing<$mob_level=GenWand" material="$any_cheap_metal" number=20/>
-					<ITEM class="metacraft:any-scrollscribing < $level_range" number=20 price="$item_level * 100"/>
-					<ITEM class="metacraft:any-scrollscribing < $level_range" number=20 price="$item_level * 100"/>
-					<ITEM class="metacraft:any-scrollscribing < $level_range" number=20 price="$item_level * 100"/>
-					<ITEM class="metacraft:any-scrollscribing < $level_range" number=20 price="$item_level * 100"/>
-					<ITEM class="metacraft:any-scrollscribing < $level_range" number=20 price="$item_level * 100"/>
-					<ITEM class="metacraft:any-alchemy < $level_range" number=20 price="$item_level * 10"/>
-					<ITEM class="metacraft:any-alchemy < $level_range" number=20 price="$item_level * 10"/>
-					<ITEM class="metacraft:any-alchemy < $level_range" number=20 price="$item_level * 10"/>
-					<ITEM class="metacraft:any-alchemy < $level_range" number=20 price="$item_level * 10"/>
-					<ITEM class="metacraft:any-alchemy < $level_range" number=20 price="$item_level * 10"/>
-					<ITEM class="metacraft:any-herbalism < $level_range" number=20 price="$item_level * 10"/>
-					<ITEM class="metacraft:any-herbalism < $level_range" number=20 price="$item_level * 10"/>
-					<ITEM class="metacraft:any-herbalism < $level_range" number=20 price="$item_level * 10"/>
-					<ITEM class="metacraft:any-herbalism < $level_range" number=20 price="$item_level * 10"/>
-					<ITEM class="metacraft:any-herbalism < $level_range" number=20 price="$item_level * 10"/>
+			</MOB>
+		</ROOM>
+		<ROOM id="town_cityhall" class="WoodRoom"  condition="$__towncityhall&lt;1 and $__numshoptypes_all &gt; 10" define="__towncityhall+=1,__townsecond+=1,judgename=$fantasy_name">
+			<TITLE select="any-1">
+				<TITLE>The ${c:areaname} $__cityhalltype</TITLE>
+				<TITLE>${c:areaname} $__cityhalltype</TITLE>
+				<TITLE>The $__cityhalltype</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>This is the $adj_fancy, $adj_majestic, $adj_phys_size_large ${c:areaname} $__cityhalltype.</DESCRIPTION>
+					<DESCRIPTION>The $adj_majestic ${c:areaname} $__cityhalltype is $adj_phys_size_large and $adj_fancy.</DESCRIPTION>
+					<DESCRIPTION>The $adj_phys_size_large $adj_majestic ${c:areaname} $__cityhalltype is $adj_fancy.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The $adj_majestic markings of officialdom and justice adorn this $adj_light room.  The $adj_conservative people here clearly want to be in charge.</DESCRIPTION>
+					<DESCRIPTION>From the furniture, to the $adj_majestic art, this $adj_light room says $adj_conservative office and justice.</DESCRIPTION>
+					<DESCRIPTION>The $adj_conservative markings of $adj_majestic officialdom and justice adorn this building.</DESCRIPTION>
+					<DESCRIPTION>From the $adj_light floors to the $adj_majestic furnishings and all the other $adj_conservative markings of officialdom, you are impressed with this building.</DESCRIPTION>
+					<DESCRIPTION>All around this $adj_light building is $adj_majestic and $adj_conservative furnishings speaking of authority and justice.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION>In this building the business of the ${l:__citytype} is done and its judgements made.</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Petitioners and ${l:__cityattendant}s go about their activities here.</DESCRIPTION>
+					<DESCRIPTION>Petitioners line up patiently here, while ${l:__cityattendant}s see to their own business.</DESCRIPTION>
+					<DESCRIPTION>In one area of the building, petitioners await their opportunity for an audience.  Elsewhere, ${l:__cityattendant}s roam about quietly.</DESCRIPTION>
+					<DESCRIPTION>${c:__cityattendant}s see to the orderly admission of petitioners for an audience here.</DESCRIPTION>
+					<DESCRIPTION>Although not a crowded place, there are petitioners and ${l:__cityattendant}s here all the time.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
+				</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="GenDoor" defclosed="false" />
+			<MOB class="GenMob" level="30+(($level_range) * 1.1)<91" race="$_humanoid_races" gender="$anygender">
+				<NAME>$__chieftype ${c:judgename}</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name is ready to dispense justice.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is calling for bids.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>0?10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="Fighterness" parms="" />
+				</BEHAVIOR>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME select="any-1"><NAME>a ${l:__chieftype}`s uniform</NAME></NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>COTTON</MATERIAL>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
-				<ITEM select="all" condition="$shoptype='jewelry'">
-					<ITEM class="metacraft:all-jewelmaking<$mob_level" material="$any_cheap_metal" number=20/>
+				<ITEM class="GenWeapon" LEVEL="$mob_level">
+					<NAME>a gavel</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>WOOD</MATERIAL>
+					<WEAPONCLASS>BLUNT</WEAPONCLASS>
+					<WEAPONTYPE>BASHING</WEAPONTYPE>
 				</ITEM>
-				<MOB select="all" condition="$shoptype='pet'">
-					<MOB class="Monkey" number=20/><MOB class="Dog" number=20/><MOB class="Fox" number=20/><MOB class="Duck" number=20/><MOB class="Falcon" number=20/><MOB class="Bee" number=20/>
-					<MOB class="Tiger" number=20/><MOB class="Rat" number=20/><MOB class="Puppy" number=20/><MOB class="Pig" number=20/><MOB class="Lizard" number=20/><MOB class="Lion" number=20/>
-				</MOB>
-				<ITEM select="all" condition="$shoptype='potion'">
-				    <ITEM select="repeat-40">
-						<ITEM class="metacraft:any-alchemy<$mob_level" number=200 price="$item_level * 9"/>
-					</ITEM>
-				    <ITEM select="repeat-40">
-						<ITEM class="metacraft:any-herbalism<$mob_level" number=200 price="$item_level * 9"/>
-				    </ITEM>
-				</ITEM>
-				<ITEM select="all" condition="$shoptype='general'">
-					<ITEM class="metacraft:all-leatherworking<$mob_level=GenContainer=GenDrink" material="leather" number=20/>
-					<ITEM class="metacraft:all-masterleatherworking<$mob_level=GenContainer=GenDrink" material="leather" number=20/>
-					<ITEM class="metacraft:all-blacksmithing<$mob_level=GenContainer=GenDrink=LightSource=GenRideable" material="$any_cheap_metal" number=20/>
-					<ITEM class="metacraft:all-weaving<$mob_level=GenContainer=GenRideable" material="hemp" number=20/>
-					<ITEM class="metacraft:all-glassblowing<$mob_level" number=20/>
-					<ITEM class="metacraft:all-pottery<$mob_level" material="clay" number=20/>
-				</ITEM>
-				<ITEM select="all" condition="$shoptype='leather'">
-					<ITEM class="metacraft:all-leatherworking<$mob_level=GenArmor=GenWeapon" material="leather" number=20/>
-					<ITEM class="metacraft:all-masterleatherworking<$mob_level=GenArmor=GenWeapon" material="leather" number=20/>
-				</ITEM>
-				<ITEM select="all" condition="$shoptype='wood'">
-					<ITEM class="metacraft:all-carpentry<$mob_level=GenWeapon=GenArmor=GenContainer" material="$any_wood" number=20/>
-					<ITEM class="metacraft:all-fletching<$mob_level" material="$any_wood" number=20/>
-					<ITEM class="metacraft:all-cobbler<$mob_level" material="$any_wood" number=20/>
-				</ITEM>
-				<ITEM select="all" condition="$shoptype='tailor'">
-					<ITEM class="metacraft:all-tailoring<$mob_level" material="$any_cheap_cloth" number=20/>
-					<ITEM class="metacraft:all-mastertailoring<$mob_level" material="$any_cheap_cloth" number=20/>
-					<ITEM class="metacraft:all-weaving<$mob_level=GenArmor=GenWeapon" material="hemp" number=20/>
-				</ITEM>
-				<ITEM select="all" condition="$shoptype='food'">
-					<ITEM class="metacraft:all-cooking<$mob_level" number=20 price="$item_level * 2"/>
-					<ITEM class="metacraft:all-mastercooking<$mob_level" number=20 price="$item_level * 2"/>
-					<ITEM class="metacraft:all-baking<$mob_level" number=20 price="$item_level * 2"/>
-					<ITEM class="metacraft:all-masterbaking<$mob_level" number=20 price="$item_level * 2"/>
-				</ITEM>
-			</SHOPINVENTORY>
-		</MOB>
-		<ITEM class="GenWallpaper" name="a sign" isreadable="true" readableText="Use `list` to see what is for sale, `view [itemname]` to see more information, `buy [itemname]` to buy something, `value [itemname]` to value your item, or `sell [itemname]` to try to sell something of yours." />
-		<ITEM class="GenFountain" LEVEL="$mob_level" isgettable="false" liquidheld=1000000 hasalid=false condition="$shoptype='food'">
-			<NAME>a drinking fountain</NAME>
-			<DISPLAY>$item_name flows from the wall"</DISPLAY>
-			<MATERIAL>STONE</MATERIAL>
-		</ITEM>
-	</ROOM>
-	<ROOM id="town_park" class="WoodsGrid" condition="$__townpark&lt;1 and $__numshoptypes_all &gt; 10 and $__townsecond &gt; 5" define="__townpark+=1,__townthird+=1" xsize="3?5" ysize="3?5">
-		<TITLE select="any-1">
-			<TITLE>The ${c:areaname} Park</TITLE>
-			<TITLE>${c:areaname} Park</TITLE>
-			<TITLE>The Park</TITLE>
-		</TITLE>
-		<DESCRIPTION>
-			You are wandering around the ${c:areaname} park. Seeing the sky through the trees makes you feel glorious. ${c:adj_beautiful} trees and shrubs surround you at every step.
-			&lt;P&gt;
-			You are strolling through ${c:areaname} park. The sky above and the fresh air do you good. ${c:adj_beautiful} trees and shrubs surround you at every step.
-			&lt;P&gt;
-			You are walking around in ${c:areaname} park. There doesn't appear to be any clear paths through the trees.
-			&lt;P&gt;
-			You are in ${c:areaname} park. There are $adj_lots of trees and $adj_lots of bushes and $adj_lots of grass and dirt underfoot.
-			&lt;P&gt;
-			You are in ${c:areaname} park. There are $adj_lots of trees and $adj_lots of bushes. Also, there is $adj_lots of grass and dirt underfoot.
-			&lt;P&gt;
-			You are in ${c:areaname} park. There are $adj_lots of trees and $adj_lots of bushes.  There is $adj_lots of grass and dirt underfoot.
-			&lt;P&gt;
-			You are in ${c:areaname} park. There are $adj_lots of trees and $adj_lots of bushes.  Grass and dirt are underfoot.
-			&lt;P&gt;
-			You are walking around in ${c:areaname} park. The sky through the trees makes you feel $adj_feeling_good. There is $adj_lots of grass and dirt underfoot.
-			&lt;P&gt;
-			You are strolling through ${c:areaname} park. ${c:adj_beautiful} trees and shrubs surround you at every step.
-			&lt;P&gt;
-			You are wandering around the ${c:areaname} park. ${c:adj_beautiful} trees and shrubs surround you at every step.
-			&lt;P&gt;
-			You are walking around in ${c:areaname} park. There are $adj_lots of trees and $adj_lots of bushes and $adj_lots of grass and dirt underfoot.  There is also $adj_lots of fresh air.
-			&lt;P&gt;
-			You are walking around in ${c:areaname} park. ${c:adj_beautiful} trees and shrubs surround you at every step.
-			&lt;P&gt;
-			You are walking around in ${c:areaname} park. You feel like you could wander around here forever.
-			&lt;P&gt;
-		</DESCRIPTION>
-		<EXIT class="Open" />
-		<MOB select="repeat-15">
-			<MOB class="genmob" copyof="Bee"><BEHAVIOR CLASS="Mobile" /></MOB>
-			<MOB class="genmob" copyof="Doe"><BEHAVIOR CLASS="Mobile" /></MOB>
-			<MOB class="genmob" copyof="Fox"><BEHAVIOR CLASS="Mobile" /></MOB>
-			<MOB class="genmob" copyof="Duck"><BEHAVIOR CLASS="Mobile" /></MOB>
-			<MOB class="genmob" copyof="Rabbit"><BEHAVIOR CLASS="Mobile" /></MOB>
-			<MOB class="genmob" copyof="Squirrel"><BEHAVIOR CLASS="Mobile" /></MOB>
-		</MOB>
-	</ROOM>
-	<ROOM id="town_stables" class="WoodRoom"  condition="$__townstables&lt;1 and $__numshoptypes_all &gt; 10 and $__townsecond &gt; 5" define="__townstables+=1,__townthird+=1">
-		<TITLE select="any-1">
-			<TITLE>The ${c:areaname} Stables</TITLE>
-			<TITLE>${c:areaname} Stables</TITLE>
-			<TITLE>The Stables</TITLE>
-		</TITLE>
-		<DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>This is the $adj_untidy $adj_filthy ${c:areaname} Stables.</DESCRIPTION>
-				<DESCRIPTION>This is the $adj_filthy $adj_phys_size_small ${c:areaname} Stables.</DESCRIPTION>
-				<DESCRIPTION>The ${c:areaname} Stables is $adj_phys_size_small and $adj_filthy.</DESCRIPTION>
-				<DESCRIPTION>The ${c:areaname} Stables is $adj_filthy.</DESCRIPTION>
+			</MOB>
+			<MOB select="repeat-3" insert="town_cityguard" />
+		</ROOM>
+		<ROOM id="town_auctionhall" class="WoodRoom"  condition="$__townauctionhall&lt;1 and $__numshoptypes_all &gt; 10" define="__townauctionhall+=1,__townsecond+=1">
+			<TITLE select="any-1">
+				<TITLE>The ${c:areaname} Auction Hall</TITLE>
+				<TITLE>${c:areaname} Auction Hall</TITLE>
+				<TITLE>The Auction Hall</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>This is the $adj_noisy $adj_phys_size_large ${c:areaname} Auction Hall.</DESCRIPTION>
+					<DESCRIPTION>This is the $adj_noisy $adj_phys_size_small ${c:areaname} Auction Hall.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Auction Hall is $adj_phys_size_small and $adj_noisy.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Auction Hall is $adj_noisy.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Tables with various items line the walls, all of which are marked for auction.</DESCRIPTION>
+					<DESCRIPTION>The lots up for auction sit in open boxes near the back of the room.</DESCRIPTION>
+					<DESCRIPTION>Around the room are the available lots sitting on individual tables with little tags.</DESCRIPTION>
+					<DESCRIPTION>The upcoming auction lots can be seen on tables around the room.</DESCRIPTION>
+					<DESCRIPTION>All the lots up for auction rest quietly on tables with numbered tags tied neatly to them.</DESCRIPTION>
+					<DESCRIPTION>A long table behind the auctioneer is covered with all the upcoming lots.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>People stand around here chatting, shouting, and generally trying to catch a good deal.</DESCRIPTION>
+					<DESCRIPTION>This run down building is quite busy with folks trying to win a cheap deal.</DESCRIPTION>
+					<DESCRIPTION>People are here selling, people are here shouting prices, people are talking about the lots.  Lots of people.</DESCRIPTION>
+					<DESCRIPTION>People talking and walking around view and discuss the lots.  Other people shout bids to the auctioneer.</DESCRIPTION>
+					<DESCRIPTION>Bustling folks examine and discuss the upcoming lots while attentive people shout bits to the auctioneer.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted by the counter.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted on the counter.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the counter.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
+				</DESCRIPTION>
 			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>Everything about this $adj_untidy barn is $adj_ragged and $adj_smelly.</DESCRIPTION>
-				<DESCRIPTION>This $adj_untidy barn seems completely $adj_ragged and $adj_smelly.</DESCRIPTION>
-				<DESCRIPTION>This $adj_ragged and $adj_smelly barn is quite $adj_untidy.</DESCRIPTION>
-				<DESCRIPTION>The atmosphere of the barn is $adj_ragged, $adj_smelly and $adj_untidy.</DESCRIPTION>
-				<DESCRIPTION>This whole barn is $adj_ragged, $adj_smelly and $adj_untidy.</DESCRIPTION>
-				<DESCRIPTION>This $adj_untidy barn seems $adj_ragged and $adj_smelly.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>Mounts can be both purchased and housed here, for a fee.</DESCRIPTION>
-				<DESCRIPTION>You can both purchase mounts here, and stable them for a time.</DESCRIPTION>
-				<DESCRIPTION>There are are horses for sale, and stables for rent to house your own mounts.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>Straw covers the floor, and bags of feed sit near a water trough.</DESCRIPTION>
-				<DESCRIPTION>The floor is covered in a bed of straw.  Feed bags, water buckets, and other tools hang on the walls.</DESCRIPTION>
-				<DESCRIPTION>Through the smell and jumble you can see feed bags and other vitals on the hay covered floor.</DESCRIPTION>
-				<DESCRIPTION>Everything a growing animal needs is scattered around here, with various implements you can only guess about hanging on the walls.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
-				<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
-			</DESCRIPTION>
-		</DESCRIPTION>
-		<EXIT class="GenDoor" defclosed="false" />
-		<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is in your account, `buy [itemname]` to acquire a horse, `borrow [amount]` to borrow money." />
-		<MOB class="GenShopKeeper" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" WHATISELL="PETS">
-			<NAME>Stable-Master ${c:fantasy_name}</NAME>
-			<DISPLAY select="pick-1">
-				<DISPLAY pickweight="1">$mob_name is here working.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name welcomes you.</DISPLAY>
-			</DISPLAY>
-			<ALIGNMENT>0?10000</ALIGNMENT>
-			<BEHAVIOR select="all">
-				<BEHAVIOR class="Nanny" parms="RATE=1.0 NAME=&quot;${c:areaname} Stables&quot; WATCHES=&quot;mounts,wagons,followers&quot;" />
-				<BEHAVIOR class="Fighterness" parms="" />
-				<BEHAVIOR class="CommonSpeaker" parms="" />
-			</BEHAVIOR>
-			<ITEM class="GenArmor" LEVEL="$mob_level">
-				<NAME select="any-1"><NAME>a stablehand`s uniform</NAME></NAME>
-				<DISPLAY>$item_name has been left here"</DISPLAY>
-				<MATERIAL>COTTON</MATERIAL>
-				<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
-			</ITEM>
-			<ITEM class="GenWeapon" LEVEL="$mob_level">
-				<NAME>a shovel</NAME>
-				<DISPLAY>$item_name has been left here"</DISPLAY>
-				<MATERIAL>WOOD</MATERIAL>
-				<WEAPONCLASS>POLEARM</WEAPONCLASS>
-				<WEAPONTYPE>SLASHING</WEAPONTYPE>
-			</ITEM>
-			<SHOPINVENTORY>
-				<ITEM class="GenRideable" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
-				<ITEM class="GenRideable" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
-				<ITEM class="GenRideable" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
-				<ITEM class="GenRideable" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
-				<ITEM class="GenRideable" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
-			</SHOPINVENTORY>
-		</MOB>
-	</ROOM>
-	<ROOM id="town_daycare" class="WoodRoom"  condition="$__towndaycare&lt;1 and $__numshoptypes_all &gt; 10 and $__townsecond &gt; 5" define="__towndaycare+=1,__townthird+=1">
-		<TITLE select="any-1">
-			<TITLE>The ${c:areaname} Day Care</TITLE>
-			<TITLE>${c:areaname} ${c:adj_happy} Day Care</TITLE>
-			<TITLE>The Day Care</TITLE>
-			<TITLE>The ${c:adj_happy} Day Care</TITLE>
-		</TITLE>
-		<DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>This is the $adj_untidy $adj_happy ${c:areaname} Day Care.</DESCRIPTION>
-				<DESCRIPTION>This is the $adj_happy $adj_phys_size_small ${c:areaname} Day Care.</DESCRIPTION>
-				<DESCRIPTION>The ${c:areaname} Day Care is $adj_phys_size_small and $adj_happy.</DESCRIPTION>
-				<DESCRIPTION>The ${c:areaname} Day Care is $adj_happy.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>Everything about this $adj_feeling_good room is $adj_light and $adj_noisy.</DESCRIPTION>
-				<DESCRIPTION>This $adj_feeling_good room seems completely $adj_light and $adj_noisy.</DESCRIPTION>
-				<DESCRIPTION>This $adj_light and $adj_noisy room is quite $adj_feeling_good.</DESCRIPTION>
-				<DESCRIPTION>The atmosphere of the room is $adj_light, $adj_noisy and $adj_feeling_good.</DESCRIPTION>
-				<DESCRIPTION>This whole room is $adj_light, $adj_noisy and $adj_feeling_good.</DESCRIPTION>
-				<DESCRIPTION>This $adj_feeling_good room seems $adj_light and $adj_noisy.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION>The walls are all painted $adj_colored_color and toys are scattered on the $adj_untidy floor.</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>Everything from the furnishings, to the stuff, to the toddlers scream $noun_fun.</DESCRIPTION>
-				<DESCRIPTION>Children full of $noun_fun bounce around here.</DESCRIPTION>
-				<DESCRIPTION>Nannies are here chasing $adj_lots of children around has they enjoy their $noun_fun.</DESCRIPTION>
-				<DESCRIPTION>${c:adj_lots} of children run around having $noun_fun.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
-				<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
-			</DESCRIPTION>
-		</DESCRIPTION>
-		<EXIT class="GenDoor" defclosed="false" />
-		<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is in your account, `deposit [itemname]` to deposit and item or money, `withdraw [itemname]` to remove an item or money, `borrow [amount]` to borrow money." />
-		<MOB class="GenMob" level="($level_range) * 1.05" race="$_humanoid_races" gender="F">
-			<NAME>Nanny ${c:fantasy_name}</NAME>
-			<DISPLAY select="pick-1">
-				<DISPLAY pickweight="1">$mob_name is exhausted.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is running around yelling.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name welcomes you.</DISPLAY>
-			</DISPLAY>
-			<ALIGNMENT>0?10000</ALIGNMENT>
-			<BEHAVIOR select="all">
-				<BEHAVIOR class="MudChat" parms="" />
-				<BEHAVIOR class="Nanny" parms="" />
-				<BEHAVIOR class="Fighterness" parms="" />
-				<BEHAVIOR class="CommonSpeaker" parms="" />
-			</BEHAVIOR>
-			<ITEM class="GenArmor" LEVEL="$mob_level">
-				<NAME select="any-1"><NAME>a nanny`s uniform</NAME></NAME>
-				<DISPLAY>$item_name has been left here"</DISPLAY>
-				<MATERIAL>COTTON</MATERIAL>
-				<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
-			</ITEM>
-			<ITEM class="GenWeapon" LEVEL="$mob_level">
-				<NAME>a ruler</NAME>
-				<DISPLAY>$item_name has been left here"</DISPLAY>
-				<MATERIAL>WOOD</MATERIAL>
-				<WEAPONCLASS>BLUNT</WEAPONCLASS>
-				<WEAPONTYPE>BASHING</WEAPONTYPE>
-			</ITEM>
-		</MOB>
-	</ROOM>
-	<ROOM id="town_clanbank" class="WoodRoom"  condition="$__townclanbank&lt;1 and $__numshoptypes_all &gt; 10 and $__townsecond &gt; 5" define="__townclanbank+=1,__townthird+=1">
-		<TITLE select="any-1">
-			<TITLE>The ${c:areaname} Clan Bank</TITLE>
-			<TITLE>${c:areaname} Clan Bank and Trust</TITLE>
-			<TITLE>The Clan Bank</TITLE>
-		</TITLE>
-		<DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>This is the $adj_tidy $adj_phys_size_large ${c:areaname} Clan Bank.</DESCRIPTION>
-				<DESCRIPTION>This is the $adj_tidy $adj_phys_size_small ${c:areaname} Clan Bank.</DESCRIPTION>
-				<DESCRIPTION>The ${c:areaname} Clan Bank is $adj_phys_size_small and $adj_tidy.</DESCRIPTION>
-				<DESCRIPTION>The ${c:areaname} Clan Bank is $adj_tidy.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>Everything about this $adj_fancy building is $adj_light and $adj_quiet.</DESCRIPTION>
-				<DESCRIPTION>This $adj_fancy building seems completely $adj_light and $adj_quiet.</DESCRIPTION>
-				<DESCRIPTION>This $adj_light and $adj_quiet building is quite $adj_fancy.</DESCRIPTION>
-				<DESCRIPTION>The atmosphere of the building is $adj_light, $adj_quiet and $adj_fancy.</DESCRIPTION>
-				<DESCRIPTION>This whole building is $adj_light, $adj_quiet and $adj_fancy.</DESCRIPTION>
-				<DESCRIPTION>This $adj_fancy building seems $adj_light and $adj_fancy.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION>A long counter divides the room in half, and ropes keep the long lines of people in order.</DESCRIPTION>
-			<DESCRIPTION>Like most banks,</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>the furnishings and decore here is very $adj_conservative and $adj_subdued.</DESCRIPTION>
-				<DESCRIPTION>the art and furniture here is $adj_conservative and $adj_subdued.</DESCRIPTION>
-				<DESCRIPTION>${c:adj_conservative} and $adj_subdued art and furnishings adorn the room.</DESCRIPTION>
-				<DESCRIPTION>${c:adj_subdued} art and the $adj_conservative furnishings adorn the room.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION>Tasteful banners of all the clans are hung from the ceiling.</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
-				<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
-				<DESCRIPTION>A sign is posted by the counter.</DESCRIPTION>
-				<DESCRIPTION>A sign is posted on the counter.</DESCRIPTION>
-				<DESCRIPTION>A sign is hanging above the counter.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
-			</DESCRIPTION>
-		</DESCRIPTION>
-		<EXIT class="GenDoor" defclosed="false">
+			<EXIT class="GenDoor" defclosed="false">
+				<AFFECT class="Prop_ClosedDayNight" />
+			</EXIT>
+			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is up for auction, `bid [amount] [itemname]` make a bid, `sell [itemname]` to put an item up for auction, or `view [itemname]` to get more information." />
 			<AFFECT class="Prop_ClosedDayNight" />
-		</EXIT>
-		<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is in your account, `deposit [itemname]` to deposit and item or money, `withdraw [itemname]` to remove an item or money, `borrow [amount]` to borrow money." />
-		<AFFECT class="Prop_ClosedDayNight" />
-		<MOB class="GenBanker" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" WHATISELL="CLAN BANKER">
-			<NAME>Bank clerk ${c:fantasy_name}</NAME>
-			<DISPLAY select="pick-1">
-				<DISPLAY pickweight="1">$mob_name is here to serve.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is here, looking dapper.</DISPLAY>
-			</DISPLAY>
-			<ALIGNMENT>0?10000</ALIGNMENT>
-			<BEHAVIOR select="all">
-				<BEHAVIOR class="MudChat" parms="" />
-				<BEHAVIOR class="Scavenger" parms="" />
-				<BEHAVIOR class="Fighterness" parms="" />
-			</BEHAVIOR>
-			<ITEM class="GenArmor" LEVEL="$mob_level">
-				<NAME select="any-1"><NAME>a conservative uniform</NAME></NAME>
-				<DISPLAY>$item_name has been left here"</DISPLAY>
-				<MATERIAL>COTTON</MATERIAL>
-				<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
-			</ITEM>
-			<ITEM class="GenWeapon" LEVEL="$mob_level">
-				<NAME>a money clip</NAME>
-				<DISPLAY>$item_name has been left here"</DISPLAY>
-				<MATERIAL>IRON</MATERIAL>
-				<WEAPONCLASS>DAGGER</WEAPONCLASS>
-				<WEAPONTYPE>PIERCING</WEAPONTYPE>
-			</ITEM>
-		</MOB>
-	</ROOM>
-	<ROOM id="town_cityhall" class="WoodRoom"  condition="$__towncityhall&lt;1 and $__numshoptypes_all &gt; 10" define="__towncityhall+=1,__townsecond+=1,judgename=$fantasy_name">
-		<TITLE select="any-1">
-			<TITLE>The ${c:areaname} $__cityhalltype</TITLE>
-			<TITLE>${c:areaname} $__cityhalltype</TITLE>
-			<TITLE>The $__cityhalltype</TITLE>
-		</TITLE>
-		<DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>This is the $adj_fancy, $adj_majestic, $adj_phys_size_large ${c:areaname} $__cityhalltype.</DESCRIPTION>
-				<DESCRIPTION>The $adj_majestic ${c:areaname} $__cityhalltype is $adj_phys_size_large and $adj_fancy.</DESCRIPTION>
-				<DESCRIPTION>The $adj_phys_size_large $adj_majestic ${c:areaname} $__cityhalltype is $adj_fancy.</DESCRIPTION>
+			<MOB class="GenAuctioneer" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender">
+				<NAME>Auctioneer ${c:fantasy_name}</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name is shouting out prices.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is calling for bids.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>0?10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="MudChat" parms="" />
+					<BEHAVIOR class="Scavenger" parms="" />
+					<BEHAVIOR class="Fighterness" parms="" />
+					<BEHAVIOR class="CommonSpeaker" parms="" />
+				</BEHAVIOR>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME select="any-1"><NAME>a colonel`s uniform</NAME></NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>COTTON</MATERIAL>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
+				</ITEM>
+				<ITEM class="GenWeapon" LEVEL="$mob_level">
+					<NAME>an auction pointer</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>IRON</MATERIAL>
+					<WEAPONCLASS>DAGGER</WEAPONCLASS>
+					<WEAPONTYPE>PIERCING</WEAPONTYPE>
+				</ITEM>
+			</MOB>
+		</ROOM>
+		<ROOM id="town_postoffice" class="WoodRoom"  condition="$__townpostoffice&lt;1 and $__numshoptypes_all &gt; 10" define="__townpostoffice+=1,__townsecond+=1">
+			<TITLE select="any-1">
+				<TITLE>The ${c:areaname} Post Office</TITLE>
+				<TITLE>${c:areaname} Post Office</TITLE>
+				<TITLE>The ${c:areaname} Post</TITLE>
+				<TITLE>The Post Office</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>This is the $adj_tidy $adj_phys_size_large ${c:areaname} Post Office.</DESCRIPTION>
+					<DESCRIPTION>This is the $adj_tidy $adj_phys_size_small ${c:areaname} Post Office.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Post Office is $adj_phys_size_small and $adj_tidy.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Post Office is $adj_tidy.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Rows and stacks of boxes line the room awaiting delivery.</DESCRIPTION>
+					<DESCRIPTION>Piles of assorted mail lay untouched in the corners, collecting cobwebs.</DESCRIPTION>
+					<DESCRIPTION>A long counter divides the room in half, and ropes held keep the long lines of people in order.</DESCRIPTION>
+					<DESCRIPTION>Mailboxes line the walls along side an assortment of wanted posters.</DESCRIPTION>
+					<DESCRIPTION>A very outdated copy of the ${c:areaname} Most Wanted list hangs near the door.</DESCRIPTION>
+					<DESCRIPTION>Envelopes of all sizes are heaped into hugh piles around the room.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Delivery men wander in and out carrying bags of mail.</DESCRIPTION>
+					<DESCRIPTION>This run down building is still quite busy with delivery boys and patrons.</DESCRIPTION>
+					<DESCRIPTION>Postmen are working hard sorting packages.</DESCRIPTION>
+					<DESCRIPTION>Several large crates have been pried open by curious postal workers.</DESCRIPTION>
+					<DESCRIPTION>For a slight fee, the postmaster will see that your letter is delivered promptly.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted by the counter.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted on the counter.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the counter.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
+				</DESCRIPTION>
 			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>The $adj_majestic markings of officialdom and justice adorn this $adj_light room.  The $adj_conservative people here clearly want to be in charge.</DESCRIPTION>
-				<DESCRIPTION>From the furniture, to the $adj_majestic art, this $adj_light room says $adj_conservative office and justice.</DESCRIPTION>
-				<DESCRIPTION>The $adj_conservative markings of $adj_majestic officialdom and justice adorn this building.</DESCRIPTION>
-				<DESCRIPTION>From the $adj_light floors to the $adj_majestic furnishings and all the other $adj_conservative markings of officialdom, you are impressed with this building.</DESCRIPTION>
-				<DESCRIPTION>All around this $adj_light building is $adj_majestic and $adj_conservative furnishings speaking of authority and justice.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION>In this building the business of the ${l:__citytype} is done and its judgements made.</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>Petitioners and ${l:__cityattendant}s go about their activities here.</DESCRIPTION>
-				<DESCRIPTION>Petitioners line up patiently here, while ${l:__cityattendant}s see to their own business.</DESCRIPTION>
-				<DESCRIPTION>In one area of the building, petitioners await their opportunity for an audience.  Elsewhere, ${l:__cityattendant}s roam about quietly.</DESCRIPTION>
-				<DESCRIPTION>${c:__cityattendant}s see to the orderly admission of petitioners for an audience here.</DESCRIPTION>
-				<DESCRIPTION>Although not a crowded place, there are petitioners and ${l:__cityattendant}s here all the time.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
-			</DESCRIPTION>
-		</DESCRIPTION>
-		<EXIT class="GenDoor" defclosed="false" />
-		<MOB class="GenMob" level="30+(($level_range) * 1.1)<91" race="$_humanoid_races" gender="$anygender">
-			<NAME>$__chieftype ${c:judgename}</NAME>
-			<DISPLAY select="pick-1">
-				<DISPLAY pickweight="1">$mob_name is ready to dispense justice.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is calling for bids.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
-			</DISPLAY>
-			<ALIGNMENT>0?10000</ALIGNMENT>
-			<BEHAVIOR select="all">
-				<BEHAVIOR class="Fighterness" parms="" />
-			</BEHAVIOR>
-			<ITEM class="GenArmor" LEVEL="$mob_level">
-				<NAME select="any-1"><NAME>a ${l:__chieftype}`s uniform</NAME></NAME>
-				<DISPLAY>$item_name has been left here"</DISPLAY>
-				<MATERIAL>COTTON</MATERIAL>
-				<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
-			</ITEM>
-			<ITEM class="GenWeapon" LEVEL="$mob_level">
-				<NAME>a gavel</NAME>
-				<DISPLAY>$item_name has been left here"</DISPLAY>
-				<MATERIAL>WOOD</MATERIAL>
-				<WEAPONCLASS>BLUNT</WEAPONCLASS>
-				<WEAPONTYPE>BASHING</WEAPONTYPE>
-			</ITEM>
-		</MOB>
-		<MOB select="repeat-3" insert="town_cityguard" />
-	</ROOM>
-	<ROOM id="town_auctionhall" class="WoodRoom"  condition="$__townauctionhall&lt;1 and $__numshoptypes_all &gt; 10" define="__townauctionhall+=1,__townsecond+=1">
-		<TITLE select="any-1">
-			<TITLE>The ${c:areaname} Auction Hall</TITLE>
-			<TITLE>${c:areaname} Auction Hall</TITLE>
-			<TITLE>The Auction Hall</TITLE>
-		</TITLE>
-		<DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>This is the $adj_noisy $adj_phys_size_large ${c:areaname} Auction Hall.</DESCRIPTION>
-				<DESCRIPTION>This is the $adj_noisy $adj_phys_size_small ${c:areaname} Auction Hall.</DESCRIPTION>
-				<DESCRIPTION>The ${c:areaname} Auction Hall is $adj_phys_size_small and $adj_noisy.</DESCRIPTION>
-				<DESCRIPTION>The ${c:areaname} Auction Hall is $adj_noisy.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>Tables with various items line the walls, all of which are marked for auction.</DESCRIPTION>
-				<DESCRIPTION>The lots up for auction sit in open boxes near the back of the room.</DESCRIPTION>
-				<DESCRIPTION>Around the room are the available lots sitting on individual tables with little tags.</DESCRIPTION>
-				<DESCRIPTION>The upcoming auction lots can be seen on tables around the room.</DESCRIPTION>
-				<DESCRIPTION>All the lots up for auction rest quietly on tables with numbered tags tied neatly to them.</DESCRIPTION>
-				<DESCRIPTION>A long table behind the auctioneer is covered with all the upcoming lots.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>People stand around here chatting, shouting, and generally trying to catch a good deal.</DESCRIPTION>
-				<DESCRIPTION>This run down building is quite busy with folks trying to win a cheap deal.</DESCRIPTION>
-				<DESCRIPTION>People are here selling, people are here shouting prices, people are talking about the lots.  Lots of people.</DESCRIPTION>
-				<DESCRIPTION>People talking and walking around view and discuss the lots.  Other people shout bids to the auctioneer.</DESCRIPTION>
-				<DESCRIPTION>Bustling folks examine and discuss the upcoming lots while attentive people shout bits to the auctioneer.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
-				<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
-				<DESCRIPTION>A sign is posted by the counter.</DESCRIPTION>
-				<DESCRIPTION>A sign is posted on the counter.</DESCRIPTION>
-				<DESCRIPTION>A sign is hanging above the counter.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
-			</DESCRIPTION>
-		</DESCRIPTION>
-		<EXIT class="GenDoor" defclosed="false">
+			<EXIT class="GenDoor" defclosed="false">
+				<AFFECT class="Prop_ClosedDayNight" />
+			</EXIT>
+			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is in your box, `deposit [itemname]` to mail an item, `withdraw [itemname]` to remove an item." />
+			<ITEM class="GenWallpaper" name="WANTED posters wall" description="Faces of various known Killers and Thieves can barely be seen." />
 			<AFFECT class="Prop_ClosedDayNight" />
-		</EXIT>
-		<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is up for auction, `bid [amount] [itemname]` make a bid, `sell [itemname]` to put an item up for auction, or `view [itemname]` to get more information." />
-		<AFFECT class="Prop_ClosedDayNight" />
-		<MOB class="GenAuctioneer" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender">
-			<NAME>Auctioneer ${c:fantasy_name}</NAME>
-			<DISPLAY select="pick-1">
-				<DISPLAY pickweight="1">$mob_name is shouting out prices.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is calling for bids.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
-			</DISPLAY>
-			<ALIGNMENT>0?10000</ALIGNMENT>
-			<BEHAVIOR select="all">
-				<BEHAVIOR class="MudChat" parms="" />
-				<BEHAVIOR class="Scavenger" parms="" />
-				<BEHAVIOR class="Fighterness" parms="" />
-				<BEHAVIOR class="CommonSpeaker" parms="" />
-			</BEHAVIOR>
-			<ITEM class="GenArmor" LEVEL="$mob_level">
-				<NAME select="any-1"><NAME>a colonel`s uniform</NAME></NAME>
-				<DISPLAY>$item_name has been left here"</DISPLAY>
-				<MATERIAL>COTTON</MATERIAL>
-				<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
-			</ITEM>
-			<ITEM class="GenWeapon" LEVEL="$mob_level">
-				<NAME>an auction pointer</NAME>
-				<DISPLAY>$item_name has been left here"</DISPLAY>
-				<MATERIAL>IRON</MATERIAL>
-				<WEAPONCLASS>DAGGER</WEAPONCLASS>
-				<WEAPONTYPE>PIERCING</WEAPONTYPE>
-			</ITEM>
-		</MOB>
-	</ROOM>
-	<ROOM id="town_postoffice" class="WoodRoom"  condition="$__townpostoffice&lt;1 and $__numshoptypes_all &gt; 10" define="__townpostoffice+=1,__townsecond+=1">
-		<TITLE select="any-1">
-			<TITLE>The ${c:areaname} Post Office</TITLE>
-			<TITLE>${c:areaname} Post Office</TITLE>
-			<TITLE>The ${c:areaname} Post</TITLE>
-			<TITLE>The Post Office</TITLE>
-		</TITLE>
-		<DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>This is the $adj_tidy $adj_phys_size_large ${c:areaname} Post Office.</DESCRIPTION>
-				<DESCRIPTION>This is the $adj_tidy $adj_phys_size_small ${c:areaname} Post Office.</DESCRIPTION>
-				<DESCRIPTION>The ${c:areaname} Post Office is $adj_phys_size_small and $adj_tidy.</DESCRIPTION>
-				<DESCRIPTION>The ${c:areaname} Post Office is $adj_tidy.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>Rows and stacks of boxes line the room awaiting delivery.</DESCRIPTION>
-				<DESCRIPTION>Piles of assorted mail lay untouched in the corners, collecting cobwebs.</DESCRIPTION>
+			<MOB class="GenPostman" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" prejudice="SELL=1.0 ; BUY=2.0">
+				<NAME select="any-1">
+					<NAME>Postal clerk ${c:fantasy_name}</NAME>
+					<NAME>Postman ${c:fantasy_name}</NAME>
+				</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name is moving very slowly.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here, rain or shine.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>0?10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="MudChat" parms="" />
+					<BEHAVIOR class="Scavenger" parms="" />
+					<BEHAVIOR class="Fighterness" parms="" />
+					<BEHAVIOR class="CommonSpeaker" parms="" />
+				</BEHAVIOR>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME select="any-1"><NAME>(a(n)) postal uniform</NAME></NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>COTTON</MATERIAL>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
+				</ITEM>
+				<ITEM class="GenWeapon" LEVEL="$mob_level">
+					<NAME>(a(n)) letter opener</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>IRON</MATERIAL>
+					<WEAPONCLASS>DAGGER</WEAPONCLASS>
+					<WEAPONTYPE>PIERCING</WEAPONTYPE>
+				</ITEM>
+				<SHOPINVENTORY>
+					<ITEM class="metacraft" name="a piece of paper" number=100/>
+				</SHOPINVENTORY>
+			</MOB>
+		</ROOM>
+		<ROOM id="town_bank" class="WoodRoom"  condition="$__townbank&lt;1 and $__numshoptypes_all &gt; 10" define="__townbank+=1,__townsecond+=1">
+			<TITLE select="any-1">
+				<TITLE>The ${c:areaname} Bank</TITLE>
+				<TITLE>${c:areaname} Bank and Trust</TITLE>
+				<TITLE>The Bank</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>This is the $adj_tidy $adj_phys_size_large ${c:areaname} Bank.</DESCRIPTION>
+					<DESCRIPTION>This is the $adj_tidy $adj_phys_size_small ${c:areaname} Bank.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Bank is $adj_phys_size_small and $adj_tidy.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Bank is $adj_tidy.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Everything in this $adj_fancy building is $adj_light and $adj_quiet.</DESCRIPTION>
+					<DESCRIPTION>This $adj_fancy building is completely $adj_light and $adj_quiet.</DESCRIPTION>
+					<DESCRIPTION>This $adj_light and $adj_quiet room is $adj_fancy.</DESCRIPTION>
+					<DESCRIPTION>The atmosphere here is $adj_light, $adj_quiet and $adj_fancy.</DESCRIPTION>
+					<DESCRIPTION>This building is $adj_light, $adj_quiet and $adj_fancy.</DESCRIPTION>
+					<DESCRIPTION>This $adj_fancy building is $adj_light and $adj_fancy.</DESCRIPTION>
+				</DESCRIPTION>
 				<DESCRIPTION>A long counter divides the room in half, and ropes held keep the long lines of people in order.</DESCRIPTION>
-				<DESCRIPTION>Mailboxes line the walls along side an assortment of wanted posters.</DESCRIPTION>
-				<DESCRIPTION>A very outdated copy of the ${c:areaname} Most Wanted list hangs near the door.</DESCRIPTION>
-				<DESCRIPTION>Envelopes of all sizes are heaped into hugh piles around the room.</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The furniture and decore here is very $adj_conservative and $adj_subdued.</DESCRIPTION>
+					<DESCRIPTION>Even the art and furnishings here is $adj_conservative and $adj_subdued.</DESCRIPTION>
+					<DESCRIPTION>${c:adj_conservative} and $adj_subdued tapestries, paintings and furnishings adorn the room.</DESCRIPTION>
+					<DESCRIPTION>The $adj_subdued art and tapestries, and the $adj_conservative furnishings adorn the room.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted by the counter.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted on the counter.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the counter.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
+				</DESCRIPTION>
 			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>Delivery men wander in and out carrying bags of mail.</DESCRIPTION>
-				<DESCRIPTION>This run down building is still quite busy with delivery boys and patrons.</DESCRIPTION>
-				<DESCRIPTION>Postmen are working hard sorting packages.</DESCRIPTION>
-				<DESCRIPTION>Several large crates have been pried open by curious postal workers.</DESCRIPTION>
-				<DESCRIPTION>For a slight fee, the postmaster will see that your letter is delivered promptly.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
-				<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
-				<DESCRIPTION>A sign is posted by the counter.</DESCRIPTION>
-				<DESCRIPTION>A sign is posted on the counter.</DESCRIPTION>
-				<DESCRIPTION>A sign is hanging above the counter.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
-			</DESCRIPTION>
-		</DESCRIPTION>
-		<EXIT class="GenDoor" defclosed="false">
+			<EXIT class="GenDoor" defclosed="false">
+				<AFFECT class="Prop_ClosedDayNight" />
+			</EXIT>
+			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is in your account, `deposit [itemname]` to deposit and item or money, `withdraw [itemname]` to remove an item or money, `borrow [amount]` to borrow money." />
 			<AFFECT class="Prop_ClosedDayNight" />
-		</EXIT>
-		<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is in your box, `deposit [itemname]` to mail an item, `withdraw [itemname]` to remove an item." />
-		<ITEM class="GenWallpaper" name="WANTED posters wall" description="Faces of various known Killers and Thieves can barely be seen." />
-		<AFFECT class="Prop_ClosedDayNight" />
-		<MOB class="GenPostman" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" prejudice="SELL=1.0 ; BUY=2.0">
-			<NAME select="any-1">
-				<NAME>Postal clerk ${c:fantasy_name}</NAME>
-				<NAME>Postman ${c:fantasy_name}</NAME>
-			</NAME>
-			<DISPLAY select="pick-1">
-				<DISPLAY pickweight="1">$mob_name is moving very slowly.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is here, rain or shine.</DISPLAY>
-			</DISPLAY>
-			<ALIGNMENT>0?10000</ALIGNMENT>
-			<BEHAVIOR select="all">
-				<BEHAVIOR class="MudChat" parms="" />
-				<BEHAVIOR class="Scavenger" parms="" />
-				<BEHAVIOR class="Fighterness" parms="" />
-				<BEHAVIOR class="CommonSpeaker" parms="" />
-			</BEHAVIOR>
-			<ITEM class="GenArmor" LEVEL="$mob_level">
-				<NAME select="any-1"><NAME>(a(n)) postal uniform</NAME></NAME>
-				<DISPLAY>$item_name has been left here"</DISPLAY>
-				<MATERIAL>COTTON</MATERIAL>
-				<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
-			</ITEM>
-			<ITEM class="GenWeapon" LEVEL="$mob_level">
-				<NAME>(a(n)) letter opener</NAME>
-				<DISPLAY>$item_name has been left here"</DISPLAY>
-				<MATERIAL>IRON</MATERIAL>
-				<WEAPONCLASS>DAGGER</WEAPONCLASS>
-				<WEAPONTYPE>PIERCING</WEAPONTYPE>
-			</ITEM>
-			<SHOPINVENTORY>
-				<ITEM class="metacraft" name="a piece of paper" number=100/>
-			</SHOPINVENTORY>
-		</MOB>
-	</ROOM>
-	<ROOM id="town_bank" class="WoodRoom"  condition="$__townbank&lt;1 and $__numshoptypes_all &gt; 10" define="__townbank+=1,__townsecond+=1">
-		<TITLE select="any-1">
-			<TITLE>The ${c:areaname} Bank</TITLE>
-			<TITLE>${c:areaname} Bank and Trust</TITLE>
-			<TITLE>The Bank</TITLE>
-		</TITLE>
-		<DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>This is the $adj_tidy $adj_phys_size_large ${c:areaname} Bank.</DESCRIPTION>
-				<DESCRIPTION>This is the $adj_tidy $adj_phys_size_small ${c:areaname} Bank.</DESCRIPTION>
-				<DESCRIPTION>The ${c:areaname} Bank is $adj_phys_size_small and $adj_tidy.</DESCRIPTION>
-				<DESCRIPTION>The ${c:areaname} Bank is $adj_tidy.</DESCRIPTION>
+			<MOB class="GenBanker" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender">
+				<NAME>Bank clerk ${c:fantasy_name}</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name is here to serve.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here, looking dapper.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>0?10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="MudChat" parms="" />
+					<BEHAVIOR class="Scavenger" parms="" />
+					<BEHAVIOR class="Fighterness" parms="" />
+				</BEHAVIOR>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME select="any-1"><NAME>a conservative uniform</NAME></NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>COTTON</MATERIAL>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
+				</ITEM>
+				<ITEM class="GenWeapon" LEVEL="$mob_level">
+					<NAME>a money clip</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>IRON</MATERIAL>
+					<WEAPONCLASS>DAGGER</WEAPONCLASS>
+					<WEAPONTYPE>PIERCING</WEAPONTYPE>
+				</ITEM>
+			</MOB>
+		</ROOM>
+		<ROOM id="town_prison" class="WoodRoom"  condition="$__townprison&lt;1 and $__numshoptypes_all &gt; 10" define="__townprison+=1,__townsecond+=1">
+			<TITLE select="any-1">
+				<TITLE>The ${c:areaname} Prison</TITLE>
+				<TITLE>${c:areaname} Jail</TITLE>
+				<TITLE>The Jail</TITLE>
+				<TITLE>The Prison</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in (a(n)) $adj_nasty prison cell.</DESCRIPTION>
+					<DESCRIPTION>You are in (a(n)) $adj_nasty cell for common prisoners.</DESCRIPTION>
+					<DESCRIPTION>You`re inside (a(n)) $adj_nasty prisoner`s holding cell.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_nasty prison cell.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_nasty cell for common prisoners.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_nasty prisoner`s holding cell.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You hear $adj_scary_feeling squeeking coming from the corner.</DESCRIPTION>
+					<DESCRIPTION>You hear the $adj_scary_feeling sounds of tiny pattering around you.</DESCRIPTION>
+					<DESCRIPTION>Something has left droppings here.</DESCRIPTION>
+					<DESCRIPTION>Some $adj_scary_feeling soul obviously relieved itself here.</DESCRIPTION>
+					<DESCRIPTION>Bits of half-eaten trash can be seen around here.</DESCRIPTION>
+					<DESCRIPTION>Bits of some half-eaten mold are here.</DESCRIPTION>
+					<DESCRIPTION>Was that the sound of something $adj_scary_feeling?</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long, not that it matters now.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long, which doesn't matter anymore.</DESCRIPTION>
+					<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
+				</DESCRIPTION>
 			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>Everything in this $adj_fancy building is $adj_light and $adj_quiet.</DESCRIPTION>
-				<DESCRIPTION>This $adj_fancy building is completely $adj_light and $adj_quiet.</DESCRIPTION>
-				<DESCRIPTION>This $adj_light and $adj_quiet room is $adj_fancy.</DESCRIPTION>
-				<DESCRIPTION>The atmosphere here is $adj_light, $adj_quiet and $adj_fancy.</DESCRIPTION>
-				<DESCRIPTION>This building is $adj_light, $adj_quiet and $adj_fancy.</DESCRIPTION>
-				<DESCRIPTION>This $adj_fancy building is $adj_light and $adj_fancy.</DESCRIPTION>
+			<EXIT class="GenDoor" hasalock="true" deflocked="true" level=91 keyname="$areaname prisonkey" />
+		</ROOM>
+		<ROOM id="town_school" class="WoodRoom"  condition="$__townschool&lt;1 and $__numshoptypes_all &gt; 10" define="__townschool+=1,__townsecond+=1">
+			<TITLE select="any-1">
+				<TITLE>The ${c:areaname} Training Academy</TITLE>
+				<TITLE>${c:areaname} Training Academy</TITLE>
+				<TITLE>The Training Academy</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>This is the $adj_phys_size_large $adj_roomwords ${c:areaname} Training Academy.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Training Academy is $adj_phys_size_large and $adj_roomwords.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>${c:adj_strange} and $adj_useful training equipment and devices are all over the place.</DESCRIPTION>
+					<DESCRIPTION>Piles of $adj_strange books and devices are here for the use of students.</DESCRIPTION>
+					<DESCRIPTION>${c:adj_strange} and $adj_useful training equipment and books for use by the students sit on shelves.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>${c:adj_personality} students train here under the watchful eye of ${adj_personality} teachers.</DESCRIPTION>
+					<DESCRIPTION>${c:adj_personality} trainers are here showing students the ropes.</DESCRIPTION>
+					<DESCRIPTION>${c:adj_personality} students are driving their trainers $adj_crazy.</DESCRIPTION>
+					<DESCRIPTION>${c:adj_personality} students busily learning their craft.</DESCRIPTION>
+					<DESCRIPTION>All over the room, ${c:adj_personality} students train at the feet of ${adj_personality} teachers.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the exit.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted by the exit.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted near the exit.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
+				</DESCRIPTION>
 			</DESCRIPTION>
-			<DESCRIPTION>A long counter divides the room in half, and ropes held keep the long lines of people in order.</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>The furniture and decore here is very $adj_conservative and $adj_subdued.</DESCRIPTION>
-				<DESCRIPTION>Even the art and furnishings here is $adj_conservative and $adj_subdued.</DESCRIPTION>
-				<DESCRIPTION>${c:adj_conservative} and $adj_subdued tapestries, paintings and furnishings adorn the room.</DESCRIPTION>
-				<DESCRIPTION>The $adj_subdued art and tapestries, and the $adj_conservative furnishings adorn the room.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
-				<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
-				<DESCRIPTION>A sign is posted by the counter.</DESCRIPTION>
-				<DESCRIPTION>A sign is posted on the counter.</DESCRIPTION>
-				<DESCRIPTION>A sign is hanging above the counter.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
-			</DESCRIPTION>
-		</DESCRIPTION>
-		<EXIT class="GenDoor" defclosed="false">
-			<AFFECT class="Prop_ClosedDayNight" />
-		</EXIT>
-		<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is in your account, `deposit [itemname]` to deposit and item or money, `withdraw [itemname]` to remove an item or money, `borrow [amount]` to borrow money." />
-		<AFFECT class="Prop_ClosedDayNight" />
-		<MOB class="GenBanker" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender">
-			<NAME>Bank clerk ${c:fantasy_name}</NAME>
-			<DISPLAY select="pick-1">
-				<DISPLAY pickweight="1">$mob_name is here to serve.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is here, looking dapper.</DISPLAY>
-			</DISPLAY>
-			<ALIGNMENT>0?10000</ALIGNMENT>
-			<BEHAVIOR select="all">
-				<BEHAVIOR class="MudChat" parms="" />
-				<BEHAVIOR class="Scavenger" parms="" />
-				<BEHAVIOR class="Fighterness" parms="" />
-			</BEHAVIOR>
-			<ITEM class="GenArmor" LEVEL="$mob_level">
-				<NAME select="any-1"><NAME>a conservative uniform</NAME></NAME>
-				<DISPLAY>$item_name has been left here"</DISPLAY>
-				<MATERIAL>COTTON</MATERIAL>
-				<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
-			</ITEM>
-			<ITEM class="GenWeapon" LEVEL="$mob_level">
-				<NAME>a money clip</NAME>
-				<DISPLAY>$item_name has been left here"</DISPLAY>
-				<MATERIAL>IRON</MATERIAL>
-				<WEAPONCLASS>DAGGER</WEAPONCLASS>
-				<WEAPONTYPE>PIERCING</WEAPONTYPE>
-			</ITEM>
-		</MOB>
-	</ROOM>
-	<ROOM id="town_prison" class="WoodRoom"  condition="$__townprison&lt;1 and $__numshoptypes_all &gt; 10" define="__townprison+=1,__townsecond+=1">
-		<TITLE select="any-1">
-			<TITLE>The ${c:areaname} Prison</TITLE>
-			<TITLE>${c:areaname} Jail</TITLE>
-			<TITLE>The Jail</TITLE>
-			<TITLE>The Prison</TITLE>
-		</TITLE>
-		<DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>You are standing in (a(n)) $adj_nasty prison cell.</DESCRIPTION>
-				<DESCRIPTION>You are in (a(n)) $adj_nasty cell for common prisoners.</DESCRIPTION>
-				<DESCRIPTION>You`re inside (a(n)) $adj_nasty prisoner`s holding cell.</DESCRIPTION>
-				<DESCRIPTION>This is (a(n)) $adj_nasty prison cell.</DESCRIPTION>
-				<DESCRIPTION>This is (a(n)) $adj_nasty cell for common prisoners.</DESCRIPTION>
-				<DESCRIPTION>This is (a(n)) $adj_nasty prisoner`s holding cell.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>You hear $adj_scary_feeling squeeking coming from the corner.</DESCRIPTION>
-				<DESCRIPTION>You hear the $adj_scary_feeling sounds of tiny pattering around you.</DESCRIPTION>
-				<DESCRIPTION>Something has left droppings here.</DESCRIPTION>
-				<DESCRIPTION>Some $adj_scary_feeling soul obviously relieved itself here.</DESCRIPTION>
-				<DESCRIPTION>Bits of half-eaten trash can be seen around here.</DESCRIPTION>
-				<DESCRIPTION>Bits of some half-eaten mold are here.</DESCRIPTION>
-				<DESCRIPTION>Was that the sound of something $adj_scary_feeling?</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>The exit is to the $roomexits_desc_long, not that it matters now.</DESCRIPTION>
-				<DESCRIPTION>The street is to the $roomexits_desc_long, which doesn't matter anymore.</DESCRIPTION>
-				<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
-			</DESCRIPTION>
-		</DESCRIPTION>
-		<EXIT class="GenDoor" hasalock="true" deflocked="true" level=91 keyname="$areaname prisonkey" />
-	</ROOM>
-	<ROOM id="town_school" class="WoodRoom"  condition="$__townschool&lt;1 and $__numshoptypes_all &gt; 10" define="__townschool+=1,__townsecond+=1">
-		<TITLE select="any-1">
-			<TITLE>The ${c:areaname} Training Academy</TITLE>
-			<TITLE>${c:areaname} Training Academy</TITLE>
-			<TITLE>The Training Academy</TITLE>
-		</TITLE>
-		<DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>This is the $adj_phys_size_large $adj_roomwords ${c:areaname} Training Academy.</DESCRIPTION>
-				<DESCRIPTION>The ${c:areaname} Training Academy is $adj_phys_size_large and $adj_roomwords.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>${c:adj_strange} and $adj_useful training equipment and devices are all over the place.</DESCRIPTION>
-				<DESCRIPTION>Piles of $adj_strange books and devices are here for the use of students.</DESCRIPTION>
-				<DESCRIPTION>${c:adj_strange} and $adj_useful training equipment and books for use by the students sit on shelves.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>${c:adj_personality} students train here under the watchful eye of ${adj_personality} teachers.</DESCRIPTION>
-				<DESCRIPTION>${c:adj_personality} trainers are here showing students the ropes.</DESCRIPTION>
-				<DESCRIPTION>${c:adj_personality} students are driving their trainers $adj_crazy.</DESCRIPTION>
-				<DESCRIPTION>${c:adj_personality} students busily learning their craft.</DESCRIPTION>
-				<DESCRIPTION>All over the room, ${c:adj_personality} students train at the feet of ${adj_personality} teachers.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
-				<DESCRIPTION>A sign is hanging above the exit.</DESCRIPTION>
-				<DESCRIPTION>A sign is posted by the exit.</DESCRIPTION>
-				<DESCRIPTION>A sign is posted near the exit.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
-				<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
-			</DESCRIPTION>
-		</DESCRIPTION>
-		<EXIT class="GenDoor" defclosed="false" />
-		<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `train [classname]` to change classes, `train [statname]` improve a stat, `gain [skillname]`  to learn a new skill, or `practice [skillname]` to improve a skill." />
-		<MOB class="GenMob" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender">
-			<NAME select="any-1">
-				<NAME>Guildmaster ${c:fantasy_name}</NAME>
-				<NAME>Master ${c:fantasy_name}</NAME>
-				<NAME>Professor ${c:fantasy_name}</NAME>
-			</NAME>
-			<DISPLAY select="pick-1">
-				<DISPLAY pickweight="1">$mob_name is waiting to show you wisdom.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is here, ready to teach.</DISPLAY>
-			</DISPLAY>
-			<ALIGNMENT>0?10000</ALIGNMENT>
-			<BEHAVIOR select="all">
-				<BEHAVIOR class="MudChat" parms="" />
-				<BEHAVIOR class="Fighterness" parms="" />
-				<BEHAVIOR class="MOBTeacher" parms="" />
-				<BEHAVIOR class="CommonSpeaker" parms="" />
-			</BEHAVIOR>
-			<AFFECT class="Prop_Trainer" parms="ALL" />
-			<ITEM class="GenArmor" LEVEL="$mob_level">
-				<NAME select="any-1"><NAME>a simple robe</NAME></NAME>
-				<DISPLAY>$item_name has been left here"</DISPLAY>
-				<MATERIAL>COTTON</MATERIAL>
-				<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
-			</ITEM>
-			<ITEM class="GenWeapon" LEVEL="$mob_level">
-				<NAME>a ruler</NAME>
-				<DISPLAY>$item_name has been left here"</DISPLAY>
-				<MATERIAL>WOOD</MATERIAL>
-				<WEAPONCLASS>BLUNT</WEAPONCLASS>
-				<WEAPONTYPE>BASHING</WEAPONTYPE>
-			</ITEM>
-		</MOB>
+			<EXIT class="GenDoor" defclosed="false" />
+			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `train [classname]` to change classes, `train [statname]` improve a stat, `gain [skillname]`  to learn a new skill, or `practice [skillname]` to improve a skill." />
+			<MOB class="GenMob" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender">
+				<NAME select="any-1">
+					<NAME>Guildmaster ${c:fantasy_name}</NAME>
+					<NAME>Master ${c:fantasy_name}</NAME>
+					<NAME>Professor ${c:fantasy_name}</NAME>
+				</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name is waiting to show you wisdom.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here, ready to teach.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>0?10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="MudChat" parms="" />
+					<BEHAVIOR class="Fighterness" parms="" />
+					<BEHAVIOR class="MOBTeacher" parms="" />
+					<BEHAVIOR class="CommonSpeaker" parms="" />
+				</BEHAVIOR>
+				<AFFECT class="Prop_Trainer" parms="ALL" />
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME select="any-1"><NAME>a simple robe</NAME></NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>COTTON</MATERIAL>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
+				</ITEM>
+				<ITEM class="GenWeapon" LEVEL="$mob_level">
+					<NAME>a ruler</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>WOOD</MATERIAL>
+					<WEAPONCLASS>BLUNT</WEAPONCLASS>
+					<WEAPONTYPE>BASHING</WEAPONTYPE>
+				</ITEM>
+			</MOB>
+		</ROOM>
 	</ROOM>
 </ROOM>
 

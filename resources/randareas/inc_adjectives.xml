@@ -641,15 +641,6 @@
 	<STRING>pulverized</STRING>
 </STRING>
 
-<STRING id="adj_smallragged" select="any-1">
-	<STRING>$adj_small</STRING>
-	<STRING>$adj_small $nasty_race_name</STRING>
-	<STRING>$adj_ragged</STRING>
-	<STRING>$adj_ragged $nasty_race_name</STRING>
-	<STRING>$adj_small $adj_ragged</STRING>
-	<STRING>$adj_small $adj_ragged $nasty_race_name</STRING>
-</STRING>
-
 <STRING id="adj_personality" select="any-1" insert="adj_personality_positive,adj_personality_negative" />
 
 <STRING id="adj_strange" select="any-1">

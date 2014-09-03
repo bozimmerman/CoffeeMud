@@ -14,8 +14,18 @@
    limitations under the License.
 -->
 <!--  include file full of desert-specific tags -->
+<string id="randomtheme" merge=true select="any-1">
+	<string condition="$theme=''">desert</string>
+</string>
 
-<ROOM id="desert_street_rooms">
+<AREA id="maze_dungeon" merge=true layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=desert" />
+<AREA id="grid_dungeon" merge=true like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=desert" />
+<AREA id="square_dungeon" merge=true like="maze_dungeon" layout="BOXCITYSQUARE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=desert" />
+<AREA id="box_dungeon" merge=true like="maze_dungeon" layout="BOXCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=desert" />
+<AREA id="cross_dungeon" merge=true like="maze_dungeon" layout="CROSS" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=desert" />
+<AREA id="tree_dungeon" merge=true like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=desert" />
+
+<ROOM id="hallway_rooms" merge=true select="pick-1" condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
 	<ROOM class="Desert" id="desert_street_room" condition="$theme='desert' or $theme='random'">
 		<TITLE>(a(n)) $_desert_path_name</TITLE>
 		<DESCRIPTION>$desert_street_desc</DESCRIPTION>
@@ -58,11 +68,11 @@
 	</ROOM>
 </ROOM>
 
-<ROOM id="desert_interior_rooms">
+<ROOM id="interior_rooms" merge=true select="any-1" condition="$roomtag_nodetype='interior' or $roomtag_nodetype='square'">
 	<ROOM class="Desert" like="desert_street_room" condition="$theme='desert' or $theme='random'" />
 </ROOM>
 
-<ROOM id="desert_leaf_rooms">
+<ROOM id="leaf_rooms" merge=true select="any-1" condition="$roomtag_nodetype='leaf'">
 	<ROOM class="Desert" id="desert_interior_room" condition="$theme='desert' or $theme='random'">
 		<TITLE>
 			<TITLE>$desert_path_prefix $desert_nouns</TITLE>

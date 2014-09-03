@@ -45,6 +45,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	protected final static char[] splitters=new char[]{'<','>','='};
 	protected final static Triad<Integer,Integer,Class<?>[]> emptyMetacraftFilter = new Triad<Integer,Integer,Class<?>[]>(Integer.valueOf(-1),Integer.valueOf(-1),new Class<?>[0]);
 	protected final static String POST_PROCESSING_STAT_SETS="___POST_PROCESSING_SETS___";
+	protected final static Set<String> UPPER_REQUIRES_KEYWORDS=new XHashSet<String>(new String[]{"INT","INTEGER","$","STRING","ANY","DOUBLE","#","NUMBER"});
+	protected final static CMParms REQUIRES_DELIMITERS=CMParms.createDelimiter(new char[]{' ','\t',',','\r','\n'});
 
 	private final SHashtable<String,Class<LayoutManager>> mgrs = new SHashtable<String,Class<LayoutManager>>();
 
@@ -74,8 +76,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	public void buildDefinedIDSet(List<XMLpiece> xmlRoot, Map<String,Object> defined)
 	{
 		if(xmlRoot==null) return;
-		final Set<String> upperKeywords=new XHashSet<String>(new String[]{"INT","INTEGER","$","STRING","ANY","DOUBLE","#","NUMBER"});
-		final CMParms delim=CMParms.createDelimiter(new char[]{' ','\t',',','\r','\n'});
 		for(int v=0;v<xmlRoot.size();v++)
 		{
 			final XMLLibrary.XMLpiece piece = xmlRoot.get(v);
@@ -101,16 +101,18 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						else
 						for(final String parm : src.parms.keySet())
 						{
-							if(!tgt.parms.containsKey(parm))
-								tgt.parms.put(parm,src.parms.get(parm));
+							final String srcParmVal=src.parms.get(parm);
+							final String tgtParmVal=tgt.parms.get(parm);
+							if(tgtParmVal==null)
+								tgt.parms.put(parm,srcParmVal);
 							else
-							if(tgt.parms.get(parm).equalsIgnoreCase(src.parms.get(parm))||parm.equalsIgnoreCase("ID"))
+							if(tgtParmVal.equalsIgnoreCase(srcParmVal)||parm.equalsIgnoreCase("ID"))
 							{ /* do nothing -- nothing to do */}
 							else
 							if(parm.equalsIgnoreCase("REQUIRES"))
 							{
-								final Map<String,String> srcParms=CMParms.parseEQParms(src.parms.get(parm), delim);
-								final Map<String,String> tgtParms=CMParms.parseEQParms(tgt.parms.get(parm), delim);
+								final Map<String,String> srcParms=CMParms.parseEQParms(srcParmVal, REQUIRES_DELIMITERS);
+								final Map<String,String> tgtParms=CMParms.parseEQParms(tgtParmVal, REQUIRES_DELIMITERS);
 								for(final String srcKey : srcParms.keySet())
 								{
 									final String srcVal=srcParms.get(srcKey);
@@ -118,25 +120,25 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 									if(tgtVal == null)
 										tgtParms.put(srcKey, srcVal);
 									else
-									if(upperKeywords.contains(srcVal.toUpperCase()))
+									if(UPPER_REQUIRES_KEYWORDS.contains(srcVal.toUpperCase()))
 									{
 										if(!srcVal.equalsIgnoreCase(tgtVal))
 											Log.errOut("Unable to merge REQUIRES parm on tags with ID: "+id+", mismatch in requirements for '"+srcKey+"'.");
 									}
 									else
-									if(upperKeywords.contains(tgtVal.toUpperCase()))
+									if(UPPER_REQUIRES_KEYWORDS.contains(tgtVal.toUpperCase()))
 										Log.errOut("Unable to merge REQUIRES parm on tags with ID: "+id+", mismatch in requirements for '"+srcKey+"'.");
 									else
 										tgtParms.put(srcKey,srcVal+";"+tgtVal);
 								}
-								tgt.parms.put("REQUIRES", CMParms.combineEQParms(tgtParms, ','));
+								tgt.parms.put(parm, CMParms.combineEQParms(tgtParms, ','));
 							}
 							else
 							if(parm.equalsIgnoreCase("CONDITION")||parm.equalsIgnoreCase("VALIDATE"))
-								tgt.parms.put(parm, tgt.parms.get(parm)+" and "+src.parms.get(parm));
+								tgt.parms.put(parm, tgtParmVal+" and "+srcParmVal);
 							else
 							if(parm.equalsIgnoreCase("INSERT")||parm.equalsIgnoreCase("DEFINE")||parm.equalsIgnoreCase("PREDEFINE"))
-								tgt.parms.put(parm, tgt.parms.get(parm)+","+src.parms.get(parm));
+								tgt.parms.put(parm, tgtParmVal+","+srcParmVal);
 							else
 								Log.errOut("Unable to merge SELECT parm on tags with ID: "+id+".");
 						}

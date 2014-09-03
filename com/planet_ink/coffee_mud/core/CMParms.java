@@ -876,6 +876,8 @@ public class CMParms
 				else
 				if(delimiterCheck.isDelimiter(c))
 				{
+					if((!Character.isWhitespace(c))&&(x<str.length()))
+						str.setCharAt(x,' '); // has to be trimmable
 					parmName=str.substring(start,x).toUpperCase().trim();
 					start=x;
 				}
@@ -899,6 +901,9 @@ public class CMParms
 					start=x;
 					lastPossibleStart=start;
 				}
+				else
+				if(!Character.isWhitespace(c))
+					str.setCharAt(x,' '); // has to be trimmable
 				break;
 			case 3:
 				if(c=='\\')
@@ -936,7 +941,11 @@ public class CMParms
 				}
 				else
 				if(delimiterCheck.isDelimiter(c))
+				{
+					if(!Character.isWhitespace(c))
+						str.setCharAt(x,' '); // has to be trimmable
 					lastWasWhitespace=true;
+				}
 				else
 				if(lastWasWhitespace)
 				{

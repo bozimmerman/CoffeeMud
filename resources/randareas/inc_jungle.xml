@@ -14,8 +14,18 @@
    limitations under the License.
 -->
 <!--  include file full of jungle-specific tags -->
+<string id="randomtheme" merge=true select="any-1">
+	<string condition="$theme=''">jungle</string>
+</string>
 
-<ROOM id="jungle_street_rooms">
+<AREA id="maze_dungeon" merge=true layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=jungle" />
+<AREA id="grid_dungeon" merge=true like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=jungle" />
+<AREA id="square_dungeon" merge=true like="maze_dungeon" layout="BOXCITYSQUARE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=jungle" />
+<AREA id="box_dungeon" merge=true like="maze_dungeon" layout="BOXCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=jungle" />
+<AREA id="cross_dungeon" merge=true like="maze_dungeon" layout="CROSS" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=jungle" />
+<AREA id="tree_dungeon" merge=true like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=jungle" />
+
+<ROOM id="hallway_rooms" merge=true select="pick-1" condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
 	<ROOM class="Jungle" id="jungle_street_room" condition="$theme='jungle' or $theme='random'">
 		<TITLE>(a(n)) $_jungle_path_name</TITLE>
 		<DESCRIPTION>$jungle_street_desc</DESCRIPTION>
@@ -58,11 +68,11 @@
 	</ROOM>
 </ROOM>
 
-<ROOM id="jungle_interior_rooms">
+<ROOM id="interior_rooms" merge=true select="any-1" condition="$roomtag_nodetype='interior' or $roomtag_nodetype='square'">
 	<ROOM class="Jungle" like="jungle_street_room" condition="$theme='jungle' or $theme='random'" />
 </ROOM>
 
-<ROOM id="jungle_leaf_rooms">
+<ROOM id="leaf_rooms" merge=true select="any-1" condition="$roomtag_nodetype='leaf'">
 	<ROOM class="Jungle" id="jungle_interior_room" condition="$theme='jungle' or $theme='random'">
 		<TITLE>
 			<TITLE>$jungle_path_prefix $jungle_nouns</TITLE>

@@ -14,684 +14,863 @@
    limitations under the License.
 -->
 <!--  include file full of rat-specific tags -->
+<string id="randomtheme" merge=true select="any-1">
+	<string condition="$theme=''">rats</string>
+</string>
 
-<ROOM id="rats_leaf_rooms" select="all" condition="$theme='rats' or $theme='random'">
-	<ROOM class="CaveRoom">
-		<TITLE>an air shaft</TITLE>
-		<DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>You are standing under an air shaft.</DESCRIPTION>
-				<DESCRIPTION>You`re inside a small cavern with an air shaft to the surface. </DESCRIPTION>
-				<DESCRIPTION>You`ve found an air shaft to the surface. </DESCRIPTION>
-				<DESCRIPTION>This is a small cavern with an air shaft to the surface. </DESCRIPTION>
+<AREA id="maze_dungeon" merge=true layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=rats" />
+<AREA id="grid_dungeon" merge=true like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=rats" />
+<AREA id="square_dungeon" merge=true like="maze_dungeon" layout="BOXCITYSQUARE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=rats" />
+<AREA id="box_dungeon" merge=true like="maze_dungeon" layout="BOXCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=rats" />
+<AREA id="cross_dungeon" merge=true like="maze_dungeon" layout="CROSS" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=rats" />
+<AREA id="tree_dungeon" merge=true like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=rats" />
+
+<ROOM id="leaf_rooms" merge=true select="any-1" condition="$roomtag_nodetype='leaf'">
+	<ROOM select="all" condition="$theme='rats' or $theme='random'">
+		<ROOM class="CaveRoom">
+			<TITLE>an air shaft</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing under an air shaft.</DESCRIPTION>
+					<DESCRIPTION>You`re inside a small cavern with an air shaft to the surface. </DESCRIPTION>
+					<DESCRIPTION>You`ve found an air shaft to the surface. </DESCRIPTION>
+					<DESCRIPTION>This is a small cavern with an air shaft to the surface. </DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>It appears far too narrow to navigate, but the air smells sweet.</DESCRIPTION>
+					<DESCRIPTION>The shaft is little more than a small hole, but it`s still nice</DESCRIPTION>
+					<DESCRIPTION>Sweet air wafts in from the small narrow hole in the ceiling.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>At first you felt quite safe here, but what is that stuff on the floor?</DESCRIPTION>
+					<DESCRIPTION>This place seems fairly nice, except for those odd sounds. </DESCRIPTION>
+					<DESCRIPTION>This must be the most refreshing cavern in this whole place, except, what was that sound? </DESCRIPTION>
+					<DESCRIPTION>You can`t imagine a more refreshing place in this lair to be standing in. Say, what`s that stuff on the floor?</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
+			</DESCRIPTION>			
+			<EXIT class="Open" />
+			<MOB select="repeat-2?5" insert="dungeon_bat" />
+			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+		</ROOM>
+		<ROOM class="StoneRoom">
+			<TITLE>a laboratory</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in (a(n)) $adj_scary_feeling laboratory.</DESCRIPTION>
+					<DESCRIPTION>You`re inside (a(n)) $adj_scary_feeling laboratory. </DESCRIPTION>
+					<DESCRIPTION>You`ve found (a(n)) $adj_scary_feeling laboratory. </DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_scary_feeling laboratory. </DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Implements of alchemy, dissection, and experimentation are everywhere.</DESCRIPTION>
+					<DESCRIPTION>Implements of alchemy, dissection, and experimentation are all over the place. </DESCRIPTION>
+					<DESCRIPTION>Implements of alchemy, dissection, and experimentation are all over. </DESCRIPTION>
+					<DESCRIPTION>Implements of alchemy, dissection, and experimentation are scattered about. </DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You can already feel your safety level dropping.</DESCRIPTION>
+					<DESCRIPTION>This place seems downright bizarre. </DESCRIPTION>
+					<DESCRIPTION>This can`t be a sane place to be hanging out. </DESCRIPTION>
+					<DESCRIPTION>You can`t imagine a more insane spot to be standing in. </DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$nasty_rat_exit</DESCRIPTION>
 			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>It appears far too narrow to navigate, but the air smells sweet.</DESCRIPTION>
-				<DESCRIPTION>The shaft is little more than a small hole, but it`s still nice</DESCRIPTION>
-				<DESCRIPTION>Sweet air wafts in from the small narrow hole in the ceiling.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>At first you felt quite safe here, but what is that stuff on the floor?</DESCRIPTION>
-				<DESCRIPTION>This place seems fairly nice, except for those odd sounds. </DESCRIPTION>
-				<DESCRIPTION>This must be the most refreshing cavern in this whole place, except, what was that sound? </DESCRIPTION>
-				<DESCRIPTION>You can`t imagine a more refreshing place in this lair to be standing in. Say, what`s that stuff on the floor?</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
-		</DESCRIPTION>			
-		<EXIT class="Open" />
-		<MOB select="repeat-2?5" insert="dungeon_bat" />
-		<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
-	</ROOM>
-	<ROOM class="StoneRoom">
-		<TITLE>a laboratory</TITLE>
-		<DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>You are standing in (a(n)) $adj_scary_feeling laboratory.</DESCRIPTION>
-				<DESCRIPTION>You`re inside (a(n)) $adj_scary_feeling laboratory. </DESCRIPTION>
-				<DESCRIPTION>You`ve found (a(n)) $adj_scary_feeling laboratory. </DESCRIPTION>
-				<DESCRIPTION>This is (a(n)) $adj_scary_feeling laboratory. </DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>Implements of alchemy, dissection, and experimentation are everywhere.</DESCRIPTION>
-				<DESCRIPTION>Implements of alchemy, dissection, and experimentation are all over the place. </DESCRIPTION>
-				<DESCRIPTION>Implements of alchemy, dissection, and experimentation are all over. </DESCRIPTION>
-				<DESCRIPTION>Implements of alchemy, dissection, and experimentation are scattered about. </DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>You can already feel your safety level dropping.</DESCRIPTION>
-				<DESCRIPTION>This place seems downright bizarre. </DESCRIPTION>
-				<DESCRIPTION>This can`t be a sane place to be hanging out. </DESCRIPTION>
-				<DESCRIPTION>You can`t imagine a more insane spot to be standing in. </DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-			<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
-		</DESCRIPTION>
-		<EXIT select="pick-1">
-			<EXIT pickweight=1 class="GenDoor" hasalock="true" deflocked="true" disposition="ISHIDDEN" keyname="$areaname labkey"/>
-			<EXIT pickweight=2 class="GenDoor" hasalock="true" deflocked="true" keyname="$areaname labkey"/>
-		</EXIT>
-		<MOB class="GenMob" level="(1.20 * ($level_range)) + 1" race="_humanoid_races" gender="$anygender">
-			<NAME>doctor $fantasy_name</NAME>
-			<DISPLAY select="pick-1">
-				<DISPLAY pickweight="1">$mob_name stands around.</DISPLAY>
-				<DISPLAY pickweight="2">$mob_name seems disturbed by the interruption.</DISPLAY>
-				<DISPLAY pickweight="2">$mob_name is doing some experiments.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is engaged in some troubling experiment.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is dissecting something.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is combining chemicals together.</DISPLAY>
-			</DISPLAY>
-			<DESCRIPTION>A mad scientist if you ever saw one.</DESCRIPTION>
-			<ALIGNMENT>-10000</ALIGNMENT>
-			<BEHAVIOR select="all">
-				<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
-				<BEHAVIOR class="MudChat" parms="" />
-				<BEHAVIOR class="Mageness" parms="" />
-				<BEHAVIOR class="ObjectGuardian" parms="" />
-			</BEHAVIOR>
-			<ITEM select="pick-1?2">
-				<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-					<NAME select="any-1"><NAME>(a(n)) $adj_fancy pointy hat</NAME><NAME>(a(n)) $adj_fancy hat</NAME></NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>COTTON</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
+			<EXIT select="pick-1">
+				<EXIT pickweight=1 class="GenDoor" hasalock="true" deflocked="true" disposition="ISHIDDEN" keyname="$areaname labkey"/>
+				<EXIT pickweight=2 class="GenDoor" hasalock="true" deflocked="true" keyname="$areaname labkey"/>
+			</EXIT>
+			<MOB class="GenMob" level="(1.20 * ($level_range)) + 1" race="_humanoid_races" gender="$anygender">
+				<NAME>doctor $fantasy_name</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name stands around.</DISPLAY>
+					<DISPLAY pickweight="2">$mob_name seems disturbed by the interruption.</DISPLAY>
+					<DISPLAY pickweight="2">$mob_name is doing some experiments.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is engaged in some troubling experiment.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is dissecting something.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is combining chemicals together.</DISPLAY>
+				</DISPLAY>
+				<DESCRIPTION>A mad scientist if you ever saw one.</DESCRIPTION>
+				<ALIGNMENT>-10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+					<BEHAVIOR class="MudChat" parms="" />
+					<BEHAVIOR class="Mageness" parms="" />
+					<BEHAVIOR class="ObjectGuardian" parms="" />
+				</BEHAVIOR>
+				<ITEM select="pick-1?2">
+					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
+						<NAME select="any-1"><NAME>(a(n)) $adj_fancy pointy hat</NAME><NAME>(a(n)) $adj_fancy hat</NAME></NAME>
+						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>COTTON</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
+					</ITEM>
+					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
+						<NAME select="any-1"><NAME>(a(n)) $adj_fancy sparkling robe</NAME><NAME>(a(n)) $adj_fancy robe</NAME></NAME>
+						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>TORSO,LEGS,ARMS</PROPERWORN><WORNAND>true</WORNAND>
+					</ITEM>
 				</ITEM>
-				<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-					<NAME select="any-1"><NAME>(a(n)) $adj_fancy sparkling robe</NAME><NAME>(a(n)) $adj_fancy robe</NAME></NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>TORSO,LEGS,ARMS</PROPERWORN><WORNAND>true</WORNAND>
+				<ITEM select="pick-1">
+					<ITEM pickweight="1" class="GenStaff" LEVEL="$mob_level">
+						<NAME>(a(n)) $adj_fancy staff</NAME>
+						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<MATERIAL>OAK</MATERIAL>
+						<WEAPONCLASS>STAFF</WEAPONCLASS>
+						<WEAPONTYPE>BASHING</WEAPONTYPE>
+					</ITEM>
 				</ITEM>
+				<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			</MOB>
+			<ITEM class="GenTable" name="(a(n)) $adj_nasty table" display="$ITEM_NAME is here" isgettable="false">
+				<CONTENT><ITEM select="any-2" insert="any_alchemy_item,any_apothecary_item,any_distilling_item,any_herbalism_item" /></CONTENT>
 			</ITEM>
-			<ITEM select="pick-1">
-				<ITEM pickweight="1" class="GenStaff" LEVEL="$mob_level">
-					<NAME>(a(n)) $adj_fancy staff</NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY>
-					<MATERIAL>OAK</MATERIAL>
-					<WEAPONCLASS>STAFF</WEAPONCLASS>
-					<WEAPONTYPE>BASHING</WEAPONTYPE>
-				</ITEM>
+			<ITEM class="metacraft:Scroll Case">
+				<CONTENT><ITEM select="any-2" insert="any_scrollscribing_item,any_scrollscribing_item" /></CONTENT>
+			</ITEM>
+			<ITEM class="metacraft:Potion Rack">
+				<CONTENT><ITEM select="any-2" insert="any_alchemy_item,any_apothecary_item,any_distilling_item,any_herbalism_item" /></CONTENT>
 			</ITEM>
 			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
-		</MOB>
-		<ITEM class="GenTable" name="(a(n)) $adj_nasty table" display="$ITEM_NAME is here" isgettable="false">
-			<CONTENT><ITEM select="any-2" insert="any_alchemy_item,any_apothecary_item,any_distilling_item,any_herbalism_item" /></CONTENT>
-		</ITEM>
-		<ITEM class="metacraft:Scroll Case">
-			<CONTENT><ITEM select="any-2" insert="any_scrollscribing_item,any_scrollscribing_item" /></CONTENT>
-		</ITEM>
-		<ITEM class="metacraft:Potion Rack">
-			<CONTENT><ITEM select="any-2" insert="any_alchemy_item,any_apothecary_item,any_distilling_item,any_herbalism_item" /></CONTENT>
-		</ITEM>
-		<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
-	</ROOM>
-	<ROOM class="CaveRoom">
-		<TITLE>a hatchery</TITLE>
-		<DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>You are standing in (a(n)) $adj_scary_feeling dragon hatchery.</DESCRIPTION>
-				<DESCRIPTION>You`re inside (a(n)) $adj_scary_feeling dragon hatchery. </DESCRIPTION>
-				<DESCRIPTION>You`ve found (a(n)) $adj_scary_feeling dragon hatchery. </DESCRIPTION>
-				<DESCRIPTION>This is (a(n)) $adj_scary_feeling dragon hatchery. </DESCRIPTION>
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a hatchery</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in (a(n)) $adj_scary_feeling dragon hatchery.</DESCRIPTION>
+					<DESCRIPTION>You`re inside (a(n)) $adj_scary_feeling dragon hatchery. </DESCRIPTION>
+					<DESCRIPTION>You`ve found (a(n)) $adj_scary_feeling dragon hatchery. </DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_scary_feeling dragon hatchery. </DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Large eggs are set carefully about the room.</DESCRIPTION>
+					<DESCRIPTION>Large eggs are evenly spaces around this room. </DESCRIPTION>
+					<DESCRIPTION>Large eggs are everywhere you look. </DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You feel quite nervous here.</DESCRIPTION>
+					<DESCRIPTION>This place seems like a dangerous spot for a rest. </DESCRIPTION>
+					<DESCRIPTION>This can`t be a safe place to be hanging around in. </DESCRIPTION>
+					<DESCRIPTION>You can`t imagine a more dangerous place to camp out in. </DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
+			</DESCRIPTION>			
+			<MOB class="GenMob" level="$level_range" id="rats_momma_dragon" race="Dragon" gender="F">
+				<NAME select="all">
+					<NAME condition="$mob_level<10">a hatchling $rats_dragoncolor dragon</NAME>
+					<NAME condition="$mob_level<20 and $mob_level>=10">a very young $rats_dragoncolor dragon</NAME>
+					<NAME condition="$mob_level<30 and $mob_level>=20">a young $rats_dragoncolor dragon</NAME>
+					<NAME condition="$mob_level<40 and $mob_level>=30">a subadult $rats_dragoncolor dragon</NAME>
+					<NAME condition="$mob_level<70 and $mob_level>=40">an adult $rats_dragoncolor dragon</NAME>
+					<NAME condition="$mob_level<80 and $mob_level>=70">an old $rats_dragoncolor dragon</NAME>
+					<NAME condition="$mob_level<85 and $mob_level>=80">a very old $rats_dragoncolor dragon</NAME>
+					<NAME condition="$mob_level>=85">a ancient $rats_dragoncolor dragon</NAME>
+				</NAME>
+				<DISPLAY>$mob_name is guarding her brood.</DISPLAY>
+				<DESCRIPTION>$mob_name is majestic, but simply being in its presence makes you uneasy.</DESCRIPTION>
+				<BEHAVIOR select="all">
+					<BEHAVIOR condition="$mob_level>=40" class="MOBEater" parms="" />
+					<BEHAVIOR class="ObjectGuardian" parms="" />
+					<BEHAVIOR class="CombatAbilities" parms="" />
+				</BEHAVIOR>
+				<ABILITY select="all">
+					<ABILITY condition="$mob_level>=10" class="Skill_Trip" parms="" />
+					<ABILITY condition="$mob_level>=20" class="Dragonbreath" parms="" />
+					<ABILITY condition="$mob_level>=30" class="Spell_DetectInvisible" parms="" />
+					<ABILITY condition="$mob_level>=40" class="Spell_Fear" parms="" />
+					<ABILITY condition="$mob_level>=50" class="Spell_Hold" parms="" />
+					<ABILITY condition="$mob_level>=60" class="Spell_Slow" parms="" />
+					<ABILITY condition="$mob_level>=70" class="Spell_GravitySlam" parms="" />
+					<ABILITY condition="$mob_level>=80" class="Spell_SpellTurning" parms="" />
+					<ABILITY condition="$mob_level>=90" class="Spell_ResistSlashing" parms="" />
+				</ABILITY>
+			</MOB>
+			<ITEM class="GenFood" weight="100" NOURISHMENT="10000" bite="500" id="dragon_egg" name="a $adj_scary_feeling dragon egg" display="$item_name is here" material="EGGS" />
+			<ITEM select="2?5" insert="dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg" />
+			<EXIT class="Open" />
+			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a dragon`s lair</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in (a(n)) $adj_scary_feeling dragon`s lair.</DESCRIPTION>
+					<DESCRIPTION>You`re inside (a(n)) $adj_scary_feeling dragon`s lair. </DESCRIPTION>
+					<DESCRIPTION>You`ve found (a(n)) $adj_scary_feeling dragon`s lair. </DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_scary_feeling dragon`s lair. </DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You don`t feel like you`ll live very long here.</DESCRIPTION>
+					<DESCRIPTION>This seems like a good place to die. </DESCRIPTION>
+					<DESCRIPTION>This can`t be a good place. </DESCRIPTION>
+					<DESCRIPTION>You can`t imagine a more foolish place to wait around in. </DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
+			</DESCRIPTION>			
+			<MOB class="GenMob" level="(1.20 * ($level_range)) + 1" id="rats_boss_dragon" race="Dragon" gender="$anygender">
+				<NAME select="all">
+					<NAME condition="$mob_level<10">a hatchling $rats_dragoncolor dragon</NAME>
+					<NAME condition="$mob_level<20 and $mob_level>=10">a very young $rats_dragoncolor dragon</NAME>
+					<NAME condition="$mob_level<30 and $mob_level>=20">a young $rats_dragoncolor dragon</NAME>
+					<NAME condition="$mob_level<40 and $mob_level>=30">a subadult $rats_dragoncolor dragon</NAME>
+					<NAME condition="$mob_level<70 and $mob_level>=40">an adult $rats_dragoncolor dragon</NAME>
+					<NAME condition="$mob_level<80 and $mob_level>=70">an old $rats_dragoncolor dragon</NAME>
+					<NAME condition="$mob_level<85 and $mob_level>=80">a very old $rats_dragoncolor dragon</NAME>
+					<NAME condition="$mob_level>=85">a ancient $rats_dragoncolor dragon</NAME>
+				</NAME>
+				<DISPLAY>$mob_name watches you intently.</DISPLAY>
+				<DESCRIPTION>$mob_name is majestic, but simply being in its presence makes you uneasy.</DESCRIPTION>
+				<BEHAVIOR select="all">
+					<BEHAVIOR condition="$mob_level>=40" class="MOBEater" parms="" />
+					<BEHAVIOR class="ObjectGuardian" parms="" />
+					<BEHAVIOR class="CombatAbilities" parms="" />
+				</BEHAVIOR>
+				<ABILITY select="all">
+					<ABILITY condition="$mob_level>=10" class="Skill_Trip" parms="" />
+					<ABILITY condition="$mob_level>=20" class="Dragonbreath" parms="" />
+					<ABILITY condition="$mob_level>=30" class="Spell_DetectInvisible" parms="" />
+					<ABILITY condition="$mob_level>=40" class="Spell_Fear" parms="" />
+					<ABILITY condition="$mob_level>=50" class="Spell_Hold" parms="" />
+					<ABILITY condition="$mob_level>=60" class="Spell_Slow" parms="" />
+					<ABILITY condition="$mob_level>=70" class="Spell_GravitySlam" parms="" />
+					<ABILITY condition="$mob_level>=80" class="Spell_SpellTurning" parms="" />
+					<ABILITY condition="$mob_level>=90" class="Spell_ResistSlashing" parms="" />
+				</ABILITY>
+			</MOB>
+			<EXIT class="Open" />
+			<ITEM class="GenContainer" name="The Dragons Chest" display="The Dragons Chest is here" HASLID="true">
+				<CONTENT>
+					<ITEM select="any-5" insert="dungeon_treasure_items" />
+				</CONTENT>
+				<AFFECT condition="1?3=1" class="Prop_Hidden" />
+			</ITEM>
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a dead-end</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in a dead-end.</DESCRIPTION>
+					<DESCRIPTION>You`re inside a dead-end cavern.</DESCRIPTION>
+					<DESCRIPTION>You`ve found a dead-end cavern.</DESCRIPTION>
+					<DESCRIPTION>This is a dead-end.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You feel like there`s more dead here than end.</DESCRIPTION>
+					<DESCRIPTION>This seems like a dead-end in more than once sense of the word.</DESCRIPTION>
+					<DESCRIPTION>The name of this place could not be more accurate.</DESCRIPTION>
+					<DESCRIPTION>You can`t imagine why this is a dead-end.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>Large eggs are set carefully about the room.</DESCRIPTION>
-				<DESCRIPTION>Large eggs are evenly spaces around this room. </DESCRIPTION>
-				<DESCRIPTION>Large eggs are everywhere you look. </DESCRIPTION>
+			<EXIT class="Open" />
+			<MOB select="repeat-1?3" insert="ratty_skeleton" />
+			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a crypt</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in an ancient crypt.</DESCRIPTION>
+					<DESCRIPTION>You`re inside an ancient crypt.</DESCRIPTION>
+					<DESCRIPTION>You`ve found an ancient crypt.</DESCRIPTION>
+					<DESCRIPTION>This is a crypt.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You feel the $adj_mustydark shadow of death here.</DESCRIPTION>
+					<DESCRIPTION>The smell of $adj_mustydark decay hangs like a fog.</DESCRIPTION>
+					<DESCRIPTION>The $adj_mustydark aura of the afterlife has found a home here.</DESCRIPTION>
+					<DESCRIPTION>The cold feelings of $adj_mustydark decay have found no rest here.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
+			</DESCRIPTION>			
+			<EXIT select="pick-1">
+				<EXIT pickweight=1 class="GenDoor" disposition="ISHIDDEN"/>
+				<EXIT pickweight=2 class="GenDoor"/>
+			</EXIT>
+			<MOB select="repeat-1?2" insert="ratty_zombie" />
+			<MOB select="any-1" insert="ratty_mummy" />
+			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<ITEM class="GenContainer" NAME="an open sarcophagus" display="$item_name is here" material="STONE" weight=5000 capacity=5300 description="It appears both ornate and extremely heavy." />
+		</ROOM>
+		<ROOM class="StoneRoom">
+			<TITLE>a safe room</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in an empty carved stone room.</DESCRIPTION>
+					<DESCRIPTION>You`re inside an empty stone room.</DESCRIPTION>
+					<DESCRIPTION>You`ve found an empty stone room.</DESCRIPTION>
+					<DESCRIPTION>This is an empty stone room.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You feel perfectly safe here, and wonder why nothing has claimed this place yet?</DESCRIPTION>
+					<DESCRIPTION>This seems like a safe place to take a rest, so long as nothing comes through the door.</DESCRIPTION>
+					<DESCRIPTION>This appears to be the safest spot in this place so far.  Perhaps you can take a rest and a bite, so long as nothing comes through the door.</DESCRIPTION>
+					<DESCRIPTION>You can`t imagine a safer place to rest, though perhaps keeping one eye open.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>You feel quite nervous here.</DESCRIPTION>
-				<DESCRIPTION>This place seems like a dangerous spot for a rest. </DESCRIPTION>
-				<DESCRIPTION>This can`t be a safe place to be hanging around in. </DESCRIPTION>
-				<DESCRIPTION>You can`t imagine a more dangerous place to camp out in. </DESCRIPTION>
+			<EXIT select="pick-1">
+				<EXIT pickweight=1 class="GenDoor" disposition="ISHIDDEN"/>
+				<EXIT pickweight=2 class="GenDoor"/>
+			</EXIT>
+			<AFFECT class="Prop_RoomDark" />
+			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+		</ROOM>
+		<ROOM class="StdMaze">
+			<TITLE>lost in the catacombs</TITLE>
+			<DESCRIPTION>You are lost in an cavernous underground catacomb.
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
 			</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
-		</DESCRIPTION>			
-		<MOB class="GenMob" level="$level_range" id="rats_momma_dragon" race="Dragon" gender="F">
-			<NAME select="all">
-				<NAME condition="$mob_level<10">a hatchling $rats_dragoncolor dragon</NAME>
-				<NAME condition="$mob_level<20 and $mob_level>=10">a very young $rats_dragoncolor dragon</NAME>
-				<NAME condition="$mob_level<30 and $mob_level>=20">a young $rats_dragoncolor dragon</NAME>
-				<NAME condition="$mob_level<40 and $mob_level>=30">a subadult $rats_dragoncolor dragon</NAME>
-				<NAME condition="$mob_level<70 and $mob_level>=40">an adult $rats_dragoncolor dragon</NAME>
-				<NAME condition="$mob_level<80 and $mob_level>=70">an old $rats_dragoncolor dragon</NAME>
-				<NAME condition="$mob_level<85 and $mob_level>=80">a very old $rats_dragoncolor dragon</NAME>
-				<NAME condition="$mob_level>=85">a ancient $rats_dragoncolor dragon</NAME>
-			</NAME>
-			<DISPLAY>$mob_name is guarding her brood.</DISPLAY>
-			<DESCRIPTION>$mob_name is majestic, but simply being in its presence makes you uneasy.</DESCRIPTION>
-			<BEHAVIOR select="all">
-				<BEHAVIOR condition="$mob_level>=40" class="MOBEater" parms="" />
-				<BEHAVIOR class="ObjectGuardian" parms="" />
-				<BEHAVIOR class="CombatAbilities" parms="" />
-			</BEHAVIOR>
-			<ABILITY select="all">
-				<ABILITY condition="$mob_level>=10" class="Skill_Trip" parms="" />
-				<ABILITY condition="$mob_level>=20" class="Dragonbreath" parms="" />
-				<ABILITY condition="$mob_level>=30" class="Spell_DetectInvisible" parms="" />
-				<ABILITY condition="$mob_level>=40" class="Spell_Fear" parms="" />
-				<ABILITY condition="$mob_level>=50" class="Spell_Hold" parms="" />
-				<ABILITY condition="$mob_level>=60" class="Spell_Slow" parms="" />
-				<ABILITY condition="$mob_level>=70" class="Spell_GravitySlam" parms="" />
-				<ABILITY condition="$mob_level>=80" class="Spell_SpellTurning" parms="" />
-				<ABILITY condition="$mob_level>=90" class="Spell_ResistSlashing" parms="" />
-			</ABILITY>
-		</MOB>
-		<ITEM class="GenFood" weight="100" NOURISHMENT="10000" bite="500" id="dragon_egg" name="a $adj_scary_feeling dragon egg" display="$item_name is here" material="EGGS" />
-		<ITEM select="2?5" insert="dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg" />
-		<EXIT class="Open" />
-		<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
-	</ROOM>
-	<ROOM class="CaveRoom">
-		<TITLE>a dragon`s lair</TITLE>
-		<DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>You are standing in (a(n)) $adj_scary_feeling dragon`s lair.</DESCRIPTION>
-				<DESCRIPTION>You`re inside (a(n)) $adj_scary_feeling dragon`s lair. </DESCRIPTION>
-				<DESCRIPTION>You`ve found (a(n)) $adj_scary_feeling dragon`s lair. </DESCRIPTION>
-				<DESCRIPTION>This is (a(n)) $adj_scary_feeling dragon`s lair. </DESCRIPTION>
+			<XSIZE>5</XSIZE>
+			<YSIZE>5</YSIZE>
+			<EXIT class="Door" />
+			<MOB class="GenUndead" level="$level_range" id="dungeon_mobile_spirit" name="a spirit of the dead" like="dungeon_spirit">
+				<BEHAVIOR class="MobileAggressive" parms="" />
+			</MOB>
+			<MOB select="repeat-5?10" insert="dungeon_mobile_spirit" />
+			<AFFECT class="Prop_RoomDark" />
+			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a rat den</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in a rat`s den.</DESCRIPTION>
+					<DESCRIPTION>You`re inside a rat`s den.</DESCRIPTION>
+					<DESCRIPTION>You`ve found a rat`s den.</DESCRIPTION>
+					<DESCRIPTION>This is a rat`s den.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You feel like some $adj_nasty critters live here.</DESCRIPTION>
+					<DESCRIPTION>This seems like a place some $adj_nasty critters call home.</DESCRIPTION>
+					<DESCRIPTION>Some $adj_nasty little critters definitely lives here.</DESCRIPTION>
+					<DESCRIPTION>You aren`t sure the $adj_nasty little critters would be happy to see you.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
+			</DESCRIPTION>			
+			<EXIT class="Open" />
+			<MOB select="repeat-3?5" insert="dungeon_rat" />
+			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a web filled den</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in a web filled den.</DESCRIPTION>
+					<DESCRIPTION>You`re inside a web covered den.</DESCRIPTION>
+					<DESCRIPTION>You`ve found a web covered den.</DESCRIPTION>
+					<DESCRIPTION>This is a web covered den.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You feel like some $adj_nasty spiders live here.</DESCRIPTION>
+					<DESCRIPTION>This seems like a place some $adj_nasty spiders call home.</DESCRIPTION>
+					<DESCRIPTION>Some $adj_nasty little spiders definitely lives here.</DESCRIPTION>
+					<DESCRIPTION>You aren`t sure the $adj_nasty little spiders would be happy to see you.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
+			</DESCRIPTION>			
+			<EXIT class="Open" />
+			<MOB select="repeat-3?5" insert="dungeon_spider" />
+			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a dry lizard`s den</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in a dry scaley den.</DESCRIPTION>
+					<DESCRIPTION>You`re inside a  dry scaley den.</DESCRIPTION>
+					<DESCRIPTION>You`ve found a  dry scaley den.</DESCRIPTION>
+					<DESCRIPTION>This is a  dry scaley den.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You feel like some $adj_nasty reptiles live here.</DESCRIPTION>
+					<DESCRIPTION>This seems like a place some $adj_nasty reptiles call home.</DESCRIPTION>
+					<DESCRIPTION>Some $adj_nasty little reptiles definitely lives here.</DESCRIPTION>
+					<DESCRIPTION>You aren`t sure the $adj_nasty little reptiles would be happy to see you.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
+			</DESCRIPTION>			
+			<EXIT class="Open" />
+			<MOB select="repeat-3?5" insert="dungeon_lizard" />
+			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a slithering den</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in a scaley slithering den.</DESCRIPTION>
+					<DESCRIPTION>You`re inside a slithering den.</DESCRIPTION>
+					<DESCRIPTION>You`ve found a slithering scaley den.</DESCRIPTION>
+					<DESCRIPTION>This is a slithering den.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You feel like some $adj_nasty snakes live here.</DESCRIPTION>
+					<DESCRIPTION>This seems like a place some $adj_nasty snakes call home.</DESCRIPTION>
+					<DESCRIPTION>Some $adj_nasty little snakes definitely lives here.</DESCRIPTION>
+					<DESCRIPTION>You aren`t sure the $adj_nasty little snakes would be happy to see you.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
+			</DESCRIPTION>			
+			<EXIT class="Open" />
+			<MOB select="repeat-3?5" insert="dungeon_snake" />
+			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+		</ROOM>
+		<ROOM class="IndoorWaterSurface" condition="1?20=1 and $__lakes&lt;1" define="__lakes+=1">
+			<TITLE>an underground lake</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are swimming in a large underground lake.</DESCRIPTION>
+					<DESCRIPTION>You`re swimming in a cold underground lake.</DESCRIPTION>
+					<DESCRIPTION>You`ve found a cold underground lake.</DESCRIPTION>
+					<DESCRIPTION>This is a large cold underground lake.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The ceiling of this cavern reflects off the still water surface.</DESCRIPTION>
+					<DESCRIPTION>The black cold waters of the lake seem to cover the whole floor.</DESCRIPTION>
+					<DESCRIPTION>The water is cold and perfectly still.</DESCRIPTION>
+					<DESCRIPTION>Shadows flicker their reflections on the surface of the cold still water.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>You don`t feel like you`ll live very long here.</DESCRIPTION>
-				<DESCRIPTION>This seems like a good place to die. </DESCRIPTION>
-				<DESCRIPTION>This can`t be a good place. </DESCRIPTION>
-				<DESCRIPTION>You can`t imagine a more foolish place to wait around in. </DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
-		</DESCRIPTION>			
-		<MOB class="GenMob" level="(1.20 * ($level_range)) + 1" id="rats_boss_dragon" race="Dragon" gender="$anygender">
-			<NAME select="all">
-				<NAME condition="$mob_level<10">a hatchling $rats_dragoncolor dragon</NAME>
-				<NAME condition="$mob_level<20 and $mob_level>=10">a very young $rats_dragoncolor dragon</NAME>
-				<NAME condition="$mob_level<30 and $mob_level>=20">a young $rats_dragoncolor dragon</NAME>
-				<NAME condition="$mob_level<40 and $mob_level>=30">a subadult $rats_dragoncolor dragon</NAME>
-				<NAME condition="$mob_level<70 and $mob_level>=40">an adult $rats_dragoncolor dragon</NAME>
-				<NAME condition="$mob_level<80 and $mob_level>=70">an old $rats_dragoncolor dragon</NAME>
-				<NAME condition="$mob_level<85 and $mob_level>=80">a very old $rats_dragoncolor dragon</NAME>
-				<NAME condition="$mob_level>=85">a ancient $rats_dragoncolor dragon</NAME>
-			</NAME>
-			<DISPLAY>$mob_name watches you intently.</DISPLAY>
-			<DESCRIPTION>$mob_name is majestic, but simply being in its presence makes you uneasy.</DESCRIPTION>
-			<BEHAVIOR select="all">
-				<BEHAVIOR condition="$mob_level>=40" class="MOBEater" parms="" />
-				<BEHAVIOR class="ObjectGuardian" parms="" />
-				<BEHAVIOR class="CombatAbilities" parms="" />
-			</BEHAVIOR>
-			<ABILITY select="all">
-				<ABILITY condition="$mob_level>=10" class="Skill_Trip" parms="" />
-				<ABILITY condition="$mob_level>=20" class="Dragonbreath" parms="" />
-				<ABILITY condition="$mob_level>=30" class="Spell_DetectInvisible" parms="" />
-				<ABILITY condition="$mob_level>=40" class="Spell_Fear" parms="" />
-				<ABILITY condition="$mob_level>=50" class="Spell_Hold" parms="" />
-				<ABILITY condition="$mob_level>=60" class="Spell_Slow" parms="" />
-				<ABILITY condition="$mob_level>=70" class="Spell_GravitySlam" parms="" />
-				<ABILITY condition="$mob_level>=80" class="Spell_SpellTurning" parms="" />
-				<ABILITY condition="$mob_level>=90" class="Spell_ResistSlashing" parms="" />
-			</ABILITY>
-		</MOB>
-		<EXIT class="Open" />
-		<ITEM class="GenContainer" name="The Dragons Chest" display="The Dragons Chest is here" HASLID="true">
-			<CONTENT>
-				<ITEM select="any-5" insert="dungeon_treasure_items" />
-			</CONTENT>
-			<AFFECT condition="1?3=1" class="Prop_Hidden" />
-		</ITEM>
-	</ROOM>
-	<ROOM class="CaveRoom">
-		<TITLE>a dead-end</TITLE>
-		<DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>You are standing in a dead-end.</DESCRIPTION>
-				<DESCRIPTION>You`re inside a dead-end cavern.</DESCRIPTION>
-				<DESCRIPTION>You`ve found a dead-end cavern.</DESCRIPTION>
-				<DESCRIPTION>This is a dead-end.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>You feel like there`s more dead here than end.</DESCRIPTION>
-				<DESCRIPTION>This seems like a dead-end in more than once sense of the word.</DESCRIPTION>
-				<DESCRIPTION>The name of this place could not be more accurate.</DESCRIPTION>
-				<DESCRIPTION>You can`t imagine why this is a dead-end.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
-		</DESCRIPTION>
-		<EXIT class="Open" />
-		<MOB select="repeat-1?3" insert="dungeon_skeleton" />
-		<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
-	</ROOM>
-	<ROOM class="CaveRoom">
-		<TITLE>a crypt</TITLE>
-		<DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>You are standing in an ancient crypt.</DESCRIPTION>
-				<DESCRIPTION>You`re inside an ancient crypt.</DESCRIPTION>
-				<DESCRIPTION>You`ve found an ancient crypt.</DESCRIPTION>
-				<DESCRIPTION>This is a crypt.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>You feel the $adj_mustydark shadow of death here.</DESCRIPTION>
-				<DESCRIPTION>The smell of $adj_mustydark decay hangs like a fog.</DESCRIPTION>
-				<DESCRIPTION>The $adj_mustydark aura of the afterlife has found a home here.</DESCRIPTION>
-				<DESCRIPTION>The cold feelings of $adj_mustydark decay have found no rest here.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
-		</DESCRIPTION>			
-		<EXIT select="pick-1">
-			<EXIT pickweight=1 class="GenDoor" disposition="ISHIDDEN"/>
-			<EXIT pickweight=2 class="GenDoor"/>
-		</EXIT>
-		<MOB select="repeat-1?2" insert="dungeon_zombie" />
-		<MOB select="any-1" insert="dungeon_mummy" />
-		<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
-		<ITEM class="GenContainer" NAME="an open sarcophagus" display="$item_name is here" material="STONE" weight=5000 capacity=5300 description="It appears both ornate and extremely heavy." />
-	</ROOM>
-	<ROOM class="StoneRoom">
-		<TITLE>a safe room</TITLE>
-		<DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>You are standing in an empty carved stone room.</DESCRIPTION>
-				<DESCRIPTION>You`re inside an empty stone room.</DESCRIPTION>
-				<DESCRIPTION>You`ve found an empty stone room.</DESCRIPTION>
-				<DESCRIPTION>This is an empty stone room.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>You feel perfectly safe here, and wonder why nothing has claimed this place yet?</DESCRIPTION>
-				<DESCRIPTION>This seems like a safe place to take a rest, so long as nothing comes through the door.</DESCRIPTION>
-				<DESCRIPTION>This appears to be the safest spot in this place so far.  Perhaps you can take a rest and a bite, so long as nothing comes through the door.</DESCRIPTION>
-				<DESCRIPTION>You can`t imagine a safer place to rest, though perhaps keeping one eye open.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
-		</DESCRIPTION>
-		<EXIT select="pick-1">
-			<EXIT pickweight=1 class="GenDoor" disposition="ISHIDDEN"/>
-			<EXIT pickweight=2 class="GenDoor"/>
-		</EXIT>
-		<AFFECT class="Prop_RoomDark" />
-		<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
-	</ROOM>
-	<ROOM class="StdMaze">
-		<TITLE>lost in the catacombs</TITLE>
-		<DESCRIPTION>You are lost in an cavernous underground catacomb.
-		&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-		&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-		&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-		&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-		&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-		&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-		&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-		&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-		&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-		&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-		&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-		&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-		&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-		&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-		&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-		&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-		&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-		&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-		&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-		&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-		&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-		&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-		&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-		&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-		&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-		</DESCRIPTION>
-		<XSIZE>5</XSIZE>
-		<YSIZE>5</YSIZE>
-		<EXIT class="Door" />
-		<MOB class="GenUndead" level="$level_range" id="dungeon_mobile_spirit" name="a spirit of the dead" like="dungeon_spirit">
-			<BEHAVIOR class="MobileAggressive" parms="" />
-		</MOB>
-		<MOB select="repeat-5?10" insert="dungeon_mobile_spirit" />
-		<AFFECT class="Prop_RoomDark" />
-		<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
-	</ROOM>
-	<ROOM class="CaveRoom">
-		<TITLE>a rat den</TITLE>
-		<DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>You are standing in a rat`s den.</DESCRIPTION>
-				<DESCRIPTION>You`re inside a rat`s den.</DESCRIPTION>
-				<DESCRIPTION>You`ve found a rat`s den.</DESCRIPTION>
-				<DESCRIPTION>This is a rat`s den.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>You feel like some $adj_nasty critters live here.</DESCRIPTION>
-				<DESCRIPTION>This seems like a place some $adj_nasty critters call home.</DESCRIPTION>
-				<DESCRIPTION>Some $adj_nasty little critters definitely lives here.</DESCRIPTION>
-				<DESCRIPTION>You aren`t sure the $adj_nasty little critters would be happy to see you.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
-		</DESCRIPTION>			
-		<EXIT class="Open" />
-		<MOB select="repeat-3?5" insert="dungeon_rat" />
-		<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
-	</ROOM>
-	<ROOM class="CaveRoom">
-		<TITLE>a web filled den</TITLE>
-		<DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>You are standing in a web filled den.</DESCRIPTION>
-				<DESCRIPTION>You`re inside a web covered den.</DESCRIPTION>
-				<DESCRIPTION>You`ve found a web covered den.</DESCRIPTION>
-				<DESCRIPTION>This is a web covered den.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>You feel like some $adj_nasty spiders live here.</DESCRIPTION>
-				<DESCRIPTION>This seems like a place some $adj_nasty spiders call home.</DESCRIPTION>
-				<DESCRIPTION>Some $adj_nasty little spiders definitely lives here.</DESCRIPTION>
-				<DESCRIPTION>You aren`t sure the $adj_nasty little spiders would be happy to see you.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
-		</DESCRIPTION>			
-		<EXIT class="Open" />
-		<MOB select="repeat-3?5" insert="dungeon_spider" />
-		<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
-	</ROOM>
-	<ROOM class="CaveRoom">
-		<TITLE>a dry lizard`s den</TITLE>
-		<DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>You are standing in a dry scaley den.</DESCRIPTION>
-				<DESCRIPTION>You`re inside a  dry scaley den.</DESCRIPTION>
-				<DESCRIPTION>You`ve found a  dry scaley den.</DESCRIPTION>
-				<DESCRIPTION>This is a  dry scaley den.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>You feel like some $adj_nasty reptiles live here.</DESCRIPTION>
-				<DESCRIPTION>This seems like a place some $adj_nasty reptiles call home.</DESCRIPTION>
-				<DESCRIPTION>Some $adj_nasty little reptiles definitely lives here.</DESCRIPTION>
-				<DESCRIPTION>You aren`t sure the $adj_nasty little reptiles would be happy to see you.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
-		</DESCRIPTION>			
-		<EXIT class="Open" />
-		<MOB select="repeat-3?5" insert="dungeon_lizard" />
-		<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
-	</ROOM>
-	<ROOM class="CaveRoom">
-		<TITLE>a slithering den</TITLE>
-		<DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>You are standing in a scaley slithering den.</DESCRIPTION>
-				<DESCRIPTION>You`re inside a slithering den.</DESCRIPTION>
-				<DESCRIPTION>You`ve found a slithering scaley den.</DESCRIPTION>
-				<DESCRIPTION>This is a slithering den.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>You feel like some $adj_nasty snakes live here.</DESCRIPTION>
-				<DESCRIPTION>This seems like a place some $adj_nasty snakes call home.</DESCRIPTION>
-				<DESCRIPTION>Some $adj_nasty little snakes definitely lives here.</DESCRIPTION>
-				<DESCRIPTION>You aren`t sure the $adj_nasty little snakes would be happy to see you.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
-		</DESCRIPTION>			
-		<EXIT class="Open" />
-		<MOB select="repeat-3?5" insert="dungeon_snake" />
-		<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
-	</ROOM>
-	<ROOM class="IndoorWaterSurface" condition="1?20=1 and $__lakes&lt;1" define="__lakes+=1">
-		<TITLE>an underground lake</TITLE>
-		<DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>You are swimming in a large underground lake.</DESCRIPTION>
-				<DESCRIPTION>You`re swimming in a cold underground lake.</DESCRIPTION>
-				<DESCRIPTION>You`ve found a cold underground lake.</DESCRIPTION>
-				<DESCRIPTION>This is a large cold underground lake.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-			<DESCRIPTION select="any-1">
-				<DESCRIPTION>The ceiling of this cavern reflects off the still water surface.</DESCRIPTION>
-				<DESCRIPTION>The black cold waters of the lake seem to cover the whole floor.</DESCRIPTION>
-				<DESCRIPTION>The water is cold and perfectly still.</DESCRIPTION>
-				<DESCRIPTION>Shadows flicker their reflections on the surface of the cold still water.</DESCRIPTION>
-			</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-			<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
-		</DESCRIPTION>
-		<AFFECT class="Prop_RoomDark" />
-		<EXIT class="Open" />
-		<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<AFFECT class="Prop_RoomDark" />
+			<EXIT class="Open" />
+			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+		</ROOM>
 	</ROOM>
 </ROOM>
 
-<STRING id="rats_random_blurbs">
-	<STRING>You hear $adj_scary_feeling squeeking nearby.</STRING>
-	<STRING>You hear the $adj_scary_feeling sounds of tiny pattering feet nearby.</STRING>
-	<STRING>You hear faint but $adj_scary_feeling animal sounds echoing around you.</STRING>
-	<STRING>Something has left droppings here.</STRING>
-	<STRING>Some $adj_scary_feeling creature obviously relieved itself here.</STRING>
-	<STRING>Bits of half-eaten trash can be seen around here.</STRING>
-	<STRING>Bits of some half-eaten creature are here.</STRING>
-	<STRING>Was that the sound of something $adj_scary_feeling?</STRING>
+<STRING id="dungeon_random_blurbs" merge=true select="all">
+	<STRING  select="all" condition="$theme='rats' or ($theme='random' and 1?10=1)">
+		<STRING>You hear $adj_scary_feeling squeeking nearby.</STRING>
+		<STRING>You hear the $adj_scary_feeling sounds of tiny pattering feet nearby.</STRING>
+		<STRING>You hear faint but $adj_scary_feeling animal sounds echoing around you.</STRING>
+		<STRING>Something has left droppings here.</STRING>
+		<STRING>Some $adj_scary_feeling creature obviously relieved itself here.</STRING>
+		<STRING>Bits of half-eaten trash can be seen around here.</STRING>
+		<STRING>Bits of some half-eaten creature are here.</STRING>
+		<STRING>Was that the sound of something $adj_scary_feeling?</STRING>
+	</STRING>
 </STRING>
 
-<MOB id="rat_mobs" select="all" condition="$theme='rats' or $theme='random'">
-	<MOB class="GenMob" level="$level_range" id="dungeon_rat" race="Rat" gender="$anygender">
-		<NAME>(a(n)) $adj_nasty_animal $adj_mammal_color rat</NAME>
-		<DISPLAY select="pick-1">
-			<DISPLAY pickweight="1">$mob_name squeeks at you.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name bares its teeth at you.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is rummaging through something.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name looks hungry.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is pittering around here.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is trying to hide here.</DISPLAY>
-			<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
-		</DISPLAY>
-		<ALIGNMENT>0</ALIGNMENT>
-		<ABILITY condition="$mob_level>10 and 1?3=1" class="Disease" />
-		<BEHAVIOR select="all">
-			<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
-			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
-			<BEHAVIOR class="Mobile" parms="" condition="$roomtag_nodetype!='leaf'" />
-			<BEHAVIOR class="CombatAbilities" parms="" />
-		</BEHAVIOR>
-	</MOB>
-	<MOB class="GenMob" level="$level_range" id="dungeon_bat" race="Bat" gender="$anygender">
-		<NAME>(a(n)) $adj_nasty_animal $adj_mammal_color bat</NAME>
-		<DISPLAY select="pick-1">
-			<DISPLAY pickweight="1">$mob_name dives at you.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name bares its teeth at you.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is circling around here.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is hunting for food.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is flying around here.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is hanging around here.</DISPLAY>
-			<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
-		</DISPLAY>
-		<ALIGNMENT>0</ALIGNMENT>
-		<ABILITY condition="$mob_level>10 and 1?3=1" class="Disease" />
-		<BEHAVIOR select="all">
-			<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
-			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
-			<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
-			<BEHAVIOR class="CombatAbilities" parms="" />
-		</BEHAVIOR>
-	</MOB>
-	<MOB class="GenMob" level="$level_range" id="dungeon_spider" race="Spider" gender="$anygender">
-		<NAME>(a(n)) $adj_nasty_animal $adj_insect_color spider</NAME>
-		<DISPLAY select="pick-1">
-			<DISPLAY pickweight="1">$mob_name creeps towards you.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name opens its mandibles at you.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is crawling around here.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is waiting for food.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is spinning around here.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is waiting around here.</DISPLAY>
-			<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
-		</DISPLAY>
-		<ALIGNMENT>0</ALIGNMENT>
-		<ABILITY condition="$mob_level>10 and 1?3=1" class="Poison" />
-		<BEHAVIOR select="all">
-			<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
-			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
-			<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
-			<BEHAVIOR class="CombatAbilities" parms="" />
-		</BEHAVIOR>
-	</MOB>
-	<MOB class="GenMob" level="$level_range" id="dungeon_blob" race="Blob" gender="N">
-		<NAME>(a(n)) $adj_nasty_animal $adj_creature_color blob</NAME>
-		<DISPLAY select="pick-1">
-			<DISPLAY pickweight="1">$mob_name creeps towards you.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name looks very menacing.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is dragging itself around here.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is waiting for food.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is waiting around here.</DISPLAY>
-			<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
-		</DISPLAY>
-		<ALIGNMENT>0</ALIGNMENT>
-		<ABILITY condition="$mob_level&gt;30 and 1?3=1" class="Paralysis" />
-		<ABILITY condition="1?3=1" class="WeakParalysis" />
-		<BEHAVIOR select="all">
-			<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
-			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
-			<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
-			<BEHAVIOR class="CombatAbilities" parms="" />
-			<BEHAVIOR class="Scavenger" parms="" />
-		</BEHAVIOR>
-	</MOB>
-	<MOB class="GenMob" level="$level_range" id="dungeon_scorpion" race="Scorpion" gender="$anygender">
-		<NAME>(a(n)) $adj_nasty_animal scorpion</NAME>
-		<DISPLAY select="pick-1">
-			<DISPLAY pickweight="1">$mob_name creeps towards you.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name snaps its tail at you.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is crawling around here.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is waiting for food.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is running around here.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is waiting around here.</DISPLAY>
-			<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
-		</DISPLAY>
-		<ALIGNMENT>0</ALIGNMENT>
-		<ABILITY condition="$mob_level>10 and 1?3=1" class="Poison" />
-		<BEHAVIOR select="all">
-			<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
-			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
-			<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
-			<BEHAVIOR class="CombatAbilities" parms="" />
-		</BEHAVIOR>
-	</MOB>
-	<MOB class="GenMob" level="$level_range" id="dungeon_snake" race="Snake" gender="$anygender">
-		<NAME>(a(n)) $adj_nasty_animal $adj_reptile_color snake</NAME>
-		<DISPLAY select="pick-1">
-			<DISPLAY pickweight="1">$mob_name slinks towards you.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name shows its fangs you.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is slithering around here.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is waiting for food.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is moving around here.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is coiled up here.</DISPLAY>
-			<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
-		</DISPLAY>
-		<ALIGNMENT>0</ALIGNMENT>
-		<ABILITY condition="$mob_level>10 and 1?3=1" class="Poison" />
-		<BEHAVIOR select="all">
-			<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
-			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
-			<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
-			<BEHAVIOR class="CombatAbilities" parms="" />
-		</BEHAVIOR>
-	</MOB>
-	<MOB class="GenMob" level="$level_range" id="dungeon_lizard" race="Lizard" gender="$anygender">
-		<NAME>(a(n)) $adj_nasty_animal $adj_reptile_color lizard</NAME>
-		<DISPLAY select="pick-1">
-			<DISPLAY pickweight="1">$mob_name creeps towards you.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name flicks its tounge you.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is crawling around here.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is waiting for food.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is trying to hide here.</DISPLAY>
-			<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
-		</DISPLAY>
-		<ALIGNMENT>0</ALIGNMENT>
-		<ABILITY condition="$mob_level>5 and 1?3=1" class="Skill_Trip" />
-		<BEHAVIOR select="all">
-			<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
-			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
-			<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
-			<BEHAVIOR class="CombatAbilities" parms="" />
-		</BEHAVIOR>
+<STRING id="nasty_rat_exit" select="all">
+	<STRING select="any-1">
+		<STRING>The stinky hole you came through is to the $roomexits_desc_long.</STRING>
+		<STRING>The way out of here is $roomexits_desc_long.</STRING>
+		<STRING>The exit to the $roomexits_desc_long is the only way out.</STRING>
+		<STRING>The only way out of here is $roomexits_desc_long.</STRING>
+	</STRING>
+</STRING>
+
+<MOB class="GenUndead" level="$level_range" id="ratty_skeleton" race="Skeleton" gender="N">
+	<NAME>a skeleton</NAME>
+	<DISPLAY select="pick-1">
+		<DISPLAY pickweight="1">$mob_name rattles towards you.</DISPLAY>
+		<DISPLAY pickweight="1">$mob_name wants to see you die.</DISPLAY>
+		<DISPLAY pickweight="1">$mob_name is rattling towards you.</DISPLAY>
+		<DISPLAY pickweight="1">$mob_name doesn`t know it`s dead.</DISPLAY>
+		<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+		<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+	</DISPLAY>
+	<ALIGNMENT>-10000?0</ALIGNMENT>
+	<BEHAVIOR select="all">
+		<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
+		<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+		<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
+	</BEHAVIOR>
+	<ITEM select="pick-1">
+		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+			<NAME>(a(n)) $adj_ragged spear</NAME>
+			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<WEAPONCLASS>POLEARM</WEAPONCLASS>
+			<WEAPONTYPE>PIERCING</WEAPONTYPE>
+			<MATERIAL>OAK</MATERIAL>
+		</ITEM>
+		<ITEM pickweight="2" class="GenWeapon" LEVEL="$mob_level">
+			<NAME>(a(n)) $adj_ragged sword</NAME>
+			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<WEAPONCLASS>SWORD</WEAPONCLASS>
+			<WEAPONTYPE>SLASHING</WEAPONTYPE>
+			<MATERIAL>IRON</MATERIAL>
+		</ITEM>
+		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+			<NAME>(a(n)) $adj_ragged dagger</NAME>
+			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<WEAPONCLASS>DAGGER</WEAPONCLASS>
+			<WEAPONTYPE>PIERCING</WEAPONTYPE>
+			<MATERIAL>IRON</MATERIAL>
+		</ITEM>
+		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+			<NAME>a spiked $adj_ragged mace</NAME>
+			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<MATERIAL>IRON</MATERIAL>
+			<WEAPONCLASS>BLUNT</WEAPONCLASS>
+			<WEAPONTYPE>BASHING</WEAPONTYPE>
+		</ITEM>
+	</ITEM>
+	<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+</MOB>
+		
+<MOB class="GenUndead" level="$level_range" id="ratty_zombie" race="Undead" gender="$anygender">
+	<NAME>(a(n)) ${l:any_humanoid_race} zombie</NAME>
+	<DISPLAY select="pick-1">
+		<DISPLAY pickweight="1">$mob_name lurches towards you.</DISPLAY>
+		<DISPLAY pickweight="1">$mob_name wants to eat your brains.</DISPLAY>
+		<DISPLAY pickweight="1">$mob_name is shuffling towards you.</DISPLAY>
+		<DISPLAY pickweight="1">$mob_name doesn`t know it`s dead.</DISPLAY>
+		<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+		<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+	</DISPLAY>
+	<ALIGNMENT>-10000?0</ALIGNMENT>
+	<BEHAVIOR select="all">
+		<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
+		<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+		<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
+	</BEHAVIOR>
+	<ITEM select="pick-1">
+		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+			<NAME>(a(n)) $adj_ragged polearm</NAME>
+			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<WEAPONCLASS>POLEARM</WEAPONCLASS>
+			<WEAPONTYPE>PIERCING</WEAPONTYPE>
+			<MATERIAL>IRON</MATERIAL>
+		</ITEM>
+		<ITEM pickweight="2" class="GenWeapon" LEVEL="$mob_level">
+			<NAME>(a(n)) $adj_ragged blade</NAME>
+			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<WEAPONCLASS>SWORD</WEAPONCLASS>
+			<WEAPONTYPE>SLASHING</WEAPONTYPE>
+			<MATERIAL>IRON</MATERIAL>
+		</ITEM>
+		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+			<NAME>(a(n)) $adj_ragged frogsticker</NAME>
+			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<WEAPONCLASS>DAGGER</WEAPONCLASS>
+			<WEAPONTYPE>PIERCING</WEAPONTYPE>
+			<MATERIAL>IRON</MATERIAL>
+		</ITEM>
+		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+			<NAME>a spiked $adj_ragged club</NAME>
+			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<MATERIAL>WOOD</MATERIAL>
+			<WEAPONCLASS>BLUNT</WEAPONCLASS>
+			<WEAPONTYPE>BASHING</WEAPONTYPE>
+		</ITEM>
+	</ITEM>
+	<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+</MOB>
+		
+<MOB class="GenUndead" level="2+($level_range)" id="ratty_mummy" race="Undead" gender="$anygender">
+	<NAME>a mummified ${l:any_humanoid_race}</NAME>
+	<DISPLAY select="pick-1">
+		<DISPLAY pickweight="1">$mob_name lurches dangerously towards you.</DISPLAY>
+		<DISPLAY pickweight="1">$mob_name wants to destroy you.</DISPLAY>
+		<DISPLAY pickweight="1">$mob_name is shuffling confidently towards you.</DISPLAY>
+		<DISPLAY pickweight="1">$mob_name doesn`t care that it`s dead.</DISPLAY>
+		<DISPLAY pickweight="1">$mob_name was waiting for you.</DISPLAY>
+		<DISPLAY pickweight="5">$mob_name is always here.</DISPLAY>
+	</DISPLAY>
+	<ALIGNMENT>-10000?0</ALIGNMENT>
+	<BEHAVIOR select="all">
+		<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
+		<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+		<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
+	</BEHAVIOR>
+	<ITEM select="pick-1">
+		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+			<NAME>a gleaming iron polearm</NAME>
+			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<WEAPONCLASS>POLEARM</WEAPONCLASS>
+			<WEAPONTYPE>PIERCING</WEAPONTYPE>
+			<MATERIAL>IRON</MATERIAL>
+		</ITEM>
+		<ITEM pickweight="2" class="GenWeapon" LEVEL="$mob_level">
+			<NAME>a broadsword</NAME>
+			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<WEAPONCLASS>SWORD</WEAPONCLASS>
+			<WEAPONTYPE>SLASHING</WEAPONTYPE>
+			<MATERIAL>IRON</MATERIAL>
+		</ITEM>
+		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+			<NAME>a blood soaked dagger</NAME>
+			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<WEAPONCLASS>DAGGER</WEAPONCLASS>
+			<WEAPONTYPE>PIERCING</WEAPONTYPE>
+			<MATERIAL>IRON</MATERIAL>
+		</ITEM>
+		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+			<NAME>a spiked club</NAME>
+			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<MATERIAL>WOOD</MATERIAL>
+			<WEAPONCLASS>BLUNT</WEAPONCLASS>
+			<WEAPONTYPE>BASHING</WEAPONTYPE>
+		</ITEM>
+	</ITEM>
+	<ITEM condition="1?10=1" select="any-1" insert="dungeon_mundane_items" />
+	<ITEM condition="1?10=1" select="any-1" insert="any_alchemy_item" />
+	<ITEM condition="1?10=1" select="any-1" insert="any_herbalism_item" />
+	<ITEM condition="1?10=1" select="any-1" insert="any_apothecary_item" />
+	<ITEM condition="1?10=1" select="any-1" insert="any_distilling_item" />
+	<ITEM condition="1?10=1" select="any-1" insert="any_scrollscribing_item" />
+</MOB>
+		
+<MOB id="dungeon_mobs" merge=true select="all" requires="level_range=int,theme=rats,aggrochance=int">
+	<MOB id="rat_mobs" select="all" condition="$theme='rats' or $theme='random'">
+		<MOB class="GenMob" level="$level_range" id="dungeon_rat" race="Rat" gender="$anygender">
+			<NAME>(a(n)) $adj_nasty_animal $adj_mammal_color rat</NAME>
+			<DISPLAY select="pick-1">
+				<DISPLAY pickweight="1">$mob_name squeeks at you.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name bares its teeth at you.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is rummaging through something.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name looks hungry.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is pittering around here.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is trying to hide here.</DISPLAY>
+				<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+			</DISPLAY>
+			<ALIGNMENT>0</ALIGNMENT>
+			<ABILITY condition="$mob_level>10 and 1?3=1" class="Disease" />
+			<BEHAVIOR select="all">
+				<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
+				<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+				<BEHAVIOR class="Mobile" parms="" condition="$roomtag_nodetype!='leaf'" />
+				<BEHAVIOR class="CombatAbilities" parms="" />
+			</BEHAVIOR>
+		</MOB>
+		<MOB class="GenMob" level="$level_range" id="dungeon_bat" race="Bat" gender="$anygender">
+			<NAME>(a(n)) $adj_nasty_animal $adj_mammal_color bat</NAME>
+			<DISPLAY select="pick-1">
+				<DISPLAY pickweight="1">$mob_name dives at you.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name bares its teeth at you.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is circling around here.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is hunting for food.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is flying around here.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is hanging around here.</DISPLAY>
+				<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+			</DISPLAY>
+			<ALIGNMENT>0</ALIGNMENT>
+			<ABILITY condition="$mob_level>10 and 1?3=1" class="Disease" />
+			<BEHAVIOR select="all">
+				<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
+				<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+				<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
+				<BEHAVIOR class="CombatAbilities" parms="" />
+			</BEHAVIOR>
+		</MOB>
+		<MOB class="GenMob" level="$level_range" id="dungeon_spider" race="Spider" gender="$anygender">
+			<NAME>(a(n)) $adj_nasty_animal $adj_insect_color spider</NAME>
+			<DISPLAY select="pick-1">
+				<DISPLAY pickweight="1">$mob_name creeps towards you.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name opens its mandibles at you.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is crawling around here.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is waiting for food.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is spinning around here.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is waiting around here.</DISPLAY>
+				<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+			</DISPLAY>
+			<ALIGNMENT>0</ALIGNMENT>
+			<ABILITY condition="$mob_level>10 and 1?3=1" class="Poison" />
+			<BEHAVIOR select="all">
+				<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
+				<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+				<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
+				<BEHAVIOR class="CombatAbilities" parms="" />
+			</BEHAVIOR>
+		</MOB>
+		<MOB class="GenMob" level="$level_range" id="dungeon_blob" race="Blob" gender="N">
+			<NAME>(a(n)) $adj_nasty_animal $adj_creature_color blob</NAME>
+			<DISPLAY select="pick-1">
+				<DISPLAY pickweight="1">$mob_name creeps towards you.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name looks very menacing.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is dragging itself around here.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is waiting for food.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is waiting around here.</DISPLAY>
+				<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+			</DISPLAY>
+			<ALIGNMENT>0</ALIGNMENT>
+			<ABILITY condition="$mob_level&gt;30 and 1?3=1" class="Paralysis" />
+			<ABILITY condition="1?3=1" class="WeakParalysis" />
+			<BEHAVIOR select="all">
+				<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
+				<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+				<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
+				<BEHAVIOR class="CombatAbilities" parms="" />
+				<BEHAVIOR class="Scavenger" parms="" />
+			</BEHAVIOR>
+		</MOB>
+		<MOB class="GenMob" level="$level_range" id="dungeon_scorpion" race="Scorpion" gender="$anygender">
+			<NAME>(a(n)) $adj_nasty_animal scorpion</NAME>
+			<DISPLAY select="pick-1">
+				<DISPLAY pickweight="1">$mob_name creeps towards you.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name snaps its tail at you.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is crawling around here.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is waiting for food.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is running around here.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is waiting around here.</DISPLAY>
+				<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+			</DISPLAY>
+			<ALIGNMENT>0</ALIGNMENT>
+			<ABILITY condition="$mob_level>10 and 1?3=1" class="Poison" />
+			<BEHAVIOR select="all">
+				<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
+				<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+				<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
+				<BEHAVIOR class="CombatAbilities" parms="" />
+			</BEHAVIOR>
+		</MOB>
+		<MOB class="GenMob" level="$level_range" id="dungeon_snake" race="Snake" gender="$anygender">
+			<NAME>(a(n)) $adj_nasty_animal $adj_reptile_color snake</NAME>
+			<DISPLAY select="pick-1">
+				<DISPLAY pickweight="1">$mob_name slinks towards you.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name shows its fangs you.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is slithering around here.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is waiting for food.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is moving around here.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is coiled up here.</DISPLAY>
+				<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+			</DISPLAY>
+			<ALIGNMENT>0</ALIGNMENT>
+			<ABILITY condition="$mob_level>10 and 1?3=1" class="Poison" />
+			<BEHAVIOR select="all">
+				<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
+				<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+				<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
+				<BEHAVIOR class="CombatAbilities" parms="" />
+			</BEHAVIOR>
+		</MOB>
+		<MOB class="GenMob" level="$level_range" id="dungeon_lizard" race="Lizard" gender="$anygender">
+			<NAME>(a(n)) $adj_nasty_animal $adj_reptile_color lizard</NAME>
+			<DISPLAY select="pick-1">
+				<DISPLAY pickweight="1">$mob_name creeps towards you.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name flicks its tounge you.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is crawling around here.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is waiting for food.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is trying to hide here.</DISPLAY>
+				<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+			</DISPLAY>
+			<ALIGNMENT>0</ALIGNMENT>
+			<ABILITY condition="$mob_level>5 and 1?3=1" class="Skill_Trip" />
+			<BEHAVIOR select="all">
+				<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
+				<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+				<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
+				<BEHAVIOR class="CombatAbilities" parms="" />
+			</BEHAVIOR>
+		</MOB>
 	</MOB>
 </MOB>
 
-<ITEM id="rats_junk" select="all" condition="$theme='rats' or $theme='random'">
-	<ITEM class="GenItem" name="some $adj_metal_broken armor scraps" display="$item_name are sitting here" material="$any_cheap_metal" level="$level_range" />
-	<ITEM class="GenResource" name="the bones of a dead aventurer" display="$item_name rest here" material="BONE" level="$level_range" weight="10" />
-	<ITEM class="GenItem" name="a string of beads" display="a string of beads lie here" material="BONE" level="$level_range" weight=1 />
-	<ITEM class="GenItem" name="a wax candle stub" display="$item_name lies here" material="WAX" level="$level_range" weight=1 />
-	<ITEM class="GenItem" name="a stub of rope" display="$item_name lies here" material="HEMP" level="$level_range" weight=3 />
-	<ITEM class="GenEmptyDrink" name="a small bottle" display="$item_name lies here" material="GLASS" level="$level_range" liquidheld=100 weight=3 />
-	<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} spike" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 damage="1"/>
-	<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken box" display="$item_name is sitting here" material="$any_wood" level="$level_range"  weight=1/>
-	<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken cloth hat"  display="$item_name lies here" material="$any_cheap_cloth" level="$level_range"  weight=1/>
-	<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken sack"  display="$item_name lies here" material="$any_cheap_cloth" level="$level_range"  weight=1/>
-	<ITEM class="GenItem" name="(a(n)) ${l:item_material} pick" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 />
-	<ITEM class="GenItem" name="a bit of ${l:item_material} wire" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 />
-	<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken blanket" display="$item_name lies here" material="$any_wood" level="$level_range"  weight=1/>
-	<ITEM class="GenItem" name="a dirty $adj_cloth_broken ${l:item_material} rag" display="$item_name lies here" material="$any_cheap_cloth" level="$level_range"  weight=1/>
-	<ITEM class="GenItem" name="(a(n)) ${l:item_material} tweezer" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 />
-	<ITEM class="GenItem" name="(a(n)) $adj_metal_broken locket" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 />
-	<ITEM class="GenItem" name="some false wooden teeth" display="$item_name are here" material="$any_wood" level="$level_range" weight=1 />
-	<ITEM class="GenFood" name="a squished frog"  display="$item_name lies here" material="MEAT" level="$level_range"  weight=1 nourishment=1 />
-	<ITEM class="GenLiquidResource" name="a puddle of blood" display="$item_name is here" material="BLOOD" level="$level_range"  weight=1 LIQUIDHELD=1 />
-	<ITEM class="GenItem" name="(a(n)) ${l:item_material} axe head" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 />
-	<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken wooden bracelet" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
-	<ITEM class="metacraft:any-Cooking < $level_range" name="some rotten $item_name" display="$item_name sits here" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
-	<ITEM class="metacraft:any-Baking < $level_range" name="some rotten $item_name" display="$item_name sits here" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
-	<ITEM class="GenWeapon" name="(a(n)) $adj_wooden_broken wooden sword" display="$item_name lies here" material="$any_wood" level="$level_range" weight=3 damage="1"/>
-	<ITEM class="GenItem" name="a pair of bull horns" display="$item_name lie here" material="BONE" level="$level_range" weight=1 />
-	<ITEM class="GenItem" name="(a(n)) $adj_metal_broken metal handle" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range" />
-	<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken ${l:item_material} stick" display="$item_name is sitting here" material="$any_wood" level="$level_range"  weight=1/>
-	<ITEM class="GenItem" name="a pile of corks" display="$item_name are here" material="OAK" level="$level_range" weight=1 />
-	<ITEM class="GenWeapon" name="(a(n)) $adj_metal_broken ${l:item_material} pipe" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 damage="2"/>
-	<ITEM class="GenItem" name="a rat skull" display="$item_name lies here" material="BONE" level="$level_range" weight=1 />
-	<ITEM class="GenItem" name="a stick of black chalk" display="$item_name lies here" material="STONE" level="$level_range" weight=1 />
-	<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} lock" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range" />
-	<ITEM class="metacraft:any-Cooking < $level_range" name="some half-eaten $item_name covered in mold" display="$item_name sits here" weight=1 description="Its been here awhile."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
-	<ITEM class="metacraft:any-Baking < $level_range" name="some half-eaten $item_name covered in mold" display="$item_name sits here" weight=1 description="Its been here awhile."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
-	<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} holy symbol" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 />
-	<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken ${l:item_material} holy symbol" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
-	<ITEM class="GenLimb" name="a cracked glass eye" display="$item_name lies here" material="GLASS" level="$level_range" weight=1 />
-	<ITEM class="GenItem" name="$any_plural_digit $any_humanoid_race toes on a $adj_metal_broken chain" display="$item_name lie here" material="$any_cheap_metal" level="$level_range" weight=1 />
-	<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken clothespin" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
-	<ITEM class="GenItem" name="a worn leather ball" display="$item_name lies here" material="LEATHER" level="$level_range" weight=1 />
-	<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} belt buckle" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range"  weight=1/>
-	<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} knitting needle" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range"  weight=1/>
-	<ITEM class="GenLimb" name="a mummified $any_humanoid_race hand" display="$item_name lies here" material="MEAT" level="$level_range" weight=1 />
-	<ITEM class="GenLimb" name="a mummified $any_mammal_race paw" display="$item_name lies here" material="MEAT" level="$level_range" weight=1 />
-	<ITEM class="GenItem" name="a ball of twine" display="$item_name lies here" material="$any_cheap_cloth" level="$level_range" weight=1 />
-	<ITEM class="GenItem" name="(a(n)) whittled ${l:item_material} stick" display="$item_name is sitting here" material="$any_wood" level="$level_range"  weight=1/>
-	<ITEM class="GenItem" name="a smooth rock" display="$item_name lies here" material="STONE" level="$level_range" weight=1 />
-	<ITEM class="GenItem" name="a dyed $adj_colored_color stone" display="$item_name lies here" material="STONE" level="$level_range" weight=1 />
-	<ITEM class="GenItem" name="a dyed $adj_colored_color stick" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
-	<ITEM class="GenItem" name="a puzzle piece" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
-	<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken bowl" display="$item_name is sitting here" material="$any_wood" level="$level_range"  weight=1/>
-	<ITEM class="GenPlayingCard" name="a playing card" ability="0?62" />
-	<ITEM class="GenItem" name="(a(n)) $any_avian_race feather" display="$item_name lies here" material="FEATHERS" level="$level_range" weight=1 />
-	<ITEM class="GenKey" name="(a(n)) $adj_metal_broken key" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 READABLETEXT="opensnothing"/>
-	<ITEM class="GenItem" name="a clump of bloody $any_humanoid_race hair" display="$item_name lies here" material="MEAT" level="$level_range" weight=1 />
-	<ITEM class="GenItem" name="(a(n)) ${l:item_material} toothpick" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
-	<ITEM class="GenItem" name="a clump of ${l:item_material}" display="$item_name lies here" material="$any_cheap_cloth" level="$level_range" weight=1 />
-	<ITEM class="GenItem" name="(a(n)) ${l:item_material} fishhook" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range" />
-	<ITEM class="GenItem" name="a gnawed-on $any_humanoid_race finger bone" display="$item_name lie here" material="BONE" level="$level_range" weight=1 />
-	<ITEM class="GenItem" name="a bloody $any_humanoid_race skull" display="$item_name lie here" material="BONE" level="$level_range" weight=1 />
-	<ITEM class="GenReadable" name="a scrap of paper" display="$item_name lies here" material="PAPER" level="$level_range" weight=1 description="There`s something written on it." READABLETEXT="Something totally unintelligible."/>
-	<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} nail" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 damage="1"/>
-	<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken hatchet handle" display="$item_name is sitting here" material="$any_wood" level="$level_range" />
-	<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken baby rattle" display="$item_name is here" material="$any_wood" level="$level_range" weight=1 />
-	<ITEM class="GenItem" name="(a(n)) $adj_metal_broken horse shoe" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1/>
-	<ITEM class="GenItem" name="a bloody comb" display="$item_name lie here" material="$random_cheap_metal" level="$level_range" weight=1 />
-	<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} chair leg" display="$item_name lies here" material="$any_wood" level="$level_range" weight=3 damage="1"/>
-	<ITEM class="metacraft:any-Weaponsmithing < $level_range" name="(a(n)) $adj_metal_broken $item_name" display="$item_name lies here" damage=1  attack=-10 affbehav="<BEHAVES /><AFFECS />" />
-	<ITEM class="metacraft:any-Armorsmithing < $level_range" name="(a(n)) $adj_metal_broken $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" />
-	<ITEM class="metacraft:any-MasterWeaponsmithing < $level_range" name="(a(n)) $adj_metal_broken $item_name" display="$item_name lies here" damage=1 attack=-10 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
-	<ITEM class="metacraft:any-MasterArmorsmithing < $level_range" name="(a(n)) $adj_metal_broken $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
+<ITEM id="dungeon_junk" merge=true select="all" requires="level_range=int">
+	<ITEM select="all" condition="$theme='rats' or $theme='random'">
+		<ITEM class="GenItem" name="some $adj_metal_broken armor scraps" display="$item_name are sitting here" material="$any_cheap_metal" level="$level_range" />
+		<ITEM class="GenResource" name="the bones of a dead aventurer" display="$item_name rest here" material="BONE" level="$level_range" weight="10" />
+		<ITEM class="GenItem" name="a string of beads" display="a string of beads lie here" material="BONE" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="a wax candle stub" display="$item_name lies here" material="WAX" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="a stub of rope" display="$item_name lies here" material="HEMP" level="$level_range" weight=3 />
+		<ITEM class="GenEmptyDrink" name="a small bottle" display="$item_name lies here" material="GLASS" level="$level_range" liquidheld=100 weight=3 />
+		<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} spike" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 damage="1"/>
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken box" display="$item_name is sitting here" material="$any_wood" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken cloth hat"  display="$item_name lies here" material="$any_cheap_cloth" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken sack"  display="$item_name lies here" material="$any_cheap_cloth" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="(a(n)) ${l:item_material} pick" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 />
+		<ITEM class="GenItem" name="a bit of ${l:item_material} wire" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken blanket" display="$item_name lies here" material="$any_wood" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="a dirty $adj_cloth_broken ${l:item_material} rag" display="$item_name lies here" material="$any_cheap_cloth" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="(a(n)) ${l:item_material} tweezer" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken locket" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="some false wooden teeth" display="$item_name are here" material="$any_wood" level="$level_range" weight=1 />
+		<ITEM class="GenFood" name="a squished frog"  display="$item_name lies here" material="MEAT" level="$level_range"  weight=1 nourishment=1 />
+		<ITEM class="GenLiquidResource" name="a puddle of blood" display="$item_name is here" material="BLOOD" level="$level_range"  weight=1 LIQUIDHELD=1 />
+		<ITEM class="GenItem" name="(a(n)) ${l:item_material} axe head" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 />
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken wooden bracelet" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
+		<ITEM class="metacraft:any-Cooking < $level_range" name="some rotten $item_name" display="$item_name sits here" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
+		<ITEM class="metacraft:any-Baking < $level_range" name="some rotten $item_name" display="$item_name sits here" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
+		<ITEM class="GenWeapon" name="(a(n)) $adj_wooden_broken wooden sword" display="$item_name lies here" material="$any_wood" level="$level_range" weight=3 damage="1"/>
+		<ITEM class="GenItem" name="a pair of bull horns" display="$item_name lie here" material="BONE" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken metal handle" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range" />
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken ${l:item_material} stick" display="$item_name is sitting here" material="$any_wood" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="a pile of corks" display="$item_name are here" material="OAK" level="$level_range" weight=1 />
+		<ITEM class="GenWeapon" name="(a(n)) $adj_metal_broken ${l:item_material} pipe" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 damage="2"/>
+		<ITEM class="GenItem" name="a rat skull" display="$item_name lies here" material="BONE" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="a stick of black chalk" display="$item_name lies here" material="STONE" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} lock" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range" />
+		<ITEM class="metacraft:any-Cooking < $level_range" name="some half-eaten $item_name covered in mold" display="$item_name sits here" weight=1 description="Its been here awhile."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
+		<ITEM class="metacraft:any-Baking < $level_range" name="some half-eaten $item_name covered in mold" display="$item_name sits here" weight=1 description="Its been here awhile."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} holy symbol" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken ${l:item_material} holy symbol" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
+		<ITEM class="GenLimb" name="a cracked glass eye" display="$item_name lies here" material="GLASS" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="$any_plural_digit $any_humanoid_race toes on a $adj_metal_broken chain" display="$item_name lie here" material="$any_cheap_metal" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken clothespin" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="a worn leather ball" display="$item_name lies here" material="LEATHER" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} belt buckle" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} knitting needle" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range"  weight=1/>
+		<ITEM class="GenLimb" name="a mummified $any_humanoid_race hand" display="$item_name lies here" material="MEAT" level="$level_range" weight=1 />
+		<ITEM class="GenLimb" name="a mummified $any_mammal_race paw" display="$item_name lies here" material="MEAT" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="a ball of twine" display="$item_name lies here" material="$any_cheap_cloth" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) whittled ${l:item_material} stick" display="$item_name is sitting here" material="$any_wood" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="a smooth rock" display="$item_name lies here" material="STONE" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="a dyed $adj_colored_color stone" display="$item_name lies here" material="STONE" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="a dyed $adj_colored_color stick" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="a puzzle piece" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken bowl" display="$item_name is sitting here" material="$any_wood" level="$level_range"  weight=1/>
+		<ITEM class="GenPlayingCard" name="a playing card" ability="0?62" />
+		<ITEM class="GenItem" name="(a(n)) $any_avian_race feather" display="$item_name lies here" material="FEATHERS" level="$level_range" weight=1 />
+		<ITEM class="GenKey" name="(a(n)) $adj_metal_broken key" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 READABLETEXT="opensnothing"/>
+		<ITEM class="GenItem" name="a clump of bloody $any_humanoid_race hair" display="$item_name lies here" material="MEAT" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) ${l:item_material} toothpick" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="a clump of ${l:item_material}" display="$item_name lies here" material="$any_cheap_cloth" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) ${l:item_material} fishhook" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range" />
+		<ITEM class="GenItem" name="a gnawed-on $any_humanoid_race finger bone" display="$item_name lie here" material="BONE" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="a bloody $any_humanoid_race skull" display="$item_name lie here" material="BONE" level="$level_range" weight=1 />
+		<ITEM class="GenReadable" name="a scrap of paper" display="$item_name lies here" material="PAPER" level="$level_range" weight=1 description="There`s something written on it." READABLETEXT="Something totally unintelligible."/>
+		<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} nail" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 damage="1"/>
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken hatchet handle" display="$item_name is sitting here" material="$any_wood" level="$level_range" />
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken baby rattle" display="$item_name is here" material="$any_wood" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken horse shoe" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1/>
+		<ITEM class="GenItem" name="a bloody comb" display="$item_name lie here" material="$random_cheap_metal" level="$level_range" weight=1 />
+		<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} chair leg" display="$item_name lies here" material="$any_wood" level="$level_range" weight=3 damage="1"/>
+		<ITEM class="metacraft:any-Weaponsmithing < $level_range" name="(a(n)) $adj_metal_broken $item_name" display="$item_name lies here" damage=1  attack=-10 affbehav="<BEHAVES /><AFFECS />" />
+		<ITEM class="metacraft:any-Armorsmithing < $level_range" name="(a(n)) $adj_metal_broken $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" />
+		<ITEM class="metacraft:any-MasterWeaponsmithing < $level_range" name="(a(n)) $adj_metal_broken $item_name" display="$item_name lies here" damage=1 attack=-10 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
+		<ITEM class="metacraft:any-MasterArmorsmithing < $level_range" name="(a(n)) $adj_metal_broken $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
+	</ITEM>
 </ITEM>
 
 <STRING id="rats_dragoncolor" select="pick-1" define="rats_dragoncolor">

@@ -14,8 +14,18 @@
    limitations under the License.
 -->
 <!--  include file full of show plains-specific tags -->
+<string id="randomtheme" merge=true select="any-1">
+	<string condition="$theme=''">plains</string>
+</string>
 
-<ROOM id="plains_street_rooms">
+<AREA id="maze_dungeon" merge=true layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=plains" />
+<AREA id="grid_dungeon" merge=true like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=plains" />
+<AREA id="square_dungeon" merge=true like="maze_dungeon" layout="BOXCITYSQUARE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=plains" />
+<AREA id="box_dungeon" merge=true like="maze_dungeon" layout="BOXCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=plains" />
+<AREA id="cross_dungeon" merge=true like="maze_dungeon" layout="CROSS" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=plains" />
+<AREA id="tree_dungeon" merge=true like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=plains" />
+
+<ROOM id="hallway_rooms" merge=true select="pick-1" condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
 	<ROOM class="Plains" id="plains_street_room" condition="$theme='plains' or $theme='random'">
 		<TITLE>(a(n)) $_plains_path_name</TITLE>
 		<DESCRIPTION>$plains_street_desc</DESCRIPTION>
@@ -58,11 +68,11 @@
 	</ROOM>
 </ROOM>
 
-<ROOM id="plains_interior_rooms">
+<ROOM id="interior_rooms" merge=true select="any-1" condition="$roomtag_nodetype='interior' or $roomtag_nodetype='square'">
 	<ROOM class="Plains" like="plains_street_room" condition="$theme='plains' or $theme='random'" />
 </ROOM>
 
-<ROOM id="plains_leaf_rooms">
+<ROOM id="leaf_rooms" merge=true select="any-1" condition="$roomtag_nodetype='leaf'">
 	<ROOM class="Plains" id="plains_interior_room" condition="$theme='plains' or $theme='random'">
 		<TITLE>
 			<TITLE>$plains_path_prefix $plains_nouns</TITLE>
