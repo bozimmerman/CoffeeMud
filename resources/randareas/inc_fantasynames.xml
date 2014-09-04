@@ -15,6 +15,10 @@
 -->
 <!--  include file with fantasy names and fantasy name selectors -->
 
+<STRING id="fantasy_name1" define="fantasy_name1">$fantasy_name</STRING>
+<STRING id="fantasy_name2" define="fantasy_name2">$fantasy_name</STRING>
+<STRING id="fantasy_name3" define="fantasy_name3">$fantasy_name</STRING>
+
 <STRING id="fantasy_name" select="any-1">
 	<STRING id="fantasy_name_values" select="all">
 		<STRING>Orrothbur</STRING><STRING>Ashash</STRING><STRING>Rynaugh</STRING><STRING>Moperche</STRING><STRING>Post</STRING>

@@ -323,7 +323,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		{
 			for(final PostProcessAttempt stat : posties)
 			{
-				stat.attempt();
+				try
+				{
+					stat.attempt();
+				}
+				catch(PostProcessException pe)
+				{
+					throw pe;
+				}
 			}
 		}
 		catch(PostProcessException pe)
@@ -726,6 +733,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				exits[linkDir.intValue()]=linkNode.room().getExitInDir(opDir);
 				groupDefined.put("ROOMTITLE_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase(),linkNode.room().displayText(null));
 			}
+			groupDefined.put("NODETYPE_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase(),linkNode.type().name());
 			//else groupDefined.put("ROOMTITLE_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase(),"");
 			groupDefined.put("ROOMLINK_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase(),"true");
 		}
@@ -756,6 +764,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			groupDefined.remove("ROOMTAG_"+key.toString().toUpperCase());
 		for(final Integer linkDir : node.links().keySet())
 		{
+			groupDefined.remove("NODETYPE_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase());
 			groupDefined.remove("ROOMLINK_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase());
 			groupDefined.remove("ROOMTITLE_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase());
 		}
@@ -2696,10 +2705,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						if(parts[p].equals("AREA"))
 							E3=CMLib.map().areaLocation(E2);
 						else
-						if(Directions.getDirectionCode(parts[p])>0)
+						if(Directions.getDirectionCode(parts[p])>=0)
 						{
 							if(R==null)
-								throw new PostProcessException("Unkown room on object "+E2.ID()+" in variable '"+V.var+"'");
+								throw new PostProcessException("Unknown room on object "+E2.ID()+" in variable '"+V.var+"'");
 							final int dir=Directions.getDirectionCode(parts[p]);
 							E3=R.getRoomInDir(dir);
 						}
@@ -2707,7 +2716,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						if(parts[p].equals("ANYROOM"))
 						{
 							if(R==null)
-								throw new PostProcessException("Unkown room on object "+E2.ID()+" in variable '"+V.var+"'");
+								throw new PostProcessException("Unknown room on object "+E2.ID()+" in variable '"+V.var+"'");
 							final List<Room> dirs=new ArrayList<Room>();
 							for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 								if((R.getRoomInDir(d)!=null)&&(R.getRoomInDir(d).roomID().length()>0))
@@ -2720,7 +2729,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						if(parts[p].equals("MOB"))
 						{
 							if(R==null)
-								throw new PostProcessException("Unkown room on object "+E2.ID()+" in variable '"+V.var+"'");
+								throw new PostProcessException("Unknown room on object "+E2.ID()+" in variable '"+V.var+"'");
 							if((R.numInhabitants()==0)||((E2 instanceof MOB)&&(R.numInhabitants()==1)))
 								throw new PostProcessException("No mobs in room for "+E2.ID()+" in variable '"+V.var+"'");
 							E3=R.fetchInhabitant(CMLib.dice().roll(1, R.numInhabitants(), -1));
@@ -2729,7 +2738,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						if(parts[p].equals("ITEM"))
 						{
 							if(R==null)
-								throw new PostProcessException("Unkown room on object "+E2.ID()+" in variable '"+V.var+"'");
+								throw new PostProcessException("Unknown room on object "+E2.ID()+" in variable '"+V.var+"'");
 							if((R.numItems()==0)||((E2 instanceof Item)&&(R.numItems()==1)))
 								throw new PostProcessException("No items in room for "+E2.ID()+" in variable '"+V.var+"'");
 							E3=R.getItem(CMLib.dice().roll(1, R.numItems(), -1));
@@ -2738,7 +2747,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						if(parts[p].equals("AREAGATE"))
 						{
 							if(R==null)
-								throw new PostProcessException("Unkown room on object "+E2.ID()+" in variable '"+V.var+"'");
+								throw new PostProcessException("Unknown room on object "+E2.ID()+" in variable '"+V.var+"'");
 							final List<Room> dirs=new ArrayList<Room>();
 							for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 							{
@@ -2756,9 +2765,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							E3=dirs.get(CMLib.dice().roll(1, dirs.size(), -1));
 						}
 						else
-							throw new PostProcessException("Unkown stat code '"+parts[p]+"' on object "+E2.ID()+" in variable '"+V.var+"'");
+							throw new PostProcessException("Unknown stat code '"+parts[p]+"' on object "+E2.ID()+" in variable '"+V.var+"'");
 						if(E3==null)
-							throw new PostProcessException("Unkown '"+parts[p]+"' on object "+E2.ID()+" in variable '"+V.var+"'");
+							throw new PostProcessException("Unknown '"+parts[p]+"' on object "+E2.ID()+" in variable '"+V.var+"'");
 						else
 							E2=E3;
 					}
@@ -2767,7 +2776,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				if (E.isStat(parts[parts.length-1]))
 					val=E.getStat(parts[parts.length-1]);
 				else
-					throw new CMException("Unkown stat code '"+parts[parts.length-1]+"' on object "+E+" in variable '"+V.var+"'");
+					throw new CMException("Unknown stat code '"+parts[parts.length-1]+"' on object "+E+" in variable '"+V.var+"'");
 			}
 			else
 				val = defined.get(V.var.toUpperCase().trim());

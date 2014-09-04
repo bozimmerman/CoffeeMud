@@ -187,6 +187,7 @@ ROOMTAG_NODEEXITS: comma separated list of all exits from a room
 ROOMTAG_NODEGATEEXIT: if this room is a "gate" rooms, which direction is the gate in.
 ROOMLINK_N, ROOMLINK_S, ROOMLINK_E, ROOMLINK_W, etc: "true" if an exit exists that way.
 ROOMTITLE_N, ROOMTITLE_S, ROOMTITLE_E, ROOMTITLE_W, etc: if already done, the title of a room that way.
+NODETYPE_N, NODETYPE_S, NODETYPE_E, NODETYPE_W, etc: type of room node in that direction, if any.
 
 Required details:
 "class"        The CoffeeMud class type to use to create the area.

@@ -83,7 +83,7 @@
 				<EXIT pickweight=2 class="GenDoor" hasalock="true" deflocked="true" keyname="$areaname labkey"/>
 			</EXIT>
 			<MOB class="GenMob" level="(1.20 * ($level_range)) + 1" race="_humanoid_races" gender="$anygender">
-				<NAME>doctor $fantasy_name</NAME>
+				<NAME>Doctor $fantasy_name1</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name stands around.</DISPLAY>
 					<DISPLAY pickweight="2">$mob_name seems disturbed by the interruption.</DISPLAY>

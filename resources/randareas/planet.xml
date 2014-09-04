@@ -49,7 +49,7 @@ See example.xml for details.
 	<STRING pickweight=1 define="atmosphere" condition="$theme='ocean'">saltwater</STRING>
 </STRING>
 <STRING id="randomtheme" pick="any-1">
-	<STRING pickweight=9>city</STRING>
+	<STRING pickweight=9>city3000</STRING>
 	<STRING pickweight=5>forest</STRING>
 	<STRING pickweight=5>desert</STRING>
 	<STRING pickweight=5>mountains</STRING>
@@ -57,11 +57,12 @@ See example.xml for details.
 	<STRING pickweight=5>swamp</STRING>
 	<STRING pickweight=5>snow</STRING>
 	<STRING pickweight=5>plains</STRING>
-	<STRING pickweight=5>ruins</STRING>
 	<STRING pickweight=4>ocean</STRING>
+	<STRING pickweight=3>ruins</STRING>
+	<STRING pickweight=1>city1300</STRING>
+	<STRING pickweight=1>city1960</STRING>
 	<STRING pickweight=1>western</STRING>
 	<STRING pickweight=1>chicago</STRING>
-	<STRING pickweight=1>mideval</STRING>
 	<STRING pickweight=1>tribal</STRING>
 </STRING>
 

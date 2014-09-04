@@ -263,17 +263,31 @@ public class Modify extends StdCommand
 		if(command.equalsIgnoreCase("AREA"))
 		{
 			if(commands.size()<4) { flunkRoomCmd(mob); return;}
+			boolean confirmed=false;
+			String areaType="";
+			if((commands.size()>4)&&(CMClass.getAreaType(commands.get(commands.size()-1).toString())!=null))
+			{
+				areaType=commands.remove(commands.size()-1).toString();
+				restStr=CMParms.combine(commands,3);
+				confirmed=true;
+			}
 			Area A=CMLib.map().getArea(restStr);
 			boolean reid=false;
+			if((A==null)&&(!CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDAREAS)))
+			{
+				mob.session().println("Not permitted.");
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
+				return;
+			}
+			else
 			if(A==null)
 			{
 				if(!mob.isMonster())
 				{
-					if(mob.session().confirm(_("\n\rThis command will create a BRAND NEW AREA\n\r with Area code '@x1'.  Are you SURE (y/N)?",restStr),_("N")))
+					if(confirmed||mob.session().confirm(_("\n\rThis command will create a BRAND NEW AREA\n\r with Area code '@x1'.  Are you SURE (y/N)?",restStr),_("N")))
 					{
-						String areaType="";
 						int tries=0;
-						while((areaType.length()==0)&&((++tries)<10))
+						while((areaType.length()==0)&&((++tries)<10)&&(mob.session()!=null)&&(!mob.session().isStopped()))
 						{
 							areaType=mob.session().prompt(_("Enter an area type to create (default=StdArea): "),_("StdArea"));
 							if(CMClass.getAreaType(areaType)==null)
@@ -291,8 +305,8 @@ public class Modify extends StdCommand
 						mob.location().setArea(A);
 						CMLib.coffeeMaker().addAutoPropsToAreaIfNecessary(A);
 						reid=true;
+						mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("This entire area twitches.\n\r"));
 					}
-					mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("This entire area twitches.\n\r"));
 				}
 				else
 				{

@@ -112,6 +112,88 @@
 	<STRING pickweight="1" condition="$room_class='Road'"></STRING>
 </STRING>
 
+<STRING id="desc_leafs" select="all">
+	<STRING select="any-1" condition="$NODETYPE_N='leaf'" action="APPEND" >
+		<STRING>To the north is ${STAT:ROOM:NORTH:DISPLAY}.</STRING>
+		<STRING>North of here is ${STAT:ROOM:NORTH:DISPLAY}.</STRING>
+		<STRING>To the north you can see ${STAT:ROOM:NORTH:DISPLAY}.</STRING>
+		<STRING>${c:STAT:ROOM:NORTH:DISPLAY} is to the north.</STRING>
+		<STRING>The entrance to ${STAT:ROOM:NORTH:DISPLAY} is north.</STRING>
+		<STRING>The entrance to ${STAT:ROOM:NORTH:DISPLAY} is to the north.</STRING>
+	</STRING>
+	<STRING select="any-1" condition="$NODETYPE_S='leaf'" action="APPEND" >
+		<STRING>To the south is ${STAT:ROOM:SOUTH:DISPLAY}.</STRING>
+		<STRING>South of here is ${STAT:ROOM:SOUTH:DISPLAY}.</STRING>
+		<STRING>To the south you can see ${STAT:ROOM:SOUTH:DISPLAY}.</STRING>
+		<STRING>${c:STAT:ROOM:SOUTH:DISPLAY} is to the south.</STRING>
+		<STRING>The entrance to ${STAT:ROOM:SOUTH:DISPLAY} is south.</STRING>
+		<STRING>The entrance to ${STAT:ROOM:SOUTH:DISPLAY} is to the south.</STRING>
+	</STRING>
+	<STRING select="any-1" condition="$NODETYPE_E='leaf'" action="APPEND" >
+		<STRING>To the east is ${STAT:ROOM:EAST:DISPLAY}.</STRING>
+		<STRING>East of here is ${STAT:ROOM:EAST:DISPLAY}.</STRING>
+		<STRING>To the east you can see ${STAT:ROOM:EAST:DISPLAY}.</STRING>
+		<STRING>${c:STAT:ROOM:EAST:DISPLAY} is to the east.</STRING>
+		<STRING>The entrance to ${STAT:ROOM:EAST:DISPLAY} is east.</STRING>
+		<STRING>The entrance to ${STAT:ROOM:EAST:DISPLAY} is to the east.</STRING>
+	</STRING>
+	<STRING select="any-1" condition="$NODETYPE_W='leaf'" action="APPEND" >
+		<STRING>To the west is ${STAT:ROOM:WEST:DISPLAY}.</STRING>
+		<STRING>West of here is ${STAT:ROOM:WEST:DISPLAY}.</STRING>
+		<STRING>To the west you can see ${STAT:ROOM:WEST:DISPLAY}.</STRING>
+		<STRING>${c:STAT:ROOM:WEST:DISPLAY} is to the west.</STRING>
+		<STRING>The entrance to ${STAT:ROOM:WEST:DISPLAY} is west.</STRING>
+		<STRING>The entrance to ${STAT:ROOM:WEST:DISPLAY} is to the west.</STRING>
+	</STRING>
+	<STRING select="any-1" condition="$NODETYPE_U='leaf'" action="APPEND" >
+		<STRING>Above you is ${STAT:ROOM:UP:DISPLAY}.</STRING>
+		<STRING>Above here is ${STAT:ROOM:UP:DISPLAY}.</STRING>
+		<STRING>Above you, can see ${STAT:ROOM:UP:DISPLAY}.</STRING>
+		<STRING>${c:STAT:ROOM:UP:DISPLAY} is above.</STRING>
+		<STRING>The entrance to ${STAT:ROOM:UP:DISPLAY} is above.</STRING>
+	</STRING>
+	<STRING select="any-1" condition="$NODETYPE_D='leaf'" action="APPEND" >
+		<STRING>Below you is ${STAT:ROOM:DOWN:DISPLAY}.</STRING>
+		<STRING>Below here is ${STAT:ROOM:DOWN:DISPLAY}.</STRING>
+		<STRING>Below you, can see ${STAT:ROOM:DOWN:DISPLAY}.</STRING>
+		<STRING>${c:STAT:ROOM:DOWN:DISPLAY} is below.</STRING>
+		<STRING>The entrance to ${STAT:ROOM:DOWN:DISPLAY} is below.</STRING>
+	</STRING>
+	<STRING select="any-1" condition="$NODETYPE_NE='leaf'" action="APPEND" >
+		<STRING>To the northeast is ${STAT:ROOM:NORTHEAST:DISPLAY}.</STRING>
+		<STRING>Northeast of here is ${STAT:ROOM:NORTHEAST:DISPLAY}.</STRING>
+		<STRING>To the northeast you can see ${STAT:ROOM:NORTHEAST:DISPLAY}.</STRING>
+		<STRING>${c:STAT:ROOM:NORTHEAST:DISPLAY} is to the northeast.</STRING>
+		<STRING>The entrance to ${STAT:ROOM:NORTHEAST:DISPLAY} is northeast.</STRING>
+		<STRING>The entrance to ${STAT:ROOM:NORTHEAST:DISPLAY} is to the northeast.</STRING>
+	</STRING>
+	<STRING select="any-1" condition="$NODETYPE_NW='leaf'" action="APPEND" >
+		<STRING>To the northwest is ${STAT:ROOM:NORTHWEST:DISPLAY}.</STRING>
+		<STRING>Northwest of here is ${STAT:ROOM:NORTHWEST:DISPLAY}.</STRING>
+		<STRING>To the northwest you can see ${STAT:ROOM:NORTHWEST:DISPLAY}.</STRING>
+		<STRING>${c:STAT:ROOM:NORTHWEST:DISPLAY} is to the northwest.</STRING>
+		<STRING>The entrance to ${STAT:ROOM:NORTHWEST:DISPLAY} is northwest.</STRING>
+		<STRING>The entrance to ${STAT:ROOM:NORTHWEST:DISPLAY} is to the northwest.</STRING>
+	</STRING>
+	<STRING select="any-1" condition="$NODETYPE_SE='leaf'" action="APPEND" >
+		<STRING>To the southeast is ${STAT:ROOM:SOUTHEAST:DISPLAY}.</STRING>
+		<STRING>Southeast of here is ${STAT:ROOM:SOUTHEAST:DISPLAY}.</STRING>
+		<STRING>To the southeast you can see ${STAT:ROOM:SOUTHEAST:DISPLAY}.</STRING>
+		<STRING>${c:STAT:ROOM:SOUTHEAST:DISPLAY} is to the southeast.</STRING>
+		<STRING>The entrance to ${STAT:ROOM:SOUTHEAST:DISPLAY} is southeast.</STRING>
+		<STRING>The entrance to ${STAT:ROOM:SOUTHEAST:DISPLAY} is to the southeast.</STRING>
+	</STRING>
+	<STRING select="any-1" condition="$NODETYPE_SW='leaf'" action="APPEND" >
+		<STRING>To the southwest is ${STAT:ROOM:SOUTHWEST:DISPLAY}.</STRING>
+		<STRING>Southwest of here is ${STAT:ROOM:SOUTHWEST:DISPLAY}.</STRING>
+		<STRING>To the southwest you can see ${STAT:ROOM:SOUTHWEST:DISPLAY}.</STRING>
+		<STRING>${c:STAT:ROOM:SOUTHWEST:DISPLAY} is to the southwest.</STRING>
+		<STRING>The entrance to ${STAT:ROOM:SOUTHWEST:DISPLAY} is southwest.</STRING>
+		<STRING>The entrance to ${STAT:ROOM:SOUTHWEST:DISPLAY} is to the southwest.</STRING>
+	</STRING>
+	<STRING action="APPEND" />
+</STRING>
+
 <STRING id="desc_exits" select="all">
 	<STRING select="all" condition="(!('n' IN $ROOMTAG_NODERUN)) and $ROOMLINK_N!=''" action="APPEND" >
 		<STRING select="any-1" condition="$ROOMTITLE_N!=''" action="APPEND" >To the north is $ROOMTITLE_N.</STRING>
@@ -153,4 +235,5 @@
 		<STRING select="any-1" condition="$ROOMTITLE_SW!=''" action="APPEND" >To the southwest is $ROOMTITLE_SW.</STRING>
 		<STRING select="any-1" condition="$ROOMTITLE_SW=''" action="APPEND" >There is an exit to the southwest.</STRING>
 	</STRING>
+	<STRING ACTION="APPEND" />
 </STRING>

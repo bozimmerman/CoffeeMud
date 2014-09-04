@@ -84,11 +84,12 @@ public class GenContainer extends StdContainer
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+hasALock();
-		case 1: return ""+hasALid();
-		case 2: return ""+capacity();
-		case 3: return ""+containTypes();
-		case 4: return ""+openDelayTicks();
+		case 0: return ID();
+		case 1: return ""+hasALock();
+		case 2: return ""+hasALid();
+		case 3: return ""+capacity();
+		case 4: return ""+containTypes();
+		case 5: return ""+openDelayTicks();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -101,11 +102,12 @@ public class GenContainer extends StdContainer
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setLidsNLocks(hasALid(),isOpen(),CMath.s_bool(val),false); break;
-		case 1: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
-		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
-		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
-		case 4: setOpenDelayTicks(CMath.s_parseIntExpression(val)); break;
+		case 0: break;
+		case 1: setLidsNLocks(hasALid(),isOpen(),CMath.s_bool(val),false); break;
+		case 2: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
+		case 3: setCapacity(CMath.s_parseIntExpression(val)); break;
+		case 4: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
+		case 5: setOpenDelayTicks(CMath.s_parseIntExpression(val)); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

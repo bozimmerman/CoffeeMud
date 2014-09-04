@@ -31,7 +31,7 @@
 		<TITLE>$a_streetprefix $_street_name</TITLE>
 		<DESCRIPTION>
 			<DESCRIPTION action="PREPEND" condition="$ROOMTAG_NODEGATEEXIT != ''">You are at the entrance to $areaname. ${c:STAT:AREAGATE:DISPLAY} is to the ${l:ROOMTAG_NODEGATEEXIT}. </DESCRIPTION>
-			<DESCRIPTION></DESCRIPTION>
+			<DESCRIPTION action="APPEND">$desc_leafs</DESCRIPTION>
 		</DESCRIPTION>
 		<EXIT class="Open" />
 		<MOB condition="1?3=1" select="any-1" insert="town_mobs" />
@@ -55,18 +55,18 @@
 
 <ROOM id="leaf_rooms" merge=true select="any-1" condition="$roomtag_nodetype='leaf'">
 	<ROOM select="all" id="town_leaf_rooms" condition="$theme='town' or $theme='random'">
-		<ROOM id="town_home" class="WoodRoom"  condition="$__townthird &gt; 5" define="__townhome+=1,patronname=$fantasy_name">
+		<ROOM id="town_home" class="WoodRoom"  condition="$__townthird &gt; 5" define="__townhome+=1">
 			<TITLE select="any-1">
-				<TITLE>${c:patronname}'s house</TITLE>
-				<TITLE>${c:patronname}'s home</TITLE>
+				<TITLE>${c:fantasy_name1}'s house</TITLE>
+				<TITLE>${c:fantasy_name1}'s home</TITLE>
 				<TITLE>A house</TITLE>
-				<TITLE>The ${c:patronname} house</TITLE>
+				<TITLE>The ${c:fantasy_name1} house</TITLE>
 			</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>This is a simple townperson's home.</DESCRIPTION>
-					<DESCRIPTION>This is the home of the ${c:patronname} family.</DESCRIPTION>
-					<DESCRIPTION>This is the house of ${c:patronname}.</DESCRIPTION>
+					<DESCRIPTION>This is the home of the ${c:fantasy_name1} family.</DESCRIPTION>
+					<DESCRIPTION>This is the house of ${c:fantasy_name1}.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>The furnishings are sparse and ${adj_useful}.</DESCRIPTION>
@@ -79,7 +79,7 @@
 			</DESCRIPTION>
 			<EXIT class="GenDoor" defclosed="true" />
 			<MOB class="GenMob" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender">
-				<NAME>${c:patronname}</NAME>
+				<NAME>${c:fantasy_name1}</NAME>
 				<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
 				<ALIGNMENT>0?10000</ALIGNMENT>
 				<BEHAVIOR select="all">
@@ -98,10 +98,10 @@
 			</ITEM>
 		</ROOM>
 		
-		<ROOM id="town_cafe" class="WoodRoom"  condition="$__townthird &gt; 5" define="__towncafe+=1,patronname=$fantasy_name">
+		<ROOM id="town_cafe" class="WoodRoom"  condition="$__townthird &gt; 5" define="__towncafe+=1">
 			<TITLE select="any-1">
-				<TITLE>${c:patronname}'s Cafe</TITLE>
-				<TITLE>${c:patronname}'s Diner</TITLE>
+				<TITLE>${c:fantasy_name1}'s Cafe</TITLE>
+				<TITLE>${c:fantasy_name1}'s Diner</TITLE>
 				<TITLE>The ${c:street_name_1} ${c:street_name_2}</TITLE>
 			</TITLE>
 			<DESCRIPTION>
@@ -129,7 +129,7 @@
 			<EXIT class="GenDoor" defclosed="false" />
 			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is up for sale `buy [itemname]` to get something, or `view [itemname]` to get more information." />
 			<MOB class="GenShopKeeper" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" whatisell="inventory only">
-				<NAME>${c:patronname}</NAME>
+				<NAME>${c:fantasy_name1}</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name will take your order now.</DISPLAY>
 					<DISPLAY pickweight="1">$mob_name is taking food orders.</DISPLAY>
@@ -165,10 +165,10 @@
 			<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
 		</ROOM>
 		
-		<ROOM id="town_bar" class="WoodRoom"  condition="$__townthird &gt; 5" define="__townbar+=1,patronname=$fantasy_name">
+		<ROOM id="town_bar" class="WoodRoom"  condition="$__townthird &gt; 5" define="__townbar+=1">
 			<TITLE select="any-1">
-				<TITLE>${c:patronname}'s Bar</TITLE>
-				<TITLE>${c:patronname}'s Pub</TITLE>
+				<TITLE>${c:fantasy_name1}'s Bar</TITLE>
+				<TITLE>${c:fantasy_name1}'s Pub</TITLE>
 				<TITLE>The ${c:street_name_1} ${c:street_name_2}</TITLE>
 			</TITLE>
 			<DESCRIPTION>
@@ -201,7 +201,7 @@
 			<EXIT class="GenDoor" defclosed="false" />
 			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is up for sale `buy [itemname]` to get something, or `view [itemname]` to get more information." />
 			<MOB class="GenShopKeeper" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" whatisell="inventory only">
-				<NAME>${c:patronname}</NAME>
+				<NAME>${c:fantasy_name1}</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name will take your order now.</DISPLAY>
 					<DISPLAY pickweight="1">$mob_name is taking drink orders.</DISPLAY>
@@ -268,7 +268,7 @@
 				<EXIT class="Open" condition="$ROOMLINK_DIR != $ROOMTAG_NODEGATEEXIT" />
 				<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what rooms are available, `buy [keyname]` to get a room key, after which just find the right room and let yourself in." />
 				<MOB class="GenShopKeeper" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" WHATISELL="INNKEEPER">
-					<NAME>Innkeeper ${c:fantasy_name}</NAME>
+					<NAME>Innkeeper ${c:fantasy_name1}</NAME>
 					<DISPLAY select="pick-1">
 						<DISPLAY pickweight="1">$mob_name looks bored.</DISPLAY>
 						<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
@@ -371,11 +371,11 @@
 			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what spells are available, `buy [spellname]` to have a spell cast on you." />
 			<MOB class="GenShopKeeper" level="($level_range) * 1.05 > 30" race="$_humanoid_races" gender="$anygender" whatisell="caster">
 				<NAME select="pick-1">
-					<NAME>${c:fantasy_name}</NAME>
-					<NAME>Priest ${c:fantasy_name}</NAME>
-					<NAME>Cleric ${c:fantasy_name}</NAME>
-					<NAME>Ibn ${c:fantasy_name}</NAME>
-					<NAME>Friar ${c:fantasy_name}</NAME>
+					<NAME>${c:fantasy_name1}</NAME>
+					<NAME>Priest ${c:fantasy_name1}</NAME>
+					<NAME>Cleric ${c:fantasy_name1}</NAME>
+					<NAME>Ibn ${c:fantasy_name1}</NAME>
+					<NAME>Friar ${c:fantasy_name1}</NAME>
 				</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name is ready to tend your wounds.</DISPLAY>
@@ -426,22 +426,22 @@
 				<MATERIAL>STONE</MATERIAL>
 			</ITEM>
 		</ROOM>
-		<ROOM id="town_shop" class="WoodRoom" condition="$__numshoptypes_all &lt;=10" define="shoptype=$next_shop_type,patronname=$fantasy_name">
+		<ROOM id="town_shop" class="WoodRoom" condition="$__numshoptypes_all &lt;=10" define="shoptype=$next_shop_type">
 			<TITLE select="pick-1">
-				<TITLE pickweight=1>${c:patronname}`s ${c:shoptype} Shop</TITLE>
-				<TITLE pickweight=1>${c:patronname}`s ${c:shoptype} Store</TITLE>
+				<TITLE pickweight=1>${c:fantasy_name1}`s ${c:shoptype} Shop</TITLE>
+				<TITLE pickweight=1>${c:fantasy_name1}`s ${c:shoptype} Store</TITLE>
 				<TITLE pickweight=2 condition="$shoptype='weapon'">The ${c:smithywords} and ${c:weaponsmithywords}</TITLE> 
 				<TITLE pickweight=2 condition="$shoptype='armor'">The ${c:smithywords} and ${c:armorsmithywords}</TITLE> 
-				<TITLE pickweight=1 condition="$shoptype='general'">${c:patronname}`s Dry Goods</TITLE>
+				<TITLE pickweight=1 condition="$shoptype='general'">${c:fantasy_name1}`s Dry Goods</TITLE>
 			</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>This is the $adj_tidy $adj_phys_size_large $shoptype shop of $patronname.</DESCRIPTION>
-					<DESCRIPTION>This is the $adj_tidy $shoptype shop of $patronname.</DESCRIPTION>
-					<DESCRIPTION>This is the $adj_tidy $adj_phys_size_small $shoptype shop of $patronname.</DESCRIPTION>
-					<DESCRIPTION>The $shoptype shop of $patronname is $adj_tidy and $adj_phys_size_large.</DESCRIPTION>
-					<DESCRIPTION>The $shoptype shop of $patronname is $adj_phys_size_small and $adj_tidy.</DESCRIPTION>
-					<DESCRIPTION>The $shoptype shop of $patronname is $adj_tidy.</DESCRIPTION>
+					<DESCRIPTION>This is the $adj_tidy $adj_phys_size_large $shoptype shop of $fantasy_name1.</DESCRIPTION>
+					<DESCRIPTION>This is the $adj_tidy $shoptype shop of $fantasy_name1.</DESCRIPTION>
+					<DESCRIPTION>This is the $adj_tidy $adj_phys_size_small $shoptype shop of $fantasy_name1.</DESCRIPTION>
+					<DESCRIPTION>The $shoptype shop of $fantasy_name1 is $adj_tidy and $adj_phys_size_large.</DESCRIPTION>
+					<DESCRIPTION>The $shoptype shop of $fantasy_name1 is $adj_phys_size_small and $adj_tidy.</DESCRIPTION>
+					<DESCRIPTION>The $shoptype shop of $fantasy_name1 is $adj_tidy.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>${c:pshoptypes} line shelves and racks throughout the store.</DESCRIPTION>
@@ -498,7 +498,7 @@
 			</EXIT>
 			<AFFECT class="Prop_ClosedDayNight" />
 			<MOB class="GenShopKeeper" level="($level_range) * 1.05" id="shop_patron" whatisell="$wshoptype" race="$_humanoid_races" gender="$anygender" prejudice="SELL=1.0 ; BUY=2.0">
-				<NAME>$patronname</NAME>
+				<NAME>$fantasy_name1</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name is ready to serve.</DISPLAY>
 					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
@@ -694,7 +694,7 @@
 			<EXIT class="GenDoor" defclosed="false" />
 			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is in your account, `buy [itemname]` to acquire a horse, `borrow [amount]` to borrow money." />
 			<MOB class="GenShopKeeper" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" WHATISELL="PETS">
-				<NAME>Stable-Master ${c:fantasy_name}</NAME>
+				<NAME>Stable-Master ${c:fantasy_name1}</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name is here working.</DISPLAY>
 					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
@@ -770,7 +770,7 @@
 			<EXIT class="GenDoor" defclosed="false" />
 			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is in your account, `deposit [itemname]` to deposit and item or money, `withdraw [itemname]` to remove an item or money, `borrow [amount]` to borrow money." />
 			<MOB class="GenMob" level="($level_range) * 1.05" race="$_humanoid_races" gender="F">
-				<NAME>Nanny ${c:fantasy_name}</NAME>
+				<NAME>Nanny ${c:fantasy_name1}</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name is exhausted.</DISPLAY>
 					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
@@ -848,7 +848,7 @@
 			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is in your account, `deposit [itemname]` to deposit and item or money, `withdraw [itemname]` to remove an item or money, `borrow [amount]` to borrow money." />
 			<AFFECT class="Prop_ClosedDayNight" />
 			<MOB class="GenBanker" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" WHATISELL="CLAN BANKER">
-				<NAME>Bank clerk ${c:fantasy_name}</NAME>
+				<NAME>Bank clerk ${c:fantasy_name1}</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name is here to serve.</DISPLAY>
 					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
@@ -875,7 +875,7 @@
 				</ITEM>
 			</MOB>
 		</ROOM>
-		<ROOM id="town_cityhall" class="WoodRoom"  condition="$__towncityhall&lt;1 and $__numshoptypes_all &gt; 10" define="__towncityhall+=1,__townsecond+=1,judgename=$fantasy_name">
+		<ROOM id="town_cityhall" class="WoodRoom"  condition="$__towncityhall&lt;1 and $__numshoptypes_all &gt; 10" define="__towncityhall+=1,__townsecond+=1">
 			<TITLE select="any-1">
 				<TITLE>The ${c:areaname} $__cityhalltype</TITLE>
 				<TITLE>${c:areaname} $__cityhalltype</TITLE>
@@ -910,7 +910,7 @@
 			</DESCRIPTION>
 			<EXIT class="GenDoor" defclosed="false" />
 			<MOB class="GenMob" level="30+(($level_range) * 1.1)<91" race="$_humanoid_races" gender="$anygender">
-				<NAME>$__chieftype ${c:judgename}</NAME>
+				<NAME>$__chieftype ${c:fantasy_name1}</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name is ready to dispense justice.</DISPLAY>
 					<DISPLAY pickweight="1">$mob_name is calling for bids.</DISPLAY>
@@ -983,7 +983,7 @@
 			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is up for auction, `bid [amount] [itemname]` make a bid, `sell [itemname]` to put an item up for auction, or `view [itemname]` to get more information." />
 			<AFFECT class="Prop_ClosedDayNight" />
 			<MOB class="GenAuctioneer" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender">
-				<NAME>Auctioneer ${c:fantasy_name}</NAME>
+				<NAME>Auctioneer ${c:fantasy_name1}</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name is shouting out prices.</DISPLAY>
 					<DISPLAY pickweight="1">$mob_name is calling for bids.</DISPLAY>
@@ -1061,8 +1061,8 @@
 			<AFFECT class="Prop_ClosedDayNight" />
 			<MOB class="GenPostman" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" prejudice="SELL=1.0 ; BUY=2.0">
 				<NAME select="any-1">
-					<NAME>Postal clerk ${c:fantasy_name}</NAME>
-					<NAME>Postman ${c:fantasy_name}</NAME>
+					<NAME>Postal clerk ${c:fantasy_name1}</NAME>
+					<NAME>Postman ${c:fantasy_name1}</NAME>
 				</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name is moving very slowly.</DISPLAY>
@@ -1141,7 +1141,7 @@
 			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is in your account, `deposit [itemname]` to deposit and item or money, `withdraw [itemname]` to remove an item or money, `borrow [amount]` to borrow money." />
 			<AFFECT class="Prop_ClosedDayNight" />
 			<MOB class="GenBanker" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender">
-				<NAME>Bank clerk ${c:fantasy_name}</NAME>
+				<NAME>Bank clerk ${c:fantasy_name1}</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name is here to serve.</DISPLAY>
 					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
@@ -1240,9 +1240,9 @@
 			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `train [classname]` to change classes, `train [statname]` improve a stat, `gain [skillname]`  to learn a new skill, or `practice [skillname]` to improve a skill." />
 			<MOB class="GenMob" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender">
 				<NAME select="any-1">
-					<NAME>Guildmaster ${c:fantasy_name}</NAME>
-					<NAME>Master ${c:fantasy_name}</NAME>
-					<NAME>Professor ${c:fantasy_name}</NAME>
+					<NAME>Guildmaster ${c:fantasy_name1}</NAME>
+					<NAME>Master ${c:fantasy_name1}</NAME>
+					<NAME>Professor ${c:fantasy_name1}</NAME>
 				</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name is waiting to show you wisdom.</DISPLAY>
