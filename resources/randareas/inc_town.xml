@@ -33,31 +33,32 @@
 		<STRING id="town_street_desc" select="all">
 			<STRING action="PREPEND" condition="$ROOMTAG_NODEGATEEXIT != ''">You are at the entrance to $areaname. ${c:STAT:AREAGATE:AREA:NAME} is to the ${l:ROOMTAG_NODEGATEEXIT}. </STRING>
 			<STRING select="any-1" action="PREPEND">
-				<STRING>You are walking along ${l:_street_name}. </STRING>
-				<STRING>You are on ${l:_street_name}. </STRING>
-				<STRING>You are strolling through the $__citytype on ${c:_street_name}. </STRING>
-				<STRING>${C:_street_name} runs through the $__citytype. </STRING>
-				<STRING>You are making your way along ${l:_street_name}. </STRING>
+				<STRING>You are walking along ${l:_street_name}.</STRING>
+				<STRING>You are on ${l:_street_name}.</STRING>
+				<STRING>You are strolling through the $__citytype on ${c:_street_name}.</STRING>
+				<STRING>${C:_street_name} runs through the $__citytype.</STRING>
+				<STRING>You are making your way along ${l:_street_name}.</STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING>The ${l:_street_type} is dotted with things typically seen in a ${l:__citytype}.</STRING>
-				<STRING>${p:__citypersontype} go about their business here. </STRING>
-				<STRING>${c:adj_color} birds flutter over the ${l:__citytype}. </STRING>
-				<STRING>You hear the $adj_subdued chatter of ${l:p:__citypersontype} nearby. </STRING>
-				<STRING>You hear $adj_faint $adj_sound animal sounds coming from somewhere nearby. </STRING>
-				<STRING>Something or someone has left $adj_nasty droppings near the side of the ${l:_street_type}. </STRING>
-				<STRING>A bit of $adj_nasty litter has been $adj_carelessly discarded here. </STRING>
-				<STRING>It appears to be a $adj_brightwords day in $areaname. </STRING>
-				<STRING>It's a $adj_brightwords day in $areaname. </STRING>
-				<STRING>This $adj_brightwords ${l:_street_type} gives you a wonderful view of $areaname. </STRING>
-				<STRING>Homes and other $adj_cozy buildings line the ${l:_street_type}. </STRING>
-				<STRING>You hear someone singing a $adj_majestic tune nearby. </STRING>
-				<STRING>${c:adj_sparse} weeds grow in $adj_random places here. </STRING>
-				<STRING>This ${l:__citytype} feels very $adj_cozy. </STRING>
-				<STRING>The ${l:_street_type} seems very $adj_cozy. </STRING>
-				<STRING>The ${l:_street_type} seems very $adj_tidy here. </STRING>
-				<STRING>The structures around here seem $adj_roomwords. </STRING>
-				<STRING>${p:__citypersontype} walk along here as well. </STRING>
+				<STRING>${p:__citypersontype} go about their business here.</STRING>
+				<STRING>${c:adj_color} birds flutter over the ${l:__citytype}.</STRING>
+				<STRING>You hear the $adj_subdued chatter of ${l:p:__citypersontype} nearby.</STRING>
+				<STRING>You hear $adj_faint $adj_sound animal sounds coming from somewhere nearby.</STRING>
+				<STRING>Something or someone has left $adj_nasty droppings near the side of the ${l:_street_type}.</STRING>
+				<STRING>A bit of $adj_nasty litter has been $adj_carelessly discarded here.</STRING>
+				<STRING>It appears to be a $adj_brightwords day in $areaname.</STRING>
+				<STRING>It's a $adj_brightwords day in $areaname.</STRING>
+				<STRING>This $adj_brightwords ${l:_street_type} gives you a wonderful view of $areaname.</STRING>
+				<STRING>Homes and other $adj_cozy buildings line the ${l:_street_type}.</STRING>
+				<STRING>You hear someone singing a $adj_majestic tune nearby.</STRING>
+				<STRING>${c:adj_sparse} weeds grow in $adj_random places here.</STRING>
+				<STRING>This ${l:__citytype} feels very $adj_cozy.</STRING>
+				<STRING>The ${l:_street_type} seems very $adj_cozy.</STRING>
+				<STRING>The ${l:_street_type} seems very $adj_tidy here.</STRING>
+				<STRING>The structures around here seem $adj_roomwords.</STRING>
+				<STRING>${c:p:__citypersontype} walk along here as well.</STRING>
+				<STRING>${c:adj_brightwords} homes and buildings line the ${l:_street_type}.</STRING>
 				<STRING></STRING>
 				<STRING></STRING>
 				<STRING></STRING>
