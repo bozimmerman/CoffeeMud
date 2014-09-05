@@ -1388,7 +1388,7 @@ public class StdSpaceShip implements Area, SpaceShip
 
 	@Override public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 	@Override public int getSaveStatIndex(){return getStatCodes().length;}
-	private static final String[] CODES={"CLASS","CLIMATE","DESCRIPTION","TEXT","THEME","BLURBS","OMLCOEFF","RADIUS"};
+	private static final String[] CODES={"CLASS","CLIMATE","DESCRIPTION","TEXT","THEME","BLURBS","OMLCOEFF","RADIUS","AUTHOR","NAME","ATMOSPHERE"};
 	@Override public String[] getStatCodes(){return CODES;}
 	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code)
@@ -1410,6 +1410,9 @@ public class StdSpaceShip implements Area, SpaceShip
 		case 5: return ""+CMLib.xml().getXMLList(blurbFlags.toStringVector(" "));
 		case 6: return ""+getOMLCoeff();
 		case 7: return ""+radius();
+		case 8: return getAuthorID();
+		case 9: return Name();
+		case 10: return ""+getAtmosphereCode();
 		}
 		return "";
 	}
@@ -1447,6 +1450,16 @@ public class StdSpaceShip implements Area, SpaceShip
 		}
 		case 6: setOMLCoeff(CMath.s_double(val)); break;
 		case 7: setRadius(CMath.s_long(val)); break;
+		case 8: setAuthorID(val); break;
+		case 9: setName(val); break;
+		case 10: {
+			if(CMath.isMathExpression(val))
+				setAtmosphere(CMath.s_parseIntExpression(val));
+			final int matCode=RawMaterial.CODES.FIND_IgnoreCase(val);
+			if(matCode>=0)
+				setAtmosphere(matCode);
+			break;
+		}
 		}
 	}
 	@Override

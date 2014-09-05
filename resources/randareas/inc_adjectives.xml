@@ -211,7 +211,7 @@
 
 <STRING id="adj_cozy" select="any-1">
 	<STRING>snug</STRING><STRING>comfortable</STRING><STRING>warm</STRING><STRING>homelike</STRING><STRING>homey</STRING><STRING>homely</STRING><STRING>welcoming</STRING>
-	<STRING>safe</STRING><STRING>sheltered</STRING><STRING>secure</STRING><STRING>down-home</STRING><STRING>homestyle</STRING><STRING>comfy</STRING><STRING>toasty</STRING>
+	<STRING>safe</STRING><STRING>sheltered</STRING><STRING>secure</STRING><STRING>down-home</STRING><STRING>homestyle</STRING><STRING>comfy</STRING>
 </STRING>
 
 <STRING id="adj_nasty" select="any-1">
@@ -367,11 +367,27 @@
 	<STRING>tasteless</STRING>
 </STRING>
 
+<STRING id="adj_negligible" select="any-1">
+	<STRING>faint</STRING><STRING>slight</STRING><STRING>slender</STRING><STRING>slim</STRING>
+	<STRING>small</STRING><STRING>tiny</STRING><STRING>negligible</STRING><STRING>remote</STRING>
+	<STRING>vague</STRING><STRING>unlikely</STRING><STRING>improbable</STRING><STRING>minuscule</STRING>
+</STRING>
+
+<STRING id="adj_faint" select="any-1">
+	<STRING>faint</STRING><STRING>ill-defined</STRING><STRING>imperceptible</STRING><STRING>unobtrusive</STRING>
+	<STRING>indistinct</STRING><STRING>vague</STRING><STRING>unclear</STRING><STRING>indefinite</STRING>
+</STRING>
+
 <STRING id="adj_sound" select="any-1">
 	<STRING>cooing</STRING>	<STRING>deafening</STRING><STRING>faint</STRING><STRING>hissing</STRING>
 	<STRING>loud</STRING><STRING>melodic</STRING><STRING>noisy</STRING><STRING>purring</STRING>
 	<STRING>quiet</STRING><STRING>raspy</STRING><STRING>screeching</STRING><STRING>thundering</STRING>
 	<STRING>voiceless</STRING><STRING>whispering</STRING>
+</STRING>
+
+<STRING id="adj_random" select="any-1">
+	<STRING>random</STRING><STRING>arbitrary</STRING><STRING>indiscriminate</STRING><STRING>haphazard</STRING>
+	<STRING>chance</STRING><STRING>accidental</STRING>
 </STRING>
 
 <STRING id="adj_creepywords" select="any-1">
@@ -483,6 +499,13 @@
 	<STRING>handsome</STRING><STRING>lofty</STRING><STRING>modest</STRING><STRING>modular</STRING>
 	<STRING>palatial</STRING><STRING>prefabricated</STRING><STRING>rambling</STRING><STRING>secure</STRING>
 	<STRING>split-level</STRING><STRING>sprawling</STRING><STRING>unfurnished</STRING><STRING>vaulted</STRING>
+</STRING>
+
+<STRING id="adj_carelessly" select="any-1">
+	<STRING>carelessly</STRING><STRING>haphazardly</STRING><STRING>hastily</STRING><STRING>irresponsibly</STRING>
+	<STRING>negligently</STRING><STRING>nonchalantly</STRING><STRING>sloppily</STRING><STRING>incautiously</STRING>
+	<STRING>inattentively</STRING><STRING>neglectfully</STRING><STRING>offhandedly</STRING><STRING>rashly</STRING>
+	<STRING>thoughtlessly</STRING><STRING>unconcernedly</STRING><STRING>unmindfully</STRING>
 </STRING>
 
 <STRING id="adj_lush" select="any-1">
