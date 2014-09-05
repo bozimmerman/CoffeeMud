@@ -15,10 +15,14 @@
 -->
 <!--  include file with street name parts and street name builders/selectors -->
 
+<STRING id="_street_type" select="any-1" define="_street_type">
+	<STRING>road</STRING>
+	<STRING>street</STRING>
+	<STRING>lane</STRING>
+</STRING>
+
 <STRING id="_street_name" select="any-1" define="_street_name">
-	<STRING>$street_name_1 $street_name_2 Road</STRING>
-	<STRING>$street_name_1 $street_name_2 Street</STRING>
-	<STRING>$street_name_1 $street_name_2 Lane</STRING>
+	<STRING>$street_name_1 $street_name_2 ${c:_street_type}</STRING>
 </STRING>
 
 <STRING id="_square_name" select="any-1" define="_square_name">
