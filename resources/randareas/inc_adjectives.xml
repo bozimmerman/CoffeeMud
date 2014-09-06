@@ -59,6 +59,26 @@
 	<STRING>sterile</STRING>
 </STRING>
 
+<STRING id="adj_deserted" select="any-1">
+    <STRING>deserted</STRING>
+    <STRING>empty</STRING>
+    <STRING>uninhabited</STRING>
+    <STRING>unoccupied</STRING>
+    <STRING>unpeopled</STRING>
+    <STRING>abandoned</STRING>
+    <STRING>evacuated</STRING>
+    <STRING>vacant</STRING>
+    <STRING>untenanted</STRING>
+    <STRING>tenantless</STRING>
+    <STRING>neglected</STRING>
+    <STRING>desolate</STRING>
+    <STRING>lonely</STRING>
+    <STRING>godforsaken</STRING>
+    <STRING>foresaken</STRING>
+    <STRING>isolated</STRING>
+    <STRING>remote</STRING>
+</STRING>
+
 <STRING id="adj_hard_rockys" select="any-1">
 	<STRING>hard</STRING>
 	<STRING>rocky</STRING>

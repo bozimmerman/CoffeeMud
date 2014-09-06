@@ -2212,6 +2212,29 @@ public class StdRoom implements Room
 	}
 
 	@Override
+	public PhysicalAgent fetchFromRoomFavorExits(String thingName)
+	{
+		String newThingName=CMLib.lang().preItemParser(thingName);
+		if(newThingName!=null) thingName=newThingName;
+		final Item goodLocation=null;
+		PhysicalAgent found=null;
+		final int dirCode = Directions.getGoodDirectionCode(thingName);
+		if(dirCode>=0) return getRoomInDir(dirCode);
+		if(found==null) found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,true);
+		if((found==null)&&(contents.size()>0)) found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,true);
+		if(inhabitants.size()>0) found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,true);
+		if(found==null) found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,false);
+		if((found==null)&&(contents.size()>0)) found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,false);
+		if((found==null)&&(inhabitants.size()>0)) found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,false);
+		if(found==null)
+		{
+			newThingName=CMLib.lang().failedItemParser(thingName);
+			if(newThingName!=null) return fetchFromRoomFavorMOBs(goodLocation,newThingName);
+		}
+		return found;
+	}
+	
+	@Override
 	public PhysicalAgent fetchFromRoomFavorMOBs(Item goodLocation, String thingName)
 	{
 		// def was Wearable.FILTER_UNWORNONLY;

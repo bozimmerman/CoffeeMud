@@ -18,6 +18,7 @@
    *. make ship torpedo launchers and torpedo containers
    *. make ship impulse and warp engines
    *. make ship dampeners
+   *. damaged systems should sometimes require random parts, from particular manufacturers, that repair respects
    *. finish main ship software for controlling all this stuff
    *. add electronics to guides, how to make a ship, how to build space, etc, details about tech
    *. add electronics to MG

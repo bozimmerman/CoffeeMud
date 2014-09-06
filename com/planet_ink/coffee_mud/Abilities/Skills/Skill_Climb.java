@@ -55,23 +55,69 @@ public class Skill_Climb extends StdSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		final int dirCode=Directions.getDirectionCode(CMParms.combine(commands,0));
+		int dirCode=-1;
+		Physical target=givenTarget;
+		if(target==null)
+			dirCode = Directions.getGoodDirectionCode(CMParms.combine(commands,0));
 		if(dirCode<0)
+		{
+			if(target == null)
+				target=mob.location().fetchFromRoomFavorExits(CMParms.combine(commands,0));
+			if(target instanceof Exit)
+				dirCode = CMLib.map().getExitDir(mob.location(), (Exit)target);
+			if((dirCode<0)&&(target != null))
+			{
+				if(target instanceof Rideable)
+				{
+					if(target instanceof Exit) // it's a portal .. so we just assume you can climb "in" it
+					{
+						
+					}
+					else
+					if(((Rideable)target).rideBasis()!=Rideable.RIDEABLE_LADDER)
+					{
+						mob.tell(_("You can not climb '@x1'.",target.name(mob)));
+						return false;
+					}
+					else // ordinary ladder item, just convert to an UP
+					{
+						target=null;
+						dirCode=Directions.UP;
+					}
+				}
+				else
+				{
+					mob.tell(_("You can not climb '@x1'.",target.name(mob)));
+					return false;
+				}
+			}
+			else
+			{
+				target = null; // it's an ordinary exit
+			}
+		}
+		
+		if((dirCode<0)&&(!(target instanceof Rideable)))
 		{
 			mob.tell(_("Climb where?"));
 			return false;
 		}
-		if((mob.location().getRoomInDir(dirCode)==null)
-		||(mob.location().getExitInDir(dirCode)==null))
+		else
+		if((dirCode>=0)
+		&&((mob.location().getRoomInDir(dirCode)==null)
+		||(mob.location().getExitInDir(dirCode)==null)))
 		{
 			mob.tell(_("You can't climb that way."));
 			return false;
 		}
-		if(CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob))
+		
+		if(CMLib.flags().isSitting(mob) // might be more subtlelty here...riding a horse is out, but what about a ladder?
+		||CMLib.flags().isSleeping(mob))
 		{
 			mob.tell(_("You need to stand up first!"));
 			return false;
 		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -88,7 +134,11 @@ public class Skill_Climb extends StdSkill
 				mob.recoverPhyStats();
 			}
 
-			CMLib.tracking().walk(mob,dirCode,false,false);
+			if(dirCode>=0)
+				CMLib.tracking().walk(mob,dirCode,false,false);
+			else
+			if(target instanceof Rideable)
+				CMLib.commands().forceStandardCommand(mob, "Enter", new XVector<Object>("ENTER",mob.location().getContextName(target)));
 			mob.delEffect(this);
 			mob.recoverPhyStats();
 			if(!success)

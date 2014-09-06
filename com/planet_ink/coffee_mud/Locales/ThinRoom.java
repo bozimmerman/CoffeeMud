@@ -259,6 +259,7 @@ public class ThinRoom implements Room
 	@Override public List<Item> findItems(String itemID) { return new Vector(1);}
 	@Override public List<Item> findItems(Item goodLocation, String itemID) { return new Vector(1);}
 
+	@Override public PhysicalAgent fetchFromRoomFavorExits(String thingName) { return null; }
 	@Override public PhysicalAgent fetchFromRoomFavorItems(Item goodLocation, String thingName){return null;}
 	@Override public PhysicalAgent fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, Filterer<Environmental> filter){return null;}
 	@Override public PhysicalAgent fetchFromRoomFavorMOBs(Item goodLocation, String thingName){return null;}
