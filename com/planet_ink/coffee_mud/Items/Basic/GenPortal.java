@@ -37,6 +37,11 @@ public class GenPortal extends StdPortal
 {
 	@Override public String ID(){    return "GenPortal";}
 	protected String readableText="";
+	
+	protected String putString="in";
+	protected String mountString="enter(s)";
+	protected String dismountString="emerge(s) from";
+	
 	public GenPortal()
 	{
 		super();
@@ -54,6 +59,10 @@ public class GenPortal extends StdPortal
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
+	@Override public String putString(Rider R){ return putString;}
+	@Override public String mountString(int commandType, Rider R){ return mountString;}
+	@Override public String dismountString(Rider R){	return dismountString;}
+	
 	@Override
 	public String keyName()
 	{
@@ -73,7 +82,8 @@ public class GenPortal extends StdPortal
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
 	}
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD","EXITNAME","CLOSEDTEXT"};
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD","EXITNAME","CLOSEDTEXT",
+											"PUTSTR","MOUNTSTR","DISMOUNTSTR"};
 	@Override
 	public String getStat(String code)
 	{
@@ -90,6 +100,9 @@ public class GenPortal extends StdPortal
 		case 6: return ""+riderCapacity();
 		case 7: return ""+doorName();
 		case 8: return ""+closedText();
+		case 9: return putString;
+		case 10: return mountString;
+		case 11: return dismountString;
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -111,6 +124,9 @@ public class GenPortal extends StdPortal
 		case 6: break;
 		case 7: setExitParams(val,closeWord(),openWord(),closedText()); break;
 		case 8: setExitParams(doorName(),closeWord(),openWord(),val); break;
+		case 9: putString=val; break;
+		case 10: mountString=val; break;
+		case 11: dismountString=val; break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

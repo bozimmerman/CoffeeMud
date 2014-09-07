@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.coffee_mud.WebMacros.grinder.GrinderItems.ItemDataField;
 
 import java.util.*;
 
@@ -38,31 +39,6 @@ import java.util.*;
 public class ItemData extends StdWebMacro
 {
 	@Override public String name() { return "ItemData"; }
-
-	private static final String[] okparms={
-	  "NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
-	  "LEVEL","ABILITY","REJUV","MISCTEXT",
-	  "MATERIALS","ISGENERIC","ISFOOD","NOURISHMENT",
-	  "ISDRINK","LIQUIDHELD","QUENCHED","ISCONTAINER",
-	  "CAPACITY","ISARMOR","ARMOR","WORNDATA",
-	  "HEIGHT","ISWEAPON","WEAPONTYPE","WEAPONCLASS",
-	  "ATTACK","DAMAGE","MINRANGE","MAXRANGE",
-	  "SECRETIDENTITY","ISGETTABLE","ISREMOVABLE","ISDROPPABLE",
-	  "ISTWOHANDED","ISTRAPPED","READABLESPELLS","ISWAND",
-	  "USESREMAIN","VALUE","WEIGHT","ISMAP",
-	  "MAPAREAS","ISREADABLE","ISPILL","ISSUPERPILL",
-	  "ISPOTION","LIQUIDTYPES","AMMOTYPE","AMMOCAP",
-	  "READABLESPELL","ISRIDEABLE","RIDEABLETYPE","MOBSHELD",
-	  "HASALID","HASALOCK","KEYCODE","ISWALLPAPER",
-	  "READABLETEXT","CONTAINER","ISLIGHTSOURCE","DURATION",
-	  "ISUNTWOHANDED","ISCOIN","ISSCROLL","BEINGWORN","NONLOCATABLE",
-	  "ISKEY", "CONTENTTYPES","ISINSTRUMENT","INSTRUMENTTYPE",
-	  "ISAMMO","ISMOBITEM","ISDUST","ISPERFUME","SMELLS",
-	  "IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT","NUMCOINS",
-	  "CURRENCY","DENOM","ISRECIPE","RECIPESKILL","RECIPEDATA",
-	  "LAYER","SEETHRU","MULTIWEAR","ISCATALOGED","CATARATE",
-	  "CATALIVE","CATAMASK","BITE","MAXUSES","ISELECTRONIC",
-	  "CATACAT"};
 
 	public ItemData()
 	{
@@ -305,699 +281,721 @@ public class ItemData extends StdWebMacro
 		if(I!=null)
 		{
 			final StringBuffer str=new StringBuffer("");
-			for(int o=0;o<okparms.length;o++)
-			if(parms.containsKey(okparms[o]))
+			for(final ItemDataField o : ItemDataField.values())
 			{
-				String old=httpReq.getUrlParameter(okparms[o]);
-				if(old==null) old="";
-				switch(o)
+				String parmName=o.name();
+				if(parmName.startsWith("_"))
+					parmName=parmName.substring(1);
+				if(parms.containsKey(parmName))
 				{
-				case 0: // name
-					if(firstTime)
+					String old=httpReq.getUrlParameter(parmName);
+					if(old==null) old="";
+					switch(o)
 					{
-						if((itemCode.equalsIgnoreCase("NEW")||itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
-						&&(httpReq.isUrlParameter("NEWITEMNAME")))
-							old=httpReq.getUrlParameter("NEWITEMNAME");
-						else
-							old=I.Name();
-					}
-					str.append(old);
-					break;
-				case 1: // classes
-					{
-						if(firstTime) old=CMClass.classID(I);
-						Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-ITEMS2:"+parms.containsKey("GENERICONLY"));
-						if(sorted==null)
+					case NAME: // name
+						if(firstTime)
 						{
-							final Vector sortMe=new Vector();
-							CMClass.addAllItemClassNames(sortMe,true,false,parms.containsKey("GENERICONLY"));
-							sorted=(new TreeSet(sortMe)).toArray();
-							Resources.submitResource("MUDGRINDER-ITEMS2:"+parms.containsKey("GENERICONLY"),sorted);
+							if((itemCode.equalsIgnoreCase("NEW")||itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
+							&&(httpReq.isUrlParameter("NEWITEMNAME")))
+								old=httpReq.getUrlParameter("NEWITEMNAME");
+							else
+								old=I.Name();
 						}
-						if(parms.containsKey("CLASSESID"))
-							str.append(old);
-						else
-							for (final Object element : sorted)
+						str.append(old);
+						break;
+					case CLASSES: // classes
+						{
+							if(firstTime) old=CMClass.classID(I);
+							Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-ITEMS2:"+parms.containsKey("GENERICONLY"));
+							if(sorted==null)
 							{
-								final String cnam=(String)element;
+								final Vector sortMe=new Vector();
+								CMClass.addAllItemClassNames(sortMe,true,false,parms.containsKey("GENERICONLY"));
+								sorted=(new TreeSet(sortMe)).toArray();
+								Resources.submitResource("MUDGRINDER-ITEMS2:"+parms.containsKey("GENERICONLY"),sorted);
+							}
+							if(parms.containsKey("CLASSESID"))
+								str.append(old);
+							else
+								for (final Object element : sorted)
+								{
+									final String cnam=(String)element;
+									str.append("<OPTION VALUE=\""+cnam+"\"");
+									if(old.equals(cnam))
+										str.append(" SELECTED");
+									str.append(">"+cnam);
+								}
+						}
+						break;
+					case DISPLAYTEXT: // displaytext
+						if(firstTime) old=I.displayText();
+						str.append(old);
+						break;
+					case DESCRIPTION: // description
+						if(firstTime) old=I.description();
+						str.append(old);
+						break;
+					case _LEVEL: // level
+						if(firstTime) old=""+I.basePhyStats().level();
+						str.append(old);
+						break;
+					case _ABILITY: // ability;
+						if(firstTime) old=""+I.basePhyStats().ability();
+						str.append(old);
+						break;
+					case _REJUV: // rejuv;
+						if(firstTime) old=""+I.basePhyStats().rejuv();
+						if(old.equals(""+Integer.MAX_VALUE))
+							str.append("0");
+						else
+							str.append(old);
+						break;
+					case _MISCTEXT: // misctext
+						if(firstTime) old=I.text();
+						str.append(old);
+						break;
+					case MATERIALS: // materials
+						if(firstTime) old=""+I.material();
+						for(final int r : RawMaterial.CODES.ALL_SBN())
+						{
+							str.append("<OPTION VALUE=\""+r+"\"");
+							if(r==CMath.s_int(old))
+								str.append(" SELECTED");
+							str.append(">"+RawMaterial.CODES.NAME(r));
+						}
+						break;
+					case ISGENERIC: // is generic
+						if(I.isGeneric())
+							return "true";
+						return "false";
+					case ISFOOD: // is food
+						if(I instanceof Food) return "true";
+						return "false";
+					case NOURISHMENT: // nourishment
+						if((firstTime)&&(I instanceof Food))
+							old=""+((Food)I).nourishment();
+						str.append(old);
+						break;
+					case ISDRINK: // is drink
+						if(I instanceof Drink) return "true";
+						return "false";
+					case LIQUIDHELD: // liquid held
+						if((firstTime)&&(I instanceof Drink))
+							old=""+((Drink)I).liquidHeld();
+						str.append(old);
+						break;
+					case QUENCHED: // quenched
+						if((firstTime)&&(I instanceof Drink))
+							old=""+((Drink)I).thirstQuenched();
+						str.append(old);
+						break;
+					case ISCONTAINER: // is container
+						if(I instanceof Container) return "true";
+						return "false";
+					case CAPACITY: // capacity
+						if((firstTime)&&(I instanceof Container))
+							old=""+((Container)I).capacity();
+						str.append(old);
+						break;
+					case ISARMOR: // is armor
+						if(I instanceof Armor) return "true";
+						return "false";
+					case ARMOR: // armor
+						if(firstTime) old=""+I.basePhyStats().armor();
+						str.append(old);
+						break;
+					case WORNDATA: // worn data
+						{
+						long climate=I.rawProperLocationBitmap();
+						if(httpReq.isUrlParameter("WORNDATA"))
+						{
+							climate=CMath.s_int(httpReq.getUrlParameter("WORNDATA"));
+							for(int i=1;;i++)
+								if(httpReq.isUrlParameter("WORNDATA"+(Integer.toString(i))))
+									climate=climate|CMath.s_int(httpReq.getUrlParameter("WORNDATA"+(Integer.toString(i))));
+								else
+									break;
+						}
+						final Wearable.CODES codes = Wearable.CODES.instance();
+						for(int i=1;i<codes.total();i++)
+						{
+							final String climstr=codes.name(i);
+							final long mask=codes.get(i);
+							str.append("<OPTION VALUE="+mask);
+							if((climate&mask)>0) str.append(" SELECTED");
+							str.append(">"+climstr);
+						}
+						}
+						break;
+					case _HEIGHT: // height
+						if(firstTime) old=""+I.basePhyStats().height();
+						str.append(old);
+						break;
+					case ISWEAPON: // is weapon
+						if(I instanceof Weapon) return "true";
+						return "false";
+					case WEAPONTYPE: // weapon type
+						if((firstTime)&&(I instanceof Weapon))
+							old=""+((Weapon)I).weaponType();
+						for(int r=0;r<Weapon.TYPE_DESCS.length;r++)
+						{
+							str.append("<OPTION VALUE=\""+r+"\"");
+							if(r==CMath.s_int(old))
+								str.append(" SELECTED");
+							str.append(">"+Weapon.TYPE_DESCS[r]);
+						}
+						break;
+					case WEAPONCLASS: // weapon class
+						if((firstTime)&&(I instanceof Weapon))
+							old=""+((Weapon)I).weaponClassification();
+						for(int r=0;r<Weapon.CLASS_DESCS.length;r++)
+						{
+							str.append("<OPTION VALUE=\""+r+"\"");
+							if(r==CMath.s_int(old))
+								str.append(" SELECTED");
+							str.append(">"+Weapon.CLASS_DESCS[r]);
+						}
+						break;
+					case ATTACK: // attack
+						if(firstTime) old=""+I.basePhyStats().attackAdjustment();
+						str.append(old);
+						break;
+					case DAMAGE: // damage
+						if(firstTime) old=""+I.basePhyStats().damage();
+						str.append(old);
+						break;
+					case MINRANGE: // min range
+						if(firstTime) old=""+I.minRange();
+						str.append(old);
+						break;
+					case MAXRANGE: // max range
+						if(firstTime) old=""+I.maxRange();
+						str.append(old);
+						break;
+					case SECRETIDENTITY: // secret identity
+						if(firstTime) old=I.rawSecretIdentity();
+						str.append(old);
+						break;
+					case ISGETTABLE: // is gettable
+						if(firstTime)
+							old=(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOTGET))?"checked":"";
+						else
+						if(old.equals("on"))
+							old="checked";
+						str.append(old);
+						break;
+					case ISREMOVABLE: // is removable
+						if(firstTime)
+							old=(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOREMOVE))?"checked":"";
+						else
+						if(old.equals("on"))
+							old="checked";
+						str.append(old);
+						break;
+					case ISDROPPABLE: // is droppable
+						if(firstTime)
+							old=(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNODROP))?"checked":"";
+						else
+						if(old.equals("on"))
+							old="checked";
+						str.append(old);
+						break;
+					case ISUNTWOHANDED: // is untwo handed
+						if(firstTime)
+							old=I.rawLogicalAnd()?"checked":"";
+						else
+						if(old.equals("on"))
+							old="checked";
+						str.append(old);
+						break;
+					case ISTRAPPED: // is trapped
+						break;
+					case READABLESPELLS: // readable spells
+						if(I instanceof SpellHolder)
+							str.append(readableSpells((SpellHolder)I,httpReq,parms,1));
+						break;
+					case ISWAND: // is wand
+						if(I instanceof Wand) return "true";
+						return "false";
+					case USESREMAIN: // uses
+						if(firstTime) old=""+I.usesRemaining();
+						str.append(old);
+						break;
+					case VALUE: // value
+						if(firstTime) old=""+I.baseGoldValue();
+						str.append(old);
+						break;
+					case WEIGHT: // weight
+						if(firstTime) old=""+I.basePhyStats().weight();
+						str.append(old);
+						break;
+					case ISMAP: // is map
+						if(I instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap) return "true";
+						return "false";
+					case MAPAREAS: // map areas
+						{
+						String mask=";"+I.readableText();
+						if(httpReq.isUrlParameter("MAPAREAS"))
+						{
+							mask=";"+httpReq.getUrlParameter("MAPAREAS");
+							for(int i=1;;i++)
+								if(httpReq.isUrlParameter("MAPAREAS"+(Integer.toString(i))))
+									mask+=";"+httpReq.getUrlParameter("MAPAREAS"+(Integer.toString(i)));
+								else
+									break;
+						}
+						mask=mask.toUpperCase()+";";
+						for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+						{
+							final Area A2=(Area)a.nextElement();
+							if(!(A2 instanceof SpaceObject))
+							{
+								str.append("<OPTION VALUE=\""+A2.Name()+"\"");
+								if(mask.indexOf(";"+A2.Name().toUpperCase()+";")>=0) str.append(" SELECTED");
+								str.append(">"+A2.name());
+							}
+						}
+						}
+						break;
+					case ISREADABLE: // is readable
+						if(firstTime)
+							old=(CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMREADABLE))?"checked":"";
+						else
+						if(old.equals("on"))
+							old="checked";
+						str.append(old);
+						break;
+					case ISPILL: // is pill
+						if(I instanceof Pill) return "true";
+						return "false";
+					case ISSUPERPILL: // is super pill
+						if((I instanceof Pill)&&(CMClass.classID(I).indexOf("SuperPill")>0)) return "true";
+						return "false";
+					case ISPOTION: // is potion
+						if(I instanceof Potion) return "true";
+						return "false";
+					case LIQUIDTYPES: // liquid types
+						if((firstTime)&&(I instanceof Drink))
+							old=""+((Drink)I).liquidType();
+						final List<Integer> liquids=RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_LIQUID);
+						for(final Integer liquid : liquids)
+						{
+							str.append("<OPTION VALUE=\""+liquid.intValue()+"\"");
+							if(liquid.intValue()==CMath.s_int(old))
+								str.append(" SELECTED");
+							str.append(">"+RawMaterial.CODES.NAME(liquid.intValue()));
+						}
+						break;
+					case AMMOTYPE: // ammo types
+						if(firstTime)
+						{
+							if(I instanceof Ammunition)
+								old=""+((Ammunition)I).ammunitionType();
+							else
+							if(I instanceof AmmunitionWeapon)
+								old=""+((AmmunitionWeapon)I).ammunitionType();
+						}
+						str.append(old);
+						break;
+					case AMMOCAP: // ammo capacity
+						if((firstTime)&&(I instanceof AmmunitionWeapon))
+							old=""+((AmmunitionWeapon)I).ammunitionCapacity();
+						str.append(old);
+						break;
+					case READABLESPELL: // readable spell
+						{
+							if((firstTime)&&(I instanceof Wand))
+								old=""+((((Wand)I).getSpell()!=null)?((Wand)I).getSpell().ID():"");
+							for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+							{
+								final String cnam=a.nextElement().ID();
 								str.append("<OPTION VALUE=\""+cnam+"\"");
 								if(old.equals(cnam))
 									str.append(" SELECTED");
 								str.append(">"+cnam);
 							}
-					}
-					break;
-				case 2: // displaytext
-					if(firstTime) old=I.displayText();
-					str.append(old);
-					break;
-				case 3: // description
-					if(firstTime) old=I.description();
-					str.append(old);
-					break;
-				case 4: // level
-					if(firstTime) old=""+I.basePhyStats().level();
-					str.append(old);
-					break;
-				case 5: // ability;
-					if(firstTime) old=""+I.basePhyStats().ability();
-					str.append(old);
-					break;
-				case 6: // rejuv;
-					if(firstTime) old=""+I.basePhyStats().rejuv();
-					if(old.equals(""+Integer.MAX_VALUE))
-						str.append("0");
-					else
+						}
+						break;
+					case ISRIDEABLE: // is rideable
+						if(I instanceof Rideable) return "true";
+						return "false";
+					case RIDEABLETYPE: // rideable type
+						if((firstTime)&&(I instanceof Rideable))
+							old=""+((Rideable)I).rideBasis();
+						for(int r=0;r<Rideable.RIDEABLE_DESCS.length;r++)
+						{
+							str.append("<OPTION VALUE=\""+r+"\"");
+							if(r==CMath.s_int(old))
+								str.append(" SELECTED");
+							str.append(">"+Rideable.RIDEABLE_DESCS[r]);
+						}
+						break;
+					case MOBSHELD: // mobsheld rideable capacity
+						if((firstTime)&&(I instanceof Rideable))
+							old=""+((Rideable)I).riderCapacity();
 						str.append(old);
-					break;
-				case 7: // misctext
-					if(firstTime) old=I.text();
-					str.append(old);
-					break;
-				case 8: // materials
-					if(firstTime) old=""+I.material();
-					for(final int r : RawMaterial.CODES.ALL_SBN())
-					{
-						str.append("<OPTION VALUE=\""+r+"\"");
-						if(r==CMath.s_int(old))
-							str.append(" SELECTED");
-						str.append(">"+RawMaterial.CODES.NAME(r));
-					}
-					break;
-				case 9: // is generic
-					if(I.isGeneric())
-						return "true";
-					return "false";
-				case 10: // is food
-					if(I instanceof Food) return "true";
-					return "false";
-				case 11: // nourishment
-					if((firstTime)&&(I instanceof Food))
-						old=""+((Food)I).nourishment();
-					str.append(old);
-					break;
-				case 12: // is drink
-					if(I instanceof Drink) return "true";
-					return "false";
-				case 13: // liquid held
-					if((firstTime)&&(I instanceof Drink))
-						old=""+((Drink)I).liquidHeld();
-					str.append(old);
-					break;
-				case 14: // quenched
-					if((firstTime)&&(I instanceof Drink))
-						old=""+((Drink)I).thirstQuenched();
-					str.append(old);
-					break;
-				case 15: // is container
-					if(I instanceof Container) return "true";
-					return "false";
-				case 16: // capacity
-					if((firstTime)&&(I instanceof Container))
-						old=""+((Container)I).capacity();
-					str.append(old);
-					break;
-				case 17: // is armor
-					if(I instanceof Armor) return "true";
-					return "false";
-				case 18: // armor
-					if(firstTime) old=""+I.basePhyStats().armor();
-					str.append(old);
-					break;
-				case 19: // worn data
-					{
-					long climate=I.rawProperLocationBitmap();
-					if(httpReq.isUrlParameter("WORNDATA"))
-					{
-						climate=CMath.s_int(httpReq.getUrlParameter("WORNDATA"));
-						for(int i=1;;i++)
-							if(httpReq.isUrlParameter("WORNDATA"+(Integer.toString(i))))
-								climate=climate|CMath.s_int(httpReq.getUrlParameter("WORNDATA"+(Integer.toString(i))));
-							else
-								break;
-					}
-					final Wearable.CODES codes = Wearable.CODES.instance();
-					for(int i=1;i<codes.total();i++)
-					{
-						final String climstr=codes.name(i);
-						final long mask=codes.get(i);
-						str.append("<OPTION VALUE="+mask);
-						if((climate&mask)>0) str.append(" SELECTED");
-						str.append(">"+climstr);
-					}
-					}
-					break;
-				case 20: // height
-					if(firstTime) old=""+I.basePhyStats().height();
-					str.append(old);
-					break;
-				case 21: // is weapon
-					if(I instanceof Weapon) return "true";
-					return "false";
-				case 22: // weapon type
-					if((firstTime)&&(I instanceof Weapon))
-						old=""+((Weapon)I).weaponType();
-					for(int r=0;r<Weapon.TYPE_DESCS.length;r++)
-					{
-						str.append("<OPTION VALUE=\""+r+"\"");
-						if(r==CMath.s_int(old))
-							str.append(" SELECTED");
-						str.append(">"+Weapon.TYPE_DESCS[r]);
-					}
-					break;
-				case 23: // weapon class
-					if((firstTime)&&(I instanceof Weapon))
-						old=""+((Weapon)I).weaponClassification();
-					for(int r=0;r<Weapon.CLASS_DESCS.length;r++)
-					{
-						str.append("<OPTION VALUE=\""+r+"\"");
-						if(r==CMath.s_int(old))
-							str.append(" SELECTED");
-						str.append(">"+Weapon.CLASS_DESCS[r]);
-					}
-					break;
-				case 24: // attack
-					if(firstTime) old=""+I.basePhyStats().attackAdjustment();
-					str.append(old);
-					break;
-				case 25: // damage
-					if(firstTime) old=""+I.basePhyStats().damage();
-					str.append(old);
-					break;
-				case 26: // min range
-					if(firstTime) old=""+I.minRange();
-					str.append(old);
-					break;
-				case 27: // max range
-					if(firstTime) old=""+I.maxRange();
-					str.append(old);
-					break;
-				case 28: // secret identity
-					if(firstTime) old=I.rawSecretIdentity();
-					str.append(old);
-					break;
-				case 29: // is gettable
-					if(firstTime)
-						old=(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOTGET))?"checked":"";
-					else
-					if(old.equals("on"))
-						old="checked";
-					str.append(old);
-					break;
-				case 30: // is removable
-					if(firstTime)
-						old=(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOREMOVE))?"checked":"";
-					else
-					if(old.equals("on"))
-						old="checked";
-					str.append(old);
-					break;
-				case 31: // is droppable
-					if(firstTime)
-						old=(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNODROP))?"checked":"";
-					else
-					if(old.equals("on"))
-						old="checked";
-					str.append(old);
-					break;
-				case 32: // is two handed
-					if(firstTime)
-						old=I.rawLogicalAnd()?"checked":"";
-					else
-					if(old.equals("on"))
-						old="checked";
-					str.append(old);
-					break;
-				case 33: // is trapped
-					break;
-				case 34: // readable spells
-					if(I instanceof SpellHolder)
-						str.append(readableSpells((SpellHolder)I,httpReq,parms,1));
-					break;
-				case 35: // is wand
-					if(I instanceof Wand) return "true";
-					return "false";
-				case 36: // uses
-					if(firstTime) old=""+I.usesRemaining();
-					str.append(old);
-					break;
-				case 37: // value
-					if(firstTime) old=""+I.baseGoldValue();
-					str.append(old);
-					break;
-				case 38: // weight
-					if(firstTime) old=""+I.basePhyStats().weight();
-					str.append(old);
-					break;
-				case 39: // is map
-					if(I instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap) return "true";
-					return "false";
-				case 40: // map areas
-					{
-					String mask=";"+I.readableText();
-					if(httpReq.isUrlParameter("MAPAREAS"))
-					{
-						mask=";"+httpReq.getUrlParameter("MAPAREAS");
-						for(int i=1;;i++)
-							if(httpReq.isUrlParameter("MAPAREAS"+(Integer.toString(i))))
-								mask+=";"+httpReq.getUrlParameter("MAPAREAS"+(Integer.toString(i)));
-							else
-								break;
-					}
-					mask=mask.toUpperCase()+";";
-					for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
-					{
-						final Area A2=(Area)a.nextElement();
-						if(!(A2 instanceof SpaceObject))
-						{
-							str.append("<OPTION VALUE=\""+A2.Name()+"\"");
-							if(mask.indexOf(";"+A2.Name().toUpperCase()+";")>=0) str.append(" SELECTED");
-							str.append(">"+A2.name());
-						}
-					}
-					}
-					break;
-				case 41: // is readable
-					if(firstTime)
-						old=(CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMREADABLE))?"checked":"";
-					else
-					if(old.equals("on"))
-						old="checked";
-					str.append(old);
-					break;
-				case 42: // is pill
-					if(I instanceof Pill) return "true";
-					return "false";
-				case 43: // is super pill
-					if((I instanceof Pill)&&(CMClass.classID(I).indexOf("SuperPill")>0)) return "true";
-					return "false";
-				case 44: // is potion
-					if(I instanceof Potion) return "true";
-					return "false";
-				case 45: // liquid types
-					if((firstTime)&&(I instanceof Drink))
-						old=""+((Drink)I).liquidType();
-					final List<Integer> liquids=RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_LIQUID);
-					for(final Integer liquid : liquids)
-					{
-						str.append("<OPTION VALUE=\""+liquid.intValue()+"\"");
-						if(liquid.intValue()==CMath.s_int(old))
-							str.append(" SELECTED");
-						str.append(">"+RawMaterial.CODES.NAME(liquid.intValue()));
-					}
-					break;
-				case 46: // ammo types
-					if(firstTime)
-					{
-						if(I instanceof Ammunition)
-							old=""+((Ammunition)I).ammunitionType();
+						break;
+					case HASALID: // has a lid
+						if((firstTime)&&(I instanceof Container))
+							old=((Container)I).hasALid()?"checked":"";
 						else
-						if(I instanceof AmmunitionWeapon)
-							old=""+((AmmunitionWeapon)I).ammunitionType();
-					}
-					str.append(old);
-					break;
-				case 47: // ammo capacity
-					if((firstTime)&&(I instanceof AmmunitionWeapon))
-						old=""+((AmmunitionWeapon)I).ammunitionCapacity();
-					str.append(old);
-					break;
-				case 48: // readable spell
-					{
-						if((firstTime)&&(I instanceof Wand))
-							old=""+((((Wand)I).getSpell()!=null)?((Wand)I).getSpell().ID():"");
-						for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
-						{
-							final String cnam=a.nextElement().ID();
-							str.append("<OPTION VALUE=\""+cnam+"\"");
-							if(old.equals(cnam))
-								str.append(" SELECTED");
-							str.append(">"+cnam);
-						}
-					}
-					break;
-				case 49: // is rideable
-					if(I instanceof Rideable) return "true";
-					return "false";
-				case 50: // rideable type
-					if((firstTime)&&(I instanceof Rideable))
-						old=""+((Rideable)I).rideBasis();
-					for(int r=0;r<Rideable.RIDEABLE_DESCS.length;r++)
-					{
-						str.append("<OPTION VALUE=\""+r+"\"");
-						if(r==CMath.s_int(old))
-							str.append(" SELECTED");
-						str.append(">"+Rideable.RIDEABLE_DESCS[r]);
-					}
-					break;
-				case 51: // rideable capacity
-					if((firstTime)&&(I instanceof Rideable))
-						old=""+((Rideable)I).riderCapacity();
-					str.append(old);
-					break;
-				case 52: // has a lid
-					if((firstTime)&&(I instanceof Container))
-						old=((Container)I).hasALid()?"checked":"";
-					else
-					if(old.equals("on"))
-						old="checked";
-					str.append(old);
-					break;
-				case 53: // has a lock
-					if((firstTime)&&(I instanceof Container))
-						old=((Container)I).hasALock()?"checked":"";
-					else
-					if(old.equals("on"))
-						old="checked";
-					str.append(old);
-					break;
-				case 54: // key code
-					if((firstTime)&&(I instanceof Container))
-						old=""+((Container)I).keyName();
-					str.append(old);
-					break;
-				case 55: // is wallpaper
-					if(CMClass.classID(I).indexOf("Wallpaper")>=0)
-						return "true";
-					return "false";
-				case 56: // readabletext
-					if(firstTime) old=""+I.readableText();
-					str.append(old);
-					break;
-				case 57:
-					// pushed back to room/mob, where it belongs
-					//str.append(container(R,M,oldI,I,old,firstTime));
-					break;
-				case 58: // is light
-					if(I instanceof Light) return "true";
-					return "false";
-				case 59:
-					if((firstTime)&&(I instanceof Light))
-						old=""+((Light)I).getDuration();
-					str.append(old);
-					break;
-				case 60: // is two handed
-					if(firstTime)
-						old=I.rawLogicalAnd()?"":"checked";
-					else
-					{
-						old=httpReq.getUrlParameter("ISTWOHANDED");
-						if(old==null) old="";
-						if(old.equals(""))
+						if(old.equals("on"))
 							old="checked";
-					}
-					str.append(old);
-					break;
-				case 61:
-					if(I instanceof Coins) return "true";
-					return "false";
-				case 62:
-					if(I instanceof Scroll) return "true";
-					return "false";
-				case 63: // being worn -- pushed back to mob/room
-					if(firstTime)
-						old=I.amWearingAt(Wearable.IN_INVENTORY)?"":"checked";
-					else
-					if(old.equals("on"))
-						old="checked";
-					str.append(old);
-					break;
-				case 64: // non-locatable
-					if(firstTime)
-						old=CMLib.flags().canBeLocated(I)?"":"checked";
-					else
-					if(old.equals("on"))
-						old="checked";
-					str.append(old);
-					break;
-				case 65: // is key
-					if(I instanceof DoorKey) return "true";
-					return "false";
-				case 66: // content types
-					if(I instanceof Container)
-					{
-						long contains=((Container)I).containTypes();
-						if(httpReq.isUrlParameter("CONTENTTYPES"))
-						{
-							contains=CMath.s_long(httpReq.getUrlParameter("CONTENTTYPES"));
-							if(contains>0)
-							for(int i=1;;i++)
-								if(httpReq.isUrlParameter("CONTENTTYPES"+(Integer.toString(i))))
-									contains=contains|CMath.s_int(httpReq.getUrlParameter("CONTENTTYPES"+(Integer.toString(i))));
-								else
-									break;
-						}
-						str.append("<OPTION VALUE=0");
-						if(contains==0) str.append(" SELECTED");
-						str.append(">"+Container.CONTAIN_DESCS[0]);
-						for(int i=1;i<Container.CONTAIN_DESCS.length;i++)
-						{
-							final String constr=Container.CONTAIN_DESCS[i];
-							final int mask=(int)CMath.pow(2,i-1);
-							str.append("<OPTION VALUE="+mask);
-							if((contains&mask)>0) str.append(" SELECTED");
-							str.append(">"+constr);
-						}
-					}
-					break;
-				case 67: // is instrument
-					if(I instanceof MusicalInstrument) return "true";
-					return "false";
-				case 68: // instrument types
-					if((firstTime)&&(I instanceof MusicalInstrument))
-						old=""+((MusicalInstrument)I).instrumentType();
-					for(int r=0;r<MusicalInstrument.TYPE_DESC.length;r++)
-					{
-						str.append("<OPTION VALUE=\""+r+"\"");
-						if(r==CMath.s_int(old))
-							str.append(" SELECTED");
-						str.append(">"+MusicalInstrument.TYPE_DESC[r]);
-					}
-					break;
-				case 69: // is ammunition
-					if(I instanceof Ammunition) return "true";
-					return "false";
-				case 70: // is mob item
-					if(M!=null) return "true";
-					return "false";
-				case 71: // is dust
-					if(I instanceof MagicDust) return "true";
-					return "false";
-				case 72: // is perfume
-					if(I instanceof Perfume) return "true";
-					return "false";
-				case 73: // smells
-					if((firstTime)&&(I instanceof Perfume))
-						old=""+((Perfume)I).getSmellList();
-					str.append(old);
-					break;
-				case 74: // image
-					if(firstTime)
-						old=I.rawImage();
-					str.append(old);
-					break;
-				case 75: // is exit
-					if(I instanceof Exit) return "true";
-					return "false";
-				case 76: // exit name
-					if((firstTime)&&(I instanceof Exit))
-						old=""+((Exit)I).doorName();
-					str.append(old);
-					break;
-				case 77: // exit closed text
-					if((firstTime)&&(I instanceof Exit))
-						old=""+((Exit)I).closedText();
-					str.append(old);
-					break;
-				case 78: // numcoins
-					if((firstTime)&&(I instanceof Coins))
-						old=""+((Coins)I).getNumberOfCoins();
-					str.append(old);
-					break;
-				case 79: // currency
-				{
-					if((firstTime)&&(I instanceof Coins))
-						old=""+((Coins)I).getCurrency();
-					final List<String> cs=CMLib.beanCounter().getAllCurrencies();
-					str.append("<OPTION VALUE=\"\"");
-					if(old.length()==0)
-						str.append(" SELECTED");
-					str.append(_(">Default currency"));
-					for(int i=0;i<cs.size();i++)
-					{
-						if(cs.get(i).length()>0)
-						{
-							str.append("<OPTION VALUE=\""+(cs.get(i))+"\"");
-							if(cs.get(i).equalsIgnoreCase(old))
-								str.append(" SELECTED");
-							str.append(">"+(cs.get(i)));
-						}
-					}
-					break;
-				}
-				case 80: // denomination
-				{
-					String currency=(I instanceof Coins)?currency=((Coins)I).getCurrency():"";
-					if((firstTime)&&(I instanceof Coins))
-						old=""+((Coins)I).getDenomination();
-					final MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(currency);
-					for (final MoneyDenomination element : DV)
-					{
-						str.append("<OPTION VALUE=\""+element.value+"\"");
-						if(element.value==CMath.s_double(old))
-							str.append(" SELECTED");
-						str.append(">"+element.name);
-					}
-					break;
-				}
-				case 81: // isrecipe
-					if(I instanceof Recipe) return "true";
-					return "false";
-				case 82: // recipeskill
-				{
-					Ability A=null;
-					if((firstTime)&&(I instanceof Recipe))
-						old=""+((Recipe)I).getCommonSkillID();
-					for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
-					{
-					 	A=e.nextElement();
-					 	if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
-					 	&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL))
-					 	{
-						 	str.append("<OPTION VALUE=\""+A.ID()+"\"");
-						 	if(A.ID().equalsIgnoreCase(old))
-						 		str.append(" SELECTED");
-						 	str.append(">"+A.name());
-					 	}
-					}
-					break;
-				}
-				case 83: // recipedata
-					if(I instanceof Recipe)
-					{
-						String prefix=parms.get("RECIPEPREFIX");
-						if(prefix==null) prefix="";
-						String postfix=parms.get("RECIPEPOSTFIX");
-						if(postfix==null) postfix="";
-						final String fieldName=parms.get("RECIPEFIELDNAME");
-						if(fieldName==null)
-							str.append("!!ERROR!!");
+						str.append(old);
+						break;
+					case HASALOCK: // has a lock
+						if((firstTime)&&(I instanceof Container))
+							old=((Container)I).hasALock()?"checked":"";
+						else
+						if(old.equals("on"))
+							old="checked";
+						str.append(old);
+						break;
+					case KEYCODE: // key code
+						if((firstTime)&&(I instanceof Container))
+							old=""+((Container)I).keyName();
+						str.append(old);
+						break;
+					case ISWALLPAPER: // is wallpaper
+						if(CMClass.classID(I).indexOf("Wallpaper")>=0)
+							return "true";
+						return "false";
+					case READABLETEXT: // readabletext
+						if(firstTime) old=""+I.readableText();
+						str.append(old);
+						break;
+					case CONTAINER:
+						// pushed back to room/mob, where it belongs
+						//str.append(container(R,M,oldI,I,old,firstTime));
+						break;
+					case ISLIGHTSOURCE: // is light
+						if(I instanceof Light) return "true";
+						return "false";
+					case DURATION:
+						if((firstTime)&&(I instanceof Light))
+							old=""+((Light)I).getDuration();
+						str.append(old);
+						break;
+					case ISTWOHANDED: // is two handed
+						if(firstTime)
+							old=I.rawLogicalAnd()?"":"checked";
 						else
 						{
-							String thisFieldName=CMStrings.replaceAll(fieldName,"###","0");
-							final List<String> allData=new LinkedList<String>();
-							int x=0;
-							if(httpReq.isUrlParameter(thisFieldName))
+							old=httpReq.getUrlParameter("ISTWOHANDED");
+							if(old==null) old="";
+							if(old.equals(""))
+								old="checked";
+						}
+						str.append(old);
+						break;
+					case ISCOIN:
+						if(I instanceof Coins) return "true";
+						return "false";
+					case ISSCROLL:
+						if(I instanceof Scroll) return "true";
+						return "false";
+					case BEINGWORN: // being worn -- pushed back to mob/room
+						if(firstTime)
+							old=I.amWearingAt(Wearable.IN_INVENTORY)?"":"checked";
+						else
+						if(old.equals("on"))
+							old="checked";
+						str.append(old);
+						break;
+					case NONLOCATABLE: // non-locatable
+						if(firstTime)
+							old=CMLib.flags().canBeLocated(I)?"":"checked";
+						else
+						if(old.equals("on"))
+							old="checked";
+						str.append(old);
+						break;
+					case ISKEY: // is key
+						if(I instanceof DoorKey) return "true";
+						return "false";
+					case CONTENTTYPES: // content types
+						if(I instanceof Container)
+						{
+							long contains=((Container)I).containTypes();
+							if(httpReq.isUrlParameter("CONTENTTYPES"))
 							{
-								while(httpReq.isUrlParameter(thisFieldName))
-								{
-									final String value=httpReq.getUrlParameter(thisFieldName);
-									if(value.length()>0)
-										allData.add(value);
-									thisFieldName=CMStrings.replaceAll(fieldName,"###",""+(++x));
-								}
+								contains=CMath.s_long(httpReq.getUrlParameter("CONTENTTYPES"));
+								if(contains>0)
+								for(int i=1;;i++)
+									if(httpReq.isUrlParameter("CONTENTTYPES"+(Integer.toString(i))))
+										contains=contains|CMath.s_int(httpReq.getUrlParameter("CONTENTTYPES"+(Integer.toString(i))));
+									else
+										break;
 							}
-							else
+							str.append("<OPTION VALUE=0");
+							if(contains==0) str.append(" SELECTED");
+							str.append(">"+Container.CONTAIN_DESCS[0]);
+							for(int i=1;i<Container.CONTAIN_DESCS.length;i++)
 							{
-								final String[] allRecipes=((Recipe)I).getRecipeCodeLines();
-								for(final String recipe : allRecipes)
-								{
-									if(recipe.length()>0)
-										allData.add(CMStrings.replaceAll(recipe,"\t",","));
-								}
-							}
-							allData.add("");
-							for(x=0;x<allData.size();x++)
-							{
-								final String recipeLine=allData.get(x);
-								thisFieldName=CMStrings.replaceAll(fieldName,"###",""+x);
-								final String myPrefix=CMStrings.replaceAll(prefix,fieldName,thisFieldName);
-								final String myPostfix=CMStrings.replaceAll(postfix,fieldName,thisFieldName);
-								str.append(myPrefix).append(super.htmlOutgoingFilter(recipeLine)).append(myPostfix);
+								final String constr=Container.CONTAIN_DESCS[i];
+								final int mask=(int)CMath.pow(2,i-1);
+								str.append("<OPTION VALUE="+mask);
+								if((contains&mask)>0) str.append(" SELECTED");
+								str.append(">"+constr);
 							}
 						}
-					}
-					break;
-				case 84: // layer
-					if((firstTime)&&(I instanceof Armor))
-						old=""+((Armor)I).getClothingLayer();
-					str.append(old);
-					break;
-				case 85: // see-thru
-					if((firstTime)&&(I instanceof Armor))
-						old=CMath.bset(((Armor)I).getLayerAttributes(),Armor.LAYERMASK_SEETHROUGH)?"checked":"";
-					else
-					if(old.equals("on"))
-						old="checked";
-					str.append(old);
-					break;
-				case 86: // multi-layer
-					if((firstTime)&&(I instanceof Armor))
-						old=CMath.bset(((Armor)I).getLayerAttributes(),Armor.LAYERMASK_MULTIWEAR)?"checked":"";
-					else
-					if(old.equals("on"))
-						old="checked";
-					str.append(old);
-					break;
-				case 87: // iscataloged
-					str.append(""+CMLib.flags().isCataloged(I));
-					break;
-				case 88: // catarate
-					if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
+						break;
+					case ISINSTRUMENT: // is instrument
+						if(I instanceof MusicalInstrument) return "true";
+						return "false";
+					case INSTRUMENTTYPE: // instrument types
+						if((firstTime)&&(I instanceof MusicalInstrument))
+							old=""+((MusicalInstrument)I).instrumentType();
+						for(int r=0;r<MusicalInstrument.TYPE_DESC.length;r++)
+						{
+							str.append("<OPTION VALUE=\""+r+"\"");
+							if(r==CMath.s_int(old))
+								str.append(" SELECTED");
+							str.append(">"+MusicalInstrument.TYPE_DESC[r]);
+						}
+						break;
+					case ISAMMO: // is ammunition
+						if(I instanceof Ammunition) return "true";
+						return "false";
+					case ISMOBITEM: // is mob item
+						if(M!=null) return "true";
+						return "false";
+					case ISDUST: // is dust
+						if(I instanceof MagicDust) return "true";
+						return "false";
+					case ISPERFUME: // is perfume
+						if(I instanceof Perfume) return "true";
+						return "false";
+					case SMELLS: // smells
+						if((firstTime)&&(I instanceof Perfume))
+							old=""+((Perfume)I).getSmellList();
+						str.append(old);
+						break;
+					case IMAGE: // image
+						if(firstTime)
+							old=I.rawImage();
+						str.append(old);
+						break;
+					case ISEXIT: // is exit
+						if(I instanceof Exit) return "true";
+						return "false";
+					case EXITNAME: // exit name
+						if((firstTime)&&(I instanceof Exit))
+							old=""+((Exit)I).doorName();
+						str.append(old);
+						break;
+					case EXITCLOSEDTEXT: // exit closed text
+						if((firstTime)&&(I instanceof Exit))
+							old=""+((Exit)I).closedText();
+						str.append(old);
+						break;
+					case NUMCOINS: // numcoins
+						if((firstTime)&&(I instanceof Coins))
+							old=""+((Coins)I).getNumberOfCoins();
+						str.append(old);
+						break;
+					case CURRENCY: // currency
 					{
-						final String name=itemCode.substring(8);
-						final CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
-						if(data!=null)
-							old=CMath.toPct(data.getRate());
+						if((firstTime)&&(I instanceof Coins))
+							old=""+((Coins)I).getCurrency();
+						final List<String> cs=CMLib.beanCounter().getAllCurrencies();
+						str.append("<OPTION VALUE=\"\"");
+						if(old.length()==0)
+							str.append(" SELECTED");
+						str.append(_(">Default currency"));
+						for(int i=0;i<cs.size();i++)
+						{
+							if(cs.get(i).length()>0)
+							{
+								str.append("<OPTION VALUE=\""+(cs.get(i))+"\"");
+								if(cs.get(i).equalsIgnoreCase(old))
+									str.append(" SELECTED");
+								str.append(">"+(cs.get(i)));
+							}
+						}
+						break;
 					}
-					str.append(old+", ");
-					break;
-				case 89: // catalive
-					if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
+					case DENOM: // denomination
 					{
-						final String name=itemCode.substring(8);
-						final CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
-						if(data!=null)
-							old=data.getWhenLive()?"on":"";
+						String currency=(I instanceof Coins)?currency=((Coins)I).getCurrency():"";
+						if((firstTime)&&(I instanceof Coins))
+							old=""+((Coins)I).getDenomination();
+						final MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(currency);
+						for (final MoneyDenomination element : DV)
+						{
+							str.append("<OPTION VALUE=\""+element.value+"\"");
+							if(element.value==CMath.s_double(old))
+								str.append(" SELECTED");
+							str.append(">"+element.name);
+						}
+						break;
 					}
-					str.append(((old.equalsIgnoreCase("on"))?"CHECKED":"")+", ");
-					break;
-				case 90: // catamask
-					if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
+					case ISRECIPE: // isrecipe
+						if(I instanceof Recipe) return "true";
+						return "false";
+					case RECIPESKILL: // recipeskill
 					{
-						final String name=itemCode.substring(8);
-						final CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
-						if(data!=null)
-							old=""+data.getMaskStr();
+						Ability A=null;
+						if((firstTime)&&(I instanceof Recipe))
+							old=""+((Recipe)I).getCommonSkillID();
+						for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+						{
+						 	A=e.nextElement();
+						 	if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
+						 	&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL))
+						 	{
+							 	str.append("<OPTION VALUE=\""+A.ID()+"\"");
+							 	if(A.ID().equalsIgnoreCase(old))
+							 		str.append(" SELECTED");
+							 	str.append(">"+A.name());
+						 	}
+						}
+						break;
 					}
-					str.append(htmlOutgoingFilter(old)+", ");
-					break;
-				case 91: // bite
-					if((firstTime)&&(I instanceof Food))
-						old=""+((Food)I).bite();
-					str.append(old);
-					break;
-				case 92: // max uses
-					if((firstTime)&&(I instanceof Wand))
-						old=""+((Wand)I).maxUses();
-					str.append(old);
-					break;
-				case 93: // iselectronic
-					str.append(I instanceof Electronics);
-					break;
-				case 95: // catacat
-					if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
-					{
-						final String name=itemCode.substring(8);
-						final CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
-						if(data!=null)
-							old=data.category();
+					case RECIPEDATA: // recipedata
+						if(I instanceof Recipe)
+						{
+							String prefix=parms.get("RECIPEPREFIX");
+							if(prefix==null) prefix="";
+							String postfix=parms.get("RECIPEPOSTFIX");
+							if(postfix==null) postfix="";
+							final String fieldName=parms.get("RECIPEFIELDNAME");
+							if(fieldName==null)
+								str.append("!!ERROR!!");
+							else
+							{
+								String thisFieldName=CMStrings.replaceAll(fieldName,"###","0");
+								final List<String> allData=new LinkedList<String>();
+								int x=0;
+								if(httpReq.isUrlParameter(thisFieldName))
+								{
+									while(httpReq.isUrlParameter(thisFieldName))
+									{
+										final String value=httpReq.getUrlParameter(thisFieldName);
+										if(value.length()>0)
+											allData.add(value);
+										thisFieldName=CMStrings.replaceAll(fieldName,"###",""+(++x));
+									}
+								}
+								else
+								{
+									final String[] allRecipes=((Recipe)I).getRecipeCodeLines();
+									for(final String recipe : allRecipes)
+									{
+										if(recipe.length()>0)
+											allData.add(CMStrings.replaceAll(recipe,"\t",","));
+									}
+								}
+								allData.add("");
+								for(x=0;x<allData.size();x++)
+								{
+									final String recipeLine=allData.get(x);
+									thisFieldName=CMStrings.replaceAll(fieldName,"###",""+x);
+									final String myPrefix=CMStrings.replaceAll(prefix,fieldName,thisFieldName);
+									final String myPostfix=CMStrings.replaceAll(postfix,fieldName,thisFieldName);
+									str.append(myPrefix).append(super.htmlOutgoingFilter(recipeLine)).append(myPostfix);
+								}
+							}
+						}
+						break;
+					case LAYER: // layer
+						if((firstTime)&&(I instanceof Armor))
+							old=""+((Armor)I).getClothingLayer();
+						str.append(old);
+						break;
+					case SEETHRU: // see-thru
+						if((firstTime)&&(I instanceof Armor))
+							old=CMath.bset(((Armor)I).getLayerAttributes(),Armor.LAYERMASK_SEETHROUGH)?"checked":"";
+						else
+						if(old.equals("on"))
+							old="checked";
+						str.append(old);
+						break;
+					case MULTIWEAR: // multiwear multi-layer
+						if((firstTime)&&(I instanceof Armor))
+							old=CMath.bset(((Armor)I).getLayerAttributes(),Armor.LAYERMASK_MULTIWEAR)?"checked":"";
+						else
+						if(old.equals("on"))
+							old="checked";
+						str.append(old);
+						break;
+					case ISCATALOGED: // iscataloged
+						str.append(""+CMLib.flags().isCataloged(I));
+						break;
+					case CATARATE: // catarate
+						if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
+						{
+							final String name=itemCode.substring(8);
+							final CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
+							if(data!=null)
+								old=CMath.toPct(data.getRate());
+						}
+						str.append(old+", ");
+						break;
+					case CATALIVE: // catalive
+						if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
+						{
+							final String name=itemCode.substring(8);
+							final CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
+							if(data!=null)
+								old=data.getWhenLive()?"on":"";
+						}
+						str.append(((old.equalsIgnoreCase("on"))?"CHECKED":"")+", ");
+						break;
+					case CATAMASK: // catamask
+						if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
+						{
+							final String name=itemCode.substring(8);
+							final CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
+							if(data!=null)
+								old=""+data.getMaskStr();
+						}
+						str.append(htmlOutgoingFilter(old)+", ");
+						break;
+					case BITE: // bite
+						if((firstTime)&&(I instanceof Food))
+							old=""+((Food)I).bite();
+						str.append(old);
+						break;
+					case _MAXUSES: // max uses
+						if((firstTime)&&(I instanceof Wand))
+							old=""+((Wand)I).maxUses();
+						str.append(old);
+						break;
+					case ISELECTRONIC: // iselectronic
+						str.append(I instanceof Electronics);
+						break;
+					case CATACAT: // catacat
+						if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
+						{
+							final String name=itemCode.substring(8);
+							final CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
+							if(data!=null)
+								old=data.category();
+						}
+						str.append(old+", ");
+						break;
+					case ISPORTAL: // isportal
+						return (((I instanceof Rideable)&&(I instanceof Exit))?"true":"false");
+					case PUTSTR: // putstr
+						if(firstTime)
+							old=I.getStat("PUTSTR");
+						str.append(old+", ");
+						break;
+					case MOUNTSTR: // mountstr
+						if(firstTime)
+							old=I.getStat("MOUNTSTR");
+						str.append(old+", ");
+						break;
+					case DISMOUNTSTR: // dismountstr
+						if(firstTime)
+							old=I.getStat("DISMOUNTSTR");
+						str.append(old+", ");
+						break;
 					}
-					str.append(old+", ");
-					break;
+					if(firstTime)
+						httpReq.addFakeUrlParameter(parmName,old.equals("checked")?"on":old);
 				}
-				if(firstTime)
-					httpReq.addFakeUrlParameter(okparms[o],old.equals("checked")?"on":old);
 			}
 			str.append(ExitData.dispositions(I,firstTime,httpReq,parms));
 			str.append(AreaData.affects(I,httpReq,parms,1));

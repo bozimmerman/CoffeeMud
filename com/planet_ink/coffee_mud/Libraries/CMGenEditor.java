@@ -1207,6 +1207,34 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mob.tell(_("(blended)"));
 	}
 
+	protected void genMountText(MOB mob, Modifiable E, int showNumber, int showFlag)
+			throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if(mob.session()==null) return;
+		mob.session().rawPrintln(_("@x1. Mount Strings: '@x2'.",""+showNumber,E.getStat("PUTSTR")+"/"+E.getStat("MOUNTSTR")+"/"+E.getStat("DISMOUNTSTR")));
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName;
+		mob.session().rawPrintln(_("Enter new 'put' string (ENTER='"+E.getStat("PUTSTR")+"')"));
+		newName=mob.session().prompt(":","");
+		if(newName.length()>0)
+			E.setStat("PUTSTR",newName);
+		else
+			mob.tell(_("(no change)"));
+		mob.session().rawPrintln(_("Enter new 'mount' string (ENTER='"+E.getStat("MOUNTSTR")+"')"));
+		newName=mob.session().prompt(":","");
+		if(newName.length()>0)
+			E.setStat("MOUNTSTR",newName);
+		else
+			mob.tell(_("(no change)"));
+		mob.session().rawPrintln(_("Enter new 'dismount' string (ENTER='"+E.getStat("DISMOUNTSTR")+"')"));
+		newName=mob.session().prompt(":","");
+		if(newName.length()>0)
+			E.setStat("DISMOUNTSTR",newName);
+		else
+			mob.tell(_("(no change)"));
+	}
+	
 	protected void genClosedText(MOB mob, Exit E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -7883,6 +7911,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				genDoorName(mob,(Exit)me,++showNumber,showFlag);
 				genClosedText(mob,(Exit)me,++showNumber,showFlag);
+			}
+			if((me instanceof Rideable)&&(me instanceof Exit)) // it's a portal!
+			{
+				genMountText(mob,me,++showNumber,showFlag);
 			}
 			genImage(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)

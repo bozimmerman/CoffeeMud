@@ -35,25 +35,33 @@ import java.util.*;
 */
 public class GrinderItems
 {
-	private static final String[] okparms={
-		  "NAME","CLASSES","DISPLAYTEXT","DESCRIPTION"," LEVEL",
-		  " ABILITY"," REJUV"," MISCTEXT","MATERIALS","ISGENERIC",
-		  "ISREADABLE","READABLETEXT","ISDRINK","LIQUIDHELD","QUENCHED",
-		  "ISCONTAINER","CAPACITY","ISARMOR","ARMOR","WORNDATA",
-		  " HEIGHT","ISWEAPON","WEAPONTYPE","WEAPONCLASS","ATTACK",
-		  "DAMAGE","MINRANGE","MAXRANGE","SECRETIDENTITY",
-		  "ISGETTABLE","ISREMOVABLE","ISDROPPABLE","ISTWOHANDED","ISTRAPPED",
-		  "READABLESPELLS","ISWAND"," USESREMAIN","VALUE","WEIGHT",
-		  "ISMAP","MAPAREAS","ISFOOD","ISPILL","ISSUPERPILL",
-		  "ISPOTION","LIQUIDTYPES","AMMOTYPE","AMMOCAP","READABLESPELL",
-		  "ISRIDEABLE","RIDEABLETYPE","MOBSHELD","HASALID","HASALOCK",
-		  "KEYCODE","ISWALLPAPER","NOURISHMENT","CONTAINER","ISLIGHTSOURCE",
-		  "DURATION","NONLOCATABLE","ISKEY","CONTENTTYPES","ISINSTRUMENT",
-		  "INSTRUMENTTYPE","ISAMMO","ISMOBITEM","ISDUST","ISPERFUME",
-		  "SMELLS","IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT",
-		  "NUMCOINS","CURRENCY","DENOM","ISRECIPE","RECIPESKILL",
-		  "RECIPEDATA", "LAYER","SEETHRU","MULTIWEAR","ISCATALOGED",
-		  "CATARATE","CATALIVE","CATAMASK","BITE","MAXUSES","CATACAT"};
+	public enum ItemDataField
+	{
+		  NAME,CLASSES,DISPLAYTEXT,DESCRIPTION,
+		  _LEVEL,_ABILITY,_REJUV,_MISCTEXT,
+		  MATERIALS,ISGENERIC,ISFOOD,NOURISHMENT,
+		  ISDRINK,LIQUIDHELD,QUENCHED,ISCONTAINER,
+		  CAPACITY,ISARMOR,ARMOR,WORNDATA,
+		  _HEIGHT,ISWEAPON,WEAPONTYPE,WEAPONCLASS,
+		  ATTACK,DAMAGE,MINRANGE,MAXRANGE,
+		  SECRETIDENTITY,ISGETTABLE,ISREMOVABLE,ISDROPPABLE,
+		  ISTWOHANDED,ISTRAPPED,READABLESPELLS,ISWAND,
+		  USESREMAIN,VALUE,WEIGHT,ISMAP,
+		  MAPAREAS,ISREADABLE,ISPILL,ISSUPERPILL,
+		  ISPOTION,LIQUIDTYPES,AMMOTYPE,AMMOCAP,
+		  READABLESPELL,ISRIDEABLE,RIDEABLETYPE,MOBSHELD,
+		  HASALID,HASALOCK,KEYCODE,ISWALLPAPER,
+		  READABLETEXT,CONTAINER,ISLIGHTSOURCE,DURATION,
+		  ISUNTWOHANDED,ISCOIN,ISSCROLL,BEINGWORN,NONLOCATABLE,
+		  ISKEY, CONTENTTYPES,ISINSTRUMENT,INSTRUMENTTYPE,
+		  ISAMMO,ISMOBITEM,ISDUST,ISPERFUME,SMELLS,
+		  IMAGE,ISEXIT,EXITNAME,EXITCLOSEDTEXT,NUMCOINS,
+		  CURRENCY,DENOM,ISRECIPE,RECIPESKILL,RECIPEDATA,
+		  LAYER,SEETHRU,MULTIWEAR,ISCATALOGED,CATARATE,
+		  CATALIVE,CATAMASK,BITE,_MAXUSES,ISELECTRONIC,
+		  CATACAT,ISPORTAL,PUTSTR,MOUNTSTR,DISMOUNTSTR;
+	}
+	
 	public static String editItem(HTTPRequest httpReq,
 								  java.util.Map<String,String> parms,
 								  MOB whom,
@@ -147,11 +155,11 @@ public class GrinderItems
 
 			CatalogLibrary.CataData cataData=null;
 
-			for(int o=0;o<okparms.length;o++)
+			for(final ItemDataField o : ItemDataField.values())
 			{
-				String parm=okparms[o];
+				String parm=o.name();
 				boolean generic=true;
-				if(parm.startsWith(" "))
+				if(parm.startsWith("_"))
 				{
 					generic=false;
 					parm=parm.substring(1);
@@ -169,68 +177,68 @@ public class GrinderItems
 				if((I.isGeneric()||(!generic)))
 				switch(o)
 				{
-				case 0: // name
+				case NAME: // name
 					I.setName(old);
 					break;
-				case 1: // classes
+				case CLASSES: // classes
 					break;
-				case 2: // displaytext
+				case DISPLAYTEXT: // displaytext
 					I.setDisplayText(old);
 					break;
-				case 3: // description
+				case DESCRIPTION: // description
 					I.setDescription(old);
 					break;
-				case 4: // level
+				case _LEVEL: // level
 					I.basePhyStats().setLevel(CMath.s_int(old));
 					break;
-				case 5: // ability;
+				case _ABILITY: // ability;
 					I.basePhyStats().setAbility(CMath.s_int(old));
 					break;
-				case 6: // rejuv;
+				case _REJUV: // rejuv;
 					I.basePhyStats().setRejuv(CMath.s_int(old));
 					break;
-				case 7: // misctext
+				case _MISCTEXT: // misctext
 					if(!I.isGeneric())
 						I.setMiscText(old);
 					break;
-				case 8: // materials
+				case MATERIALS: // materials
 					I.setMaterial(CMath.s_int(old));
 					break;
-				case 9: // is generic
+				case ISGENERIC: // is generic
 					break;
-				case 10: // isreadable
+				case ISREADABLE: // isreadable
 					CMLib.flags().setReadable(I,old.equals("on"));
 					break;
-				case 11: // readable text
+				case READABLETEXT: // readable text
 					if(!(I instanceof Ammunition))
 						I.setReadableText(old);
 					break;
-				case 12: // is drink
+				case ISDRINK: // is drink
 					break;
-				case 13: // liquid held
+				case LIQUIDHELD: // liquid held
 					if(I instanceof Drink)
 					{
 						((Drink)I).setLiquidHeld(CMath.s_int(old));
 						((Drink)I).setLiquidRemaining(CMath.s_int(old));
 					}
 					break;
-				case 14: // quenched
+				case QUENCHED: // quenched
 					if(I instanceof Drink)
 						((Drink)I).setThirstQuenched(CMath.s_int(old));
 					break;
-				case 15: // is container
+				case ISCONTAINER: // is container
 					break;
-				case 16: // capacity
+				case CAPACITY: // capacity
 					if(I instanceof Container)
 						((Container)I).setCapacity(CMath.s_int(old));
 					break;
-				case 17: // is armor
+				case ISARMOR: // is armor
 					break;
-				case 18: // armor
+				case ARMOR: // armor
 					if(I instanceof Armor)
 						I.basePhyStats().setArmor(CMath.s_int(old));
 					break;
-				case 19: // worn data
+				case WORNDATA: // worn data
 					if(((I instanceof Armor)||(I instanceof MusicalInstrument))
 					&&(httpReq.isUrlParameter("WORNDATA")))
 					{
@@ -243,55 +251,55 @@ public class GrinderItems
 						I.setRawProperLocationBitmap(climate);
 					}
 					break;
-				case 20: // height
+				case _HEIGHT: // height
 					if(I instanceof Armor)
 						I.basePhyStats().setHeight(CMath.s_int(old));
 					break;
-				case 21: // is weapon
+				case ISWEAPON: // is weapon
 					break;
-				case 22: // weapon type
+				case WEAPONTYPE: // weapon type
 					if(I instanceof Weapon)
 						((Weapon)I).setWeaponType(CMath.s_int(old));
 					break;
-				case 23: // weapon class
+				case WEAPONCLASS: // weapon class
 					if(I instanceof Weapon)
 						((Weapon)I).setWeaponClassification(CMath.s_int(old));
 					break;
-				case 24: // attack
+				case ATTACK: // attack
 					if(I instanceof Weapon)
 						I.basePhyStats().setAttackAdjustment(CMath.s_int(old));
 					break;
-				case 25: // damage
+				case DAMAGE: // damage
 					if(I instanceof Weapon)
 						I.basePhyStats().setDamage(CMath.s_int(old));
 					break;
-				case 26: // min range
+				case MINRANGE: // min range
 					if(I instanceof Weapon)
 						((Weapon)I).setRanges(CMath.s_int(old),I.maxRange());
 					break;
-				case 27: // max range
+				case MAXRANGE: // max range
 					if(I instanceof Weapon)
 						((Weapon)I).setRanges(I.minRange(),CMath.s_int(old));
 					break;
-				case 28: // secret identity
+				case SECRETIDENTITY: // secret identity
 					I.setSecretIdentity(old);
 					break;
-				case 29: // is gettable
+				case ISGETTABLE: // is gettable
 					CMLib.flags().setGettable(I,old.equals("on"));
 					break;
-				case 30: // is removable
+				case ISREMOVABLE: // is removable
 					CMLib.flags().setRemovable(I,old.equals("on"));
 					break;
-				case 31: // is droppable
+				case ISDROPPABLE: // is droppable
 					CMLib.flags().setDroppable(I,old.equals("on"));
 					break;
-				case 32: // is two handed
+				case ISTWOHANDED: // is two handed
 					if((I instanceof Weapon)||(I instanceof Armor))
 						I.setRawLogicalAnd(old.equals("on"));
 					break;
-				case 33: // is trapped
+				case ISTRAPPED: // is trapped
 					break;
-				case 34: // readable spells
+				case READABLESPELLS: // readable spells
 					if(((I instanceof SpellHolder))
 					&&(CMClass.classID(I).indexOf("SuperPill")<0))
 					{
@@ -321,20 +329,18 @@ public class GrinderItems
 						((SpellHolder)I).setSpellList(sp.toString());
 					}
 					break;
-				case 35: // is wand
+				case ISWAND: // is wand
 					break;
-				case 36: // uses
+				case USESREMAIN: // uses
 					I.setUsesRemaining(CMath.s_int(old));
 					break;
-				case 37: // value
+				case VALUE: // value
 					I.setBaseValue(CMath.s_int(old));
 					break;
-				case 38: // weight
+				case WEIGHT: // weight
 					I.basePhyStats().setWeight(CMath.s_int(old));
 					break;
-				case 39: // is map
-					break;
-				case 40: // map areas
+				case MAPAREAS: // map areas
 					if(I instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
 					{
 						final Vector<String> V=new Vector<String>();
@@ -358,26 +364,24 @@ public class GrinderItems
 						I.setReadableText(old);
 					}
 					break;
-				case 41: // is readable
+				case ISPILL: // is pill
 					break;
-				case 42: // is pill
+				case ISSUPERPILL: // is super pill
 					break;
-				case 43: // is super pill
+				case ISPOTION: // is potion
 					break;
-				case 44: // is potion
-					break;
-				case 45: // liquid types
+				case LIQUIDTYPES: // liquid types
 					if((I instanceof Drink)&&(!(I instanceof Potion)))
 						((Drink)I).setLiquidType(CMath.s_int(old));
 					break;
-				case 46: // ammo types
+				case AMMOTYPE: // ammo types
 					if(I instanceof Ammunition)
 						((Ammunition)I).setAmmunitionType(old);
 					else
 					if((I instanceof AmmunitionWeapon)&&(!(I instanceof Wand)))
 						((AmmunitionWeapon)I).setAmmunitionType(old);
 					break;
-				case 47: // ammo capacity
+				case AMMOCAP: // ammo capacity
 					if((I instanceof AmmunitionWeapon)&&(!(I instanceof Wand)))
 					{
 						((AmmunitionWeapon)I).setAmmoCapacity(CMath.s_int(old));
@@ -385,42 +389,42 @@ public class GrinderItems
 							((AmmunitionWeapon)I).setAmmoRemaining(CMath.s_int(old));
 					}
 					break;
-				case 48: // readable spell
+				case READABLESPELL: // readable spell
 					if(I instanceof Wand)
 						((Wand)I).setSpell(CMClass.findAbility(old));
 					break;
-				case 49: // is map
+				case ISMAP: // is map
 					break;
-				case 50: // rideable type
+				case RIDEABLETYPE: // rideable type
 					if(I instanceof Rideable)
 						((Rideable)I).setRideBasis(CMath.s_int(old));
 					break;
-				case 51: // mob capacity
+				case MOBSHELD: // mob capacity
 					if(I instanceof Rideable)
 						((Rideable)I).setRiderCapacity(CMath.s_int(old));
 					break;
-				case 52: // has a lid
+				case HASALID: // has a lid
 					if(I instanceof Container)
 						((Container)I).setLidsNLocks(old.equals("on"),!old.equals("on"),((Container)I).hasALock(),((Container)I).hasALock());
 					break;
-				case 53: // has a lock
+				case HASALOCK: // has a lock
 					if(I instanceof Container)
 					{
 						final boolean hasALid=((Container)I).hasALid();
 						((Container)I).setLidsNLocks(hasALid||old.equals("on"),!(hasALid||old.equals("on")),old.equals("on"),old.equals("on"));
 					}
 					break;
-				case 54: // key code
+				case KEYCODE: // key code
 					if((I instanceof Container)&&(((Container)I).hasALock()))
 						((Container)I).setKeyName(old);
 					break;
-				case 55: // is wallpaper
+				case ISWALLPAPER: // is wallpaper
 					break;
-				case 56: // nourishment
+				case NOURISHMENT: // nourishment
 					if(I instanceof Food)
 						((Food)I).setNourishment(CMath.s_int(old));
 					break;
-				case 57: // container
+				case CONTAINER: // container
 					/* pushed back to room/mob, where it belongs
 					if(!RoomData.isAllNum(old))
 						I.setContainer(null);
@@ -431,22 +435,22 @@ public class GrinderItems
 						I.setContainer(RoomData.getItemFromCode(M,old));
 					*/
 					break;
-				case 58: // is light
+				case ISLIGHTSOURCE: // is light
 					break;
-				case 59:
+				case DURATION:
 					if(I instanceof Light)
 						((Light)I).setDuration(CMath.s_int(old));
 					break;
-				case 60:
+				case NONLOCATABLE:
 					if(old.equals("on"))
 						I.basePhyStats().setSensesMask(I.basePhyStats().sensesMask()|PhyStats.SENSE_UNLOCATABLE);
 					else
 					if((I.basePhyStats().sensesMask()&PhyStats.SENSE_UNLOCATABLE)>0)
 						I.basePhyStats().setSensesMask(I.basePhyStats().sensesMask()-PhyStats.SENSE_UNLOCATABLE);
 					break;
-				case 61: // is key
+				case ISKEY: // is key
 					break;
-				case 62: // content types
+				case CONTENTTYPES: // content types
 					if((I instanceof Container)&&(httpReq.isUrlParameter("CONTENTTYPES")))
 					{
 						long content=CMath.s_long(httpReq.getUrlParameter("CONTENTTYPES"));
@@ -459,56 +463,56 @@ public class GrinderItems
 						((Container)I).setContainTypes(content);
 					}
 					break;
-				case 63: // is instrument:
+				case ISINSTRUMENT: // is instrument:
 					break;
-				case 64: // instrumenttype
+				case INSTRUMENTTYPE: // instrumenttype
 					if(I instanceof MusicalInstrument)
 						((MusicalInstrument)I).setInstrumentType(CMath.s_int(old));
 					break;
-				case 65: // isammo
+				case ISAMMO: // isammo
 					break;
-				case 66: // is mob type
+				case ISMOBITEM: // is mob type
 					break;
-				case 67: // is dust
+				case ISDUST: // is dust
 					break;
-				case 68: // is perfume
+				case ISPERFUME: // is perfume
 					break;
-				case 69: // smells
+				case SMELLS: // smells
 					if(I instanceof Perfume)
 						((Perfume)I).setSmellList(old);
 					break;
-				case 70:
+				case IMAGE:
 					I.setImage(old);
 					break;
-				case 71: // is exit
+				case ISEXIT: // is exit
 					break;
-				case 72: // exit name
+				case EXITNAME: // exit name
 					if(I instanceof Exit)
 						((Exit)I).setExitParams(old,((Exit)I).closeWord(),((Exit)I).openWord(),((Exit)I).closedText());
 					break;
-				case 73: // exit closed text
+				case EXITCLOSEDTEXT: // exit closed text
 					if(I instanceof Exit)
 						((Exit)I).setExitParams(((Exit)I).doorName(),((Exit)I).closeWord(),((Exit)I).openWord(),old);
 					break;
-				case 74: // numcoins
+				case NUMCOINS: // numcoins
 					if(I instanceof Coins)
 						((Coins)I).setNumberOfCoins(CMath.s_long(old));
 					break;
-				case 75: // currency
+				case CURRENCY: // currency
 					if(I instanceof Coins)
 						((Coins)I).setCurrency(old);
 					break;
-				case 76: // denomination
+				case DENOM: // denomination
 					if(I instanceof Coins)
 						((Coins)I).setDenomination(CMath.s_double(old));
 					break;
-				case 77: // isrecipe
+				case ISRECIPE: // isrecipe
 					break;
-				case 78: // recipeskill
+				case RECIPESKILL: // recipeskill
 					if(I instanceof Recipe)
 						((Recipe)I).setCommonSkillID(old);
 					break;
-				case 79: // recipedata
+				case RECIPEDATA: // recipedata
 					if(I instanceof Recipe)
 					{
 						final String fieldName=parms.get("RECIPEFIELDNAME");
@@ -525,11 +529,11 @@ public class GrinderItems
 						((Recipe)I).setRecipeCodeLines(finalData.toArray(new String[0]));
 					}
 					break;
-				case 80: // layer
+				case LAYER: // layer
 					if(I instanceof Armor)
 						((Armor)I).setClothingLayer(CMath.s_short(old));
 					break;
-				case 81: // see-thru
+				case SEETHRU: // see-thru
 					if(I instanceof Armor)
 					{
 						if(old.equals("on"))
@@ -539,7 +543,7 @@ public class GrinderItems
 							((Armor)I).setLayerAttributes((short)(((Armor)I).getLayerAttributes()-Armor.LAYERMASK_SEETHROUGH));
 					}
 					break;
-				case 82: // multi-wear
+				case MULTIWEAR: // multi-wear
 					if(I instanceof Armor)
 					{
 						if(old.equals("on"))
@@ -549,43 +553,73 @@ public class GrinderItems
 							((Armor)I).setLayerAttributes((short)(((Armor)I).getLayerAttributes()-Armor.LAYERMASK_MULTIWEAR));
 					}
 					break;
-				case 83: // iscataloged
+				case ISCATALOGED: // iscataloged
 					break;
-				case 84: // catarate
+				case CATARATE: // catarate
 					if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
 					{
 						if(cataData==null) cataData=CMLib.catalog().sampleCataData("");
 						cataData.setRate(CMath.s_pct(old));
 					}
 					break;
-				case 85: // catalive
+				case CATALIVE: // catalive
 					if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
 					{
 						if(cataData==null) cataData=CMLib.catalog().sampleCataData("");
 						cataData.setWhenLive((old.equalsIgnoreCase("on")));
 					}
 					break;
-				case 86: // catamask
+				case CATAMASK: // catamask
 					if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
 					{
 						if(cataData==null) cataData=CMLib.catalog().sampleCataData("");
 						cataData.setMaskStr(old);
 					}
 					break;
-				case 87: // bite
+				case BITE: // bite
 					if(I instanceof Food)
 						((Food)I).setBite(CMath.s_int(old));
 					break;
-				case 88: // max uses
+				case _MAXUSES: // max uses
 					if(I instanceof Wand)
 						((Wand)I).setMaxUses(CMath.s_int(old));
 					break;
-				case 89: // catacat
+				case CATACAT: // catacat
 					if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
 					{
 						if(cataData==null) cataData=CMLib.catalog().sampleCataData("");
 						cataData.setCatagory(old.toUpperCase().trim());
 					}
+					break;
+				case ISPORTAL: // isportal
+					break;
+				case PUTSTR: // putstr
+					if((I instanceof Rideable)&&(I instanceof Exit))
+						I.setStat("PUTSTR", old);
+					break;
+				case MOUNTSTR: // mountstr
+					if((I instanceof Rideable)&&(I instanceof Exit))
+						I.setStat("MOUNTSTR", old);
+					break;
+				case DISMOUNTSTR: // dismountstr
+					if((I instanceof Rideable)&&(I instanceof Exit))
+						I.setStat("DISMOUNTSTR", old);
+					break;
+				case BEINGWORN:
+					break;
+				case ISCOIN:
+					break;
+				case ISELECTRONIC:
+					break;
+				case ISFOOD:
+					break;
+				case ISRIDEABLE:
+					break;
+				case ISSCROLL:
+					break;
+				case ISUNTWOHANDED:
+					break;
+				default:
 					break;
 				}
 			}

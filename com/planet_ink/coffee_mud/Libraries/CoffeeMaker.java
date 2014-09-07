@@ -484,6 +484,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			text.append(CMLib.xml().convertXMLtoTag("RIDET",((Rideable)E).rideBasis()));
 			text.append(CMLib.xml().convertXMLtoTag("RIDEC",((Rideable)E).riderCapacity()));
+			if(E instanceof Exit) // it's a portal!
+			{
+				text.append(CMLib.xml().convertXMLtoTag("PUTSTR",E.getStat("PUTSTR")));
+				text.append(CMLib.xml().convertXMLtoTag("MOUNTSTR",E.getStat("MOUNTSTR")));
+				text.append(CMLib.xml().convertXMLtoTag("DISMOUNTSTR",E.getStat("DISMOUNTSTR")));
+			}
 		}
 
 		if(E instanceof RawMaterial)
@@ -2649,6 +2655,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			((Rideable)E).setRideBasis(CMLib.xml().getIntFromPieces(buf,"RIDET"));
 			((Rideable)E).setRiderCapacity(CMLib.xml().getIntFromPieces(buf,"RIDEC"));
+			if(E instanceof Exit) // it's a portal!
+			{
+				E.setStat("PUTSTR", CMLib.xml().getValFromPieces(buf, "PUTSTR", "in"));
+				E.setStat("MOUNTSTR", CMLib.xml().getValFromPieces(buf, "MOUNTSTR", "enter(s)"));
+				E.setStat("DISMOUNTSTR", CMLib.xml().getValFromPieces(buf, "DISMOUNTSTR", "emerge(s) from"));
+			}
 		}
 		if(E instanceof Electronics)
 		{
