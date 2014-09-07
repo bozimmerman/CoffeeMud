@@ -35,128 +35,53 @@ import java.util.*;
 public class ClimbableSurface extends StdRoom
 {
 	@Override public String ID(){return "ClimbableSurface";}
+	protected Ability climbA;
 	public ClimbableSurface()
 	{
 		super();
 		name="the surface";
 		basePhyStats.setWeight(4);
+		climbA=CMClass.getAbility("Prop_Climbable");
+		if(climbA!=null)
+		{
+			climbA.setAffectedOne(this);
+			climbA.makeNonUninvokable();
+		}
 		recoverPhyStats();
 	}
 	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_ROCKS;}
-
-	public void mountLadder(MOB mob, Rideable ladder)
+	
+	@Override
+	public CMObject copyOf()
 	{
-		final String mountStr=ladder.mountString(CMMsg.TYP_MOUNT,mob);
-		final CMMsg msg=CMClass.getMsg(mob,ladder,null,CMMsg.MSG_MOUNT,_("<S-NAME> @x1 <T-NAMESELF>.",mountStr));
-		Room room=(Room)((Item)ladder).owner();
-		if(mob.location()==room) room=null;
-		if((mob.location().okMessage(mob,msg))
-		&&((room==null)||(room.okMessage(mob,msg))))
-		{
-			mob.location().send(mob,msg);
-			if(room!=null)
-				room.sendOthers(mob,msg);
-		}
+		final ClimbableSurface R = (ClimbableSurface)super.copyOf();
+		R.climbA=CMClass.getAbility("Prop_Climbable");
+		R.climbA.setAffectedOne(R);
+		R.climbA.makeNonUninvokable();
+		return R;
 	}
-
-	public Rideable findALadder(MOB mob, Room room)
-	{
-		if(room==null) return null;
-		if(mob.riding()!=null) return null;
-		for(int i=0;i<room.numItems();i++)
-		{
-			final Item I=room.getItem(i);
-			if((I!=null)
-			   &&(I instanceof Rideable)
-			   &&(CMLib.flags().canBeSeenBy(I,mob))
-			   &&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_LADDER))
-				return (Rideable)I;
-		}
-		return null;
-	}
-
+	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg))
+		if((climbA!=null)&&(!climbA.okMessage(myHost, msg)))
 			return false;
-
-		if(CMLib.flags().isSleeping(this))
-			return true;
-
-		if(msg.amITarget(this)
-		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MOVE))
-		&&(!CMLib.flags().isFalling(msg.source()))
-		&&(msg.sourceMinor()!=CMMsg.TYP_RECALL)
-		&&((msg.targetMinor()==CMMsg.TYP_ENTER)||(!(msg.tool() instanceof Ability))||(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING)))
-		&&(!CMLib.flags().isClimbing(msg.source()))
-		&&(!CMLib.flags().isInFlight(msg.source())))
-		{
-			final Rideable ladder=findALadder(msg.source(),this);
-			if(ladder!=null)
-				mountLadder(msg.source(),ladder);
-			if((!CMLib.flags().isClimbing(msg.source()))
-			&&(!CMLib.flags().isFalling(msg.source())))
-			{
-				msg.source().tell(_("You need to climb that way, if you know how."));
-				return false;
-			}
-		}
-		return true;
+		return super.okMessage(myHost, msg);
 	}
-
+	
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
+		if(climbA!=null)
+			climbA.executeMsg(myHost, msg);
 		super.executeMsg(myHost,msg);
-		if(CMLib.flags().isSleeping(this)) return;
-
-		if((msg.sourceMinor()==CMMsg.TYP_THROW)
-		&&(CMLib.map().roomLocation(msg.target())==this)
-		&&(msg.tool() instanceof Item)
-		&&((!(msg.tool() instanceof Rideable))
-		   ||(((Rideable)msg.tool()).rideBasis()!=Rideable.RIDEABLE_LADDER))
-		&&(!CMLib.flags().isFlying((Item)msg.tool())))
-			InTheAir.makeFall((Item)msg.tool(),this,0);
-		else
-		if((msg.targetMinor()==CMMsg.TYP_DROP)
-		&&(msg.target() instanceof Item)
-		&&((!(msg.target() instanceof Rideable))
-		   ||(((Rideable)msg.target()).rideBasis()!=Rideable.RIDEABLE_LADDER))
-		&&(!CMLib.flags().isFlying((Item)msg.target())))
-			InTheAir.makeFall((Item)msg.target(),this,0);
-		else
-		if(msg.amITarget(this)
-		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MOVE))
-		&&(!CMLib.flags().isFalling(msg.source())))
-		{
-			final MOB mob=msg.source();
-			if(isInhabitant(mob))
-			{
-				if((!CMLib.flags().isInFlight(mob))
-				&&(!CMLib.flags().isClimbing(mob))
-				&&(getRoomInDir(Directions.DOWN)!=null)
-				&&(getExitInDir(Directions.DOWN)!=null)
-				&&(getExitInDir(Directions.DOWN).isOpen()))
-				{
-					Rideable ladder=findALadder(mob,this);
-					if(ladder!=null)
-						mountLadder(mob,ladder);
-					if(!CMLib.flags().isClimbing(mob))
-					{
-						ladder=findALadder(mob,getRoomInDir(Directions.DOWN));
-						if(ladder!=null)
-						{
-							CMLib.commands().postLook(mob,false);
-							mountLadder(mob,ladder);
-						}
-						if(CMLib.flags().isClimbing(mob))
-							CMLib.tracking().walk(mob,Directions.DOWN,false,true);
-						else
-							InTheAir.makeFall(mob,this,0);
-					}
-				}
-			}
-		}
+	}
+	
+	@Override
+	public void recoverPhyStats()
+	{
+		super.recoverPhyStats();
+		if(climbA!=null)
+			climbA.affectPhyStats(this, phyStats());
 	}
 }

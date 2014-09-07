@@ -35,6 +35,7 @@ public interface TrackingLibrary extends CMLibrary
 	public List<Room> findBastardTheBestWay(Room location, List<Room> destRooms, TrackingFlags flags, int maxRadius);
 	public int trackNextDirectionFromHere(List<Room> theTrail, Room location, boolean openOnly);
 	public void stopTracking(MOB mob);
+	public boolean makeFall(Physical P, Room room, int avg);
 	public int radiatesFromDir(Room room, List<Room> rooms);
 	public void getRadiantRooms(Room room, List<Room> rooms, TrackingFlags flags, Room radiateTo, int maxDepth, Set<Room> ignoreRooms);
 	public List<Room> getRadiantRooms(final Room room, final RFilters filters, final int maxDepth);
@@ -56,6 +57,8 @@ public interface TrackingLibrary extends CMLibrary
 	public List<List<Integer>> findAllTrails(Room from, Room to, List<Room> radiantTrail);
 	public List<List<Integer>> findAllTrails(Room from, List<Room> tos, List<Room> radiantTrail);
 	public String getTrailToDescription(Room R1, List<Room> set, String where, boolean areaNames, boolean confirm, int radius, Set<Room> ignoreRooms, int maxMins);
+	public Rideable findALadder(MOB mob, Room room);
+	public void postMountLadder(MOB mob, Rideable ladder);
 
 	public static abstract class RFilter
 	{

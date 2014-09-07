@@ -235,37 +235,6 @@ public class StdExit implements Exit
 	@Override public int maxRange(){return Integer.MAX_VALUE;}
 	@Override public int minRange(){return Integer.MIN_VALUE;}
 
-	protected Rideable findALadder(MOB mob, Room room)
-	{
-		if(room==null) return null;
-		if(mob.riding()!=null) return null;
-		for(int i=0;i<room.numItems();i++)
-		{
-			final Item I=room.getItem(i);
-			if((I!=null)
-			   &&(I instanceof Rideable)
-			   &&(CMLib.flags().canBeSeenBy(I,mob))
-			   &&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_LADDER))
-				return (Rideable)I;
-		}
-		return null;
-	}
-
-	protected void mountLadder(MOB mob, Rideable ladder)
-	{
-		final String mountStr=ladder.mountString(CMMsg.TYP_MOUNT,mob);
-		final CMMsg msg=CMClass.getMsg(mob,ladder,null,CMMsg.MSG_MOUNT,_("<S-NAME> @x1 <T-NAMESELF>.",mountStr));
-		Room room=(Room)((Item)ladder).owner();
-		if(mob.location()==room) room=null;
-		if((mob.location().okMessage(mob,msg))
-		&&((room==null)||(room.okMessage(mob,msg))))
-		{
-			mob.location().send(mob,msg);
-			if(room!=null)
-				room.sendOthers(mob,msg);
-		}
-	}
-
 	protected final String closeWordPastTense()
 	{
 		if(closeWord().length()==0)
@@ -352,9 +321,9 @@ public class StdExit implements Exit
 			{
 				Rideable ladder=null;
 				if(msg.target() instanceof Room)
-					ladder=findALadder(mob,(Room)msg.target());
+					ladder=CMLib.tracking().findALadder(mob,(Room)msg.target());
 				if(ladder!=null)
-					mountLadder(mob,ladder);
+					CMLib.tracking().postMountLadder(mob,ladder);
 				if((!CMLib.flags().isClimbing(mob))
 				&&(!CMLib.flags().isFalling(mob)))
 				{

@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -49,31 +50,6 @@ public class InTheAir extends StdRoom
 	{
 		if(!super.okMessage(myHost,msg)) return false;
 		return isOkAirAffect(this,msg);
-	}
-
-	public static void makeFall(Physical P, Room room, int avg)
-	{
-		if((P==null)||(room==null)) return;
-
-		if((avg==0)&&(room.getRoomInDir(Directions.DOWN)==null)) return;
-		if((avg>0)&&(room.getRoomInDir(Directions.UP)==null)) return;
-
-		if(((P instanceof MOB)&&(!CMLib.flags().isInFlight(P)))
-		||((P instanceof Item)
-			&&(((Item)P).container()==null)
-			&&(!CMLib.flags().isFlying(((Item)P).ultimateContainer(null)))))
-		{
-			if(!CMLib.flags().isFalling(P))
-			{
-				final Ability falling=CMClass.getAbility("Falling");
-				if(falling!=null)
-				{
-					falling.setProficiency(avg);
-					falling.setAffectedOne(room);
-					falling.invoke(null,null,P,true,0);
-				}
-			}
-		}
 	}
 
 	public static void airAffects(Room room, CMMsg msg)
@@ -129,8 +105,9 @@ public class InTheAir extends StdRoom
 			final Ability A=P.fetchEffect("Falling");
 			if(A!=null) A.setProficiency(avg);
 		}
+		final TrackingLibrary tracker = CMLib.tracking();
 		for(final Physical P : needToFall)
-			makeFall(P,room,avg);
+			tracker.makeFall(P,room,avg);
 	}
 
 	@Override

@@ -1279,5 +1279,71 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return theTrail.toString();
 	}
 
+	@Override
+	public Rideable findALadder(MOB mob, Room room)
+	{
+		if(room==null) 
+			return null;
+		if(mob.riding()!=null) 
+			return null;
+		for(int i=0;i<room.numItems();i++)
+		{
+			final Item I=room.getItem(i);
+			if((I!=null)
+			   &&(I instanceof Rideable)
+			   &&(CMLib.flags().canBeSeenBy(I,mob))
+			   &&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_LADDER))
+				return (Rideable)I;
+		}
+		return null;
+	}
+	
+	@Override
+	public void postMountLadder(MOB mob, Rideable ladder)
+	{
+		final String mountStr=ladder.mountString(CMMsg.TYP_MOUNT,mob);
+		final CMMsg msg=CMClass.getMsg(mob,ladder,null,CMMsg.MSG_MOUNT,_("<S-NAME> @x1 <T-NAMESELF>.",mountStr));
+		Room room=(Room)((Item)ladder).owner();
+		if(mob.location()==room) 
+			room=null;
+		if((mob.location().okMessage(mob,msg))
+		&&((room==null)||(room.okMessage(mob,msg))))
+		{
+			mob.location().send(mob,msg);
+			if(room!=null)
+				room.sendOthers(mob,msg);
+		}
+	}
 
+	@Override
+	public boolean makeFall(Physical P, Room room, int avg)
+	{
+		if((P==null)||(room==null)) 
+			return false;
+
+		if((avg==0)&&(room.getRoomInDir(Directions.DOWN)==null)) 
+			return false;
+		
+		if((avg>0)&&(room.getRoomInDir(Directions.UP)==null)) 
+			return false;
+
+		if(((P instanceof MOB)&&(!CMLib.flags().isInFlight(P)))
+		||((P instanceof Item)
+			&&(((Item)P).container()==null)
+			&&(!CMLib.flags().isFlying(((Item)P).ultimateContainer(null)))))
+		{
+			if(!CMLib.flags().isFalling(P))
+			{
+				final Ability falling=CMClass.getAbility("Falling");
+				if(falling!=null)
+				{
+					falling.setProficiency(avg);
+					falling.setAffectedOne(room);
+					falling.invoke(null,null,P,true,0);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }

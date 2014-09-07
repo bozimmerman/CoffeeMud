@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.ClimbableSurface;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -37,11 +38,51 @@ public class ClimbableExit extends StdExit
 	@Override public String Name(){ return "a sheer surface";}
 	@Override public String displayText(){ return "a sheer surface";}
 	@Override public String description(){ return "Looks like you'll have to climb it.";}
+	protected Ability climbA;
 
 	public ClimbableExit()
 	{
 		super();
-		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_CLIMBING);
+		climbA=CMClass.getAbility("Prop_Climbable");
+		if(climbA!=null)
+		{
+			climbA.setAffectedOne(this);
+			climbA.makeNonUninvokable();
+		}
 		recoverPhyStats();
+	}
+	
+	@Override
+	public CMObject copyOf()
+	{
+		final ClimbableExit R = (ClimbableExit)super.copyOf();
+		R.climbA=CMClass.getAbility("Prop_Climbable");
+		R.climbA.setAffectedOne(R);
+		R.climbA.makeNonUninvokable();
+		return R;
+	}
+	
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if((climbA!=null)&&(!climbA.okMessage(myHost, msg)))
+			return false;
+		return super.okMessage(myHost, msg);
+	}
+	
+	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		if(climbA!=null)
+			climbA.executeMsg(myHost, msg);
+		super.executeMsg(myHost,msg);
+	}
+	
+	@Override
+	public void recoverPhyStats()
+	{
+		super.recoverPhyStats();
+		if(climbA!=null)
+			climbA.affectPhyStats(this, phyStats());
 	}
 }

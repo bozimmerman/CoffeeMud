@@ -539,6 +539,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			}
 			teachWhat=theExpertise.name;
 		}
+		//TODO: move this to handleBeingTaught and make async!!
 		try
 		{
 			if((!teacher.isMonster())
