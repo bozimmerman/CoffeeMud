@@ -283,9 +283,7 @@ public class ItemData extends StdWebMacro
 			final StringBuffer str=new StringBuffer("");
 			for(final ItemDataField o : ItemDataField.values())
 			{
-				String parmName=o.name();
-				if(parmName.startsWith("_"))
-					parmName=parmName.substring(1);
+				final String parmName=o.name();
 				if(parms.containsKey(parmName))
 				{
 					String old=httpReq.getUrlParameter(parmName);
@@ -335,22 +333,22 @@ public class ItemData extends StdWebMacro
 						if(firstTime) old=I.description();
 						str.append(old);
 						break;
-					case _LEVEL: // level
+					case LEVEL: // level
 						if(firstTime) old=""+I.basePhyStats().level();
 						str.append(old);
 						break;
-					case _ABILITY: // ability;
+					case ABILITY: // ability;
 						if(firstTime) old=""+I.basePhyStats().ability();
 						str.append(old);
 						break;
-					case _REJUV: // rejuv;
+					case REJUV: // rejuv;
 						if(firstTime) old=""+I.basePhyStats().rejuv();
 						if(old.equals(""+Integer.MAX_VALUE))
 							str.append("0");
 						else
 							str.append(old);
 						break;
-					case _MISCTEXT: // misctext
+					case MISCTEXT: // misctext
 						if(firstTime) old=I.text();
 						str.append(old);
 						break;
@@ -427,7 +425,7 @@ public class ItemData extends StdWebMacro
 						}
 						}
 						break;
-					case _HEIGHT: // height
+					case HEIGHT: // height
 						if(firstTime) old=""+I.basePhyStats().height();
 						str.append(old);
 						break;
@@ -957,7 +955,7 @@ public class ItemData extends StdWebMacro
 							old=""+((Food)I).bite();
 						str.append(old);
 						break;
-					case _MAXUSES: // max uses
+					case MAXUSES: // max uses
 						if((firstTime)&&(I instanceof Wand))
 							old=""+((Wand)I).maxUses();
 						str.append(old);

@@ -37,29 +37,38 @@ public class GrinderItems
 {
 	public enum ItemDataField
 	{
-		  NAME,CLASSES,DISPLAYTEXT,DESCRIPTION,
-		  _LEVEL,_ABILITY,_REJUV,_MISCTEXT,
-		  MATERIALS,ISGENERIC,ISFOOD,NOURISHMENT,
-		  ISDRINK,LIQUIDHELD,QUENCHED,ISCONTAINER,
-		  CAPACITY,ISARMOR,ARMOR,WORNDATA,
-		  _HEIGHT,ISWEAPON,WEAPONTYPE,WEAPONCLASS,
-		  ATTACK,DAMAGE,MINRANGE,MAXRANGE,
-		  SECRETIDENTITY,ISGETTABLE,ISREMOVABLE,ISDROPPABLE,
-		  ISTWOHANDED,ISTRAPPED,READABLESPELLS,ISWAND,
-		  USESREMAIN,VALUE,WEIGHT,ISMAP,
-		  MAPAREAS,ISREADABLE,ISPILL,ISSUPERPILL,
-		  ISPOTION,LIQUIDTYPES,AMMOTYPE,AMMOCAP,
-		  READABLESPELL,ISRIDEABLE,RIDEABLETYPE,MOBSHELD,
-		  HASALID,HASALOCK,KEYCODE,ISWALLPAPER,
-		  READABLETEXT,CONTAINER,ISLIGHTSOURCE,DURATION,
-		  ISUNTWOHANDED,ISCOIN,ISSCROLL,BEINGWORN,NONLOCATABLE,
-		  ISKEY, CONTENTTYPES,ISINSTRUMENT,INSTRUMENTTYPE,
-		  ISAMMO,ISMOBITEM,ISDUST,ISPERFUME,SMELLS,
-		  IMAGE,ISEXIT,EXITNAME,EXITCLOSEDTEXT,NUMCOINS,
-		  CURRENCY,DENOM,ISRECIPE,RECIPESKILL,RECIPEDATA,
-		  LAYER,SEETHRU,MULTIWEAR,ISCATALOGED,CATARATE,
-		  CATALIVE,CATAMASK,BITE,_MAXUSES,ISELECTRONIC,
-		  CATACAT,ISPORTAL,PUTSTR,MOUNTSTR,DISMOUNTSTR;
+		NAME,CLASSES,DISPLAYTEXT,DESCRIPTION,
+		LEVEL(false),ABILITY(false),REJUV(false),MISCTEXT(false),
+		MATERIALS,ISGENERIC,ISFOOD,NOURISHMENT,
+		ISDRINK,LIQUIDHELD,QUENCHED,ISCONTAINER,
+		CAPACITY,ISARMOR,ARMOR,WORNDATA,
+		HEIGHT(false),ISWEAPON,WEAPONTYPE,WEAPONCLASS,
+		ATTACK,DAMAGE,MINRANGE,MAXRANGE,
+		SECRETIDENTITY,ISGETTABLE,ISREMOVABLE,ISDROPPABLE,
+		ISTWOHANDED,ISTRAPPED,READABLESPELLS,ISWAND,
+		USESREMAIN,VALUE,WEIGHT,ISMAP,
+		MAPAREAS,ISREADABLE,ISPILL,ISSUPERPILL,
+		ISPOTION,LIQUIDTYPES,AMMOTYPE,AMMOCAP,
+		READABLESPELL,ISRIDEABLE,RIDEABLETYPE,MOBSHELD,
+		HASALID,HASALOCK,KEYCODE,ISWALLPAPER,
+		READABLETEXT,CONTAINER,ISLIGHTSOURCE,DURATION,
+		ISUNTWOHANDED,ISCOIN,ISSCROLL,BEINGWORN,NONLOCATABLE,
+		ISKEY, CONTENTTYPES,ISINSTRUMENT,INSTRUMENTTYPE,
+		ISAMMO,ISMOBITEM,ISDUST,ISPERFUME,SMELLS,
+		IMAGE,ISEXIT,EXITNAME,EXITCLOSEDTEXT,NUMCOINS,
+		CURRENCY,DENOM,ISRECIPE,RECIPESKILL,RECIPEDATA,
+		LAYER,SEETHRU,MULTIWEAR,ISCATALOGED,CATARATE,
+		CATALIVE,CATAMASK,BITE,MAXUSES(false),ISELECTRONIC,
+		CATACAT,ISPORTAL,PUTSTR,MOUNTSTR,DISMOUNTSTR;
+		public boolean isGenField;
+		private ItemDataField(boolean isGeneric)
+		{
+			this.isGenField=isGeneric;
+		}
+		private ItemDataField()
+		{
+			isGenField = true;
+		}
 	}
 	
 	public static String editItem(HTTPRequest httpReq,
@@ -157,21 +166,16 @@ public class GrinderItems
 
 			for(final ItemDataField o : ItemDataField.values())
 			{
-				String parm=o.name();
-				boolean generic=true;
-				if(parm.startsWith("_"))
-				{
-					generic=false;
-					parm=parm.substring(1);
-				}
-				if((!httpReq.isUrlParameter(parm))
+				final String fieldName=o.name();
+				final boolean generic=o.isGenField;
+				if((!httpReq.isUrlParameter(fieldName))
 				&&(newClassID==null)
 				&&(CMLib.flags().isCataloged(oldI))
-				&&(!parm.equalsIgnoreCase("CONTAINER"))
-				&&(!parm.equalsIgnoreCase("BEINGWORN")))
+				&&(!fieldName.equalsIgnoreCase("CONTAINER"))
+				&&(!fieldName.equalsIgnoreCase("BEINGWORN")))
 					continue;
 
-				String old=httpReq.getUrlParameter(parm);
+				String old=httpReq.getUrlParameter(fieldName);
 				if(old==null) old="";
 
 				if((I.isGeneric()||(!generic)))
@@ -188,16 +192,16 @@ public class GrinderItems
 				case DESCRIPTION: // description
 					I.setDescription(old);
 					break;
-				case _LEVEL: // level
+				case LEVEL: // level
 					I.basePhyStats().setLevel(CMath.s_int(old));
 					break;
-				case _ABILITY: // ability;
+				case ABILITY: // ability;
 					I.basePhyStats().setAbility(CMath.s_int(old));
 					break;
-				case _REJUV: // rejuv;
+				case REJUV: // rejuv;
 					I.basePhyStats().setRejuv(CMath.s_int(old));
 					break;
-				case _MISCTEXT: // misctext
+				case MISCTEXT: // misctext
 					if(!I.isGeneric())
 						I.setMiscText(old);
 					break;
@@ -251,7 +255,7 @@ public class GrinderItems
 						I.setRawProperLocationBitmap(climate);
 					}
 					break;
-				case _HEIGHT: // height
+				case HEIGHT: // height
 					if(I instanceof Armor)
 						I.basePhyStats().setHeight(CMath.s_int(old));
 					break;
@@ -515,16 +519,16 @@ public class GrinderItems
 				case RECIPEDATA: // recipedata
 					if(I instanceof Recipe)
 					{
-						final String fieldName=parms.get("RECIPEFIELDNAME");
-						if(fieldName==null) return "No recipefieldname!";
+						final String recipeFieldName=parms.get("RECIPEFIELDNAME");
+						if(recipeFieldName==null) return "No recipefieldname!";
 						int x=0;
-						String thisFieldname = CMStrings.replaceAll(fieldName,"###", ""+x);
+						String thisFieldname = CMStrings.replaceAll(recipeFieldName,"###", ""+x);
 						final List<String> finalData=new ArrayList<String>();
 						while(httpReq.isUrlParameter(thisFieldname))
 						{
 							old = httpReq.getUrlParameter(thisFieldname);
 							finalData.add(CMStrings.replaceAll(old,",","\t"));
-							thisFieldname = CMStrings.replaceAll(fieldName,"###", ""+(++x));
+							thisFieldname = CMStrings.replaceAll(recipeFieldName,"###", ""+(++x));
 						}
 						((Recipe)I).setRecipeCodeLines(finalData.toArray(new String[0]));
 					}
@@ -580,7 +584,7 @@ public class GrinderItems
 					if(I instanceof Food)
 						((Food)I).setBite(CMath.s_int(old));
 					break;
-				case _MAXUSES: // max uses
+				case MAXUSES: // max uses
 					if(I instanceof Wand)
 						((Wand)I).setMaxUses(CMath.s_int(old));
 					break;
