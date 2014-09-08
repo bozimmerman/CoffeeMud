@@ -43,6 +43,7 @@ public class ShallowWater extends StdRoom implements Drink
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
+
 	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
 	@Override protected int baseThirst(){return 0;}
 	@Override public long decayTime(){return 0;}

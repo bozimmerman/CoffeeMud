@@ -48,6 +48,7 @@ See example.xml for details.
 	<STRING pickweight=1 define="atmosphere" condition="$theme='ocean'">freshwater</STRING>
 	<STRING pickweight=1 define="atmosphere" condition="$theme='ocean'">saltwater</STRING>
 </STRING>
+
 <STRING id="randomtheme" pick="any-1">
 	<STRING pickweight=9>city3000</STRING>
 	<STRING pickweight=5>forest</STRING>

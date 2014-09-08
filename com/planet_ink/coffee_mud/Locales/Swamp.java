@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -32,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Swamp extends StdRoom
+public class Swamp extends StdRoom implements Drink
 {
 	@Override public String ID(){return "Swamp";}
 	public Swamp()
@@ -63,6 +62,23 @@ public class Swamp extends StdRoom
 			if((A!=null)&&(msg.source().fetchEffect(A.ID())==null))
 				A.invoke(msg.source(),msg.source(),true,0);
 		}
+		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_DRINK))
+		{
+			final MOB mob=msg.source();
+			final boolean thirsty=mob.curState().getThirst()<=0;
+			final boolean full=!mob.curState().adjThirst(thirstQuenched(),mob.maxState().maxThirst(mob.baseWeight()));
+			if(thirsty)
+				mob.tell(_("You are no longer thirsty."));
+			else
+			if(full)
+				mob.tell(_("You have drunk all you can."));
+			if(CMLib.dice().rollPercentage()<10)
+			{
+				Ability A=CMClass.getAbility("Disease_Malaria");
+				if((A!=null)&&(msg.source().fetchEffect(A.ID())==null))
+					A.invoke(msg.source(),msg.source(),true,0);
+			}
+		}
 		super.executeMsg(myHost,msg);
 	}
 
@@ -77,6 +93,22 @@ public class Swamp extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_SUGAR),
 		Integer.valueOf(RawMaterial.RESOURCE_CLAY),
 	};
+	
+	@Override protected int baseThirst(){return 0;}
+	@Override public long decayTime(){return 0;}
+	@Override public void setDecayTime(long time){}
+	@Override public int thirstQuenched(){return 500;}
+	@Override public int liquidHeld(){return Integer.MAX_VALUE-1000;}
+	@Override public int liquidRemaining(){return Integer.MAX_VALUE-1000;}
+	@Override public int liquidType(){return RawMaterial.RESOURCE_FRESHWATER;}
+	@Override public void setLiquidType(int newLiquidType){}
+	@Override public void setThirstQuenched(int amount){}
+	@Override public void setLiquidHeld(int amount){}
+	@Override public void setLiquidRemaining(int amount){}
+	@Override public boolean disappearsAfterDrinking(){return false;}
+	@Override public boolean containsDrink(){return true;}
+	@Override public int amountTakenToFillMe(Drink theSource){return 0;}
+	
 	public static final List<Integer> roomResources=new Vector<Integer>(Arrays.asList(resourceList));
 	@Override public List<Integer> resourceChoices(){return Swamp.roomResources;}
 }
