@@ -37,24 +37,37 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class GrinderMobs
 {
-	private static final String[] okparms={
-	  "NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
-	  " LEVEL"," ABILITY"," REJUV"," MISCTEXT",
-	  "RACE","GENDER","HEIGHT","WEIGHT",
-	  "SPEED","ATTACK","DAMAGE","ARMOR",
-	  "ALIGNMENT","MONEY","ISRIDEABLE","RIDEABLETYPE",
-	  "MOBSHELD","ISSHOPKEEPER","SHOPKEEPERTYPE","ISGENERIC",
-	  "ISBANKER","COININT","ITEMINT","BANKNAME","SHOPPREJ",
-	  "ISDEITY","CLEREQ","CLERIT","WORREQ","WORRIT",
-	  "CLESIN","WORSIN","CLEPOW","CURSES","POWERS",
-	  "CLANID","TATTOOS","EXPERTISES",
-	  "BUDGET","DEVALRATE","INVRESETRATE","IMAGE",
-	  "ISPOSTMAN","POSTCHAIN","POSTMIN","POSTLBS",
-	  "POSTHOLD","POSTNEW","POSTHELD","IGNOREMASK",
-	  "LOANINT","SVCRIT","AUCCHAIN","LIVELIST","TIMELIST",
-	  "TIMELISTPCT","LIVECUT","TIMECUT","MAXDAYS",
-	  "MINDAYS","ISAUCTION","DEITYID","VARMONEY",
-	  "CATACAT"};
+	public enum MOBDataField
+	{
+		NAME,CLASSES,DISPLAYTEXT,DESCRIPTION,
+		LEVEL(false),ABILITY(false),REJUV(false),MISCTEXT(false),
+		RACE,GENDER,HEIGHT,WEIGHT,
+		SPEED,ATTACK,DAMAGE,ARMOR,
+		ALIGNMENT,MONEY,ISRIDEABLE,RIDEABLETYPE,
+		MOBSHELD,ISSHOPKEEPER,SHOPKEEPERTYPE,ISGENERIC,
+		ISBANKER,COININT,ITEMINT,BANKNAME,SHOPPREJ,
+		ISDEITY,CLEREQ,CLERIT,WORREQ,WORRIT,
+		CLESIN,WORSIN,CLEPOW,CURSES,POWERS,
+		CLANID,TATTOOS,EXPERTISES,
+		BUDGET,DEVALRATE,INVRESETRATE,IMAGE,
+		ISPOSTMAN,POSTCHAIN,POSTMIN,POSTLBS,
+		POSTHOLD,POSTNEW,POSTHELD,IGNOREMASK,
+		LOANINT,SVCRIT,AUCCHAIN,LIVELIST,TIMELIST,
+		TIMELISTPCT,LIVECUT,TIMECUT,MAXDAYS,
+		MINDAYS,ISAUCTION,DEITYID,VARMONEY,
+		CATACAT;
+		
+		public boolean isGenField;
+		private MOBDataField(boolean isGeneric)
+		{
+			this.isGenField=isGeneric;
+		}
+		private MOBDataField()
+		{
+			isGenField = true;
+		}
+	}
+
 	public static String senses(Physical P, HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
 		P.basePhyStats().setSensesMask(0);
@@ -413,158 +426,153 @@ public class GrinderMobs
 			}
 			MOB copyMOB=(MOB)M.copyOf();
 
-			for(int o=0;o<okparms.length;o++)
+			for(MOBDataField o : MOBDataField.values())
 			{
-				String parm=okparms[o];
-				boolean generic=true;
-				if(parm.startsWith(" "))
-				{
-					generic=false;
-					parm=parm.substring(1);
-				}
-				String old=httpReq.getUrlParameter(parm);
+				final String parmName=o.name();
+				boolean generic=o.isGenField;
+				String old=httpReq.getUrlParameter(parmName);
 				if(old==null) old="";
 				if((M.isGeneric()||(!generic)))
 				switch(o)
 				{
-				case 0: // name
+				case NAME: // name
 					M.setName(old);
 					break;
-				case 1: // classes
+				case CLASSES: // classes
 					break;
-				case 2: // displaytext
+				case DISPLAYTEXT: // displaytext
 					M.setDisplayText(old);
 					break;
-				case 3: // description
+				case DESCRIPTION: // description
 					M.setDescription(old);
 					break;
-				case 4: // level
+				case LEVEL: // level
 					M.basePhyStats().setLevel(CMath.s_int(old));
 					break;
-				case 5: // ability;
+				case ABILITY: // ability;
 					M.basePhyStats().setAbility(CMath.s_int(old));
 					break;
-				case 6: // rejuv;
+				case REJUV: // rejuv;
 					M.basePhyStats().setRejuv(CMath.s_int(old));
 					break;
-				case 7: // misctext
+				case MISCTEXT: // misctext
 					if(!M.isGeneric())
 						M.setMiscText(old);
 					break;
-				case 8: // race
+				case RACE: // race
 					M.baseCharStats().setMyRace(CMClass.getRace(old));
 					break;
-				case 9: // gender
+				case GENDER: // gender
 					M.baseCharStats().setStat(CharStats.STAT_GENDER,old.charAt(0));
 					break;
-				case 10: // height
+				case HEIGHT: // height
 					M.basePhyStats().setHeight(CMath.s_int(old));
 					break;
-				case 11: // weight;
+				case WEIGHT: // weight;
 					M.basePhyStats().setWeight(CMath.s_int(old));
 					break;
-				case 12: // speed
+				case SPEED: // speed
 					double d=CMath.s_double(old);
 					if(d<0.0) d=1.0;
 					M.basePhyStats().setSpeed(d);
 					break;
-				case 13: // attack
+				case ATTACK: // attack
 					M.basePhyStats().setAttackAdjustment(CMath.s_int(old));
 					break;
-				case 14: // damage
+				case DAMAGE: // damage
 					M.basePhyStats().setDamage(CMath.s_int(old));
 					break;
-				case 15: // armor
+				case ARMOR: // armor
 					M.basePhyStats().setArmor(CMath.s_int(old));
 					break;
-				case 16: // alignment
+				case ALIGNMENT: // alignment
 					for(final Faction.Align v : Faction.Align.values())
 						if(old.equalsIgnoreCase(v.toString()))
 							CMLib.factions().setAlignment(M,v);
 					break;
-				case 17: // money
+				case MONEY: // money
 					CMLib.beanCounter().setMoney(M,CMath.s_int(old));
 					break;
-				case 18: // is rideable
+				case ISRIDEABLE: // is rideable
 					break;
-				case 19: // rideable type
+				case RIDEABLETYPE: // rideable type
 					if(M instanceof Rideable)
 						((Rideable)M).setRideBasis(CMath.s_int(old));
 					break;
-				case 20: // mobs held
+				case MOBSHELD: // mobs held
 					if(M instanceof Rideable)
 						((Rideable)M).setRiderCapacity(CMath.s_int(old));
 					break;
-				case 21: // is shopkeeper
+				case ISSHOPKEEPER: // is shopkeeper
 					break;
-				case 22: // shopkeeper type
+				case SHOPKEEPERTYPE: // shopkeeper type
 					if(M instanceof ShopKeeper)
 					{
 						((ShopKeeper)M).setWhatIsSoldMask(0);
 						((ShopKeeper)M).addSoldType(CMath.s_int(old));
 						int x=1;
-						while(httpReq.getUrlParameter(okparms[o]+x)!=null)
+						while(httpReq.getUrlParameter(parmName+x)!=null)
 						{
-							((ShopKeeper)M).addSoldType(CMath.s_int(httpReq.getUrlParameter(okparms[o]+x)));
+							((ShopKeeper)M).addSoldType(CMath.s_int(httpReq.getUrlParameter(parmName+x)));
 							x++;
 						}
 					}
 					break;
-				case 23: // is generic
+				case ISGENERIC: // is generic
 					break;
-				case 24: // is banker
+				case ISBANKER: // is banker
 					break;
-				case 25: // coin interest
+				case COININT: // coin interest
 					if(M instanceof Banker)
 						((Banker)M).setCoinInterest(CMath.s_double(old));
 					break;
-				case 26: // item interest
+				case ITEMINT: // item interest
 					if(M instanceof Banker)
 						((Banker)M).setItemInterest(CMath.s_double(old));
 					break;
-				case 27: // bank name
+				case BANKNAME: // bank name
 					if(M instanceof Banker)
 						((Banker)M).setBankChain(old);
 					break;
-				case 28: // shopkeeper prejudices
+				case SHOPPREJ: // shopkeeper prejudices
 					if(M instanceof ShopKeeper)
 						((ShopKeeper)M).setPrejudiceFactors(old);
 					break;
-				case 29: // is deity
+				case ISDEITY: // is deity
 					break;
-				case 30: // cleric requirements
+				case CLEREQ: // cleric requirements
 					if(M instanceof Deity)
 						((Deity)M).setClericRequirements(old);
 					break;
-				case 31: // cleric ritual
+				case CLERIT: // cleric ritual
 					if(M instanceof Deity)
 						((Deity)M).setClericRitual(old);
 					break;
-				case 32: // worshipper requirements
+				case WORREQ: // worshipper requirements
 					if(M instanceof Deity)
 						((Deity)M).setWorshipRequirements(old);
 					break;
-				case 33: // worshipper ritual
+				case WORRIT: // worshipper ritual
 					if(M instanceof Deity)
 						((Deity)M).setWorshipRitual(old);
 					break;
-				case 34: // cleric sins
+				case CLESIN: // cleric sins
 					if(M instanceof Deity)
 						((Deity)M).setClericSin(old);
 					break;
-				case 35: // worshipper sins
+				case WORSIN: // worshipper sins
 					if(M instanceof Deity)
 						((Deity)M).setWorshipSin(old);
 					break;
-				case 36: // cleric power
+				case CLEPOW: // cleric power
 					if(M instanceof Deity)
 						((Deity)M).setClericPowerup(old);
 					break;
-				case 37: // curses
+				case CURSES: // curses
 					break;
-				case 38: // powers
+				case POWERS: // powers
 					break;
-				case 39: // clanid
+				case CLANID: // clanid
 				{
 					final List<String> list=CMParms.parseCommas(old,true);
 					M.setClan("", Integer.MIN_VALUE); // signal to clear the list
@@ -592,7 +600,7 @@ public class GrinderMobs
 					}
 					break;
 				}
-				case 40: // tattoos
+				case TATTOOS: // tattoos
 					{
 						final List<String> V=CMParms.parseSemicolons(old,true);
 						for(final Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
@@ -601,7 +609,7 @@ public class GrinderMobs
 							M.addTattoo(CMLib.database().parseTattoo(V.get(v)));
 					}
 					break;
-				case 41: // expertises
+				case EXPERTISES: // expertises
 					{
 						final List<String> V=CMParms.parseSemicolons(old,true);
 						M.delAllExpertises();
@@ -609,115 +617,115 @@ public class GrinderMobs
 							M.addExpertise(V.get(v));
 					}
 					break;
-				case 42: // budget
+				case BUDGET: // budget
 					if(M instanceof ShopKeeper)
 						((ShopKeeper)M).setBudget(old);
 					break;
-				case 43: // devaluation rate
+				case DEVALRATE: // devaluation rate
 					if(M instanceof ShopKeeper)
 						((ShopKeeper)M).setDevalueRate(old);
 					break;
-				case 44: // inventory reset rate
+				case INVRESETRATE: // inventory reset rate
 					if(M instanceof ShopKeeper)
 						((ShopKeeper)M).setInvResetRate(CMath.s_int(old));
 					break;
-				case 45: // image
+				case IMAGE: // image
 					M.setImage(old);
 					break;
-				case 46: // is postman
+				case ISPOSTMAN: // is postman
 					break;
-				case 47: // postal chain
+				case POSTCHAIN: // postal chain
 					if(M instanceof PostOffice)
 						((PostOffice)M).setPostalChain(old);
 					break;
-				case 48: // minimum postage
+				case POSTMIN: // minimum postage
 					if(M instanceof PostOffice)
 						((PostOffice)M).setMinimumPostage(CMath.s_double(old));
 					break;
-				case 49: // postage per pound after first
+				case POSTLBS: // postage per pound after first
 					if(M instanceof PostOffice)
 						((PostOffice)M).setPostagePerPound(CMath.s_double(old));
 					break;
-				case 50: // holding fee per pound per month
+				case POSTHOLD: // holding fee per pound per month
 					if(M instanceof PostOffice)
 						((PostOffice)M).setHoldFeePerPound(CMath.s_double(old));
 					break;
-				case 51: // new box fee
+				case POSTNEW: // new box fee
 					if(M instanceof PostOffice)
 						((PostOffice)M).setFeeForNewBox(CMath.s_double(old));
 					break;
-				case 52: // maximum months held
+				case POSTHELD: // maximum months held
 					if(M instanceof PostOffice)
 						((PostOffice)M).setMaxMudMonthsHeld(CMath.s_int(old));
 					break;
-				case 53: // shopkeeper ignore mask
+				case IGNOREMASK: // shopkeeper ignore mask
 					if(M instanceof ShopKeeper)
 						((ShopKeeper)M).setIgnoreMask(old);
 					break;
-				case 54: // loan interest
+				case LOANINT: // loan interest
 					if((M instanceof Banker)&&(old.length()>0))
 						((Banker)M).setLoanInterest(CMath.s_double(old));
 					break;
-				case 55: // service ritual
+				case SVCRIT: // service ritual
 					if(M instanceof Deity)
 						((Deity)M).setServiceRitual(old);
 					break;
-				case 56: // auction house
+				case AUCCHAIN: // auction house
 					if(M instanceof Auctioneer)
 						((Auctioneer)M).setAuctionHouse(old);
 					break;
-				case 57: // live list
+				case LIVELIST: // live list
 					//if(M instanceof Auctioneer)
 					//	if(old.length()==0)
 					//		((Auctioneer)M).setLiveListingPrice(-1.0);
 					//	else
 					//		((Auctioneer)M).setLiveListingPrice(CMath.s_double(old));
 					break;
-				case 58: // timed list
+				case TIMELIST: // timed list
 					if(M instanceof Auctioneer)
 						if(old.length()==0)
 							((Auctioneer)M).setTimedListingPrice(-1.0);
 						else
 							((Auctioneer)M).setTimedListingPrice(CMath.s_double(old));
 					break;
-				case 59: // timed list pct
+				case TIMELISTPCT: // timed list pct
 					if(M instanceof Auctioneer)
 						if(old.length()==0)
 							((Auctioneer)M).setTimedListingPct(-1.0);
 						else
 							((Auctioneer)M).setTimedListingPct(CMath.s_pct(old));
 					break;
-				case 60: // live cut
+				case LIVECUT: // live cut
 					//if(M instanceof Auctioneer)
 					//	if(old.length()==0)
 					//		((Auctioneer)M).setLiveFinalCutPct(-1.0);
 					//	else
 					//		((Auctioneer)M).setLiveFinalCutPct(CMath.s_pct(old));
 					break;
-				case 61: // timed cut
+				case TIMECUT: // timed cut
 					if(M instanceof Auctioneer)
 						if(old.length()==0)
 							((Auctioneer)M).setTimedFinalCutPct(-1.0);
 						else
 							((Auctioneer)M).setTimedFinalCutPct(CMath.s_pct(old));
 					break;
-				case 62: // max days
+				case MAXDAYS: // max days
 					if(M instanceof Auctioneer)
 						if(old.length()==0)
 							((Auctioneer)M).setMaxTimedAuctionDays(-1);
 						else
 							((Auctioneer)M).setMaxTimedAuctionDays(CMath.s_int(old));
 					break;
-				case 63: // min days
+				case MINDAYS: // min days
 					if(M instanceof Auctioneer)
 						if(old.length()==0)
 							((Auctioneer)M).setMinTimedAuctionDays(-1);
 						else
 							((Auctioneer)M).setMinTimedAuctionDays(CMath.s_int(old));
 					break;
-				case 64: // is auction
+				case ISAUCTION: // is auction
 					break;
-				case 65: // deity
+				case DEITYID: // deity
 					/*
 					if(old.length()==0)
 						M.setWorshipCharID("");
@@ -726,10 +734,10 @@ public class GrinderMobs
 						M.setWorshipCharID(CMLib.map().getDeity(old).Name());
 					*/
 					break;
-				case 66: // money variation
+				case VARMONEY: // money variation
 					M.setMoneyVariation(CMath.s_double(old));
 					break;
-				case 67: // catacat
+				case CATACAT: // catacat
 					if(mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-"))
 					{
 						if(cataData==null) cataData=CMLib.catalog().sampleCataData("");

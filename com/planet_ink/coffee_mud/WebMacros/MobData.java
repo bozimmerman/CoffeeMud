@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.coffee_mud.WebMacros.grinder.GrinderMobs.MOBDataField;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -38,24 +39,6 @@ import java.util.Map.Entry;
 public class MobData extends StdWebMacro
 {
 	@Override public String name() { return "MobData"; }
-
-	private static final String[] okparms={
-	  "NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
-	  "LEVEL","ABILITY","REJUV","MISCTEXT",
-	  "RACE","GENDER","HEIGHT","WEIGHT",
-	  "SPEED","ATTACK","DAMAGE","ARMOR",
-	  "ALIGNMENT","MONEY","ISRIDEABLE","RIDEABLETYPE",
-	  "MOBSHELD","ISSHOPKEEPER","SHOPKEEPERTYPE","ISGENERIC",
-	  "ISBANKER","COININT","ITEMINT","BANKNAME","SHOPPREJ",
-	  "ISDEITY","CLEREQ","CLERIT","WORREQ","WORRIT",
-	  "CLESIN","WORSIN","CLEPOW","CLANID","TATTOOS","EXPERTISES",
-	  "BUDGET","DEVALRATE","INVRESETRATE","IMAGE",
-	  "ISPOSTMAN","POSTCHAIN","POSTMIN","POSTLBS",
-	  "POSTHOLD","POSTNEW","POSTHELD","IGNOREMASK",
-	  "LOANINT","SVCRIT","AUCCHAIN","LIVELIST","TIMELIST",
-	  "TIMELISTPCT","LIVECUT","TIMECUT","MAXDAYS",
-	  "MINDAYS","ISAUCTION","DEITYID","VARMONEY",
-	  "CATACAT"};
 
 	public static int getShopCardinality(ShopKeeper SK, Environmental O)
 	{
@@ -1108,492 +1091,501 @@ public class MobData extends StdWebMacro
 		}
 
 		final StringBuffer str=new StringBuffer("");
-		for(int o=0;o<okparms.length;o++)
-		if(parms.containsKey(okparms[o]))
+		for(MOBDataField o : MOBDataField.values())
 		{
-			String old=httpReq.getUrlParameter(okparms[o]);
-			if(old==null) old="";
-			switch(o)
+			final String parmName=o.name();
+			if(parms.containsKey(parmName))
 			{
-			case 0: // name
-				if(firstTime)
+				String old=httpReq.getUrlParameter(parmName);
+				if(old==null) old="";
+				switch(o)
 				{
-					if((mobCode.equalsIgnoreCase("NEW")||mobCode.equalsIgnoreCase("NEWDEITY")||mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-"))
-					&&(httpReq.isUrlParameter("NEWMOBNAME")))
-						old=httpReq.getUrlParameter("NEWMOBNAME");
-					else
-						old=M.Name();
-				}
-				str.append(old);
-				break;
-			case 1: // classes
-				{
-					if(firstTime) old=CMClass.classID(M);
-					Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-MOBS");
-					if(sorted==null)
+				case NAME: // name
+					if(firstTime)
 					{
-						final Vector sortMe=new Vector();
-						for(final Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
-							sortMe.addElement(CMClass.classID(m.nextElement()));
-						sorted=(new TreeSet(sortMe)).toArray();
-						Resources.submitResource("MUDGRINDER-MOBS",sorted);
+						if((mobCode.equalsIgnoreCase("NEW")||mobCode.equalsIgnoreCase("NEWDEITY")||mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-"))
+						&&(httpReq.isUrlParameter("NEWMOBNAME")))
+							old=httpReq.getUrlParameter("NEWMOBNAME");
+						else
+							old=M.Name();
 					}
-					if(parms.containsKey("CLASSESID"))
-						str.append(old);
-					else
-						for (final Object element : sorted)
-						{
-							final String cnam=(String)element;
-							str.append("<OPTION VALUE=\""+cnam+"\"");
-							if(old.equals(cnam))
-								str.append(" SELECTED");
-							str.append(">"+cnam);
-						}
-				}
-				break;
-			case 2: // displaytext
-				if(firstTime) old=M.displayText();
-				str.append(old);
-				break;
-			case 3: // description
-				if(firstTime) old=M.description();
-				str.append(old);
-				break;
-			case 4: // level
-				if(firstTime) old=""+M.basePhyStats().level();
-				str.append(old);
-				break;
-			case 5: // ability;
-				if(firstTime) old=""+M.basePhyStats().ability();
-				str.append(old);
-				break;
-			case 6: // rejuv;
-				if(firstTime) old=""+M.basePhyStats().rejuv();
-				if(old.equals(""+Integer.MAX_VALUE))
-					str.append("0");
-				else
 					str.append(old);
-				break;
-			case 7: // misctext
-				if(firstTime) old=M.text();
-				str.append(old);
-				break;
-			case 8: // race
-				if(firstTime) old=""+M.baseCharStats().getMyRace().ID();
-				for(final Enumeration r=CMClass.races();r.hasMoreElements();)
-				{
-					final Race R2=(Race)r.nextElement();
-					str.append("<OPTION VALUE=\""+R2.ID()+"\"");
-					if(R2.ID().equals(old))
-						str.append(" SELECTED");
-					str.append(">"+R2.name());
-				}
-				if((changedClass)||(changedLevel))
-				{
-					final Race R3=CMClass.getRace(old);
-					char G=(char)M.baseCharStats().getStat(CharStats.STAT_GENDER);
-					if((httpReq.isUrlParameter("GENDER"))&&((httpReq.getUrlParameter("GENDER")).length()>0))
-						G=(httpReq.getUrlParameter("GENDER")).charAt(0);
-					if(R3!=null)
+					break;
+				case CLASSES: // classes
 					{
-						R3.setHeightWeight(M.basePhyStats(),G);
-						httpReq.addFakeUrlParameter("WEIGHT",""+M.basePhyStats().weight());
-						httpReq.addFakeUrlParameter("HEIGHT",""+M.basePhyStats().height());
-					}
-				}
-				break;
-			case 9: // gender
-				if(firstTime) old=""+((char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
-				if(old.toUpperCase().startsWith("M"))
-				{
-					str.append("<INPUT TYPE=RADIO NAME=GENDER CHECKED VALUE=M>Male");
-					str.append("&nbsp;&nbsp; <INPUT TYPE=RADIO NAME=GENDER VALUE=F>Female");
-					str.append("&nbsp;&nbsp; <INPUT TYPE=RADIO NAME=GENDER VALUE=N>Neuter");
-				}
-				else
-				if(old.toUpperCase().startsWith("F"))
-				{
-					str.append("<INPUT TYPE=RADIO NAME=GENDER VALUE=M>Male");
-					str.append("&nbsp;&nbsp; <INPUT TYPE=RADIO CHECKED NAME=GENDER VALUE=F>Female");
-					str.append("&nbsp;&nbsp; <INPUT TYPE=RADIO NAME=GENDER VALUE=N>Neuter");
-				}
-				else
-				{
-					str.append("<INPUT TYPE=RADIO NAME=GENDER VALUE=M>Male");
-					str.append("&nbsp;&nbsp; <INPUT TYPE=RADIO NAME=GENDER VALUE=F>Female");
-					str.append("&nbsp;&nbsp; <INPUT CHECKED TYPE=RADIO NAME=GENDER VALUE=N>Neuter");
-				}
-				break;
-			case 10: // height
-				if(firstTime) old=""+M.basePhyStats().height();
-				str.append(old);
-				break;
-			case 11: // weight
-				if(firstTime) old=""+M.basePhyStats().weight();
-				str.append(old);
-				break;
-			case 12: // speed
-				if(firstTime) old=""+M.basePhyStats().speed();
-				str.append(old);
-				break;
-			case 13: // attack
-				if(firstTime) old=""+M.basePhyStats().attackAdjustment();
-				str.append(old);
-				break;
-			case 14: // damage
-				if(firstTime) old=""+M.basePhyStats().damage();
-				str.append(old);
-				break;
-			case 15: // armor
-				if(firstTime) old=""+M.basePhyStats().armor();
-				str.append(old);
-				break;
-			case 16: // alignment
-				if(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null)
-				{
-					if(firstTime) old=""+M.fetchFaction(CMLib.factions().AlignID());
-					for(final Faction.Align v : Faction.Align.values())
-					{
-						if(v!=Faction.Align.INDIFF)
+						if(firstTime) old=CMClass.classID(M);
+						Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-MOBS");
+						if(sorted==null)
 						{
-							str.append("<OPTION VALUE="+v.toString());
-							if(old.equalsIgnoreCase(v.toString()))
-								str.append(" SELECTED");
-							str.append(">"+CMStrings.capitalizeAndLower(v.toString().toLowerCase()));
+							final Vector sortMe=new Vector();
+							for(final Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
+								sortMe.addElement(CMClass.classID(m.nextElement()));
+							sorted=(new TreeSet(sortMe)).toArray();
+							Resources.submitResource("MUDGRINDER-MOBS",sorted);
+						}
+						if(parms.containsKey("CLASSESID"))
+							str.append(old);
+						else
+							for (final Object element : sorted)
+							{
+								final String cnam=(String)element;
+								str.append("<OPTION VALUE=\""+cnam+"\"");
+								if(old.equals(cnam))
+									str.append(" SELECTED");
+								str.append(">"+cnam);
+							}
+					}
+					break;
+				case DISPLAYTEXT: // displaytext
+					if(firstTime) old=M.displayText();
+					str.append(old);
+					break;
+				case DESCRIPTION: // description
+					if(firstTime) old=M.description();
+					str.append(old);
+					break;
+				case LEVEL: // level
+					if(firstTime) old=""+M.basePhyStats().level();
+					str.append(old);
+					break;
+				case ABILITY: // ability;
+					if(firstTime) old=""+M.basePhyStats().ability();
+					str.append(old);
+					break;
+				case REJUV: // rejuv;
+					if(firstTime) old=""+M.basePhyStats().rejuv();
+					if(old.equals(""+Integer.MAX_VALUE))
+						str.append("0");
+					else
+						str.append(old);
+					break;
+				case MISCTEXT: // misctext
+					if(firstTime) old=M.text();
+					str.append(old);
+					break;
+				case RACE: // race
+					if(firstTime) old=""+M.baseCharStats().getMyRace().ID();
+					for(final Enumeration r=CMClass.races();r.hasMoreElements();)
+					{
+						final Race R2=(Race)r.nextElement();
+						str.append("<OPTION VALUE=\""+R2.ID()+"\"");
+						if(R2.ID().equals(old))
+							str.append(" SELECTED");
+						str.append(">"+R2.name());
+					}
+					if((changedClass)||(changedLevel))
+					{
+						final Race R3=CMClass.getRace(old);
+						char G=(char)M.baseCharStats().getStat(CharStats.STAT_GENDER);
+						if((httpReq.isUrlParameter("GENDER"))&&((httpReq.getUrlParameter("GENDER")).length()>0))
+							G=(httpReq.getUrlParameter("GENDER")).charAt(0);
+						if(R3!=null)
+						{
+							R3.setHeightWeight(M.basePhyStats(),G);
+							httpReq.addFakeUrlParameter("WEIGHT",""+M.basePhyStats().weight());
+							httpReq.addFakeUrlParameter("HEIGHT",""+M.basePhyStats().height());
 						}
 					}
-				}
-				break;
-			case 17: // money
-				if(firstTime)
-				{
-					old=""+CMLib.beanCounter().getMoney(M);
-					CMLib.beanCounter().clearInventoryMoney(M,null);
-				}
-				str.append(old);
-				break;
-			case 18: // is rideable
-				if(M instanceof Rideable) return "true";
-				return "false";
-			case 19: // rideable type
-				if((firstTime)&&(M instanceof Rideable))
-					old=""+((Rideable)M).rideBasis();
-				for(int r=0;r<Rideable.RIDEABLE_DESCS.length;r++)
-				{
-					str.append("<OPTION VALUE=\""+r+"\"");
-					if(r==CMath.s_int(old))
-						str.append(" SELECTED");
-					str.append(">"+Rideable.RIDEABLE_DESCS[r]);
-				}
-				break;
-			case 20: // rideable capacity
-				if((firstTime)&&(M instanceof Rideable))
-					old=""+((Rideable)M).riderCapacity();
-				str.append(old);
-				break;
-			case 21: // is shopkeeper
-				if(M instanceof ShopKeeper) return "true";
-				return "false";
-			case 22: // shopkeeper type
-			{
-				final HashSet shopTypes=new HashSet();
-				if((firstTime)&&(M instanceof ShopKeeper))
-				{
-					for(int d=0;d<ShopKeeper.DEAL_DESCS.length;d++)
-						if(((ShopKeeper)M).isSold(d))
-							shopTypes.add(Integer.valueOf(d));
-				}
-				else
-				{
-					shopTypes.add(Integer.valueOf(CMath.s_int(old)));
-					int x=1;
-					while(httpReq.getUrlParameter(okparms[o]+x)!=null)
+					break;
+				case GENDER: // gender
+					if(firstTime) old=""+((char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
+					if(old.toUpperCase().startsWith("M"))
 					{
-						shopTypes.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter(okparms[o]+x))));
-						x++;
+						str.append("<INPUT TYPE=RADIO NAME=GENDER CHECKED VALUE=M>Male");
+						str.append("&nbsp;&nbsp; <INPUT TYPE=RADIO NAME=GENDER VALUE=F>Female");
+						str.append("&nbsp;&nbsp; <INPUT TYPE=RADIO NAME=GENDER VALUE=N>Neuter");
 					}
-				}
-				if(M instanceof Banker)
-				{
-					int r=ShopKeeper.DEAL_BANKER;
-					str.append("<OPTION VALUE=\""+r+"\"");
-					if(shopTypes.contains(Integer.valueOf(r))) str.append(" SELECTED");
-					str.append(">"+ShopKeeper.DEAL_DESCS[r]);
-					r=ShopKeeper.DEAL_CLANBANKER;
-					str.append("<OPTION VALUE=\""+r+"\"");
-					if(shopTypes.contains(Integer.valueOf(r))) str.append(" SELECTED");
-					str.append(">"+ShopKeeper.DEAL_DESCS[r]);
-				}
-				else
-				if(M instanceof PostOffice)
-				{
-					int r=ShopKeeper.DEAL_POSTMAN;
-					str.append("<OPTION VALUE=\""+r+"\"");
-					if(shopTypes.contains(Integer.valueOf(r))) str.append(" SELECTED");
-					str.append(">"+ShopKeeper.DEAL_DESCS[r]);
-					r=ShopKeeper.DEAL_CLANPOSTMAN;
-					str.append("<OPTION VALUE=\""+r+"\"");
-					if(shopTypes.contains(Integer.valueOf(r))) str.append(" SELECTED");
-					str.append(">"+ShopKeeper.DEAL_DESCS[r]);
-				}
-				else
-				for(int r=0;r<ShopKeeper.DEAL_DESCS.length;r++)
-				{
-					if((r!=ShopKeeper.DEAL_CLANBANKER)
-					&&(r!=ShopKeeper.DEAL_BANKER)
-					&&(r!=ShopKeeper.DEAL_POSTMAN)
-					&&(r!=ShopKeeper.DEAL_CLANPOSTMAN))
+					else
+					if(old.toUpperCase().startsWith("F"))
 					{
+						str.append("<INPUT TYPE=RADIO NAME=GENDER VALUE=M>Male");
+						str.append("&nbsp;&nbsp; <INPUT TYPE=RADIO CHECKED NAME=GENDER VALUE=F>Female");
+						str.append("&nbsp;&nbsp; <INPUT TYPE=RADIO NAME=GENDER VALUE=N>Neuter");
+					}
+					else
+					{
+						str.append("<INPUT TYPE=RADIO NAME=GENDER VALUE=M>Male");
+						str.append("&nbsp;&nbsp; <INPUT TYPE=RADIO NAME=GENDER VALUE=F>Female");
+						str.append("&nbsp;&nbsp; <INPUT CHECKED TYPE=RADIO NAME=GENDER VALUE=N>Neuter");
+					}
+					break;
+				case HEIGHT: // height
+					if(firstTime) old=""+M.basePhyStats().height();
+					str.append(old);
+					break;
+				case WEIGHT: // weight
+					if(firstTime) old=""+M.basePhyStats().weight();
+					str.append(old);
+					break;
+				case SPEED: // speed
+					if(firstTime) old=""+M.basePhyStats().speed();
+					str.append(old);
+					break;
+				case ATTACK: // attack
+					if(firstTime) old=""+M.basePhyStats().attackAdjustment();
+					str.append(old);
+					break;
+				case DAMAGE: // damage
+					if(firstTime) old=""+M.basePhyStats().damage();
+					str.append(old);
+					break;
+				case ARMOR: // armor
+					if(firstTime) old=""+M.basePhyStats().armor();
+					str.append(old);
+					break;
+				case ALIGNMENT: // alignment
+					if(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null)
+					{
+						if(firstTime) old=""+M.fetchFaction(CMLib.factions().AlignID());
+						for(final Faction.Align v : Faction.Align.values())
+						{
+							if(v!=Faction.Align.INDIFF)
+							{
+								str.append("<OPTION VALUE="+v.toString());
+								if(old.equalsIgnoreCase(v.toString()))
+									str.append(" SELECTED");
+								str.append(">"+CMStrings.capitalizeAndLower(v.toString().toLowerCase()));
+							}
+						}
+					}
+					break;
+				case MONEY: // money
+					if(firstTime)
+					{
+						old=""+CMLib.beanCounter().getMoney(M);
+						CMLib.beanCounter().clearInventoryMoney(M,null);
+					}
+					str.append(old);
+					break;
+				case ISRIDEABLE: // is rideable
+					if(M instanceof Rideable) return "true";
+					return "false";
+				case RIDEABLETYPE: // rideable type
+					if((firstTime)&&(M instanceof Rideable))
+						old=""+((Rideable)M).rideBasis();
+					for(int r=0;r<Rideable.RIDEABLE_DESCS.length;r++)
+					{
+						str.append("<OPTION VALUE=\""+r+"\"");
+						if(r==CMath.s_int(old))
+							str.append(" SELECTED");
+						str.append(">"+Rideable.RIDEABLE_DESCS[r]);
+					}
+					break;
+				case MOBSHELD: // rideable capacity
+					if((firstTime)&&(M instanceof Rideable))
+						old=""+((Rideable)M).riderCapacity();
+					str.append(old);
+					break;
+				case ISSHOPKEEPER: // is shopkeeper
+					if(M instanceof ShopKeeper) return "true";
+					return "false";
+				case SHOPKEEPERTYPE: // shopkeeper type
+				{
+					final HashSet shopTypes=new HashSet();
+					if((firstTime)&&(M instanceof ShopKeeper))
+					{
+						for(int d=0;d<ShopKeeper.DEAL_DESCS.length;d++)
+							if(((ShopKeeper)M).isSold(d))
+								shopTypes.add(Integer.valueOf(d));
+					}
+					else
+					{
+						shopTypes.add(Integer.valueOf(CMath.s_int(old)));
+						int x=1;
+						while(httpReq.getUrlParameter(parmName+x)!=null)
+						{
+							shopTypes.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter(parmName+x))));
+							x++;
+						}
+					}
+					if(M instanceof Banker)
+					{
+						int r=ShopKeeper.DEAL_BANKER;
+						str.append("<OPTION VALUE=\""+r+"\"");
+						if(shopTypes.contains(Integer.valueOf(r))) str.append(" SELECTED");
+						str.append(">"+ShopKeeper.DEAL_DESCS[r]);
+						r=ShopKeeper.DEAL_CLANBANKER;
 						str.append("<OPTION VALUE=\""+r+"\"");
 						if(shopTypes.contains(Integer.valueOf(r))) str.append(" SELECTED");
 						str.append(">"+ShopKeeper.DEAL_DESCS[r]);
 					}
+					else
+					if(M instanceof PostOffice)
+					{
+						int r=ShopKeeper.DEAL_POSTMAN;
+						str.append("<OPTION VALUE=\""+r+"\"");
+						if(shopTypes.contains(Integer.valueOf(r))) str.append(" SELECTED");
+						str.append(">"+ShopKeeper.DEAL_DESCS[r]);
+						r=ShopKeeper.DEAL_CLANPOSTMAN;
+						str.append("<OPTION VALUE=\""+r+"\"");
+						if(shopTypes.contains(Integer.valueOf(r))) str.append(" SELECTED");
+						str.append(">"+ShopKeeper.DEAL_DESCS[r]);
+					}
+					else
+					for(int r=0;r<ShopKeeper.DEAL_DESCS.length;r++)
+					{
+						if((r!=ShopKeeper.DEAL_CLANBANKER)
+						&&(r!=ShopKeeper.DEAL_BANKER)
+						&&(r!=ShopKeeper.DEAL_POSTMAN)
+						&&(r!=ShopKeeper.DEAL_CLANPOSTMAN))
+						{
+							str.append("<OPTION VALUE=\""+r+"\"");
+							if(shopTypes.contains(Integer.valueOf(r))) str.append(" SELECTED");
+							str.append(">"+ShopKeeper.DEAL_DESCS[r]);
+						}
+					}
+					break;
 				}
-				break;
-			}
-			case 23:
-				if(M.isGeneric()) return "true";
-				return "false";
-			case 24: // is banker
-				if(M instanceof Banker) return "true";
-				return "false";
-			case 25: // coin interest
-				if((firstTime)&&(M instanceof Banker))
-					old=""+((Banker)M).getCoinInterest();
-				str.append(old);
-				break;
-			case 26: // item interest
-				if((firstTime)&&(M instanceof Banker))
-					old=""+((Banker)M).getItemInterest();
-				str.append(old);
-				break;
-			case 27: // bank name
-				if((firstTime)&&(M instanceof Banker))
-					old=""+((Banker)M).bankChain();
-				str.append(old);
-				break;
-			case 28: // prejudice factors
-				if((firstTime)&&(M instanceof ShopKeeper))
-					old=((ShopKeeper)M).prejudiceFactors();
-				str.append(old);
-				break;
-			case 29: // is deity
-				if(M instanceof Deity) return "true";
-				return "false";
-			case 30: // cleric requirements
-				if((firstTime)&&(M instanceof Deity))
-					old=((Deity)M).getClericRequirements();
-				str.append(old);
-				break;
-			case 31: // cleric ritual
-				if((firstTime)&&(M instanceof Deity))
-					old=((Deity)M).getClericRitual();
-				str.append(old);
-				break;
-			case 32: // worship requirements
-				if((firstTime)&&(M instanceof Deity))
-					old=((Deity)M).getWorshipRequirements();
-				str.append(old);
-				break;
-			case 33: // worship ritual
-				if((firstTime)&&(M instanceof Deity))
-					old=((Deity)M).getWorshipRitual();
-				str.append(old);
-				break;
-			case 34: // cleric sin
-				if((firstTime)&&(M instanceof Deity))
-					old=((Deity)M).getClericSin();
-				str.append(old);
-				break;
-			case 35: // worshipper sin
-				if((firstTime)&&(M instanceof Deity))
-					old=((Deity)M).getWorshipSin();
-				str.append(old);
-				break;
-			case 36: // cleric power
-				if((firstTime)&&(M instanceof Deity))
-					old=((Deity)M).getClericPowerup();
-				str.append(old);
-				break;
-			case 37: // clanid
-				if(firstTime)
-				{
-					final StringBuilder oldBuf=new StringBuilder("");
-					for(final Pair<Clan,Integer> p : M.clans())
-						oldBuf.append(p.first.getName()).append("(").append(p.second.toString()).append("), ");
-					old=oldBuf.toString();
-				}
-				str.append(old);
-				break;
-			case 38: // tattoos
-				if(firstTime)
-				{
-					old="";
-					for(final Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
-						str.append(e.nextElement().toString()).append(";");
-				}
-				else
+				case ISGENERIC:
+					if(M.isGeneric()) return "true";
+					return "false";
+				case ISBANKER: // is banker
+					if(M instanceof Banker) return "true";
+					return "false";
+				case COININT: // coin interest
+					if((firstTime)&&(M instanceof Banker))
+						old=""+((Banker)M).getCoinInterest();
 					str.append(old);
-				break;
-			case 39: // expertises
-				if(firstTime)
-				{
-					old="";
-					for(final Enumeration<String> x=M.expertises();x.hasMoreElements();)
-						str.append(x.nextElement()).append(';');
-				}
-				else
+					break;
+				case ITEMINT: // item interest
+					if((firstTime)&&(M instanceof Banker))
+						old=""+((Banker)M).getItemInterest();
 					str.append(old);
-				break;
-			case 40: // budget
-				if((firstTime)&&(M instanceof ShopKeeper))
-					old=((ShopKeeper)M).budget();
-				str.append(old);
-				break;
-			case 41: // devaluation rate
-				if((firstTime)&&(M instanceof ShopKeeper))
-					old=((ShopKeeper)M).devalueRate();
-				str.append(old);
-				break;
-			case 42: // inventory reset rate
-				if((firstTime)&&(M instanceof ShopKeeper))
-					old=""+((ShopKeeper)M).invResetRate();
-				str.append(old);
-				break;
-			case 43: // image
+					break;
+				case BANKNAME: // bank name
+					if((firstTime)&&(M instanceof Banker))
+						old=""+((Banker)M).bankChain();
+					str.append(old);
+					break;
+				case SHOPPREJ: // prejudice factors
+					if((firstTime)&&(M instanceof ShopKeeper))
+						old=((ShopKeeper)M).prejudiceFactors();
+					str.append(old);
+					break;
+				case ISDEITY: // is deity
+					if(M instanceof Deity) return "true";
+					return "false";
+				case CLEREQ: // cleric requirements
+					if((firstTime)&&(M instanceof Deity))
+						old=((Deity)M).getClericRequirements();
+					str.append(old);
+					break;
+				case CLERIT: // cleric ritual
+					if((firstTime)&&(M instanceof Deity))
+						old=((Deity)M).getClericRitual();
+					str.append(old);
+					break;
+				case WORREQ: // worship requirements
+					if((firstTime)&&(M instanceof Deity))
+						old=((Deity)M).getWorshipRequirements();
+					str.append(old);
+					break;
+				case WORRIT: // worship ritual
+					if((firstTime)&&(M instanceof Deity))
+						old=((Deity)M).getWorshipRitual();
+					str.append(old);
+					break;
+				case CLESIN: // cleric sin
+					if((firstTime)&&(M instanceof Deity))
+						old=((Deity)M).getClericSin();
+					str.append(old);
+					break;
+				case WORSIN: // worshipper sin
+					if((firstTime)&&(M instanceof Deity))
+						old=((Deity)M).getWorshipSin();
+					str.append(old);
+					break;
+				case CLEPOW: // cleric power
+					if((firstTime)&&(M instanceof Deity))
+						old=((Deity)M).getClericPowerup();
+					str.append(old);
+					break;
+				case CLANID: // clanid
+					if(firstTime)
+					{
+						final StringBuilder oldBuf=new StringBuilder("");
+						for(final Pair<Clan,Integer> p : M.clans())
+							oldBuf.append(p.first.getName()).append("(").append(p.second.toString()).append("), ");
+						old=oldBuf.toString();
+					}
+					str.append(old);
+					break;
+				case TATTOOS: // tattoos
+					if(firstTime)
+					{
+						old="";
+						for(final Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
+							str.append(e.nextElement().toString()).append(";");
+					}
+					else
+						str.append(old);
+					break;
+				case EXPERTISES: // expertises
+					if(firstTime)
+					{
+						old="";
+						for(final Enumeration<String> x=M.expertises();x.hasMoreElements();)
+							str.append(x.nextElement()).append(';');
+					}
+					else
+						str.append(old);
+					break;
+				case BUDGET: // budget
+					if((firstTime)&&(M instanceof ShopKeeper))
+						old=((ShopKeeper)M).budget();
+					str.append(old);
+					break;
+				case DEVALRATE: // devaluation rate
+					if((firstTime)&&(M instanceof ShopKeeper))
+						old=((ShopKeeper)M).devalueRate();
+					str.append(old);
+					break;
+				case INVRESETRATE: // inventory reset rate
+					if((firstTime)&&(M instanceof ShopKeeper))
+						old=""+((ShopKeeper)M).invResetRate();
+					str.append(old);
+					break;
+				case IMAGE: // image
+					if(firstTime)
+						old=M.rawImage();
+					str.append(old);
+					break;
+				case ISPOSTMAN: // ispostman
+					if(M instanceof PostOffice) return "true";
+					return "false";
+				case POSTCHAIN: // postal chain
+					if((firstTime)&&(M instanceof PostOffice))
+						old=((PostOffice)M).postalChain();
+					str.append(old);
+					break;
+				case POSTMIN: // minimum postage
+					if((firstTime)&&(M instanceof PostOffice))
+						old=""+((PostOffice)M).minimumPostage();
+					str.append(old);
+					break;
+				case POSTLBS: // postage per pound
+					if((firstTime)&&(M instanceof PostOffice))
+						old=""+((PostOffice)M).postagePerPound();
+					str.append(old);
+					break;
+				case POSTHOLD: // holding fee per pound
+					if((firstTime)&&(M instanceof PostOffice))
+						old=""+((PostOffice)M).holdFeePerPound();
+					str.append(old);
+					break;
+				case POSTNEW: // new box fee
+					if((firstTime)&&(M instanceof PostOffice))
+						old=""+((PostOffice)M).feeForNewBox();
+					str.append(old);
+					break;
+				case POSTHELD: // max held months
+					if((firstTime)&&(M instanceof PostOffice))
+						old=""+((PostOffice)M).maxMudMonthsHeld();
+					str.append(old);
+					break;
+				case IGNOREMASK: // ignore mask
+					if((firstTime)&&(M instanceof ShopKeeper))
+						old=((ShopKeeper)M).ignoreMask();
+					str.append(old);
+					break;
+				case LOANINT: // loan interest
+					if((firstTime)&&(M instanceof Banker))
+						old=""+((Banker)M).getLoanInterest();
+					str.append(old);
+					break;
+				case SVCRIT: // service ritual
+					if((firstTime)&&(M instanceof Deity))
+						old=((Deity)M).getServiceRitual();
+					str.append(old);
+					break;
+				case AUCCHAIN: // auction chain
+					if((firstTime)&&(M instanceof Auctioneer))
+						old=((Auctioneer)M).auctionHouse();
+					str.append(old);
+					break;
+				case LIVELIST: // live list
+					//if((firstTime)&&(M instanceof Auctioneer))
+					//    old=""+((Auctioneer)M).liveListingPrice();
+					//if(CMath.s_double(old)<0.0) old="";
+					//str.append(old);
+					break;
+				case TIMELIST: // timed list
+					if((firstTime)&&(M instanceof Auctioneer))
+						old=""+((Auctioneer)M).timedListingPrice();
+					if(CMath.s_double(old)<0.0) old="";
+					str.append(old);
+					break;
+				case TIMELISTPCT: // timed list pct
+					if((firstTime)&&(M instanceof Auctioneer))
+						old=""+(((Auctioneer)M).timedListingPct()*100.0)+"%";
+					if(CMath.s_pct(old)<0.0)
+						old="";
+					str.append(old);
+					break;
+				case LIVECUT: // live cut pct
+					//if((firstTime)&&(M instanceof Auctioneer))
+					//    old=""+(((Auctioneer)M).liveFinalCutPct()*100.0)+"%";
+					//if(CMath.s_pct(old)<0.0) old="";
+					str.append(old);
+					break;
+				case TIMECUT: // timed cut pct
+					if((firstTime)&&(M instanceof Auctioneer))
+						old=""+(((Auctioneer)M).timedFinalCutPct()*100.0)+"%";
+					if(CMath.s_pct(old)<0.0) old="";
+					str.append(old);
+					break;
+				case MAXDAYS: // max days
+					if((firstTime)&&(M instanceof Auctioneer))
+						old=""+((Auctioneer)M).maxTimedAuctionDays();
+					if(CMath.s_double(old)<0.0) old="";
+					str.append(old);
+					break;
+				case MINDAYS: // min days
+					if((firstTime)&&(M instanceof Auctioneer))
+						old=""+((Auctioneer)M).minTimedAuctionDays();
+					if(CMath.s_double(old)<0.0) old="";
+					str.append(old);
+					break;
+				case ISAUCTION: // is auction
+					if(M instanceof Auctioneer) return "true";
+					return "false";
+				case DEITYID: // deityid
+				{
+					if(firstTime) old=M.getWorshipCharID();
+					for(final Enumeration d=CMLib.map().deities();d.hasMoreElements();)
+					{
+						final Deity D=(Deity)d.nextElement();
+						str.append("<OPTION VALUE=\""+D.Name()+"\"");
+						if(D.Name().equalsIgnoreCase(old))
+							str.append(" SELECTED");
+						str.append(">"+D.Name());
+					}
+					break;
+				}
+				case VARMONEY: // varmoney
+					if(firstTime) old=""+M.getMoneyVariation();
+					str.append(old);
+					break;
+				case CATACAT: // catacat
+					if((firstTime)&&(mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-")))
+					{
+						final String name=mobCode.substring(8);
+						final CatalogLibrary.CataData data=CMLib.catalog().getCatalogMobData(name);
+						if(data!=null)
+							old=data.category();
+					}
+					str.append(old+", ");
+					break;
+				case CURSES:
+					// moved to below
+					break;
+				case POWERS:
+					// moved to below
+					break;
+				}
 				if(firstTime)
-					old=M.rawImage();
-				str.append(old);
-				break;
-			case 44: // ispostman
-				if(M instanceof PostOffice) return "true";
-				return "false";
-			case 45: // postal chain
-				if((firstTime)&&(M instanceof PostOffice))
-					old=((PostOffice)M).postalChain();
-				str.append(old);
-				break;
-			case 46: // minimum postage
-				if((firstTime)&&(M instanceof PostOffice))
-					old=""+((PostOffice)M).minimumPostage();
-				str.append(old);
-				break;
-			case 47: // postage per pound
-				if((firstTime)&&(M instanceof PostOffice))
-					old=""+((PostOffice)M).postagePerPound();
-				str.append(old);
-				break;
-			case 48: // holding fee per pound
-				if((firstTime)&&(M instanceof PostOffice))
-					old=""+((PostOffice)M).holdFeePerPound();
-				str.append(old);
-				break;
-			case 49: // new box fee
-				if((firstTime)&&(M instanceof PostOffice))
-					old=""+((PostOffice)M).feeForNewBox();
-				str.append(old);
-				break;
-			case 50: // max held months
-				if((firstTime)&&(M instanceof PostOffice))
-					old=""+((PostOffice)M).maxMudMonthsHeld();
-				str.append(old);
-				break;
-			case 51: // ignore mask
-				if((firstTime)&&(M instanceof ShopKeeper))
-					old=((ShopKeeper)M).ignoreMask();
-				str.append(old);
-				break;
-			case 52: // loan interest
-				if((firstTime)&&(M instanceof Banker))
-					old=""+((Banker)M).getLoanInterest();
-				str.append(old);
-				break;
-			case 53: // service ritual
-				if((firstTime)&&(M instanceof Deity))
-					old=((Deity)M).getServiceRitual();
-				str.append(old);
-				break;
-			case 54: // auction chain
-				if((firstTime)&&(M instanceof Auctioneer))
-					old=((Auctioneer)M).auctionHouse();
-				str.append(old);
-				break;
-			case 55: // live list
-				//if((firstTime)&&(M instanceof Auctioneer))
-				//    old=""+((Auctioneer)M).liveListingPrice();
-				//if(CMath.s_double(old)<0.0) old="";
-				//str.append(old);
-				break;
-			case 56: // timed list
-				if((firstTime)&&(M instanceof Auctioneer))
-					old=""+((Auctioneer)M).timedListingPrice();
-				if(CMath.s_double(old)<0.0) old="";
-				str.append(old);
-				break;
-			case 57: // timed list pct
-				if((firstTime)&&(M instanceof Auctioneer))
-					old=""+(((Auctioneer)M).timedListingPct()*100.0)+"%";
-				if(CMath.s_pct(old)<0.0)
-					old="";
-				str.append(old);
-				break;
-			case 58: // live cut pct
-				//if((firstTime)&&(M instanceof Auctioneer))
-				//    old=""+(((Auctioneer)M).liveFinalCutPct()*100.0)+"%";
-				//if(CMath.s_pct(old)<0.0) old="";
-				str.append(old);
-				break;
-			case 59: // timed cut pct
-				if((firstTime)&&(M instanceof Auctioneer))
-					old=""+(((Auctioneer)M).timedFinalCutPct()*100.0)+"%";
-				if(CMath.s_pct(old)<0.0) old="";
-				str.append(old);
-				break;
-			case 60: // max days
-				if((firstTime)&&(M instanceof Auctioneer))
-					old=""+((Auctioneer)M).maxTimedAuctionDays();
-				if(CMath.s_double(old)<0.0) old="";
-				str.append(old);
-				break;
-			case 61: // min days
-				if((firstTime)&&(M instanceof Auctioneer))
-					old=""+((Auctioneer)M).minTimedAuctionDays();
-				if(CMath.s_double(old)<0.0) old="";
-				str.append(old);
-				break;
-			case 62: // is auction
-				if(M instanceof Auctioneer) return "true";
-				return "false";
-			case 63: // deityid
-			{
-				if(firstTime) old=M.getWorshipCharID();
-				for(final Enumeration d=CMLib.map().deities();d.hasMoreElements();)
-				{
-					final Deity D=(Deity)d.nextElement();
-					str.append("<OPTION VALUE=\""+D.Name()+"\"");
-					if(D.Name().equalsIgnoreCase(old))
-						str.append(" SELECTED");
-					str.append(">"+D.Name());
-				}
-				break;
+					httpReq.addFakeUrlParameter(parmName,old.equals("checked")?"on":old);
 			}
-			case 64: // varmoney
-				if(firstTime) old=""+M.getMoneyVariation();
-				str.append(old);
-				break;
-			case 65: // catacat
-				if((firstTime)&&(mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-")))
-				{
-					final String name=mobCode.substring(8);
-					final CatalogLibrary.CataData data=CMLib.catalog().getCatalogMobData(name);
-					if(data!=null)
-						old=data.category();
-				}
-				str.append(old+", ");
-				break;
-			}
-			if(firstTime)
-				httpReq.addFakeUrlParameter(okparms[o],old.equals("checked")?"on":old);
 		}
 		str.append(ExitData.dispositions(M,firstTime,httpReq,parms));
 		str.append(MobData.senses(M,firstTime,httpReq,parms));
