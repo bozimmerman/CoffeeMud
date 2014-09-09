@@ -125,19 +125,21 @@ Any tag may contain zero or more of the following meta-attributes:
 Tag values:
 A non-container non-basic tag will typically have a string value.  This value may contain
 any embedded variables or identifiers, so long as they are preceded with a $ character.
+
 A string beginning with a $ character will be assumed to be an identifier, and will be
 searched for within the list of defined variables and identifiers.  If the identifier
 resolves to a tag, the tag will be parsed as a string.  If the identifier resolves to
-a string, so much the easier.  Tag names can also be embedded in {} characters; for
-example: ${tagname}. When embedded in this way, the tagname may be preceeded by "u:" to
-force to all-uppercase, "l:" to force all-lowercase, "p:" to force plural, or "c:" to
-force to be capitalized (first letter upper, rest lower).
+a string, so much the easier.  
+
+Tag names can also be embedded in {} characters; for example: ${tagname}. When embedded 
+in this way, the tagname may be preceeded by "u:" to force to all-uppercase, "l:" to 
+force all-lowercase, "p:" to force plural, or "c:" to force to be capitalized (first letter upper, rest lower).
 
 Special Tag values:
 $SYSTEM_RANDOM_NAME:[NUMX]-[NUMY] generate a random name with between NUMX and NUMY syllables.
-$STAT:[STATNAME] embed the value from another stat on the same object.  STATs are things like
+${STAT:[STATNAME]} embed the value from another stat on the same object.  STATs are things like
   NAME, DISPLAY, DESCRIPTION, etc...
-$STAT:[PATH]:[TO]:[ANOTHER]:[OBJECT]:[STATNAME} embed the value from another objects stat, potentially
+${STAT:[PATH]:[TO]:[ANOTHER]:[OBJECT]:[STATNAME]} embed the value from another objects stat, potentially
   in a different room. Where path-to-another-object may be: ROOM to refer to the room containing
   the object, NORTH,SOUTH,EAST,WEST,UP,DOWN,NORTHEAST..etc.. to specify a room in a specific 
   direction, ANYROOM to specify any room connected to this one, MOB to specify any mob in the
@@ -146,6 +148,8 @@ $STAT:[PATH]:[TO]:[ANOTHER]:[OBJECT]:[STATNAME} embed the value from another obj
   "To the east is the residence of ${STAT:ROOM:EAST:MOB:NAME}" 
     would embed the name of a mob in a room to the east of the current room.
   This command may internally cause post-processing if necessary, and so is almost guarenteed.
+(a(n)) will remove any indefinite or definite articles from the string immediately following it
+  and replace it (or insert) either "a" or "an" depending on the first letter of the word.
 
 Objects:
 Each basic tag type may contain other basic tag types to help define them.  For instance,
@@ -166,7 +170,9 @@ with their parsing, and will often cause variables to be defined as their detail
 filled in.  Basic tags also have certain required details which must be resolved for the
 object to be created, and other optional details which may or may not be given, and which
 are extremely object-specific.
+
 ----------------------------------------
+
 AREA Basic tags: 
 As the highest-level possible tag, an area is parsed only with the variables
 it is given on the GENERATE command line, and using whatever it can find in its XML
@@ -205,6 +211,7 @@ Optional details: (See Archon's Guide)
 "INVRESETRATE", "IGNOREMASK", "PRICEMASKS"  
 
 ----------------------------------------
+
 ROOM Basic tags:
 Parsed with variables from the generate command, and from any defined variables internal, and
 from any internal tags and attributes, and from any variables defined by its AREA tag. As
@@ -221,6 +228,7 @@ that room tag (or inserted, or whatever) are used to build multiple rooms from t
 much as specified above on the AREA tag. 
 
 ----------------------------------------
+
 MOB Basic tags:
 Parsed with variables from the generate command, and from any defined variables internal, and
 from any internal tags and attributes, and from any variables defined by other room tags. As
@@ -240,6 +248,7 @@ Optional details: (See Archon's Guide)
 The "RACE" detail can be the name of a race, or resolve to a RACE tag, see below.
 
 ----------------------------------------
+
 Item Basic tags:
 Parsed with variables from the generate command, and from any defined variables internal, and
 from any internal tags and attributes, and from any variables defined by other room tags. As
@@ -268,15 +277,18 @@ to designate what else is sold.  Also, the SHOPINVENTORY or those ITEM, MOB, or 
 may contain optional PRICE or NUMBER attributes.
 
 ----------------------------------------
+
 Affect, Ability, Behavior tags:
 Required detail: "class"
 Optional Detail: "parms"
 
 ----------------------------------------
+
 Content tags:
 A pure container tag that contains one or more ITEM tags, as above.
 
 ----------------------------------------
+
 Exit tags:
 Required detail: "class"
 Optional Objects: "AFFECT","BEHAVIOR", "CLASS","NAME","DISPLAY","DESCRIPTION","DOOR",
@@ -284,6 +296,7 @@ Optional Objects: "AFFECT","BEHAVIOR", "CLASS","NAME","DISPLAY","DESCRIPTION","D
 "DEFCLOSED","HASALOCK","DEFLOCKED",	"KEYNAME"
 
 ----------------------------------------
+
 Race tags:
 Required detail: "class", "name"
 Warning: Generating a custom race will add the race to your database!
@@ -302,6 +315,7 @@ Special Optional Objects:
 "WEAPONCLASS" - the name of an item tag or tags from which the race natural weapon is chosen
 
 ----------------------------------------
+
 Faction tags:
 Required details: "id" "value"
 

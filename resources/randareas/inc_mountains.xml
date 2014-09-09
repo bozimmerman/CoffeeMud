@@ -101,7 +101,7 @@
 			</STRING>
 		</STRING>
 		<EXIT class="Open" />
-		<MOB condition="$__defined_mountain_giant&lt;1 or $__defined_mountain_dragon&lt;1" SELECT="any-1">
+		<MOB condition="($NOFANTASY != 'true') and ($__defined_mountain_giant&lt;1 or $__defined_mountain_dragon&lt;1)" SELECT="any-1">
 			<MOB condition="$__defined_mountain_giant&lt;1" define="__defined_mountain_giant+=1" like="mountain_giant_mob" />
 			<MOB condition="$__defined_mountain_dragon&lt;1" define="__defined_mountain_dragon+=1" like="mountain_dragon_mob" />
 		</MOB>

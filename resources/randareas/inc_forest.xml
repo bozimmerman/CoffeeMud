@@ -102,7 +102,7 @@
 			</STRING>
 		</STRING>
 		<EXIT class="Open" />
-		<MOB condition="$__defined_forest_faerie&lt;1" define="__defined_forest_faerie+=1" like="forest_faerie_mob" />
+		<MOB condition="($NOFANTASY != 'true') and ($__defined_forest_faerie&lt;1)" define="__defined_forest_faerie+=1" like="forest_faerie_mob" />
 		<MOB condition="1?2=1" select="any-1" insert="forest_mobs" />
 		<ITEM condition="1?4=1" select="any-1">
 			<ITEM class="GenContainer" name="A $adj_wooden_ragged chest" display="$item_name is here" HASLID="true" HASLOCK="$trueorfalse">
@@ -164,7 +164,7 @@
 		<MOB class="genmob" copyof="Deer" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
 		<MOB class="genmob" copyof="Buck" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
 		<MOB class="genmob" copyof="Fox" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
-		<MOB class="genmob" copyof="Troll" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB condition="$NOFANTASY != 'true'" class="genmob" copyof="Troll" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
 		<MOB class="genmob" copyof="Falcon" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
 		<MOB class="genmob" copyof="Wolf" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
 		<MOB class="genmob" copyof="Monkey" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>

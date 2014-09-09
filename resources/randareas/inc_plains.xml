@@ -101,7 +101,7 @@
 			</STRING>
 		</STRING>
 		<EXIT class="Open" />
-		<MOB condition="$__defined_plains_dragon&lt;1" define="__defined_plains_dragon+=1" like="plains_dragon_mob" />
+		<MOB condition="($NOFANTASY != 'true') and ($__defined_plains_dragon&lt;1)" define="__defined_plains_dragon+=1" like="plains_dragon_mob" />
 		<MOB condition="1?2=1" select="any-1" insert="plains_mobs" />
 		<ITEM condition="1?4=1" select="any-1">
 			<ITEM class="GenContainer" name="A $adj_wooden_ragged chest" display="$item_name is here" HASLID="true" HASLOCK="$trueorfalse">
@@ -165,7 +165,7 @@
 		<MOB class="genmob" copyof="Buck" level="$level_range"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
 		<MOB class="genmob" copyof="Bee" level="$level_range - 2" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
 		<MOB class="genmob" copyof="Fox" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
-		<MOB class="genmob" copyof="Gnoll" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB condition="$NOFANTASY != 'true'" class="genmob" copyof="Gnoll" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
 		<MOB class="genmob" copyof="Falcon" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
 		<MOB class="genmob" copyof="Wolf" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
 		<MOB class="genmob" copyof="Rattlesnake" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>

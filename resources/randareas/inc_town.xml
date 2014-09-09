@@ -466,7 +466,7 @@
 				<MATERIAL>STONE</MATERIAL>
 			</ITEM>
 		</ROOM>
-		<ROOM id="town_shop" class="WoodRoom" condition="$__numshoptypes_all &lt;=10" define="shoptype=$next_shop_type">
+		<ROOM id="town_shop" class="WoodRoom" condition="$__numshoptypes_all &lt;=10">
 			<TITLE select="pick-1">
 				<TITLE pickweight=1>${c:fantasy_name1}`s ${c:shoptype} Shop</TITLE>
 				<TITLE pickweight=1>${c:fantasy_name1}`s ${c:shoptype} Store</TITLE>
@@ -548,7 +548,7 @@
 					<BEHAVIOR class="MudChat" parms="" />
 					<BEHAVIOR class="Scavenger" parms="" />
 					<BEHAVIOR class="Fighterness" parms=""  condition="$shoptype!='potion' and $shoptype!='magic' and $shoptype!='jewelry'"/>
-					<BEHAVIOR class="Mageness" parms=""  condition="$shoptype='potion' or $shoptype='magic' or $shoptype='jewelry'"/>
+					<BEHAVIOR class="Mageness" parms=""  condition="($NOFANTASY != 'true') and ($shoptype='potion' or $shoptype='magic' or $shoptype='jewelry')"/>
 					<BEHAVIOR class="CommonSpeaker" parms="" />
 				</BEHAVIOR>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
@@ -574,7 +574,7 @@
 						<ITEM class="metacraft:all-armorsmithing<$mob_level" material="$any_cheap_metal" number=20/>
 						<ITEM class="metacraft:all-masterarmorsmithing<$mob_level" material="$any_cheap_metal" number=20/>
 					</ITEM>
-					<ITEM select="all" condition="$shoptype='magic'">
+					<ITEM select="all" condition="$shoptype='magic' and ($NOFANTASY != 'true')">
 						<ITEM class="metacraft:all-glassblowing<$mob_level=GenWand" number=20/>
 						<ITEM class="metacraft:all-blacksmithing<$mob_level=GenWand" material="$any_cheap_metal" number=20/>
 						<ITEM class="metacraft:any-scrollscribing < $level_range" number=20 price="$item_level * 100"/>
@@ -1315,7 +1315,7 @@
 	</ROOM>
 </ROOM>
 
-<STRING id="next_shop_type" select="any-1">
+<STRING id="shoptype" select="any-1" define="shoptype">
 	<STRING condition="$__numshoptypes_weapon &lt; 1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_weapon+=1,__numshoptypes_all+=1,pshoptypes=weapons,wshoptype=weapons">weapon</STRING>
 	<STRING condition="$__numshoptypes_armor &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_armor+=1,__numshoptypes_all+=1,pshoptypes=armor,wshoptype=armor">armor</STRING>
 	<STRING condition="$__numshoptypes_leather &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_leather+=1,__numshoptypes_all+=1,pshoptypes=leather goods,wshoptype=leather">leather</STRING>
@@ -1323,7 +1323,7 @@
 	<STRING condition="$__numshoptypes_food &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_food+=1,__numshoptypes_all+=1,pshoptypes=baked goods,wshoptype=inventory only">food</STRING>
 	<STRING condition="$__numshoptypes_general &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_general+=1,__numshoptypes_all+=1,pshoptypes=all kinds of things,wshoptype=general">general</STRING>
 	<STRING condition="$__numshoptypes_wood &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_wood+=1,__numshoptypes_all+=1,pshoptypes=wooden items,wshoptype=inventory only">wood</STRING>
-	<STRING condition="$__numshoptypes_magic &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_magic+=1,__numshoptypes_all+=1,pshoptypes=magical items,wshoptype=magic">magic</STRING>
+	<STRING condition="($NOFANTASY != 'true') and ($__numshoptypes_magic &lt;1 or $__numshoptypes_all &gt; 10)" define="__numshoptypes_magic+=1,__numshoptypes_all+=1,pshoptypes=magical items,wshoptype=magic">magic</STRING>
 	<STRING condition="$__numshoptypes_potion &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_potion+=1,__numshoptypes_all+=1,pshoptypes=potions,wshoptype=potions">potion</STRING>
 	<STRING condition="$__numshoptypes_jewelry &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_jewelry+=1,__numshoptypes_all+=1,pshoptypes=jewels,wshoptype=jewelry">jewelry</STRING>
 	<STRING condition="$__numshoptypes_pet &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_pet+=1,__numshoptypes_all+=1,pshoptypes=boxes of animals,wshoptype=pets">pet</STRING>
