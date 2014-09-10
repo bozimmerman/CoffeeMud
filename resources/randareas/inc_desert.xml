@@ -148,23 +148,73 @@
 		<ABILITY condition="$mob_level&gt;=90" class="Spell_ResistSlashing" parms="" />
 	</ABILITY>
 </MOB>
-		
+
 <MOB id="desert_mob" select="any-1" requires="level_range=int,aggrochance=int">
 	<MOB id="desert_mobs" select="all" requires="level_range=int,aggrochance=int">
-		<MOB class="genmob" copyof="Lizard" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
-		<MOB class="genmob" copyof="Lizard" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
-		<MOB class="genmob" copyof="Vulture" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
-		<MOB class="genmob" copyof="Rabbit" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
-		<MOB class="genmob" copyof="Rat" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
-		<MOB class="genmob" copyof="Toad" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /></MOB>
-		<MOB class="genmob" copyof="Spider" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
-		<MOB class="genmob" copyof="Scorpion" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
-		<MOB condition="$NOFANTASY != 'true'" class="genmob" copyof="Zombie" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
-		<MOB class="genmob" copyof="Rattlesnake" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
-		<MOB class="genmob" copyof="Scorpion" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
-		<MOB class="genmob" copyof="Rattlesnake" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
-		<MOB class="genmob" copyof="GiantScorpion" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
-		<MOB class="genmob" copyof="Cobra" level="$level_range" gender="$anygender"><BEHAVIOR CLASS="Mobile" /><BEHAVIOR CLASS="BrotherHelper" /><BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" /></MOB>
+		<MOB class="genmob" copyof="Lizard" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+		</MOB>
+		<MOB class="genmob" copyof="Lizard" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+		</MOB>
+		<MOB class="genmob" copyof="Vulture" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+		</MOB>
+		<MOB class="genmob" copyof="Rabbit" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+		</MOB>
+		<MOB class="genmob" copyof="Rat" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+		</MOB>
+		<MOB class="genmob" copyof="Toad" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+		</MOB>
+		<MOB class="genmob" copyof="Spider" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+		</MOB>
+		<MOB class="genmob" copyof="Scorpion" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+		</MOB>
+		<MOB condition="$NOFANTASY != 'true'" class="genmob" copyof="Zombie" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+		</MOB>
+		<MOB class="genmob" copyof="Rattlesnake" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+		</MOB>
+		<MOB class="genmob" copyof="Scorpion" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+		</MOB>
+		<MOB class="genmob" copyof="Rattlesnake" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+		</MOB>
+		<MOB class="genmob" copyof="GiantScorpion" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+		</MOB>
+		<MOB class="genmob" copyof="Cobra" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+		</MOB>
 	</MOB>
 </MOB>
 

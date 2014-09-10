@@ -44,7 +44,7 @@ public class GiantScorpion extends StdMOB
 
 		username="a Giant Scorpion";
 		setDescription("The giant scorpion has a green carapace and yellowish green legs and pincers. The segmented tail is black, with a vicious stinger on the end.");
-		setDisplayText("A mean Giant Scorpion hunts.");
+		setDisplayText("A mean giant scorpion hunts.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(2);

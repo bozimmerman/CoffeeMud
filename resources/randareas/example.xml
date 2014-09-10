@@ -364,6 +364,16 @@ Required details: "id" "value"
 	<string condition="$theme=''">random</string>
 </string>
 
+<STRING id="subtheme_adjusted_name" select="any-1" merge=true>
+	<STRING condition="$adj_subtheme=''">${STAT:NAME}</STRING>
+	<STRING condition="$adj_subtheme!=''">(a(n)) ${l:adj_subtheme} ${STAT:NAME}</STRING>
+</STRING>
+
+<STRING id="subtheme_adjusted_display" select="any-1" merge=true>
+	<STRING condition="$adj_subtheme=''">${STAT:DISPLAY}</STRING>
+	<STRING condition="$adj_subtheme!=''">(a(n)) ${l:adj_subtheme} ${STAT:DISPLAY}</STRING>
+</STRING>
+
 <STRING id="dungeon_random_blurb" select="any-1">
 	<STRING id="dungeon_random_blurbs" merge=true select="all">
 		<STRING select="any-1">
