@@ -18,6 +18,9 @@
 	<string condition="$theme=''">rats</string>
 </string>
 
+<STRING load="/resources/randareas/inc_dungeonblurbs.xml" />
+<STRING load="/resources/randareas/inc_fantasynames.xml" />
+
 <AREA id="maze_dungeon" merge=true layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=rats" />
 <AREA id="grid_dungeon" merge=true like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=rats" />
 <AREA id="square_dungeon" merge=true like="maze_dungeon" layout="BOXCITYSQUARE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=rats" />
@@ -47,12 +50,12 @@
 					<DESCRIPTION>This must be the most refreshing cavern in this whole place, except, what was that sound? </DESCRIPTION>
 					<DESCRIPTION>You can`t imagine a more refreshing place in this lair to be standing in. Say, what`s that stuff on the floor?</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>			
 			<EXIT class="Open" />
-			<MOB select="repeat-2?5" insert="dungeon_bat" />
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<MOB select="repeat-2?5" insert="rats_bat" />
+			<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
 		</ROOM>
 		<ROOM class="StoneRoom">
 			<TITLE>a laboratory</TITLE>
@@ -75,7 +78,7 @@
 					<DESCRIPTION>This can`t be a sane place to be hanging out. </DESCRIPTION>
 					<DESCRIPTION>You can`t imagine a more insane spot to be standing in. </DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$nasty_rat_exit</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT select="pick-1">
@@ -120,7 +123,7 @@
 						<WEAPONTYPE>BASHING</WEAPONTYPE>
 					</ITEM>
 				</ITEM>
-				<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+				<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
 			</MOB>
 			<ITEM class="GenTable" name="(a(n)) $adj_nasty table" display="$ITEM_NAME is here" isgettable="false">
 				<CONTENT><ITEM select="any-2" insert="any_alchemy_item,any_apothecary_item,any_distilling_item,any_herbalism_item" /></CONTENT>
@@ -131,7 +134,7 @@
 			<ITEM class="metacraft:Potion Rack">
 				<CONTENT><ITEM select="any-2" insert="any_alchemy_item,any_apothecary_item,any_distilling_item,any_herbalism_item" /></CONTENT>
 			</ITEM>
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom">
 			<TITLE>a hatchery</TITLE>
@@ -153,8 +156,8 @@
 					<DESCRIPTION>This can`t be a safe place to be hanging around in. </DESCRIPTION>
 					<DESCRIPTION>You can`t imagine a more dangerous place to camp out in. </DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>			
 			<MOB class="GenMob" level="$level_range" id="rats_momma_dragon" race="Dragon" gender="F">
 				<NAME select="all">
@@ -189,7 +192,7 @@
 			<ITEM class="GenFood" weight="100" NOURISHMENT="10000" bite="500" id="dragon_egg" name="a $adj_scary_feeling dragon egg" display="$item_name is here" material="EGGS" />
 			<ITEM select="2?5" insert="dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg" />
 			<EXIT class="Open" />
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom">
 			<TITLE>a dragon`s lair</TITLE>
@@ -200,14 +203,14 @@
 					<DESCRIPTION>You`ve found (a(n)) $adj_scary_feeling dragon`s lair. </DESCRIPTION>
 					<DESCRIPTION>This is (a(n)) $adj_scary_feeling dragon`s lair. </DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>You don`t feel like you`ll live very long here.</DESCRIPTION>
 					<DESCRIPTION>This seems like a good place to die. </DESCRIPTION>
 					<DESCRIPTION>This can`t be a good place. </DESCRIPTION>
 					<DESCRIPTION>You can`t imagine a more foolish place to wait around in. </DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>			
 			<MOB class="GenMob" level="(1.20 * ($level_range)) + 1" id="rats_boss_dragon" race="Dragon" gender="$anygender">
 				<NAME select="all">
@@ -256,18 +259,18 @@
 					<DESCRIPTION>You`ve found a dead-end cavern.</DESCRIPTION>
 					<DESCRIPTION>This is a dead-end.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>You feel like there`s more dead here than end.</DESCRIPTION>
 					<DESCRIPTION>This seems like a dead-end in more than once sense of the word.</DESCRIPTION>
 					<DESCRIPTION>The name of this place could not be more accurate.</DESCRIPTION>
 					<DESCRIPTION>You can`t imagine why this is a dead-end.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="Open" />
 			<MOB select="repeat-1?3" insert="ratty_skeleton" />
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom">
 			<TITLE>a crypt</TITLE>
@@ -278,14 +281,14 @@
 					<DESCRIPTION>You`ve found an ancient crypt.</DESCRIPTION>
 					<DESCRIPTION>This is a crypt.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>You feel the $adj_mustydark shadow of death here.</DESCRIPTION>
 					<DESCRIPTION>The smell of $adj_mustydark decay hangs like a fog.</DESCRIPTION>
 					<DESCRIPTION>The $adj_mustydark aura of the afterlife has found a home here.</DESCRIPTION>
 					<DESCRIPTION>The cold feelings of $adj_mustydark decay have found no rest here.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>			
 			<EXIT select="pick-1">
 				<EXIT pickweight=1 class="GenDoor" disposition="ISHIDDEN"/>
@@ -293,7 +296,7 @@
 			</EXIT>
 			<MOB select="repeat-1?2" insert="ratty_zombie" />
 			<MOB select="any-1" insert="ratty_mummy" />
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
 			<ITEM class="GenContainer" NAME="an open sarcophagus" display="$item_name is here" material="STONE" weight=5000 capacity=5300 description="It appears both ornate and extremely heavy." />
 		</ROOM>
 		<ROOM class="StoneRoom">
@@ -311,53 +314,76 @@
 					<DESCRIPTION>This appears to be the safest spot in this place so far.  Perhaps you can take a rest and a bite, so long as nothing comes through the door.</DESCRIPTION>
 					<DESCRIPTION>You can`t imagine a safer place to rest, though perhaps keeping one eye open.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT select="pick-1">
 				<EXIT pickweight=1 class="GenDoor" disposition="ISHIDDEN"/>
 				<EXIT pickweight=2 class="GenDoor"/>
 			</EXIT>
 			<AFFECT class="Prop_RoomDark" />
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
 		</ROOM>
 		<ROOM class="StdMaze">
 			<TITLE>lost in the catacombs</TITLE>
 			<DESCRIPTION>You are lost in an cavernous underground catacomb.
-			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
-			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $rats_random_blurb $rats_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $rats_random_blurb $rats_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $rats_random_blurb $rats_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $rats_random_blurb $rats_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $rats_random_blurb $rats_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $rats_random_blurb $rats_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $rats_random_blurb $rats_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $rats_random_blurb $rats_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $rats_random_blurb $rats_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $rats_random_blurb $rats_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $rats_random_blurb $rats_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $rats_random_blurb $rats_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $rats_random_blurb $rats_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $rats_random_blurb $rats_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $rats_random_blurb $rats_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $rats_random_blurb $rats_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $rats_random_blurb $rats_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $rats_random_blurb $rats_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $rats_random_blurb $rats_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $rats_random_blurb $rats_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $rats_random_blurb $rats_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $rats_random_blurb $rats_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $rats_random_blurb $rats_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $rats_random_blurb $rats_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $rats_random_blurb $rats_random_blurb
 			</DESCRIPTION>
 			<XSIZE>5</XSIZE>
 			<YSIZE>5</YSIZE>
 			<EXIT class="Door" />
-			<MOB class="GenUndead" level="$level_range" id="dungeon_mobile_spirit" name="a spirit of the dead" like="dungeon_spirit">
+			<MOB class="GenUndead" level="$level_range" id="rats_mobile_spirit" race="Spirit" gender="$anygender">
+				<NAME>a spirit of the dead</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name whisps towards you.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name wants your soul.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is trying to escape.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name doesn`t know it`s dead.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+					<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+				</DISPLAY>
 				<BEHAVIOR class="MobileAggressive" parms="" />
+				<ALIGNMENT>-10000?0</ALIGNMENT>
+				<ABILITY select="all">
+					<ABILITY condition="1?3=1" class="Undead_ColdTouch" />
+					<ABILITY condition="1?3=1" class="Undead_WeakEnergyDrain" />
+					<ABILITY condition="1?3=1 and $mob_level&gt;20" class="Undead_EnergyDrain" />
+					<ABILITY condition="1?3=1" class="Undead_LifeDrain" />
+					<ABILITY condition="1?3=1" class="Thief_Distract" />
+				</ABILITY>
+				<BEHAVIOR select="all">
+					<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
+					<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+					<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
+				</BEHAVIOR>
+				<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
 			</MOB>
-			<MOB select="repeat-5?10" insert="dungeon_mobile_spirit" />
+			<MOB select="repeat-5?10" insert="rats_mobile_spirit" />
 			<AFFECT class="Prop_RoomDark" />
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom">
 			<TITLE>a rat den</TITLE>
@@ -368,19 +394,19 @@
 					<DESCRIPTION>You`ve found a rat`s den.</DESCRIPTION>
 					<DESCRIPTION>This is a rat`s den.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>You feel like some $adj_nasty critters live here.</DESCRIPTION>
 					<DESCRIPTION>This seems like a place some $adj_nasty critters call home.</DESCRIPTION>
 					<DESCRIPTION>Some $adj_nasty little critters definitely lives here.</DESCRIPTION>
 					<DESCRIPTION>You aren`t sure the $adj_nasty little critters would be happy to see you.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>			
 			<EXIT class="Open" />
-			<MOB select="repeat-3?5" insert="dungeon_rat" />
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<MOB select="repeat-3?5" insert="rats_rat" />
+			<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom">
 			<TITLE>a web filled den</TITLE>
@@ -391,19 +417,19 @@
 					<DESCRIPTION>You`ve found a web covered den.</DESCRIPTION>
 					<DESCRIPTION>This is a web covered den.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>You feel like some $adj_nasty spiders live here.</DESCRIPTION>
 					<DESCRIPTION>This seems like a place some $adj_nasty spiders call home.</DESCRIPTION>
 					<DESCRIPTION>Some $adj_nasty little spiders definitely lives here.</DESCRIPTION>
 					<DESCRIPTION>You aren`t sure the $adj_nasty little spiders would be happy to see you.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>			
 			<EXIT class="Open" />
-			<MOB select="repeat-3?5" insert="dungeon_spider" />
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<MOB select="repeat-3?5" insert="rats_spider" />
+			<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom">
 			<TITLE>a dry lizard`s den</TITLE>
@@ -414,19 +440,19 @@
 					<DESCRIPTION>You`ve found a  dry scaley den.</DESCRIPTION>
 					<DESCRIPTION>This is a  dry scaley den.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>You feel like some $adj_nasty reptiles live here.</DESCRIPTION>
 					<DESCRIPTION>This seems like a place some $adj_nasty reptiles call home.</DESCRIPTION>
 					<DESCRIPTION>Some $adj_nasty little reptiles definitely lives here.</DESCRIPTION>
 					<DESCRIPTION>You aren`t sure the $adj_nasty little reptiles would be happy to see you.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>			
 			<EXIT class="Open" />
-			<MOB select="repeat-3?5" insert="dungeon_lizard" />
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<MOB select="repeat-3?5" insert="rats_lizard" />
+			<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom">
 			<TITLE>a slithering den</TITLE>
@@ -437,19 +463,19 @@
 					<DESCRIPTION>You`ve found a slithering scaley den.</DESCRIPTION>
 					<DESCRIPTION>This is a slithering den.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>You feel like some $adj_nasty snakes live here.</DESCRIPTION>
 					<DESCRIPTION>This seems like a place some $adj_nasty snakes call home.</DESCRIPTION>
 					<DESCRIPTION>Some $adj_nasty little snakes definitely lives here.</DESCRIPTION>
 					<DESCRIPTION>You aren`t sure the $adj_nasty little snakes would be happy to see you.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>			
 			<EXIT class="Open" />
-			<MOB select="repeat-3?5" insert="dungeon_snake" />
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<MOB select="repeat-3?5" insert="rats_snake" />
+			<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
 		</ROOM>
 		<ROOM class="IndoorWaterSurface" condition="1?20=1 and $__lakes&lt;1" define="__lakes+=1">
 			<TITLE>an underground lake</TITLE>
@@ -460,33 +486,127 @@
 					<DESCRIPTION>You`ve found a cold underground lake.</DESCRIPTION>
 					<DESCRIPTION>This is a large cold underground lake.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>The ceiling of this cavern reflects off the still water surface.</DESCRIPTION>
 					<DESCRIPTION>The black cold waters of the lake seem to cover the whole floor.</DESCRIPTION>
 					<DESCRIPTION>The water is cold and perfectly still.</DESCRIPTION>
 					<DESCRIPTION>Shadows flicker their reflections on the surface of the cold still water.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$rats_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>
 			<AFFECT class="Prop_RoomDark" />
 			<EXIT class="Open" />
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
 		</ROOM>
 	</ROOM>
 </ROOM>
 
-<STRING id="dungeon_random_blurbs" merge=true select="all">
-	<STRING  select="all" condition="$theme='rats' or ($theme='random' and 1?10=1)">
-		<STRING>You hear $adj_scary_feeling squeeking nearby.</STRING>
-		<STRING>You hear the $adj_scary_feeling sounds of tiny pattering feet nearby.</STRING>
-		<STRING>You hear faint but $adj_scary_feeling animal sounds echoing around you.</STRING>
-		<STRING>Something has left droppings here.</STRING>
-		<STRING>Some $adj_scary_feeling creature obviously relieved itself here.</STRING>
-		<STRING>Bits of half-eaten trash can be seen around here.</STRING>
-		<STRING>Bits of some half-eaten creature are here.</STRING>
-		<STRING>Was that the sound of something $adj_scary_feeling?</STRING>
+<STRING id="_rats_tunnelword" define="_rats_tunnelword" select="any-1">
+	<STRING>tunnel</STRING>
+	<STRING>corridor</STRING>
+	<STRING>tube</STRING>
+	<STRING>hallway</STRING>
+	<STRING>passageway</STRING>
+</STRING>
+
+<ROOM id="interior_rooms" merge=true select="any-1" condition="$roomtag_nodetype='interior' or $roomtag_nodetype='square'">
+	<ROOM class="CaveRoom" condition="$theme='rats' or $theme='random'">
+		<TITLE>$a_streetprefix $_rats_hallways_street_name</TITLE>
+		<STRING id="rats_interior_desc" select="all">
+			<STRING select="any-1" action="PREPEND">
+				<STRING>You are standing  in (a(n)) $adj_any $_dungeon_tunnelword that branches $roomexits_desc_long.</STRING> 
+				<STRING>This $adj_any $_dungeon_tunnelword branches steeply $roomexits_desc_long.</STRING> 
+				<STRING>You are in (a(n)) $adj_any $_dungeon_tunnelword running $roomexits_desc_long.</STRING> 
+				<STRING>This $adj_any $_dungeon_tunnelword runs $roomexits_desc_long.</STRING> 
+				<STRING>You are walking through (a(n)) $adj_any $_dungeon_tunnelword heading $roomexits_desc_long.</STRING>
+				<STRING>This $adj_any $_dungeon_tunnelword heads $roomexits_desc_long.</STRING>
+				<STRING>This $adj_any $_dungeon_tunnelword seems to head $roomexits_desc_long.</STRING>
+			</STRING>
+			<STRING select="any-2" insert="rats_random_blurbs" action="APPEND" />
+			<STRING select="all" action="APPEND" insert="desc_exits" />
+		</STRING>
+		<DESCRIPTION>$rats_interior_desc</DESCRIPTION>
+		<EXIT class="Open" />
+		<MOB condition="1?3=1" select="any-1" insert="rats_mobs" />
+		<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
+	</ROOM>
+</ROOM>
+
+<ROOM id="hallway_rooms" merge=true select="pick-1" condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
+	<ROOM class="CaveRoom" pickweight="5" condition="$theme='rats' or $theme='random'">
+		<TITLE>$a_streetprefix $_rats_hallways_street_name</TITLE>
+		<STRING id="_rats_hallways_street_name" define="_rats_hallways_street_name" select="any-1">
+			<STRING>cavernous $_rats_tunnelword</STRING>
+			<STRING>rocky $_rats_tunnelword</STRING>
+			<STRING>$_rats_tunnelword</STRING>
+			<STRING>dark cave $_rats_tunnelword</STRING>
+			<STRING>cavernous $roomrun_desc $_rats_tunnelword</STRING>
+			<STRING>rocky $roomrun_desc $_rats_tunnelword</STRING>
+			<STRING>$roomrun_desc $_rats_tunnelword</STRING>
+			<STRING>dark $roomrun_desc cave $_rats_tunnelword</STRING>
+		</STRING>
+		<DESCRIPTION>$rats_hallways_street_desc</DESCRIPTION>
+		<STRING id="rats_hallways_street_desc" select="all">
+			<STRING select="any-1" action="PREPEND">
+				<STRING>You stand in (a(n)) $adj_any $_rats_tunnelword that runs steeply $roomrun_desc_long.</STRING> 
+				<STRING>This $adj_any $_rats_tunnelword runs steeply $roomrun_desc_long.</STRING> 
+				<STRING>You are in (a(n)) $adj_any $_rats_tunnelword running $roomrun_desc_long.</STRING> 
+				<STRING>This $adj_any $_rats_tunnelword runs $roomrun_desc_long.</STRING> 
+				<STRING>You are walking through (a(n)) $adj_any $_rats_tunnelword running $roomrun_desc_long.</STRING>
+				<STRING>This $adj_any $_rats_tunnelword heads $roomrun_desc_long.</STRING>
+				<STRING>This $adj_any $_rats_tunnelword seems to head $roomrun_desc_long.</STRING>
+			</STRING>
+			<STRING select="all" action="APPEND" insert="desc_exits" />
+			<STRING select="any-1" insert="rats_random_blurbs" action="APPEND" />
+		</STRING>
+		<EXIT class="Open" />
+		<MOB condition="1?2=1" select="any-1" insert="rats_mobs" />
+		<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
+	</ROOM>
+	<ROOM class="CaveRoom" pickweight="1" condition="$theme='rats' or $theme='random'">
+		<TITLE>$a_streetprefix $_rats_crawlways_street_name</TITLE>
+		<STRING id="_rats_crawlways_street_name" define="_rats_crawlways_street_name" select="any-1">
+			<STRING>small $_rats_hallways_street_name</STRING>
+			<STRING>narrow $_rats_hallways_street_name</STRING>
+			<STRING>short $_rats_hallways_street_name</STRING>
+		</STRING>
+		<DESCRIPTION>$rats_crawlways_street_desc</DESCRIPTION>
+		<STRING id="rats_crawlways_street_desc" select="all">
+			<STRING select="any-1" action="prepend">
+				<STRING>You are in (a(n)) $adj_anynosize $_rats_tunnelword that runs narrowly $roomrun_desc_long.</STRING> 
+				<STRING>This $adj_anynosize $_rats_tunnelword runs narrowly $roomrun_desc_long.</STRING> 
+				<STRING>You are in (a(n)) $adj_anynosize $_rats_tunnelword squeezing $roomrun_desc_long.</STRING> 
+				<STRING>This $adj_anynosize $_rats_tunnelword runs $roomrun_desc_long.</STRING> 
+				<STRING>You are going through (a(n)) $adj_anynosize $_rats_tunnelword running $roomrun_desc_long.</STRING>
+				<STRING>This $adj_anynosize $_rats_tunnelword heads $roomrun_desc_long.</STRING>
+				<STRING>This $adj_anynosize $_rats_tunnelword seems to head $roomrun_desc_long.</STRING>
+			</STRING>
+			<STRING select="any-1">
+				<STRING>The $adj_phys_nosize ceiling is very low.</STRING>
+				<STRING>The $adj_phys_nosize ceiling is lower than usual.</STRING>
+			</STRING>
+			<STRING select="any-1" insert="rats_random_blurbs" action="APPEND" />
+		</STRING>
+		<AFFECT class="Prop_Crawlspace" parms="" />
+		<EXIT class="Open" />
+		<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
+	</ROOM>
+</ROOM>
+
+<STRING id="rats_random_blurb" select="any-1">
+	<STRING id="rats_random_blurbs" select="all" insert="dungeon_random_blurbs">
+		<STRING  select="all" condition="$theme='rats' or ($theme='random' and 1?10=1)">
+			<STRING>You hear $adj_scary_feeling squeeking nearby.</STRING>
+			<STRING>You hear the $adj_scary_feeling sounds of tiny pattering feet nearby.</STRING>
+			<STRING>You hear faint but $adj_scary_feeling animal sounds echoing around you.</STRING>
+			<STRING>Something has left droppings here.</STRING>
+			<STRING>Some $adj_scary_feeling creature obviously relieved itself here.</STRING>
+			<STRING>Bits of half-eaten trash can be seen around here.</STRING>
+			<STRING>Bits of some half-eaten creature are here.</STRING>
+			<STRING>Was that the sound of something $adj_scary_feeling?</STRING>
+		</STRING>
 	</STRING>
 </STRING>
 
@@ -545,7 +665,7 @@
 			<WEAPONTYPE>BASHING</WEAPONTYPE>
 		</ITEM>
 	</ITEM>
-	<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+	<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
 </MOB>
 		
 <MOB class="GenUndead" level="$level_range" id="ratty_zombie" race="Undead" gender="$anygender">
@@ -594,7 +714,7 @@
 			<WEAPONTYPE>BASHING</WEAPONTYPE>
 		</ITEM>
 	</ITEM>
-	<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+	<ITEM condition="1?10=1" select="any-1" insert="rats_junk" />
 </MOB>
 		
 <MOB class="GenUndead" level="2+($level_range)" id="ratty_mummy" race="Undead" gender="$anygender">
@@ -651,154 +771,153 @@
 	<ITEM condition="1?10=1" select="any-1" insert="any_scrollscribing_item" />
 </MOB>
 		
-<MOB id="dungeon_mobs" merge=true select="all" requires="level_range=int,theme=rats,aggrochance=int">
-	<MOB id="rat_mobs" select="all" condition="$theme='rats' or $theme='random'">
-		<MOB class="GenMob" level="$level_range" id="dungeon_rat" race="Rat" gender="$anygender">
-			<NAME>(a(n)) $adj_nasty_animal $adj_mammal_color rat</NAME>
-			<DISPLAY select="pick-1">
-				<DISPLAY pickweight="1">$mob_name squeeks at you.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name bares its teeth at you.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is rummaging through something.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name looks hungry.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is pittering around here.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is trying to hide here.</DISPLAY>
-				<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
-			</DISPLAY>
-			<ALIGNMENT>0</ALIGNMENT>
-			<ABILITY condition="$mob_level>10 and 1?3=1" class="Disease" />
-			<BEHAVIOR select="all">
-				<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
-				<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
-				<BEHAVIOR class="Mobile" parms="" condition="$roomtag_nodetype!='leaf'" />
-				<BEHAVIOR class="CombatAbilities" parms="" />
-			</BEHAVIOR>
-		</MOB>
-		<MOB class="GenMob" level="$level_range" id="dungeon_bat" race="Bat" gender="$anygender">
-			<NAME>(a(n)) $adj_nasty_animal $adj_mammal_color bat</NAME>
-			<DISPLAY select="pick-1">
-				<DISPLAY pickweight="1">$mob_name dives at you.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name bares its teeth at you.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is circling around here.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is hunting for food.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is flying around here.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is hanging around here.</DISPLAY>
-				<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
-			</DISPLAY>
-			<ALIGNMENT>0</ALIGNMENT>
-			<ABILITY condition="$mob_level>10 and 1?3=1" class="Disease" />
-			<BEHAVIOR select="all">
-				<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
-				<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
-				<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
-				<BEHAVIOR class="CombatAbilities" parms="" />
-			</BEHAVIOR>
-		</MOB>
-		<MOB class="GenMob" level="$level_range" id="dungeon_spider" race="Spider" gender="$anygender">
-			<NAME>(a(n)) $adj_nasty_animal $adj_insect_color spider</NAME>
-			<DISPLAY select="pick-1">
-				<DISPLAY pickweight="1">$mob_name creeps towards you.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name opens its mandibles at you.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is crawling around here.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is waiting for food.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is spinning around here.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is waiting around here.</DISPLAY>
-				<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
-			</DISPLAY>
-			<ALIGNMENT>0</ALIGNMENT>
-			<ABILITY condition="$mob_level>10 and 1?3=1" class="Poison" />
-			<BEHAVIOR select="all">
-				<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
-				<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
-				<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
-				<BEHAVIOR class="CombatAbilities" parms="" />
-			</BEHAVIOR>
-		</MOB>
-		<MOB class="GenMob" level="$level_range" id="dungeon_blob" race="Blob" gender="N">
-			<NAME>(a(n)) $adj_nasty_animal $adj_creature_color blob</NAME>
-			<DISPLAY select="pick-1">
-				<DISPLAY pickweight="1">$mob_name creeps towards you.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name looks very menacing.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is dragging itself around here.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is waiting for food.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is waiting around here.</DISPLAY>
-				<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
-			</DISPLAY>
-			<ALIGNMENT>0</ALIGNMENT>
-			<ABILITY condition="$mob_level&gt;30 and 1?3=1" class="Paralysis" />
-			<ABILITY condition="1?3=1" class="WeakParalysis" />
-			<BEHAVIOR select="all">
-				<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
-				<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
-				<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
-				<BEHAVIOR class="CombatAbilities" parms="" />
-				<BEHAVIOR class="Scavenger" parms="" />
-			</BEHAVIOR>
-		</MOB>
-		<MOB class="GenMob" level="$level_range" id="dungeon_scorpion" race="Scorpion" gender="$anygender">
-			<NAME>(a(n)) $adj_nasty_animal scorpion</NAME>
-			<DISPLAY select="pick-1">
-				<DISPLAY pickweight="1">$mob_name creeps towards you.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name snaps its tail at you.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is crawling around here.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is waiting for food.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is running around here.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is waiting around here.</DISPLAY>
-				<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
-			</DISPLAY>
-			<ALIGNMENT>0</ALIGNMENT>
-			<ABILITY condition="$mob_level>10 and 1?3=1" class="Poison" />
-			<BEHAVIOR select="all">
-				<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
-				<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
-				<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
-				<BEHAVIOR class="CombatAbilities" parms="" />
-			</BEHAVIOR>
-		</MOB>
-		<MOB class="GenMob" level="$level_range" id="dungeon_snake" race="Snake" gender="$anygender">
-			<NAME>(a(n)) $adj_nasty_animal $adj_reptile_color snake</NAME>
-			<DISPLAY select="pick-1">
-				<DISPLAY pickweight="1">$mob_name slinks towards you.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name shows its fangs you.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is slithering around here.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is waiting for food.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is moving around here.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is coiled up here.</DISPLAY>
-				<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
-			</DISPLAY>
-			<ALIGNMENT>0</ALIGNMENT>
-			<ABILITY condition="$mob_level>10 and 1?3=1" class="Poison" />
-			<BEHAVIOR select="all">
-				<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
-				<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
-				<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
-				<BEHAVIOR class="CombatAbilities" parms="" />
-			</BEHAVIOR>
-		</MOB>
-		<MOB class="GenMob" level="$level_range" id="dungeon_lizard" race="Lizard" gender="$anygender">
-			<NAME>(a(n)) $adj_nasty_animal $adj_reptile_color lizard</NAME>
-			<DISPLAY select="pick-1">
-				<DISPLAY pickweight="1">$mob_name creeps towards you.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name flicks its tounge you.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is crawling around here.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is waiting for food.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is trying to hide here.</DISPLAY>
-				<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
-			</DISPLAY>
-			<ALIGNMENT>0</ALIGNMENT>
-			<ABILITY condition="$mob_level>5 and 1?3=1" class="Skill_Trip" />
-			<BEHAVIOR select="all">
-				<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
-				<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
-				<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
-				<BEHAVIOR class="CombatAbilities" parms="" />
-			</BEHAVIOR>
-		</MOB>
+<MOB id="rats_mobs" select="all" requires="level_range=int,theme=rats,aggrochance=int">
+	<MOB class="GenMob" level="$level_range" id="rats_rat" race="Rat" gender="$anygender">
+		<NAME>(a(n)) $adj_nasty_animal $adj_mammal_color rat</NAME>
+		<DISPLAY select="pick-1">
+			<DISPLAY pickweight="1">$mob_name squeeks at you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name bares its teeth at you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is rummaging through something.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name looks hungry.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is pittering around here.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is trying to hide here.</DISPLAY>
+			<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+		</DISPLAY>
+		<ALIGNMENT>0</ALIGNMENT>
+		<ABILITY condition="$mob_level>10 and 1?3=1" class="Disease" />
+		<BEHAVIOR select="all">
+			<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
+			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+			<BEHAVIOR class="Mobile" parms="" condition="$roomtag_nodetype!='leaf'" />
+			<BEHAVIOR class="CombatAbilities" parms="" />
+		</BEHAVIOR>
+	</MOB>
+	<MOB class="GenMob" level="$level_range" id="rats_bat" race="Bat" gender="$anygender">
+		<NAME>(a(n)) $adj_nasty_animal $adj_mammal_color bat</NAME>
+		<DISPLAY select="pick-1">
+			<DISPLAY pickweight="1">$mob_name dives at you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name bares its teeth at you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is circling around here.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is hunting for food.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is flying around here.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is hanging around here.</DISPLAY>
+			<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+		</DISPLAY>
+		<ALIGNMENT>0</ALIGNMENT>
+		<ABILITY condition="$mob_level>10 and 1?3=1" class="Disease" />
+		<BEHAVIOR select="all">
+			<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
+			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+			<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
+			<BEHAVIOR class="CombatAbilities" parms="" />
+		</BEHAVIOR>
+	</MOB>
+	<MOB class="GenMob" level="$level_range" id="rats_spider" race="Spider" gender="$anygender">
+		<NAME>(a(n)) $adj_nasty_animal $adj_insect_color spider</NAME>
+		<DISPLAY select="pick-1">
+			<DISPLAY pickweight="1">$mob_name creeps towards you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name opens its mandibles at you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is crawling around here.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is waiting for food.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is spinning around here.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is waiting around here.</DISPLAY>
+			<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+		</DISPLAY>
+		<ALIGNMENT>0</ALIGNMENT>
+		<ABILITY condition="$mob_level>10 and 1?3=1" class="Poison" />
+		<BEHAVIOR select="all">
+			<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
+			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+			<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
+			<BEHAVIOR class="CombatAbilities" parms="" />
+		</BEHAVIOR>
+	</MOB>
+	<MOB class="GenMob" level="$level_range" id="rats_blob" race="Blob" gender="N">
+		<NAME>(a(n)) $adj_nasty_animal $adj_creature_color blob</NAME>
+		<DISPLAY select="pick-1">
+			<DISPLAY pickweight="1">$mob_name creeps towards you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name looks very menacing.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is dragging itself around here.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is waiting for food.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is waiting around here.</DISPLAY>
+			<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+		</DISPLAY>
+		<ALIGNMENT>0</ALIGNMENT>
+		<ABILITY condition="$mob_level&gt;30 and 1?3=1" class="Paralysis" />
+		<ABILITY condition="1?3=1" class="WeakParalysis" />
+		<BEHAVIOR select="all">
+			<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
+			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+			<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
+			<BEHAVIOR class="CombatAbilities" parms="" />
+			<BEHAVIOR class="Scavenger" parms="" />
+		</BEHAVIOR>
+	</MOB>
+	<MOB class="GenMob" level="$level_range" id="rats_scorpion" race="Scorpion" gender="$anygender">
+		<NAME>(a(n)) $adj_nasty_animal scorpion</NAME>
+		<DISPLAY select="pick-1">
+			<DISPLAY pickweight="1">$mob_name creeps towards you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name snaps its tail at you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is crawling around here.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is waiting for food.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is running around here.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is waiting around here.</DISPLAY>
+			<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+		</DISPLAY>
+		<ALIGNMENT>0</ALIGNMENT>
+		<ABILITY condition="$mob_level>10 and 1?3=1" class="Poison" />
+		<BEHAVIOR select="all">
+			<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
+			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+			<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
+			<BEHAVIOR class="CombatAbilities" parms="" />
+		</BEHAVIOR>
+	</MOB>
+	<MOB class="GenMob" level="$level_range" id="rats_snake" race="Snake" gender="$anygender">
+		<NAME>(a(n)) $adj_nasty_animal $adj_reptile_color snake</NAME>
+		<DISPLAY select="pick-1">
+			<DISPLAY pickweight="1">$mob_name slinks towards you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name shows its fangs you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is slithering around here.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is waiting for food.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is moving around here.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is coiled up here.</DISPLAY>
+			<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+		</DISPLAY>
+		<ALIGNMENT>0</ALIGNMENT>
+		<ABILITY condition="$mob_level>10 and 1?3=1" class="Poison" />
+		<BEHAVIOR select="all">
+			<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
+			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+			<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
+			<BEHAVIOR class="CombatAbilities" parms="" />
+		</BEHAVIOR>
+	</MOB>
+	<MOB class="GenMob" level="$level_range" id="rats_lizard" race="Lizard" gender="$anygender">
+		<NAME>(a(n)) $adj_nasty_animal $adj_reptile_color lizard</NAME>
+		<DISPLAY select="pick-1">
+			<DISPLAY pickweight="1">$mob_name creeps towards you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name flicks its tounge you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is crawling around here.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is waiting for food.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+			<DISPLAY pickweight="1">$mob_name is trying to hide here.</DISPLAY>
+			<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+		</DISPLAY>
+		<ALIGNMENT>0</ALIGNMENT>
+		<ABILITY condition="$mob_level>5 and 1?3=1" class="Skill_Trip" />
+		<BEHAVIOR select="all">
+			<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
+			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+			<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
+			<BEHAVIOR class="CombatAbilities" parms="" />
+		</BEHAVIOR>
 	</MOB>
 </MOB>
 
-<ITEM id="dungeon_junk" merge=true select="all" requires="level_range=int">
-	<ITEM select="all" condition="$theme='rats' or $theme='random'">
+<ITEM id="rats_junk" select="all" requires="level_range=int">
+	<ITEM select="all" insert="dungeon_junk" />
+	<ITEM select="all">
 		<ITEM class="GenItem" name="some $adj_metal_broken armor scraps" display="$item_name are sitting here" material="$any_cheap_metal" level="$level_range" />
 		<ITEM class="GenResource" name="the bones of a dead aventurer" display="$item_name rest here" material="BONE" level="$level_range" weight="10" />
 		<ITEM class="GenItem" name="a string of beads" display="a string of beads lie here" material="BONE" level="$level_range" weight=1 />
@@ -886,8 +1005,8 @@
 	<STRING pickweight=1 define="dragon_alignment=10000">gold</STRING>
 </STRING>
 
-<STRING id="dungeon_leaf_exit" select="any-1">
-	<STRING id="dungeon_leaf_exits" select="all">
+<STRING id="rats_leaf_exit" select="any-1">
+	<STRING id="rats_leaf_exits" select="all">
 		<STRING>The exit is to the $roomexits_desc_long.</STRING>
 		<STRING>The way out of here is $roomexits_desc_long.</STRING>
 		<STRING>The exit to the $roomexits_desc_long is the only way out.</STRING>

@@ -152,11 +152,21 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if((load!=null)&&(load.length()>0))
 			{
 				piece.parms.remove("LOAD");
-				final CMFile file = new CMFile(load,null,CMFile.FLAG_LOGERRORS|CMFile.FLAG_FORCEALLOW);
-				if(file.exists() && file.canRead())
+				XMLpiece loadedPiece=(XMLpiece)defined.get("SYSTEM_LOADED_XML_FILES");
+				if(loadedPiece==null)
 				{
-					final List<XMLpiece> addPieces=CMLib.xml().parseAllXML(file.text());
-					piece.contents.addAll(addPieces);
+					loadedPiece=new XMLpiece("SYSTEM_LOADED_XML_FILES","");
+					defined.put("SYSTEM_LOADED_XML_FILES", loadedPiece);
+				}
+				final CMFile file = new CMFile(load,null,CMFile.FLAG_LOGERRORS|CMFile.FLAG_FORCEALLOW);
+				if(CMLib.xml().getPieceFromPieces(loadedPiece.contents, file.getAbsolutePath().toUpperCase())==null)
+				{
+					loadedPiece.contents.add(new XMLpiece(file.getAbsolutePath().toUpperCase(),"true"));
+					if(file.exists() && file.canRead())
+					{
+						final List<XMLpiece> addPieces=CMLib.xml().parseAllXML(file.text());
+						piece.contents.addAll(addPieces);
+					}
 				}
 			}
 			buildDefinedIDSet(piece.contents,defined);

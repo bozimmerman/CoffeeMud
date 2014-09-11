@@ -14,6 +14,8 @@
    limitations under the License.
 -->
 <!--  include file full of town-specific tags -->
+<STRING load="/resources/randareas/inc_streetnames.xml" />
+<STRING load="/resources/randareas/inc_fantasynames.xml" />
 
 <AREA id="maze_dungeon" merge=true layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=town">
 	<BEHAVIOR condition="$theme='town'" class="Arrest" parms="laws.ini;OFFICERS=&quot;\&quot;$__officertype\&quot;&quot; JUDGE=&quot;\&quot;$__chieftype\&quot;&quot;"/>
@@ -345,12 +347,12 @@
 				<TITLE>$a_streetprefix $roomrun_desc hallway</TITLE>
 				<DESCRIPTION>
 					<DESCRIPTION select="any-1" action="PREPEND">
-						<DESCRIPTION>You stand in (a(n)) $adj_any $noun_hallway that runs $roomrun_desc_long.</DESCRIPTION> 
-						<DESCRIPTION>This $adj_any $noun_hallway runs steeply $roomrun_desc_long.</DESCRIPTION> 
-						<DESCRIPTION>You are in (a(n)) $adj_any $noun_hallway running $roomrun_desc_long.</DESCRIPTION> 
-						<DESCRIPTION>This $adj_any $noun_hallway runs $roomrun_desc_long.</DESCRIPTION> 
-						<DESCRIPTION>You are walking through (a(n)) $adj_any $noun_hallway running $roomrun_desc_long.</DESCRIPTION>
-						<DESCRIPTION>This $adj_any $noun_hallway heads $roomrun_desc_long.</DESCRIPTION>
+						<DESCRIPTION>You stand in (a(n)) $adj_any $town_hallway_type that runs $roomrun_desc_long.</DESCRIPTION> 
+						<DESCRIPTION>This $adj_any $town_hallway_type runs steeply $roomrun_desc_long.</DESCRIPTION> 
+						<DESCRIPTION>You are in (a(n)) $adj_any $town_hallway_type running $roomrun_desc_long.</DESCRIPTION> 
+						<DESCRIPTION>This $adj_any $town_hallway_type runs $roomrun_desc_long.</DESCRIPTION> 
+						<DESCRIPTION>You are walking through (a(n)) $adj_any $town_hallway_type running $roomrun_desc_long.</DESCRIPTION>
+						<DESCRIPTION>This $adj_any $town_hallway_type heads $roomrun_desc_long.</DESCRIPTION>
 					</DESCRIPTION>
 					<DESCRIPTION select="all" action="APPEND" insert="desc_exits" />
 				</DESCRIPTION>
@@ -792,10 +794,10 @@
 				</DESCRIPTION>
 				<DESCRIPTION>The walls are all painted $adj_colored_color and toys are scattered on the $adj_untidy floor.</DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>Everything from the furnishings, to the stuff, to the toddlers scream $noun_fun.</DESCRIPTION>
-					<DESCRIPTION>Children full of $noun_fun bounce around here.</DESCRIPTION>
-					<DESCRIPTION>Nannies are here chasing $adj_lots of children around has they enjoy their $noun_fun.</DESCRIPTION>
-					<DESCRIPTION>${c:adj_lots} of children run around having $noun_fun.</DESCRIPTION>
+					<DESCRIPTION>Everything from the furnishings, to the stuff, to the toddlers scream for $town_fun.</DESCRIPTION>
+					<DESCRIPTION>Children full of $town_fun bounce around here.</DESCRIPTION>
+					<DESCRIPTION>Nannies are here chasing $adj_lots of children around has they enjoy their $town_fun.</DESCRIPTION>
+					<DESCRIPTION>${c:adj_lots} of children run around for $town_fun.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
@@ -1470,4 +1472,21 @@
 <STRING id="armorsmithywords" select="any-1">
 	<STRING>shield</STRING><STRING>armor</STRING><STRING>bracer</STRING><STRING>chain</STRING><STRING>plate</STRING>
 </STRING>
+
+<STRING id="town_hallway_type" select="any-1">
+	<STRING>corridor</STRING>
+	<STRING>hallway</STRING>
+	<STRING>hall</STRING>
+	<STRING>passage</STRING>
+	<STRING>passageway</STRING>
+</STRING>
+
+<STRING id="town_fun" select="any-1">
+	<STRING>enjoyment</STRING><STRING>entertainment</STRING><STRING>amusement</STRING><STRING>pleasure</STRING><STRING>jollification</STRING>
+	<STRING>merrymaking; recreation</STRING><STRING>diversion</STRING><STRING>leisure</STRING><STRING>merriment</STRING><STRING>cheerfulness</STRING>
+	<STRING>cheeriness</STRING><STRING>jollity</STRING><STRING>joviality</STRING><STRING>jocularity</STRING><STRING>gaiety</STRING>
+	<STRING>mirth</STRING><STRING>laughter</STRING><STRING>hilarity</STRING><STRING>glee</STRING><STRING>gladness</STRING>
+	<STRING>lightheartedness</STRING><STRING>levity</STRING>
+</STRING> 
+
 

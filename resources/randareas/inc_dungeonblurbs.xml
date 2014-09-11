@@ -1,0 +1,76 @@
+<!--  
+   Copyright 2013-2014 Bo Zimmerman
+
+   Licensed under the Apache License</STRING><STRING>Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+	   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing</STRING><STRING>software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND</STRING><STRING>either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!--  include file for common dungeon blurbs -->
+<STRING id="dungeon_random_blurbs" select="all">
+	<STRING select="any-1">
+		<STRING>The $adj_any walls are nearly pitch black.</STRING>
+		<STRING>The walls here are $adj_any.</STRING>
+		<STRING>The walls are $adj_any.</STRING>
+		<STRING>The walls are $adj_any and just slightly $adj_any.</STRING>
+		<STRING>The $adj_any walls are tall and sheer.</STRING>
+	</STRING>
+	<STRING select="any-1">
+		<STRING>The $adj_any floor has been worn down by years of use.</STRING>
+		<STRING>The floor is $adj_any and appears unscathed by mass footfall.</STRING>
+		<STRING>The $adj_any floor is bare and dirtless.</STRING>
+		<STRING>The floor has bits of bones and rotten flesh.</STRING>
+		<STRING>The $adj_any floor has bits of rotten and half-eaten animal parts.</STRING>
+		<STRING>Earthly spines jut out from the ceiling and the floor.</STRING>
+		<STRING>Sharp pointed rocks on the ceiling and floor provide plenty of navigational obstacles.</STRING>
+	</STRING>
+	<STRING>There are several menacing stalagtites and stalagmites to navigate around.</STRING>
+	<STRING>A series of undecipherable scribbles sit on the walls.</STRING>
+	<STRING>It looks like something might have died here.</STRING>
+	<STRING>You might have just stepped on a frog.</STRING>
+	<STRING>Something indescribable makes you feel lonesome and sad here.</STRING>
+	<STRING select="any-1">
+		<STRING>The $adj_any ceiling is too far above you to see clearly.</STRING>
+		<STRING>The ceiling is $adj_any.</STRING>
+		<STRING>The $adj_any ceiling is unsettling.</STRING>
+	</STRING>
+	<STRING select="any-1">
+		<STRING>A layer of dirt upon the ground is marked with various tracks.</STRING>
+		<STRING>Dust has settled on the ground from scarce use.</STRING>
+	</STRING>
+	<STRING condition="1?10 &lt;= 2">
+		<STRING select="any-1"  id="random_badsmell">
+			<STRING select="all" id="random_badsmells">
+				<STRING>The stench is quite unbearable.</STRING>
+				<STRING>A musty, dank smell wafts through the air.</STRING>
+				<STRING>You think you smell brimstone.</STRING>
+				<STRING>The first thing you notice is the stench.</STRING>
+				<STRING>The stink in here is horrible.</STRING>
+				<STRING>The foul smells here are overwhelming.</STRING>
+				<STRING>You detect offensive odors all around..</STRING>
+			</STRING>
+		</STRING>
+	</STRING>
+	<STRING select="any-1">
+		<STRING>The air is $adj_nonphys.</STRING>
+		<STRING>$adj_nonphys air hovers around you.</STRING>
+		<STRING>This air is $adj_nonphys and $adj_nonphys.</STRING>
+		<STRING>The air is not quite as $adj_nonphys here.</STRING>
+	</STRING>
+	<STRING>This place is $adj_anynosize.</STRING>
+	<STRING>You feel $adj_nonphys.</STRING>
+	<STRING>You thought you felt a breeze.</STRING>
+	<STRING select="any-1">
+		<STRING>You think you heard a sound of faint trickling in the distance.</STRING>
+		<STRING>The walls seems to groan.</STRING>
+		<STRING>Faint $adj_scary_feeling sounds can be heard in the distance.</STRING>
+	</STRING>
+</STRING>
+

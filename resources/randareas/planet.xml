@@ -20,8 +20,8 @@ See example.xml for details.
 <AREADATA>
 
 <STRING load="/resources/randareas/inc_roomruns.xml" />
+<STRING load="/resources/randareas/inc_common.xml" />
 <STRING load="/resources/randareas/inc_adjectives.xml" />
-<STRING load="/resources/randareas/inc_streetnames.xml" />
 <STRING load="/resources/randareas/inc_fantasynames.xml" />
 
 <STRING load="/resources/randareas/inc_forest.xml" />

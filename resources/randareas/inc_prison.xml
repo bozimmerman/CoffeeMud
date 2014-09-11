@@ -18,12 +18,74 @@
 	<string condition="$theme=''">prison</string>
 </string>
 
+<STRING load="/resources/randareas/inc_dungeonblurbs.xml" />
+<STRING load="/resources/randareas/inc_fantasynames.xml" />
+
 <AREA id="maze_dungeon" merge=true layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison" />
 <AREA id="grid_dungeon" merge=true like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison" />
 <AREA id="square_dungeon" merge=true like="maze_dungeon" layout="BOXCITYSQUARE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison" />
 <AREA id="box_dungeon" merge=true like="maze_dungeon" layout="BOXCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison" />
 <AREA id="cross_dungeon" merge=true like="maze_dungeon" layout="CROSS" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison" />
 <AREA id="tree_dungeon" merge=true like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison" />
+
+<STRING id="_prison_tunnelword" define="_prison_tunnelword" select="any-1">
+	<STRING>corridor</STRING>
+	<STRING>hallway</STRING>
+	<STRING>passageway</STRING>
+</STRING>
+
+<ROOM id="interior_rooms" merge=true select="any-1" condition="$roomtag_nodetype='interior' or $roomtag_nodetype='square'">
+	<ROOM class="StoneRoom" condition="$theme='prison' or $theme='random'">
+		<TITLE>$a_streetprefix $_prison_hallways_street_name</TITLE>
+		<STRING id="prison_interior_desc" select="all">
+			<STRING select="any-1" action="PREPEND">
+				<STRING>You are standing  in (a(n)) $adj_any $_prison_tunnelword that branches $roomexits_desc_long.</STRING> 
+				<STRING>This $adj_any $_prison_tunnelword branches steeply $roomexits_desc_long.</STRING> 
+				<STRING>You are in (a(n)) $adj_any $_prison_tunnelword running $roomexits_desc_long.</STRING> 
+				<STRING>This $adj_any $_prison_tunnelword runs $roomexits_desc_long.</STRING> 
+				<STRING>You are walking through (a(n)) $adj_any $_prison_tunnelword heading $roomexits_desc_long.</STRING>
+				<STRING>This $adj_any $_prison_tunnelword heads $roomexits_desc_long.</STRING>
+				<STRING>This $adj_any $_prison_tunnelword seems to head $roomexits_desc_long.</STRING>
+			</STRING>
+			<STRING select="any-2" insert="prison_random_blurbs" action="APPEND" />
+			<STRING select="all" action="APPEND" insert="desc_exits" />
+		</STRING>
+		<DESCRIPTION>$prison_interior_desc</DESCRIPTION>
+		<EXIT class="Open" />
+		<MOB condition="1?3=1" select="any-1" insert="prison_mobs" />
+		<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
+	</ROOM>
+</ROOM>
+
+<STRING id="prison_adjwords" select="any-1">
+	<STRING>confining</STRING><STRING>constricting</STRING><STRING>enclosing</STRING><STRING>captivating</STRING>
+	<STRING>cooped up</STRING><STRING>narrow</STRING><STRING>impounding</STRING><STRING>enclosed</STRING>
+	<STRING>hedging</STRING><STRING>claustrophobic</STRING><STRING>interning</STRING><STRING></STRING>
+</STRING>
+
+<ROOM id="hallway_rooms" merge=true select="pick-1" condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
+	<ROOM class="StoneRoom" pickweight="5" condition="$theme='prison' or $theme='random'">
+		<TITLE>$a_streetprefix $_prison_hallways_street_name</TITLE>
+		<STRING id="_prison_hallways_street_name" define="_prison_hallways_street_name">$prison_adjwords $_prison_tunnelword</STRING>
+		<DESCRIPTION>$prison_hallways_street_desc</DESCRIPTION>
+		<STRING id="prison_hallways_street_desc" select="all">
+			<STRING select="any-1" action="PREPEND">
+				<STRING>You stand in (a(n)) $adj_any $_prison_tunnelword that runs steeply $roomrun_desc_long.</STRING> 
+				<STRING>This $adj_any $_prison_tunnelword runs steeply $roomrun_desc_long.</STRING> 
+				<STRING>You are in (a(n)) $adj_any $_prison_tunnelword running $roomrun_desc_long.</STRING> 
+				<STRING>This $adj_any $_prison_tunnelword runs $roomrun_desc_long.</STRING> 
+				<STRING>You are walking through (a(n)) $adj_any $_prison_tunnelword running $roomrun_desc_long.</STRING>
+				<STRING>This $adj_any $_prison_tunnelword heads $roomrun_desc_long.</STRING>
+				<STRING>This $adj_any $_prison_tunnelword seems to head $roomrun_desc_long.</STRING>
+			</STRING>
+			<STRING select="all" action="APPEND" insert="desc_exits" />
+			<STRING select="any-1" insert="prison_random_blurbs" action="APPEND" />
+		</STRING>
+		<EXIT class="Open" />
+		<MOB condition="1?2=1" select="any-1" insert="prison_mobs" />
+		<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
+	</ROOM>
+</ROOM>
 
 <ROOM id="leaf_rooms" merge=true select="any-1" condition="$roomtag_nodetype='leaf'">
 	<ROOM select="all" condition="$theme='prison' or $theme='random'">
@@ -38,13 +100,13 @@
 					<DESCRIPTION>This is (a(n)) $adj_nasty cell for common prisoners.</DESCRIPTION>
 					<DESCRIPTION>This is (a(n)) $adj_nasty prisoner`s holding cell.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_prison_exit_desc</DESCRIPTION>
+				<DESCRIPTION select="any-1">$prison_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$prison_exit_desc</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="LockedDoor" text="$areaname cellkey" />
-			<MOB select="repeat-1?2" insert="dungeon_prisoner" />
+			<MOB select="repeat-1?2" insert="prison_prisoner" />
 			<AFFECT class="Prop_NoRecall" /> <AFFECT class="Prop_NoSummon" /> <AFFECT class="Prop_NoTeleportOut" />
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom">
 			<TITLE>a large $adj_nasty cage</TITLE>
@@ -63,13 +125,13 @@
 					<DESCRIPTION>The $adj_nasty bars make this room like a cage.</DESCRIPTION>
 					<DESCRIPTION>A set of $adj_nasty bars surround you.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_prison_exit_desc</DESCRIPTION>
+				<DESCRIPTION select="any-1">$prison_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$prison_exit_desc</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="LockedGate" text="$areaname cellkey" />
-			<MOB select="repeat-2?5" insert="dungeon_prisoner" />
+			<MOB select="repeat-2?5" insert="prison_prisoner" />
 			<AFFECT class="Prop_NoRecall" /> <AFFECT class="Prop_NoSummon" /> <AFFECT class="Prop_NoTeleportOut" />
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom">
 			<TITLE>(a(n)) $adj_nasty solitary cell</TITLE>
@@ -90,13 +152,13 @@
 					<DESCRIPTION>This room is $adj_dark and $adj_phys_size_small.</DESCRIPTION>
 					<DESCRIPTION>This $adj_scary_feeling is $adj_dark room.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_prison_exit_desc</DESCRIPTION>
+				<DESCRIPTION select="any-1">$prison_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$prison_exit_desc</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="LockedDoor" text="$areaname cellkey" />
-			<MOB select="any-1" insert="dungeon_prisoner" />
+			<MOB select="any-1" insert="prison_prisoner" />
 			<AFFECT class="Prop_NoRecall" /> <AFFECT class="Prop_NoSummon" /> <AFFECT class="Prop_NoTeleportOut" />
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
 		</ROOM>
 		<ROOM class="StoneRoom" condition="$__luxuryCell&lt;2" define="__luxuryCell+=1">
 			<TITLE>a private $adj_fancy cell</TITLE>
@@ -117,10 +179,10 @@
 					<DESCRIPTION>This room is $adj_light and $adj_fancy.</DESCRIPTION>
 					<DESCRIPTION>This $adj_fancy room is $adj_light.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_prison_exit_desc</DESCRIPTION>
+				<DESCRIPTION select="any-1">$prison_exit_desc</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="LockedDoor" text="$areaname luxurykey" />
-			<MOB class="GenMob" like="dungeon_prisoner" level="$level_range" race="$_prisoner_races" name="$fantasy_name" display="$glitzy_prisoner_disp" />
+			<MOB class="GenMob" like="prison_prisoner" level="$level_range" race="$_prisoner_races" name="$fantasy_name" display="$glitzy_prisoner_disp" />
 			<AFFECT class="Prop_NoRecall" /> <AFFECT class="Prop_NoSummon" /> <AFFECT class="Prop_NoTeleportOut" />
 			<STRING id="glitzy_prisoner_disp" select="any-1">
 				<STRING>$MOB_NAME is enjoying a confined rest.</STRING>
@@ -141,7 +203,7 @@
 				<ITEM class="GenPipe" name="(a(n)) $adj_fancy pipe" display="$ITEM_NAME has been put aside for a moment" />
 				<ITEM class="GenCigar" name="(a(n)) $adj_fancy cigar" display="$ITEM_NAME is here waiting to be enjoyed." />
 			</ITEM>
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom" condition="$__torturechamber&lt;1" define="__torturechamber+=1">
 			<TITLE>(a(n)) $adj_scary_feeling torture chamber</TITLE>
@@ -160,10 +222,10 @@
 					<DESCRIPTION>This $adj_nasty room of suffering makes you feel $adj_scary_feeling.</DESCRIPTION>
 					<DESCRIPTION>You feel $adj_scary_feeling just standing in this place.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_prison_exit_desc</DESCRIPTION>
+				<DESCRIPTION select="any-1">$prison_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$prison_exit_desc</DESCRIPTION>
 			</DESCRIPTION>
-			<MOB class="GenMob" like="dungeon_prisonguard" level="$level_range" race="$_prisoner_races" name="Dr. $fantasy_name" display="$torture_prisonguard_disp" />
+			<MOB class="GenMob" like="prison_prisonguard" level="$level_range" race="$_prisoner_races" name="Dr. $fantasy_name" display="$torture_prisonguard_disp" />
 			<ITEM select="any-2">
 				<ITEM class="metacraft:Whipping Post"/>
 				<ITEM class="metacraft:Torture Bed" isgettable="false"/>
@@ -187,7 +249,7 @@
 				<EXIT pickweight=1 class="GenDoor" DISPOSITION="ISHIDDEN"/>
 				<EXIT pickweight=2 class="GenDoor"/>
 			</EXIT>
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom" condition="$__pitroom&lt;2" define="__pitroom+=1">
 			<TITLE>(a(n)) $adj_nasty pit</TITLE>
@@ -204,14 +266,14 @@
 					<DESCRIPTION>A pit holds prisoners in a large hole surrounded by bars.</DESCRIPTION>
 					<DESCRIPTION>A great hole surrounded by bars holds in the prisoners.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_prison_exit_desc</DESCRIPTION>
+				<DESCRIPTION select="any-1">$prison_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$prison_exit_desc</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="LockedDoor" text="$areaname cellkey" />
-			<MOB select="repeat-1?3" insert="dungeon_prisoner" />
+			<MOB select="repeat-1?3" insert="prison_prisoner" />
 			<AFFECT class="Prop_NoRecall" /> <AFFECT class="Prop_NoSummon" /> <AFFECT class="Prop_NoTeleportOut" />
 			<EXIT class="Gate" />
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom" condition="$__latrine&lt;2" define="__latrine+=1">
 			<TITLE>(a(n)) $adj_nasty latrine</TITLE>
@@ -235,12 +297,12 @@
 					<DESCRIPTION>This is not what you were looking for.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$random_badsmell</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_prison_exit_desc</DESCRIPTION>
+				<DESCRIPTION select="any-1">$prison_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$prison_exit_desc</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="Door" />
-			<MOB select="repeat-1?2" insert="dungeon_prisonguard" />
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<MOB select="repeat-1?2" insert="prison_prisonguard" />
+			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom">
 			<TITLE>a guard station</TITLE>
@@ -254,8 +316,8 @@
 				<DESCRIPTION>The exit is to the $roomexits_desc_long</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="Door" />
-			<MOB select="repeat-2?5" insert="dungeon_prisonguard" />
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<MOB select="repeat-2?5" insert="prison_prisonguard" />
+			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom" condition="$__wardenroom&lt;2" define="__wardenroom+=1">
 			<TITLE>the wardens office</TITLE>
@@ -280,11 +342,11 @@
 				<DESCRIPTION>The exit is to the $roomexits_desc_long</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="Door" />
-			<MOB select="repeat-2?5" insert="dungeon_prisonguard" />
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<MOB select="repeat-2?5" insert="prison_prisonguard" />
+			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
+			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
+			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
+			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
 			<MOB class="GenMob" level="(1.20 * ($level_range)) + 1" id="prison_warden" race="$_humanoid_races" gender="$anygender">
 				<NAME>Warden $fantasy_name</NAME>
 				<DISPLAY select="pick-1">
@@ -332,7 +394,7 @@
 						<WEAPONTYPE>BASHING</WEAPONTYPE>
 					</ITEM>
 				</ITEM>
-				<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+				<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
 			</MOB>
 			<ITEM class="GenChair"  name="(a(n)) $adj_fancy chair" display="$ITEM_NAME is here"  isgettable="false"/>
 			<ITEM class="GenTable"  name="(a(n)) $adj_fancy desk" display="$ITEM_NAME is here"  isgettable="false"/>
@@ -370,8 +432,8 @@
 				<DESCRIPTION>The exit is to the $roomexits_desc_long</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="Door" />
-			<MOB select="repeat-2?5" insert="dungeon_prisoner" />
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<MOB select="repeat-2?5" insert="prison_prisoner" />
+			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
 			<ITEM select="repeat-3">
 				<ITEM class="GenTub" name="a laundry tub" display="$item_name sits here">
 					<CONTENT>
@@ -387,9 +449,9 @@
 	</ROOM>
 </ROOM>
 
-<MOB id="dungeon_mobs" merge=true select="all" requires="level_range=int,theme=prison,aggrochance=int">
+<MOB id="prison_mobs" select="all" requires="level_range=int,theme=prison,aggrochance=int">
 	<MOB select="all" condition="$theme='prison' or $theme='random'">
-		<MOB class="GenMob" level="$level_range" id="dungeon_prisoner" race="$_prisoner_races" gender="$anygender">
+		<MOB class="GenMob" level="$level_range" id="prison_prisoner" race="$_prisoner_races" gender="$anygender">
 			<NAME>(a(n)) $_prisoner_races prisoner</NAME>
 			<DISPLAY select="pick-1">
 				<DISPLAY pickweight="1">$mob_name sneaks towards you.</DISPLAY>
@@ -446,9 +508,9 @@
 					</ITEM>
 				</ITEM>
 			</ITEM>
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
 		</MOB>
-		<MOB class="GenUndead" level="$level_range" id="dungeon_spirit" race="Spirit" gender="$anygender" condition="($theme!='prison') or (1?3=1)">
+		<MOB class="GenUndead" level="$level_range" id="prison_spirit" race="Spirit" gender="$anygender" condition="($theme!='prison') or (1?3=1)">
 			<NAME>a dead prisoners spirit</NAME>
 			<DISPLAY select="pick-1">
 				<DISPLAY pickweight="1">$mob_name whisps towards you.</DISPLAY>
@@ -471,9 +533,9 @@
 				<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
 				<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
 			</BEHAVIOR>
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
 		</MOB>
-		<MOB class="GenMob" level="$level_range" id="dungeon_prisonguard" race="$_humanoid_races" gender="$anygender">
+		<MOB class="GenMob" level="$level_range" id="prison_prisonguard" race="$_humanoid_races" gender="$anygender">
 			<NAME>(a(n)) $_humanoid_races prison guard</NAME>
 			<DISPLAY select="pick-1">
 				<DISPLAY pickweight="1">$mob_name marches towards you.</DISPLAY>
@@ -560,13 +622,14 @@
 					</ITEM>
 				</ITEM>
 			</ITEM>
-			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
+			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
 		</MOB>
 	</MOB>
 </MOB>
 
-<ITEM id="dungeon_junk" merge=true select="all" requires="level_range=int">
-	<ITEM select="all" condition="$theme='prison' or $theme='random'">
+<ITEM id="prison_junk" select="all" requires="level_range=int">
+	<ITEM select="all" insert="dungeon_junk" />
+	<ITEM select="all">
 		<ITEM class="GenItem" name="some $adj_metal_broken handcuffs scraps" display="$item_name were discarded here" material="IRON" level="$level_range" />
 		<ITEM class="GenWeapon" name="a $adj_wooden_broken night stick" display="$item_name is lying here" material="WOOD" level="$level_range" attack="-10" damage="1"/>
 		<ITEM class="GenResource" name="the bones of a dead prisoner" display="$item_name rest here" material="BONE" level="$level_range" weight="10" />
@@ -642,8 +705,8 @@
 	</ITEM>
 </ITEM>
 
-<STRING id="dungeon_prison_exit_desc" select="any-1">
-	<STRING id="dungeon_prison_exit_descs" select="all">
+<STRING id="prison_exit_desc" select="any-1">
+	<STRING id="prison_exit_descs" select="all">
 		<STRING>The exit is to the $roomexits_desc_long.</STRING>
 		<STRING>The way out of here is $roomexits_desc_long.</STRING>
 		<STRING>The exit to the $roomexits_desc_long is the only way out.</STRING>
@@ -664,15 +727,17 @@
 	<STRING>Goblin</STRING>
 </STRING>
 
-<STRING id="dungeon_random_blurbs" merge=true select="all">
-	<STRING  select="all" condition="$theme='prison' or ($theme='random' and 1?10=1)">
-		<STRING>You are certain you just heard (a(n)) $adj_scary_feeling scream coming from somewhere.</STRING>
-		<STRING>You can hear the $adj_scary_feeling sounds of human suffering.</STRING>
-		<STRING>You hear $adj_scary_feeling tortured screams in the distance.</STRING>
-		<STRING>You hear $adj_scary_feeling screams of suffering in the distance.</STRING>
-		<STRING>You hear $adj_scary_feeling sounds coming from all around you.</STRING>
-		<STRING>You hear $adj_scary_feeling sounds coming from all around you.</STRING>
-		<STRING>You wonder if an execution occurred here.</STRING>
+<STRING id="prison_random_blurb" select="any-1">
+	<STRING id="prison_random_blurbs" select="all" insert="dungeon_random_blurbs">
+		<STRING  select="all" condition="$theme='prison' or ($theme='random' and 1?10=1)">
+			<STRING>You are certain you just heard (a(n)) $adj_scary_feeling scream coming from somewhere.</STRING>
+			<STRING>You can hear the $adj_scary_feeling sounds of human suffering.</STRING>
+			<STRING>You hear $adj_scary_feeling tortured screams in the distance.</STRING>
+			<STRING>You hear $adj_scary_feeling screams of suffering in the distance.</STRING>
+			<STRING>You hear $adj_scary_feeling sounds coming from all around you.</STRING>
+			<STRING>You hear $adj_scary_feeling sounds coming from all around you.</STRING>
+			<STRING>You wonder if an execution occurred here.</STRING>
+		</STRING>
 	</STRING>
 </STRING>
 
