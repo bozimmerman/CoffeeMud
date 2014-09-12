@@ -89,7 +89,7 @@ public class MXP
 		addElement(new MXPElement("H","","","",MXPElement.BIT_NOTSUPPORTED));
 		addElement(new MXPElement("FONT","<FONT STYLE=\"color: &color;;background-color: &back;;font-family: &face;;font-size: &size;;\">","FACE SIZE COLOR BACK STYLE","",MXPElement.BIT_SPECIAL));
 		addElement(new MXPElement("NOBR","","","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND));  // special done
-		addElement(new MXPElement("A","<A STYLE=\"&lcc;\" ONMOUSEOVER=\"&onmouseover;\" ONCLICK=\"&onclick;\" HREF=\"&href;\" TITLE=\"&hint;\">","HREF HINT EXPIRE TITLE=HINT STYLE ONMOUSEOUT ONMOUSEOVER ONCLICK","",0,"EXPIRE"));
+		addElement(new MXPElement("A","<A TARGET=ELSEWHERE STYLE=\"&lcc;\" ONMOUSEOVER=\"&onmouseover;\" ONCLICK=\"&onclick;\" HREF=\"&href;\" TITLE=\"&hint;\">","HREF HINT EXPIRE TITLE=HINT STYLE ONMOUSEOUT ONMOUSEOVER ONCLICK","",0,"EXPIRE"));
 		addElement(new MXPElement("SEND","<A STYLE=\"&lcc;\" HREF=\"&href;\" ONMOUSEOUT=\"delayhidemenu();\" ONCLICK=\"&onclick;\" TITLE=\"&hint;\">","HREF HINT PROMPT EXPIRE STYLE","",MXPElement.BIT_SPECIAL,"EXPIRE")); // special done
 		addElement(new MXPElement("EXPIRE","","NAME","",MXPElement.BIT_NOTSUPPORTED));
 		addElement(new MXPElement("VERSION","","","",MXPElement.BIT_SPECIAL|MXPElement.BIT_COMMAND)); // special done
