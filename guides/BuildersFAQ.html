@@ -1,13 +1,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
   <meta name="generator" content="HTML Tidy, see www.w3.org" />
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  
-  <title>Builders FAQ</title><link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix valiadation problems, add index, hyperlink questions, remove duplicates, and fix spelling errors --></head>
-
+  <title>Builders FAQ</title>
+  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
+<!-- Modified by Josh Mueller, 2006-05-05, fix valiadation problems, add index, hyperlink questions, remove duplicates, and fix spelling errors -->
+</head>
 <body>
 <center>
-<table style="width: 1018px; height: 6401px;" border="1" bordercolor="gray" cellpadding="10" cellspacing="0">
+<table style="width: 1018px; height: 6401px;" border="1"
+ bordercolor="gray" cellpadding="10" cellspacing="0">
   <tbody>
     <tr>
       <td colspan="2" align="left" bgcolor="#dfdfdf" width="100%">
@@ -170,27 +173,32 @@ would have to have 30 levels in both
 translate it into other human languages?</a></h3>
       <p>Getting CoffeeMud 100% translated will be difficult, but
 here's a quick way to get you the first 90% of the way there. &nbsp;</p>
-      <p>First, copy the input parser file <span style="font-style: italic;">resources/parser_en_TX.properties</span>
-into the same folder will a different language name, such as <span style="font-style: italic;">resources/parser_fr_CA.properties</span>
+      <p>First, copy the input parser file <span
+ style="font-style: italic;">resources/parser_en_TX.properties</span>
+into the same folder with a different language name, such as <span
+ style="font-style: italic;">resources/parser_fr_CA.properties</span>
 for Canadian French. &nbsp;</p>
-      <p>Next copy the output translation file <span style="font-style: italic;">resources/translation_en_TX.properties</span>
+      <p>Next copy the output translation file <span
+ style="font-style: italic;">resources/translation_en_TX.properties</span>
 and rename the copy, just like you did with the input parser file.</p>
       <p>Open up coffeemud.ini file, find the entries for LANGUAGE= and
 COUNTRY= and change them accordingly.</p>
       <p>Open up your copy of <span style="font-style: italic;">resources/parser_??_??.properties</span>
 and scroll down until you see [command-word-processor] and a line
 underneath it which says<span style="font-weight: bold;"> #autoignore
-9999</span>. &nbsp;Remove the hash mark # so that it says&nbsp;<span style="font-weight: bold;">autoignore 9999</span>. &nbsp;Save the
+9999</span>. &nbsp;Remove the hash mark # so that it says&nbsp;<span
+ style="font-weight: bold;">autoignore 9999</span>. &nbsp;Save the
 file, we will edit it again later.</p>
       <p>Open up your copy of <span style="font-style: italic;">resources/translation_??_??.properties</span>
 and scroll down until you see [session-translation] and a line
 underneath it which says<span style="font-weight: bold;"> #autoignore
-9999</span>. &nbsp;Remove the hash mark # so that it says&nbsp;<span style="font-weight: bold;">autoignore 9999</span>. &nbsp;Save the
+9999</span>. &nbsp;Remove the hash mark # so that it says&nbsp;<span
+ style="font-weight: bold;">autoignore 9999</span>. &nbsp;Save the
 file, we will edit it again later.</p>
       <p>Now log into your mud as your Archon and start entering
 commands.&nbsp;As you enter commands and do things, the parser and
 translation files will fill up with unlocalized strings that it
-encounters. &nbsp;Early versions of this deature won't capture EVERY
+encounters. &nbsp;Early versions of this feature won't capture EVERY
 string, only those designated as localizeable, but eventually every
 string will be handled. &nbsp;When you are satisfied you've seen every
 string and entered every command you want to localize, you can stop and
@@ -208,7 +216,8 @@ REPLACEEXACT "WIMPY" WITH "MAUVIETTE"<br />
       </p>
       <p>You can keep the AUTOIGNORE 9999 command at the bottom of the
 list, and it will continue to add any new strings it encounters which
-were missed the first time around.</p><p>After
+were missed the first time around.</p>
+      <p>After
 this, it gets easy, but tedious -- you'll need to localize all the
 faction files (alignment.ini), all the help files, text files,
 lists.ini, and all the other loose files.<br />
@@ -248,34 +257,47 @@ called FakeDB so you don't have to setup a database if you want.
 However, products like MySQL and HSQLDB make the system run much faster.</p>
       <h3><a name="q07" id="q07">How do Clans work?</a></h3>
       <p>First, you need to use
-the clancreate command to create a new
+the '<span style="font-weight: bold;">clancreate</span>' command to
+create a new
 clan, during which you can give your clan a name, and decide how the
 officers will be structured (tyrannically all the way to
 democratically). You have to get at least MINCLANMEMBERS amount of new
 members
-before it will activate you (Set in the INI file). Activation means you
+before it will activate you (set in the INI file). Activation means you
 will be visible in the listing, can buy land for the clan, can have
 clan bank accounts, and can hire mobs, as well as have politics with
 others.</p>
       <p>Once you've made your
-clan, people can 'clanapply' to the
-clan. Of course, the person has to be at least level MINCLANLEVEL (Set
-in the INI file). 'clanapply' can be done even if you're the only one
+clan, people can '<span style="font-weight: bold;">clanapply</span>' to
+the
+clan. Of course, the person has to be at least level MINCLANLEVEL (set
+in the INI file). '<span style="font-weight: bold;">clanapply</span>'
+can be done even if you're the only one
 online. Clan bosses can set qualifications to the clan with the
-'clanqual' command and both bosses and lieutentants will see new
+'<span style="font-weight: bold;">clanqual</span>' command and both
+bosses and lieutentants will see new
 applicants
-in their 'clandetails' screen, at which point, they can 'clanaccept' or
-'clanreject' the player (regardless of online status). Clan bosses can
-also 'clanassign' people roles, such as treasurer, lieutentant, or even
-boss. Clan bosses and lieutentants may, at any time, 'clanexile' a
+in their '<span style="font-weight: bold;">clandetails</span>' screen,
+at which point, they can '<span style="font-weight: bold;">clanaccept</span>'
+or
+'<span style="font-weight: bold;">clanreject</span>' the player
+(regardless of online status). Clan bosses can
+also '<span style="font-weight: bold;">clanassign</span>' people roles,
+such as treasurer, lieutentant, or even
+boss. Clan bosses and lieutentants may, at any time, '<span
+ style="font-weight: bold;">clanexile</span>' a
 member -
-as well as members can 'clanresign'</p>
+as well as members can '<span style="font-weight: bold;">clanresign</span>'</p>
       <p>Once you're accepted into
 a clan, you can use the clantalk
 channel to talk to your clan, as well as use the 'Clan Home' and 'Clan
-Donate' spells. The 'clanhome' location and the 'clandonate' location
-can be set by bosses using the 'clanhomeset' and 'clandonateset'
-commands. Clan morgues can be designated with the 'clanmorgueset'
+Donate' spells. The '<span style="font-weight: bold;">clanhome</span>'
+location and the '<span style="font-weight: bold;">clandonate</span>'
+location
+can be set by bosses using the '<span style="font-weight: bold;">clanhomeset</span>'
+and '<span style="font-weight: bold;">clandonateset</span>'
+commands. Clan morgues can be designated with the '<span
+ style="font-weight: bold;">clanmorgueset</span>'
 command. Bosses and treasurers may deal with any Clan bankers and Clan
 Postmen in your game. If MINCLANMEMBERS don't at least login in
 DAYSCLANDEATH days, then the clan will be purged automatically.</p>
@@ -306,7 +328,8 @@ talk/answer
 questions?</a></h3>
       <p>Luckily, a great document
 has already been provided for the
-useful things which can be accomplished with the MudChat behavior. <a href="MudChat.html">Here it is.</a></p>
+useful things which can be accomplished with the MudChat behavior. <a
+ href="MudChat.html">Here it is.</a></p>
       <h3><a name="q11" id="q11">How do player Tattoos work?</a></h3>
       <p>Tattoo's are intended to
 act as miscellaneous flags which
@@ -494,11 +517,11 @@ each other in engine-moderated contests. The Hero game will feature
 super heroes and villains.</p>
       <h3><a name="q27" id="q27">Whats with the Space Ship
 Stuff?</a></h3>
-See the answer to the next question.<br />
+See the answer to the previous question.<br />
       <h3><a name="q28" id="q28">Whats with the Heroics and
 Technical
 settings on Areas, Classes, and Races?</a></h3>
-See the answer to the next question.
+See the answer to the previous question.
       <h3><a name="q29" id="q29">Whats with the Electronics
 stuff?</a></h3>
       <p>See the previous question
@@ -593,4 +616,5 @@ available, or available only from skills.</p>
   </tbody>
 </table>
 </center>
-</body></html>
+</body>
+</html>
