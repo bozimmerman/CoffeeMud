@@ -322,14 +322,10 @@ Required details: "id" "value"
 -->
 <AREADATA>
 
-<STRING load="/resources/randareas/inc_roomruns.xml" />
-<STRING load="/resources/randareas/inc_common.xml" />
-<STRING load="/resources/randareas/inc_adjectives.xml" />
-
 <AREA id="maze_dungeon" merge=true layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" >
-	<NAME>$areaname</NAME><SIZE>$areasize</SIZE>
-	<CLASS select="any-1"><CLASS condition="$areatype!=''">$areatype</CLASS><CLASS condition="$areatype=''">StdArea</CLASS></CLASS>
-	<ROOM id="other_rooms" merge=true insert="hallway_rooms,interior_rooms,leaf_rooms" />
+	<NAME merge=false>$areaname</NAME><SIZE merge=false>$areasize</SIZE>
+	<CLASS merge=false select="any-1"><CLASS condition="$areatype!=''">$areatype</CLASS><CLASS condition="$areatype=''">StdArea</CLASS></CLASS>
+	<ROOM merge=false insert="hallway_rooms,interior_rooms,leaf_rooms" />
 	<BEHAVIOR condition="$theme='random'" class="RandomTraps" parms="mintraps=1 maxtraps=3 rooms=Y exits=Y" />
 </AREA>
 <AREA id="grid_dungeon" merge=true like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" >
@@ -347,6 +343,18 @@ Required details: "id" "value"
 	insert="maze_dungeon,grid_dungeon,square_dungeon,box_dungeon,cross_dungeon,tree_dungeon" 
 	predefine="areasize=$randomareasize,level_range=$randomlevelrange,aggrochance=10+$level_range,theme=$randomtheme" >
 </AREA>
+
+<STRING load="/resources/randareas/forest.xml" />
+<STRING load="/resources/randareas/plains.xml" />
+<STRING load="/resources/randareas/snow.xml" />
+<STRING load="/resources/randareas/jungle.xml" />
+<STRING load="/resources/randareas/swamp.xml" />
+<STRING load="/resources/randareas/mountains.xml" />
+<STRING load="/resources/randareas/desert.xml" />
+<STRING load="/resources/randareas/town.xml" />
+<STRING load="/resources/randareas/prison.xml" />
+<STRING load="/resources/randareas/rats.xml" />
+<STRING load="/resources/randareas/lair.xml" />
 
 <string id="randomareasize" select="any-1">
 	<string condition="$areasize!=''">$areasize</string>
@@ -372,17 +380,5 @@ Required details: "id" "value"
 	<STRING condition="$adj_subtheme=''">${STAT:DISPLAY}</STRING>
 	<STRING condition="$adj_subtheme!=''">(a(n)) ${l:adj_subtheme} ${STAT:DISPLAY}</STRING>
 </STRING>
-
-<STRING load="/resources/randareas/inc_forest.xml" />
-<STRING load="/resources/randareas/inc_plains.xml" />
-<STRING load="/resources/randareas/inc_snow.xml" />
-<STRING load="/resources/randareas/inc_jungle.xml" />
-<STRING load="/resources/randareas/inc_swamp.xml" />
-<STRING load="/resources/randareas/inc_mountains.xml" />
-<STRING load="/resources/randareas/inc_desert.xml" />
-<STRING load="/resources/randareas/inc_town.xml" />
-<STRING load="/resources/randareas/inc_prison.xml" />
-<STRING load="/resources/randareas/inc_rats.xml" />
-<STRING load="/resources/randareas/inc_lair.xml" />
 
 </AREADATA>
