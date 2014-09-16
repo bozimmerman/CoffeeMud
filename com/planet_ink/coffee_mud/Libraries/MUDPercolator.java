@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -1031,74 +1032,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return list;
 	}
 
-	protected boolean fillIgnoreMultiStatCode(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String[] stats, final XMLLibrary.XMLpiece piece, final Map<String,Object> defined) throws CMException
-	{
-		String value = null;
-		if((!ignoreStats.contains(stats[0].toUpperCase().trim()))
-		&&((value=fillOutStatCode(E,ignoreStats,defPrefix,stats[0],piece,defined))!=null))
-		{
-			final int num=CMath.s_int(value);
-			for(int n=0;n<num;n++)
-			{
-				for(int t=1;t<stats.length;t++)
-				{
-					final String statName=stats[t]+n;
-					PostProcessAttempter(defined,new PostProcessAttempt() {
-						@Override
-						public String attempt() throws CMException, PostProcessException 
-						{
-							String value = findOptionalString(E,ignoreStats,defPrefix,statName,piece,this.defined);
-							if(value != null)
-								E.setStat(statName, value);
-							return value;
-						}
-					});
-				}
-			}
-			if(num>0)
-			{
-				for(String stat : stats)
-					ignoreStats.add(stat.toUpperCase().trim());
-			}
-			return num>0;
-		}
-		return false;
-	}
-
-	protected void fillIgnoreItemStatCodes(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String[] stats, final XMLLibrary.XMLpiece piece, final Map<String,Object> defined)
-	throws CMException
-	{
-		if(stats.length==3)
-		{
-			PostProcessAttempter(defined,new PostProcessAttempt() {
-				@Override
-				public String attempt() throws CMException, PostProcessException 
-				{
-					String tag = findOptionalString(E,ignoreStats,defPrefix,stats[0].toUpperCase().trim(),piece,this.defined);
-					if((tag!=null)&&(this.defined.get(tag.toUpperCase()) instanceof XMLLibrary.XMLpiece))
-					{
-						List<Item> items=findItems((XMLLibrary.XMLpiece)this.defined.get(tag.toUpperCase()), this.defined);
-						E.setStat(stats[0], ""+items.size());
-						for(int i=0;i<items.size();i++)
-						{
-							Item I=items.get(CMLib.dice().roll(1, items.size(),-1));
-							E.setStat(stats[1]+i, I.ID());
-							E.setStat(stats[2]+i, I.text());
-						}
-						for(String stat : stats)
-							ignoreStats.add(stat.toUpperCase().trim());
-						if((!firstRun)&&(E instanceof Race)&&(((Race)E).isGeneric()))
-						{
-							CMLib.database().DBDeleteRace(((Race)E).ID());
-							CMLib.database().DBCreateRace(((Race)E).ID(),((Race)E).racialParms());
-						}
-					}
-					return tag;
-				}
-			});
-		}
-	}
-
 	protected String fillOutStatCode(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String stat, final XMLLibrary.XMLpiece piece, final Map<String,Object> defined)
 	{
 		if(!ignoreStats.contains(stat.toUpperCase().trim()))
@@ -2002,7 +1935,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				continue;
 			defineReward(E,null,null,CMLib.xml().getParmValue(piece.parms,"DEFINE"),valPiece,null,defined,true);
 			final Set<String> definedSet=getPrevouslyDefined(defined,tagName+"_");
-			final Race R=buildGenRace(valPiece,defined);
+			final Race R=buildGenRace(E,valPiece,defined);
 			V.add(R);
 			clearNewlyDefined(defined, definedSet, tagName+"_");
 		}
@@ -2049,7 +1982,85 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return B;
 	}
 
-	protected Race buildGenRace(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
+	protected List<AbilityMapping> findRaceAbles(final Modifiable E, String tagName, final String prefix, final XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
+	{
+		try
+		{
+			final List<AbilityMapping> V = new Vector<AbilityMapping>();
+			final List<XMLLibrary.XMLpiece> choices = getAllChoices(E,null,prefix,tagName, piece, defined,true);
+			if((choices==null)||(choices.size()==0)) return V;
+			for(int c=0;c<choices.size();c++)
+			{
+				final XMLLibrary.XMLpiece valPiece = choices.get(c);
+				if(valPiece.parms.containsKey("VALIDATE") && !testCondition(E,null,prefix,CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(valPiece.parms,"VALIDATE")),valPiece, defined))
+					continue;
+				defineReward(E,null,prefix,CMLib.xml().getParmValue(piece.parms,"DEFINE"),valPiece,null,defined,true);
+				final Set<String> definedSet=getPrevouslyDefined(defined,tagName+"_");
+				final String classID = findStringNow("CLASS",valPiece,defined);
+				Ability A=CMClass.getAbility(classID);
+				if(A == null) A=CMClass.findAbility(classID);
+				if(A == null) throw new CMException("Unable to build ability on classID '"+classID+"', Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
+				defined.put(prefix+"CLASS", classID);
+				final AbilityMapping mapA=new AbilityMapping(classID);
+				String value;
+				value=findOptionalStringNow(E, null, prefix, "PARMS", valPiece, defined);
+				if(value != null)
+				{
+					mapA.defaultParm = value;
+					defined.put(prefix+"PARMS", value);
+				}
+				value=findOptionalStringNow(E, null, prefix, "PROFF", valPiece, defined);
+				if(value != null)
+				{
+					mapA.defaultProficiency = CMath.parseIntExpression(value);
+					defined.put(prefix+"PROFF", mapA.defaultParm);
+				}
+				value=findOptionalStringNow(E, null, prefix, "LEVEL", valPiece, defined);
+				if(value != null)
+				{
+					mapA.qualLevel = CMath.parseIntExpression(value);
+					defined.put(prefix+"LEVEL", mapA.defaultParm);
+				}
+				value=findOptionalStringNow(E, null, prefix, "QUALIFY", valPiece, defined);
+				if(value != null)
+				{
+					mapA.autoGain = !CMath.s_bool(value);
+					defined.put(prefix+"QUALIFY", value);
+				}
+				V.add(mapA);
+				clearNewlyDefined(defined, definedSet, tagName+"_");
+			}
+			return V;
+		}
+		catch(PostProcessException pe)
+		{
+			throw new CMException("Unable to post process this object type: "+pe.getMessage(),pe);
+		}
+	}
+
+	protected List<Item> getRaceItems(final Modifiable E, String tagName, final String prefix, final XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
+	{
+		try
+		{
+			final List<Item> V = new Vector<Item>();
+			final List<XMLLibrary.XMLpiece> choices = getAllChoices(E,null,prefix,tagName, piece, defined,true);
+			if((choices==null)||(choices.size()==0)) return V;
+			for(int c=0;c<choices.size();c++)
+			{
+				final XMLLibrary.XMLpiece valPiece = choices.get(c);
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
+					Log.debugOut("MUDPercolator","Found Race Item: "+valPiece.value);
+				V.addAll(findItems(valPiece,defined));
+			}
+			return V;
+		}
+		catch(PostProcessException pe)
+		{
+			throw new CMException("Unable to post process this object type: "+pe.getMessage(),pe);
+		}
+	}
+	
+	protected Race buildGenRace(Modifiable E, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
 		final String classID = findStringNow("class",piece,defined);
 		Race R=CMClass.getRace(classID);
@@ -2075,12 +2086,64 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		R.setStat("NAME", findStringNow("name",piece,defined));
 		addDefinition("RACE_NAME",R.name(),defined); // define so we can mess with it
 		final List<String> ignoreStats=new XVector<String>(new String[]{"CLASS","NAME"});
-		fillIgnoreItemStatCodes(R,ignoreStats,"RACE_",new String[]{"WEAPONCLASS","WEAPONCLASS","WEAPONXML"},piece,defined);
-		fillIgnoreItemStatCodes(R,ignoreStats,"RACE_",new String[]{"NUMRSC","GETRSCID","GETRSCPARM"},piece,defined);
-		fillIgnoreItemStatCodes(R,ignoreStats,"RACE_",new String[]{"NUMOFT","GETOFTID","GETOFTPARM"},piece,defined);
-		fillIgnoreMultiStatCode(R,ignoreStats,"RACE_",new String[]{"NUMRABLE","GETRABLE","GETRABLEPROF","GETRABLEQUAL","GETRABLELVL"},piece,defined);
-		fillIgnoreMultiStatCode(R,ignoreStats,"RACE_",new String[]{"NUMCABLE","GETCABLE","GETCABLEPROF"},piece,defined);
-		fillIgnoreMultiStatCode(R,ignoreStats,"RACE_",new String[]{"NUMREFF","GETREFF","GETREFFPARM","GETREFFLVL"},piece,defined);
+		
+		final List<Item> raceWeapons=getRaceItems(E,"WEAPON","RACE_WEAPON_",piece,defined);
+		if(raceWeapons.size()>0)
+		{
+			Item I=raceWeapons.get(CMLib.dice().roll(1, raceWeapons.size(), -1));
+			R.setStat("WEAPONCLASS", I.ID());
+			R.setStat("WEAPONXML", I.text());
+		}
+		ignoreStats.addAll(Arrays.asList(new String[]{"WEAPONCLASS","WEAPONXML"}));
+		
+		final List<Item> raceResources=getRaceItems(E,"RESOURCES","RACE_RESOURCE_",piece,defined);
+		R.setStat("NUMRSC", ""+raceResources.size());
+		for(int i=0;i<raceResources.size();i++)
+		{
+			final Item I=raceResources.get(i);
+			R.setStat("GETRSCID"+i, I.ID());
+			R.setStat("GETRSCPARM"+i, ""+I.text());
+		}
+		ignoreStats.addAll(Arrays.asList(new String[]{"NUMRSC","GETRSCID","GETRSCPARM"}));
+		final List<Item> raceOutfit=getRaceItems(E,"OUTFIT","RACE_RESOURCE_",piece,defined);
+		R.setStat("NUMOFT", ""+raceOutfit.size());
+		for(int i=0;i<raceOutfit.size();i++)
+		{
+			final Item I=raceOutfit.get(i);
+			R.setStat("GETOFTID"+i, I.ID());
+			R.setStat("GETOFTPARM"+i, ""+I.text());
+		}
+		ignoreStats.addAll(Arrays.asList(new String[]{"NUMOFT","GETOFTID","GETOFTPARM"}));
+		final List<AbilityMapping> rables = findRaceAbles(E,"ABILITY","RACE_ABLE_",piece,defined);
+		R.setStat("NUMRABLE", ""+rables.size());
+		for(int i=0;i<rables.size();i++)
+		{
+			final AbilityMapping ableMap=rables.get(i);
+			R.setStat("GETRABLE"+i, ableMap.abilityID);
+			R.setStat("GETRABLEPROF"+i, ""+ableMap.defaultProficiency);
+			R.setStat("GETRABLEQUAL"+i, ""+(!ableMap.autoGain));
+			R.setStat("GETRABLELVL"+i, ""+ableMap.qualLevel);
+		}
+		ignoreStats.addAll(Arrays.asList(new String[]{"NUMRABLE","GETRABLE","GETRABLEPROF","GETRABLEQUAL","GETRABLELVL"}));
+		final List<AbilityMapping> cables = findRaceAbles(E,"CULTUREABILITY","RACE_CULT_ABLE_",piece,defined);
+		R.setStat("NUMCABLE", ""+cables.size());
+		for(int i=0;i<cables.size();i++)
+		{
+			final AbilityMapping ableMap=cables.get(i);
+			R.setStat("GETCABLE"+i, ableMap.abilityID);
+			R.setStat("GETCABLEPROF"+i, ""+ableMap.defaultProficiency);
+		}
+		ignoreStats.addAll(Arrays.asList(new String[]{"NUMCABLE","GETCABLE","GETCABLEPROF"}));
+		final List<AbilityMapping> reffs = findRaceAbles(E,"AFFECT","RACE_EFFECT_",piece,defined);
+		R.setStat("NUMREFF", ""+reffs.size());
+		for(int i=0;i<reffs.size();i++)
+		{
+			final AbilityMapping ableMap=reffs.get(i);
+			R.setStat("GETREFF"+i, ableMap.abilityID);
+			R.setStat("GETREFFPARM"+i, ""+ableMap.defaultParm);
+			R.setStat("GETREFFLVL"+i, ""+ableMap.qualLevel);
+		}
+		ignoreStats.addAll(Arrays.asList(new String[]{"NUMREFF","GETREFF","GETREFFPARM","GETREFFLVL"}));
 		fillOutStatCodes(R,ignoreStats,"RACE_",piece,defined);
 		CMLib.database().DBCreateRace(R.ID(),R.racialParms());
 		return R;
