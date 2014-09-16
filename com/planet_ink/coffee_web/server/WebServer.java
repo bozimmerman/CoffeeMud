@@ -53,7 +53,7 @@ limitations under the License.
 public class WebServer extends Thread
 {
 	public static final	String	  NAME				= "CoffeeWebServer";
-	public static final String	  POMVERSION		= "2.1";
+	public static final String	  POMVERSION		= "2.2";
 	public static 		double	  VERSION;
 	static { try { VERSION=Double.parseDouble(POMVERSION); } catch(final Exception e){ VERSION=0.0;} }
 	

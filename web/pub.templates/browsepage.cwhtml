@@ -1,0 +1,28 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+	<head>
+		<title>Index of @URLPATH@</title>
+	</head>
+	<body>
+		<IMG SRC="/images/skull.jpg" WIDTH=60 HEIGHT=60 ALT="" BORDER="0" align="left" hspace="20" vspace="2">
+		<h2>Index of @URLPATH@</h2>
+		<hr>
+		<table border=1>
+		<tr>
+			<td width=100px><b>Type</b></td>
+			<td width=400px><b>Name</b></td>
+			<td width=100px><b>Size</b></td>
+			<td width=200px><b>Modified</b></td>
+		</tr>
+		@STARTFILELOOP@
+		<tr>
+			<td>@FILETYPE@</td>
+			<td><a href="@FILEURLPATH@">@FILENAME@</a></td>
+			<td>@FILESIZE@</td>
+			<td>@FILELASTMOD@</td>
+		</tr>
+		@ENDFILELOOP@
+		</table>
+	</body>
+</html>

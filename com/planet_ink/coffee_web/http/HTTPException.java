@@ -47,9 +47,9 @@ public class HTTPException extends Exception
 	private final HTTPStatus 			status;		// status to return
 	private final String 				body;		// optional body to send back with the error, usually ""
 	private final Map<HTTPHeader,String>errorHeaders = new Hashtable<HTTPHeader,String>(); // any optional/extraneous headers to send back
-	private final boolean    			isDebugging;
-	private final Logger    			debugLogger;
-	private final CWConfig			config;
+	private final boolean				isDebugging;
+	private final Logger				debugLogger;
+	private final CWConfig				config;
 	private final static String			EOLN		 = HTTPIOHandler.EOLN;
 	
 	/**
@@ -194,7 +194,7 @@ public class HTTPException extends Exception
 	/**
 	 * Simple cache to save memory and garbage collection time
 	 */
-	private static final Map<HTTPStatus,HTTPException> factoryExceptions=new Hashtable<HTTPStatus,HTTPException>();
+	private static final Map<HTTPStatus,Map<CWConfig,HTTPException>> factoryExceptions=new Hashtable<HTTPStatus,Map<CWConfig,HTTPException>>();
 
 	/**
 	 * Static accessor for fetching completely standard-issue exceptions
@@ -203,13 +203,23 @@ public class HTTPException extends Exception
 	 */
 	public static final HTTPException standardException(final HTTPStatus status)
 	{
-		HTTPException exception=factoryExceptions.get(status);
-		if(exception != null)
+		Map<CWConfig,HTTPException> xMap=factoryExceptions.get(status);
+		final CWConfig config = ((CWThread)Thread.currentThread()).getConfig();
+		if(xMap != null)
 		{
-			return exception;
+			if((config != null)&&(xMap.containsKey(config)))
+				return xMap.get(config);
 		}
-		exception=new HTTPException(status);
-		factoryExceptions.put(status, exception);
+		else
+		{
+			xMap = new Hashtable<CWConfig,HTTPException>();
+			factoryExceptions.put(status, xMap);
+		}
+		final HTTPException exception=new HTTPException(status);
+		if(config != null)
+		{
+			xMap.put(config, exception);
+		}
 		return exception;
 	}
 }

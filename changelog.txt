@@ -2,7 +2,7 @@
    1. New GENERATEable themes in /resources/randreas/example.xml: forest, jungle, desert, swamp, mountains, snow, plains
    2. Generic Character Classes now support starting money values. (Standard support requires code).
    3. Socials action cost can now be controlled and tweeked from ini file/control panel.
-   4. (Internal) MiniWebServer renamed to CoffeeWebServer -- so many path/name changes
+   4. MiniWebServer renamed to CoffeeWebServer -- so many path/name changes! Also upgraded to 2.2.
    5. Clan Position-based effects/abilities implemented. Standard Powers also still apply.
    6. Random Generator now supports post-processing tags in XML, MERGE parameters and NODETYPE_[dir] tags. See example.xml re-organization.
    7. Portals can now be entered using the CLIMB skill, and their put, mount, and dismount strings are modifiable.

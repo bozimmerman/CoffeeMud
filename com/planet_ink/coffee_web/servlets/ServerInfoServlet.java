@@ -51,6 +51,7 @@ public class ServerInfoServlet implements SimpleServlet
 				response.getOutputStream().write(("<tr><td>Debug flag</td><td>"+config.getDebugFlag()+"</td></tr>").getBytes());
 				response.getOutputStream().write(("<tr><td>Default page</td><td>"+config.getDefaultPage()+"</td></tr>").getBytes());
 				response.getOutputStream().write(("<tr><td>Error page</td><td>"+config.getErrorPage()+"</td></tr>").getBytes());
+				response.getOutputStream().write(("<tr><td>Browse page</td><td>"+config.getBrowsePage()+"</td></tr>").getBytes());
 				response.getOutputStream().write(("<tr><td>File cache expire ms</td><td>"+config.getFileCacheExpireMs()+"</td></tr>").getBytes());
 				response.getOutputStream().write(("<tr><td>File cache max bytes</td><td>"+config.getFileCacheMaxBytes()+"</td></tr>").getBytes());
 				response.getOutputStream().write(("<tr><td>File cache max file bytes</td><td>"+config.getFileCacheMaxFileBytes()+"</td></tr>").getBytes());

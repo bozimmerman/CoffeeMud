@@ -49,7 +49,8 @@ public class CWConfig implements Cloneable
 	public  static final int  	  DEFAULT_SSL_PORT 				= 443;
 
 	private static final String   DEFAULT_PAGE 					= "index.html"; // this would normally be configurable as a list
-	private static final String   ERROR_PAGE 					= "root\\errorpage.cwhtml";
+	private static final String   DEFAULT_ERROR_PAGE 			= "root\\errorpage.cwhtml";
+	private static final String   DEFAULT_BROWSE_PAGE 			= "root\\browsepage.cwhtml";
 	
 	public  static final long  	  DEFAULT_THROTTLE_BYTES 		= Long.MAX_VALUE / 2;
 	
@@ -130,7 +131,8 @@ public class CWConfig implements Cloneable
 	private int		requestMaxPerConn	 = DEFAULT_MAX_PIPELINED_REQUESTS;
 	
 	private String	defaultPage			 = DEFAULT_PAGE;
-	private String	errorPage			 = ERROR_PAGE;
+	private String	errorPage			 = DEFAULT_ERROR_PAGE;
+	private String	browsePage			 = DEFAULT_BROWSE_PAGE;
 	
 	private String  debugFlag			 = DEFAULT_DEBUG_FLAG;
 	private boolean isDebugging			 = false;
@@ -141,6 +143,7 @@ public class CWConfig implements Cloneable
 	private Map<String,Map<Integer,KeyPairSearchTree<WebAddress>>>  fwds	= new HashMap<String,Map<Integer,KeyPairSearchTree<WebAddress>>>();
 	private Map<String,Map<Integer,KeyPairSearchTree<ThrottleSpec>>>outs	= new HashMap<String,Map<Integer,KeyPairSearchTree<ThrottleSpec>>>();
 	private Map<String,Map<Integer,KeyPairSearchTree<ChunkSpec>>>	chunks	= new HashMap<String,Map<Integer,KeyPairSearchTree<ChunkSpec>>>();
+	private Map<String,Map<Integer,KeyPairSearchTree<String>>> 		browse	= new HashMap<String,Map<Integer,KeyPairSearchTree<String>>>();
 	
 	public enum DupPolicy { ENUMERATE, OVERWRITE }
 	
@@ -222,6 +225,7 @@ public class CWConfig implements Cloneable
 	{
 		return defaultPage;
 	}
+	
 	/**
 	 * @return the errorPage
 	 */
@@ -229,6 +233,15 @@ public class CWConfig implements Cloneable
 	{
 		return errorPage;
 	}
+	
+	/**
+	 * @return the directory browsePage
+	 */
+	public final String getBrowsePage()
+	{
+		return browsePage;
+	}
+	
 	/**
 	 * @param defaultPage the defaultPage to set
 	 */
@@ -408,15 +421,17 @@ public class CWConfig implements Cloneable
 	}
 
 	/**
-	 * return the proper mount for the given host and context and port
+	 * return the proper pair for the given host and context and port
+	 * and the given map of string pairs
 	 * @param host the host name to search for, or "" for all hosts
 	 * @param port the port to search for, or -1 for all ports
 	 * @param context the context to search for -- NOT OPTIONAL!
-	 * @return the proper mount for the given host and context and port
+	 * @return the proper pair for the given host and context and port
 	 */
-	public final Pair<String,String> getMount(final String host, final int port, final String context)
+	private final Pair<String,String> getContextPair(final Map<String,Map<Integer,KeyPairSearchTree<String>>> map, 
+													 final String host, final int port, final String context)
 	{
-		Map<Integer,KeyPairSearchTree<String>> portMap=mounts.get(host);
+		Map<Integer,KeyPairSearchTree<String>> portMap=map.get(host);
 		if(portMap != null)
 		{
 			KeyPairSearchTree<String> contexts=portMap.get(Integer.valueOf(port));
@@ -434,7 +449,7 @@ public class CWConfig implements Cloneable
 					return pair;
 			}
 		}
-		portMap=mounts.get(ALL_HOSTS);
+		portMap=map.get(ALL_HOSTS);
 		if(portMap != null)
 		{
 			KeyPairSearchTree<String> contexts=portMap.get(Integer.valueOf(port));
@@ -453,6 +468,34 @@ public class CWConfig implements Cloneable
 			}
 		}
 		return null;
+	}
+
+	
+	/**
+	 * return the proper mount for the given host and context and port
+	 * @param host the host name to search for, or "" for all hosts
+	 * @param port the port to search for, or -1 for all ports
+	 * @param context the context to search for -- NOT OPTIONAL!
+	 * @return the proper mount for the given host and context and port
+	 */
+	public final Pair<String,String> getMount(final String host, final int port, final String context)
+	{
+		return this.getContextPair(mounts, host, port, context);
+	}
+
+	/**
+	 * return the proper browse code for the given host and context and port
+	 * @param host the host name to search for, or "" for all hosts
+	 * @param port the port to search for, or -1 for all ports
+	 * @param context the context to search for -- NOT OPTIONAL!
+	 * @return the proper browse code for the given host and context and port
+	 */
+	public final String getBrowseCode(final String host, final int port, final String context)
+	{
+		final Pair<String,String> p = this.getContextPair(browse, host, port, context);
+		if(p == null)
+			return null;
+		return p.second;
 	}
 
 	/**
@@ -1237,6 +1280,37 @@ public class CWConfig implements Cloneable
 		return null;
 	}
 	
+	public Map<String,Map<Integer,KeyPairSearchTree<String>>> getContextMap(final String prefix, final Properties props)
+	{
+		Map<String,Map<Integer,KeyPairSearchTree<String>>> map = null;
+		final Map<String,String> pairs=getPrefixedPairs(props,prefix,'/');
+		if(pairs != null)
+		{
+			map=new HashMap<String,Map<Integer,KeyPairSearchTree<String>>>();
+			for(final Entry<String,String> p : pairs.entrySet())
+			{
+				final String key=p.getKey();
+				final Triad<String,Integer,String> from=findHostPortContext(key);
+				if(from == null) continue;
+				Map<Integer,KeyPairSearchTree<String>> portMap=map.get(from.first);
+				if(portMap == null)
+				{
+					portMap=new HashMap<Integer,KeyPairSearchTree<String>>();
+					map.put(from.first, portMap);
+				}
+				KeyPairSearchTree<String> tree=portMap.get(from.second);
+				if(tree == null)
+				{
+					tree=new KeyPairSearchTree<String>();
+					portMap.put(from.second, tree);
+				}
+				tree.addEntry(from.third, p.getValue());
+			}
+		}
+		return map;
+	}
+	
+	
 	/**
 	 * 
 	 * @param props
@@ -1278,6 +1352,7 @@ public class CWConfig implements Cloneable
 		requestMaxPerConn=getInt(props,"REQUESTMAXPERCONN",requestMaxPerConn);
 		defaultPage=getString(props,"DEFAULTPAGE",defaultPage);
 		errorPage=getString(props,"ERRORPAGE",errorPage);
+		browsePage=getString(props,"BROWSEPAGE",browsePage);
 		setDebugFlag(getString(props,"DEBUGFLAG",debugFlag));
 		setDupPolicy(getString(props,"DUPPOLICY",dupPolicy.toString()));
 		setAccessLogFlag(getString(props,"ACCESSLOGS",accessLogFlag));
@@ -1304,30 +1379,13 @@ public class CWConfig implements Cloneable
 		final Map<String,String> newConverts=getPrefixedPairs(props,"MIMECONVERT",'.');
 		if(newConverts != null)
 			fileConverts=newConverts;
-		final Map<String,String> newMounts=getPrefixedPairs(props,"MOUNT",'/');
+		final Map<String,Map<Integer,KeyPairSearchTree<String>>> newMounts = getContextMap("MOUNT",props);
 		if(newMounts != null)
-		{
-			mounts=new HashMap<String,Map<Integer,KeyPairSearchTree<String>>>();
-			for(final Entry<String,String> p : newMounts.entrySet())
-			{
-				final String key=p.getKey();
-				final Triad<String,Integer,String> from=findHostPortContext(key);
-				if(from == null) continue;
-				Map<Integer,KeyPairSearchTree<String>> portMap=mounts.get(from.first);
-				if(portMap == null)
-				{
-					portMap=new HashMap<Integer,KeyPairSearchTree<String>>();
-					mounts.put(from.first, portMap);
-				}
-				KeyPairSearchTree<String> tree=portMap.get(from.second);
-				if(tree == null)
-				{
-					tree=new KeyPairSearchTree<String>();
-					portMap.put(from.second, tree);
-				}
-				tree.addEntry(from.third, p.getValue());
-			}
-		}
+			mounts = newMounts;
+		
+		final Map<String,Map<Integer,KeyPairSearchTree<String>>> newBrowse = getContextMap("BROWSE",props);
+		if(newBrowse != null)
+			browse = newBrowse;
 		
 		final Map<String,String> newForwards=getPrefixedPairs(props,"FORWARD",'/');
 		if(newForwards != null)

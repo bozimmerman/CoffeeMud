@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_web.http;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
@@ -82,6 +83,7 @@ public class CWHTTPRequest implements HTTPRequest
 	private final boolean		 	isDebugging;				// optomization for the when not debug logging
 	private final Logger		 	debugLogger;
 	private ByteBuffer	 		 	overFlowBuf 	= null;		// generated when a request buffer overflows to next (pipelining)
+	private ByteArrayOutputStream	chunkBytes		= null;
 	private Map<String,Double>	 	acceptEnc		= null;
 	private final boolean		 	isHttps;
 	private final boolean		 	overwriteDups;
@@ -312,6 +314,75 @@ public class CWHTTPRequest implements HTTPRequest
 		}
 		
 		this.bodyLength=contentLength;
+	}
+	
+	/**
+	 * An important method! When the end of headers is received,
+	 * and the headers indicated chunked encoding is forthcoming,
+	 * calling this method will switch the internal buffer to
+	 * receive the main body of the request according to the 
+	 * length given.  Any remaining bytes in the line buffer
+	 * are transferred to the new one.
+	 * 
+	 * @param chunkSize the size of the chunk to expect, or 0 for headers
+	 * @return the internal byte buffer ready to write to
+	 */
+	public ByteBuffer setToReceiveContentChunkedBody(int chunkSize)
+	{
+		final ByteBuffer previousBuffer = buffer;
+		if(chunkSize == 0)
+			chunkSize = (int)requestLineSize ; // enough to hold chunk length bits and maybe headers?
+		if(this.buffer.capacity() >= previousBuffer.remaining() + chunkSize)
+		{
+			this.buffer.compact();
+		}
+		else
+		{
+			this.buffer=ByteBuffer.allocate(previousBuffer.remaining() + chunkSize); // enough to hold chunk
+			this.buffer.put(previousBuffer);
+		}
+		if(this.chunkBytes == null)
+		{
+			this.bodyLength=0; // this should be improved as we read ...
+			this.chunkBytes=new ByteArrayOutputStream();
+		}
+		return this.buffer;
+	}
+
+	/**
+	 * Returns the size of the body buffer in it's current state.  If
+	 * receiving chunked encoding, will return bytes received thus far.
+	 * @return size of the body buffer or bytes received in chunks
+	 */
+	public long getBufferSize()
+	{
+		return this.chunkBytes != null ? this.chunkBytes.size() : this.buffer.capacity();
+	}
+
+	/**
+	 * Transfers the given number of bytes from the internal buffer
+	 * to the chunked body accumulator and ensures the buffer is
+	 * large enough to next round of stuff.
+	 * @param byteCount the number of bytes to receive
+	 * @return the internal buffer, ready to be written to
+	 */
+	public ByteBuffer receiveChunkedContent(final int byteCount)
+	{
+		if((this.buffer.remaining() >= byteCount) && (byteCount > 0))
+		{
+			try
+			{
+				final byte[] newBuffer = new byte[byteCount];
+				buffer.get(newBuffer);
+				this.chunkBytes.write(newBuffer);
+			}
+			catch(Exception e)
+			{
+				// eat it -- errors don't happen
+			}
+			this.bodyLength+=byteCount;
+		}
+		return setToReceiveContentChunkedBody(0); // make sure there's enough space for more stuff
 	}
 	
 	/**
@@ -685,6 +756,13 @@ public class CWHTTPRequest implements HTTPRequest
 		{
 			if (isDebugging) debugLogger.finest("Got range request!");
 			byteRanges=parseRangeRequest(headers.get(HTTPHeader.RANGE.lowerCaseName()));
+		}
+		
+		if(chunkBytes != null)
+		{
+			this.bodyLength = chunkBytes.size();
+			this.buffer = ByteBuffer.wrap(chunkBytes.toByteArray());
+			chunkBytes = null;
 		}
 		
 		// if no body was sent, there is nothing left to do, at ALL

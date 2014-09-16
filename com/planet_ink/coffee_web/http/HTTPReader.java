@@ -70,6 +70,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 	
 	private volatile CWHTTPRequest 		currentReq;			  	  // the parser and pojo of the current request
 	private volatile ParseState  		currentState	 = ParseState.REQ_INLINE;	// the current parse state of this request
+	private volatile int				nextChunkSize	= 0;
 	
 	private volatile HTTPForwarder		forwarder		 = null;  // in the off chance everything is just being forwarded, it goes here
 	private volatile ThrottleSpec		outputThrottle	 = null;
@@ -79,7 +80,23 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 	private final static String			EOLN			 = HTTPIOHandler.EOLN;
 	private static final Charset		utf8			 = Charset.forName("UTF-8");
 	
-	private enum ParseState { REQ_INLINE, REQ_EOLN, HDR_INLINE, HDR_EOLN, BODY, FORWARD, DONE } // state enum for high level parsing
+	private enum ParseState  // state enum for high level parsing 
+	{ 
+		REQ_INLINE, 
+		REQ_EOLN, 
+		HDR_INLINE, 
+		HDR_EOLN, 
+		CHUNKED_HEADER_INLINE, 
+		CHUNKED_HEADER_EOLN, 
+		CHUNKED_ENDER_INLINE, 
+		CHUNKED_ENDER_EOLN, 
+		CHUNKED_TRAILER_INLINE, 
+		CHUNKED_TRAILER_EOLN, 
+		CHUNKED_BODY, 
+		BODY, 
+		FORWARD, 
+		DONE 
+	}
 	
 
 	/**
@@ -295,7 +312,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 	 * @param buffer the bytebuffer to process data from
 	 * @throws HTTPException
 	 */
-	private void processBuffer(final ByteBuffer buffer) throws HTTPException
+	private void processBuffer(ByteBuffer buffer) throws HTTPException
 	{
 		ParseState state = currentState; // since currentState is volatile, lets cache local before tinkering with it
 		try
@@ -336,6 +353,68 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 					c=(char)buffer.get();
 					switch(state)
 					{
+					case CHUNKED_ENDER_INLINE:
+					{
+						if(c=='\r')
+							state=ParseState.CHUNKED_ENDER_EOLN;
+						else
+							throw HTTPException.standardException(HTTPStatus.S400_BAD_REQUEST);
+						break;
+					}
+					case CHUNKED_ENDER_EOLN:
+					{
+						if(c=='\n')
+						{
+							lastEOLIndex=buffer.position();
+							state=ParseState.CHUNKED_HEADER_INLINE;
+						}
+						else
+							throw HTTPException.standardException(HTTPStatus.S400_BAD_REQUEST);
+						break;
+					}
+					case CHUNKED_HEADER_INLINE:
+					{
+						if(c=='\r')
+							state=ParseState.CHUNKED_HEADER_EOLN;
+						break;
+					}
+					case CHUNKED_HEADER_EOLN:
+					{
+						if (c=='\n')
+						{
+							final String chunkSizeStr = new String(Arrays.copyOfRange(buffer.array(), lastEOLIndex, buffer.position()-2),utf8).trim();
+							lastEOLIndex=buffer.position();
+							if (chunkSizeStr.length()>0)
+							{
+								final String[] parts=chunkSizeStr.split(";");
+								this.nextChunkSize = Integer.parseInt(parts[0],16);
+								if(this.nextChunkSize == 0) // we've reached the last chunk
+								{
+									buffer = currentReq.setToReceiveContentChunkedBody((int)config.getRequestLineBufBytes());
+									buffer.flip();
+									lastEOLIndex=0;
+									state=ParseState.CHUNKED_TRAILER_INLINE;
+								}
+								else
+								{
+									 // check for illegal request
+									if((this.nextChunkSize + currentReq.getBufferSize()) > config.getRequestMaxBodyBytes())
+									{
+										throw HTTPException.standardException(HTTPStatus.S413_REQUEST_ENTITY_TOO_LARGE);
+									}
+									buffer = currentReq.setToReceiveContentChunkedBody(this.nextChunkSize);
+									buffer.flip();
+									lastEOLIndex=0;
+									state=ParseState.CHUNKED_BODY;
+								}
+							}
+							else
+								throw HTTPException.standardException(HTTPStatus.S400_BAD_REQUEST);
+						}
+						else
+							throw HTTPException.standardException(HTTPStatus.S400_BAD_REQUEST);
+						break;
+					}
 					case REQ_INLINE:
 						if(c=='\r')
 							state=ParseState.REQ_EOLN;
@@ -349,7 +428,14 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 							state=ParseState.HDR_INLINE;
 							if (requestLine.length()>0)
 							{
-								currentReq.parseRequest(requestLine);
+								try
+								{
+									currentReq.parseRequest(requestLine);
+								}
+								catch(final NumberFormatException ne)
+								{
+									throw HTTPException.standardException(HTTPStatus.S400_BAD_REQUEST);
+								}
 							}
 							else
 							{
@@ -367,6 +453,11 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 						if(c=='\r')
 							state=ParseState.HDR_EOLN;
 						break;
+					case CHUNKED_TRAILER_INLINE:
+						if(c=='\r')
+							state=ParseState.CHUNKED_TRAILER_EOLN;
+						break;
+					case CHUNKED_TRAILER_EOLN:
 					case HDR_EOLN:
 					{
 						if (c=='\n')
@@ -376,13 +467,17 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 							if(headerLine.length()>0) 
 							{
 								String host = currentReq.parseHeaderLine(headerLine);
+								if (state == ParseState.CHUNKED_TRAILER_EOLN)
+									state=ParseState.CHUNKED_TRAILER_INLINE;
+								else
 								state=ParseState.HDR_INLINE;
+								
 								if(host!=null)
 								{
 									final int x=host.indexOf(':');
 									if(x>0) host=host.substring(0, x); // we only care about the host, we KNOW the port.
 									final Pair<String,WebAddress> forward=config.getPortForward(host,currentReq.getClientPort(),currentReq.getUrlPath());
-									if(forward != null)
+									if((forward != null) && (state != ParseState.CHUNKED_TRAILER_INLINE))
 									{
 										final String requestLine=startPortForwarding(forward.second, forward.first);
 										if(forwarder!=null)
@@ -404,9 +499,18 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 							}
 							else // a blank line means the end of the header section!!!
 							{
+								if(state == ParseState.CHUNKED_TRAILER_EOLN)
+								{
+									currentReq.finishRequest();
+									state=ParseState.DONE;
+								}
+								else
 								if("chunked".equalsIgnoreCase(currentReq.getHeader(HTTPHeader.TRANSFER_ENCODING.lowerCaseName())))
 								{
-									//TODO: Implement!
+									state=ParseState.CHUNKED_HEADER_INLINE;
+									buffer = currentReq.setToReceiveContentChunkedBody(0); // prepare for chunk length/headers
+									buffer.flip();
+									lastEOLIndex=0;
 								}
 								else
 								{
@@ -468,6 +572,17 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 							lastEOLIndex=buffer.position();
 							state=ParseState.REQ_INLINE;
 						}
+						break;
+					}
+					case CHUNKED_BODY: // while in a body state, there's nothing to do but see if its done
+					{
+						buffer.position(buffer.position()-1);
+						final int len = (buffer.limit() >= this.nextChunkSize) ? this.nextChunkSize : buffer.limit(); 
+						buffer = this.currentReq.receiveChunkedContent(len);
+						buffer.flip();
+						this.nextChunkSize -= len;
+						if(this.nextChunkSize <= 0)
+							state=ParseState.CHUNKED_ENDER_INLINE;
 						break;
 					}
 					case FORWARD: // you can't get there from here 

@@ -3,6 +3,10 @@ package com.planet_ink.coffee_web.converters;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.nio.ByteBuffer;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +35,22 @@ limitations under the License.
 
 public class CWHTMLConverter implements HTTPOutputConverter
 {
-	private static enum Macro { HTTPSTATUS, HTTPSTATUSINFO, WEBSERVERVERSION, WEBSERVERNAME, WEBSERVERPORT }
+	private static enum Macro 
+	{ 
+		HTTPSTATUS, 
+		HTTPSTATUSINFO, 
+		WEBSERVERVERSION, 
+		WEBSERVERNAME, 
+		WEBSERVERPORT,
+		STARTFILELOOP,
+		ENDFILELOOP,
+		FILETYPE,
+		FILENAME,
+		FILESIZE,
+		FILELASTMOD,
+		FILEURLPATH,
+		URLPATH
+	}
 	private static Map<String,Macro> macros=new HashMap<String,Macro>();
 	static
 	{
@@ -58,6 +77,25 @@ public class CWHTMLConverter implements HTTPOutputConverter
 		final ByteArrayOutputStream out=new ByteArrayOutputStream();
 		int state=-1;
 		final StringBuilder macro=new StringBuilder("");
+		int fileLoopCounter = -1;
+		final File[] files = (pageFile.isDirectory() ? pageFile.listFiles() : null);
+		if((files != null) && (files.length>0))
+		{
+			Arrays.sort(files,new Comparator<File>(){
+				@Override
+				public int compare(File arg0, File arg1) 
+				{
+					final boolean isDir0=arg0.isDirectory();
+					final boolean isDir1=arg1.isDirectory();
+					if(isDir0 && (!isDir1))
+						return -1;
+					if(isDir1 && (!isDir0))
+						return 1;
+					return arg0.getName().compareToIgnoreCase(arg1.getName());
+				}
+			});
+		}
+		int fileLoopBufferPosition = -1;
 		while(buffer.remaining()>0)
 		{
 			final char c=(char)buffer.get();
@@ -74,6 +112,9 @@ public class CWHTMLConverter implements HTTPOutputConverter
 						{
 							switch(m)
 							{
+							case URLPATH:
+								out.write((""+request.getUrlPath()).getBytes());
+								break;
 							case HTTPSTATUS:
 								out.write((""+status.getStatusCode()).getBytes());
 								break;
@@ -89,6 +130,56 @@ public class CWHTMLConverter implements HTTPOutputConverter
 							case WEBSERVERPORT:
 								if(request != null)
 									out.write((""+request.getClientPort()).getBytes()); 
+								break;
+							case STARTFILELOOP:
+								fileLoopCounter = 0;
+								fileLoopBufferPosition = buffer.position();
+								break;
+							case ENDFILELOOP:
+								fileLoopCounter++ ;
+								if((files != null) && (fileLoopCounter >=0) && (fileLoopCounter < files.length))
+									buffer.position(fileLoopBufferPosition);
+								break;
+							case FILETYPE:
+								if((files != null) && (fileLoopCounter >=0) && (fileLoopCounter < files.length))
+								{
+									final File file=files[fileLoopCounter];
+									if(file.isDirectory())
+										out.write("directory".getBytes());
+									else
+										out.write("file".getBytes());
+								}
+								break;
+							case FILENAME:
+								if((files != null) && (fileLoopCounter >=0) && (fileLoopCounter < files.length))
+								{
+									final File file=files[fileLoopCounter];
+									out.write(file.getName().getBytes());
+								}
+								break;
+							case FILEURLPATH:
+								if((files != null) && (fileLoopCounter >=0) && (fileLoopCounter < files.length))
+								{
+									final File file=files[fileLoopCounter];
+									out.write((request.getUrlPath()+file.getName()).getBytes());
+									if(file.isDirectory())
+										out.write("/".getBytes());
+								}
+								break;
+							case FILESIZE:
+								if((files != null) && (fileLoopCounter >=0) && (fileLoopCounter < files.length))
+								{
+									final File file=files[fileLoopCounter];
+									if(!file.isDirectory())
+										out.write(Long.toString(file.length()).getBytes());
+								}
+								break;
+							case FILELASTMOD:
+								if((files != null) && (fileLoopCounter >=0) && (fileLoopCounter < files.length))
+								{
+									final File file=files[fileLoopCounter];
+									out.write(SimpleDateFormat.getDateTimeInstance().format(new Date(file.lastModified())).getBytes());
+								}
 								break;
 							}
 						}

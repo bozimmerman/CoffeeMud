@@ -345,7 +345,16 @@ public class HTTPReqProcessor implements HTTPFileGetter
 		}
 		// see if the path we have is complete, or if there's an implicit default page requested.
 		if(request.getUrlPath().endsWith("/"))
+		{
+			final File dirFile = finalFile;
 			finalFile=mgr.createFileFromPath(finalFile,config.getDefaultPage());
+			if((!finalFile.exists())&&(dirFile.exists())&&(dirFile.isDirectory()))
+			{
+				String browseCode = config.getBrowseCode(host,request.getClientPort(),fullPathStr);
+				if(browseCode != null) // it's allowed to be browsed
+					finalFile = dirFile;
+			}
+		}
 		return finalFile;
 	}
 	
@@ -469,7 +478,8 @@ public class HTTPReqProcessor implements HTTPFileGetter
 	/**
 	 * Retreives a buffer set containing the possibly cached contents of the file. 
 	 * This can trigger file reads, servlet calls and other ways
-	 * of generating body data.
+	 * of generating body data.  Apparantly UNUSED internally, it must
+	 * be for embedded usage.
 	 * 
 	 * @param request the request to generate output for
 	 * @throws HTTPException
@@ -491,9 +501,17 @@ public class HTTPReqProcessor implements HTTPFileGetter
 		}
 		
 		// not a servlet, so it must be a file path
-		final File pageFile = assembleFileRequest(request);
-		if(pageFile.isDirectory())
-			throw HTTPException.standardException(HTTPStatus.S500_INTERNAL_ERROR);
+		final File pathFile = assembleFileRequest(request);
+		final File pageFile;
+		if(pathFile.isDirectory())
+		{
+			pageFile=config.getFileManager().createFileFromPath(config.getBrowsePage());
+			//TODO: check this: throw HTTPException.standardException(HTTPStatus.S500_INTERNAL_ERROR);
+		}
+		else
+		{
+			pageFile = pathFile;
+		}
 		
 		final MIMEType mimeType = MIMEType.getMIMEType(pageFile.getName());
 		DataBuffers buffers = null;
@@ -508,7 +526,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 				HTTPOutputConverter converter;
 				try { 
 					converter = converterClass.newInstance();
-					return new CWDataBuffers(converter.convertOutput(config, request, pageFile, HTTPStatus.S200_OK, buffers.flushToBuffer()), System.currentTimeMillis(), true);
+					return new CWDataBuffers(converter.convertOutput(config, request, pathFile, HTTPStatus.S200_OK, buffers.flushToBuffer()), System.currentTimeMillis(), true);
 				}
 				catch (final Exception e) { }
 				return buffers;
@@ -550,12 +568,21 @@ public class HTTPReqProcessor implements HTTPFileGetter
 		}
 		
 		// not a servlet, so it must be a file path
-		final File pageFile = assembleFileRequest(request);
-		if(pageFile.isDirectory()) //TODO: support directory browsing someday
+		final File pathFile = assembleFileRequest(request);
+		final File pageFile;
+		if(pathFile.isDirectory())
+		{
+			if(!request.getUrlPath().endsWith("/"))
 		{
 			final HTTPException movedException=HTTPException.standardException(HTTPStatus.S301_MOVED_PERMANENTLY);
 			movedException.getErrorHeaders().put(HTTPHeader.LOCATION, request.getFullHost() + request.getUrlPath() + "/");
 			throw movedException;
+		}
+			pageFile=config.getFileManager().createFileFromPath(config.getBrowsePage());
+		}
+		else
+		{
+			pageFile = pathFile;
 		}
 		
 		final MIMEType mimeType = MIMEType.getMIMEType(pageFile.getName());
@@ -586,7 +613,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 						extraHeaders.put(HTTPHeader.CACHE_CONTROL, "no-cache");
 						final long dateTime=System.currentTimeMillis();
 						extraHeaders.put(HTTPHeader.EXPIRES, HTTPIOHandler.DATE_FORMAT.format(Long.valueOf(dateTime)));
-						buffers=new CWDataBuffers(converter.convertOutput(config, request, pageFile, HTTPStatus.S200_OK, buffers.flushToBuffer()), dateTime, true);
+						buffers=new CWDataBuffers(converter.convertOutput(config, request, pathFile, HTTPStatus.S200_OK, buffers.flushToBuffer()), dateTime, true);
 						buffers = handleEncodingRequest(request, null, buffers, extraHeaders);
 					}
 					catch (final Exception e)

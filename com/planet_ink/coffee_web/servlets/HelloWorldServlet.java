@@ -1,6 +1,9 @@
 package com.planet_ink.coffee_web.servlets;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 
 import com.planet_ink.coffee_web.http.HTTPMethod;
 import com.planet_ink.coffee_web.http.HTTPStatus;
@@ -34,14 +37,43 @@ limitations under the License.
  */
 public class HelloWorldServlet implements SimpleServlet
 {
-	public static final String helloResponse="<html><body><h1>Hello World</h1></body></html>";
+	public static final String helloResponseStart="<html><body><h1>";
+	public static final String defaultResponseBody="Hello World!";
+	public static final String helloResponseEnd="</h1></body></html>";
+	public static final String helloResponse=helloResponseStart+defaultResponseBody+helloResponseEnd;
 	@Override
 	public void doGet(SimpleServletRequest request, SimpleServletResponse response)
 	{
 		try
 		{
 			response.setMimeType(MIMEType.html.getType());
-			response.getOutputStream().write(helloResponse.getBytes());
+			response.getOutputStream().write(helloResponseStart.getBytes());
+			response.getOutputStream().write(defaultResponseBody.getBytes());
+			response.getOutputStream().write(helloResponseEnd.getBytes());
+		}
+		catch (final IOException e)
+		{
+			response.setStatusCode(500);
+		}
+	}
+
+	public void doDynamicPost(SimpleServletRequest request, SimpleServletResponse response)
+	{
+		try
+		{
+			response.setMimeType(MIMEType.html.getType());
+			response.getOutputStream().write(helloResponseStart.getBytes());
+			final InputStream in = request.getBody();
+			final ByteArrayOutputStream bout=new ByteArrayOutputStream();
+			int c;
+			while((c=in.read())>=0)
+				bout.write((byte)c);
+			String submitted=new String(bout.toByteArray(),Charset.forName("UTF-8"));
+			if(submitted.length()==0)
+				response.getOutputStream().write(defaultResponseBody.getBytes());
+			else
+				response.getOutputStream().write(submitted.getBytes());
+			response.getOutputStream().write(helloResponseEnd.getBytes());
 		}
 		catch (final IOException e)
 		{
@@ -52,11 +84,16 @@ public class HelloWorldServlet implements SimpleServlet
 	@Override
 	public void doPost(SimpleServletRequest request, SimpleServletResponse response)
 	{
+		if(request.getHeader("X-DynamicPost")!=null)
+			this.doDynamicPost(request, response);
+		else
+		{
 		for(final String cookieName : request.getCookieNames())
 			response.setCookie(cookieName, request.getCookie(cookieName));
 		for(final String field : request.getUrlParameters())
 			response.setHeader("X-"+field, request.getUrlParameter(field));
 		response.setStatusCode(HTTPStatus.S204_NO_CONTENT.getStatusCode());
+		}
 	}
 
 	@Override
