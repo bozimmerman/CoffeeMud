@@ -75,7 +75,7 @@ public class Skill_Scratch extends StdSkill
 				mob.location().send(mob,msg);
 				final int damage=CMLib.dice().roll(1, 8, 0);
 				CMLib.combat().postDamage(mob, target, mob.myNaturalWeapon(), damage, CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,
-						mob.myNaturalWeapon().weaponType(),affected.name()+" <DAMAGE> <T-NAME>!");
+						mob.myNaturalWeapon().weaponType(),"<S-YOUPOSS> scratch <DAMAGES> <T-NAME>!");
 			}
 		}
 		else
