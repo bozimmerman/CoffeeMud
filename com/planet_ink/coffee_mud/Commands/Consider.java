@@ -87,74 +87,74 @@ public class Consider extends StdCommand
 			if(mob.phyStats().level()>60) theDiff=5;
 			if(mob.phyStats().level()>80) theDiff=6;
 
-			String levelMsg=null;
+			StringBuilder levelMsg=new StringBuilder("");
 			if(lvlDiff==0)
-				levelMsg=targetMOB.charStats().HeShe()+" is your equal";
+				levelMsg.append(_(targetMOB.charStats().HeShe()+" is your equal"));
 			else
 			if(lvlDiff<-CMProps.getIntVar(CMProps.Int.EXPRATE))
-				levelMsg=targetMOB.charStats().HeShe()+" is vastly inferior to you";
+				levelMsg.append(_(targetMOB.charStats().HeShe()+" is vastly inferior to you"));
 			else
 			if(lvlDiff>CMProps.getIntVar(CMProps.Int.EXPRATE))
-				levelMsg=targetMOB.charStats().HeShe()+" is far superior to you";
+				levelMsg.append(_(targetMOB.charStats().HeShe()+" is far superior to you"));
 			else
 			if(CMProps.getIntVar(CMProps.Int.EXPRATE)!=0)
 			{
 				final int relLvlDiff=(lvlDiff<0)?-lvlDiff:lvlDiff;
 				final double pct=CMath.div(relLvlDiff,CMProps.getIntVar(CMProps.Int.EXPRATE));
 				if((lvlDiff<0)&&(pct<0.5))
-					levelMsg=targetMOB.charStats().HeShe()+" is almost your equal";
+					levelMsg.append(_(targetMOB.charStats().HeShe()+" is almost your equal"));
 				else
 				if((lvlDiff<0)&&(pct<=1.0))
-					levelMsg=targetMOB.charStats().HeShe()+" is somewhat inferior to you";
+					levelMsg.append(_(targetMOB.charStats().HeShe()+" is somewhat inferior to you"));
 				else
 				if((lvlDiff<0))
-					levelMsg=targetMOB.charStats().HeShe()+" is inferior to you";
+					levelMsg.append(_(targetMOB.charStats().HeShe()+" is inferior to you"));
 				else
 				if((lvlDiff>0)&&(pct<0.5))
-					levelMsg="You are almost "+targetMOB.charStats().hisher()+" equal";
+					levelMsg.append(_("You are almost "+targetMOB.charStats().hisher()+" equal"));
 				else
 				if((lvlDiff>0)&&(pct<0.8))
-					levelMsg=targetMOB.charStats().HeShe()+" is somewhat superior to you";
+					levelMsg.append(_(targetMOB.charStats().HeShe()+" is somewhat superior to you"));
 				else
-					levelMsg=targetMOB.charStats().HeShe()+" is superior to you";
+					levelMsg.append(_(targetMOB.charStats().HeShe()+" is superior to you"));
 			}
 
 			final int levelDiff=Math.abs(realDiff);
 			if(levelDiff<theDiff)
 			{
-				levelMsg+=(lvlDiff!=0)?" but ":" and ";
-				levelMsg+="the perfect match!";
+				levelMsg.append(_((lvlDiff!=0)?" but ":" and "));
+				levelMsg.append(_("the perfect match!"));
 			}
 			else
 			if(realDiff<0)
 			{
-				levelMsg+=(lvlDiff<0)?" and ":" but ";
+				levelMsg.append(_((lvlDiff<0)?" and ":" but "));
 				if(realDiff>-(2*theDiff))
-					levelMsg+=targetMOB.charStats().heshe()+" might give you a fight.";
+					levelMsg.append(_(targetMOB.charStats().heshe()+" might actually give you a fight."));
 				else
 				if(realDiff>-(3*theDiff))
-					levelMsg+=targetMOB.charStats().heshe()+" is hardly worth your while.";
+					levelMsg.append(_(targetMOB.charStats().heshe()+" won't put up a big fight."));
 				else
 				if(realDiff>-(4*theDiff))
-					levelMsg+=targetMOB.charStats().heshe()+" is a pushover.";
+					levelMsg.append(_(targetMOB.charStats().heshe()+" is basically a pushover."));
 				else
-					levelMsg+=targetMOB.charStats().heshe()+" is not worth the effort.";
+					levelMsg.append(_(targetMOB.charStats().heshe()+" is an easy kill."));
 			}
 			else
 			{
-				levelMsg+=(lvlDiff>0)?" and ":" but ";
+				levelMsg.append(_((lvlDiff>0)?" and ":" but "));
 				if(realDiff<(2*theDiff))
-					levelMsg+=targetMOB.charStats().heshe()+" looks a little tough.";
+					levelMsg.append(_(targetMOB.charStats().heshe()+" looks a little tough."));
 				else
 				if(realDiff<(3*theDiff))
-					levelMsg+=targetMOB.charStats().heshe()+" is a serious threat.";
+					levelMsg.append(_(targetMOB.charStats().heshe()+" is a serious threat."));
 				else
 				if(realDiff<(4*theDiff))
-					levelMsg+=targetMOB.charStats().heshe()+" will clean your clock.";
+					levelMsg.append(_(targetMOB.charStats().heshe()+" will clean your clock."));
 				else
-					levelMsg+=targetMOB.charStats().heshe()+" WILL KILL YOU DEAD!";
+					levelMsg.append(_(targetMOB.charStats().heshe()+" WILL KILL YOU DEAD!"));
 			}
-			mob.tell(levelMsg);
+			mob.tell(levelMsg.toString());
 		}
 		final StringBuffer withWhat=new StringBuffer("");
 		final Vector mendors=new Vector();
@@ -168,12 +168,12 @@ public class Consider extends StdCommand
 		{
 			final Ability A=(Ability)mendors.elementAt(m);
 			if(m==0)
-				withWhat.append("You could probably help "+target.name(mob)+" out with your "+A.name()+" skill");
+				withWhat.append(_("You could probably help @x1 out with your @x2 skill",target.name(mob),A.name()));
 			else
 			if(m<mendors.size()-1)
-				withWhat.append(", your "+A.name()+" skill");
+				withWhat.append(_(", your @x1 skill",A.name()));
 			else
-				withWhat.append(" or your "+A.name()+" skill");
+				withWhat.append(_(" or your @x1 skill",A.name()));
 		}
 
 		if(withWhat.length()>0)
