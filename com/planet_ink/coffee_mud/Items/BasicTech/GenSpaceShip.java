@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine;
 import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine.ThrustPort;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
@@ -610,6 +611,33 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 				}
 				break;
 			case CMMsg.TYP_COLLISION:
+			{
+				final MOB mob=msg.source();
+				List<Electronics> electronics = null;
+				
+				if((msg.tool() instanceof SpaceObject) // we hit something very very big
+				&&(((SpaceObject)msg.tool()).getMass() >= (100 * SpaceObject.Distance.Kilometer.dm)))
+				{
+					setSpeed(0); // if you collide with something massive, your speed ENDS
+					electronics=CMLib.tech().getMakeRegisteredElectronics(getShipArea().Name());
+					for(final Electronics E : electronics)
+					{
+						if(E instanceof ShipComponent.ShipEngine)
+						{
+							final String code=Technical.TechCommand.THRUST.makeCommand(ShipComponent.ShipEngine.ThrustPort.AFT,Integer.valueOf(0));
+							final CMMsg msg2=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+							if(E.owner() instanceof Room)
+							{
+								if(((Room)E.owner()).okMessage(mob, msg2))
+									((Room)E.owner()).send(mob, msg2);
+							}
+							else
+							if(E.okMessage(mob, msg2))
+								E.executeMsg(mob, msg2);
+						}
+					}
+				}
+				
 				if((speed() <= SpaceObject.ACCELLERATION_DAMAGED)
 				&&(msg.tool() instanceof Area))
 				{
@@ -631,13 +659,11 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 					}
 					if(LR!=null)
 					{
-						dockHere(LR);
-						//TODO: End speed, set location and so forth -- 
-						//accelleration must stop, or we'll just undock again
+						dockHere(LR); // set location and so forth
 					}
 					else
 					{
-						//TODO: landing notice, ensure not in bounds...
+						// we landed, but there was nowhere to dock!
 					}
 				}
 				else
@@ -645,9 +671,33 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 				{
 					// we've been -- hit?
 					//TODO: add the speeds of both things * mass to calculate kenetic damage
-					
+					//if a planet, need to do engine stop as above!
 				}
-				//TODO: lots -- figure out what got damaged, for one!
+				else
+				{
+					//so there was a collision, but not with a space object?
+					Log.errOut("SpaceShip","Collided with "+msg.tool());
+				}
+				if(electronics == null)
+					electronics=CMLib.tech().getMakeRegisteredElectronics(getShipArea().Name());
+				for(final Electronics E : electronics)
+				{
+					if(E instanceof Electronics.Computer)
+					{
+						if(E.owner() instanceof Room)
+						{
+							//TODO: teach computers to understand what a collision means!!!!
+							if(((Room)E.owner()).okMessage(mob, msg))
+								((Room)E.owner()).send(mob, msg);
+						}
+						else
+						if(E.okMessage(mob, msg))
+							E.executeMsg(mob, msg);
+					}
+				}
+				break;
+			}
+			default:
 				break;
 			}
 		}
