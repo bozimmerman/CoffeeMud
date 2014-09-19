@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Skills;
+package com.planet_ink.coffee_mud.Abilities.Thief;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -32,9 +32,9 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("rawtypes")
-public class Skill_Scratch extends StdSkill
+public class Thief_Scratch extends ThiefSkill
 {
-	@Override public String ID() { return "Skill_Scratch"; }
+	@Override public String ID() { return "Thief_Scratch"; }
 	private final static String localizedName = CMLib.lang()._("Scratch");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
@@ -67,13 +67,15 @@ public class Skill_Scratch extends StdSkill
 		String str=null;
 		if((success)&&(CMLib.combat().rollToHit(mob, target)))
 		{
-			str=auto?null:_("^F^<FIGHT^><S-NAME> scratch(es) at <T-NAMESELF>!^</FIGHT^>^?");
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),str);
+			str=auto?null:_("^F^<FIGHT^><S-NAME> descretely swipe(s) at <T-NAMESELF>!^</FIGHT^>^?");
+			final int attackCode =  CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0);
+			final int hideOverrideCode = CMLib.flags().isHidden(mob)?CMMsg.TYP_LOOK:attackCode;
+			final CMMsg msg=CMClass.getMsg(mob,target,this,attackCode,str,attackCode,str,hideOverrideCode,str);
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final int damage=CMLib.dice().roll(1, 8, 0);
+				final int damage=CMLib.dice().roll(1, 4, 0);
 				CMLib.combat().postDamage(mob, target, mob.myNaturalWeapon(), damage, CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,
 						mob.myNaturalWeapon().weaponType(),"<S-YOUPOSS> scratch <DAMAGES> <T-NAME>!");
 			}
