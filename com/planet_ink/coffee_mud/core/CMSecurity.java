@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZapperMask;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -53,23 +54,23 @@ LIST: (affected by killx, cmdplayers, loadunload, cmdclans, ban, nopurge,
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CMSecurity
 {
-	protected final static Set<DisFlag> 	disVars 		 = new HashSet<DisFlag>();
-	protected final static Set<String>  	cmdDisVars  	 = new HashSet<String>();
-	protected final static Set<String>  	facDisVars  	 = new HashSet<String>();
-	protected final static Set<String>  	ablDisVars  	 = new HashSet<String>();
-	protected final static Set<String>  	expDisVars  	 = new HashSet<String>();
-	protected final static Set<DbgFlag> 	dbgVars 		 = new HashSet<DbgFlag>();
-	protected final static Set<String>  	saveFlags   	 = new HashSet<String>();
-	protected final static Set<String>  	journalFlags	 = new HashSet<String>(); // global, because of cross-library issues
+	protected final static Set<DisFlag>		disVars		 = new HashSet<DisFlag>();
+	protected final static Set<String>		cmdDisVars	 = new HashSet<String>();
+	protected final static Set<String>		facDisVars	 = new HashSet<String>();
+	protected final static Set<String>		ablDisVars	 = new HashSet<String>();
+	protected final static Set<String>		expDisVars	 = new HashSet<String>();
+	protected final static Set<DbgFlag>		dbgVars		 = new HashSet<DbgFlag>();
+	protected final static Set<String>		saveFlags 	 = new HashSet<String>();
+	protected final static Set<String>		journalFlags = new HashSet<String>(); // global, because of cross-library issues
 
-	protected final long						startTime	 = System.currentTimeMillis();
-	protected MaskingLibrary.CompiledZapperMask compiledSysop= null;
-	protected final Map<String,SecGroup> 		groups  	 = new Hashtable<String,SecGroup>();
+	protected final long					startTime	 = System.currentTimeMillis();
+	protected CompiledZapperMask			compiledSysop= null;
+	protected final Map<String,SecGroup> 	groups  	 = new Hashtable<String,SecGroup>();
 
-	protected static boolean					debuggingEverything=false;
+	protected static boolean				debuggingEverything=false;
 
-	private final static CMSecurity[]   		secs=new CMSecurity[256];
-	private final static Iterator<SecFlag>		EMPTYSECFLAGS=new EnumerationIterator<SecFlag>(new EmptyEnumeration<SecFlag>());
+	private final static CMSecurity[]		secs		 = new CMSecurity[256];
+	private final static Iterator<SecFlag>	EMPTYSECFLAGS= new EnumerationIterator<SecFlag>(new EmptyEnumeration<SecFlag>());
 
 	public CMSecurity()
 	{
