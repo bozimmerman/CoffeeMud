@@ -488,7 +488,38 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 		return str;
 	}
-
+	
+	@Override
+	public void forcePeaceAllFightingAgainst(final MOB mob, final Set<MOB> exceptionSet)
+	{
+		final Room R=mob.location();
+		if(R==null)
+			return;
+		for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+		{
+			final MOB M=m.nextElement();
+			if((M!=null)&&(M.getVictim()==mob)&&(M!=mob)&&(!exceptionSet.contains(M)))
+				M.makePeace();
+		}
+	}
+	
+	@Override
+	public Set<MOB> getAllFightingAgainst(final MOB mob, Set<MOB> set)
+	{
+		if(set == null)
+			set=new HashSet<MOB>(1);
+		final Room R=mob.location();
+		if(R==null)
+			return set;
+		for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+		{
+			final MOB M=m.nextElement();
+			if((M!=null)&&(M.getVictim()==mob)&&(M!=mob))
+				set.add(M);
+		}
+		return set;
+	}
+	
 	@Override
 	public void postDamage(MOB attacker, MOB target, Environmental weapon, int damage, int messageCode, int damageType, String allDisplayMessage)
 	{

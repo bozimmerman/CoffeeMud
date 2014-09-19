@@ -70,6 +70,8 @@ public class Thief_Scratch extends ThiefSkill
 			str=auto?null:_("^F^<FIGHT^><S-NAME> descretely swipe(s) at <T-NAMESELF>!^</FIGHT^>^?");
 			final int attackCode =  CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0);
 			final int hideOverrideCode = CMLib.flags().isHidden(mob)?CMMsg.TYP_LOOK:attackCode;
+			final Set<MOB> combatants=CMLib.combat().getAllFightingAgainst(mob, new HashSet<MOB>(1));
+			final boolean makePeace=(!mob.isInCombat()) && (combatants.size()==0);
 			final CMMsg msg=CMClass.getMsg(mob,target,this,attackCode,str,attackCode,str,hideOverrideCode,str);
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
@@ -78,6 +80,11 @@ public class Thief_Scratch extends ThiefSkill
 				final int damage=CMLib.dice().roll(1, 4, 0);
 				CMLib.combat().postDamage(mob, target, mob.myNaturalWeapon(), damage, CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,
 						mob.myNaturalWeapon().weaponType(),"<S-YOUPOSS> scratch <DAMAGES> <T-NAME>!");
+				if(CMLib.flags().isHidden(mob) && makePeace)
+				{
+					mob.makePeace();
+					CMLib.combat().forcePeaceAllFightingAgainst(mob, combatants);
+				}
 			}
 		}
 		else

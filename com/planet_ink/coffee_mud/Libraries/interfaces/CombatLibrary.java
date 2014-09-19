@@ -46,6 +46,8 @@ public interface CombatLibrary extends CMLibrary
 	public boolean rollToHit(int attack, int defence, int adjustment);
 	public Set<MOB> allCombatants(MOB mob);
 	public void makePeaceInGroup(MOB mob);
+	public void forcePeaceAllFightingAgainst(final MOB mob, final Set<MOB> exceptionSet);
+	public Set<MOB> getAllFightingAgainst(final MOB mob, Set<MOB> set);
 	public void postPanic(MOB mob, CMMsg addHere);
 	public void postDeath(MOB killerM, MOB deadM, CMMsg addHere);
 	public boolean postAttack(MOB attacker, MOB target, Item weapon);
