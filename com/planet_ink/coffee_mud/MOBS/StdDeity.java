@@ -761,11 +761,17 @@ public class StdDeity extends StdMOB implements Deity
 								if(System.currentTimeMillis()>(trigTimes.get(msg.source().Name()).longValue()+(CMath.s_int(DT.parm1)*CMProps.getTickMillis())))
 								{
 									yup=true;
-									waitingFor.remove(msg.source());
+									synchronized(waitingFor)
+									{
+										waitingFor.remove(msg.source());
+									}
 								}
 								else
 								{
-									waitingFor.add(msg.source());
+									synchronized(waitingFor)
+									{
+										waitingFor.add(msg.source());
+									}
 									return false;
 								}
 							}
@@ -1328,14 +1334,30 @@ public class StdDeity extends StdMOB implements Deity
 				}
 			}
 		}
-		for (final MOB M : waitingFor)
+		if(waitingFor.size()>0)
 		{
-			try
+			final List<MOB> executeMOBList; 
+			synchronized(waitingFor)
 			{
-				executeMsg(this,CMClass.getMsg(M,null,null,CMMsg.MSG_OK_VISUAL,null));
-			}catch(final Exception e){}
+				if(waitingFor.size()>0)
+				{
+					executeMOBList=new ArrayList(waitingFor);
+					waitingFor.clear();
+				}
+				else
+					executeMOBList=null;
+			}
+			if(executeMOBList != null)
+			{
+				for (final MOB M : executeMOBList)
+				{
+					try
+					{
+						executeMsg(this,CMClass.getMsg(M,null,null,CMMsg.MSG_OK_VISUAL,null));
+					}catch(final Exception e){}
+				}
+			}
 		}
-		waitingFor.clear();
 		return true;
 	}
 
