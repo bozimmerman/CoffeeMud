@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_Teleport extends Spell
 {
 	@Override public String ID() { return "Spell_Teleport"; }
-	private final static String localizedName = CMLib.lang()._("Teleport");
+	private final static String localizedName = CMLib.lang().L("Teleport");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
@@ -66,7 +66,7 @@ public class Spell_Teleport extends Spell
 		}
 		if(commands.size()<1)
 		{
-			mob.tell(_("Teleport to what area?"));
+			mob.tell(L("Teleport to what area?"));
 			return false;
 		}
 		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
@@ -79,13 +79,13 @@ public class Spell_Teleport extends Spell
 
 		if(candidates.size()==0)
 		{
-			mob.tell(_("You don't know of an area called '@x1'.",CMParms.combine(commands,0)));
+			mob.tell(L("You don't know of an area called '@x1'.",CMParms.combine(commands,0)));
 			return false;
 		}
 
 		if(CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob))
 		{
-			mob.tell(_("You need to stand up!"));
+			mob.tell(L("You need to stand up!"));
 			return false;
 		}
 
@@ -111,7 +111,7 @@ public class Spell_Teleport extends Spell
 
 		if(newRoom==null)
 		{
-			mob.tell(_("Your magic seems unable to take you to that area."));
+			mob.tell(L("Your magic seems unable to take you to that area."));
 			return false;
 		}
 
@@ -126,11 +126,11 @@ public class Spell_Teleport extends Spell
 			while(isBadRoom(room,mob,newRoom) && ((++x)<1000))
 				room=CMLib.map().getRandomRoom();
 			if(isBadRoom(room,mob,newRoom))
-				beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to invoke transportation, but fizzle(s) the spell."));
+				beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to invoke transportation, but fizzle(s) the spell."));
 			newRoom=room;
 		}
 
-		final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|verbalCastCode(mob,newRoom,auto),_("^S<S-NAME> invoke(s) a teleportation spell.^?"));
+		final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|verbalCastCode(mob,newRoom,auto),L("^S<S-NAME> invoke(s) a teleportation spell.^?"));
 		if(mob.location().okMessage(mob,msg)&&(newRoom!=null))
 		{
 			mob.location().send(mob,msg);
@@ -141,8 +141,8 @@ public class Spell_Teleport extends Spell
 			for (final Object element : h)
 			{
 				final MOB follower=(MOB)element;
-				final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> appears in a puff of smoke.@x1",CMLib.protocol().msp("appear.wav",10)));
-				final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,_("<S-NAME> disappear(s) in a puff of smoke."));
+				final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> appears in a puff of smoke.@x1",CMLib.protocol().msp("appear.wav",10)));
+				final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,L("<S-NAME> disappear(s) in a puff of smoke."));
 				if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 				{
 					if(follower.isInCombat())
@@ -153,7 +153,7 @@ public class Spell_Teleport extends Spell
 					thisRoom.send(follower,leaveMsg);
 					newRoom.bringMobHere(follower,false);
 					newRoom.send(follower,enterMsg);
-					follower.tell(_("\n\r\n\r"));
+					follower.tell(L("\n\r\n\r"));
 					CMLib.commands().postLook(follower,true);
 				}
 			}

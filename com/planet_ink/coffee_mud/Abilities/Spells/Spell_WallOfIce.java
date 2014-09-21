@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_WallOfIce extends Spell
 {
 	@Override public String ID() { return "Spell_WallOfIce"; }
-	private final static String localizedName = CMLib.lang()._("Wall of Ice");
+	private final static String localizedName = CMLib.lang().L("Wall of Ice");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Wall of Ice)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Wall of Ice)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
 	@Override public int minRange(){return 1;}
@@ -72,7 +72,7 @@ public class Spell_WallOfIce extends Spell
 				if(w==null) w=mob.myNaturalWeapon();
 				if(w==null) return false;
 				final Room room=mob.location();
-				final CMMsg msg2=CMClass.getMsg(mob,null,w,CMMsg.MSG_WEAPONATTACK,_("^F^<FIGHT^><S-NAME> hack(s) at the wall of ice with <O-NAME>.^</FIGHT^>^?"));
+				final CMMsg msg2=CMClass.getMsg(mob,null,w,CMMsg.MSG_WEAPONATTACK,L("^F^<FIGHT^><S-NAME> hack(s) at the wall of ice with <O-NAME>.^</FIGHT^>^?"));
 				CMLib.color().fixSourceFightColor(msg2);
 				if(mob.location().okMessage(mob,msg2))
 				{
@@ -140,7 +140,7 @@ public class Spell_WallOfIce extends Spell
 	{
 		if((!mob.isInCombat())||(mob.rangeToTarget()<1))
 		{
-			mob.tell(_("You really should be in ranged combat to cast this."));
+			mob.tell(L("You really should be in ranged combat to cast this."));
 			return false;
 		}
 		for(int i=0;i<mob.location().numItems();i++)
@@ -148,7 +148,7 @@ public class Spell_WallOfIce extends Spell
 			final Item I=mob.location().getItem(i);
 			if((I!=null)&&(I.fetchEffect(ID())!=null))
 			{
-				mob.tell(_("There is already a wall of ice here."));
+				mob.tell(L("There is already a wall of ice here."));
 				return false;
 			}
 		}
@@ -172,15 +172,15 @@ public class Spell_WallOfIce extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),auto?_("A mighty wall of ice appears!"):_("^S<S-NAME> conjur(s) up a mighty wall of ice!^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),auto?L("A mighty wall of ice appears!"):L("^S<S-NAME> conjur(s) up a mighty wall of ice!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				amountRemaining=20;
 				final Item I=CMClass.getItem("GenItem");
-				I.setName(_("a wall of ice"));
-				I.setDisplayText(_("a mighty wall of ice has been erected here"));
-				I.setDescription(_("The ice is crystal clear."));
+				I.setName(L("a wall of ice"));
+				I.setDisplayText(L("a mighty wall of ice has been erected here"));
+				I.setDescription(L("The ice is crystal clear."));
 				I.setMaterial(RawMaterial.RESOURCE_GLASS);
 				CMLib.flags().setGettable(I,false);
 				I.recoverPhyStats();
@@ -191,7 +191,7 @@ public class Spell_WallOfIce extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> incant(s), but the magic fizzles."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> incant(s), but the magic fizzles."));
 
 		// return whether it worked
 		return success;

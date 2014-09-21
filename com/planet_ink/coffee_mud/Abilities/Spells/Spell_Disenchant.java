@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_Disenchant extends Spell
 {
 	@Override public String ID() { return "Spell_Disenchant"; }
-	private final static String localizedName = CMLib.lang()._("Disenchant");
+	private final static String localizedName = CMLib.lang().L("Disenchant");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;	}
@@ -55,17 +55,17 @@ public class Spell_Disenchant extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> hold(s) <T-NAMESELF> and cast(s) a spell.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> hold(s) <T-NAMESELF> and cast(s) a spell.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				int level=CMLib.utensils().disenchantItem(target);
 				if(target.amDestroyed())
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> fades away!"));
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> fades away!"));
 				else
 				if(level>-999)
 				{
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> fades and becomes dull!"));
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> fades and becomes dull!"));
 					if((target.basePhyStats().disposition()&PhyStats.IS_BONUS)==PhyStats.IS_BONUS)
 						target.basePhyStats().setDisposition(target.basePhyStats().disposition()-PhyStats.IS_BONUS);
 					if(level<=0) level=1;
@@ -73,12 +73,12 @@ public class Spell_Disenchant extends Spell
 					target.recoverPhyStats();
 				}
 				else
-					mob.tell(_("@x1 doesn't seem to be enchanted.",target.name(mob)));
+					mob.tell(L("@x1 doesn't seem to be enchanted.",target.name(mob)));
 			}
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> hold(s) <T-NAMESELF> and whisper(s), but fail(s) to cast a spell."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> hold(s) <T-NAMESELF> and whisper(s), but fail(s) to cast a spell."));
 
 
 		// return whether it worked

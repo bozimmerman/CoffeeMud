@@ -36,9 +36,9 @@ import java.util.*;
 public class Fighter_Warcry extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Warcry"; }
-	private final static String localizedName = CMLib.lang()._("War Cry");
+	private final static String localizedName = CMLib.lang().L("War Cry");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(War Cry)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(War Cry)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	private static final String[] triggerStrings =_i(new String[] {"WARCRY"});
@@ -81,7 +81,7 @@ public class Fighter_Warcry extends FighterSkill
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("You calm down a bit."));
+			mob.tell(L("You calm down a bit."));
 	}
 
 	@Override
@@ -93,7 +93,7 @@ public class Fighter_Warcry extends FighterSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_SPEAK,auto?"":_("^S<S-NAME> scream(s) a mighty WAR CRY!!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_SPEAK,auto?"":L("^S<S-NAME> scream(s) a mighty WAR CRY!!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -102,14 +102,14 @@ public class Fighter_Warcry extends FighterSkill
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
-					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> get(s) enraged!"));
+					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> get(s) enraged!"));
 					timesTicking=0;
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,auto?"":_("<S-NAME> mumble(s) a weak war cry."));
+			beneficialWordsFizzle(mob,null,auto?"":L("<S-NAME> mumble(s) a weak war cry."));
 
 		// return whether it worked
 		return success;

@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_DeadenSmell extends Spell
 {
 	@Override public String ID() { return "Spell_DeadenSmell"; }
-	private final static String localizedName = CMLib.lang()._("Deaden Smell");
+	private final static String localizedName = CMLib.lang().L("Deaden Smell");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Deadened Smell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Deadened Smell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
@@ -61,7 +61,7 @@ public class Spell_DeadenSmell extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("You nose clears up."));
+			mob.tell(L("You nose clears up."));
 	}
 
 	@Override
@@ -86,19 +86,19 @@ public class Spell_DeadenSmell extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":_("^S<S-NAME> point(s) and snort(s) at <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> point(s) and snort(s) at <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> lost <S-HIS-HER> sense of smell!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> lost <S-HIS-HER> sense of smell!"));
 					success=beneficialAffect(mob,target,asLevel,0);
 				}
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,_("<S-NAME> point(s) and snort(s) at <T-NAMESELF>, but the spell fizzles."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> point(s) and snort(s) at <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_MassFly extends Spell
 {
 	@Override public String ID() { return "Spell_MassFly"; }
-	private final static String localizedName = CMLib.lang()._("Mass Fly");
+	private final static String localizedName = CMLib.lang().L("Mass Fly");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
@@ -48,7 +48,7 @@ public class Spell_MassFly extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,false);
 		if(h==null)
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth making fly."));
+			mob.tell(L("There doesn't appear to be anyone here worth making fly."));
 			return false;
 		}
 
@@ -63,7 +63,7 @@ public class Spell_MassFly extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> wave(s) <S-HIS-HER> arms and speak(s).^?")))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> arms and speak(s).^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -77,7 +77,7 @@ public class Spell_MassFly extends Spell
 					{
 						mob.location().send(mob,msg);
 						if(mob.location()==target.location())
-							target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> start(s) to fly around!"));
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> start(s) to fly around!"));
 						final Spell_Fly fly=new Spell_Fly();
 						fly.setProficiency(proficiency());
 						fly.beneficialAffect(mob,target,asLevel,0);
@@ -85,7 +85,7 @@ public class Spell_MassFly extends Spell
 				}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> wave(s) <S-HIS-HER> arms and speak(s), but the spell fizzles."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> wave(s) <S-HIS-HER> arms and speak(s), but the spell fizzles."));
 
 
 		// return whether it worked

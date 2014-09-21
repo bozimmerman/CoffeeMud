@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_UndeadInvisibility extends StdSkill
 {
 	@Override public String ID() { return "Skill_UndeadInvisibility"; }
-	private final static String localizedName = CMLib.lang()._("Undead Invisibility");
+	private final static String localizedName = CMLib.lang().L("Undead Invisibility");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -58,7 +58,7 @@ public class Skill_UndeadInvisibility extends StdSkill
 			&&(msg.source().charStats().getMyRace().racialCategory().equals("Undead"))
 			&&(msg.source().getVictim()!=target))
 			{
-				msg.source().tell(_("You don't see @x1",target.name(msg.source())));
+				msg.source().tell(L("You don't see @x1",target.name(msg.source())));
 				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();

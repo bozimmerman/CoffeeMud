@@ -39,7 +39,7 @@ public class HideoutShelter extends MagicShelter
 	{
 		super();
 		name="the hideout";
-		displayText=_("Secret Hideout");
+		displayText=L("Secret Hideout");
 		setDescription("You are in a small dark room.");
 		basePhyStats.setWeight(0);
 		basePhyStats.setDisposition(PhyStats.IS_DARK);

@@ -37,7 +37,7 @@ import java.util.*;
 public class Skill_JailKey extends StdSkill
 {
 	@Override public String ID() { return "Skill_JailKey"; }
-	private final static String localizedName = CMLib.lang()._("Jail Key");
+	private final static String localizedName = CMLib.lang().L("Jail Key");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_EXITS;}
@@ -79,36 +79,36 @@ public class Skill_JailKey extends StdSkill
 		if(unlockThis==null)
 		{
 			if(dirCode<0)
-				mob.tell(_("You should specify a direction."));
+				mob.tell(L("You should specify a direction."));
 			else
 			{
 				final Exit E=mob.location().getExitInDir(dirCode);
 				if(E==null)
-					mob.tell(_("You must specify a jail door direction."));
+					mob.tell(L("You must specify a jail door direction."));
 				else
 				if(!E.hasADoor())
-					mob.tell(_("You must specify a jail **DOOR** direction."));
+					mob.tell(L("You must specify a jail **DOOR** direction."));
 				else
 				if(!E.hasALock())
-					mob.tell(_("You must specify a **JAIL** door direction."));
+					mob.tell(L("You must specify a **JAIL** door direction."));
 				else
 				if(E.isOpen())
-					mob.tell(_("@x1 is open already.",E.name()));
+					mob.tell(L("@x1 is open already.",E.name()));
 				else
-					mob.tell(_("That's not a jail door."));
+					mob.tell(L("That's not a jail door."));
 			}
 			return false;
 		}
 
 		if(!unlockThis.hasALock())
 		{
-			mob.tell(_("There is no lock on @x1!",unlockThis.name()));
+			mob.tell(L("There is no lock on @x1!",unlockThis.name()));
 			return false;
 		}
 
 		if(unlockThis.isOpen())
 		{
-			mob.tell(_("@x1 is open!",unlockThis.name()));
+			mob.tell(L("@x1 is open!",unlockThis.name()));
 			return false;
 		}
 
@@ -118,16 +118,16 @@ public class Skill_JailKey extends StdSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
-			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) <S-HIS-HER> jailkey on @x1 and fail(s).",unlockThis.name()));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) <S-HIS-HER> jailkey on @x1 and fail(s).",unlockThis.name()));
 		else
 		{
 			CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_VISUAL:(CMMsg.MSG_THIEF_ACT),CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				if(!unlockThis.isLocked())
-					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,auto?_("@x1 vibrate(s) and click(s).",unlockThis.name()):_("<S-NAME> use(s) <S-HIS-HER> jailkey and relock(s) @x1.",unlockThis.name()));
+					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,auto?L("@x1 vibrate(s) and click(s).",unlockThis.name()):L("<S-NAME> use(s) <S-HIS-HER> jailkey and relock(s) @x1.",unlockThis.name()));
 				else
-					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,auto?_("@x1 vibrate(s) and click(s).",unlockThis.name()):_("<S-NAME> use(s) <S-HIS-HER> jailkey and unlock(s) @x1.",unlockThis.name()));
+					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,auto?L("@x1 vibrate(s) and click(s).",unlockThis.name()):L("<S-NAME> use(s) <S-HIS-HER> jailkey and unlock(s) @x1.",unlockThis.name()));
 				CMLib.utensils().roomAffectFully(msg,mob.location(),dirCode);
 			}
 		}

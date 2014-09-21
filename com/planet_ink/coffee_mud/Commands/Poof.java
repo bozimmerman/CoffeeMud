@@ -43,7 +43,7 @@ public class Poof extends StdCommand
 
 	public boolean errorOut(MOB mob)
 	{
-		mob.tell(_("You are not allowed to do that here."));
+		mob.tell(L("You are not allowed to do that here."));
 		return false;
 	}
 
@@ -58,14 +58,14 @@ public class Poof extends StdCommand
 		while((!ok)&&(mob.playerStats()!=null))
 		{
 			int showNumber=0;
-			final String poofIn=CMLib.genEd().prompt(mob,mob.playerStats().getPoofIn(),++showNumber,showFlag,_("Poof-in"),true,true);
-			final String poofOut=CMLib.genEd().prompt(mob,mob.playerStats().getPoofOut(),++showNumber,showFlag,_("Poof-out"),true,true);
-			final String tranPoofIn=CMLib.genEd().prompt(mob,mob.playerStats().getTranPoofIn(),++showNumber,showFlag,_("Transfer-in"),true,true);
-			final String tranPoofOut=CMLib.genEd().prompt(mob,mob.playerStats().getTranPoofOut(),++showNumber,showFlag,_("Transfer-out"),true,true);
+			final String poofIn=CMLib.genEd().prompt(mob,mob.playerStats().getPoofIn(),++showNumber,showFlag,L("Poof-in"),true,true);
+			final String poofOut=CMLib.genEd().prompt(mob,mob.playerStats().getPoofOut(),++showNumber,showFlag,L("Poof-out"),true,true);
+			final String tranPoofIn=CMLib.genEd().prompt(mob,mob.playerStats().getTranPoofIn(),++showNumber,showFlag,L("Transfer-in"),true,true);
+			final String tranPoofOut=CMLib.genEd().prompt(mob,mob.playerStats().getTranPoofOut(),++showNumber,showFlag,L("Transfer-out"),true,true);
 			mob.playerStats().setPoofs(poofIn,poofOut,tranPoofIn,tranPoofOut);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
-			showFlag=CMath.s_int(mob.session().prompt(_("Edit which? "),""));
+			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
 				showFlag=-1;

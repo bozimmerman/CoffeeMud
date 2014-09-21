@@ -629,13 +629,13 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(isBound(mob))
 		{
 			if(!quiet)
-				mob.tell(_("You are bound!"));
+				mob.tell(L("You are bound!"));
 			return false;
 		}
 		if(isBoundOrHeld(mob))
 		{
 			if(!quiet)
-				mob.tell(_("You are paralyzed!"));
+				mob.tell(L("You are paralyzed!"));
 			return false;
 		}
 		return true;
@@ -656,17 +656,17 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		}
 		if(mob.amDead()||(mob.curState().getHitPoints()<0))
 		{
-			mob.tell(_("You are DEAD!"));
+			mob.tell(L("You are DEAD!"));
 			return false;
 		}
 		if(isSleeping(mob))
 		{
-			mob.tell(_("You are sleeping!"));
+			mob.tell(L("You are sleeping!"));
 			return false;
 		}
 		if(!canMove(mob))
 		{
-			mob.tell(_("You can't move!"));
+			mob.tell(L("You can't move!"));
 			return false;
 		}
 		return true;
@@ -1594,23 +1594,23 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(!canMove(mob))
 			str.append("can't move, ");
 		if(canSeeBonusItems(mob))
-			str.append(_("detect magic, "));
+			str.append(L("detect magic, "));
 		if(canSeeEvil(mob))
-			str.append(_("detect evil, "));
+			str.append(L("detect evil, "));
 		if(canSeeGood(mob))
-			str.append(_("detect good, "));
+			str.append(L("detect good, "));
 		if(canSeeHidden(mob))
 			str.append("see hidden, ");
 		if(canSeeInDark(mob))
-			str.append(_("darkvision, "));
+			str.append(L("darkvision, "));
 		if(canSeeInfrared(mob))
-			str.append(_("infravision, "));
+			str.append(L("infravision, "));
 		if(canSeeInvisible(mob))
-			str.append(_("see invisible, "));
+			str.append(L("see invisible, "));
 		if(canSeeMetal(mob))
-			str.append(_("metalvision, "));
+			str.append(L("metalvision, "));
 		if(canSeeSneakers(mob))
-			str.append(_("see sneaking, "));
+			str.append(L("see sneaking, "));
 		if(!canSmell(mob))
 			str.append("can't smell, ");
 		if(!canSpeak(mob))

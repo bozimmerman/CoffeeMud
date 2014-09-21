@@ -66,11 +66,11 @@ public class ManualClasses extends StdItem implements MiscMagic,ArchonOnly
 					if(mob.fetchEffect("Spell_ReadMagic")!=null)
 					{
 						if(this.usesRemaining()<=0)
-							mob.tell(_("The markings have been read off the parchment, and are no longer discernable."));
+							mob.tell(L("The markings have been read off the parchment, and are no longer discernable."));
 						else
 						{
 							this.setUsesRemaining(this.usesRemaining()-1);
-							mob.tell(_("The manual glows softly, enveloping you in its wisdom."));
+							mob.tell(L("The manual glows softly, enveloping you in its wisdom."));
 							CharClass lastC=null;
 							CharClass thisC=null;
 							for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
@@ -89,13 +89,13 @@ public class ManualClasses extends StdItem implements MiscMagic,ArchonOnly
 								mob.charStats().setCurrentClass(thisC);
 								if((!mob.isMonster())&&(mob.soulMate()==null))
 									CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_CLASSCHANGE);
-								mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("@x1 undergoes a traumatic change.",mob.name()));
-								mob.tell(_("You are now a @x1.",thisC.name(mob.charStats().getClassLevel(thisC))));
+								mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 undergoes a traumatic change.",mob.name()));
+								mob.tell(L("You are now a @x1.",thisC.name(mob.charStats().getClassLevel(thisC))));
 							}
 						}
 					}
 					else
-						mob.tell(_("The markings look magical, and are unknown to you."));
+						mob.tell(L("The markings look magical, and are unknown to you."));
 				}
 				return;
 			default:

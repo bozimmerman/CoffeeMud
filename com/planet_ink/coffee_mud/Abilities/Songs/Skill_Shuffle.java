@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Shuffle extends BardSkill
 {
 	@Override public String ID() { return "Skill_Shuffle"; }
-	private final static String localizedName = CMLib.lang()._("Shuffle");
+	private final static String localizedName = CMLib.lang().L("Shuffle");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -50,18 +50,18 @@ public class Skill_Shuffle extends BardSkill
 	{
 		if((CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob)))
 		{
-			mob.tell(_("You must stand up first!"));
+			mob.tell(L("You must stand up first!"));
 			return false;
 		}
 
 		if(mob.isInCombat())
 		{
-			mob.tell(_("Not while you are fighting!"));
+			mob.tell(L("Not while you are fighting!"));
 			return false;
 		}
 		if(mob.location().numInhabitants()==1)
 		{
-			mob.tell(_("You are the only one here!"));
+			mob.tell(L("You are the only one here!"));
 			return false;
 		}
 
@@ -72,7 +72,7 @@ public class Skill_Shuffle extends BardSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),_("<S-NAME> shuffle(s) around, bumping into everyone."));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),L("<S-NAME> shuffle(s) around, bumping into everyone."));
 			final CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
@@ -99,7 +99,7 @@ public class Skill_Shuffle extends BardSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,_("<S-NAME> shuffle(s) around, confusing <S-HIM-HERSELF>."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> shuffle(s) around, confusing <S-HIM-HERSELF>."));
 
 		return success;
 	}

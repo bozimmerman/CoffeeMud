@@ -213,7 +213,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				}
 				if(returnToRoom==null)
 				{
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_ACTION,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT, _("You must be at an entrance to reset the area.")));
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_ACTION,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT, L("You must be at an entrance to reset the area.")));
 					return;
 				}
 				final Area A=this.getParentArea();
@@ -247,7 +247,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 									final Room R=e.nextElement();
 									R.executeMsg(mob,CMClass.getMsg(mob,R,null,CMMsg.MSG_EXPIRE,null));
 								}
-								msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,_("The instance has been reset.")));
+								msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,L("The instance has been reset.")));
 								CMLib.map().delArea(this);
 								destroy();
 								return;
@@ -255,7 +255,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 						}
 					}
 				}
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,_("The instance failed to reset.")));
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,L("The instance failed to reset.")));
 			}
 		}
 	}
@@ -282,7 +282,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					playerInvolved = playerInvolved || (!M.isMonster());
 				if(!playerInvolved)
 				{
-					msg.source().tell(_("You'll need to be accompanied by an adult to enter there."));
+					msg.source().tell(L("You'll need to be accompanied by an adult to enter there."));
 					return false;
 				}
 			}
@@ -333,7 +333,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					direction = CMLib.map().getExitDir(msg.source().location(), (Exit)msg.target());
 				if(direction < 0)
 				{
-					msg.source().tell(_("Can't figure out where you're coming from?!"));
+					msg.source().tell(L("Can't figure out where you're coming from?!"));
 					return false;
 				}
 				if(myDex<0)
@@ -349,7 +349,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					final StringBuffer xml = Resources.getFileResource(getGeneratorXmlPath(), true);
 					if((xml==null)||(xml.length()==0))
 					{
-						msg.source().tell(_("Unable to load this area.  Please try again later."));
+						msg.source().tell(L("Unable to load this area.  Please try again later."));
 						return false;
 					}
 					final List<XMLLibrary.XMLpiece> xmlRoot = CMLib.xml().parseAllXML(xml);
@@ -398,7 +398,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					if((!(definedIDs.get(idName) instanceof XMLLibrary.XMLpiece))
 					||(!((XMLLibrary.XMLpiece)definedIDs.get(idName)).tag.equalsIgnoreCase("area")))
 					{
-						msg.source().tell(_("The area id '@x1' has not been defined in the data file.",idName));
+						msg.source().tell(L("The area id '@x1' has not been defined in the data file.",idName));
 						return false;
 					}
 					final ScriptingEngine scrptEng=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
@@ -455,16 +455,16 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 						}
 						catch(final CMException cme)
 						{
-							msg.source().tell(_("Required ids for @x1 were missing: @x2",idName,cme.getMessage()));
+							msg.source().tell(L("Required ids for @x1 were missing: @x2",idName,cme.getMessage()));
 							return false;
 						}
 						for(final MOB M : myGroup)
-							M.tell(_("^x------------------------------------------------------\n\rPreparing to enter @x1, please stand by...\n\r------------------------------------------------------^N^.",Name()));
+							M.tell(L("^x------------------------------------------------------\n\rPreparing to enter @x1, please stand by...\n\r------------------------------------------------------^N^.",Name()));
 						definedIDs.put("ROOMTAG_NODEGATEEXIT", Directions.getDirectionName(Directions.getOpDirectionCode(direction)));
 						definedIDs.put("ROOMTAG_GATEEXITROOM", msg.source().location());
 						if(!CMLib.percolator().fillInArea(piece, definedIDs, newA, direction))
 						{
-							msg.source().tell(_("Failed to enter the new area.  Try again later."));
+							msg.source().tell(L("Failed to enter the new area.  Try again later."));
 							return false;
 						}
 						CMLib.percolator().postProcess(definedIDs);
@@ -472,7 +472,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					catch(final CMException cme)
 					{
 						Log.errOut("StdAutoGenInstance",cme);
-						msg.source().tell(_("Failed to finish entering the new area.  Try again later."));
+						msg.source().tell(L("Failed to finish entering the new area.  Try again later."));
 						return false;
 					}
 					redirectA=newA;
@@ -492,7 +492,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 						if(E==null) E = CMClass.getExit("Open");
 						final int opDir=Directions.getOpDirectionCode(direction);
 						if(R.getRoomInDir(opDir)!=null)
-							msg.source().tell(_("An error has caused the following exit to be one-way."));
+							msg.source().tell(L("An error has caused the following exit to be one-way."));
 						else
 						{
 							R.setRawExit(opDir, E);

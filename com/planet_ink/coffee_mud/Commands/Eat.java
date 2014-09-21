@@ -44,7 +44,7 @@ public class Eat extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("Eat what?"));
+			mob.tell(L("Eat what?"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -54,13 +54,13 @@ public class Eat extends StdCommand
 		if((thisThang==null)
 		||(!CMLib.flags().canBeSeenBy(thisThang,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",CMParms.combine(commands,0)));
+			mob.tell(L("You don't see '@x1' here.",CMParms.combine(commands,0)));
 			return false;
 		}
 		final boolean hasHands=mob.charStats().getBodyPart(Race.BODY_HAND)>0;
 		if((thisThang instanceof Food)&&(!mob.isMine(thisThang))&&(hasHands))
 		{
-			mob.tell(_("You don't seem to have '@x1'.",CMParms.combine(commands,0)));
+			mob.tell(L("You don't seem to have '@x1'.",CMParms.combine(commands,0)));
 			return false;
 		}
 		final String eatSound=CMLib.protocol().msp("gulp.wav",10);

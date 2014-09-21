@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_AnimateWeapon extends Spell
 {
 	@Override public String ID() { return "Spell_AnimateWeapon"; }
-	private final static String localizedName = CMLib.lang()._("Animate Weapon");
+	private final static String localizedName = CMLib.lang().L("Animate Weapon");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
@@ -57,7 +57,7 @@ public class Spell_AnimateWeapon extends Spell
 			{
 				final boolean isHit=(CMLib.combat().rollToHit(CMLib.combat().adjustedAttackBonus(invoker(),invoker().getVictim())+((Item)affected).phyStats().attackAdjustment(),CMLib.combat().adjustedArmor(invoker().getVictim()), 0));
 				if((!isHit)||(!(affected instanceof Weapon)))
-					invoker().location().show(invoker(),invoker().getVictim(),affected,CMMsg.MSG_OK_ACTION,_("<O-NAME> attacks <T-NAME> and misses!"));
+					invoker().location().show(invoker(),invoker().getVictim(),affected,CMMsg.MSG_OK_ACTION,L("<O-NAME> attacks <T-NAME> and misses!"));
 				else
 					CMLib.combat().postDamage(invoker(),invoker().getVictim(),affected,
 											CMLib.dice().roll(1,affected.phyStats().damage(),5),
@@ -69,19 +69,19 @@ public class Spell_AnimateWeapon extends Spell
 			switch(CMLib.dice().roll(1,5,0))
 			{
 			case 1:
-				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 twiches a bit.",affected.name()));
+				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 twiches a bit.",affected.name()));
 				break;
 			case 2:
-				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 is looking for trouble.",affected.name()));
+				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 is looking for trouble.",affected.name()));
 				break;
 			case 3:
-				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 practices its moves.",affected.name()));
+				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 practices its moves.",affected.name()));
 				break;
 			case 4:
-				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 makes a few fake attacks.",affected.name()));
+				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 makes a few fake attacks.",affected.name()));
 				break;
 			case 5:
-				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 dances around.",affected.name()));
+				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 dances around.",affected.name()));
 				break;
 			}
 		}
@@ -120,7 +120,7 @@ public class Spell_AnimateWeapon extends Spell
 		&&(affected instanceof Item)
 		&&(((Item)affected).owner()!=null)
 		&&(((Item)affected).owner() instanceof Room))
-			((Room)((Item)affected).owner()).showHappens(CMMsg.MSG_OK_ACTION,_("@x1 stops moving.",affected.name()));
+			((Room)((Item)affected).owner()).showHappens(CMMsg.MSG_OK_ACTION,L("@x1 stops moving.",affected.name()));
 		super.unInvoke();
 	}
 
@@ -138,7 +138,7 @@ public class Spell_AnimateWeapon extends Spell
 		if(target==null) return false;
 		if(!(target instanceof Weapon))
 		{
-			mob.tell(_("That's not a weapon!"));
+			mob.tell(L("That's not a weapon!"));
 			return false;
 		}
 
@@ -155,15 +155,15 @@ public class Spell_AnimateWeapon extends Spell
 				mob.location().send(mob,msg);
 				target.unWear();
 				if(mob.isMine(target))
-					mob.location().show(mob,target,CMMsg.MSG_DROP,_("<T-NAME> flies out of <S-YOUPOSS> hands!"));
+					mob.location().show(mob,target,CMMsg.MSG_DROP,L("<T-NAME> flies out of <S-YOUPOSS> hands!"));
 				else
-					mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> starts flying around!"));
+					mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> starts flying around!"));
 				if(mob.location().isContent(target))
 					beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> twitch(es) oddly, but does nothing more."));
+			mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> twitch(es) oddly, but does nothing more."));
 
 
 		// return whether it worked

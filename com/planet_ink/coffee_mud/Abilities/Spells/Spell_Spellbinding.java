@@ -41,7 +41,7 @@ import java.io.ObjectOutputStream;
 public class Spell_Spellbinding extends Spell
 {
 	@Override public String ID() { return "Spell_Spellbinding"; }
-	private final static String localizedName = CMLib.lang()._("Spellbinding");
+	private final static String localizedName = CMLib.lang().L("Spellbinding");
 	@Override public String name() { return localizedName; }
 	@Override protected int overrideMana(){return 0;}
 	@Override
@@ -137,7 +137,7 @@ public class Spell_Spellbinding extends Spell
 							if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
 								alreadyWanding=true;
 					if(!alreadyWanding)
-						msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),this,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,_("The magic of '@x1' swells within you!",s),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),this,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,L("The magic of '@x1' swells within you!",s),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 				}
 		}
 		else
@@ -186,7 +186,7 @@ public class Spell_Spellbinding extends Spell
 		Spell_Spellbinding priorBinding=(Spell_Spellbinding)target.fetchEffect(ID());
 		if(commands.size()<2)
 		{
-			mob.tell(_("You must specify your trigger word, followed by a list of spells, seperated by spaces."));
+			mob.tell(L("You must specify your trigger word, followed by a list of spells, seperated by spaces."));
 			return false;
 		}
 		final String key=(String)commands.elementAt(0);
@@ -200,7 +200,7 @@ public class Spell_Spellbinding extends Spell
 			||(A.ID().equals(ID()))
 			||(A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]>50))
 			{
-				mob.tell(_("You can't bind '@x1'.",A.ID()));
+				mob.tell(L("You can't bind '@x1'.",A.ID()));
 				return false;
 			}
 			V.addElement(A.ID(),Integer.valueOf(A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]));
@@ -214,7 +214,7 @@ public class Spell_Spellbinding extends Spell
 			||((A.classificationCode()&ALL_ACODES)!=ACODE_SPELL)
 			||(A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]>50))
 			{
-				mob.tell(_("You can't bind '@x1'.",((String)commands.elementAt(v))));
+				mob.tell(L("You can't bind '@x1'.",((String)commands.elementAt(v))));
 				return false;
 			}
 			V.addElement(A.ID(),Integer.valueOf(A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]));
@@ -227,7 +227,7 @@ public class Spell_Spellbinding extends Spell
 		final int curMana=mob.curState().getMana();
 		if(curMana<totalcost)
 		{
-			mob.tell(_("You need @x1 mana to bind those spells.",""+totalcost));
+			mob.tell(L("You need @x1 mana to bind those spells.",""+totalcost));
 			return false;
 		}
 		DVector thePriorKey=null;
@@ -240,14 +240,14 @@ public class Spell_Spellbinding extends Spell
 			for(int v2=0;v2<V.size();v2++)
 				if((v!=v2)&&(((String)V.elementAt(v,1)).equals(V.elementAt(v2,1))))
 				{
-					mob.tell(_("The same spell can not be bound to the same trigger more than once."));
+					mob.tell(L("The same spell can not be bound to the same trigger more than once."));
 					return false;
 				}
 		if(thePriorKey!=null)
 			for(int v=0;v<V.size();v++)
 				if(thePriorKey.contains(V.elementAt(v,1)))
 				{
-					mob.tell(_("The same spell can not be bound to the same trigger more than once."));
+					mob.tell(L("The same spell can not be bound to the same trigger more than once."));
 					return false;
 				}
 
@@ -263,7 +263,7 @@ public class Spell_Spellbinding extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, null, this, verbalCastCode(mob,target,auto),_(auto?"":"^S<S-NAME> shout(s) the magic of spellbinding!^?"));
+			final CMMsg msg = CMClass.getMsg(mob, null, this, verbalCastCode(mob,target,auto),L(auto?"":"^S<S-NAME> shout(s) the magic of spellbinding!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -283,7 +283,7 @@ public class Spell_Spellbinding extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> whisper(s) about spellbinding, and the magic fizzles."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> whisper(s) about spellbinding, and the magic fizzles."));
 
 		// return whether it worked
 		return success;

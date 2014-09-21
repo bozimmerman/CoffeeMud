@@ -39,7 +39,7 @@ import java.util.*;
 public class Torturesmithing extends CraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "Torturesmithing"; }
-	private final static String localizedName = CMLib.lang()._("Torturesmithing");
+	private final static String localizedName = CMLib.lang().L("Torturesmithing");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"TORTURESMITH","TORTURESMITHING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -82,7 +82,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 						if(activity == CraftingActivity.LEARNING)
 							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+buildingI.name()+".");
 						else
-							commonTell(mob,_("You've ruined @x1!",buildingI.name(mob)));
+							commonTell(mob,L("You've ruined @x1!",buildingI.name(mob)));
 						buildingI.destroy();
 					}
 					else
@@ -137,7 +137,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
-				commonTell(mob,_("That's not a torturesmithing item."));
+				commonTell(mob,L("That's not a torturesmithing item."));
 			return false;
 		}
 		return true;
@@ -161,7 +161,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,_("Make what? Enter \"@x1 list\" for a list, \"@x2 learn <item>\" to gain recipes, or \"@x3 stop\" to cancel.",triggerStrings()[0].toLowerCase(),triggerStrings()[0].toLowerCase(),triggerStrings()[0].toLowerCase()));
+			commonTell(mob,L("Make what? Enter \"@x1 list\" for a list, \"@x2 learn <item>\" to gain recipes, or \"@x3 stop\" to cancel.",triggerStrings()[0].toLowerCase(),triggerStrings()[0].toLowerCase(),triggerStrings()[0].toLowerCase()));
 			return false;
 		}
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
@@ -178,7 +178,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 				allFlag=true;
 				mask="";
 			}
-			final StringBuffer buf=new StringBuffer(_("@x1 Lvl Material required\n\r",CMStrings.padRight(_("Item"),16)));
+			final StringBuffer buf=new StringBuffer(L("@x1 Lvl Material required\n\r",CMStrings.padRight(L("Item"),16)));
 			for(int r=0;r<recipes.size();r++)
 			{
 				final List<String> V=recipes.get(r);
@@ -230,7 +230,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		}
 		if(foundRecipe==null)
 		{
-			commonTell(mob,_("You don't know how to make a '@x1'.  Try \"@x2 list\" for a list.",recipeName,triggerStrings[0].toLowerCase()));
+			commonTell(mob,L("You don't know how to make a '@x1'.  Try \"@x2 list\" for a list.",recipeName,triggerStrings[0].toLowerCase()));
 			return false;
 		}
 
@@ -279,7 +279,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 		if(buildingI==null)
 		{
-			commonTell(mob,_("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
+			commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
 			return false;
 		}
 		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
@@ -289,11 +289,11 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		else
 			itemName=CMLib.english().startWithAorAn(itemName);
 		buildingI.setName(itemName);
-		startStr=_("<S-NAME> start(s) making @x1.",buildingI.name());
-		displayText=_("You are making @x1",buildingI.name());
-		verb=_("making @x1",buildingI.name());
+		startStr=L("<S-NAME> start(s) making @x1.",buildingI.name());
+		displayText=L("You are making @x1",buildingI.name());
+		verb=L("making @x1",buildingI.name());
 		playSound="hammer.wav";
-		buildingI.setDisplayText(_("@x1 lies here",itemName));
+		buildingI.setDisplayText(L("@x1 lies here",itemName));
 		buildingI.setDescription(itemName+". ");
 		buildingI.basePhyStats().setWeight(woodRequired);
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));

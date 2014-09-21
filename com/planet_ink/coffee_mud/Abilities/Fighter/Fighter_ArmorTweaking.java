@@ -38,7 +38,7 @@ import java.util.*;
 public class Fighter_ArmorTweaking extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_ArmorTweaking"; }
-	private final static String localizedName = CMLib.lang()._("Armor Tweaking");
+	private final static String localizedName = CMLib.lang().L("Armor Tweaking");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"ARMORTWEAK","TWEAK"});
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
@@ -79,7 +79,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 		{
 			final MOB M=(MOB)((Item)affected).owner();
 			if((!M.amDead())&&(CMLib.flags().isInTheGame(M,true))&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))
-				M.tell(M,affected,null,_("<T-NAME> no longer feel(s) quite as snuggly tweaked."));
+				M.tell(M,affected,null,L("<T-NAME> no longer feel(s) quite as snuggly tweaked."));
 		}
 		super.unInvoke();
 	}
@@ -121,18 +121,18 @@ public class Fighter_ArmorTweaking extends FighterSkill
 		&&(!armor.amWearingAt(Wearable.WORN_TORSO))
 		&&(!armor.amWearingAt(Wearable.WORN_WAIST)))
 		{
-			mob.tell(_("@x1 can not be tweaked to provide any more benefit.",armor.name()));
+			mob.tell(L("@x1 can not be tweaked to provide any more benefit.",armor.name()));
 			return false;
 		}
 		if((!auto)&&(mob.isInCombat()))
 		{
-			mob.tell(_("You are a bit too busy to do that right now."));
+			mob.tell(L("You are a bit too busy to do that right now."));
 			return false;
 		}
 		final int bonus=(int)Math.round(CMath.mul(0.10+(0.10*getXLEVELLevel(mob)),armor.phyStats().armor()));
 		if(bonus<1)
 		{
-			mob.tell(_("@x1 is too weak of an armor to provide any more benefit from tweaking.",armor.name()));
+			mob.tell(L("@x1 is too weak of an armor to provide any more benefit from tweaking.",armor.name()));
 			return false;
 		}
 
@@ -142,7 +142,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final String str=auto?_("@x1 snuggly covers <S-NAME>!",armor.name()):_("<S-NAME> tweak(s) <T-NAMESELF> until it is as snuggly protective as possible.");
+			final String str=auto?L("@x1 snuggly covers <S-NAME>!",armor.name()):L("<S-NAME> tweak(s) <T-NAMESELF> until it is as snuggly protective as possible.");
 			final CMMsg msg=CMClass.getMsg(mob,armor,this,CMMsg.MSG_NOISYMOVEMENT,str);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -155,7 +155,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,armor,_("<S-NAME> attempt(s) to tweak <T-NAME>, but just can't get it quite right."));
+			return beneficialVisualFizzle(mob,armor,L("<S-NAME> attempt(s) to tweak <T-NAME>, but just can't get it quite right."));
 		return success;
 	}
 

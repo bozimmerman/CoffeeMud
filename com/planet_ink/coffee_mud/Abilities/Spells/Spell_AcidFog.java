@@ -35,9 +35,9 @@ import java.util.*;
 public class Spell_AcidFog extends Spell
 {
 	@Override public String ID() { return "Spell_AcidFog"; }
-	private final static String localizedName = CMLib.lang()._("Acid Fog");
+	private final static String localizedName = CMLib.lang().L("Acid Fog");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Acid Fog)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Acid Fog)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -81,7 +81,7 @@ public class Spell_AcidFog extends Spell
 		if(canBeUninvoked())
 		{
 			if((!mob.amDead())&&(mob.location()!=null))
-				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> manage(s) to escape the acid fog!"));
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> manage(s) to escape the acid fog!"));
 		}
 	}
 
@@ -92,7 +92,7 @@ public class Spell_AcidFog extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth melting."));
+			mob.tell(L("There doesn't appear to be anyone here worth melting."));
 			return false;
 		}
 
@@ -107,7 +107,7 @@ public class Spell_AcidFog extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?_("A horrendous cloud of acid appears!"):_("^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms around.^?")))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?L("A horrendous cloud of acid appears!"):L("^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms around.^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -128,13 +128,13 @@ public class Spell_AcidFog extends Spell
 						{
 							castingLocation=mob.location();
 							success=maliciousAffect(mob,target,asLevel,((mob.phyStats().level()+super.getXLEVELLevel(mob)+(2*super.getX1Level(mob)))*10),-1);
-							target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> become(s) enveloped in the acid fog!"));
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> become(s) enveloped in the acid fog!"));
 						}
 					}
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> incant(s), but the spell fizzles."));
+			return maliciousFizzle(mob,null,L("<S-NAME> incant(s), but the spell fizzles."));
 
 
 		// return whether it worked

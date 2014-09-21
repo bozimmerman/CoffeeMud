@@ -36,7 +36,7 @@ public class Song_Revelation extends Song
 {
 
 	@Override public String ID() { return "Song_Revelation"; }
-	private final static String localizedName = CMLib.lang()._("Revelation");
+	private final static String localizedName = CMLib.lang().L("Revelation");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 

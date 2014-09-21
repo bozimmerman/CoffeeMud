@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_GrowFood extends Chant
 {
 	@Override public String ID() { return "Chant_GrowFood"; }
-	private final static String localizedName = CMLib.lang()._("Grow Food");
+	private final static String localizedName = CMLib.lang().L("Grow Food");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -50,7 +50,7 @@ public class Chant_GrowFood extends Chant
 
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
-			mob.tell(_("You must be outdoors to try this."));
+			mob.tell(L("You must be outdoors to try this."));
 			return false;
 		}
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
@@ -59,7 +59,7 @@ public class Chant_GrowFood extends Chant
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			mob.tell(_("This magic will not work here."));
+			mob.tell(L("This magic will not work here."));
 			return false;
 		}
 
@@ -68,7 +68,7 @@ public class Chant_GrowFood extends Chant
 		final String s=CMParms.combine(commands,0);
 
 		int col=0;
-		final StringBuffer buf=new StringBuffer(_("Food types known:\n\r"));
+		final StringBuffer buf=new StringBuffer(L("Food types known:\n\r"));
 		final List<Integer> codes = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_VEGETATION);
 		for(final Integer code : codes)
 			if(!CMParms.contains(Chant_SummonSeed.NON_SEEDS,code))
@@ -88,7 +88,7 @@ public class Chant_GrowFood extends Chant
 		}
 		if((material<0)&&(s.length()>0))
 		{
-			mob.tell(_("'@x1' is not a recognized form of food or herbs!    Try LIST as a parameter...",s));
+			mob.tell(L("'@x1' is not a recognized form of food or herbs!    Try LIST as a parameter...",s));
 			return false;
 		}
 
@@ -104,7 +104,7 @@ public class Chant_GrowFood extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) to the ground.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) to the ground.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -117,19 +117,19 @@ public class Chant_GrowFood extends Chant
 				newItem.setMaterial(material);
 				newItem.setBaseValue(1);
 				newItem.basePhyStats().setWeight(1);
-				newItem.setName(_("a pound of @x1",name));
-				newItem.setDisplayText(_("some @x1 sits here.",name));
+				newItem.setName(L("a pound of @x1",name));
+				newItem.setDisplayText(L("some @x1 sits here.",name));
 				newItem.setDescription("");
 				CMLib.materials().addEffectsToResource(newItem);
 				newItem.recoverPhyStats();
 				newItem.setMiscText(newItem.text());
 				mob.location().addItem(newItem,ItemPossessor.Expire.Resource);
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 pops out of the ground.",newItem.name()));
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 pops out of the ground.",newItem.name()));
 				mob.location().recoverPhyStats();
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) to the ground, but nothing happens."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) to the ground, but nothing happens."));
 
 		// return whether it worked
 		return success;

@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_Boulderbash extends Chant
 {
 	@Override public String ID() { return "Chant_Boulderbash"; }
-	private final static String localizedName = CMLib.lang()._("Boulderbash");
+	private final static String localizedName = CMLib.lang().L("Boulderbash");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -72,7 +72,7 @@ public class Chant_Boulderbash extends Chant
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_ROCKS))
 		{
-			mob.tell(_("This magic only works in caves, mountainous, or rocky regions, where the rocks will answer to your chant."));
+			mob.tell(L("This magic only works in caves, mountainous, or rocky regions, where the rocks will answer to your chant."));
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
@@ -94,7 +94,7 @@ public class Chant_Boulderbash extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_(auto?"A boulder flies through the air!":"^S<S-NAME> chant(s) to <T-NAMESELF>.  Suddenly a huge rock flies at <T-HIM-HER>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"A boulder flies through the air!":"^S<S-NAME> chant(s) to <T-NAMESELF>.  Suddenly a huge rock flies at <T-HIM-HER>!^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_JUSTICE,null);
 			if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 			{
@@ -109,7 +109,7 @@ public class Chant_Boulderbash extends Chant
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAMESELF>, but the magic fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAMESELF>, but the magic fades."));
 
 
 		// return whether it worked

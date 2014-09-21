@@ -37,7 +37,7 @@ import java.util.*;
 public class Paladin_MountedCharge extends StdAbility
 {
 	@Override public String ID() { return "Paladin_MountedCharge"; }
-	private final static String localizedName = CMLib.lang()._("Mounted Charge");
+	private final static String localizedName = CMLib.lang().L("Mounted Charge");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"MOUNTEDCHARGE","MCHARGE"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -102,13 +102,13 @@ public class Paladin_MountedCharge extends StdAbility
 		if((mob.isInCombat())
 		&&(mob.rangeToTarget()<=0))
 		{
-			mob.tell(_("You can not charge while in melee!"));
+			mob.tell(L("You can not charge while in melee!"));
 			return false;
 		}
 
 		if(mob.riding()==null)
 		{
-			mob.tell(_("You must be mounted to use this skill."));
+			mob.tell(L("You must be mounted to use this skill."));
 			return false;
 		}
 
@@ -127,7 +127,7 @@ public class Paladin_MountedCharge extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE,_("<S-NAME> ride(s) hard at <T-NAMESELF>!"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE,L("<S-NAME> ride(s) hard at <T-NAMESELF>!"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -150,7 +150,7 @@ public class Paladin_MountedCharge extends StdAbility
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,_("<S-NAME> ride(s) at <T-NAMESELF>, but miss(es)."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> ride(s) at <T-NAMESELF>, but miss(es)."));
 
 		// return whether it worked
 		return success;

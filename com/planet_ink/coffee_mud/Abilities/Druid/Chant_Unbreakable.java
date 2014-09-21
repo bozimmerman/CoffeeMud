@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_Unbreakable extends Chant
 {
 	@Override public String ID() { return "Chant_Unbreakable"; }
-	private final static String localizedName = CMLib.lang()._("Unbreakable");
+	private final static String localizedName = CMLib.lang().L("Unbreakable");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Unbreakable)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Unbreakable)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -76,7 +76,7 @@ public class Chant_Unbreakable extends Chant
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)
 		   ||((msg.tool() instanceof Ability)&&(((Ability)msg.tool()).abstractQuality()==Ability.QUALITY_MALICIOUS))))
 		{
-			msg.source().tell(_("@x1 is unbreakable!",affected.name()));
+			msg.source().tell(L("@x1 is unbreakable!",affected.name()));
 			return false;
 		}
 
@@ -94,7 +94,7 @@ public class Chant_Unbreakable extends Chant
 			if(((affected!=null)&&(affected instanceof Item))
 			&&((((Item)affected).owner()!=null)
 			&&(((Item)affected).owner() instanceof MOB)))
-				((MOB)((Item)affected).owner()).tell(_("The enchantment on @x1 fades.",((Item)affected).name()));
+				((MOB)((Item)affected).owner()).tell(L("The enchantment on @x1 fades.",((Item)affected).name()));
 		}
 		super.unInvoke();
 	}
@@ -108,7 +108,7 @@ public class Chant_Unbreakable extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(_("@x1 is already unbreakable.",target.name(mob)));
+			mob.tell(L("@x1 is already unbreakable.",target.name(mob)));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -122,7 +122,7 @@ public class Chant_Unbreakable extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> appear(s) unbreakable!"):_("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> appear(s) unbreakable!"):L("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -132,13 +132,13 @@ public class Chant_Unbreakable extends Chant
 					maintainCondition=target.usesRemaining();
 
 				beneficialAffect(mob,target,asLevel,0);
-				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> is unbreakable!"));
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> is unbreakable!"));
 				target.recoverPhyStats();
 				mob.recoverPhyStats();
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
 		// return whether it worked
 		return success;
 	}

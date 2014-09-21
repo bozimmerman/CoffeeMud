@@ -38,10 +38,10 @@ import java.util.*;
 public class Chant_LocateAnimals extends Chant
 {
 	@Override public String ID() { return "Chant_LocateAnimals"; }
-	private final static String localizedName = CMLib.lang()._("Locate Animals");
+	private final static String localizedName = CMLib.lang().L("Locate Animals");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
-	protected String displayText=_("(Locating Animals)");
+	protected String displayText=L("(Locating Animals)");
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override public String displayText(){return displayText;}
 
@@ -68,21 +68,21 @@ public class Chant_LocateAnimals extends Chant
 
 			if(nextDirection==999)
 			{
-				mob.tell(_("The trail seems to pause here."));
+				mob.tell(L("The trail seems to pause here."));
 				nextDirection=-2;
 				unInvoke();
 			}
 			else
 			if(nextDirection==-1)
 			{
-				mob.tell(_("The trail dries up here."));
+				mob.tell(L("The trail dries up here."));
 				nextDirection=-999;
 				unInvoke();
 			}
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell(_("The trail seems to continue @x1.",Directions.getDirectionName(nextDirection)));
+				mob.tell(L("The trail seems to continue @x1.",Directions.getDirectionName(nextDirection)));
 				nextDirection=-2;
 			}
 
@@ -130,7 +130,7 @@ public class Chant_LocateAnimals extends Chant
 	{
 		if(mob.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(_("You are already trying to locate animals."));
+			mob.tell(L("You are already trying to locate animals."));
 			return false;
 		}
 		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
@@ -144,7 +144,7 @@ public class Chant_LocateAnimals extends Chant
 
 		if(animalHere(mob.location())!=null)
 		{
-			mob.tell(_("Try 'look'."));
+			mob.tell(L("Try 'look'."));
 			return false;
 		}
 
@@ -177,12 +177,12 @@ public class Chant_LocateAnimals extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("^S<S-NAME> chant(s) for the animals.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> chant(s) for the animals.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
-				displayText=_("(seeking @x1)",target.name());
+				displayText=L("(seeking @x1)",target.name());
 				final Chant_LocateAnimals newOne=(Chant_LocateAnimals)this.copyOf();
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
@@ -191,7 +191,7 @@ public class Chant_LocateAnimals extends Chant
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) for the animals, but nothing happens."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> chant(s) for the animals, but nothing happens."));
 
 
 		// return whether it worked

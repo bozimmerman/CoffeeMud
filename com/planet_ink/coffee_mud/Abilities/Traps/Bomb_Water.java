@@ -35,7 +35,7 @@ import java.util.*;
 public class Bomb_Water extends StdBomb
 {
 	@Override public String ID() { return "Bomb_Water"; }
-	private final static String localizedName = CMLib.lang()._("water bomb");
+	private final static String localizedName = CMLib.lang().L("water bomb");
 	@Override public String name() { return localizedName; }
 	@Override protected int trapLevel(){return 1;}
 	@Override public String requiresToSet(){return "a water container";}
@@ -56,7 +56,7 @@ public class Bomb_Water extends StdBomb
 		||(((Drink)P).liquidType()!=RawMaterial.RESOURCE_FRESHWATER))
 		{
 			if(mob!=null)
-				mob.tell(_("You need a full water container to make this out of."));
+				mob.tell(L("You need a full water container to make this out of."));
 			return false;
 		}
 		return true;
@@ -69,9 +69,9 @@ public class Bomb_Water extends StdBomb
 			if((target==invoker())
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) the water bomb!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) the water bomb!"));
 			else
-			if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("@x1 explodes water all over <T-NAME>!",affected.name())))
+			if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("@x1 explodes water all over <T-NAME>!",affected.name())))
 			{
 				super.spring(target);
 				CMLib.utensils().extinguish(invoker(),target,true);

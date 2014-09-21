@@ -35,7 +35,7 @@ import java.util.*;
 public class Burglar extends Thief
 {
 	@Override public String ID(){return "Burglar";}
-	private final static String localizedStaticName = CMLib.lang()._("Burglar");
+	private final static String localizedStaticName = CMLib.lang().L("Burglar");
 	@Override public String name() { return localizedStaticName; }
 	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_BURGLAR;}

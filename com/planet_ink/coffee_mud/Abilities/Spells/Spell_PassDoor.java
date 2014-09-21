@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_PassDoor extends Spell
 {
 	@Override public String ID() { return "Spell_PassDoor"; }
-	private final static String localizedName = CMLib.lang()._("Pass Door");
+	private final static String localizedName = CMLib.lang().L("Pass Door");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Pass Door)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Pass Door)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canTargetCode(){return 0;}
 	protected int overridemana(){return Ability.COST_ALL;}
@@ -64,7 +64,7 @@ public class Spell_PassDoor extends Spell
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> no longer translucent."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> no longer translucent."));
 
 		super.unInvoke();
 	}
@@ -97,7 +97,7 @@ public class Spell_PassDoor extends Spell
 		{
 			if(dirCode<0)
 			{
-				mob.tell(_("Pass which direction?!"));
+				mob.tell(L("Pass which direction?!"));
 				return false;
 			}
 
@@ -106,13 +106,13 @@ public class Spell_PassDoor extends Spell
 
 			if((exit==null)||(room==null)||(!CMLib.flags().canBeSeenBy(exit,mob)))
 			{
-				mob.tell(_("You can't see anywhere to pass that way."));
+				mob.tell(L("You can't see anywhere to pass that way."));
 				return false;
 			}
 			//Exit opExit=room.getReverseExit(dirCode);
 			if(exit.isOpen())
 			{
-				mob.tell(_("But it looks free and clear that way!"));
+				mob.tell(L("But it looks free and clear that way!"));
 				return false;
 			}
 		}
@@ -125,11 +125,11 @@ public class Spell_PassDoor extends Spell
 
 		if((!success)
 		||(mob.fetchEffect(ID())!=null))
-			beneficialVisualFizzle(mob,null,_("<S-NAME> walk(s) @x1, but go(es) no further.",Directions.getDirectionName(dirCode)));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> walk(s) @x1, but go(es) no further.",Directions.getDirectionName(dirCode)));
 		else
 		if(auto)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),_("^S<S-NAME> shimmer(s) and turn(s) translucent.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),L("^S<S-NAME> shimmer(s) and turn(s) translucent.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -139,13 +139,13 @@ public class Spell_PassDoor extends Spell
 		}
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),_("^S<S-NAME> shimmer(s) and pass(es) @x1.^?",Directions.getDirectionName(dirCode)));
+			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),L("^S<S-NAME> shimmer(s) and pass(es) @x1.^?",Directions.getDirectionName(dirCode)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.addEffect(this);
 				mob.recoverPhyStats();
-				mob.tell(_("\n\r\n\r"));
+				mob.tell(L("\n\r\n\r"));
 				CMLib.tracking().walk(mob,dirCode,false,false);
 				mob.delEffect(this);
 				mob.recoverPhyStats();

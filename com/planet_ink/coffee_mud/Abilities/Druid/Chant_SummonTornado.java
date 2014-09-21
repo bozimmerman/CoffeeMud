@@ -37,7 +37,7 @@ public class Chant_SummonTornado extends Chant
 {
 	@Override public String ID() { return "Chant_SummonTornado"; }
 	@Override public String name(){return renderedMundane?"tornado":"Summon Tornado";}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Inside a Tornado)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Inside a Tornado)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
@@ -79,7 +79,7 @@ public class Chant_SummonTornado extends Chant
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
-			mob.tell(_("You must be outdoors for this chant to work."));
+			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
 		if((mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_THUNDERSTORM)
@@ -87,7 +87,7 @@ public class Chant_SummonTornado extends Chant
 		&&(mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_BLIZZARD)
 		&&(!auto))
 		{
-			mob.tell(_("This chant requires wind, a thunderstorm, or a blizzard!"));
+			mob.tell(L("This chant requires wind, a thunderstorm, or a blizzard!"));
 			return false;
 		}
 
@@ -95,7 +95,7 @@ public class Chant_SummonTornado extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,null,null,_("A tornado is already here!"));
+			mob.tell(mob,null,null,L("A tornado is already here!"));
 			return false;
 		}
 
@@ -116,7 +116,7 @@ public class Chant_SummonTornado extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto), _((auto?"^JA":"^S<S-NAME> chant(s) to the sky and a")+" tornado touches down!^?")+CMLib.protocol().msp("tornado.wav",40));
+			CMMsg msg = CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto), L((auto?"^JA":"^S<S-NAME> chant(s) to the sky and a")+" tornado touches down!^?")+CMLib.protocol().msp("tornado.wav",40));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -142,7 +142,7 @@ public class Chant_SummonTornado extends Chant
 						availableRooms.addElement(R);
 				}
 				if(stuff.size()==0)
-					mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The tornado dissipates harmlessly."));
+					mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The tornado dissipates harmlessly."));
 				else
 				while(stuff.size()>0)
 				{
@@ -153,10 +153,10 @@ public class Chant_SummonTornado extends Chant
 					{
 						final Item I=(Item)O;
 						if(R==mob.location())
-							mob.location().show(mob,null,I,CMMsg.MSG_OK_ACTION,_("The tornado picks up <O-NAME> and whisks it around."));
+							mob.location().show(mob,null,I,CMMsg.MSG_OK_ACTION,L("The tornado picks up <O-NAME> and whisks it around."));
 						else
 						{
-							mob.location().show(mob,null,I,CMMsg.MSG_OK_ACTION,_("The tornado picks up <O-NAME> and whisks it away."));
+							mob.location().show(mob,null,I,CMMsg.MSG_OK_ACTION,L("The tornado picks up <O-NAME> and whisks it away."));
 							R.moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
 						}
 						if(I.subjectToWearAndTear())
@@ -210,10 +210,10 @@ public class Chant_SummonTornado extends Chant
 							mob.location().send(mob,msg2);
 							mob.location().send(mob,msg3);
 							if(R==mob.location())
-								mob.location().show(M,null,null,CMMsg.MSG_OK_ACTION,_("The tornado picks <S-NAME> up and whisks <S-HIM-HER> around."));
+								mob.location().show(M,null,null,CMMsg.MSG_OK_ACTION,L("The tornado picks <S-NAME> up and whisks <S-HIM-HER> around."));
 							else
 							{
-								mob.location().show(M,null,null,CMMsg.MSG_OK_ACTION,_("The tornado picks <S-NAME> up and whisks <S-HIM-HER> away."));
+								mob.location().show(M,null,null,CMMsg.MSG_OK_ACTION,L("The tornado picks <S-NAME> up and whisks <S-HIM-HER> away."));
 								R.bringMobHere(M,false);
 							}
 							final int maxDie=(int)Math.round(CMath.div(adjustedLevel(mob,asLevel),2.0));
@@ -221,14 +221,14 @@ public class Chant_SummonTornado extends Chant
 							if((msg.value()>0)||(msg2.value()>0))
 								damage = (int)Math.round(CMath.div(damage,2.0));
 							CMLib.combat().postDamage(mob,M,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_GAS,Weapon.TYPE_BASHING,"The tornado <DAMAGE> <T-NAME>!");
-							//if(R!=mob.location()) M.tell(_("Wait a minute! Where are you?"));
+							//if(R!=mob.location()) M.tell(L("Wait a minute! Where are you?"));
 						}
 					}
 				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) into the sky, but nothing happens."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) into the sky, but nothing happens."));
 
 		// return whether it worked
 		return success;

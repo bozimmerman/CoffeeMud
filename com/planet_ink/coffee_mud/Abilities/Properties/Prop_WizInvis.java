@@ -128,7 +128,7 @@ public class Prop_WizInvis extends Property
 			}
 			else
 				being.recoverPhyStats();
-			mob.tell(_("You begin to fade back into view."));
+			mob.tell(L("You begin to fade back into view."));
 		}
 	}
 
@@ -139,7 +139,7 @@ public class Prop_WizInvis extends Property
 		{
 			if(msg.source()!=msg.target())
 			{
-				msg.source().tell(_("Ah, leave @x1 alone.",affected.name()));
+				msg.source().tell(L("Ah, leave @x1 alone.",affected.name()));
 				if(affected instanceof MOB)
 					((MOB)affected).makePeace();
 			}

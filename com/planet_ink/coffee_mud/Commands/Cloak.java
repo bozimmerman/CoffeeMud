@@ -47,14 +47,14 @@ public class Cloak extends StdCommand
 			commands.insertElementAt("OFF",1);
 		commands.removeElementAt(0);
 		final int abilityCode=PhyStats.IS_CLOAKED;
-		str=_("Prop_WizInvis");
+		str=L("Prop_WizInvis");
 		Ability A=mob.fetchEffect(str);
 		if(CMParms.combine(commands,0).trim().equalsIgnoreCase("OFF"))
 		{
 		   if(A!=null)
 			   A.unInvoke();
 		   else
-			   mob.tell(_("You are not cloaked!"));
+			   mob.tell(L("You are not cloaked!"));
 		   return false;
 		}
 		else
@@ -62,7 +62,7 @@ public class Cloak extends StdCommand
 		{
 			if(CMath.bset(A.abilityCode(),abilityCode)&&(!CMath.bset(A.abilityCode(),PhyStats.IS_NOT_SEEN)))
 			{
-				mob.tell(_("You are already cloaked!"));
+				mob.tell(L("You are already cloaked!"));
 				return false;
 			}
 		}
@@ -75,7 +75,7 @@ public class Cloak extends StdCommand
 			A=CMClass.getAbility(str);
 		if(A!=null)
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> become(s) cloaked!"));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) cloaked!"));
 			if(mob.fetchEffect(A.ID())==null)
 				mob.addPriorityEffect((Ability)A.copyOf());
 			A=mob.fetchEffect(A.ID());
@@ -83,10 +83,10 @@ public class Cloak extends StdCommand
 
 			mob.recoverPhyStats();
 			mob.location().recoverRoomStats();
-			mob.tell(_("You may uninvoke CLOAK with 'CLOAK OFF' or 'WIZINV OFF'."));
+			mob.tell(L("You may uninvoke CLOAK with 'CLOAK OFF' or 'WIZINV OFF'."));
 			return false;
 		}
-		mob.tell(_("Cloaking is not available!"));
+		mob.tell(L("Cloaking is not available!"));
 		return false;
 	}
 

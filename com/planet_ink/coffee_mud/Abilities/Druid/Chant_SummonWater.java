@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_SummonWater extends Chant
 {
 	@Override public String ID() { return "Chant_SummonWater"; }
-	private final static String localizedName = CMLib.lang()._("Summon Water");
+	private final static String localizedName = CMLib.lang().L("Summon Water");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
@@ -54,7 +54,7 @@ public class Chant_SummonWater extends Chant
 		if(littleSpring==null)
 			return;
 		if(canBeUninvoked())
-			SpringLocation.showHappens(CMMsg.MSG_OK_VISUAL,_("The little spring dries up."));
+			SpringLocation.showHappens(CMMsg.MSG_OK_VISUAL,L("The little spring dries up."));
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
@@ -71,7 +71,7 @@ public class Chant_SummonWater extends Chant
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
-			mob.tell(_("You must be outdoors for this chant to work."));
+			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
@@ -80,7 +80,7 @@ public class Chant_SummonWater extends Chant
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			mob.tell(_("This magic will not work here."));
+			mob.tell(L("This magic will not work here."));
 			return false;
 		}
 
@@ -91,7 +91,7 @@ public class Chant_SummonWater extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) for water.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) for water.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -101,12 +101,12 @@ public class Chant_SummonWater extends Chant
 
 				if(newItem==null)
 				{
-					mob.tell(_("There's no such thing as a '@x1'.\n\r",itemID));
+					mob.tell(L("There's no such thing as a '@x1'.\n\r",itemID));
 					return false;
 				}
 
 				mob.location().addItem(newItem);
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 starts flowing here.",newItem.name()));
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 starts flowing here.",newItem.name()));
 				SpringLocation=mob.location();
 				littleSpring=newItem;
 				beneficialAffect(mob,newItem,asLevel,0);
@@ -114,7 +114,7 @@ public class Chant_SummonWater extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) for water, but nothing happens."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) for water, but nothing happens."));
 
 		// return whether it worked
 		return success;

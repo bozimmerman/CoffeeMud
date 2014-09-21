@@ -51,9 +51,9 @@ public class Unload extends StdCommand
 		if(commands.size()<2)
 		{
 			if(tryArchon)
-				mob.tell(_("UNLOAD what? Try @x1",CMParms.toStringList(ARCHON_LIST)));
+				mob.tell(L("UNLOAD what? Try @x1",CMParms.toStringList(ARCHON_LIST)));
 			else
-				mob.tell(_("Unload what?"));
+				mob.tell(L("Unload what?"));
 			return false;
 		}
 		final String str=CMParms.combine(commands,1);
@@ -77,15 +77,15 @@ public class Unload extends StdCommand
 					items.add((AmmunitionWeapon)I);
 			}
 			if(baseItems.size()==0)
-				mob.tell(_("You don't seem to have that."));
+				mob.tell(L("You don't seem to have that."));
 			else
 			if(items.size()==0)
-				mob.tell(_("You can't seem to unload that."));
+				mob.tell(L("You can't seem to unload that."));
 			else
 			for(final AmmunitionWeapon W : items)
 			{
 				final Item ammunition=CMLib.coffeeMaker().makeAmmunition(W.ammunitionType(),W.ammunitionRemaining());
-				final CMMsg newMsg=CMClass.getMsg(mob,W,ammunition,CMMsg.MSG_UNLOAD,_("<S-NAME> unload(s) <O-NAME> from <T-NAME>."));
+				final CMMsg newMsg=CMClass.getMsg(mob,W,ammunition,CMMsg.MSG_UNLOAD,L("<S-NAME> unload(s) <O-NAME> from <T-NAME>."));
 				if(mob.location().okMessage(mob,newMsg))
 					mob.location().send(mob,newMsg);
 			}
@@ -98,7 +98,7 @@ public class Unload extends StdCommand
 			{
 				if(commands.size()<3)
 				{
-					mob.tell(_("Unload which @x1?",what));
+					mob.tell(L("Unload which @x1?",what));
 					return false;
 				}
 				if(what.equalsIgnoreCase("CLASS"))
@@ -112,7 +112,7 @@ public class Unload extends StdCommand
 				}
 				final CMObjectType whatType=CMClass.findObjectType(what);
 				if(whatType==null)
-					mob.tell(_("Don't know how to load a '@x1'.  Try one of the following: @x2",what,CMParms.toStringList(ARCHON_LIST)));
+					mob.tell(L("Don't know how to load a '@x1'.  Try one of the following: @x2",what,CMParms.toStringList(ARCHON_LIST)));
 				else
 				{
 					commands.removeElementAt(0);
@@ -122,12 +122,12 @@ public class Unload extends StdCommand
 						final String name=(String)commands.elementAt(0);
 						final Object O=CMClass.getObjectOrPrototype(name);
 						if(!(O instanceof CMObject))
-							mob.tell(_("Class '@x1' was not found in the class loader.",name));
+							mob.tell(L("Class '@x1' was not found in the class loader.",name));
 						else
 						if(!CMClass.delClass(whatType,(CMObject)O))
-							mob.tell(_("Failed to unload class '@x1' from the class loader.",name));
+							mob.tell(L("Failed to unload class '@x1' from the class loader.",name));
 						else
-							mob.tell(_("Class '@x1' was unloaded.",name));
+							mob.tell(L("Class '@x1' was unloaded.",name));
 					}
 				}
 				return false;
@@ -141,19 +141,19 @@ public class Unload extends StdCommand
 					CMLib.help().unloadHelpFile(mob);
 					return false;
 				}
-				mob.tell(_("No access to help."));
+				mob.tell(L("No access to help."));
 			}
 			else
 			if(str.equalsIgnoreCase("inifile"))
 			{
 				CMProps.instance().resetSecurityVars();
 				CMProps.instance().resetSystemVars();
-				mob.tell(_("INI file entries have been unloaded."));
+				mob.tell(L("INI file entries have been unloaded."));
 			}
 			else
 			if((str.equalsIgnoreCase("all"))&&(CMSecurity.isASysOp(mob)))
 			{
-				mob.tell(_("All soft resources unloaded."));
+				mob.tell(L("All soft resources unloaded."));
 				CMLib.factions().removeFaction(null);
 				Resources.clearResources();
 				CMProps.instance().resetSecurityVars();
@@ -177,12 +177,12 @@ public class Unload extends StdCommand
 					final MOB M=CMLib.players().getPlayer(which);
 					if(M==null)
 					{
-						mob.tell(_("No such user as '@x1'!",which));
+						mob.tell(L("No such user as '@x1'!",which));
 						return false;
 					}
 					users.addElement(M);
 				}
-				final boolean saveFirst=mob.session().confirm(_("Save first (Y/n)?"),_("Y"));
+				final boolean saveFirst=mob.session().confirm(L("Save first (Y/n)?"),L("Y"));
 				for(int u=0;u<users.size();u++)
 				{
 					final MOB M=(MOB)users.elementAt(u);
@@ -195,7 +195,7 @@ public class Unload extends StdCommand
 							if(M.session()!=null) M.session().stopSession(true,true,true);
 						}
 						else
-							mob.tell(_("Can't unload yourself -- a destroy is involved, which would disrupt this process."));
+							mob.tell(L("Can't unload yourself -- a destroy is involved, which would disrupt this process."));
 					}
 					if(saveFirst)
 					{
@@ -218,7 +218,7 @@ public class Unload extends StdCommand
 					}
 				}
 
-				mob.tell(_("@x1 user(s) unloaded.",""+done));
+				mob.tell(L("@x1 user(s) unloaded.",""+done));
 				return true;
 			}
 			else
@@ -236,10 +236,10 @@ public class Unload extends StdCommand
 				{
 					if(CMLib.factions().removeFaction(which))
 					{
-						mob.tell(_("Faction '@x1' unloaded.",which));
+						mob.tell(L("Faction '@x1' unloaded.",which));
 						return false;
 					}
-					mob.tell(_("Unknown Faction '@x1'.  Use LIST FACTIONS.",which));
+					mob.tell(L("Unknown Faction '@x1'.  Use LIST FACTIONS.",which));
 					return false;
 				}
 			}
@@ -253,7 +253,7 @@ public class Unload extends StdCommand
 				if(which.length()>0)
 					A=CMLib.map().getArea(which);
 				if(A==null)
-					mob.tell(_("Unknown Area '@x1'.  Use AREAS.",which));
+					mob.tell(L("Unknown Area '@x1'.  Use AREAS.",which));
 				else
 				{
 					return false;
@@ -265,7 +265,7 @@ public class Unload extends StdCommand
 			{
 				Resources.removeResource("skills/expertises.txt");
 				CMLib.expertises().recompileExpertises();
-				mob.tell(_("Expertise list unloaded and reloaded."));
+				mob.tell(L("Expertise list unloaded and reloaded."));
 				return false;
 			}
 			else
@@ -275,14 +275,14 @@ public class Unload extends StdCommand
 				final Iterator<String> k=Resources.findResourceKeys(which);
 				if(!k.hasNext())
 				{
-					mob.tell(_("Unknown resource '@x1'.  Use LIST RESOURCES.",which));
+					mob.tell(L("Unknown resource '@x1'.  Use LIST RESOURCES.",which));
 					return false;
 				}
 				for(;k.hasNext();)
 				{
 					final String key=k.next();
 					Resources.removeResource(key);
-					mob.tell(_("Resource '@x1' unloaded.",key));
+					mob.tell(L("Resource '@x1' unloaded.",key));
 				}
 			}
 			else
@@ -311,24 +311,24 @@ public class Unload extends StdCommand
 					final CMFile F2=new CMFile(F1.getVFSPathAndName(),mob,CMFile.FLAG_LOGERRORS);
 					if((!F2.exists())||(!F2.canRead()))
 					{
-						mob.tell(_("Inaccessible file resource: '@x1'",which));
+						mob.tell(L("Inaccessible file resource: '@x1'",which));
 						return false;
 					}
 					final Iterator<String> k=Resources.findResourceKeys(which);
 					if(!k.hasNext())
 					{
-						mob.tell(_("Unknown resource '@x1'.  Use LIST RESOURCES.",which));
+						mob.tell(L("Unknown resource '@x1'.  Use LIST RESOURCES.",which));
 						return false;
 					}
 					for(;k.hasNext();)
 					{
 						final String key=k.next();
 						Resources.removeResource(key);
-						mob.tell(_("Resource '@x1' unloaded.",key));
+						mob.tell(L("Resource '@x1' unloaded.",key));
 					}
 				}
 				else
-					mob.tell(_("Unknown file resource: '@x1'",which));
+					mob.tell(L("Unknown file resource: '@x1'",which));
 			}
 			else
 			{
@@ -354,24 +354,24 @@ public class Unload extends StdCommand
 					final CMFile F2=new CMFile(F1.getVFSPathAndName(),mob,CMFile.FLAG_LOGERRORS);
 					if((!F2.exists())||(!F2.canRead()))
 					{
-						mob.tell(_("Inaccessible file resource: '@x1'",str));
+						mob.tell(L("Inaccessible file resource: '@x1'",str));
 						return false;
 					}
 					final Iterator<String> k=Resources.findResourceKeys(str);
 					if(!k.hasNext())
 					{
-						mob.tell(_("Unknown resource '@x1'.  Use LIST RESOURCES.",str));
+						mob.tell(L("Unknown resource '@x1'.  Use LIST RESOURCES.",str));
 						return false;
 					}
 					for(;k.hasNext();)
 					{
 						final String key=k.next();
 						Resources.removeResource(key);
-						mob.tell(_("Resource '@x1' unloaded.",key));
+						mob.tell(L("Resource '@x1' unloaded.",key));
 					}
 				}
 				else
-					mob.tell(_("Unknown resource type '@x1. Try @x2.",((String)commands.elementAt(1)),CMParms.toStringList(ARCHON_LIST)));
+					mob.tell(L("Unknown resource type '@x1. Try @x2.",((String)commands.elementAt(1)),CMParms.toStringList(ARCHON_LIST)));
 			}
 		}
 		return false;

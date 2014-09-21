@@ -161,7 +161,7 @@ public class Polls extends StdLibrary implements PollManager
 			present.append("^O"+P.getDescription()+"^N\n\r\n\r");
 			if(P.getOptions().size()==0)
 			{
-				mob.tell(_("@x1Oops! No options defined!",present.toString()));
+				mob.tell(L("@x1Oops! No options defined!",present.toString()));
 				return;
 			}
 			Poll.PollOption PO=null;
@@ -178,7 +178,7 @@ public class Polls extends StdLibrary implements PollManager
 			while((choice<0)&&(mob.session()!=null)&&(!mob.session().isStopped()))
 			{
 
-				final String s=mob.session().prompt(_("Please make your selection (1-@x1): ",""+P.getOptions().size()));
+				final String s=mob.session().prompt(L("Please make your selection (1-@x1): ",""+P.getOptions().size()));
 				if((s.length()==0)&&(CMath.bset(P.getFlags(),Poll.FLAG_ABSTAIN)))
 					break;
 				if(CMath.isInteger(s)&&(CMath.s_int(s)>=1)&&(CMath.s_int(s)<=P.getOptions().size()))
@@ -215,31 +215,31 @@ public class Polls extends StdLibrary implements PollManager
 		while(!ok)
 		{
 			int showNumber=0;
-			String possName=CMLib.genEd().prompt(mob,P.getName(),++showNumber,showFlag,_("Name"));
+			String possName=CMLib.genEd().prompt(mob,P.getName(),++showNumber,showFlag,L("Name"));
 			while((!possName.equalsIgnoreCase(P.getName()))&&(CMLib.polls().getPoll(possName)!=null))
 				possName=possName+"!";
 			P.setName(possName);
-			P.setDescription(CMLib.genEd().prompt(mob,P.getDescription(),++showNumber,showFlag,_("Introduction")));
-			P.setSubject(CMLib.genEd().prompt(mob,P.getSubject(),++showNumber,showFlag,_("Results Header")));
+			P.setDescription(CMLib.genEd().prompt(mob,P.getDescription(),++showNumber,showFlag,L("Introduction")));
+			P.setSubject(CMLib.genEd().prompt(mob,P.getSubject(),++showNumber,showFlag,L("Results Header")));
 			if(P.getSubject().length()>250) P.setSubject(P.getSubject().substring(0,250));
 			if(P.getAuthor().length()==0) P.setAuthor(mob.Name());
-			P.setQualZapper(CMLib.genEd().prompt(mob,P.getQualZapper(),++showNumber,showFlag,_("Qual. Mask"),true));
-			P.setFlags((CMLib.genEd().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_ACTIVE),++showNumber,showFlag,_("Poll Active")))?
+			P.setQualZapper(CMLib.genEd().prompt(mob,P.getQualZapper(),++showNumber,showFlag,L("Qual. Mask"),true));
+			P.setFlags((CMLib.genEd().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_ACTIVE),++showNumber,showFlag,L("Poll Active")))?
 				CMath.setb(P.getFlags(),Poll.FLAG_ACTIVE):CMath.unsetb(P.getFlags(),Poll.FLAG_ACTIVE));
-			P.setFlags((CMLib.genEd().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_PREVIEWRESULTS),++showNumber,showFlag,_("Preview Results")))?
+			P.setFlags((CMLib.genEd().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_PREVIEWRESULTS),++showNumber,showFlag,L("Preview Results")))?
 					CMath.setb(P.getFlags(),Poll.FLAG_PREVIEWRESULTS):CMath.unsetb(P.getFlags(),Poll.FLAG_PREVIEWRESULTS));
-			P.setFlags((CMLib.genEd().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_ABSTAIN),++showNumber,showFlag,_("Allow Abstention")))?
+			P.setFlags((CMLib.genEd().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_ABSTAIN),++showNumber,showFlag,L("Allow Abstention")))?
 					CMath.setb(P.getFlags(),Poll.FLAG_ABSTAIN):CMath.unsetb(P.getFlags(),Poll.FLAG_ABSTAIN));
-			P.setFlags((CMLib.genEd().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_VOTEBYIP),++showNumber,showFlag,_("Use IP Addresses/Accounts")))?
+			P.setFlags((CMLib.genEd().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_VOTEBYIP),++showNumber,showFlag,L("Use IP Addresses/Accounts")))?
 					CMath.setb(P.getFlags(),Poll.FLAG_VOTEBYIP):CMath.unsetb(P.getFlags(),Poll.FLAG_VOTEBYIP));
-			P.setFlags((CMLib.genEd().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_HIDERESULTS),++showNumber,showFlag,_("Hide Results")))?
+			P.setFlags((CMLib.genEd().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_HIDERESULTS),++showNumber,showFlag,L("Hide Results")))?
 					CMath.setb(P.getFlags(),Poll.FLAG_HIDERESULTS):CMath.unsetb(P.getFlags(),Poll.FLAG_HIDERESULTS));
-			P.setFlags((CMLib.genEd().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_NOTATLOGIN),++showNumber,showFlag,_("POLL CMD only")))?
+			P.setFlags((CMLib.genEd().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_NOTATLOGIN),++showNumber,showFlag,L("POLL CMD only")))?
 					CMath.setb(P.getFlags(),Poll.FLAG_NOTATLOGIN):CMath.unsetb(P.getFlags(),Poll.FLAG_NOTATLOGIN));
 			String expirationDate="NA";
 			if(P.getExpiration()>0) expirationDate=CMLib.time().date2String(P.getExpiration());
 
-			expirationDate=CMLib.genEd().prompt(mob,expirationDate,++showNumber,showFlag,_("Exp. Date (MM/DD/YYYY HH:MM AP)"),true);
+			expirationDate=CMLib.genEd().prompt(mob,expirationDate,++showNumber,showFlag,L("Exp. Date (MM/DD/YYYY HH:MM AP)"),true);
 			if((expirationDate.trim().length()==0)||(expirationDate.equalsIgnoreCase("NA")))
 				P.setExpiration(0);
 			else
@@ -249,7 +249,7 @@ public class Polls extends StdLibrary implements PollManager
 			for(int i=0;i<P.getOptions().size();i++)
 			{
 				final Poll.PollOption PO=P.getOptions().get(i);
-				PO.text=CMLib.genEd().prompt(mob,PO.text,++showNumber,showFlag,_("Vote Option"),true);
+				PO.text=CMLib.genEd().prompt(mob,PO.text,++showNumber,showFlag,L("Vote Option"),true);
 				if(PO.text.length()==0) del.addElement(PO);
 			}
 			for(int i=0;i<del.size();i++)
@@ -259,7 +259,7 @@ public class Polls extends StdLibrary implements PollManager
 			while(!mob.session().isStopped())
 			{
 				PO=new Poll.PollOption(
-						CMLib.genEd().prompt(mob,"",++showNumber,showFlag,_("New Vote Option"),true)
+						CMLib.genEd().prompt(mob,"",++showNumber,showFlag,L("New Vote Option"),true)
 				);
 				if(PO.text.length()==0)
 					break;
@@ -267,7 +267,7 @@ public class Polls extends StdLibrary implements PollManager
 			}
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
-			showFlag=CMath.s_int(mob.session().prompt(_("Edit which? "),""));
+			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
 				showFlag=-1;
@@ -288,7 +288,7 @@ public class Polls extends StdLibrary implements PollManager
 		present.append("^O"+P.getSubject()+"^N\n\r\n\r");
 		if(P.getOptions().size()==0)
 		{
-			mob.tell(_("@x1Oops! No options defined!",present.toString()));
+			mob.tell(L("@x1Oops! No options defined!",present.toString()));
 			return;
 		}
 		int total=0;

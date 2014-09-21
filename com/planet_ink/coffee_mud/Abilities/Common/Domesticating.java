@@ -36,7 +36,7 @@ import java.util.*;
 public class Domesticating extends CommonSkill
 {
 	@Override public String ID() { return "Domesticating"; }
-	private final static String localizedName = CMLib.lang()._("Domesticating");
+	private final static String localizedName = CMLib.lang().L("Domesticating");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"DOMESTICATE","DOMESTICATING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -47,8 +47,8 @@ public class Domesticating extends CommonSkill
 	public Domesticating()
 	{
 		super();
-		displayText=_("You are domesticating...");
-		verb=_("domesticating");
+		displayText=L("You are domesticating...");
+		verb=L("domesticating");
 	}
 
 	@Override
@@ -79,16 +79,16 @@ public class Domesticating extends CommonSkill
 				if((taming!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonTell(mob,_("You've failed to domesticate @x1!",taming.name()));
+						commonTell(mob,L("You've failed to domesticate @x1!",taming.name()));
 					else
 					{
 						if(taming.amFollowing()==mob)
-							commonTell(mob,_("@x1 is already domesticated.",taming.name()));
+							commonTell(mob,L("@x1 is already domesticated.",taming.name()));
 						else
 						{
 							CMLib.commands().postFollow(taming,mob,true);
 							if(taming.amFollowing()==mob)
-								mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> manage(s) to domesticate @x1.",taming.name()));
+								mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to domesticate @x1.",taming.name()));
 						}
 					}
 				}
@@ -114,29 +114,29 @@ public class Domesticating extends CommonSkill
 		final MOB M=mob.location().fetchInhabitant(str);
 		if((M==null)||(!CMLib.flags().canBeSeenBy(M,mob)))
 		{
-			commonTell(mob,_("You don't see anyone called '@x1' here.",str));
+			commonTell(mob,L("You don't see anyone called '@x1' here.",str));
 			return false;
 		}
 		if(!M.isMonster())
 		{
 			if(newName!=null)
-				commonTell(mob,M,null,_("You can't name <T-NAME>."));
+				commonTell(mob,M,null,L("You can't name <T-NAME>."));
 			else
-				commonTell(mob,M,null,_("You can't domesticate <T-NAME>."));
+				commonTell(mob,M,null,L("You can't domesticate <T-NAME>."));
 			return false;
 		}
 		if(!CMLib.flags().isAnimalIntelligence(M))
 		{
 			if(newName!=null)
-				commonTell(mob,M,null,_("You can't name <T-NAME>."));
+				commonTell(mob,M,null,L("You can't name <T-NAME>."));
 			else
-				commonTell(mob,M,null,_("You don't know how to domesticate <T-NAME>."));
+				commonTell(mob,M,null,L("You don't know how to domesticate <T-NAME>."));
 			return false;
 		}
 		final String theName=newName;
 		if((newName!=null)&&(M.amFollowing()==null))
 		{
-			commonTell(mob,_("You can only name someones pet."));
+			commonTell(mob,L("You can only name someones pet."));
 			return false;
 		}
 		else
@@ -144,12 +144,12 @@ public class Domesticating extends CommonSkill
 		{
 			if(newName.trim().length()==0)
 			{
-				mob.tell(_("You must specify a name."));
+				mob.tell(L("You must specify a name."));
 				return false;
 			}
 			if(newName.indexOf(' ')>=0)
 			{
-				mob.tell(_("The name may not contain a space."));
+				mob.tell(L("The name may not contain a space."));
 				return false;
 			}
 			String oldName=M.name();
@@ -175,14 +175,14 @@ public class Domesticating extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		taming=M;
-		verb=_("domesticating @x1",M.name());
+		verb=L("domesticating @x1",M.name());
 		int levelDiff=taming.phyStats().level()-xlevel(mob);
 		if(levelDiff<0) levelDiff=0;
 		messedUp=!proficiencyCheck(mob,-(levelDiff*5),auto);
 		int duration=35+levelDiff;
 		if(duration<10) duration=10;
 		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),
-			(newName!=null)?_("<S-NAME> name(s) @x1 '@x2'.",M.name(),theName):_("<S-NAME> start(s) domesticating @x1.",M.name()));
+			(newName!=null)?L("<S-NAME> name(s) @x1 '@x2'.",M.name(),theName):L("<S-NAME> start(s) domesticating @x1.",M.name()));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

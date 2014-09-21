@@ -48,12 +48,12 @@ public class AutoNotify extends StdCommand
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTONOTIFY))
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTONOTIFY));
-			mob.tell(_("Notification of the arrival of your FRIENDS is now off."));
+			mob.tell(L("Notification of the arrival of your FRIENDS is now off."));
 		}
 		else
 		{
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTONOTIFY));
-			mob.tell(_("Notification of the arrival of your FRIENDS is now on."));
+			mob.tell(L("Notification of the arrival of your FRIENDS is now on."));
 		}
 		return false;
 	}

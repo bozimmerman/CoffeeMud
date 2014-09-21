@@ -38,9 +38,9 @@ import java.util.*;
 public class Chant_WindColor extends Chant
 {
 	@Override public String ID() { return "Chant_WindColor"; }
-	private final static String localizedName = CMLib.lang()._("Wind Color");
+	private final static String localizedName = CMLib.lang().L("Wind Color");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Wind Color)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Wind Color)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
@@ -56,7 +56,7 @@ public class Chant_WindColor extends Chant
 			lastRoom=null;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("Your senses are no longer sensitive to the winds."));
+			mob.tell(L("Your senses are no longer sensitive to the winds."));
 	}
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -73,7 +73,7 @@ public class Chant_WindColor extends Chant
 		{
 			lastRoom=((MOB)affected).location();
 			final String prediction=getWindColor((MOB)affected,((MOB)affected).location());
-			if(prediction.length()>0) ((MOB)affected).tell(_("The winds are @x1.",prediction));
+			if(prediction.length()>0) ((MOB)affected).tell(L("The winds are @x1.",prediction));
 		}
 		return true;
 	}
@@ -203,22 +203,22 @@ public class Chant_WindColor extends Chant
 			switch(levelCode)
 			{
 			case -1:
-				str.append(_("dull stripes of "));
+				str.append(L("dull stripes of "));
 				break;
 			case 0:
-				str.append(_("faded stripes of "));
+				str.append(L("faded stripes of "));
 				break;
 			case 1:
-				str.append(_("striped "));
+				str.append(L("striped "));
 				break;
 			case 2:
-				str.append(_("brightly striped "));
+				str.append(L("brightly striped "));
 				break;
 			case 3:
-				str.append(_("brilliant stripes of "));
+				str.append(L("brilliant stripes of "));
 				break;
 			case 4:
-				str.append(_("dazzling stripes of "));
+				str.append(L("dazzling stripes of "));
 				break;
 			}
 			break;
@@ -226,22 +226,22 @@ public class Chant_WindColor extends Chant
 			switch(levelCode)
 			{
 			case -1:
-				str.append(_("a swirl of dull "));
+				str.append(L("a swirl of dull "));
 				break;
 			case 0:
-				str.append(_("a swirl of faded "));
+				str.append(L("a swirl of faded "));
 				break;
 			case 1:
-				str.append(_("a swirl of "));
+				str.append(L("a swirl of "));
 				break;
 			case 2:
-				str.append(_("a bright swirl of "));
+				str.append(L("a bright swirl of "));
 				break;
 			case 3:
-				str.append(_("a swirl of brilliant "));
+				str.append(L("a swirl of brilliant "));
 				break;
 			case 4:
-				str.append(_("a swirl of dazzling "));
+				str.append(L("a swirl of dazzling "));
 				break;
 			}
 			break;
@@ -249,21 +249,21 @@ public class Chant_WindColor extends Chant
 			switch(levelCode)
 			{
 			case -1:
-				str.append(_("faded "));
+				str.append(L("faded "));
 				break;
 			case 0:
-				str.append(_("faded "));
+				str.append(L("faded "));
 				break;
 			case 1:
 				break;
 			case 2:
-				str.append(_("bright "));
+				str.append(L("bright "));
 				break;
 			case 3:
-				str.append(_("brilliant "));
+				str.append(L("brilliant "));
 				break;
 			case 4:
-				str.append(_("dazzling "));
+				str.append(L("dazzling "));
 				break;
 			}
 			break;
@@ -277,7 +277,7 @@ public class Chant_WindColor extends Chant
 		for(int i=0;i<V.size();i++)
 		{
 			final int x=((Integer)V.elementAt(i)).intValue();
-			if(i==V.size()-1) str.append(_("and @x1 ",getColor(x)));
+			if(i==V.size()-1) str.append(L("and @x1 ",getColor(x)));
 			else
 			if(i>0) str.append(", "+getColor(x)+" ");
 			else str.append(getColor(x)+" ");
@@ -294,13 +294,13 @@ public class Chant_WindColor extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already watching the winds."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already watching the winds."));
 			return false;
 		}
 
 		if(((target.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
-			target.tell(_("You must be outdoors for this chant to work."));
+			target.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
 
@@ -311,7 +311,7 @@ public class Chant_WindColor extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) visions of the winds!"):_("^S<S-NAME> chant(s) for visions on the wind!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> gain(s) visions of the winds!"):L("^S<S-NAME> chant(s) for visions on the wind!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				lastRoom=null;
@@ -320,7 +320,7 @@ public class Chant_WindColor extends Chant
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) into the air, but the magic fizzles."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> chant(s) into the air, but the magic fizzles."));
 
 		return success;
 	}

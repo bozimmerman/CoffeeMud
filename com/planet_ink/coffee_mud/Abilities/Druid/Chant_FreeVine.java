@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_FreeVine extends Chant
 {
 	@Override public String ID() { return "Chant_FreeVine"; }
-	private final static String localizedName = CMLib.lang()._("Free Vine");
+	private final static String localizedName = CMLib.lang().L("Free Vine");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
@@ -69,7 +69,7 @@ public class Chant_FreeVine extends Chant
 
 		if(!target.charStats().getMyRace().ID().equals("Vine"))
 		{
-			mob.tell(_("@x1 can not be uprooted.",target.name(mob)));
+			mob.tell(L("@x1 can not be uprooted.",target.name(mob)));
 			return false;
 		}
 
@@ -83,19 +83,19 @@ public class Chant_FreeVine extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s)freely to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s)freely to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> pull(s) <S-HIS-HER> roots up!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> pull(s) <S-HIS-HER> roots up!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) freely to <T-NAMESELF>, but the magic fades"));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) freely to <T-NAMESELF>, but the magic fades"));
 
 
 		// return whether it worked

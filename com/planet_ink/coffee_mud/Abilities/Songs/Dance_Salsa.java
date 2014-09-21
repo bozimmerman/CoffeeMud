@@ -37,7 +37,7 @@ import java.util.*;
 public class Dance_Salsa extends Dance
 {
 	@Override public String ID() { return "Dance_Salsa"; }
-	private final static String localizedName = CMLib.lang()._("Salsa");
+	private final static String localizedName = CMLib.lang().L("Salsa");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 
@@ -79,19 +79,19 @@ public class Dance_Salsa extends Dance
 				switch(CMLib.dice().roll(1,5,0))
 				{
 				case 1:
-					mob.tell(_("You feel strange urgings towards @x1.",M.name(mob)));
+					mob.tell(L("You feel strange urgings towards @x1.",M.name(mob)));
 					break;
 				case 2:
-					mob.tell(_("You have strong happy feelings towards @x1.",M.name(mob)));
+					mob.tell(L("You have strong happy feelings towards @x1.",M.name(mob)));
 					break;
 				case 3:
-					mob.tell(_("You feel very appreciative of @x1.",M.name(mob)));
+					mob.tell(L("You feel very appreciative of @x1.",M.name(mob)));
 					break;
 				case 4:
-					mob.tell(_("You feel very close to @x1.",M.name(mob)));
+					mob.tell(L("You feel very close to @x1.",M.name(mob)));
 					break;
 				case 5:
-					mob.tell(_("You feel lovingly towards @x1.",M.name(mob)));
+					mob.tell(L("You feel lovingly towards @x1.",M.name(mob)));
 					break;
 				}
 		}

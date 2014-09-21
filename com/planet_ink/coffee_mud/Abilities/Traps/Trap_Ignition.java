@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_Ignition extends StdTrap
 {
 	@Override public String ID() { return "Trap_Ignition"; }
-	private final static String localizedName = CMLib.lang()._("ignition trap");
+	private final static String localizedName = CMLib.lang().L("ignition trap");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -87,7 +87,7 @@ public class Trap_Ignition extends StdTrap
 		if((I==null)
 		&&(mob!=null))
 		{
-			mob.tell(_("You'll need to set down a container of lamp oil first."));
+			mob.tell(L("You'll need to set down a container of lamp oil first."));
 			return false;
 		}
 		return true;
@@ -99,9 +99,9 @@ public class Trap_Ignition extends StdTrap
 		{
 			if((doesSaveVsTraps(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) setting off a trap!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) setting off a trap!"));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> set(s) off a trap! @x1 ignites!",CMStrings.capitalizeAndLower(affected.name()))))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> set(s) off a trap! @x1 ignites!",CMStrings.capitalizeAndLower(affected.name()))))
 			{
 				super.spring(target);
 				final Ability B=CMClass.getAbility("Burning");
@@ -111,7 +111,7 @@ public class Trap_Ignition extends StdTrap
 				{
 					if(target.isMine(affected))
 					{
-						target.location().show(target,affected,null,CMMsg.MSG_DROP,_("<S-NAME> drop(s) the burning <T-NAME>!"));
+						target.location().show(target,affected,null,CMMsg.MSG_DROP,L("<S-NAME> drop(s) the burning <T-NAME>!"));
 						if(target.isMine(affected))
 							target.location().moveItemTo((Item)affected,ItemPossessor.Expire.Player_Drop);
 					}

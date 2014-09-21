@@ -38,7 +38,7 @@ import java.util.*;
 public class Allergies extends StdAbility implements HealthCondition
 {
 	@Override public String ID() { return "Allergies"; }
-	private final static String localizedName = CMLib.lang()._("Allergies");
+	private final static String localizedName = CMLib.lang().L("Allergies");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -104,7 +104,7 @@ public class Allergies extends StdAbility implements HealthCondition
 					{
 						M=R.fetchInhabitant(i);
 						if((M!=null)&&(M!=mob)&&(raceAllergies.contains(M.charStats().getMyRace())))
-							R.show(mob,null,this,CMMsg.TYP_NOISYMOVEMENT,_("<S-NAME> sneeze(s)! AAAAACHHHOOOO!"));
+							R.show(mob,null,this,CMMsg.TYP_NOISYMOVEMENT,L("<S-NAME> sneeze(s)! AAAAACHHHOOOO!"));
 					}
 				}
 				else
@@ -117,7 +117,7 @@ public class Allergies extends StdAbility implements HealthCondition
 						if((I!=null)
 						&&(I.container()==null)
 						&&(resourceAllergies.contains(Integer.valueOf(I.material()))))
-							R.show(mob,null,this,CMMsg.TYP_NOISYMOVEMENT,_("<S-NAME> sneeze(s)! AAAAACHHHOOOO!"));
+							R.show(mob,null,this,CMMsg.TYP_NOISYMOVEMENT,L("<S-NAME> sneeze(s)! AAAAACHHHOOOO!"));
 					}
 					if(R.numInhabitants()>0)
 					{
@@ -129,7 +129,7 @@ public class Allergies extends StdAbility implements HealthCondition
 							if((I!=null)
 							&&(I.container()==null)
 							&&(resourceAllergies.contains(Integer.valueOf(I.material()))))
-								R.show(mob,null,this,CMMsg.TYP_NOISYMOVEMENT,_("<S-NAME> sneeze(s)! AAAAACHHHOOOO!"));
+								R.show(mob,null,this,CMMsg.TYP_NOISYMOVEMENT,L("<S-NAME> sneeze(s)! AAAAACHHHOOOO!"));
 						}
 					}
 				}

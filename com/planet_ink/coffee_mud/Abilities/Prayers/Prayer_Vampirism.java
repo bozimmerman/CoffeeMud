@@ -36,9 +36,9 @@ import java.util.*;
 public class Prayer_Vampirism extends Prayer
 {
 	@Override public String ID() { return "Prayer_Vampirism"; }
-	private final static String localizedName = CMLib.lang()._("Inflict Vampirism");
+	private final static String localizedName = CMLib.lang().L("Inflict Vampirism");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Vampirism)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Vampirism)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -58,7 +58,7 @@ public class Prayer_Vampirism extends Prayer
 
 		if((canBeUninvoked())&&(CMLib.flags().canSee(mob)))
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.tell(_("Your vampirism fades."));
+				mob.tell(L("Your vampirism fades."));
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class Prayer_Vampirism extends Prayer
 			   &&(msg.tool()!=null)
 			   &&(msg.tool().ID().equals("Skill_Swim")))
 			{
-				mob.tell(_("You can't swim!"));
+				mob.tell(L("You can't swim!"));
 				return false;
 			}
 		}
@@ -221,13 +221,13 @@ public class Prayer_Vampirism extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":_("^S<S-NAME> invoke(s) a vampiric hunger upon <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":L("^S<S-NAME> invoke(s) a vampiric hunger upon <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> inflicted with vampiric hunger!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> inflicted with vampiric hunger!"));
 					target.curState().setHunger(0);
 					target.curState().setThirst(0);
 					maliciousAffect(mob,target,asLevel,0,-1);
@@ -235,7 +235,7 @@ public class Prayer_Vampirism extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to inflict vampirism upon <T-NAMESELF>, but flub(s) it."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to inflict vampirism upon <T-NAMESELF>, but flub(s) it."));
 
 
 		// return whether it worked

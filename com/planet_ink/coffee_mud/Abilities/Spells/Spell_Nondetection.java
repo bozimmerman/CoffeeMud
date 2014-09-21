@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Nondetection extends Spell
 {
 	@Override public String ID() { return "Spell_Nondetection"; }
-	private final static String localizedName = CMLib.lang()._("Resist Divination");
+	private final static String localizedName = CMLib.lang().L("Resist Divination");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Resist Divination)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Resist Divination)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -52,7 +52,7 @@ public class Spell_Nondetection extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("Your divination resistance field fades."));
+			mob.tell(L("Your divination resistance field fades."));
 
 		super.unInvoke();
 
@@ -87,7 +87,7 @@ public class Spell_Nondetection extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_(auto?"An undetectable field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an globe of resistance around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"An undetectable field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an globe of resistance around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -95,7 +95,7 @@ public class Spell_Nondetection extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a resistance globe, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a resistance globe, but fail(s)."));
 
 		return success;
 	}

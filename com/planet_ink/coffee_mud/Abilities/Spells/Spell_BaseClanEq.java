@@ -40,7 +40,7 @@ import java.util.*;
 public class Spell_BaseClanEq extends Spell
 {
 	@Override public String ID() { return "Spell_BaseClanEq"; }
-	private final static String localizedName = CMLib.lang()._("Enchant Clan Equipment Base Model");
+	private final static String localizedName = CMLib.lang().L("Enchant Clan Equipment Base Model");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
@@ -60,8 +60,8 @@ public class Spell_BaseClanEq extends Spell
 				final Ability A=a.nextElement();
 				if((A!=null)&&(A instanceof Spell_BaseClanEq))
 				{
-					teacher.tell(_("@x1 already knows '@x2', and may not learn another clan enchantment.",student.name(),A.name()));
-					student.tell(_("You may only learn a single clan enchantment."));
+					teacher.tell(L("@x1 already knows '@x2', and may not learn another clan enchantment.",student.name(),A.name()));
+					student.tell(L("You may only learn a single clan enchantment."));
 					return false;
 				}
 			}
@@ -74,13 +74,13 @@ public class Spell_BaseClanEq extends Spell
 		if(type.length()==0) return false;
 		if(!mob.clans().iterator().hasNext())
 		{
-			mob.tell(_("You aren't even a member of a clan."));
+			mob.tell(L("You aren't even a member of a clan."));
 			return false;
 		}
 		final Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.ENCHANT);
 		if(clanPair==null)
 		{
-			mob.tell(_("You are not authorized to draw from the power of your clan."));
+			mob.tell(L("You are not authorized to draw from the power of your clan."));
 			return false;
 		}
 		final Clan C=clanPair.first;
@@ -92,38 +92,38 @@ public class Spell_BaseClanEq extends Spell
 		//   -2   -1			0    1
 		if(commands.size()<1)
 		{
-			mob.tell(_("Enchant which spell onto what?"));
+			mob.tell(L("Enchant which spell onto what?"));
 			return false;
 		}
 		if(commands.size()<2)
 		{
-			mob.tell(_("Use how much clan enchantment power?"));
+			mob.tell(L("Use how much clan enchantment power?"));
 			return false;
 		}
 		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.elementAt(0),Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",((String)commands.elementAt(0))));
+			mob.tell(L("You don't see '@x1' here.",((String)commands.elementAt(0))));
 			return false;
 		}
 		// Add clan power check start
 		final int points=CMath.s_int((String)commands.elementAt(1));
 		if(points<=0)
 		{
-			mob.tell(_("You need to use at least 1 enchantment point."));
+			mob.tell(L("You need to use at least 1 enchantment point."));
 			return false;
 		}
 		final long exp=points*CMProps.getIntVar(CMProps.Int.CLANENCHCOST);
 		if((C.getExp()<exp)||(exp<0))
 		{
-			mob.tell(_("You need @x1 to do that, but your @x2 has only @x3 experience points.",""+exp,C.getGovernmentName(),""+C.getExp()));
+			mob.tell(L("You need @x1 to do that, but your @x2 has only @x3 experience points.",""+exp,C.getGovernmentName(),""+C.getExp()));
 			return false;
 		}
 
 		// Add clan power check end
 		if(target.fetchEffect("Prop_ClanEquipment")!=null)
 		{
-			mob.tell(_("@x1 is already clan enchanted.",target.name(mob)));
+			mob.tell(L("@x1 is already clan enchanted.",target.name(mob)));
 			return false;
 		}
 
@@ -138,7 +138,7 @@ public class Spell_BaseClanEq extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, encanting intensely.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, encanting intensely.^?"));
 			if (mob.location().okMessage(mob, msg))
 			{
 				mob.location().send(mob, msg);
@@ -157,7 +157,7 @@ public class Spell_BaseClanEq extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, encanting intensely, and looking very frustrated."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, encanting intensely, and looking very frustrated."));
 		return success;
 	}
 }

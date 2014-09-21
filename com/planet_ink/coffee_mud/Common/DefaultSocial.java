@@ -57,7 +57,7 @@ public class DefaultSocial implements Social
 		if(x<0) return name();
 		return name().substring(0,x);
 	}
-	@Override public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+	@Override public String L(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 	@Override public void setName(String newName){Social_name=newName;}
 	@Override public String You_see(){return You_see;}
 	@Override public String Third_party_sees(){return Third_party_sees;}

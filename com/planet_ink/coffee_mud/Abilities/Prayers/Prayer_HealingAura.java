@@ -35,12 +35,12 @@ import java.util.*;
 public class Prayer_HealingAura extends Prayer
 {
 	@Override public String ID() { return "Prayer_HealingAura"; }
-	private final static String localizedName = CMLib.lang()._("Healing Aura");
+	private final static String localizedName = CMLib.lang().L("Healing Aura");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Healing Aura)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Healing Aura)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

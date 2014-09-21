@@ -35,7 +35,7 @@ import java.util.*;
 public class Prayer_CallUndead extends Prayer
 {
 	@Override public String ID() { return "Prayer_CallUndead"; }
-	private final static String localizedName = CMLib.lang()._("Call Undead");
+	private final static String localizedName = CMLib.lang().L("Call Undead");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
@@ -50,7 +50,7 @@ public class Prayer_CallUndead extends Prayer
 		final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 		if((H.size()==0)||((H.size()==1)&&(H.contains(mob))))
 		{
-			mob.tell(_("You don't have any controlled undead!"));
+			mob.tell(L("You don't have any controlled undead!"));
 			return false;
 		}
 
@@ -72,13 +72,13 @@ public class Prayer_CallUndead extends Prayer
 		}
 		if((target==null)&&(allHere))
 		{
-			mob.tell(_("Better look around first."));
+			mob.tell(L("Better look around first."));
 			return false;
 		}
 
 		if(target==null)
 		{
-			mob.tell(_("Either they are all en route, or you can not fixate on your undead."));
+			mob.tell(L("Either they are all en route, or you can not fixate on your undead."));
 			return false;
 		}
 
@@ -90,7 +90,7 @@ public class Prayer_CallUndead extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> call(s) <S-HIS-HER> undead to come to <S-HIM-HER>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> call(s) <S-HIS-HER> undead to come to <S-HIM-HER>!^?"));
 			if((mob.location().okMessage(mob,msg))&&(oldRoom != null)&&(oldRoom.okMessage(mob,msg)))
 			{
 				mob.location().send(mob,msg);
@@ -106,7 +106,7 @@ public class Prayer_CallUndead extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to call <S-HIS-HER> undead, but fail(s)."));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to call <S-HIS-HER> undead, but fail(s)."));
 
 		// return whether it worked
 		return success;

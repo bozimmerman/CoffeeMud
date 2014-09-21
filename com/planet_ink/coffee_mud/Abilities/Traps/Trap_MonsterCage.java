@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_MonsterCage extends StdTrap
 {
 	@Override public String ID() { return "Trap_MonsterCage"; }
-	private final static String localizedName = CMLib.lang()._("monster cage");
+	private final static String localizedName = CMLib.lang().L("monster cage");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -115,7 +115,7 @@ public class Trap_MonsterCage extends StdTrap
 		if(getCagedAnimal(mob)==null)
 		{
 			if(mob!=null)
-				mob.tell(_("You'll need to set down a caged animal of some sort first."));
+				mob.tell(L("You'll need to set down a caged animal of some sort first."));
 			return false;
 		}
 		return true;
@@ -128,9 +128,9 @@ public class Trap_MonsterCage extends StdTrap
 		{
 			if((doesSaveVsTraps(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) opening a monster cage!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) opening a monster cage!"));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> trip(s) open a caged monster!")))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> trip(s) open a caged monster!")))
 			{
 				super.spring(target);
 				final Item I=CMClass.getItem("GenCaged");

@@ -36,7 +36,7 @@ import java.util.*;
 public class Chant_SummonHouseplant extends Chant_SummonPlants
 {
 	@Override public String ID() { return "Chant_SummonHouseplant"; }
-	private final static String localizedName = CMLib.lang()._("Summon Houseplant");
+	private final static String localizedName = CMLib.lang().L("Summon Houseplant");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
@@ -76,7 +76,7 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_STONE)
 		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_WOOD))
 		{
-			mob.tell(_("This is not the place for a houseplant."));
+			mob.tell(L("This is not the place for a houseplant."));
 			return false;
 		}
 		return true;
@@ -89,39 +89,39 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 		switch(CMLib.dice().roll(1,7,0))
 		{
 		case 1:
-			newItem.setName(_("a potted rose"));
-			newItem.setDisplayText(_("a potted rose is here."));
+			newItem.setName(L("a potted rose"));
+			newItem.setDisplayText(L("a potted rose is here."));
 			newItem.setDescription("");
 			break;
 		case 2:
-			newItem.setName(_("a potted daisy"));
-			newItem.setDisplayText(_("a potted daisy is here."));
+			newItem.setName(L("a potted daisy"));
+			newItem.setDisplayText(L("a potted daisy is here."));
 			newItem.setDescription("");
 			break;
 		case 3:
-			newItem.setName(_("a potted carnation"));
-			newItem.setDisplayText(_("a potted white carnation is here"));
+			newItem.setName(L("a potted carnation"));
+			newItem.setDisplayText(L("a potted white carnation is here"));
 			newItem.setDescription("");
 			break;
 		case 4:
-			newItem.setName(_("a potted sunflower"));
-			newItem.setDisplayText(_("a potted sunflowers is here."));
-			newItem.setDescription(_("Happy flowers have little yellow blooms."));
+			newItem.setName(L("a potted sunflower"));
+			newItem.setDisplayText(L("a potted sunflowers is here."));
+			newItem.setDescription(L("Happy flowers have little yellow blooms."));
 			break;
 		case 5:
-			newItem.setName(_("a potted gladiola"));
-			newItem.setDisplayText(_("a potted gladiola is here."));
+			newItem.setName(L("a potted gladiola"));
+			newItem.setDisplayText(L("a potted gladiola is here."));
 			newItem.setDescription("");
 			break;
 		case 6:
-			newItem.setName(_("a potted fern"));
-			newItem.setDisplayText(_("a potted fern is here."));
-			newItem.setDescription(_("Like a tiny bush, this dark green plant is lovely."));
+			newItem.setName(L("a potted fern"));
+			newItem.setDisplayText(L("a potted fern is here."));
+			newItem.setDescription(L("Like a tiny bush, this dark green plant is lovely."));
 			break;
 		case 7:
-			newItem.setName(_("a potted patch of bluebonnets"));
-			newItem.setDisplayText(_("a potted patch of bluebonnets is here."));
-			newItem.setDescription(_("Happy flowers with little blue and purple blooms."));
+			newItem.setName(L("a potted patch of bluebonnets"));
+			newItem.setDisplayText(L("a potted patch of bluebonnets is here."));
+			newItem.setDescription(L("Happy flowers with little blue and purple blooms."));
 			break;
 		}
 		newItem.setSecretIdentity(mob.Name());
@@ -131,7 +131,7 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 		newItem.basePhyStats().setWeight(1);
 		newItem.basePhyStats().setLevel(10+newChant.getX1Level(mob));
 		newItem.setExpirationDate(0);
-		room.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang()._("Suddenly, @x1 appears here.",newItem.name()));
+		room.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang().L("Suddenly, @x1 appears here.",newItem.name()));
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
 		if(CMLib.law().doesOwnThisProperty(mob,room))

@@ -45,7 +45,7 @@ public class Feed extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(_("Feed who what?"));
+			mob.tell(L("Feed who what?"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -55,12 +55,12 @@ public class Feed extends StdCommand
 		final MOB target=mob.location().fetchInhabitant(whom);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("I don't see @x1 here.",whom));
+			mob.tell(L("I don't see @x1 here.",whom));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell(_("Not while you are in combat!"));
+			mob.tell(L("Not while you are in combat!"));
 			return false;
 		}
 		if(target.willFollowOrdersOf(mob)||(CMLib.flags().isBoundOrHeld(target)))
@@ -68,25 +68,25 @@ public class Feed extends StdCommand
 			final Item item=mob.findItem(null,what);
 			if((item==null)||(!CMLib.flags().canBeSeenBy(item,mob)))
 			{
-				mob.tell(_("I don't see @x1 here.",what));
+				mob.tell(L("I don't see @x1 here.",what));
 				return false;
 			}
 			if(!item.amWearingAt(Wearable.IN_INVENTORY))
 			{
-				mob.tell(_("You might want to remove that first."));
+				mob.tell(L("You might want to remove that first."));
 				return false;
 			}
 			if((!(item instanceof Food))&&(!(item instanceof Drink)))
 			{
-				mob.tell(_("You might want to try feeding them something edibile or drinkable."));
+				mob.tell(L("You might want to try feeding them something edibile or drinkable."));
 				return false;
 			}
 			if(target.isInCombat())
 			{
-				mob.tell(_("Not while @x1 is in combat!",target.name(mob)));
+				mob.tell(L("Not while @x1 is in combat!",target.name(mob)));
 				return false;
 			}
-			CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> feed(s) @x1 to <T-NAMESELF>.",item.name()));
+			CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> feed(s) @x1 to <T-NAMESELF>.",item.name()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -117,7 +117,7 @@ public class Feed extends StdCommand
 			}
 		}
 		else
-			mob.tell(_("@x1 won't let you.",target.name(mob)));
+			mob.tell(L("@x1 won't let you.",target.name(mob)));
 		return false;
 	}
 	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}

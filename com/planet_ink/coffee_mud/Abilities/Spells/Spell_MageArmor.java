@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_MageArmor extends Spell
 {
 	@Override public String ID() { return "Spell_MageArmor"; }
-	private final static String localizedName = CMLib.lang()._("Mage Armor");
+	private final static String localizedName = CMLib.lang().L("Mage Armor");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Mage Armor)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Mage Armor)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -62,7 +62,7 @@ public class Spell_MageArmor extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> magical armor fades away."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> magical armor fades away."));
 	}
 
 	@Override
@@ -87,13 +87,13 @@ public class Spell_MageArmor extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already wearing mage armor."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already wearing mage armor."));
 			return false;
 		}
 
 		if(target.freeWearPositions(Wearable.WORN_TORSO,(short)0,(short)0)==0)
 		{
-			mob.tell(_("You are already wearing something on your torso!"));
+			mob.tell(L("You are already wearing something on your torso!"));
 			return false;
 		}
 
@@ -113,7 +113,7 @@ public class Spell_MageArmor extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("A magical breast plate appears around <S-NAME>."):_("^S<S-NAME> invoke(s) a magical glowing breast plate!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("A magical breast plate appears around <S-NAME>."):L("^S<S-NAME> invoke(s) a magical glowing breast plate!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -128,7 +128,7 @@ public class Spell_MageArmor extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke magical protection, but fail(s)."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke magical protection, but fail(s)."));
 
 		// return whether it worked
 		return success;

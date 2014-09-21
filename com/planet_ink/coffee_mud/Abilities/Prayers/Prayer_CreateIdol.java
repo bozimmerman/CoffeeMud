@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_CreateIdol extends Prayer
 {
 	@Override public String ID() { return "Prayer_CreateIdol"; }
-	private final static String localizedName = CMLib.lang()._("Create Idol");
+	private final static String localizedName = CMLib.lang().L("Create Idol");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
@@ -91,7 +91,7 @@ public class Prayer_CreateIdol extends Prayer
 		&&(msg.tool()==affected)
 		&&(!((MOB)msg.target()).willFollowOrdersOf(msg.source())))
 		{
-			msg.source().tell(_("@x1 won`t accept @x2.",((MOB)msg.target()).name(msg.source()),((Item)msg.tool()).name(msg.source())));
+			msg.source().tell(L("@x1 won`t accept @x2.",((MOB)msg.target()).name(msg.source()),((Item)msg.tool()).name(msg.source())));
 			return false;
 		}
 		return super.okMessage(host,msg);
@@ -102,7 +102,7 @@ public class Prayer_CreateIdol extends Prayer
 	{
 		if((mob.getWorshipCharID().length()==0)||(CMLib.map().getDeity(mob.getWorshipCharID())==null))
 		{
-			mob.tell(_("You must worship a god to use this prayer."));
+			mob.tell(L("You must worship a god to use this prayer."));
 			return false;
 		}
 
@@ -138,7 +138,7 @@ public class Prayer_CreateIdol extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if((success)&&(material>0))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> @x1 for an idol.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> @x1 for an idol.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -146,7 +146,7 @@ public class Prayer_CreateIdol extends Prayer
 				newItem.setBaseValue(1);
 				final String name=CMLib.english().startWithAorAn(RawMaterial.CODES.NAME(material).toLowerCase()+" idol of "+mob.getWorshipCharID());
 				newItem.setName(name);
-				newItem.setDisplayText(_("@x1 sits here.",name));
+				newItem.setDisplayText(L("@x1 sits here.",name));
 				newItem.basePhyStats().setDisposition(PhyStats.IS_EVIL);
 				newItem.basePhyStats().setWeight(10);
 				newItem.setMaterial(material);
@@ -155,12 +155,12 @@ public class Prayer_CreateIdol extends Prayer
 				CMLib.flags().setDroppable(newItem,false);
 				newItem.addNonUninvokableEffect((Ability)copyOf());
 				mob.location().addItem(newItem,ItemPossessor.Expire.Resource);
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 grows out of the ground.",newItem.name()));
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 grows out of the ground.",newItem.name()));
 				mob.location().recoverPhyStats();
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 for an idol, but there is no answer.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 for an idol, but there is no answer.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

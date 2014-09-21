@@ -338,8 +338,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				I=CMClass.getItem("GenWallpaper");
 				CMLib.flags().setReadable(I,true);
 				I.setName(("id"));
-				I.setReadableText(CMLib.lang()._("This room is "+CMLib.map().getExtendedRoomID(R)));
-				I.setDescription(CMLib.lang()._("This room is @x1",CMLib.map().getExtendedRoomID(R)));
+				I.setReadableText(CMLib.lang().L("This room is "+CMLib.map().getExtendedRoomID(R)));
+				I.setDescription(CMLib.lang().L("This room is @x1",CMLib.map().getExtendedRoomID(R)));
 				R.addItem(I);
 				CMLib.database().DBUpdateItems(R);
 			}

@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_CollectBounty extends StdSkill
 {
 	@Override public String ID() { return "Skill_CollectBounty"; }
-	private final static String localizedName = CMLib.lang()._("Collect Bounty");
+	private final static String localizedName = CMLib.lang().L("Collect Bounty");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -123,7 +123,7 @@ public class Skill_CollectBounty extends StdSkill
 		final Room R=mob.location();
 		if(mob.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("You are already collecting a bounty.  Be patient."));
+			mob.tell(L("You are already collecting a bounty.  Be patient."));
 			return false;
 		}
 
@@ -131,19 +131,19 @@ public class Skill_CollectBounty extends StdSkill
 
 		if(judge==null)
 		{
-			mob.tell(_("You must present @x1 to the judge.",target.name(mob)));
+			mob.tell(L("You must present @x1 to the judge.",target.name(mob)));
 			return false;
 		}
 
 		final List<LegalWarrant> warrants=getWarrantsOf(target,R);
 		if(warrants.size()==0)
 		{
-			mob.tell(_("@x1 is not wanted for anything here.",target.name(mob)));
+			mob.tell(L("@x1 is not wanted for anything here.",target.name(mob)));
 			return false;
 		}
 		if((target.amDead())||(!CMLib.flags().isInTheGame(target,true)))
 		{
-			mob.tell(_("@x1 is not _really_ here.",target.name(mob)));
+			mob.tell(L("@x1 is not _really_ here.",target.name(mob)));
 			return false;
 		}
 		for(int w=0;w<warrants.size();w++)
@@ -151,7 +151,7 @@ public class Skill_CollectBounty extends StdSkill
 			final LegalWarrant W=warrants.get(w);
 			if(W.crime().equalsIgnoreCase("pardoned"))
 			{
-				mob.tell(_("@x1 has been pardoned, and is no longer a criminal.",target.name(mob)));
+				mob.tell(L("@x1 has been pardoned, and is no longer a criminal.",target.name(mob)));
 				return false;
 			}
 		}
@@ -164,7 +164,7 @@ public class Skill_CollectBounty extends StdSkill
 		final Area legalA=CMLib.law().getLegalObject(R);
 		if((success)&&(legalA!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOUTH|CMMsg.MASK_SOUND|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),_("<S-NAME> turn(s) <T-NAMESELF> in to @x1 for the bounty.",judge.name()));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOUTH|CMMsg.MASK_SOUND|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),L("<S-NAME> turn(s) <T-NAMESELF> in to @x1 for the bounty.",judge.name()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -173,7 +173,7 @@ public class Skill_CollectBounty extends StdSkill
 					CMLib.tracking().wanderFromTo(officer,mob.location(),true);
 				if((officer==null)||(!mob.location().isInhabitant(officer)))
 				{
-					CMLib.commands().postSay(judge,mob,_("I'm sorry, there are no free officers to take care of this one right now."),false,false);
+					CMLib.commands().postSay(judge,mob,L("I'm sorry, there are no free officers to take care of this one right now."),false,false);
 					return false;
 				}
 				int gold=0;
@@ -192,13 +192,13 @@ public class Skill_CollectBounty extends StdSkill
 					W=warrants.get(i);
 					gold+=(W.punishment()*(5+getXLEVELLevel(mob)));
 				}
-				mob.location().show(judge,mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> pay(s) <T-NAMESELF> the bounty of @x1 on @x2.",CMLib.beanCounter().nameCurrencyShort(judge,gold),target.Name()));
+				mob.location().show(judge,mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> pay(s) <T-NAMESELF> the bounty of @x1 on @x2.",CMLib.beanCounter().nameCurrencyShort(judge,gold),target.Name()));
 				final String currency=CMLib.beanCounter().getCurrency(judge);
 				CMLib.beanCounter().giveSomeoneMoney(judge,mob,currency,gold);
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to turn in <T-NAMESELF> to @x1 for the bounty, but can't get @x2 attention.",judge.name(),judge.charStats().hisher()));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to turn in <T-NAMESELF> to @x1 for the bounty, but can't get @x2 attention.",judge.name(),judge.charStats().hisher()));
 
 		return success;
 	}

@@ -37,12 +37,12 @@ import java.util.*;
 public class Prayer_Earthshield extends Prayer
 {
 	@Override public String ID() { return "Prayer_Earthshield"; }
-	private final static String localizedName = CMLib.lang()._("Earthshield");
+	private final static String localizedName = CMLib.lang().L("Earthshield");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(In Earthshield)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(In Earthshield)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -75,7 +75,7 @@ public class Prayer_Earthshield extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> earth shield vanishes."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> earth shield vanishes."));
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class Prayer_Earthshield extends Prayer
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already affected by @x1.",name()));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already affected by @x1.",name()));
 			return false;
 		}
 
@@ -101,19 +101,19 @@ public class Prayer_Earthshield extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
 					success=beneficialAffect(mob,target,asLevel,0);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> covered by an Earth Shield!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> covered by an Earth Shield!"));
 				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1, but flub(s) it.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1, but flub(s) it.",prayWord(mob)));
 
 
 		// return whether it worked

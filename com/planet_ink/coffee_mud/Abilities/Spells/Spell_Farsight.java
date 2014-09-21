@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_Farsight extends Spell
 {
 	@Override public String ID() { return "Spell_Farsight"; }
-	private final static String localizedName = CMLib.lang()._("Farsight");
+	private final static String localizedName = CMLib.lang().L("Farsight");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
@@ -50,10 +50,10 @@ public class Spell_Farsight extends Spell
 			return false;
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
-			this.beneficialVisualFizzle(mob,null,_("<S-NAME> get(s) a far off look, but the spell fizzles."));
+			this.beneficialVisualFizzle(mob,null,L("<S-NAME> get(s) a far off look, but the spell fizzles."));
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),_("^S<S-NAME> get(s) a far off look in <S-HIS-HER> eyes.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),L("^S<S-NAME> get(s) a far off look in <S-HIS-HER> eyes.^?"));
 			int limit=mob.phyStats().level()/5;
 			if(limit<0) limit=1;
 			if(mob.location().okMessage(mob,msg))
@@ -92,14 +92,14 @@ public class Spell_Farsight extends Spell
 					final int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 					if(limit<=0)
 					{
-						mob.tell(_("Your sight has reached its limit."));
+						mob.tell(L("Your sight has reached its limit."));
 						success=true;
 						break;
 					}
 					else
 					if(dirCode<0)
 					{
-						mob.tell(_("\n\r'@x1' is not a valid direction.",whatToOpen));
+						mob.tell(L("\n\r'@x1' is not a valid direction.",whatToOpen));
 						commands.removeAllElements();
 						success=false;
 					}
@@ -110,7 +110,7 @@ public class Spell_Farsight extends Spell
 
 						if((exit==null)||(room==null)||(!CMLib.flags().canBeSeenBy(exit,mob))||(!exit.isOpen()))
 						{
-							mob.tell(_("\n\rSomething has obstructed your vision."));
+							mob.tell(L("\n\rSomething has obstructed your vision."));
 							success=false;
 							commands.removeAllElements();
 						}
@@ -119,7 +119,7 @@ public class Spell_Farsight extends Spell
 							commands.removeElementAt(0);
 							thatRoom=room;
 							limit--;
-							mob.tell(_("\n\r"));
+							mob.tell(L("\n\r"));
 							final CMMsg msg2=CMClass.getMsg(mob,thatRoom,CMMsg.MSG_LOOK,null);
 							thatRoom.executeMsg(mob,msg2);
 						}

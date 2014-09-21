@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_DivineGuidance extends Prayer
 {
 	@Override public String ID() { return "Prayer_DivineGuidance"; }
-	private final static String localizedName = CMLib.lang()._("Divine Guidance");
+	private final static String localizedName = CMLib.lang().L("Divine Guidance");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Awaiting Divine Guidance)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Awaiting Divine Guidance)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -65,7 +65,7 @@ public class Prayer_DivineGuidance extends Prayer
 		{
 			final MOB mob=(MOB)affected;
 			if(canBeUninvoked())
-				mob.tell(_("You have received your divine guidance."));
+				mob.tell(L("You have received your divine guidance."));
 		}
 		super.unInvoke();
 	}
@@ -103,7 +103,7 @@ public class Prayer_DivineGuidance extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),_(auto?"<T-NAME> await(s) divine guidance!":"^S<S-NAME> "+prayForWord(mob)+" to give <T-NAME> divine guidance.^?")+CMLib.protocol().msp("bless.wav",10));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),L(auto?"<T-NAME> await(s) divine guidance!":"^S<S-NAME> "+prayForWord(mob)+" to give <T-NAME> divine guidance.^?")+CMLib.protocol().msp("bless.wav",10));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -113,7 +113,7 @@ public class Prayer_DivineGuidance extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for divine guidance, but <S-IS-ARE> not heard.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for divine guidance, but <S-IS-ARE> not heard.",prayWord(mob)));
 		// return whether it worked
 		return success;
 	}

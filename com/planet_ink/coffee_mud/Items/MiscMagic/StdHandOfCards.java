@@ -590,7 +590,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 				// are capturing an event in mid-stride.  This event we have
 				// captured has not completed executing yet.
 				if(str.length()>0)
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),owner(),null,CMMsg.MSG_OK_VISUAL,_("<T-NAME> <T-HAS-HAVE> the following cards shown: @x1.",str.toString().substring(0,str.length()-2)),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),owner(),null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> <T-HAS-HAVE> the following cards shown: @x1.",str.toString().substring(0,str.length()-2)),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 			}
 		}
 		super.executeMsg(host,msg);

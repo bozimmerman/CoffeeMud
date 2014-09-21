@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_Camelback extends Chant
 {
 	@Override public String ID() { return "Chant_Camelback"; }
-	private final static String localizedName = CMLib.lang()._("Camelback");
+	private final static String localizedName = CMLib.lang().L("Camelback");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Camelback)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Camelback)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -66,7 +66,7 @@ public class Chant_Camelback extends Chant
 		if(canBeUninvoked())
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> camelback disappears."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> camelback disappears."));
 			mob.curState().setThirst(0);
 		}
 	}
@@ -94,7 +94,7 @@ public class Chant_Camelback extends Chant
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> a camel's back."));
+			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> a camel's back."));
 			return false;
 		}
 
@@ -113,17 +113,17 @@ public class Chant_Camelback extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) thirstily.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) thirstily.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> grow(s) a camelback hump!"));
-				target.tell(_("You feel quenched!"));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> grow(s) a camelback hump!"));
+				target.tell(L("You feel quenched!"));
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) thirstily, but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) thirstily, but nothing more happens."));
 
 		// return whether it worked
 		return success;

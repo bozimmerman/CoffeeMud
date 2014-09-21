@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_SummonHeat extends Chant
 {
 	@Override public String ID() { return "Chant_SummonHeat"; }
-	private final static String localizedName = CMLib.lang()._("Summon Heat");
+	private final static String localizedName = CMLib.lang().L("Summon Heat");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}
@@ -66,7 +66,7 @@ public class Chant_SummonHeat extends Chant
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
-			mob.tell(_("You must be outdoors for this chant to work."));
+			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -78,7 +78,7 @@ public class Chant_SummonHeat extends Chant
 		final boolean success=proficiencyCheck(mob,-size,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?_("^JThe sky changes color!^?"):_("^S<S-NAME> chant(s) into the sky for heat!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?L("^JThe sky changes color!^?"):L("^S<S-NAME> chant(s) into the sky for heat!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -133,7 +133,7 @@ public class Chant_SummonHeat extends Chant
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) into the sky for heat, but the magic fizzles."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> chant(s) into the sky for heat, but the magic fizzles."));
 
 		return success;
 	}

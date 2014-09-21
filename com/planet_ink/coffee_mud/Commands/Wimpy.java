@@ -44,7 +44,7 @@ public class Wimpy extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("Change your wimp level to what?"));
+			mob.tell(L("Change your wimp level to what?"));
 			return false;
 		}
 		final String amt=CMParms.combine(commands,1);
@@ -56,11 +56,11 @@ public class Wimpy extends StdCommand
 			newWimp=CMath.s_int(amt);
 		else
 		{
-			mob.tell(_("You can't change your wimp level to '@x1'",amt));
+			mob.tell(L("You can't change your wimp level to '@x1'",amt));
 			return false;
 		}
 		mob.setWimpHitPoint(newWimp);
-		mob.tell(_("Your wimp level has been changed to @x1 hit points.",""+mob.getWimpHitPoint()));
+		mob.tell(L("Your wimp level has been changed to @x1 hit points.",""+mob.getWimpHitPoint()));
 		return false;
 	}
 

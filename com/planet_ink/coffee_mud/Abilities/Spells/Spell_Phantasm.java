@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Phantasm extends Spell
 {
 	@Override public String ID() { return "Spell_Phantasm"; }
-	private final static String localizedName = CMLib.lang()._("Phantasm");
+	private final static String localizedName = CMLib.lang().L("Phantasm");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Phantasm)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Phantasm)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -64,7 +64,7 @@ public class Spell_Phantasm extends Spell
 					if(mob.amDead()) mob.setLocation(null);
 					else
 					if(mob.location()!=null)
-						mob.location().show(mob,null,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> look(s) around for someone to fight..."));
+						mob.location().show(mob,null,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> look(s) around for someone to fight..."));
 					((MOB)affected).destroy();
 				}
 			}
@@ -83,7 +83,7 @@ public class Spell_Phantasm extends Spell
 			final MOB mob=(MOB)affected;
 			if(msg.amITarget(mob)&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL))
 			{
-				msg.source().tell(_("@x1 seems strangely unaffected by your magic.",mob.name(msg.source())));
+				msg.source().tell(L("@x1 seems strangely unaffected by your magic.",mob.name(msg.source())));
 				return false;
 			}
 		}
@@ -105,7 +105,7 @@ public class Spell_Phantasm extends Spell
 			}
 			else
 			if(msg.amITarget(mob)&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
-				msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,_("@x1's attack somehow went THROUGH <T-NAMESELF>.",msg.source().name())));
+				msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,L("@x1's attack somehow went THROUGH <T-NAMESELF>.",msg.source().name())));
 		}
 	}
 
@@ -151,7 +151,7 @@ public class Spell_Phantasm extends Spell
 		{
 			if(commands.size()==0)
 			{
-				mob.tell(_("You must specify the type of creature to create a phantasm of!"));
+				mob.tell(L("You must specify the type of creature to create a phantasm of!"));
 				return false;
 			}
 			type=CMStrings.capitalizeAndLower(CMParms.combine(commands,0));
@@ -160,7 +160,7 @@ public class Spell_Phantasm extends Spell
 		if((R==null)
 		||(!CMProps.isTheme(R.availabilityCode())))
 		{
-			mob.tell(_("You don't know how to create a phantasm of a '@x1'.",type));
+			mob.tell(L("You don't know how to create a phantasm of a '@x1'.",type));
 			return false;
 		}
 
@@ -169,7 +169,7 @@ public class Spell_Phantasm extends Spell
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> incant(s), calling on the name of @x1.^?",type));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> incant(s), calling on the name of @x1.^?",type));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -181,11 +181,11 @@ public class Spell_Phantasm extends Spell
 				invoker=mob;
 				beneficialAffect(mob,myMonster,asLevel,0);
 				if(myMonster.amFollowing()!=mob)
-					mob.tell(_("@x1 seems unwilling to follow you.",myMonster.name()));
+					mob.tell(L("@x1 seems unwilling to follow you.",myMonster.name()));
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> incant(s) to summon a @x1, but fails.",type));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> incant(s) to summon a @x1, but fails.",type));
 
 		// return whether it worked
 		return success;
@@ -213,8 +213,8 @@ public class Spell_Phantasm extends Spell
 		newMOB.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
-		newMOB.setName(_("a ferocious @x1",R.name().toLowerCase()));
-		newMOB.setDisplayText(_("a ferocious @x1 is stalking around here",R.name().toLowerCase()));
+		newMOB.setName(L("a ferocious @x1",R.name().toLowerCase()));
+		newMOB.setDisplayText(L("a ferocious @x1 is stalking around here",R.name().toLowerCase()));
 		newMOB.setDescription("");
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();
@@ -223,7 +223,7 @@ public class Spell_Phantasm extends Spell
 		newMOB.text();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 		caster.location().recoverRoomStats();
 		newMOB.setStartRoom(null);
 		return(newMOB);

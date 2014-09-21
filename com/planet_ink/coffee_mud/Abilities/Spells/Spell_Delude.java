@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Delude extends Spell
 {
 	@Override public String ID() { return "Spell_Delude"; }
-	private final static String localizedName = CMLib.lang()._("Delude");
+	private final static String localizedName = CMLib.lang().L("Delude");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Delude spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Delude spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -60,7 +60,7 @@ public class Spell_Delude extends Spell
 			CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), previousAlignment-mob.fetchFaction(CMLib.factions().AlignID()));
 			if(mob.fetchFaction(CMLib.factions().AlignID()) != previousAlignment)
 				mob.addFaction(CMLib.factions().AlignID(), previousAlignment);
-			mob.tell(_("Your attitude returns to normal."));
+			mob.tell(L("Your attitude returns to normal."));
 			CMLib.utensils().confirmWearability(mob);
 		}
 	}
@@ -74,7 +74,7 @@ public class Spell_Delude extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already deluding others."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already deluding others."));
 			return false;
 		}
 		// the invoke method for spells receives as
@@ -93,7 +93,7 @@ public class Spell_Delude extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> incant(s) and meditate(s).^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> incant(s) and meditate(s).^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -101,7 +101,7 @@ public class Spell_Delude extends Spell
 				{
 					previousAlignment=target.fetchFaction(CMLib.factions().AlignID());
 
-					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> undergo(es) a change of attitude"));
+					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> undergo(es) a change of attitude"));
 					success=beneficialAffect(mob,target,asLevel,0);
 					if(success)
 					{
@@ -159,7 +159,7 @@ public class Spell_Delude extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> incant(s) and meditate(s), but fizzle(s) the spell."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> incant(s) and meditate(s), but fizzle(s) the spell."));
 
 
 		// return whether it worked

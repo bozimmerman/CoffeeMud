@@ -37,7 +37,7 @@ import java.util.*;
 public class PlantLore extends CommonSkill
 {
 	@Override public String ID() { return "PlantLore"; }
-	private final static String localizedName = CMLib.lang()._("Plant Lore");
+	private final static String localizedName = CMLib.lang().L("Plant Lore");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"PLANTLORE","PSPECULATE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -47,8 +47,8 @@ public class PlantLore extends CommonSkill
 	public PlantLore()
 	{
 		super();
-		displayText=_("You are observing plant growth...");
-		verb=_("observing plant growths");
+		displayText=L("You are observing plant growth...");
+		verb=L("observing plant growths");
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class PlantLore extends CommonSkill
 			{
 				if(success==false)
 				{
-					final StringBuffer str=new StringBuffer(_("Your growth observation attempt failed.\n\r"));
+					final StringBuffer str=new StringBuffer(L("Your growth observation attempt failed.\n\r"));
 					commonTell(mob,str.toString());
 					unInvoke();
 				}
@@ -107,7 +107,7 @@ public class PlantLore extends CommonSkill
 								continue;
 							final String resourceStr=RawMaterial.CODES.NAME(resource);
 							if(R==room)
-								str.append(_("You think this spot would be good for @x1.\n\r",resourceStr.toLowerCase()));
+								str.append(L("You think this spot would be good for @x1.\n\r",resourceStr.toLowerCase()));
 							else
 							{
 								int isAdjacent=-1;
@@ -117,14 +117,14 @@ public class PlantLore extends CommonSkill
 									if(room2==R) isAdjacent=d;
 								}
 								if(isAdjacent>=0)
-									str.append(_("There looks like @x1 @x2.\n\r",resourceStr.toLowerCase(),Directions.getInDirectionName(isAdjacent)));
+									str.append(L("There looks like @x1 @x2.\n\r",resourceStr.toLowerCase(),Directions.getInDirectionName(isAdjacent)));
 								else
 								{
 									int d=CMLib.tracking().radiatesFromDir(R,V);
 									if(d>=0)
 									{
 										d=Directions.getOpDirectionCode(d);
-										str.append(_("There looks like @x1 far @x2.\n\r",resourceStr.toLowerCase(),Directions.getInDirectionName(d)));
+										str.append(L("There looks like @x1 far @x2.\n\r",resourceStr.toLowerCase(),Directions.getInDirectionName(d)));
 									}
 								}
 
@@ -133,7 +133,7 @@ public class PlantLore extends CommonSkill
 						commonTell(mob,str.toString());
 					}
 					else
-						commonTell(mob,_("You don't find any good plant life around here."));
+						commonTell(mob,L("You don't find any good plant life around here."));
 				}
 			}
 		}
@@ -146,14 +146,14 @@ public class PlantLore extends CommonSkill
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		verb=_("observing plant growth");
+		verb=L("observing plant growth");
 		success=false;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		if(proficiencyCheck(mob,0,auto))
 			success=true;
 		final int duration=getDuration(45,mob,1,5);
-		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),_("<S-NAME> start(s) observing the growth in this area."));
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),L("<S-NAME> start(s) observing the growth in this area."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

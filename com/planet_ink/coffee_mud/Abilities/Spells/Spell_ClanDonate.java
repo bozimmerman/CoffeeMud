@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_ClanDonate extends Spell
 {
 	@Override public String ID() { return "Spell_ClanDonate"; }
-	private final static String localizedName = CMLib.lang()._("Clan Donate");
+	private final static String localizedName = CMLib.lang().L("Clan Donate");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
@@ -52,19 +52,19 @@ public class Spell_ClanDonate extends Spell
 		if(target==null) return false;
 		if(!mob.isMine(target))
 		{
-			mob.tell(_("You aren't holding that!"));
+			mob.tell(L("You aren't holding that!"));
 			return false;
 		}
 
 		if(!mob.clans().iterator().hasNext())
 		{
-			mob.tell(_("You aren't even a member of a clan."));
+			mob.tell(L("You aren't even a member of a clan."));
 			return false;
 		}
 		final Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.CLAN_BENEFITS);
 		if(clanPair==null)
 		{
-			mob.tell(_("You are not authorized to draw from the power of your clan."));
+			mob.tell(L("You are not authorized to draw from the power of your clan."));
 			return false;
 		}
 		final Clan C=clanPair.first;
@@ -72,12 +72,12 @@ public class Spell_ClanDonate extends Spell
 		clanDonateRoom=CMLib.map().getRoom(C.getDonation());
 		if(clanDonateRoom==null)
 		{
-			mob.tell(_("Your clan does not have a donation home."));
+			mob.tell(L("Your clan does not have a donation home."));
 			return false;
 		}
 		if(!CMLib.flags().canAccess(mob,clanDonateRoom))
 		{
-			mob.tell(_("This magic can not be used to donate from here."));
+			mob.tell(L("This magic can not be used to donate from here."));
 			return false;
 		}
 
@@ -88,7 +88,7 @@ public class Spell_ClanDonate extends Spell
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("^S<S-NAME> invoke(s) a donation spell upon <T-NAMESELF>.^?"));
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> invoke(s) a donation spell upon <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				final MOB victim=mob.getVictim();
@@ -103,10 +103,10 @@ public class Spell_ClanDonate extends Spell
 				if(proceed)
 				{
 					mob.location().send(mob,msg);
-					msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,_("<T-NAME> appears!"));
+					msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,L("<T-NAME> appears!"));
 					if(clanDonateRoom.okMessage(mob,msg))
 					{
-						mob.location().show(mob,target,this,CMMsg.MSG_OK_VISUAL,_("<T-NAME> vanishes!"));
+						mob.location().show(mob,target,this,CMMsg.MSG_OK_VISUAL,L("<T-NAME> vanishes!"));
 						if(!clanDonateRoom.isContent(target))
 							clanDonateRoom.moveItemTo(target,ItemPossessor.Expire.Player_Drop);
 						if(!(target.amDestroyed()))
@@ -126,7 +126,7 @@ public class Spell_ClanDonate extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke donation upon <T-NAMESELF>, but fizzle(s) the spell."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke donation upon <T-NAMESELF>, but fizzle(s) the spell."));
 
 
 		// return whether it worked

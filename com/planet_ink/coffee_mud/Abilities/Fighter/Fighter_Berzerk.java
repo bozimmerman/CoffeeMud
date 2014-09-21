@@ -37,9 +37,9 @@ import java.util.*;
 public class Fighter_Berzerk extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Berzerk"; }
-	private final static String localizedName = CMLib.lang()._("Berzerk");
+	private final static String localizedName = CMLib.lang().L("Berzerk");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Berzerk)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Berzerk)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	private static final String[] triggerStrings =_i(new String[] {"BERZERK"});
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -88,7 +88,7 @@ public class Fighter_Berzerk extends FighterSkill
 					mob.curState().setHitPoints(1);
 				else
 					mob.curState().adjHitPoints(-hpAdjustment,mob.maxState());
-				mob.tell(_("You feel calmer."));
+				mob.tell(L("You feel calmer."));
 				mob.recoverMaxState();
 			}
 		}
@@ -114,13 +114,13 @@ public class Fighter_Berzerk extends FighterSkill
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already berzerk."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already berzerk."));
 			return false;
 		}
 
 		if((!auto)&&(!mob.isInCombat()))
 		{
-			mob.tell(_("You aren't in combat!"));
+			mob.tell(L("You aren't in combat!"));
 			return false;
 		}
 
@@ -130,7 +130,7 @@ public class Fighter_Berzerk extends FighterSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,_("<T-NAME> get(s) a wild look in <T-HIS-HER> eyes!"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,L("<T-NAME> get(s) a wild look in <T-HIS-HER> eyes!"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -141,7 +141,7 @@ public class Fighter_Berzerk extends FighterSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> huff(s) and grunt(s), but can't get angry."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> huff(s) and grunt(s), but can't get angry."));
 		return success;
 	}
 }

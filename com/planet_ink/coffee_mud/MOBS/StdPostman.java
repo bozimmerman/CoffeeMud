@@ -113,12 +113,12 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 			{
 				if(mob.clans().iterator().hasNext())
 				{
-					CMLib.commands().postSay(this,mob,_("I'm sorry, you aren't authorized by your clan to do that."),true,false);
+					CMLib.commands().postSay(this,mob,L("I'm sorry, you aren't authorized by your clan to do that."),true,false);
 					return null;
 				}
 				else
 				{
-					CMLib.commands().postSay(this,mob,_("I'm sorry, I only deal with clans."),true,false);
+					CMLib.commands().postSay(this,mob,L("I'm sorry, I only deal with clans."),true,false);
 					return null;
 				}
 			}
@@ -553,7 +553,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 							final StdPostman me=this;
 							S.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 							{
-								@Override public void showPrompt() { S.promptPrint(_("Address this to whom? "));}
+								@Override public void showPrompt() { S.promptPrint(L("Address this to whom? "));}
 								@Override public void timedOut() { autoGive(me,msg.source(),(Item)msg.tool()); }
 								@Override public void callBack()
 								{
@@ -570,7 +570,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 										S.prompt(new InputCallback(InputCallback.Type.CHOOSE,"P","CP\n",0)
 										{
 											@Override public void showPrompt() {
-												S.promptPrint(_("Postage on this will be @x1.\n\rWould you like to P)ay this now, or be C)harged on delivery (c/P)?",CMLib.beanCounter().nameCurrencyShort(me,amt)));
+												S.promptPrint(L("Postage on this will be @x1.\n\rWould you like to P)ay this now, or be C)harged on delivery (c/P)?",CMLib.beanCounter().nameCurrencyShort(me,amt)));
 											}
 											@Override public void timedOut() { autoGive(me,msg.source(),(Item)msg.tool()); }
 											@Override public void callBack()
@@ -580,14 +580,14 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 												{
 													S.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 													{
-														@Override public void showPrompt() { S.promptPrint(_("Enter COD amount (@x1): ",CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(me),CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(me)))));}
+														@Override public void showPrompt() { S.promptPrint(L("Enter COD amount (@x1): ",CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(me),CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(me)))));}
 														@Override public void timedOut() { autoGive(me,msg.source(),(Item)msg.tool()); }
 														@Override public void callBack()
 														{
 															final String CODstr=this.input;
 															if((CODstr.length()==0)||(!CMath.isNumber(CODstr))||(CMath.s_double(CODstr)<=0.0))
 															{
-																CMLib.commands().postSay(me,mob,_("That is not a valid amount."),true,false);
+																CMLib.commands().postSay(me,mob,L("That is not a valid amount."),true,false);
 																autoGive(me,msg.source(),(Item)msg.tool());
 															}
 															else
@@ -595,7 +595,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 																final Coins currency=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(me),CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(me))*(CMath.s_double(CODstr)));
 																final double COD=currency.getTotalValue();
 																addToBox(postalChain(),(Item)msg.tool(),fromWhom,toWhom,System.currentTimeMillis(),COD);
-																CMLib.commands().postSay(me,mob,_("I'll deliver that for ya right away!"),true,false);
+																CMLib.commands().postSay(me,mob,L("I'll deliver that for ya right away!"),true,false);
 																((Item)msg.tool()).destroy();
 															}
 														}
@@ -604,14 +604,14 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 												else
 												if((amt>0.0)&&(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),me)<amt))
 												{
-													CMLib.commands().postSay(me,mob,_("You can't afford postage."),true,false);
+													CMLib.commands().postSay(me,mob,L("You can't afford postage."),true,false);
 													autoGive(me,msg.source(),(Item)msg.tool());
 												}
 												else
 												{
 													CMLib.beanCounter().subtractMoney(mob,CMLib.beanCounter().getCurrency(me),amt);
 													addToBox(postalChain(),(Item)msg.tool(),fromWhom,toWhom,System.currentTimeMillis(),0.0);
-													CMLib.commands().postSay(me,mob,_("I'll deliver that for ya right away!"),true,false);
+													CMLib.commands().postSay(me,mob,L("I'll deliver that for ya right away!"),true,false);
 													((Item)msg.tool()).destroy();
 												}
 											}
@@ -620,14 +620,14 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 									}
 									else
 									{
-										CMLib.commands().postSay(me,mob,_("That is not a valid player or clan name."),true,false);
+										CMLib.commands().postSay(me,mob,L("That is not a valid player or clan name."),true,false);
 										autoGive(me,msg.source(),(Item)msg.tool());
 									}
 								}
 							});
 						}
 						else
-							CMLib.commands().postSay(this,mob,_("I can't seem to deliver @x1.",msg.tool().name()),true,false);
+							CMLib.commands().postSay(this,mob,L("I can't seem to deliver @x1.",msg.tool().name()),true,false);
 					}
 				}
 				return;
@@ -642,7 +642,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 					&&(msg.source().isMarriedToLiege()))
 						data=findExactBoxData(msg.source().getLiegeID(),(Item)msg.tool());
 					if(data==null)
-						CMLib.commands().postSay(this,mob,_("You want WHAT? Try LIST."),true,false);
+						CMLib.commands().postSay(this,mob,L("You want WHAT? Try LIST."),true,false);
 					else
 					{
 						if((!delFromBox(fromWhom,old))
@@ -660,14 +660,14 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 								returnMoney=CMLib.beanCounter().makeBestCurrency(this,COD);
 							if(returnMoney!=null)
 							{
-								CMLib.commands().postSay(this,mob,_("The COD amount of @x1 has been sent back to @x2.",returnMoney.Name(),data.from),true,false);
+								CMLib.commands().postSay(this,mob,L("The COD amount of @x1 has been sent back to @x2.",returnMoney.Name(),data.from),true,false);
 								addToBox(postalChain(),returnMoney,data.to,data.from,System.currentTimeMillis(),0.0);
-								CMLib.commands().postSay(this,mob,_("The total charge on that was a COD charge of @x1 plus @x2 postage and holding fees.",returnMoney.Name(),CMLib.beanCounter().nameCurrencyShort(this,totalCharge-COD)),true,false);
+								CMLib.commands().postSay(this,mob,L("The total charge on that was a COD charge of @x1 plus @x2 postage and holding fees.",returnMoney.Name(),CMLib.beanCounter().nameCurrencyShort(this,totalCharge-COD)),true,false);
 							}
 							else
-								CMLib.commands().postSay(this,mob,_("The total charge on that was @x1 in holding/storage fees.",CMLib.beanCounter().nameCurrencyShort(this,totalCharge)),true,false);
+								CMLib.commands().postSay(this,mob,L("The total charge on that was @x1 in holding/storage fees.",CMLib.beanCounter().nameCurrencyShort(this,totalCharge)),true,false);
 						}
-						CMLib.commands().postSay(this,mob,_("There ya go!"),true,false);
+						CMLib.commands().postSay(this,mob,L("There ya go!"),true,false);
 						if(location()!=null)
 							location().addItem(old,ItemPossessor.Expire.Player_Drop);
 						final CMMsg msg2=CMClass.getMsg(mob,old,this,CMMsg.MSG_GET,null);
@@ -694,32 +694,32 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 					if(getOurOpenBoxes(theName).containsKey(postalBranch()))
 					{
 						if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
-							CMLib.commands().postSay(this,mob,_("@x1 already has a box open here!",CMStrings.capitalizeFirstLetter(theName)),true,false);
+							CMLib.commands().postSay(this,mob,L("@x1 already has a box open here!",CMStrings.capitalizeFirstLetter(theName)),true,false);
 						else
-							CMLib.commands().postSay(this,mob,_("You already have a box open here!"),true,false);
+							CMLib.commands().postSay(this,mob,L("You already have a box open here!"),true,false);
 					}
 					else
 					if(feeForNewBox()>0.0)
 					{
 						if(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),this)<feeForNewBox())
 						{
-							CMLib.commands().postSay(this,mob,_("Too bad you can't afford it."),true,false);
+							CMLib.commands().postSay(this,mob,L("Too bad you can't afford it."),true,false);
 							return;
 						}
 						CMLib.beanCounter().subtractMoney(msg.source(),CMLib.beanCounter().getCurrency(this),feeForNewBox());
 						createBoxHere(theName,theName);
 						if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
-							CMLib.commands().postSay(this,mob,_("A box has been opened for @x1.",CMStrings.capitalizeFirstLetter(theName)),true,false);
+							CMLib.commands().postSay(this,mob,L("A box has been opened for @x1.",CMStrings.capitalizeFirstLetter(theName)),true,false);
 						else
-							CMLib.commands().postSay(this,mob,_("A box has been opened for you."),true,false);
+							CMLib.commands().postSay(this,mob,L("A box has been opened for you."),true,false);
 					}
 					else
 					{
 						createBoxHere(theName,theName);
 						if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
-							CMLib.commands().postSay(this,mob,_("A box has been opened for @x1.",CMStrings.capitalizeFirstLetter(theName)),true,false);
+							CMLib.commands().postSay(this,mob,L("A box has been opened for @x1.",CMStrings.capitalizeFirstLetter(theName)),true,false);
 						else
-							CMLib.commands().postSay(this,mob,_("A box has been opened for you."),true,false);
+							CMLib.commands().postSay(this,mob,L("A box has been opened for you."),true,false);
 					}
 				}
 				else
@@ -729,17 +729,17 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 					if(!getOurOpenBoxes(theName).containsKey(postalBranch()))
 					{
 						if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
-							CMLib.commands().postSay(this,mob,_("@x1 does not have a box here!",CMStrings.capitalizeFirstLetter(theName)),true,false);
+							CMLib.commands().postSay(this,mob,L("@x1 does not have a box here!",CMStrings.capitalizeFirstLetter(theName)),true,false);
 						else
-							CMLib.commands().postSay(this,mob,_("You don't have a box open here!"),true,false);
+							CMLib.commands().postSay(this,mob,L("You don't have a box open here!"),true,false);
 					}
 					else
 					if(getAllLocalBoxPD(theName).size()>0)
-						CMLib.commands().postSay(this,mob,_("That box has pending items which must be removed first."),true,false);
+						CMLib.commands().postSay(this,mob,L("That box has pending items which must be removed first."),true,false);
 					else
 					{
 						deleteBoxHere(theName);
-						CMLib.commands().postSay(this,mob,_("That box is now closed."),true,false);
+						CMLib.commands().postSay(this,mob,L("That box is now closed."),true,false);
 					}
 				}
 				else
@@ -750,33 +750,33 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 					if(!getOurOpenBoxes(theName).containsKey(postalBranch()))
 					{
 						if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
-							CMLib.commands().postSay(this,mob,_("@x1 does not have a box here!",CMStrings.capitalizeFirstLetter(theName)),true,false);
+							CMLib.commands().postSay(this,mob,L("@x1 does not have a box here!",CMStrings.capitalizeFirstLetter(theName)),true,false);
 						else
-							CMLib.commands().postSay(this,mob,_("You don't have a box open here!"),true,false);
+							CMLib.commands().postSay(this,mob,L("You don't have a box open here!"),true,false);
 					}
 					else
 					{
 						final Area A=CMLib.map().findAreaStartsWith(str);
 						if(A==null)
-							CMLib.commands().postSay(this,mob,_("I don't know of an area called '@x1'.",str),true,false);
+							CMLib.commands().postSay(this,mob,L("I don't know of an area called '@x1'.",str),true,false);
 						else
 						{
 							final PostOffice P=CMLib.map().getPostOffice(postalChain(),A.Name());
 							if(P==null)
-								CMLib.commands().postSay(this,mob,_("I'm sorry, we don't have a branch in @x1.",A.name()),true,false);
+								CMLib.commands().postSay(this,mob,L("I'm sorry, we don't have a branch in @x1.",A.name()),true,false);
 							else
 							if(!P.getOurOpenBoxes(theName).containsKey(P.postalBranch()))
 							{
 								if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
-									CMLib.commands().postSay(this,mob,_("I'm sorry, @x1 does not have a box at our branch in @x2.",CMStrings.capitalizeFirstLetter(theName),A.name()),true,false);
+									CMLib.commands().postSay(this,mob,L("I'm sorry, @x1 does not have a box at our branch in @x2.",CMStrings.capitalizeFirstLetter(theName),A.name()),true,false);
 								else
-									CMLib.commands().postSay(this,mob,_("I'm sorry, you don't have a box at our branch in @x1.",A.name()),true,false);
+									CMLib.commands().postSay(this,mob,L("I'm sorry, you don't have a box at our branch in @x1.",A.name()),true,false);
 							}
 							else
 							{
 								deleteBoxHere(theName);
 								createBoxHere(theName,P.postalBranch());
-								CMLib.commands().postSay(this,mob,_("Ok, mail will now be forwarded to our branch in @x1.",A.name()),true,false);
+								CMLib.commands().postSay(this,mob,L("Ok, mail will now be forwarded to our branch in @x1.",A.name()),true,false);
 							}
 						}
 					}
@@ -806,11 +806,11 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 					TimeClock C=CMLib.time().localClock(getStartRoom());
 					boolean codCharge=false;
 					if(V.size()==0)
-						mob.tell(_("\n\rYour postal box is presently empty."));
+						mob.tell(L("\n\rYour postal box is presently empty."));
 					else
 					{
 						StringBuffer str=new StringBuffer("");
-						str.append(_("\n\rItems in your postal box here:\n\r"));
+						str.append(L("\n\rItems in your postal box here:\n\r"));
 						str.append("^x[COD     ][From           ][Sent           ][Item                        ]^.^N");
 						mob.tell(str.toString());
 						for(int i=0;i<V.size();i++)
@@ -836,12 +836,12 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 					}
 					final StringBuffer str=new StringBuffer("\n\r^N");
 					if(codCharge)
-						str.append(_("* COD charges above include all shipping costs.\n\r"));
-					str.append(_("* This branch charges minimum @x1 postage for first pound.\n\r",CMLib.beanCounter().nameCurrencyShort(this,minimumPostage())));
-					str.append(_("* An additional @x1 per pound is charged for packages.\n\r",CMLib.beanCounter().nameCurrencyShort(this,postagePerPound())));
-					str.append(_("* A charge of @x1 per pound per month is charged for holding.\n\r",CMLib.beanCounter().nameCurrencyShort(this,holdFeePerPound())));
+						str.append(L("* COD charges above include all shipping costs.\n\r"));
+					str.append(L("* This branch charges minimum @x1 postage for first pound.\n\r",CMLib.beanCounter().nameCurrencyShort(this,minimumPostage())));
+					str.append(L("* An additional @x1 per pound is charged for packages.\n\r",CMLib.beanCounter().nameCurrencyShort(this,postagePerPound())));
+					str.append(L("* A charge of @x1 per pound per month is charged for holding.\n\r",CMLib.beanCounter().nameCurrencyShort(this,holdFeePerPound())));
 					str.append("* To forward your mail, 'say \""+name()+"\" \"forward <areaname>\"'.\n\r");
-					str.append(_("* To close your box, 'say \"@x1\" close'.\n\r",name()));
+					str.append(L("* To close your box, 'say \"@x1\" close'.\n\r",name()));
 					mob.tell(str.toString());
 				}
 				return;
@@ -880,12 +880,12 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 						return false;
 					if(!(msg.tool() instanceof Item))
 					{
-						mob.tell(_("@x1 doesn't look interested.",mob.charStats().HeShe()));
+						mob.tell(L("@x1 doesn't look interested.",mob.charStats().HeShe()));
 						return false;
 					}
 					if(CMLib.flags().isEnspelled((Item)msg.tool()) || CMLib.flags().isOnFire((Item)msg.tool()))
 					{
-						mob.tell(this,msg.tool(),null,_("<S-HE-SHE> refuses to accept <T-NAME> for delivery."));
+						mob.tell(this,msg.tool(),null,L("<S-HE-SHE> refuses to accept <T-NAME> for delivery."));
 						return false;
 					}
 				}
@@ -899,7 +899,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 						return false;
 					if((msg.tool()==null)||(!(msg.tool() instanceof Item)))
 					{
-						CMLib.commands().postSay(this,mob,_("What do you want? I'm busy!"),true,false);
+						CMLib.commands().postSay(this,mob,L("What do you want? I'm busy!"),true,false);
 						return false;
 					}
 					if((msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
@@ -911,13 +911,13 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 						data=findExactBoxData(msg.source().getLiegeID(),(Item)msg.tool());
 					if(data==null)
 					{
-						CMLib.commands().postSay(this,mob,_("You want WHAT? Try LIST."),true,false);
+						CMLib.commands().postSay(this,mob,L("You want WHAT? Try LIST."),true,false);
 						return false;
 					}
 					final double totalCharge=getCODChargeForPiece(data);
 					if(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),this)<totalCharge)
 					{
-						CMLib.commands().postSay(this,mob,_("The total charge to receive that item is @x1. You don't have enough.",CMLib.beanCounter().nameCurrencyShort(this,totalCharge)),true,false);
+						CMLib.commands().postSay(this,mob,L("The total charge to receive that item is @x1. You don't have enough.",CMLib.beanCounter().nameCurrencyShort(this,totalCharge)),true,false);
 						return false;
 					}
 				}
@@ -948,13 +948,13 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 					}
 					final StringBuffer str=new StringBuffer("");
 					if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
-						str.append(_("@x1 does not have a postal box at this branch, I'm afraid.",CMStrings.capitalizeFirstLetter(senderName)));
+						str.append(L("@x1 does not have a postal box at this branch, I'm afraid.",CMStrings.capitalizeFirstLetter(senderName)));
 					else
-						str.append(_("You don't have a postal box at this branch, I'm afraid."));
+						str.append(L("You don't have a postal box at this branch, I'm afraid."));
 					if(postalChain().length()>0)
-						str.append(_("\n\rThis branch is part of the @x1 postal chain.",postalChain()));
+						str.append(L("\n\rThis branch is part of the @x1 postal chain.",postalChain()));
 					CMLib.commands().postSay(this,mob,str.toString()+"^T",true,false);
-					mob.tell(_("Use 'say \"@x1\" open' to open a box here@x2",name(),((feeForNewBox()<=0.0)?".":(" for "+CMLib.beanCounter().nameCurrencyShort(this,feeForNewBox())+"."))));
+					mob.tell(L("Use 'say \"@x1\" open' to open a box here@x2",name(),((feeForNewBox()<=0.0)?".":(" for "+CMLib.beanCounter().nameCurrencyShort(this,feeForNewBox())+"."))));
 					return false;
 				}
 				return true;

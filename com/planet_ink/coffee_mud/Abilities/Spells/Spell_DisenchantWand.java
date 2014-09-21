@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_DisenchantWand extends Spell
 {
 	@Override public String ID() { return "Spell_DisenchantWand"; }
-	private final static String localizedName = CMLib.lang()._("Disenchant Wand");
+	private final static String localizedName = CMLib.lang().L("Disenchant Wand");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;	}
@@ -58,13 +58,13 @@ public class Spell_DisenchantWand extends Spell
 		&&(((Wand)target).usesRemaining()>0)
 		&&(((Wand)target).getSpell()!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> hold(s) <T-NAMESELF> and cast(s) a spell.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> hold(s) <T-NAMESELF> and cast(s) a spell.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				((Wand)target).setSpell(null);
 				((Wand)target).setUsesRemaining(0);
-				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> fades and becomes dull!"));
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> fades and becomes dull!"));
 				if((target.basePhyStats().disposition()&PhyStats.IS_BONUS)==PhyStats.IS_BONUS)
 					target.basePhyStats().setDisposition(target.basePhyStats().disposition()-PhyStats.IS_BONUS);
 				target.recoverPhyStats();
@@ -72,7 +72,7 @@ public class Spell_DisenchantWand extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> hold(s) <T-NAMESELF> and whisper(s), but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> hold(s) <T-NAMESELF> and whisper(s), but nothing happens."));
 
 
 		// return whether it worked

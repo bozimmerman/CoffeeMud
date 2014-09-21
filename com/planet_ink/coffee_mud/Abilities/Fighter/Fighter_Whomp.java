@@ -37,9 +37,9 @@ import java.util.*;
 public class Fighter_Whomp extends FighterSkill implements HealthCondition
 {
 	@Override public String ID() { return "Fighter_Whomp"; }
-	private final static String localizedName = CMLib.lang()._("Whomp");
+	private final static String localizedName = CMLib.lang().L("Whomp");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(knocked out)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(knocked out)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	private static final String[] triggerStrings =_i(new String[] {"WHOMP"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -74,7 +74,7 @@ public class Fighter_Whomp extends FighterSkill implements HealthCondition
 			||(msg.sourceMajor(CMMsg.MASK_MOVE)))
 			{
 				if(msg.sourceMessage()!=null)
-					mob.tell(_("You are way too drowsy."));
+					mob.tell(L("You are way too drowsy."));
 				return false;
 			}
 		}
@@ -107,9 +107,9 @@ public class Fighter_Whomp extends FighterSkill implements HealthCondition
 			if(!mob.amDead())
 			{
 				if(mob.location()!=null)
-					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> seem(s) less drowsy."));
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> seem(s) less drowsy."));
 				else
-					mob.tell(_("You feel less drowsy."));
+					mob.tell(L("You feel less drowsy."));
 				CMLib.commands().postStand(mob,true);
 			}
 		}
@@ -141,18 +141,18 @@ public class Fighter_Whomp extends FighterSkill implements HealthCondition
 
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell(_("You are too far away from your target to whomp!"));
+			mob.tell(L("You are too far away from your target to whomp!"));
 			return false;
 		}
 		if((!auto)&&(mob.charStats().getStat(CharStats.STAT_STRENGTH)<CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)))
 		{
-			mob.tell(_("You need at least an @x1 strength to do that.",""+CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)));
+			mob.tell(L("You need at least an @x1 strength to do that.",""+CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)));
 			return false;
 		}
 
 		if((!auto)&&(mob.baseWeight()<(target.baseWeight()-250)))
 		{
-			mob.tell(_("@x1 is way too big to knock out!",target.name(mob)));
+			mob.tell(L("@x1 is way too big to knock out!",target.name(mob)));
 			return false;
 		}
 
@@ -178,7 +178,7 @@ public class Fighter_Whomp extends FighterSkill implements HealthCondition
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),_(auto?"<T-NAME> hit(s) the floor!":"^F<S-NAME> knock(s) <T-NAMESELF> to the floor!^?"+CMLib.protocol().msp("bashed2.wav",30)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),L(auto?"<T-NAME> hit(s) the floor!":"^F<S-NAME> knock(s) <T-NAMESELF> to the floor!^?"+CMLib.protocol().msp("bashed2.wav",30)));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -188,7 +188,7 @@ public class Fighter_Whomp extends FighterSkill implements HealthCondition
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to knock <T-NAMESELF> out, but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to knock <T-NAMESELF> out, but fail(s)."));
 
 		// return whether it worked
 		return success;

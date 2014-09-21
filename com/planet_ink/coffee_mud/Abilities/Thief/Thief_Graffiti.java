@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_Graffiti extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Graffiti"; }
-	private final static String localizedName = CMLib.lang()._("Graffiti");
+	private final static String localizedName = CMLib.lang().L("Graffiti");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
@@ -50,7 +50,7 @@ public class Thief_Graffiti extends ThiefSkill
 		final String str=CMParms.combine(commands,0);
 		if(str.length()==0)
 		{
-			mob.tell(_("What would you like to write here?"));
+			mob.tell(L("What would you like to write here?"));
 			return false;
 		}
 		Room target=mob.location();
@@ -61,7 +61,7 @@ public class Thief_Graffiti extends ThiefSkill
 		   &&(mob.location().domainType()!=Room.DOMAIN_INDOORS_WOOD)
 		   &&(mob.location().domainType()!=Room.DOMAIN_INDOORS_STONE))
 		{
-			mob.tell(_("You can't put graffiti here."));
+			mob.tell(L("You can't put graffiti here."));
 			return false;
 		}
 
@@ -74,34 +74,34 @@ public class Thief_Graffiti extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,_("<S-NAME> write(s) graffiti here."));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,L("<S-NAME> write(s) graffiti here."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final Item I=CMClass.getItem("GenWallpaper");
-				I.setName(_("Graffiti"));
+				I.setName(L("Graffiti"));
 				CMLib.flags().setReadable(I,true);
 				I.recoverPhyStats();
 				I.setReadableText(str);
 				switch(CMLib.dice().roll(1,6,0))
 				{
 				case 1:
-					I.setDescription(_("Someone has scribbed some graffiti here.  Try reading it."));
+					I.setDescription(L("Someone has scribbed some graffiti here.  Try reading it."));
 					break;
 				case 2:
-					I.setDescription(_("A cryptic message has been written on the walls.  Try reading it."));
+					I.setDescription(L("A cryptic message has been written on the walls.  Try reading it."));
 					break;
 				case 3:
-					I.setDescription(_("Someone wrote a message here to read."));
+					I.setDescription(L("Someone wrote a message here to read."));
 					break;
 				case 4:
-					I.setDescription(_("A strange message is written here.  Read it."));
+					I.setDescription(L("A strange message is written here.  Read it."));
 					break;
 				case 5:
-					I.setDescription(_("This graffiti looks like it is in @x1 handwriting.  Read it!",mob.name()));
+					I.setDescription(L("This graffiti looks like it is in @x1 handwriting.  Read it!",mob.name()));
 					break;
 				case 6:
-					I.setDescription(_("The wall is covered in graffiti.  You might want to read it."));
+					I.setDescription(L("The wall is covered in graffiti.  You might want to read it."));
 					break;
 				}
 				mob.location().addItem(I);
@@ -110,7 +110,7 @@ public class Thief_Graffiti extends ThiefSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to write graffiti here, but fails."));
+			beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to write graffiti here, but fails."));
 		return success;
 	}
 }

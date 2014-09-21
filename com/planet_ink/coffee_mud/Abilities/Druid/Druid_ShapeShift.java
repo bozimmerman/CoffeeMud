@@ -37,7 +37,7 @@ import java.util.*;
 public class Druid_ShapeShift extends StdAbility
 {
 	@Override public String ID() { return "Druid_ShapeShift"; }
-	private final static String localizedName = CMLib.lang()._("Shape Shift");
+	private final static String localizedName = CMLib.lang().L("Shape Shift");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
@@ -141,7 +141,7 @@ public class Druid_ShapeShift extends StdAbility
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob.location()!=null))
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> revert(s) to @x1 form.",mob.charStats().raceName().toLowerCase()));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> revert(s) to @x1 form.",mob.charStats().raceName().toLowerCase()));
 	}
 
 	public int getClassLevel(MOB mob)
@@ -285,9 +285,9 @@ public class Druid_ShapeShift extends StdAbility
 			{
 				try
 				{
-				if(!mob.session().confirm(_("You have not yet chosen your form, would you like to now (Y/n)?"),_("Y")))
+				if(!mob.session().confirm(L("You have not yet chosen your form, would you like to now (Y/n)?"),L("Y")))
 					return false;
-				final StringBuffer str=new StringBuffer(_("Choose from the following:\n\r"));
+				final StringBuffer str=new StringBuffer(L("Choose from the following:\n\r"));
 				final StringBuffer choices=new StringBuffer("");
 				for(int i=0;i<forms.length;i++)
 				{
@@ -297,7 +297,7 @@ public class Druid_ShapeShift extends StdAbility
 						choices.append(""+(i+1));
 					}
 				}
-				str.append(_("Please select: "));
+				str.append(L("Please select: "));
 				final String choice=mob.session().choose(str.toString(),choices.toString(),"");
 				myRaceCode=CMath.s_int(choice)-1;
 				}catch(final Exception e){}
@@ -385,7 +385,7 @@ public class Druid_ShapeShift extends StdAbility
 					return A.invoke(mob,new Vector(),givenTarget,auto,asLevel);
 				}
 			}
-			mob.tell(_("'@x1' is an illegal form!\n\rValid forms include: \n\r@x2",parm,list.toString()));
+			mob.tell(L("'@x1' is an illegal form!\n\rValid forms include: \n\r@x2",parm,list.toString()));
 			return false;
 		}
 
@@ -398,7 +398,7 @@ public class Druid_ShapeShift extends StdAbility
 		{
 			if((CMLib.dice().rollPercentage()<50))
 			{
-				mob.tell(_("Extreme emotions disrupt your change."));
+				mob.tell(L("Extreme emotions disrupt your change."));
 				return false;
 			}
 		}
@@ -413,14 +413,14 @@ public class Druid_ShapeShift extends StdAbility
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> take(s) on @x1 form.",raceName.toLowerCase()));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> take(s) on @x1 form.",raceName.toLowerCase()));
 				beneficialAffect(mob,mob,asLevel,Ability.TICKS_FOREVER);
 				raceName=CMStrings.capitalizeAndLower(CMLib.english().startWithAorAn(raceName.toLowerCase()));
 				CMLib.utensils().confirmWearability(mob);
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) to <S-HIM-HERSELF>, but nothing happens."));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) to <S-HIM-HERSELF>, but nothing happens."));
 
 
 		// return whether it worked

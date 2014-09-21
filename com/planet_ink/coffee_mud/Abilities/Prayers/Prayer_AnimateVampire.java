@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_AnimateVampire extends Prayer
 {
 	@Override public String ID() { return "Prayer_AnimateVampire"; }
-	private final static String localizedName = CMLib.lang()._("Animate Vampire");
+	private final static String localizedName = CMLib.lang().L("Animate Vampire");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
@@ -71,12 +71,12 @@ public class Prayer_AnimateVampire extends Prayer
 
 		if(target==mob)
 		{
-			mob.tell(_("@x1 doesn't look dead yet.",target.name(mob)));
+			mob.tell(L("@x1 doesn't look dead yet.",target.name(mob)));
 			return false;
 		}
 		if(!(target instanceof DeadBody))
 		{
-			mob.tell(_("You can't animate that."));
+			mob.tell(L("You can't animate that."));
 			return false;
 		}
 
@@ -84,7 +84,7 @@ public class Prayer_AnimateVampire extends Prayer
 		if(body.playerCorpse()||(body.mobName().length()==0)
 		||((body.charStats()!=null)&&(body.charStats().getMyRace()!=null)&&(body.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))))
 		{
-			mob.tell(_("You can't animate that."));
+			mob.tell(L("You can't animate that."));
 			return false;
 		}
 		String race="a";
@@ -98,7 +98,7 @@ public class Prayer_AnimateVampire extends Prayer
 
 		if(body.basePhyStats().level()<25)
 		{
-			mob.tell(_("This creature is too weak to create a vampire from."));
+			mob.tell(L("This creature is too weak to create a vampire from."));
 			return false;
 		}
 
@@ -109,14 +109,14 @@ public class Prayer_AnimateVampire extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 to animate <T-NAMESELF> as a vampire.^?",prayForWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 to animate <T-NAMESELF> as a vampire.^?",prayForWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final MOB newMOB=CMClass.getMOB("GenUndead");
-				newMOB.setName(_("@x1 vampire",race));
+				newMOB.setName(L("@x1 vampire",race));
 				newMOB.setDescription(description);
-				newMOB.setDisplayText(_("@x1 vampire is here",race));
+				newMOB.setDisplayText(L("@x1 vampire is here",race));
 				newMOB.basePhyStats().setLevel(19+(super.getX1Level(mob)*2)+super.getXLEVELLevel(mob));
 				newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
@@ -156,7 +156,7 @@ public class Prayer_AnimateVampire extends Prayer
 				newMOB.text();
 				newMOB.bringToLife(mob.location(),true);
 				CMLib.beanCounter().clearZeroMoney(newMOB,null);
-				newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
+				newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 				int it=0;
 				while(it<newMOB.location().numItems())
 				{
@@ -179,12 +179,12 @@ public class Prayer_AnimateVampire extends Prayer
 				}
 				body.destroy();
 				newMOB.setStartRoom(null);
-				mob.location().show(newMOB,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> begin(s) to rise!"));
+				mob.location().show(newMOB,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> begin(s) to rise!"));
 				mob.location().recoverRoomStats();
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 to animate <T-NAMESELF>, but fail(s) miserably.",prayForWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 to animate <T-NAMESELF>, but fail(s) miserably.",prayForWord(mob)));
 
 		// return whether it worked
 		return success;

@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_DestroyObject extends Spell
 {
 	@Override public String ID() { return "Spell_DestroyObject"; }
-	private final static String localizedName = CMLib.lang()._("Destroy Object");
+	private final static String localizedName = CMLib.lang().L("Destroy Object");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
@@ -55,7 +55,7 @@ public class Spell_DestroyObject extends Spell
 			if(DB.playerCorpse()
 			&&(!DB.mobName().equals(mob.Name())))
 			{
-				mob.tell(_("You are not allowed to destroy a player corpse."));
+				mob.tell(L("You are not allowed to destroy a player corpse."));
 				return false;
 			}
 		}
@@ -77,14 +77,14 @@ public class Spell_DestroyObject extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> vanish(es) into thin air!"));
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> vanish(es) into thin air!"));
 				target.destroy();
 				mob.location().recoverRoomStats();
 			}
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> incant(s) at <T-NAMESELF>, but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> incant(s) at <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

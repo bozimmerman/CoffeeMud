@@ -131,9 +131,9 @@ public class Patroller extends ActiveTicker
 		&&(msg.source().riding()==host))
 		{
 			if(host instanceof MOB)
-				msg.source().tell(_("You must dismount before you can do that."));
+				msg.source().tell(L("You must dismount before you can do that."));
 			else
-				msg.source().tell(_("You must disembark before you can do that."));
+				msg.source().tell(L("You must disembark before you can do that."));
 			return false;
 		}
 		return super.okMessage(host,msg);
@@ -447,7 +447,7 @@ public class Patroller extends ActiveTicker
 				}
 
 				tickStatus=Tickable.STATUS_MISC+17;
-				thisRoom.showHappens(CMMsg.MSG_OK_ACTION,I,_("<S-NAME> goes @x1.",Directions.getDirectionName(direction)));
+				thisRoom.showHappens(CMMsg.MSG_OK_ACTION,I,L("<S-NAME> goes @x1.",Directions.getDirectionName(direction)));
 				tickStatus=Tickable.STATUS_MISC+18;
 				if(thatRoom!=null)
 					thatRoom.moveItemTo(I);
@@ -455,7 +455,7 @@ public class Patroller extends ActiveTicker
 				if((I.owner()==thatRoom)&&(thatRoom!=null))
 				{
 					tickStatus=Tickable.STATUS_MISC+20;
-					thatRoom.showHappens(CMMsg.MSG_OK_ACTION,I,_("<S-NAME> arrives from @x1.",Directions.getFromDirectionName(Directions.getOpDirectionCode(direction))));
+					thatRoom.showHappens(CMMsg.MSG_OK_ACTION,I,L("<S-NAME> arrives from @x1.",Directions.getFromDirectionName(Directions.getOpDirectionCode(direction))));
 					tickStatus=Tickable.STATUS_MISC+21;
 					if(riders!=null)
 					for(int i=0;i<riders.size();i++)
@@ -514,14 +514,14 @@ public class Patroller extends ActiveTicker
 						CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 						if(mob.location().okMessage(mob,msg))
 						{
-							msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,_("<S-NAME> unlock(s) <T-NAMESELF>."));
+							msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,L("<S-NAME> unlock(s) <T-NAMESELF>."));
 							CMLib.utensils().roomAffectFully(msg,thisRoom,direction);
 						}
 					}
 					CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 					if(mob.location().okMessage(mob,msg))
 					{
-						msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OPEN,CMMsg.MSG_OK_VISUAL,_("<S-NAME> @x1(s) <T-NAMESELF>.",E.openWord()));
+						msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OPEN,CMMsg.MSG_OK_VISUAL,L("<S-NAME> @x1(s) <T-NAMESELF>.",E.openWord()));
 						CMLib.utensils().roomAffectFully(msg,thisRoom,direction);
 					}
 				}

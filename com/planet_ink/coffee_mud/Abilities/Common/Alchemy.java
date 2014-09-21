@@ -40,7 +40,7 @@ import java.util.*;
 public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "Alchemy"; }
-	private final static String localizedName = CMLib.lang()._("Alchemy");
+	private final static String localizedName = CMLib.lang().L("Alchemy");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"BREW","ALCHEMY"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -69,14 +69,14 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 				if((theSpell.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 				{
 					commonEmote(mob,"<S-NAME> start(s) praying for "+buildingI.name()+".");
-					displayText=_("You are praying for @x1",buildingI.name());
-					verb=_("praying for @x1",buildingI.name());
+					displayText=L("You are praying for @x1",buildingI.name());
+					verb=L("praying for @x1",buildingI.name());
 				}
 				else
 				{
 					commonEmote(mob,"<S-NAME> start(s) brewing "+buildingI.name()+".");
-					displayText=_("You are brewing @x1",buildingI.name());
-					verb=_("brewing @x1",buildingI.name());
+					displayText=L("You are brewing @x1",buildingI.name());
+					verb=L("brewing @x1",buildingI.name());
 					playSound="hotspring.wav";
 				}
 			}
@@ -139,7 +139,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+buildingI.name()+".");
 						else
 						if(oldName.length()>0)
-							commonTell(mob,_("Something went wrong! @x1 explodes!",(Character.toUpperCase(oldName.charAt(0))+oldName.substring(1))));
+							commonTell(mob,L("Something went wrong! @x1 explodes!",(Character.toUpperCase(oldName.charAt(0))+oldName.substring(1))));
 						buildingI.destroy();
 					}
 					else
@@ -183,8 +183,8 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 	{
 		buildingI=CMClass.getItem("GenPotion");
 		((Potion)buildingI).setSpellList(theSpell.ID());
-		buildingI.setName(_("a potion of @x1",theSpell.name().toLowerCase()));
-		buildingI.setDisplayText(_("a potion of @x1 sits here.",theSpell.name().toLowerCase()));
+		buildingI.setName(L("a potion of @x1",theSpell.name().toLowerCase()));
+		buildingI.setDisplayText(L("a potion of @x1 sits here.",theSpell.name().toLowerCase()));
 		buildingI.setDescription("");
 		buildingI.basePhyStats().setLevel(level);
 		buildingI.phyStats().setLevel(level);
@@ -218,7 +218,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,0);
 		if(commands.size()<1)
 		{
-			commonTell(mob,_("Brew what? Enter \"brew list\" for a list, or \"brew stop\" to cancel."));
+			commonTell(mob,L("Brew what? Enter \"brew list\" for a list, or \"brew stop\" to cancel."));
 			return false;
 		}
 		final int[] cols={
@@ -235,8 +235,8 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 				allFlag=true;
 				mask="";
 			}
-			final StringBuffer buf=new StringBuffer(_("Potions you know how to brew:\n\r"));
-			buf.append(CMStrings.padRight(_("Spell"),cols[0])+" "+CMStrings.padRight(_("Spell"),cols[0])+" "+CMStrings.padRight(_("Spell"),cols[0]));
+			final StringBuffer buf=new StringBuffer(L("Potions you know how to brew:\n\r"));
+			buf.append(CMStrings.padRight(L("Spell"),cols[0])+" "+CMStrings.padRight(L("Spell"),cols[0])+" "+CMStrings.padRight(L("Spell"),cols[0]));
 			int toggler=1;
 			final int toggleTop=3;
 			for(int r=0;r<recipes.size();r++)
@@ -273,27 +273,27 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			if(buildingI==null) return false;
 			if(!mob.isMine(buildingI))
 			{
-				commonTell(mob,_("You'll need to pick that up first."));
+				commonTell(mob,L("You'll need to pick that up first."));
 				return false;
 			}
 			if(!(buildingI instanceof Container))
 			{
-				commonTell(mob,_("There's nothing in @x1 to brew!",buildingI.name(mob)));
+				commonTell(mob,L("There's nothing in @x1 to brew!",buildingI.name(mob)));
 				return false;
 			}
 			if(!(buildingI instanceof Drink))
 			{
-				commonTell(mob,_("You can't drink out of a @x1.",buildingI.name(mob)));
+				commonTell(mob,L("You can't drink out of a @x1.",buildingI.name(mob)));
 				return false;
 			}
 			if(((Drink)buildingI).liquidRemaining()==0)
 			{
-				commonTell(mob,_("The @x1 contains no liquid base.  Water is probably fine.",buildingI.name(mob)));
+				commonTell(mob,L("The @x1 contains no liquid base.  Water is probably fine.",buildingI.name(mob)));
 				return false;
 			}
 			if(buildingI.material()!=RawMaterial.RESOURCE_GLASS)
 			{
-				commonTell(mob,_("You can only brew into glass containers."));
+				commonTell(mob,L("You can only brew into glass containers."));
 				return false;
 			}
 			activity = CraftingActivity.CRAFTING;
@@ -320,7 +320,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			}
 			if(theSpell==null)
 			{
-				commonTell(mob,_("You don't know how to brew '@x1'.  Try \"brew list\" for a list.",recipeName));
+				commonTell(mob,L("You don't know how to brew '@x1'.  Try \"brew list\" for a list.",recipeName));
 				return false;
 			}
 			int experienceToLose=10;
@@ -349,7 +349,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 					found=true;
 					if(V.size()>0)
 					{
-						commonTell(mob,_("The extraneous stuff from the @x1 must be removed before starting.",buildingI.name(mob)));
+						commonTell(mob,L("The extraneous stuff from the @x1 must be removed before starting.",buildingI.name(mob)));
 						return false;
 					}
 				}
@@ -361,13 +361,13 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 						found=true;
 					else
 					{
-						commonTell(mob,_("The @x1 must be removed from the @x2 before starting.",I.name(mob),buildingI.name(mob)));
+						commonTell(mob,L("The @x1 must be removed from the @x2 before starting.",I.name(mob),buildingI.name(mob)));
 						return false;
 					}
 				}
 				if(!found)
 				{
-					commonTell(mob,_("This potion requires @x1.  Please place some inside the @x2 and try again.",ingredient,buildingI.name(mob)));
+					commonTell(mob,L("This potion requires @x1.  Please place some inside the @x2 and try again.",ingredient,buildingI.name(mob)));
 					return false;
 				}
 			}
@@ -379,7 +379,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			playSound=null;
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 			CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
-			commonTell(mob,_("You lose @x1 experience points for the effort.",""+experienceToLose));
+			commonTell(mob,L("You lose @x1 experience points for the effort.",""+experienceToLose));
 			oldName=buildingI.name();
 			buildingI.destroy();
 			buildingI=buildItem(theSpell, theSpellLevel);

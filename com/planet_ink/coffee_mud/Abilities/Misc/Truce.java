@@ -37,7 +37,7 @@ import java.util.*;
 public class Truce extends StdAbility
 {
 	@Override public String ID() { return "Truce"; }
-	private final static String localizedName = CMLib.lang()._("Truce");
+	private final static String localizedName = CMLib.lang().L("Truce");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -114,7 +114,7 @@ public class Truce extends StdAbility
 			||((msg.target()==mob)&&(isTruceWith(msg.source().Name()))))
 		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
 		{
-			msg.source().tell(msg.source(),msg.target(),null,_("You have made peace with <T-NAMESELF>."));
+			msg.source().tell(msg.source(),msg.target(),null,L("You have made peace with <T-NAMESELF>."));
 			msg.source().makePeace();
 			if(msg.target() instanceof MOB)
 				((MOB)msg.target()).makePeace();
@@ -144,7 +144,7 @@ public class Truce extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> make(s) a truce with <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> make(s) a truce with <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -160,7 +160,7 @@ public class Truce extends StdAbility
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,auto?"":_("^S<S-NAME> tr(ys) to make <T-NAMESELF> fall asleep, but fails.^?"));
+			return maliciousFizzle(mob,target,auto?"":L("^S<S-NAME> tr(ys) to make <T-NAMESELF> fall asleep, but fails.^?"));
 
 		// return whether it worked
 		return success;

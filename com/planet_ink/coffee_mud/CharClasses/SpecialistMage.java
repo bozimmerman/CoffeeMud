@@ -35,7 +35,7 @@ import java.util.*;
 public class SpecialistMage extends Mage
 {
 	@Override public String ID(){return "SpecialistMage";}
-	private final static String localizedStaticName = CMLib.lang()._("Specialist Mage");
+	private final static String localizedStaticName = CMLib.lang().L("Specialist Mage");
 	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return "Mage";}
 	public int domain(){return Ability.DOMAIN_ABJURATION;}
@@ -105,7 +105,7 @@ public class SpecialistMage extends Mage
 				if(CMLib.dice().rollPercentage()>
 				   (myChar.charStats().getStat(CharStats.STAT_INTELLIGENCE)*((myChar.charStats().getCurrentClass().ID().equals(ID()))?1:2)))
 				{
-					myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> fizzle(s) a spell."));
+					myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> fizzle(s) a spell."));
 					return false;
 				}
 			}

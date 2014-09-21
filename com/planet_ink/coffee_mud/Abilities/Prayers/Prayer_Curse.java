@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_Curse extends Prayer
 {
 	@Override public String ID() { return "Prayer_Curse"; }
-	private final static String localizedName = CMLib.lang()._("Curse");
+	private final static String localizedName = CMLib.lang().L("Curse");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Cursed)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Cursed)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
@@ -69,13 +69,13 @@ public class Prayer_Curse extends Prayer
 		{
 			if(canBeUninvoked())
 			if((affected instanceof Item)&&(((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB))
-				((MOB)((Item)affected).owner()).tell(_("The curse on @x1 is lifted.",((Item)affected).name()));
+				((MOB)((Item)affected).owner()).tell(L("The curse on @x1 is lifted.",((Item)affected).name()));
 			super.unInvoke();
 			return;
 		}
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("The curse is lifted."));
+			mob.tell(L("The curse is lifted."));
 		super.unInvoke();
 	}
 
@@ -144,7 +144,7 @@ public class Prayer_Curse extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?_("<T-NAME> <T-IS-ARE> cursed!"):_("^S<S-NAME> curse(s) <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?L("<T-NAME> <T-IS-ARE> cursed!"):L("^S<S-NAME> curse(s) <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -163,7 +163,7 @@ public class Prayer_Curse extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to curse <T-NAMESELF>, but nothing happens."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to curse <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

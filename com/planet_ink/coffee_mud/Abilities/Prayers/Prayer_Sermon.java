@@ -36,9 +36,9 @@ import java.util.*;
 public class Prayer_Sermon extends Prayer
 {
 	@Override public String ID() { return "Prayer_Sermon"; }
-	private final static String localizedName = CMLib.lang()._("Sermon");
+	private final static String localizedName = CMLib.lang().L("Sermon");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Sermon)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Sermon)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
@@ -100,7 +100,7 @@ public class Prayer_Sermon extends Prayer
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.amITarget(mob.amFollowing())))
 		{
-			mob.tell(_("You admire @x1 too much.",mob.amFollowing().charStats().himher()));
+			mob.tell(L("You admire @x1 too much.",mob.amFollowing().charStats().himher()));
 			return false;
 		}
 		else
@@ -111,7 +111,7 @@ public class Prayer_Sermon extends Prayer
 		&&(mob.amFollowing()!=null)
 		&&(((Room)msg.target()).isInhabitant(mob.amFollowing())))
 		{
-			mob.tell(_("You are too enthralled to leave."));
+			mob.tell(L("You are too enthralled to leave."));
 			return false;
 		}
 		else
@@ -119,7 +119,7 @@ public class Prayer_Sermon extends Prayer
 		&&(mob.amFollowing()!=null)
 		&&(msg.sourceMinor()==CMMsg.TYP_NOFOLLOW))
 		{
-			mob.tell(_("You believe in @x1 too much.",mob.amFollowing().name()));
+			mob.tell(L("You believe in @x1 too much.",mob.amFollowing().name()));
 			return false;
 		}
 
@@ -140,7 +140,7 @@ public class Prayer_Sermon extends Prayer
 		}
 		if(h.size()==0)
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth sermonizing to."));
+			mob.tell(L("There doesn't appear to be anyone here worth sermonizing to."));
 			return false;
 		}
 
@@ -156,7 +156,7 @@ public class Prayer_Sermon extends Prayer
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> begin(s) sermonizing on the wonders of @x1.^?",hisHerDiety(mob))))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> begin(s) sermonizing on the wonders of @x1.^?",hisHerDiety(mob))))
 			for(final Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				final MOB target=(MOB)f.nextElement();
@@ -176,17 +176,17 @@ public class Prayer_Sermon extends Prayer
 						{
 							if(target.getVictim()==mob)
 								target.makePeace();
-							target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> begin(s) nodding and shouting praises to @x1.",hisHerDiety(mob)));
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> begin(s) nodding and shouting praises to @x1.",hisHerDiety(mob)));
 							CMLib.commands().postFollow(target,mob,true);
 						}
 					}
 				}
 				else
-					beneficialWordsFizzle(mob,target,_("<T-NAME> seem(s) unmoved by the <S-YOUPOSS> sermon."));
+					beneficialWordsFizzle(mob,target,L("<T-NAME> seem(s) unmoved by the <S-YOUPOSS> sermon."));
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> forget(s) how <S-YOUPOSS> sermon to @x1 goes.",hisHerDiety(mob)));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> forget(s) how <S-YOUPOSS> sermon to @x1 goes.",hisHerDiety(mob)));
 
 
 		// return whether it worked

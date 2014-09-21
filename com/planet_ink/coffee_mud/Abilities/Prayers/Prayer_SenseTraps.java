@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_SenseTraps extends Prayer
 {
 	@Override public String ID() { return "Prayer_SenseTraps"; }
-	private final static String localizedName = CMLib.lang()._("Sense Traps");
+	private final static String localizedName = CMLib.lang().L("Sense Traps");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Sensing Traps)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Sensing Traps)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
@@ -58,7 +58,7 @@ public class Prayer_SenseTraps extends Prayer
 			lastRoom=null;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("Your senses are no longer sensitive to traps."));
+			mob.tell(L("Your senses are no longer sensitive to traps."));
 	}
 	public String trapCheck(Physical P)
 	{
@@ -106,7 +106,7 @@ public class Prayer_SenseTraps extends Prayer
 			final List<Item> V=C.getContents();
 			for(int v=0;v<V.size();v++)
 				if(trapCheck(V.get(v)).length()>0)
-					msg.append(_("@x1 contains something trapped.\n",C.name()));
+					msg.append(L("@x1 contains something trapped.\n",C.name()));
 		}
 		else
 		if((P instanceof Item)&&(CMLib.flags().canBeSeenBy(P,mob)))
@@ -159,10 +159,10 @@ public class Prayer_SenseTraps extends Prayer
 				}
 			}
 			if((dirs.length()==0)&&(last.length()>0))
-				mob.tell(_("You sense a trap to @x1.",last));
+				mob.tell(L("You sense a trap to @x1.",last));
 			else
 			if((dirs.length()>2)&&(last.length()>0))
-				mob.tell(_("You sense a trap to @x1, and @x2.",dirs.substring(2),last));
+				mob.tell(L("You sense a trap to @x1, and @x2.",dirs.substring(2),last));
 		}
 	}
 
@@ -194,14 +194,14 @@ public class Prayer_SenseTraps extends Prayer
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already sensing traps."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already sensing traps."));
 			return false;
 		}
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) trap sensitivities!"):_("^S<S-NAME> @x1, and gain(s) sensitivity to traps!^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> gain(s) trap sensitivities!"):L("^S<S-NAME> @x1, and gain(s) sensitivity to traps!^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -209,7 +209,7 @@ public class Prayer_SenseTraps extends Prayer
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
 
 		return success;
 	}

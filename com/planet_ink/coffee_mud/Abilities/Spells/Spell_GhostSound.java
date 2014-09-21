@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_GhostSound extends Spell
 {
 	@Override public String ID() { return "Spell_GhostSound"; }
-	private final static String localizedName = CMLib.lang()._("Ghost Sound");
+	private final static String localizedName = CMLib.lang().L("Ghost Sound");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Ghost Sound spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Ghost Sound spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -56,46 +56,46 @@ public class Spell_GhostSound extends Spell
 		switch(CMLib.dice().roll(1,14,0))
 		{
 		case 1:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				_("You hear something coming up behind you."));
+				L("You hear something coming up behind you."));
 				break;
 		case 2:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				_("You hear somebody screaming in the distance."));
+				L("You hear somebody screaming in the distance."));
 				break;
 		case 3:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				_("You hear the snarl of a large ferocious beast."));
+				L("You hear the snarl of a large ferocious beast."));
 				break;
 		case 4:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				_("You hear complete silence."));
+				L("You hear complete silence."));
 				break;
 		case 5:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				_("CLANK! Someone just dropped their sword."));
+				L("CLANK! Someone just dropped their sword."));
 				break;
 		case 6:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				_("You hear a bird singing."));
+				L("You hear a bird singing."));
 				break;
 		case 7:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				_("You hear a cat dying."));
+				L("You hear a cat dying."));
 				break;
 		case 8:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				_("You hear some people talking."));
+				L("You hear some people talking."));
 				break;
 		case 9:	((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				_("You hear singing."));
+				L("You hear singing."));
 				break;
 		case 10:((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				_("You hear a cow mooing."));
+				L("You hear a cow mooing."));
 				break;
 		case 11:((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				_("You hear your shadow."));
+				L("You hear your shadow."));
 				break;
 		case 12:((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				_("You hear someone trying to sneak by you."));
+				L("You hear someone trying to sneak by you."));
 				break;
 		case 13:((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				_("You hear an annoying beeping sound."));
+				L("You hear an annoying beeping sound."));
 				break;
 		case 14:((Room)affected).showHappens(CMMsg.MSG_NOISE,
-				_("You hear your heart beating in your chest."));
+				L("You hear your heart beating in your chest."));
 				break;
 		}
 		return super.tick(ticking,tickID);
@@ -129,7 +129,7 @@ public class Spell_GhostSound extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,null,null,_("There are already ghost sounds here."));
+			mob.tell(mob,null,null,L("There are already ghost sounds here."));
 			return false;
 		}
 
@@ -143,7 +143,7 @@ public class Spell_GhostSound extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> scream(s) loudly, then fall(s) silent.^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> scream(s) loudly, then fall(s) silent.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -151,7 +151,7 @@ public class Spell_GhostSound extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> scream(s) loudly, but then feel(s) disappointed."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> scream(s) loudly, but then feel(s) disappointed."));
 
 		// return whether it worked
 		return success;

@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_TrapImmunity extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_TrapImmunity"; }
-	private final static String localizedName = CMLib.lang()._("Trap Immunity");
+	private final static String localizedName = CMLib.lang().L("Trap Immunity");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -63,7 +63,7 @@ public class Thief_TrapImmunity extends ThiefSkill
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Trap))
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> deftly avoid(s) a trap."));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> deftly avoid(s) a trap."));
 			helpProficiency(mob, 0);
 			return false;
 		}

@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_ResistGas extends Spell
 {
 	@Override public String ID() { return "Spell_ResistGas"; }
-	private final static String localizedName = CMLib.lang()._("Resist Gas");
+	private final static String localizedName = CMLib.lang().L("Resist Gas");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Resist Gas)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Resist Gas)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -53,7 +53,7 @@ public class Spell_ResistGas extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("Your filtering protection dissipates."));
+			mob.tell(L("Your filtering protection dissipates."));
 
 		super.unInvoke();
 
@@ -78,7 +78,7 @@ public class Spell_ResistGas extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> feel(s) filteringly protected."):_("^S<S-NAME> invoke(s) a filtering field of protection around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> feel(s) filteringly protected."):L("^S<S-NAME> invoke(s) a filtering field of protection around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -86,7 +86,7 @@ public class Spell_ResistGas extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a filtering shield, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a filtering shield, but fail(s)."));
 
 		return success;
 	}

@@ -37,14 +37,14 @@ import java.util.*;
 public class Skill_Enslave extends StdSkill
 {
 	@Override public String ID() { return "Skill_Enslave"; }
-	private final static String localizedName = CMLib.lang()._("Enslave");
+	private final static String localizedName = CMLib.lang().L("Enslave");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings =_i(new String[] {"ENSLAVE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Enslaved)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Enslaved)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_CRIMINAL; }
 
@@ -133,7 +133,7 @@ public class Skill_Enslave extends StdSkill
 							final Vector<String> V=CMParms.parse(response.toUpperCase());
 							if(V.contains("STOP")||V.contains("CANCEL"))
 							{
-								CMLib.commands().postSay(mob,msg.source(),_("Yes master."),false,false);
+								CMLib.commands().postSay(mob,msg.source(),L("Yes master."),false,false);
 								STEPS=null;
 								return;
 							}
@@ -157,7 +157,7 @@ public class Skill_Enslave extends StdSkill
 						{
 							if((response.toUpperCase().startsWith("I COMMAND YOU TO "))
 							||(response.toUpperCase().startsWith("I ORDER YOU TO ")))
-								CMLib.commands().postSay(mob,msg.source(),_("I don't take orders from you. "),false,false);
+								CMLib.commands().postSay(mob,msg.source(),L("I don't take orders from you. "),false,false);
 						}
 					}
 					else
@@ -172,16 +172,16 @@ public class Skill_Enslave extends StdSkill
 								response=response.substring(("I ORDER YOU TO ").length());
 							else
 							{
-								CMLib.commands().postSay(mob,msg.source(),_("Master, please begin your instruction with the words 'I command you to '.  You can also tell me to 'stop' or 'cancel' any order you give."),false,false);
+								CMLib.commands().postSay(mob,msg.source(),L("Master, please begin your instruction with the words 'I command you to '.  You can also tell me to 'stop' or 'cancel' any order you give."),false,false);
 								return;
 							}
 							STEPS=CMLib.slavery().processRequest(msg.source(),mob,response);
 							if((STEPS!=null)&&(STEPS.size()>0))
-								CMLib.commands().postSay(mob,msg.source(),_("Yes master."),false,false);
+								CMLib.commands().postSay(mob,msg.source(),L("Yes master."),false,false);
 							else
 							{
 								STEPS=null;
-								CMLib.commands().postSay(mob,msg.source(),_("Huh? Wuh?"),false,false);
+								CMLib.commands().postSay(mob,msg.source(),L("Huh? Wuh?"),false,false);
 							}
 						}
 					}
@@ -189,7 +189,7 @@ public class Skill_Enslave extends StdSkill
 				else
 				if((msg.tool() instanceof Ability)
 				&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))
-					CMLib.commands().postSay(mob,msg.source(),_("I don't understand your words."),false,false);
+					CMLib.commands().postSay(mob,msg.source(),L("I don't understand your words."),false,false);
 			}
 		}
 		else
@@ -239,7 +239,7 @@ public class Skill_Enslave extends StdSkill
 					final MOB myMaster=getMaster();
 					if((myMaster!=null)&&(mob.location().isInhabitant(myMaster)))
 					{
-						mob.location().show(mob,myMaster,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> rebel(s) against <T-NAMESELF>!"));
+						mob.location().show(mob,myMaster,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> rebel(s) against <T-NAMESELF>!"));
 						final MOB master=getMaster();
 						unMaster(mob);
 						setMiscText("");
@@ -252,7 +252,7 @@ public class Skill_Enslave extends StdSkill
 					else
 					if(CMLib.dice().rollPercentage()<50)
 					{
-						mob.location().show(mob,myMaster,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> escape(s) <T-NAMESELF>!"));
+						mob.location().show(mob,myMaster,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> escape(s) <T-NAMESELF>!"));
 						CMLib.tracking().beMobile(mob,true,true,false,false,null,null);
 					}
 				}
@@ -266,7 +266,7 @@ public class Skill_Enslave extends StdSkill
 						{ f=(Food)I; break;}
 					}
 					if(f==null)
-						CMLib.commands().postSay(mob,null,_("I am hungry."),false,false);
+						CMLib.commands().postSay(mob,null,L("I am hungry."),false,false);
 					else
 					{
 						final Command C=CMClass.getCommand("Eat");
@@ -283,7 +283,7 @@ public class Skill_Enslave extends StdSkill
 						{ d=(Drink)I; break;}
 					}
 					if(d==null)
-						CMLib.commands().postSay(mob,null,_("I am thirsty."),false,false);
+						CMLib.commands().postSay(mob,null,L("I am thirsty."),false,false);
 					else
 					{
 						final Command C=CMClass.getCommand("Drink");
@@ -306,9 +306,9 @@ public class Skill_Enslave extends StdSkill
 				if(mob.isInCombat())
 					return true; // let them finish fighting.
 				if((STEPS!=null)&&((STEPS.size()==0)||(STEPS.done)))
-					mob.tell(_("You have completed your masters task."));
+					mob.tell(L("You have completed your masters task."));
 				else
-					mob.tell(_("You have been released from your masters task."));
+					mob.tell(L("You have been released from your masters task."));
 				if((mob.isMonster())
 				&&(!mob.amDead())
 				&&(mob.location()!=null)
@@ -342,27 +342,27 @@ public class Skill_Enslave extends StdSkill
 	{
 		if(mob.isMonster())
 		{
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> sigh(s)."));
-			CMLib.commands().postSay(mob,null,_("You know, if I had any ambitions, I would enslave myself so I could do interesting things!"),false,false);
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,L("<S-NAME> sigh(s)."));
+			CMLib.commands().postSay(mob,null,L("You know, if I had any ambitions, I would enslave myself so I could do interesting things!"),false,false);
 			return false;
 		}
 
 		if(commands.size()<1)
 		{
-			mob.tell(_("You need to specify a target to enslave."));
+			mob.tell(L("You need to specify a target to enslave."));
 			return false;
 		}
 		final MOB target=getTarget(mob,commands,givenTarget,false,true);
 		if(target==null) return false;
 		if(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<5)
 		{
-			mob.tell(_("@x1 would be too stupid to understand your instructions!",target.name(mob)));
+			mob.tell(L("@x1 would be too stupid to understand your instructions!",target.name(mob)));
 			return false;
 		}
 
 		if((!CMLib.flags().isBoundOrHeld(target))&&(target.fetchEffect(ID())==null)&&(!CMSecurity.isAllowed(mob,target.location(), CMSecurity.SecFlag.CMDMOBS)))
 		{
-			mob.tell(_("@x1 must be bound first.",target.name(mob)));
+			mob.tell(L("@x1 must be bound first.",target.name(mob)));
 			return false;
 		}
 
@@ -376,7 +376,7 @@ public class Skill_Enslave extends StdSkill
 			invoker=mob;
 			final boolean peace1=!mob.isInCombat();
 			final boolean peace2=!target.isInCombat();
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISE|CMMsg.MASK_MALICIOUS,auto?"":_("^S<S-NAME> enslave(s) <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISE|CMMsg.MASK_MALICIOUS,auto?"":L("^S<S-NAME> enslave(s) <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -392,7 +392,7 @@ public class Skill_Enslave extends StdSkill
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to enslave on <T-NAMESELF>, but fails."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to enslave on <T-NAMESELF>, but fails."));
 
 		// return whether it worked
 		return success;

@@ -40,7 +40,7 @@ import java.util.*;
 public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override public String ID() { return "Fletching"; }
-	private final static String localizedName = CMLib.lang()._("Fletching");
+	private final static String localizedName = CMLib.lang().L("Fletching");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"FLETCH","FLETCHING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -149,7 +149,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 		||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
-				commonTell(mob,_("That's not a fletched item."));
+				commonTell(mob,L("That's not a fletched item."));
 			return false;
 		}
 		return true;
@@ -174,7 +174,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,_("Make what? Enter \"fletch list\" for a list, \"fletch scan\", \"fletch learn <item>\", \"fletch mend <item>\", or \"fletch stop\" to cancel."));
+			commonTell(mob,L("Make what? Enter \"fletch list\" for a list, \"fletch scan\", \"fletch learn <item>\", \"fletch mend <item>\", or \"fletch stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -209,7 +209,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 					ListingLibrary.ColFixer.fixColWidth(5,mob.session())
 				};
 			for(int r=0;r<toggleTop;r++)
-				buf.append((r>0?" ":"")+CMStrings.padRight(_("Item"),cols[0])+" "+CMStrings.padRight(_("Lvl"),cols[1])+" "+CMStrings.padRight(_("Wood"),cols[2]));
+				buf.append((r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Wood"),cols[2]));
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -232,7 +232,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 					}
 				}
 			}
-			buf.append(_("\n\rSome items may require additional material."));
+			buf.append(L("\n\rSome items may require additional material."));
 			commonTell(mob,buf.toString());
 			enhanceList(mob);
 			return true;
@@ -257,9 +257,9 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr=_("<S-NAME> start(s) mending @x1.",buildingI.name());
-			displayText=_("You are mending @x1",buildingI.name());
-			verb=_("mending @x1",buildingI.name());
+			startStr=L("<S-NAME> start(s) mending @x1.",buildingI.name());
+			displayText=L("You are mending @x1",buildingI.name());
+			verb=L("mending @x1",buildingI.name());
 		}
 		else
 		{
@@ -291,7 +291,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,_("You don't know how to make a '@x1'.  Try \"fletch list\" for a list.",recipeName));
+				commonTell(mob,L("You don't know how to make a '@x1'.  Try \"fletch list\" for a list.",recipeName));
 				return false;
 			}
 
@@ -328,7 +328,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 				}
 				if((fire==null)||(!mob.location().isContent(fire)))
 				{
-					commonTell(mob,_("You'll need to build a fire first."));
+					commonTell(mob,L("You'll need to build a fire first."));
 					return false;
 				}
 			}
@@ -343,18 +343,18 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(buildingI==null)
 			{
-				commonTell(mob,_("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
+				commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
 			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
 			itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);
-			startStr=_("<S-NAME> start(s) making @x1.",buildingI.name());
-			displayText=_("You are making @x1",buildingI.name());
-			verb=_("making @x1",buildingI.name());
+			startStr=L("<S-NAME> start(s) making @x1.",buildingI.name());
+			displayText=L("You are making @x1",buildingI.name());
+			verb=L("making @x1",buildingI.name());
 			playSound="sanding.wav";
-			buildingI.setDisplayText(_("@x1 lies here",itemName));
+			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
@@ -405,9 +405,9 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 		{
 			messedUp=false;
 			duration=1;
-			verb=_("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
-			startStr=_("<S-NAME> start(s) @x1.",verb);
-			displayText=_("You are @x1",verb);
+			verb=L("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
+			startStr=L("<S-NAME> start(s) @x1.",verb);
+			displayText=L("You are @x1",verb);
 		}
 
 		if(parsedVars.autoGenerate>0)

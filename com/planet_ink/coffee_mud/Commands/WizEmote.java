@@ -111,11 +111,11 @@ public class WizEmote extends StdCommand
 					}
 				}
 				if(!found)
-					mob.tell(_("You can't find anyone or anywhere by that name."));
+					mob.tell(L("You can't find anyone or anywhere by that name."));
 			}
 		}
 		else
-			mob.tell(_("You must specify either all, or an area/mob name, and an message."));
+			mob.tell(L("You must specify either all, or an area/mob name, and an message."));
 		return false;
 	}
 

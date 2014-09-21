@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_SummonMonster extends Spell
 {
 	@Override public String ID() { return "Spell_SummonMonster"; }
-	private final static String localizedName = CMLib.lang()._("Monster Summoning");
+	private final static String localizedName = CMLib.lang().L("Monster Summoning");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Monster Summoning)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Monster Summoning)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -82,7 +82,7 @@ public class Spell_SummonMonster extends Spell
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> summon(s) help from the Java Plane....^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> summon(s) help from the Java Plane....^?"));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
@@ -92,7 +92,7 @@ public class Spell_SummonMonster extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> call(s) for magical help, but choke(s) on the words."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> call(s) for magical help, but choke(s) on the words."));
 
 		// return whether it worked
 		return success;
@@ -161,9 +161,9 @@ public class Spell_SummonMonster extends Spell
 			newMOB=CMClass.getMOB("GenMOB");
 			newMOB.basePhyStats().setLevel(level);
 			newMOB.charStats().setMyRace(CMClass.getRace("Unique"));
-			newMOB.setName(_("a wierd extra-planar monster"));
-			newMOB.setDisplayText(_("a wierd extra-planar monster stands here"));
-			newMOB.setDescription(_("It's too difficult to describe what this thing looks like, but he/she/it is definitely angry!"));
+			newMOB.setName(L("a wierd extra-planar monster"));
+			newMOB.setDisplayText(L("a wierd extra-planar monster stands here"));
+			newMOB.setDescription(L("It's too difficult to describe what this thing looks like, but he/she/it is definitely angry!"));
 			CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 			newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 			newMOB.baseState().setHitPoints(CMLib.dice().rollHP(level, 20));
@@ -187,18 +187,18 @@ public class Spell_SummonMonster extends Spell
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(R,true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		R.showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
+		R.showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 		final MOB victim=caster.getVictim();
 		newMOB.setStartRoom(null); // keep before postFollow for Conquest
 		CMLib.commands().postFollow(newMOB,caster,true);
 		if(newMOB.amFollowing()!=caster)
-			caster.tell(_("@x1 seems unwilling to follow you.",newMOB.name()));
+			caster.tell(L("@x1 seems unwilling to follow you.",newMOB.name()));
 		else
 		if(victim!=null)
 		{
 			if(newMOB.getVictim()!=victim) 
 				newMOB.setVictim(victim);
-			R.showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,_("<S-NAME> start(s) attacking <T-NAMESELF>!"));
+			R.showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,L("<S-NAME> start(s) attacking <T-NAMESELF>!"));
 		}
 		if(newMOB.amDead()||newMOB.amDestroyed())
 			return null;

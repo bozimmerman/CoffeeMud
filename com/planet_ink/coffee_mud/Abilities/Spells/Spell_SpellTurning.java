@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_SpellTurning extends Spell
 {
 	@Override public String ID() { return "Spell_SpellTurning"; }
-	private final static String localizedName = CMLib.lang()._("Spell Turning");
+	private final static String localizedName = CMLib.lang().L("Spell Turning");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Spell Turning)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Spell Turning)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -54,7 +54,7 @@ public class Spell_SpellTurning extends Spell
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> reflective protection dissipates."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> reflective protection dissipates."));
 
 		super.unInvoke();
 
@@ -81,7 +81,7 @@ public class Spell_SpellTurning extends Spell
 		&&((CMLib.dice().rollPercentage()+(2*getXLEVELLevel(invoker())))>75))
 		{
 			oncePerRound=true;
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("The field around <S-NAME> reflects the spell!"));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("The field around <S-NAME> reflects the spell!"));
 			final Ability A=(Ability)msg.tool();
 			A.invoke(mob,msg.source(),true,msg.source().phyStats().level());
 			return false;
@@ -124,7 +124,7 @@ public class Spell_SpellTurning extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("A reflective barrier appears around <T-NAMESELF>."):_("^S<S-NAME> invoke(s) a reflective barrier of protection around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("A reflective barrier appears around <T-NAMESELF>."):L("^S<S-NAME> invoke(s) a reflective barrier of protection around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -132,7 +132,7 @@ public class Spell_SpellTurning extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a reflective spell, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a reflective spell, but fail(s)."));
 
 		return success;
 	}

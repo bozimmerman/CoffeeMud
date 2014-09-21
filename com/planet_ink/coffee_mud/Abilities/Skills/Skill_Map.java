@@ -35,9 +35,9 @@ import java.util.*;
 public class Skill_Map extends StdSkill
 {
 	@Override public String ID() { return "Skill_Map"; }
-	private final static String localizedName = CMLib.lang()._("Make Maps");
+	private final static String localizedName = CMLib.lang().L("Make Maps");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Mapping)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Mapping)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
@@ -59,7 +59,7 @@ public class Skill_Map extends StdSkill
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("You stop mapping."));
+			mob.tell(L("You stop mapping."));
 		map=null;
 	}
 
@@ -103,7 +103,7 @@ public class Skill_Map extends StdSkill
 		}
 		if(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<5)
 		{
-			mob.tell(_("You are too stupid to actually make a map."));
+			mob.tell(L("You are too stupid to actually make a map."));
 			return false;
 		}
 		final Item target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_UNWORNONLY);
@@ -112,13 +112,13 @@ public class Skill_Map extends StdSkill
 		Item item=target;
 		if(!item.isReadable())
 		{
-			mob.tell(_("You can't map on that."));
+			mob.tell(L("You can't map on that."));
 			return false;
 		}
 
 		if(item instanceof Scroll)
 		{
-			mob.tell(_("You can't map on a scroll."));
+			mob.tell(L("You can't map on a scroll."));
 			return false;
 		}
 
@@ -126,14 +126,14 @@ public class Skill_Map extends StdSkill
 		{
 			if(!item.ID().equals("BardMap"))
 			{
-				mob.tell(_("There's no more room to add to that map."));
+				mob.tell(L("There's no more room to add to that map."));
 				return false;
 			}
 		}
 		else
 		if(item.readableText().length()>0)
 		{
-			mob.tell(_("There's no more room to map on that."));
+			mob.tell(L("There's no more room to map on that."));
 			return false;
 		}
 
@@ -144,7 +144,7 @@ public class Skill_Map extends StdSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_WRITE,_("<S-NAME> start(s) mapping on <T-NAMESELF>."),CMMsg.MSG_WRITE,";",CMMsg.MSG_WRITE,_("<S-NAME> start(s) mapping on <T-NAMESELF>."));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_WRITE,L("<S-NAME> start(s) mapping on <T-NAMESELF>."),CMMsg.MSG_WRITE,";",CMMsg.MSG_WRITE,L("<S-NAME> start(s) mapping on <T-NAMESELF>."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -191,7 +191,7 @@ public class Skill_Map extends StdSkill
 			}
 		}
 		else
-			mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<S-NAME> attempt(s) to start mapping on <T-NAMESELF>, but mess(es) up."));
+			mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<S-NAME> attempt(s) to start mapping on <T-NAMESELF>, but mess(es) up."));
 		return success;
 	}
 

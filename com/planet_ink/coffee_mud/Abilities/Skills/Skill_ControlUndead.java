@@ -35,9 +35,9 @@ import java.util.*;
 public class Skill_ControlUndead extends StdSkill
 {
 	@Override public String ID() { return "Skill_ControlUndead"; }
-	private final static String localizedName = CMLib.lang()._("Control Undead");
+	private final static String localizedName = CMLib.lang().L("Control Undead");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Controlled)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Controlled)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -101,7 +101,7 @@ public class Skill_ControlUndead extends StdSkill
 		{
 			if((!invoker().isInCombat())&&(msg.source().getVictim()!=invoker()))
 			{
-				msg.source().tell(_("You're too submissive towards @x1",invoker().name()));
+				msg.source().tell(L("You're too submissive towards @x1",invoker().name()));
 				if(invoker().getVictim()==msg.source())
 				{
 					invoker().makePeace();
@@ -109,7 +109,7 @@ public class Skill_ControlUndead extends StdSkill
 				}
 			}
 			else
-				msg.source().tell(_("You're too submissive towards @x1",invoker().name()));
+				msg.source().tell(L("You're too submissive towards @x1",invoker().name()));
 			return false;
 		}
 		else
@@ -122,7 +122,7 @@ public class Skill_ControlUndead extends StdSkill
 			&&(mob.amFollowing()!=null)
 			&&(((Room)msg.target()).isInhabitant(mob.amFollowing())))
 			{
-				mob.tell(_("You don't want to leave your master."));
+				mob.tell(L("You don't want to leave your master."));
 				return false;
 			}
 			else
@@ -130,7 +130,7 @@ public class Skill_ControlUndead extends StdSkill
 			&&(mob.amFollowing()!=null)
 			&&(msg.sourceMinor()==CMMsg.TYP_NOFOLLOW))
 			{
-				msg.source().tell(_("You're too submissive towards @x1",invoker().name()));
+				msg.source().tell(L("You're too submissive towards @x1",invoker().name()));
 				return false;
 			}
 		}
@@ -173,7 +173,7 @@ public class Skill_ControlUndead extends StdSkill
 
 		if((canBeUninvoked()&&(!mob.amDead())))
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> free-will returns."));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> free-will returns."));
 			if(mob.amFollowing()!=null)
 				CMLib.commands().postFollow(mob,null,false);
 			CMLib.commands().postStand(mob,true);
@@ -218,13 +218,13 @@ public class Skill_ControlUndead extends StdSkill
 		if((target.baseCharStats().getMyRace()==null)
 		||(!target.baseCharStats().getMyRace().racialCategory().equals("Undead")))
 		{
-			mob.tell(auto?_("Only the undead can be controlled."):_("You can only control the undead."));
+			mob.tell(auto?L("Only the undead can be controlled."):L("You can only control the undead."));
 			return false;
 		}
 
 		if(CMLib.flags().isGood(mob))
 		{
-			mob.tell(_("Only the wicked may control the undead."));
+			mob.tell(L("Only the wicked may control the undead."));
 			return false;
 		}
 
@@ -243,7 +243,7 @@ public class Skill_ControlUndead extends StdSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_ATTACK_SOMANTIC_SPELL|(auto?CMMsg.MASK_ALWAYS:0),auto?_("<T-NAME> seem(s) controlled."):_("^S<S-NAME> control(s) <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_ATTACK_SOMANTIC_SPELL|(auto?CMMsg.MASK_ALWAYS:0),auto?L("<T-NAME> seem(s) controlled."):L("^S<S-NAME> control(s) <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -255,18 +255,18 @@ public class Skill_ControlUndead extends StdSkill
 							success=maliciousAffect(mob,target,asLevel,0,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_MIND|CMMsg.MASK_ALWAYS);
 						if(success)
 						{
-							mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> now controlled."));
+							mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> now controlled."));
 							target.makePeace();
 							CMLib.commands().postFollow(target,mob,false);
 							CMLib.combat().makePeaceInGroup(mob);
 							invoker=mob;
 							if(target.amFollowing()!=mob)
-								mob.tell(_("@x1 seems unwilling to obey you.",target.name(mob)));
+								mob.tell(L("@x1 seems unwilling to obey you.",target.name(mob)));
 						}
 					}
 					else
 					{
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) submissive!"));
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) submissive!"));
 						target.makePeace();
 						beneficialAffect(mob,target,asLevel,5);
 					}
@@ -274,7 +274,7 @@ public class Skill_ControlUndead extends StdSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to control <T-NAMESELF>, but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to control <T-NAMESELF>, but fail(s)."));
 
 
 		// return whether it worked

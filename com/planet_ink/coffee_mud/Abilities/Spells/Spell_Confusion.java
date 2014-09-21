@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Confusion extends Spell
 {
 	@Override public String ID() { return "Spell_Confusion"; }
-	private final static String localizedName = CMLib.lang()._("Confusion");
+	private final static String localizedName = CMLib.lang().L("Confusion");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Confusion spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Confusion spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -80,7 +80,7 @@ public class Spell_Confusion extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("You feel less confused."));
+			mob.tell(L("You feel less confused."));
 		CMLib.commands().postStand(mob,true);
 	}
 
@@ -117,7 +117,7 @@ public class Spell_Confusion extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> enchant(s) <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> enchant(s) <T-NAMESELF>!^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
@@ -128,12 +128,12 @@ public class Spell_Confusion extends Spell
 					success=maliciousAffect(mob,target,asLevel,15,-1);
 					if(success)
 						if(target.location()==mob.location())
-							target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> look(s) confused!"));
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> look(s) confused!"));
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to enchant <T-NAMESELF>, but the spell fizzles"));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to enchant <T-NAMESELF>, but the spell fizzles"));
 
 		// return whether it worked
 		return success;

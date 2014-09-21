@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_ContinualLight extends Spell
 {
 	@Override public String ID() { return "Spell_ContinualLight"; }
-	private final static String localizedName = CMLib.lang()._("Continual Light");
+	private final static String localizedName = CMLib.lang().L("Continual Light");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Continual Light)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Continual Light)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
@@ -63,7 +63,7 @@ public class Spell_ContinualLight extends Spell
 		final MOB mob=(MOB)affected;
 		final Room room=((MOB)affected).location();
 		if(canBeUninvoked())
-			room.show(mob,null,CMMsg.MSG_OK_VISUAL,_("The light above <S-NAME> dims."));
+			room.show(mob,null,CMMsg.MSG_OK_VISUAL,L("The light above <S-NAME> dims."));
 		super.unInvoke();
 		if(canBeUninvoked())
 			room.recoverRoomStats();
@@ -95,9 +95,9 @@ public class Spell_ContinualLight extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			String str=_("^S<S-NAME> invoke(s) a continual light toward(s) <T-NAMESELF>!^?");
+			String str=L("^S<S-NAME> invoke(s) a continual light toward(s) <T-NAMESELF>!^?");
 			if(!(target instanceof MOB))
-				str=_("^S<S-NAME> invoke(s) a continual light into <T-NAME>!^?");
+				str=L("^S<S-NAME> invoke(s) a continual light into <T-NAME>!^?");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),str);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -107,7 +107,7 @@ public class Spell_ContinualLight extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke light, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke light, but fail(s)."));
 
 		return success;
 	}

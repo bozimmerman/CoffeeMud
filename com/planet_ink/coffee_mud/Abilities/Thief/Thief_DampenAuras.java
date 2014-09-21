@@ -36,9 +36,9 @@ import java.util.*;
 public class Thief_DampenAuras extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_DampenAuras"; }
-	private final static String localizedName = CMLib.lang()._("Dampen Auras");
+	private final static String localizedName = CMLib.lang().L("Dampen Auras");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Dampened Auras)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Dampened Auras)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -86,7 +86,7 @@ public class Thief_DampenAuras extends ThiefSkill
 		final Environmental E=affected;
 		super.unInvoke();
 		if((E instanceof MOB)&&(!((MOB)E).amDead()))
-			((MOB)E).tell(_("You noticed the aura dampening is wearing away on @x1.",E.name()));
+			((MOB)E).tell(L("You noticed the aura dampening is wearing away on @x1.",E.name()));
 	}
 
 	@Override
@@ -98,7 +98,7 @@ public class Thief_DampenAuras extends ThiefSkill
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> can't dampen <S-YOUPOSS> auras again so soon."));
+			mob.tell(target,null,null,L("<S-NAME> can't dampen <S-YOUPOSS> auras again so soon."));
 			return false;
 		}
 
@@ -107,9 +107,9 @@ public class Thief_DampenAuras extends ThiefSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":_("<T-NAME> dampen(s) <T-HIS-HER> auras."));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":L("<T-NAME> dampen(s) <T-HIS-HER> auras."));
 		if(!success)
-			return beneficialVisualFizzle(mob,null,auto?"":_("<S-NAME> attempt(s) to dampen <S-HIS-HER> auras, but fail(s)."));
+			return beneficialVisualFizzle(mob,null,auto?"":L("<S-NAME> attempt(s) to dampen <S-HIS-HER> auras, but fail(s)."));
 		else
 		if(mob.location().okMessage(mob,msg))
 		{
@@ -133,7 +133,7 @@ public class Thief_DampenAuras extends ThiefSkill
 					}
 				}
 				if(items.length()>2)
-					target.tell(_("You've dampened the auras on the following items: @x1",items.substring(2)));
+					target.tell(L("You've dampened the auras on the following items: @x1",items.substring(2)));
 				target.location().recoverRoomStats();
 			}
 		}

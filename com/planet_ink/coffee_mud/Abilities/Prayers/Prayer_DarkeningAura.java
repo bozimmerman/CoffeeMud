@@ -36,12 +36,12 @@ import java.util.*;
 public class Prayer_DarkeningAura extends Prayer
 {
 	@Override public String ID() { return "Prayer_DarkeningAura"; }
-	private final static String localizedName = CMLib.lang()._("Darkening Aura");
+	private final static String localizedName = CMLib.lang().L("Darkening Aura");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Darkening Aura)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Darkening Aura)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -58,7 +58,7 @@ public class Prayer_DarkeningAura extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your darkening aura fades."));
+			mob.tell(L("Your darkening aura fades."));
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class Prayer_DarkeningAura extends Prayer
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already surrounded by a darkening aura."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already surrounded by a darkening aura."));
 			return false;
 		}
 
@@ -109,19 +109,19 @@ public class Prayer_DarkeningAura extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":_("^S<S-NAME> @x1 for a dark aura upon <T-NAMESELF>.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":L("^S<S-NAME> @x1 for a dark aura upon <T-NAMESELF>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <IS-ARE> surrounded by a dark aura!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <IS-ARE> surrounded by a dark aura!"));
 					maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> @x1 for a darkening aura, but nothing happens.",prayWord(mob)));
+			return maliciousFizzle(mob,target,L("<S-NAME> @x1 for a darkening aura, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

@@ -37,9 +37,9 @@ import java.util.*;
 public class Disease_Leeches extends Disease
 {
 	@Override public String ID() { return "Disease_Leeches"; }
-	private final static String localizedName = CMLib.lang()._("Leeches");
+	private final static String localizedName = CMLib.lang().L("Leeches");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Leeches)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Leeches)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

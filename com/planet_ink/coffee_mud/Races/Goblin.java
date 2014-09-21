@@ -96,7 +96,7 @@ public class Goblin extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName(_("nasty little claws"));
+			naturalWeapon.setName(L("nasty little claws"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 			naturalWeapon.setUsesRemaining(1000);
 			naturalWeapon.setWeaponType(Weapon.TYPE_SLASHING);
@@ -149,15 +149,15 @@ public class Goblin extends StdRace
 			outfitChoices=new Vector();
 			// Have to, since it requires use of special constructor
 			final Armor s1=CMClass.getArmor("GenShirt");
-			s1.setName(_("a small ratty tunic"));
-			s1.setDisplayText(_("a small ratty tunic is folded neatly here."));
-			s1.setDescription(_("It is a small ratty abused little shirt."));
+			s1.setName(L("a small ratty tunic"));
+			s1.setDisplayText(L("a small ratty tunic is folded neatly here."));
+			s1.setDescription(L("It is a small ratty abused little shirt."));
 			s1.text();
 			outfitChoices.add(s1);
 			final Armor p1=CMClass.getArmor("GenPants");
-			p1.setName(_("a cotton loincloth"));
-			p1.setDisplayText(_("a cotton loincloth lies here"));
-			p1.setDescription(_("Looks like little more than some rags pinned together at the corners."));
+			p1.setName(L("a cotton loincloth"));
+			p1.setDisplayText(L("a cotton loincloth lies here"));
+			p1.setDescription(L("Looks like little more than some rags pinned together at the corners."));
 			p1.text();
 			outfitChoices.add(p1);
 			final Armor s3=CMClass.getArmor("GenBelt");

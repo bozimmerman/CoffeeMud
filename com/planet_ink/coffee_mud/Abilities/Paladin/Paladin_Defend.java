@@ -37,7 +37,7 @@ import java.util.*;
 public class Paladin_Defend extends StdAbility
 {
 	@Override public String ID() { return "Paladin_Defend"; }
-	private final static String localizedName = CMLib.lang()._("All Defence");
+	private final static String localizedName = CMLib.lang().L("All Defence");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"DEFENCE"});
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
@@ -63,7 +63,7 @@ public class Paladin_Defend extends StdAbility
 			if(msg.amISource(invoker)
 			&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK))
 			{
-				invoker.location().show((MOB)affected,msg.target(),CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> defend(s) <S-HIM-HERSELF> against <T-NAME>."));
+				invoker.location().show((MOB)affected,msg.target(),CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> defend(s) <S-HIM-HERSELF> against <T-NAME>."));
 				return false;
 			}
 		}
@@ -104,7 +104,7 @@ public class Paladin_Defend extends StdAbility
 					unInvoke();
 				if(mob.location()!=null)
 				{
-					if(mob.location().show(mob,null,this,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> successful defence <S-HAS-HAVE> allowed <S-HIM-HER> to disengage.")))
+					if(mob.location().show(mob,null,this,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> successful defence <S-HAS-HAVE> allowed <S-HIM-HER> to disengage.")))
 					{
 						final MOB victim=mob.getVictim();
 						if((victim!=null)&&(victim.getVictim()==mob))
@@ -130,18 +130,18 @@ public class Paladin_Defend extends StdAbility
 		if(A!=null)
 		{
 			A.unInvoke();
-			mob.tell(_("You end your all-out defensive posture."));
+			mob.tell(L("You end your all-out defensive posture."));
 			return true;
 		}
 		if(!mob.isInCombat())
 		{
-			mob.tell(_("You must be in combat to defend!"));
+			mob.tell(L("You must be in combat to defend!"));
 			return false;
 		}
 
 		if((!auto)&&(!(CMLib.flags().isGood(mob))))
 		{
-			mob.tell(_("You don't feel worthy of a good defence."));
+			mob.tell(L("You don't feel worthy of a good defence."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,mob,auto,asLevel))
@@ -155,7 +155,7 @@ public class Paladin_Defend extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_CAST_SOMANTIC_SPELL,_("^S<S-NAME> assume(s) an all-out defensive posture.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_CAST_SOMANTIC_SPELL,L("^S<S-NAME> assume(s) an all-out defensive posture.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -164,7 +164,7 @@ public class Paladin_Defend extends StdAbility
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to assume an all-out defensive posture, but fail(s)."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to assume an all-out defensive posture, but fail(s)."));
 
 
 		// return whether it worked

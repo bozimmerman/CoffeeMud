@@ -38,7 +38,7 @@ import java.util.*;
 public class Druid_Rend extends StdAbility
 {
 	@Override public String ID() { return "Druid_Rend"; }
-	private final static String localizedName = CMLib.lang()._("Rend");
+	private final static String localizedName = CMLib.lang().L("Rend");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"REND"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -73,23 +73,23 @@ public class Druid_Rend extends StdAbility
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell(_("You are too far away to rend!"));
+			mob.tell(L("You are too far away to rend!"));
 			return false;
 		}
 		if(!Druid_ShapeShift.isShapeShifted(mob))
 		{
-			mob.tell(_("You must be in your animal form to rend."));
+			mob.tell(L("You must be in your animal form to rend."));
 			return false;
 		}
 		if(mob.charStats().getBodyPart(Race.BODY_LEG)<=0)
 		{
-			mob.tell(_("You must have legs to rend!"));
+			mob.tell(L("You must have legs to rend!"));
 			return false;
 		}
 		final Ability A=mob.fetchEffect("Fighter_Pin");
 		if(A!=null)
 		{
-			mob.tell(_("You rend your way out of the pin!"));
+			mob.tell(L("You rend your way out of the pin!"));
 			A.unInvoke();
 			mob.delEffect(A);
 			CMLib.commands().postStand(mob,true);
@@ -101,7 +101,7 @@ public class Druid_Rend extends StdAbility
 
 		if(CMLib.flags().isStanding(target))
 		{
-			mob.tell(_("You can only rend someone who is on the ground!"));
+			mob.tell(L("You can only rend someone who is on the ground!"));
 			return false;
 		}
 
@@ -133,7 +133,7 @@ public class Druid_Rend extends StdAbility
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> fail(s) to rend <T-NAMESELF>."));
+			return maliciousFizzle(mob,target,L("<S-NAME> fail(s) to rend <T-NAMESELF>."));
 
 		// return whether it worked
 		return success;

@@ -38,7 +38,7 @@ import java.util.*;
 public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override public String ID() { return "Armorsmithing"; }
-	private final static String localizedName = CMLib.lang()._("Armorsmithing");
+	private final static String localizedName = CMLib.lang().L("Armorsmithing");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"ARMORSMITH","ARMORSMITHING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -187,7 +187,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 		||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
-				commonTell(mob,_("That's not @x1 item.",CMLib.english().startWithAorAn(Name().toLowerCase())));
+				commonTell(mob,L("That's not @x1 item.",CMLib.english().startWithAorAn(Name().toLowerCase())));
 			return false;
 		}
 		return true;
@@ -213,7 +213,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,_("Make what? Enter \"armorsmith list\" for a list, \"armorsmith refit <item>\" to resize, \"armorsmith learn <item>\", \"armorsmith scan\", \"armorsmith mend <item>\", or \"armorsmith stop\" to cancel."));
+			commonTell(mob,L("Make what? Enter \"armorsmith list\" for a list, \"armorsmith refit <item>\" to resize, \"armorsmith learn <item>\", \"armorsmith scan\", \"armorsmith mend <item>\", or \"armorsmith stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -248,7 +248,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			int toggler=1;
 			final int toggleTop=2;
 			for(int r=0;r<toggleTop;r++)
-				buf.append((r>0?" ":"")+CMStrings.padRight(_("Item"),cols[0])+" "+CMStrings.padRight(_("Lvl"),cols[1])+" "+CMStrings.padRight(_("Amt"),cols[2]));
+				buf.append((r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Amt"),cols[2]));
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -298,9 +298,9 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr=_("<S-NAME> start(s) mending @x1.",buildingI.name());
-			displayText=_("You are mending @x1",buildingI.name());
-			verb=_("mending @x1",buildingI.name());
+			startStr=L("<S-NAME> start(s) mending @x1.",buildingI.name());
+			displayText=L("You are mending @x1",buildingI.name());
+			verb=L("mending @x1",buildingI.name());
 		}
 		else
 		if(str.equalsIgnoreCase("refit"))
@@ -316,25 +316,25 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			if(((buildingI.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)
 			&&((buildingI.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL))
 			{
-				commonTell(mob,_("That's not made of metal.  That can't be refitted."));
+				commonTell(mob,L("That's not made of metal.  That can't be refitted."));
 				return false;
 			}
 			if(!(buildingI instanceof Armor))
 			{
-				commonTell(mob,_("You don't know how to refit that sort of thing."));
+				commonTell(mob,L("You don't know how to refit that sort of thing."));
 				return false;
 			}
 			if(buildingI.phyStats().height()==0)
 			{
-				commonTell(mob,_("@x1 is already the right size.",buildingI.name(mob)));
+				commonTell(mob,L("@x1 is already the right size.",buildingI.name(mob)));
 				return false;
 			}
 			activity = CraftingActivity.REFITTING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr=_("<S-NAME> start(s) refitting @x1.",buildingI.name());
-			displayText=_("You are refitting @x1",buildingI.name());
-			verb=_("refitting @x1",buildingI.name());
+			startStr=L("<S-NAME> start(s) refitting @x1.",buildingI.name());
+			displayText=L("You are refitting @x1",buildingI.name());
+			verb=L("refitting @x1",buildingI.name());
 		}
 		else
 		{
@@ -369,7 +369,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,_("You don't know how to make a '@x1'.  Try \"armorsmith list\" for a list.",recipeName));
+				commonTell(mob,L("You don't know how to make a '@x1'.  Try \"armorsmith list\" for a list.",recipeName));
 				return false;
 			}
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
@@ -400,7 +400,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(buildingI==null)
 			{
-				commonTell(mob,_("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
+				commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),6);
@@ -410,11 +410,11 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			else
 				itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);
-			startStr=_("<S-NAME> start(s) smithing @x1.",buildingI.name());
-			displayText=_("You are smithing @x1",buildingI.name());
-			verb=_("smithing @x1",buildingI.name());
+			startStr=L("<S-NAME> start(s) smithing @x1.",buildingI.name());
+			displayText=L("You are smithing @x1",buildingI.name());
+			verb=L("smithing @x1",buildingI.name());
 			playSound="ratchet.wav";
-			buildingI.setDisplayText(_("@x1 lies here",itemName));
+			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
@@ -454,9 +454,9 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 		{
 			messedUp=false;
 			duration=1;
-			verb=_("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
-			startStr=_("<S-NAME> start(s) @x1.",verb);
-			displayText=_("You are @x1",verb);
+			verb=L("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
+			startStr=L("<S-NAME> start(s) @x1.",verb);
+			displayText=L("You are @x1",verb);
 		}
 
 		if(parsedVars.autoGenerate>0)

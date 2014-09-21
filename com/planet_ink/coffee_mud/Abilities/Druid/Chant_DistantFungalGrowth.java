@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_DistantFungalGrowth extends Chant
 {
 	@Override public String ID() { return "Chant_DistantFungalGrowth"; }
-	private final static String localizedName = CMLib.lang()._("Distant Fungal Growth");
+	private final static String localizedName = CMLib.lang().L("Distant Fungal Growth");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -50,7 +50,7 @@ public class Chant_DistantFungalGrowth extends Chant
 
 		if(commands.size()<1)
 		{
-			mob.tell(_("Grow plants where?"));
+			mob.tell(L("Grow plants where?"));
 			return false;
 		}
 
@@ -74,16 +74,16 @@ public class Chant_DistantFungalGrowth extends Chant
 		if(newRoom==null)
 		{
 			if(anyRoom==null)
-				mob.tell(_("You don't know of a place called '@x1'.",CMParms.combine(commands,0)));
+				mob.tell(L("You don't know of a place called '@x1'.",CMParms.combine(commands,0)));
 			else
 			if((anyRoom.domainType()&Room.INDOORS)==0)
-				mob.tell(_("There IS such a place, but it is outdoors, where your fungus will not grow."));
+				mob.tell(L("There IS such a place, but it is outdoors, where your fungus will not grow."));
 			else
 			if((anyRoom.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
 			||(anyRoom.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
-				mob.tell(_("There IS such a place, but it is on or in the water, so your magic would fail."));
+				mob.tell(L("There IS such a place, but it is on or in the water, so your magic would fail."));
 			else
-				mob.tell(_("There IS such a place, but it is not in a cave, so your magic would fail."));
+				mob.tell(L("There IS such a place, but it is not in a cave, so your magic would fail."));
 			return false;
 		}
 
@@ -94,16 +94,16 @@ public class Chant_DistantFungalGrowth extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),_("^S<S-NAME> chant(s) about a far away place.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),L("^S<S-NAME> chant(s) about a far away place.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final Item newItem=new Chant_SummonFungus().buildFungus(mob,newRoom);
-				mob.tell(_("You feel a distant connection with @x1",newItem.name()));
+				mob.tell(L("You feel a distant connection with @x1",newItem.name()));
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) about a far away place, but the magic fades."));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) about a far away place, but the magic fades."));
 
 
 		// return whether it worked

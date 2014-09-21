@@ -36,7 +36,7 @@ import java.util.*;
 public class Play_Dirge extends Play
 {
 	@Override public String ID() { return "Play_Dirge"; }
-	private final static String localizedName = CMLib.lang()._("Dirge");
+	private final static String localizedName = CMLib.lang().L("Dirge");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
@@ -66,12 +66,12 @@ public class Play_Dirge extends Play
 
 		if((!(target instanceof DeadBody))||(target.rawSecretIdentity().toUpperCase().indexOf("FAKE")>=0))
 		{
-			mob.tell(_("You may only play this for the dead."));
+			mob.tell(L("You may only play this for the dead."));
 			return false;
 		}
 		if((((DeadBody)target).playerCorpse())&&(((DeadBody)target).getContents().size()>0))
 		{
-			mob.tell(_("You may not play for that body"));
+			mob.tell(L("You may not play for that body"));
 			return false;
 		}
 
@@ -85,9 +85,9 @@ public class Play_Dirge extends Play
 			invoker=mob;
 			originRoom=mob.location();
 			commonRoomSet=getInvokerScopeRoomSet(null);
-			String str=auto?_("^S@x1 begins to play!^?",songOf()):_("^S<S-NAME> begin(s) to play @x1 on @x2.^?",songOf(),instrumentName());
+			String str=auto?L("^S@x1 begins to play!^?",songOf()):L("^S<S-NAME> begin(s) to play @x1 on @x2.^?",songOf(),instrumentName());
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
-				str=_("^S<S-NAME> start(s) playing @x1 on @x2 again.^?",songOf(),instrumentName());
+				str=L("^S<S-NAME> start(s) playing @x1 on @x2 again.^?",songOf(),instrumentName());
 
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
@@ -114,13 +114,13 @@ public class Play_Dirge extends Play
 							CMLib.leveler().postExperience(follower,null,null,expGained,false);
 					}
 					R.recoverRoomStats();
-					R.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 fades away.",target.name()));
+					R.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 fades away.",target.name()));
 					target.destroy();
 				}
 			}
 		}
 		else
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> hit(s) a foul note."));
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,L("<S-NAME> hit(s) a foul note."));
 
 		return success;
 	}

@@ -41,7 +41,7 @@ import java.util.*;
 public class Prayer_Regrowth extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_Regrowth"; }
-	private final static String localizedName = CMLib.lang()._("Regrowth");
+	private final static String localizedName = CMLib.lang().L("Regrowth");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
@@ -99,7 +99,7 @@ public class Prayer_Regrowth extends Prayer implements MendingSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) surrounded by a bright light."):_("^S<S-NAME> @x1 over <T-NAMESELF> for restorative healing.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) surrounded by a bright light."):L("^S<S-NAME> @x1 over <T-NAMESELF> for restorative healing.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -135,7 +135,7 @@ public class Prayer_Regrowth extends Prayer implements MendingSkill
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 over <T-NAMESELF>, but @x2 does not heed.",prayWord(mob),hisHerDiety(mob)));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 over <T-NAMESELF>, but @x2 does not heed.",prayWord(mob),hisHerDiety(mob)));
 		// return whether it worked
 		return success;
 	}

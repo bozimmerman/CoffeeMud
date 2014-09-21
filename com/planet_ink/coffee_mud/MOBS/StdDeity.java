@@ -200,80 +200,80 @@ public class StdDeity extends StdMOB implements Deity
 			switch(DT.triggerCode)
 			{
 			case TRIGGER_SAY:
-				buf.append(_("the player should say '@x1'",DT.parm1.toLowerCase()));
+				buf.append(L("the player should say '@x1'",DT.parm1.toLowerCase()));
 				break;
 			case TRIGGER_READING:
 				if(DT.parm1.equals("0"))
-					buf.append(_("the player should read something"));
+					buf.append(L("the player should read something"));
 				else
-					buf.append(_("the player should read '@x1'",DT.parm1.toLowerCase()));
+					buf.append(L("the player should read '@x1'",DT.parm1.toLowerCase()));
 				break;
 			case TRIGGER_TIME:
-				buf.append(_("the hour of the day is @x1",DT.parm1.toLowerCase()));
+				buf.append(L("the hour of the day is @x1",DT.parm1.toLowerCase()));
 				break;
 			case TRIGGER_PUTTHING:
-				buf.append(_("the player should put @x1 in @x2",DT.parm1.toLowerCase(),DT.parm2.toLowerCase()));
+				buf.append(L("the player should put @x1 in @x2",DT.parm1.toLowerCase(),DT.parm2.toLowerCase()));
 				break;
 			case TRIGGER_BURNTHING:
-				buf.append(_("the player should burn @x1",DT.parm1.toLowerCase()));
+				buf.append(L("the player should burn @x1",DT.parm1.toLowerCase()));
 				break;
 			case TRIGGER_DRINK:
-				buf.append(_("the player should drink @x1",DT.parm1.toLowerCase()));
+				buf.append(L("the player should drink @x1",DT.parm1.toLowerCase()));
 				break;
 			case TRIGGER_EAT:
-				buf.append(_("the player should eat @x1",DT.parm1.toLowerCase()));
+				buf.append(L("the player should eat @x1",DT.parm1.toLowerCase()));
 				break;
 			case TRIGGER_INROOM:
 				{
 				if(DT.parm1.equalsIgnoreCase("holy")
 				||DT.parm1.equalsIgnoreCase("unholy")
 				||DT.parm1.equalsIgnoreCase("balance"))
-					buf.append(_("the player should be in the deities room of infused @x1-ness.",DT.parm1.toLowerCase()));
+					buf.append(L("the player should be in the deities room of infused @x1-ness.",DT.parm1.toLowerCase()));
 				else
 				{
 					final Room R=CMLib.map().getRoom(DT.parm1);
 					if(R==null)
-						buf.append(_("the player should be in some unknown place"));
+						buf.append(L("the player should be in some unknown place"));
 					else
-						buf.append(_("the player should be in '@x1'",R.displayText(null)));
+						buf.append(L("the player should be in '@x1'",R.displayText(null)));
 				}
 				}
 				break;
 			case TRIGGER_RIDING:
-				buf.append(_("the player should be on @x1",DT.parm1.toLowerCase()));
+				buf.append(L("the player should be on @x1",DT.parm1.toLowerCase()));
 				break;
 			case TRIGGER_CAST:
 				{
 				final Ability A=CMClass.findAbility(DT.parm1);
 				if(A==null)
-					buf.append(_("the player should cast '@x1'",DT.parm1));
+					buf.append(L("the player should cast '@x1'",DT.parm1));
 				else
-					buf.append(_("the player should cast '@x1'",A.name()));
+					buf.append(L("the player should cast '@x1'",A.name()));
 				}
 				break;
 			case TRIGGER_EMOTE:
-				buf.append(_("the player should emote '@x1'",DT.parm1.toLowerCase()));
+				buf.append(L("the player should emote '@x1'",DT.parm1.toLowerCase()));
 				break;
 			case TRIGGER_RANDOM:
 				buf.append(DT.parm1+"% of the time");
 				break;
 			case TRIGGER_WAIT:
-				buf.append(_("wait @x1 seconds",""+((CMath.s_int(DT.parm1)*CMProps.getTickMillis())/1000)));
+				buf.append(L("wait @x1 seconds",""+((CMath.s_int(DT.parm1)*CMProps.getTickMillis())/1000)));
 				break;
 			case TRIGGER_YOUSAY:
-				buf.append(_("then you will automatically say '@x1'",DT.parm1.toLowerCase()));
+				buf.append(L("then you will automatically say '@x1'",DT.parm1.toLowerCase()));
 				break;
 			case TRIGGER_OTHERSAY:
-				buf.append(_("then all others will say '@x1'",DT.parm1.toLowerCase()));
+				buf.append(L("then all others will say '@x1'",DT.parm1.toLowerCase()));
 				break;
 			case TRIGGER_ALLSAY:
-				buf.append(_("then all will say '@x1'",DT.parm1.toLowerCase()));
+				buf.append(L("then all will say '@x1'",DT.parm1.toLowerCase()));
 				break;
 			case TRIGGER_CHECK:
 				buf.append(CMLib.masking().maskDesc(DT.parm1));
 				break;
 			case TRIGGER_PUTVALUE:
-				buf.append(_("the player should put an item worth at least @x1 in @x2",DT.parm1.toLowerCase(),DT.parm2.toLowerCase()));
+				buf.append(L("the player should put an item worth at least @x1 in @x2",DT.parm1.toLowerCase(),DT.parm2.toLowerCase()));
 				break;
 			case TRIGGER_PUTMATERIAL:
 				{
@@ -286,7 +286,7 @@ public class StdDeity extends StdMOB implements Deity
 					else
 					if(RawMaterial.CODES.IS_VALID(t))
 						material=RawMaterial.CODES.NAME(t).toLowerCase();
-					buf.append(_("the player puts an item made of @x1 in @x2",material,DT.parm2.toLowerCase()));
+					buf.append(L("the player puts an item made of @x1 in @x2",material,DT.parm2.toLowerCase()));
 				}
 				break;
 			case TRIGGER_BURNMATERIAL:
@@ -300,20 +300,20 @@ public class StdDeity extends StdMOB implements Deity
 					else
 					if(RawMaterial.CODES.IS_VALID(t))
 						material=RawMaterial.CODES.NAME(t).toLowerCase();
-					buf.append(_("the player should burn an item made of @x1",material));
+					buf.append(L("the player should burn an item made of @x1",material));
 				}
 				break;
 			case TRIGGER_BURNVALUE:
-				buf.append(_("the player should burn an item worth at least @x1",DT.parm1.toLowerCase()));
+				buf.append(L("the player should burn an item worth at least @x1",DT.parm1.toLowerCase()));
 				break;
 			case TRIGGER_SITTING:
-				buf.append(_("the player should sit down"));
+				buf.append(L("the player should sit down"));
 				break;
 			case TRIGGER_STANDING:
-				buf.append(_("the player should stand up"));
+				buf.append(L("the player should stand up"));
 				break;
 			case TRIGGER_SLEEPING:
-				buf.append(_("the player should go to sleep"));
+				buf.append(L("the player should go to sleep"));
 				break;
 			}
 		}
@@ -367,41 +367,41 @@ public class StdDeity extends StdMOB implements Deity
 		case CMMsg.TYP_SERVE:
 			if(msg.source().getMyDeity()==this)
 			{
-				msg.source().tell(_("You already worship @x1.",name()));
+				msg.source().tell(L("You already worship @x1.",name()));
 				if(msg.source().isMonster())
-					CMLib.commands().postSay(msg.source(),null,_("I already worship @x1.",msg.source().getMyDeity().name()));
+					CMLib.commands().postSay(msg.source(),null,L("I already worship @x1.",msg.source().getMyDeity().name()));
 				return false;
 			}
 			if(msg.source().getMyDeity()!=null)
 			{
-				msg.source().tell(_("You already worship @x1.",msg.source().getMyDeity().name()));
+				msg.source().tell(L("You already worship @x1.",msg.source().getMyDeity().name()));
 				if(msg.source().isMonster())
-					CMLib.commands().postSay(msg.source(),null,_("I already worship @x1.",msg.source().getMyDeity().name()));
+					CMLib.commands().postSay(msg.source(),null,L("I already worship @x1.",msg.source().getMyDeity().name()));
 				return false;
 			}
 			if(msg.source().charStats().getCurrentClass().baseClass().equalsIgnoreCase("Cleric"))
 			{
 				if(!CMLib.masking().maskCheck(getClericRequirements(),msg.source(),true))
 				{
-					msg.source().tell(_("You are unworthy of serving @x1.",name()));
+					msg.source().tell(L("You are unworthy of serving @x1.",name()));
 					if(msg.source().isMonster())
-						CMLib.commands().postSay(msg.source(),null,_("I am unworthy of serving @x1.",name()));
+						CMLib.commands().postSay(msg.source(),null,L("I am unworthy of serving @x1.",name()));
 					return false;
 				}
 			}
 			else
 			if(!CMLib.masking().maskCheck(getWorshipRequirements(),msg.source(),true))
 			{
-				msg.source().tell(_("You are unworthy of @x1.",name()));
+				msg.source().tell(L("You are unworthy of @x1.",name()));
 				if(msg.source().isMonster())
-					CMLib.commands().postSay(msg.source(),null,_("I am unworthy of @x1.",name()));
+					CMLib.commands().postSay(msg.source(),null,L("I am unworthy of @x1.",name()));
 				return false;
 			}
 			break;
 		case CMMsg.TYP_REBUKE:
 			if(!msg.source().getWorshipCharID().equals(Name()))
 			{
-				msg.source().tell(_("You do not worship @x1.",name()));
+				msg.source().tell(L("You do not worship @x1.",name()));
 				return false;
 			}
 			break;
@@ -506,7 +506,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			if((!alreadyBlessed(mob))&&(numBlessings()>0))
 			{
-				mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,_("You feel the presence of <S-NAME> in <T-NAME>."));
+				mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,L("You feel the presence of <S-NAME> in <T-NAME>."));
 				if((mob.charStats().getCurrentClass().baseClass().equals("Cleric"))
 				||(CMSecurity.isASysOp(mob)))
 				{
@@ -540,7 +540,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			if((!alreadyPowered(mob))&&(numPowers()>0))
 			{
-				mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,_("You feel the power of <S-NAME> in <T-NAME>."));
+				mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,L("You feel the power of <S-NAME> in <T-NAME>."));
 				final Ability Power=fetchPower(CMLib.dice().roll(1,numPowers(),-1));
 				if(Power!=null)
 					bestowPower(mob,Power);
@@ -560,7 +560,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			if(numCurses()>0)
 			{
-				mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,_("You feel the wrath of <S-NAME> in <T-NAME>."));
+				mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,L("You feel the wrath of <S-NAME> in <T-NAME>."));
 				if(mob.charStats().getCurrentClass().baseClass().equals("Cleric")
 				||(CMSecurity.isASysOp(mob)))
 				{
@@ -591,7 +591,7 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		if((alreadyBlessed(mob))&&(mob.location()!=null))
 		{
-			mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,_("<S-NAME> remove(s) <S-HIS-HER> blessings from <T-NAME>."));
+			mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,L("<S-NAME> remove(s) <S-HIS-HER> blessings from <T-NAME>."));
 			for(int a=mob.numEffects()-1;a>=0;a--) // reverse, and personal
 			{
 				final Ability A=mob.fetchEffect(a);
@@ -608,7 +608,7 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		if((alreadyPowered(mob))&&(mob.location()!=null))
 		{
-			mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,_("<S-NAME> remove(s) <S-HIS-HER> powers from <T-NAME>."));
+			mob.location().show(this,mob,CMMsg.MSG_OK_VISUAL,L("<S-NAME> remove(s) <S-HIS-HER> powers from <T-NAME>."));
 			for(int a=mob.numAbilities()-1;a>=0;a--)
 			{
 				Ability A=mob.fetchAbility(a);
@@ -912,13 +912,13 @@ public class StdDeity extends StdMOB implements Deity
 					if(msg.source().charStats().getCurrentClass().baseClass().equals("Cleric"))
 					{
 						removePowers(msg.source());
-						msg.source().tell(_("You feel the wrath of @x1!",name()));
+						msg.source().tell(L("You feel the wrath of @x1!",name()));
 						if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
 							msg.source().charStats().getCurrentClass().unLevel(msg.source());
 					}
 					else
 					{
-						msg.source().tell(_("@x1 takes @x2 of experience from you.",name(),""+xpwrath));
+						msg.source().tell(L("@x1 takes @x2 of experience from you.",name(),""+xpwrath));
 						CMLib.leveler().postExperience(msg.source(),null,null,-xpwrath,false);
 					}
 				}
@@ -1082,7 +1082,7 @@ public class StdDeity extends StdMOB implements Deity
 				if(M.getWorshipCharID().equals(Name()))
 				{
 					if(!M.isMonster())
-						M.tell(_("Services for @x1 are now starting at @x2.",Name(),room.displayText(null)));
+						M.tell(L("Services for @x1 are now starting at @x2.",Name(),room.displayText(null)));
 					else
 					if(!CMLib.flags().isATrackingMonster(M))
 					{
@@ -1194,9 +1194,9 @@ public class StdDeity extends StdMOB implements Deity
 				if(A!=null) A.unInvoke();
 			}
 		}
-		room.showHappens(CMMsg.MASK_ALWAYS, _("The service conducted by @x1 has been cancelled.",mob.Name()));
+		room.showHappens(CMMsg.MASK_ALWAYS, L("The service conducted by @x1 has been cancelled.",mob.Name()));
 		if(mob.location()!=room)
-			mob.tell(_("Your service has been cancelled."));
+			mob.tell(L("Your service has been cancelled."));
 		undoService(service.parishaners);
 		synchronized(services)
 		{
@@ -1234,7 +1234,7 @@ public class StdDeity extends StdMOB implements Deity
 						{
 							if((blacklist==M)&&((++blackmarks)>30))
 							{
-								final CMMsg msg=CMClass.getMsg(M,this,null,CMMsg.MSG_REBUKE,_("<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!"));
+								final CMMsg msg=CMClass.getMsg(M,this,null,CMMsg.MSG_REBUKE,L("<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!"));
 								if((M.location()!=null)&&(M.okMessage(M,msg)))
 									M.location().send(M,msg);
 								blackmarks=0;
@@ -1249,7 +1249,7 @@ public class StdDeity extends StdMOB implements Deity
 								blackmarks++;
 								lastBlackmark=System.currentTimeMillis();
 								if((blackmarks%5)==0)
-									M.tell(_("You feel dirtied by the disappointment of @x1.",name()));
+									M.tell(L("You feel dirtied by the disappointment of @x1.",name()));
 							}
 						}
 						else
@@ -1260,7 +1260,7 @@ public class StdDeity extends StdMOB implements Deity
 					{
 						if((blacklist==M)&&((++blackmarks)>30))
 						{
-							final CMMsg msg=CMClass.getMsg(M,this,null,CMMsg.MSG_REBUKE,_("<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!"));
+							final CMMsg msg=CMClass.getMsg(M,this,null,CMMsg.MSG_REBUKE,L("<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!"));
 							if((M.location()!=null)&&(M.okMessage(M,msg)))
 								M.location().send(M,msg);
 						}
@@ -1272,7 +1272,7 @@ public class StdDeity extends StdMOB implements Deity
 							blackmarks++;
 							lastBlackmark=System.currentTimeMillis();
 							if(blackmarks==1)
-								M.tell(_("Woshipper, you have disappointed @x1. Make amends or face my wrath!",name()));
+								M.tell(L("Woshipper, you have disappointed @x1. Make amends or face my wrath!",name()));
 						}
 					}
 					else

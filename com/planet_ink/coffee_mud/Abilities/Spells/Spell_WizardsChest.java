@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_WizardsChest extends Spell
 {
 	@Override public String ID() { return "Spell_WizardsChest"; }
-	private final static String localizedName = CMLib.lang()._("Wizards Chest");
+	private final static String localizedName = CMLib.lang().L("Wizards Chest");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Wizard Chest)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Wizard Chest)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
@@ -63,17 +63,17 @@ public class Spell_WizardsChest extends Spell
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_OPEN:
-			mob.tell(_("@x1 appears to be magically protected.",affected.name()));
+			mob.tell(L("@x1 appears to be magically protected.",affected.name()));
 			return false;
 		case CMMsg.TYP_UNLOCK:
-			mob.tell(_("@x1 appears to be magically protected.",affected.name()));
+			mob.tell(L("@x1 appears to be magically protected.",affected.name()));
 			return false;
 		case CMMsg.TYP_JUSTICE:
 			if(!msg.targetMajor(CMMsg.MASK_DELICATE))
 				return true;
 		//$FALL-THROUGH$
 		case CMMsg.TYP_DELICATE_HANDS_ACT:
-			mob.tell(_("@x1 appears to be magically protected.",affected.name()));
+			mob.tell(L("@x1 appears to be magically protected.",affected.name()));
 			return false;
 		default:
 			break;
@@ -93,7 +93,7 @@ public class Spell_WizardsChest extends Spell
 		{
 			final Container container=(Container)affected;
 			container.setLidsNLocks(container.hasALid(),true,container.hasALock(),false);
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.MSG_OK_VISUAL,_("<T-NAME> pop(s) open!")));
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> pop(s) open!")));
 		}
 	}
 
@@ -102,7 +102,7 @@ public class Spell_WizardsChest extends Spell
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell(_("Enchant what?."));
+			mob.tell(L("Enchant what?."));
 			return false;
 		}
 		Physical target=null;
@@ -111,19 +111,19 @@ public class Spell_WizardsChest extends Spell
 
 		if((!(target instanceof Container))||(!((Container)target).hasALock())||(!((Container)target).hasALid()))
 		{
-			mob.tell(_("You can only enchant the locks on open containers with lids."));
+			mob.tell(L("You can only enchant the locks on open containers with lids."));
 			return false;
 		}
 
 		if(!((Container)target).isOpen())
 		{
-			mob.tell(_("@x1 must be opened before this magic will work.",target.name(mob)));
+			mob.tell(L("@x1 must be opened before this magic will work.",target.name(mob)));
 			return false;
 		}
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(_("@x1 is already a wizards chest!",target.name(mob)));
+			mob.tell(L("@x1 is already a wizards chest!",target.name(mob)));
 			return false;
 		}
 
@@ -134,7 +134,7 @@ public class Spell_WizardsChest extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> point(s) <S-HIS-HER> finger at <T-NAMESELF>, incanting.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> point(s) <S-HIS-HER> finger at <T-NAMESELF>, incanting.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -143,13 +143,13 @@ public class Spell_WizardsChest extends Spell
 					beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
 					final Container container=(Container)target;
 					container.setLidsNLocks(container.hasALid(),false,container.hasALock(),true);
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> look(s) well protected!"));
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> look(s) well protected!"));
 				}
 			}
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> point(s) at <T-NAMESELF>, incanting, but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF>, incanting, but nothing happens."));
 
 
 		// return whether it worked

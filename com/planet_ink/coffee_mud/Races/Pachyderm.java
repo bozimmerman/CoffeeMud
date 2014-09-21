@@ -68,7 +68,7 @@ public class Pachyderm extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName(_("a pair of tusks"));
+			naturalWeapon.setName(L("a pair of tusks"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 			naturalWeapon.setUsesRemaining(1000);
 			naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);

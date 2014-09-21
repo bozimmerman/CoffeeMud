@@ -38,7 +38,7 @@ import java.util.*;
 public class Gaian extends StdCharClass
 {
 	@Override public String ID(){return "Gaian";}
-	private final static String localizedStaticName = CMLib.lang()._("Gaian");
+	private final static String localizedStaticName = CMLib.lang().L("Gaian");
 	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return "Druid";}
 	@Override public int getBonusPracLevel(){return 2;}
@@ -257,7 +257,7 @@ public class Gaian extends StdCharClass
 		{
 			if(((Ability)msg.tool()).appropriateToMyFactions(myChar))
 				return true;
-			myChar.tell(_("Extreme emotions disrupt your chant."));
+			myChar.tell(L("Extreme emotions disrupt your chant."));
 			return false;
 		}
 		return true;

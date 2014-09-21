@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Anchor extends Spell
 {
 	@Override public String ID() { return "Spell_Anchor"; }
-	private final static String localizedName = CMLib.lang()._("Anchor");
+	private final static String localizedName = CMLib.lang().L("Anchor");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Anchor)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Anchor)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
@@ -55,7 +55,7 @@ public class Spell_Anchor extends Spell
 		}
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("Your anchor has been lifted."));
+			mob.tell(L("Your anchor has been lifted."));
 
 		super.unInvoke();
 
@@ -109,9 +109,9 @@ public class Spell_Anchor extends Spell
 			||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
 			{
 				if(roomS!=null)
-					roomS.showHappens(CMMsg.MSG_OK_VISUAL,_("Magic energy fizzles and is absorbed into the air."));
+					roomS.showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
 				if(roomD!=null)
-					roomD.showHappens(CMMsg.MSG_OK_VISUAL,_("Magic energy fizzles and is absorbed into the air."));
+					roomD.showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
 			}
 			return false;
 		}
@@ -132,7 +132,7 @@ public class Spell_Anchor extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_(auto?"An magical anchoring field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an anchoring field of protection around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"An magical anchoring field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an anchoring field of protection around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -140,7 +140,7 @@ public class Spell_Anchor extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke an anchoring field, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke an anchoring field, but fail(s)."));
 
 		return success;
 	}

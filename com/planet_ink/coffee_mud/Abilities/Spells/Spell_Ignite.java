@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_Ignite extends Spell
 {
 	@Override public String ID() { return "Spell_Ignite"; }
-	private final static String localizedName = CMLib.lang()._("Ignite");
+	private final static String localizedName = CMLib.lang().L("Ignite");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "Ignite";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -73,7 +73,7 @@ public class Spell_Ignite extends Spell
 			}
 			break;
 		}
-		mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 ignites!",I.name()));
+		mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 ignites!",I.name()));
 		final Ability B=CMClass.getAbility("Burning");
 		if(B!=null)
 			B.invoke(mob,I,true,durationOfBurn);
@@ -87,7 +87,7 @@ public class Spell_Ignite extends Spell
 		if((!(target instanceof MOB))
 		&&(!(target instanceof Item)))
 		{
-			mob.tell(_("You can't ignite '@x1'!",target.name(mob)));
+			mob.tell(L("You can't ignite '@x1'!",target.name(mob)));
 			return false;
 		}
 
@@ -108,7 +108,7 @@ public class Spell_Ignite extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> flares up!"):_("^S<S-NAME> evoke(s) a spell upon <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> flares up!"):L("^S<S-NAME> evoke(s) a spell upon <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -131,7 +131,7 @@ public class Spell_Ignite extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> evoke(s) at <T-NAMESELF>, but the spell fizzles."));
+			return maliciousFizzle(mob,target,L("<S-NAME> evoke(s) at <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

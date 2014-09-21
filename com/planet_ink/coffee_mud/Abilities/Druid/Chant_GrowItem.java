@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_GrowItem extends Chant
 {
 	@Override public String ID() { return "Chant_GrowItem"; }
-	private final static String localizedName = CMLib.lang()._("Grow Item");
+	private final static String localizedName = CMLib.lang().L("Grow Item");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -52,7 +52,7 @@ public class Chant_GrowItem extends Chant
 		&&((mob.location().myResource()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_JUNGLE))
 		{
-			mob.tell(_("This magic will not work here."));
+			mob.tell(L("This magic will not work here."));
 			return false;
 		}
 		int material=RawMaterial.RESOURCE_OAK;
@@ -79,7 +79,7 @@ public class Chant_GrowItem extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) to the trees.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) to the trees.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -88,19 +88,19 @@ public class Chant_GrowItem extends Chant
 				if(A!=null) pair=A.craftAnyItem(material);
 				if(pair==null)
 				{
-					mob.tell(_("The chant failed for some reason..."));
+					mob.tell(L("The chant failed for some reason..."));
 					return false;
 				}
 				final Item building=pair.item;
 				final Item key=pair.key;
 				mob.location().addItem(building,ItemPossessor.Expire.Resource);
 				if(key!=null) mob.location().addItem(key,ItemPossessor.Expire.Resource);
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("@x1 grows out of a tree and drops.",building.name()));
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("@x1 grows out of a tree and drops.",building.name()));
 				mob.location().recoverPhyStats();
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) to the trees, but nothing happens."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) to the trees, but nothing happens."));
 
 		// return whether it worked
 		return success;

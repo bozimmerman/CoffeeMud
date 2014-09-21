@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Write extends StdSkill
 {
 	@Override public String ID() { return "Skill_Write"; }
-	private final static String localizedName = CMLib.lang()._("Write");
+	private final static String localizedName = CMLib.lang().L("Write");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
@@ -50,12 +50,12 @@ public class Skill_Write extends StdSkill
 	{
 		if(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<5)
 		{
-			mob.tell(_("You are too stupid to actually write anything."));
+			mob.tell(L("You are too stupid to actually write anything."));
 			return false;
 		}
 		if(commands.size()<1)
 		{
-			mob.tell(_("What would you like to write on?"));
+			mob.tell(L("What would you like to write on?"));
 			return false;
 		}
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.elementAt(0));
@@ -64,13 +64,13 @@ public class Skill_Write extends StdSkill
 			target=mob.location().findItem(null,(String)commands.elementAt(0));
 			if((target!=null)&&(CMLib.flags().isGettable(target)))
 			{
-				mob.tell(_("You don't have that."));
+				mob.tell(L("You don't have that."));
 				return false;
 			}
 		}
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",((String)commands.elementAt(0))));
+			mob.tell(L("You don't see '@x1' here.",((String)commands.elementAt(0))));
 			return false;
 		}
 
@@ -81,19 +81,19 @@ public class Skill_Write extends StdSkill
 		   &&(item.material()!=RawMaterial.RESOURCE_HEMP))
 		||(!item.isReadable()))
 		{
-			mob.tell(_("You can't write on that."));
+			mob.tell(L("You can't write on that."));
 			return false;
 		}
 
 		if(item instanceof Scroll)
 		{
-			mob.tell(_("You can't write on a scroll."));
+			mob.tell(L("You can't write on a scroll."));
 			return false;
 		}
 
 		if(CMParms.combine(commands,1).toUpperCase().startsWith("FILE="))
 		{
-			mob.tell(_("You can't write that."));
+			mob.tell(L("You can't write that."));
 			return false;
 		}
 
@@ -104,12 +104,12 @@ public class Skill_Write extends StdSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_WRITE,_("<S-NAME> write(s) on <T-NAMESELF>."),CMMsg.MSG_WRITE,CMParms.combine(commands,1),CMMsg.MSG_WRITE,_("<S-NAME> write(s) on <T-NAMESELF>."));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_WRITE,L("<S-NAME> write(s) on <T-NAMESELF>."),CMMsg.MSG_WRITE,CMParms.combine(commands,1),CMMsg.MSG_WRITE,L("<S-NAME> write(s) on <T-NAMESELF>."));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
-			mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<S-NAME> attempt(s) to write on <T-NAMESELF>, but mess(es) up."));
+			mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<S-NAME> attempt(s) to write on <T-NAMESELF>, but mess(es) up."));
 		return success;
 	}
 

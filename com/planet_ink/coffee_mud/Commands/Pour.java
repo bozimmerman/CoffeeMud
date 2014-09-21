@@ -47,7 +47,7 @@ public class Pour extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("Pour what, into/onto what?"));
+			mob.tell(L("Pour what, into/onto what?"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -56,7 +56,7 @@ public class Pour extends StdCommand
 		fillFromThis=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,thingToFillFrom);
 		if((fillFromThis==null)||(!CMLib.flags().canBeSeenBy(fillFromThis,mob)))
 		{
-			mob.tell(_("You don't seem to have '@x1'.",thingToFillFrom));
+			mob.tell(L("You don't seem to have '@x1'.",thingToFillFrom));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -88,8 +88,8 @@ public class Pour extends StdCommand
 			((Drink)out).setLiquidHeld(999999);
 			((Drink)out).setLiquidRemaining(0);
 			out.setDisplayText("");
-			out.setName(_("out"));
-			msgStr=_("<S-NAME> pour(s) <O-NAME> <T-NAME>.");
+			out.setName(L("out"));
+			msgStr=L("<S-NAME> pour(s) <O-NAME> <T-NAME>.");
 			mob.location().addItem(out,ItemPossessor.Expire.Resource);
 			fillThis=out;
 		}
@@ -97,14 +97,14 @@ public class Pour extends StdCommand
 		{
 			if(commands.size()<1)
 			{
-				mob.tell(_("@x1 what should I pour the @x2?",CMStrings.capitalizeAndLower(verb.name()),thingToFillFrom));
+				mob.tell(L("@x1 what should I pour the @x2?",CMStrings.capitalizeAndLower(verb.name()),thingToFillFrom));
 				return false;
 			}
 			final String thingToFill=CMParms.combine(commands,0);
 			fillThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFill,Wearable.FILTER_ANY);
 			if((fillThis==null)||(!CMLib.flags().canBeSeenBy(fillThis,mob)))
 			{
-				mob.tell(_("I don't see '@x1' here.",thingToFill));
+				mob.tell(L("I don't see '@x1' here.",thingToFill));
 				return false;
 			}
 			if((verb==PourVerb.DEFAULT)&&(!(fillThis instanceof Drink)))
@@ -113,9 +113,9 @@ public class Pour extends StdCommand
 			if((verb==PourVerb.ONTO)&&(fillThis instanceof Drink))
 				verb=PourVerb.INTO;
 			if(verb==PourVerb.ONTO)
-				msgStr=_("<S-NAME> pour(s) <O-NAME> onto <T-NAME>.");
+				msgStr=L("<S-NAME> pour(s) <O-NAME> onto <T-NAME>.");
 			else
-				msgStr=_("<S-NAME> pour(s) <O-NAME> into <T-NAME>.");
+				msgStr=L("<S-NAME> pour(s) <O-NAME> into <T-NAME>.");
 		}
 
 		final CMMsg fillMsg=CMClass.getMsg(mob,fillThis,fillFromThis,(verb==PourVerb.ONTO)?CMMsg.MSG_POUR:CMMsg.MSG_FILL,msgStr);

@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_Sneak extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Sneak"; }
-	private final static String localizedName = CMLib.lang()._("Sneak");
+	private final static String localizedName = CMLib.lang().L("Sneak");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
@@ -54,13 +54,13 @@ public class Thief_Sneak extends ThiefSkill
 		final int dirCode=Directions.getGoodDirectionCode(dir);
 		if(dirCode<0)
 		{
-			mob.tell(_("Sneak where?"));
+			mob.tell(L("Sneak where?"));
 			return false;
 		}
 
 		if((mob.location().getRoomInDir(dirCode)==null)||(mob.location().getExitInDir(dirCode)==null))
 		{
-			mob.tell(_("Sneak where?"));
+			mob.tell(L("Sneak where?"));
 			return false;
 		}
 
@@ -71,7 +71,7 @@ public class Thief_Sneak extends ThiefSkill
 			return false;
 
 		boolean success=false;
-		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,_("You quietly sneak @x1.",Directions.getDirectionName(dirCode)),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,L("You quietly sneak @x1.",Directions.getDirectionName(dirCode)),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

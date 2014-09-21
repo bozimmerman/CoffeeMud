@@ -92,7 +92,7 @@ public class StdContainer extends StdItem implements Container
 			case CMMsg.TYP_INSTALL:
 				if((!(this instanceof Technical))||(!(msg.tool() instanceof Technical)))
 				{
-					mob.tell(_("@x1 cannot be installed.",name()));
+					mob.tell(L("@x1 cannot be installed.",name()));
 					return false;
 				}
 				//$FALL-THROUGH$
@@ -101,62 +101,62 @@ public class StdContainer extends StdItem implements Container
 				{
 					if(!CMLib.flags().isDroppable((Item)msg.tool()))
 					{
-						mob.tell(_("You can't seem to let go of @x1.",msg.tool().name()));
+						mob.tell(L("You can't seem to let go of @x1.",msg.tool().name()));
 						return false;
 					}
 					final Item newitem=(Item)msg.tool();
 					if(hasALid()&&(!isOpen()))
 					{
-						mob.tell(_("@x1 is closed.",name()));
+						mob.tell(L("@x1 is closed.",name()));
 						return false;
 					}
 					else
 					if(newitem.amWearingAt(Wearable.WORN_WIELD))
 					{
-						mob.tell(_("You are already wielding that!"));
+						mob.tell(L("You are already wielding that!"));
 						return false;
 					}
 					else
 					if(newitem.amWearingAt(Wearable.WORN_HELD))
 					{
-						mob.tell(_("You are holding that!"));
+						mob.tell(L("You are holding that!"));
 						return false;
 					}
 					else
 					if(!newitem.amWearingAt(Wearable.IN_INVENTORY))
 					{
-						mob.tell(_("You are wearing that!"));
+						mob.tell(L("You are wearing that!"));
 						return false;
 					}
 					else
 					if(capacity<=0)
 					{
-						mob.tell(_("You can't put anything in @x1!",name()));
+						mob.tell(L("You can't put anything in @x1!",name()));
 						return false;
 					}
 					else
 					{
 						if(!canContain(newitem))
 						{
-							mob.tell(_("You can't put @x1 in @x2.",newitem.name(),name()));
+							mob.tell(L("You can't put @x1 in @x2.",newitem.name(),name()));
 							return false;
 						}
 						else
 						if(newitem.phyStats().weight()>capacity)
 						{
-							mob.tell(_("@x1 won't fit in @x2.",newitem.name(),name()));
+							mob.tell(L("@x1 won't fit in @x2.",newitem.name(),name()));
 							return false;
 						}
 						else
 						if((recursiveWeight()+newitem.phyStats().weight())>capacity)
 						{
 							if(getContents().size()==0)
-								mob.tell(_("@x1 is too small.",name()));
+								mob.tell(L("@x1 is too small.",name()));
 							else
 							if((newitem instanceof Software) && (this instanceof Electronics.Computer))
-								mob.tell(_("@x1 is out of memory.",name()));
+								mob.tell(L("@x1 is out of memory.",name()));
 							else
-								mob.tell(_("@x1 is full.",name()));
+								mob.tell(L("@x1 is full.",name()));
 							return false;
 						}
 						if((!msg.source().isMine(this))&&(msg.source().isMine(newitem)))
@@ -177,13 +177,13 @@ public class StdContainer extends StdItem implements Container
 						&&(amWearingAt(Wearable.IN_INVENTORY))
 						&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
 						{
-							mob.tell(mob,newitem,this,_("You can't see <T-NAME> in <O-NAME>."));
+							mob.tell(mob,newitem,this,L("You can't see <T-NAME> in <O-NAME>."));
 							return false;
 						}
 						else
 						if(hasALid()&&(!isOpen()))
 						{
-							mob.tell(_("@x1 is closed.",name()));
+							mob.tell(L("@x1 is closed.",name()));
 							return false;
 						}
 						else
@@ -192,42 +192,42 @@ public class StdContainer extends StdItem implements Container
 						&&(!mob.charStats().getMyRace().leveless())
 						&&(!mob.charStats().getCurrentClass().leveless()))
 						{
-							mob.tell(_("@x1 is too powerful to endure possessing it.",newitem.name()));
+							mob.tell(L("@x1 is too powerful to endure possessing it.",newitem.name()));
 							return false;
 						}
 						else
 						if((newitem.recursiveWeight()>(mob.maxCarry()-mob.phyStats().weight()))&&(!mob.isMine(this)))
 						{
-							mob.tell(_("@x1 is too heavy.",newitem.name()));
+							mob.tell(L("@x1 is too heavy.",newitem.name()));
 							return false;
 						}
 						else
 						if((newitem.numberOfItems()>(mob.maxItems()-mob.numItems()))&&(!mob.isMine(this)))
 						{
-							mob.tell(_("You can't carry that many items."));
+							mob.tell(L("You can't carry that many items."));
 							return false;
 						}
 						else
 						if(!CMLib.flags().isGettable(newitem))
 						{
-							mob.tell(_("You can't get @x1.",newitem.name()));
+							mob.tell(L("You can't get @x1.",newitem.name()));
 							return false;
 						}
 						return true;
 					}
-					mob.tell(mob,newitem,this,_("You can't see <T-NAME> in <O-NAME>."));
+					mob.tell(mob,newitem,this,L("You can't see <T-NAME> in <O-NAME>."));
 					return false;
 				}
 				else
 				if((recursiveWeight()>(mob.maxCarry()-mob.phyStats().weight()))&&(!mob.isMine(this)))
 				{
-					mob.tell(_("@x1 is too heavy.",name()));
+					mob.tell(L("@x1 is too heavy.",name()));
 					return false;
 				}
 				else
 				if(((numberOfItems()>mob.maxItems()-mob.numItems()))&&(!mob.isMine(this)))
 				{
-					mob.tell(_("You can't carry that many items."));
+					mob.tell(L("You can't carry that many items."));
 					return false;
 				}
 				break;
@@ -240,19 +240,19 @@ public class StdContainer extends StdItem implements Container
 						if((!CMLib.flags().canBeSeenBy(newitem,mob))
 						&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
 						{
-							mob.tell(_("You can't see that."));
+							mob.tell(L("You can't see that."));
 							return false;
 						}
 						else
 						if(hasALid()&&(!isOpen()))
 						{
-							mob.tell(_("@x1 is closed.",name()));
+							mob.tell(L("@x1 is closed.",name()));
 							return false;
 						}
 						else
 							return true;
 					}
-					mob.tell(_("You don't see that here."));
+					mob.tell(L("You don't see that here."));
 					return false;
 				}
 				break;
@@ -261,27 +261,27 @@ public class StdContainer extends StdItem implements Container
 				{
 					if(!hasALid)
 					{
-						mob.tell(_("There is nothing to close on @x1.",name()));
+						mob.tell(L("There is nothing to close on @x1.",name()));
 						return false;
 					}
 					return true;
 				}
-				mob.tell(_("@x1 is already closed.",name()));
+				mob.tell(L("@x1 is already closed.",name()));
 				return false;
 			case CMMsg.TYP_OPEN:
 				if(!hasALid)
 				{
-					mob.tell(_("There is nothing to open on @x1.",name()));
+					mob.tell(L("There is nothing to open on @x1.",name()));
 					return false;
 				}
 				if(isOpen)
 				{
-					mob.tell(_("@x1 is already open!",name()));
+					mob.tell(L("@x1 is already open!",name()));
 					return false;
 				}
 				if(isLocked)
 				{
-					mob.tell(_("@x1 is locked.",name()));
+					mob.tell(L("@x1 is locked.",name()));
 					return false;
 				}
 				return true;
@@ -289,31 +289,31 @@ public class StdContainer extends StdItem implements Container
 			case CMMsg.TYP_UNLOCK:
 				if(!hasALid)
 				{
-					mob.tell(_("There is nothing to lock or unlock on @x1.",name()));
+					mob.tell(L("There is nothing to lock or unlock on @x1.",name()));
 					return false;
 				}
 				if(isOpen)
 				{
-					mob.tell(_("@x1 is open!",name()));
+					mob.tell(L("@x1 is open!",name()));
 					return false;
 				}
 				else
 				if(!hasALock)
 				{
-					mob.tell(_("There is no lock!"));
+					mob.tell(L("There is no lock!"));
 					return false;
 				}
 				else
 				{
 					if((!isLocked)&&(msg.targetMinor()==CMMsg.TYP_UNLOCK))
 					{
-						mob.tell(_("@x1 is not locked.",name()));
+						mob.tell(L("@x1 is not locked.",name()));
 						return false;
 					}
 					else
 					if((isLocked)&&(msg.targetMinor()==CMMsg.TYP_LOCK))
 					{
-						mob.tell(_("@x1 is already locked.",name()));
+						mob.tell(L("@x1 is already locked.",name()));
 						return false;
 					}
 					else
@@ -330,7 +330,7 @@ public class StdContainer extends StdItem implements Container
 							&&(CMLib.flags().canBeSeenBy(item,mob)))
 								return true;
 						}
-						mob.tell(_("You don't have the key."));
+						mob.tell(L("You don't have the key."));
 						return false;
 					}
 				}

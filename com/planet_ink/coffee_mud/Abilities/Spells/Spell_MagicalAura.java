@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_MagicalAura extends Spell
 {
 	@Override public String ID() { return "Spell_MagicalAura"; }
-	private final static String localizedName = CMLib.lang()._("Magical Aura");
+	private final static String localizedName = CMLib.lang().L("Magical Aura");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Magical Aura)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Magical Aura)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
@@ -61,7 +61,7 @@ public class Spell_MagicalAura extends Spell
 			return;
 		if(canBeUninvoked())
 			if(affected instanceof MOB)
-				((MOB)affected).tell(_("Your magical aura fades."));
+				((MOB)affected).tell(L("Your magical aura fades."));
 
 		super.unInvoke();
 
@@ -89,7 +89,7 @@ public class Spell_MagicalAura extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(_("There is already a magical aura around @x1.",target.name(mob)));
+			mob.tell(L("There is already a magical aura around @x1.",target.name(mob)));
 			return false;
 		}
 
@@ -99,7 +99,7 @@ public class Spell_MagicalAura extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("A magical aura appears around <T-NAME>."):_("^S<S-NAME> invoke(s) a magical aura around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("A magical aura appears around <T-NAME>."):L("^S<S-NAME> invoke(s) a magical aura around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -108,7 +108,7 @@ public class Spell_MagicalAura extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a magical aura, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a magical aura, but fail(s)."));
 
 		return success;
 	}

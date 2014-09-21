@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Extinguish extends Prayer
 {
 	@Override public String ID() { return "Prayer_Extinguish"; }
-	private final static String localizedName = CMLib.lang()._("Extinguish");
+	private final static String localizedName = CMLib.lang().L("Extinguish");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return 0;}
@@ -63,7 +63,7 @@ public class Prayer_Extinguish extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 to extinguish <T-NAMESELF>.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 to extinguish <T-NAMESELF>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -73,7 +73,7 @@ public class Prayer_Extinguish extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 to extinguish <T-NAMESELF>, but nothing happens.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 to extinguish <T-NAMESELF>, but nothing happens.",prayWord(mob)));
 		// return whether it worked
 		return success;
 	}

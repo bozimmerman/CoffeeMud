@@ -37,7 +37,7 @@ public class Thief_AutoMarkTraps extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_AutoMarkTraps"; }
 	@Override public String displayText() {return "(Automarking traps)";}
-	private final static String localizedName = CMLib.lang()._("AutoMark Traps");
+	private final static String localizedName = CMLib.lang().L("AutoMark Traps");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"AUTOMARKTRAPS"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -110,18 +110,18 @@ public class Thief_AutoMarkTraps extends ThiefSkill
 		final MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
 		if(target.fetchEffect(ID())!=null)
 		{
-			target.tell(_("You are no longer automatically marking traps."));
+			target.tell(L("You are no longer automatically marking traps."));
 			target.delEffect(mob.fetchEffect(ID()));
 			return false;
 		}
 		if((!auto)&&(target.fetchAbility("Thief_MarkTrapped")==null))
 		{
-			target.tell(_("You don't know how to mark traps yet!"));
+			target.tell(L("You don't know how to mark traps yet!"));
 			return false;
 		}
 		if((!auto)&&(target.fetchAbility("Thief_DetectTraps")==null))
 		{
-			target.tell(_("You don't know how to detect traps yet!"));
+			target.tell(L("You don't know how to detect traps yet!"));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -130,14 +130,14 @@ public class Thief_AutoMarkTraps extends ThiefSkill
 
 		if(success)
 		{
-			target.tell(_("You will now automatically mark traps when you enter a room."));
+			target.tell(L("You will now automatically mark traps when you enter a room."));
 			beneficialAffect(mob,target,asLevel,0);
 			final Ability A=mob.fetchEffect(ID());
 			if(A!=null) A.makeLongLasting();
 			dropem(target,target.location());
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to mark traps, but can't seem to concentrate."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to mark traps, but can't seem to concentrate."));
 		return success;
 	}
 }

@@ -59,7 +59,7 @@ public class Kill extends StdCommand
 		{
 			if(!mob.isInCombat())
 			{
-				mob.tell(_("Kill whom?"));
+				mob.tell(L("Kill whom?"));
 				return false;
 			}
 			else
@@ -86,14 +86,14 @@ public class Kill extends StdCommand
 			target=mob.location().fetchInhabitant(whomToKill);
 			if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 			{
-				mob.tell(_("I don't see '@x1' here.",whomToKill));
+				mob.tell(L("I don't see '@x1' here.",whomToKill));
 				return false;
 			}
 		}
 
 		if(reallyKill)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_ACTION,_("^F^<FIGHT^><S-NAME> touch(es) <T-NAMESELF>.^</FIGHT^>^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_ACTION,L("^F^<FIGHT^><S-NAME> touch(es) <T-NAMESELF>.^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -110,7 +110,7 @@ public class Kill extends StdCommand
 			if(((oldVictim!=null)&&(oldVictim==target)
 			&&(CMProps.getIntVar(CMProps.Int.COMBATSYSTEM)==CombatLibrary.COMBAT_DEFAULT)))
 			{
-				mob.tell(_("^f^<FIGHT^>You are already fighting @x1.^</FIGHT^>^?",mob.getVictim().name()));
+				mob.tell(L("^f^<FIGHT^>You are already fighting @x1.^</FIGHT^>^?",mob.getVictim().name()));
 				return false;
 			}
 
@@ -128,14 +128,14 @@ public class Kill extends StdCommand
 					if(range>=0)
 						mob.setAtRange(range);
 				}
-				mob.tell(_("^f^<FIGHT^>You are now targeting @x1.^</FIGHT^>^?",target.name(mob)));
+				mob.tell(L("^f^<FIGHT^>You are now targeting @x1.^</FIGHT^>^?",target.name(mob)));
 				mob.setVictim(target);
 				return false;
 			}
 		}
 
 		if((!mob.mayPhysicallyAttack(target)))
-			mob.tell(_("You are not allowed to attack @x1.",target.name(mob)));
+			mob.tell(L("You are not allowed to attack @x1.",target.name(mob)));
 		else
 		{
 			final Item weapon=mob.fetchWieldedItem();

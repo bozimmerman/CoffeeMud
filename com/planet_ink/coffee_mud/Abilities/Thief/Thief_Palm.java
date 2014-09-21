@@ -37,7 +37,7 @@ import java.util.*;
 public class Thief_Palm extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Palm"; }
-	private final static String localizedName = CMLib.lang()._("Palm");
+	private final static String localizedName = CMLib.lang().L("Palm");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
@@ -54,7 +54,7 @@ public class Thief_Palm extends ThiefSkill
 	{
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
-			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to palm something and fail(s)."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to palm something and fail(s)."));
 		else
 		{
 			if((commands.size()>0)&&(!((String)commands.lastElement()).equalsIgnoreCase("UNOBTRUSIVELY")))

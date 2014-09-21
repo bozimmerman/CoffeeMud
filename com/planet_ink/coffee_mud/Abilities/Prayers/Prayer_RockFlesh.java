@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_RockFlesh extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_RockFlesh"; }
-	private final static String localizedName = CMLib.lang()._("Rock Flesh");
+	private final static String localizedName = CMLib.lang().L("Rock Flesh");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
@@ -73,9 +73,9 @@ public class Prayer_RockFlesh extends Prayer implements MendingSkill
 		if(revokeThis==null)
 		{
 			if(auto)
-				mob.tell(_("Nothing happens."));
+				mob.tell(L("Nothing happens."));
 			else
-				mob.tell(mob,target,null,_("<T-NAME> can not be affected by this prayer."));
+				mob.tell(mob,target,null,L("<T-NAME> can not be affected by this prayer."));
 			return false;
 		}
 
@@ -86,7 +86,7 @@ public class Prayer_RockFlesh extends Prayer implements MendingSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 to dispel @x2 from <T-NAMESELF>.^?",prayForWord(mob),revokeThis.name()));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 to dispel @x2 from <T-NAMESELF>.^?",prayForWord(mob),revokeThis.name()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -94,7 +94,7 @@ public class Prayer_RockFlesh extends Prayer implements MendingSkill
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 on <T-YOUPOSS> behalf, but flub(s) it.",prayWord(mob)));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 on <T-YOUPOSS> behalf, but flub(s) it.",prayWord(mob)));
 
 
 		// return whether it worked

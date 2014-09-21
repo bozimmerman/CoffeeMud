@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Shove extends Spell
 {
 	@Override public String ID() { return "Spell_Shove"; }
-	private final static String localizedName = CMLib.lang()._("Shove");
+	private final static String localizedName = CMLib.lang().L("Shove");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Shoved Down)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Shoved Down)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(4);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -69,7 +69,7 @@ public class Spell_Shove extends Spell
 			}
 			if(dir<0)
 			{
-				mob.tell(_("Shove whom which direction?  Try north, south, east, or west..."));
+				mob.tell(L("Shove whom which direction?  Try north, south, east, or west..."));
 				return false;
 			}
 		}
@@ -77,7 +77,7 @@ public class Spell_Shove extends Spell
 		   ||(mob.location().getExitInDir(dir)==null)
 		   ||(!mob.location().getExitInDir(dir).isOpen()))
 		{
-			mob.tell(_("You can't shove anyone that way!"));
+			mob.tell(L("You can't shove anyone that way!"));
 			return false;
 		}
 
@@ -95,7 +95,7 @@ public class Spell_Shove extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> get(s) shoved back!"):_("<S-NAME> incant(s) and shove(s) at <T-NAMESELF>."));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> get(s) shoved back!"):L("<S-NAME> incant(s) and shove(s) at <T-NAMESELF>."));
 			if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 			{
 				if((msg.value()<=0)&&(target.location()==mob.location()))
@@ -104,21 +104,21 @@ public class Spell_Shove extends Spell
 					target.makePeace();
 					final Room newRoom=mob.location().getRoomInDir(dir);
 					final Room thisRoom=mob.location();
-					final CMMsg enterMsg=CMClass.getMsg(target,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> fly(s) in from @x1.",Directions.getFromDirectionName(Directions.getOpDirectionCode(dir))));
-					final CMMsg leaveMsg=CMClass.getMsg(target,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,_("<S-NAME> <S-IS-ARE> shoved forcefully into the air and out @x1.",Directions.getInDirectionName(dir)));
+					final CMMsg enterMsg=CMClass.getMsg(target,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> fly(s) in from @x1.",Directions.getFromDirectionName(Directions.getOpDirectionCode(dir))));
+					final CMMsg leaveMsg=CMClass.getMsg(target,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,L("<S-NAME> <S-IS-ARE> shoved forcefully into the air and out @x1.",Directions.getInDirectionName(dir)));
 					if(thisRoom.okMessage(target,leaveMsg)&&newRoom.okMessage(target,enterMsg))
 					{
 						thisRoom.send(target,leaveMsg);
 						newRoom.bringMobHere(target,false);
 						newRoom.send(target,enterMsg);
-						target.tell(_("\n\r\n\r"));
+						target.tell(L("\n\r\n\r"));
 						CMLib.commands().postLook(target,true);
 					}
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> incant(s), but nothing seems to happen."));
+			return maliciousFizzle(mob,null,L("<S-NAME> incant(s), but nothing seems to happen."));
 
 
 		// return whether it worked

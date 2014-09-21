@@ -37,9 +37,9 @@ import java.util.*;
 public class Paralysis extends StdAbility implements HealthCondition
 {
 	@Override public String ID() { return "Paralysis"; }
-	private final static String localizedName = CMLib.lang()._("Paralysis");
+	private final static String localizedName = CMLib.lang().L("Paralysis");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Paralyzed)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Paralyzed)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -77,7 +77,7 @@ public class Paralysis extends StdAbility implements HealthCondition
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("The paralysis eases out of your muscles."));
+			mob.tell(L("The paralysis eases out of your muscles."));
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public class Paralysis extends StdAbility implements HealthCondition
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_PARALYZE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":_("^S<S-NAME> paralyze(s) <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_PARALYZE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("^S<S-NAME> paralyze(s) <T-NAMESELF>.^?"));
 			if(target.location().okMessage(target,msg))
 			{
 				target.location().send(target,msg);
@@ -119,12 +119,12 @@ public class Paralysis extends StdAbility implements HealthCondition
 					int levelDiff=(adjustedLevel(mob, asLevel)-target.phyStats().level());
 					if(levelDiff<0) levelDiff=0;
 					success=maliciousAffect(mob,target,asLevel,10 + (levelDiff/10),-1);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> can't move!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> can't move!"));
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to paralyze <T-NAMESELF>, but fail(s)!"));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to paralyze <T-NAMESELF>, but fail(s)!"));
 
 
 		// return whether it worked

@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Slow extends Spell
 {
 	@Override public String ID() { return "Spell_Slow"; }
-	private final static String localizedName = CMLib.lang()._("Slow");
+	private final static String localizedName = CMLib.lang().L("Slow");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Slow spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Slow spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -62,7 +62,7 @@ public class Spell_Slow extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("You begin to go back to a normal speed."));
+			mob.tell(L("You begin to go back to a normal speed."));
 	}
 
 
@@ -91,13 +91,13 @@ public class Spell_Slow extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> cast(s) a spell on <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> cast(s) a spell on <T-NAMESELF>.^?"));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
 				if(msg.value()<=0)
 				{
-					R.show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> slow(s) down!"));
+					R.show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> slow(s) down!"));
 					final Ability A=target.fetchEffect("Spell_MassSlow");
 					if(A!=null)A.unInvoke();
 					success=maliciousAffect(mob,target,asLevel,0,-1);
@@ -105,7 +105,7 @@ public class Spell_Slow extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) at <T-NAMESELF>, but the spell fizzles."));
+			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) at <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

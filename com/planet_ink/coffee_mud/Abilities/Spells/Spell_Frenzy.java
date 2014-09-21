@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Frenzy extends Spell
 {
 	@Override public String ID() { return "Spell_Frenzy"; }
-	private final static String localizedName = CMLib.lang()._("Frenzy");
+	private final static String localizedName = CMLib.lang().L("Frenzy");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Frenzy spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Frenzy spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -89,7 +89,7 @@ public class Spell_Frenzy extends Spell
 				mob.curState().setHitPoints(1);
 			else
 				mob.curState().adjHitPoints(-hpAdjustment,mob.maxState());
-			mob.tell(_("You feel calmer."));
+			mob.tell(L("You feel calmer."));
 			mob.recoverMaxState();
 		}
 	}
@@ -118,13 +118,13 @@ public class Spell_Frenzy extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> scream(s) at <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> scream(s) at <T-NAMESELF>!^?"));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
 				if(target.location()==R)
 				{
-					R.show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> go(es) wild!"));
+					R.show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> go(es) wild!"));
 					hpAdjustment=(int)Math.round(CMath.div(target.maxState().getHitPoints(),5.0));
 					beneficialAffect(mob,target,asLevel,0);
 					final Ability A=target.fetchEffect(ID());
@@ -136,7 +136,7 @@ public class Spell_Frenzy extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> scream(s) wildly at <T-NAMESELF>, but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> scream(s) wildly at <T-NAMESELF>, but nothing more happens."));
 
 		// return whether it worked
 		return success;

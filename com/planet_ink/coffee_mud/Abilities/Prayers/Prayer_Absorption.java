@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_Absorption extends Prayer
 {
 	@Override public String ID() { return "Prayer_Absorption"; }
-	private final static String localizedName = CMLib.lang()._("Absorption");
+	private final static String localizedName = CMLib.lang().L("Absorption");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Absorption)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Absorption)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
@@ -61,7 +61,7 @@ public class Prayer_Absorption extends Prayer
 		if((canBeUninvoked())&&(absorbed!=null)&&(M!=null))
 		{
 			M.delAbility(absorbed);
-			M.tell(_("You forget all about @x1.",absorbed.name()));
+			M.tell(L("You forget all about @x1.",absorbed.name()));
 			absorbed=null;
 		}
 	}
@@ -86,16 +86,16 @@ public class Prayer_Absorption extends Prayer
 		if(target==null) return false;
 		if(target==mob)
 		{
-			mob.tell(_("Umm.. ok. Done."));
+			mob.tell(L("Umm.. ok. Done."));
 			return false;
 		}
 		final Prayer_Absorption old=(Prayer_Absorption)mob.fetchEffect(ID());
 		if(old!=null)
 		{
 			if(old.absorbed!=null)
-				mob.tell(_("You have already absorbed @x1 from someone.",old.absorbed.name()));
+				mob.tell(L("You have already absorbed @x1 from someone.",old.absorbed.name()));
 			else
-				mob.tell(_("You have already absorbed a skill from someone."));
+				mob.tell(L("You have already absorbed a skill from someone."));
 			return false;
 		}
 
@@ -127,7 +127,7 @@ public class Prayer_Absorption extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 for some of <T-YOUPOSS> knowledge!^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 for some of <T-YOUPOSS> knowledge!^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -135,12 +135,12 @@ public class Prayer_Absorption extends Prayer
 				absorbed=(Ability)absorbed.copyOf();
 				absorbed.setSavable(false);
 				mob.addAbility(absorbed);
-				mob.tell(_("You have absorbed @x1!",absorbed.name()));
+				mob.tell(L("You have absorbed @x1!",absorbed.name()));
 				beneficialAffect(mob,mob,asLevel,15);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for some of <T-YOUPOSS> knowledge, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for some of <T-YOUPOSS> knowledge, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
 
 
 		// return whether it worked

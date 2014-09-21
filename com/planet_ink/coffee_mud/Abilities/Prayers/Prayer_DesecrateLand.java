@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_DesecrateLand extends Prayer
 {
 	@Override public String ID() { return "Prayer_DesecrateLand"; }
-	private final static String localizedName = CMLib.lang()._("Desecrate Land");
+	private final static String localizedName = CMLib.lang().L("Desecrate Land");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Desecrate Land)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Desecrate Land)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -59,7 +59,7 @@ public class Prayer_DesecrateLand extends Prayer
 		&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY))
 		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY)))
 		{
-			msg.source().tell(_("This place is blocking holy magic!"));
+			msg.source().tell(L("This place is blocking holy magic!"));
 			return false;
 		}
 		return super.okMessage(myHost,msg);
@@ -73,7 +73,7 @@ public class Prayer_DesecrateLand extends Prayer
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("This place is already desecrated."));
+			mob.tell(L("This place is already desecrated."));
 			return false;
 		}
 
@@ -83,7 +83,7 @@ public class Prayer_DesecrateLand extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 to desecrate this place.^?",prayForWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 to desecrate this place.^?",prayForWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -99,7 +99,7 @@ public class Prayer_DesecrateLand extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 to desecrate this place, but <S-IS-ARE> not answered.",prayForWord(mob)));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 to desecrate this place, but <S-IS-ARE> not answered.",prayForWord(mob)));
 
 		return success;
 	}

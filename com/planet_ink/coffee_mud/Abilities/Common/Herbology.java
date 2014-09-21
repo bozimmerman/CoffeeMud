@@ -39,7 +39,7 @@ import java.util.*;
 public class Herbology extends CommonSkill
 {
 	@Override public String ID() { return "Herbology"; }
-	private final static String localizedName = CMLib.lang()._("Herbology");
+	private final static String localizedName = CMLib.lang().L("Herbology");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"HERBOLOGY"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -53,8 +53,8 @@ public class Herbology extends CommonSkill
 	public Herbology()
 	{
 		super();
-		displayText=_("You are evaluating...");
-		verb=_("evaluating");
+		displayText=L("You are evaluating...");
+		verb=L("evaluating");
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class Herbology extends CommonSkill
 			{
 				final MOB mob=(MOB)affected;
 				if(messedUp)
-					commonTell(mob,_("You lose your concentration on @x1.",found.name()));
+					commonTell(mob,L("You lose your concentration on @x1.",found.name()));
 				else
 				{
 					final List<String> herbList=Resources.getFileLineVector(Resources.getFileResource("skills/herbology.txt",true));
@@ -80,14 +80,14 @@ public class Herbology extends CommonSkill
 						found.setSecretIdentity("");
 					}
 
-					commonTell(mob,_("@x1 appears to be @x2.",found.name(),herb));
+					commonTell(mob,L("@x1 appears to be @x2.",found.name(),herb));
 					String name=found.Name();
 					name=name.substring(0,name.length()-5).trim();
 					if(name.length()>0)
 						found.setName(name+" "+herb);
 					else
-						found.setName(_("some @x1",herb));
-					found.setDisplayText(_("@x1 is here",found.Name()));
+						found.setName(L("some @x1",herb));
+					found.setDisplayText(L("@x1 is here",found.Name()));
 					found.setDescription("");
 					found.text();
 				}
@@ -104,13 +104,13 @@ public class Herbology extends CommonSkill
 			return true;
 		if(commands.size()<1)
 		{
-			commonTell(mob,_("You must specify what herb you want to identify."));
+			commonTell(mob,L("You must specify what herb you want to identify."));
 			return false;
 		}
 		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,CMParms.combine(commands,0));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTell(mob,_("You don't seem to have a '@x1'.",((String)commands.firstElement())));
+			commonTell(mob,L("You don't seem to have a '@x1'.",((String)commands.firstElement())));
 			return false;
 		}
 		commands.remove(commands.firstElement());
@@ -121,18 +121,18 @@ public class Herbology extends CommonSkill
 		||(!(target instanceof RawMaterial))
 		||(!target.isGeneric()))
 		{
-			commonTell(mob,_("You can only identify unknown herbs."));
+			commonTell(mob,L("You can only identify unknown herbs."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		verb=_("studying @x1",target.name());
-		displayText=_("You are @x1",verb);
+		verb=L("studying @x1",target.name());
+		displayText=L("You are @x1",verb);
 		found=target;
 		messedUp=false;
 		if(!proficiencyCheck(mob,0,auto)) messedUp=true;
 		final int duration=getDuration(15,mob,1,2);
-		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),_("<S-NAME> stud(ys) @x1.",target.name()));
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),L("<S-NAME> stud(ys) @x1.",target.name()));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

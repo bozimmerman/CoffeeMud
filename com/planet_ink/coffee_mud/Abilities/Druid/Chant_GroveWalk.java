@@ -36,7 +36,7 @@ import java.util.*;
 public class Chant_GroveWalk extends Chant
 {
 	@Override public String ID() { return "Chant_GroveWalk"; }
-	private final static String localizedName = CMLib.lang()._("Grove Walk");
+	private final static String localizedName = CMLib.lang().L("Grove Walk");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -48,7 +48,7 @@ public class Chant_GroveWalk extends Chant
 	{
 		if(commands.size()<1)
 		{
-			mob.tell(_("You must specify the name of the location of another grove where there is a druidic monument."));
+			mob.tell(L("You must specify the name of the location of another grove where there is a druidic monument."));
 			return false;
 		}
 		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
@@ -75,12 +75,12 @@ public class Chant_GroveWalk extends Chant
 		}catch(final NoSuchElementException e){}
 		if(!hereok)
 		{
-			mob.tell(_("There is no druidic monument here.  You can only use this chant in a druidic grove."));
+			mob.tell(L("There is no druidic monument here.  You can only use this chant in a druidic grove."));
 			return false;
 		}
 		if(newRoom==null)
 		{
-			mob.tell(_("You can't seem to fixate on a place called '@x1', perhaps it is not a grove?",CMParms.combine(commands,0)));
+			mob.tell(L("You can't seem to fixate on a place called '@x1', perhaps it is not a grove?",CMParms.combine(commands,0)));
 			return false;
 		}
 
@@ -91,7 +91,7 @@ public class Chant_GroveWalk extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,newRoom,this,verbalCastCode(mob,newRoom,auto),auto?"":_("^S<S-NAME> chant(s) and walk(s) around.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,newRoom,this,verbalCastCode(mob,newRoom,auto),auto?"":L("^S<S-NAME> chant(s) and walk(s) around.^?"));
 			if((mob.location().okMessage(mob,msg))&&(newRoom.okMessage(mob,msg)))
 			{
 				mob.location().send(mob,msg);
@@ -102,8 +102,8 @@ public class Chant_GroveWalk extends Chant
 				for (final Object element : h)
 				{
 					final MOB follower=(MOB)element;
-					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> emerge(s) from around the stones."));
-					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,_("<S-NAME> disappear(s) around the stones."));
+					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> emerge(s) from around the stones."));
+					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,L("<S-NAME> disappear(s) around the stones."));
 					if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())
@@ -114,7 +114,7 @@ public class Chant_GroveWalk extends Chant
 						thisRoom.send(follower,leaveMsg);
 						newRoom.bringMobHere(follower,false);
 						newRoom.send(follower,enterMsg);
-						follower.tell(_("\n\r\n\r"));
+						follower.tell(L("\n\r\n\r"));
 						CMLib.commands().postLook(follower,true);
 					}
 				}
@@ -122,7 +122,7 @@ public class Chant_GroveWalk extends Chant
 
 		}
 		else
-			beneficialVisualFizzle(mob,newRoom,_("<S-NAME> chant(s) and walk(s) around, but nothing happens."));
+			beneficialVisualFizzle(mob,newRoom,L("<S-NAME> chant(s) and walk(s) around, but nothing happens."));
 
 
 		// return whether it worked

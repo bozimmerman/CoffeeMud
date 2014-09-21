@@ -36,12 +36,12 @@ import java.util.*;
 public class Prayer_ProtectElements extends Prayer
 {
 	@Override public String ID() { return "Prayer_ProtectElements"; }
-	private final static String localizedName = CMLib.lang()._("Protection Elements");
+	private final static String localizedName = CMLib.lang().L("Protection Elements");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Protection/Elements)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Protection/Elements)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -58,7 +58,7 @@ public class Prayer_ProtectElements extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your elemental protection fades."));
+			mob.tell(L("Your elemental protection fades."));
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class Prayer_ProtectElements extends Prayer
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> protection from elements."));
+			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> protection from elements."));
 			return false;
 		}
 
@@ -96,7 +96,7 @@ public class Prayer_ProtectElements extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> attain(s) elemental protection."):_("^S<S-NAME> @x1 for elemental protection.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> attain(s) elemental protection."):L("^S<S-NAME> @x1 for elemental protection.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -104,7 +104,7 @@ public class Prayer_ProtectElements extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for elemental protection, but nothing happens.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for elemental protection, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

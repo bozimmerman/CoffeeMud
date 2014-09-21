@@ -38,7 +38,7 @@ import java.util.*;
 public class Prayer_Refresh extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_Refresh"; }
-	private final static String localizedName = CMLib.lang()._("Refresh");
+	private final static String localizedName = CMLib.lang().L("Refresh");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
@@ -87,7 +87,7 @@ public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean au
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("A bright yellow glow surrounds <T-NAME>."):_("^S<S-NAME> @x1, delivering a strong touch of infusion to <T-NAMESELF>.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("A bright yellow glow surrounds <T-NAME>."):L("^S<S-NAME> @x1, delivering a strong touch of infusion to <T-NAMESELF>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -98,12 +98,12 @@ public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean au
 				target.curState().setFatigue(0);
 				target.curState().setHunger(target.maxState().getHunger());
 				target.curState().setThirst(target.maxState().getThirst());
-				target.tell(_("You feel refreshed!"));
+				target.tell(L("You feel refreshed!"));
 				lastCastHelp=System.currentTimeMillis();
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
+			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
 		// return whether it worked
 		return success;
 	}

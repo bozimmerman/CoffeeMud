@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_PeaceMoon extends Chant
 {
 	@Override public String ID() { return "Chant_PeaceMoon"; }
-	private final static String localizedName = CMLib.lang()._("Peace Moon");
+	private final static String localizedName = CMLib.lang().L("Peace Moon");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Peace Moon)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Peace Moon)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
@@ -53,13 +53,13 @@ public class Chant_PeaceMoon extends Chant
 		if(!(affected instanceof MOB))
 		{
 			if((affected instanceof Room)&&(canBeUninvoked()))
-				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,_("The peace moon sets."));
+				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,L("The peace moon sets."));
 			super.unInvoke();
 			return;
 		}
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("You are no longer under the peace moon."));
+			mob.tell(L("You are no longer under the peace moon."));
 
 		super.unInvoke();
 
@@ -77,7 +77,7 @@ public class Chant_PeaceMoon extends Chant
 			   &&(msg.target()!=null)
 			   &&(msg.source()!=msg.target()))
 			{
-				msg.source().tell(_("Nah, you feel too peaceful under that bright moon."));
+				msg.source().tell(L("Nah, you feel too peaceful under that bright moon."));
 				final MOB victim=msg.source().getVictim();
 				if(victim!=null) victim.makePeace();
 				msg.source().makePeace();
@@ -127,12 +127,12 @@ public class Chant_PeaceMoon extends Chant
 		if(target==null) return false;
 		if(!target.getArea().getClimateObj().canSeeTheMoon(target,null))
 		{
-			mob.tell(_("You must be able to see the moon for this magic to work."));
+			mob.tell(L("You must be able to see the moon for this magic to work."));
 			return false;
 		}
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("This place is already under the peace moon."));
+			mob.tell(L("This place is already under the peace moon."));
 			return false;
 		}
 		for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
@@ -141,7 +141,7 @@ public class Chant_PeaceMoon extends Chant
 			if((A!=null)
 			&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONALTERING))
 			{
-				mob.tell(_("The moon is already under @x1, and can not be changed until this magic is gone.",A.name()));
+				mob.tell(L("The moon is already under @x1, and can not be changed until this magic is gone.",A.name()));
 				return false;
 			}
 		}
@@ -162,19 +162,19 @@ public class Chant_PeaceMoon extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to the sky.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to the sky.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The Peace Moon Rises!"));
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The Peace Moon Rises!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) to the sky, but the magic fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to the sky, but the magic fades."));
 		// return whether it worked
 		return success;
 	}

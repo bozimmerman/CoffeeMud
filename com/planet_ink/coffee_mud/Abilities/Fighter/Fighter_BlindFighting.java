@@ -36,7 +36,7 @@ import java.util.*;
 public class Fighter_BlindFighting extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_BlindFighting"; }
-	private final static String localizedName = CMLib.lang()._("Blind Fighting");
+	private final static String localizedName = CMLib.lang().L("Blind Fighting");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_FeedTheDead extends Prayer
 {
 	@Override public String ID() { return "Prayer_FeedTheDead"; }
-	private final static String localizedName = CMLib.lang()._("Feed The Dead");
+	private final static String localizedName = CMLib.lang().L("Feed The Dead");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
 	@Override protected int canAffectCode(){return 0;}
@@ -53,7 +53,7 @@ public class Prayer_FeedTheDead extends Prayer
 		{
 			if((commands.size()==0)||(!CMath.isNumber((String)commands.lastElement())))
 			{
-				mob.tell(_("Feed how much experience?"));
+				mob.tell(L("Feed how much experience?"));
 				return false;
 			}
 			amount=CMath.s_int((String)commands.lastElement());
@@ -62,7 +62,7 @@ public class Prayer_FeedTheDead extends Prayer
 			&&!mob.charStats().getCurrentClass().expless()
 			&&!mob.charStats().getMyRace().expless()))
 			{
-				mob.tell(_("You cannot feed @x1 experience.",""+amount));
+				mob.tell(L("You cannot feed @x1 experience.",""+amount));
 				return false;
 			}
 			commands.removeElementAt(commands.size()-1);
@@ -71,17 +71,17 @@ public class Prayer_FeedTheDead extends Prayer
 		if(target==null) return false;
 		if(!target.charStats().getMyRace().racialCategory().equals("Undead"))
 		{
-			mob.tell(_("Only the undead may be fed in this way."));
+			mob.tell(L("Only the undead may be fed in this way."));
 			return false;
 		}
 		if(!target.isMonster())
 		{
-			mob.tell(_("That creature cannot be fed."));
+			mob.tell(L("That creature cannot be fed."));
 			return false;
 		}
 		if(mob.isMonster() && (!auto) && (givenTarget==null))
 		{
-			mob.tell(_("You cannot feed the dead."));
+			mob.tell(L("You cannot feed the dead."));
 			return false;
 		}
 
@@ -96,7 +96,7 @@ public class Prayer_FeedTheDead extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_(auto?"<T-NAME> gain(s) fake life!":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to be fed.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> gain(s) fake life!":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to be fed.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -108,7 +108,7 @@ public class Prayer_FeedTheDead extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for <T-NAMESELF> to be fed, but nothing happens.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for <T-NAMESELF> to be fed, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

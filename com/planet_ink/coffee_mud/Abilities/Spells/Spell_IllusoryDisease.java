@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 {
 	@Override public String ID() { return "Spell_IllusoryDisease"; }
-	private final static String localizedName = CMLib.lang()._("Illusory Disease");
+	private final static String localizedName = CMLib.lang().L("Illusory Disease");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Diseased)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Diseased)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -76,19 +76,19 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 			switch(CMLib.dice().roll(1,5,0))
 			{
 			case 1:
-				str=_("<S-NAME> double(s) over and dry heave(s).");
+				str=L("<S-NAME> double(s) over and dry heave(s).");
 				break;
 			case 2:
-				str=_("<S-NAME> sneeze(s). AAAAAAAAAAAAAACHOOO!!!!");
+				str=L("<S-NAME> sneeze(s). AAAAAAAAAAAAAACHOOO!!!!");
 				break;
 			case 3:
-				str=_("<S-NAME> shake(s) feverishly.");
+				str=L("<S-NAME> shake(s) feverishly.");
 				break;
 			case 4:
-				str=_("<S-NAME> look(s) around weakly.");
+				str=L("<S-NAME> look(s) around weakly.");
 				break;
 			case 5:
-				str=_("<S-NAME> cough(s) and shudder(s) feverishly.");
+				str=L("<S-NAME> cough(s) and shudder(s) feverishly.");
 				break;
 			}
 			if(str!=null)
@@ -108,7 +108,7 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("You begin to feel better."));
+			mob.tell(L("You begin to feel better."));
 	}
 
 
@@ -135,19 +135,19 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> incant(s) at <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> incant(s) at <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> get(s) sick!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> get(s) sick!"));
 					success=maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) at <T-NAMESELF>, but the spell fizzles."));
+			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) at <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

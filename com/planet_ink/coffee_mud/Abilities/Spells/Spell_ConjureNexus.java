@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_ConjureNexus extends Spell
 {
 	@Override public String ID() { return "Spell_ConjureNexus"; }
-	private final static String localizedName = CMLib.lang()._("Conjure Nexus");
+	private final static String localizedName = CMLib.lang().L("Conjure Nexus");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
@@ -46,7 +46,7 @@ public class Spell_ConjureNexus extends Spell
 	public void unInvoke()
 	{
 		if((canBeUninvoked())&&(invoker()!=null)&&(affected!=null)&&(affected instanceof Room))
-			invoker().tell(_("The Nexus in '@x1' dissipates.",((Room)affected).displayText()));
+			invoker().tell(L("The Nexus in '@x1' dissipates.",((Room)affected).displayText()));
 		super.unInvoke();
 	}
 
@@ -105,7 +105,7 @@ public class Spell_ConjureNexus extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":_("^S<S-NAME> summon(s) the Nexus of mana!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":L("^S<S-NAME> summon(s) the Nexus of mana!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -114,7 +114,7 @@ public class Spell_ConjureNexus extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to summon a Nexus, but fail(s)."));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to summon a Nexus, but fail(s)."));
 
 
 		// return whether it worked

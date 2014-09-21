@@ -37,7 +37,7 @@ import java.util.*;
 public class Poison_Firebreather extends Poison_Liquor
 {
 	@Override public String ID() { return "Poison_Firebreather"; }
-	private final static String localizedName = CMLib.lang()._("Firebreather");
+	private final static String localizedName = CMLib.lang().L("Firebreather");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"LIQUORFIRE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -59,7 +59,7 @@ public class Poison_Firebreather extends Poison_Liquor
 		{
 			if(CMLib.dice().rollPercentage()<40)
 			{
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> belch(es) fire!@x1",CMLib.protocol().msp("fireball.wav",20)));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> belch(es) fire!@x1",CMLib.protocol().msp("fireball.wav",20)));
 				for(int i=0;i<room.numInhabitants();i++)
 				{
 					final MOB target=room.fetchInhabitant(i);
@@ -86,7 +86,7 @@ public class Poison_Firebreather extends Poison_Liquor
 				}
 			}
 			else
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> belch(es) smoke!"));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> belch(es) smoke!"));
 			disableHappiness=true;
 		}
 		return super.tick(ticking,tickID);

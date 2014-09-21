@@ -44,7 +44,7 @@ public class Gain extends StdCommand
 	{
 		if(commands.size()==1)
 		{
-			mob.tell(_("Gain what?  Enter QUALIFY to see what you can gain."));
+			mob.tell(L("Gain what?  Enter QUALIFY to see what you can gain."));
 			return false;
 		}
 		commands.insertElementAt("SAY",0);

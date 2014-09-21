@@ -46,12 +46,12 @@ public class ClanList extends StdCommand
 		final boolean trophySystemActive=CMLib.clans().trophySystemActive();
 		final StringBuffer head=new StringBuffer("");
 		head.append("^x[");
-		head.append(CMStrings.padRight(_("Clan Name"),30)+"| ");
-		head.append(CMStrings.padRight(_("Type"),10)+"| ");
-		head.append(CMStrings.padRight(_("Status"),7)+"| ");
-		head.append(CMStrings.padRight(_("Members"),7));
+		head.append(CMStrings.padRight(L("Clan Name"),30)+"| ");
+		head.append(CMStrings.padRight(L("Type"),10)+"| ");
+		head.append(CMStrings.padRight(L("Status"),7)+"| ");
+		head.append(CMStrings.padRight(L("Members"),7));
 		if(trophySystemActive)
-			head.append(" | "+CMStrings.padRight(_("Trophies"),8));
+			head.append(" | "+CMStrings.padRight(L("Trophies"),8));
 		head.append("]^.^? \n\r");
 		final StringBuffer msg=new StringBuffer("");
 		for(final Enumeration e=CMLib.clans().clans();e.hasMoreElements();)

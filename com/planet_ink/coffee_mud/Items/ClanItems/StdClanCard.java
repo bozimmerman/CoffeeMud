@@ -64,10 +64,10 @@ public class StdClanCard extends StdClanItem
 		&&(msg.source()!=owner())
 		&&(CMLib.flags().isInTheGame(msg.source(),true)))
 		{
-			if(msg.source().location().show((MOB)msg.target(),msg.source(),msg.tool(),CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> reject(s) <O-NAME> from <T-NAME>.")))
+			if(msg.source().location().show((MOB)msg.target(),msg.source(),msg.tool(),CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> reject(s) <O-NAME> from <T-NAME>.")))
 			{
-				CMLib.commands().postSay((MOB)msg.target(),msg.source(),_("How dare you!  Give me those!"),false,true);
-				if(msg.source().location().show((MOB)msg.target(),msg.source(),null,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> takes(s) @x1 away from <T-NAME> and destroys it!",msg.tool().name())))
+				CMLib.commands().postSay((MOB)msg.target(),msg.source(),L("How dare you!  Give me those!"),false,true);
+				if(msg.source().location().show((MOB)msg.target(),msg.source(),null,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> takes(s) @x1 away from <T-NAME> and destroys it!",msg.tool().name())))
 				{
 					Item I=null;
 					for(int i=msg.source().numItems();i>=0;i--)

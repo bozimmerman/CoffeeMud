@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_Treemorph extends Chant
 {
 	@Override public String ID() { return "Chant_Treemorph"; }
-	private final static String localizedName = CMLib.lang()._("Treemorph");
+	private final static String localizedName = CMLib.lang().L("Treemorph");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Treemorph)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Treemorph)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -112,7 +112,7 @@ public class Chant_Treemorph extends Chant
 				if((!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 				&&(msg.sourceMajor()>0))
 				{
-					mob.tell(_("Trees can't do that."));
+					mob.tell(L("Trees can't do that."));
 					return false;
 				}
 			}
@@ -127,7 +127,7 @@ public class Chant_Treemorph extends Chant
 				msg.source().setVictim(null);
 			if((msg.target()==mob)&&(CMath.bset(msg.targetMajor(), CMMsg.MASK_MALICIOUS)))
 			{
-				msg.source().tell(msg.source(),mob,null,_("You can't do that to <T-NAME>."));
+				msg.source().tell(msg.source(),mob,null,L("You can't do that to <T-NAME>."));
 				return false;
 			}
 			if(mob.isInCombat())
@@ -151,9 +151,9 @@ public class Chant_Treemorph extends Chant
 		if((treeForm!=null)&&(affected instanceof MOB))
 		{
 			if(affected.name().indexOf(' ')>0)
-				affectableStats.setName(_("a @x1 called @x2",treeForm.name(),affected.name()));
+				affectableStats.setName(L("a @x1 called @x2",treeForm.name(),affected.name()));
 			else
-				affectableStats.setName(_("@x1 the @x2",affected.name(),treeForm.name()));
+				affectableStats.setName(L("@x1 the @x2",affected.name(),treeForm.name()));
 			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			treeForm.setHeightWeight(affectableStats,'M');
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
@@ -180,7 +180,7 @@ public class Chant_Treemorph extends Chant
 		{
 			if(tree!=null) tree.destroy();
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> no longer a tree."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> no longer a tree."));
 			mob.curState().setHitPoints(1);
 			mob.curState().setMana(0);
 			mob.curState().setMovement(0);
@@ -217,7 +217,7 @@ public class Chant_Treemorph extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) at <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) at <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -235,12 +235,12 @@ public class Chant_Treemorph extends Chant
 					target.makePeace();
 					CMLib.commands().postStand(target,true);
 					tree=CMClass.getItem("GenItem");
-					tree.setName(_("a oak tree"));
-					tree.setDisplayText(_("an oak tree that reminds you of @x1 is growing here.",target.name()));
-					tree.setDescription(_("It`s a tall oak tree, which seems to remind you of @x1.",target.name()));
+					tree.setName(L("a oak tree"));
+					tree.setDisplayText(L("an oak tree that reminds you of @x1 is growing here.",target.name()));
+					tree.setDescription(L("It`s a tall oak tree, which seems to remind you of @x1.",target.name()));
 					tree.setMaterial(RawMaterial.RESOURCE_OAK);
 					tree.basePhyStats().setWeight(5000);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> turn(s) into a tree!!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> turn(s) into a tree!!"));
 					success=maliciousAffect(mob,target,asLevel,(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*25,-1);
 					final Ability A=target.fetchEffect(ID());
 					if(success&&(A!=null))
@@ -254,7 +254,7 @@ public class Chant_Treemorph extends Chant
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAMESELF>, but the magic fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAMESELF>, but the magic fades."));
 
 		// return whether it worked
 		return success;

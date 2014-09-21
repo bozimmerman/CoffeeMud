@@ -39,9 +39,9 @@ import java.util.*;
 public class Chant_WarningWinds extends Chant
 {
 	@Override public String ID() { return "Chant_WarningWinds"; }
-	private final static String localizedName = CMLib.lang()._("Warning Winds");
+	private final static String localizedName = CMLib.lang().L("Warning Winds");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Warning Winds)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Warning Winds)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
@@ -57,7 +57,7 @@ public class Chant_WarningWinds extends Chant
 			lastRoom=null;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("Your senses are no longer attuned to the winds."));
+			mob.tell(L("Your senses are no longer attuned to the winds."));
 	}
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -117,10 +117,10 @@ public class Chant_WarningWinds extends Chant
 								if(lastRoom.getRoomInDir(d)==R) far="";
 							dir=Directions.getOpDirectionCode(dir);
 							if(fighting)
-								((MOB)affected).tell(_("The winds tell of fighting @x1@x2.",far,Directions.getInDirectionName(dir)));
+								((MOB)affected).tell(L("The winds tell of fighting @x1@x2.",far,Directions.getInDirectionName(dir)));
 							else
 							if(enemy)
-								((MOB)affected).tell(_("The winds tell of enemies @x1@x2.",far,Directions.getInDirectionName(dir)));
+								((MOB)affected).tell(L("The winds tell of enemies @x1@x2.",far,Directions.getInDirectionName(dir)));
 						}
 					}
 				}
@@ -138,13 +138,13 @@ public class Chant_WarningWinds extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already attuned to the winds."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already attuned to the winds."));
 			return false;
 		}
 
 		if(((target.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
-			target.tell(_("You must be outdoors for this chant to work."));
+			target.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
 
@@ -155,7 +155,7 @@ public class Chant_WarningWinds extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) a sense of the winds!"):_("^S<S-NAME> chant(s) for a sense of the winds!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> gain(s) a sense of the winds!"):L("^S<S-NAME> chant(s) for a sense of the winds!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				lastRoom=null;
@@ -164,7 +164,7 @@ public class Chant_WarningWinds extends Chant
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) into the air, but the magic fizzles."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> chant(s) into the air, but the magic fizzles."));
 
 		return success;
 	}

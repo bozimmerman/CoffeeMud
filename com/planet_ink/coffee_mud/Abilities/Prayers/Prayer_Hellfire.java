@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Hellfire extends Prayer
 {
 	@Override public String ID() { return "Prayer_Hellfire"; }
-	private final static String localizedName = CMLib.lang()._("Hellfire");
+	private final static String localizedName = CMLib.lang().L("Hellfire");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -77,7 +77,7 @@ public class Prayer_Hellfire extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			final Prayer_Hellfire newOne=(Prayer_Hellfire)this.copyOf();
-			final CMMsg msg=CMClass.getMsg(mob,target,newOne,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,_(auto?"":"^S<S-NAME> "+prayForWord(mob)+" to rage against the good inside <T-NAMESELF>!^?")+CMLib.protocol().msp("spelldam1.wav",40));
+			final CMMsg msg=CMClass.getMsg(mob,target,newOne,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,L(auto?"":"^S<S-NAME> "+prayForWord(mob)+" to rage against the good inside <T-NAMESELF>!^?")+CMLib.protocol().msp("spelldam1.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 			{
@@ -93,7 +93,7 @@ public class Prayer_Hellfire extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> @x1, but nothing emerges.",prayWord(mob)));
+			return maliciousFizzle(mob,target,L("<S-NAME> @x1, but nothing emerges.",prayWord(mob)));
 
 
 		// return whether it worked

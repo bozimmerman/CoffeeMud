@@ -293,7 +293,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		{
 			if(deityStandIn!=null) deityStandIn.destroy();
 			final MOB everywhereMOB=CMClass.getMOB("StdMOB");
-			everywhereMOB.setName(_("god"));
+			everywhereMOB.setName(L("god"));
 			everywhereMOB.setLocation(this.getRandomRoom());
 			deityStandIn=everywhereMOB;
 		}
@@ -310,7 +310,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public MOB getFactoryMOB(Room R)
 	{
 		final MOB everywhereMOB=CMClass.getFactoryMOB();
-		everywhereMOB.setName(_("somebody"));
+		everywhereMOB.setName(L("somebody"));
 		everywhereMOB.setLocation(R);
 		return everywhereMOB;
 	}

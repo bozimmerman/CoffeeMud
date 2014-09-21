@@ -36,9 +36,9 @@ import java.util.*;
 public class Undead_EnergyDrain extends StdAbility
 {
 	@Override public String ID() { return "Undead_EnergyDrain"; }
-	private final static String localizedName = CMLib.lang()._("Energy Drain");
+	private final static String localizedName = CMLib.lang().L("Energy Drain");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Drained of Energy)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Drained of Energy)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -98,7 +98,7 @@ public class Undead_EnergyDrain extends StdAbility
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("The energy drain is lifted."));
+			mob.tell(L("The energy drain is lifted."));
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public class Undead_EnergyDrain extends StdAbility
 		{
 			if(mob.rangeToTarget()>0)
 			{
-				mob.tell(_("You are too far away to touch!"));
+				mob.tell(L("You are too far away to touch!"));
 				return false;
 			}
 			final MOB victim=mob.getVictim();
@@ -131,14 +131,14 @@ public class Undead_EnergyDrain extends StdAbility
 		String str=null;
 		if(success)
 		{
-			str=auto?"":_("^S<S-NAME> extend(s) an energy draining hand to <T-NAMESELF>!^?");
+			str=auto?"":L("^S<S-NAME> extend(s) an energy draining hand to <T-NAMESELF>!^?");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> drained!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> drained!"));
 					if(reAffect!=null)
 					{
 						if(reAffect instanceof Undead_EnergyDrain)
@@ -160,7 +160,7 @@ public class Undead_EnergyDrain extends StdAbility
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to drain <T-NAMESELF>, but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to drain <T-NAMESELF>, but fail(s)."));
 
 		return success;
 	}

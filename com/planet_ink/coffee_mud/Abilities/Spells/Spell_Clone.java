@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Clone extends Spell
 {
 	@Override public String ID() { return "Spell_Clone"; }
-	private final static String localizedName = CMLib.lang()._("Clone");
+	private final static String localizedName = CMLib.lang().L("Clone");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Clone)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Clone)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -106,7 +106,7 @@ public class Spell_Clone extends Spell
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,mob,auto),auto?"":_("^S<S-NAME> incant(s), feeling <S-HIS-HER> body split in two.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,mob,auto),auto?"":L("^S<S-NAME> incant(s), feeling <S-HIS-HER> body split in two.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -151,14 +151,14 @@ public class Spell_Clone extends Spell
 					myMonster.setVictim(mob.getVictim());
 					CMLib.commands().postFollow(myMonster,mob,true);
 					if(myMonster.amFollowing()!=mob)
-						mob.tell(_("@x1 seems unwilling to follow you.",myMonster.name()));
+						mob.tell(L("@x1 seems unwilling to follow you.",myMonster.name()));
 				}
 				invoker=mob;
 				beneficialAffect(mob,myMonster,asLevel,0);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to clone <S-HIM-HERSELF>, but fails."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to clone <S-HIM-HERSELF>, but fails."));
 
 		// return whether it worked
 		return success;
@@ -198,7 +198,7 @@ public class Spell_Clone extends Spell
 		newMOB.delAllBehaviors();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 		caster.location().recoverRoomStats();
 		newMOB.setStartRoom(null);
 		return(newMOB);

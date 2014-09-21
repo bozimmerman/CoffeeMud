@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_UndeniableFaith extends Prayer
 {
 	@Override public String ID() { return "Prayer_UndeniableFaith"; }
-	private final static String localizedName = CMLib.lang()._("Undeniable Faith");
+	private final static String localizedName = CMLib.lang().L("Undeniable Faith");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
@@ -53,7 +53,7 @@ public class Prayer_UndeniableFaith extends Prayer
 		final MOB M=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
-			M.tell(_("Your compelled faith is finally subsided."));
+			M.tell(L("Your compelled faith is finally subsided."));
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class Prayer_UndeniableFaith extends Prayer
 		&&(msg.target()!=null)
 		&&((msg.target()==invoker())||(msg.target().Name().equals(godName))))
 		{
-			msg.source().tell(_("Your faith is too undeniable."));
+			msg.source().tell(L("Your faith is too undeniable."));
 			return false;
 		}
 		return super.okMessage(host,msg);
@@ -115,19 +115,19 @@ public class Prayer_UndeniableFaith extends Prayer
 		if((mob.getWorshipCharID().length()==0)
 		||(CMLib.map().getDeity(mob.getWorshipCharID())==null))
 		{
-			if(!auto) mob.tell(_("You must worship a god to use this prayer."));
+			if(!auto) mob.tell(L("You must worship a god to use this prayer."));
 			return false;
 		}
 		final Deity D=CMLib.map().getDeity(mob.getWorshipCharID());
 		if((target.getWorshipCharID().length()>0)
 		&&(CMLib.map().getDeity(target.getWorshipCharID())!=null))
 		{
-			if(!auto) mob.tell(_("@x1 worships @x2, and may not be converted with this prayer.",target.name(mob),target.getWorshipCharID()));
+			if(!auto) mob.tell(L("@x1 worships @x2, and may not be converted with this prayer.",target.name(mob),target.getWorshipCharID()));
 			return false;
 		}
 		if((CMLib.flags().isAnimalIntelligence(target)||CMLib.flags().isGolem(target)||(D==null)))
 		{
-			if(!auto) mob.tell(_("@x1 can not be converted with this prayer.",target.name(mob)));
+			if(!auto) mob.tell(L("@x1 can not be converted with this prayer.",target.name(mob)));
 			return false;
 		}
 		if(!auto)
@@ -140,7 +140,7 @@ public class Prayer_UndeniableFaith extends Prayer
 			}
 			if(convertStack.contains(target))
 			{
-				mob.tell(_("@x1 must wait to be undeniably faithful again.",target.name(mob)));
+				mob.tell(L("@x1 must wait to be undeniably faithful again.",target.name(mob)));
 				return false;
 			}
 		}
@@ -160,8 +160,8 @@ public class Prayer_UndeniableFaith extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,type,auto?"":_("^S<S-NAME> @x1 for <T-NAMESELF> to BELIEVE!^?",prayWord(mob)));
-			final CMMsg msg2=CMClass.getMsg(target,D,this,CMMsg.MSG_SERVE,_("<S-NAME> BELIEVE(S) !!!"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,type,auto?"":L("^S<S-NAME> @x1 for <T-NAMESELF> to BELIEVE!^?",prayWord(mob)));
+			final CMMsg msg2=CMClass.getMsg(target,D,this,CMMsg.MSG_SERVE,L("<S-NAME> BELIEVE(S) !!!"));
 			final CMMsg msg3=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|mal|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))
 			&&(mob.location().okMessage(mob,msg3))
@@ -182,7 +182,7 @@ public class Prayer_UndeniableFaith extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
+			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

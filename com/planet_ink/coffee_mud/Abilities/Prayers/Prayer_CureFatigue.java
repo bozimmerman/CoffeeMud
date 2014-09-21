@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_CureFatigue extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_CureFatigue"; }
-	private final static String localizedName = CMLib.lang()._("Cure Fatigue");
+	private final static String localizedName = CMLib.lang().L("Cure Fatigue");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
@@ -82,7 +82,7 @@ public class Prayer_CureFatigue extends Prayer implements MendingSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("A soft white glow surrounds <T-NAME>."):_("^S<S-NAME> @x1, delivering a light invigorating touch to <T-NAMESELF>.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("A soft white glow surrounds <T-NAME>."):L("^S<S-NAME> @x1, delivering a light invigorating touch to <T-NAMESELF>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -90,12 +90,12 @@ public class Prayer_CureFatigue extends Prayer implements MendingSkill
 				if(target.maxState().getFatigue()>Long.MIN_VALUE/2)
 					target.curState().adjFatigue(-(target.curState().getFatigue()/2),target.maxState());
 				target.curState().adjMovement(healing,target.maxState());
-				target.tell(_("You feel slightly more invigorated!"));
+				target.tell(L("You feel slightly more invigorated!"));
 				lastCastHelp=System.currentTimeMillis();
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
+			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
 		// return whether it worked
 		return success;
 	}

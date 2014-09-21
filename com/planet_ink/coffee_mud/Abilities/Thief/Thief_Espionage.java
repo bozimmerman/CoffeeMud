@@ -38,7 +38,7 @@ import java.util.*;
 public class Thief_Espionage extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Espionage"; }
-	private final static String localizedName = CMLib.lang()._("Espionage");
+	private final static String localizedName = CMLib.lang().L("Espionage");
 	@Override public String name() { return localizedName; }
 		// can NOT have a display text since the ability instance
 		// is shared between the invoker and the target
@@ -81,7 +81,7 @@ public class Thief_Espionage extends ThiefSkill
 		if(canBeUninvoked())
 		{
 			if((invoker!=null)&&(affected!=null))
-				invoker.tell(_("You are no longer committing espionage with @x1.",affected.name()));
+				invoker.tell(L("You are no longer committing espionage with @x1.",affected.name()));
 		}
 		super.unInvoke();
 	}
@@ -91,14 +91,14 @@ public class Thief_Espionage extends ThiefSkill
 	{
 		if(commands.size()<1)
 		{
-			mob.tell(_("Commit espionage through whom?"));
+			mob.tell(L("Commit espionage through whom?"));
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget,false,true);
 		if(target==null) return false;
 		if(target==mob)
 		{
-			mob.tell(_("You cannot do that with yourself?!"));
+			mob.tell(L("You cannot do that with yourself?!"));
 			return false;
 		}
 		final Ability A=target.fetchEffect(ID());
@@ -111,18 +111,18 @@ public class Thief_Espionage extends ThiefSkill
 			}
 			else
 			{
-				mob.tell(mob,target,null,_("It is too crowded to commit espionage with <T-NAME>."));
+				mob.tell(mob,target,null,L("It is too crowded to commit espionage with <T-NAME>."));
 				return false;
 			}
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell(_("Not while you are fighting!"));
+			mob.tell(L("Not while you are fighting!"));
 			return false;
 		}
 		if(CMLib.flags().canBeSeenBy(mob,target))
 		{
-			mob.tell(_("@x1 is watching you too closely.",target.name(mob)));
+			mob.tell(L("@x1 is watching you too closely.",target.name(mob)));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -134,13 +134,13 @@ public class Thief_Espionage extends ThiefSkill
 
 		if(!success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":_("Your attempt to commit espionage using <T-NAMESELF> fails; <T-NAME> spots you!"),CMMsg.MSG_OK_VISUAL,auto?"":_("You spot <S-NAME> trying to commit espionage through you."),CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":L("Your attempt to commit espionage using <T-NAMESELF> fails; <T-NAME> spots you!"),CMMsg.MSG_OK_VISUAL,auto?"":L("You spot <S-NAME> trying to commit espionage through you."),CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_THIEF_ACT,_("You are now committing espionage with <T-NAME>.  Enter 'espionage <targetname>' again to disengage."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_THIEF_ACT,L("You are now committing espionage with <T-NAME>.  Enter 'espionage <targetname>' again to disengage."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

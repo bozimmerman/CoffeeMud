@@ -651,14 +651,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		final Ability evokableAbility=getToEvoke(mob,commands);
 		if(evokableAbility==null)
 		{
-			mob.tell(_("You don't know how to do that."));
+			mob.tell(L("You don't know how to do that."));
 			return false;
 		}
 		if((CMLib.ableMapper().qualifyingLevel(mob,evokableAbility)>=0)
 		&&(!CMLib.ableMapper().qualifiesByLevel(mob,evokableAbility))
 		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ALLSKILLS)))
 		{
-			mob.tell(_("You are not high enough level to do that."));
+			mob.tell(L("You are not high enough level to do that."));
 			return false;
 		}
 		return evokableAbility.preInvoke(mob,commands,null,false,0,secondsElapsed,actionsRemaining);
@@ -670,14 +670,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		final Ability evokableAbility=getToEvoke(mob,commands);
 		if(evokableAbility==null)
 		{
-			mob.tell(_("You don't know how to do that."));
+			mob.tell(L("You don't know how to do that."));
 			return;
 		}
 		if((CMLib.ableMapper().qualifyingLevel(mob,evokableAbility)>=0)
 		&&(!CMLib.ableMapper().qualifiesByLevel(mob,evokableAbility))
 		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ALLSKILLS)))
 		{
-			mob.tell(_("You are not high enough level to do that."));
+			mob.tell(L("You are not high enough level to do that."));
 			return;
 		}
 		evokableAbility.invoke(mob,commands,null,false,0);
@@ -1056,7 +1056,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				commands.remove(commands.size()-1);
 			else
 			{
-				mob.tell(_("You don't see anyone called '@x1' here buying or selling.",commands.get(commands.size()-1)));
+				mob.tell(L("You don't see anyone called '@x1' here buying or selling.",commands.get(commands.size()-1)));
 				return null;
 			}
 			return shopkeeper;
@@ -1465,7 +1465,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				mob.addItem(C);
 				return C;
 			}
-			mob.tell(_("You don't have that much @x1.",CMLib.beanCounter().getDenominationName(currency,denomination)));
+			mob.tell(L("You don't have that much @x1.",CMLib.beanCounter().getDenominationName(currency,denomination)));
 			final List<Coins> V=CMLib.beanCounter().getStandardCurrency(mob,currency);
 			for(int v=0;v<V.size();v++)
 				if(V.get(v).getDenomination()==denomination)
@@ -1673,7 +1673,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					if(max>3000) max=3000;
 					if(maxToGive>max)
 					{
-						mob.tell(_("You can only handle @x1 at a time.",""+max));
+						mob.tell(L("You can only handle @x1 at a time.",""+max));
 						return -1;
 					}
 					final Environmental toWhat=CMLib.materials().unbundle((Item)fromWhat,maxToGive,null);
@@ -1681,14 +1681,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					{
 						if(throwError)
 						{
-							mob.tell(_("You can't get anything from @x1.",fromWhat.name()));
+							mob.tell(L("You can't get anything from @x1.",fromWhat.name()));
 							return -1;
 						}
 					}
 					else
 					if(getOnly&&mob.isMine(fromWhat)&&mob.isMine(toWhat))
 					{
-						mob.tell(_("Ok"));
+						mob.tell(L("Ok"));
 						return -1;
 					}
 					else
@@ -1705,7 +1705,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				else
 				if(throwError)
 				{
-					mob.tell(_("You don't see '@x1' here.",packCheckName));
+					mob.tell(L("You don't see '@x1' here.",packCheckName));
 					return -1;
 				}
 			}

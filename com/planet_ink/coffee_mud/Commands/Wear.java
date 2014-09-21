@@ -42,23 +42,23 @@ public class Wear extends StdCommand
 
 	public boolean wear(MOB mob, Item item, int locationIndex, boolean quiet)
 	{
-		String str=_("<S-NAME> put(s) on <T-NAME>.");
+		String str=L("<S-NAME> put(s) on <T-NAME>.");
 		int msgType=CMMsg.MSG_WEAR;
 		if(item.rawProperLocationBitmap()==Wearable.WORN_HELD)
 		{
-			str=_("<S-NAME> hold(s) <T-NAME>.");
+			str=L("<S-NAME> hold(s) <T-NAME>.");
 			msgType=CMMsg.MSG_HOLD;
 		}
 		else
 		if((item.rawProperLocationBitmap()==Wearable.WORN_WIELD)
 		||(item.rawProperLocationBitmap()==(Wearable.WORN_HELD|Wearable.WORN_WIELD)))
 		{
-			str=_("<S-NAME> wield(s) <T-NAME>.");
+			str=L("<S-NAME> wield(s) <T-NAME>.");
 			msgType=CMMsg.MSG_WIELD;
 		}
 		else
 		if(locationIndex!=0)
-			str=_("<S-NAME> put(s) <T-NAME> on <S-HIS-HER> @x1.",Wearable.CODES.NAME(locationIndex).toLowerCase());
+			str=L("<S-NAME> put(s) <T-NAME> on <S-HIS-HER> @x1.",Wearable.CODES.NAME(locationIndex).toLowerCase());
 		final CMMsg newMsg=CMClass.getMsg(mob,item,null,msgType,quiet?null:str);
 		newMsg.setValue(locationIndex);
 		if(mob.location().okMessage(mob,newMsg))
@@ -76,7 +76,7 @@ public class Wear extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("Wear what?"));
+			mob.tell(L("Wear what?"));
 			return false;
 		}
 		final Wearable.CODES codes = Wearable.CODES.instance();
@@ -132,14 +132,14 @@ public class Wear extends StdCommand
 				}
 				else
 				{
-					mob.tell(_("You can't wear anything on your '@x1'",possibleWearLocation));
+					mob.tell(L("You can't wear anything on your '@x1'",possibleWearLocation));
 					return false;
 				}
 				// will always break out here, one way or the other.
 			}
 		final List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,false);
 		if(items.size()==0)
-			mob.tell(_("You don't seem to be carrying that."));
+			mob.tell(L("You don't seem to be carrying that."));
 		else
 		{
 			// sort hold-onlys down.

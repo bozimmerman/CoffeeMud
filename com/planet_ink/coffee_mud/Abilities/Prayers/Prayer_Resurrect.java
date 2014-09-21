@@ -38,7 +38,7 @@ import java.util.*;
 public class Prayer_Resurrect extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_Resurrect"; }
-	private final static String localizedName = CMLib.lang()._("Resurrect");
+	private final static String localizedName = CMLib.lang().L("Resurrect");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
@@ -79,9 +79,9 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 			final String name=CMParms.combine(commands,0);
 			if(name.equalsIgnoreCase("list"))
 			{
-				mob.tell("^x"+CMStrings.padRight(_("Guardian"),15)
-						+CMStrings.padRight(_("Child name"),45)
-						+CMStrings.padRight(_("Birth date"),16)+"^?");
+				mob.tell("^x"+CMStrings.padRight(L("Guardian"),15)
+						+CMStrings.padRight(L("Child name"),45)
+						+CMStrings.padRight(L("Birth date"),16)+"^?");
 				for(int i=0;i<allObjs.size();i++)
 				{
 					body=allObjs.elementAt(i);
@@ -109,7 +109,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 			if((!(body instanceof DeadBody))
 			||(((DeadBody)body).mobName().length()==0))
 			{
-				mob.tell(_("You can't resurrect that."));
+				mob.tell(L("You can't resurrect that."));
 				return false;
 			}
 			playerCorpse=((DeadBody)body).playerCorpse();
@@ -134,13 +134,13 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 					}
 					if(nonPlayerData==null)
 					{
-						mob.tell(_("You can't seem to focus on @x1's spirit.  Perhaps if loved ones were here?",body.Name()));
+						mob.tell(L("You can't seem to focus on @x1's spirit.  Perhaps if loved ones were here?",body.Name()));
 						return false;
 					}
 				}
 				else
 				{
-					mob.tell(_("You can't resurrect @x1.",((DeadBody)body).charStats().himher()));
+					mob.tell(L("You can't resurrect @x1.",((DeadBody)body).charStats().himher()));
 					return false;
 				}
 			}
@@ -156,7 +156,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,body,this,verbalCastCode(mob,body,auto),auto?_("<T-NAME> is resurrected!"):_("^S<S-NAME> resurrect(s) <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,body,this,verbalCastCode(mob,body,auto),auto?L("<T-NAME> is resurrected!"):L("^S<S-NAME> resurrect(s) <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				invoker=mob;
@@ -169,12 +169,12 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 					final String data=nonPlayerData.xml;
 					final Environmental object=parseHeavenlyData(data);
 					if(object==null)
-						mob.location().show(mob,body,CMMsg.MSG_OK_VISUAL,_("<T-NAME> twitch(es) for a moment, but the spirit is too far gone."));
+						mob.location().show(mob,body,CMMsg.MSG_OK_VISUAL,L("<T-NAME> twitch(es) for a moment, but the spirit is too far gone."));
 					else
 					if(object instanceof Item)
 					{
 						body.destroy();
-						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 comes back to life!",object.Name()));
+						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 comes back to life!",object.Name()));
 						mob.location().addItem((Item)object);
 					}
 					else
@@ -185,14 +185,14 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 						body.delEffect(body.fetchEffect("Age")); // so misskids doesn't record it
 						body.destroy();
 						rejuvedMOB.bringToLife(mob.location(),true);
-						rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> get(s) up!"));
+						rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> get(s) up!"));
 					}
 					mob.location().recoverRoomStats();
 				}
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,body,auto?"":_("<S-NAME> attempt(s) to resurrect <T-NAMESELF>, but nothing happens."));
+			beneficialWordsFizzle(mob,body,auto?"":L("<S-NAME> attempt(s) to resurrect <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

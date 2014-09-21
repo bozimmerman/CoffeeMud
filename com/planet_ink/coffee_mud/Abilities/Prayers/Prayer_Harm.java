@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Harm extends Prayer
 {
 	@Override public String ID() { return "Prayer_Harm"; }
-	private final static String localizedName = CMLib.lang()._("Harm");
+	private final static String localizedName = CMLib.lang().L("Harm");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
@@ -76,7 +76,7 @@ public class Prayer_Harm extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			final Room R=target.location();
-			final CMMsg msg=CMClass.getMsg(mob,target,this,(undead?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),_(auto?"<T-NAME> cringe(s) in pain.":"^S<S-NAME> "+prayWord(mob)+" to deliver tremendous pain at <T-NAMESELF>!^?")+CMLib.protocol().msp("spelldam2.wav",40));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(undead?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),L(auto?"<T-NAME> cringe(s) in pain.":"^S<S-NAME> "+prayWord(mob)+" to deliver tremendous pain at <T-NAMESELF>!^?")+CMLib.protocol().msp("spelldam2.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 			{
@@ -90,7 +90,7 @@ public class Prayer_Harm extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> point(s) at <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
+			return maliciousFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

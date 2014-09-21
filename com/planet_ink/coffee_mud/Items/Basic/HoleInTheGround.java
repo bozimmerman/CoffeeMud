@@ -101,13 +101,13 @@ public class HoleInTheGround extends StdContainer
 				{
 					if((text().length()>0)&&(!text().equals(msg.source().Name())))
 					{
-						msg.source().tell(_("Go find your own hole."));
+						msg.source().tell(L("Go find your own hole."));
 						return false;
 					}
 				}
 				if((msg.tool()!=null)&&(msg.tool() instanceof ClanItem))
 				{
-					msg.source().tell(_("Go may not bury a clan item."));
+					msg.source().tell(L("Go may not bury a clan item."));
 					return false;
 				}
 				break;

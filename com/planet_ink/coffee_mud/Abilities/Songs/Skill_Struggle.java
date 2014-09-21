@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Struggle extends BardSkill
 {
 	@Override public String ID() { return "Skill_Struggle"; }
-	private final static String localizedName = CMLib.lang()._("Struggle");
+	private final static String localizedName = CMLib.lang().L("Struggle");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -75,7 +75,7 @@ public class Skill_Struggle extends BardSkill
 	{
 		if(!CMLib.flags().isBound(mob))
 		{
-			mob.tell(_("You don't seem to be bound by anything you can struggle against!"));
+			mob.tell(L("You don't seem to be bound by anything you can struggle against!"));
 			return false;
 		}
 
@@ -86,7 +86,7 @@ public class Skill_Struggle extends BardSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> attempt(s) to struggle with <S-HIS-HER> bonds."));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> attempt(s) to struggle with <S-HIS-HER> bonds."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.addEffect(this);
@@ -97,7 +97,7 @@ public class Skill_Struggle extends BardSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,_("<S-NAME> fumble(s) <S-HIS-HER> attempt to struggle."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> fumble(s) <S-HIS-HER> attempt to struggle."));
 
 		return success;
 	}

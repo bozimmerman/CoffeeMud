@@ -38,7 +38,7 @@ import java.util.*;
 public class Prayer_Position extends Prayer
 {
 	@Override public String ID() { return "Prayer_Position"; }
-	private final static String localizedName = CMLib.lang()._("Position");
+	private final static String localizedName = CMLib.lang().L("Position");
 	@Override public String name() { return localizedName; }
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -143,16 +143,16 @@ public class Prayer_Position extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> @x1 for a position check.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> @x1 for a position check.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.tell(_("The trail from @x1 to here is: @x2",lastPosition.name(),trailTo(lastPosition,mob.location())));
+				mob.tell(L("The trail from @x1 to here is: @x2",lastPosition.name(),trailTo(lastPosition,mob.location())));
 				lastPosition=mob.location();
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 for a position check, but fail(s).",prayWord(mob)));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 for a position check, but fail(s).",prayWord(mob)));
 
 		return success;
 	}

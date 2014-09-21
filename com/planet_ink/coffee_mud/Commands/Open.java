@@ -72,7 +72,7 @@ public class Open extends StdCommand
 					{
 						final boolean useShipDirs=(opR instanceof SpaceShip)||(opR.getArea() instanceof SpaceShip);
 						final String inDirName=useShipDirs?Directions.getShipInDirectionName(opCode):Directions.getInDirectionName(opCode);
-						opR.showHappens(CMMsg.MSG_OK_ACTION,_("@x1 @x2 opens.",opE.name(),inDirName));
+						opR.showHappens(CMMsg.MSG_OK_ACTION,L("@x1 @x2 opens.",opE.name(),inDirName));
 					}
 					return true;
 				}
@@ -94,7 +94,7 @@ public class Open extends StdCommand
 		final String whatToOpen=CMParms.combine(commands,1);
 		if(whatToOpen.length()==0)
 		{
-			mob.tell(_("Open what?"));
+			mob.tell(L("Open what?"));
 			return false;
 		}
 		Environmental openThis=null;
@@ -106,7 +106,7 @@ public class Open extends StdCommand
 
 		if((openThis==null)||(!CMLib.flags().canBeSeenBy(openThis,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",whatToOpen));
+			mob.tell(L("You don't see '@x1' here.",whatToOpen));
 			return false;
 		}
 		open(mob,openThis,whatToOpen,dirCode,false);

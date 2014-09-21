@@ -76,7 +76,7 @@ public class TreeGolem extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName(_("a jagged limb"));
+			naturalWeapon.setName(L("a jagged limb"));
 			naturalWeapon.setRanges(0,2);
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_OAK);
 			naturalWeapon.setUsesRemaining(1000);
@@ -93,7 +93,7 @@ public class TreeGolem extends StdRace
 		{
 			if(msg.targetMinor()==CMMsg.TYP_LEAVE)
 			{
-				msg.source().tell(_("You can't really go anywhere -- you are rooted!"));
+				msg.source().tell(L("You can't really go anywhere -- you are rooted!"));
 				return false;
 			}
 		}

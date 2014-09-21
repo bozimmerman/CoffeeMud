@@ -36,9 +36,9 @@ import java.util.*;
 public class Thief_Detection extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Detection"; }
-	private final static String localizedName = CMLib.lang()._("Detection");
+	private final static String localizedName = CMLib.lang().L("Detection");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Detecting hidden...)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Detecting hidden...)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -69,7 +69,7 @@ public class Thief_Detection extends ThiefSkill
 		final MOB M=(MOB)affected;
 		super.unInvoke();
 		if((M!=null)&&(!M.amDead()))
-			M.tell(_("You stop detecting."));
+			M.tell(L("You stop detecting."));
 	}
 
 	@Override
@@ -124,7 +124,7 @@ public class Thief_Detection extends ThiefSkill
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already detecting hidden things."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already detecting hidden things."));
 			return false;
 		}
 
@@ -133,9 +133,9 @@ public class Thief_Detection extends ThiefSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?_("<T-NAME> become(s) very observant."):_("<S-NAME> start(s) examining <S-HIS-HER> surroundings carefully."));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?L("<T-NAME> become(s) very observant."):L("<S-NAME> start(s) examining <S-HIS-HER> surroundings carefully."));
 		if(!success)
-			return beneficialVisualFizzle(mob,null,auto?"":_("<S-NAME> look(s) around carefully, but become(s) distracted."));
+			return beneficialVisualFizzle(mob,null,auto?"":L("<S-NAME> look(s) around carefully, but become(s) distracted."));
 		else
 		if(mob.location().okMessage(mob,msg))
 		{

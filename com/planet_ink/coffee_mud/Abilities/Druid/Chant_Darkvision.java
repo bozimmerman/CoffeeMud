@@ -37,9 +37,9 @@ import java.util.Vector;
 public class Chant_Darkvision extends Chant
 {
 	@Override public String ID() { return "Chant_Darkvision"; }
-	private final static String localizedName = CMLib.lang()._("Darkvision");
+	private final static String localizedName = CMLib.lang().L("Darkvision");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Darkvision)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Darkvision)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
@@ -73,7 +73,7 @@ public class Chant_Darkvision extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("You lose your darkvision."));
+			mob.tell(L("You lose your darkvision."));
 	}
 
 	@Override
@@ -85,7 +85,7 @@ public class Chant_Darkvision extends Chant
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> darkvision."));
+			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> darkvision."));
 			return false;
 		}
 
@@ -105,7 +105,7 @@ public class Chant_Darkvision extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<S-NAME> gain(s) darkvision!"):_("^S<S-NAME> chant(s) for darkvision!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<S-NAME> gain(s) darkvision!"):L("^S<S-NAME> chant(s) for darkvision!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -113,7 +113,7 @@ public class Chant_Darkvision extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s), but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s), but nothing more happens."));
 
 		// return whether it worked
 		return success;

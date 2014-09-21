@@ -128,7 +128,7 @@ public class Areas extends StdCommand
 						statVal=x;
 				if(statVal<0)
 				{
-					mob.tell(_("There was an error in your SORT= qualifier: '@x1' is unknown.",s.substring(5)));
+					mob.tell(L("There was an error in your SORT= qualifier: '@x1' is unknown.",s.substring(5)));
 					return false;
 				}
 				final int sortStat=statVal;
@@ -153,11 +153,11 @@ public class Areas extends StdCommand
 			}
 		}
 
-		StringBuffer msg=new StringBuffer(_("^HComplete areas list@x1:^?^N\n\r",append));
+		StringBuffer msg=new StringBuffer(L("^HComplete areas list@x1:^?^N\n\r",append));
 		if(commands.size()>1)
 		{
 			expression=CMParms.combineWithQuotes(commands,1);
-			msg=new StringBuffer(_("^HFiltered areas list@x1:^?^N\n\r",append));
+			msg=new StringBuffer(L("^HFiltered areas list@x1:^?^N\n\r",append));
 		}
 		final Vector areasVec=new Vector();
 		final boolean sysop=(mob!=null)&&CMSecurity.isASysOp(mob);
@@ -193,7 +193,7 @@ public class Areas extends StdCommand
 						}catch(final Exception e)
 						{
 							if(mob!=null)
-								mob.tell(_("There was an error in your AREA qualifier parameters. See help on AREA for more information. The error was: @x1",e.getMessage()));
+								mob.tell(L("There was an error in your AREA qualifier parameters. See help on AREA for more information. The error was: @x1",e.getMessage()));
 							return false;
 						}
 					}
@@ -211,7 +211,7 @@ public class Areas extends StdCommand
 			}
 			msg.append(CMStrings.padRight((String)areasVec.elementAt(i),colWidth)+"^N");
 		}
-		msg.append(_("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?"));
+		msg.append(L("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?"));
 		if((mob!=null)&&(!mob.isMonster()))
 			mob.session().colorOnlyPrintln(msg.toString());
 		return false;

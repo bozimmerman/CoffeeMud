@@ -36,12 +36,12 @@ import java.util.*;
 public class Prayer_Silence extends Prayer
 {
 	@Override public String ID() { return "Prayer_Silence"; }
-	private final static String localizedName = CMLib.lang()._("Silent");
+	private final static String localizedName = CMLib.lang().L("Silent");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Silenced)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Silenced)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -66,7 +66,7 @@ public class Prayer_Silence extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your silence is lifted."));
+			mob.tell(L("Your silence is lifted."));
 	}
 
 	@Override
@@ -104,19 +104,19 @@ public class Prayer_Silence extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 for an unholy silence upon <T-NAMESELF>.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 for an unholy silence upon <T-NAMESELF>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
 					success=maliciousAffect(mob,target,asLevel,-levelDiff,-1);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> silenced!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> silenced!"));
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to silence <T-NAMESELF>, but flub(s) it."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to silence <T-NAMESELF>, but flub(s) it."));
 
 
 		// return whether it worked

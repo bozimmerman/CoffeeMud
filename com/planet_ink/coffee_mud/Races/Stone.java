@@ -100,7 +100,7 @@ public class Stone extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName(_("<S-HIS-HER> body"));
+			naturalWeapon.setName(L("<S-HIS-HER> body"));
 			naturalWeapon.setRanges(0,3);
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_STONE);
 			naturalWeapon.setUsesRemaining(1000);
@@ -120,7 +120,7 @@ public class Stone extends StdRace
 				||(msg.sourceMinor()==CMMsg.TYP_RETREAT)
 				||(msg.sourceMinor()==CMMsg.TYP_RECALL)))
 			{
-				msg.source().tell(_("You can't really go anywhere -- you're a rock!"));
+				msg.source().tell(L("You can't really go anywhere -- you're a rock!"));
 				return false;
 			}
 		}
@@ -136,7 +136,7 @@ public class Stone extends StdRace
 			&&(msg.source().location()==target.location())
 			&&(msg.source().getVictim()!=target))
 			{
-				msg.source().tell(_("Attack a rock?!"));
+				msg.source().tell(L("Attack a rock?!"));
 				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();

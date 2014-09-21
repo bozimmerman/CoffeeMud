@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_Alarm extends Spell
 {
 	@Override public String ID() { return "Spell_Alarm"; }
-	private final static String localizedName = CMLib.lang()._("Alarm");
+	private final static String localizedName = CMLib.lang().L("Alarm");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
@@ -64,8 +64,8 @@ public class Spell_Alarm extends Spell
 
 		if(msg.amITarget(affected))
 		{
-			myRoomContainer.showHappens(CMMsg.MSG_NOISE,_("A HORRENDOUS ALARM GOES OFF, WHICH SEEMS TO BE COMING FROM @x1!!!",affected.name().toUpperCase()));
-			invoker.tell(_("The alarm on your @x1 has gone off.",affected.name()));
+			myRoomContainer.showHappens(CMMsg.MSG_NOISE,L("A HORRENDOUS ALARM GOES OFF, WHICH SEEMS TO BE COMING FROM @x1!!!",affected.name().toUpperCase()));
+			invoker.tell(L("The alarm on your @x1 has gone off.",affected.name()));
 			unInvoke();
 		}
 	}
@@ -83,7 +83,7 @@ public class Spell_Alarm extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> glow(s) faintly for a short time."):_("^S<S-NAME> touch(es) <T-NAMESELF> very lightly.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> glow(s) faintly for a short time."):L("^S<S-NAME> touch(es) <T-NAMESELF> very lightly.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -93,7 +93,7 @@ public class Spell_Alarm extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> speak(s) and touch(es) <T-NAMESELF> very lightly, but the spell fizzles."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> speak(s) and touch(es) <T-NAMESELF> very lightly, but the spell fizzles."));
 
 
 		// return whether it worked

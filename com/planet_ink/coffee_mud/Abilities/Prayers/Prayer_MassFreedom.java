@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_MassFreedom extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_MassFreedom"; }
-	private final static String localizedName = CMLib.lang()._("Mass Freedom");
+	private final static String localizedName = CMLib.lang().L("Mass Freedom");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
@@ -110,7 +110,7 @@ public class Prayer_MassFreedom extends Prayer implements MendingSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?_("A feeling of freedom flows through the air"):_("^S<S-NAME> @x1 for freedom, and the area begins to fill with divine glory.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?L("A feeling of freedom flows through the air"):L("^S<S-NAME> @x1 for freedom, and the area begins to fill with divine glory.^?",prayWord(mob)));
 			final Room room=mob.location();
 			if((room!=null)&&(room.okMessage(mob,msg)))
 			{
@@ -131,13 +131,13 @@ public class Prayer_MassFreedom extends Prayer implements MendingSkill
 						for(int a=offensiveAffects.size()-1;a>=0;a--)
 							offensiveAffects.get(a).unInvoke();
 						if((!CMLib.flags().stillAffectedBy(target,offensiveAffects,false))&&(target.location()!=null))
-							target.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) less constricted."));
+							target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) less constricted."));
 					}
 				}
 			}
 		}
 		else
-			this.beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 for freedom, but nothing happens.",prayWord(mob)));
+			this.beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 for freedom, but nothing happens.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

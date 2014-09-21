@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_DeathTrap extends ThiefSkill implements Trap
 {
 	@Override public String ID() { return "Thief_DeathTrap"; }
-	private final static String localizedName = CMLib.lang()._("Death Trap");
+	private final static String localizedName = CMLib.lang().L("Death Trap");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
@@ -159,12 +159,12 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 			amount=CMLib.materials().findNumberOfResource(mob.location(),resource.material());
 		if(amount<100)
 		{
-			mob.tell(_("You need 100 pounds of raw metal to build this trap."));
+			mob.tell(L("You need 100 pounds of raw metal to build this trap."));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell(_("You are too busy to get that done right now."));
+			mob.tell(L("You are too busy to get that done right now."));
 			return false;
 		}
 
@@ -176,13 +176,13 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		if(resource!=null)
 			CMLib.materials().destroyResourcesValue(mob.location(),100, resource.material(), -1, null);
 
-		final CMMsg msg=CMClass.getMsg(mob,trapThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_ALWAYS|CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_ACTION,(auto?_("@x1 begins to glow!",trapThis.name()):_("<S-NAME> attempt(s) to lay a trap here.")));
+		final CMMsg msg=CMClass.getMsg(mob,trapThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_ALWAYS|CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_ACTION,(auto?L("@x1 begins to glow!",trapThis.name()):L("<S-NAME> attempt(s) to lay a trap here.")));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			if(success)
 			{
-				mob.tell(_("You have set the trap."));
+				mob.tell(L("You have set the trap."));
 				setTrap(mob,trapThis,mob.charStats().getClassLevel(mob.charStats().getCurrentClass()),(CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().lowestQualifyingLevel(ID()))+1,false);
 				final Thief_DeathTrap T=(Thief_DeathTrap)trapThis.fetchEffect(ID());
 				if(T!=null) T.setMiscText(mob.Name());
@@ -192,12 +192,12 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 				if(CMLib.dice().rollPercentage()>50)
 				{
 					final Trap T=setTrap(mob,trapThis,mob.charStats().getClassLevel(mob.charStats().getCurrentClass()),(CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().lowestQualifyingLevel(ID()))+1,false);
-					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> trigger(s) the trap on accident!"));
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> trigger(s) the trap on accident!"));
 					T.spring(mob);
 				}
 				else
 				{
-					mob.tell(_("You fail in your attempt to set the death trap."));
+					mob.tell(L("You fail in your attempt to set the death trap."));
 				}
 			}
 		}

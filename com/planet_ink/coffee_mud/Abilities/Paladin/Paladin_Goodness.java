@@ -36,7 +36,7 @@ import java.util.*;
 public class Paladin_Goodness extends PaladinSkill
 {
 	@Override public String ID() { return "Paladin_Goodness"; }
-	private final static String localizedName = CMLib.lang()._("Paladin`s Goodness");
+	private final static String localizedName = CMLib.lang().L("Paladin`s Goodness");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
 	protected boolean tickTock=false;

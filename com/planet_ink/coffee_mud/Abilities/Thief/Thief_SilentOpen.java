@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_SilentOpen extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_SilentOpen"; }
-	private final static String localizedName = CMLib.lang()._("Silent Open");
+	private final static String localizedName = CMLib.lang().L("Silent Open");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
@@ -54,7 +54,7 @@ public class Thief_SilentOpen extends ThiefSkill
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell(_("What would you like to open?"));
+			mob.tell(L("What would you like to open?"));
 			return false;
 		}
 		final Environmental item=super.getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
@@ -63,7 +63,7 @@ public class Thief_SilentOpen extends ThiefSkill
 		||(item instanceof Area)
 		||(item instanceof Room))
 		{
-			mob.tell(_("You can't open that!"));
+			mob.tell(L("You can't open that!"));
 			return false;
 		}
 
@@ -74,7 +74,7 @@ public class Thief_SilentOpen extends ThiefSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,item,this,CMMsg.MSG_THIEF_ACT,_("<S-NAME> open(s) <T-NAME>."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,item,this,CMMsg.MSG_THIEF_ACT,L("<S-NAME> open(s) <T-NAME>."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -83,7 +83,7 @@ public class Thief_SilentOpen extends ThiefSkill
 		}
 		else
 		{
-			beneficialVisualFizzle(mob,item,_("<S-NAME> attempt(s) to open <T-NAME> quietly, but fail(s)."));
+			beneficialVisualFizzle(mob,item,L("<S-NAME> attempt(s) to open <T-NAME> quietly, but fail(s)."));
 			CMLib.commands().postOpen(mob,item,false);
 		}
 		return success;

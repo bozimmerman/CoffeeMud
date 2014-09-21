@@ -82,7 +82,7 @@ public class StdClanApron extends StdClanItem
 							&&(state!=Clan.REL_ALLY)
 							&&(state!=Clan.REL_FRIENDLY))
 							{
-								msg.source().tell(((MOB)owner()),null,null,_("<S-NAME> seem(s) to be ignoring you."));
+								msg.source().tell(((MOB)owner()),null,null,L("<S-NAME> seem(s) to be ignoring you."));
 								return false;
 							}
 						}

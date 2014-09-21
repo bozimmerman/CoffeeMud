@@ -37,7 +37,7 @@ import java.util.*;
 public class Spell_DetectSentience extends Spell
 {
 	@Override public String ID() { return "Spell_DetectSentience"; }
-	private final static String localizedName = CMLib.lang()._("Detect Sentience");
+	private final static String localizedName = CMLib.lang().L("Detect Sentience");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canTargetCode(){return 0;}
@@ -54,13 +54,13 @@ public class Spell_DetectSentience extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,mob,auto),auto?"":_("^S<S-NAME> incant(s) softly to <S-HIM-HERSELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,mob,auto),auto?"":L("^S<S-NAME> incant(s) softly to <S-HIM-HERSELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final StringBuffer lines=new StringBuffer("^x");
-				lines.append(CMStrings.padRight(_("Name"),25)+"| ");
-				lines.append(CMStrings.padRight(_("Location"),17)+"^.^N\n\r");
+				lines.append(CMStrings.padRight(L("Name"),25)+"| ");
+				lines.append(CMStrings.padRight(L("Location"),17)+"^.^N\n\r");
 				TrackingLibrary.TrackingFlags flags;
 				flags = new TrackingLibrary.TrackingFlags()
 						.plus(TrackingLibrary.TrackingFlag.AREAONLY);
@@ -91,7 +91,7 @@ public class Spell_DetectSentience extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> incant(s) to <S-HIM-HERSELF>, but the spell fizzles."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> incant(s) to <S-HIM-HERSELF>, but the spell fizzles."));
 
 		return success;
 	}

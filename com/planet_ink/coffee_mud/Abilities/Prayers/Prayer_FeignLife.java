@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_FeignLife extends Prayer
 {
 	@Override public String ID() { return "Prayer_FeignLife"; }
-	private final static String localizedName = CMLib.lang()._("Feign Life");
+	private final static String localizedName = CMLib.lang().L("Feign Life");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Feign Life)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Feign Life)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
@@ -67,7 +67,7 @@ public class Prayer_FeignLife extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> fake life fades."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> fake life fades."));
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class Prayer_FeignLife extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_(auto?"<T-NAME> gain(s) fake life!":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to gain fake life.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> gain(s) fake life!":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to gain fake life.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -114,7 +114,7 @@ public class Prayer_FeignLife extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for <T-NAMESELF> to have a fake life, but nothing happens.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for <T-NAMESELF> to have a fake life, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

@@ -73,7 +73,7 @@ public class JConsole extends StdCommand
 				}
 				catch(final Exception e)
 				{
-					mob.tell(_("Error: @x1",e.getMessage()));
+					mob.tell(L("Error: @x1",e.getMessage()));
 					return false;
 				}
 			}
@@ -86,7 +86,7 @@ public class JConsole extends StdCommand
 				}
 				catch(final Exception e)
 				{
-					mob.tell(_("Error: @x1",e.getMessage()));
+					mob.tell(L("Error: @x1",e.getMessage()));
 					return false;
 				}
 			}
@@ -137,7 +137,7 @@ public class JConsole extends StdCommand
 					session.prompt(IC[0].reset());
 				}
 			};
-			mob.tell(_("JConsole! Enter \"exit\" to exit."));
+			mob.tell(L("JConsole! Enter \"exit\" to exit."));
 			session.prompt(IC[0]);
 		}
 		finally

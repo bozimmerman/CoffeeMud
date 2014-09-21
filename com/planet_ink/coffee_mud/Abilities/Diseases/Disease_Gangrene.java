@@ -36,9 +36,9 @@ import java.util.*;
 public class Disease_Gangrene extends Disease
 {
 	@Override public String ID() { return "Disease_Gangrene"; }
-	private final static String localizedName = CMLib.lang()._("Gangrene");
+	private final static String localizedName = CMLib.lang().L("Gangrene");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Gangrene)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Gangrene)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

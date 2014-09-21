@@ -37,9 +37,9 @@ import java.util.*;
 public class WanderHomeLater extends StdAbility
 {
 	@Override public String ID() { return "WanderHomeLater"; }
-	private final static String localizedName = CMLib.lang()._("WanderHomeLater");
+	private final static String localizedName = CMLib.lang().L("WanderHomeLater");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Waiting til you're clear to go home)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Waiting til you're clear to go home)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

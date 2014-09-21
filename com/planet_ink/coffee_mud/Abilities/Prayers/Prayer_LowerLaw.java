@@ -38,7 +38,7 @@ import java.util.*;
 public class Prayer_LowerLaw extends Prayer
 {
 	@Override public String ID() { return "Prayer_LowerLaw"; }
-	private final static String localizedName = CMLib.lang()._("Lower Law");
+	private final static String localizedName = CMLib.lang().L("Lower Law");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canTargetCode(){return 0;}
@@ -68,14 +68,14 @@ public class Prayer_LowerLaw extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> @x1 for knowledge of the lower law here.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> @x1 for knowledge of the lower law here.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final Area O=CMLib.law().getLegalObject(mob.location());
 				final LegalBehavior B=CMLib.law().getLegalBehavior(mob.location());
 				if((B==null)||(O==null))
-					mob.tell(_("No lower law is established here."));
+					mob.tell(L("No lower law is established here."));
 				else
 				{
 					final Law L=B.legalInfo(O);
@@ -102,12 +102,12 @@ public class Prayer_LowerLaw extends Prayer
 						final String name=L.otherBits().get(x)[Law.BIT_CRIMENAME];
 						if(!crimes.contains(name)) crimes.add(name);
 					}
-					mob.tell(_("The following lower crimes are divinely revealed to you: @x1.",CMLib.english().toEnglishStringList(crimes.toArray(new String[0]))));
+					mob.tell(L("The following lower crimes are divinely revealed to you: @x1.",CMLib.english().toEnglishStringList(crimes.toArray(new String[0]))));
 				}
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> @x1, but nothing is revealed.",prayWord(mob)));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> @x1, but nothing is revealed.",prayWord(mob)));
 
 		return success;
 	}

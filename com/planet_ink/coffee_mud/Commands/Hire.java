@@ -50,9 +50,9 @@ public class Hire extends StdCommand
 			target=null;
 		CMMsg msg=null;
 		if(target==null)
-			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,_("^T<S-NAME> say(s) 'I'm looking to hire some help.'^?"));
+			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) 'I'm looking to hire some help.'^?"));
 		else
-			msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,_("^T<S-NAME> say(s) to <T-NAMESELF> 'Are you for hire?'^?"));
+			msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) to <T-NAMESELF> 'Are you for hire?'^?"));
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		return false;

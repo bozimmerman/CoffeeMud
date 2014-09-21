@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_Sunray extends Chant
 {
 	@Override public String ID() { return "Chant_Sunray"; }
-	private final static String localizedName = CMLib.lang()._("Sunray");
+	private final static String localizedName = CMLib.lang().L("Sunray");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Sunray)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Sunray)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
@@ -65,7 +65,7 @@ public class Chant_Sunray extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your vision returns."));
+			mob.tell(L("Your vision returns."));
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class Chant_Sunray extends Chant
 
 		if((!auto)&&(target.charStats().getBodyPart(Race.BODY_EYE)==0))
 		{
-			mob.tell(_("@x1 has no eyes, and would not be affected.",target.name(mob)));
+			mob.tell(L("@x1 has no eyes, and would not be affected.",target.name(mob)));
 			return false;
 		}
 
@@ -109,19 +109,19 @@ public class Chant_Sunray extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF>. A beam of bright sunlight flashes into <T-HIS-HER> eyes!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>. A beam of bright sunlight flashes into <T-HIS-HER> eyes!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> go(es) blind!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> go(es) blind!"));
 					maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
 
 
 		// return whether it worked

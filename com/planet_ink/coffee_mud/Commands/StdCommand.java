@@ -51,7 +51,7 @@ public class StdCommand implements Command
 	@Override public String[] getAccessWords(){return access;}
 	@Override public void initializeClass(){}
 	
-	public String _(final String str, final String ... xs)
+	public String L(final String str, final String ... xs)
 	{
 		return CMLib.lang().fullSessionTranslation(str, xs);
 	}
@@ -112,13 +112,13 @@ public class StdCommand implements Command
 			}
 		}
 		final StringBuilder str=new StringBuilder("");
-		str.append(_("Illegal arguments. Sent: "));
+		str.append(L("Illegal arguments. Sent: "));
 		for(final Object o : args)
 			if(o==null)
-				str.append(_("null "));
+				str.append(L("null "));
 			else
 				str.append(o.getClass().getSimpleName()).append(" ");
-		str.append(_(". Correct: "));
+		str.append(L(". Correct: "));
 		for (final Class[] element : fmt)
 			for(final Class c : element)
 				str.append(c.getSimpleName()).append(" ");

@@ -36,7 +36,7 @@ import java.util.*;
 public class AnimalTrading extends CommonSkill
 {
 	@Override public String ID() { return "AnimalTrading"; }
-	private final static String localizedName = CMLib.lang()._("Animal Trading");
+	private final static String localizedName = CMLib.lang().L("Animal Trading");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"ANIMALTRADING","ANIMALTRADE","ANIMALSELL","ASELL"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -59,7 +59,7 @@ public class AnimalTrading extends CommonSkill
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
-			commonTell(mob,_("Sell what?"));
+			commonTell(mob,L("Sell what?"));
 			return false;
 		}
 
@@ -69,17 +69,17 @@ public class AnimalTrading extends CommonSkill
 		{
 			if(!CMLib.flags().canBeSeenBy(M,mob))
 			{
-				commonTell(mob,_("You don't see anyone called '@x1' here.",str));
+				commonTell(mob,L("You don't see anyone called '@x1' here.",str));
 				return false;
 			}
 			if((!M.isMonster())||(!CMLib.flags().isAnimalIntelligence(M)))
 			{
-				commonTell(mob,_("You can't sell @x1.",M.name(mob)));
+				commonTell(mob,L("You can't sell @x1.",M.name(mob)));
 				return false;
 			}
 			if((CMLib.flags().canMove(M))&&(!CMLib.flags().isBoundOrHeld(M)))
 			{
-				commonTell(mob,_("@x1 doesn't seem willing to cooperate.  You need to bind the animal before you can sell it.",M.name(mob)));
+				commonTell(mob,L("@x1 doesn't seem willing to cooperate.  You need to bind the animal before you can sell it.",M.name(mob)));
 				return false;
 			}
 			taming=M;
@@ -119,13 +119,13 @@ public class AnimalTrading extends CommonSkill
 			}
 			if(cage==null)
 			{
-				commonTell(mob,_("You don't see anyone called '@x1' here.",str));
+				commonTell(mob,L("You don't see anyone called '@x1' here.",str));
 				return false;
 			}
 			taming=mob.location().fetchFromMOBRoomFavorsItems(mob,cage,CMParms.combine(commands,0),Wearable.FILTER_ANY);
 			if((taming==null)||(!CMLib.flags().canBeSeenBy(taming,mob))||(!(taming instanceof CagedAnimal)))
 			{
-				commonTell(mob,_("You don't see any creatures in @x1 called '@x2'.",cage.name(),CMParms.combine(commands,0)));
+				commonTell(mob,L("You don't see any creatures in @x1 called '@x2'.",cage.name(),CMParms.combine(commands,0)));
 				return false;
 			}
 			M=((CagedAnimal)taming).unCageMe();
@@ -137,7 +137,7 @@ public class AnimalTrading extends CommonSkill
 			return false;
 		if(proficiencyCheck(mob,0,auto))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,shopkeeper,M,CMMsg.MSG_SELL,_("<S-NAME> sell(s) <O-NAME> to <T-NAME>."));
+			final CMMsg msg=CMClass.getMsg(mob,shopkeeper,M,CMMsg.MSG_SELL,L("<S-NAME> sell(s) <O-NAME> to <T-NAME>."));
 			final CMMsg msg2=CMClass.getMsg(mob,M,this,getActivityMessageType(),null);
 			if(!recentlyTraded.contains(mob.Name()))
 			{
@@ -155,7 +155,7 @@ public class AnimalTrading extends CommonSkill
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,shopkeeper,_("<S-NAME> <S-IS-ARE>n't able to strike a deal with <T-NAME>."));
+			beneficialWordsFizzle(mob,shopkeeper,L("<S-NAME> <S-IS-ARE>n't able to strike a deal with <T-NAME>."));
 		return true;
 	}
 }

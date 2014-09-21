@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_NeutralizePoison extends Chant implements MendingSkill
 {
 	@Override public String ID() { return "Chant_NeutralizePoison"; }
-	private final static String localizedName = CMLib.lang()._("Neutralize Poison");
+	private final static String localizedName = CMLib.lang().L("Neutralize Poison");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return 0;}
@@ -99,7 +99,7 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> look(s) cleansed of any poisons."):_("^S<S-NAME> chant(s) for <T-NAME> to be cleansed of poisons.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> look(s) cleansed of any poisons."):L("^S<S-NAME> chant(s) for <T-NAME> to be cleansed of poisons.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -113,7 +113,7 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 				if((!CMLib.flags().stillAffectedBy(target,offensiveAffects,false))
 				&&(target instanceof MOB))
 				{
-					((MOB)target).tell(_("You feel much better!"));
+					((MOB)target).tell(L("You feel much better!"));
 					((MOB)target).recoverCharStats();
 					((MOB)target).recoverMaxState();
 				}
@@ -121,7 +121,7 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> chant(s) for <T-NAME>, but nothing happens."));
+			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> chant(s) for <T-NAME>, but nothing happens."));
 
 
 		// return whether it worked

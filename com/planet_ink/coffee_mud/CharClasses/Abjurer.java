@@ -33,7 +33,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Abjurer extends SpecialistMage
 {
 	@Override public String ID(){return "Abjurer";}
-	private final static String localizedStaticName = CMLib.lang()._("Abjurer");
+	private final static String localizedStaticName = CMLib.lang().L("Abjurer");
 	@Override public String name() { return localizedStaticName; }
 	@Override public int domain(){return Ability.DOMAIN_ABJURATION;}
 	@Override public int opposed(){return Ability.DOMAIN_ENCHANTMENT;}

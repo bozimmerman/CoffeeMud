@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Grow extends Spell
 {
 	@Override public String ID() { return "Spell_Grow"; }
-	private final static String localizedName = CMLib.lang()._("Grow");
+	private final static String localizedName = CMLib.lang().L("Grow");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Grow)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Grow)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -86,7 +86,7 @@ public class Spell_Grow extends Spell
 			else
 				mob.basePhyStats().setWeight(getOldWeight());
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> shrink(s) back down to size."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> shrink(s) back down to size."));
 			CMLib.utensils().confirmWearability(mob);
 		}
 		super.unInvoke();
@@ -100,7 +100,7 @@ public class Spell_Grow extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(_("@x1 is already HUGE!",target.name(mob)));
+			mob.tell(L("@x1 is already HUGE!",target.name(mob)));
 			return false;
 		}
 
@@ -111,7 +111,7 @@ public class Spell_Grow extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -127,7 +127,7 @@ public class Spell_Grow extends Spell
 					A=target.fetchEffect(ID());
 					if(A!=null)
 					{
-						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> grow(s) to an enormous size!"));
+						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> grow(s) to an enormous size!"));
 						setMiscText(Integer.toString(target.basePhyStats().weight()));
 						A.setMiscText(Integer.toString(target.basePhyStats().weight()));
 						long newWeight=Math.round(CMath.mul(target.basePhyStats().weight(),aff));
@@ -140,7 +140,7 @@ public class Spell_Grow extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting but nothing happens."));
 
 
 		// return whether it worked

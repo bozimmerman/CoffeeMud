@@ -39,9 +39,9 @@ public class Archon_Banish extends ArchonSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Archon_Banish"; }
-	private final static String localizedName = CMLib.lang()._("Banish");
+	private final static String localizedName = CMLib.lang().L("Banish");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return _("(Banished "+timeRemaining()+")"); }
+	@Override public String displayText() { return L("(Banished "+timeRemaining()+")"); }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -78,8 +78,8 @@ public class Archon_Banish extends ArchonSkill
 			prisonRoom=CMClass.getLocale("StoneRoom");
 			prisonRoom.addNonUninvokableEffect((Ability)copyOf());
 			prisonRoom.setArea(CMLib.map().getFirstArea());
-			prisonRoom.setDescription(_("You are standing on an immense, grey stone floor that stretches as far as you can see in all directions.  Rough winds plunging from the dark, starless sky tear savagely at your fragile body."));
-			prisonRoom.setDisplayText(_("The Hall of Lost Souls"));
+			prisonRoom.setDescription(L("You are standing on an immense, grey stone floor that stretches as far as you can see in all directions.  Rough winds plunging from the dark, starless sky tear savagely at your fragile body."));
+			prisonRoom.setDisplayText(L("The Hall of Lost Souls"));
 			prisonRoom.setRoomID("");
 			final Ability A2=CMClass.getAbility("Prop_HereSpellCast");
 			if(A2!=null) A2.setMiscText("Spell_Hungerless;Spell_Thirstless");
@@ -135,7 +135,7 @@ public class Archon_Banish extends ArchonSkill
 				if(((!shere)&&(!summon)&&(teleport))
 				   ||((shere)&&(summon)))
 				{
-					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,_("Magic energy fizzles and is absorbed into the air."));
+					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
 					return false;
 				}
 			}
@@ -151,7 +151,7 @@ public class Archon_Banish extends ArchonSkill
 				if(((shere)&&(!summon)&&(teleport))
 				   ||((!shere)&&(summon)))
 				{
-					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,_("Magic energy fizzles and is absorbed into the air."));
+					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
 					return false;
 				}
 			}
@@ -163,13 +163,13 @@ public class Archon_Banish extends ArchonSkill
 			   ||(msg.source().location().getArea()==affected))
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING)))
 			{
-				msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,_("Magic energy fizzles and is absorbed into the air."));
+				msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
 				return false;
 			}
 			if(msg.sourceMinor()==CMMsg.TYP_RECALL)
 			{
 				if((msg.source()!=null)&&(msg.source().location()!=null))
-					msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,_("<S-NAME> attempt(s) to recall, but the magic fizzles."));
+					msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to recall, but the magic fizzles."));
 				return false;
 			}
 		}
@@ -188,7 +188,7 @@ public class Archon_Banish extends ArchonSkill
 
 		super.unInvoke();
 
-		mob.tell(_("You are released from banishment!"));
+		mob.tell(L("You are released from banishment!"));
 		mob.getStartRoom().bringMobHere(mob,true);
 		if(prisonRoom!=null)
 		{
@@ -249,7 +249,7 @@ public class Archon_Banish extends ArchonSkill
 		if(A!=null)
 		{
 			A.unInvoke();
-			mob.tell(_("@x1 is released from banishment.",target.Name()));
+			mob.tell(L("@x1 is released from banishment.",target.Name()));
 			return true;
 		}
 
@@ -260,7 +260,7 @@ public class Archon_Banish extends ArchonSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?_("<T-NAME> is banished!"):_("^F<S-NAME> banish(es) <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?L("<T-NAME> is banished!"):L("^F<S-NAME> banish(es) <T-NAMESELF>.^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -274,14 +274,14 @@ public class Archon_Banish extends ArchonSkill
 				{
 					A.prison().bringMobHere(target,false);
 					mob.location().send(mob,msg);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> banished to @x1!",A.prison().displayText()));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> banished to @x1!",A.prison().displayText()));
 					Log.sysOut("Banish",mob.Name()+" banished "+target.name()+" to "+CMLib.map().getExtendedRoomID(A.prison())+".");
 				}
 
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to banish <T-NAMESELF>, but fail(s)."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to banish <T-NAMESELF>, but fail(s)."));
 		return success;
 	}
 }

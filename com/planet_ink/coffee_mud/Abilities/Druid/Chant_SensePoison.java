@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_SensePoison extends Chant
 {
 	@Override public String ID() { return "Chant_SensePoison"; }
-	private final static String localizedName = CMLib.lang()._("Sense Poison");
+	private final static String localizedName = CMLib.lang().L("Sense Poison");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	@Override protected int canAffectCode(){return 0;}
@@ -86,13 +86,13 @@ public class Chant_SensePoison extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) over <T-NAME>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) over <T-NAME>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final StringBuffer buf=new StringBuffer(_("@x1 contains: ",target.name()));
+				final StringBuffer buf=new StringBuffer(L("@x1 contains: ",target.name()));
 				if(offensiveAffects.size()==0)
-					buf.append(_("weak impurities, "));
+					buf.append(L("weak impurities, "));
 				else
 				for(int i=0;i<offensiveAffects.size();i++)
 					buf.append(offensiveAffects.get(i).name()+", ");
@@ -100,7 +100,7 @@ public class Chant_SensePoison extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> chant(s) over <T-NAME>, but receives no insight."));
+			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> chant(s) over <T-NAME>, but receives no insight."));
 
 
 		// return whether it worked

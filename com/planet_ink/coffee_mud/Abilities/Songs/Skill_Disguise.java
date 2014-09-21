@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Disguise extends BardSkill
 {
 	@Override public String ID() { return "Skill_Disguise"; }
-	private final static String localizedName = CMLib.lang()._("Disguise");
+	private final static String localizedName = CMLib.lang().L("Disguise");
 	@Override public String name() { return localizedName; }
 	@Override
 	public String description()
@@ -48,7 +48,7 @@ public class Skill_Disguise extends BardSkill
 				ret.append(what+" ");
 		return ret.toString();
 	}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(In Disguise)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(In Disguise)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -168,11 +168,11 @@ public class Skill_Disguise extends BardSkill
 		{
 			if(A==null)
 			{
-				mob.tell(_("Disguise what? @x1.",validChoices));
+				mob.tell(L("Disguise what? @x1.",validChoices));
 				return false;
 			}
 			A.unInvoke();
-			mob.tell(_("You remove your disguise."));
+			mob.tell(L("You remove your disguise."));
 			return true;
 		}
 		final String what=(String)commands.firstElement();
@@ -182,20 +182,20 @@ public class Skill_Disguise extends BardSkill
 				which=i;
 		if(which<0)
 		{
-			mob.tell(_("Disguise what? '@x1' is not a valid choice.  Valid choices are: @x2.",what,validChoices));
+			mob.tell(L("Disguise what? '@x1' is not a valid choice.  Valid choices are: @x2.",what,validChoices));
 			return false;
 
 		}
 		if((CMLib.ableMapper().qualifyingLevel(mob,this)>0)
 		   &&((CMLib.ableMapper().qualifyingClassLevel(mob,this)+getXLEVELLevel(mob))<levels[which]))
 		{
-			mob.tell(_("You must have @x1 levels in this skill to use that disguise.",""+levels[which]));
+			mob.tell(L("You must have @x1 levels in this skill to use that disguise.",""+levels[which]));
 			return false;
 		}
 		commands.removeElementAt(0);
 		if(commands.size()==0)
 		{
-			mob.tell(_("Disguise @x1 in what way?  Be more specific.",whats[which].toLowerCase()));
+			mob.tell(L("Disguise @x1 in what way?  Be more specific.",whats[which].toLowerCase()));
 			return false;
 		}
 		String how=CMStrings.removeColors(CMParms.combine(commands,0));
@@ -207,7 +207,7 @@ public class Skill_Disguise extends BardSkill
 		{
 			if(CMath.s_int(how)<=0)
 			{
-				mob.tell(_("You cannot disguise your weight as @x1 pounds!",how));
+				mob.tell(L("You cannot disguise your weight as @x1 pounds!",how));
 				return false;
 			}
 			int x=mob.basePhyStats().weight()-CMath.s_int(how);
@@ -218,7 +218,7 @@ public class Skill_Disguise extends BardSkill
 		case 1: // level
 			if((CMath.s_int(how)<=0)||CMath.s_int(how)>100000)
 			{
-				mob.tell(_("You cannot disguise your level as @x1!",how));
+				mob.tell(L("You cannot disguise your level as @x1!",how));
 				return false;
 			}
 			how=Integer.toString(CMath.s_int(how));
@@ -235,7 +235,7 @@ public class Skill_Disguise extends BardSkill
 			if(how.toUpperCase().startsWith("G")) how="girl";
 			else
 			{
-				mob.tell(_("'@x1' is a sex which cannot be guessed at!",how));
+				mob.tell(L("'@x1' is a sex which cannot be guessed at!",how));
 				return false;
 			}
 			break;
@@ -243,7 +243,7 @@ public class Skill_Disguise extends BardSkill
 			{
 				if(CMClass.getRace(how)==null)
 				{
-					mob.tell(_("'@x1' is an unknown race!",how));
+					mob.tell(L("'@x1' is an unknown race!",how));
 					return false;
 				}
 				how=CMClass.getRace(how).name();
@@ -253,7 +253,7 @@ public class Skill_Disguise extends BardSkill
 		{
 			if(CMath.s_int(how)<=0)
 			{
-				mob.tell(_("You cannot disguise your height as @x1 inches!",how));
+				mob.tell(L("You cannot disguise your height as @x1 inches!",how));
 				return false;
 			}
 			int x=mob.phyStats().height()-CMath.s_int(how);
@@ -265,19 +265,19 @@ public class Skill_Disguise extends BardSkill
 		{
 			if((how.indexOf(' ')>=0)||(how.indexOf('<')>=0))
 			{
-				mob.tell(_("Your disguise name may not have a space in it, or illegal characters."));
+				mob.tell(L("Your disguise name may not have a space in it, or illegal characters."));
 				return false;
 			}
 			else
 			if(CMLib.players().playerExists(how))
 			{
-				mob.tell(_("You cannot disguise yourself as a player except through Mark Disguise."));
+				mob.tell(L("You cannot disguise yourself as a player except through Mark Disguise."));
 				return false;
 			}
 			else
 			if(CMLib.login().isBadName(how))
 			{
-				mob.tell(_("You cannot disguise yourself as that."));
+				mob.tell(L("You cannot disguise yourself as that."));
 				return false;
 			}
 			else
@@ -288,12 +288,12 @@ public class Skill_Disguise extends BardSkill
 			{
 				if(how.equalsIgnoreCase("Archon"))
 				{
-					mob.tell(_("You cannot disguise yourself as an Archon."));
+					mob.tell(L("You cannot disguise yourself as an Archon."));
 					return false;
 				}
 				if(CMClass.findCharClass(how)==null)
 				{
-					mob.tell(_("'@x1' is an unknown character class!",how));
+					mob.tell(L("'@x1' is an unknown character class!",how));
 					return false;
 				}
 				how=CMStrings.capitalizeAndLower(how);
@@ -303,7 +303,7 @@ public class Skill_Disguise extends BardSkill
 		{
 			if((!how.equalsIgnoreCase("good"))&&(!how.equalsIgnoreCase("evil")))
 			{
-				mob.tell(_("You may only disguise your alignment as 'good' or 'evil'."));
+				mob.tell(L("You may only disguise your alignment as 'good' or 'evil'."));
 				return false;
 			}
 			break;
@@ -312,7 +312,7 @@ public class Skill_Disguise extends BardSkill
 		{
 			if((CMath.s_int(how)<=0)||(CMath.s_int(how)>100000))
 			{
-				mob.tell(_("You cannot disguise your age as @x1 years!",how));
+				mob.tell(L("You cannot disguise your age as @x1 years!",how));
 				return false;
 			}
 			int x=mob.baseCharStats().getStat(CharStats.STAT_AGE)-CMath.s_int(how);
@@ -329,7 +329,7 @@ public class Skill_Disguise extends BardSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob,null,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),_("<S-NAME> turn(s) away for a second."));
+			final CMMsg msg=CMClass.getMsg(mob,mob,null,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),L("<S-NAME> turn(s) away for a second."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -342,7 +342,7 @@ public class Skill_Disguise extends BardSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,_("<S-NAME> turn(s) away and then back, but look(s) the same."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> turn(s) away and then back, but look(s) the same."));
 
 		return success;
 	}

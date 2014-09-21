@@ -38,10 +38,10 @@ import java.util.*;
 public class Prayer_HuntEvil extends Prayer
 {
 	@Override public String ID() { return "Prayer_HuntEvil"; }
-	private final static String localizedName = CMLib.lang()._("Hunt Evil");
+	private final static String localizedName = CMLib.lang().L("Hunt Evil");
 	@Override public String name() { return localizedName; }
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_TRACKING;}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Hunting Evil)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Hunting Evil)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	protected String word(){return "evil";}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
@@ -69,21 +69,21 @@ public class Prayer_HuntEvil extends Prayer
 
 			if(nextDirection==999)
 			{
-				mob.tell(_("The hunt seems to pause here."));
+				mob.tell(L("The hunt seems to pause here."));
 				nextDirection=-2;
 				unInvoke();
 			}
 			else
 			if(nextDirection==-1)
 			{
-				mob.tell(_("The hunt dries up here."));
+				mob.tell(L("The hunt dries up here."));
 				nextDirection=-999;
 				unInvoke();
 			}
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell(_("The hunt seems to continue @x1.",Directions.getDirectionName(nextDirection)));
+				mob.tell(L("The hunt seems to continue @x1.",Directions.getDirectionName(nextDirection)));
 				nextDirection=-2;
 			}
 
@@ -131,7 +131,7 @@ public class Prayer_HuntEvil extends Prayer
 	{
 		if(mob.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(_("You are already trying to hunt @x1.",word()));
+			mob.tell(L("You are already trying to hunt @x1.",word()));
 			return false;
 		}
 		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
@@ -145,7 +145,7 @@ public class Prayer_HuntEvil extends Prayer
 
 		if(gameHere(mob.location())!=null)
 		{
-			mob.tell(_("Try 'look'."));
+			mob.tell(L("Try 'look'."));
 			return false;
 		}
 
@@ -174,7 +174,7 @@ public class Prayer_HuntEvil extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("^S<S-NAME> @x1 for the trail to @x2.^?",prayWord(mob),word()));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> @x1 for the trail to @x2.^?",prayWord(mob),word()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -187,7 +187,7 @@ public class Prayer_HuntEvil extends Prayer
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,_("<S-NAME> @x1 for the trail to @x2, but nothing happens.",prayWord(mob),word()));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> @x1 for the trail to @x2, but nothing happens.",prayWord(mob),word()));
 
 
 		// return whether it worked

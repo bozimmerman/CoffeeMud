@@ -36,7 +36,7 @@ import java.util.*;
 public class Digging extends GatheringSkill
 {
 	@Override public String ID() { return "Digging"; }
-	private final static String localizedName = CMLib.lang()._("Gem Digging");
+	private final static String localizedName = CMLib.lang().L("Gem Digging");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"GDIG","GDIGGING","GEMDIGGING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -49,8 +49,8 @@ public class Digging extends GatheringSkill
 	public Digging()
 	{
 		super();
-		displayText=_("You are digging for gems...");
-		verb=_("digging");
+		displayText=L("You are digging for gems...");
+		verb=L("digging");
 	}
 
 	protected int getDuration(MOB mob, int level)
@@ -69,15 +69,15 @@ public class Digging extends GatheringSkill
 			{
 				if(found!=null)
 				{
-					commonTell(mob,_("You have found some @x1!",foundShortName));
-					displayText=_("You are digging out @x1",foundShortName);
-					verb=_("digging out @x1",foundShortName);
+					commonTell(mob,L("You have found some @x1!",foundShortName));
+					displayText=L("You are digging out @x1",foundShortName);
+					verb=L("digging out @x1",foundShortName);
 					if((found.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PRECIOUS)
 						bumpTickDown(tickDown*2);
 				}
 				else
 				{
-					final StringBuffer str=new StringBuffer(_("You can't seem to find anything worth digging up here.\n\r"));
+					final StringBuffer str=new StringBuffer(L("You can't seem to find anything worth digging up here.\n\r"));
 					commonTell(mob,str.toString());
 					unInvoke();
 				}
@@ -105,7 +105,7 @@ public class Digging extends GatheringSkill
 					amount=amount*abilityCode();
 					String s="s";
 					if((amount==1)||(foundShortName.endsWith("s"))) s="";
-					mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> manage(s) to dig out @x1 @x2@x3.",""+amount,foundShortName,s));
+					mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to dig out @x1 @x2@x3.",""+amount,foundShortName,s));
 					for(int i=0;i<amount;i++)
 					{
 						final Item newFound=(Item)found.copyOf();
@@ -135,7 +135,7 @@ public class Digging extends GatheringSkill
 			return false;
 		}
 
-		verb=_("digging");
+		verb=L("digging");
 		playSound="dig.wav";
 		found=null;
 		if((!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_PRECIOUS,mob.location()))
@@ -143,7 +143,7 @@ public class Digging extends GatheringSkill
 		&&(!confirmPossibleMaterialLocation(RawMaterial.RESOURCE_SAND,mob.location()))
 		&&(!confirmPossibleMaterialLocation(RawMaterial.RESOURCE_STONE,mob.location())))
 		{
-			commonTell(mob,_("You don't think this is a good place to dig for gems."));
+			commonTell(mob,L("You don't think this is a good place to dig for gems."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -162,7 +162,7 @@ public class Digging extends GatheringSkill
 		}
 
 		final int duration=getDuration(mob,1);
-		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),_("<S-NAME> start(s) digging for gems."));
+		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),L("<S-NAME> start(s) digging for gems."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

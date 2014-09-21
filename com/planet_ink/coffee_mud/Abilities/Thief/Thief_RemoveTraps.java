@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_RemoveTraps extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_RemoveTraps"; }
-	private final static String localizedName = CMLib.lang()._("Remove Traps");
+	private final static String localizedName = CMLib.lang().L("Remove Traps");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
@@ -116,10 +116,10 @@ public class Thief_RemoveTraps extends ThiefSkill
 		}
 		if(unlockThis==null)
 		{
-			mob.tell(_("You can't seem to remember how this works."));
+			mob.tell(L("You can't seem to remember how this works."));
 			return false;
 		}
-		final CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_ACTION,auto?_("@x1 begins to glow.",unlockThis.name()):_("<S-NAME> attempt(s) to safely deactivate a trap on @x1.",unlockThis.name()));
+		final CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_ACTION,auto?L("@x1 begins to glow.",unlockThis.name()):L("<S-NAME> attempt(s) to safely deactivate a trap on @x1.",unlockThis.name()));
 		if((success)&&(!lastDone.contains(""+unlockThis)))
 		{
 			while(lastDone.size()>40) lastDone.removeElementAt(0);
@@ -165,7 +165,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 				}
 			}
 			if((!auto)&&(!saveTheTrap))
-				mob.tell(_("You have completed your attempt."));
+				mob.tell(L("You have completed your attempt."));
 			lastChecked=unlockThis;
 		}
 

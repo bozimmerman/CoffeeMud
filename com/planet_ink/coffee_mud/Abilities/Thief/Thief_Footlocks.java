@@ -35,9 +35,9 @@ import java.util.*;
 public class Thief_Footlocks extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Footlocks"; }
-	private final static String localizedName = CMLib.lang()._("Footlocks");
+	private final static String localizedName = CMLib.lang().L("Footlocks");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Footlocked)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Footlocked)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_BINDING;}
@@ -63,7 +63,7 @@ public class Thief_Footlocks extends ThiefSkill
 		&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(CharStats.STAT_DEXTERITY)-(getXLEVELLevel(mob)*3)))
 		&&((msg.sourceMinor()==CMMsg.TYP_ADVANCE)||(msg.sourceMinor()==CMMsg.TYP_RETREAT)||(msg.sourceMinor()==CMMsg.TYP_FLEE)))
 		{
-			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> stumble(s) in the footlocks."));
+			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> stumble(s) in the footlocks."));
 			return false;
 		}
 		return super.okMessage(myHost,msg);
@@ -80,7 +80,7 @@ public class Thief_Footlocks extends ThiefSkill
 			if(!mob.amDead())
 			{
 				if((mob.location()!=null)&&(!mob.amDead()))
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> break(s) free of the footlocks."));
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> break(s) free of the footlocks."));
 			}
 			if(footlock!=null)
 			{
@@ -118,7 +118,7 @@ public class Thief_Footlocks extends ThiefSkill
 
 		if(CMLib.flags().isSleeping(mob))
 		{
-			mob.tell(_("You need to wake up!"));
+			mob.tell(L("You need to wake up!"));
 			return false;
 		}
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
@@ -130,13 +130,13 @@ public class Thief_Footlocks extends ThiefSkill
 			cloth=CMLib.materials().findMostOfMaterial(mob,RawMaterial.MATERIAL_CLOTH);
 			if((cloth==null)||CMLib.materials().findNumberOfResource(mob,cloth.material())<1)
 			{
-				mob.tell(_("You need a pound of cloth to use this skill."));
+				mob.tell(L("You need a pound of cloth to use this skill."));
 				return false;
 			}
 			wood=CMLib.materials().findMostOfMaterial(mob,RawMaterial.MATERIAL_WOODEN);
 			if((wood==null)||CMLib.materials().findNumberOfResource(mob,wood.material())<2)
 			{
-				mob.tell(_("You need two pounds of wood to use this skill."));
+				mob.tell(L("You need two pounds of wood to use this skill."));
 				return false;
 			}
 		}
@@ -157,12 +157,12 @@ public class Thief_Footlocks extends ThiefSkill
 		{
 			final Item foots=CMClass.getItem("GenItem");
 			foots.setRawWornCode(Wearable.WORN_FEET);
-			foots.setName(_("a pair of footlock blocks"));
-			foots.setDisplayText(_("whats left of some footlocks"));
+			foots.setName(L("a pair of footlock blocks"));
+			foots.setDisplayText(L("whats left of some footlocks"));
 			CMLib.flags().setRemovable(foots,false);
 			CMLib.flags().setDroppable(foots,false);
 			foots.setMaterial((wood!=null)?wood.material():RawMaterial.RESOURCE_WOOD);
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,auto?_("<T-NAME> can't seem to move <T-HIS-HER> feet!"):_("<S-NAME> throw(s) a pair of roped blocks at <T-YOUPOSS> feet!"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,auto?L("<T-NAME> can't seem to move <T-HIS-HER> feet!"):L("<S-NAME> throw(s) a pair of roped blocks at <T-YOUPOSS> feet!"));
 			final CMMsg msg2=CMClass.getMsg(mob,target,foots,CMMsg.MSG_THROW,null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
@@ -179,7 +179,7 @@ public class Thief_Footlocks extends ThiefSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,_("<S-NAME> throw(s) a pair of footlock blocks at <T-YOUPOSS> feet and miss(es)."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> throw(s) a pair of footlock blocks at <T-YOUPOSS> feet and miss(es)."));
 		return success;
 	}
 }

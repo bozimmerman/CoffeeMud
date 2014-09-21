@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_Ventriloquate extends Spell
 {
 	@Override public String ID() { return "Spell_Ventriloquate"; }
-	private final static String localizedName = CMLib.lang()._("Ventriloquate");
+	private final static String localizedName = CMLib.lang().L("Ventriloquate");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
@@ -48,13 +48,13 @@ public class Spell_Ventriloquate extends Spell
 
 		if(commands.size()<2)
 		{
-			mob.tell(_("You must specify who or what to cast this on, and what you want said."));
+			mob.tell(L("You must specify who or what to cast this on, and what you want said."));
 			return false;
 		}
 		final Physical target=mob.location().fetchFromRoomFavorItems(null,(String)commands.elementAt(0));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",((String)commands.elementAt(0))));
+			mob.tell(L("You don't see '@x1' here.",((String)commands.elementAt(0))));
 			return false;
 		}
 		if(target==mob) return false;
@@ -70,12 +70,12 @@ public class Spell_Ventriloquate extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_SPEAK,_("^T<T-NAME> say(s) '@x1'^?",CMParms.combine(commands,1)));
+				mob.location().show(mob,target,CMMsg.MSG_SPEAK,L("^T<T-NAME> say(s) '@x1'^?",CMParms.combine(commands,1)));
 			}
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to ventriloquate through <T-NAMESELF>, but no one is fooled."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to ventriloquate through <T-NAMESELF>, but no one is fooled."));
 
 
 		// return whether it worked

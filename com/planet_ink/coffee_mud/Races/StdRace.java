@@ -277,7 +277,7 @@ public class StdRace implements Race
 		&&(myHost instanceof MOB)
 		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING)))
 		{
-			msg.source().location().show(msg.source(),myHost,CMMsg.MSG_OK_VISUAL,_("<T-NAME> seem(s) unaffected by the charm magic from <S-NAMESELF>."));
+			msg.source().location().show(msg.source(),myHost,CMMsg.MSG_OK_VISUAL,L("<T-NAME> seem(s) unaffected by the charm magic from <S-NAMESELF>."));
 			return false;
 		}
 		return true;
@@ -332,7 +332,7 @@ public class StdRace implements Race
 								&&(myChar.charStats().ageCategory()<Race.AGE_OLD))))
 				{
 					if(srcExhausted)
-						msg.source().tell(_("You are exhausted!"));
+						msg.source().tell(L("You are exhausted!"));
 					else
 					{
 						if(msg.source().maxState().getFatigue()>Long.MIN_VALUE/2)
@@ -340,7 +340,7 @@ public class StdRace implements Race
 						msg.source().curState().adjMovement(-msg.source().maxState().getMovement()/2, msg.source().maxState());
 					}
 					if(meExhausted)
-						myChar.tell(_("You are exhausted!"));
+						myChar.tell(L("You are exhausted!"));
 					else
 					{
 						if(myChar.maxState().getFatigue()>Long.MIN_VALUE/2)
@@ -375,7 +375,7 @@ public class StdRace implements Race
 	@Override public int getTickStatus(){return Tickable.STATUS_NOT;}
 	@Override public boolean tick(Tickable myChar, int tickID){return true;}
 	
-	public String _(final String str, final String ... xs)
+	public String L(final String str, final String ... xs)
 	{
 		return CMLib.lang().fullSessionTranslation(str, xs);
 	}
@@ -461,35 +461,35 @@ public class StdRace implements Race
 					case 1:
 					case 2:
 					case 3:
-					naturalWeapon.setName(_("a quick punch"));
+					naturalWeapon.setName(L("a quick punch"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 					case 4:
-					naturalWeapon.setName(_("fingernails and teeth"));
+					naturalWeapon.setName(L("fingernails and teeth"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
 					break;
 					case 5:
-					naturalWeapon.setName(_("an elbow"));
+					naturalWeapon.setName(L("an elbow"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 					case 6:
-					naturalWeapon.setName(_("a backhand"));
+					naturalWeapon.setName(L("a backhand"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 					case 7:
-					naturalWeapon.setName(_("a strong jab"));
+					naturalWeapon.setName(L("a strong jab"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 					case 8:
-					naturalWeapon.setName(_("a stinging punch"));
+					naturalWeapon.setName(L("a stinging punch"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 					case 9:
-					naturalWeapon.setName(_("a knee"));
+					naturalWeapon.setName(L("a knee"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 					case 10:
-					naturalWeapon.setName(_("a head butt"));
+					naturalWeapon.setName(L("a head butt"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 				}
@@ -553,10 +553,10 @@ public class StdRace implements Race
 		bodyI.setPlayerCorpse(!mob.isMonster());
 		bodyI.setTimeOfDeath(System.currentTimeMillis());
 		bodyI.setMobPKFlag(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL));
-		bodyI.setName(_("the body of @x1",mob.Name().replace('\'','`')));
+		bodyI.setName(L("the body of @x1",mob.Name().replace('\'','`')));
 		bodyI.setMobName(mob.Name().replace('\'','`'));
 		bodyI.setMobDescription(mob.description().replace('\'','`'));
-		bodyI.setDisplayText(_("the body of @x1 lies here.",mob.Name().replace('\'','`')));
+		bodyI.setDisplayText(L("the body of @x1 lies here.",mob.Name().replace('\'','`')));
 		final Ability ageA=mob.fetchEffect("Age");
 		if(ageA!=null) bodyI.addNonUninvokableEffect(ageA);
 		if(room!=null)

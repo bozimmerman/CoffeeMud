@@ -43,7 +43,7 @@ public class Pause extends StdCommand
 
 	public boolean errorOut(MOB mob)
 	{
-		mob.tell(_("You are not allowed to do that here."));
+		mob.tell(L("You are not allowed to do that here."));
 		return false;
 	}
 
@@ -58,28 +58,28 @@ public class Pause extends StdCommand
 			if(!CMLib.threads().isAllSuspended())
 			{
 				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.PAUSE))
-					mob.tell(_("You are not allowed to pause all objects."));
+					mob.tell(L("You are not allowed to pause all objects."));
 				else
 				{
 					CMLib.threads().suspendAll(new CMRunnable[]{mob.session()});
-					mob.tell(_("All objects have been suspended. Enter PAUSE again to resume."));
+					mob.tell(L("All objects have been suspended. Enter PAUSE again to resume."));
 				}
 			}
 			else
 			{
 				CMLib.threads().resumeAll();
-				mob.tell(_("All objects have been resumed."));
+				mob.tell(L("All objects have been resumed."));
 			}
 		}
 		else
 		if(cmd.equalsIgnoreCase("RESUME"))
 		{
 			if(!CMLib.threads().isAllSuspended())
-				mob.tell(_("Objects are not currently suspended."));
+				mob.tell(L("Objects are not currently suspended."));
 			else
 			{
 				CMLib.threads().resumeAll();
-				mob.tell(_("All objects have been resumed."));
+				mob.tell(L("All objects have been resumed."));
 			}
 		}
 		else
@@ -93,20 +93,20 @@ public class Pause extends StdCommand
 			else
 				E=mob.location().fetchFromRoomFavorMOBs(null,cmd);
 			if(E==null)
-				mob.tell(_("'@x1' is an unknown object here.",cmd));
+				mob.tell(L("'@x1' is an unknown object here.",cmd));
 			else
 			if(!CMLib.threads().isTicking(E,-1))
-				mob.tell(_("'@x1' has no thread support.",cmd));
+				mob.tell(L("'@x1' has no thread support.",cmd));
 			else
 			if(!CMLib.threads().isSuspended(E,-1))
 			{
 				CMLib.threads().suspendTicking(E,-1);
-				mob.tell(_("Object '@x1' ticks have been suspended. Enter PAUSE @x2 again to resume.",E.name(),cmd.toUpperCase()));
+				mob.tell(L("Object '@x1' ticks have been suspended. Enter PAUSE @x2 again to resume.",E.name(),cmd.toUpperCase()));
 			}
 			else
 			{
 				CMLib.threads().resumeTicking(E,-1);
-				mob.tell(_("Object '@x1' ticks have been resumed.",E.name()));
+				mob.tell(L("Object '@x1' ticks have been resumed.",E.name()));
 			}
 		}
 		return false;

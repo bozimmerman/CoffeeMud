@@ -39,7 +39,7 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Spell_CEqParalysis extends Spell_BaseClanEq {
 @Override public String ID() { return "Spell_CEqParalysis"; }
-private final static String localizedName = CMLib.lang()._("ClanEnchant Paralysis");
+private final static String localizedName = CMLib.lang().L("ClanEnchant Paralysis");
 	@Override public String name() { return localizedName; }
 @Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 

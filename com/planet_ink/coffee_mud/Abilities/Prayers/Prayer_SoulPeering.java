@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_SoulPeering extends Prayer
 {
 	@Override public String ID() { return "Prayer_SoulPeering"; }
-	private final static String localizedName = CMLib.lang()._("Soul Peering");
+	private final static String localizedName = CMLib.lang().L("Soul Peering");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
@@ -55,7 +55,7 @@ public class Prayer_SoulPeering extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 while peering into <T-YOUPOSS> soul.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 while peering into <T-YOUPOSS> soul.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -65,7 +65,7 @@ public class Prayer_SoulPeering extends Prayer
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to peer into <T-YOUPOSS> soul, but fails."));
+			beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to peer into <T-YOUPOSS> soul, but fails."));
 
 		return success;
 	}

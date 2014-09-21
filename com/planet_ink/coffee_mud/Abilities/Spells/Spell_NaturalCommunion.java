@@ -38,7 +38,7 @@ import java.util.*;
 public class Spell_NaturalCommunion extends Spell
 {
 	@Override public String ID() { return "Spell_NaturalCommunion"; }
-	private final static String localizedName = CMLib.lang()._("Natural Communion");
+	private final static String localizedName = CMLib.lang().L("Natural Communion");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canTargetCode(){return 0;}
@@ -101,7 +101,7 @@ public class Spell_NaturalCommunion extends Spell
 		final boolean success=proficiencyCheck(mob,chance,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,targetR,this,somanticCastCode(mob,targetR,auto),auto?"":_("^S<S-NAME> commune(s) with <S-HIS-HER> natural surroundings.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,targetR,this,somanticCastCode(mob,targetR,auto),auto?"":L("^S<S-NAME> commune(s) with <S-HIS-HER> natural surroundings.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -111,11 +111,11 @@ public class Spell_NaturalCommunion extends Spell
 				communeWithThisRoom(mob,mob.location(),stuff);
 				for(final Room R : rooms)
 					communeWithThisRoom(mob,R,stuff);
-				mob.tell(_("Your surroundings show the following natural signs: @x1.",CMLib.english().toEnglishStringList(stuff.toArray(new String[0]))));
+				mob.tell(L("Your surroundings show the following natural signs: @x1.",CMLib.english().toEnglishStringList(stuff.toArray(new String[0]))));
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,targetR,_("<S-NAME> attempt(s) to commune with nature, and fail(s)."));
+			beneficialVisualFizzle(mob,targetR,L("<S-NAME> attempt(s) to commune with nature, and fail(s)."));
 
 
 		// return whether it worked

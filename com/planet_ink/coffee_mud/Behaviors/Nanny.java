@@ -267,7 +267,7 @@ public class Nanny extends StdBehavior
 			if(isDropOffable(msg.tool()))
 			{
 				final String pronoun=this.getPronoun(new XVector(msg.tool()));
-				msg.source().tell(msg.source(),host,msg.tool(),_("<T-NAME> won't accept <O-NAME>.  You should probably leave your @x1 here.",pronoun));
+				msg.source().tell(msg.source(),host,msg.tool(),L("<T-NAME> won't accept <O-NAME>.  You should probably leave your @x1 here.",pronoun));
 				return false;
 			}
 			if(msg.tool() instanceof Coins)
@@ -277,9 +277,9 @@ public class Nanny extends StdBehavior
 				if(!C.getCurrency().equalsIgnoreCase(myCurrency))
 				{
 					if(host instanceof MOB)
-						CMLib.commands().postSay((MOB)host,msg.source(),_("I'm don't accept @x1.  I can only accept @x2.",CMLib.beanCounter().getDenominationName(C.getCurrency(),C.getDenomination()),CMLib.beanCounter().getDenominationName(myCurrency)));
+						CMLib.commands().postSay((MOB)host,msg.source(),L("I'm don't accept @x1.  I can only accept @x2.",CMLib.beanCounter().getDenominationName(C.getCurrency(),C.getDenomination()),CMLib.beanCounter().getDenominationName(myCurrency)));
 					else
-						msg.source().tell(_("The @x1 doesn't accept @x2.  It only accepts @x3.",place,CMLib.beanCounter().getDenominationName(C.getCurrency(),C.getDenomination()),CMLib.beanCounter().getDenominationName(myCurrency)));
+						msg.source().tell(L("The @x1 doesn't accept @x2.  It only accepts @x3.",place,CMLib.beanCounter().getDenominationName(C.getCurrency(),C.getDenomination()),CMLib.beanCounter().getDenominationName(myCurrency)));
 					return false;
 				}
 			}
@@ -299,15 +299,15 @@ public class Nanny extends StdBehavior
 			&&(host instanceof MOB))
 			{
 				if(amt.length()>0)
-					CMLib.commands().postSay((MOB)host,msg.source(),_("I'm afraid that @x1 fees of @x2 are still owed.",place,amt));
+					CMLib.commands().postSay((MOB)host,msg.source(),L("I'm afraid that @x1 fees of @x2 are still owed.",place,amt));
 				else
-					CMLib.commands().postSay((MOB)host,msg.source(),_("I'm afraid that @x1 fees are still owed on @x2.",place,obj.name()));
+					CMLib.commands().postSay((MOB)host,msg.source(),L("I'm afraid that @x1 fees are still owed on @x2.",place,obj.name()));
 			}
 			else
 			if(amt.length()>0)
-				msg.source().tell(_("You'll need to pay @x1 fees of @x2 first.",place,amt));
+				msg.source().tell(L("You'll need to pay @x1 fees of @x2 first.",place,amt));
 			else
-				msg.source().tell(_("You'll need to pay your @x1 fees  for @x2 first.",place,obj.name()));
+				msg.source().tell(L("You'll need to pay your @x1 fees  for @x2 first.",place,obj.name()));
 			return false;
 		}
 		else
@@ -322,13 +322,13 @@ public class Nanny extends StdBehavior
 			{
 				if((host instanceof MOB)&&(msg.source().location()==CMLib.map().roomLocation(host)))
 				{
-					CMLib.commands().postSay((MOB)host,msg.source(),_("Not in my @x1 you dont!",place));
+					CMLib.commands().postSay((MOB)host,msg.source(),L("Not in my @x1 you dont!",place));
 					final MOB victim=msg.source().getVictim();
 					if(victim!=null) victim.makePeace();
 					msg.source().makePeace();
 				}
 				else
-					msg.source().tell(_("You can't do that here."));
+					msg.source().tell(L("You can't do that here."));
 			}
 			return false;
 		}
@@ -349,8 +349,8 @@ public class Nanny extends StdBehavior
 					if((!shere)&&((summon)||(teleport)))
 					{
 						if((msg.source().location()!=null)&&(msg.source().location()!=R))
-							msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,_("Magical energy fizzles and is absorbed into the air!"));
-						R.showHappens(CMMsg.MSG_OK_VISUAL,_("Magic energy fizzles and is absorbed into the air."));
+							msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,L("Magical energy fizzles and is absorbed into the air!"));
+						R.showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
 						return false;
 					}
 				}
@@ -361,15 +361,15 @@ public class Nanny extends StdBehavior
 					&&(host instanceof MOB))
 					{
 						if(amt.length()>0)
-							CMLib.commands().postSay((MOB)host,msg.source(),_("I'm afraid that @x1 fees of @x2 are still owed on @x3.",place,amt,obj.name()));
+							CMLib.commands().postSay((MOB)host,msg.source(),L("I'm afraid that @x1 fees of @x2 are still owed on @x3.",place,amt,obj.name()));
 						else
-							CMLib.commands().postSay((MOB)host,msg.source(),_("I'm afraid that @x1 fees are still owed on @x2.",place,obj.name()));
+							CMLib.commands().postSay((MOB)host,msg.source(),L("I'm afraid that @x1 fees are still owed on @x2.",place,obj.name()));
 					}
 					else
 					if(amt.length()>0)
-						msg.source().tell(_("You'll need to pay @x1 fees of @x2 for @x3 first.",place,amt,obj.name()));
+						msg.source().tell(L("You'll need to pay @x1 fees of @x2 for @x3 first.",place,amt,obj.name()));
 					else
-						msg.source().tell(_("You'll need to pay your @x1 fees  for @x2 first.",place,obj.name()));
+						msg.source().tell(L("You'll need to pay your @x1 fees  for @x2 first.",place,obj.name()));
 				}
 				return false;
 			}
@@ -587,7 +587,7 @@ public class Nanny extends StdBehavior
 				if((change>0.0)&&(C!=null))
 				{
 					// this message will actually end up triggering the hand-over.
-					final CMMsg newMsg=CMClass.getMsg((MOB)host,source,C,CMMsg.MSG_SPEAK,_("^T<S-NAME> say(s) 'Heres your change.' to <T-NAMESELF>.^?"));
+					final CMMsg newMsg=CMClass.getMsg((MOB)host,source,C,CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) 'Heres your change.' to <T-NAMESELF>.^?"));
 					C.setOwner((MOB)host);
 					final long num=C.getNumberOfCoins();
 					final String curr=C.getCurrency();
@@ -599,7 +599,7 @@ public class Nanny extends StdBehavior
 					msg.addTrailerMsg(newMsg);
 				}
 				else
-					CMLib.commands().postSay((MOB)host,source,_("Gee, thanks. :)"),true,false);
+					CMLib.commands().postSay((MOB)host,source,L("Gee, thanks. :)"),true,false);
 			}
 			((Coins)msg.tool()).destroy();
 			if(paid>=owed)
@@ -616,8 +616,8 @@ public class Nanny extends StdBehavior
 							((MOB)P).setBitmap(CMath.unsetb(((MOB)P).getBitmap(), MOB.ATT_AUTOGUARD));
 						if(((MOB)P).amFollowing()!=msg.source())
 						{
-							CMLib.commands().postSay((MOB)host,msg.source(),_("Hmm, '@x1' doesn't seem ready to leave.  Now get along!",P.name()),true,false);
-							msg.source().location().send((MOB)P,CMClass.getMsg((MOB)P,msg.source(),null,CMMsg.MSG_FOLLOW|CMMsg.MASK_ALWAYS,_("<S-NAME> follow(s) <T-NAMESELF>.")));
+							CMLib.commands().postSay((MOB)host,msg.source(),L("Hmm, '@x1' doesn't seem ready to leave.  Now get along!",P.name()),true,false);
+							msg.source().location().send((MOB)P,CMClass.getMsg((MOB)P,msg.source(),null,CMMsg.MSG_FOLLOW|CMMsg.MASK_ALWAYS,L("<S-NAME> follow(s) <T-NAMESELF>.")));
 							if(((MOB)P).amFollowing()!=msg.source())
 								((MOB)P).setFollowing(msg.source());
 						}
@@ -905,24 +905,24 @@ public class Nanny extends StdBehavior
 			{
 				if(PA.fetchEffect("Soiled")!=null)
 				{
-					R.show(mob, PA, CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> change(s) <T-YOUPOSS> diaper."));
+					R.show(mob, PA, CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> change(s) <T-YOUPOSS> diaper."));
 					PA.delEffect(PA.fetchEffect("Soiled"));
 				}
 				else
 				if(CMLib.dice().rollPercentage()>50)
-					R.show(mob, PA, CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> play(s) with <T-NAME>."));
+					R.show(mob, PA, CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> play(s) with <T-NAME>."));
 				else
-					R.show(mob, PA, CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> go(es) 'coochie-coochie coo' to <T-NAME>."));
+					R.show(mob, PA, CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> go(es) 'coochie-coochie coo' to <T-NAME>."));
 
 			}
 			else
 			if(CMLib.flags().isChild(PA))
 			{
 				if(CMLib.dice().rollPercentage()>20)
-					R.show(mob, PA, CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> play(s) with <T-NAME>."));
+					R.show(mob, PA, CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> play(s) with <T-NAME>."));
 				else
 				{
-					R.show(mob, PA, CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> groom(s) <T-NAME>."));
+					R.show(mob, PA, CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> groom(s) <T-NAME>."));
 					if(PA.fetchEffect("Soiled")!=null)
 						PA.delEffect(PA.fetchEffect("Soiled"));
 				}
@@ -934,7 +934,7 @@ public class Nanny extends StdBehavior
 				{
 					if((!CMLib.flags().isAnimalIntelligence((MOB)PA))
 					&&(CMLib.flags().canSpeak(mob)))
-						R.show(mob, PA, CMMsg.MSG_NOISE,_("<S-NAME> speak(s) quietly with <T-NAME>."));
+						R.show(mob, PA, CMMsg.MSG_NOISE,L("<S-NAME> speak(s) quietly with <T-NAME>."));
 					else
 					{
 						final List<RawMaterial> V=((MOB)PA).charStats().getMyRace().myResources();
@@ -944,22 +944,22 @@ public class Nanny extends StdBehavior
 							if(((Item)V.get(v)).material()==RawMaterial.RESOURCE_FUR)
 								comb=true;
 						if(comb)
-							R.show(mob, PA, CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> groom(s) <T-NAME>."));
+							R.show(mob, PA, CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> groom(s) <T-NAME>."));
 						else
-							R.show(mob, PA, CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> pet(s) <T-NAME>."));
+							R.show(mob, PA, CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> pet(s) <T-NAME>."));
 					}
 				}
 				else
-					R.show(mob, PA, CMMsg.MSG_LOCK,_("<S-NAME> admire(s) <T-NAME>."));
+					R.show(mob, PA, CMMsg.MSG_LOCK,L("<S-NAME> admire(s) <T-NAME>."));
 			}
 			else
 			if(PA instanceof MOB)
 			{
 				if(CMLib.flags().isAnimalIntelligence((MOB)PA))
-					R.show(mob, PA, CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> smile(s) and pet(s) <T-NAME>."));
+					R.show(mob, PA, CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> smile(s) and pet(s) <T-NAME>."));
 				else
 				if(CMLib.flags().canSpeak(mob))
-					R.show(mob, PA, CMMsg.MSG_NOISE,_("<S-NAME> speak(s) quietly with <T-NAME>."));
+					R.show(mob, PA, CMMsg.MSG_NOISE,L("<S-NAME> speak(s) quietly with <T-NAME>."));
 			}
 		}
 		return true;

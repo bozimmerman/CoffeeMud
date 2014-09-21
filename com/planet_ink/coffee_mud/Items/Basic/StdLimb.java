@@ -86,7 +86,7 @@ public class StdLimb extends StdItem implements FalseLimb
 							final Item I=mob.fetchFirstWornItem(codes.get(w2));
 							if((I!=null)&&(I!=this))
 							{
-								msg.source().tell(mob,I,null,_("You'll need to remove <T-NAMESELF> first."));
+								msg.source().tell(mob,I,null,L("You'll need to remove <T-NAMESELF> first."));
 								return false;
 							}
 						}
@@ -200,12 +200,12 @@ public class StdLimb extends StdItem implements FalseLimb
 	{
 		if(partNum()<0)
 		{
-			mob.tell(_("This limb looks malformed."));
+			mob.tell(L("This limb looks malformed."));
 			return false;
 		}
 		if(!canWear(mob,0))
 		{
-			mob.tell(_("You don't have any empty sockets to wear @x1 on.",name()));
+			mob.tell(L("You don't have any empty sockets to wear @x1 on.",name()));
 			return false;
 		}
 		return true;

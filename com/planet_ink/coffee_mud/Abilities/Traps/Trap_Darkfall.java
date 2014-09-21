@@ -34,7 +34,7 @@ import java.util.*;
 public class Trap_Darkfall extends StdTrap
 {
 	@Override public String ID() { return "Trap_Darkfall"; }
-	private final static String localizedName = CMLib.lang()._("darkfall");
+	private final static String localizedName = CMLib.lang().L("darkfall");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -63,9 +63,9 @@ public class Trap_Darkfall extends StdTrap
 		{
 			if((doesSaveVsTraps(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) setting off a trap!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) setting off a trap!"));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> set(s) off a darkness trap!")))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> set(s) off a darkness trap!")))
 			{
 				super.spring(target);
 				target.location().recoverRoomStats();

@@ -45,7 +45,7 @@ public class Lock extends StdCommand
 		final String whatTolock=CMParms.combine(commands,1);
 		if(whatTolock.length()==0)
 		{
-			mob.tell(_("Lock what?"));
+			mob.tell(L("Lock what?"));
 			return false;
 		}
 		Environmental lockThis=null;
@@ -57,7 +57,7 @@ public class Lock extends StdCommand
 
 		if((lockThis==null)||(!CMLib.flags().canBeSeenBy(lockThis,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",whatTolock));
+			mob.tell(L("You don't see '@x1' here.",whatTolock));
 			return false;
 		}
 		final String lockMsg="<S-NAME> lock(s) <T-NAMESELF>."+CMLib.protocol().msp("doorlock.wav",10);
@@ -90,7 +90,7 @@ public class Lock extends StdCommand
 					{
 						final boolean useShipDirs=(opR instanceof SpaceShip)||(opR.getArea() instanceof SpaceShip);
 						final String inDirName=useShipDirs?Directions.getShipInDirectionName(opCode):Directions.getInDirectionName(opCode);
-						opR.showHappens(CMMsg.MSG_OK_ACTION,_("@x1 @x2 is locked from the other side.",opE.name(),inDirName));
+						opR.showHappens(CMMsg.MSG_OK_ACTION,L("@x1 @x2 is locked from the other side.",opE.name(),inDirName));
 					}
 				}
 			}

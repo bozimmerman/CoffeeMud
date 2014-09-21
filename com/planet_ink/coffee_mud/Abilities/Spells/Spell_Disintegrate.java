@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_Disintegrate extends Spell
 {
 	@Override public String ID() { return "Spell_Disintegrate"; }
-	private final static String localizedName = CMLib.lang()._("Disintegrate");
+	private final static String localizedName = CMLib.lang().L("Disintegrate");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
@@ -56,7 +56,7 @@ public class Spell_Disintegrate extends Spell
 			if(DB.playerCorpse()
 			&&(!DB.mobName().equals(mob.Name())))
 			{
-				mob.tell(_("You are not allowed to destroy a player corpse."));
+				mob.tell(L("You are not allowed to destroy a player corpse."));
 				return false;
 			}
 		}
@@ -82,7 +82,7 @@ public class Spell_Disintegrate extends Spell
 		if(success)
 		{
 			final Room R=mob.location();
-			final CMMsg msg=CMClass.getMsg(mob,target,this,affectType,_(auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and utter(s) a treacherous spell!^?")+CMLib.protocol().msp("spelldam2.wav",40));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,affectType,L(auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and utter(s) a treacherous spell!^?")+CMLib.protocol().msp("spelldam2.wav",40));
 			if((R!=null)&&(R.okMessage(mob,msg)))
 			{
 				R.send(mob,msg);
@@ -102,12 +102,12 @@ public class Spell_Disintegrate extends Spell
 						if(((MOB)target).curState().getHitPoints()>0)
 							CMLib.combat().postDamage(mob,(MOB)target,this,(((MOB)target).curState().getHitPoints()*100),CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe spell <DAMAGE> <T-NAME>!^?");
 						if(((MOB)target).amDead())
-							R.show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> disintegrate(s)!"));
+							R.show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> disintegrate(s)!"));
 						else
 							return false;
 					}
 					else
-						R.show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> disintegrate(s)!"));
+						R.show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> disintegrate(s)!"));
 
 					if(target instanceof Item)
 						((Item)target).destroy();
@@ -133,7 +133,7 @@ public class Spell_Disintegrate extends Spell
 
 		}
 		else
-			maliciousFizzle(mob,target,_("<S-NAME> point(s) at <T-NAMESELF> and utter(s) a treacherous but fizzled spell!"));
+			maliciousFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF> and utter(s) a treacherous but fizzled spell!"));
 
 
 		// return whether it worked

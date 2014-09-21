@@ -66,7 +66,7 @@ public class Train extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("You have @x1 training sessions. Enter HELP TRAIN for more information.",""+mob.getTrains()));
+			mob.tell(L("You have @x1 training sessions. Enter HELP TRAIN for more information.",""+mob.getTrains()));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -144,7 +144,7 @@ public class Train extends StdCommand
 			{
 				if(abilityCode<0)
 				{
-					mob.tell(_("You can't train for '@x1'. Try @x2HIT POINTS, MANA, MOVE, GAIN, or PRACTICES.",abilityName,thingsToTrainFor.toString()));
+					mob.tell(L("You can't train for '@x1'. Try @x2HIT POINTS, MANA, MOVE, GAIN, or PRACTICES.",abilityName,thingsToTrainFor.toString()));
 					return false;
 				}
 			}
@@ -154,14 +154,14 @@ public class Train extends StdCommand
 		{
 			if(mob.getPractices()<7)
 			{
-				mob.tell(_("You don't seem to have enough practices to do that."));
+				mob.tell(L("You don't seem to have enough practices to do that."));
 				return false;
 			}
 		}
 		else
 		if(mob.getTrains()<=0)
 		{
-			mob.tell(_("You don't seem to have enough training sessions to do that."));
+			mob.tell(L("You don't seem to have enough training sessions to do that."));
 			return false;
 		}
 		else
@@ -169,13 +169,13 @@ public class Train extends StdCommand
 		{
 			if(trainsRequired>1)
 			{
-				mob.tell(_("Training that ability further will require @x1 training points.",""+trainsRequired));
+				mob.tell(L("Training that ability further will require @x1 training points.",""+trainsRequired));
 				return false;
 			}
 			else
 			if(trainsRequired==1)
 			{
-				mob.tell(_("Training that ability further will require @x1 training points.",""+trainsRequired));
+				mob.tell(L("Training that ability further will require @x1 training points.",""+trainsRequired));
 				return false;
 			}
 		}
@@ -195,32 +195,32 @@ public class Train extends StdCommand
 		}
 		if((teacher==null)||(!CMLib.flags().canBeSeenBy(teacher,mob)))
 		{
-			mob.tell(teacher,null,null,_("<S-NAME> can't see you!"));
+			mob.tell(teacher,null,null,L("<S-NAME> can't see you!"));
 			return false;
 		}
 		if(!CMLib.flags().canBeSeenBy(mob,teacher))
 		{
-			mob.tell(teacher,null,null,_("<S-NAME> can't see you!"));
+			mob.tell(teacher,null,null,L("<S-NAME> can't see you!"));
 			return false;
 		}
 		if(teacher==mob)
 		{
-			mob.tell(_("You cannot train with yourself!"));
+			mob.tell(L("You cannot train with yourself!"));
 			return false;
 		}
 		if(CMath.bset(teacher.getBitmap(),MOB.ATT_NOTEACH))
 		{
-			mob.tell(_("@x1 is refusing to teach right now.",teacher.name()));
+			mob.tell(L("@x1 is refusing to teach right now.",teacher.name()));
 			return false;
 		}
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_NOTEACH))
 		{
-			mob.tell(_("You are refusing training at this time."));
+			mob.tell(L("You are refusing training at this time."));
 			return false;
 		}
 		if(CMLib.flags().isSleeping(mob)||CMLib.flags().isSitting(mob))
 		{
-			mob.tell(_("You need to stand up for your training."));
+			mob.tell(L("You need to stand up for your training."));
 			return false;
 		}
 		if(CMLib.flags().isSleeping(teacher)||CMLib.flags().isSitting(teacher))
@@ -228,18 +228,18 @@ public class Train extends StdCommand
 			if(teacher.isMonster()) CMLib.commands().postStand(teacher,true);
 			if(CMLib.flags().isSleeping(teacher)||CMLib.flags().isSitting(teacher))
 			{
-				mob.tell(_("@x1 looks a bit too relaxed to train with you.",teacher.name()));
+				mob.tell(L("@x1 looks a bit too relaxed to train with you.",teacher.name()));
 				return false;
 			}
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell(_("Not while you are fighting!"));
+			mob.tell(L("Not while you are fighting!"));
 			return false;
 		}
 		if(teacher.isInCombat())
 		{
-			mob.tell(_("Your teacher seems busy right now."));
+			mob.tell(L("Your teacher seems busy right now."));
 			return false;
 		}
 
@@ -257,14 +257,14 @@ public class Train extends StdCommand
 				{
 					final CharClass C=CMClass.getCharClass(mob.charStats().getCurrentClass().baseClass());
 					final String baseClassName=(C!=null)?C.name():mob.charStats().getCurrentClass().baseClass();
-					mob.tell(_("You can only learn that from another @x1.",baseClassName));
+					mob.tell(L("You can only learn that from another @x1.",baseClassName));
 				}
 				else
 				if(theClass!=null)
 				{
 					int classLevel=mob.charStats().getClassLevel(theClass);
 					if(classLevel<0) classLevel=0;
-					mob.tell(_("You can only learn that from another @x1.",theClass.name(classLevel)));
+					mob.tell(L("You can only learn that from another @x1.",theClass.name(classLevel)));
 				}
 				return false;
 			}
@@ -275,82 +275,82 @@ public class Train extends StdCommand
 			final int teachStat=teacher.charStats().getStat(abilityCode);
 			if(curStat>=teachStat)
 			{
-				mob.tell(_("You can only train with someone whose score is higher than yours."));
+				mob.tell(L("You can only train with someone whose score is higher than yours."));
 				return false;
 			}
 			curStat=mob.baseCharStats().getStat(abilityCode);
 		}
 
-		final CMMsg msg=CMClass.getMsg(teacher,mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> train(s) with <T-NAMESELF>."));
+		final CMMsg msg=CMClass.getMsg(teacher,mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> train(s) with <T-NAMESELF>."));
 		if(!mob.location().okMessage(mob,msg))
 			return false;
 		mob.location().send(mob,msg);
 		switch(abilityCode)
 		{
 		case 0:
-			mob.tell(_("You feel stronger!"));
+			mob.tell(L("You feel stronger!"));
 			mob.baseCharStats().setStat(CharStats.STAT_STRENGTH,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-trainsRequired);
 			break;
 		case 1:
-			mob.tell(_("You feel smarter!"));
+			mob.tell(L("You feel smarter!"));
 			mob.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-trainsRequired);
 			break;
 		case 2:
-			mob.tell(_("You feel more dextrous!"));
+			mob.tell(L("You feel more dextrous!"));
 			mob.baseCharStats().setStat(CharStats.STAT_DEXTERITY,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-trainsRequired);
 			break;
 		case 3:
-			mob.tell(_("You feel healthier!"));
+			mob.tell(L("You feel healthier!"));
 			mob.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-trainsRequired);
 			break;
 		case 4:
-			mob.tell(_("You feel more charismatic!"));
+			mob.tell(L("You feel more charismatic!"));
 			mob.baseCharStats().setStat(CharStats.STAT_CHARISMA,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-trainsRequired);
 			break;
 		case 5:
-			mob.tell(_("You feel wiser!"));
+			mob.tell(L("You feel wiser!"));
 			mob.baseCharStats().setStat(CharStats.STAT_WISDOM,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-trainsRequired);
 			break;
 		case 101:
-			mob.tell(_("You feel even healthier!"));
+			mob.tell(L("You feel even healthier!"));
 			mob.baseState().setHitPoints(mob.baseState().getHitPoints()+10);
 			mob.maxState().setHitPoints(mob.maxState().getHitPoints()+10);
 			mob.curState().setHitPoints(mob.curState().getHitPoints()+10);
 			mob.setTrains(mob.getTrains()-1);
 			break;
 		case 102:
-			mob.tell(_("You feel more powerful!"));
+			mob.tell(L("You feel more powerful!"));
 			mob.baseState().setMana(mob.baseState().getMana()+20);
 			mob.maxState().setMana(mob.maxState().getMana()+20);
 			mob.curState().setMana(mob.curState().getMana()+20);
 			mob.setTrains(mob.getTrains()-1);
 			break;
 		case 103:
-			mob.tell(_("You feel more rested!"));
+			mob.tell(L("You feel more rested!"));
 			mob.baseState().setMovement(mob.baseState().getMovement()+20);
 			mob.maxState().setMovement(mob.maxState().getMovement()+20);
 			mob.curState().setMovement(mob.curState().getMovement()+20);
 			mob.setTrains(mob.getTrains()-1);
 			break;
 		case 104:
-			mob.tell(_("You feel more trainable!"));
+			mob.tell(L("You feel more trainable!"));
 			mob.setTrains(mob.getTrains()+1);
 			mob.setPractices(mob.getPractices()-7);
 			break;
 		case 105:
-			mob.tell(_("You feel more educatable!"));
+			mob.tell(L("You feel more educatable!"));
 			mob.setTrains(mob.getTrains()-1);
 			mob.setPractices(mob.getPractices()+5);
 			break;
@@ -359,7 +359,7 @@ public class Train extends StdCommand
 			{
 				int classLevel=mob.charStats().getClassLevel(theClass);
 				if(classLevel<0) classLevel=0;
-				mob.tell(_("You have undergone @x1 training!",theClass.name(classLevel)));
+				mob.tell(L("You have undergone @x1 training!",theClass.name(classLevel)));
 				mob.setTrains(mob.getTrains()-1);
 				mob.baseCharStats().getCurrentClass().endCharacter(mob);
 				mob.baseCharStats().setCurrentClass(theClass);

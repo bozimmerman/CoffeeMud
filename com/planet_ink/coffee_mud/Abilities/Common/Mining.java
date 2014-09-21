@@ -36,7 +36,7 @@ import java.util.*;
 public class Mining extends GatheringSkill
 {
 	@Override public String ID() { return "Mining"; }
-	private final static String localizedName = CMLib.lang()._("Mining");
+	private final static String localizedName = CMLib.lang().L("Mining");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"MINE","MINING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -49,8 +49,8 @@ public class Mining extends GatheringSkill
 	public Mining()
 	{
 		super();
-		displayText=_("You are mining...");
-		verb=_("mining");
+		displayText=L("You are mining...");
+		verb=L("mining");
 	}
 
 	protected int getDuration(MOB mob, int level)
@@ -69,13 +69,13 @@ public class Mining extends GatheringSkill
 			{
 				if(found!=null)
 				{
-					commonTell(mob,_("You have found a vein of @x1!",foundShortName));
-					displayText=_("You are mining @x1",foundShortName);
-					verb=_("mining @x1",foundShortName);
+					commonTell(mob,L("You have found a vein of @x1!",foundShortName));
+					displayText=L("You are mining @x1",foundShortName);
+					verb=L("mining @x1",foundShortName);
 				}
 				else
 				{
-					final StringBuffer str=new StringBuffer(_("You can't seem to find anything worth mining here.\n\r"));
+					final StringBuffer str=new StringBuffer(L("You can't seem to find anything worth mining here.\n\r"));
 					commonTell(mob,str.toString());
 					unInvoke();
 				}
@@ -102,7 +102,7 @@ public class Mining extends GatheringSkill
 					amount=amount*abilityCode();
 					String s="s";
 					if(amount==1) s="";
-					mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> manage(s) to mine @x1 pound@x2 of @x3.",""+amount,s,foundShortName));
+					mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to mine @x1 pound@x2 of @x3.",""+amount,s,foundShortName));
 					for(int i=0;i<amount;i++)
 					{
 						final Item newFound=(Item)found.copyOf();
@@ -131,7 +131,7 @@ public class Mining extends GatheringSkill
 				return super.bundle(mob,commands);
 			return false;
 		}
-		verb=_("mining");
+		verb=L("mining");
 		playSound="dig.wav";
 		found=null;
 		if((!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_PRECIOUS,mob.location()))
@@ -141,7 +141,7 @@ public class Mining extends GatheringSkill
 		&&(!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_METAL,mob.location()))
 		&&(!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_MITHRIL,mob.location())))
 		{
-			commonTell(mob,_("You don't think this is a good place to mine."));
+			commonTell(mob,L("You don't think this is a good place to mine."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -161,7 +161,7 @@ public class Mining extends GatheringSkill
 				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		}
 		final int duration=getDuration(mob,1);
-		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),_("<S-NAME> start(s) mining."));
+		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),L("<S-NAME> start(s) mining."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -36,7 +36,7 @@ import java.util.*;
 public class Chant_SummonFungus extends Chant_SummonPlants
 {
 	@Override public String ID() { return "Chant_SummonFungus"; }
-	private final static String localizedName = CMLib.lang()._("Summon Fungus");
+	private final static String localizedName = CMLib.lang().L("Summon Fungus");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -75,7 +75,7 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 		if((!auto)
 		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE))
 		{
-			mob.tell(_("This is not the place for fungus."));
+			mob.tell(L("This is not the place for fungus."));
 			return false;
 		}
 		return true;
@@ -88,33 +88,33 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 		switch(CMLib.dice().roll(1,6,0))
 		{
 		case 1:
-			newItem.setName(_("a mushroom"));
-			newItem.setDisplayText(_("a mushroom is here."));
+			newItem.setName(L("a mushroom"));
+			newItem.setDisplayText(L("a mushroom is here."));
 			newItem.setDescription("");
 			break;
 		case 2:
-			newItem.setName(_("a shiitake mushroom"));
-			newItem.setDisplayText(_("a shiitake mushroom grows here."));
+			newItem.setName(L("a shiitake mushroom"));
+			newItem.setDisplayText(L("a shiitake mushroom grows here."));
 			newItem.setDescription("");
 			break;
 		case 3:
-			newItem.setName(_("a cremini mushroom"));
-			newItem.setDisplayText(_("a cremini mushroom grows here"));
+			newItem.setName(L("a cremini mushroom"));
+			newItem.setDisplayText(L("a cremini mushroom grows here"));
 			newItem.setDescription("");
 			break;
 		case 4:
-			newItem.setName(_("a white mushroom"));
-			newItem.setDisplayText(_("a white mushroom grows here."));
+			newItem.setName(L("a white mushroom"));
+			newItem.setDisplayText(L("a white mushroom grows here."));
 			newItem.setDescription("");
 			break;
 		case 5:
-			newItem.setName(_("a portabello mushroom"));
-			newItem.setDisplayText(_("a portabello mushroom grows here."));
+			newItem.setName(L("a portabello mushroom"));
+			newItem.setDisplayText(L("a portabello mushroom grows here."));
 			newItem.setDescription("");
 			break;
 		case 6:
-			newItem.setName(_("a wood ear"));
-			newItem.setDisplayText(_("a wood ear grows here."));
+			newItem.setName(L("a wood ear"));
+			newItem.setDisplayText(L("a wood ear grows here."));
 			newItem.setDescription("");
 			break;
 		}
@@ -126,7 +126,7 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 		newItem.basePhyStats().setWeight(1);
 		newItem.setExpirationDate(0);
 		CMLib.materials().addEffectsToResource(newItem);
-		room.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang()._("Suddenly, @x1 sprouts up here.",newItem.name()));
+		room.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang().L("Suddenly, @x1 sprouts up here.",newItem.name()));
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
 		if(CMLib.law().doesOwnThisProperty(mob,room))

@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_Portal extends Spell
 {
 	@Override public String ID() { return "Spell_Portal"; }
-	private final static String localizedName = CMLib.lang()._("Portal");
+	private final static String localizedName = CMLib.lang().L("Portal");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
@@ -54,13 +54,13 @@ public class Spell_Portal extends Spell
 		{
 			if(newRoom!=null)
 			{
-				newRoom.showHappens(CMMsg.MSG_OK_VISUAL,_("The swirling portal closes."));
+				newRoom.showHappens(CMMsg.MSG_OK_VISUAL,L("The swirling portal closes."));
 				newRoom.rawDoors()[Directions.GATE]=null;
 				newRoom.setRawExit(Directions.GATE,null);
 			}
 			if(oldRoom!=null)
 			{
-				oldRoom.showHappens(CMMsg.MSG_OK_VISUAL,_("The swirling portal closes."));
+				oldRoom.showHappens(CMMsg.MSG_OK_VISUAL,L("The swirling portal closes."));
 				oldRoom.rawDoors()[Directions.GATE]=null;
 				oldRoom.setRawExit(Directions.GATE,null);
 			}
@@ -84,13 +84,13 @@ public class Spell_Portal extends Spell
 		}
 		if(commands.size()<1)
 		{
-			mob.tell(_("Create a portal to where?"));
+			mob.tell(L("Create a portal to where?"));
 			return false;
 		}
 		if((mob.location().getRoomInDir(Directions.GATE)!=null)
 		||(mob.location().getExitInDir(Directions.GATE)!=null))
 		{
-			mob.tell(_("A portal cannot be created here."));
+			mob.tell(L("A portal cannot be created here."));
 			return false;
 		}
 		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
@@ -119,7 +119,7 @@ public class Spell_Portal extends Spell
 
 		if(newRoom==null)
 		{
-			mob.tell(_("You don't know of a place called '@x1'.",CMParms.combine(commands,0)));
+			mob.tell(L("You don't know of a place called '@x1'.",CMParms.combine(commands,0)));
 			return false;
 		}
 
@@ -145,18 +145,18 @@ public class Spell_Portal extends Spell
 		&&((newRoom.getRoomInDir(Directions.GATE)==null)
 		&&(newRoom.getExitInDir(Directions.GATE)==null)))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),_("^S<S-NAME> evoke(s) a blinding, swirling portal here.^?"));
-			final CMMsg msg2=CMClass.getMsg(mob,newRoom,this,verbalCastCode(mob,newRoom,auto),_("A blinding, swirling portal appears here."));
+			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),L("^S<S-NAME> evoke(s) a blinding, swirling portal here.^?"));
+			final CMMsg msg2=CMClass.getMsg(mob,newRoom,this,verbalCastCode(mob,newRoom,auto),L("A blinding, swirling portal appears here."));
 			if((mob.location().okMessage(mob,msg))&&(newRoom.okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				newRoom.send(mob,msg2);
 				final Exit e=CMClass.getExit("GenExit");
-				e.setDescription(_("A swirling portal to somewhere"));
-				e.setDisplayText(_("A swirling portal to somewhere"));
+				e.setDescription(L("A swirling portal to somewhere"));
+				e.setDisplayText(L("A swirling portal to somewhere"));
 				e.setDoorsNLocks(false,true,false,false,false,false);
 				e.setExitParams("portal","close","open","closed.");
-				e.setName(_("a swirling portal"));
+				e.setName(L("a swirling portal"));
 				final Ability A1=CMClass.getAbility("Prop_RoomView");
 				if(A1!=null)
 				{
@@ -179,7 +179,7 @@ public class Spell_Portal extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to evoke a portal, but fizzle(s) the spell."));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to evoke a portal, but fizzle(s) the spell."));
 
 
 		// return whether it worked

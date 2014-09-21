@@ -38,7 +38,7 @@ import java.util.*;
 public class Prayer_AnimateDead extends Prayer
 {
 	@Override public String ID() { return "Prayer_AnimateDead"; }
-	private final static String localizedName = CMLib.lang()._("Animate Dead");
+	private final static String localizedName = CMLib.lang().L("Animate Dead");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
@@ -54,12 +54,12 @@ public class Prayer_AnimateDead extends Prayer
 
 		if(target==mob)
 		{
-			mob.tell(_("@x1 doesn't look dead yet.",target.name(mob)));
+			mob.tell(L("@x1 doesn't look dead yet.",target.name(mob)));
 			return false;
 		}
 		if(!(target instanceof DeadBody))
 		{
-			mob.tell(_("You can't animate that."));
+			mob.tell(L("You can't animate that."));
 			return false;
 		}
 
@@ -67,7 +67,7 @@ public class Prayer_AnimateDead extends Prayer
 		if(body.playerCorpse()||(body.mobName().length()==0)
 		||((body.charStats()!=null)&&(body.charStats().getMyRace()!=null)&&(body.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))))
 		{
-			mob.tell(_("You can't animate that."));
+			mob.tell(L("You can't animate that."));
 			return false;
 		}
 		final String realName=body.mobName();
@@ -84,12 +84,12 @@ public class Prayer_AnimateDead extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 for dark powers over <T-NAMESELF>.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 for dark powers over <T-NAMESELF>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final MOB newMOB=CMClass.getMOB("GenUndead");
-				newMOB.setName(_("@x1 zombie",realName));
+				newMOB.setName(L("@x1 zombie",realName));
 				newMOB.setDescription(description);
 				newMOB.setDisplayText("");
 				newMOB.basePhyStats().setLevel(body.phyStats().level()+((super.getX1Level(mob)+super.getXLEVELLevel(mob))/2));
@@ -121,7 +121,7 @@ public class Prayer_AnimateDead extends Prayer
 				newMOB.text();
 				newMOB.bringToLife(mob.location(),true);
 				CMLib.beanCounter().clearZeroMoney(newMOB,null);
-				newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
+				newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 				int it=0;
 				while(it<newMOB.location().numItems())
 				{
@@ -144,12 +144,12 @@ public class Prayer_AnimateDead extends Prayer
 				}
 				body.destroy();
 				newMOB.setStartRoom(null);
-				mob.location().show(newMOB,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> begin(s) to rise!"));
+				mob.location().show(newMOB,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> begin(s) to rise!"));
 				mob.location().recoverRoomStats();
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for dark powers, but fail(s) miserably.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for dark powers, but fail(s) miserably.",prayWord(mob)));
 
 
 		// return whether it worked

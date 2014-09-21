@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Counterspell extends Spell
 {
 	@Override public String ID() { return "Spell_Counterspell"; }
-	private final static String localizedName = CMLib.lang()._("Counterspell");
+	private final static String localizedName = CMLib.lang().L("Counterspell");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Counterspell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Counterspell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -53,7 +53,7 @@ public class Spell_Counterspell extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("Your counterspell fades."));
+			mob.tell(L("Your counterspell fades."));
 
 		super.unInvoke();
 
@@ -76,7 +76,7 @@ public class Spell_Counterspell extends Spell
 		&&(!mob.amDead())
 		&&(CMLib.dice().rollPercentage()<(70+(2*((mob.phyStats().level()+(2*getXLEVELLevel(invoker())))-msg.source().phyStats().level())))))
 		{
-			mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,_("The barrier around <S-NAME> dispels the @x1 from <T-NAME>!",msg.tool().name()));
+			mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,L("The barrier around <S-NAME> dispels the @x1 from <T-NAME>!",msg.tool().name()));
 			tickDown=0;
 			return false;
 		}
@@ -111,7 +111,7 @@ public class Spell_Counterspell extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> feel(s) protected from spells."):_("^S<S-NAME> invoke(s) a counterspell barrier around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> feel(s) protected from spells."):L("^S<S-NAME> invoke(s) a counterspell barrier around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -120,7 +120,7 @@ public class Spell_Counterspell extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a counterspell barrier, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a counterspell barrier, but fail(s)."));
 
 		return success;
 	}

@@ -37,7 +37,7 @@ public class Thief_Autosneak extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Autosneak"; }
 	@Override public String displayText() {return "(AutoSneak)";}
-	private final static String localizedName = CMLib.lang()._("AutoSneak");
+	private final static String localizedName = CMLib.lang().L("AutoSneak");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -100,7 +100,7 @@ public class Thief_Autosneak extends ThiefSkill
 	{
 		if((mob.fetchEffect(ID())!=null))
 		{
-			mob.tell(_("You are no longer automatically sneaking around."));
+			mob.tell(L("You are no longer automatically sneaking around."));
 			mob.delEffect(mob.fetchEffect(ID()));
 			return false;
 		}
@@ -111,13 +111,13 @@ public class Thief_Autosneak extends ThiefSkill
 
 		if(success)
 		{
-			mob.tell(_("You will now automatically sneak around while you move."));
+			mob.tell(L("You will now automatically sneak around while you move."));
 			beneficialAffect(mob,mob,asLevel,adjustedLevel(mob,asLevel));
 			final Ability A=mob.fetchEffect(ID());
 			if(A!=null) A.makeLongLasting();
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to get into <S-HIS-HER> sneaking stance, but fail(s)."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to get into <S-HIS-HER> sneaking stance, but fail(s)."));
 		return success;
 	}
 

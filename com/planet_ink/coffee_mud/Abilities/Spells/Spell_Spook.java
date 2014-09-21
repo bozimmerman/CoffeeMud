@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Spook extends Spell
 {
 	@Override public String ID() { return "Spell_Spook"; }
-	private final static String localizedName = CMLib.lang()._("Spook");
+	private final static String localizedName = CMLib.lang().L("Spook");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Spooked)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Spooked)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
@@ -64,7 +64,7 @@ public class Spell_Spook extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> scare(s) <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> scare(s) <T-NAMESELF>.^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 			{
@@ -76,7 +76,7 @@ public class Spell_Spook extends Spell
 					{
 						if(target.location()==mob.location())
 						{
-							target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> shake(s) in fear!"));
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> shake(s) in fear!"));
 							invoker=mob;
 							CMLib.commands().postFlee(target,"");
 						}
@@ -85,7 +85,7 @@ public class Spell_Spook extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to scare <T-NAMESELF>, but fizzle(s) the spell."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to scare <T-NAMESELF>, but fizzle(s) the spell."));
 
 
 		// return whether it worked

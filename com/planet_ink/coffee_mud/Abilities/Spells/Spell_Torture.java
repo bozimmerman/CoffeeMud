@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_Torture extends Spell
 {
 	@Override public String ID() { return "Spell_Torture"; }
-	private final static String localizedName = CMLib.lang()._("Torture");
+	private final static String localizedName = CMLib.lang().L("Torture");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(being tortured)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(being tortured)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -57,7 +57,7 @@ public class Spell_Torture extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		if((!mob.amDead())&&(mob.location()!=null))
-			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> manage(s) to survive the torture."));
+			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> manage(s) to survive the torture."));
 	}
 
 	public void cryOut(MOB mob)
@@ -86,7 +86,7 @@ public class Spell_Torture extends Spell
 		case 11:
 			if(mob.getLiegeID().length()>0)
 				mob.location().show(mob,null,CMMsg.MSG_SPEAK,
-				_("<S-NAME> admits that @x1 is <S-HIS-HER> liege.",mob.getLiegeID()));
+				L("<S-NAME> admits that @x1 is <S-HIS-HER> liege.",mob.getLiegeID()));
 			else
 				roll=CMLib.dice().roll(1,10,0);
 			break;
@@ -123,7 +123,7 @@ public class Spell_Torture extends Spell
 							roll=CMLib.dice().roll(1,10,0);
 						else
 							mob.location().show(mob,null,CMMsg.MSG_SPEAK,
-							_("<S-NAME> mutters that @x1 is a part of his clan, called @x2.",name,C.getName()));
+							L("<S-NAME> mutters that @x1 is a part of his clan, called @x2.",name,C.getName()));
 					}
 				}
 			}
@@ -153,7 +153,7 @@ public class Spell_Torture extends Spell
 					roll=CMLib.dice().roll(1,10,0);
 				else
 					mob.location().show(mob,null,CMMsg.MSG_SPEAK,
-					_("<S-NAME> mutters that @x1 has @x2 experience points.",C.getName(),""+C.getExp()));
+					L("<S-NAME> mutters that @x1 has @x2 experience points.",C.getName(),""+C.getExp()));
 			}
 			break;
 		case 14:
@@ -161,7 +161,7 @@ public class Spell_Torture extends Spell
 			&&!mob.charStats().getCurrentClass().expless()
 			&&!mob.charStats().getMyRace().expless())
 				mob.location().show(mob,null,CMMsg.MSG_SPEAK,
-				_("<S-NAME> mutters that <S-HE-SHE> scored @x1 experience points.",""+mob.getExperience()));
+				L("<S-NAME> mutters that <S-HE-SHE> scored @x1 experience points.",""+mob.getExperience()));
 			break;
 		case 15:
 		{
@@ -169,7 +169,7 @@ public class Spell_Torture extends Spell
 			final Command C=CMClass.getCommand("Affect");
 			try{str.append(C.executeInternal(mob,0,mob).toString());}catch(final Exception e){}
 			mob.location().show(mob,null,CMMsg.MSG_SPEAK,
-			_("<S-NAME> says OK! I am affected by:\n\r@x1",str.toString()));
+			L("<S-NAME> says OK! I am affected by:\n\r@x1",str.toString()));
 			break;
 		}
 		case 16:
@@ -179,7 +179,7 @@ public class Spell_Torture extends Spell
 			{
 			   final Ability A=mob.fetchRandomAbility();
 				mob.location().show(mob,null,CMMsg.MSG_SPEAK,
-				_("<S-NAME> admit(s) that <S-HE-SHE> knows @x1 at @x2%.",A.name(),""+A.proficiency()));
+				L("<S-NAME> admit(s) that <S-HE-SHE> knows @x1 at @x2%.",A.name(),""+A.proficiency()));
 			}
 			break;
 		}
@@ -187,25 +187,25 @@ public class Spell_Torture extends Spell
 		switch(roll)
 		{
 		case 1:    mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-			_("<S-NAME> struggle(s) against the pain.")); break;
+			L("<S-NAME> struggle(s) against the pain.")); break;
 		case 2:    mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-			_("<S-NAME> scream(s) in horror!")); break;
+			L("<S-NAME> scream(s) in horror!")); break;
 		case 3:    mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-			_("<S-NAME> beg(s) for mercy.")); break;
+			L("<S-NAME> beg(s) for mercy.")); break;
 		case 4:    mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-			_("<S-NAME> grab(s) <S-HIS-HER> head and cr(ys).")); break;
+			L("<S-NAME> grab(s) <S-HIS-HER> head and cr(ys).")); break;
 		case 5:    mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-			_("<S-NAME> whimper(s).")); break;
+			L("<S-NAME> whimper(s).")); break;
 		case 6:    mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-			_("<S-NAME> look(s) terrified!")); break;
+			L("<S-NAME> look(s) terrified!")); break;
 		case 7:    mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-			_("<S-NAME> shake(s) in pain from <S-HIS-HER> head to <S-HIS-HER> feet.")); break;
+			L("<S-NAME> shake(s) in pain from <S-HIS-HER> head to <S-HIS-HER> feet.")); break;
 		case 8:    mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-			_("<S-NAME> gasp(s) for air.")); break;
+			L("<S-NAME> gasp(s) for air.")); break;
 		case 9:    mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-			_("<S-NAME> shiver(s) in pain.")); break;
+			L("<S-NAME> shiver(s) in pain.")); break;
 		case 10:mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-			_("<S-NAME> cr(ys) in anticipation of pain!")); break;
+			L("<S-NAME> cr(ys) in anticipation of pain!")); break;
 		}
 	}
 
@@ -252,7 +252,7 @@ public class Spell_Torture extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> whisper(s) a torturous spell to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> whisper(s) a torturous spell to <T-NAMESELF>.^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))||(mob.location().okMessage(mob,msg2)))
 			{
@@ -263,7 +263,7 @@ public class Spell_Torture extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> whisper(s) a torturous spell to <T-NAMESELF>, but the spell fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> whisper(s) a torturous spell to <T-NAMESELF>, but the spell fades."));
 
 		// return whether it worked
 		return success;

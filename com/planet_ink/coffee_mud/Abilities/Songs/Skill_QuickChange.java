@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_QuickChange extends BardSkill
 {
 	@Override public String ID() { return "Skill_QuickChange"; }
-	private final static String localizedName = CMLib.lang()._("QuickChange");
+	private final static String localizedName = CMLib.lang().L("QuickChange");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
@@ -142,7 +142,7 @@ public class Skill_QuickChange extends BardSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),_("<S-NAME> perform(s) a quick costume change."));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),L("<S-NAME> perform(s) a quick costume change."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -150,13 +150,13 @@ public class Skill_QuickChange extends BardSkill
 				final List<PackedItem> mySavedGear=getAllPackedItems(mob.session());
 				packThese(myCurrentGear);
 				if(mySavedGear.size()==0)
-					mob.tell(_("That outfit is now tucked away for a quick change later on."));
+					mob.tell(L("That outfit is now tucked away for a quick change later on."));
 				else
 					wearThese(mob,mySavedGear);
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to change clothes, but forget(s) how."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to change clothes, but forget(s) how."));
 
 		return success;
 	}

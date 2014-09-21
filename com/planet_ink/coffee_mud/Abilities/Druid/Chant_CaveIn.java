@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_CaveIn extends Chant
 {
 	@Override public String ID() { return "Chant_CaveIn"; }
-	private final static String localizedName = CMLib.lang()._("Cave-In");
+	private final static String localizedName = CMLib.lang().L("Cave-In");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -54,7 +54,7 @@ public class Chant_CaveIn extends Chant
 		&&(msg.source().phyStats().height()>=0)
 		&&((msg.tool()==affected)||(msg.target()==affected)))
 		{
-			msg.source().tell(_("This exit is blocked by rubble, and can not be moved through."));
+			msg.source().tell(L("This exit is blocked by rubble, and can not be moved through."));
 			return false;
 		}
 		else
@@ -68,7 +68,7 @@ public class Chant_CaveIn extends Chant
 			&&((msg.sourceMajor(CMMsg.MASK_HANDS))
 			||(msg.sourceMajor(CMMsg.MASK_MOVE))))
 			{
-				mob.location().show(mob,null,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> struggle(s) to get out from under the rocks."));
+				mob.location().show(mob,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> struggle(s) to get out from under the rocks."));
 				amountRemaining-=(mob.charStats().getStat(CharStats.STAT_STRENGTH)*4);
 				if(amountRemaining<0)
 					unInvoke();
@@ -121,13 +121,13 @@ public class Chant_CaveIn extends Chant
 		if(target==null) return false;
 		if((target instanceof Item)||(target instanceof Room))
 		{
-			mob.tell(_("This chant can only target exits or creatures."));
+			mob.tell(L("This chant can only target exits or creatures."));
 			return false;
 		}
 		if((!auto)
 		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE))
 		{
-			mob.tell(_("This chant only works in caves."));
+			mob.tell(L("This chant only works in caves."));
 			return false;
 		}
 
@@ -141,17 +141,17 @@ public class Chant_CaveIn extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":_("^S<S-NAME> chant(s) at <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":L("^S<S-NAME> chant(s) at <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				amountRemaining=200;
 				if(target instanceof Exit)
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("A cave-in causes rubble to fall, blocking <T-NAME>!"));
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("A cave-in causes rubble to fall, blocking <T-NAME>!"));
 				else
 				if(target instanceof MOB)
 				{
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("A cave-in drops rocks on <T-NAME>!"));
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("A cave-in drops rocks on <T-NAME>!"));
 					final int maxDie =  (adjustedLevel( mob, asLevel )+(2*super.getX1Level(mob))) / 2;
 					int damage = CMLib.dice().roll(maxDie,3,maxDie);
 					if(msg.value()>0)
@@ -165,7 +165,7 @@ public class Chant_CaveIn extends Chant
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

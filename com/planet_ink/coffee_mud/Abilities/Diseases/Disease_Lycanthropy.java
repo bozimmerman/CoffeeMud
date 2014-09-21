@@ -37,9 +37,9 @@ import java.util.*;
 public class Disease_Lycanthropy extends Disease
 {
 	@Override public String ID() { return "Disease_Lycanthropy"; }
-	private final static String localizedName = CMLib.lang()._("Lycanthropy");
+	private final static String localizedName = CMLib.lang().L("Lycanthropy");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Lycanthropy)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Lycanthropy)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -73,9 +73,9 @@ public class Disease_Lycanthropy extends Disease
 		if(lycanRace()!=null)
 		{
 			if(affected.name().indexOf(' ')>0)
-				affectableStats.setName(_("a @x1 called @x2",lycanRace().name(),affected.name()));
+				affectableStats.setName(L("a @x1 called @x2",lycanRace().name(),affected.name()));
 			else
-				affectableStats.setName(_("@x1 the @x2",affected.name(),lycanRace().name()));
+				affectableStats.setName(L("@x1 the @x2",affected.name(),lycanRace().name()));
 			lycanRace().setHeightWeight(affectableStats,'M');
 		}
 	}
@@ -141,7 +141,7 @@ public class Disease_Lycanthropy extends Disease
 
 		if((CMLib.dice().rollPercentage()<15)
 		&&((mob.location().domainType()&Room.INDOORS)>0))
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> howl(s) at the moon! ARROOOOOOOO!!!!"));
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,L("<S-NAME> howl(s) at the moon! ARROOOOOOOO!!!!"));
 		// time to tick lycanthropically
 		final MOB M=victimHere(mob.location(),mob);
 		if(M!=null)
@@ -186,7 +186,7 @@ public class Disease_Lycanthropy extends Disease
 						deathTrail=null;
 					else
 					if(CMLib.dice().rollPercentage()<15)
-						mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> sniff(s) at the air."));
+						mob.location().show(mob,null,CMMsg.MSG_NOISE,L("<S-NAME> sniff(s) at the air."));
 
 				}
 				else
@@ -213,7 +213,7 @@ public class Disease_Lycanthropy extends Disease
 			&&(A.getTimeObj().getMoonPhase()==TimeClock.MoonPhase.FULL))
 			{
 				changed=true;
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> turn(s) into a @x1!",lycanRace().name()));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> turn(s) into a @x1!",lycanRace().name()));
 				mob.recoverCharStats();
 				mob.recoverPhyStats();
 				mob.recoverMaxState();
@@ -228,7 +228,7 @@ public class Disease_Lycanthropy extends Disease
 			||(A.getTimeObj().getMoonPhase()!=TimeClock.MoonPhase.FULL))
 			{
 				changed=false;
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> revert(s) to normal."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> revert(s) to normal."));
 				mob.recoverCharStats();
 				mob.recoverPhyStats();
 				mob.recoverMaxState();

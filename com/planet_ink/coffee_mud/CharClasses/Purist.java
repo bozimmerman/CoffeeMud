@@ -37,7 +37,7 @@ import java.util.*;
 public class Purist extends Cleric
 {
 	@Override public String ID(){return "Purist";}
-	private final static String localizedStaticName = CMLib.lang()._("Purist");
+	private final static String localizedStaticName = CMLib.lang().L("Purist");
 	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return "Cleric";}
 	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
@@ -192,13 +192,13 @@ public class Purist extends Cleric
 			final int pct = CMLib.factions().getPercent(CMLib.factions().AlignID(), alignment);
 			if(pct < 50)
 			{
-				myChar.tell(_("Your impurity disrupts the prayer."));
+				myChar.tell(L("Your impurity disrupts the prayer."));
 				return false;
 			}
 			final int hq=holyQuality((Ability)msg.tool());
 			if(hq==0)
 			{
-				myChar.tell(_("You most certainly should not be casting that."));
+				myChar.tell(L("You most certainly should not be casting that."));
 				return false;
 			}
 		}

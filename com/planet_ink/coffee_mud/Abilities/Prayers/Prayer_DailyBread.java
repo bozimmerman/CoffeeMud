@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_DailyBread extends Prayer
 {
 	@Override public String ID() { return "Prayer_DailyBread"; }
-	private final static String localizedName = CMLib.lang()._("Daily Bread");
+	private final static String localizedName = CMLib.lang().L("Daily Bread");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
@@ -103,7 +103,7 @@ public class Prayer_DailyBread extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("^S<S-NAME> @x1 for <T-NAMESELF> to provide <S-HIS-HER> daily bread!^?",prayWord(mob)));
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> @x1 for <T-NAMESELF> to provide <S-HIS-HER> daily bread!^?",prayWord(mob)));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
@@ -111,14 +111,14 @@ public class Prayer_DailyBread extends Prayer
 				mob.location().send(mob,msg2);
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
-					msg=CMClass.getMsg(target,mob,Bread,CMMsg.MSG_GIVE,_("<S-NAME> gladly donate(s) <O-NAME> to <T-NAMESELF>."));
+					msg=CMClass.getMsg(target,mob,Bread,CMMsg.MSG_GIVE,L("<S-NAME> gladly donate(s) <O-NAME> to <T-NAMESELF>."));
 					if(mob.location().okMessage(mob,msg))
 						mob.location().send(mob,msg);
 				}
 			}
 		}
 		else
-			maliciousFizzle(mob,target,auto?"":_("<S-NAME> @x1 for <T-NAMESELF> to provide <S-HIS-HER> daily bread, but nothing happens.",prayWord(mob)));
+			maliciousFizzle(mob,target,auto?"":L("<S-NAME> @x1 for <T-NAMESELF> to provide <S-HIS-HER> daily bread, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

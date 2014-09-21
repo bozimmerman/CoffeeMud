@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_DisassembleTrap extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_DisassembleTrap"; }
-	private final static String localizedName = CMLib.lang()._("Disassemble Traps");
+	private final static String localizedName = CMLib.lang().L("Disassemble Traps");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
@@ -55,7 +55,7 @@ public class Thief_DisassembleTrap extends ThiefSkill
 		final Hashtable traps=new Hashtable();
 		if(A==null)
 		{
-			mob.tell(_("You don't know how to remove traps."));
+			mob.tell(L("You don't know how to remove traps."));
 			return false;
 		}
 
@@ -74,7 +74,7 @@ public class Thief_DisassembleTrap extends ThiefSkill
 			}
 		if(traps.size()==0)
 		{
-			mob.tell(_("Your attempt was unsuccessful."));
+			mob.tell(L("Your attempt was unsuccessful."));
 			return false;
 		}
 
@@ -88,8 +88,8 @@ public class Thief_DisassembleTrap extends ThiefSkill
 			final CMMsg msg=CMClass.getMsg(mob,T,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,
 													 CMMsg.MSG_DELICATE_HANDS_ACT,
 													 CMMsg.MSG_OK_ACTION,
-												auto?_("@x1 begins to glow.",T.name()):
-													_("<S-NAME> attempt(s) to safely dissassemble the @x1 trap.",T.name()));
+												auto?L("@x1 begins to glow.",T.name()):
+													L("<S-NAME> attempt(s) to safely dissassemble the @x1 trap.",T.name()));
 			final Room R=mob.location();
 			if(R.okMessage(mob,msg))
 			{
@@ -97,7 +97,7 @@ public class Thief_DisassembleTrap extends ThiefSkill
 				final List<Item> components=T.getTrapComponents();
 				if(components.size()==0)
 				{
-					mob.tell(_("You don't end up with any usable components."));
+					mob.tell(L("You don't end up with any usable components."));
 				}
 				else
 				{
@@ -121,7 +121,7 @@ public class Thief_DisassembleTrap extends ThiefSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,T,_("<S-NAME> attempt(s) to disassemble the <T-NAME> trap, but fail(s)."));
+			beneficialVisualFizzle(mob,T,L("<S-NAME> attempt(s) to disassemble the <T-NAME> trap, but fail(s)."));
 
 		return success;
 	}

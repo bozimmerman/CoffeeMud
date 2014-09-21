@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Immunity extends Spell
 {
 	@Override public String ID() { return "Spell_Immunity"; }
-	private final static String localizedName = CMLib.lang()._("Immunity");
+	private final static String localizedName = CMLib.lang().L("Immunity");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return _("(Immunity to "+immunityName+")"); }
+	@Override public String displayText() { return L("(Immunity to "+immunityName+")"); }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
@@ -54,7 +54,7 @@ public class Spell_Immunity extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("Your immunity has passed."));
+			mob.tell(L("Your immunity has passed."));
 
 		super.unInvoke();
 
@@ -73,7 +73,7 @@ public class Spell_Immunity extends Spell
 		&&(!mob.amDead())
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 		{
-			mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) immune to @x1 attack from <T-NAME>.",immunityName));
+			mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) immune to @x1 attack from <T-NAME>.",immunityName));
 			return false;
 		}
 		return true;
@@ -91,7 +91,7 @@ public class Spell_Immunity extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> attain(s) an immunity barrier."):_("^S<S-NAME> invoke(s) an immunity barrier around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> attain(s) an immunity barrier."):L("^S<S-NAME> invoke(s) an immunity barrier around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				switch(CMLib.dice().roll(1,5,0))
@@ -122,7 +122,7 @@ public class Spell_Immunity extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke an immunity barrier, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke an immunity barrier, but fail(s)."));
 
 		return success;
 	}

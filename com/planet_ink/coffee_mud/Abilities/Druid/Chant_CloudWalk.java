@@ -40,9 +40,9 @@ import java.util.Vector;
 public class Chant_CloudWalk extends Chant
 {
 	@Override public String ID() { return "Chant_CloudWalk"; }
-	private final static String localizedName = CMLib.lang()._("Cloud Walk");
+	private final static String localizedName = CMLib.lang().L("Cloud Walk");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Cloud Walk)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Cloud Walk)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -58,7 +58,7 @@ public class Chant_CloudWalk extends Chant
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> float(s) down to the ground."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> float(s) down to the ground."));
 
 		super.unInvoke();
 
@@ -97,7 +97,7 @@ public class Chant_CloudWalk extends Chant
 					   &&(M.location()==mob.location())
 					   &&(M.fetchEffect(ID())==null))
 					{
-						M.location().show(M,null,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> start(s) to fly around!"));
+						M.location().show(M,null,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> start(s) to fly around!"));
 						beneficialAffect(mob,M,0,0);
 					}
 				}
@@ -115,7 +115,7 @@ public class Chant_CloudWalk extends Chant
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already a cloud walker"));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already a cloud walker"));
 			return false;
 		}
 
@@ -134,19 +134,19 @@ public class Chant_CloudWalk extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to the <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to the <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> start(s) to fly around!"));
+					mob.location().show(target,null,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> start(s) to fly around!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
 		// return whether it worked
 		return success;
 	}

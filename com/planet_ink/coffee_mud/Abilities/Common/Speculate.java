@@ -36,7 +36,7 @@ import java.util.*;
 public class Speculate extends CommonSkill
 {
 	@Override public String ID() { return "Speculate"; }
-	private final static String localizedName = CMLib.lang()._("Speculating");
+	private final static String localizedName = CMLib.lang().L("Speculating");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"SPECULATE","SPECULATING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -46,8 +46,8 @@ public class Speculate extends CommonSkill
 	public Speculate()
 	{
 		super();
-		displayText=_("You are speculating...");
-		verb=_("speculating");
+		displayText=L("You are speculating...");
+		verb=L("speculating");
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class Speculate extends CommonSkill
 			{
 				if(success==false)
 				{
-					final StringBuffer str=new StringBuffer(_("Your speculate attempt failed.\n\r"));
+					final StringBuffer str=new StringBuffer(L("Your speculate attempt failed.\n\r"));
 					commonTell(mob,str.toString());
 					unInvoke();
 				}
@@ -86,7 +86,7 @@ public class Speculate extends CommonSkill
 					{
 						final StringBuffer str=new StringBuffer("");
 						String resourceStr=RawMaterial.CODES.NAME(resource);
-						str.append(_("You think this spot would be good for @x1.\n\r",resourceStr.toLowerCase()));
+						str.append(L("You think this spot would be good for @x1.\n\r",resourceStr.toLowerCase()));
 						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 						{
 							final Room room2=room.getRoomInDir(d);
@@ -98,14 +98,14 @@ public class Speculate extends CommonSkill
 								if(RawMaterial.CODES.IS_VALID(resource))
 								{
 									resourceStr=RawMaterial.CODES.NAME(resource);
-									str.append(_("There looks like @x1 @x2.\n\r",resourceStr.toLowerCase(),Directions.getInDirectionName(d)));
+									str.append(L("There looks like @x1 @x2.\n\r",resourceStr.toLowerCase(),Directions.getInDirectionName(d)));
 								}
 							}
 						}
 						commonTell(mob,str.toString());
 					}
 					else
-						commonTell(mob,_("You don't find any good resources around here."));
+						commonTell(mob,L("You don't find any good resources around here."));
 				}
 			}
 		}
@@ -118,14 +118,14 @@ public class Speculate extends CommonSkill
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		verb=_("speculating");
+		verb=L("speculating");
 		success=false;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		if(proficiencyCheck(mob,0,auto))
 			success=true;
 		final int duration=getDuration(45,mob,1,10);
-		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),_("<S-NAME> start(s) speculating on this area."));
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),L("<S-NAME> start(s) speculating on this area."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

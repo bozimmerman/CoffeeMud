@@ -38,7 +38,7 @@ import java.util.*;
 public class WingFlying extends StdAbility implements HealthCondition
 {
 	@Override public String ID() { return "WingFlying"; }
-	private final static String localizedName = CMLib.lang()._("Winged Flight");
+	private final static String localizedName = CMLib.lang().L("Winged Flight");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -84,7 +84,7 @@ public class WingFlying extends StdAbility implements HealthCondition
 		if(target==null) return false;
 		if(target.charStats().getBodyPart(Race.BODY_WING)<=0)
 		{
-			mob.tell(_("You can't flap without wings."));
+			mob.tell(L("You can't flap without wings."));
 			return false;
 		}
 
@@ -94,9 +94,9 @@ public class WingFlying extends StdAbility implements HealthCondition
 		target.recoverPhyStats();
 		String str="";
 		if(wasFlying)
-			str=_("<S-NAME> stop(s) flapping <S-HIS-HER> wings.");
+			str=L("<S-NAME> stop(s) flapping <S-HIS-HER> wings.");
 		else
-			str=_("<S-NAME> start(s) flapping <S-HIS-HER> wings.");
+			str=L("<S-NAME> start(s) flapping <S-HIS-HER> wings.");
 
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -119,7 +119,7 @@ public class WingFlying extends StdAbility implements HealthCondition
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,_("<T-NAME> fumble(s) trying to use <T-HIS-HER> wings."));
+			return beneficialVisualFizzle(mob,target,L("<T-NAME> fumble(s) trying to use <T-HIS-HER> wings."));
 
 
 		// return whether it worked

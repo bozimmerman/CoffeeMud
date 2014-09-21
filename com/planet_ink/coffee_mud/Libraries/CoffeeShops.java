@@ -117,15 +117,15 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	{
 		final StringBuffer str=new StringBuffer("");
 		if(E==null) return str.toString();
-		str.append(_("Interested in @x1?",E.name()));
-		str.append(_(" Here is some information for you:"));
+		str.append(L("Interested in @x1?",E.name()));
+		str.append(L(" Here is some information for you:"));
 		if(E instanceof Physical)
 			str.append("\n\rLevel      : "+((Physical)E).phyStats().level());
 		if(E instanceof Item)
 		{
 			final Item I=(Item)E;
 			str.append("\n\rMaterial   : "+CMStrings.capitalizeAndLower(RawMaterial.CODES.NAME(I.material()).toLowerCase()));
-			str.append(_("\n\rWeight     : @x1 pounds",""+I.phyStats().weight()));
+			str.append(L("\n\rWeight     : @x1 pounds",""+I.phyStats().weight()));
 			if(I instanceof Weapon)
 			{
 				str.append("\n\rWeap. Type : "+CMStrings.capitalizeAndLower(Weapon.TYPE_DESCS[((Weapon)I).weaponType()]));
@@ -134,7 +134,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			else
 			if(I instanceof Armor)
 			{
-				str.append(_("\n\rWear Info  : Worn on "));
+				str.append(L("\n\rWear Info  : Worn on "));
 				final Wearable.CODES codes = Wearable.CODES.instance();
 				for(final long wornCode : codes.all())
 					if(wornCode != Wearable.IN_INVENTORY)
@@ -539,7 +539,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					&&((((Physical)product).phyStats().level()>(medianLevel+rangeI))
 						||(((Physical)product).phyStats().level()<(medianLevel-rangeI))))
 					{
-						CMLib.commands().postSay(seller,buyer,_("I'm sorry, that's out of my level range."),true,false);
+						CMLib.commands().postSay(seller,buyer,L("I'm sorry, that's out of my level range."),true,false);
 						return false;
 					}
 				}
@@ -547,25 +547,25 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			final double yourValue=pawningPrice(seller,buyer,product,shop).absoluteGoldPrice;
 			if(yourValue<2)
 			{
-				CMLib.commands().postSay(seller,buyer,_("I'm not interested."),true,false);
+				CMLib.commands().postSay(seller,buyer,L("I'm not interested."),true,false);
 				return false;
 			}
 			if((product instanceof Physical)&&CMLib.flags().isEnspelled((Physical)product) || CMLib.flags().isOnFire((Physical)product))
 			{
-				CMLib.commands().postSay(seller, buyer, _("I won't buy that in it's present state."), true, false);
+				CMLib.commands().postSay(seller, buyer, L("I won't buy that in it's present state."), true, false);
 				return false;
 			}
 			if((sellNotValue)&&(yourValue>maxToPay))
 			{
 				if(yourValue>maxEverPaid)
-					CMLib.commands().postSay(seller,buyer,_("That's way out of my price range! Try AUCTIONing it."),true,false);
+					CMLib.commands().postSay(seller,buyer,L("That's way out of my price range! Try AUCTIONing it."),true,false);
 				else
-					CMLib.commands().postSay(seller,buyer,_("Sorry, I can't afford that right now.  Try back later."),true,false);
+					CMLib.commands().postSay(seller,buyer,L("Sorry, I can't afford that right now.  Try back later."),true,false);
 				return false;
 			}
 			if(product instanceof Ability)
 			{
-				CMLib.commands().postSay(seller,buyer,_("I'm not interested."),true,false);
+				CMLib.commands().postSay(seller,buyer,L("I'm not interested."),true,false);
 				return false;
 			}
 			if((product instanceof Container)&&(((Container)product).hasALock()))
@@ -581,13 +581,13 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					else
 					if(CMLib.flags().isEnspelled(I) || CMLib.flags().isOnFire(I))
 					{
-						CMLib.commands().postSay(seller, buyer, _("I won't buy the contents of that in it's present state."), true, false);
+						CMLib.commands().postSay(seller, buyer, L("I won't buy the contents of that in it's present state."), true, false);
 						return false;
 					}
 				}
 				if(!found)
 				{
-					CMLib.commands().postSay(seller,buyer,_("I won't buy that back unless you put the key in it."),true,false);
+					CMLib.commands().postSay(seller,buyer,L("I won't buy that back unless you put the key in it."),true,false);
 					return false;
 				}
 			}
@@ -599,7 +599,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			}
 			return true;
 		}
-		CMLib.commands().postSay(seller,buyer,_("I'm sorry, I'm not buying those."),true,false);
+		CMLib.commands().postSay(seller,buyer,L("I'm sorry, I'm not buying those."),true,false);
 		return false;
 	}
 
@@ -619,18 +619,18 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				final ShopKeeper.ShopPrice price=sellingPrice(seller,buyer,product,shop,true);
 				if((price.experiencePrice>0)&&(price.experiencePrice>buyer.getExperience()))
 				{
-					CMLib.commands().postSay(seller,buyer,_("You aren't experienced enough to buy @x1.",product.name()),false,false);
+					CMLib.commands().postSay(seller,buyer,L("You aren't experienced enough to buy @x1.",product.name()),false,false);
 					return false;
 				}
 				if((price.questPointPrice>0)&&(price.questPointPrice>buyer.getQuestPoint()))
 				{
-					CMLib.commands().postSay(seller,buyer,_("You don't have enough quest points to buy @x1.",product.name()),false,false);
+					CMLib.commands().postSay(seller,buyer,L("You don't have enough quest points to buy @x1.",product.name()),false,false);
 					return false;
 				}
 				if((price.absoluteGoldPrice>0.0)
 				&&(price.absoluteGoldPrice>CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(buyer,seller)))
 				{
-					CMLib.commands().postSay(seller,buyer,_("You can't afford to buy @x1.",product.name()),false,false);
+					CMLib.commands().postSay(seller,buyer,L("You can't afford to buy @x1.",product.name()),false,false);
 					return false;
 				}
 			}
@@ -638,7 +638,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			{
 				if(((Item)product).phyStats().level()>buyer.phyStats().level())
 				{
-					CMLib.commands().postSay(seller,buyer,_("That's too advanced for you, I'm afraid."),true,false);
+					CMLib.commands().postSay(seller,buyer,L("That's too advanced for you, I'm afraid."),true,false);
 					return false;
 				}
 			}
@@ -649,10 +649,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				if(clanPair==null)
 				{
 					if(!buyer.clans().iterator().hasNext())
-						CMLib.commands().postSay(seller,buyer,_("I only sell to clans."),true,false);
+						CMLib.commands().postSay(seller,buyer,L("I only sell to clans."),true,false);
 					else
 					if(!buyer.isMonster())
-						CMLib.commands().postSay(seller,buyer,_("You are not authorized by your clan to handle property."),true,false);
+						CMLib.commands().postSay(seller,buyer,L("You are not authorized by your clan to handle property."),true,false);
 					return false;
 				}
 			}
@@ -660,7 +660,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			{
 				if(buyer.totalFollowers()>=buyer.maxFollowers())
 				{
-					CMLib.commands().postSay(seller,buyer,_("You can't accept any more followers."),true,false);
+					CMLib.commands().postSay(seller,buyer,L("You can't accept any more followers."),true,false);
 					return false;
 				}
 				if((CMProps.getIntVar(CMProps.Int.FOLLOWLEVELDIFF)>0)
@@ -669,12 +669,12 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				{
 					if(seller.phyStats().level() > (buyer.phyStats().level() + CMProps.getIntVar(CMProps.Int.FOLLOWLEVELDIFF)))
 					{
-						buyer.tell(_("@x1 is too advanced for you.",product.name()));
+						buyer.tell(L("@x1 is too advanced for you.",product.name()));
 						return false;
 					}
 					if(seller.phyStats().level() < (buyer.phyStats().level() - CMProps.getIntVar(CMProps.Int.FOLLOWLEVELDIFF)))
 					{
-						buyer.tell(_("@x1 is too inexperienced for you.",product.name()));
+						buyer.tell(L("@x1 is too inexperienced for you.",product.name()));
 						return false;
 					}
 				}
@@ -704,20 +704,20 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 						if(I==null) I=buyer.fetchHeldItem();
 						if(I==null)
 						{
-							CMLib.commands().postSay(seller,buyer,_("You need to be wielding or holding the item you want this cast on."),true,false);
+							CMLib.commands().postSay(seller,buyer,L("You need to be wielding or holding the item you want this cast on."),true,false);
 							return false;
 						}
 					}
 					else
 					{
-						CMLib.commands().postSay(seller,buyer,_("I don't know how to sell that spell."),true,false);
+						CMLib.commands().postSay(seller,buyer,L("I don't know how to sell that spell."),true,false);
 						return false;
 					}
 				}
 			}
 			return true;
 		}
-		CMLib.commands().postSay(seller,buyer,_("I don't have that in stock.  Ask for my LIST."),true,false);
+		CMLib.commands().postSay(seller,buyer,L("I don't have that in stock.  Ask for my LIST."),true,false);
 		return false;
 	}
 
@@ -767,7 +767,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				}
 			}
 
-			final String c="^x["+CMStrings.padRight(_("Cost"),4+csize)+"] "+CMStrings.padRight(_("Product"),Math.max(totalWidth-csize,5));
+			final String c="^x["+CMStrings.padRight(L("Cost"),4+csize)+"] "+CMStrings.padRight(L("Product"),Math.max(totalWidth-csize,5));
 			str.append(c+((totalCols>1)?c:"")+"^.^N^<!ENTITY shopkeeper \""+CMStrings.removeColors(seller.name())+"\"^>^.^N\n\r");
 			int colNum=0;
 			int rowNum=0;
@@ -778,10 +778,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				price=sellingPrice(seller,buyer,E,shop,true);
 				col=null;
 				if(price.questPointPrice>0)
-					col=CMStrings.padRight(_("[@x1qp",""+price.questPointPrice),(5+csize))+"] ^<SHOP^>"+CMStrings.padRight(E.name(),"^</SHOP^>",Math.max(totalWidth-csize,5));
+					col=CMStrings.padRight(L("[@x1qp",""+price.questPointPrice),(5+csize))+"] ^<SHOP^>"+CMStrings.padRight(E.name(),"^</SHOP^>",Math.max(totalWidth-csize,5));
 				else
 				if(price.experiencePrice>0)
-					col=CMStrings.padRight(_("[@x1xp",""+price.experiencePrice),(5+csize))+"] ^<SHOP^>"+CMStrings.padRight(E.name(),"^</SHOP^>",Math.max(totalWidth-csize,5));
+					col=CMStrings.padRight(L("[@x1xp",""+price.experiencePrice),(5+csize))+"] ^<SHOP^>"+CMStrings.padRight(E.name(),"^</SHOP^>",Math.max(totalWidth-csize,5));
 				else
 					col=CMStrings.padRight("["+CMLib.beanCounter().abbreviatedPrice(seller,price.absoluteGoldPrice),5+csize)+"] ^<SHOP^>"+CMStrings.padRight(E.name(),"^</SHOP^>",Math.max(totalWidth-csize,5));
 				if((++colNum)>totalCols)
@@ -871,7 +871,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				CMLib.beanCounter().subtractMoney(shopkeeper,currency,val);
 			CMLib.beanCounter().giveSomeoneMoney(shopkeeper,pawner,currency,val);
 			pawner.recoverPhyStats();
-			pawner.tell(_("@x1 pays you @x2 for @x3.",shopkeeper.name(),CMLib.beanCounter().nameCurrencyShort(shopkeeper,val),rawSoldItem.name()));
+			pawner.tell(L("@x1 pays you @x2 for @x3.",shopkeeper.name(),CMLib.beanCounter().nameCurrencyShort(shopkeeper,val),rawSoldItem.name()));
 			if(rawSoldItem instanceof Item)
 			{
 				List<Item> V=null;
@@ -993,7 +993,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				String buf=findInnRoom(item, "", room);
 				if(buf==null) buf=findInnRoom(item, "upstairs", room.getRoomInDir(Directions.UP));
 				if(buf==null) buf=findInnRoom(item, "downstairs", room.getRoomInDir(Directions.DOWN));
-				if(buf!=null) CMLib.commands().postSay(seller,mobFor,_("Your room is @x1.",buf),true,false);
+				if(buf!=null) CMLib.commands().postSay(seller,mobFor,L("Your room is @x1.",buf),true,false);
 			}
 			return true;
 		}
@@ -1033,7 +1033,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		CMLib.commands().postFollow(product,mobFor,false);
 		if(product.amFollowing()==null)
 		{
-			mobFor.tell(_("You cannot accept seem to accept this follower!"));
+			mobFor.tell(L("You cannot accept seem to accept this follower!"));
 			return false;
 		}
 		return true;
@@ -1173,7 +1173,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 						((LandTitle)I).setLandPropertyID(R.Name());
 					if((((LandTitle)I).getOwnerName().length()>0)
 					&&(!I.Name().endsWith(" (Copy)")))
-						I.setName(_("@x1 (Copy)",I.Name()));
+						I.setName(L("@x1 (Copy)",I.Name()));
 					I.text();
 					I.recoverPhyStats();
 					if((A.getOwnerName().length()==0)
@@ -1226,7 +1226,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	{
 		if((ignoreMask.length()>0)&&(!CMLib.masking().maskCheck(ignoreMask,mob,false)))
 		{
-			mob.tell(whoIgnores,null,null,_("<S-NAME> appear(s) to be ignoring you."));
+			mob.tell(whoIgnores,null,null,L("<S-NAME> appear(s) to be ignoring you."));
 			return false;
 		}
 		return true;
@@ -1618,7 +1618,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 									  String mask)
 	{
 		final StringBuffer str=new StringBuffer("");
-		str.append("^x"+CMStrings.padRight(_("Lvl"),3)+" "+CMStrings.padRight(_("Item"),50)+" "+CMStrings.padRight(_("Days"),4)+" ["+CMStrings.padRight(_("Bid"),6)+"] Buy^.^N\n\r");
+		str.append("^x"+CMStrings.padRight(L("Lvl"),3)+" "+CMStrings.padRight(L("Item"),50)+" "+CMStrings.padRight(L("Days"),4)+" ["+CMStrings.padRight(L("Bid"),6)+"] Buy^.^N\n\r");
 		final List<AuctionData> auctions=getAuctions(null,auction.auctionHouse());
 		for(int v=0;v<auctions.size();v++)
 		{
@@ -1690,6 +1690,6 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		}
 		CMLib.database().DBDeleteJournal(auctionHouse, data.auctionDBKey);
 		if(data.auctioningI!=null)
-			data.auctioningM.tell(_("Auction ended."));
+			data.auctioningM.tell(L("Auction ended."));
 	}
 }

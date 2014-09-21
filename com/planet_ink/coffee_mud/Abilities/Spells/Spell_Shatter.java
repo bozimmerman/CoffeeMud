@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_Shatter extends Spell
 {
 	@Override public String ID() { return "Spell_Shatter"; }
-	private final static String localizedName = CMLib.lang()._("Shatter");
+	private final static String localizedName = CMLib.lang().L("Shatter");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -90,7 +90,7 @@ public class Spell_Shatter extends Spell
 		{
 			target=getItem(mob);
 			if(target==null)
-				return maliciousFizzle(mob,mobTarget,_("<S-NAME> attempt(s) a shattering spell at <T-NAMESELF>, but nothing happens."));
+				return maliciousFizzle(mob,mobTarget,L("<S-NAME> attempt(s) a shattering spell at <T-NAMESELF>, but nothing happens."));
 		}
 
 		if((target==null)&&(mobTarget!=null))
@@ -114,7 +114,7 @@ public class Spell_Shatter extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> starts vibrating!"):_("^S<S-NAME> utter(s) a shattering spell, causing <T-NAMESELF> to vibrate and resonate.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> starts vibrating!"):L("^S<S-NAME> utter(s) a shattering spell, causing <T-NAMESELF> to vibrate and resonate.^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,mobTarget,this,verbalCastCode(mob,target,auto),null);
 			if((R.okMessage(mob,msg))&&((mobTarget==null)||(R.okMessage(mob,msg2))))
 			{
@@ -154,7 +154,7 @@ public class Spell_Shatter extends Spell
 						target.setUsesRemaining(target.usesRemaining()-damage);
 					else
 					{
-						R.show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> seems otherwise unaffected."));
+						R.show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> seems otherwise unaffected."));
 						return true;
 					}
 					if(target.usesRemaining()>0)
@@ -163,9 +163,9 @@ public class Spell_Shatter extends Spell
 					{
 						target.setUsesRemaining(100);
 						if(mobTarget==null)
-							R.show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> is destroyed!"));
+							R.show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> is destroyed!"));
 						else
-							R.show(mobTarget,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME>, possessed by <S-NAME>, is destroyed!"));
+							R.show(mobTarget,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME>, possessed by <S-NAME>, is destroyed!"));
 						target.unWear();
 						target.destroy();
 						R.recoverRoomStats();
@@ -174,7 +174,7 @@ public class Spell_Shatter extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> attempt(s) a shattering spell, but nothing happens."));
+			return maliciousFizzle(mob,null,L("<S-NAME> attempt(s) a shattering spell, but nothing happens."));
 
 
 		// return whether it worked

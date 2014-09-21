@@ -36,9 +36,9 @@ import java.util.*;
 public class Fighter_KiStrike extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_KiStrike"; }
-	private final static String localizedName = CMLib.lang()._("Ki Strike");
+	private final static String localizedName = CMLib.lang().L("Ki Strike");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Ki Strike)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Ki Strike)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	private static final String[] triggerStrings =_i(new String[] {"KISTRIKE","KI"});
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -61,7 +61,7 @@ public class Fighter_KiStrike extends FighterSkill
 			if((CMLib.flags().aliveAwakeMobile(mob,true))
 			&&(mob.location()!=null))
 			{
-				mob.location().show(mob,null,CMMsg.MSG_SPEAK,_("<S-NAME> yell(s) 'KIA'!"));
+				mob.location().show(mob,null,CMMsg.MSG_SPEAK,L("<S-NAME> yell(s) 'KIA'!"));
 				msg.setValue(msg.value()+adjustedLevel(invoker(),0));
 				unInvoke();
 			}
@@ -79,7 +79,7 @@ public class Fighter_KiStrike extends FighterSkill
 
 		if(!CMLib.flags().canSpeak(mob))
 		{
-			mob.tell(_("You can't speak!"));
+			mob.tell(L("You can't speak!"));
 			return false;
 		}
 
@@ -98,7 +98,7 @@ public class Fighter_KiStrike extends FighterSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> concentrate(s) <S-HIS-HER> strength."));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> concentrate(s) <S-HIS-HER> strength."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -106,7 +106,7 @@ public class Fighter_KiStrike extends FighterSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,_("<S-NAME> lose(s) concentration."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> lose(s) concentration."));
 
 		// return whether it worked
 		return success;

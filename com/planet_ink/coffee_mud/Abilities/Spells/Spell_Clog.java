@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Clog extends Spell
 {
 	@Override public String ID() { return "Spell_Clog"; }
-	private final static String localizedName = CMLib.lang()._("Shrink Mouth");
+	private final static String localizedName = CMLib.lang().L("Shrink Mouth");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Shrunken Mouth)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Shrunken Mouth)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -62,7 +62,7 @@ public class Spell_Clog extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> mouth reverts to normal size."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> mouth reverts to normal size."));
 	}
 
 	@Override
@@ -98,7 +98,7 @@ public class Spell_Clog extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> gergle(s) at <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> gergle(s) at <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -106,14 +106,14 @@ public class Spell_Clog extends Spell
 				{
 					if(target.location()==mob.location())
 					{
-						target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> start(s) gagging and spitting as <S-HIS-HER> mouth shrinks!"));
+						target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> start(s) gagging and spitting as <S-HIS-HER> mouth shrinks!"));
 						success=maliciousAffect(mob,target,asLevel,0,-1);
 					}
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> gurgle(s) at <T-NAMESELF>, but the spell fizzles."));
+			return maliciousFizzle(mob,target,L("<S-NAME> gurgle(s) at <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

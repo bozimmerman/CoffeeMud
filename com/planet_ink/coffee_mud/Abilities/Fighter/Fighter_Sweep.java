@@ -36,7 +36,7 @@ import java.util.*;
 public class Fighter_Sweep extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Sweep"; }
-	private final static String localizedName = CMLib.lang()._("Sweep");
+	private final static String localizedName = CMLib.lang().L("Sweep");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"SWEEP"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -74,12 +74,12 @@ public class Fighter_Sweep extends FighterSkill
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell(_("You are too far away to sweep!"));
+			mob.tell(L("You are too far away to sweep!"));
 			return false;
 		}
 		if(!mob.isInCombat())
 		{
-			mob.tell(_("You must be in combat to sweep!"));
+			mob.tell(L("You must be in combat to sweep!"));
 			return false;
 		}
 		final Set<MOB> h=properTargets(mob,givenTarget,false);
@@ -89,20 +89,20 @@ public class Fighter_Sweep extends FighterSkill
 
 		if(h.size()==0)
 		{
-			mob.tell(_("There aren't enough enough targets in range!"));
+			mob.tell(L("There aren't enough enough targets in range!"));
 			return false;
 		}
 
 		final Item w=mob.fetchWieldedItem();
 		if((w==null)||(!(w instanceof Weapon)))
 		{
-			mob.tell(_("You need a weapon to sweep!"));
+			mob.tell(L("You need a weapon to sweep!"));
 			return false;
 		}
 		final Weapon wp=(Weapon)w;
 		if(wp.weaponType()!=Weapon.TYPE_SLASHING)
 		{
-			mob.tell(_("You cannot sweep with @x1!",wp.name()));
+			mob.tell(L("You cannot sweep with @x1!",wp.name()));
 			return false;
 		}
 
@@ -117,7 +117,7 @@ public class Fighter_Sweep extends FighterSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,_("^F^<FIGHT^><S-NAME> sweep(s)!^</FIGHT^>^?"));
+			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,L("^F^<FIGHT^><S-NAME> sweep(s)!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -144,7 +144,7 @@ public class Fighter_Sweep extends FighterSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> fail(s) to sweep."));
+			return maliciousFizzle(mob,null,L("<S-NAME> fail(s) to sweep."));
 
 		// return whether it worked
 		return success;

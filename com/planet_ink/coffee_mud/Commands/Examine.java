@@ -84,7 +84,7 @@ public class Examine extends StdCommand
 						thisThang=exit;
 					else
 					{
-						mob.tell(_("You don't see anything that way."));
+						mob.tell(L("You don't see anything that way."));
 						return false;
 					}
 				}
@@ -101,14 +101,14 @@ public class Examine extends StdCommand
 						name=((mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip))?
 							Directions.getShipDirectionName(dirCode):Directions.getDirectionName(dirCode);
 				}
-				final CMMsg msg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_EXAMINE,_("@x1@x2 closely.",textMsg,name));
+				final CMMsg msg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_EXAMINE,L("@x1@x2 closely.",textMsg,name));
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 				if((CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))&&(thisThang instanceof Room))
 					msg.addTrailerMsg(CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_LOOK_EXITS,null));
 			}
 			else
-				mob.tell(_("You don't see that here!"));
+				mob.tell(L("You don't see that here!"));
 		}
 		else
 		{

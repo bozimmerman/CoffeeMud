@@ -36,7 +36,7 @@ import java.util.*;
 public class Dance_Stop extends Dance
 {
 	@Override public String ID() { return "Dance_Stop"; }
-	private final static String localizedName = CMLib.lang()._("Stop");
+	private final static String localizedName = CMLib.lang().L("Stop");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected boolean skipStandardSongInvoke(){return true;}
@@ -61,11 +61,11 @@ public class Dance_Stop extends Dance
 		undanceAll(mob,null);
 		if(!foundOne)
 		{
-			mob.tell(auto?_("There is no dance going."):_("You aren't dancing."));
+			mob.tell(auto?L("There is no dance going."):L("You aren't dancing."));
 			return true;
 		}
 
-		mob.location().show(mob,null,CMMsg.MSG_NOISE,auto?_("Rest."):_("<S-NAME> stop(s) dancing."));
+		mob.location().show(mob,null,CMMsg.MSG_NOISE,auto?L("Rest."):L("<S-NAME> stop(s) dancing."));
 		mob.location().recoverRoomStats();
 		return true;
 	}

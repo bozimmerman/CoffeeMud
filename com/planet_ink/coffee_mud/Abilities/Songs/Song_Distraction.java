@@ -36,7 +36,7 @@ import java.util.*;
 public class Song_Distraction extends Song
 {
 	@Override public String ID() { return "Song_Distraction"; }
-	private final static String localizedName = CMLib.lang()._("Distraction");
+	private final static String localizedName = CMLib.lang().L("Distraction");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 
@@ -60,7 +60,7 @@ public class Song_Distraction extends Song
 			&&((msg.sourceMajor(CMMsg.MASK_HANDS))
 			||(msg.sourceMajor(CMMsg.MASK_MOVE))))
 			{
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appear(s) distracted by the singing."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appear(s) distracted by the singing."));
 				return false;
 			}
 		}

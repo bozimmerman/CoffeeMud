@@ -39,7 +39,7 @@ import java.util.*;
 public class Chant_SweetScent extends Chant
 {
 	@Override public String ID() { return "Chant_SweetScent"; }
-	private final static String localizedName = CMLib.lang()._("Sweet Scent");
+	private final static String localizedName = CMLib.lang().L("Sweet Scent");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
@@ -68,7 +68,7 @@ public class Chant_SweetScent extends Chant
 					if((M!=null)
 					&&(CMLib.flags().isAnimalIntelligence(M))
 					&&(CMLib.flags().canSmell(M)))
-						M.tell(M,I,null,_("<T-NAME> smell(s) absolutely intoxicating!"));
+						M.tell(M,I,null,L("<T-NAME> smell(s) absolutely intoxicating!"));
 				}
 				for(int r=0;r<rooms.size();r++)
 				{
@@ -87,7 +87,7 @@ public class Chant_SweetScent extends Chant
 								&&((!M.isMonster())||(CMLib.flags().isMobile(M)))
 								&&(CMLib.flags().canSmell(M)))
 								{
-									M.tell(M,null,null,_("You smell something irresistable @x1.",Directions.getInDirectionName(dir)));
+									M.tell(M,null,null,L("You smell something irresistable @x1.",Directions.getInDirectionName(dir)));
 									if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_MIND))
 										CMLib.tracking().walk(M,dir,false,false);
 								}
@@ -108,7 +108,7 @@ public class Chant_SweetScent extends Chant
 		if((msg.amITarget(affected))
 		&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
 		&&(CMLib.flags().canSmell(msg.source())))
-			msg.source().tell(msg.source(),affected,null,_("<T-NAME> smell(s) absolutely intoxicating!"));
+			msg.source().tell(msg.source(),affected,null,L("<T-NAME> smell(s) absolutely intoxicating!"));
 	}
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
@@ -122,7 +122,7 @@ public class Chant_SweetScent extends Chant
 		||(mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
 		   )
 		{
-			mob.tell(_("This magic will not work here."));
+			mob.tell(L("This magic will not work here."));
 			return false;
 		}
 
@@ -130,7 +130,7 @@ public class Chant_SweetScent extends Chant
 		if(target==null) return false;
 		if(!Druid_MyPlants.isMyPlant(target,mob))
 		{
-			mob.tell(_("@x1 is not one of your plants!",target.name(mob)));
+			mob.tell(L("@x1 is not one of your plants!",target.name(mob)));
 			return false;
 		}
 
@@ -141,7 +141,7 @@ public class Chant_SweetScent extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -149,7 +149,7 @@ public class Chant_SweetScent extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to the <T-NAMESELF>, but nothing happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to the <T-NAMESELF>, but nothing happens."));
 
 		// return whether it worked
 		return success;

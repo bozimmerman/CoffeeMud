@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_SideKick extends MonkSkill
 {
 	@Override public String ID() { return "Fighter_SideKick"; }
-	private final static String localizedName = CMLib.lang()._("Side Kick");
+	private final static String localizedName = CMLib.lang().L("Side Kick");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -84,7 +84,7 @@ public class Fighter_SideKick extends MonkSkill
 					||(naturalWeapon.amDestroyed()))
 					{
 						naturalWeapon=CMClass.getWeapon("GenWeapon");
-						naturalWeapon.setName(_("a side kick"));
+						naturalWeapon.setName(L("a side kick"));
 						naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 						naturalWeapon.setUsesRemaining(1000);
 						naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);

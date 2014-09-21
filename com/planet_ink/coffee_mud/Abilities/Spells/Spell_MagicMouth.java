@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_MagicMouth extends Spell
 {
 	@Override public String ID() { return "Spell_MagicMouth"; }
-	private final static String localizedName = CMLib.lang()._("Magic Mouth");
+	private final static String localizedName = CMLib.lang().L("Magic Mouth");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
@@ -51,7 +51,7 @@ public class Spell_MagicMouth extends Spell
 
 	public void doMyThing()
 	{
-		myRoomContainer.showHappens(CMMsg.MSG_NOISE,_("\n\r\n\r@x1 says '@x2'.\n\r\n\r",affected.name(),message));
+		myRoomContainer.showHappens(CMMsg.MSG_NOISE,L("\n\r\n\r@x1 says '@x2'.\n\r\n\r",affected.name(),message));
 		unInvoke();
 		return;
 	}
@@ -118,18 +118,18 @@ public class Spell_MagicMouth extends Spell
 
 		if(commands.size()<3)
 		{
-			mob.tell(_("You must specify:\n\r 1. What object you want the spell cast on.\n\r 2. Whether it is triggered by TOUCH, HOLD, WIELD, WEAR, or someone ENTERing the same room. \n\r 3. The message you wish the object to impart. "));
+			mob.tell(L("You must specify:\n\r 1. What object you want the spell cast on.\n\r 2. Whether it is triggered by TOUCH, HOLD, WIELD, WEAR, or someone ENTERing the same room. \n\r 3. The message you wish the object to impart. "));
 			return false;
 		}
 		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,((String)commands.elementAt(0)),Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",((String)commands.elementAt(0))));
+			mob.tell(L("You don't see '@x1' here.",((String)commands.elementAt(0))));
 			return false;
 		}
 		if(target instanceof MOB)
 		{
-			mob.tell(_("You can't can't cast this on @x1.",target.name(mob)));
+			mob.tell(L("You can't can't cast this on @x1.",target.name(mob)));
 			return false;
 		}
 
@@ -151,7 +151,7 @@ public class Spell_MagicMouth extends Spell
 			myTrigger=CMMsg.TYP_ENTER;
 		else
 		{
-			mob.tell(_("You must specify the trigger event that will cause the mouth to speak.\n\r'@x1' is not correct, but you can try TOUCH, WEAR, WIELD, HOLD, or ENTER.\n\r",triggerStr));
+			mob.tell(L("You must specify the trigger event that will cause the mouth to speak.\n\r'@x1' is not correct, but you can try TOUCH, WEAR, WIELD, HOLD, or ENTER.\n\r",triggerStr));
 			return false;
 		}
 
@@ -163,7 +163,7 @@ public class Spell_MagicMouth extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("^S<S-NAME> invoke(s) a spell upon <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> invoke(s) a spell upon <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -174,7 +174,7 @@ public class Spell_MagicMouth extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a spell upon <T-NAMESELF>, but the spell fizzles."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a spell upon <T-NAMESELF>, but the spell fizzles."));
 
 
 		// return whether it worked

@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_DetectAmbush extends Spell
 {
 	@Override public String ID() { return "Spell_DetectAmbush"; }
-	private final static String localizedName = CMLib.lang()._("Detect Ambush");
+	private final static String localizedName = CMLib.lang().L("Detect Ambush");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Detecting Ambushes)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Detecting Ambushes)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -56,7 +56,7 @@ public class Spell_DetectAmbush extends Spell
 		lastRoom=null;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("You are no longer detecting ambushes."));
+			mob.tell(L("You are no longer detecting ambushes."));
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class Spell_DetectAmbush extends Spell
 			lastRoom=R;
 			if(found)
 			{
-				mob.tell(_("Potential danger in that direction stops you for a second."));
+				mob.tell(L("Potential danger in that direction stops you for a second."));
 				return false;
 			}
 		}
@@ -122,7 +122,7 @@ public class Spell_DetectAmbush extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already detecting ambushes."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already detecting ambushes."));
 			return false;
 		}
 
@@ -133,7 +133,7 @@ public class Spell_DetectAmbush extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) careful senses!"):_("^S<S-NAME> incant(s) softly, and gain(s) careful senses!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> gain(s) careful senses!"):L("^S<S-NAME> incant(s) softly, and gain(s) careful senses!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -141,7 +141,7 @@ public class Spell_DetectAmbush extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> incant(s) and open(s) <S-HIS-HER> careful eyes, but the spell fizzles."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> incant(s) and open(s) <S-HIS-HER> careful eyes, but the spell fizzles."));
 
 		return success;
 	}

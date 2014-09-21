@@ -37,7 +37,7 @@ import java.util.*;
 public class Thief_SetAlarm extends ThiefSkill implements Trap
 {
 	@Override public String ID() { return "Thief_SetAlarm"; }
-	private final static String localizedName = CMLib.lang()._("Set Alarm");
+	private final static String localizedName = CMLib.lang().L("Set Alarm");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_EXITS;}
 	@Override protected int canTargetCode(){return Ability.CAN_EXITS;}
@@ -102,8 +102,8 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 			CMLib.tracking().getRadiantRooms(room1,rooms,flags,null,10+(getXLEVELLevel(invoker())*2),null);
 			CMLib.tracking().getRadiantRooms(room2,rooms,flags,null,10+(getXLEVELLevel(invoker())*2),null);
 			final Vector mobsDone=new Vector();
-			room1.showHappens(CMMsg.MSG_NOISE,_("A horrible alarm is going off here."));
-			room2.showHappens(CMMsg.MSG_NOISE,_("A horrible alarm is going off here."));
+			room1.showHappens(CMMsg.MSG_NOISE,L("A horrible alarm is going off here."));
+			room2.showHappens(CMMsg.MSG_NOISE,L("A horrible alarm is going off here."));
 			for(int r=0;r<rooms.size();r++)
 			{
 				final Room R=(Room)rooms.elementAt(r);
@@ -112,7 +112,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 					final int dir=CMLib.tracking().radiatesFromDir(R,rooms);
 					if(dir>=0)
 					{
-						R.showHappens(CMMsg.MSG_NOISE,_("You hear a loud alarm @x1.",Directions.getInDirectionName(dir)));
+						R.showHappens(CMMsg.MSG_NOISE,L("You hear a loud alarm @x1.",Directions.getInDirectionName(dir)));
 						for(int i=0;i<R.numInhabitants();i++)
 						{
 							final MOB M=R.fetchInhabitant(i);
@@ -147,7 +147,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 			alarmThis=mob.location().getExitInDir(dirCode);
 		if((alarmThis==null)||(!alarmThis.hasADoor()))
 		{
-			mob.tell(_("You can't set an alarm that way."));
+			mob.tell(L("You can't set an alarm that way."));
 			return false;
 		}
 
@@ -156,7 +156,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,alarmThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_ALWAYS|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_OK_ACTION,(auto?_("@x1 begins to glow!",alarmThis.name()):_("<S-NAME> attempt(s) to lay a trap on @x1.",alarmThis.name())));
+		final CMMsg msg=CMClass.getMsg(mob,alarmThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_ALWAYS|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_OK_ACTION,(auto?L("@x1 begins to glow!",alarmThis.name()):L("<S-NAME> attempt(s) to lay a trap on @x1.",alarmThis.name())));
 		if(mob.location().okMessage(mob,msg))
 		{
 			invoker=mob;
@@ -166,7 +166,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 				sprung=false;
 				room1=mob.location();
 				room2=mob.location().getRoomInDir(dirCode);
-				mob.tell(_("You have set the alarm."));
+				mob.tell(L("You have set the alarm."));
 				beneficialAffect(mob,alarmThis,asLevel,0);
 			}
 			else
@@ -174,13 +174,13 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 				if(CMLib.dice().rollPercentage()>50)
 				{
 					beneficialAffect(mob,alarmThis,asLevel,0);
-					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> trigger(s) the alarm on accident!"));
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> trigger(s) the alarm on accident!"));
 					final Trap T=(Trap)alarmThis.fetchEffect(ID());
 					if(T!=null) T.spring(mob);
 				}
 				else
 				{
-					mob.tell(_("You fail in your attempt to set an alarm."));
+					mob.tell(L("You fail in your attempt to set an alarm."));
 				}
 			}
 		}

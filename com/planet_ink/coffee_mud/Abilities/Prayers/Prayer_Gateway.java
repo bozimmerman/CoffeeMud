@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Gateway extends Prayer
 {
 	@Override public String ID() { return "Prayer_Gateway"; }
-	private final static String localizedName = CMLib.lang()._("Gateway");
+	private final static String localizedName = CMLib.lang().L("Gateway");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_TRANSPORTING;}
@@ -54,13 +54,13 @@ public class Prayer_Gateway extends Prayer
 		{
 			if(newRoom!=null)
 			{
-				newRoom.showHappens(CMMsg.MSG_OK_VISUAL,_("The divine gateway closes."));
+				newRoom.showHappens(CMMsg.MSG_OK_VISUAL,L("The divine gateway closes."));
 				newRoom.rawDoors()[Directions.GATE]=null;
 				newRoom.setRawExit(Directions.GATE,null);
 			}
 			if(oldRoom!=null)
 			{
-				oldRoom.showHappens(CMMsg.MSG_OK_VISUAL,_("The divine gateway closes."));
+				oldRoom.showHappens(CMMsg.MSG_OK_VISUAL,L("The divine gateway closes."));
 				oldRoom.rawDoors()[Directions.GATE]=null;
 				oldRoom.setRawExit(Directions.GATE,null);
 			}
@@ -75,13 +75,13 @@ public class Prayer_Gateway extends Prayer
 			commands.addElement(CMLib.map().getRandomRoom().displayText());
 		if(commands.size()<1)
 		{
-			mob.tell(_("Pray for a gateway to where?"));
+			mob.tell(L("Pray for a gateway to where?"));
 			return false;
 		}
 		if((mob.location().getRoomInDir(Directions.GATE)!=null)
 		||(mob.location().getExitInDir(Directions.GATE)!=null))
 		{
-			mob.tell(_("A gateway cannot be created here."));
+			mob.tell(L("A gateway cannot be created here."));
 			return false;
 		}
 		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
@@ -96,7 +96,7 @@ public class Prayer_Gateway extends Prayer
 
 		if(newRoom==null)
 		{
-			mob.tell(_("You don't know of a place called '@x1'.",CMParms.combine(commands,0)));
+			mob.tell(L("You don't know of a place called '@x1'.",CMParms.combine(commands,0)));
 			return false;
 		}
 
@@ -122,18 +122,18 @@ public class Prayer_Gateway extends Prayer
 		&&((newRoom.getRoomInDir(Directions.GATE)==null)
 		&&(newRoom.getExitInDir(Directions.GATE)==null)))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),_("^S<S-NAME> @x1 for a blinding, divine gateway here.^?",prayWord(mob)));
-			final CMMsg msg2=CMClass.getMsg(mob,newRoom,this,verbalCastCode(mob,newRoom,auto),_("A blinding, divine gateway appears here."));
+			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),L("^S<S-NAME> @x1 for a blinding, divine gateway here.^?",prayWord(mob)));
+			final CMMsg msg2=CMClass.getMsg(mob,newRoom,this,verbalCastCode(mob,newRoom,auto),L("A blinding, divine gateway appears here."));
 			if((mob.location().okMessage(mob,msg))&&(newRoom.okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				newRoom.send(mob,msg2);
 				final Exit e=CMClass.getExit("GenExit");
-				e.setDescription(_("A divine gateway to somewhere"));
-				e.setDisplayText(_("A divine gateway to somewhere"));
+				e.setDescription(L("A divine gateway to somewhere"));
+				e.setDisplayText(L("A divine gateway to somewhere"));
 				e.setDoorsNLocks(false,true,false,false,false,false);
 				e.setExitParams("gateway","close","open","closed.");
-				e.setName(_("a divine gateway"));
+				e.setName(L("a divine gateway"));
 				mob.location().rawDoors()[Directions.GATE]=newRoom;
 				newRoom.rawDoors()[Directions.GATE]=mob.location();
 				mob.location().setRawExit(Directions.GATE,e);
@@ -143,7 +143,7 @@ public class Prayer_Gateway extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 for a gateway, but nothing happens.",prayWord(mob)));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 for a gateway, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

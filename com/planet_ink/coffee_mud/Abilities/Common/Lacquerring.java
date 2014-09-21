@@ -37,7 +37,7 @@ import java.util.*;
 public class Lacquerring extends CommonSkill
 {
 	@Override public String ID() { return "Lacquerring"; }
-	private final static String localizedName = CMLib.lang()._("Lacquering");
+	private final static String localizedName = CMLib.lang().L("Lacquering");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"LACQUERING","LACQUER"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -48,8 +48,8 @@ public class Lacquerring extends CommonSkill
 	public Lacquerring()
 	{
 		super();
-		displayText=_("You are lacquering...");
-		verb=_("lacquering");
+		displayText=L("You are lacquering...");
+		verb=L("lacquering");
 	}
 
 	protected String fixColor(String name, String colorWord)
@@ -133,7 +133,7 @@ public class Lacquerring extends CommonSkill
 			return true;
 		if(commands.size()<2)
 		{
-			commonTell(mob,_("You must specify what you want to lacquer, and the color to lacquer it in."));
+			commonTell(mob,L("You must specify what you want to lacquer, and the color to lacquer it in."));
 			return false;
 		}
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.firstElement());
@@ -151,14 +151,14 @@ public class Lacquerring extends CommonSkill
 				}
 				if(!ok)
 				{
-					commonTell(mob,_("You aren't allowed to work on '@x1'.",((String)commands.firstElement())));
+					commonTell(mob,L("You aren't allowed to work on '@x1'.",((String)commands.firstElement())));
 					return false;
 				}
 			}
 		}
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTell(mob,_("You don't seem to have a '@x1'.",((String)commands.firstElement())));
+			commonTell(mob,L("You don't seem to have a '@x1'.",((String)commands.firstElement())));
 			return false;
 		}
 		commands.remove(commands.firstElement());
@@ -172,7 +172,7 @@ public class Lacquerring extends CommonSkill
 			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN))
 		||(!target.isGeneric()))
 		{
-			commonTell(mob,_("You can't lacquer that material."));
+			commonTell(mob,L("You can't lacquer that material."));
 			return false;
 		}
 
@@ -185,18 +185,18 @@ public class Lacquerring extends CommonSkill
 		}
 		if((" white green blue red yellow cyan purple ".indexOf(" "+writing.trim()+" ")<0)||(writing.trim().indexOf(' ')>=0))
 		{
-			commonTell(mob,_("You can't lacquer anything '@x1'.  Try white, green, blue, red, yellow, cyan, or purple. You can also prefix the colors with the word 'dark'.",writing));
+			commonTell(mob,L("You can't lacquer anything '@x1'.  Try white, green, blue, red, yellow, cyan, or purple. You can also prefix the colors with the word 'dark'.",writing));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		verb=_("lacquering @x1 @x2",target.name(),writing);
-		displayText=_("You are @x1",verb);
+		verb=L("lacquering @x1 @x2",target.name(),writing);
+		displayText=L("You are @x1",verb);
 		found=target;
 		if(darkFlag) writing=CMStrings.capitalizeAndLower(writing);
 		if(!proficiencyCheck(mob,0,auto)) writing="";
 		final int duration=getDuration(60,mob,1,12);
-		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),_("<S-NAME> start(s) lacquering <T-NAME>."));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),L("<S-NAME> start(s) lacquering <T-NAME>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

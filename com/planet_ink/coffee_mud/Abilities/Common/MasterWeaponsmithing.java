@@ -38,7 +38,7 @@ import java.util.*;
 public class MasterWeaponsmithing extends Weaponsmithing implements ItemCraftor
 {
 	@Override public String ID() { return "MasterWeaponsmithing"; }
-	private final static String localizedName = CMLib.lang()._("Master Weaponsmithing");
+	private final static String localizedName = CMLib.lang().L("Master Weaponsmithing");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"MWEAPONSMITH","MASTERWEAPONSMITHING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -68,7 +68,7 @@ public class MasterWeaponsmithing extends Weaponsmithing implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,_("Make what? Enter \"mweaponsmith list\" for a list, \"mweaponsmith scan\", \"mweaponsmith learn <item>\", \"mweaponsmith mend <item>\", or \"mweaponsmith stop\" to cancel."));
+			commonTell(mob,L("Make what? Enter \"mweaponsmith list\" for a list, \"mweaponsmith scan\", \"mweaponsmith learn <item>\", \"mweaponsmith mend <item>\", or \"mweaponsmith stop\" to cancel."));
 			return false;
 		}
 		if(parsedVars.autoGenerate>0)

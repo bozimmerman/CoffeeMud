@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_DetectMetal extends Spell
 {
 	@Override public String ID() { return "Spell_DetectMetal"; }
-	private final static String localizedName = CMLib.lang()._("Detect Metal");
+	private final static String localizedName = CMLib.lang().L("Detect Metal");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Detecting Metal)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Detecting Metal)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -54,7 +54,7 @@ public class Spell_DetectMetal extends Spell
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("Your senses are no longer as metallic."));
+			mob.tell(L("Your senses are no longer as metallic."));
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class Spell_DetectMetal extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already detecting metallic things."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already detecting metallic things."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -96,7 +96,7 @@ public class Spell_DetectMetal extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) metallic senses!"):_("^S<S-NAME> incant(s) softly, and gain(s) metallic senses!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> gain(s) metallic senses!"):L("^S<S-NAME> incant(s) softly, and gain(s) metallic senses!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -104,7 +104,7 @@ public class Spell_DetectMetal extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> incant(s) and open(s) <S-HIS-HER> metallic eyes, but the spell fizzles."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> incant(s) and open(s) <S-HIS-HER> metallic eyes, but the spell fizzles."));
 
 		return success;
 	}

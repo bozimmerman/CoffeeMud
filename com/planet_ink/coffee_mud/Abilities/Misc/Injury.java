@@ -37,7 +37,7 @@ import java.util.*;
 public class Injury extends StdAbility implements HealthCondition
 {
 	@Override public String ID() { return "Injury"; }
-	private final static String localizedName = CMLib.lang()._("Injury");
+	private final static String localizedName = CMLib.lang().L("Injury");
 	@Override public String name() { return localizedName; }
 
 	protected CMMsg lastMsg=null;
@@ -116,7 +116,7 @@ public class Injury extends StdAbility implements HealthCondition
 		final Environmental E=affected;
 		super.unInvoke();
 		if((E instanceof MOB)&&(canBeUninvoked())&&(!((MOB)E).amDead()))
-			((MOB)E).tell(_("Your injuries are healed."));
+			((MOB)E).tell(L("Your injuries are healed."));
 	}
 
 	@Override

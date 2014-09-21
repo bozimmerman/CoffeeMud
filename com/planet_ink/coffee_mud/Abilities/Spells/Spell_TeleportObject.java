@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_TeleportObject extends Spell
 {
 	@Override public String ID() { return "Spell_TeleportObject"; }
-	private final static String localizedName = CMLib.lang()._("Teleport Object");
+	private final static String localizedName = CMLib.lang().L("Teleport Object");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
@@ -57,19 +57,19 @@ public class Spell_TeleportObject extends Spell
 		final Room oldRoom=mob.location();
 		if(commands.size()<2)
 		{
-			mob.tell(_("Teleport what object to what place or person?"));
+			mob.tell(L("Teleport what object to what place or person?"));
 			return false;
 		}
 		final String objectName=(String)commands.firstElement();
 		final Item target=mob.findItem(null,objectName);
 		if(target==null)
 		{
-			mob.tell(_("You don't seem to have an item '@x1'.",objectName));
+			mob.tell(L("You don't seem to have an item '@x1'.",objectName));
 			return false;
 		}
 		if(target.amWearingAt(Wearable.IN_INVENTORY))
 		{
-			mob.tell(_("You seem to be wearing or holding the item '@x1'.",objectName));
+			mob.tell(L("You seem to be wearing or holding the item '@x1'.",objectName));
 			return false;
 		}
 		String searchWhat=null;
@@ -92,13 +92,13 @@ public class Spell_TeleportObject extends Spell
 		final List<Room> candidates=CMLib.map().findWorldRoomsLiberally(mob,destinationString,searchWhat,10,600000);
 		if(candidates.size()==0)
 		{
-			mob.tell(_("You don't know of a place called '@x1'.",destinationString.toLowerCase()));
+			mob.tell(L("You don't know of a place called '@x1'.",destinationString.toLowerCase()));
 			return false;
 		}
 
 		if(CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob))
 		{
-			mob.tell(_("You need to stand up!"));
+			mob.tell(L("You need to stand up!"));
 			return false;
 		}
 
@@ -121,7 +121,7 @@ public class Spell_TeleportObject extends Spell
 
 		if((newRoom==null)||(newRoom==oldRoom))
 		{
-			mob.tell(_("Your magic seems unable to send anything there."));
+			mob.tell(L("Your magic seems unable to send anything there."));
 			return false;
 		}
 
@@ -130,7 +130,7 @@ public class Spell_TeleportObject extends Spell
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),_("^S<S-NAME> invoke(s) a teleportation spell upon <T-NAME>.^?"));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),L("^S<S-NAME> invoke(s) a teleportation spell upon <T-NAME>.^?"));
 		if(oldRoom.okMessage(mob,msg))
 		{
 			oldRoom.send(mob,msg);
@@ -140,11 +140,11 @@ public class Spell_TeleportObject extends Spell
 			oldRoom.bringMobHere(mob,false);
 			if(success)
 			{
-				oldRoom.show(mob,target,null,CMMsg.MSG_OK_VISUAL,_("<T-NAME> vanishes!"));
-				newRoom.showOthers(mob,target,null,CMMsg.MSG_OK_VISUAL,_("<T-NAME> appear(s) out of nowhere!"));
+				oldRoom.show(mob,target,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> vanishes!"));
+				newRoom.showOthers(mob,target,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> appear(s) out of nowhere!"));
 			}
 			else
-				mob.tell(_("Nothing happens."));
+				mob.tell(L("Nothing happens."));
 		}
 		// return whether it worked
 		return success;

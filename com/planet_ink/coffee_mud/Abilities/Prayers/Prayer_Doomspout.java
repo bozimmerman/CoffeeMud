@@ -37,12 +37,12 @@ import java.util.*;
 public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 {
 	@Override public String ID() { return "Prayer_Doomspout"; }
-	private final static String localizedName = CMLib.lang()._("Doomspout");
+	private final static String localizedName = CMLib.lang().L("Doomspout");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Doomspout)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Doomspout)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -76,20 +76,20 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 			ispoke=false;
 			switch(CMLib.dice().roll(1,12,0))
 			{
-			case 1:	CMLib.commands().postSay(mob,null,_("Repent, or @x1 will consume your soul!",godName),false,false); break;
-			case 2:	CMLib.commands().postSay(mob,null,_("We are all damned! Hope is forgotten!"),false,false); break;
-			case 3:	CMLib.commands().postSay(mob,null,_("@x1 has damned us all!",godName),false,false); break;
-			case 4:	CMLib.commands().postSay(mob,null,_("Death is the only way out for us now!"),false,false); break;
-			case 5:	CMLib.commands().postSay(mob,null,_("The finger of @x1 will destroy all!",godName),false,false); break;
-			case 6:	CMLib.commands().postSay(mob,null,_("The waters will dry! The air will turn cold! Our bodies will fail! We are Lost!"),false,false); break;
-			case 7:	CMLib.commands().postSay(mob,null,_("Nothing can save you! Throw yourself on the mercy of @x1!",godName),false,false); break;
-			case 8:	CMLib.commands().postSay(mob,null,_("@x1 will show us no mercy!",godName),false,false); break;
-			case 9:	CMLib.commands().postSay(mob,null,_("@x1 has spoken! We will all be destroyed!",godName),false,false);
+			case 1:	CMLib.commands().postSay(mob,null,L("Repent, or @x1 will consume your soul!",godName),false,false); break;
+			case 2:	CMLib.commands().postSay(mob,null,L("We are all damned! Hope is forgotten!"),false,false); break;
+			case 3:	CMLib.commands().postSay(mob,null,L("@x1 has damned us all!",godName),false,false); break;
+			case 4:	CMLib.commands().postSay(mob,null,L("Death is the only way out for us now!"),false,false); break;
+			case 5:	CMLib.commands().postSay(mob,null,L("The finger of @x1 will destroy all!",godName),false,false); break;
+			case 6:	CMLib.commands().postSay(mob,null,L("The waters will dry! The air will turn cold! Our bodies will fail! We are Lost!"),false,false); break;
+			case 7:	CMLib.commands().postSay(mob,null,L("Nothing can save you! Throw yourself on the mercy of @x1!",godName),false,false); break;
+			case 8:	CMLib.commands().postSay(mob,null,L("@x1 will show us no mercy!",godName),false,false); break;
+			case 9:	CMLib.commands().postSay(mob,null,L("@x1 has spoken! We will all be destroyed!",godName),false,false);
 					break;
 			case 10:
 			case 11:
 			case 12:
-					CMLib.commands().postSay(mob,null,_("Our doom is upon us! The end is near!"),false,false);
+					CMLib.commands().postSay(mob,null,L("Our doom is upon us! The end is near!"),false,false);
 					break;
 			}
 			if((CMLib.flags().canSpeak(mob))&&(ispoke))
@@ -102,7 +102,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 				&&(target.fetchEffect(ID())==null))
 					if(CMLib.dice().rollPercentage()>target.charStats().getSave(CharStats.STAT_SAVE_DISEASE))
 					{
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> look(s) seriously ill!"));
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> look(s) seriously ill!"));
 						maliciousAffect(invoker,target,0,0,-1);
 					}
 					else
@@ -145,7 +145,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
 				spreadImmunity(mob);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> doomspout disease clear up."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> doomspout disease clear up."));
 			}
 	}
 
@@ -176,7 +176,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":_("^S<S-NAME> inflict(s) an unholy disease upon <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":L("^S<S-NAME> inflict(s) an unholy disease upon <T-NAMESELF>.^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_DISEASE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			final CMMsg msg3=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))
@@ -192,14 +192,14 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 					if(mob.getWorshipCharID().length()>0)
 						godName=mob.getWorshipCharID();
 					maliciousAffect(mob,target,asLevel,0,-1);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> look(s) seriously ill!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> look(s) seriously ill!"));
 				}
 				else
 					spreadImmunity(target);
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to inflict a disease upon <T-NAMESELF>, but flub(s) it."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to inflict a disease upon <T-NAMESELF>, but flub(s) it."));
 
 
 		// return whether it worked

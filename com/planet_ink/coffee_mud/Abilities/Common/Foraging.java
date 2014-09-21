@@ -36,7 +36,7 @@ import java.util.*;
 public class Foraging extends GatheringSkill
 {
 	@Override public String ID() { return "Foraging"; }
-	private final static String localizedName = CMLib.lang()._("Foraging");
+	private final static String localizedName = CMLib.lang().L("Foraging");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"FORAGE","FORAGING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -49,8 +49,8 @@ public class Foraging extends GatheringSkill
 	public Foraging()
 	{
 		super();
-		displayText=_("You are foraging...");
-		verb=_("foraging");
+		displayText=L("You are foraging...");
+		verb=L("foraging");
 	}
 
 	protected int getDuration(MOB mob, int level)
@@ -69,18 +69,18 @@ public class Foraging extends GatheringSkill
 			{
 				if(found!=null)
 				{
-					commonTell(mob,_("You have found some @x1!",foundShortName));
-					displayText=_("You are foraging for @x1",foundShortName);
-					verb=_("foraging for @x1",foundShortName);
+					commonTell(mob,L("You have found some @x1!",foundShortName));
+					displayText=L("You are foraging for @x1",foundShortName);
+					verb=L("foraging for @x1",foundShortName);
 				}
 				else
 				{
-					final StringBuffer str=new StringBuffer(_("You can't seem to find anything worth foraging around here.\n\r"));
+					final StringBuffer str=new StringBuffer(L("You can't seem to find anything worth foraging around here.\n\r"));
 					final int d=lookingFor(RawMaterial.MATERIAL_VEGETATION,mob.location());
 					if(d<0)
-						str.append(_("You might try elsewhere."));
+						str.append(L("You might try elsewhere."));
 					else
-						str.append(_("You might try @x1.",Directions.getInDirectionName(d)));
+						str.append(L("You might try @x1.",Directions.getInDirectionName(d)));
 					commonTell(mob,str.toString());
 					unInvoke();
 				}
@@ -105,7 +105,7 @@ public class Foraging extends GatheringSkill
 							   (CMLib.dice().roll(1,3,0)*(abilityCode()));
 					String s="s";
 					if(amount==1) s="";
-					mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> manage(s) to gather @x1 pound@x2 of @x3.",""+amount,s,foundShortName));
+					mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to gather @x1 pound@x2 of @x3.",""+amount,s,foundShortName));
 					for(int i=0;i<amount;i++)
 					{
 						final Item newFound=(Item)found.copyOf();
@@ -134,14 +134,14 @@ public class Foraging extends GatheringSkill
 			return false;
 		}
 
-		verb=_("foraging");
+		verb=L("foraging");
 		found=null;
 		if((!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_VEGETATION,mob.location()))
 		&&(!confirmPossibleMaterialLocation(RawMaterial.RESOURCE_HEMP,mob.location()))
 		&&(!confirmPossibleMaterialLocation(RawMaterial.RESOURCE_SILK,mob.location()))
 		&&(!confirmPossibleMaterialLocation(RawMaterial.RESOURCE_COTTON,mob.location())))
 		{
-			commonTell(mob,_("You don't think this is a good place to forage."));
+			commonTell(mob,L("You don't think this is a good place to forage."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -159,7 +159,7 @@ public class Foraging extends GatheringSkill
 				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		}
 		final int duration=getDuration(mob,1);
-		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),_("<S-NAME> start(s) foraging."));
+		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),L("<S-NAME> start(s) foraging."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			// herb/locale customisation for jeremy

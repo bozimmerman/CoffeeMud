@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_AlternateReality extends Spell
 {
 	@Override public String ID() { return "Spell_AlternateReality"; }
-	private final static String localizedName = CMLib.lang()._("Alternate Reality");
+	private final static String localizedName = CMLib.lang().L("Alternate Reality");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Alternate Reality)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Alternate Reality)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -53,7 +53,7 @@ public class Spell_AlternateReality extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("Your reality returns to normal."));
+			mob.tell(L("Your reality returns to normal."));
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class Spell_AlternateReality extends Spell
 			final Set<MOB> H=invoker().getGroupMembers(new HashSet<MOB>());
 			if(H.contains(msg.target()))
 			{
-				msg.source().tell(_("But you are on @x1's side!",invoker().name()));
+				msg.source().tell(L("But you are on @x1's side!",invoker().name()));
 				if(invoker().getVictim()!=affected)
 					((MOB)affected).setVictim(invoker().getVictim());
 				return false;
@@ -100,7 +100,7 @@ public class Spell_AlternateReality extends Spell
 
 		if(target.getVictim()!=mob)
 		{
-			mob.tell(_("But @x1 isn't fighting you!",target.charStats().heshe()));
+			mob.tell(L("But @x1 isn't fighting you!",target.charStats().heshe()));
 			return false;
 		}
 		// the invoke method for spells receives as
@@ -119,7 +119,7 @@ public class Spell_AlternateReality extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> incant(s) to <T-NAME>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> incant(s) to <T-NAME>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -129,7 +129,7 @@ public class Spell_AlternateReality extends Spell
 					if(success)
 					{
 						final Room R=target.location();
-						R.show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> change(s) sides!"));
+						R.show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> change(s) sides!"));
 						target.makePeace();
 						if(mob.getVictim()==target)
 							mob.setVictim(null);
@@ -167,7 +167,7 @@ public class Spell_AlternateReality extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) to <T-NAME>, but fizzle(s) the spell."));
+			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) to <T-NAME>, but fizzle(s) the spell."));
 
 
 		// return whether it worked

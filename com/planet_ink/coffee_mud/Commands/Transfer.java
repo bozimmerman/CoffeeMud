@@ -45,7 +45,7 @@ public class Transfer extends At
 		Room room=null;
 		if(commands.size()<3)
 		{
-			mob.tell(_("Transfer whom where? Try all or a mob name, followerd by a Room ID, target player name, area name, or room text!"));
+			mob.tell(L("Transfer whom where? Try all or a mob name, followerd by a Room ID, target player name, area name, or room text!"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -156,7 +156,7 @@ public class Transfer extends At
 
 		if(V.size()==0)
 		{
-			mob.tell(_("Transfer what?  '@x1' is unknown to you.",mobname));
+			mob.tell(L("Transfer what?  '@x1' is unknown to you.",mobname));
 			return false;
 		}
 
@@ -171,7 +171,7 @@ public class Transfer extends At
 
 		if(room==null)
 		{
-			mob.tell(_("Transfer where? '@x1' is unknown.  Enter a Room ID, player name, area name, or room text!",cmd.toString()));
+			mob.tell(L("Transfer where? '@x1' is unknown.  Enter a Room ID, player name, area name, or room text!",cmd.toString()));
 			return false;
 		}
 		for(int i=0;i<V.size();i++)
@@ -205,7 +205,7 @@ public class Transfer extends At
 			}
 		}
 		if(mob.playerStats().getTranPoofOut().length()==0)
-			mob.tell(_("Done."));
+			mob.tell(L("Done."));
 		return false;
 	}
 

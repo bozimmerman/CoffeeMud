@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_MassDisintegrate extends Spell
 {
 	@Override public String ID() { return "Spell_MassDisintegrate"; }
-	private final static String localizedName = CMLib.lang()._("Mass Disintegrate");
+	private final static String localizedName = CMLib.lang().L("Mass Disintegrate");
 	@Override public String name() { return localizedName; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -51,7 +51,7 @@ public class Spell_MassDisintegrate extends Spell
 		{
 			if(mob.location().numItems()==0)
 			{
-				mob.tell(_("There doesn't appear to be anyone here worth disintgrating."));
+				mob.tell(L("There doesn't appear to be anyone here worth disintgrating."));
 				return false;
 			}
 			h=new HashSet();
@@ -83,7 +83,7 @@ public class Spell_MassDisintegrate extends Spell
 		{
 			if(avgLevel <= 0)
 				avgLevel = 1;
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?_("Something is happening!"):_("^S<S-NAME> wave(s) <S-HIS-HER> arms and utter(s) a trecherous spell!^?")))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?L("Something is happening!"):L("^S<S-NAME> wave(s) <S-HIS-HER> arms and utter(s) a trecherous spell!^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -126,7 +126,7 @@ public class Spell_MassDisintegrate extends Spell
 				||(!((DeadBody)I).playerCorpse())
 				||(((DeadBody)I).mobName().equals(mob.Name())))
 				{
-					final CMMsg msg=CMClass.getMsg(mob,I,this,verbalCastCode(mob,I,auto),_("@x1 disintegrates!",I.name()));
+					final CMMsg msg=CMClass.getMsg(mob,I,this,verbalCastCode(mob,I,auto),L("@x1 disintegrates!",I.name()));
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);
@@ -138,7 +138,7 @@ public class Spell_MassDisintegrate extends Spell
 			mob.location().recoverRoomStats();
 		}
 		else
-			maliciousFizzle(mob,null,_("<S-NAME> wave(s) <S-HIS-HER> arms and utter(s) a treacherous but fizzled spell!"));
+			maliciousFizzle(mob,null,L("<S-NAME> wave(s) <S-HIS-HER> arms and utter(s) a treacherous but fizzled spell!"));
 
 		return success;
 	}

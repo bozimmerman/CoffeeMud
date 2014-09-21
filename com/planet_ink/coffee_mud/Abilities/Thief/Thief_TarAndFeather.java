@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_TarAndFeather extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_TarAndFeather"; }
-	private final static String localizedName = CMLib.lang()._("Tar And Feather");
+	private final static String localizedName = CMLib.lang().L("Tar And Feather");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
@@ -84,7 +84,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 	{
 		if(mob.isInCombat())
 		{
-			mob.tell(_("Not while in combat!"));
+			mob.tell(L("Not while in combat!"));
 			return false;
 		}
 		final MOB target=getTarget(mob,commands,givenTarget);
@@ -92,14 +92,14 @@ public class Thief_TarAndFeather extends ThiefSkill
 
 		if(CMLib.flags().isSitting(mob))
 		{
-			mob.tell(_("You need to stand up!"));
+			mob.tell(L("You need to stand up!"));
 			return false;
 		}
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
 			return false;
 		if((!auto)&&(!CMLib.flags().isBoundOrHeld(target))&&(!CMLib.flags().isSleeping(target)))
 		{
-			mob.tell(_("@x1 must be prone or bound first.",target.name(mob)));
+			mob.tell(L("@x1 must be prone or bound first.",target.name(mob)));
 			return false;
 		}
 		for(int i=0;i<target.numItems();i++)
@@ -107,7 +107,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 			final Item I=target.getItem(i);
 			if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY))&&(!I.amWearingAt(Wearable.WORN_FLOATING_NEARBY)))
 			{
-				mob.tell(_("@x1 must be undressed first.",target.name(mob)));
+				mob.tell(L("@x1 must be undressed first.",target.name(mob)));
 				return false;
 			}
 		}
@@ -117,7 +117,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,_("<S-NAME> tar(s) and feather(s) <T-NAMESELF>!"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,L("<S-NAME> tar(s) and feather(s) <T-NAMESELF>!"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -144,8 +144,8 @@ public class Thief_TarAndFeather extends ThiefSkill
 					}
 					I.setRawProperLocationBitmap(wearCode);
 					I.setRawWornCode(wearCode);
-					I.setName(_("a coating of tar and feathers"));
-					I.setDisplayText(_("a pile of tar and feathers sits here."));
+					I.setName(L("a coating of tar and feathers"));
+					I.setDisplayText(L("a pile of tar and feathers sits here."));
 					I.basePhyStats().setSensesMask(PhyStats.SENSE_ITEMNOREMOVE);
 					I.phyStats().setSensesMask(PhyStats.SENSE_ITEMNOREMOVE);
 					I.setRawLogicalAnd(true);
@@ -158,7 +158,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 			}
 		}
 		else
-			maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to tar and feather <T-NAMESELF>, but fail(s)."));
+			maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to tar and feather <T-NAMESELF>, but fail(s)."));
 		return success;
 	}
 }

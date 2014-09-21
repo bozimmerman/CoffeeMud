@@ -68,7 +68,7 @@ public class Unicorn extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName(_("a Unicorn Horn"));
+			naturalWeapon.setName(L("a Unicorn Horn"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 			naturalWeapon.setUsesRemaining(1000);
 			naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);

@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_Enlarge extends Spell
 {
 	@Override public String ID() { return "Spell_Enlarge"; }
-	private final static String localizedName = CMLib.lang()._("Enlarge Object");
+	private final static String localizedName = CMLib.lang().L("Enlarge Object");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	private static final String addOnString=" of ENORMOUS SIZE!!!";
@@ -60,12 +60,12 @@ public class Spell_Enlarge extends Spell
 		{
 			final Item I=(Item)affected;
 			if(I.owner() instanceof MOB)
-				((MOB)I.owner()).tell(_("@x1 in your inventory shrinks back to size.",I.name((MOB)I.owner())));
+				((MOB)I.owner()).tell(L("@x1 in your inventory shrinks back to size.",I.name((MOB)I.owner())));
 			else
 			{
 				final Room R=CMLib.map().roomLocation(I);
 				if(R!=null)
-					R.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 shrinks back to normal size.",I.name()));
+					R.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 shrinks back to normal size.",I.name()));
 			}
 		}
 		super.unInvoke();
@@ -79,12 +79,12 @@ public class Spell_Enlarge extends Spell
 
 		if(mob.isMine(target))
 		{
-			mob.tell(_("You'd better put it down first."));
+			mob.tell(L("You'd better put it down first."));
 			return false;
 		}
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(_("@x1 is already HUGE!",target.name(mob)));
+			mob.tell(L("@x1 is already HUGE!",target.name(mob)));
 			return false;
 		}
 
@@ -95,7 +95,7 @@ public class Spell_Enlarge extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -104,14 +104,14 @@ public class Spell_Enlarge extends Spell
 					A.unInvoke();
 				else
 				{
-					mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> grow(s) to an enormous size!"));
+					mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> grow(s) to an enormous size!"));
 					beneficialAffect(mob,target,asLevel,100);
 				}
 			}
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting but nothing happens."));
 
 
 		// return whether it worked

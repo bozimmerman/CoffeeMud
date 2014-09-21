@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Joke extends BardSkill
 {
 	@Override public String ID() { return "Skill_Joke"; }
-	private final static String localizedName = CMLib.lang()._("Joke");
+	private final static String localizedName = CMLib.lang().L("Joke");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -54,7 +54,7 @@ public class Skill_Joke extends BardSkill
 		// won't happen
 		if((!auto)&&(!CMLib.flags().canBeHeardSpeakingBy(mob,target)))
 		{
-			mob.tell(_("@x1 can't hear your words.",target.charStats().HeShe()));
+			mob.tell(L("@x1 can't hear your words.",target.charStats().HeShe()));
 			return false;
 		}
 
@@ -66,7 +66,7 @@ public class Skill_Joke extends BardSkill
 		String str=null;
 		if(success)
 		{
-			if(auto) str=_("<T-NAME> remember(s) a joke!");
+			if(auto) str=L("<T-NAME> remember(s) a joke!");
 			else
 			{
 				final List<String> insultd=Resources.getFileLineVector(Resources.getFileResource("skills/insultd.txt",true));
@@ -118,7 +118,7 @@ public class Skill_Joke extends BardSkill
 						 +"A: When it's "+de[2]+" "+ob[2]+"!'";
 					break;
 				}
-				str=_("<S-NAME> joke(s) to <T-NAMESELF>:\n\r@x1",joke);
+				str=L("<S-NAME> joke(s) to <T-NAMESELF>:\n\r@x1",joke);
 			}
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK|(auto?CMMsg.MASK_ALWAYS:0),str);
 			if(mob.location().okMessage(mob,msg))
@@ -138,7 +138,7 @@ public class Skill_Joke extends BardSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to think up a joke for <T-NAMESELF>, but fail(s)."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to think up a joke for <T-NAMESELF>, but fail(s)."));
 
 		return success;
 	}

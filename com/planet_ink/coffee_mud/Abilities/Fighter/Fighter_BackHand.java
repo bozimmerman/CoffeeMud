@@ -36,7 +36,7 @@ import java.util.*;
 public class Fighter_BackHand extends MonkSkill
 {
 	@Override public String ID() { return "Fighter_BackHand"; }
-	private final static String localizedName = CMLib.lang()._("Back Hand");
+	private final static String localizedName = CMLib.lang().L("Back Hand");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -83,7 +83,7 @@ public class Fighter_BackHand extends MonkSkill
 					||(naturalWeapon.amDestroyed()))
 					{
 						naturalWeapon=CMClass.getWeapon("GenWeapon");
-						naturalWeapon.setName(_("a back hand"));
+						naturalWeapon.setName(L("a back hand"));
 						naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 						naturalWeapon.setUsesRemaining(1000);
 						naturalWeapon.basePhyStats().setDamage(5);

@@ -48,10 +48,10 @@ public class Ignore extends StdCommand
 		if((commands.size()<2)||(((String)commands.elementAt(1)).equalsIgnoreCase("list")))
 		{
 			if(h.size()==0)
-				mob.tell(_("You have no names on your ignore list.  Use IGNORE ADD to add more."));
+				mob.tell(L("You have no names on your ignore list.  Use IGNORE ADD to add more."));
 			else
 			{
-				final StringBuffer str=new StringBuffer(_("You are ignoring: "));
+				final StringBuffer str=new StringBuffer(L("You are ignoring: "));
 				for (final Object element : h)
 					str.append(((String)element)+" ");
 				mob.tell(str.toString());
@@ -63,22 +63,22 @@ public class Ignore extends StdCommand
 			String name=CMParms.combine(commands,2);
 			if(name.length()==0)
 			{
-				mob.tell(_("Add whom?"));
+				mob.tell(L("Add whom?"));
 				return false;
 			}
 			name=CMStrings.capitalizeAndLower(name);
 			if((!CMLib.players().playerExists(name))&&(name.indexOf('@')<0))
 			{
-				mob.tell(_("No player by that name was found."));
+				mob.tell(L("No player by that name was found."));
 				return false;
 			}
 			if(h.contains(name))
 			{
-				mob.tell(_("That name is already on your list."));
+				mob.tell(L("That name is already on your list."));
 				return false;
 			}
 			h.add(name);
-			mob.tell(_("The Player '@x1' has been added to your ignore list.",name));
+			mob.tell(L("The Player '@x1' has been added to your ignore list.",name));
 		}
 		else
 		if(((String)commands.elementAt(1)).equalsIgnoreCase("REMOVE"))
@@ -86,20 +86,20 @@ public class Ignore extends StdCommand
 			final String name=CMParms.combine(commands,2);
 			if(name.length()==0)
 			{
-				mob.tell(_("Remove whom?"));
+				mob.tell(L("Remove whom?"));
 				return false;
 			}
 			if(!h.contains(name))
 			{
-				mob.tell(_("That name '@x1' does not appear on your list.  Watch your casing!",name));
+				mob.tell(L("That name '@x1' does not appear on your list.  Watch your casing!",name));
 				return false;
 			}
 			h.remove(name);
-			mob.tell(_("The Player '@x1' has been removed from your ignore list.",name));
+			mob.tell(L("The Player '@x1' has been removed from your ignore list.",name));
 		}
 		else
 		{
-			mob.tell(_("Parameter '@x1' is not recognized.  Try LIST, ADD, or REMOVE.",((String)commands.elementAt(1))));
+			mob.tell(L("Parameter '@x1' is not recognized.  Try LIST, ADD, or REMOVE.",((String)commands.elementAt(1))));
 			return false;
 		}
 		return false;

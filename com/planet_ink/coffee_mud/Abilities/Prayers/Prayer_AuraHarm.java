@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_AuraHarm extends Prayer
 {
 	@Override public String ID() { return "Prayer_AuraHarm"; }
-	private final static String localizedName = CMLib.lang()._("Aura of Harm");
+	private final static String localizedName = CMLib.lang().L("Aura of Harm");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Harm Aura)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Harm Aura)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -67,7 +67,7 @@ public class Prayer_AuraHarm extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			R.showHappens(CMMsg.MSG_OK_VISUAL,_("The harmful aura around you fades."));
+			R.showHappens(CMMsg.MSG_OK_VISUAL,L("The harmful aura around you fades."));
 	}
 
 	@Override
@@ -132,7 +132,7 @@ public class Prayer_AuraHarm extends Prayer
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("The aura of harm is already here."));
+			mob.tell(L("The aura of harm is already here."));
 			return false;
 		}
 		if(target.fetchEffect("Prayer_AuraHeal")!=null)
@@ -152,16 +152,16 @@ public class Prayer_AuraHarm extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 for all to feel pain.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 for all to feel pain.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("A harmful aura descends over the area!"));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("A harmful aura descends over the area!"));
 				maliciousAffect(mob,target,asLevel,0,-1);
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> @x1 for an aura of harm, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
+			return maliciousFizzle(mob,target,L("<S-NAME> @x1 for an aura of harm, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
 
 
 		// return whether it worked

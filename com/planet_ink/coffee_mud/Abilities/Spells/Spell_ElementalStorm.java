@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_ElementalStorm extends Spell
 {
 	@Override public String ID() { return "Spell_ElementalStorm"; }
-	private final static String localizedName = CMLib.lang()._("Elemental Storm");
+	private final static String localizedName = CMLib.lang().L("Elemental Storm");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
@@ -82,7 +82,7 @@ public class Spell_ElementalStorm extends Spell
 			final Room R=target.location();
 			for(int i=0;(i<numMissiles) && (target.location()==R);i++)
 			{
-				final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),(i==0)?_((auto?"An elemental storm assaults <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, evoking an elemental storm!^?")+CMLib.protocol().msp("spelldam1.wav",40)):null);
+				final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),(i==0)?L((auto?"An elemental storm assaults <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, evoking an elemental storm!^?")+CMLib.protocol().msp("spelldam1.wav",40)):null);
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
@@ -105,7 +105,7 @@ public class Spell_ElementalStorm extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> point(s) at <T-NAMESELF>, but fizzle(s) the spell."));
+			return maliciousFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF>, but fizzle(s) the spell."));
 
 
 		// return whether it worked

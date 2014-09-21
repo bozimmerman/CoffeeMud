@@ -107,7 +107,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 	public String accountForYourself()
 	{
 		// My slightly complicated way of showing the clan effect when ID'd
-		final StringBuffer id=new StringBuffer(_("@x1 @x2 Bonus: ",clanType,clanName));
+		final StringBuffer id=new StringBuffer(L("@x1 @x2 Bonus: ",clanType,clanName));
 		if((affected instanceof Weapon)&&(!(affected instanceof Wand))&&(TypeOfEffect<1000))
 		{
 			id.append("Does "+(1*PowerLevel)+"-"+(6*PowerLevel)+" additional "+type.toLowerCase()+" damage.");
@@ -231,7 +231,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 
 		if(manaRequired>mob.curState().getMana())
 		{
-			mob.tell(_("You don't have enough mana."));
+			mob.tell(L("You don't have enough mana."));
 			return false;
 		}
 		mob.curState().adjMana(-manaRequired,mob.maxState());
@@ -283,13 +283,13 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 				final Ability wandUse=mob.fetchAbility("Skill_WandUse");
 				if((wandUse==null)||(!wandUse.proficiencyCheck(mob,0,false)))
 				{
-					mob.tell(_("@x1 glows faintly for a moment, then fades.",me.name()));
+					mob.tell(L("@x1 glows faintly for a moment, then fades.",me.name()));
 				}else
 				{
 					wandUse.setInvoker(mob);
 					if(useAsWand(mob,wandUse.abilityCode()))
 					{
-						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("@x1 glows brightly.",me.name()));
+						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly.",me.name()));
 						final int flameDamage=CMLib.dice().roll(1,6*PowerLevel,1*PowerLevel);
 						CMLib.combat().postDamage(mob,target,null,flameDamage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|TypeOfEffect,WeaponType,
 								"^F^<FIGHT^>The magic of "+clanName+" <DAMAGE> <T-NAME>!^</FIGHT^>^?");
@@ -365,7 +365,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 				&&(!((MOB)msg.target()).amDead()))
 		{
 			final double flameDamage=CMLib.dice().roll(1,6*PowerLevel,1*PowerLevel);
-			final String str=_("^F^<FIGHT^>The magic of @x1 <DAMAGE> <T-NAME>!^</FIGHT^>^?",clanName);
+			final String str=L("^F^<FIGHT^>The magic of @x1 <DAMAGE> <T-NAME>!^</FIGHT^>^?",clanName);
 			CMLib.combat().postDamage(msg.source(),(MOB)msg.target(),null,(int)Math.round(flameDamage),
 					CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|TypeOfEffect,WeaponType,str);
 		}

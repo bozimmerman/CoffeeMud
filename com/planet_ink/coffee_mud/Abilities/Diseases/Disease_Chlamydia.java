@@ -35,9 +35,9 @@ import java.util.*;
 public class Disease_Chlamydia extends Disease
 {
 	@Override public String ID() { return "Disease_Chlamydia"; }
-	private final static String localizedName = CMLib.lang()._("Chlamydia");
+	private final static String localizedName = CMLib.lang().L("Chlamydia");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Chlamydia)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Chlamydia)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -88,7 +88,7 @@ public class Disease_Chlamydia extends Disease
 			&&(msg.tool().Name().equals("MATE <T-NAME>")
 			||msg.tool().Name().equals("SEX <T-NAME>")))
 			{
-				msg.source().tell(mob,null,null,_("<S-NAME> really do(es)n't feel like it."));
+				msg.source().tell(mob,null,null,L("<S-NAME> really do(es)n't feel like it."));
 				return false;
 			}
 		}

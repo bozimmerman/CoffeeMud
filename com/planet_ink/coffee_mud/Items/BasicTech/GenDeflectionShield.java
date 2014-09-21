@@ -74,10 +74,10 @@ public class GenDeflectionShield extends GenPersonalShield
 				if(s.indexOf("<DAMAGES> <T-HIM-HER>")>0)
 					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGES>", "deflects off the shield around"));
 				else
-					mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,_("The field around <S-NAME> deflects the <O-NAMENOART> damage."));
+					mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,L("The field around <S-NAME> deflects the <O-NAMENOART> damage."));
 			}
 			else
-				mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,_("The field around <S-NAME> deflects the <O-NAMENOART> damage."));
+				mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,L("The field around <S-NAME> deflects the <O-NAMENOART> damage."));
 		}
 		return false;
 	}

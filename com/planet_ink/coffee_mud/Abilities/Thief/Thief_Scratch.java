@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_Scratch extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Scratch"; }
-	private final static String localizedName = CMLib.lang()._("Scratch");
+	private final static String localizedName = CMLib.lang().L("Scratch");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -54,7 +54,7 @@ public class Thief_Scratch extends ThiefSkill
 
 		if(target.charStats().getBodyPart(Race.BODY_HAND)<0)
 		{
-			mob.tell(_("@x1 must stand up first!",target.name(mob)));
+			mob.tell(L("@x1 must stand up first!",target.name(mob)));
 			return false;
 		}
 
@@ -67,7 +67,7 @@ public class Thief_Scratch extends ThiefSkill
 		String str=null;
 		if((success)&&(CMLib.combat().rollToHit(mob, target)))
 		{
-			str=auto?null:_("^F^<FIGHT^><S-NAME> descretely swipe(s) at <T-NAMESELF>!^</FIGHT^>^?");
+			str=auto?null:L("^F^<FIGHT^><S-NAME> descretely swipe(s) at <T-NAMESELF>!^</FIGHT^>^?");
 			final int attackCode =  CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0);
 			final int hideOverrideCode = CMLib.flags().isHidden(mob)?CMMsg.TYP_LOOK:attackCode;
 			final Set<MOB> combatants=CMLib.combat().getAllFightingAgainst(mob, new HashSet<MOB>(1));
@@ -88,7 +88,7 @@ public class Thief_Scratch extends ThiefSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to scratch <T-NAMESELF>, but miss(es)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to scratch <T-NAMESELF>, but miss(es)."));
 
 		return success;
 	}

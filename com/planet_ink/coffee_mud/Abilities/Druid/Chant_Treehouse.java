@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_Treehouse extends Chant
 {
 	@Override public String ID() { return "Chant_Treehouse"; }
-	private final static String localizedName = CMLib.lang()._("Treehouse");
+	private final static String localizedName = CMLib.lang().L("Treehouse");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Treehouse)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Treehouse)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -60,7 +60,7 @@ public class Chant_Treehouse extends Chant
 			final Room R=room.getRoomInDir(Directions.UP);
 			if((R!=null)&&(R.roomID().equalsIgnoreCase("")))
 			{
-				R.showHappens(CMMsg.MSG_OK_VISUAL,_("The treehouse fades away..."));
+				R.showHappens(CMMsg.MSG_OK_VISUAL,L("The treehouse fades away..."));
 				while(R.numInhabitants()>0)
 				{
 					final MOB M=R.fetchInhabitant(0);
@@ -86,7 +86,7 @@ public class Chant_Treehouse extends Chant
 		final Physical target = mob.location();
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("There is already a treehouse above here!"));
+			mob.tell(L("There is already a treehouse above here!"));
 			return false;
 		}
 		boolean isATree=((mob.location().domainType()==Room.DOMAIN_OUTDOORS_WOODS)
@@ -98,18 +98,18 @@ public class Chant_Treehouse extends Chant
 			isATree=true;
 		if(!isATree)
 		{
-			mob.tell(_("There really aren't enough trees here to chant to."));
+			mob.tell(L("There really aren't enough trees here to chant to."));
 			return false;
 		}
 		if(mob.location().roomID().length()==0)
 		{
-			mob.tell(_("This magic will not work here."));
+			mob.tell(L("This magic will not work here."));
 			return false;
 		}
 		if((mob.location().getRoomInDir(Directions.UP)!=null)
 		&&(mob.location().getRoomInDir(Directions.UP).roomID().length()>0))
 		{
-			mob.tell(_("You can't create a treehouse here!"));
+			mob.tell(L("You can't create a treehouse here!"));
 			return false;
 		}
 
@@ -129,15 +129,15 @@ public class Chant_Treehouse extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto), auto?"":_("^S<S-NAME> chant(s) for a treehouse!^?"));
+			final CMMsg msg = CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto), auto?"":L("^S<S-NAME> chant(s) for a treehouse!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("A treehouse appears up in a nearby tree!"));
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("A treehouse appears up in a nearby tree!"));
 				mob.location().clearSky();
 				final Room newRoom=CMClass.getLocale("WoodRoom");
-				newRoom.setDisplayText(_("A treehouse"));
-				newRoom.setDescription(_("You are up in the treehouse. The view is great from up here!"));
+				newRoom.setDisplayText(L("A treehouse"));
+				newRoom.setDescription(L("You are up in the treehouse. The view is great from up here!"));
 				newRoom.setArea(mob.location().getArea());
 				mob.location().rawDoors()[Directions.UP]=newRoom;
 				mob.location().setRawExit(Directions.UP,CMClass.getExit("ClimbableExit"));
@@ -180,7 +180,7 @@ public class Chant_Treehouse extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) for a treehouse, but the magic fades."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) for a treehouse, but the magic fades."));
 
 		// return whether it worked
 		return success;

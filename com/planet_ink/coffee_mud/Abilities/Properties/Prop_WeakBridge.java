@@ -75,7 +75,7 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 			if(CMLib.flags().isInFlight(mob)) return true;
 			if(!bridgeIsUp)
 			{
-				mob.tell(_("The bridge appears to be out."));
+				mob.tell(L("The bridge appears to be out."));
 				return false;
 			}
 		}
@@ -179,7 +179,7 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 							&&(((Room)affected).getExitInDir(Directions.DOWN)!=null)
 							&&(((Room)affected).getExitInDir(Directions.DOWN).isOpen()))
 							{
-								mob.tell(_("The bridge breaks under your weight!"));
+								mob.tell(L("The bridge breaks under your weight!"));
 								if((!CMLib.flags().isFalling(mob))
 								&&(mob.location()==affected))
 								{
@@ -191,8 +191,8 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 							}
 							else
 							{
-								mob.location().showSource(mob,null,CMMsg.MSG_OK_VISUAL,_("The bridge breaks under your weight!"));
-								mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> fall(s) to <S-HIS-HER> death!!"));
+								mob.location().showSource(mob,null,CMMsg.MSG_OK_VISUAL,L("The bridge breaks under your weight!"));
+								mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> fall(s) to <S-HIS-HER> death!!"));
 								mob.location().show(mob,null,CMMsg.MSG_DEATH,null);
 							}
 						}

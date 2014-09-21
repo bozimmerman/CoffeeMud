@@ -36,10 +36,10 @@ import java.util.*;
 public class Prayer_Philosophy extends Prayer
 {
 	@Override public String ID() { return "Prayer_Philosophy"; }
-	private final static String localizedName = CMLib.lang()._("Philosophy");
+	private final static String localizedName = CMLib.lang().L("Philosophy");
 	@Override public String name() { return localizedName; }
 	@Override public long flags(){return Ability.FLAG_HOLY;}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Philosophy spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Philosophy spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
@@ -81,7 +81,7 @@ public class Prayer_Philosophy extends Prayer
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("You stop pondering life and the mysteries of the universe."));
+			mob.tell(L("You stop pondering life and the mysteries of the universe."));
 	}
 
 
@@ -109,16 +109,16 @@ public class Prayer_Philosophy extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> give(s) <T-NAMESELF> something to think about.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> give(s) <T-NAMESELF> something to think about.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> start(s) pondering the mysteries of the universe."));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> start(s) pondering the mysteries of the universe."));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> give(s) <T-NAMESELF> something to think about, but it just confuses <T-HIM-HER>."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> give(s) <T-NAMESELF> something to think about, but it just confuses <T-HIM-HER>."));
 
 
 		// return whether it worked

@@ -35,7 +35,7 @@ import java.util.*;
 public class StdTrap extends StdAbility implements Trap
 {
 	@Override public String ID() { return "StdTrap"; }
-	private final static String localizedName = CMLib.lang()._("standard trap");
+	private final static String localizedName = CMLib.lang().L("standard trap");
 	@Override public String name() { return localizedName; }
 
 	protected boolean sprung=false;
@@ -217,7 +217,7 @@ public class StdTrap extends StdAbility implements Trap
 			   &&(msg.target() instanceof MOB)
 			   &&(!msg.source().getGroupMembers(new HashSet<MOB>()).contains(msg.target())))
 			{
-				msg.source().tell((MOB)msg.target(),msg.tool(),null,_("<S-NAME> can't accept <T-NAME>."));
+				msg.source().tell((MOB)msg.target(),msg.tool(),null,L("<S-NAME> can't accept <T-NAME>."));
 				return false;
 			}
 		}
@@ -308,7 +308,7 @@ public class StdTrap extends StdAbility implements Trap
 					if((msg.targetMinor()==CMMsg.TYP_HOLD)
 					&&(msg.source().isMine(affected)))
 					{
-						msg.source().tell(msg.source(),affected,null,_("You activate <T-NAME>."));
+						msg.source().tell(msg.source(),affected,null,L("You activate <T-NAME>."));
 						activateBomb();
 					}
 				}
@@ -373,19 +373,19 @@ public class StdTrap extends StdAbility implements Trap
 			&&(!mob.charStats().getCurrentClass().leveless())
 			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
 			{
-				mob.tell(_("You are not high enough level (@x1) to set that trap.",""+trapLevel()));
+				mob.tell(L("You are not high enough level (@x1) to set that trap.",""+trapLevel()));
 				return false;
 			}
 		if(P.fetchEffect(ID())!=null)
 		{
 			if(mob!=null)
-				mob.tell(_("This trap is already set on @x1.",P.name()));
+				mob.tell(L("This trap is already set on @x1.",P.name()));
 			return false;
 		}
 		if(!canAffect(P))
 		{
 			if(mob!=null)
-				mob.tell(_("You can't set '@x1' on @x2.",name(),P.name()));
+				mob.tell(L("You can't set '@x1' on @x2.",name(),P.name()));
 			return false;
 		}
 		if((canAffectCode()&Ability.CAN_EXITS)==Ability.CAN_EXITS)
@@ -393,19 +393,19 @@ public class StdTrap extends StdAbility implements Trap
 			if((P instanceof Item)&&(!(P instanceof Container)))
 			{
 				if(mob!=null)
-					mob.tell(_("@x1 has no lid, so '@x2' cannot be set on it.",P.name(),name()));
+					mob.tell(L("@x1 has no lid, so '@x2' cannot be set on it.",P.name(),name()));
 				return false;
 			}
 			if(((P instanceof Exit)&&(!(((Exit)P).hasADoor()))))
 			{
 				if(mob!=null)
-					mob.tell(_("@x1 has no door, so '@x2' cannot be set on it.",P.name(),name()));
+					mob.tell(L("@x1 has no door, so '@x2' cannot be set on it.",P.name(),name()));
 				return false;
 			}
 			if(((P instanceof Container)&&(!(((Container)P).hasALid()))))
 			{
 				if(mob!=null)
-					mob.tell(_("@x1 has no lid, so '@x2' cannot be set on it.",P.name(),name()));
+					mob.tell(L("@x1 has no lid, so '@x2' cannot be set on it.",P.name(),name()));
 				return false;
 			}
 		}

@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_DetectMagic extends Spell
 {
 	@Override public String ID() { return "Spell_DetectMagic"; }
-	private final static String localizedName = CMLib.lang()._("Detect Magic");
+	private final static String localizedName = CMLib.lang().L("Detect Magic");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Detecting Magic)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Detecting Magic)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -56,7 +56,7 @@ public class Spell_DetectMagic extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> eyes cease to sparkle."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> eyes cease to sparkle."));
 	}
 
 	@Override
@@ -132,7 +132,7 @@ public class Spell_DetectMagic extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already detecting magic."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already detecting magic."));
 			return false;
 		}
 
@@ -144,7 +144,7 @@ public class Spell_DetectMagic extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) sparkling eyes!"):_("^S<S-NAME> incant(s) softly, and gain(s) sparkling eyes!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> gain(s) sparkling eyes!"):L("^S<S-NAME> incant(s) softly, and gain(s) sparkling eyes!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -152,7 +152,7 @@ public class Spell_DetectMagic extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> incant(s) and open(s) <S-HIS-HER> eyes sparkling, but the spell fizzles."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> incant(s) and open(s) <S-HIS-HER> eyes sparkling, but the spell fizzles."));
 
 		return success;
 	}

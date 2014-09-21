@@ -37,9 +37,9 @@ import java.util.Vector;
 public class Prayer_DarkSenses extends Prayer
 {
 	@Override public String ID() { return "Prayer_DarkSenses"; }
-	private final static String localizedName = CMLib.lang()._("Dark Senses");
+	private final static String localizedName = CMLib.lang().L("Dark Senses");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Dark Senses)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Dark Senses)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
@@ -74,7 +74,7 @@ public class Prayer_DarkSenses extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("You lose your dark senses."));
+			mob.tell(L("You lose your dark senses."));
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class Prayer_DarkSenses extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<S-NAME> gain(s) dark senses!"):_("^S<S-NAME> @x1 for <T-NAME> to gain dark senses!^?",prayForWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<S-NAME> gain(s) dark senses!"):L("^S<S-NAME> @x1 for <T-NAME> to gain dark senses!^?",prayForWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -107,7 +107,7 @@ public class Prayer_DarkSenses extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1, but nothing more happens.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1, but nothing more happens.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

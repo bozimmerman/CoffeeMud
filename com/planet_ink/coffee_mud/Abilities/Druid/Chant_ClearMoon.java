@@ -37,7 +37,7 @@ import java.util.Vector;
 public class Chant_ClearMoon extends Chant
 {
 	@Override public String ID() { return "Chant_ClearMoon"; }
-	private final static String localizedName = CMLib.lang()._("Clear Moon");
+	private final static String localizedName = CMLib.lang().L("Clear Moon");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}
@@ -67,10 +67,10 @@ public class Chant_ClearMoon extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
-			this.beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) for a clear moon, but the magic fades."));
+			this.beneficialVisualFizzle(mob,null,L("<S-NAME> chant(s) for a clear moon, but the magic fades."));
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),_("^S<S-NAME> chant(s) for a clear moon.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),L("^S<S-NAME> chant(s) for a clear moon.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

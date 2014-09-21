@@ -49,16 +49,16 @@ public class AutoGuard extends StdCommand
 		   ||((commands.size()>0)&&(((String)commands.firstElement()).toUpperCase().startsWith("G"))))
 		{
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOGUARD));
-			mob.tell(_("You are now on guard. You will no longer follow group leaders."));
+			mob.tell(L("You are now on guard. You will no longer follow group leaders."));
 			if(mob.isMonster())
-				CMLib.commands().postSay(mob,null,_("I am now on guard."),false,false);
+				CMLib.commands().postSay(mob,null,L("I am now on guard."),false,false);
 		}
 		else
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOGUARD));
-			mob.tell(_("You are no longer on guard.  You will now follow group leaders."));
+			mob.tell(L("You are no longer on guard.  You will now follow group leaders."));
 			if(mob.isMonster())
-				CMLib.commands().postSay(mob,null,_("I will now follow my group leader."),false,false);
+				CMLib.commands().postSay(mob,null,L("I will now follow my group leader."),false,false);
 		}
 		return false;
 	}

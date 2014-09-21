@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_FloodRoom extends StdTrap
 {
 	@Override public String ID() { return "Trap_FloodRoom"; }
-	private final static String localizedName = CMLib.lang()._("flood room");
+	private final static String localizedName = CMLib.lang().L("flood room");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -118,12 +118,12 @@ public class Trap_FloodRoom extends StdTrap
 			if((I==null)
 			||(super.findNumberOfResource(mob.location(),I.material())<100))
 			{
-				mob.tell(_("You'll need to set down at least 100 pounds of stone first."));
+				mob.tell(L("You'll need to set down at least 100 pounds of stone first."));
 				return false;
 			}
 			if(numWaterskins(mob)<=10)
 			{
-				mob.tell(_("You'll need to set down at least 10 water containers first."));
+				mob.tell(L("You'll need to set down at least 10 water containers first."));
 				return false;
 			}
 		}
@@ -133,7 +133,7 @@ public class Trap_FloodRoom extends StdTrap
 			if((R.domainType()&Room.INDOORS)==0)
 			{
 				if(mob!=null)
-					mob.tell(_("You can only set this trap indoors."));
+					mob.tell(L("You can only set this trap indoors."));
 				return false;
 			}
 		}
@@ -170,14 +170,14 @@ public class Trap_FloodRoom extends StdTrap
 				||(msg.targetMinor()==CMMsg.TYP_FLEE))
 			   &&(msg.amITarget(affected)))
 			{
-				msg.source().tell(_("The exits are blocked! You can't get out!"));
+				msg.source().tell(L("The exits are blocked! You can't get out!"));
 				return false;
 			}
 			else
 			if((msg.targetMinor()==CMMsg.TYP_ENTER)
 			   &&(msg.amITarget(affected)))
 			{
-				msg.source().tell(_("The entry to that room is blocked!"));
+				msg.source().tell(L("The entry to that room is blocked!"));
 				return false;
 			}
 		}
@@ -198,7 +198,7 @@ public class Trap_FloodRoom extends StdTrap
 				final Room R=(Room)affected;
 				if(tickDown>13)
 				{
-					R.showHappens(CMMsg.MSG_OK_VISUAL,_("Water is filling up the room!"));
+					R.showHappens(CMMsg.MSG_OK_VISUAL,L("Water is filling up the room!"));
 					CMLib.utensils().extinguish(invoker(),R,true);
 					R.recoverPhyStats();
 					R.recoverRoomStats();
@@ -214,7 +214,7 @@ public class Trap_FloodRoom extends StdTrap
 				{
 					R.recoverPhyStats();
 					R.recoverRoomStats();
-					R.showHappens(CMMsg.MSG_OK_VISUAL,_("The water is draining away..."));
+					R.showHappens(CMMsg.MSG_OK_VISUAL,L("The water is draining away..."));
 				}
 			}
 		}
@@ -239,12 +239,12 @@ public class Trap_FloodRoom extends StdTrap
 		{
 			if((doesSaveVsTraps(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) setting off a trap!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) setting off a trap!"));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> trigger(s) a trap!")))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> trigger(s) a trap!")))
 			{
 				super.spring(target);
-				target.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The exits are blocked off! Water starts pouring in!"));
+				target.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The exits are blocked off! Water starts pouring in!"));
 			}
 		}
 	}

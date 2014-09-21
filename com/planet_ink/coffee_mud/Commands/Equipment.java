@@ -183,20 +183,20 @@ public class Equipment extends StdCommand
 								if(!allPlaces) name=CMStrings.ellipse(name,wrap);
 								if(wornCode==Wearable.WORN_HELD)
 								{
-									if(msg.length()==0) msg.append(_("nothing."));
+									if(msg.length()==0) msg.append(L("nothing."));
 									if(mob==seer)
-										msg.append(_("\n\rHolding ^<EItem^>@x1^</EItem^>@x2^N",name,CMLib.flags().colorCodes(thisItem,seer).toString().trim()));
+										msg.append(L("\n\rHolding ^<EItem^>@x1^</EItem^>@x2^N",name,CMLib.flags().colorCodes(thisItem,seer).toString().trim()));
 									else
-										msg.append(_("\n\r@x1 is holding @x2@x3^N.",mob.charStats().HeShe(),name.trim(),CMLib.flags().colorCodes(thisItem, seer).toString().trim()));
+										msg.append(L("\n\r@x1 is holding @x2@x3^N.",mob.charStats().HeShe(),name.trim(),CMLib.flags().colorCodes(thisItem, seer).toString().trim()));
 								}
 								else
 								if(wornCode==Wearable.WORN_WIELD)
 								{
-									if(msg.length()==0) msg.append(_("nothing."));
+									if(msg.length()==0) msg.append(L("nothing."));
 									if(mob==seer)
-										msg.append(_("\n\rWielding ^<EItem^>@x1^</EItem^>@x2^N.",name,CMLib.flags().colorCodes(thisItem,seer).toString().trim()));
+										msg.append(L("\n\rWielding ^<EItem^>@x1^</EItem^>@x2^N.",name,CMLib.flags().colorCodes(thisItem,seer).toString().trim()));
 									else
-										msg.append(_("\n\r@x1 is wielding @x2@x3^N.",mob.charStats().HeShe(),name.trim(),CMLib.flags().colorCodes(thisItem, seer).toString().trim()));
+										msg.append(L("\n\r@x1 is wielding @x2@x3^N.",mob.charStats().HeShe(),name.trim(),CMLib.flags().colorCodes(thisItem, seer).toString().trim()));
 								}
 								else
 								{
@@ -220,7 +220,7 @@ public class Equipment extends StdCommand
 						else
 						if(seer==mob)
 						{
-							msg.append(_("@x1(something you can`t see)@x2^?\n\r",header,CMLib.flags().colorCodes(thisItem,seer).toString().trim()));
+							msg.append(L("@x1(something you can`t see)@x2^?\n\r",header,CMLib.flags().colorCodes(thisItem,seer).toString().trim()));
 							shownThisLoc++;
 						}
 					}
@@ -270,7 +270,7 @@ public class Equipment extends StdCommand
 		}
 		if(msg.length()==0)
 		{
-			msg.append(_("^!(nothing)^?\n\r"));
+			msg.append(L("^!(nothing)^?\n\r"));
 		}
 		else
 		{
@@ -296,15 +296,15 @@ public class Equipment extends StdCommand
 			if(paragraphView)
 			{
 				if(longView)
-					session.wraplessPrintln(_("You are wearing @x1",getEquipment(mob,mob,true).toString()));
+					session.wraplessPrintln(L("You are wearing @x1",getEquipment(mob,mob,true).toString()));
 				else
-					session.wraplessPrintln(_("You are wearing @x1",getEquipment(mob,mob,false).toString()));
+					session.wraplessPrintln(L("You are wearing @x1",getEquipment(mob,mob,false).toString()));
 			}
 			else
 			if(longView)
-				session.wraplessPrintln(_("You are wearing:\n\r@x1",getEquipment(mob,mob,true).toString()));
+				session.wraplessPrintln(L("You are wearing:\n\r@x1",getEquipment(mob,mob,true).toString()));
 			else
-				session.wraplessPrintln(_("You are wearing:\n\r@x1",getEquipment(mob,mob,false).toString()));
+				session.wraplessPrintln(L("You are wearing:\n\r@x1",getEquipment(mob,mob,false).toString()));
 		}
 	}
 

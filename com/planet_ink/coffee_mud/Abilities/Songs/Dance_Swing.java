@@ -36,7 +36,7 @@ import java.util.*;
 public class Dance_Swing extends Dance
 {
 	@Override public String ID() { return "Dance_Swing"; }
-	private final static String localizedName = CMLib.lang()._("Swing");
+	private final static String localizedName = CMLib.lang().L("Swing");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected boolean doneThisRound=false;
@@ -78,7 +78,7 @@ public class Dance_Swing extends Dance
 				{
 					if(proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)+(getXLEVELLevel(invoker())*2)-70,false))
 					{
-						final CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> parr(ys) @x1 attack from <T-NAME>!",attackerWeapon.name()));
+						final CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> parr(ys) @x1 attack from <T-NAME>!",attackerWeapon.name()));
 						if(mob.location().okMessage(mob,msg2))
 						{
 							doneThisRound=true;

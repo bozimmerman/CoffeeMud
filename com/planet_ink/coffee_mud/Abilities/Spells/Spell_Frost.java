@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Frost extends Spell
 {
 	@Override public String ID() { return "Spell_Frost"; }
-	private final static String localizedName = CMLib.lang()._("Frost");
+	private final static String localizedName = CMLib.lang().L("Frost");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Frost)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Frost)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -69,7 +69,7 @@ public class Spell_Frost extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_((auto?"A ":"^S<S-NAME> incant(s) and point(s) at <T-NAMESELF>. A ")+"blast of frost erupts!^?")+CMLib.protocol().msp("spelldam1.wav",40));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L((auto?"A ":"^S<S-NAME> incant(s) and point(s) at <T-NAMESELF>. A ")+"blast of frost erupts!^?")+CMLib.protocol().msp("spelldam1.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_COLD|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((R.okMessage(mob,msg))&&(R.okMessage(mob,msg2)))
 			{
@@ -88,7 +88,7 @@ public class Spell_Frost extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) and point(s) at <T-NAMESELF>, but flub(s) the spell."));
+			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) and point(s) at <T-NAMESELF>, but flub(s) the spell."));
 
 
 		// return whether it worked

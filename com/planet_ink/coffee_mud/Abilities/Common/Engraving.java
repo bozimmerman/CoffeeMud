@@ -37,7 +37,7 @@ import java.util.*;
 public class Engraving extends CommonSkill
 {
 	@Override public String ID() { return "Engraving"; }
-	private final static String localizedName = CMLib.lang()._("Engraving");
+	private final static String localizedName = CMLib.lang().L("Engraving");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"ENGRAVE","ENGRAVING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -50,8 +50,8 @@ public class Engraving extends CommonSkill
 	public Engraving()
 	{
 		super();
-		displayText=_("You are engraving...");
-		verb=_("engraving");
+		displayText=L("You are engraving...");
+		verb=L("engraving");
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class Engraving extends CommonSkill
 			{
 				final MOB mob=(MOB)affected;
 				if(writing.length()==0)
-					commonTell(mob,_("You mess up your engraving."));
+					commonTell(mob,L("You mess up your engraving."));
 				else
 				{
 					String desc=found.description();
@@ -71,7 +71,7 @@ public class Engraving extends CommonSkill
 					final int y=desc.lastIndexOf('`');
 					if((x>=0)&&(y>x))
 						desc=desc.substring(0,x);
-					found.setDescription(_("@x1 Engraved on it are the words `@x2`.",desc,writing));
+					found.setDescription(L("@x1 Engraved on it are the words `@x2`.",desc,writing));
 				}
 			}
 		}
@@ -85,7 +85,7 @@ public class Engraving extends CommonSkill
 			return true;
 		if(commands.size()<2)
 		{
-			commonTell(mob,_("You must specify what you want to engrave onto, and what words to engrave on it."));
+			commonTell(mob,L("You must specify what you want to engrave onto, and what words to engrave on it."));
 			return false;
 		}
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.firstElement());
@@ -103,14 +103,14 @@ public class Engraving extends CommonSkill
 				}
 				if(!ok)
 				{
-					commonTell(mob,_("You aren't allowed to work on '@x1'.",((String)commands.firstElement())));
+					commonTell(mob,L("You aren't allowed to work on '@x1'.",((String)commands.firstElement())));
 					return false;
 				}
 			}
 		}
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTell(mob,_("You don't seem to have a '@x1'.",((String)commands.firstElement())));
+			commonTell(mob,L("You don't seem to have a '@x1'.",((String)commands.firstElement())));
 			return false;
 		}
 		commands.remove(commands.firstElement());
@@ -118,7 +118,7 @@ public class Engraving extends CommonSkill
 		final Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)
 		{
-			commonTell(mob,_("You must know how to write to engrave."));
+			commonTell(mob,L("You must know how to write to engrave."));
 			return false;
 		}
 
@@ -131,19 +131,19 @@ public class Engraving extends CommonSkill
 			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL))
 		||(!target.isGeneric()))
 		{
-			commonTell(mob,_("You can't engrave onto that material."));
+			commonTell(mob,L("You can't engrave onto that material."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		writing=CMParms.combine(commands,0);
-		verb=_("engraving on @x1",target.name());
-		displayText=_("You are @x1",verb);
+		verb=L("engraving on @x1",target.name());
+		displayText=L("You are @x1",verb);
 		found=target;
 		if((!proficiencyCheck(mob,0,auto))||(!write.proficiencyCheck(mob,0,auto)))
 			writing="";
 		final int duration=getDuration(30,mob,1,3);
-		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),_("<S-NAME> start(s) engraving on <T-NAME>."));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),L("<S-NAME> start(s) engraving on <T-NAME>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

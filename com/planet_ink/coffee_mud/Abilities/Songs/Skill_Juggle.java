@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Juggle extends BardSkill
 {
 	@Override public String ID() { return "Skill_Juggle"; }
-	private final static String localizedName = CMLib.lang()._("Juggle");
+	private final static String localizedName = CMLib.lang().L("Juggle");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -75,7 +75,7 @@ public class Skill_Juggle extends BardSkill
 	{
 		if(juggles.size()>0)
 		{
-			final StringBuffer str=new StringBuffer(_("(Juggling: "));
+			final StringBuffer str=new StringBuffer(L("(Juggling: "));
 			final SVector<Item> V=juggles.copyOf();
 			for(int i=0;i<V.size();i++)
 			{
@@ -114,7 +114,7 @@ public class Skill_Juggle extends BardSkill
 		&&(CMLib.dice().rollPercentage()<90)
 		&&(msg.source()!=affected))
 		{
-			msg.source().tell(msg.source(),msg.target(),null,_("<T-NAME> is moving too fast for you to grab it."));
+			msg.source().tell(msg.source(),msg.target(),null,L("<T-NAME> is moving too fast for you to grab it."));
 			return false;
 		}
 		return true;
@@ -190,7 +190,7 @@ public class Skill_Juggle extends BardSkill
 			&&(!juggles.contains(I))
 			&&(juggles.size()<maxJuggles()))
 			{
-				if(M.location().show(M,I,CMMsg.MSG_DELICATE_HANDS_ACT,_("<S-NAME> start(s) juggling <T-NAMESELF>.")))
+				if(M.location().show(M,I,CMMsg.MSG_DELICATE_HANDS_ACT,L("<S-NAME> start(s) juggling <T-NAMESELF>.")))
 					juggleItem(I);
 				else
 				{
@@ -287,7 +287,7 @@ public class Skill_Juggle extends BardSkill
 				final MOB mob=(MOB)affected;
 				if(mob.location()!=null)
 				{
-					if(!mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> juggle(s) @x1 items in the air.",""+juggles.size())))
+					if(!mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> juggle(s) @x1 items in the air.",""+juggles.size())))
 					   unInvoke();
 					else
 					if(mob.isInCombat())
@@ -338,7 +338,7 @@ public class Skill_Juggle extends BardSkill
 			while(juggles.size()>0)
 			{
 				final Item I=juggles.elementAt(0);
-				M.location().show(M,I,CMMsg.MSG_OK_ACTION,_("<S-NAME> stop(s) juggling <T-NAMESELF>."));
+				M.location().show(M,I,CMMsg.MSG_OK_ACTION,L("<S-NAME> stop(s) juggling <T-NAMESELF>."));
 				unJuggle(I);
 				I.unWear();
 				if(!M.isMine(I)) M.moveItemTo(I);
@@ -367,17 +367,17 @@ public class Skill_Juggle extends BardSkill
 		{
 			if(A==null)
 			{
-				mob.tell(_("Juggle what?"));
+				mob.tell(L("Juggle what?"));
 				return false;
 			}
-			mob.tell(_("You stop juggling."));
+			mob.tell(L("You stop juggling."));
 			A.unInvoke();
 			return true;
 		}
 
 		if((A!=null)&&(A.juggles.size()>=A.maxJuggles()))
 		{
-			mob.tell(_("You are already juggling the most items you can."));
+			mob.tell(L("You are already juggling the most items you can."));
 			return false;
 		}
 
@@ -421,7 +421,7 @@ public class Skill_Juggle extends BardSkill
 
 		if(V.size()==0)
 		{
-			mob.tell(_("You don't seem to be carrying that."));
+			mob.tell(L("You don't seem to be carrying that."));
 			return false;
 		}
 
@@ -443,7 +443,7 @@ public class Skill_Juggle extends BardSkill
 			for(int i=0;i<V.size();i++)
 			{
 				final Item I=(Item)V.elementAt(i);
-				final CMMsg msg=CMClass.getMsg(mob,I,this,CMMsg.MSG_DELICATE_HANDS_ACT,_("<S-NAME> start(s) juggling <T-NAMESELF>."));
+				final CMMsg msg=CMClass.getMsg(mob,I,this,CMMsg.MSG_DELICATE_HANDS_ACT,L("<S-NAME> start(s) juggling <T-NAMESELF>."));
 				if((A.juggles.size()<A.maxJuggles())
 				&&(mob.location().okMessage(mob,msg)))
 				{
@@ -456,7 +456,7 @@ public class Skill_Juggle extends BardSkill
 			A.pause=false;
 		}
 		else
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> attempt(s) to juggle, but messes up."));
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to juggle, but messes up."));
 
 
 		// return whether it worked

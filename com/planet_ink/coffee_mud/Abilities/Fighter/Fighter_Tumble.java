@@ -37,9 +37,9 @@ public class Fighter_Tumble extends FighterSkill
 {
 	public int hits=0;
 	@Override public String ID() { return "Fighter_Tumble"; }
-	private final static String localizedName = CMLib.lang()._("Tumble");
+	private final static String localizedName = CMLib.lang().L("Tumble");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Tumbling)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Tumbling)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	private static final String[] triggerStrings =_i(new String[] {"TUMBLE"});
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -86,7 +86,7 @@ public class Fighter_Tumble extends FighterSkill
 			{
 				msg.modify(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 				if(!((MOB)msg.target()).amDead())
-					msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),msg.source(),CMMsg.MSG_OK_VISUAL,_("<S-NAME> tumble(s) around the attack from <T-NAME>.")));
+					msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),msg.source(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> tumble(s) around the attack from <T-NAME>.")));
 				if((++hits)>=2)
 					unInvoke();
 			}
@@ -114,18 +114,18 @@ public class Fighter_Tumble extends FighterSkill
 	{
 		if(mob.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(_("You are already tumbling."));
+			mob.tell(L("You are already tumbling."));
 			return false;
 		}
 
 		if((!auto)&&(!mob.isInCombat()))
 		{
-			mob.tell(_("You aren't in combat!"));
+			mob.tell(L("You aren't in combat!"));
 			return false;
 		}
 		if(!CMLib.flags().aliveAwakeMobile(mob,true))
 		{
-			mob.tell(_("You need to stand up!"));
+			mob.tell(L("You need to stand up!"));
 			return false;
 		}
 
@@ -139,7 +139,7 @@ public class Fighter_Tumble extends FighterSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,auto?_("<T-NAME> begin(s) tumbling around!"):_("<S-NAME> tumble(s) around!"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,auto?L("<T-NAME> begin(s) tumbling around!"):L("<S-NAME> tumble(s) around!"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -148,7 +148,7 @@ public class Fighter_Tumble extends FighterSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to tumble, but goof(s) it up."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to tumble, but goof(s) it up."));
 		return success;
 	}
 }

@@ -36,7 +36,7 @@ import java.util.*;
 public class Play_Lullabies extends Play
 {
 	@Override public String ID() { return "Play_Lullabies"; }
-	private final static String localizedName = CMLib.lang()._("Lullabies");
+	private final static String localizedName = CMLib.lang().L("Lullabies");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected boolean maliciousButNotAggressiveFlag(){return true;}
@@ -73,11 +73,11 @@ public class Play_Lullabies extends Play
 			{
 				if(CMLib.flags().isSleeping(mob))
 					mob.phyStats().setDisposition(mob.phyStats().disposition()-PhyStats.IS_SLEEPING);
-				mob.location().show(mob,null,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> wake(s) up."));
+				mob.location().show(mob,null,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> wake(s) up."));
 			}
 			else
 			{
-				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> fall(s) asleep."));
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> fall(s) asleep."));
 				mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SLEEPING);
 			}
 		}

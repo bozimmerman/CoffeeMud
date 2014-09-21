@@ -39,7 +39,7 @@ import java.util.*;
 public class GatheringSkill extends CommonSkill
 {
 	@Override public String ID() { return "GatheringSkill"; }
-	private final static String localizedName = CMLib.lang()._("GatheringSkill");
+	private final static String localizedName = CMLib.lang().L("GatheringSkill");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"FLETCH","FLETCHING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -127,14 +127,14 @@ public class GatheringSkill extends CommonSkill
 		if((what.size()<3)
 		||((!CMath.isNumber((String)what.elementAt(1)))&&(!((String)what.elementAt(1)).equalsIgnoreCase("ALL"))))
 		{
-			commonTell(mob,_("You must specify an amount to bundle, followed by what resource to bundle."));
+			commonTell(mob,L("You must specify an amount to bundle, followed by what resource to bundle."));
 			return false;
 		}
 		int amount=CMath.s_int((String)what.elementAt(1));
 		if(((String)what.elementAt(1)).equalsIgnoreCase("ALL")) amount=Integer.MAX_VALUE;
 		if(amount<=0)
 		{
-			commonTell(mob,_("@x1 is not an appropriate amount.",""+amount));
+			commonTell(mob,L("@x1 is not an appropriate amount.",""+amount));
 			return false;
 		}
 		int numHere=0;
@@ -180,15 +180,15 @@ public class GatheringSkill extends CommonSkill
 		if((numHere==0)||(foundResource<0))
 		{
 			if(foundAnyway!=null)
-				commonTell(mob,_("You can't bundle @x1 with this skill.",foundAnyway.name()));
+				commonTell(mob,L("You can't bundle @x1 with this skill.",foundAnyway.name()));
 			else
-				commonTell(mob,_("You don't see any @x1 on the ground here.",name));
+				commonTell(mob,L("You don't see any @x1 on the ground here.",name));
 			return false;
 		}
 		if(amount==Integer.MAX_VALUE) amount=numHere;
 		if(numHere<amount)
 		{
-			commonTell(mob,_("You only see @x1 pounds of @x2 on the ground here.",""+numHere,name));
+			commonTell(mob,L("You only see @x1 pounds of @x2 on the ground here.",""+numHere,name));
 			return false;
 		}
 		if(lowestNonZeroFoodNumber==Long.MAX_VALUE)
@@ -196,13 +196,13 @@ public class GatheringSkill extends CommonSkill
 		final Item I=(Item)CMLib.materials().makeResource(foundResource,Integer.toString(mob.location().domainType()),true,null);
 		if(I==null)
 		{
-			commonTell(mob,_("You could not bundle @x1 due to @x2 being an invalid resource code.  Bug it!",name,""+foundResource));
+			commonTell(mob,L("You could not bundle @x1 due to @x2 being an invalid resource code.  Bug it!",name,""+foundResource));
 			return false;
 		}
-		I.setName(_("a @x1# @x2 bundle",""+amount,RawMaterial.CODES.NAME(foundResource).toLowerCase()));
-		I.setDisplayText(_("@x1 is here.",I.name()));
+		I.setName(L("a @x1# @x2 bundle",""+amount,RawMaterial.CODES.NAME(foundResource).toLowerCase()));
+		I.setDisplayText(L("@x1 is here.",I.name()));
 		I.basePhyStats().setWeight(amount);
-		if(R.show(mob,null,I,getActivityMessageType(),_("<S-NAME> create(s) <O-NAME>.")))
+		if(R.show(mob,null,I,getActivityMessageType(),L("<S-NAME> create(s) <O-NAME>.")))
 		{
 			final int lostValue=CMLib.materials().destroyResourcesValue(R,amount,foundResource,-1,I);
 			I.setBaseValue(lostValue);

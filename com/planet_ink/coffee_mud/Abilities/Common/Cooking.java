@@ -40,7 +40,7 @@ import java.util.*;
 public class Cooking extends CraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "Cooking"; }
-	private final static String localizedName = CMLib.lang()._("Cooking");
+	private final static String localizedName = CMLib.lang().L("Cooking");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"COOK","COOKING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -79,7 +79,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	public Cooking()
 	{
 		super();
-		displayText=_("You are @x1...",cookWord());
+		displayText=L("You are @x1...",cookWord());
 		verb=cookWord();
 	}
 
@@ -139,8 +139,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			else
 			if(tickUp==0)
 			{
-				commonTell(mob,_("You start @x1 up some @x2.",cookWord(),finalDishName));
-				displayText=_("You are @x1 @x2",cookWord(),finalDishName);
+				commonTell(mob,L("You start @x1 up some @x2.",cookWord(),finalDishName));
+				displayText=L("You are @x1 @x2",cookWord(),finalDishName);
 				verb=cookWord()+" "+finalDishName;
 			}
 		}
@@ -451,8 +451,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			buildingI=CMClass.getItem("GenFood");
 			final Food food=(Food)buildingI;
 			buildingI.setName(((messedUp)?"burnt ":"")+finalDishName);
-			buildingI.setDisplayText(_("some @x1@x2 is here",((messedUp)?"burnt ":""),finalDishName));
-			buildingI.setDescription(_("It looks @x1",((messedUp)?"burnt!":"good!")));
+			buildingI.setDisplayText(L("some @x1@x2 is here",((messedUp)?"burnt ":""),finalDishName));
+			buildingI.setDescription(L("It looks @x1",((messedUp)?"burnt!":"good!")));
 			food.setNourishment(0);
 			if(!messedUp)
 			{
@@ -553,8 +553,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			//building.setMiscText(cooking.text());
 			//building.recoverPhyStats();
 			buildingI.setName(((messedUp)?"spoiled ":"")+finalDishName);
-			buildingI.setDisplayText(_("some @x1@x2 is here.",((messedUp)?"spoiled ":""),finalDishName));
-			buildingI.setDescription(_("It looks @x1",((messedUp)?"spoiled!":"good!")));
+			buildingI.setDisplayText(L("some @x1@x2 is here.",((messedUp)?"spoiled ":""),finalDishName));
+			buildingI.setDescription(L("It looks @x1",((messedUp)?"spoiled!":"good!")));
 			final Drink drink=(Drink)buildingI;
 			int liquidType=RawMaterial.RESOURCE_FRESHWATER;
 			if(contents!=null)
@@ -592,7 +592,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			buildingI=CMClass.getItem(foodType);
 			final String ruinWord=(buildingI instanceof Drink)?"spoiled ":"burnt ";
 			buildingI.setName(((messedUp)?ruinWord:"")+finalDishName);
-			buildingI.setDisplayText(_("some @x1@x2 is here",((messedUp)?ruinWord:""),finalDishName));
+			buildingI.setDisplayText(L("some @x1@x2 is here",((messedUp)?ruinWord:""),finalDishName));
 			if(buildingI instanceof Drink)
 			{
 				final Drink drink=(Drink)buildingI;
@@ -636,7 +636,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			}
 			final String ruinWord=(buildingI instanceof Drink)?"spoiled ":"burnt ";
 			buildingI.setName(((messedUp)?ruinWord:"")+finalDishName);
-			buildingI.setDisplayText(_("some @x1@x2 is here",((messedUp)?ruinWord:""),finalDishName));
+			buildingI.setDisplayText(L("some @x1@x2 is here",((messedUp)?ruinWord:""),finalDishName));
 			buildingI.basePhyStats().setWeight(buildingI.basePhyStats().weight()/finalAmount);
 			playSound=defaultFoodSound;
 		}
@@ -736,7 +736,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				allFlag=true;
 				mask="";
 			}
-			final StringBuffer buf=new StringBuffer(_("@x1^.^? ^B^~wIngredients required^N\n\r",CMStrings.padRight(_("^xRecipe"),colWidth)));
+			final StringBuffer buf=new StringBuffer(L("@x1^.^? ^B^~wIngredients required^N\n\r",CMStrings.padRight(L("^xRecipe"),colWidth)));
 			for(int r=0;r<allRecipes.size();r++)
 			{
 				final List<String> Vr=allRecipes.get(r);
@@ -778,20 +778,20 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 					}
 				}
 			}
-			commonTell(mob,_("@x1\n\rIngredients beginning with the ~ character are optional additives.",buf.toString()));
+			commonTell(mob,L("@x1\n\rIngredients beginning with the ~ character are optional additives.",buf.toString()));
 			return true;
 		}
 		final Item possibleContainer=possibleContainer(mob,commands,true,Wearable.FILTER_UNWORNONLY);
 		final Item target=getTarget(mob,mob.location(),givenTarget,possibleContainer,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null)
 		{
-			commonTell(mob,_("The syntax for this skill is @x1 [CONTAINER]",triggerStrings()[0]));
+			commonTell(mob,L("The syntax for this skill is @x1 [CONTAINER]",triggerStrings()[0]));
 			return false;
 		}
 
 		if(!(target instanceof Container))
 		{
-			commonTell(mob,_("There's nothing in @x1 to @x2!",target.name(mob),cookWordShort()));
+			commonTell(mob,L("There's nothing in @x1 to @x2!",target.name(mob),cookWordShort()));
 			return false;
 		}
 		for(int a=0;a<mob.numEffects();a++)
@@ -799,18 +799,18 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			final Ability A=mob.fetchEffect(a);
 			if((A instanceof Cooking) && (((Cooking)A).cookingPot==target))
 			{
-				commonTell(mob,_("That is already in use."));
+				commonTell(mob,L("That is already in use."));
 				return false;
 			}
 		}
 		if(!isMineForCooking(mob,(Container)target))
 		{
-			commonTell(mob,_("You probably need to pick that up first."));
+			commonTell(mob,L("You probably need to pick that up first."));
 			return false;
 		}
 		if(!meetsLidRequirements(mob,(Container)target))
 		{
-			commonTell(mob,_("You need a closeable container to bake that in, and you need to close it to begin."));
+			commonTell(mob,L("You need a closeable container to bake that in, and you need to close it to begin."));
 			return false;
 		}
 		switch(target.material()&RawMaterial.MATERIAL_MASK)
@@ -822,7 +822,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		case RawMaterial.MATERIAL_PRECIOUS:
 			break;
 		default:
-			commonTell(mob,_("@x1 is not suitable to @x2 in.",target.name(mob),cookWordShort()));
+			commonTell(mob,L("@x1 is not suitable to @x2 in.",target.name(mob),cookWordShort()));
 			return false;
 		}
 
@@ -870,7 +870,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		{
 			if(closeRecipes.size()==0)
 			{
-				commonTell(mob,_("You don't know how to make anything out of those ingredients.  Have you tried LIST as a parameter?"));
+				commonTell(mob,L("You don't know how to make anything out of those ingredients.  Have you tried LIST as a parameter?"));
 				return false;
 			}
 			for(int vr=0;vr<closeRecipes.size();vr++)
@@ -881,22 +881,22 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				final String recipeName=replacePercent((String)Vr.get(RCP_FINALFOOD),((String)Vr.get(RCP_MAININGR)).toLowerCase());
 				if(extra.size()>0)
 				{
-					final StringBuffer buf=new StringBuffer(_("If you are trying to make @x1, you need to remove ",recipeName));
+					final StringBuffer buf=new StringBuffer(L("If you are trying to make @x1, you need to remove ",recipeName));
 					for(int i=0;i<extra.size();i++)
 						if(i==0) buf.append(((String)extra.elementAt(i)).toLowerCase());
 						else
-						if(i==extra.size()-1) buf.append(_(", and @x1",((String)extra.elementAt(i)).toLowerCase()));
+						if(i==extra.size()-1) buf.append(L(", and @x1",((String)extra.elementAt(i)).toLowerCase()));
 						else buf.append(", "+((String)extra.elementAt(i)).toLowerCase());
 					commonTell(mob,buf.toString()+".");
 				}
 				else
 				if(missing.size()>0)
 				{
-					final StringBuffer buf=new StringBuffer(_("If you are trying to make @x1, you need to add ",recipeName));
+					final StringBuffer buf=new StringBuffer(L("If you are trying to make @x1, you need to add ",recipeName));
 					for(int i=0;i<missing.size();i++)
 						if(i==0) buf.append(((String)missing.elementAt(i)).toLowerCase());
 						else
-						if(i==missing.size()-1) buf.append(_(", and @x1",((String)missing.elementAt(i)).toLowerCase()));
+						if(i==missing.size()-1) buf.append(L(", and @x1",((String)missing.elementAt(i)).toLowerCase()));
 						else buf.append(", "+((String)missing.elementAt(i)).toLowerCase());
 					commonTell(mob,buf.toString()+".");
 				}
@@ -924,13 +924,13 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			else
 			if(amountMaking.intValue()<=0)
 			{
-				final StringBuffer buf=new StringBuffer(_("If you are trying to make @x1, you need to add a little more ",recipeName));
+				final StringBuffer buf=new StringBuffer(L("If you are trying to make @x1, you need to add a little more ",recipeName));
 				for(int i=1;i<counts.size();i++)
 					if(i==1)
 						buf.append(((String)counts.elementAt(i)).toLowerCase());
 					else
 					if(i==counts.size()-1)
-						buf.append(_(", and @x1",((String)counts.elementAt(i)).toLowerCase()));
+						buf.append(L(", and @x1",((String)counts.elementAt(i)).toLowerCase()));
 					else
 						buf.append(", "+((String)counts.elementAt(i)).toLowerCase());
 				complaints.addElement(buf.toString());
@@ -938,13 +938,13 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			else
 			if(amountMaking.intValue()>0)
 			{
-				final StringBuffer buf=new StringBuffer(_("If you are trying to make @x1, you need to remove some of the ",recipeName));
+				final StringBuffer buf=new StringBuffer(L("If you are trying to make @x1, you need to remove some of the ",recipeName));
 				for(int i=1;i<counts.size();i++)
 					if(i==1)
 						buf.append(((String)counts.elementAt(i)).toLowerCase());
 					else
 					if(i==counts.size()-1)
-						buf.append(_(", and @x1",((String)counts.elementAt(i)).toLowerCase()));
+						buf.append(L(", and @x1",((String)counts.elementAt(i)).toLowerCase()));
 					else
 						buf.append(", "+((String)counts.elementAt(i)).toLowerCase());
 				complaints.addElement(buf.toString());
@@ -965,7 +965,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final CMMsg msg=CMClass.getMsg(mob,cookingPot,this,getActivityMessageType(),getActivityMessageType(),getActivityMessageType(),_("<S-NAME> start(s) @x1 something in <T-NAME>.",cookWord()));
+		final CMMsg msg=CMClass.getMsg(mob,cookingPot,this,getActivityMessageType(),getActivityMessageType(),getActivityMessageType(),L("<S-NAME> start(s) @x1 something in <T-NAME>.",cookWord()));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

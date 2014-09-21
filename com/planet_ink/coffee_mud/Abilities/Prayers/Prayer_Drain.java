@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_Drain extends Prayer
 {
 	@Override public String ID() { return "Prayer_Drain"; }
-	private final static String localizedName = CMLib.lang()._("Drain");
+	private final static String localizedName = CMLib.lang().L("Drain");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Drain)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Drain)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -68,7 +68,7 @@ public class Prayer_Drain extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
-			final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> reach(es) at <T-NAMESELF>, @x1!^?",prayingWord(mob)));
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> reach(es) at <T-NAMESELF>, @x1!^?",prayingWord(mob)));
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg2);
@@ -83,7 +83,7 @@ public class Prayer_Drain extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> reach(es) for <T-NAMESELF>, @x1, but the spell fades.",prayingWord(mob)));
+			return maliciousFizzle(mob,target,L("<S-NAME> reach(es) for <T-NAMESELF>, @x1, but the spell fades.",prayingWord(mob)));
 
 
 		// return whether it worked

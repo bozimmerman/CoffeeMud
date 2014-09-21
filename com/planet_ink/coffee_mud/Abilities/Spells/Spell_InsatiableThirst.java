@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_InsatiableThirst extends Spell
 {
 	@Override public String ID() { return "Spell_InsatiableThirst"; }
-	private final static String localizedName = CMLib.lang()._("Insatiable Thirst");
+	private final static String localizedName = CMLib.lang().L("Insatiable Thirst");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Insatiable Thirst)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Insatiable Thirst)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
@@ -64,19 +64,19 @@ public class Spell_InsatiableThirst extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> incant(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> incant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
 					target.curState().adjThirst(-150 - ((mob.phyStats().level()+(2*getXLEVELLevel(mob))) * 100),target.maxState().maxThirst(target.baseWeight()));
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> feel(s) incredibly thirsty!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) incredibly thirsty!"));
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) to <T-NAMESELF>, but the spell fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) to <T-NAMESELF>, but the spell fades."));
 		// return whether it worked
 		return success;
 	}

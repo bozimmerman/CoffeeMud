@@ -36,12 +36,12 @@ import java.util.*;
 public class Prayer_BrighteningAura extends Prayer
 {
 	@Override public String ID() { return "Prayer_BrighteningAura"; }
-	private final static String localizedName = CMLib.lang()._("Brightening Aura");
+	private final static String localizedName = CMLib.lang().L("Brightening Aura");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override public long flags(){return Ability.FLAG_HOLY;}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Brightening Aura)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Brightening Aura)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -58,7 +58,7 @@ public class Prayer_BrighteningAura extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your brightening aura fades."));
+			mob.tell(L("Your brightening aura fades."));
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class Prayer_BrighteningAura extends Prayer
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already surrounded by a brightening aura."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already surrounded by a brightening aura."));
 			return false;
 		}
 
@@ -107,7 +107,7 @@ public class Prayer_BrighteningAura extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<S-NAME> attain(s) a brightening aura."):_("^S<S-NAME> invoke(s) a brightening aura upon <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<S-NAME> attain(s) a brightening aura."):L("^S<S-NAME> invoke(s) a brightening aura upon <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -115,7 +115,7 @@ public class Prayer_BrighteningAura extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for a brightening aura, but nothing happens.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for a brightening aura, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

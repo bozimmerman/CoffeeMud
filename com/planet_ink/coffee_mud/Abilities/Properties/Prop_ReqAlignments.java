@@ -114,7 +114,7 @@ public class Prop_ReqAlignments extends Property implements TriggeredAffect
 				&&(passesMuster((MOB)E)))
 					return super.okMessage(myHost,msg);
 			}
-			msg.source().tell(_("You may not go that way."));
+			msg.source().tell(L("You may not go that way."));
 			return false;
 		}
 		return super.okMessage(myHost,msg);

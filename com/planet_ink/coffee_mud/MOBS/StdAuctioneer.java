@@ -206,38 +206,38 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 				{
 					if(!(msg.tool() instanceof Item))
 					{
-						CMLib.commands().postSay(this,mob,_("I can't seem to auction @x1.",msg.tool().name()),true,false);
+						CMLib.commands().postSay(this,mob,L("I can't seem to auction @x1.",msg.tool().name()),true,false);
 						return false;
 					}
 					if(msg.source().isMonster())
 					{
-						CMLib.commands().postSay(this,mob,_("You can't sell anything."),true,false);
+						CMLib.commands().postSay(this,mob,L("You can't sell anything."),true,false);
 						return false;
 					}
 					final Item I=(Item)msg.tool();
 					if((I instanceof Container)&&(((Container)I).getContents().size()>0))
 					{
-						CMLib.commands().postSay(this,mob,_("@x1 will have to be emptied first.",I.name()),true,false);
+						CMLib.commands().postSay(this,mob,L("@x1 will have to be emptied first.",I.name()),true,false);
 						return false;
 					}
 					if(!(I.amWearingAt(Wearable.IN_INVENTORY)))
 					{
-						CMLib.commands().postSay(this,mob,_("@x1 will have to be removed first.",I.name()),true,false);
+						CMLib.commands().postSay(this,mob,L("@x1 will have to be removed first.",I.name()),true,false);
 						return false;
 					}
 					final AuctionRates aRates=new AuctionRates(this);
-					CMLib.commands().postSay(this,mob,_("Ok, so how many local days will your auction run for (@x1-@x2)?",""+aRates.minDays,""+aRates.maxDays),true,false);
+					CMLib.commands().postSay(this,mob,L("Ok, so how many local days will your auction run for (@x1-@x2)?",""+aRates.minDays,""+aRates.maxDays),true,false);
 					int days=0;
 					try{days=CMath.s_int(mob.session().prompt(":","",30000));}catch(final Exception e){return false;}
 					if(days==0) return false;
 					if(days<aRates.minDays)
 					{
-						CMLib.commands().postSay(this,mob,_("Minimum number of local days on an auction is @x1.",""+aRates.minDays),true,false);
+						CMLib.commands().postSay(this,mob,L("Minimum number of local days on an auction is @x1.",""+aRates.minDays),true,false);
 						return false;
 					}
 					if(days>aRates.maxDays)
 					{
-						CMLib.commands().postSay(this,mob,_("Maximum number of local days on an auction is @x1.",""+aRates.maxDays),true,false);
+						CMLib.commands().postSay(this,mob,L("Maximum number of local days on an auction is @x1.",""+aRates.maxDays),true,false);
 						return false;
 					}
 					double deposit=aRates.timeListPrice;
@@ -245,11 +245,11 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 					final String depositAmt=CMLib.beanCounter().nameCurrencyLong(mob, deposit);
 					if(CMLib.beanCounter().getTotalAbsoluteValue(mob,CMLib.beanCounter().getCurrency(mob))<deposit)
 					{
-						CMLib.commands().postSay(this,mob,_("You don't have enough to cover the listing fee of @x1.  Sell a cheaper item, use fewer days, or come back later.",depositAmt),true,false);
+						CMLib.commands().postSay(this,mob,L("You don't have enough to cover the listing fee of @x1.  Sell a cheaper item, use fewer days, or come back later.",depositAmt),true,false);
 						return false;
 					}
-					CMLib.commands().postSay(this,mob,_("Auctioning @x1 will cost a listing fee of @x2, proceed?",I.name(),depositAmt),true,false);
-					try{if(!mob.session().confirm(_("(Y/N):"),_("Y"),10000)) return false;}catch(final Exception e){return false;}
+					CMLib.commands().postSay(this,mob,L("Auctioning @x1 will cost a listing fee of @x2, proceed?",I.name(),depositAmt),true,false);
+					try{if(!mob.session().confirm(L("(Y/N):"),L("Y"),10000)) return false;}catch(final Exception e){return false;}
 					lastMsgData=new AuctionData();
 					lastMsgData.auctioningI=(Item)msg.tool();
 					lastMsgData.auctioningM=msg.source();
@@ -270,13 +270,13 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 					final String bidStr=parseBidString(msg.targetMessage());
 					if(bidStr==null)
 					{
-						CMLib.commands().postSay(this,mob,_("I can't seem to do business with you."),true,false);
+						CMLib.commands().postSay(this,mob,L("I can't seem to do business with you."),true,false);
 						return false;
 					}
 					if((msg.tool() instanceof Physical)
 					&&(((Physical)msg.tool()).phyStats().level()>msg.source().phyStats().level()))
 					{
-						CMLib.commands().postSay(this,msg.source(),_("That's too advanced for you, I'm afraid."),true,false);
+						CMLib.commands().postSay(this,msg.source(),L("That's too advanced for you, I'm afraid."),true,false);
 						return false;
 					}
 					String itemName=msg.tool().name();
@@ -286,7 +286,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 					if(data==null) data=CMLib.coffeeShops().getEnumeratedAuction(msg.tool().name(), auctionHouse());
 					if(data==null)
 					{
-						CMLib.commands().postSay(this,mob,_("That's not up for auction."),true,false);
+						CMLib.commands().postSay(this,mob,L("That's not up for auction."),true,false);
 						return false;
 					}
 					if(data.auctioningM==msg.source())
@@ -294,14 +294,14 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						final Auctioneer.AuctionRates rates=new Auctioneer.AuctionRates(this);
 						if((rates.minDays>0)&&(rates.minDays>=data.daysEllapsed(mob,this)))
 						{
-							CMLib.commands().postSay(this,mob,_("You may not close this auction until it has been active for @x1 days.",""+rates.minDays),true,false);
+							CMLib.commands().postSay(this,mob,L("You may not close this auction until it has been active for @x1 days.",""+rates.minDays),true,false);
 							return false;
 						}
 						if(msg.source().session()!=null)
 						{
 							try
 							{
-							if(!msg.source().session().confirm(_("This will cancel your auction on @x1, are you sure (y/N)?",data.auctioningI.name()),_("N"),10000))
+							if(!msg.source().session().confirm(L("This will cancel your auction on @x1, are you sure (y/N)?",data.auctioningI.name()),L("N"),10000))
 								return false;
 							}catch(final Exception e){return false;}
 						}
@@ -311,10 +311,10 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 					{
 						if(data.highBidderM==msg.source())
 						{
-							CMLib.commands().postSay(this,mob,_("You have won this auction -- use the BUY command to complete the transaction."),true,false);
+							CMLib.commands().postSay(this,mob,L("You have won this auction -- use the BUY command to complete the transaction."),true,false);
 							return false;
 						}
-						CMLib.commands().postSay(this,mob,_("That auction is closed."),true,false);
+						CMLib.commands().postSay(this,mob,L("That auction is closed."),true,false);
 						return false;
 					}
 					else
@@ -327,13 +327,13 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						if(!myCurrency.equals(data.currency))
 						{
 							final String currencyName=CMLib.beanCounter().getDenominationName(data.currency);
-							CMLib.commands().postSay(this,mob,_("This auction is being handled in @x1.",currencyName),true,false);
+							CMLib.commands().postSay(this,mob,L("This auction is being handled in @x1.",currencyName),true,false);
 							return false;
 						}
 						if(CMLib.beanCounter().getTotalAbsoluteValue(mob,data.currency)<bid)
 						{
 							final String currencyName=CMLib.beanCounter().getDenominationName(data.currency);
-							CMLib.commands().postSay(this,mob,_("You don't have enough @x1 on hand to cover your bid.",currencyName),true,false);
+							CMLib.commands().postSay(this,mob,L("You don't have enough @x1 on hand to cover your bid.",currencyName),true,false);
 							return false;
 						}
 					}
@@ -350,7 +350,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 					if((msg.tool() instanceof Physical)
 					&&(((Physical)msg.tool()).phyStats().level()>msg.source().phyStats().level()))
 					{
-						CMLib.commands().postSay(this,msg.source(),_("That's too advanced for you, I'm afraid."),true,false);
+						CMLib.commands().postSay(this,msg.source(),L("That's too advanced for you, I'm afraid."),true,false);
 						return false;
 					}
 					String itemName=msg.tool().name();
@@ -360,7 +360,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 					if(data==null) data=CMLib.coffeeShops().getEnumeratedAuction(msg.tool().name(), auctionHouse());
 					if(data==null)
 					{
-						CMLib.commands().postSay(this,mob,_("That's not up for auction."),true,false);
+						CMLib.commands().postSay(this,mob,L("That's not up for auction."),true,false);
 						return false;
 					}
 					else
@@ -369,14 +369,14 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						final Auctioneer.AuctionRates rates=new Auctioneer.AuctionRates(this);
 						if((rates.minDays>0)&&(rates.minDays>=data.daysEllapsed(mob,this)))
 						{
-							CMLib.commands().postSay(this,mob,_("You may not close this auction until it has been active for @x1 days.",""+rates.minDays),true,false);
+							CMLib.commands().postSay(this,mob,L("You may not close this auction until it has been active for @x1 days.",""+rates.minDays),true,false);
 							return false;
 						}
 						if(msg.source().session()!=null)
 						{
 							try
 							{
-							if(!msg.source().session().confirm(_("This will cancel your auction on @x1, are you sure (y/N)?",data.auctioningI.name()),_("N"),10000))
+							if(!msg.source().session().confirm(L("This will cancel your auction on @x1, are you sure (y/N)?",data.auctioningI.name()),L("N"),10000))
 								return false;
 							}catch(final Exception e){return false;}
 						}
@@ -390,7 +390,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						}
 						else
 						{
-							CMLib.commands().postSay(this,mob,_("That auction is closed."),true,false);
+							CMLib.commands().postSay(this,mob,L("That auction is closed."),true,false);
 							return false;
 						}
 					}
@@ -398,14 +398,14 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 					{
 						if(data.buyOutPrice<=0.0)
 						{
-							CMLib.commands().postSay(this,mob,_("You'll have to BID on that.  BUY is not available for that particular item."),true,false);
+							CMLib.commands().postSay(this,mob,L("You'll have to BID on that.  BUY is not available for that particular item."),true,false);
 							return false;
 						}
 						else
 						if(CMLib.beanCounter().getTotalAbsoluteValue(mob,data.currency)<data.buyOutPrice)
 						{
 							final String currencyName=CMLib.beanCounter().getDenominationName(data.currency);
-							CMLib.commands().postSay(this,mob,_("You don't have enough @x1 on hand to buy that.",currencyName),true,false);
+							CMLib.commands().postSay(this,mob,L("You don't have enough @x1 on hand to buy that.",currencyName),true,false);
 							return false;
 						}
 					}
@@ -451,15 +451,15 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 					if((thisData==null)||(thisData.auctioningM!=msg.source())||(msg.source().isMonster()))
 					{
 						lastMsgData=null;
-						CMLib.commands().postSay(this,mob,_("I'm confused. Please try to SELL again."),true,false);
+						CMLib.commands().postSay(this,mob,L("I'm confused. Please try to SELL again."),true,false);
 					}
 					else
 					try
 					{
 						final double lowestDenom=CMLib.beanCounter().getLowestDenomination(thisData.currency);
-						CMLib.commands().postSay(this,mob,_("What would you like your opening price to be (in @x1?",CMLib.beanCounter().getDenominationName(thisData.currency, lowestDenom)),true,false);
+						CMLib.commands().postSay(this,mob,L("What would you like your opening price to be (in @x1?",CMLib.beanCounter().getDenominationName(thisData.currency, lowestDenom)),true,false);
 						final String openPrice=mob.session().prompt(": ",30000);
-						CMLib.commands().postSay(this,mob,_("What would you like your buy-now price to be (in @x1?",CMLib.beanCounter().getDenominationName(thisData.currency, lowestDenom)),true,false);
+						CMLib.commands().postSay(this,mob,L("What would you like your buy-now price to be (in @x1?",CMLib.beanCounter().getDenominationName(thisData.currency, lowestDenom)),true,false);
 						final String buyPrice=mob.session().prompt(": ",30000);
 						thisData.bid=CMath.s_double(openPrice)*lowestDenom;
 						if(thisData.bid<0.0) thisData.bid=0.0;
@@ -473,7 +473,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						deposit+=(aRates.timeListPct*(CMath.mul(thisData.daysRemaining(mob,this),thisData.auctioningI.baseGoldValue())));
 						CMLib.beanCounter().subtractMoney(mob,deposit);
 						thisData.auctioningI.destroy();
-						CMLib.commands().postSay(this,mob,_("Your auction for @x1 is now open.  When it is done, you will receive either your winnings automatically, or the returned item automatically.",thisData.auctioningI.name()),true,false);
+						CMLib.commands().postSay(this,mob,L("Your auction for @x1 is now open.  When it is done, you will receive either your winnings automatically, or the returned item automatically.",thisData.auctioningI.name()),true,false);
 					}catch(final Exception e){}
 				}
 				super.executeMsg(myHost,msg);
@@ -490,12 +490,12 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						AuctionData data=CMLib.coffeeShops().getEnumeratedAuction(itemName, auctionHouse());
 						if(data==null) data=CMLib.coffeeShops().getEnumeratedAuction(msg.tool().name(), auctionHouse());
 						if(data==null)
-							CMLib.commands().postSay(this,mob,_("That's not up for auction."),true,false);
+							CMLib.commands().postSay(this,mob,L("That's not up for auction."),true,false);
 						else
 						if(data.auctioningM==mob)
 						{
 							CMLib.coffeeShops().cancelAuction(auctionHouse(), data);
-							CMLib.commands().postSay(this,mob,_("Your auction for @x1 has been canceled.",data.auctioningI.name()),true,false);
+							CMLib.commands().postSay(this,mob,L("Your auction for @x1 has been canceled.",data.auctioningI.name()),true,false);
 						}
 						else
 						if((System.currentTimeMillis()>=data.tickDown)&&(data.highBidderM==mob))
@@ -507,9 +507,9 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 							CMLib.coffeeShops().auctionNotify(data.auctioningM,data.highBidderM.Name()+", who won your auction for "+data.auctioningI.name()+" has claimed "+data.highBidderM.charStats().hisher()+" property.  You have been credited with "+CMLib.beanCounter().nameCurrencyShort(data.currency,finalAmount)+", after the house took a cut of "+CMLib.beanCounter().nameCurrencyShort(data.currency,houseCut)+".",data.auctioningI.Name());
 							//CMLib.coffeeShops().auctionNotify(data.highBidderM,"You won the auction for "+data.auctioningI.name()+" for "+CMLib.beanCounter().nameCurrencyShort(data.currency,data.bid)+".  The difference from your high bid ("+CMLib.beanCounter().nameCurrencyShort(data.currency,data.highBid-data.bid)+") has been returned to you along with the winning item.",data.auctioningI.Name());
 							if((data.highBid-data.bid)>0.0)
-								CMLib.commands().postSay(this,mob,_("Congratulations, and here is your @x1 in change as well.",CMLib.beanCounter().nameCurrencyShort(data.currency,data.highBid-data.bid)),true,false);
+								CMLib.commands().postSay(this,mob,L("Congratulations, and here is your @x1 in change as well.",CMLib.beanCounter().nameCurrencyShort(data.currency,data.highBid-data.bid)),true,false);
 							else
-								CMLib.commands().postSay(this,mob,_("Congratulations!"),true,false);
+								CMLib.commands().postSay(this,mob,L("Congratulations!"),true,false);
 							CMLib.coffeeShops().returnMoney(mob,data.currency,data.highBid-data.bid);
 							CMLib.coffeeShops().purchaseItems(data.auctioningI,new XVector(data.auctioningI),this,mob);
 							if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
@@ -530,7 +530,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						}
 					}
 					else
-						CMLib.commands().postSay(this,mob,_("I can't seem to auction @x1.",msg.tool().name()),true,false);
+						CMLib.commands().postSay(this,mob,L("I can't seem to auction @x1.",msg.tool().name()),true,false);
 				}
 				break;
 			case CMMsg.TYP_BID:
@@ -545,19 +545,19 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						AuctionData data=CMLib.coffeeShops().getEnumeratedAuction(itemName, auctionHouse());
 						if(data==null) data=CMLib.coffeeShops().getEnumeratedAuction(msg.tool().name(), auctionHouse());
 						if(data==null)
-							CMLib.commands().postSay(this,mob,_("That's not up for auction."),true,false);
+							CMLib.commands().postSay(this,mob,L("That's not up for auction."),true,false);
 						else
 						if(data.auctioningM==mob)
 						{
 							CMLib.coffeeShops().cancelAuction(auctionHouse(), data);
-							CMLib.commands().postSay(this,mob,_("Your auction for @x1 has been canceled.",data.auctioningI.name()),true,false);
+							CMLib.commands().postSay(this,mob,L("Your auction for @x1 has been canceled.",data.auctioningI.name()),true,false);
 						}
 						else
 						{
 							final String bidStr=parseBidString(msg.targetMessage());
 							if(bidStr==null)
 							{
-								CMLib.commands().postSay(this,mob,_("I can't seem to do business with you."),true,false);
+								CMLib.commands().postSay(this,mob,L("I can't seem to do business with you."),true,false);
 								return;
 							}
 							final Object[] bidAmts=CMLib.english().parseMoneyStringSDL(mob,bidStr,data.currency);
@@ -581,14 +581,14 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						}
 					}
 					else
-						CMLib.commands().postSay(this,mob,_("I can't seem to auction @x1.",msg.tool().name()),true,false);
+						CMLib.commands().postSay(this,mob,L("I can't seem to auction @x1.",msg.tool().name()),true,false);
 				}
 				break;
 			case CMMsg.TYP_VALUE:
 				super.executeMsg(myHost,msg);
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				{
-					CMLib.commands().postSay(this,mob,_("That's for the people to decide.  Why don't you use the SELL command and see what you can get?"),true,false);
+					CMLib.commands().postSay(this,mob,L("That's for the people to decide.  Why don't you use the SELL command and see what you can get?"),true,false);
 					return;
 				}
 				break;
@@ -602,13 +602,13 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 					AuctionData data=CMLib.coffeeShops().getEnumeratedAuction(itemName, auctionHouse());
 					if(data==null) data=CMLib.coffeeShops().getEnumeratedAuction(msg.tool().name(), auctionHouse());
 					if(data==null)
-						CMLib.commands().postSay(this,mob,_("That's not up for auction."),true,false);
+						CMLib.commands().postSay(this,mob,L("That's not up for auction."),true,false);
 					else
 					{
 						final String price=CMLib.beanCounter().nameCurrencyShort(data.currency,data.bid);
 						final String buyOut=(data.buyOutPrice<=0.0)?null:CMLib.beanCounter().nameCurrencyShort(data.currency,data.buyOutPrice);
-						final StringBuffer str=new StringBuffer(_("@x1\n\r\n\rThe current bid on @x2 is @x3. Use the BID command to place your own bid.  ",CMLib.coffeeShops().getViewDescription(msg.tool()),msg.tool().name(),price));
-						if(buyOut!=null) str.append(_("You may also buy this item immediately for @x1 by using the BUY command.",buyOut));
+						final StringBuffer str=new StringBuffer(L("@x1\n\r\n\rThe current bid on @x2 is @x3. Use the BID command to place your own bid.  ",CMLib.coffeeShops().getViewDescription(msg.tool()),msg.tool().name(),price));
+						if(buyOut!=null) str.append(L("You may also buy this item immediately for @x1 by using the BUY command.",buyOut));
 						CMLib.commands().postSay(this,mob,str.toString(),true,false);
 					}
 				}

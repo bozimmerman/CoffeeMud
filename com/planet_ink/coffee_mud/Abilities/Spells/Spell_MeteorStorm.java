@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_MeteorStorm extends Spell
 {
 	@Override public String ID() { return "Spell_MeteorStorm"; }
-	private final static String localizedName = CMLib.lang()._("Meteor Storm");
+	private final static String localizedName = CMLib.lang().L("Meteor Storm");
 	@Override public String name() { return localizedName; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
 	@Override public int minRange(){return 1;}
@@ -48,7 +48,7 @@ public class Spell_MeteorStorm extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth storming at."));
+			mob.tell(L("There doesn't appear to be anyone here worth storming at."));
 			return false;
 		}
 
@@ -64,7 +64,7 @@ public class Spell_MeteorStorm extends Spell
 		if(success)
 		{
 
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),_(auto?"A devastating meteor shower erupts!":"^S<S-NAME> conjur(s) up a devastating meteor shower!^?")+CMLib.protocol().msp("meteor.wav",40)))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"A devastating meteor shower erupts!":"^S<S-NAME> conjur(s) up a devastating meteor shower!^?")+CMLib.protocol().msp("meteor.wav",40)))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -90,7 +90,7 @@ public class Spell_MeteorStorm extends Spell
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> attempt(s) to invoke a meteoric spell, but the spell fizzles."));
+			return maliciousFizzle(mob,null,L("<S-NAME> attempt(s) to invoke a meteoric spell, but the spell fizzles."));
 
 
 		// return whether it worked

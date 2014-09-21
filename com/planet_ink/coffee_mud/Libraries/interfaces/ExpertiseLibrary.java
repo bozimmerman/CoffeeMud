@@ -155,7 +155,7 @@ public interface ExpertiseLibrary extends CMLibrary
 		@Override public CMObject newInstance() { return this; }
 		@Override public CMObject copyOf() { return this; }
 		@Override public void initializeClass() {}
-		public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+		public String L(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 	}
 
 	/** Enumeration of the types of costs of gaining this ability */

@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Delirium extends Spell
 {
 	@Override public String ID() { return "Spell_Delirium"; }
-	private final static String localizedName = CMLib.lang()._("Delirium");
+	private final static String localizedName = CMLib.lang().L("Delirium");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Delirium)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Delirium)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -222,7 +222,7 @@ public class Spell_Delirium extends Spell
 		super.unInvoke();
 
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> begin(s) to feel a bit less delirious."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> begin(s) to feel a bit less delirious."));
 	}
 
 	@Override
@@ -262,7 +262,7 @@ public class Spell_Delirium extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> whisper(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> whisper(s) to <T-NAMESELF>.^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))||(mob.location().okMessage(mob,msg2)))
 			{
@@ -272,12 +272,12 @@ public class Spell_Delirium extends Spell
 				{
 					amountRemaining=300;
 					maliciousAffect(mob,target,asLevel,0,-1);
-					target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> go(es) under the grip of delirium!!"));
+					target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> go(es) under the grip of delirium!!"));
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> whisper(s) to <T-NAMESELF>, but the spell fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> whisper(s) to <T-NAMESELF>, but the spell fades."));
 
 		// return whether it worked
 		return success;

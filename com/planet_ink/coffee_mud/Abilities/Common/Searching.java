@@ -36,7 +36,7 @@ import java.util.*;
 public class Searching extends CommonSkill
 {
 	@Override public String ID() { return "Searching"; }
-	private final static String localizedName = CMLib.lang()._("Searching");
+	private final static String localizedName = CMLib.lang().L("Searching");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"SEARCH","SEARCHING"});
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ALERT; }
@@ -55,8 +55,8 @@ public class Searching extends CommonSkill
 	public Searching()
 	{
 		super();
-		displayText=_("You are searching...");
-		verb=_("searching");
+		displayText=L("You are searching...");
+		verb=L("searching");
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class Searching extends CommonSkill
 			{
 				if(success==false)
 				{
-					final StringBuffer str=new StringBuffer(_("You get distracted from your search.\n\r"));
+					final StringBuffer str=new StringBuffer(L("You get distracted from your search.\n\r"));
 					commonTell(mob,str.toString());
 					unInvoke();
 					return super.tick(ticking,tickID);
@@ -105,20 +105,20 @@ public class Searching extends CommonSkill
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		verb=_("searching");
+		verb=L("searching");
 		success=false;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		if(proficiencyCheck(mob,0,auto))
 			success=true;
 		final int duration=3+getXLEVELLevel(mob);
-		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),_(auto?"":"<S-NAME> start(s) searching."));
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),L(auto?"":"<S-NAME> start(s) searching."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			searchRoom=mob.location();
 			beneficialAffect(mob,mob,asLevel,duration);
-			mob.tell(_(" "));
+			mob.tell(L(" "));
 			CMLib.commands().postLook(mob,true);
 		}
 		return true;

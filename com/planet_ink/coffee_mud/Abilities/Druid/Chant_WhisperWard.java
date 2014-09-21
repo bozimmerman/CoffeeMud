@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_WhisperWard extends Chant implements Trap
 {
 	@Override public String ID() { return "Chant_WhisperWard"; }
-	private final static String localizedName = CMLib.lang()._("Whisperward");
+	private final static String localizedName = CMLib.lang().L("Whisperward");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Whisperward)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Whisperward)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -73,7 +73,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 	public void doMyThing()
 	{
 		if(invoker!=null)
-			invoker.tell(_("** You hear the wind whisper to you; your ward has been triggered."));
+			invoker.tell(L("** You hear the wind whisper to you; your ward has been triggered."));
 		unInvoke();
 		return;
 	}
@@ -134,7 +134,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 
 		if(commands.size()<2)
 		{
-			mob.tell(_("You must specify:\n\r What object you want the spell cast on.\n\r AND Whether it is triggered by TOUCH, HOLD, WIELD, WEAR, or someone ENTERing the same room. "));
+			mob.tell(L("You must specify:\n\r What object you want the spell cast on.\n\r AND Whether it is triggered by TOUCH, HOLD, WIELD, WEAR, or someone ENTERing the same room. "));
 			return false;
 		}
 		final String triggerStr=((String)commands.lastElement()).trim().toUpperCase();
@@ -155,7 +155,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 			myTrigger=CMMsg.TYP_ENTER;
 		else
 		{
-			mob.tell(_("You must specify the trigger event that will cause the wind to whisper to you.\n\r'@x1' is not correct, but you can try TOUCH, WEAR, WIELD, HOLD, or ENTER.\n\r",triggerStr));
+			mob.tell(L("You must specify the trigger event that will cause the wind to whisper to you.\n\r'@x1' is not correct, but you can try TOUCH, WEAR, WIELD, HOLD, or ENTER.\n\r",triggerStr));
 			return false;
 		}
 
@@ -167,12 +167,12 @@ public class Chant_WhisperWard extends Chant implements Trap
 			target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,itemName,Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",((String)commands.elementAt(0))));
+			mob.tell(L("You don't see '@x1' here.",((String)commands.elementAt(0))));
 			return false;
 		}
 		if(target instanceof MOB)
 		{
-			mob.tell(_("You can't can't cast this on @x1.",target.name(mob)));
+			mob.tell(L("You can't can't cast this on @x1.",target.name(mob)));
 			return false;
 		}
 
@@ -183,7 +183,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -193,7 +193,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fizzles."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fizzles."));
 
 
 		// return whether it worked

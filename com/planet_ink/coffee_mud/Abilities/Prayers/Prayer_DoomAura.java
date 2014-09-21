@@ -36,9 +36,9 @@ import java.util.*;
 public class Prayer_DoomAura extends Prayer_BladeBarrier
 {
 	@Override public String ID() { return "Prayer_DoomAura"; }
-	private final static String localizedName = CMLib.lang()._("Doom Aura");
+	private final static String localizedName = CMLib.lang().L("Doom Aura");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Doom Aura)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Doom Aura)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}

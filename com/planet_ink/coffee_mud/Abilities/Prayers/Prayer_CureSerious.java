@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_CureSerious extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_CureSerious"; }
-	private final static String localizedName = CMLib.lang()._("Cure Serious Wounds");
+	private final static String localizedName = CMLib.lang().L("Cure Serious Wounds");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
@@ -85,7 +85,7 @@ public class Prayer_CureSerious extends Prayer implements MendingSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,(!undead?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),auto?_("A soft white glow surrounds <T-NAME>."):_("^S<S-NAME> @x1, delivering a serious healing touch to <T-NAMESELF>.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(!undead?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),auto?L("A soft white glow surrounds <T-NAME>."):L("^S<S-NAME> @x1, delivering a serious healing touch to <T-NAMESELF>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -93,12 +93,12 @@ public class Prayer_CureSerious extends Prayer implements MendingSkill
 				final int oldHP=target.curState().getHitPoints();
 				CMLib.combat().postHealing(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,healing,null);
 				if(target.curState().getHitPoints()>oldHP)
-					target.tell(_("You feel better!"));
+					target.tell(L("You feel better!"));
 				lastCastHelp=System.currentTimeMillis();
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
+			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

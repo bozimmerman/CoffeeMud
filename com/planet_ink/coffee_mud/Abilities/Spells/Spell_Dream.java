@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_Dream extends Spell
 {
 	@Override public String ID() { return "Spell_Dream"; }
-	private final static String localizedName = CMLib.lang()._("Dream");
+	private final static String localizedName = CMLib.lang().L("Dream");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
@@ -46,7 +46,7 @@ public class Spell_Dream extends Spell
 
 		if(commands.size()<1)
 		{
-			mob.tell(_("Invoke a dream about what?"));
+			mob.tell(L("Invoke a dream about what?"));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -56,7 +56,7 @@ public class Spell_Dream extends Spell
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),_("^S<S-NAME> invoke(s) a dreamy spell.^?"));
+			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),L("^S<S-NAME> invoke(s) a dreamy spell.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -73,7 +73,7 @@ public class Spell_Dream extends Spell
 							{
 								msg=CMClass.getMsg(mob,inhab,this,verbalCastCode(mob,inhab,auto),null);
 								if(R.okMessage(mob,msg))
-									inhab.tell(_("You dream @x1.",CMParms.combine(commands,0)));
+									inhab.tell(L("You dream @x1.",CMParms.combine(commands,0)));
 							}
 						}
 					}
@@ -82,7 +82,7 @@ public class Spell_Dream extends Spell
 
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to invoke a dream, but fizzle(s) the spell."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to invoke a dream, but fizzle(s) the spell."));
 
 
 		// return whether it worked

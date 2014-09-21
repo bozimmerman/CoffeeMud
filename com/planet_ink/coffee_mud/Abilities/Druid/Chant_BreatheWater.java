@@ -38,9 +38,9 @@ import java.util.*;
 public class Chant_BreatheWater extends Chant
 {
 	@Override public String ID() { return "Chant_BreatheWater"; }
-	private final static String localizedName = CMLib.lang()._("Fish Gills");
+	private final static String localizedName = CMLib.lang().L("Fish Gills");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Fish Gills)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Fish Gills)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
@@ -56,7 +56,7 @@ public class Chant_BreatheWater extends Chant
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("Your fish gills disappear."));
+			mob.tell(L("Your fish gills disappear."));
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class Chant_BreatheWater extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already a water breather."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already a water breather."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -97,16 +97,16 @@ public class Chant_BreatheWater extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> grow(s) a pair of gills!"));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> grow(s) a pair of gills!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
 
 		return success;
 	}

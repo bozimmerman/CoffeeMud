@@ -38,9 +38,9 @@ import java.util.*;
 public class Fighter_AtemiStrike extends MonkSkill
 {
 	@Override public String ID() { return "Fighter_AtemiStrike"; }
-	private final static String localizedName = CMLib.lang()._("Atemi Strike");
+	private final static String localizedName = CMLib.lang().L("Atemi Strike");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Atemi Strike)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Atemi Strike)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	private static final String[] triggerStrings =_i(new String[] {"ATEMI"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -96,31 +96,31 @@ public class Fighter_AtemiStrike extends MonkSkill
 
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell(_("You are too far away from your target to strike!"));
+			mob.tell(L("You are too far away from your target to strike!"));
 			return false;
 		}
 
 		if((!auto)&&(mob.baseWeight()<(target.baseWeight()/2)))
 		{
-			mob.tell(_("@x1 is too big to strike!",target.name(mob)));
+			mob.tell(L("@x1 is too big to strike!",target.name(mob)));
 			return false;
 		}
 
 		if((!auto)&&(anyWeapons(mob)))
 		{
-			mob.tell(_("You must be unarmed to perform the strike."));
+			mob.tell(L("You must be unarmed to perform the strike."));
 			return false;
 		}
 
 		if(CMLib.flags().isGolem(target))
 		{
-			mob.tell(target,null,null,_("You can't hurt <S-NAMESELF> with Atemi Strike."));
+			mob.tell(target,null,null,L("You can't hurt <S-NAMESELF> with Atemi Strike."));
 			return false;
 		}
 
 		if(mob.charStats().getBodyPart(Race.BODY_HAND)<=0)
 		{
-			mob.tell(_("You need hands to do this."));
+			mob.tell(L("You need hands to do this."));
 			return false;
 		}
 
@@ -146,20 +146,20 @@ public class Fighter_AtemiStrike extends MonkSkill
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?_("<T-NAME> hit(s) the floor!"):_("^F^<FIGHT^><S-NAME> deliver(s) a deadly Atemi strike to <T-NAMESELF>!^</FIGHT^>^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?L("<T-NAME> hit(s) the floor!"):L("^F^<FIGHT^><S-NAME> deliver(s) a deadly Atemi strike to <T-NAMESELF>!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> do(es) not look well."));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> do(es) not look well."));
 					success=maliciousAffect(mob,target,asLevel,((2*getXLEVELLevel(mob))+mob.phyStats().level())/3,-1);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) the deadly Atemi strike on <T-NAMESELF>, but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) the deadly Atemi strike on <T-NAMESELF>, but fail(s)."));
 
 		// return whether it worked
 		return success;

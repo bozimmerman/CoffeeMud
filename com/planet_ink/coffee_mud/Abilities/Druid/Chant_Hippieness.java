@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_Hippieness extends Chant
 {
 	@Override public String ID() { return "Chant_Hippieness"; }
-	private final static String localizedName = CMLib.lang()._("Hippieness");
+	private final static String localizedName = CMLib.lang().L("Hippieness");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Feeling Groovy)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Feeling Groovy)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -75,7 +75,7 @@ public class Chant_Hippieness extends Chant
 		&&(((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
 			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)))
 		{
-			msg.source().tell(_("No, man... work is so bourgeois..."));
+			msg.source().tell(L("No, man... work is so bourgeois..."));
 			return false;
 		}
 		return super.okMessage(host,msg);
@@ -125,9 +125,9 @@ public class Chant_Hippieness extends Chant
 						final Item smoke=CMClass.getItem("GenResource");
 						if(smoke!=null)
 						{
-							smoke.setName(_("some smoke"));
-							smoke.setDescription(_("Looks liefy and green."));
-							smoke.setDisplayText(_("some smoke is sitting here."));
+							smoke.setName(L("some smoke"));
+							smoke.setDescription(L("Looks liefy and green."));
+							smoke.setDisplayText(L("some smoke is sitting here."));
 							smoke.setMaterial(RawMaterial.RESOURCE_HEMP);
 							smoke.basePhyStats().setWeight(1);
 							smoke.setBaseValue(25);
@@ -161,7 +161,7 @@ public class Chant_Hippieness extends Chant
 		{
 			for(final Pair<Clan,Integer> p : oldClans)
 				mob.setClan(p.first.clanID(),p.second.intValue());
-			mob.tell(_("You don't feel quite so groovy."));
+			mob.tell(L("You don't feel quite so groovy."));
 		}
 	}
 
@@ -188,7 +188,7 @@ public class Chant_Hippieness extends Chant
 		if(target==null) return false;
 		if(CMLib.flags().isAnimalIntelligence(target))
 		{
-			mob.tell(_("@x1 is not smart enough to be a hippy.",target.name(mob)));
+			mob.tell(L("@x1 is not smart enough to be a hippy.",target.name(mob)));
 			return false;
 		}
 
@@ -208,7 +208,7 @@ public class Chant_Hippieness extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,(target.isMonster()?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(target.isMonster()?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>!^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,(target.isMonster()?0:CMMsg.MASK_MALICIOUS)|CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_DISEASE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
@@ -220,13 +220,13 @@ public class Chant_Hippieness extends Chant
 					for(final Pair<Clan,Integer> p : target.clans())
 						oldClans.add(p);
 					target.setClan("",Integer.MIN_VALUE); // deletes all clans
-					CMLib.commands().postSay(target,null,_("Far out..."),false,false);
+					CMLib.commands().postSay(target,null,L("Far out..."),false,false);
 					maliciousAffect(mob,target,asLevel,0,verbalCastMask(mob,target,auto)|CMMsg.TYP_MIND);
 				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but nothing more happens."));
 
 		// return whether it worked
 		return success;

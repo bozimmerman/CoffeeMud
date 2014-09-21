@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_PiercingMoon extends Chant
 {
 	@Override public String ID() { return "Chant_PiercingMoon"; }
-	private final static String localizedName = CMLib.lang()._("Piercing Moon");
+	private final static String localizedName = CMLib.lang().L("Piercing Moon");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Piercing Moon)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Piercing Moon)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
@@ -56,7 +56,7 @@ public class Chant_PiercingMoon extends Chant
 		{
 			final Room R=CMLib.map().roomLocation(affected);
 			if((R!=null)&&(CMLib.flags().isInTheGame(affected,true)))
-				R.showHappens(CMMsg.MSG_OK_VISUAL,_("The piercing moon sets."));
+				R.showHappens(CMMsg.MSG_OK_VISUAL,L("The piercing moon sets."));
 		}
 		super.unInvoke();
 
@@ -106,18 +106,18 @@ public class Chant_PiercingMoon extends Chant
 		if((target.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DUSK)
 		&&(target.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.NIGHT))
 		{
-			mob.tell(_("You can only start this chant at night."));
+			mob.tell(L("You can only start this chant at night."));
 			return false;
 		}
 		if((target.domainType()&Room.INDOORS)>0)
 		{
-			mob.tell(_("This chant only works outdoors."));
+			mob.tell(L("This chant only works outdoors."));
 			return false;
 		}
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("This place is already under the piercing moon."));
+			mob.tell(L("This place is already under the piercing moon."));
 			return false;
 		}
 
@@ -136,22 +136,22 @@ public class Chant_PiercingMoon extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to the sky.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to the sky.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
 					if(!mob.location().getArea().getClimateObj().canSeeTheStars(mob.location()))
-						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The Moon pierces through the clouds!"));
+						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The Moon pierces through the clouds!"));
 					else
-						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The Moon brightens!"));
+						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The Moon brightens!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) to the sky, but the magic fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to the sky, but the magic fades."));
 		// return whether it worked
 		return success;
 	}

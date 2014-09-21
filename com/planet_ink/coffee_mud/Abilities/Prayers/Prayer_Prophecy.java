@@ -38,9 +38,9 @@ import java.util.*;
 public class Prayer_Prophecy extends Prayer
 {
 	@Override public String ID() { return "Prayer_Prophecy"; }
-	private final static String localizedName = CMLib.lang()._("Prophecy");
+	private final static String localizedName = CMLib.lang().L("Prophecy");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(In a Prophetic Trance)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(In a Prophetic Trance)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public long flags(){return Ability.FLAG_HOLY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -58,7 +58,7 @@ public class Prayer_Prophecy extends Prayer
 		if((mob.amDead())||(this.tickDown>0)||(mob.isInCombat()))
 		{
 			if(mob.location()!=null)
-				mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL,_("<S-NAME> end(s) <S-HIS-HER> trance."));
+				mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL,L("<S-NAME> end(s) <S-HIS-HER> trance."));
 			super.unInvoke();
 			return;
 		}
@@ -107,7 +107,7 @@ public class Prayer_Prophecy extends Prayer
 			}
 		}
 		if(prophesies.size()==0)
-			mob.tell(_("You receive no prophetic visions."));
+			mob.tell(L("You receive no prophetic visions."));
 		else
 		{
 			final TimeClock clock =CMLib.time().localClock(mob);
@@ -220,7 +220,7 @@ public class Prayer_Prophecy extends Prayer
 	{
 		if((mob.isInCombat())&&(!auto))
 		{
-			mob.tell(_("Not while you're fighting!"));
+			mob.tell(L("Not while you're fighting!"));
 			return false;
 		}
 
@@ -236,7 +236,7 @@ public class Prayer_Prophecy extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,null,auto),auto?"":_("^S<T-NAME> @x1, entering a divine trance.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,null,auto),auto?"":L("^S<T-NAME> @x1, entering a divine trance.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -244,7 +244,7 @@ public class Prayer_Prophecy extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<T-NAME> @x1, but nothing happens.",prayWord(mob)));
+			beneficialWordsFizzle(mob,target,L("<T-NAME> @x1, but nothing happens.",prayWord(mob)));
 
 		return success;
 	}

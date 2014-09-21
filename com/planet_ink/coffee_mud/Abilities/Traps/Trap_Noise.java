@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_Noise extends StdTrap
 {
 	@Override public String ID() { return "Trap_Noise"; }
-	private final static String localizedName = CMLib.lang()._("noisy trap");
+	private final static String localizedName = CMLib.lang().L("noisy trap");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -49,9 +49,9 @@ public class Trap_Noise extends StdTrap
 		{
 			if((doesSaveVsTraps(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) setting off a noise trap!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) setting off a noise trap!"));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> set(s) off a noise trap!")))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> set(s) off a noise trap!")))
 			{
 				super.spring(target);
 				final Area A=target.location().getArea();
@@ -59,7 +59,7 @@ public class Trap_Noise extends StdTrap
 				{
 					final Room R=(Room)e.nextElement();
 					if(R!=target.location())
-						R.showHappens(CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("You hear a loud noise coming from somewhere."));
+						R.showHappens(CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("You hear a loud noise coming from somewhere."));
 				}
 				if((canBeUninvoked())&&(affected instanceof Item))
 					disable();

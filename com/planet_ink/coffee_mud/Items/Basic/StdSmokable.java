@@ -86,7 +86,7 @@ public class StdSmokable extends StdContainer implements Light
 			}
 			if(durationTicks==0)
 			{
-				mob.tell(_("@x1 looks empty.",name()));
+				mob.tell(L("@x1 looks empty.",name()));
 				return false;
 			}
 			final Room room=mob.location();
@@ -97,7 +97,7 @@ public class StdSmokable extends StdContainer implements Light
 				&&(durationTicks>0)
 				&&(mob.isMine(this)))
 				{
-					mob.tell(_("It's too wet to light @x1 here.",name()));
+					mob.tell(L("It's too wet to light @x1 here.",name()));
 					return false;
 				}
 			}
@@ -109,7 +109,7 @@ public class StdSmokable extends StdContainer implements Light
 		case CMMsg.TYP_EXTINGUISH:
 			if((durationTicks==0)||(!isLit()))
 			{
-				mob.tell(_("@x1 is not lit!",name()));
+				mob.tell(L("@x1 is not lit!",name()));
 				return false;
 			}
 			return true;
@@ -137,7 +137,7 @@ public class StdSmokable extends StdContainer implements Light
 					&&(CMLib.flags().aliveAwakeMobile(mob,true)))
 					{
 						tickStatus=Tickable.STATUS_WEATHER;
-						mob.location().show(mob,this,this,CMMsg.MSG_HANDS,_("<S-NAME> puff(s) on <T-NAME>."));
+						mob.location().show(mob,this,this,CMMsg.MSG_HANDS,L("<S-NAME> puff(s) on <T-NAME>."));
 						if((CMLib.dice().roll(1,1000,0)==1)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 						{
 							final Ability A=CMClass.getAbility("Disease_Cancer");
@@ -153,7 +153,7 @@ public class StdSmokable extends StdContainer implements Light
 				tickStatus=Tickable.STATUS_CLASS;
 				final Room R=(Room)owner;
 				if(R.numInhabitants()>0)
-					R.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 burns out.",name()));
+					R.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 burns out.",name()));
 				if(destroyedWhenBurnedOut())
 					destroy();
 				R.recoverRoomStats();
@@ -163,7 +163,7 @@ public class StdSmokable extends StdContainer implements Light
 			{
 				tickStatus=Tickable.STATUS_DEAD;
 				final MOB M=(MOB)owner();
-				M.tell(M,null,this,_("<O-NAME> burns out."));
+				M.tell(M,null,this,L("<O-NAME> burns out."));
 				durationTicks=0;
 				if(destroyedWhenBurnedOut())
 					destroy();
@@ -208,9 +208,9 @@ public class StdSmokable extends StdContainer implements Light
 		   ||((room.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(room.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE))))
 		{
 			if(LightSource.inTheWater(msg.source(),room))
-				mob.tell(_("The water makes @x1 go out.",name()));
+				mob.tell(L("The water makes @x1 go out.",name()));
 			else
-				mob.tell(_("The rain makes @x1 go out.",name()));
+				mob.tell(L("The rain makes @x1 go out.",name()));
 			tick(this,Tickable.TICKID_LIGHT_FLICKERS);
 		}
 

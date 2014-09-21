@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_Cogniportive extends Spell
 {
 	@Override public String ID() { return "Spell_Cogniportive"; }
-	private final static String localizedName = CMLib.lang()._("Cogniportive");
+	private final static String localizedName = CMLib.lang().L("Cogniportive");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
@@ -121,7 +121,7 @@ public class Spell_Cogniportive extends Spell
 				setMiscText(establishHome(mob,me,true));
 			final Room home=CMLib.map().getRoom(text());
 			if((home==null)||(!CMLib.flags().canAccess(mob,home)))
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("Strange fizzled sparks fly from @x1.",me.name()));
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("Strange fizzled sparks fly from @x1.",me.name()));
 			else
 			{
 				final Set<MOB> h=properTargets(mob,null,false);
@@ -131,8 +131,8 @@ public class Spell_Cogniportive extends Spell
 				for (final Object element : h)
 				{
 					final MOB follower=(MOB)element;
-					final CMMsg enterMsg=CMClass.getMsg(follower,home,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> appears in a puff of smoke."));
-					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,_("<S-NAME> disappear(s) in a puff of smoke."));
+					final CMMsg enterMsg=CMClass.getMsg(follower,home,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> appears in a puff of smoke."));
+					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,L("<S-NAME> disappear(s) in a puff of smoke."));
 					if(thisRoom.isInhabitant(follower)
 					&&thisRoom.okMessage(follower,leaveMsg)
 					&&(!home.isInhabitant(follower))
@@ -146,7 +146,7 @@ public class Spell_Cogniportive extends Spell
 						thisRoom.send(follower,leaveMsg);
 						home.bringMobHere(follower,false);
 						home.send(follower,enterMsg);
-						follower.tell(_("\n\r\n\r"));
+						follower.tell(L("\n\r\n\r"));
 						CMLib.commands().postLook(follower,true);
 					}
 				}
@@ -209,14 +209,14 @@ public class Spell_Cogniportive extends Spell
 		{
 			final String str=CMParms.combine(commands,0).toUpperCase();
 			if(str.equals("MONEY")||str.equals("GOLD")||str.equals("COINS"))
-				mob.tell(_("You can't cast this spell on coins!"));
+				mob.tell(L("You can't cast this spell on coins!"));
 			return false;
 		}
 
 		Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
-			mob.tell(_("@x1 is already cogniportive!",target.name(mob)));
+			mob.tell(L("@x1 is already cogniportive!",target.name(mob)));
 			return false;
 		}
 
@@ -227,11 +227,11 @@ public class Spell_Cogniportive extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":_("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> glow(s) softly!"));
+				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> glow(s) softly!"));
 				beneficialAffect(mob,target,asLevel,1000);
 				A=target.fetchEffect(ID());
 				if(A!=null)
@@ -248,7 +248,7 @@ public class Spell_Cogniportive extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting, but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting, but nothing happens."));
 
 
 		// return whether it worked

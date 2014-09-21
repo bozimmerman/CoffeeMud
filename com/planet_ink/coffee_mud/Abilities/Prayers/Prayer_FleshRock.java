@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_FleshRock extends Prayer
 {
 	@Override public String ID() { return "Prayer_FleshRock"; }
-	private final static String localizedName = CMLib.lang()._("Flesh Rock");
+	private final static String localizedName = CMLib.lang().L("Flesh Rock");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Flesh to Rock)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Flesh to Rock)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
@@ -101,7 +101,7 @@ public class Prayer_FleshRock extends Prayer
 				if((!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 				&&(msg.sourceMajor()>0))
 				{
-					mob.tell(_("Statues can't do that."));
+					mob.tell(L("Statues can't do that."));
 					return false;
 				}
 			}
@@ -158,7 +158,7 @@ public class Prayer_FleshRock extends Prayer
 		{
 			if(statue!=null) statue.destroy();
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> flesh is no longer made of rock."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> flesh is no longer made of rock."));
 			if(prevState!=null) prevState.copyInto(mob.curState());
 			CMLib.commands().postStand(mob,true);
 		}
@@ -189,7 +189,7 @@ public class Prayer_FleshRock extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 and point(s) at <T-NAMESELF>.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 and point(s) at <T-NAMESELF>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -210,12 +210,12 @@ public class Prayer_FleshRock extends Prayer
 					if(name.startsWith("A ")) name="a "+name.substring(2);
 					if(name.startsWith("An ")) name="an "+name.substring(3);
 					if(name.startsWith("The ")) name="the "+name.substring(4);
-					statue.setName(_("a rocky statue of @x1",name));
-					statue.setDisplayText(_("a rocky statue of @x1 stands here.",name));
-					statue.setDescription(_("It`s a hard rocky statue, which looks exactly like @x1.",name));
+					statue.setName(L("a rocky statue of @x1",name));
+					statue.setDisplayText(L("a rocky statue of @x1 stands here.",name));
+					statue.setDescription(L("It`s a hard rocky statue, which looks exactly like @x1.",name));
 					statue.setMaterial(RawMaterial.RESOURCE_GRANITE);
 					statue.basePhyStats().setWeight(2000);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> turn(s) into rock!!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> turn(s) into rock!!"));
 					success=maliciousAffect(mob,target,asLevel,(mob.phyStats().level()+(2*super.getXLEVELLevel(mob))),-1);
 					target.makePeace();
 					if(mob.getVictim()==target) mob.setVictim(null);
@@ -232,7 +232,7 @@ public class Prayer_FleshRock extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> @x1 and point(s) at <T-NAMESELF>, but nothing happens.",prayWord(mob)));
+			return maliciousFizzle(mob,target,L("<S-NAME> @x1 and point(s) at <T-NAMESELF>, but nothing happens.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

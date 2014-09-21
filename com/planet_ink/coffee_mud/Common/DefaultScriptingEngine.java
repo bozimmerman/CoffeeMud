@@ -720,7 +720,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		{
 			final Room R=CMLib.map().roomLocation(scripted);
 			Log.errOut("Scripting",scripted.name()+"/"+CMLib.map().getExtendedRoomID(R)+"/"+ cmdName+"/"+errType+"/"+errMsg);
-			if(R!=null) R.showHappens(CMMsg.MSG_OK_VISUAL,_("Scripting Error: @x1/@x2/@x3/@x4/@x5/@x6",scripted.name(),CMLib.map().getExtendedRoomID(R),CMParms.toStringList(externalFiles()),cmdName,errType,errMsg));
+			if(R!=null) R.showHappens(CMMsg.MSG_OK_VISUAL,L("Scripting Error: @x1/@x2/@x3/@x4/@x5/@x6",scripted.name(),CMLib.map().getExtendedRoomID(R),CMParms.toStringList(externalFiles()),cmdName,errType,errMsg));
 		}
 		else
 			Log.errOut("Scripting","*/*/"+CMParms.toStringList(externalFiles())+"/"+cmdName+"/"+errType+"/"+errMsg);
@@ -6370,7 +6370,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(CMProps.getIntVar(CMProps.Int.JSCRIPTS)==1)
 				{
 					if(lastKnownLocation!=null)
-						lastKnownLocation.showHappens(CMMsg.MSG_OK_ACTION,_("A Javascript was not authorized.  Contact an Admin to use MODIFY JSCRIPT to authorize this script."));
+						lastKnownLocation.showHappens(CMMsg.MSG_OK_ACTION,L("A Javascript was not authorized.  Contact an Admin to use MODIFY JSCRIPT to authorize this script."));
 				}
 				break;
 			}
@@ -6473,16 +6473,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				if(V.size()>1)
 				{
-					//source.tell(_("Starting @x1",conditionStr));
+					//source.tell(L("Starting @x1",conditionStr));
 					//for(int v=0;v<V.size();v++)
-					//  source.tell(_("Statement @x1",((String)V.elementAt(v))));
+					//  source.tell(L("Statement @x1",((String)V.elementAt(v))));
 					final String response=execute(scripted,source,target,monster,primaryItem,secondaryItem,V,msg,tmp);
 					if(response!=null)
 					{
 						tickStatus=Tickable.STATUS_END;
 						return response;
 					}
-					//source.tell(_("Stopping @x1",conditionStr));
+					//source.tell(L("Stopping @x1",conditionStr));
 				}
 				break;
 			}
@@ -6699,9 +6699,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				if(V.size()>1)
 				{
-					//source.tell(_("Starting @x1",conditionStr));
+					//source.tell(L("Starting @x1",conditionStr));
 					//for(int v=0;v<V.size();v++)
-					//  source.tell(_("Statement @x1",((String)V.elementAt(v))));
+					//  source.tell(L("Statement @x1",((String)V.elementAt(v))));
 					final int fromInt=CMath.s_int(from);
 					int toInt=CMath.s_int(to);
 					final int increment=(toInt>=fromInt)?1:-1;
@@ -6731,7 +6731,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return response;
 					}
 					tmp[whichVar]=null;
-					//source.tell(_("Stopping @x1",conditionStr));
+					//source.tell(L("Stopping @x1",conditionStr));
 				}
 				break;
 			}
@@ -8355,19 +8355,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if((range.startsWith("--"))&&(CMath.isInteger(range.substring(2).trim())))
 					{
 						final int amt=CMath.s_int(range.substring(2).trim());
-						themob.tell(_("You lose @x1 faction with @x2.",""+amt,F.name()));
+						themob.tell(L("You lose @x1 faction with @x2.",""+amt,F.name()));
 						range=""+(themob.fetchFaction(faction)-amt);
 					}
 					else
 					if((range.startsWith("+"))&&(CMath.isInteger(range.substring(1).trim())))
 					{
 						final int amt=CMath.s_int(range.substring(1).trim());
-						themob.tell(_("You gain @x1 faction with @x2.",""+amt,F.name()));
+						themob.tell(L("You gain @x1 faction with @x2.",""+amt,F.name()));
 						range=""+(themob.fetchFaction(faction)+amt);
 					}
 					else
 					if(CMath.isInteger(range))
-						themob.tell(_("Your faction with @x1 is now @x2.",F.name(),""+CMath.s_int(range.trim())));
+						themob.tell(L("Your faction with @x1 is now @x2.",F.name(),""+CMath.s_int(range.trim())));
 					if(CMath.isInteger(range))
 						themob.addFaction(F.factionID(),CMath.s_int(range.trim()));
 					else
@@ -8385,7 +8385,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							logError(scripted,"MPFACTION","RunTime",range+" is not a valid range for "+F.name()+".");
 						else
 						{
-							themob.tell(_("Your faction with @x1 is now @x2.",F.name(),FR.name()));
+							themob.tell(L("Your faction with @x1 is now @x2.",F.name(),FR.name()));
 							themob.addFaction(F.factionID(),FR.low()+((FR.high()-FR.low())/2));
 						}
 					}
@@ -8740,7 +8740,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									thisRoom.send(follower,leaveMsg);
 									newRoom.bringMobHere(follower,false);
 									newRoom.send(follower,enterMsg);
-									follower.tell(CMLib.lang()._("\n\r\n\r"));
+									follower.tell(CMLib.lang().L("\n\r\n\r"));
 									CMLib.commands().postLook(follower,true);
 								}
 							}
@@ -9031,7 +9031,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(destroy)
 							{
 								if(lastKnownLocation!=null)
-									lastKnownLocation.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 is destroyed!",E.name()));
+									lastKnownLocation.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 is destroyed!",E.name()));
 								E.destroy();
 							}
 						}
@@ -10587,7 +10587,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(backupMOB!=null)
 				{
 					backupMOB.setName(ticking.name());
-					backupMOB.setDisplayText(_("@x1 is here.",ticking.name()));
+					backupMOB.setDisplayText(L("@x1 is here.",ticking.name()));
 					backupMOB.setDescription("");
 					backupMOB.setAgeMinutes(-1);
 					mob=backupMOB;
@@ -10603,7 +10603,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					backupMOB.setLocation(lastKnownLocation);
 					backupMOB.setName(ticking.name());
-					backupMOB.setDisplayText(_("@x1 is here.",ticking.name()));
+					backupMOB.setDisplayText(L("@x1 is here.",ticking.name()));
 				}
 			}
 		}
@@ -10900,7 +10900,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}catch(final Exception e){Log.errOut("DefaultScriptingEngine",e);}
 	}
 
-	public String _(final String str, final String ... xs)
+	public String L(final String str, final String ... xs)
 	{
 		return CMLib.lang().fullSessionTranslation(str, xs);
 	}

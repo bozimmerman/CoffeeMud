@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_Refit extends Spell
 {
 	@Override public String ID() { return "Spell_Refit"; }
-	private final static String localizedName = CMLib.lang()._("Refit");
+	private final static String localizedName = CMLib.lang().L("Refit");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
@@ -48,7 +48,7 @@ public class Spell_Refit extends Spell
 		final Item target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 		if(!(target instanceof Armor))
-		{	mob.tell(_("@x1 cannot be refitted.",target.name(mob))); return false;}
+		{	mob.tell(L("@x1 cannot be refitted.",target.name(mob))); return false;}
 
 		if(!super.invoke(mob,commands, givenTarget, auto,asLevel))
 			return false;
@@ -65,10 +65,10 @@ public class Spell_Refit extends Spell
 				mob.location().send(mob,msg);
 
 				if(target.phyStats().height()==0)
-					mob.tell(_("Nothing happens to @x1.",target.name(mob)));
+					mob.tell(L("Nothing happens to @x1.",target.name(mob)));
 				else
 				{
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> begin(s) to magically resize itself!"));
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> begin(s) to magically resize itself!"));
 					target.basePhyStats().setHeight(0);
 				}
 				target.recoverPhyStats();
@@ -77,7 +77,7 @@ public class Spell_Refit extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> incant(s) at <T-NAMESELF>, but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> incant(s) at <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

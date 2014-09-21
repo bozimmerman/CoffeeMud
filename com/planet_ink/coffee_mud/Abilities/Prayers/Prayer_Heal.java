@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Heal extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_Heal"; }
-	private final static String localizedName = CMLib.lang()._("Heal");
+	private final static String localizedName = CMLib.lang().L("Heal");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
@@ -85,7 +85,7 @@ public class Prayer_Heal extends Prayer implements MendingSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,(!undead?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) surrounded by a white light."):_("^S<S-NAME> @x1 for tremendous healing power over <T-NAMESELF>.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(!undead?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) surrounded by a white light."):L("^S<S-NAME> @x1 for tremendous healing power over <T-NAMESELF>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -93,12 +93,12 @@ public class Prayer_Heal extends Prayer implements MendingSkill
 				final int oldHP=target.curState().getHitPoints();
 				CMLib.combat().postHealing(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,healing,null);
 				if(target.curState().getHitPoints()>oldHP)
-					target.tell(_("You feel tons better!"));
+					target.tell(L("You feel tons better!"));
 				lastCastHelp=System.currentTimeMillis();
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

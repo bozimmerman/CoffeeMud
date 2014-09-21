@@ -40,7 +40,7 @@ import java.util.*;
 public class Prayer_Annul extends Prayer
 {
 	@Override public String ID() { return "Prayer_Annul"; }
-	private final static String localizedName = CMLib.lang()._("Annul");
+	private final static String localizedName = CMLib.lang().L("Annul");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
@@ -53,12 +53,12 @@ public class Prayer_Annul extends Prayer
 		if(target==null) return false;
 		if(!target.isMarriedToLiege())
 		{
-			mob.tell(_("@x1 is not married!",target.name(mob)));
+			mob.tell(L("@x1 is not married!",target.name(mob)));
 			return false;
 		}
 		if(target.fetchItem(null,Wearable.FILTER_WORNONLY,"wedding band")!=null)
 		{
-			mob.tell(_("@x1 must remove the wedding band first.",target.name(mob)));
+			mob.tell(L("@x1 must remove the wedding band first.",target.name(mob)));
 			return false;
 		}
 
@@ -69,7 +69,7 @@ public class Prayer_Annul extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> annul(s) the marriage between <T-NAMESELF> and @x1.^?",target.getLiegeID()));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> annul(s) the marriage between <T-NAMESELF> and @x1.^?",target.getLiegeID()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				if((!target.isMonster())&&(target.soulMate()==null))
@@ -84,7 +84,7 @@ public class Prayer_Annul extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> clear(s) <S-HIS-HER> throat."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> clear(s) <S-HIS-HER> throat."));
 
 		return success;
 	}

@@ -37,9 +37,9 @@ import java.util.*;
 public class Thief_Search extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Search"; }
-	private final static String localizedName = CMLib.lang()._("Search");
+	private final static String localizedName = CMLib.lang().L("Search");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Searching)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Searching)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -116,7 +116,7 @@ public class Thief_Search extends ThiefSkill
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already aware of hidden things."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already aware of hidden things."));
 			return false;
 		}
 
@@ -125,9 +125,9 @@ public class Thief_Search extends ThiefSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?_("<T-NAME> become(s) very observant."):_("<S-NAME> examine(s) <S-HIS-HER> surroundings carefully."));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?L("<T-NAME> become(s) very observant."):L("<S-NAME> examine(s) <S-HIS-HER> surroundings carefully."));
 		if(!success)
-			return beneficialVisualFizzle(mob,null,auto?"":_("<S-NAME> look(s) around carefully, but become(s) distracted."));
+			return beneficialVisualFizzle(mob,null,auto?"":L("<S-NAME> look(s) around carefully, but become(s) distracted."));
 		else
 		if(mob.location().okMessage(mob,msg))
 		{

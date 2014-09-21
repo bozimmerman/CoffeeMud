@@ -74,7 +74,7 @@ public class Prop_OpenPassword extends Property
 							{
 								CMMsg msg2=CMClass.getMsg(mob,E,null,CMMsg.MSG_UNLOCK,null);
 								CMLib.utensils().roomAffectFully(msg2,R,dirCode);
-								msg2=CMClass.getMsg(mob,E,null,CMMsg.MSG_OPEN,_("<T-NAME> opens."));
+								msg2=CMClass.getMsg(mob,E,null,CMMsg.MSG_OPEN,L("<T-NAME> opens."));
 								CMLib.utensils().roomAffectFully(msg2,R,dirCode);
 							}
 						}
@@ -84,7 +84,7 @@ public class Prop_OpenPassword extends Property
 					{
 						CMMsg msg2=CMClass.getMsg(mob,affected,null,CMMsg.MSG_UNLOCK,null);
 						affected.executeMsg(mob,msg2);
-						msg2=CMClass.getMsg(mob,affected,null,CMMsg.MSG_OPEN,_("<T-NAME> opens."));
+						msg2=CMClass.getMsg(mob,affected,null,CMMsg.MSG_OPEN,L("<T-NAME> opens."));
 						affected.executeMsg(mob,msg2);
 					}
 				}

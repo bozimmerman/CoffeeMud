@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_DistantIngrowth extends Chant
 {
 	@Override public String ID() { return "Chant_DistantIngrowth"; }
-	private final static String localizedName = CMLib.lang()._("Distant Ingrowth");
+	private final static String localizedName = CMLib.lang().L("Distant Ingrowth");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -50,7 +50,7 @@ public class Chant_DistantIngrowth extends Chant
 
 		if(commands.size()<1)
 		{
-			mob.tell(_("Create growth where?"));
+			mob.tell(L("Create growth where?"));
 			return false;
 		}
 
@@ -75,12 +75,12 @@ public class Chant_DistantIngrowth extends Chant
 		if(newRoom==null)
 		{
 			if(anyRoom==null)
-				mob.tell(_("You don't know of a place called '@x1'.",CMParms.combine(commands,0)));
+				mob.tell(L("You don't know of a place called '@x1'.",CMParms.combine(commands,0)));
 			else
 			if(anyRoom.domainType()==Room.DOMAIN_INDOORS_CAVE)
-				mob.tell(_("There IS such a place, but its in a cave where fungus rule, so your magic would fail."));
+				mob.tell(L("There IS such a place, but its in a cave where fungus rule, so your magic would fail."));
 			else
-				mob.tell(_("There IS such a place, but its not in a building, so your magic would fail."));
+				mob.tell(L("There IS such a place, but its not in a building, so your magic would fail."));
 			return false;
 		}
 
@@ -91,7 +91,7 @@ public class Chant_DistantIngrowth extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),_("^S<S-NAME> chant(s) about a far away place.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),L("^S<S-NAME> chant(s) about a far away place.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -105,11 +105,11 @@ public class Chant_DistantIngrowth extends Chant
 					newItem=new Chant_SummonHouseplant().buildHouseplant(mob,newRoom);
 				else
 					newItem=new Chant_SummonPlants().buildPlant(mob,newRoom);
-				mob.tell(_("You feel a distant connection with @x1",newItem.name()));
+				mob.tell(L("You feel a distant connection with @x1",newItem.name()));
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) about a far away place, but the magic fades."));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) about a far away place, but the magic fades."));
 
 
 		// return whether it worked

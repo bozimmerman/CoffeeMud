@@ -740,7 +740,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		{
 			final Coins C=V.get(i);
 			banker.addItem(C);
-			final CMMsg newMsg=CMClass.getMsg(banker,customer,C,CMMsg.MSG_GIVE,_("<S-NAME> give(s) @x1 to <T-NAMESELF>.",C.Name()));
+			final CMMsg newMsg=CMClass.getMsg(banker,customer,C,CMMsg.MSG_GIVE,L("<S-NAME> give(s) @x1 to <T-NAMESELF>.",C.Name()));
 			if(banker.location().okMessage(banker,newMsg))
 			{
 				banker.location().send(banker,newMsg);

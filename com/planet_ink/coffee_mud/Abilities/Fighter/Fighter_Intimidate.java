@@ -36,7 +36,7 @@ import java.util.*;
 public class Fighter_Intimidate extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Intimidate"; }
-	private final static String localizedName = CMLib.lang()._("Intimidation");
+	private final static String localizedName = CMLib.lang().L("Intimidation");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
@@ -65,7 +65,7 @@ public class Fighter_Intimidate extends FighterSkill
 			&&(attackerM.location()==targetM.location())
 			&&((targetM.fetchAbility(ID())==null)||proficiencyCheck(null,(-(100+levelDiff))+(targetM.charStats().getStat(CharStats.STAT_CHARISMA)*2),false)))
 			{
-				attackerM.tell(_("You are too intimidated by @x1",targetM.name(attackerM)));
+				attackerM.tell(L("You are too intimidated by @x1",targetM.name(attackerM)));
 				if(targetM.location()!=lastRoom)
 				{
 					lastRoom=targetM.location();

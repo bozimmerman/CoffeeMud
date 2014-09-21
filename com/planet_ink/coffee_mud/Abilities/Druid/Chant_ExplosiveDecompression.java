@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_ExplosiveDecompression extends Chant
 {
 	@Override public String ID() { return "Chant_ExplosiveDecompression"; }
-	private final static String localizedName = CMLib.lang()._("Explosive Decompression");
+	private final static String localizedName = CMLib.lang().L("Explosive Decompression");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -72,7 +72,7 @@ public class Chant_ExplosiveDecompression extends Chant
 		if(target==null) return false;
 		if((!auto)&&((target.domainType()&Room.INDOORS)==0))
 		{
-			mob.tell(_("This chant only works indoors."));
+			mob.tell(L("This chant only works indoors."));
 			return false;
 		}
 
@@ -91,13 +91,13 @@ public class Chant_ExplosiveDecompression extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) loudly.  A ball of fire forms around <S-NAME>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) loudly.  A ball of fire forms around <S-NAME>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The ball of fire **EXPLODES**!"));
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The ball of fire **EXPLODES**!"));
 					for(int i=0;i<target.numInhabitants();i++)
 					{
 						final MOB M=target.fetchInhabitant(i);
@@ -116,16 +116,16 @@ public class Chant_ExplosiveDecompression extends Chant
 							}
 							if((M.charStats().getBodyPart(Race.BODY_FOOT)>0)
 							&&(!CMLib.flags().isFlying(M))&&(CMLib.flags().isStanding(M)))
-								mob.location().show(M,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_SIT,_("<S-NAME> <S-IS-ARE> blown off <S-HIS-HER> feet!"));
+								mob.location().show(M,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_SIT,L("<S-NAME> <S-IS-ARE> blown off <S-HIS-HER> feet!"));
 						}
 					}
 					maliciousAffect(mob,target,asLevel,20,-1);
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The fire burns off all the air here!"));
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The fire burns off all the air here!"));
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) loudly, but nothing happens."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) loudly, but nothing happens."));
 		// return whether it worked
 		return success;
 	}

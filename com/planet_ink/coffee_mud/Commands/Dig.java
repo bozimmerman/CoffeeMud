@@ -83,11 +83,11 @@ public class Dig extends StdCommand
 		{
 			if(isOccupiedWithOtherWork(mob))
 			{
-				mob.tell(_("You are too busy to dig right now."));
+				mob.tell(L("You are too busy to dig right now."));
 				return false;
 			}
 
-			final String msgStr=_("<S-NAME> start(s) digging a hole with <O-NAME>.");
+			final String msgStr=L("<S-NAME> start(s) digging a hole with <O-NAME>.");
 			Item I=mob.fetchWieldedItem();
 			if(I==null)  I=mob.myNaturalWeapon();
 			final CMMsg msg=CMClass.getMsg(mob,mob.location(),I,CMMsg.MSG_DIG,msgStr);
@@ -100,7 +100,7 @@ public class Dig extends StdCommand
 		else
 		if((secondsElapsed % 8)==0)
 		{
-			final String msgStr=_("<S-NAME> continue(s) digging a hole with <O-NAME>.");
+			final String msgStr=L("<S-NAME> continue(s) digging a hole with <O-NAME>.");
 			Item I=mob.fetchWieldedItem();
 			if(I==null)  I=mob.myNaturalWeapon();
 			final CMMsg msg=CMClass.getMsg(mob,mob.location(),I,CMMsg.MSG_DIG,msgStr);
@@ -117,7 +117,7 @@ public class Dig extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> stop(s) digging."));
+		final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> stop(s) digging."));
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		return false;

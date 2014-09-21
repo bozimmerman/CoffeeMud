@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_DruidicConnection extends Chant
 {
 	@Override public String ID() { return "Chant_DruidicConnection"; }
-	private final static String localizedName = CMLib.lang()._("Druidic Connection");
+	private final static String localizedName = CMLib.lang().L("Druidic Connection");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
@@ -77,7 +77,7 @@ public class Chant_DruidicConnection extends Chant
 					unInvoke();
 					return false;
 				}
-				invoker.tell(_("Your prolonged connection to this place fills you with harmony!"));
+				invoker.tell(L("Your prolonged connection to this place fills you with harmony!"));
 				final int xp=(int)Math.round(5.0*CMath.mul(CMath.div(V.size(),((Area)affected).getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()])
 											,((Area)affected).getAreaIStats()[Area.Stats.AVG_LEVEL.ordinal()]));
 				CMLib.leveler().postExperience(invoker(),null,null,xp,false);
@@ -125,7 +125,7 @@ public class Chant_DruidicConnection extends Chant
 						I.destroy();
 				}
 			}
-			invoker.tell(_("You have destroyed your connection with @x1!",affected.name()));
+			invoker.tell(L("You have destroyed your connection with @x1!",affected.name()));
 			for(final Enumeration e=((Area)affected).getMetroMap();e.hasMoreElements();)
 				((Room)e.nextElement()).recoverRoomStats();
 		}
@@ -147,7 +147,7 @@ public class Chant_DruidicConnection extends Chant
 		if(target.fetchEffect(ID())!=null)
 		{
 			if(!quietly)
-				mob.tell(_("This place is already connected to a druid."));
+				mob.tell(L("This place is already connected to a druid."));
 			return false;
 		}
 		final Vector V=Druid_MyPlants.myAreaPlantRooms(mob,target);
@@ -157,13 +157,13 @@ public class Chant_DruidicConnection extends Chant
 		if(pct<50)
 		{
 			if(!quietly)
-				mob.tell(_("You'll need to summon more of your special plant-life here to develop the connection."));
+				mob.tell(L("You'll need to summon more of your special plant-life here to develop the connection."));
 			return false;
 		}
 		if((!auto)&&(!mob.charStats().getCurrentClass().baseClass().equalsIgnoreCase("Druid")))
 		{
 			if(!quietly)
-				mob.tell(_("Only druids can make this connection."));
+				mob.tell(L("Only druids can make this connection."));
 			return false;
 		}
 
@@ -171,7 +171,7 @@ public class Chant_DruidicConnection extends Chant
 		&&(!auto))
 		{
 			if(!quietly)
-				mob.tell(_("This chant does not work here."));
+				mob.tell(L("This chant does not work here."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -184,7 +184,7 @@ public class Chant_DruidicConnection extends Chant
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected area. 
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("This area seems connected to <S-NAME>."):_("^S<S-NAME> chant(s), establishing a natural connection with this area.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("This area seems connected to <S-NAME>."):L("^S<S-NAME> chant(s), establishing a natural connection with this area.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -205,7 +205,7 @@ public class Chant_DruidicConnection extends Chant
 				success=false;
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s), but the magic fades."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s), but the magic fades."));
 
 		// return whether it worked
 		return success;

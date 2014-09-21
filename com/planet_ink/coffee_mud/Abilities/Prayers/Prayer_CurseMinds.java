@@ -36,12 +36,12 @@ import java.util.*;
 public class Prayer_CurseMinds extends Prayer
 {
 	@Override public String ID() { return "Prayer_CurseMinds"; }
-	private final static String localizedName = CMLib.lang()._("Curse Minds");
+	private final static String localizedName = CMLib.lang().L("Curse Minds");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Cursed Mind)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Cursed Mind)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 
 	boolean notAgain=false;
@@ -73,7 +73,7 @@ public class Prayer_CurseMinds extends Prayer
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("Your mind feels less cursed."));
+			mob.tell(L("Your mind feels less cursed."));
 		CMLib.commands().postStand(mob,true);
 	}
 
@@ -105,7 +105,7 @@ public class Prayer_CurseMinds extends Prayer
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":_("^S<S-NAME> @x1 an unholy curse upon <T-NAMESELF>.^?",prayWord(mob)));
+				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":L("^S<S-NAME> @x1 an unholy curse upon <T-NAMESELF>.^?",prayWord(mob)));
 				final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 				if((target!=mob)&&(mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 				{
@@ -114,7 +114,7 @@ public class Prayer_CurseMinds extends Prayer
 					if((msg.value()<=0)&&(msg2.value()<=0))
 					{
 						success=maliciousAffect(mob,target,asLevel,15,-1);
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> look(s) confused!"));
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> look(s) confused!"));
 					}
 					nothingDone=false;
 				}
@@ -122,7 +122,7 @@ public class Prayer_CurseMinds extends Prayer
 		}
 
 		if(nothingDone)
-			return maliciousFizzle(mob,null,_("<S-NAME> attempt(s) to curse everyone, but flub(s) it."));
+			return maliciousFizzle(mob,null,L("<S-NAME> attempt(s) to curse everyone, but flub(s) it."));
 
 
 		// return whether it worked

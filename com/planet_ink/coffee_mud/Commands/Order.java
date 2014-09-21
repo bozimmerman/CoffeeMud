@@ -45,20 +45,20 @@ public class Order extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(_("Order who do to what?"));
+			mob.tell(L("Order who do to what?"));
 			return false;
 		}
 		commands.removeElementAt(0);
 		if(commands.size()<2)
 		{
-			mob.tell(_("Order them to do what?"));
+			mob.tell(L("Order them to do what?"));
 			return false;
 		}
 		if((!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ORDER))
 		&&(!mob.isMonster())
 		&&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOASSIST)))
 		{
-			mob.tell(_("You may not order someone around with your AUTOASSIST flag off."));
+			mob.tell(L("You may not order someone around with your AUTOASSIST flag off."));
 			return false;
 		}
 
@@ -85,9 +85,9 @@ public class Order extends StdCommand
 		if(V.size()==0)
 		{
 			if(whomToOrder.equalsIgnoreCase("ALL"))
-				mob.tell(_("You don't see anyone called '@x1' here.",whomToOrder));
+				mob.tell(L("You don't see anyone called '@x1' here.",whomToOrder));
 			else
-				mob.tell(_("You don't see anyone here."));
+				mob.tell(L("You don't see anyone here."));
 			return false;
 		}
 
@@ -99,12 +99,12 @@ public class Order extends StdCommand
 			||(!CMLib.flags().canBeHeardSpeakingBy(mob,target))
 			||(target.location()!=mob.location()))
 			{
-				mob.tell(_("'@x1' doesn't seem to be listening.",whomToOrder));
+				mob.tell(L("'@x1' doesn't seem to be listening.",whomToOrder));
 				return false;
 			}
 			if(!target.willFollowOrdersOf(mob))
 			{
-				mob.tell(_("You can't order '@x1' around.",target.name(mob)));
+				mob.tell(L("You can't order '@x1' around.",target.name(mob)));
 				return false;
 			}
 		}
@@ -117,7 +117,7 @@ public class Order extends StdCommand
 		{
 			if((O instanceof Command)&&(!((Command)O).canBeOrdered()))
 			{
-				mob.tell(_("You can't order anyone to '@x1'.",order));
+				mob.tell(L("You can't order anyone to '@x1'.",order));
 				return false;
 			}
 		}
@@ -132,7 +132,7 @@ public class Order extends StdCommand
 				if((O instanceof Command)
 				&&((!((Command)O).canBeOrdered())||(!((Command)O).securityCheck(mob))))
 				{
-					mob.tell(_("You can't order @x1 to '@x2'.",target.name(mob),order));
+					mob.tell(L("You can't order @x1 to '@x2'.",target.name(mob),order));
 					continue;
 				}
 				if(O instanceof Ability)
@@ -141,7 +141,7 @@ public class Order extends StdCommand
 				{
 					if(CMath.bset(((Ability)O).flags(),Ability.FLAG_NOORDERING))
 					{
-						mob.tell(_("You can't order @x1 to '@x2'.",target.name(mob),order));
+						mob.tell(L("You can't order @x1 to '@x2'.",target.name(mob),order));
 						continue;
 					}
 				}
@@ -149,13 +149,13 @@ public class Order extends StdCommand
 			if((!CMLib.flags().canBeSeenBy(target,mob))
 			||(!CMLib.flags().canBeHeardSpeakingBy(mob,target))
 			||(target.location()!=mob.location()))
-				mob.tell(_("'@x1' doesn't seem to be listening.",whomToOrder));
+				mob.tell(L("'@x1' doesn't seem to be listening.",whomToOrder));
 			else
 			if(!target.willFollowOrdersOf(mob))
-				mob.tell(_("You can't order '@x1' around.",target.name(mob)));
+				mob.tell(L("You can't order '@x1' around.",target.name(mob)));
 			else
 			{
-				final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,CMMsg.MSG_ORDER,CMMsg.MSG_SPEAK,_("^T<S-NAME> order(s) <T-NAMESELF> to '@x1'^?.",order));
+				final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,CMMsg.MSG_ORDER,CMMsg.MSG_SPEAK,L("^T<S-NAME> order(s) <T-NAMESELF> to '@x1'^?.",order));
 				if((mob.location().okMessage(mob,msg)))
 				{
 					mob.location().send(mob,msg);

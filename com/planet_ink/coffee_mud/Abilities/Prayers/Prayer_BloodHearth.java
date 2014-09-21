@@ -36,9 +36,9 @@ import java.util.*;
 public class Prayer_BloodHearth extends Prayer
 {
 	@Override public String ID() { return "Prayer_BloodHearth"; }
-	private final static String localizedName = CMLib.lang()._("Blood Hearth");
+	private final static String localizedName = CMLib.lang().L("Blood Hearth");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Blood Hearth)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Blood Hearth)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -92,7 +92,7 @@ public class Prayer_BloodHearth extends Prayer
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("This place is already a blood hearth."));
+			mob.tell(L("This place is already a blood hearth."));
 			return false;
 		}
 
@@ -102,7 +102,7 @@ public class Prayer_BloodHearth extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 to fill this place with blood.^?",prayForWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 to fill this place with blood.^?",prayForWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -121,7 +121,7 @@ public class Prayer_BloodHearth extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 to fill this place with blood, but <S-IS-ARE> not answered.",prayForWord(mob)));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 to fill this place with blood, but <S-IS-ARE> not answered.",prayForWord(mob)));
 
 		return success;
 	}

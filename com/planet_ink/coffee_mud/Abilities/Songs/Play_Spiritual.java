@@ -37,10 +37,10 @@ import java.util.*;
 public class Play_Spiritual extends Play
 {
 	@Override public String ID() { return "Play_Spiritual"; }
-	private final static String localizedName = CMLib.lang()._("Spiritual");
+	private final static String localizedName = CMLib.lang().L("Spiritual");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected String songOf(){return _("Spiritual Music");}
+	@Override protected String songOf(){return L("Spiritual Music");}
 	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
 	@Override

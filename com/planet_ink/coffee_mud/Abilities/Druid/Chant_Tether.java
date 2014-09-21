@@ -37,10 +37,10 @@ import java.util.*;
 public class Chant_Tether extends Chant
 {
 	@Override public String ID() { return "Chant_Tether"; }
-	private final static String localizedName = CMLib.lang()._("Tether");
+	private final static String localizedName = CMLib.lang().L("Tether");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Tether)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Tether)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
@@ -66,7 +66,7 @@ public class Chant_Tether extends Chant
 			&&(msg.sourceMinor()==CMMsg.TYP_DEATH)
 			&&(mob.curState().getHitPoints()>0))
 			{
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> pulled back by the tether!"));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> pulled back by the tether!"));
 				if((tetheredTo!=null)&&(tetheredTo!=mob.location()))
 					tetheredTo.bringMobHere(mob,false);
 				return false;
@@ -86,7 +86,7 @@ public class Chant_Tether extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your tether has left you."));
+			mob.tell(L("Your tether has left you."));
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public class Chant_Tether extends Chant
 			lastRoom=mob.location();
 			if(mob.fetchEffect("Falling")!=null)
 			{
-				mob.tell(_("The tether keeps you from falling!"));
+				mob.tell(L("The tether keeps you from falling!"));
 				mob.delEffect(mob.fetchEffect("Falling"));
 			}
 		}
@@ -116,7 +116,7 @@ public class Chant_Tether extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already tethered."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already tethered."));
 			return false;
 		}
 
@@ -131,7 +131,7 @@ public class Chant_Tether extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) magically tethered!"):_("^S<S-NAME> chant(s) about a magical tether!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) magically tethered!"):L("^S<S-NAME> chant(s) about a magical tether!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -140,7 +140,7 @@ public class Chant_Tether extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) about a magical tether, but the magic fades."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) about a magical tether, but the magic fades."));
 
 
 		// return whether it worked

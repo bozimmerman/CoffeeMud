@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Deafness extends Spell
 {
 	@Override public String ID() { return "Spell_Deafness"; }
-	private final static String localizedName = CMLib.lang()._("Deafen");
+	private final static String localizedName = CMLib.lang().L("Deafen");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Deafen)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Deafen)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -62,7 +62,7 @@ public class Spell_Deafness extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your hearing returns."));
+			mob.tell(L("Your hearing returns."));
 	}
 
 	@Override
@@ -103,19 +103,19 @@ public class Spell_Deafness extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> scream(s) at <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> scream(s) at <T-NAMESELF>.^?"));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
 				if(msg.value()<=0)
 				{
 					success=maliciousAffect(mob,target,asLevel,0,-1);
-					R.show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> go(es) deaf!"));
+					R.show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> go(es) deaf!"));
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> scream(s) at <T-NAMESELF>, but the spell fizzles."));
+			return maliciousFizzle(mob,target,L("<S-NAME> scream(s) at <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

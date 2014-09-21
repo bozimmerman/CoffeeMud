@@ -33,7 +33,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Trapper extends Thief
 {
 	@Override public String ID(){return "Trapper";}
-	private final static String localizedStaticName = CMLib.lang()._("Trapper");
+	private final static String localizedStaticName = CMLib.lang().L("Trapper");
 	@Override public String name() { return localizedStaticName; }
 
 	public Trapper()
@@ -169,7 +169,7 @@ public class Trapper extends Thief
 				int xp=(int)Math.round(10.0*CMath.div(((MOB)msg.target()).phyStats().level(),myChar.phyStats().level()));
 				if(xp>125) xp=125;
 				if((xp>0)&&CMLib.leveler().postExperience(myChar,null,null,xp,true))
-					msg.addTrailerMsg(CMClass.getMsg(myChar,null,null,CMMsg.MSG_OK_VISUAL,_("You gain @x1 experience for selling @x2.",""+xp,((MOB)msg.target()).name(myChar)),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+					msg.addTrailerMsg(CMClass.getMsg(myChar,null,null,CMMsg.MSG_OK_VISUAL,L("You gain @x1 experience for selling @x2.",""+xp,((MOB)msg.target()).name(myChar)),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 			}
 			if((((myChar.location().domainType()&Room.INDOORS)>0))
 			||(myChar.location().domainType()==Room.DOMAIN_OUTDOORS_CITY))
@@ -193,13 +193,13 @@ public class Trapper extends Thief
 					{
 						if(msg.tool().ID().equalsIgnoreCase("Thief_Hide"))
 						{
-							myChar.tell(_("You don't know how to hide outside the wilderness."));
+							myChar.tell(L("You don't know how to hide outside the wilderness."));
 							return false;
 						}
 						else
 						if(msg.tool().ID().equalsIgnoreCase("Thief_Sneak"))
 						{
-							myChar.tell(_("You don't know how to sneak outside the wilderness."));
+							myChar.tell(L("You don't know how to sneak outside the wilderness."));
 							return false;
 						}
 					}

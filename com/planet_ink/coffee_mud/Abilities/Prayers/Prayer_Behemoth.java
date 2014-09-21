@@ -37,12 +37,12 @@ import java.util.*;
 public class Prayer_Behemoth extends Prayer
 {
 	@Override public String ID() { return "Prayer_Behemoth"; }
-	private final static String localizedName = CMLib.lang()._("Behemoth");
+	private final static String localizedName = CMLib.lang().L("Behemoth");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Behemoth)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Behemoth)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -59,7 +59,7 @@ public class Prayer_Behemoth extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your behemoth size has subsided."));
+			mob.tell(L("Your behemoth size has subsided."));
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class Prayer_Behemoth extends Prayer
 	{
 		super.affectPhyStats(affected,affectedStats);
 		affectedStats.setHeight(affectedStats.height()*3);
-		affectedStats.setName(_("A BEHEMOTH @x1",affected.name().toUpperCase()));
+		affectedStats.setName(L("A BEHEMOTH @x1",affected.name().toUpperCase()));
 		if(!(affected instanceof MOB))
 			affectedStats.setWeight(affectedStats.weight()*4);
 	}
@@ -93,7 +93,7 @@ public class Prayer_Behemoth extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already BEHEMOTH in size."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already BEHEMOTH in size."));
 			return false;
 		}
 
@@ -108,17 +108,17 @@ public class Prayer_Behemoth extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> grow(s) to BEHEMOTH size!"));
+				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> grow(s) to BEHEMOTH size!"));
 				beneficialAffect(mob,target,asLevel,0);
 				CMLib.utensils().confirmWearability(target);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

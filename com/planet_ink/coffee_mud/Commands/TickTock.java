@@ -50,7 +50,7 @@ public class TickTock extends StdCommand
 			{
 				int h=CMath.s_int(s);
 				if(h==0) h=1;
-				mob.tell(_("..tick..tock.."));
+				mob.tell(L("..tick..tock.."));
 				mob.location().getArea().getTimeObj().tickTock(h);
 				mob.location().getArea().getTimeObj().save();
 			}
@@ -68,16 +68,16 @@ public class TickTock extends StdCommand
 							((Runnable)lib).run();
 						else
 							lib.getServiceClient().tickTicker(true);
-						mob.tell(_("Done."));
+						mob.tell(L("Done."));
 						return false;
 					}
 				}
-				mob.tell(_("Ticktock what?  Enter a number of mud-hours, or clanticks, or thread id."));
+				mob.tell(L("Ticktock what?  Enter a number of mud-hours, or clanticks, or thread id."));
 			}
 		}
 		catch(final Exception e)
 		{
-			mob.tell(_("Ticktock failed: @x1",e.getMessage()));
+			mob.tell(L("Ticktock failed: @x1",e.getMessage()));
 		}
 
 		return false;

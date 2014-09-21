@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_DetectTraps extends Spell
 {
 	@Override public String ID() { return "Spell_DetectTraps"; }
-	private final static String localizedName = CMLib.lang()._("Detect Traps");
+	private final static String localizedName = CMLib.lang().L("Detect Traps");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Detecting Traps)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Detecting Traps)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -57,7 +57,7 @@ public class Spell_DetectTraps extends Spell
 			lastRoom=null;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("Your senses are no longer sensitive to traps."));
+			mob.tell(L("Your senses are no longer sensitive to traps."));
 	}
 	public String trapCheck(Physical P)
 	{
@@ -80,7 +80,7 @@ public class Spell_DetectTraps extends Spell
 			final List<Item> V=C.getContents();
 			for(int v=0;v<V.size();v++)
 				if(trapCheck(V.get(v)).length()>0)
-					msg.append(_("@x1 contains something trapped.",C.name()));
+					msg.append(L("@x1 contains something trapped.",C.name()));
 		}
 		else
 		if((P instanceof Item)&&(CMLib.flags().canBeSeenBy(P,mob)))
@@ -175,7 +175,7 @@ public class Spell_DetectTraps extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already detecting traps."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already detecting traps."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -185,7 +185,7 @@ public class Spell_DetectTraps extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) trap sensitivities!"):_("^S<S-NAME> incant(s) softly, and gain(s) sensitivity to traps!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> gain(s) trap sensitivities!"):L("^S<S-NAME> incant(s) softly, and gain(s) sensitivity to traps!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -193,7 +193,7 @@ public class Spell_DetectTraps extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> incant(s) and open(s) <S-HIS-HER> eyes, but the spell fizzles."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> incant(s) and open(s) <S-HIS-HER> eyes, but the spell fizzles."));
 
 		return success;
 	}

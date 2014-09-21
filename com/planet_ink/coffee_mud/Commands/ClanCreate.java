@@ -59,9 +59,9 @@ public class ClanCreate extends StdCommand
 		if(numGovernmentsAvailable==0)
 		{
 			if(p!=null)
-				mob.tell(_("You are already a member of @x1. You need to resign before you can create another.",p.first.getName()));
+				mob.tell(L("You are already a member of @x1. You need to resign before you can create another.",p.first.getName()));
 			else
-				mob.tell(_("You are not elligible to create a new clan at this time."));
+				mob.tell(L("You are not elligible to create a new clan at this time."));
 			return false;
 		}
 
@@ -73,13 +73,13 @@ public class ClanCreate extends StdCommand
 			{
 				if(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob)<(cost))
 				{
-					mob.tell(_("It costs @x1 to create a clan.  You don't have it.",CMLib.beanCounter().nameCurrencyShort(mob,cost)));
+					mob.tell(L("It costs @x1 to create a clan.  You don't have it.",CMLib.beanCounter().nameCurrencyShort(mob,cost)));
 					return false;
 				}
 			}
 			session.prompt(new InputCallback(InputCallback.Type.CHOOSE,"N","YN\n",0)
 			{
-				@Override public void showPrompt() { session.promptPrint(_("Are you sure you want to found a new clan (y/N)?"));}
+				@Override public void showPrompt() { session.promptPrint(L("Are you sure you want to found a new clan (y/N)?"));}
 				@Override public void timedOut() { }
 				@Override public void callBack()
 				{
@@ -88,7 +88,7 @@ public class ClanCreate extends StdCommand
 						return;
 					session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 					{
-						@Override public void showPrompt() { session.promptPrint(_("\n\r^HEnter the name of your new clan (30 chars max), exactly how you want it\n\r:^N"));}
+						@Override public void showPrompt() { session.promptPrint(L("\n\r^HEnter the name of your new clan (30 chars max), exactly how you want it\n\r:^N"));}
 						@Override public void timedOut() { }
 						@Override public void callBack()
 						{
@@ -97,21 +97,21 @@ public class ClanCreate extends StdCommand
 								return;
 							if(doubleCheck.length()>30) // Robert checking length
 							{
-								mob.tell(_("That name is too long, please use a shorter one."));
+								mob.tell(L("That name is too long, please use a shorter one."));
 								return;
 							}
 							final Clan checkC=CMLib.clans().findClan(doubleCheck);
 							if(CMLib.players().playerExists(doubleCheck)
 							||(doubleCheck.equalsIgnoreCase("All")))
-								mob.tell(_("That name can not be used."));
+								mob.tell(L("That name can not be used."));
 							else
 							if(checkC!=null)
-								mob.tell(_("Clan @x1  exists already. Type 'CLANLIST' and I'll show you what clans are available.  You may 'CLANAPPLY' to join them.",checkC.clanID()));
+								mob.tell(L("Clan @x1  exists already. Type 'CLANLIST' and I'll show you what clans are available.  You may 'CLANAPPLY' to join them.",checkC.clanID()));
 							else
 							{
 								session.prompt(new InputCallback(InputCallback.Type.CHOOSE,"N","YN\n",0)
 								{
-									@Override public void showPrompt() { session.promptPrint(_("\n\rIs '@x1' correct (y/N)?",doubleCheck));}
+									@Override public void showPrompt() { session.promptPrint(L("\n\rIs '@x1' correct (y/N)?",doubleCheck));}
 									@Override public void timedOut() { }
 									@Override public void callBack()
 									{
@@ -143,7 +143,7 @@ public class ClanCreate extends StdCommand
 											@Override public void callBack()
 											{
 												final String govt=this.input;
-												if(govt.length()==0){ mob.tell(_("Aborted.")); return;}
+												if(govt.length()==0){ mob.tell(L("Aborted.")); return;}
 												int govtType=-1;
 												int newRoleID=-1;
 												for(final ClanGovernment gvt : CMLib.clans().getStockGovernments())
@@ -154,7 +154,7 @@ public class ClanCreate extends StdCommand
 														/*
 														if(!CMLib.masking().maskCheck(C.getBasicRequirementMask(), mob, true))
 														{
-															mob.tell(_("You are not qualified to create a clan of this style.\n\rRequirements: @x1",CMLib.masking().maskDesc(gvt.requiredMaskStr)));
+															mob.tell(L("You are not qualified to create a clan of this style.\n\rRequirements: @x1",CMLib.masking().maskDesc(gvt.requiredMaskStr)));
 															session.prompt(IC[0].reset());
 															return;
 														}
@@ -164,7 +164,7 @@ public class ClanCreate extends StdCommand
 														if((newClan.getAuthority(newRoleID, Clan.Function.ASSIGN) == Clan.Authority.CAN_NOT_DO)
 														&&(newClan.getRolesList().length>1))
 														{
-															mob.tell(_("You are not qualified to lead a clan of this style.\n\r"));
+															mob.tell(L("You are not qualified to lead a clan of this style.\n\r"));
 															session.prompt(IC[0].reset());
 															return;
 														}
@@ -176,7 +176,7 @@ public class ClanCreate extends StdCommand
 												}
 												if((govtType<0)||(newRoleID<0))
 												{
-													mob.tell(_("That is not a proper type.\n\r"));
+													mob.tell(L("That is not a proper type.\n\r"));
 													session.prompt(IC[0].reset());
 													return;
 												}
@@ -189,7 +189,7 @@ public class ClanCreate extends StdCommand
 												newClan.create();
 												CMLib.database().DBUpdateClanMembership(mob.Name(),newClan.getName(),newRoleID);
 												newClan.updateClanPrivileges(mob);
-												CMLib.clans().clanAnnounce(mob, _("The @x1 @x2 is online and can now accept applicants.",newClan.getGovernmentName(),newClan.clanID()));
+												CMLib.clans().clanAnnounce(mob, L("The @x1 @x2 is online and can now accept applicants.",newClan.getGovernmentName(),newClan.clanID()));
 											}
 										};
 										session.prompt(IC[0]);

@@ -77,7 +77,7 @@ public class Stat  extends Skills
 				if((t!=null)&&(!(t instanceof MOB)))
 				{
 					if(!quiet)
-						mob.tell(mob,t,null,_("You can't do that to <T-NAMESELF>."));
+						mob.tell(mob,t,null,L("You can't do that to <T-NAMESELF>."));
 					return null;
 				}
 			}
@@ -95,7 +95,7 @@ public class Stat  extends Skills
 		ENDQ.set(Calendar.MILLISECOND,999);
 		CMLib.coffeeTables().update();
 		final List<CoffeeTableRow> V=CMLib.database().DBReadStats(ENDQ.getTimeInMillis()-1);
-		if(V.size()==0){ mob.tell(_("No Stats?!")); return false;}
+		if(V.size()==0){ mob.tell(L("No Stats?!")); return false;}
 		final StringBuffer table=new StringBuffer("");
 		boolean skillUse=false;
 		boolean questStats=false;
@@ -115,32 +115,32 @@ public class Stat  extends Skills
 		}
 		table.append("^xStatistics since "+CMLib.time().date2String(ENDQ.getTimeInMillis())+":^.^N\n\r\n\r");
 		if(skillUse)
-			table.append(CMStrings.padRight(_("Skill"),25)+CMStrings.padRight(_("Uses"),10)+CMStrings.padRight(_("Skill"),25)+CMStrings.padRight(_("Uses"),10)+"\n\r");
+			table.append(CMStrings.padRight(L("Skill"),25)+CMStrings.padRight(L("Uses"),10)+CMStrings.padRight(L("Skill"),25)+CMStrings.padRight(L("Uses"),10)+"\n\r");
 		else
 		if(questStats)
-			table.append(CMStrings.padRight(_("Quest"),30)
-	   					+CMStrings.padRight(_("STRT"),5)
-						+CMStrings.padRight(_("TSRT"),5)
-						+CMStrings.padRight(_("FLST"),5)
-						+CMStrings.padRight(_("ACPT"),5)
-						+CMStrings.padRight(_("WINS"),5)
-						+CMStrings.padRight(_("FAIL"),5)
-						+CMStrings.padRight(_("DROP"),5)
-						+CMStrings.padRight(_("TSTP"),5)
-						+CMStrings.padRight(_("STOP"),5)
+			table.append(CMStrings.padRight(L("Quest"),30)
+	   					+CMStrings.padRight(L("STRT"),5)
+						+CMStrings.padRight(L("TSRT"),5)
+						+CMStrings.padRight(L("FLST"),5)
+						+CMStrings.padRight(L("ACPT"),5)
+						+CMStrings.padRight(L("WINS"),5)
+						+CMStrings.padRight(L("FAIL"),5)
+						+CMStrings.padRight(L("DROP"),5)
+						+CMStrings.padRight(L("TSTP"),5)
+						+CMStrings.padRight(L("STOP"),5)
 						+"\n\r");
 		else
-			table.append(CMStrings.padRight(_("Date"),25)
-						 +CMStrings.padRight(_("CONs"),5)
-						 +CMStrings.padRight(_("HIGH"),5)
-						 +CMStrings.padRight(_("ONLN"),5)
-						 +CMStrings.padRight(_("AVGM"),5)
-						 +CMStrings.padRight(_("NEWB"),5)
-						 +CMStrings.padRight(_("DTHs"),5)
-						 +CMStrings.padRight(_("PKDs"),5)
-						 +CMStrings.padRight(_("CLAS"),5)
-						 +CMStrings.padRight(_("PURG"),5)
-						 +CMStrings.padRight(_("MARR"),5)+"\n\r");
+			table.append(CMStrings.padRight(L("Date"),25)
+						 +CMStrings.padRight(L("CONs"),5)
+						 +CMStrings.padRight(L("HIGH"),5)
+						 +CMStrings.padRight(L("ONLN"),5)
+						 +CMStrings.padRight(L("AVGM"),5)
+						 +CMStrings.padRight(L("NEWB"),5)
+						 +CMStrings.padRight(L("DTHs"),5)
+						 +CMStrings.padRight(L("PKDs"),5)
+						 +CMStrings.padRight(L("CLAS"),5)
+						 +CMStrings.padRight(L("PURG"),5)
+						 +CMStrings.padRight(L("MARR"),5)+"\n\r");
 		table.append(CMStrings.repeat('-',75)+"\n\r");
 		final Calendar C=Calendar.getInstance();
 		C.set(Calendar.HOUR_OF_DAY,23);
@@ -343,7 +343,7 @@ public class Stat  extends Skills
 		&&((String)commands.firstElement()).equals("?"))
 		{
 			final StringBuilder msg = new StringBuilder("STAT allows the following options: \n\r");
-			msg.append(_("[MOB/PLAYER NAME], [NUMBER] [DAYS/WEEKS/MONTHS], "));
+			msg.append(L("[MOB/PLAYER NAME], [NUMBER] [DAYS/WEEKS/MONTHS], "));
 			for (final String[] element : ABLETYPE_DESCS)
 				msg.append(element[0]+", ");
 			msg.append(CMParms.toStringList(Ability.ACODE_DESCS));
@@ -431,13 +431,13 @@ public class Stat  extends Skills
 			target=CMLib.players().getLoadPlayer(MOBname);
 		if(target==null)
 		{
-			mob.tell(_("You can't stat '@x1'  -- he doesn't exist.",MOBname));
+			mob.tell(L("You can't stat '@x1'  -- he doesn't exist.",MOBname));
 			return false;
 		}
 		if(((target.isMonster())&&(!CMSecurity.isAllowed(mob, target.location(), CMSecurity.SecFlag.CMDMOBS)))
 		||((!target.isMonster())&&(!CMSecurity.isAllowed(mob, target.location(), CMSecurity.SecFlag.CMDPLAYERS))))
 		{
-			mob.tell(_("You aren't allowed to stat '@x1'.",target.Name()));
+			mob.tell(L("You aren't allowed to stat '@x1'.",target.Name()));
 			return false;
 		}
 
@@ -458,7 +458,7 @@ public class Stat  extends Skills
 		else
 		if(ableTypes==ABLETYPE_QUESTWINS)
 		{
-			str.append(_("Quests won:"));
+			str.append(L("Quests won:"));
 			final StringBuffer won=new StringBuffer("");
 			for(int q=0;q<CMLib.quests().numQuests();q++)
 			{
@@ -475,7 +475,7 @@ public class Stat  extends Skills
 		else
 		if(ableTypes==ABLETYPE_TITLES)
 		{
-			str.append(_("Titles:"));
+			str.append(L("Titles:"));
 			final StringBuffer ttl=new StringBuffer("");
 			if(target.playerStats()!=null)
 				for(int t=0;t<target.playerStats().getTitles().size();t++)
@@ -492,17 +492,17 @@ public class Stat  extends Skills
 		else
 		if(ableTypes==ABLETYPE_SCRIPTS)
 		{
-			str.append(_("Scripts covered:\n\r"));
+			str.append(L("Scripts covered:\n\r"));
 			int q=1;
 			for(final Enumeration<ScriptingEngine> e=target.scripts();e.hasMoreElements();q++)
 			{
 				final ScriptingEngine SE=e.nextElement();
-				str.append(_("Script #@x1\n\r",""+q));
-				str.append(_("Quest: @x1\n\r",SE.defaultQuestName()));
-				str.append(_("Savable: @x1\n\r",""+SE.isSavable()));
-				str.append(_("Scope: @x1\n\r",SE.getVarScope()));
-				str.append(_("Vars: @x1\n\r",SE.getLocalVarXML()));
-				str.append(_("Script: @x1\n\r",SE.getScript()));
+				str.append(L("Script #@x1\n\r",""+q));
+				str.append(L("Quest: @x1\n\r",SE.defaultQuestName()));
+				str.append(L("Savable: @x1\n\r",""+SE.isSavable()));
+				str.append(L("Scope: @x1\n\r",SE.getVarScope()));
+				str.append(L("Vars: @x1\n\r",SE.getLocalVarXML()));
+				str.append(L("Script: @x1\n\r",SE.getScript()));
 				str.append("\n\r");
 			}
 			str.append("\n\r");
@@ -510,7 +510,7 @@ public class Stat  extends Skills
 		else
 		if(ableTypes==ABLETYPE_TATTOOS)
 		{
-			str.append(_("Tattoos:"));
+			str.append(L("Tattoos:"));
 			for(final Enumeration<MOB.Tattoo> e=target.tattoos();e.hasMoreElements();)
 				str.append(" "+e.nextElement().tattooName+",");
 			str.deleteCharAt(str.length()-1);
@@ -519,7 +519,7 @@ public class Stat  extends Skills
 		else
 		if(ableTypes==ABLETYPE_FACTIONS)
 		{
-			str.append(_("Factions:\n\r"));
+			str.append(L("Factions:\n\r"));
 			for(final Enumeration<String> f=target.fetchFactions();f.hasMoreElements();)
 			{
 				final Faction F=CMLib.factions().getFaction(f.nextElement());
@@ -532,9 +532,9 @@ public class Stat  extends Skills
 		if(ableTypes==ABLETYPE_WORLDEXPLORED)
 		{
 			if(target.playerStats()!=null)
-				str.append(_("@x1 has explored @x2% of the world.\n\r",target.name(),""+mob.playerStats().percentVisited(mob,null)));
+				str.append(L("@x1 has explored @x2% of the world.\n\r",target.name(),""+mob.playerStats().percentVisited(mob,null)));
 			else
-				str.append(_("Exploration data is not kept on mobs.\n\r"));
+				str.append(L("Exploration data is not kept on mobs.\n\r"));
 		}
 		else
 		if(ableTypes==ABLETYPE_AREASEXPLORED)
@@ -550,7 +550,7 @@ public class Stat  extends Skills
 				str=new StringBuilder(str.toString().substring(0,str.toString().length()-2)+"\n\r");
 			}
 			else
-				str.append(_("Exploration data is not kept on mobs.\n\r"));
+				str.append(L("Exploration data is not kept on mobs.\n\r"));
 		}
 		else
 		if(ableTypes==ABLETYPE_ROOMSEXPLORED)
@@ -566,12 +566,12 @@ public class Stat  extends Skills
 				str=new StringBuilder(str.toString().substring(0,str.toString().length()-2)+"\n\r");
 			}
 			else
-				str.append(_("Exploration data is not kept on mobs.\n\r"));
+				str.append(L("Exploration data is not kept on mobs.\n\r"));
 		}
 		else
 		if(ableTypes==ABLETYPE_COMBAT)
 		{
-			str.append(_("Combat summary:\n\r\n\r"));
+			str.append(L("Combat summary:\n\r\n\r"));
 			final MOB M=CMClass.getMOB("StdMOB");
 			M.setBaseCharStats((CharStats)target.baseCharStats().copyOf());
 			M.setBasePhyStats((PhyStats)target.basePhyStats().copyOf());
@@ -579,7 +579,7 @@ public class Stat  extends Skills
 			recoverMOB(target);
 			recoverMOB(M);
 			int base=CMLib.combat().adjustedAttackBonus(M,null);
-			str.append("^c"+CMStrings.padRight(_("Base Attack"),40)+": ^W"+base+"\n\r");
+			str.append("^c"+CMStrings.padRight(L("Base Attack"),40)+": ^W"+base+"\n\r");
 			for(int i=0;i<target.numItems();i++)
 			{
 				final Item I=target.getItem(i);
@@ -594,10 +594,10 @@ public class Stat  extends Skills
 			recoverMOB(target);
 			recoverMOB(M);
 			str.append("^W-------------------------\n\r");
-			str.append("^C"+CMStrings.padRight(_("Total"),40)+": ^W"+CMLib.combat().adjustedAttackBonus(target,null)+"\n\r");
+			str.append("^C"+CMStrings.padRight(L("Total"),40)+": ^W"+CMLib.combat().adjustedAttackBonus(target,null)+"\n\r");
 			str.append("\n\r");
 			base=CMLib.combat().adjustedArmor(M);
-			str.append("^C"+CMStrings.padRight(_("Base Armor"),40)+": ^W"+base+"\n\r");
+			str.append("^C"+CMStrings.padRight(L("Base Armor"),40)+": ^W"+base+"\n\r");
 			for(int i=0;i<target.numItems();i++)
 			{
 				final Item I=target.getItem(i);
@@ -612,10 +612,10 @@ public class Stat  extends Skills
 			recoverMOB(target);
 			recoverMOB(M);
 			str.append("^W-------------------------\n\r");
-			str.append("^C"+CMStrings.padRight(_("Total"),40)+": ^W"+CMLib.combat().adjustedArmor(target)+"\n\r");
+			str.append("^C"+CMStrings.padRight(L("Total"),40)+": ^W"+CMLib.combat().adjustedArmor(target)+"\n\r");
 			str.append("\n\r");
 			base=CMLib.combat().adjustedDamage(M,null,null,0,false);
-			str.append("^C"+CMStrings.padRight(_("Base Damage"),40)+": ^W"+base+"\n\r");
+			str.append("^C"+CMStrings.padRight(L("Base Damage"),40)+": ^W"+base+"\n\r");
 			for(int i=0;i<target.numItems();i++)
 			{
 				final Item I=target.getItem(i);
@@ -630,10 +630,10 @@ public class Stat  extends Skills
 			recoverMOB(target);
 			recoverMOB(M);
 			str.append("^W-------------------------\n\r");
-			str.append("^C"+CMStrings.padRight(_("Total"),40)+": ^W"+CMLib.combat().adjustedDamage(target,null,null,0,false)+"\n\r");
+			str.append("^C"+CMStrings.padRight(L("Total"),40)+": ^W"+CMLib.combat().adjustedDamage(target,null,null,0,false)+"\n\r");
 			str.append("\n\r");
 			base=(int)Math.round(M.phyStats().speed()*100);
-			str.append("^C"+CMStrings.padRight(_("Base Attacks%"),40)+": ^W"+base+"\n\r");
+			str.append("^C"+CMStrings.padRight(L("Base Attacks%"),40)+": ^W"+base+"\n\r");
 			for(int i=0;i<target.numItems();i++)
 			{
 				final Item I=target.getItem(i);
@@ -648,10 +648,10 @@ public class Stat  extends Skills
 			recoverMOB(target);
 			recoverMOB(M);
 			str.append("^W-------------------------\n\r");
-			str.append("^C"+CMStrings.padRight(_("Total"),40)+": ^W"+(int)Math.round(target.phyStats().speed()*100)+"\n\r");
+			str.append("^C"+CMStrings.padRight(L("Total"),40)+": ^W"+(int)Math.round(target.phyStats().speed()*100)+"\n\r");
 			str.append("\n\r");
 			base=M.maxState().getHitPoints();
-			str.append("^C"+CMStrings.padRight(_("Base Hit Points"),40)+": ^W"+base+"\n\r");
+			str.append("^C"+CMStrings.padRight(L("Base Hit Points"),40)+": ^W"+base+"\n\r");
 			for(int i=0;i<target.numItems();i++)
 			{
 				final Item I=target.getItem(i);
@@ -665,7 +665,7 @@ public class Stat  extends Skills
 			}
 			recoverMOB(M);
 			str.append("^W-------------------------\n\r");
-			str.append("^C"+CMStrings.padRight(_("Total"),40)+": ^W"+target.maxState().getHitPoints()+"\n\r");
+			str.append("^C"+CMStrings.padRight(L("Total"),40)+": ^W"+target.maxState().getHitPoints()+"\n\r");
 			recoverMOB(target);
 		}
 		else

@@ -36,7 +36,7 @@ import java.util.*;
 public class BardSkill extends StdAbility
 {
 	@Override public String ID() { return "BardSkill"; }
-	private final static String localizedName = CMLib.lang()._("a Bard Skill");
+	private final static String localizedName = CMLib.lang().L("a Bard Skill");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){	return Ability.ACODE_SKILL;}
@@ -57,7 +57,7 @@ public class BardSkill extends StdAbility
 		&&(mob.location()!=null)
 		&&(CMLib.dice().rollPercentage()<50))
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> fumble(s) @x1 due to <S-HIS-HER> clumsy armor!",name()));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> fumble(s) @x1 due to <S-HIS-HER> clumsy armor!",name()));
 			return false;
 		}
 		return true;

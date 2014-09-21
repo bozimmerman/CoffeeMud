@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_StrikeBarren extends Chant
 {
 	@Override public String ID() { return "Chant_StrikeBarren"; }
-	private final static String localizedName = CMLib.lang()._("Strike Barren");
+	private final static String localizedName = CMLib.lang().L("Strike Barren");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Striken Barren)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Striken Barren)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -54,7 +54,7 @@ public class Chant_StrikeBarren extends Chant
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("Your mystical barrenness fades."));
+			mob.tell(L("Your mystical barrenness fades."));
 
 		super.unInvoke();
 
@@ -98,7 +98,7 @@ public class Chant_StrikeBarren extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if((success)&&(target.charStats().getStat(CharStats.STAT_GENDER)=='F'))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) barren!"):_("^S<S-NAME> chant(s) at <T-NAMESELF>, striking <T-HIM-HER> barren!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) barren!"):L("^S<S-NAME> chant(s) at <T-NAMESELF>, striking <T-HIM-HER> barren!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -106,7 +106,7 @@ public class Chant_StrikeBarren extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens."));
 
 		return success;
 	}

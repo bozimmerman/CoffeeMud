@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_CombatPrecognition extends Spell
 {
 	@Override public String ID() { return "Spell_CombatPrecognition"; }
-	private final static String localizedName = CMLib.lang()._("Combat Precognition");
+	private final static String localizedName = CMLib.lang().L("Combat Precognition");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Combat Precognition)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Combat Precognition)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -60,7 +60,7 @@ public class Spell_CombatPrecognition extends Spell
 		{
 			if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			{
-				final CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> avoid(s) the attack by <T-NAME>!"));
+				final CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> avoid(s) the attack by <T-NAME>!"));
 				if((proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-60,false))
 				&&(!lastTime)
 				&&(msg.source().getVictim()==mob)
@@ -88,31 +88,31 @@ public class Spell_CombatPrecognition extends Spell
 				case CMMsg.TYP_JUSTICE:
 					if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MOVE))
 					&&(tool!=null))
-						msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> avoid(s) the @x1 from <T-NAME>.",tool));
+						msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> avoid(s) the @x1 from <T-NAME>.",tool));
 					break;
 				case CMMsg.TYP_GAS:
-					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"noxious fumes":tool)));
+					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"noxious fumes":tool)));
 					break;
 				case CMMsg.TYP_COLD:
-					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"cold blast":tool)));
+					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"cold blast":tool)));
 					break;
 				case CMMsg.TYP_ELECTRIC:
-					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"electrical attack":tool)));
+					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"electrical attack":tool)));
 					break;
 				case CMMsg.TYP_FIRE:
-					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"blast of heat":tool)));
+					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"blast of heat":tool)));
 					break;
 				case CMMsg.TYP_WATER:
-					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"weat blast":tool)));
+					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"weat blast":tool)));
 					break;
 				case CMMsg.TYP_ACID:
-					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"acid attack":tool)));
+					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"acid attack":tool)));
 					break;
 				case CMMsg.TYP_SONIC:
-					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"sonic attack":tool)));
+					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"sonic attack":tool)));
 					break;
 				case CMMsg.TYP_LASER:
-					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"laser attack":tool)));
+					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> avoid(s) the @x1 from <T-NAME>.",((tool==null)?"laser attack":tool)));
 					break;
 				}
 				if((msg2!=null)&&(mob.location()!=null)&&(mob.location().okMessage(mob,msg2)))
@@ -134,7 +134,7 @@ public class Spell_CombatPrecognition extends Spell
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		mob.tell(_("Your combat precognition fades away."));
+		mob.tell(L("Your combat precognition fades away."));
 	}
 
 	@Override
@@ -145,7 +145,7 @@ public class Spell_CombatPrecognition extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> the sight."));
+			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> the sight."));
 			return false;
 		}
 
@@ -165,7 +165,7 @@ public class Spell_CombatPrecognition extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_(auto?"<T-NAME> shout(s) combatively!":"^S<S-NAME> shout(s) a combative spell!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> shout(s) combatively!":"^S<S-NAME> shout(s) a combative spell!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -173,7 +173,7 @@ public class Spell_CombatPrecognition extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> shout(s) combatively, but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> shout(s) combatively, but nothing more happens."));
 		// return whether it worked
 		return success;
 	}

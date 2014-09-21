@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_ClarifyScroll extends Spell
 {
 	@Override public String ID() { return "Spell_ClarifyScroll"; }
-	private final static String localizedName = CMLib.lang()._("Clarify Scroll");
+	private final static String localizedName = CMLib.lang().L("Clarify Scroll");
 	@Override public String name() { return localizedName; }
 	@Override public int overrideMana(){return 50;}
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
@@ -51,13 +51,13 @@ public class Spell_ClarifyScroll extends Spell
 
 		if(!(target instanceof Scroll))
 		{
-			mob.tell(_("You can't clarify that."));
+			mob.tell(L("You can't clarify that."));
 			return false;
 		}
 
 		if(((Scroll)target).usesRemaining()>((Scroll)target).getSpells().size())
 		{
-			mob.tell(_("That scroll can not be enhanced any further."));
+			mob.tell(L("That scroll can not be enhanced any further."));
 			return false;
 		}
 
@@ -68,17 +68,17 @@ public class Spell_ClarifyScroll extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> wave(s) <S-HIS-HER> fingers at <T-NAMESELF>, uttering a magical phrase.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> fingers at <T-NAMESELF>, uttering a magical phrase.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("The words on <T-NAME> become more definite!"));
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("The words on <T-NAME> become more definite!"));
 				((Scroll)target).setUsesRemaining(((Scroll)target).usesRemaining()+1);
 			}
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> wave(s) <S-HIS-HER> fingers at <T-NAMESELF>, uttering a magical phrase, and looking very frustrated."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> wave(s) <S-HIS-HER> fingers at <T-NAMESELF>, uttering a magical phrase, and looking very frustrated."));
 
 
 		// return whether it worked

@@ -36,7 +36,7 @@ import java.util.*;
 public class Poison_Rotten extends Poison
 {
 	@Override public String ID() { return "Poison_Rotten"; }
-	private final static String localizedName = CMLib.lang()._("Rotten");
+	private final static String localizedName = CMLib.lang().L("Rotten");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"POISONROTT"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -80,7 +80,7 @@ public class Poison_Rotten extends Poison
 		&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
 		&&(affected instanceof Item)
 		&&(CMLib.flags().canSmell(msg.source())))
-			msg.source().tell(msg.source(),affected,null,_("<T-NAME> smell(s) rotten!"));
+			msg.source().tell(msg.source(),affected,null,L("<T-NAME> smell(s) rotten!"));
 	}
 	@Override protected String POISON_AFFECT(){return "^G<S-NAME> moan(s) and clutch(es) <S-HIS-HER> stomach.";}
 	@Override protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";}

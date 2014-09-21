@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_SporeTrap extends StdTrap
 {
 	@Override public String ID() { return "Trap_SporeTrap"; }
-	private final static String localizedName = CMLib.lang()._("spore trap");
+	private final static String localizedName = CMLib.lang().L("spore trap");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -110,7 +110,7 @@ public class Trap_SporeTrap extends StdTrap
 		if((I==null)
 		&&(mob!=null))
 		{
-			mob.tell(_("You'll need to set down some diseased food first."));
+			mob.tell(L("You'll need to set down some diseased food first."));
 			return false;
 		}
 		return true;
@@ -125,9 +125,9 @@ public class Trap_SporeTrap extends StdTrap
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) setting off a trap!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) setting off a trap!"));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> set(s) off a trap which sends spores flying around!")))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> set(s) off a trap which sends spores flying around!")))
 			{
 				super.spring(target);
 				Ability A=CMClass.getAbility(text());

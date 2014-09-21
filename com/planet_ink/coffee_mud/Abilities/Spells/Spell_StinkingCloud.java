@@ -35,9 +35,9 @@ import java.util.*;
 public class Spell_StinkingCloud extends Spell
 {
 	@Override public String ID() { return "Spell_StinkingCloud"; }
-	private final static String localizedName = CMLib.lang()._("Stinking Cloud");
+	private final static String localizedName = CMLib.lang().L("Stinking Cloud");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(In the Stinking Cloud)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(In the Stinking Cloud)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(3);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -93,7 +93,7 @@ public class Spell_StinkingCloud extends Spell
 				case CMMsg.TYP_ADVANCE:
 					if(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.STAT_SAVE_GAS)))
 					{
-						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> double(s) over from the sickening gas."));
+						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> double(s) over from the sickening gas."));
 						return false;
 					}
 					break;
@@ -120,7 +120,7 @@ public class Spell_StinkingCloud extends Spell
 		if((msg.amITarget(affected))
 		&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
 		&&(CMLib.flags().canSmell(msg.source())))
-			msg.source().tell(msg.source(),affected,null,_("<T-NAME> smell(s) nauseatingly stinky!"));
+			msg.source().tell(msg.source(),affected,null,L("<T-NAME> smell(s) nauseatingly stinky!"));
 		super.executeMsg(myHost,msg);
 	}
 
@@ -136,7 +136,7 @@ public class Spell_StinkingCloud extends Spell
 		if(canBeUninvoked())
 		{
 			if((!mob.amDead())&&(mob.location()!=null))
-				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> manage(s) to escape the stinking cloud!"));
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> manage(s) to escape the stinking cloud!"));
 		}
 	}
 
@@ -154,7 +154,7 @@ public class Spell_StinkingCloud extends Spell
 			h=CMLib.combat().properTargets(this,mob,auto);
 		if(h==null)
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth casting this on."));
+			mob.tell(L("There doesn't appear to be anyone here worth casting this on."));
 			return false;
 		}
 
@@ -169,7 +169,7 @@ public class Spell_StinkingCloud extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms around.  A horrendous cloud of green and orange gas appears!^?")))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms around.  A horrendous cloud of green and orange gas appears!^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -190,13 +190,13 @@ public class Spell_StinkingCloud extends Spell
 						{
 							castingLocation=mob.location();
 							success=maliciousAffect(mob,target,asLevel,0,-1);
-							target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> become(s) enveloped in the stinking cloud!"));
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> become(s) enveloped in the stinking cloud!"));
 						}
 					}
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> incant(s), but the spell fizzles."));
+			return maliciousFizzle(mob,null,L("<S-NAME> incant(s), but the spell fizzles."));
 
 
 		// return whether it worked

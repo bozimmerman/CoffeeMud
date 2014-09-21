@@ -41,7 +41,7 @@ import java.util.*;
 public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override public String ID() { return "Sculpting"; }
-	private final static String localizedName = CMLib.lang()._("Sculpting");
+	private final static String localizedName = CMLib.lang().L("Sculpting");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"SCULPT","SCULPTING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -100,7 +100,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 							buildingI.destroy();
 						}
 						else
-							commonTell(mob,_("<S-NAME> mess(es) up sculpting @x1.",buildingI.name(mob)));
+							commonTell(mob,L("<S-NAME> mess(es) up sculpting @x1.",buildingI.name(mob)));
 					}
 					else
 					{
@@ -156,7 +156,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 		if((IE.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK)
 		{
 			if(!quiet)
-				commonTell(mob,_("That's not made of stone.  That can't be mended."));
+				commonTell(mob,L("That's not made of stone.  That can't be mended."));
 			return false;
 		}
 		return true;
@@ -182,7 +182,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,_("Sculpt what? Enter \"sculpt list\" for a list, \"sculpt scan\", \"sculpt learn <item>\", \"sculpt mend <item>\", or \"sculpt stop\" to cancel."));
+			commonTell(mob,L("Sculpt what? Enter \"sculpt list\" for a list, \"sculpt scan\", \"sculpt learn <item>\", \"sculpt mend <item>\", or \"sculpt stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -212,7 +212,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 					ListingLibrary.ColFixer.fixColWidth(20,mob.session()),
 					ListingLibrary.ColFixer.fixColWidth(3,mob.session())
 				};
-			final StringBuffer buf=new StringBuffer(_("@x1 @x2 Stone required\n\r",CMStrings.padRight(_("Item"),cols[0]),CMStrings.padRight(_("Lvl"),cols[1])));
+			final StringBuffer buf=new StringBuffer(L("@x1 @x2 Stone required\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1])));
 			for(int r=0;r<recipes.size();r++)
 			{
 				final List<String> V=recipes.get(r);
@@ -251,9 +251,9 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr=_("<S-NAME> start(s) mending @x1.",buildingI.name());
-			displayText=_("You are mending @x1",buildingI.name());
-			verb=_("mending @x1",buildingI.name());
+			startStr=L("<S-NAME> start(s) mending @x1.",buildingI.name());
+			displayText=L("You are mending @x1",buildingI.name());
+			verb=L("mending @x1",buildingI.name());
 
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
@@ -308,7 +308,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,_("You don't know how to sculpt a '@x1'.  Try \"sculpt list\" for a list.",recipeName));
+				commonTell(mob,L("You don't know how to sculpt a '@x1'.  Try \"sculpt list\" for a list.",recipeName));
 				return false;
 			}
 
@@ -334,7 +334,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(buildingI==null)
 			{
-				commonTell(mob,_("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
+				commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
@@ -344,11 +344,11 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			else
 				itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);
-			startStr=_("<S-NAME> start(s) sculpting @x1.",buildingI.name());
-			displayText=_("You are sculpting @x1",buildingI.name());
-			verb=_("sculpting @x1",buildingI.name());
+			startStr=L("<S-NAME> start(s) sculpting @x1.",buildingI.name());
+			displayText=L("You are sculpting @x1",buildingI.name());
+			verb=L("sculpting @x1",buildingI.name());
 			playSound="metalbat.wav";
-			buildingI.setDisplayText(_("@x1 lies here",itemName));
+			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
@@ -371,7 +371,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 					if(session!=null)
 					session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 					{
-						@Override public void showPrompt() {session.promptPrint(_("What is this a statue of?\n\r: "));}
+						@Override public void showPrompt() {session.promptPrint(L("What is this a statue of?\n\r: "));}
 						@Override public void timedOut() {}
 						@Override public void callBack()
 						{
@@ -389,9 +389,9 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 				{
 					if((statue==null)||(statue.trim().length()==0))
 						statue=rest;
-					buildingI.setName(_("@x1 of @x2",itemName,statue.trim()));
-					buildingI.setDisplayText(_("@x1 of @x2 is here",itemName,statue.trim()));
-					buildingI.setDescription(_("@x1 of @x2. ",itemName,statue.trim()));
+					buildingI.setName(L("@x1 of @x2",itemName,statue.trim()));
+					buildingI.setDisplayText(L("@x1 of @x2 is here",itemName,statue.trim()));
+					buildingI.setDescription(L("@x1 of @x2. ",itemName,statue.trim()));
 				}
 			}
 			else
@@ -422,9 +422,9 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 					((Container)buildingI).setKeyName(Double.toString(Math.random()));
 					key=CMClass.getItem("GenKey");
 					((DoorKey)key).setKey(((Container)buildingI).keyName());
-					key.setName(_("a key"));
-					key.setDisplayText(_("a small key sits here"));
-					key.setDescription(_("looks like a key to @x1",buildingI.name()));
+					key.setName(L("a key"));
+					key.setDisplayText(L("a small key sits here"));
+					key.setDescription(L("looks like a key to @x1",buildingI.name()));
 					key.recoverPhyStats();
 					key.text();
 				}
@@ -443,7 +443,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			if((!CMLib.flags().isGettable(buildingI))
 			&&(!CMLib.law().doesOwnThisProperty(mob,mob.location())))
 			{
-				commonTell(mob,_("You are not allowed to build that here."));
+				commonTell(mob,L("You are not allowed to build that here."));
 				return false;
 			}
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -463,9 +463,9 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 		{
 			messedUp=false;
 			duration=1;
-			verb=_("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
-			startStr=_("<S-NAME> start(s) @x1.",verb);
-			displayText=_("You are @x1",verb);
+			verb=L("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
+			startStr=L("<S-NAME> start(s) @x1.",verb);
+			displayText=L("You are @x1",verb);
 		}
 
 		if(parsedVars.autoGenerate>0)

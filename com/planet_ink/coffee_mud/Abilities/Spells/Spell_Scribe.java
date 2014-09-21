@@ -37,7 +37,7 @@ import java.util.*;
 public class Spell_Scribe extends Spell
 {
 	@Override public String ID() { return "Spell_Scribe"; }
-	private final static String localizedName = CMLib.lang()._("Scribe");
+	private final static String localizedName = CMLib.lang().L("Scribe");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
@@ -50,18 +50,18 @@ public class Spell_Scribe extends Spell
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("Scribe which spell onto what?"));
+			mob.tell(L("Scribe which spell onto what?"));
 			return false;
 		}
 		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",((String)commands.lastElement())));
+			mob.tell(L("You don't see '@x1' here.",((String)commands.lastElement())));
 			return false;
 		}
 		if(!(target instanceof Scroll))
 		{
-			mob.tell(_("You can't scribe onto that."));
+			mob.tell(L("You can't scribe onto that."));
 			return false;
 		}
 
@@ -91,12 +91,12 @@ public class Spell_Scribe extends Spell
 			}
 		if(scrollThis==null)
 		{
-			mob.tell(_("You don't know how to scribe '@x1'.",spellName));
+			mob.tell(L("You don't know how to scribe '@x1'.",spellName));
 			return false;
 		}
 		if(CMLib.ableMapper().lowestQualifyingLevel(scrollThis.ID())>24)
 		{
-			mob.tell(_("That spell is too powerful to scribe."));
+			mob.tell(L("That spell is too powerful to scribe."));
 			return false;
 		}
 
@@ -104,7 +104,7 @@ public class Spell_Scribe extends Spell
 		if(numSpells<0) numSpells=1;
 		if(scroll.getSpells().size()>numSpells)
 		{
-			mob.tell(_("You aren't powerful enough to scribe any more spells onto @x1.",scroll.name()));
+			mob.tell(L("You aren't powerful enough to scribe any more spells onto @x1.",scroll.name()));
 			return false;
 		}
 
@@ -112,14 +112,14 @@ public class Spell_Scribe extends Spell
 		for(final Ability spell: spells)
 			if(spell.ID().equals(scrollThis.ID()))
 			{
-				mob.tell(_("That spell is already scribed onto @x1.",scroll.name()));
+				mob.tell(L("That spell is already scribed onto @x1.",scroll.name()));
 				return false;
 			}
 
 		int experienceToLose=10*CMLib.ableMapper().lowestQualifyingLevel(scrollThis.ID());
 		if((mob.getExperience()-experienceToLose)<0)
 		{
-			mob.tell(_("You don't have enough experience to cast this spell."));
+			mob.tell(L("You don't have enough experience to cast this spell."));
 			return false;
 		}
 		// lose all the mana!
@@ -128,14 +128,14 @@ public class Spell_Scribe extends Spell
 
 		experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
-		mob.tell(_("You lose @x1 experience points for the effort.",""+experienceToLose));
+		mob.tell(L("You lose @x1 experience points for the effort.",""+experienceToLose));
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			setMiscText(scrollThis.ID());
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -150,7 +150,7 @@ public class Spell_Scribe extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly, and looking very frustrated."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly, and looking very frustrated."));
 
 
 		// return whether it worked

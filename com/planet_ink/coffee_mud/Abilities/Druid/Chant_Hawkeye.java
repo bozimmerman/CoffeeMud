@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_Hawkeye extends Chant
 {
 	@Override public String ID() { return "Chant_Hawkeye"; }
-	private final static String localizedName = CMLib.lang()._("Hawkeye");
+	private final static String localizedName = CMLib.lang().L("Hawkeye");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Hawkeye)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Hawkeye)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -70,7 +70,7 @@ public class Chant_Hawkeye extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("You lose your hawk-like vision."));
+			mob.tell(L("You lose your hawk-like vision."));
 	}
 
 	@Override
@@ -103,7 +103,7 @@ public class Chant_Hawkeye extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> hawk vision."));
+			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> hawk vision."));
 			return false;
 		}
 
@@ -123,7 +123,7 @@ public class Chant_Hawkeye extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<S-NAME> gain(s) hawk(s) eyes!"):_("^S<S-NAME> chant(s) for hawk's eyes!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<S-NAME> gain(s) hawk(s) eyes!"):L("^S<S-NAME> chant(s) for hawk's eyes!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -131,7 +131,7 @@ public class Chant_Hawkeye extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s), but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s), but nothing more happens."));
 
 		// return whether it worked
 		return success;

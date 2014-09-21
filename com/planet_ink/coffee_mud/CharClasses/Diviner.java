@@ -33,7 +33,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Diviner extends SpecialistMage
 {
 	@Override public String ID(){return "Diviner";}
-	private final static String localizedStaticName = CMLib.lang()._("Diviner");
+	private final static String localizedStaticName = CMLib.lang().L("Diviner");
 	@Override public String name() { return localizedStaticName; }
 	@Override public int domain(){return Ability.DOMAIN_DIVINATION;}
 	@Override public int opposed(){return Ability.DOMAIN_ILLUSION;}

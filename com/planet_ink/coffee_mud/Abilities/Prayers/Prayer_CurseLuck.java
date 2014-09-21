@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_CurseLuck extends Prayer
 {
 	@Override public String ID() { return "Prayer_CurseLuck"; }
-	private final static String localizedName = CMLib.lang()._("Curse Luck");
+	private final static String localizedName = CMLib.lang().L("Curse Luck");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Cursed Luck)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Cursed Luck)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
@@ -59,7 +59,7 @@ public class Prayer_CurseLuck extends Prayer
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("Your cursed luck fades."));
+			mob.tell(L("Your cursed luck fades."));
 	}
 
 	@Override
@@ -93,7 +93,7 @@ public class Prayer_CurseLuck extends Prayer
 				if(msg.tool()!=null)
 					permProts.add(msg.tool());
 				prots--;
-				msg.source().location().show((MOB)msg.target(),msg.source(),this,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> cursed luck trips!"));
+				msg.source().location().show((MOB)msg.target(),msg.source(),this,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> cursed luck trips!"));
 				if(prots==0)
 					unInvoke();
 			}
@@ -124,7 +124,7 @@ public class Prayer_CurseLuck extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> feel(s) <T-HIS-HER> luck become cursed!"):_("^S<S-NAME> @x1 to curse the luck of <T-NAMESELF>!^?",prayForWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> feel(s) <T-HIS-HER> luck become cursed!"):L("^S<S-NAME> @x1 to curse the luck of <T-NAMESELF>!^?",prayForWord(mob)));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
@@ -135,7 +135,7 @@ public class Prayer_CurseLuck extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> @x1 to curse the luck of <T-NAMESELF>, but nothing happens.",prayForWord(mob)));
+			return maliciousFizzle(mob,target,L("<S-NAME> @x1 to curse the luck of <T-NAMESELF>, but nothing happens.",prayForWord(mob)));
 
 		// return whether it worked
 		return success;

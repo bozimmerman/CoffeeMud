@@ -45,7 +45,7 @@ public class South extends Go
 		standIfNecessary(mob,metaFlags);
 		if((CMLib.flags().isSitting(mob))||(CMLib.flags().isSleeping(mob)))
 		{
-			mob.tell(_("You need to stand up first."));
+			mob.tell(L("You need to stand up first."));
 			return false;
 		}
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTORUN))

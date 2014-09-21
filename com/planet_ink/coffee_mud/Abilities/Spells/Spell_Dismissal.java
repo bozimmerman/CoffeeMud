@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_Dismissal extends Spell
 {
 	@Override public String ID() { return "Spell_Dismissal"; }
-	private final static String localizedName = CMLib.lang()._("Dismissal");
+	private final static String localizedName = CMLib.lang().L("Dismissal");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
@@ -72,7 +72,7 @@ public class Spell_Dismissal extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> point(s) at <T-NAMESELF> and utter(s) a dismissive spell!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> point(s) at <T-NAMESELF> and utter(s) a dismissive spell!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -82,8 +82,8 @@ public class Spell_Dismissal extends Spell
 						target.destroy();
 					else
 					{
-						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> vanish(es) in dismissal!"));
-						target.getStartRoom().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> appear(s)!"));
+						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> vanish(es) in dismissal!"));
+						target.getStartRoom().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> appear(s)!"));
 						target.getStartRoom().bringMobHere(target,false);
 						CMLib.commands().postLook(target,true);
 					}
@@ -94,7 +94,7 @@ public class Spell_Dismissal extends Spell
 
 		}
 		else
-			maliciousFizzle(mob,target,_("<S-NAME> point(s) at <T-NAMESELF> and utter(s) a dismissive but fizzled spell!"));
+			maliciousFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF> and utter(s) a dismissive but fizzled spell!"));
 
 
 		// return whether it worked

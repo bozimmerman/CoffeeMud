@@ -38,7 +38,7 @@ import java.util.*;
 public class Druid extends StdCharClass
 {
 	@Override public String ID(){return "Druid";}
-	private final static String localizedStaticName = CMLib.lang()._("Druid");
+	private final static String localizedStaticName = CMLib.lang().L("Druid");
 	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return ID();}
 	@Override public int getBonusPracLevel(){return 2;}
@@ -316,7 +316,7 @@ public class Druid extends StdCharClass
 		{
 			if(((Ability)msg.tool()).appropriateToMyFactions(myChar))
 				return true;
-			myChar.tell(_("Extreme emotions disrupt your chant."));
+			myChar.tell(L("Extreme emotions disrupt your chant."));
 			return false;
 		}
 		return true;
@@ -339,7 +339,7 @@ public class Druid extends StdCharClass
 				final int xp=msg.source().phyStats().level()*5;
 				if(xp>0)
 				{
-					druidM.tell(CMLib.lang()._("Your stewardship has benefitted @x1.",msg.source().name(druidM)));
+					druidM.tell(CMLib.lang().L("Your stewardship has benefitted @x1.",msg.source().name(druidM)));
 					CMLib.leveler().postExperience(druidM,null,null,xp,false);
 				}
 			}
@@ -380,7 +380,7 @@ public class Druid extends StdCharClass
 			if((((Integer)stuff[1]).intValue()<19)&&(!((List)stuff[2]).contains(""+msg.source())))
 			{
 				stuff[1]=Integer.valueOf(((Integer)stuff[1]).intValue()+1);
-				((MOB)host).tell(CMLib.lang()._("You have freed @x1 from @x2.",msg.source().name((MOB)host),(msg.source().getStartRoom().getArea().name())));
+				((MOB)host).tell(CMLib.lang().L("You have freed @x1 from @x2.",msg.source().name((MOB)host),(msg.source().getStartRoom().getArea().name())));
 				CMLib.leveler().postExperience((MOB)host,null,null,((Integer)stuff[1]).intValue(),false);
 			}
 		}

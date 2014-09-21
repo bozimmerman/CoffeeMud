@@ -226,7 +226,7 @@ public class CMClass extends ClassLoader
 		StringBuffer str=new StringBuffer("");
 		for(int i=0;i<OBJECT_TOTAL;i++)
 			if(OBJECT_CREATIONS[i]>0)
-				str.append(_("@x1: Created: @x2, Destroyed: @x3, Remaining: @x4\n\r",CMStrings.padRight(OBJECT_DESCS[i],12),OBJECT_CREATIONS[i],OBJECT_DESTRUCTIONS[i],(OBJECT_CREATIONS[i]-OBJECT_DESTRUCTIONS[i])));
+				str.append(L("@x1: Created: @x2, Destroyed: @x3, Remaining: @x4\n\r",CMStrings.padRight(OBJECT_DESCS[i],12),OBJECT_CREATIONS[i],OBJECT_DESTRUCTIONS[i],(OBJECT_CREATIONS[i]-OBJECT_DESTRUCTIONS[i])));
 		return str.toString();
 	}
 

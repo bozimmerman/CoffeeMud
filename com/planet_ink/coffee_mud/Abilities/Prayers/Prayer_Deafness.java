@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_Deafness extends Prayer
 {
 	@Override public String ID() { return "Prayer_Deafness"; }
-	private final static String localizedName = CMLib.lang()._("Deafness");
+	private final static String localizedName = CMLib.lang().L("Deafness");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Deafness)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Deafness)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -68,7 +68,7 @@ public class Prayer_Deafness extends Prayer
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(CMLib.flags().canHear(mob)))
-			mob.tell(_("Your hearing returns."));
+			mob.tell(L("Your hearing returns."));
 	}
 
 	@Override
@@ -103,19 +103,19 @@ public class Prayer_Deafness extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":_("^S<S-NAME> scream(s) an unholy prayer to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":L("^S<S-NAME> scream(s) an unholy prayer to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> go(es) deaf!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> go(es) deaf!"));
 					maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> scream(s) at <T-NAMESELF>, but flub(s) the prayer."));
+			return maliciousFizzle(mob,target,L("<S-NAME> scream(s) at <T-NAMESELF>, but flub(s) the prayer."));
 
 
 		// return whether it worked

@@ -93,12 +93,12 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 				{
 					if(getDestinationRoom()==null)
 					{
-						msg.source().tell(_("This portal is broken.. nowhere to go!"));
+						msg.source().tell(L("This portal is broken.. nowhere to go!"));
 						return false;
 					}
 					if(hasALid()&&(!isOpen()))
 					{
-						msg.source().tell(_("@x1 is closed.",name()));
+						msg.source().tell(L("@x1 is closed.",name()));
 						return false;
 					}
 					msg.modify(msg.source(),msg.target(),msg.tool(),
@@ -107,21 +107,21 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 							   msg.othersMajor()|CMMsg.TYP_ENTER,null);
 					return true;
 				}
-				msg.source().tell(_("You cannot sit on @x1.",name()));
+				msg.source().tell(L("You cannot sit on @x1.",name()));
 				return false;
 			}
 			break;
 		case CMMsg.TYP_SLEEP:
 			if(msg.amITarget(this))
 			{
-				msg.source().tell(_("You cannot sleep on @x1.",name()));
+				msg.source().tell(L("You cannot sleep on @x1.",name()));
 				return false;
 			}
 			break;
 		case CMMsg.TYP_MOUNT:
 			if(msg.amITarget(this))
 			{
-				msg.source().tell(_("You cannot mount @x1, try Enter.",name()));
+				msg.source().tell(L("You cannot mount @x1, try Enter.",name()));
 				return false;
 			}
 			break;

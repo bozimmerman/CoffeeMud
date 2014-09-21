@@ -39,9 +39,9 @@ import java.util.*;
 public class Thief_Hideout extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Hideout"; }
-	private final static String localizedName = CMLib.lang()._("Hideout");
+	private final static String localizedName = CMLib.lang().L("Hideout");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(In your hideout)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(In your hideout)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings =_i(new String[] {"HIDEOUT"});
@@ -83,9 +83,9 @@ public class Thief_Hideout extends ThiefSkill
 			for(final MOB mob : mobs)
 			{
 				if(mob==null) break;
-				mob.tell(_("You slip back onto the streets."));
+				mob.tell(L("You slip back onto the streets."));
 
-				final CMMsg enterMsg=CMClass.getMsg(mob,previousLocation,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> walk(s) in out of nowhere."));
+				final CMMsg enterMsg=CMClass.getMsg(mob,previousLocation,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> walk(s) in out of nowhere."));
 				backToRoom=getPreviousLocation(mob);
 				if(backToRoom==null)
 					backToRoom=mob.getStartRoom();
@@ -155,7 +155,7 @@ public class Thief_Hideout extends ThiefSkill
 		final Room thisRoom=mob.location();
 		if(thisRoom.domainType()!=Room.DOMAIN_OUTDOORS_CITY)
 		{
-			mob.tell(_("You must be on the streets to enter your hideout."));
+			mob.tell(L("You must be on the streets to enter your hideout."));
 			return false;
 		}
 		TrackingLibrary.TrackingFlags flags;
@@ -173,7 +173,7 @@ public class Thief_Hideout extends ThiefSkill
 			case Room.DOMAIN_OUTDOORS_CITY:
 				break;
 			default:
-				mob.tell(_("You must be deep in an urban area to enter your hideout."));
+				mob.tell(L("You must be deep in an urban area to enter your hideout."));
 				return false;
 			}
 		}
@@ -184,7 +184,7 @@ public class Thief_Hideout extends ThiefSkill
 			previousLocation=thisRoom;
 			shelter=CMClass.getLocale("HideoutShelter");
 			final Exit E=CMClass.getExit("OpenDescriptable");
-			E.setDisplayText(_("The way back to @x1",thisRoom.displayText(mob)));
+			E.setDisplayText(L("The way back to @x1",thisRoom.displayText(mob)));
 			final int dir=CMLib.dice().roll(1, 4, -1);
 			shelter.setRawExit(dir, E);
 			shelter.rawDoors()[dir]=thisRoom;
@@ -192,8 +192,8 @@ public class Thief_Hideout extends ThiefSkill
 			shelter.setArea(mob.location().getArea());
 			miscText=CMLib.map().getExtendedRoomID(thisRoom);
 
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_THIEF_ACT,auto?"":_("<S-NAME> slip(s) away."));
-			final CMMsg enterMsg=CMClass.getMsg(mob,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> duck(s) into the hideout."));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_THIEF_ACT,auto?"":L("<S-NAME> slip(s) away."));
+			final CMMsg enterMsg=CMClass.getMsg(mob,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> duck(s) into the hideout."));
 			if(thisRoom.okMessage(mob,msg) && newRoom.okMessage(mob,enterMsg))
 			{
 				if(mob.isInCombat())
@@ -205,13 +205,13 @@ public class Thief_Hideout extends ThiefSkill
 				newRoom.bringMobHere(mob,false);
 				thisRoom.delInhabitant(mob);
 				newRoom.send(mob,enterMsg);
-				mob.tell(_("\n\r\n\r"));
+				mob.tell(L("\n\r\n\r"));
 				CMLib.commands().postLook(mob,true);
 				beneficialAffect(mob,mob,asLevel,999999);
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> attemp(s) to slip away, and fail(s)."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> attemp(s) to slip away, and fail(s)."));
 
 		return success;
 	}

@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_FlameWeapon extends Prayer
 {
 	@Override public String ID() { return "Prayer_FlameWeapon"; }
-	private final static String localizedName = CMLib.lang()._("Flame Weapon");
+	private final static String localizedName = CMLib.lang().L("Flame Weapon");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Enflamed)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Enflamed)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -84,7 +84,7 @@ public class Prayer_FlameWeapon extends Prayer
 					{
 						int flameDamage = (int) Math.round( Math.random() * 6 );
 						flameDamage *= (super.getXLEVELLevel(invoker())+(super.getX1Level(invoker())));
-						msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),CMMsg.MSG_OK_ACTION,_("^RThe flame around @x1 @x2 <T-NAME>!^?",affected.name(),CMLib.combat().standardHitWord(Weapon.TYPE_BURNING,flameDamage))));
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),CMMsg.MSG_OK_ACTION,L("^RThe flame around @x1 @x2 <T-NAME>!^?",affected.name(),CMLib.combat().standardHitWord(Weapon.TYPE_BURNING,flameDamage))));
 						final CMMsg msg3=CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,CMMsg.MSG_DAMAGE,CMMsg.NO_EFFECT,null);
 						msg3.setValue(flameDamage);
 						msg.addTrailerMsg(msg3);
@@ -108,12 +108,12 @@ public class Prayer_FlameWeapon extends Prayer
 				||((((Weapon)affected).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION))
 				{
 					if((((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB))
-						((MOB)((Item)affected).owner()).tell(_("The flames around @x1 consume it.",((Item)affected).name()));
+						((MOB)((Item)affected).owner()).tell(L("The flames around @x1 consume it.",((Item)affected).name()));
 					destroyMe=(Item)affected;
 				}
 				else
 				if((((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB))
-					((MOB)((Item)affected).owner()).tell(_("The flames around @x1 fade.",((Item)affected).name()));
+					((MOB)((Item)affected).owner()).tell(L("The flames around @x1 fade.",((Item)affected).name()));
 			}
 		}
 		super.unInvoke();
@@ -153,14 +153,14 @@ public class Prayer_FlameWeapon extends Prayer
 			}
 			if(!(target instanceof Weapon))
 			{
-				mob.tell(_("You can only enflame weapons."));
+				mob.tell(L("You can only enflame weapons."));
 				return false;
 			}
 		}
 
 		if(((Weapon)target).fetchEffect(this.ID())!=null)
 		{
-			mob.tell(_("@x1 is already enflamed.",target.name(mob)));
+			mob.tell(L("@x1 is already enflamed.",target.name(mob)));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -174,7 +174,7 @@ public class Prayer_FlameWeapon extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> appear(s) surrounded by flames!"):_("^S<S-NAME> hold(s) <T-NAMESELF> and @x1.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> appear(s) surrounded by flames!"):L("^S<S-NAME> hold(s) <T-NAMESELF> and @x1.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -185,7 +185,7 @@ public class Prayer_FlameWeapon extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> hold(s) <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> hold(s) <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
 		// return whether it worked
 		return success;
 	}

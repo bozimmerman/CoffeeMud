@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_DetectInvisible extends Spell
 {
 	@Override public String ID() { return "Spell_DetectInvisible"; }
-	private final static String localizedName = CMLib.lang()._("Detect Invisible");
+	private final static String localizedName = CMLib.lang().L("Detect Invisible");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Detecting Invisible)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Detecting Invisible)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -55,7 +55,7 @@ public class Spell_DetectInvisible extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("Your sight becomes less keen."));
+			mob.tell(L("Your sight becomes less keen."));
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class Spell_DetectInvisible extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already detecting invisibility."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already detecting invisibility."));
 			return false;
 		}
 
@@ -106,7 +106,7 @@ public class Spell_DetectInvisible extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> open(s) <S-HIS-HER> softly glowing eyes."):_("^S<S-NAME> incant(s) softly, and open(s) <S-HIS-HER> glowing eyes.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> open(s) <S-HIS-HER> softly glowing eyes."):L("^S<S-NAME> incant(s) softly, and open(s) <S-HIS-HER> glowing eyes.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -114,7 +114,7 @@ public class Spell_DetectInvisible extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> incant(s) and open(s) <S-HIS-HER> eyes softly, but the spell fizzles."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> incant(s) and open(s) <S-HIS-HER> eyes softly, but the spell fizzles."));
 
 		return success;
 	}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Sinking extends StdAbility
 {
 	@Override public String ID() { return "Sinking"; }
-	private final static String localizedName = CMLib.lang()._("Sinking");
+	private final static String localizedName = CMLib.lang().L("Sinking");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_ITEMS|Ability.CAN_MOBS;}
@@ -100,7 +100,7 @@ public class Sinking extends StdAbility
 			   ||(((Room)msg.target()).domainType()==Room.DOMAIN_OUTDOORS_AIR))
 			&&(!CMLib.flags().isFlying(msg.source())))
 			{
-				msg.source().tell(_("You can't seem to get there from here."));
+				msg.source().tell(L("You can't seem to get there from here."));
 				return false;
 			}
 		}
@@ -140,11 +140,11 @@ public class Sinking extends StdAbility
 		sinkTickDown=1;
 
 		int direction=Directions.DOWN;
-		String addStr=_("down");
+		String addStr=L("down");
 		if(reversed())
 		{
 			direction=Directions.UP;
-			addStr=_("upwards");
+			addStr=L("upwards");
 		}
 		if(affected instanceof MOB)
 		{
@@ -165,7 +165,7 @@ public class Sinking extends StdAbility
 			&&(A.proficiencyCheck(mob,25,(A.proficiency()>=75))
 			&&(mob.curState().getMovement()>0)))
 			{
-				if((R.show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> tread(s) water.")))
+				if((R.show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> tread(s) water.")))
 				&&(!mob.isMonster()))
 				{
 					isTreading=true;
@@ -176,7 +176,7 @@ public class Sinking extends StdAbility
 			}
 			isTreading=false;
 			mob.recoverPhyStats();
-			mob.tell(_("\n\r\n\rYOU ARE SINKING @x1!!\n\r\n\r",addStr.toUpperCase()));
+			mob.tell(L("\n\r\n\rYOU ARE SINKING @x1!!\n\r\n\r",addStr.toUpperCase()));
 			CMLib.tracking().walk(mob,direction,false,false);
 			R=mob.location();
 			if((R!=null)&&(!canSinkFrom(R,direction)))
@@ -221,10 +221,10 @@ public class Sinking extends StdAbility
 			final Room nextRoom=room.getRoomInDir(direction);
 			if((nextRoom!=null)&&(canSinkFrom(room,direction)))
 			{
-				room.show(invoker,null,item,CMMsg.MSG_OK_ACTION,_("<O-NAME> sinks @x1.",addStr));
+				room.show(invoker,null,item,CMMsg.MSG_OK_ACTION,L("<O-NAME> sinks @x1.",addStr));
 				nextRoom.moveItemTo(item,ItemPossessor.Expire.Player_Drop);
 				room=nextRoom;
-				nextRoom.show(invoker,null,item,CMMsg.MSG_OK_ACTION,_("<O-NAME> sinks in from @x1.",(reversed()?_("below"):_("above"))));
+				nextRoom.show(invoker,null,item,CMMsg.MSG_OK_ACTION,L("<O-NAME> sinks in from @x1.",(reversed()?L("below"):L("above"))));
 				return true;
 			}
 			if(reversed())

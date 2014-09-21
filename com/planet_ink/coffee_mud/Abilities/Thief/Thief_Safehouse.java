@@ -37,9 +37,9 @@ import java.util.*;
 public class Thief_Safehouse extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Safehouse"; }
-	private final static String localizedName = CMLib.lang()._("Safehouse");
+	private final static String localizedName = CMLib.lang().L("Safehouse");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Safehouse)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Safehouse)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -60,7 +60,7 @@ public class Thief_Safehouse extends ThiefSkill
 		&&(affected instanceof Room)
 		&&(isLaw(msg.source())))
 		{
-			msg.source().tell(_("You don't think there's anything going on in there."));
+			msg.source().tell(L("You don't think there's anything going on in there."));
 			return false;
 		}
 		return true;
@@ -135,12 +135,12 @@ public class Thief_Safehouse extends ThiefSkill
 		final Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
-			mob.tell(_("This place is already a safehouse."));
+			mob.tell(L("This place is already a safehouse."));
 			return false;
 		}
 		if((!auto)&&(CMLib.law().getLegalBehavior(target)==null))
 		{
-			mob.tell(_("There is no law here!"));
+			mob.tell(L("There is no law here!"));
 			return false;
 		}
 		if(!isGoodSafehouse(target))
@@ -161,7 +161,7 @@ public class Thief_Safehouse extends ThiefSkill
 				if((isGoodSafehouse(R))&&(!isLawHere(R)))
 					break;
 			}
-			mob.tell(_("A place like this can't be a safehouse."));
+			mob.tell(L("A place like this can't be a safehouse."));
 			if((isGoodSafehouse(R))&&(!isLawHere(R)))
 			{
 				V=CMLib.tracking().findBastardTheBestWay(target,new XVector(R),flags,50+(2*getXLEVELLevel(mob)));
@@ -176,16 +176,16 @@ public class Thief_Safehouse extends ThiefSkill
 					dir=CMLib.tracking().trackNextDirectionFromHere(V,target,true);
 				}
 				if(target==R)
-					mob.tell(_("You happen to know of one nearby though.  Go: @x1",trail.toString()));
+					mob.tell(L("You happen to know of one nearby though.  Go: @x1",trail.toString()));
 			}
 			return false;
 		}
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":_("<S-NAME> hide(s) out from the law here."));
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":L("<S-NAME> hide(s) out from the law here."));
 		if(!success)
-			return beneficialVisualFizzle(mob,null,auto?"":_("<S-NAME> attempt(s) hide out from the law here, but things are just too hot."));
+			return beneficialVisualFizzle(mob,null,auto?"":L("<S-NAME> attempt(s) hide out from the law here, but things are just too hot."));
 		else
 		if(mob.location().okMessage(mob,msg))
 		{

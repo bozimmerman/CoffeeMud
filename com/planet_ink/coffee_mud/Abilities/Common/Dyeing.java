@@ -37,7 +37,7 @@ import java.util.*;
 public class Dyeing extends CommonSkill
 {
 	@Override public String ID() { return "Dyeing"; }
-	private final static String localizedName = CMLib.lang()._("Dyeing");
+	private final static String localizedName = CMLib.lang().L("Dyeing");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"DYE","DYEING"});
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
@@ -53,8 +53,8 @@ public class Dyeing extends CommonSkill
 	public Dyeing()
 	{
 		super();
-		displayText=_("You are dyeing...");
-		verb=_("dyeing");
+		displayText=L("You are dyeing...");
+		verb=L("dyeing");
 	}
 
 	protected String fixColor(String name, char colorChar, String colorWord)
@@ -146,13 +146,13 @@ public class Dyeing extends CommonSkill
 			return true;
 		if(commands.size()<2)
 		{
-			commonTell(mob,_("You must specify what you want to dye, and color to dye it."));
+			commonTell(mob,L("You must specify what you want to dye, and color to dye it."));
 			return false;
 		}
 		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.firstElement());
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTell(mob,_("You don't seem to have a '@x1'.",((String)commands.firstElement())));
+			commonTell(mob,L("You don't seem to have a '@x1'.",((String)commands.firstElement())));
 			return false;
 		}
 		commands.remove(commands.firstElement());
@@ -164,7 +164,7 @@ public class Dyeing extends CommonSkill
 			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER))
 		||(!target.isGeneric()))
 		{
-			commonTell(mob,_("You can't dye that material."));
+			commonTell(mob,L("You can't dye that material."));
 			return false;
 		}
 		writing=CMParms.combine(commands,0).toLowerCase();
@@ -190,13 +190,13 @@ public class Dyeing extends CommonSkill
 		}
 		if((" white green blue red yellow cyan purple ".indexOf(" "+writing.trim()+" ")<0)||(writing.trim().indexOf(' ')>=0))
 		{
-			commonTell(mob,_("You can't dye anything '@x1'.  Try white, green, blue, red, yellow, cyan, or purple. You can also prefix the colors with the word 'dark', 'light', or 'bright'.",writing));
+			commonTell(mob,L("You can't dye anything '@x1'.  Try white, green, blue, red, yellow, cyan, or purple. You can also prefix the colors with the word 'dark', 'light', or 'bright'.",writing));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		verb=_("dyeing @x1 @x2@x3",target.name(),(darkFlag?"dark ":brightFlag?"bright ":lightFlag?"light ":""),writing);
-		displayText=_("You are @x1",verb);
+		verb=L("dyeing @x1 @x2@x3",target.name(),(darkFlag?"dark ":brightFlag?"bright ":lightFlag?"light ":""),writing);
+		displayText=L("You are @x1",verb);
 		found=target;
 		if(darkFlag) writing=CMStrings.capitalizeAndLower(writing);
 		if(!proficiencyCheck(mob,0,auto))
@@ -205,7 +205,7 @@ public class Dyeing extends CommonSkill
 		if((target.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LEATHER)
 			duration*=2;
 		duration=getDuration(duration,mob,1,6);
-		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),_("<S-NAME> start(s) dyeing @x1.",target.name()));
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),L("<S-NAME> start(s) dyeing @x1.",target.name()));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

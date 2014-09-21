@@ -103,7 +103,7 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 				if(!isAllWiringConnected(this))
 				{
 					if(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
-						msg.source().tell(_("The panel containing @x1 is not activated or connected.",name()));
+						msg.source().tell(L("The panel containing @x1 is not activated or connected.",name()));
 					return false;
 				}
 				break;
@@ -143,24 +143,24 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 				break;
 			case CMMsg.TYP_ACTIVATE:
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
-					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, _("<S-NAME> activate(s) <T-NAME>."));
+					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, L("<S-NAME> activate(s) <T-NAME>."));
 				this.activate(true);
 				break;
 			case CMMsg.TYP_DEACTIVATE:
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
-					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, _("<S-NAME> deactivate(s) <T-NAME>."));
+					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, L("<S-NAME> deactivate(s) <T-NAME>."));
 				this.activate(false);
 				break;
 			case CMMsg.TYP_LOOK:
 				super.executeMsg(host, msg);
 				if(CMLib.flags().canBeSeenBy(this, msg.source()))
-					msg.source().tell(_("@x1 is currently @x2",name(),(activated()?"connected.\n\r":"deactivated/disconnected.\n\r")));
+					msg.source().tell(L("@x1 is currently @x2",name(),(activated()?"connected.\n\r":"deactivated/disconnected.\n\r")));
 				return;
 			case CMMsg.TYP_REPAIR:
 				if(CMLib.dice().rollPercentage()<msg.value())
 				{
 					setUsesRemaining(usesRemaining()<100?100:usesRemaining());
-					msg.source().tell(_("@x1 is now repaired.\n\r",name()));
+					msg.source().tell(L("@x1 is now repaired.\n\r",name()));
 				}
 				else
 				{
@@ -171,7 +171,7 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 						if(repairApplied < 0)
 							repairApplied=1;
 						setUsesRemaining(usesRemaining()+repairApplied);
-						msg.source().tell(_("@x1 is now @x2% repaired.\n\r",name(),""+usesRemaining()));
+						msg.source().tell(L("@x1 is now @x2% repaired.\n\r",name(),""+usesRemaining()));
 					}
 				}
 				break;
@@ -186,11 +186,11 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 							addAmt=0.1f;
 					}
 					setInstalledFactor(this.getInstalledFactor()+addAmt);
-					msg.source().tell(msg.source(),this,null,_("<T-NAME> is now enhanced.\n\r"));
+					msg.source().tell(msg.source(),this,null,L("<T-NAME> is now enhanced.\n\r"));
 				}
 				else
 				{
-					msg.source().tell(msg.source(),this,null,_("Your attempt to enhance <T-NAME> has failed.\n\r"));
+					msg.source().tell(msg.source(),this,null,L("Your attempt to enhance <T-NAME> has failed.\n\r"));
 				}
 				break;
 			}

@@ -36,7 +36,7 @@ public class Fighter_CoverDefence extends FighterSkill
 {
 	public int hits=0;
 	@Override public String ID() { return "Fighter_CoverDefence"; }
-	private final static String localizedName = CMLib.lang()._("Cover Defence");
+	private final static String localizedName = CMLib.lang().L("Cover Defence");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -66,7 +66,7 @@ public class Fighter_CoverDefence extends FighterSkill
 		   &&(proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90+(2*getXLEVELLevel(mob)),false))
 		   &&(msg.source().getVictim()==mob))
 		{
-			final CMMsg msg2=CMClass.getMsg(msg.source(),mob,null,CMMsg.MSG_QUIETMOVEMENT,_("<T-NAME> take(s) cover from <S-YOUPOSS> attack!"));
+			final CMMsg msg2=CMClass.getMsg(msg.source(),mob,null,CMMsg.MSG_QUIETMOVEMENT,L("<T-NAME> take(s) cover from <S-YOUPOSS> attack!"));
 			if(mob.location().okMessage(mob,msg2))
 			{
 				mob.location().send(mob,msg2);

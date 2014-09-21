@@ -38,7 +38,7 @@ import java.util.*;
 public class Song_Strength extends Song
 {
 	@Override public String ID() { return "Song_Strength"; }
-	private final static String localizedName = CMLib.lang()._("Strength");
+	private final static String localizedName = CMLib.lang().L("Strength");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
@@ -81,14 +81,14 @@ public class Song_Strength extends Song
 				amount=mob.charStats().getStat(CharStats.STAT_STRENGTH)/2;
 			else
 			{
-				mob.tell(_("Sing about how much strength?"));
+				mob.tell(L("Sing about how much strength?"));
 				return false;
 			}
 		}
 
 		if(amount>=mob.charStats().getStat(CharStats.STAT_STRENGTH))
 		{
-			mob.tell(_("You can't sing away that much strength."));
+			mob.tell(L("You can't sing away that much strength."));
 			return false;
 		}
 

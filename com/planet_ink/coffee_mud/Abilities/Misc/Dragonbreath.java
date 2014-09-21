@@ -37,7 +37,7 @@ import java.util.*;
 public class Dragonbreath extends StdAbility
 {
 	@Override public String ID() { return "Dragonbreath"; }
-	private final static String localizedName = CMLib.lang()._("Dragonbreath");
+	private final static String localizedName = CMLib.lang().L("Dragonbreath");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
@@ -66,17 +66,17 @@ public class Dragonbreath extends StdAbility
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth breathing on."));
+			mob.tell(L("There doesn't appear to be anyone here worth breathing on."));
 			return false;
 		}
 		if(!CMLib.flags().canBreatheHere(mob,mob.location()))
 		{
-			mob.tell(_("You can't breathe!"));
+			mob.tell(L("You can't breathe!"));
 			return false;
 		}
 		if(mob.charStats().getBodyPart(Race.BODY_MOUTH)==0)
 		{
-			mob.tell(_("You don't have a mouth!"));
+			mob.tell(L("You don't have a mouth!"));
 			return false;
 		}
 		char colorc='f';

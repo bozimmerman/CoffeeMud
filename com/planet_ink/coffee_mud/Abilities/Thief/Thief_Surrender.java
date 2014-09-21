@@ -37,7 +37,7 @@ import java.util.*;
 public class Thief_Surrender extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Surrender"; }
-	private final static String localizedName = CMLib.lang()._("Surrender");
+	private final static String localizedName = CMLib.lang().L("Surrender");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
@@ -63,7 +63,7 @@ public class Thief_Surrender extends ThiefSkill
 		final double goldRequired=gold;
 		if((!mob.isInCombat())||(theList.size()==0))
 		{
-			mob.tell(_("There's no one to surrender to!"));
+			mob.tell(L("There's no one to surrender to!"));
 			return false;
 		}
 
@@ -88,7 +88,7 @@ public class Thief_Surrender extends ThiefSkill
 				else
 					enemiesList.append(", "+vic.name());
 			}
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> surrender(s) to @x1, paying @x2.",enemiesList.toString(),costWords));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> surrender(s) to @x1, paying @x2.",enemiesList.toString(),costWords));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -107,7 +107,7 @@ public class Thief_Surrender extends ThiefSkill
 				success=false;
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to surrender and fail(s)."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to surrender and fail(s)."));
 		return success;
 	}
 }

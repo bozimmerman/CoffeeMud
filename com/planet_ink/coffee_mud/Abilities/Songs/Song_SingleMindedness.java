@@ -36,7 +36,7 @@ import java.util.*;
 public class Song_SingleMindedness extends Song
 {
 	@Override public String ID() { return "Song_SingleMindedness"; }
-	private final static String localizedName = CMLib.lang()._("Single Mindedness");
+	private final static String localizedName = CMLib.lang().L("Single Mindedness");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected CMMsg themsg=null;
@@ -64,7 +64,7 @@ public class Song_SingleMindedness extends Song
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&(themsg.sourceMinor()!=msg.sourceMinor()))
 		{
-			msg.source().tell(msg.source(),null,null,_("The only thing you have a mind to do is '@x1'.",themsg.sourceMessage()));
+			msg.source().tell(msg.source(),null,null,L("The only thing you have a mind to do is '@x1'.",themsg.sourceMessage()));
 			return false;
 		}
 		return super.okMessage(ticking,msg);

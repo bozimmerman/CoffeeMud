@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_SummonTree extends Chant_SummonPlants
 {
 	@Override public String ID() { return "Chant_SummonTree"; }
-	private final static String localizedName = CMLib.lang()._("Summon Tree");
+	private final static String localizedName = CMLib.lang().L("Summon Tree");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
@@ -53,7 +53,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 		final Item newItem=CMClass.getBasicItem("GenItem");
 		final String name=CMLib.english().startWithAorAn(RawMaterial.CODES.NAME(code).toLowerCase()+" tree");
 		newItem.setName(name);
-		newItem.setDisplayText(_("@x1 grows here.",newItem.name()));
+		newItem.setDisplayText(L("@x1 grows here.",newItem.name()));
 		newItem.setDescription("");
 		newItem.basePhyStats().setWeight(10000);
 		CMLib.flags().setGettable(newItem,false);
@@ -64,7 +64,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 		final Chant_SummonTree newChant=new Chant_SummonTree();
 		newItem.basePhyStats().setLevel(10+newChant.getX1Level(mob));
 		newItem.setExpirationDate(0);
-		room.showHappens(CMMsg.MSG_OK_ACTION,_("a tall, healthy @x1 tree sprouts up.",RawMaterial.CODES.NAME(code).toLowerCase()));
+		room.showHappens(CMMsg.MSG_OK_ACTION,L("a tall, healthy @x1 tree sprouts up.",RawMaterial.CODES.NAME(code).toLowerCase()));
 		room.recoverPhyStats();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;

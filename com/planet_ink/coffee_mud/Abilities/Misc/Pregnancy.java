@@ -38,7 +38,7 @@ import java.util.*;
 public class Pregnancy extends StdAbility implements HealthCondition
 {
 	@Override public String ID() { return "Pregnancy"; }
-	private final static String localizedName = CMLib.lang()._("Pregnancy");
+	private final static String localizedName = CMLib.lang().L("Pregnancy");
 	@Override public String name() { return localizedName; }
 	protected long monthsRemaining=-1;
 	protected long daysRemaining=-1;
@@ -97,7 +97,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 		&&(affected instanceof MOB)
 		&&((daysRemaining>0)&&(monthsRemaining<=3)))
 			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,
-										  CMMsg.MSG_OK_VISUAL,_("\n\r<S-NAME> <S-IS-ARE> obviously with child.\n\r"),
+										  CMMsg.MSG_OK_VISUAL,L("\n\r<S-NAME> <S-IS-ARE> obviously with child.\n\r"),
 										  CMMsg.NO_EFFECT,null,
 										  CMMsg.NO_EFFECT,null));
 		super.executeMsg(host,msg);
@@ -217,7 +217,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 						if(CMLib.flags().isSleeping(mob))
 							mob.enqueCommand(CMParms.parse("WAKE"),Command.METAFLAG_FORCED,0);
 						if((CMLib.dice().rollPercentage()>50)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>5))
-							mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> moan(s) and scream(s) in labor pain!!"));
+							mob.location().show(mob,null,CMMsg.MSG_NOISE,L("<S-NAME> moan(s) and scream(s) in labor pain!!"));
 						ticksInLabor++;
 						if(ticksInLabor>=45)
 						{
@@ -246,7 +246,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 							desc+=".";
 							mob.curState().setMovement(0);
 							mob.curState().setHitPoints(mob.curState().getHitPoints()/2);
-							mob.location().show(mob,null,CMMsg.MSG_NOISE,_("***** <S-NAME> !!!GIVE(S) BIRTH!!! ******"));
+							mob.location().show(mob,null,CMMsg.MSG_NOISE,L("***** <S-NAME> !!!GIVE(S) BIRTH!!! ******"));
 							if(CMLib.dice().rollPercentage()>5)
 							{
 								Ability A=mob.fetchEffect(ID());
@@ -273,7 +273,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 								babe.setClan(p.first.clanID(),p.first.getAutoPosition());
 							babe.setLiegeID(mob.getLiegeID());
 							babe.setDescription(desc);
-							babe.setDisplayText(_("@x1 is here.",name));
+							babe.setDisplayText(L("@x1 is here.",name));
 							CMLib.beanCounter().clearZeroMoney(babe,null);
 							babe.baseCharStats().setMyRace(R);
 							babe.baseCharStats().setStat(CharStats.STAT_CHARISMA,10);
@@ -333,7 +333,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 								I.addNonUninvokableEffect((Ability)AGE.copyOf());
 							name=CMLib.english().startWithAorAn(R.makeMobName((char)babe.baseCharStats().getStat(CharStats.STAT_GENDER), 1)).toLowerCase();
 							I.setName(name);
-							I.setDisplayText(_("@x1 is here.",name));
+							I.setDisplayText(L("@x1 is here.",name));
 							I.recoverPhyStats();
 							mob.location().addItem(I);
 							final Behavior B=CMClass.getBehavior("Emoter");
@@ -362,7 +362,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 							}
 						}
 						else
-							mob.tell(_("You are in labor!!"));
+							mob.tell(L("You are in labor!!"));
 
 					}
 					else
@@ -374,18 +374,18 @@ public class Pregnancy extends StdAbility implements HealthCondition
 						{
 							if(CMLib.flags().isSleeping(mob))
 								mob.enqueCommand(CMParms.parse("WAKE"),Command.METAFLAG_FORCED,0);
-							mob.tell(_("Oh! You had a contraction!"));
+							mob.tell(L("Oh! You had a contraction!"));
 						}
 						else
 						if((monthsRemaining<=3)&&(CMLib.dice().rollPercentage()==1)&&(CMLib.dice().rollPercentage()==1))
-							mob.tell(_("You feel a kick in your gut."));
+							mob.tell(L("You feel a kick in your gut."));
 						else
 						if((monthsRemaining>8)&&(mob.location()!=null)&&(mob.location().getArea().getTimeObj().getHourOfDay()<2)&&(CMLib.dice().rollPercentage()==1))
 						{
 							if(CMLib.dice().rollPercentage()>25)
-								mob.tell(_("You feel really sick this morning."));
+								mob.tell(L("You feel really sick this morning."));
 							else
-								mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("**BLEH** <S-NAME> just threw up."));
+								mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("**BLEH** <S-NAME> just threw up."));
 						}
 					}
 				}
@@ -420,7 +420,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 				end=start;
 				start-=millisperbirthperiod;
 			}
-			if(mob.location().show(mob,target,this,CMMsg.TYP_GENERAL,auto?null:_("<S-NAME> imgregnate(s) <T-NAMESELF>.")))
+			if(mob.location().show(mob,target,this,CMMsg.TYP_GENERAL,auto?null:L("<S-NAME> imgregnate(s) <T-NAMESELF>.")))
 			{
 				setMiscText(start+"/"+end+"/"+mob.Name()+"/"+mob.charStats().getMyRace().ID());
 				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONCEPTIONS);
@@ -431,7 +431,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 		}
 		else
 		if(!auto)
-			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to impregnate <T-NAMESELF>, but fail(s)!"));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to impregnate <T-NAMESELF>, but fail(s)!"));
 		return success;
 	}
 }

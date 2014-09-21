@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_FeatherFall extends Spell
 {
 	@Override public String ID() { return "Spell_FeatherFall"; }
-	private final static String localizedName = CMLib.lang()._("Feather Fall");
+	private final static String localizedName = CMLib.lang().L("Feather Fall");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Feather Fall)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Feather Fall)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -77,7 +77,7 @@ public class Spell_FeatherFall extends Spell
 			if((((Item)msg.target()).phyStats().weight()>(mob.maxCarry()-mobWeight(mob)))
 			&&(!mob.isMine(msg.target())))
 			{
-				mob.tell(_("@x1 is too heavy.",((Item)msg.target()).name(mob)));
+				mob.tell(L("@x1 is too heavy.",((Item)msg.target()).name(mob)));
 				return false;
 			}
 		}
@@ -95,7 +95,7 @@ public class Spell_FeatherFall extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> normal weight returns."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> normal weight returns."));
 	}
 
 	@Override
@@ -119,7 +119,7 @@ public class Spell_FeatherFall extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) very light!"):_("^S<S-NAME> invoke(s) immediate lightness upon <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) very light!"):L("^S<S-NAME> invoke(s) immediate lightness upon <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -127,7 +127,7 @@ public class Spell_FeatherFall extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a spell upon <T-NAMESELF>, but nothing happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a spell upon <T-NAMESELF>, but nothing happens."));
 		// return whether it worked
 		return success;
 	}

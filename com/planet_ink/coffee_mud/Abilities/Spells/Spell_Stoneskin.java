@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Stoneskin extends Spell
 {
 	@Override public String ID() { return "Spell_Stoneskin"; }
-	private final static String localizedName = CMLib.lang()._("Stoneskin");
+	private final static String localizedName = CMLib.lang().L("Stoneskin");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Stoneskin)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Stoneskin)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -65,7 +65,7 @@ public class Spell_Stoneskin extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> skin softens."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> skin softens."));
 	}
 
 
@@ -86,7 +86,7 @@ public class Spell_Stoneskin extends Spell
 		&&((msg.targetMinor()==CMMsg.TYP_DAMAGE)&&((msg.value())>0)&&(msg.tool() instanceof Weapon)))
 		{
 			msg.modify(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
-			msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),msg.source(),CMMsg.MSG_OK_VISUAL,_("The stone skin around <S-NAME> absorbs the attack from <T-NAME>.")));
+			msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),msg.source(),CMMsg.MSG_OK_VISUAL,L("The stone skin around <S-NAME> absorbs the attack from <T-NAME>.")));
 			if((--HitsRemaining)<=0)
 				unInvoke();
 		}
@@ -116,17 +116,17 @@ public class Spell_Stoneskin extends Spell
 			// what happened.
 			invoker=mob;
 
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":_("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> watch(es) <S-HIS-HER> skin turn hard as stone!"));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> watch(es) <S-HIS-HER> skin turn hard as stone!"));
 				HitsRemaining = 3 + ( adjustedLevel( mob, asLevel ) / 5 );
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a spell, but fail(s) miserably."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a spell, but fail(s) miserably."));
 
 		// return whether it worked
 		return success;

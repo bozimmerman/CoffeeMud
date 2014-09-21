@@ -38,9 +38,9 @@ import java.util.*;
 public class Chant_EndureRust extends Chant
 {
 	@Override public String ID() { return "Chant_EndureRust"; }
-	private final static String localizedName = CMLib.lang()._("Endure Rust");
+	private final static String localizedName = CMLib.lang().L("Endure Rust");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Endure Rust)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Endure Rust)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
@@ -52,7 +52,7 @@ public class Chant_EndureRust extends Chant
 	public void unInvoke()
 	{
 		if((affected instanceof MOB)&&(canBeUninvoked()))
-			((MOB)affected).tell(_("Your rust endurance fades."));
+			((MOB)affected).tell(L("Your rust endurance fades."));
 		super.unInvoke();
 	}
 
@@ -68,7 +68,7 @@ public class Chant_EndureRust extends Chant
 				final Room R=CMLib.map().roomLocation(affected);
 				dontbother.add(msg.target());
 				if(R!=null)
-					R.show(msg.source(),affected,CMMsg.MSG_OK_VISUAL,_("<T-NAME> resist(s) the oxidizing affects."));
+					R.show(msg.source(),affected,CMMsg.MSG_OK_VISUAL,L("<T-NAME> resist(s) the oxidizing affects."));
 			}
 			return false;
 		}
@@ -89,7 +89,7 @@ public class Chant_EndureRust extends Chant
 		}
 		else
 		{
-			mob.tell(_("This chant won't affect @x1.",target.name(mob)));
+			mob.tell(L("This chant won't affect @x1.",target.name(mob)));
 			return false;
 		}
 
@@ -101,9 +101,9 @@ public class Chant_EndureRust extends Chant
 
 		if(!success)
 		{
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but fail(s)."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but fail(s)."));
 		}
-		final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF>, causing a rust proof film to envelope <T-HIM-HER>!^?"));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>, causing a rust proof film to envelope <T-HIM-HER>!^?"));
 		if(mob.location().okMessage(mob,msg))
 		{
 			dontbother.clear();

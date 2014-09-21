@@ -37,10 +37,10 @@ import java.util.*;
 public class Fighter_WeaponSharpening extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_WeaponSharpening"; }
-	private final static String localizedName = CMLib.lang()._("Weapon Sharpening");
+	private final static String localizedName = CMLib.lang().L("Weapon Sharpening");
 	@Override public String name() { return localizedName; }
 	protected String displayString="Sharpening";
-	@Override public String displayText() { return _("("+displayString+")"); }
+	@Override public String displayText() { return L("("+displayString+")"); }
 	private static final String[] triggerStrings =_i(new String[] {"WEAPONSHARPENING","SHARPEN"});
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -75,7 +75,7 @@ public class Fighter_WeaponSharpening extends FighterSkill
 			}
 			if((this.tickDown % 2)==0)
 			{
-				mob.location().show(mob, weapon, CMMsg.MSG_HANDS, _("<S-NAME> continue(s) sharpening <T-NAME> (@x1).",CMath.toPct(CMath.div((TICKS_TO_SHARPEN-tickDown+1),TICKS_TO_SHARPEN))));
+				mob.location().show(mob, weapon, CMMsg.MSG_HANDS, L("<S-NAME> continue(s) sharpening <T-NAME> (@x1).",CMath.toPct(CMath.div((TICKS_TO_SHARPEN-tickDown+1),TICKS_TO_SHARPEN))));
 			}
 		}
 		else
@@ -108,7 +108,7 @@ public class Fighter_WeaponSharpening extends FighterSkill
 			weapon.recoverPhyStats();
 			if(mob.location()!=null)
 				mob.location().recoverRoomStats();
-			mob.tell(mob,weapon,null,_("You have finished sharpening <T-NAME>."));
+			mob.tell(mob,weapon,null,L("You have finished sharpening <T-NAME>."));
 			weapon = null;
 		}
 		else
@@ -118,7 +118,7 @@ public class Fighter_WeaponSharpening extends FighterSkill
 		{
 			final MOB M=(MOB)((Item)affected).owner();
 			if((!M.amDead())&&(CMLib.flags().isInTheGame(M,true))&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))
-				M.tell(M,affected,null,_("<T-NAME> no longer seem(s) quite as sharp."));
+				M.tell(M,affected,null,L("<T-NAME> no longer seem(s) quite as sharp."));
 		}
 		super.unInvoke();
 	}
@@ -138,19 +138,19 @@ public class Fighter_WeaponSharpening extends FighterSkill
 	{
 		if(mob.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("You are already sharpening something."));
+			mob.tell(L("You are already sharpening something."));
 			return false;
 		}
 		final Item weapon=super.getTarget(mob,null,givenTarget,null,commands,Wearable.FILTER_ANY);
 		if(weapon==null) return false;
 		if(!(weapon instanceof Weapon))
 		{
-			mob.tell(mob,weapon,null,_("<T-NAME> is not a weapon."));
+			mob.tell(mob,weapon,null,L("<T-NAME> is not a weapon."));
 			return false;
 		}
 		if(weapon.fetchEffect(ID())!=null)
 		{
-			mob.tell(mob,weapon,null,_("<T-NAME> is already sharp."));
+			mob.tell(mob,weapon,null,L("<T-NAME> is already sharp."));
 			return false;
 		}
 		boolean isSharpenable;
@@ -183,23 +183,23 @@ public class Fighter_WeaponSharpening extends FighterSkill
 		}
 		if(!isSharpenable)
 		{
-			mob.tell(mob,weapon,null,_("<T-NAME> can not be sharpened with this skill."));
+			mob.tell(mob,weapon,null,L("<T-NAME> can not be sharpened with this skill."));
 			return false;
 		}
 		if((weapon.subjectToWearAndTear())&&(weapon.usesRemaining()<95))
 		{
-			mob.tell(mob,weapon,null,_("<T-NAME> needs repairing first."));
+			mob.tell(mob,weapon,null,L("<T-NAME> needs repairing first."));
 			return false;
 		}
 		if((!auto)&&(mob.isInCombat()))
 		{
-			mob.tell(_("You are a bit too busy to do that right now."));
+			mob.tell(L("You are a bit too busy to do that right now."));
 			return false;
 		}
 		final int bonus=(int)Math.round(CMath.mul(0.10+(0.10*getXLEVELLevel(mob)),weapon.phyStats().damage()));
 		if(bonus<1)
 		{
-			mob.tell(mob,weapon,null,_("<T-NAME> is too weak of a weapon to provide any more benefit from sharpening."));
+			mob.tell(mob,weapon,null,L("<T-NAME> is too weak of a weapon to provide any more benefit from sharpening."));
 			return false;
 		}
 
@@ -209,7 +209,7 @@ public class Fighter_WeaponSharpening extends FighterSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final String str=auto?_("<T-NAME> looks sharper!"):_("<S-NAME> start(s) sharpening <T-NAMESELF>.");
+			final String str=auto?L("<T-NAME> looks sharper!"):L("<S-NAME> start(s) sharpening <T-NAMESELF>.");
 			final CMMsg msg=CMClass.getMsg(mob,weapon,this,CMMsg.MSG_NOISYMOVEMENT,str);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -236,7 +236,7 @@ public class Fighter_WeaponSharpening extends FighterSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,weapon,_("<S-NAME> attempt(s) to tweak <T-NAME>, but just can't get it quite right."));
+			return beneficialVisualFizzle(mob,weapon,L("<S-NAME> attempt(s) to tweak <T-NAME>, but just can't get it quite right."));
 		return success;
 	}
 

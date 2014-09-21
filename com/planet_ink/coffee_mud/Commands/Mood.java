@@ -50,7 +50,7 @@ public class Mood extends StdCommand
 			A.invoke(mob,V,mob,true,0);
 		}
 		else
-			mob.tell(_("This command is not implemented."));
+			mob.tell(L("This command is not implemented."));
 		return false;
 	}
 	@Override public boolean canBeOrdered(){return true;}

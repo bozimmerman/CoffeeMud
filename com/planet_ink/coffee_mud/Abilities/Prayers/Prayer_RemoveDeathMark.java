@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_RemoveDeathMark extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_RemoveDeathMark"; }
-	private final static String localizedName = CMLib.lang()._("Remove Death Mark");
+	private final static String localizedName = CMLib.lang().L("Remove Death Mark");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -97,7 +97,7 @@ public class Prayer_RemoveDeathMark extends Prayer implements MendingSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("^SA glow surrounds <T-NAME>.^?"):_("^S<S-NAME> call(s) on @x1 for <T-NAME> to be released from a death mark.^?",hisHerDiety(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("^SA glow surrounds <T-NAME>.^?"):L("^S<S-NAME> call(s) on @x1 for <T-NAME> to be released from a death mark.^?",hisHerDiety(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -112,7 +112,7 @@ public class Prayer_RemoveDeathMark extends Prayer implements MendingSkill
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> call(s) on @x1 to release <T-NAME> from a death mark, but nothing happens.",hisHerDiety(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> call(s) on @x1 to release <T-NAME> from a death mark, but nothing happens.",hisHerDiety(mob)));
 
 
 		// return whether it worked

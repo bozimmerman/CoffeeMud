@@ -45,7 +45,7 @@ public class Goto extends At
 		Room room=null;
 		if(commands.size()<2)
 		{
-			mob.tell(_("Go where? Try a Room ID, player name, area name, or room text!"));
+			mob.tell(L("Go where? Try a Room ID, player name, area name, or room text!"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -63,7 +63,7 @@ public class Goto extends At
 		if("PREVIOUS".startsWith(cmd.toString().toUpperCase()))
 		{
 			if(stack.size()==0)
-				mob.tell(_("Your previous room stack is empty."));
+				mob.tell(L("Your previous room stack is empty."));
 			else
 			{
 				room=CMLib.map().getRoom(stack.get(stack.size()-1));
@@ -81,17 +81,17 @@ public class Goto extends At
 
 		if(room==null)
 		{
-			mob.tell(_("Goto where? Try a Room ID, player name, area name, room text, or PREVIOUS!"));
+			mob.tell(L("Goto where? Try a Room ID, player name, area name, room text, or PREVIOUS!"));
 			return false;
 		}
 		if(!CMSecurity.isAllowed(mob,room,CMSecurity.SecFlag.GOTO))
 		{
-			mob.tell(_("You aren't powerful enough to do that. Try 'GO'."));
+			mob.tell(L("You aren't powerful enough to do that. Try 'GO'."));
 			return false;
 		}
 		if(curRoom==room)
 		{
-			mob.tell(_("Done."));
+			mob.tell(L("Done."));
 			return false;
 		}
 		if(!"PREVIOUS".startsWith(cmd.toString().toUpperCase()))

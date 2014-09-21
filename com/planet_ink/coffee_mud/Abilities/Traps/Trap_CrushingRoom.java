@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_CrushingRoom extends StdTrap
 {
 	@Override public String ID() { return "Trap_CrushingRoom"; }
-	private final static String localizedName = CMLib.lang()._("crushing room");
+	private final static String localizedName = CMLib.lang().L("crushing room");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -74,7 +74,7 @@ public class Trap_CrushingRoom extends StdTrap
 			if((I==null)
 			||(super.findNumberOfResource(mob.location(),I.material())<100))
 			{
-				mob.tell(_("You'll need to set down at least 100 pounds of stone first."));
+				mob.tell(L("You'll need to set down at least 100 pounds of stone first."));
 				return false;
 			}
 		}
@@ -84,7 +84,7 @@ public class Trap_CrushingRoom extends StdTrap
 			if((R.domainType()&Room.INDOORS)==0)
 			{
 				if(mob!=null)
-					mob.tell(_("You can only set this trap indoors."));
+					mob.tell(L("You can only set this trap indoors."));
 				return false;
 			}
 		}
@@ -103,14 +103,14 @@ public class Trap_CrushingRoom extends StdTrap
 				||(msg.targetMinor()==CMMsg.TYP_FLEE))
 			   &&(msg.amITarget(affected)))
 			{
-				msg.source().tell(_("The exits are blocked! You can't get out!"));
+				msg.source().tell(L("The exits are blocked! You can't get out!"));
 				return false;
 			}
 			else
 			if((msg.targetMinor()==CMMsg.TYP_ENTER)
 			   &&(msg.amITarget(affected)))
 			{
-				msg.source().tell(_("The entry to that room is blocked!"));
+				msg.source().tell(L("The entry to that room is blocked!"));
 				return false;
 			}
 		}
@@ -130,7 +130,7 @@ public class Trap_CrushingRoom extends StdTrap
 			{
 				final Room R=(Room)affected;
 				if(tickDown>13)
-					R.showHappens(CMMsg.MSG_OK_VISUAL,_("The walls start closing in around you!"));
+					R.showHappens(CMMsg.MSG_OK_VISUAL,L("The walls start closing in around you!"));
 				else
 				if(tickDown>4)
 				{
@@ -147,7 +147,7 @@ public class Trap_CrushingRoom extends StdTrap
 				}
 				else
 				{
-					R.showHappens(CMMsg.MSG_OK_VISUAL,_("The walls begin retracting..."));
+					R.showHappens(CMMsg.MSG_OK_VISUAL,L("The walls begin retracting..."));
 				}
 			}
 		}
@@ -161,12 +161,12 @@ public class Trap_CrushingRoom extends StdTrap
 		{
 			if((doesSaveVsTraps(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) setting off a trap!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) setting off a trap!"));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> trigger(s) a trap!")))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> trigger(s) a trap!")))
 			{
 				super.spring(target);
-				target.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The exits are blocked off! The walls start closing in!"));
+				target.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The exits are blocked off! The walls start closing in!"));
 			}
 		}
 	}

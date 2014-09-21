@@ -45,7 +45,7 @@ public class Knock extends StdCommand
 	{
 		if(commands.size()<=1)
 		{
-			mob.tell(_("Knock on what?"));
+			mob.tell(L("Knock on what?"));
 			return false;
 		}
 		final String knockWhat=CMParms.combine(commands,1).toUpperCase();
@@ -55,10 +55,10 @@ public class Knock extends StdCommand
 			final Environmental getThis=mob.location().fetchFromMOBRoomItemExit(mob,null,knockWhat,Wearable.FILTER_UNWORNONLY);
 			if(getThis==null)
 			{
-				mob.tell(_("You don't see '@x1' here.",knockWhat.toLowerCase()));
+				mob.tell(L("You don't see '@x1' here.",knockWhat.toLowerCase()));
 				return false;
 			}
-			final CMMsg msg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,_("<S-NAME> knock(s) on <T-NAMESELF>.@x1",CMLib.protocol().msp("knock.wav",50)));
+			final CMMsg msg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,L("<S-NAME> knock(s) on <T-NAMESELF>.@x1",CMLib.protocol().msp("knock.wav",50)));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 
@@ -68,22 +68,22 @@ public class Knock extends StdCommand
 			Exit E=mob.location().getExitInDir(dir);
 			if(E==null)
 			{
-				mob.tell(_("Knock on what?"));
+				mob.tell(L("Knock on what?"));
 				return false;
 			}
 			if(!E.hasADoor())
 			{
-				mob.tell(_("You can't knock on @x1!",E.name()));
+				mob.tell(L("You can't knock on @x1!",E.name()));
 				return false;
 			}
-			final CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,_("<S-NAME> knock(s) on <T-NAMESELF>.@x1",CMLib.protocol().msp("knock.wav",50)));
+			final CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,L("<S-NAME> knock(s) on <T-NAMESELF>.@x1",CMLib.protocol().msp("knock.wav",50)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				E=mob.location().getPairedExit(dir);
 				final Room R=mob.location().getRoomInDir(dir);
 				if((R!=null)&&(E!=null)&&(E.hasADoor())
-				&&(R.showOthers(mob,E,null,CMMsg.MSG_KNOCK,_("You hear a knock on <T-NAMESELF>.@x1",CMLib.protocol().msp("knock.wav",50))))
+				&&(R.showOthers(mob,E,null,CMMsg.MSG_KNOCK,L("You hear a knock on <T-NAMESELF>.@x1",CMLib.protocol().msp("knock.wav",50))))
 				&&((R.domainType()&Room.INDOORS)==Room.INDOORS))
 				{
 					final Vector V=new Vector();
@@ -104,7 +104,7 @@ public class Knock extends StdCommand
 							{
 								final boolean useShipDirs=(R2 instanceof SpaceShip)||(R2.getArea() instanceof SpaceShip);
 								final String inDirName=useShipDirs?Directions.getShipInDirectionName(dir2):Directions.getInDirectionName(dir2);
-								R2.showHappens(CMMsg.MASK_SOUND|CMMsg.TYP_KNOCK,_("You hear a knock @x1.@x2",inDirName,CMLib.protocol().msp("knock.wav",50)));
+								R2.showHappens(CMMsg.MASK_SOUND|CMMsg.TYP_KNOCK,L("You hear a knock @x1.@x2",inDirName,CMLib.protocol().msp("knock.wav",50)));
 							}
 						}
 					}

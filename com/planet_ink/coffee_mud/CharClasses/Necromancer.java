@@ -38,7 +38,7 @@ import java.util.*;
 public class Necromancer extends Cleric
 {
 	@Override public String ID(){return "Necromancer";}
-	private final static String localizedStaticName = CMLib.lang()._("Necromancer");
+	private final static String localizedStaticName = CMLib.lang().L("Necromancer");
 	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return "Cleric";}
 	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
@@ -182,7 +182,7 @@ public class Necromancer extends Cleric
 			final Race newRace=CMClass.getRace("Lich");
 			if(newRace!=null)
 			{
-				myChar.tell(_("The dark powers are transforming you into a @x1!!",newRace.name()));
+				myChar.tell(L("The dark powers are transforming you into a @x1!!",newRace.name()));
 				myChar.baseCharStats().setMyRace(newRace);
 				myChar.recoverCharStats();
 			}
@@ -218,10 +218,10 @@ public class Necromancer extends Cleric
 					&&(!CMath.bset(M.getBitmap(),MOB.ATT_QUIET)))
 					{
 						if(!aChar.isMonster())
-							M.tell(_("^RYou just felt the death of @x1.^N",aChar.Name()));
+							M.tell(L("^RYou just felt the death of @x1.^N",aChar.Name()));
 						else
 						if((M.location()!=myRoom)&&(myRoom.getArea().Name().equals(M.location().getArea().Name())))
-							M.tell(_("^RYou just felt the death of @x1 somewhere nearby.^N",aChar.Name()));
+							M.tell(L("^RYou just felt the death of @x1 somewhere nearby.^N",aChar.Name()));
 					}
 				}
 			}

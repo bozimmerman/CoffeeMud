@@ -192,12 +192,12 @@ public class StdArmor extends StdContainer implements Armor
 			{
 				if(msg.source().phyStats().height()<(phyStats().height()-devianceAllowed))
 				{
-					msg.source().tell(_("@x1 doesn't fit you -- it's too big.",name()));
+					msg.source().tell(L("@x1 doesn't fit you -- it's too big.",name()));
 					return false;
 				}
 				if(msg.source().phyStats().height()>(phyStats().height()+devianceAllowed))
 				{
-					msg.source().tell(_("@x1 doesn't fit you -- it's too small.",name()));
+					msg.source().tell(L("@x1 doesn't fit you -- it's too small.",name()));
 					return false;
 				}
 			}
@@ -543,7 +543,7 @@ public class StdArmor extends StdContainer implements Armor
 			&&(owner()!=null)
 			&&(owner() instanceof MOB)
 			&&(usesRemaining()>0))
-				((MOB)owner()).tell(_("@x1 is nearly destroyed! (@x2%)",name(),""+usesRemaining()));
+				((MOB)owner()).tell(L("@x1 is nearly destroyed! (@x2%)",name(),""+usesRemaining()));
 			else
 			if((usesRemaining()<=0)
 			&&(owner()!=null)
@@ -551,7 +551,7 @@ public class StdArmor extends StdContainer implements Armor
 			{
 				final MOB owner=(MOB)owner();
 				setUsesRemaining(100);
-				msg.addTrailerMsg(CMClass.getMsg(((MOB)owner()),null,null,CMMsg.MSG_OK_VISUAL,_("^I@x1 is destroyed!!^?",name()),CMMsg.NO_EFFECT,null,CMMsg.MSG_OK_VISUAL,_("^I@x1 being worn by <S-NAME> is destroyed!^?",name())));
+				msg.addTrailerMsg(CMClass.getMsg(((MOB)owner()),null,null,CMMsg.MSG_OK_VISUAL,L("^I@x1 is destroyed!!^?",name()),CMMsg.NO_EFFECT,null,CMMsg.MSG_OK_VISUAL,L("^I@x1 being worn by <S-NAME> is destroyed!^?",name())));
 				unWear();
 				destroy();
 				owner.recoverPhyStats();

@@ -38,9 +38,9 @@ import java.util.*;
 public class Chant_TremorSense extends Chant
 {
 	@Override public String ID() { return "Chant_TremorSense"; }
-	private final static String localizedName = CMLib.lang()._("Tremor Sense");
+	private final static String localizedName = CMLib.lang().L("Tremor Sense");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Tremor Sense)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Tremor Sense)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
@@ -71,7 +71,7 @@ public class Chant_TremorSense extends Chant
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> tremor sense fades."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> tremor sense fades."));
 		for(int r=0;r<rooms.size();r++)
 		{
 			final Room R=rooms.elementAt(r);
@@ -103,12 +103,12 @@ public class Chant_TremorSense extends Chant
 			&&(invoker.location()!=null))
 			{
 				if(invoker.location()==affected)
-					invoker.tell(_("You feel footsteps around you."));
+					invoker.tell(L("You feel footsteps around you."));
 				else
 				{
 					final int dir=CMLib.tracking().radiatesFromDir((Room)affected,rooms);
 					if(dir>=0)
-						invoker.tell(_("You feel footsteps @x1",Directions.getInDirectionName(dir)));
+						invoker.tell(L("You feel footsteps @x1",Directions.getInDirectionName(dir)));
 				}
 			}
 			else
@@ -117,12 +117,12 @@ public class Chant_TremorSense extends Chant
 				||(msg.tool().ID().endsWith("_Earthquake"))))
 			{
 				if(invoker.location()==affected)
-					invoker.tell(_("You feel a ferocious rumble."));
+					invoker.tell(L("You feel a ferocious rumble."));
 				else
 				{
 					final int dir=CMLib.tracking().radiatesFromDir((Room)affected,rooms);
 					if(dir>=0)
-						invoker.tell(_("You feel a ferocious rumble @x1",Directions.getInDirectionName(dir)));
+						invoker.tell(L("You feel a ferocious rumble @x1",Directions.getInDirectionName(dir)));
 				}
 			}
 		}
@@ -137,13 +137,13 @@ public class Chant_TremorSense extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already sensing tremors."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already sensing tremors."));
 			return false;
 		}
 
 		if((!CMLib.flags().isSitting(mob))||(mob.riding()!=null))
 		{
-			mob.tell(_("You must be sitting on the ground for this chant to work."));
+			mob.tell(L("You must be sitting on the ground for this chant to work."));
 			return false;
 		}
 
@@ -158,7 +158,7 @@ public class Chant_TremorSense extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("@x1<T-NAME> gain(s) a sense of the earth!^?",_(auto?"":"^S<S-NAME> chant(s) to <S-HIM-HERSELF>.  ")));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("@x1<T-NAME> gain(s) a sense of the earth!^?",L(auto?"":"^S<S-NAME> chant(s) to <S-HIM-HERSELF>.  ")));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -185,7 +185,7 @@ public class Chant_TremorSense extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s), but nothing happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s), but nothing happens."));
 
 
 		// return whether it worked

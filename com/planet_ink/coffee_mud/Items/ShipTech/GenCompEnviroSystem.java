@@ -62,7 +62,7 @@ public class GenCompEnviroSystem extends GenElecCompItem
 			{
 			case CMMsg.TYP_LOOK:
 				if(CMLib.flags().canBeSeenBy(this, msg.source()))
-					msg.source().tell(_("@x1 is currently @x2",name(),(activated()?"delivering power.\n\r":"deactivated/disconnected.\n\r")));
+					msg.source().tell(L("@x1 is currently @x2",name(),(activated()?"delivering power.\n\r":"deactivated/disconnected.\n\r")));
 				return;
 			case CMMsg.TYP_POWERCURRENT:
 				if(activated())

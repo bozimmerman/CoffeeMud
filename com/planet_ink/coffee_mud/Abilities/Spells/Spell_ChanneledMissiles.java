@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_ChanneledMissiles extends Spell
 {
 	@Override public String ID() { return "Spell_ChanneledMissiles"; }
-	private final static String localizedName = CMLib.lang()._("Channeled Missiles");
+	private final static String localizedName = CMLib.lang().L("Channeled Missiles");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Channeling Missile spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Channeling Missile spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -110,7 +110,7 @@ public class Spell_ChanneledMissiles extends Spell
 		if(mob==null) return;
 
 		if((canBeUninvoked()&&(!mob.amDead())))
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> stop(s) channeling missiles."));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> stop(s) channeling missiles."));
 	}
 
 	@Override
@@ -147,7 +147,7 @@ public class Spell_ChanneledMissiles extends Spell
 						{
 							for(int i=0;(i<numMissiles) && (target[0].location()==R);i++)
 							{
-								final CMMsg msg=CMClass.getMsg(mob,target[0],thisSpellA,somanticCastCode(mob,target[0],auto),(i==0)?_((auto?"Magic missiles appear hurling full speed at <T-NAME>!":"^S<S-NAME> channel(s) magic missiles toward(s) <T-NAMESELF>!^?")+CMLib.protocol().msp("spelldam2.wav",40)):null);
+								final CMMsg msg=CMClass.getMsg(mob,target[0],thisSpellA,somanticCastCode(mob,target[0],auto),(i==0)?L((auto?"Magic missiles appear hurling full speed at <T-NAME>!":"^S<S-NAME> channel(s) magic missiles toward(s) <T-NAMESELF>!^?")+CMLib.protocol().msp("spelldam2.wav",40)):null);
 								if((mob.location()!=null)&&(mob.location().okMessage(mob,msg)))
 								{
 									mob.location().send(mob,msg);
@@ -155,7 +155,7 @@ public class Spell_ChanneledMissiles extends Spell
 									{
 										final int damage = CMLib.dice().roll(1,11,11);
 										if(target[0].location()==mob.location())
-											CMLib.combat().postDamage(mob,target[0],thisSpellA,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,_((i==0)?"^SThe missile ":"^SAnother missile ")+"<DAMAGE> <T-NAME>!^?");
+											CMLib.combat().postDamage(mob,target[0],thisSpellA,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,L((i==0)?"^SThe missile ":"^SAnother missile ")+"<DAMAGE> <T-NAME>!^?");
 									}
 								}
 								if((target[0]==null)||(target[0].amDead())||(target[0].location()!=R))
@@ -188,7 +188,7 @@ public class Spell_ChanneledMissiles extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target[0],_("<S-NAME> point(s) at <T-NAMESELF>, but fizzle(s) the spell."));
+			return maliciousFizzle(mob,target[0],L("<S-NAME> point(s) at <T-NAMESELF>, but fizzle(s) the spell."));
 
 
 		// return whether it worked

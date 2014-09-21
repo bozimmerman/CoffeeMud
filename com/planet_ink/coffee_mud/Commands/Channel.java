@@ -71,13 +71,13 @@ public class Channel extends StdCommand
 		if((pstats!=null)&&(CMath.isSet(pstats.getChannelMask(),channelInt)))
 		{
 			pstats.setChannelMask(pstats.getChannelMask()&(pstats.getChannelMask()-channelNum));
-			mob.tell(_("@x1 has been turned on.  Use `NO@x2` to turn it off again.",channelName,channelName.toUpperCase()));
+			mob.tell(L("@x1 has been turned on.  Use `NO@x2` to turn it off again.",channelName,channelName.toUpperCase()));
 			return false;
 		}
 
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_QUIET))
 		{
-			mob.tell(_("You have QUIET mode on.  You must turn it off first."));
+			mob.tell(L("You have QUIET mode on.  You must turn it off first."));
 			return false;
 		}
 
@@ -87,13 +87,13 @@ public class Channel extends StdCommand
 			if(size>0)
 			{
 				if(size>5) size=5;
-				mob.tell(_("@x1 what?  Here's the last @x2 message(s):\n\r",channelName,""+size));
+				mob.tell(L("@x1 what?  Here's the last @x2 message(s):\n\r",channelName,""+size));
 				commands.add("LAST");
 				commands.add(Integer.toString(size));
 			}
 			else
 			{
-				mob.tell(_("@x1 what?",channelName));
+				mob.tell(L("@x1 what?",channelName));
 				return false;
 			}
 		}
@@ -107,7 +107,7 @@ public class Channel extends StdCommand
 		final ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(channelInt);
 		if(!CMLib.masking().maskCheck(chan.mask,mob,true))
 		{
-			mob.tell(_("This channel is not available to you."));
+			mob.tell(L("This channel is not available to you."));
 			return false;
 		}
 
@@ -116,7 +116,7 @@ public class Channel extends StdCommand
 		{
 			if(!CMLib.clans().checkClanPrivilege(mob, Clan.Function.CHANNEL))
 			{
-				mob.tell(_("You can't talk to your clan - you don't have one that allows you."));
+				mob.tell(L("You can't talk to your clan - you don't have one that allows you."));
 				return false;
 			}
 		}
@@ -165,20 +165,20 @@ public class Channel extends StdCommand
 			}
 			if(!showedAny)
 			{
-				mob.tell(_("There are no previous entries on this channel."));
+				mob.tell(L("There are no previous entries on this channel."));
 				return false;
 			}
 		}
 		else
 		if(flags.contains(ChannelsLibrary.ChannelFlag.READONLY))
 		{
-			mob.tell(_("This channel is read-only."));
+			mob.tell(L("This channel is read-only."));
 			return false;
 		}
 		else
 		if(flags.contains(ChannelsLibrary.ChannelFlag.PLAYERREADONLY)&&(!mob.isMonster()))
 		{
-			mob.tell(_("This channel is read-only."));
+			mob.tell(L("This channel is read-only."));
 			return false;
 		}
 		else

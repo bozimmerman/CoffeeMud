@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Advancement extends Spell
 {
 	@Override public String ID() { return "Spell_Advancement"; }
-	private final static String localizedName = CMLib.lang()._("Advancement");
+	private final static String localizedName = CMLib.lang().L("Advancement");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Advancement)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Advancement)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -71,7 +71,7 @@ public class Spell_Advancement extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your temporary advancement has receded."));
+			mob.tell(L("Your temporary advancement has receded."));
 	}
 
 	@Override
@@ -97,16 +97,16 @@ public class Spell_Advancement extends Spell
 			// what happened.
 			invoker=mob;
 
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":_("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> become(s) more knowledgable!"));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) more knowledgable!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a spell, but fail(s) miserably."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a spell, but fail(s) miserably."));
 
 		// return whether it worked
 		return success;

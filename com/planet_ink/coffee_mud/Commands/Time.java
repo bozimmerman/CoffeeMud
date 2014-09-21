@@ -71,7 +71,7 @@ public class Time extends StdCommand
 			timeDesc.append(" day of "+C.getMonthNames()[bmonth-1]);
 			if(C.getYearNames().length>0)
 				timeDesc.append(", "+CMStrings.replaceAll(C.getYearNames()[year%C.getYearNames().length],"#",""+year));
-			mob.tell(_("Your next birthday is @x1.",timeDesc.toString()));
+			mob.tell(L("Your next birthday is @x1.",timeDesc.toString()));
 		}
 		return false;
 	}

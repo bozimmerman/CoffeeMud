@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Shield extends Spell
 {
 	@Override public String ID() { return "Spell_Shield"; }
-	private final static String localizedName = CMLib.lang()._("Shield");
+	private final static String localizedName = CMLib.lang().L("Shield");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Shield spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Shield spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -61,7 +61,7 @@ public class Spell_Shield extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("You begin to feel a bit more vulnerable."));
+			mob.tell(L("You begin to feel a bit more vulnerable."));
 	}
 
 
@@ -90,16 +90,16 @@ public class Spell_Shield extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> invoke(s) a shield upon <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> invoke(s) a shield upon <T-NAMESELF>.^?"));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				R.show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> look(s) protected!"));
+				R.show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> look(s) protected!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a spell, but fail(s) miserably."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a spell, but fail(s) miserably."));
 
 		// return whether it worked
 		return success;

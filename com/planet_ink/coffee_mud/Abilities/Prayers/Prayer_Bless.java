@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_Bless extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_Bless"; }
-	private final static String localizedName = CMLib.lang()._("Bless");
+	private final static String localizedName = CMLib.lang().L("Bless");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Blessed)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Blessed)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
@@ -73,13 +73,13 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 		{
 			if(canBeUninvoked())
 			if((affected instanceof Item)&&(((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB))
-				((MOB)((Item)affected).owner()).tell(_("The blessing on @x1 fades.",((Item)affected).name()));
+				((MOB)((Item)affected).owner()).tell(L("The blessing on @x1 fades.",((Item)affected).name()));
 			super.unInvoke();
 			return;
 		}
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("Your aura of blessing fades."));
+			mob.tell(L("Your aura of blessing fades."));
 		super.unInvoke();
 	}
 
@@ -167,7 +167,7 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 
 		if(target instanceof Coins)
 		{
-			mob.tell(_("You can not bless that."));
+			mob.tell(L("You can not bless that."));
 			return false;
 		}
 
@@ -182,7 +182,7 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_(auto?"<T-NAME> appear(s) blessed!":"^S<S-NAME> bless(es) <T-NAMESELF>"+inTheNameOf(mob)+".^?")+CMLib.protocol().msp("bless.wav",10));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> appear(s) blessed!":"^S<S-NAME> bless(es) <T-NAMESELF>"+inTheNameOf(mob)+".^?")+CMLib.protocol().msp("bless.wav",10));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -191,7 +191,7 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 				while((I!=null)&&(!alreadyDone.contains(I)))
 				{
 					alreadyDone.add(I);
-					final CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,_("<S-NAME> release(s) <T-NAME>."));
+					final CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,L("<S-NAME> release(s) <T-NAME>."));
 					target.location().send(target,msg2);
 					endLowerCurses(I,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 					I.recoverPhyStats();
@@ -205,7 +205,7 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for blessings, but nothing happens.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for blessings, but nothing happens.",prayWord(mob)));
 		// return whether it worked
 		return success;
 	}

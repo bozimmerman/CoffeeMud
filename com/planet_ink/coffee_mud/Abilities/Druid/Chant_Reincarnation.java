@@ -38,9 +38,9 @@ import java.util.*;
 public class Chant_Reincarnation extends Chant
 {
 	@Override public String ID() { return "Chant_Reincarnation"; }
-	private final static String localizedName = CMLib.lang()._("Reincarnation");
+	private final static String localizedName = CMLib.lang().L("Reincarnation");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Reincarnation Geas)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Reincarnation Geas)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
@@ -55,9 +55,9 @@ public class Chant_Reincarnation extends Chant
 		if(newRace!=null)
 		{
 			if(affected.name().indexOf(' ')>0)
-				affectableStats.setName(_("@x1 called @x2",CMLib.english().startWithAorAn(newRace.name()),affected.name()));
+				affectableStats.setName(L("@x1 called @x2",CMLib.english().startWithAorAn(newRace.name()),affected.name()));
 			else
-				affectableStats.setName(_("@x1 the @x2",affected.name(),newRace.name()));
+				affectableStats.setName(L("@x1 the @x2",affected.name(),newRace.name()));
 			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			newRace.setHeightWeight(affectableStats,'M');
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
@@ -94,7 +94,7 @@ public class Chant_Reincarnation extends Chant
 				if(!(affected instanceof MOB))
 					return super.tick(ticking,tickID);
 				final MOB mob=(MOB)affected;
-				mob.tell(_("Your reincarnation geas is lifted as your form solidifies."));
+				mob.tell(L("Your reincarnation geas is lifted as your form solidifies."));
 				if(newRace!=null)
 				{
 					mob.baseCharStats().setMyRace(newRace);
@@ -148,7 +148,7 @@ public class Chant_Reincarnation extends Chant
 			||(newRace.ID().equals("StdRace")))
 				newRace=CMClass.randomRace();
 			if(newRace!=null)
-				mob.tell(_("You are being reincarnated as a @x1!!",newRace.name()));
+				mob.tell(L("You are being reincarnated as a @x1!!",newRace.name()));
 			msg.source().recoverCharStats();
 			msg.source().recoverPhyStats();
 			super.canBeUninvoked=false; // without this, bring to life removes it
@@ -163,15 +163,15 @@ public class Chant_Reincarnation extends Chant
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			if(mob.location().show(mob,target,null,CMMsg.MSG_CAST,_("<S-NAME> lift(s) the reincarnation geas on <T-NAMESELF>.")))
+			if(mob.location().show(mob,target,null,CMMsg.MSG_CAST,L("<S-NAME> lift(s) the reincarnation geas on <T-NAMESELF>.")))
 				target.delEffect(target.fetchEffect(ID()));
 			else
-				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> fail(s) to lift the reincarnation geas on <T-NAMESELF>."));
+				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> fail(s) to lift the reincarnation geas on <T-NAMESELF>."));
 			return false;
 		}
 		if(target.isMonster())
 		{
-			mob.tell(_("Your chant would have no effect on such a creature."));
+			mob.tell(L("Your chant would have no effect on such a creature."));
 			return false;
 		}
 
@@ -179,7 +179,7 @@ public class Chant_Reincarnation extends Chant
 		final Set<MOB> groupMembers=mob.getGroupMembers(new HashSet<MOB>());
 		if(success&&(!auto)&&(mob!=target)&&(!mob.mayIFight(target))&&(!groupMembers.contains(target)))
 		{
-			mob.tell(_("@x1 is a player, so you must be group members, and your playerkill flags must be on for this to work.",target.name(mob)));
+			mob.tell(L("@x1 is a player, so you must be group members, and your playerkill flags must be on for this to work.",target.name(mob)));
 			success=false;
 		}
 
@@ -191,7 +191,7 @@ public class Chant_Reincarnation extends Chant
 			int modifier=0;
 			if((target!=mob)&&(!groupMembers.contains(target)))
 				modifier=CMMsg.MASK_MALICIOUS;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,modifier|verbalCastCode(mob,target,auto),_(auto?"^S<S-NAME> get(s) put under a reincarnation geas!^?":"^S<S-NAME> chant(s) a reincarnation geas upon <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,modifier|verbalCastCode(mob,target,auto),L(auto?"^S<S-NAME> get(s) put under a reincarnation geas!^?":"^S<S-NAME> chant(s) a reincarnation geas upon <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -199,7 +199,7 @@ public class Chant_Reincarnation extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) for a reincarnation geas, but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) for a reincarnation geas, but nothing happens."));
 
 		return success;
 	}

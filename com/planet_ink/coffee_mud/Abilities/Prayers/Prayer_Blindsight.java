@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_Blindsight extends Prayer
 {
 	@Override public String ID() { return "Prayer_Blindsight"; }
-	private final static String localizedName = CMLib.lang()._("Blindsight");
+	private final static String localizedName = CMLib.lang().L("Blindsight");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Blindsight)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Blindsight)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -59,7 +59,7 @@ public class Prayer_Blindsight extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your natural vision returns."));
+			mob.tell(L("Your natural vision returns."));
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class Prayer_Blindsight extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> the blindsight."));
+			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> the blindsight."));
 			return false;
 		}
 
@@ -110,7 +110,7 @@ public class Prayer_Blindsight extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> attain(s) blindsight."):_("^S<S-NAME> @x1 for the blindsight.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> attain(s) blindsight."):L("^S<S-NAME> @x1 for the blindsight.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -124,7 +124,7 @@ public class Prayer_Blindsight extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for blindsight, but go(es) unanswered.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for blindsight, but go(es) unanswered.",prayWord(mob)));
 
 
 		// return whether it worked

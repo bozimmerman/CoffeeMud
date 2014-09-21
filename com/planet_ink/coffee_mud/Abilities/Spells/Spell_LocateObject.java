@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_LocateObject extends Spell
 {
 	@Override public String ID() { return "Spell_LocateObject"; }
-	private final static String localizedName = CMLib.lang()._("Locate Object");
+	private final static String localizedName = CMLib.lang().L("Locate Object");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
@@ -48,7 +48,7 @@ public class Spell_LocateObject extends Spell
 
 		if(commands.size()<1)
 		{
-			mob.tell(_("Locate what?"));
+			mob.tell(L("Locate what?"));
 			return false;
 		}
 
@@ -95,7 +95,7 @@ public class Spell_LocateObject extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> invoke(s) a divination, shouting '@x1'^?.",what));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> invoke(s) a divination, shouting '@x1'^?.",what));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -134,7 +134,7 @@ public class Spell_LocateObject extends Spell
 					if((item!=null)
 					&&(CMLib.flags().canBeLocated((Item)item)))
 					{
-						final String str=_("@x1 is in a place called '@x2'.",item.name(),room.displayText(mob));
+						final String str=L("@x1 is in a place called '@x2'.",item.name(),room.displayText(mob));
 						itemsFound.add(str);
 					}
 					for(int i=0;i<room.numInhabitants();i++)
@@ -155,7 +155,7 @@ public class Spell_LocateObject extends Spell
 							if(room.okMessage(mob,msg2))
 							{
 								room.send(mob,msg2);
-								final String str=_("@x1@x2 is being carried by @x3 in a place called '@x4'.",item.name(),((!levelAdjust)?"":("("+((Item)item).phyStats().level()+")")),inhab.name(),room.displayText(mob));
+								final String str=L("@x1@x2 is being carried by @x3 in a place called '@x4'.",item.name(),((!levelAdjust)?"":("("+((Item)item).phyStats().level()+")")),inhab.name(),room.displayText(mob));
 								itemsFound.add(str);
 								break;
 							}
@@ -164,7 +164,7 @@ public class Spell_LocateObject extends Spell
 					if(itemsFound.size()>=maxFound) break;
 				}
 				if(itemsFound.size()==0)
-					mob.tell(_("Your magic fails to focus on anything called '@x1'.",what));
+					mob.tell(L("Your magic fails to focus on anything called '@x1'.",what));
 				else
 				{
 					while(itemsFound.size()>maxFound)
@@ -176,7 +176,7 @@ public class Spell_LocateObject extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> invoke(s) a divination, shouting '@x1', but there is no answer.",what));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> invoke(s) a divination, shouting '@x1', but there is no answer.",what));
 
 
 		// return whether it worked

@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_GraceOfTheCat extends Spell
 {
 	@Override public String ID() { return "Spell_GraceOfTheCat"; }
-	private final static String localizedName = CMLib.lang()._("Grace Of The Cat");
+	private final static String localizedName = CMLib.lang().L("Grace Of The Cat");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Grace Of The Cat)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Grace Of The Cat)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -79,7 +79,7 @@ public class Spell_GraceOfTheCat extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("You begin to feel more like your regular clumsy self."));
+			mob.tell(L("You begin to feel more like your regular clumsy self."));
 	}
 
 
@@ -107,19 +107,19 @@ public class Spell_GraceOfTheCat extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> speak(s) and gesture(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> speak(s) and gesture(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(target.location()==mob.location())
 				{
-					target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> move(s) more gracefully!"));
+					target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> move(s) more gracefully!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> speak(s) gracefully to <T-NAMESELF>, but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> speak(s) gracefully to <T-NAMESELF>, but nothing more happens."));
 
 
 		// return whether it worked

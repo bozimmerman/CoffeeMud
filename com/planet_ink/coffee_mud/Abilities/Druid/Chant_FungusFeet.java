@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_FungusFeet extends Chant implements DiseaseAffect
 {
 	@Override public String ID() { return "Chant_FungusFeet"; }
-	private final static String localizedName = CMLib.lang()._("Fungus Feet");
+	private final static String localizedName = CMLib.lang().L("Fungus Feet");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Fungus Feet)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Fungus Feet)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -73,7 +73,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 			{
 				if((mob.location()!=null)&&(CMLib.flags().isInTheGame(mob,false)))
 				{
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOU-POSS> feet rot off!"));
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOU-POSS> feet rot off!"));
 					final Ability A=CMClass.getAbility("Amputation");
 					if(A!=null)
 					{
@@ -114,7 +114,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 			if((mob.location()!=null)&&(!mob.amDead())&&(mob.getWearPositions(Wearable.WORN_FEET)>0))
 			{
 				spreadImmunity(mob);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("The fungus on <S-YOUPOSS> feet dies and falls off."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("The fungus on <S-YOUPOSS> feet dies and falls off."));
 			}
 	}
 
@@ -140,7 +140,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 
 		if(target.charStats().getBodyPart(Race.BODY_FOOT)==0)
 		{
-			mob.tell(_("@x1 has no feet!",target.name(mob)));
+			mob.tell(L("@x1 has no feet!",target.name(mob)));
 			return false;
 		}
 
@@ -154,7 +154,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":_("^S<S-NAME> chant(s) at <T-YOUPOSS> feet!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":L("^S<S-NAME> chant(s) at <T-YOUPOSS> feet!^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_DISEASE,null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
@@ -164,14 +164,14 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 				{
 					invoker=mob;
 					maliciousAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER,-1);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("A fungus sprouts up between <S-YOUPOSS> toes!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("A fungus sprouts up between <S-YOUPOSS> toes!"));
 				}
 				else
 					spreadImmunity(target);
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) at <T-YOUPOSS> feet, but nothing happens."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-YOUPOSS> feet, but nothing happens."));
 
 
 		// return whether it worked

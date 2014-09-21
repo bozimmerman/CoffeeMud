@@ -37,7 +37,7 @@ public class Thief_AutoDetectTraps extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_AutoDetectTraps"; }
 	@Override public String displayText() {return "(Autodetecting traps)";}
-	private final static String localizedName = CMLib.lang()._("AutoDetect Traps");
+	private final static String localizedName = CMLib.lang().L("AutoDetect Traps");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -119,13 +119,13 @@ public class Thief_AutoDetectTraps extends ThiefSkill
 		final MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
 		if(target.fetchEffect(ID())!=null)
 		{
-			target.tell(_("You are no longer automatically detecting traps."));
+			target.tell(L("You are no longer automatically detecting traps."));
 			target.delEffect(mob.fetchEffect(ID()));
 			return false;
 		}
 		if((!auto)&&(target.fetchAbility("Thief_DetectTraps")==null))
 		{
-			target.tell(_("You don't know how to detect traps yet!"));
+			target.tell(L("You don't know how to detect traps yet!"));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -135,14 +135,14 @@ public class Thief_AutoDetectTraps extends ThiefSkill
 
 		if(success)
 		{
-			target.tell(_("You will now automatically detect traps when you enter a room."));
+			target.tell(L("You will now automatically detect traps when you enter a room."));
 			beneficialAffect(mob,target,asLevel,0);
 			final Ability A=mob.fetchEffect(ID());
 			if(A!=null) A.makeLongLasting();
 			dropem(target,target.location());
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to detect traps, but can't seem to concentrate."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to detect traps, but can't seem to concentrate."));
 		return success;
 	}
 }

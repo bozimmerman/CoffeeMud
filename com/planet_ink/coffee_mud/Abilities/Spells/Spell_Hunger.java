@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Hunger extends Spell
 {
 	@Override public String ID() { return "Spell_Hunger"; }
-	private final static String localizedName = CMLib.lang()._("Endless Hunger");
+	private final static String localizedName = CMLib.lang().L("Endless Hunger");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Hunger)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Hunger)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -65,19 +65,19 @@ public class Spell_Hunger extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> incant(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> incant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
 					target.curState().adjHunger(-150 - ((mob.phyStats().level()+(2*getXLEVELLevel(mob))) * 5),target.maxState().maxHunger(target.baseWeight()));
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> feel(s) incredibly hungry!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) incredibly hungry!"));
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) to <T-NAMESELF>, but the spell fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) to <T-NAMESELF>, but the spell fades."));
 		// return whether it worked
 		return success;
 	}

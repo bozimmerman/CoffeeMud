@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_Listen extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Listen"; }
-	private final static String localizedName = CMLib.lang()._("Listen");
+	private final static String localizedName = CMLib.lang().L("Listen");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
@@ -52,7 +52,7 @@ public class Thief_Listen extends ThiefSkill
 	protected MOB getInvisibleMOB()
 	{
 		final MOB mrInvisible=CMClass.getFactoryMOB();
-		mrInvisible.setName(_("Someone"));
+		mrInvisible.setName(L("Someone"));
 		mrInvisible.basePhyStats().setDisposition(mrInvisible.basePhyStats().disposition()|PhyStats.IS_NOT_SEEN);
 		mrInvisible.phyStats().setDisposition(mrInvisible.phyStats().disposition()|PhyStats.IS_NOT_SEEN);
 		return mrInvisible;
@@ -61,7 +61,7 @@ public class Thief_Listen extends ThiefSkill
 	protected Item getInvisibleItem()
 	{
 		final Item mrInvisible=CMClass.getItem("StdItem");
-		mrInvisible.setName(_("Something"));
+		mrInvisible.setName(L("Something"));
 		mrInvisible.basePhyStats().setDisposition(mrInvisible.basePhyStats().disposition()|PhyStats.IS_NOT_SEEN);
 		mrInvisible.phyStats().setDisposition(mrInvisible.phyStats().disposition()|PhyStats.IS_NOT_SEEN);
 		return mrInvisible;
@@ -133,7 +133,7 @@ public class Thief_Listen extends ThiefSkill
 					if((invoker().phyStats().level()+(getXLEVELLevel(invoker())*10))>msg.source().phyStats().level())
 						invoker().tell(msg.source(),msg.target(),msg.tool(),msg.sourceMessage());
 					else
-						invoker().tell(msg.source(),null,null,_("<S-NAME> said something, but you couldn't quite make it out."));
+						invoker().tell(msg.source(),null,null,L("<S-NAME> said something, but you couldn't quite make it out."));
 				}
 			}
 			else
@@ -151,7 +151,7 @@ public class Thief_Listen extends ThiefSkill
 					this.cleanTalkers(Ps);
 				}
 				else
-					invoker().tell(msg.source(),null,null,_("<S-NAME> said something, but you couldn't quite make it out."));
+					invoker().tell(msg.source(),null,null,L("<S-NAME> said something, but you couldn't quite make it out."));
 			}
 
 		}
@@ -165,7 +165,7 @@ public class Thief_Listen extends ThiefSkill
 		final MOB M=invoker();
 		super.unInvoke();
 		if((M!=null)&&(!M.amDead()))
-			M.tell(_("You stop listening."));
+			M.tell(L("You stop listening."));
 	}
 
 	@Override
@@ -175,7 +175,7 @@ public class Thief_Listen extends ThiefSkill
 		final int dirCode=Directions.getGoodDirectionCode(whom);
 		if(!CMLib.flags().canHear(mob))
 		{
-			mob.tell(_("You don't hear anything."));
+			mob.tell(L("You don't hear anything."));
 			return false;
 		}
 
@@ -193,13 +193,13 @@ public class Thief_Listen extends ThiefSkill
 		{
 			if((mob.location().getRoomInDir(dirCode)==null)||(mob.location().getExitInDir(dirCode)==null))
 			{
-				mob.tell(_("Listen which direction?"));
+				mob.tell(L("Listen which direction?"));
 				return false;
 			}
 			room=mob.location().getRoomInDir(dirCode);
 			if((room.domainType()&Room.INDOORS)==0)
 			{
-				mob.tell(_("You can only listen indoors."));
+				mob.tell(L("You can only listen indoors."));
 				return false;
 			}
 		}
@@ -208,7 +208,7 @@ public class Thief_Listen extends ThiefSkill
 			return false;
 
 		boolean success=false;
-		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_SMALL_HANDS_ACT),CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,_("<S-NAME> listen(s)@x1.",((dirCode<0)?"":" "+Directions.getDirectionName(dirCode))));
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_SMALL_HANDS_ACT),CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,L("<S-NAME> listen(s)@x1.",((dirCode<0)?"":" "+Directions.getDirectionName(dirCode))));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -229,7 +229,7 @@ public class Thief_Listen extends ThiefSkill
 			{
 				if(((proficiency()+(getXLEVELLevel(mob)*10))>(50+levelsHeard))||(room==mob.location()))
 				{
-					mob.tell(_("You definitely hear @x1 creature(s).",""+numberHeard));
+					mob.tell(L("You definitely hear @x1 creature(s).",""+numberHeard));
 					if(proficiency()>((room==mob.location())?50:75))
 					{
 						sourceRoom=mob.location();
@@ -237,10 +237,10 @@ public class Thief_Listen extends ThiefSkill
 					}
 				}
 				else
-					mob.tell(_("You definitely hear something."));
+					mob.tell(L("You definitely hear something."));
 			}
 			else
-				mob.tell(_("You don't hear anything."));
+				mob.tell(L("You don't hear anything."));
 		}
 		return success;
 	}

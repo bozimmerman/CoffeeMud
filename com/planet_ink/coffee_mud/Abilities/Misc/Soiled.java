@@ -38,9 +38,9 @@ import java.util.*;
 public class Soiled extends StdAbility
 {
 	@Override public String ID() { return "Soiled"; }
-	private final static String localizedName = CMLib.lang()._("Soiled");
+	private final static String localizedName = CMLib.lang().L("Soiled");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Soiled)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Soiled)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -70,17 +70,17 @@ public class Soiled extends StdAbility
 			if(E instanceof MOB)
 			{
 				final MOB mob=(MOB)E;
-				mob.tell(_("You are no longer soiled."));
+				mob.tell(L("You are no longer soiled."));
 				final MOB following=((MOB)E).amFollowing();
 				if((following!=null)
 				&&(following.location()==mob.location())
 				&&(CMLib.flags().isInTheGame(mob,true))
 				&&(CMLib.flags().canBeSeenBy(mob,following)))
-					following.tell(_("@x1 is no longer soiled.",E.name()));
+					following.tell(L("@x1 is no longer soiled.",E.name()));
 			}
 			else
 			if((E instanceof Item)&&(((Item)E).owner() instanceof MOB))
-				((MOB)((Item)E).owner()).tell(_("@x1 is no longer soiled.",E.name()));
+				((MOB)((Item)E).owner()).tell(L("@x1 is no longer soiled.",E.name()));
 		}
 	}
 
@@ -145,7 +145,7 @@ public class Soiled extends StdAbility
 				{
 					M=CMClass.getFactoryMOB();
 					M.setName(affected.name());
-					M.setDisplayText(_("@x1 is here.",affected.name()));
+					M.setDisplayText(L("@x1 is here.",affected.name()));
 					M.setDescription("");
 					if(M.location()!=R)
 						M.setLocation(R);
@@ -202,7 +202,7 @@ public class Soiled extends StdAbility
 		A.startTickDown(mob,target,Ability.TICKS_ALMOST_FOREVER);
 		Environmental msgTarget=target;
 		if(target instanceof CagedAnimal) msgTarget=((CagedAnimal)target).unCageMe();
-		mob.location().show(mob,msgTarget,CMMsg.MSG_OK_VISUAL,_("<T-NAME> has soiled <T-HIM-HERSELF>!"));
+		mob.location().show(mob,msgTarget,CMMsg.MSG_OK_VISUAL,L("<T-NAME> has soiled <T-HIM-HERSELF>!"));
 		if(target instanceof MOB)
 		{
 			final Item pants=((MOB)target).fetchFirstWornItem(Wearable.WORN_WAIST);

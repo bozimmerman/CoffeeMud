@@ -40,7 +40,7 @@ import java.util.*;
 public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override public String ID() { return "Shipwright"; }
-	private final static String localizedName = CMLib.lang()._("Ship Building");
+	private final static String localizedName = CMLib.lang().L("Ship Building");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"SHIPBUILD","SHIPBUILDING","SHIPWRIGHT"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -166,7 +166,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		if((!(E instanceof Item))||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
-				commonTell(mob,_("That's not a shipwrighting item."));
+				commonTell(mob,L("That's not a shipwrighting item."));
 			return false;
 		}
 		return true;
@@ -190,7 +190,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,_("Shipwright what? Enter \"shipwright list\" for a list, \"shipwright scan\", \"shipwright learn <item>\", \"shipwright mend <item>\", or \"shipwright stop\" to cancel."));
+			commonTell(mob,L("Shipwright what? Enter \"shipwright list\" for a list, \"shipwright scan\", \"shipwright learn <item>\", \"shipwright mend <item>\", or \"shipwright stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -221,7 +221,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 					ListingLibrary.ColFixer.fixColWidth(5,mob.session()),
 					ListingLibrary.ColFixer.fixColWidth(8,mob.session())
 				};
-			final StringBuffer buf=new StringBuffer(_("@x1 @x2 @x3 Wood required\n\r",CMStrings.padRight(_("Item"),cols[0]),CMStrings.padRight(_("Level"),cols[1]),CMStrings.padRight(_("Capacity"),cols[2])));
+			final StringBuffer buf=new StringBuffer(L("@x1 @x2 @x3 Wood required\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Level"),cols[1]),CMStrings.padRight(L("Capacity"),cols[2])));
 			for(int r=0;r<recipes.size();r++)
 			{
 				final List<String> V=recipes.get(r);
@@ -260,9 +260,9 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr=_("<S-NAME> start(s) mending @x1.",buildingI.name());
-			displayText=_("You are mending @x1",buildingI.name());
-			verb=_("mending @x1",buildingI.name());
+			startStr=L("<S-NAME> start(s) mending @x1.",buildingI.name());
+			displayText=L("You are mending @x1",buildingI.name());
+			verb=L("mending @x1",buildingI.name());
 		}
 		else
 		{
@@ -295,7 +295,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,_("You don't know how to carve a '@x1'.  Try \"shipwright list\" for a list.",recipeName));
+				commonTell(mob,L("You don't know how to carve a '@x1'.  Try \"shipwright list\" for a list.",recipeName));
 				return false;
 			}
 
@@ -326,7 +326,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(buildingI==null)
 			{
-				commonTell(mob,_("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
+				commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),6);
@@ -336,11 +336,11 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			else
 				itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);
-			startStr=_("<S-NAME> start(s) carving @x1.",buildingI.name());
-			displayText=_("You are carving @x1",buildingI.name());
-			verb=_("carving @x1",buildingI.name());
+			startStr=L("<S-NAME> start(s) carving @x1.",buildingI.name());
+			displayText=L("You are carving @x1",buildingI.name());
+			verb=L("carving @x1",buildingI.name());
 			playSound="saw.wav";
-			buildingI.setDisplayText(_("@x1 lies here",itemName));
+			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
@@ -379,9 +379,9 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		{
 			messedUp=false;
 			duration=1;
-			verb=_("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
-			startStr=_("<S-NAME> start(s) @x1.",verb);
-			displayText=_("You are @x1",verb);
+			verb=L("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
+			startStr=L("<S-NAME> start(s) @x1.",verb);
+			displayText=L("You are @x1",verb);
 		}
 
 		if(parsedVars.autoGenerate>0)

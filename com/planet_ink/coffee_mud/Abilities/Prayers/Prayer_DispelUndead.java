@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_DispelUndead extends Prayer
 {
 	@Override public String ID() { return "Prayer_DispelUndead"; }
-	private final static String localizedName = CMLib.lang()._("Dispel Undead");
+	private final static String localizedName = CMLib.lang().L("Dispel Undead");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -74,7 +74,7 @@ public class Prayer_DispelUndead extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?_("The evil inside <T-NAME> is exorcised!"):_("^S<S-NAME> @x1 to dispel the coldness inside <T-NAMESELF>!^?",prayForWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?L("The evil inside <T-NAME> is exorcised!"):L("^S<S-NAME> @x1 to dispel the coldness inside <T-NAMESELF>!^?",prayForWord(mob)));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			final Room R=target.location();
 			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
@@ -88,7 +88,7 @@ public class Prayer_DispelUndead extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> point(s) at <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
+			return maliciousFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

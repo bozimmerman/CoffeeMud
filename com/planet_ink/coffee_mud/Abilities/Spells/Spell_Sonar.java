@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_Sonar extends Spell
 {
 	@Override public String ID() { return "Spell_Sonar"; }
-	private final static String localizedName = CMLib.lang()._("Sonar");
+	private final static String localizedName = CMLib.lang().L("Sonar");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Sonar)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Sonar)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -55,7 +55,7 @@ public class Spell_Sonar extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> sonar ears return to normal."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> sonar ears return to normal."));
 	}
 
 	@Override
@@ -104,7 +104,7 @@ public class Spell_Sonar extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> sonar."));
+			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> sonar."));
 			return false;
 		}
 
@@ -116,7 +116,7 @@ public class Spell_Sonar extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) sonar capability!"):_("^S<S-NAME> incant(s) softly, and <S-HIS-HER> ears become capable of sonar!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> gain(s) sonar capability!"):L("^S<S-NAME> incant(s) softly, and <S-HIS-HER> ears become capable of sonar!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -124,7 +124,7 @@ public class Spell_Sonar extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> incant(s) softly and listen(s), but the spell fizzles."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> incant(s) softly and listen(s), but the spell fizzles."));
 
 		return success;
 	}

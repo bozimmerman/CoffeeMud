@@ -79,12 +79,12 @@ public class EternityQuarterstaff extends Quarterstaff
 					if(usesRemaining()>0)
 					{
 						this.setUsesRemaining(this.usesRemaining()-5);
-						final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_VERBAL_SPELL,_("<S-NAME> point(s) <S-HIS-HER> quarterstaff at <T-NAMESELF>, and delivers a healing beam of light."));
+						final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_VERBAL_SPELL,L("<S-NAME> point(s) <S-HIS-HER> quarterstaff at <T-NAMESELF>, and delivers a healing beam of light."));
 						if(mob.location().okMessage(mob,msg2))
 						{
 		   					final int healing=1+(int)Math.round(CMath.div(phyStats().level(),10.0));
 							target.curState().adjHitPoints(healing,target.maxState());
-							target.tell(_("You feel a little better!"));
+							target.tell(L("You feel a little better!"));
 							return;
 						}
 

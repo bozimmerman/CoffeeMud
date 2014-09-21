@@ -206,7 +206,7 @@ public interface SlaveryLibrary extends CMLibrary
 				{
 					if(CMLib.english().containsString(response,universalRejection))
 					{
-						CMLib.commands().postSay(me,speaker,CMLib.lang()._("Ok, thanks anyway."),false,false);
+						CMLib.commands().postSay(me,speaker,CMLib.lang().L("Ok, thanks anyway."),false,false);
 						return true;
 					}
 				}
@@ -264,7 +264,7 @@ public interface SlaveryLibrary extends CMLibrary
 					{
 						step=STEP_EVAL;
 						que.remove(0);
-						CMLib.commands().postSay(me,null,CMLib.lang()._("I got the money!"),false,false);
+						CMLib.commands().postSay(me,null,CMLib.lang().L("I got the money!"),false,false);
 						return "HOLD";
 					}
 					item="coins";
@@ -286,7 +286,7 @@ public interface SlaveryLibrary extends CMLibrary
 						return "HOLD";
 					}
 					que.remove(0);
-					CMLib.commands().postSay(me,null,CMLib.lang()._("I got @x1!",I.name(me)),false,false);
+					CMLib.commands().postSay(me,null,CMLib.lang().L("I got @x1!",I.name(me)),false,false);
 					return "HOLD";
 				}
 				// is it just sitting around?
@@ -317,7 +317,7 @@ public interface SlaveryLibrary extends CMLibrary
 						{
 							if(step==STEP_EVAL)
 							{
-								CMLib.commands().postSay(me,M,CMLib.lang()._("I must have '@x1.  Give it to me now.",I.name(me)),false,false);
+								CMLib.commands().postSay(me,M,CMLib.lang().L("I must have '@x1.  Give it to me now.",I.name(me)),false,false);
 								step=STEP_INT1;
 								return "HOLD";
 							}
@@ -330,7 +330,7 @@ public interface SlaveryLibrary extends CMLibrary
 							else
 							if(step==STEP_INT2)
 							{
-								CMLib.commands().postSay(me,M,CMLib.lang()._("I MUST HAVE '@x1.  GIVE IT TO ME NOW!!!!",I.name(me).toUpperCase()),false,false);
+								CMLib.commands().postSay(me,M,CMLib.lang().L("I MUST HAVE '@x1.  GIVE IT TO ME NOW!!!!",I.name(me).toUpperCase()),false,false);
 								step=STEP_INT3;
 								return "HOLD";
 							}
@@ -363,7 +363,7 @@ public interface SlaveryLibrary extends CMLibrary
 								}
 								price=price-CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(me,M);
 								que.add(0,CMParms.parse("itemfind "+CMLib.beanCounter().nameCurrencyShort(M,price)));
-								CMLib.commands().postSay(me,null,CMLib.lang()._("Damn, I need @x1.",CMLib.beanCounter().nameCurrencyShort(M,price)),false,false);
+								CMLib.commands().postSay(me,null,CMLib.lang().L("Damn, I need @x1.",CMLib.beanCounter().nameCurrencyShort(M,price)),false,false);
 								step=STEP_EVAL;
 								return "HOLD";
 							}

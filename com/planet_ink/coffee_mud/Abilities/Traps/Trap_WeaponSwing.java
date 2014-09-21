@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_WeaponSwing extends StdTrap
 {
 	@Override public String ID() { return "Trap_WeaponSwing"; }
-	private final static String localizedName = CMLib.lang()._("weapon swing");
+	private final static String localizedName = CMLib.lang().L("weapon swing");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -87,7 +87,7 @@ public class Trap_WeaponSwing extends StdTrap
 			final Item I=getPoison(mob);
 			if(I==null)
 			{
-				mob.tell(_("You'll need to set down a melee weapon first."));
+				mob.tell(L("You'll need to set down a melee weapon first."));
 				return false;
 			}
 		}
@@ -112,9 +112,9 @@ public class Trap_WeaponSwing extends StdTrap
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) setting off @x1 trap!",name));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) setting off @x1 trap!",name));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> <S-IS-ARE> struck by @x1 trap!",name)))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> <S-IS-ARE> struck by @x1 trap!",name)))
 			{
 				super.spring(target);
 				final int damage=CMLib.dice().roll(trapLevel()+abilityCode(),dam,1);

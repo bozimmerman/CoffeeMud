@@ -36,7 +36,7 @@ import java.util.*;
 public class Oracle extends Cleric
 {
 	@Override public String ID(){return "Oracle";}
-	private final static String localizedStaticName = CMLib.lang()._("Oracle");
+	private final static String localizedStaticName = CMLib.lang().L("Oracle");
 	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return "Cleric";}
 	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
@@ -265,7 +265,7 @@ public class Oracle extends Cleric
 		if((!mob.isMonster())&&(mob.charStats().getClassLevel(this)>=30))
 		{
 			if((newAbilityIDs.size()==0)&&(numNonQualified(mob)>=maxNonQualified(mob)))
-				mob.tell(_("^NYou have learned no new secrets this level, as you already know ^H@x1/@x2^? secret skills.^N",""+numNonQualified(mob),""+maxNonQualified(mob)));
+				mob.tell(L("^NYou have learned no new secrets this level, as you already know ^H@x1/@x2^? secret skills.^N",""+numNonQualified(mob),""+maxNonQualified(mob)));
 		}
 	}
 }

@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_FakeSpring extends Spell
 {
 	@Override public String ID() { return "Spell_FakeSpring"; }
-	private final static String localizedName = CMLib.lang()._("Fake Spring");
+	private final static String localizedName = CMLib.lang().L("Fake Spring");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -64,7 +64,7 @@ public class Spell_FakeSpring extends Spell
 			{
 				if(msg.othersMessage()!=null)
 					msg.source().location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_QUIETMOVEMENT,msg.othersMessage());
-				msg.source().tell(_("You have drunk all you can."));
+				msg.source().tell(L("You have drunk all you can."));
 				return false;
 			}
 		}
@@ -73,7 +73,7 @@ public class Spell_FakeSpring extends Spell
 		{
 			if(msg.targetMinor()==CMMsg.TYP_FILL)
 			{
-				msg.source().tell(_("@x1 is full.",((Drink)msg.target()).name(msg.source())));
+				msg.source().tell(L("@x1 is full.",((Drink)msg.target()).name(msg.source())));
 				return false;
 			}
 		}
@@ -90,7 +90,7 @@ public class Spell_FakeSpring extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> invoke(s) a spell dramatically.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> invoke(s) a spell dramatically.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -100,7 +100,7 @@ public class Spell_FakeSpring extends Spell
 
 				if(newItem==null)
 				{
-					mob.tell(_("There's no such thing as a '@x1'.\n\r",itemID));
+					mob.tell(L("There's no such thing as a '@x1'.\n\r",itemID));
 					return false;
 				}
 
@@ -113,7 +113,7 @@ public class Spell_FakeSpring extends Spell
 				W.setThirstQuenched(0);
 				W.recoverPhyStats();
 				mob.location().addItem((Item)W);
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 starts flowing here.",newItem.name()));
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 starts flowing here.",newItem.name()));
 				if(CMLib.law().doesOwnThisProperty(mob,mob.location()))
 				{
 					final Ability A=(Ability)copyOf();
@@ -126,7 +126,7 @@ public class Spell_FakeSpring extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> dramatically attempt(s) to invoke a spell, but fizzle(s) the spell."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> dramatically attempt(s) to invoke a spell, but fizzle(s) the spell."));
 
 
 		// return whether it worked

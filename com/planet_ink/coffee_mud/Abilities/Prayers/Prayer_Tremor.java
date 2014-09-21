@@ -35,9 +35,9 @@ import java.util.*;
 public class Prayer_Tremor extends Prayer
 {
 	@Override public String ID() { return "Prayer_Tremor"; }
-	private final static String localizedName = CMLib.lang()._("Tremor");
+	private final static String localizedName = CMLib.lang().L("Tremor");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Tremor)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Tremor)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -77,7 +77,7 @@ public class Prayer_Tremor extends Prayer
 			if(!oncePerRd)
 			{
 				oncePerRd=true;
-				mob.location().show(mob,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> attempt(s) to stand up, and falls back down!"));
+				mob.location().show(mob,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> attempt(s) to stand up, and falls back down!"));
 			}
 			return false;
 		}
@@ -97,7 +97,7 @@ public class Prayer_Tremor extends Prayer
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> regain(s) <S-HIS-HER> feet as the ground stops shaking."));
+				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> regain(s) <S-HIS-HER> feet as the ground stops shaking."));
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
@@ -105,7 +105,7 @@ public class Prayer_Tremor extends Prayer
 				}
 			}
 			else
-				mob.tell(_("The movement under your feet stops."));
+				mob.tell(L("The movement under your feet stops."));
 		}
 	}
 
@@ -115,7 +115,7 @@ public class Prayer_Tremor extends Prayer
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth shaking up."));
+			mob.tell(L("There doesn't appear to be anyone here worth shaking up."));
 			return false;
 		}
 
@@ -131,7 +131,7 @@ public class Prayer_Tremor extends Prayer
 		if(success)
 		{
 
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),_(auto?"":"^S<S-NAME> "+prayWord(mob)+" thunderously.^?")+CMLib.protocol().msp("earthquake.wav",40)))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"":"^S<S-NAME> "+prayWord(mob)+" thunderously.^?")+CMLib.protocol().msp("earthquake.wav",40)))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -142,7 +142,7 @@ public class Prayer_Tremor extends Prayer
 					// what happened.
 					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 					if(CMLib.flags().isInFlight(target))
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) unaffected."));
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) unaffected."));
 					else
 					if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 					{
@@ -159,13 +159,13 @@ public class Prayer_Tremor extends Prayer
 								}
 							}
 							else
-								mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) unaffected by the quake."));
+								mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) unaffected by the quake."));
 						}
 					}
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> @x1 thunderously, but nothing happens.",prayWord(mob)));
+			return maliciousFizzle(mob,null,L("<S-NAME> @x1 thunderously, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

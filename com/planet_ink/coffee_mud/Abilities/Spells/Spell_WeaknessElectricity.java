@@ -38,9 +38,9 @@ import java.util.*;
 public class Spell_WeaknessElectricity extends Spell
 {
 	@Override public String ID() { return "Spell_WeaknessElectricity"; }
-	private final static String localizedName = CMLib.lang()._("Weakness to Electricity");
+	private final static String localizedName = CMLib.lang().L("Weakness to Electricity");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Weakness/Electricity)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Weakness/Electricity)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -54,7 +54,7 @@ public class Spell_WeaknessElectricity extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("Your electric weakness is now gone."));
+			mob.tell(L("Your electric weakness is now gone."));
 
 		super.unInvoke();
 
@@ -120,7 +120,7 @@ public class Spell_WeaknessElectricity extends Spell
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("A shimmering conductive field appears around <T-NAMESELF>."):_("^S<S-NAME> invoke(s) a shimmering conductive field around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("A shimmering conductive field appears around <T-NAMESELF>."):L("^S<S-NAME> invoke(s) a shimmering conductive field around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -129,7 +129,7 @@ public class Spell_WeaknessElectricity extends Spell
 			}
 		}
 		else
-			maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to invoke weakness to electricity, but fail(s)."));
+			maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to invoke weakness to electricity, but fail(s)."));
 
 		return success;
 	}

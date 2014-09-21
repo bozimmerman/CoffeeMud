@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_ResistBludgeoning extends Spell
 {
 	@Override public String ID() { return "Spell_ResistBludgeoning"; }
-	private final static String localizedName = CMLib.lang()._("Resist Bludgeoning");
+	private final static String localizedName = CMLib.lang().L("Resist Bludgeoning");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Resist Bludgeoning)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Resist Bludgeoning)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -52,7 +52,7 @@ public class Spell_ResistBludgeoning extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("Your bludgeoning protection dissipates."));
+			mob.tell(L("Your bludgeoning protection dissipates."));
 
 		super.unInvoke();
 
@@ -77,7 +77,7 @@ public class Spell_ResistBludgeoning extends Spell
 		&&(!mob.amDead())
 		&&(CMLib.dice().rollPercentage()<35))
 		{
-			mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,_("The barrier around <S-NAME> absorbs <O-NAME> attack from <T-NAME>!"));
+			mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,L("The barrier around <S-NAME> absorbs <O-NAME> attack from <T-NAME>!"));
 			return false;
 		}
 		return super.okMessage(myHost,msg);
@@ -96,7 +96,7 @@ public class Spell_ResistBludgeoning extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> feel(s) protected."):_("^S<S-NAME> invoke(s) an anti-bludgeoning barrier around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> feel(s) protected."):L("^S<S-NAME> invoke(s) an anti-bludgeoning barrier around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -104,7 +104,7 @@ public class Spell_ResistBludgeoning extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke an anti-bludgeoning barrier, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke an anti-bludgeoning barrier, but fail(s)."));
 
 		return success;
 	}

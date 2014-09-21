@@ -44,22 +44,22 @@ public class Serve extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("Serve whom?"));
+			mob.tell(L("Serve whom?"));
 			return false;
 		}
 		commands.removeElementAt(0);
 		final MOB recipient=mob.location().fetchInhabitant(CMParms.combine(commands,0));
 		if((recipient!=null)&&(recipient.isMonster())&&(!(recipient instanceof Deity)))
 		{
-			mob.tell(_("You may not serve @x1.",recipient.name()));
+			mob.tell(L("You may not serve @x1.",recipient.name()));
 			return false;
 		}
 		if((recipient==null)||(!CMLib.flags().canBeSeenBy(recipient,mob)))
 		{
-			mob.tell(_("I don't see @x1 here.",CMParms.combine(commands,0)));
+			mob.tell(L("I don't see @x1 here.",CMParms.combine(commands,0)));
 			return false;
 		}
-		final CMMsg msg=CMClass.getMsg(mob,recipient,null,CMMsg.MSG_SERVE,_("<S-NAME> swear(s) fealty to <T-NAMESELF>."));
+		final CMMsg msg=CMClass.getMsg(mob,recipient,null,CMMsg.MSG_SERVE,L("<S-NAME> swear(s) fealty to <T-NAMESELF>."));
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		return false;

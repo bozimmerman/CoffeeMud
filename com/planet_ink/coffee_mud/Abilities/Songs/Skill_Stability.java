@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Stability extends BardSkill
 {
 	@Override public String ID() { return "Skill_Stability"; }
-	private final static String localizedName = CMLib.lang()._("Stability");
+	private final static String localizedName = CMLib.lang().L("Stability");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
@@ -74,9 +74,9 @@ public class Skill_Stability extends BardSkill
 				roomD=null;
 
 			if(roomS!=null)
-				roomS.show((MOB)affected,null,msg.tool(),CMMsg.MSG_OK_VISUAL,_("<S-NAME> remain(s) stable despite the <O-NAME>."));
+				roomS.show((MOB)affected,null,msg.tool(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> remain(s) stable despite the <O-NAME>."));
 			if(roomD!=null)
-				roomD.show((MOB)affected,null,msg.tool(),CMMsg.MSG_OK_VISUAL,_("<S-NAME> remain(s) stable despite the <O-NAME>."));
+				roomD.show((MOB)affected,null,msg.tool(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> remain(s) stable despite the <O-NAME>."));
 			helpProficiency((MOB)affected, 0);
 			return false;
 		}

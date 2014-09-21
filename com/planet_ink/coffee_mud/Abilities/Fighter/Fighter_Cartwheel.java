@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_Cartwheel extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Cartwheel"; }
-	private final static String localizedName = CMLib.lang()._("Cartwheel");
+	private final static String localizedName = CMLib.lang().L("Cartwheel");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"CARTWHEEL"});
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
@@ -51,18 +51,18 @@ public class Fighter_Cartwheel extends FighterSkill
 		final MOB victim=mob.getVictim();
 		if(victim==null)
 		{
-			mob.tell(_("You can only do this in combat!"));
+			mob.tell(L("You can only do this in combat!"));
 			return false;
 		}
 		if(mob.rangeToTarget()>=mob.location().maxRange())
 		{
-			mob.tell(_("You can not get any further away here!"));
+			mob.tell(L("You can not get any further away here!"));
 			return false;
 		}
 		if((mob.charStats().getBodyPart(Race.BODY_LEG)<=1)
 		||(mob.charStats().getBodyPart(Race.BODY_ARM)<=1))
 		{
-			mob.tell(_("You need arms and legs to do this."));
+			mob.tell(L("You need arms and legs to do this."));
 			return false;
 		}
 
@@ -81,7 +81,7 @@ public class Fighter_Cartwheel extends FighterSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,victim,this,CMMsg.MSG_RETREAT,_("<S-NAME> cartwheel(s) away from <T-NAMESELF>!"));
+			CMMsg msg=CMClass.getMsg(mob,victim,this,CMMsg.MSG_RETREAT,L("<S-NAME> cartwheel(s) away from <T-NAMESELF>!"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -95,7 +95,7 @@ public class Fighter_Cartwheel extends FighterSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to cartwheel and fail(s)."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to cartwheel and fail(s)."));
 
 		// return whether it worked
 		return success;

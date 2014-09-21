@@ -44,7 +44,7 @@ public class Enter extends Go
 	{
 		if(commands.size()<=1)
 		{
-			mob.tell(_("Enter what or where? Try LOOK or EXITS."));
+			mob.tell(L("Enter what or where? Try LOOK or EXITS."));
 			return false;
 		}
 		Environmental enterThis=null;
@@ -65,7 +65,7 @@ public class Enter extends Go
 				&&(mob.phyStats().height()<=0)
 				&&(mob.phyStats().weight()<=0))
 				{
-					final String enterStr=_("<S-NAME> enter(s) <T-NAME>.");
+					final String enterStr=L("<S-NAME> enter(s) <T-NAME>.");
 					final CMMsg msg=CMClass.getMsg(mob,enterThis,null,CMMsg.MSG_SIT,enterStr);
 					if(mob.location().okMessage(mob,msg))
 						mob.location().send(mob,msg);
@@ -75,7 +75,7 @@ public class Enter extends Go
 			dir=CMLib.tracking().findExitDir(mob,mob.location(),enterWhat);
 			if(dir<0)
 			{
-				mob.tell(_("You don't see '@x1' here.",enterWhat.toLowerCase()));
+				mob.tell(L("You don't see '@x1' here.",enterWhat.toLowerCase()));
 				return false;
 			}
 		}

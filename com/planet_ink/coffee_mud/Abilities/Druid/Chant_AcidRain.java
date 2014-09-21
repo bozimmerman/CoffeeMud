@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_AcidRain extends Chant
 {
 	@Override public String ID() { return "Chant_AcidRain"; }
-	private final static String localizedName = CMLib.lang()._("Acid Rain");
+	private final static String localizedName = CMLib.lang().L("Acid Rain");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
@@ -101,7 +101,7 @@ public class Chant_AcidRain extends Chant
 		if(target==null) return false;
 		if(!isRaining(target))
 		{
-			mob.tell(_("This chant requires some rain."));
+			mob.tell(L("This chant requires some rain."));
 			return false;
 		}
 
@@ -120,7 +120,7 @@ public class Chant_AcidRain extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) to the rain.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) to the rain.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -132,13 +132,13 @@ public class Chant_AcidRain extends Chant
 						if((M!=null)&&(mob!=M))
 							mob.location().show(mob,M,CMMsg.MASK_MALICIOUS|CMMsg.TYP_OK_VISUAL,null);
 					}
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("Acid rain starts pouring from the sky!"));
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("Acid rain starts pouring from the sky!"));
 					maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) to the rain, but the magic fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to the rain, but the magic fades."));
 		// return whether it worked
 		return success;
 	}

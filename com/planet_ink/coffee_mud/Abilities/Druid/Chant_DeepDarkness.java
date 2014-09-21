@@ -37,9 +37,9 @@ import java.util.Vector;
 public class Chant_DeepDarkness extends Chant
 {
 	@Override public String ID() { return "Chant_DeepDarkness"; }
-	private final static String localizedName = CMLib.lang()._("Deep Darkness");
+	private final static String localizedName = CMLib.lang().L("Deep Darkness");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Deep Darkness spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Deep Darkness spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -60,7 +60,7 @@ public class Chant_DeepDarkness extends Chant
 		{
 			room.recoverRoomStats();
 			room.recoverRoomStats();
-			room.showHappens(CMMsg.MSG_OK_VISUAL, _("The deep darkness starts to lift."));
+			room.showHappens(CMMsg.MSG_OK_VISUAL, L("The deep darkness starts to lift."));
 		}
 	}
 
@@ -107,7 +107,7 @@ public class Chant_DeepDarkness extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,null,null,_("Deep Darkness is already been here!"));
+			mob.tell(mob,null,null,L("Deep Darkness is already been here!"));
 			return false;
 		}
 
@@ -121,7 +121,7 @@ public class Chant_DeepDarkness extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target,this,verbalCastCode(mob,target,auto), _((auto?"D":"^S<S-NAME> chant(s) deeply and d")+"arkness descends.^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target,this,verbalCastCode(mob,target,auto), L((auto?"D":"^S<S-NAME> chant(s) deeply and d")+"arkness descends.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -130,7 +130,7 @@ public class Chant_DeepDarkness extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) deeply, but nothing happens."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) deeply, but nothing happens."));
 
 		// return whether it worked
 		return success;

@@ -68,7 +68,7 @@ public class ClanExile extends StdCommand
 		{
 			if(C==null)
 			{
-				mob.tell(_("You aren't allowed to exile anyone from @x1.",((clanName.length()==0)?"anything":clanName)));
+				mob.tell(L("You aren't allowed to exile anyone from @x1.",((clanName.length()==0)?"anything":clanName)));
 				return false;
 			}
 			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.EXILE,false))
@@ -76,7 +76,7 @@ public class ClanExile extends StdCommand
 				final List<MemberRecord> apps=C.getMemberList();
 				if(apps.size()<1)
 				{
-					mob.tell(_("There are no members in your @x1.",C.getGovernmentName()));
+					mob.tell(L("There are no members in your @x1.",C.getGovernmentName()));
 					return false;
 				}
 				for(final MemberRecord member : apps)
@@ -91,7 +91,7 @@ public class ClanExile extends StdCommand
 					final MOB M=CMLib.players().getLoadPlayer(memberStr);
 					if(M==null)
 					{
-						mob.tell(_("@x1 was not found.  Could not exile from @x2.",memberStr,C.getGovernmentName()));
+						mob.tell(L("@x1 was not found.  Could not exile from @x2.",memberStr,C.getGovernmentName()));
 						return false;
 					}
 					if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.EXILE,true))
@@ -105,32 +105,32 @@ public class ClanExile extends StdCommand
 							S.setSavable(false);
 							S.setVarScope("*");
 							S.setScript(C.getGovernment().getExitScript());
-							final CMMsg msg2=CMClass.getMsg(M,M,null,CMMsg.MSG_OK_VISUAL,null,null,_("CLANEXIT"));
+							final CMMsg msg2=CMClass.getMsg(M,M,null,CMMsg.MSG_OK_VISUAL,null,null,L("CLANEXIT"));
 							S.executeMsg(M, msg2);
 							S.dequeResponses();
 							S.tick(M,Tickable.TICKID_MOB);
 						}
-						CMLib.clans().clanAnnounce(mob,_("Member exiled from @x1 @x2: @x3",C.getGovernmentName(),C.name(),M.Name()));
-						mob.tell(_("@x1 has been exiled from @x2 '@x3'.",M.Name(),C.getGovernmentName(),C.clanID()));
+						CMLib.clans().clanAnnounce(mob,L("Member exiled from @x1 @x2: @x3",C.getGovernmentName(),C.name(),M.Name()));
+						mob.tell(L("@x1 has been exiled from @x2 '@x3'.",M.Name(),C.getGovernmentName(),C.clanID()));
 						if((M.session()!=null)&&(M.session().mob()==M))
-							M.tell(_("You have been exiled from @x1 '@x2'.",C.getGovernmentName(),C.clanID()));
+							M.tell(L("You have been exiled from @x1 '@x2'.",C.getGovernmentName(),C.clanID()));
 						C.delMember(M);
 						return false;
 					}
 				}
 				else
 				{
-					msg.append(_("@x1 isn't a member of your @x2.",memberStr,C.getGovernmentName()));
+					msg.append(L("@x1 isn't a member of your @x2.",memberStr,C.getGovernmentName()));
 				}
 			}
 			else
 			{
-				msg.append(_("You aren't in the right position to exile anyone from your @x1.",C.getGovernmentName()));
+				msg.append(L("You aren't in the right position to exile anyone from your @x1.",C.getGovernmentName()));
 			}
 		}
 		else
 		{
-			msg.append(_("You haven't specified which member you are exiling."));
+			msg.append(L("You haven't specified which member you are exiling."));
 		}
 		mob.tell(msg.toString());
 		return false;

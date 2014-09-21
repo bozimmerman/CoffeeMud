@@ -35,9 +35,9 @@ import java.util.*;
 public class Spell_GustOfWind extends Spell
 {
 	@Override public String ID() { return "Spell_GustOfWind"; }
-	private final static String localizedName = CMLib.lang()._("Gust of Wind");
+	private final static String localizedName = CMLib.lang().L("Gust of Wind");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Blown Down)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Blown Down)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(4);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -82,11 +82,11 @@ public class Spell_GustOfWind extends Spell
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> regain(s) <S-HIS-HER> feet."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> regain(s) <S-HIS-HER> feet."));
 				CMLib.commands().postStand(mob,true);
 			}
 			else
-				mob.tell(_("You regain your feet."));
+				mob.tell(L("You regain your feet."));
 		}
 	}
 
@@ -98,7 +98,7 @@ public class Spell_GustOfWind extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if((h==null)||(h.size()==0))
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth blowing around."));
+			mob.tell(L("There doesn't appear to be anyone here worth blowing around."));
 			return false;
 		}
 
@@ -113,7 +113,7 @@ public class Spell_GustOfWind extends Spell
 
 		if(success)
 		{
-			if(R.show(mob,null,this,verbalCastCode(mob,null,auto),auto?_("A horrendous wind gust blows through here."):_("^S<S-NAME> blow(s) at <S-HIS-HER> enemies.^?")))
+			if(R.show(mob,null,this,verbalCastCode(mob,null,auto),auto?L("A horrendous wind gust blows through here."):L("^S<S-NAME> blow(s) at <S-HIS-HER> enemies.^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -122,7 +122,7 @@ public class Spell_GustOfWind extends Spell
 					// and add it to the affects list of the
 					// affected MOB.  Then tell everyone else
 					// what happened.
-					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("<T-NAME> get(s) blown back!"));
+					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("<T-NAME> get(s) blown back!"));
 					if((R.okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 					{
 						if((msg.value()<=0)&&(target.location()==R))
@@ -138,7 +138,7 @@ public class Spell_GustOfWind extends Spell
 							&&(CMLib.dice().rollPercentage()>((target.charStats().getStat(CharStats.STAT_DEXTERITY)*2)+target.phyStats().level()-(adjustedLevel(mob,asLevel)/2)))
 							&&(target.charStats().getBodyPart(Race.BODY_LEG)>0))
 							{
-								R.show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> fall(s) down!"));
+								R.show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> fall(s) down!"));
 								doneTicking=false;
 								success=maliciousAffect(mob,target,asLevel,2,-1);
 							}
@@ -150,7 +150,7 @@ public class Spell_GustOfWind extends Spell
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> blow(s), but find(s) <S-HE-SHE> is only full of hot air."));
+			return maliciousFizzle(mob,null,L("<S-NAME> blow(s), but find(s) <S-HE-SHE> is only full of hot air."));
 
 
 		// return whether it worked

@@ -46,7 +46,7 @@ public class Boot extends StdCommand
 		if(mob.session()==null) return false;
 		if(commands.size()==0)
 		{
-			mob.tell(_("Boot out who?"));
+			mob.tell(L("Boot out who?"));
 			return false;
 		}
 		final String whom=CMParms.combine(commands,0);
@@ -58,17 +58,17 @@ public class Boot extends StdCommand
 			{
 				if(S==mob.session())
 				{
-					mob.tell(_("Try QUIT."));
+					mob.tell(L("Try QUIT."));
 					return false;
 				}
 				if(S.mob()!=null)
 				{
-					mob.tell(_("You boot @x1",S.mob().name()));
+					mob.tell(L("You boot @x1",S.mob().name()));
 					if(S.mob().location()!=null)
-						S.mob().location().show(S.mob(),null,CMMsg.MSG_OK_VISUAL,_("Something is happening to <S-NAME>."));
+						S.mob().location().show(S.mob(),null,CMMsg.MSG_OK_VISUAL,L("Something is happening to <S-NAME>."));
 				}
 				else
-					mob.tell(_("You boot @x1",S.getAddress()));
+					mob.tell(L("You boot @x1",S.getAddress()));
 				S.stopSession(false,false,false);
 				if(((S.getPreviousCMD()==null)||(S.getPreviousCMD().size()==0))
 				&&(!CMLib.flags().isInTheGame(S.mob(),true)))
@@ -78,7 +78,7 @@ public class Boot extends StdCommand
 			}
 		}
 		if(!boot)
-			mob.tell(_("You can't find anyone by that name or ip address."));
+			mob.tell(L("You can't find anyone by that name or ip address."));
 		return false;
 	}
 

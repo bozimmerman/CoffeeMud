@@ -730,7 +730,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	}
 	
 	@Override
-	public String _(final String str, final String ... xs)
+	public String L(final String str, final String ... xs)
 	{
 		if((str==null)||(str.length()==0))
 			return str;

@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_StoneFriend extends Chant
 {
 	@Override public String ID() { return "Chant_StoneFriend"; }
-	private final static String localizedName = CMLib.lang()._("Stone Friend");
+	private final static String localizedName = CMLib.lang().L("Stone Friend");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Charmed)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Charmed)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -84,7 +84,7 @@ public class Chant_StoneFriend extends Chant
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.target()==mob.amFollowing()))
 		{
-			mob.tell(_("You like @x1 too much.",mob.amFollowing().charStats().himher()));
+			mob.tell(L("You like @x1 too much.",mob.amFollowing().charStats().himher()));
 			return false;
 		}
 		else
@@ -95,7 +95,7 @@ public class Chant_StoneFriend extends Chant
 		&&(mob.amFollowing()!=null)
 		&&(((Room)msg.target()).isInhabitant(mob.amFollowing())))
 		{
-			mob.tell(_("You don't want to leave your friend."));
+			mob.tell(L("You don't want to leave your friend."));
 			return false;
 		}
 		else
@@ -103,7 +103,7 @@ public class Chant_StoneFriend extends Chant
 		&&(mob.amFollowing()!=null)
 		&&(msg.sourceMinor()==CMMsg.TYP_NOFOLLOW))
 		{
-			mob.tell(_("You like @x1 too much.",mob.amFollowing().name()));
+			mob.tell(L("You like @x1 too much.",mob.amFollowing().name()));
 			return false;
 		}
 
@@ -137,7 +137,7 @@ public class Chant_StoneFriend extends Chant
 
 		if((canBeUninvoked())&&(!mob.amDead()))
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> free-will returns."));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> free-will returns."));
 			if(mob.amFollowing()!=null)
 				CMLib.commands().postFollow(mob,null,false);
 			CMLib.commands().postStand(mob,true);
@@ -182,7 +182,7 @@ public class Chant_StoneFriend extends Chant
 		   &&(!target.charStats().getMyRace().racialCategory().equals("Stone Golem"))
 		   &&(!target.charStats().getMyRace().racialCategory().equals("Metal Golem")))
 		{
-			mob.tell(_("@x1 is not an stone/metal golem or earth elemental!",target.name(mob)));
+			mob.tell(L("@x1 is not an stone/metal golem or earth elemental!",target.name(mob)));
 			return false;
 		}
 
@@ -201,7 +201,7 @@ public class Chant_StoneFriend extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final String str=auto?"":_("^S<S-NAME> chant(s) at <T-NAMESELF>.^?");
+			final String str=auto?"":L("^S<S-NAME> chant(s) at <T-NAMESELF>.^?");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),str);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -215,13 +215,13 @@ public class Chant_StoneFriend extends Chant
 						CMLib.commands().postFollow(target,mob,false);
 						CMLib.combat().makePeaceInGroup(mob);
 						if(target.amFollowing()!=mob)
-							mob.tell(_("@x1 seems unwilling to follow you.",target.name(mob)));
+							mob.tell(L("@x1 seems unwilling to follow you.",target.name(mob)));
 					}
 				}
 			}
 		}
 		if(!success)
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens."));
 
 		// return whether it worked
 		return success;

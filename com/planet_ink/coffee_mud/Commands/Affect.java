@@ -51,62 +51,62 @@ public class Affect extends StdCommand
 			else
 			{
 				final int x=(int)(mob.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT);
-				if(x<=1) msg.append(_("^!You could use a bath.^?\n\r"));
+				if(x<=1) msg.append(L("^!You could use a bath.^?\n\r"));
 				else
-				if(x<=3) msg.append(_("^!You could really use a bath.^?\n\r"));
+				if(x<=3) msg.append(L("^!You could really use a bath.^?\n\r"));
 				else
-				if(x<=7) msg.append(_("^!You need to bathe, soon.^?\n\r"));
+				if(x<=7) msg.append(L("^!You need to bathe, soon.^?\n\r"));
 				else
-				if(x<15) msg.append(_("^!You desperately need to bathe.^?\n\r"));
-				else msg.append(_("^!Your stench is horrendous! Bathe dammit!^?\n\r"));
+				if(x<15) msg.append(L("^!You desperately need to bathe.^?\n\r"));
+				else msg.append(L("^!Your stench is horrendous! Bathe dammit!^?\n\r"));
 			}
 		}
 
 		if(CMLib.flags().isBound(mob))
-			msg.append(_("^!You are bound.^?\n\r"));
+			msg.append(L("^!You are bound.^?\n\r"));
 
 		// dont do falling -- the flag doubles for drowning/treading water anyway.
 		//if(CMLib.flags().isFalling(mob))
-		//    msg.append(_("^!You are falling!!!^?\n\r"));
+		//    msg.append(L("^!You are falling!!!^?\n\r"));
 		//else
 		if(CMLib.flags().isSleeping(mob))
-			msg.append(_("^!You are sleeping.^?\n\r"));
+			msg.append(L("^!You are sleeping.^?\n\r"));
 		else
 		if(CMLib.flags().isSitting(mob))
-			msg.append(_("^!You are resting.^?\n\r"));
+			msg.append(L("^!You are resting.^?\n\r"));
 		else
 		if(CMLib.flags().isSwimmingInWater(mob))
-			msg.append(_("^!You are swimming.^?\n\r"));
+			msg.append(L("^!You are swimming.^?\n\r"));
 		else
 		if(CMLib.flags().isClimbing(mob))
-			msg.append(_("^!You are climbing.^?\n\r"));
+			msg.append(L("^!You are climbing.^?\n\r"));
 		else
 		if(CMLib.flags().isFlying(mob))
-			msg.append(_("^!You are flying.^?\n\r"));
+			msg.append(L("^!You are flying.^?\n\r"));
 		else
-			msg.append(_("^!You are standing.^?\n\r"));
+			msg.append(L("^!You are standing.^?\n\r"));
 
 		if(mob.riding()!=null)
-			msg.append(_("^!You are @x1 @x2.^?\n\r",mob.riding().stateString(mob),mob.riding().name()));
+			msg.append(L("^!You are @x1 @x2.^?\n\r",mob.riding().stateString(mob),mob.riding().name()));
 
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL))
-			msg.append(_("^!Your playerkill flag is on.^?\n\r"));
+			msg.append(L("^!Your playerkill flag is on.^?\n\r"));
 
 		if(CMLib.flags().isInvisible(mob))
-			msg.append(_("^!You are invisible.^?\n\r"));
+			msg.append(L("^!You are invisible.^?\n\r"));
 		if(CMLib.flags().isHidden(mob))
-			msg.append(_("^!You are hidden.^?\n\r"));// ("+CMLib.flags().getHideScore(mob)+").^?\n\r");
+			msg.append(L("^!You are hidden.^?\n\r"));// ("+CMLib.flags().getHideScore(mob)+").^?\n\r");
 		if(CMLib.flags().isSneaking(mob))
-			msg.append(_("^!You are sneaking.^?\n\r"));
+			msg.append(L("^!You are sneaking.^?\n\r"));
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_QUIET))
-			msg.append(_("^!You are in QUIET mode.^?\n\r"));
+			msg.append(L("^!You are in QUIET mode.^?\n\r"));
 
 		if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS)
-			msg.append(_("^!You are fatigued.^?\n\r"));
+			msg.append(L("^!You are fatigued.^?\n\r"));
 		if(mob.curState().getHunger()<1)
-			msg.append(_("^!You are hungry.^?\n\r"));
+			msg.append(L("^!You are hungry.^?\n\r"));
 		if(mob.curState().getThirst()<1)
-			msg.append(_("^!You are thirsty.^?\n\r"));
+			msg.append(L("^!You are thirsty.^?\n\r"));
 		return msg.toString();
 	}
 
@@ -184,14 +184,14 @@ public class Affect extends StdCommand
 					else
 						P=mob.location().fetchFromMOBRoomFavorsItems(mob,null,name,Wearable.FILTER_ANY);
 					if(P==null)
-						S.colorOnlyPrint(_("You don't see @x1 here.\n\r^N",name));
+						S.colorOnlyPrint(L("You don't see @x1 here.\n\r^N",name));
 					else
 					{
 						if(S==mob.session())
-							S.colorOnlyPrint(_(" \n\r^!@x1 is affected by: ^?",P.name()));
+							S.colorOnlyPrint(L(" \n\r^!@x1 is affected by: ^?",P.name()));
 						final String msg=getAffects(S,P,true,CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
 						if(msg.length()<5)
-							S.colorOnlyPrintln(_("Nothing!\n\r^N"));
+							S.colorOnlyPrintln(L("Nothing!\n\r^N"));
 						else
 							S.colorOnlyPrintln(msg);
 					}
@@ -202,10 +202,10 @@ public class Affect extends StdCommand
 			if(S==mob.session())
 				S.colorOnlyPrintln("\n\r"+getMOBState(mob)+"\n\r");
 			if(S==mob.session())
-				S.colorOnlyPrint(_("^!You are affected by: ^?"));
+				S.colorOnlyPrint(L("^!You are affected by: ^?"));
 			final String msg=getAffects(S,mob,CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS),CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
 			if(msg.length()<5)
-				S.colorOnlyPrintln(_("Nothing!\n\r^N"));
+				S.colorOnlyPrintln(L("Nothing!\n\r^N"));
 			else
 				S.colorOnlyPrintln(msg);
 		}

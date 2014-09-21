@@ -36,7 +36,7 @@ import java.util.*;
 public class Chant_SummonPlants extends Chant
 {
 	@Override public String ID() { return "Chant_SummonPlants"; }
-	private final static String localizedName = CMLib.lang()._("Summon Plants");
+	private final static String localizedName = CMLib.lang().L("Summon Plants");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -54,7 +54,7 @@ public class Chant_SummonPlants extends Chant
 		if(littlePlants==null)
 			return;
 		if(canBeUninvoked())
-			PlantsLocation.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 wither@x2 away.",littlePlants.name(),(littlePlants.name().startsWith("s")?"":"s")));
+			PlantsLocation.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 wither@x2 away.",littlePlants.name(),(littlePlants.name().startsWith("s")?"":"s")));
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
@@ -93,29 +93,29 @@ public class Chant_SummonPlants extends Chant
 		switch(CMLib.dice().roll(1,5,0))
 		{
 		case 1:
-			newItem.setName(_("some happy flowers"));
-			newItem.setDisplayText(_("some happy flowers are growing here."));
-			newItem.setDescription(_("Happy flowers with little red and yellow blooms."));
+			newItem.setName(L("some happy flowers"));
+			newItem.setDisplayText(L("some happy flowers are growing here."));
+			newItem.setDescription(L("Happy flowers with little red and yellow blooms."));
 			break;
 		case 2:
-			newItem.setName(_("some happy weeds"));
-			newItem.setDisplayText(_("some happy weeds are growing here."));
-			newItem.setDescription(_("Long stalked little plants with tiny bulbs on top."));
+			newItem.setName(L("some happy weeds"));
+			newItem.setDisplayText(L("some happy weeds are growing here."));
+			newItem.setDescription(L("Long stalked little plants with tiny bulbs on top."));
 			break;
 		case 3:
-			newItem.setName(_("a pretty fern"));
-			newItem.setDisplayText(_("a pretty fern is growing here."));
-			newItem.setDescription(_("Like a tiny bush, this dark green plant is lovely."));
+			newItem.setName(L("a pretty fern"));
+			newItem.setDisplayText(L("a pretty fern is growing here."));
+			newItem.setDescription(L("Like a tiny bush, this dark green plant is lovely."));
 			break;
 		case 4:
-			newItem.setName(_("a patch of sunflowers"));
-			newItem.setDisplayText(_("a patch of sunflowers is growing here."));
-			newItem.setDescription(_("Happy flowers with little yellow blooms."));
+			newItem.setName(L("a patch of sunflowers"));
+			newItem.setDisplayText(L("a patch of sunflowers is growing here."));
+			newItem.setDescription(L("Happy flowers with little yellow blooms."));
 			break;
 		case 5:
-			newItem.setName(_("a patch of bluebonnets"));
-			newItem.setDisplayText(_("a patch of bluebonnets is growing here."));
-			newItem.setDescription(_("Happy flowers with little blue and purple blooms."));
+			newItem.setName(L("a patch of bluebonnets"));
+			newItem.setDisplayText(L("a patch of bluebonnets is growing here."));
+			newItem.setDescription(L("Happy flowers with little blue and purple blooms."));
 			break;
 		}
 		final Chant_SummonPlants newChant=new Chant_SummonPlants();
@@ -125,7 +125,7 @@ public class Chant_SummonPlants extends Chant
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
 		newItem.setExpirationDate(0);
-		room.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang()._("Suddenly, @x1 sprout(s) up here.",newItem.name()));
+		room.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang().L("Suddenly, @x1 sprout(s) up here.",newItem.name()));
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
 		if(CMLib.law().doesOwnThisProperty(mob,room))
@@ -180,7 +180,7 @@ public class Chant_SummonPlants extends Chant
 					num[0]++;
 					if(num[0]<19)
 					{
-						mob.tell(_("You have made this city greener."));
+						mob.tell(L("You have made this city greener."));
 						CMLib.leveler().postExperience(mob,null,null,(int)num[0],false);
 					}
 				}
@@ -195,7 +195,7 @@ public class Chant_SummonPlants extends Chant
 	{
 		if((!auto)&&(mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell(_("You must be outdoors for this chant to work."));
+			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
 
@@ -205,7 +205,7 @@ public class Chant_SummonPlants extends Chant
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			mob.tell(_("This magic will not work here."));
+			mob.tell(L("This magic will not work here."));
 			return false;
 		}
 		return true;
@@ -237,7 +237,7 @@ public class Chant_SummonPlants extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) to the ground.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) to the ground.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -245,7 +245,7 @@ public class Chant_SummonPlants extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) to the ground, but nothing happens."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) to the ground, but nothing happens."));
 
 		// return whether it worked
 		return success;

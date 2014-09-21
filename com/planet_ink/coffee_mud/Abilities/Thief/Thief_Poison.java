@@ -41,7 +41,7 @@ public class Thief_Poison extends ThiefSkill
 	// replaced with Thief_UsePoison
 	// **
 	@Override public String ID() { return "Thief_Poison"; }
-	private final static String localizedName = CMLib.lang()._("Deprecated Poison");
+	private final static String localizedName = CMLib.lang().L("Deprecated Poison");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return 0;}
@@ -65,7 +65,7 @@ public class Thief_Poison extends ThiefSkill
 		String str=null;
 		if(success)
 		{
-			str=auto?"":_("^F^<FIGHT^><S-NAME> attempt(s) to poison <T-NAMESELF>!^</FIGHT^>^?");
+			str=auto?"":L("^F^<FIGHT^><S-NAME> attempt(s) to poison <T-NAMESELF>!^</FIGHT^>^?");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,str,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.MSG_THIEF_ACT|(auto?CMMsg.MASK_ALWAYS:0),str,CMMsg.MSG_NOISYMOVEMENT,str);
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.TYP_POISON,null,CMMsg.MASK_MALICIOUS|CMMsg.TYP_POISON|(auto?CMMsg.MASK_ALWAYS:0),null,CMMsg.NO_EFFECT,null);
 			CMLib.color().fixSourceFightColor(msg);
@@ -82,7 +82,7 @@ public class Thief_Poison extends ThiefSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s)."));
 
 		return success;
 	}

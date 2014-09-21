@@ -39,7 +39,7 @@ import java.util.*;
 public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 {
 	@Override public String ID() { return "Paladin_CraftHolyAvenger"; }
-	private final static String localizedName = CMLib.lang()._("Craft Holy Avenger");
+	private final static String localizedName = CMLib.lang().L("Craft Holy Avenger");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"CRAFTHOLY","CRAFTHOLYAVENGER","CRAFTAVENGER"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -110,10 +110,10 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 		completion=50-CMLib.ableMapper().qualifyingClassLevel(mob,this);
 		final String itemName="the Holy Avenger";
 		buildingI.setName(itemName);
-		final String startStr=_("<S-NAME> start(s) crafting @x1.",buildingI.name());
-		displayText=_("You are crafting @x1",buildingI.name());
-		verb=_("crafting @x1",buildingI.name());
-		buildingI.setDisplayText(_("@x1 lies here",itemName));
+		final String startStr=L("<S-NAME> start(s) crafting @x1.",buildingI.name());
+		displayText=L("You are crafting @x1",buildingI.name());
+		verb=L("crafting @x1",buildingI.name());
+		buildingI.setDisplayText(L("@x1 lies here",itemName));
 		buildingI.setDescription(itemName+". ");
 		buildingI.basePhyStats().setWeight(woodRequired);
 		buildingI.setBaseValue(0);

@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_Plague extends Chant
 {
 	@Override public String ID() { return "Chant_Plague"; }
-	private final static String localizedName = CMLib.lang()._("Summon Plague");
+	private final static String localizedName = CMLib.lang().L("Summon Plague");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -75,7 +75,7 @@ public class Chant_Plague extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":_("^S<S-NAME> chant(s) at <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":L("^S<S-NAME> chant(s) at <T-NAMESELF>!^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.TYP_DISEASE,null);
 			if(mob.location().okMessage(mob,msg)||mob.location().okMessage(mob,msg2))
 			{
@@ -90,7 +90,7 @@ public class Chant_Plague extends Chant
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

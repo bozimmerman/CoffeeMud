@@ -98,7 +98,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 			case CMMsg.TYP_PULL:
 				if(!CMSecurity.isASysOp(msg.source()))
 				{
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("@x1 flashes and falls out of <S-HIS-HER> hands!",name()));
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 flashes and falls out of <S-HIS-HER> hands!",name()));
 					return false;
 				}
 				break;
@@ -126,7 +126,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 		&&(mob.session().getPreviousCMD()!=null)
 		&&(CMParms.combine(mob.session().getPreviousCMD(),0).toUpperCase().indexOf(message)<0))
 		{
-			mob.tell(_("The wand fizzles in an irritating way."));
+			mob.tell(L("The wand fizzles in an irritating way."));
 			return false;
 		}
 		return true;
@@ -160,7 +160,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 				if(message.equals("LEVEL ALL UP"))
 				{
 					if(!safetyCheck(mob,message.toUpperCase())) return;
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("@x1 glows brightly at <T-NAME>.",this.name()));
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly at <T-NAME>.",this.name()));
 					int destLevel=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
 					if(destLevel==0) destLevel=30;
 					if(destLevel<=target.basePhyStats().level())
@@ -169,7 +169,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 					||(target.charStats().isLevelCapped(target.charStats().getCurrentClass()))
 					||(target.charStats().getMyRace().leveless())
 					||(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
-						mob.tell(_("The wand will not work on such as @x1.",target.name(mob)));
+						mob.tell(L("The wand will not work on such as @x1.",target.name(mob)));
 					else
 					while(target.basePhyStats().level()<destLevel)
 					{
@@ -189,12 +189,12 @@ public class WandArchon extends StdWand implements ArchonOnly
 					message=message.substring(0,message.length()-2).trim();
 					int num=1;
 					if(CMath.isInteger(message)) num=CMath.s_int(message);
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("@x1 glows brightly at <T-NAME>.",this.name()));
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly at <T-NAME>.",this.name()));
 					if((target.charStats().getCurrentClass().leveless())
 					||(target.charStats().isLevelCapped(target.charStats().getCurrentClass()))
 					||(target.charStats().getMyRace().leveless())
 					||(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
-						mob.tell(_("The wand will not work on such as @x1.",target.name(mob)));
+						mob.tell(L("The wand will not work on such as @x1.",target.name(mob)));
 					else
 					for(int i=0;i<num;i++)
 					{
@@ -215,12 +215,12 @@ public class WandArchon extends StdWand implements ArchonOnly
 					message=message.substring(0,message.length()-4).trim();
 					int num=1;
 					if(CMath.isInteger(message)) num=CMath.s_int(message);
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("@x1 glows brightly at <T-NAME>.",this.name()));
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly at <T-NAME>.",this.name()));
 					if((target.charStats().getCurrentClass().leveless())
 					||(target.charStats().isLevelCapped(target.charStats().getCurrentClass()))
 					||(target.charStats().getMyRace().leveless())
 					||(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
-						mob.tell(_("The wand will not work on such as @x1.",target.name(mob)));
+						mob.tell(L("The wand will not work on such as @x1.",target.name(mob)));
 					else
 					for(int i=0;i<num;i++)
 					{
@@ -241,7 +241,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 				if(message.equals("RESTORE"))
 				{
 					if(!safetyCheck(mob,message)) return;
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("@x1 glows brightly at <T-NAME>.",this.name()));
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly at <T-NAME>.",this.name()));
 					final List<Ability> diseaseV=CMLib.flags().domainAffects(target,Ability.ACODE_DISEASE);
 					if(diseaseV.size()>0){ final Ability A=CMClass.getAbility("Prayer_CureDisease"); if(A!=null) A.invoke(mob,target,true,0);}
 					final List<Ability> poisonV=CMLib.flags().domainAffects(target,Ability.ACODE_POISON);
@@ -251,25 +251,25 @@ public class WandArchon extends StdWand implements ArchonOnly
 					final Ability ampu=target.fetchEffect("Amputation"); if(ampu!=null){ ampu.unInvoke(); target.delEffect(ampu);}
 					target.recoverMaxState();
 					target.resetToMaxState();
-					target.tell(_("You feel refreshed!"));
+					target.tell(L("You feel refreshed!"));
 					return;
 				}
 				else
 				if(message.equals("REFRESH"))
 				{
 					if(!safetyCheck(mob,message)) return;
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("@x1 glows brightly at <T-NAME>.",this.name()));
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly at <T-NAME>.",this.name()));
 					final Ability bleed=target.fetchEffect("Bleeding"); if(bleed!=null){ bleed.unInvoke(); target.delEffect(bleed);}
 					target.recoverMaxState();
 					target.resetToMaxState();
-					target.tell(_("You feel refreshed!"));
+					target.tell(L("You feel refreshed!"));
 					return;
 				}
 				else
 				if(message.equals("BLAST"))
 				{
 					if(!safetyCheck(mob,message)) return;
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("@x1 zaps <T-NAME> with unworldly energy.",this.name()));
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 zaps <T-NAME> with unworldly energy.",this.name()));
 					target.curState().setHitPoints(1);
 					target.curState().setMana(1);
 					target.curState().setMovement(1);
@@ -279,7 +279,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 				if(message.equals("BURN"))
 				{
 					if(!safetyCheck(mob,message)) return;
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("@x1 wielded by <S-NAME> shoots forth magical green flames at <T-NAME>.",this.name()));
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 wielded by <S-NAME> shoots forth magical green flames at <T-NAME>.",this.name()));
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= 3;
 					CMLib.combat().postDamage(mob,target,null,(++flameDamage),CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,(this.name()+" <DAMAGE> <T-NAME>!")+CMLib.protocol().msp("fireball.wav",30));

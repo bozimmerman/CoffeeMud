@@ -37,7 +37,7 @@ public class Chant_WindGust extends Chant
 {
 	@Override public String ID() { return "Chant_WindGust"; }
 	@Override public String name(){ return renderedMundane?"wind gust":"Wind Gust";}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Blown Down)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Blown Down)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
@@ -83,7 +83,7 @@ public class Chant_WindGust extends Chant
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> regain(s) <S-HIS-HER> feet."));
+				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> regain(s) <S-HIS-HER> feet."));
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
@@ -91,7 +91,7 @@ public class Chant_WindGust extends Chant
 				}
 			}
 			else
-				mob.tell(_("You regain your feet."));
+				mob.tell(L("You regain your feet."));
 		}
 	}
 
@@ -101,7 +101,7 @@ public class Chant_WindGust extends Chant
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if((h==null)||(h.size()==0))
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth blowing around."));
+			mob.tell(L("There doesn't appear to be anyone here worth blowing around."));
 			return false;
 		}
 
@@ -116,7 +116,7 @@ public class Chant_WindGust extends Chant
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),_(auto?"^JA horrendous wind gust blows through here.^?":"^S<S-NAME> chant(s) at <S-HIS-HER> enemies.^?")+CMLib.protocol().msp("wind.wav",40)))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"^JA horrendous wind gust blows through here.^?":"^S<S-NAME> chant(s) at <S-HIS-HER> enemies.^?")+CMLib.protocol().msp("wind.wav",40)))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -125,7 +125,7 @@ public class Chant_WindGust extends Chant
 					// and add it to the affects list of the
 					// affected MOB.  Then tell everyone else
 					// what happened.
-					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("<T-NAME> get(s) blown back!"));
+					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("<T-NAME> get(s) blown back!"));
 					if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 					{
 						if((msg.value()<=0)&&(target.location()==mob.location()))
@@ -146,7 +146,7 @@ public class Chant_WindGust extends Chant
 							&&(CMLib.dice().rollPercentage()>(((target.charStats().getStat(CharStats.STAT_DEXTERITY)*2)+target.phyStats().level()))-(5*howLong))
 							&&(target.charStats().getBodyPart(Race.BODY_LEG)>0))
 							{
-								mob.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> fall(s) down!"));
+								mob.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> fall(s) down!"));
 								doneTicking=false;
 								success=maliciousAffect(mob,target,asLevel,howLong,-1);
 							}
@@ -159,7 +159,7 @@ public class Chant_WindGust extends Chant
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> chant(s), but nothing happens."));
+			return maliciousFizzle(mob,null,L("<S-NAME> chant(s), but nothing happens."));
 
 
 		// return whether it worked

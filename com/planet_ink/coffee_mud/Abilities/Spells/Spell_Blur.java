@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Blur extends Spell
 {
 	@Override public String ID() { return "Spell_Blur"; }
-	private final static String localizedName = CMLib.lang()._("Blur");
+	private final static String localizedName = CMLib.lang().L("Blur");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Blur spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Blur spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -64,7 +64,7 @@ public class Spell_Blur extends Spell
 			final int pctDodge=invoker.charStats().getStat(CharStats.STAT_INTELLIGENCE);
 			if(CMLib.dice().rollPercentage()<(pctDodge*2))
 			{
-				final CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,_("<T-NAME> can't seem to focus on <S-NAME>."));
+				final CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> can't seem to focus on <S-NAME>."));
 				if(mob.location().okMessage(mob,msg2))
 					mob.location().send(mob,msg2);
 				return false;
@@ -91,7 +91,7 @@ public class Spell_Blur extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> begin(s) to come back into focus."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> begin(s) to come back into focus."));
 	}
 
 
@@ -118,16 +118,16 @@ public class Spell_Blur extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> invoke(s) a spell.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> invoke(s) a spell.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> look(s) blurry!"));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> look(s) blurry!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a spell, but fail(s) miserably."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a spell, but fail(s) miserably."));
 
 		// return whether it worked
 		return success;

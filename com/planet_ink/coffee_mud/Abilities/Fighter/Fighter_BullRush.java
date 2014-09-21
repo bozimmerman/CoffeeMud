@@ -37,7 +37,7 @@ import java.util.*;
 public class Fighter_BullRush extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_BullRush"; }
-	private final static String localizedName = CMLib.lang()._("Bullrush");
+	private final static String localizedName = CMLib.lang().L("Bullrush");
 	@Override public String name() { return localizedName; }
 	@Override public int minRange(){return 0;}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
@@ -55,12 +55,12 @@ public class Fighter_BullRush extends FighterSkill
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("Bullrush whom which direction?"));
+			mob.tell(L("Bullrush whom which direction?"));
 			return false;
 		}
 		if(!mob.isInCombat())
 		{
-			mob.tell(_("You can only do this in the rage of combat!"));
+			mob.tell(L("You can only do this in the rage of combat!"));
 			return false;
 		}
 		String str=(String)commands.lastElement();
@@ -68,7 +68,7 @@ public class Fighter_BullRush extends FighterSkill
 		final int dirCode=Directions.getGoodDirectionCode(str);
 		if((dirCode<0)||(mob.location()==null)||(mob.location().getRoomInDir(dirCode)==null)||(mob.location().getExitInDir(dirCode)==null))
 		{
-			mob.tell(_("'@x1' is not a valid direction.",str));
+			mob.tell(L("'@x1' is not a valid direction.",str));
 			return false;
 		}
 		final String direction=Directions.getInDirectionName(dirCode);
@@ -83,7 +83,7 @@ public class Fighter_BullRush extends FighterSkill
 
 		final boolean success=proficiencyCheck(mob,-(levelDiff*5),auto);
 
-		str=_("^F^<FIGHT^><S-NAME> bullrush(es) <T-NAME> @x1.^</FIGHT^>^?",direction);
+		str=L("^F^<FIGHT^><S-NAME> bullrush(es) <T-NAME> @x1.^</FIGHT^>^?",direction);
 		final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MASK_MOVE|CMMsg.MASK_SOUND|CMMsg.MASK_HANDS|CMMsg.TYP_JUSTICE,str);
 		CMLib.color().fixSourceFightColor(msg);
 		if(mob.location().okMessage(mob,msg))

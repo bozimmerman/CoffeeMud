@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_ManaBurn extends Spell
 {
 	@Override public String ID() { return "Spell_ManaBurn"; }
-	private final static String localizedName = CMLib.lang()._("Mana Burn");
+	private final static String localizedName = CMLib.lang().L("Mana Burn");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Mana Burn)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Mana Burn)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -92,7 +92,7 @@ public class Spell_ManaBurn extends Spell
 
 		super.unInvoke();
 
-		mob.tell(_("You feel less drained."));
+		mob.tell(L("You feel less drained."));
 	}
 
 	@Override
@@ -133,7 +133,7 @@ public class Spell_ManaBurn extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final String str=auto?"":_("^S<S-NAME> incant(s) hotly at <T-NAMESELF>^?");
+			final String str=auto?"":L("^S<S-NAME> incant(s) hotly at <T-NAMESELF>^?");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),str);
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
@@ -146,12 +146,12 @@ public class Spell_ManaBurn extends Spell
 					curMana=target.curState().getMana();
 					success=maliciousAffect(mob,target,asLevel,-levelDiff,-1);
 					if(success)
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) drained!"));
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) drained!"));
 				}
 			}
 		}
 		if(!success)
-			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) hotly at <T-NAMESELF>, but nothing happens."));
+			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) hotly at <T-NAMESELF>, but nothing happens."));
 
 		// return whether it worked
 		return success;

@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_WizardLock extends Spell
 {
 	@Override public String ID() { return "Spell_WizardLock"; }
-	private final static String localizedName = CMLib.lang()._("Wizard Lock");
+	private final static String localizedName = CMLib.lang().L("Wizard Lock");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Wizard Locked)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Wizard Locked)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ITEMS|CAN_EXITS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
@@ -67,17 +67,17 @@ public class Spell_WizardLock extends Spell
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_OPEN:
-			mob.tell(_("@x1 appears to be magically locked.",affected.name()));
+			mob.tell(L("@x1 appears to be magically locked.",affected.name()));
 			return false;
 		case CMMsg.TYP_UNLOCK:
-			mob.tell(_("@x1 appears to be magically locked.",affected.name()));
+			mob.tell(L("@x1 appears to be magically locked.",affected.name()));
 			return false;
 		case CMMsg.TYP_JUSTICE:
 			if(!msg.targetMajor(CMMsg.MASK_DELICATE))
 				return true;
 		//$FALL-THROUGH$
 		case CMMsg.TYP_DELICATE_HANDS_ACT:
-			mob.tell(_("@x1 appears to be magically protected.",affected.name()));
+			mob.tell(L("@x1 appears to be magically protected.",affected.name()));
 			return false;
 		default:
 			break;
@@ -111,7 +111,7 @@ public class Spell_WizardLock extends Spell
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell(_("Wizard Lock what?."));
+			mob.tell(L("Wizard Lock what?."));
 			return false;
 		}
 		final String targetName=CMParms.combine(commands,0);
@@ -126,7 +126,7 @@ public class Spell_WizardLock extends Spell
 
 		if((!(target instanceof Container))&&(!(target instanceof Exit)))
 		{
-			mob.tell(_("You can't lock that."));
+			mob.tell(L("You can't lock that."));
 			return false;
 		}
 
@@ -135,7 +135,7 @@ public class Spell_WizardLock extends Spell
 			final Container container=(Container)target;
 			if((!container.hasALid())||(!container.hasALock()))
 			{
-				mob.tell(_("You can't lock that!"));
+				mob.tell(L("You can't lock that!"));
 				return false;
 			}
 		}
@@ -145,14 +145,14 @@ public class Spell_WizardLock extends Spell
 			final Exit exit=(Exit)target;
 			if(!exit.hasADoor())
 			{
-				mob.tell(_("You can't lock that!"));
+				mob.tell(L("You can't lock that!"));
 				return false;
 			}
 		}
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(_("@x1 is already magically locked!",target.name(mob)));
+			mob.tell(L("@x1 is already magically locked!",target.name(mob)));
 			return false;
 		}
 
@@ -163,7 +163,7 @@ public class Spell_WizardLock extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> point(s) <S-HIS-HER> finger at <T-NAMESELF>, incanting.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> point(s) <S-HIS-HER> finger at <T-NAMESELF>, incanting.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -185,7 +185,7 @@ public class Spell_WizardLock extends Spell
 					}
 					else
 						beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> look(s) shut tight!"));
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> look(s) shut tight!"));
 				}
 				else
 				if(target instanceof Container)
@@ -193,7 +193,7 @@ public class Spell_WizardLock extends Spell
 					beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
 					final Container container=(Container)target;
 					container.setLidsNLocks(container.hasALid(),false,container.hasALock(),true);
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> look(s) shut tight!"));
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> look(s) shut tight!"));
 				}
 				final Ability lock=target.fetchEffect(ID());
 				if(lock != null)
@@ -216,7 +216,7 @@ public class Spell_WizardLock extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> point(s) at <T-NAMESELF>, incanting, but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF>, incanting, but nothing happens."));
 
 
 		// return whether it worked

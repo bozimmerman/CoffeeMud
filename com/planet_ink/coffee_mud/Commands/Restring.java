@@ -42,7 +42,7 @@ public class Restring extends StdCommand
 
 	public boolean errorOut(MOB mob)
 	{
-		mob.tell(_("You are not allowed to do that here."));
+		mob.tell(L("You are not allowed to do that here."));
 		return false;
 	}
 
@@ -72,8 +72,8 @@ public class Restring extends StdCommand
 						srchContainer=I;
 					else
 					{
-						mob.tell(_("MOB or Container '@x1' not found.",rest));
-						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
+						mob.tell(L("MOB or Container '@x1' not found.",rest));
+						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 						return false;
 					}
 				}
@@ -96,7 +96,7 @@ public class Restring extends StdCommand
 		if((thang!=null)&&(thang instanceof Item))
 		{
 			if(!thang.isGeneric())
-				mob.tell(_("@x1 can not be restrung.",thang.name()));
+				mob.tell(L("@x1 can not be restrung.",thang.name()));
 			else
 			{
 				int showFlag=-1;
@@ -111,7 +111,7 @@ public class Restring extends StdCommand
 					CMLib.genEd().genDescription(mob,thang,++showNumber,showFlag);
 					if(showFlag<-900){ ok=true; break;}
 					if(showFlag>0){ showFlag=-1; continue;}
-					showFlag=CMath.s_int(mob.session().prompt(_("Edit which? "),""));
+					showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 					if(showFlag<=0)
 					{
 						showFlag=-1;
@@ -120,10 +120,10 @@ public class Restring extends StdCommand
 				}
 			}
 			thang.recoverPhyStats();
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("@x1 shake(s) under the transforming power.",thang.name()));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 shake(s) under the transforming power.",thang.name()));
 		}
 		else
-			mob.tell(_("'@x1' can not be restrung.",allWord));
+			mob.tell(L("'@x1' can not be restrung.",allWord));
 		return false;
 	}
 

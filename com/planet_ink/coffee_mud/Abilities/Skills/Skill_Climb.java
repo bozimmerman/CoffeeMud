@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Climb extends StdSkill
 {
 	@Override public String ID() { return "Skill_Climb"; }
-	private final static String localizedName = CMLib.lang()._("Climb");
+	private final static String localizedName = CMLib.lang().L("Climb");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -76,7 +76,7 @@ public class Skill_Climb extends StdSkill
 					else
 					if(((Rideable)target).rideBasis()!=Rideable.RIDEABLE_LADDER)
 					{
-						mob.tell(_("You can not climb '@x1'.",target.name(mob)));
+						mob.tell(L("You can not climb '@x1'.",target.name(mob)));
 						return false;
 					}
 					else // ordinary ladder item, just convert to an UP
@@ -87,7 +87,7 @@ public class Skill_Climb extends StdSkill
 				}
 				else
 				{
-					mob.tell(_("You can not climb '@x1'.",target.name(mob)));
+					mob.tell(L("You can not climb '@x1'.",target.name(mob)));
 					return false;
 				}
 			}
@@ -99,7 +99,7 @@ public class Skill_Climb extends StdSkill
 		
 		if((dirCode<0)&&(!(target instanceof Rideable)))
 		{
-			mob.tell(_("Climb where?"));
+			mob.tell(L("Climb where?"));
 			return false;
 		}
 		else
@@ -107,14 +107,14 @@ public class Skill_Climb extends StdSkill
 		&&((mob.location().getRoomInDir(dirCode)==null)
 		||(mob.location().getExitInDir(dirCode)==null)))
 		{
-			mob.tell(_("You can't climb that way."));
+			mob.tell(L("You can't climb that way."));
 			return false;
 		}
 		
 		if(CMLib.flags().isSitting(mob) // might be more subtlelty here...riding a horse is out, but what about a ladder?
 		||CMLib.flags().isSleeping(mob))
 		{
-			mob.tell(_("You need to stand up first!"));
+			mob.tell(L("You need to stand up first!"));
 			return false;
 		}
 		

@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_FloatingDisc extends Spell
 {
 	@Override public String ID() { return "Spell_FloatingDisc"; }
-	private final static String localizedName = CMLib.lang()._("Floating Disc");
+	private final static String localizedName = CMLib.lang().L("Floating Disc");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
@@ -63,7 +63,7 @@ public class Spell_FloatingDisc extends Spell
 		{
 			if(item.amWearingAt(Wearable.WORN_FLOATING_NEARBY))
 			{
-				mob.location().show(mob,item,CMMsg.MSG_OK_VISUAL,_("<T-NAME> floating near <S-NAME> now floats back @x1",((wasntMine)?"down to the ground":"into <S-HIS-HER> hands.")));
+				mob.location().show(mob,item,CMMsg.MSG_OK_VISUAL,L("<T-NAME> floating near <S-NAME> now floats back @x1",((wasntMine)?"down to the ground":"into <S-HIS-HER> hands.")));
 				item.unWear();
 			}
 			if(wasntMine)
@@ -100,13 +100,13 @@ public class Spell_FloatingDisc extends Spell
 		if((!(target instanceof Item))
 		||(!CMLib.flags().isGettable(((Item)target))))
 		{
-			mob.tell(_("You cannot float @x1!",target.name(mob)));
+			mob.tell(L("You cannot float @x1!",target.name(mob)));
 			return false;
 		}
 
 		if(mob.freeWearPositions(Wearable.WORN_FLOATING_NEARBY,(short)0,(short)0)==0)
 		{
-			mob.tell(_("There is no more room around you to float anything!"));
+			mob.tell(L("There is no more room around you to float anything!"));
 			return false;
 		}
 
@@ -138,7 +138,7 @@ public class Spell_FloatingDisc extends Spell
 				target.delEffect(this);
 				target.recoverPhyStats();
 			}
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> begin(s) to float around."):_("^S<S-NAME> invoke(s) a floating disc underneath <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> begin(s) to float around."):L("^S<S-NAME> invoke(s) a floating disc underneath <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -158,7 +158,7 @@ public class Spell_FloatingDisc extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a floating disc, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a floating disc, but fail(s)."));
 
 
 

@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_Flagportation extends Spell
 {
 	@Override public String ID() { return "Spell_Flagportation"; }
-	private final static String localizedName = CMLib.lang()._("Flagportation");
+	private final static String localizedName = CMLib.lang().L("Flagportation");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
@@ -58,13 +58,13 @@ public class Spell_Flagportation extends Spell
 
 		if(!mob.clans().iterator().hasNext())
 		{
-			mob.tell(_("You aren't even a member of a clan."));
+			mob.tell(L("You aren't even a member of a clan."));
 			return false;
 		}
 		final Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.CLAN_BENEFITS);
 		if(clanPair==null)
 		{
-			mob.tell(_("You are not authorized to draw from the power of your clan."));
+			mob.tell(L("You are not authorized to draw from the power of your clan."));
 			return false;
 		}
 		final Clan C=clanPair.first;
@@ -95,13 +95,13 @@ public class Spell_Flagportation extends Spell
 		}catch(final NoSuchElementException nse){}
 		if(candidates.size()==0)
 		{
-			mob.tell(_("You don't have any flags to flagportate to!"));
+			mob.tell(L("You don't have any flags to flagportate to!"));
 			return false;
 		}
 
 		if(CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob))
 		{
-			mob.tell(_("You need to stand up!"));
+			mob.tell(L("You need to stand up!"));
 			return false;
 		}
 
@@ -121,7 +121,7 @@ public class Spell_Flagportation extends Spell
 
 		if(newRoom==null)
 		{
-			mob.tell(_("Your magic seems unable to take you to that flag."));
+			mob.tell(L("Your magic seems unable to take you to that flag."));
 			return false;
 		}
 
@@ -136,11 +136,11 @@ public class Spell_Flagportation extends Spell
 			while((isBadRoom(room,mob,newRoom))&&((++x)<1000))
 				room=CMLib.map().getRandomRoom();
 			if(isBadRoom(room,mob,newRoom))
-				beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to invoke flagportating transportation, but fizzle(s) the spell."));
+				beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to invoke flagportating transportation, but fizzle(s) the spell."));
 			newRoom=room;
 		}
 
-		final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|verbalCastCode(mob,null,auto),_("^S<S-NAME> invoke(s) a flagportating teleportation spell.^?"));
+		final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|verbalCastCode(mob,null,auto),L("^S<S-NAME> invoke(s) a flagportating teleportation spell.^?"));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -151,8 +151,8 @@ public class Spell_Flagportation extends Spell
 			for (final Object element : h)
 			{
 				final MOB follower=(MOB)element;
-				final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> appears in a puff of smoke.@x1",CMLib.protocol().msp("appear.wav",10)));
-				final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,_("<S-NAME> disappear(s) in a puff of smoke."));
+				final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> appears in a puff of smoke.@x1",CMLib.protocol().msp("appear.wav",10)));
+				final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,L("<S-NAME> disappear(s) in a puff of smoke."));
 				if(thisRoom.okMessage(follower,leaveMsg)&&(newRoom!=null)&&newRoom.okMessage(follower,enterMsg))
 				{
 					if(follower.isInCombat())
@@ -163,7 +163,7 @@ public class Spell_Flagportation extends Spell
 					thisRoom.send(follower,leaveMsg);
 					newRoom.bringMobHere(follower,false);
 					newRoom.send(follower,enterMsg);
-					follower.tell(_("\n\r\n\r"));
+					follower.tell(L("\n\r\n\r"));
 					CMLib.commands().postLook(follower,true);
 				}
 			}

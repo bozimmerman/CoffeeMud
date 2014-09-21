@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_DemonGate extends Spell
 {
 	@Override public String ID() { return "Spell_DemonGate"; }
-	private final static String localizedName = CMLib.lang()._("Demon Gate");
+	private final static String localizedName = CMLib.lang().L("Demon Gate");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Demon Gate)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Demon Gate)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -92,9 +92,9 @@ public class Spell_DemonGate extends Spell
 			if(R!=null)
 			{
 				if(mob.amFollowing()!=null)
-					R.showOthers(mob,mob.amFollowing(),CMMsg.MSG_OK_ACTION,_("^F^<FIGHT^><S-NAME> uses the fight to wrest itself from out of <T-YOUPOSS> control!^?%0DTo <T-YOUPOSS> great relief, it disappears back into its home plane.^</FIGHT^>^?"));
+					R.showOthers(mob,mob.amFollowing(),CMMsg.MSG_OK_ACTION,L("^F^<FIGHT^><S-NAME> uses the fight to wrest itself from out of <T-YOUPOSS> control!^?%0DTo <T-YOUPOSS> great relief, it disappears back into its home plane.^</FIGHT^>^?"));
 				else
-					R.showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> disappears back into its home plane."));
+					R.showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> disappears back into its home plane."));
 			}
 			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
@@ -112,7 +112,7 @@ public class Spell_DemonGate extends Spell
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> open(s) the gates of the abyss, incanting angrily.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> open(s) the gates of the abyss, incanting angrily.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -120,13 +120,13 @@ public class Spell_DemonGate extends Spell
 				final MOB myMonster = determineMonster(mob, mob.phyStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob))));
 				if(otherMonster!=null)
 				{
-					myMonster.location().showOthers(myMonster,mob,CMMsg.MSG_OK_ACTION,_("^F^<FIGHT^><S-NAME> wrests itself from out of <T-YOUPOSS> control!^</FIGHT^>^?"));
+					myMonster.location().showOthers(myMonster,mob,CMMsg.MSG_OK_ACTION,L("^F^<FIGHT^><S-NAME> wrests itself from out of <T-YOUPOSS> control!^</FIGHT^>^?"));
 					myMonster.setVictim(otherMonster);
 				}
 				else
 				if(CMLib.dice().rollPercentage()<10)
 				{
-					myMonster.location().showOthers(myMonster,mob,CMMsg.MSG_OK_ACTION,_("^F^<FIGHT^><S-NAME> wrests itself from out of <T-YOUPOSS> control!^</FIGHT^>^?"));
+					myMonster.location().showOthers(myMonster,mob,CMMsg.MSG_OK_ACTION,L("^F^<FIGHT^><S-NAME> wrests itself from out of <T-YOUPOSS> control!^</FIGHT^>^?"));
 					myMonster.setVictim(mob);
 				}
 				else
@@ -134,14 +134,14 @@ public class Spell_DemonGate extends Spell
 					myMonster.setVictim(mob.getVictim());
 					CMLib.commands().postFollow(myMonster,mob,true);
 					if(myMonster.amFollowing()!=mob)
-						mob.tell(_("@x1 seems unwilling to follow you.",myMonster.name()));
+						mob.tell(L("@x1 seems unwilling to follow you.",myMonster.name()));
 				}
 				invoker=mob;
 				beneficialAffect(mob,myMonster,asLevel,0);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to open the gates of the abyss, but fail(s)."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to open the gates of the abyss, but fail(s)."));
 
 		// return whether it worked
 		return success;
@@ -167,9 +167,9 @@ public class Spell_DemonGate extends Spell
 		newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
 		newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
 		newMOB.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
-		newMOB.setName(_("the great demonbeast"));
-		newMOB.setDisplayText(_("a horrendous demonbeast is stalking around here"));
-		newMOB.setDescription(_("Blood red skin with massive horns, and of course muscles in places you didn`t know existed."));
+		newMOB.setName(L("the great demonbeast"));
+		newMOB.setDisplayText(L("a horrendous demonbeast is stalking around here"));
+		newMOB.setDescription(L("Blood red skin with massive horns, and of course muscles in places you didn`t know existed."));
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		ride.setRiderCapacity(2);
 		newMOB.recoverCharStats();
@@ -179,7 +179,7 @@ public class Spell_DemonGate extends Spell
 		newMOB.text();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> tears through the fabric of reality and steps into this world!"));
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> tears through the fabric of reality and steps into this world!"));
 		caster.location().recoverRoomStats();
 		newMOB.setStartRoom(null);
 		return(newMOB);

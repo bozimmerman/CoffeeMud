@@ -85,15 +85,15 @@ public class Halfling extends StdRace
 			outfitChoices=new Vector();
 			// Have to, since it requires use of special constructor
 			final Armor s1=CMClass.getArmor("GenShirt");
-			s1.setName(_("a small tunic"));
-			s1.setDisplayText(_("a small tunic is folded neatly here."));
-			s1.setDescription(_("It is a small but nicely made button-up tunic."));
+			s1.setName(L("a small tunic"));
+			s1.setDisplayText(L("a small tunic is folded neatly here."));
+			s1.setDescription(L("It is a small but nicely made button-up tunic."));
 			s1.text();
 			outfitChoices.add(s1);
 			final Armor p1=CMClass.getArmor("GenPants");
-			p1.setName(_("some small pants"));
-			p1.setDisplayText(_("some small pants lie here."));
-			p1.setDescription(_("They appear to be for a dimunitive person, and extend barely past the knee at that."));
+			p1.setName(L("some small pants"));
+			p1.setDisplayText(L("some small pants lie here."));
+			p1.setDescription(L("They appear to be for a dimunitive person, and extend barely past the knee at that."));
 			p1.text();
 			outfitChoices.add(p1);
 			final Armor s3=CMClass.getArmor("GenBelt");

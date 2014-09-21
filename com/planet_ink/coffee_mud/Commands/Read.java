@@ -45,7 +45,7 @@ public class Read extends StdCommand
 	{
 		if((thisThang==null)||((!(thisThang instanceof Item)&&(!(thisThang instanceof Exit))))||(!CMLib.flags().canBeSeenBy(thisThang,mob)))
 		{
-			mob.tell(_("You don't seem to have that."));
+			mob.tell(L("You don't seem to have that."));
 			return false;
 		}
 		if(thisThang instanceof Item)
@@ -53,7 +53,7 @@ public class Read extends StdCommand
 			final Item thisItem=(Item)thisThang;
 			if((CMLib.flags().isGettable(thisItem))&&(!mob.isMine(thisItem)))
 			{
-				mob.tell(_("You don't seem to be carrying that."));
+				mob.tell(L("You don't seem to be carrying that."));
 				return false;
 			}
 		}
@@ -76,7 +76,7 @@ public class Read extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("Read what?"));
+			mob.tell(L("Read what?"));
 			return false;
 		}
 		commands.removeElementAt(0);

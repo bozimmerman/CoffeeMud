@@ -36,7 +36,7 @@ import java.util.*;
 public class Fighter_SizeOpponent extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_SizeOpponent"; }
-	private final static String localizedName = CMLib.lang()._("Opponent Knowledge");
+	private final static String localizedName = CMLib.lang().L("Opponent Knowledge");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"SIZEUP","OPPONENT"});
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -63,17 +63,17 @@ public class Fighter_SizeOpponent extends FighterSkill
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_LOOK|(auto?CMMsg.MASK_ALWAYS:0),_("<S-NAME> size(s) up <T-NAMESELF> with <S-HIS-HER> eyes."));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_LOOK|(auto?CMMsg.MASK_ALWAYS:0),L("<S-NAME> size(s) up <T-NAMESELF> with <S-HIS-HER> eyes."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final StringBuffer buf=new StringBuffer(_("@x1 looks to have @x2 out of @x3 hit points.\n\r",target.name(mob),""+target.curState().getHitPoints(),""+target.maxState().getHitPoints()));
-				buf.append(_("@x1 looks like @x2 is @x3 and is @x4.",target.charStats().HeShe(),target.charStats().heshe(),CMStrings.removeColors(CMLib.combat().fightingProwessStr(target)),CMStrings.removeColors(CMLib.combat().armorStr(target))));
+				final StringBuffer buf=new StringBuffer(L("@x1 looks to have @x2 out of @x3 hit points.\n\r",target.name(mob),""+target.curState().getHitPoints(),""+target.maxState().getHitPoints()));
+				buf.append(L("@x1 looks like @x2 is @x3 and is @x4.",target.charStats().HeShe(),target.charStats().heshe(),CMStrings.removeColors(CMLib.combat().fightingProwessStr(target)),CMStrings.removeColors(CMLib.combat().armorStr(target))));
 				mob.tell(buf.toString());
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,_("<S-NAME> size(s) up <T-NAMESELF> with <S-HIS-HER> eyes, but look(s) confused."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> size(s) up <T-NAMESELF> with <S-HIS-HER> eyes, but look(s) confused."));
 
 		// return whether it worked
 		return success;

@@ -36,7 +36,7 @@ import java.util.*;
 public class Archon extends StdCharClass
 {
 	@Override public String ID(){return "Archon";}
-	private final static String localizedStaticName = CMLib.lang()._("Archon");
+	private final static String localizedStaticName = CMLib.lang().L("Archon");
 	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return ID();}
 	@Override public boolean leveless(){return true;}
@@ -84,7 +84,7 @@ public class Archon extends StdCharClass
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(!quiet)
-			mob.tell(_("This class cannot be learned."));
+			mob.tell(L("This class cannot be learned."));
 		return false;
 	}
 
@@ -100,9 +100,9 @@ public class Archon extends StdCharClass
 			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_DISEASE)
 			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON)))
 		{
-			//((MOB)msg.target()).tell(_("You are immune to @x1.",msg.tool().name()));
+			//((MOB)msg.target()).tell(L("You are immune to @x1.",msg.tool().name()));
 			if(msg.source()!=msg.target())
-				msg.source().tell(msg.source(),msg.target(),msg.tool(),_("<T-NAME> is immune to <O-NAME>."));
+				msg.source().tell(msg.source(),msg.target(),msg.tool(),L("<T-NAME> is immune to <O-NAME>."));
 			return false;
 		}
 		return super.okMessage(myHost, msg);

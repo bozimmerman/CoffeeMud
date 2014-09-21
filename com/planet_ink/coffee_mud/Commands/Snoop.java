@@ -60,16 +60,16 @@ public class Snoop extends StdCommand
 			if(S.isBeingSnoopedBy(mob.session()))
 			{
 				if(S.mob()!=null)
-					mob.tell(_("You stop snooping on @x1.",S.mob().name()));
+					mob.tell(L("You stop snooping on @x1.",S.mob().name()));
 				else
-					mob.tell(_("You stop snooping on someone."));
+					mob.tell(L("You stop snooping on someone."));
 				doneSomething=true;
 				S.setBeingSnoopedBy(mob.session(),false);
 			}
 		if(commands.size()==0)
 		{
 			if(!doneSomething)
-				mob.tell(_("Snoop on whom?"));
+				mob.tell(L("Snoop on whom?"));
 			return false;
 		}
 		final String whom=CMParms.combine(commands,0);
@@ -79,7 +79,7 @@ public class Snoop extends StdCommand
 		{
 			if(S==mob.session())
 			{
-				mob.tell(_("no."));
+				mob.tell(L("no."));
 				return false;
 			}
 			else
@@ -87,13 +87,13 @@ public class Snoop extends StdCommand
 				SnoopOn=S;
 		}
 		if(SnoopOn==null)
-			mob.tell(_("You can't find anyone to snoop on by that name."));
+			mob.tell(L("You can't find anyone to snoop on by that name."));
 		else
 		if(!CMLib.flags().isInTheGame(SnoopOn.mob(),true))
-			mob.tell(_("@x1 is not yet fully in the game.",SnoopOn.mob().Name()));
+			mob.tell(L("@x1 is not yet fully in the game.",SnoopOn.mob().Name()));
 		else
 		if(CMSecurity.isASysOp(SnoopOn.mob())&&(!CMSecurity.isASysOp(mob)))
-			mob.tell(_("Only another Archon can snoop on @x1.",SnoopOn.mob().name()));
+			mob.tell(L("Only another Archon can snoop on @x1.",SnoopOn.mob().name()));
 		else
 		{
 			final Vector snoop=new Vector();
@@ -102,7 +102,7 @@ public class Snoop extends StdCommand
 			{
 				if(snoop.elementAt(v)==mob.session())
 				{
-					mob.tell(_("This would create a snoop loop!"));
+					mob.tell(L("This would create a snoop loop!"));
 					return false;
 				}
 				final List<Session> V=snoopingOn((Session)snoop.elementAt(v));
@@ -113,7 +113,7 @@ public class Snoop extends StdCommand
 						snoop.addElement(S2);
 				}
 			}
-			mob.tell(_("You start snooping on @x1.",SnoopOn.mob().name()));
+			mob.tell(L("You start snooping on @x1.",SnoopOn.mob().name()));
 			SnoopOn.setBeingSnoopedBy(mob.session(), true);
 		}
 		return false;

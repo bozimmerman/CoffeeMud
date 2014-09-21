@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_RogueLimb extends Spell
 {
 	@Override public String ID() { return "Spell_RogueLimb"; }
-	private final static String localizedName = CMLib.lang()._("Rogue Limb");
+	private final static String localizedName = CMLib.lang().L("Rogue Limb");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Rogue Limb)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Rogue Limb)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -100,7 +100,7 @@ public class Spell_RogueLimb extends Spell
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB))
-			((MOB)affected).location().show(((MOB)affected),rogueLimb,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> gain(s) control of <T-NAMESELF>."));
+			((MOB)affected).location().show(((MOB)affected),rogueLimb,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> gain(s) control of <T-NAMESELF>."));
 		if(rogueLimb!=null)
 		{
 			rogueLimb.destroy();
@@ -122,7 +122,7 @@ public class Spell_RogueLimb extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> lose(s) control of <T-HIS-HER> limb!"):_("^S<S-NAME> invoke(s) a powerful spell upon <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> lose(s) control of <T-HIS-HER> limb!"):L("^S<S-NAME> invoke(s) a powerful spell upon <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -142,8 +142,8 @@ public class Spell_RogueLimb extends Spell
 					else
 						limb=(Race.BODYPARTSTR[((Integer)limbs.elementAt(CMLib.dice().roll(1,limbs.size(),-1))).intValue()]).toLowerCase();
 					rogueLimb=CMClass.getMOB("GenMob");
-					rogueLimb.setName(_("@x1's @x2",target.name(),limb));
-					rogueLimb.setDisplayText(_("@x1 is misbehaving here.",rogueLimb.name()));
+					rogueLimb.setName(L("@x1's @x2",target.name(),limb));
+					rogueLimb.setDisplayText(L("@x1 is misbehaving here.",rogueLimb.name()));
 					rogueLimb.basePhyStats().setAttackAdjustment(target.phyStats().attackAdjustment());
 					rogueLimb.basePhyStats().setArmor(target.phyStats().armor());
 					rogueLimb.baseCharStats().setMyRace(theRace);
@@ -170,7 +170,7 @@ public class Spell_RogueLimb extends Spell
 			}
 		}
 		else
-			mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("^S<S-NAME> invoke(s) at <T-NAMESELF>, causing <T-NAME> to twitch, and nothing more."));
+			mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("^S<S-NAME> invoke(s) at <T-NAMESELF>, causing <T-NAME> to twitch, and nothing more."));
 
 
 		// return whether it worked

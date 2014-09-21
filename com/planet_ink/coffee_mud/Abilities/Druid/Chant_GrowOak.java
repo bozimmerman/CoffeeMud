@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_GrowOak extends Chant_SummonPlants
 {
 	@Override public String ID() { return "Chant_GrowOak"; }
-	private final static String localizedName = CMLib.lang()._("Grow Oak");
+	private final static String localizedName = CMLib.lang().L("Grow Oak");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -55,7 +55,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		final Item newItem=CMClass.getBasicItem("GenItem");
 		final String name=CMLib.english().startWithAorAn(RawMaterial.CODES.NAME(code).toLowerCase()+" tree");
 		newItem.setName(name);
-		newItem.setDisplayText(_("@x1 grows here.",newItem.name()));
+		newItem.setDisplayText(L("@x1 grows here.",newItem.name()));
 		newItem.setDescription("");
 		final Chant_GrowOak newChant=new Chant_GrowOak();
 		newItem.basePhyStats().setLevel(10+newChant.getX1Level(mob));
@@ -66,7 +66,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
 		newItem.setExpirationDate(0);
-		room.showHappens(CMMsg.MSG_OK_ACTION,_("a tall, healthy @x1 tree sprouts up.",RawMaterial.CODES.NAME(code).toLowerCase()));
+		room.showHappens(CMMsg.MSG_OK_ACTION,L("a tall, healthy @x1 tree sprouts up.",RawMaterial.CODES.NAME(code).toLowerCase()));
 		room.recoverPhyStats();
 		newChant.PlantsLocation=room;
 		newChant.hpRemaining=100*(mob.phyStats().level()+(2*newChant.getXLEVELLevel(mob))+(10*newChant.getX1Level(mob)));
@@ -93,7 +93,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 				if(dmg>0)
 				{
 					if(CMLib.combat().postHealing(invoker,invoker,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,dmg,null))
-						invoker.tell(_("Your oak absorbs @x1 points of your damage!",""+dmg));
+						invoker.tell(L("Your oak absorbs @x1 points of your damage!",""+dmg));
 				}
 				hpRemaining-=dmg;
 				if(hpRemaining<0)
@@ -108,7 +108,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 			{
 				final int dmg=CMLib.dice().roll(1,50,50);
 				hpRemaining-=dmg;
-				if(invoker!=null) invoker.tell(_("Your oak is being chopped down!"));
+				if(invoker!=null) invoker.tell(L("Your oak is being chopped down!"));
 				CMLib.combat().postDamage(invoker,invoker,null,dmg/2,CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_SLASHING,"The chopping on your oak <DAMAGE> you!");
 				if(hpRemaining<0)
 				{
@@ -136,7 +136,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 				   &&(I.secretIdentity().equals(mob.Name()))
 				   &&(I.fetchEffect(ID())!=null))
 				{
-					mob.tell(_("Each druid is allowed but one oak at a time."));
+					mob.tell(L("Each druid is allowed but one oak at a time."));
 					return false;
 				}
 			}

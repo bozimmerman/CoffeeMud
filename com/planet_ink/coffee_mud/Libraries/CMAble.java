@@ -1988,13 +1988,13 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			buf.append(itemDesc+" held");
 		else
 		if(comp.getLocation()==AbilityComponent.CompLocation.WORN)
-			buf.append(_("@x1 worn or wielded",itemDesc));
+			buf.append(L("@x1 worn or wielded",itemDesc));
 		else
 		if(comp.getLocation()==AbilityComponent.CompLocation.NEARBY)
 			buf.append(itemDesc+" nearby");
 		else
 		if(comp.getLocation()==AbilityComponent.CompLocation.ONGROUND)
-			buf.append(_("@x1 on the ground",itemDesc));
+			buf.append(L("@x1 on the ground",itemDesc));
 		return buf.toString();
 	}
 

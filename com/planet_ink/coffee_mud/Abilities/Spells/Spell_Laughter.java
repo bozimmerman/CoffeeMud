@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Laughter extends Spell
 {
 	@Override public String ID() { return "Spell_Laughter"; }
-	private final static String localizedName = CMLib.lang()._("Laughter");
+	private final static String localizedName = CMLib.lang().L("Laughter");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Laughter spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Laughter spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -60,7 +60,7 @@ public class Spell_Laughter extends Spell
 
 		if(!super.tick(ticking,tickID))
 			return false;
-		((MOB)affected).location().show((MOB)affected,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> laugh(s) uncontrollably, unable to move!"));
+		((MOB)affected).location().show((MOB)affected,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> laugh(s) uncontrollably, unable to move!"));
 		return true;
 	}
 
@@ -76,7 +76,7 @@ public class Spell_Laughter extends Spell
 		if(canBeUninvoked())
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> stop(s) laughing."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> stop(s) laughing."));
 			CMLib.commands().postStand(mob,true);
 		}
 	}
@@ -95,7 +95,7 @@ public class Spell_Laughter extends Spell
 		// won't happen
 		if((!auto)&&(!CMLib.flags().canBeHeardSpeakingBy(mob,target)))
 		{
-			mob.tell(_("@x1 can't hear your words.",target.charStats().HeShe()));
+			mob.tell(L("@x1 can't hear your words.",target.charStats().HeShe()));
 			return false;
 		}
 
@@ -119,7 +119,7 @@ public class Spell_Laughter extends Spell
 			// what happened.
 			invoker=mob;
 			final Room R=mob.location();
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> tell(s) <T-NAMESELF> a magical joke.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> tell(s) <T-NAMESELF> a magical joke.^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((R.okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
@@ -132,12 +132,12 @@ public class Spell_Laughter extends Spell
 					success=maliciousAffect(mob,target,asLevel,ticks,-1);
 					if(success)
 						if(target.location()==R)
-							R.show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> begin(s) laughing uncontrollably, unable to move!!"));
+							R.show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> begin(s) laughing uncontrollably, unable to move!!"));
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> tell(s) <T-NAMESELF> a magical joke, but <T-NAME> do(es)n't think it is funny."));
+			return maliciousFizzle(mob,target,L("<S-NAME> tell(s) <T-NAMESELF> a magical joke, but <T-NAME> do(es)n't think it is funny."));
 
 		// return whether it worked
 		return success;

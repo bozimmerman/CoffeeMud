@@ -36,15 +36,15 @@ import java.util.*;
 public class Spell_Shockshield extends Spell
 {
 	@Override public String ID() { return "Spell_Shockshield"; }
-	private final static String localizedName = CMLib.lang()._("Shockshield");
+	private final static String localizedName = CMLib.lang().L("Shockshield");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Shockshield)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Shockshield)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	@Override public long flags(){return Ability.FLAG_AIRBASED;}
-	final static String msgStr=CMLib.lang()._("The shock shield around <S-NAME> sparks and <DAMAGES> <T-NAME>!");
+	final static String msgStr=CMLib.lang().L("The shock shield around <S-NAME> sparks and <DAMAGES> <T-NAME>!");
 	protected long oncePerTickTime=0;
 
 	@Override
@@ -59,7 +59,7 @@ public class Spell_Shockshield extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> electric shield fizzles out."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> electric shield fizzles out."));
 	}
 
 	@Override
@@ -127,7 +127,7 @@ public class Spell_Shockshield extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_((auto?"":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms.  ")+"A field of sparks erupt(s) around <T-NAME>!^?")+CMLib.protocol().msp("lightning.wav",10));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L((auto?"":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms.  ")+"A field of sparks erupt(s) around <T-NAME>!^?")+CMLib.protocol().msp("lightning.wav",10));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -135,7 +135,7 @@ public class Spell_Shockshield extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms, but only sparks emerge."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms, but only sparks emerge."));
 
 
 		// return whether it worked

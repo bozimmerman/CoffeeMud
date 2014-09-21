@@ -37,9 +37,9 @@ public class Skill_Slip extends StdSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Skill_Slip"; }
-	private final static String localizedName = CMLib.lang()._("Slip");
+	private final static String localizedName = CMLib.lang().L("Slip");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Slipped)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Slipped)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -89,7 +89,7 @@ public class Skill_Slip extends StdSkill
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> regain(s) <S-HIS-HER> feet."));
+				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> regain(s) <S-HIS-HER> feet."));
 				if(mob.location().okMessage(mob,msg)&&(!mob.amDead()))
 				{
 					mob.location().send(mob,msg);
@@ -97,7 +97,7 @@ public class Skill_Slip extends StdSkill
 				}
 			}
 			else
-				mob.tell(_("You regain your feet."));
+				mob.tell(L("You regain your feet."));
 		}
 	}
 
@@ -124,17 +124,17 @@ public class Skill_Slip extends StdSkill
 
 		if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
 		{
-			mob.tell(target,null,null,_("<S-NAME> is already on the floor!"));
+			mob.tell(target,null,null,L("<S-NAME> is already on the floor!"));
 			return false;
 		}
 		if(CMLib.flags().isInFlight(target))
 		{
-			mob.tell(_("@x1 is flying and can't slip!",target.name(mob)));
+			mob.tell(L("@x1 is flying and can't slip!",target.name(mob)));
 			return false;
 		}
 		if(target.riding()!=null)
 		{
-			mob.tell(_("You can't make someone @x1 @x2 slip!",target.riding().stateString(target),target.riding().name()));
+			mob.tell(L("You can't make someone @x1 @x2 slip!",target.riding().stateString(target),target.riding().name()));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -151,17 +151,17 @@ public class Skill_Slip extends StdSkill
 		success=success&&(target.charStats().getBodyPart(Race.BODY_LEG)>0);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?_("<T-NAME> slip(s)!"):_("^F^<FIGHT^><S-NAME> slip(s) <T-NAMESELF>!^</FIGHT^>^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?L("<T-NAME> slip(s)!"):L("^F^<FIGHT^><S-NAME> slip(s) <T-NAMESELF>!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				maliciousAffect(mob,target,asLevel,2,-1);
-				target.tell(_("You hit the floor!"));
+				target.tell(L("You hit the floor!"));
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,auto?_("<T-NAMESELF> almost slipped, but maintain(s) <T-HIS-HER> balance."):_("<S-NAME> attempt(s) to slip <T-NAMESELF>, but fail(s)."));
+			return maliciousFizzle(mob,target,auto?L("<T-NAMESELF> almost slipped, but maintain(s) <T-HIS-HER> balance."):L("<S-NAME> attempt(s) to slip <T-NAMESELF>, but fail(s)."));
 		return success;
 	}
 }

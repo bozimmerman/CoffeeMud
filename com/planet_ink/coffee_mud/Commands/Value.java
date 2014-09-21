@@ -46,7 +46,7 @@ public class Value extends StdCommand
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
-			mob.tell(_("Value what?"));
+			mob.tell(L("Value what?"));
 			return false;
 		}
 
@@ -78,7 +78,7 @@ public class Value extends StdCommand
 		}
 
 		if(V.size()==0)
-			mob.tell(_("You don't seem to have '@x1'.",whatName));
+			mob.tell(L("You don't seem to have '@x1'.",whatName));
 		else
 		for(int v=0;v<V.size();v++)
 		{

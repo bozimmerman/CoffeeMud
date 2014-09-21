@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_ShockingGrasp extends Spell
 {
 	@Override public String ID() { return "Spell_ShockingGrasp"; }
-	private final static String localizedName = CMLib.lang()._("Shocking Grasp");
+	private final static String localizedName = CMLib.lang().L("Shocking Grasp");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
@@ -63,7 +63,7 @@ public class Spell_ShockingGrasp extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_HANDS|verbalCastCode(mob,target,auto),_(auto?"":"^S<S-NAME> grab(s) at <T-NAMESELF>.^?")+CMLib.protocol().msp("shock.wav",40));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_HANDS|verbalCastCode(mob,target,auto),L(auto?"":"^S<S-NAME> grab(s) at <T-NAMESELF>.^?")+CMLib.protocol().msp("shock.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ELECTRIC|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((target.location().okMessage(mob,msg))&&((target.location().okMessage(mob,msg2))))
 			{
@@ -81,7 +81,7 @@ public class Spell_ShockingGrasp extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> grab(s) at <T-NAMESELF>, but fizzle(s) the spell."));
+			return maliciousFizzle(mob,target,L("<S-NAME> grab(s) at <T-NAMESELF>, but fizzle(s) the spell."));
 
 
 		// return whether it worked

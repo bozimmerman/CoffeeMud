@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_MagneticEarth extends Chant
 {
 	@Override public String ID() { return "Chant_MagneticEarth"; }
-	private final static String localizedName = CMLib.lang()._("Magnetic Earth");
+	private final static String localizedName = CMLib.lang().L("Magnetic Earth");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -80,7 +80,7 @@ public class Chant_MagneticEarth extends Chant
 						if(CMLib.commands().postDrop(M,I,true,true,false))
 						{
 							didSomething=true;
-							R.show(M,I,CMMsg.MSG_OK_VISUAL,_("<T-NAME> is pulled away from <S-NAME> to the magnetic ground!"));
+							R.show(M,I,CMMsg.MSG_OK_VISUAL,L("<T-NAME> is pulled away from <S-NAME> to the magnetic ground!"));
 						}
 					}
 				}
@@ -138,7 +138,7 @@ public class Chant_MagneticEarth extends Chant
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_ROCKS))
 		{
-			mob.tell(_("This chant only works in caves, mountains, or rocky areas."));
+			mob.tell(L("This chant only works in caves, mountains, or rocky areas."));
 			return false;
 		}
 
@@ -157,7 +157,7 @@ public class Chant_MagneticEarth extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) to the ground.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) to the ground.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -169,13 +169,13 @@ public class Chant_MagneticEarth extends Chant
 						if((M!=null)&&(mob!=M))
 							mob.location().show(mob,M,CMMsg.MASK_MALICIOUS|CMMsg.TYP_OK_VISUAL,null);
 					}
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The ground gains a powerful magnetic field!"));
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The ground gains a powerful magnetic field!"));
 					maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) the ground, but the magic fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) the ground, but the magic fades."));
 		// return whether it worked
 		return success;
 	}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Spell_Duplicate extends Spell
 {
 	@Override public String ID() { return "Spell_Duplicate"; }
-	private final static String localizedName = CMLib.lang()._("Duplicate");
+	private final static String localizedName = CMLib.lang().L("Duplicate");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
@@ -52,17 +52,17 @@ public class Spell_Duplicate extends Spell
 
 		if(!mob.isMine(target))
 		{
-			mob.tell(_("You'll need to pick it up first."));
+			mob.tell(L("You'll need to pick it up first."));
 			return false;
 		}
 		if(target instanceof ClanItem)
 		{
-			mob.tell(_("Clan items can not be duplicated."));
+			mob.tell(L("Clan items can not be duplicated."));
 			return false;
 		}
 		if(target instanceof ArchonOnly)
 		{
-			mob.tell(_("That item can not be duplicated."));
+			mob.tell(L("That item can not be duplicated."));
 			return false;
 		}
 
@@ -78,29 +78,29 @@ public class Spell_Duplicate extends Spell
 		int expLoss=(level*multiPlier);
 		if((mob.getExperience()-expLoss)<0)
 		{
-			mob.tell(_("You don't have enough experience to cast this spell."));
+			mob.tell(L("You don't have enough experience to cast this spell."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		expLoss=getXPCOSTAdjustment(mob,-expLoss);
-		mob.tell(_("You lose @x1 experience points.",""+(-expLoss)));
+		mob.tell(L("You lose @x1 experience points.",""+(-expLoss)));
 		CMLib.leveler().postExperience(mob,null,null,expLoss,false);
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> hold(s) <T-NAMESELF> and cast(s) a spell.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> hold(s) <T-NAMESELF> and cast(s) a spell.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final Item newTarget=(Item)target.copyOf();
-				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("@x1 blurs and divides into two!",target.name()));
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 blurs and divides into two!",target.name()));
 				CMLib.utensils().disenchantItem(newTarget);
 				if(newTarget.amDestroyed())
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> fades away!"));
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> fades away!"));
 				else
 				{
 					newTarget.recoverPhyStats();
@@ -123,7 +123,7 @@ public class Spell_Duplicate extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> hold(s) <T-NAMESELF> tightly and incant(s), the spell fizzles."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> hold(s) <T-NAMESELF> tightly and incant(s), the spell fizzles."));
 
 
 		// return whether it worked

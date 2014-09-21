@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Levitate extends Spell
 {
 	@Override public String ID() { return "Spell_Levitate"; }
-	private final static String localizedName = CMLib.lang()._("Levitate");
+	private final static String localizedName = CMLib.lang().L("Levitate");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Levitated)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Levitated)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -65,7 +65,7 @@ public class Spell_Levitate extends Spell
 			||(msg.sourceMinor()==CMMsg.TYP_ENTER)
 			||(msg.sourceMinor()==CMMsg.TYP_RETREAT))
 			{
-				mob.tell(_("You can't seem to go anywhere!"));
+				mob.tell(L("You can't seem to go anywhere!"));
 				return false;
 			}
 		}
@@ -93,7 +93,7 @@ public class Spell_Levitate extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> float(s) back down."));
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> float(s) back down."));
 			CMLib.commands().postStand(mob,true);
 		}
 	}
@@ -118,7 +118,7 @@ public class Spell_Levitate extends Spell
 		{
 			if(mob.isMine(target))
 			{
-				mob.tell(_("You'd better set it down first!"));
+				mob.tell(L("You'd better set it down first!"));
 				return false;
 			}
 		}
@@ -128,7 +128,7 @@ public class Spell_Levitate extends Spell
 		}
 		else
 		{
-			mob.tell(_("You can't levitate @x1!",target.name(mob)));
+			mob.tell(L("You can't levitate @x1!",target.name(mob)));
 			return false;
 		}
 
@@ -143,7 +143,7 @@ public class Spell_Levitate extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":_("^S<S-NAME> wave(s) <S-HIS-HER> arms and cast(s) a spell.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> arms and cast(s) a spell.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -151,14 +151,14 @@ public class Spell_Levitate extends Spell
 				{
 					success=maliciousAffect(mob,target,asLevel,5+super.getXLEVELLevel(mob),-1);
 					if(target instanceof MOB)
-						((MOB)target).location().show((MOB)target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> float(s) straight up!"));
+						((MOB)target).location().show((MOB)target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> float(s) straight up!"));
 					else
-						mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("@x1 float(s) straight up!",target.name()));
+						mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("@x1 float(s) straight up!",target.name()));
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> incant(s), but the spell fizzles."));
+			return maliciousFizzle(mob,null,L("<S-NAME> incant(s), but the spell fizzles."));
 		// return whether it worked
 		return success;
 	}

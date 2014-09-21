@@ -65,7 +65,7 @@ public class BagOfEndlessness extends BagOfHolding implements ArchonOnly
 				if((!CMSecurity.isAllowedAnywhere(msg.source(), CMSecurity.SecFlag.COPYITEMS))
 				&&(!CMSecurity.isAllowedAnywhere(msg.source(), CMSecurity.SecFlag.CMDITEMS)))
 				{
-					msg.source().tell(_("You aren't allowed to do that."));
+					msg.source().tell(L("You aren't allowed to do that."));
 					return false;
 				}
 			}

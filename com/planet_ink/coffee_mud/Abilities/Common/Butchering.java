@@ -36,7 +36,7 @@ import java.util.*;
 public class Butchering extends GatheringSkill
 {
 	@Override public String ID() { return "Butchering"; }
-	private final static String localizedName = CMLib.lang()._("Butchering");
+	private final static String localizedName = CMLib.lang().L("Butchering");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"BUTCHER","BUTCHERING","SKIN"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -47,8 +47,8 @@ public class Butchering extends GatheringSkill
 	public Butchering()
 	{
 		super();
-		displayText=_("You are skinning and butchering something...");
-		verb=_("skinning and butchering");
+		displayText=L("You are skinning and butchering something...");
+		verb=L("skinning and butchering");
 	}
 
 	protected int getDuration(MOB mob, int weight)
@@ -71,10 +71,10 @@ public class Butchering extends GatheringSkill
 				if((body!=null)&&(!aborted))
 				{
 					if(failed)
-						commonTell(mob,_("You messed up your butchering completely."));
+						commonTell(mob,L("You messed up your butchering completely."));
 					else
 					{
-						mob.location().show(mob,null,body,getActivityMessageType(),_("<S-NAME> manage(s) to skin and chop up <O-NAME>."));
+						mob.location().show(mob,null,body,getActivityMessageType(),L("<S-NAME> manage(s) to skin and chop up <O-NAME>."));
 						final List<RawMaterial> resources=body.charStats().getMyRace().myResources();
 						final Vector diseases=new Vector();
 						for(int i=0;i<body.numEffects();i++)
@@ -155,24 +155,24 @@ public class Butchering extends GatheringSkill
 		   ||((DeadBody)I).playerCorpse()
 		   ||(((DeadBody)I).charStats().getMyRace()==null))
 		{
-			commonTell(mob,_("You can't butcher @x1.",I.name(mob)));
+			commonTell(mob,L("You can't butcher @x1.",I.name(mob)));
 			return false;
 		}
 		final List<RawMaterial> resources=((DeadBody)I).charStats().getMyRace().myResources();
 		if((resources==null)||(resources.size()==0))
 		{
-			commonTell(mob,_("There doesn't appear to be any good parts on @x1.",I.name(mob)));
+			commonTell(mob,L("There doesn't appear to be any good parts on @x1.",I.name(mob)));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		failed=!proficiencyCheck(mob,0,auto);
-		final CMMsg msg=CMClass.getMsg(mob,I,this,getActivityMessageType(),getActivityMessageType(),getActivityMessageType(),_("<S-NAME> start(s) butchering <T-NAME>."));
+		final CMMsg msg=CMClass.getMsg(mob,I,this,getActivityMessageType(),getActivityMessageType(),getActivityMessageType(),L("<S-NAME> start(s) butchering <T-NAME>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			body=(DeadBody)I;
-			verb=_("skinning and butchering @x1",I.name());
+			verb=L("skinning and butchering @x1",I.name());
 			playSound="ripping.wav";
 			final int duration=getDuration(mob,I.phyStats().weight());
 			beneficialAffect(mob,mob,asLevel,duration);

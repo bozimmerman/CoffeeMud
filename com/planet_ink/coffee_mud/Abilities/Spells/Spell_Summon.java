@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Summon extends Spell
 {
 	@Override public String ID() { return "Spell_Summon"; }
-	private final static String localizedName = CMLib.lang()._("Summon");
+	private final static String localizedName = CMLib.lang().L("Summon");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Summoned)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Summoned)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int canAffectCode(){return 0;}
@@ -61,7 +61,7 @@ public class Spell_Summon extends Spell
 					return;
 				if(mob.getStartRoom().getArea()!=mob.location().getArea())
 				{
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> drawn back into the summoning swirl."));
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> drawn back into the summoning swirl."));
 					mob.getStartRoom().bringMobHere(mob,false);
 				}
 			}
@@ -76,7 +76,7 @@ public class Spell_Summon extends Spell
 		String areaName=CMParms.combine(commands,0).trim().toUpperCase();
 		if((commands.size()<1)&&(!auto))
 		{
-			mob.tell(_("Summon whom?"));
+			mob.tell(L("Summon whom?"));
 			return false;
 		}
 		else
@@ -99,7 +99,7 @@ public class Spell_Summon extends Spell
 
 		if((mob.location().fetchInhabitant(areaName)!=null)&&(!auto))
 		{
-			mob.tell(_("Better look around first."));
+			mob.tell(L("Better look around first."));
 			return false;
 		}
 
@@ -128,7 +128,7 @@ public class Spell_Summon extends Spell
 
 		if((oldRoom==null)||(target==null))
 		{
-			mob.tell(_("You can't seem to fixate on '@x1', perhaps they don't exist?",CMParms.combine(commands,0)));
+			mob.tell(L("You can't seem to fixate on '@x1', perhaps they don't exist?",CMParms.combine(commands,0)));
 			return false;
 		}
 
@@ -140,13 +140,13 @@ public class Spell_Summon extends Spell
 
 		if(success&&(!auto)&&(!mob.mayIFight(target))&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 		{
-			mob.tell(_("@x1 is a player, so you must be group members, or your playerkill flags must be on for this to work.",target.name(mob)));
+			mob.tell(L("@x1 is a player, so you must be group members, or your playerkill flags must be on for this to work.",target.name(mob)));
 			success=false;
 		}
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> summon(s) <T-NAME> in a mighty cry!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> summon(s) <T-NAME> in a mighty cry!^?"));
 			if((mob.location().okMessage(mob,msg))&&(oldRoom.okMessage(mob,msg)))
 			{
 				mob.location().send(mob,msg);
@@ -154,7 +154,7 @@ public class Spell_Summon extends Spell
 				final MOB follower=target;
 				final Room newRoom=mob.location();
 				final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,("<S-NAME> appear(s) in a burst of light.")+CMLib.protocol().msp("appear.wav",10));
-				final CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,_("<S-NAME> disappear(s) in a great summoning swirl created by @x1.",mob.name()));
+				final CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,L("<S-NAME> disappear(s) in a great summoning swirl created by @x1.",mob.name()));
 				if(oldRoom.okMessage(follower,leaveMsg))
 				{
 					if(newRoom.okMessage(follower,enterMsg))
@@ -163,7 +163,7 @@ public class Spell_Summon extends Spell
 						oldRoom.send(follower,leaveMsg);
 						newRoom.bringMobHere(follower,false);
 						newRoom.send(follower,enterMsg);
-						follower.tell(_("\n\r\n\r"));
+						follower.tell(L("\n\r\n\r"));
 						if(follower.isMonster()
 						&&(follower.getStartRoom()!=null)
 						&&(follower.getStartRoom().getArea().name().equals(oldRoom.getArea().name())))
@@ -171,15 +171,15 @@ public class Spell_Summon extends Spell
 						CMLib.commands().postLook(follower,true);
 					}
 					else
-						mob.tell(_("Some powerful magic stifles the spell."));
+						mob.tell(L("Some powerful magic stifles the spell."));
 				}
 				else
-					mob.tell(_("Some powerful magic stifles the spell."));
+					mob.tell(L("Some powerful magic stifles the spell."));
 			}
 
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to summon '@x1', but fail(s).",areaName));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to summon '@x1', but fail(s).",areaName));
 
 
 		// return whether it worked

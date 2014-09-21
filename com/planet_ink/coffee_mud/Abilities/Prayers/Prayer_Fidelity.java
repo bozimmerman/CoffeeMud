@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_Fidelity extends Prayer
 {
 	@Override public String ID() { return "Prayer_Fidelity"; }
-	private final static String localizedName = CMLib.lang()._("Fidelity");
+	private final static String localizedName = CMLib.lang().L("Fidelity");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Fidelity)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Fidelity)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
@@ -56,7 +56,7 @@ public class Prayer_Fidelity extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your magical fidelity subsides."));
+			mob.tell(L("Your magical fidelity subsides."));
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class Prayer_Fidelity extends Prayer
 			&&(msg.tool().Name().equals("MATE <T-NAME>")
 				||msg.tool().Name().equals("SEX <T-NAME>")))
 			{
-				myChar.tell(_("You fidelity geas prevents you from doing that."));
+				myChar.tell(L("You fidelity geas prevents you from doing that."));
 				return false;
 			}
 		}
@@ -99,16 +99,16 @@ public class Prayer_Fidelity extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 for <T-NAMESELF>.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 for <T-NAMESELF>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> gain(s) the fidelity geas!"));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> gain(s) the fidelity geas!"));
 				beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for <T-NAMESELF>, but the magic fades.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for <T-NAMESELF>, but the magic fades.",prayWord(mob)));
 
 
 		// return whether it worked

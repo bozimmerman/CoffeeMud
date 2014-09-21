@@ -36,7 +36,7 @@ import java.util.*;
 public class Doomsayer extends Cleric
 {
 	@Override public String ID(){return "Doomsayer";}
-	private final static String localizedStaticName = CMLib.lang()._("Doomsayer");
+	private final static String localizedStaticName = CMLib.lang().L("Doomsayer");
 	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return "Cleric";}
 	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}

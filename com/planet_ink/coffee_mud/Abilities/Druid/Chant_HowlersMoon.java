@@ -38,9 +38,9 @@ import java.util.*;
 public class Chant_HowlersMoon extends Chant
 {
 	@Override public String ID() { return "Chant_HowlersMoon"; }
-	private final static String localizedName = CMLib.lang()._("Howlers Moon");
+	private final static String localizedName = CMLib.lang().L("Howlers Moon");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Howlers Moon)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Howlers Moon)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -57,7 +57,7 @@ public class Chant_HowlersMoon extends Chant
 		if(!(affected instanceof MOB))
 		{
 			if(affected instanceof Room)
-				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,_("The howlers moon sets."));
+				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,L("The howlers moon sets."));
 			super.unInvoke();
 			return;
 		}
@@ -68,7 +68,7 @@ public class Chant_HowlersMoon extends Chant
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob.amFollowing()==null))
 		{
-			mob.tell(_("You are no longer under the howlers moon."));
+			mob.tell(L("You are no longer under the howlers moon."));
 			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
 		}
@@ -114,7 +114,7 @@ public class Chant_HowlersMoon extends Chant
 				final int opDir=Directions.getOpDirectionCode(fromDir);
 				target.bringToLife(newRoom,true);
 				CMLib.beanCounter().clearZeroMoney(target,null);
-				target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
+				target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
 				CMLib.tracking().walk(target,opDir,false,false);
@@ -194,12 +194,12 @@ public class Chant_HowlersMoon extends Chant
 		if(target==null) return false;
 		if(!target.getArea().getClimateObj().canSeeTheMoon(target,null))
 		{
-			mob.tell(_("You must be able to see the moon for this magic to work."));
+			mob.tell(L("You must be able to see the moon for this magic to work."));
 			return false;
 		}
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("This place is already under the howler's moon."));
+			mob.tell(L("This place is already under the howler's moon."));
 			return false;
 		}
 		for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
@@ -208,7 +208,7 @@ public class Chant_HowlersMoon extends Chant
 			if((A!=null)
 			&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONALTERING))
 			{
-				mob.tell(_("The moon is already under @x1, and can not be changed until this magic is gone.",A.name()));
+				mob.tell(L("The moon is already under @x1, and can not be changed until this magic is gone.",A.name()));
 				return false;
 			}
 		}
@@ -216,14 +216,14 @@ public class Chant_HowlersMoon extends Chant
 
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell(_("You must be outdoors for this chant to work."));
+			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
 		final Vector choices=fillChoices(mob.location());
 		fromDir=-1;
 		if(choices.size()==0)
 		{
-			mob.tell(_("You must be further outdoors to summon an animal."));
+			mob.tell(L("You must be further outdoors to summon an animal."));
 			return false;
 		}
 		fromDir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
@@ -243,20 +243,20 @@ public class Chant_HowlersMoon extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to the sky.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to the sky.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The Howler's Moon Rises!"));
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The Howler's Moon Rises!"));
 					ticksTicked=0;
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) to the sky, but the magic fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to the sky, but the magic fades."));
 		// return whether it worked
 		return success;
 	}
@@ -278,9 +278,9 @@ public class Chant_HowlersMoon extends Chant
 		newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
 		newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
 		newMOB.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
-		newMOB.setName(_("a ferocious wolf"));
-		newMOB.setDisplayText(_("a huge, ferocious wolf is here"));
-		newMOB.setDescription(_("Dark black fur, always standing on end surrounds its muscular body.  The eyes are deep red, and his teeth are bared, snarling at you."));
+		newMOB.setName(L("a ferocious wolf"));
+		newMOB.setDisplayText(L("a huge, ferocious wolf is here"));
+		newMOB.setDescription(L("Dark black fur, always standing on end surrounds its muscular body.  The eyes are deep red, and his teeth are bared, snarling at you."));
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		Behavior B=CMClass.getBehavior("CorpseEater");
 		if(B!=null) newMOB.addBehavior(B);

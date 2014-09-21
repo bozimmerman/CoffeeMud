@@ -92,7 +92,7 @@ public class Frog extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName(_("a slippery tongue"));
+			naturalWeapon.setName(L("a slippery tongue"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_LEATHER);
 			naturalWeapon.setUsesRemaining(1000);
 			naturalWeapon.setWeaponType(Weapon.TYPE_SLASHING);

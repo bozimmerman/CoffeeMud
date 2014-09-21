@@ -46,7 +46,7 @@ public class Emote extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_(" EMOTE what?"));
+			mob.tell(L(" EMOTE what?"));
 			return false;
 		}
 		String combinedCommands=CMParms.combine(commands,1);

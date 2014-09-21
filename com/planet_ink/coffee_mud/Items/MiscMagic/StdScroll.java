@@ -84,7 +84,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 			manaRequired=25;
 		if(manaRequired>mob.curState().getMana())
 		{
-			mob.tell(_("You don't have enough mana."));
+			mob.tell(L("You don't have enough mana."));
 			return false;
 		}
 		mob.curState().adjMana(-manaRequired,mob.maxState());
@@ -129,18 +129,18 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 			final boolean readingMagic=(mob.fetchEffect("Spell_ReadMagic")!=null);
 			if(readingMagic)
 			{
-				mob.tell(_("@x1 glows softly.",name()));
+				mob.tell(L("@x1 glows softly.",name()));
 				me.setReadableScrollBy(mob.Name());
 			}
 			if(me.isReadableScrollBy(mob.Name()))
 			{
 				if(me.usesRemaining()<=0)
-					mob.tell(_("The markings have been read off the parchment, and are no longer discernable."));
+					mob.tell(L("The markings have been read off the parchment, and are no longer discernable."));
 				else
 				{
 					List<Ability> Spells=me.getSpells();
 					if(Spells.size()==0)
-						mob.tell(_("The scroll appears to contain no discernable information."));
+						mob.tell(L("The scroll appears to contain no discernable information."));
 					else
 					{
 						Ability thisOne=null;
@@ -180,7 +180,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 						}
 						else
 						if(spellName.length()>0)
-							mob.tell(_("That is not written on the scroll."));
+							mob.tell(L("That is not written on the scroll."));
 						else
 						if(!mob.isMonster())
 						{
@@ -197,7 +197,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 				}
 			}
 			else
-				mob.tell(_("The markings look magical, and are unknown to you."));
+				mob.tell(L("The markings look magical, and are unknown to you."));
 		}
 	}
 

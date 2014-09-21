@@ -36,9 +36,9 @@ import java.util.*;
 public class Prayer_Maladiction extends Prayer
 {
 	@Override public String ID() { return "Prayer_Maladiction"; }
-	private final static String localizedName = CMLib.lang()._("Maladiction");
+	private final static String localizedName = CMLib.lang().L("Maladiction");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Maladiction)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Maladiction)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
@@ -57,7 +57,7 @@ public class Prayer_Maladiction extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your maladiction fades."));
+			mob.tell(L("Your maladiction fades."));
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class Prayer_Maladiction extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) filled with maladiction!"):_("^S<S-NAME> @x1 for a maladiction over <T-NAMESELF>!^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) filled with maladiction!"):L("^S<S-NAME> @x1 for a maladiction over <T-NAMESELF>!^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -100,7 +100,7 @@ public class Prayer_Maladiction extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> @x1 for a maladiction over <T-YOUPOSS>, but there is no answer.",prayWord(mob)));
+			return maliciousFizzle(mob,target,L("<S-NAME> @x1 for a maladiction over <T-YOUPOSS>, but there is no answer.",prayWord(mob)));
 
 
 		// return whether it worked

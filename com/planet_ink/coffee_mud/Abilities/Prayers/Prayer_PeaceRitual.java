@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_PeaceRitual extends Prayer
 {
 	@Override public String ID() { return "Prayer_PeaceRitual"; }
-	private final static String localizedName = CMLib.lang()._("Peace Ritual");
+	private final static String localizedName = CMLib.lang().L("Peace Ritual");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Peace Ritual)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Peace Ritual)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
@@ -86,7 +86,7 @@ public class Prayer_PeaceRitual extends Prayer
 		&&(msg.source()!=affected)
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)))
 		{
-			msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,_("The peace ritual is disrupted!"));
+			msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,L("The peace ritual is disrupted!"));
 			clan1=null;
 			clan2=null;
 			unInvoke();
@@ -95,7 +95,7 @@ public class Prayer_PeaceRitual extends Prayer
 		if(msg.amISource((MOB)affected)
 		&&((msg.targetMinor()==CMMsg.TYP_ENTER)||(msg.targetMinor()==CMMsg.TYP_LEAVE)))
 		{
-			msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,_("The peace ritual is disrupted!"));
+			msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,L("The peace ritual is disrupted!"));
 			clan1=null;
 			clan2=null;
 			unInvoke();
@@ -141,18 +141,18 @@ public class Prayer_PeaceRitual extends Prayer
 		if((auto)&&(givenTarget!=null)) target=givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,target,null,_("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));
+			mob.tell(mob,target,null,L("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));
 			return false;
 		}
 		clan1=CMLib.clans().findRivalrousClan(mob);
 		if(clan1==null)
 		{
-			mob.tell(_("You must belong to a clan to use this prayer."));
+			mob.tell(L("You must belong to a clan to use this prayer."));
 			return false;
 		}
 		if(commands.size()<1)
 		{
-			mob.tell(_("You must specify the clan you wish to see peace with."));
+			mob.tell(L("You must specify the clan you wish to see peace with."));
 			return false;
 		}
 		final String clan2Name=CMParms.combine(commands,0);
@@ -160,7 +160,7 @@ public class Prayer_PeaceRitual extends Prayer
 		if((clan2==null)
 		||((clan1.getClanRelations(clan2.clanID())!=Clan.REL_WAR)&&(clan2.getClanRelations(clan1.clanID())!=Clan.REL_WAR)))
 		{
-			mob.tell(_("Your @x1 is not at war with @x2!",clan1.getGovernmentName(),clan2.name()));
+			mob.tell(L("Your @x1 is not at war with @x2!",clan1.getGovernmentName(),clan2.name()));
 			return false;
 		}
 		boolean found=false;
@@ -172,7 +172,7 @@ public class Prayer_PeaceRitual extends Prayer
 		}
 		if(!found)
 		{
-			mob.tell(_("You must wait until a member of @x1 is online before beginning the ritual.",clan2.name()));
+			mob.tell(L("You must wait until a member of @x1 is online before beginning the ritual.",clan2.name()));
 			return false;
 		}
 
@@ -187,7 +187,7 @@ public class Prayer_PeaceRitual extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> begin(s) a peace ritual."):_("^S<S-NAME> @x1 for peace between @x2 and @x3.^?",prayWord(mob),clan1.name(),clan2.name()));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> begin(s) a peace ritual."):L("^S<S-NAME> @x1 for peace between @x2 and @x3.^?",prayWord(mob),clan1.name(),clan2.name()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -195,7 +195,7 @@ public class Prayer_PeaceRitual extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 for peace between @x2 and @x3, but there is no answer.",prayWord(mob),clan1.name(),clan2.name()));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 for peace between @x2 and @x3, but there is no answer.",prayWord(mob),clan1.name(),clan2.name()));
 
 
 		// return whether it worked

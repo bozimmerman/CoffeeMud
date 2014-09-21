@@ -46,12 +46,12 @@ public class NoPurge extends StdCommand
 		final String protectMe=CMParms.combine(commands,0);
 		if(protectMe.length()==0)
 		{
-			mob.tell(_("Protect whom?  Enter a player name to protect from autopurge."));
+			mob.tell(L("Protect whom?  Enter a player name to protect from autopurge."));
 			return false;
 		}
 		if((!CMLib.players().playerExists(protectMe))&&(!CMLib.players().accountExists(protectMe))&&(CMLib.clans().getClan(protectMe)==null))
 		{
-			mob.tell(_("Protect whom?  '@x1' is not a known player.",protectMe));
+			mob.tell(L("Protect whom?  '@x1' is not a known player.",protectMe));
 			return false;
 		}
 		final List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
@@ -61,11 +61,11 @@ public class NoPurge extends StdCommand
 			final String B=protectedOnes.get(b);
 			if(B.equalsIgnoreCase(protectMe))
 			{
-				mob.tell(_("That player already protected.  Do LIST NOPURGE and check out #@x1.",""+(b+1)));
+				mob.tell(L("That player already protected.  Do LIST NOPURGE and check out #@x1.",""+(b+1)));
 				return false;
 			}
 		}
-		mob.tell(_("The player '@x1' is now protected from autopurge.",protectMe));
+		mob.tell(L("The player '@x1' is now protected from autopurge.",protectMe));
 		final StringBuffer str=Resources.getFileResource("protectedplayers.ini",false);
 		if(protectMe.trim().length()>0) str.append(protectMe+"\n");
 		Resources.updateFileResource("::protectedplayers.ini",str);

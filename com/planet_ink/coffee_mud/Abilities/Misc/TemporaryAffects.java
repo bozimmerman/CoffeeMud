@@ -37,7 +37,7 @@ import java.util.*;
 public class TemporaryAffects extends StdAbility
 {
 	@Override public String ID() { return "TemporaryAffects"; }
-	private final static String localizedName = CMLib.lang()._("Temporary Affects");
+	private final static String localizedName = CMLib.lang().L("Temporary Affects");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_MOBS | CAN_ITEMS | CAN_EXITS | CAN_ROOMS;}
 	@Override protected int canTargetCode(){return CAN_MOBS | CAN_ITEMS | CAN_EXITS | CAN_ROOMS;}
@@ -289,7 +289,7 @@ public class TemporaryAffects extends StdAbility
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(_("Specify a target, a property, number of ticks, and (optionally) some misc text!"));
+			mob.tell(L("Specify a target, a property, number of ticks, and (optionally) some misc text!"));
 			return false;
 		}
 		final Vector V=new XVector(commands.firstElement());
@@ -307,13 +307,13 @@ public class TemporaryAffects extends StdAbility
 			A=CMClass.findBehavior(abilityStr);
 		if(A==null)
 		{
-			mob.tell(_("No such ability or behavior as @x1!",abilityStr));
+			mob.tell(L("No such ability or behavior as @x1!",abilityStr));
 			return false;
 		}
 		final String numTicks=((String)commands.elementAt(1)).trim();
 		if((!CMath.isInteger(numTicks)) ||(CMath.s_int(numTicks)<=0))
 		{
-			mob.tell(_("'@x1' is not a number of ticks!",numTicks));
+			mob.tell(L("'@x1' is not a number of ticks!",numTicks));
 			return false;
 		}
 		final String parms=CMParms.combine(commands, 2);

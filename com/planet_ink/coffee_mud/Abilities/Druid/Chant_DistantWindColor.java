@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_DistantWindColor extends Chant
 {
 	@Override public String ID() { return "Chant_DistantWindColor"; }
-	private final static String localizedName = CMLib.lang()._("Distant Wind Color");
+	private final static String localizedName = CMLib.lang().L("Distant Wind Color");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
@@ -50,7 +50,7 @@ public class Chant_DistantWindColor extends Chant
 
 		if(commands.size()<1)
 		{
-			mob.tell(_("Discern the wind color where?"));
+			mob.tell(L("Discern the wind color where?"));
 			return false;
 		}
 
@@ -76,13 +76,13 @@ public class Chant_DistantWindColor extends Chant
 		if(newRoom==null)
 		{
 			if(anyRoom==null)
-				mob.tell(_("You don't know of a place called '@x1'.",CMParms.combine(commands,0)));
+				mob.tell(L("You don't know of a place called '@x1'.",CMParms.combine(commands,0)));
 			else
 			if((anyRoom.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 			||(anyRoom.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
-				mob.tell(_("There IS such a place, but it is on or in the water, so your magic would fail."));
+				mob.tell(L("There IS such a place, but it is on or in the water, so your magic would fail."));
 			else
-				mob.tell(_("There IS such a place, but it is not outdoors, so your magic would fail."));
+				mob.tell(L("There IS such a place, but it is not outdoors, so your magic would fail."));
 			return false;
 		}
 
@@ -93,19 +93,19 @@ public class Chant_DistantWindColor extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),_("^S<S-NAME> chant(s) about a far away place.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),L("^S<S-NAME> chant(s) about a far away place.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final String msg2=new Chant_WindColor().getWindColor(mob,newRoom);
 				if(msg2.length()==0)
-					mob.tell(_("The winds at @x1 are clear.",newRoom.displayText(mob)));
+					mob.tell(L("The winds at @x1 are clear.",newRoom.displayText(mob)));
 				else
-					mob.tell(_("The winds at @x1 are @x2.",newRoom.displayText(mob),msg2));
+					mob.tell(L("The winds at @x1 are @x2.",newRoom.displayText(mob),msg2));
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) about a far away place, but the magic fades."));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) about a far away place, but the magic fades."));
 
 
 		// return whether it worked

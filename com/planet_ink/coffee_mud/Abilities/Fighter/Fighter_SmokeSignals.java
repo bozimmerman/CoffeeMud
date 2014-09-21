@@ -37,7 +37,7 @@ import java.util.*;
 public class Fighter_SmokeSignals extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_SmokeSignals"; }
-	private final static String localizedName = CMLib.lang()._("Smoke Signals");
+	private final static String localizedName = CMLib.lang().L("Smoke Signals");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -61,7 +61,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 		&&(msg.targetMinor()==CMMsg.NO_EFFECT)
 		&&(msg.targetMessage()!=null)
 		&&(msg.othersMessage()!=null))
-			msg.addTrailerMsg(CMClass.getMsg((MOB)affected,null,null,CMMsg.MSG_OK_VISUAL,_("The smoke signals seem to say '@x1'.",msg.targetMessage()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+			msg.addTrailerMsg(CMClass.getMsg((MOB)affected,null,null,CMMsg.MSG_OK_VISUAL,L("The smoke signals seem to say '@x1'.",msg.targetMessage()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 		super.executeMsg(myHost,msg);
 	}
 
@@ -79,7 +79,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 		}
 		if((fire==null)||(!mob.location().isContent(fire)))
 		{
-			mob.tell(_("A fire will need to be built first."));
+			mob.tell(L("A fire will need to be built first."));
 			return null;
 		}
 		return fire;
@@ -90,7 +90,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 	{
 		if((!auto)&&(mob.isInCombat()))
 		{
-			mob.tell(_("Not while you are fighting!"));
+			mob.tell(L("Not while you are fighting!"));
 			return false;
 		}
 
@@ -101,7 +101,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 		if(((R.domainType()&Room.INDOORS)==Room.INDOORS)
 		||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
 		{
-			mob.tell(_("You can't signal anyone from here."));
+			mob.tell(L("You can't signal anyone from here."));
 			return false;
 		}
 		else
@@ -113,14 +113,14 @@ public class Fighter_SmokeSignals extends FighterSkill
 		||(weather==Climate.WEATHER_SNOW)
 		||(weather==Climate.WEATHER_THUNDERSTORM))
 		{
-			mob.tell(_("You won't be able to get a signal up in these weather conditions."));
+			mob.tell(L("You won't be able to get a signal up in these weather conditions."));
 			return false;
 		}
 
 
 		if(commands.size()==0)
 		{
-			mob.tell(_("You need to specify the message to send up in the smoke signals."));
+			mob.tell(L("You need to specify the message to send up in the smoke signals."));
 			return false;
 		}
 
@@ -130,12 +130,12 @@ public class Fighter_SmokeSignals extends FighterSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,auto?_("<T-NAME> begin(s) smoking uncontrollably!"):_("<S-NAME> puff(s) up a mighty series of smoke signals!"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,auto?L("<T-NAME> begin(s) smoking uncontrollably!"):L("<S-NAME> puff(s) up a mighty series of smoke signals!"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final String str=CMParms.combine(commands,0);
-				final CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,str,CMMsg.MSG_OK_VISUAL,_("You see some smoke signals in the distance."));
+				final CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,str,CMMsg.MSG_OK_VISUAL,L("You see some smoke signals in the distance."));
 				final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
 				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
 				for(final Iterator<Room> r=checkSet.iterator();r.hasNext();)
@@ -158,7 +158,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to send a smoke signal, but goof(s) it up."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to send a smoke signal, but goof(s) it up."));
 		return success;
 	}
 }

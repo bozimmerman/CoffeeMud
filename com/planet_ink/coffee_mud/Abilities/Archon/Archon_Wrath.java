@@ -37,7 +37,7 @@ public class Archon_Wrath extends ArchonSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Archon_Wrath"; }
-	private final static String localizedName = CMLib.lang()._("Wrath");
+	private final static String localizedName = CMLib.lang().L("Wrath");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -68,8 +68,8 @@ public class Archon_Wrath extends ArchonSkill
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),
-									auto?_("<T-NAME> <T-IS-ARE> knocked out of <T-HIS-HER> shoes!!!"):
-										 _("^F**<S-NAME> BLAST(S) <T-NAMESELF>**, knocking <T-HIM-HER> out of <T-HIS-HER> shoes!!^?"));
+									auto?L("<T-NAME> <T-IS-ARE> knocked out of <T-HIS-HER> shoes!!!"):
+										 L("^F**<S-NAME> BLAST(S) <T-NAMESELF>**, knocking <T-HIM-HER> out of <T-HIS-HER> shoes!!^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(target.location().okMessage(mob,msg))
 			{
@@ -99,7 +99,7 @@ public class Archon_Wrath extends ArchonSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to inflict <S-HIS-HER> wrath upon <T-NAMESELF>, but fail(s)."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to inflict <S-HIS-HER> wrath upon <T-NAMESELF>, but fail(s)."));
 		return success;
 	}
 }

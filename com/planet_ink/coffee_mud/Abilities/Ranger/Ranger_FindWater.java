@@ -38,9 +38,9 @@ import java.util.*;
 public class Ranger_FindWater extends StdAbility
 {
 	@Override public String ID() { return "Ranger_FindWater"; }
-	private final static String localizedName = CMLib.lang()._("Find Water");
+	private final static String localizedName = CMLib.lang().L("Find Water");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(finding water)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(finding water)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -87,14 +87,14 @@ public class Ranger_FindWater extends StdAbility
 			if(nextDirection==-1)
 			{
 				if(waterHere(mob,mob.location(),null).length()==0)
-					mob.tell(_("The water trail dries up here."));
+					mob.tell(L("The water trail dries up here."));
 				nextDirection=-999;
 				unInvoke();
 			}
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell(_("The water trail seems to continue @x1.",Directions.getDirectionName(nextDirection)));
+				mob.tell(L("The water trail seems to continue @x1.",Directions.getDirectionName(nextDirection)));
 				if(mob.isMonster())
 				{
 					final Room nextRoom=mob.location().getRoomInDir(nextDirection);
@@ -161,12 +161,12 @@ public class Ranger_FindWater extends StdAbility
 			if(((I instanceof Drink))
 			&&(((Drink)I).containsDrink())
 			&&(CMLib.flags().canBeSeenBy(I,mob)))
-				msg.append(_("@x1 contains some sort of liquid.\n\r",I.name()));
+				msg.append(L("@x1 contains some sort of liquid.\n\r",I.name()));
 		}
 		else
 		if((I.container()!=null)&&(I.container().container()==container))
 			if(msg.toString().indexOf(I.container().name()+" contains some sort of liquid.")<0)
-				msg.append(_("@x1 contains some sort of liquid.\n\r",I.container().name()));
+				msg.append(L("@x1 contains some sort of liquid.\n\r",I.container().name()));
 		return msg.toString();
 	}
 
@@ -188,20 +188,20 @@ public class Ranger_FindWater extends StdAbility
 			   ||(room.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
 			   ||(room.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
 			   ||(room.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
-				msg.append(_("Your water-finding senses are saturated.  This is a very wet place.\n\r"));
+				msg.append(L("Your water-finding senses are saturated.  This is a very wet place.\n\r"));
 			else
 			if(CMath.bset(room.getClimateType(),Places.CLIMASK_WET))
-				msg.append(_("Your water-finding senses are saturated.  This is a damp place.\n\r"));
+				msg.append(L("Your water-finding senses are saturated.  This is a damp place.\n\r"));
 			else
 			if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_RAIN)
 			||(room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_THUNDERSTORM))
-				msg.append(_("It is raining here! Your water-finding senses are saturated!\n\r"));
+				msg.append(L("It is raining here! Your water-finding senses are saturated!\n\r"));
 			else
 			if(room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_HAIL)
-				msg.append(_("It is hailing here! Your water-finding senses are saturated!\n\r"));
+				msg.append(L("It is hailing here! Your water-finding senses are saturated!\n\r"));
 			else
 			if(room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_SNOW)
-				msg.append(_("It is snowing here! Your water-finding senses are saturated!\n\r"));
+				msg.append(L("It is snowing here! Your water-finding senses are saturated!\n\r"));
 			else
 			{
 				for(int i=0;i<room.numItems();i++)
@@ -259,7 +259,7 @@ public class Ranger_FindWater extends StdAbility
 		for(final Ability A : V) A.unInvoke();
 		if(V.size()>0)
 		{
-			mob.tell(_("You stop tracking."));
+			mob.tell(L("You stop tracking."));
 			if(commands.size()==0) return true;
 		}
 
@@ -293,7 +293,7 @@ public class Ranger_FindWater extends StdAbility
 
 		if((success)&&(theTrail!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,auto?_("<S-NAME> begin(s) sniffing around for water!"):_("<S-NAME> begin(s) sensing water."));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,auto?L("<S-NAME> begin(s) sniffing around for water!"):L("<S-NAME> begin(s) sensing water."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -305,7 +305,7 @@ public class Ranger_FindWater extends StdAbility
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to find water, but fail(s)."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to find water, but fail(s)."));
 
 		return success;
 	}

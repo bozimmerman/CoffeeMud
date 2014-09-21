@@ -36,9 +36,9 @@ import java.util.*;
 public class Prayer_GuardianHearth extends Prayer
 {
 	@Override public String ID() { return "Prayer_GuardianHearth"; }
-	private final static String localizedName = CMLib.lang()._("Guardian Hearth");
+	private final static String localizedName = CMLib.lang().L("Guardian Hearth");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Guardian Hearth)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Guardian Hearth)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
@@ -78,7 +78,7 @@ public class Prayer_GuardianHearth extends Prayer
 					&&((M.Name().equals(text()))
 						||(M.getClanRole(text())!=null))))
 				{
-					R.show(((MOB)msg.target()),null,this,CMMsg.MSG_OK_VISUAL,_("The guardian hearth protect(s) <S-NAME>!"));
+					R.show(((MOB)msg.target()),null,this,CMMsg.MSG_OK_VISUAL,L("The guardian hearth protect(s) <S-NAME>!"));
 					break;
 				}
 			}
@@ -94,7 +94,7 @@ public class Prayer_GuardianHearth extends Prayer
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("This place is already a guarded hearth."));
+			mob.tell(L("This place is already a guarded hearth."));
 			return false;
 		}
 
@@ -104,7 +104,7 @@ public class Prayer_GuardianHearth extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 to guard this place.^?",prayForWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 to guard this place.^?",prayForWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -124,7 +124,7 @@ public class Prayer_GuardianHearth extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 to guard this place, but <S-IS-ARE> not answered.",prayForWord(mob)));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 to guard this place, but <S-IS-ARE> not answered.",prayForWord(mob)));
 
 		return success;
 	}

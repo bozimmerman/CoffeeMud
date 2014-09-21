@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_BestowName extends Chant
 {
 	@Override public String ID() { return "Chant_BestowName"; }
-	private final static String localizedName = CMLib.lang()._("Bestow Name");
+	private final static String localizedName = CMLib.lang().L("Bestow Name");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
@@ -66,19 +66,19 @@ public class Chant_BestowName extends Chant
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("You must specify the animal, and a name to give him."));
+			mob.tell(L("You must specify the animal, and a name to give him."));
 			return false;
 		}
 		String myName=((String)commands.lastElement()).trim();
 		commands.removeElementAt(commands.size()-1);
 		if(myName.length()==0)
 		{
-			mob.tell(_("You must specify a name."));
+			mob.tell(L("You must specify a name."));
 			return false;
 		}
 		if(myName.indexOf(' ')>=0)
 		{
-			mob.tell(_("Your name may not contain a space."));
+			mob.tell(L("Your name may not contain a space."));
 			return false;
 		}
 
@@ -86,7 +86,7 @@ public class Chant_BestowName extends Chant
 		if(target==null) return false;
 		if((!CMLib.flags().isAnimalIntelligence(target))||(!target.isMonster())||(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 		{
-			mob.tell(_("This chant only works on non-player animals in your group."));
+			mob.tell(L("This chant only works on non-player animals in your group."));
 			return false;
 		}
 
@@ -110,7 +110,7 @@ public class Chant_BestowName extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF>, bestowing the name '@x1'.^?",myName));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>, bestowing the name '@x1'.^?",myName));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -121,7 +121,7 @@ public class Chant_BestowName extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

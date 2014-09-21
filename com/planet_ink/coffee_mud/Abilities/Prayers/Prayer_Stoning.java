@@ -38,7 +38,7 @@ import java.util.*;
 public class Prayer_Stoning extends Prayer
 {
 	@Override public String ID() { return "Prayer_Stoning"; }
-	private final static String localizedName = CMLib.lang()._("Stoning");
+	private final static String localizedName = CMLib.lang().L("Stoning");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
@@ -90,7 +90,7 @@ public class Prayer_Stoning extends Prayer
 						CMLib.combat().postDamage(M,mob,W,dmg,CMMsg.MSG_WEAPONATTACK|CMMsg.MASK_ALWAYS,Weapon.TYPE_BASHING,"<S-NAME> stone(s) <T-NAMESELF>!");
 					}
 					else
-						R.show(M,mob,null,CMMsg.MSG_NOISE,_("<S-NAME> shout(s) obscenities at <T-NAMESELF>."));
+						R.show(M,mob,null,CMMsg.MSG_NOISE,L("<S-NAME> shout(s) obscenities at <T-NAMESELF>."));
 				}
 			}
 			while(cits.size()<10)
@@ -124,13 +124,13 @@ public class Prayer_Stoning extends Prayer
 			warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);
 		if((warrants.size()==0)&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ABOVELAW)))
 		{
-			mob.tell(_("You are not allowed to stone @x1 at this time.",target.Name()));
+			mob.tell(L("You are not allowed to stone @x1 at this time.",target.Name()));
 			return false;
 		}
 
 		if((!auto)&&(!CMLib.flags().isBoundOrHeld(target))&&(!CMSecurity.isASysOp(mob)))
 		{
-			mob.tell(_("@x1 must be bound first.",target.name(mob)));
+			mob.tell(L("@x1 must be bound first.",target.name(mob)));
 			return false;
 		}
 
@@ -145,7 +145,7 @@ public class Prayer_Stoning extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> call(s) for the stoning of <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> call(s) for the stoning of <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -162,7 +162,7 @@ public class Prayer_Stoning extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> call(s) for the stoning of <T-NAMESELF>."));
+			return maliciousFizzle(mob,target,L("<S-NAME> call(s) for the stoning of <T-NAMESELF>."));
 
 
 		// return whether it worked

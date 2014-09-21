@@ -125,12 +125,12 @@ public class InTheAir extends StdRoom
 		&&(!(msg.target() instanceof Exit))
 		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
 		{
-			msg.source().tell(CMLib.lang()._("You can't sit here."));
+			msg.source().tell(CMLib.lang().L("You can't sit here."));
 			return false;
 		}
 		if((msg.sourceMinor()==CMMsg.TYP_SLEEP)&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
 		{
-			msg.source().tell(CMLib.lang()._("You can't sleep here."));
+			msg.source().tell(CMLib.lang().L("You can't sleep here."));
 			return false;
 		}
 
@@ -140,29 +140,29 @@ public class InTheAir extends StdRoom
 			final MOB mob=msg.source();
 			if((!CMLib.flags().isInFlight(mob))&&(!CMLib.flags().isFalling(mob)))
 			{
-				mob.tell(CMLib.lang()._("You can't fly."));
+				mob.tell(CMLib.lang().L("You can't fly."));
 				return false;
 			}
 			if(CMLib.dice().rollPercentage()>50)
 			switch(room.getArea().getClimateObj().weatherType(room))
 			{
 			case Climate.WEATHER_BLIZZARD:
-				room.show(mob,null,CMMsg.MSG_OK_VISUAL,CMLib.lang()._("The swirling blizzard inhibits <S-YOUPOSS> progress."));
+				room.show(mob,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("The swirling blizzard inhibits <S-YOUPOSS> progress."));
 				return false;
 			case Climate.WEATHER_HAIL:
-				room.show(mob,null,CMMsg.MSG_OK_VISUAL,CMLib.lang()._("The hail storm inhibits <S-YOUPOSS> progress."));
+				room.show(mob,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("The hail storm inhibits <S-YOUPOSS> progress."));
 				return false;
 			case Climate.WEATHER_RAIN:
-				room.show(mob,null,CMMsg.MSG_OK_VISUAL,CMLib.lang()._("The rain storm inhibits <S-YOUPOSS> progress."));
+				room.show(mob,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("The rain storm inhibits <S-YOUPOSS> progress."));
 				return false;
 			case Climate.WEATHER_SLEET:
-				room.show(mob,null,CMMsg.MSG_OK_VISUAL,CMLib.lang()._("The biting sleet inhibits <S-YOUPOSS> progress."));
+				room.show(mob,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("The biting sleet inhibits <S-YOUPOSS> progress."));
 				return false;
 			case Climate.WEATHER_THUNDERSTORM:
-				room.show(mob,null,CMMsg.MSG_OK_VISUAL,CMLib.lang()._("The thunderstorm inhibits <S-YOUPOSS> progress."));
+				room.show(mob,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("The thunderstorm inhibits <S-YOUPOSS> progress."));
 				return false;
 			case Climate.WEATHER_WINDY:
-				room.show(mob,null,CMMsg.MSG_OK_VISUAL,CMLib.lang()._("The hard winds inhibit <S-YOUPOSS> progress."));
+				room.show(mob,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("The hard winds inhibit <S-YOUPOSS> progress."));
 				return false;
 			}
 		}

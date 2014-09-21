@@ -37,9 +37,9 @@ import java.util.*;
 public class Bleeding extends StdAbility implements HealthCondition
 {
 	@Override public String ID() { return "Bleeding"; }
-	private final static String localizedName = CMLib.lang()._("Bleeding");
+	private final static String localizedName = CMLib.lang().L("Bleeding");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Bleeding)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Bleeding)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ITEMS|Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -62,7 +62,7 @@ public class Bleeding extends StdAbility implements HealthCondition
 		&&(canBeUninvoked())
 		&&(!((MOB)affected).amDead())
 		&&(CMLib.flags().isInTheGame((MOB)affected,true)))
-			((MOB)affected).location().show((MOB)affected,null,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> stop(s) bleeding."));
+			((MOB)affected).location().show((MOB)affected,null,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> stop(s) bleeding."));
 		super.unInvoke();
 	}
 
@@ -81,7 +81,7 @@ public class Bleeding extends StdAbility implements HealthCondition
 			else
 			if((msg.targetMinor()==CMMsg.TYP_LOOK)
 			||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
-				msg.source().tell((MOB)msg.target(),null,null,_("^R<S-NAME> <S-IS-ARE> still bleeding..."));
+				msg.source().tell((MOB)msg.target(),null,null,L("^R<S-NAME> <S-IS-ARE> still bleeding..."));
 		}
 		else
 		if((msg.source()==affected)
@@ -97,11 +97,11 @@ public class Bleeding extends StdAbility implements HealthCondition
 			if((dir>=0)&&(R.findItem(null,"a trail of blood")==null))
 			{
 				final Item I=CMClass.getItem("GenFatWallpaper");
-				I.setName(_("A trail of blood"));
+				I.setName(L("A trail of blood"));
 				if(lastDir>=0)
-					I.setDisplayText(_("A faint trail of blood leads from @x1 to @x2.",Directions.getDirectionName(lastDir),Directions.getDirectionName(dir)));
+					I.setDisplayText(L("A faint trail of blood leads from @x1 to @x2.",Directions.getDirectionName(lastDir),Directions.getDirectionName(dir)));
 				else
-					I.setDisplayText(_("A faint trail of blood leads @x1.",Directions.getDirectionName(dir)));
+					I.setDisplayText(L("A faint trail of blood leads @x1.",Directions.getDirectionName(dir)));
 				I.phyStats().setDisposition(I.phyStats().disposition()|PhyStats.IS_HIDDEN|PhyStats.IS_UNSAVABLE);
 				I.setSecretIdentity(msg.source().Name()+"`s blood.");
 				R.addItem(I,ItemPossessor.Expire.Monster_EQ);
@@ -147,7 +147,7 @@ public class Bleeding extends StdAbility implements HealthCondition
 		if(((MOB)target).phyStats().level()<CMProps.getIntVar(CMProps.Int.INJBLEEDMINLEVEL)) return false;
 		if(((MOB)target).fetchEffect(ID())!=null) return false;
 		if(((MOB)target).location()==null) return false;
-		if(((MOB)target).location().show((MOB)target,null,this,CMMsg.MSG_OK_VISUAL,_("^R<S-NAME> start(s) BLEEDING!^?")))
+		if(((MOB)target).location().show((MOB)target,null,this,CMMsg.MSG_OK_VISUAL,L("^R<S-NAME> start(s) BLEEDING!^?")))
 			beneficialAffect(mob,target,asLevel,0);
 		return true;
 	}

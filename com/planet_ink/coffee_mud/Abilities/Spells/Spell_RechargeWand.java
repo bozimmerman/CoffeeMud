@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_RechargeWand extends Spell
 {
 	@Override public String ID() { return "Spell_RechargeWand"; }
-	private final static String localizedName = CMLib.lang()._("Recharge Wand");
+	private final static String localizedName = CMLib.lang().L("Recharge Wand");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int overrideMana(){return 100;}
@@ -51,7 +51,7 @@ public class Spell_RechargeWand extends Spell
 
 		if(!(target instanceof Wand))
 		{
-			mob.tell(_("You can't recharge that."));
+			mob.tell(L("You can't recharge that."));
 			return false;
 		}
 
@@ -62,13 +62,13 @@ public class Spell_RechargeWand extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> incant(s) at <T-NAMESELF> as sweat beads form on <S-HIS-HER> forehead.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> incant(s) at <T-NAMESELF> as sweat beads form on <S-HIS-HER> forehead.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if((((Wand)target).usesRemaining()+5) >= ((Wand)target).maxUses())
 				{
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> glow(s) brightly then disintigrates!"));
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glow(s) brightly then disintigrates!"));
 					target.destroy();
 				}
 				else
@@ -79,18 +79,18 @@ public class Spell_RechargeWand extends Spell
 					((Wand)target).setUsesRemaining(((Wand)target).usesRemaining()+5);
 					if(!(willBreak))
 					{
-						mob.location().show(mob, target, CMMsg.MSG_OK_VISUAL, _("<T-NAME> glow(s) brightly!"));
+						mob.location().show(mob, target, CMMsg.MSG_OK_VISUAL, L("<T-NAME> glow(s) brightly!"));
 					}
 					else
 					{
-						mob.location().show(mob, target, CMMsg.MSG_OK_VISUAL, _("<T-NAME> glow(s) brightly and begins to hum.  It clearly cannot hold more magic."));
+						mob.location().show(mob, target, CMMsg.MSG_OK_VISUAL, L("<T-NAME> glow(s) brightly and begins to hum.  It clearly cannot hold more magic."));
 					}
 				}
 			}
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> incant(s) at <T-NAMESELF>, looking more frustrated every minute."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> incant(s) at <T-NAMESELF>, looking more frustrated every minute."));
 
 
 		// return whether it worked

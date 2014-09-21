@@ -36,9 +36,9 @@ import java.util.*;
 public class Chant_PlantSnare extends Chant
 {
 	@Override public String ID() { return "Chant_PlantSnare"; }
-	private final static String localizedName = CMLib.lang()._("Plant Snare");
+	private final static String localizedName = CMLib.lang().L("Plant Snare");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Snared)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Snared)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -71,7 +71,7 @@ public class Chant_PlantSnare extends Chant
 			&&((msg.sourceMajor(CMMsg.MASK_HANDS))
 			||(msg.sourceMajor(CMMsg.MASK_MOVE))))
 			{
-				if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> struggle(s) against the snaring plants.")))
+				if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> struggle(s) against the snaring plants.")))
 				{
 					amountRemaining-=(mob.charStats().getStat(CharStats.STAT_STRENGTH)*4);
 					if(amountRemaining<0)
@@ -95,7 +95,7 @@ public class Chant_PlantSnare extends Chant
 		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
-				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> manage(s) to break <S-HIS-HER> way free of the plants."));
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> manage(s) to break <S-HIS-HER> way free of the plants."));
 			CMLib.commands().postStand(mob,true);
 		}
 	}
@@ -130,7 +130,7 @@ public class Chant_PlantSnare extends Chant
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth snaring."));
+			mob.tell(L("There doesn't appear to be anyone here worth snaring."));
 			return false;
 		}
 		final Room room=mob.location();
@@ -142,7 +142,7 @@ public class Chant_PlantSnare extends Chant
 		&&(room.domainType()!=Room.DOMAIN_OUTDOORS_JUNGLE)
 		&&(room.domainType()!=Room.DOMAIN_OUTDOORS_SWAMP))
 		{
-			mob.tell(_("There doesn't seem to be a large enough mass of plant life around here...\n\r"));
+			mob.tell(L("There doesn't seem to be a large enough mass of plant life around here...\n\r"));
 			return false;
 		}
 
@@ -157,7 +157,7 @@ public class Chant_PlantSnare extends Chant
 
 		if(success)
 		{
-			if(room.show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) to the plants around <S-HIM-HER>.^?")))
+			if(room.show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) to the plants around <S-HIM-HER>.^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -177,14 +177,14 @@ public class Chant_PlantSnare extends Chant
 							if(troom==room)
 							{
 								success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1);
-								troom.show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> become(s) stuck as tangling mass of plant life grows onto <S-HIM-HER>!"));
+								troom.show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> become(s) stuck as tangling mass of plant life grows onto <S-HIM-HER>!"));
 							}
 						}
 					}
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> chant(s), but the magic fades."));
+			return maliciousFizzle(mob,null,L("<S-NAME> chant(s), but the magic fades."));
 
 
 		// return whether it worked

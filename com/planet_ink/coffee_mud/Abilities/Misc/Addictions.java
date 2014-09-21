@@ -39,7 +39,7 @@ import java.util.*;
 public class Addictions extends StdAbility
 {
 	@Override public String ID() { return "Addictions"; }
-	private final static String localizedName = CMLib.lang()._("Addictions");
+	private final static String localizedName = CMLib.lang().L("Addictions");
 	@Override public String name() { return localizedName; }
 	private long lastFix=System.currentTimeMillis();
 	@Override public String displayText(){ return craving()?"(Addiction to "+text()+")":"";}
@@ -67,7 +67,7 @@ public class Addictions extends StdAbility
 		{
 			if((System.currentTimeMillis()-lastFix)>WITHDRAW_TIME)
 			{
-				((MOB)ticking).tell(_("You've managed to kick your addiction."));
+				((MOB)ticking).tell(L("You've managed to kick your addiction."));
 				canBeUninvoked=true;
 				unInvoke();
 				((MOB)ticking).delEffect(this);
@@ -80,13 +80,13 @@ public class Addictions extends StdAbility
 				puffCredit=null;
 			switch(CMLib.dice().roll(1,7,0))
 			{
-			case 1: ((MOB)ticking).tell(_("Man, you could sure use some @x1.",text())); break;
-			case 2: ((MOB)ticking).tell(_("Wouldn't some @x1 be great right about now?",text())); break;
-			case 3: ((MOB)ticking).tell(_("You are seriously craving @x1.",text())); break;
-			case 4: ((MOB)ticking).tell(_("There's got to be some @x1 around here somewhere.",text())); break;
-			case 5: ((MOB)ticking).tell(_("You REALLY want some @x1.",text())); break;
-			case 6: ((MOB)ticking).tell(_("You NEED some @x1, NOW!",text())); break;
-			case 7: ((MOB)ticking).tell(_("Some @x1 would be lovely.",text())); break;
+			case 1: ((MOB)ticking).tell(L("Man, you could sure use some @x1.",text())); break;
+			case 2: ((MOB)ticking).tell(L("Wouldn't some @x1 be great right about now?",text())); break;
+			case 3: ((MOB)ticking).tell(L("You are seriously craving @x1.",text())); break;
+			case 4: ((MOB)ticking).tell(L("There's got to be some @x1 around here somewhere.",text())); break;
+			case 5: ((MOB)ticking).tell(L("You REALLY want some @x1.",text())); break;
+			case 6: ((MOB)ticking).tell(L("You NEED some @x1, NOW!",text())); break;
+			case 7: ((MOB)ticking).tell(L("Some @x1 would be lovely.",text())); break;
 			}
 
 		}

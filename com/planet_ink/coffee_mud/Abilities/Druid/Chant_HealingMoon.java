@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_HealingMoon extends Chant
 {
 	@Override public String ID() { return "Chant_HealingMoon"; }
-	private final static String localizedName = CMLib.lang()._("Healing Moon");
+	private final static String localizedName = CMLib.lang().L("Healing Moon");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Healing Moon)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Healing Moon)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
@@ -52,7 +52,7 @@ public class Chant_HealingMoon extends Chant
 	{
 		if(canBeUninvoked())
 			if(affected instanceof Room)
-				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,_("The healing moon sets."));
+				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,L("The healing moon sets."));
 		super.unInvoke();
 
 	}
@@ -110,13 +110,13 @@ public class Chant_HealingMoon extends Chant
 		if(target==null) return false;
 		if(!target.getArea().getClimateObj().canSeeTheMoon(target,null))
 		{
-			mob.tell(_("You must be able to see the moon for this magic to work."));
+			mob.tell(L("You must be able to see the moon for this magic to work."));
 			return false;
 		}
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("This place is already under the healing moon."));
+			mob.tell(L("This place is already under the healing moon."));
 			return false;
 		}
 
@@ -126,7 +126,7 @@ public class Chant_HealingMoon extends Chant
 			if((A!=null)
 			&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONALTERING))
 			{
-				mob.tell(_("The moon is already under @x1, and can not be changed until this magic is gone.",A.name()));
+				mob.tell(L("The moon is already under @x1, and can not be changed until this magic is gone.",A.name()));
 				return false;
 			}
 		}
@@ -146,19 +146,19 @@ public class Chant_HealingMoon extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to the moon.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to the moon.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The Healing Moon Rises!"));
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The Healing Moon Rises!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) to the moon, but the magic fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to the moon, but the magic fades."));
 		// return whether it worked
 		return success;
 	}

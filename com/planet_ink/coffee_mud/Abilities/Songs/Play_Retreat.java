@@ -36,7 +36,7 @@ import java.util.*;
 public class Play_Retreat extends Play
 {
 	@Override public String ID() { return "Play_Retreat"; }
-	private final static String localizedName = CMLib.lang()._("Retreat");
+	private final static String localizedName = CMLib.lang().L("Retreat");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return 0;}
@@ -50,7 +50,7 @@ public class Play_Retreat extends Play
 	{
 		if(directionCode<0)
 		{
-			mob.tell(_("Flee where?!"));
+			mob.tell(L("Flee where?!"));
 			return;
 		}
 		mob.makePeace();

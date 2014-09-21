@@ -35,9 +35,9 @@ import java.util.*;
 public class Spell_Fear extends Spell
 {
 	@Override public String ID() { return "Spell_Fear"; }
-	private final static String localizedName = CMLib.lang()._("Fear");
+	private final static String localizedName = CMLib.lang().L("Fear");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Afraid)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Afraid)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
@@ -54,9 +54,9 @@ public class Spell_Fear extends Spell
 			if(!M.isMonster())
 				CMLib.commands().postStand(M,true);
 			if((oldI!=M)&&(oldI!=null))
-				M.tell(M,oldI,null,_("You are no longer afraid of <T-NAMESELF>."));
+				M.tell(M,oldI,null,L("You are no longer afraid of <T-NAMESELF>."));
 			else
-				M.tell(_("You are no longer afraid."));
+				M.tell(L("You are no longer afraid."));
 		}
 	}
 
@@ -94,7 +94,7 @@ public class Spell_Fear extends Spell
 		if(h==null)
 		{
 			if(!auto)
-				mob.tell(_("There doesn't appear to be anyone here worth scaring."));
+				mob.tell(L("There doesn't appear to be anyone here worth scaring."));
 			return false;
 		}
 
@@ -117,7 +117,7 @@ public class Spell_Fear extends Spell
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> scare(s) <T-NAMESELF>.^?"));
+				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> scare(s) <T-NAMESELF>.^?"));
 				final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 				if(((text().toUpperCase().indexOf("WEAK")<0)||((mob.phyStats().level()/2)>target.phyStats().level()))
 				&&((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2)))))
@@ -136,7 +136,7 @@ public class Spell_Fear extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) a frightening spell, but completely flub(s) it."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) a frightening spell, but completely flub(s) it."));
 
 
 		// return whether it worked

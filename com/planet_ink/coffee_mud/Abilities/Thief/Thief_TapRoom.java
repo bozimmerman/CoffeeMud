@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_TapRoom extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_TapRoom"; }
-	private final static String localizedName = CMLib.lang()._("Tap Room");
+	private final static String localizedName = CMLib.lang().L("Tap Room");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
@@ -131,7 +131,7 @@ public class Thief_TapRoom extends ThiefSkill
 			{
 				if(getAvailableLine(msg.source()).size()==0)
 				{
-					msg.source().tell(_("You have run out of cloth to make tapline from!  Better put down the cup..."));
+					msg.source().tell(L("You have run out of cloth to make tapline from!  Better put down the cup..."));
 					return false;
 				}
 				int roomsLeft=0;
@@ -140,7 +140,7 @@ public class Thief_TapRoom extends ThiefSkill
 					roomsLeft=CMath.s_int(V.get(3));
 				if(roomsLeft<=0)
 				{
-					msg.source().tell(_("Go any further, and your tap line won't work at all.  Better just put it down here..."));
+					msg.source().tell(L("Go any further, and your tap line won't work at all.  Better just put it down here..."));
 					return false;
 				}
 			}
@@ -195,13 +195,13 @@ public class Thief_TapRoom extends ThiefSkill
 						{
 							canBeUninvoked=true;
 							unInvoke();
-							msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,_("Oh no! You've lost your tap line! It was all for naught!"),null,null));
+							msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,L("Oh no! You've lost your tap line! It was all for naught!"),null,null));
 						}
 						else
 						{
 							final RawMaterial I=lineV.get(0);
 							CMLib.materials().destroyResourcesValue(msg.source(),1,I.material(),0,null);
-							msg.addTrailerMsg(CMClass.getMsg(msg.source(),I,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,_("You stretch out another length of tap-line here using some of <T-NAME>"),null,_("<S-NAME> do(es) something in the corner with <T-NAME>")));
+							msg.addTrailerMsg(CMClass.getMsg(msg.source(),I,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,L("You stretch out another length of tap-line here using some of <T-NAME>"),null,L("<S-NAME> do(es) something in the corner with <T-NAME>")));
 							int roomsLeft=0;
 							if(p.size()>3)
 								roomsLeft=CMath.s_int(p.get(3));
@@ -220,7 +220,7 @@ public class Thief_TapRoom extends ThiefSkill
 				{
 					canBeUninvoked=true;
 					unInvoke();
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,_("The tap line is broken."),null,null));
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,L("The tap line is broken."),null,null));
 				}
 				else
 				if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
@@ -327,7 +327,7 @@ public class Thief_TapRoom extends ThiefSkill
 			target=(Room)givenTarget;
 		if(mob.isInCombat())
 		{
-			mob.tell(mob,null,null,_("Not while <S-NAME> <S-IS-ARE> fighting."));
+			mob.tell(mob,null,null,L("Not while <S-NAME> <S-IS-ARE> fighting."));
 			return false;
 		}
 
@@ -335,13 +335,13 @@ public class Thief_TapRoom extends ThiefSkill
 		final Item[] cups=getCups(mob);
 		if((!auto)&&(cups==null))
 		{
-			mob.tell(_("You'll need 2 unused glass cups, emptied of liquid, to start tapping a room."));
+			mob.tell(L("You'll need 2 unused glass cups, emptied of liquid, to start tapping a room."));
 			abort=true;
 		}
 		final List<RawMaterial> line=getAvailableLine(mob);
 		if((!auto)&&(line.size()==0))
 		{
-			mob.tell(_("You'll need several pounds of raw cloth material (like cotton or wool) to start tapping a room."));
+			mob.tell(L("You'll need several pounds of raw cloth material (like cotton or wool) to start tapping a room."));
 			abort=true;
 		}
 		if(abort) return false;
@@ -350,7 +350,7 @@ public class Thief_TapRoom extends ThiefSkill
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":_("<S-NAME> lay(s) down @x1 and <S-IS-ARE> ready to lay down a tap line.",(cups!=null?cups[0].name():"")));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":L("<S-NAME> lay(s) down @x1 and <S-IS-ARE> ready to lay down a tap line.",(cups!=null?cups[0].name():"")));
 		if((success)&&(mob.location().okMessage(mob,msg))&&((cups==null)||CMLib.commands().postDrop(mob,cups[0],true,false,false)))
 		{
 			mob.location().send(mob,msg);
@@ -368,11 +368,11 @@ public class Thief_TapRoom extends ThiefSkill
 			TR.setMiscText("DST;"+CMLib.map().getExtendedRoomID(target)+";"+mob.Name()+";"+level+";"+code);
 			if(cups!=null)
 				cups[1].addNonUninvokableEffect(TR);
-			mob.tell(_("You should now walk to a listening room and put down the last cup.  Your skill will allow you to stretch the line @x1 rooms.",""+level));
+			mob.tell(L("You should now walk to a listening room and put down the last cup.  Your skill will allow you to stretch the line @x1 rooms.",""+level));
 			target.recoverRoomStats();
 		}
 		else
-			return beneficialVisualFizzle(mob,target,auto?"":_("<S-NAME> fail(s) to tap this room."));
+			return beneficialVisualFizzle(mob,target,auto?"":L("<S-NAME> fail(s) to tap this room."));
 		return success;
 	}
 }

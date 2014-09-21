@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_IceLance extends Spell
 {
 	@Override public String ID() { return "Spell_IceLance"; }
-	private final static String localizedName = CMLib.lang()._("Ice Lance");
+	private final static String localizedName = CMLib.lang().L("Ice Lance");
 	@Override public String name() { return localizedName; }
 	@Override public int minRange(){return 1;}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
@@ -66,7 +66,7 @@ public class Spell_IceLance extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_((auto?"A ":"^S<S-NAME> incant(s) and point(s) at <T-NAMESELF>. A ")+"long shard of ice streaks through the air!^?")+CMLib.protocol().msp("spelldam2.wav",40));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L((auto?"A ":"^S<S-NAME> incant(s) and point(s) at <T-NAMESELF>. A ")+"long shard of ice streaks through the air!^?")+CMLib.protocol().msp("spelldam2.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_COLD|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
@@ -85,7 +85,7 @@ public class Spell_IceLance extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) and point(s) at <T-NAMESELF>, but flub(s) the spell."));
+			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) and point(s) at <T-NAMESELF>, but flub(s) the spell."));
 
 
 		// return whether it worked

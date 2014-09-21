@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_CounterAttack extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_CounterAttack"; }
-	private final static String localizedName = CMLib.lang()._("Counter-Attack");
+	private final static String localizedName = CMLib.lang().L("Counter-Attack");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -62,7 +62,7 @@ public class Fighter_CounterAttack extends FighterSkill
 		{
 			if(msg.tool().ID().equals("Skill_Parry"))
 			{
-				final CMMsg msg2=CMClass.getMsg(mob,msg.target(),this,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> position(s) <S-HIM-HERSELF> for a counterattack!"));
+				final CMMsg msg2=CMClass.getMsg(mob,msg.target(),this,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> position(s) <S-HIM-HERSELF> for a counterattack!"));
 				msg.addTrailerMsg(msg2);
 			}
 			else

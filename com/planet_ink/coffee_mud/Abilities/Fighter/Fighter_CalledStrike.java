@@ -37,7 +37,7 @@ import java.util.*;
 public class Fighter_CalledStrike extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_CalledStrike"; }
-	private final static String localizedName = CMLib.lang()._("Called Strike");
+	private final static String localizedName = CMLib.lang().L("Called Strike");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"CALLEDSTRIKE"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -92,7 +92,7 @@ public class Fighter_CalledStrike extends FighterSkill
 				amputate();
 			}
 			else
-				mob.tell(mob,target,null,_("You failed to cut off <T-YOUPOSS> '@x1'.",gone));
+				mob.tell(mob,target,null,L("You failed to cut off <T-YOUPOSS> '@x1'.",gone));
 			unInvoke();
 		}
 		return super.okMessage(myHost,msg);
@@ -103,7 +103,7 @@ public class Fighter_CalledStrike extends FighterSkill
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
 			if(!quiet)
-			mob.tell(_("You are too far away to perform a called strike!"));
+			mob.tell(L("You are too far away to perform a called strike!"));
 			return false;
 		}
 
@@ -111,14 +111,14 @@ public class Fighter_CalledStrike extends FighterSkill
 		if((w==null)||(!(w instanceof Weapon)))
 		{
 			if(!quiet)
-			mob.tell(_("You need a weapon to perform a called strike!"));
+			mob.tell(L("You need a weapon to perform a called strike!"));
 			return false;
 		}
 		final Weapon wp=(Weapon)w;
 		if(wp.weaponType()!=Weapon.TYPE_SLASHING)
 		{
 			if(!quiet)
-			mob.tell(_("You cannot amputate with @x1!",wp.name()));
+			mob.tell(L("You cannot amputate with @x1!",wp.name()));
 			return false;
 		}
 		return true;
@@ -151,7 +151,7 @@ public class Fighter_CalledStrike extends FighterSkill
 				target=mob.location().fetchInhabitant(s);
 			if((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob)))
 			{
-				mob.tell(_("You can't see '@x1' here.",s));
+				mob.tell(L("You can't see '@x1' here.",s));
 				return false;
 			}
 			if(target!=null)
@@ -161,12 +161,12 @@ public class Fighter_CalledStrike extends FighterSkill
 			target=mob.getVictim();
 		if((target==null)||(target==mob))
 		{
-			mob.tell(_("Do this to whom?"));
+			mob.tell(L("Do this to whom?"));
 			return false;
 		}
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("@x1 already has a call against one of @x2 limbs.",target.name(mob),target.charStats().hisher()));
+			mob.tell(L("@x1 already has a call against one of @x2 limbs.",target.name(mob),target.charStats().hisher()));
 			return false;
 		}
 
@@ -177,7 +177,7 @@ public class Fighter_CalledStrike extends FighterSkill
 		if(remainingLimbList.size()==0)
 		{
 			if(!auto)
-				mob.tell(_("There is nothing left on @x1 to cut off!",target.name(mob)));
+				mob.tell(L("There is nothing left on @x1 to cut off!",target.name(mob)));
 			return false;
 		}
 		if(mob.isMonster())
@@ -185,8 +185,8 @@ public class Fighter_CalledStrike extends FighterSkill
 		else
 		if(commands.size()<=0)
 		{
-			mob.tell(_("You must specify a body part to cut off."));
-			final StringBuffer str=new StringBuffer(_("Parts include: "));
+			mob.tell(L("You must specify a body part to cut off."));
+			final StringBuffer str=new StringBuffer(L("Parts include: "));
 			for(int i=0;i<remainingLimbList.size();i++)
 				str.append((remainingLimbList.get(i))+", ");
 			mob.tell(str.toString().substring(0,str.length()-2)+".");
@@ -210,8 +210,8 @@ public class Fighter_CalledStrike extends FighterSkill
 				}
 			if(gone.length()==0)
 			{
-				mob.tell(_("'@x1' is not a valid body part.",off));
-				final StringBuffer str=new StringBuffer(_("Parts include: "));
+				mob.tell(L("'@x1' is not a valid body part.",off));
+				final StringBuffer str=new StringBuffer(L("Parts include: "));
 				for(int i=0;i<remainingLimbList.size();i++)
 					str.append((remainingLimbList.get(i))+", ");
 				mob.tell(str.toString().substring(0,str.length()-2)+".");
@@ -230,7 +230,7 @@ public class Fighter_CalledStrike extends FighterSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if((success)&&(gone.length()>0))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,_("^F^<FIGHT^><S-NAME> call(s) '@x1'!^</FIGHT^>^?",gone));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,L("^F^<FIGHT^><S-NAME> call(s) '@x1'!^</FIGHT^>^?",gone));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -243,7 +243,7 @@ public class Fighter_CalledStrike extends FighterSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> call(s) '@x1', but fail(s) <S-HIS-HER> attack.",gone));
+			return maliciousFizzle(mob,null,L("<S-NAME> call(s) '@x1', but fail(s) <S-HIS-HER> attack.",gone));
 
 		// return whether it worked
 		return success;

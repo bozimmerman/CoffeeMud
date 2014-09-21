@@ -37,7 +37,7 @@ public class Thief_Autocaltrops extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Autocaltrops"; }
 	@Override public String displayText() {return "(Autocaltropping)";}
-	private final static String localizedName = CMLib.lang()._("AutoCaltrops");
+	private final static String localizedName = CMLib.lang().L("AutoCaltrops");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -80,7 +80,7 @@ public class Thief_Autocaltrops extends ThiefSkill
 	public void unInvoke()
 	{
 		if((affected instanceof MOB)&&(!((MOB)affected).amDead()))
-			((MOB)affected).tell(_("You stop throwing down caltrops."));
+			((MOB)affected).tell(L("You stop throwing down caltrops."));
 		super.unInvoke();
 	}
 
@@ -90,13 +90,13 @@ public class Thief_Autocaltrops extends ThiefSkill
 		final MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
 		if(target.fetchEffect(ID())!=null)
 		{
-			target.tell(_("You are no longer automatically dropping caltrops."));
+			target.tell(L("You are no longer automatically dropping caltrops."));
 			target.delEffect(mob.fetchEffect(ID()));
 			return false;
 		}
 		if((!auto)&&(target.fetchAbility("Thief_Caltrops")==null))
 		{
-			target.tell(_("You don't know how to make and drop caltrops yet!"));
+			target.tell(L("You don't know how to make and drop caltrops yet!"));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -106,12 +106,12 @@ public class Thief_Autocaltrops extends ThiefSkill
 
 		if(success)
 		{
-			target.tell(_("You will now automatically drop caltrops around when you enter a room."));
+			target.tell(L("You will now automatically drop caltrops around when you enter a room."));
 			beneficialAffect(mob,target,asLevel,5+(3*getXLEVELLevel(mob)));
 			dropem(target,target.location());
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to prepare some caltrops for quick dropping, but mess(es) up."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to prepare some caltrops for quick dropping, but mess(es) up."));
 		return success;
 	}
 }

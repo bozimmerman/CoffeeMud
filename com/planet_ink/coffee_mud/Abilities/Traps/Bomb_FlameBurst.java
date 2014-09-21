@@ -35,7 +35,7 @@ import java.util.*;
 public class Bomb_FlameBurst extends StdBomb
 {
 	@Override public String ID() { return "Bomb_FlameBurst"; }
-	private final static String localizedName = CMLib.lang()._("flame burst bomb");
+	private final static String localizedName = CMLib.lang().L("flame burst bomb");
 	@Override public String name() { return localizedName; }
 	@Override protected int trapLevel(){return 17;}
 	@Override public String requiresToSet(){return "some lamp oil";}
@@ -57,7 +57,7 @@ public class Bomb_FlameBurst extends StdBomb
 		   &&(((Item)P).material()!=RawMaterial.RESOURCE_LAMPOIL))
 		{
 			if(mob!=null)
-				mob.tell(_("You need some lamp oil to make this out of."));
+				mob.tell(L("You need some lamp oil to make this out of."));
 			return false;
 		}
 		return true;
@@ -72,7 +72,7 @@ public class Bomb_FlameBurst extends StdBomb
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) the flame burst!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) the flame burst!"));
 			else
 			if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,(affected.name()+" flames all over <T-NAME>!")+CMLib.protocol().msp("fireball.wav",30)))
 			{

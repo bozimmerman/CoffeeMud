@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_MoralBalance extends Prayer
 {
 	@Override public String ID() { return "Prayer_MoralBalance"; }
-	private final static String localizedName = CMLib.lang()._("Moral Balance");
+	private final static String localizedName = CMLib.lang().L("Moral Balance");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
@@ -55,7 +55,7 @@ public class Prayer_MoralBalance extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		CMMsg msg2=null;
 		if((mob!=target)&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
-			msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,_("<T-NAME> do(es) not seem to like <S-NAME> messing with <T-HIS-HER> head."));
+			msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,L("<T-NAME> do(es) not seem to like <S-NAME> messing with <T-HIS-HER> head."));
 
 		if((success)&&(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null))
 		{
@@ -63,14 +63,14 @@ public class Prayer_MoralBalance extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_(auto?"<T-NAME> feel(s) completely different about the world.":"^S<S-NAME> "+prayWord(mob)+" to bring balance to <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> feel(s) completely different about the world.":"^S<S-NAME> "+prayWord(mob)+" to bring balance to <T-NAMESELF>!^?"));
 			if((mob.location().okMessage(mob,msg))
 			&&((msg2==null)||(mob.location().okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
 				if((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
 				{
-					target.tell(_("Your views on the world suddenly change."));
+					target.tell(L("Your views on the world suddenly change."));
 					final Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
 					if(F!=null)
 					{
@@ -89,7 +89,7 @@ public class Prayer_MoralBalance extends Prayer
 		{
 			if((msg2!=null)&&(mob.location().okMessage(mob,msg2)))
 				mob.location().send(mob,msg2);
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> point(s) at <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
 		}
 
 

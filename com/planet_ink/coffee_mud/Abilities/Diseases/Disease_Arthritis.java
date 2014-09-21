@@ -35,9 +35,9 @@ import java.util.*;
 public class Disease_Arthritis extends Disease
 {
 	@Override public String ID() { return "Disease_Arthritis"; }
-	private final static String localizedName = CMLib.lang()._("Arthritis");
+	private final static String localizedName = CMLib.lang().L("Arthritis");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Arthritis)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Arthritis)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

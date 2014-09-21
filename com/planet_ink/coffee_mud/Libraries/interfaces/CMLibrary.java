@@ -32,5 +32,5 @@ public interface CMLibrary extends CMObject
 	 * @param xs the array of variables to replace
 	 * @return the translated string, with all variables in place
 	 */
-	public String _(final String str, final String ... xs);
+	public String L(final String str, final String ... xs);
 }

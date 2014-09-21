@@ -35,7 +35,7 @@ import java.util.*;
 public class Prayer_MassHeal extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_MassHeal"; }
-	private final static String localizedName = CMLib.lang()._("Mass Heal");
+	private final static String localizedName = CMLib.lang().L("Mass Heal");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
@@ -83,17 +83,17 @@ public class Prayer_MassHeal extends Prayer implements MendingSkill
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				final CMMsg msg=CMClass.getMsg(mob,target,this,(!undead?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) surrounded by a white light."):_("^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>.^?"));
+				final CMMsg msg=CMClass.getMsg(mob,target,this,(!undead?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) surrounded by a white light."):L("^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>.^?"));
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
 					final int healing=CMLib.dice().roll(adjustedLevel(mob,asLevel),5,adjustedLevel(mob,asLevel));
 					CMLib.combat().postHealing(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,healing,null);
-					target.tell(_("You feel tons better!"));
+					target.tell(L("You feel tons better!"));
 				}
 			}
 			else
-				beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, but @x1 does not heed.",hisHerDiety(mob)));
+				beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, but @x1 does not heed.",hisHerDiety(mob)));
 		}
 
 		// return whether it worked

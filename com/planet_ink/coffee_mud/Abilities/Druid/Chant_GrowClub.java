@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_GrowClub extends Chant
 {
 	@Override public String ID() { return "Chant_GrowClub"; }
-	private final static String localizedName = CMLib.lang()._("Grow Club");
+	private final static String localizedName = CMLib.lang().L("Grow Club");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
@@ -70,7 +70,7 @@ public class Chant_GrowClub extends Chant
 		&&((mob.location().myResource()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_JUNGLE))
 		{
-			mob.tell(_("This magic will not work here."));
+			mob.tell(L("This magic will not work here."));
 			return false;
 		}
 		int material=RawMaterial.RESOURCE_OAK;
@@ -97,15 +97,15 @@ public class Chant_GrowClub extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) to the trees.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) to the trees.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final Weapon newItem=CMClass.getWeapon("GenWeapon");
-				newItem.setName(_("@x1 club",RawMaterial.CODES.NAME(material).toLowerCase()));
+				newItem.setName(L("@x1 club",RawMaterial.CODES.NAME(material).toLowerCase()));
 				newItem.setName(CMLib.english().startWithAorAn(newItem.Name()));
-				newItem.setDisplayText(_("@x1 sits here",newItem.name()));
-				newItem.setDescription(_("It looks like the limb of a tree."));
+				newItem.setDisplayText(L("@x1 sits here",newItem.name()));
+				newItem.setDescription(L("It looks like the limb of a tree."));
 				newItem.setMaterial(material);
 				newItem.basePhyStats().setWeight(10);
 				final int level=mob.phyStats().level();
@@ -121,12 +121,12 @@ public class Chant_GrowClub extends Chant
 				newItem.setWeaponType(Weapon.TYPE_BASHING);
 				newItem.setMiscText(newItem.text());
 				mob.location().addItem(newItem,ItemPossessor.Expire.Resource);
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("A good looking club grows out of a tree and drops."));
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A good looking club grows out of a tree and drops."));
 				mob.location().recoverPhyStats();
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) to the trees, but nothing happens."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) to the trees, but nothing happens."));
 
 		// return whether it worked
 		return success;

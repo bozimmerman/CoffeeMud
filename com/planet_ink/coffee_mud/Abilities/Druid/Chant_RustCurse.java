@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_RustCurse extends Chant
 {
 	@Override public String ID() { return "Chant_RustCurse"; }
-	private final static String localizedName = CMLib.lang()._("Rust Curse");
+	private final static String localizedName = CMLib.lang().L("Rust Curse");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Rust Curse)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Rust Curse)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -54,7 +54,7 @@ public class Chant_RustCurse extends Chant
 			M=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(M!=null)&&(!M.amDead()))
-			M.tell(_("You don't feel so damp any more."));
+			M.tell(L("You don't feel so damp any more."));
 	}
 
 
@@ -122,19 +122,19 @@ public class Chant_RustCurse extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) at <T-NAME> rustily!^?"));
+			final CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) at <T-NAME> rustily!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
 					maliciousAffect(mob,target,asLevel,0,-1);
-					target.tell(_("You feel damp!"));
+					target.tell(L("You feel damp!"));
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAME>, but the magic fizzles."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAME>, but the magic fizzles."));
 
 		// return whether it worked
 		return success;

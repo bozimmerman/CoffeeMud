@@ -56,14 +56,14 @@ public class ClanResign extends StdCommand
 		final Clan C=chkC;
 		if(C==null)
 		{
-			mob.tell(_("You can't resign from @x1.",((clanName.length()==0)?"anything":clanName)));
+			mob.tell(L("You can't resign from @x1.",((clanName.length()==0)?"anything":clanName)));
 		}
 		else
 		if(S!=null)
 		{
 			S.prompt(new InputCallback(InputCallback.Type.CHOOSE,"N","YN",0)
 			{
-				@Override public void showPrompt() { S.promptPrint(_("Resign from @x1.  Are you absolutely SURE (y/N)?",C.getName()));}
+				@Override public void showPrompt() { S.promptPrint(L("Resign from @x1.  Are you absolutely SURE (y/N)?",C.getName()));}
 				@Override public void timedOut() { }
 				@Override public void callBack()
 				{
@@ -79,12 +79,12 @@ public class ClanResign extends StdCommand
 							S.setSavable(false);
 							S.setVarScope("*");
 							S.setScript(C.getGovernment().getExitScript());
-							final CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,_("CLANEXIT"));
+							final CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,L("CLANEXIT"));
 							S.executeMsg(mob, msg2);
 							S.dequeResponses();
 							S.tick(mob,Tickable.TICKID_MOB);
 						}
-						CMLib.clans().clanAnnounce(mob,_("Member resigned from @x1 @x2: @x3",C.getGovernmentName(),C.name(),mob.Name()));
+						CMLib.clans().clanAnnounce(mob,L("Member resigned from @x1 @x2: @x3",C.getGovernmentName(),C.name(),mob.Name()));
 						C.delMember(mob);
 					}
 				}

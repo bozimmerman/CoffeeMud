@@ -36,7 +36,7 @@ import java.util.*;
 public class AnimalTaming extends CommonSkill
 {
 	@Override public String ID() { return "AnimalTaming"; }
-	private final static String localizedName = CMLib.lang()._("Animal Taming");
+	private final static String localizedName = CMLib.lang().L("Animal Taming");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"TAME","TAMING","ANIMALTAMING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -47,8 +47,8 @@ public class AnimalTaming extends CommonSkill
 	public AnimalTaming()
 	{
 		super();
-		displayText=_("You are taming...");
-		verb=_("taming");
+		displayText=L("You are taming...");
+		verb=L("taming");
 	}
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -94,11 +94,11 @@ public class AnimalTaming extends CommonSkill
 					if((taming!=null)&&(taming instanceof CagedAnimal))
 						animal=((CagedAnimal)taming).unCageMe();
 					if((messedUp)||(animal==null))
-						commonTell(mob,_("You've failed to tame @x1!",taming.name()));
+						commonTell(mob,L("You've failed to tame @x1!",taming.name()));
 					else
 					{
 						if(animal.numBehaviors()==0)
-							commonTell(mob,_("@x1 is already tame.",taming.name()));
+							commonTell(mob,L("@x1 is already tame.",taming.name()));
 						else
 						{
 							int amount=1;
@@ -109,7 +109,7 @@ public class AnimalTaming extends CommonSkill
 							if(amount>1)
 								s="of "+amount+" ";
 							s+="of "+animal.charStats().hisher()+" behaviors";
-							mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> manage(s) to tame @x1 @x2.",animal.name(),s));
+							mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to tame @x1 @x2.",animal.name(),s));
 							for(int i=0;i<amount;i++)
 							{
 								if(animal.numBehaviors()==0) break;
@@ -141,7 +141,7 @@ public class AnimalTaming extends CommonSkill
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		verb=_("taming");
+		verb=L("taming");
 		taming=null;
 		Item cage=null;
 		final String str=CMParms.combine(commands,0);
@@ -151,18 +151,18 @@ public class AnimalTaming extends CommonSkill
 		{
 			if(!CMLib.flags().canBeSeenBy(M,mob))
 			{
-				commonTell(mob,_("You don't see anyone called '@x1' here.",str));
+				commonTell(mob,L("You don't see anyone called '@x1' here.",str));
 				return false;
 			}
 			if((!M.isMonster())
 			   ||(!CMLib.flags().isAnimalIntelligence(M)))
 			{
-				commonTell(mob,_("You can't tame @x1.",M.name(mob)));
+				commonTell(mob,L("You can't tame @x1.",M.name(mob)));
 				return false;
 			}
 			if((CMLib.flags().canMove(M))&&(!CMLib.flags().isBoundOrHeld(M)))
 			{
-				commonTell(mob,_("@x1 doesn't seem willing to cooperate.",M.name(mob)));
+				commonTell(mob,L("@x1 doesn't seem willing to cooperate.",M.name(mob)));
 				return false;
 			}
 			taming=M;
@@ -192,13 +192,13 @@ public class AnimalTaming extends CommonSkill
 			}
 			if(cage==null)
 			{
-				commonTell(mob,_("You don't see anyone called '@x1' here.",str));
+				commonTell(mob,L("You don't see anyone called '@x1' here.",str));
 				return false;
 			}
 			taming=mob.location().findItem(cage,CMParms.combine(commands,0));
 			if((taming==null)||(!CMLib.flags().canBeSeenBy(taming,mob))||(!(taming instanceof CagedAnimal)))
 			{
-				commonTell(mob,_("You don't see any creatures in @x1 called '@x2'.",cage.name(),CMParms.combine(commands,0)));
+				commonTell(mob,L("You don't see any creatures in @x1 called '@x2'.",cage.name(),CMParms.combine(commands,0)));
 				return false;
 			}
 			M=((CagedAnimal)taming).unCageMe();
@@ -210,8 +210,8 @@ public class AnimalTaming extends CommonSkill
 			return false;
 		messedUp=!proficiencyCheck(mob,-taming.phyStats().level()+(2*getXLEVELLevel(mob)),auto);
 		final int duration=getDuration(35,mob,taming.phyStats().level(),10);
-		verb=_("taming @x1",M.name());
-		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),_("<S-NAME> start(s) taming @x1.",M.name()));
+		verb=L("taming @x1",M.name());
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),L("<S-NAME> start(s) taming @x1.",M.name()));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

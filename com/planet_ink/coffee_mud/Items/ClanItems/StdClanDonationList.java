@@ -127,12 +127,12 @@ public class StdClanDonationList extends StdClanItem
 					for(int i=0;i<sorted.size();i++)
 						text.append(((String)((Object[])sorted.elementAt(i))[1])+"\n\r");
 					if(text.length()>0)
-						mob.tell(_("It says '@x1'.",text.toString()));
+						mob.tell(L("It says '@x1'.",text.toString()));
 					else
-						mob.tell(_("There is nothing written on @x1.",name()));
+						mob.tell(L("There is nothing written on @x1.",name()));
 				}
 				else
-					mob.tell(_("You can't see that!"));
+					mob.tell(L("You can't see that!"));
 				return;
 			}
 			else

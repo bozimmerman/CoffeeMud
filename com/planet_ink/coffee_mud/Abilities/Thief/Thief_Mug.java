@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_Mug extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Mug"; }
-	private final static String localizedName = CMLib.lang()._("Mug");
+	private final static String localizedName = CMLib.lang().L("Mug");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
@@ -67,7 +67,7 @@ public class Thief_Mug extends ThiefSkill
 		final MOB target=mob.getVictim();
 		if(!mob.isInCombat())
 		{
-			mob.tell(_("You can only mug someone you are fighting!"));
+			mob.tell(L("You can only mug someone you are fighting!"));
 			return false;
 		}
 		String itemToSteal="all";
@@ -75,7 +75,7 @@ public class Thief_Mug extends ThiefSkill
 		{
 			if(commands.size()<1)
 			{
-				mob.tell(_("Mug what from @x1?",target.name(mob)));
+				mob.tell(L("Mug what from @x1?",target.name(mob)));
 				return false;
 			}
 			itemToSteal=CMParms.combine(commands,0);
@@ -87,13 +87,13 @@ public class Thief_Mug extends ThiefSkill
 		final Item stolen=target.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemToSteal);
 		if(stolen instanceof Coins)
 		{
-			mob.tell(_("You can not mug that from @x1.",target.name(mob)));
+			mob.tell(L("You can not mug that from @x1.",target.name(mob)));
 			return false;
 		}
 		final boolean success=proficiencyCheck(mob,levelDiff,auto);
 		if(!success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":_("You fumble the attempt to mug <T-NAME>!"),CMMsg.MSG_NOISYMOVEMENT,auto?"":_("<S-NAME> tries to mug you and fails!"),CMMsg.MSG_NOISYMOVEMENT,auto?"":_("<S-NAME> tries to mug <T-NAME> and fails!"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":L("You fumble the attempt to mug <T-NAME>!"),CMMsg.MSG_NOISYMOVEMENT,auto?"":L("<S-NAME> tries to mug you and fails!"),CMMsg.MSG_NOISYMOVEMENT,auto?"":L("<S-NAME> tries to mug <T-NAME> and fails!"));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
@@ -103,11 +103,11 @@ public class Thief_Mug extends ThiefSkill
 			int code=(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT;
 			if(!auto)
 				if((stolen!=null)&&(stolen.amWearingAt(Wearable.IN_INVENTORY)))
-					str=_("<S-NAME> mug(s) <T-NAMESELF>, stealing @x1 from <T-HIM-HER>.",stolen.name());
+					str=L("<S-NAME> mug(s) <T-NAMESELF>, stealing @x1 from <T-HIM-HER>.",stolen.name());
 				else
 				{
 					code=CMMsg.MSG_QUIETMOVEMENT;
-					str=_("<S-NAME> attempt(s) to mug <T-HIM-HER>, but it doesn't appear @x1 has that in <T-HIS-HER> inventory!",target.charStats().heshe());
+					str=L("<S-NAME> attempt(s) to mug <T-HIM-HER>, but it doesn't appear @x1 has that in <T-HIS-HER> inventory!",target.charStats().heshe());
 				}
 
 			CMMsg msg=CMClass.getMsg(mob,target,this,code,str,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT|CMMsg.MASK_MALICIOUS,str,CMMsg.NO_EFFECT,null);

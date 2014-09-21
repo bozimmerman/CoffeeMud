@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_AddLimb extends Spell
 {
 	@Override public String ID() { return "Spell_AddLimb"; }
-	private final static String localizedName = CMLib.lang()._("Add Limb");
+	private final static String localizedName = CMLib.lang().L("Add Limb");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Add Limb)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Add Limb)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -63,7 +63,7 @@ public class Spell_AddLimb extends Spell
 			{
 				noloop=true;
 				if((mob.location()!=null)&&(!mob.amDead()))
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> extra limb fades away."));
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> extra limb fades away."));
 				mob.recoverCharStats();
 				CMLib.utensils().confirmWearability(mob);
 			}
@@ -109,17 +109,17 @@ public class Spell_AddLimb extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> grow(s) an arm!"));
+				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> grow(s) an arm!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting but nothing happens."));
 
 
 		// return whether it worked

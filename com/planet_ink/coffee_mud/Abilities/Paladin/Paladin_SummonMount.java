@@ -38,7 +38,7 @@ import java.util.*;
 public class Paladin_SummonMount extends StdAbility
 {
 	@Override public String ID() { return "Paladin_SummonMount"; }
-	private final static String localizedName = CMLib.lang()._("Call Mount");
+	private final static String localizedName = CMLib.lang().L("Call Mount");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText() {return "(Mount)";}
 	private static final String[] triggerStrings =_i(new String[] {"CALLMOUNT"});
@@ -104,12 +104,12 @@ public class Paladin_SummonMount extends StdAbility
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell(_("You must be outdoors to call your mount."));
+			mob.tell(L("You must be outdoors to call your mount."));
 			return false;
 		}
 		if((!auto)&&(!(CMLib.flags().isGood(mob))))
 		{
-			mob.tell(_("Your alignment has alienated you from your god."));
+			mob.tell(L("Your alignment has alienated you from your god."));
 			return false;
 		}
 		final Vector choices=new Vector();
@@ -128,7 +128,7 @@ public class Paladin_SummonMount extends StdAbility
 		}
 		if(choices.size()==0)
 		{
-			mob.tell(_("You must be further outdoors to call your mount."));
+			mob.tell(L("You must be further outdoors to call your mount."));
 			return false;
 		}
 		fromDir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
@@ -142,14 +142,14 @@ public class Paladin_SummonMount extends StdAbility
 		if((success)&&(newRoom!=null))
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":_("<S-NAME> call(s) for <S-HIS-HER> loyal steed."));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":L("<S-NAME> call(s) for <S-HIS-HER> loyal steed."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final MOB target = determineMonster(mob, adjustedLevel(mob,asLevel));
 				target.bringToLife(newRoom,true);
 				CMLib.beanCounter().clearZeroMoney(target,null);
-				target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
+				target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
 				if(target.isInCombat()) target.makePeace();
@@ -159,14 +159,14 @@ public class Paladin_SummonMount extends StdAbility
 					if(target.isInCombat()) target.makePeace();
 					CMLib.commands().postFollow(target,mob,true);
 					if(target.amFollowing()!=mob)
-						mob.tell(_("@x1 seems unwilling to follow you.",target.name(mob)));
+						mob.tell(L("@x1 seems unwilling to follow you.",target.name(mob)));
 				}
 				invoker=mob;
 				target.addNonUninvokableEffect((Ability)copyOf());
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> call(s) for <S-HIS-HER> loyal steed, but <S-IS-ARE> not answered."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> call(s) for <S-HIS-HER> loyal steed, but <S-IS-ARE> not answered."));
 
 		// return whether it worked
 		return success;
@@ -188,9 +188,9 @@ public class Paladin_SummonMount extends StdAbility
 		newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
 		newMOB.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
 		newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
-		newMOB.setName(_("a white horse"));
-		newMOB.setDisplayText(_("a proud white horse stands here"));
-		newMOB.setDescription(_("A proud and noble steed; albino white and immaculate."));
+		newMOB.setName(L("a white horse"));
+		newMOB.setDisplayText(L("a proud white horse stands here"));
+		newMOB.setDescription(L("A proud and noble steed; albino white and immaculate."));
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		ride.setRiderCapacity(4);
 		newMOB.recoverCharStats();

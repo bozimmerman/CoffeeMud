@@ -38,7 +38,7 @@ import java.util.*;
 public class Barbarian extends StdCharClass
 {
 	@Override public String ID(){return "Barbarian";}
-	private final static String localizedStaticName = CMLib.lang()._("Barbarian");
+	private final static String localizedStaticName = CMLib.lang().L("Barbarian");
 	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return "Fighter";}
 	@Override public int getBonusPracLevel(){return -1;}
@@ -189,7 +189,7 @@ public class Barbarian extends StdCharClass
 		{
 			if(CMLib.dice().rollPercentage()<=myChar.charStats().getClassLevel(this))
 			{
-				myChar.location().show(myChar,null,msg.source(),CMMsg.MSG_OK_ACTION,_("<S-NAME> resist(s) the @x1 attack from <O-NAMESELF>!",msg.tool().name()));
+				myChar.location().show(myChar,null,msg.source(),CMMsg.MSG_OK_ACTION,L("<S-NAME> resist(s) the @x1 attack from <O-NAMESELF>!",msg.tool().name()));
 				return false;
 			}
 		}

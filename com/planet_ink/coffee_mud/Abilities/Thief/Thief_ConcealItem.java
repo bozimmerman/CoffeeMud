@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_ConcealItem extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_ConcealItem"; }
-	private final static String localizedName = CMLib.lang()._("Conceal Item");
+	private final static String localizedName = CMLib.lang().L("Conceal Item");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
@@ -75,7 +75,7 @@ public class Thief_ConcealItem extends ThiefSkill
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell(_("What item would you like to conceal?"));
+			mob.tell(L("What item would you like to conceal?"));
 			return false;
 		}
 		final Item item=super.getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
@@ -83,7 +83,7 @@ public class Thief_ConcealItem extends ThiefSkill
 
 		if((!auto)&&(item.phyStats().weight()>((adjustedLevel(mob,asLevel)*2))))
 		{
-			mob.tell(_("You aren't good enough to conceal anything that large."));
+			mob.tell(L("You aren't good enough to conceal anything that large."));
 			return false;
 		}
 
@@ -92,7 +92,7 @@ public class Thief_ConcealItem extends ThiefSkill
 			||(CMath.bset(item.phyStats().sensesMask(), PhyStats.SENSE_UNDESTROYABLE)))
 		&&(!CMLib.law().doesHavePriviledgesHere(mob,mob.location())))
 		{
-			mob.tell(_("You may not conceal that."));
+			mob.tell(L("You may not conceal that."));
 			return false;
 		}
 
@@ -103,7 +103,7 @@ public class Thief_ConcealItem extends ThiefSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,item,this,CMMsg.MSG_THIEF_ACT,_("<S-NAME> conceal(s) <T-NAME>."),CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
+			final CMMsg msg=CMClass.getMsg(mob,item,this,CMMsg.MSG_THIEF_ACT,L("<S-NAME> conceal(s) <T-NAME>."),CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -120,7 +120,7 @@ public class Thief_ConcealItem extends ThiefSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,item,_("<S-NAME> attempt(s) to coneal <T-NAME>, but fail(s)."));
+			beneficialVisualFizzle(mob,item,L("<S-NAME> attempt(s) to coneal <T-NAME>, but fail(s)."));
 		return success;
 	}
 }

@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Darkness extends Spell
 {
 	@Override public String ID() { return "Spell_Darkness"; }
-	private final static String localizedName = CMLib.lang()._("Darkness");
+	private final static String localizedName = CMLib.lang().L("Darkness");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Darkness spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Darkness spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return CAN_ROOMS;}
@@ -59,7 +59,7 @@ public class Spell_Darkness extends Spell
 		{
 			room.recoverRoomStats();
 			room.recoverRoomStats();
-			room.showHappens(CMMsg.MSG_OK_VISUAL, _("The darkness starts to fade."));
+			room.showHappens(CMMsg.MSG_OK_VISUAL, L("The darkness starts to fade."));
 		}
 	}
 
@@ -95,7 +95,7 @@ public class Spell_Darkness extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,null,null,_("Darkness is already here!"));
+			mob.tell(mob,null,null,L("Darkness is already here!"));
 			return false;
 		}
 
@@ -109,7 +109,7 @@ public class Spell_Darkness extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), _("@x1arkness envelopes everyone.^?",(auto?"D":"^S<S-NAME> incant(s) and gesture(s) and d")));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), L("@x1arkness envelopes everyone.^?",(auto?"D":"^S<S-NAME> incant(s) and gesture(s) and d")));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -118,7 +118,7 @@ public class Spell_Darkness extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> incant(s) darkly, but the spell fizzles."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> incant(s) darkly, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

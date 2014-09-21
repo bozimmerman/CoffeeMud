@@ -36,9 +36,9 @@ import java.util.*;
 public class Chant_SummonInsects extends Chant
 {
 	@Override public String ID() { return "Chant_SummonInsects"; }
-	private final static String localizedName = CMLib.lang()._("Summon Insects");
+	private final static String localizedName = CMLib.lang().L("Summon Insects");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(In a swarm of insects)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(In a swarm of insects)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -79,7 +79,7 @@ public class Chant_SummonInsects extends Chant
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((!mob.amDead())&&(mob.location()!=null))
-				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> manage(s) to escape the insect swarm!"));
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> manage(s) to escape the insect swarm!"));
 	}
 
 	@Override
@@ -104,7 +104,7 @@ public class Chant_SummonInsects extends Chant
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
-			mob.tell(_("You must be outdoors for this chant to work."));
+			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
 
@@ -123,10 +123,10 @@ public class Chant_SummonInsects extends Chant
 		{
 			if(h==null)
 			{
-				mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?_("A swarm of stinging insects appear, then flutter away!"):_("^S<S-NAME> chant(s) into the sky.  A swarm of stinging insects appear.  Finding no one to sting, they flutter away.^?"));
+				mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?L("A swarm of stinging insects appear, then flutter away!"):L("^S<S-NAME> chant(s) into the sky.  A swarm of stinging insects appear.  Finding no one to sting, they flutter away.^?"));
 				return false;
 			}
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?_("A swarm of stinging insects appear, then flutter away!"):_("^S<S-NAME> chant(s) into the sky.  A swarm of stinging insects appears and attacks!^?")))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?L("A swarm of stinging insects appear, then flutter away!"):L("^S<S-NAME> chant(s) into the sky.  A swarm of stinging insects appears and attacks!^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -144,13 +144,13 @@ public class Chant_SummonInsects extends Chant
 						{
 							castingLocation=mob.location();
 							success=maliciousAffect(mob,target,asLevel,((mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*10),-1);
-							target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> become(s) enveloped by the swarm of stinging insects!"));
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> become(s) enveloped by the swarm of stinging insects!"));
 						}
 					}
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> chant(s), but the magic fizzles."));
+			return maliciousFizzle(mob,null,L("<S-NAME> chant(s), but the magic fizzles."));
 
 
 		// return whether it worked

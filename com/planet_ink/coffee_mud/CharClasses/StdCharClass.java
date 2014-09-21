@@ -40,7 +40,7 @@ import java.util.*;
 public class StdCharClass implements CharClass
 {
 	@Override public String ID(){return "StdCharClass";}
-	private final static String localizedStaticName = CMLib.lang()._("mob");
+	private final static String localizedStaticName = CMLib.lang().L("mob");
 	@Override public String name() { return localizedStaticName; }
 
 	@Override public String name(int classLevel){return name();}
@@ -222,7 +222,7 @@ public class StdCharClass implements CharClass
 				if(mob.baseCharStats().getStat(statCode) < minReq.second.intValue())
 				{
 					if(!quiet)
-						mob.tell(_("You need at least a @x1 @x2 to become a @x3.",minReq.second.toString(),CMStrings.capitalizeAndLower(CharStats.CODES.NAME(statCode)),name()));
+						mob.tell(L("You need at least a @x1 @x2 to become a @x3.",minReq.second.toString(),CMStrings.capitalizeAndLower(CharStats.CODES.NAME(statCode)),name()));
 					return false;
 				}
 			}
@@ -246,7 +246,7 @@ public class StdCharClass implements CharClass
 		{
 			if(!quiet)
 			{
-				mob.tell(_("You need to be a @x1 to be a @x2.",getRaceList(raceList).toString(),name()));
+				mob.tell(L("You need to be a @x1 to be a @x2.",getRaceList(raceList).toString(),name()));
 			}
 			return false;
 		}
@@ -255,7 +255,7 @@ public class StdCharClass implements CharClass
 			if(currentClassID.equals(changeToClassID))
 			{
 				if(!quiet)
-					mob.tell(_("But you are already a @x1!",name()));
+					mob.tell(L("But you are already a @x1!",name()));
 				return false;
 			}
 			if(currentClassID.equalsIgnoreCase("StdCharClass")) // this is the starting character rule
@@ -275,14 +275,14 @@ public class StdCharClass implements CharClass
 				if(multiClassFirstRule.equals("APP")&&(getSubClassRule()==SubClassRule.ANY))
 					return true;
 				if(!quiet)
-					mob.tell(_("You can't train to be a @x1!",name()));
+					mob.tell(L("You can't train to be a @x1!",name()));
 				return false;
 			}
 			else
 			if(curClass.getSubClassRule()==SubClassRule.NONE)
 			{
 				if(!quiet)
-					mob.tell(_("You can't train to be a @x1!",name()));
+					mob.tell(L("You can't train to be a @x1!",name()));
 				return false;
 			}
 			else
@@ -298,7 +298,7 @@ public class StdCharClass implements CharClass
 					if((changeToBaseClassID.equals(changeToClassID))||(changeToBaseClassID.equals(currentBaseClassID)))
 						return true;
 					if(!quiet)
-						mob.tell(_("You must be a @x1 type to become a @x2.",changeToBaseClassID,name()));
+						mob.tell(L("You must be a @x1 type to become a @x2.",changeToBaseClassID,name()));
 				}
 				return false;
 			}
@@ -308,7 +308,7 @@ public class StdCharClass implements CharClass
 					return true;
 				else
 				if(multiClassFirstRule.equals("NO")||(multiClassSecondRule.equals("NO")))
-					mob.tell(_("You should be happy to be a @x1.",curClass.name()));
+					mob.tell(L("You should be happy to be a @x1.",curClass.name()));
 				else
 				if(multiClassFirstRule.equals("SUB")|| multiClassSecondRule.equals("SUB"))
 				{
@@ -327,7 +327,7 @@ public class StdCharClass implements CharClass
 					if(doesBaseHaveAnAny)
 						return true;
 					if(!quiet)
-						mob.tell(_("You must be a @x1 type to become a @x2.",changeToBaseClassID,name()));
+						mob.tell(L("You must be a @x1 type to become a @x2.",changeToBaseClassID,name()));
 				}
 			}
 			return false;
@@ -348,7 +348,7 @@ public class StdCharClass implements CharClass
 		{
 			if(i>0) str.append(", ");
 			if(i==raceList.length-1)
-				str.append(_("or "));
+				str.append(L("or "));
 			str.append(CMStrings.capitalizeAndLower(raceList[i]));
 		}
 		return str;
@@ -392,30 +392,30 @@ public class StdCharClass implements CharClass
 		for(final int i : CharStats.CODES.BASECODES())
 			if(maxStatAdjustments()[i]!=0)
 				str.append(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i))+" ("+(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+maxStatAdjustments()[i])+"), ");
-		str.append(_("Others (@x1)",""+CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)));
+		str.append(L("Others (@x1)",""+CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)));
 		return str.toString();
 	}
 	@Override
 	public String getPracticeDesc()
 	{
 		final StringBuilder str=new StringBuilder("");
-		str.append(_("@x1 +(Wisdom/6)",""+getPracsFirstLevel()));
+		str.append(L("@x1 +(Wisdom/6)",""+getPracsFirstLevel()));
 		if(getBonusPracLevel()>0)
 			str.append("+"+getBonusPracLevel());
 		else
 		if(getBonusPracLevel()<0)
 			str.append(""+getBonusPracLevel());
-		return str.toString()+_(" per level");
+		return str.toString()+L(" per level");
 	}
 	@Override
 	public String getTrainDesc()
 	{
-		return getTrainsFirstLevel()+_(" +1 per level");
+		return getTrainsFirstLevel()+L(" +1 per level");
 	}
 	@Override
 	public String getDamageDesc()
 	{
-		return _("+1 damage per @x1 level(s)",""+getLevelsPerBonusDamage());
+		return L("+1 damage per @x1 level(s)",""+getLevelsPerBonusDamage());
 	}
 
 	@Override
@@ -490,7 +490,7 @@ public class StdCharClass implements CharClass
 		else
 		if(getBonusAttackLevel()<0)
 			str.append(""+getBonusAttackLevel());
-		str.append(_(" per level"));
+		str.append(L(" per level"));
 		return str.toString();
 	}
 
@@ -571,7 +571,7 @@ public class StdCharClass implements CharClass
 		&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(getAttackAttribute())*2))
 		&&(mob.fetchWieldedItem()!=null))
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> fumble(s) horribly with @x1.",E.name()));
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> fumble(s) horribly with @x1.",E.name()));
 			return false;
 		}
 		return true;
@@ -953,7 +953,7 @@ public class StdCharClass implements CharClass
 				if((msg.target() instanceof Weapon)
 				&&(((requiredWeaponMaterials()!=null)&&(!requiredWeaponMaterials().contains(Integer.valueOf(((Weapon)msg.target()).material()&RawMaterial.MATERIAL_MASK))))
 					||((disallowedWeaponClasses(msg.source())!=null)&&(disallowedWeaponClasses(msg.source()).contains(Integer.valueOf(((Weapon)msg.target()).weaponClassification()))))))
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.TYP_OK_VISUAL,_("<T-NAME> feel(s) a bit strange in your hands."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.TYP_OK_VISUAL,L("<T-NAME> feel(s) a bit strange in your hands."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 				break;
 			}
 			case CMMsg.TYP_WEAR:
@@ -988,7 +988,7 @@ public class StdCharClass implements CharClass
 	 * @param xs the array of variables to replace
 	 * @return the translated string, with all variables in place
 	 */
-	public String _(final String str, final String ... xs)
+	public String L(final String str, final String ... xs)
 	{
 		return CMLib.lang().fullSessionTranslation(str, xs);
 	}

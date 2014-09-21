@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Frailty extends Spell
 {
 	@Override public String ID() { return "Spell_Frailty"; }
-	private final static String localizedName = CMLib.lang()._("Frailty");
+	private final static String localizedName = CMLib.lang().L("Frailty");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Frailty)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Frailty)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -81,7 +81,7 @@ public class Spell_Frailty extends Spell
 		if(canBeUninvoked())
 		{
 			if(mob.location()!=null)
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) less frail."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) less frail."));
 		}
 	}
 
@@ -106,19 +106,19 @@ public class Spell_Frailty extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> incant(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> incant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) frail!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) frail!"));
 					maliciousAffect(mob,target,asLevel,10,-1);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) to <T-NAMESELF>, but the spell fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) to <T-NAMESELF>, but the spell fades."));
 		// return whether it worked
 		return success;
 	}

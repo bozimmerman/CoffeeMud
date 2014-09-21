@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_VineWeave extends Chant
 {
 	@Override public String ID() { return "Chant_VineWeave"; }
-	private final static String localizedName = CMLib.lang()._("Vine Weave");
+	private final static String localizedName = CMLib.lang().L("Vine Weave");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}
@@ -50,7 +50,7 @@ public class Chant_VineWeave extends Chant
 	{
 		if(mob.location().resourceChoices()==null)
 		{
-			mob.tell(_("This magic will not work here."));
+			mob.tell(L("This magic will not work here."));
 			return false;
 		}
 		if(((mob.location().myResource()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
@@ -62,7 +62,7 @@ public class Chant_VineWeave extends Chant
 		&&(!mob.location().resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_WHEAT)))
 		&&(!mob.location().resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_SEAWEED))))
 		{
-			mob.tell(_("This magic will not work here."));
+			mob.tell(L("This magic will not work here."));
 			return false;
 		}
 		int material=RawMaterial.RESOURCE_VINE;
@@ -88,7 +88,7 @@ public class Chant_VineWeave extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) to the plants.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) to the plants.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -97,19 +97,19 @@ public class Chant_VineWeave extends Chant
 				if(A!=null) pair=A.craftAnyItem(material);
 				if(pair==null)
 				{
-					mob.tell(_("The chant failed for some reason..."));
+					mob.tell(L("The chant failed for some reason..."));
 					return false;
 				}
 				final Item building=pair.item;
 				final Item key=pair.key;
 				mob.location().addItem(building,ItemPossessor.Expire.Resource);
 				if(key!=null) mob.location().addItem(key,ItemPossessor.Expire.Resource);
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("@x1 twists out of some vines and grows still.",building.name()));
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("@x1 twists out of some vines and grows still.",building.name()));
 				mob.location().recoverPhyStats();
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) to the plants, but nothing happens."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) to the plants, but nothing happens."));
 
 		// return whether it worked
 		return success;

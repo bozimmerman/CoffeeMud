@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_Snare extends StdTrap
 {
 	@Override public String ID() { return "Trap_Snare"; }
-	private final static String localizedName = CMLib.lang()._("snare trap");
+	private final static String localizedName = CMLib.lang().L("snare trap");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -73,7 +73,7 @@ public class Trap_Snare extends StdTrap
 			if((I==null)
 			||(findNumberOfResource(mob.location(),I.material())<5))
 			{
-				mob.tell(_("You'll need to set down at least 5 pounds of cloth first."));
+				mob.tell(L("You'll need to set down at least 5 pounds of cloth first."));
 				return false;
 			}
 		}
@@ -90,16 +90,16 @@ public class Trap_Snare extends StdTrap
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) tripping a snare trap!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) tripping a snare trap!"));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> trip(s) a snare trap and get(s) all tangled up!")))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> trip(s) a snare trap and get(s) all tangled up!")))
 			{
 				super.spring(target);
 				target.basePhyStats().setDisposition(target.basePhyStats().disposition()|PhyStats.IS_SITTING);
 				target.recoverPhyStats();
 				final Ability A=CMClass.getAbility("Thief_Bind");
 				final Item I=CMClass.getItem("StdItem");
-				I.setName(_("the snare"));
+				I.setName(L("the snare"));
 				A.setAffectedOne(I);
 				A.invoke(invoker(),target,true,0);
 			}

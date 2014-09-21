@@ -50,7 +50,7 @@ public class Prop_SparringRoom extends Property
 			return false;
 		if(msg.sourceMinor()==CMMsg.TYP_RECALL)
 		{
-			msg.source().tell(_("Noone hears your plea."));
+			msg.source().tell(L("Noone hears your plea."));
 			return false;
 		}
 		if((msg.sourceMinor()==CMMsg.TYP_DEATH)
@@ -94,7 +94,7 @@ public class Prop_SparringRoom extends Property
 			if(R==null) R=target.getStartRoom();
 			R.bringMobHere(target,false);
 			target.bringToLife(R,true);
-			target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
+			target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 			deathRoom.recoverRoomStats();
 			return false;
 		}

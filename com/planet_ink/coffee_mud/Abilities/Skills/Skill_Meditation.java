@@ -35,9 +35,9 @@ import java.util.*;
 public class Skill_Meditation extends StdSkill
 {
 	@Override public String ID() { return "Skill_Meditation"; }
-	private final static String localizedName = CMLib.lang()._("Meditation");
+	private final static String localizedName = CMLib.lang().L("Meditation");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Meditating)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Meditating)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -58,9 +58,9 @@ public class Skill_Meditation extends StdSkill
 			if(!mob.amDead())
 			{
 				if(mob.location()!=null)
-					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> end(s) <S-HIS-HER> meditation."));
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> end(s) <S-HIS-HER> meditation."));
 				else
-					mob.tell(_("Your meditation ends."));
+					mob.tell(L("Your meditation ends."));
 			}
 		}
 	}
@@ -81,9 +81,9 @@ public class Skill_Meditation extends StdSkill
 		   &&(CMLib.flags().canBeHeardMovingBy(msg.source(),mob)))
 		{
 			if(!msg.amISource(mob))
-				msg.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.TYP_GENERAL|CMMsg.MASK_HANDS,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,_("Your meditation is interrupted by the noise.")));
+				msg.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.TYP_GENERAL|CMMsg.MASK_HANDS,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,L("Your meditation is interrupted by the noise.")));
 			else
-				msg.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.TYP_GENERAL|CMMsg.MASK_HANDS,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,_("Your meditation is interrupted.")));
+				msg.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.TYP_GENERAL|CMMsg.MASK_HANDS,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,L("Your meditation is interrupted.")));
 		}
 		return;
 	}
@@ -103,9 +103,9 @@ public class Skill_Meditation extends StdSkill
 		||(mob.curState().getThirst()<=0))
 		{
 			if(mob.curState().getThirst()<=0)
-				mob.tell(_("Your mouth is dry!"));
+				mob.tell(L("Your mouth is dry!"));
 			else
-				mob.tell(_("Your stomach growls!"));
+				mob.tell(L("Your stomach growls!"));
 			unInvoke();
 			return false;
 		}
@@ -133,17 +133,17 @@ public class Skill_Meditation extends StdSkill
 		final MOB target=mob;
 		if(mob.isInCombat())
 		{
-			mob.tell(_("You can't meditate while in combat!"));
+			mob.tell(L("You can't meditate while in combat!"));
 			return false;
 		}
 		if(!CMLib.flags().isSitting(mob))
 		{
-			mob.tell(_("You must be in a sitting, restful position to meditate."));
+			mob.tell(L("You must be in a sitting, restful position to meditate."));
 			return false;
 		}
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("You are already meditating!"));
+			mob.tell(L("You are already meditating!"));
 			return false;
 		}
 		// now see if it worked
@@ -155,7 +155,7 @@ public class Skill_Meditation extends StdSkill
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL|(auto?CMMsg.MASK_ALWAYS:0),auto?"":_("<S-NAME> begin(s) to meditate..."));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("<S-NAME> begin(s) to meditate..."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -164,7 +164,7 @@ public class Skill_Meditation extends StdSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to meditate, but lose(s) concentration."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to meditate, but lose(s) concentration."));
 
 		// return whether it worked
 		return success;

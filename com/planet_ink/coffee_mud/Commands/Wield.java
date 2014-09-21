@@ -46,7 +46,7 @@ public class Wield extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("Wield what?"));
+			mob.tell(L("Wield what?"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -61,13 +61,13 @@ public class Wield extends StdCommand
 		else
 			items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,false);
 		if(items.size()==0)
-			mob.tell(_("You don't seem to be carrying that."));
+			mob.tell(L("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<items.size();i++)
 			if((items.size()==1)||(items.get(i).canWear(mob,Wearable.WORN_WIELD)))
 			{
 				final Item item=items.get(i);
-				final CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_WIELD,_("<S-NAME> wield(s) <T-NAME>."));
+				final CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_WIELD,L("<S-NAME> wield(s) <T-NAME>."));
 				if(mob.location().okMessage(mob,newMsg))
 					mob.location().send(mob,newMsg);
 			}

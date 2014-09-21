@@ -39,9 +39,9 @@ import java.util.*;
 public class Druid_PackCall extends StdAbility
 {
 	@Override public String ID() { return "Druid_PackCall"; }
-	private final static String localizedName = CMLib.lang()._("Pack Call");
+	private final static String localizedName = CMLib.lang().L("Pack Call");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Pack Call)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Pack Call)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	private static final String[] triggerStrings =_i(new String[] {"PACKCALL"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -79,7 +79,7 @@ public class Druid_PackCall extends StdAbility
 		if((canBeUninvoked())&&(mob!=null))
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> wander(s) off."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> wander(s) off."));
 			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
 		}
@@ -133,18 +133,18 @@ public class Druid_PackCall extends StdAbility
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell(_("You must be outdoors to call your pack."));
+			mob.tell(L("You must be outdoors to call your pack."));
 			return false;
 		}
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
 		||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
 		{
-			mob.tell(_("You must be in the wild to call your pack."));
+			mob.tell(L("You must be in the wild to call your pack."));
 			return false;
 		}
 		if(!mob.isInCombat())
 		{
-			mob.tell(_("Only the anger of combat can call your pack."));
+			mob.tell(L("Only the anger of combat can call your pack."));
 			return false;
 		}
 		Druid_ShapeShift D=null;
@@ -156,13 +156,13 @@ public class Druid_PackCall extends StdAbility
 		}
 		if(D==null)
 		{
-			mob.tell(_("You must be in your animal form to call the pack."));
+			mob.tell(L("You must be in your animal form to call the pack."));
 			return false;
 		}
 
 		if(mob.totalFollowers()>=mob.maxFollowers())
 		{
-			mob.tell(_("You can't have any more followers!"));
+			mob.tell(L("You can't have any more followers!"));
 			return false;
 		}
 
@@ -177,7 +177,7 @@ public class Druid_PackCall extends StdAbility
 
 		if(choices.size()==0)
 		{
-			mob.tell(_("Your call would not be heard here."));
+			mob.tell(L("Your call would not be heard here."));
 			return false;
 		}
 
@@ -188,7 +188,7 @@ public class Druid_PackCall extends StdAbility
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISE,auto?"":_("^S<S-NAME> call(s) for help from <S-HIS-HER> pack!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISE,auto?"":L("^S<S-NAME> call(s) for help from <S-HIS-HER> pack!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -210,7 +210,7 @@ public class Druid_PackCall extends StdAbility
 					final String raceName=D.getRaceName(level,MOBRaceCode).toLowerCase();
 					final String name=CMLib.english().startWithAorAn(raceName).toLowerCase();
 					newMOB.setName(name);
-					newMOB.setDisplayText(_("a loyal @x1 is here",raceName));
+					newMOB.setDisplayText(L("a loyal @x1 is here",raceName));
 					newMOB.setDescription("");
 					newMOB.copyFactions(mob);
 					final Ability A=CMClass.getAbility("Fighter_Rescue");
@@ -235,7 +235,7 @@ public class Druid_PackCall extends StdAbility
 					if(victim.getVictim()!=newMOB) victim.setVictim(newMOB);
 					final int dir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
 					if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
-					newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,_("<S-NAME> arrive(s) @x1 and attack(s) <T-NAMESELF>!",Directions.getFromDirectionName(dir)));
+					newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,L("<S-NAME> arrive(s) @x1 and attack(s) <T-NAMESELF>!",Directions.getFromDirectionName(dir)));
 					newMOB.setStartRoom(null); // keep before postFollow for Conquest
 					CMLib.commands().postFollow(newMOB,mob,true);
 					if(newMOB.amFollowing()!=mob)
@@ -248,7 +248,7 @@ public class Druid_PackCall extends StdAbility
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> call(s) for help from <S-HIS-HER> pack, but nothing happens."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> call(s) for help from <S-HIS-HER> pack, but nothing happens."));
 
 		// return whether it worked
 		return success;

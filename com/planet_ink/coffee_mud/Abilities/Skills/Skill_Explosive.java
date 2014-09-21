@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_Explosive extends StdSkill
 {
 	@Override public String ID() { return "Skill_Explosive"; }
-	private final static String localizedName = CMLib.lang()._("Explosive Touch");
+	private final static String localizedName = CMLib.lang().L("Explosive Touch");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -61,7 +61,7 @@ public class Skill_Explosive extends StdSkill
 		String str=null;
 		if(success)
 		{
-			str=auto?_("<T-NAME> is **BLASTED**!"):_("^F^<FIGHT^><S-NAME> ** BLAST(S) ** <T-NAMESELF>!^</FIGHT^>^?");
+			str=auto?L("<T-NAME> is **BLASTED**!"):L("^F^<FIGHT^><S-NAME> ** BLAST(S) ** <T-NAMESELF>!^</FIGHT^>^?");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),str);
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
@@ -74,7 +74,7 @@ public class Skill_Explosive extends StdSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to ** BLAST ** <T-NAMESELF>, but end(s) up looking silly."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to ** BLAST ** <T-NAMESELF>, but end(s) up looking silly."));
 
 		return success;
 	}

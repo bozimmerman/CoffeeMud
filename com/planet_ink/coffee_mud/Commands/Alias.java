@@ -55,7 +55,7 @@ public class Alias extends StdCommand
 					menu.append(CMStrings.padRight((i+1)+". "+aliasNames[i],15)+": "+pStats.getAlias(aliasNames[i])+"\n\r");
 				menu.append((aliasNames.length+1)+". Add a new alias\n\r");
 				mob.tell(menu.toString());
-				session.promptPrint(_("Enter a selection: "));
+				session.promptPrint(L("Enter a selection: "));
 			}
 			@Override public void timedOut() { }
 			@Override public void callBack()
@@ -70,7 +70,7 @@ public class Alias extends StdCommand
 					final String selection=pStats.getAliasNames()[num-1];
 					session.prompt(new InputCallback(InputCallback.Type.CHOOSE,"","MD\n",0)
 					{
-						@Override public void showPrompt() { session.promptPrint(_("\n\rAlias selected '@x1'.\n\rWould you like to D)elete or M)odify this alias (d/M)? ",selection));}
+						@Override public void showPrompt() { session.promptPrint(L("\n\rAlias selected '@x1'.\n\rWould you like to D)elete or M)odify this alias (d/M)? ",selection));}
 						@Override public void timedOut() { }
 						@Override public void callBack()
 						{
@@ -83,7 +83,7 @@ public class Alias extends StdCommand
 							if(check.equals("D"))
 							{
 								pStats.delAliasName(selection);
-								mob.tell(_("Alias deleted."));
+								mob.tell(L("Alias deleted."));
 								session.prompt(IC[0].reset());
 								return;
 							}
@@ -95,7 +95,7 @@ public class Alias extends StdCommand
 				{
 					session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 					{
-						@Override public void showPrompt() { session.promptPrint(_("\n\rEnter a new alias string consisting of letters and numbers only.\n\r: "));}
+						@Override public void showPrompt() { session.promptPrint(L("\n\rEnter a new alias string consisting of letters and numbers only.\n\r: "));}
 						@Override public void timedOut() { }
 						@Override public void callBack()
 						{
@@ -107,20 +107,20 @@ public class Alias extends StdCommand
 							final String commandStr=this.input.toUpperCase().trim();
 							if(pStats.getAlias(commandStr).length()>0)
 							{
-								mob.tell(_("That alias already exists.  Select it from the menu to delete or modify."));
+								mob.tell(L("That alias already exists.  Select it from the menu to delete or modify."));
 								session.prompt(IC[0].reset());
 								return;
 							}
 							if(CMParms.contains(access,commandStr))
 							{
-								mob.tell(_("You may not alias alias."));
+								mob.tell(L("You may not alias alias."));
 								session.prompt(IC[0].reset());
 								return;
 							}
 							for(int i=0;i<commandStr.length();i++)
 								if(!Character.isLetterOrDigit(commandStr.charAt(i)))
 								{
-									mob.tell(_("Your alias name may only contain letters and numbers without spaces. "));
+									mob.tell(L("Your alias name may only contain letters and numbers without spaces. "));
 									session.prompt(IC[0].reset());
 									return;
 								}
@@ -139,7 +139,7 @@ public class Alias extends StdCommand
 	{
 		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 		{
-			@Override public void showPrompt() { session.rawPrintln(_("\n\rEnter a value for alias '@x1'.  Use ~ to separate commands.",aliasName)); session.promptPrint(": "); }
+			@Override public void showPrompt() { session.rawPrintln(L("\n\rEnter a value for alias '@x1'.  Use ~ to separate commands.",aliasName)); session.promptPrint(": "); }
 			@Override public void timedOut() { }
 			@Override public void callBack()
 			{
@@ -147,17 +147,17 @@ public class Alias extends StdCommand
 				value=CMStrings.replaceAll(value,"<","");
 				value=CMStrings.replaceAll(value,"&","");
 				if((value.length()==0)&&(pStats.getAlias(aliasName).length()>0))
-					mob.tell(_("(No change)"));
+					mob.tell(L("(No change)"));
 				else
 				if(value.length()==0)
 				{
-					mob.tell(_("Aborted."));
+					mob.tell(L("Aborted."));
 					pStats.delAliasName(aliasName);
 				}
 				else
 				{
 					pStats.setAlias(aliasName,value);
-					mob.tell(_("The alias was successfully changed."));
+					mob.tell(L("The alias was successfully changed."));
 				}
 				session.prompt(IC[0].reset());
 			}

@@ -38,9 +38,9 @@ import java.util.*;
 public class Prayer_HolyDay extends Prayer
 {
 	@Override public String ID() { return "Prayer_HolyDay"; }
-	private final static String localizedName = CMLib.lang()._("Holy Day");
+	private final static String localizedName = CMLib.lang().L("Holy Day");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Holy Day)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Holy Day)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -65,7 +65,7 @@ public class Prayer_HolyDay extends Prayer
 			for(final Enumeration e=A.getMetroMap();e.hasMoreElements();)
 			{
 				final Room R=(Room)e.nextElement();
-				R.showHappens(CMMsg.MSG_OK_VISUAL,_("The holy day has ended."));
+				R.showHappens(CMMsg.MSG_OK_VISUAL,L("The holy day has ended."));
 			}
 		}
 	}
@@ -78,7 +78,7 @@ public class Prayer_HolyDay extends Prayer
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
 		&&(msg.source()!=invoker()))
 		{
-			msg.source().tell(_("You are not allowed to work on the holy day of @x1.",godName));
+			msg.source().tell(L("You are not allowed to work on the holy day of @x1.",godName));
 			return false;
 		}
 		else
@@ -90,7 +90,7 @@ public class Prayer_HolyDay extends Prayer
 			||(msg.sourceMinor()==CMMsg.TYP_DEPOSIT))
 		&&(msg.source()!=invoker()))
 		{
-			msg.source().tell(_("You are not allowed to work or do commerce on the holy day of @x1.",godName));
+			msg.source().tell(L("You are not allowed to work or do commerce on the holy day of @x1.",godName));
 			return false;
 		}
 		else
@@ -104,7 +104,7 @@ public class Prayer_HolyDay extends Prayer
 				B=CMLib.law().getLegalBehavior(msg.source().location());
 			if((B!=null)&&(B.controlPoints()>0))
 			{
-				msg.source().tell(_("There can be no conquest on the holy day of @x1.",godName));
+				msg.source().tell(L("There can be no conquest on the holy day of @x1.",godName));
 				return false;
 			}
 		}
@@ -156,7 +156,7 @@ public class Prayer_HolyDay extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 for a holy day.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 for a holy day.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -166,13 +166,13 @@ public class Prayer_HolyDay extends Prayer
 					godName=mob.getWorshipCharID();
 					if((godName.length()==0)||(CMLib.map().getDeity(godName)==null))
 						godName="the gods";
-					R.showHappens(CMMsg.MSG_OK_VISUAL,_("A holy day of @x1 has begun!",godName));
+					R.showHappens(CMMsg.MSG_OK_VISUAL,L("A holy day of @x1 has begun!",godName));
 				}
 				beneficialAffect(mob,target,asLevel,CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY));
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for a holy day, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for a holy day, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
 
 
 		// return whether it worked

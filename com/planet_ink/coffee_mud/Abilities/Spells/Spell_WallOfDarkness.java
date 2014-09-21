@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_WallOfDarkness extends Spell
 {
 	@Override public String ID() { return "Spell_WallOfDarkness"; }
-	private final static String localizedName = CMLib.lang()._("Wall of Darkness");
+	private final static String localizedName = CMLib.lang().L("Wall of Darkness");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Wall of Darkness)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Wall of Darkness)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
 	@Override public int minRange(){return 1;}
@@ -67,7 +67,7 @@ public class Spell_WallOfDarkness extends Spell
 		{
 			if((msg.tool()!=null)&&(msg.tool() instanceof Ability))
 			{
-				mob.tell(_("You cannot see through the wall of darkness to target @x1.",mob.getVictim().name()));
+				mob.tell(L("You cannot see through the wall of darkness to target @x1.",mob.getVictim().name()));
 				return false;
 			}
 			if((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
@@ -76,7 +76,7 @@ public class Spell_WallOfDarkness extends Spell
 			&&(!((Weapon)msg.tool()).amWearingAt(Wearable.IN_INVENTORY))
 			&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED))
 			{
-				mob.tell(_("You cannot see through the wall of darkness to target @x1.",mob.getVictim().name()));
+				mob.tell(L("You cannot see through the wall of darkness to target @x1.",mob.getVictim().name()));
 				if(mob.isMonster())
 					CMLib.commands().postRemove(mob,(Item)msg.tool(),true);
 				return false;
@@ -97,7 +97,7 @@ public class Spell_WallOfDarkness extends Spell
 			&&(theWall.owner() instanceof Room)
 			&&(((Room)theWall.owner()).isContent(theWall)))
 			{
-				((Room)theWall.owner()).showHappens(CMMsg.MSG_OK_VISUAL,_("The wall of darkness fades."));
+				((Room)theWall.owner()).showHappens(CMMsg.MSG_OK_VISUAL,L("The wall of darkness fades."));
 				final Item wall=theWall;
 				theWall=null;
 				wall.destroy();
@@ -124,7 +124,7 @@ public class Spell_WallOfDarkness extends Spell
 	{
 		if((!mob.isInCombat())||(mob.rangeToTarget()<1))
 		{
-			mob.tell(_("You really should be in ranged combat to cast this."));
+			mob.tell(L("You really should be in ranged combat to cast this."));
 			return false;
 		}
 		for(int i=0;i<mob.location().numItems();i++)
@@ -132,7 +132,7 @@ public class Spell_WallOfDarkness extends Spell
 			final Item I=mob.location().getItem(i);
 			if((I!=null)&&(I.fetchEffect(ID())!=null))
 			{
-				mob.tell(_("There is already a wall of darkness here."));
+				mob.tell(L("There is already a wall of darkness here."));
 				return false;
 			}
 		}
@@ -156,14 +156,14 @@ public class Spell_WallOfDarkness extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),auto?_("An eerie wall of darkness appears!"):_("^S<S-NAME> conjur(s) up a eerie wall of darkness!^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),auto?L("An eerie wall of darkness appears!"):L("^S<S-NAME> conjur(s) up a eerie wall of darkness!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final Item I=CMClass.getItem("GenItem");
-				I.setName(_("a wall of darkness"));
-				I.setDisplayText(_("an eerie wall of darkness lingers here"));
-				I.setDescription(_("It`s black."));
+				I.setName(L("a wall of darkness"));
+				I.setDisplayText(L("an eerie wall of darkness lingers here"));
+				I.setDescription(L("It`s black."));
 				I.setMaterial(RawMaterial.RESOURCE_NOTHING);
 				CMLib.flags().setGettable(I,false);
 				I.recoverPhyStats();
@@ -173,7 +173,7 @@ public class Spell_WallOfDarkness extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> incant(s), but the magic fizzles."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> incant(s), but the magic fizzles."));
 
 		// return whether it worked
 		return success;

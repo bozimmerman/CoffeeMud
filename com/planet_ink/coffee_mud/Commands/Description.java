@@ -44,17 +44,17 @@ public class Description extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("^xYour current description:^?\n\r@x1",mob.description()));
-			mob.tell(_("\n\rEnter DESCRIPTION [NEW TEXT] to change."));
+			mob.tell(L("^xYour current description:^?\n\r@x1",mob.description()));
+			mob.tell(L("\n\rEnter DESCRIPTION [NEW TEXT] to change."));
 			return false;
 		}
 		final String s=CMParms.combine(commands,1);
 		if(s.length()>255)
-			mob.tell(_("Your description exceeds 255 characters in length.  Please re-enter a shorter one."));
+			mob.tell(L("Your description exceeds 255 characters in length.  Please re-enter a shorter one."));
 		else
 		{
 			mob.setDescription(s);
-			mob.tell(_("Your description has been changed."));
+			mob.tell(L("Your description has been changed."));
 		}
 		return false;
 	}

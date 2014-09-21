@@ -37,12 +37,12 @@ import java.util.*;
 public class Prayer_DrunkenStupor extends Prayer
 {
 	@Override public String ID() { return "Prayer_DrunkenStupor"; }
-	private final static String localizedName = CMLib.lang()._("Drunken Stupor");
+	private final static String localizedName = CMLib.lang().L("Drunken Stupor");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_INTOXICATING;}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Drunken Stupor)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Drunken Stupor)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -133,7 +133,7 @@ public class Prayer_DrunkenStupor extends Prayer
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("You feel sober now."));
+			mob.tell(L("You feel sober now."));
 	}
 
 
@@ -153,7 +153,7 @@ public class Prayer_DrunkenStupor extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":_("^S<S-NAME> @x1 to inflict a drunken stupor upon <T-NAMESELF>.^?",prayForWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":L("^S<S-NAME> @x1 to inflict a drunken stupor upon <T-NAMESELF>.^?",prayForWord(mob)));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
@@ -163,12 +163,12 @@ public class Prayer_DrunkenStupor extends Prayer
 				{
 					invoker=mob;
 					maliciousAffect(mob,target,asLevel,0,-1);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> look(s) a bit tipsy!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> look(s) a bit tipsy!"));
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> @x1 to inflict a drunken stupor upon <T-NAMESELF>, but flub(s) it.",prayForWord(mob)));
+			return maliciousFizzle(mob,target,L("<S-NAME> @x1 to inflict a drunken stupor upon <T-NAMESELF>, but flub(s) it.",prayForWord(mob)));
 
 
 		// return whether it worked

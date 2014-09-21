@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_CurseItem extends Prayer
 {
 	@Override public String ID() { return "Prayer_CurseItem"; }
-	private final static String localizedName = CMLib.lang()._("Curse Item");
+	private final static String localizedName = CMLib.lang().L("Curse Item");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Cursed)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Cursed)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
@@ -71,13 +71,13 @@ public class Prayer_CurseItem extends Prayer
 		{
 			if(canBeUninvoked())
 			if((affected instanceof Item)&&(((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB))
-				((MOB)((Item)affected).owner()).tell(_("The curse on @x1 is lifted.",((Item)affected).name()));
+				((MOB)((Item)affected).owner()).tell(L("The curse on @x1 is lifted.",((Item)affected).name()));
 			super.unInvoke();
 			return;
 		}
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("The curse is lifted."));
+			mob.tell(L("The curse is lifted."));
 		super.unInvoke();
 	}
 
@@ -95,7 +95,7 @@ public class Prayer_CurseItem extends Prayer
 		final MOB mob=msg.source();
 		if((msg.tool()==item)&&(msg.sourceMinor()==CMMsg.TYP_THROW))
 		{
-			mob.tell(_("You can't seem to get rid of @x1.",item.name()));
+			mob.tell(L("You can't seem to get rid of @x1.",item.name()));
 			return false;
 		}
 		else
@@ -109,15 +109,15 @@ public class Prayer_CurseItem extends Prayer
 			{
 				if(item.amWearingAt(Wearable.WORN_WIELD)||item.amWearingAt(Wearable.WORN_HELD))
 				{
-					mob.tell(_("You can't seem to let go of @x1.",item.name()));
+					mob.tell(L("You can't seem to let go of @x1.",item.name()));
 					return false;
 				}
-				mob.tell(_("You can't seem to remove @x1.",item.name()));
+				mob.tell(L("You can't seem to remove @x1.",item.name()));
 				return false;
 			}
 			break;
 		case CMMsg.TYP_DROP:
-			mob.tell(_("You can't seem to get rid of @x1.",item.name()));
+			mob.tell(L("You can't seem to get rid of @x1.",item.name()));
 			return false;
 		}
 		return true;
@@ -164,7 +164,7 @@ public class Prayer_CurseItem extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> <T-IS-ARE> cursed!"):_("^S<S-NAME> curse(s) <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> <T-IS-ARE> cursed!"):L("^S<S-NAME> curse(s) <T-NAMESELF>.^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,mobTarget,this,verbalCastCode(mob,mobTarget,auto),null);
 			if((mob.location().okMessage(mob,msg))&&((mobTarget==null)||(mob.location().okMessage(mob,msg2))))
 			{
@@ -181,7 +181,7 @@ public class Prayer_CurseItem extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to curse <T-NAMESELF>, but nothing happens."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to curse <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

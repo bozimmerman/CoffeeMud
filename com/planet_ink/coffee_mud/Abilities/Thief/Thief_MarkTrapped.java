@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_MarkTrapped extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_MarkTrapped"; }
-	private final static String localizedName = CMLib.lang()._("Mark Trapped");
+	private final static String localizedName = CMLib.lang().L("Mark Trapped");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
@@ -81,7 +81,7 @@ public class Thief_MarkTrapped extends ThiefSkill
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell(_("What item would you like to mark as trapped?"));
+			mob.tell(L("What item would you like to mark as trapped?"));
 			return false;
 		}
 		final int dir=Directions.getGoodDirectionCode(CMParms.combine(commands,0));
@@ -102,7 +102,7 @@ public class Thief_MarkTrapped extends ThiefSkill
 
 		if((!auto)&&(item instanceof MOB))
 		{
-			mob.tell(_("Umm.. you can't mark @x1 as trapped.",item.name()));
+			mob.tell(L("Umm.. you can't mark @x1 as trapped.",item.name()));
 			return false;
 		}
 
@@ -111,7 +111,7 @@ public class Thief_MarkTrapped extends ThiefSkill
 			if((!auto)
 			&&(item.phyStats().weight()>((adjustedLevel(mob,asLevel)*2)+(getXLEVELLevel(mob)*10))))
 			{
-				mob.tell(_("You aren't good enough to effectively mark anything that large."));
+				mob.tell(L("You aren't good enough to effectively mark anything that large."));
 				return false;
 			}
 		}
@@ -126,9 +126,9 @@ public class Thief_MarkTrapped extends ThiefSkill
 			CMMsg msg;
 			final Ability A=item.fetchEffect(ID());
 			if((A!=null)&&((givenTarget==null)||(auto)))
-				msg=CMClass.getMsg(mob,item,null,CMMsg.MSG_THIEF_ACT,_("<S-NAME> remove(s) the mark on <T-NAME>."),CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
+				msg=CMClass.getMsg(mob,item,null,CMMsg.MSG_THIEF_ACT,L("<S-NAME> remove(s) the mark on <T-NAME>."),CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
 			else
-				msg=CMClass.getMsg(mob,item,this,CMMsg.MSG_THIEF_ACT,_("<S-NAME> mark(s) <T-NAME> as trapped."),CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
+				msg=CMClass.getMsg(mob,item,this,CMMsg.MSG_THIEF_ACT,L("<S-NAME> mark(s) <T-NAME> as trapped."),CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -149,7 +149,7 @@ public class Thief_MarkTrapped extends ThiefSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,item,_("<S-NAME> attempt(s) to mark <T-NAME> as trapped, but fail(s)."));
+			beneficialVisualFizzle(mob,item,L("<S-NAME> attempt(s) to mark <T-NAME> as trapped, but fail(s)."));
 		return success;
 	}
 }

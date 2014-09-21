@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Tourettes extends Spell implements DiseaseAffect
 {
 	@Override public String ID() { return "Spell_Tourettes"; }
-	private final static String localizedName = CMLib.lang()._("Tourettes");
+	private final static String localizedName = CMLib.lang().L("Tourettes");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Tourettes)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Tourettes)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -69,7 +69,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
 				spreadImmunity(mob);
-				mob.tell(_("You feel more polite."));
+				mob.tell(L("You feel more polite."));
 			}
 	}
 
@@ -135,7 +135,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 				{
 					if(CMLib.dice().rollPercentage()>target.charStats().getSave(CharStats.STAT_SAVE_DISEASE))
 					{
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> feel(s) different somehow..."));
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) different somehow..."));
 						maliciousAffect(invoker,target,0,0,-1);
 					}
 					else
@@ -175,7 +175,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":_("^S<S-NAME> incant(s) rudely to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":L("^S<S-NAME> incant(s) rudely to <T-NAMESELF>.^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_DISEASE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
@@ -185,14 +185,14 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 				{
 					invoker=mob;
 					maliciousAffect(mob,target,asLevel,0,-1);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> feel(s) different somehow..."));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) different somehow..."));
 				}
 				else
 					spreadImmunity(target);
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) rudely to <T-NAMESELF>, but the spell fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) rudely to <T-NAMESELF>, but the spell fades."));
 		// return whether it worked
 		return success;
 	}

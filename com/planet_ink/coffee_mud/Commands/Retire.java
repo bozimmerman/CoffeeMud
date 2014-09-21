@@ -49,12 +49,12 @@ public class Retire extends StdCommand
 		final PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return false;
 
-		mob.tell(_("^HThis will delete your player from the system FOREVER!"));
+		mob.tell(L("^HThis will delete your player from the system FOREVER!"));
 		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",120000)
 		{
 			@Override public void showPrompt()
 			{
-				session.promptPrint(_("If that's what you want, re-enter your password: "));
+				session.promptPrint(L("If that's what you want, re-enter your password: "));
 			}
 			@Override public void timedOut() {}
 			@Override public void callBack()
@@ -62,7 +62,7 @@ public class Retire extends StdCommand
 				if(input.trim().length()==0)
 					return;
 				if(!pstats.matchesPassword(input.trim()))
-					mob.tell(_("Password incorrect."));
+					mob.tell(L("Password incorrect."));
 				else
 				{
 					if(CMSecurity.isDisabled(CMSecurity.DisFlag.RETIREREASON))
@@ -76,7 +76,7 @@ public class Retire extends StdCommand
 					{
 						@Override public void showPrompt()
 						{
-							session.promptPrint(_("OK.  Please leave us a short message as to why you are deleting this character.  Your answers will be kept confidential, and are for administrative purposes only.\n\r: "));
+							session.promptPrint(L("OK.  Please leave us a short message as to why you are deleting this character.  Your answers will be kept confidential, and are for administrative purposes only.\n\r: "));
 						}
 						@Override public void timedOut() {}
 						@Override public void callBack()

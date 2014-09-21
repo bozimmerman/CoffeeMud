@@ -38,9 +38,9 @@ import java.util.*;
 public class Spell_SpiderClimb extends Spell
 {
 	@Override public String ID() { return "Spell_SpiderClimb"; }
-	private final static String localizedName = CMLib.lang()._("Spider Climb");
+	private final static String localizedName = CMLib.lang().L("Spider Climb");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Spider Climb)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Spider Climb)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -64,7 +64,7 @@ public class Spell_SpiderClimb extends Spell
 		final MOB mob=(MOB)affected;
 		final Room room=((MOB)affected).location();
 		if((canBeUninvoked())&&(!mob.amDead())&&(room!=null))
-			room.show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> no longer <S-HAS-HAVE> a spidery gait."));
+			room.show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> no longer <S-HAS-HAVE> a spidery gait."));
 		super.unInvoke();
 		if(canBeUninvoked()&&(room!=null))
 			room.recoverRoomStats();
@@ -78,7 +78,7 @@ public class Spell_SpiderClimb extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> spidery magic."));
+			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> spidery magic."));
 			return false;
 		}
 
@@ -87,7 +87,7 @@ public class Spell_SpiderClimb extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("^S<S-NAME> attains a climbers stance!"):_("^S<S-NAME> invoke(s) a spidery spell upon <S-HIM-HERSELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("^S<S-NAME> attains a climbers stance!"):L("^S<S-NAME> invoke(s) a spidery spell upon <S-HIM-HERSELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -95,7 +95,7 @@ public class Spell_SpiderClimb extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,mob.location(),_("<S-NAME> attempt(s) to invoke a spell, but fail(s)."));
+			beneficialWordsFizzle(mob,mob.location(),L("<S-NAME> attempt(s) to invoke a spell, but fail(s)."));
 
 		return success;
 	}

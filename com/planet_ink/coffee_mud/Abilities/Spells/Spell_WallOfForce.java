@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_WallOfForce extends Spell
 {
 	@Override public String ID() { return "Spell_WallOfForce"; }
-	private final static String localizedName = CMLib.lang()._("Wall of Force");
+	private final static String localizedName = CMLib.lang().L("Wall of Force");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Wall of Force)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Wall of Force)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
 	@Override public int minRange(){return 1;}
@@ -74,7 +74,7 @@ public class Spell_WallOfForce extends Spell
 				&&(!((Weapon)msg.tool()).amWearingAt(Wearable.IN_INVENTORY))
 				&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)))
 			{
-				mob.tell(_("Malice neither escapes nor enters the wall of force."));
+				mob.tell(L("Malice neither escapes nor enters the wall of force."));
 				if(mob.isMonster())
 					CMLib.commands().postRemove(mob,(Item)msg.tool(),true);
 				return false;
@@ -84,7 +84,7 @@ public class Spell_WallOfForce extends Spell
 			{
 				if(mob!=invoker)
 				{
-					final CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,_("^F^<FIGHT^><S-NAME> attempt(s) to penetrate the wall of force and fail(s).^</FIGHT^>^?"));
+					final CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,L("^F^<FIGHT^><S-NAME> attempt(s) to penetrate the wall of force and fail(s).^</FIGHT^>^?"));
 					CMLib.color().fixSourceFightColor(msg2);
 					if(mob.location().okMessage(mob,msg2))
 						mob.location().send(mob,msg2);
@@ -107,7 +107,7 @@ public class Spell_WallOfForce extends Spell
 			&&(theWall.owner() instanceof Room)
 			&&(((Room)theWall.owner()).isContent(theWall)))
 			{
-				((Room)theWall.owner()).showHappens(CMMsg.MSG_OK_VISUAL,_("The wall of force is gone."));
+				((Room)theWall.owner()).showHappens(CMMsg.MSG_OK_VISUAL,L("The wall of force is gone."));
 				final Item wall=theWall;
 				theWall=null;
 				wall.destroy();
@@ -134,7 +134,7 @@ public class Spell_WallOfForce extends Spell
 	{
 		if((!mob.isInCombat())||(mob.rangeToTarget()<1))
 		{
-			mob.tell(_("You really should be in ranged combat to cast this."));
+			mob.tell(L("You really should be in ranged combat to cast this."));
 			return false;
 		}
 		for(int i=0;i<mob.location().numItems();i++)
@@ -142,7 +142,7 @@ public class Spell_WallOfForce extends Spell
 			final Item I=mob.location().getItem(i);
 			if((I!=null)&&(I.fetchEffect(ID())!=null))
 			{
-				mob.tell(_("There is already a wall of force here."));
+				mob.tell(L("There is already a wall of force here."));
 				return false;
 			}
 		}
@@ -166,14 +166,14 @@ public class Spell_WallOfForce extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),auto?_("An impenetrable wall of force appears!"):_("^S<S-NAME> conjur(s) up a impenetrable wall of force!^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),auto?L("An impenetrable wall of force appears!"):L("^S<S-NAME> conjur(s) up a impenetrable wall of force!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final Item I=CMClass.getItem("GenItem");
-				I.setName(_("a wall of force"));
-				I.setDisplayText(_("an impenetrable wall of force surrounds @x1",mob.name()));
-				I.setDescription(_("It`s tough, that's for sure."));
+				I.setName(L("a wall of force"));
+				I.setDisplayText(L("an impenetrable wall of force surrounds @x1",mob.name()));
+				I.setDescription(L("It`s tough, that's for sure."));
 				I.setMaterial(RawMaterial.RESOURCE_NOTHING);
 				CMLib.flags().setGettable(I,false);
 				I.recoverPhyStats();
@@ -183,7 +183,7 @@ public class Spell_WallOfForce extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> incant(s), but the magic fizzles."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> incant(s), but the magic fizzles."));
 
 		// return whether it worked
 		return success;

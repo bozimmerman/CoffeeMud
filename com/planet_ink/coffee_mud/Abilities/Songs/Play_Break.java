@@ -36,7 +36,7 @@ import java.util.*;
 public class Play_Break extends Play
 {
 	@Override public String ID() { return "Play_Break"; }
-	private final static String localizedName = CMLib.lang()._("Break");
+	private final static String localizedName = CMLib.lang().L("Break");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected boolean skipStandardSongInvoke(){return true;}
@@ -60,11 +60,11 @@ public class Play_Break extends Play
 		}
 		if(!foundOne)
 		{
-			mob.tell(auto?_("There is noone playing."):_("You aren't playing anything."));
+			mob.tell(auto?L("There is noone playing."):L("You aren't playing anything."));
 			return true;
 		}
 		unplayAll(mob,mob);
-		mob.location().show(mob,null,CMMsg.MSG_NOISE,auto?_("Silence."):_("<S-NAME> stop(s) playing."));
+		mob.location().show(mob,null,CMMsg.MSG_NOISE,auto?L("Silence."):L("<S-NAME> stop(s) playing."));
 		mob.location().recoverRoomStats();
 		return true;
 	}

@@ -44,7 +44,7 @@ public class Split extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("Split what, how much?"));
+			mob.tell(L("Split what, how much?"));
 			return false;
 		}
 		final String itemID=CMParms.combine(commands,1);
@@ -71,7 +71,7 @@ public class Split extends StdCommand
 			}
 			if(num==0)
 			{
-				mob.tell(_("No one appears to be eligible to receive any of your money."));
+				mob.tell(L("No one appears to be eligible to receive any of your money."));
 				return false;
 			}
 
@@ -79,7 +79,7 @@ public class Split extends StdCommand
 			totalAbsoluteValue=CMath.div(totalAbsoluteValue,num+1);
 			if((totalAbsoluteValue*num)>CMLib.beanCounter().getTotalAbsoluteValue(mob,currency))
 			{
-				mob.tell(_("You don't have that much @x1.",CMLib.beanCounter().getDenominationName(currency,denom)));
+				mob.tell(L("You don't have that much @x1.",CMLib.beanCounter().getDenominationName(currency,denom)));
 				return false;
 			}
 			final List<Coins> V=CMLib.beanCounter().makeAllCurrency(currency,totalAbsoluteValue);
@@ -92,7 +92,7 @@ public class Split extends StdCommand
 					Coins C=V.get(v);
 					C=(Coins)C.copyOf();
 					mob.addItem(C);
-					final CMMsg newMsg=CMClass.getMsg(mob,recipient,C,CMMsg.MSG_GIVE,_("<S-NAME> give(s) <O-NAME> to <T-NAMESELF>."));
+					final CMMsg newMsg=CMClass.getMsg(mob,recipient,C,CMMsg.MSG_GIVE,L("<S-NAME> give(s) <O-NAME> to <T-NAMESELF>."));
 					if(mob.location().okMessage(mob,newMsg))
 						mob.location().send(mob,newMsg);
 					C.putCoinsBack();
@@ -105,7 +105,7 @@ public class Split extends StdCommand
 			final int howMuch=CMath.s_int((String)commands.lastElement());
 			if(howMuch<=0)
 			{
-				mob.tell(_("Split what, how much?"));
+				mob.tell(L("Split what, how much?"));
 				return false;
 			}
 			commands.remove(commands.size()-1);
@@ -115,7 +115,7 @@ public class Split extends StdCommand
 		}
 		else
 		{
-			mob.tell(_("Split what, how much?"));
+			mob.tell(L("Split what, how much?"));
 			return false;
 		}
 		return false;

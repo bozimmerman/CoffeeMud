@@ -44,10 +44,10 @@ public class Quit extends StdCommand
 	{
 		if(mob.soulMate()==null)
 		{
-			mob.tell(CMLib.lang()._("Huh?"));
+			mob.tell(CMLib.lang().L("Huh?"));
 			return;
 		}
-		final CMMsg msg=CMClass.getMsg(mob, CMMsg.MSG_DISPOSSESS, CMLib.lang()._("^H<S-YOUPOSS> spirit has returned to <S-YOUPOSS> body...\n\r\n\r^N"));
+		final CMMsg msg=CMClass.getMsg(mob, CMMsg.MSG_DISPOSSESS, CMLib.lang().L("^H<S-YOUPOSS> spirit has returned to <S-YOUPOSS> body...\n\r\n\r^N"));
 		final Room room=mob.location();
 		if((room==null)||(room.okMessage(mob, msg))||force)
 		{
@@ -71,7 +71,7 @@ public class Quit extends StdCommand
 				if((session.getLastPKFight()>0)
 				&&((System.currentTimeMillis()-session.getLastPKFight())<(5*60*1000)))
 				{
-					mob.tell(_("You must wait a few more minutes before you are allowed to quit."));
+					mob.tell(L("You must wait a few more minutes before you are allowed to quit."));
 					return false;
 				}
 				session.prompt(new InputCallback(InputCallback.Type.CONFIRM, "N", 30000)
@@ -79,7 +79,7 @@ public class Quit extends StdCommand
 					@Override
 					public void showPrompt()
 					{
-						session.promptPrint(_("\n\rQuit -- are you sure (y/N)?"));
+						session.promptPrint(L("\n\rQuit -- are you sure (y/N)?"));
 					}
 					@Override public void timedOut() {}
 					@Override

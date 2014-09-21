@@ -36,9 +36,9 @@ import java.util.*;
 public class Prayer_ProtUndead extends Prayer
 {
 	@Override public String ID() { return "Prayer_ProtUndead"; }
-	private final static String localizedName = CMLib.lang()._("Protection Undead");
+	private final static String localizedName = CMLib.lang().L("Protection Undead");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Protection/Undead)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Protection/Undead)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
@@ -97,7 +97,7 @@ public class Prayer_ProtUndead extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your protection from undead fades."));
+			mob.tell(L("Your protection from undead fades."));
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class Prayer_ProtUndead extends Prayer
 		if((auto)&&(givenTarget!=null)) target=givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,target,null,_("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));
+			mob.tell(mob,target,null,L("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));
 			return false;
 		}
 
@@ -136,7 +136,7 @@ public class Prayer_ProtUndead extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) protected from the undead."):_("^S<S-NAME> @x1 for protection from the undead.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) protected from the undead."):L("^S<S-NAME> @x1 for protection from the undead.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -144,7 +144,7 @@ public class Prayer_ProtUndead extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 for protection, but there is no answer.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 for protection, but there is no answer.",prayWord(mob)));
 
 
 		// return whether it worked

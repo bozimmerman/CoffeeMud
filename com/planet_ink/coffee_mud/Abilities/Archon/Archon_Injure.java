@@ -36,7 +36,7 @@ import java.util.*;
 public class Archon_Injure extends ArchonSkill
 {
 	@Override public String ID() { return "Archon_Injure"; }
-	private final static String localizedName = CMLib.lang()._("Injure");
+	private final static String localizedName = CMLib.lang().L("Injure");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -89,9 +89,9 @@ public class Archon_Injure extends ArchonSkill
 		if((gone==null)||(part==null))
 		{
 			if(part==null)
-				mob.tell(target,null,null,_("<S-NAME> has no parts."));
+				mob.tell(target,null,null,L("<S-NAME> has no parts."));
 			else
-				mob.tell(target,null,null,_("<S-NAME> has no part called '@x1'.",part.toLowerCase()));
+				mob.tell(target,null,null,L("<S-NAME> has no part called '@x1'.",part.toLowerCase()));
 			return false;
 		}
 
@@ -101,7 +101,7 @@ public class Archon_Injure extends ArchonSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?_("A stink cloud surrounds <T-NAME>!"):_("^F<S-NAME> injure(s) <T-YOUPOSS> @x1.^?",gone.toLowerCase()));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?L("A stink cloud surrounds <T-NAME>!"):L("^F<S-NAME> injure(s) <T-YOUPOSS> @x1.^?",gone.toLowerCase()));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -121,7 +121,7 @@ public class Archon_Injure extends ArchonSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to injure <T-NAMESELF>, but fail(s)."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to injure <T-NAMESELF>, but fail(s)."));
 		return success;
 	}
 }

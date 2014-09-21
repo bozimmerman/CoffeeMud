@@ -37,12 +37,12 @@ import java.util.*;
 public class Fighter_Charge extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Charge"; }
-	private final static String localizedName = CMLib.lang()._("Charge");
+	private final static String localizedName = CMLib.lang().L("Charge");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"CHARGE"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Charging!!)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Charging!!)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -108,12 +108,12 @@ public class Fighter_Charge extends FighterSkill
 		if((mob.isInCombat())
 		&&(mob.rangeToTarget()<=0))
 		{
-			mob.tell(_("You can not charge while in melee!"));
+			mob.tell(L("You can not charge while in melee!"));
 			return false;
 		}
 		if((CMLib.flags().isSitting(mob))||(mob.riding()!=null))
 		{
-			mob.tell(_("You must be on your feet to charge!"));
+			mob.tell(L("You must be on your feet to charge!"));
 			return false;
 		}
 
@@ -132,7 +132,7 @@ public class Fighter_Charge extends FighterSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE,_("^F^<FIGHT^><S-NAME> charge(s) at <T-NAMESELF>!^</FIGHT^>^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE,L("^F^<FIGHT^><S-NAME> charge(s) at <T-NAMESELF>!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -156,7 +156,7 @@ public class Fighter_Charge extends FighterSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to charge <T-NAME>, but then give(s) up."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to charge <T-NAME>, but then give(s) up."));
 
 		// return whether it worked
 		return success;

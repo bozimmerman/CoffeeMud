@@ -37,7 +37,7 @@ import java.util.*;
 public class Paladin_Breakup extends StdAbility
 {
 	@Override public String ID() { return "Paladin_Breakup"; }
-	private final static String localizedName = CMLib.lang()._("Breakup Fight");
+	private final static String localizedName = CMLib.lang().L("Breakup Fight");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"BREAKUP"});
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
@@ -52,12 +52,12 @@ public class Paladin_Breakup extends StdAbility
 	{
 		if(mob.isInCombat())
 		{
-			mob.tell(_("You must end combat before trying to break up someone elses fight."));
+			mob.tell(L("You must end combat before trying to break up someone elses fight."));
 			return false;
 		}
 		if((!auto)&&(!(CMLib.flags().isGood(mob))))
 		{
-			mob.tell(_("You don't feel worthy of a such a good act."));
+			mob.tell(L("You don't feel worthy of a such a good act."));
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
@@ -67,7 +67,7 @@ public class Paladin_Breakup extends StdAbility
 			return false;
 		if(!target.isInCombat())
 		{
-			mob.tell(_("@x1 is not fighting anyone!",target.name(mob)));
+			mob.tell(L("@x1 is not fighting anyone!",target.name(mob)));
 			return false;
 		}
 
@@ -79,7 +79,7 @@ public class Paladin_Breakup extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?_("<T-NAME> exude(s) a peaceful aura."):_("<S-NAME> break(s) up the fight between <T-NAME> and @x1.",target.getVictim().name()));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?L("<T-NAME> exude(s) a peaceful aura."):L("<S-NAME> break(s) up the fight between <T-NAME> and @x1.",target.getVictim().name()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -91,7 +91,7 @@ public class Paladin_Breakup extends StdAbility
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to break up <T-NAME>'s fight, but fail(s)."));
+			beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to break up <T-NAME>'s fight, but fail(s)."));
 
 
 		// return whether it worked

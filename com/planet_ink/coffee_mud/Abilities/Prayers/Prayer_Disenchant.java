@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Disenchant extends Prayer
 {
 	@Override public String ID() { return "Prayer_Disenchant"; }
-	private final static String localizedName = CMLib.lang()._("Neutralize Item");
+	private final static String localizedName = CMLib.lang().L("Neutralize Item");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
@@ -64,7 +64,7 @@ public class Prayer_Disenchant extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> appear(s) neutralized!"):_("^S<S-NAME> @x1 to neutralize <T-NAMESELF>.^?",prayForWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> appear(s) neutralized!"):L("^S<S-NAME> @x1 to neutralize <T-NAMESELF>.^?",prayForWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -84,7 +84,7 @@ public class Prayer_Disenchant extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 to neutralize <T-NAMESELF>, but nothing happens.",prayForWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 to neutralize <T-NAMESELF>, but nothing happens.",prayForWord(mob)));
 		// return whether it worked
 		return success;
 	}

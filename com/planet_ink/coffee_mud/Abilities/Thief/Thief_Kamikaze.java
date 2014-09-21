@@ -37,7 +37,7 @@ import java.util.*;
 public class Thief_Kamikaze extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Kamikaze"; }
-	private final static String localizedName = CMLib.lang()._("Kamikaze");
+	private final static String localizedName = CMLib.lang().L("Kamikaze");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -112,7 +112,7 @@ public class Thief_Kamikaze extends ThiefSkill
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("You must specify who your kamikaze bomber is, and which direction they should go."));
+			mob.tell(L("You must specify who your kamikaze bomber is, and which direction they should go."));
 			return false;
 		}
 		final String s=(String)commands.lastElement();
@@ -122,13 +122,13 @@ public class Thief_Kamikaze extends ThiefSkill
 
 		if((!target.mayIFight(mob))||(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<3))
 		{
-			mob.tell(_("You can't talk @x1 into a kamikaze mission.",target.name(mob)));
+			mob.tell(L("You can't talk @x1 into a kamikaze mission.",target.name(mob)));
 			return false;
 		}
 
 		if((s.length()==0)||(CMParms.parse(s).size()==0))
 		{
-			mob.tell(_("Send @x1 which direction?",target.charStats().himher()));
+			mob.tell(L("Send @x1 which direction?",target.charStats().himher()));
 			return false;
 		}
 
@@ -141,7 +141,7 @@ public class Thief_Kamikaze extends ThiefSkill
 		final String costWords=CMLib.beanCounter().nameCurrencyShort(localCurrency,goldRequired);
 		if(CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
 		{
-			mob.tell(_("@x1 requires @x2 to do this.",target.charStats().HeShe(),costWords));
+			mob.tell(L("@x1 requires @x2 to do this.",target.charStats().HeShe(),costWords));
 			return false;
 		}
 
@@ -161,7 +161,7 @@ public class Thief_Kamikaze extends ThiefSkill
 		}
 		if(bombFound==null)
 		{
-			mob.tell(_("@x1 must have some bombs for this to work.",target.name(mob)));
+			mob.tell(L("@x1 must have some bombs for this to work.",target.name(mob)));
 			return false;
 		}
 
@@ -169,13 +169,13 @@ public class Thief_Kamikaze extends ThiefSkill
 
 		if(!success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,_("^T<S-NAME> attempt(s) to convince <T-NAMESELF> to kamikaze @x1, but no deal is reached.^?",s));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,L("^T<S-NAME> attempt(s) to convince <T-NAMESELF> to kamikaze @x1, but no deal is reached.^?",s));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,_("^T<S-NAME> pay(s) <T-NAMESELF> to Kamikaze @x1 for @x2.^?",s,costWords));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,L("^T<S-NAME> pay(s) <T-NAMESELF> to Kamikaze @x1 for @x2.^?",s,costWords));
 
 			CMLib.beanCounter().subtractMoney(mob,localCurrency,goldRequired);
 			mob.recoverPhyStats();

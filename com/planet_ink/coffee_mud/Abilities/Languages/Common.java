@@ -36,7 +36,7 @@ import java.util.*;
 public class Common extends StdLanguage
 {
 	@Override public String ID() { return "Common"; }
-	private final static String localizedName = CMLib.lang()._("Common");
+	private final static String localizedName = CMLib.lang().L("Common");
 	@Override public String name() { return localizedName; }
 	@Override public boolean isAutoInvoked(){return false;}
 	@Override public boolean canBeUninvoked(){return canBeUninvoked;}
@@ -70,9 +70,9 @@ public class Common extends StdLanguage
 				msg="already speaking "+name()+".";
 			else
 				msg="now speaking "+name()+".";
-			mob.tell(_("You are @x1",msg));
+			mob.tell(L("You are @x1",msg));
 			if((mob.isMonster())&&(mob.amFollowing()!=null))
-				CMLib.commands().postSay(mob,_("I am @x1",msg));
+				CMLib.commands().postSay(mob,L("I am @x1",msg));
 		}
 		return true;
 	}

@@ -80,9 +80,9 @@ public class Group extends StdCommand
 				msg.append(CMStrings.padRight(levelStr,cols[2]));
 		}
 		msg.append("] "+CMStrings.padRight(who.name(),cols[3])+" ");
-		msg.append(CMStrings.padRightPreserve(CMLib.lang()._("hp(@x1/@x2)",CMStrings.padRightPreserve(""+who.curState().getHitPoints(),cols[4]),CMStrings.padRightPreserve(""+who.maxState().getHitPoints(),cols[4])),cols[5]));
-		msg.append(CMStrings.padRightPreserve(CMLib.lang()._("mn(@x1/@x2)",CMStrings.padRightPreserve(""+who.curState().getMana(),cols[4]),CMStrings.padRightPreserve(""+who.maxState().getMana(),cols[4])),cols[5]));
-		msg.append(CMStrings.padRightPreserve(CMLib.lang()._("mv(@x1/@x2)",CMStrings.padRightPreserve(""+who.curState().getMovement(),cols[4]),CMStrings.padRightPreserve(""+who.maxState().getMovement(),cols[4])),cols[5]));
+		msg.append(CMStrings.padRightPreserve(CMLib.lang().L("hp(@x1/@x2)",CMStrings.padRightPreserve(""+who.curState().getHitPoints(),cols[4]),CMStrings.padRightPreserve(""+who.maxState().getHitPoints(),cols[4])),cols[5]));
+		msg.append(CMStrings.padRightPreserve(CMLib.lang().L("mn(@x1/@x2)",CMStrings.padRightPreserve(""+who.curState().getMana(),cols[4]),CMStrings.padRightPreserve(""+who.maxState().getMana(),cols[4])),cols[5]));
+		msg.append(CMStrings.padRightPreserve(CMLib.lang().L("mv(@x1/@x2)",CMStrings.padRightPreserve(""+who.curState().getMovement(),cols[4]),CMStrings.padRightPreserve(""+who.maxState().getMovement(),cols[4])),cols[5]));
 		msg.append("\n\r");
 		return msg;
 	}
@@ -91,7 +91,7 @@ public class Group extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		mob.tell(_("@x1's group:\n\r",mob.name()));
+		mob.tell(L("@x1's group:\n\r",mob.name()));
 		final Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
 		final StringBuffer msg=new StringBuffer("");
 		for (final Object element : group)

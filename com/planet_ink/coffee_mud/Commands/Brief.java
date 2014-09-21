@@ -45,12 +45,12 @@ public class Brief extends StdCommand
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_BRIEF))
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_BRIEF));
-			mob.tell(_("Brief room descriptions are now off."));
+			mob.tell(L("Brief room descriptions are now off."));
 		}
 		else
 		{
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_BRIEF));
-			mob.tell(_("Brief room descriptions are now on."));
+			mob.tell(L("Brief room descriptions are now on."));
 		}
 		return false;
 	}

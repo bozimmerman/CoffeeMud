@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_EndlessRoad extends Spell
 {
 	@Override public String ID() { return "Spell_EndlessRoad"; }
-	private final static String localizedName = CMLib.lang()._("Endless Road");
+	private final static String localizedName = CMLib.lang().L("Endless Road");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Endless Road)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Endless Road)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -54,7 +54,7 @@ public class Spell_EndlessRoad extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("You feel like you are finally getting somewhere."));
+			mob.tell(L("You feel like you are finally getting somewhere."));
 		CMLib.commands().postStand(mob,true);
 	}
 
@@ -119,7 +119,7 @@ public class Spell_EndlessRoad extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> incant(s) to <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> incant(s) to <T-NAMESELF>!^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
@@ -130,12 +130,12 @@ public class Spell_EndlessRoad extends Spell
 					success=maliciousAffect(mob,target,asLevel,0,-1);
 					if(success)
 						if(target.location()==mob.location())
-							target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> seem(s) lost!"));
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> seem(s) lost!"));
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) to <T-NAMESELF>, but the spell fizzles"));
+			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) to <T-NAMESELF>, but the spell fizzles"));
 
 		// return whether it worked
 		return success;

@@ -36,7 +36,7 @@ import java.util.*;
 public class Fighter_RapidShot extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_RapidShot"; }
-	private final static String localizedName = CMLib.lang()._("Rapid Shot");
+	private final static String localizedName = CMLib.lang().L("Rapid Shot");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

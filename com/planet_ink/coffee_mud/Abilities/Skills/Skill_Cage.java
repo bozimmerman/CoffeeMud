@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_Cage extends StdSkill
 {
 	@Override public String ID() { return "Skill_Cage"; }
-	private final static String localizedName = CMLib.lang()._("Cage");
+	private final static String localizedName = CMLib.lang().L("Cage");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return 0;}
@@ -99,19 +99,19 @@ public class Skill_Cage extends StdSkill
 			}
 			if(!ok)
 			{
-				mob.tell(_("@x1 won't seem to let you.",target.name(mob)));
+				mob.tell(L("@x1 won't seem to let you.",target.name(mob)));
 				return false;
 			}
 
 			if(cage==null)
 			{
-				mob.tell(_("Cage @x1 where?",target.name(mob)));
+				mob.tell(L("Cage @x1 where?",target.name(mob)));
 				return false;
 			}
 
 			if((mob.isInCombat())&&(mob.getVictim()!=target))
 			{
-				mob.tell(_("Not while you are fighting!"));
+				mob.tell(L("Not while you are fighting!"));
 				return false;
 			}
 		}
@@ -142,7 +142,7 @@ public class Skill_Cage extends StdSkill
 				}
 				else
 					mob.addItem(caged);
-				final CMMsg putMsg=CMClass.getMsg(mob,cage,caged,CMMsg.MSG_PUT,_("<S-NAME> cage(s) <O-NAME> in <T-NAME>."));
+				final CMMsg putMsg=CMClass.getMsg(mob,cage,caged,CMMsg.MSG_PUT,L("<S-NAME> cage(s) <O-NAME> in <T-NAME>."));
 				if(mob.location().okMessage(mob,putMsg))
 				{
 					mob.location().send(mob,putMsg);
@@ -154,7 +154,7 @@ public class Skill_Cage extends StdSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to cage <T-NAME> and fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to cage <T-NAME> and fail(s)."));
 
 
 		// return whether it worked

@@ -44,7 +44,7 @@ public class Put extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(_("Put out what?"));
+			mob.tell(L("Put out what?"));
 			return;
 		}
 		commands.removeElementAt(1);
@@ -52,14 +52,14 @@ public class Put extends StdCommand
 
 		final List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,true);
 		if(items.size()==0)
-			mob.tell(_("You don't seem to be carrying that."));
+			mob.tell(L("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<items.size();i++)
 		{
 			final Item I=items.get(i);
 			if((items.size()==1)||(I instanceof Light))
 			{
-				final CMMsg msg=CMClass.getMsg(mob,I,null,CMMsg.MSG_EXTINGUISH,quiet?null:_("<S-NAME> put(s) out <T-NAME>."));
+				final CMMsg msg=CMClass.getMsg(mob,I,null,CMMsg.MSG_EXTINGUISH,quiet?null:L("<S-NAME> put(s) out <T-NAME>."));
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
@@ -72,7 +72,7 @@ public class Put extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("Put what where?"));
+			mob.tell(L("Put what where?"));
 			return false;
 		}
 
@@ -114,14 +114,14 @@ public class Put extends StdCommand
 		commands.removeElementAt(0);
 		if(commands.size()<2)
 		{
-			mob.tell(_("Where should I put the @x1",(String)commands.elementAt(0)));
+			mob.tell(L("Where should I put the @x1",(String)commands.elementAt(0)));
 			return false;
 		}
 
 		final Environmental container=CMLib.english().possibleContainer(mob,commands,false,Wearable.FILTER_ANY);
 		if((container==null)||(!CMLib.flags().canBeSeenBy(container,mob)))
 		{
-			mob.tell(_("I don't see a @x1 here.",(String)commands.lastElement()));
+			mob.tell(L("I don't see a @x1 here.",(String)commands.lastElement()));
 			return false;
 		}
 
@@ -166,13 +166,13 @@ public class Put extends StdCommand
 			V.remove(container);
 
 		if(V.size()==0)
-			mob.tell(_("You don't seem to be carrying that."));
+			mob.tell(L("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<V.size();i++)
 		{
 			putThis=(Item)V.elementAt(i);
 			final String putWord=(container instanceof Rideable)?((Rideable)container).putString(mob):"in";
-			final CMMsg putMsg=CMClass.getMsg(mob,container,putThis,CMMsg.MASK_OPTIMIZE|CMMsg.MSG_PUT,_("<S-NAME> put(s) <O-NAME> @x1 <T-NAME>.",putWord));
+			final CMMsg putMsg=CMClass.getMsg(mob,container,putThis,CMMsg.MASK_OPTIMIZE|CMMsg.MSG_PUT,L("<S-NAME> put(s) <O-NAME> @x1 <T-NAME>.",putWord));
 			if(mob.location().okMessage(mob,putMsg))
 				mob.location().send(mob,putMsg);
 			if(putThis instanceof Coins)

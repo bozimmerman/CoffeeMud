@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_FodderSignal extends Chant
 {
 	@Override public String ID() { return "Chant_FodderSignal"; }
-	private final static String localizedName = CMLib.lang()._("Fodder Signal");
+	private final static String localizedName = CMLib.lang().L("Fodder Signal");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Fodder Signal)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Fodder Signal)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -54,7 +54,7 @@ public class Chant_FodderSignal extends Chant
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("The fodder signal stops flashing."));
+			mob.tell(L("The fodder signal stops flashing."));
 
 		super.unInvoke();
 
@@ -90,7 +90,7 @@ public class Chant_FodderSignal extends Chant
 					&&(!dummy.getGroupMembers(new HashSet<MOB>()).contains(M))
 					&&(CMLib.flags().canBeSeenBy(dummy,M)))
 					{
-						if(room.show(M,dummy,CMMsg.MASK_MOVE|CMMsg.MSG_NOISE,_("<S-NAME> howl(s) in anger at <T-NAMESELF>!")))
+						if(room.show(M,dummy,CMMsg.MASK_MOVE|CMMsg.MSG_NOISE,L("<S-NAME> howl(s) in anger at <T-NAMESELF>!")))
 							CMLib.combat().postAttack(M,dummy,M.fetchWieldedItem());
 					}
 				}
@@ -121,19 +121,19 @@ public class Chant_FodderSignal extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) at <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) at <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("A horrible angering flag is emitting from <S-NAME>!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("A horrible angering flag is emitting from <S-NAME>!"));
 					maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAMESELF>, but the magic fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAMESELF>, but the magic fades."));
 		// return whether it worked
 		return success;
 	}

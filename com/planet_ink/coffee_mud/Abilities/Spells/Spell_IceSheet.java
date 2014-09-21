@@ -35,9 +35,9 @@ import java.util.*;
 public class Spell_IceSheet extends Spell
 {
 	@Override public String ID() { return "Spell_IceSheet"; }
-	private final static String localizedName = CMLib.lang()._("Ice Sheet");
+	private final static String localizedName = CMLib.lang().L("Ice Sheet");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Ice Sheet spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Ice Sheet spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -55,7 +55,7 @@ public class Spell_IceSheet extends Spell
 			return;
 		final Room room=(Room)affected;
 		if(canBeUninvoked())
-			room.showHappens(CMMsg.MSG_OK_VISUAL, _("The ice sheet melts."));
+			room.showHappens(CMMsg.MSG_OK_VISUAL, L("The ice sheet melts."));
 		super.unInvoke();
 	}
 
@@ -73,7 +73,7 @@ public class Spell_IceSheet extends Spell
 				if((room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 				||(room.domainType()==Room.DOMAIN_INDOORS_UNDERWATER))
 				{
-					mob.tell(_("You are frozen in the ice sheet and can't even blink."));
+					mob.tell(L("You are frozen in the ice sheet and can't even blink."));
 					return false;
 				}
 				else
@@ -86,7 +86,7 @@ public class Spell_IceSheet extends Spell
 						oldDisposition=oldDisposition&(~(PhyStats.IS_SLEEPING|PhyStats.IS_SNEAKING|PhyStats.IS_SITTING|PhyStats.IS_CUSTOM));
 						mob.basePhyStats().setDisposition(oldDisposition|PhyStats.IS_SITTING);
 						mob.recoverPhyStats();
-						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> slip(s) on the ice."));
+						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> slip(s) on the ice."));
 						return false;
 					}
 				}
@@ -106,7 +106,7 @@ public class Spell_IceSheet extends Spell
 		{
 			final MOB mob=msg.source();
 			final Room room=(Room)affected;
-			msg.addTrailerMsg(CMClass.getMsg(mob,room,null,CMMsg.MSG_OK_VISUAL,_("\n\r<T-NAME> is covered in ice."),null,null));
+			msg.addTrailerMsg(CMClass.getMsg(mob,room,null,CMMsg.MSG_OK_VISUAL,L("\n\r<T-NAME> is covered in ice."),null,null));
 		}
 	}
 
@@ -133,7 +133,7 @@ public class Spell_IceSheet extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,null,null,_("An Ice Sheet is already here!"));
+			mob.tell(mob,null,null,L("An Ice Sheet is already here!"));
 			return false;
 		}
 
@@ -147,14 +147,14 @@ public class Spell_IceSheet extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			String msgStr=_("the ground becomes covered in ice!");
+			String msgStr=L("the ground becomes covered in ice!");
 			if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
 			||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 			||(mob.location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
 			||(mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
-				msgStr=_("the water freezes over!");
+				msgStr=L("the water freezes over!");
 			if(auto)msgStr=Character.toUpperCase(msgStr.charAt(0))+msgStr.substring(1);
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),_(auto?"":"^S<S-NAME> speak(s) and gesture(s) and ")+msgStr+"^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),L(auto?"":"^S<S-NAME> speak(s) and gesture(s) and ")+msgStr+"^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -162,7 +162,7 @@ public class Spell_IceSheet extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> speak(s) about the cold, but the spell fizzles."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> speak(s) about the cold, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

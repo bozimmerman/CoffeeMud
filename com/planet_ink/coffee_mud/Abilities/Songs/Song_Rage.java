@@ -36,7 +36,7 @@ import java.util.*;
 public class Song_Rage extends Song
 {
 	@Override public String ID() { return "Song_Rage"; }
-	private final static String localizedName = CMLib.lang()._("Rage");
+	private final static String localizedName = CMLib.lang().L("Rage");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override
@@ -61,7 +61,7 @@ public class Song_Rage extends Song
 		if(msg.sourceMinor()!=CMMsg.TYP_FLEE) return true;
 		if(msg.source().fetchEffect(this.ID())==null) return true;
 
-		msg.source().tell(_("You are too enraged to flee."));
+		msg.source().tell(L("You are too enraged to flee."));
 		return false;
 	}
 

@@ -37,7 +37,7 @@ import java.util.*;
 public class FireBuilding extends CommonSkill
 {
 	@Override public String ID() { return "FireBuilding"; }
-	private final static String localizedName = CMLib.lang()._("Fire Building");
+	private final static String localizedName = CMLib.lang().L("Fire Building");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"LIGHT","FIREBUILD","FIREBUILDING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -59,16 +59,16 @@ public class FireBuilding extends CommonSkill
 			{
 				final MOB mob=(MOB)affected;
 				if(failed)
-					commonTell(mob,_("You failed to get the fire started."));
+					commonTell(mob,L("You failed to get the fire started."));
 				else
 				{
 					if(lighting==null)
 					{
 						final Item I=CMClass.getItem("GenItem");
 						I.basePhyStats().setWeight(50);
-						I.setName(_("a roaring campfire"));
-						I.setDisplayText(_("A roaring campfire has been built here."));
-						I.setDescription(_("It consists of dry wood, burning."));
+						I.setName(L("a roaring campfire"));
+						I.setDisplayText(L("A roaring campfire has been built here."));
+						I.setDescription(L("It consists of dry wood, burning."));
 						I.recoverPhyStats();
 						I.setMaterial(RawMaterial.RESOURCE_WOOD);
 						mob.location().addItem(I);
@@ -129,7 +129,7 @@ public class FireBuilding extends CommonSkill
 
 		if(commands.size()==0)
 		{
-			commonTell(mob,_("Light what?  Try light fire, or light torch..."));
+			commonTell(mob,L("Light what?  Try light fire, or light torch..."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -143,7 +143,7 @@ public class FireBuilding extends CommonSkill
 			lighting=null;
 			if((mob.location().domainType()&Room.INDOORS)>0)
 			{
-				commonTell(mob,_("You can't seem to find any deadwood around here."));
+				commonTell(mob,L("You can't seem to find any deadwood around here."));
 				return false;
 			}
 			switch(mob.location().domainType())
@@ -155,13 +155,13 @@ public class FireBuilding extends CommonSkill
 			case Room.DOMAIN_OUTDOORS_WOODS:
 				break;
 			default:
-				commonTell(mob,_("You can't seem to find any dry deadwood around here."));
+				commonTell(mob,L("You can't seem to find any dry deadwood around here."));
 				return false;
 			}
 			duration=getDuration(25,mob,1,3);
 			durationOfBurn=150+(xlevel(mob)*5);
-			verb=_("building a fire");
-			displayText=_("You are building a fire.");
+			verb=L("building a fire");
+			displayText=L("You are building a fire.");
 		}
 		else
 		{
@@ -171,7 +171,7 @@ public class FireBuilding extends CommonSkill
 			if((lighting.displayText().length()==0)
 			||(!CMLib.flags().isGettable(lighting)))
 			{
-				commonTell(mob,_("For some reason, @x1 just won't catch.",lighting.name()));
+				commonTell(mob,L("For some reason, @x1 just won't catch.",lighting.name()));
 				return false;
 			}
 			if(lighting instanceof Light)
@@ -179,15 +179,15 @@ public class FireBuilding extends CommonSkill
 				final Light l=(Light)lighting;
 				if(l.isLit())
 				{
-					commonTell(mob,_("@x1 is already lit!",l.name()));
+					commonTell(mob,L("@x1 is already lit!",l.name()));
 					return false;
 				}
 				if(CMLib.flags().isGettable(lighting))
-					commonTell(mob,_("Just hold this item to light it."));
+					commonTell(mob,L("Just hold this item to light it."));
 				else
 				{
 					l.light(true);
-					mob.location().show(mob,lighting,CMMsg.TYP_HANDS,_("<S-NAME> light(s) <T-NAMESELF>."));
+					mob.location().show(mob,lighting,CMMsg.TYP_HANDS,L("<S-NAME> light(s) <T-NAMESELF>."));
 					return true;
 				}
 				return false;
@@ -197,26 +197,26 @@ public class FireBuilding extends CommonSkill
 				final LandTitle t=CMLib.law().getLandTitle(mob.location());
 				if((t!=null)&&(!CMLib.law().doesHavePriviledgesHere(mob,mob.location())))
 				{
-					mob.tell(_("You are not allowed to burn anything here."));
+					mob.tell(L("You are not allowed to burn anything here."));
 					return false;
 				}
 			}
 			durationOfBurn=CMLib.flags().burnStatus(lighting);
 			if(durationOfBurn<0)
 			{
-				commonTell(mob,_("You need to cook that, if you can."));
+				commonTell(mob,L("You need to cook that, if you can."));
 				return false;
 			}
 			else
 			if(durationOfBurn==0)
 			{
-				commonTell(mob,_("That won't burn."));
+				commonTell(mob,L("That won't burn."));
 				return false;
 			}
 			if((lighting.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
 				duration=getDuration(25,mob,1,3);
-			verb=_("lighting @x1",lighting.name());
-			displayText=_("You are lighting @x1.",lighting.name());
+			verb=L("lighting @x1",lighting.name());
+			displayText=L("You are lighting @x1.",lighting.name());
 		}
 
 		switch(mob.location().getArea().getClimateObj().weatherType(mob.location()))
@@ -247,7 +247,7 @@ public class FireBuilding extends CommonSkill
 		durationOfBurn=durationOfBurn*abilityCode();
 		if(duration<4) duration=4;
 
-		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),auto?"":_("<S-NAME> start(s) building a fire."));
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),auto?"":L("<S-NAME> start(s) building a fire."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

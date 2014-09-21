@@ -38,7 +38,7 @@ import java.util.*;
 public class Thief_Snatch extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Snatch"; }
-	private final static String localizedName = CMLib.lang()._("Weapon Snatch");
+	private final static String localizedName = CMLib.lang().L("Weapon Snatch");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -83,24 +83,24 @@ public class Thief_Snatch extends ThiefSkill
 		final MOB target=(auto&&(givenTarget instanceof MOB))?(MOB)givenTarget:mob.getVictim();
 		if((!mob.isInCombat())||(target==null))
 		{
-			mob.tell(_("You must be in combat to do this!"));
+			mob.tell(L("You must be in combat to do this!"));
 			return false;
 		}
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell(_("You are too far away to disarm!"));
+			mob.tell(L("You are too far away to disarm!"));
 			return false;
 		}
 		final Item weapon=mob.fetchWieldedItem();
 		if(weapon==null)
 		{
-			mob.tell(_("You need a weapon to disarm someone!"));
+			mob.tell(L("You need a weapon to disarm someone!"));
 			return false;
 		}
 		else
 		if(mob.freeWearPositions(Wearable.WORN_HELD,(short)0,(short)0)>0)
 		{
-			mob.tell(_("Your other hand needs to be free to do a weapon snatch."));
+			mob.tell(L("Your other hand needs to be free to do a weapon snatch."));
 			return false;
 		}
 
@@ -109,13 +109,13 @@ public class Thief_Snatch extends ThiefSkill
 		||(!(hisItem instanceof Weapon))
 		||((((Weapon)hisItem).weaponClassification()==Weapon.CLASS_NATURAL)))
 		{
-			mob.tell(_("@x1 is not wielding a weapon!",target.charStats().HeShe()));
+			mob.tell(L("@x1 is not wielding a weapon!",target.charStats().HeShe()));
 			return false;
 		}
 		else
 		if(hisItem.rawLogicalAnd())
 		{
-			mob.tell(_("You can't snatch a two-handed weapon!"));
+			mob.tell(L("You can't snatch a two-handed weapon!"));
 			return false;
 		}
 		final Weapon hisWeapon=(Weapon)hisItem;
@@ -140,13 +140,13 @@ public class Thief_Snatch extends ThiefSkill
 			{
 				mob.location().send(target,msg);
 				mob.location().send(mob,msg2);
-				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<S-NAME> disarm(s) <T-NAMESELF>!"));
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<S-NAME> disarm(s) <T-NAMESELF>!"));
 				if(mob.location().isContent(hisWeapon))
 				{
 					CMLib.commands().postGet(mob,null,hisWeapon,true);
 					if(mob.isMine(hisWeapon))
 					{
-						msg=CMClass.getMsg(mob,hisWeapon,null,CMMsg.MSG_HOLD,_("<S-NAME> snatch(es) the <T-NAME> out of mid-air!"));
+						msg=CMClass.getMsg(mob,hisWeapon,null,CMMsg.MSG_HOLD,L("<S-NAME> snatch(es) the <T-NAME> out of mid-air!"));
 						if(mob.location().okMessage(mob,msg))
 							mob.location().send(mob,msg);
 					}
@@ -154,7 +154,7 @@ public class Thief_Snatch extends ThiefSkill
 			}
 		}
 		else
-			maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to disarm <T-NAMESELF> and fail(s)!"));
+			maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to disarm <T-NAMESELF> and fail(s)!"));
 		return success;
 	}
 }

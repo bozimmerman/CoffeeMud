@@ -70,7 +70,7 @@ public class ArchonJournal extends StdJournal implements ArchonOnly, MiscMagic
 		case CMMsg.TYP_PULL:
 			if(!CMSecurity.isASysOp(msg.source()))
 			{
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("@x1 flashes and falls out of <S-HIS-HER> hands!",name()));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 flashes and falls out of <S-HIS-HER> hands!",name()));
 				return false;
 			}
 			break;

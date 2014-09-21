@@ -35,7 +35,7 @@ import java.util.*;
 public class Bomb_Spores extends StdBomb
 {
 	@Override public String ID() { return "Bomb_Spores"; }
-	private final static String localizedName = CMLib.lang()._("spore bomb");
+	private final static String localizedName = CMLib.lang().L("spore bomb");
 	@Override public String name() { return localizedName; }
 	@Override protected int trapLevel(){return 15;}
 	@Override public String requiresToSet(){return "some diseased meat";}
@@ -72,7 +72,7 @@ public class Bomb_Spores extends StdBomb
 		if((!(P instanceof Food))||(V.size()==0))
 		{
 			if(mob!=null)
-				mob.tell(_("You need some diseased meat to make this out of."));
+				mob.tell(L("You need some diseased meat to make this out of."));
 			return false;
 		}
 		return true;
@@ -97,9 +97,9 @@ public class Bomb_Spores extends StdBomb
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) the poison gas!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) the poison gas!"));
 			else
-			if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("@x1 spews poison gas all over <T-NAME>!",affected.name())))
+			if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("@x1 spews poison gas all over <T-NAME>!",affected.name())))
 			{
 				super.spring(target);
 				Ability A=CMClass.getAbility(text());

@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Mimicry extends BardSkill
 {
 	@Override public String ID() { return "Skill_Mimicry"; }
-	private final static String localizedName = CMLib.lang()._("Mimicry");
+	private final static String localizedName = CMLib.lang().L("Mimicry");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -178,7 +178,7 @@ public class Skill_Mimicry extends BardSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":_("<S-NAME> begin(s) mimicing <T-NAMESELF>."));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("<S-NAME> begin(s) mimicing <T-NAMESELF>."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -188,7 +188,7 @@ public class Skill_Mimicry extends BardSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to mimic <T-NAMESELF>, but fail(s)."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to mimic <T-NAMESELF>, but fail(s)."));
 		return success;
 	}
 }

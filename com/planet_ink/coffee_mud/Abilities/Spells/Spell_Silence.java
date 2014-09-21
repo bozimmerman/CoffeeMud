@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Silence extends Spell
 {
 	@Override public String ID() { return "Spell_Silence"; }
-	private final static String localizedName = CMLib.lang()._("Silence");
+	private final static String localizedName = CMLib.lang().L("Silence");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Silence spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Silence spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -56,7 +56,7 @@ public class Spell_Silence extends Spell
 			return;
 		final Room room=(Room)affected;
 		if(canBeUninvoked())
-			room.showHappens(CMMsg.MSG_OK_ACTION, _("The sounds here begin to return."));
+			room.showHappens(CMMsg.MSG_OK_ACTION, L("The sounds here begin to return."));
 		super.unInvoke();
 	}
 
@@ -125,7 +125,7 @@ public class Spell_Silence extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,null,null,_("This place is already silent."));
+			mob.tell(mob,null,null,L("This place is already silent."));
 			return false;
 		}
 
@@ -139,7 +139,7 @@ public class Spell_Silence extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),_((auto?"S":"^S<S-NAME> whisper(s) and gesture(s) and s")+"ilence falls like a blanket.^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),L((auto?"S":"^S<S-NAME> whisper(s) and gesture(s) and s")+"ilence falls like a blanket.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -147,7 +147,7 @@ public class Spell_Silence extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> whisper(s) about silence, but the spell fizzles."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> whisper(s) about silence, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

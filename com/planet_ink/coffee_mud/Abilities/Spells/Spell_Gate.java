@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_Gate extends Spell
 {
 	@Override public String ID() { return "Spell_Gate"; }
-	private final static String localizedName = CMLib.lang()._("Gate");
+	private final static String localizedName = CMLib.lang().L("Gate");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
@@ -79,20 +79,20 @@ public class Spell_Gate extends Spell
 		}
 		if(commands.size()<1)
 		{
-			mob.tell(_("Gate to whom?"));
+			mob.tell(L("Gate to whom?"));
 			return false;
 		}
 		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
 
 		if(mob.location().fetchInhabitant(areaName)!=null)
 		{
-			mob.tell(_("Better look around first."));
+			mob.tell(L("Better look around first."));
 			return false;
 		}
 
 		if(CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob))
 		{
-			mob.tell(_("You need to stand up!"));
+			mob.tell(L("You need to stand up!"));
 			return false;
 		}
 
@@ -111,7 +111,7 @@ public class Spell_Gate extends Spell
 
 		if((newRoom==null) || (target == null))
 		{
-			mob.tell(_("You can't seem to fixate on '@x1', perhaps they don't exist?",CMParms.combine(commands,0)));
+			mob.tell(L("You can't seem to fixate on '@x1', perhaps they don't exist?",CMParms.combine(commands,0)));
 			return false;
 		}
 
@@ -131,14 +131,14 @@ public class Spell_Gate extends Spell
 				room=CMLib.map().getRandomRoom();
 			if(isBadRoom(room,mob,newRoom))
 			{
-				beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to invoke transportation, but fizzle(s) the spell."));
+				beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to invoke transportation, but fizzle(s) the spell."));
 				room=null;
 			}
 			addOn=", but the spell goes AWRY!!";
 			newRoom=room;
 		}
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),_("^S<S-NAME> invoke(s) a teleportation spell@x1^?",addOn));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),L("^S<S-NAME> invoke(s) a teleportation spell@x1^?",addOn));
 		if((mob.location().okMessage(mob,msg))&&(newRoom!=null)&&(newRoom.okMessage(mob,msg)))
 		{
 			mob.location().send(mob,msg);
@@ -150,7 +150,7 @@ public class Spell_Gate extends Spell
 			{
 				final MOB follower=(MOB)element;
 				final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,("<S-NAME> appear(s) in a burst of light.")+CMLib.protocol().msp("appear.wav",10));
-				final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,_("<S-NAME> disappear(s) in a burst of light."));
+				final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,L("<S-NAME> disappear(s) in a burst of light."));
 				if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 				{
 					if(follower.isInCombat())
@@ -161,7 +161,7 @@ public class Spell_Gate extends Spell
 					thisRoom.send(follower,leaveMsg);
 					newRoom.bringMobHere(follower,false);
 					newRoom.send(follower,enterMsg);
-					follower.tell(_("\n\r\n\r"));
+					follower.tell(L("\n\r\n\r"));
 					CMLib.commands().postLook(follower,true);
 				}
 			}

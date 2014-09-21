@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_TimeStop extends Spell
 {
 	@Override public String ID() { return "Spell_TimeStop"; }
-	private final static String localizedName = CMLib.lang()._("Time Stop");
+	private final static String localizedName = CMLib.lang().L("Time Stop");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Time is Stopped)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Time is Stopped)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ROOMS|CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -64,7 +64,7 @@ public class Spell_TimeStop extends Spell
 			if(affected instanceof Room)
 			{
 				final Room room=(Room)affected;
-				room.showHappens(CMMsg.MSG_OK_VISUAL, _("Time starts moving again..."));
+				room.showHappens(CMMsg.MSG_OK_VISUAL, L("Time starts moving again..."));
 				if(invoker!=null)
 				{
 					final Ability me=invoker.fetchEffect(ID());
@@ -86,7 +86,7 @@ public class Spell_TimeStop extends Spell
 				CMLib.threads().resumeTicking(mob,-1);
 				if(mob.location()!=null)
 				{
-					mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL, _("Time starts moving again..."));
+					mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL, L("Time starts moving again..."));
 					final Ability me=mob.location().fetchEffect(ID());
 					if(me!=null)
 						me.unInvoke();
@@ -107,9 +107,9 @@ public class Spell_TimeStop extends Spell
 			case CMMsg.TYP_LEAVE:
 			case CMMsg.TYP_FLEE:
 				if(msg.source()==invoker)
-					msg.source().tell(_("You cannot travel beyond the time stopped area."));
+					msg.source().tell(L("You cannot travel beyond the time stopped area."));
 				else
-					msg.source().tell(_("Nothing just happened.  You didn't do that."));
+					msg.source().tell(L("Nothing just happened.  You didn't do that."));
 				return false;
 			default:
 				if((msg.source() == invoker)
@@ -127,7 +127,7 @@ public class Spell_TimeStop extends Spell
 				   &&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 				   &&(!CMath.bset(msg.targetMajor(),CMMsg.MASK_ALWAYS)))
 				{
-					msg.source().tell(_("Time is stopped. Nothing just happened.  You didn't do that."));
+					msg.source().tell(L("Time is stopped. Nothing just happened.  You didn't do that."));
 					return false;
 				}
 			}
@@ -149,7 +149,7 @@ public class Spell_TimeStop extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,null,null,_("Time has already been stopped here!"));
+			mob.tell(mob,null,null,L("Time has already been stopped here!"));
 			return false;
 		}
 
@@ -163,7 +163,7 @@ public class Spell_TimeStop extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),_((auto?"T":"^S<S-NAME> speak(s) and gesture(s) and t")+"ime suddenly STOPS!^?"));
+			CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),L((auto?"T":"^S<S-NAME> speak(s) and gesture(s) and t")+"ime suddenly STOPS!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -187,7 +187,7 @@ public class Spell_TimeStop extends Spell
 										return false;
 								}
 								else
-									return beneficialWordsFizzle(mob,null,_("<S-NAME> incant(s) for awhile, but the spell fizzles."));
+									return beneficialWordsFizzle(mob,null,L("<S-NAME> incant(s) for awhile, but the spell fizzles."));
 							}
 						}
 					}
@@ -206,7 +206,7 @@ public class Spell_TimeStop extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> incant(s) for awhile, but the spell fizzles."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> incant(s) for awhile, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

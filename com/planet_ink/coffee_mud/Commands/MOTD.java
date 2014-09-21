@@ -206,7 +206,7 @@ public class MOTD extends StdCommand
 							mymsgs++;
 					}
 					if(mymsgs>0)
-						buf.append(_("\n\r^ZYou have mail waiting. Enter 'EMAIL BOX' to read.^?^.\n\r"));
+						buf.append(L("\n\r^ZYou have mail waiting. Enter 'EMAIL BOX' to read.^?^.\n\r"));
 				}
 
 				if((CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDPLAYERS))
@@ -215,8 +215,8 @@ public class MOTD extends StdCommand
 					final List<String> l=CMLib.login().getExpiredList();
 					if(l.size()>0)
 					{
-						buf.append(_("\n\r^XThere are currently @x1 expired "+((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)?"accounts":"characters"),""+l.size()));
-						buf.append(_(".  Enter LIST EXPIRED to view them.^?^.\n\r"));
+						buf.append(L("\n\r^XThere are currently @x1 expired "+((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)?"accounts":"characters"),""+l.size()));
+						buf.append(L(".  Enter LIST EXPIRED to view them.^?^.\n\r"));
 					}
 				}
 
@@ -225,16 +225,16 @@ public class MOTD extends StdCommand
 					if(buf.length()>0)
 					{
 						if(qQVec.size()>0)
-							buf.append(_("\n\r^HYou are on @x1 quest(s).  Enter QUESTS to see them!.^?^.\n\r",""+qQVec.size()));
+							buf.append(L("\n\r^HYou are on @x1 quest(s).  Enter QUESTS to see them!.^?^.\n\r",""+qQVec.size()));
 						mob.session().wraplessPrintln("\n\r--------------------------------------\n\r"+buf.toString());
-						if(pause){ mob.session().prompt(_("\n\rPress ENTER: "),10000); mob.session().println("\n\r");}
+						if(pause){ mob.session().prompt(L("\n\rPress ENTER: "),10000); mob.session().println("\n\r");}
 					}
 					else
 					if(qQVec.size()>0)
-						buf.append(_("\n\r^HYou are on @x1 quest(s).  Enter QUESTS to see them!.^?^.\n\r",""+qQVec.size()));
+						buf.append(L("\n\r^HYou are on @x1 quest(s).  Enter QUESTS to see them!.^?^.\n\r",""+qQVec.size()));
 					else
 					if(CMParms.combine(commands,1).equalsIgnoreCase("AGAIN"))
-						mob.session().println(_("No @x1 to re-read.",what));
+						mob.session().println(L("No @x1 to re-read.",what));
 			}
 			catch(final HTTPRedirectException e){}
 			return false;
@@ -244,11 +244,11 @@ public class MOTD extends StdCommand
 			if(CMath.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE))
 			{
 				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_DAILYMESSAGE));
-				mob.tell(_("The daily messages have been turned on."));
+				mob.tell(L("The daily messages have been turned on."));
 			}
 			else
 			{
-				mob.tell(_("The daily messages are already on."));
+				mob.tell(L("The daily messages are already on."));
 			}
 		}
 		else
@@ -257,16 +257,16 @@ public class MOTD extends StdCommand
 			if(!CMath.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE))
 			{
 				mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_DAILYMESSAGE));
-				mob.tell(_("The daily messages have been turned off."));
+				mob.tell(L("The daily messages have been turned off."));
 			}
 			else
 			{
-				mob.tell(_("The daily messages are already off."));
+				mob.tell(L("The daily messages are already off."));
 			}
 		}
 		else
 		{
-			mob.tell(_("'@x1' is not a valid parameter.  Try ON, OFF, or AGAIN.",parm));
+			mob.tell(L("'@x1' is not a valid parameter.  Try ON, OFF, or AGAIN.",parm));
 		}
 		return false;
 	}

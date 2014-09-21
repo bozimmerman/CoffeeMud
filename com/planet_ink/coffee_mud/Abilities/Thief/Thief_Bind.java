@@ -35,9 +35,9 @@ import java.util.*;
 public class Thief_Bind extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Bind"; }
-	private final static String localizedName = CMLib.lang()._("Bind");
+	private final static String localizedName = CMLib.lang().L("Bind");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return _("(Bound by "+ropeName+")"); }
+	@Override public String displayText() { return L("(Bound by "+ropeName+")"); }
 	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -82,7 +82,7 @@ public class Thief_Bind extends ThiefSkill
 			{
 				if(canBeUninvoked())
 				{
-					if(msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,_("<S-NAME> struggle(s) against @x1 binding <S-HIM-HER>.",ropeName.toLowerCase())))
+					if(msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("<S-NAME> struggle(s) against @x1 binding <S-HIM-HER>.",ropeName.toLowerCase())))
 					{
 						amountRemaining-=(msg.source().charStats().getStat(CharStats.STAT_STRENGTH)+msg.source().phyStats().level());
 						if(amountRemaining<0)
@@ -90,7 +90,7 @@ public class Thief_Bind extends ThiefSkill
 					}
 				}
 				else
-					msg.source().tell(_("You are constricted by @x1 and can't move!",ropeName.toLowerCase()));
+					msg.source().tell(L("You are constricted by @x1 and can't move!",ropeName.toLowerCase()));
 				return false;
 			}
 		}
@@ -122,7 +122,7 @@ public class Thief_Bind extends ThiefSkill
 		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
-				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> manage(s) to break <S-HIS-HER> way free of @x1.",ropeName));
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> manage(s) to break <S-HIS-HER> way free of @x1.",ropeName));
 			CMLib.commands().postStand(mob,true);
 		}
 	}
@@ -147,7 +147,7 @@ public class Thief_Bind extends ThiefSkill
 	{
 		if((mob.isInCombat())&&(!auto))
 		{
-			mob.tell(_("Not while you are fighting!"));
+			mob.tell(L("Not while you are fighting!"));
 			return false;
 		}
 		if((commands.size()>0)&&((String)commands.firstElement()).equalsIgnoreCase("UNTIE"))
@@ -158,14 +158,14 @@ public class Thief_Bind extends ThiefSkill
 			final Ability A=target.fetchEffect(ID());
 			if(A!=null)
 			{
-				if(mob.location().show(mob,target,null,CMMsg.MSG_HANDS,_("<S-NAME> attempt(s) to unbind <T-NAMESELF>.")))
+				if(mob.location().show(mob,target,null,CMMsg.MSG_HANDS,L("<S-NAME> attempt(s) to unbind <T-NAMESELF>.")))
 				{
 					A.unInvoke();
 					return true;
 				}
 				return false;
 			}
-			mob.tell(_("@x1 doesn't appear to be bound with ropes.",target.name(mob)));
+			mob.tell(L("@x1 doesn't appear to be bound with ropes.",target.name(mob)));
 			return false;
 		}
 
@@ -175,7 +175,7 @@ public class Thief_Bind extends ThiefSkill
 
 		if((!CMLib.flags().isSleeping(target))&&(CMLib.flags().canMove(target)&&(!auto)))
 		{
-			mob.tell(_("@x1 doesn't look willing to cooperate.",target.name(mob)));
+			mob.tell(L("@x1 doesn't look willing to cooperate.",target.name(mob)));
 			return false;
 		}
 		// the invoke method for spells receives as
@@ -190,7 +190,7 @@ public class Thief_Bind extends ThiefSkill
 		if(success)
 		{
 			if(auto) maxRange=10;
-			final String str=auto?_("<T-NAME> become(s) bound by @x1.",ropeName):_("<S-NAME> bind(s) <T-NAME> with @x1.",ropeName);
+			final String str=auto?L("<T-NAME> become(s) bound by @x1.",ropeName):L("<S-NAME> bind(s) <T-NAME> with @x1.",ropeName);
 			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT|CMMsg.MASK_SOUND|CMMsg.MASK_MALICIOUS,auto?"":str,str,str);
 			if((target.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 			{
@@ -224,7 +224,7 @@ public class Thief_Bind extends ThiefSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to bind <T-NAME> and fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to bind <T-NAME> and fail(s)."));
 
 
 		// return whether it worked

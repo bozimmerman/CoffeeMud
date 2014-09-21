@@ -174,7 +174,7 @@ public class GenCharClass extends StdCharClass
 		final StringBuffer str=new StringBuffer("");
 		if((disallowedWeaponClasses(null)!=null)&&(disallowedWeaponClasses(null).size()>0))
 		{
-			str.append(_("The following weapon types may not be used: "));
+			str.append(L("The following weapon types may not be used: "));
 			for(final Iterator i=disallowedWeaponClasses(null).iterator();i.hasNext();)
 			{
 				final Integer I=(Integer)i.next();
@@ -184,7 +184,7 @@ public class GenCharClass extends StdCharClass
 		}
 		if((requiredWeaponMaterials()!=null)&&(requiredWeaponMaterials().size()>0))
 		{
-			str.append(_("Requires using weapons made of the following materials: "));
+			str.append(L("Requires using weapons made of the following materials: "));
 			for(final Iterator i=requiredWeaponMaterials().iterator();i.hasNext();)
 			{
 				final Integer I=(Integer)i.next();
@@ -193,7 +193,7 @@ public class GenCharClass extends StdCharClass
 			str.append(".  ");
 		}
 
-		if(str.length()==0) str.append(_("No limitations."));
+		if(str.length()==0) str.append(L("No limitations."));
 		return str.toString().trim();
 	}
 
@@ -226,7 +226,7 @@ public class GenCharClass extends StdCharClass
 				if(!CMLib.masking().maskCheck(qualifications,mob,true))
 				{
 					if(!quiet)
-						mob.tell(_("You must meet the following qualifications to be a @x1:\n@x2",name(),getStatQualDesc()));
+						mob.tell(L("You must meet the following qualifications to be a @x1:\n@x2",name(),getStatQualDesc()));
 					return false;
 				}
 			}

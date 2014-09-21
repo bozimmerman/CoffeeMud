@@ -36,7 +36,7 @@ import java.util.*;
 public class Fighter_Cleave extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Cleave"; }
-	private final static String localizedName = CMLib.lang()._("Cleave");
+	private final static String localizedName = CMLib.lang().L("Cleave");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -67,7 +67,7 @@ public class Fighter_Cleave extends FighterSkill
 		{
 			Item w=mob.fetchWieldedItem();
 			if(w==null) w=mob.myNaturalWeapon();
-			final CMMsg msg=CMClass.getMsg(mob,nextTarget,this,CMMsg.MSG_NOISYMOVEMENT,_("^F^<FIGHT^><S-NAME> CLEAVE(S) INTO <T-NAME>!!^</FIGHT^>^?"));
+			final CMMsg msg=CMClass.getMsg(mob,nextTarget,this,CMMsg.MSG_NOISYMOVEMENT,L("^F^<FIGHT^><S-NAME> CLEAVE(S) INTO <T-NAME>!!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{

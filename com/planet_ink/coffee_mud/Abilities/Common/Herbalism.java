@@ -42,7 +42,7 @@ import java.util.*;
 public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "Herbalism"; }
-	private final static String localizedName = CMLib.lang()._("Herbalism");
+	private final static String localizedName = CMLib.lang().L("Herbalism");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"HERBALISM","HERBREW","HBREW"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -77,8 +77,8 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			if(tickUp==0)
 			{
 				commonEmote(mob,"<S-NAME> start(s) brewing "+buildingI.name()+".");
-				displayText=_("You are brewing @x1",buildingI.name());
-				verb=_("brewing @x1",buildingI.name());
+				displayText=L("You are brewing @x1",buildingI.name());
+				verb=L("brewing @x1",buildingI.name());
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -167,7 +167,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+buildingI.name()+".");
 						else
 						if(oldName.length()>0)
-							commonTell(mob,_("Something went wrong! @x1 explodes!",(Character.toUpperCase(oldName.charAt(0))+oldName.substring(1))));
+							commonTell(mob,L("Something went wrong! @x1 explodes!",(Character.toUpperCase(oldName.charAt(0))+oldName.substring(1))));
 						buildingI.destroy();
 					}
 					else
@@ -189,8 +189,8 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 	{
 		buildingI=CMClass.getItem("GenMultiPotion");
 		((Potion)buildingI).setSpellList(theSpell.ID());
-		buildingI.setName(_("a potion of @x1",theSpell.name().toLowerCase()));
-		buildingI.setDisplayText(_("a potion of @x1 sits here.",theSpell.name().toLowerCase()));
+		buildingI.setName(L("a potion of @x1",theSpell.name().toLowerCase()));
+		buildingI.setDisplayText(L("a potion of @x1 sits here.",theSpell.name().toLowerCase()));
 		buildingI.basePhyStats().setLevel(level);
 		buildingI.phyStats().setLevel(level);
 		((Drink)buildingI).setThirstQuenched(10);
@@ -222,7 +222,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 		}
 		if(commands.size()<1)
 		{
-			commonTell(mob,_("Brew what? Enter \"hbrew list\" for a list, \"hbrew learn <item>\" to learn recipes, or \"hbrew stop\" to cancel."));
+			commonTell(mob,L("Brew what? Enter \"hbrew list\" for a list, \"hbrew learn <item>\" to learn recipes, or \"hbrew stop\" to cancel."));
 			return false;
 		}
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
@@ -236,12 +236,12 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 				allFlag=true;
 				mask="";
 			}
-			final StringBuffer buf=new StringBuffer(_("Potions you know how to brew:\n\r"));
+			final StringBuffer buf=new StringBuffer(L("Potions you know how to brew:\n\r"));
 			final int[] cols={
 					ListingLibrary.ColFixer.fixColWidth(20,mob.session()),
 					ListingLibrary.ColFixer.fixColWidth(5,mob.session())
 				};
-			buf.append(_("@x1 @x2 Ingredients\n\r",CMStrings.padRight(_("Chant"),cols[0]),CMStrings.padRight(_("Level"),cols[1])));
+			buf.append(L("@x1 @x2 Ingredients\n\r",CMStrings.padRight(L("Chant"),cols[0]),CMStrings.padRight(L("Level"),cols[1])));
 			final boolean fillUsage=(usage.size()==0);
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -304,22 +304,22 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			if(buildingI==null) return false;
 			if(!mob.isMine(buildingI))
 			{
-				commonTell(mob,_("You'll need to pick that up first."));
+				commonTell(mob,L("You'll need to pick that up first."));
 				return false;
 			}
 			if(!(buildingI instanceof Container))
 			{
-				commonTell(mob,_("There's nothing in @x1 to brew!",buildingI.name(mob)));
+				commonTell(mob,L("There's nothing in @x1 to brew!",buildingI.name(mob)));
 				return false;
 			}
 			if(!(buildingI instanceof Drink))
 			{
-				commonTell(mob,_("You can't drink out of a @x1.",buildingI.name(mob)));
+				commonTell(mob,L("You can't drink out of a @x1.",buildingI.name(mob)));
 				return false;
 			}
 			if(((Drink)buildingI).liquidRemaining()==0)
 			{
-				commonTell(mob,_("The @x1 contains no liquid base.  Water is probably fine.",buildingI.name(mob)));
+				commonTell(mob,L("The @x1 contains no liquid base.  Water is probably fine.",buildingI.name(mob)));
 				return false;
 			}
 			final String recipeName=CMParms.combine(commands,0);
@@ -346,7 +346,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			}
 			if((theSpell==null)||(recipe==null))
 			{
-				commonTell(mob,_("You don't know how to brew '@x1'.  Try \"hbrew list\" for a list.",recipeName));
+				commonTell(mob,L("You don't know how to brew '@x1'.  Try \"hbrew list\" for a list.",recipeName));
 				return false;
 			}
 			int experienceToLose=10;
@@ -373,7 +373,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 					}
 					if(!ok)
 					{
-						commonTell(mob,_("This brew requires @x1.  Please place some inside the @x2 and try again.",ingredient.toLowerCase(),buildingI.name(mob)));
+						commonTell(mob,L("This brew requires @x1.  Please place some inside the @x2 and try again.",ingredient.toLowerCase(),buildingI.name(mob)));
 						return false;
 					}
 				}
@@ -393,7 +393,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 				}
 				if(!ok)
 				{
-					commonTell(mob,_("The @x1 must be removed from the @x2 before starting.",I.name(mob),buildingI.name(mob)));
+					commonTell(mob,L("The @x1 must be removed from the @x2 before starting.",I.name(mob),buildingI.name(mob)));
 					return false;
 				}
 			}
@@ -405,7 +405,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 			CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
-			commonTell(mob,_("You lose @x1 experience points for the effort.",""+experienceToLose));
+			commonTell(mob,L("You lose @x1 experience points for the effort.",""+experienceToLose));
 			oldName=buildingI.name();
 			buildingI.destroy();
 			buildingI=buildItem(theSpell, theLevel);

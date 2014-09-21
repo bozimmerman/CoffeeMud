@@ -38,10 +38,10 @@ import java.util.*;
 public class Chant_FindPlant extends Chant
 {
 	@Override public String ID() { return "Chant_FindPlant"; }
-	private final static String localizedName = CMLib.lang()._("Find Plant");
+	private final static String localizedName = CMLib.lang().L("Find Plant");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	@Override public String displayText() { return _("(Finding "+lookingFor+")"); }
+	@Override public String displayText() { return L("(Finding "+lookingFor+")"); }
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override public long flags(){return Ability.FLAG_TRACKING;}
 	protected String lookingFor="plants";
@@ -103,14 +103,14 @@ public class Chant_FindPlant extends Chant
 			if(nextDirection==-1)
 			{
 				if(itsHere(mob,mob.location()).length()==0)
-					mob.tell(_("The trail fizzles out here."));
+					mob.tell(L("The trail fizzles out here."));
 				nextDirection=-999;
 				unInvoke();
 			}
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell(_("Your sense @x1 @x2.",lookingFor,Directions.getInDirectionName(nextDirection)));
+				mob.tell(L("Your sense @x1 @x2.",lookingFor,Directions.getInDirectionName(nextDirection)));
 				nextDirection=-2;
 			}
 
@@ -159,7 +159,7 @@ public class Chant_FindPlant extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already trying to @x1",name()));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already trying to @x1",name()));
 			return false;
 		}
 		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
@@ -169,13 +169,13 @@ public class Chant_FindPlant extends Chant
 			commands.addElement(text());
 		if(commands.size()==0)
 		{
-			mob.tell(_("Find which @x1?  Use 'CHANT \"@x2\" LIST' for a list.",lookingFor,name()));
+			mob.tell(L("Find which @x1?  Use 'CHANT \"@x2\" LIST' for a list.",lookingFor,name()));
 			return false;
 		}
 		final String s=CMParms.combine(commands,0);
 		if(s.equalsIgnoreCase("LIST"))
 		{
-			final StringBuffer msg=new StringBuffer(_("You may search for any of the following: "));
+			final StringBuffer msg=new StringBuffer(L("You may search for any of the following: "));
 			for(int i=0;i<allOkResources().size();i++)
 				msg.append(RawMaterial.CODES.NAME(((Integer)allOkResources().elementAt(i)).intValue()).toLowerCase()+", ");
 			mob.tell(msg.substring(0,msg.length()-2));
@@ -195,7 +195,7 @@ public class Chant_FindPlant extends Chant
 		}
 		if(whatImLookingFor<0)
 		{
-			mob.tell(_("'@x1' cannot be found with this chant.    Use 'CHANT \"@x2\" LIST' for a list.",s,name()));
+			mob.tell(L("'@x1' cannot be found with this chant.    Use 'CHANT \"@x2\" LIST' for a list.",s,name()));
 			return false;
 		}
 
@@ -233,7 +233,7 @@ public class Chant_FindPlant extends Chant
 
 		if((success)&&(theTrail!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> begin(s) to @x1s!",name().toLowerCase()):_("^S<S-NAME> chant(s) for @x1.^?",lookingFor));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> begin(s) to @x1s!",name().toLowerCase()):L("^S<S-NAME> chant(s) for @x1.^?",lookingFor));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -245,7 +245,7 @@ public class Chant_FindPlant extends Chant
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s), but gain(s) nothing from it."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> chant(s), but gain(s) nothing from it."));
 
 		return success;
 	}

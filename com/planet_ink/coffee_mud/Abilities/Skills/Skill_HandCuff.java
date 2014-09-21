@@ -36,9 +36,9 @@ import java.util.*;
 public class Skill_HandCuff extends StdSkill
 {
 	@Override public String ID() { return "Skill_HandCuff"; }
-	private final static String localizedName = CMLib.lang()._("Handcuff");
+	private final static String localizedName = CMLib.lang().L("Handcuff");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Handcuffed)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Handcuffed)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -75,14 +75,14 @@ public class Skill_HandCuff extends StdSkill
 			if(msg.sourceMinor()==CMMsg.TYP_RECALL)
 			{
 				if((msg.source()!=null)&&(msg.source().location()!=null))
-					msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,_("<S-NAME> attempt(s) to recall, but the handcuffs prevent <S-HIM-HER>."));
+					msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to recall, but the handcuffs prevent <S-HIM-HER>."));
 				return false;
 			}
 			else
 			if(((msg.sourceMinor()==CMMsg.TYP_FOLLOW)&&(msg.target()!=invoker()))
 			||((msg.sourceMinor()==CMMsg.TYP_NOFOLLOW)&&(msg.source().amFollowing()==invoker())))
 			{
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> struggle(s) against <S-HIS-HER> cuffs."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> struggle(s) against <S-HIS-HER> cuffs."));
 				amountRemaining-=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+mob.phyStats().level());
 				if(amountRemaining<0)
 					unInvoke();
@@ -100,7 +100,7 @@ public class Skill_HandCuff extends StdSkill
 			&&(msg.target() instanceof Room)
 			&&(!((Room)msg.target()).isInhabitant(invoker))))
 			{
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> struggle(s) against <S-HIS-HER> cuffs."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> struggle(s) against <S-HIS-HER> cuffs."));
 				amountRemaining-=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+mob.phyStats().level());
 				if(amountRemaining<0)
 					unInvoke();
@@ -115,7 +115,7 @@ public class Skill_HandCuff extends StdSkill
 			&&((msg.sourceMajor(CMMsg.MASK_HANDS))
 			||(msg.sourceMajor(CMMsg.MASK_MOVE))))
 			{
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> struggle(s) against <S-HIS-HER> cuffs."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> struggle(s) against <S-HIS-HER> cuffs."));
 				amountRemaining-=mob.charStats().getStat(CharStats.STAT_STRENGTH);
 				if(amountRemaining<0)
 					unInvoke();
@@ -131,7 +131,7 @@ public class Skill_HandCuff extends StdSkill
 		&&(msg.source().isMonster())
 		&&(msg.source().getVictim()!=mob))
 		{
-			msg.source().tell(_("You may not assault this prisoner."));
+			msg.source().tell(L("You may not assault this prisoner."));
 			if(mob.getVictim()==msg.source())
 			{
 				mob.makePeace();
@@ -155,7 +155,7 @@ public class Skill_HandCuff extends StdSkill
 		{
 			mob.setFollowing(null);
 			if(!mob.amDead())
-				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> <S-IS-ARE> released from the handcuffs."));
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> <S-IS-ARE> released from the handcuffs."));
 			if(!oldAssist)
 				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOASSIST));
 			if(oldGuard)
@@ -186,7 +186,7 @@ public class Skill_HandCuff extends StdSkill
 	{
 		if(mob.isInCombat()&&(!auto))
 		{
-			mob.tell(_("Not while you are fighting!"));
+			mob.tell(L("Not while you are fighting!"));
 			return false;
 		}
 		if((commands.size()>0)&&((String)commands.firstElement()).equalsIgnoreCase("UNTIE"))
@@ -197,14 +197,14 @@ public class Skill_HandCuff extends StdSkill
 			final Ability A=target.fetchEffect(ID());
 			if(A!=null)
 			{
-				if(mob.location().show(mob,target,null,CMMsg.MSG_HANDS,_("<S-NAME> attempt(s) to unbind <T-NAMESELF>.")))
+				if(mob.location().show(mob,target,null,CMMsg.MSG_HANDS,L("<S-NAME> attempt(s) to unbind <T-NAMESELF>.")))
 				{
 					A.unInvoke();
 					return true;
 				}
 				return false;
 			}
-			mob.tell(_("@x1 doesn't appear to be handcuffed.",target.name(mob)));
+			mob.tell(L("@x1 doesn't appear to be handcuffed.",target.name(mob)));
 			return false;
 		}
 		final MOB target=getTarget(mob,commands,givenTarget);
@@ -212,12 +212,12 @@ public class Skill_HandCuff extends StdSkill
 
 		if(Skill_Arrest.getWarrantsOf(target, CMLib.law().getLegalObject(mob.location().getArea())).size()==0)
 		{
-			mob.tell(_("@x1 has no warrants out here.",target.name(mob)));
+			mob.tell(L("@x1 has no warrants out here.",target.name(mob)));
 			return false;
 		}
 		if((CMLib.flags().isStanding(target))&&(!auto))
 		{
-			mob.tell(_("@x1 doesn't look willing to cooperate.",target.name(mob)));
+			mob.tell(L("@x1 doesn't look willing to cooperate.",target.name(mob)));
 			return false;
 		}
 		// the invoke method for spells receives as
@@ -231,7 +231,7 @@ public class Skill_HandCuff extends StdSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:CMMsg.MASK_MALICIOUS),_("<S-NAME> handcuff(s) <T-NAME>."));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:CMMsg.MASK_MALICIOUS),L("<S-NAME> handcuff(s) <T-NAME>."));
 			if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 			{
 				mob.location().send(mob,msg);
@@ -276,7 +276,7 @@ public class Skill_HandCuff extends StdSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to bind <T-NAME> and fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to bind <T-NAME> and fail(s)."));
 
 
 		// return whether it worked

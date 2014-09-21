@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_CureBlindness extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_CureBlindness"; }
-	private final static String localizedName = CMLib.lang()._("Cure Blindness");
+	private final static String localizedName = CMLib.lang().L("Cure Blindness");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
@@ -114,7 +114,7 @@ public class Prayer_CureBlindness extends Prayer implements MendingSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("A visible glow surrounds <T-NAME>."):_("^S<S-NAME> @x1 for <T-NAMESELF> to see the light.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("A visible glow surrounds <T-NAME>."):L("^S<S-NAME> @x1 for <T-NAMESELF> to see the light.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -123,7 +123,7 @@ public class Prayer_CureBlindness extends Prayer implements MendingSkill
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
+			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

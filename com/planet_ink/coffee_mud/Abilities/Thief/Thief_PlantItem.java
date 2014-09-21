@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_PlantItem extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_PlantItem"; }
-	private final static String localizedName = CMLib.lang()._("Plant Item");
+	private final static String localizedName = CMLib.lang().L("Plant Item");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -54,18 +54,18 @@ public class Thief_PlantItem extends ThiefSkill
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("What would you like to plant on whom?"));
+			mob.tell(L("What would you like to plant on whom?"));
 			return false;
 		}
 		final MOB target=mob.location().fetchInhabitant((String)commands.lastElement());
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",(String)commands.lastElement()));
+			mob.tell(L("You don't see '@x1' here.",(String)commands.lastElement()));
 			return false;
 		}
 		if(target==mob)
 		{
-			mob.tell(_("You cannot plant anything on yourself!"));
+			mob.tell(L("You cannot plant anything on yourself!"));
 			return false;
 		}
 		commands.removeElement(commands.lastElement());
@@ -83,7 +83,7 @@ public class Thief_PlantItem extends ThiefSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_GIVE,_("<S-NAME> plant(s) <O-NAME> on <T-NAMESELF>."),CMMsg.MASK_ALWAYS|CMMsg.MSG_GIVE,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_GIVE,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_GIVE,L("<S-NAME> plant(s) <O-NAME> on <T-NAMESELF>."),CMMsg.MASK_ALWAYS|CMMsg.MSG_GIVE,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_GIVE,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -95,7 +95,7 @@ public class Thief_PlantItem extends ThiefSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to plant @x1 on <T-NAMESELF>, but fail(s).",item.name()));
+			beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to plant @x1 on <T-NAMESELF>, but fail(s).",item.name()));
 		return success;
 	}
 }

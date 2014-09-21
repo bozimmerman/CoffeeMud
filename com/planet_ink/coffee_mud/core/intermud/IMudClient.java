@@ -49,7 +49,7 @@ public class IMudClient implements I3Interface
 	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new IMudClient();}}
 	@Override public void initializeClass(){}
 	@Override public CMObject copyOf(){try{return (CMObject)this.clone();}catch(final Exception e){return newInstance();}}
-	@Override public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+	@Override public String L(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	@Override public boolean activate(){ return true;}
 	@Override public boolean shutdown(){ return true;}
@@ -71,7 +71,7 @@ public class IMudClient implements I3Interface
 		if((!i3online())&&(!imc2online())) return;
 		if((mudName==null)||(mudName.length()==0))
 		{
-			mob.tell(_("You must specify a mud name."));
+			mob.tell(L("You must specify a mud name."));
 			return;
 		}
 		if(i3online()&&Intermud.isAPossibleMUDName(mudName))
@@ -79,7 +79,7 @@ public class IMudClient implements I3Interface
 			mudName=Intermud.translateName(mudName);
 			if(!Intermud.isUp(mudName))
 			{
-				mob.tell(_("@x1 is not available.",mudName));
+				mob.tell(L("@x1 is not available.",mudName));
 				return;
 			}
 			final WhoPacket wk=new WhoPacket();
@@ -97,7 +97,7 @@ public class IMudClient implements I3Interface
 			imc2.imc_send_who(mob.name(),imc2.getIMC2Mud(mudName).name,"who",mob.phyStats().level(),0);
 		else
 		{
-			mob.tell(_("'@x1' is not a mud name.",mudName));
+			mob.tell(L("'@x1' is not a mud name.",mudName));
 			return;
 		}
 	}
@@ -121,7 +121,7 @@ public class IMudClient implements I3Interface
 		if((mob==null)||(!imc2online())) return;
 		if((parms==null)||(parms.length()==0)||(imc2.getIMC2Mud(parms)==null))
 		{
-			mob.tell(_("You must specify a mud name."));
+			mob.tell(L("You must specify a mud name."));
 			return;
 		}
 		imc2.imc_send_who(mob.name(),imc2.getIMC2Mud(parms).name,"info",mob.phyStats().level(),0);
@@ -133,23 +133,23 @@ public class IMudClient implements I3Interface
 		if((mob==null)||(!i3online())) return;
 		if((mudName==null)||(mudName.length()==0))
 		{
-			mob.tell(_("You must specify a mud name."));
+			mob.tell(L("You must specify a mud name."));
 			return;
 		}
 		if((channel==null)||(channel.length()==0)||(Intermud.getRemoteChannel(channel).length()==0))
 		{
-			mob.tell(_("You must specify an InterMud 3 channel name."));
+			mob.tell(L("You must specify an InterMud 3 channel name."));
 			return;
 		}
 		if(!Intermud.isAPossibleMUDName(mudName))
 		{
-			mob.tell(_("'@x1' is an unknown mud.",mudName));
+			mob.tell(L("'@x1' is an unknown mud.",mudName));
 			return;
 		}
 		mudName=Intermud.translateName(mudName);
 		if(!Intermud.isUp(mudName))
 		{
-			mob.tell(_("@x1 is not available.",mudName));
+			mob.tell(L("@x1 is not available.",mudName));
 			return;
 		}
 		final ChannelWhoRequest ck=new ChannelWhoRequest();
@@ -168,7 +168,7 @@ public class IMudClient implements I3Interface
 		if((mob==null)||(!i3online())) return;
 		if((channel==null)||(channel.length()==0)||(Intermud.getLocalChannel(channel).length()==0))
 		{
-			mob.tell(_("You must specify an existing channel to add it to the i3 network."));
+			mob.tell(L("You must specify an existing channel to add it to the i3 network."));
 			return;
 		}
 
@@ -187,15 +187,15 @@ public class IMudClient implements I3Interface
 		if((mob==null)||(!i3online())) return;
 		if((channel==null)||(channel.length()==0))
 		{
-			mob.tell(_("You must specify a channel name listed in your INI file."));
+			mob.tell(L("You must specify a channel name listed in your INI file."));
 			return;
 		}
 		if(Intermud.getLocalChannel(channel).length()==0)
 		{
 			if(Intermud.registerFakeChannel(channel).length()>0)
-				mob.tell(_("Channel was not officially registered."));
+				mob.tell(L("Channel was not officially registered."));
 			else
-				mob.tell(_("Channel listen failed."));
+				mob.tell(L("Channel listen failed."));
 		}
 		final ChannelListen ck=new ChannelListen();
 		ck.sender_name=mob.Name();
@@ -215,11 +215,11 @@ public class IMudClient implements I3Interface
 		   ||(channel.length()==0)
 		   ||(Intermud.getLocalChannel(channel).length()==0))
 		{
-			mob.tell(_("You must specify an actual channel name."));
+			mob.tell(L("You must specify an actual channel name."));
 			return;
 		}
 		if(Intermud.removeFakeChannel(channel).length()>0)
-			mob.tell(_("Unofficial channel closed."));
+			mob.tell(L("Unofficial channel closed."));
 
 		final ChannelListen ck=new ChannelListen();
 		ck.sender_name=mob.Name();
@@ -237,7 +237,7 @@ public class IMudClient implements I3Interface
 		if((mob==null)||(!i3online())) return;
 		if((channel==null)||(channel.length()==0)||(Intermud.getRemoteChannel(channel).length()==0))
 		{
-			mob.tell(_("You must specify a valid InterMud 3 channel name."));
+			mob.tell(L("You must specify a valid InterMud 3 channel name."));
 			return;
 		}
 		final ChannelDelete ck=new ChannelDelete();
@@ -256,17 +256,17 @@ public class IMudClient implements I3Interface
 		if((!i3online())&&(!imc2online())) return;
 		if((mudName==null)||(mudName.length()==0))
 		{
-			mob.tell(_("You must specify a mud name."));
+			mob.tell(L("You must specify a mud name."));
 			return;
 		}
 		if((tellName==null)||(tellName.length()<1))
 		{
-			mob.tell(_("You must specify someone to talk to."));
+			mob.tell(L("You must specify someone to talk to."));
 			return;
 		}
 		if((message==null)||(message.length()<1))
 		{
-			mob.tell(_("You must enter a message!"));
+			mob.tell(L("You must enter a message!"));
 			return;
 		}
 		if(i3online()&&Intermud.isAPossibleMUDName(mudName))
@@ -274,10 +274,10 @@ public class IMudClient implements I3Interface
 			mudName=Intermud.translateName(mudName);
 			if(!Intermud.isUp(mudName))
 			{
-				mob.tell(_("@x1 is not available.",mudName));
+				mob.tell(L("@x1 is not available.",mudName));
 				return;
 			}
-			mob.tell(_("You tell @x1 '@x2'",tellName,message));
+			mob.tell(L("You tell @x1 '@x2'",tellName,message));
 			final TellPacket tk=new TellPacket();
 			tk.sender_name=mob.Name();
 			tk.sender_visible_name=mob.Name();
@@ -295,14 +295,14 @@ public class IMudClient implements I3Interface
 		if(imc2online()&&(imc2.getIMC2Mud(mudName)!=null))
 		{
 			tellName=CMStrings.capitalizeAndLower(tellName)+"@"+imc2.getIMC2Mud(mudName).name;
-			mob.tell(_("^CYou tell @x1 '@x2'^?",tellName,message));
+			mob.tell(L("^CYou tell @x1 '@x2'^?",tellName,message));
 			if(mob.playerStats()!=null)
 				mob.playerStats().addTellStack("You tell "+tellName+" '"+message+"'");
 			imc2.imc_send_tell(mob.name(),tellName,message,0,CMLib.flags().isInvisible(mob)?1:0);
 		}
 		else
 		{
-			mob.tell(_("@x1 is an unknown mud.",mudName));
+			mob.tell(L("@x1 is an unknown mud.",mudName));
 			return;
 		}
 	}
@@ -322,12 +322,12 @@ public class IMudClient implements I3Interface
 		if((!i3online())&&(!imc2online())) return;
 		if((channelName==null)||(channelName.length()==0))
 		{
-			mob.tell(_("You must specify a channel name."));
+			mob.tell(L("You must specify a channel name."));
 			return;
 		}
 		if((message==null)||(message.length()<1))
 		{
-			mob.tell(_("You must enter a message!"));
+			mob.tell(L("You must enter a message!"));
 			return;
 		}
 		if(i3online()&&Intermud.getRemoteChannel(channelName).length()>0)
@@ -353,23 +353,23 @@ public class IMudClient implements I3Interface
 						final String tellName=msg.target().name().substring(0,x);
 						if((mudName==null)||(mudName.length()==0))
 						{
-							mob.tell(_("You must specify a mud name."));
+							mob.tell(L("You must specify a mud name."));
 							return;
 						}
 						if((tellName==null)||(tellName.length()<1))
 						{
-							mob.tell(_("You must specify someone to emote to."));
+							mob.tell(L("You must specify someone to emote to."));
 							return;
 						}
 						if(!Intermud.isAPossibleMUDName(mudName))
 						{
-							mob.tell(_("'@x1' is an unknown mud.",mudName));
+							mob.tell(L("'@x1' is an unknown mud.",mudName));
 							return;
 						}
 						mudName=Intermud.translateName(mudName);
 						if(!Intermud.isUp(mudName))
 						{
-							mob.tell(_("@x1 is not available.",mudName));
+							mob.tell(L("@x1 is not available.",mudName));
 							return;
 						}
 						ck.target_mud=mudName;
@@ -433,19 +433,19 @@ public class IMudClient implements I3Interface
 						final String tellName=msg.target().name().substring(0,x);
 						if((mudName==null)||(mudName.length()==0))
 						{
-							mob.tell(_("You must specify a mud name."));
+							mob.tell(L("You must specify a mud name."));
 							destroymob(mob2);
 							return;
 						}
 						if((tellName==null)||(tellName.length()<1))
 						{
-							mob.tell(_("You must specify someone to emote to."));
+							mob.tell(L("You must specify someone to emote to."));
 							destroymob(mob2);
 							return;
 						}
 						if(imc2.getIMC2Mud(mudName)==null)
 						{
-							mob.tell(_("@x1 is not available.",mudName));
+							mob.tell(L("@x1 is not available.",mudName));
 							destroymob(mob2);
 							return;
 						}
@@ -467,7 +467,7 @@ public class IMudClient implements I3Interface
 		}
 		else
 		{
-			mob.tell(_("You must specify a channel name."));
+			mob.tell(L("You must specify a channel name."));
 			return;
 		}
 	}
@@ -480,7 +480,7 @@ public class IMudClient implements I3Interface
 
 		if((mobName==null)||(mobName.length()==0))
 		{
-			mob.tell(_("You must specify a name."));
+			mob.tell(L("You must specify a name."));
 			return;
 		}
 
@@ -521,7 +521,7 @@ public class IMudClient implements I3Interface
 
 		if((mobName==null)||(mobName.length()==0))
 		{
-			mob.tell(_("You must specify a name."));
+			mob.tell(L("You must specify a name."));
 			return;
 		}
 
@@ -543,15 +543,15 @@ public class IMudClient implements I3Interface
 	public String getMudInfo(I3Mud mudToShow)
 	{
 		final StringBuilder buf=new StringBuilder("");
-		buf.append(CMStrings.padRight(_("Name"),10)+": "+mudToShow.mud_name+"\n\r");
-		buf.append(CMStrings.padRight(_("Address"),10)+": "+mudToShow.address+"\n\r");
-		buf.append(CMStrings.padRight(_("Port"),10)+": "+mudToShow.player_port+"\n\r");
-		buf.append(CMStrings.padRight(_("Admin@"),10)+": "+mudToShow.admin_email+"\n\r");
-		buf.append(CMStrings.padRight(_("Base"),10)+": "+mudToShow.base_mudlib+"\n\r");
-		buf.append(CMStrings.padRight(_("MudLib"),10)+": "+mudToShow.mudlib+"\n\r");
-		buf.append(CMStrings.padRight(_("Type"),10)+": "+mudToShow.mud_type+"\n\r");
-		buf.append(CMStrings.padRight(_("Driver"),10)+": "+mudToShow.driver+"\n\r");
-		buf.append(CMStrings.padRight(_("Status"),10)+": "+mudToShow.status+"\n\r");
+		buf.append(CMStrings.padRight(L("Name"),10)+": "+mudToShow.mud_name+"\n\r");
+		buf.append(CMStrings.padRight(L("Address"),10)+": "+mudToShow.address+"\n\r");
+		buf.append(CMStrings.padRight(L("Port"),10)+": "+mudToShow.player_port+"\n\r");
+		buf.append(CMStrings.padRight(L("Admin@"),10)+": "+mudToShow.admin_email+"\n\r");
+		buf.append(CMStrings.padRight(L("Base"),10)+": "+mudToShow.base_mudlib+"\n\r");
+		buf.append(CMStrings.padRight(L("MudLib"),10)+": "+mudToShow.mudlib+"\n\r");
+		buf.append(CMStrings.padRight(L("Type"),10)+": "+mudToShow.mud_type+"\n\r");
+		buf.append(CMStrings.padRight(L("Driver"),10)+": "+mudToShow.driver+"\n\r");
+		buf.append(CMStrings.padRight(L("Status"),10)+": "+mudToShow.status+"\n\r");
 		return buf.toString();
 	}
 
@@ -621,15 +621,15 @@ public class IMudClient implements I3Interface
 		else
 		for(final I3Mud mudToShow : muds)
 		{
-			buf.append(CMStrings.padRight(_("Name"),10)+": "+mudToShow.mud_name+"\n\r");
-			buf.append(CMStrings.padRight(_("Address"),10)+": "+mudToShow.address+"\n\r");
-			buf.append(CMStrings.padRight(_("Port"),10)+": "+mudToShow.player_port+"\n\r");
-			buf.append(CMStrings.padRight(_("Admin@"),10)+": "+mudToShow.admin_email+"\n\r");
-			buf.append(CMStrings.padRight(_("Base"),10)+": "+mudToShow.base_mudlib+"\n\r");
-			buf.append(CMStrings.padRight(_("MudLib"),10)+": "+mudToShow.mudlib+"\n\r");
-			buf.append(CMStrings.padRight(_("Type"),10)+": "+mudToShow.mud_type+"\n\r");
-			buf.append(CMStrings.padRight(_("Driver"),10)+": "+mudToShow.driver+"\n\r");
-			buf.append(CMStrings.padRight(_("Status"),10)+": "+mudToShow.status+"\n\r");
+			buf.append(CMStrings.padRight(L("Name"),10)+": "+mudToShow.mud_name+"\n\r");
+			buf.append(CMStrings.padRight(L("Address"),10)+": "+mudToShow.address+"\n\r");
+			buf.append(CMStrings.padRight(L("Port"),10)+": "+mudToShow.player_port+"\n\r");
+			buf.append(CMStrings.padRight(L("Admin@"),10)+": "+mudToShow.admin_email+"\n\r");
+			buf.append(CMStrings.padRight(L("Base"),10)+": "+mudToShow.base_mudlib+"\n\r");
+			buf.append(CMStrings.padRight(L("MudLib"),10)+": "+mudToShow.mudlib+"\n\r");
+			buf.append(CMStrings.padRight(L("Type"),10)+": "+mudToShow.mud_type+"\n\r");
+			buf.append(CMStrings.padRight(L("Driver"),10)+": "+mudToShow.driver+"\n\r");
+			buf.append(CMStrings.padRight(L("Status"),10)+": "+mudToShow.status+"\n\r");
 		}
 		mob.session().wraplessPrintln(buf.toString());
 	}
@@ -730,7 +730,7 @@ public class IMudClient implements I3Interface
 		if(mob.isMonster()) return;
 		final StringBuffer buf=new StringBuffer("\n\rIMC2 Channels List:\n\r");
 		final Hashtable channels=imc2.query_channels();
-		buf.append(CMStrings.padRight(_("Name"), 22)+CMStrings.padRight(_("Policy"),25)+CMStrings.padRight(_("Owner"),20)+"\n\r");
+		buf.append(CMStrings.padRight(L("Name"), 22)+CMStrings.padRight(L("Policy"),25)+CMStrings.padRight(L("Owner"),20)+"\n\r");
 		final Enumeration e = channels.keys();
 		while (e.hasMoreElements())
 		{

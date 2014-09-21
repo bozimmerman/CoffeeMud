@@ -36,7 +36,7 @@ import java.util.*;
 public class Monk extends StdCharClass
 {
 	@Override public String ID(){return "Monk";}
-	private final static String localizedStaticName = CMLib.lang()._("Monk");
+	private final static String localizedStaticName = CMLib.lang().L("Monk");
 	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return "Fighter";}
 	@Override public int getBonusPracLevel(){return -1;}
@@ -216,7 +216,7 @@ public class Monk extends StdCharClass
 		super.level(mob, newAbilityIDs);
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)) return;
 		final int attArmor=(((int)Math.round(CMath.div(mob.charStats().getStat(CharStats.STAT_DEXTERITY),9.0)))+1);
-		mob.tell(_("^NYour dexterity grants you a defensive bonus of ^H@x1^?.^N",""+attArmor));
+		mob.tell(L("^NYour dexterity grants you a defensive bonus of ^H@x1^?.^N",""+attArmor));
 	}
 
 	@Override

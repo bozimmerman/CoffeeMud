@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_PredictWeather extends Spell
 {
 	@Override public String ID() { return "Spell_PredictWeather"; }
-	private final static String localizedName = CMLib.lang()._("Forecast Weather");
+	private final static String localizedName = CMLib.lang().L("Forecast Weather");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Forecast Weather)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Forecast Weather)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -58,7 +58,7 @@ public class Spell_PredictWeather extends Spell
 			lastPrediction="";
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("Your senses are no longer sensitive to the weather."));
+			mob.tell(L("Your senses are no longer sensitive to the weather."));
 	}
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -75,7 +75,7 @@ public class Spell_PredictWeather extends Spell
 		   if(!prediction.equals(lastPrediction))
 		   {
 			   lastPrediction=prediction;
-			   ((MOB)affected).tell(_("Your weather senses gaze into the future, you see: \n\r@x1",prediction));
+			   ((MOB)affected).tell(L("Your weather senses gaze into the future, you see: \n\r@x1",prediction));
 		   }
 		}
 		return true;
@@ -90,7 +90,7 @@ public class Spell_PredictWeather extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already detecting weather."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already detecting weather."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -101,7 +101,7 @@ public class Spell_PredictWeather extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) sensitivity to the weather!"):_("^S<S-NAME> invoke(s) weather sensitivity!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> gain(s) sensitivity to the weather!"):L("^S<S-NAME> invoke(s) weather sensitivity!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				lastPrediction="";
@@ -110,7 +110,7 @@ public class Spell_PredictWeather extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> incant(s) into the sky, but the spell fizzles."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> incant(s) into the sky, but the spell fizzles."));
 
 		return success;
 	}

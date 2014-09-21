@@ -38,7 +38,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class Thief_TrophyCount extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_TrophyCount"; }
-	private final static String localizedName = CMLib.lang()._("Trophy Count");
+	private final static String localizedName = CMLib.lang().L("Trophy Count");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -128,7 +128,7 @@ public class Thief_TrophyCount extends ThiefSkill
 		if(proficiencyCheck(mob,0,auto))
 		{
 			final StringBuffer str=new StringBuffer("");
-			str.append(_("@x1Kills\n\r",CMStrings.padRight(_("Name"),20)));
+			str.append(L("@x1Kills\n\r",CMStrings.padRight(L("Name"),20)));
 			for(final Enumeration e=theList.elements();e.hasMoreElements();)
 			{
 				final String[] one=(String[])e.nextElement();
@@ -139,7 +139,7 @@ public class Thief_TrophyCount extends ThiefSkill
 				mob.session().rawPrintln(str.toString());
 			return true;
 		}
-		mob.tell(_("You failed to recall your count."));
+		mob.tell(L("You failed to recall your count."));
 		return false;
 	}
 }

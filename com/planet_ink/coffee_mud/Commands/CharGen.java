@@ -144,7 +144,7 @@ public class CharGen extends StdCommand
 	{
 		final MOB mob=CMClass.getFactoryMOB();
 		CMLib.factions().setAlignment(mob,Faction.Align.NEUTRAL);
-		mob.setName(_("Average Joe"));
+		mob.setName(L("Average Joe"));
 		if(player) mob.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
 		mob.baseCharStats().setMyRace(CMClass.getRace("Human"));
 		mob.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
@@ -301,7 +301,7 @@ public class CharGen extends StdCommand
 		c.mob=mob;
 		if(commands.size()==0)
 		{
-			mob.tell(_("USAGE: CHARGEN COMBAT ([CHARCLASS(S)]...) (EXPORT=FILENAME) (FAILCHECK) (ITERATIONS=[X]) (SKIPLEVELS=[X]) ([START LEVEL]) ([END LEVEL])"));
+			mob.tell(L("USAGE: CHARGEN COMBAT ([CHARCLASS(S)]...) (EXPORT=FILENAME) (FAILCHECK) (ITERATIONS=[X]) (SKIPLEVELS=[X]) ([START LEVEL]) ([END LEVEL])"));
 			return;
 		}
 		final String[][] CAMATCH={
@@ -426,7 +426,7 @@ public class CharGen extends StdCommand
 
 
 		c.A=CMClass.getAreaType("StdArea");
-		c.A.setName(_("UNKNOWNAREA"));
+		c.A.setName(L("UNKNOWNAREA"));
 		CMLib.map().addArea(c.A);
 		c.allData=new int[c.classSet.size()][c.levelEnd-c.levelStart+1][17];
 		c.allSkills=new String[c.classSet.size()][c.levelEnd-c.levelStart+1][4];
@@ -553,7 +553,7 @@ public class CharGen extends StdCommand
 								final Behavior B2=CMClass.getBehavior("CombatAbilities");
 								M1.baseCharStats().setMyRace(humanR);
 								M1.basePhyStats().setLevel(level);
-								M1.setName(_("GOODGUY"));
+								M1.setName(L("GOODGUY"));
 								M1.recoverCharStats();
 								M1.recoverPhyStats();
 								M1.setLocation(R);
@@ -577,7 +577,7 @@ public class CharGen extends StdCommand
 							{
 								M1=AverageClassMOB(null,level,C,1,false);
 								M1.baseCharStats().setMyRace(humanR);
-								M1.setName(_("GOODGUY"));
+								M1.setName(L("GOODGUY"));
 								M1.recoverCharStats();
 								M1.recoverPhyStats();
 								M1.setLocation(R);
@@ -614,7 +614,7 @@ public class CharGen extends StdCommand
 							final Behavior B2=CMClass.getBehavior("CombatAbilities");
 							M2.baseCharStats().setMyRace(humanR);
 							M2.basePhyStats().setLevel(level);
-							M2.setName(_("BADGUY"));
+							M2.setName(L("BADGUY"));
 							M2.recoverCharStats();
 							M2.recoverPhyStats();
 							M2.setLocation(R);
@@ -650,8 +650,8 @@ public class CharGen extends StdCommand
 									mob.session().wraplessPrintln(msg.toString());
 								if(mob.session()!=null)
 								{
-									mob.session().println(_("@x1 has @x2 behavior for @x3 abilities.",M1.name(),B1.ID(),M1.numAbilities()));
-									mob.session().print(_("Working.."));
+									mob.session().println(L("@x1 has @x2 behavior for @x3 abilities.",M1.name(),B1.ID(),M1.numAbilities()));
+									mob.session().print(L("Working.."));
 								}
 								*/
 							}
@@ -849,15 +849,15 @@ public class CharGen extends StdCommand
 						if(mob.session()!=null) mob.session().println("!");
 						if(fileExp==null)
 						{
-							mob.tell(_("HITPOINTS: @x1 vs @x2",""+H1,""+H2));
-							mob.tell(_("QUICKEST : @x1: @x2",""+bestIterScore[0],bestIterSkill[0]));
-							mob.tell(_("MOST DAM : @x1: @x2",""+bestHitScore[0],bestHitSkill[0]));
-							mob.tell(_("BEST HIT : @x1, Phys: @x2, Skill: @x3",""+bestSingleHitScore[0],""+bestSingleHitPhys[0],bestSingleHitSkill[0]));
-							mob.tell(_("MEDIANS  : HITS: @x1 (@x2%), LOSS ITERS: @x3, WIN ITERS: @x4",
+							mob.tell(L("HITPOINTS: @x1 vs @x2",""+H1,""+H2));
+							mob.tell(L("QUICKEST : @x1: @x2",""+bestIterScore[0],bestIterSkill[0]));
+							mob.tell(L("MOST DAM : @x1: @x2",""+bestHitScore[0],bestHitSkill[0]));
+							mob.tell(L("BEST HIT : @x1, Phys: @x2, Skill: @x3",""+bestSingleHitScore[0],""+bestSingleHitPhys[0],bestSingleHitSkill[0]));
+							mob.tell(L("MEDIANS  : HITS: @x1 (@x2%), LOSS ITERS: @x3, WIN ITERS: @x4",
 									""+allData[charClassDex][level-levelStart][5],""+allData[charClassDex][level-levelStart][6],""+allData[charClassDex][level-levelStart][7],""+allData[charClassDex][level-levelStart][8]));
-							mob.tell(_("MEDIANS  : PHYS DONE: @x1, PHYS TAKEN: @x2 (@x3%)",
+							mob.tell(L("MEDIANS  : PHYS DONE: @x1, PHYS TAKEN: @x2 (@x3%)",
 									""+allData[charClassDex][level-levelStart][9],""+allData[charClassDex][level-levelStart][10],""+allData[charClassDex][level-levelStart][11]));
-							mob.tell(_("LOSSES   : @x1",""+losses[0]));
+							mob.tell(L("LOSSES   : @x1",""+losses[0]));
 							if((c.failSkillCheck!=null)&&(c.failSkillCheck.size()>0))
 							{
 								final StringBuffer fails=new StringBuffer("SKILLFAILS: ");
@@ -892,7 +892,7 @@ public class CharGen extends StdCommand
 			aborted[0]=true;
 			return;
 		}
-		mob.tell(_(""));
+		mob.tell(L(""));
 		if(fileExp!=null)
 		{
 			final CMFile file=new CMFile(fileExp,mob);
@@ -1000,10 +1000,10 @@ public class CharGen extends StdCommand
 
 		if((C==null)&&(createNewOnly||(ClassName.toUpperCase().indexOf("ALL")<0)))
 		{
-			mob.tell(_("Enter 'ALL' for all classes."));
+			mob.tell(L("Enter 'ALL' for all classes."));
 			try
 			{
-				ClassName=mob.session().prompt(_("Enter a class name:"));
+				ClassName=mob.session().prompt(L("Enter a class name:"));
 			}
 			catch(final Exception e){return false;}
 
@@ -1016,7 +1016,7 @@ public class CharGen extends StdCommand
 		{
 			try
 			{
-				level=CMath.s_int(mob.session().prompt(_("Enter a level (1-@x1): ",""+CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))));
+				level=CMath.s_int(mob.session().prompt(L("Enter a level (1-@x1): ",""+CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))));
 			}
 			catch(final Exception e){return false;}
 			if(level<=0)
@@ -1024,9 +1024,9 @@ public class CharGen extends StdCommand
 		}
 
 		if(C!=null)
-			mob.session().print(_("\n\rAverage @x1...",C.name()));
+			mob.session().print(L("\n\rAverage @x1...",C.name()));
 		else
-			mob.session().print(_("\n\rAverage MOB stats, across all classes..."));
+			mob.session().print(L("\n\rAverage MOB stats, across all classes..."));
 
 		MOB avgMob=null;
 		if(C!=null)

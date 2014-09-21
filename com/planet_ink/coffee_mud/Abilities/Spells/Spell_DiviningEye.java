@@ -37,7 +37,7 @@ import java.util.*;
 public class Spell_DiviningEye extends Spell
 {
 	@Override public String ID() { return "Spell_DiviningEye"; }
-	private final static String localizedName = CMLib.lang()._("Divining Eye");
+	private final static String localizedName = CMLib.lang().L("Divining Eye");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}
@@ -49,14 +49,14 @@ public class Spell_DiviningEye extends Spell
 	{
 		if(commands.size()==0)
 		{
-			mob.tell(_("You must specify a divining spell and any parameters for it."));
+			mob.tell(L("You must specify a divining spell and any parameters for it."));
 			return false;
 		}
 
 		final Ability pryingEyeA=mob.fetchEffect("Spell_PryingEye");
 		if(pryingEyeA==null)
 		{
-			mob.tell(_("This spell requires an active prying eye."));
+			mob.tell(L("This spell requires an active prying eye."));
 			return false;
 		}
 
@@ -65,13 +65,13 @@ public class Spell_DiviningEye extends Spell
 		final Ability A=CMLib.english().getToEvoke(mob, commands);
 		if(A==null)
 		{
-			mob.tell(_("'@x1' does not refer to any diviner spell you know.",commandStr));
+			mob.tell(L("'@x1' does not refer to any diviner spell you know.",commandStr));
 			return false;
 		}
 		if(((A.classificationCode() & Ability.ALL_ACODES)!=Ability.ACODE_SPELL)
 		||((A.classificationCode() & Ability.ALL_DOMAINS)!=Ability.DOMAIN_DIVINATION))
 		{
-			mob.tell(_("'@x1' is not a diviner spell you know.",A.name()));
+			mob.tell(L("'@x1' is not a diviner spell you know.",A.name()));
 			return false;
 		}
 
@@ -82,7 +82,7 @@ public class Spell_DiviningEye extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":_("^S<S-NAME> invoke(s) a remote divination!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> invoke(s) a remote divination!^?"));
 			final Room room=mob.location();
 			if(room.okMessage(mob,msg))
 			{
@@ -103,7 +103,7 @@ public class Spell_DiviningEye extends Spell
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to invoke something, but fail(s)."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to invoke something, but fail(s)."));
 
 		// return whether it worked
 		return success;

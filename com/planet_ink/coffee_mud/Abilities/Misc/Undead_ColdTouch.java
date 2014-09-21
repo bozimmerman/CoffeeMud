@@ -38,9 +38,9 @@ public class Undead_ColdTouch extends StdAbility
 {
 	int coldDown=3;
 	@Override public String ID() { return "Undead_ColdTouch"; }
-	private final static String localizedName = CMLib.lang()._("Cold Touch");
+	private final static String localizedName = CMLib.lang().L("Cold Touch");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Cold and Weakened)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Cold and Weakened)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -68,7 +68,7 @@ public class Undead_ColdTouch extends StdAbility
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("The chill is lifted."));
+			mob.tell(L("The chill is lifted."));
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class Undead_ColdTouch extends StdAbility
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell(_("You are too far away to touch!"));
+			mob.tell(L("You are too far away to touch!"));
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
@@ -90,20 +90,20 @@ public class Undead_ColdTouch extends StdAbility
 		String str=null;
 		if(success)
 		{
-			str=auto?"":_("^S<S-NAME> extend(s) a chilling hand to <T-NAMESELF>!^?");
+			str=auto?"":L("^S<S-NAME> extend(s) a chilling hand to <T-NAMESELF>!^?");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> turn(s) cold!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> turn(s) cold!"));
 					success=maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> extend(s) a chilling hand to <T-NAMESELF>, but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> extend(s) a chilling hand to <T-NAMESELF>, but fail(s)."));
 
 		return success;
 	}

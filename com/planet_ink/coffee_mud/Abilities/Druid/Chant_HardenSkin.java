@@ -38,9 +38,9 @@ import java.util.*;
 public class Chant_HardenSkin extends Chant
 {
 	@Override public String ID() { return "Chant_HardenSkin"; }
-	private final static String localizedName = CMLib.lang()._("Harden Skin");
+	private final static String localizedName = CMLib.lang().L("Harden Skin");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Harden Skin)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Harden Skin)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -72,7 +72,7 @@ public class Chant_HardenSkin extends Chant
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> skin softens."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> skin softens."));
 	}
 
 
@@ -85,7 +85,7 @@ public class Chant_HardenSkin extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-YOUPOSS> skin is already hard."));
+			mob.tell(target,null,null,L("<S-YOUPOSS> skin is already hard."));
 			return false;
 		}
 
@@ -105,7 +105,7 @@ public class Chant_HardenSkin extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-YOUPOSS> skin hardens!"):_("^S<S-NAME> chant(s) to <T-NAMESELF> and <T-HIS-HER> skin hardens!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-YOUPOSS> skin hardens!"):L("^S<S-NAME> chant(s) to <T-NAMESELF> and <T-HIS-HER> skin hardens!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -114,7 +114,7 @@ public class Chant_HardenSkin extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens"));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens"));
 
 		// return whether it worked
 		return success;

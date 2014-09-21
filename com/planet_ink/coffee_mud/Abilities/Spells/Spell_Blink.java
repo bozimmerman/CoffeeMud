@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Blink extends Spell
 {
 	@Override public String ID() { return "Spell_Blink"; }
-	private final static String localizedName = CMLib.lang()._("Blink");
+	private final static String localizedName = CMLib.lang().L("Blink");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Blink spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Blink spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -55,7 +55,7 @@ public class Spell_Blink extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> stop(s) blinking."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> stop(s) blinking."));
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class Spell_Blink extends Spell
 				default: move=0;
 				}
 				if(move==0)
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> vanish(es) and reappear(s) again."));
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> vanish(es) and reappear(s) again."));
 				else
 				{
 					int rangeTo=mob.rangeToTarget();
@@ -93,19 +93,19 @@ public class Spell_Blink extends Spell
 					switch(move)
 					{
 					case 0:
-						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> vanish(es) and reappear(s) again."));
+						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> vanish(es) and reappear(s) again."));
 						break;
 					case 1:
-						mob.location().show(mob,null,mob.getVictim(),CMMsg.MSG_OK_VISUAL,_("<S-NAME> vanish(es) and reappear(s) a bit further from <O-NAMESELF>."));
+						mob.location().show(mob,null,mob.getVictim(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> vanish(es) and reappear(s) a bit further from <O-NAMESELF>."));
 						break;
 					case 2:
-						mob.location().show(mob,null,mob.getVictim(),CMMsg.MSG_OK_VISUAL,_("<S-NAME> vanish(es) and reappear(s) much further from <O-NAMESELF>."));
+						mob.location().show(mob,null,mob.getVictim(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> vanish(es) and reappear(s) much further from <O-NAMESELF>."));
 						break;
 					case -1:
-						mob.location().show(mob,null,mob.getVictim(),CMMsg.MSG_OK_VISUAL,_("<S-NAME> vanish(es) and reappear(s) a bit closer to <O-NAMESELF>."));
+						mob.location().show(mob,null,mob.getVictim(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> vanish(es) and reappear(s) a bit closer to <O-NAMESELF>."));
 						break;
 					case -2:
-						mob.location().show(mob,null,mob.getVictim(),CMMsg.MSG_OK_VISUAL,_("<S-NAME> vanish(es) and reappear(s) much closer to <O-NAMESELF>."));
+						mob.location().show(mob,null,mob.getVictim(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> vanish(es) and reappear(s) much closer to <O-NAMESELF>."));
 						break;
 					}
 				}
@@ -113,9 +113,9 @@ public class Spell_Blink extends Spell
 			}
 			else
 			if((roll>2)&&(roll<7))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> vanish(es) and reappear(s) a few feet away."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> vanish(es) and reappear(s) a few feet away."));
 			else
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> vanish(es) and reappear(s) again."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> vanish(es) and reappear(s) again."));
 		}
 		return super.tick(ticking,tickID);
 	}
@@ -142,7 +142,7 @@ public class Spell_Blink extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> begin(s) to blink!"):_("^S<S-NAME> cast(s) a spell at <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> begin(s) to blink!"):L("^S<S-NAME> cast(s) a spell at <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -154,7 +154,7 @@ public class Spell_Blink extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> cast(s) a spell to <T-NAMESELF>, but the magic fizzles."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> cast(s) a spell to <T-NAMESELF>, but the magic fizzles."));
 
 		// return whether it worked
 		return success;

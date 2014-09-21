@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_Stonewalking extends Chant
 {
 	@Override public String ID() { return "Chant_Stonewalking"; }
-	private final static String localizedName = CMLib.lang()._("Stonewalking");
+	private final static String localizedName = CMLib.lang().L("Stonewalking");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Stonewalking spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Stonewalking spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -99,12 +99,12 @@ public class Chant_Stonewalking extends Chant
 			{
 				final Room R=mob.location();
 				if((R.domainType()==Room.DOMAIN_INDOORS_CAVE)||(R.domainType()==Room.DOMAIN_INDOORS_STONE))
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> drawn out of the walls."));
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> drawn out of the walls."));
 				else
 				if((R.domainType()==Room.DOMAIN_OUTDOORS_MOUNTAINS)||(R.domainType()==Room.DOMAIN_OUTDOORS_ROCKS))
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> drawn out of the rocks."));
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> drawn out of the rocks."));
 				else
-					mob.tell(_("Your stone walk has ended."));
+					mob.tell(L("Your stone walk has ended."));
 			}
 	}
 
@@ -134,7 +134,7 @@ public class Chant_Stonewalking extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already @x1.",name()));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already @x1.",name()));
 			return false;
 		}
 
@@ -144,7 +144,7 @@ public class Chant_Stonewalking extends Chant
 		   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
 		   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS))
 		{
-			mob.tell(_("You must be near walls of stone or massive rock to use this chant."));
+			mob.tell(L("You must be near walls of stone or massive rock to use this chant."));
 			return false;
 		}
 		// the invoke method for spells receives as
@@ -162,16 +162,16 @@ public class Chant_Stonewalking extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) quietly to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) quietly to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> fade(s) into the walls!"));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> fade(s) into the walls!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) quietly to <T-NAMESELF>, but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) quietly to <T-NAMESELF>, but nothing more happens."));
 
 		// return whether it worked
 		return success;

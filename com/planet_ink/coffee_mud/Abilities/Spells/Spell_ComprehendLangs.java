@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_ComprehendLangs extends Spell
 {
 	@Override public String ID() { return "Spell_ComprehendLangs"; }
-	private final static String localizedName = CMLib.lang()._("Comprehend Languages");
+	private final static String localizedName = CMLib.lang().L("Comprehend Languages");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Comprehend Languages)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Comprehend Languages)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -55,7 +55,7 @@ public class Spell_ComprehendLangs extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("You no longer feel so comprehensive."));
+			mob.tell(L("You no longer feel so comprehensive."));
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class Spell_ComprehendLangs extends Spell
 			&&(msg.sourceMinor()==CMMsg.NO_EFFECT)
 			&&(msg.targetMinor()==CMMsg.NO_EFFECT)
 			&&(msg.othersMessage()!=null))
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,_("The smoke signals seem to say '@x1'.",msg.othersMessage()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,L("The smoke signals seem to say '@x1'.",msg.othersMessage()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 			else
 			if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
@@ -83,17 +83,17 @@ public class Spell_ComprehendLangs extends Spell
 				if(str!=null)
 				{
 					if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
-						msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),_("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(msg.othersMessage(),str),msg.tool().name())));
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(msg.othersMessage(),str),msg.tool().name())));
 					else
 					if(msg.amITarget(affected)&&(msg.targetMessage()!=null))
-						msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,_("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(msg.targetMessage(),str),msg.tool().name())));
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(msg.targetMessage(),str),msg.tool().name())));
 					else
 					if((msg.othersMessage()!=null)&&(msg.othersMessage().indexOf('\'')>0))
 					{
 						String otherMes=msg.othersMessage();
 						if(msg.target()!=null)
 							otherMes=CMLib.coffeeFilter().fullOutFilter(((MOB)affected).session(),(MOB)affected,msg.source(),msg.target(),msg.tool(),otherMes,false);
-						msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.othersCode(),CMMsg.NO_EFFECT,_("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,str),msg.tool().name())));
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.othersCode(),CMMsg.NO_EFFECT,L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,str),msg.tool().name())));
 					}
 				}
 			}
@@ -122,7 +122,7 @@ public class Spell_ComprehendLangs extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> comprehension."));
+			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> comprehension."));
 			return false;
 		}
 
@@ -142,7 +142,7 @@ public class Spell_ComprehendLangs extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> feel(s) more comprehending."):_("^S<S-NAME> invoke(s) the power of comprehension!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> feel(s) more comprehending."):L("^S<S-NAME> invoke(s) the power of comprehension!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -150,7 +150,7 @@ public class Spell_ComprehendLangs extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a spell, but fail(s) miserably."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a spell, but fail(s) miserably."));
 
 		// return whether it worked
 		return success;

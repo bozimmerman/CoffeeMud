@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_MindBlock extends Spell
 {
 	@Override public String ID() { return "Spell_MindBlock"; }
-	private final static String localizedName = CMLib.lang()._("Mind Block");
+	private final static String localizedName = CMLib.lang().L("Mind Block");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Mind Block)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Mind Block)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -55,7 +55,7 @@ public class Spell_MindBlock extends Spell
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> anti-psionic field fades."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> anti-psionic field fades."));
 
 		super.unInvoke();
 
@@ -85,7 +85,7 @@ public class Spell_MindBlock extends Spell
 			}
 			if(yep)
 			{
-				msg.source().tell(msg.source(),mob,null,_("<T-NAME> seem(s) unaffected by the enchantment."));
+				msg.source().tell(msg.source(),mob,null,L("<T-NAME> seem(s) unaffected by the enchantment."));
 				return false;
 			}
 		}
@@ -105,7 +105,7 @@ public class Spell_MindBlock extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_(auto?"A anti-psionic field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an anti-psionic field of protection around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"A anti-psionic field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an anti-psionic field of protection around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				amountAbsorbed=0;
@@ -114,7 +114,7 @@ public class Spell_MindBlock extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke an anti-psionic field, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke an anti-psionic field, but fail(s)."));
 
 		return success;
 	}

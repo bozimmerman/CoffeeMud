@@ -36,7 +36,7 @@ import java.util.*;
 public class Song_Ode extends Song
 {
 	@Override public String ID() { return "Song_Ode"; }
-	private final static String localizedName = CMLib.lang()._("Ode");
+	private final static String localizedName = CMLib.lang().L("Ode");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public MOB whom=null;
@@ -45,7 +45,7 @@ public class Song_Ode extends Song
 	protected String song=null;
 	protected Hashtable songs=null;
 	protected StringBuffer trail=null;
-	@Override protected String songOf(){ return (whom==null)?_("Ode"):(_("Ode to ")+whom.name());}
+	@Override protected String songOf(){ return (whom==null)?L("Ode"):(L("Ode to ")+whom.name());}
 	@Override protected boolean skipStandardSongTick(){return (song==null);}
 	protected static final Hashtable cmds=new Hashtable();
 	protected static final String[][] stuff={
@@ -284,7 +284,7 @@ public class Song_Ode extends Song
 				V.addElement(e.nextElement());
 			final Integer I=(Integer)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
 			final String[] chk=stuff[I.intValue()];
-			invoker().location().show(invoker(),this,whom,CMMsg.MSG_SPEAK,_("<S-NAME> sing(s) '@x1'.",chk[3]));
+			invoker().location().show(invoker(),this,whom,CMMsg.MSG_SPEAK,L("<S-NAME> sing(s) '@x1'.",chk[3]));
 		}
 
 
@@ -366,7 +366,7 @@ public class Song_Ode extends Song
 			final Song_Ode A=(Song_Ode)mob.fetchEffect(ID());
 			if((A!=null)&&(A.whom!=null)&&(A.song==null))
 			{
-				final String str=_("^S<S-NAME> finish(es) composing the @x1.^?",A.songOf());
+				final String str=L("^S<S-NAME> finish(es) composing the @x1.^?",A.songOf());
 				final CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,str);
 				if(mob.location().okMessage(mob,msg))
 				{
@@ -382,9 +382,9 @@ public class Song_Ode extends Song
 			final StringBuffer str=new StringBuffer("");
 			for(final Enumeration e=H.keys();e.hasMoreElements();)
 				str.append((String)e.nextElement()+" ");
-			mob.tell(_("Compose or sing an ode about whom?"));
+			mob.tell(L("Compose or sing an ode about whom?"));
 			if(str.length()>0)
-				mob.tell(_("You presently have odes written about: @x1.",str.toString().trim()));
+				mob.tell(L("You presently have odes written about: @x1.",str.toString().trim()));
 			return false;
 		}
 		String name=CMParms.combine(commands,0);
@@ -416,7 +416,7 @@ public class Song_Ode extends Song
 		if(target==null) return false;
 		if(target==mob)
 		{
-			mob.tell(_("You may not compose an ode about yourself!"));
+			mob.tell(L("You may not compose an ode about yourself!"));
 			return false;
 		}
 
@@ -428,7 +428,7 @@ public class Song_Ode extends Song
 			originRoom=mob.location();
 			commonRoomSet=getInvokerScopeRoomSet(null);
 			whom=target;
-			final String str=_("^S<S-NAME> begin(s) to compose an @x1.^?",songOf());
+			final String str=L("^S<S-NAME> begin(s) to compose an @x1.^?",songOf());
 			final CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,str);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -442,7 +442,7 @@ public class Song_Ode extends Song
 			}
 		}
 		else
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> lose(s) <S-HIS-HER> inspiration."));
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,L("<S-NAME> lose(s) <S-HIS-HER> inspiration."));
 		return success;
 	}
 }

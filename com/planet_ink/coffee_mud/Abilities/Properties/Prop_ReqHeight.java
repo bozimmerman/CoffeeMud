@@ -64,7 +64,7 @@ public class Prop_ReqHeight extends Property implements TriggeredAffect
 				height=CMath.s_int(text());
 			if(msg.source().phyStats().height()>height)
 			{
-				msg.source().tell(_("You are too tall to fit in there."));
+				msg.source().tell(L("You are too tall to fit in there."));
 				return false;
 			}
 		}

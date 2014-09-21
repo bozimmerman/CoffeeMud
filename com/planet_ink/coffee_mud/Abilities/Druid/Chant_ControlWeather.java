@@ -38,7 +38,7 @@ import java.util.Vector;
 public class Chant_ControlWeather extends Chant
 {
 	@Override public String ID() { return "Chant_ControlWeather"; }
-	private final static String localizedName = CMLib.lang()._("Control Weather");
+	private final static String localizedName = CMLib.lang().L("Control Weather");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_AREAS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -62,14 +62,14 @@ public class Chant_ControlWeather extends Chant
 				||(((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_MOONALTERING)
 				   &&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_MOONSUMMONING)))
 				{
-					msg.source().tell(_("The weather is finely balanced here, and will not heed your call."));
+					msg.source().tell(L("The weather is finely balanced here, and will not heed your call."));
 					return false;
 				}
 			}
 			else
 			if(!msg.amISource(invoker()))
 			{
-				msg.source().tell(_("The sky here does not heed to your call."));
+				msg.source().tell(L("The sky here does not heed to your call."));
 				return false;
 			}
 		}
@@ -81,7 +81,7 @@ public class Chant_ControlWeather extends Chant
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
-			mob.tell(_("You must be outdoors for this chant to work."));
+			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -91,7 +91,7 @@ public class Chant_ControlWeather extends Chant
 		if((A!=null)&&(A.abilityCode()==1))
 		{
 			final long remaining=A.tickDown*CMProps.getTickMillis();
-			mob.tell(_("This area is under an enchantment of climactic balance, which can not be controlled for @x1.",mob.location().getArea().getTimeObj().deriveEllapsedTimeString(remaining)));
+			mob.tell(L("This area is under an enchantment of climactic balance, which can not be controlled for @x1.",mob.location().getArea().getTimeObj().deriveEllapsedTimeString(remaining)));
 			return false;
 		}
 		int size=mob.location().getArea().numberOfProperIDedRooms();
@@ -101,18 +101,18 @@ public class Chant_ControlWeather extends Chant
 		final boolean success=proficiencyCheck(mob,-size,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob.location().getArea(),this,verbalCastCode(mob,mob.location().getArea(),auto),auto?_("The sky changes color as the weather comes under control!"):_("^S<S-NAME> chant(s) into the sky for control of the weather!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,mob.location().getArea(),this,verbalCastCode(mob,mob.location().getArea(),auto),auto?L("The sky changes color as the weather comes under control!"):L("^S<S-NAME> chant(s) into the sky for control of the weather!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if((A!=null)&&(A.invoker()!=mob))
-					mob.tell(_("You successfully wrest control of the weather from @x1.",A.invoker().name()));
+					mob.tell(L("You successfully wrest control of the weather from @x1.",A.invoker().name()));
 				if(A!=null) A.unInvoke();
 				beneficialAffect(mob,mob.location().getArea(),asLevel,0);
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) into the sky for control, but the magic fizzles."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> chant(s) into the sky for control, but the magic fizzles."));
 
 		return success;
 	}

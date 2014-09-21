@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_GrowForest extends Chant
 {
 	@Override public String ID() { return "Chant_GrowForest"; }
-	private final static String localizedName = CMLib.lang()._("Grow Forest");
+	private final static String localizedName = CMLib.lang().L("Grow Forest");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -55,7 +55,7 @@ public class Chant_GrowForest extends Chant
 			||(type==Room.DOMAIN_OUTDOORS_UNDERWATER)
 			||(type==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			mob.tell(_("This magic won't work here."));
+			mob.tell(L("This magic won't work here."));
 			return false;
 		}
 
@@ -74,7 +74,7 @@ public class Chant_GrowForest extends Chant
 			}
 		if((material<0)&&(s.length()>0))
 		{
-			mob.tell(_("'@x1' is not a recognized form of tree!",s));
+			mob.tell(L("'@x1' is not a recognized form of tree!",s));
 			return false;
 		}
 
@@ -92,16 +92,16 @@ public class Chant_GrowForest extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) to the ground.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) to the ground.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("A grove of @x1 trees sprout up.",shortName.toLowerCase()));
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("A grove of @x1 trees sprout up.",shortName.toLowerCase()));
 				mob.location().setResource(material);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) to the ground, but nothing happens."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) to the ground, but nothing happens."));
 
 		// return whether it worked
 		return success;

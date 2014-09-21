@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_Revoke extends StdSkill
 {
 	@Override public String ID() { return "Skill_Revoke"; }
-	private final static String localizedName = CMLib.lang()._("Revoke");
+	private final static String localizedName = CMLib.lang().L("Revoke");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
@@ -77,7 +77,7 @@ public class Skill_Revoke extends StdSkill
 
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("Revoke from what?  You don't see '@x1' here.",whatToRevoke));
+			mob.tell(L("Revoke from what?  You don't see '@x1' here.",whatToRevoke));
 			return false;
 		}
 
@@ -98,9 +98,9 @@ public class Skill_Revoke extends StdSkill
 		if(revokeThis==null)
 		{
 			if(target instanceof Room)
-				mob.tell(_("Revoke your magic from what?"));
+				mob.tell(L("Revoke your magic from what?"));
 			else
-				mob.tell(mob,target,null,_("<T-NAME> do(es) not appear to be affected by anything you can revoke."));
+				mob.tell(mob,target,null,L("<T-NAME> do(es) not appear to be affected by anything you can revoke."));
 			return false;
 		}
 
@@ -111,7 +111,7 @@ public class Skill_Revoke extends StdSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_HANDS,_("<S-NAME> revoke(s) @x1 from @x2",revokeThis.name(),target.name()));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_HANDS,L("<S-NAME> revoke(s) @x1 from @x2",revokeThis.name(),target.name()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -119,7 +119,7 @@ public class Skill_Revoke extends StdSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to revoke @x1 from @x2, but flub(s) it.",revokeThis.name(),target.name()));
+			beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to revoke @x1 from @x2, but flub(s) it.",revokeThis.name(),target.name()));
 		return success;
 	}
 

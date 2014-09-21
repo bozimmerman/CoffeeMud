@@ -32,7 +32,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Skill_Resistance extends StdSkill
 {
 	@Override public String ID() { return "Skill_Resistance"; }
-	private final static String localizedName = CMLib.lang()._("Resistance");
+	private final static String localizedName = CMLib.lang().L("Resistance");
 	@Override public String name() { return localizedName; }
 	protected String displayText="";
 	@Override public String displayText(){ return displayText;}
@@ -53,7 +53,7 @@ public class Skill_Resistance extends StdSkill
 			if(newText.equalsIgnoreCase(CharStats.CODES.NAME(i))||newText.equalsIgnoreCase(CharStats.CODES.DESC(i)))
 				resistanceCode=i;
 		if(resistanceCode>0)
-			displayText=_("(Resistance to @x1)",newText.trim().toLowerCase());
+			displayText=L("(Resistance to @x1)",newText.trim().toLowerCase());
 	}
 
 	@Override

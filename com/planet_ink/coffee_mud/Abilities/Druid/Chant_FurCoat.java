@@ -36,9 +36,9 @@ import java.util.*;
 public class Chant_FurCoat extends Chant
 {
 	@Override public String ID() { return "Chant_FurCoat"; }
-	private final static String localizedName = CMLib.lang()._("Fur Coat");
+	private final static String localizedName = CMLib.lang().L("Fur Coat");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Fur Coat)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Fur Coat)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -62,7 +62,7 @@ public class Chant_FurCoat extends Chant
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> fur coat vanishes."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> fur coat vanishes."));
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public class Chant_FurCoat extends Chant
 		if((msg.targetMinor()==CMMsg.TYP_REMOVE)
 		||(msg.targetMinor()==CMMsg.TYP_GET))
 		{
-			mob.tell(_("The fur coat cannot be removed from where it is."));
+			mob.tell(L("The fur coat cannot be removed from where it is."));
 			return false;
 		}
 		return true;
@@ -144,19 +144,19 @@ public class Chant_FurCoat extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> a fur coat."));
+			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> a fur coat."));
 			return false;
 		}
 
 		if(Druid_ShapeShift.isShapeShifted(target))
 		{
-			mob.tell(_("You cannot invoke this chant in your present form."));
+			mob.tell(L("You cannot invoke this chant in your present form."));
 			return false;
 		}
 
 		if(target.freeWearPositions(Wearable.WORN_TORSO,(short)-2048,(short)0)<=0)
 		{
-			mob.tell(_("You are already wearing something on your torso!"));
+			mob.tell(L("You are already wearing something on your torso!"));
 			return false;
 		}
 
@@ -176,14 +176,14 @@ public class Chant_FurCoat extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("A thick coat of fur appears on <T-NAME>."):_("^S<S-NAME> chant(s) for a thick coat of fur!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("A thick coat of fur appears on <T-NAME>."):L("^S<S-NAME> chant(s) for a thick coat of fur!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				theArmor=CMClass.getArmor("GenArmor");
-				theArmor.setName(_("a fur coat"));
+				theArmor.setName(L("a fur coat"));
 				theArmor.setDisplayText("");
-				theArmor.setDescription(_("The coat is made of thick black fur."));
+				theArmor.setDescription(L("The coat is made of thick black fur."));
 				theArmor.setMaterial(RawMaterial.RESOURCE_FUR);
 				theArmor.basePhyStats().setArmor(2*CMLib.ableMapper().qualifyingClassLevel(mob,this));
 				final long wornCode=(Wearable.WORN_TORSO|Wearable.WORN_ARMS|Wearable.WORN_FEET|Wearable.WORN_WAIST|Wearable.WORN_LEGS);
@@ -210,7 +210,7 @@ public class Chant_FurCoat extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) for a thick coat of fur, but nothing happen(s)."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) for a thick coat of fur, but nothing happen(s)."));
 
 		// return whether it worked
 		return success;

@@ -36,9 +36,9 @@ import java.util.*;
 public class Prayer_DivinePerspective extends Prayer
 {
 	@Override public String ID() { return "Prayer_DivinePerspective"; }
-	private final static String localizedName = CMLib.lang()._("Divine Perspective");
+	private final static String localizedName = CMLib.lang().L("Divine Perspective");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Perspective)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Perspective)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public long flags(){return Ability.FLAG_HOLY;}
@@ -55,7 +55,7 @@ public class Prayer_DivinePerspective extends Prayer
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if(invoker!=null)
-				invoker.tell(_("The perspective of '@x1' fades from your mind.",mob.name(invoker)));
+				invoker.tell(L("The perspective of '@x1' fades from your mind.",mob.name(invoker)));
 		super.unInvoke();
 
 	}
@@ -97,7 +97,7 @@ public class Prayer_DivinePerspective extends Prayer
 		if((mob.getWorshipCharID().length()==0)
 		||(CMLib.map().getDeity(mob.getWorshipCharID())==null))
 		{
-			mob.tell(_("You must worship a god to use this prayer."));
+			mob.tell(L("You must worship a god to use this prayer."));
 			return false;
 		}
 		final Deity target=CMLib.map().getDeity(mob.getWorshipCharID());
@@ -111,7 +111,7 @@ public class Prayer_DivinePerspective extends Prayer
 		if(success)
 		{
 			mobName=target.Name();
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> invoke(s) the holy perspective of '@x1'.^?",mobName));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> invoke(s) the holy perspective of '@x1'.^?",mobName));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 			if((mob.location().okMessage(mob,msg))&&((newRoom==mob.location())||(newRoom.okMessage(mob,msg2))))
 			{
@@ -122,7 +122,7 @@ public class Prayer_DivinePerspective extends Prayer
 
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to invoke the holy perspective of @x1, but fail(s).",target.Name()));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to invoke the holy perspective of @x1, but fail(s).",target.Name()));
 
 
 		// return whether it worked

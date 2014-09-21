@@ -36,9 +36,9 @@ import java.util.*;
 public class Disease_Syphilis extends Disease
 {
 	@Override public String ID() { return "Disease_Syphilis"; }
-	private final static String localizedName = CMLib.lang()._("Syphilis");
+	private final static String localizedName = CMLib.lang().L("Syphilis");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Syphilis)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Syphilis)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

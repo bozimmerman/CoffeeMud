@@ -35,9 +35,9 @@ import java.util.*;
 public class Disease_Depression extends Disease
 {
 	@Override public String ID() { return "Disease_Depression"; }
-	private final static String localizedName = CMLib.lang()._("Depression");
+	private final static String localizedName = CMLib.lang().L("Depression");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Depression)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Depression)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -69,7 +69,7 @@ public class Disease_Depression extends Disease
 			&&(msg.tool().Name().equals("MATE <T-NAME>")
 				||msg.tool().Name().equals("SEX <T-NAME>")))
 			{
-				mob.tell(_("You don't really feel like doing it right now."));
+				mob.tell(L("You don't really feel like doing it right now."));
 				return false;
 			}
 		}
@@ -98,11 +98,11 @@ public class Disease_Depression extends Disease
 
 		final MOB mob=(MOB)affected;
 		if(CMLib.dice().rollPercentage()==1)
-			mob.tell(_("You are hungry."));
+			mob.tell(L("You are hungry."));
 		if(mob.isInCombat()
 		&&(CMLib.dice().rollPercentage()<10))
 		{
-			mob.tell(_("Whats the point in fighting, really?"));
+			mob.tell(L("Whats the point in fighting, really?"));
 			mob.makePeace();
 		}
 		if((!mob.isInCombat())

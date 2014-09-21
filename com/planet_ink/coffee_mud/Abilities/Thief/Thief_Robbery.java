@@ -37,7 +37,7 @@ import java.util.*;
 public class Thief_Robbery extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Robbery"; }
-	private final static String localizedName = CMLib.lang()._("Robbery");
+	private final static String localizedName = CMLib.lang().L("Robbery");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -83,7 +83,7 @@ public class Thief_Robbery extends ThiefSkill
 			   ||(msg.targetMinor()==CMMsg.TYP_VALUE)
 			   ||(msg.targetMinor()==CMMsg.TYP_VIEW))
 			{
-				msg.source().tell(_("@x1 looks unwilling to do business with you.",affected.name()));
+				msg.source().tell(L("@x1 looks unwilling to do business with you.",affected.name()));
 				return false;
 			}
 		}
@@ -112,12 +112,12 @@ public class Thief_Robbery extends ThiefSkill
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("Rob what from whom?"));
+			mob.tell(L("Rob what from whom?"));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell(_("Not while you are fighting!"));
+			mob.tell(L("Not while you are fighting!"));
 			return false;
 		}
 
@@ -130,19 +130,19 @@ public class Thief_Robbery extends ThiefSkill
 			target=mob.location().fetchInhabitant(CMParms.combine(commands,1));
 		if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",CMParms.combine(commands,1)));
+			mob.tell(L("You don't see '@x1' here.",CMParms.combine(commands,1)));
 			return false;
 		}
 		final int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(getXLEVELLevel(mob)*2));
 
 		if((!target.mayIFight(mob))||(CMLib.coffeeShops().getShopKeeper(target)==null))
 		{
-			mob.tell(_("You cannot rob from @x1.",target.charStats().himher()));
+			mob.tell(L("You cannot rob from @x1.",target.charStats().himher()));
 			return false;
 		}
 		if(target==mob)
 		{
-			mob.tell(_("You cannot rob yourself."));
+			mob.tell(L("You cannot rob yourself."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -160,7 +160,7 @@ public class Thief_Robbery extends ThiefSkill
 			||(stolen instanceof LandTitle)
 			||((price.experiencePrice>0)||(price.questPointPrice>0)))
 			{
-				mob.tell(mob,target,stolen,_("You cannot rob '<O-NAME>' from <T-NAME>."));
+				mob.tell(mob,target,stolen,L("You cannot rob '<O-NAME>' from <T-NAME>."));
 				return false;
 			}
 			if(!shop.getShop().doIHaveThisInStock(stolen.Name(),mob))
@@ -181,7 +181,7 @@ public class Thief_Robbery extends ThiefSkill
 		{
 			if(CMLib.dice().rollPercentage()>discoverChance)
 			{
-				final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":_("You fumble the attempt to rob <T-NAMESELF>; <T-NAME> spots you!"),CMMsg.MSG_NOISYMOVEMENT,auto?"":_("<S-NAME> tries to rob you and fails!"),CMMsg.MSG_NOISYMOVEMENT,auto?"":_("<S-NAME> tries to rob <T-NAME> and fails!"));
+				final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":L("You fumble the attempt to rob <T-NAMESELF>; <T-NAME> spots you!"),CMMsg.MSG_NOISYMOVEMENT,auto?"":L("<S-NAME> tries to rob you and fails!"),CMMsg.MSG_NOISYMOVEMENT,auto?"":L("<S-NAME> tries to rob <T-NAME> and fails!"));
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 				final Thief_Robbery A=(Thief_Robbery)target.fetchEffect(ID());
@@ -195,7 +195,7 @@ public class Thief_Robbery extends ThiefSkill
 					A.mobs.add(mob);
 			}
 			else
-				mob.tell(mob,target,null,auto?"":_("You fumble the attempt to rob <T-NAME>."));
+				mob.tell(mob,target,null,auto?"":L("You fumble the attempt to rob <T-NAME>."));
 		}
 		else
 		{
@@ -203,10 +203,10 @@ public class Thief_Robbery extends ThiefSkill
 			int code=CMMsg.MSG_THIEF_ACT;
 			if(!auto)
 				if(stolen!=null)
-					str=_("<S-NAME> rob(s) @x1 from <T-NAMESELF>.",stolen.name());
+					str=L("<S-NAME> rob(s) @x1 from <T-NAMESELF>.",stolen.name());
 				else
 				{
-					str=_("<S-NAME> attempt(s) to rob <T-HIM-HER>, but it doesn't appear @x1 has that in <T-HIS-HER> inventory!",target.charStats().heshe());
+					str=L("<S-NAME> attempt(s) to rob <T-HIM-HER>, but it doesn't appear @x1 has that in <T-HIS-HER> inventory!",target.charStats().heshe());
 					code=CMMsg.MSG_QUIETMOVEMENT;
 				}
 

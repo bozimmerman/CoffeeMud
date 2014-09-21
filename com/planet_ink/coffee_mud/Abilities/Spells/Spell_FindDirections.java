@@ -38,7 +38,7 @@ import java.util.*;
 public class Spell_FindDirections extends Spell
 {
 	@Override public String ID() { return "Spell_FindDirections"; }
-	private final static String localizedName = CMLib.lang()._("Find Directions");
+	private final static String localizedName = CMLib.lang().L("Find Directions");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canTargetCode(){return Ability.CAN_AREAS;}
@@ -81,7 +81,7 @@ public class Spell_FindDirections extends Spell
 
 		if(A==null)
 		{
-			mob.tell(_("You know of nowhere called \"@x1\".",CMParms.combine(commands)));
+			mob.tell(L("You know of nowhere called \"@x1\".",CMParms.combine(commands)));
 			return false;
 		}
 
@@ -91,15 +91,15 @@ public class Spell_FindDirections extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,targetR,this,somanticCastCode(mob,targetR,auto),auto?"":_("^S<S-NAME> wave(s) <S-HIS-HER> hands around, pointing towards '@x1'.^?",A.name()));
+			final CMMsg msg=CMClass.getMsg(mob,targetR,this,somanticCastCode(mob,targetR,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> hands around, pointing towards '@x1'.^?",A.name()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.tell(_("The directions are taking shape in your mind: \n\r@x1",CMLib.tracking().getTrailToDescription(targetR, new Vector<Room>(), A.Name(), false, false, 100, null,1)));
+				mob.tell(L("The directions are taking shape in your mind: \n\r@x1",CMLib.tracking().getTrailToDescription(targetR, new Vector<Room>(), A.Name(), false, false, 100, null,1)));
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,targetR,_("<S-NAME> wave(s) <S-HIS-HER> hands around, looking more frustrated every second."));
+			beneficialVisualFizzle(mob,targetR,L("<S-NAME> wave(s) <S-HIS-HER> hands around, looking more frustrated every second."));
 
 
 		// return whether it worked

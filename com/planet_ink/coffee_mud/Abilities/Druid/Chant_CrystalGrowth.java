@@ -37,7 +37,7 @@ import java.util.Vector;
 public class Chant_CrystalGrowth extends Chant
 {
 	@Override public String ID() { return "Chant_CrystalGrowth"; }
-	private final static String localizedName = CMLib.lang()._("Crystal Growth");
+	private final static String localizedName = CMLib.lang().L("Crystal Growth");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	@Override protected int canAffectCode(){return 0;}
@@ -50,7 +50,7 @@ public class Chant_CrystalGrowth extends Chant
 	{
 		if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
 		{
-			mob.tell(_("This magic will not work here."));
+			mob.tell(L("This magic will not work here."));
 			return false;
 		}
 		final int material=RawMaterial.RESOURCE_CRYSTAL;
@@ -61,7 +61,7 @@ public class Chant_CrystalGrowth extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) to the cave walls.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) to the cave walls.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -90,7 +90,7 @@ public class Chant_CrystalGrowth extends Chant
 				if(A!=null) pair=A.craftAnyItem(material);
 				if(pair==null)
 				{
-					mob.tell(_("The chant failed for some reason..."));
+					mob.tell(L("The chant failed for some reason..."));
 					return false;
 				}
 				final Item building=pair.item;
@@ -100,12 +100,12 @@ public class Chant_CrystalGrowth extends Chant
 				final Ability A2=CMClass.getAbility("Chant_Brittle");
 				if(A2!=null) building.addNonUninvokableEffect(A2);
 
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("a tiny crystal fragment drops out of the stone, swells and grows, forming into @x1.",building.name()));
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("a tiny crystal fragment drops out of the stone, swells and grows, forming into @x1.",building.name()));
 				mob.location().recoverPhyStats();
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) to the walls, but nothing happens."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) to the walls, but nothing happens."));
 
 		// return whether it worked
 		return success;

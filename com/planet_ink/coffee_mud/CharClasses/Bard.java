@@ -37,7 +37,7 @@ import java.util.*;
 public class Bard extends StdCharClass
 {
 	@Override public String ID(){return "Bard";}
-	private final static String localizedStaticName = CMLib.lang()._("Bard");
+	private final static String localizedStaticName = CMLib.lang().L("Bard");
 	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return ID();}
 	@Override public int getBonusPracLevel(){return 1;}
@@ -227,7 +227,7 @@ public class Bard extends StdCharClass
 				{
 					final int xpGain=50;
 					if(CMLib.leveler().postExperience((MOB)host,null,null,xpGain,true))
-						msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang()._("^HYou have discovered a new pub, you gain @x1 experience.^?",""+xpGain),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+						msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have discovered a new pub, you gain @x1 experience.^?",""+xpGain),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 				}
 				if((!mob.playerStats().hasVisited(A))&&(mob.soulMate()==null))
 				{
@@ -236,7 +236,7 @@ public class Bard extends StdCharClass
 					int xp=(int)Math.round(100.0*CMath.div(A.getAreaIStats()[Area.Stats.AVG_LEVEL.ordinal()],hostP.phyStats().level()));
 					if(xp>250) xp=250;
 					if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
-						msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang()._("^HYou have discovered '@x1', you gain @x2 experience.^?",A.name(),""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+						msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have discovered '@x1', you gain @x2 experience.^?",A.name(),""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 				}
 				else
 				{
@@ -249,7 +249,7 @@ public class Bard extends StdCharClass
 						int xp=(int)Math.round(50.0*CMath.div(A.getAreaIStats()[Area.Stats.AVG_LEVEL.ordinal()],hostP.phyStats().level()));
 						if(xp>125) xp=125;
 						if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
-							msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang()._("^HYou have familiarized yourself with '@x1', you gain @x2 experience.^?",A.name(),""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+							msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have familiarized yourself with '@x1', you gain @x2 experience.^?",A.name(),""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 					}
 					else
 					if((pctBefore<90)&&(pctAfter>=90))
@@ -257,7 +257,7 @@ public class Bard extends StdCharClass
 						int xp=(int)Math.round(100.0*CMath.div(A.getAreaIStats()[Area.Stats.AVG_LEVEL.ordinal()],hostP.phyStats().level()));
 						if(xp>250) xp=250;
 						if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
-							msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang()._("^HYou have explored '@x1', you gain @x2 experience.^?",A.name(),""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+							msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have explored '@x1', you gain @x2 experience.^?",A.name(),""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 					}
 				}
 

@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_MassInvisibility extends Spell
 {
 	@Override public String ID() { return "Spell_MassInvisibility"; }
-	private final static String localizedName = CMLib.lang()._("Mass Invisibility");
+	private final static String localizedName = CMLib.lang().L("Mass Invisibility");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
@@ -62,7 +62,7 @@ public class Spell_MassInvisibility extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,false);
 		if(h==null)
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth making invisible."));
+			mob.tell(L("There doesn't appear to be anyone here worth making invisible."));
 			return false;
 		}
 
@@ -77,7 +77,7 @@ public class Spell_MassInvisibility extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) softly.^?")))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) softly.^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -90,7 +90,7 @@ public class Spell_MassInvisibility extends Spell
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> fade(s) from view!"));
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> fade(s) from view!"));
 						final Spell_Invisibility spell=new Spell_Invisibility();
 						spell.setProficiency(proficiency());
 						spell.beneficialAffect(mob,target,asLevel,0);
@@ -98,7 +98,7 @@ public class Spell_MassInvisibility extends Spell
 				}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) softly, but the spell fizzles."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) softly, but the spell fizzles."));
 
 
 		// return whether it worked

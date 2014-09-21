@@ -38,9 +38,9 @@ import java.util.*;
 public class Chant_SummonSapling extends Chant
 {
 	@Override public String ID() { return "Chant_SummonSapling"; }
-	private final static String localizedName = CMLib.lang()._("Summon Sapling");
+	private final static String localizedName = CMLib.lang().L("Summon Sapling");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Summon Sapling)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Summon Sapling)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -93,7 +93,7 @@ public class Chant_SummonSapling extends Chant
 		if((canBeUninvoked())&&(mob!=null))
 		{
 			if(mob.location()!=null)
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> grow(s) still and tree-like."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> grow(s) still and tree-like."));
 			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
 		}
@@ -140,12 +140,12 @@ public class Chant_SummonSapling extends Chant
 		&&((mob.location().myResource()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_JUNGLE))
 		{
-			mob.tell(_("This magic will not work here."));
+			mob.tell(L("This magic will not work here."));
 			return false;
 		}
 		if(!mob.isInCombat())
 		{
-			mob.tell(_("Only the anger of combat can summon sapling warriors."));
+			mob.tell(L("Only the anger of combat can summon sapling warriors."));
 			return false;
 		}
 		int material=RawMaterial.RESOURCE_OAK;
@@ -173,7 +173,7 @@ public class Chant_SummonSapling extends Chant
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) and summon(s) help from the trees.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) and summon(s) help from the trees.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -181,11 +181,11 @@ public class Chant_SummonSapling extends Chant
 				beneficialAffect(mob,target,asLevel,0);
 				CMLib.commands().postFollow(target,mob,true);
 				if(target.amFollowing()!=mob)
-					mob.tell(_("@x1 seems unwilling to follow you.",target.name(mob)));
+					mob.tell(L("@x1 seems unwilling to follow you.",target.name(mob)));
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s), but nothing happens."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s), but nothing happens."));
 
 		// return whether it worked
 		return success;
@@ -202,7 +202,7 @@ public class Chant_SummonSapling extends Chant
 		String name=resourceName+" sapling";
 		name=CMLib.english().startWithAorAn(name).toLowerCase();
 		newMOB.setName(name);
-		newMOB.setDisplayText(_("@x1 looks enraged!",name));
+		newMOB.setDisplayText(L("@x1 looks enraged!",name));
 		newMOB.setDescription("");
 		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 		final Ability A=CMClass.getAbility("Fighter_Rescue");
@@ -230,7 +230,7 @@ public class Chant_SummonSapling extends Chant
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		if(victim.getVictim()!=newMOB) victim.setVictim(newMOB);
 		if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
-		newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,_("<S-NAME> start(s) attacking <T-NAMESELF>!"));
+		newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,L("<S-NAME> start(s) attacking <T-NAMESELF>!"));
 		newMOB.setStartRoom(null);
 		return(newMOB);
 	}

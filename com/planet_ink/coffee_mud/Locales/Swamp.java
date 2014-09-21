@@ -68,10 +68,10 @@ public class Swamp extends StdRoom implements Drink
 			final boolean thirsty=mob.curState().getThirst()<=0;
 			final boolean full=!mob.curState().adjThirst(thirstQuenched(),mob.maxState().maxThirst(mob.baseWeight()));
 			if(thirsty)
-				mob.tell(_("You are no longer thirsty."));
+				mob.tell(L("You are no longer thirsty."));
 			else
 			if(full)
-				mob.tell(_("You have drunk all you can."));
+				mob.tell(L("You have drunk all you can."));
 			if(CMLib.dice().rollPercentage()<10)
 			{
 				Ability A=CMClass.getAbility("Disease_Malaria");

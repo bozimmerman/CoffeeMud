@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_Imitation extends BardSkill
 {
 	@Override public String ID() { return "Skill_Imitation"; }
-	private final static String localizedName = CMLib.lang()._("Imitate");
+	private final static String localizedName = CMLib.lang().L("Imitate");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -108,8 +108,8 @@ public class Skill_Imitation extends BardSkill
 		}
 		if((cmd.length()==0)||(found==null))
 		{
-			if(found!=null) mob.tell(_("'@x1' is not something you know how to imitate.",cmd));
-			mob.tell(_("Spells/Skills you may imitate: @x1.",str.toString()));
+			if(found!=null) mob.tell(L("'@x1' is not something you know how to imitate.",cmd));
+			mob.tell(L("Spells/Skills you may imitate: @x1.",str.toString()));
 			return true;
 		}
 		if(target==null) target=mob.getVictim();
@@ -127,7 +127,7 @@ public class Skill_Imitation extends BardSkill
 				mob.location().send(mob,msg);
 		}
 		else
-			return beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to imitate @x1, but fail(s).",found));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to imitate @x1, but fail(s).",found));
 
 		return success;
 	}

@@ -36,12 +36,12 @@ import java.util.*;
 public class Prayer_Stasis extends Prayer
 {
 	@Override public String ID() { return "Prayer_Stasis"; }
-	private final static String localizedName = CMLib.lang()._("Stasis");
+	private final static String localizedName = CMLib.lang().L("Stasis");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(In stasis)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(In stasis)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -73,7 +73,7 @@ public class Prayer_Stasis extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("The holy stasis has been lifted."));
+			mob.tell(L("The holy stasis has been lifted."));
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class Prayer_Stasis extends Prayer
 		else
 		if((msg.amITarget(mob))&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)))
 		{
-			msg.source().tell(msg.source(),mob,null,_("The statis field around <T-NAME> protect(s) <T-HIM-HER>."));
+			msg.source().tell(msg.source(),mob,null,L("The statis field around <T-NAME> protect(s) <T-HIM-HER>."));
 			return false;
 		}
 
@@ -114,19 +114,19 @@ public class Prayer_Stasis extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 to place a stasis upon <T-NAMESELF>.^?",prayForWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 to place a stasis upon <T-NAMESELF>.^?",prayForWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
 					success=beneficialAffect(mob,target,asLevel,10);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> surrounded by a stasis field!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> surrounded by a stasis field!"));
 				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 to place <T-NAMESELF> into stasis, but flub(s) it.",prayForWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 to place <T-NAMESELF> into stasis, but flub(s) it.",prayForWord(mob)));
 
 
 		// return whether it worked

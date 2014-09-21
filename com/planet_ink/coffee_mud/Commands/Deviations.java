@@ -48,16 +48,16 @@ public class Deviations extends StdCommand
 	{
 		final StringBuffer str=new StringBuffer();
 		str.append("\n\r");
-		str.append(CMStrings.padRight(_("Name"),20)+" ");
-		str.append(CMStrings.padRight(_("Lvl"),4)+" ");
-		str.append(CMStrings.padRight(_("Att"),5)+" ");
-		str.append(CMStrings.padRight(_("Dmg"),5)+" ");
-		str.append(CMStrings.padRight(_("Armor"),5)+" ");
-		str.append(CMStrings.padRight(_("Speed"),5)+" ");
-		str.append(CMStrings.padRight(_("Rejuv"),5)+" ");
+		str.append(CMStrings.padRight(L("Name"),20)+" ");
+		str.append(CMStrings.padRight(L("Lvl"),4)+" ");
+		str.append(CMStrings.padRight(L("Att"),5)+" ");
+		str.append(CMStrings.padRight(L("Dmg"),5)+" ");
+		str.append(CMStrings.padRight(L("Armor"),5)+" ");
+		str.append(CMStrings.padRight(L("Speed"),5)+" ");
+		str.append(CMStrings.padRight(L("Rejuv"),5)+" ");
 		if(useFaction!=null)
 			str.append(CMStrings.padRight(useFaction.name(),7)+" ");
-		str.append(CMStrings.padRight(_("Worn"),5));
+		str.append(CMStrings.padRight(L("Worn"),5));
 		str.append("\n\r");
 		return str.toString();
 	}
@@ -65,16 +65,16 @@ public class Deviations extends StdCommand
 	{
 		final StringBuffer str=new StringBuffer();
 		str.append("\n\r");
-		str.append(CMStrings.padRight(_("Name"),20)+" ");
-		str.append(CMStrings.padRight(_("Type"),10)+" ");
-		str.append(CMStrings.padRight(_("Lvl"),4)+" ");
-		str.append(CMStrings.padRight(_("Att"),5)+" ");
-		str.append(CMStrings.padRight(_("Dmg"),5)+" ");
-		str.append(CMStrings.padRight(_("Armor"),5)+" ");
-		str.append(CMStrings.padRight(_("Value"),5)+" ");
-		str.append(CMStrings.padRight(_("Rejuv"),5)+" ");
-		str.append(CMStrings.padRight(_("Wght."),4)+" ");
-		str.append(CMStrings.padRight(_("Size"),4));
+		str.append(CMStrings.padRight(L("Name"),20)+" ");
+		str.append(CMStrings.padRight(L("Type"),10)+" ");
+		str.append(CMStrings.padRight(L("Lvl"),4)+" ");
+		str.append(CMStrings.padRight(L("Att"),5)+" ");
+		str.append(CMStrings.padRight(L("Dmg"),5)+" ");
+		str.append(CMStrings.padRight(L("Armor"),5)+" ");
+		str.append(CMStrings.padRight(L("Value"),5)+" ");
+		str.append(CMStrings.padRight(L("Rejuv"),5)+" ");
+		str.append(CMStrings.padRight(L("Wght."),4)+" ");
+		str.append(CMStrings.padRight(L("Size"),4));
 		str.append("\n\r");
 		return str.toString();
 	}
@@ -221,7 +221,7 @@ public class Deviations extends StdCommand
 		else
 			check.addElement(E);
 		final StringBuffer str=new StringBuffer("");
-		str.append(_("Deviations Report:\n\r"));
+		str.append(L("Deviations Report:\n\r"));
 		final StringBuffer itemResults = new StringBuffer();
 		final StringBuffer mobResults = new StringBuffer();
 		for(int c=0;c<check.size();c++)

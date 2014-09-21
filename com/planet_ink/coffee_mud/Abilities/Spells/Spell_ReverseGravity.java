@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_ReverseGravity extends Spell
 {
 	@Override public String ID() { return "Spell_ReverseGravity"; }
-	private final static String localizedName = CMLib.lang()._("Reverse Gravity");
+	private final static String localizedName = CMLib.lang().L("Reverse Gravity");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Gravity is Reversed)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Gravity is Reversed)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -102,7 +102,7 @@ public class Spell_ReverseGravity extends Spell
 			if(affected instanceof Room)
 			{
 				final Room room=(Room)affected;
-				room.showHappens(CMMsg.MSG_OK_VISUAL, _("Gravity returns to normal..."));
+				room.showHappens(CMMsg.MSG_OK_VISUAL, L("Gravity returns to normal..."));
 				if(invoker!=null)
 				{
 					final Ability me=invoker.fetchEffect(ID());
@@ -115,7 +115,7 @@ public class Spell_ReverseGravity extends Spell
 				final MOB mob=(MOB)affected;
 				if(mob.location()!=null)
 				{
-					mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL, _("Gravity returns to normal.."));
+					mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL, L("Gravity returns to normal.."));
 					final Ability me=mob.location().fetchEffect(ID());
 					if(me!=null) me.setProficiency(0);
 				}
@@ -155,7 +155,7 @@ public class Spell_ReverseGravity extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,null,null,_("Gravity has already been reversed here!"));
+			mob.tell(mob,null,null,L("Gravity has already been reversed here!"));
 			return false;
 		}
 
@@ -169,7 +169,7 @@ public class Spell_ReverseGravity extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), _((auto?"G":"^S<S-NAME> speak(s) and wave(s) and g")+"ravity begins to reverse!^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), L((auto?"G":"^S<S-NAME> speak(s) and wave(s) and g")+"ravity begins to reverse!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				childrenAffects=new Vector();
@@ -178,7 +178,7 @@ public class Spell_ReverseGravity extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> speak(s) in reverse, but the spell fizzles."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> speak(s) in reverse, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

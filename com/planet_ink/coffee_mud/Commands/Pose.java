@@ -49,21 +49,21 @@ public class Pose extends StdCommand
 			{
 				if((pstats.getSavedPose()==null)||(pstats.getSavedPose().length()==0))
 				{
-					mob.tell(_("You are not currently posing."));
+					mob.tell(L("You are not currently posing."));
 					return false;
 				}
 				pstats.setSavedPose("");
 				mob.setDisplayText("");
-				mob.tell(_("You stop posing."));
+				mob.tell(L("You stop posing."));
 			}
 			return false;
 		}
 		if(commands.size()<2)
 		{
 			if(mob.displayText().length()==0)
-				mob.tell(_("POSE how?"));
+				mob.tell(L("POSE how?"));
 			else
-				mob.tell(_("Your current pose is: @x1",mob.displayText(mob)));
+				mob.tell(L("Your current pose is: @x1",mob.displayText(mob)));
 			return false;
 		}
 		String combinedCommands=CMParms.combine(commands,1);
@@ -73,7 +73,7 @@ public class Pose extends StdCommand
 		else
 			combinedCommands=" "+combinedCommands.trim();
 		final String emote="^E<S-NAME>"+combinedCommands+" ^?";
-		final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_EMOTE | CMMsg.MASK_ALWAYS,_("^E@x1@x2 ^?",mob.name(),combinedCommands),emote,emote);
+		final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_EMOTE | CMMsg.MASK_ALWAYS,L("^E@x1@x2 ^?",mob.name(),combinedCommands),emote,emote);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

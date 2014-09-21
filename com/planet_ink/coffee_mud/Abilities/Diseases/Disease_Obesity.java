@@ -38,7 +38,7 @@ import java.util.Vector;
 public class Disease_Obesity extends Disease
 {
 	@Override public String ID() { return "Disease_Obesity"; }
-	private final static String localizedName = CMLib.lang()._("Obesity");
+	private final static String localizedName = CMLib.lang().L("Obesity");
 	@Override public String name() { return localizedName; }
 	@Override
 	public String displayText()
@@ -177,17 +177,17 @@ public class Disease_Obesity extends Disease
 			final int amount=amountOfFat();
 			String str="";
 			if(amount<20)
-				str=_("a bit chubby");
+				str=L("a bit chubby");
 			else
 			if(amount<60)
-				str=_("fat");
+				str=L("fat");
 			else
 			if(amount<120)
-				str=_("obese");
+				str=L("obese");
 			else
-				str=_("morbidly obese");
+				str=L("morbidly obese");
 			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,
-										  CMMsg.MSG_OK_VISUAL,_("\n\r@x1 is @x2.\n\r",affected.name(),str),
+										  CMMsg.MSG_OK_VISUAL,L("\n\r@x1 is @x2.\n\r",affected.name(),str),
 										  CMMsg.NO_EFFECT,null,
 										  CMMsg.NO_EFFECT,null));
 		}

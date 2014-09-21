@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_MassFeatherfall extends Spell
 {
 	@Override public String ID() { return "Spell_MassFeatherfall"; }
-	private final static String localizedName = CMLib.lang()._("Mass FeatherFall");
+	private final static String localizedName = CMLib.lang().L("Mass FeatherFall");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
@@ -48,7 +48,7 @@ public class Spell_MassFeatherfall extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,false);
 		if(h==null)
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth floating."));
+			mob.tell(L("There doesn't appear to be anyone here worth floating."));
 			return false;
 		}
 
@@ -63,7 +63,7 @@ public class Spell_MassFeatherfall extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) lightly.^?")))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) lightly.^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -83,7 +83,7 @@ public class Spell_MassFeatherfall extends Spell
 				}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) lightly, but the spell fizzles."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) lightly, but the spell fizzles."));
 
 
 		// return whether it worked

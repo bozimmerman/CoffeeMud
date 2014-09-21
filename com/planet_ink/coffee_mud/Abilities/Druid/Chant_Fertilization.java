@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_Fertilization extends Chant
 {
 	@Override public String ID() { return "Chant_Fertilization"; }
-	private final static String localizedName = CMLib.lang()._("Fertilization");
+	private final static String localizedName = CMLib.lang().L("Fertilization");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
@@ -78,7 +78,7 @@ public class Chant_Fertilization extends Chant
 			||(type==Room.DOMAIN_OUTDOORS_UNDERWATER)
 			||(type==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			mob.tell(_("That magic won't work here."));
+			mob.tell(L("That magic won't work here."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -88,7 +88,7 @@ public class Chant_Fertilization extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":_("^S<S-NAME> chant(s) to make the land fruitful.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":L("^S<S-NAME> chant(s) to make the land fruitful.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -101,7 +101,7 @@ public class Chant_Fertilization extends Chant
 
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) to make the land fruitful, but nothing happens."));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) to make the land fruitful, but nothing happens."));
 
 
 		// return whether it worked

@@ -35,7 +35,7 @@ import java.util.*;
 public class Bomb_AcidBurst extends StdBomb
 {
 	@Override public String ID() { return "Bomb_AcidBurst"; }
-	private final static String localizedName = CMLib.lang()._("acid burst bomb");
+	private final static String localizedName = CMLib.lang().L("acid burst bomb");
 	@Override public String name() { return localizedName; }
 	@Override protected int trapLevel(){return 20;}
 	@Override public String requiresToSet(){return "some lemons";}
@@ -55,7 +55,7 @@ public class Bomb_AcidBurst extends StdBomb
 		||(((Item)P).material()!=RawMaterial.RESOURCE_LEMONS))
 		{
 			if(mob!=null)
-				mob.tell(_("You need some lemons to make this out of."));
+				mob.tell(L("You need some lemons to make this out of."));
 			return false;
 		}
 		return true;
@@ -70,9 +70,9 @@ public class Bomb_AcidBurst extends StdBomb
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) the acid burst!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) the acid burst!"));
 			else
-			if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("@x1 sprays acid all over <T-NAME>!",affected.name())))
+			if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("@x1 sprays acid all over <T-NAME>!",affected.name())))
 			{
 				super.spring(target);
 				CMLib.combat().postDamage(invoker(),target,null,CMLib.dice().roll(trapLevel()+abilityCode(),24,1),CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The acid <DAMAGE> <T-NAME>!");

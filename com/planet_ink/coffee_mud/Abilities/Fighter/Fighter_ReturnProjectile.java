@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_ReturnProjectile extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_ReturnProjectile"; }
-	private final static String localizedName = CMLib.lang()._("Return Projectile");
+	private final static String localizedName = CMLib.lang().L("Return Projectile");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
@@ -90,7 +90,7 @@ public class Fighter_ReturnProjectile extends FighterSkill
 					ammo=ammo.substring(0,ammo.length()-1);
 				ammo=CMLib.english().startWithAorAn(ammo);
 				neww.setName(ammo);
-				neww.setDisplayText(_("@x1 sits here.",ammo));
+				neww.setDisplayText(L("@x1 sits here.",ammo));
 				neww.setUsesRemaining(1);
 				neww.setMaterial(((Weapon)w).material());
 				neww.setWeaponClassification(Weapon.CLASS_THROWN);
@@ -104,7 +104,7 @@ public class Fighter_ReturnProjectile extends FighterSkill
 			}
 			if(mob.location().isContent(w))
 			{
-				final CMMsg msg2=CMClass.getMsg(mob,w,msg.source(),CMMsg.MSG_GET,_("<S-NAME> catch(es) the <T-NAME> shot by <O-NAME>!"));
+				final CMMsg msg2=CMClass.getMsg(mob,w,msg.source(),CMMsg.MSG_GET,L("<S-NAME> catch(es) the <T-NAME> shot by <O-NAME>!"));
 				if(mob.location().okMessage(mob,msg2))
 				{
 					mob.location().send(mob,msg2);

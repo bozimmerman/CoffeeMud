@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_SetDecoys extends ThiefSkill implements Trap
 {
 	@Override public String ID() { return "Thief_SetDecoys"; }
-	private final static String localizedName = CMLib.lang()._("Set Decoys");
+	private final static String localizedName = CMLib.lang().L("Set Decoys");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
@@ -70,9 +70,9 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 		final Room R=mob.location();
 		if(R==null) return;
 		if((!invoker().mayIFight(mob))||(!mob.isInCombat())||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)-(getXLEVELLevel(invoker())*5)))
-			R.show(mob,affected,this,CMMsg.MSG_OK_ACTION,_("A decoy pops up, prompting <S-NAME> to glance toward(s) it, but <S-HE-SHE> <S-IS-ARE> not fooled."));
+			R.show(mob,affected,this,CMMsg.MSG_OK_ACTION,L("A decoy pops up, prompting <S-NAME> to glance toward(s) it, but <S-HE-SHE> <S-IS-ARE> not fooled."));
 		else
-		if(R.show(mob,null,this,CMMsg.MSG_OK_VISUAL,_("A decoy pops up, confusing <S-NAME>!")))
+		if(R.show(mob,null,this,CMMsg.MSG_OK_VISUAL,L("A decoy pops up, confusing <S-NAME>!")))
 		{
 			int max=R.maxRange();
 			final int level=getXLEVELLevel(invoker())+2;
@@ -80,7 +80,7 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 			while((mob.isInCombat())&&(mob.rangeToTarget()<max))
 			{
 				final int r=mob.rangeToTarget();
-				if(!R.show(mob,mob.getVictim(),null,CMMsg.MSG_RETREAT,_("<S-NAME> advance(s) toward(s) the decoy.")))
+				if(!R.show(mob,mob.getVictim(),null,CMMsg.MSG_RETREAT,L("<S-NAME> advance(s) toward(s) the decoy.")))
 					break;
 				if(mob.rangeToTarget()==r)
 					break;
@@ -130,10 +130,10 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 				spring(target);
 			else
 			if(numWhoCanSee>1)
-				R.showHappens(CMMsg.MSG_OK_VISUAL,_("A decoy pops up, causing everyone's gaze to be momentarily distracted towards it."));
+				R.showHappens(CMMsg.MSG_OK_VISUAL,L("A decoy pops up, causing everyone's gaze to be momentarily distracted towards it."));
 			else
 			if(numWhoCanSee==1)
-				R.showHappens(CMMsg.MSG_OK_VISUAL,_("A decoy pops up, causing your gaze to be momentarily distracted towards it."));
+				R.showHappens(CMMsg.MSG_OK_VISUAL,L("A decoy pops up, causing your gaze to be momentarily distracted towards it."));
 		}
 		return true;
 	}
@@ -160,12 +160,12 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 		final Physical target=(givenTarget!=null)?givenTarget:mob.location();
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("Decoys have already been set here."));
+			mob.tell(L("Decoys have already been set here."));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell(_("Not while in combat!"));
+			mob.tell(L("Not while in combat!"));
 			return false;
 		}
 
@@ -175,13 +175,13 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			if(mob.location().show(mob,target,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT,_("<S-NAME> set(s) several decoys around the room.")))
+			if(mob.location().show(mob,target,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT,L("<S-NAME> set(s) several decoys around the room.")))
 				maliciousAffect(mob,target,asLevel,0,-1);
 			else
 				success=false;
 		}
 		else
-			maliciousFizzle(mob,target,_("<S-NAME> fail(s) to set <S-HIS-HER> decoys properly."));
+			maliciousFizzle(mob,target,L("<S-NAME> fail(s) to set <S-HIS-HER> decoys properly."));
 		return success;
 	}
 }

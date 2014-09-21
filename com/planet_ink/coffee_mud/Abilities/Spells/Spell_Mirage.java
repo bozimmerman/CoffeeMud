@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Mirage extends Spell
 {
 	@Override public String ID() { return "Spell_Mirage"; }
-	private final static String localizedName = CMLib.lang()._("Mirage");
+	private final static String localizedName = CMLib.lang().L("Mirage");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Mirage spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Mirage spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return CAN_ROOMS;}
@@ -57,7 +57,7 @@ public class Spell_Mirage extends Spell
 			return;
 		final Room room=(Room)affected;
 		if(canBeUninvoked())
-			room.showHappens(CMMsg.MSG_OK_VISUAL, _("The appearance of this place changes..."));
+			room.showHappens(CMMsg.MSG_OK_VISUAL, L("The appearance of this place changes..."));
 		super.unInvoke();
 	}
 
@@ -118,7 +118,7 @@ public class Spell_Mirage extends Spell
 	{
 		if(mob.location().getArea().properSize()<2)
 		{
-			mob.tell(_("This area is too small to cast this spell."));
+			mob.tell(L("This area is too small to cast this spell."));
 			return false;
 		}
 
@@ -139,11 +139,11 @@ public class Spell_Mirage extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), auto?"":_("^S<S-NAME> speak(s) and gesture(s) dramatically!^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), auto?"":L("^S<S-NAME> speak(s) and gesture(s) dramatically!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The appearance of this place changes..."));
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The appearance of this place changes..."));
 				if(CMLib.law().doesOwnThisProperty(mob,mob.location()))
 				{
 					final Ability A=(Ability)copyOf();
@@ -161,7 +161,7 @@ public class Spell_Mirage extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> speak(s) and gesture(s) dramatically, but the spell fizzles."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> speak(s) and gesture(s) dramatically, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

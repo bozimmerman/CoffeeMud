@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_BladeBarrier extends Prayer
 {
 	@Override public String ID() { return "Prayer_BladeBarrier"; }
-	private final static String localizedName = CMLib.lang()._("Blade Barrier");
+	private final static String localizedName = CMLib.lang().L("Blade Barrier");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Blade Barrier)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Blade Barrier)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -67,7 +67,7 @@ public class Prayer_BladeBarrier extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> @x1 disappears.",name().toLowerCase()));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> @x1 disappears.",name().toLowerCase()));
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public class Prayer_BladeBarrier extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> @x1.",name().toLowerCase()));
+			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> @x1.",name().toLowerCase()));
 			return false;
 		}
 
@@ -131,7 +131,7 @@ public class Prayer_BladeBarrier extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_(auto?"":"^S<S-NAME> "+prayWord(mob)+" for divine protection!  ")+startStr());
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"":"^S<S-NAME> "+prayWord(mob)+" for divine protection!  ")+startStr());
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -139,7 +139,7 @@ public class Prayer_BladeBarrier extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for divine protection, but nothing happens.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for divine protection, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

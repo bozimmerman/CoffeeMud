@@ -52,7 +52,7 @@ public class Possess extends StdCommand
 				if((t!=null)&&(!(t instanceof MOB)))
 				{
 					if(!quiet)
-						mob.tell(mob,t,null,_("You can't do that to <T-NAMESELF>."));
+						mob.tell(mob,t,null,L("You can't do that to <T-NAMESELF>."));
 					return null;
 				}
 			}
@@ -66,9 +66,9 @@ public class Possess extends StdCommand
 			if(!quiet)
 			{
 				if(targetName.trim().length()==0)
-					mob.tell(_("You don't see them here."));
+					mob.tell(L("You don't see them here."));
 				else
-					mob.tell(_("You don't see '@x1' here.",targetName));
+					mob.tell(L("You don't see '@x1' here.",targetName));
 			}
 			return null;
 		}
@@ -82,7 +82,7 @@ public class Possess extends StdCommand
 	{
 		if(mob.soulMate()!=null)
 		{
-			mob.tell(_("You are already possessing someone.  Quit back to your body first!"));
+			mob.tell(L("You are already possessing someone.  Quit back to your body first!"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -119,21 +119,21 @@ public class Possess extends StdCommand
 		}
 		if((target==null)||(!target.isMonster())||(!CMLib.flags().isInTheGame(target,true)))
 		{
-			mob.tell(_("You can't possess '@x1' right now.",MOBname));
+			mob.tell(L("You can't possess '@x1' right now.",MOBname));
 			return false;
 		}
 		if(!CMSecurity.isAllowed(mob,target.location(),CMSecurity.SecFlag.POSSESS))
 		{
-			mob.tell(_("You can not possess @x1.",target.Name()));
+			mob.tell(L("You can not possess @x1.",target.Name()));
 			return false;
 		}
 
 		if((!CMSecurity.isASysOp(mob))&&(CMSecurity.isASysOp(target)))
 		{
-			mob.tell(_("You may not possess '@x1'.",MOBname));
+			mob.tell(L("You may not possess '@x1'.",MOBname));
 			return false;
 		}
-		final CMMsg msg=CMClass.getMsg(mob,target,null, CMMsg.MSG_POSSESS, _("<S-NAME> get(s) a far away look, then seem(s) to fall limp."));
+		final CMMsg msg=CMClass.getMsg(mob,target,null, CMMsg.MSG_POSSESS, L("<S-NAME> get(s) a far away look, then seem(s) to fall limp."));
 		final Room room=mob.location();
 		if((room==null)||(room.okMessage(mob, msg)))
 		{
@@ -144,7 +144,7 @@ public class Possess extends StdCommand
 			target.setSoulMate(mob);
 			mob.setSession(null);
 			CMLib.commands().postLook(target,true);
-			target.tell(_("^HYour spirit has changed bodies@x1, use QUIT to return to yours.",(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)?" and SECURITY mode is ON":"")));
+			target.tell(L("^HYour spirit has changed bodies@x1, use QUIT to return to yours.",(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)?" and SECURITY mode is ON":"")));
 		}
 		return false;
 	}

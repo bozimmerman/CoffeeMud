@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_Ambush extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Ambush"; }
-	private final static String localizedName = CMLib.lang()._("Ambush");
+	private final static String localizedName = CMLib.lang().L("Ambush");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -51,13 +51,13 @@ public class Thief_Ambush extends ThiefSkill
 	{
 		if(mob.fetchEffect("Thief_Hide")!=null)
 		{
-			mob.tell(_("You are already hiding."));
+			mob.tell(L("You are already hiding."));
 			return false;
 		}
 
 		if(mob.isInCombat())
 		{
-			mob.tell(_("Not while in combat!"));
+			mob.tell(L("Not while in combat!"));
 			return false;
 		}
 
@@ -75,7 +75,7 @@ public class Thief_Ambush extends ThiefSkill
 		}
 		if(numBesidesMe==0)
 		{
-			mob.tell(_("You need a group to set up an ambush!"));
+			mob.tell(L("You need a group to set up an ambush!"));
 			return false;
 		}
 		for(int i=0;i<mob.location().numInhabitants();i++)
@@ -83,17 +83,17 @@ public class Thief_Ambush extends ThiefSkill
 			final MOB M=mob.location().fetchInhabitant(i);
 			if((M!=null)&&(M!=mob)&&(!H.contains(M))&&(CMLib.flags().canSee(M)))
 			{
-				mob.tell(M,null,null,_("<S-NAME> is watching you too closely."));
+				mob.tell(M,null,null,L("<S-NAME> is watching you too closely."));
 				return false;
 			}
 		}
 		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
-			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to set up an ambush, but fail(s)."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to set up an ambush, but fail(s)."));
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),_("<S-NAME> set(s) up an ambush, directing everyone to hiding places."));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),L("<S-NAME> set(s) up an ambush, directing everyone to hiding places."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

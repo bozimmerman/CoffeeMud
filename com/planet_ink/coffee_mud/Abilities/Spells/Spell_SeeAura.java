@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_SeeAura extends Spell
 {
 	@Override public String ID() { return "Spell_SeeAura"; }
-	private final static String localizedName = CMLib.lang()._("See Aura");
+	private final static String localizedName = CMLib.lang().L("See Aura");
 	@Override public String name() { return localizedName; }
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
@@ -49,7 +49,7 @@ public class Spell_SeeAura extends Spell
 		if(target==null) return false;
 		if(target==mob)
 		{
-			mob.tell(_("Um, you could just enter SCORE."));
+			mob.tell(L("Um, you could just enter SCORE."));
 			return false;
 		}
 
@@ -62,7 +62,7 @@ public class Spell_SeeAura extends Spell
 		// and add it to the affects list of the
 		// affected MOB.  Then tell everyone else
 		// what happened.
-		final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^SYou draw out <T-NAME>s aura, seeing <T-HIM-HER> from the inside out...^?"),verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> draw(s) out your aura.^?"),verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> draws out <T-NAME>s aura.^?"));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^SYou draw out <T-NAME>s aura, seeing <T-HIM-HER> from the inside out...^?"),verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> draw(s) out your aura.^?"),verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> draws out <T-NAME>s aura.^?"));
 		if(success)
 		{
 			if(mob.location().okMessage(mob,msg))
@@ -74,7 +74,7 @@ public class Spell_SeeAura extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,target,_("<S-NAME> examine(s) <T-NAME>, incanting, but the spell fizzles."));
+			beneficialVisualFizzle(mob,target,L("<S-NAME> examine(s) <T-NAME>, incanting, but the spell fizzles."));
 
 
 		// return whether it worked

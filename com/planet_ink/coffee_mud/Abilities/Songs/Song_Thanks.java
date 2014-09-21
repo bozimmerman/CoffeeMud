@@ -36,7 +36,7 @@ import java.util.*;
 public class Song_Thanks extends Song
 {
 	@Override public String ID() { return "Song_Thanks"; }
-	private final static String localizedName = CMLib.lang()._("Thanks");
+	private final static String localizedName = CMLib.lang().L("Thanks");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected boolean skipStandardSongInvoke(){return true;}
@@ -75,34 +75,34 @@ public class Song_Thanks extends Song
 			switch(CMLib.dice().roll(1,10,0))
 			{
 			case 1:
-				CMLib.commands().postSay(mob,invoker,_("Thank you @x1!",invoker.name()),false,false);
+				CMLib.commands().postSay(mob,invoker,L("Thank you @x1!",invoker.name()),false,false);
 				break;
 			case 2:
-				CMLib.commands().postSay(mob,invoker,_("Thanks for being you, @x1!",invoker.name()),false,false);
+				CMLib.commands().postSay(mob,invoker,L("Thanks for being you, @x1!",invoker.name()),false,false);
 				break;
 			case 3:
-				CMLib.commands().postSay(mob,invoker,_("Thanks @x1!",invoker.name()),false,false);
+				CMLib.commands().postSay(mob,invoker,L("Thanks @x1!",invoker.name()),false,false);
 				break;
 			case 4:
-				CMLib.commands().postSay(mob,invoker,_("You are great, @x1!  Thanks!",invoker.name()),false,false);
+				CMLib.commands().postSay(mob,invoker,L("You are great, @x1!  Thanks!",invoker.name()),false,false);
 				break;
 			case 5:
-				CMLib.commands().postSay(mob,invoker,_("I appreciate you, @x1!",invoker.name()),false,false);
+				CMLib.commands().postSay(mob,invoker,L("I appreciate you, @x1!",invoker.name()),false,false);
 				break;
 			case 6:
-				CMLib.commands().postSay(mob,invoker,_("Keep it up, @x1! Thanks!",invoker.name()),false,false);
+				CMLib.commands().postSay(mob,invoker,L("Keep it up, @x1! Thanks!",invoker.name()),false,false);
 				break;
 			case 7:
-				CMLib.commands().postSay(mob,invoker,_("Thanks a lot, @x1!",invoker.name()),false,false);
+				CMLib.commands().postSay(mob,invoker,L("Thanks a lot, @x1!",invoker.name()),false,false);
 				break;
 			case 8:
-				CMLib.commands().postSay(mob,invoker,_("Thank you dearly, @x1!",invoker.name()),false,false);
+				CMLib.commands().postSay(mob,invoker,L("Thank you dearly, @x1!",invoker.name()),false,false);
 				break;
 			case 9:
-				CMLib.commands().postSay(mob,invoker,_("Thank you always, @x1!",invoker.name()),false,false);
+				CMLib.commands().postSay(mob,invoker,L("Thank you always, @x1!",invoker.name()),false,false);
 				break;
 			case 10:
-				CMLib.commands().postSay(mob,invoker,_("You're the best, @x1! Thanks!",invoker.name()),false,false);
+				CMLib.commands().postSay(mob,invoker,L("You're the best, @x1! Thanks!",invoker.name()),false,false);
 				break;
 			}
 			final Coins C=CMLib.beanCounter().makeBestCurrency(mob,CMath.mul(1.0,super.getXLEVELLevel(invoker())));
@@ -125,7 +125,7 @@ public class Song_Thanks extends Song
 
 		if((!auto)&&(!CMLib.flags().canSpeak(mob)))
 		{
-			mob.tell(_("You can't sing!"));
+			mob.tell(L("You can't sing!"));
 			return false;
 		}
 
@@ -136,9 +136,9 @@ public class Song_Thanks extends Song
 			invoker=mob;
 			originRoom=mob.location();
 			commonRoomSet=getInvokerScopeRoomSet(null);
-			String str=auto?_("^SThe @x1 begins to play!^?",songOf()):_("^S<S-NAME> begin(s) to sing the @x1.^?",songOf());
+			String str=auto?L("^SThe @x1 begins to play!^?",songOf()):L("^S<S-NAME> begin(s) to sing the @x1.^?",songOf());
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
-				str=_("^S<S-NAME> start(s) the @x1 over again.^?",songOf());
+				str=L("^S<S-NAME> start(s) the @x1 over again.^?",songOf());
 
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
@@ -185,7 +185,7 @@ public class Song_Thanks extends Song
 			}
 		}
 		else
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> hit(s) a foul note."));
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,L("<S-NAME> hit(s) a foul note."));
 
 		return success;
 	}

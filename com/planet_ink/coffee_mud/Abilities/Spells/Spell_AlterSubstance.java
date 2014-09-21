@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_AlterSubstance extends Spell
 {
 	@Override public String ID() { return "Spell_AlterSubstance"; }
-	private final static String localizedName = CMLib.lang()._("Alter Substance");
+	private final static String localizedName = CMLib.lang().L("Alter Substance");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
@@ -61,10 +61,10 @@ public class Spell_AlterSubstance extends Spell
 			final Item I=(Item)affected;
 			I.setMaterial(oldMaterial);
 			if(I.owner() instanceof Room)
-				((Room)I.owner()).showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 reverts to its natural form.",I.name()));
+				((Room)I.owner()).showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 reverts to its natural form.",I.name()));
 			else
 			if(I.owner() instanceof MOB)
-				((MOB)I.owner()).tell(_("@x1 reverts to its natural form.",I.name(((MOB)I.owner()))));
+				((MOB)I.owner()).tell(L("@x1 reverts to its natural form.",I.name(((MOB)I.owner()))));
 		}
 		super.unInvoke();
 	}
@@ -107,7 +107,7 @@ public class Spell_AlterSubstance extends Spell
 		}
 		if(newMaterial<0)
 		{
-			mob.tell(_("'@x1' is not a known substance!",material));
+			mob.tell(L("'@x1' is not a known substance!",material));
 			return false;
 		}
 
@@ -118,12 +118,12 @@ public class Spell_AlterSubstance extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				material=CMStrings.capitalizeAndLower(material);
-				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> change(s) into @x1!",material));
+				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> change(s) into @x1!",material));
 				oldMaterial=target.material();
 				target.setMaterial(newMaterial);
 				final String oldResourceName=RawMaterial.CODES.NAME(oldMaterial);
@@ -145,7 +145,7 @@ public class Spell_AlterSubstance extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting but nothing happens."));
 
 
 		// return whether it worked

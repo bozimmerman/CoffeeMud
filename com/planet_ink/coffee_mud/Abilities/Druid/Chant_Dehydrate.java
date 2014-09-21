@@ -38,9 +38,9 @@ import java.util.Vector;
 public class Chant_Dehydrate extends Chant
 {
 	@Override public String ID() { return "Chant_Dehydrate"; }
-	private final static String localizedName = CMLib.lang()._("Dehydrate");
+	private final static String localizedName = CMLib.lang().L("Dehydrate");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Dehydrate)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Dehydrate)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -66,7 +66,7 @@ public class Chant_Dehydrate extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -75,7 +75,7 @@ public class Chant_Dehydrate extends Chant
 					if(target instanceof MOB)
 					{
 						((MOB)target).curState().adjThirst(-150 - ((mob.phyStats().level()+(2*super.getXLEVELLevel(mob))) * 100),((MOB)target).maxState().maxThirst(((MOB)target).baseWeight()));
-						mob.location().show(((MOB)target),null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> feel(s) incredibly thirsty!"));
+						mob.location().show(((MOB)target),null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) incredibly thirsty!"));
 					}
 					else
 					if(target instanceof Item)
@@ -107,7 +107,7 @@ public class Chant_Dehydrate extends Chant
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
 		// return whether it worked
 		return success;
 	}

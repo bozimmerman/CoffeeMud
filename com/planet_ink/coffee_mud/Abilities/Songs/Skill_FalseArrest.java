@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_FalseArrest extends BardSkill
 {
 	@Override public String ID() { return "Skill_FalseArrest"; }
-	private final static String localizedName = CMLib.lang()._("False Arrest");
+	private final static String localizedName = CMLib.lang().L("False Arrest");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -53,12 +53,12 @@ public class Skill_FalseArrest extends BardSkill
 		if(target==null) return false;
 		if(mob==target)
 		{
-			mob.tell(_("Arrest whom?!"));
+			mob.tell(L("Arrest whom?!"));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell(_("Not while you are fighting!"));
+			mob.tell(L("Not while you are fighting!"));
 			return false;
 		}
 
@@ -93,7 +93,7 @@ public class Skill_FalseArrest extends BardSkill
 
 		if(B==null)
 		{
-			mob.tell(_("@x1 is not wanted for anything, anywhere.",target.name(mob)));
+			mob.tell(L("@x1 is not wanted for anything, anywhere.",target.name(mob)));
 			return false;
 		}
 
@@ -110,16 +110,16 @@ public class Skill_FalseArrest extends BardSkill
 
 		if(!success)
 		{
-			beneficialWordsFizzle(mob,target,_("<S-NAME> frown(s) at <T-NAMESELF>, but lose(s) the nerve."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> frown(s) at <T-NAMESELF>, but lose(s) the nerve."));
 			return false;
 		}
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,_("<S-NAME> frown(s) at <T-NAMESELF>."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,L("<S-NAME> frown(s) at <T-NAMESELF>."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			if(!B.arrest(A2,mob,target))
 			{
-				mob.tell(_("You are not able to arrest @x1 at this time.",target.name(mob)));
+				mob.tell(L("You are not able to arrest @x1 at this time.",target.name(mob)));
 				return false;
 			}
 		}

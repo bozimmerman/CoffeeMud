@@ -35,9 +35,9 @@ import java.util.*;
 public class Spell_ObscureSelf extends Spell
 {
 	@Override public String ID() { return "Spell_ObscureSelf"; }
-	private final static String localizedName = CMLib.lang()._("Obscure Self");
+	private final static String localizedName = CMLib.lang().L("Obscure Self");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Obscure Self)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Obscure Self)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -73,7 +73,7 @@ public class Spell_ObscureSelf extends Spell
 										||(msg.targetMinor()==CMMsg.TYP_EXAMINE)
 										||(msg.targetMinor()==CMMsg.TYP_READ)))
 			{
-				msg.source().tell(_("He or she is too vague to make out any details."));
+				msg.source().tell(L("He or she is too vague to make out any details."));
 				return false;
 			}
 
@@ -149,7 +149,7 @@ public class Spell_ObscureSelf extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) a bit less obscure."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) a bit less obscure."));
 	}
 
 	@Override
@@ -160,7 +160,7 @@ public class Spell_ObscureSelf extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already obscure."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already obscure."));
 			return false;
 		}
 
@@ -181,7 +181,7 @@ public class Spell_ObscureSelf extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("^S<T-NAME> become(s) obscure!"):_("^S<S-NAME> whisper(s) to <S-HIM-HERSELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("^S<T-NAME> become(s) obscure!"):L("^S<S-NAME> whisper(s) to <S-HIM-HERSELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -189,7 +189,7 @@ public class Spell_ObscureSelf extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> whisper(s) to <S-HIM-HERSELF>, but nothing happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> whisper(s) to <S-HIM-HERSELF>, but nothing happens."));
 		// return whether it worked
 		return success;
 	}

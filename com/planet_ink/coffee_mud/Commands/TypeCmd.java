@@ -47,9 +47,9 @@ public class TypeCmd extends Go
 		if((commands.size()<=1)||(R==null))
 		{
 			if(consoleMode)
-				mob.tell(_("Type what into this console?  Have you read the screen?"));
+				mob.tell(L("Type what into this console?  Have you read the screen?"));
 			else
-				mob.tell(_("Type what into what?"));
+				mob.tell(L("Type what into what?"));
 			return false;
 		}
 		Environmental typeIntoThis=(consoleMode)?mob.riding():null;
@@ -81,7 +81,7 @@ public class TypeCmd extends Go
 				}
 				else
 				{
-					mob.tell(_("You don't see '@x1' here.",typeWhere.toLowerCase()));
+					mob.tell(L("You don't see '@x1' here.",typeWhere.toLowerCase()));
 				}
 			}
 		}
@@ -89,7 +89,7 @@ public class TypeCmd extends Go
 		final String enterWhat=CMParms.combine(commands,1);
 		if(typeIntoThis!=null)
 		{
-			final String enterStr=_("^W<S-NAME> enter(s) '@x1' into <T-NAME>.^?",enterWhat);
+			final String enterStr=L("^W<S-NAME> enter(s) '@x1' into <T-NAME>.^?",enterWhat);
 			final CMMsg msg=CMClass.getMsg(mob,typeIntoThis,null,CMMsg.MSG_WRITE,enterStr,CMMsg.MSG_WRITE,enterWhat,CMMsg.MSG_WRITE,null);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
@@ -97,7 +97,7 @@ public class TypeCmd extends Go
 		}
 		else
 		{
-			mob.tell(_("You don't see '@x1' here.",enterWhat.toLowerCase()));
+			mob.tell(L("You don't see '@x1' here.",enterWhat.toLowerCase()));
 		}
 		return false;
 	}

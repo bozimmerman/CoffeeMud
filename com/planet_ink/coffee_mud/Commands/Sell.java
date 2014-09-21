@@ -46,7 +46,7 @@ public class Sell extends StdCommand
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
-			mob.tell(_("Sell what?"));
+			mob.tell(L("Sell what?"));
 			return false;
 		}
 
@@ -74,12 +74,12 @@ public class Sell extends StdCommand
 		}
 
 		if(V.size()==0)
-			mob.tell(_("You don't seem to have '@x1'.",whatName));
+			mob.tell(L("You don't seem to have '@x1'.",whatName));
 		else
 		for(int v=0;v<V.size();v++)
 		{
 			final Item thisThang=(Item)V.elementAt(v);
-			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_SELL,_("<S-NAME> sell(s) <O-NAME> to <T-NAMESELF>."));
+			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_SELL,L("<S-NAME> sell(s) <O-NAME> to <T-NAMESELF>."));
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);
 		}

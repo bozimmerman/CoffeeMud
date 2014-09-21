@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Lightning extends Spell
 {
 	@Override public String ID() { return "Spell_Lightning"; }
-	private final static String localizedName = CMLib.lang()._("Lightning Bolt");
+	private final static String localizedName = CMLib.lang().L("Lightning Bolt");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Lightning Bolt spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Lightning Bolt spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -67,7 +67,7 @@ public class Spell_Lightning extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),_(auto?"A lightning bolt streaks through the air!":"^S<S-NAME> point(s) incanting at <T-NAMESELF>, shooting forth a lightning bolt!^?")+CMLib.protocol().msp("lightning.wav",40));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),L(auto?"A lightning bolt streaks through the air!":"^S<S-NAME> point(s) incanting at <T-NAMESELF>, shooting forth a lightning bolt!^?")+CMLib.protocol().msp("lightning.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ELECTRIC|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 			{
@@ -83,7 +83,7 @@ public class Spell_Lightning extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> invoke(s) at <T-NAMESELF>, but the spell fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> invoke(s) at <T-NAMESELF>, but the spell fades."));
 
 
 		// return whether it worked

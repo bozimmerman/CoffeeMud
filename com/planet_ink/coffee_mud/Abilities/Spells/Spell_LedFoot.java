@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_LedFoot extends Spell
 {
 	@Override public String ID() { return "Spell_LedFoot"; }
-	private final static String localizedName = CMLib.lang()._("Lead Foot");
+	private final static String localizedName = CMLib.lang().L("Lead Foot");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Lead Foot)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Lead Foot)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -54,7 +54,7 @@ public class Spell_LedFoot extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your feet feel lighter."));
+			mob.tell(L("Your feet feel lighter."));
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class Spell_LedFoot extends Spell
 					&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 					&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)))
 				{
-					mob.tell(_("Your feet are just too heavy to move."));
+					mob.tell(L("Your feet are just too heavy to move."));
 					return false;
 				}
 				break;
@@ -99,7 +99,7 @@ public class Spell_LedFoot extends Spell
 
 		if((!auto)&&(target.charStats().getBodyPart(Race.BODY_FOOT)==0))
 		{
-			mob.tell(_("@x1 has no feet, and would not be affected.",target.name(mob)));
+			mob.tell(L("@x1 has no feet, and would not be affected.",target.name(mob)));
 			return false;
 		}
 
@@ -119,19 +119,19 @@ public class Spell_LedFoot extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^SYou invoke a heavy spell into <T-NAME>s feet.^?"),verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> invoke(s) a heavy spell into your feet.^?"),CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,auto?"":_("^S<S-NAME> invokes a heavy spell into <T-NAME>s feet.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^SYou invoke a heavy spell into <T-NAME>s feet.^?"),verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> invoke(s) a heavy spell into your feet.^?"),CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,auto?"":L("^S<S-NAME> invokes a heavy spell into <T-NAME>s feet.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> feet seem as heavy as lead!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> feet seem as heavy as lead!"));
 					success=maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> cast(s) a spell at <T-NAMESELF>, but the magic fizzles."));
+			return maliciousFizzle(mob,target,L("<S-NAME> cast(s) a spell at <T-NAMESELF>, but the magic fizzles."));
 
 		// return whether it worked
 		return success;

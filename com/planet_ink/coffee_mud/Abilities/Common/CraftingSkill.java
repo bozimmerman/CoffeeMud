@@ -39,7 +39,7 @@ import java.util.*;
 public class CraftingSkill extends GatheringSkill
 {
 	@Override public String ID() { return "CraftingSkill"; }
-	private final static String localizedName = CMLib.lang()._("Crafting Skill");
+	private final static String localizedName = CMLib.lang().L("Crafting Skill");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CRAFTINGSKILL;}
 	@Override public String accountForYourself(){return name()+" requires: "+supportedResourceString();}
@@ -232,10 +232,10 @@ public class CraftingSkill extends GatheringSkill
 	{
 		final Room R=mob.location();
 		if(R==null)
-			commonTell(mob,_("You are NOWHERE?!"));
+			commonTell(mob,L("You are NOWHERE?!"));
 		else
 		if(building==null)
-			commonTell(mob,_("You have built NOTHING?!!"));
+			commonTell(mob,L("You have built NOTHING?!!"));
 		else
 		{
 			R.addItem(building,ItemPossessor.Expire.Player_Drop);
@@ -246,7 +246,7 @@ public class CraftingSkill extends GatheringSkill
 					foundIt=true;
 			if(!foundIt)
 			{
-				commonTell(mob,_("You have won the common-skill-failure LOTTERY! Congratulations!"));
+				commonTell(mob,L("You have won the common-skill-failure LOTTERY! Congratulations!"));
 				CMLib.leveler().postExperience(mob, null, null,50,false);
 			}
 		}
@@ -459,7 +459,7 @@ public class CraftingSkill extends GatheringSkill
 			if(data[0][FOUND_AMT]==0)
 			{
 				if(req1Desc!=null)
-					commonTell(mob,_("There is no @x1 here to make anything from!  It might need to be put down first.",req1Desc.toLowerCase()));
+					commonTell(mob,L("There is no @x1 here to make anything from!  It might need to be put down first.",req1Desc.toLowerCase()));
 				return null;
 			}
 			if(!bundle) req1Required=fixResourceRequirement(data[0][FOUND_CODE],req1Required);
@@ -471,9 +471,9 @@ public class CraftingSkill extends GatheringSkill
 				||((req2==null)&&(req2Desc.length()>0)&&(data[1][FOUND_AMT]==0)))
 				{
 					if(req2Desc.equalsIgnoreCase("PRECIOUS"))
-						commonTell(mob,_("You need some sort of precious stones to make that.  There is not enough here.  Are you sure you set it all on the ground first?"));
+						commonTell(mob,L("You need some sort of precious stones to make that.  There is not enough here.  Are you sure you set it all on the ground first?"));
 					else
-						commonTell(mob,_("You need some @x1 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",req2Desc.toLowerCase()));
+						commonTell(mob,L("You need some @x1 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",req2Desc.toLowerCase()));
 					return null;
 				}
 			if(!bundle) req2Required=fixResourceRequirement(data[1][FOUND_CODE],req2Required);
@@ -481,13 +481,13 @@ public class CraftingSkill extends GatheringSkill
 
 		if(req1Required>data[0][FOUND_AMT])
 		{
-			commonTell(mob,_("You need @x1 pounds of @x2 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",""+req1Required,RawMaterial.CODES.NAME(data[0][FOUND_CODE]).toLowerCase()));
+			commonTell(mob,L("You need @x1 pounds of @x2 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",""+req1Required,RawMaterial.CODES.NAME(data[0][FOUND_CODE]).toLowerCase()));
 			return null;
 		}
 		data[0][FOUND_AMT]=req1Required;
 		if((req2Required>0)&&(req2Required>data[1][FOUND_AMT]))
 		{
-			commonTell(mob,_("You need @x1 pounds of @x2 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",""+req2Required,RawMaterial.CODES.NAME(data[1][FOUND_CODE]).toLowerCase()));
+			commonTell(mob,L("You need @x1 pounds of @x2 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",""+req2Required,RawMaterial.CODES.NAME(data[1][FOUND_CODE]).toLowerCase()));
 			return null;
 		}
 		data[1][FOUND_AMT]=req2Required;
@@ -752,7 +752,7 @@ public class CraftingSkill extends GatheringSkill
 			scanning=mob.location().fetchInhabitant(rest);
 			if((scanning==null)||(!CMLib.flags().canBeSeenBy(scanning,mob)))
 			{
-				commonTell(mob,_("You don't see anyone called '@x1' here.",rest));
+				commonTell(mob,L("You don't see anyone called '@x1' here.",rest));
 				return false;
 			}
 		}
@@ -760,16 +760,16 @@ public class CraftingSkill extends GatheringSkill
 		if(allStuff.size()==0)
 		{
 			if(mob==scanning)
-				commonTell(mob,_("You don't seem to have anything that needs mending with @x1.",name()));
+				commonTell(mob,L("You don't seem to have anything that needs mending with @x1.",name()));
 			else
-				commonTell(mob,_("You don't see anything on @x1 that needs mending with @x2.",scanning.name(),name()));
+				commonTell(mob,L("You don't see anything on @x1 that needs mending with @x2.",scanning.name(),name()));
 			return false;
 		}
 		final StringBuffer buf=new StringBuffer("");
 		if(scanning==mob)
-			buf.append(_("The following items could use some @x1:\n\r",name()));
+			buf.append(L("The following items could use some @x1:\n\r",name()));
 		else
-			buf.append(_("The following items on @x1 could use some @x2:\n\r",scanning.name(),name()));
+			buf.append(L("The following items on @x1 could use some @x2:\n\r",scanning.name(),name()));
 		for(int i=0;i<allStuff.size();i++)
 		{
 			final Item I=(Item)allStuff.elementAt(i);
@@ -1056,20 +1056,20 @@ public class CraftingSkill extends GatheringSkill
 		if(!(E instanceof Item))
 		{
 			if(!quiet)
-				commonTell(mob,_("You can't mend @x1.",E.name()));
+				commonTell(mob,L("You can't mend @x1.",E.name()));
 			return false;
 		}
 		final Item IE=(Item)E;
 		if(!IE.subjectToWearAndTear())
 		{
 			if(!quiet)
-				commonTell(mob,_("You can't mend @x1.",IE.name()));
+				commonTell(mob,L("You can't mend @x1.",IE.name()));
 			return false;
 		}
 		if(IE.usesRemaining()>=100)
 		{
 			if(!quiet)
-				commonTell(mob,_("@x1 is in good condition already.",IE.name()));
+				commonTell(mob,L("@x1 is in good condition already.",IE.name()));
 			return false;
 		}
 		return true;
@@ -1100,7 +1100,7 @@ public class CraftingSkill extends GatheringSkill
 			final StringBuffer buf=new StringBuffer("");
 			for(int r=0;r<componentsRequirements.size();r++)
 				buf.append(CMLib.ableMapper().getAbilityComponentDesc(mob,componentsRequirements,r));
-			mob.tell(_("You lack the necessary materials to @x1, the requirements are: @x2.",doingWhat.toLowerCase(),buf.toString()));
+			mob.tell(L("You lack the necessary materials to @x1, the requirements are: @x2.",doingWhat.toLowerCase(),buf.toString()));
 			return null;
 		}
 		return new LinkedList<Object>();
@@ -1145,14 +1145,14 @@ public class CraftingSkill extends GatheringSkill
 		recipeHolder=null;
 		if((!(this instanceof ItemCraftor))||(!((ItemCraftor)this).supportsDeconstruction()))
 		{
-			commonTell(mob,_("You don't know how to learn new recipes with this skill."));
+			commonTell(mob,L("You don't know how to learn new recipes with this skill."));
 			return false;
 		}
 		commands=new XVector(commands);
 		commands.remove(0);
 		if(commands.size()<1)
 		{
-			commonTell(mob,_("You've failed to specify which item to deconstruct and learn."));
+			commonTell(mob,L("You've failed to specify which item to deconstruct and learn."));
 			return false;
 		}
 		buildingI=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
@@ -1160,22 +1160,22 @@ public class CraftingSkill extends GatheringSkill
 			return false;
 		if(buildingI.owner() instanceof Room)
 		{
-			commonTell(mob,_("You need to pick that up first."));
+			commonTell(mob,L("You need to pick that up first."));
 			return false;
 		}
 		if(!mayICraft( mob, buildingI ))
 		{
-			commonTell(mob,_("You can't learn anything about @x1 with @x2.",buildingI.name(mob),name()));
+			commonTell(mob,L("You can't learn anything about @x1 with @x2.",buildingI.name(mob),name()));
 			return false;
 		}
 		if(!buildingI.amWearingAt( Wearable.IN_INVENTORY ))
 		{
-			commonTell(mob,_("You need to remove @x1 first.",buildingI.name(mob)));
+			commonTell(mob,L("You need to remove @x1 first.",buildingI.name(mob)));
 			return false;
 		}
 		if((buildingI instanceof Container)&&(((Container)buildingI).getContents().size()>0))
 		{
-			commonTell(mob,_("You need to empty @x1 first.",buildingI.name(mob)));
+			commonTell(mob,L("You need to empty @x1 first.",buildingI.name(mob)));
 			return false;
 		}
 		recipeHolder=null;
@@ -1195,16 +1195,16 @@ public class CraftingSkill extends GatheringSkill
 		}
 		if(recipeHolder==null)
 		{
-			commonTell(mob,_("You need to have either a blank recipe page or book, or one already containing recipes for @x1 that has blank pages.",name()));
+			commonTell(mob,L("You need to have either a blank recipe page or book, or one already containing recipes for @x1 that has blank pages.",name()));
 			return false;
 		}
 		activity = CraftingActivity.LEARNING;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		displayText=_("You are deconstructing @x1",buildingI.name());
-		verb=_("deconstructing @x1",buildingI.name());
+		displayText=L("You are deconstructing @x1",buildingI.name());
+		verb=L("deconstructing @x1",buildingI.name());
 		messedUp=!proficiencyCheck(mob,0,auto);
-		final CMMsg msg=CMClass.getMsg(mob,buildingI,this,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> start(s) deconstructing and studying <T-NAMESELF>."));
+		final CMMsg msg=CMClass.getMsg(mob,buildingI,this,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> start(s) deconstructing and studying <T-NAMESELF>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

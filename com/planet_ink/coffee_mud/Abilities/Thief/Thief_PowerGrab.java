@@ -37,7 +37,7 @@ import java.util.*;
 public class Thief_PowerGrab extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_PowerGrab"; }
-	private final static String localizedName = CMLib.lang()._("Power Grab");
+	private final static String localizedName = CMLib.lang().L("Power Grab");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
@@ -57,10 +57,10 @@ public class Thief_PowerGrab extends ThiefSkill
 		if(target==null) return false;
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
-			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to power grab something and fail(s)."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to power grab something and fail(s)."));
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|CMMsg.MASK_MAGIC,auto?"":_("^S<S-NAME> carefully attempt(s) to acquire <T-NAME>^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|CMMsg.MASK_MAGIC,auto?"":L("^S<S-NAME> carefully attempt(s) to acquire <T-NAME>^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

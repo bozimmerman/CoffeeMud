@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_TuneInstrument extends BardSkill
 {
 	@Override public String ID() { return "Skill_TuneInstrument"; }
-	private final static String localizedName = CMLib.lang()._("Tune Instrument");
+	private final static String localizedName = CMLib.lang().L("Tune Instrument");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -59,7 +59,7 @@ public class Skill_TuneInstrument extends BardSkill
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("@x1 is already tuned.",target.name(mob)));
+			mob.tell(L("@x1 is already tuned.",target.name(mob)));
 			return false;
 		}
 
@@ -70,7 +70,7 @@ public class Skill_TuneInstrument extends BardSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,_("<S-NAME> tune(s) <T-NAMESELF>."));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,L("<S-NAME> tune(s) <T-NAMESELF>."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -78,7 +78,7 @@ public class Skill_TuneInstrument extends BardSkill
 			}
 		}
 		else
-			mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<S-NAME> attempt(s) to tune <T-NAMESELF>, but mess(es) up."));
+			mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to tune <T-NAMESELF>, but mess(es) up."));
 
 
 		// return whether it worked

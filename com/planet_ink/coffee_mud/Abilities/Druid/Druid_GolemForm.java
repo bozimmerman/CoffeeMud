@@ -37,7 +37,7 @@ import java.util.*;
 public class Druid_GolemForm extends StdAbility
 {
 	@Override public String ID() { return "Druid_GolemForm"; }
-	private final static String localizedName = CMLib.lang()._("Golem Form");
+	private final static String localizedName = CMLib.lang().L("Golem Form");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings =_i(new String[] {"GOLEMFORM"});
@@ -168,7 +168,7 @@ public class Druid_GolemForm extends StdAbility
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob.location()!=null))
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> revert(s) to @x1 form.",mob.charStats().raceName().toLowerCase()));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> revert(s) to @x1 form.",mob.charStats().raceName().toLowerCase()));
 	}
 
 	public void setRaceName(MOB mob)
@@ -250,7 +250,7 @@ public class Druid_GolemForm extends StdAbility
 		final String choice=(mob.isMonster()||(commands.size()==0))?getRaceName(classLevel-1):CMParms.combine(commands,0);
 		if(choice.trim().length()>0)
 		{
-			final StringBuffer buf=new StringBuffer(_("Golem Forms:\n\r"));
+			final StringBuffer buf=new StringBuffer(L("Golem Forms:\n\r"));
 			final Vector choices=new Vector();
 			for(int i=0;i<classLevel;i++)
 			{
@@ -282,7 +282,7 @@ public class Druid_GolemForm extends StdAbility
 		{
 			if((CMLib.dice().rollPercentage()<50))
 			{
-				mob.tell(_("Extreme emotions disrupt your change."));
+				mob.tell(L("Extreme emotions disrupt your change."));
 				return false;
 			}
 		}
@@ -297,7 +297,7 @@ public class Druid_GolemForm extends StdAbility
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> take(s) on @x1 form.",raceName.toLowerCase()));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> take(s) on @x1 form.",raceName.toLowerCase()));
 				raceName=getRaceName(classLevel);
 				newRace=getRace(classLevel);
 				raceLevel=getRaceLevel(classLevel);
@@ -307,7 +307,7 @@ public class Druid_GolemForm extends StdAbility
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) to <S-HIM-HERSELF>, but nothing happens."));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) to <S-HIM-HERSELF>, but nothing happens."));
 
 
 		// return whether it worked

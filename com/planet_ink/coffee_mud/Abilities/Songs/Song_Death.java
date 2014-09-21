@@ -37,7 +37,7 @@ import java.util.*;
 public class Song_Death extends Song
 {
 	@Override public String ID() { return "Song_Death"; }
-	private final static String localizedName = CMLib.lang()._("Death");
+	private final static String localizedName = CMLib.lang().L("Death");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected int getXMAXRANGELevel(MOB mob){return 0;} // people are complaining about multi-room death

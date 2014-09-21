@@ -37,7 +37,7 @@ import java.util.*;
 public class Amputation extends StdAbility implements Amputator, HealthCondition
 {
 	@Override public String ID() { return "Amputation"; }
-	private final static String localizedName = CMLib.lang()._("Amputation");
+	private final static String localizedName = CMLib.lang().L("Amputation");
 	@Override public String name() { return localizedName; }
 	@Override
 	public String displayText()
@@ -116,7 +116,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 				final String s=CMLib.utensils().niceCommaList(missingLimbNameSet(),true);
 				if(s.length()>0)
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,
-												  CMMsg.MSG_OK_VISUAL,_("\n\r@x1 is missing @x2 @x3.\n\r",M.name(msg.source()),M.charStats().hisher(),s),
+												  CMMsg.MSG_OK_VISUAL,L("\n\r@x1 is missing @x2 @x3.\n\r",M.name(msg.source()),M.charStats().hisher(),s),
 												  CMMsg.NO_EFFECT,null,
 												  CMMsg.NO_EFFECT,null));
 			}
@@ -200,7 +200,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> limbs have been restored."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> limbs have been restored."));
 	}
 
 	public MOB getTarget(MOB mob, Vector commands, Environmental givenTarget, boolean quiet)
@@ -225,7 +225,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 				if((t!=null)&&(!(t instanceof MOB)))
 				{
 					if(!quiet)
-						mob.tell(mob,target,null,_("You can't do that to <T-NAMESELF>."));
+						mob.tell(mob,target,null,L("You can't do that to <T-NAMESELF>."));
 					return null;
 				}
 			}
@@ -239,9 +239,9 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 			if(!quiet)
 			{
 				if(targetName.trim().length()==0)
-					mob.tell(_("You don't see them here."));
+					mob.tell(L("You don't see them here."));
 				else
-					mob.tell(_("You don't see '@x1' here.",targetName));
+					mob.tell(L("You don't see '@x1' here.",targetName));
 			}
 			return null;
 		}
@@ -363,13 +363,13 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 		{
 			if (target instanceof MOB)
 			{
-				((MOB)target).location().show(((MOB)target), null, CMMsg.MSG_OK_VISUAL, _("^G<S-YOUPOSS> @x1 miraculously regrows!!^?",gone));
+				((MOB)target).location().show(((MOB)target), null, CMMsg.MSG_OK_VISUAL, L("^G<S-YOUPOSS> @x1 miraculously regrows!!^?",gone));
 			}
 			else
 			if ((target instanceof DeadBody)
 			&& (((Item)target).owner() instanceof Room))
 			{
-				((Room)((Item)target).owner()).showHappens(CMMsg.MSG_OK_VISUAL, _("^G@x1's @x2 miraculously regrows!!^?",target.name(),gone));
+				((Room)((Item)target).owner()).showHappens(CMMsg.MSG_OK_VISUAL, L("^G@x1's @x2 miraculously regrows!!^?",target.name(),gone));
 			}
 		}
 
@@ -428,9 +428,9 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 				R=((MOB)target).charStats().getMyRace();
 				boolean success;
 				if(gone.toLowerCase().endsWith("eye"))
-					success=((MOB)target).location().show(((MOB)target),A,CMMsg.MSG_OK_VISUAL,_("^G<S-YOUPOSS> @x1 is destroyed!^?",gone));
+					success=((MOB)target).location().show(((MOB)target),A,CMMsg.MSG_OK_VISUAL,L("^G<S-YOUPOSS> @x1 is destroyed!^?",gone));
 				else
-					success=((MOB)target).location().show(((MOB)target),A,CMMsg.MSG_OK_VISUAL,_("^G<S-YOUPOSS> @x1 falls off!^?",gone));
+					success=((MOB)target).location().show(((MOB)target),A,CMMsg.MSG_OK_VISUAL,L("^G<S-YOUPOSS> @x1 falls off!^?",gone));
 				if(!success)
 					return null;
 			}
@@ -441,9 +441,9 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 			{
 				R=((DeadBody)target).charStats().getMyRace();
 				if(gone.toLowerCase().endsWith("eye"))
-					((Room)((Item)target).owner()).showHappens(CMMsg.MSG_OK_VISUAL,_("^G@x1's @x2 is destroyed!^?",target.name(),gone));
+					((Room)((Item)target).owner()).showHappens(CMMsg.MSG_OK_VISUAL,L("^G@x1's @x2 is destroyed!^?",target.name(),gone));
 				else
-					((Room)((Item)target).owner()).showHappens(CMMsg.MSG_OK_VISUAL,_("^G@x1's @x2 falls off!^?",target.name(),gone));
+					((Room)((Item)target).owner()).showHappens(CMMsg.MSG_OK_VISUAL,L("^G@x1's @x2 falls off!^?",target.name(),gone));
 			}
 		}
 		Item limb=null;
@@ -465,9 +465,9 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 		if(!isFakeLimb)
 		{
 			limb=CMClass.getItem("GenLimb");
-			limb.setName(_("a @x1",gone));
+			limb.setName(L("a @x1",gone));
 			limb.basePhyStats().setAbility(1);
-			limb.setDisplayText(_("a bloody @x1 is sitting here.",gone));
+			limb.setDisplayText(L("a bloody @x1 is sitting here.",gone));
 			if(target != null)
 				limb.setSecretIdentity(target.name()+"`s bloody "+gone+".");
 			int material=RawMaterial.RESOURCE_MEAT;
@@ -589,7 +589,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 				warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);
 			if((warrants.size()==0)&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ABOVELAW)))
 			{
-				mob.tell(_("You are not authorized by law to amputate from @x1 at this time.",target.Name()));
+				mob.tell(L("You are not authorized by law to amputate from @x1 at this time.",target.Name()));
 				return false;
 			}
 			final Item w=mob.fetchWieldedItem();
@@ -598,23 +598,23 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 				Weapon ww=null;
 				if((w==null)||(!(w instanceof Weapon)))
 				{
-					mob.tell(_("You cannot amputate without a weapon!"));
+					mob.tell(L("You cannot amputate without a weapon!"));
 					return false;
 				}
 				ww=(Weapon)w;
 				if((ww.weaponType()!=Weapon.TYPE_PIERCING)&&(ww.weaponType()!=Weapon.TYPE_SLASHING))
 				{
-					mob.tell(_("You cannot amputate with a @x1!",ww.name()));
+					mob.tell(L("You cannot amputate with a @x1!",ww.name()));
 					return false;
 				}
 				if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 				{
-					mob.tell(_("You are too far away to try that!"));
+					mob.tell(L("You are too far away to try that!"));
 					return false;
 				}
 				if((!CMLib.flags().isBoundOrHeld(target))||(!CMLib.flags().isSleeping(target)))
 				{
-					mob.tell(_("@x1 must be bound, and asleep on an operating bed before you can amputate.",target.charStats().HeShe()));
+					mob.tell(L("@x1 must be bound, and asleep on an operating bed before you can amputate.",target.charStats().HeShe()));
 					return false;
 				}
 			}
@@ -652,7 +652,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 			if((VN.size()==0)&&(fakeLimb==null))
 			{
 				if(!auto)
-					mob.tell(_("There is nothing left on @x1 to amputate!",target.name(mob)));
+					mob.tell(L("There is nothing left on @x1 to amputate!",target.name(mob)));
 				return false;
 			}
 			if((choice.length()>0)&&(fakeLimb==null)&&(gone==null))
@@ -663,7 +663,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 				if(gone==null)
 				{
 					if(!auto)
-						mob.tell(_("There is nothing left on @x1 called '@x2'!",target.name(mob),choice));
+						mob.tell(L("There is nothing left on @x1 called '@x2'!",target.name(mob),choice));
 					return false;
 				}
 			}
@@ -680,7 +680,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 			}
 			final String goneName = (fakeLimb!=null)?fakeLimb.name():gone;
 
-			final String str=auto?"":_("^F^<FIGHT^><S-NAME> amputate(s) <T-YOUPOSS> @x1!^</FIGHT^>^?",goneName);
+			final String str=auto?"":L("^F^<FIGHT^><S-NAME> amputate(s) <T-YOUPOSS> @x1!^</FIGHT^>^?",goneName);
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),str);
 			CMLib.color().fixSourceFightColor(msg);
 			if(target.location().okMessage(target,msg))
@@ -710,7 +710,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 				success=false;
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to amputate <T-NAMESELF>, but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to amputate <T-NAMESELF>, but fail(s)."));
 		return success;
 	}
 }

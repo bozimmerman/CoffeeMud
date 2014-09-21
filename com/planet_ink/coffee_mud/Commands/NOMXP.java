@@ -53,10 +53,10 @@ public class NOMXP extends StdCommand
 				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_MXP));
 				mob.session().changeTelnetMode(Session.TELNET_MXP,false);
 				mob.session().setClientTelnetMode(Session.TELNET_MXP,false);
-				mob.tell(_("MXP codes are disabled.\n\r"));
+				mob.tell(L("MXP codes are disabled.\n\r"));
 			}
 			else
-				mob.tell(_("MXP codes are already disabled.\n\r"));
+				mob.tell(L("MXP codes are already disabled.\n\r"));
 		}
 		return false;
 	}

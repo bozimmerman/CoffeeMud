@@ -505,7 +505,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				if(oldRoom.okMessage(mob,msg))
 				{
 					relock=true;
-					msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,_("<S-NAME> unlock(s) <T-NAMESELF>."));
+					msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,L("<S-NAME> unlock(s) <T-NAMESELF>."));
 					if(oldRoom.okMessage(mob,msg))
 						CMLib.utensils().roomAffectFully(msg,oldRoom,direction);
 				}
@@ -589,7 +589,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					CMMsg msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 					if(nextRoom.okMessage(mob,msg))
 					{
-						msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,_("<S-NAME> lock(s) <T-NAMESELF>."));
+						msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,L("<S-NAME> lock(s) <T-NAMESELF>."));
 						if(nextRoom.okMessage(mob,msg))
 							CMLib.utensils().roomAffectFully(msg,nextRoom,opDirection);
 					}
@@ -647,12 +647,12 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				dir=-1;
 		}
 		if(dir<0)
-			toHere.show(M,null,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> wanders in."));
+			toHere.show(M,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wanders in."));
 		else
 		{
 			final String inDir=((toHere instanceof SpaceShip)||(toHere.getArea() instanceof SpaceShip))?
 					Directions.getShipDirectionName(dir):Directions.getDirectionName(dir);
-			toHere.show(M,null,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> wanders in from @x1.",inDir));
+			toHere.show(M,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wanders in from @x1.",inDir));
 		}
 		toHere.bringMobHere(M,true);
 	}
@@ -675,7 +675,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 						{
 							final String inDir=((sourceRoom instanceof SpaceShip)||(sourceRoom.getArea() instanceof SpaceShip))?
 									Directions.getShipDirectionName(directionCode):Directions.getDirectionName(directionCode);
-							rMOB.tell(_("You ride @x1 @x2.",rMOB.riding().name(),inDir));
+							rMOB.tell(L("You ride @x1 @x2.",rMOB.riding().name(),inDir));
 						}
 						if(!move(rMOB,directionCode,flee,false,true,false,running))
 							fallOff=true;
@@ -683,7 +683,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					if(fallOff)
 					{
 						if(rMOB.riding()!=null)
-							rMOB.tell(_("You fall off @x1!",rMOB.riding().name()));
+							rMOB.tell(L("You fall off @x1!",rMOB.riding().name()));
 						rMOB.setRiding(null);
 					}
 				}
@@ -760,11 +760,11 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			{
 				final String inDir=((sourceRoom instanceof SpaceShip)||(sourceRoom.getArea() instanceof SpaceShip))?
 						Directions.getShipDirectionName(directionCode):Directions.getDirectionName(directionCode);
-				((MOB)riding).tell(_("You are ridden @x1.",inDir));
+				((MOB)riding).tell(L("You are ridden @x1.",inDir));
 				if(!move(((MOB)riding),directionCode,false,false,true,false,running))
 				{
 					if(theRider instanceof MOB)
-						((MOB)theRider).tell(_("@x1 won't seem to let you go that way.",((MOB)riding).name()));
+						((MOB)theRider).tell(L("@x1 won't seem to let you go that way.",((MOB)riding).name()));
 					for(;r.hasPrevious();)
 					{
 						riding=r.previous();
@@ -818,7 +818,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		final Exit exit=thisRoom.getExitInDir(directionCode);
 		if(destRoom==null)
 		{
-			mob.tell(_("You can't go that way."));
+			mob.tell(L("You can't go that way."));
 			return false;
 		}
 
@@ -841,23 +841,23 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		final CMMsg leaveMsg;
 		if((mob.riding()!=null)&&(mob.riding().mobileRideBasis()))
 		{
-			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> ride(s) @x1 in from @x2.",mob.riding().name(),otherDirectionName));
-			leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,((flee)?_("You flee @x1.",directionName):null),leaveCode,null,leaveCode,_(((flee)?"<S-NAME> flee(s) with ":"<S-NAME> ride(s) ")+"@x1 @x2.",mob.riding().name()+" "+directionName+"."));
+			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> ride(s) @x1 in from @x2.",mob.riding().name(),otherDirectionName));
+			leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,((flee)?L("You flee @x1.",directionName):null),leaveCode,null,leaveCode,L(((flee)?"<S-NAME> flee(s) with ":"<S-NAME> ride(s) ")+"@x1 @x2.",mob.riding().name()+" "+directionName+"."));
 		}
 		else
 		{
-			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> "+CMLib.flags().dispositionString(mob,CMFlagLibrary.flag_arrives)+" from @x1.",otherDirectionName));
-			leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,((flee)?"You flee "+directionName+".":null),leaveCode,null,leaveCode,((flee)?_("<S-NAME> flee(s) @x1.",directionName):_("<S-NAME> "+CMLib.flags().dispositionString(mob,CMFlagLibrary.flag_leaves)+" @x1.",directionName)));
+			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> "+CMLib.flags().dispositionString(mob,CMFlagLibrary.flag_arrives)+" from @x1.",otherDirectionName));
+			leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,((flee)?"You flee "+directionName+".":null),leaveCode,null,leaveCode,((flee)?L("<S-NAME> flee(s) @x1.",directionName):L("<S-NAME> "+CMLib.flags().dispositionString(mob,CMFlagLibrary.flag_leaves)+" @x1.",directionName)));
 		}
 		final boolean gotoAllowed=(!mob.isMonster()) && CMSecurity.isAllowed(mob,destRoom,CMSecurity.SecFlag.GOTO);
 		if((exit==null)&&(!gotoAllowed))
 		{
-			mob.tell(_("You can't go that way."));
+			mob.tell(L("You can't go that way."));
 			return false;
 		}
 		else
 		if(exit==null)
-			thisRoom.showHappens(CMMsg.MSG_OK_VISUAL,_("The area to the @x1 shimmers and becomes transparent.",directionName));
+			thisRoom.showHappens(CMMsg.MSG_OK_VISUAL,L("The area to the @x1 shimmers and becomes transparent.",directionName));
 		else
 		if((!exit.okMessage(mob,enterMsg))&&(!gotoAllowed))
 			return false;
@@ -891,7 +891,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			}
 			if((!flee)&&(mob.curState().getMovement()<=0)&&(!gotoAllowed))
 			{
-				mob.tell(_("You are too tired."));
+				mob.tell(L("You are too tired."));
 				return false;
 			}
 			if((mob.soulMate()==null)&&(mob.playerStats()!=null)&&(mob.riding()==null)&&(mob.location()!=null))
@@ -925,7 +925,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		if(enterMsg.target()==null)
 		{
 			((Room)leaveMsg.target()).bringMobHere(mob,false);
-			mob.tell(_("You can't go that way."));
+			mob.tell(L("You can't go that way."));
 			return false;
 		}
 		mob.setLocation((Room)enterMsg.target());
@@ -962,12 +962,12 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					if((follower.location()==thisRoom)&&(CMLib.flags().aliveAwakeMobile(follower,true)))
 					{
 						if(CMath.bset(follower.getBitmap(),MOB.ATT_AUTOGUARD))
-							thisRoom.show(follower,null,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> remain(s) on guard here."));
+							thisRoom.show(follower,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> remain(s) on guard here."));
 						else
 						{
 							final String inDir=((thisRoom instanceof SpaceShip)||(thisRoom.getArea() instanceof SpaceShip))?
 									Directions.getShipDirectionName(directionCode):Directions.getDirectionName(directionCode);
-							follower.tell(_("You follow @x1 @x2.",mob.name(follower),inDir));
+							follower.tell(L("You follow @x1 @x2.",mob.name(follower),inDir));
 							boolean tryStand=false;
 							if(CMLib.flags().isSitting(mob))
 							{
@@ -1219,7 +1219,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			theDirTrail.add(Directions.getDirectionChar(getRoomDirection(R,RA,empty))+" ");
 		}
 		final StringBuffer theTrail=new StringBuffer("");
-		if(confirm)	theTrail.append("\n\r"+CMStrings.padRight(_("Trail"),30)+": ");
+		if(confirm)	theTrail.append("\n\r"+CMStrings.padRight(L("Trail"),30)+": ");
 		String lastDir="";
 		int lastNum=0;
 		while(theDirTrail.size()>0)
@@ -1262,13 +1262,13 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				}
 			}
 			final Room R=trailV.get(1);
-			theTrail.append("\n\r"+CMStrings.padRight(_("From"),30)+": "+Directions.getDirectionName(getRoomDirection(R,R2,empty))+" <- "+R.roomID());
-			theTrail.append("\n\r"+CMStrings.padRight(_("Room"),30)+": "+R.displayText()+"/"+R.description());
+			theTrail.append("\n\r"+CMStrings.padRight(L("From"),30)+": "+Directions.getDirectionName(getRoomDirection(R,R2,empty))+" <- "+R.roomID());
+			theTrail.append("\n\r"+CMStrings.padRight(L("Room"),30)+": "+R.displayText()+"/"+R.description());
 			theTrail.append("\n\r\n\r");
 		}
 		if((areaNames)&&(areasDone.size()>0))
 		{
-			theTrail.append("\n\r"+CMStrings.padRight(_("Areas"),30)+":");
+			theTrail.append("\n\r"+CMStrings.padRight(L("Areas"),30)+":");
 			for (final Area A : areasDone)
 			{
 				theTrail.append(" \""+A.name()+"\",");
@@ -1302,7 +1302,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	public void postMountLadder(MOB mob, Rideable ladder)
 	{
 		final String mountStr=ladder.mountString(CMMsg.TYP_MOUNT,mob);
-		final CMMsg msg=CMClass.getMsg(mob,ladder,null,CMMsg.MSG_MOUNT,_("<S-NAME> @x1 <T-NAMESELF>.",mountStr));
+		final CMMsg msg=CMClass.getMsg(mob,ladder,null,CMMsg.MSG_MOUNT,L("<S-NAME> @x1 <T-NAMESELF>.",mountStr));
 		Room room=(Room)((Item)ladder).owner();
 		if(mob.location()==room) 
 			room=null;

@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Faithless extends Prayer
 {
 	@Override public String ID() { return "Prayer_Faithless"; }
-	private final static String localizedName = CMLib.lang()._("Faithless");
+	private final static String localizedName = CMLib.lang().L("Faithless");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -71,12 +71,12 @@ public class Prayer_Faithless extends Prayer
 		if(target==null) return false;
 		if((!auto)&&(target.charStats().getCurrentClass().baseClass().equals("Cleric")))
 		{
-			mob.tell(_("@x1 can not be affected by this prayer.",target.name(mob)));
+			mob.tell(L("@x1 can not be affected by this prayer.",target.name(mob)));
 			return false;
 		}
 		if(CMLib.flags().isAnimalIntelligence(target)||CMLib.flags().isGolem(target))
 		{
-			if(!auto)mob.tell(_("@x1 can not be affected by this prayer.",target.name(mob)));
+			if(!auto)mob.tell(L("@x1 can not be affected by this prayer.",target.name(mob)));
 			return false;
 		}
 
@@ -98,8 +98,8 @@ public class Prayer_Faithless extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,type,auto?"":_("^S<S-NAME> @x1 for <T-NAMESELF> to lose faith!^?",prayWord(mob)));
-			final CMMsg msg2=CMClass.getMsg(target,D,this,CMMsg.MSG_REBUKE,_("<S-NAME> LOSE(S) FAITH!!!"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,type,auto?"":L("^S<S-NAME> @x1 for <T-NAMESELF> to lose faith!^?",prayWord(mob)));
+			final CMMsg msg2=CMClass.getMsg(target,D,this,CMMsg.MSG_REBUKE,L("<S-NAME> LOSE(S) FAITH!!!"));
 			final CMMsg msg3=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|mal|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))
 			&&(mob.location().okMessage(mob,msg3))
@@ -112,7 +112,7 @@ public class Prayer_Faithless extends Prayer
 			}
 		}
 		else
-			maliciousFizzle(mob,target,auto?"":_("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
+			maliciousFizzle(mob,target,auto?"":L("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

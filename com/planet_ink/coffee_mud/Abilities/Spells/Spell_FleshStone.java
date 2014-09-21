@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_FleshStone extends Spell
 {
 	@Override public String ID() { return "Spell_FleshStone"; }
-	private final static String localizedName = CMLib.lang()._("Flesh Stone");
+	private final static String localizedName = CMLib.lang().L("Flesh Stone");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Flesh to Stone)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Flesh to Stone)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
@@ -101,7 +101,7 @@ public class Spell_FleshStone extends Spell
 				if((!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 				&&(msg.sourceMajor()>0))
 				{
-					mob.tell(_("Statues can't do that."));
+					mob.tell(L("Statues can't do that."));
 					return false;
 				}
 			}
@@ -160,7 +160,7 @@ public class Spell_FleshStone extends Spell
 			if(statue!=null)
 				statue.destroy();
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> flesh returns to normal."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> flesh returns to normal."));
 			if(prevState!=null) prevState.copyInto(mob.curState());
 			CMLib.commands().postStand(mob,true);
 		}
@@ -179,7 +179,7 @@ public class Spell_FleshStone extends Spell
 		// won't happen
 		if((!auto)&&(!CMLib.flags().canBeHeardSpeakingBy(mob,target)))
 		{
-			mob.tell(_("@x1 can't hear your words.",target.charStats().HeShe()));
+			mob.tell(L("@x1 can't hear your words.",target.charStats().HeShe()));
 			return false;
 		}
 
@@ -203,7 +203,7 @@ public class Spell_FleshStone extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> incant(s) at <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> incant(s) at <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -224,12 +224,12 @@ public class Spell_FleshStone extends Spell
 					if(name.startsWith("A ")) name="a "+name.substring(2);
 					if(name.startsWith("An ")) name="an "+name.substring(3);
 					if(name.startsWith("The ")) name="the "+name.substring(4);
-					statue.setName(_("a statue of @x1",name));
-					statue.setDisplayText(_("a statue of @x1 stands here.",name));
-					statue.setDescription(_("It`s a hard granite statue, which looks exactly like @x1.",name));
+					statue.setName(L("a statue of @x1",name));
+					statue.setDisplayText(L("a statue of @x1 stands here.",name));
+					statue.setDescription(L("It`s a hard granite statue, which looks exactly like @x1.",name));
 					statue.setMaterial(RawMaterial.RESOURCE_GRANITE);
 					statue.basePhyStats().setWeight(2000);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> turn(s) into stone!!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> turn(s) into stone!!"));
 					success=maliciousAffect(mob,target,asLevel,(mob.phyStats().level()+(2*getXLEVELLevel(mob))),-1);
 					target.makePeace();
 					if(mob.getVictim()==target) mob.setVictim(null);
@@ -246,7 +246,7 @@ public class Spell_FleshStone extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) at <T-NAMESELF>, but the spell fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) at <T-NAMESELF>, but the spell fades."));
 
 		// return whether it worked
 		return success;

@@ -471,7 +471,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	{
 		if(CMath.bset(teacher.getBitmap(),MOB.ATT_NOTEACH))
 		{
-			teacher.tell(_("You are refusing to teach right now."));
+			teacher.tell(L("You are refusing to teach right now."));
 			return false;
 		}
 
@@ -479,9 +479,9 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		&&((!student.isMonster())||(!student.willFollowOrdersOf(teacher))))
 		{
 			if(teacher.isMonster())
-				CMLib.commands().postSay(teacher,student,_("You are refusing training at this time."),true,false);
+				CMLib.commands().postSay(teacher,student,L("You are refusing training at this time."),true,false);
 			else
-				teacher.tell(_("@x1 is refusing training at this time.",student.name()));
+				teacher.tell(L("@x1 is refusing training at this time.",student.name()));
 			return false;
 		}
 
@@ -501,9 +501,9 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			if(student.fetchAbility(theA.ID())!=null)
 			{
 				if(teacher.isMonster())
-					CMLib.commands().postSay(teacher,student,_("You already know '@x1'.",teachWhat),true,false);
+					CMLib.commands().postSay(teacher,student,L("You already know '@x1'.",teachWhat),true,false);
 				else
-					teacher.tell(_("@x1 already knows how to do that.",student.name()));
+					teacher.tell(L("@x1 already knows how to do that.",student.name()));
 				return false;
 			}
 		}
@@ -515,26 +515,26 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			if(student.fetchExpertise(theExpertise.ID)!=null)
 			{
 				if(teacher.isMonster())
-					CMLib.commands().postSay(teacher,student,_("You already know @x1",theExpertise.name),true,false);
+					CMLib.commands().postSay(teacher,student,L("You already know @x1",theExpertise.name),true,false);
 				else
-					teacher.tell(_("@x1 already knows @x2",student.name(),theExpertise.name));
+					teacher.tell(L("@x1 already knows @x2",student.name(),theExpertise.name));
 				return false;
 			}
 
 			if(!myQualifiedExpertises(student).contains(theExpertise))
 			{
 				if(teacher.isMonster())
-					CMLib.commands().postSay(teacher,student,_("I'm sorry, you do not yet fully qualify for the expertise '@x1'.\n\rRequirements: @x2",theExpertise.name,CMLib.masking().maskDesc(theExpertise.allRequirements())),true,false);
+					CMLib.commands().postSay(teacher,student,L("I'm sorry, you do not yet fully qualify for the expertise '@x1'.\n\rRequirements: @x2",theExpertise.name,CMLib.masking().maskDesc(theExpertise.allRequirements())),true,false);
 				else
-					teacher.tell(_("@x1 does not yet fully qualify for the expertise '@x2'.\n\rRequirements: @x3",student.name(),theExpertise.name,CMLib.masking().maskDesc(theExpertise.allRequirements())));
+					teacher.tell(L("@x1 does not yet fully qualify for the expertise '@x2'.\n\rRequirements: @x3",student.name(),theExpertise.name,CMLib.masking().maskDesc(theExpertise.allRequirements())));
 				return false;
 			}
 			if(!theExpertise.meetsCostRequirements(student))
 			{
 				if(teacher.isMonster())
-					CMLib.commands().postSay(teacher,student,_("I'm sorry, but to learn the expertise '@x1' requires: @x2",theExpertise.name,theExpertise.costDescription()),true,false);
+					CMLib.commands().postSay(teacher,student,L("I'm sorry, but to learn the expertise '@x1' requires: @x2",theExpertise.name,theExpertise.costDescription()),true,false);
 				else
-					teacher.tell(_("Training for that expertise requires @x1.",theExpertise.costDescription()));
+					teacher.tell(L("Training for that expertise requires @x1.",theExpertise.costDescription()));
 				return false;
 			}
 			teachWhat=theExpertise.name;
@@ -544,11 +544,11 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		{
 			if((!teacher.isMonster())
 			&&(student.session()!=null)
-			&&(!student.session().confirm(_("\n\r@x1 wants to teach you @x2.  Is this Ok (y/N)?",teacher.Name(),teachWhat),_("N"),5000)))
+			&&(!student.session().confirm(L("\n\r@x1 wants to teach you @x2.  Is this Ok (y/N)?",teacher.Name(),teachWhat),L("N"),5000)))
 			{
 				if(student.session()!=null)
 					student.session().println("\n\r");
-				teacher.tell(_("@x1 does not want you to.",student.charStats().HeShe()));
+				teacher.tell(L("@x1 does not want you to.",student.charStats().HeShe()));
 				return false;
 			}
 		}
@@ -562,7 +562,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			catch(final Exception e1)
 			{
 			}
-			teacher.tell(_("@x1 does not answer you.",student.charStats().HeShe()));
+			teacher.tell(L("@x1 does not answer you.",student.charStats().HeShe()));
 			return false;
 		}
 		return true;
@@ -605,7 +605,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		final Environmental tool=(teachObj instanceof Environmental)?(Environmental)teachObj:null;
 		final String teachWhat=teachObj.name();
 		final String ID=teachObj.ID();
-		msg=CMClass.getMsg(teacher,student,tool,CMMsg.MSG_TEACH,_("<S-NAME> teach(es) <T-NAMESELF> '@x1'^<LEARN NAME=\"@x2\" /^>.",teachWhat,ID));
+		msg=CMClass.getMsg(teacher,student,tool,CMMsg.MSG_TEACH,L("<S-NAME> teach(es) <T-NAMESELF> '@x1'^<LEARN NAME=\"@x2\" /^>.",teachWhat,ID));
 		if(!teacher.location().okMessage(teacher,msg))
 			return false;
 		teacher.location().send(teacher,msg);

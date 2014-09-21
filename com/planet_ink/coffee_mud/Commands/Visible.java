@@ -68,7 +68,7 @@ public class Visible extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		final String str=_("Prop_WizInvis");
+		final String str=L("Prop_WizInvis");
 		final Ability A=mob.fetchEffect(str);
 		boolean didSomething=false;
 		if(A!=null)
@@ -84,7 +84,7 @@ public class Visible extends StdCommand
 		if(V.size()==0)
 		{
 			if(!didSomething)
-			mob.tell(_("You are not invisible or hidden!"));
+			mob.tell(L("You are not invisible or hidden!"));
 		}
 		else
 		for(int v=0;v<V.size();v++)

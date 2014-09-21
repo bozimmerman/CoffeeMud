@@ -152,7 +152,7 @@ public class Corpse extends GenContainer implements DeadBody
 		}
 		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
 		&&((System.currentTimeMillis()-timeOfDeath())>(TimeManager.MILI_HOUR/2)))
-			msg.source().tell(_("@x1 has definitely started to decay.",name()));
+			msg.source().tell(L("@x1 has definitely started to decay.",name()));
 		super.executeMsg(myHost, msg);
 
 	}
@@ -196,7 +196,7 @@ public class Corpse extends GenContainer implements DeadBody
 				else
 				if(CMProps.getVar(CMProps.Str.CORPSEGUARD).equalsIgnoreCase("SELFONLY"))
 				{
-					msg.source().tell(_("You may not loot another players corpse."));
+					msg.source().tell(L("You may not loot another players corpse."));
 					return false;
 				}
 				else
@@ -204,13 +204,13 @@ public class Corpse extends GenContainer implements DeadBody
 				{
 					if(!(CMath.bset((msg.source()).getBitmap(), MOB.ATT_PLAYERKILL)))
 					{
-						msg.source().tell(_("You can not get that.  You are not a player killer."));
+						msg.source().tell(L("You can not get that.  You are not a player killer."));
 						return false;
 					}
 					else
 					if(mobPKFlag())
 					{
-						msg.source().tell(_("You can not get that.  @x1 was not a player killer.",mobName()));
+						msg.source().tell(L("You can not get that.  @x1 was not a player killer.",mobName()));
 						return false;
 					}
 				}

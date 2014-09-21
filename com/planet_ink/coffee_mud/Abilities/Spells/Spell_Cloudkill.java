@@ -35,9 +35,9 @@ import java.util.*;
 public class Spell_Cloudkill extends Spell
 {
 	@Override public String ID() { return "Spell_Cloudkill"; }
-	private final static String localizedName = CMLib.lang()._("Cloudkill");
+	private final static String localizedName = CMLib.lang().L("Cloudkill");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Cloudkill)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Cloudkill)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
 	@Override public int minRange(){return 1;}
@@ -69,7 +69,7 @@ public class Spell_Cloudkill extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			mob.tell(_("You feel less intoxicated."));
+			mob.tell(L("You feel less intoxicated."));
 			CMLib.commands().postStand(mob,true);
 			if((invoker!=null)
 			&&(!mob.isInCombat())
@@ -86,7 +86,7 @@ public class Spell_Cloudkill extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth clouding."));
+			mob.tell(L("There doesn't appear to be anyone here worth clouding."));
 			return false;
 		}
 
@@ -101,7 +101,7 @@ public class Spell_Cloudkill extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?_("A horrendous green cloud appears!"):_("^S<S-NAME> evoke(s) a horrendous green cloud.^?")))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?L("A horrendous green cloud appears!"):L("^S<S-NAME> evoke(s) a horrendous green cloud.^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -153,7 +153,7 @@ public class Spell_Cloudkill extends Spell
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> attempt(s) to evoke a green cloud, but the spell fizzles."));
+			return maliciousFizzle(mob,null,L("<S-NAME> attempt(s) to evoke a green cloud, but the spell fizzles."));
 
 
 		// return whether it worked

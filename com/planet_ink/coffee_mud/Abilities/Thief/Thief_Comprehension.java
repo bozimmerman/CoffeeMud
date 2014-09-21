@@ -36,9 +36,9 @@ import java.util.*;
 public class Thief_Comprehension extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Comprehension"; }
-	private final static String localizedName = CMLib.lang()._("Linguistic Comprehension");
+	private final static String localizedName = CMLib.lang().L("Linguistic Comprehension");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Lang. Comprehension)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Lang. Comprehension)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -58,7 +58,7 @@ public class Thief_Comprehension extends ThiefSkill
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("You are no longer comprehending languages."));
+			mob.tell(L("You are no longer comprehending languages."));
 	}
 
 	@Override
@@ -96,17 +96,17 @@ public class Thief_Comprehension extends ThiefSkill
 			if(str!=null)
 			{
 				if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
-					queue.addElement(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),_("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(msg.othersMessage(),str),((Ability)msg.tool()).name())));
+					queue.addElement(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(msg.othersMessage(),str),((Ability)msg.tool()).name())));
 				else
 				if(msg.amITarget(affected)&&(msg.targetMessage()!=null))
-					queue.addElement(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,_("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(msg.targetMessage(),str),((Ability)msg.tool()).name())));
+					queue.addElement(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(msg.targetMessage(),str),((Ability)msg.tool()).name())));
 				else
 				if((msg.othersMessage()!=null)&&(msg.othersMessage().indexOf('\'')>0))
 				{
 					String otherMes=msg.othersMessage();
 					if(msg.target()!=null)
 						otherMes=CMLib.coffeeFilter().fullOutFilter(((MOB)affected).session(),(MOB)affected,msg.source(),msg.target(),msg.tool(),otherMes,false);
-					queue.addElement(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.othersCode(),CMMsg.NO_EFFECT,_("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,str),((Ability)msg.tool()).name())));
+					queue.addElement(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.othersCode(),CMMsg.NO_EFFECT,L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,str),((Ability)msg.tool()).name())));
 				}
 			}
 		}
@@ -122,7 +122,7 @@ public class Thief_Comprehension extends ThiefSkill
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("You already have comprehension."));
+			mob.tell(L("You already have comprehension."));
 			return false;
 		}
 
@@ -142,7 +142,7 @@ public class Thief_Comprehension extends ThiefSkill
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?_("<T-NAME> feel(s) more comprehending."):_("^S<S-NAME> listen(s) with intense comprehension.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?L("<T-NAME> feel(s) more comprehending."):L("^S<S-NAME> listen(s) with intense comprehension.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -150,7 +150,7 @@ public class Thief_Comprehension extends ThiefSkill
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to listen with comprehension, but fail(s) miserably."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to listen with comprehension, but fail(s) miserably."));
 
 		// return whether it worked
 		return success;

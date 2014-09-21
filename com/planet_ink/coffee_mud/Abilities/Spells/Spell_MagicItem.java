@@ -38,7 +38,7 @@ import java.util.*;
 public class Spell_MagicItem extends Spell
 {
 	@Override public String ID() { return "Spell_MagicItem"; }
-	private final static String localizedName = CMLib.lang()._("Magic Item");
+	private final static String localizedName = CMLib.lang().L("Magic Item");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
@@ -51,18 +51,18 @@ public class Spell_MagicItem extends Spell
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("Enchant which spell onto what?"));
+			mob.tell(L("Enchant which spell onto what?"));
 			return false;
 		}
 		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",((String)commands.lastElement())));
+			mob.tell(L("You don't see '@x1' here.",((String)commands.lastElement())));
 			return false;
 		}
 		if(!(target instanceof Item))
 		{
-			mob.tell(mob,target,null,_("You can't enchant <T-NAME>."));
+			mob.tell(mob,target,null,L("You can't enchant <T-NAME>."));
 			return false;
 		}
 
@@ -86,7 +86,7 @@ public class Spell_MagicItem extends Spell
 			wandThis = (Spell)CMLib.english().fetchEnvironmental(ables,spellName,false);
 		if(wandThis==null)
 		{
-			mob.tell(_("You don't know how to enchant anything with '@x1'.",spellName));
+			mob.tell(L("You don't know how to enchant anything with '@x1'.",spellName));
 			return false;
 		}
 
@@ -95,20 +95,20 @@ public class Spell_MagicItem extends Spell
 		||(wandThis.ID().equals("Spell_MirrorImage"))
 		||(CMath.bset(wandThis.flags(), FLAG_SUMMONING)))
 		{
-			mob.tell(_("That spell cannot be used to enchant anything."));
+			mob.tell(L("That spell cannot be used to enchant anything."));
 			return false;
 		}
 
 		if((CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())>24)
 		||(((StdAbility)wandThis).usageCost(null,true)[0]>45))
 		{
-			mob.tell(_("That spell is too powerful to enchant into anything."));
+			mob.tell(L("That spell is too powerful to enchant into anything."));
 			return false;
 		}
 
 		if((wand.numEffects()>0)||(!wand.isGeneric()))
 		{
-			mob.tell(_("You can't enchant '@x1'.",wand.name()));
+			mob.tell(L("You can't enchant '@x1'.",wand.name()));
 			return false;
 		}
 
@@ -116,7 +116,7 @@ public class Spell_MagicItem extends Spell
 		experienceToLose+=(100*CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID()));
 		if((mob.getExperience()-experienceToLose)<0)
 		{
-			mob.tell(_("You don't have enough experience to cast this spell."));
+			mob.tell(L("You don't have enough experience to cast this spell."));
 			return false;
 		}
 		// lose all the mana!
@@ -130,13 +130,13 @@ public class Spell_MagicItem extends Spell
 		{
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 			CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
-			mob.tell(_("You lose @x1 experience points for the effort.",""+experienceToLose));
+			mob.tell(L("You lose @x1 experience points for the effort.",""+experienceToLose));
 			setMiscText(wandThis.ID());
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,_("<T-NAME> glow(s) brightly!"));
+				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glow(s) brightly!"));
 				wand.basePhyStats().setDisposition(target.basePhyStats().disposition()|PhyStats.IS_BONUS);
 				wand.basePhyStats().setLevel(wand.basePhyStats().level()+(CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())/2));
 				//Vector V=CMParms.parseCommas(CMLib.utensils().wornList(wand.rawProperLocationBitmap()),true);
@@ -182,8 +182,8 @@ public class Spell_MagicItem extends Spell
 		{
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 			CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
-			mob.tell(_("You lose @x1 experience points for the effort.",""+experienceToLose));
-			beneficialWordsFizzle(mob,target,_("<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly, and looking very frustrated."));
+			mob.tell(L("You lose @x1 experience points for the effort.",""+experienceToLose));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly, and looking very frustrated."));
 		}
 
 

@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_IdentifyPoison extends StdSkill
 {
 	@Override public String ID() { return "Skill_IdentifyPoison"; }
-	private final static String localizedName = CMLib.lang()._("Identify Poison");
+	private final static String localizedName = CMLib.lang().L("Identify Poison");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
@@ -77,13 +77,13 @@ public class Skill_IdentifyPoison extends StdSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":_("^S<S-NAME> carefully sniff(s) and taste(s) <T-NAME>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("^S<S-NAME> carefully sniff(s) and taste(s) <T-NAME>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final StringBuffer buf=new StringBuffer(_("@x1 contains: ",target.name(mob)));
+				final StringBuffer buf=new StringBuffer(L("@x1 contains: ",target.name(mob)));
 				if(offensiveAffects.size()==0)
-					buf.append(_("weak impurities, "));
+					buf.append(L("weak impurities, "));
 				else
 				for(int i=0;i<offensiveAffects.size();i++)
 					buf.append(offensiveAffects.get(i).name()+", ");
@@ -91,7 +91,7 @@ public class Skill_IdentifyPoison extends StdSkill
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> sniff(s) and taste(s) <T-NAME>, but receives no insight."));
+			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> sniff(s) and taste(s) <T-NAME>, but receives no insight."));
 
 
 		// return whether it worked

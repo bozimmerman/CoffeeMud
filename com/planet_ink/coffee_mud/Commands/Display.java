@@ -45,20 +45,20 @@ public class Display extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("Show what to whom?"));
+			mob.tell(L("Show what to whom?"));
 			return false;
 		}
 		commands.removeElementAt(0);
 		if(commands.size()<2)
 		{
-			mob.tell(_("To whom should I show that?"));
+			mob.tell(L("To whom should I show that?"));
 			return false;
 		}
 
 		final MOB recipient=mob.location().fetchInhabitant((String)commands.lastElement());
 		if((recipient==null)||(!CMLib.flags().canBeSeenBy(recipient,mob)))
 		{
-			mob.tell(_("I don't see anyone called @x1 here.",(String)commands.lastElement()));
+			mob.tell(L("I don't see anyone called @x1 here.",(String)commands.lastElement()));
 			return false;
 		}
 		commands.removeElementAt(commands.size()-1);
@@ -99,15 +99,15 @@ public class Display extends StdCommand
 		}
 
 		if(V.size()==0)
-			mob.tell(_("You don't seem to be carrying that."));
+			mob.tell(L("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<V.size();i++)
 		{
 			final Environmental giveThis=(Environmental)V.elementAt(i);
-			final CMMsg newMsg=CMClass.getMsg(recipient,giveThis,mob,CMMsg.MSG_LOOK,_("<O-NAME> show(s) <T-NAME> to <S-NAMESELF>."));
+			final CMMsg newMsg=CMClass.getMsg(recipient,giveThis,mob,CMMsg.MSG_LOOK,L("<O-NAME> show(s) <T-NAME> to <S-NAMESELF>."));
 			if(mob.location().okMessage(recipient,newMsg))
 			{
-				recipient.tell(recipient,giveThis,mob,_("<O-NAME> show(s) <T-NAME> to <S-NAMESELF>."));
+				recipient.tell(recipient,giveThis,mob,L("<O-NAME> show(s) <T-NAME> to <S-NAMESELF>."));
 				mob.location().send(recipient,newMsg);
 			}
 

@@ -63,7 +63,7 @@ public class Sounds extends StdCommand
 				if(session.getClientTelnetMode(Session.TELNET_MSP))
 				{
 					mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_SOUND));
-					mob.tell(_("MSP Sound/Music enabled.\n\r"));
+					mob.tell(L("MSP Sound/Music enabled.\n\r"));
 				}
 				else
 				if(force)
@@ -71,14 +71,14 @@ public class Sounds extends StdCommand
 					session.setClientTelnetMode(Session.TELNET_MSP, true);
 					session.setServerTelnetMode(Session.TELNET_MSP, true);
 					mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_SOUND));
-					mob.tell(_("MSP Sound/Music has been forceably enabled.\n\r"));
+					mob.tell(L("MSP Sound/Music has been forceably enabled.\n\r"));
 				}
 				else
-					mob.tell(_("Your client does not appear to support MSP."));
+					mob.tell(L("Your client does not appear to support MSP."));
 			}
 			else
 			{
-				mob.tell(_("MSP Sound/Music is already enabled.\n\r"));
+				mob.tell(L("MSP Sound/Music is already enabled.\n\r"));
 			}
 		}
 		return false;

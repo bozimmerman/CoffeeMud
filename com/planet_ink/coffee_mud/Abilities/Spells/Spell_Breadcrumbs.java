@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_Breadcrumbs extends Spell
 {
 	@Override public String ID() { return "Spell_Breadcrumbs"; }
-	private final static String localizedName = CMLib.lang()._("Breadcrumbs");
+	private final static String localizedName = CMLib.lang().L("Breadcrumbs");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -53,14 +53,14 @@ public class Spell_Breadcrumbs extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your breadcrumbs fade away."));
+			mob.tell(L("Your breadcrumbs fade away."));
 		trail=null;
 	}
 
 	@Override
 	public String displayText()
 	{
-		final StringBuffer str=new StringBuffer(_("(Breadcrumb Trail: "));
+		final StringBuffer str=new StringBuffer(L("(Breadcrumb Trail: "));
 		if(trail!=null)
 		synchronized(trail)
 		{
@@ -79,7 +79,7 @@ public class Spell_Breadcrumbs extends Spell
 					if(dir>=0)
 						str.append(Directions.getDirectionName(dir)+" ");
 					else
-						str.append(_("Unknown "));
+						str.append(L("Unknown "));
 				}
 				lastRoom=R;
 			}
@@ -148,7 +148,7 @@ public class Spell_Breadcrumbs extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already dropping breadcrumbs."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already dropping breadcrumbs."));
 			return false;
 		}
 
@@ -167,7 +167,7 @@ public class Spell_Breadcrumbs extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> attain(s) mysterious breadcrumbs."):_("^S<S-NAME> invoke(s) the mystical breadcrumbs.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> attain(s) mysterious breadcrumbs."):L("^S<S-NAME> invoke(s) the mystical breadcrumbs.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -177,7 +177,7 @@ public class Spell_Breadcrumbs extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke breadcrumbs, but fail(s)."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke breadcrumbs, but fail(s)."));
 
 		// return whether it worked
 		return success;

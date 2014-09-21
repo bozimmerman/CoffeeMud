@@ -38,9 +38,9 @@ import java.util.*;
 public class Chant_SensePlants extends Chant
 {
 	@Override public String ID() { return "Chant_SensePlants"; }
-	private final static String localizedName = CMLib.lang()._("Sense Plants");
+	private final static String localizedName = CMLib.lang().L("Sense Plants");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Sensing Plants)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Sensing Plants)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
@@ -64,7 +64,7 @@ public class Chant_SensePlants extends Chant
 			lastRoom=null;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("Your senses are no longer sensitive to @x1.",word()));
+			mob.tell(L("Your senses are no longer sensitive to @x1.",word()));
 	}
 	public String itsHere(MOB mob, Room R)
 	{
@@ -101,10 +101,10 @@ public class Chant_SensePlants extends Chant
 				}
 			}
 			if((dirs.length()==0)&&(last.length()>0))
-				mob.tell(_("You sense @x1 to @x2.",word(),last));
+				mob.tell(L("You sense @x1 to @x2.",word(),last));
 			else
 			if((dirs.length()>2)&&(last.length()>0))
-				mob.tell(_("You sense @x1 to @x2, and @x3.",word(),dirs.substring(2),last));
+				mob.tell(L("You sense @x1 to @x2, and @x3.",word(),dirs.substring(2),last));
 		}
 	}
 
@@ -136,14 +136,14 @@ public class Chant_SensePlants extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already sensing @x1.",word()));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already sensing @x1.",word()));
 			return false;
 		}
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) sensitivity to @x1!",word()):_("^S<S-NAME> chant(s) and gain(s) sensitivity to @x1!^?",word()));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> gain(s) sensitivity to @x1!",word()):L("^S<S-NAME> chant(s) and gain(s) sensitivity to @x1!^?",word()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -151,7 +151,7 @@ public class Chant_SensePlants extends Chant
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s), but nothing happens."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> chant(s), but nothing happens."));
 
 		return success;
 	}

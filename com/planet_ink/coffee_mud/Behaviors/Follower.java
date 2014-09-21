@@ -139,7 +139,7 @@ public class Follower extends ActiveTicker
 		&&(msg.tool()==host)
 		&&(msg.sourceMinor()==CMMsg.TYP_SELL))
 		{
-			msg.source().tell(_("You can not sell @x1.",host.name()));
+			msg.source().tell(L("You can not sell @x1.",host.name()));
 			return false;
 		}
 		return true;

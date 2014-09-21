@@ -37,7 +37,7 @@ import java.util.*;
 public class Druid_Bite extends StdAbility
 {
 	@Override public String ID() { return "Druid_Bite"; }
-	private final static String localizedName = CMLib.lang()._("Bite");
+	private final static String localizedName = CMLib.lang().L("Bite");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"BITE"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -67,17 +67,17 @@ public class Druid_Bite extends StdAbility
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell(_("You are too far away to bite!"));
+			mob.tell(L("You are too far away to bite!"));
 			return false;
 		}
 		if(!Druid_ShapeShift.isShapeShifted(mob))
 		{
-			mob.tell(_("You must be in your animal form to bite."));
+			mob.tell(L("You must be in your animal form to bite."));
 			return false;
 		}
 		if(mob.charStats().getBodyPart(Race.BODY_MOUTH)<=0)
 		{
-			mob.tell(_("You must have a mouth to bite!"));
+			mob.tell(L("You must have a mouth to bite!"));
 			return false;
 		}
 
@@ -112,7 +112,7 @@ public class Druid_Bite extends StdAbility
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> fail(s) to bite <T-NAMESELF>."));
+			return maliciousFizzle(mob,target,L("<S-NAME> fail(s) to bite <T-NAMESELF>."));
 
 		// return whether it worked
 		return success;

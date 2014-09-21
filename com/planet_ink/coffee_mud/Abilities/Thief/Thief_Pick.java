@@ -37,7 +37,7 @@ import java.util.*;
 public class Thief_Pick extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Pick"; }
-	private final static String localizedName = CMLib.lang()._("Pick Locks");
+	private final static String localizedName = CMLib.lang().L("Pick Locks");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
@@ -63,7 +63,7 @@ public class Thief_Pick extends ThiefSkill
 		||((unlockThis instanceof Container)&&(!((Container)unlockThis).hasALock()))
 		||((unlockThis instanceof Item)&&(!(unlockThis instanceof Container))))
 		{
-			mob.tell(_("There is no lock on @x1!",unlockThis.name()));
+			mob.tell(L("There is no lock on @x1!",unlockThis.name()));
 			return false;
 		}
 
@@ -75,7 +75,7 @@ public class Thief_Pick extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,adjustment,auto);
 
 		if(!success)
-			beneficialVisualFizzle(mob,unlockThis,_("<S-NAME> attempt(s) to pick the lock on <T-NAME> and fail(s)."));
+			beneficialVisualFizzle(mob,unlockThis,L("<S-NAME> attempt(s) to pick the lock on <T-NAME> and fail(s)."));
 		else
 		{
 			CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_VISUAL:(CMMsg.MSG_THIEF_ACT),CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
@@ -84,9 +84,9 @@ public class Thief_Pick extends ThiefSkill
 			{
 				if(((unlockThis instanceof Exit)&&(!((Exit)unlockThis).isLocked()))
 				||((unlockThis instanceof Container)&&(!((Container)unlockThis).isLocked())))
-					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,auto?_("<T-NAME> vibrate(s) and click(s)."):_("<S-NAME> pick(s) and relock(s) <T-NAME>."));
+					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,auto?L("<T-NAME> vibrate(s) and click(s)."):L("<S-NAME> pick(s) and relock(s) <T-NAME>."));
 				else
-					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,auto?_("<T-NAME> vibrate(s) and click(s)."):_("<S-NAME> pick(s) the lock on <T-NAME>."));
+					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,auto?L("<T-NAME> vibrate(s) and click(s)."):L("<S-NAME> pick(s) the lock on <T-NAME>."));
 				if(!lastDone.contains(""+unlockThis))
 				{
 					while(lastDone.size()>40) lastDone.removeElementAt(0);

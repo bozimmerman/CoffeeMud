@@ -46,7 +46,7 @@ public class Follow extends StdCommand
 		if(R==null) return false;
 		if(mob.amFollowing()!=null)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob.amFollowing(),null,CMMsg.MSG_NOFOLLOW,quiet?null:_("<S-NAME> stop(s) following <T-NAMESELF>."));
+			final CMMsg msg=CMClass.getMsg(mob,mob.amFollowing(),null,CMMsg.MSG_NOFOLLOW,quiet?null:L("<S-NAME> stop(s) following <T-NAMESELF>."));
 			// no room OKaffects, since the damn leader may not be here.
 			if(mob.okMessage(mob,msg))
 				R.send(mob,msg);
@@ -55,7 +55,7 @@ public class Follow extends StdCommand
 		}
 		else
 		if(errorsOk)
-			mob.tell(_("You aren't following anyone!"));
+			mob.tell(L("You aren't following anyone!"));
 		return true;
 	}
 
@@ -90,12 +90,12 @@ public class Follow extends StdCommand
 			if(mob.getGroupMembers(new HashSet<MOB>()).contains(tofollow))
 			{
 				if(!quiet)
-					mob.tell(_("You are already a member of @x1's group!",tofollow.name()));
+					mob.tell(L("You are already a member of @x1's group!",tofollow.name()));
 				return false;
 			}
 			if(nofollow(mob,false,false))
 			{
-				final CMMsg msg=CMClass.getMsg(mob,tofollow,null,CMMsg.MSG_FOLLOW,quiet?null:_("<S-NAME> follow(s) <T-NAMESELF>."));
+				final CMMsg msg=CMClass.getMsg(mob,tofollow,null,CMMsg.MSG_FOLLOW,quiet?null:L("<S-NAME> follow(s) <T-NAMESELF>."));
 				if(R.okMessage(mob,msg))
 					R.send(mob,msg);
 				else
@@ -130,7 +130,7 @@ public class Follow extends StdCommand
 
 		if(commands.size()<2)
 		{
-			mob.tell(_("Follow whom?"));
+			mob.tell(L("Follow whom?"));
 			return false;
 		}
 
@@ -144,23 +144,23 @@ public class Follow extends StdCommand
 		final MOB target=R.fetchInhabitant(whomToFollow);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("I don't see them here."));
+			mob.tell(L("I don't see them here."));
 			return false;
 		}
 		if((target.isMonster())&&(!mob.isMonster()))
 		{
-			mob.tell(_("You cannot follow '@x1'.",target.name(mob)));
+			mob.tell(L("You cannot follow '@x1'.",target.name(mob)));
 			return false;
 		}
 		if(CMath.bset(target.getBitmap(),MOB.ATT_NOFOLLOW))
 		{
-			mob.tell(_("@x1 is not accepting followers.",target.name(mob)));
+			mob.tell(L("@x1 is not accepting followers.",target.name(mob)));
 			return false;
 		}
 		final MOB ultiTarget=target.amUltimatelyFollowing();
 		if((ultiTarget!=null)&&(CMath.bset(ultiTarget.getBitmap(),MOB.ATT_NOFOLLOW)))
 		{
-			mob.tell(_("@x1 is not accepting followers.",ultiTarget.name()));
+			mob.tell(L("@x1 is not accepting followers.",ultiTarget.name()));
 			return false;
 		}
 		processFollow(mob,target,quiet);

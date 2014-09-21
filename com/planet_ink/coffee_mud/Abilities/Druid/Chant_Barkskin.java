@@ -38,9 +38,9 @@ import java.util.*;
 public class Chant_Barkskin extends Chant
 {
 	@Override public String ID() { return "Chant_Barkskin"; }
-	private final static String localizedName = CMLib.lang()._("Barkskin");
+	private final static String localizedName = CMLib.lang().L("Barkskin");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Barkskin)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Barkskin)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
@@ -62,7 +62,7 @@ public class Chant_Barkskin extends Chant
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> skin is no longer bark-like."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> skin is no longer bark-like."));
 	}
 
 
@@ -76,7 +76,7 @@ public class Chant_Barkskin extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-YOUPOSS> skin is already like bark."));
+			mob.tell(target,null,null,L("<S-YOUPOSS> skin is already like bark."));
 			return false;
 		}
 
@@ -96,7 +96,7 @@ public class Chant_Barkskin extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?_("<T-NAME> attain(s) bark-like skin!"):_("^S<S-NAME> chant(s) to <S-NAMESELF> and <S-HIS-HER> skin turns hard and brown!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?L("<T-NAME> attain(s) bark-like skin!"):L("^S<S-NAME> chant(s) to <S-NAMESELF> and <S-HIS-HER> skin turns hard and brown!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -105,7 +105,7 @@ public class Chant_Barkskin extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) to <S-NAMESELF>, but nothing happens"));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) to <S-NAMESELF>, but nothing happens"));
 
 		// return whether it worked
 		return success;

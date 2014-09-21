@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_MassHaste extends Spell
 {
 	@Override public String ID() { return "Spell_MassHaste"; }
-	private final static String localizedName = CMLib.lang()._("Mass Haste");
+	private final static String localizedName = CMLib.lang().L("Mass Haste");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
@@ -48,7 +48,7 @@ public class Spell_MassHaste extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,false);
 		if(h==null)
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth speeding up."));
+			mob.tell(L("There doesn't appear to be anyone here worth speeding up."));
 			return false;
 		}
 
@@ -63,7 +63,7 @@ public class Spell_MassHaste extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) quickly.^?")))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) quickly.^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -78,7 +78,7 @@ public class Spell_MassHaste extends Spell
 					   &&(target.fetchEffect("Spell_MassHaste")==null))
 					{
 						mob.location().send(mob,msg);
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> speed(s) up!"));
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> speed(s) up!"));
 						final Spell_Haste haste=new Spell_Haste();
 						haste.setProficiency(proficiency());
 						haste.beneficialAffect(mob,target,asLevel,0);
@@ -86,7 +86,7 @@ public class Spell_MassHaste extends Spell
 				}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) quickly, but the spell fizzles."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) quickly, but the spell fizzles."));
 
 
 		// return whether it worked

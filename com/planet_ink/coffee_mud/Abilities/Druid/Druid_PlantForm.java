@@ -38,7 +38,7 @@ import java.util.*;
 public class Druid_PlantForm extends StdAbility
 {
 	@Override public String ID() { return "Druid_PlantForm"; }
-	private final static String localizedName = CMLib.lang()._("Plant Form");
+	private final static String localizedName = CMLib.lang().L("Plant Form");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
@@ -87,7 +87,7 @@ public class Druid_PlantForm extends StdAbility
 			&&(msg.source().location()==target.location())
 			&&(msg.source().getVictim()!=target))
 			{
-				msg.source().tell(_("Attack a plant?!"));
+				msg.source().tell(L("Attack a plant?!"));
 				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();
@@ -135,7 +135,7 @@ public class Druid_PlantForm extends StdAbility
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob.location()!=null))
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> revert(s) to @x1 form.",mob.charStats().raceName().toLowerCase()));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> revert(s) to @x1 form.",mob.charStats().raceName().toLowerCase()));
 	}
 
 	public void setRaceName(MOB mob)
@@ -224,13 +224,13 @@ public class Druid_PlantForm extends StdAbility
 
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell(_("You must be outdoors to take on your plant form."));
+			mob.tell(L("You must be outdoors to take on your plant form."));
 			return false;
 		}
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
 		||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
 		{
-			mob.tell(_("You must be in the wild to take on your plant form."));
+			mob.tell(L("You must be in the wild to take on your plant form."));
 			return false;
 		}
 
@@ -240,7 +240,7 @@ public class Druid_PlantForm extends StdAbility
 		final String choice=(mob.isMonster()||(commands.size()==0))?getRaceName(classLevel-1):CMParms.combine(commands,0);
 		if(choice.trim().length()>0)
 		{
-			final StringBuffer buf=new StringBuffer(_("Plant Forms:\n\r"));
+			final StringBuffer buf=new StringBuffer(L("Plant Forms:\n\r"));
 			final Vector choices=new Vector();
 			for(int i=0;i<classLevel;i++)
 			{
@@ -274,7 +274,7 @@ public class Druid_PlantForm extends StdAbility
 		{
 			if((CMLib.dice().rollPercentage()<50))
 			{
-				mob.tell(_("Extreme emotions disrupt your change."));
+				mob.tell(L("Extreme emotions disrupt your change."));
 				return false;
 			}
 		}
@@ -291,12 +291,12 @@ public class Druid_PlantForm extends StdAbility
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob,asLevel,Ability.TICKS_FOREVER);
 				raceName=CMStrings.capitalizeAndLower(CMLib.english().startWithAorAn(raceName.toLowerCase()));
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> take(s) on @x1 form.",raceName.toLowerCase()));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> take(s) on @x1 form.",raceName.toLowerCase()));
 				CMLib.utensils().confirmWearability(mob);
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) to <S-HIM-HERSELF>, but nothing happens."));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) to <S-HIM-HERSELF>, but nothing happens."));
 
 
 		// return whether it worked

@@ -53,7 +53,7 @@ public class Blob extends Unique
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName(_("a body slam"));
+			naturalWeapon.setName(L("a body slam"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_SLIME);
 			naturalWeapon.setUsesRemaining(1000);
 			naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);

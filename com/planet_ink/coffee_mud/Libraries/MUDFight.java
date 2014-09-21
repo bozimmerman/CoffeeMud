@@ -200,7 +200,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				{
 					I.setUsesRemaining(100);
 					I.unWear();
-					msg=CMClass.getMsg(mob,null,I,CMMsg.MSG_OK_VISUAL,_("<O-NAME> is destroyed!"),null,_("<O-NAME> carried by <S-NAME> is destroyed!"));
+					msg=CMClass.getMsg(mob,null,I,CMMsg.MSG_OK_VISUAL,L("<O-NAME> is destroyed!"),null,L("<O-NAME> carried by <S-NAME> is destroyed!"));
 					if(R.okMessage(mob,msg))
 						R.send(mob,msg);
 					I.destroy();
@@ -212,7 +212,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				else
 				if(I.usesRemaining()<=10)
 				{
-					mob.tell(_("@x1 is looking really bad.",I.name(mob)));
+					mob.tell(L("@x1 is looking really bad.",I.name(mob)));
 				}
 			}
 		}
@@ -390,14 +390,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		CMMsg msg=null;
 		if(isKnockedOutUponDeath(deadM,killerM))
 			msg=CMClass.getMsg(deadM,null,killerM,
-					CMMsg.MSG_OK_VISUAL,_("^f^*^<FIGHT^>!!!!!!!!!YOU ARE DEFEATED!!!!!!!!!!^</FIGHT^>^?^.\n\r@x1",msp),
+					CMMsg.MSG_OK_VISUAL,L("^f^*^<FIGHT^>!!!!!!!!!YOU ARE DEFEATED!!!!!!!!!!^</FIGHT^>^?^.\n\r@x1",msp),
 					CMMsg.MSG_OK_VISUAL,null,
-					CMMsg.MSG_DEATH,_("^F^<FIGHT^><S-NAME> is DEFEATED!!!^</FIGHT^>^?\n\r@x1",msp));
+					CMMsg.MSG_DEATH,L("^F^<FIGHT^><S-NAME> is DEFEATED!!!^</FIGHT^>^?\n\r@x1",msp));
 		else
 			msg=CMClass.getMsg(deadM,null,killerM,
-				CMMsg.MSG_OK_VISUAL,_("^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r@x1",msp),
+				CMMsg.MSG_OK_VISUAL,L("^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r@x1",msp),
 				CMMsg.MSG_OK_VISUAL,null,
-				CMMsg.MSG_DEATH,_("^F^<FIGHT^><S-NAME> is DEAD!!!^</FIGHT^>^?\n\r@x1",msp));
+				CMMsg.MSG_DEATH,L("^F^<FIGHT^><S-NAME> is DEAD!!!^</FIGHT^>^?\n\r@x1",msp));
 		CMLib.map().sendGlobalMessage(deadM,CMMsg.TYP_DEATH, CMClass.getMsg(deadM,null,killerM, CMMsg.TYP_DEATH,null, CMMsg.TYP_DEATH,null, CMMsg.TYP_DEATH,null));
 		final CMMsg msg2=CMClass.getMsg(deadM,null,killerM, CMMsg.MSG_DEATH,null, CMMsg.MSG_DEATH,null, CMMsg.MSG_DEATH,null);
 		if(addHere!=null)
@@ -1049,7 +1049,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		&&(!isKnockedOutUponDeath(target,source)))
 			body=target.killMeDead(true);
 
-		handleConsequences(target,source,cmds,expLost,_("^*You lose @x1 experience points.^?^."));
+		handleConsequences(target,source,cmds,expLost,L("^*You lose @x1 experience points.^?^."));
 
 		if(!isKnockedOutUponDeath(target,source))
 		{
@@ -1075,7 +1075,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				s.setMob(target.soulMate());
 				target.soulMate().setSession(s);
 				target.setSession(null);
-				target.soulMate().tell(_("^HYour spirit has returned to your body...\n\r\n\r^N"));
+				target.soulMate().tell(L("^HYour spirit has returned to your body...\n\r\n\r^N"));
 				CMLib.commands().postLook(target.soulMate(),true);
 				target.setSoulMate(null);
 			}
@@ -1088,10 +1088,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			&&(CMath.bset(source.getBitmap(),MOB.ATT_AUTOLOOT)))
 			{
 				if((source.riding()!=null)&&(source.riding() instanceof MOB))
-					source.tell(_("You'll need to dismount to loot the body."));
+					source.tell(L("You'll need to dismount to loot the body."));
 				else
 				if((source.riding()!=null)&&(source.riding() instanceof MOB))
-					source.tell(_("You'll need to disembark to loot the body."));
+					source.tell(L("You'll need to disembark to loot the body."));
 				else
 				for(int i=bodyRoom.numItems()-1;i>=0;i--)
 				{
@@ -1121,10 +1121,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					if(mob.location()==bodyRoom)
 					{
 						if((mob.riding()!=null)&&(mob.riding() instanceof MOB))
-							mob.tell(_("You'll need to dismount to get @x1 off the body.",C.name()));
+							mob.tell(L("You'll need to dismount to get @x1 off the body.",C.name()));
 						else
 						if((mob.riding()!=null)&&(mob.riding() instanceof Item))
-							mob.tell(_("You'll need to disembark to get @x1 off the body.",C.name()));
+							mob.tell(L("You'll need to disembark to get @x1 off the body.",C.name()));
 						else
 						if(CMLib.flags().canBeSeenBy(body,mob))
 							CMLib.commands().postGet(mob,body,C,false);
@@ -1757,7 +1757,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					inminrange=true;
 					inmaxrange=false;
 					// we advance
-					final CMMsg msg=CMClass.getMsg(fighter,fighter.getVictim(),CMMsg.MSG_ADVANCE,_("<S-NAME> advances(s) at <T-NAMESELF>."));
+					final CMMsg msg=CMClass.getMsg(fighter,fighter.getVictim(),CMMsg.MSG_ADVANCE,L("<S-NAME> advances(s) at <T-NAMESELF>."));
 					if(fighter.location().okMessage(fighter,msg))
 					{
 						fighter.location().send(fighter,msg);
@@ -1773,7 +1773,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 			if((!inminrange)&&(fighter.curState().getMovement()>=25))
 			{
-				final CMMsg msg=CMClass.getMsg(fighter,fighter.getVictim(),CMMsg.MSG_RETREAT,_("<S-NAME> retreat(s) before <T-NAME>."));
+				final CMMsg msg=CMClass.getMsg(fighter,fighter.getVictim(),CMMsg.MSG_RETREAT,L("<S-NAME> retreat(s) before <T-NAME>."));
 				if(fighter.location().okMessage(fighter,msg))
 					fighter.location().send(fighter,msg);
 			}
@@ -1956,38 +1956,38 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				||(ticksHungry>CharState.DEATH_HUNGER_TICKS))
 				{
 					if(thirsty)
-						mob.tell(_("YOU ARE DYING OF THIRST!"));
+						mob.tell(L("YOU ARE DYING OF THIRST!"));
 					if(hungry)
-						mob.tell(_("YOU ARE DYING OF HUNGER!"));
+						mob.tell(L("YOU ARE DYING OF HUNGER!"));
 					CMLib.combat().postDeath(null,mob,null);
 				}
 				else
 				if(ticksThirsty>CharState.DEATH_THIRST_TICKS-30)
-					mob.tell(_("You are dehydrated, and near death.  DRINK SOMETHING!"));
+					mob.tell(L("You are dehydrated, and near death.  DRINK SOMETHING!"));
 				else
 				if(ticksHungry>CharState.DEATH_HUNGER_TICKS-30)
-					mob.tell(_("You are starved, and near death.  EAT SOMETHING!"));
+					mob.tell(L("You are starved, and near death.  EAT SOMETHING!"));
 				else
 				{
 					if(thirsty && ((ticksThirsty-1 % CharState.ANNOYANCE_DEFAULT_TICKS)==0))
 					{
 						if(ticksThirsty>((CharState.DEATH_THIRST_TICKS/2)+(CharState.DEATH_THIRST_TICKS/4)))
-							mob.tell(_("You are dehydrated! Drink something!"));
+							mob.tell(L("You are dehydrated! Drink something!"));
 						else
 						if(ticksThirsty>(CharState.DEATH_THIRST_TICKS/2))
-							mob.tell(_("You are parched! Drink something!"));
+							mob.tell(L("You are parched! Drink something!"));
 						else
-							mob.tell(_("You are thirsty."));
+							mob.tell(L("You are thirsty."));
 					}
 					if((hungry) && ((ticksHungry-1 % CharState.ANNOYANCE_DEFAULT_TICKS)==0))
 					{
 						if(ticksHungry>((CharState.DEATH_HUNGER_TICKS/2)+(CharState.DEATH_HUNGER_TICKS/4)))
-							mob.tell(_("You are starved! Eat something!"));
+							mob.tell(L("You are starved! Eat something!"));
 						else
 						if(ticksHungry>(CharState.DEATH_HUNGER_TICKS/2))
-							mob.tell(_("You are famished! Eat something!"));
+							mob.tell(L("You are famished! Eat something!"));
 						else
-							mob.tell(_("You are hungry."));
+							mob.tell(L("You are hungry."));
 					}
 				}
 			}
@@ -2030,14 +2030,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				final Ability A=CMClass.getAbility("Prop_AstralSpirit");
 				if((A!=null)&&(mob.fetchAbility(A.ID())==null))
 				{
-					mob.tell(_("^HYou are now a spirit.^N"));
+					mob.tell(L("^HYou are now a spirit.^N"));
 					if(whatToDo.startsWith("ASTRAL_R"))
 					{
 						A.setMiscText("SELF-RES");
-						mob.tell(_("^HFind your corpse and use ENTER [body name] to re-enter your body.^N"));
+						mob.tell(L("^HFind your corpse and use ENTER [body name] to re-enter your body.^N"));
 					}
 					else
-						mob.tell(_("^HFind your corpse have someone resurrect it.^N"));
+						mob.tell(L("^HFind your corpse have someone resurrect it.^N"));
 					mob.addAbility(A);
 					A.autoInvocation(mob);
 				}
@@ -2071,7 +2071,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					final Ability A=mob.fetchAbility(CMLib.dice().roll(1,mob.numAbilities(),-1));
 					if(A!=null)
 					{
-						mob.tell(_("You've forgotten @x1.",A.Name()));
+						mob.tell(L("You've forgotten @x1.",A.Name()));
 						mob.delAbility(A);
 						if(A.isAutoInvoked())
 						{

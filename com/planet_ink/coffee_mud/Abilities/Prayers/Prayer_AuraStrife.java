@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_AuraStrife extends Prayer
 {
 	@Override public String ID() { return "Prayer_AuraStrife"; }
-	private final static String localizedName = CMLib.lang()._("Aura of Strife");
+	private final static String localizedName = CMLib.lang().L("Aura of Strife");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Aura of Strife)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Aura of Strife)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -83,7 +83,7 @@ public class Prayer_AuraStrife extends Prayer
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(M!=null)&&(!M.amDead())&&(M.location()!=null))
-			M.location().show(M,null,CMMsg.MSG_OK_VISUAL,_("The aura of strife around <S-NAME> fades."));
+			M.location().show(M,null,CMMsg.MSG_OK_VISUAL,L("The aura of strife around <S-NAME> fades."));
 	}
 
 	@Override

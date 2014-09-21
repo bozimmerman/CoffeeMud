@@ -36,9 +36,9 @@ import java.util.*;
 public class Thief_Flank extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Flank"; }
-	private final static String localizedName = CMLib.lang()._("Flank");
+	private final static String localizedName = CMLib.lang().L("Flank");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Flanking)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Flanking)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -102,7 +102,7 @@ public class Thief_Flank extends ThiefSkill
 			return;
 		final MOB mob=(MOB)affected;
 		if((canBeUninvoked())&&(mob!=null)&&(target!=null)&&(!mob.amDead()))
-			mob.tell(_("You are no longer flanking @x1.",target.name(mob)));
+			mob.tell(L("You are no longer flanking @x1.",target.name(mob)));
 		super.unInvoke();
 	}
 
@@ -111,19 +111,19 @@ public class Thief_Flank extends ThiefSkill
 	{
 		if(!mob.isInCombat())
 		{
-			mob.tell(_("You must be in combat to flank!"));
+			mob.tell(L("You must be in combat to flank!"));
 			return false;
 		}
 		MOB target=mob.getVictim();
 		if(target.getVictim()==mob)
 		{
-			mob.tell(_("You can't flank someone who is attacking you!"));
+			mob.tell(L("You can't flank someone who is attacking you!"));
 			return false;
 		}
 
 		if(CMLib.flags().isSitting(mob))
 		{
-			mob.tell(_("You need to stand up!"));
+			mob.tell(L("You need to stand up!"));
 			return false;
 		}
 		if(!CMLib.flags().aliveAwakeMobile(mob,false))
@@ -131,7 +131,7 @@ public class Thief_Flank extends ThiefSkill
 
 		if(mob.rangeToTarget()>0)
 		{
-			mob.tell(_("You are too far away to flank @x1!",mob.getVictim().name()));
+			mob.tell(L("You are too far away to flank @x1!",mob.getVictim().name()));
 			return false;
 		}
 
@@ -141,7 +141,7 @@ public class Thief_Flank extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,auto?"":_("<S-NAME> flank(s) <T-NAMESELF>!"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,auto?"":L("<S-NAME> flank(s) <T-NAMESELF>!"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -150,7 +150,7 @@ public class Thief_Flank extends ThiefSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to flank <T-NAMESELF>, but flub(s) it."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to flank <T-NAMESELF>, but flub(s) it."));
 		return success;
 	}
 }

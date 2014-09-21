@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_SummonEnemy extends Spell
 {
 	@Override public String ID() { return "Spell_SummonEnemy"; }
-	private final static String localizedName = CMLib.lang()._("Summon Enemy");
+	private final static String localizedName = CMLib.lang().L("Summon Enemy");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Enemy Summoning)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Enemy Summoning)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
@@ -85,7 +85,7 @@ public class Spell_SummonEnemy extends Spell
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> conjur(s) the dark shadow of a living creature...^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> conjur(s) the dark shadow of a living creature...^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -103,11 +103,11 @@ public class Spell_SummonEnemy extends Spell
 						CMLib.tracking().wanderAway(target, false, true);
 				}
 				else
-					mob.tell(_("Your equal could not be summoned."));
+					mob.tell(L("Your equal could not be summoned."));
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> conjur(s), but nothing happens."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> conjur(s), but nothing happens."));
 
 		// return whether it worked
 		return success;
@@ -150,7 +150,7 @@ public class Spell_SummonEnemy extends Spell
 		monster.text();
 		monster.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(monster,null);
-		monster.location().showOthers(monster,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
+		monster.location().showOthers(monster,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 		caster.location().recoverRoomStats();
 		monster.setStartRoom(null);
 		return(monster);

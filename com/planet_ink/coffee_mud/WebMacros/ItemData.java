@@ -800,7 +800,7 @@ public class ItemData extends StdWebMacro
 						str.append("<OPTION VALUE=\"\"");
 						if(old.length()==0)
 							str.append(" SELECTED");
-						str.append(_(">Default currency"));
+						str.append(L(">Default currency"));
 						for(int i=0;i<cs.size();i++)
 						{
 							if(cs.get(i).length()>0)

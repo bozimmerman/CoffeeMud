@@ -49,7 +49,7 @@ public class PageBreak extends StdCommand
 		if(commands.size()<2)
 		{
 			final String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"Disabled";
-			mob.tell(_("Change your page break to what? Your current page break setting is: @x1. Enter a number larger than 0 or 'disable'.",pageBreak));
+			mob.tell(L("Change your page break to what? Your current page break setting is: @x1. Enter a number larger than 0 or 'disable'.",pageBreak));
 			return false;
 		}
 		final String newBreak=CMParms.combine(commands,1);
@@ -61,12 +61,12 @@ public class PageBreak extends StdCommand
 			newVal=0;
 		else
 		{
-			mob.tell(_("'@x1' is not a valid setting. Enter a number larger than 0 or 'disable'.",newBreak));
+			mob.tell(L("'@x1' is not a valid setting. Enter a number larger than 0 or 'disable'.",newBreak));
 			return false;
 		}
 		mob.playerStats().setPageBreak(newVal);
 		final String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"Disabled";
-		mob.tell(_("Your new page break setting is: @x1.",pageBreak));
+		mob.tell(L("Your new page break setting is: @x1.",pageBreak));
 		return false;
 	}
 

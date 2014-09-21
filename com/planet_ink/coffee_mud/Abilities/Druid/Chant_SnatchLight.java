@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_SnatchLight extends Chant
 {
 	@Override public String ID() { return "Chant_SnatchLight"; }
-	private final static String localizedName = CMLib.lang()._("Snatch Light");
+	private final static String localizedName = CMLib.lang().L("Snatch Light");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Snatch Light)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Snatch Light)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
@@ -169,7 +169,7 @@ public class Chant_SnatchLight extends Chant
 
 		if((canBeUninvoked())&&(mob!=null))
 		{
-			mob.tell(_("Your ability to snatch light dissipates."));
+			mob.tell(L("Your ability to snatch light dissipates."));
 			if(mob.location()!=null)
 			{
 				mob.location().recoverRoomStats();
@@ -187,7 +187,7 @@ public class Chant_SnatchLight extends Chant
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already snatching light."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already snatching light."));
 			return false;
 		}
 
@@ -207,7 +207,7 @@ public class Chant_SnatchLight extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<S-NAME> gain(s) an aura of light snatching!"):_("^S<S-NAME> chant(s), feeling <S-HIS-HER> body become a light snatcher!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<S-NAME> gain(s) an aura of light snatching!"):L("^S<S-NAME> chant(s), feeling <S-HIS-HER> body become a light snatcher!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -215,7 +215,7 @@ public class Chant_SnatchLight extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s), but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s), but nothing more happens."));
 
 		// return whether it worked
 		return success;

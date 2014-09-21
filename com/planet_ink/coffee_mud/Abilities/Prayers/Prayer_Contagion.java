@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_Contagion extends Prayer implements DiseaseAffect
 {
 	@Override public String ID() { return "Prayer_Contagion"; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Contagion)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Contagion)");
 	@Override public String displayText() { return localizedStaticDisplay; }
-	private final static String localizedName = CMLib.lang()._("Contagion");
+	private final static String localizedName = CMLib.lang().L("Contagion");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -63,7 +63,7 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 		{
 			if(!mob.amDead())
 				spreadImmunity(mob);
-			mob.tell(_("The contagion fades."));
+			mob.tell(L("The contagion fades."));
 		}
 		super.unInvoke();
 	}
@@ -128,7 +128,7 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?_("<T-NAME> become(s) contagious!"):_("^S<S-NAME> @x1 for a contagion to inflict <T-NAMESELF>.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?L("<T-NAME> become(s) contagious!"):L("^S<S-NAME> @x1 for a contagion to inflict <T-NAMESELF>.^?",prayWord(mob)));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.TYP_DISEASE|CMMsg.MASK_MALICIOUS,null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
@@ -141,7 +141,7 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> point(s) at <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
+			return maliciousFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

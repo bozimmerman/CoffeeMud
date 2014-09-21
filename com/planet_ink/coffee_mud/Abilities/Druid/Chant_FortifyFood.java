@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_FortifyFood extends Chant
 {
 	@Override public String ID() { return "Chant_FortifyFood"; }
-	private final static String localizedName = CMLib.lang()._("Fortify Food");
+	private final static String localizedName = CMLib.lang().L("Fortify Food");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -58,23 +58,23 @@ public class Chant_FortifyFood extends Chant
 
 		if(!(target instanceof Food))
 		{
-			mob.tell(_("@x1 is not edible.",target.name(mob)));
+			mob.tell(L("@x1 is not edible.",target.name(mob)));
 			return false;
 		}
 
 		if(((Food)target).nourishment()>1000)
 		{
-			mob.tell(_("@x1 is already well fortified.",target.name(mob)));
+			mob.tell(L("@x1 is already well fortified.",target.name(mob)));
 			return false;
 		}
 
 		if(success && (((Food)target).nourishment()<=0))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> look(s) much more nutritious!"));
+				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> look(s) much more nutritious!"));
 				int bites=1;
 				if(((Food)target).bite()>0)
 					bites=((Food)target).nourishment()/((Food)target).bite();
@@ -85,7 +85,7 @@ public class Chant_FortifyFood extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

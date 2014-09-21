@@ -42,9 +42,9 @@ public class Skill_Track extends StdSkill
 	public int nextDirection=-2;
 
 	@Override public String ID() { return "Skill_Track"; }
-	private final static String localizedName = CMLib.lang()._("Tracking");
+	private final static String localizedName = CMLib.lang().L("Tracking");
 	@Override public String name() { return localizedName; }
-	protected String displayText=_("(Tracking)");
+	protected String displayText=L("(Tracking)");
 	@Override public String displayText(){ return displayText;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ROOMS;}
@@ -85,21 +85,21 @@ public class Skill_Track extends StdSkill
 
 			if(nextDirection==999)
 			{
-				mob.tell(_("The trail seems to pause here."));
+				mob.tell(L("The trail seems to pause here."));
 				nextDirection=-2;
 				unInvoke();
 			}
 			else
 			if(nextDirection==-1)
 			{
-				mob.tell(_("The trail dries up here."));
+				mob.tell(L("The trail dries up here."));
 				nextDirection=-999;
 				unInvoke();
 			}
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell(_("The trail seems to continue @x1.",Directions.getDirectionName(nextDirection)));
+				mob.tell(L("The trail seems to continue @x1.",Directions.getDirectionName(nextDirection)));
 				if((mob.isMonster())&&(mob.location()!=null))
 				{
 					final Room oldRoom=mob.location();
@@ -119,7 +119,7 @@ public class Skill_Track extends StdSkill
 								if(oldRoom.okMessage(mob,msg))
 								{
 									relock=true;
-									msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,_("<S-NAME> unlock(s) <T-NAMESELF>."));
+									msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,L("<S-NAME> unlock(s) <T-NAMESELF>."));
 									CMLib.utensils().roomAffectFully(msg,oldRoom,nextDirection);
 								}
 							}
@@ -127,7 +127,7 @@ public class Skill_Track extends StdSkill
 							if(oldRoom.okMessage(mob,msg))
 							{
 								reclose=true;
-								msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OPEN,CMMsg.MSG_OK_VISUAL,_("<S-NAME> @x1(s) <T-NAMESELF>.",nextExit.openWord()));
+								msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OPEN,CMMsg.MSG_OK_VISUAL,L("<S-NAME> @x1(s) <T-NAMESELF>.",nextExit.openWord()));
 								CMLib.utensils().roomAffectFully(msg,oldRoom,nextDirection);
 							}
 						}
@@ -164,7 +164,7 @@ public class Skill_Track extends StdSkill
 										CMMsg msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 										if(nextRoom.okMessage(mob,msg))
 										{
-											msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_CLOSE,CMMsg.MSG_OK_VISUAL,_("<S-NAME> @x1(s) <T-NAMESELF>.",nextExit.closeWord()));
+											msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_CLOSE,CMMsg.MSG_OK_VISUAL,L("<S-NAME> @x1(s) <T-NAMESELF>.",nextExit.closeWord()));
 											CMLib.utensils().roomAffectFully(msg,nextRoom,opDirection);
 										}
 										if((opExit.hasALock())&&(relock))
@@ -172,7 +172,7 @@ public class Skill_Track extends StdSkill
 											msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 											if(nextRoom.okMessage(mob,msg))
 											{
-												msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,_("<S-NAME> lock(s) <T-NAMESELF>."));
+												msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,L("<S-NAME> lock(s) <T-NAMESELF>."));
 												CMLib.utensils().roomAffectFully(msg,nextRoom,opDirection);
 											}
 										}
@@ -223,7 +223,7 @@ public class Skill_Track extends StdSkill
 		for(final Ability A : V) A.unInvoke();
 		if(V.size()>0)
 		{
-			mob.tell(_("You stop tracking."));
+			mob.tell(L("You stop tracking."));
 			if((commands.size()==0)||(CMParms.combine(commands,0).equalsIgnoreCase("stop")))
 			{
 				tickStatus=Tickable.STATUS_NOT;
@@ -272,7 +272,7 @@ public class Skill_Track extends StdSkill
 		final String mobName=CMParms.combine(commands,0);
 		if((givenTarget==null)&&(mobName.length()==0))
 		{
-			mob.tell(_("Track whom?"));
+			mob.tell(L("Track whom?"));
 			tickStatus=Tickable.STATUS_NOT;
 			return false;
 		}
@@ -287,7 +287,7 @@ public class Skill_Track extends StdSkill
 		if((givenTarget==null)
 		&&(thisRoom.fetchInhabitant(mobName)!=null))
 		{
-			mob.tell(_("Try 'look'."));
+			mob.tell(L("Try 'look'."));
 			tickStatus=Tickable.STATUS_NOT;
 			return false;
 		}
@@ -353,7 +353,7 @@ public class Skill_Track extends StdSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,mob.isMonster()?null:_("<S-NAME> begin(s) to track."));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,mob.isMonster()?null:L("<S-NAME> begin(s) to track."));
 			if(thisRoom.okMessage(mob,msg))
 			{
 				tickStatus=Tickable.STATUS_MISC6+12;
@@ -371,7 +371,7 @@ public class Skill_Track extends StdSkill
 		else
 		{
 			tickStatus=Tickable.STATUS_NOT;
-			return beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to track, but can't find the trail."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to track, but can't find the trail."));
 		}
 		tickStatus=Tickable.STATUS_NOT;
 		// return whether it worked

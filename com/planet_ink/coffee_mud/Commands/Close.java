@@ -45,7 +45,7 @@ public class Close extends StdCommand
 		final String whatToClose=CMParms.combine(commands,1);
 		if(whatToClose.length()==0)
 		{
-			mob.tell(_("Close what?"));
+			mob.tell(L("Close what?"));
 			return false;
 		}
 		Environmental closeThis=null;
@@ -57,7 +57,7 @@ public class Close extends StdCommand
 
 		if((closeThis==null)||(!CMLib.flags().canBeSeenBy(closeThis,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",whatToClose));
+			mob.tell(L("You don't see '@x1' here.",whatToClose));
 			return false;
 		}
 		final boolean useShipDirs=(mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip);
@@ -89,7 +89,7 @@ public class Close extends StdCommand
 					if((opE!=null)
 					&&(!opE.isOpen())
 					&&(!((Exit)closeThis).isOpen()))
-					   opR.showHappens(CMMsg.MSG_OK_ACTION,_("@x1 @x2 closes.",opE.name(),(useShipDirs?Directions.getShipInDirectionName(opCode):Directions.getInDirectionName(opCode))));
+					   opR.showHappens(CMMsg.MSG_OK_ACTION,L("@x1 @x2 closes.",opE.name(),(useShipDirs?Directions.getShipInDirectionName(opCode):Directions.getInDirectionName(opCode))));
 				}
 			}
 		}

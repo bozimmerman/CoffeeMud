@@ -34,7 +34,7 @@ import java.util.*;
 public class Skill_BellyRolling extends StdSkill
 {
 	@Override public String ID() { return "Skill_BellyRolling"; }
-	private final static String localizedName = CMLib.lang()._("Belly Rolling");
+	private final static String localizedName = CMLib.lang().L("Belly Rolling");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -70,7 +70,7 @@ public class Skill_BellyRolling extends StdSkill
 		&&(msg.tool() instanceof Weapon))
 		{
 			// can't use -NAME for msg.source() lest sitting prevent it
-			final CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_SITMOVE,_("<S-NAME> roll(s) away from the attack by <T-NAMESELF>!"));
+			final CMMsg msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_SITMOVE,L("<S-NAME> roll(s) away from the attack by <T-NAMESELF>!"));
 			if((proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-50+(super.getXLEVELLevel(mob)*5),false))
 			&&((msg.source().getVictim()==mob)||(msg.source().getVictim()==null))
 			&&(mob.location().okMessage(mob,msg2)))

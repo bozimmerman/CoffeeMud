@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Fly extends Spell
 {
 	@Override public String ID() { return "Spell_Fly"; }
-	private final static String localizedName = CMLib.lang()._("Fly");
+	private final static String localizedName = CMLib.lang().L("Fly");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Fly spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Fly spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
@@ -67,7 +67,7 @@ public class Spell_Fly extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> begin(s) to float back down."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> begin(s) to float back down."));
 	}
 
 	@Override
@@ -93,19 +93,19 @@ public class Spell_Fly extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> cast(s) a spell on <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> cast(s) a spell on <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(target.location()==mob.location())
 				{
-					target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> start(s) to fly around!"));
+					target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> start(s) to fly around!"));
 					success=beneficialAffect(mob,target,asLevel,0);
 				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> cast(s) a spell on <T-NAMESELF>, but the magic fizzles."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> cast(s) a spell on <T-NAMESELF>, but the magic fizzles."));
 
 		// return whether it worked
 		return success;

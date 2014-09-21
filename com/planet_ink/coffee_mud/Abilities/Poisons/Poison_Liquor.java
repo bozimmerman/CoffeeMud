@@ -37,7 +37,7 @@ import java.util.*;
 public class Poison_Liquor extends Poison_Alcohol
 {
 	@Override public String ID() { return "Poison_Liquor"; }
-	private final static String localizedName = CMLib.lang()._("Liquor");
+	private final static String localizedName = CMLib.lang().L("Liquor");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"LIQUORUP"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -62,6 +62,6 @@ public class Poison_Liquor extends Poison_Alcohol
 		}
 		super.unInvoke();
 		if((mob!=null)&&(!mob.isInCombat()))
-			mob.location().show(mob,null,CMMsg.MSG_SLEEP,_("<S-NAME> curl(s) up on the ground and fall(s) asleep."));
+			mob.location().show(mob,null,CMMsg.MSG_SLEEP,L("<S-NAME> curl(s) up on the ground and fall(s) asleep."));
 	}
 }

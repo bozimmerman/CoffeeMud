@@ -85,10 +85,10 @@ public class StdPersonalShield extends StdElecItem implements Armor
 				if(s.indexOf("<DAMAGES> <T-HIM-HER>")>0)
 					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGES>", "reflects off the shield around"));
 				else
-					mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,_("The field around <S-NAME> reflects the <O-NAMENOART> damage."));
+					mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,L("The field around <S-NAME> reflects the <O-NAMENOART> damage."));
 			}
 			else
-				mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,_("The field around <S-NAME> reflects the <O-NAMENOART> damage."));
+				mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,L("The field around <S-NAME> reflects the <O-NAMENOART> damage."));
 		}
 		return false;
 	}
@@ -177,7 +177,7 @@ public class StdPersonalShield extends StdElecItem implements Armor
 				super.executeMsg(host, msg);
 				if(CMLib.flags().canBeSeenBy(this, msg.source()))
 				{
-					msg.source().tell(_("@x1 is currently @x2 and is at @x3% power.",name(),(activated()?"activated":"deactivated"),""+Math.round(CMath.div(powerRemaining(),powerCapacity())*100.0)));
+					msg.source().tell(L("@x1 is currently @x2 and is at @x3% power.",name(),(activated()?"activated":"deactivated"),""+Math.round(CMath.div(powerRemaining(),powerCapacity())*100.0)));
 				}
 				return;
 			case CMMsg.TYP_ACTIVATE:

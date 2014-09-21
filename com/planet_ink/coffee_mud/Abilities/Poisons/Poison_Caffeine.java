@@ -34,9 +34,9 @@ import java.util.*;
 
 public class Poison_Caffeine extends Poison {
 	@Override public String ID() { return "Poison_Caffeine"; }
-	private final static String localizedName = CMLib.lang()._("Poison_Hyper");
+	private final static String localizedName = CMLib.lang().L("Poison_Hyper");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(CAFFEINATED!!)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(CAFFEINATED!!)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	private static final String[] triggerStrings =_i(new String[] {"POISONHYPER"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -75,7 +75,7 @@ public class Poison_Caffeine extends Poison {
 		final MOB mob=(MOB)affected;
 		if(msg.amISource(mob)&&((msg.sourceMinor()==CMMsg.TYP_SIT)||(msg.sourceMinor()==CMMsg.TYP_SLEEP)))
 		{
-			mob.tell(_("You're too caffeinated for that!"));
+			mob.tell(L("You're too caffeinated for that!"));
 			return false;
 		}
 		return true;

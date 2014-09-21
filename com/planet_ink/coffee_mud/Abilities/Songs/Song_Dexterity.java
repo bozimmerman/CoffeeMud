@@ -37,7 +37,7 @@ import java.util.*;
 public class Song_Dexterity extends Song
 {
 	@Override public String ID() { return "Song_Dexterity"; }
-	private final static String localizedName = CMLib.lang()._("Dexterity");
+	private final static String localizedName = CMLib.lang().L("Dexterity");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int amount=0;
@@ -78,14 +78,14 @@ public class Song_Dexterity extends Song
 				amount=mob.charStats().getStat(CharStats.STAT_DEXTERITY)/2;
 			else
 			{
-				mob.tell(_("Sing about how much dexterity?"));
+				mob.tell(L("Sing about how much dexterity?"));
 				return false;
 			}
 		}
 
 		if(amount>=mob.charStats().getStat(CharStats.STAT_DEXTERITY))
 		{
-			mob.tell(_("You can't sing away that much dexterity."));
+			mob.tell(L("You can't sing away that much dexterity."));
 			return false;
 		}
 

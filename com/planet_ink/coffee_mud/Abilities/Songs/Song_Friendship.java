@@ -36,7 +36,7 @@ import java.util.*;
 public class Song_Friendship extends Song
 {
 	@Override public String ID() { return "Song_Friendship"; }
-	private final static String localizedName = CMLib.lang()._("Friendship");
+	private final static String localizedName = CMLib.lang().L("Friendship");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected boolean skipStandardSongInvoke(){return true;}
@@ -63,7 +63,7 @@ public class Song_Friendship extends Song
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.amITarget(mob.amFollowing())))
 		{
-			mob.tell(_("You like @x1 too much.",mob.amFollowing().charStats().himher()));
+			mob.tell(L("You like @x1 too much.",mob.amFollowing().charStats().himher()));
 			return false;
 		}
 		else
@@ -74,7 +74,7 @@ public class Song_Friendship extends Song
 		&&(mob.amFollowing()!=null)
 		&&(((Room)msg.target()).isInhabitant(mob.amFollowing())))
 		{
-			mob.tell(_("You don't want to leave your friend."));
+			mob.tell(L("You don't want to leave your friend."));
 			return false;
 		}
 		else
@@ -82,7 +82,7 @@ public class Song_Friendship extends Song
 		&&(mob.amFollowing()!=null)
 		&&(msg.sourceMinor()==CMMsg.TYP_NOFOLLOW))
 		{
-			mob.tell(_("You like @x1 too much.",mob.amFollowing().name()));
+			mob.tell(L("You like @x1 too much.",mob.amFollowing().name()));
 			return false;
 		}
 
@@ -131,7 +131,7 @@ public class Song_Friendship extends Song
 			{
 				if((canBeUninvoked()&&(!mob.amDead())))
 				{
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> free-will returns."));
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> free-will returns."));
 					mob.setFollowing(null);
 					CMLib.commands().postStand(mob,true);
 					if(mob.isMonster())
@@ -161,7 +161,7 @@ public class Song_Friendship extends Song
 
 		if((!auto)&&(!CMLib.flags().canSpeak(mob)))
 		{
-			mob.tell(_("You can't sing!"));
+			mob.tell(L("You can't sing!"));
 			return false;
 		}
 
@@ -172,9 +172,9 @@ public class Song_Friendship extends Song
 			invoker=mob;
 			originRoom=mob.location();
 			commonRoomSet=getInvokerScopeRoomSet(null);
-			String str=auto?_("^SThe @x1 begins to play!^?",songOf()):_("^S<S-NAME> begin(s) to sing the @x1.^?",songOf());
+			String str=auto?L("^SThe @x1 begins to play!^?",songOf()):L("^S<S-NAME> begin(s) to sing the @x1.^?",songOf());
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
-				str=_("^S<S-NAME> start(s) the @x1 over again.^?",songOf());
+				str=L("^S<S-NAME> start(s) the @x1 over again.^?",songOf());
 
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
@@ -206,7 +206,7 @@ public class Song_Friendship extends Song
 							if(levelDiff<0) levelDiff=0;
 
 							if((levelDiff>(3+((mob.phyStats().level()+(getXLEVELLevel(mob)*2))/10)))&&(mindAttack()))
-								mob.tell(mob,follower,null,_("<T-NAME> looks too powerful."));
+								mob.tell(mob,follower,null,L("<T-NAME> looks too powerful."));
 							else
 							if((R.okMessage(mob,msg2))&&(R.okMessage(mob,msg3)))
 							{
@@ -237,7 +237,7 @@ public class Song_Friendship extends Song
 			}
 		}
 		else
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> hit(s) a foul note."));
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,L("<S-NAME> hit(s) a foul note."));
 
 		return success;
 	}

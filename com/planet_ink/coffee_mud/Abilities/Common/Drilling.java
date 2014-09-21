@@ -36,7 +36,7 @@ import java.util.*;
 public class Drilling extends GatheringSkill
 {
 	@Override public String ID() { return "Drilling"; }
-	private final static String localizedName = CMLib.lang()._("Drilling");
+	private final static String localizedName = CMLib.lang().L("Drilling");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"DRILL","DRILLING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -50,8 +50,8 @@ public class Drilling extends GatheringSkill
 	public Drilling()
 	{
 		super();
-		displayText=_("You are drilling...");
-		verb=_("drilling");
+		displayText=L("You are drilling...");
+		verb=L("drilling");
 	}
 
 	protected int getDuration(MOB mob, int level)
@@ -70,19 +70,19 @@ public class Drilling extends GatheringSkill
 			{
 				if(found!=null)
 				{
-					commonTell(mob,_("You have found some @x1!",foundShortName));
-					displayText=_("You are drilling out some @x1",foundShortName);
-					verb=_("drilling out some @x1",foundShortName);
+					commonTell(mob,L("You have found some @x1!",foundShortName));
+					displayText=L("You are drilling out some @x1",foundShortName);
+					verb=L("drilling out some @x1",foundShortName);
 					playSound="drill.wav";
 				}
 				else
 				{
-					final StringBuffer str=new StringBuffer(_("You can't seem to find anything worth drilling around here.\n\r"));
+					final StringBuffer str=new StringBuffer(L("You can't seem to find anything worth drilling around here.\n\r"));
 					final int d=lookingFor(RawMaterial.MATERIAL_LIQUID,mob.location());
 					if(d<0)
-						str.append(_("You might try elsewhere."));
+						str.append(L("You might try elsewhere."));
 					else
-						str.append(_("You might try @x1.",Directions.getInDirectionName(d)));
+						str.append(L("You might try @x1.",Directions.getInDirectionName(d)));
 					commonTell(mob,str.toString());
 					unInvoke();
 				}
@@ -111,7 +111,7 @@ public class Drilling extends GatheringSkill
 						amount=(container.liquidHeld()-container.liquidRemaining());
 					if(amount>((Container)container).capacity())
 						amount=((Container)container).capacity();
-					mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> manage(s) to drill out @x1 pound@x2 of @x3.",""+amount,s,foundShortName));
+					mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to drill out @x1 pound@x2 of @x3.",""+amount,s,foundShortName));
 					for(int i=0;i<amount;i++)
 					{
 						final Item newFound=(Item)found.copyOf();
@@ -160,13 +160,13 @@ public class Drilling extends GatheringSkill
 		if((!(I instanceof Container))
 		||(((Container)I).capacity()<=((Container)I).phyStats().weight()))
 		{
-			commonTell(mob,_("@x1 doesn't look like it can hold anything.",I.name(mob)));
+			commonTell(mob,L("@x1 doesn't look like it can hold anything.",I.name(mob)));
 			return false;
 		}
 		final int resourceType=mob.location().myResource();
 		if((!(I instanceof Drink))||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
 		{
-			commonTell(mob,_("@x1 doesn't look like it can hold a liquid.",I.name(mob)));
+			commonTell(mob,L("@x1 doesn't look like it can hold a liquid.",I.name(mob)));
 			return false;
 		}
 		final List<Item> V=((Container)I).getContents();
@@ -179,24 +179,24 @@ public class Drilling extends GatheringSkill
 				{
 					if(I2.material()!=resourceType)
 					{
-						commonTell(mob,_("@x1 needs to have the @x2 removed first.",I.name(mob),I2.name(mob)));
+						commonTell(mob,L("@x1 needs to have the @x2 removed first.",I.name(mob),I2.name(mob)));
 						return false;
 					}
 				}
 			}
 			if(((Drink)I).liquidRemaining()>0)
 			{
-				commonTell(mob,_("You need to empty @x1 first.",I.name(mob)));
+				commonTell(mob,L("You need to empty @x1 first.",I.name(mob)));
 				return false;
 			}
 		}
 
-		verb=_("drilling");
+		verb=L("drilling");
 		found=null;
 		playSound=null;
 		if(!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_LIQUID,mob.location()))
 		{
-			commonTell(mob,_("You don't think this is a good place to drill."));
+			commonTell(mob,L("You don't think this is a good place to drill."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -210,7 +210,7 @@ public class Drilling extends GatheringSkill
 				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		}
 		final int duration=getDuration(mob,1);
-		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),_("<S-NAME> start(s) drilling."));
+		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),L("<S-NAME> start(s) drilling."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

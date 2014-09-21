@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_AuraHeal extends Prayer
 {
 	@Override public String ID() { return "Prayer_AuraHeal"; }
-	private final static String localizedName = CMLib.lang()._("Aura of Healing");
+	private final static String localizedName = CMLib.lang().L("Aura of Healing");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Heal Aura)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Heal Aura)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -66,7 +66,7 @@ public class Prayer_AuraHeal extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			R.showHappens(CMMsg.MSG_OK_VISUAL,_("The healing aura around you fades."));
+			R.showHappens(CMMsg.MSG_OK_VISUAL,L("The healing aura around you fades."));
 	}
 
 	@Override
@@ -106,7 +106,7 @@ public class Prayer_AuraHeal extends Prayer
 					CMLib.combat().postHealing(M,M,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,healing,null);
 				}
 				if(M.curState().getHitPoints()>oldHP)
-					M.tell(_("You feel a little better!"));
+					M.tell(L("You feel a little better!"));
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -139,7 +139,7 @@ public class Prayer_AuraHeal extends Prayer
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("The aura of healing is already here."));
+			mob.tell(L("The aura of healing is already here."));
 			return false;
 		}
 		if(target.fetchEffect("Prayer_AuraHarm")!=null)
@@ -159,16 +159,16 @@ public class Prayer_AuraHeal extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 for all to feel better.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 for all to feel better.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("A healing aura descends over the area!"));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("A healing aura descends over the area!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for an aura of healing, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for an aura of healing, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
 
 
 		// return whether it worked

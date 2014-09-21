@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_DetectHidden extends Spell
 {
 	@Override public String ID() { return "Spell_DetectHidden"; }
-	private final static String localizedName = CMLib.lang()._("Detect Hidden");
+	private final static String localizedName = CMLib.lang().L("Detect Hidden");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Detecting Hidden)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Detecting Hidden)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -56,7 +56,7 @@ public class Spell_DetectHidden extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("Your vision is no longer as keen."));
+			mob.tell(L("Your vision is no longer as keen."));
 	}
 
 	@Override
@@ -103,7 +103,7 @@ public class Spell_DetectHidden extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already detecting hidden things."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already detecting hidden things."));
 			return false;
 		}
 
@@ -114,7 +114,7 @@ public class Spell_DetectHidden extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) keen vision!"):_("^S<S-NAME> incant(s) softly and gain(s) keen vision!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> gain(s) keen vision!"):L("^S<S-NAME> incant(s) softly and gain(s) keen vision!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -122,7 +122,7 @@ public class Spell_DetectHidden extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> incant(s) and open(s) <S-HIS-HER> keen eyes, but the spell fizzles."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> incant(s) and open(s) <S-HIS-HER> keen eyes, but the spell fizzles."));
 
 		return success;
 	}

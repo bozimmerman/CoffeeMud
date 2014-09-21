@@ -34,7 +34,7 @@ import java.util.*;
 public class Trap_Boomerang extends StdTrap
 {
 	@Override public String ID() { return "Trap_Boomerang"; }
-	private final static String localizedName = CMLib.lang()._("boomerang");
+	private final static String localizedName = CMLib.lang().L("boomerang");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -60,16 +60,16 @@ public class Trap_Boomerang extends StdTrap
 		{
 			final boolean ok=((invoker()!=null)&&(invoker().location()!=null));
 			if((!ok)||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> foil(s) a trap on @x1!",affected.name()));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> foil(s) a trap on @x1!",affected.name()));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> set(s) off a trap!")))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> set(s) off a trap!")))
 			{
 				if(affected instanceof Item)
 				{
 					((Item)affected).unWear();
 					((Item)affected).removeFromOwnerContainer();
 					invoker().addItem((Item)affected);
-					invoker().tell(invoker(),affected,null,_("Magically, <T-NAME> appear(s) in your inventory."));
+					invoker().tell(invoker(),affected,null,L("Magically, <T-NAME> appear(s) in your inventory."));
 				}
 				super.spring(target);
 				if((canBeUninvoked())&&(affected instanceof Item))

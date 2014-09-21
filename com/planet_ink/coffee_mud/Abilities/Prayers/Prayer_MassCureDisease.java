@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_MassCureDisease"; }
-	private final static String localizedName = CMLib.lang()._("Mass Cure Disease");
+	private final static String localizedName = CMLib.lang().L("Mass Cure Disease");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
@@ -99,7 +99,7 @@ public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?_("A healing glow surrounds this place."):_("^S<S-NAME> @x1 to cure disease here.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?L("A healing glow surrounds this place."):L("^S<S-NAME> @x1 to cure disease here.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -135,19 +135,19 @@ public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 										worked=true;
 								}
 								if(badOnes)
-									mob.tell(mob,target,null,_("<T-NAME> had diseases too powerful for this magic."));
+									mob.tell(mob,target,null,L("<T-NAME> had diseases too powerful for this magic."));
 								if(!CMLib.flags().stillAffectedBy(target,offensiveAffects,false))
-									target.tell(_("You feel much better!"));
+									target.tell(L("You feel much better!"));
 							}
 						}
 					}
 				}
 				if((worked)&&(!auto))
-					mob.tell(_("Your healing prayer has cured the sick."));
+					mob.tell(L("Your healing prayer has cured the sick."));
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,mob.location(),auto?"":_("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
+			beneficialWordsFizzle(mob,mob.location(),auto?"":L("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

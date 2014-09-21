@@ -36,9 +36,9 @@ import java.util.*;
 public class Prayer_Tithe extends Prayer
 {
 	@Override public String ID() { return "Prayer_Tithe"; }
-	private final static String localizedName = CMLib.lang()._("Tithe");
+	private final static String localizedName = CMLib.lang().L("Tithe");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Tithe)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Tithe)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -57,7 +57,7 @@ public class Prayer_Tithe extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your need to tithe fades."));
+			mob.tell(L("Your need to tithe fades."));
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class Prayer_Tithe extends Prayer
 			((Coins)msg.target()).setNumberOfCoins(num-(num/10));
 			if((invoker()!=msg.source())&&((num/10)>0))
 			{
-				invoker().tell(msg.source(),null,null,_("<S-NAME> tithes."));
+				invoker().tell(msg.source(),null,null,L("<S-NAME> tithes."));
 				final String currency=((Coins)msg.target()).getCurrency();
 				CMLib.beanCounter().addMoney(invoker(),currency,CMath.mul(((Coins)msg.target()).getDenomination(),(num/10)));
 			}
@@ -95,7 +95,7 @@ public class Prayer_Tithe extends Prayer
 				if((price.absoluteGoldPrice>0.0)&&(price.absoluteGoldPrice<=CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),invoker())))
 					if(invoker()!=msg.target())
 					{
-						invoker().tell(msg.source(),null,null,_("<S-NAME> tithes."));
+						invoker().tell(msg.source(),null,null,L("<S-NAME> tithes."));
 						CMLib.beanCounter().addMoney(invoker(),CMath.div(price.absoluteGoldPrice,10.0));
 					}
 			}
@@ -134,7 +134,7 @@ public class Prayer_Tithe extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) filled with a need to tithe!"):_("^S<S-NAME> @x1 for <T-YOUPOSS> need to tithe!^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) filled with a need to tithe!"):L("^S<S-NAME> @x1 for <T-YOUPOSS> need to tithe!^?",prayWord(mob)));
 			final CMMsg msg3=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg3)))
 			{
@@ -145,7 +145,7 @@ public class Prayer_Tithe extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> @x1 for <T-YOUPOSS> tithing need but there is no answer.",prayWord(mob)));
+			return maliciousFizzle(mob,null,L("<S-NAME> @x1 for <T-YOUPOSS> tithing need but there is no answer.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

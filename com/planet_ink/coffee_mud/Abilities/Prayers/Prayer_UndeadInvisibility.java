@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_UndeadInvisibility extends Prayer
 {
 	@Override public String ID() { return "Prayer_UndeadInvisibility"; }
-	private final static String localizedName = CMLib.lang()._("Invisibility to Undead");
+	private final static String localizedName = CMLib.lang().L("Invisibility to Undead");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Invisibility/Undead)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Invisibility/Undead)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
@@ -79,7 +79,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 			&&(msg.source().location()==target.location())
 			&&(msg.source().getVictim()!=target))
 			{
-				msg.source().tell(_("You don't see @x1",target.name(msg.source())));
+				msg.source().tell(L("You don't see @x1",target.name(msg.source())));
 				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();
@@ -104,7 +104,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your invisibility to undead fades."));
+			mob.tell(L("Your invisibility to undead fades."));
 	}
 
 	@Override
@@ -127,7 +127,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 		if((auto)&&(givenTarget!=null)) target=givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,target,null,_("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));
+			mob.tell(mob,target,null,L("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));
 			return false;
 		}
 
@@ -142,7 +142,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) invisible to the undead."):_("^S<S-NAME> @x1 for invisibility to the undead.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) invisible to the undead."):L("^S<S-NAME> @x1 for invisibility to the undead.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -150,7 +150,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 for invisibility to the undead, but there is no answer.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 for invisibility to the undead, but there is no answer.",prayWord(mob)));
 
 
 		// return whether it worked

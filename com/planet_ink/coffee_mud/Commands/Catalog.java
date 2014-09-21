@@ -52,7 +52,7 @@ public class Catalog extends StdCommand
 		if((!(P instanceof DBIdentifiable))
 		||(!((DBIdentifiable)P).canSaveDatabaseID()))
 		{
-			mob.tell(_("The object '@x1' can not be cataloged.",P.Name()));
+			mob.tell(L("The object '@x1' can not be cataloged.",P.Name()));
 			return false;
 		}
 		String newCat=currentCats.get(mob.Name());
@@ -64,7 +64,7 @@ public class Catalog extends StdCommand
 		/*
 		if(CMLib.flags().isCataloged(P))
 		{
-			mob.tell(_("The object '@x1' is already cataloged@x2.",P.Name(),catagory));
+			mob.tell(L("The object '@x1' is already cataloged@x2.",P.Name(),catagory));
 			return false;
 		}
 		*/
@@ -77,7 +77,7 @@ public class Catalog extends StdCommand
 				if((data!=null)&&(!data.category().equals(newCat)))
 				{
 					if((mob.session()==null)
-					||(!mob.session().confirm(_("The object '@x1' already exists in the catalog@x2 , exactly as it is.  Would you like to change it to category '@x3'(y/N)?",cataP.Name(),catagory,newCat),_("N"))))
+					||(!mob.session().confirm(L("The object '@x1' already exists in the catalog@x2 , exactly as it is.  Would you like to change it to category '@x3'(y/N)?",cataP.Name(),catagory,newCat),L("N"))))
 					{
 						return false;
 					}
@@ -89,14 +89,14 @@ public class Catalog extends StdCommand
 				}
 				else
 				{
-					mob.tell(_("The object '@x1' already exists in the catalog@x2 , exactly as it is.",cataP.Name(),catagory));
+					mob.tell(L("The object '@x1' already exists in the catalog@x2 , exactly as it is.",cataP.Name(),catagory));
 					return true;
 				}
 			}
 			if((data!=null)&&(!data.category().equals(newCat)))
 				diffs.insert(0,"New category: '"+newCat+"', ");
 			if((mob.session()==null)
-			||(!mob.session().confirm(_("Cataloging that object will change the existing cataloged '@x1'@x2 by altering the following properties: @x3.  Please confirm (y/N)?",P.Name(),catagory,diffs.toString()),_("Y"))))
+			||(!mob.session().confirm(L("Cataloging that object will change the existing cataloged '@x1'@x2 by altering the following properties: @x3.  Please confirm (y/N)?",P.Name(),catagory,diffs.toString()),L("Y"))))
 			{
 				CMLib.catalog().changeCatalogUsage(origP,false);
 				return false;
@@ -219,8 +219,8 @@ public class Catalog extends StdCommand
 				final String type=types[whatKind];
 
 				if((mob.session()!=null)
-				&&(mob.session().confirm(_("You are about to auto-catalog (room-reset and save) all @x1 @x2.\n\rThis command, if used improperly, may alter @x3 in this @x4.\n\rAre you absolutely sure (y/N)?",which,type,type,which),_("N")))
-				&&((which.equalsIgnoreCase("ROOM"))||mob.session().confirm(_("I'm serious now.  You can't abort this, and it WILL modify stuff.\n\rHave you tested this command on small areas and know what you're doing?.\n\rAre you absolutely POSITIVELY sure (y/N)?"),_("N"))))
+				&&(mob.session().confirm(L("You are about to auto-catalog (room-reset and save) all @x1 @x2.\n\rThis command, if used improperly, may alter @x3 in this @x4.\n\rAre you absolutely sure (y/N)?",which,type,type,which),L("N")))
+				&&((which.equalsIgnoreCase("ROOM"))||mob.session().confirm(L("I'm serious now.  You can't abort this, and it WILL modify stuff.\n\rHave you tested this command on small areas and know what you're doing?.\n\rAre you absolutely POSITIVELY sure (y/N)?"),L("N"))))
 				{
 					Physical P=null;
 					String roomID=null;
@@ -273,7 +273,7 @@ public class Catalog extends StdCommand
 				}
 				String oldCat=currentCats.get(mob.Name());
 				if(oldCat == null) oldCat="";
-				mob.tell(_("Your current category is '@x1'.",oldCat));
+				mob.tell(L("Your current category is '@x1'.",oldCat));
 				if(commands.size()>0)
 				{
 					ID=ID.toUpperCase().trim();
@@ -285,20 +285,20 @@ public class Catalog extends StdCommand
 							final Session session=mob.session();
 							final String newCat=ID;
 							if(newCat.equalsIgnoreCase("GLOBAL")||newCat.equalsIgnoreCase("NONE")||newCat.equalsIgnoreCase("UNCATEGORIZED"))
-								mob.tell(_("That is not a valid new catagory to create."));
+								mob.tell(L("That is not a valid new catagory to create."));
 							else
 							if(session!=null)
 								session.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N")
 								{
-									@Override public void showPrompt() { session.promptPrint(_("Create new category '@x1' (y/N)?",newCat));}
+									@Override public void showPrompt() { session.promptPrint(L("Create new category '@x1' (y/N)?",newCat));}
 									@Override public void timedOut() {}
 									@Override public void callBack()
 									{
 										if(this.confirmed)
 										{
 											currentCats.put(mob.Name(), newCat);
-											mob.tell(_("Your category is now '@x1' for new mob/item catalog additions.",newCat));
-											mob.tell(_("To change back to the global category, enter CATALOG CATAGORY NONE"));
+											mob.tell(L("Your category is now '@x1' for new mob/item catalog additions.",newCat));
+											mob.tell(L("To change back to the global category, enter CATALOG CATAGORY NONE"));
 										}
 									}
 								});
@@ -306,14 +306,14 @@ public class Catalog extends StdCommand
 						else
 						{
 							currentCats.put(mob.Name(), ID);
-							mob.tell(_("Your category is now '@x1' for new mob/item catalog additions.",ID));
-							mob.tell(_("To change back to the global category, enter CATALOG CATAGORY NONE"));
+							mob.tell(L("Your category is now '@x1' for new mob/item catalog additions.",ID));
+							mob.tell(L("To change back to the global category, enter CATALOG CATAGORY NONE"));
 						}
 					}
 					else
 					{
 						currentCats.remove(mob.Name());
-						mob.tell(_("Your category is now '' (the global category)."));
+						mob.tell(L("Your category is now '' (the global category)."));
 					}
 				}
 			}
@@ -333,9 +333,9 @@ public class Catalog extends StdCommand
 					String cat=currentCats.get(mob.Name());
 					if(cat==null) cat="";
 					list.append("^HMobs ("+(cat)+")\n\r^N");
-					list.append(CMStrings.padRight(_("Name"),34)+" ");
+					list.append(CMStrings.padRight(L("Name"),34)+" ");
 					list.append(CMStrings.padRight("#",3));
-					list.append(CMStrings.padRight(_("Name"),34)+" ");
+					list.append(CMStrings.padRight(L("Name"),34)+" ");
 					list.append(CMStrings.padRight("#",3));
 					list.append("\n\r"+CMStrings.repeat('-',78)+"\n\r");
 					final String[] names=CMLib.catalog().getCatalogMobNames(cat);
@@ -368,10 +368,10 @@ public class Catalog extends StdCommand
 					String cat=currentCats.get(mob.Name());
 					if(cat==null) cat="";
 					list.append("^HItems ("+(cat)+")\n\r^N");
-					list.append(CMStrings.padRight(_("Name"),34)+" ");
+					list.append(CMStrings.padRight(L("Name"),34)+" ");
 					list.append(CMStrings.padRight("#",3)+" ");
-					list.append(CMStrings.padRight(_("Rate"),6)+" ");
-					list.append(CMStrings.padRight(_("Mask"),31)+" ");
+					list.append(CMStrings.padRight(L("Rate"),6)+" ");
+					list.append(CMStrings.padRight(L("Mask"),31)+" ");
 					list.append("\n\r"+CMStrings.repeat('-',78)+"\n\r");
 					final String[] names=CMLib.catalog().getCatalogItemNames(cat);
 					for (final String name : names)
@@ -429,7 +429,7 @@ public class Catalog extends StdCommand
 					final Physical P=findCatalog(whatKind,ID,false);
 					if(P==null)
 					{
-						mob.tell(_("'@x1' not found in catalog! Try CATALOG LIST",ID));
+						mob.tell(L("'@x1' not found in catalog! Try CATALOG LIST",ID));
 						return false;
 					}
 					del=new Physical[]{P};
@@ -443,10 +443,10 @@ public class Catalog extends StdCommand
 						if((data!=null)&&(data.numReferences()>0))
 							prefix="Catalog MOB '"+((MOB)P).Name()+"' is currently listed as being in use '"+data.numReferences()+" times.  ";
 						if((mob.session()!=null)
-						&&((del.length>10)||(mob.session().confirm(_("@x1This will permanently delete mob '@x2' from the catalog.  Are you sure (y/N)?",prefix,((MOB)P).Name()),_("N")))))
+						&&((del.length>10)||(mob.session().confirm(L("@x1This will permanently delete mob '@x2' from the catalog.  Are you sure (y/N)?",prefix,((MOB)P).Name()),L("N")))))
 						{
 							CMLib.catalog().delCatalog(P);
-							mob.tell(_("MOB '@x1 has been permanently removed from the catalog.",((MOB)P).Name()));
+							mob.tell(L("MOB '@x1 has been permanently removed from the catalog.",((MOB)P).Name()));
 						}
 					}
 					else
@@ -456,10 +456,10 @@ public class Catalog extends StdCommand
 						if((data!=null)&&(data.numReferences()>0))
 							prefix="Catalog Item '"+((Item)P).Name()+"' is currently listed as being in use '"+data.numReferences()+" times.  ";
 						if((mob.session()!=null)
-						&&((del.length>10)||(mob.session().confirm(_("@x1This will permanently delete item '@x2' from the catalog.  Are you sure (y/N)?",prefix,((Item)P).Name()),_("N")))))
+						&&((del.length>10)||(mob.session().confirm(L("@x1This will permanently delete item '@x2' from the catalog.  Are you sure (y/N)?",prefix,((Item)P).Name()),L("N")))))
 						{
 							CMLib.catalog().delCatalog(P);
-							mob.tell(_("Item '@x1 has been permanently removed from the catalog.",P.Name()));
+							mob.tell(L("Item '@x1 has been permanently removed from the catalog.",P.Name()));
 						}
 					}
 				}
@@ -473,13 +473,13 @@ public class Catalog extends StdCommand
 				final Physical P=findCatalog(whatKind,ID,false);
 				if(P==null)
 				{
-					mob.tell(_("'@x1' not found in catalog! Try CATALOG LIST",ID));
+					mob.tell(L("'@x1' not found in catalog! Try CATALOG LIST",ID));
 					return false;
 				}
 				final CatalogLibrary.CataData data=CMLib.catalog().getCatalogData(P);
 				if(P instanceof MOB)
 				{
-					mob.tell(_("There is no extra mob data to edit. See help on CATALOG."));
+					mob.tell(L("There is no extra mob data to edit. See help on CATALOG."));
 				}
 				else
 				if(P instanceof Item)
@@ -489,14 +489,14 @@ public class Catalog extends StdCommand
 						Double newPct=null;
 						while(newPct == null)
 						{
-							final String newRate=mob.session().prompt(_("Enter a new Drop Rate or 0% to disable (@x1): ",CMath.toPct(data.getRate())), CMath.toPct(data.getRate()));
+							final String newRate=mob.session().prompt(L("Enter a new Drop Rate or 0% to disable (@x1): ",CMath.toPct(data.getRate())), CMath.toPct(data.getRate()));
 							if(newRate.trim().length()==0)
 								return false;
 							else
 							if(CMath.isPct(newRate))
 								newPct=Double.valueOf(CMath.s_pct(newRate));
 							else
-								mob.tell(_("'@x1' is not a valid percentage value.  Try something like 10%",newRate));
+								mob.tell(L("'@x1' is not a valid percentage value.  Try something like 10%",newRate));
 						}
 						data.setRate(newPct.doubleValue());
 						if(data.getRate()<=0.0)
@@ -505,15 +505,15 @@ public class Catalog extends StdCommand
 							data.setRate(0.0);
 							CMLib.database().DBUpdateItem("CATALOG_ITEMS",(Item)P);
 							Log.sysOut("Catalog",mob.Name()+" modified catalog item "+P.Name());
-							mob.tell(_("No drop item."));
+							mob.tell(L("No drop item."));
 							return false;
 						}
-						final String choice=mob.session().choose(_("Is this for L)ive mobs or D)ead ones (@x1): ",(data.getWhenLive()?"L":"D")),_("LD"), (data.getWhenLive()?"L":"D"));
+						final String choice=mob.session().choose(L("Is this for L)ive mobs or D)ead ones (@x1): ",(data.getWhenLive()?"L":"D")),L("LD"), (data.getWhenLive()?"L":"D"));
 						data.setWhenLive(choice.equalsIgnoreCase("L"));
 						String newMask="?";
 						while(newMask.equalsIgnoreCase("?"))
 						{
-							newMask=mob.session().prompt(_("Enter new MOB selection mask, or NULL (@x1)\n\r: ",data.getMaskStr()),data.getMaskStr());
+							newMask=mob.session().prompt(L("Enter new MOB selection mask, or NULL (@x1)\n\r: ",data.getMaskStr()),data.getMaskStr());
 							if(newMask.equalsIgnoreCase("?"))
 								mob.tell(CMLib.masking().maskHelp("\n","disallow"));
 						}
@@ -521,7 +521,7 @@ public class Catalog extends StdCommand
 						{
 							data.setMaskStr("");
 							data.setRate(0.0);
-							mob.tell(_("Mask removed."));
+							mob.tell(L("Mask removed."));
 						}
 						else
 						{
@@ -529,7 +529,7 @@ public class Catalog extends StdCommand
 						}
 						CMLib.database().DBUpdateItem("CATALOG_ITEMS",(Item)P);
 						Log.sysOut("Catalog",mob.Name()+" modified catalog item "+P.Name());
-						mob.tell(_("Item '@x1 has been updated.",P.Name()));
+						mob.tell(L("Item '@x1 has been updated.",P.Name()));
 					}
 				}
 			}
@@ -560,21 +560,21 @@ public class Catalog extends StdCommand
 							if(P instanceof Coins) continue;
 							if((P instanceof MOB)&&(whatKind!=2)&&(CMLib.flags().isCataloged(P)))
 								if(CMLib.catalog().getCatalogObj(P)!=null)
-									mob.tell(_("Check: MOB @x1 in @x2 is cataloged.",P.Name(),roomID));
+									mob.tell(L("Check: MOB @x1 in @x2 is cataloged.",P.Name(),roomID));
 								else
-									mob.tell(_("Error: MOB @x1 in @x2 is falsely cataloged.",P.Name(),roomID));
+									mob.tell(L("Error: MOB @x1 in @x2 is falsely cataloged.",P.Name(),roomID));
 
 							if((P instanceof Item)&&(whatKind!=1)&&(CMLib.flags().isCataloged(P)))
 								if(CMLib.catalog().getCatalogObj(P)!=null)
-									mob.tell(_("Check: Item @x1 in @x2 is cataloged.",P.Name(),roomID));
+									mob.tell(L("Check: Item @x1 in @x2 is cataloged.",P.Name(),roomID));
 								else
-									mob.tell(_("Error: Item @x1 in @x2 is falsely cataloged.",P.Name(),roomID));
+									mob.tell(L("Error: Item @x1 in @x2 is falsely cataloged.",P.Name(),roomID));
 						}
 						if(db) R.destroy();
 					}
 				}
 				else
-					mob.tell(_("Scan what?"));
+					mob.tell(L("Scan what?"));
 			}
 			else
 			if((((String)commands.firstElement()).equalsIgnoreCase("OVERLOOK"))
@@ -603,21 +603,21 @@ public class Catalog extends StdCommand
 							if(E instanceof Coins) continue;
 							if((E instanceof MOB)&&(whatKind!=2)&&(!CMLib.flags().isCataloged(E)))
 								if(CMLib.catalog().getCatalogMob(E.Name())!=null)
-									mob.tell(_("MOB @x1 in @x2 should be tied to the catalog.",E.Name(),roomID));
+									mob.tell(L("MOB @x1 in @x2 should be tied to the catalog.",E.Name(),roomID));
 								else
-									mob.tell(_("MOB @x1 in @x2 is not cataloged.",E.Name(),roomID));
+									mob.tell(L("MOB @x1 in @x2 is not cataloged.",E.Name(),roomID));
 
 							if((E instanceof Item)&&(whatKind!=1)&&(!CMLib.flags().isCataloged(E)))
 								if(CMLib.catalog().getCatalogItem(E.Name())!=null)
-									mob.tell(_("Item @x1 in @x2 should be tied to the catalog.",E.Name(),roomID));
+									mob.tell(L("Item @x1 in @x2 should be tied to the catalog.",E.Name(),roomID));
 								else
-									mob.tell(_("Item @x1 in @x2 is not cataloged.",E.Name(),roomID));
+									mob.tell(L("Item @x1 in @x2 is not cataloged.",E.Name(),roomID));
 						}
 						if(db) R.destroy();
 					}
 				}
 				else
-					mob.tell(_("Scan what?"));
+					mob.tell(L("Scan what?"));
 			}
 			else
 			if(((String)commands.firstElement()).equalsIgnoreCase("CLEAN"))
@@ -631,7 +631,7 @@ public class Catalog extends StdCommand
 					final int whatKind=getObjectType(commands);
 					final String type=types[whatKind];
 					if((mob.session()!=null)
-					&&(mob.session().confirm(_("You are about to auto-clean (and auto-save) all @x1 @x2.\n\rThis command, if used improperly, may alter @x3 in this @x4.\n\rAre you absolutely sure (y/N)?",which,type,type,which),_("N"))))
+					&&(mob.session().confirm(L("You are about to auto-clean (and auto-save) all @x1 @x2.\n\rThis command, if used improperly, may alter @x3 in this @x4.\n\rAre you absolutely sure (y/N)?",which,type,type,which),L("N"))))
 					{
 						Physical P=null;
 						String roomID=null;
@@ -653,7 +653,7 @@ public class Catalog extends StdCommand
 										CMLib.catalog().changeCatalogUsage(P,false);
 										content.flagDirty();
 										dirty=true;
-										mob.tell(_("MOB @x1 in @x2 was cleaned.",P.Name(),roomID));
+										mob.tell(L("MOB @x1 in @x2 was cleaned.",P.Name(),roomID));
 									}
 								}
 								else
@@ -665,7 +665,7 @@ public class Catalog extends StdCommand
 										CMLib.catalog().changeCatalogUsage(P,false);
 										content.flagDirty();
 										dirty=true;
-										mob.tell(_("Item @x1 in @x2 was cleaned.",P.Name(),roomID));
+										mob.tell(L("Item @x1 in @x2 was cleaned.",P.Name(),roomID));
 									}
 								}
 							}
@@ -679,7 +679,7 @@ public class Catalog extends StdCommand
 					}
 				}
 				else
-					mob.tell(_("Clean what?"));
+					mob.tell(L("Clean what?"));
 			}
 			else
 			{
@@ -708,11 +708,11 @@ public class Catalog extends StdCommand
 					}
 				}
 				else
-					mob.tell(_("You don't see '@x1' here!",ID));
+					mob.tell(L("You don't see '@x1' here!",ID));
 			}
 		}
 		else
-			mob.tell(_("Catalog huh? Try CATALOG LIST (MOBS/ITEMS) (MASK), CATALOG [mob/item name], CATALOG DELETE [mob/item name], CATALOG EDIT [item name]."));
+			mob.tell(L("Catalog huh? Try CATALOG LIST (MOBS/ITEMS) (MASK), CATALOG [mob/item name], CATALOG DELETE [mob/item name], CATALOG EDIT [item name]."));
 		return false;
 	}
 

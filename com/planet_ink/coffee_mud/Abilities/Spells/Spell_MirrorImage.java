@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_MirrorImage extends Spell
 {
 	@Override public String ID() { return "Spell_MirrorImage"; }
-	private final static String localizedName = CMLib.lang()._("Mirror Image");
+	private final static String localizedName = CMLib.lang().L("Mirror Image");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Mirror Image spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Mirror Image spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -73,7 +73,7 @@ public class Spell_MirrorImage extends Spell
 			final int numberOfTargets = numberOfImages + intAdjustment;
 			if(randomizer.nextInt() % numberOfTargets >= intAdjustment)
 			{
-				if(mob.location().show(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,_("<T-NAME> attack(s) a mirrored image!")))
+				if(mob.location().show(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,L("<T-NAME> attack(s) a mirrored image!")))
 					numberOfImages--;
 				return false;
 			}
@@ -158,7 +158,7 @@ public class Spell_MirrorImage extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your mirror images fade away."));
+			mob.tell(L("Your mirror images fade away."));
 	}
 
 	@Override
@@ -169,7 +169,7 @@ public class Spell_MirrorImage extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> mirror images."));
+			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> mirror images."));
 			return false;
 		}
 
@@ -190,7 +190,7 @@ public class Spell_MirrorImage extends Spell
 			// what happened.
 			invoker=mob;
 			numberOfImages = CMLib.dice().roll(1,(int)(Math.round(CMath.div(adjustedLevel(mob,asLevel),3.0))),2);
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_((auto?"A spell forms around":"^S<S-NAME> incant(s) the reflective spell of")+" <T-NAME>, and suddenly @x1 copies appear.^?",""+numberOfImages));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L((auto?"A spell forms around":"^S<S-NAME> incant(s) the reflective spell of")+" <T-NAME>, and suddenly @x1 copies appear.^?",""+numberOfImages));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -200,7 +200,7 @@ public class Spell_MirrorImage extends Spell
 		else
 		{
 			numberOfImages = 0;
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> speak(s) reflectively, but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> speak(s) reflectively, but nothing more happens."));
 		}
 		// return whether it worked
 		return success;

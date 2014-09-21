@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_VineMass extends Chant_SummonVine
 {
 	@Override public String ID() { return "Chant_VineMass"; }
-	private final static String localizedName = CMLib.lang()._("Vine Mass");
+	private final static String localizedName = CMLib.lang().L("Vine Mass");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Vine Mass)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Vine Mass)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -64,7 +64,7 @@ public class Chant_VineMass extends Chant_SummonVine
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Vine"));
 			final String name="a vine";
 			newMOB.setName(name);
-			newMOB.setDisplayText(_("@x1 looks enraged!",name));
+			newMOB.setDisplayText(L("@x1 looks enraged!",name));
 			newMOB.setDescription("");
 			CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 			Ability A=CMClass.getAbility("Fighter_Rescue");

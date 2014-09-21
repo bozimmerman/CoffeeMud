@@ -37,9 +37,9 @@ import java.util.*;
 public class Falling extends StdAbility
 {
 	@Override public String ID() { return "Falling"; }
-	private final static String localizedName = CMLib.lang()._("Falling");
+	private final static String localizedName = CMLib.lang().L("Falling");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Falling)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Falling)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ITEMS|Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -100,7 +100,7 @@ public class Falling extends StdAbility
 			if(!hitTheCeiling)
 			{
 				hitTheCeiling=true;
-				if(R!=null) R.show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> hit(s) the ceiling.@x1",CMLib.protocol().msp("splat.wav",50)));
+				if(R!=null) R.show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> hit(s) the ceiling.@x1",CMLib.protocol().msp("splat.wav",50)));
 				CMLib.combat().postDamage(mob,mob,this,damageToTake,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,-1,null);
 			}
 			return true;
@@ -110,12 +110,12 @@ public class Falling extends StdAbility
 		if(R!=null)
 		{
 			if(isAirRoom(R))
-				R.show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> stop(s) falling.@x1",CMLib.protocol().msp("splat.wav",50)));
+				R.show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> stop(s) falling.@x1",CMLib.protocol().msp("splat.wav",50)));
 			else
 			if(isWaterSurface(R)||isUnderWater(R))
-				R.show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> hit(s) the water.@x1",CMLib.protocol().msp("splat.wav",50)));
+				R.show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> hit(s) the water.@x1",CMLib.protocol().msp("splat.wav",50)));
 			else
-				R.show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> hit(s) the ground.@x1",CMLib.protocol().msp("splat.wav",50)));
+				R.show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> hit(s) the ground.@x1",CMLib.protocol().msp("splat.wav",50)));
 			CMLib.combat().postDamage(mob,mob,this,damageToTake,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,-1,null);
 		}
 		mob.delEffect(this);
@@ -138,11 +138,11 @@ public class Falling extends StdAbility
 		fallTickDown=1;
 
 		int direction=Directions.DOWN;
-		String addStr=_("down");
+		String addStr=L("down");
 		if(reversed())
 		{
 			direction=Directions.UP;
-			addStr=_("upwards");
+			addStr=L("upwards");
 		}
 		if(affected instanceof MOB)
 		{
@@ -163,11 +163,11 @@ public class Falling extends StdAbility
 			{
 				if(mob.phyStats().weight()<1)
 				{
-					mob.tell(_("\n\r\n\rYou are floating gently @x1.\n\r\n\r",addStr));
+					mob.tell(L("\n\r\n\rYou are floating gently @x1.\n\r\n\r",addStr));
 				}
 				else
 				{
-					mob.tell(_("\n\r\n\rYOU ARE FALLING @x1!!\n\r\n\r",addStr.toUpperCase()));
+					mob.tell(L("\n\r\n\rYOU ARE FALLING @x1!!\n\r\n\r",addStr.toUpperCase()));
 					final int damage = CMLib.dice().roll(1,(int)Math.round(CMath.mul(CMath.mul(mob.maxState().getHitPoints(),0.1),CMath.div(mob.baseWeight(),150.0))),0);
 					damageToTake=reversed()?damage:(damageToTake+damage);
 				}
@@ -207,10 +207,10 @@ public class Falling extends StdAbility
 			final Room nextRoom=room.getRoomInDir(direction);
 			if(canFallFrom(room,direction))
 			{
-				room.show(invoker,null,item,CMMsg.MSG_OK_ACTION,_("<O-NAME> falls @x1.",addStr));
+				room.show(invoker,null,item,CMMsg.MSG_OK_ACTION,L("<O-NAME> falls @x1.",addStr));
 				nextRoom.moveItemTo(item,ItemPossessor.Expire.Player_Drop);
 				room=nextRoom;
-				nextRoom.show(invoker,null,item,CMMsg.MSG_OK_ACTION,_("<O-NAME> falls in from @x1.",(reversed()?"below":"above")));
+				nextRoom.show(invoker,null,item,CMMsg.MSG_OK_ACTION,L("<O-NAME> falls in from @x1.",(reversed()?"below":"above")));
 				return true;
 			}
 			if(reversed())
@@ -242,7 +242,7 @@ public class Falling extends StdAbility
 				}
 				if(msg.targetMajor(CMMsg.MASK_MOVE) &&(!hitTheCeiling))
 				{
-					msg.source().tell(_("You are too busy falling to do that right now."));
+					msg.source().tell(L("You are too busy falling to do that right now."));
 					return false;
 				}
 			}

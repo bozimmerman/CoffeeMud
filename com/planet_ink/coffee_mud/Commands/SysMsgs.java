@@ -46,7 +46,7 @@ public class SysMsgs extends StdCommand
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
 		else
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
-		mob.tell(_("Extended messages are now : @x1",((CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))?"ON":"OFF")));
+		mob.tell(L("Extended messages are now : @x1",((CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))?"ON":"OFF")));
 		return false;
 	}
 

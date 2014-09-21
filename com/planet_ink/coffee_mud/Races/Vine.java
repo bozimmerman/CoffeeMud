@@ -97,7 +97,7 @@ public class Vine extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName(_("a whip-like arm"));
+			naturalWeapon.setName(L("a whip-like arm"));
 			naturalWeapon.setRanges(0,3);
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_VINE);
 			naturalWeapon.setUsesRemaining(1000);
@@ -118,7 +118,7 @@ public class Vine extends StdRace
 				||(msg.sourceMinor()==CMMsg.TYP_RECALL))
 			&&(((MOB)myHost).fetchEffect("Chant_FreeVine")==null))
 			{
-				msg.source().tell(_("You can't really go anywhere -- you are rooted!"));
+				msg.source().tell(L("You can't really go anywhere -- you are rooted!"));
 				return false;
 			}
 		}

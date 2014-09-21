@@ -124,15 +124,15 @@ public class PuddleMaker extends StdBehavior
 		I.recoverPhyStats();
 		if(coldWetWeather(oldWeather))
 		{
-			I.setName(_("some snow"));
-			I.setDisplayText(_("some snow rests on the ground here."));
-			I.setDescription(_("the snow is white and still quite cold!"));
+			I.setName(L("some snow"));
+			I.setDisplayText(L("some snow rests on the ground here."));
+			I.setDescription(L("the snow is white and still quite cold!"));
 		}
 		else
 		{
-			I.setName(_("a puddle of water"));
-			I.setDisplayText(_("a puddle of water has formed here."));
-			I.setDescription(_("It looks drinkable."));
+			I.setName(L("a puddle of water"));
+			I.setDisplayText(L("a puddle of water has formed here."));
+			I.setDescription(L("It looks drinkable."));
 		}
 		R.addItem(I,ItemPossessor.Expire.Monster_EQ);
 		R.recoverRoomStats();

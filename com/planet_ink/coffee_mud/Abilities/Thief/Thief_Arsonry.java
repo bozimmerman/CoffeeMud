@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_Arsonry extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Arsonry"; }
-	private final static String localizedName = CMLib.lang()._("Arsonry");
+	private final static String localizedName = CMLib.lang().L("Arsonry");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
@@ -49,7 +49,7 @@ public class Thief_Arsonry extends ThiefSkill
 	{
 		if(commands.size()<1)
 		{
-			mob.tell(_("What or which direction is that which would you like to set on fire?"));
+			mob.tell(L("What or which direction is that which would you like to set on fire?"));
 			return false;
 		}
 		final String str=CMParms.combine(commands,0);
@@ -61,12 +61,12 @@ public class Thief_Arsonry extends ThiefSkill
 			final Room room=mob.location().getRoomInDir(dir);
 			if((room==null)||(mob.location().getExitInDir(dir)==null))
 			{
-				mob.tell(_("But there's nothing that way!"));
+				mob.tell(L("But there's nothing that way!"));
 				return false;
 			}
 			if(!mob.location().getExitInDir(dir).isOpen())
 			{
-				mob.tell(_("That way isn't open!"));
+				mob.tell(L("That way isn't open!"));
 				return false;
 			}
 			final Vector choices=new Vector();
@@ -83,7 +83,7 @@ public class Thief_Arsonry extends ThiefSkill
 			}
 			if(choices.size()==0)
 			{
-				mob.tell(_("There's nothing that way you can burn!"));
+				mob.tell(L("There's nothing that way you can burn!"));
 				return false;
 			}
 			target=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
@@ -105,7 +105,7 @@ public class Thief_Arsonry extends ThiefSkill
 		}
 		if(!proceed)
 		{
-			mob.tell(_("You need to have something in your inventory on fire, like a torch, to use this skill."));
+			mob.tell(L("You need to have something in your inventory on fire, like a torch, to use this skill."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -117,7 +117,7 @@ public class Thief_Arsonry extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,_("<S-NAME> commit(s) arsonry against <T-NAME>."));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,L("<S-NAME> commit(s) arsonry against <T-NAME>."));
 			if((mob.location().okMessage(mob,msg))
 			&&((targetRoom==mob.location())||(targetRoom.okMessage(mob,msg))))
 			{
@@ -129,7 +129,7 @@ public class Thief_Arsonry extends ThiefSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) arsonry against <T-NAME>, but fails."));
+			beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) arsonry against <T-NAME>, but fails."));
 		return success;
 	}
 

@@ -74,14 +74,14 @@ public class MPRun extends StdCommand
 			return CMLib.commands().handleUnknownCommand(mob, commands);
 		if(commands.size()<2)
 		{
-			mob.tell(_("mprun (user:password) [script]"));
+			mob.tell(L("mprun (user:password) [script]"));
 			return false;
 		}
 		commands.removeElementAt(0);
 
 		final String cmd = CMParms.combineWithQuotes(commands, 0);
 		executeScript(mob, cmd);
-		mob.tell(_("Completed."));
+		mob.tell(L("Completed."));
 		return false;
 	}
 
@@ -91,7 +91,7 @@ public class MPRun extends StdCommand
 		S.setSavable(false);
 		S.setVarScope("*");
 		S.setScript(script);
-		final CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,_("MPRUN"));
+		final CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,L("MPRUN"));
 		S.executeMsg(mob, msg2);
 		S.dequeResponses();
 		S.tick(mob,Tickable.TICKID_MOB);

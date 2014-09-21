@@ -35,12 +35,12 @@ import java.util.*;
 public class Prayer_MassParalyze extends Prayer
 {
 	@Override public String ID() { return "Prayer_MassParalyze"; }
-	private final static String localizedName = CMLib.lang()._("Mass Paralyze");
+	private final static String localizedName = CMLib.lang().L("Mass Paralyze");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_PARALYZING;}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Paralyzed)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Paralyzed)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 
 	@Override
@@ -64,7 +64,7 @@ public class Prayer_MassParalyze extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("The paralysis eases out of your muscles."));
+			mob.tell(L("The paralysis eases out of your muscles."));
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class Prayer_MassParalyze extends Prayer
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":_("^S<S-NAME> @x1 an unholy paralysis upon <T-NAMESELF>.^?",prayForWord(mob)));
+				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":L("^S<S-NAME> @x1 an unholy paralysis upon <T-NAMESELF>.^?",prayForWord(mob)));
 				final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.TYP_PARALYZE|(auto?CMMsg.MASK_ALWAYS:0),null);
 				if((target!=mob)&&(mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 				{
@@ -99,7 +99,7 @@ public class Prayer_MassParalyze extends Prayer
 					if((msg.value()<=0)&&(msg2.value()<=0))
 					{
 						success=maliciousAffect(mob,target,asLevel,8-levelDiff,-1);
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> can't move!"));
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> can't move!"));
 					}
 					nothingDone=false;
 				}
@@ -107,7 +107,7 @@ public class Prayer_MassParalyze extends Prayer
 		}
 
 		if(nothingDone)
-			return maliciousFizzle(mob,null,_("<S-NAME> attempt(s) to paralyze everyone, but flub(s) it."));
+			return maliciousFizzle(mob,null,L("<S-NAME> attempt(s) to paralyze everyone, but flub(s) it."));
 
 
 		// return whether it worked

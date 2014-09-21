@@ -44,13 +44,13 @@ public class Tell extends StdCommand
 	{
 		if((!mob.isMonster())&&CMath.bset(mob.getBitmap(),MOB.ATT_QUIET))
 		{
-			mob.tell(_("You have QUIET mode on.  You must turn it off first."));
+			mob.tell(L("You have QUIET mode on.  You must turn it off first."));
 			return false;
 		}
 
 		if(commands.size()<3)
 		{
-			mob.tell(_("Tell whom what?"));
+			mob.tell(L("Tell whom what?"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -63,7 +63,7 @@ public class Tell extends StdCommand
 			if((V.size()==0)
 			||(CMath.bset(metaFlags,Command.METAFLAG_AS))
 			||(CMath.bset(metaFlags,Command.METAFLAG_POSSESSED)))
-				mob.tell(_("No telling."));
+				mob.tell(L("No telling."));
 			else
 			{
 				int num=CMath.s_int(CMParms.combine(commands,1));
@@ -96,7 +96,7 @@ public class Tell extends StdCommand
 		String combinedCommands=CMParms.combine(commands,1);
 		if(combinedCommands.equals(""))
 		{
-			mob.tell(_("Tell them what?"));
+			mob.tell(L("Tell them what?"));
 			return false;
 		}
 		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.Str.SAYFILTER);
@@ -109,16 +109,16 @@ public class Tell extends StdCommand
 				if(CMLib.intermud().i3online()||CMLib.intermud().imc2online())
 					CMLib.intermud().i3tell(mob,targetName,mudName,combinedCommands);
 				else
-					mob.tell(_("Intermud is unavailable."));
+					mob.tell(L("Intermud is unavailable."));
 				return false;
 			}
-			mob.tell(_("That person doesn't appear to be online."));
+			mob.tell(L("That person doesn't appear to be online."));
 			return false;
 		}
 
 		if(CMath.bset(targetM.getBitmap(),MOB.ATT_QUIET))
 		{
-			mob.tell(_("That person can not hear you."));
+			mob.tell(L("That person can not hear you."));
 			return false;
 		}
 

@@ -39,7 +39,7 @@ import java.util.*;
 public class Age extends StdAbility
 {
 	@Override public String ID() { return "Age"; }
-	private final static String localizedName = CMLib.lang()._("Age");
+	private final static String localizedName = CMLib.lang().L("Age");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -94,7 +94,7 @@ public class Age extends StdAbility
 				{
 					final Room R=CMLib.map().roomLocation(affected);
 					if(R!=null)
-						R.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 died.",affected.name()));
+						R.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 died.",affected.name()));
 					((Item)affected).destroy();
 				}
 			}
@@ -214,7 +214,7 @@ public class Age extends StdAbility
 					final MOB babe=C.unCageMe();
 					if((babe==null)||(babe.baseCharStats()==null))
 					{
-						R.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 JUST DIED OF DEFORMITIES!!",affected.name()));
+						R.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 JUST DIED OF DEFORMITIES!!",affected.name()));
 						((Item)affected).destroy();
 					}
 					else
@@ -248,7 +248,7 @@ public class Age extends StdAbility
 						babe.bringToLife(R,true);
 						CMLib.beanCounter().clearZeroMoney(babe,null);
 						babe.setFollowing(following);
-						R.show(babe,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> JUST TOOK <S-HIS-HER> FIRST STEPS!!!"));
+						R.show(babe,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> JUST TOOK <S-HIS-HER> FIRST STEPS!!!"));
 						I.destroy();
 						if(!CMLib.flags().isAnimalIntelligence(babe))
 							CMLib.database().DBReCreateData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text(),babe.ID()+"/"+babe.basePhyStats().ability()+"/"+babe.text());
@@ -280,7 +280,7 @@ public class Age extends StdAbility
 					{
 						final String name=CMLib.english().startWithAorAn(getMyRace().makeMobName((char)babe.baseCharStats().getStat(CharStats.STAT_GENDER), 3)).toLowerCase();
 						babe.setName(name);
-						babe.setDisplayText(_("@x1 is here.",name));
+						babe.setDisplayText(L("@x1 is here.",name));
 					}
 					babe.baseCharStats().setStat(CharStats.STAT_CHARISMA,10);
 					babe.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,10);
@@ -488,8 +488,8 @@ public class Age extends StdAbility
 					if(liege != null)
 					{
 						if(liege!=babe.amFollowing())
-							babe.amFollowing().tell(_("@x1 has just grown up! @x2 password is the same as @x3's.",newMan.Name(),CMStrings.capitalizeAndLower(newMan.baseCharStats().hisher()),liege.Name()));
-						liege.tell(_("@x1 has just grown up! @x2 password is the same as @x3's.",newMan.Name(),CMStrings.capitalizeAndLower(newMan.baseCharStats().hisher()),liege.Name()));
+							babe.amFollowing().tell(L("@x1 has just grown up! @x2 password is the same as @x3's.",newMan.Name(),CMStrings.capitalizeAndLower(newMan.baseCharStats().hisher()),liege.Name()));
+						liege.tell(L("@x1 has just grown up! @x2 password is the same as @x3's.",newMan.Name(),CMStrings.capitalizeAndLower(newMan.baseCharStats().hisher()),liege.Name()));
 					}
 					CMLib.database().DBUpdatePlayer(newMan);
 					newMan.removeFromGame(false,true);
@@ -510,12 +510,12 @@ public class Age extends StdAbility
 					{
 						final String name=CMLib.english().startWithAorAn(getMyRace().makeMobName((char)babe.baseCharStats().getStat(CharStats.STAT_GENDER), 4)).toLowerCase();
 						babe.setName(name);
-						babe.setDisplayText(_("@x1 stands here.",name));
+						babe.setDisplayText(L("@x1 stands here.",name));
 					}
 					CMLib.database().DBDeleteData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text());
 					if(liege!=babe.amFollowing())
-						babe.amFollowing().tell(_("@x1 has just grown up to be a mob.",babe.Name()));
-					liege.tell(_("@x1 has just grown up to be a mob.",babe.Name()));
+						babe.amFollowing().tell(L("@x1 has just grown up to be a mob.",babe.Name()));
+					liege.tell(L("@x1 has just grown up to be a mob.",babe.Name()));
 					A=babe.fetchEffect(ID());
 					A.setMiscText(""+ellapsed);
 					babe.recoverCharStats();
@@ -546,7 +546,7 @@ public class Age extends StdAbility
 					{
 						final String name=CMLib.english().startWithAorAn(getMyRace().makeMobName((char)babe.baseCharStats().getStat(CharStats.STAT_GENDER), 3)).toLowerCase();
 						babe.setName(name);
-						babe.setDisplayText(_("@x1 is here.",name));
+						babe.setDisplayText(L("@x1 is here.",name));
 					}
 					babe.baseCharStats().setStat(CharStats.STAT_CHARISMA,10);
 					babe.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,10);
@@ -580,7 +580,7 @@ public class Age extends StdAbility
 				{
 					final String name=CMLib.english().startWithAorAn(getMyRace().makeMobName((char)babe.baseCharStats().getStat(CharStats.STAT_GENDER), 4)).toLowerCase();
 					babe.setName(name);
-					babe.setDisplayText(_("@x1 stands here.",name));
+					babe.setDisplayText(L("@x1 stands here.",name));
 				}
 
 				babe.baseCharStats().setStat(CharStats.STAT_CHARISMA,10);
@@ -605,7 +605,7 @@ public class Age extends StdAbility
 				{
 					final String name=CMLib.english().startWithAorAn(getMyRace().makeMobName((char)babe.baseCharStats().getStat(CharStats.STAT_GENDER), 5)).toLowerCase();
 					babe.setName(name);
-					babe.setDisplayText(_("@x1 stands here.",name));
+					babe.setDisplayText(L("@x1 stands here.",name));
 				}
 				babe.baseState().setHitPoints(20);
 				babe.baseState().setMana(25);
@@ -652,7 +652,7 @@ public class Age extends StdAbility
 							String s=displayText();
 							if(s.startsWith("("))s=s.substring(1);
 							if(s.endsWith(")"))s=s.substring(0,s.length()-1);
-							msg.source().tell(_("@x1 is @x2",Name(),s));
+							msg.source().tell(L("@x1 is @x2",Name(),s));
 						}
 					}
 				}

@@ -57,7 +57,7 @@ public class Pull extends Go
 				||(mob.location().getExitInDir(dirCode)==null)
 				||(!mob.location().getExitInDir(dirCode).isOpen()))
 				{
-					mob.tell(_("You can't pull anything that way."));
+					mob.tell(L("You can't pull anything that way."));
 					return false;
 				}
 				E=mob.location().getRoomInDir(dirCode);
@@ -79,10 +79,10 @@ public class Pull extends Go
 			openThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,itemName,Wearable.FILTER_ANY);
 		if((openThis==null)||(!CMLib.flags().canBeSeenBy(openThis,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",itemName));
+			mob.tell(L("You don't see '@x1' here.",itemName));
 			return false;
 		}
-		final CMMsg msg=CMClass.getMsg(mob,openThis,E,CMMsg.MSG_PULL,_("<S-NAME> pull(s) <T-NAME>@x1.",dir));
+		final CMMsg msg=CMClass.getMsg(mob,openThis,E,CMMsg.MSG_PULL,L("<S-NAME> pull(s) <T-NAME>@x1.",dir));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

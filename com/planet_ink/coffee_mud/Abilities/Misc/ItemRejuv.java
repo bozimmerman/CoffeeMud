@@ -37,9 +37,9 @@ import java.util.*;
 public class ItemRejuv extends StdAbility implements ItemTicker
 {
 	@Override public String ID() { return "ItemRejuv"; }
-	private final static String localizedName = CMLib.lang()._("ItemRejuv");
+	private final static String localizedName = CMLib.lang().L("ItemRejuv");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(ItemRejuv)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(ItemRejuv)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}

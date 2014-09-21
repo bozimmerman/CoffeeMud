@@ -37,9 +37,9 @@ import java.util.*;
 public class CombatSleep extends StdAbility implements HealthCondition
 {
 	@Override public String ID() { return "CombatSleep"; }
-	private final static String localizedName = CMLib.lang()._("Combat Sleep");
+	private final static String localizedName = CMLib.lang().L("Combat Sleep");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Asleep)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Asleep)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -71,7 +71,7 @@ public class CombatSleep extends StdAbility implements HealthCondition
 		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 		&&(msg.sourceMajor()>0))
 		{
-			mob.tell(_("You are way too unconscious."));
+			mob.tell(L("You are way too unconscious."));
 			return false;
 		}
 		return super.okMessage(myHost,msg);
@@ -101,7 +101,7 @@ public class CombatSleep extends StdAbility implements HealthCondition
 		if(canBeUninvoked())
 		{
 			if((!mob.amDead())&&(mob.location()!=null))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> do(es)n't seem so drowsy any more."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> do(es)n't seem so drowsy any more."));
 			CMLib.commands().postStand(mob,true);
 		}
 	}
@@ -148,7 +148,7 @@ public class CombatSleep extends StdAbility implements HealthCondition
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),auto?"":_("^S<S-NAME> make(s) <T-NAMESELF> go unconscious!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("^S<S-NAME> make(s) <T-NAMESELF> go unconscious!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -157,7 +157,7 @@ public class CombatSleep extends StdAbility implements HealthCondition
 					success=maliciousAffect(mob,target,asLevel,3-levelDiff,CMMsg.MASK_MALICIOUS|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0));
 					if(success)
 						if(target.location()==mob.location())
-							target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> fall(s) unconscious!!"));
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> fall(s) unconscious!!"));
 				}
 				target.makePeace();
 				if(mob.getVictim()==target)
@@ -165,7 +165,7 @@ public class CombatSleep extends StdAbility implements HealthCondition
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,auto?"":_("^S<S-NAME> tr(ys) to make <T-NAMESELF> go unconscious, but fails.^?"));
+			return maliciousFizzle(mob,target,auto?"":L("^S<S-NAME> tr(ys) to make <T-NAMESELF> go unconscious, but fails.^?"));
 
 		// return whether it worked
 		return success;

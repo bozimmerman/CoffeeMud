@@ -69,7 +69,7 @@ public class Prop_SafePet extends Property
 		{
 			if((msg.amISource((MOB)affected))&&(msg.sourceMinor()==CMMsg.TYP_DEATH)&&(!CMath.bset(msg.sourceMajor(), CMMsg.MASK_ALWAYS)))
 			{
-				msg.source().tell(_("You are safe from death."));
+				msg.source().tell(L("You are safe from death."));
 				return false;
 			}
 			else

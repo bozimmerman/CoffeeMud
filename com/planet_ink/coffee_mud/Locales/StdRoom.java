@@ -39,7 +39,7 @@ public class StdRoom implements Room
 	@Override public String ID(){return "StdRoom";}
 	protected String		myID="";
 	protected String		name="the room";
-	protected String		displayText=_("Standard Room");
+	protected String		displayText=L("Standard Room");
 	protected String		rawImageName=null;
 	protected String		cachedImageName=null;
 	protected Object		description=null;
@@ -676,7 +676,7 @@ public class StdRoom implements Room
 			case CMMsg.TYP_VALUE:
 				if(CMLib.coffeeShops().getShopKeeper(this)==null)
 				{
-					mob.tell(_("You can't shop here."));
+					mob.tell(L("You can't shop here."));
 					return false;
 				}
 				break;
@@ -685,7 +685,7 @@ public class StdRoom implements Room
 			case CMMsg.TYP_DIG:
 				if(CMLib.map().getExtendedRoomID(this).length()==0)
 				{
-					mob.tell(_("You can't really dig here."));
+					mob.tell(L("You can't really dig here."));
 					return false;
 				}
 				switch(this.domainType())
@@ -703,7 +703,7 @@ public class StdRoom implements Room
 						break;
 				//$FALL-THROUGH$
 				default:
-					mob.tell(_("You can't really dig here."));
+					mob.tell(L("You can't really dig here."));
 					return false;
 				}
 				break;
@@ -711,7 +711,7 @@ public class StdRoom implements Room
 				if(((msg.targetMajor(CMMsg.MASK_HANDS))||(msg.targetMajor(CMMsg.MASK_MOUTH)))
 				&&(msg.targetMinor()!=CMMsg.TYP_THROW))
 				{
-					mob.tell(_("You can't do that here."));
+					mob.tell(L("You can't do that here."));
 					return false;
 				}
 				break;
@@ -812,9 +812,9 @@ public class StdRoom implements Room
 				break;
 			case CMMsg.TYP_READ:
 				if(CMLib.flags().canBeSeenBy(this,mob))
-					mob.tell(_("There is nothing written here."));
+					mob.tell(L("There is nothing written here."));
 				else
-					mob.tell(_("You can't see that!"));
+					mob.tell(L("You can't see that!"));
 				break;
 			case CMMsg.TYP_AREAAFFECT:
 				// obsolete with the area objects
@@ -909,7 +909,7 @@ public class StdRoom implements Room
 					if((M!=null)&&(M.getStartRoom()!=null))
 					{
 						final Room startRoom=CMLib.map().getRoom(M.getStartRoom());
-						M.tell(_("Your corpse has been moved to @x1",startRoom.displayText()));
+						M.tell(L("Your corpse has been moved to @x1",startRoom.displayText()));
 						startRoom.moveItemTo(D);
 					}
 				}
@@ -2662,7 +2662,7 @@ public class StdRoom implements Room
 		catch(final ArrayIndexOutOfBoundsException e){}
 	}
 
-	@Override public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+	@Override public String L(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 
 	@Override public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
 	protected static final String[] STDCODES={"CLASS","DISPLAY","DESCRIPTION","TEXT","AFFBEHAV","IMAGE","CLIMATE","ATMOSPHERE"};

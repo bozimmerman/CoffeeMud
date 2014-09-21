@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_WallOfAir extends Spell
 {
 	@Override public String ID() { return "Spell_WallOfAir"; }
-	private final static String localizedName = CMLib.lang()._("Wall of Air");
+	private final static String localizedName = CMLib.lang().L("Wall of Air");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Wall of Air)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Wall of Air)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
 	@Override public int minRange(){return 1;}
@@ -69,10 +69,10 @@ public class Spell_WallOfAir extends Spell
 		&&(!((Weapon)msg.tool()).amWearingAt(Wearable.IN_INVENTORY))
 		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED))
 		{
-			mob.location().show(mob,invoker,msg.tool(),CMMsg.MSG_OK_VISUAL,_("<S-NAME> fire(s) <O-NAME> at <T-NAME>.  The missile enters the wall of air."));
+			mob.location().show(mob,invoker,msg.tool(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> fire(s) <O-NAME> at <T-NAME>.  The missile enters the wall of air."));
 			final MOB M=CMClass.getMOB("StdMOB");
 			M.setLocation(mob.location());
-			M.setName(_("The wall of air"));
+			M.setName(L("The wall of air"));
 			M.setVictim(mob);
 			M.setAtRange(mob.rangeToTarget());
 			CMLib.combat().postWeaponDamage(M,mob,(Weapon)msg.tool(),true);
@@ -99,7 +99,7 @@ public class Spell_WallOfAir extends Spell
 			&&(theWall.owner() instanceof Room)
 			&&(((Room)theWall.owner()).isContent(theWall)))
 			{
-				((Room)theWall.owner()).showHappens(CMMsg.MSG_OK_VISUAL,_("The wall of air dissipates."));
+				((Room)theWall.owner()).showHappens(CMMsg.MSG_OK_VISUAL,L("The wall of air dissipates."));
 				final Item wall=theWall;
 				theWall=null;
 				wall.destroy();
@@ -126,7 +126,7 @@ public class Spell_WallOfAir extends Spell
 	{
 		if((!mob.isInCombat())||(mob.rangeToTarget()<1))
 		{
-			mob.tell(_("You really should be in ranged combat to cast this."));
+			mob.tell(L("You really should be in ranged combat to cast this."));
 			return false;
 		}
 		for(int i=0;i<mob.location().numItems();i++)
@@ -134,7 +134,7 @@ public class Spell_WallOfAir extends Spell
 			final Item I=mob.location().getItem(i);
 			if((I!=null)&&(I.fetchEffect(ID())!=null))
 			{
-				mob.tell(_("There is already a wall of air here."));
+				mob.tell(L("There is already a wall of air here."));
 				return false;
 			}
 		}
@@ -158,14 +158,14 @@ public class Spell_WallOfAir extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),auto?_("An swirling wall of air appears!"):_("^S<S-NAME> conjur(s) up a swirling wall of air!^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),auto?L("An swirling wall of air appears!"):L("^S<S-NAME> conjur(s) up a swirling wall of air!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final Item I=CMClass.getItem("GenItem");
-				I.setName(_("a wall of air"));
+				I.setName(L("a wall of air"));
 				I.setDisplayText("");
-				I.setDescription(_("The air is swirling dangerously."));
+				I.setDescription(L("The air is swirling dangerously."));
 				I.setMaterial(RawMaterial.RESOURCE_NOTHING);
 				CMLib.flags().setGettable(I,false);
 				I.recoverPhyStats();
@@ -175,7 +175,7 @@ public class Spell_WallOfAir extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> incant(s), but the magic fizzles."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> incant(s), but the magic fizzles."));
 
 		// return whether it worked
 		return success;

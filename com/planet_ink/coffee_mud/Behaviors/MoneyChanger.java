@@ -210,13 +210,13 @@ public class MoneyChanger extends StdBehavior
 		{
 			if(!(msg.tool() instanceof Coins))
 			{
-				CMLib.commands().postSay(observer,source,_("I'm sorry, I can only accept money."),true,false);
+				CMLib.commands().postSay(observer,source,L("I'm sorry, I can only accept money."),true,false);
 				return false;
 			}
 			else
 			if(!doIExchangeThisCurrency(affecting,((Coins)msg.tool()).getCurrency()))
 			{
-				CMLib.commands().postSay(observer,source,_("I'm sorry, I don't accept that kind of currency."),true,false);
+				CMLib.commands().postSay(observer,source,L("I'm sorry, I don't accept that kind of currency."),true,false);
 				return false;
 			}
 			double value=((Coins)msg.tool()).getTotalValue();
@@ -230,7 +230,7 @@ public class MoneyChanger extends StdBehavior
 			final Coins C=CMLib.beanCounter().makeBestCurrency(observer,value);
 			if((value<=0)||(C==null))
 			{
-				CMLib.commands().postSay(observer,source,_("I'm sorry, I can not change such a small amount."),true,false);
+				CMLib.commands().postSay(observer,source,L("I'm sorry, I can not change such a small amount."),true,false);
 				return false;
 			}
 		}
@@ -266,7 +266,7 @@ public class MoneyChanger extends StdBehavior
 				if((value>0.0)&&(C!=null))
 				{
 					// this message will actually end up triggering the hand-over.
-					final CMMsg newMsg=CMClass.getMsg(observer,source,C,CMMsg.MSG_SPEAK,_("^T<S-NAME> say(s) 'Thank you for your business' to <T-NAMESELF>.^?"));
+					final CMMsg newMsg=CMClass.getMsg(observer,source,C,CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) 'Thank you for your business' to <T-NAMESELF>.^?"));
 					C.setOwner(observer);
 					final long num=C.getNumberOfCoins();
 					final String curr=C.getCurrency();
@@ -278,12 +278,12 @@ public class MoneyChanger extends StdBehavior
 					msg.addTrailerMsg(newMsg);
 				}
 				else
-					CMLib.commands().postSay(observer,source,_("Gee, thanks. :)"),true,false);
+					CMLib.commands().postSay(observer,source,L("Gee, thanks. :)"),true,false);
 				((Coins)msg.tool()).destroy();
 			}
 			else
 			if(!CMLib.flags().canBeSeenBy(source,observer))
-				CMLib.commands().postSay(observer,null,_("Wha?  Where did this come from?  Cool!"),true,false);
+				CMLib.commands().postSay(observer,null,L("Wha?  Where did this come from?  Cool!"),true,false);
 		}
 		else
 		if((msg.source()==observer)

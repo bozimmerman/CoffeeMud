@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_MassWaterbreath extends Spell
 {
 	@Override public String ID() { return "Spell_MassWaterbreath"; }
-	private final static String localizedName = CMLib.lang()._("Mass Waterbreath");
+	private final static String localizedName = CMLib.lang().L("Mass Waterbreath");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
@@ -48,7 +48,7 @@ public class Spell_MassWaterbreath extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,false);
 		if(h==null)
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth casting this on."));
+			mob.tell(L("There doesn't appear to be anyone here worth casting this on."));
 			return false;
 		}
 
@@ -63,7 +63,7 @@ public class Spell_MassWaterbreath extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> wave(s) <S-HIS-HER> arms and speak(s).^?")))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> arms and speak(s).^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -78,13 +78,13 @@ public class Spell_MassWaterbreath extends Spell
 						mob.location().send(mob,msg);
 						final Spell_WaterBreathing breath=new Spell_WaterBreathing();
 						breath.setProficiency(proficiency());
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> grow(s) a pair of gills!"));
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> grow(s) a pair of gills!"));
 						breath.beneficialAffect(mob,target,asLevel,0);
 					}
 				}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> wave(s) <S-HIS-HER> arms and speak(s), but the spell fizzles."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> wave(s) <S-HIS-HER> arms and speak(s), but the spell fizzles."));
 
 
 		// return whether it worked

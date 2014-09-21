@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_Light extends Spell
 {
 	@Override public String ID() { return "Spell_Light"; }
-	private final static String localizedName = CMLib.lang()._("Light");
+	private final static String localizedName = CMLib.lang().L("Light");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Light)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Light)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -70,7 +70,7 @@ public class Spell_Light extends Spell
 		// undo the affects of this spell
 		final Room room=CMLib.map().roomLocation(affected);
 		if(canBeUninvoked()&&(room!=null)&&(affected instanceof MOB))
-			room.show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,_("The light above <S-NAME> dims."));
+			room.show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,L("The light above <S-NAME> dims."));
 		super.unInvoke();
 		if(canBeUninvoked()&&(room!=null))
 			room.recoverRoomStats();
@@ -84,7 +84,7 @@ public class Spell_Light extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> light."));
+			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> light."));
 			return false;
 		}
 
@@ -96,7 +96,7 @@ public class Spell_Light extends Spell
 		final Room room=mob.location();
 		if((success)&&(room!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("^S<S-NAME> attain(s) a light above <S-HIS-HER> head!"):_("^S<S-NAME> invoke(s) a white light above <S-HIS-HER> head!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("^S<S-NAME> attain(s) a light above <S-HIS-HER> head!"):L("^S<S-NAME> invoke(s) a white light above <S-HIS-HER> head!^?"));
 			if(room.okMessage(mob,msg))
 			{
 				room.send(mob,msg);
@@ -105,7 +105,7 @@ public class Spell_Light extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,mob.location(),_("<S-NAME> attempt(s) to invoke light, but fail(s)."));
+			beneficialWordsFizzle(mob,mob.location(),L("<S-NAME> attempt(s) to invoke light, but fail(s)."));
 
 		return success;
 	}

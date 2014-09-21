@@ -36,7 +36,7 @@ import java.util.*;
 public class Dance_Cotillon extends Dance
 {
 	@Override public String ID() { return "Dance_Cotillon"; }
-	private final static String localizedName = CMLib.lang()._("Cotillon");
+	private final static String localizedName = CMLib.lang().L("Cotillon");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected String danceOf(){return name()+" Dance";}
@@ -94,7 +94,7 @@ public class Dance_Cotillon extends Dance
 				if((whichLast!=null)
 				&&(M.isInCombat())
 				&&(M.getVictim().getVictim()!=whichLast)
-				&&(whichLast.location().show(whichLast,null,M.getVictim(),CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> dance(s) into <O-YOUPOSS> way."))))
+				&&(whichLast.location().show(whichLast,null,M.getVictim(),CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> dance(s) into <O-YOUPOSS> way."))))
 					M.getVictim().setVictim(whichLast);
 			}
 		}

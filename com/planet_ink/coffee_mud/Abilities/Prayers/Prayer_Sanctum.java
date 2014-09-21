@@ -35,9 +35,9 @@ import java.util.*;
 public class Prayer_Sanctum extends Prayer
 {
 	@Override public String ID() { return "Prayer_Sanctum"; }
-	private final static String localizedName = CMLib.lang()._("Sanctum");
+	private final static String localizedName = CMLib.lang().L("Sanctum");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Sanctum)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Sanctum)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
@@ -48,7 +48,7 @@ public class Prayer_Sanctum extends Prayer
 	{
 		if(!CMLib.law().doesAnyoneHavePrivilegesHere(mob, text(), R))
 		{
-			mob.tell(_("You feel your muscles unwilling to cooperate."));
+			mob.tell(L("You feel your muscles unwilling to cooperate."));
 			return false;
 		}
 		return true;
@@ -70,7 +70,7 @@ public class Prayer_Sanctum extends Prayer
 				&&(msg.source().amFollowing().getClanRole(text())==null)))
 		&&(!CMLib.law().doesHavePriviledgesHere(msg.source(),R)))
 		{
-			msg.source().tell(_("You feel your muscles unwilling to cooperate."));
+			msg.source().tell(L("You feel your muscles unwilling to cooperate."));
 			return false;
 		}
 		if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS))
@@ -127,7 +127,7 @@ public class Prayer_Sanctum extends Prayer
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("This place is already a sanctum."));
+			mob.tell(L("This place is already a sanctum."));
 			return false;
 		}
 
@@ -137,7 +137,7 @@ public class Prayer_Sanctum extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 to make this place a sanctum.^?",prayForWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 to make this place a sanctum.^?",prayForWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -163,7 +163,7 @@ public class Prayer_Sanctum extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 to make this place a sanctum, but <S-IS-ARE> not answered.",prayForWord(mob)));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 to make this place a sanctum, but <S-IS-ARE> not answered.",prayForWord(mob)));
 
 		return success;
 	}

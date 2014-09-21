@@ -39,7 +39,7 @@ import java.util.*;
 public class Chant_MassFungalGrowth extends Chant_SummonFungus
 {
 	@Override public String ID() { return "Chant_MassFungalGrowth"; }
-	private final static String localizedName = CMLib.lang()._("Mass Fungal Growth");
+	private final static String localizedName = CMLib.lang().L("Mass Fungal Growth");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -68,7 +68,7 @@ public class Chant_MassFungalGrowth extends Chant_SummonFungus
 		}
 		if(V.size()>0)
 		{
-			mob.location().show(mob,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_NOISE,_("The faint sound of fungus popping into existence can be heard."));
+			mob.location().show(mob,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_NOISE,L("The faint sound of fungus popping into existence can be heard."));
 			int done=0;
 			for(int v=0;v<V.size();v++)
 			{

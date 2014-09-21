@@ -74,9 +74,9 @@ public class MOBEater extends ActiveTicker
 			lastKnownLocation=((MOB)forMe).location();
 			if(lastKnownLocation!=null)
 				Stomach.setArea(lastKnownLocation.getArea());
-			Stomach.setDisplayText(_("The Stomach of @x1",forMe.name()));
-			Stomach.setName(_("the stomach of @x1",forMe.name()));
-			Stomach.setDescription(_("You are in the stomach of @x1.  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.",forMe.name()));
+			Stomach.setDisplayText(L("The Stomach of @x1",forMe.name()));
+			Stomach.setName(L("the stomach of @x1",forMe.name()));
+			Stomach.setDescription(L("You are in the stomach of @x1.  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.",forMe.name()));
 			Stomach.addNonUninvokableEffect(CMClass.getAbility("Prop_NoRecall"));
 			Stomach.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));
 		}
@@ -169,14 +169,14 @@ public class MOBEater extends ActiveTicker
 										   CMMsg.MSG_EAT,
 										   CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,
 										   CMMsg.MSG_NOISYMOVEMENT,
-										   _("<S-NAME> swallow(es) <T-NAMESELF> WHOLE!"));
+										   L("<S-NAME> swallow(es) <T-NAMESELF> WHOLE!"));
 				if(mob.location().okMessage(TastyMorsel,EatMsg))
 				{
 					mob.location().send(TastyMorsel,EatMsg);
 					if(EatMsg.value()==0)
 					{
 						Stomach.bringMobHere(TastyMorsel,false);
-						final CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach,null,CMMsg.MSG_ENTER,Stomach.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> slide(s) down the gullet into the stomach!"));
+						final CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach,null,CMMsg.MSG_ENTER,Stomach.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> slide(s) down the gullet into the stomach!"));
 						Stomach.send(TastyMorsel,enterMsg);
 					}
 				}
@@ -200,7 +200,7 @@ public class MOBEater extends ActiveTicker
 										   TastyMorsel,
 										   null,
 										   CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,
-										   _("<S-NAME> digest(s) <T-NAMESELF>!!"));
+										   L("<S-NAME> digest(s) <T-NAMESELF>!!"));
 				// no OKaffectS, since the dragon is not in his own stomach.
 				Stomach.send(mob,DigestMsg);
 				int damage=(int)Math.round(TastyMorsel.curState().getHitPoints() * CMath.div(pctAcidHp, 100));

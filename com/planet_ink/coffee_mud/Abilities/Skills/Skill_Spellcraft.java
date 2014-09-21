@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Spellcraft extends StdSkill
 {
 	@Override public String ID() { return "Skill_Spellcraft"; }
-	private final static String localizedName = CMLib.lang()._("Spellcraft");
+	private final static String localizedName = CMLib.lang().L("Spellcraft");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -102,7 +102,7 @@ public class Skill_Spellcraft extends StdSkill
 				final Ability A=(Ability)copyOf();
 				A.setMiscText(msg.tool().ID());
 				lastID=msg.tool().ID();
-				msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),A,CMMsg.MSG_OK_VISUAL,_("<T-NAME> casts '@x1'.",msg.tool().name()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+				msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),A,CMMsg.MSG_OK_VISUAL,L("<T-NAME> casts '@x1'.",msg.tool().name()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 				helpProficiency(mob, 0);
 			}
 		}

@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Buffoonery extends BardSkill
 {
 	@Override public String ID() { return "Skill_Buffoonery"; }
-	private final static String localizedName = CMLib.lang()._("Buffoonery");
+	private final static String localizedName = CMLib.lang().L("Buffoonery");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -135,20 +135,20 @@ public class Skill_Buffoonery extends BardSkill
 			}
 			if(commands.size()<2)
 			{
-				mob.tell(_("You must specify a target, and what item to swap on the target!"));
+				mob.tell(L("You must specify a target, and what item to swap on the target!"));
 				return false;
 			}
 		}
 		final Item I=mob.findItem(null,(String)commands.lastElement());
 		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
 		{
-			mob.tell(_("You don't seem to have '@x1'.",((String)commands.lastElement())));
+			mob.tell(L("You don't seem to have '@x1'.",((String)commands.lastElement())));
 			return false;
 		}
 		if(((I instanceof Armor)&&(I.basePhyStats().armor()>1))
 		||((I instanceof Weapon)&&(I.basePhyStats().damage()>1)))
 		{
-			mob.tell(_("@x1 is not buffoonish enough!",I.name(mob)));
+			mob.tell(L("@x1 is not buffoonish enough!",I.name(mob)));
 			return false;
 		}
 		commands.removeElementAt(commands.size()-1);
@@ -161,7 +161,7 @@ public class Skill_Buffoonery extends BardSkill
 		{
 			if(!freePosition(target))
 			{
-				mob.tell(_("@x1 has no free wearing positions!",target.name(mob)));
+				mob.tell(L("@x1 has no free wearing positions!",target.name(mob)));
 				return false;
 			}
 		}
@@ -179,7 +179,7 @@ public class Skill_Buffoonery extends BardSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,(CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_DELICATE|CMMsg.MASK_MALICIOUS)|(auto?CMMsg.MASK_ALWAYS:0),auto?"":_("<S-NAME> do(es) buffoonery to <T-NAMESELF>."));			if(mob.location().okMessage(mob,msg))
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_DELICATE|CMMsg.MASK_MALICIOUS)|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("<S-NAME> do(es) buffoonery to <T-NAMESELF>."));			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				long position=-1;
@@ -193,7 +193,7 @@ public class Skill_Buffoonery extends BardSkill
 					final Vector free=getFreeWearingPositions(target);
 					if(free.size()<1)
 					{
-						mob.tell(_("@x1 has no free wearing positions!",target.name(mob)));
+						mob.tell(L("@x1 has no free wearing positions!",target.name(mob)));
 						return false;
 					}
 					if((free.contains(Long.valueOf(Wearable.WORN_WIELD)))
@@ -211,7 +211,7 @@ public class Skill_Buffoonery extends BardSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) buffoonery on <T-NAMESELF>, but fail(s)."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) buffoonery on <T-NAMESELF>, but fail(s)."));
 
 		return success;
 	}

@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_CritStrike extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_CritStrike"; }
-	private final static String localizedName = CMLib.lang()._("Critical Strike");
+	private final static String localizedName = CMLib.lang().L("Critical Strike");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

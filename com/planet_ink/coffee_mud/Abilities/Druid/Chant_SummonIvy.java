@@ -36,7 +36,7 @@ import java.util.*;
 public class Chant_SummonIvy extends Chant_SummonPlants
 {
 	@Override public String ID() { return "Chant_SummonIvy"; }
-	private final static String localizedName = CMLib.lang()._("Summon Ivy");
+	private final static String localizedName = CMLib.lang().L("Summon Ivy");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
@@ -51,19 +51,19 @@ public class Chant_SummonIvy extends Chant_SummonPlants
 		{
 		case 1:
 		case 4:
-			newItem.setName(_("poison ivy"));
-			newItem.setDisplayText(_("a lovely trifoliate is growing here."));
+			newItem.setName(L("poison ivy"));
+			newItem.setDisplayText(L("a lovely trifoliate is growing here."));
 			newItem.setDescription("");
 			break;
 		case 2:
-			newItem.setName(_("poison sumac"));
-			newItem.setDisplayText(_("a small pinnately leafletted tree grows here"));
+			newItem.setName(L("poison sumac"));
+			newItem.setDisplayText(L("a small pinnately leafletted tree grows here"));
 			newItem.setDescription("");
 			break;
 		case 3:
 		case 5:
-			newItem.setName(_("poison oak"));
-			newItem.setDisplayText(_("a lovely wrinkled plant grows here"));
+			newItem.setName(L("poison oak"));
+			newItem.setDisplayText(L("a lovely wrinkled plant grows here"));
 			newItem.setDescription("");
 			break;
 		}
@@ -75,7 +75,7 @@ public class Chant_SummonIvy extends Chant_SummonPlants
 		newItem.addNonUninvokableEffect(CMClass.getAbility("Disease_PoisonIvy"));
 		room.addItem(newItem);
 		newItem.setExpirationDate(0);
-		room.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang()._("Suddenly, @x1 sprout(s) up here.",newItem.name()));
+		room.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang().L("Suddenly, @x1 sprout(s) up here.",newItem.name()));
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
 		if(CMLib.law().doesOwnThisProperty(mob,room))

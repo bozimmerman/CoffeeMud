@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_Tangle extends Chant
 {
 	@Override public String ID() { return "Chant_Tangle"; }
-	private final static String localizedName = CMLib.lang()._("Tangle");
+	private final static String localizedName = CMLib.lang().L("Tangle");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Tangled)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Tangled)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -77,7 +77,7 @@ public class Chant_Tangle extends Chant
 			&&((msg.sourceMajor(CMMsg.MASK_HANDS))
 			||(msg.sourceMajor(CMMsg.MASK_MOVE))))
 			{
-				mob.location().show(mob,null,thePlants,CMMsg.MSG_OK_ACTION,_("<S-NAME> struggle(s) against <O-NAME>."));
+				mob.location().show(mob,null,thePlants,CMMsg.MSG_OK_ACTION,L("<S-NAME> struggle(s) against <O-NAME>."));
 				amountRemaining-=(mob.charStats().getStat(CharStats.STAT_STRENGTH)*4);
 				if(amountRemaining<0)
 					unInvoke();
@@ -100,7 +100,7 @@ public class Chant_Tangle extends Chant
 		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
-				mob.location().show(mob,null,thePlants,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> manage(s) to break <S-HIS-HER> way free of <O-NAME>."));
+				mob.location().show(mob,null,thePlants,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> manage(s) to break <S-HIS-HER> way free of <O-NAME>."));
 			CMLib.commands().postStand(mob,true);
 		}
 	}
@@ -126,7 +126,7 @@ public class Chant_Tangle extends Chant
 		thePlants=Druid_MyPlants.myPlant(mob.location(),mob,0);
 		if(thePlants==null)
 		{
-			mob.tell(_("There doesn't appear to be any plants here you can control!"));
+			mob.tell(L("There doesn't appear to be any plants here you can control!"));
 			return false;
 		}
 
@@ -141,7 +141,7 @@ public class Chant_Tangle extends Chant
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> begin(s) to chant.^?")))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> begin(s) to chant.^?")))
 			{
 				// it worked, so build a copy of this ability,
 				// and add it to the affects list of the
@@ -157,14 +157,14 @@ public class Chant_Tangle extends Chant
 						if(target.location()==mob.location())
 						{
 							success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1);
-							target.location().show(target,null,thePlants,CMMsg.MSG_OK_ACTION,_("<S-NAME> become(s) stuck in <O-NAME> as they grow and twist around <S-HIM-HER>!"));
+							target.location().show(target,null,thePlants,CMMsg.MSG_OK_ACTION,L("<S-NAME> become(s) stuck in <O-NAME> as they grow and twist around <S-HIM-HER>!"));
 						}
 					}
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> chant(s), but the magic fades."));
+			return maliciousFizzle(mob,null,L("<S-NAME> chant(s), but the magic fades."));
 
 
 		// return whether it worked

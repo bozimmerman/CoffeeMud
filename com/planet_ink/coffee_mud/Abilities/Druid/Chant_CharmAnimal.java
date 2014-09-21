@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_CharmAnimal extends Chant
 {
 	@Override public String ID() { return "Chant_CharmAnimal"; }
-	private final static String localizedName = CMLib.lang()._("Charm Animal");
+	private final static String localizedName = CMLib.lang().L("Charm Animal");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Charmed)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Charmed)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -98,7 +98,7 @@ public class Chant_CharmAnimal extends Chant
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.target()==mob.amFollowing()))
 		{
-			mob.tell(_("You like @x1 too much.",mob.amFollowing().charStats().himher()));
+			mob.tell(L("You like @x1 too much.",mob.amFollowing().charStats().himher()));
 			return false;
 		}
 		else
@@ -109,7 +109,7 @@ public class Chant_CharmAnimal extends Chant
 		&&(mob.amFollowing()!=null)
 		&&(((Room)msg.target()).isInhabitant(mob.amFollowing())))
 		{
-			mob.tell(_("You don't want to leave your friend."));
+			mob.tell(L("You don't want to leave your friend."));
 			return false;
 		}
 		else
@@ -117,7 +117,7 @@ public class Chant_CharmAnimal extends Chant
 		&&(mob.amFollowing()!=null)
 		&&(msg.sourceMinor()==CMMsg.TYP_NOFOLLOW))
 		{
-			mob.tell(_("You like @x1 too much.",mob.amFollowing().name()));
+			mob.tell(L("You like @x1 too much.",mob.amFollowing().name()));
 			return false;
 		}
 
@@ -154,7 +154,7 @@ public class Chant_CharmAnimal extends Chant
 
 		if((canBeUninvoked()&&(!mob.amDead())))
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> natural-will returns."));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> natural-will returns."));
 			if(mob.amFollowing()!=null)
 				CMLib.commands().postFollow(mob,null,false);
 			CMLib.commands().postStand(mob,true);
@@ -197,7 +197,7 @@ public class Chant_CharmAnimal extends Chant
 
 		if(!CMLib.flags().isAnimalIntelligence(target))
 		{
-			mob.tell(_("@x1 is not an animal!",target.name(mob)));
+			mob.tell(L("@x1 is not an animal!",target.name(mob)));
 			return false;
 		}
 
@@ -216,7 +216,7 @@ public class Chant_CharmAnimal extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final String str=auto?"":_("^S<S-NAME> chant(s) at <T-NAMESELF>.^?");
+			final String str=auto?"":L("^S<S-NAME> chant(s) at <T-NAMESELF>.^?");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),str);
 			if(R.okMessage(mob,msg))
 			{
@@ -230,13 +230,13 @@ public class Chant_CharmAnimal extends Chant
 						CMLib.commands().postFollow(target,mob,false);
 						CMLib.combat().makePeaceInGroup(mob);
 						if(target.amFollowing()!=mob)
-							mob.tell(_("@x1 seems unwilling to follow you.",target.name(mob)));
+							mob.tell(L("@x1 seems unwilling to follow you.",target.name(mob)));
 					}
 				}
 			}
 		}
 		if(!success)
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens."));
 
 		// return whether it worked
 		return success;

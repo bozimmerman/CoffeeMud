@@ -37,7 +37,7 @@ import java.util.*;
 public class Thief_Swipe extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Swipe"; }
-	private final static String localizedName = CMLib.lang()._("Swipe gold");
+	private final static String localizedName = CMLib.lang().L("Swipe gold");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -95,7 +95,7 @@ public class Thief_Swipe extends ThiefSkill
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell(_("Swipe from whom?"));
+			mob.tell(L("Swipe from whom?"));
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
@@ -103,19 +103,19 @@ public class Thief_Swipe extends ThiefSkill
 
 		if((mob.isInCombat())&&(CMLib.flags().aliveAwakeMobile(target,true)||(mob.getVictim()!=target)))
 		{
-			mob.tell(mob,mob.getVictim(),null,_("Not while you are fighting <T-NAME>!"));
+			mob.tell(mob,mob.getVictim(),null,L("Not while you are fighting <T-NAME>!"));
 			return false;
 		}
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
 		if((!target.mayIFight(mob))||(levelDiff>15))
 		{
-			mob.tell(_("You cannot swipe from @x1.",target.charStats().himher()));
+			mob.tell(L("You cannot swipe from @x1.",target.charStats().himher()));
 			return false;
 		}
 		if(target==mob)
 		{
-			mob.tell(_("You cannot swipe from yourself."));
+			mob.tell(L("You cannot swipe from yourself."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -144,12 +144,12 @@ public class Thief_Swipe extends ThiefSkill
 			if(CMLib.dice().rollPercentage()>discoverChance)
 			{
 				if((target.isMonster())&&(mob.getVictim()==null)) mob.setVictim(target);
-				final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":_("You fumble the swipe; <T-NAME> spots you!"),CMMsg.MSG_NOISYMOVEMENT,auto?"":_("<S-NAME> tries to pick your pocket and fails!"),CMMsg.MSG_OK_VISUAL,auto?"":_("<S-NAME> tries to pick <T-NAME>'s pocket and fails!"));
+				final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":L("You fumble the swipe; <T-NAME> spots you!"),CMMsg.MSG_NOISYMOVEMENT,auto?"":L("<S-NAME> tries to pick your pocket and fails!"),CMMsg.MSG_OK_VISUAL,auto?"":L("<S-NAME> tries to pick <T-NAME>'s pocket and fails!"));
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
 			else
-				mob.tell(auto?"":_("You fumble the swipe."));
+				mob.tell(auto?"":L("You fumble the swipe."));
 		}
 		else
 		{
@@ -167,10 +167,10 @@ public class Thief_Swipe extends ThiefSkill
 			int code=CMMsg.MSG_THIEF_ACT;
 			if(!auto)
 				if(goldTaken > 0)
-					str=_("<S-NAME> pick(s) <T-HIS-HER> pocket for @x1.",goldTakenStr);
+					str=L("<S-NAME> pick(s) <T-HIS-HER> pocket for @x1.",goldTakenStr);
 				else
 				{
-					str=_("<S-NAME> attempt(s) to pick <T-HIS-HER> pocket, but nothing was found to steal!");
+					str=L("<S-NAME> attempt(s) to pick <T-HIS-HER> pocket, but nothing was found to steal!");
 					code=CMMsg.MSG_QUIETMOVEMENT;
 				}
 

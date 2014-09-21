@@ -38,7 +38,7 @@ import java.util.*;
 public class SoundEcho extends StdAbility
 {
 	@Override public String ID() { return "SoundEcho"; }
-	private final static String localizedName = CMLib.lang()._("Sound Echo");
+	private final static String localizedName = CMLib.lang().L("Sound Echo");
 	@Override public String name() { return localizedName; }
 	protected String displayText="";
 	@Override public String displayText(){ return displayText;}
@@ -56,7 +56,7 @@ public class SoundEcho extends StdAbility
 		bmob=CMClass.getMOB("StdMOB");
 		if(bmob!=null)
 		{
-			bmob.setName(_("Someone"));
+			bmob.setName(L("Someone"));
 			bmob.basePhyStats().setSensesMask(PhyStats.CAN_NOT_SEE);
 			bmob.recoverPhyStats();
 		}

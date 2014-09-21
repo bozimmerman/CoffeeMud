@@ -36,9 +36,9 @@ import java.util.*;
 public class Skill_Subdue extends StdSkill
 {
 	@Override public String ID() { return "Skill_Subdue"; }
-	private final static String localizedName = CMLib.lang()._("Subdue");
+	private final static String localizedName = CMLib.lang().L("Subdue");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return _("(Subdueing "+whom+")"); }
+	@Override public String displayText() { return L("(Subdueing "+whom+")"); }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -92,7 +92,7 @@ public class Skill_Subdue extends StdSkill
 			&&(CMLib.flags().canBeSeenBy(whom, msg.source())))
 			{
 				final double actualHitPct = CMath.div(whom.curState().getHitPoints()-whomDamage,whom.baseState().getHitPoints());
-				msg.source().tell(msg.source(),whom,null,_("<T-NAME> is @x1 health away from being overcome.",CMath.toPct(actualHitPct)));
+				msg.source().tell(msg.source(),whom,null,L("<T-NAME> is @x1 health away from being overcome.",CMath.toPct(actualHitPct)));
 			}
 
 			if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
@@ -114,7 +114,7 @@ public class Skill_Subdue extends StdSkill
 	public void unInvoke()
 	{
 		if((canBeUninvoked())&&(affected instanceof MOB))
-			((MOB)affected).tell(_("You are no longer trying to subdue @x1",whom.name()));
+			((MOB)affected).tell(L("You are no longer trying to subdue @x1",whom.name()));
 		super.unInvoke();
 	}
 
@@ -140,7 +140,7 @@ public class Skill_Subdue extends StdSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":_("^F^<FIGHT^><S-NAME> attempt(s) to subdue <T-NAMESELF>!^</FIGHT^>^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("^F^<FIGHT^><S-NAME> attempt(s) to subdue <T-NAMESELF>!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -155,7 +155,7 @@ public class Skill_Subdue extends StdSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to subdue <T-NAMESELF>, but fails."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to subdue <T-NAMESELF>, but fails."));
 		return success;
 	}
 }

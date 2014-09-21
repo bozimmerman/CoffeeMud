@@ -37,7 +37,7 @@ import java.util.*;
 public class CageBuilding extends Wainwrighting
 {
 	@Override public String ID() { return "CageBuilding"; }
-	private final static String localizedName = CMLib.lang()._("Cage Building");
+	private final static String localizedName = CMLib.lang().L("Cage Building");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"BUILDCAGE","CAGEBUILDING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -74,7 +74,7 @@ public class CageBuilding extends Wainwrighting
 			return true;
 		if(commands.size()==0)
 		{
-			commonTell(mob,_("Build what? Enter \"buildcage list\" for a list, \"buildcage learn <item>\" to gain recipes, or \"buildcage stop\" to cancel."));
+			commonTell(mob,L("Build what? Enter \"buildcage list\" for a list, \"buildcage learn <item>\" to gain recipes, or \"buildcage stop\" to cancel."));
 			return false;
 		}
 		return super.invoke(mob,commands,givenTarget,auto,asLevel);

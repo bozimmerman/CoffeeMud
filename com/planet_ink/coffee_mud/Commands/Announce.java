@@ -95,12 +95,12 @@ public class Announce extends StdCommand
 		{
 			final String s=CMParms.combine(commands,1);
 			if(s.length()==0)
-				mob.tell(_("Your announce message is currently: @x1",mob.playerStats().getAnnounceMessage()));
+				mob.tell(L("Your announce message is currently: @x1",mob.playerStats().getAnnounceMessage()));
 			else
 			{
 				if(mob.playerStats()!=null)
 					mob.playerStats().setAnnounceMessage(s);
-				mob.tell(_("Your announce message has been changed."));
+				mob.tell(L("Your announce message has been changed."));
 			}
 		}
 		else
@@ -141,11 +141,11 @@ public class Announce extends StdCommand
 					}
 				}
 				if(!found)
-					mob.tell(_("You can't find anyone by that name."));
+					mob.tell(L("You can't find anyone by that name."));
 			}
 		}
 		else
-			mob.tell(_("Usage ANNOUNCETO [ALL|HERE|(USER NAME)] (MESSAGE)\n\rANNOUNCE (MESSAGE)\n\rANNOUNCEMSG (NEW ANNOUNCE PREFIX)\n\r"));
+			mob.tell(L("Usage ANNOUNCETO [ALL|HERE|(USER NAME)] (MESSAGE)\n\rANNOUNCE (MESSAGE)\n\rANNOUNCEMSG (NEW ANNOUNCE PREFIX)\n\r"));
 		return false;
 	}
 

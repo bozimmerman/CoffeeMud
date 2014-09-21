@@ -36,9 +36,9 @@ import java.util.*;
 public class Skill_CenterOfAttention extends BardSkill
 {
 	@Override public String ID() { return "Skill_CenterOfAttention"; }
-	private final static String localizedName = CMLib.lang()._("Center of Attention");
+	private final static String localizedName = CMLib.lang().L("Center of Attention");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return _("(Watching "+(invoker()==null?"a crazy bard":invoker().name())+")"); }
+	@Override public String displayText() { return L("(Watching "+(invoker()==null?"a crazy bard":invoker().name())+")"); }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -74,31 +74,31 @@ public class Skill_CenterOfAttention extends BardSkill
 			String targetStr;
 			switch(CMLib.dice().roll(1, 10, 0))
 			{
-			case 1: verbStr=_("<S-IS-ARE> entranced by"); break;
-			case 2: verbStr=_("remain(s) captivated by"); break;
-			case 3: verbStr=_("<S-IS-ARE> captivated by"); break;
-			case 4: verbStr=_("remain(s) entranced by"); break;
-			case 5: verbStr=_("can't stop watching"); break;
-			case 6: verbStr=_("stare(s) amazed at"); break;
-			case 7: verbStr=_("<S-IS-ARE> hypnotized by"); break;
-			case 8: verbStr=_("remain(s) enthralled by"); break;
-			case 9: verbStr=_("<S-IS-ARE> delighted by"); break;
-			default: verbStr=_("remain(s) enchanted by"); break;
+			case 1: verbStr=L("<S-IS-ARE> entranced by"); break;
+			case 2: verbStr=L("remain(s) captivated by"); break;
+			case 3: verbStr=L("<S-IS-ARE> captivated by"); break;
+			case 4: verbStr=L("remain(s) entranced by"); break;
+			case 5: verbStr=L("can't stop watching"); break;
+			case 6: verbStr=L("stare(s) amazed at"); break;
+			case 7: verbStr=L("<S-IS-ARE> hypnotized by"); break;
+			case 8: verbStr=L("remain(s) enthralled by"); break;
+			case 9: verbStr=L("<S-IS-ARE> delighted by"); break;
+			default: verbStr=L("remain(s) enchanted by"); break;
 			}
 			switch(CMLib.dice().roll(1, 10, 0))
 			{
-			case 1: targetStr=_("<T-YOUPOSS> performance"); break;
-			case 2: targetStr=_("<T-YOUPOSS> antics"); break;
-			case 3: targetStr=_("<T-YOUPOSS> flailing about"); break;
-			case 4: targetStr=_("<T-YOUPOSS> drama"); break;
-			case 5: targetStr=_("<T-YOUPOSS> show"); break;
-			case 6: targetStr=_("the ongoing spectacle"); break;
-			case 7: targetStr=_("<T-YOUPOSS> comedy"); break;
-			case 8: targetStr=_("<T-YOUPOSS> tomfoolery"); break;
-			case 9: targetStr=_("<T-YOUPOSS> escapades"); break;
-			default: targetStr=_("<T-YOUPOSS> stunts"); break;
+			case 1: targetStr=L("<T-YOUPOSS> performance"); break;
+			case 2: targetStr=L("<T-YOUPOSS> antics"); break;
+			case 3: targetStr=L("<T-YOUPOSS> flailing about"); break;
+			case 4: targetStr=L("<T-YOUPOSS> drama"); break;
+			case 5: targetStr=L("<T-YOUPOSS> show"); break;
+			case 6: targetStr=L("the ongoing spectacle"); break;
+			case 7: targetStr=L("<T-YOUPOSS> comedy"); break;
+			case 8: targetStr=L("<T-YOUPOSS> tomfoolery"); break;
+			case 9: targetStr=L("<T-YOUPOSS> escapades"); break;
+			default: targetStr=L("<T-YOUPOSS> stunts"); break;
 			}
-			mob.location().show(mob, invoker(), CMMsg.MSG_OK_VISUAL, _("<S-NAME> @x1 @x2.",verbStr,targetStr));
+			mob.location().show(mob, invoker(), CMMsg.MSG_OK_VISUAL, L("<S-NAME> @x1 @x2.",verbStr,targetStr));
 		}
 
 		return true;
@@ -124,7 +124,7 @@ public class Skill_CenterOfAttention extends BardSkill
 	{
 		if(CMLib.flags().isSitting(mob))
 		{
-			mob.tell(_("You need to stand up!"));
+			mob.tell(L("You need to stand up!"));
 			return false;
 		}
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
@@ -136,7 +136,7 @@ public class Skill_CenterOfAttention extends BardSkill
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth performing for."));
+			mob.tell(L("There doesn't appear to be anyone here worth performing for."));
 			return false;
 		}
 
@@ -144,7 +144,7 @@ public class Skill_CenterOfAttention extends BardSkill
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),
-										auto?"":_("<S-NAME> begin(s) flailing about while making loud silly noises."));
+										auto?"":L("<S-NAME> begin(s) flailing about while making loud silly noises."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -165,7 +165,7 @@ public class Skill_CenterOfAttention extends BardSkill
 							if((msg.value()<=0)&&(msg2.value()<=0))
 							{
 								maliciousAffect(mob,target,asLevel,3,-1);
-								target.location().show(target,mob,CMMsg.MSG_OK_ACTION,_("<S-NAME> begin(s) watching <T-NAME> with an amused expression."));
+								target.location().show(target,mob,CMMsg.MSG_OK_ACTION,L("<S-NAME> begin(s) watching <T-NAME> with an amused expression."));
 							}
 						}
 					}
@@ -174,7 +174,7 @@ public class Skill_CenterOfAttention extends BardSkill
 			setTimeOfNextCast(mob);
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> attempt(s) to become the center of attention, but fail(s)."));
+			return maliciousFizzle(mob,null,L("<S-NAME> attempt(s) to become the center of attention, but fail(s)."));
 		return success;
 	}
 }

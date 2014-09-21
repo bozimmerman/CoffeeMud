@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_SnakePit extends Trap_RoomPit
 {
 	@Override public String ID() { return "Trap_SnakePit"; }
-	private final static String localizedName = CMLib.lang()._("snake pit");
+	private final static String localizedName = CMLib.lang().L("snake pit");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -98,7 +98,7 @@ public class Trap_SnakePit extends Trap_RoomPit
 		if(getCagedAnimal(mob)==null)
 		{
 			if(mob!=null)
-				mob.tell(_("You'll need to set down some caged snakes first."));
+				mob.tell(L("You'll need to set down some caged snakes first."));
 			return false;
 		}
 		return true;
@@ -128,10 +128,10 @@ public class Trap_SnakePit extends Trap_RoomPit
 	public void finishSpringing(MOB target)
 	{
 		if((!invoker().mayIFight(target))||(target.phyStats().weight()<5))
-			target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> float(s) gently into the pit!"));
+			target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> float(s) gently into the pit!"));
 		else
 		{
-			target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> hit(s) the pit floor with a THUMP!"));
+			target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> hit(s) the pit floor with a THUMP!"));
 			final int damage=CMLib.dice().roll(trapLevel()+abilityCode(),6,1);
 			CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,-1,null);
 		}

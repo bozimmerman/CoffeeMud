@@ -38,9 +38,9 @@ public class Fighter_BodyFlip extends FighterSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Fighter_BodyFlip"; }
-	private final static String localizedName = CMLib.lang()._("Body Flip");
+	private final static String localizedName = CMLib.lang().L("Body Flip");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Flipped and stunned)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Flipped and stunned)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -86,7 +86,7 @@ public class Fighter_BodyFlip extends FighterSkill
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> regain(s) <S-HIS-HER> feet."));
+				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> regain(s) <S-HIS-HER> feet."));
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
@@ -94,7 +94,7 @@ public class Fighter_BodyFlip extends FighterSkill
 				}
 			}
 			else
-				mob.tell(_("You regain your feet."));
+				mob.tell(L("You regain your feet."));
 		}
 	}
 
@@ -130,35 +130,35 @@ public class Fighter_BodyFlip extends FighterSkill
 
 		if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
 		{
-			mob.tell(_("@x1 is already on the floor!",target.name(mob)));
+			mob.tell(L("@x1 is already on the floor!",target.name(mob)));
 			return false;
 		}
 
 		if(CMLib.flags().isSitting(mob))
 		{
-			mob.tell(_("You need to stand up!"));
+			mob.tell(L("You need to stand up!"));
 			return false;
 		}
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
 			return false;
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell(_("You are too far away to do a body flip!"));
+			mob.tell(L("You are too far away to do a body flip!"));
 			return false;
 		}
 		if(target.riding()!=null)
 		{
-			mob.tell(_("You can't flip someone @x1 @x2!",target.riding().stateString(target),target.riding().name()));
+			mob.tell(L("You can't flip someone @x1 @x2!",target.riding().stateString(target),target.riding().name()));
 			return false;
 		}
 		if(CMLib.flags().isInFlight(target))
 		{
-			mob.tell(_("@x1 is flying and can't be flipped over!",target.name(mob)));
+			mob.tell(L("@x1 is flying and can't be flipped over!",target.name(mob)));
 			return false;
 		}
 		if(mob.charStats().getBodyPart(Race.BODY_ARM)<=1)
 		{
-			mob.tell(_("You need at least two arms to do this."));
+			mob.tell(L("You need at least two arms to do this."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -175,17 +175,17 @@ public class Fighter_BodyFlip extends FighterSkill
 		success=success&&(target.charStats().getBodyPart(Race.BODY_LEG)>0);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?_("<T-NAME> flip(s) over!"):_("^F^<FIGHT^><S-NAME> flip(s) <T-NAMESELF> over!^</FIGHT^>^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?L("<T-NAME> flip(s) over!"):L("^F^<FIGHT^><S-NAME> flip(s) <T-NAMESELF> over!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				maliciousAffect(mob,target,asLevel,2,-1);
-				target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> hit(s) the floor!"));
+				target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> hit(s) the floor!"));
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to flip <T-NAMESELF> over, but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to flip <T-NAMESELF> over, but fail(s)."));
 		return success;
 	}
 }

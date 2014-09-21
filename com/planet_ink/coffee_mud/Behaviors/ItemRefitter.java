@@ -100,19 +100,19 @@ public class ItemRefitter extends StdBehavior
 			final double cost=cost(tool);
 			if(!(tool instanceof Armor))
 			{
-				CMLib.commands().postSay(observer,source,_("I'm sorry, I can't refit that."),true,false);
+				CMLib.commands().postSay(observer,source,L("I'm sorry, I can't refit that."),true,false);
 				return false;
 			}
 
 			if(tool.basePhyStats().height()==0)
 			{
-				CMLib.commands().postSay(observer,source,_("This already looks your size!"),true,false);
+				CMLib.commands().postSay(observer,source,L("This already looks your size!"),true,false);
 				return false;
 			}
 			if(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),observer)<(cost))
 			{
 				final String costStr=CMLib.beanCounter().nameCurrencyShort(observer,cost);
-				CMLib.commands().postSay(observer,source,_("You'll need @x1 for me to refit that.",costStr),true,false);
+				CMLib.commands().postSay(observer,source,L("You'll need @x1 for me to refit that.",costStr),true,false);
 				return false;
 			}
 			return true;
@@ -144,9 +144,9 @@ public class ItemRefitter extends StdBehavior
 			((Item)msg.tool()).basePhyStats().setHeight(0);
 			((Item)msg.tool()).recoverPhyStats();
 
-			CMMsg newMsg=CMClass.getMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,_("<S-NAME> give(s) <O-NAME> to <T-NAMESELF> and charges <T-NAMESELF> @x1.",costStr));
+			CMMsg newMsg=CMClass.getMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,L("<S-NAME> give(s) <O-NAME> to <T-NAMESELF> and charges <T-NAMESELF> @x1.",costStr));
 			msg.addTrailerMsg(newMsg);
-			newMsg=CMClass.getMsg(observer,source,null,CMMsg.MSG_SPEAK,_("^T<S-NAME> say(s) 'There she is, a perfect fit!  Thanks for your business' to <T-NAMESELF>.^?"));
+			newMsg=CMClass.getMsg(observer,source,null,CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) 'There she is, a perfect fit!  Thanks for your business' to <T-NAMESELF>.^?"));
 			msg.addTrailerMsg(newMsg);
 			newMsg=CMClass.getMsg(observer,msg.tool(),null,CMMsg.MSG_DROP,null);
 			msg.addTrailerMsg(newMsg);

@@ -47,7 +47,7 @@ public class WizInv extends StdCommand
 			commands.insertElementAt("OFF",1);
 		commands.removeElementAt(0);
 		int abilityCode=PhyStats.IS_NOT_SEEN|PhyStats.IS_CLOAKED;
-		str=_("Prop_WizInvis");
+		str=L("Prop_WizInvis");
 		Ability A=mob.fetchEffect(str);
 		if((commands.size()>0)&&("NOCLOAK".startsWith(CMParms.combine(commands,0).trim().toUpperCase())))
 			abilityCode=PhyStats.IS_NOT_SEEN;
@@ -56,7 +56,7 @@ public class WizInv extends StdCommand
 		   if(A!=null)
 			   A.unInvoke();
 		   else
-			   mob.tell(_("You are not wizinvisible!"));
+			   mob.tell(L("You are not wizinvisible!"));
 		   return false;
 		}
 		else
@@ -64,7 +64,7 @@ public class WizInv extends StdCommand
 		{
 			if(CMath.bset(A.abilityCode(),abilityCode))
 			{
-				mob.tell(_("You have already faded from view!"));
+				mob.tell(L("You have already faded from view!"));
 				return false;
 			}
 		}
@@ -78,7 +78,7 @@ public class WizInv extends StdCommand
 		if(A!=null)
 		{
 			if(mob.location()!=null)
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> fade(s) from view!"));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> fade(s) from view!"));
 			if(mob.fetchEffect(A.ID())==null)
 				mob.addPriorityEffect((Ability)A.copyOf());
 			A=mob.fetchEffect(A.ID());
@@ -86,10 +86,10 @@ public class WizInv extends StdCommand
 
 			mob.recoverPhyStats();
 			mob.location().recoverRoomStats();
-			mob.tell(_("You may uninvoke WIZINV with 'WIZINV OFF'."));
+			mob.tell(L("You may uninvoke WIZINV with 'WIZINV OFF'."));
 			return false;
 		}
-		mob.tell(_("Wizard invisibility is not available!"));
+		mob.tell(L("Wizard invisibility is not available!"));
 		return false;
 	}
 

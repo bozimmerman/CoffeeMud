@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_GroupStatus extends Spell
 {
 	@Override public String ID() { return "Spell_GroupStatus"; }
-	private final static String localizedName = CMLib.lang()._("Group Status");
+	private final static String localizedName = CMLib.lang().L("Group Status");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Group Status)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Group Status)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -92,7 +92,7 @@ public class Spell_GroupStatus extends Spell
 				{
 					if(!reporteds.contains("LOWHITPOINTS"))
 					{
-						invoker().tell(_("@x1 is low on hit points.",mob.Name()));
+						invoker().tell(L("@x1 is low on hit points.",mob.Name()));
 						reporteds.add("LOWHITPOINTS");
 					}
 				}
@@ -113,7 +113,7 @@ public class Spell_GroupStatus extends Spell
 					&&(!affects.contains(A.ID())))
 					{
 						affects.add(A.ID());
-						invoker().tell(_("@x1 is now affected by @x2.",mob.Name(),A.name()));
+						invoker().tell(L("@x1 is now affected by @x2.",mob.Name(),A.name()));
 					}
 				}
 			}
@@ -131,7 +131,7 @@ public class Spell_GroupStatus extends Spell
 		{
 			if(!reporteds.contains("DEATH"))
 			{
-				invoker().tell(_("@x1 is dying.",affected.Name()));
+				invoker().tell(L("@x1 is dying.",affected.Name()));
 				reporteds.add("DEATH");
 			}
 		}
@@ -167,7 +167,7 @@ public class Spell_GroupStatus extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already knowledgable about <S-HIS-HER> group."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already knowledgable about <S-HIS-HER> group."));
 			return false;
 		}
 
@@ -180,7 +180,7 @@ public class Spell_GroupStatus extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> point(s) at <S-HIS-HER> group members and knowingly cast(s) a spell.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> point(s) at <S-HIS-HER> group members and knowingly cast(s) a spell.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -188,7 +188,7 @@ public class Spell_GroupStatus extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> point(s) at <S-HIS-HER> group members speak(s) knowingly, but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> point(s) at <S-HIS-HER> group members speak(s) knowingly, but nothing more happens."));
 
 
 		// return whether it worked

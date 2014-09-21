@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_VolcanicChasm extends Chant
 {
 	@Override public String ID() { return "Chant_VolcanicChasm"; }
-	private final static String localizedName = CMLib.lang()._("Volcanic Chasm");
+	private final static String localizedName = CMLib.lang().L("Volcanic Chasm");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -118,7 +118,7 @@ public class Chant_VolcanicChasm extends Chant
 		if((!auto)
 		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE))
 		{
-			mob.tell(_("This chant only works in caves."));
+			mob.tell(L("This chant only works in caves."));
 			return false;
 		}
 
@@ -137,7 +137,7 @@ public class Chant_VolcanicChasm extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) to the walls.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) to the walls.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -149,13 +149,13 @@ public class Chant_VolcanicChasm extends Chant
 						if((M!=null)&&(mob!=M))
 							mob.location().show(mob,M,CMMsg.MASK_MALICIOUS|CMMsg.TYP_OK_VISUAL,null);
 					}
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("Flames and sulfurous steam leap from cracks opening around you!"));
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("Flames and sulfurous steam leap from cracks opening around you!"));
 					maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) the walls, but the magic fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) the walls, but the magic fades."));
 		// return whether it worked
 		return success;
 	}

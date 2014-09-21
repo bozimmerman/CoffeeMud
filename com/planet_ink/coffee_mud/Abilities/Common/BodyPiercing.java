@@ -37,7 +37,7 @@ import java.util.*;
 public class BodyPiercing extends CommonSkill
 {
 	@Override public String ID() { return "BodyPiercing"; }
-	private final static String localizedName = CMLib.lang()._("Body Piercing");
+	private final static String localizedName = CMLib.lang().L("Body Piercing");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"BODYPIERCE","BODYPIERCING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -47,8 +47,8 @@ public class BodyPiercing extends CommonSkill
 	public BodyPiercing()
 	{
 		super();
-		displayText=_("You are piercing...");
-		verb=_("piercing");
+		displayText=L("You are piercing...");
+		verb=L("piercing");
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class BodyPiercing extends CommonSkill
 			return true;
 		if(commands.size()<2)
 		{
-			commonTell(mob,_("You must specify remove and/or whom you want to pierce, and what body part to pierce."));
+			commonTell(mob,L("You must specify remove and/or whom you want to pierce, and what body part to pierce."));
 			return false;
 		}
 		String name=(String)commands.firstElement();
@@ -114,7 +114,7 @@ public class BodyPiercing extends CommonSkill
 		&&(CMLib.flags().aliveAwakeMobile(target,true))
 		&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 		{
-			mob.tell(_("@x1 doesn't want any piercings.",target.Name()));
+			mob.tell(L("@x1 doesn't want any piercings.",target.Name()));
 			return false;
 		}
 
@@ -151,7 +151,7 @@ public class BodyPiercing extends CommonSkill
 		}
 		if((partNum<0)||(wearLocName==null))
 		{
-			commonTell(mob,_("'@x1' is not a valid location.  Valid locations include: @x2",part,allParts.toString().substring(2)));
+			commonTell(mob,L("'@x1' is not a valid location.  Valid locations include: @x2",part,allParts.toString().substring(2)));
 			return false;
 		}
 		final long wornCode=codes.get(partNum);
@@ -160,7 +160,7 @@ public class BodyPiercing extends CommonSkill
 		if((target.getWearPositions(wornCode)<=0)
 		||(target.freeWearPositions(wornCode,(short)(Short.MIN_VALUE+1),(short)0)<=0))
 		{
-			commonTell(mob,_("That location is not available for piercing. Make sure no clothing is being worn there."));
+			commonTell(mob,L("That location is not available for piercing. Make sure no clothing is being worn there."));
 			return false;
 		}
 
@@ -175,14 +175,14 @@ public class BodyPiercing extends CommonSkill
 		{
 			if(numTattsDone<=0)
 			{
-				commonTell(mob,_("There is no piercing there to heal."));
+				commonTell(mob,L("There is no piercing there to heal."));
 				return false;
 			}
 		}
 		else
 		if(numTattsDone>=target.getWearPositions(codes.get(partNum)))
 		{
-			commonTell(mob,_("That location is already decorated."));
+			commonTell(mob,L("That location is already decorated."));
 			return false;
 		}
 
@@ -192,13 +192,13 @@ public class BodyPiercing extends CommonSkill
 			writing=wearLocName+":Pierced "+wornName.toLowerCase();
 		else
 			writing=wearLocName+":A pierced "+wornName.toLowerCase();
-		verb=_("piercing @x1 on the @x2",target.name(),wornName);
-		displayText=_("You are @x1",verb);
+		verb=L("piercing @x1 on the @x2",target.name(),wornName);
+		displayText=L("You are @x1",verb);
 		if(!proficiencyCheck(mob,0,auto)) writing="";
 		final int duration=getDuration(30,mob,1,6);
-		String msgStr=_("<S-NAME> start(s) piercing <T-NAMESELF> on the @x1.",wornName.toLowerCase());
+		String msgStr=L("<S-NAME> start(s) piercing <T-NAMESELF> on the @x1.",wornName.toLowerCase());
 		if("REMOVE".equals(command))
-			msgStr=_("<S-NAME> heal(s) the piercing on <T-YOUPOSS> @x1.",wornName.toLowerCase());
+			msgStr=L("<S-NAME> heal(s) the piercing on <T-YOUPOSS> @x1.",wornName.toLowerCase());
 		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),msgStr);
 		if(mob.location().okMessage(mob,msg))
 		{

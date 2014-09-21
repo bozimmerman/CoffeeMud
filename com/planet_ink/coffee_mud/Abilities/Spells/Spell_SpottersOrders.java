@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_SpottersOrders extends Spell
 {
 	@Override public String ID() { return "Spell_SpottersOrders"; }
-	private final static String localizedName = CMLib.lang()._("Spotters Orders");
+	private final static String localizedName = CMLib.lang().L("Spotters Orders");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return _("(Spotting weaknesses of "+text()+")"); }
+	@Override public String displayText() { return L("(Spotting weaknesses of "+text()+")"); }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
@@ -125,7 +125,7 @@ public class Spell_SpottersOrders extends Spell
 					{
 						P.third[0]=System.currentTimeMillis() + (CMLib.dice().roll(1, 4, 0) * CMProps.getTickMillis()) -1;
 						if(mob!=P.first)
-							P.first.tell(mob,spottedM,null,_("<S-NAME> telepathically imparts the weaknesses of <T-NAME> to you."));
+							P.first.tell(mob,spottedM,null,L("<S-NAME> telepathically imparts the weaknesses of <T-NAME> to you."));
 					}
 					if(P.second==null)
 					{
@@ -141,7 +141,7 @@ public class Spell_SpottersOrders extends Spell
 							P.second.tick(P.first, Tickable.TICKID_MOB);
 							P.first.recoverPhyStats();
 							if((invoker()!=null)&&(invoker()!=P.first))
-								P.first.tell(_("You can sense the shared thoughts of @x1.",invoker().Name()));
+								P.first.tell(L("You can sense the shared thoughts of @x1.",invoker().Name()));
 						}
 					}
 				}
@@ -188,13 +188,13 @@ public class Spell_SpottersOrders extends Spell
 			target=(MOB)givenTarget;
 		if(!target.isInCombat())
 		{
-			mob.tell(target,null,null,_("<T-NAME> <T-IS-ARE> not in combat."));
+			mob.tell(target,null,null,L("<T-NAME> <T-IS-ARE> not in combat."));
 			return false;
 		}
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already knowledgable about <S-HIS-HER> target."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already knowledgable about <S-HIS-HER> target."));
 			return false;
 		}
 
@@ -207,7 +207,7 @@ public class Spell_SpottersOrders extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> point(s) at <S-HIS-HER> group members and knowingly cast(s) a spell concerning <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> point(s) at <S-HIS-HER> group members and knowingly cast(s) a spell concerning <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -219,13 +219,13 @@ public class Spell_SpottersOrders extends Spell
 					{
 						A.spottedM=victim;
 						A.setMiscText(victim.Name());
-						mob.location().show(target,victim,CMMsg.MSG_OK_VISUAL,_("<S-NAME> attain(s) knowledge of <T-YOUPOSS> weaknesses!"));
+						mob.location().show(target,victim,CMMsg.MSG_OK_VISUAL,L("<S-NAME> attain(s) knowledge of <T-YOUPOSS> weaknesses!"));
 					}
 				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> point(s) at <S-HIS-HER> group members speak(s) knowingly about <T-NAMESELF>, but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> point(s) at <S-HIS-HER> group members speak(s) knowingly about <T-NAMESELF>, but nothing more happens."));
 
 
 		// return whether it worked

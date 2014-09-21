@@ -75,11 +75,11 @@ public class Prop_NoChannel extends Property
 				if(!sendOK)
 				{
 					if(msg.source()==affected)
-						msg.source().tell(_("Your message drifts into oblivion."));
+						msg.source().tell(L("Your message drifts into oblivion."));
 					else
 					if((!(affected instanceof MOB))
 					&&(CMLib.map().roomLocation(affected)==msg.source().location()))
-						msg.source().tell(_("This is a no-channel area."));
+						msg.source().tell(L("This is a no-channel area."));
 					return false;
 				}
 				if(!receive)

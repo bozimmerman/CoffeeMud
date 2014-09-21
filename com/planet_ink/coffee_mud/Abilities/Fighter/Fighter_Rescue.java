@@ -37,7 +37,7 @@ import java.util.*;
 public class Fighter_Rescue extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Rescue"; }
-	private final static String localizedName = CMLib.lang()._("Rescue");
+	private final static String localizedName = CMLib.lang().L("Rescue");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"RESCUE","RES"});
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
@@ -70,13 +70,13 @@ public class Fighter_Rescue extends FighterSkill
 
 		if((target.amDead())||(monster==null)||(monster.amDead()))
 		{
-			mob.tell(_("@x1 isn't fighting anyone!",target.charStats().HeShe()));
+			mob.tell(L("@x1 isn't fighting anyone!",target.charStats().HeShe()));
 			return false;
 		}
 
 		if(monster.getVictim()==mob)
 		{
-			mob.tell(_("You are already taking the blows from @x1.",monster.name()));
+			mob.tell(L("You are already taking the blows from @x1.",monster.name()));
 			return false;
 		}
 
@@ -88,7 +88,7 @@ public class Fighter_Rescue extends FighterSkill
 		String str=null;
 		if(success)
 		{
-			str=_("^F^<FIGHT^><S-NAME> rescue(s) <T-NAMESELF>!^</FIGHT^>^?");
+			str=L("^F^<FIGHT^><S-NAME> rescue(s) <T-NAMESELF>!^</FIGHT^>^?");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,str);
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
@@ -99,7 +99,7 @@ public class Fighter_Rescue extends FighterSkill
 		}
 		else
 		{
-			str=_("<S-NAME> attempt(s) to rescue <T-NAMESELF>, but fail(s).");
+			str=L("<S-NAME> attempt(s) to rescue <T-NAMESELF>, but fail(s).");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,str);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);

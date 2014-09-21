@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_Blight extends Chant
 {
 	@Override public String ID() { return "Chant_Blight"; }
-	private final static String localizedName = CMLib.lang()._("Blight");
+	private final static String localizedName = CMLib.lang().L("Blight");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Blight)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Blight)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -54,7 +54,7 @@ public class Chant_Blight extends Chant
 			return;
 		final Room R=(Room)affected;
 		if(canBeUninvoked())
-			R.showHappens(CMMsg.MSG_OK_VISUAL,_("The blight is ended."));
+			R.showHappens(CMMsg.MSG_OK_VISUAL,L("The blight is ended."));
 
 		super.unInvoke();
 
@@ -86,7 +86,7 @@ public class Chant_Blight extends Chant
 				final Item I=R.getItem(i);
 				if((I!=null)&&(isBlightable(I.material())))
 				{
-					R.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 withers away.",I.name()));
+					R.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 withers away.",I.name()));
 					I.destroy();
 					break;
 				}
@@ -131,7 +131,7 @@ public class Chant_Blight extends Chant
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("This place is already blighted."));
+			mob.tell(L("This place is already blighted."));
 			return false;
 		}
 
@@ -150,19 +150,19 @@ public class Chant_Blight extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to the ground.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to the ground.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The soil is blighted!"));
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The soil is blighted!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) to the ground, but the magic fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to the ground, but the magic fades."));
 		// return whether it worked
 		return success;
 	}

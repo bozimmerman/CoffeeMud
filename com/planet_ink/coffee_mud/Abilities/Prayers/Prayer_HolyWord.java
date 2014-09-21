@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_HolyWord extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_HolyWord"; }
-	private final static String localizedName = CMLib.lang()._("Holy Word");
+	private final static String localizedName = CMLib.lang().L("Holy Word");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Holy Word)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Holy Word)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -92,7 +92,7 @@ public class Prayer_HolyWord extends Prayer implements MendingSkill
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> blinding holy aura fades."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> blinding holy aura fades."));
 	}
 
 	@Override
@@ -104,7 +104,7 @@ public class Prayer_HolyWord extends Prayer implements MendingSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		String str=(auto?"The holy word is spoken.":"^S<S-NAME> speak(s) the holy word"+ofDiety(mob)+" to <T-NAMESELF>.^?")+CMLib.protocol().msp("bless.wav",10);
-		String missStr=_("<S-NAME> speak(s) the holy word@x1, but nothing happens.",ofDiety(mob));
+		String missStr=L("<S-NAME> speak(s) the holy word@x1, but nothing happens.",ofDiety(mob));
 		final Room room=mob.location();
 		if(room!=null)
 		for(int i=0;i<room.numInhabitants();i++)
@@ -137,7 +137,7 @@ public class Prayer_HolyWord extends Prayer implements MendingSkill
 							while((I!=null)&&(!alreadyDone.contains(I)))
 							{
 								alreadyDone.add(I);
-								final CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,_("<S-NAME> release(s) <T-NAME>."));
+								final CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,L("<S-NAME> release(s) <T-NAME>."));
 								target.location().send(target,msg2);
 								Prayer_Bless.endLowerCurses(I,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 								I.recoverPhyStats();
@@ -150,9 +150,9 @@ public class Prayer_HolyWord extends Prayer implements MendingSkill
 						}
 						else
 						if(CMath.bset(affectType,CMMsg.MASK_MALICIOUS))
-							maliciousFizzle(mob,target,_("<T-NAME> did not hear the word!"));
+							maliciousFizzle(mob,target,L("<T-NAME> did not hear the word!"));
 						else
-							beneficialWordsFizzle(mob,target,_("<T-NAME> did not hear the word!"));
+							beneficialWordsFizzle(mob,target,L("<T-NAME> did not hear the word!"));
 
 					}
 				}

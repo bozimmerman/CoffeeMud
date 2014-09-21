@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_KnowFate extends Spell
 {
 	@Override public String ID() { return "Spell_KnowFate"; }
-	private final static String localizedName = CMLib.lang()._("Know Fate");
+	private final static String localizedName = CMLib.lang().L("Know Fate");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}
@@ -54,7 +54,7 @@ public class Spell_KnowFate extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":_("^S<S-NAME> concentrate(s) on <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> concentrate(s) on <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -160,20 +160,20 @@ public class Spell_KnowFate extends Spell
 				if(draws>0)
 					addendum=" with "+draws+" draws.";
 				if(iwin>hewin)
-					mob.tell(_("@x1% of the time, you defeat @x2 with @x3 hit points left@x4.",""+iwin,target.charStats().himher(),""+(ihp/iwin),addendum));
+					mob.tell(L("@x1% of the time, you defeat @x2 with @x3 hit points left@x4.",""+iwin,target.charStats().himher(),""+(ihp/iwin),addendum));
 				else
 				if(hewin>iwin)
-					mob.tell(_("@x1% of the time you die, and @x2 still has @x3 hit points left@x4.",""+hewin,target.charStats().himher(),""+(hehp/hewin),addendum));
+					mob.tell(L("@x1% of the time you die, and @x2 still has @x3 hit points left@x4.",""+hewin,target.charStats().himher(),""+(hehp/hewin),addendum));
 				else
 				if(iwin>0)
-					mob.tell(_("Half of the time, you defeat @x1 with @x2 hit points left@x3.",target.charStats().himher(),""+(ihp/iwin),addendum));
+					mob.tell(L("Half of the time, you defeat @x1 with @x2 hit points left@x3.",target.charStats().himher(),""+(ihp/iwin),addendum));
 				else
-					mob.tell(_("You can't hurt each other .. there were @x1% draws.",""+(draws*5)));
+					mob.tell(L("You can't hurt each other .. there were @x1% draws.",""+(draws*5)));
 				//Log.debugOut(fakeS.afkMessage());
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,_("<S-NAME> concentrate(s) on <T-NAMESELF>, but look(s) frustrated."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> concentrate(s) on <T-NAMESELF>, but look(s) frustrated."));
 
 		// return whether it worked
 		return success;

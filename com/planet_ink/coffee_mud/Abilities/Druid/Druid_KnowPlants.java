@@ -38,7 +38,7 @@ import java.util.*;
 public class Druid_KnowPlants extends StdAbility
 {
 	@Override public String ID() { return "Druid_KnowPlants"; }
-	private final static String localizedName = CMLib.lang()._("Know Plants");
+	private final static String localizedName = CMLib.lang().L("Know Plants");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return 0;}
@@ -69,7 +69,7 @@ public class Druid_KnowPlants extends StdAbility
 		if(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_VEGETATION)
 		&&((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN))
 		{
-			mob.tell(_("Your plant knowledge can tell you nothing about @x1.",I.name(mob)));
+			mob.tell(L("Your plant knowledge can tell you nothing about @x1.",I.name(mob)));
 			return false;
 		}
 
@@ -78,7 +78,7 @@ public class Druid_KnowPlants extends StdAbility
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
-			mob.tell(_("Your plant senses fail you."));
+			mob.tell(L("Your plant senses fail you."));
 		else
 		{
 			final CMMsg msg=CMClass.getMsg(mob,I,null,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|CMMsg.MASK_MAGIC,null);
@@ -86,11 +86,11 @@ public class Druid_KnowPlants extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				final StringBuffer str=new StringBuffer("");
-				str.append(_("@x1 is a kind of @x2.  ",I.name(mob),RawMaterial.CODES.NAME(I.material()).toLowerCase()));
+				str.append(L("@x1 is a kind of @x2.  ",I.name(mob),RawMaterial.CODES.NAME(I.material()).toLowerCase()));
 				if(isPlant(I))
-					str.append(_("It was summoned by @x1.",I.rawSecretIdentity()));
+					str.append(L("It was summoned by @x1.",I.rawSecretIdentity()));
 				else
-					str.append(_("It is either processed by hand, or grown wild."));
+					str.append(L("It is either processed by hand, or grown wild."));
 				mob.tell(str.toString());
 			}
 		}

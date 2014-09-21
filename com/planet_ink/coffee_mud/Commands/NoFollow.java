@@ -55,9 +55,9 @@ public class NoFollow extends Follow
 			{
 				M=mob.location().fetchInhabitant(CMParms.combine(commands,1));
 				if(M!=null)
-					mob.tell(_("@x1 is not following you!",M.name(mob)));
+					mob.tell(L("@x1 is not following you!",M.name(mob)));
 				else
-					mob.tell(_("There is noone here called '@x1' following you!",CMParms.combine(commands,1)));
+					mob.tell(L("There is noone here called '@x1' following you!",CMParms.combine(commands,1)));
 				return false;
 			}
 			if((mob.location()!=null)&&(M!=null)&&(M.amFollowing()==mob))
@@ -65,19 +65,19 @@ public class NoFollow extends Follow
 				nofollow(M,true,false);
 				return true;
 			}
-			mob.tell(_("There is noone called '@x1' following you!",CMParms.combine(commands,1)));
+			mob.tell(L("There is noone called '@x1' following you!",CMParms.combine(commands,1)));
 			return false;
 		}
 		if(!CMath.bset(mob.getBitmap(),MOB.ATT_NOFOLLOW))
 		{
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_NOFOLLOW));
 			//unfollow(mob,false);
-			mob.tell(_("You are no longer accepting new followers."));
+			mob.tell(L("You are no longer accepting new followers."));
 		}
 		else
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_NOFOLLOW));
-			mob.tell(_("You are now accepting new followers."));
+			mob.tell(L("You are now accepting new followers."));
 		}
 		return false;
 	}

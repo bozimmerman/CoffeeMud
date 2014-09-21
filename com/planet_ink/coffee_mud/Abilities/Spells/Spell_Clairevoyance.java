@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_Clairevoyance extends Spell
 {
 	@Override public String ID() { return "Spell_Clairevoyance"; }
-	private final static String localizedName = CMLib.lang()._("Clairevoyance");
+	private final static String localizedName = CMLib.lang().L("Clairevoyance");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -53,7 +53,7 @@ public class Spell_Clairevoyance extends Spell
 
 		if(canBeUninvoked()) scries.removeElement(mob);
 		if((canBeUninvoked())&&(invoker!=null))
-			invoker.tell(invoker,mob,null,_("Your visions of <T-NAME> fade."));
+			invoker.tell(invoker,mob,null,L("Your visions of <T-NAME> fade."));
 		super.unInvoke();
 
 	}
@@ -103,9 +103,9 @@ public class Spell_Clairevoyance extends Spell
 				if(scries.elementAt(e,2)==mob)
 					scryList.append(((e>0)?", ":"")+((MOB)scries.elementAt(e,1)).name());
 			if(scryList.length()>0)
-				mob.tell(_("Cast on or revoke from whom?  You currently have @x1 on the following: @x2.",name(),scryList.toString()));
+				mob.tell(L("Cast on or revoke from whom?  You currently have @x1 on the following: @x2.",name(),scryList.toString()));
 			else
-				mob.tell(_("Cast on whom?"));
+				mob.tell(L("Cast on whom?"));
 			return false;
 		}
 		final String mobName=CMParms.combine(commands,0).trim().toUpperCase();
@@ -131,13 +131,13 @@ public class Spell_Clairevoyance extends Spell
 			newRoom=target.location();
 		else
 		{
-			mob.tell(_("You can't seem to focus on '@x1'.",mobName));
+			mob.tell(L("You can't seem to focus on '@x1'.",mobName));
 			return false;
 		}
 
 		if(mob==target)
 		{
-			mob.tell(_("You can't cast this on yourself!"));
+			mob.tell(L("You can't cast this on yourself!"));
 			return false;
 		}
 
@@ -150,7 +150,7 @@ public class Spell_Clairevoyance extends Spell
 		else
 		if((A!=null)||(scries.contains(target)))
 		{
-			mob.tell(_("You can't seem to focus on '@x1'.",mobName));
+			mob.tell(L("You can't seem to focus on '@x1'.",mobName));
 			return false;
 		}
 
@@ -161,7 +161,7 @@ public class Spell_Clairevoyance extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> invoke(s) clairevoyance, calling '@x1'.^?",mobName));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> invoke(s) clairevoyance, calling '@x1'.^?",mobName));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 			if((mob.location().okMessage(mob,msg))&&((newRoom==mob.location())||(newRoom.okMessage(mob,msg2))))
 			{
@@ -173,7 +173,7 @@ public class Spell_Clairevoyance extends Spell
 
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to invoke clairevoyance, but fizzle(s) the spell."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to invoke clairevoyance, but fizzle(s) the spell."));
 
 
 		// return whether it worked

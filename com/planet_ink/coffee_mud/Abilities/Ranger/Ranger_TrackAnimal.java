@@ -37,9 +37,9 @@ import java.util.*;
 public class Ranger_TrackAnimal extends StdAbility
 {
 	@Override public String ID() { return "Ranger_TrackAnimal"; }
-	private final static String localizedName = CMLib.lang()._("Track Animal");
+	private final static String localizedName = CMLib.lang().L("Track Animal");
 	@Override public String name() { return localizedName; }
-	protected String displayText=_("(tracking an animal)");
+	protected String displayText=L("(tracking an animal)");
 	@Override public String displayText(){ return displayText;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -73,21 +73,21 @@ public class Ranger_TrackAnimal extends StdAbility
 
 			if(nextDirection==999)
 			{
-				mob.tell(_("The trail seems to pause here."));
+				mob.tell(L("The trail seems to pause here."));
 				nextDirection=-2;
 				unInvoke();
 			}
 			else
 			if(nextDirection==-1)
 			{
-				mob.tell(_("The trail dries up here."));
+				mob.tell(L("The trail dries up here."));
 				nextDirection=-999;
 				unInvoke();
 			}
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell(_("The trail seems to continue @x1.",Directions.getDirectionName(nextDirection)));
+				mob.tell(L("The trail seems to continue @x1.",Directions.getDirectionName(nextDirection)));
 				if(mob.isMonster())
 				{
 					final Room nextRoom=mob.location().getRoomInDir(nextDirection);
@@ -152,7 +152,7 @@ public class Ranger_TrackAnimal extends StdAbility
 
 		if(!CMLib.flags().canBeSeenBy(mob.location(),mob))
 		{
-			mob.tell(_("You can't see anything to track!"));
+			mob.tell(L("You can't see anything to track!"));
 			return false;
 		}
 
@@ -160,7 +160,7 @@ public class Ranger_TrackAnimal extends StdAbility
 		for(final Ability A : V) A.unInvoke();
 		if(V.size()>0)
 		{
-			mob.tell(_("You stop tracking."));
+			mob.tell(L("You stop tracking."));
 			if(commands.size()==0) return true;
 		}
 
@@ -172,7 +172,7 @@ public class Ranger_TrackAnimal extends StdAbility
 
 		if(animalHere(mob.location())!=null)
 		{
-			mob.tell(_("Try 'look'."));
+			mob.tell(L("Try 'look'."));
 			return false;
 		}
 
@@ -208,13 +208,13 @@ public class Ranger_TrackAnimal extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> begin(s) to track <T-NAMESELF>."),null,_("<S-NAME> begin(s) to track <T-NAMESELF>."));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> begin(s) to track <T-NAMESELF>."),null,L("<S-NAME> begin(s) to track <T-NAMESELF>."));
 			if((mob.location().okMessage(mob,msg))&&(target.okMessage(target,msg)))
 			{
 				mob.location().send(mob,msg);
 				target.executeMsg(target,msg);
 				invoker=mob;
-				displayText=_("(tracking @x1)",target.name());
+				displayText=L("(tracking @x1)",target.name());
 				final Ranger_TrackAnimal newOne=(Ranger_TrackAnimal)this.copyOf();
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
@@ -223,7 +223,7 @@ public class Ranger_TrackAnimal extends StdAbility
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to track an animal, but can't find the trail."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to track an animal, but can't find the trail."));
 
 
 		// return whether it worked

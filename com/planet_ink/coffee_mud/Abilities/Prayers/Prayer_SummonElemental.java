@@ -36,9 +36,9 @@ import java.util.*;
 public class Prayer_SummonElemental extends Prayer
 {
 	@Override public String ID() { return "Prayer_SummonElemental"; }
-	private final static String localizedName = CMLib.lang()._("Elemental Aid");
+	private final static String localizedName = CMLib.lang().L("Elemental Aid");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Elemental Aid)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Elemental Aid)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -104,7 +104,7 @@ public class Prayer_SummonElemental extends Prayer
 	{
 		if(CMLib.flags().hasAControlledFollower(mob, this))
 		{
-			mob.tell(_("You can only control one elemental."));
+			mob.tell(L("You can only control one elemental."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -115,7 +115,7 @@ public class Prayer_SummonElemental extends Prayer
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> @x1 for elemental assistance.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> @x1 for elemental assistance.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -125,7 +125,7 @@ public class Prayer_SummonElemental extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 for elemental assistance, but is not answered.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 for elemental assistance, but is not answered.",prayWord(mob)));
 
 		// return whether it worked
 		return success;
@@ -162,30 +162,30 @@ public class Prayer_SummonElemental extends Prayer
 		{
 		case 0:
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("EarthElemental"));
-			newMOB.setName(_("a hideous rock beast"));
-			newMOB.setDisplayText(_("a hideous rock beast is stomping around here"));
-			newMOB.setDescription(_("This enormous hunk of rock is roughly the shape of a humanoid."));
+			newMOB.setName(L("a hideous rock beast"));
+			newMOB.setDisplayText(L("a hideous rock beast is stomping around here"));
+			newMOB.setDescription(L("This enormous hunk of rock is roughly the shape of a humanoid."));
 			ride.setRiderCapacity(2);
 			break;
 		case 1:
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("FireElemental"));
-			newMOB.setName(_("a creature of flame and smoke"));
-			newMOB.setDisplayText(_("a creature of flame and smoke is here"));
-			newMOB.setDescription(_("This enormous burning ember is roughly the shape of a humanoid."));
+			newMOB.setName(L("a creature of flame and smoke"));
+			newMOB.setDisplayText(L("a creature of flame and smoke is here"));
+			newMOB.setDescription(L("This enormous burning ember is roughly the shape of a humanoid."));
 			ride.setRiderCapacity(0);
 			break;
 		case 2:
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("AirElemental"));
-			newMOB.setName(_("a swirling air elemental"));
-			newMOB.setDisplayText(_("a swirling air elemental spins around here"));
-			newMOB.setDescription(_("This enormous swirling code of air is roughly the shape of a humanoid."));
+			newMOB.setName(L("a swirling air elemental"));
+			newMOB.setDisplayText(L("a swirling air elemental spins around here"));
+			newMOB.setDescription(L("This enormous swirling code of air is roughly the shape of a humanoid."));
 			ride.setRiderCapacity(0);
 			break;
 		case 3:
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("WaterElemental"));
-			newMOB.setName(_("a hideous ice beast"));
-			newMOB.setDisplayText(_("a hideous ice beast is stomping around here"));
-			newMOB.setDescription(_("This enormous hunk of ice is roughly the shape of a humanoid."));
+			newMOB.setName(L("a hideous ice beast"));
+			newMOB.setDisplayText(L("a hideous ice beast is stomping around here"));
+			newMOB.setDescription(L("This enormous hunk of ice is roughly the shape of a humanoid."));
 			ride.setRiderCapacity(2);
 			break;
 		}
@@ -199,18 +199,18 @@ public class Prayer_SummonElemental extends Prayer
 		newMOB.text();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 		caster.location().recoverRoomStats();
 		final MOB victim=caster.getVictim();
 		newMOB.setStartRoom(null); // this must be before postFollow due to the effects on conquest.
 		CMLib.commands().postFollow(newMOB,caster,true);
 		if(newMOB.amFollowing()!=caster)
-			caster.tell(_("@x1 seems unwilling to follow you.",newMOB.name()));
+			caster.tell(L("@x1 seems unwilling to follow you.",newMOB.name()));
 		else
 		if(victim!=null)
 		{
 			if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
-			newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,_("<S-NAME> start(s) attacking <T-NAMESELF>!"));
+			newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,L("<S-NAME> start(s) attacking <T-NAMESELF>!"));
 		}
 		return(newMOB);
 

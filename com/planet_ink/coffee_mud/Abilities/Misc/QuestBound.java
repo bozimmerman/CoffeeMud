@@ -61,7 +61,7 @@ public class QuestBound implements Ability
 	@Override
 	public ExpertiseLibrary.SkillCost getTrainingCost(MOB mob)
 	{ return new ExpertiseLibrary.SkillCost(ExpertiseLibrary.CostType.TRAIN,Double.valueOf(1.0));}
-	@Override public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+	@Override public String L(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 
 	@Override public void setName(String newName){}
 	@Override public void setDescription(String newDescription){}

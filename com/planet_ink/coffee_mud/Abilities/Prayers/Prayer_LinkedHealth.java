@@ -36,9 +36,9 @@ import java.util.*;
 public class Prayer_LinkedHealth extends Prayer
 {
 	@Override public String ID() { return "Prayer_LinkedHealth"; }
-	private final static String localizedName = CMLib.lang()._("Linked Health");
+	private final static String localizedName = CMLib.lang().L("Linked Health");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Linked Health)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Linked Health)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -62,7 +62,7 @@ public class Prayer_LinkedHealth extends Prayer
 		{
 			if(buddy!=null)
 			{
-				mob.tell(_("Your health is no longer linked with @x1.",buddy.name()));
+				mob.tell(L("Your health is no longer linked with @x1.",buddy.name()));
 				final Ability A=buddy.fetchEffect(ID());
 				if(A!=null) A.unInvoke();
 			}
@@ -97,18 +97,18 @@ public class Prayer_LinkedHealth extends Prayer
 		if(target==null) return false;
 		if(mob.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("Your health is already linked with someones!"));
+			mob.tell(L("Your health is already linked with someones!"));
 			return false;
 		}
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("@x1's health is already linked with someones!",target.name(mob)));
+			mob.tell(L("@x1's health is already linked with someones!",target.name(mob)));
 			return false;
 		}
 
 		if(!mob.getGroupMembers(new HashSet<MOB>()).contains(target))
 		{
-			mob.tell(_("@x1 is not in your group.",target.name(mob)));
+			mob.tell(L("@x1 is not in your group.",target.name(mob)));
 			return false;
 		}
 
@@ -123,11 +123,11 @@ public class Prayer_LinkedHealth extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 that <S-HIS-HER> health be linked with <T-NAME>.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 that <S-HIS-HER> health be linked with <T-NAME>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<S-NAME> and <T-NAME> are linked in health."));
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<S-NAME> and <T-NAME> are linked in health."));
 				buddy=mob;
 				beneficialAffect(mob,target,asLevel,0);
 				buddy=target;
@@ -135,7 +135,7 @@ public class Prayer_LinkedHealth extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for a link with <T-NAME>, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for a link with <T-NAME>, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
 
 
 		// return whether it worked

@@ -36,9 +36,9 @@ import java.util.*;
 public class Thief_TagTurf extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_TagTurf"; }
-	private final static String localizedName = CMLib.lang()._("Tag Turf");
+	private final static String localizedName = CMLib.lang().L("Tag Turf");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Tagged)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Tagged)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -60,7 +60,7 @@ public class Thief_TagTurf extends ThiefSkill
 		&&(!msg.tool().ID().equals("Thief_TurfWar"))
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_THIEF_SKILL))
 		{
-			msg.source().tell(_("You definitely aren't allowed to do that on @x1's turf.",text()));
+			msg.source().tell(L("You definitely aren't allowed to do that on @x1's turf.",text()));
 			return false;
 		}
 		return true;
@@ -78,12 +78,12 @@ public class Thief_TagTurf extends ThiefSkill
 			if((msg.source().Name().equals(text()))
 			||((msg.source().getClanRole(text())!=null) && CMLib.clans().checkClanPrivilege(msg.source(), Clan.Function.CLAN_BENEFITS)))
 				msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,
-										CMMsg.MSG_OK_VISUAL,_("This is your turf."),
+										CMMsg.MSG_OK_VISUAL,L("This is your turf."),
 										CMMsg.NO_EFFECT,null,
 										CMMsg.NO_EFFECT,null));
 			else
 				msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,
-										CMMsg.MSG_OK_VISUAL,_("This turf has been claimed by @x1.",text()),
+										CMMsg.MSG_OK_VISUAL,L("This turf has been claimed by @x1.",text()),
 										CMMsg.NO_EFFECT,null,
 										CMMsg.NO_EFFECT,null));
 		}
@@ -108,24 +108,24 @@ public class Thief_TagTurf extends ThiefSkill
 			{
 				A.unInvoke();
 				target.delEffect(A);
-				mob.tell(_("This place has been untagged."));
+				mob.tell(L("This place has been untagged."));
 				return true;
 			}
-			mob.tell(_("This place has already been tagged by @x1.",A.text()));
+			mob.tell(L("This place has already been tagged by @x1.",A.text()));
 			return false;
 		}
 		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_CITY)
 		   &&(mob.location().domainType()!=Room.DOMAIN_INDOORS_WOOD)
 		   &&(mob.location().domainType()!=Room.DOMAIN_INDOORS_STONE))
 		{
-			mob.tell(_("A place like this can't get your turf."));
+			mob.tell(L("A place like this can't get your turf."));
 			return false;
 		}
 		if((!CMLib.law().doesOwnThisProperty(mob,mob.location()))
 		&&(CMLib.law().getLandTitle(mob.location())!=null)
 		&&(CMLib.law().getLandTitle(mob.location()).getOwnerName().length()>0))
 		{
-			mob.tell(_("You can't tag anothers property!"));
+			mob.tell(L("You can't tag anothers property!"));
 			return false;
 		}
 
@@ -133,9 +133,9 @@ public class Thief_TagTurf extends ThiefSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":_("<S-NAME> tag(s) this place as <S-HIS-HER> turf."));
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":L("<S-NAME> tag(s) this place as <S-HIS-HER> turf."));
 		if(!success)
-			return beneficialVisualFizzle(mob,null,auto?"":_("<S-NAME> attempt(s) to tag this place, but can't get into it."));
+			return beneficialVisualFizzle(mob,null,auto?"":L("<S-NAME> attempt(s) to tag this place, but can't get into it."));
 		else
 		if(mob.location().okMessage(mob,msg))
 		{

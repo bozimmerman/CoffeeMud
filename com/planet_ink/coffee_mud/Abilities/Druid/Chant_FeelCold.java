@@ -38,9 +38,9 @@ import java.util.*;
 public class Chant_FeelCold extends Chant
 {
 	@Override public String ID() { return "Chant_FeelCold"; }
-	private final static String localizedName = CMLib.lang()._("Feel Cold");
+	private final static String localizedName = CMLib.lang().L("Feel Cold");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Feel Cold)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Feel Cold)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -55,7 +55,7 @@ public class Chant_FeelCold extends Chant
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("Your cold feeling is gone."));
+			mob.tell(L("Your cold feeling is gone."));
 
 		super.unInvoke();
 
@@ -158,19 +158,19 @@ public class Chant_FeelCold extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> feel(s) very cold."));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) very cold."));
 					maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
 		// return whether it worked
 		return success;
 	}

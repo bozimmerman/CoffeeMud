@@ -35,7 +35,7 @@ import java.util.*;
 public class Bomb_Pepper extends StdBomb
 {
 	@Override public String ID() { return "Bomb_Pepper"; }
-	private final static String localizedName = CMLib.lang()._("pepper bomb");
+	private final static String localizedName = CMLib.lang().L("pepper bomb");
 	@Override public String name() { return localizedName; }
 	@Override protected int trapLevel(){return 7;}
 	@Override public String requiresToSet(){return "some peppers";}
@@ -55,7 +55,7 @@ public class Bomb_Pepper extends StdBomb
 		||(((Item)P).material()!=RawMaterial.RESOURCE_PEPPERS))
 		{
 			if(mob!=null)
-				mob.tell(_("You need some peppers to make this out of."));
+				mob.tell(L("You need some peppers to make this out of."));
 			return false;
 		}
 		return true;
@@ -70,9 +70,9 @@ public class Bomb_Pepper extends StdBomb
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) the water bomb!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) the water bomb!"));
 			else
-			if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("@x1 explodes water all over <T-NAME>!",affected.name())))
+			if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("@x1 explodes water all over <T-NAME>!",affected.name())))
 			{
 				super.spring(target);
 				final Ability A=CMClass.getAbility("Spell_Irritation");

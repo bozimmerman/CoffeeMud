@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_Nullification extends Prayer
 {
 	@Override public String ID() { return "Prayer_Nullification"; }
-	private final static String localizedName = CMLib.lang()._("Nullification");
+	private final static String localizedName = CMLib.lang().L("Nullification");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
@@ -91,7 +91,7 @@ public class Prayer_Nullification extends Prayer
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) nullified."):_("^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>.^?"));
+				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) nullified."):L("^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>.^?"));
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
@@ -115,17 +115,17 @@ public class Prayer_Nullification extends Prayer
 					if(revokeThis==null)
 					{
 						if(foundSomethingAtLeast)
-							mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("The magic on <T-NAME> appears too powerful to be nullified."));
+							mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("The magic on <T-NAME> appears too powerful to be nullified."));
 						else
 						if(auto)
-							mob.tell(mob,target,null,_("Nothing seems to be happening to <T-NAME>."));
+							mob.tell(mob,target,null,L("Nothing seems to be happening to <T-NAME>."));
 					}
 					else
 						revokeThis.unInvoke();
 				}
 			}
 			else
-				beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, but @x1 does not heed.",hisHerDiety(mob)));
+				beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, but @x1 does not heed.",hisHerDiety(mob)));
 		}
 
 		// return whether it worked

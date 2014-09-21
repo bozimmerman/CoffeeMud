@@ -38,9 +38,9 @@ import java.util.*;
 public class Chant_Homeopathy extends Chant
 {
 	@Override public String ID() { return "Chant_Homeopathy"; }
-	private final static String localizedName = CMLib.lang()._("Homeopathy");
+	private final static String localizedName = CMLib.lang().L("Homeopathy");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Homeopathy)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Homeopathy)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -58,7 +58,7 @@ public class Chant_Homeopathy extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("Something is happening to <T-NAME>!"):_("^S<S-NAME> chant(s) homeopathically to <T-NAME>^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("Something is happening to <T-NAME>!"):L("^S<S-NAME> chant(s) homeopathically to <T-NAME>^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -71,16 +71,16 @@ public class Chant_Homeopathy extends Chant
 				}
 				final int roll=CMLib.dice().rollPercentage();
 				if((roll>66)||(D==null))
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> condition is unchanged."));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> condition is unchanged."));
 				else
 				if(roll>33)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> glow(s) a bit."));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> glow(s) a bit."));
 					D.unInvoke();
 				}
 				else
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("Something is definitely happening to <S-NAME>!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("Something is definitely happening to <S-NAME>!"));
 					for(int i=0;i<1000;i++)
 						if(!D.tick(target,Tickable.TICKID_MOB))
 							break;
@@ -88,7 +88,7 @@ public class Chant_Homeopathy extends Chant
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
 
 		return success;
 	}

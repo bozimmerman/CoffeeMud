@@ -37,7 +37,7 @@ import java.util.*;
 public class Spell_Permanency extends Spell
 {
 	@Override public String ID() { return "Spell_Permanency"; }
-	private final static String localizedName = CMLib.lang()._("Permanency");
+	private final static String localizedName = CMLib.lang().L("Permanency");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS;}
 	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS;}
@@ -53,7 +53,7 @@ public class Spell_Permanency extends Spell
 
 		if(((mob.baseState().getMana()<100)||(mob.maxState().getMana()<100))||(mob.isMonster()))
 		{
-			mob.tell(_("You aren't powerful enough to cast this."));
+			mob.tell(L("You aren't powerful enough to cast this."));
 			return false;
 		}
 
@@ -64,7 +64,7 @@ public class Spell_Permanency extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> incant(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> incant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -84,7 +84,7 @@ public class Spell_Permanency extends Spell
 				}
 				if(theOne==null)
 				{
-					mob.tell(_("There does not appear to be any of your spells on @x1 which can be made permanent.",target.name(mob)));
+					mob.tell(L("There does not appear to be any of your spells on @x1 which can be made permanent.",target.name(mob)));
 					return false;
 				}
 				else
@@ -92,7 +92,7 @@ public class Spell_Permanency extends Spell
 				&&(theOne.enchantQuality()==Ability.QUALITY_MALICIOUS)
 				&&(!CMLib.law().doesOwnThisProperty(mob,mob.location())))
 				{
-					mob.tell(_("You can not make @x1 permanent here.",theOne.name()));
+					mob.tell(L("You can not make @x1 permanent here.",theOne.name()));
 					return false;
 				}
 				else
@@ -117,13 +117,13 @@ public class Spell_Permanency extends Spell
 						||((R2!=null)&&(CMLib.law().doesOwnThisProperty(mob,R2))))
 							CMLib.database().DBUpdateExits(R);
 					}
-					mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,_("The quality of @x1 inside <T-NAME> glows!",theOne.name()));
+					mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,L("The quality of @x1 inside <T-NAME> glows!",theOne.name()));
 				}
 			}
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> incant(s) to <T-NAMESELF>, but lose(s) patience."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> incant(s) to <T-NAMESELF>, but lose(s) patience."));
 
 
 		// return whether it worked

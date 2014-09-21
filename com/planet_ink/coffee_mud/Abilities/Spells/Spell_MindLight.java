@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_MindLight extends Spell
 {
 	@Override public String ID() { return "Spell_MindLight"; }
-	private final static String localizedName = CMLib.lang()._("Mind Light");
+	private final static String localizedName = CMLib.lang().L("Mind Light");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Mind Light spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Mind Light spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return CAN_ROOMS;}
@@ -57,7 +57,7 @@ public class Spell_MindLight extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			room.showHappens(CMMsg.MSG_OK_VISUAL, _("The mind light starts to fade."));
+			room.showHappens(CMMsg.MSG_OK_VISUAL, L("The mind light starts to fade."));
 		}
 	}
 
@@ -102,7 +102,7 @@ public class Spell_MindLight extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,null,null,_("The Mind Light is already here!"));
+			mob.tell(mob,null,null,L("The Mind Light is already here!"));
 			return false;
 		}
 
@@ -116,7 +116,7 @@ public class Spell_MindLight extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), _((auto?"T":"^S<S-NAME> incant(s) and gesture(s) and t")+"he mind light envelopes everyone.^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), L((auto?"T":"^S<S-NAME> incant(s) and gesture(s) and t")+"he mind light envelopes everyone.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -125,7 +125,7 @@ public class Spell_MindLight extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> incant(s) lightly, but the spell fizzles."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> incant(s) lightly, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

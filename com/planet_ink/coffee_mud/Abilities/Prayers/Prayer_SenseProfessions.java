@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_SenseProfessions extends Prayer
 {
 	@Override public String ID() { return "Prayer_SenseProfessions"; }
-	private final static String localizedName = CMLib.lang()._("Sense Professions");
+	private final static String localizedName = CMLib.lang().L("Sense Professions");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -52,7 +52,7 @@ public class Prayer_SenseProfessions extends Prayer
 		if(target==null) return false;
 		if(target==mob)
 		{
-			mob.tell(_("You already know your own @x1!.",senseWhatStr()));
+			mob.tell(L("You already know your own @x1!.",senseWhatStr()));
 			return false;
 		}
 
@@ -67,7 +67,7 @@ public class Prayer_SenseProfessions extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 and peer(s) at <T-NAMESELF>.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 and peer(s) at <T-NAMESELF>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -80,13 +80,13 @@ public class Prayer_SenseProfessions extends Prayer
 						professionsV.addElement(A.name() + " ("+A.proficiency()+"%)");
 				}
 				if(professionsV.size()==0)
-					mob.tell(mob,target,null,_("<T-NAME> seem(s) like <T-HE-SHE> has no @x1.",senseWhatStr()));
+					mob.tell(mob,target,null,L("<T-NAME> seem(s) like <T-HE-SHE> has no @x1.",senseWhatStr()));
 				else
-					mob.tell(mob,target,null,_("<T-NAME> seem(s) like <T-HE-SHE> understands the following @x1: @x2",senseWhatStr(),CMParms.toStringList(professionsV)));
+					mob.tell(mob,target,null,L("<T-NAME> seem(s) like <T-HE-SHE> understands the following @x1: @x2",senseWhatStr(),CMParms.toStringList(professionsV)));
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> @x1 and peer(s) at <T-NAMESELF>, but then blink(s).",prayWord(mob)));
+			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> @x1 and peer(s) at <T-NAMESELF>, but then blink(s).",prayWord(mob)));
 
 
 		// return whether it worked

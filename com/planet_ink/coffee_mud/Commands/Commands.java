@@ -48,7 +48,7 @@ public class Commands extends StdCommand
 			if ((commands!=null) && (commands.size()>0) && ("CLEAR".startsWith(commands.get(0).toString().toUpperCase())))
 			{
 				mob.clearCommandQueue();
-				mob.tell(_("Command queue cleared."));
+				mob.tell(L("Command queue cleared."));
 				return false;
 			}
 			final StringBuffer commandList=new StringBuffer("");
@@ -87,7 +87,7 @@ public class Commands extends StdCommand
 				commandList.append(CMStrings.padRight("^<HELP^>"+s+"^</HELP^>",COL_LEN));
 			}
 			commandList.append("\n\r\n\rEnter HELP 'COMMAND' for more information on these commands.\n\r");
-			mob.session().colorOnlyPrintln(_("^HComplete commands list:^?\n\r@x1",commandList.toString()),false);
+			mob.session().colorOnlyPrintln(L("^HComplete commands list:^?\n\r@x1",commandList.toString()),false);
 		}
 		return false;
 	}

@@ -36,7 +36,7 @@ import java.util.*;
 public class Chant_SummonSeaweed extends Chant_SummonPlants
 {
 	@Override public String ID() { return "Chant_SummonSeaweed"; }
-	private final static String localizedName = CMLib.lang()._("Summon Seaweed");
+	private final static String localizedName = CMLib.lang().L("Summon Seaweed");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
@@ -51,28 +51,28 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 		switch(CMLib.dice().roll(1,5,0))
 		{
 		case 1:
-			newItem.setName(_("some algae"));
-			newItem.setDisplayText(_("some algae is here."));
+			newItem.setName(L("some algae"));
+			newItem.setDisplayText(L("some algae is here."));
 			newItem.setDescription("");
 			break;
 		case 2:
-			newItem.setName(_("some seaweed"));
-			newItem.setDisplayText(_("some seaweed is here."));
+			newItem.setName(L("some seaweed"));
+			newItem.setDisplayText(L("some seaweed is here."));
 			newItem.setDescription("");
 			break;
 		case 3:
-			newItem.setName(_("some kelp"));
-			newItem.setDisplayText(_("some kelp is here"));
+			newItem.setName(L("some kelp"));
+			newItem.setDisplayText(L("some kelp is here"));
 			newItem.setDescription("");
 			break;
 		case 4:
-			newItem.setName(_("some coral"));
-			newItem.setDisplayText(_("some coral is here."));
+			newItem.setName(L("some coral"));
+			newItem.setDisplayText(L("some coral is here."));
 			newItem.setDescription("");
 			break;
 		case 5:
-			newItem.setName(_("some sponge"));
-			newItem.setDisplayText(_("some sponge is here."));
+			newItem.setName(L("some sponge"));
+			newItem.setDisplayText(L("some sponge is here."));
 			newItem.setDescription("");
 			break;
 		}
@@ -83,7 +83,7 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
 		newItem.setExpirationDate(0);
-		room.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang()._("Suddenly, @x1 sprout(s) up here.",newItem.name()));
+		room.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang().L("Suddenly, @x1 sprout(s) up here.",newItem.name()));
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
 		if(CMLib.law().doesOwnThisProperty(mob,room))
@@ -109,14 +109,14 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 	{
 		if((!auto)&&(mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell(_("You must be outdoors for this chant to work."));
+			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
 
 		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
 		   &&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			mob.tell(_("This magic will not work here."));
+			mob.tell(L("This magic will not work here."));
 			return false;
 		}
 		return true;

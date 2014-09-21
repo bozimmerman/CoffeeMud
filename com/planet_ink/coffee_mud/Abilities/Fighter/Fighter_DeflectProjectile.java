@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_DeflectProjectile extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_DeflectProjectile"; }
-	private final static String localizedName = CMLib.lang()._("Deflect Projectile");
+	private final static String localizedName = CMLib.lang().L("Deflect Projectile");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
@@ -82,7 +82,7 @@ public class Fighter_DeflectProjectile extends FighterSkill
 				if(!mob.location().isContent(w))
 					return true;
 			}
-			final CMMsg msg2=CMClass.getMsg(mob,w,msg.source(),CMMsg.MSG_GET,_("<S-NAME> deflect(s) the <T-NAME> shot by <O-NAME>!"));
+			final CMMsg msg2=CMClass.getMsg(mob,w,msg.source(),CMMsg.MSG_GET,L("<S-NAME> deflect(s) the <T-NAME> shot by <O-NAME>!"));
 			if(mob.location().okMessage(mob,msg2))
 			{
 				mob.location().send(mob,msg2);

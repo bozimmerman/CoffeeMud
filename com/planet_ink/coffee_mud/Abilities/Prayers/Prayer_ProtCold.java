@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_ProtCold extends Prayer
 {
 	@Override public String ID() { return "Prayer_ProtCold"; }
-	private final static String localizedName = CMLib.lang()._("Protection Cold");
+	private final static String localizedName = CMLib.lang().L("Protection Cold");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Protection from Cold)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Protection from Cold)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_HEATING;}
@@ -55,7 +55,7 @@ public class Prayer_ProtCold extends Prayer
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("Your warm protection warms up."));
+			mob.tell(L("Your warm protection warms up."));
 
 		super.unInvoke();
 
@@ -78,7 +78,7 @@ public class Prayer_ProtCold extends Prayer
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already protected from cold."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already protected from cold."));
 			return false;
 		}
 
@@ -88,7 +88,7 @@ public class Prayer_ProtCold extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("A warm field of protection appears around <T-NAME>."):_("^S<S-NAME> @x1 for a warm field of protection around <T-NAMESELF>.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("A warm field of protection appears around <T-NAME>."):L("^S<S-NAME> @x1 for a warm field of protection around <T-NAMESELF>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -96,7 +96,7 @@ public class Prayer_ProtCold extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for cold protection, but fail(s).",prayWord(mob)));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for cold protection, but fail(s).",prayWord(mob)));
 
 		return success;
 	}

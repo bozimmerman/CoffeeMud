@@ -34,7 +34,7 @@ import java.util.*;
 public class Trap_AcidPit extends Trap_RoomPit
 {
 	@Override public String ID() { return "Trap_AcidPit"; }
-	private final static String localizedName = CMLib.lang()._("acid pit");
+	private final static String localizedName = CMLib.lang().L("acid pit");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -52,13 +52,13 @@ public class Trap_AcidPit extends Trap_RoomPit
 	public void finishSpringing(MOB target)
 	{
 		if((!invoker().mayIFight(target))||(target.phyStats().weight()<5))
-			target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> float(s) gently into the pit!"));
+			target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> float(s) gently into the pit!"));
 		else
 		{
-			target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> hit(s) the pit floor with a THUMP!"));
+			target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> hit(s) the pit floor with a THUMP!"));
 			final int damage=CMLib.dice().roll(trapLevel()+abilityCode(),6,1);
 			CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.TYP_ACID,-1,null);
-			target.location().showHappens(CMMsg.MSG_OK_VISUAL,_("Acid starts pouring into the room!"));
+			target.location().showHappens(CMMsg.MSG_OK_VISUAL,L("Acid starts pouring into the room!"));
 		}
 		CMLib.commands().postLook(target,true);
 	}

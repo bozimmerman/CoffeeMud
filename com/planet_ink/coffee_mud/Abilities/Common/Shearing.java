@@ -36,7 +36,7 @@ import java.util.*;
 public class Shearing extends CommonSkill
 {
 	@Override public String ID() { return "Shearing"; }
-	private final static String localizedName = CMLib.lang()._("Shearing");
+	private final static String localizedName = CMLib.lang().L("Shearing");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"SHEAR","SHEARING"});
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
@@ -47,8 +47,8 @@ public class Shearing extends CommonSkill
 	public Shearing()
 	{
 		super();
-		displayText=_("You are shearing something...");
-		verb=_("shearing");
+		displayText=L("You are shearing something...");
+		verb=L("shearing");
 	}
 
 	protected int getDuration(MOB mob, int weight)
@@ -99,10 +99,10 @@ public class Shearing extends CommonSkill
 				if((sheep!=null)&&(!aborted))
 				{
 					if((failed)||(!mob.location().isInhabitant(sheep)))
-						commonTell(mob,_("You messed up your shearing completely."));
+						commonTell(mob,L("You messed up your shearing completely."));
 					else
 					{
-						mob.location().show(mob,null,sheep,getActivityMessageType(),_("<S-NAME> manage(s) to shear <O-NAME>."));
+						mob.location().show(mob,null,sheep,getActivityMessageType(),L("<S-NAME> manage(s) to shear <O-NAME>."));
 						spreadImmunity(sheep);
 						final int yield=abilityCode()<=0?1:abilityCode();
 						for(int i=0;i<yield;i++)
@@ -148,7 +148,7 @@ public class Shearing extends CommonSkill
 		}
 		else
 		if(commands.size()==0)
-			mob.tell(_("Shear what?"));
+			mob.tell(L("Shear what?"));
 		else
 			target=super.getTarget(mob,commands,givenTarget);
 
@@ -156,18 +156,18 @@ public class Shearing extends CommonSkill
 		if((getMyWool(target).size()<=0)
 		||(!target.okMessage(target,CMClass.getMsg(target,target,this,CMMsg.MSG_OK_ACTION,null))))
 		{
-			commonTell(mob,target,null,_("You can't shear <T-NAME>, there's no wool left on <T-HIM-HER>."));
+			commonTell(mob,target,null,L("You can't shear <T-NAME>, there's no wool left on <T-HIM-HER>."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		failed=!proficiencyCheck(mob,0,auto);
-		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),getActivityMessageType(),getActivityMessageType(),_("<S-NAME> start(s) shearing <T-NAME>."));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),getActivityMessageType(),getActivityMessageType(),L("<S-NAME> start(s) shearing <T-NAME>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			sheep=target;
-			verb=_("shearing @x1",target.name());
+			verb=L("shearing @x1",target.name());
 			playSound="scissor.wav";
 			final int duration=getDuration(mob,target.phyStats().weight());
 			beneficialAffect(mob,mob,asLevel,duration);

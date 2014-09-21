@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_DivineFavor extends Prayer
 {
 	@Override public String ID() { return "Prayer_DivineFavor"; }
-	private final static String localizedName = CMLib.lang()._("Divine Favor");
+	private final static String localizedName = CMLib.lang().L("Divine Favor");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Divine Favor)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Divine Favor)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -59,7 +59,7 @@ public class Prayer_DivineFavor extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your fall out of divine favor."));
+			mob.tell(L("Your fall out of divine favor."));
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class Prayer_DivineFavor extends Prayer
 			if(deityM!=null)
 			{
 				struckDownToday=true;
-				((MOB)affected).location().showOthers(deityM,((MOB)affected).getVictim(),null,CMMsg.MSG_OK_ACTION,_("@x1 strike(s) down <T-NAME> with all of <S-HIS-HER> divine fury!",deityM.name()));
+				((MOB)affected).location().showOthers(deityM,((MOB)affected).getVictim(),null,CMMsg.MSG_OK_ACTION,L("@x1 strike(s) down <T-NAME> with all of <S-HIS-HER> divine fury!",deityM.name()));
 				CMLib.combat().postDeath(deityM,((MOB)affected).getVictim(),null);
 			}
 		}
@@ -110,7 +110,7 @@ public class Prayer_DivineFavor extends Prayer
 		if((auto)&&(givenTarget!=null)) target=givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,target,null,_("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));
+			mob.tell(mob,target,null,L("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));
 			return false;
 		}
 
@@ -125,7 +125,7 @@ public class Prayer_DivineFavor extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) divinely favored."):_("^S<S-NAME> @x1 for divine favor.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) divinely favored."):L("^S<S-NAME> @x1 for divine favor.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -133,7 +133,7 @@ public class Prayer_DivineFavor extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> @x1, but there's no answer.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> @x1, but there's no answer.",prayWord(mob)));
 
 
 		// return whether it worked

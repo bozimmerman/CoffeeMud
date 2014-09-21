@@ -37,7 +37,7 @@ import java.util.*;
 public class Paladin_Aura extends PaladinSkill
 {
 	@Override public String ID() { return "Paladin_Aura"; }
-	private final static String localizedName = CMLib.lang()._("Paladin`s Aura");
+	private final static String localizedName = CMLib.lang().L("Paladin`s Aura");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
 	public Paladin_Aura()
@@ -95,7 +95,7 @@ public class Paladin_Aura extends PaladinSkill
 			&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY))
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
 			{
-				msg.source().location().show((MOB)msg.target(),null,CMMsg.MSG_OK_VISUAL,_("The holy field around <S-NAME> protect(s) <S-HIM-HER> from the evil magic attack of @x1.",msg.source().name()));
+				msg.source().location().show((MOB)msg.target(),null,CMMsg.MSG_OK_VISUAL,L("The holy field around <S-NAME> protect(s) <S-HIM-HER> from the evil magic attack of @x1.",msg.source().name()));
 				return false;
 			}
 			if(((msg.targetMinor()==CMMsg.TYP_POISON)||(msg.targetMinor()==CMMsg.TYP_DISEASE))

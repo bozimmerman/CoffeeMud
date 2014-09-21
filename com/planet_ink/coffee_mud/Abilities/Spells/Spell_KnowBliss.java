@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_KnowBliss extends Spell
 {
 	@Override public String ID() { return "Spell_KnowBliss"; }
-	private final static String localizedName = CMLib.lang()._("Know Bliss");
+	private final static String localizedName = CMLib.lang().L("Know Bliss");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Know Bliss)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Know Bliss)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -56,7 +56,7 @@ public class Spell_KnowBliss extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			mob.tell(_("You feel less blissful."));
+			mob.tell(L("You feel less blissful."));
 			if((mob.isMonster())
 			   &&(!mob.amDead())
 			   &&(mob.location()!=null)
@@ -102,7 +102,7 @@ public class Spell_KnowBliss extends Spell
 		if(msg.amISource(mob)
 		&&(msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
 		{
-			mob.tell(_("Nah, you feel too happy to do that."));
+			mob.tell(L("Nah, you feel too happy to do that."));
 			mob.setVictim(null);
 			return false;
 		}
@@ -131,13 +131,13 @@ public class Spell_KnowBliss extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> incant(s) happily at <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> incant(s) happily at <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(target.location()==mob.location())
 				{
-					target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> smile(s) most peculiarly!"));
+					target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> smile(s) most peculiarly!"));
 					maliciousAffect(mob,target,asLevel,0,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0));
 					target.makePeace();
 					if(mob.getVictim()==target)
@@ -152,7 +152,7 @@ public class Spell_KnowBliss extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) happily at <T-NAMESELF>, but nothing more happens."));
+			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) happily at <T-NAMESELF>, but nothing more happens."));
 
 		// return whether it worked
 		return success;

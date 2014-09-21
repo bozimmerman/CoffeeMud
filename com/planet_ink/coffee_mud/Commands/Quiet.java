@@ -45,12 +45,12 @@ public class Quiet extends StdCommand
 		if(!CMath.bset(mob.getBitmap(),MOB.ATT_QUIET))
 		{
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_QUIET));
-			mob.tell(_("Quiet mode is now on.  You will no longer receive channel messages or tells."));
+			mob.tell(L("Quiet mode is now on.  You will no longer receive channel messages or tells."));
 		}
 		else
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_QUIET));
-			mob.tell(_("Quiet mode is now off.  You may now receive channel messages and tells."));
+			mob.tell(L("Quiet mode is now off.  You may now receive channel messages and tells."));
 		}
 		return false;
 	}

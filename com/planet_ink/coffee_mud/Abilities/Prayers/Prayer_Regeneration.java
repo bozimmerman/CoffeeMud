@@ -35,9 +35,9 @@ import java.util.*;
 public class Prayer_Regeneration extends Prayer
 {
 	@Override public String ID() { return "Prayer_Regeneration"; }
-	private final static String localizedName = CMLib.lang()._("Regeneration");
+	private final static String localizedName = CMLib.lang().L("Regeneration");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Regeneration)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Regeneration)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -57,7 +57,7 @@ public class Prayer_Regeneration extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your regenerative powers go away."));
+			mob.tell(L("Your regenerative powers go away."));
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class Prayer_Regeneration extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("You already have regenerative powers."));
+			mob.tell(L("You already have regenerative powers."));
 			return false;
 		}
 
@@ -115,7 +115,7 @@ public class Prayer_Regeneration extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> attain(s) regenerative abilities!"):_("^S<S-NAME> @x1 for divine regenerative abilities!^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> attain(s) regenerative abilities!"):L("^S<S-NAME> @x1 for divine regenerative abilities!^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -123,7 +123,7 @@ public class Prayer_Regeneration extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for regenerative abilities, but nothing happens.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for regenerative abilities, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

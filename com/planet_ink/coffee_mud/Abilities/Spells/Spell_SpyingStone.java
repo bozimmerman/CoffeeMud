@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_SpyingStone extends Spell
 {
 	@Override public String ID() { return "Spell_SpyingStone"; }
-	private final static String localizedName = CMLib.lang()._("Spying Stone");
+	private final static String localizedName = CMLib.lang().L("Spying Stone");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Spying Stone)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Spying Stone)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
@@ -63,8 +63,8 @@ public class Spell_SpyingStone extends Spell
 				final StringBuilder str=new StringBuilder("");
 				for(final String m : msgs)
 					str.append(m).append("\n\r");
-				if(str.length()==0) str.append(_("Nothing!"));
-				room.showHappens(CMMsg.MSG_SPEAK, affected,_("^S<S-NAME> grow(s) a mouth and say(s) '^N@x1^S'^N",str.toString()));
+				if(str.length()==0) str.append(L("Nothing!"));
+				room.showHappens(CMMsg.MSG_SPEAK, affected,L("^S<S-NAME> grow(s) a mouth and say(s) '^N@x1^S'^N",str.toString()));
 				msgs.clear();
 			}
 		}
@@ -83,13 +83,13 @@ public class Spell_SpyingStone extends Spell
 
 		if(!(target instanceof Item))
 		{
-			mob.tell(_("You can't cast this spell on that."));
+			mob.tell(L("You can't cast this spell on that."));
 			return false;
 		}
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(_("@x1 is already a spying stone!",target.name(mob)));
+			mob.tell(L("@x1 is already a spying stone!",target.name(mob)));
 			return false;
 		}
 
@@ -100,16 +100,16 @@ public class Spell_SpyingStone extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> point(s) <S-HIS-HER> finger at <T-NAMESELF>, incanting.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> point(s) <S-HIS-HER> finger at <T-NAMESELF>, incanting.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
-				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> open(s) a pair of strange eyes, which become transluscent."));
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> open(s) a pair of strange eyes, which become transluscent."));
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> point(s) at <T-NAMESELF>, incanting, but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF>, incanting, but nothing happens."));
 
 
 		// return whether it worked

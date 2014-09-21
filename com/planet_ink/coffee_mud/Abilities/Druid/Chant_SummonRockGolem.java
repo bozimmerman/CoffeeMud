@@ -38,9 +38,9 @@ import java.util.*;
 public class Chant_SummonRockGolem extends Chant
 {
 	@Override public String ID() { return "Chant_SummonRockGolem"; }
-	private final static String localizedName = CMLib.lang()._("Summon Rock Golem");
+	private final static String localizedName = CMLib.lang().L("Summon Rock Golem");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Summon Rock Golem)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Summon Rock Golem)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -105,7 +105,7 @@ public class Chant_SummonRockGolem extends Chant
 	{
 		if(CMLib.flags().hasAControlledFollower(mob, this))
 		{
-			mob.tell(_("You can only control one golem."));
+			mob.tell(L("You can only control one golem."));
 			return false;
 		}
 
@@ -115,7 +115,7 @@ public class Chant_SummonRockGolem extends Chant
 		if((!auto)
 		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE))
 		{
-			mob.tell(_("You can not summon a rock golem here."));
+			mob.tell(L("You can not summon a rock golem here."));
 			return false;
 		}
 
@@ -124,7 +124,7 @@ public class Chant_SummonRockGolem extends Chant
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) and summon(s) help from the earth.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) and summon(s) help from the earth.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -133,7 +133,7 @@ public class Chant_SummonRockGolem extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s), but nothing happens."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s), but nothing happens."));
 
 		// return whether it worked
 		return success;
@@ -142,9 +142,9 @@ public class Chant_SummonRockGolem extends Chant
 	{
 		final MOB newMOB=CMClass.getMOB("GenMOB");
 		newMOB.basePhyStats().setLevel(adjustedLevel(caster,0));
-		newMOB.setName(_("an golem of stone"));
-		newMOB.setDisplayText(_("an stone golem lumbers around here."));
-		newMOB.setDescription(_("A large beast, made of rock and stone, with a hard stare."));
+		newMOB.setName(L("an golem of stone"));
+		newMOB.setDisplayText(L("an stone golem lumbers around here."));
+		newMOB.setDescription(L("A large beast, made of rock and stone, with a hard stare."));
 		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("StoneGolem"));
 		newMOB.recoverPhyStats();
@@ -174,17 +174,17 @@ public class Chant_SummonRockGolem extends Chant
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears out of the cave walls!"));
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears out of the cave walls!"));
 		final MOB victim=caster.getVictim();
 		newMOB.setStartRoom(null); // keep before postFollow for Conquest
 		CMLib.commands().postFollow(newMOB,caster,true);
 		if(newMOB.amFollowing()!=caster)
-			caster.tell(_("@x1 seems unwilling to follow you.",newMOB.name()));
+			caster.tell(L("@x1 seems unwilling to follow you.",newMOB.name()));
 		else
 		if(victim!=null)
 		{
 			if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
-			newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,_("<S-NAME> start(s) attacking <T-NAMESELF>!"));
+			newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,L("<S-NAME> start(s) attacking <T-NAMESELF>!"));
 		}
 		newMOB.addNonUninvokableEffect(this);
 		return(newMOB);

@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_Infected extends StdTrap
 {
 	@Override public String ID() { return "Trap_Infected"; }
-	private final static String localizedName = CMLib.lang()._("infected");
+	private final static String localizedName = CMLib.lang().L("infected");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -107,7 +107,7 @@ public class Trap_Infected extends StdTrap
 		if(I==null)
 		{
 			if(mob!=null)
-				mob.tell(_("You'll need to set down some diseased food first."));
+				mob.tell(L("You'll need to set down some diseased food first."));
 			return false;
 		}
 		return true;
@@ -122,9 +122,9 @@ public class Trap_Infected extends StdTrap
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) setting off an infectous trap!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) setting off an infectous trap!"));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> notice(s) that @x1 is infected!",affected.name())))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> notice(s) that @x1 is infected!",affected.name())))
 			{
 				super.spring(target);
 				Ability A=CMClass.getAbility(text());

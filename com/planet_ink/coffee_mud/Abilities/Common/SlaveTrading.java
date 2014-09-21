@@ -36,7 +36,7 @@ import java.util.*;
 public class SlaveTrading extends CommonSkill
 {
 	@Override public String ID() { return "SlaveTrading"; }
-	private final static String localizedName = CMLib.lang()._("Slave Trading");
+	private final static String localizedName = CMLib.lang().L("Slave Trading");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"SLAVETRADING","SLAVETRADE","SLAVESELL","SSELL"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -52,7 +52,7 @@ public class SlaveTrading extends CommonSkill
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
-			commonTell(mob,_("Sell whom?"));
+			commonTell(mob,L("Sell whom?"));
 			return false;
 		}
 
@@ -62,22 +62,22 @@ public class SlaveTrading extends CommonSkill
 		{
 			if(!CMLib.flags().canBeSeenBy(M,mob))
 			{
-				commonTell(mob,_("You don't see anyone called '@x1' here.",str));
+				commonTell(mob,L("You don't see anyone called '@x1' here.",str));
 				return false;
 			}
 			if(!M.isMonster())
 			{
-				commonTell(mob,M,null,_("You can't sell <T-NAME> as a slave."));
+				commonTell(mob,M,null,L("You can't sell <T-NAME> as a slave."));
 				return false;
 			}
 			if(CMLib.flags().isAnimalIntelligence(M))
 			{
-				commonTell(mob,M,null,_("You can't sell <T-NAME> as a slave.  Animals are not slaves."));
+				commonTell(mob,M,null,L("You can't sell <T-NAME> as a slave.  Animals are not slaves."));
 				return false;
 			}
 			if((M.fetchEffect("Skill_Enslave")==null)||(!M.fetchEffect("Skill_Enslave").text().equals(mob.Name())))
 			{
-				commonTell(mob,M,null,_("<T-NAME> do(es)n't seem to be your slave."));
+				commonTell(mob,M,null,L("<T-NAME> do(es)n't seem to be your slave."));
 				return false;
 			}
 		}
@@ -86,12 +86,12 @@ public class SlaveTrading extends CommonSkill
 			return false;
 		if(proficiencyCheck(mob,0,auto))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,shopkeeper,M,CMMsg.MSG_SELL,_("<S-NAME> sell(s) <O-NAME> to <T-NAME>."));
+			final CMMsg msg=CMClass.getMsg(mob,shopkeeper,M,CMMsg.MSG_SELL,L("<S-NAME> sell(s) <O-NAME> to <T-NAME>."));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
-			beneficialWordsFizzle(mob,shopkeeper,_("<S-NAME> <S-IS-ARE>n't able to strike a deal with <T-NAME>."));
+			beneficialWordsFizzle(mob,shopkeeper,L("<S-NAME> <S-IS-ARE>n't able to strike a deal with <T-NAME>."));
 		return true;
 	}
 }

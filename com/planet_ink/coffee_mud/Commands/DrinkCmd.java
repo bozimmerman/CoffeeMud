@@ -44,7 +44,7 @@ public class DrinkCmd extends StdCommand
 	{
 		if((commands.size()<2)&&(!(mob.location() instanceof Drink)))
 		{
-			mob.tell(_("Drink what?"));
+			mob.tell(L("Drink what?"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -61,16 +61,16 @@ public class DrinkCmd extends StdCommand
 			||((!mob.isMine(thisThang))
 			   &&(!CMLib.flags().canBeSeenBy(thisThang,mob))))
 			{
-				mob.tell(_("You don't see '@x1' here.",CMParms.combine(commands,0)));
+				mob.tell(L("You don't see '@x1' here.",CMParms.combine(commands,0)));
 				return false;
 			}
 		}
-		String str=_("<S-NAME> take(s) a drink from <T-NAMESELF>.");
+		String str=L("<S-NAME> take(s) a drink from <T-NAMESELF>.");
 		Environmental tool=null;
 		if((thisThang instanceof Drink)
 		&&(((Drink)thisThang).liquidRemaining()>0)
 		&&(((Drink)thisThang).liquidType()!=RawMaterial.RESOURCE_FRESHWATER))
-			str=_("<S-NAME> take(s) a drink of @x1 from <T-NAMESELF>.",RawMaterial.CODES.NAME(((Drink)thisThang).liquidType()).toLowerCase());
+			str=L("<S-NAME> take(s) a drink of @x1 from <T-NAMESELF>.",RawMaterial.CODES.NAME(((Drink)thisThang).liquidType()).toLowerCase());
 		else
 		if(thisThang instanceof Container)
 		{
@@ -82,7 +82,7 @@ public class DrinkCmd extends StdCommand
 				{
 					tool=thisThang;
 					thisThang=I;
-					str=_("<S-NAME> take(s) a drink of <T-NAMESELF> from <O-NAMESELF>.");
+					str=L("<S-NAME> take(s) a drink of <T-NAMESELF> from <O-NAMESELF>.");
 					break;
 				}
 			}

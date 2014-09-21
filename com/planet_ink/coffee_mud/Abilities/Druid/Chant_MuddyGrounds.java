@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_MuddyGrounds extends Chant
 {
 	@Override public String ID() { return "Chant_MuddyGrounds"; }
-	private final static String localizedName = CMLib.lang()._("Muddy Grounds");
+	private final static String localizedName = CMLib.lang().L("Muddy Grounds");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
@@ -48,7 +48,7 @@ public class Chant_MuddyGrounds extends Chant
 	public void unInvoke()
 	{
 		if((canBeUninvoked())&&(affected!=null)&&(affected instanceof Room))
-			((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,_("The mud in '@x1' dries up.",((Room)affected).displayText()));
+			((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,L("The mud in '@x1' dries up.",((Room)affected).displayText()));
 		super.unInvoke();
 	}
 
@@ -109,7 +109,7 @@ public class Chant_MuddyGrounds extends Chant
 			||(type==Room.DOMAIN_OUTDOORS_UNDERWATER)
 			||(type==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			mob.tell(_("That magic won't work here."));
+			mob.tell(L("That magic won't work here."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -119,11 +119,11 @@ public class Chant_MuddyGrounds extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":_("^S<S-NAME> chant(s) to the ground.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":L("^S<S-NAME> chant(s) to the ground.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The ground here turns to MUD!"));
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The ground here turns to MUD!"));
 				if(CMLib.law().doesOwnThisProperty(mob,mob.location()))
 				{
 					mob.location().addNonUninvokableEffect((Ability)copyOf());
@@ -135,7 +135,7 @@ public class Chant_MuddyGrounds extends Chant
 
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) to the ground, but nothing happens."));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) to the ground, but nothing happens."));
 
 
 		// return whether it worked

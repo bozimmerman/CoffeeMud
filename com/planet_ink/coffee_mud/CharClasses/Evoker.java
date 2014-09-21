@@ -33,7 +33,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Evoker extends SpecialistMage
 {
 	@Override public String ID(){return "Evoker";}
-	private final static String localizedStaticName = CMLib.lang()._("Evoker");
+	private final static String localizedStaticName = CMLib.lang().L("Evoker");
 	@Override public String name() { return localizedStaticName; }
 	@Override public int domain(){return Ability.DOMAIN_EVOCATION;}
 	@Override public int opposed(){return Ability.DOMAIN_ALTERATION;}

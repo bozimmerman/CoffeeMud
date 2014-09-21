@@ -523,7 +523,7 @@ public class StdWebMacro implements WebMacro
 		return requestParms;
 	}
 	
-	public String _(final String str, final String ... xs)
+	public String L(final String str, final String ... xs)
 	{
 		return CMLib.lang().fullSessionTranslation(str, xs);
 	}

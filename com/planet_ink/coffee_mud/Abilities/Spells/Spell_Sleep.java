@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Sleep extends Spell
 {
 	@Override public String ID() { return "Spell_Sleep"; }
-	private final static String localizedName = CMLib.lang()._("Sleep");
+	private final static String localizedName = CMLib.lang().L("Sleep");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Sleep spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Sleep spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -59,7 +59,7 @@ public class Spell_Sleep extends Spell
 		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 		&&(msg.sourceMajor()>0))
 		{
-			mob.tell(_("You are way too drowsy."));
+			mob.tell(L("You are way too drowsy."));
 			return false;
 		}
 		return super.okMessage(myHost,msg);
@@ -89,7 +89,7 @@ public class Spell_Sleep extends Spell
 		if(canBeUninvoked())
 		{
 			if((!mob.amDead())&&(mob.location()!=null))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> do(es)n't seem so drowsy any more."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> do(es)n't seem so drowsy any more."));
 			CMLib.commands().postStand(mob,true);
 		}
 	}
@@ -121,7 +121,7 @@ public class Spell_Sleep extends Spell
 
 		if((!auto)&&target.isInCombat())
 		{
-			mob.tell(_("@x1 is in combat, and would not be affected.",target.name(mob)));
+			mob.tell(L("@x1 is in combat, and would not be affected.",target.name(mob)));
 			return false;
 		}
 
@@ -129,7 +129,7 @@ public class Spell_Sleep extends Spell
 		// won't happen
 		if((!auto)&&(!CMLib.flags().canBeHeardSpeakingBy(mob,target)))
 		{
-			mob.tell(_("@x1 can't hear your words.",target.charStats().HeShe()));
+			mob.tell(L("@x1 can't hear your words.",target.charStats().HeShe()));
 			return false;
 		}
 
@@ -151,7 +151,7 @@ public class Spell_Sleep extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> whisper(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> whisper(s) to <T-NAMESELF>.^?"));
 			final MOB oldVictim=mob.getVictim();
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -161,13 +161,13 @@ public class Spell_Sleep extends Spell
 					success=maliciousAffect(mob,target,asLevel,3-levelDiff,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0));
 					if(success)
 						if(target.location()==mob.location())
-							target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> fall(s) asleep!!"));
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> fall(s) asleep!!"));
 				}
 				if(oldVictim==null)	mob.setVictim(null);
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> whisper(s) to <T-NAMESELF>, but the spell fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> whisper(s) to <T-NAMESELF>, but the spell fades."));
 
 		// return whether it worked
 		return success;

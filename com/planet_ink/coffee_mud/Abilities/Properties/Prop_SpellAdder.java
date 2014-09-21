@@ -210,7 +210,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			if(R==null) R=CMLib.map().roomLocation(target);
 			if(R==null) R=CMLib.map().getRandomRoom();
 			mob=CMLib.map().getFactoryMOB(R);
-			mob.setName(_("invoker"));
+			mob.setName(L("invoker"));
 			mob.basePhyStats().setLevel(affected.phyStats().level());
 			mob.phyStats().setLevel(affected.phyStats().level());
 		}

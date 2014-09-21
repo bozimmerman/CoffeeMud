@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_DivineLuck extends Prayer
 {
 	@Override public String ID() { return "Prayer_DivineLuck"; }
-	private final static String localizedName = CMLib.lang()._("Divine Luck");
+	private final static String localizedName = CMLib.lang().L("Divine Luck");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Divine Luck)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Divine Luck)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -89,7 +89,7 @@ public class Prayer_DivineLuck extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your divine luck is over."));
+			mob.tell(L("Your divine luck is over."));
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class Prayer_DivineLuck extends Prayer
 		if((auto)&&(givenTarget!=null)) target=givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,target,null,_("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));
+			mob.tell(mob,target,null,L("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));
 			return false;
 		}
 
@@ -114,7 +114,7 @@ public class Prayer_DivineLuck extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) divinely lucky."):_("^S<S-NAME> @x1 for divine luck.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) divinely lucky."):L("^S<S-NAME> @x1 for divine luck.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -122,7 +122,7 @@ public class Prayer_DivineLuck extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> @x1, but as luck would have it, there's no answer.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> @x1, but as luck would have it, there's no answer.",prayWord(mob)));
 
 
 		// return whether it worked

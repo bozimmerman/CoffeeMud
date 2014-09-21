@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_DeathsDoor extends Prayer
 {
 	@Override public String ID() { return "Prayer_DeathsDoor"; }
-	private final static String localizedName = CMLib.lang()._("Deaths Door");
+	private final static String localizedName = CMLib.lang().L("Deaths Door");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Deaths Door)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Deaths Door)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
@@ -62,7 +62,7 @@ public class Prayer_DeathsDoor extends Prayer
 					return super.okMessage(host,msg);
 				final Room oldRoom=mob.location();
 				mob.resetToMaxState();
-				oldRoom.show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> pulled back from death's door!"));
+				oldRoom.show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> pulled back from death's door!"));
 				startRoom.bringMobHere(mob,false);
 				unInvoke();
 				for(int a=mob.numEffects()-1;a>=0;a--) // personal effects
@@ -89,7 +89,7 @@ public class Prayer_DeathsDoor extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your deaths door protection fades."));
+			mob.tell(L("Your deaths door protection fades."));
 	}
 
 	@Override
@@ -109,7 +109,7 @@ public class Prayer_DeathsDoor extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) guarded at deaths door!"):_("^S<S-NAME> @x1 for <T-NAME> to be guarded at deaths door!^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) guarded at deaths door!"):L("^S<S-NAME> @x1 for <T-NAME> to be guarded at deaths door!^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -117,7 +117,7 @@ public class Prayer_DeathsDoor extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for <T-NAMESELF>, but there is no answer.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for <T-NAMESELF>, but there is no answer.",prayWord(mob)));
 
 
 		// return whether it worked

@@ -34,7 +34,7 @@ import java.util.*;
 public class Trap_Vanishing extends StdTrap
 {
 	@Override public String ID() { return "Trap_Vanishing"; }
-	private final static String localizedName = CMLib.lang()._("vanishing trap");
+	private final static String localizedName = CMLib.lang().L("vanishing trap");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -47,9 +47,9 @@ public class Trap_Vanishing extends StdTrap
 		if((target!=invoker())&&(target.location()!=null))
 		{
 			if(doesSaveVsTraps(target))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> foil(s) a trap on @x1!",affected.name()));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> foil(s) a trap on @x1!",affected.name()));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> notice(s) something about @x1 .. it's fading away.",affected.name())))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> notice(s) something about @x1 .. it's fading away.",affected.name())))
 			{
 				super.spring(target);
 				affected.basePhyStats().setDisposition(affected.basePhyStats().disposition()|PhyStats.IS_INVISIBLE);

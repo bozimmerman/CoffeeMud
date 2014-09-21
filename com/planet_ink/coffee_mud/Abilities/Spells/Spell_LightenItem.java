@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_LightenItem extends Spell
 {
 	@Override public String ID() { return "Spell_LightenItem"; }
-	private final static String localizedName = CMLib.lang()._("Lighten Item");
+	private final static String localizedName = CMLib.lang().L("Lighten Item");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
@@ -62,7 +62,7 @@ public class Spell_LightenItem extends Spell
 			&&(((MOB)item.owner()).isMine(item)))
 			{
 				final MOB mob=(MOB)item.owner();
-				mob.tell(_("@x1 grows heavy again.",item.name()));
+				mob.tell(L("@x1 grows heavy again.",item.name()));
 				if((mob.phyStats().weight()+item.basePhyStats().weight())>mob.maxCarry())
 				{
 					if(!item.amWearingAt(Wearable.IN_INVENTORY))
@@ -83,13 +83,13 @@ public class Spell_LightenItem extends Spell
 		{
 			final String str=CMParms.combine(commands,0).toUpperCase();
 			if(str.equals("MONEY")||str.equals("GOLD")||str.equals("COINS"))
-				mob.tell(_("You can't cast this spell on your own coins."));
+				mob.tell(L("You can't cast this spell on your own coins."));
 			return false;
 		}
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(_("@x1 is already light!",target.name(mob)));
+			mob.tell(L("@x1 is already light!",target.name(mob)));
 			return false;
 		}
 
@@ -100,11 +100,11 @@ public class Spell_LightenItem extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> grow(s) much lighter."));
+				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> grow(s) much lighter."));
 				beneficialAffect(mob,target,asLevel,100);
 				target.recoverPhyStats();
 				mob.recoverPhyStats();
@@ -113,7 +113,7 @@ public class Spell_LightenItem extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting, but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting, but nothing happens."));
 
 
 		// return whether it worked

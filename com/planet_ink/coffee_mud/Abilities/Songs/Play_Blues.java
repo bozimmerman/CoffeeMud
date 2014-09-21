@@ -36,11 +36,11 @@ import java.util.*;
 public class Play_Blues extends Play
 {
 	@Override public String ID() { return "Play_Blues"; }
-	private final static String localizedName = CMLib.lang()._("Blues");
+	private final static String localizedName = CMLib.lang().L("Blues");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected boolean maliciousButNotAggressiveFlag(){return true;}
-	@Override protected String songOf(){return _("the Blues");}
+	@Override protected String songOf(){return L("the Blues");}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -58,10 +58,10 @@ public class Play_Blues extends Play
 				||msg.tool().Name().equals("SEX <T-NAME>"))))
 			{
 				if(msg.amISource(myChar))
-					myChar.tell(_("You really don't feel like it."));
+					myChar.tell(L("You really don't feel like it."));
 				else
 				if(msg.amITarget(myChar))
-					msg.source().tell(_("@x1 doesn't look like @x2 feels like it.",myChar.name(),myChar.charStats().heshe()));
+					msg.source().tell(L("@x1 doesn't look like @x2 feels like it.",myChar.name(),myChar.charStats().heshe()));
 				return false;
 			}
 		}

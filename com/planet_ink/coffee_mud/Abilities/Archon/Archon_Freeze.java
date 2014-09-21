@@ -37,9 +37,9 @@ public class Archon_Freeze extends ArchonSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Archon_Freeze"; }
-	private final static String localizedName = CMLib.lang()._("Freeze");
+	private final static String localizedName = CMLib.lang().L("Freeze");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Freezed)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Freezed)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -69,7 +69,7 @@ public class Archon_Freeze extends ArchonSkill
 			case CMMsg.TYP_ADVANCE:
 			case CMMsg.TYP_LEAVE:
 			case CMMsg.TYP_FLEE:
-				mob.tell(_("You are frozen, and cant go anywhere."));
+				mob.tell(L("You are frozen, and cant go anywhere."));
 				return false;
 			}
 		}
@@ -86,7 +86,7 @@ public class Archon_Freeze extends ArchonSkill
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("You are no longer freezed!"));
+			mob.tell(L("You are no longer freezed!"));
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class Archon_Freeze extends ArchonSkill
 		if(A!=null)
 		{
 			A.unInvoke();
-			mob.tell(_("@x1 is released from his freezedness.",target.Name()));
+			mob.tell(L("@x1 is released from his freezedness.",target.Name()));
 			return true;
 		}
 
@@ -110,18 +110,18 @@ public class Archon_Freeze extends ArchonSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?_("A frozen chill falls upon <T-NAME>!"):_("^F<S-NAME> freeze(s) <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?L("A frozen chill falls upon <T-NAME>!"):L("^F<S-NAME> freeze(s) <T-NAMESELF>.^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> frozen!"));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> frozen!"));
 				beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
 				Log.sysOut("Freeze",mob.Name()+" freezed "+target.name()+".");
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to freeze <T-NAMESELF>, but fail(s)."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to freeze <T-NAMESELF>, but fail(s)."));
 		return success;
 	}
 }

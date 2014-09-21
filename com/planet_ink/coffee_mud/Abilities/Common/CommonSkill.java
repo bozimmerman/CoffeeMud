@@ -38,7 +38,7 @@ import java.util.*;
 public class CommonSkill extends StdAbility
 {
 	@Override public String ID() { return "CommonSkill"; }
-	private final static String localizedName = CMLib.lang()._("Common Skill");
+	private final static String localizedName = CMLib.lang().L("Common Skill");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings = empty;
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -53,13 +53,13 @@ public class CommonSkill extends StdAbility
 	protected boolean bundling=false;
 	public Ability helpingAbility=null;
 	protected volatile int tickUp=0;
-	protected String verb=_("working");
+	protected String verb=L("working");
 	protected String playSound=null;
 	protected int yield=baseYield();
 
 	protected int baseYield() { return 1; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected String displayText=_("(Doing something productive)");
+	protected String displayText=L("(Doing something productive)");
 	@Override public String displayText(){return displayText;}
 
 	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getCommonTrainCostFormula(ID()); }
@@ -115,13 +115,13 @@ public class CommonSkill extends StdAbility
 			}
 			final String sound=(playSound!=null)?CMLib.protocol().msp(playSound,10):"";
 			if(tickDown==4)
-				mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> <S-IS-ARE> almost done @x1.@x2",verb,sound));
+				mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> <S-IS-ARE> almost done @x1.@x2",verb,sound));
 			else
 			if((tickUp%4)==0)
 			{
 				final int total=tickUp+tickDown;
 				final int pct=(int)Math.round(CMath.div(tickUp,total)*100.0);
-				mob.location().show(mob,null,this,getActivityMessageType(),_("<S-NAME> continue(s) @x1 (@x2% completed).@x3",verb,""+pct,sound),null,_("<S-NAME> continue(s) @x1.@x2",verb,sound));
+				mob.location().show(mob,null,this,getActivityMessageType(),L("<S-NAME> continue(s) @x1 (@x2% completed).@x3",verb,""+pct,sound),null,L("<S-NAME> continue(s) @x1.@x2",verb,sound));
 			}
 			if((helping)
 			&&(helpingAbility!=null)
@@ -150,9 +150,9 @@ public class CommonSkill extends StdAbility
 			{
 				final MOB mob=(MOB)affected;
 				if(aborted)
-					mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> stop(s) @x1.",verb));
+					mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> stop(s) @x1.",verb));
 				else
-					mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> <S-IS-ARE> done @x1.",verb));
+					mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> <S-IS-ARE> done @x1.",verb));
 				helping=false;
 				helpingAbility=null;
 			}
@@ -192,7 +192,7 @@ public class CommonSkill extends StdAbility
 	{
 		if(mob.isMonster()&&(mob.amFollowing()!=null))
 		{
-			if(str.startsWith("You")) str=_("I@x1",str.substring(3));
+			if(str.startsWith("You")) str=L("I@x1",str.substring(3));
 			if(target!=null) str=CMStrings.replaceAll(str,"<T-NAME>",target.name());
 			if(tool!=null)  str=CMStrings.replaceAll(str,"<O-NAME>",tool.name());
 			CMLib.commands().postSay(mob,null,str,false,false);
@@ -205,7 +205,7 @@ public class CommonSkill extends StdAbility
 	{
 		if(mob.isMonster()&&(mob.amFollowing()!=null))
 		{
-			if(str.startsWith("You")) str=_("I@x1",str.substring(3));
+			if(str.startsWith("You")) str=L("I@x1",str.substring(3));
 			CMLib.commands().postSay(mob,null,str,false,false);
 		}
 		else
@@ -271,7 +271,7 @@ public class CommonSkill extends StdAbility
 		}
 		if((fire==null)||(!mob.location().isContent(fire)))
 		{
-			commonTell(mob,_("A fire will need to be built first."));
+			commonTell(mob,L("A fire will need to be built first."));
 			return null;
 		}
 		return fire;
@@ -467,15 +467,15 @@ public class CommonSkill extends StdAbility
 		final AbilityMapper.AbilityLimits remainders = CMLib.ableMapper().getCommonSkillRemainder(studentM, this);
 		if(remainders.commonSkills<=0)
 		{
-			teacherM.tell(_("@x1 can not learn any more common skills.",studentM.name(teacherM)));
-			studentM.tell(_("You have learned the maximum @x1 common skills, and may not learn any more.",""+C.maxCommonSkills()));
+			teacherM.tell(L("@x1 can not learn any more common skills.",studentM.name(teacherM)));
+			studentM.tell(L("You have learned the maximum @x1 common skills, and may not learn any more.",""+C.maxCommonSkills()));
 			return false;
 		}
 		if(remainders.specificSkillLimit<=0)
 		{
-			teacherM.tell(_("@x1 can not learn any more @x2crafting common skills.",studentM.name(teacherM),(crafting?"":"non-")));
+			teacherM.tell(L("@x1 can not learn any more @x2crafting common skills.",studentM.name(teacherM),(crafting?"":"non-")));
 			final int max = crafting ? C.maxCraftingSkills() : C.maxNonCraftingSkills();
-			studentM.tell(_("You have learned the maximum @x1@x2crafting skills, and may not learn any more.",""+max,(crafting?" ":" non-")));
+			studentM.tell(L("You have learned the maximum @x1@x2crafting skills, and may not learn any more.",""+max,(crafting?" ":" non-")));
 			return false;
 		}
 		return true;
@@ -493,15 +493,15 @@ public class CommonSkill extends StdAbility
 			final boolean crafting = ((classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
 			final AbilityMapper.AbilityLimits remainders = CMLib.ableMapper().getCommonSkillRemainder(student, this);
 			if(remainders.commonSkills<=0)
-				student.tell(_("@x1 may not learn any more common skills.",student.name()));
+				student.tell(L("@x1 may not learn any more common skills.",student.name()));
 			else
 			if(remainders.commonSkills<=Integer.MAX_VALUE/2)
-				student.tell(_("@x1 may learn @x2 more common skills.",student.name(),""+remainders.commonSkills));
+				student.tell(L("@x1 may learn @x2 more common skills.",student.name(),""+remainders.commonSkills));
 			if(remainders.specificSkillLimit<=0)
-				student.tell(_("@x1 may not learn any more @x2crafting common skills.",student.name(),(crafting?"":"non-")));
+				student.tell(L("@x1 may not learn any more @x2crafting common skills.",student.name(),(crafting?"":"non-")));
 			else
 			if(remainders.specificSkillLimit<=Integer.MAX_VALUE/2)
-				student.tell(_("@x1 may learn @x2 more @x3crafting common skills.",student.name(),""+remainders.specificSkillLimit,(crafting?"":"non-")));
+				student.tell(L("@x1 may learn @x2 more @x3crafting common skills.",student.name(),""+remainders.specificSkillLimit,(crafting?"":"non-")));
 		}
 	}
 
@@ -532,7 +532,7 @@ public class CommonSkill extends StdAbility
 				A.unInvoke();
 				return true;
 			}
-			mob.tell(_("You are not doing that right now."));
+			mob.tell(L("You are not doing that right now."));
 		}
 		return false;
 	}
@@ -554,12 +554,12 @@ public class CommonSkill extends StdAbility
 
 		if((!allowedInTheDark())&&(!CMLib.flags().canBeSeenBy(mob.location(),mob)))
 		{
-			commonTell(mob,_("<S-NAME> can't see to do that!"));
+			commonTell(mob,L("<S-NAME> can't see to do that!"));
 			return false;
 		}
 		if((CMLib.flags().isSitting(mob)&&(!canBeDoneSittingDown()))||CMLib.flags().isSleeping(mob))
 		{
-			commonTell(mob,_("You need to stand up!"));
+			commonTell(mob,L("You need to stand up!"));
 			return false;
 		}
 		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
@@ -583,25 +583,25 @@ public class CommonSkill extends StdAbility
 		if(mob.curState().getMana()<consumed[Ability.USAGEINDEX_MANA])
 		{
 			if(mob.maxState().getMana()==consumed[Ability.USAGEINDEX_MANA])
-				mob.tell(_("You must be at full mana to do that."));
+				mob.tell(L("You must be at full mana to do that."));
 			else
-				mob.tell(_("You don't have enough mana to do that."));
+				mob.tell(L("You don't have enough mana to do that."));
 			return false;
 		}
 		if(mob.curState().getMovement()<consumed[Ability.USAGEINDEX_MOVEMENT])
 		{
 			if(mob.maxState().getMovement()==consumed[Ability.USAGEINDEX_MOVEMENT])
-				mob.tell(_("You must be at full movement to do that."));
+				mob.tell(L("You must be at full movement to do that."));
 			else
-				mob.tell(_("You don't have enough movement to do that.  You are too tired."));
+				mob.tell(L("You don't have enough movement to do that.  You are too tired."));
 			return false;
 		}
 		if(mob.curState().getHitPoints()<consumed[Ability.USAGEINDEX_HITPOINTS])
 		{
 			if(mob.maxState().getHitPoints()==consumed[Ability.USAGEINDEX_HITPOINTS])
-				mob.tell(_("You must be at full health to do that."));
+				mob.tell(L("You must be at full health to do that."));
 			else
-				mob.tell(_("You don't have enough hit points to do that."));
+				mob.tell(L("You don't have enough hit points to do that."));
 			return false;
 		}
 		if(!checkComponents(mob))

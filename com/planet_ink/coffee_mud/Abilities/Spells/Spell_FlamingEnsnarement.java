@@ -35,9 +35,9 @@ import java.util.*;
 public class Spell_FlamingEnsnarement extends Spell
 {
 	@Override public String ID() { return "Spell_FlamingEnsnarement"; }
-	private final static String localizedName = CMLib.lang()._("Flaming Ensnarement");
+	private final static String localizedName = CMLib.lang().L("Flaming Ensnarement");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Ensnared in Fire)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Ensnared in Fire)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
 	@Override public int minRange(){return 1;}
@@ -66,7 +66,7 @@ public class Spell_FlamingEnsnarement extends Spell
 			case CMMsg.TYP_ADVANCE:
 			case CMMsg.TYP_LEAVE:
 			case CMMsg.TYP_FLEE:
-				if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> struggle(s) against the flaming ensnarement.")))
+				if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> struggle(s) against the flaming ensnarement.")))
 				{
 					amountRemaining-=mob.phyStats().level();
 					if(amountRemaining<0)
@@ -94,7 +94,7 @@ public class Spell_FlamingEnsnarement extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> manage(s) to break <S-HIS-HER> way free of the burning ensnarement."));
+			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> manage(s) to break <S-HIS-HER> way free of the burning ensnarement."));
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class Spell_FlamingEnsnarement extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth ensnaring."));
+			mob.tell(L("There doesn't appear to be anyone here worth ensnaring."));
 			return false;
 		}
 
@@ -136,7 +136,7 @@ public class Spell_FlamingEnsnarement extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> speak(s) and wave(s) <S-HIS-HER> fingers at the ground.^?")))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> speak(s) and wave(s) <S-HIS-HER> fingers at the ground.^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -155,14 +155,14 @@ public class Spell_FlamingEnsnarement extends Spell
 							if(target.location()==mob.location())
 							{
 								success=maliciousAffect(mob,target,asLevel,0,-1);
-								target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> become(s) ensnared in the flaming tendrils erupting from the ground, and is unable to move <S-HIS-HER> feet!"));
+								target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> become(s) ensnared in the flaming tendrils erupting from the ground, and is unable to move <S-HIS-HER> feet!"));
 							}
 						}
 					}
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> speak(s) and wave(s) <S-HIS-HER> fingers, but the spell fizzles."));
+			return maliciousFizzle(mob,null,L("<S-NAME> speak(s) and wave(s) <S-HIS-HER> fingers, but the spell fizzles."));
 
 
 		// return whether it worked

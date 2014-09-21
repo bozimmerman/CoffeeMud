@@ -38,9 +38,9 @@ import java.util.*;
 public class Chant_SummonFlyTrap extends Chant
 {
 	@Override public String ID() { return "Chant_SummonFlyTrap"; }
-	private final static String localizedName = CMLib.lang()._("Summon FlyTrap");
+	private final static String localizedName = CMLib.lang().L("Summon FlyTrap");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Summon FlyTrap)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Summon FlyTrap)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -70,7 +70,7 @@ public class Chant_SummonFlyTrap extends Chant
 						final String raceCat=((DeadBody)I).charStats().getMyRace().racialCategory();
 						if(raceCat.equals("Insect")||raceCat.equals("Arachnid"))
 						{
-							if(R.show(mob,I,CMMsg.MSG_HANDS|CMMsg.MASK_SOUND,_("<S-NAME> devour(s) <T-NAMESELF>.")))
+							if(R.show(mob,I,CMMsg.MSG_HANDS|CMMsg.MASK_SOUND,L("<S-NAME> devour(s) <T-NAMESELF>.")))
 							{
 								I.destroy();
 								break;
@@ -91,7 +91,7 @@ public class Chant_SummonFlyTrap extends Chant
 		if((canBeUninvoked())&&(mob!=null))
 		{
 			if(mob.location()!=null)
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> shrivels up and dies."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> shrivels up and dies."));
 			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
 		}
@@ -126,7 +126,7 @@ public class Chant_SummonFlyTrap extends Chant
 	{
 		if((!auto)&&(mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell(_("You must be outdoors for this chant to work."));
+			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
 
@@ -136,7 +136,7 @@ public class Chant_SummonFlyTrap extends Chant
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			mob.tell(_("This magic will not work here."));
+			mob.tell(L("This magic will not work here."));
 			return false;
 		}
 
@@ -148,7 +148,7 @@ public class Chant_SummonFlyTrap extends Chant
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) to the fertile ground.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) to the fertile ground.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -156,11 +156,11 @@ public class Chant_SummonFlyTrap extends Chant
 				beneficialAffect(mob,target,asLevel,0);
 				CMLib.commands().postFollow(target,mob,true);
 				if(target.amFollowing()!=mob)
-					mob.tell(_("@x1 seems unwilling to follow you.",target.name(mob)));
+					mob.tell(L("@x1 seems unwilling to follow you.",target.name(mob)));
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s), but nothing happens."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s), but nothing happens."));
 
 		// return whether it worked
 		return success;
@@ -172,8 +172,8 @@ public class Chant_SummonFlyTrap extends Chant
 		if(level<1) level=1;
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Vine"));
-		newMOB.setName(_("a large flytrap"));
-		newMOB.setDisplayText(_("@x1 is planted here",newMOB.Name()));
+		newMOB.setName(L("a large flytrap"));
+		newMOB.setDisplayText(L("@x1 is planted here",newMOB.Name()));
 		newMOB.setDescription("");
 		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 		newMOB.recoverPhyStats();
@@ -198,7 +198,7 @@ public class Chant_SummonFlyTrap extends Chant
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		newMOB.location().show(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> grow(s) from the ground."));
+		newMOB.location().show(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> grow(s) from the ground."));
 		newMOB.setStartRoom(null);
 		return(newMOB);
 	}

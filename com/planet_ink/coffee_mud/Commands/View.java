@@ -46,13 +46,13 @@ public class View extends StdCommand
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
-			mob.tell(_("View what merchandise?"));
+			mob.tell(L("View what merchandise?"));
 			return false;
 		}
 
 		if(CMLib.coffeeShops().getShopKeeper(shopkeeper)==null)
 		{
-			mob.tell(_("@x1 is not a shopkeeper!",shopkeeper.name()));
+			mob.tell(L("@x1 is not a shopkeeper!",shopkeeper.name()));
 			return false;
 		}
 
@@ -85,7 +85,7 @@ public class View extends StdCommand
 		}
 
 		if(V.size()==0)
-			mob.tell(mob,shopkeeper,null,_("<T-NAME> do(es)n't appear to have any '@x1' for sale.  Try LIST.",whatName));
+			mob.tell(mob,shopkeeper,null,L("<T-NAME> do(es)n't appear to have any '@x1' for sale.  Try LIST.",whatName));
 		else
 		for(int v=0;v<V.size();v++)
 		{

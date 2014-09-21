@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_MetalMold extends Chant
 {
 	@Override public String ID() { return "Chant_MetalMold"; }
-	private final static String localizedName = CMLib.lang()._("Metal Mold");
+	private final static String localizedName = CMLib.lang().L("Metal Mold");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
@@ -102,7 +102,7 @@ public class Chant_MetalMold extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> grow(s) moldy!"):_("^S<S-NAME> chant(s), causing <T-NAMESELF> to get eaten by mold.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> grow(s) moldy!"):L("^S<S-NAME> chant(s), causing <T-NAMESELF> to get eaten by mold.^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,mobTarget,this,verbalCastCode(mob,mobTarget,auto),null);
 			if((mob.location().okMessage(mob,msg))&&((mobTarget==null)||(mob.location().okMessage(mob,msg2))))
 			{
@@ -125,12 +125,12 @@ public class Chant_MetalMold extends Chant
 		}
 		else
 		if(mobTarget!=null)
-			return maliciousFizzle(mob,mobTarget,_("<S-NAME> chant(s) at <T-NAME> for mold, but nothing happens."));
+			return maliciousFizzle(mob,mobTarget,L("<S-NAME> chant(s) at <T-NAME> for mold, but nothing happens."));
 		else
 		if(target!=null)
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAME> for mold, but nothing happens."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAME> for mold, but nothing happens."));
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> chant(s) for mold, but nothing happens."));
+			return maliciousFizzle(mob,null,L("<S-NAME> chant(s) for mold, but nothing happens."));
 
 
 

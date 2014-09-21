@@ -35,7 +35,7 @@ import java.util.*;
 public class Bomb_Explosive extends StdBomb
 {
 	@Override public String ID() { return "Bomb_Explosive"; }
-	private final static String localizedName = CMLib.lang()._("explosive bomb");
+	private final static String localizedName = CMLib.lang().L("explosive bomb");
 	@Override public String name() { return localizedName; }
 	@Override protected int trapLevel(){return 10;}
 	@Override public String requiresToSet(){return "a pound of coal";}
@@ -55,7 +55,7 @@ public class Bomb_Explosive extends StdBomb
 		||(((Item)P).material()!=RawMaterial.RESOURCE_COAL))
 		{
 			if(mob!=null)
-				mob.tell(_("You need some coal to make this out of."));
+				mob.tell(L("You need some coal to make this out of."));
 			return false;
 		}
 		return true;
@@ -70,7 +70,7 @@ public class Bomb_Explosive extends StdBomb
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) the explosive!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) the explosive!"));
 			else
 			if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,(affected.name()+" explodes all over <T-NAME>!")+CMLib.protocol().msp("explode.wav",30)))
 			{

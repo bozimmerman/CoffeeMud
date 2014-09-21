@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_Avalanche extends StdTrap
 {
 	@Override public String ID() { return "Trap_Avalanche"; }
-	private final static String localizedName = CMLib.lang()._("avalanche");
+	private final static String localizedName = CMLib.lang().L("avalanche");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -73,7 +73,7 @@ public class Trap_Avalanche extends StdTrap
 			if((I==null)
 			||(super.findNumberOfResource(mob.location(),I.material())<100))
 			{
-				mob.tell(_("You'll need to set down at least 100 pounds of stone first."));
+				mob.tell(L("You'll need to set down at least 100 pounds of stone first."));
 				return false;
 			}
 		}
@@ -83,7 +83,7 @@ public class Trap_Avalanche extends StdTrap
 			if(R.domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
 			{
 				if(mob!=null)
-					mob.tell(_("You can only set this trap in the mountains."));
+					mob.tell(L("You can only set this trap in the mountains."));
 				return false;
 			}
 		}
@@ -97,9 +97,9 @@ public class Trap_Avalanche extends StdTrap
 		{
 			if((doesSaveVsTraps(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) setting off an avalanche!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) setting off an avalanche!"));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> trigger(s) an avalanche!")))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> trigger(s) an avalanche!")))
 			{
 				super.spring(target);
 				if((affected!=null)

@@ -37,7 +37,7 @@ import java.util.*;
 public class Fighter_AutoBash extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_AutoBash"; }
-	private final static String localizedName = CMLib.lang()._("AutoBash");
+	private final static String localizedName = CMLib.lang().L("AutoBash");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	private static final String[] triggerStrings =_i(new String[] {"AUTOBASH"});
@@ -108,7 +108,7 @@ public class Fighter_AutoBash extends FighterSkill
 	{
 		if((mob.fetchEffect(ID())!=null))
 		{
-			mob.tell(_("You are no longer automatically bashing opponents."));
+			mob.tell(L("You are no longer automatically bashing opponents."));
 			mob.delEffect(mob.fetchEffect(ID()));
 			return false;
 		}
@@ -119,13 +119,13 @@ public class Fighter_AutoBash extends FighterSkill
 
 		if(success)
 		{
-			mob.tell(_("You will now automatically bash opponents when you fight."));
+			mob.tell(L("You will now automatically bash opponents when you fight."));
 			beneficialAffect(mob,mob,asLevel,0);
 			final Ability A=mob.fetchEffect(ID());
 			if(A!=null) A.makeLongLasting();
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to get into <S-HIS-HER> bashing mood, but fail(s)."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to get into <S-HIS-HER> bashing mood, but fail(s)."));
 		return success;
 	}
 

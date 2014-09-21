@@ -46,12 +46,12 @@ public class HelpList extends StdCommand
 		final String helpStr=CMParms.combine(commands,1);
 		if(CMLib.help().getHelpFile().size()==0)
 		{
-			mob.tell(_("No help is available."));
+			mob.tell(L("No help is available."));
 			return false;
 		}
 		if(helpStr.length()==0)
 		{
-			mob.tell(_("You must enter a search pattern.  Use 'TOPICS' or 'COMMANDS' for an unfiltered list."));
+			mob.tell(L("You must enter a search pattern.  Use 'TOPICS' or 'COMMANDS' for an unfiltered list."));
 			return false;
 		}
 		final StringBuilder thisTag=
@@ -62,12 +62,12 @@ public class HelpList extends StdCommand
 					mob);
 		if((thisTag==null)||(thisTag.length()==0))
 		{
-			mob.tell(_("No help entries match '@x1'.\nEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list.",helpStr));
+			mob.tell(L("No help entries match '@x1'.\nEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list.",helpStr));
 			Log.helpOut("Help",mob.Name()+" wanted help list match on "+helpStr);
 		}
 		else
 		if(!mob.isMonster())
-			mob.session().wraplessPrintln(_("^xHelp File Matches:^.^?\n\r^N@x1",thisTag.toString().replace('_',' ')));
+			mob.session().wraplessPrintln(L("^xHelp File Matches:^.^?\n\r^N@x1",thisTag.toString().replace('_',' ')));
 		return false;
 	}
 

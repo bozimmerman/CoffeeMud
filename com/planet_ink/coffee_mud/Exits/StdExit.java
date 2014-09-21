@@ -302,16 +302,16 @@ public class StdExit implements Exit
 			if((hasADoor())&&(!isOpen())&&(mob.phyStats().height()>=0))
 			{
 				if(!CMLib.flags().canBeSeenBy(this,mob))
-					mob.tell(_("You can't go that way."));
+					mob.tell(L("You can't go that way."));
 				else
-					mob.tell(_("The @x1 is @x2.",doorName(),closeWordPastTense()));
+					mob.tell(L("The @x1 is @x2.",doorName(),closeWordPastTense()));
 				return false;
 			}
 			if((CMLib.flags().isFlying(this))
 			&&(!CMLib.flags().isInFlight(mob))
 			&&(!CMLib.flags().isFalling(mob)))
 			{
-				mob.tell(_("You can't fly."));
+				mob.tell(L("You can't fly."));
 				return false;
 			}
 			if((CMLib.flags().isClimbing(this))
@@ -327,7 +327,7 @@ public class StdExit implements Exit
 				if((!CMLib.flags().isClimbing(mob))
 				&&(!CMLib.flags().isFalling(mob)))
 				{
-					mob.tell(_("You need to climb that way, if you know how."));
+					mob.tell(L("You need to climb that way, if you know how."));
 					return false;
 				}
 			}
@@ -343,12 +343,12 @@ public class StdExit implements Exit
 			{
 				if(!hasADoor())
 				{
-					mob.tell(_("There is nothing to @x1!",closeWord()));
+					mob.tell(L("There is nothing to @x1!",closeWord()));
 					return false;
 				}
 				return true;
 			}
-			mob.tell(_("The @x1 is already @x2.",doorName(),closeWordPastTense()));
+			mob.tell(L("The @x1 is already @x2.",doorName(),closeWordPastTense()));
 			return false;
 		}
 		case CMMsg.TYP_OPEN:
@@ -356,17 +356,17 @@ public class StdExit implements Exit
 			if(openWord().length()==0) setExitParams(doorName(),"open",closeWord(),closedText());
 			if(!hasADoor())
 			{
-				mob.tell(_("There is nothing to @x1 that way!",openWord()));
+				mob.tell(L("There is nothing to @x1 that way!",openWord()));
 				return false;
 			}
 			if(isOpen())
 			{
-				mob.tell(_("The @x1 is already @x2!",doorName(),openWordPastTense()));
+				mob.tell(L("The @x1 is already @x2!",doorName(),openWordPastTense()));
 				return false;
 			}
 			if(isLocked()&&hasALock())
 			{
-				mob.tell(_("The @x1 is locked.",doorName()));
+				mob.tell(L("The @x1 is locked.",doorName()));
 				return false;
 			}
 			return true;
@@ -374,7 +374,7 @@ public class StdExit implements Exit
 		case CMMsg.TYP_PUSH:
 			if((isOpen())||(!hasADoor()))
 			{
-				mob.tell(_("There is nothing to push over there."));
+				mob.tell(L("There is nothing to push over there."));
 				return false;
 			}
 			return true;
@@ -386,45 +386,45 @@ public class StdExit implements Exit
 		case CMMsg.TYP_PULL:
 			if((isOpen())||(!hasADoor()))
 			{
-				mob.tell(_("There is nothing to pull over there."));
+				mob.tell(L("There is nothing to pull over there."));
 				return false;
 			}
 			return true;
 		case CMMsg.TYP_LOCK:
 			if(!hasADoor())
 			{
-				mob.tell(_("There is nothing to lock that way!"));
+				mob.tell(L("There is nothing to lock that way!"));
 				return false;
 			}
 		//$FALL-THROUGH$
 		case CMMsg.TYP_UNLOCK:
 			if(!hasADoor())
 			{
-				mob.tell(_("There is nothing to unlock that way!"));
+				mob.tell(L("There is nothing to unlock that way!"));
 				return false;
 			}
 			if(isOpen())
 			{
-				mob.tell(_("The @x1 is already @x2!",doorName(),openWord()));
+				mob.tell(L("The @x1 is already @x2!",doorName(),openWord()));
 				return false;
 			}
 			else
 			if(!hasALock())
 			{
-				mob.tell(_("There is no lock!"));
+				mob.tell(L("There is no lock!"));
 				return false;
 			}
 			else
 			{
 				if((!isLocked())&&(msg.targetMinor()==CMMsg.TYP_UNLOCK))
 				{
-					mob.tell(_("The @x1 is not locked.",doorName()));
+					mob.tell(L("The @x1 is not locked.",doorName()));
 					return false;
 				}
 				else
 				if((isLocked())&&(msg.targetMinor()==CMMsg.TYP_LOCK))
 				{
-					mob.tell(_("The @x1 is already locked.",doorName()));
+					mob.tell(L("The @x1 is already locked.",doorName()));
 					return false;
 				}
 				else
@@ -441,7 +441,7 @@ public class StdExit implements Exit
 						&&(CMLib.flags().canBeSeenBy(item,mob)))
 							return true;
 					}
-					mob.tell(_("You don't seem to have the key."));
+					mob.tell(L("You don't seem to have the key."));
 					return false;
 				}
 			}
@@ -451,7 +451,7 @@ public class StdExit implements Exit
 		}
 		if(msg.amITarget(this))
 		{
-			mob.tell(_("You can't do that."));
+			mob.tell(L("You can't do that."));
 			return false;
 		}
 		return true;
@@ -541,7 +541,7 @@ public class StdExit implements Exit
 			break;
 		case CMMsg.TYP_PULL:
 		case CMMsg.TYP_PUSH:
-			mob.tell(_("It doesn't appear to be doing any good."));
+			mob.tell(L("It doesn't appear to be doing any good."));
 			break;
 		case CMMsg.TYP_UNLOCK:
 			if((!hasADoor())||(!hasALock())||(isOpen())||(!isLocked()))
@@ -902,7 +902,7 @@ public class StdExit implements Exit
 	@Override public int openDelayTicks()    { return 45;}
 	@Override public void setOpenDelayTicks(int numTicks){}
 
-	@Override public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+	@Override public String L(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 	@Override public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS","TEXT"};
 	@Override public String[] getStatCodes(){return CODES;}

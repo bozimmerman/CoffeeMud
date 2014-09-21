@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_Geas extends Spell
 {
 	@Override public String ID() { return "Spell_Geas"; }
-	private final static String localizedName = CMLib.lang()._("Geas");
+	private final static String localizedName = CMLib.lang().L("Geas");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return _("(Geas to "+text()+")"); }
+	@Override public String displayText() { return L("(Geas to "+text()+")"); }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
@@ -57,9 +57,9 @@ public class Spell_Geas extends Spell
 		if(canBeUninvoked())
 		{
 			if((STEPS==null)||(STEPS.size()==0)||(STEPS.done))
-				mob.tell(_("You have completed your geas."));
+				mob.tell(L("You have completed your geas."));
 			else
-				mob.tell(_("You have been released from your geas."));
+				mob.tell(L("You have been released from your geas."));
 
 			if((mob.isMonster())
 			&&(!mob.amDead())
@@ -116,14 +116,14 @@ public class Spell_Geas extends Spell
 	{
 		if(mob.isMonster())
 		{
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> sigh(s)."));
-			CMLib.commands().postSay(mob,null,_("You know, if I had any ambitions, I would put the geas on myself!"),false,false);
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,L("<S-NAME> sigh(s)."));
+			CMLib.commands().postSay(mob,null,L("You know, if I had any ambitions, I would put the geas on myself!"),false,false);
 			return false;
 		}
 
 		if(commands.size()<2)
 		{
-			mob.tell(_("You need to specify a target creature, and a geas to place on them."));
+			mob.tell(L("You need to specify a target creature, and a geas to place on them."));
 			return false;
 		}
 		final Vector name=CMParms.parse((String)commands.elementAt(0));
@@ -132,7 +132,7 @@ public class Spell_Geas extends Spell
 		if(target==null) return false;
 		if(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<5)
 		{
-			mob.tell(_("@x1 is too stupid to understand the instructions!",target.name(mob)));
+			mob.tell(L("@x1 is too stupid to understand the instructions!",target.name(mob)));
 			return false;
 		}
 
@@ -144,7 +144,7 @@ public class Spell_Geas extends Spell
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> place(s) a powerful geas upon <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> place(s) a powerful geas upon <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -152,7 +152,7 @@ public class Spell_Geas extends Spell
 				if((STEPS==null)||(STEPS.size()==0))
 				{
 					STEPS=null;
-					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> look(s) confused."));
+					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> look(s) confused."));
 					return false;
 				}
 				setMiscText(CMParms.combine(commands,0));
@@ -174,7 +174,7 @@ public class Spell_Geas extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to place a geas on <T-NAMESELF>, but fails."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to place a geas on <T-NAMESELF>, but fails."));
 
 		// return whether it worked
 		return success;

@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_MysticShine extends Spell
 {
 	@Override public String ID() { return "Spell_MysticShine"; }
-	private final static String localizedName = CMLib.lang()._("Mystic Shine");
+	private final static String localizedName = CMLib.lang().L("Mystic Shine");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Mystic Shine)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Mystic Shine)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
@@ -60,7 +60,7 @@ public class Spell_MysticShine extends Spell
 		// undo the affects of this spell
 		final Room room=CMLib.map().roomLocation(affected);
 		if((canBeUninvoked())&&(room!=null))
-			room.showHappens(CMMsg.MSG_OK_VISUAL,affected,_("The gleam upon <S-NAME> dims."));
+			room.showHappens(CMMsg.MSG_OK_VISUAL,affected,L("The gleam upon <S-NAME> dims."));
 		super.unInvoke();
 		if((canBeUninvoked())&&(room!=null))
 			room.recoverRoomStats();
@@ -78,7 +78,7 @@ public class Spell_MysticShine extends Spell
 		||(((((Item)target).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)
 			&&((((Item)target).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL)))
 		{
-			mob.tell(_("This magic only affects metallic items."));
+			mob.tell(L("This magic only affects metallic items."));
 			return false;
 		}
 
@@ -89,7 +89,7 @@ public class Spell_MysticShine extends Spell
 		final Room room=mob.location();
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("^S<T-NAME> begin(s) to really shine!"):_("^S<S-NAME> cause(s) the surface of <T-NAME> to mystically shine!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("^S<T-NAME> begin(s) to really shine!"):L("^S<S-NAME> cause(s) the surface of <T-NAME> to mystically shine!^?"));
 			if(room.okMessage(mob,msg))
 			{
 				room.send(mob,msg);
@@ -98,7 +98,7 @@ public class Spell_MysticShine extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,mob.location(),_("<S-NAME> attempt(s) to cause shininess, but fail(s)."));
+			beneficialWordsFizzle(mob,mob.location(),L("<S-NAME> attempt(s) to cause shininess, but fail(s)."));
 
 		return success;
 	}

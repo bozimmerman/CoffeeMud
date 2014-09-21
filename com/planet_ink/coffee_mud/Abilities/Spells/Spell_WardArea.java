@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_WardArea extends Spell implements Trap
 {
 	@Override public String ID() { return "Spell_WardArea"; }
-	private final static String localizedName = CMLib.lang()._("Ward Area");
+	private final static String localizedName = CMLib.lang().L("Ward Area");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Ward Area spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Ward Area spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return CAN_ROOMS;}
@@ -108,11 +108,11 @@ public class Spell_WardArea extends Spell implements Trap
 		if((invoker()!=null)&&(mob!=null)&&(!invoker().mayIFight(mob)))
 			return;
 		if(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
-			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,_("<S-NAME> avoid(s) a magical ward trap."));
+			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,L("<S-NAME> avoid(s) a magical ward trap."));
 		else
 		{
 			final MOB newCaster=CMClass.getMOB("StdMOB");
-			newCaster.setName(_("the thin air"));
+			newCaster.setName(L("the thin air"));
 			newCaster.setDescription(" ");
 			newCaster.setDisplayText(" ");
 			if(invoker()!=null)
@@ -182,7 +182,7 @@ public class Spell_WardArea extends Spell implements Trap
 	{
 		if(commands.size()<1)
 		{
-			mob.tell(_("You must specify what arcane spell to set, and any necessary parameters."));
+			mob.tell(L("You must specify what arcane spell to set, and any necessary parameters."));
 			return false;
 		}
 		commands.insertElementAt("CAST",0);
@@ -192,7 +192,7 @@ public class Spell_WardArea extends Spell implements Trap
 		{
 			parameters=null;
 			shooter=null;
-			mob.tell(_("You don't know any arcane spell by that name."));
+			mob.tell(L("You don't know any arcane spell by that name."));
 			return false;
 		}
 
@@ -202,14 +202,14 @@ public class Spell_WardArea extends Spell implements Trap
 			final MOB M=mob.location().fetchInhabitant(m);
 			if((M!=null)&&(M!=mob)&&(!M.mayIFight(mob)))
 			{
-				mob.tell(_("You cannot set that spell here -- there are other players present!"));
+				mob.tell(L("You cannot set that spell here -- there are other players present!"));
 				return false;
 			}
 		}
 		final Physical target = mob.location();
 		if((target.fetchEffect(this.ID())!=null)||(givenTarget!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("A ward trap has already been set here!"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("A ward trap has already been set here!"));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
@@ -230,7 +230,7 @@ public class Spell_WardArea extends Spell implements Trap
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), auto?"":_("^S<S-NAME> set(s) a magical trap.^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), auto?"":L("^S<S-NAME> set(s) a magical trap.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -247,7 +247,7 @@ public class Spell_WardArea extends Spell implements Trap
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to set a magic trap, but fail(s)."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to set a magic trap, but fail(s)."));
 
 		// return whether it worked
 		return success;

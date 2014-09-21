@@ -64,7 +64,7 @@ public class Generate extends StdCommand
 		oldR.rawDoors()[direction]=R;
 		final int opDir=Directions.getOpDirectionCode(direction);
 		if(R.getRoomInDir(opDir)!=null)
-			mob.tell(_("An error has caused the following exit to be one-way."));
+			mob.tell(L("An error has caused the following exit to be one-way."));
 		else
 		{
 			R.setRawExit(opDir, E);
@@ -73,7 +73,7 @@ public class Generate extends StdCommand
 		CMLib.database().DBUpdateExits(oldR);
 		final String dirName=((R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip))?
 				Directions.getShipDirectionName(direction):Directions.getDirectionName(direction);
-		oldR.showHappens(CMMsg.MSG_OK_VISUAL,_("A new place materializes to the @x1",dirName));
+		oldR.showHappens(CMMsg.MSG_OK_VISUAL,L("A new place materializes to the @x1",dirName));
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class Generate extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(_("Generate what? Try GENERATE [TYPE] [ID] (FROM [DATA_FILE_PATH]) ([VAR=VALUE]..) [DIRECTION]"));
+			mob.tell(L("Generate what? Try GENERATE [TYPE] [ID] (FROM [DATA_FILE_PATH]) ([VAR=VALUE]..) [DIRECTION]"));
 			return false;
 		}
 		final String finalLog = mob.Name()+" called generate command with parms: " + CMParms.combine(commands, 1);
@@ -97,7 +97,7 @@ public class Generate extends StdCommand
 			file = new CMFile(Resources.buildResourcePath("randareas/example.xml"),mob);
 		if(!file.canRead())
 		{
-			mob.tell(_("Random data file '@x1' not found.  Aborting.",file.getCanonicalPath()));
+			mob.tell(L("Random data file '@x1' not found.  Aborting.",file.getCanonicalPath()));
 			return false;
 		}
 		final StringBuffer xml = file.textUnformatted();
@@ -120,7 +120,7 @@ public class Generate extends StdCommand
 			}
 			if(codeI==null)
 			{
-				mob.tell(_("'@x1' is an unknown object type.  Try: @x2",typeName,CMParms.toStringList(OBJECT_TYPES.keys())));
+				mob.tell(L("'@x1' is an unknown object type.  Try: @x2",typeName,CMParms.toStringList(OBJECT_TYPES.keys())));
 				return false;
 			}
 		}
@@ -131,14 +131,14 @@ public class Generate extends StdCommand
 			direction = Directions.getGoodDirectionCode(possDir);
 			if(direction<0)
 			{
-				mob.tell(_("When creating an area or room, the LAST parameter to this command must be a direction to link to this room by."));
+				mob.tell(L("When creating an area or room, the LAST parameter to this command must be a direction to link to this room by."));
 				return false;
 			}
 			if(mob.location().getRoomInDir(direction)!=null)
 			{
 				final String dirName=((mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip))?
 						Directions.getShipDirectionName(direction):Directions.getDirectionName(direction);
-				mob.tell(_("A room already exists in direction @x1. Action aborted.",dirName));
+				mob.tell(L("A room already exists in direction @x1. Action aborted.",dirName));
 				return false;
 			}
 		}
@@ -146,7 +146,7 @@ public class Generate extends StdCommand
 		if((!(definedIDs.get(idName) instanceof XMLLibrary.XMLpiece))
 		||(!((XMLLibrary.XMLpiece)definedIDs.get(idName)).tag.equalsIgnoreCase(objectType)))
 		{
-			mob.tell(_("The @x1 id '@x2' has not been defined in the data file.",objectType,idName));
+			mob.tell(L("The @x1 id '@x2' has not been defined in the data file.",objectType,idName));
 			final StringBuffer foundIDs=new StringBuffer("");
 			for(final Enumeration tkeye=OBJECT_TYPES.keys();tkeye.hasMoreElements();)
 			{
@@ -162,7 +162,7 @@ public class Generate extends StdCommand
 				}
 				foundIDs.append(CMParms.toStringList(xmlTagsV)+"\n\r");
 			}
-			mob.tell(_("Found ids include: \n\r@x1",foundIDs.toString()));
+			mob.tell(L("Found ids include: \n\r@x1",foundIDs.toString()));
 			return false;
 		}
 
@@ -174,7 +174,7 @@ public class Generate extends StdCommand
 		}
 		catch(final CMException cme)
 		{
-			mob.tell(_("Required ids for @x1 were missing: @x2",idName,cme.getMessage()));
+			mob.tell(L("Required ids for @x1 were missing: @x2",idName,cme.getMessage()));
 			return false;
 		}
 		final Vector V = new Vector();
@@ -226,14 +226,14 @@ public class Generate extends StdCommand
 				break;
 			}
 			if(V.size()==0)
-				mob.tell(_("Nothing generated."));
+				mob.tell(L("Nothing generated."));
 			else
 			for(int v=0;v<V.size();v++)
 			{
 				if(V.elementAt(v) instanceof MOB)
 				{
 					((MOB)V.elementAt(v)).bringToLife(mob.location(),true);
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 appears.",((MOB)V.elementAt(v)).name()));
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 appears.",((MOB)V.elementAt(v)).name()));
 					CMLib.percolator().postProcess(definedIDs);
 					Log.sysOut("Generate",mob.Name()+" generated mob "+((MOB)V.elementAt(v)).name());
 				}
@@ -241,7 +241,7 @@ public class Generate extends StdCommand
 				if(V.elementAt(v) instanceof Item)
 				{
 					mob.location().addItem((Item)V.elementAt(v));
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 appears.",((Item)V.elementAt(v)).name()));
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 appears.",((Item)V.elementAt(v)).name()));
 					CMLib.percolator().postProcess(definedIDs);
 					Log.sysOut("Generate",mob.Name()+" generated item "+((Item)V.elementAt(v)).name());
 				}
@@ -273,7 +273,7 @@ public class Generate extends StdCommand
 					if(R==null) R=A.getFilledProperMap().nextElement();
 					createNewPlace(mob,mob.location(),R,direction);
 					CMLib.percolator().postProcess(definedIDs);
-					mob.tell(_("Saving remaining rooms for area '@x1'...",A.name()));
+					mob.tell(L("Saving remaining rooms for area '@x1'...",A.name()));
 					for(final Enumeration e=A.getFilledProperMap();e.hasMoreElements();)
 					{
 						R=(Room)e.nextElement();
@@ -282,14 +282,14 @@ public class Generate extends StdCommand
 						CMLib.database().DBUpdateItems(R);
 						CMLib.database().DBUpdateMOBs(R);
 					}
-					mob.tell(_("Done saving remaining rooms for area '@x1'",A.name()));
+					mob.tell(L("Done saving remaining rooms for area '@x1'",A.name()));
 					Log.sysOut("Generate",mob.Name()+" generated area "+A.name());
 				}
 			}
 		}
 		catch(final CMException cex)
 		{
-			mob.tell(_("Unable to fully generate: @x1",cex.getMessage()));
+			mob.tell(L("Unable to fully generate: @x1",cex.getMessage()));
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 				Log.debugOut("Generate",cex);
 			return false;

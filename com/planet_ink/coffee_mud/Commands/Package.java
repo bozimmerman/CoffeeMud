@@ -46,7 +46,7 @@ public class Package extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("Package what?"));
+			mob.tell(L("Package what?"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -79,7 +79,7 @@ public class Package extends StdCommand
 
 		if(V.size()==0)
 		{
-			mob.tell(_("You don't see '@x1' here.",whatName));
+			mob.tell(L("You don't see '@x1' here.",whatName));
 			return false;
 		}
 
@@ -90,7 +90,7 @@ public class Package extends StdCommand
 			||(CMLib.flags().isEnspelled(I))
 			||(CMLib.flags().isOnFire(I)))
 			{
-				mob.tell(_("Items such as @x1 may not be packaged.",I.name(mob)));
+				mob.tell(L("Items such as @x1 may not be packaged.",I.name(mob)));
 				return false;
 			}
 		}
@@ -98,7 +98,7 @@ public class Package extends StdCommand
 		if(thePackage==null) return false;
 		if(!thePackage.isPackagable(V))
 		{
-			mob.tell(_("All items in a package must be absolutely identical.  Some here are not."));
+			mob.tell(L("All items in a package must be absolutely identical.  Some here are not."));
 			return false;
 		}
 		Item getThis=null;
@@ -111,7 +111,7 @@ public class Package extends StdCommand
 		if(getThis==null)
 			return false;
 		final String name=CMLib.english().cleanArticles(getThis.name());
-		final CMMsg msg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> package(s) up @x1 <T-NAMENOART>(s).",""+V.size()));
+		final CMMsg msg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> package(s) up @x1 <T-NAMENOART>(s).",""+V.size()));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -37,9 +37,9 @@ import java.util.*;
 public class ArchonSkill extends StdAbility
 {
 	@Override public String ID() { return "ArchonSkill"; }
-	private final static String localizedName = CMLib.lang()._("an Archon Skill");
+	private final static String localizedName = CMLib.lang().L("an Archon Skill");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(in the realms of greatest power)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(in the realms of greatest power)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public boolean putInCommandlist(){return false;}
 	@Override protected int canAffectCode(){return 0;}
@@ -100,9 +100,9 @@ public class ArchonSkill extends StdAbility
 			if(!quiet)
 			{
 				if(targetName.trim().length()==0)
-					mob.tell(_("You don't know of anyone called '@x1'.",targetName));
+					mob.tell(L("You don't know of anyone called '@x1'.",targetName));
 				else
-					mob.tell(_("You don't know of anyone called '@x1' here.",targetName));
+					mob.tell(L("You don't know of anyone called '@x1' here.",targetName));
 			}
 			return null;
 		}
@@ -112,9 +112,9 @@ public class ArchonSkill extends StdAbility
 			if((givenTarget==null)&&(!quiet))
 			{
 				if(target==mob)
-					mob.tell(_("You are already affected by @x1.",name()));
+					mob.tell(L("You are already affected by @x1.",name()));
 				else
-					mob.tell(target,null,null,_("<S-NAME> is already affected by @x1.",name()));
+					mob.tell(target,null,null,L("<S-NAME> is already affected by @x1.",name()));
 			}
 			return null;
 		}

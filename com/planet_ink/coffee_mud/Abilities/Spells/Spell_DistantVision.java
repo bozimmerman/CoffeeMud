@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_DistantVision extends Spell
 {
 	@Override public String ID() { return "Spell_DistantVision"; }
-	private final static String localizedName = CMLib.lang()._("Distant Vision");
+	private final static String localizedName = CMLib.lang().L("Distant Vision");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
@@ -47,7 +47,7 @@ public class Spell_DistantVision extends Spell
 	{
 		if(commands.size()<1)
 		{
-			mob.tell(_("Divine a vision of where?"));
+			mob.tell(L("Divine a vision of where?"));
 			return false;
 		}
 		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
@@ -61,7 +61,7 @@ public class Spell_DistantVision extends Spell
 
 		if(thisRoom==null)
 		{
-			mob.tell(_("You can't seem to fixate on a place called '@x1'.",CMParms.combine(commands,0)));
+			mob.tell(L("You can't seem to fixate on a place called '@x1'.",CMParms.combine(commands,0)));
 			return false;
 		}
 
@@ -72,18 +72,18 @@ public class Spell_DistantVision extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,thisRoom,auto),auto?"":_("^S<S-NAME> close(s) <S-HIS-HER> eyes, and invoke(s) a vision.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,thisRoom,auto),auto?"":L("^S<S-NAME> close(s) <S-HIS-HER> eyes, and invoke(s) a vision.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.tell(_("\n\r\n\r"));
+				mob.tell(L("\n\r\n\r"));
 				final CMMsg msg2=CMClass.getMsg(mob,thisRoom,CMMsg.MSG_LOOK,null);
 				thisRoom.executeMsg(mob,msg2);
 			}
 
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> close(s) <S-HIS-HER> eyes, incanting, but then open(s) them in frustration."));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> close(s) <S-HIS-HER> eyes, incanting, but then open(s) them in frustration."));
 
 
 		// return whether it worked

@@ -73,7 +73,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	@Override
 	public String getFormattedDate(Environmental E)
 	{
-		String date=CMStrings.padRight(_("Unknown"),11);
+		String date=CMStrings.padRight(L("Unknown"),11);
 		if(E!=null)
 		{
 			final TimeClock C=(E instanceof Area)?((Area)E).getTimeObj():((CMLib.map().roomLocation(E)!=null)?CMLib.map().roomLocation(E).getArea().getTimeObj():null);
@@ -948,13 +948,13 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		final MOB rejuvedMOB=CMLib.players().getPlayer(body.mobName());
 
 		if(rejuvedMOB!=null) // doing this here is helpful -- it can trigger a socket error.
-			rejuvedMOB.tell(_("You are being resurrected."));
+			rejuvedMOB.tell(L("You are being resurrected."));
 
 		if((rejuvedMOB!=null)&&(rejuvedMOB.session()!=null)&&(!rejuvedMOB.session().isStopped()))
 		{
 			if(rejuvedMOB.location()!=corpseRoom)
 			{
-				rejuvedMOB.location().showOthers(rejuvedMOB,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> disappears!"));
+				rejuvedMOB.location().showOthers(rejuvedMOB,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> disappears!"));
 				corpseRoom.bringMobHere(rejuvedMOB,false);
 			}
 			Ability A=rejuvedMOB.fetchAbility("Prop_AstralSpirit");
@@ -981,7 +981,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			body.destroy();
 			rejuvedMOB.basePhyStats().setDisposition(CMath.unsetb(rejuvedMOB.basePhyStats().disposition(),PhyStats.IS_SITTING|PhyStats.IS_CUSTOM));
 			rejuvedMOB.phyStats().setDisposition(CMath.unsetb(rejuvedMOB.basePhyStats().disposition(),PhyStats.IS_SITTING|PhyStats.IS_CUSTOM));
-			rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> get(s) up!"));
+			rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> get(s) up!"));
 			corpseRoom.recoverRoomStats();
 			final Vector<String> whatsToDo=CMParms.parse(CMProps.getVar(CMProps.Str.PLAYERDEATH));
 			for(int w=0;w<whatsToDo.size();w++)
@@ -1001,7 +1001,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					if(XPLevel>=0)
 					{
 						final int expLost=(CMath.s_int(whatToDo)+(2*XPLevel))/2;
-						rejuvedMOB.tell(_("^*You regain @x1 experience points.^?^.",""+expLost));
+						rejuvedMOB.tell(L("^*You regain @x1 experience points.^?^.",""+expLost));
 						CMLib.leveler().postExperience(rejuvedMOB,null,null,expLost,false);
 					}
 				}
@@ -1015,14 +1015,14 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					for(int l=body.phyStats().level();l<rejuvedMOB.phyStats().level();l++)
 						lvl=lvl/2.0;
 					final int expRestored=(int)Math.round(((100.0+(2.0*(XPLevel)))*lvl)/2.0);
-					rejuvedMOB.tell(_("^*You regain @x1 experience points.^?^.",""+expRestored));
+					rejuvedMOB.tell(L("^*You regain @x1 experience points.^?^.",""+expRestored));
 					CMLib.leveler().postExperience(rejuvedMOB,null,null,expRestored,false);
 				}
 			}
 			return true;
 		}
 		else
-			corpseRoom.show(tellMob,body,CMMsg.MSG_OK_VISUAL,_("<T-NAME> twitch(es) for a moment, but the spirit is too far gone."));
+			corpseRoom.show(tellMob,body,CMMsg.MSG_OK_VISUAL,L("<T-NAME> twitch(es) for a moment, but the spirit is too far gone."));
 		return false;
 	}
 
@@ -1206,16 +1206,16 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				case 'H': { buf.append("^<MaxHp^>"+mob.maxState().getHitPoints()+"^</MaxHp^>"); c++; break;}
 				case 'I': {   if((CMLib.flags().isCloaked(mob))
 							  &&(((mob.phyStats().disposition()&PhyStats.IS_NOT_SEEN)!=0)))
-								  buf.append(_("Wizinvisible"));
+								  buf.append(L("Wizinvisible"));
 							  else
 							  if(CMLib.flags().isCloaked(mob))
 								  buf.append("Cloaked");
 							  else
 							  if(!CMLib.flags().isSeen(mob))
-								  buf.append(_("Undetectable"));
+								  buf.append(L("Undetectable"));
 							  else
 							  if(CMLib.flags().isInvisible(mob)&&CMLib.flags().isHidden(mob))
-								  buf.append(_("Hidden/Invisible"));
+								  buf.append(L("Hidden/Invisible"));
 							  else
 							  if(CMLib.flags().isInvisible(mob))
 								  buf.append("Invisible");

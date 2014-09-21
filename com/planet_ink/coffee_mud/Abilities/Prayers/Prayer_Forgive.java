@@ -38,7 +38,7 @@ import java.util.*;
 public class Prayer_Forgive extends Prayer
 {
 	@Override public String ID() { return "Prayer_Forgive"; }
-	private final static String localizedName = CMLib.lang()._("Forgive");
+	private final static String localizedName = CMLib.lang().L("Forgive");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -58,7 +58,7 @@ public class Prayer_Forgive extends Prayer
 		if((name.trim().length()==0)&&(givenTarget!=null)) name=givenTarget.Name();
 		if(name.trim().length()==0)
 		{
-			mob.tell(_("Forgive whom?"));
+			mob.tell(L("Forgive whom?"));
 			return false;
 		}
 		List<LegalWarrant> warrants=new Vector();
@@ -78,10 +78,10 @@ public class Prayer_Forgive extends Prayer
 		if(success)
 		{
 			if(warrants.size()==0)
-				beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 to forgive @x2 for no reason at all.",prayForWord(mob),name));
+				beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 to forgive @x2 for no reason at all.",prayForWord(mob),name));
 			else
 			{
-				final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":_("^S<S-NAME> @x1 to forgive @x2.^?",prayForWord(mob),name));
+				final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":L("^S<S-NAME> @x1 to forgive @x2.^?",prayForWord(mob),name));
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
@@ -95,7 +95,7 @@ public class Prayer_Forgive extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 to forgive @x2, but nothing happens.",prayForWord(mob),name));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 to forgive @x2, but nothing happens.",prayForWord(mob),name));
 
 
 		// return whether it worked

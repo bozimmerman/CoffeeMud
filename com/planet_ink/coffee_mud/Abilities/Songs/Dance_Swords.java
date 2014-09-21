@@ -37,7 +37,7 @@ import java.util.*;
 public class Dance_Swords extends Dance
 {
 	@Override public String ID() { return "Dance_Swords"; }
-	private final static String localizedName = CMLib.lang()._("Swords");
+	private final static String localizedName = CMLib.lang().L("Swords");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
@@ -83,7 +83,7 @@ public class Dance_Swords extends Dance
 		&&(((Item)E).owner()!=null)
 		&&(((Item)E).owner() instanceof Room))
 		{
-			((Room)((Item)E).owner()).showHappens(CMMsg.MSG_OK_ACTION,_("@x1 stops dancing!",E.name()));
+			((Room)((Item)E).owner()).showHappens(CMMsg.MSG_OK_ACTION,L("@x1 stops dancing!",E.name()));
 		}
 	}
 
@@ -144,7 +144,7 @@ public class Dance_Swords extends Dance
 			{
 				final boolean isHit=(CMLib.combat().rollToHit(CMLib.combat().adjustedAttackBonus(M,victiM)+((Weapon)affected).phyStats().attackAdjustment(), CMLib.combat().adjustedArmor(victiM), 0));
 				if((!isHit)||(!(affected instanceof Weapon)))
-					M.location().show(M,victiM,affected,CMMsg.MSG_OK_ACTION,_("<O-NAME> attacks <T-NAME> and misses!"));
+					M.location().show(M,victiM,affected,CMMsg.MSG_OK_ACTION,L("<O-NAME> attacks <T-NAME> and misses!"));
 				else
 				{
 					final int bonusDamage=(affected.phyStats().damage()+5+getXLEVELLevel(M))-M.phyStats().damage();
@@ -158,19 +158,19 @@ public class Dance_Swords extends Dance
 			switch(CMLib.dice().roll(1,5,0))
 			{
 			case 1:
-				M.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 twiches a bit.",affected.name()));
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 twiches a bit.",affected.name()));
 				break;
 			case 2:
-				M.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 is looking for trouble.",affected.name()));
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 is looking for trouble.",affected.name()));
 				break;
 			case 3:
-				M.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 practices its moves.",affected.name()));
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 practices its moves.",affected.name()));
 				break;
 			case 4:
-				M.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 makes a few fake attacks.",affected.name()));
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 makes a few fake attacks.",affected.name()));
 				break;
 			case 5:
-				M.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 dances around.",affected.name()));
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 dances around.",affected.name()));
 				break;
 			}
 		}
@@ -202,9 +202,9 @@ public class Dance_Swords extends Dance
 			invoker=mob;
 			originRoom=mob.location();
 			commonRoomSet=getInvokerScopeRoomSet(null);
-			String str=auto?_("^SThe @x1 begins!^?",danceOf()):_("^S<S-NAME> begin(s) to dance the @x1.^?",danceOf());
+			String str=auto?L("^SThe @x1 begins!^?",danceOf()):L("^S<S-NAME> begin(s) to dance the @x1.^?",danceOf());
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
-				str=_("^S<S-NAME> start(s) the @x1 over again.^?",danceOf());
+				str=L("^S<S-NAME> start(s) the @x1 over again.^?",danceOf());
 
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
@@ -242,7 +242,7 @@ public class Dance_Swords extends Dance
 			}
 		}
 		else
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> make(s) a false step."));
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,L("<S-NAME> make(s) a false step."));
 
 		return success;
 	}

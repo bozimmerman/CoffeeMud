@@ -45,7 +45,7 @@ public class Unlock extends StdCommand
 		final String whatTounlock=CMParms.combine(commands,1);
 		if(whatTounlock.length()==0)
 		{
-			mob.tell(_("Unlock what?"));
+			mob.tell(L("Unlock what?"));
 			return false;
 		}
 		Environmental unlockThis=null;
@@ -57,7 +57,7 @@ public class Unlock extends StdCommand
 
 		if((unlockThis==null)||(!CMLib.flags().canBeSeenBy(unlockThis,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",whatTounlock));
+			mob.tell(L("You don't see '@x1' here.",whatTounlock));
 			return false;
 		}
 		final String unlockMsg="<S-NAME> unlock(s) <T-NAMESELF>."+CMLib.protocol().msp("doorunlock.wav",10);
@@ -90,7 +90,7 @@ public class Unlock extends StdCommand
 					{
 						final boolean useShipDirs=(opR instanceof SpaceShip)||(opR.getArea() instanceof SpaceShip);
 						final String inDirName=useShipDirs?Directions.getShipInDirectionName(opCode):Directions.getInDirectionName(opCode);
-						opR.showHappens(CMMsg.MSG_OK_ACTION,_("@x1 @x2 is unlocked from the other side.",opE.name(),inDirName));
+						opR.showHappens(CMMsg.MSG_OK_ACTION,L("@x1 @x2 is unlocked from the other side.",opE.name(),inDirName));
 					}
 				}
 			}

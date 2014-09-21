@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_ConcealDoor extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_ConcealDoor"; }
-	private final static String localizedName = CMLib.lang()._("Conceal Door");
+	private final static String localizedName = CMLib.lang().L("Conceal Door");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
@@ -115,7 +115,7 @@ public class Thief_ConcealDoor extends ThiefSkill
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell(_("Which door would you like to conceal?"));
+			mob.tell(L("Which door would you like to conceal?"));
 			return false;
 		}
 		Environmental chkE=null;
@@ -126,23 +126,23 @@ public class Thief_ConcealDoor extends ThiefSkill
 			chkE=mob.location().getExitInDir(Directions.getGoodDirectionCode(typed));
 		if((!(chkE instanceof Exit))||(!CMLib.flags().canBeSeenBy(chkE,mob)))
 		{
-			mob.tell(_("You don't see any doors called '@x1' here.",typed));
+			mob.tell(L("You don't see any doors called '@x1' here.",typed));
 			return false;
 		}
 		final Exit X=(Exit)chkE;
 		if(!X.hasADoor())
 		{
-			mob.tell(mob,X,null,_("<T-NAME> is not a door!"));
+			mob.tell(mob,X,null,L("<T-NAME> is not a door!"));
 			return false;
 		}
 		if((!auto)&&(X.phyStats().level()>((adjustedLevel(mob,asLevel)*2))))
 		{
-			mob.tell(_("You aren't good enough to conceal that door."));
+			mob.tell(L("You aren't good enough to conceal that door."));
 			return false;
 		}
 		if(X.isOpen())
 		{
-			mob.tell(mob,X,null,_("You'd better close <T-NAME> first."));
+			mob.tell(mob,X,null,L("You'd better close <T-NAME> first."));
 			return false;
 		}
 
@@ -154,7 +154,7 @@ public class Thief_ConcealDoor extends ThiefSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,X,this,CMMsg.MSG_THIEF_ACT,_("<S-NAME> conceal(s) <T-NAME>."),CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
+			final CMMsg msg=CMClass.getMsg(mob,X,this,CMMsg.MSG_THIEF_ACT,L("<S-NAME> conceal(s) <T-NAME>."),CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -178,7 +178,7 @@ public class Thief_ConcealDoor extends ThiefSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,X,_("<S-NAME> attempt(s) to coneal <T-NAME>, but obviously fail(s)."));
+			beneficialVisualFizzle(mob,X,L("<S-NAME> attempt(s) to coneal <T-NAME>, but obviously fail(s)."));
 		return success;
 	}
 }

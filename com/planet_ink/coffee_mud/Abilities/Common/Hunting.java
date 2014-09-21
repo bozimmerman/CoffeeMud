@@ -37,7 +37,7 @@ import java.util.*;
 public class Hunting extends CommonSkill
 {
 	@Override public String ID() { return "Hunting"; }
-	private final static String localizedName = CMLib.lang()._("Hunting");
+	private final static String localizedName = CMLib.lang().L("Hunting");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"HUNT","HUNTING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -48,8 +48,8 @@ public class Hunting extends CommonSkill
 	public Hunting()
 	{
 		super();
-		displayText=_("You are hunting...");
-		verb=_("hunting");
+		displayText=L("You are hunting...");
+		verb=L("hunting");
 	}
 
 	public Room nearByRoom()
@@ -130,10 +130,10 @@ public class Hunting extends CommonSkill
 			{
 				if(found!=null)
 				{
-					commonTell(mob,_("You have found some @x1 tracks!",foundShortName));
-					commonTell(mob,_("You need to find the @x1 nearby before the trail goes cold!",foundShortName));
-					displayText=_("You are hunting for @x1",found.name());
-					verb=_("hunting for @x1",found.name());
+					commonTell(mob,L("You have found some @x1 tracks!",foundShortName));
+					commonTell(mob,L("You need to find the @x1 nearby before the trail goes cold!",foundShortName));
+					displayText=L("You are hunting for @x1",found.name());
+					verb=L("hunting for @x1",found.name());
 					found.basePhyStats().setLevel(mob.basePhyStats().level());
 					found.recoverPhyStats();
 					final Ability A=CMClass.getAbility("Prop_ModExperience");
@@ -144,12 +144,12 @@ public class Hunting extends CommonSkill
 				}
 				else
 				{
-					final StringBuffer str=new StringBuffer(_("You can't seem to find any game around here.\n\r"));
+					final StringBuffer str=new StringBuffer(L("You can't seem to find any game around here.\n\r"));
 					final int d=lookingFor(RawMaterial.MATERIAL_FLESH,mob.location());
 					if(d<0)
-						str.append(_("You might try elsewhere."));
+						str.append(L("You might try elsewhere."));
 					else
-						str.append(_("You might try @x1.",Directions.getInDirectionName(d)));
+						str.append(L("You might try @x1.",Directions.getInDirectionName(d)));
 					commonTell(mob,str.toString());
 					unInvoke();
 				}
@@ -188,7 +188,7 @@ public class Hunting extends CommonSkill
 					found.location().delInhabitant(found);
 					found.setLocation(null);
 					found.destroy();
-					mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> <S-HAS-HAVE> lost the trail."));
+					mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> <S-HAS-HAVE> lost the trail."));
 				}
 			}
 		}
@@ -201,7 +201,7 @@ public class Hunting extends CommonSkill
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		verb=_("hunting");
+		verb=L("hunting");
 		found=null;
 		activityRoom=null;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -234,7 +234,7 @@ public class Hunting extends CommonSkill
 			}
 		}
 		final int duration=10+mob.phyStats().level()+(super.getXTIMELevel(mob)*2);
-		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),_("<S-NAME> start(s) hunting."));
+		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),L("<S-NAME> start(s) hunting."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -37,9 +37,9 @@ import java.util.*;
 public class WeakParalysis extends StdAbility
 {
 	@Override public String ID() { return "WeakParalysis"; }
-	private final static String localizedName = CMLib.lang()._("Weak Paralysis");
+	private final static String localizedName = CMLib.lang().L("Weak Paralysis");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Paralyzed)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Paralyzed)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -71,7 +71,7 @@ public class WeakParalysis extends StdAbility
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("The paralysis eases out of your muscles."));
+			mob.tell(L("The paralysis eases out of your muscles."));
 	}
 
 
@@ -91,19 +91,19 @@ public class WeakParalysis extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_PARALYZE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":_("^S<S-NAME> paralyze(s) <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_PARALYZE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("^S<S-NAME> paralyze(s) <T-NAMESELF>.^?"));
 			if(target.location().okMessage(target,msg))
 			{
 				target.location().send(target,msg);
 				if(msg.value()<=0)
 				{
 					success=maliciousAffect(mob,target,asLevel,5,-1);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> can't move!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> can't move!"));
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to paralyze <T-NAMESELF>, but fail(s)!"));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to paralyze <T-NAMESELF>, but fail(s)!"));
 
 
 		// return whether it worked

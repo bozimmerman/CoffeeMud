@@ -37,9 +37,9 @@ import java.util.*;
 public class Thief_Squatting extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Squatting"; }
-	private final static String localizedName = CMLib.lang()._("Squatting");
+	private final static String localizedName = CMLib.lang().L("Squatting");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Squatting)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Squatting)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -94,11 +94,11 @@ public class Thief_Squatting extends ThiefSkill
 		if((canBeUninvoked())&&(mob.location()!=null))
 		{
 			if((failed)||(!CMLib.flags().isSitting(mob))||(room==null)||(title==null)||(mob.location()!=room))
-				mob.tell(_("You are no longer squatting."));
+				mob.tell(L("You are no longer squatting."));
 			else
 			if(title.getOwnerName().length()>0)
 			{
-				mob.tell(_("Your squat has succeeded.  This property no longer belongs to @x1.",title.getOwnerName()));
+				mob.tell(L("Your squat has succeeded.  This property no longer belongs to @x1.",title.getOwnerName()));
 				title.setOwnerName("");
 				title.updateTitle();
 				title.updateLot(null);
@@ -106,7 +106,7 @@ public class Thief_Squatting extends ThiefSkill
 			else
 			if(title.getOwnerName().length()>0)
 			{
-				mob.tell(_("Your squat has succeeded.  This property now belongs to you."));
+				mob.tell(L("Your squat has succeeded.  This property now belongs to you."));
 				title.setOwnerName(mob.Name());
 				title.updateTitle();
 				title.updateLot(new XVector(mob.name()));
@@ -124,7 +124,7 @@ public class Thief_Squatting extends ThiefSkill
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already squatting."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already squatting."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -132,7 +132,7 @@ public class Thief_Squatting extends ThiefSkill
 
 		if(CMLib.law().doesHavePriviledgesHere(mob,mob.location()))
 		{
-			mob.tell(_("This is your place already!"));
+			mob.tell(L("This is your place already!"));
 			return false;
 		}
 		final LandTitle T=CMLib.law().getLandTitle(mob.location());
@@ -145,7 +145,7 @@ public class Thief_Squatting extends ThiefSkill
 		}
 		if(T==null)
 		{
-			mob.tell(_("This property is not available for sale, and cannot be squatted upon."));
+			mob.tell(L("This property is not available for sale, and cannot be squatted upon."));
 			return false;
 		}
 		MOB warnMOB=null;
@@ -170,26 +170,26 @@ public class Thief_Squatting extends ThiefSkill
 			}
 			if((warnMOB==null)||(!CMLib.flags().isInTheGame(warnMOB,true)))
 			{
-				mob.tell(_("The owners must be in the game for you to begin squatting."));
+				mob.tell(L("The owners must be in the game for you to begin squatting."));
 				return false;
 			}
 		}
 		if(!confirmed)
 		{
-			mob.tell(_("You cannot squat on an area for sale."));
+			mob.tell(L("You cannot squat on an area for sale."));
 			return false;
 		}
 		if(!CMLib.flags().isSitting(mob))
 		{
-			mob.tell(_("You must be sitting!"));
+			mob.tell(L("You must be sitting!"));
 			return false;
 		}
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":_("<S-NAME> start(s) squatting."));
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":L("<S-NAME> start(s) squatting."));
 		if(!success)
-			return beneficialVisualFizzle(mob,null,auto?"":_("<S-NAME> can't seem to get comfortable here."));
+			return beneficialVisualFizzle(mob,null,auto?"":L("<S-NAME> can't seem to get comfortable here."));
 		else
 		if(mob.location().okMessage(mob,msg))
 		{
@@ -199,7 +199,7 @@ public class Thief_Squatting extends ThiefSkill
 			title=T;
 			beneficialAffect(mob,target,asLevel,(CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH)));
 			if(warnMOB!=null)
-				warnMOB.tell(_("You've heard a rumor that someone is squatting on @x1's property.",T.getOwnerName()));
+				warnMOB.tell(L("You've heard a rumor that someone is squatting on @x1's property.",T.getOwnerName()));
 		}
 		return success;
 	}

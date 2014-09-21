@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_DeathWarning extends Spell
 {
 	@Override public String ID() { return "Spell_DeathWarning"; }
-	private final static String localizedName = CMLib.lang()._("Death Warning");
+	private final static String localizedName = CMLib.lang().L("Death Warning");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Death Warning)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Death Warning)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -56,7 +56,7 @@ public class Spell_DeathWarning extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.tell(mob,null,null,_("<S-YOUPOSS> death warning magic fades."));
+				mob.tell(mob,null,null,L("<S-YOUPOSS> death warning magic fades."));
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class Spell_DeathWarning extends Spell
 			final int hitPoints=mob.curState().getHitPoints();
 			mob.curState().setHitPoints(1);
 			final Room room=mob.location();
-			mob.tell(_("^SYou receive a warning of your impending death!!^N"));
+			mob.tell(L("^SYou receive a warning of your impending death!!^N"));
 			mob.doCommand(commands,0);
 			if(mob.location()!=room)
 			{
@@ -94,7 +94,7 @@ public class Spell_DeathWarning extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> a death's warning."));
+			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> a death's warning."));
 			return false;
 		}
 
@@ -104,7 +104,7 @@ public class Spell_DeathWarning extends Spell
 				commands.add("FLEE");
 			else
 			{
-				mob.tell(_("You need to specify what you want to do should the warning arrives!"));
+				mob.tell(L("You need to specify what you want to do should the warning arrives!"));
 				return false;
 			}
 		}
@@ -116,7 +116,7 @@ public class Spell_DeathWarning extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> begin(s) listening for a death's warning!"):_("^S<S-NAME> incant(s) coldly, and begin(s) listening for death's warning!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> begin(s) listening for a death's warning!"):L("^S<S-NAME> incant(s) coldly, and begin(s) listening for death's warning!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -126,7 +126,7 @@ public class Spell_DeathWarning extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> incant(s) coldly and listen(s), but the spell fizzles."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> incant(s) coldly and listen(s), but the spell fizzles."));
 
 		return success;
 	}

@@ -46,13 +46,13 @@ public class WizList extends StdCommand
 		final StringBuffer head=new StringBuffer("");
 		final boolean isArchonLooker=CMSecurity.isASysOp(mob);
 		head.append("^x[");
-		head.append(CMStrings.padRight(_("Class"),16)+" ");
-		head.append(CMStrings.padRight(_("Race"),8)+" ");
-		head.append(CMStrings.padRight(_("Lvl"),4)+" ");
+		head.append(CMStrings.padRight(L("Class"),16)+" ");
+		head.append(CMStrings.padRight(L("Race"),8)+" ");
+		head.append(CMStrings.padRight(L("Lvl"),4)+" ");
 		if(isArchonLooker)
-			head.append(CMStrings.padRight(_("Last"),18)+" ");
+			head.append(CMStrings.padRight(L("Last"),18)+" ");
 		head.append("] Character Name^.^?\n\r");
-		mob.tell("^x["+CMStrings.centerPreserve(_("The Administrators of @x1",CMProps.getVar(CMProps.Str.MUDNAME)),head.length()-10)+"]^.^?");
+		mob.tell("^x["+CMStrings.centerPreserve(L("The Administrators of @x1",CMProps.getVar(CMProps.Str.MUDNAME)),head.length()-10)+"]^.^?");
 		final java.util.List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
 		String mask=CMProps.getVar(CMProps.Str.WIZLISTMASK);
 		if(mask.length()==0) mask="-ANYCLASS +Archon";
@@ -74,7 +74,7 @@ public class WizList extends StdCommand
 				if(C!=null)
 					head.append(CMStrings.padRight(C.name(),16)+" ");
 				else
-					head.append(CMStrings.padRight(_("Unknown"),16)+" ");
+					head.append(CMStrings.padRight(L("Unknown"),16)+" ");
 				head.append(CMStrings.padRight(U.race,8)+" ");
 				if((C==null)||(!C.leveless()))
 					head.append(CMStrings.padRight(""+U.level,4)+" ");

@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_AuraIntolerance extends Prayer
 {
 	@Override public String ID() { return "Prayer_AuraIntolerance"; }
-	private final static String localizedName = CMLib.lang()._("Aura of Intolerance");
+	private final static String localizedName = CMLib.lang().L("Aura of Intolerance");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Intolerance Aura)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Intolerance Aura)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -59,7 +59,7 @@ public class Prayer_AuraIntolerance extends Prayer
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(M!=null)&&(!M.amDead())&&(M.location()!=null))
-			M.location().show(M,null,CMMsg.MSG_OK_VISUAL,_("The intolerant aura around <S-NAME> fades."));
+			M.location().show(M,null,CMMsg.MSG_OK_VISUAL,L("The intolerant aura around <S-NAME> fades."));
 	}
 
 	@Override
@@ -135,13 +135,13 @@ public class Prayer_AuraIntolerance extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("The aura of intolerance is already with <S-NAME>."));
+			mob.tell(target,null,null,L("The aura of intolerance is already with <S-NAME>."));
 			return false;
 		}
 		if((!auto)&&((mob.getWorshipCharID().length()==0)
 					 ||(CMLib.map().getDeity(mob.getWorshipCharID())==null)))
 		{
-			mob.tell(_("You must worship a god to be intolerant."));
+			mob.tell(L("You must worship a god to be intolerant."));
 			return false;
 		}
 
@@ -156,7 +156,7 @@ public class Prayer_AuraIntolerance extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 for the aura of intolerance.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 for the aura of intolerance.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -164,7 +164,7 @@ public class Prayer_AuraIntolerance extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for an aura of intolerance, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for an aura of intolerance, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
 
 
 		// return whether it worked

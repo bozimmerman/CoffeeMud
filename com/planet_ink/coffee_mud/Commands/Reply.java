@@ -47,7 +47,7 @@ public class Reply extends StdCommand
 		if(pstats==null) return false;
 		if(pstats.getReplyToMOB()==null)
 		{
-			mob.tell(_("No one has told you anything yet!"));
+			mob.tell(L("No one has told you anything yet!"));
 			return false;
 		}
 		if((pstats.getReplyToMOB().Name().indexOf('@')<0)
@@ -55,12 +55,12 @@ public class Reply extends StdCommand
 			||(pstats.getReplyToMOB().isMonster())
 			||(!CMLib.flags().isInTheGame(pstats.getReplyToMOB(),true))))
 		{
-			mob.tell(_("@x1 is no longer logged in.",pstats.getReplyToMOB().Name()));
+			mob.tell(L("@x1 is no longer logged in.",pstats.getReplyToMOB().Name()));
 			return false;
 		}
 		if(CMParms.combine(commands,1).length()==0)
 		{
-			mob.tell(_("Tell '@x1' what?",pstats.getReplyToMOB().Name()));
+			mob.tell(L("Tell '@x1' what?",pstats.getReplyToMOB().Name()));
 			return false;
 		}
 		final int replyType=pstats.getReplyType();
@@ -71,7 +71,7 @@ public class Reply extends StdCommand
 			if((pstats.getReplyToMOB().Name().indexOf('@')<0)
 			&&((mob.location()==null)||(!mob.location().isInhabitant(pstats.getReplyToMOB()))))
 			{
-				mob.tell(_("@x1 is no longer in the room.",pstats.getReplyToMOB().Name()));
+				mob.tell(L("@x1 is no longer in the room.",pstats.getReplyToMOB().Name()));
 				return false;
 			}
 			CMLib.commands().postSay(mob,pstats.getReplyToMOB(),CMParms.combine(commands,1),false,false);

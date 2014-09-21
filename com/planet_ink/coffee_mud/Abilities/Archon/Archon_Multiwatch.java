@@ -36,7 +36,7 @@ import java.util.*;
 public class Archon_Multiwatch extends ArchonSkill
 {
 	@Override public String ID() { return "Archon_Multiwatch"; }
-	private final static String localizedName = CMLib.lang()._("Multiwatch");
+	private final static String localizedName = CMLib.lang().L("Multiwatch");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -239,7 +239,7 @@ public class Archon_Multiwatch extends ArchonSkill
 			}
 			if((DATA.size()==0)&&(IPS.size()==0)&&(!foundLegacy))
 			{
-				mob.tell(_("Multiwatch is already off."));
+				mob.tell(L("Multiwatch is already off."));
 				return false;
 			}
 			for(final Enumeration<List<MOB>> e=IPS.elements();e.hasMoreElements();)
@@ -261,7 +261,7 @@ public class Archon_Multiwatch extends ArchonSkill
 					if(A!=null) M.delEffect(A);
 				}
 			}
-			mob.tell(_("Multiplay watcher is now turned off."));
+			mob.tell(L("Multiplay watcher is now turned off."));
 			DATA.clear();
 			IPS.clear();
 			return true;
@@ -277,7 +277,7 @@ public class Archon_Multiwatch extends ArchonSkill
 				if((M.session()!=null)&&(CMLib.flags().isInTheGame(M,true)))
 					V.addElement(M);
 				else
-					mob.tell(_("'@x1' is not online.",name));
+					mob.tell(L("'@x1' is not online.",name));
 			}
 			if(V.size()>1)
 			{
@@ -292,7 +292,7 @@ public class Archon_Multiwatch extends ArchonSkill
 					}
 				}
 				IPS.put("MANUAL"+(IPS.size()+1),V);
-				mob.tell(_("Manual Watch #@x1 added.",""+IPS.size()));
+				mob.tell(L("Manual Watch #@x1 added.",""+IPS.size()));
 			}
 			return true;
 		}
@@ -312,11 +312,11 @@ public class Archon_Multiwatch extends ArchonSkill
 					if(data!=null) sync+=data[DATA_SYNCHROFOUND];
 				}
 				report.append("^x"+key+"^?^., Syncs: "+sync+"\n\r");
-				report.append(CMStrings.padRight(_("Name"),25)
-							  +CMStrings.padRight(_("Speech"),15)
-							  +CMStrings.padRight(_("Socials"),15)
-							  +CMStrings.padRight(_("CMD"),10)
-							  +CMStrings.padRight(_("ORDERS"),10)
+				report.append(CMStrings.padRight(L("Name"),25)
+							  +CMStrings.padRight(L("Speech"),15)
+							  +CMStrings.padRight(L("Socials"),15)
+							  +CMStrings.padRight(L("CMD"),10)
+							  +CMStrings.padRight(L("ORDERS"),10)
 							  +"\n\r");
 				for(int v=0;v<V.size();v++)
 				{
@@ -342,7 +342,7 @@ public class Archon_Multiwatch extends ArchonSkill
 		}
 		else
 		{
-			mob.tell(_("Try MULTIWATCH AUTO, MULTIWATCH STOP, or MULTIWATCH ADD name1 name2.."));
+			mob.tell(L("Try MULTIWATCH AUTO, MULTIWATCH STOP, or MULTIWATCH ADD name1 name2.."));
 			return false;
 		}
 

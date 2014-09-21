@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_NeutralizeLand extends Prayer
 {
 	@Override public String ID() { return "Prayer_NeutralizeLand"; }
-	private final static String localizedName = CMLib.lang()._("Neutralize Land");
+	private final static String localizedName = CMLib.lang().L("Neutralize Land");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -80,7 +80,7 @@ public class Prayer_NeutralizeLand extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) neutralized."):_("^S<S-NAME> @x1, sweeping <S-HIS-HER> hands over <T-NAMESELF>.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) neutralized."):L("^S<S-NAME> @x1, sweeping <S-HIS-HER> hands over <T-NAMESELF>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -106,10 +106,10 @@ public class Prayer_NeutralizeLand extends Prayer
 				if(revokeThis==null)
 				{
 					if(foundSomethingAtLeast)
-						mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("The magic on <T-NAME> appears too powerful to be nullified."));
+						mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("The magic on <T-NAME> appears too powerful to be nullified."));
 					else
 					if(auto)
-						mob.tell(mob,target,null,_("Nothing seems to be happening to <T-NAME>."));
+						mob.tell(mob,target,null,L("Nothing seems to be happening to <T-NAME>."));
 				}
 				else
 				{
@@ -120,7 +120,7 @@ public class Prayer_NeutralizeLand extends Prayer
 				}
 			}
 			else
-				beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, but @x1 does not heed.",hisHerDiety(mob)));
+				beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, but @x1 does not heed.",hisHerDiety(mob)));
 		}
 
 		// return whether it worked

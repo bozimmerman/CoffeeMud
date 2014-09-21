@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_IncreaseGravity extends Spell
 {
 	@Override public String ID() { return "Spell_IncreaseGravity"; }
-	private final static String localizedName = CMLib.lang()._("Increase Gravity");
+	private final static String localizedName = CMLib.lang().L("Increase Gravity");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Gravity is Increased)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Gravity is Increased)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_ROOMS|CAN_MOBS;}
@@ -90,14 +90,14 @@ public class Spell_IncreaseGravity extends Spell
 			if(affected instanceof Room)
 			{
 				final Room room=(Room)affected;
-				room.showHappens(CMMsg.MSG_OK_VISUAL, _("Gravity returns to normal..."));
+				room.showHappens(CMMsg.MSG_OK_VISUAL, L("Gravity returns to normal..."));
 			}
 			else
 			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
 				if((mob.location()!=null)&&(mob.location()!=gravityRoom()))
-					mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL, _("Your weight returns to normal.."));
+					mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL, L("Your weight returns to normal.."));
 			}
 		}
 		super.unInvoke();
@@ -120,18 +120,18 @@ public class Spell_IncreaseGravity extends Spell
 		{
 		case CMMsg.TYP_ADVANCE:
 			{
-				msg.source().tell(_("You feel too heavy to advance."));
+				msg.source().tell(L("You feel too heavy to advance."));
 				return false;
 			}
 		case CMMsg.TYP_RETREAT:
 			{
-				msg.source().tell(_("You feel too heavy to retreat."));
+				msg.source().tell(L("You feel too heavy to retreat."));
 				return false;
 			}
 		case CMMsg.TYP_LEAVE:
 		case CMMsg.TYP_FLEE:
 			{
-				msg.source().tell(_("You feel too heavy to leave."));
+				msg.source().tell(L("You feel too heavy to leave."));
 				return false;
 			}
 		}
@@ -167,7 +167,7 @@ public class Spell_IncreaseGravity extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,null,null,_("Gravity has already been increased here!"));
+			mob.tell(mob,null,null,L("Gravity has already been increased here!"));
 			return false;
 		}
 
@@ -181,7 +181,7 @@ public class Spell_IncreaseGravity extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), _((auto?"G":"^S<S-NAME> speak(s) and wave(s) and g")+"ravity begins to increase!^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), L((auto?"G":"^S<S-NAME> speak(s) and wave(s) and g")+"ravity begins to increase!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -190,7 +190,7 @@ public class Spell_IncreaseGravity extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> speak(s) heavily, but the spell fizzles."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> speak(s) heavily, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

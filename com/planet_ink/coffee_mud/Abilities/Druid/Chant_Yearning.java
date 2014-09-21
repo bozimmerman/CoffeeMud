@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_Yearning extends Chant
 {
 	@Override public String ID() { return "Chant_Yearning"; }
-	private final static String localizedName = CMLib.lang()._("Yearning");
+	private final static String localizedName = CMLib.lang().L("Yearning");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Sexual Yearnings)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Sexual Yearnings)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -66,7 +66,7 @@ public class Chant_Yearning extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your yearning subsides."));
+			mob.tell(L("Your yearning subsides."));
 	}
 
 	@Override
@@ -117,19 +117,19 @@ public class Chant_Yearning extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) to yearn for something!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) to yearn for something!"));
 					maliciousAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER,-1);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
 
 
 		// return whether it worked

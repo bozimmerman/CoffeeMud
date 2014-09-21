@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_ImprovedPolymorph extends Spell
 {
 	@Override public String ID() { return "Spell_ImprovedPolymorph"; }
-	private final static String localizedName = CMLib.lang()._("Improved Polymorph");
+	private final static String localizedName = CMLib.lang().L("Improved Polymorph");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Improved Polymorph)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Improved Polymorph)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
@@ -53,9 +53,9 @@ public class Spell_ImprovedPolymorph extends Spell
 		if(newRace!=null)
 		{
 			if(affected.name().indexOf(' ')>0)
-				affectableStats.setName(_("a @x1 called @x2",newRace.name(),affected.name()));
+				affectableStats.setName(L("a @x1 called @x2",newRace.name(),affected.name()));
 			else
-				affectableStats.setName(_("@x1 the @x2",affected.name(),newRace.name()));
+				affectableStats.setName(L("@x1 the @x2",affected.name(),newRace.name()));
 			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			newRace.setHeightWeight(affectableStats,'M');
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
@@ -85,7 +85,7 @@ public class Spell_ImprovedPolymorph extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> morph(s) back to <S-HIS-HER> normal form."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> morph(s) back to <S-HIS-HER> normal form."));
 	}
 
 	@Override
@@ -107,7 +107,7 @@ public class Spell_ImprovedPolymorph extends Spell
 	{
 		if(commands.size()==0)
 		{
-			mob.tell(_("You need to specify what to turn your target into!"));
+			mob.tell(L("You need to specify what to turn your target into!"));
 			return false;
 		}
 		final String race=(String)commands.lastElement();
@@ -116,7 +116,7 @@ public class Spell_ImprovedPolymorph extends Spell
 		if(target==null) return false;
 		if((target==mob)&&(!auto))
 		{
-			mob.tell(_("You cannot hold enough energy to cast this on yourself."));
+			mob.tell(L("You cannot hold enough energy to cast this on yourself."));
 			return false;
 		}
 		Race R=CMClass.getRace(race);
@@ -136,7 +136,7 @@ public class Spell_ImprovedPolymorph extends Spell
 			}
 			else
 			{
-				mob.tell(_("You can't turn @x1 into a '@x2'!",target.name(mob),race));
+				mob.tell(L("You can't turn @x1 into a '@x2'!",target.name(mob),race));
 				return false;
 			}
 		}
@@ -156,13 +156,13 @@ public class Spell_ImprovedPolymorph extends Spell
 
 		if(target.baseCharStats().getMyRace() != target.charStats().getMyRace())
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already polymorphed."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already polymorphed."));
 			return false;
 		}
 
 		if((R!=null)&&(!CMath.bset(R.availabilityCode(),Area.THEME_FANTASY)))
 		{
-			mob.tell(_("You can't turn @x1 into a '@x2'!",target.name(mob),R.name()));
+			mob.tell(L("You can't turn @x1 into a '@x2'!",target.name(mob),R.name()));
 			return false;
 		}
 
@@ -205,7 +205,7 @@ public class Spell_ImprovedPolymorph extends Spell
 		boolean success=proficiencyCheck(mob,levelDiff-statDiff,auto);
 		if(success&&(!auto)&&(!mob.mayIFight(target))&&(mob!=target)&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 		{
-			mob.tell(_("@x1 is a player, so you must be group members, or your playerkill flags must be on for this to work.",target.name(mob)));
+			mob.tell(L("@x1 is a player, so you must be group members, or your playerkill flags must be on for this to work.",target.name(mob)));
 			success=false;
 		}
 
@@ -216,14 +216,14 @@ public class Spell_ImprovedPolymorph extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> form(s) an improved spell around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> form(s) an improved spell around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
 					newRace=R;
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> become(s) a @x1!",newRace.name()));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) a @x1!",newRace.name()));
 					success=beneficialAffect(mob,target,asLevel,0);
 					target.recoverCharStats();
 					CMLib.utensils().confirmWearability(target);
@@ -231,7 +231,7 @@ public class Spell_ImprovedPolymorph extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> form(s) an improved spell around <T-NAMESELF>, but the spell fizzles."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> form(s) an improved spell around <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

@@ -36,15 +36,15 @@ import java.util.*;
 public class Prayer_Demonshield extends Prayer
 {
 	@Override public String ID() { return "Prayer_Demonshield"; }
-	private final static String localizedName = CMLib.lang()._("Demonshield");
+	private final static String localizedName = CMLib.lang().L("Demonshield");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Demonshield)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Demonshield)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
-	final static String msgStr=CMLib.lang()._("The unholy flames around <S-NAME> flare and <DAMAGE> <T-NAME>!");
+	final static String msgStr=CMLib.lang().L("The unholy flames around <S-NAME> flare and <DAMAGE> <T-NAME>!");
 	protected long oncePerTickTime=0;
 
 	@Override
@@ -59,7 +59,7 @@ public class Prayer_Demonshield extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> demonic flame shield vanishes."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> demonic flame shield vanishes."));
 	}
 
 	@Override
@@ -132,7 +132,7 @@ public class Prayer_Demonshield extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),((auto?"":"^S<S-NAME> "+prayWord(mob)+".  ")+_("A field of unholy flames erupt(s) around <T-NAME>!^?"))+CMLib.protocol().msp("fireball.wav",10));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),((auto?"":"^S<S-NAME> "+prayWord(mob)+".  ")+L("A field of unholy flames erupt(s) around <T-NAME>!^?"))+CMLib.protocol().msp("fireball.wav",10));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -140,7 +140,7 @@ public class Prayer_Demonshield extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1, but only sparks emerge.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1, but only sparks emerge.",prayWord(mob)));
 
 
 		// return whether it worked

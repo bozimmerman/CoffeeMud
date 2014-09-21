@@ -37,7 +37,7 @@ import java.util.*;
 public class Skill_Leeching extends StdSkill
 {
 	@Override public String ID() { return "Skill_Leeching"; }
-	private final static String localizedName = CMLib.lang()._("Leeching");
+	private final static String localizedName = CMLib.lang().L("Leeching");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -54,12 +54,12 @@ public class Skill_Leeching extends StdSkill
 
 		if((!auto)&&(mob!=target)&&(!target.willFollowOrdersOf(mob)))
 		{
-			mob.tell(_("@x1 must be a follower for you to leech them.",target.charStats().HeShe()));
+			mob.tell(L("@x1 must be a follower for you to leech them.",target.charStats().HeShe()));
 			return false;
 		}
 		if(mob.isInCombat()&&(mob.getVictim()==target)&&(mob.rangeToTarget()>0))
 		{
-			mob.tell(_("You are too far away to try that!"));
+			mob.tell(L("You are too far away to try that!"));
 			return false;
 		}
 
@@ -74,7 +74,7 @@ public class Skill_Leeching extends StdSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":_("^S<S-NAME> carefully applie(s) leeches to the skin of <T-NAME>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("^S<S-NAME> carefully applie(s) leeches to the skin of <T-NAME>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -85,7 +85,7 @@ public class Skill_Leeching extends StdSkill
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> attempt(s) to apply leeches to <T-NAME>, but fail(s)."));
+			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> attempt(s) to apply leeches to <T-NAME>, but fail(s)."));
 
 
 		// return whether it worked

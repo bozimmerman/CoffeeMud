@@ -38,7 +38,7 @@ public class StdItem implements Item
 	@Override public String ID(){	return "StdItem";}
 
 	protected String		name="an ordinary item";
-	protected String		displayText=_("a nondescript item sits here doing nothing.");
+	protected String		displayText=L("a nondescript item sits here doing nothing.");
 	protected Object		description=null;
 	protected int   		myUses=Integer.MAX_VALUE;
 	protected long  		myWornCode=Wearable.IN_INVENTORY;
@@ -740,13 +740,13 @@ public class StdItem implements Item
 				{
 					if(!CMLib.commands().postRemove(mob,alreadyWearing,false))
 					{
-						mob.tell(_("You are already wearing @x1 on your @x2.",alreadyWearing.name(),codes.name(cantWearAt)));
+						mob.tell(L("You are already wearing @x1 on your @x2.",alreadyWearing.name(),codes.name(cantWearAt)));
 						return false;
 					}
 					alreadyWearing=mob.fetchFirstWornItem(cantWearAt);
 					if((alreadyWearing!=null)&&(!canWear(mob,0)))
 					{
-						mob.tell(_("You are already wearing @x1 on your @x2.",alreadyWearing.name(),codes.name(cantWearAt)));
+						mob.tell(L("You are already wearing @x1 on your @x2.",alreadyWearing.name(),codes.name(cantWearAt)));
 						return false;
 					}
 				}
@@ -761,12 +761,12 @@ public class StdItem implements Item
 					&&(CMLib.commands().postRemove(mob,alreadyWearing,false)))
 						return true;
 					if(cantWearAt==Wearable.WORN_HELD)
-						mob.tell(_("You are already holding @x1.",alreadyWearing.name()));
+						mob.tell(L("You are already holding @x1.",alreadyWearing.name()));
 					else
 					if(cantWearAt==Wearable.WORN_WIELD)
-						mob.tell(_("You are already wielding @x1.",alreadyWearing.name()));
+						mob.tell(L("You are already wielding @x1.",alreadyWearing.name()));
 					else
-						mob.tell(_("You are already wearing @x1 on your @x2.",alreadyWearing.name(),codes.name(cantWearAt)));
+						mob.tell(L("You are already wearing @x1 on your @x2.",alreadyWearing.name(),codes.name(cantWearAt)));
 					return false;
 				}
 			}
@@ -778,14 +778,14 @@ public class StdItem implements Item
 					if((codes.get(i)&wearWhere)>0)
 						locs.append(", " + codes.name(i));
 				if(locs.length()==0)
-					mob.tell(_("You can't wear that there."));
+					mob.tell(L("You can't wear that there."));
 				else
-					mob.tell(_("You can't wear that on your @x1.",locs.toString().substring(1).trim()));
+					mob.tell(L("You can't wear that on your @x1.",locs.toString().substring(1).trim()));
 				return false;
 			}
 			else
 			{
-				mob.tell(_("You don't have anywhere you can wear that."));
+				mob.tell(L("You don't have anywhere you can wear that."));
 				return false;
 			}
 		}
@@ -797,15 +797,15 @@ public class StdItem implements Item
 		if(!thisItem.amWearingAt(Wearable.IN_INVENTORY))
 		{
 			if(thisItem.amWearingAt(Wearable.WORN_WIELD))
-				mob.tell(_("@x1 is already being wielded.",thisItem.name()));
+				mob.tell(L("@x1 is already being wielded.",thisItem.name()));
 			else
 			if(thisItem.amWearingAt(Wearable.WORN_HELD))
-				mob.tell(_("@x1 is already being held.",thisItem.name()));
+				mob.tell(L("@x1 is already being held.",thisItem.name()));
 			else
 			if(thisItem.amWearingAt(Wearable.WORN_FLOATING_NEARBY))
-				mob.tell(_("@x1 is floating nearby.",thisItem.name()));
+				mob.tell(L("@x1 is floating nearby.",thisItem.name()));
 			else
-				mob.tell(_("@x1is already being worn.",thisItem.name()));
+				mob.tell(L("@x1is already being worn.",thisItem.name()));
 			return false;
 		}
 		return true;
@@ -851,12 +851,12 @@ public class StdItem implements Item
 					if((phyStats().weight()>(mob.maxCarry()/5))
 					&&(phyStats().weight()!=0))
 					{
-						mob.tell(_("@x1 is too heavy to throw.",name()));
+						mob.tell(L("@x1 is too heavy to throw.",name()));
 						return false;
 					}
 					if(!CMLib.flags().isDroppable(this))
 					{
-						mob.tell(_("You can't seem to let go of @x1.",name()));
+						mob.tell(L("You can't seem to let go of @x1.",name()));
 						return false;
 					}
 				}
@@ -864,7 +864,7 @@ public class StdItem implements Item
 			case CMMsg.TYP_POUR:
 				if(!(this instanceof Drink))
 				{
-					mob.tell(mob,this,null,_("You can't do that with <T-NAMESELF>."));
+					mob.tell(mob,this,null,L("You can't do that with <T-NAMESELF>."));
 					return false;
 				}
 				break;
@@ -887,7 +887,7 @@ public class StdItem implements Item
 			&&(msg.tool() instanceof Ability)
 			&&(((Ability)msg.tool()).abstractQuality()==Ability.QUALITY_MALICIOUS))))
 		{
-			mob.tell(_("Please don't do that."));
+			mob.tell(L("Please don't do that."));
 			return false;
 		}
 		else
@@ -936,7 +936,7 @@ public class StdItem implements Item
 			{
 				if(((AmmunitionWeapon)this).ammunitionRemaining()>=((AmmunitionWeapon)this).ammunitionCapacity())
 				{
-					mob.tell(_("@x1 is already loaded.",name()));
+					mob.tell(L("@x1 is already loaded.",name()));
 					return false;
 				}
 				return true;
@@ -948,7 +948,7 @@ public class StdItem implements Item
 			{
 				if(((AmmunitionWeapon)this).ammunitionRemaining()<=0)
 				{
-					mob.tell(_("@x1 is not loaded.",name()));
+					mob.tell(L("@x1 is not loaded.",name()));
 					return false;
 				}
 				return true;
@@ -970,7 +970,7 @@ public class StdItem implements Item
 				return false;
 			if(phyStats().level()>mob.phyStats().level())
 			{
-				mob.tell(_("That looks too advanced for you."));
+				mob.tell(L("That looks too advanced for you."));
 				return false;
 			}
 			if((!rawLogicalAnd())||(properWornBitmap==0))
@@ -983,13 +983,13 @@ public class StdItem implements Item
 						if((!CMLib.commands().postRemove(mob,alreadyWearing,false))
 						||(!canWear(mob,Wearable.WORN_HELD)))
 						{
-							mob.tell(_("Your hands are full."));
+							mob.tell(L("Your hands are full."));
 							return false;
 						}
 					}
 					else
 					{
-						mob.tell(_("You need hands to hold things."));
+						mob.tell(L("You need hands to hold things."));
 						return false;
 					}
 				}
@@ -999,28 +999,28 @@ public class StdItem implements Item
 		case CMMsg.TYP_WEAR:
 			if(properWornBitmap==0)
 			{
-				mob.tell(_("You can't wear @x1.",name()));
+				mob.tell(L("You can't wear @x1.",name()));
 				return false;
 			}
 			if(!alreadyWornMsg(msg.source(),this))
 				return false;
 			if(phyStats().level()>mob.phyStats().level())
 			{
-				mob.tell(_("That looks too advanced for you."));
+				mob.tell(L("That looks too advanced for you."));
 				return false;
 			}
 			return canWearComplete(mob,(msg.value()<=0)?0:((long)(1<<msg.value())/2));
 		case CMMsg.TYP_WIELD:
 			if((!fitsOn(Wearable.WORN_WIELD))||(properWornBitmap==0))
 			{
-				mob.tell(_("You can't wield @x1 as a weapon.",name()));
+				mob.tell(L("You can't wield @x1 as a weapon.",name()));
 				return false;
 			}
 			if(!alreadyWornMsg(msg.source(),this))
 				return false;
 			if(phyStats().level()>mob.phyStats().level())
 			{
-				mob.tell(_("That looks too advanced for you."));
+				mob.tell(L("That looks too advanced for you."));
 				return false;
 			}
 			if((!rawLogicalAnd())||(properWornBitmap==0))
@@ -1032,13 +1032,13 @@ public class StdItem implements Item
 					{
 						if(!CMLib.commands().postRemove(mob,alreadyWearing,false))
 						{
-							mob.tell(_("You are already wielding @x1.",alreadyWearing.name()));
+							mob.tell(L("You are already wielding @x1.",alreadyWearing.name()));
 							return false;
 						}
 					}
 					else
 					{
-						mob.tell(_("You need hands to wield things."));
+						mob.tell(L("You need hands to wield things."));
 						return false;
 					}
 				}
@@ -1048,12 +1048,12 @@ public class StdItem implements Item
 		case CMMsg.TYP_PULL:
 			if(msg.source().isMine(this))
 			{
-				mob.tell(_("You'll need to put that down first."));
+				mob.tell(L("You'll need to put that down first."));
 				return false;
 			}
 			if(!CMLib.flags().isGettable(this))
 			{
-				mob.tell(_("You can't move @x1.",name()));
+				mob.tell(L("You can't move @x1.",name()));
 				return false;
 			}
 			return true;
@@ -1064,7 +1064,7 @@ public class StdItem implements Item
 				&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 				&&(amWearingAt(Wearable.IN_INVENTORY)))
 				{
-					mob.tell(_("You can't see that."));
+					mob.tell(L("You can't see that."));
 					return false;
 				}
 				if((mob.phyStats().level()<phyStats().level()-(10+(mob.phyStats().level()/5)))
@@ -1072,32 +1072,32 @@ public class StdItem implements Item
 				&&(!mob.charStats().getMyRace().leveless())
 				&&(!mob.charStats().getCurrentClass().leveless()))
 				{
-					mob.tell(_("@x1 is too powerful to endure possessing it.",name()));
+					mob.tell(L("@x1 is too powerful to endure possessing it.",name()));
 					return false;
 				}
 				if((phyStats().weight()>(mob.maxCarry()-mob.phyStats().weight()))
 				&&(!mob.isMine(this))
 				&&(phyStats().weight()!=0))
 				{
-					mob.tell(_("@x1 is too heavy.",name()));
+					mob.tell(L("@x1 is too heavy.",name()));
 					return false;
 				}
 				if((numberOfItems()>(mob.maxItems()-mob.numItems()))&&(!mob.isMine(this)))
 				{
-					mob.tell(_("You can't carry that many items."));
+					mob.tell(L("You can't carry that many items."));
 					return false;
 				}
 				if(!CMLib.flags().isGettable(this))
 				{
-					mob.tell(_("You can't get @x1.",name()));
+					mob.tell(L("You can't get @x1.",name()));
 					return false;
 				}
 				if((this instanceof Rideable)&&(((Rideable)this).numRiders()>0))
 				{
 					if((mob.riding()!=null)&&(mob.riding()==this))
-						mob.tell(_("You are @x1 @x2!",((Rideable)this).stateString(mob),name()));
+						mob.tell(L("You are @x1 @x2!",((Rideable)this).stateString(mob),name()));
 					else
-						mob.tell(_("Someone is @x1 @x2!",((Rideable)this).stateString(mob),name()));
+						mob.tell(L("Someone is @x1 @x2!",((Rideable)this).stateString(mob),name()));
 					return false;
 				}
 				return true;
@@ -1125,17 +1125,17 @@ public class StdItem implements Item
 				   &&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 				   &&(amWearingAt(Wearable.IN_INVENTORY)))
 				{
-					mob.tell(_("You can't see that."));
+					mob.tell(L("You can't see that."));
 					return false;
 				}
 				if((!amWearingAt(Wearable.IN_INVENTORY))&&(!CMLib.flags().isRemovable(this)))
 				{
 					if(amWearingAt(Wearable.WORN_WIELD)||amWearingAt(Wearable.WORN_HELD))
 					{
-						mob.tell(_("You can't seem to let go of @x1.",name()));
+						mob.tell(L("You can't seem to let go of @x1.",name()));
 						return false;
 					}
-					mob.tell(_("You can't seem to remove @x1.",name()));
+					mob.tell(L("You can't seem to remove @x1.",name()));
 					return false;
 				}
 				Item I=null;
@@ -1150,7 +1150,7 @@ public class StdItem implements Item
 						thislayer=(I instanceof Armor)?((Armor)I).getClothingLayer():0;
 						if(thislayer>layer)
 						{
-							mob.tell(mob,I,null,_("You must remove <T-NAME> first."));
+							mob.tell(mob,I,null,L("You must remove <T-NAME> first."));
 							return false;
 						}
 					}
@@ -1176,12 +1176,12 @@ public class StdItem implements Item
 		case CMMsg.TYP_DROP:
 			if(!mob.isMine(this))
 			{
-				mob.tell(_("You don't have that."));
+				mob.tell(L("You don't have that."));
 				return false;
 			}
 			if(!CMLib.flags().isDroppable(this))
 			{
-				mob.tell(_("You can't seem to let go of @x1.",name()));
+				mob.tell(L("You can't seem to let go of @x1.",name()));
 				return false;
 			}
 			return true;
@@ -1241,22 +1241,22 @@ public class StdItem implements Item
 				if(msg.targetMessage().trim().length()==0)
 				{
 					if(this instanceof Electronics)
-						mob.tell(_("Enter what into @x1?",name()));
+						mob.tell(L("Enter what into @x1?",name()));
 					else
-						mob.tell(_("Write what on @x1?",name()));
+						mob.tell(L("Write what on @x1?",name()));
 					return false;
 				}
 				return true;
 			}
 			if(this instanceof Electronics)
-				mob.tell(_("You can't enter commands into @x1.",name()));
+				mob.tell(L("You can't enter commands into @x1.",name()));
 			else
-				mob.tell(_("You can't write on @x1.",name()));
+				mob.tell(L("You can't write on @x1.",name()));
 			return false;
 		default:
 			break;
 		}
-		mob.tell(mob,this,null,_("You can't do that to <T-NAMESELF>."));
+		mob.tell(mob,this,null,L("You can't do that to <T-NAMESELF>."));
 		return false;
 	}
 
@@ -1749,7 +1749,7 @@ public class StdItem implements Item
 		case 4: setMiscText(val); break;
 		}
 	}
-	@Override public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+	@Override public String L(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 	@Override public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
 	@Override public String[] getStatCodes(){return CODES;}
 	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}

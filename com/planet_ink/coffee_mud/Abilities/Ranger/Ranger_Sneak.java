@@ -38,7 +38,7 @@ import java.util.*;
 public class Ranger_Sneak extends StdAbility
 {
 	@Override public String ID() { return "Ranger_Sneak"; }
-	private final static String localizedName = CMLib.lang()._("Woodland Sneak");
+	private final static String localizedName = CMLib.lang().L("Woodland Sneak");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
@@ -85,26 +85,26 @@ public class Ranger_Sneak extends StdAbility
 		final int dirCode=Directions.getGoodDirectionCode(dir);
 		if(dirCode<0)
 		{
-			mob.tell(_("Sneak where?"));
+			mob.tell(L("Sneak where?"));
 			return false;
 		}
 
 		if((((mob.location().domainType()&Room.INDOORS)>0))&&(!auto))
 		{
-			mob.tell(_("You must be outdoors to do this."));
+			mob.tell(L("You must be outdoors to do this."));
 			return false;
 		}
 		if(((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
 		&&(!auto))
 		{
-			mob.tell(_("You don't know how to sneak around a place like this."));
+			mob.tell(L("You don't know how to sneak around a place like this."));
 			return false;
 		}
 
 		if((mob.location().getRoomInDir(dirCode)==null)||(mob.location().getExitInDir(dirCode)==null))
 		{
-			mob.tell(_("Sneak where?"));
+			mob.tell(L("Sneak where?"));
 			return false;
 		}
 
@@ -115,7 +115,7 @@ public class Ranger_Sneak extends StdAbility
 			return false;
 
 		boolean success=false;
-		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,_("You quietly sneak @x1.",Directions.getDirectionName(dirCode)),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,L("You quietly sneak @x1.",Directions.getDirectionName(dirCode)),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

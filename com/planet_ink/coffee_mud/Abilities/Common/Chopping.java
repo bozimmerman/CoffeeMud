@@ -36,7 +36,7 @@ import java.util.*;
 public class Chopping extends GatheringSkill
 {
 	@Override public String ID() { return "Chopping"; }
-	private final static String localizedName = CMLib.lang()._("Wood Chopping");
+	private final static String localizedName = CMLib.lang().L("Wood Chopping");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"CHOP","CHOPPING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -49,8 +49,8 @@ public class Chopping extends GatheringSkill
 	public Chopping()
 	{
 		super();
-		displayText=_("You are looking for a good tree...");
-		verb=_("looking");
+		displayText=L("You are looking for a good tree...");
+		verb=L("looking");
 	}
 
 	protected int getDuration(MOB mob, int level)
@@ -69,19 +69,19 @@ public class Chopping extends GatheringSkill
 			{
 				if(found!=null)
 				{
-					commonTell(mob,_("You have a good tree for @x1.",foundShortName));
-					displayText=_("You are chopping up @x1",foundShortName);
-					verb=_("chopping @x1",foundShortName);
+					commonTell(mob,L("You have a good tree for @x1.",foundShortName));
+					displayText=L("You are chopping up @x1",foundShortName);
+					verb=L("chopping @x1",foundShortName);
 					playSound="chopping.wav";
 				}
 				else
 				{
-					final StringBuffer str=new StringBuffer(_("You can't seem to find any trees worth cutting around here.\n\r"));
+					final StringBuffer str=new StringBuffer(L("You can't seem to find any trees worth cutting around here.\n\r"));
 					final int d=lookingFor(RawMaterial.MATERIAL_WOODEN,mob.location());
 					if(d<0)
-						str.append(_("You might try elsewhere."));
+						str.append(L("You might try elsewhere."));
 					else
-						str.append(_("You might try @x1.",Directions.getInDirectionName(d)));
+						str.append(L("You might try @x1.",Directions.getInDirectionName(d)));
 					commonTell(mob,str.toString());
 					unInvoke();
 				}
@@ -104,7 +104,7 @@ public class Chopping extends GatheringSkill
 					final int amount=CMLib.dice().roll(1,7,3)*(abilityCode());
 					String s="s";
 					if(amount==1) s="";
-					mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> manage(s) to chop up @x1 pound@x2 of @x3.",""+amount,s,foundShortName));
+					mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to chop up @x1 pound@x2 of @x3.",""+amount,s,foundShortName));
 					for(int i=0;i<amount;i++)
 					{
 						final Item newFound=(Item)found.copyOf();
@@ -134,12 +134,12 @@ public class Chopping extends GatheringSkill
 			return false;
 		}
 
-		verb=_("chopping");
+		verb=L("chopping");
 		playSound=null;
 		found=null;
 		if(!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_WOODEN,mob.location()))
 		{
-			commonTell(mob,_("You can't find anything to chop here."));
+			commonTell(mob,L("You can't find anything to chop here."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -154,7 +154,7 @@ public class Chopping extends GatheringSkill
 				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		}
 		final int duration=getDuration(mob,1);
-		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),_("<S-NAME> start(s) looking for a good tree to chop."));
+		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),L("<S-NAME> start(s) looking for a good tree to chop."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

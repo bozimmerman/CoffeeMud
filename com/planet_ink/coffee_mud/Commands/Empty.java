@@ -49,7 +49,7 @@ public class Empty extends Drop
 		final Vector V=new Vector();
 		if(commands.size()<2)
 		{
-			mob.tell(_("Empty what where?"));
+			mob.tell(L("Empty what where?"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -87,7 +87,7 @@ public class Empty extends Drop
 
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("Empty it where?"));
+			mob.tell(L("Empty it where?"));
 			return false;
 		}
 
@@ -124,7 +124,7 @@ public class Empty extends Drop
 				{
 					if((!dropThis.amWearingAt(Wearable.WORN_HELD))&&(!dropThis.amWearingAt(Wearable.WORN_WIELD)))
 					{
-						mob.tell(_("You must remove that first."));
+						mob.tell(L("You must remove that first."));
 						return false;
 					}
 					final CMMsg newMsg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
@@ -144,7 +144,7 @@ public class Empty extends Drop
 			addendumStr="."+(++addendum);
 		}
 
-		String str=_("<S-NAME> empt(ys) <T-NAME>");
+		String str=L("<S-NAME> empt(ys) <T-NAME>");
 		if(target instanceof Room) str+=" here.";
 		else
 		if(target instanceof MOB) str+=".";
@@ -152,21 +152,21 @@ public class Empty extends Drop
 
 		if((V.size()==0)&&(drink!=null))
 		{
-			mob.tell(_("@x1 must be POURed out.",drink.name()));
+			mob.tell(L("@x1 must be POURed out.",drink.name()));
 			return false;
 		}
 
 		if(V.size()==0)
-			mob.tell(_("You don't seem to be carrying that."));
+			mob.tell(L("You don't seem to be carrying that."));
 		else
 		if((V.size()==1)&&(V.firstElement()==target))
-			mob.tell(_("You can't empty something into itself!"));
+			mob.tell(L("You can't empty something into itself!"));
 		else
 		if((V.size()==1)
 		&&(V.firstElement() instanceof Drink)
 		&&(!((Drink)V.firstElement()).containsDrink())
 		)
-			mob.tell(mob,(Drink)V.firstElement(),null,_("<T-NAME> is already empty."));
+			mob.tell(mob,(Drink)V.firstElement(),null,L("<T-NAME> is already empty."));
 		else
 		for(int v=0;v<V.size();v++)
 		{

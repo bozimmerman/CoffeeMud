@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_Worms extends Chant implements DiseaseAffect
 {
 	@Override public String ID() { return "Chant_Worms"; }
-	private final static String localizedName = CMLib.lang()._("Worms");
+	private final static String localizedName = CMLib.lang().L("Worms");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Worms)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Worms)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -98,7 +98,7 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
 				spreadImmunity(mob);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> worms disease is cured."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> worms disease is cured."));
 			}
 	}
 
@@ -119,7 +119,7 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":_("^S<S-NAME> chant(s) at <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":L("^S<S-NAME> chant(s) at <T-NAMESELF>!^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_DISEASE,null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
@@ -129,14 +129,14 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 				{
 					invoker=mob;
 					maliciousAffect(mob,target,asLevel,688,-1);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> feel(s) very sick in the stomach!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) very sick in the stomach!"));
 				}
 				else
 					spreadImmunity(target);
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

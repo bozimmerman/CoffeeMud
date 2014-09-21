@@ -48,7 +48,7 @@ public class ClanAssign extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(_("You must specify the members name, and a new role."));
+			mob.tell(L("You must specify the members name, and a new role."));
 			return false;
 		}
 		String memberStr=(commands.size()>2)?(String)commands.get(commands.size()-2):"";
@@ -75,7 +75,7 @@ public class ClanAssign extends StdCommand
 		{
 			if(C==null)
 			{
-				mob.tell(_("You aren't allowed to assign anyone from @x1.",((clanName.length()==0)?"anything":clanName)));
+				mob.tell(L("You aren't allowed to assign anyone from @x1.",((clanName.length()==0)?"anything":clanName)));
 				return false;
 			}
 			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.ASSIGN,false))
@@ -83,13 +83,13 @@ public class ClanAssign extends StdCommand
 				final List<MemberRecord> members=C.getMemberList();
 				if(members.size()<1)
 				{
-					mob.tell(_("There are no members in your @x1",C.getGovernmentName()));
+					mob.tell(L("There are no members in your @x1",C.getGovernmentName()));
 					return false;
 				}
 				final int newPos=C.getRoleFromName(pos);
 				if(newPos<0)
 				{
-					mob.tell(_("'@x1' is not a valid role.",pos));
+					mob.tell(L("'@x1' is not a valid role.",pos));
 					return false;
 				}
 				memberStr=CMStrings.capitalizeAndLower(memberStr);
@@ -106,12 +106,12 @@ public class ClanAssign extends StdCommand
 					final Pair<Clan,Integer> oldRole=(M!=null)?M.getClanRole(C.clanID()):null;
 					if((M==null)||(oldRole==null))
 					{
-						mob.tell(_("@x1 was not found.  Could not change @x2 role.",memberStr,C.getGovernmentName()));
+						mob.tell(L("@x1 was not found.  Could not change @x2 role.",memberStr,C.getGovernmentName()));
 						return false;
 					}
 					if(!C.canBeAssigned(M, newPos))
 					{
-						mob.tell(_("@x1 may not be assigned to @x2.",M.name(mob),C.getRoleName(newPos,true,false)));
+						mob.tell(L("@x1 may not be assigned to @x2.",M.name(mob),C.getRoleName(newPos,true,false)));
 						return false;
 					}
 					if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.ASSIGN,true))
@@ -133,7 +133,7 @@ public class ClanAssign extends StdCommand
 										numMembers++;
 							if(numMembers==0)
 							{
-								mob.tell(_("@x1 is the last @x2 and must be replaced before being reassigned.",M.Name(),C.getRoleName(oldPos,true,false)));
+								mob.tell(L("@x1 is the last @x2 and must be replaced before being reassigned.",M.Name(),C.getRoleName(oldPos,true,false)));
 								return false;
 							}
 						}
@@ -144,7 +144,7 @@ public class ClanAssign extends StdCommand
 							{
 								final String s=(String)currentMembersInNewPosV.elementAt(0);
 								currentMembersInNewPosV.removeElementAt(0);
-								CMLib.clans().clanAnnounce(mob,_(" @x1 of the @x2 @x3 is now a @x4.",s,C.getGovernmentName(),C.clanID(),C.getRoleName(C.getGovernment().getAcceptPos(),true,false)));
+								CMLib.clans().clanAnnounce(mob,L(" @x1 of the @x2 @x3 is now a @x4.",s,C.getGovernmentName(),C.clanID(),C.getRoleName(C.getGovernment().getAcceptPos(),true,false)));
 								final MOB M2=CMLib.players().getPlayer(s);
 								if(M2!=null) M2.setClan(C.clanID(),C.getGovernment().getAcceptPos());
 								CMLib.database().DBUpdateClanMembership(s, C.clanID(), C.getGovernment().getAcceptPos());
@@ -152,27 +152,27 @@ public class ClanAssign extends StdCommand
 							}
 						}
 						// finally, promote
-						CMLib.clans().clanAnnounce(mob,_("@x1 of the @x2 @x3 changed from @x4 to @x5.",M.name(),C.getGovernmentName(),C.clanID(),C.getRoleName(oldRole.second.intValue(),true,false),C.getRoleName(newPos,true,false)));
+						CMLib.clans().clanAnnounce(mob,L("@x1 of the @x2 @x3 changed from @x4 to @x5.",M.name(),C.getGovernmentName(),C.clanID(),C.getRoleName(oldRole.second.intValue(),true,false),C.getRoleName(newPos,true,false)));
 						C.addMember(M,newPos);
-						mob.tell(_("@x1 of the @x2 @x3 has been assigned to be @x4. ",M.Name(),C.getGovernmentName(),C.clanID(),CMLib.english().startWithAorAn(C.getRoleName(newPos,false,false))));
+						mob.tell(L("@x1 of the @x2 @x3 has been assigned to be @x4. ",M.Name(),C.getGovernmentName(),C.clanID(),CMLib.english().startWithAorAn(C.getRoleName(newPos,false,false))));
 						if((M.session()!=null)&&(M.session().mob()==M))
-							M.tell(_("You have been assigned to be @x1 of @x2 @x3.",CMLib.english().startWithAorAn(C.getRoleName(newPos,false,false)),C.getGovernmentName(),C.clanID()));
+							M.tell(L("You have been assigned to be @x1 of @x2 @x3.",CMLib.english().startWithAorAn(C.getRoleName(newPos,false,false)),C.getGovernmentName(),C.clanID()));
 						return false;
 					}
 				}
 				else
 				{
-					msg.append(_("@x1 isn't a member of your @x2.",memberStr,C.getGovernmentName()));
+					msg.append(L("@x1 isn't a member of your @x2.",memberStr,C.getGovernmentName()));
 				}
 			}
 			else
 			{
-				msg.append(_("You aren't in the right position to assign anyone in your @x1.",C.getGovernmentName()));
+				msg.append(L("You aren't in the right position to assign anyone in your @x1.",C.getGovernmentName()));
 			}
 		}
 		else
 		{
-			msg.append(_("You haven't specified which member you are assigning a new role to."));
+			msg.append(L("You haven't specified which member you are assigning a new role to."));
 		}
 		mob.tell(msg.toString());
 		return false;

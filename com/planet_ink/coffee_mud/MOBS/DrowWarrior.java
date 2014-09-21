@@ -232,7 +232,7 @@ public class DrowWarrior extends DrowElf
 		{
 			if(CMLib.dice().rollPercentage() <= magicResistance)
 			{
-				msg.source().tell(_("The drow warrior resisted your spell!"));
+				msg.source().tell(L("The drow warrior resisted your spell!"));
 				return false;
 			}
 		}
@@ -271,7 +271,7 @@ public class DrowWarrior extends DrowElf
 	{
 		if(CMLib.flags().isSitting(this))
 			phyStats().setDisposition(CMath.unsetb(phyStats().disposition(),PhyStats.IS_SITTING|PhyStats.IS_CUSTOM));
-		this.location().show(this, null, CMMsg.MSG_NOISYMOVEMENT, _("<S-NAME> stand(s) up, ready for more combat."));
+		this.location().show(this, null, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> stand(s) up, ready for more combat."));
 
 		return true;
 	}

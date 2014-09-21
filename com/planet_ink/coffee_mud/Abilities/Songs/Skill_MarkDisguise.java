@@ -37,7 +37,7 @@ import java.util.*;
 public class Skill_MarkDisguise extends Skill_Disguise
 {
 	@Override public String ID() { return "Skill_MarkDisguise"; }
-	private final static String localizedName = CMLib.lang()._("Mark Disguise");
+	private final static String localizedName = CMLib.lang().L("Mark Disguise");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"MARKDISGUISE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -66,7 +66,7 @@ public class Skill_MarkDisguise extends Skill_Disguise
 		if(A!=null)
 		{
 			A.unInvoke();
-			mob.tell(_("You remove your disguise."));
+			mob.tell(L("You remove your disguise."));
 			return true;
 		}
 		MOB target=getMark(mob);
@@ -75,12 +75,12 @@ public class Skill_MarkDisguise extends Skill_Disguise
 
 		if(target==null)
 		{
-			mob.tell(_("You need to have marked someone before you can disguise yourself as him or her."));
+			mob.tell(L("You need to have marked someone before you can disguise yourself as him or her."));
 			return false;
 		}
 		if(target.charStats().getClassLevel("Archon")>=0)
 		{
-			mob.tell(_("You may not disguise yourself as an Archon."));
+			mob.tell(L("You may not disguise yourself as an Archon."));
 			return false;
 		}
 
@@ -89,7 +89,7 @@ public class Skill_MarkDisguise extends Skill_Disguise
 		{
 			if(target==getMark(mob))
 			{
-				mob.tell(_("You'll need to observe your mark a little longer (@x1/15 ticks) before you can get the disguise right.",""+ticksWaited));
+				mob.tell(L("You'll need to observe your mark a little longer (@x1/15 ticks) before you can get the disguise right.",""+ticksWaited));
 				return false;
 			}
 		}
@@ -103,7 +103,7 @@ public class Skill_MarkDisguise extends Skill_Disguise
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob,null,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),_("<S-NAME> turn(s) away for a second."));
+			final CMMsg msg=CMClass.getMsg(mob,mob,null,CMMsg.MSG_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),L("<S-NAME> turn(s) away for a second."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -129,7 +129,7 @@ public class Skill_MarkDisguise extends Skill_Disguise
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,_("<S-NAME> turn(s) away and then back, but look(s) the same."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> turn(s) away and then back, but look(s) the same."));
 		return success;
 	}
 

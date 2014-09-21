@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_WallOfFire extends Spell
 {
 	@Override public String ID() { return "Spell_WallOfFire"; }
-	private final static String localizedName = CMLib.lang()._("Wall of Fire");
+	private final static String localizedName = CMLib.lang().L("Wall of Fire");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Wall of Fire)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Wall of Fire)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
 	@Override public int minRange(){return 1;}
@@ -111,7 +111,7 @@ public class Spell_WallOfFire extends Spell
 	{
 		if((!mob.isInCombat())||(mob.rangeToTarget()<1))
 		{
-			mob.tell(_("You really should be in ranged combat to cast this."));
+			mob.tell(L("You really should be in ranged combat to cast this."));
 			return false;
 		}
 		for(int i=0;i<mob.location().numItems();i++)
@@ -119,7 +119,7 @@ public class Spell_WallOfFire extends Spell
 			final Item I=mob.location().getItem(i);
 			if((I!=null)&&(I.fetchEffect(ID())!=null))
 			{
-				mob.tell(_("There is already a wall of fire here."));
+				mob.tell(L("There is already a wall of fire here."));
 				return false;
 			}
 		}
@@ -143,14 +143,14 @@ public class Spell_WallOfFire extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),_(auto?"A blazing wall of fire appears!":"^S<S-NAME> conjur(s) up a blazing wall of fire!^?")+CMLib.protocol().msp("fireball.wav",10));
+			final CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),L(auto?"A blazing wall of fire appears!":"^S<S-NAME> conjur(s) up a blazing wall of fire!^?")+CMLib.protocol().msp("fireball.wav",10));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final Item I=CMClass.getItem("GenItem");
-				I.setName(_("a wall of fire"));
-				I.setDisplayText(_("a blazing wall of fire is burning here"));
-				I.setDescription(_("The flames are high and hot."));
+				I.setName(L("a wall of fire"));
+				I.setDisplayText(L("a blazing wall of fire is burning here"));
+				I.setDescription(L("The flames are high and hot."));
 				I.setMaterial(RawMaterial.RESOURCE_NOTHING);
 				I.basePhyStats().setDisposition(I.basePhyStats().disposition()|PhyStats.IS_LIGHTSOURCE);
 				CMLib.flags().setGettable(I,false);
@@ -162,7 +162,7 @@ public class Spell_WallOfFire extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> incant(s), but the magic fizzles."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> incant(s), but the magic fizzles."));
 
 		// return whether it worked
 		return success;

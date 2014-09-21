@@ -41,7 +41,7 @@ import java.util.*;
 public class PaperMaking extends CraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "PaperMaking"; }
-	private final static String localizedName = CMLib.lang()._("Paper Making");
+	private final static String localizedName = CMLib.lang().L("Paper Making");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"PAPERMAKE","PAPERMAKING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -89,7 +89,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonTell(mob,_("<S-NAME> mess(es) up making @x1.",buildingI.name(mob)));
+						commonTell(mob,L("<S-NAME> mess(es) up making @x1.",buildingI.name(mob)));
 					else
 						dropAWinner(mob,buildingI);
 				}
@@ -119,7 +119,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,_("Papermake what? Enter \"papermake list\" for a list, or \"papermake stop\" to cancel."));
+			commonTell(mob,L("Papermake what? Enter \"papermake list\" for a list, or \"papermake stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -148,7 +148,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 					ListingLibrary.ColFixer.fixColWidth(22,mob.session()),
 					ListingLibrary.ColFixer.fixColWidth(3,mob.session())
 				};
-			final StringBuffer buf=new StringBuffer(_("@x1 @x2 Material required\n\r",CMStrings.padRight(_("Item"),cols[0]),CMStrings.padRight(_("Lvl"),cols[1])));
+			final StringBuffer buf=new StringBuffer(L("@x1 @x2 Material required\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1])));
 			for(int r=0;r<recipes.size();r++)
 			{
 				final List<String> V=recipes.get(r);
@@ -205,7 +205,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 
 		if(foundRecipe==null)
 		{
-			commonTell(mob,_("You don't know how to make a '@x1'.  Try \"make list\" for a list.",recipeName));
+			commonTell(mob,L("You don't know how to make a '@x1'.  Try \"make list\" for a list.",recipeName));
 			return false;
 		}
 
@@ -233,7 +233,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 			final Physical target=givenTarget;
 			session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 			{
-				@Override public void showPrompt() {session.promptPrint(_("What is this of?\n\r: "));}
+				@Override public void showPrompt() {session.promptPrint(L("What is this of?\n\r: "));}
 				@Override public void timedOut() {}
 				@Override public void callBack()
 				{
@@ -259,18 +259,18 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 		if(buildingI==null)
 		{
-			commonTell(mob,_("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
+			commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
 			return false;
 		}
 		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
 		String itemName=foundRecipe.get(RCP_FINALNAME).toLowerCase();
 		itemName=CMLib.english().startWithAorAn(itemName);
 		buildingI.setName(itemName);
-		startStr=_("<S-NAME> start(s) making @x1.",buildingI.name());
-		displayText=_("You are making @x1",buildingI.name());
-		verb=_("making @x1",buildingI.name());
+		startStr=L("<S-NAME> start(s) making @x1.",buildingI.name());
+		displayText=L("You are making @x1",buildingI.name());
+		verb=L("making @x1",buildingI.name());
 		playSound="crumple.wav";
-		buildingI.setDisplayText(_("@x1 lies here",itemName));
+		buildingI.setDisplayText(L("@x1 lies here",itemName));
 		buildingI.setDescription(itemName+". ");
 		buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
@@ -300,11 +300,11 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 			}
 			else
 			{
-				buildingI.setName(_("@x1 of @x2",itemName,statue.trim()));
-				buildingI.setDisplayText(_("@x1 of @x2 is here",itemName,statue.trim()));
-				buildingI.setDescription(_("@x1 of @x2. ",itemName,statue.trim()));
+				buildingI.setName(L("@x1 of @x2",itemName,statue.trim()));
+				buildingI.setDisplayText(L("@x1 of @x2 is here",itemName,statue.trim()));
+				buildingI.setDescription(L("@x1 of @x2. ",itemName,statue.trim()));
 			}
-			verb=_("making @x1",buildingI.name());
+			verb=L("making @x1",buildingI.name());
 		}
 
 		messedUp=!proficiencyCheck(mob,0,auto);

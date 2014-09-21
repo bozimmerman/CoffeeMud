@@ -70,9 +70,9 @@ public class Load extends StdCommand
 		if(commands.size()<3)
 		{
 			if(tryArchon)
-				mob.tell(_("LOAD what? Try @x1 [CLASSNAME]",CMParms.toStringList(ARCHON_LIST)));
+				mob.tell(L("LOAD what? Try @x1 [CLASSNAME]",CMParms.toStringList(ARCHON_LIST)));
 			else
-				mob.tell(_("Load what where?"));
+				mob.tell(L("Load what where?"));
 			return false;
 		}
 		String what=(String)commands.elementAt(1);
@@ -100,10 +100,10 @@ public class Load extends StdCommand
 				}
 			}
 			if(baseAmmoItems.size()==0)
-				mob.tell(_("You don't seem to have any ammunition like that."));
+				mob.tell(L("You don't seem to have any ammunition like that."));
 			else
 			if((ammos.size()==0)&&(!what.equalsIgnoreCase("all")))
-				mob.tell(_("You can't seem to use that as ammunition."));
+				mob.tell(L("You can't seem to use that as ammunition."));
 			else
 			{
 				commands.removeElementAt(0);
@@ -116,23 +116,23 @@ public class Load extends StdCommand
 				}
 				boolean doneOne=false;
 				if(baseItems.size()==0)
-					mob.tell(_("You don't seem to have that."));
+					mob.tell(L("You don't seem to have that."));
 				else
 				if(items.size()==0)
-					mob.tell(_("You can't seem to load that."));
+					mob.tell(L("You can't seem to load that."));
 				else
 				for(final AmmunitionWeapon W : items)
 				{
 					Ammunition ammunition = getNextAmmunition(W.ammunitionType(),ammos);
 					if(ammunition==null)
 					{
-						mob.tell(_("You are all out of @x1.",W.ammunitionType()));
+						mob.tell(L("You are all out of @x1.",W.ammunitionType()));
 					}
 					else
 					while((ammunition != null)
 					&&((W.ammunitionRemaining() < W.ammunitionCapacity())||(!doneOne)))
 					{
-						final CMMsg newMsg=CMClass.getMsg(mob,W,ammunition,CMMsg.MSG_RELOAD,_("<S-NAME> reload(s) <T-NAME> with <O-NAME>."));
+						final CMMsg newMsg=CMClass.getMsg(mob,W,ammunition,CMMsg.MSG_RELOAD,L("<S-NAME> reload(s) <T-NAME> with <O-NAME>."));
 						if(mob.location().okMessage(mob,newMsg))
 						{
 							doneOne=true;
@@ -152,9 +152,9 @@ public class Load extends StdCommand
 			{
 				final Faction F=CMLib.factions().getFaction(name);
 				if(F==null)
-					mob.tell(_("Faction file '@x1' was not found.",name));
+					mob.tell(L("Faction file '@x1' was not found.",name));
 				else
-					mob.tell(_("Faction '@x1' from file '@x2' was loaded.",F.name(),name));
+					mob.tell(L("Faction '@x1' from file '@x2' was loaded.",F.name(),name));
 				return false;
 			}
 			else
@@ -162,14 +162,14 @@ public class Load extends StdCommand
 			{
 				final CMFile F=new CMFile(name,mob,CMFile.FLAG_LOGERRORS);
 				if((!F.exists())||(!F.canRead()))
-					mob.tell(_("File '@x1' could not be accessed.",name));
+					mob.tell(L("File '@x1' could not be accessed.",name));
 				else
 				{
 					final StringBuffer buf=Resources.getFileResource(name,true); // enforces its own security
 					if((buf==null)||(buf.length()==0))
-						mob.tell(_("Resource '@x1' was not found.",name));
+						mob.tell(L("Resource '@x1' was not found.",name));
 					else
-						mob.tell(_("Resource '@x1' was loaded.",name));
+						mob.tell(L("Resource '@x1' was loaded.",name));
 				}
 			}
 			else
@@ -194,7 +194,7 @@ public class Load extends StdCommand
 						final PrintWriter pout=new PrintWriter(new OutputStreamWriter(bout));
 						if(CO==null)
 						{
-							mob.tell(_("Unable to instantiate compiler.  You might try including your Java JDK's lib/tools.jar in your classpath next time you boot the mud."));
+							mob.tell(L("Unable to instantiate compiler.  You might try including your Java JDK's lib/tools.jar in your classpath next time you boot the mud."));
 							return false;
 						}
 						final String[] args=new String[]{name};
@@ -204,7 +204,7 @@ public class Load extends StdCommand
 							final Object returnVal=M.invoke(CO,new Object[]{args,pout});
 							if((returnVal instanceof Integer)&&(((Integer)returnVal).intValue()!=0))
 							{
-								mob.tell(_("Compile failed:"));
+								mob.tell(L("Compile failed:"));
 								if(mob.session()!=null)
 									mob.session().rawOut(bout.toString());
 								return false;
@@ -230,17 +230,17 @@ public class Load extends StdCommand
 					}
 					final CMObjectType whatType=CMClass.findObjectType(what);
 					if(whatType==null)
-						mob.tell(_("Don't know how to load a '@x1'.  Try one of the following: @x2",what,CMParms.toStringList(ARCHON_LIST)));
+						mob.tell(L("Don't know how to load a '@x1'.  Try one of the following: @x2",what,CMParms.toStringList(ARCHON_LIST)));
 					else
 					{
 						final Object O=CMClass.getObjectOrPrototype(unloadClassName);
 						if((O instanceof CMObject)
 						&&(name.toUpperCase().endsWith(".CLASS"))
 						&&(CMClass.delClass(whatType,(CMObject)O)))
-							mob.tell(_("@x1 was unloaded.",unloadClassName));
+							mob.tell(L("@x1 was unloaded.",unloadClassName));
 						if(CMClass.loadClass(whatType,name,false))
 						{
-							mob.tell(_("@x1 @x2 was successfully loaded.",CMStrings.capitalizeAndLower(what),name));
+							mob.tell(L("@x1 @x2 was successfully loaded.",CMStrings.capitalizeAndLower(what),name));
 							return true;
 						}
 					}
@@ -253,7 +253,7 @@ public class Load extends StdCommand
 				{
 					Log.errOut("Load",t.getClass().getName()+": "+t.getMessage());
 				}
-				mob.tell(_("@x1 @x2 was not loaded.",CMStrings.capitalizeAndLower(what),name));
+				mob.tell(L("@x1 @x2 was not loaded.",CMStrings.capitalizeAndLower(what),name));
 			}
 		}
 		return false;

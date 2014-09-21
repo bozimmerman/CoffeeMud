@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_PlantMaze extends Chant
 {
 	@Override public String ID() { return "Chant_PlantMaze"; }
-	private final static String localizedName = CMLib.lang()._("Plant Maze");
+	private final static String localizedName = CMLib.lang().L("Plant Maze");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Plant Maze)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Plant Maze)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -114,13 +114,13 @@ public class Chant_PlantMaze extends Chant
 		thePlants=Druid_MyPlants.myPlant(mob.location(),mob,0);
 		if(thePlants==null)
 		{
-			mob.tell(_("There doesn't appear to be any plants here you can control!"));
+			mob.tell(L("There doesn't appear to be any plants here you can control!"));
 			return false;
 		}
 
 		if(mob.location().roomID().length()==0)
 		{
-			mob.tell(_("You cannot invoke the plant maze here."));
+			mob.tell(L("You cannot invoke the plant maze here."));
 			return false;
 		}
 
@@ -140,11 +140,11 @@ public class Chant_PlantMaze extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto), auto?"":_("^S<S-NAME> chant(s) amazingly!^?"));
+			final CMMsg msg = CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto), auto?"":L("^S<S-NAME> chant(s) amazingly!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("Something is happening..."));
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("Something is happening..."));
 
 				final Room newRoom=CMClass.getLocale("WoodsMaze");
 				((GridLocale)newRoom).setXGridSize(10+super.getX1Level(invoker())+super.getXLEVELLevel(invoker()));
@@ -152,7 +152,7 @@ public class Chant_PlantMaze extends Chant
 				String s=CMParms.parse(thePlants.name()).lastElement().toLowerCase();
 				if(!s.endsWith("s"))s=s+"s";
 				final String nos=s.substring(0,s.length()-1).toLowerCase();
-				newRoom.setDisplayText(_("@x1 Maze",CMStrings.capitalizeAndLower(nos)));
+				newRoom.setDisplayText(L("@x1 Maze",CMStrings.capitalizeAndLower(nos)));
 				newRoom.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));
 				final StringBuffer desc=new StringBuffer("");
 				desc.append("This quaint glade is surrounded by tall "+s+".  A gentle breeze tosses leaves up into the air.");
@@ -201,8 +201,8 @@ public class Chant_PlantMaze extends Chant
 					final MOB follower=(MOB)everyone.elementAt(m);
 					if(follower==null) continue;
 					final Room newerRoom=((GridLocale)newRoom).getRandomGridChild();
-					final CMMsg enterMsg=CMClass.getMsg(follower,newerRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> appears out of @x1.",thePlants.name()));
-					final CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,verbalCastCode(mob,oldRoom,auto),_("<S-NAME> disappear(s) into @x1.",thePlants.name()));
+					final CMMsg enterMsg=CMClass.getMsg(follower,newerRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> appears out of @x1.",thePlants.name()));
+					final CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,verbalCastCode(mob,oldRoom,auto),L("<S-NAME> disappear(s) into @x1.",thePlants.name()));
 					if(oldRoom.okMessage(follower,leaveMsg)&&newerRoom.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())
@@ -210,14 +210,14 @@ public class Chant_PlantMaze extends Chant
 						oldRoom.send(follower,leaveMsg);
 						newerRoom.bringMobHere(follower,false);
 						newerRoom.send(follower,enterMsg);
-						follower.tell(_("\n\r\n\r"));
+						follower.tell(L("\n\r\n\r"));
 						CMLib.commands().postLook(follower,true);
 					}
 				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) amazingly, but the magic fades."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) amazingly, but the magic fades."));
 
 		// return whether it worked
 		return success;

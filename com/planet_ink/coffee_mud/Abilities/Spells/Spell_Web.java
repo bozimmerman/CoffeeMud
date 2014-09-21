@@ -35,9 +35,9 @@ import java.util.*;
 public class Spell_Web extends Spell
 {
 	@Override public String ID() { return "Spell_Web"; }
-	private final static String localizedName = CMLib.lang()._("Web");
+	private final static String localizedName = CMLib.lang().L("Web");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Webbed)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Webbed)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
 	@Override public int minRange(){return 1;}
@@ -72,7 +72,7 @@ public class Spell_Web extends Spell
 			&&((msg.sourceMajor(CMMsg.MASK_HANDS))
 			||(msg.sourceMajor(CMMsg.MASK_MOVE))))
 			{
-				if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> struggle(s) against the web.")))
+				if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> struggle(s) against the web.")))
 				{
 					amountRemaining-=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+mob.phyStats().level());
 					if(amountRemaining<0)
@@ -96,7 +96,7 @@ public class Spell_Web extends Spell
 		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
-				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> manage(s) to break <S-HIS-HER> way free of the web."));
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> manage(s) to break <S-HIS-HER> way free of the web."));
 			CMLib.commands().postStand(mob,true);
 		}
 	}
@@ -107,7 +107,7 @@ public class Spell_Web extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth webbing."));
+			mob.tell(L("There doesn't appear to be anyone here worth webbing."));
 			return false;
 		}
 
@@ -122,7 +122,7 @@ public class Spell_Web extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),_(auto?"":"^S<S-NAME> speak(s) and wave(s) <S-HIS-HER> arms.^?")+CMLib.protocol().msp("web.wav",40)))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"":"^S<S-NAME> speak(s) and wave(s) <S-HIS-HER> arms.^?")+CMLib.protocol().msp("web.wav",40)))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -141,14 +141,14 @@ public class Spell_Web extends Spell
 							if(target.location()==mob.location())
 							{
 								success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1);
-								target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> become(s) stuck in a mass of web!"));
+								target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> become(s) stuck in a mass of web!"));
 							}
 						}
 					}
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> speak(s) and wave(s) <S-HIS-HER> arms, but the spell fizzles."));
+			return maliciousFizzle(mob,null,L("<S-NAME> speak(s) and wave(s) <S-HIS-HER> arms, but the spell fizzles."));
 
 
 		// return whether it worked

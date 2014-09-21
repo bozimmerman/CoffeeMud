@@ -63,7 +63,7 @@ public class ClanVote extends StdCommand
 
 		if((C==null)||(clanRole==null))
 		{
-			mob.tell(_("You can't vote for anything in @x1.",((clanName.length()==0)?"any clan":clanName)));
+			mob.tell(L("You can't vote for anything in @x1.",((clanName.length()==0)?"any clan":clanName)));
 			return false;
 		}
 		else
@@ -82,10 +82,10 @@ public class ClanVote extends StdCommand
 			if(voteNumStr.length()==0)
 			{
 				if(votesForYou.size()==0)
-					msg.append(_("Your @x1 does not have anything up for your vote.",C.getGovernmentName()));
+					msg.append(L("Your @x1 does not have anything up for your vote.",C.getGovernmentName()));
 				else
 				{
-					msg.append(_(" @x1@x2Command to execute\n\r",CMStrings.padRight("#",3),CMStrings.padRight(_("Status"),15)));
+					msg.append(L(" @x1@x2Command to execute\n\r",CMStrings.padRight("#",3),CMStrings.padRight(L("Status"),15)));
 					for(int v=0;v<votesForYou.size();v++)
 					{
 						final Clan.ClanVote CV=(Clan.ClanVote)votesForYou.elementAt(v);
@@ -96,7 +96,7 @@ public class ClanVote extends StdCommand
 								  +CMStrings.padRight(((CV.voteStatus==Clan.VSTAT_STARTED)?(votesCast+" votes cast"):(Clan.VSTAT_DESCS[CV.voteStatus])),15)
 								  +CMStrings.padRight(CV.matter,55)+"\n\r");
 					}
-					msg.append(_("\n\rEnter CLANVOTE [#] to see details or place your vote."));
+					msg.append(L("\n\rEnter CLANVOTE [#] to see details or place your vote."));
 				}
 			}
 			else
@@ -106,7 +106,7 @@ public class ClanVote extends StdCommand
 				if((which>=0)&&(which<votesForYou.size()))
 					CV=(Clan.ClanVote)votesForYou.elementAt(which);
 				if(CV==null)
-					msg.append(_("That vote does not exist.  Use CLANVOTE to see a list."));
+					msg.append(L("That vote does not exist.  Use CLANVOTE to see a list."));
 				else
 				{
 					int yeas=0;
@@ -122,25 +122,25 @@ public class ClanVote extends StdCommand
 							else
 								nays++;
 						}
-					msg.append(_("Vote       : @x1\n\r",""+(which+1)));
-					msg.append(_("Started by : @x1\n\r",CV.voteStarter));
+					msg.append(L("Vote       : @x1\n\r",""+(which+1)));
+					msg.append(L("Started by : @x1\n\r",CV.voteStarter));
 					if(CV.voteStatus==Clan.VSTAT_STARTED)
-						msg.append(_("Started on : @x1\n\r",CMLib.time().date2String(CV.voteStarted)));
+						msg.append(L("Started on : @x1\n\r",CMLib.time().date2String(CV.voteStarted)));
 					else
-						msg.append(_("Ended on   : @x1\n\r",CMLib.time().date2String(CV.voteStarted)));
-					msg.append(_("Status     : @x1\n\r",Clan.VSTAT_DESCS[CV.voteStatus]));
+						msg.append(L("Ended on   : @x1\n\r",CMLib.time().date2String(CV.voteStarted)));
+					msg.append(L("Status     : @x1\n\r",Clan.VSTAT_DESCS[CV.voteStatus]));
 					switch(CV.voteStatus)
 					{
 					case Clan.VSTAT_STARTED:
-						msg.append(_("If passed, the following command would be executed:\n\r"));
+						msg.append(L("If passed, the following command would be executed:\n\r"));
 						break;
 					case Clan.VSTAT_PASSED:
-						msg.append(_("Results    : @x1 Yeas, @x2 Nays\n\r",""+yeas,""+nays));
-						msg.append(_("The following command has been executed:\n\r"));
+						msg.append(L("Results    : @x1 Yeas, @x2 Nays\n\r",""+yeas,""+nays));
+						msg.append(L("The following command has been executed:\n\r"));
 						break;
 					case Clan.VSTAT_FAILED:
-						msg.append(_("Results    : @x1 Yeas, @x2 Nays\n\r",""+yeas,""+nays));
-						msg.append(_("The following command will not be executed:\n\r"));
+						msg.append(L("Results    : @x1 Yeas, @x2 Nays\n\r",""+yeas,""+nays));
+						msg.append(L("The following command will not be executed:\n\r"));
 						break;
 					}
 					msg.append(CV.matter+"\n\r");
@@ -163,29 +163,29 @@ public class ClanVote extends StdCommand
 						boolean updateVote=false;
 						if((prompt.length()>0)&&(mob.session()!=null))
 						{
-							final String answer=mob.session().choose(_("Choices: @x1or ENTER @x2: ",prompt.toString(),enterWhat),choices,"");
+							final String answer=mob.session().choose(L("Choices: @x1or ENTER @x2: ",prompt.toString(),enterWhat),choices,"");
 							if(answer.length()>0)
 							switch(answer.toUpperCase().charAt(0))
 							{
 							case 'Y':
-								msg.append(_("Your YEA vote is recorded."));
+								msg.append(L("Your YEA vote is recorded."));
 								CV.votes.addElement(mob.Name(),Boolean.TRUE);
 								updateVote=true;
 								yeas++;
 								break;
 							case 'N':
 								CV.votes.addElement(mob.Name(),Boolean.FALSE);
-								msg.append(_("Your NAY vote is recorded."));
+								msg.append(L("Your NAY vote is recorded."));
 								updateVote=true;
 								nays++;
 								break;
 							case 'C':
 								if((mob.session()!=null)
-								&&(mob.session().confirm(_("This will cancel this entire vote, are you sure (N/y)?"),_("N"))))
+								&&(mob.session().confirm(L("This will cancel this entire vote, are you sure (N/y)?"),L("N"))))
 								{
 									C.delVote(CV);
-									CMLib.clans().clanAnnounce(mob,_("A prior vote for @x1 @x2 has been deleted.",C.getGovernmentName(),C.clanID()));
-									msg.append(_("The vote has been deleted."));
+									CMLib.clans().clanAnnounce(mob,L("A prior vote for @x1 @x2 has been deleted.",C.getGovernmentName(),C.clanID()));
+									msg.append(L("The vote has been deleted."));
 									updateVote=true;
 								}
 								break;

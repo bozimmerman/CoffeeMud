@@ -55,9 +55,9 @@ public class Prop_LocationBound extends Property
 			if(text().length()==0)
 			{
 				if(affected instanceof MOB)
-					msg.source().tell(_("You are not allowed to leave this place."));
+					msg.source().tell(L("You are not allowed to leave this place."));
 				else
-					msg.source().tell(_("@x1 prevents you from taking it that way.",affected.name()));
+					msg.source().tell(L("@x1 prevents you from taking it that way.",affected.name()));
 				return false;
 			}
 			else
@@ -66,9 +66,9 @@ public class Prop_LocationBound extends Property
 				if(whereTo!=R)
 				{
 					if(affected instanceof MOB)
-						msg.source().tell(_("You are not allowed to leave this place."));
+						msg.source().tell(L("You are not allowed to leave this place."));
 					else
-						msg.source().tell(_("@x1 prevents you from taking it that way.",affected.name()));
+						msg.source().tell(L("@x1 prevents you from taking it that way.",affected.name()));
 					return false;
 				}
 			}
@@ -78,9 +78,9 @@ public class Prop_LocationBound extends Property
 				if(whereTo.getArea()!=R.getArea())
 				{
 					if(affected instanceof MOB)
-						msg.source().tell(_("You are not allowed to leave this place."));
+						msg.source().tell(L("You are not allowed to leave this place."));
 					else
-						msg.source().tell(_("@x1 prevents you from taking it that way.",affected.name()));
+						msg.source().tell(L("@x1 prevents you from taking it that way.",affected.name()));
 					return false;
 				}
 			}
@@ -93,12 +93,12 @@ public class Prop_LocationBound extends Property
 					{
 						if(affected instanceof MOB)
 						{
-							msg.source().tell(_("You are whisked back home!"));
+							msg.source().tell(L("You are whisked back home!"));
 							tR.bringMobHere((MOB)affected,false);
 						}
 						else
 						{
-							msg.source().tell(_("@x1 is whisked from you and back to its home.",affected.name()));
+							msg.source().tell(L("@x1 is whisked from you and back to its home.",affected.name()));
 							tR.moveItemTo((Item)affected);
 							return true;
 						}
@@ -106,9 +106,9 @@ public class Prop_LocationBound extends Property
 					else
 					{
 						if(affected instanceof MOB)
-							msg.source().tell(_("You are not allowed to leave this place."));
+							msg.source().tell(L("You are not allowed to leave this place."));
 						else
-							msg.source().tell(_("@x1 prevents you from taking it that way.",affected.name()));
+							msg.source().tell(L("@x1 prevents you from taking it that way.",affected.name()));
 					}
 					return false;
 				}
@@ -119,12 +119,12 @@ public class Prop_LocationBound extends Property
 					{
 						if(affected instanceof MOB)
 						{
-							msg.source().tell(_("You are whisked back home!"));
+							msg.source().tell(L("You are whisked back home!"));
 							A.getRandomMetroRoom().bringMobHere((MOB)affected,false);
 						}
 						else
 						{
-							msg.source().tell(_("@x1 is whisked from you and back to its home.",affected.name()));
+							msg.source().tell(L("@x1 is whisked from you and back to its home.",affected.name()));
 							A.getRandomMetroRoom().moveItemTo((Item)affected);
 							return true;
 						}
@@ -132,9 +132,9 @@ public class Prop_LocationBound extends Property
 					else
 					{
 						if(affected instanceof MOB)
-							msg.source().tell(_("You are not allowed to leave this place."));
+							msg.source().tell(L("You are not allowed to leave this place."));
 						else
-							msg.source().tell(_("@x1 prevents you from taking it that way.",affected.name()));
+							msg.source().tell(L("@x1 prevents you from taking it that way.",affected.name()));
 					}
 					return false;
 				}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_WarpWood extends Chant
 {
 	@Override public String ID() { return "Chant_WarpWood"; }
-	private final static String localizedName = CMLib.lang()._("Warp Wood");
+	private final static String localizedName = CMLib.lang().L("Warp Wood");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -99,7 +99,7 @@ public class Chant_WarpWood extends Chant
 		if(((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
 		||(!target.subjectToWearAndTear()))
 		{
-			mob.tell(_("That can't be warped."));
+			mob.tell(L("That can't be warped."));
 			return false;
 		}
 
@@ -114,7 +114,7 @@ public class Chant_WarpWood extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> starts warping!"):_("^S<S-NAME> chant(s) at <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> starts warping!"):L("^S<S-NAME> chant(s) at <T-NAMESELF>.^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,mobTarget,this,verbalCastCode(mob,mobTarget,auto),null);
 			if((mob.location().okMessage(mob,msg))&&((mobTarget==null)||(mob.location().okMessage(mob,msg2))))
 			{
@@ -128,15 +128,15 @@ public class Chant_WarpWood extends Chant
 						damage=(int)Math.round(CMath.div(damage,2.0));
 					target.setUsesRemaining(target.usesRemaining()-damage);
 					if(mobTarget==null)
-						mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> begin(s) to twist and warp!"));
+						mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> begin(s) to twist and warp!"));
 					else
-						mob.location().show(mobTarget,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME>, possessed by <S-NAME>, twists and warps!"));
+						mob.location().show(mobTarget,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME>, possessed by <S-NAME>, twists and warps!"));
 					if(target.usesRemaining()>0)
 						target.recoverPhyStats();
 					else
 					{
 						target.setUsesRemaining(100);
-						mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> is destroyed!"));
+						mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> is destroyed!"));
 						target.unWear();
 						target.destroy();
 						mob.location().recoverRoomStats();
@@ -145,7 +145,7 @@ public class Chant_WarpWood extends Chant
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> chant(s), but nothing happens."));
+			return maliciousFizzle(mob,null,L("<S-NAME> chant(s), but nothing happens."));
 
 
 		// return whether it worked

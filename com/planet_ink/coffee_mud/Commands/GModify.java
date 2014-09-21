@@ -281,7 +281,7 @@ public class GModify extends StdCommand
 		if(checkedOut)
 		{
 			if(changes.size()==0)
-				mob.tell(CMLib.lang()._("Matched on @x1 from @x2.",E.name(),CMLib.map().getExtendedRoomID(room)));
+				mob.tell(CMLib.lang().L("Matched on @x1 from @x2.",E.name(),CMLib.map().getExtendedRoomID(room)));
 			else
 			for(int i=0;i<changes.size();i++)
 			{
@@ -374,12 +374,12 @@ public class GModify extends StdCommand
 		commands.removeElementAt(0);
 		if(commands.size()==0)
 		{
-			mob.tell(_("GModify what?"));
+			mob.tell(L("GModify what?"));
 			return false;
 		}
 		if(mob.isMonster())
 		{
-			mob.tell(_("No can do."));
+			mob.tell(L("No can do."));
 			return false;
 		}
 		if((commands.size()>0)&&
@@ -395,7 +395,7 @@ public class GModify extends StdCommand
 			addEnumeratedStatCodes(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
 			addEnumeratedStatCodes(CMClass.tech(),allKnownFields,allFieldsMsg);
 			allFieldsMsg.append("ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT REJUV DESTROY ");
-			mob.tell(_("Valid field names are @x1",allFieldsMsg.toString()));
+			mob.tell(L("Valid field names are @x1",allFieldsMsg.toString()));
 			return false;
 		}
 		if((commands.size()>0)&&
@@ -403,7 +403,7 @@ public class GModify extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.GMODIFY))
 			{
-				mob.tell(_("You are not allowed to do that here."));
+				mob.tell(L("You are not allowed to do that here."));
 				return false;
 			}
 			commands.removeElementAt(0);
@@ -414,7 +414,7 @@ public class GModify extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.GMODIFY))
 			{
-				mob.tell(_("You are not allowed to do that here."));
+				mob.tell(L("You are not allowed to do that here."));
 				return false;
 			}
 			commands.removeElementAt(0);
@@ -425,7 +425,7 @@ public class GModify extends StdCommand
 		{
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.GMODIFY))
 			{
-				mob.tell(_("You are not allowed to do that."));
+				mob.tell(L("You are not allowed to do that."));
 				return false;
 			}
 			commands.removeElementAt(0);
@@ -515,7 +515,7 @@ public class GModify extends StdCommand
 					}
 				if(divLen==0)
 				{
-					mob.tell(_("String '@x1' does not contain an equation divider.  Even CHANGE needs at least an = sign!",str));
+					mob.tell(L("String '@x1' does not contain an equation divider.  Even CHANGE needs at least an = sign!",str));
 					return false;
 				}
 				final String equator=str.substring(eq,eq+divLen);
@@ -558,7 +558,7 @@ public class GModify extends StdCommand
 				Pattern P=null;
 				if(use==null)
 				{
-					mob.tell(_("'@x1' goes to an unknown parameter!",((String)commands.elementAt(i))));
+					mob.tell(L("'@x1' goes to an unknown parameter!",((String)commands.elementAt(i))));
 					return false;
 				}
 				while(val.trim().startsWith("["))
@@ -586,14 +586,14 @@ public class GModify extends StdCommand
 					use.addElement(key,equator,val,code,P);
 				else
 				{
-					mob.tell(_("'@x1' is an unknown field name.  Valid fields include: @x2",key,allFieldsMsg.toString()));
+					mob.tell(L("'@x1' is an unknown field name.  Valid fields include: @x2",key,allFieldsMsg.toString()));
 					return false;
 				}
 			}
 		}
 		if((onfields.size()==0)&&(changes.size()==0))
 		{
-			mob.tell(_("You must specify either WHEN, or CHANGES parameters for valid matches to be made."));
+			mob.tell(L("You must specify either WHEN, or CHANGES parameters for valid matches to be made."));
 			return false;
 		}
 		if(placesToDo.size()==0)
@@ -606,7 +606,7 @@ public class GModify extends StdCommand
 		}
 		if(placesToDo.size()==0)
 		{
-			mob.tell(_("There are no rooms with data to gmodify!"));
+			mob.tell(L("There are no rooms with data to gmodify!"));
 			return false;
 		}
 		for(int i=placesToDo.size()-1;i>=0;i--)
@@ -632,9 +632,9 @@ public class GModify extends StdCommand
 		if(mob.session()!=null)
 		{
 			if(changes.size()==0)
-				mob.session().rawPrintln(_("Searching..."));
+				mob.session().rawPrintln(L("Searching..."));
 			else
-				mob.session().rawPrint(_("Searching, modifying and saving..."));
+				mob.session().rawPrint(L("Searching, modifying and saving..."));
 		}
 		if(noisy) gmodifydebugtell(mob,"Rooms to do: "+placesToDo.size());
 		if(noisy) gmodifydebugtell(mob,"When fields="+CMParms.toStringList(onfields.getDimensionVector(1)));
@@ -727,7 +727,7 @@ public class GModify extends StdCommand
 			}
 		}
 
-		if(mob.session()!=null) mob.session().rawPrintln(_("!\n\rDone!"));
+		if(mob.session()!=null) mob.session().rawPrintln(L("!\n\rDone!"));
 		Area A=null;
 		for(int i=0;i<placesToDo.size();i++)
 		{

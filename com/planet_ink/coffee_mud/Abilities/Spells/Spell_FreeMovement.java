@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_FreeMovement extends Spell
 {
 	@Override public String ID() { return "Spell_FreeMovement"; }
-	private final static String localizedName = CMLib.lang()._("Free Movement");
+	private final static String localizedName = CMLib.lang().L("Free Movement");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Free Movement)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Free Movement)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -52,7 +52,7 @@ public class Spell_FreeMovement extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("Your uninhibiting protection dissipates."));
+			mob.tell(L("Your uninhibiting protection dissipates."));
 
 		super.unInvoke();
 
@@ -75,7 +75,7 @@ public class Spell_FreeMovement extends Spell
 			final Ability A=(Ability)msg.tool();
 			if(CMath.bset(A.flags(),Ability.FLAG_PARALYZING))
 			{
-				msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_OK_VISUAL,_("The uninhibiting barrier around <S-NAME> repels the @x1.",A.name())));
+				msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_OK_VISUAL,L("The uninhibiting barrier around <S-NAME> repels the @x1.",A.name())));
 				return false;
 			}
 			final MOB newMOB=CMClass.getFactoryMOB();
@@ -88,7 +88,7 @@ public class Spell_FreeMovement extends Spell
 				   ||(CMath.bset(A.flags(),Ability.FLAG_PARALYZING))
 				   ||(!A.okMessage(newMOB,msg2)))
 				{
-					msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_OK_VISUAL,_("The uninhibiting barrier around <S-NAME> repels the @x1.",A.name())));
+					msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_OK_VISUAL,L("The uninhibiting barrier around <S-NAME> repels the @x1.",A.name())));
 					newMOB.destroy();
 					return false;
 				}
@@ -114,7 +114,7 @@ public class Spell_FreeMovement extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> feel(s) freely protected."):_("^S<S-NAME> invoke(s) an uninhibiting barrier of protection around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> feel(s) freely protected."):L("^S<S-NAME> invoke(s) an uninhibiting barrier of protection around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -122,7 +122,7 @@ public class Spell_FreeMovement extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke an uninhibiting barrier, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke an uninhibiting barrier, but fail(s)."));
 
 		return success;
 	}

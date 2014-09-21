@@ -37,7 +37,7 @@ import java.util.*;
 public class Dance_Square extends Dance
 {
 	@Override public String ID() { return "Dance_Square"; }
-	private final static String localizedName = CMLib.lang()._("Square");
+	private final static String localizedName = CMLib.lang().L("Square");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected boolean skipStandardDanceInvoke(){return true;}
@@ -105,9 +105,9 @@ public class Dance_Square extends Dance
 			invoker=mob;
 			originRoom=mob.location();
 			commonRoomSet=getInvokerScopeRoomSet(null);
-			String str=auto?_("^SThe @x1 begins!^?",danceOf()):_("^S<S-NAME> begin(s) to dance the @x1.^?",danceOf());
+			String str=auto?L("^SThe @x1 begins!^?",danceOf()):L("^S<S-NAME> begin(s) to dance the @x1.^?",danceOf());
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
-				str=_("^S<S-NAME> start(s) the @x1 over again.^?",danceOf());
+				str=L("^S<S-NAME> start(s) the @x1 over again.^?",danceOf());
 
 			final Set<MOB> friends=mob.getGroupMembers(new HashSet<MOB>());
 			for(int v=0;v<commonRoomSet.size();v++)
@@ -162,7 +162,7 @@ public class Dance_Square extends Dance
 			}
 		}
 		else
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> make(s) a false step."));
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,L("<S-NAME> make(s) a false step."));
 
 		return success;
 	}

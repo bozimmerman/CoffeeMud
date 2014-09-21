@@ -46,7 +46,7 @@ public class Throw extends StdCommand
 			commands.addElement(mob.getVictim().location().getContextName(mob.getVictim()));
 		if(commands.size()<3)
 		{
-			mob.tell(_("Throw what, where or at whom?"));
+			mob.tell(L("Throw what, where or at whom?"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -57,12 +57,12 @@ public class Throw extends StdCommand
 		if(item==null) item=mob.findItem(null,what);
 		if((item==null)||(!CMLib.flags().canBeSeenBy(item,mob)))
 		{
-			mob.tell(_("You don't seem to have a '@x1'!",what));
+			mob.tell(L("You don't seem to have a '@x1'!",what));
 			return false;
 		}
 		if((!item.amWearingAt(Wearable.WORN_HELD))&&(!item.amWearingAt(Wearable.WORN_WIELD)))
 		{
-			mob.tell(_("You aren't holding or wielding @x1!",item.name()));
+			mob.tell(L("You aren't holding or wielding @x1!",item.name()));
 			return false;
 		}
 
@@ -77,7 +77,7 @@ public class Throw extends StdCommand
 			||(mob.location().getExitInDir(dir)==null)
 			||(!mob.location().getExitInDir(dir).isOpen()))
 			{
-				mob.tell(_("You can't throw anything that way!"));
+				mob.tell(L("You can't throw anything that way!"));
 				return false;
 			}
 			final boolean amOutside=((mob.location().domainType()&Room.INDOORS)==0);
@@ -88,13 +88,13 @@ public class Throw extends StdCommand
 			if(amOutside&&isOutside&&(!isUp)&&(!isDown)
 			&&((((Room)target).domainType()&Room.DOMAIN_OUTDOORS_AIR)==0))
 			{
-				mob.tell(_("That's too far to throw @x1.",item.name()));
+				mob.tell(L("That's too far to throw @x1.",item.name()));
 				return false;
 			}
 		}
 		if((dir<0)&&((target==null)||((target!=mob.getVictim())&&(!CMLib.flags().canBeSeenBy(target,mob)))))
 		{
-			mob.tell(_("You can't target @x1 at '@x2'!",item.name(),str));
+			mob.tell(L("You can't target @x1 at '@x2'!",item.name(),str));
 			return false;
 		}
 
@@ -121,7 +121,7 @@ public class Throw extends StdCommand
 							}
 					}
 				}
-				final CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,targetMsg,CMMsg.MSG_THROW,_("<S-NAME> throw(s) <O-NAME> at <T-NAMESELF>."));
+				final CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,targetMsg,CMMsg.MSG_THROW,L("<S-NAME> throw(s) <O-NAME> at <T-NAMESELF>."));
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
@@ -132,8 +132,8 @@ public class Throw extends StdCommand
 			final int opDir=Directions.getOpDirectionCode(dir);
 			final String inDir=useShipDirs?Directions.getShipInDirectionName(dir):Directions.getInDirectionName(dir);
 			final String fromDir=useShipDirs?Directions.getShipFromDirectionName(opDir):Directions.getFromDirectionName(opDir);
-			final CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,_("<S-NAME> throw(s) <O-NAME> @x1.",inDir.toLowerCase()));
-			final CMMsg msg2=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,_("<O-NAME> fl(ys) in from @x1.",fromDir.toLowerCase()));
+			final CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,L("<S-NAME> throw(s) <O-NAME> @x1.",inDir.toLowerCase()));
+			final CMMsg msg2=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,L("<O-NAME> fl(ys) in from @x1.",fromDir.toLowerCase()));
 			if(mob.location().okMessage(mob,msg)&&((Room)target).okMessage(mob,msg2))
 			{
 				mob.location().send(mob,msg);

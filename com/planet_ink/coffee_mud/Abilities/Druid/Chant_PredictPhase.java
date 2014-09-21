@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_PredictPhase extends Chant
 {
 	@Override public String ID() { return "Chant_PredictPhase"; }
-	private final static String localizedName = CMLib.lang()._("Predict Phase");
+	private final static String localizedName = CMLib.lang().L("Predict Phase");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONSUMMONING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -55,7 +55,7 @@ public class Chant_PredictPhase extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) and gaze(s) toward the sky.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) and gaze(s) toward the sky.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -63,7 +63,7 @@ public class Chant_PredictPhase extends Chant
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) and gaze(s) toward the sky, but the magic fizzles."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> chant(s) and gaze(s) toward the sky, but the magic fizzles."));
 
 		return success;
 	}

@@ -35,9 +35,9 @@ import java.util.*;
 public class Spell_Repulsion extends Spell
 {
 	@Override public String ID() { return "Spell_Repulsion"; }
-	private final static String localizedName = CMLib.lang()._("Repulsion");
+	private final static String localizedName = CMLib.lang().L("Repulsion");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Repulsion)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Repulsion)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(3);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -62,7 +62,7 @@ public class Spell_Repulsion extends Spell
 		{
 			if(msg.sourceMinor()==CMMsg.TYP_ADVANCE)
 			{
-				if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> struggle(s) against the repulsion field.")))
+				if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> struggle(s) against the repulsion field.")))
 				{
 					amountRemaining-=mob.charStats().getStat(CharStats.STAT_STRENGTH);
 					if(amountRemaining<0)
@@ -102,7 +102,7 @@ public class Spell_Repulsion extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> manage(s) to break <S-HIS-HER> way free of the repulsion field."));
+			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> manage(s) to break <S-HIS-HER> way free of the repulsion field."));
 			CMLib.commands().postStand(mob,true);
 		}
 	}
@@ -113,7 +113,7 @@ public class Spell_Repulsion extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if((h==null)||(h.size()==0))
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth repelling."));
+			mob.tell(L("There doesn't appear to be anyone here worth repelling."));
 			return false;
 		}
 
@@ -128,7 +128,7 @@ public class Spell_Repulsion extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),auto?"":_("^S<S-NAME> wave(s) <S-HIS-HER> arms and cast(s) a spell.^?")))
+			if(mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> arms and cast(s) a spell.^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -151,7 +151,7 @@ public class Spell_Repulsion extends Spell
 								if((CMLib.ableMapper().qualifyingClassLevel(mob,this)>0)&&((adjustedLevel(mob,asLevel)-CMLib.ableMapper().qualifyingClassLevel(mob,this))>10))
 									level+=((adjustedLevel(mob,asLevel)-CMLib.ableMapper().qualifyingClassLevel(mob,this))-10)/10;
 								if(level<2) level=2;
-								target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> become(s) repelled!"));
+								target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> become(s) repelled!"));
 								if((target.getVictim()!=null)&&(target.rangeToTarget()>0))
 									target.setAtRange(target.rangeToTarget());
 								else
@@ -169,7 +169,7 @@ public class Spell_Repulsion extends Spell
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> wave(s) <S-HIS-HER> arms, but the spell fizzles."));
+			return maliciousFizzle(mob,null,L("<S-NAME> wave(s) <S-HIS-HER> arms, but the spell fizzles."));
 
 
 		// return whether it worked

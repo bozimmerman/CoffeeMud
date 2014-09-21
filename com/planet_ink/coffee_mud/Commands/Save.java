@@ -66,12 +66,12 @@ public class Save extends StdCommand
 			{
 				CMLib.database().DBUpdatePlayer(mob);
 				CMLib.database().DBUpdateFollowers(mob);
-				mob.tell(_("Your player record has been updated."));
+				mob.tell(L("Your player record has been updated."));
 			}
 			return false;
 		}
 
-		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
+		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 		String firstCommand="";
 		String lastCommand = "";
 		if(commands.size()>1)
@@ -84,7 +84,7 @@ public class Save extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS))
 			{
-				mob.tell(_("You are not allowed to save players."));
+				mob.tell(L("You are not allowed to save players."));
 				return false;
 			}
 			for(final Session S : CMLib.sessions().allIterable())
@@ -96,24 +96,24 @@ public class Save extends StdCommand
 					CMLib.database().DBUpdateFollowers(M);
 				}
 			}
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("A feeling of permanency envelopes everyone.\n\r"));
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes everyone.\n\r"));
 		}
 		else
 		if(lastCommand.equals("ITEMS"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS))
 			{
-				mob.tell(_("You are not allowed to save the mobs here."));
+				mob.tell(L("You are not allowed to save the mobs here."));
 				return false;
 			}
 			if(firstCommand.equals("AREA"))
 			{
-				if((mob.session()!=null)&&(mob.session().confirm(_("Doing this assumes every item in every room in this area is correctly placed.  Are you sure (N/y)?"),_("N"))))
+				if((mob.session()!=null)&&(mob.session().confirm(L("Doing this assumes every item in every room in this area is correctly placed.  Are you sure (N/y)?"),L("N"))))
 				{
 					final Area A=mob.location().getArea();
 					for(final Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
 						clearSaveAndRestart(e.nextElement(),1);
-					mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("A feeling of permanency envelopes the area.\n\r"));
+					mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes the area.\n\r"));
 				}
 				else
 					return false;
@@ -121,7 +121,7 @@ public class Save extends StdCommand
 			else
 			{
 				clearSaveAndRestart(mob.location(),1);
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("A feeling of permanency envelopes the room.\n\r"));
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes the room.\n\r"));
 			}
 			Resources.removeResource("HELP_"+mob.location().getArea().Name().toUpperCase());
 		}
@@ -130,17 +130,17 @@ public class Save extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS))
 			{
-				mob.tell(_("You are not allowed to save the contents here."));
+				mob.tell(L("You are not allowed to save the contents here."));
 				return false;
 			}
 			if(firstCommand.equals("AREA"))
 			{
-				if((mob.session()!=null)&&(mob.session().confirm(_("Doing this assumes every mob and item in every room in this area is correctly placed.  Are you sure (N/y)?"),_("N"))))
+				if((mob.session()!=null)&&(mob.session().confirm(L("Doing this assumes every mob and item in every room in this area is correctly placed.  Are you sure (N/y)?"),L("N"))))
 				{
 					final Area A=mob.location().getArea();
 					for(final Enumeration e=A.getProperMap();e.hasMoreElements();)
 						clearSaveAndRestart((Room)e.nextElement(),0);
-					mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("A feeling of permanency envelopes the area.\n\r"));
+					mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes the area.\n\r"));
 				}
 				else
 					return false;
@@ -148,7 +148,7 @@ public class Save extends StdCommand
 			else
 			{
 				clearSaveAndRestart(mob.location(),0);
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("A feeling of permanency envelopes the room.\n\r"));
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes the room.\n\r"));
 			}
 			Resources.removeResource("HELP_"+mob.location().getArea().Name().toUpperCase());
 		}
@@ -157,17 +157,17 @@ public class Save extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS))
 			{
-				mob.tell(_("You are not allowed to save the mobs here."));
+				mob.tell(L("You are not allowed to save the mobs here."));
 				return false;
 			}
 			if(firstCommand.equals("AREA"))
 			{
-				if((mob.session()!=null)&&(mob.session().confirm(_("Doing this assumes every mob in every room in this area is correctly placed.  Are you sure (N/y)?"),_("N"))))
+				if((mob.session()!=null)&&(mob.session().confirm(L("Doing this assumes every mob in every room in this area is correctly placed.  Are you sure (N/y)?"),L("N"))))
 				{
 					final Area A=mob.location().getArea();
 					for(final Enumeration e=A.getProperMap();e.hasMoreElements();)
 						clearSaveAndRestart((Room)e.nextElement(),2);
-					mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("A feeling of permanency envelopes the area.\n\r"));
+					mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes the area.\n\r"));
 				}
 				else
 					return false;
@@ -176,7 +176,7 @@ public class Save extends StdCommand
 			else
 			{
 				clearSaveAndRestart(mob.location(),2);
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("A feeling of permanency envelopes the room.\n\r"));
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes the room.\n\r"));
 			}
 			Resources.removeResource("HELP_"+mob.location().getArea().Name().toUpperCase());
 		}
@@ -185,11 +185,11 @@ public class Save extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDQUESTS))
 			{
-				mob.tell(_("You are not allowed to save the contents here."));
+				mob.tell(L("You are not allowed to save the contents here."));
 				return false;
 			}
 			CMLib.quests().save();
-			mob.tell(_("Quest list saved."));
+			mob.tell(L("Quest list saved."));
 		}
 		else
 		if(firstCommand.equals("USER")||firstCommand.equals("PLAYER")||firstCommand.equals("CHARACTER")||firstCommand.equals("CHAR"))
@@ -197,13 +197,13 @@ public class Save extends StdCommand
 			final MOB M=CMLib.players().getPlayer(lastCommand);
 			if(M==null)
 			{
-				mob.tell(_("No user named @x1",lastCommand));
+				mob.tell(L("No user named @x1",lastCommand));
 				return false;
 			}
 			CMLib.database().DBUpdatePlayer(M);
 			if(CMLib.flags().isInTheGame(M,true))
 				CMLib.database().DBUpdateFollowers(M);
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("A feeling of permanency envelopes '@x1'.\n\r",M.name()));
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes '@x1'.\n\r",M.name()));
 		}
 		else
 		if(CMLib.players().getPlayer(firstCommand)!=null)
@@ -212,7 +212,7 @@ public class Save extends StdCommand
 			CMLib.database().DBUpdatePlayer(M);
 			if(CMLib.flags().isInTheGame(M,true))
 				CMLib.database().DBUpdateFollowers(M);
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("A feeling of permanency envelopes '@x1'.\n\r",M.name()));
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes '@x1'.\n\r",M.name()));
 		}
 		else
 		if(CMLib.players().getPlayer(lastCommand)!=null)
@@ -221,12 +221,12 @@ public class Save extends StdCommand
 			CMLib.database().DBUpdatePlayer(M);
 			if(CMLib.flags().isInTheGame(M,true))
 				CMLib.database().DBUpdateFollowers(M);
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("A feeling of permanency envelopes '@x1'.\n\r",M.name()));
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes '@x1'.\n\r",M.name()));
 		}
 		else
 		{
 			mob.tell(
-				_("\n\rYou cannot save '@x1'. However, you might try ITEMS, USERS, [PLAYERNAME], QUESTS, MOBS, or ROOM.",firstCommand));
+				L("\n\rYou cannot save '@x1'. However, you might try ITEMS, USERS, [PLAYERNAME], QUESTS, MOBS, or ROOM.",firstCommand));
 		}
 		return false;
 	}

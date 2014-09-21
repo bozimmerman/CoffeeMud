@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_SummonFire extends Chant
 {
 	@Override public String ID() { return "Chant_SummonFire"; }
-	private final static String localizedName = CMLib.lang()._("Summon Fire");
+	private final static String localizedName = CMLib.lang().L("Summon Fire");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
@@ -55,7 +55,7 @@ public class Chant_SummonFire extends Chant
 		if(littleFire==null)
 			return;
 		if(canBeUninvoked())
-			FireLocation.showHappens(CMMsg.MSG_OK_VISUAL,_("The little magical fire goes out."));
+			FireLocation.showHappens(CMMsg.MSG_OK_VISUAL,L("The little magical fire goes out."));
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
@@ -72,7 +72,7 @@ public class Chant_SummonFire extends Chant
 	{
 		if((((mob.location().domainType()&Room.INDOORS)>0))&&(!auto))
 		{
-			mob.tell(_("You must be outdoors for this chant to work."));
+			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
 		if(((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
@@ -82,7 +82,7 @@ public class Chant_SummonFire extends Chant
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		   &&(!auto))
 		{
-			mob.tell(_("This magic will not work here."));
+			mob.tell(L("This magic will not work here."));
 			return false;
 		}
 
@@ -93,15 +93,15 @@ public class Chant_SummonFire extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) for fire.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) for fire.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final Item I=CMClass.getItem("GenItem");
 				I.basePhyStats().setWeight(50);
-				I.setName(_("a magical campfire"));
-				I.setDisplayText(_("A roaring magical campfire has been built here."));
-				I.setDescription(_("It consists of magically burning flames, consuming no fuel."));
+				I.setName(L("a magical campfire"));
+				I.setDisplayText(L("A roaring magical campfire has been built here."));
+				I.setDescription(L("It consists of magically burning flames, consuming no fuel."));
 				I.recoverPhyStats();
 				I.setMaterial(RawMaterial.RESOURCE_NOTHING);
 				I.setMiscText(I.text());
@@ -109,7 +109,7 @@ public class Chant_SummonFire extends Chant
 				I.addNonUninvokableEffect(B);
 
 				mob.location().addItem(I);
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, a little magical campfire begins burning here."));
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, a little magical campfire begins burning here."));
 				FireLocation=mob.location();
 				littleFire=I;
 				beneficialAffect(mob,I,asLevel,0);
@@ -117,7 +117,7 @@ public class Chant_SummonFire extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) for fire, but nothing happens."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) for fire, but nothing happens."));
 
 		// return whether it worked
 		return success;

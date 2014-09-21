@@ -44,7 +44,7 @@ public class DumpFile extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(_("dumpfile {raw} username|all {filename1 ...}"));
+			mob.tell(L("dumpfile {raw} username|all {filename1 ...}"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -109,7 +109,7 @@ public class DumpFile extends StdCommand
 				}
 			}
 		}
-		mob.tell(_("dumped @x1 files to @x2 user(s)",""+numFiles,""+numSessions));
+		mob.tell(L("dumped @x1 files to @x2 user(s)",""+numFiles,""+numSessions));
 		return false;
 	}
 

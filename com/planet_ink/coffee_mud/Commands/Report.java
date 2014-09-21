@@ -45,7 +45,7 @@ public class Report extends Skills
 		if(commands.size()<2)
 		{
 			final StringBuffer buf=new StringBuffer(
-								_("say \"I have @x1/@x2 hit points, @x3/@x4 mana, @x5/@x6 move",
+								L("say \"I have @x1/@x2 hit points, @x3/@x4 mana, @x5/@x6 move",
 									""+mob.curState().getHitPoints(),
 									""+mob.maxState().getHitPoints(),
 									""+mob.curState().getMana(),
@@ -56,7 +56,7 @@ public class Report extends Skills
 			&&!mob.charStats().getCurrentClass().expless()
 			&&!mob.charStats().getMyRace().expless()
 			&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))
-			   buf.append(_(", and need @x1 to level",""+mob.getExpNeededLevel()));
+			   buf.append(L(", and need @x1 to level",""+mob.getExpNeededLevel()));
 			buf.append(".\"");
 			final Command C=CMClass.getCommand("Say");
 			if(C!=null) C.execute(mob,CMParms.parse(buf.toString()),metaFlags);
@@ -131,7 +131,7 @@ public class Report extends Skills
 
 
 			if(say.length()==0)
-				mob.tell(_("'@x1' is unknown.  Try SPELLS, SKILLS, PRAYERS, CHANTS, SONGS, STATS, or ALL.",s));
+				mob.tell(L("'@x1' is unknown.  Try SPELLS, SKILLS, PRAYERS, CHANTS, SONGS, STATS, or ALL.",s));
 			else
 				CMLib.commands().postSay(mob,null,say.toString(),false,false);
 		}

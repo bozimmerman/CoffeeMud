@@ -36,9 +36,9 @@ import java.util.*;
 public class Prayer_SanctifyRoom extends Prayer
 {
 	@Override public String ID() { return "Prayer_SanctifyRoom"; }
-	private final static String localizedName = CMLib.lang()._("Sanctify Room");
+	private final static String localizedName = CMLib.lang().L("Sanctify Room");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Sanctify Room)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Sanctify Room)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -57,7 +57,7 @@ public class Prayer_SanctifyRoom extends Prayer
 	{
 		if(!CMLib.law().doesAnyoneHavePrivilegesHere(mob, text(), R))
 		{
-			mob.tell(_("You feel your muscles unwilling to cooperate."));
+			mob.tell(L("You feel your muscles unwilling to cooperate."));
 			return false;
 		}
 		return true;
@@ -105,7 +105,7 @@ public class Prayer_SanctifyRoom extends Prayer
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("This place is already a sanctified place."));
+			mob.tell(L("This place is already a sanctified place."));
 			return false;
 		}
 
@@ -115,7 +115,7 @@ public class Prayer_SanctifyRoom extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 to sanctify this place.^?",prayForWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 to sanctify this place.^?",prayForWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -142,7 +142,7 @@ public class Prayer_SanctifyRoom extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 to sanctify this place, but <S-IS-ARE> not answered.",prayForWord(mob)));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 to sanctify this place, but <S-IS-ARE> not answered.",prayForWord(mob)));
 
 		return success;
 	}

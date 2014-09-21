@@ -55,11 +55,11 @@ public class Who extends StdCommand
 		final StringBuilder head=new StringBuilder("");
 		head.append("^x[");
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
-			head.append(CMStrings.padRight(_("Race"),colWidths[0])+" ");
+			head.append(CMStrings.padRight(L("Race"),colWidths[0])+" ");
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
-			head.append(CMStrings.padRight(_("Class"),colWidths[1])+" ");
+			head.append(CMStrings.padRight(L("Class"),colWidths[1])+" ");
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
-			head.append(CMStrings.padRight(_("Level"),colWidths[2]));
+			head.append(CMStrings.padRight(L("Level"),colWidths[2]));
 		head.append("] Character name^.^N\n\r");
 		return head.toString();
 	}
@@ -143,7 +143,7 @@ public class Who extends StdCommand
 		{
 			if((!(CMLib.intermud().i3online()))
 			&&(!CMLib.intermud().imc2online()))
-				mob.tell(_("Intermud is unavailable."));
+				mob.tell(L("Intermud is unavailable."));
 			else
 				CMLib.intermud().i3who(mob,mobName.substring(1));
 			return false;
@@ -175,7 +175,7 @@ public class Who extends StdCommand
 
 		final String msg = getWho(mob,friends,mobName);
 		if((mobName!=null)&&(msg.length()==0))
-			mob.tell(_("That person doesn't appear to be online.\n\r"));
+			mob.tell(L("That person doesn't appear to be online.\n\r"));
 		else
 			mob.tell(msg);
 		return false;

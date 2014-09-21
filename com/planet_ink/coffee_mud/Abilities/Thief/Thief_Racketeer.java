@@ -88,11 +88,11 @@ public class Thief_Racketeer extends ThiefSkill
 		{
 			if(invoker()==source)
 			{
-				source.tell(_("@x1 is currently under your protection.",((Physical)msg.target()).name(source)));
+				source.tell(L("@x1 is currently under your protection.",((Physical)msg.target()).name(source)));
 			}else
 			{
-				source.tell(_("@x1 is under @x2's protection.",((Physical)msg.target()).name(source),invoker().name(source)));
-				invoker().tell(_("Word on the street is that @x1 is hassling @x2 who is under your protection.",source.name(invoker()),((Physical)msg.target()).name(invoker())));
+				source.tell(L("@x1 is under @x2's protection.",((Physical)msg.target()).name(source),invoker().name(source)));
+				invoker().tell(L("Word on the street is that @x1 is hassling @x2 who is under your protection.",source.name(invoker()),((Physical)msg.target()).name(invoker())));
 			}
 			return false;
 		}
@@ -127,7 +127,7 @@ public class Thief_Racketeer extends ThiefSkill
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell(_("Get protection money from whom?"));
+			mob.tell(L("Get protection money from whom?"));
 			return false;
 		}
 		MOB target=null;
@@ -137,37 +137,37 @@ public class Thief_Racketeer extends ThiefSkill
 			target=mob.location().fetchInhabitant(CMParms.combine(commands,0));
 		if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",CMParms.combine(commands,1)));
+			mob.tell(L("You don't see '@x1' here.",CMParms.combine(commands,1)));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell(_("You are too busy to racketeer right now."));
+			mob.tell(L("You are too busy to racketeer right now."));
 			return false;
 		}
 		if((CMLib.coffeeShops().getShopKeeper(target)==null)&&(target.fetchBehavior("MoneyChanger")==null)
 				&&(target.fetchBehavior("ItemMender")==null)&&(target.fetchBehavior("ItemIdentifier")==null)
 				&&(target.fetchBehavior("ItemRefitter")==null))
 		{
-			mob.tell(_("You can't get protection money from @x1.",target.name(mob)));
+			mob.tell(L("You can't get protection money from @x1.",target.name(mob)));
 			return false;
 		}
 		final Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
 			if(A.invoker()==mob)
-				mob.tell(_("@x1 has already been extracted from today.",target.name(mob)));
+				mob.tell(L("@x1 has already been extracted from today.",target.name(mob)));
 			else
 			{
-				mob.tell(_("@x1 is already under @x2's protection.",target.name(mob),A.invoker().name(mob)));
-				A.invoker().tell(_("Word on the street is that @x1 is trying to push into your business with @x2.",mob.name(A.invoker()),target.name()));
+				mob.tell(L("@x1 is already under @x2's protection.",target.name(mob),A.invoker().name(mob)));
+				A.invoker().tell(L("Word on the street is that @x1 is trying to push into your business with @x2.",mob.name(A.invoker()),target.name()));
 			}
 			return false;
 		}
 		final int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(!target.mayIFight(mob))
 		{
-			mob.tell(_("You cannot racketeer @x1.",target.charStats().himher()));
+			mob.tell(L("You cannot racketeer @x1.",target.charStats().himher()));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel)) return false;
@@ -175,7 +175,7 @@ public class Thief_Racketeer extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,-(levelDiff),auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT,_("<S-NAME> extract(s) @x1 of protection money from <T-NAME>.",CMLib.beanCounter().nameCurrencyShort(target,amount)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT,L("<S-NAME> extract(s) @x1 of protection money from <T-NAME>.",CMLib.beanCounter().nameCurrencyShort(target,amount)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -194,7 +194,7 @@ public class Thief_Racketeer extends ThiefSkill
 				}
 			}
 		}else
-			maliciousFizzle(mob,target,_("<T-NAME> seem(s) unintimidated by <S-NAME>."));
+			maliciousFizzle(mob,target,L("<T-NAME> seem(s) unintimidated by <S-NAME>."));
 		return success;
 	}
 }

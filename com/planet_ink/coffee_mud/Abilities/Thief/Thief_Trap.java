@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_Trap extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Trap"; }
-	private final static String localizedName = CMLib.lang()._("Lay Traps");
+	private final static String localizedName = CMLib.lang().L("Lay Traps");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
@@ -88,21 +88,21 @@ public class Thief_Trap extends ThiefSkill
 		else
 		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
 		{
-			final StringBuffer buf=new StringBuffer(_("@x1 @x2 Requires\n\r",CMStrings.padRight(_("Trap Name"),15),CMStrings.padRight(_("Affects"),17)));
+			final StringBuffer buf=new StringBuffer(L("@x1 @x2 Requires\n\r",CMStrings.padRight(L("Trap Name"),15),CMStrings.padRight(L("Affects"),17)));
 			for(int r=0;r<traps.size();r++)
 			{
 				final Trap T=(Trap)traps.elementAt(r);
 				buf.append(CMStrings.padRight(T.name(),15)+" ");
 				if(T.canAffect(Ability.CAN_ROOMS))
-					buf.append(CMStrings.padRight(_("Rooms"),17)+" ");
+					buf.append(CMStrings.padRight(L("Rooms"),17)+" ");
 				else
 				if(T.canAffect(Ability.CAN_EXITS))
-					buf.append(CMStrings.padRight(_("Exits, Containers"),17)+" ");
+					buf.append(CMStrings.padRight(L("Exits, Containers"),17)+" ");
 				else
 				if(T.canAffect(Ability.CAN_ITEMS))
-					buf.append(CMStrings.padRight(_("Items"),17)+" ");
+					buf.append(CMStrings.padRight(L("Items"),17)+" ");
 				else
-					buf.append(CMStrings.padRight(_("Unknown"),17)+" ");
+					buf.append(CMStrings.padRight(L("Unknown"),17)+" ");
 				buf.append(T.requiresToSet()+"\n\r");
 			}
 			if(mob.session()!=null) mob.session().rawPrintln(buf.toString());
@@ -112,14 +112,14 @@ public class Thief_Trap extends ThiefSkill
 		{
 			if(mob.isInCombat())
 			{
-				mob.tell(_("You are too busy to be laying traps at the moment!"));
+				mob.tell(L("You are too busy to be laying traps at the moment!"));
 				return false;
 			}
 
 			final String cmdWord=triggerStrings()[0].toLowerCase();
 			if(commands.size()<2)
 			{
-				mob.tell(_("Trap what, with what kind of trap? Use @x1 list for a list.",cmdWord));
+				mob.tell(L("Trap what, with what kind of trap? Use @x1 list for a list.",cmdWord));
 				return false;
 			}
 			String name;
@@ -149,7 +149,7 @@ public class Thief_Trap extends ThiefSkill
 			}
 			if(theTrap==null)
 			{
-				mob.tell(_("'@x1' is not a valid trap name.  Try @x2 LIST.",name,cmdWord.toUpperCase()));
+				mob.tell(L("'@x1' is not a valid trap name.  Try @x2 LIST.",name,cmdWord.toUpperCase()));
 				return false;
 			}
 
@@ -183,13 +183,13 @@ public class Thief_Trap extends ThiefSkill
 			}
 		}
 
-		final CMMsg msg=CMClass.getMsg(mob,trapThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_ALWAYS|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_OK_ACTION,(auto?_("@x1 begins to glow!",trapThis.name()):_("<S-NAME> attempt(s) to lay a trap on <T-NAMESELF>.")));
+		final CMMsg msg=CMClass.getMsg(mob,trapThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_ALWAYS|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_OK_ACTION,(auto?L("@x1 begins to glow!",trapThis.name()):L("<S-NAME> attempt(s) to lay a trap on <T-NAMESELF>.")));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			if(success)
 			{
-				mob.tell(_("You have completed your task."));
+				mob.tell(L("You have completed your task."));
 				boolean permanent=false;
 				if((trapThis instanceof Room)
 				&&(CMLib.law().doesOwnThisProperty(mob,((Room)trapThis))))
@@ -218,12 +218,12 @@ public class Thief_Trap extends ThiefSkill
 				if((CMLib.dice().rollPercentage()>50)&&(theTrap!=null))
 				{
 					final Trap T=theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel),false);
-					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> trigger(s) the trap on accident!"));
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> trigger(s) the trap on accident!"));
 					T.spring(mob);
 				}
 				else
 				{
-					mob.tell(_("You fail in your attempt."));
+					mob.tell(L("You fail in your attempt."));
 				}
 			}
 		}

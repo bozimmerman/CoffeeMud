@@ -38,7 +38,7 @@ import java.util.*;
 public class Antidote extends StdAbility
 {
 	@Override public String ID() { return "Antidote"; }
-	private final static String localizedName = CMLib.lang()._("An Antidote");
+	private final static String localizedName = CMLib.lang().L("An Antidote");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override public String displayText(){ return "";}
@@ -129,7 +129,7 @@ public class Antidote extends StdAbility
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
 					offensiveAffects.get(a).unInvoke();
 				if((!CMLib.flags().stillAffectedBy(target,offensiveAffects,false))&&(target.location()!=null))
-					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> feel(s) better now."));
+					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) better now."));
 			}
 		}
 

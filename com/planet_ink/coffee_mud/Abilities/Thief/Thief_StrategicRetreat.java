@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_StrategicRetreat extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_StrategicRetreat"; }
-	private final static String localizedName = CMLib.lang()._("Strategic Retreat");
+	private final static String localizedName = CMLib.lang().L("Strategic Retreat");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return 0;}
@@ -52,7 +52,7 @@ public class Thief_StrategicRetreat extends ThiefSkill
 	{
 		if(!mob.isInCombat())
 		{
-			mob.tell(_("You can only retreat from combat!"));
+			mob.tell(L("You can only retreat from combat!"));
 			return false;
 		}
 
@@ -64,7 +64,7 @@ public class Thief_StrategicRetreat extends ThiefSkill
 		String where=CMParms.combine(commands,0);
 		if(!success)
 		{
-			mob.tell(_("Your attempt to flee with grace and honor FAILS!"));
+			mob.tell(L("Your attempt to flee with grace and honor FAILS!"));
 			CMLib.commands().postFlee(mob,where);
 		}
 		else
@@ -95,7 +95,7 @@ public class Thief_StrategicRetreat extends ThiefSkill
 					directionCode=Directions.getGoodDirectionCode(where);
 				if(directionCode<0)
 				{
-					mob.tell(_("Flee where?!"));
+					mob.tell(L("Flee where?!"));
 					return false;
 				}
 				mob.makePeace();

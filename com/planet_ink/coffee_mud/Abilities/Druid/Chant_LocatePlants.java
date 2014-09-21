@@ -38,10 +38,10 @@ import java.util.*;
 public class Chant_LocatePlants extends Chant
 {
 	@Override public String ID() { return "Chant_LocatePlants"; }
-	private final static String localizedName = CMLib.lang()._("Locate Plants");
+	private final static String localizedName = CMLib.lang().L("Locate Plants");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Locating Plants)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Locating Plants)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override public long flags(){return Ability.FLAG_TRACKING;}
@@ -76,14 +76,14 @@ public class Chant_LocatePlants extends Chant
 			if(nextDirection==-1)
 			{
 				if(plantsHere(mob,mob.location()).length()==0)
-					mob.tell(_("The plant life trail fizzles out here."));
+					mob.tell(L("The plant life trail fizzles out here."));
 				nextDirection=-999;
 				unInvoke();
 			}
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell(_("Your sense plant life @x1.",Directions.getDirectionName(nextDirection)));
+				mob.tell(L("Your sense plant life @x1.",Directions.getDirectionName(nextDirection)));
 				nextDirection=-2;
 			}
 
@@ -119,7 +119,7 @@ public class Chant_LocatePlants extends Chant
 		||((room.myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
 		||(room.domainType()==Room.DOMAIN_OUTDOORS_JUNGLE)
 		||(room.domainType()==Room.DOMAIN_OUTDOORS_SWAMP))
-			msg.append(_("There seem to be a large number of plants all around you!\n\r"));
+			msg.append(L("There seem to be a large number of plants all around you!\n\r"));
 		return msg.toString();
 	}
 
@@ -139,7 +139,7 @@ public class Chant_LocatePlants extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already trying to find plant life."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already trying to find plant life."));
 			return false;
 		}
 		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
@@ -180,7 +180,7 @@ public class Chant_LocatePlants extends Chant
 
 		if((success)&&(theTrail!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> begin(s) to sense plant life!"):_("^S<S-NAME> chant(s) for a route to plant life.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> begin(s) to sense plant life!"):L("^S<S-NAME> chant(s) for a route to plant life.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -192,7 +192,7 @@ public class Chant_LocatePlants extends Chant
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) to find plant life, but fail(s)."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> chant(s) to find plant life, but fail(s)."));
 
 		return success;
 	}

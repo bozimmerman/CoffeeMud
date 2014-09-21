@@ -39,7 +39,7 @@ public class MagicShelter extends StdRoom
 	{
 		super();
 		name="the shelter";
-		displayText=_("Magic Shelter");
+		displayText=L("Magic Shelter");
 		setDescription("You are in a domain of complete void and peace.");
 		basePhyStats.setWeight(0);
 		recoverPhyStats();
@@ -87,7 +87,7 @@ public class MagicShelter extends StdRoom
 		if((msg.sourceMinor()==CMMsg.TYP_RECALL)
 		||(msg.sourceMinor()==CMMsg.TYP_LEAVE))
 		{
-			msg.source().tell(_("You can't leave the shelter that way.  You'll have to revoke it."));
+			msg.source().tell(L("You can't leave the shelter that way.  You'll have to revoke it."));
 			return false;
 		}
 		return true;

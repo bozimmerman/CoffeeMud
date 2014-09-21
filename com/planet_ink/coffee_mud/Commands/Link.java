@@ -44,12 +44,12 @@ public class Link extends At
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
+		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 
 		if(commands.size()<3)
 		{
-			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is LINK [ROOM ID] [DIRECTION]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
+			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is LINK [ROOM ID] [DIRECTION]\n\r"));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
 			return false;
 		}
 		final String dirStr=(String)commands.lastElement();
@@ -57,8 +57,8 @@ public class Link extends At
 		final int direction=Directions.getGoodDirectionCode(dirStr);
 		if(direction<0)
 		{
-			mob.tell(_("You have failed to specify a direction.  Try @x1.\n\r",Directions.LETTERS()));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
+			mob.tell(L("You have failed to specify a direction.  Try @x1.\n\r",Directions.LETTERS()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
 			return false;
 		}
 
@@ -70,8 +70,8 @@ public class Link extends At
 			thisRoom=CMLib.map().findWorldRoomLiberally(mob,RoomID,"R",100,120000);
 			if(thisRoom==null)
 			{
-				mob.tell(_("Room \"@x1\" is unknown.  Try again.",RoomID));
-				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a powerful spell."));
+				mob.tell(L("Room \"@x1\" is unknown.  Try again.",RoomID));
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
 				return false;
 			}
 		}
@@ -80,7 +80,7 @@ public class Link extends At
 		mob.location().getArea().fillInAreaRoom(thisRoom);
 
 		mob.location().recoverRoomStats();
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly a portal opens up in the landscape.\n\r"));
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly a portal opens up in the landscape.\n\r"));
 		Log.sysOut("Link",mob.Name()+" linked "+CMLib.map().getExtendedRoomID(mob.location())+" to room "+CMLib.map().getExtendedRoomID(thisRoom)+".");
 		return false;
 	}
@@ -97,7 +97,7 @@ public class Link extends At
 
 		if((reverseRoom!=null)
 		&&((reverseRoom==mob.location())||(reverseRoom==mob.location().getGridParent())))
-			mob.tell(_("Opposite room already exists and heads this way.  One-way link created."));
+			mob.tell(L("Opposite room already exists and heads this way.  One-way link created."));
 
 		if(opRoom!=null)
 			mob.location().rawDoors()[direction]=null;

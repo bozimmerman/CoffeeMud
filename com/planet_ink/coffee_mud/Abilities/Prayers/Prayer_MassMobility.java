@@ -36,12 +36,12 @@ import java.util.*;
 public class Prayer_MassMobility extends Prayer
 {
 	@Override public String ID() { return "Prayer_MassMobility"; }
-	private final static String localizedName = CMLib.lang()._("Mass Mobility");
+	private final static String localizedName = CMLib.lang().L("Mass Mobility");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Mass Mobility)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Mass Mobility)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 
 
@@ -71,7 +71,7 @@ public class Prayer_MassMobility extends Prayer
 				   ||(CMath.bset(A.flags(),Ability.FLAG_PARALYZING))
 				   ||(!A.okMessage(newMOB,msg2)))
 				{
-					mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,_("The aura around <S-NAME> repels the @x1 from <T-NAME>.",A.name()));
+					mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,L("The aura around <S-NAME> repels the @x1 from <T-NAME>.",A.name()));
 					newMOB.destroy();
 					return false;
 				}
@@ -103,7 +103,7 @@ public class Prayer_MassMobility extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("The aura of mobility around you fades."));
+			mob.tell(L("The aura of mobility around you fades."));
 	}
 
 
@@ -120,7 +120,7 @@ public class Prayer_MassMobility extends Prayer
 		if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 		if((success)&&(room!=null))
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,affectType,auto?"":_("^S<S-NAME> @x1 for an aura of mobility!^?",prayWord(mob)));
+			CMMsg msg=CMClass.getMsg(mob,null,this,affectType,auto?"":L("^S<S-NAME> @x1 for an aura of mobility!^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -133,7 +133,7 @@ public class Prayer_MassMobility extends Prayer
 					// and add it to the affects list of the
 					// affected MOB.  Then tell everyone else
 					// what happened.
-					msg=CMClass.getMsg(mob,target,this,affectType,_("Mobility is invoked upon <T-NAME>."));
+					msg=CMClass.getMsg(mob,target,this,affectType,L("Mobility is invoked upon <T-NAME>."));
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);
@@ -144,7 +144,7 @@ public class Prayer_MassMobility extends Prayer
 		}
 		else
 		{
-			beneficialWordsFizzle(mob,null,_("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
 			return false;
 		}
 		return success;

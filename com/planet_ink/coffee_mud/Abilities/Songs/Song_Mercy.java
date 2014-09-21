@@ -38,7 +38,7 @@ import java.util.*;
 public class Song_Mercy extends Song
 {
 	@Override public String ID() { return "Song_Mercy"; }
-	private final static String localizedName = CMLib.lang()._("Mercy");
+	private final static String localizedName = CMLib.lang().L("Mercy");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
@@ -78,7 +78,7 @@ public class Song_Mercy extends Song
 			&&(mob.location()==target.location())
 			&&(msg.source().getVictim()!=target))
 			{
-				msg.source().tell(_("You feel like showing @x1 mercy right now.",target.name(msg.source())));
+				msg.source().tell(L("You feel like showing @x1 mercy right now.",target.name(msg.source())));
 				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();

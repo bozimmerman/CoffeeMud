@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_Enter extends Trap_Trap
 {
 	@Override public String ID() { return "Trap_Enter"; }
-	private final static String localizedName = CMLib.lang()._("Entry Trap");
+	private final static String localizedName = CMLib.lang().L("Entry Trap");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}

@@ -40,7 +40,7 @@ import java.util.*;
 public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "Blacksmithing"; }
-	private final static String localizedName = CMLib.lang()._("Blacksmithing");
+	private final static String localizedName = CMLib.lang().L("Blacksmithing");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"BLACKSMITH","BLACKSMITHING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -156,7 +156,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 						if(activity == CraftingActivity.LEARNING)
 							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+buildingI.name()+".");
 						else
-							commonTell(mob,_("You've ruined @x1!",buildingI.name(mob)));
+							commonTell(mob,L("You've ruined @x1!",buildingI.name(mob)));
 						buildingI.destroy();
 					}
 					else
@@ -196,7 +196,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,_("Make what? Enter \"@x1 list\" for a list, \"@x2 learn <item>\" to gain recipes, or \"@x3 stop\" to cancel.",triggerStrings()[0].toLowerCase(),triggerStrings()[0].toLowerCase(),triggerStrings()[0].toLowerCase()));
+			commonTell(mob,L("Make what? Enter \"@x1 list\" for a list, \"@x2 learn <item>\" to gain recipes, or \"@x3 stop\" to cancel.",triggerStrings()[0].toLowerCase(),triggerStrings()[0].toLowerCase(),triggerStrings()[0].toLowerCase()));
 			return false;
 		}
 		if((!auto)
@@ -226,7 +226,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 				allFlag=true;
 				mask="";
 			}
-			final StringBuffer buf=new StringBuffer(_("@x1 @x2 Metals required\n\r",CMStrings.padRight(_("Item"),cols[0]),CMStrings.padRight(_("Lvl"),cols[1])));
+			final StringBuffer buf=new StringBuffer(L("@x1 @x2 Metals required\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1])));
 			for(int r=0;r<recipes.size();r++)
 			{
 				final List<String> V=recipes.get(r);
@@ -286,7 +286,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		}
 		if(foundRecipe==null)
 		{
-			commonTell(mob,_("You don't know how to make a '@x1'.  Try \"@x2 list\" for a list.",recipeName,triggerStrings[0].toLowerCase()));
+			commonTell(mob,L("You don't know how to make a '@x1'.  Try \"@x2 list\" for a list.",recipeName,triggerStrings[0].toLowerCase()));
 			return false;
 		}
 
@@ -327,7 +327,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 			final Physical target=givenTarget;
 			session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 			{
-				@Override public void showPrompt() {session.promptPrint(_("What is a statue this of?\n\r: "));}
+				@Override public void showPrompt() {session.promptPrint(L("What is a statue this of?\n\r: "));}
 				@Override public void timedOut() {}
 				@Override public void callBack()
 				{
@@ -350,7 +350,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 		if(buildingI==null)
 		{
-			commonTell(mob,_("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
+			commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
 			return false;
 		}
 		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
@@ -360,11 +360,11 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		else
 			itemName=CMLib.english().startWithAorAn(itemName);
 		buildingI.setName(itemName);
-		startStr=_("<S-NAME> start(s) smithing @x1.",buildingI.name());
-		displayText=_("You are smithing @x1",buildingI.name());
-		verb=_("smithing @x1",buildingI.name());
+		startStr=L("<S-NAME> start(s) smithing @x1.",buildingI.name());
+		displayText=L("You are smithing @x1",buildingI.name());
+		verb=L("smithing @x1",buildingI.name());
 		playSound="tinktinktink2.wav";
-		buildingI.setDisplayText(_("@x1 lies here",itemName));
+		buildingI.setDisplayText(L("@x1 lies here",itemName));
 		buildingI.setDescription(itemName+". ");
 		buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
@@ -379,9 +379,9 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		&&(statue!=null)
 		&&(statue.trim().length()>0))
 		{
-			buildingI.setName(_("@x1 of @x2",itemName,statue.trim()));
-			buildingI.setDisplayText(_("@x1 of @x2 is here",itemName,statue.trim()));
-			buildingI.setDescription(_("@x1 of @x2. ",itemName,statue.trim()));
+			buildingI.setName(L("@x1 of @x2",itemName,statue.trim()));
+			buildingI.setDisplayText(L("@x1 of @x2 is here",itemName,statue.trim()));
+			buildingI.setDescription(L("@x1 of @x2. ",itemName,statue.trim()));
 		}
 		else
 		if(buildingI instanceof Rideable)
@@ -431,9 +431,9 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		{
 			messedUp=false;
 			duration=1;
-			verb=_("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
-			startStr=_("<S-NAME> start(s) @x1.",verb);
-			displayText=_("You are @x1",verb);
+			verb=L("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
+			startStr=L("<S-NAME> start(s) @x1.",verb);
+			displayText=L("You are @x1",verb);
 		}
 
 		if(parsedVars.autoGenerate>0)

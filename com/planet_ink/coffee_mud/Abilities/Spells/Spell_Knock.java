@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Knock extends Spell
 {
 	@Override public String ID() { return "Spell_Knock"; }
-	private final static String localizedName = CMLib.lang()._("Knock");
+	private final static String localizedName = CMLib.lang().L("Knock");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Knock Spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Knock Spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_EXITS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
@@ -80,7 +80,7 @@ public class Spell_Knock extends Spell
 		{
 			if(((Exit)openThis).isOpen())
 			{
-				mob.tell(_("That's already open!"));
+				mob.tell(L("That's already open!"));
 				return false;
 			}
 		}
@@ -89,13 +89,13 @@ public class Spell_Knock extends Spell
 		{
 			if(((Container)openThis).isOpen())
 			{
-				mob.tell(_("That's already open!"));
+				mob.tell(L("That's already open!"));
 				return false;
 			}
 		}
 		else
 		{
-			mob.tell(_("You can't cast knock on @x1!",openThis.name()));
+			mob.tell(L("You can't cast knock on @x1!",openThis.name()));
 			return false;
 		}
 
@@ -107,10 +107,10 @@ public class Spell_Knock extends Spell
 		if(levelDiff<0) levelDiff=0;
 		final boolean success=proficiencyCheck(mob,-(levelDiff*25),auto);
 		if(!success)
-			beneficialWordsFizzle(mob,openThis,auto?_("Nothing happens to @x1.",openThis.name()):_("<S-NAME> point(s) at @x1 and shout(s) incoherently, but nothing happens.",openThis.name()));
+			beneficialWordsFizzle(mob,openThis,auto?L("Nothing happens to @x1.",openThis.name()):L("<S-NAME> point(s) at @x1 and shout(s) incoherently, but nothing happens.",openThis.name()));
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,openThis,this,verbalCastCode(mob,openThis,auto),(auto?_("@x1 begin(s) to glow!",openThis.name()):_("^S<S-NAME> point(s) at <T-NAMESELF>.^?"))+CMLib.protocol().msp("knock.wav",10));
+			CMMsg msg=CMClass.getMsg(mob,openThis,this,verbalCastCode(mob,openThis,auto),(auto?L("@x1 begin(s) to glow!",openThis.name()):L("^S<S-NAME> point(s) at <T-NAMESELF>.^?"))+CMLib.protocol().msp("knock.wav",10));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
@@ -135,14 +135,14 @@ public class Spell_Knock extends Spell
 						if(level<(mob.phyStats().level()+3+(2*getXLEVELLevel(mob))))
 						{
 							A.unInvoke();
-							R.show(mob,null,openThis,CMMsg.MSG_OK_VISUAL,_("A spell around <O-NAME> seems to fade."));
+							R.show(mob,null,openThis,CMMsg.MSG_OK_VISUAL,L("A spell around <O-NAME> seems to fade."));
 							break;
 						}
 					}
 				}
 				msg=CMClass.getMsg(mob,openThis,null,CMMsg.MSG_UNLOCK,null);
 				CMLib.utensils().roomAffectFully(msg,R,dirCode);
-				msg=CMClass.getMsg(mob,openThis,null,CMMsg.MSG_OPEN,_("<T-NAME> opens."));
+				msg=CMClass.getMsg(mob,openThis,null,CMMsg.MSG_OPEN,L("<T-NAME> opens."));
 				CMLib.utensils().roomAffectFully(msg,R,dirCode);
 			}
 		}

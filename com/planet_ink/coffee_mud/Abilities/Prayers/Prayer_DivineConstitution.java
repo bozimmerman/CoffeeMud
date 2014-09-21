@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_DivineConstitution extends Prayer
 {
 	@Override public String ID() { return "Prayer_DivineConstitution"; }
-	private final static String localizedName = CMLib.lang()._("Divine Constitution");
+	private final static String localizedName = CMLib.lang().L("Divine Constitution");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Divine Constitution)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Divine Constitution)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
@@ -87,7 +87,7 @@ public class Prayer_DivineConstitution extends Prayer
 				if((diff>0)
 				&&(msg.value()>diff))
 				{
-					R.show(M,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> gain(s) divine health!"));
+					R.show(M,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> gain(s) divine health!"));
 					conPts++;
 					xtraHPs+=1+diff;
 					msg.source().recoverCharStats();
@@ -110,7 +110,7 @@ public class Prayer_DivineConstitution extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> divine constitution fades."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> divine constitution fades."));
 	}
 
 	@Override
@@ -130,7 +130,7 @@ public class Prayer_DivineConstitution extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_(auto?"<T-NAME> become(s) covered by divine constitution.":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to be covered by divine constitution.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> become(s) covered by divine constitution.":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to be covered by divine constitution.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				conPts=1+(super.getXLEVELLevel(mob)/2);
@@ -144,7 +144,7 @@ public class Prayer_DivineConstitution extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for <T-NAMESELF> to have divine constitution, but nothing happens.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for <T-NAMESELF> to have divine constitution, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_Boomerang extends Spell
 {
 	@Override public String ID() { return "Spell_Boomerang"; }
-	private final static String localizedName = CMLib.lang()._("Returning");
+	private final static String localizedName = CMLib.lang().L("Returning");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
@@ -83,7 +83,7 @@ public class Spell_Boomerang extends Spell
 			{
 				if(!owner.isMine(I))
 				{
-					owner.tell(_("@x1 returns to your inventory!",I.name(owner)));
+					owner.tell(L("@x1 returns to your inventory!",I.name(owner)));
 					I.unWear();
 					I.setContainer(null);
 					owner.moveItemTo(I);
@@ -109,7 +109,7 @@ public class Spell_Boomerang extends Spell
 		&&(text().length()==0))
 		{
 			setMiscText(msg.source().Name());
-			msg.source().tell(_("@x1 will now return back to you.",affected.name()));
+			msg.source().tell(L("@x1 will now return back to you.",affected.name()));
 			makeNonUninvokable();
 		}
 		if((affected instanceof Item)&&(text().length()>0))
@@ -159,12 +159,12 @@ public class Spell_Boomerang extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":_("^S<S-NAME> point(s) at <T-NAMESELF> and cast(s) a spell.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> point(s) at <T-NAMESELF> and cast(s) a spell.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> glows slightly!"));
-				mob.tell(_("@x1 will now await someone to GET it before acknowleding its new master.",target.name(mob)));
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glows slightly!"));
+				mob.tell(L("@x1 will now await someone to GET it before acknowleding its new master.",target.name(mob)));
 				setMiscText("");
 				beneficialAffect(mob,target,asLevel,0);
 				target.recoverPhyStats();
@@ -173,7 +173,7 @@ public class Spell_Boomerang extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> point(s) at <T-NAMESELF>, but fail(s) to cast a spell."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF>, but fail(s) to cast a spell."));
 
 
 		// return whether it worked

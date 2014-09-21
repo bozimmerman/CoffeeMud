@@ -189,15 +189,15 @@ public class Sheath extends StdCommand
 		{
 			if(!noerrors)
 				if(sheaths.size()==0)
-					mob.tell(_("You are not wearing an appropriate sheath."));
+					mob.tell(L("You are not wearing an appropriate sheath."));
 				else
 				if(sheathable!=null)
-					mob.tell(_("You aren't wearing anything you can sheath @x1 in.",sheathable.name()));
+					mob.tell(L("You aren't wearing anything you can sheath @x1 in.",sheathable.name()));
 				else
 				if(commands.size()==0)
-					mob.tell(_("You don't seem to be wielding anything you can sheath."));
+					mob.tell(L("You don't seem to be wielding anything you can sheath."));
 				else
-					mob.tell(_("You don't seem to be wielding that."));
+					mob.tell(L("You don't seem to be wielding that."));
 		}
 		else
 		for(int i=0;i<items.size();i++)

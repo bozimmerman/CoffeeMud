@@ -54,7 +54,7 @@ public class Logoff extends StdCommand
 			&&(session.getLastPKFight()>0)
 			&&((System.currentTimeMillis()-session.getLastPKFight())<(5*60*1000)))
 			{
-				mob.tell(_("You must wait a few more minutes before you are allowed to logout."));
+				mob.tell(L("You must wait a few more minutes before you are allowed to logout."));
 				return false;
 			}
 			try
@@ -65,7 +65,7 @@ public class Logoff extends StdCommand
 						@Override
 						public void showPrompt()
 						{
-							session.promptPrint(_("\n\rLogout -- are you sure (y/N)?"));
+							session.promptPrint(L("\n\rLogout -- are you sure (y/N)?"));
 						}
 						@Override public void timedOut() {}
 

@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_DualParry extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_DualParry"; }
-	private final static String localizedName = CMLib.lang()._("Dual Parry");
+	private final static String localizedName = CMLib.lang().L("Dual Parry");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -79,7 +79,7 @@ public class Fighter_DualParry extends FighterSkill
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_RANGED)
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_THROWN))
 				{
-					final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> parr(ys) @x1 attack with @x2!",attackerWeapon.name(),myOtherWeapon.name()));
+					final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> parr(ys) @x1 attack with @x2!",attackerWeapon.name(),myOtherWeapon.name()));
 					if((proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90+(2*getXLEVELLevel(mob)),false))
 					&&(!lastTime)
 					&&(mob.location().okMessage(mob,msg2)))

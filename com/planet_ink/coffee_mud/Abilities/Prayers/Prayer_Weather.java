@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Weather extends Prayer
 {
 	@Override public String ID() { return "Prayer_Weather"; }
-	private final static String localizedName = CMLib.lang()._("Change Weather");
+	private final static String localizedName = CMLib.lang().L("Change Weather");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
@@ -57,7 +57,7 @@ public class Prayer_Weather extends Prayer
 		final boolean success=proficiencyCheck(mob,-size,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?_("The sky changes color!"):_("^S<S-NAME> @x1 for a change in weather!^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?L("The sky changes color!"):L("^S<S-NAME> @x1 for a change in weather!^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				final int switcher=CMLib.dice().roll(1,3,0);
@@ -175,7 +175,7 @@ public class Prayer_Weather extends Prayer
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
 
 		return success;
 	}

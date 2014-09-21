@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_StoneFlesh extends Spell
 {
 	@Override public String ID() { return "Spell_StoneFlesh"; }
-	private final static String localizedName = CMLib.lang()._("Stone Flesh");
+	private final static String localizedName = CMLib.lang().L("Stone Flesh");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
@@ -65,9 +65,9 @@ public class Spell_StoneFlesh extends Spell
 		if(revokeThis==null)
 		{
 			if(auto)
-				mob.tell(_("Nothing happens."));
+				mob.tell(L("Nothing happens."));
 			else
-				mob.tell(mob,target,null,_("<T-NAME> can not be affected by this spell."));
+				mob.tell(mob,target,null,L("<T-NAME> can not be affected by this spell."));
 			return false;
 		}
 
@@ -78,7 +78,7 @@ public class Spell_StoneFlesh extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> dispel(s) @x1 from <T-NAMESELF>.^?",revokeThis.name()));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> dispel(s) @x1 from <T-NAMESELF>.^?",revokeThis.name()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -86,7 +86,7 @@ public class Spell_StoneFlesh extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to dispel @x1 from <T-NAMESELF>, but flub(s) it.",revokeThis.name()));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to dispel @x1 from <T-NAMESELF>, but flub(s) it.",revokeThis.name()));
 
 
 		// return whether it worked

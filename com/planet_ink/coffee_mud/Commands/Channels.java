@@ -45,7 +45,7 @@ public class Channels extends StdCommand
 	{
 		final PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return false;
-		final StringBuffer buf=new StringBuffer(_("Available channels: \n\r"));
+		final StringBuffer buf=new StringBuffer(L("Available channels: \n\r"));
 		int col=0;
 		final String[] names=CMLib.channels().getChannelNames();
 		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(24.0,mob);

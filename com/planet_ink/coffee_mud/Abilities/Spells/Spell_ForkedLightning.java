@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_ForkedLightning extends Spell
 {
 	@Override public String ID() { return "Spell_ForkedLightning"; }
-	private final static String localizedName = CMLib.lang()._("Forked Lightning");
+	private final static String localizedName = CMLib.lang().L("Forked Lightning");
 	@Override public String name() { return localizedName; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -48,7 +48,7 @@ public class Spell_ForkedLightning extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth electrocuting."));
+			mob.tell(L("There doesn't appear to be anyone here worth electrocuting."));
 			return false;
 		}
 
@@ -64,7 +64,7 @@ public class Spell_ForkedLightning extends Spell
 		if(success)
 		{
 
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),_(auto?"A thunderous crack of lightning erupts!":"^S<S-NAME> invoke(s) a thunderous crack of forked lightning.^?")+CMLib.protocol().msp("lightning.wav",40)))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"A thunderous crack of lightning erupts!":"^S<S-NAME> invoke(s) a thunderous crack of forked lightning.^?")+CMLib.protocol().msp("lightning.wav",40)))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -91,7 +91,7 @@ public class Spell_ForkedLightning extends Spell
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> attempt(s) to invoke a ferocious spell, but the spell fizzles."));
+			return maliciousFizzle(mob,null,L("<S-NAME> attempt(s) to invoke a ferocious spell, but the spell fizzles."));
 
 
 		// return whether it worked

@@ -706,7 +706,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		{
 			final StringBuffer list=getRecipeList(recipe);
 			mob.tell(list.toString());
-			final String lineNum = mob.session().prompt(_("\n\rEnter a line to edit, A to add, or ENTER to exit: "),"");
+			final String lineNum = mob.session().prompt(L("\n\rEnter a line to edit, A to add, or ENTER to exit: "),"");
 			if(lineNum.trim().length()==0) break;
 			DVector editRow = null;
 			if(lineNum.equalsIgnoreCase("A"))
@@ -722,7 +722,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						classFieldData = A.commandLinePrompt(mob,(String)editRow.elementAt(keyIndex,2),new int[]{0},-999);
 						if(!A.confirmValue(classFieldData))
 						{
-							mob.tell(_("Invalid value.  Aborted."));
+							mob.tell(L("Invalid value.  Aborted."));
 							continue;
 						}
 					}
@@ -760,7 +760,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 					if(showFlag<-900){ ok=true; break;}
 					if(showFlag>0){ showFlag=-1; continue;}
-					showFlag=CMath.s_int(mob.session().prompt(_("Edit which? "),""));
+					showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 					if(showFlag<=0)
 					{
 						showFlag=-1;
@@ -772,9 +772,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		if((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			final String prompt="Save to V)FS, F)ilesystem, or C)ancel (" + (recipe.wasVFS()?"V/f/c":"v/F/c")+"): ";
-			final String choice=mob.session().choose(prompt,_("VFC"),recipe.wasVFS()?_("V"):_("F"));
+			final String choice=mob.session().choose(prompt,L("VFC"),recipe.wasVFS()?L("V"):L("F"));
 			if(choice.equalsIgnoreCase("C"))
-				mob.tell(_("Cancelled."));
+				mob.tell(L("Cancelled."));
 			else
 			{
 				final boolean saveToVFS = choice.equalsIgnoreCase("V");
@@ -1216,7 +1216,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						str.append("\n\rAmount: <INPUT TYPE=TEXT SIZE=3 NAME="+fieldName+"_AMOUNT VALUE=\""+(type!=0?"":value)+"\"  ONKEYDOWN=\"document.RESOURCES."+fieldName+"_WHICH[0].checked=true;\">");
 						str.append("\n\r<BR>");
 						str.append("<INPUT TYPE=RADIO NAME="+fieldName+"_WHICH "+(type==1?"CHECKED ":"")+"VALUE=\"COMPONENT\">");
-						str.append(_("\n\rSkill Components:"));
+						str.append(L("\n\rSkill Components:"));
 						str.append("\n\r<SELECT NAME="+fieldName+"_COMPONENT ONCHANGE=\"document.RESOURCES."+fieldName+"_WHICH[1].checked=true;\">");
 						str.append("<OPTION VALUE=\"0\"");
 						if((type!=1)||(value.length()==0)||(value.equalsIgnoreCase("0")))
@@ -1350,7 +1350,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 								error=CMLib.ableMapper().addAbilityComponent("ID="+str, new Hashtable<String,List<AbilityComponent>>());
 								if(error==null) return str;
 							}
-							mob.session().println(_("'@x1' is not an amount of material, a component key, or custom component list@x2.  Please use ? for help.",str,(error==null?"":"("+error+")")));
+							mob.session().println(L("'@x1' is not an amount of material, a component key, or custom component list@x2.  Please use ? for help.",str,(error==null?"":"("+error+")")));
 						}
 						return str;
 					}
@@ -2118,7 +2118,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							if(str.length()==0) return "";
 							final boolean isResource = CMParms.contains(RawMaterial.CODES.NAMES(),str);
 							if((!isResource)&&(mob.session()!=null)&&(!mob.session().isStopped()))
-								if(!mob.session().confirm(_("You`ve entered a non-resource item keyword '@x1', ok (Y/n)?",str),_("Y")))
+								if(!mob.session().confirm(L("You`ve entered a non-resource item keyword '@x1', ok (Y/n)?",str),L("Y")))
 									proceed = true;
 						}
 						return str;
@@ -2196,7 +2196,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							final boolean isResource = CMParms.contains(RawMaterial.CODES.NAMES(),str);
 							if((!isResource)&&(mob.session()!=null)&&(!mob.session().isStopped()))
 							{
-								if(!mob.session().confirm(_("You`ve entered a non-resource item keyword '@x1', ok (Y/n)?",str),_("Y")))
+								if(!mob.session().confirm(L("You`ve entered a non-resource item keyword '@x1', ok (Y/n)?",str),L("Y")))
 									proceed = true;
 								else
 									str=str+"$";
@@ -2420,7 +2420,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							mob.tell(showNumber+". "+prompt()+": '"+newVal+"'.");
 							if((showFlag!=showNumber[0])&&(showFlag>-999)) return newVal;
 							final Vector<String> parsedVals = CMParms.parse(newVal.toUpperCase());
-							behave=mob.session().prompt(_("Enter a race to add/remove (?)\n\r:"),"");
+							behave=mob.session().prompt(L("Enter a race to add/remove (?)\n\r:"),"");
 							if(behave.length()>0)
 							{
 								if(behave.equalsIgnoreCase("?"))
@@ -2432,26 +2432,26 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 									{
 										if(parsedVals.contains(R.ID().toUpperCase()))
 										{
-											mob.tell(_("'@x1' removed.",behave));
+											mob.tell(L("'@x1' removed.",behave));
 											parsedVals.remove(R.ID().toUpperCase().trim());
 											newVal = CMParms.combine(parsedVals,0);
 										}
 										else
 										{
-											mob.tell(_("@x1 added.",R.ID()));
+											mob.tell(L("@x1 added.",R.ID()));
 											parsedVals.addElement(R.ID().toUpperCase());
 											newVal = CMParms.combine(parsedVals,0);
 										}
 									}
 									else
 									{
-										mob.tell(_("'@x1' is not a recognized race.  Try '?'.",behave));
+										mob.tell(L("'@x1' is not a recognized race.  Try '?'.",behave));
 									}
 								}
 							}
 							else
 								if(oldVal.equalsIgnoreCase(newVal))
-									mob.tell(_("(no change)"));
+									mob.tell(L("(no change)"));
 						}
 						return newVal;
 					}
@@ -2875,7 +2875,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				{
 					str = CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),emptyOK).trim();
 					if((!spaceOK) && (str.indexOf(' ') >= 0))
-						mob.tell(_("Spaces are not allowed here."));
+						mob.tell(L("Spaces are not allowed here."));
 					else
 						proceed=false;
 				}

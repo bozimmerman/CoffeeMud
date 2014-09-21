@@ -35,7 +35,7 @@ import java.util.*;
 public class Specialization_Armor extends StdAbility
 {
 	@Override public String ID() { return "Specialization_Armor"; }
-	private final static String localizedName = CMLib.lang()._("Armor Specialization");
+	private final static String localizedName = CMLib.lang().L("Armor Specialization");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

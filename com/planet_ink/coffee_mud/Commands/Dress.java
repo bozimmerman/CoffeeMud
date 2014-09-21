@@ -44,12 +44,12 @@ public class Dress extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(_("Dress whom in what?"));
+			mob.tell(L("Dress whom in what?"));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell(_("Not while you are in combat!"));
+			mob.tell(L("Not while you are in combat!"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -59,7 +59,7 @@ public class Dress extends StdCommand
 		final MOB target=mob.location().fetchInhabitant(whom);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("I don't see @x1 here.",whom));
+			mob.tell(L("I don't see @x1 here.",whom));
 			return false;
 		}
 		if((target.willFollowOrdersOf(mob))||(CMLib.flags().isBoundOrHeld(target)))
@@ -67,14 +67,14 @@ public class Dress extends StdCommand
 			final Item item=mob.findItem(null,what);
 			if((item==null)||(!CMLib.flags().canBeSeenBy(item,mob)))
 			{
-				mob.tell(_("I don't see @x1 here.",what));
+				mob.tell(L("I don't see @x1 here.",what));
 				return false;
 			}
 			if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ORDER)
 			||(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS)&&(target.isMonster()))
 			||(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDMOBS)&&(target.isMonster())))
 			{
-				mob.location().show(mob,target,item,CMMsg.MASK_ALWAYS|CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> mystically put(s) <O-NAME> on <T-NAMESELF>."));
+				mob.location().show(mob,target,item,CMMsg.MASK_ALWAYS|CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> mystically put(s) <O-NAME> on <T-NAMESELF>."));
 				item.unWear();
 				target.moveItemTo(item);
 				item.wearIfPossible(target);
@@ -100,17 +100,17 @@ public class Dress extends StdCommand
 			{
 				if(!item.amWearingAt(Wearable.IN_INVENTORY))
 				{
-					mob.tell(_("You might want to remove that first."));
+					mob.tell(L("You might want to remove that first."));
 					return false;
 				}
 				if(item instanceof Coins)
 				{
-					mob.tell(_("I don't think you want to dress someone in @x1.",item.name()));
+					mob.tell(L("I don't think you want to dress someone in @x1.",item.name()));
 					return false;
 				}
 				if(target.isInCombat())
 				{
-					mob.tell(_("Not while @x1 is in combat!",target.name(mob)));
+					mob.tell(L("Not while @x1 is in combat!",target.name(mob)));
 					return false;
 				}
 				CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_QUIETMOVEMENT,null);
@@ -126,19 +126,19 @@ public class Dress extends StdCommand
 							if(mob.location().okMessage(mob,msg))
 							{
 								mob.location().send(mob,msg);
-								mob.location().show(mob,target,item,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> put(s) <O-NAME> on <T-NAMESELF>."));
+								mob.location().show(mob,target,item,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> put(s) <O-NAME> on <T-NAMESELF>."));
 							}
 							else
-								mob.tell(_("You cannot seem to get @x1 on @x2.",item.name(),target.name(mob)));
+								mob.tell(L("You cannot seem to get @x1 on @x2.",item.name(),target.name(mob)));
 						}
 						else
-							mob.tell(_("You cannot seem to get @x1 to @x2.",item.name(),target.name(mob)));
+							mob.tell(L("You cannot seem to get @x1 to @x2.",item.name(),target.name(mob)));
 					}
 				}
 			}
 		}
 		else
-			mob.tell(_("@x1 won't let you.",target.name(mob)));
+			mob.tell(L("@x1 won't let you.",target.name(mob)));
 		return false;
 	}
 	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}

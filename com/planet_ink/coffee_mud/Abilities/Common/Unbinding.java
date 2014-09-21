@@ -37,7 +37,7 @@ import java.util.*;
 public class Unbinding extends CommonSkill
 {
 	@Override public String ID() { return "Unbinding"; }
-	private final static String localizedName = CMLib.lang()._("Unbinding");
+	private final static String localizedName = CMLib.lang().L("Unbinding");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"UNBIND","UNTIE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -61,12 +61,12 @@ public class Unbinding extends CommonSkill
 				if((affects!=null)&&(affects.size()>0))
 				{
 					removing=affects.get(0);
-					displayText=_("You are removing @x1 from @x2",removing.name(),found.name());
-					verb=_("removing @x1 from @x2",removing.name(),found.name());
+					displayText=L("You are removing @x1 from @x2",removing.name(),found.name());
+					verb=L("removing @x1 from @x2",removing.name(),found.name());
 				}
 				else
 				{
-					final StringBuffer str=new StringBuffer(_("You can't seem to remove any of the bindings.\n\r"));
+					final StringBuffer str=new StringBuffer(L("You can't seem to remove any of the bindings.\n\r"));
 					commonTell(mob,str.toString());
 					unInvoke();
 				}
@@ -111,9 +111,9 @@ public class Unbinding extends CommonSkill
 				{
 					removing.unInvoke();
 					if(found.fetchEffect(removing.ID())==null)
-						mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> manage(s) to remove @x1 from @x2.",removing.name(),found.name()));
+						mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to remove @x1 from @x2.",removing.name(),found.name()));
 					else
-						mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> fail(s) to remove @x1 from @x2.",removing.name(),found.name()));
+						mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> fail(s) to remove @x1 from @x2.",removing.name(),found.name()));
 				}
 			}
 		}
@@ -130,36 +130,36 @@ public class Unbinding extends CommonSkill
 		if(target==null) return false;
 		if((!auto)&&(target==mob))
 		{
-			mob.tell(_("You can't unbind yourself!"));
+			mob.tell(L("You can't unbind yourself!"));
 			return false;
 		}
 		if((!auto)&&mob.isInCombat())
 		{
-			mob.tell(_("Not while you are fighting!"));
+			mob.tell(L("Not while you are fighting!"));
 			return false;
 		}
 		final List<Ability> affects=CMLib.flags().flaggedAffects(target,Ability.FLAG_BINDING);
 		if(affects.size()==0)
 		{
-			mob.tell(_("@x1 does not have any bindings you can remove.",target.name(mob)));
+			mob.tell(L("@x1 does not have any bindings you can remove.",target.name(mob)));
 			return false;
 		}
 		final Ability A=affects.get(0);
 
-		verb=_("unbinding");
+		verb=L("unbinding");
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int duration=CMLib.ableMapper().lowestQualifyingLevel(A.ID())-(CMLib.ableMapper().qualifyingLevel(mob,A)+(2*getXLEVELLevel(mob)));
 		if(duration<5) duration=4;
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,_("<S-NAME> begin(s) to unbind <T-NAMESELF>."));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,L("<S-NAME> begin(s) to unbind <T-NAMESELF>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			found=target;
-			verb=_("unbinding @x1",found.name());
-			displayText=_("You are @x1",verb);
+			verb=L("unbinding @x1",found.name());
+			displayText=L("You are @x1",verb);
 			found=proficiencyCheck(mob,0,auto)?found:null;
 			beneficialAffect(mob,mob,asLevel,duration);
 		}

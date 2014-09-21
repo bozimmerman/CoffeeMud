@@ -35,12 +35,12 @@ import java.util.*;
 public class Prayer_Wave extends Prayer
 {
 	@Override public String ID() { return "Prayer_Wave"; }
-	private final static String localizedName = CMLib.lang()._("Wave");
+	private final static String localizedName = CMLib.lang().L("Wave");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Waved)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Waved)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_EXITS;}
@@ -66,7 +66,7 @@ public class Prayer_Wave extends Prayer
 			}
 			else
 			{
-				mob.tell(_("Wash your opponents which direction?"));
+				mob.tell(L("Wash your opponents which direction?"));
 				return false;
 			}
 		}
@@ -74,7 +74,7 @@ public class Prayer_Wave extends Prayer
 		final Exit exitRoom=mob.location().getExitInDir(dir);
 		if((destRoom==null)||(exitRoom==null)||(dir==Directions.UP))
 		{
-			mob.tell(_("You can't wash your opponents that way!"));
+			mob.tell(L("You can't wash your opponents that way!"));
 			return false;
 		}
 
@@ -95,7 +95,7 @@ public class Prayer_Wave extends Prayer
 					// affected MOB.  Then tell everyone else
 					// what happened.
 					final Room R=target.location();
-					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?_("<T-NAME> <T-IS-ARE> swept away by a great wave!"):_("^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, @x1.^?",prayingWord(mob)));
+					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?L("<T-NAME> <T-IS-ARE> swept away by a great wave!"):L("^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, @x1.^?",prayingWord(mob)));
 					final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_WATER|(auto?CMMsg.MASK_ALWAYS:0),null);
 					if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 					{
@@ -117,7 +117,7 @@ public class Prayer_Wave extends Prayer
 					}
 				}
 				else
-					maliciousFizzle(mob,target,_("<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, @x1, but @x2 does not heed.",prayingWord(mob),hisHerDiety(mob)));
+					maliciousFizzle(mob,target,L("<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, @x1, but @x2 does not heed.",prayingWord(mob),hisHerDiety(mob)));
 			}
 		}
 		return success;

@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_WindShape extends Chant
 {
 	@Override public String ID() { return "Chant_WindShape"; }
-	private final static String localizedName = CMLib.lang()._("Wind Shape");
+	private final static String localizedName = CMLib.lang().L("Wind Shape");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Wind Shape)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Wind Shape)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -59,7 +59,7 @@ public class Chant_WindShape extends Chant
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> no longer shaped like the wind."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> no longer shaped like the wind."));
 	}
 
 	@Override
@@ -90,7 +90,7 @@ public class Chant_WindShape extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already the shape of the wind."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already the shape of the wind."));
 			return false;
 		}
 
@@ -105,16 +105,16 @@ public class Chant_WindShape extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) for <T-NAMESELF> be given the shape of the wind.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) for <T-NAMESELF> be given the shape of the wind.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> shimmer(s)."));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> shimmer(s)."));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) for a new form, but nothing happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) for a new form, but nothing happens."));
 
 
 		// return whether it worked

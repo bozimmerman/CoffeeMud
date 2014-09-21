@@ -46,7 +46,7 @@ public class Activate extends StdCommand
 		final Room R=mob.location();
 		if((commands.size()<2)||(R==null))
 		{
-			mob.tell(_("Activate what?"));
+			mob.tell(L("Activate what?"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -107,13 +107,13 @@ public class Activate extends StdCommand
 		}
 		if(E==null)
 		{
-			mob.tell(_("You don't see anything called '@x1' or '@x2' here that you can activate.",what,whole));
+			mob.tell(L("You don't see anything called '@x1' or '@x2' here that you can activate.",what,whole));
 			return false;
 		}
 		else
 		if(item==null)
 		{
-			mob.tell(_("You can't activate @x1.",E.name()));
+			mob.tell(L("You can't activate @x1.",E.name()));
 			return false;
 		}
 

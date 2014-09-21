@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_Grapevine extends Chant
 {
 	@Override public String ID() { return "Chant_Grapevine"; }
-	private final static String localizedName = CMLib.lang()._("Grapevine");
+	private final static String localizedName = CMLib.lang().L("Grapevine");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -95,19 +95,19 @@ public class Chant_Grapevine extends Chant
 	{
 		if((mob.fetchEffect(ID())!=null)||(mob.fetchEffect("Chant_TapGrapevine")!=null))
 		{
-			mob.tell(_("You are already listening through a grapevine."));
+			mob.tell(L("You are already listening through a grapevine."));
 			return false;
 		}
 		final Vector myRooms=Druid_MyPlants.myPlantRooms(mob);
 		if((myRooms==null)||(myRooms.size()==0))
 		{
-			mob.tell(_("There doesn't appear to be any of your plants around to listen through."));
+			mob.tell(L("There doesn't appear to be any of your plants around to listen through."));
 			return false;
 		}
 		Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
 		if((!auto)&&(myPlant==null))
 		{
-			mob.tell(_("You must be in the same room as one of your plants to initiate this chant."));
+			mob.tell(L("You must be in the same room as one of your plants to initiate this chant."));
 			return false;
 		}
 
@@ -118,7 +118,7 @@ public class Chant_Grapevine extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,myPlant,this,verbalCastCode(mob,myPlant,auto),auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF> and listen(s) carefully to <T-HIM-HER>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,myPlant,this,verbalCastCode(mob,myPlant,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF> and listen(s) carefully to <T-HIM-HER>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -148,7 +148,7 @@ public class Chant_Grapevine extends Chant
 
 		}
 		else
-			beneficialVisualFizzle(mob,myPlant,_("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
+			beneficialVisualFizzle(mob,myPlant,L("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

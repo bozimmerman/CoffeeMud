@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_Mend extends Spell
 {
 	@Override public String ID() { return "Spell_Mend"; }
-	private final static String localizedName = CMLib.lang()._("Mend");
+	private final static String localizedName = CMLib.lang().L("Mend");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
@@ -49,7 +49,7 @@ public class Spell_Mend extends Spell
 		if(target==null) return false;
 		if(!target.subjectToWearAndTear())
 		{
-			mob.tell(_("@x1 cannot be mended.",target.name(mob)));
+			mob.tell(L("@x1 cannot be mended.",target.name(mob)));
 			return false;
 		}
 
@@ -67,10 +67,10 @@ public class Spell_Mend extends Spell
 			{
 				mob.location().send(mob,msg);
 				if(target.usesRemaining()>=100)
-					mob.tell(_("Nothing happens to @x1.",target.name(mob)));
+					mob.tell(L("Nothing happens to @x1.",target.name(mob)));
 				else
 				{
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> begin(s) to glow and mend!"));
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> begin(s) to glow and mend!"));
 					target.setUsesRemaining(100);
 				}
 				target.recoverPhyStats();
@@ -79,7 +79,7 @@ public class Spell_Mend extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> incant(s) at <T-NAMESELF>, but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> incant(s) at <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

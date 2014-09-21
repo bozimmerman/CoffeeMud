@@ -50,7 +50,7 @@ public class GenWallpaper implements Item
 		super();
 		//CMClass.bumpCounter(this,CMClass.CMObjectType.ITEM);//removed for mem & perf
 	}
-	@Override public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+	@Override public String L(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 	@Override public boolean isGeneric(){return true;}
 	@Override public Rideable riding(){return null;}
 	@Override public void setRiding(Rideable one){}
@@ -246,7 +246,7 @@ public class GenWallpaper implements Item
 		else
 		if(CMath.bset(msg.targetMajor(),CMMsg.MASK_MAGIC))
 		{
-			mob.tell(_("Please don't do that."));
+			mob.tell(L("Please don't do that."));
 			return false;
 		}
 		else
@@ -263,7 +263,7 @@ public class GenWallpaper implements Item
 		case CMMsg.TYP_GET:
 			if((msg.tool()==null)||(msg.tool() instanceof MOB))
 			{
-				mob.tell(_("You can't get @x1.",name()));
+				mob.tell(L("You can't get @x1.",name()));
 				return false;
 			}
 			break;
@@ -272,7 +272,7 @@ public class GenWallpaper implements Item
 		default:
 			break;
 		}
-		mob.tell(mob,this,null,_("You can't do that to <T-NAMESELF>."));
+		mob.tell(mob,this,null,L("You can't do that to <T-NAMESELF>."));
 		return false;
 	}
 

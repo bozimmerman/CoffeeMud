@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_ResistPetrification extends Spell
 {
 	@Override public String ID() { return "Spell_ResistPetrification"; }
-	private final static String localizedName = CMLib.lang()._("Resist Petrification");
+	private final static String localizedName = CMLib.lang().L("Resist Petrification");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Resist Petrification)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Resist Petrification)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -52,7 +52,7 @@ public class Spell_ResistPetrification extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("Your flowing protection dissipates."));
+			mob.tell(L("Your flowing protection dissipates."));
 
 		super.unInvoke();
 
@@ -74,7 +74,7 @@ public class Spell_ResistPetrification extends Spell
 		&&(!mob.amDead())
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 		{
-			mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,_("The barrier around <S-NAME> absorbs the Stone to Flesh spell from <T-NAME>!"));
+			mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,L("The barrier around <S-NAME> absorbs the Stone to Flesh spell from <T-NAME>!"));
 			return false;
 		}
 		return super.okMessage(myHost,msg);
@@ -93,7 +93,7 @@ public class Spell_ResistPetrification extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> feel(s) flowingly protected."):_("^S<S-NAME> invoke(s) a flowing barrier of protection around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> feel(s) flowingly protected."):L("^S<S-NAME> invoke(s) a flowing barrier of protection around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -101,7 +101,7 @@ public class Spell_ResistPetrification extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a flowing barrier, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a flowing barrier, but fail(s)."));
 
 		return success;
 	}

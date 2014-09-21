@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_ElectricShock extends StdTrap
 {
 	@Override public String ID() { return "Trap_ElectricShock"; }
-	private final static String localizedName = CMLib.lang()._("electric shock");
+	private final static String localizedName = CMLib.lang().L("electric shock");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -74,7 +74,7 @@ public class Trap_ElectricShock extends StdTrap
 			if((I==null)
 			||(super.findNumberOfResource(mob.location(),I.material())<10))
 			{
-				mob.tell(_("You'll need to set down at least 10 pounds of metal first."));
+				mob.tell(L("You'll need to set down at least 10 pounds of metal first."));
 				return false;
 			}
 		}
@@ -91,9 +91,9 @@ public class Trap_ElectricShock extends StdTrap
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) setting off a shocking trap!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) setting off a shocking trap!"));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> set(s) off an shocking trap!")))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> set(s) off an shocking trap!")))
 			{
 				super.spring(target);
 				CMLib.combat().postDamage(invoker(),target,null,CMLib.dice().roll(trapLevel()+abilityCode(),8,1),CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The shock <DAMAGES> <T-NAME>!"+CMLib.protocol().msp("shock.wav",30));

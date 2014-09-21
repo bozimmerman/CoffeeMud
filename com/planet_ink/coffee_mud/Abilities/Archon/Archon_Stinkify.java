@@ -37,7 +37,7 @@ public class Archon_Stinkify extends ArchonSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Archon_Stinkify"; }
-	private final static String localizedName = CMLib.lang()._("Stinkify");
+	private final static String localizedName = CMLib.lang().L("Stinkify");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -61,23 +61,23 @@ public class Archon_Stinkify extends ArchonSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?_("A stink cloud surrounds <T-NAME>!"):_("^F<S-NAME> stinkif(ys) <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?L("A stink cloud surrounds <T-NAME>!"):L("^F<S-NAME> stinkif(ys) <T-NAMESELF>.^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(target.playerStats()!=null)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> stinkier!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> stinkier!"));
 					target.playerStats().adjHygiene(PlayerStats.HYGIENE_DELIMIT+1);
 					Log.sysOut("Stinkify",mob.Name()+" stinkied "+target.name()+".");
 				}
 				else
-					mob.tell(mob,target,null,_("<T-NAME> is a mob.  Try a player."));
+					mob.tell(mob,target,null,L("<T-NAME> is a mob.  Try a player."));
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to stinkify <T-NAMESELF>, but fail(s)."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to stinkify <T-NAMESELF>, but fail(s)."));
 		return success;
 	}
 }

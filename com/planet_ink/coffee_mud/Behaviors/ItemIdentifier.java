@@ -95,7 +95,7 @@ public class ItemIdentifier extends StdBehavior
 			if(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),observer)<(cost))
 			{
 				final String costStr=CMLib.beanCounter().nameCurrencyShort(observer,cost);
-				CMLib.commands().postSay(observer,source,_("You'll need @x1 for me to identify that.",costStr),true,false);
+				CMLib.commands().postSay(observer,source,L("You'll need @x1 for me to identify that.",costStr),true,false);
 				return false;
 			}
 			return true;
@@ -125,9 +125,9 @@ public class ItemIdentifier extends StdBehavior
 			CMLib.beanCounter().subtractMoney(source,CMLib.beanCounter().getCurrency(observer),cost);
 			final String costStr=CMLib.beanCounter().nameCurrencyLong(observer,cost);
 			source.recoverPhyStats();
-			CMMsg newMsg=CMClass.getMsg(msg.source(),observer,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> give(s) @x1 to <T-NAMESELF>.",costStr));
+			CMMsg newMsg=CMClass.getMsg(msg.source(),observer,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> give(s) @x1 to <T-NAMESELF>.",costStr));
 			msg.addTrailerMsg(newMsg);
-			newMsg=CMClass.getMsg(observer,I,null,CMMsg.MSG_EXAMINE,_("<S-NAME> examine(s) <T-NAME> very closely."));
+			newMsg=CMClass.getMsg(observer,I,null,CMMsg.MSG_EXAMINE,L("<S-NAME> examine(s) <T-NAME> very closely."));
 			msg.addTrailerMsg(newMsg);
 			final StringBuffer up=new StringBuffer(I.name(observer)+" is made of "+RawMaterial.CODES.NAME(I.material()).toLowerCase()+".\n\r");
 			if((I instanceof Armor)&&(((Armor)I).phyStats().height()>0))
@@ -144,9 +144,9 @@ public class ItemIdentifier extends StdBehavior
 				up.append("It does "+Weapon.TYPE_DESCS[w.weaponType()].toLowerCase()+" damage.\n\r");
 			}
 			up.append(I.secretIdentity());
-			newMsg=CMClass.getMsg(observer,null,null,CMMsg.MSG_SPEAK,_("^T<S-NAME> say(s) '@x1'^?.",up.toString()));
+			newMsg=CMClass.getMsg(observer,null,null,CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) '@x1'^?.",up.toString()));
 			msg.addTrailerMsg(newMsg);
-			newMsg=CMClass.getMsg(observer,source,I,CMMsg.MSG_GIVE,_("<S-NAME> give(s) <O-NAME> to <T-NAMESELF>."));
+			newMsg=CMClass.getMsg(observer,source,I,CMMsg.MSG_GIVE,L("<S-NAME> give(s) <O-NAME> to <T-NAMESELF>."));
 			msg.addTrailerMsg(newMsg);
 			newMsg=CMClass.getMsg(observer,I,null,CMMsg.MSG_DROP,null);
 			msg.addTrailerMsg(newMsg);

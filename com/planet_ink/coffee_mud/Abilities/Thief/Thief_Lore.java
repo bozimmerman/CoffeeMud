@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_Lore extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Lore"; }
-	private final static String localizedName = CMLib.lang()._("Lore");
+	private final static String localizedName = CMLib.lang().L("Lore");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
@@ -61,7 +61,7 @@ public class Thief_Lore extends ThiefSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,auto?"":_("<S-NAME> stud(ys) <T-NAMESELF> and consider(s) for a moment."));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,auto?"":L("<S-NAME> stud(ys) <T-NAMESELF> and consider(s) for a moment."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -71,7 +71,7 @@ public class Thief_Lore extends ThiefSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,target,_("<S-NAME> stud(ys) <T-NAMESELF>, but can't remember a thing."));
+			beneficialVisualFizzle(mob,target,L("<S-NAME> stud(ys) <T-NAMESELF>, but can't remember a thing."));
 		return success;
 	}
 }

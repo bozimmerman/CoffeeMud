@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_CaveIn extends StdTrap
 {
 	@Override public String ID() { return "Trap_CaveIn"; }
-	private final static String localizedName = CMLib.lang()._("cave-in");
+	private final static String localizedName = CMLib.lang().L("cave-in");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -74,7 +74,7 @@ public class Trap_CaveIn extends StdTrap
 			if((I==null)
 			||(super.findNumberOfResource(mob.location(),I.material())<100))
 			{
-					mob.tell(_("You'll need to set down at least 100 pounds of wood first."));
+					mob.tell(L("You'll need to set down at least 100 pounds of wood first."));
 				return false;
 			}
 		}
@@ -84,7 +84,7 @@ public class Trap_CaveIn extends StdTrap
 			if(R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
 			{
 				if(mob!=null)
-					mob.tell(_("You can only set this trap in caves."));
+					mob.tell(L("You can only set this trap in caves."));
 				return false;
 			}
 		}
@@ -104,7 +104,7 @@ public class Trap_CaveIn extends StdTrap
 				||(msg.targetMinor()==CMMsg.TYP_FLEE))
 			   &&(msg.amITarget(affected)))
 			{
-				msg.source().tell(_("The cave-in prevents entry or exit from here."));
+				msg.source().tell(L("The cave-in prevents entry or exit from here."));
 				return false;
 			}
 		}
@@ -118,9 +118,9 @@ public class Trap_CaveIn extends StdTrap
 		{
 			if((doesSaveVsTraps(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) setting off a cave-in!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) setting off a cave-in!"));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> trigger(s) a cave-in!")))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> trigger(s) a cave-in!")))
 			{
 				super.spring(target);
 				if((affected!=null)

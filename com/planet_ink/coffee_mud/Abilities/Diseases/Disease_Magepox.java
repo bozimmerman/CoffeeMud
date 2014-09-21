@@ -35,9 +35,9 @@ import java.util.*;
 public class Disease_Magepox extends Disease
 {
 	@Override public String ID() { return "Disease_Magepox"; }
-	private final static String localizedName = CMLib.lang()._("Magepox");
+	private final static String localizedName = CMLib.lang().L("Magepox");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Magepox)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Magepox)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

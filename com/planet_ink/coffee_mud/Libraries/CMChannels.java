@@ -236,15 +236,15 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			final Set<ChannelFlag> flags = chan.flags;
 			final String mask = chan.mask;
 			if(flags.contains(ChannelFlag.CLANALLYONLY))
-				str.append(_(" This is a channel for clans and their allies."));
+				str.append(L(" This is a channel for clans and their allies."));
 			if(flags.contains(ChannelFlag.CLANONLY))
-				str.append(_(" Only members of the same clan can see messages on this channel."));
+				str.append(L(" Only members of the same clan can see messages on this channel."));
 			if(flags.contains(ChannelFlag.PLAYERREADONLY)||flags.contains(ChannelFlag.READONLY))
-				str.append(_(" This channel is read-only."));
+				str.append(L(" This channel is read-only."));
 			if(flags.contains(ChannelFlag.SAMEAREA))
-				str.append(_(" Only people in the same area can see messages on this channel."));
+				str.append(L(" Only people in the same area can see messages on this channel."));
 			if((mask!=null)&&(mask.trim().length()>0))
-				str.append(_(" The following may read this channel : @x1",CMLib.masking().maskDesc(mask)));
+				str.append(L(" The following may read this channel : @x1",CMLib.masking().maskDesc(mask)));
 		}
 		return str.toString();
 	}
@@ -530,7 +530,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			}
 		}
 		else
-			msg=CMClass.getMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,_("@x1^<CHANNEL \"@x2\"^>You @x3 '@x4'^</CHANNEL^>^N^.",channelColor,channelName,channelName,message),CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),_("@x1^<CHANNEL \"@x2\"^><S-NAME> @x3S '@x4'^</CHANNEL^>^N^.",channelColor,channelName,channelName,message));
+			msg=CMClass.getMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,L("@x1^<CHANNEL \"@x2\"^>You @x3 '@x4'^</CHANNEL^>^N^.",channelColor,channelName,channelName,message),CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),L("@x1^<CHANNEL \"@x2\"^><S-NAME> @x3S '@x4'^</CHANNEL^>^N^.",channelColor,channelName,channelName,message));
 		if((chan.flags.contains(ChannelsLibrary.ChannelFlag.ACCOUNTOOC))
 		&&(pStats!=null)
 		&&(pStats.getAccount()!=null)

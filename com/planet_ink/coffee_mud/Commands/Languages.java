@@ -45,7 +45,7 @@ public class Languages extends Skills
 		final StringBuffer msg=new StringBuffer("");
 		if(parsedOutIndividualSkill(mob,CMParms.combine(commands,1),Ability.ACODE_SPELL))
 			return true;
-		msg.append(_("\n\r^HLanguages known:^? @x1\n\r",getAbilities(mob,mob,Ability.ACODE_LANGUAGE,-1,true,parseOutLevel(commands)).toString()));
+		msg.append(L("\n\r^HLanguages known:^? @x1\n\r",getAbilities(mob,mob,Ability.ACODE_LANGUAGE,-1,true,parseOutLevel(commands)).toString()));
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());
 		return false;

@@ -38,9 +38,9 @@ import java.util.*;
 public class Chant_AcidWard extends Chant
 {
 	@Override public String ID() { return "Chant_AcidWard"; }
-	private final static String localizedName = CMLib.lang()._("Acid Ward");
+	private final static String localizedName = CMLib.lang().L("Acid Ward");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Acid Ward)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Acid Ward)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
@@ -53,7 +53,7 @@ public class Chant_AcidWard extends Chant
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("Your oily protection warms up."));
+			mob.tell(L("Your oily protection warms up."));
 
 		super.unInvoke();
 
@@ -74,7 +74,7 @@ public class Chant_AcidWard extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already warding acid."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already warding acid."));
 			return false;
 		}
 
@@ -84,7 +84,7 @@ public class Chant_AcidWard extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("An oily field of protection appears around <T-NAME>."):_("^S<S-NAME> chant(s) for an oily field of protection around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("An oily field of protection appears around <T-NAME>."):L("^S<S-NAME> chant(s) for an oily field of protection around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -92,7 +92,7 @@ public class Chant_AcidWard extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) for oily protection, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) for oily protection, but fail(s)."));
 
 		return success;
 	}

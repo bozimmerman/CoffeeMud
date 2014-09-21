@@ -101,7 +101,7 @@ public class Slime extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName(_("a slimy protrusion"));
+			naturalWeapon.setName(L("a slimy protrusion"));
 			naturalWeapon.setRanges(0,5);
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_SLIME);
 			naturalWeapon.setUsesRemaining(1000);

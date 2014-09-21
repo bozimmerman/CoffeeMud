@@ -36,7 +36,7 @@ import java.util.*;
 public class Poison_Alcohol extends Poison
 {
 	@Override public String ID() { return "Poison_Alcohol"; }
-	private final static String localizedName = CMLib.lang()._("Alcohol");
+	private final static String localizedName = CMLib.lang().L("Alcohol");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"POISONALCOHOL"});
 	@Override public String displayText(){ return (drunkness<=3)?"(Tipsy)":((drunkness<10)?"(Drunk)":"(Smashed)");}
@@ -135,31 +135,31 @@ public class Poison_Alcohol extends Poison
 			switch(CMLib.dice().roll(1,9,-1))
 			{
 			case 0:
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> stagger(s) around making ugly faces."));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> stagger(s) around making ugly faces."));
 				break;
 			case 1:
-				room.show(mob,null,this,CMMsg.MSG_NOISE,_("<S-NAME> belch(es) grotesquely."));
+				room.show(mob,null,this,CMMsg.MSG_NOISE,L("<S-NAME> belch(es) grotesquely."));
 				break;
 			case 2:
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> spin(s) <S-HIS-HER> head around."));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> spin(s) <S-HIS-HER> head around."));
 				break;
 			case 3:
-				room.show(mob,null,this,CMMsg.MSG_NOISE,_("<S-NAME> can't stop snarling."));
+				room.show(mob,null,this,CMMsg.MSG_NOISE,L("<S-NAME> can't stop snarling."));
 				break;
 			case 4:
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> just fell over!"));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> just fell over!"));
 				break;
 			case 5:
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> look(s) around with glazed over eyes."));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> look(s) around with glazed over eyes."));
 				break;
 			case 6:
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> can't seem to focus."));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> can't seem to focus."));
 				break;
 			case 7:
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> <S-IS-ARE> definitely sh** faced!"));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> <S-IS-ARE> definitely sh** faced!"));
 				break;
 			case 8:
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> stare(s) blankly at the ground."));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> stare(s) blankly at the ground."));
 				break;
 			}
 			else
@@ -167,62 +167,62 @@ public class Poison_Alcohol extends Poison
 			switch(CMLib.dice().roll(1,9,-1))
 			{
 			case 0:
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> stagger(s) around aimlessly."));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> stagger(s) around aimlessly."));
 				break;
 			case 1:
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> burp(s) noncommitally."));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> burp(s) noncommitally."));
 				break;
 			case 2:
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> look(s) around with glazed over eyes."));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> look(s) around with glazed over eyes."));
 				break;
 			case 3:
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> can't seem to focus."));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> can't seem to focus."));
 				break;
 			case 4:
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> almost fell over."));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> almost fell over."));
 				break;
 			case 5:
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> hiccup(s) and almost smile(s)."));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> hiccup(s) and almost smile(s)."));
 				break;
 			case 6:
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> belch(es)!"));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> belch(es)!"));
 				break;
 			case 7:
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> <S-IS-ARE> definitely drunk!"));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> <S-IS-ARE> definitely drunk!"));
 				break;
 			case 8:
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> stare(s) blankly ahead."));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> stare(s) blankly ahead."));
 				break;
 			}
 			else
 			switch(CMLib.dice().roll(1,9,-1))
 			{
 			case 0:
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> stagger(s) around trying to hug everyone."));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> stagger(s) around trying to hug everyone."));
 				break;
 			case 1:
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> hiccup(s) and smile(s)."));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> hiccup(s) and smile(s)."));
 				break;
 			case 2:
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> bob(s) <S-HIS-HER> head back and forth."));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> bob(s) <S-HIS-HER> head back and forth."));
 				break;
 			case 3:
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> can't stop smiling."));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> can't stop smiling."));
 				break;
 			case 4:
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> lean(s) slightly to one side."));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> lean(s) slightly to one side."));
 				break;
 			case 5:
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> look(s) around with glazed over eyes."));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> look(s) around with glazed over eyes."));
 				break;
 			case 6:
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> can't seem to focus."));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> can't seem to focus."));
 				break;
 			case 7:
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> <S-IS-ARE> definitely a bit tipsy!"));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> <S-IS-ARE> definitely a bit tipsy!"));
 				break;
 			case 8:
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> stare(s) blankly at <S-HIS-HER> eyelids."));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> stare(s) blankly at <S-HIS-HER> eyelids."));
 				break;
 			}
 

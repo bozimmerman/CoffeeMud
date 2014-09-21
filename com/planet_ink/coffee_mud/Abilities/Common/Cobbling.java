@@ -40,7 +40,7 @@ import java.util.*;
 public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override public String ID() { return "Cobbling"; }
-	private final static String localizedName = CMLib.lang()._("Cobbling");
+	private final static String localizedName = CMLib.lang().L("Cobbling");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"COBBLE","COBBLING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -156,7 +156,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 		||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
-				commonTell(mob,_("That's not a cobbled item."));
+				commonTell(mob,L("That's not a cobbled item."));
 			return false;
 		}
 		return true;
@@ -181,7 +181,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,_("Make what? Enter \"cobble list\" for a list, \"cobble refit <item>\" to resize, \"cobble learn <item>\", \"cobble scan\", or \"cobble mend <item>\", \"cobble stop\" to cancel."));
+			commonTell(mob,L("Make what? Enter \"cobble list\" for a list, \"cobble refit <item>\" to resize, \"cobble learn <item>\", \"cobble scan\", or \"cobble mend <item>\", \"cobble stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -216,7 +216,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			int toggler=1;
 			final int toggleTop=2;
 			for(int r=0;r<toggleTop;r++)
-				buf.append((r>0?" ":"")+CMStrings.padRight(_("Item"),cols[0])+" "+CMStrings.padRight(_("Lvl"),cols[1])+" "+CMStrings.padRight(_("Amt"),cols[2]));
+				buf.append((r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Amt"),cols[2]));
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -264,9 +264,9 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr=_("<S-NAME> start(s) mending @x1.",buildingI.name());
-			displayText=_("You are mending @x1",buildingI.name());
-			verb=_("mending @x1",buildingI.name());
+			startStr=L("<S-NAME> start(s) mending @x1.",buildingI.name());
+			displayText=L("You are mending @x1",buildingI.name());
+			verb=L("mending @x1",buildingI.name());
 		}
 		else
 		if(str.equalsIgnoreCase("refit"))
@@ -279,25 +279,25 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			if(buildingI==null) return false;
 			if(!buildingI.fitsOn(Wearable.WORN_FEET))
 			{
-				commonTell(mob,_("That's not footwear.  That can't be refitted."));
+				commonTell(mob,L("That's not footwear.  That can't be refitted."));
 				return false;
 			}
 			if(!(buildingI instanceof Armor))
 			{
-				commonTell(mob,_("You don't know how to refit that sort of thing."));
+				commonTell(mob,L("You don't know how to refit that sort of thing."));
 				return false;
 			}
 			if(buildingI.phyStats().height()==0)
 			{
-				commonTell(mob,_("@x1 is already the right size.",buildingI.name(mob)));
+				commonTell(mob,L("@x1 is already the right size.",buildingI.name(mob)));
 				return false;
 			}
 			activity = CraftingActivity.REFITTING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr=_("<S-NAME> start(s) refitting @x1.",buildingI.name());
-			displayText=_("You are refitting @x1",buildingI.name());
-			verb=_("refitting @x1",buildingI.name());
+			startStr=L("<S-NAME> start(s) refitting @x1.",buildingI.name());
+			displayText=L("You are refitting @x1",buildingI.name());
+			verb=L("refitting @x1",buildingI.name());
 		}
 		else
 		{
@@ -329,7 +329,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,_("You don't know how to make a '@x1'.  Try \"cobble list\" for a list.",recipeName));
+				commonTell(mob,L("You don't know how to make a '@x1'.  Try \"cobble list\" for a list.",recipeName));
 				return false;
 			}
 
@@ -361,7 +361,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(buildingI==null)
 			{
-				commonTell(mob,_("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
+				commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
@@ -371,11 +371,11 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			else
 				itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);
-			startStr=_("<S-NAME> start(s) cobbling @x1.",buildingI.name());
-			displayText=_("You are cobbling @x1",buildingI.name());
-			verb=_("cobbling @x1",buildingI.name());
+			startStr=L("<S-NAME> start(s) cobbling @x1.",buildingI.name());
+			displayText=L("You are cobbling @x1",buildingI.name());
+			verb=L("cobbling @x1",buildingI.name());
 			playSound="sanding.wav";
-			buildingI.setDisplayText(_("@x1 lies here",itemName));
+			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
@@ -416,9 +416,9 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 		{
 			messedUp=false;
 			duration=1;
-			verb=_("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
-			startStr=_("<S-NAME> start(s) @x1.",verb);
-			displayText=_("You are @x1",verb);
+			verb=L("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
+			startStr=L("<S-NAME> start(s) @x1.",verb);
+			displayText=L("You are @x1",verb);
 		}
 
 		if(parsedVars.autoGenerate>0)

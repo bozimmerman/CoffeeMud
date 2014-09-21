@@ -37,7 +37,7 @@ import java.util.*;
 public class Spell_EnchantWeapon extends Spell
 {
 	@Override public String ID() { return "Spell_EnchantWeapon"; }
-	private final static String localizedName = CMLib.lang()._("Enchant Weapon");
+	private final static String localizedName = CMLib.lang().L("Enchant Weapon");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
@@ -53,12 +53,12 @@ public class Spell_EnchantWeapon extends Spell
 
 		if(!(target instanceof Weapon))
 		{
-			mob.tell(mob,target,null,_("You can't enchant <T-NAME> with an Enchant Weapon spell!"));
+			mob.tell(mob,target,null,L("You can't enchant <T-NAME> with an Enchant Weapon spell!"));
 			return false;
 		}
 		if(target.phyStats().ability()>2)
 		{
-			mob.tell(_("@x1 cannot be enchanted further.",target.name(mob)));
+			mob.tell(L("@x1 cannot be enchanted further.",target.name(mob)));
 			return false;
 		}
 
@@ -67,17 +67,17 @@ public class Spell_EnchantWeapon extends Spell
 
 		final int experienceToLose=getXPCOSTAdjustment(mob,50);
 		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
-		mob.tell(_("The effort causes you to lose @x1 experience.",""+experienceToLose));
+		mob.tell(L("The effort causes you to lose @x1 experience.",""+experienceToLose));
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> hold(s) <T-NAMESELF> and cast(s) a spell.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> hold(s) <T-NAMESELF> and cast(s) a spell.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> glows!"));
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glows!"));
 				target.basePhyStats().setAbility(target.basePhyStats().ability()+1);
 				target.basePhyStats().setLevel(target.basePhyStats().level()+3);
 				target.recoverPhyStats();
@@ -86,7 +86,7 @@ public class Spell_EnchantWeapon extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> hold(s) <T-NAMESELF> tightly and whisper(s), but fail(s) to cast a spell."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> hold(s) <T-NAMESELF> tightly and whisper(s), but fail(s) to cast a spell."));
 
 
 		// return whether it worked

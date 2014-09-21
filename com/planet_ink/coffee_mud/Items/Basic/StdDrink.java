@@ -124,24 +124,24 @@ public class StdDrink extends StdContainer implements Drink,Item
 				{
 					if(!containsDrink())
 					{
-						mob.tell(_("@x1 is empty.",name()));
+						mob.tell(L("@x1 is empty.",name()));
 						return false;
 					}
 					if((liquidType()==RawMaterial.RESOURCE_SALTWATER)
 					||(liquidType()==RawMaterial.RESOURCE_LAMPOIL))
 					{
-						mob.tell(_("You don't want to be drinking @x1.",RawMaterial.CODES.NAME(liquidType()).toLowerCase()));
+						mob.tell(L("You don't want to be drinking @x1.",RawMaterial.CODES.NAME(liquidType()).toLowerCase()));
 						return false;
 					}
 					return true;
 				}
-				mob.tell(_("You don't have that."));
+				mob.tell(L("You don't have that."));
 				return false;
 			case CMMsg.TYP_FILL:
 				if((totalDrinkContained()>=amountOfLiquidHeld)
 				&&(liquidHeld()<500000))
 				{
-					mob.tell(_("@x1 is full.",name()));
+					mob.tell(L("@x1 is full.",name()));
 					return false;
 				}
 				if((msg.tool() instanceof Container)
@@ -163,7 +163,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 								msg.othersCode(),msg.othersMessage());
 					else
 					{
-						msg.source().tell(_("@x1 has nothing you can fill this with.",((Container)msg.tool()).name(msg.source())));
+						msg.source().tell(L("@x1 has nothing you can fill this with.",((Container)msg.tool()).name(msg.source())));
 						return false;
 					}
 				}
@@ -174,18 +174,18 @@ public class StdDrink extends StdContainer implements Drink,Item
 					final Drink thePuddle=(Drink)msg.tool();
 					if(!thePuddle.containsDrink())
 					{
-						mob.tell(_("@x1 is empty.",thePuddle.name()));
+						mob.tell(L("@x1 is empty.",thePuddle.name()));
 						return false;
 					}
 					if((liquidRemaining()>0)&&(liquidType()!=thePuddle.liquidType()))
 					{
-						mob.tell(_("There is still some @x1 left in @x2.  You must empty it before you can fill it with @x3.",RawMaterial.CODES.NAME(liquidType()).toLowerCase(),name(),RawMaterial.CODES.NAME(thePuddle.liquidType()).toLowerCase()));
+						mob.tell(L("There is still some @x1 left in @x2.  You must empty it before you can fill it with @x3.",RawMaterial.CODES.NAME(liquidType()).toLowerCase(),name(),RawMaterial.CODES.NAME(thePuddle.liquidType()).toLowerCase()));
 						return false;
 
 					}
 					return true;
 				}
-				mob.tell(_("You can't fill @x1 from that.",name()));
+				mob.tell(L("You can't fill @x1 from that.",name()));
 				return false;
 			default:
 				break;
@@ -219,10 +219,10 @@ public class StdDrink extends StdContainer implements Drink,Item
 				final boolean thirsty=mob.curState().getThirst()<=0;
 				final boolean full=!mob.curState().adjThirst(amountOfThirstQuenched,mob.maxState().maxThirst(mob.baseWeight()));
 				if(thirsty)
-					mob.tell(_("You are no longer thirsty."));
+					mob.tell(L("You are no longer thirsty."));
 				else
 				if(full)
-					mob.tell(_("You have drunk all you can."));
+					mob.tell(L("You have drunk all you can."));
 				if(disappearsAfterDrinking
 				||((this instanceof RawMaterial)&&(amountOfLiquidRemaining<=0)))
 					destroy();

@@ -40,7 +40,7 @@ import java.util.*;
 public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override public String ID() { return "Weaponsmithing"; }
-	private final static String localizedName = CMLib.lang()._("Weaponsmithing");
+	private final static String localizedName = CMLib.lang().L("Weaponsmithing");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"WEAPONSMITH","WEAPONSMITHING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -223,7 +223,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
-				commonTell(mob,_("That's not @x1 item.",CMLib.english().startWithAorAn(Name().toLowerCase())));
+				commonTell(mob,L("That's not @x1 item.",CMLib.english().startWithAorAn(Name().toLowerCase())));
 			return false;
 		}
 		return true;
@@ -249,7 +249,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,_("Make what? Enter \"weaponsmith list\" for a list, \"weaponsmith scan\", \"weaponsmith learn <item>\", \"weaponsmith mend <item>\", or \"weaponsmith stop\" to cancel."));
+			commonTell(mob,L("Make what? Enter \"weaponsmith list\" for a list, \"weaponsmith scan\", \"weaponsmith learn <item>\", \"weaponsmith mend <item>\", or \"weaponsmith stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -275,12 +275,12 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 				allFlag=true;
 				mask="";
 			}
-			final StringBuffer buf=new StringBuffer(_("Weapons <S-NAME> <S-IS-ARE> skilled at making:\n\r"));
+			final StringBuffer buf=new StringBuffer(L("Weapons <S-NAME> <S-IS-ARE> skilled at making:\n\r"));
 			int toggler=1;
 			final int toggleTop=displayColumns();
 			final int itemWidth=ListingLibrary.ColFixer.fixColWidth((78/toggleTop)-9,mob.session());
 			for(int r=0;r<toggleTop;r++)
-				buf.append(_("@x1 Lvl @x2@x3",CMStrings.padRight(_("Item"),itemWidth),CMStrings.padRight(_("Amt"),3),((r<(toggleTop-1)?" ":""))));
+				buf.append(L("@x1 Lvl @x2@x3",CMStrings.padRight(L("Item"),itemWidth),CMStrings.padRight(L("Amt"),3),((r<(toggleTop-1)?" ":""))));
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -331,9 +331,9 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr=_("<S-NAME> start(s) mending @x1.",buildingI.name());
-			displayText=_("You are mending @x1",buildingI.name());
-			verb=_("mending @x1",buildingI.name());
+			startStr=L("<S-NAME> start(s) mending @x1.",buildingI.name());
+			displayText=L("You are mending @x1",buildingI.name());
+			verb=L("mending @x1",buildingI.name());
 		}
 		else
 		{
@@ -368,7 +368,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,_("You don't know how to make a '@x1'.  Try 'list' instead.",recipeName));
+				commonTell(mob,L("You don't know how to make a '@x1'.  Try 'list' instead.",recipeName));
 				return false;
 			}
 
@@ -401,19 +401,19 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(buildingI==null)
 			{
-				commonTell(mob,_("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
+				commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
 			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
 			itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);
-			startStr=_("<S-NAME> start(s) smithing @x1.",buildingI.name());
-			displayText=_("You are smithing @x1",buildingI.name());
-			verb=_("smithing @x1",buildingI.name());
+			startStr=L("<S-NAME> start(s) smithing @x1.",buildingI.name());
+			displayText=L("You are smithing @x1",buildingI.name());
+			verb=L("smithing @x1",buildingI.name());
 			playSound="tinktinktink2.wav";
 			final int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-6;
-			buildingI.setDisplayText(_("@x1 lies here",itemName));
+			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
 			buildingI.setBaseValue((CMath.s_int(foundRecipe.get(RCP_VALUE))/4)+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
@@ -445,9 +445,9 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		{
 			messedUp=false;
 			duration=1;
-			verb=_("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
-			startStr=_("<S-NAME> start(s) @x1.",verb);
-			displayText=_("You are @x1",verb);
+			verb=L("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
+			startStr=L("<S-NAME> start(s) @x1.",verb);
+			displayText=L("You are @x1",verb);
 		}
 
 		if(parsedVars.autoGenerate>0)

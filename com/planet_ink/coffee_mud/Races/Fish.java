@@ -87,7 +87,7 @@ public class Fish extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName(_("nasty stingers"));
+			naturalWeapon.setName(L("nasty stingers"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 			naturalWeapon.setUsesRemaining(1000);
 			naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
@@ -119,7 +119,7 @@ public class Fish extends StdRace
 		&&(msg.tool() instanceof Exit)
 		&&(Arrays.binarySearch(getBreathables(), ((Room)msg.target()).getAtmosphere())<0))
 		{
-			((MOB)affected).tell(_("That way looks too dry."));
+			((MOB)affected).tell(L("That way looks too dry."));
 			return false;
 		}
 		return true;

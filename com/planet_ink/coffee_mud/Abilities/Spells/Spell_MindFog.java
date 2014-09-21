@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_MindFog extends Spell
 {
 	@Override public String ID() { return "Spell_MindFog"; }
-	private final static String localizedName = CMLib.lang()._("Mind Fog");
+	private final static String localizedName = CMLib.lang().L("Mind Fog");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Mind Fog)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Mind Fog)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -62,7 +62,7 @@ public class Spell_MindFog extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("You feel a little less foggy in the head."));
+			mob.tell(L("You feel a little less foggy in the head."));
 	}
 
 
@@ -89,7 +89,7 @@ public class Spell_MindFog extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> invoke(s) a spell at <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> invoke(s) a spell at <T-NAMESELF>.^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
@@ -97,13 +97,13 @@ public class Spell_MindFog extends Spell
 				mob.location().send(mob,msg2);
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> begin(s) to feel a bit fogged in the head."));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> begin(s) to feel a bit fogged in the head."));
 					success=maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> invoke(s) at <T-NAMESELF>, but the spell fizzles."));
+			return maliciousFizzle(mob,target,L("<S-NAME> invoke(s) at <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

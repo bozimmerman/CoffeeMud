@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_PhantomHound extends Spell
 {
 	@Override public String ID() { return "Spell_PhantomHound"; }
-	private final static String localizedName = CMLib.lang()._("Phantom Hound");
+	private final static String localizedName = CMLib.lang().L("Phantom Hound");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -81,7 +81,7 @@ public class Spell_PhantomHound extends Spell
 				if((!beast.isInCombat())||(beast.getVictim()!=victim))
 				{
 					final Room R=beast.location();
-					if(R!=null) R.show(beast, null,CMMsg.MSG_OK_VISUAL, _("<S-NAME> vanish(es)!"));
+					if(R!=null) R.show(beast, null,CMMsg.MSG_OK_VISUAL, L("<S-NAME> vanish(es)!"));
 					if(beast.amDead()) beast.setLocation(null);
 					beast.destroy();
 				}
@@ -95,7 +95,7 @@ public class Spell_PhantomHound extends Spell
 					if(pointsLeft<0)
 					{
 						final Room R=beast.location();
-						if(R!=null) R.show(victim, beast,CMMsg.MSG_OK_VISUAL, _("<S-NAME> disbelieve(s) <T-NAME>, who vanish(es)!"));
+						if(R!=null) R.show(victim, beast,CMMsg.MSG_OK_VISUAL, L("<S-NAME> disbelieve(s) <T-NAME>, who vanish(es)!"));
 						if(beast.amDead()) beast.setLocation(null);
 						beast.destroy();
 					}
@@ -157,7 +157,7 @@ public class Spell_PhantomHound extends Spell
 	{
 		if(!mob.isInCombat())
 		{
-			mob.tell(_("You must be in combat to cast this spell!"));
+			mob.tell(L("You must be in combat to cast this spell!"));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -167,15 +167,15 @@ public class Spell_PhantomHound extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> invoke(s) a ferocious phantom assistant.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> invoke(s) a ferocious phantom assistant.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final MOB beast=CMClass.getMOB("GenMOB");
-				beast.setName(_("the phantom hound"));
-				beast.setDisplayText(_("the phantom hound is here"));
+				beast.setName(L("the phantom hound"));
+				beast.setDisplayText(L("the phantom hound is here"));
 				beast.setStartRoom(null);
-				beast.setDescription(_("This is the most ferocious beast you have ever seen."));
+				beast.setDescription(L("This is the most ferocious beast you have ever seen."));
 				beast.basePhyStats().setAttackAdjustment(mob.phyStats().attackAdjustment()+100);
 				beast.basePhyStats().setArmor(mob.basePhyStats().armor()-20);
 				beast.basePhyStats().setDamage(75);
@@ -196,7 +196,7 @@ public class Spell_PhantomHound extends Spell
 				beast.text();
 				beast.bringToLife(mob.location(),true);
 				CMLib.beanCounter().clearZeroMoney(beast,null);
-				beast.location().showOthers(beast,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
+				beast.location().showOthers(beast,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 				beast.setStartRoom(null);
 				victim=mob.getVictim();
 				if(victim!=null)
@@ -209,7 +209,7 @@ public class Spell_PhantomHound extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to invoke a spell, but fizzle(s) the spell."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to invoke a spell, but fizzle(s) the spell."));
 
 
 		// return whether it worked

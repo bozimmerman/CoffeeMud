@@ -58,7 +58,7 @@ public class Email extends StdCommand
 
 			if(CMProps.getVar(CMProps.Str.MAILBOX).length()==0)
 			{
-				mob.tell(_("A mailbox has not been defined by this muds administrators, so mail can be neither sent, or received."));
+				mob.tell(L("A mailbox has not been defined by this muds administrators, so mail can be neither sent, or received."));
 				return false;
 			}
 			final String name=CMParms.combine(commands,1);
@@ -75,7 +75,7 @@ public class Email extends StdCommand
 				{
 					final Vector mymsgs=new Vector();
 					StringBuffer messages=new StringBuffer("^X"+CMStrings.padCenter(mob.Name()+"'s MailBox",cols[0])+"^?^.\n\r");
-					messages.append("^X### "+CMStrings.padRight(_("From"),cols[1])+" "+CMStrings.padRight(_("Date"),cols[2])+" Subject^?^.\n\r");
+					messages.append("^X### "+CMStrings.padRight(L("From"),cols[1])+" "+CMStrings.padRight(L("Date"),cols[2])+" Subject^?^.\n\r");
 					for(int num=0;num<msgs.size();num++)
 					{
 						final JournalsLibrary.JournalEntry thismsg=msgs.get(num);
@@ -97,9 +97,9 @@ public class Email extends StdCommand
 					||(CMath.bset(metaFlags,Command.METAFLAG_AS)))
 					{
 						if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOFORWARD))
-							mob.tell(_("You have no email waiting, but then, it's probably been forwarded to you already."));
+							mob.tell(L("You have no email waiting, but then, it's probably been forwarded to you already."));
 						else
-							mob.tell(_("You have no email waiting."));
+							mob.tell(L("You have no email waiting."));
 						return false;
 					}
 					final Session S=mob.session();
@@ -113,12 +113,12 @@ public class Email extends StdCommand
 						if(S!=null) S.snoopSuspension(-1);
 					}
 					if(mob.session()==null) continue;
-					String s=mob.session().prompt(_("Enter a message #"),"");
+					String s=mob.session().prompt(L("Enter a message #"),"");
 					if((!CMath.isInteger(s))||(mob.session().isStopped()))
 						return false;
 					final int num=CMath.s_int(s);
 					if((num<=0)||(num>mymsgs.size()))
-						mob.tell(_("That is not a valid number."));
+						mob.tell(L("That is not a valid number."));
 					else
 					while((mob.session()!=null)&&(!mob.session().isStopped()))
 					{
@@ -145,7 +145,7 @@ public class Email extends StdCommand
 							if(S!=null) S.snoopSuspension(-1);
 						}
 						if(mob.session()==null) continue;
-						s=mob.session().choose(_("Would you like to D)elete, H)old, or R)eply (D/H/R)? "),_("DHR"),_("H"));
+						s=mob.session().choose(L("Would you like to D)elete, H)old, or R)eply (D/H/R)? "),L("DHR"),L("H"));
 						if(s.equalsIgnoreCase("H"))
 							break;
 						if(s.equalsIgnoreCase("R"))
@@ -156,14 +156,14 @@ public class Email extends StdCommand
 							&&(CMLib.players().getLoadPlayer(from)!=null))
 								execute(mob,new XVector(getAccessWords()[0],from),metaFlags);
 							else
-								mob.tell(_("You can not reply to this email."));
+								mob.tell(L("You can not reply to this email."));
 						}
 						else
 						if(s.equalsIgnoreCase("D"))
 						{
 							CMLib.database().DBDeleteJournal(journalName,key);
 							msgs.remove(thismsg);
-							mob.tell(_("Deleted."));
+							mob.tell(L("Deleted."));
 							break;
 						}
 					}
@@ -174,17 +174,17 @@ public class Email extends StdCommand
 				final MOB M=CMLib.players().getLoadPlayer(name);
 				if(M==null)
 				{
-					mob.tell(_("There is no player called '@x1' to send email to.  If you were trying to read your mail, try EMAIL BOX.  If you were trying to change your email address, just enter EMAIL without any parameters.",name));
+					mob.tell(L("There is no player called '@x1' to send email to.  If you were trying to read your mail, try EMAIL BOX.  If you were trying to change your email address, just enter EMAIL without any parameters.",name));
 					return false;
 				}
 				if(!CMath.bset(M.getBitmap(),MOB.ATT_AUTOFORWARD))
 				{
-					if(!mob.session().confirm(_("Send email to '@x1' (Y/n)?",M.Name()),_("Y")))
+					if(!mob.session().confirm(L("Send email to '@x1' (Y/n)?",M.Name()),L("Y")))
 						return false;
 				}
 				else
 				{
-					if(!mob.session().confirm(_("Send email to '@x1', even though their AUTOFORWARD is turned off (y/N)?",M.Name()),_("N")))
+					if(!mob.session().confirm(L("Send email to '@x1', even though their AUTOFORWARD is turned off (y/N)?",M.Name()),L("N")))
 						return false;
 				}
 				if(CMProps.getIntVar(CMProps.Int.MAXMAILBOX)>0)
@@ -192,28 +192,28 @@ public class Email extends StdCommand
 					final int count=CMLib.database().DBCountJournal(CMProps.getVar(CMProps.Str.MAILBOX),null,M.Name());
 					if(count>=CMProps.getIntVar(CMProps.Int.MAXMAILBOX))
 					{
-						mob.tell(_("@x1's mailbox is full.",M.Name()));
+						mob.tell(L("@x1's mailbox is full.",M.Name()));
 						return false;
 					}
 				}
 				if(mob.session()==null) return false;
-				final String subject=mob.session().prompt(_("Email Subject: "),"").trim();
+				final String subject=mob.session().prompt(L("Email Subject: "),"").trim();
 				if(subject.length()==0)
 				{
-					mob.tell(_("Aborted"));
+					mob.tell(L("Aborted"));
 					return false;
 				}
 				if(mob.session()==null) return false;
-				String message=mob.session().prompt(_("Enter your message\n\r: "),"").trim();
+				String message=mob.session().prompt(L("Enter your message\n\r: "),"").trim();
 				if(message.trim().length()==0)
 				{
-					mob.tell(_("Aborted"));
+					mob.tell(L("Aborted"));
 					return false;
 				}
 				if(mob.session()==null) return false;
 				message+="\n\r\n\rThis message was sent through the "+CMProps.getVar(CMProps.Str.MUDNAME)+" mail server at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+", port"+CMProps.getVar(CMProps.Str.MUDPORTS)+".  Please contact the administrators regarding any abuse of this system.\n\r";
 				CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX), mob.Name(), M.Name(), subject, message);
-				mob.tell(_("Your email has been sent."));
+				mob.tell(L("Your email has been sent."));
 				return true;
 			}
 		}
@@ -222,29 +222,29 @@ public class Email extends StdCommand
 			if(CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("DISABLED"))
 			{
 				if(commands!=null)
-					mob.session().println(_("\n\rAn email address is not required by this system."));
+					mob.session().println(L("\n\rAn email address is not required by this system."));
 				return true;
 			}
-			mob.session().println(_("\n\rYou have no email address on file for this character."));
+			mob.session().println(L("\n\rYou have no email address on file for this character."));
 		}
 		else
 		{
 			if(commands==null) return true;
-			final String change=mob.session().prompt(_("You currently have '@x1' set as the email address for this character.\n\rChange it (y/N)?",pstats.getEmail()),_("N"));
+			final String change=mob.session().prompt(L("You currently have '@x1' set as the email address for this character.\n\rChange it (y/N)?",pstats.getEmail()),L("N"));
 			if(change.toUpperCase().startsWith("N")) return false;
 		}
 		if((CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
 		&&(commands!=null)
 		&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0))
-			mob.session().println(_("\n\r** Changing your email address will cause you to be logged off, and a new password to be generated and emailed to the new address. **\n\r"));
-		String newEmail=mob.session().prompt(_("New E-mail Address:"));
+			mob.session().println(L("\n\r** Changing your email address will cause you to be logged off, and a new password to be generated and emailed to the new address. **\n\r"));
+		String newEmail=mob.session().prompt(L("New E-mail Address:"));
 		if(newEmail==null) return false;
 		newEmail=newEmail.trim();
 		if(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("OPTION"))
 		{
 			if(newEmail.length()<6) return false;
 			if(newEmail.indexOf('@')<0) return false;
-			String confirmEmail=mob.session().prompt(_("Confirm that '@x1' is correct by re-entering.\n\rRe-enter:",newEmail));
+			String confirmEmail=mob.session().prompt(L("Confirm that '@x1' is correct by re-entering.\n\rRe-enter:",newEmail));
 			if(confirmEmail==null) return false;
 			confirmEmail=confirmEmail.trim();
 			if(confirmEmail.length()==0) return false;
@@ -264,7 +264,7 @@ public class Email extends StdCommand
 					  mob.Name(),
 					  "Password for "+mob.Name(),
 					  "Your new password for "+mob.Name()+" is: "+password+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.Str.MUDPORTS)+".\n\rYou may use the PASSWORD command to change it once you are online.");
-			mob.tell(_("You will receive an email with your new password shortly.  Goodbye."));
+			mob.tell(L("You will receive an email with your new password shortly.  Goodbye."));
 			if(mob.session()!=null)
 			{
 				try{Thread.sleep(1000);}catch(final Exception e){}

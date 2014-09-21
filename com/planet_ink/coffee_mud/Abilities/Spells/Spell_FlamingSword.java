@@ -38,7 +38,7 @@ import java.util.*;
 public class Spell_FlamingSword extends Spell
 {
 	@Override public String ID() { return "Spell_FlamingSword"; }
-	private final static String localizedName = CMLib.lang()._("Flaming Sword");
+	private final static String localizedName = CMLib.lang().L("Flaming Sword");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
@@ -88,7 +88,7 @@ public class Spell_FlamingSword extends Spell
 		if(item==null) return;
 		final Room room=CMLib.map().roomLocation(item);
 		if((canBeUninvoked())&&(room!=null))
-			room.showHappens(CMMsg.MSG_OK_VISUAL,item,_("<S-YOUPOSS> flaming sword is consumed!"));
+			room.showHappens(CMMsg.MSG_OK_VISUAL,item,L("<S-YOUPOSS> flaming sword is consumed!"));
 		super.unInvoke();
 		if((canBeUninvoked())&&(room!=null))
 		{
@@ -110,7 +110,7 @@ public class Spell_FlamingSword extends Spell
 		||(((((Item)target).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)
 			&&((((Item)target).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL)))
 		{
-			mob.tell(_("This magic only affects metal swords."));
+			mob.tell(L("This magic only affects metal swords."));
 			return false;
 		}
 
@@ -120,7 +120,7 @@ public class Spell_FlamingSword extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("^S<T-NAME> erupts into flame!"):_("^S<S-NAME> invoke(s) a writhing flame around <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("^S<T-NAME> erupts into flame!"):L("^S<S-NAME> invoke(s) a writhing flame around <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -129,7 +129,7 @@ public class Spell_FlamingSword extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,mob.location(),_("<S-NAME> attempt(s) to invoke a flame, but cause(s) a puff of smoke."));
+			beneficialWordsFizzle(mob,mob.location(),L("<S-NAME> attempt(s) to invoke a flame, but cause(s) a puff of smoke."));
 
 		return success;
 	}

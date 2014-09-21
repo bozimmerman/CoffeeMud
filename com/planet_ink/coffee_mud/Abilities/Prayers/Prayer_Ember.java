@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Ember extends Prayer
 {
 	@Override public String ID() { return "Prayer_Ember"; }
-	private final static String localizedName = CMLib.lang()._("Ember");
+	private final static String localizedName = CMLib.lang().L("Ember");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -60,7 +60,7 @@ public class Prayer_Ember extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?_("A flaming ember assaults <T-NAME>."):_("^S<S-NAME> @x1.  A flaming ember appears and attacks <T-NAMESELF>!^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?L("A flaming ember assaults <T-NAME>."):L("^S<S-NAME> @x1.  A flaming ember appears and attacks <T-NAMESELF>!^?",prayWord(mob)));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_FIRE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			final Room R=target.location();
 			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
@@ -75,7 +75,7 @@ public class Prayer_Ember extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> point(s) at <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
+			return maliciousFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

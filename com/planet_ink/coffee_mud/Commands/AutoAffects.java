@@ -100,14 +100,14 @@ public class AutoAffects extends StdCommand
 				{
 					final Physical P=mob.location().fetchFromMOBRoomFavorsItems(mob,null,name,Wearable.FILTER_ANY);
 					if(P==null)
-						S.colorOnlyPrint(_("You don't see @x1 here.",name));
+						S.colorOnlyPrint(L("You don't see @x1 here.",name));
 					else
 					{
 						if(S==mob.session())
-							S.colorOnlyPrint(_(" \n\r^!@x1 is affected by: ^?",P.name()));
+							S.colorOnlyPrint(L(" \n\r^!@x1 is affected by: ^?",P.name()));
 						final String msg=getAutoAffects(mob,P);
 						if(msg.length()<5)
-							S.colorOnlyPrintln(_("Nothing!\n\r^N"));
+							S.colorOnlyPrintln(L("Nothing!\n\r^N"));
 						else
 							S.colorOnlyPrintln(msg);
 					}
@@ -116,10 +116,10 @@ public class AutoAffects extends StdCommand
 
 			}
 			if(S==mob.session())
-				S.colorOnlyPrint(_(" \n\r^!Your auto-invoked skills are:^?"));
+				S.colorOnlyPrint(L(" \n\r^!Your auto-invoked skills are:^?"));
 			final String msg=getAutoAffects(mob,mob);
 			if(msg.length()<5)
-				S.colorOnlyPrintln(_(" Non-existant!\n\r^N"));
+				S.colorOnlyPrintln(L(" Non-existant!\n\r^N"));
 			else
 				S.colorOnlyPrintln(msg);
 		}

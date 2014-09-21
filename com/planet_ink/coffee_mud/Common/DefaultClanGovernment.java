@@ -508,7 +508,7 @@ public class DefaultClanGovernment implements ClanGovernment
 		P.setID(positions.length+""+Math.random());
 		P.setRoleID(0);
 		P.setRank(highestRank);
-		P.setName(CMLib.lang()._("Unnamed"));
+		P.setName(CMLib.lang().L("Unnamed"));
 		P.setPluralName("Unnameds");
 		P.setMax(Integer.MAX_VALUE);
 		P.setInnerMaskStr("");
@@ -768,9 +768,9 @@ public class DefaultClanGovernment implements ClanGovernment
 			return null;
 		if(helpStr==null)
 		{
-			final StringBuilder str=new StringBuilder(CMLib.lang()._("\n\rOrganization type: "+getName()+"\n\r\n\r"));
+			final StringBuilder str=new StringBuilder(CMLib.lang().L("\n\rOrganization type: "+getName()+"\n\r\n\r"));
 			str.append(getLongDesc()).append("\n\r");
-			str.append(CMLib.lang()._("\n\rAuthority Chart:\n\r\n\r"));
+			str.append(CMLib.lang().L("\n\rAuthority Chart:\n\r\n\r"));
 			final List<ClanPosition> showablePositions=new Vector<ClanPosition>();
 			for(final ClanPosition P : getPositions())
 			{
@@ -825,7 +825,7 @@ public class DefaultClanGovernment implements ClanGovernment
 				}
 
 			final int commandColLen = funcMaxLen;
-			str.append(CMStrings.padRight(CMLib.lang()._("Command"),commandColLen-1)).append("!");
+			str.append(CMStrings.padRight(CMLib.lang().L("Command"),commandColLen-1)).append("!");
 			for(int p=0;p<posses.length;p++)
 			{
 				final ClanPosition pos = sortedPositions.get(p);
@@ -877,7 +877,7 @@ public class DefaultClanGovernment implements ClanGovernment
 			if((clanAbilityLevels!=null)&&(clanEffectLevels!=null)
 			&&(clanAbilityLevels.length>0)&&(clanEffectLevels.length>0))
 			{
-				str.append(CMLib.lang()._("\n\rBenefits per Clan Level:\n\r"));
+				str.append(CMLib.lang().L("\n\rBenefits per Clan Level:\n\r"));
 				int maxLevel=-1;
 				for(final int x : clanEffectLevels) if(x>maxLevel) maxLevel=x;
 				for(final int x : clanAbilityLevels) if(x>maxLevel) maxLevel=x;
@@ -904,11 +904,11 @@ public class DefaultClanGovernment implements ClanGovernment
 									roleNames=CMLib.english().toEnglishStringList(roleList);
 								}
 								else
-									roleNames=CMLib.lang()._("Members");
+									roleNames=CMLib.lang().L("Members");
 								A.setMiscText(clanEffectParms[x]);
 								String desc=A.accountForYourself();
 								if((desc==null)||(desc.length()==0))
-									desc=CMLib.lang()._("@x1 gain the following effect: @x2",roleNames,A.name());
+									desc=CMLib.lang().L("@x1 gain the following effect: @x2",roleNames,A.name());
 								levelBenefits.add(desc);
 							}
 						}
@@ -932,15 +932,15 @@ public class DefaultClanGovernment implements ClanGovernment
 									roleNames=CMLib.english().toEnglishStringList(roleList);
 								}
 								else
-									roleNames=CMLib.lang()._("Members");
+									roleNames=CMLib.lang().L("Members");
 								if(clanAbilityQuals[x])
-									levelBenefits.add(CMLib.lang()._("@x1 qualify for: @x2",roleNames,A.name()));
+									levelBenefits.add(CMLib.lang().L("@x1 qualify for: @x2",roleNames,A.name()));
 								else
-									levelBenefits.add(CMLib.lang()._("@x1 automatically gain: @x2",roleNames,A.name()));
+									levelBenefits.add(CMLib.lang().L("@x1 automatically gain: @x2",roleNames,A.name()));
 							}
 						}
 					for(final String bene : levelBenefits)
-						str.append(CMLib.lang()._("Level @x1: @x2\n\r",""+l,bene));
+						str.append(CMLib.lang().L("Level @x1: @x2\n\r",""+l,bene));
 				}
 			}
 			helpStr=str.toString();

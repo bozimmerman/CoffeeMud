@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_Shapelessness extends Chant
 {
 	@Override public String ID() { return "Chant_Shapelessness"; }
-	private final static String localizedName = CMLib.lang()._("Shapelessness");
+	private final static String localizedName = CMLib.lang().L("Shapelessness");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Shapelessness)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Shapelessness)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -59,7 +59,7 @@ public class Chant_Shapelessness extends Chant
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> return(s) to material form."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> return(s) to material form."));
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class Chant_Shapelessness extends Chant
 				&&(!((Exit)msg.tool()).isOpen())
 				&&(msg.source().numItems()>0))
 				{
-					msg.source().tell(_("Your corporeal equipment, suspended in your shapeless form, will not pass through the door."));
+					msg.source().tell(L("Your corporeal equipment, suspended in your shapeless form, will not pass through the door."));
 					return false;
 				}
 				break;
@@ -107,7 +107,7 @@ public class Chant_Shapelessness extends Chant
 			case CMMsg.TYP_INSTALL:
 			case CMMsg.TYP_ENHANCE:
 			case CMMsg.TYP_REPAIR:
-				msg.source().tell(_("You have trouble manipulating matter in this form."));
+				msg.source().tell(L("You have trouble manipulating matter in this form."));
 				return false;
 			case CMMsg.TYP_THROW:
 			case CMMsg.TYP_WEAPONATTACK:
@@ -116,7 +116,7 @@ public class Chant_Shapelessness extends Chant
 			case CMMsg.TYP_PUSH:
 			case CMMsg.TYP_OPEN:
 			case CMMsg.TYP_CLOSE:
-				msg.source().tell(_("You fail your attempt to affect matter in this form."));
+				msg.source().tell(L("You fail your attempt to affect matter in this form."));
 				return false;
 			}
 		}
@@ -145,12 +145,12 @@ public class Chant_Shapelessness extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already shapeless."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already shapeless."));
 			return false;
 		}
 		if((!auto)&&(!mob.location().getArea().getClimateObj().canSeeTheMoon(mob.location(),null)))
 		{
-			mob.tell(_("You must be able under the moons glow for this magic to work."));
+			mob.tell(L("You must be able under the moons glow for this magic to work."));
 			return false;
 		}
 
@@ -165,16 +165,16 @@ public class Chant_Shapelessness extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant that <T-NAME> be given a shapeless form.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant that <T-NAME> be given a shapeless form.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> shimmer(s) and become(s) ethereal!"));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> shimmer(s) and become(s) ethereal!"));
 				beneficialAffect(mob,target,asLevel,3);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) for a new shape, but nothing happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) for a new shape, but nothing happens."));
 
 
 		// return whether it worked

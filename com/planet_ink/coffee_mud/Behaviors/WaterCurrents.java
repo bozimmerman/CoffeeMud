@@ -143,12 +143,12 @@ public class WaterCurrents extends ActiveTicker
 					if(todo.elementAt(m) instanceof MOB)
 					{
 						M=(MOB)todo.elementAt(m);
-						final CMMsg themsg=CMClass.getMsg(M,M,new AWaterCurrent(),CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> swept @x1 by the current.",Directions.getDirectionName(dir).toLowerCase()));
+						final CMMsg themsg=CMClass.getMsg(M,M,new AWaterCurrent(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> swept @x1 by the current.",Directions.getDirectionName(dir).toLowerCase()));
 						if(R.okMessage(M,themsg))
 						{
 							R.send(M,themsg);
 							R2.bringMobHere(M,false);
-							R2.showOthers(M,null,new AWaterCurrent(),CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> swept in from @x1 by the current.",Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()));
+							R2.showOthers(M,null,new AWaterCurrent(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> swept in from @x1 by the current.",Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()));
 							CMLib.commands().postLook(M,true);
 						}
 					}
@@ -156,9 +156,9 @@ public class WaterCurrents extends ActiveTicker
 					if(todo.elementAt(m) instanceof Item)
 					{
 						I=(Item)todo.elementAt(m);
-						R.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 is swept @x2 by the current.",I.name(),Directions.getDirectionName(dir).toLowerCase()));
+						R.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 is swept @x2 by the current.",I.name(),Directions.getDirectionName(dir).toLowerCase()));
 						R2.moveItemTo(I,ItemPossessor.Expire.Player_Drop);
-						R2.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 is swept in from @x2 by the current.",I.name(),Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()));
+						R2.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 is swept in from @x2 by the current.",I.name(),Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()));
 					}
 				}
 			}
@@ -237,7 +237,7 @@ public class WaterCurrents extends ActiveTicker
 		@Override
 		public ExpertiseLibrary.SkillCost getTrainingCost(MOB mob)
 		{ return new ExpertiseLibrary.SkillCost(ExpertiseLibrary.CostType.TRAIN, Double.valueOf(1.0));}
-		@Override public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+		@Override public String L(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 		@Override public long flags(){return Ability.FLAG_TRANSPORTING;}
 		@Override public int getTickStatus(){return Tickable.STATUS_NOT;}
 		@Override public int usageType(){return 0;}

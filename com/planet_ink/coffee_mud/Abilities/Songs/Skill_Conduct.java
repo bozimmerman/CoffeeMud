@@ -35,9 +35,9 @@ import java.util.*;
 public class Skill_Conduct extends BardSkill
 {
 	@Override public String ID() { return "Skill_Conduct"; }
-	private final static String localizedName = CMLib.lang()._("Conduct Symphony");
+	private final static String localizedName = CMLib.lang().L("Conduct Symphony");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Conduct Symphony)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Conduct Symphony)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -53,7 +53,7 @@ public class Skill_Conduct extends BardSkill
 		Ability SYMPHONY=mob.fetchAbility("Play_Symphony");
 		if((!auto)&&(SYMPHONY==null))
 		{
-			mob.tell(_("But you don't know how to play a symphony."));
+			mob.tell(L("But you don't know how to play a symphony."));
 			return false;
 		}
 		if(SYMPHONY==null)
@@ -71,9 +71,9 @@ public class Skill_Conduct extends BardSkill
 		new Play().unplayAll(mob,mob);
 		if(success)
 		{
-			String str=auto?_("^SSymphonic Conduction Begins!^?"):_("^S<S-NAME> begin(s) to wave <S-HIS-HER> arms in a mystical way!^?");
+			String str=auto?L("^SSymphonic Conduction Begins!^?"):L("^S<S-NAME> begin(s) to wave <S-HIS-HER> arms in a mystical way!^?");
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
-				str=_("^S<S-NAME> start(s) conducting the symphony over again.^?");
+				str=L("^S<S-NAME> start(s) conducting the symphony over again.^?");
 
 			final CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_CAST_SOMANTIC_SPELL,str);
 			if(mob.location().okMessage(mob,msg))
@@ -107,7 +107,7 @@ public class Skill_Conduct extends BardSkill
 			}
 		}
 		else
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> wave(s) <S-HIS-HER> arms around, looking silly."));
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,L("<S-NAME> wave(s) <S-HIS-HER> arms around, looking silly."));
 
 		return success;
 	}

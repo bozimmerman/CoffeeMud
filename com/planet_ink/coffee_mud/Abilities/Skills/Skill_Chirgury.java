@@ -37,7 +37,7 @@ import java.util.*;
 public class Skill_Chirgury extends StdSkill
 {
 	@Override public String ID() { return "Skill_Chirgury"; }
-	private final static String localizedName = CMLib.lang()._("Chirurgy");
+	private final static String localizedName = CMLib.lang().L("Chirurgy");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
@@ -68,7 +68,7 @@ public class Skill_Chirgury extends StdSkill
 	{
 		if(commands.size()==0)
 		{
-			mob.tell(_("Remove what from whom? Parts include: @x1",CMParms.toStringList(parts)));
+			mob.tell(L("Remove what from whom? Parts include: @x1",CMParms.toStringList(parts)));
 			return false;
 
 		}
@@ -90,7 +90,7 @@ public class Skill_Chirgury extends StdSkill
 			final StringBuilder str=new StringBuilder("");
 			for(final Object[] o : parts)
 				str.append(", ").append(o[0].toString());
-			mob.tell(_("'@x1' is not a valid part to remove.  Try one of these: @x2",part,str.toString().substring(2)));
+			mob.tell(L("'@x1' is not a valid part to remove.  Try one of these: @x2",part,str.toString().substring(2)));
 			return false;
 		}
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY,false,true);
@@ -106,7 +106,7 @@ public class Skill_Chirgury extends StdSkill
 		if((partSet[1] instanceof Integer)
 		&&(C!=null) && (C.getMyRace().bodyMask()[((Integer)partSet[1]).intValue()]<=0))
 		{
-			mob.tell(_("@x1 doesn't have a @x2",target.name(mob),part));
+			mob.tell(L("@x1 doesn't have a @x2",target.name(mob),part));
 			return false;
 		}
 
@@ -114,32 +114,32 @@ public class Skill_Chirgury extends StdSkill
 			for(final String raceCat : badRaceCats)
 				if(C.getMyRace().racialCategory().equalsIgnoreCase(raceCat))
 				{
-					mob.tell(_("@x1 doesn't have a @x2",target.name(mob),part));
+					mob.tell(L("@x1 doesn't have a @x2",target.name(mob),part));
 					return false;
 				}
 
 		if((partCode==0)&&((!(target instanceof MOB))||(target.fetchEffect("Pregnancy")==null)))
 		{
-			mob.tell(_("A baby can not be removed from @x1.",target.name(mob)));
+			mob.tell(L("A baby can not be removed from @x1.",target.name(mob)));
 			return false;
 		}
 
 		if((target instanceof MOB)&&((!CMLib.flags().isBoundOrHeld(target))||(!CMLib.flags().isSleeping(target))))
 		{
-			mob.tell(_("@x1 must be bound, and asleep on an operating bed before you can perform chirurgy.",((MOB)target).charStats().HeShe()));
+			mob.tell(L("@x1 must be bound, and asleep on an operating bed before you can perform chirurgy.",((MOB)target).charStats().HeShe()));
 			return false;
 		}
 
 		if((partCode>1)&&(!(target instanceof DeadBody)))
 		{
-			mob.tell(_("That can only be removed from a corpse."));
+			mob.tell(L("That can only be removed from a corpse."));
 			return false;
 		}
 
 		Ability oldChirge=target.fetchEffect(ID());
 		if((oldChirge!=null)&&(oldChirge.text().indexOf(";"+parts[partCode])>=0))
 		{
-			mob.tell(_("That has already been removed from @x1.",target.name(mob)));
+			mob.tell(L("That has already been removed from @x1.",target.name(mob)));
 			return false;
 		}
 
@@ -147,20 +147,20 @@ public class Skill_Chirgury extends StdSkill
 		Weapon ww=null;
 		if((w==null)||(!(w instanceof Weapon)))
 		{
-			mob.tell(_("You cannot perform chirurgy without a weapon!"));
+			mob.tell(L("You cannot perform chirurgy without a weapon!"));
 			return false;
 		}
 
 		ww=(Weapon)w;
 		if((ww.weaponType()!=Weapon.TYPE_PIERCING)&&(ww.weaponType()!=Weapon.TYPE_SLASHING))
 		{
-			mob.tell(_("You cannot perform chirurgy with a @x1!",ww.name()));
+			mob.tell(L("You cannot perform chirurgy with a @x1!",ww.name()));
 			return false;
 		}
 
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell(_("You are too far away to try that!"));
+			mob.tell(L("You are too far away to try that!"));
 			return false;
 		}
 
@@ -175,7 +175,7 @@ public class Skill_Chirgury extends StdSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":_("^S<S-NAME> carefully perform(s) chirurgy upon <T-NAME>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("^S<S-NAME> carefully perform(s) chirurgy upon <T-NAME>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -209,11 +209,11 @@ public class Skill_Chirgury extends StdSkill
 						if(target instanceof MOB)
 							CMLib.combat().postDamage(mob,(MOB)target,this,amt*3,CMMsg.MASK_ALWAYS|CMMsg.TYP_DISEASE,-1,"The bleeding <DAMAGE> <T-NAME>!");
 					}
-					meat.setName(_("the @x1 of @x2",parts[partCode][0].toString().toLowerCase(),target.Name()));
+					meat.setName(L("the @x1 of @x2",parts[partCode][0].toString().toLowerCase(),target.Name()));
 					if((parts[partCode][0].toString().endsWith("S"))&&(!parts[partCode][0].toString().equalsIgnoreCase("PANCREAS")))
-						meat.setDisplayText(_("the @x1 of @x2 lie here.",parts[partCode][0].toString().toLowerCase(),target.Name()));
+						meat.setDisplayText(L("the @x1 of @x2 lie here.",parts[partCode][0].toString().toLowerCase(),target.Name()));
 					else
-						meat.setDisplayText(_("the @x1 of @x2 lies here.",parts[partCode][0].toString().toLowerCase(),target.Name()));
+						meat.setDisplayText(L("the @x1 of @x2 lies here.",parts[partCode][0].toString().toLowerCase(),target.Name()));
 					CMLib.materials().addEffectsToResource(meat);
 					meat.recoverPhyStats();
 					meat.text();
@@ -223,7 +223,7 @@ public class Skill_Chirgury extends StdSkill
 						meat.recoverPhyStats();
 						meat.text();
 						mob.location().addItem(meat,ItemPossessor.Expire.Player_Drop);
-						mob.location().show(mob,meat,null,CMMsg.MSG_GET,(i==0)?_("<S-NAME> remove(s) <T-NAME> from @x1.",target.name()):null);
+						mob.location().show(mob,meat,null,CMMsg.MSG_GET,(i==0)?L("<S-NAME> remove(s) <T-NAME> from @x1.",target.name()):null);
 					}
 				}
 				else
@@ -235,8 +235,8 @@ public class Skill_Chirgury extends StdSkill
 						target.delEffect(preg);
 						preg.setAffectedOne(null);
 						final DeadBody baby=(DeadBody)CMClass.getItem("GenCorpse");
-						baby.setName(_("@x1's bloody fetus",target.Name()));
-						baby.setDisplayText(_("@x1's bloody fetus is lying here.",target.Name()));
+						baby.setName(L("@x1's bloody fetus",target.Name()));
+						baby.setDisplayText(L("@x1's bloody fetus is lying here.",target.Name()));
 						baby.setTimeOfDeath(System.currentTimeMillis());
 						baby.setDestroyAfterLooting(false);
 						baby.setKillerName(mob.Name());
@@ -253,17 +253,17 @@ public class Skill_Chirgury extends StdSkill
 							baby.charStats().setStat(i,1);
 						baby.charStats().setMyRace(((MOB)target).charStats().getMyRace());
 						baby.recoverPhyStats();
-						baby.setDescription(_("@x1 body parts can be faintly made out in the twisted and mangled flesh.",CMStrings.capitalizeAndLower(baby.charStats().hisher())));
+						baby.setDescription(L("@x1 body parts can be faintly made out in the twisted and mangled flesh.",CMStrings.capitalizeAndLower(baby.charStats().hisher())));
 						baby.setMobDescription(baby.description());
 						baby.text();
 						mob.location().addItem(baby,ItemPossessor.Expire.Player_Drop);
-						mob.location().show(mob,baby,null,CMMsg.MSG_GET,_("<S-NAME> remove(s) <T-NAME> from @x1.",target.name()));
+						mob.location().show(mob,baby,null,CMMsg.MSG_GET,L("<S-NAME> remove(s) <T-NAME> from @x1.",target.name()));
 					}
 				}
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> attempt(s) to cut open <T-NAME>, but lose(s) concentration."));
+			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> attempt(s) to cut open <T-NAME>, but lose(s) concentration."));
 
 
 		// return whether it worked

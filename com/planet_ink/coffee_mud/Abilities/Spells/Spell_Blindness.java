@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Blindness extends Spell
 {
 	@Override public String ID() { return "Spell_Blindness"; }
-	private final static String localizedName = CMLib.lang()._("Blind");
+	private final static String localizedName = CMLib.lang().L("Blind");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Blind)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Blind)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -62,7 +62,7 @@ public class Spell_Blindness extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your vision returns."));
+			mob.tell(L("Your vision returns."));
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class Spell_Blindness extends Spell
 
 		if((!auto)&&(target.charStats().getBodyPart(Race.BODY_EYE)==0))
 		{
-			mob.tell(_("@x1 has no eyes, and would not be affected.",target.name(mob)));
+			mob.tell(L("@x1 has no eyes, and would not be affected.",target.name(mob)));
 			return false;
 		}
 
@@ -111,19 +111,19 @@ public class Spell_Blindness extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^SYou invoke a flashing light into <T-NAME>s eyes.^?"),verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> invoke(s) a flashing light into your eyes.^?"),CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,auto?"":_("^S<S-NAME> invokes a flashing light into <T-NAME>s eyes.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^SYou invoke a flashing light into <T-NAME>s eyes.^?"),verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> invoke(s) a flashing light into your eyes.^?"),CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,auto?"":L("^S<S-NAME> invokes a flashing light into <T-NAME>s eyes.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> go(es) blind!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> go(es) blind!"));
 					success=maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> cast(s) a spell at <T-NAMESELF>, but the magic fizzles."));
+			return maliciousFizzle(mob,target,L("<S-NAME> cast(s) a spell at <T-NAMESELF>, but the magic fizzles."));
 
 		// return whether it worked
 		return success;

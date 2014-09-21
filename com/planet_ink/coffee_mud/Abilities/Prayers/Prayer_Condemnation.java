@@ -38,7 +38,7 @@ import java.util.*;
 public class Prayer_Condemnation extends Prayer
 {
 	@Override public String ID() { return "Prayer_Condemnation"; }
-	private final static String localizedName = CMLib.lang()._("Condemnation");
+	private final static String localizedName = CMLib.lang().L("Condemnation");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -65,7 +65,7 @@ public class Prayer_Condemnation extends Prayer
 
 		if((success)&&(warrants.size()>0))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 to condemn <T-NAMESELF>.^?",prayForWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 to condemn <T-NAMESELF>.^?",prayForWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -80,7 +80,7 @@ public class Prayer_Condemnation extends Prayer
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 to condemn <T-NAMESELF>, but nothing happens.",prayForWord(mob)));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 to condemn <T-NAMESELF>, but nothing happens.",prayForWord(mob)));
 
 
 		// return whether it worked

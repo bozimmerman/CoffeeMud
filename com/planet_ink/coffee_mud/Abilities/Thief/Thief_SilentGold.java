@@ -38,7 +38,7 @@ public class Thief_SilentGold extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_SilentGold"; }
 	@Override public String displayText() {return "(Silent AutoGold)";}
-	private final static String localizedName = CMLib.lang()._("Silent AutoGold");
+	private final static String localizedName = CMLib.lang().L("Silent AutoGold");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -75,7 +75,7 @@ public class Thief_SilentGold extends ThiefSkill
 						mob.location().recoverRoomStats();
 						final MOB victim=mob.getVictim();
 						mob.setVictim(null);
-						final CMMsg msg2=CMClass.getMsg(mob,C,this,CMMsg.MSG_THIEF_ACT,_("You silently loot <T-NAME> from the corpse of @x1",msg.source().name(mob)),CMMsg.MSG_THIEF_ACT,null,CMMsg.NO_EFFECT,null);
+						final CMMsg msg2=CMClass.getMsg(mob,C,this,CMMsg.MSG_THIEF_ACT,L("You silently loot <T-NAME> from the corpse of @x1",msg.source().name(mob)),CMMsg.MSG_THIEF_ACT,null,CMMsg.NO_EFFECT,null);
 						if(mob.location().okMessage(mob,msg2))
 						{
 							mob.location().send(mob,msg2);
@@ -93,7 +93,7 @@ public class Thief_SilentGold extends ThiefSkill
 	{
 		if((mob.fetchEffect(ID())!=null))
 		{
-			mob.tell(_("You are no longer automatically looting gold from corpses silently."));
+			mob.tell(L("You are no longer automatically looting gold from corpses silently."));
 			mob.delEffect(mob.fetchEffect(ID()));
 			return false;
 		}
@@ -104,13 +104,13 @@ public class Thief_SilentGold extends ThiefSkill
 
 		if(success)
 		{
-			mob.tell(_("You will now automatically loot gold from corpses silently."));
+			mob.tell(L("You will now automatically loot gold from corpses silently."));
 			beneficialAffect(mob,mob,asLevel,0);
 			final Ability A=mob.fetchEffect(ID());
 			if(A!=null) A.makeLongLasting();
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to start silently looting gold from corpses, but fail(s)."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to start silently looting gold from corpses, but fail(s)."));
 		return success;
 	}
 

@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_CharmArea extends Chant
 {
 	@Override public String ID() { return "Chant_CharmArea"; }
-	private final static String localizedName = CMLib.lang()._("Charm Area");
+	private final static String localizedName = CMLib.lang().L("Charm Area");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -51,7 +51,7 @@ public class Chant_CharmArea extends Chant
 		   &&(!msg.amISource(invoker))
 		   &&(msg.source().amFollowing()!=invoker))
 		{
-			msg.source().tell(_("You really don't feel like leaving this place.  It is just too beautiful."));
+			msg.source().tell(L("You really don't feel like leaving this place.  It is just too beautiful."));
 			return false;
 		}
 		if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS))
@@ -62,7 +62,7 @@ public class Chant_CharmArea extends Chant
 			   &&(msg.target()!=null)
 			   &&(msg.source()!=msg.target()))
 			{
-				msg.source().tell(_("You feel too peaceful here."));
+				msg.source().tell(L("You feel too peaceful here."));
 				final MOB victim=msg.source().getVictim();
 				if(victim!=null) victim.makePeace();
 				msg.source().makePeace();
@@ -80,7 +80,7 @@ public class Chant_CharmArea extends Chant
 		if(msg.amITarget(affected)
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
 		{
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,_("There is something charming about this place.")));
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,L("There is something charming about this place.")));
 		}
 	}
 
@@ -118,12 +118,12 @@ public class Chant_CharmArea extends Chant
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("This place is already charmed."));
+			mob.tell(L("This place is already charmed."));
 			return false;
 		}
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
-			mob.tell(_("You must be outdoors for this chant to work."));
+			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
 		if(((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
@@ -133,7 +133,7 @@ public class Chant_CharmArea extends Chant
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		&&(!auto))
 		{
-			mob.tell(_("This chant does not work here."));
+			mob.tell(L("This chant does not work here."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -147,7 +147,7 @@ public class Chant_CharmArea extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("This area seems to twinkle with beauty."):_("^S<S-NAME> chant(s), bringing forth the natural beauty of this place.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("This area seems to twinkle with beauty."):L("^S<S-NAME> chant(s), bringing forth the natural beauty of this place.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -155,7 +155,7 @@ public class Chant_CharmArea extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s), but the magic fades."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s), but the magic fades."));
 
 		// return whether it worked
 		return success;

@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Delay extends Spell
 {
 	@Override public String ID() { return "Spell_Delay"; }
-	private final static String localizedName = CMLib.lang()._("Delay");
+	private final static String localizedName = CMLib.lang().L("Delay");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Delay spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Delay spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return CAN_ROOMS;}
@@ -62,7 +62,7 @@ public class Spell_Delay extends Spell
 		{
 			shooter = (Ability)shooter.copyOf();
 			final MOB newCaster=CMClass.getMOB("StdMOB");
-			newCaster.setName(_("the thin air"));
+			newCaster.setName(L("the thin air"));
 			newCaster.setDescription(" ");
 			newCaster.setDisplayText(" ");
 			newCaster.basePhyStats().setLevel(invoker.phyStats().level()+(2*getXLEVELLevel(invoker)));
@@ -93,7 +93,7 @@ public class Spell_Delay extends Spell
 	{
 		if(commands.size()<1)
 		{
-			mob.tell(_("You must specify what arcane spell to delay, and any necessary parameters."));
+			mob.tell(L("You must specify what arcane spell to delay, and any necessary parameters."));
 			return false;
 		}
 		commands.insertElementAt("CAST",0);
@@ -103,7 +103,7 @@ public class Spell_Delay extends Spell
 		{
 			parameters=null;
 			shooter=null;
-			mob.tell(_("You don't know any arcane spell by that name."));
+			mob.tell(L("You don't know any arcane spell by that name."));
 			return false;
 		}
 
@@ -113,7 +113,7 @@ public class Spell_Delay extends Spell
 			final MOB M=mob.location().fetchInhabitant(m);
 			if((M!=null)&&(M!=mob)&&(!M.mayIFight(mob)))
 			{
-				mob.tell(_("You cannot delay that spell here -- there are other players present!"));
+				mob.tell(L("You cannot delay that spell here -- there are other players present!"));
 				return false;
 			}
 		}
@@ -127,7 +127,7 @@ public class Spell_Delay extends Spell
 		final Physical target = mob.location();
 		if((target.fetchEffect(this.ID())!=null)||(givenTarget!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("A delay has already been cast here!"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("A delay has already been cast here!"));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
@@ -142,18 +142,18 @@ public class Spell_Delay extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), auto?"":_("^S<S-NAME> point(s) and shout(s) 'NOW!'.^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), auto?"":L("^S<S-NAME> point(s) and shout(s) 'NOW!'.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.tell(_("You hear a clock start ticking down in your head...20...19..."));
+				mob.tell(L("You hear a clock start ticking down in your head...20...19..."));
 				beneficialAffect(mob,mob.location(),asLevel,5);
 				shooter=null;
 				parameters=null;
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> point(s) and shout(s) 'NOW', but then look(s) frustrated."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> point(s) and shout(s) 'NOW', but then look(s) frustrated."));
 
 		// return whether it worked
 		return success;

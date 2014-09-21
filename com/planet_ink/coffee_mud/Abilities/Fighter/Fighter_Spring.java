@@ -37,7 +37,7 @@ import java.util.*;
 public class Fighter_Spring extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Spring"; }
-	private final static String localizedName = CMLib.lang()._("Spring Attack");
+	private final static String localizedName = CMLib.lang().L("Spring Attack");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"SPRINGATTACK","SPRING","SATTACK"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -68,17 +68,17 @@ public class Fighter_Spring extends FighterSkill
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell(_("You are too far away to make a spring attack!"));
+			mob.tell(L("You are too far away to make a spring attack!"));
 			return false;
 		}
 		if(mob.curState().getMovement()<50)
 		{
-			mob.tell(_("You are too tired to make a spring attack."));
+			mob.tell(L("You are too tired to make a spring attack."));
 			return false;
 		}
 		if(mob.rangeToTarget()>=mob.location().maxRange())
 		{
-			mob.tell(_("There is no more room to spring back!"));
+			mob.tell(L("There is no more room to spring back!"));
 			return false;
 		}
 
@@ -108,7 +108,7 @@ public class Fighter_Spring extends FighterSkill
 				CMLib.combat().postAttack(mob,target,mob.fetchWieldedItem());
 				if(mob.getVictim()==target)
 				{
-					msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_RETREAT,_("^F^<FIGHT^><S-NAME> spring(s) back!^</FIGHT^>^?"));
+					msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_RETREAT,L("^F^<FIGHT^><S-NAME> spring(s) back!^</FIGHT^>^?"));
 					CMLib.color().fixSourceFightColor(msg);
 					if(mob.location().okMessage(mob,msg))
 					{
@@ -124,7 +124,7 @@ public class Fighter_Spring extends FighterSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> fail(s) to spring attack <T-NAMESELF>."));
+			return maliciousFizzle(mob,target,L("<S-NAME> fail(s) to spring attack <T-NAMESELF>."));
 
 		// return whether it worked
 		return success;

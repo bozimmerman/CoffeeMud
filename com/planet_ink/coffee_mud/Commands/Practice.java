@@ -44,7 +44,7 @@ public class Practice extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("You have @x1 practice points.  Enter HELP PRACTICE for more information.",""+mob.getPractices()));
+			mob.tell(L("You have @x1 practice points.  Enter HELP PRACTICE for more information.",""+mob.getPractices()));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -77,29 +77,29 @@ public class Practice extends StdCommand
 		final Ability myAbility=mob.findAbility(abilityName);
 		if(myAbility==null)
 		{
-			mob.tell(_("You don't seem to know @x1.",abilityName));
+			mob.tell(L("You don't seem to know @x1.",abilityName));
 			return false;
 		}
 		
 		if((teacher==null)||(!CMLib.flags().canBeSeenBy(teacher,mob)))
 		{
 			if(triedTeacher)
-				mob.tell(_("That person doesn't seem to be here."));
+				mob.tell(L("That person doesn't seem to be here."));
 			else
-				mob.tell(_("There doesn't seem to be a teacher to practice with here."));
+				mob.tell(L("There doesn't seem to be a teacher to practice with here."));
 			return false;
 		}
 
 		if(!myAbility.isSavable())
 		{
-			mob.tell(_("@x1 cannot be practiced, as it is a native skill.",myAbility.name()));
+			mob.tell(L("@x1 cannot be practiced, as it is a native skill.",myAbility.name()));
 			return false;
 		}
 
 		final Ability teacherAbility=mob.findAbility(abilityName);
 		if(teacherAbility==null)
 		{
-			mob.tell(_("@x1 doesn't seem to know @x2.",teacher.name(),abilityName));
+			mob.tell(L("@x1 doesn't seem to know @x2.",teacher.name(),abilityName));
 			return false;
 		}
 
@@ -110,7 +110,7 @@ public class Practice extends StdCommand
 		CMMsg msg=CMClass.getMsg(teacher,mob,null,CMMsg.MSG_SPEAK,null);
 		if(!mob.location().okMessage(mob,msg))
 			return false;
-		msg=CMClass.getMsg(teacher,mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> practice(s) '@x1' with <T-NAMESELF>.",myAbility.name()));
+		msg=CMClass.getMsg(teacher,mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> practice(s) '@x1' with <T-NAMESELF>.",myAbility.name()));
 		if(!mob.location().okMessage(mob,msg))
 			return false;
 		teacherAbility.practice(teacher,mob);

@@ -42,9 +42,9 @@ public class Regeneration extends StdAbility implements HealthCondition
 	protected int regenTick=maxTickDown;
 
 	@Override public String ID() { return "Regeneration"; }
-	private final static String localizedName = CMLib.lang()._("Stat Regeneration");
+	private final static String localizedName = CMLib.lang().L("Stat Regeneration");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Stat Regeneration)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Stat Regeneration)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -81,7 +81,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 		doneAnything=doneAnything||mob.curState().adjMana(mob.phyStats().level()*2,mob.maxState());
 		doneAnything=doneAnything||mob.curState().adjMovement(mob.phyStats().level()*3,mob.maxState());
 		if(doneAnything)
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> regenerate(s)."));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> regenerate(s)."));
 		return true;
 	}
 
@@ -177,7 +177,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("You feel less regenerative."));
+			mob.tell(L("You feel less regenerative."));
 	}
 
 	@Override
@@ -192,7 +192,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final String str=auto?"":_("<S-NAME> lay(s) regenerative magic upon <T-NAMESELF>.");
+			final String str=auto?"":L("<S-NAME> lay(s) regenerative magic upon <T-NAMESELF>.");
 			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_QUIETMOVEMENT,str);
 			if(target.location().okMessage(target,msg))
 			{

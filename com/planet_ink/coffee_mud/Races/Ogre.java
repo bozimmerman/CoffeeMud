@@ -93,15 +93,15 @@ public class Ogre extends Humanoid
 			outfitChoices=new Vector();
 			// Have to, since it requires use of special constructor
 			final Armor s1=CMClass.getArmor("GenShirt");
-			s1.setName(_("a large patchy tunic"));
-			s1.setDisplayText(_("a large patchy tunic is crumpled up here."));
-			s1.setDescription(_("It is a large ragged patchy nasty sweat-stained tunic."));
+			s1.setName(L("a large patchy tunic"));
+			s1.setDisplayText(L("a large patchy tunic is crumpled up here."));
+			s1.setDescription(L("It is a large ragged patchy nasty sweat-stained tunic."));
 			s1.text();
 			outfitChoices.add(s1);
 			final Armor p1=CMClass.getArmor("GenPants");
-			p1.setName(_("some torn leggings"));
-			p1.setDisplayText(_("some torn leggings lie here."));
-			p1.setDescription(_("They appear made for a large person with poor taste in clothing."));
+			p1.setName(L("some torn leggings"));
+			p1.setDisplayText(L("some torn leggings lie here."));
+			p1.setDescription(L("They appear made for a large person with poor taste in clothing."));
 			p1.text();
 			outfitChoices.add(p1);
 			final Armor s3=CMClass.getArmor("GenBelt");

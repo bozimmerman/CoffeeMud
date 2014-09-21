@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_BodyShield extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_BodyShield"; }
-	private final static String localizedName = CMLib.lang()._("Body Shield");
+	private final static String localizedName = CMLib.lang().L("Body Shield");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
@@ -76,7 +76,7 @@ public class Fighter_BodyShield extends FighterSkill
 				doneThisRound=true;
 				final int regain=(int)Math.round(CMath.mul((msg.value()),CMath.div(proficiency(),100.0)));
 				msg.setValue(msg.value()-regain);
-				final CMMsg msg2=CMClass.getMsg(mob,mob.getVictim(),this,CMMsg.MSG_DAMAGE,_("<S-NAME> use(s) <T-NAMESELF> as a body shield!"));
+				final CMMsg msg2=CMClass.getMsg(mob,mob.getVictim(),this,CMMsg.MSG_DAMAGE,L("<S-NAME> use(s) <T-NAMESELF> as a body shield!"));
 				msg2.setValue(regain);
 				msg.addTrailerMsg(msg2);
 				helpProficiency(mob, 0);

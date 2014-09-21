@@ -33,9 +33,9 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Disease_Amnesia extends Disease
 {
 	@Override public String ID() { return "Disease_Amnesia"; }
-	private final static String localizedName = CMLib.lang()._("Amnesia");
+	private final static String localizedName = CMLib.lang().L("Amnesia");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Amnesia)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Amnesia)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -68,7 +68,7 @@ public class Disease_Amnesia extends Disease
 		&&(mob.fetchAbility(msg.tool().ID())==msg.tool())
 		&&(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.STAT_SAVE_MIND)+10)))
 		{
-			mob.tell(_("You can't remember @x1!",msg.tool().name()));
+			mob.tell(L("You can't remember @x1!",msg.tool().name()));
 			return false;
 		}
 		return super.okMessage(myHost,msg);

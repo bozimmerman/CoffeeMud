@@ -37,7 +37,7 @@ import java.util.*;
 public class Spell_KnowOrigin extends Spell
 {
 	@Override public String ID() { return "Spell_KnowOrigin"; }
-	private final static String localizedName = CMLib.lang()._("Know Origin");
+	private final static String localizedName = CMLib.lang().L("Know Origin");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}
@@ -82,15 +82,15 @@ public class Spell_KnowOrigin extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if((success)&&(R!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> incant(s), divining the origin of <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> incant(s), divining the origin of <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.tell(_("@x1 seems to come from '@x2'.",target.name(mob),R.displayText(mob)));
+				mob.tell(L("@x1 seems to come from '@x2'.",target.name(mob),R.displayText(mob)));
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to divine something, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to divine something, but fail(s)."));
 
 		return success;
 	}

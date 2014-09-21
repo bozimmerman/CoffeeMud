@@ -38,7 +38,7 @@ import java.util.*;
 public class Merchant extends CommonSkill implements ShopKeeper
 {
 	@Override public String ID() { return "Merchant"; }
-	private final static String localizedName = CMLib.lang()._("Marketeering");
+	private final static String localizedName = CMLib.lang().L("Marketeering");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"MARKET"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -225,10 +225,10 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			staticMOB=CMClass.getMOB("StdMOB");
 			if((affected instanceof Room)
 			||(affected instanceof Exit))
-				staticMOB.setName(_("the shopkeeper"));
+				staticMOB.setName(L("the shopkeeper"));
 			else
 			if(affected instanceof Area)
-				staticMOB.setName(_("the shop"));
+				staticMOB.setName(L("the shop"));
 			else
 				staticMOB.setName(affected.Name());
 		}
@@ -255,7 +255,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			if((newitem.numberOfItems()>(merchantM.maxItems()-(merchantM.numItems()+shop.totalStockSizeIncludingDuplicates())))
 			&&(!merchantM.isMine(this)))
 			{
-				merchantM.tell(_("You can't carry that many items."));
+				merchantM.tell(L("You can't carry that many items."));
 				return false;
 			}
 		}
@@ -269,7 +269,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			{
 				if(!merchantM.isMonster())
 				{
-					shopperM.tell(shopperM,null,null,_("You'll have to talk to <S-NAME> about that."));
+					shopperM.tell(shopperM,null,null,L("You'll have to talk to <S-NAME> about that."));
 					return false;
 				}
 				if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),merchantM))
@@ -325,7 +325,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				&&(source.getClanRole(CMLib.law().getLegalBehavior(merchantM.getStartRoom()).rulingOrganization())!=null)))
 		&&((doISellThis(tool))||(isSold(DEAL_INVENTORYONLY))))
 		{
-			CMLib.commands().postSay(merchantM,source,_("OK, I will now sell @x1.",tool.name()),false,false);
+			CMLib.commands().postSay(merchantM,source,L("OK, I will now sell @x1.",tool.name()),false,false);
 			getShop().addStoreInventory(tool,1,-1);
 			if(affected instanceof Area)
 				CMLib.database().DBUpdateArea(affected.Name(),(Area)affected);
@@ -382,7 +382,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			case CMMsg.TYP_VALUE:
 				super.executeMsg(myHost,msg);
 				if(merchantM.isMonster())
-					CMLib.commands().postSay(merchantM,mob,_("I'll give you @x1 for @x2.",CMLib.beanCounter().nameCurrencyShort(merchantM,CMLib.coffeeShops().pawningPrice(merchantM,mob,msg.tool(),this).absoluteGoldPrice),msg.tool().name()),true,false);
+					CMLib.commands().postSay(merchantM,mob,L("I'll give you @x1 for @x2.",CMLib.beanCounter().nameCurrencyShort(merchantM,CMLib.coffeeShops().pawningPrice(merchantM,mob,msg.tool(),this).absoluteGoldPrice),msg.tool().name()),true,false);
 				break;
 			case CMMsg.TYP_VIEW:
 				super.executeMsg(myHost,msg);
@@ -390,7 +390,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				&&(getShop().doIHaveThisInStock(msg.tool().Name(),mob)))
 				{
 
-					CMLib.commands().postSay(merchantM,msg.source(),_("Interested in @x1? Here is some information for you:\n\rLevel @x2\n\rDescription: @x3",msg.tool().name(),""+((Physical)msg.tool()).phyStats().level(),msg.tool().description()),true,false);
+					CMLib.commands().postSay(merchantM,msg.source(),L("Interested in @x1? Here is some information for you:\n\rLevel @x2\n\rDescription: @x3",msg.tool().name(),""+((Physical)msg.tool()).phyStats().level(),msg.tool().description()),true,false);
 				}
 				break;
 			case CMMsg.TYP_SELL: // sell TO -- this is a shopkeeper purchasing from a player
@@ -474,12 +474,12 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	{
 		if(commands.size()==0)
 		{
-			commonTell(mob,_("Market what? Enter \"market list\" for a list or \"market item value\" to sell something."));
+			commonTell(mob,L("Market what? Enter \"market list\" for a list or \"market item value\" to sell something."));
 			return false;
 		}
 		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob,CMMsg.MSG_LIST,_("<S-NAME> review(s) <S-HIS-HER> inventory."));
+			final CMMsg msg=CMClass.getMsg(mob,mob,CMMsg.MSG_LIST,L("<S-NAME> review(s) <S-HIS-HER> inventory."));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return true;
@@ -489,14 +489,14 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		{
 			if(commands.size()==1)
 			{
-				commonTell(mob,_("Remove what item from the marketing list?"));
+				commonTell(mob,L("Remove what item from the marketing list?"));
 				return false;
 			}
 			final String itemName=CMParms.combine(commands,1);
 			Item I=(Item)getShop().removeStock(itemName,mob);
 			if(I==null)
 			{
-				commonTell(mob,_("'@x1' is not on the list.",itemName));
+				commonTell(mob,L("'@x1' is not on the list.",itemName));
 				return false;
 			}
 			final String iname=I.name();
@@ -509,7 +509,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			mob.recoverCharStats();
 			mob.recoverPhyStats();
 			mob.recoverMaxState();
-			mob.tell(_("@x1 has been removed from your inventory list.",iname));
+			mob.tell(L("@x1 has been removed from your inventory list.",iname));
 			return true;
 		}
 
@@ -564,13 +564,13 @@ public class Merchant extends CommonSkill implements ShopKeeper
 
 		if(V.size()==0)
 		{
-			commonTell(mob,_("You don't seem to be carrying '@x1'.",itemName));
+			commonTell(mob,L("You don't seem to be carrying '@x1'.",itemName));
 			return false;
 		}
 
 		if((getShop().numberInStock(target)<=0)&&(val<=0))
 		{
-			commonTell(mob,_("You failed to specify a price for '@x1'.",itemName));
+			commonTell(mob,L("You failed to specify a price for '@x1'.",itemName));
 			return false;
 		}
 
@@ -579,11 +579,11 @@ public class Merchant extends CommonSkill implements ShopKeeper
 
 		if(!proficiencyCheck(mob,0,auto))
 		{
-			commonTell(mob,target,null,_("You fail to put <T-NAME> up for sale."));
+			commonTell(mob,target,null,L("You fail to put <T-NAME> up for sale."));
 			return false;
 		}
 
-		final CMMsg msg=CMClass.getMsg(mob,target,CMMsg.MSG_SELL,_("<S-NAME> put(s) <T-NAME> up for sale."));
+		final CMMsg msg=CMClass.getMsg(mob,target,CMMsg.MSG_SELL,L("<S-NAME> put(s) <T-NAME> up for sale."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

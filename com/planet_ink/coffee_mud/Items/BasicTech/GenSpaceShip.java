@@ -86,7 +86,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		{
 			area=CMClass.getAreaType("StdSpaceShip");
 			final String num=Double.toString(Math.random());
-			area.setName(_("UNNAMED_@x1",num.substring(num.indexOf('.')+1)));
+			area.setName(L("UNNAMED_@x1",num.substring(num.indexOf('.')+1)));
 			area.setSavable(false);
 			area.setTheme(Area.THEME_TECHNOLOGY);
 			final Room R=CMClass.getLocale("MetalRoom");
@@ -538,12 +538,12 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		{
 			if((msg.targetMinor()==CMMsg.TYP_OPEN)||(msg.targetMinor()==CMMsg.TYP_CLOSE)||(msg.targetMinor()==CMMsg.TYP_LOCK)||(msg.targetMinor()==CMMsg.TYP_UNLOCK))
 			{
-				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", _("a hatch on <T-NAME>")));
-				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", _("a hatch on <T-NAMESELF>")));
-				msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", _("a hatch on <T-NAME>")));
-				msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", _("a hatch on <T-NAMESELF>")));
-				msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", _("a hatch on <T-NAME>")));
-				msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", _("a hatch on <T-NAMESELF>")));
+				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", L("a hatch on <T-NAME>")));
+				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", L("a hatch on <T-NAMESELF>")));
+				msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", L("a hatch on <T-NAME>")));
+				msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", L("a hatch on <T-NAMESELF>")));
+				msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", L("a hatch on <T-NAME>")));
+				msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", L("a hatch on <T-NAMESELF>")));
 			}
 		}
 		return true;
@@ -785,7 +785,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			final InputCallback[] namer=new InputCallback[1];
 			namer[0]=new InputCallback(InputCallback.Type.PROMPT)
 			{
-				@Override public void showPrompt() { session.println(_("\n\rEnter a new name for your ship: ")); }
+				@Override public void showPrompt() { session.println(L("\n\rEnter a new name for your ship: ")); }
 				@Override public void timedOut() { }
 				@Override public void callBack()
 				{
@@ -793,22 +793,22 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 					||(!CMLib.login().isOkName(this.input.trim(),true))
 					||(CMLib.tech().getMakeRegisteredKeys().contains(this.input.trim())))
 					{
-						session.println(_("^ZThat is not a permitted name.^N"));
+						session.println(L("^ZThat is not a permitted name.^N"));
 						session.prompt(namer[0].reset());
 						return;
 					}
 					me.renameSpaceShip(this.input.trim());
-					buyer.tell(_("@x1 is now signed over to @x2.",name(),getOwnerName()));
+					buyer.tell(L("@x1 is now signed over to @x2.",name(),getOwnerName()));
 					final LocationRoom finalR=findNearestDocks(R);
 					if(finalR==null)
 					{
 						Log.errOut("Could not dock ship in area "+R.getArea().Name()+" due to lack of spaceport.");
-						buyer.tell(_("Nowhere was found to dock your ship.  Please contact the administrators!."));
+						buyer.tell(L("Nowhere was found to dock your ship.  Please contact the administrators!."));
 					}
 					else
 					{
 						me.dockHere(finalR);
-						buyer.tell(_("You'll find your ship docked at '@x1'.",finalR.displayText(buyer)));
+						buyer.tell(L("You'll find your ship docked at '@x1'.",finalR.displayText(buyer)));
 					}
 					if ((buyer.playerStats() != null) && (!buyer.playerStats().getExtItems().isContent(me)))
 						buyer.playerStats().getExtItems().addItem(me);
@@ -818,7 +818,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		}
 		else
 		{
-			buyer.tell(_("@x1 is now signed over to @x2.",name(),getOwnerName()));
+			buyer.tell(L("@x1 is now signed over to @x2.",name(),getOwnerName()));
 			if ((buyer.playerStats() != null) && (!buyer.playerStats().getExtItems().isContent(this)))
 				buyer.playerStats().getExtItems().addItem(this);
 			final LocationRoom finalR=findNearestDocks(R);

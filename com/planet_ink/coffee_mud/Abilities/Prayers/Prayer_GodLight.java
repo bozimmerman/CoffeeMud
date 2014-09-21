@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_GodLight extends Prayer
 {
 	@Override public String ID() { return "Prayer_GodLight"; }
-	private final static String localizedName = CMLib.lang()._("Godlight");
+	private final static String localizedName = CMLib.lang().L("Godlight");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Godlight)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Godlight)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public long flags(){return Ability.FLAG_HOLY;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
@@ -69,7 +69,7 @@ public class Prayer_GodLight extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your vision returns."));
+			mob.tell(L("Your vision returns."));
 	}
 
 
@@ -113,14 +113,14 @@ public class Prayer_GodLight extends Prayer
 		if(target==null) return false;
 		if((target instanceof Room)&&(target.fetchEffect(ID())!=null))
 		{
-			mob.tell(_("This place already has the god light."));
+			mob.tell(L("This place already has the god light."));
 			return false;
 		}
 
 		if((target instanceof MOB)
 		&&(((MOB)target).charStats().getBodyPart(Race.BODY_EYE)==0))
 		{
-			mob.tell(_("@x1 has no eyes, and would not be affected.",target.name(mob)));
+			mob.tell(L("@x1 has no eyes, and would not be affected.",target.name(mob)));
 			return false;
 		}
 
@@ -143,7 +143,7 @@ public class Prayer_GodLight extends Prayer
 				if(msg.value()<=0)
 				{
 					if(target instanceof MOB)
-						mob.location().show((MOB)target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> go(es) blind!"));
+						mob.location().show((MOB)target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> go(es) blind!"));
 					maliciousAffect(mob,target,asLevel,0,-1);
 					mob.location().recoverRoomStats();
 					mob.location().recoverRoomStats();
@@ -151,7 +151,7 @@ public class Prayer_GodLight extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> point(s) at <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
+			return maliciousFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

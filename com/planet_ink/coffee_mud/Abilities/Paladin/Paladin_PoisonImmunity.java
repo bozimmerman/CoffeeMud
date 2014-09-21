@@ -35,7 +35,7 @@ import java.util.*;
 public class Paladin_PoisonImmunity extends PaladinSkill
 {
 	@Override public String ID() { return "Paladin_PoisonImmunity"; }
-	private final static String localizedName = CMLib.lang()._("Poison Immunity");
+	private final static String localizedName = CMLib.lang().L("Poison Immunity");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
 

@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_Plague extends Prayer
 {
 	@Override public String ID() { return "Prayer_Plague"; }
-	private final static String localizedName = CMLib.lang()._("Plague");
+	private final static String localizedName = CMLib.lang().L("Plague");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -74,7 +74,7 @@ public class Prayer_Plague extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":_("^S<S-NAME> inflict(s) an unholy plague at <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":L("^S<S-NAME> inflict(s) an unholy plague at <T-NAMESELF>.^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.TYP_DISEASE,null);
 			if(mob.location().okMessage(mob,msg)||mob.location().okMessage(mob,msg2))
 			{
@@ -89,7 +89,7 @@ public class Prayer_Plague extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to inflict a plague at <T-NAMESELF>, but flub(s) it."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to inflict a plague at <T-NAMESELF>, but flub(s) it."));
 
 
 		// return whether it worked

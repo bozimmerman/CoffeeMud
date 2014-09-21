@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_Tripline extends StdTrap
 {
 	@Override public String ID() { return "Trap_Tripline"; }
-	private final static String localizedName = CMLib.lang()._("tripline");
+	private final static String localizedName = CMLib.lang().L("tripline");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -72,7 +72,7 @@ public class Trap_Tripline extends StdTrap
 		{
 			if(findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_CLOTH)==null)
 			{
-				mob.tell(_("You'll need to set down at least a pound of cloth first."));
+				mob.tell(L("You'll need to set down at least a pound of cloth first."));
 				return false;
 			}
 		}
@@ -88,9 +88,9 @@ public class Trap_Tripline extends StdTrap
 		{
 			if((doesSaveVsTraps(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) tripping on a taut rope!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) tripping on a taut rope!"));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> trip(s) on a taut rope!")))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> trip(s) on a taut rope!")))
 			{
 				super.spring(target);
 				target.basePhyStats().setDisposition(target.basePhyStats().disposition()|PhyStats.IS_SITTING);

@@ -35,7 +35,7 @@ import java.util.*;
 public class SignLanguage extends StdLanguage
 {
 	@Override public String ID() { return "SignLanguage"; }
-	private final static String localizedName = CMLib.lang()._("Sign Language");
+	private final static String localizedName = CMLib.lang().L("Sign Language");
 	@Override public String name() { return localizedName; }
 	@Override public String writtenName() { return "Braille";}
 	public static List<String[]> wordLists=null;
@@ -63,7 +63,7 @@ public class SignLanguage extends StdLanguage
 		String startFullMsg=fullMsgStr.substring(0,wordStart);
 		if(startFullMsg.indexOf("YELL(S)")>0)
 		{
-			msg.source().tell(_("You can't yell in sign language."));
+			msg.source().tell(L("You can't yell in sign language."));
 			return false;
 		}
 		final String oldStartFullMsg = startFullMsg;
@@ -103,13 +103,13 @@ public class SignLanguage extends StdLanguage
 		String verb = "sign(s)";
 		switch(CMLib.dice().roll(1, 20, 0))
 		{
-		case 1: case 2: case 3: case 4: case 5: verb=_("gesture(s)"); break;
-		case 6: verb=_("wave(s)"); break;
-		case 7: case 8: verb=_("gesticulate(s)"); break;
-		case 9: verb=_("wave(s) <S-HIS-HER> fingers"); break;
-		case 10: verb=_("wiggle(s) <S-HIS-HER> hands"); break;
-		case 11: case 12: verb=_("wave(s) <S-HIS-HER> hands"); break;
-		case 13: verb=_("wiggle(s) <S-HIS-HER> fingers"); break;
+		case 1: case 2: case 3: case 4: case 5: verb=L("gesture(s)"); break;
+		case 6: verb=L("wave(s)"); break;
+		case 7: case 8: verb=L("gesticulate(s)"); break;
+		case 9: verb=L("wave(s) <S-HIS-HER> fingers"); break;
+		case 10: verb=L("wiggle(s) <S-HIS-HER> hands"); break;
+		case 11: case 12: verb=L("wave(s) <S-HIS-HER> hands"); break;
+		case 13: verb=L("wiggle(s) <S-HIS-HER> fingers"); break;
 		}
 		final String oldStartFullMsg = startFullMsg;
 		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "tell(s)", verb);
@@ -147,7 +147,7 @@ public class SignLanguage extends StdLanguage
 				otherMes=otherMes.replace('.', ' ')+'\''+sourceWords+'\'';
 			if(msg.target()!=null)
 				otherMes=CMLib.coffeeFilter().fullOutFilter(null,(MOB)affected,msg.source(),msg.target(),msg.tool(),otherMes,false);
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.othersCode(),_("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,sourceWords),name()),CMMsg.NO_EFFECT,null));
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.othersCode(),L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,sourceWords),name()),CMMsg.NO_EFFECT,null));
 			return true;
 		}
 		return false;
@@ -163,7 +163,7 @@ public class SignLanguage extends StdLanguage
 				otherMes=otherMes.replace('.', ' ')+'\''+sourceWords+'\'';
 			if(msg.target()!=null)
 				otherMes=CMLib.coffeeFilter().fullOutFilter(null,(MOB)affected,msg.source(),msg.target(),msg.tool(),otherMes,false);
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.targetCode(),_("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,sourceWords),name()),CMMsg.NO_EFFECT,null));
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.targetCode(),L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,sourceWords),name()),CMMsg.NO_EFFECT,null));
 			return true;
 		}
 		return false;
@@ -177,7 +177,7 @@ public class SignLanguage extends StdLanguage
 			String otherMes=msg.othersMessage();
 			if((otherMes.lastIndexOf('\'')==otherMes.indexOf('\'')))
 				otherMes=otherMes.replace('.', ' ')+'\''+sourceWords+'\'';
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),_("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,sourceWords),name())));
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,sourceWords),name())));
 			return true;
 		}
 		return false;

@@ -44,16 +44,16 @@ public class Sit extends StdCommand
 	{
 		if(CMLib.flags().isSitting(mob))
 		{
-			mob.tell(_("You are already sitting!"));
+			mob.tell(L("You are already sitting!"));
 			return false;
 		}
 		if(commands.size()<=1)
 		{
 			CMMsg msg;
 			if(CMLib.flags().isSleeping(mob))
-				msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SIT,_("<S-NAME> awake(s) and sit(s) up."));
+				msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SIT,L("<S-NAME> awake(s) and sit(s) up."));
 			else
-				msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SIT,_("<S-NAME> sit(s) down and take(s) a rest."));
+				msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SIT,L("<S-NAME> sit(s) down and take(s) a rest."));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
@@ -65,7 +65,7 @@ public class Sit extends StdCommand
 			E=mob.location().fetchFromRoomFavorItems(null,possibleRideable);
 			if((E==null)||(!CMLib.flags().canBeSeenBy(E,mob)))
 			{
-				mob.tell(_("You don't see '@x1' here.",possibleRideable));
+				mob.tell(L("You don't see '@x1' here.",possibleRideable));
 				return false;
 			}
 			if(E instanceof MOB)
@@ -76,9 +76,9 @@ public class Sit extends StdCommand
 		}
 		String mountStr=null;
 		if(E instanceof Rideable)
-			mountStr=_("<S-NAME> "+((Rideable)E).mountString(CMMsg.TYP_SIT,mob)+" <T-NAME>.");
+			mountStr=L("<S-NAME> "+((Rideable)E).mountString(CMMsg.TYP_SIT,mob)+" <T-NAME>.");
 		else
-			mountStr=_("<S-NAME> sit(s) on <T-NAME>.");
+			mountStr=L("<S-NAME> sit(s) on <T-NAME>.");
 		final CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_SIT,mountStr);
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);

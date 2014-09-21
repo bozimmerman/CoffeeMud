@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_Bury extends Chant
 {
 	@Override public String ID() { return "Chant_Bury"; }
-	private final static String localizedName = CMLib.lang()._("Earthfeed");
+	private final static String localizedName = CMLib.lang().L("Earthfeed");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -64,7 +64,7 @@ public class Chant_Bury extends Chant
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell(_("You must be outdoors for this chant to work."));
+			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
@@ -73,13 +73,13 @@ public class Chant_Bury extends Chant
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			mob.tell(_("This chant does not work here."));
+			mob.tell(L("This chant does not work here."));
 			return false;
 		}
 		Item hole=mob.location().findItem("HoleInTheGround");
 		if((hole!=null)&&(!hole.text().equalsIgnoreCase(mob.Name())))
 		{
-			mob.tell(_("This chant will not work on desecrated ground."));
+			mob.tell(L("This chant will not work on desecrated ground."));
 			return false;
 		}
 		Item target=null;
@@ -92,7 +92,7 @@ public class Chant_Bury extends Chant
 		if((!(target instanceof DeadBody))
 		||(((DeadBody)target).rawSecretIdentity().toUpperCase().indexOf("FAKE")>=0))
 		{
-			mob.tell(_("You may only feed the dead to the earth."));
+			mob.tell(L("You may only feed the dead to the earth."));
 			return false;
 		}
 
@@ -100,7 +100,7 @@ public class Chant_Bury extends Chant
 		&&(!((DeadBody)target).mobName().equals(mob.Name()))
 		&&(((DeadBody)target).getContents().size()>0))
 		{
-			mob.tell(_("You are not allowed to bury that corpse."));
+			mob.tell(L("You are not allowed to bury that corpse."));
 			return false;
 		}
 
@@ -115,7 +115,7 @@ public class Chant_Bury extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> bur(ys) <T-HIM-HERSELF>."):_("^S<S-NAME> chant(s) to <T-NAMESELF>, returning dust to dust.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> bur(ys) <T-HIM-HERSELF>."):L("^S<S-NAME> chant(s) to <T-NAMESELF>, returning dust to dust.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -138,7 +138,7 @@ public class Chant_Bury extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
 
 		// return whether it worked
 		return success;

@@ -36,9 +36,9 @@ import java.util.*;
 public class Thief_BackStab extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_BackStab"; }
-	private final static String localizedName = CMLib.lang()._("Back Stab");
+	private final static String localizedName = CMLib.lang().L("Back Stab");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Backstabbing)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Backstabbing)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -83,7 +83,7 @@ public class Thief_BackStab extends ThiefSkill
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell(_("Backstab whom?"));
+			mob.tell(L("Backstab whom?"));
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
@@ -91,17 +91,17 @@ public class Thief_BackStab extends ThiefSkill
 
 		if(CMLib.flags().canBeSeenBy(mob,target))
 		{
-			mob.tell(_("@x1 is watching you too closely to do that.",target.name(mob)));
+			mob.tell(L("@x1 is watching you too closely to do that.",target.name(mob)));
 			return false;
 		}
 		if(lastMOB.equals(target+""))
 		{
-			mob.tell(target,null,null,_("@x1 is watching <S-HIS-HER> back too closely to do that again.",target.name(mob)));
+			mob.tell(target,null,null,L("@x1 is watching <S-HIS-HER> back too closely to do that again.",target.name(mob)));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell(_("You are too busy to focus on backstabbing right now."));
+			mob.tell(L("You are too busy to focus on backstabbing right now."));
 			return false;
 		}
 
@@ -113,7 +113,7 @@ public class Thief_BackStab extends ThiefSkill
 			weapon=(Weapon)I;
 		if(weapon==null)
 		{
-			mob.tell(mob,target,null,_("Backstab <T-HIM-HER> with what? You need to wield a weapon!"));
+			mob.tell(mob,target,null,L("Backstab <T-HIM-HER> with what? You need to wield a weapon!"));
 			return false;
 		}
 		if((weapon.weaponClassification()==Weapon.CLASS_BLUNT)
@@ -123,7 +123,7 @@ public class Thief_BackStab extends ThiefSkill
 		||(weapon.weaponClassification()==Weapon.CLASS_THROWN)
 		||(weapon.weaponClassification()==Weapon.CLASS_STAFF))
 		{
-			mob.tell(mob,target,weapon,_("You cannot stab anyone with <O-NAME>."));
+			mob.tell(mob,target,weapon,L("You cannot stab anyone with <O-NAME>."));
 			return false;
 		}
 
@@ -132,12 +132,12 @@ public class Thief_BackStab extends ThiefSkill
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT),auto?"":_("<S-NAME> attempt(s) to stab <T-NAMESELF> in the back!"));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT),auto?"":L("<S-NAME> attempt(s) to stab <T-NAMESELF> in the back!"));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			if(((!success)||(CMLib.flags().canBeSeenBy(mob,target))||(msg.value()>0))&&(!CMLib.flags().isSleeping(target)))
-				mob.location().show(target,mob,CMMsg.MSG_OK_VISUAL,auto?"":_("<S-NAME> spot(s) <T-NAME>!"));
+				mob.location().show(target,mob,CMMsg.MSG_OK_VISUAL,auto?"":L("<S-NAME> spot(s) <T-NAME>!"));
 			else
 			{
 				mob.addEffect(this);

@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_TrueSight extends Spell
 {
 	@Override public String ID() { return "Spell_TrueSight"; }
-	private final static String localizedName = CMLib.lang()._("True Sight");
+	private final static String localizedName = CMLib.lang().L("True Sight");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(True Sight)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(True Sight)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -54,7 +54,7 @@ public class Spell_TrueSight extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("You no longer have true sight."));
+			mob.tell(L("You no longer have true sight."));
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class Spell_TrueSight extends Spell
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 		&&(msg.target()!=null)
 		&&(!msg.target().name().equals(msg.target().Name())))
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,this,CMMsg.MSG_OK_VISUAL,_("@x1 is truly @x2.",msg.target().name(),msg.target().Name()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,this,CMMsg.MSG_OK_VISUAL,L("@x1 is truly @x2.",msg.target().name(),msg.target().Name()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 		return true;
 	}
 
@@ -107,7 +107,7 @@ public class Spell_TrueSight extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE>  true sight."));
+			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE>  true sight."));
 			return false;
 		}
 
@@ -119,7 +119,7 @@ public class Spell_TrueSight extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) true sight!"):_("^S<S-NAME> incant(s) softly, and gain(s) true sight!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> gain(s) true sight!"):L("^S<S-NAME> incant(s) softly, and gain(s) true sight!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -127,7 +127,7 @@ public class Spell_TrueSight extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> incant(s) and open(s) <S-HIS-HER> eyes, but the spell fizzles."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> incant(s) and open(s) <S-HIS-HER> eyes, but the spell fizzles."));
 
 		return success;
 	}

@@ -376,12 +376,12 @@ public class MOBTeacher extends CombatAbilities
 				if(s.endsWith("\"")) s=s.substring(0,s.length()-1);
 				if(s.trim().equalsIgnoreCase("LIST"))
 				{
-					CMLib.commands().postSay(monster,student,_("Try the QUALIFY command."),true,false);
+					CMLib.commands().postSay(monster,student,L("Try the QUALIFY command."),true,false);
 					return;
 				}
 				if(s.trim().toUpperCase().equals("ALL"))
 				{
-					CMLib.commands().postSay(monster,student,_("I can't teach you everything at once. Try the QUALIFY command."),true,false);
+					CMLib.commands().postSay(monster,student,L("I can't teach you everything at once. Try the QUALIFY command."),true,false);
 					return;
 				}
 				final Ability myAbility=CMClass.findAbility(s.trim().toUpperCase(),monster);
@@ -433,7 +433,7 @@ public class MOBTeacher extends CombatAbilities
 					}
 					else
 					if((CMClass.findCharClass(s.trim())!=null))
-						CMLib.commands().postSay(monster,student,_("I've heard of @x1, but that's an class-- try TRAINing  for it.",s),true,false);
+						CMLib.commands().postSay(monster,student,L("I've heard of @x1, but that's an class-- try TRAINing  for it.",s),true,false);
 					else
 					{
 						for(final Enumeration e=CMLib.expertises().definitions(); e.hasMoreElements();)
@@ -446,9 +446,9 @@ public class MOBTeacher extends CombatAbilities
 							}
 						}
 						if(theExpertise==null)
-							CMLib.commands().postSay(monster,student,_("I'm sorry, but I've never heard of @x1",s),true,false);
+							CMLib.commands().postSay(monster,student,L("I'm sorry, but I've never heard of @x1",s),true,false);
 						else
-							CMLib.commands().postSay(monster,student,_("I'm sorry, but I do not know @x1.",theExpertise.name));
+							CMLib.commands().postSay(monster,student,L("I'm sorry, but I do not know @x1.",theExpertise.name));
 					}
 					return;
 				}

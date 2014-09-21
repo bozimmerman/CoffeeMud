@@ -61,13 +61,13 @@ public class ClanPremise extends StdCommand
 		final Clan C=chkC;
 		if(C==null)
 		{
-			mob.tell(_("You aren't allowed to set a premise for @x1.",((clanName.length()==0)?"anything":clanName)));
+			mob.tell(L("You aren't allowed to set a premise for @x1.",((clanName.length()==0)?"anything":clanName)));
 			return false;
 		}
 
 		if((!skipChecks)&&(!CMLib.clans().goForward(mob,C,commands,Clan.Function.PREMISE,false)))
 		{
-			mob.tell(_("You aren't in the right position to set the premise to your @x1.",C.getGovernmentName()));
+			mob.tell(L("You aren't in the right position to set the premise to your @x1.",C.getGovernmentName()));
 			return false;
 		}
 		if((skipChecks)&&(commands.size()>1))
@@ -82,7 +82,7 @@ public class ClanPremise extends StdCommand
 		}
 		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 		{
-			@Override public void showPrompt() { session.promptPrint(_("Describe your @x1's Premise\n\r: ",C.getGovernmentName()));}
+			@Override public void showPrompt() { session.promptPrint(L("Describe your @x1's Premise\n\r: ",C.getGovernmentName()));}
 			@Override public void timedOut() { }
 			@Override public void callBack()
 			{
@@ -107,7 +107,7 @@ public class ClanPremise extends StdCommand
 	{
 		C.setPremise(premise);
 		C.update();
-		CMLib.clans().clanAnnounce(mob,_("The premise of @x1 @x2 has been changed.",C.getGovernmentName(),C.clanID()));
+		CMLib.clans().clanAnnounce(mob,L("The premise of @x1 @x2 has been changed.",C.getGovernmentName(),C.clanID()));
 	}
 
 

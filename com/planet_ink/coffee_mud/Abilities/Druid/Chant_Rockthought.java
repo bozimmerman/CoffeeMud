@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_Rockthought extends Chant
 {
 	@Override public String ID() { return "Chant_Rockthought"; }
-	private final static String localizedName = CMLib.lang()._("Rockthought");
+	private final static String localizedName = CMLib.lang().L("Rockthought");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Rockthought)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Rockthought)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -102,7 +102,7 @@ public class Chant_Rockthought extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":_("^S<S-NAME> chant(s) at <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":L("^S<S-NAME> chant(s) at <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -113,13 +113,13 @@ public class Chant_Rockthought extends Chant
 					if(success)
 					{
 						if(target.isInCombat()) target.makePeace();
-						target.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> look(s) stubborn."));
+						target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> look(s) stubborn."));
 					}
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

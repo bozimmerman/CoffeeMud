@@ -66,12 +66,12 @@ public class ClanAccept extends StdCommand
 		{
 			if(C==null)
 			{
-				mob.tell(_("You aren't allowed to accept anyone into @x1.",((clanName.length()==0)?"anything":clanName)));
+				mob.tell(L("You aren't allowed to accept anyone into @x1.",((clanName.length()==0)?"anything":clanName)));
 				return false;
 			}
 			if(C.getGovernment().getAutoRole() == C.getGovernment().getAcceptPos())
 			{
-				mob.tell(_("Everyone is already accepted."));
+				mob.tell(L("Everyone is already accepted."));
 				return false;
 			}
 			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.ACCEPT,false))
@@ -79,7 +79,7 @@ public class ClanAccept extends StdCommand
 				final List<MemberRecord> apps=C.getMemberList(C.getGovernment().getAutoRole());
 				if(apps.size()<1)
 				{
-					mob.tell(_("There are no applicants to your @x1.",C.getGovernmentName()));
+					mob.tell(L("There are no applicants to your @x1.",C.getGovernmentName()));
 					return false;
 				}
 				memberStr=CMStrings.capitalizeAndLower(memberStr);
@@ -95,7 +95,7 @@ public class ClanAccept extends StdCommand
 					final MOB M=CMLib.players().getLoadPlayer(memberStr);
 					if(M==null)
 					{
-						mob.tell(_("@x1 was not found.  Could not add to @x2.",memberStr,C.getGovernmentName()));
+						mob.tell(L("@x1 was not found.  Could not add to @x2.",memberStr,C.getGovernmentName()));
 						return false;
 					}
 					if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.ACCEPT,true))
@@ -107,31 +107,31 @@ public class ClanAccept extends StdCommand
 							S.setSavable(false);
 							S.setVarScope("*");
 							S.setScript(C.getGovernment().getEntryScript());
-							final CMMsg msg2=CMClass.getMsg(M,M,null,CMMsg.MSG_OK_VISUAL,null,null,_("CLANENTRY"));
+							final CMMsg msg2=CMClass.getMsg(M,M,null,CMMsg.MSG_OK_VISUAL,null,null,L("CLANENTRY"));
 							S.executeMsg(M, msg2);
 							S.dequeResponses();
 							S.tick(M,Tickable.TICKID_MOB);
 						}
-						CMLib.clans().clanAnnounce(mob,_("@x1 is now a new member of @x2 @x3.",M.Name(),C.getGovernmentName(),C.name()));
-						mob.tell(_("@x1 has been accepted into @x2 '@x3'.",M.Name(),C.getGovernmentName(),C.clanID()));
+						CMLib.clans().clanAnnounce(mob,L("@x1 is now a new member of @x2 @x3.",M.Name(),C.getGovernmentName(),C.name()));
+						mob.tell(L("@x1 has been accepted into @x2 '@x3'.",M.Name(),C.getGovernmentName(),C.clanID()));
 						if((M.session()!=null)&&(M.session().mob()==M))
-							M.tell(_("@x1 has accepted you as a member of @x2 '@x3'.",mob.Name(),C.getGovernmentName(),C.clanID()));
+							M.tell(L("@x1 has accepted you as a member of @x2 '@x3'.",mob.Name(),C.getGovernmentName(),C.clanID()));
 						return false;
 					}
 				}
 				else
 				{
-					msg.append(_("@x1 isn't an applicant of your @x2.",memberStr,C.getGovernmentName()));
+					msg.append(L("@x1 isn't an applicant of your @x2.",memberStr,C.getGovernmentName()));
 				}
 			}
 			else
 			{
-				msg.append(_("You aren't in the right position to accept members into your @x1.",C.getGovernmentName()));
+				msg.append(L("You aren't in the right position to accept members into your @x1.",C.getGovernmentName()));
 			}
 		}
 		else
 		{
-			msg.append(_("You haven't specified which applicant you are accepting."));
+			msg.append(L("You haven't specified which applicant you are accepting."));
 		}
 		mob.tell(msg.toString());
 		return false;

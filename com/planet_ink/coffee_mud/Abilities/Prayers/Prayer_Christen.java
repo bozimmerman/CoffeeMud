@@ -39,7 +39,7 @@ import java.util.*;
 public class Prayer_Christen extends Prayer
 {
 	@Override public String ID() { return "Prayer_Christen"; }
-	private final static String localizedName = CMLib.lang()._("Christen");
+	private final static String localizedName = CMLib.lang().L("Christen");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
@@ -64,12 +64,12 @@ public class Prayer_Christen extends Prayer
 	{
 		if(mob.isInCombat())
 		{
-			mob.tell(_("Not while you're fighting!"));
+			mob.tell(L("Not while you're fighting!"));
 			return false;
 		}
 		if(commands.size()<2)
 		{
-			mob.tell(_("Christen whom what?"));
+			mob.tell(L("Christen whom what?"));
 			return false;
 		}
 		String name=((String)commands.lastElement()).trim();
@@ -79,17 +79,17 @@ public class Prayer_Christen extends Prayer
 
 		if((!(target instanceof CagedAnimal))||(target.phyStats().ability()<=0)||(!target.isGeneric()))
 		{
-			mob.tell(_("You may only christen a child."));
+			mob.tell(L("You may only christen a child."));
 			return false;
 		}
 		if(name.length()==0)
 		{
-			mob.tell(_("Christen @x1 what?",target.name(mob)));
+			mob.tell(L("Christen @x1 what?",target.name(mob)));
 			return false;
 		}
 		if(name.indexOf(' ')>=0)
 		{
-			mob.tell(_("The name may not have a space in it."));
+			mob.tell(L("The name may not have a space in it."));
 			return false;
 		}
 
@@ -97,7 +97,7 @@ public class Prayer_Christen extends Prayer
 
 		if(CMLib.players().playerExists(name))
 		{
-			mob.tell(_("That name is already taken.  Please choose another."));
+			mob.tell(L("That name is already taken.  Please choose another."));
 			return false;
 		}
 
@@ -112,13 +112,13 @@ public class Prayer_Christen extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> becomes @x1.",name):_("^S<S-NAME> christen(s) <T-NAMESELF> '@x1'.^?",name));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> becomes @x1.",name):L("^S<S-NAME> christen(s) <T-NAMESELF> '@x1'.^?",name));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				String oldName=target.Name();
 				target.setName(name);
-				target.setDisplayText(_("@x1 is here.",name));
+				target.setDisplayText(L("@x1 is here.",name));
 				String txt=((CagedAnimal)target).cageText();
 				int startNameX=txt.indexOf("<NAME>");
 				int endNameX=(startNameX>=0)?txt.indexOf("</NAME>",startNameX):-1;
@@ -134,7 +134,7 @@ public class Prayer_Christen extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 over <T-NAME>, but lose(s) <S-HIS-HER> concentration.",prayWord(mob)));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 over <T-NAME>, but lose(s) <S-HIS-HER> concentration.",prayWord(mob)));
 
 
 		// return whether it worked

@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_SilentDrop extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_SilentDrop"; }
-	private final static String localizedName = CMLib.lang()._("Silent Drop");
+	private final static String localizedName = CMLib.lang().L("Silent Drop");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
@@ -54,7 +54,7 @@ public class Thief_SilentDrop extends ThiefSkill
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell(_("What would you like to drop?"));
+			mob.tell(L("What would you like to drop?"));
 			return false;
 		}
 		final Item item=super.getTarget(mob,null,givenTarget,commands,Wearable.FILTER_UNWORNONLY);
@@ -67,7 +67,7 @@ public class Thief_SilentDrop extends ThiefSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,item,this,CMMsg.MSG_THIEF_ACT,_("<S-NAME> drop(s) <T-NAME>."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,item,this,CMMsg.MSG_THIEF_ACT,L("<S-NAME> drop(s) <T-NAME>."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -76,7 +76,7 @@ public class Thief_SilentDrop extends ThiefSkill
 		}
 		else
 		{
-			beneficialVisualFizzle(mob,item,_("<S-NAME> attempt(s) to drop <T-NAME> quietly, but fail(s)."));
+			beneficialVisualFizzle(mob,item,L("<S-NAME> attempt(s) to drop <T-NAME> quietly, but fail(s)."));
 			CMLib.commands().postDrop(mob, item, false, false,false);
 		}
 		return success;

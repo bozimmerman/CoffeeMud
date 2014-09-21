@@ -69,12 +69,12 @@ public class ClanTax extends StdCommand
 		final Clan C=chkC;
 		if(C==null)
 		{
-			mob.tell(_("You aren't allowed to tax anyone from @x1.",((clanName.length()==0)?"anything":clanName)));
+			mob.tell(L("You aren't allowed to tax anyone from @x1.",((clanName.length()==0)?"anything":clanName)));
 			return false;
 		}
 		if((!skipChecks)&&(!CMLib.clans().goForward(mob,chkC,commands,Clan.Function.TAX,false)))
 		{
-			mob.tell(_("You aren't in the right position to set the experience tax rate for your @x1.",C.getGovernmentName()));
+			mob.tell(L("You aren't in the right position to set the experience tax rate for your @x1.",C.getGovernmentName()));
 			return false;
 		}
 		final Session S=mob.session();
@@ -87,7 +87,7 @@ public class ClanTax extends StdCommand
 			{
 				S.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 				{
-					@Override public void showPrompt() { S.promptPrint(_("Enter your @x1's new tax rate (0-25)\n\r: ",C.getGovernmentName()));}
+					@Override public void showPrompt() { S.promptPrint(L("Enter your @x1's new tax rate (0-25)\n\r: ",C.getGovernmentName()));}
 					@Override public void timedOut() { }
 					@Override public void callBack()
 					{
@@ -109,7 +109,7 @@ public class ClanTax extends StdCommand
 		if((intt<0)||(intt>25))
 		{
 			if(mob.session()!=null)
-				mob.session().println(_("'@x1' is not a valid value.  Try 0-25.",t));
+				mob.session().println(L("'@x1' is not a valid value.  Try 0-25.",t));
 			return;
 		}
 		final Vector commands=new Vector();
@@ -124,7 +124,7 @@ public class ClanTax extends StdCommand
 		{
 			C.setTaxes(newRate);
 			C.update();
-			CMLib.clans().clanAnnounce(mob,_("The experience tax rate of @x1 @x2 has been changed to @x3",C.getGovernmentName(),C.clanID(),((int)Math.round(C.getTaxes()*100.0)+"%.")));
+			CMLib.clans().clanAnnounce(mob,L("The experience tax rate of @x1 @x2 has been changed to @x3",C.getGovernmentName(),C.clanID(),((int)Math.round(C.getTaxes()*100.0)+"%.")));
 		}
 	}
 

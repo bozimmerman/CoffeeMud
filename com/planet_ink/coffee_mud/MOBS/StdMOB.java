@@ -1070,7 +1070,7 @@ public class StdMOB implements MOB
 		{
 			location().delInhabitant(this);
 			if ((session() != null) && (!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
-				location().showOthers(this, null, CMMsg.MSG_OK_ACTION, _("<S-NAME> vanish(es) in a puff of smoke."));
+				location().showOthers(this, null, CMMsg.MSG_OK_ACTION, L("<S-NAME> vanish(es) in a puff of smoke."));
 		}
 		if(playerStats!=null)
 			CMLib.players().changePlayersLocation(this,null);
@@ -1236,7 +1236,7 @@ public class StdMOB implements MOB
 		CMLib.map().registerWorldObjectLoaded(null, getStartRoom(), this);
 		location().show(this, null, CMMsg.MSG_BRINGTOLIFE, null);
 		if (CMLib.flags().isSleeping(this))
-			tell(_("(You are asleep)"));
+			tell(L("(You are asleep)"));
 		else
 			CMLib.commands().postLook(this, true);
 		inventory.trimToSize();
@@ -1619,19 +1619,19 @@ public class StdMOB implements MOB
 			else
 				sendBack = new StringBuffer(titledName());
 			sendBack.append(" ");
-			sendBack.append(_(CMLib.flags().dispositionString(this, CMFlagLibrary.flag_is)+" here"));
+			sendBack.append(L(CMLib.flags().dispositionString(this, CMFlagLibrary.flag_is)+" here"));
 			if (riding() != null)
 			{
 				sendBack.append(" " + riding().stateString(this) + " ");
 				if (riding() == viewerMob)
-					sendBack.append(_("YOU"));
+					sendBack.append(L("YOU"));
 				else
 				if (!CMLib.flags().canBeSeenBy(riding(), viewerMob))
 				{
 					if (riding() instanceof Item)
-						sendBack.append(_("something"));
+						sendBack.append(L("something"));
 					else
-						sendBack.append(_("someone"));
+						sendBack.append(L("someone"));
 				}
 				else
 					sendBack.append(riding().name());
@@ -1661,9 +1661,9 @@ public class StdMOB implements MOB
 						if (!CMLib.flags().canBeSeenBy(riding(), viewerMob))
 						{
 							if (riding() instanceof Item)
-								sendBack.append(_("something"));
+								sendBack.append(L("something"));
 							else
-								sendBack.append(_("someone"));
+								sendBack.append(L("someone"));
 						}
 						else
 							sendBack.append(rider.name());
@@ -1674,19 +1674,19 @@ public class StdMOB implements MOB
 			if ((isInCombat()) && (CMLib.flags().canMove(this)) && (!CMLib.flags().isSleeping(this)))
 			{
 				if (getVictim() == viewerMob)
-					sendBack.append(_(" fighting YOU"));
+					sendBack.append(L(" fighting YOU"));
 				else
 				if (!CMLib.flags().canBeSeenBy(getVictim(), viewerMob))
-					sendBack.append(_(" fighting someone"));
+					sendBack.append(L(" fighting someone"));
 				else
-					sendBack.append(_(" fighting @x1",getVictim().name()));
+					sendBack.append(L(" fighting @x1",getVictim().name()));
 			}
 			if ((amFollowing() != null) && (amFollowing().fetchFollowerOrder(this) > 0))
 			{
 				final List<MOB> whoseAhead = CMLib.combat().getFormationFollowed(this);
 				if ((whoseAhead != null) && (whoseAhead.size() > 0))
 				{
-					sendBack.append(_(", behind "));
+					sendBack.append(L(", behind "));
 					for (int v = 0; v < whoseAhead.size(); v++)
 					{
 						final MOB ahead = whoseAhead.get(v);
@@ -1694,13 +1694,13 @@ public class StdMOB implements MOB
 						{
 							sendBack.append(", ");
 							if (v == whoseAhead.size() - 1)
-								sendBack.append(_("and "));
+								sendBack.append(L("and "));
 						}
 						if (ahead == viewerMob)
-							sendBack.append(_("you"));
+							sendBack.append(L("you"));
 						else
 						if (!CMLib.flags().canBeSeenBy(ahead, viewerMob))
-							sendBack.append(_("someone"));
+							sendBack.append(L("someone"));
 						else
 							sendBack.append(ahead.name());
 					}
@@ -1951,13 +1951,13 @@ public class StdMOB implements MOB
 				Log.errOut("StdMOB", io.getMessage());
 			else
 				Log.errOut("StdMOB", io);
-			tell(_("Oops!"));
+			tell(L("Oops!"));
 		}
 		catch (final Exception e)
 		{
 			Log.errOut("StdMOB", CMParms.toStringList(commands));
 			Log.errOut("StdMOB", e);
-			tell(_("Oops!"));
+			tell(L("Oops!"));
 		}
 	}
 
@@ -1967,7 +1967,7 @@ public class StdMOB implements MOB
 		{
 			if (command == null)
 			{
-				tell(_("Huh?!"));
+				tell(L("Huh?!"));
 				return -1.0;
 			}
 			if (command instanceof Command)
@@ -2113,8 +2113,8 @@ public class StdMOB implements MOB
 			{
 				curState().setHitPoints(1);
 				if ((msg.tool() != null) && (msg.tool() != this) && (msg.tool() instanceof MOB))
-					((MOB) msg.tool()).tell(_("@x1 is immortal, and can not die.",name((MOB)msg.tool())));
-				tell(_("You are immortal, and can not die."));
+					((MOB) msg.tool()).tell(L("@x1 is immortal, and can not die.",name((MOB)msg.tool())));
+				tell(L("You are immortal, and can not die."));
 				return false;
 			}
 
@@ -2124,7 +2124,7 @@ public class StdMOB implements MOB
 				final int srcMinor = msg.sourceMinor();
 				if (amDead())
 				{
-					tell(_("You are DEAD!"));
+					tell(L("You are DEAD!"));
 					return false;
 				}
 
@@ -2135,15 +2135,15 @@ public class StdMOB implements MOB
 						final MOB target = (MOB) msg.target();
 						if ((amFollowing() != null) && (target == amFollowing()))
 						{
-							tell(_("You like @x1 too much.",amFollowing().charStats().himher()));
+							tell(L("You like @x1 too much.",amFollowing().charStats().himher()));
 							return false;
 						}
 						if ((getLiegeID().length() > 0) && (target.Name().equals(getLiegeID())))
 						{
 							if (isMarriedToLiege())
-								tell(_("You are married to '@x1'!",getLiegeID()));
+								tell(L("You are married to '@x1'!",getLiegeID()));
 							else
-								tell(_("You are serving '@x1'!",getLiegeID()));
+								tell(L("You are serving '@x1'!",getLiegeID()));
 							return false;
 						}
 						CMLib.combat().establishRange(this, (MOB) msg.target(), msg.tool());
@@ -2154,16 +2154,16 @@ public class StdMOB implements MOB
 				{
 					if (CMLib.flags().isSleeping(this))
 					{
-						tell(_("Not while you are sleeping."));
+						tell(L("Not while you are sleeping."));
 						return false;
 					}
 					if (!(msg.target() instanceof Room))
 						if (!CMLib.flags().canBeSeenBy(msg.target(), this))
 						{
 							if (msg.target() instanceof Item)
-								tell(_("You don't see @x1 here.",((Item)msg.target()).name(this)));
+								tell(L("You don't see @x1 here.",((Item)msg.target()).name(this)));
 							else
-								tell(_("You can't see that!"));
+								tell(L("You can't see that!"));
 							return false;
 						}
 				}
@@ -2180,17 +2180,17 @@ public class StdMOB implements MOB
 						{
 							if (CMLib.flags().isSleeping(this))
 							{
-								tell(_("Not while you are sleeping."));
+								tell(L("Not while you are sleeping."));
 								return false;
 							}
 							if (!CMLib.flags().canSpeak(this))
 							{
-								tell(_("You can't make sounds!"));
+								tell(L("You can't make sounds!"));
 								return false;
 							}
 							if (CMLib.flags().isAnimalIntelligence(this))
 							{
-								tell(_("You aren't smart enough to speak."));
+								tell(L("You aren't smart enough to speak."));
 								return false;
 							}
 						}
@@ -2201,15 +2201,15 @@ public class StdMOB implements MOB
 						&& (!(isMine(msg.target())
 						&& (msg.target() instanceof Item))))
 						{
-							srcM.tell(_("You don't see '@x1' here.",((Item)msg.target()).name(this)));
+							srcM.tell(L("You don't see '@x1' here.",((Item)msg.target()).name(this)));
 							return false;
 						}
 						if (!CMLib.flags().canTaste(this))
 						{
 							if ((msg.sourceMinor()==CMMsg.TYP_EAT)||(msg.sourceMinor()==CMMsg.TYP_DRINK))
-								tell(_("You can't eat or drink."));
+								tell(L("You can't eat or drink."));
 							else
-								tell(_("Your mouth is out of order."));
+								tell(L("Your mouth is out of order."));
 							return false;
 						}
 					}
@@ -2221,7 +2221,7 @@ public class StdMOB implements MOB
 					&& (!((isInCombat()) && (msg.target() == victim)))
 					&& (CMath.bset(msg.targetMajor(), CMMsg.MASK_HANDS)))
 					{
-						srcM.tell(_("You don't see '@x1' here.",((Physical)msg.target()).name(this)));
+						srcM.tell(L("You don't see '@x1' here.",((Physical)msg.target()).name(this)));
 						return false;
 					}
 					if (!CMLib.flags().aliveAwakeMobile(this, false))
@@ -2237,7 +2237,7 @@ public class StdMOB implements MOB
 						&& (location() != null)
 						&& (!CMath.bset(location().phyStats().sensesMask(), PhyStats.SENSE_ROOMCRUNCHEDIN))))
 					{
-						tell(_("You need to stand up!"));
+						tell(L("You need to stand up!"));
 						return false;
 					}
 				}
@@ -2254,13 +2254,13 @@ public class StdMOB implements MOB
 					&& (msg.sourceMinor() != CMMsg.TYP_SIT)
 					&& (msg.sourceMinor() != CMMsg.TYP_SLEEP))
 					{
-						tell(_("You need to stand up!"));
+						tell(L("You need to stand up!"));
 						if ((msg.sourceMinor() != CMMsg.TYP_WEAPONATTACK) && (msg.sourceMinor() != CMMsg.TYP_THROW))
 							return false;
 					}
 					if (!CMLib.flags().canMove(this))
 					{
-						tell(_("You can't move!"));
+						tell(L("You can't move!"));
 						return false;
 					}
 				}
@@ -2276,21 +2276,21 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_CLOSE:
 					if (charStats().getBodyPart(Race.BODY_ARM) == 0)
 					{
-						tell(_("You need arms to do that."));
+						tell(L("You need arms to do that."));
 						return false;
 					}
 					break;
 				case CMMsg.TYP_DELICATE_HANDS_ACT:
 					if ((charStats().getBodyPart(Race.BODY_HAND) == 0) && (msg.othersMinor() != CMMsg.NO_EFFECT))
 					{
-						tell(_("You need hands to do that."));
+						tell(L("You need hands to do that."));
 						return false;
 					}
 					break;
 				case CMMsg.TYP_JUSTICE:
 					if ((charStats().getBodyPart(Race.BODY_HAND) == 0) && (msg.target() instanceof Item))
 					{
-						tell(_("You need hands to do that."));
+						tell(L("You need hands to do that."));
 						return false;
 					}
 					break;
@@ -2306,7 +2306,7 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_WRITE:
 					if (charStats().getBodyPart(Race.BODY_HAND) == 0)
 					{
-						tell(_("You need hands to do that."));
+						tell(L("You need hands to do that."));
 						return false;
 					}
 					break;
@@ -2315,7 +2315,7 @@ public class StdMOB implements MOB
 					{
 						if ((msg.target() != null) && (isMine(msg.target())))
 						{
-							tell(_("You need hands to do that."));
+							tell(L("You need hands to do that."));
 							return false;
 						}
 					}
@@ -2335,14 +2335,14 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_JUSTICE:
 					if ((msg.target() != null) && (isInCombat()) && (msg.target() instanceof Item))
 					{
-						tell(_("Not while you are fighting!"));
+						tell(L("Not while you are fighting!"));
 						return false;
 					}
 					break;
 				case CMMsg.TYP_THROW:
 					if (charStats().getBodyPart(Race.BODY_ARM) == 0)
 					{
-						tell(_("You need arms to do that."));
+						tell(L("You need arms to do that."));
 						return false;
 					}
 					break;
@@ -2352,7 +2352,7 @@ public class StdMOB implements MOB
 					{
 						if ((msg.target() != null) && ((msg.target() instanceof Exit) || (srcM.isMine(msg.target()))))
 							break;
-						tell(_("Not while you are fighting!"));
+						tell(L("Not while you are fighting!"));
 						return false;
 					}
 					break;
@@ -2366,7 +2366,7 @@ public class StdMOB implements MOB
 							if ((M != this) && (M.getVictim() == this) && (CMLib.flags().aliveAwakeMobile(M, true))
 									&& (CMLib.flags().canSenseEnteringLeaving(srcM, M)))
 							{
-								tell(_("Not while you are fighting!"));
+								tell(L("Not while you are fighting!"));
 								return false;
 							}
 						}
@@ -2386,7 +2386,7 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_READ:
 					if (isInCombat() && (!msg.sourceMajor(CMMsg.MASK_MAGIC)))
 					{
-						tell(_("Not while you are fighting!"));
+						tell(L("Not while you are fighting!"));
 						return false;
 					}
 					break;
@@ -2398,7 +2398,7 @@ public class StdMOB implements MOB
 							if ((msg.target() instanceof MOB)
 							&& (!CMLib.flags().canBeHeardSpeakingBy(this, (MOB) msg.target())))
 							{
-								tell(_("@x1 can't hear you!",((Physical)msg.target()).name(this)));
+								tell(L("@x1 can't hear you!",((Physical)msg.target()).name(this)));
 								return false;
 							}
 							else
@@ -2412,7 +2412,7 @@ public class StdMOB implements MOB
 							if ((!((msg.target() instanceof MOB) && (((MOB) msg.target()).getLiegeID().equals(Name()))))
 							&& (!msg.target().Name().equals(getLiegeID())))
 							{
-								tell(_("@x1 does not serve you, and you do not serve @x2.",((Physical)msg.target()).name(this),((Physical)msg.target()).name(this)));
+								tell(L("@x1 does not serve you, and you do not serve @x2.",((Physical)msg.target()).name(this),((Physical)msg.target()).name(this)));
 								return false;
 							}
 							else
@@ -2421,21 +2421,21 @@ public class StdMOB implements MOB
 							&& (getLiegeID().equals(msg.target().Name()))
 							&& (((MOB) msg.target()).isMarriedToLiege()))
 							{
-								tell(_("You cannot rebuke @x1.  You must get an annulment or a divorce.",((Physical)msg.target()).name(this)));
+								tell(L("You cannot rebuke @x1.  You must get an annulment or a divorce.",((Physical)msg.target()).name(this)));
 								return false;
 							}
 						}
 						else
 						if (getLiegeID().length() == 0)
 						{
-							tell(_("You aren't serving anyone!"));
+							tell(L("You aren't serving anyone!"));
 							return false;
 						}
 					}
 					else
 					if (getWorshipCharID().length() == 0)
 					{
-						tell(_("You aren't worshipping anyone!"));
+						tell(L("You aren't worshipping anyone!"));
 						return false;
 					}
 					break;
@@ -2444,7 +2444,7 @@ public class StdMOB implements MOB
 						return false;
 					if (msg.target() == this)
 					{
-						tell(_("You can't serve yourself!"));
+						tell(L("You can't serve yourself!"));
 						return false;
 					}
 					if (msg.target() instanceof Deity)
@@ -2452,24 +2452,24 @@ public class StdMOB implements MOB
 					if ((msg.target() instanceof MOB)
 							&& (!CMLib.flags().canBeHeardSpeakingBy(this, (MOB) msg.target())))
 					{
-						tell(_("@x1 can't hear you!",((Physical)msg.target()).name(this)));
+						tell(L("@x1 can't hear you!",((Physical)msg.target()).name(this)));
 						return false;
 					}
 					if (getLiegeID().length() > 0)
 					{
-						tell(_("You are already serving '@x1'.",getLiegeID()));
+						tell(L("You are already serving '@x1'.",getLiegeID()));
 						return false;
 					}
 					if ((msg.target() instanceof MOB) && (((MOB) msg.target()).getLiegeID().equals(Name())))
 					{
-						tell(_("You can not serve each other!"));
+						tell(L("You can not serve each other!"));
 						return false;
 					}
 					break;
 				case CMMsg.TYP_CAST_SPELL:
 					if (charStats().getStat(CharStats.STAT_INTELLIGENCE) < 5)
 					{
-						tell(_("You aren't smart enough to do magic."));
+						tell(L("You aren't smart enough to do magic."));
 						return false;
 					}
 					break;
@@ -2513,12 +2513,12 @@ public class StdMOB implements MOB
 			{
 				if (curState().getMovement() < 25)
 				{
-					tell(_("You are too tired."));
+					tell(L("You are too tired."));
 					return false;
 				}
 				if ((location() != null) && (rangeToTarget() >= location().maxRange()))
 				{
-					tell(_("You cannot retreat any further."));
+					tell(L("You cannot retreat any further."));
 					return false;
 				}
 				curState().adjMovement(-25, maxState());
@@ -2554,13 +2554,13 @@ public class StdMOB implements MOB
 				}
 				if ((useRange >= 0) && (maxRange(tool) < useRange))
 				{
-					srcM.tell(_("You are too far away from @x1 to use @x2.",trgM.name(srcM),tool.name()));
+					srcM.tell(L("You are too far away from @x1 to use @x2.",trgM.name(srcM),tool.name()));
 					return false;
 				}
 				else
 				if ((useRange >= 0) && (minRange(tool) > useRange))
 				{
-					srcM.tell(_("You are too close to @x1 to use @x2.",trgM.name(srcM),tool.name()));
+					srcM.tell(L("You are too close to @x1 to use @x2.",trgM.name(srcM),tool.name()));
 					if ((msg.targetMinor() == CMMsg.TYP_WEAPONATTACK)
 					&& (tool instanceof Weapon)
 					&& (!((Weapon) tool).amWearingAt(Wearable.IN_INVENTORY)))
@@ -2584,7 +2584,7 @@ public class StdMOB implements MOB
 				&& (!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 				&& ((msg.tool() == null) || (!(msg.tool() instanceof Ability)) || (!((Ability) msg.tool()).isNowAnAutoEffect())))
 				{
-					srcM.tell(_("You like yourself too much."));
+					srcM.tell(L("You like yourself too much."));
 					if (victim == this)
 					{
 						victim = null;
@@ -2599,7 +2599,7 @@ public class StdMOB implements MOB
 						&& ((((Ability) msg.tool()).classificationCode() & Ability.ALL_ACODES) != Ability.ACODE_DISEASE))
 					|| ((srcM == this) && (srcM.isMonster()))))
 				{
-					srcM.tell(_("You may not attack @x1.",name(srcM)));
+					srcM.tell(L("You may not attack @x1.",name(srcM)));
 					srcM.setVictim(null);
 					if (victim == srcM)
 						setVictim(null);
@@ -2616,7 +2616,7 @@ public class StdMOB implements MOB
 				&& (!CMSecurity.isAllowed(srcM, srcM.location(), CMSecurity.SecFlag.PKILL))
 				&& ((!(msg.tool() instanceof Ability)) || (((Ability) msg.tool()).classificationCode() & Ability.ALL_ACODES) != Ability.ACODE_DISEASE))
 				{
-					srcM.tell(_("That is not EVEN a fair fight."));
+					srcM.tell(L("That is not EVEN a fair fight."));
 					srcM.setVictim(null);
 					if (victim == srcM)
 						setVictim(null);
@@ -2687,7 +2687,7 @@ public class StdMOB implements MOB
 			case CMMsg.TYP_UNLOCK:
 			case CMMsg.TYP_WEAR:
 			case CMMsg.TYP_WIELD:
-				srcM.tell(srcM, this, null, _("You can't do that to <T-NAMESELF>."));
+				srcM.tell(srcM, this, null, L("You can't do that to <T-NAMESELF>."));
 				return false;
 			case CMMsg.TYP_TEACH:
 				if((msg.target() instanceof MOB)
@@ -2697,24 +2697,24 @@ public class StdMOB implements MOB
 			case CMMsg.TYP_PULL:
 				if ((!CMLib.flags().isBoundOrHeld(this)) && (!CMLib.flags().isSleeping(this)))
 				{
-					srcM.tell(srcM, this, null, _("You can't do that to <T-NAMESELF>."));
+					srcM.tell(srcM, this, null, L("You can't do that to <T-NAMESELF>."));
 					return false;
 				}
 				if (phyStats().weight() > (srcM.maxCarry() / 2))
 				{
-					srcM.tell(srcM, this, null, _("<T-NAME> is too big for you to pull."));
+					srcM.tell(srcM, this, null, L("<T-NAME> is too big for you to pull."));
 					return false;
 				}
 				break;
 			case CMMsg.TYP_PUSH:
 				if ((!CMLib.flags().isBoundOrHeld(this)) && (!CMLib.flags().isSleeping(this)))
 				{
-					srcM.tell(srcM, this, null, _("You can't do that to <T-NAMESELF>."));
+					srcM.tell(srcM, this, null, L("You can't do that to <T-NAMESELF>."));
 					return false;
 				}
 				if (phyStats().weight() > srcM.maxCarry())
 				{
-					srcM.tell(srcM, this, null, _("<T-NAME> is too heavy for you to push."));
+					srcM.tell(srcM, this, null, L("<T-NAME> is too heavy for you to push."));
 					return false;
 				}
 				break;
@@ -2722,7 +2722,7 @@ public class StdMOB implements MOB
 			case CMMsg.TYP_DISMOUNT:
 				if (!(this instanceof Rideable))
 				{
-					srcM.tell(srcM, this, null, _("You can't do that to <T-NAMESELF>."));
+					srcM.tell(srcM, this, null, L("You can't do that to <T-NAMESELF>."));
 					return false;
 				}
 				break;
@@ -2737,13 +2737,13 @@ public class StdMOB implements MOB
 					return true;
 				if ((getWearPositions(Wearable.WORN_ARMS) == 0) && (!CMath.bset(msg.targetMajor(), CMMsg.MASK_ALWAYS)))
 				{
-					srcM.tell(_("@x1 is unable to accept that from you.",name(srcM)));
+					srcM.tell(L("@x1 is unable to accept that from you.",name(srcM)));
 					return false;
 				}
 				if ((!CMLib.flags().canBeSeenBy(msg.tool(), this))
 						&& (!CMath.bset(msg.targetMajor(), CMMsg.MASK_ALWAYS)))
 				{
-					srcM.tell(_("@x1 can't see what you are giving.",name(srcM)));
+					srcM.tell(L("@x1 can't see what you are giving.",name(srcM)));
 					return false;
 				}
 				final int GC = msg.targetMajor() & CMMsg.MASK_ALWAYS;
@@ -2759,7 +2759,7 @@ public class StdMOB implements MOB
 							GC | CMMsg.MSG_GET | CMMsg.MASK_INTERMSG, null);
 					if (!location().okMessage(msg.target(), msg2))
 					{
-						srcM.tell(_("@x1 cannot seem to accept @x2.",((Physical)msg.target()).name(srcM),((Physical)msg.tool()).name(this)));
+						srcM.tell(L("@x1 cannot seem to accept @x2.",((Physical)msg.target()).name(srcM),((Physical)msg.tool()).name(this)));
 						return false;
 					}
 				}
@@ -2767,7 +2767,7 @@ public class StdMOB implements MOB
 			case CMMsg.TYP_FOLLOW:
 				if (totalFollowers() + srcM.totalFollowers() >= maxFollowers())
 				{
-					srcM.tell(_("@x1 can't accept any more followers.",name(srcM)));
+					srcM.tell(L("@x1 can't accept any more followers.",name(srcM)));
 					return false;
 				}
 				if ((CMProps.getIntVar(CMProps.Int.FOLLOWLEVELDIFF) > 0)
@@ -2778,12 +2778,12 @@ public class StdMOB implements MOB
 				{
 					if (phyStats.level() > (srcM.phyStats().level() + CMProps.getIntVar(CMProps.Int.FOLLOWLEVELDIFF)))
 					{
-						srcM.tell(_("@x1 is too advanced for you.",name(srcM)));
+						srcM.tell(L("@x1 is too advanced for you.",name(srcM)));
 						return false;
 					}
 					if (phyStats.level() < (srcM.phyStats().level() - CMProps.getIntVar(CMProps.Int.FOLLOWLEVELDIFF)))
 					{
-						srcM.tell(_("@x1 is too inexperienced for you.",name(srcM)));
+						srcM.tell(L("@x1 is too inexperienced for you.",name(srcM)));
 						return false;
 					}
 				}
@@ -2942,7 +2942,7 @@ public class StdMOB implements MOB
 				break;
 			case CMMsg.TYP_READ:
 				if ((CMLib.flags().canBeSeenBy(this, srcM)) && (msg.amITarget(this)))
-					srcM.tell(_("There is nothing written on @x1",name(srcM)));
+					srcM.tell(L("There is nothing written on @x1",name(srcM)));
 				break;
 			case CMMsg.TYP_SIT:
 				CMLib.commands().handleSit(msg);
@@ -3180,7 +3180,7 @@ public class StdMOB implements MOB
 								&& (A.getAreaState() != Area.State.FROZEN)
 								&& (A.getAreaState() != Area.State.STOPPED))
 									lastTickedTime = CMLib.utensils().processVariableEquipment(this);
-								room.showOthers(this, null, CMMsg.MSG_OK_ACTION, _("<S-NAME> appears!"));
+								room.showOthers(this, null, CMMsg.MSG_OK_ACTION, L("<S-NAME> appears!"));
 							}
 						}
 					}
@@ -3304,7 +3304,7 @@ public class StdMOB implements MOB
 							}
 							if (smallChance && curState().getFatigue() > (CharState.FATIGUED_EXHAUSTED_MILLIS))
 							{
-								R.show(this, null, CMMsg.MSG_OK_ACTION, _("<S-NAME> fall(s) asleep from exhaustion!!"));
+								R.show(this, null, CMMsg.MSG_OK_ACTION, L("<S-NAME> fall(s) asleep from exhaustion!!"));
 								basePhyStats().setDisposition(basePhyStats().disposition() | PhyStats.IS_SLEEPING);
 								phyStats().setDisposition(phyStats().disposition() | PhyStats.IS_SLEEPING);
 							}
@@ -4868,7 +4868,7 @@ public class StdMOB implements MOB
 	}
 
 	@Override
-	public String _(final String str, final String ... xs)
+	public String L(final String str, final String ... xs)
 	{
 		return CMLib.lang().fullSessionTranslation(str, xs);
 	}

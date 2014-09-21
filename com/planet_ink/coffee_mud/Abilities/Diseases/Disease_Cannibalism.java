@@ -35,9 +35,9 @@ import java.util.*;
 public class Disease_Cannibalism extends Disease
 {
 	@Override public String ID() { return "Disease_Cannibalism"; }
-	private final static String localizedName = CMLib.lang()._("Cannibalism");
+	private final static String localizedName = CMLib.lang().L("Cannibalism");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Cannibalism)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Cannibalism)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -112,7 +112,7 @@ public class Disease_Cannibalism extends Disease
 			if((food!=null)
 			&&(food.name().toLowerCase().indexOf(mob.charStats().raceName()) < 0))
 			{
-				final CMMsg newMessage=CMClass.getMsg(mob,null,this,CMMsg.MSG_OK_VISUAL,_("^S<S-NAME> attempt(s) to eat @x1, but can't stomach it....^?",food.Name()));
+				final CMMsg newMessage=CMClass.getMsg(mob,null,this,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> attempt(s) to eat @x1, but can't stomach it....^?",food.Name()));
 				if(mob.location().okMessage(mob,newMessage))
 					mob.location().send(mob,newMessage);
 				return false;
@@ -126,7 +126,7 @@ public class Disease_Cannibalism extends Disease
 			&&(msg.tool()!=null)
 			&&(msg.tool().ID().equals("Spell_Hungerless")))
 			{
-				mob.tell(_("You don't feel any less hungry."));
+				mob.tell(L("You don't feel any less hungry."));
 				return false;
 			}
 		}

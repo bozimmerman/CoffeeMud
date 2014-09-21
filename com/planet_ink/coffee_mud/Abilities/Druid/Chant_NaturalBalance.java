@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_NaturalBalance extends Chant
 {
 	@Override public String ID() { return "Chant_NaturalBalance"; }
-	private final static String localizedName = CMLib.lang()._("Natural Balance");
+	private final static String localizedName = CMLib.lang().L("Natural Balance");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Communing with the Natural Balance)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Communing with the Natural Balance)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
@@ -59,9 +59,9 @@ public class Chant_NaturalBalance extends Chant
 			if(!mob.amDead())
 			{
 				if(mob.location()!=null)
-					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> end(s) <S-HIS-HER> natural communion."));
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> end(s) <S-HIS-HER> natural communion."));
 				else
-					mob.tell(_("Your communion with natural balance ends."));
+					mob.tell(L("Your communion with natural balance ends."));
 			}
 		}
 	}
@@ -125,16 +125,16 @@ public class Chant_NaturalBalance extends Chant
 					CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), -oneHalfPct);
 				switch(CMLib.dice().roll(1,10,0))
 				{
-				case 0: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> empathize(s) with the plants.")); break;
-				case 1: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> learn(s) from the birds.")); break;
-				case 2: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> watch(es) the insects.")); break;
-				case 3: room.show(mob,null,this,CMMsg.MSG_HANDS|CMMsg.MASK_ALWAYS,_("<S-NAME> hug(s) the ground.")); break;
-				case 4: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> inhale(s) the fresh air.")); break;
-				case 5: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> watch(es) the plants grow.")); break;
-				case 6: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> become(s) one with life.")); break;
-				case 7: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> seek(s) the inner beauty of the natural order.")); break;
-				case 8: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> expunge(s) <S-HIS-HER> unnatural thoughts.")); break;
-				case 9: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> find(s) clarity in the natural world.")); break;
+				case 0: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> empathize(s) with the plants.")); break;
+				case 1: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> learn(s) from the birds.")); break;
+				case 2: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> watch(es) the insects.")); break;
+				case 3: room.show(mob,null,this,CMMsg.MSG_HANDS|CMMsg.MASK_ALWAYS,L("<S-NAME> hug(s) the ground.")); break;
+				case 4: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> inhale(s) the fresh air.")); break;
+				case 5: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> watch(es) the plants grow.")); break;
+				case 6: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> become(s) one with life.")); break;
+				case 7: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> seek(s) the inner beauty of the natural order.")); break;
+				case 8: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> expunge(s) <S-HIS-HER> unnatural thoughts.")); break;
+				case 9: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> find(s) clarity in the natural world.")); break;
 				}
 			}
 		}
@@ -151,12 +151,12 @@ public class Chant_NaturalBalance extends Chant
 	{
 		if(mob.isInCombat())
 		{
-			mob.tell(_("You can't commune while in combat!"));
+			mob.tell(L("You can't commune while in combat!"));
 			return false;
 		}
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell(_("You must be outdoors for this chant to work."));
+			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
@@ -165,7 +165,7 @@ public class Chant_NaturalBalance extends Chant
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			mob.tell(_("This magic will not work here."));
+			mob.tell(L("This magic will not work here."));
 			return false;
 		}
 
@@ -178,7 +178,7 @@ public class Chant_NaturalBalance extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),_("^S<S-NAME> begin(s) to commune with the natural balance...^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),L("^S<S-NAME> begin(s) to commune with the natural balance...^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -187,7 +187,7 @@ public class Chant_NaturalBalance extends Chant
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) to commune with nature, but lose(s) concentration."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> chant(s) to commune with nature, but lose(s) concentration."));
 
 		// return whether it worked
 		return success;

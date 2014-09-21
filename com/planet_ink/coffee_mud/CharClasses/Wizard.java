@@ -36,7 +36,7 @@ import java.util.*;
 public class Wizard extends Mage
 {
 	@Override public String ID(){return "Wizard";}
-	private final static String localizedStaticName = CMLib.lang()._("Wizard");
+	private final static String localizedStaticName = CMLib.lang().L("Wizard");
 	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return "Mage";}
 	@Override protected boolean grantSomeSpells(){return false;}
@@ -168,7 +168,7 @@ public class Wizard extends Mage
 				if(CMLib.dice().rollPercentage()>
 				   (myChar.charStats().getStat(CharStats.STAT_INTELLIGENCE)*((myChar.charStats().getCurrentClass().ID().equals(ID()))?1:2)))
 				{
-					myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> fizzle(s) a spell."));
+					myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> fizzle(s) a spell."));
 					return false;
 				}
 			}

@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_Hunger extends Chant
 {
 	@Override public String ID() { return "Chant_Hunger"; }
-	private final static String localizedName = CMLib.lang()._("Feel Hunger");
+	private final static String localizedName = CMLib.lang().L("Feel Hunger");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Feel Hunger)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Feel Hunger)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -67,19 +67,19 @@ public class Chant_Hunger extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
 					target.curState().adjHunger(-(150+(mob.phyStats().level()+(2*super.getXLEVELLevel(mob))) * 5),target.maxState().maxHunger(target.baseWeight()));
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> feel(s) incredibly hungry!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) incredibly hungry!"));
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
 		// return whether it worked
 		return success;
 	}

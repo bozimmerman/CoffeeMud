@@ -99,7 +99,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 				controlI.addScreenMessage(controlMessage);
 			else
 			if((mob!=null)&&(me!=null))
-				mob.tell(CMLib.lang()._("A panel on @x1 reports '@x2'.",me.name(mob),controlMessage));
+				mob.tell(CMLib.lang().L("A panel on @x1 reports '@x2'.",me.name(mob),controlMessage));
 		}
 		return false;
 	}

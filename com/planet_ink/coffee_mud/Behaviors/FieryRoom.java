@@ -168,7 +168,7 @@ public class FieryRoom
 	private void dealDamage(MOB mob)
 	{
 		final MOB M=CMLib.map().getFactoryMOB(mob.location());
-		M.setName(_("fire"));
+		M.setName(L("fire"));
 		CMLib.combat().postDamage(M, mob, null, directDamage, CMMsg.MASK_ALWAYS | CMMsg.MASK_MALICIOUS|CMMsg.TYP_FIRE, Weapon.TYPE_BURNING,
 							"The fire here <DAMAGE> <T-NAME>!");
 		M.destroy();
@@ -180,7 +180,7 @@ public class FieryRoom
 		if (target != null)
 		{
 			final MOB M=CMLib.map().getFactoryMOB(mob.location());
-			M.setName(_("fire"));
+			M.setName(L("fire"));
 			switch (target.material() & RawMaterial.MATERIAL_MASK)
 			{
 				case RawMaterial.MATERIAL_GLASS:
@@ -203,7 +203,7 @@ public class FieryRoom
 					final Ability burn = CMClass.getAbility("Burning");
 					if (burn != null)
 					{
-						mob.location().showHappens(CMMsg.MSG_OK_ACTION, _("@x1 begins to burn!",target.Name()));
+						mob.location().showHappens(CMMsg.MSG_OK_ACTION, L("@x1 begins to burn!",target.Name()));
 						burn.invoke(M, target, true, 0);
 						target.recoverPhyStats();
 					}
@@ -224,7 +224,7 @@ public class FieryRoom
 			final Ability burn = CMClass.getAbility("Burning");
 			if((burn != null)&&(CMLib.dice().rollPercentage()>60))
 			{
-				which.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang()._("@x1 begins to burn!",target.Name()));
+				which.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang().L("@x1 begins to burn!",target.Name()));
 				burn.invoke(mob,target,true,0);
 				target.recoverPhyStats();
 			}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_CalmAnimal extends Chant
 {
 	@Override public String ID() { return "Chant_CalmAnimal"; }
-	private final static String localizedName = CMLib.lang()._("Calm Animal");
+	private final static String localizedName = CMLib.lang().L("Calm Animal");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
@@ -51,13 +51,13 @@ public class Chant_CalmAnimal extends Chant
 		if(target==null) return false;
 		if(!CMLib.flags().isAnimalIntelligence(target))
 		{
-			mob.tell(_("@x1 is not an animal!",target.name(mob)));
+			mob.tell(L("@x1 is not an animal!",target.name(mob)));
 			return false;
 		}
 
 		if(!target.isInCombat())
 		{
-			mob.tell(_("@x1 doesn't seem particularly enraged at the moment.",target.name(mob)));
+			mob.tell(L("@x1 doesn't seem particularly enraged at the moment.",target.name(mob)));
 			return false;
 		}
 
@@ -72,7 +72,7 @@ public class Chant_CalmAnimal extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) surrounded by a natural light."):_("^S<S-NAME> chant(s) to <T-NAMESELF> for calm.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) surrounded by a natural light."):L("^S<S-NAME> chant(s) to <T-NAMESELF> for calm.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -86,7 +86,7 @@ public class Chant_CalmAnimal extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
 		// return whether it worked
 		return success;
 	}

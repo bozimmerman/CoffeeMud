@@ -35,9 +35,9 @@ import java.util.*;
 public class Skill_Swim extends StdSkill
 {
 	@Override public String ID() { return "Skill_Swim"; }
-	private final static String localizedName = CMLib.lang()._("Swim");
+	private final static String localizedName = CMLib.lang().L("Swim");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Swimming)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Swimming)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -77,7 +77,7 @@ public class Skill_Swim extends StdSkill
 			final int dirCode=Directions.getDirectionCode(CMParms.combine(commands,0));
 			if(dirCode<0)
 			{
-				mob.tell(_("Swim where?"));
+				mob.tell(L("Swim where?"));
 				return false;
 			}
 			final Room r=mob.location().getRoomInDir(dirCode);
@@ -85,7 +85,7 @@ public class Skill_Swim extends StdSkill
 			{
 				if(!placeToSwim(r))
 				{
-					mob.tell(_("There is no water to swim on that way."));
+					mob.tell(L("There is no water to swim on that way."));
 					return false;
 				}
 			}
@@ -94,7 +94,7 @@ public class Skill_Swim extends StdSkill
 			&&(r.domainType()==Room.DOMAIN_OUTDOORS_AIR)
 			&&(r.domainType()==Room.DOMAIN_INDOORS_AIR))
 			{
-				mob.tell(_("There is no water to swim on that way."));
+				mob.tell(L("There is no water to swim on that way."));
 				return false;
 			}
 
@@ -102,10 +102,10 @@ public class Skill_Swim extends StdSkill
 			&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_WATER)
 			&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_AIR))
 			{
-				mob.tell(_("You need to get off @x1 first!",mob.riding().name()));
+				mob.tell(L("You need to get off @x1 first!",mob.riding().name()));
 				return false;
 			}
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> start(s) swimming @x1.",Directions.getDirectionName(dirCode)));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> start(s) swimming @x1.",Directions.getDirectionName(dirCode)));
 			final Room R=mob.location();
 			if((R!=null)&&(R.okMessage(mob,msg)))
 				R.send(mob,msg);
@@ -133,7 +133,7 @@ public class Skill_Swim extends StdSkill
 			R.send(mob,msg);
 			success=proficiencyCheck(mob,0,auto);
 			if(!success)
-				R.show(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> struggle(s) against the water, making no progress."));
+				R.show(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> struggle(s) against the water, making no progress."));
 			else
 			{
 				if(mob.fetchEffect(ID())==null)

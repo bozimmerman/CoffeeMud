@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_ArmsLength extends Spell
 {
 	@Override public String ID() { return "Spell_ArmsLength"; }
-	private final static String localizedName = CMLib.lang()._("Arms Length");
+	private final static String localizedName = CMLib.lang().L("Arms Length");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Arms Length)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Arms Length)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -55,7 +55,7 @@ public class Spell_ArmsLength extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.tell(mob,null,null,_("<S-YOUPOSS> arms length magic fades."));
+				mob.tell(mob,null,null,L("<S-YOUPOSS> arms length magic fades."));
 	}
 
   @Override
@@ -82,7 +82,7 @@ public int castingQuality(MOB mob, Physical target)
 			if((mob.getVictim()==msg.source())
 			&&(mob.location()!=null))
 			{
-		final CMMsg msg2=CMClass.getMsg(mob,mob.getVictim(),CMMsg.MSG_RETREAT,_("<S-NAME> predict(s) <T-YOUPOSS> advance and retreat(s)."));
+		final CMMsg msg2=CMClass.getMsg(mob,mob.getVictim(),CMMsg.MSG_RETREAT,L("<S-NAME> predict(s) <T-YOUPOSS> advance and retreat(s)."));
 		if(mob.location().okMessage(mob,msg2))
 			mob.location().send(mob,msg2);
 			}
@@ -98,7 +98,7 @@ public int castingQuality(MOB mob, Physical target)
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> already <S-IS-ARE> keeping enemies at arms length."));
+			mob.tell(target,null,null,L("<S-NAME> already <S-IS-ARE> keeping enemies at arms length."));
 			return false;
 		}
 
@@ -109,7 +109,7 @@ public int castingQuality(MOB mob, Physical target)
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> begin(s) keeping <T-HIS-HER> enemies at arms length!"):_("^S<S-NAME> incant(s) distantly!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> begin(s) keeping <T-HIS-HER> enemies at arms length!"):L("^S<S-NAME> incant(s) distantly!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -120,7 +120,7 @@ public int castingQuality(MOB mob, Physical target)
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> incant(s) distantly, but the spell fizzles."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> incant(s) distantly, but the spell fizzles."));
 
 		return success;
 	}

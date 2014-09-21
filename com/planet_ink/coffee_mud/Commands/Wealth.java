@@ -38,7 +38,7 @@ public class Wealth extends Inventory
 		final StringBuilder msg=new StringBuilder("");
 		final InventoryList list = fetchInventory(seer,mob);
 		if(list.moneyItems.size()==0)
-			msg.append(_("\n\r^HMoney:^N None!\n\r"));
+			msg.append(L("\n\r^HMoney:^N None!\n\r"));
 		else
 			msg.append(getShowableMoney(list));
 		return msg;
@@ -56,7 +56,7 @@ public class Wealth extends Inventory
 		}
 		final StringBuilder msg=getInventory(mob,mob,CMParms.combine(commands,1));
 		if(msg.length()==0)
-			mob.tell(_("You have no money on you."));
+			mob.tell(L("You have no money on you."));
 		else
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());

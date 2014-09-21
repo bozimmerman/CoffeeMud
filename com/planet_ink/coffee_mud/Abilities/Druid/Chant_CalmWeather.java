@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_CalmWeather extends Chant
 {
 	@Override public String ID() { return "Chant_CalmWeather"; }
-	private final static String localizedName = CMLib.lang()._("Calm Weather");
+	private final static String localizedName = CMLib.lang().L("Calm Weather");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}
@@ -57,7 +57,7 @@ public class Chant_CalmWeather extends Chant
 			&&((newC.weatherType(null)==Climate.WEATHER_CLEAR)
 				||(newC.weatherType(null)==Climate.WEATHER_CLOUDY)))
 			{
-				mob.tell(CMLib.lang()._("^YYou have restored balance to the weather!^N"));
+				mob.tell(CMLib.lang().L("^YYou have restored balance to the weather!^N"));
 				CMLib.leveler().postExperience(mob,null,null,25,false);
 				A=CMClass.getAbility("Chant_ControlWeather");
 				A.invoke(mob,area,true,0);
@@ -91,7 +91,7 @@ public class Chant_CalmWeather extends Chant
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
-			mob.tell(_("You must be outdoors for this chant to work."));
+			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
 		switch(mob.location().getArea().getClimateObj().weatherType(mob.location()))
@@ -106,7 +106,7 @@ public class Chant_CalmWeather extends Chant
 		case Climate.WEATHER_RAIN:
 			break;
 		default:
-			mob.tell(_("The weather just doesn't get much calmer than this."));
+			mob.tell(L("The weather just doesn't get much calmer than this."));
 			return false;
 		}
 
@@ -119,7 +119,7 @@ public class Chant_CalmWeather extends Chant
 		final boolean success=proficiencyCheck(mob,-size,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?_("^JThe swirling sky changes color!^?"):_("^S<S-NAME> chant(s) into the swirling sky!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?L("^JThe swirling sky changes color!^?"):L("^S<S-NAME> chant(s) into the swirling sky!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -159,7 +159,7 @@ public class Chant_CalmWeather extends Chant
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) into the sky, but the magic fizzles."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> chant(s) into the sky, but the magic fizzles."));
 
 		return success;
 	}

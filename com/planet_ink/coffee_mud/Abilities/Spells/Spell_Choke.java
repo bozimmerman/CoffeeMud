@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Choke extends Spell
 {
 	@Override public String ID() { return "Spell_Choke"; }
-	private final static String localizedName = CMLib.lang()._("Choke");
+	private final static String localizedName = CMLib.lang().L("Choke");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Choke spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Choke spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -61,7 +61,7 @@ public class Spell_Choke extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("You begin to breathe easier."));
+			mob.tell(L("You begin to breathe easier."));
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class Spell_Choke extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> incant(s) at <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> incant(s) at <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -99,7 +99,7 @@ public class Spell_Choke extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) at <T-NAMESELF>, but the spell fizzles."));
+			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) at <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

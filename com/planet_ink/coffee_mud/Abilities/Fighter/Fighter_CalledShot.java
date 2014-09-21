@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_CalledShot extends Fighter_CalledStrike
 {
 	@Override public String ID() { return "Fighter_CalledShot"; }
-	private final static String localizedName = CMLib.lang()._("Called Shot");
+	private final static String localizedName = CMLib.lang().L("Called Shot");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"CALLEDSHOT"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -46,7 +46,7 @@ public class Fighter_CalledShot extends Fighter_CalledStrike
 		if(mob.isInCombat()&&(mob.rangeToTarget()==0))
 		{
 			if(!quiet)
-				mob.tell(_("You are too close to perform a called shot!"));
+				mob.tell(L("You are too close to perform a called shot!"));
 			return false;
 		}
 
@@ -54,14 +54,14 @@ public class Fighter_CalledShot extends Fighter_CalledStrike
 		if((w==null)||(!(w instanceof Weapon)))
 		{
 			if(!quiet)
-				mob.tell(_("You need a weapon to perform a called shot!"));
+				mob.tell(L("You need a weapon to perform a called shot!"));
 			return false;
 		}
 		final Weapon wp=(Weapon)w;
 		if((wp.weaponClassification()!=Weapon.CLASS_RANGED)&&(wp.weaponClassification()!=Weapon.CLASS_THROWN))
 		{
 			if(!quiet)
-				mob.tell(_("You cannot shoot with @x1!",wp.name()));
+				mob.tell(L("You cannot shoot with @x1!",wp.name()));
 			return false;
 		}
 		return true;

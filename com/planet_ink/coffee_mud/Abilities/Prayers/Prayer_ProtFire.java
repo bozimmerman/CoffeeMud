@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_ProtFire extends Prayer
 {
 	@Override public String ID() { return "Prayer_ProtFire"; }
-	private final static String localizedName = CMLib.lang()._("Protection Fire");
+	private final static String localizedName = CMLib.lang().L("Protection Fire");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Protection from Fire)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Protection from Fire)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
@@ -55,7 +55,7 @@ public class Prayer_ProtFire extends Prayer
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("Your cool protection warms up."));
+			mob.tell(L("Your cool protection warms up."));
 
 		super.unInvoke();
 
@@ -77,7 +77,7 @@ public class Prayer_ProtFire extends Prayer
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already protected from fire."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already protected from fire."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -86,7 +86,7 @@ public class Prayer_ProtFire extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("A cool field of protection appears around <T-NAME>."):_("^S<S-NAME> @x1 for a cool field of protection around <T-NAMESELF>.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("A cool field of protection appears around <T-NAME>."):L("^S<S-NAME> @x1 for a cool field of protection around <T-NAMESELF>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -94,7 +94,7 @@ public class Prayer_ProtFire extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for fire protection, but fail(s).",prayWord(mob)));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for fire protection, but fail(s).",prayWord(mob)));
 
 		return success;
 	}

@@ -37,9 +37,9 @@ import java.util.Vector;
 public class Chant_Crossbreed extends Chant
 {
 	@Override public String ID() { return "Chant_Crossbreed"; }
-	private final static String localizedName = CMLib.lang()._("Crossbreed");
+	private final static String localizedName = CMLib.lang().L("Crossbreed");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Crossbreed)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Crossbreed)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
@@ -55,7 +55,7 @@ public class Chant_Crossbreed extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your strange cross-fertility subsides."));
+			mob.tell(L("Your strange cross-fertility subsides."));
 	}
 
 	@Override
@@ -125,16 +125,16 @@ public class Chant_Crossbreed extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) strangely fertile!"));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) strangely fertile!"));
 				beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
 
 
 		// return whether it worked

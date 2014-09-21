@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_Treemind extends Chant
 {
 	@Override public String ID() { return "Chant_Treemind"; }
-	private final static String localizedName = CMLib.lang()._("Treemind");
+	private final static String localizedName = CMLib.lang().L("Treemind");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Treemind)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Treemind)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -53,7 +53,7 @@ public class Chant_Treemind extends Chant
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("Your treemind fades."));
+			mob.tell(L("Your treemind fades."));
 
 		super.unInvoke();
 
@@ -96,7 +96,7 @@ public class Chant_Treemind extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already have the mind of a tree."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already have the mind of a tree."));
 			return false;
 		}
 
@@ -106,7 +106,7 @@ public class Chant_Treemind extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_(auto?"A treemind field envelopes <T-NAME>!":"^S<S-NAME> chant(s) for the hard protective mind of the tree.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"A treemind field envelopes <T-NAME>!":"^S<S-NAME> chant(s) for the hard protective mind of the tree.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				amountAbsorbed=0;
@@ -115,7 +115,7 @@ public class Chant_Treemind extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s), but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s), but nothing happens."));
 
 		return success;
 	}

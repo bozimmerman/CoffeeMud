@@ -38,7 +38,7 @@ import java.util.*;
 public class Apothecary extends Cooking
 {
 	@Override public String ID() { return "Apothecary"; }
-	private final static String localizedName = CMLib.lang()._("Apothecary");
+	private final static String localizedName = CMLib.lang().L("Apothecary");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"APOTHECARY","MIX"});
 	@Override public String[] triggerStrings(){return triggerStrings;}

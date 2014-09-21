@@ -36,7 +36,7 @@ import java.util.*;
 public class AnimalTraining extends CommonSkill
 {
 	@Override public String ID() { return "AnimalTraining"; }
-	private final static String localizedName = CMLib.lang()._("Animal Training");
+	private final static String localizedName = CMLib.lang().L("Animal Training");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"ANIMALTRAINING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -49,8 +49,8 @@ public class AnimalTraining extends CommonSkill
 	public AnimalTraining()
 	{
 		super();
-		displayText=_("You are taming...");
-		verb=_("taming");
+		displayText=L("You are taming...");
+		verb=L("taming");
 	}
 
 	@Override
@@ -97,15 +97,15 @@ public class AnimalTraining extends CommonSkill
 					if((taming!=null)&&(taming instanceof CagedAnimal))
 						animal=((CagedAnimal)taming).unCageMe();
 					if((messedUp)||(animal==null)||(skill==null))
-						commonTell(mob,_("You've failed to train @x1!",taming.name()));
+						commonTell(mob,L("You've failed to train @x1!",taming.name()));
 					else
 					{
 						if(animal.numBehaviors()==0)
-							commonTell(mob,_("@x1 is already tame.",taming.name()));
+							commonTell(mob,L("@x1 is already tame.",taming.name()));
 						else
 						{
 							final String s=" to "+skillto;
-							mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> manage(s) to train @x1 @x2.",animal.name(),s));
+							mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to train @x1 @x2.",animal.name(),s));
 							if(skill instanceof Behavior)
 								animal.addBehavior((Behavior)skill);
 							else
@@ -137,7 +137,7 @@ public class AnimalTraining extends CommonSkill
 		if(super.checkStop(mob, commands))
 			return true;
 
-		verb=_("training");
+		verb=L("training");
 		taming=null;
 		Item cage=null;
 		final String[] skills={"WANDER", //0
@@ -151,7 +151,7 @@ public class AnimalTraining extends CommonSkill
 		valid+=".";
 		if(commands.size()<2)
 		{
-			commonTell(mob,_("Train whom to do what? @x1",valid));
+			commonTell(mob,L("Train whom to do what? @x1",valid));
 			return false;
 		}
 		skill=null;
@@ -182,7 +182,7 @@ public class AnimalTraining extends CommonSkill
 		}
 		if(skill==null)
 		{
-			commonTell(mob,_("Train whom to do what? @x1",valid));
+			commonTell(mob,L("Train whom to do what? @x1",valid));
 			return false;
 		}
 
@@ -193,17 +193,17 @@ public class AnimalTraining extends CommonSkill
 		{
 			if(!CMLib.flags().canBeSeenBy(M,mob))
 			{
-				commonTell(mob,_("You don't see anyone called '@x1' here.",str));
+				commonTell(mob,L("You don't see anyone called '@x1' here.",str));
 				return false;
 			}
 			if((!M.isMonster())||(!CMLib.flags().isAnimalIntelligence(M)))
 			{
-				commonTell(mob,_("You can't train @x1.",M.name(mob)));
+				commonTell(mob,L("You can't train @x1.",M.name(mob)));
 				return false;
 			}
 			if((CMLib.flags().canMove(M))&&(!CMLib.flags().isBoundOrHeld(M)))
 			{
-				commonTell(mob,_("@x1 doesn't seem willing to cooperate.",M.name(mob)));
+				commonTell(mob,L("@x1 doesn't seem willing to cooperate.",M.name(mob)));
 				return false;
 			}
 			taming=M;
@@ -233,13 +233,13 @@ public class AnimalTraining extends CommonSkill
 			}
 			if(cage==null)
 			{
-				commonTell(mob,_("You don't see anyone called '@x1' here.",str));
+				commonTell(mob,L("You don't see anyone called '@x1' here.",str));
 				return false;
 			}
 			taming=mob.location().findItem(cage,CMParms.combine(commands,0));
 			if((taming==null)||(!CMLib.flags().canBeSeenBy(taming,mob))||(!(taming instanceof CagedAnimal)))
 			{
-				commonTell(mob,_("You don't see any creatures in @x1 called '@x2'.",cage.name(),CMParms.combine(commands,0)));
+				commonTell(mob,L("You don't see any creatures in @x1 called '@x2'.",cage.name(),CMParms.combine(commands,0)));
 				return false;
 			}
 			M=((CagedAnimal)taming).unCageMe();
@@ -250,7 +250,7 @@ public class AnimalTraining extends CommonSkill
 		if(((skill instanceof Behavior)&&(M.fetchBehavior(((Behavior)skill).ID())!=null))
 		||(skill instanceof Ability)&&(M.fetchAbility(((Ability)skill).ID())!=null))
 		{
-			commonTell(mob,_("@x1 already knows how to do that.",M.name(mob)));
+			commonTell(mob,L("@x1 already knows how to do that.",M.name(mob)));
 			return false;
 		}
 
@@ -258,8 +258,8 @@ public class AnimalTraining extends CommonSkill
 			return false;
 		messedUp=!proficiencyCheck(mob,-taming.phyStats().level()+(2*getXLEVELLevel(mob)),auto);
 		final int duration=getDuration(35,mob,taming.phyStats().level(),10);
-		verb=_("training @x1",M.name());
-		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),_("<S-NAME> start(s) training @x1.",M.name()));
+		verb=L("training @x1",M.name());
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),L("<S-NAME> start(s) training @x1.",M.name()));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

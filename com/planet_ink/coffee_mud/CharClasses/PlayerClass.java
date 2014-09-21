@@ -38,7 +38,7 @@ import java.util.*;
 public class PlayerClass extends StdCharClass
 {
 	@Override public String ID(){return "PlayerClass";}
-	private final static String localizedStaticName = CMLib.lang()._("PlayerClass");
+	private final static String localizedStaticName = CMLib.lang().L("PlayerClass");
 	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return ID();}
 	@Override public boolean showThinQualifyList(){return true;}
@@ -60,7 +60,7 @@ public class PlayerClass extends StdCharClass
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(!quiet)
-			mob.tell(_("This class cannot be learned."));
+			mob.tell(L("This class cannot be learned."));
 		return false;
 	}
 

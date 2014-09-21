@@ -36,9 +36,9 @@ import java.util.*;
 public class Thief_SlipperyMind extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_SlipperyMind"; }
-	private final static String localizedName = CMLib.lang()._("Slippery Mind");
+	private final static String localizedName = CMLib.lang().L("Slippery Mind");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Slippery Mind)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Slippery Mind)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -119,7 +119,7 @@ public class Thief_SlipperyMind extends ThiefSkill
 		if((E instanceof MOB)&&(oldFactions!=null))
 		{
 			if(!((MOB)E).amDead())
-				((MOB)E).tell(_("You've lost your slippery mind concentration."));
+				((MOB)E).tell(L("You've lost your slippery mind concentration."));
 			for(final Pair<Faction,Integer> p : oldFactions)
 				((MOB)E).addFaction(p.first.factionID(),p.second.intValue());
 			oldFactions=null;
@@ -135,7 +135,7 @@ public class Thief_SlipperyMind extends ThiefSkill
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> a slippery mind."));
+			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> a slippery mind."));
 			return false;
 		}
 
@@ -144,9 +144,9 @@ public class Thief_SlipperyMind extends ThiefSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?_("<T-NAME> gain(s) a slippery mind."):_("<S-NAME> wink(s) and nod(s)."));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?L("<T-NAME> gain(s) a slippery mind."):L("<S-NAME> wink(s) and nod(s)."));
 		if(!success)
-			return beneficialVisualFizzle(mob,null,auto?"":_("<S-NAME> wink(s) and nod(s), but <S-IS-ARE>n't fooling anyone."));
+			return beneficialVisualFizzle(mob,null,auto?"":L("<S-NAME> wink(s) and nod(s), but <S-IS-ARE>n't fooling anyone."));
 		else
 		if(mob.location().okMessage(mob,msg))
 		{

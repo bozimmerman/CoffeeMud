@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_LimbRack extends Spell
 {
 	@Override public String ID() { return "Spell_LimbRack"; }
-	private final static String localizedName = CMLib.lang()._("Limb Rack");
+	private final static String localizedName = CMLib.lang().L("Limb Rack");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Being pulled apart)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Being pulled apart)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -57,7 +57,7 @@ public class Spell_LimbRack extends Spell
 		&&(mob.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>=0))
 		{
 			final String str=(text().equalsIgnoreCase("ARMSONLY"))?
-				_("<T-NAME> <T-IS-ARE> having <T-HIS-HER> arms pulled from <T-HIS-HER> body!"):_("<T-NAME> <T-IS-ARE> having <T-HIS-HER> arms and legs pulled from <T-HIS-HER> body!");
+				L("<T-NAME> <T-IS-ARE> having <T-HIS-HER> arms pulled from <T-HIS-HER> body!"):L("<T-NAME> <T-IS-ARE> having <T-HIS-HER> arms and legs pulled from <T-HIS-HER> body!");
 			CMLib.combat().postDamage(invoker,mob,this,mob.maxState().getHitPoints()/(10-(getXLEVELLevel(invoker)/2)),CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BURSTING,str);
 		}
 
@@ -76,9 +76,9 @@ public class Spell_LimbRack extends Spell
 			&&(mob.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>0))
 			{
 				if(text().equalsIgnoreCase("ARMSONLY"))
-					mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> has <S-HIS-HER> arms TORN OFF!"));
+					mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> has <S-HIS-HER> arms TORN OFF!"));
 				else
-					mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> has <S-HIS-HER> arms and legs TORN OFF!"));
+					mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> has <S-HIS-HER> arms and legs TORN OFF!"));
 				Amputator A=(Amputator)mob.fetchEffect("Amputation");
 				if(A==null) A=(Amputator)CMClass.getAbility("Amputation");
 				boolean success=true;
@@ -116,7 +116,7 @@ public class Spell_LimbRack extends Spell
 		&&(target.charStats().getMyRace().bodyMask()[Race.BODY_LEG]<=0)))
 		{
 			if(!auto)
-				mob.tell(_("There is nothing left on @x1 to rack off!",target.name(mob)));
+				mob.tell(L("There is nothing left on @x1 to rack off!",target.name(mob)));
 			return false;
 		}
 
@@ -136,7 +136,7 @@ public class Spell_LimbRack extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_(auto?"!":"^S<S-NAME> invoke(s) a stretching spell upon <T-NAMESELF>"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"!":"^S<S-NAME> invoke(s) a stretching spell upon <T-NAMESELF>"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -153,7 +153,7 @@ public class Spell_LimbRack extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) stretchingly at <T-NAMESELF>, but flub(s) the spell."));
+			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) stretchingly at <T-NAMESELF>, but flub(s) the spell."));
 
 
 		// return whether it worked

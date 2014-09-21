@@ -37,7 +37,7 @@ import java.util.*;
 public class Thief_SenseLaw extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_SenseLaw"; }
-	private final static String localizedName = CMLib.lang()._("Sense Law");
+	private final static String localizedName = CMLib.lang().L("Sense Law");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -87,9 +87,9 @@ public class Thief_SenseLaw extends ThiefSkill
 				{
 					final MOB M=(MOB)V.elementAt(l);
 					if(CMLib.flags().canBeSeenBy(M,mob))
-						buf.append(_("@x1 is an officer of the law.  ",M.name(mob)));
+						buf.append(L("@x1 is an officer of the law.  ",M.name(mob)));
 					else
-						buf.append(_("There is an officer of the law here.  "));
+						buf.append(L("There is an officer of the law here.  "));
 				}
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
@@ -99,14 +99,14 @@ public class Thief_SenseLaw extends ThiefSkill
 					{
 						V=getLawMen(mob.location().getArea(),R,B);
 						if((V!=null)&&(V.size()>0))
-							buf.append(_("There is an officer of the law @x1.  ",Directions.getInDirectionName(d)));
+							buf.append(L("There is an officer of the law @x1.  ",Directions.getInDirectionName(d)));
 					}
 				}
 				if((buf.length()>0)
 				&&((mob.location()!=oldroom)||(!buf.toString().equals(lastReport)))
 				&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false)))
 				{
-					mob.tell(_("You sense: @x1",buf.toString()));
+					mob.tell(L("You sense: @x1",buf.toString()));
 					oldroom=mob.location();
 					helpProficiency(mob, 0);
 					lastReport=buf.toString();

@@ -36,7 +36,7 @@ import java.util.*;
 public class Fishing extends GatheringSkill
 {
 	@Override public String ID() { return "Fishing"; }
-	private final static String localizedName = CMLib.lang()._("Fishing");
+	private final static String localizedName = CMLib.lang().L("Fishing");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"FISH"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -48,8 +48,8 @@ public class Fishing extends GatheringSkill
 	public Fishing()
 	{
 		super();
-		displayText=_("You are fishing...");
-		verb=_("fishing");
+		displayText=L("You are fishing...");
+		verb=L("fishing");
 	}
 
 	protected int getDuration(MOB mob, int level)
@@ -67,10 +67,10 @@ public class Fishing extends GatheringSkill
 			if(tickUp==6)
 			{
 				if(found!=null)
-					commonTell(mob,_("You got a tug on the line!"));
+					commonTell(mob,L("You got a tug on the line!"));
 				else
 				{
-					final StringBuffer str=new StringBuffer(_("Nothing is biting around here.\n\r"));
+					final StringBuffer str=new StringBuffer(L("Nothing is biting around here.\n\r"));
 					commonTell(mob,str.toString());
 					unInvoke();
 				}
@@ -93,7 +93,7 @@ public class Fishing extends GatheringSkill
 					final int amount=CMLib.dice().roll(1,3,0)*(abilityCode());
 					String s="s";
 					if(amount==1) s="";
-					mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> manage(s) to catch @x1 pound@x2 of @x3.",""+amount,s,foundShortName));
+					mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to catch @x1 pound@x2 of @x3.",""+amount,s,foundShortName));
 					for(int i=0;i<amount;i++)
 					{
 						final Item newFound=(Item)found.copyOf();
@@ -142,10 +142,10 @@ public class Fishing extends GatheringSkill
 		}
 		if(!maybeFish)
 		{
-			commonTell(mob,_("The fishing doesn't look too good around here."));
+			commonTell(mob,L("The fishing doesn't look too good around here."));
 			return false;
 		}
-		verb=_("fishing");
+		verb=L("fishing");
 		found=null;
 		playSound="fishreel.wav";
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -159,7 +159,7 @@ public class Fishing extends GatheringSkill
 				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		}
 		final int duration=getDuration(mob,1);
-		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),_("<S-NAME> start(s) fishing."));
+		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),L("<S-NAME> start(s) fishing."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

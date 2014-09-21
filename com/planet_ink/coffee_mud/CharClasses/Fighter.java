@@ -37,7 +37,7 @@ import java.util.*;
 public class Fighter extends StdCharClass
 {
 	@Override public String ID(){return "Fighter";}
-	private final static String localizedStaticName = CMLib.lang()._("Fighter");
+	private final static String localizedStaticName = CMLib.lang().L("Fighter");
 	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return ID();}
 	@Override public int getBonusPracLevel(){return -1;}
@@ -196,7 +196,7 @@ public class Fighter extends StdCharClass
 			if(xp>500) xp=500;
 			if(xp>0)
 			{
-				((MOB)host).tell(CMLib.lang()._("^YVictory!!^N"));
+				((MOB)host).tell(CMLib.lang().L("^YVictory!!^N"));
 				CMLib.leveler().postExperience((MOB)host,null,null,xp,false);
 			}
 		}

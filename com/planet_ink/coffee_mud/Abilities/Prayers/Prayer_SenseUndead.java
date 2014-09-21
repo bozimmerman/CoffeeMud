@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_SenseUndead extends Prayer
 {
 	@Override public String ID() { return "Prayer_SenseUndead"; }
-	private final static String localizedName = CMLib.lang()._("Sense Undead");
+	private final static String localizedName = CMLib.lang().L("Sense Undead");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Sensing Undead)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Sensing Undead)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
@@ -57,7 +57,7 @@ public class Prayer_SenseUndead extends Prayer
 		lastRoom=null;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("Your senses are no longer as dark."));
+			mob.tell(L("Your senses are no longer as dark."));
 	}
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -75,7 +75,7 @@ public class Prayer_SenseUndead extends Prayer
 			{
 				final MOB mob=lastRoom.fetchInhabitant(i);
 				if((mob!=null)&&(mob!=affected)&&(mob.charStats()!=null)&&(mob.charStats().getMyRace()!=null)&&(mob.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead")))
-					((MOB)affected).tell(_("@x1 gives off a cold dark vibe.",mob.name((MOB)affected)));
+					((MOB)affected).tell(L("@x1 gives off a cold dark vibe.",mob.name((MOB)affected)));
 			}
 		}
 		return true;
@@ -94,7 +94,7 @@ public class Prayer_SenseUndead extends Prayer
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already sensing undead things."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already sensing undead things."));
 			return false;
 		}
 
@@ -102,7 +102,7 @@ public class Prayer_SenseUndead extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) dark cold senses!"):_("^S<S-NAME> @x1, and gain(s) dark cold senses!^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> gain(s) dark cold senses!"):L("^S<S-NAME> @x1, and gain(s) dark cold senses!^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -110,7 +110,7 @@ public class Prayer_SenseUndead extends Prayer
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
 
 		return success;
 	}

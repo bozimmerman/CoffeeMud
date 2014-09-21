@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_PlantBed extends Chant
 {
 	@Override public String ID() { return "Chant_PlantBed"; }
-	private final static String localizedName = CMLib.lang()._("Plant Bed");
+	private final static String localizedName = CMLib.lang().L("Plant Bed");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
@@ -53,7 +53,7 @@ public class Chant_PlantBed extends Chant
 		{
 			final Room R=CMLib.map().roomLocation(peaPod);
 			if(R!=null)
-				R.showHappens(CMMsg.MSG_OK_VISUAL,_("A pea-pod shrivels up!"));
+				R.showHappens(CMMsg.MSG_OK_VISUAL,L("A pea-pod shrivels up!"));
 			final Rideable RI=(Rideable)peaPod;
 			for(int r=RI.numRiders()-1;r>=0;r--)
 				RI.fetchRider(r).setRiding(null);
@@ -73,7 +73,7 @@ public class Chant_PlantBed extends Chant
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR))
 		&&(!auto))
 		{
-			mob.tell(_("This chant will not work here."));
+			mob.tell(L("This chant will not work here."));
 			return false;
 		}
 
@@ -84,15 +84,15 @@ public class Chant_PlantBed extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) to the ground.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) to the ground.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final Item newItem=CMClass.getItem("GenBed");
 				final Rideable newRide=(Rideable)newItem;
-				newItem.setName(_("a plant bed"));
-				newItem.setDisplayText(_("A enormously comfortable pea-pod looks ready to sleep in."));
-				newItem.setDescription(_("The plant bed looks like a hollowed pea-pod with fern-like cushioning inside.  Looks like a nice place to take a nap in!"));
+				newItem.setName(L("a plant bed"));
+				newItem.setDisplayText(L("A enormously comfortable pea-pod looks ready to sleep in."));
+				newItem.setDescription(L("The plant bed looks like a hollowed pea-pod with fern-like cushioning inside.  Looks like a nice place to take a nap in!"));
 				newRide.setRideBasis(Rideable.RIDEABLE_SLEEP);
 				newRide.setRiderCapacity(1);
 				newItem.setMaterial(RawMaterial.RESOURCE_HEMP);
@@ -106,13 +106,13 @@ public class Chant_PlantBed extends Chant
 				newItem.setMiscText(newItem.text());
 				peaPod=newItem;
 				mob.location().addItem(newItem,ItemPossessor.Expire.Resource);
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("A comfortable pea-pod bed grows nearby."));
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A comfortable pea-pod bed grows nearby."));
 				mob.location().recoverPhyStats();
 				beneficialAffect(mob,newItem,asLevel,0);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) to the ground, but nothing happens."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) to the ground, but nothing happens."));
 
 		// return whether it worked
 		return success;

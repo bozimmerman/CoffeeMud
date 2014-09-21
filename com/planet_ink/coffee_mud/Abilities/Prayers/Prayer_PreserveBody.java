@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_PreserveBody extends Prayer
 {
 	@Override public String ID() { return "Prayer_PreserveBody"; }
-	private final static String localizedName = CMLib.lang()._("Preserve Body");
+	private final static String localizedName = CMLib.lang().L("Preserve Body");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
@@ -51,12 +51,12 @@ public class Prayer_PreserveBody extends Prayer
 
 		if(target==mob)
 		{
-			mob.tell(_("@x1 doesn't look dead yet.",target.name(mob)));
+			mob.tell(L("@x1 doesn't look dead yet.",target.name(mob)));
 			return false;
 		}
 		if(!(target instanceof DeadBody))
 		{
-			mob.tell(_("You can't preserve that."));
+			mob.tell(L("You can't preserve that."));
 			return false;
 		}
 
@@ -67,7 +67,7 @@ public class Prayer_PreserveBody extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 to preserve <T-NAMESELF>.^?",prayForWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 to preserve <T-NAMESELF>.^?",prayForWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -76,7 +76,7 @@ public class Prayer_PreserveBody extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 to preserve <T-NAMESELF>, but fail(s) miserably.",prayForWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 to preserve <T-NAMESELF>, but fail(s) miserably.",prayForWord(mob)));
 
 		// return whether it worked
 		return success;

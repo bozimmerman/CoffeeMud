@@ -37,7 +37,7 @@ import java.util.*;
 public class FighterSkill extends StdAbility
 {
 	@Override public String ID() { return "FighterSkill"; }
-	private final static String localizedName = CMLib.lang()._("FighterSkill");
+	private final static String localizedName = CMLib.lang().L("FighterSkill");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){ return Ability.ACODE_SKILL;}
 	@Override public int usageType(){return USAGE_MOVEMENT;}

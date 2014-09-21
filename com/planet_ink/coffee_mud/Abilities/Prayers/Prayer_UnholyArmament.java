@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_UnholyArmament extends Prayer
 {
 	@Override public String ID() { return "Prayer_UnholyArmament"; }
-	private final static String localizedName = CMLib.lang()._("Unholy Armament");
+	private final static String localizedName = CMLib.lang().L("Unholy Armament");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
@@ -67,7 +67,7 @@ public class Prayer_UnholyArmament extends Prayer
 
 		if(mob.isInCombat())
 		{
-			mob.tell(_("Not during combat!"));
+			mob.tell(L("Not during combat!"));
 			return false;
 		}
 
@@ -85,20 +85,20 @@ public class Prayer_UnholyArmament extends Prayer
 			if(pos<0)
 			{
 				if(mob.getWorshipCharID().length()>0)
-					mob.tell(_("@x1 can see that you are already completely armed.",mob.getWorshipCharID()));
+					mob.tell(L("@x1 can see that you are already completely armed.",mob.getWorshipCharID()));
 				else
-					mob.tell(_("The gods can see that you are already armed."));
+					mob.tell(L("The gods can see that you are already armed."));
 				return false;
 			}
 			int numThatsOk=1;
 			if(pos==Wearable.WORN_WIELD)
 			{
 				I=CMClass.getWeapon("GenWeapon");
-				I.setName(_("an unholy blade"));
-				I.setDisplayText(_("an wicked looking blade sits here."));
+				I.setName(L("an unholy blade"));
+				I.setDisplayText(L("an wicked looking blade sits here."));
 				((Weapon)I).setWeaponClassification(Weapon.CLASS_SWORD);
 				((Weapon)I).setWeaponType(Weapon.TYPE_SLASHING);
-				I.setDescription(_("Whatever made this sharp twisted thing couldn`t have been good.."));
+				I.setDescription(L("Whatever made this sharp twisted thing couldn`t have been good.."));
 				I.basePhyStats().setLevel(mob.phyStats().level());
 				I.basePhyStats().setWeight(20);
 				I.setMaterial(RawMaterial.RESOURCE_MITHRIL);
@@ -112,9 +112,9 @@ public class Prayer_UnholyArmament extends Prayer
 			if(pos==Wearable.WORN_HELD)
 			{
 				I=CMClass.getArmor("GenShield");
-				I.setName(_("an unholy shield"));
-				I.setDisplayText(_("an unholy shield sits here."));
-				I.setDescription(_("Whatever made this hideous shield couldn`t have been good."));
+				I.setName(L("an unholy shield"));
+				I.setDisplayText(L("an unholy shield sits here."));
+				I.setDescription(L("Whatever made this hideous shield couldn`t have been good."));
 				I.basePhyStats().setLevel(mob.phyStats().level());
 				I.basePhyStats().setWeight(20);
 				I.setMaterial(RawMaterial.RESOURCE_MITHRIL);
@@ -140,59 +140,59 @@ public class Prayer_UnholyArmament extends Prayer
 				I.setBaseValue(0);
 				if(pos==Wearable.WORN_TORSO)
 				{
-					I.setName(_("an unholy breast plate"));
-					I.setDisplayText(_("a wicked looking breast plate sits here."));
-					I.setDescription(_("Whatever made this black spiked armor couldn`t have been good."));
+					I.setName(L("an unholy breast plate"));
+					I.setDisplayText(L("a wicked looking breast plate sits here."));
+					I.setDescription(L("Whatever made this black spiked armor couldn`t have been good."));
 				}
 				if(pos==Wearable.WORN_HEAD)
 				{
-					I.setName(_("an unholy helm"));
-					I.setDisplayText(_("a wicked looking helmet sits here."));
-					I.setDescription(_("Whatever made this spiked helmet couldn`t have been good."));
+					I.setName(L("an unholy helm"));
+					I.setDisplayText(L("a wicked looking helmet sits here."));
+					I.setDescription(L("Whatever made this spiked helmet couldn`t have been good."));
 				}
 				if(pos==Wearable.WORN_ABOUT_BODY)
 				{
-					I.setName(_("an unholy cape"));
-					I.setDisplayText(_("a torn black cape sits here."));
-					I.setDescription(_("Whatever made this cape couldn`t have been good."));
+					I.setName(L("an unholy cape"));
+					I.setDisplayText(L("a torn black cape sits here."));
+					I.setDescription(L("Whatever made this cape couldn`t have been good."));
 				}
 				if(pos==Wearable.WORN_ARMS)
 				{
-					I.setName(_("some unholy arm cannons"));
-					I.setDisplayText(_("a pair of wicked looking arm cannons sit here."));
-					I.setDescription(_("Whatever made this couldn`t have been good."));
+					I.setName(L("some unholy arm cannons"));
+					I.setDisplayText(L("a pair of wicked looking arm cannons sit here."));
+					I.setDescription(L("Whatever made this couldn`t have been good."));
 				}
 				if((pos==Wearable.WORN_LEFT_WRIST)
 				||(pos==Wearable.WORN_RIGHT_WRIST))
 				{
 					numThatsOk=2;
-					I.setName(_("an unholy vambrace"));
-					I.setDisplayText(_("a wicked looking spiked vambrace sit here."));
-					I.setDescription(_("Whatever made this twisted black metal couldn`t have been good."));
+					I.setName(L("an unholy vambrace"));
+					I.setDisplayText(L("a wicked looking spiked vambrace sit here."));
+					I.setDescription(L("Whatever made this twisted black metal couldn`t have been good."));
 				}
 				if(pos==Wearable.WORN_HANDS)
 				{
-					I.setName(_("a pair of unholy gauntlets"));
-					I.setDisplayText(_("some wicked looking gauntlets sit here."));
-					I.setDescription(_("Whatever made this twisted black metal couldn`t have been good."));
+					I.setName(L("a pair of unholy gauntlets"));
+					I.setDisplayText(L("some wicked looking gauntlets sit here."));
+					I.setDescription(L("Whatever made this twisted black metal couldn`t have been good."));
 				}
 				if(pos==Wearable.WORN_WAIST)
 				{
-					I.setName(_("an unholy girdle"));
-					I.setDisplayText(_("a wicked looking girdle sits here."));
-					I.setDescription(_("Whatever made this twisted black metal couldn`t have been good."));
+					I.setName(L("an unholy girdle"));
+					I.setDisplayText(L("a wicked looking girdle sits here."));
+					I.setDescription(L("Whatever made this twisted black metal couldn`t have been good."));
 				}
 				if(pos==Wearable.WORN_LEGS)
 				{
-					I.setName(_("a pair of unholy leg cannons"));
-					I.setDisplayText(_("a wicked looking pair of leg cannons sits here."));
-					I.setDescription(_("Whatever made this twisted and spiked black metal couldn`t have been good."));
+					I.setName(L("a pair of unholy leg cannons"));
+					I.setDisplayText(L("a wicked looking pair of leg cannons sits here."));
+					I.setDescription(L("Whatever made this twisted and spiked black metal couldn`t have been good."));
 				}
 				if(pos==Wearable.WORN_FEET)
 				{
-					I.setName(_("a pair of unholy boots"));
-					I.setDisplayText(_("a wicked looking pair of boots sits here."));
-					I.setDescription(_("Whatever made this pair of twisted and spiked black metal boots couldn`t have been good."));
+					I.setName(L("a pair of unholy boots"));
+					I.setDisplayText(L("a wicked looking pair of boots sits here."));
+					I.setDescription(L("Whatever made this pair of twisted and spiked black metal boots couldn`t have been good."));
 				}
 			}
 			Ability A=CMClass.getAbility("Prop_HaveZapper");
@@ -224,16 +224,16 @@ public class Prayer_UnholyArmament extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> @x1 to be provided armament!^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> @x1 to be provided armament!^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.location().addItem(I,ItemPossessor.Expire.Monster_EQ);
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 materializes out of the ground.",I.name()));
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 materializes out of the ground.",I.name()));
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob, null,_("<S-NAME> @x1 for armament, but flub(s) it.",prayWord(mob)));
+			return beneficialWordsFizzle(mob, null,L("<S-NAME> @x1 for armament, but flub(s) it.",prayWord(mob)));
 
 
 		// return whether it worked

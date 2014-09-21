@@ -51,7 +51,7 @@ public class Prop_NoPKill extends Property
 		{
 			if(CMath.s_int(text())==0)
 			{
-				msg.source().tell(_("Player killing is forbidden here."));
+				msg.source().tell(L("Player killing is forbidden here."));
 				msg.source().setVictim(null);
 				return false;
 			}
@@ -59,7 +59,7 @@ public class Prop_NoPKill extends Property
 			if(levelDiff<0) levelDiff=levelDiff*-1;
 			if(levelDiff>CMath.s_int(text()))
 			{
-				msg.source().tell(_("Player killing is forbidden for characters whose level difference is greater than @x1.",""+CMath.s_int(text())));
+				msg.source().tell(L("Player killing is forbidden for characters whose level difference is greater than @x1.",""+CMath.s_int(text())));
 				msg.source().setVictim(null);
 				return false;
 			}

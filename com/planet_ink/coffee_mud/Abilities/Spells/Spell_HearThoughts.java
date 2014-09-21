@@ -37,7 +37,7 @@ import java.util.*;
 public class Spell_HearThoughts extends Spell
 {
 	@Override public String ID() { return "Spell_HearThoughts"; }
-	private final static String localizedName = CMLib.lang()._("Hear Thoughts");
+	private final static String localizedName = CMLib.lang().L("Hear Thoughts");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}
@@ -53,7 +53,7 @@ public class Spell_HearThoughts extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":_("^S<S-NAME> concentrate(s) and listen(s) carefully!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> concentrate(s) and listen(s) carefully!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -96,7 +96,7 @@ public class Spell_HearThoughts extends Spell
 					else
 					if(target.charStats().getStat(CharStats.STAT_WISDOM)>=10)
 						adjective+="wise, ";
-					mob.tell(_("Regarding @x1, a @x2@x3 @x4 at @x5:",target.Name(),adjective,target.charStats().getMyRace().name(),target.charStats().getCurrentClass().name(),room.displayText(mob)));
+					mob.tell(L("Regarding @x1, a @x2@x3 @x4 at @x5:",target.Name(),adjective,target.charStats().getMyRace().name(),target.charStats().getCurrentClass().name(),room.displayText(mob)));
 					final StringBuilder thoughts=new StringBuilder("");
 					final LegalBehavior LB=CMLib.law().getLegalBehavior(target.location());
 					final Area AO=CMLib.law().getLegalObject(target.location());
@@ -124,14 +124,14 @@ public class Spell_HearThoughts extends Spell
 						thoughts.append(prefix).append(accounting).append("  ");
 					}
 					if(thoughts.length()==0)
-						mob.tell(_("You don't detect any other thoughts.\n\r"));
+						mob.tell(L("You don't detect any other thoughts.\n\r"));
 					else
 						mob.tell(thoughts.append("\n\r").toString());
 				}
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,_("<S-NAME> concentrate(s), but look(s) frustrated."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> concentrate(s), but look(s) frustrated."));
 
 		// return whether it worked
 		return success;

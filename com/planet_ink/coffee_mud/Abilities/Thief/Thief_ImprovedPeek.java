@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_ImprovedPeek extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_ImprovedPeek"; }
-	private final static String localizedName = CMLib.lang()._("Improved Peek");
+	private final static String localizedName = CMLib.lang().L("Improved Peek");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

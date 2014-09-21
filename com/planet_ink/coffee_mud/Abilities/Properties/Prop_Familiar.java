@@ -37,7 +37,7 @@ public class Prop_Familiar extends Property
 {
 	@Override public String ID() { return "Prop_Familiar"; }
 	@Override public String name(){ return "Find Familiar Property";}
-	protected String displayText=_("Familiarity with an animal");
+	protected String displayText=L("Familiarity with an animal");
 	@Override public String displayText() {return displayText;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected final static int DOG=0;
@@ -78,7 +78,7 @@ public class Prop_Familiar extends Property
 				/*if(!familiarTo.amDead())
 				{
 					CMLib.leveler().postExperience(familiarTo,null,null,-50,false);
-					familiarTo.tell(_("You`ve just lost 50 experience points for losing your familiar"));
+					familiarTo.tell(L("You`ve just lost 50 experience points for losing your familiar"));
 				}*/
 				familiarTo.recoverCharStats();
 				familiarTo.recoverPhyStats();
@@ -198,7 +198,7 @@ public class Prop_Familiar extends Property
 			&&(msg.source().location()==target.location())
 			&&(msg.source().getVictim()!=target))
 			{
-				msg.source().tell(_("You are too much in awe of @x1",target.name(msg.source())));
+				msg.source().tell(L("You are too much in awe of @x1",target.name(msg.source())));
 				if(familiarWith.getVictim()==msg.source())
 					familiarWith.makePeace();
 				if(familiarTo.getVictim()==msg.source())
@@ -227,7 +227,7 @@ public class Prop_Familiar extends Property
 		for(int i=0;i<names.length;i++)
 			if(newText.trim().equalsIgnoreCase(names[i]))
 			{ familiarType=i; break;}
-		displayText=_("(Familiarity with the @x1)",names[familiarType]);
+		displayText=L("(Familiarity with the @x1)",names[familiarType]);
 	}
 
 	@Override

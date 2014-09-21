@@ -35,9 +35,9 @@ import java.util.*;
 public class Disease_Vampirism extends Disease
 {
 	@Override public String ID() { return "Disease_Vampirism"; }
-	private final static String localizedName = CMLib.lang()._("Vampirism");
+	private final static String localizedName = CMLib.lang().L("Vampirism");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Vampirism)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Vampirism)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -74,7 +74,7 @@ public class Disease_Vampirism extends Disease
 			   &&(msg.tool()!=null)
 			   &&(msg.tool().ID().equals("Skill_Swim")))
 			{
-				mob.tell(_("You can't swim!"));
+				mob.tell(L("You can't swim!"));
 				return false;
 			}
 		}

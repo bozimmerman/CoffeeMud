@@ -36,7 +36,7 @@ import java.util.*;
 public class Fighter_Kick extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Kick"; }
-	private final static String localizedName = CMLib.lang()._("Kick");
+	private final static String localizedName = CMLib.lang().L("Kick");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"KICK"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -64,12 +64,12 @@ public class Fighter_Kick extends FighterSkill
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0)&&(!auto))
 		{
-			mob.tell(_("You are too far away to kick!"));
+			mob.tell(L("You are too far away to kick!"));
 			return false;
 		}
 		if(mob.charStats().getBodyPart(Race.BODY_LEG)<=0)
 		{
-			mob.tell(_("You need legs to do this."));
+			mob.tell(L("You need legs to do this."));
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
@@ -104,7 +104,7 @@ public class Fighter_Kick extends FighterSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> fail(s) to kick <T-NAMESELF>."));
+			return maliciousFizzle(mob,target,L("<S-NAME> fail(s) to kick <T-NAMESELF>."));
 
 		// return whether it worked
 		return success;

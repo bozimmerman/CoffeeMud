@@ -38,7 +38,7 @@ import java.util.*;
 public class Prayer_Bury extends Prayer
 {
 	@Override public String ID() { return "Prayer_Bury"; }
-	private final static String localizedName = CMLib.lang()._("Bury");
+	private final static String localizedName = CMLib.lang().L("Bury");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
@@ -58,18 +58,18 @@ public class Prayer_Bury extends Prayer
 		if((!(target instanceof DeadBody))
 		   ||(target.rawSecretIdentity().toUpperCase().indexOf("FAKE")>=0))
 		{
-			mob.tell(_("You may only bury the dead."));
+			mob.tell(L("You may only bury the dead."));
 			return false;
 		}
 		if((((DeadBody)target).playerCorpse())&&(!((DeadBody)target).mobName().equals(mob.Name())))
 		{
-			mob.tell(_("You are not allowed to bury a players corpse."));
+			mob.tell(L("You are not allowed to bury a players corpse."));
 			return false;
 		}
 		Item hole=mob.location().findItem("HoleInTheGround");
 		if((hole!=null)&&(!hole.text().equalsIgnoreCase(mob.Name())))
 		{
-			mob.tell(_("This chant will not work on desecrated ground."));
+			mob.tell(L("This chant will not work on desecrated ground."));
 			return false;
 		}
 
@@ -84,7 +84,7 @@ public class Prayer_Bury extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("^S<T-NAME> bur(ys) <T-HIM-HERSELF>.^?"):_("^S<S-NAME> bur(ys) <T-NAMESELF> in the name of @x1.^?",hisHerDiety(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("^S<T-NAME> bur(ys) <T-HIM-HERSELF>.^?"):L("^S<S-NAME> bur(ys) <T-NAMESELF> in the name of @x1.^?",hisHerDiety(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -114,7 +114,7 @@ public class Prayer_Bury extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to bury <T-NAMESELF>, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to bury <T-NAMESELF>, but fail(s)."));
 
 		// return whether it worked
 		return success;

@@ -36,9 +36,9 @@ import java.util.*;
 public class Prayer_Sanctuary extends Prayer
 {
 	@Override public String ID() { return "Prayer_Sanctuary"; }
-	private final static String localizedName = CMLib.lang()._("Sanctuary");
+	private final static String localizedName = CMLib.lang().L("Sanctuary");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Sanctuary)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Sanctuary)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -59,7 +59,7 @@ public class Prayer_Sanctuary extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("The sanctuary around <S-NAME> fades."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("The sanctuary around <S-NAME> fades."));
 	}
 
 	@Override
@@ -99,18 +99,18 @@ public class Prayer_Sanctuary extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 that <T-NAME> be given sanctuary from harm.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 that <T-NAME> be given sanctuary from harm.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("A white aura surrounds <S-NAME>."));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("A white aura surrounds <S-NAME>."));
 				beneficialAffect(mob,target,asLevel,0);
 				final Ability A=target.fetchEffect("Prayer_Fortress");
 				if(A!=null) A.unInvoke();
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for sanctuary, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for sanctuary, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
 
 
 		// return whether it worked

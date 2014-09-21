@@ -38,7 +38,7 @@ import java.util.*;
 public class Paladin_Purity extends PaladinSkill
 {
 	@Override public String ID() { return "Paladin_Purity"; }
-	private final static String localizedName = CMLib.lang()._("Paladin`s Purity");
+	private final static String localizedName = CMLib.lang().L("Paladin`s Purity");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
 	public Paladin_Purity()
@@ -63,7 +63,7 @@ public class Paladin_Purity extends PaladinSkill
 		&&(msg.othersMessage()!=null)
 		&&(msg.othersMessage().equalsIgnoreCase(CMLib.factions().AlignID())))
 		{
-			msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> purity protects <S-HIM-HER> from the evil influence."));
+			msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> purity protects <S-HIM-HER> from the evil influence."));
 			return false;
 		}
 		return true;

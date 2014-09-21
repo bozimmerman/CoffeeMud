@@ -35,9 +35,9 @@ import java.util.*;
 public class Disease_Lockjaw extends Disease
 {
 	@Override public String ID() { return "Disease_Lockjaw"; }
-	private final static String localizedName = CMLib.lang()._("Lockjaw");
+	private final static String localizedName = CMLib.lang().L("Lockjaw");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Lockjaw)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Lockjaw)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -87,7 +87,7 @@ public class Disease_Lockjaw extends Disease
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&((msg.sourceMinor()==CMMsg.TYP_EAT)||(msg.sourceMinor()==CMMsg.TYP_DRINK)))
 		{
-			mob.tell(_("You can't open your mouth!"));
+			mob.tell(L("You can't open your mouth!"));
 			return false;
 		}
 

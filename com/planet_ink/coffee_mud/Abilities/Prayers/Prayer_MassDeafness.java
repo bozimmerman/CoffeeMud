@@ -35,12 +35,12 @@ import java.util.*;
 public class Prayer_MassDeafness extends Prayer
 {
 	@Override public String ID() { return "Prayer_MassDeafness"; }
-	private final static String localizedName = CMLib.lang()._("Mass Deafness");
+	private final static String localizedName = CMLib.lang().L("Mass Deafness");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Deafness)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Deafness)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 
 	@Override
@@ -78,7 +78,7 @@ public class Prayer_MassDeafness extends Prayer
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(CMLib.flags().canHear(mob)))
-			mob.tell(_("Your hearing returns."));
+			mob.tell(L("Your hearing returns."));
 	}
 
 
@@ -102,14 +102,14 @@ public class Prayer_MassDeafness extends Prayer
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":_("^S<S-NAME> @x1 an unholy deafness upon <T-NAMESELF>.^?",prayForWord(mob)));
+				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":L("^S<S-NAME> @x1 an unholy deafness upon <T-NAMESELF>.^?",prayForWord(mob)));
 				if((target!=mob)&&(mob.location().okMessage(mob,msg)))
 				{
 					mob.location().send(mob,msg);
 					if(msg.value()<=0)
 					{
 						success=maliciousAffect(mob,target,asLevel,0,-1);
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> go(es) deaf!!"));
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> go(es) deaf!!"));
 					}
 					nothingDone=false;
 				}
@@ -117,7 +117,7 @@ public class Prayer_MassDeafness extends Prayer
 		}
 
 		if(nothingDone)
-			return maliciousFizzle(mob,null,_("<S-NAME> attempt(s) to deafen everyone, but flub(s) it."));
+			return maliciousFizzle(mob,null,L("<S-NAME> attempt(s) to deafen everyone, but flub(s) it."));
 
 
 		// return whether it worked

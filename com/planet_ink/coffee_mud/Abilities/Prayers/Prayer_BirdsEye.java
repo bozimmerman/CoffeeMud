@@ -39,7 +39,7 @@ import java.util.*;
 public class Prayer_BirdsEye extends Prayer
 {
 	@Override public String ID() { return "Prayer_BirdsEye"; }
-	private final static String localizedName = CMLib.lang()._("Birds Eye");
+	private final static String localizedName = CMLib.lang().L("Birds Eye");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
@@ -54,7 +54,7 @@ public class Prayer_BirdsEye extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> @x1 for a birds eye view.^?",prayWord(mob)));
+			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> @x1 for a birds eye view.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -81,7 +81,7 @@ public class Prayer_BirdsEye extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 for a birds eye view, but fail(s).",prayWord(mob)));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 for a birds eye view, but fail(s).",prayWord(mob)));
 
 		return success;
 	}

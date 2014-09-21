@@ -36,7 +36,7 @@ import java.util.*;
 public class Chant_MeteorStrike extends Chant
 {
 	@Override public String ID() { return "Chant_MeteorStrike"; }
-	private final static String localizedName = CMLib.lang()._("Meteor Strike");
+	private final static String localizedName = CMLib.lang().L("Meteor Strike");
 	@Override public String name() { return localizedName; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
 	@Override public int minRange(){return 1;}
@@ -68,12 +68,12 @@ public class Chant_MeteorStrike extends Chant
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth striking at."));
+			mob.tell(L("There doesn't appear to be anyone here worth striking at."));
 			return false;
 		}
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell(_("You must be outdoors to strike with meteors."));
+			mob.tell(L("You must be outdoors to strike with meteors."));
 			return false;
 		}
 
@@ -89,7 +89,7 @@ public class Chant_MeteorStrike extends Chant
 		if(success)
 		{
 
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),_(auto?"A devastating meteor shower erupts!":"^S<S-NAME> chant(s) for a devastating meteor shower!^?")+CMLib.protocol().msp("meteor.wav",40)))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"A devastating meteor shower erupts!":"^S<S-NAME> chant(s) for a devastating meteor shower!^?")+CMLib.protocol().msp("meteor.wav",40)))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -115,7 +115,7 @@ public class Chant_MeteorStrike extends Chant
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> chant(s) to the sky, but nothing happens."));
+			return maliciousFizzle(mob,null,L("<S-NAME> chant(s) to the sky, but nothing happens."));
 
 
 		// return whether it worked

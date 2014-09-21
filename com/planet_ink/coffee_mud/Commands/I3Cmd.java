@@ -43,9 +43,9 @@ public class I3Cmd extends StdCommand
 	public void i3Error(MOB mob)
 	{
 		if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3))
-			mob.tell(_("Try I3 LIST, I3 CHANNELS, I3 ADD [CHANNEL], I3 DELETE [CHANNEL], I3 LISTEN [CHANNEL], I3 SILENCE [CHANNEL], I3 PING [MUD], I3 LOCATE [NAME], I3 RESTART, or I3 INFO [MUD]."));
+			mob.tell(L("Try I3 LIST, I3 CHANNELS, I3 ADD [CHANNEL], I3 DELETE [CHANNEL], I3 LISTEN [CHANNEL], I3 SILENCE [CHANNEL], I3 PING [MUD], I3 LOCATE [NAME], I3 RESTART, or I3 INFO [MUD]."));
 		else
-			mob.tell(_("Try I3 LIST, I3 LOCATE [NAME], or I3 INFO [MUD-NAME]."));
+			mob.tell(L("Try I3 LIST, I3 LOCATE [NAME], or I3 INFO [MUD-NAME]."));
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class I3Cmd extends StdCommand
 		{
 			if(!CMLib.intermud().i3online())
 			{
-				mob.tell(_("I3 is unavailable."));
+				mob.tell(L("I3 is unavailable."));
 				return false;
 			}
 			i3Error(mob);
@@ -65,7 +65,7 @@ public class I3Cmd extends StdCommand
 		}
 		final String str=(String)commands.firstElement();
 		if((!CMLib.intermud().i3online())&&(!str.equalsIgnoreCase("restart")))
-			mob.tell(_("I3 is unavailable."));
+			mob.tell(L("I3 is unavailable."));
 		else
 		if(str.equalsIgnoreCase("list"))
 			CMLib.intermud().giveI3MudList(mob);
@@ -75,7 +75,7 @@ public class I3Cmd extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3)){ i3Error(mob); return false;}
 			if(commands.size()<2)
 			{
-				mob.tell(_("You did not specify a channel name!"));
+				mob.tell(L("You did not specify a channel name!"));
 				return false;
 			}
 			CMLib.intermud().i3channelAdd(mob,CMParms.combine(commands,1));
@@ -89,7 +89,7 @@ public class I3Cmd extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3)){ i3Error(mob); return false;}
 			if(commands.size()<2)
 			{
-				mob.tell(_("You did not specify a channel name!"));
+				mob.tell(L("You did not specify a channel name!"));
 				return false;
 			}
 			CMLib.intermud().i3channelRemove(mob,CMParms.combine(commands,1));
@@ -100,7 +100,7 @@ public class I3Cmd extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3)){ i3Error(mob); return false;}
 			if(commands.size()<2)
 			{
-				mob.tell(_("You did not specify a channel name!"));
+				mob.tell(L("You did not specify a channel name!"));
 				return false;
 			}
 			CMLib.intermud().i3channelListen(mob,CMParms.combine(commands,1));
@@ -125,7 +125,7 @@ public class I3Cmd extends StdCommand
 		{
 			if(commands.size()<2)
 			{
-				mob.tell(_("You did not specify a name!"));
+				mob.tell(L("You did not specify a name!"));
 				return false;
 			}
 			CMLib.intermud().i3locate(mob,CMParms.combine(commands,1));
@@ -136,7 +136,7 @@ public class I3Cmd extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3)){ i3Error(mob); return false;}
 			if(commands.size()<2)
 			{
-				mob.tell(_("You did not specify a channel name!"));
+				mob.tell(L("You did not specify a channel name!"));
 				return false;
 			}
 			CMLib.intermud().i3channelSilence(mob,CMParms.combine(commands,1));

@@ -36,9 +36,9 @@ import java.util.*;
 public class Thief_HideInPlainSight extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_HideInPlainSight"; }
-	private final static String localizedName = CMLib.lang()._("Hide In Plain Sight");
+	private final static String localizedName = CMLib.lang().L("Hide In Plain Sight");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Hiding in plain sight)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Hiding in plain sight)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -160,7 +160,7 @@ public class Thief_HideInPlainSight extends ThiefSkill
 		final MOB M=(MOB)affected;
 		super.unInvoke();
 		if((M!=null)&&(!M.amDead()))
-			M.tell(_("You are no longer hiding in plain site."));
+			M.tell(L("You are no longer hiding in plain site."));
 	}
 
 	@Override
@@ -172,7 +172,7 @@ public class Thief_HideInPlainSight extends ThiefSkill
 			if(A!=null) A.unInvoke();
 			A=mob.fetchEffect(ID());
 			if(A!=null)
-				mob.tell(_("You are already hiding in plain site."));
+				mob.tell(L("You are already hiding in plain site."));
 			return false;
 		}
 
@@ -182,16 +182,16 @@ public class Thief_HideInPlainSight extends ThiefSkill
 		final MOB highestMOB=getHighestLevelMOB(mob,null);
 		final int levelDiff=mob.phyStats().level()-getMOBLevel(highestMOB)-(this.getXLEVELLevel(mob)*2);
 
-		final String str=_("You step to the side and become totally inconspicuous.");
+		final String str=L("You step to the side and become totally inconspicuous.");
 
 		boolean success=proficiencyCheck(mob,levelDiff*10,auto);
 
 		if(!success)
 		{
 			if(highestMOB!=null)
-				beneficialVisualFizzle(mob,highestMOB,_("<S-NAME> step(s) to the side of <T-NAMESELF>, but end(s) up looking like an idiot."));
+				beneficialVisualFizzle(mob,highestMOB,L("<S-NAME> step(s) to the side of <T-NAMESELF>, but end(s) up looking like an idiot."));
 			else
-				beneficialVisualFizzle(mob,null,_("<S-NAME> step(s) to the side and look(s) like an idiot."));
+				beneficialVisualFizzle(mob,null,L("<S-NAME> step(s) to the side and look(s) like an idiot."));
 		}
 		else
 		{

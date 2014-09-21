@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_SenseAlignment extends Prayer
 {
 	@Override public String ID() { return "Prayer_SenseAlignment"; }
-	private final static String localizedName = CMLib.lang()._("Sense Alignment");
+	private final static String localizedName = CMLib.lang().L("Sense Alignment");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -50,7 +50,7 @@ public class Prayer_SenseAlignment extends Prayer
 		if(target==null) return false;
 		if(target==mob)
 		{
-			mob.tell(_("You already know your own alignment!."));
+			mob.tell(L("You already know your own alignment!."));
 			return false;
 		}
 
@@ -65,15 +65,15 @@ public class Prayer_SenseAlignment extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> peer(s) into the eyes of <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> peer(s) into the eyes of <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.tell(mob,target,null,_("<T-NAME> seem(s) like <T-HE-SHE> is @x1.",CMLib.flags().getAlignmentName(target).toLowerCase()));
+				mob.tell(mob,target,null,L("<T-NAME> seem(s) like <T-HE-SHE> is @x1.",CMLib.flags().getAlignmentName(target).toLowerCase()));
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> peer(s) into the eyes of <T-NAMESELF>, but then blink(s)."));
+			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> peer(s) into the eyes of <T-NAMESELF>, but then blink(s)."));
 
 
 		// return whether it worked

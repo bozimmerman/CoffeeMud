@@ -36,9 +36,9 @@ import java.util.*;
 public class Chant_WindSnatcher extends Chant
 {
 	@Override public String ID() { return "Chant_WindSnatcher"; }
-	private final static String localizedName = CMLib.lang()._("Wind Snatcher");
+	private final static String localizedName = CMLib.lang().L("Wind Snatcher");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Wind Snatcher)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Wind Snatcher)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -71,7 +71,7 @@ public class Chant_WindSnatcher extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your wind snatcher fades away."));
+			mob.tell(L("Your wind snatcher fades away."));
 	}
 
 	@Override
@@ -107,7 +107,7 @@ public class Chant_WindSnatcher extends Chant
 		if((msg.tool()!=null)&&(msg.tool() instanceof Ability)
 		   &&(isSpell(msg.tool().ID())))
 		{
-			msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,_("A form around <S-NAME> snatches @x1.",msg.tool().name()));
+			msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,L("A form around <S-NAME> snatches @x1.",msg.tool().name()));
 			return false;
 		}
 		return true;
@@ -120,7 +120,7 @@ public class Chant_WindSnatcher extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already snatching the wind."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already snatching the wind."));
 			return false;
 		}
 
@@ -135,16 +135,16 @@ public class Chant_WindSnatcher extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) for <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) for <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("The wind snatcher surrounds <S-NAME>."));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("The wind snatcher surrounds <S-NAME>."));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) for the wind snatcher, but nothing happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) for the wind snatcher, but nothing happens."));
 
 
 		// return whether it worked

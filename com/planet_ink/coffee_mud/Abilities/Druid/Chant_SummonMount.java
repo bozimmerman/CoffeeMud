@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_SummonMount extends Chant
 {
 	@Override public String ID() { return "Chant_SummonMount"; }
-	private final static String localizedName = CMLib.lang()._("Summon Mount");
+	private final static String localizedName = CMLib.lang().L("Summon Mount");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Mount)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Mount)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -102,7 +102,7 @@ public class Chant_SummonMount extends Chant
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell(_("You must be outdoors for this chant to work."));
+			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
 		final Vector choices=new Vector();
@@ -121,7 +121,7 @@ public class Chant_SummonMount extends Chant
 		}
 		if(choices.size()==0)
 		{
-			mob.tell(_("You must be further outdoors to summon a mount."));
+			mob.tell(L("You must be further outdoors to summon a mount."));
 			return false;
 		}
 		fromDir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
@@ -135,14 +135,14 @@ public class Chant_SummonMount extends Chant
 		if((success)&&(newRoom!=null))
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) humbly for a mount.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) humbly for a mount.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final MOB target = determineMonster(mob, adjustedLevel(mob,asLevel));
 				target.bringToLife(newRoom,true);
 				CMLib.beanCounter().clearZeroMoney(target,null);
-				target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
+				target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
 				if(target.isInCombat()) target.makePeace();
@@ -152,14 +152,14 @@ public class Chant_SummonMount extends Chant
 					if(target.isInCombat()) target.makePeace();
 					CMLib.commands().postFollow(target,mob,true);
 					if(target.amFollowing()!=mob)
-						mob.tell(_("@x1 seems unwilling to follow you.",target.name(mob)));
+						mob.tell(L("@x1 seems unwilling to follow you.",target.name(mob)));
 				}
 				invoker=mob;
 				target.addNonUninvokableEffect((Ability)copyOf());
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) humbly for a mount, but <S-IS-ARE> not answered."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) humbly for a mount, but <S-IS-ARE> not answered."));
 
 		// return whether it worked
 		return success;
@@ -181,9 +181,9 @@ public class Chant_SummonMount extends Chant
 		newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
 		newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
 		newMOB.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
-		newMOB.setName(_("a wild horse"));
-		newMOB.setDisplayText(_("a wild horse stands here"));
-		newMOB.setDescription(_("An untamed beast of the fields, tame only by magical means."));
+		newMOB.setName(L("a wild horse"));
+		newMOB.setDisplayText(L("a wild horse stands here"));
+		newMOB.setDescription(L("An untamed beast of the fields, tame only by magical means."));
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		ride.setRiderCapacity(1);
 		newMOB.recoverCharStats();

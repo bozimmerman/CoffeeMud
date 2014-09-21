@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_FountainLife extends Prayer
 {
 	@Override public String ID() { return "Prayer_FountainLife"; }
-	private final static String localizedName = CMLib.lang()._("Fountain of Life");
+	private final static String localizedName = CMLib.lang().L("Fountain of Life");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
@@ -56,7 +56,7 @@ public class Prayer_FountainLife extends Prayer
 		if(littleSpring==null)
 			return;
 		if(canBeUninvoked())
-			SpringLocation.showHappens(CMMsg.MSG_OK_VISUAL,_("The fountain of life dries up."));
+			SpringLocation.showHappens(CMMsg.MSG_OK_VISUAL,L("The fountain of life dries up."));
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
@@ -79,7 +79,7 @@ public class Prayer_FountainLife extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> @x1 for the fountain of life.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> @x1 for the fountain of life.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -89,12 +89,12 @@ public class Prayer_FountainLife extends Prayer
 
 				if(newItem==null)
 				{
-					mob.tell(_("There's no such thing as a '@x1'.\n\r",itemID));
+					mob.tell(L("There's no such thing as a '@x1'.\n\r",itemID));
 					return false;
 				}
 
 				mob.location().addItem(newItem);
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 starts flowing here.",newItem.name()));
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 starts flowing here.",newItem.name()));
 				SpringLocation=mob.location();
 				littleSpring=newItem;
 				beneficialAffect(mob,newItem,asLevel,0);
@@ -102,7 +102,7 @@ public class Prayer_FountainLife extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 for a fountain of life, but there is no answer.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 for a fountain of life, but there is no answer.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

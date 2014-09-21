@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_IllusoryWall extends Spell
 {
 	@Override public String ID() { return "Spell_IllusoryWall"; }
-	private final static String localizedName = CMLib.lang()._("Illusory Wall");
+	private final static String localizedName = CMLib.lang().L("Illusory Wall");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_EXITS;}
 	@Override protected int canTargetCode(){return CAN_EXITS;}
@@ -63,7 +63,7 @@ public class Spell_IllusoryWall extends Spell
 		final int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 		if(dirCode<0)
 		{
-			mob.tell(_("Cast which direction?!"));
+			mob.tell(L("Cast which direction?!"));
 			return false;
 		}
 
@@ -72,7 +72,7 @@ public class Spell_IllusoryWall extends Spell
 
 		if((exit==null)||(room==null)||(!CMLib.flags().canBeSeenBy(exit,mob)))
 		{
-			mob.tell(_("That way is already closed."));
+			mob.tell(L("That way is already closed."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -82,10 +82,10 @@ public class Spell_IllusoryWall extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
-			beneficialVisualFizzle(mob,null,_("<S-NAME> whisper(s) @x1, but nothing happens.",Directions.getDirectionName(dirCode)));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> whisper(s) @x1, but nothing happens.",Directions.getDirectionName(dirCode)));
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,exit,this,verbalCastCode(mob,exit,auto),auto?"":_("^S<S-NAME> whisper(s) @x1.^?",Directions.getDirectionName(dirCode)));
+			final CMMsg msg=CMClass.getMsg(mob,exit,this,verbalCastCode(mob,exit,auto),auto?"":L("^S<S-NAME> whisper(s) @x1.^?",Directions.getDirectionName(dirCode)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

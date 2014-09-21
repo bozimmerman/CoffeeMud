@@ -36,7 +36,7 @@ import java.util.*;
 public class Song_Babble extends Song
 {
 	@Override public String ID() { return "Song_Babble"; }
-	private final static String localizedName = CMLib.lang()._("Babble");
+	private final static String localizedName = CMLib.lang().L("Babble");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected final static String consonants="bcdfghjklmnpqrstvwxz";
@@ -139,7 +139,7 @@ public class Song_Babble extends Song
 
 		if((!auto)&&(!CMLib.flags().canSpeak(mob)))
 		{
-			mob.tell(_("You can't sing!"));
+			mob.tell(L("You can't sing!"));
 			return false;
 		}
 
@@ -150,9 +150,9 @@ public class Song_Babble extends Song
 			invoker=mob;
 			originRoom=mob.location();
 			commonRoomSet=getInvokerScopeRoomSet(null);
-			String str=auto?_("The @x1 begins to play!",songOf()):_("<S-NAME> begin(s) to sing the @x1.",songOf());
+			String str=auto?L("The @x1 begins to play!",songOf()):L("<S-NAME> begin(s) to sing the @x1.",songOf());
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
-				str=_("<S-NAME> start(s) the @x1 over again.",songOf());
+				str=L("<S-NAME> start(s) the @x1 over again.",songOf());
 
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
@@ -199,7 +199,7 @@ public class Song_Babble extends Song
 			}
 		}
 		else
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> hit(s) a foul note."));
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,L("<S-NAME> hit(s) a foul note."));
 
 		return success;
 	}

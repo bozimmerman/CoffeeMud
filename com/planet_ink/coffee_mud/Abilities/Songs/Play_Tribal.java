@@ -37,10 +37,10 @@ import java.util.*;
 public class Play_Tribal extends Play
 {
 	@Override public String ID() { return "Play_Tribal"; }
-	private final static String localizedName = CMLib.lang()._("Tribal");
+	private final static String localizedName = CMLib.lang().L("Tribal");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected String songOf(){return _("Tribal Music");}
+	@Override protected String songOf(){return L("Tribal Music");}
 	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
 	@Override

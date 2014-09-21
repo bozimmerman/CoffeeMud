@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_Youth extends Spell
 {
 	@Override public String ID() { return "Spell_Youth"; }
-	private final static String localizedName = CMLib.lang()._("Youth");
+	private final static String localizedName = CMLib.lang().L("Youth");
 	@Override public String name() { return localizedName; }
 	public int overridemana(){return Ability.COST_ALL;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
@@ -56,7 +56,7 @@ public class Spell_Youth extends Spell
 		// and add it to the affects list of the
 		// affected MOB.  Then tell everyone else
 		// what happened.
-		final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":_("^S<S-NAME> wave(s) <S-HIS-HER> arms around <T-NAMESELF>, drawing forth <T-HIS-HER> youthful self.^?"));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> arms around <T-NAMESELF>, drawing forth <T-HIS-HER> youthful self.^?"));
 		if(success)
 		{
 			if(mob.location().okMessage(mob,msg))
@@ -65,13 +65,13 @@ public class Spell_Youth extends Spell
 				if((target.baseCharStats().getStat(CharStats.STAT_AGE)<=0)
 					||(target.baseCharStats().ageCategory()<=Race.AGE_YOUNGADULT))
 				{
-					mob.tell(mob,target,null,_("The magic appears to have had no effect upon <T-NAME>."));
+					mob.tell(mob,target,null,L("The magic appears to have had no effect upon <T-NAME>."));
 					success=false;
 				}
 				else
 				{
 					final int[] chart=target.baseCharStats().getMyRace().getAgingChart();
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> grow(s) younger!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> grow(s) younger!"));
 					final int cat=target.baseCharStats().ageCategory();
 					int age=target.baseCharStats().getStat(CharStats.STAT_AGE);
 					if(cat>=Race.AGE_ANCIENT)
@@ -106,7 +106,7 @@ public class Spell_Youth extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,target,_("<S-NAME> wave(s) <S-HIS-HER> arms around <T-NAMESELF>, but the spell fizzles."));
+			beneficialVisualFizzle(mob,target,L("<S-NAME> wave(s) <S-HIS-HER> arms around <T-NAMESELF>, but the spell fizzles."));
 
 
 		// return whether it worked

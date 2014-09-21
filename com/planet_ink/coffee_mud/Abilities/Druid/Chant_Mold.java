@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_Mold extends Chant
 {
 	@Override public String ID() { return "Chant_Mold"; }
-	private final static String localizedName = CMLib.lang()._("Mold");
+	private final static String localizedName = CMLib.lang().L("Mold");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Mold)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Mold)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -68,7 +68,7 @@ public class Chant_Mold extends Chant
 		   ||(target instanceof Room)
 		   ||(target instanceof Exit))
 		{
-			mob.tell(_("You can't cast this on @x1.",target.name(mob)));
+			mob.tell(L("You can't cast this on @x1.",target.name(mob)));
 			return false;
 		}
 
@@ -88,7 +88,7 @@ public class Chant_Mold extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -124,7 +124,7 @@ public class Chant_Mold extends Chant
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
 		// return whether it worked
 		return success;
 	}

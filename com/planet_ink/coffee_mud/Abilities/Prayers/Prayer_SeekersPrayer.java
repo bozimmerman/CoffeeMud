@@ -38,7 +38,7 @@ import java.util.*;
 public class Prayer_SeekersPrayer extends Prayer
 {
 	@Override public String ID() { return "Prayer_SeekersPrayer"; }
-	private final static String localizedName = CMLib.lang()._("Seekers Prayer");
+	private final static String localizedName = CMLib.lang().L("Seekers Prayer");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canTargetCode(){return 0;}
@@ -51,7 +51,7 @@ public class Prayer_SeekersPrayer extends Prayer
 	{
 		if((mob.isInCombat())&&(!auto))
 		{
-			mob.tell(_("Not while you're fighting!"));
+			mob.tell(L("Not while you're fighting!"));
 			return false;
 		}
 
@@ -67,7 +67,7 @@ public class Prayer_SeekersPrayer extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,null,auto),auto?"":_("^S<T-NAME> @x1 for knowledge of seekers.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,null,auto),auto?"":L("^S<T-NAME> @x1 for knowledge of seekers.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -90,7 +90,7 @@ public class Prayer_SeekersPrayer extends Prayer
 					seeks.add(Q);
 				}
 				if(seeks.size()==0)
-					mob.tell(_("You receive no visions of seekers."));
+					mob.tell(L("You receive no visions of seekers."));
 				else
 				{
 					while(seeks.size() > numSeekers)
@@ -127,7 +127,7 @@ public class Prayer_SeekersPrayer extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<T-NAME> @x1, but nothing is revealed.",prayWord(mob)));
+			beneficialWordsFizzle(mob,target,L("<T-NAME> @x1, but nothing is revealed.",prayWord(mob)));
 
 		return success;
 	}

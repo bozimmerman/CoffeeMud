@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_PolymorphSelf extends Spell
 {
 	@Override public String ID() { return "Spell_PolymorphSelf"; }
-	private final static String localizedName = CMLib.lang()._("Polymorph Self");
+	private final static String localizedName = CMLib.lang().L("Polymorph Self");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Polymorph Self)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Polymorph Self)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -55,9 +55,9 @@ public class Spell_PolymorphSelf extends Spell
 		if(newRace!=null)
 		{
 			if(affected.name().indexOf(' ')>0)
-				affectableStats.setName(_("@x1 called @x2",CMLib.english().startWithAorAn(newRace.name()),affected.name()));
+				affectableStats.setName(L("@x1 called @x2",CMLib.english().startWithAorAn(newRace.name()),affected.name()));
 			else
-				affectableStats.setName(_("@x1 the @x2",affected.name(),newRace.name()));
+				affectableStats.setName(L("@x1 the @x2",affected.name(),newRace.name()));
 			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			newRace.setHeightWeight(affectableStats,'M');
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
@@ -87,7 +87,7 @@ public class Spell_PolymorphSelf extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> morph(s) back into <S-HIM-HERSELF> again."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> morph(s) back into <S-HIM-HERSELF> again."));
 	}
 
 
@@ -107,7 +107,7 @@ public class Spell_PolymorphSelf extends Spell
 		}
 		if(commands.size()==0)
 		{
-			mob.tell(_("You need to specify what to turn yourself into!"));
+			mob.tell(L("You need to specify what to turn yourself into!"));
 			return false;
 		}
 		final String race=CMParms.combine(commands,0);
@@ -117,18 +117,18 @@ public class Spell_PolymorphSelf extends Spell
 		final Race R=CMClass.getRace(race);
 		if((R==null)||(!CMath.bset(R.availabilityCode(),Area.THEME_FANTASY)))
 		{
-			mob.tell(_("You can't turn yourself into @x1!",CMLib.english().startWithAorAn(race)));
+			mob.tell(L("You can't turn yourself into @x1!",CMLib.english().startWithAorAn(race)));
 			return false;
 		}
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already polymorphed."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already polymorphed."));
 			return false;
 		}
 
 		if(target.baseCharStats().getMyRace() != target.charStats().getMyRace())
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already polymorphed."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already polymorphed."));
 			return false;
 		}
 
@@ -164,14 +164,14 @@ public class Spell_PolymorphSelf extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> whisper(s) to <T-NAMESELF> about @x1.^?",CMLib.english().makePlural(R.name())));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> whisper(s) to <T-NAMESELF> about @x1.^?",CMLib.english().makePlural(R.name())));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
 					newRace=R;
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> become(s) a @x1!",CMLib.english().startWithAorAn(newRace.name())));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) a @x1!",CMLib.english().startWithAorAn(newRace.name())));
 					success=beneficialAffect(mob,target,asLevel,0);
 					target.recoverCharStats();
 					CMLib.utensils().confirmWearability(target);
@@ -179,7 +179,7 @@ public class Spell_PolymorphSelf extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> whisper(s) to <T-NAMESELF>, but the spell fizzles."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> whisper(s) to <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

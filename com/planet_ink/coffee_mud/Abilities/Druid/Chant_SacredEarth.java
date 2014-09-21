@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_SacredEarth extends Chant
 {
 	@Override public String ID() { return "Chant_SacredEarth"; }
-	private final static String localizedName = CMLib.lang()._("Sacred Earth");
+	private final static String localizedName = CMLib.lang().L("Sacred Earth");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Sacred Earth)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Sacred Earth)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -54,7 +54,7 @@ public class Chant_SacredEarth extends Chant
 			return;
 		final Room R=(Room)affected;
 		if(canBeUninvoked())
-			R.showHappens(CMMsg.MSG_OK_VISUAL,_("The sacred earth charm is ended."));
+			R.showHappens(CMMsg.MSG_OK_VISUAL,L("The sacred earth charm is ended."));
 
 		super.unInvoke();
 
@@ -69,7 +69,7 @@ public class Chant_SacredEarth extends Chant
 		if((msg.tool() instanceof Ability)
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_GATHERINGSKILL))
 		{
-			msg.source().tell(_("The sacred earth will not allow you to violate it."));
+			msg.source().tell(L("The sacred earth will not allow you to violate it."));
 			return false;
 		}
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
@@ -123,7 +123,7 @@ public int castingQuality(MOB mob, Physical target)
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("This earth is already sacred."));
+			mob.tell(L("This earth is already sacred."));
 			return false;
 		}
 		if((((mob.location().domainType()&Room.INDOORS)>0)
@@ -132,7 +132,7 @@ public int castingQuality(MOB mob, Physical target)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR))
 		&&(!auto))
 		{
-			mob.tell(_("This chant will not work here."));
+			mob.tell(L("This chant will not work here."));
 			return false;
 		}
 
@@ -152,13 +152,13 @@ public int castingQuality(MOB mob, Physical target)
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to the ground.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to the ground.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The charm of the sacred earth begins here!"));
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The charm of the sacred earth begins here!"));
 					beneficialAffect(mob,target,asLevel,0);
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
@@ -175,7 +175,7 @@ public int castingQuality(MOB mob, Physical target)
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) to the ground, but the magic fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to the ground, but the magic fades."));
 		// return whether it worked
 		return success;
 	}

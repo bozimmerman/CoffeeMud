@@ -310,7 +310,7 @@ public class Drowness extends StdBehavior
 	{
 		if(CMLib.flags().isSitting(mob))
 			mob.phyStats().setDisposition(CMath.unsetb(mob.phyStats().disposition(),PhyStats.IS_SITTING|PhyStats.IS_CUSTOM));
-		mob.location().show(mob, null, CMMsg.MSG_QUIETMOVEMENT, _("<S-NAME> stand(s) up, ready for more combat."));
+		mob.location().show(mob, null, CMMsg.MSG_QUIETMOVEMENT, L("<S-NAME> stand(s) up, ready for more combat."));
 
 		return true;
 	}
@@ -347,7 +347,7 @@ public class Drowness extends StdBehavior
 		{
 			if(CMLib.dice().rollPercentage() <= magicResistance)
 			{
-				msg.source().tell(_("The drow resisted your spell!"));
+				msg.source().tell(L("The drow resisted your spell!"));
 				return false;
 			}
 		}

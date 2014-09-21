@@ -38,9 +38,9 @@ import java.util.*;
 public class Chant_AnimalFriendship extends Chant
 {
 	@Override public String ID() { return "Chant_AnimalFriendship"; }
-	private final static String localizedName = CMLib.lang()._("Animal Friendship");
+	private final static String localizedName = CMLib.lang().L("Animal Friendship");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Animal Friendship)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Animal Friendship)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
@@ -58,7 +58,7 @@ public class Chant_AnimalFriendship extends Chant
 			&&(msg.source().location()==target.location())
 			&&(msg.source().getVictim()!=target))
 			{
-				msg.source().tell(_("You feel too friendly towards @x1",target.name(msg.source())));
+				msg.source().tell(L("You feel too friendly towards @x1",target.name(msg.source())));
 				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();
@@ -80,7 +80,7 @@ public class Chant_AnimalFriendship extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("You seem less animal friendly."));
+			mob.tell(L("You seem less animal friendly."));
 	}
 
 
@@ -94,7 +94,7 @@ public class Chant_AnimalFriendship extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already friendly to animals."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already friendly to animals."));
 			return false;
 		}
 
@@ -114,7 +114,7 @@ public class Chant_AnimalFriendship extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) animal friendly!"):_("^S<S-NAME> chant(s) for animal friendship.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) animal friendly!"):L("^S<S-NAME> chant(s) for animal friendship.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -122,7 +122,7 @@ public class Chant_AnimalFriendship extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s), the magic fades."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s), the magic fades."));
 
 		// return whether it worked
 		return success;

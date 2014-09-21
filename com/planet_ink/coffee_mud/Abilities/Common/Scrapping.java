@@ -38,7 +38,7 @@ import java.util.*;
 public class Scrapping extends CommonSkill
 {
 	@Override public String ID() { return "Scrapping"; }
-	private final static String localizedName = CMLib.lang()._("Scrapping");
+	private final static String localizedName = CMLib.lang().L("Scrapping");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"SCRAP","SCRAPPING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -54,8 +54,8 @@ public class Scrapping extends CommonSkill
 	public Scrapping()
 	{
 		super();
-		displayText=_("You are scrapping...");
-		verb=_("scrapping");
+		displayText=L("You are scrapping...");
+		verb=L("scrapping");
 	}
 
 	@Override
@@ -86,13 +86,13 @@ public class Scrapping extends CommonSkill
 				if((found!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonTell(mob,_("You've messed up scrapping @x1!",oldItemName));
+						commonTell(mob,L("You've messed up scrapping @x1!",oldItemName));
 					else
 					{
 						amount=amount*abilityCode();
 						String s="s";
 						if(amount==1) s="";
-						mob.location().show(mob,null,getActivityMessageType(),_("<S-NAME> manage(s) to scrap @x1 pound@x2 of @x3.",""+amount,s,foundShortName));
+						mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to scrap @x1 pound@x2 of @x3.",""+amount,s,foundShortName));
 						for(int i=0;i<amount;i++)
 						{
 							final Item newFound=(Item)found.copyOf();
@@ -112,12 +112,12 @@ public class Scrapping extends CommonSkill
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		verb=_("scrapping");
+		verb=L("scrapping");
 		final String str=CMParms.combine(commands,0);
 		final Item I=mob.location().findItem(null,str);
 		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
 		{
-			commonTell(mob,_("You don't see anything called '@x1' here.",str));
+			commonTell(mob,L("You don't see anything called '@x1' here.",str));
 			return false;
 		}
 		boolean okMaterial=true;
@@ -134,19 +134,19 @@ public class Scrapping extends CommonSkill
 		}
 		if(!okMaterial)
 		{
-			commonTell(mob,_("You don't know how to scrap @x1.",I.name(mob)));
+			commonTell(mob,L("You don't know how to scrap @x1.",I.name(mob)));
 			return false;
 		}
 
 		if(I instanceof RawMaterial)
 		{
-			commonTell(mob,_("@x1 already looks like scrap.",I.name(mob)));
+			commonTell(mob,L("@x1 already looks like scrap.",I.name(mob)));
 			return false;
 		}
 
 		if(CMLib.flags().enchanted(I))
 		{
-			commonTell(mob,_("@x1 is enchanted, and can't be scrapped.",I.name(mob)));
+			commonTell(mob,L("@x1 is enchanted, and can't be scrapped.",I.name(mob)));
 			return false;
 		}
 
@@ -165,7 +165,7 @@ public class Scrapping extends CommonSkill
 		final LandTitle t=CMLib.law().getLandTitle(mob.location());
 		if((t!=null)&&(!CMLib.law().doesHavePriviledgesHere(mob,mob.location())))
 		{
-			mob.tell(_("You are not allowed to scrap anything here."));
+			mob.tell(L("You are not allowed to scrap anything here."));
 			return false;
 		}
 
@@ -174,14 +174,14 @@ public class Scrapping extends CommonSkill
 			final Item I2=mob.location().getItem(i);
 			if((I2.container()!=null)&&(V.contains(I2.container())))
 			{
-				commonTell(mob,_("You need to remove the contents of @x1 first.",I2.name(mob)));
+				commonTell(mob,L("You need to remove the contents of @x1 first.",I2.name(mob)));
 				return false;
 			}
 		}
 		amount=totalWeight/5;
 		if(amount<1)
 		{
-			commonTell(mob,_("You don't have enough here to get anything from."));
+			commonTell(mob,L("You don't have enough here to get anything from."));
 			return false;
 		}
 		fireRequired=false;
@@ -205,7 +205,7 @@ public class Scrapping extends CommonSkill
 		playSound="ripping.wav";
 		if(found!=null)
 			foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
-		final CMMsg msg=CMClass.getMsg(mob,I,this,getActivityMessageType(),_("<S-NAME> start(s) scrapping @x1.",I.name()));
+		final CMMsg msg=CMClass.getMsg(mob,I,this,getActivityMessageType(),L("<S-NAME> start(s) scrapping @x1.",I.name()));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

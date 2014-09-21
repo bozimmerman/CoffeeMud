@@ -58,7 +58,7 @@ public class Prop_NoRecall extends Property
 				||((myHost instanceof Room)&&(msg.source().location()==myHost))
 				||(myHost instanceof Exit)
 				||(myHost instanceof Area))
-					msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,_("<S-NAME> attempt(s) to recall, but the magic fizzles."));
+					msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to recall, but the magic fizzles."));
 				return false;
 			}
 		}

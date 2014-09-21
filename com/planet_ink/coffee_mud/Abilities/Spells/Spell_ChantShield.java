@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_ChantShield extends Spell
 {
 	@Override public String ID() { return "Spell_ChantShield"; }
-	private final static String localizedName = CMLib.lang()._("Chant Shield");
+	private final static String localizedName = CMLib.lang().L("Chant Shield");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Chant Shield)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Chant Shield)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -52,7 +52,7 @@ public class Spell_ChantShield extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("Your shield against chants fades."));
+			mob.tell(L("Your shield against chants fades."));
 
 		super.unInvoke();
 
@@ -76,7 +76,7 @@ public class Spell_ChantShield extends Spell
 		&&(!mob.amDead())
 		&&(CMLib.dice().rollPercentage()<35))
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("The barrier around <S-NAME> blocks off @x1!",msg.tool().name()));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("The barrier around <S-NAME> blocks off @x1!",msg.tool().name()));
 			return false;
 		}
 		return super.okMessage(myHost,msg);
@@ -109,7 +109,7 @@ public class Spell_ChantShield extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<S-NAME> look(s) protected from chants."):_("^S<S-NAME> invoke(s) an anti-chant shield around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<S-NAME> look(s) protected from chants."):L("^S<S-NAME> invoke(s) an anti-chant shield around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -117,7 +117,7 @@ public class Spell_ChantShield extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a shield, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a shield, but fail(s)."));
 
 		return success;
 	}

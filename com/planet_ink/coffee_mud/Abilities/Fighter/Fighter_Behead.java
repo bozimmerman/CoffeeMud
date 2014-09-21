@@ -38,7 +38,7 @@ import java.util.*;
 public class Fighter_Behead extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Behead"; }
-	private final static String localizedName = CMLib.lang()._("Behead");
+	private final static String localizedName = CMLib.lang().L("Behead");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"BEHEAD"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -87,7 +87,7 @@ public class Fighter_Behead extends FighterSkill
 		final Race R=target.charStats().getMyRace();
 		if(R.bodyMask()[Race.BODY_HEAD]<=0)
 		{
-			mob.tell(_("@x1 has no head!",target.name(mob)));
+			mob.tell(L("@x1 has no head!",target.name(mob)));
 			return false;
 		}
 
@@ -98,7 +98,7 @@ public class Fighter_Behead extends FighterSkill
 			warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);
 		if((warrants.size()==0)&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ABOVELAW)))
 		{
-			mob.tell(_("You are not allowed to behead @x1 at this time.",target.Name()));
+			mob.tell(L("You are not allowed to behead @x1 at this time.",target.Name()));
 			return false;
 		}
 
@@ -108,23 +108,23 @@ public class Fighter_Behead extends FighterSkill
 		{
 			if((w==null)||(!(w instanceof Weapon)))
 			{
-				mob.tell(_("You cannot behead without a weapon!"));
+				mob.tell(L("You cannot behead without a weapon!"));
 				return false;
 			}
 			ww=(Weapon)w;
 			if(ww.weaponType()!=Weapon.TYPE_SLASHING)
 			{
-				mob.tell(_("You cannot behead with a @x1!",ww.name()));
+				mob.tell(L("You cannot behead with a @x1!",ww.name()));
 				return false;
 			}
 			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 			{
-				mob.tell(_("You are too far away to try that!"));
+				mob.tell(L("You are too far away to try that!"));
 				return false;
 			}
 			if(!CMLib.flags().isBoundOrHeld(target))
 			{
-				mob.tell(_("@x1 is not bound and would resist.",target.charStats().HeShe()));
+				mob.tell(L("@x1 is not bound and would resist.",target.charStats().HeShe()));
 				return false;
 			}
 		}
@@ -151,9 +151,9 @@ public class Fighter_Behead extends FighterSkill
 				CMLib.combat().postDamage(mob,target,ww,Integer.MAX_VALUE/2,CMMsg.MSG_WEAPONATTACK,ww.weaponClassification(),auto?"":"^F^<FIGHT^><S-NAME> rear(s) back and behead(s) <T-NAME>!^</FIGHT^>^?"+CMLib.protocol().msp("decap.wav",30));
 				mob.location().recoverRoomStats();
 				final Item limb=CMClass.getItem("GenLimb");
-				limb.setName(_("@x1`s head",target.Name()));
+				limb.setName(L("@x1`s head",target.Name()));
 				limb.basePhyStats().setAbility(1);
-				limb.setDisplayText(_("the bloody head of @x1 is sitting here.",target.Name()));
+				limb.setDisplayText(L("the bloody head of @x1 is sitting here.",target.Name()));
 				limb.setSecretIdentity(target.name()+"`s bloody head.");
 				int material=RawMaterial.RESOURCE_MEAT;
 				for(int r=0;r<R.myResources().size();r++)
@@ -185,7 +185,7 @@ public class Fighter_Behead extends FighterSkill
 			if(target.getVictim()==mob) target.makePeace();
 		}
 		else
-			maliciousFizzle(mob,target,_("<S-NAME> attempt(s) a beheading and fail(s)!"));
+			maliciousFizzle(mob,target,L("<S-NAME> attempt(s) a beheading and fail(s)!"));
 		return success;
 	}
 }

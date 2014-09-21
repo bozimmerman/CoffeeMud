@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_FakeArmor extends Spell
 {
 	@Override public String ID() { return "Spell_FakeArmor"; }
-	private final static String localizedName = CMLib.lang()._("Fake Armor");
+	private final static String localizedName = CMLib.lang().L("Fake Armor");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -63,7 +63,7 @@ public class Spell_FakeArmor extends Spell
 		&&(msg.target() instanceof MOB))
 		{
 			notAgainThisRound=true;
-			msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),null,CMMsg.MSG_OK_VISUAL,_("@x1 absorbs some of the damage done to <S-NAME>.",affected.name())));
+			msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),null,CMMsg.MSG_OK_VISUAL,L("@x1 absorbs some of the damage done to <S-NAME>.",affected.name())));
 			((Item)affected).unWear();
 			((Item)affected).destroy();
 		}
@@ -105,7 +105,7 @@ public class Spell_FakeArmor extends Spell
 		}
 		if((choice<0)||(choice2<0))
 		{
-			mob.tell(_("You must specify what kind of armor to create: plate, chain, studded, or leather.You must also specify a armor type: helmet, shirt, leggings, sleeves, or boots"));
+			mob.tell(L("You must specify what kind of armor to create: plate, chain, studded, or leather.You must also specify a armor type: helmet, shirt, leggings, sleeves, or boots"));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -114,7 +114,7 @@ public class Spell_FakeArmor extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":_("^S<S-NAME> wave(s) <S-HIS-HER> arms around dramatically.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> arms around dramatically.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -133,39 +133,39 @@ public class Spell_FakeArmor extends Spell
 				switch(choice2)
 				{
 				case 0:
-					armor.setName(_("a @x1 helmet",materialName));
+					armor.setName(L("a @x1 helmet",materialName));
 					armor.setRawProperLocationBitmap(Wearable.WORN_HEAD);
 					break;
 				case 1:
-					armor.setName(_("a @x1 shirt",materialName));
+					armor.setName(L("a @x1 shirt",materialName));
 					armor.setRawProperLocationBitmap(Wearable.WORN_HEAD);
 					break;
 				case 2:
-					armor.setName(_("a pair of @x1 leggings",materialName));
+					armor.setName(L("a pair of @x1 leggings",materialName));
 					armor.setRawProperLocationBitmap(Wearable.WORN_LEGS);
 					break;
 				case 3:
-					armor.setName(_("a pair of @x1 sleeves",materialName));
+					armor.setName(L("a pair of @x1 sleeves",materialName));
 					armor.setRawProperLocationBitmap(Wearable.WORN_ARMS);
 					break;
 				case 4:
-					armor.setName(_("a pair of @x1 boots",materialName));
+					armor.setName(L("a pair of @x1 boots",materialName));
 					armor.setRawProperLocationBitmap(Wearable.WORN_FEET);
 					break;
 				}
-				armor.setDisplayText(_("@x1 sits here",armor.name()));
-				armor.setDescription(_("looks like your size!"));
+				armor.setDisplayText(L("@x1 sits here",armor.name()));
+				armor.setDescription(L("looks like your size!"));
 				armor.basePhyStats().setWeight(0);
 				armor.recoverPhyStats();
 				armor.setBaseValue(0);
 				mob.addItem(armor);
-				mob.location().show(mob,null,armor,CMMsg.MSG_OK_ACTION,_("Suddenly, <S-NAME> own(s) <O-NAME>!"));
+				mob.location().show(mob,null,armor,CMMsg.MSG_OK_ACTION,L("Suddenly, <S-NAME> own(s) <O-NAME>!"));
 				myItem=armor;
 				beneficialAffect(mob,armor,asLevel,0);
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> dramatically wave(s) <S-HIS-HER> arms around, but fizzle(s) the spell."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> dramatically wave(s) <S-HIS-HER> arms around, but fizzle(s) the spell."));
 
 
 		// return whether it worked

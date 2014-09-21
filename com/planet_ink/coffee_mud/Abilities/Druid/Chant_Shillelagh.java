@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_Shillelagh extends Chant
 {
 	@Override public String ID() { return "Chant_Shillelagh"; }
-	private final static String localizedName = CMLib.lang()._("Shillelagh");
+	private final static String localizedName = CMLib.lang().L("Shillelagh");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Shillelagh)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Shillelagh)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -67,7 +67,7 @@ public class Chant_Shillelagh extends Chant
 			if(((affected!=null)&&(affected instanceof Item))
 			&&((((Item)affected).owner()!=null)
 			&&(((Item)affected).owner() instanceof MOB)))
-				((MOB)((Item)affected).owner()).tell(_("The enchantment on @x1 fades.",((Item)affected).name()));
+				((MOB)((Item)affected).owner()).tell(L("The enchantment on @x1 fades.",((Item)affected).name()));
 		}
 		super.unInvoke();
 	}
@@ -103,18 +103,18 @@ public class Chant_Shillelagh extends Chant
 
 		if(!(target instanceof Weapon))
 		{
-			mob.tell(_("You can only enchant weapons."));
+			mob.tell(L("You can only enchant weapons."));
 			return false;
 		}
 		if(((((Weapon)target).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
 		&&((((Weapon)target).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_VEGETATION))
 		{
-			mob.tell(_("You cannot enchant this foreign material."));
+			mob.tell(L("You cannot enchant this foreign material."));
 			return false;
 		}
 		if(((Weapon)target).fetchEffect(this.ID())!=null)
 		{
-			mob.tell(_("@x1 is already enchanted.",target.name(mob)));
+			mob.tell(L("@x1 is already enchanted.",target.name(mob)));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -128,18 +128,18 @@ public class Chant_Shillelagh extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> appear(s) enchanted!"):_("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> appear(s) enchanted!"):L("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
-				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> glow(s)!"));
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glow(s)!"));
 				target.recoverPhyStats();
 				mob.recoverPhyStats();
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
 		// return whether it worked
 		return success;
 	}

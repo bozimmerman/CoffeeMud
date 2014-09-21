@@ -154,19 +154,19 @@ public class Concierge extends StdBehavior
 			final int destIndex=destinations.indexOf(source);
 			if(destIndex<0)
 			{
-				CMLib.commands().postSay(observer,source,_("What's this for?  Please tell me where you'd like to go first."),true,false);
+				CMLib.commands().postSay(observer,source,L("What's this for?  Please tell me where you'd like to go first."),true,false);
 				return false;
 			}
 			else
 			if(!(msg.tool() instanceof Coins))
 			{
-				CMLib.commands().postSay(observer,source,_("I'm sorry, I can only accept money."),true,false);
+				CMLib.commands().postSay(observer,source,L("I'm sorry, I can only accept money."),true,false);
 				return false;
 			}
 			else
 			if(!((Coins)msg.tool()).getCurrency().equalsIgnoreCase(CMLib.beanCounter().getCurrency(observer)))
 			{
-				CMLib.commands().postSay(observer,source,_("I'm sorry, I don't accept that kind of currency."),true,false);
+				CMLib.commands().postSay(observer,source,L("I'm sorry, I don't accept that kind of currency."),true,false);
 				return false;
 			}
 			final Environmental destination=(Environmental)destinations.elementAt(destIndex,2);
@@ -174,7 +174,7 @@ public class Concierge extends StdBehavior
 			final double owed=getPrice(destination)-paid.doubleValue();
 			if(owed<=0.0)
 			{
-				CMLib.commands().postSay(observer,source,_("Hey, you've already paid me!"),true,false);
+				CMLib.commands().postSay(observer,source,L("Hey, you've already paid me!"),true,false);
 				return false;
 			}
 		}
@@ -242,7 +242,7 @@ public class Concierge extends StdBehavior
 				if(owed>0.0)
 				{
 					destinations.setElementAt(destIndex,3,Double.valueOf(owed));
-					CMLib.commands().postSay(observer,source,_("Ok, you still owe @x1.",CMLib.beanCounter().nameCurrencyLong(observer,owed)),true,false);
+					CMLib.commands().postSay(observer,source,L("Ok, you still owe @x1.",CMLib.beanCounter().nameCurrencyLong(observer,owed)),true,false);
 					return;
 				}
 				else
@@ -253,7 +253,7 @@ public class Concierge extends StdBehavior
 					if((change>0.0)&&(C!=null))
 					{
 						// this message will actually end up triggering the hand-over.
-						final CMMsg newMsg=CMClass.getMsg(observer,source,C,CMMsg.MSG_SPEAK,_("^T<S-NAME> say(s) 'Heres your change.' to <T-NAMESELF>.^?"));
+						final CMMsg newMsg=CMClass.getMsg(observer,source,C,CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) 'Heres your change.' to <T-NAMESELF>.^?"));
 						C.setOwner(observer);
 						final long num=C.getNumberOfCoins();
 						final String curr=C.getCurrency();
@@ -265,7 +265,7 @@ public class Concierge extends StdBehavior
 						msg.addTrailerMsg(newMsg);
 					}
 					else
-						CMLib.commands().postSay(observer,source,_("Gee, thanks. :)"),true,false);
+						CMLib.commands().postSay(observer,source,L("Gee, thanks. :)"),true,false);
 				}
 				((Coins)msg.tool()).destroy();
 				thingsToSay.addElement(msg.source(),"Thank you. The way to "+destination.name()+" from here is: "+this.getDestination(observer,destination));
@@ -273,7 +273,7 @@ public class Concierge extends StdBehavior
 			}
 			else
 			if(!CMLib.flags().canBeSeenBy(source,observer))
-				CMLib.commands().postSay(observer,null,_("Wha?  Where did this come from?  Cool!"),true,false);
+				CMLib.commands().postSay(observer,null,L("Wha?  Where did this come from?  Cool!"),true,false);
 		}
 		else
 		if((msg.source()==observer)

@@ -38,7 +38,7 @@ import java.util.*;
 public class Chant_SenseSentience extends Chant
 {
 	@Override public String ID() { return "Chant_SenseSentience"; }
-	private final static String localizedName = CMLib.lang()._("Sense Sentience");
+	private final static String localizedName = CMLib.lang().L("Sense Sentience");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
@@ -55,13 +55,13 @@ public class Chant_SenseSentience extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) softly to <S-HIM-HERSELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) softly to <S-HIM-HERSELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final StringBuffer lines=new StringBuffer("^x");
-				lines.append(CMStrings.padRight(_("Name"),25)+"| ");
-				lines.append(CMStrings.padRight(_("Location"),17)+"^.^N\n\r");
+				lines.append(CMStrings.padRight(L("Name"),25)+"| ");
+				lines.append(CMStrings.padRight(L("Location"),17)+"^.^N\n\r");
 				TrackingLibrary.TrackingFlags flags;
 				flags = new TrackingLibrary.TrackingFlags()
 						.plus(TrackingLibrary.TrackingFlag.AREAONLY);
@@ -89,7 +89,7 @@ public class Chant_SenseSentience extends Chant
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) softly to <S-HIM-HERSELF>, but the magic fades."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> chant(s) softly to <S-HIM-HERSELF>, but the magic fades."));
 
 		return success;
 	}

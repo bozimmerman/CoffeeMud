@@ -45,7 +45,7 @@ public class ClanDeclare extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(_("You must specify the clans name, and a new relationship."));
+			mob.tell(L("You must specify the clans name, and a new relationship."));
 			return false;
 		}
 		commands.setElementAt(getAccessWords()[0],0);
@@ -81,19 +81,19 @@ public class ClanDeclare extends StdCommand
 
 		if(C2==null)
 		{
-			mob.tell(_("@x1 is an unknown clan.",clan2Name));
+			mob.tell(L("@x1 is an unknown clan.",clan2Name));
 			return false;
 		}
 
 		if(C==null)
 		{
-			mob.tell(_("You aren't allowed to declare @x1 on behalf of @x2.",rel.toLowerCase(),((clanName.length()==0)?"anything":clanName)));
+			mob.tell(L("You aren't allowed to declare @x1 on behalf of @x2.",rel.toLowerCase(),((clanName.length()==0)?"anything":clanName)));
 			return false;
 		}
 
 		if((!C2.isRivalrous())||(!C.isRivalrous()))
 		{
-			mob.tell(_("Relations between @x1 and @x2 are impossible.",C.getName(),C2.getName()));
+			mob.tell(L("Relations between @x1 and @x2 are impossible.",C.getName(),C2.getName()));
 			return false;
 		}
 
@@ -108,17 +108,17 @@ public class ClanDeclare extends StdCommand
 						newRole=i;
 				if(newRole<0)
 				{
-					mob.tell(_("'@x1' is not a valid relationship. Try WAR, HOSTILE, NEUTRAL, FRIENDLY, or ALLY.",rel));
+					mob.tell(L("'@x1' is not a valid relationship. Try WAR, HOSTILE, NEUTRAL, FRIENDLY, or ALLY.",rel));
 					return false;
 				}
 				if(C2==C)
 				{
-					mob.tell(_("You can't do that."));
+					mob.tell(L("You can't do that."));
 					return false;
 				}
 				if(C.getClanRelations(C2.clanID())==newRole)
 				{
-					mob.tell(_("@x1 is already in that state with @x2.",C.getName(),C2.getName()));
+					mob.tell(L("@x1 is already in that state with @x2.",C.getName(),C2.getName()));
 					return false;
 
 				}
@@ -128,7 +128,7 @@ public class ClanDeclare extends StdCommand
 					last=last+(CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH)*CMProps.getTickMillis());
 					if(System.currentTimeMillis()<last)
 					{
-						mob.tell(_("You must wait at least 1 mud month between relation changes."));
+						mob.tell(L("You must wait at least 1 mud month between relation changes."));
 						return false;
 					}
 				}
@@ -138,7 +138,7 @@ public class ClanDeclare extends StdCommand
 				commands.add(rel);
 				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.DECLARE,true))
 				{
-					CMLib.clans().clanAnnounce(mob,_("The @x1 @x2 has declared @x3 @x4.",C.getGovernmentName(),C.clanID(),CMStrings.capitalizeAndLower(Clan.REL_STATES[newRole].toLowerCase()),C2.name()));
+					CMLib.clans().clanAnnounce(mob,L("The @x1 @x2 has declared @x3 @x4.",C.getGovernmentName(),C.clanID(),CMStrings.capitalizeAndLower(Clan.REL_STATES[newRole].toLowerCase()),C2.name()));
 					C.setClanRelations(C2.clanID(),newRole,System.currentTimeMillis());
 					C.update();
 					return false;
@@ -146,12 +146,12 @@ public class ClanDeclare extends StdCommand
 			}
 			else
 			{
-				msg.append(_("You aren't in the right position to declare relationships with your @x1.",C.getGovernmentName()));
+				msg.append(L("You aren't in the right position to declare relationships with your @x1.",C.getGovernmentName()));
 			}
 		}
 		else
 		{
-			mob.tell(_("You must specify the clans name, and a new relationship."));
+			mob.tell(L("You must specify the clans name, and a new relationship."));
 			return false;
 		}
 		mob.tell(msg.toString());

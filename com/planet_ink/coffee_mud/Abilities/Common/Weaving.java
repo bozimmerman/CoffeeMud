@@ -40,7 +40,7 @@ import java.util.*;
 public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override public String ID() { return "Weaving"; }
-	private final static String localizedName = CMLib.lang()._("Weaving");
+	private final static String localizedName = CMLib.lang().L("Weaving");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"WEAVING","WEAVE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -223,7 +223,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
-				commonTell(mob,_("That's not a weaved item."));
+				commonTell(mob,L("That's not a weaved item."));
 			return false;
 		}
 		return true;
@@ -248,7 +248,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,_("Weave what? Enter \"weave list\" for a list, \"weave refit <item>\" to resize, \"weave learn <item>\", \"weave scan\", \"weave mend <item>\", or \"weave stop\" to cancel."));
+			commonTell(mob,L("Weave what? Enter \"weave list\" for a list, \"weave refit <item>\" to resize, \"weave learn <item>\", \"weave scan\", \"weave mend <item>\", or \"weave stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -283,7 +283,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 					ListingLibrary.ColFixer.fixColWidth(10,mob.session())
 				};
 			for(int r=0;r<toggleTop;r++)
-				buf.append((r>0?" ":"")+CMStrings.padRight(_("Item"),cols[0])+" "+CMStrings.padRight(_("Lvl"),cols[1])+" "+CMStrings.padRight(_("Material"),cols[2]));
+				buf.append((r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Material"),cols[2]));
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -332,9 +332,9 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr=_("<S-NAME> start(s) mending @x1.",buildingI.name());
-			displayText=_("You are mending @x1",buildingI.name());
-			verb=_("mending @x1",buildingI.name());
+			startStr=L("<S-NAME> start(s) mending @x1.",buildingI.name());
+			displayText=L("You are mending @x1",buildingI.name());
+			verb=L("mending @x1",buildingI.name());
 		}
 		else
 		if(str.equalsIgnoreCase("refit"))
@@ -353,25 +353,25 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			&&(buildingI.material()!=RawMaterial.RESOURCE_WHEAT)
 			&&(buildingI.material()!=RawMaterial.RESOURCE_SEAWEED))
 			{
-				commonTell(mob,_("That's not made of any sort of weavable material.  It can't be refitted."));
+				commonTell(mob,L("That's not made of any sort of weavable material.  It can't be refitted."));
 				return false;
 			}
 			if(!(buildingI instanceof Armor))
 			{
-				commonTell(mob,_("You don't know how to refit that sort of thing."));
+				commonTell(mob,L("You don't know how to refit that sort of thing."));
 				return false;
 			}
 			if(buildingI.phyStats().height()==0)
 			{
-				commonTell(mob,_("@x1 is already the right size.",buildingI.name(mob)));
+				commonTell(mob,L("@x1 is already the right size.",buildingI.name(mob)));
 				return false;
 			}
 			activity = CraftingActivity.REFITTING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr=_("<S-NAME> start(s) refitting @x1.",buildingI.name());
-			displayText=_("You are refitting @x1",buildingI.name());
-			verb=_("refitting @x1",buildingI.name());
+			startStr=L("<S-NAME> start(s) refitting @x1.",buildingI.name());
+			displayText=L("You are refitting @x1",buildingI.name());
+			verb=L("refitting @x1",buildingI.name());
 		}
 		else
 		{
@@ -404,7 +404,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,_("You don't know how to weave a '@x1'.  Try \"weave list\" for a list.",recipeName));
+				commonTell(mob,L("You don't know how to weave a '@x1'.  Try \"weave list\" for a list.",recipeName));
 				return false;
 			}
 
@@ -441,7 +441,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(buildingI==null)
 			{
-				commonTell(mob,_("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
+				commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
@@ -454,10 +454,10 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			else
 				itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);
-			startStr=_("<S-NAME> start(s) weaving @x1.",buildingI.name());
-			displayText=_("You are weaving @x1",buildingI.name());
-			verb=_("weaving @x1",buildingI.name());
-			buildingI.setDisplayText(_("@x1 lies here",itemName));
+			startStr=L("<S-NAME> start(s) weaving @x1.",buildingI.name());
+			displayText=L("You are weaving @x1",buildingI.name());
+			verb=L("weaving @x1",buildingI.name());
+			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
@@ -515,9 +515,9 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 					((Container)buildingI).setKeyName(Double.toString(Math.random()));
 					key=CMClass.getItem("GenKey");
 					((DoorKey)key).setKey(((Container)buildingI).keyName());
-					key.setName(_("a key"));
-					key.setDisplayText(_("a small key sits here"));
-					key.setDescription(_("looks like a key to @x1",buildingI.name()));
+					key.setName(L("a key"));
+					key.setDisplayText(L("a small key sits here"));
+					key.setDescription(L("looks like a key to @x1",buildingI.name()));
 					key.recoverPhyStats();
 					key.text();
 				}
@@ -537,9 +537,9 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		{
 			messedUp=false;
 			duration=1;
-			verb=_("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
-			startStr=_("<S-NAME> start(s) @x1.",verb);
-			displayText=_("You are @x1",verb);
+			verb=L("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
+			startStr=L("<S-NAME> start(s) @x1.",verb);
+			displayText=L("You are @x1",verb);
 		}
 
 		if(parsedVars.autoGenerate>0)

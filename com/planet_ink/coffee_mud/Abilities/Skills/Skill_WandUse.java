@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_WandUse extends StdSkill
 {
 	@Override public String ID() { return "Skill_WandUse"; }
-	private final static String localizedName = CMLib.lang()._("Wands");
+	private final static String localizedName = CMLib.lang().L("Wands");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

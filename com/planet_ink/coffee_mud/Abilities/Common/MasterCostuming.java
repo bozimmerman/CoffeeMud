@@ -38,7 +38,7 @@ import java.util.*;
 public class MasterCostuming extends Costuming
 {
 	@Override public String ID() { return "MasterCostuming"; }
-	private final static String localizedName = CMLib.lang()._("Master Costuming");
+	private final static String localizedName = CMLib.lang().L("Master Costuming");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"MASTERCOSTUME","MCOSTUME","MCOSTUMING","MASTERCOSTUMING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -65,7 +65,7 @@ public class MasterCostuming extends Costuming
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,_("Make what? Enter \"mcostume list\" for a list, \"mcostume scan\", \"mcostume refit\", \"mcostume learn <item>\", \"mcostume mend <item>\", or \"mcostume stop\" to cancel."));
+			commonTell(mob,L("Make what? Enter \"mcostume list\" for a list, \"mcostume scan\", \"mcostume refit\", \"mcostume learn <item>\", \"mcostume mend <item>\", or \"mcostume stop\" to cancel."));
 			return false;
 		}
 		if(parsedVars.autoGenerate>0)

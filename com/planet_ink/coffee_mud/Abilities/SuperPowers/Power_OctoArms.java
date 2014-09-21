@@ -35,7 +35,7 @@ import java.util.*;
 public class Power_OctoArms extends SuperPower
 {
 	@Override public String ID() { return "Power_OctoArms"; }
-	private final static String localizedName = CMLib.lang()._("Octo-Arms");
+	private final static String localizedName = CMLib.lang().L("Octo-Arms");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -66,7 +66,7 @@ public class Power_OctoArms extends SuperPower
 				||(naturalWeapon.amDestroyed()))
 				{
 					naturalWeapon=CMClass.getWeapon("GenWeapon");
-					naturalWeapon.setName(_("a huge snaking arm"));
+					naturalWeapon.setName(L("a huge snaking arm"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					naturalWeapon.setMaterial(RawMaterial.RESOURCE_STEEL);
 					naturalWeapon.setUsesRemaining(1000);

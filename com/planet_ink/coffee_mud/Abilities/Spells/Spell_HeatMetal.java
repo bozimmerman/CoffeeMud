@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_HeatMetal extends Spell
 {
 	@Override public String ID() { return "Spell_HeatMetal"; }
-	private final static String localizedName = CMLib.lang()._("Heat Metal");
+	private final static String localizedName = CMLib.lang().L("Heat Metal");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Heated)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Heated)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
@@ -59,7 +59,7 @@ public class Spell_HeatMetal extends Spell
 
 		if(msg.targetMajor(CMMsg.MASK_HANDS))
 		{
-			msg.source().tell(_("@x1 is too hot!",affected.name()));
+			msg.source().tell(L("@x1 is too hot!",affected.name()));
 			return false;
 		}
 		return true;
@@ -165,7 +165,7 @@ public class Spell_HeatMetal extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> invoke(s) a spell upon <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> invoke(s) a spell upon <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -174,7 +174,7 @@ public class Spell_HeatMetal extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> invoke(s) at <T-NAMESELF>, but the spell fizzles."));
+			return maliciousFizzle(mob,target,L("<S-NAME> invoke(s) at <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

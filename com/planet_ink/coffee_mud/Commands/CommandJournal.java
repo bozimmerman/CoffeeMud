@@ -73,12 +73,12 @@ public class CommandJournal extends StdCommand
 		   return false;
 		if(!CMSecurity.isJournalAccessAllowed(mob,security))
 		{
-			mob.tell(_("Transfer not allowed."));
+			mob.tell(L("Transfer not allowed."));
 			return true;
 		}
 		if((second.length()>0)&&(!CMath.isNumber(second)))
 		{
-			mob.tell(_("@x1 is not a number",second));
+			mob.tell(L("@x1 is not a number",second));
 			return true;
 		}
 		final int count=CMath.s_int(second);
@@ -87,12 +87,12 @@ public class CommandJournal extends StdCommand
 		if(journal!=null) size=journal.size();
 		if(size<=0)
 		{
-			mob.tell(_("There are no @x1 listed at this time.",journalWord));
+			mob.tell(L("There are no @x1 listed at this time.",journalWord));
 			return true;
 		}
 		if(count>size)
 		{
-			mob.tell(_("Maximum count of @x1 is @x2.",journalWord,""+size));
+			mob.tell(L("Maximum count of @x1 is @x2.",journalWord,""+size));
 			return true;
 		}
 		String realName=null;
@@ -112,7 +112,7 @@ public class CommandJournal extends StdCommand
 			realName=CMLib.database().DBGetRealJournalName(rest.toUpperCase());
 		if(realName==null)
 		{
-			mob.tell(_("@x1 is not a journal",rest));
+			mob.tell(L("@x1 is not a journal",rest));
 			return true;
 		}
 		final List<JournalsLibrary.JournalEntry> journal2=CMLib.database().DBReadJournalMsgs(journalID);
@@ -127,7 +127,7 @@ public class CommandJournal extends StdCommand
 										  to,
 										  subject,
 										  message);
-		mob.tell(_("Message transferred."));
+		mob.tell(L("Message transferred."));
 		return true;
 	}
 
@@ -149,19 +149,19 @@ public class CommandJournal extends StdCommand
 
 		final Item journalItem=CMClass.getItem("StdJournal");
 		if(journalItem==null)
-			mob.tell(_("This feature has been disabled."));
+			mob.tell(L("This feature has been disabled."));
 		else
 		{
 			final List<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(journalID);
 			int size=0;
 			if(journal!=null) size=journal.size();
 			if(size<=0)
-				mob.tell(_("There are no @x1 listed at this time.",journalWord));
+				mob.tell(L("There are no @x1 listed at this time.",journalWord));
 			else
 			{
 				journalItem.setName(journalID);
 				if(count>size)
-					mob.tell(_("Maximum count of @x1 is @x2.",journalWord,""+size));
+					mob.tell(L("Maximum count of @x1 is @x2.",journalWord,""+size));
 				else
 				while(count<=size)
 				{
@@ -187,7 +187,7 @@ public class CommandJournal extends StdCommand
 	{
 		if((commands==null)||(commands.size()<2))
 		{
-			mob.tell(_("@x1 what??!?!",((commands==null)||(commands.size()==0))?"":commands.get(0).toString()));
+			mob.tell(L("@x1 what??!?!",((commands==null)||(commands.size()==0))?"":commands.get(0).toString()));
 			return false;
 		}
 		JournalsLibrary.CommandJournal journal=null;
@@ -212,13 +212,13 @@ public class CommandJournal extends StdCommand
 		}
 		if(journal==null)
 		{
-			mob.tell(_("!!!!!"));
+			mob.tell(L("!!!!!"));
 			return false;
 		}
 		if((journal.mask().length()>0)
 		&&(!CMLib.masking().maskCheck(journal.mask(),mob,true)))
 		{
-			mob.tell(_("This command is not available to you."));
+			mob.tell(L("This command is not available to you."));
 			return false;
 		}
 		if((!review(mob,journal.JOURNAL_NAME(),journal.NAME().toLowerCase()+"s",commands,journal.NAME()))
@@ -231,7 +231,7 @@ public class CommandJournal extends StdCommand
 			{
 				if(journal.getFlag(JournalsLibrary.CommandJournalFlags.CONFIRM)!=null)
 				{
-					if(!mob.session().confirm(_("\n\r^HSubmit this @x1: '^N@x2^H' (Y/n)?^.^N",journal.NAME().toLowerCase(),msgString),_("Y")))
+					if(!mob.session().confirm(L("\n\r^HSubmit this @x1: '^N@x2^H' (Y/n)?^.^N",journal.NAME().toLowerCase(),msgString),L("Y")))
 						return false;
 				}
 				String prePend="";
@@ -240,13 +240,13 @@ public class CommandJournal extends StdCommand
 				CMLib.database().DBWriteJournal(journal.JOURNAL_NAME(),mob.Name(),"ALL",
 						CMStrings.padRight("^.^N"+msgString+"^.^N",20),
 						prePend+msgString);
-				mob.tell(_("Your @x1 message has been sent.  Thank you.",journal.NAME().toLowerCase()));
+				mob.tell(L("Your @x1 message has been sent.  Thank you.",journal.NAME().toLowerCase()));
 				if(journal.getFlag(JournalsLibrary.CommandJournalFlags.CHANNEL)!=null)
 					CMLib.commands().postChannel(journal.getFlag(JournalsLibrary.CommandJournalFlags.CHANNEL).toUpperCase().trim(),null,mob.Name()+" posted to "+journal.NAME()+": "+CMParms.combine(commands,1),true);
 			}
 			else
 			{
-				mob.tell(_("What's the @x1? Be Specific!",journal.NAME().toLowerCase()));
+				mob.tell(L("What's the @x1? Be Specific!",journal.NAME().toLowerCase()));
 				return false;
 			}
 

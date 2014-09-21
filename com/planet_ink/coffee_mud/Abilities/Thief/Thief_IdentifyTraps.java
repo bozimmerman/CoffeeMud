@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_IdentifyTraps extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_IdentifyTraps"; }
-	private final static String localizedName = CMLib.lang()._("Identify Traps");
+	private final static String localizedName = CMLib.lang().L("Identify Traps");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
@@ -79,7 +79,7 @@ public class Thief_IdentifyTraps extends ThiefSkill
 			}
 			if(detect==null)
 			{
-				mob.tell(_("You don't know how to detect traps!"));
+				mob.tell(L("You don't know how to detect traps!"));
 				return false;
 			}
 		}
@@ -136,11 +136,11 @@ public class Thief_IdentifyTraps extends ThiefSkill
 			if((!success)||(theTrap==null))
 			{
 				if(!auto)
-					mob.tell(_("You can't identify the trap on @x1.",unlockThis.name()));
+					mob.tell(L("You can't identify the trap on @x1.",unlockThis.name()));
 				success=false;
 			}
 			else
-				mob.tell(_("The trap that is on @x1 is @x2 of quality level @x3.",unlockThis.name(),theTrap.name(),""+theTrap.abilityCode()));
+				mob.tell(L("The trap that is on @x1 is @x2 of quality level @x3.",unlockThis.name(),theTrap.name(),""+theTrap.abilityCode()));
 			lastChecked=unlockThis;
 		}
 		else

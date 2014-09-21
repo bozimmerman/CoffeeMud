@@ -269,10 +269,10 @@ public class Dragon extends StdMOB
 				Stomach = CMClass.getLocale("StdRoom");
 				if(Stomach!=null)
 				{
-					Stomach.setName(_("Dragon Stomach"));
-					Stomach.setDisplayText(_("Dragon Stomach"));
+					Stomach.setName(L("Dragon Stomach"));
+					Stomach.setDisplayText(L("Dragon Stomach"));
 					Stomach.setArea(location().getArea());
-					Stomach.setDescription(_("You are in the stomach of a dragon.  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested."));
+					Stomach.setDescription(L("You are in the stomach of a dragon.  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested."));
 				}
 			}
 			if((--digestDown)<=0)
@@ -441,14 +441,14 @@ public class Dragon extends StdMOB
 											   CMMsg.MSG_EAT,
 											   CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,
 											   CMMsg.MSG_NOISYMOVEMENT,
-											   _("<S-NAME> swallow(es) <T-NAMESELF> WHOLE!"));
+											   L("<S-NAME> swallow(es) <T-NAMESELF> WHOLE!"));
 					if(location().okMessage(TastyMorsel,EatMsg))
 					{
 						location().send(TastyMorsel,EatMsg);
 						if(EatMsg.value()==0)
 						{
 							Stomach.bringMobHere(TastyMorsel,false);
-							final CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach,null,CMMsg.MSG_ENTER,Stomach.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> slide(s) down the gullet into the stomach!"));
+							final CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach,null,CMMsg.MSG_ENTER,Stomach.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> slide(s) down the gullet into the stomach!"));
 							Stomach.send(TastyMorsel,enterMsg);
 						}
 					}
@@ -515,7 +515,7 @@ public class Dragon extends StdMOB
 										   TastyMorsel,
 										   null,
 										   CMMsg.MSG_OK_ACTION,
-										   _("<S-NAME> digest(s) <T-NAMESELF>!!"));
+										   L("<S-NAME> digest(s) <T-NAMESELF>!!"));
 				Stomach.send(this,DigestMsg);
 				int damage=((int)Math.round(CMath.div(TastyMorsel.curState().getHitPoints(),2)));
 				if(damage<(TastyMorsel.phyStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()+1;

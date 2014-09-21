@@ -38,7 +38,7 @@ import java.util.*;
 public class Dance_Manipuri extends Dance
 {
 	@Override public String ID() { return "Dance_Manipuri"; }
-	private final static String localizedName = CMLib.lang()._("Manipuri");
+	private final static String localizedName = CMLib.lang().L("Manipuri");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected String danceOf(){return name()+" Dance";}
@@ -77,7 +77,7 @@ public class Dance_Manipuri extends Dance
 			if((!target.isInCombat())
 			&&(msg.source().getVictim()!=target))
 			{
-				msg.source().tell(_("You feel like letting @x1 be for awhile.",target.name(msg.source())));
+				msg.source().tell(L("You feel like letting @x1 be for awhile.",target.name(msg.source())));
 				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();

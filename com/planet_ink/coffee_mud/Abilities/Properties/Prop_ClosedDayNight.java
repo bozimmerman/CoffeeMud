@@ -159,7 +159,7 @@ public class Prop_ClosedDayNight extends Property
 		{
 			final ShopKeeper sk=CMLib.coffeeShops().getShopKeeper(affected);
 			if(sk!=null)
-				CMLib.commands().postSay((MOB)affected,msg.source(),(shopMsg!=null)?shopMsg:_("Sorry, I'm off right now.  Try me tomorrow."),false,false);
+				CMLib.commands().postSay((MOB)affected,msg.source(),(shopMsg!=null)?shopMsg:L("Sorry, I'm off right now.  Try me tomorrow."),false,false);
 			return false;
 		}
 		return true;
@@ -236,7 +236,7 @@ public class Prop_ClosedDayNight extends Property
 								msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 								if(R2.okMessage(mob,msg))
 								{
-									msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_CLOSE,CMMsg.MSG_OK_VISUAL,_("<S-NAME> @x1(s) <T-NAMESELF>.",E.closeWord()));
+									msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_CLOSE,CMMsg.MSG_OK_VISUAL,L("<S-NAME> @x1(s) <T-NAMESELF>.",E.closeWord()));
 									CMLib.utensils().roomAffectFully(msg,mob.location(),d);
 								}
 							}
@@ -245,7 +245,7 @@ public class Prop_ClosedDayNight extends Property
 								msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 								if(R2.okMessage(mob,msg))
 								{
-									msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,_("<S-NAME> lock(s) <T-NAMESELF>."));
+									msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,L("<S-NAME> lock(s) <T-NAMESELF>."));
 									CMLib.utensils().roomAffectFully(msg,mob.location(),d);
 								}
 							}
@@ -262,7 +262,7 @@ public class Prop_ClosedDayNight extends Property
 							return true;
 						final ShopKeeper sk=CMLib.coffeeShops().getShopKeeper(affected);
 						if(sk!=null)
-							CMLib.commands().postSay((MOB)affected,null,(shopMsg!=null)?shopMsg:_("Sorry, I'm off right now.  Try me tomorrow."),false,false);
+							CMLib.commands().postSay((MOB)affected,null,(shopMsg!=null)?shopMsg:L("Sorry, I'm off right now.  Try me tomorrow."),false,false);
 						final Ability A=CMClass.getAbility("Skill_Track");
 						if(A!=null)
 						{
@@ -317,7 +317,7 @@ public class Prop_ClosedDayNight extends Property
 								msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 								if(R2.okMessage(mob,msg))
 								{
-									msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,_("<S-NAME> unlock(s) <T-NAMESELF>."));
+									msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,L("<S-NAME> unlock(s) <T-NAMESELF>."));
 									CMLib.utensils().roomAffectFully(msg,mob.location(),d);
 								}
 							}
@@ -326,7 +326,7 @@ public class Prop_ClosedDayNight extends Property
 								msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 								if(R2.okMessage(mob,msg))
 								{
-									msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OPEN,CMMsg.MSG_OK_VISUAL,_("<S-NAME> @x1(s) <T-NAMESELF>.",E.openWord()));
+									msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OPEN,CMMsg.MSG_OK_VISUAL,L("<S-NAME> @x1(s) <T-NAMESELF>.",E.openWord()));
 									CMLib.utensils().roomAffectFully(msg,mob.location(),d);
 								}
 							}

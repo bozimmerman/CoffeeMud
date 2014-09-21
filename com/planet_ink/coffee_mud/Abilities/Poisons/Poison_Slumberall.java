@@ -35,7 +35,7 @@ import java.util.*;
 public class Poison_Slumberall extends Poison
 {
 	@Override public String ID() { return "Poison_Slumberall"; }
-	private final static String localizedName = CMLib.lang()._("Slumberall");
+	private final static String localizedName = CMLib.lang().L("Slumberall");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"POISONSLEEP"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -86,7 +86,7 @@ public class Poison_Slumberall extends Poison
 		&&(msg.sourceMajor()>0)
 		&&(msg.sourceMinor()!=CMMsg.TYP_SLEEP))
 		{
-			mob.tell(_("You are way too drowsy."));
+			mob.tell(L("You are way too drowsy."));
 			return false;
 		}
 		return super.okMessage(myHost,msg);
@@ -107,7 +107,7 @@ public class Poison_Slumberall extends Poison
 		if((!fallenYet)&&(mob.location()!=null))
 		{
 			fallenYet=true;
-			mob.location().show(mob,null,CMMsg.MSG_SLEEP,_("<S-NAME> fall(s) asleep!"));
+			mob.location().show(mob,null,CMMsg.MSG_SLEEP,L("<S-NAME> fall(s) asleep!"));
 			mob.recoverPhyStats();
 		}
 		return true;

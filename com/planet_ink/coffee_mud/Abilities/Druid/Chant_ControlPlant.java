@@ -38,7 +38,7 @@ import java.util.Vector;
 public class Chant_ControlPlant extends Chant
 {
 	@Override public String ID() { return "Chant_ControlPlant"; }
-	private final static String localizedName = CMLib.lang()._("Control Plant");
+	private final static String localizedName = CMLib.lang().L("Control Plant");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -69,13 +69,13 @@ public class Chant_ControlPlant extends Chant
 
 		if(isPlant(myPlant)==null)
 		{
-			mob.tell(_("You can't control @x1.",myPlant.name()));
+			mob.tell(L("You can't control @x1.",myPlant.name()));
 			return false;
 		}
 
 		if(myPlant.rawSecretIdentity().equals(mob.Name()))
 		{
-			mob.tell(_("You already control @x1.",myPlant.name()));
+			mob.tell(L("You already control @x1.",myPlant.name()));
 			return false;
 		}
 
@@ -87,19 +87,19 @@ public class Chant_ControlPlant extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,myPlant,this,verbalCastCode(mob,myPlant,auto),auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,myPlant,this,verbalCastCode(mob,myPlant,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final Ability A=isPlant(myPlant);
 				if(A!=null)	A.setInvoker(mob);
-				mob.tell(_("You wrest control of @x1 from @x2.",myPlant.name(),myPlant.secretIdentity()));
+				mob.tell(L("You wrest control of @x1 from @x2.",myPlant.name(),myPlant.secretIdentity()));
 				myPlant.setSecretIdentity(mob.Name());
 			}
 
 		}
 		else
-			beneficialVisualFizzle(mob,myPlant,_("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
+			beneficialVisualFizzle(mob,myPlant,L("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

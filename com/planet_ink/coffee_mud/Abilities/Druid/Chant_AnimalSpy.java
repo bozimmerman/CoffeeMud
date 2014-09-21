@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_AnimalSpy extends Chant
 {
 	@Override public String ID() { return "Chant_AnimalSpy"; }
-	private final static String localizedName = CMLib.lang()._("Animal Spy");
+	private final static String localizedName = CMLib.lang().L("Animal Spy");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Animal Spy)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Animal Spy)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
@@ -75,7 +75,7 @@ public class Chant_AnimalSpy extends Chant
 				final Ability A=invoker.fetchEffect(this.ID());
 				if(A!=null)
 					invoker.delEffect(A);
-				invoker.tell(_("Your connection with '@x1' fades.",spy.name()));
+				invoker.tell(L("Your connection with '@x1' fades.",spy.name()));
 			}
 		}
 		super.unInvoke();
@@ -139,7 +139,7 @@ public class Chant_AnimalSpy extends Chant
 
 		if(commands.size()<1)
 		{
-			mob.tell(_("Chant to whom?"));
+			mob.tell(L("Chant to whom?"));
 			return false;
 		}
 		final String mobName=CMParms.combine(commands,0).trim().toUpperCase();
@@ -152,13 +152,13 @@ public class Chant_AnimalSpy extends Chant
 			if((!CMLib.flags().isAnimalIntelligence(target))
 			||(target.amFollowing()!=mob))
 			{
-				mob.tell(_("You have no animal follower named '@x1' here.",mobName));
+				mob.tell(L("You have no animal follower named '@x1' here.",mobName));
 				return false;
 			}
 		}
 		else
 		{
-			mob.tell(_("You have no animal follower named '@x1' here.",mobName));
+			mob.tell(L("You have no animal follower named '@x1' here.",mobName));
 			return false;
 		}
 
@@ -169,7 +169,7 @@ public class Chant_AnimalSpy extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF>, invoking the a mystical connection.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>, invoking the a mystical connection.^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 			if((mob.location().okMessage(mob,msg))&&((newRoom==mob.location())||(newRoom.okMessage(mob,msg2))))
 			{
@@ -187,7 +187,7 @@ public class Chant_AnimalSpy extends Chant
 
 		}
 		else
-			beneficialVisualFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
+			beneficialVisualFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
 
 
 		// return whether it worked

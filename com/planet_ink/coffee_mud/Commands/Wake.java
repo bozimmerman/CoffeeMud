@@ -47,10 +47,10 @@ public class Wake extends StdCommand
 		if((commands==null)||(commands.size()==0))
 		{
 			if(!CMLib.flags().isSleeping(mob))
-				mob.tell(_("You aren't sleeping!?"));
+				mob.tell(L("You aren't sleeping!?"));
 			else
 			{
-				final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_STAND,_("<S-NAME> awake(s) and stand(s) up."));
+				final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_STAND,L("<S-NAME> awake(s) and stand(s) up."));
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
@@ -61,15 +61,15 @@ public class Wake extends StdCommand
 			final MOB M=mob.location().fetchInhabitant(whom);
 			if((M==null)||(!CMLib.flags().canBeSeenBy(M,mob)))
 			{
-				mob.tell(_("You don't see '@x1' here.",whom));
+				mob.tell(L("You don't see '@x1' here.",whom));
 				return false;
 			}
 			if(!CMLib.flags().isSleeping(M))
 			{
-				mob.tell(_("@x1 is awake!",M.name(mob)));
+				mob.tell(L("@x1 is awake!",M.name(mob)));
 				return false;
 			}
-			final CMMsg msg=CMClass.getMsg(mob,M,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> attempt(s) to wake <T-NAME> up."));
+			final CMMsg msg=CMClass.getMsg(mob,M,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> attempt(s) to wake <T-NAME> up."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

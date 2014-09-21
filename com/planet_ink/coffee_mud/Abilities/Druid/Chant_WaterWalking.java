@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_WaterWalking extends Chant
 {
 	@Override public String ID() { return "Chant_WaterWalking"; }
-	private final static String localizedName = CMLib.lang()._("Water Walking");
+	private final static String localizedName = CMLib.lang().L("Water Walking");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Water Walking)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Water Walking)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
@@ -77,7 +77,7 @@ public class Chant_WaterWalking extends Chant
 				||(mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
 			&&(msg.target()==mob.location().getRoomInDir(Directions.UP)))
 			{
-				msg.source().tell(_("Your water walking magic prevents you from ascending from the water surface."));
+				msg.source().tell(L("Your water walking magic prevents you from ascending from the water surface."));
 				return false;
 			}
 			else
@@ -122,7 +122,7 @@ public class Chant_WaterWalking extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("You have a sinking feeling that your water walking ability is gone."));
+			mob.tell(L("You have a sinking feeling that your water walking ability is gone."));
 	}
 
 
@@ -136,7 +136,7 @@ public class Chant_WaterWalking extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already a water walker."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already a water walker."));
 			return false;
 		}
 
@@ -156,19 +156,19 @@ public class Chant_WaterWalking extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(target.location()==mob.location())
 				{
-					target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> feel(s) a little lighter!"));
+					target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> feel(s) a little lighter!"));
 					success=beneficialAffect(mob,target,asLevel,0);
 				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fizzles."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fizzles."));
 
 		// return whether it worked
 		return success;

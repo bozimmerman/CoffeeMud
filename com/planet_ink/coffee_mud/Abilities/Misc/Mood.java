@@ -38,7 +38,7 @@ import java.util.*;
 public class Mood extends StdAbility
 {
 	@Override public String ID() { return "Mood"; }
-	private final static String localizedName = CMLib.lang()._("Mood");
+	private final static String localizedName = CMLib.lang().L("Mood");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return (moodCode<=0)?"":"(In "+CMLib.english().startWithAorAn(MOODS[moodCode][0].toLowerCase())+" mood)";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -372,13 +372,13 @@ public class Mood extends StdAbility
 						}
 						switch(CMLib.dice().roll(1,5,0))
 						{
-						case 1: str=_("If you please, @x1",str); break;
-						case 2: str=_("@x1 Thank you.",CMStrings.endWithAPeriod(str)); break;
-						case 3: str=_("@x1 If you please.",CMStrings.endWithAPeriod(str)); break;
-						case 4: str=_("Forgive me but, @x1",str); break;
-						case 5: str=_("If I may, @x1",str); break;
-						case 6: str=_("Please, @x1",str); break;
-						case 7: str=_("Humbly speaking, @x1",str); break;
+						case 1: str=L("If you please, @x1",str); break;
+						case 2: str=L("@x1 Thank you.",CMStrings.endWithAPeriod(str)); break;
+						case 3: str=L("@x1 If you please.",CMStrings.endWithAPeriod(str)); break;
+						case 4: str=L("Forgive me but, @x1",str); break;
+						case 5: str=L("If I may, @x1",str); break;
+						case 6: str=L("Please, @x1",str); break;
+						case 7: str=L("Humbly speaking, @x1",str); break;
 						default:
 							if(msg.source().charStats().getStat(CharStats.STAT_GENDER)=='F')
 							{
@@ -508,10 +508,10 @@ public class Mood extends StdAbility
 						}
 						final int rand=CMLib.dice().roll(1,20,0);
 						if(rand<5)
-							str=_("Hey @x1, @x2",uglyPhrases[CMLib.dice().roll(1,uglyPhrases.length,-1)],str);
+							str=L("Hey @x1, @x2",uglyPhrases[CMLib.dice().roll(1,uglyPhrases.length,-1)],str);
 						else
 						if(rand<15)
-							str=_("@x1..you @x2.",CMStrings.endWithAPeriod(str),uglyPhrases[CMLib.dice().roll(1,uglyPhrases.length,-1)]);
+							str=L("@x1..you @x2.",CMStrings.endWithAPeriod(str),uglyPhrases[CMLib.dice().roll(1,uglyPhrases.length,-1)]);
 						else
 						{
 							if(M!=null)
@@ -726,7 +726,7 @@ public class Mood extends StdAbility
 		final String moodName = CMLib.english().startWithAorAn(moodCode.toLowerCase());
 		if(entered.trim().length()==0)
 		{
-			mob.tell(_("You are currently in @x1 mood.",moodName));
+			mob.tell(L("You are currently in @x1 mood.",moodName));
 			return false;
 		}
 		if(entered.equalsIgnoreCase("RANDOM"))
@@ -766,16 +766,16 @@ public class Mood extends StdAbility
 			for (final String[] element : MOODS)
 				choices+=", "+element[0];
 			if(entered.equalsIgnoreCase("LIST"))
-				mob.tell(_("Mood choices include: @x1",choices.substring(2)));
+				mob.tell(L("Mood choices include: @x1",choices.substring(2)));
 			else
-				mob.tell(_("'@x1' is not a known mood. Choices include: @x2",entered,choices.substring(2)));
+				mob.tell(L("'@x1' is not a known mood. Choices include: @x2",entered,choices.substring(2)));
 			return false;
 		}
 		if(moodCode.equalsIgnoreCase(choice))
 		{
 			if(origEntered.equalsIgnoreCase("RANDOM"))
 				return false;
-			mob.tell(_("You are already in @x1 mood.",CMLib.english().startWithAorAn(choice.toLowerCase())));
+			mob.tell(L("You are already in @x1 mood.",CMLib.english().startWithAorAn(choice.toLowerCase())));
 			return false;
 		}
 
@@ -783,7 +783,7 @@ public class Mood extends StdAbility
 		{
 			if(origEntered.equalsIgnoreCase("RANDOM"))
 				return false;
-			mob.tell(_("You must meet the following criteria to be in that mood: @x1",CMLib.masking().maskDesc(mask,true)));
+			mob.tell(L("You must meet the following criteria to be in that mood: @x1",CMLib.masking().maskDesc(mask,true)));
 			return false;
 		}
 
@@ -792,7 +792,7 @@ public class Mood extends StdAbility
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,_("<T-NAME> appear(s) to be in @x1 mood.",CMLib.english().startWithAorAn(choice.toLowerCase())));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,L("<T-NAME> appear(s) to be in @x1 mood.",CMLib.english().startWithAorAn(choice.toLowerCase())));
 			if(target.location()!=null)
 			{
 				if(target.location().okMessage(target,msg))

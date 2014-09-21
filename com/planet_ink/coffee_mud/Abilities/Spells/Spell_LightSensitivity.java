@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_LightSensitivity extends Spell
 {
 	@Override public String ID() { return "Spell_LightSensitivity"; }
-	private final static String localizedName = CMLib.lang()._("Light Sensitivity");
+	private final static String localizedName = CMLib.lang().L("Light Sensitivity");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Light Sensitivity)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Light Sensitivity)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -67,7 +67,7 @@ public class Spell_LightSensitivity extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your light sensitivity returns to normal."));
+			mob.tell(L("Your light sensitivity returns to normal."));
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class Spell_LightSensitivity extends Spell
 
 		if((!auto)&&(target.charStats().getBodyPart(Race.BODY_EYE)==0))
 		{
-			mob.tell(_("@x1 has no eyes, and would not be affected.",target.name(mob)));
+			mob.tell(L("@x1 has no eyes, and would not be affected.",target.name(mob)));
 			return false;
 		}
 
@@ -119,17 +119,17 @@ public class Spell_LightSensitivity extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final String autoStr=_("A flashing light blazes in the eyes of <T-NAME>!");
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?autoStr:_("^SYou invoke a sensitive light into <T-NAME>s eyes.^?"),verbalCastCode(mob,target,auto),auto?autoStr:_("^S<S-NAME> invoke(s) a sensitive light into your eyes.^?"),CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,auto?autoStr:_("^S<S-NAME> invokes a sensitive light into <T-NAME>s eyes.^?"));
+			final String autoStr=L("A flashing light blazes in the eyes of <T-NAME>!");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?autoStr:L("^SYou invoke a sensitive light into <T-NAME>s eyes.^?"),verbalCastCode(mob,target,auto),auto?autoStr:L("^S<S-NAME> invoke(s) a sensitive light into your eyes.^?"),CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,auto?autoStr:L("^S<S-NAME> invokes a sensitive light into <T-NAME>s eyes.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
 					if(CMLib.flags().isInDark(mob.location()))
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> become(s) extremely sensitive to light."));
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) extremely sensitive to light."));
 					else
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> become(s) blinded by the light."));
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) blinded by the light."));
 					if(castingQuality(mob,target)==Ability.QUALITY_MALICIOUS)
 						success=maliciousAffect(mob,target,asLevel,0,-1);
 					else
@@ -139,9 +139,9 @@ public class Spell_LightSensitivity extends Spell
 		}
 		else
 		if(castingQuality(mob,target)==Ability.QUALITY_MALICIOUS)
-			return maliciousFizzle(mob,target,_("<S-NAME> invoke(s) at <T-NAMESELF>, but the spell fizzles."));
+			return maliciousFizzle(mob,target,L("<S-NAME> invoke(s) at <T-NAMESELF>, but the spell fizzles."));
 		else
-			return beneficialVisualFizzle(mob,target,_("<S-NAME> invoke(s) at <T-NAMESELF>, but the spell fizzles."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> invoke(s) at <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

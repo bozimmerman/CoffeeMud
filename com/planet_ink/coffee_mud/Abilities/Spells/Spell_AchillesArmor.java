@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_AchillesArmor extends Spell
 {
 	@Override public String ID() { return "Spell_AchillesArmor"; }
-	private final static String localizedName = CMLib.lang()._("Achilles Armor");
+	private final static String localizedName = CMLib.lang().L("Achilles Armor");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Achilles Armor)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Achilles Armor)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -55,7 +55,7 @@ public class Spell_AchillesArmor extends Spell
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> Achilles Armor is now gone."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> Achilles Armor is now gone."));
 
 		super.unInvoke();
 
@@ -125,7 +125,7 @@ public class Spell_AchillesArmor extends Spell
 					name=msg.tool().name();
 				else
 					name="the "+msg.tool().name();
-				mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,_("The armor around <S-NAME> blocks @x1 attack from <T-NAME>!",name));
+				mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,L("The armor around <S-NAME> blocks @x1 attack from <T-NAME>!",name));
 				return false;
 			}
 			CMLib.combat().postDeath(msg.source(),mob,msg);
@@ -134,7 +134,7 @@ public class Spell_AchillesArmor extends Spell
 		{
 			if(msg.tool().ID().equals("Amputation"))
 			{
-				mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,_("The armor around <S-NAME> protect(s) <T-NAME>!"));
+				mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,L("The armor around <S-NAME> protect(s) <T-NAME>!"));
 				return false;
 			}
 		}
@@ -154,7 +154,7 @@ public class Spell_AchillesArmor extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> attain(s) Achilles Armor!"):_("^S<S-NAME> invoke(s) Achilles Armor around <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> attain(s) Achilles Armor!"):L("^S<S-NAME> invoke(s) Achilles Armor around <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -163,7 +163,7 @@ public class Spell_AchillesArmor extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke Achilles Armor, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke Achilles Armor, but fail(s)."));
 
 		return success;
 	}

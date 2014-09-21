@@ -40,7 +40,7 @@ import java.util.*;
 public class Wainwrighting extends CraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "Wainwrighting"; }
-	private final static String localizedName = CMLib.lang()._("Wainwrighting");
+	private final static String localizedName = CMLib.lang().L("Wainwrighting");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"WAINWRIGHTING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -176,7 +176,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,_("Wainwright what? Enter \"wainwright list\" for a list, \"wainwright learn <item>\" to gain recipes, or \"wainwright stop\" to cancel."));
+			commonTell(mob,L("Wainwright what? Enter \"wainwright list\" for a list, \"wainwright learn <item>\" to gain recipes, or \"wainwright stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -206,7 +206,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 					ListingLibrary.ColFixer.fixColWidth(5,mob.session()),
 					ListingLibrary.ColFixer.fixColWidth(8,mob.session())
 				};
-			final StringBuffer buf=new StringBuffer(_("@x1 @x2 @x3 Wood required\n\r",CMStrings.padRight(_("Item"),cols[0]),CMStrings.padRight(_("Level"),cols[1]),CMStrings.padRight(_("Capacity"),cols[2])));
+			final StringBuffer buf=new StringBuffer(L("@x1 @x2 @x3 Wood required\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Level"),cols[1]),CMStrings.padRight(L("Capacity"),cols[2])));
 			for(int r=0;r<recipes.size();r++)
 			{
 				final List<String> V=recipes.get(r);
@@ -257,7 +257,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 		}
 		if(foundRecipe==null)
 		{
-			commonTell(mob,_("You don't know how to build a '@x1'.  Try \"list\" as your parameter for a list.",recipeName));
+			commonTell(mob,L("You don't know how to build a '@x1'.  Try \"list\" as your parameter for a list.",recipeName));
 			return false;
 		}
 
@@ -287,7 +287,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 		buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 		if(buildingI==null)
 		{
-			commonTell(mob,_("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
+			commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
 			return false;
 		}
 		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
@@ -297,11 +297,11 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 		else
 			itemName=CMLib.english().startWithAorAn(itemName);
 		buildingI.setName(itemName);
-		startStr=_("<S-NAME> start(s) building @x1.",buildingI.name());
-		displayText=_("You are building @x1",buildingI.name());
-		verb=_("building @x1",buildingI.name());
+		startStr=L("<S-NAME> start(s) building @x1.",buildingI.name());
+		displayText=L("You are building @x1",buildingI.name());
+		verb=L("building @x1",buildingI.name());
 		playSound="hammer.wav";
-		buildingI.setDisplayText(_("@x1 lies here",itemName));
+		buildingI.setDisplayText(L("@x1 lies here",itemName));
 		buildingI.setDescription(itemName+". ");
 		buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
@@ -337,9 +337,9 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 				((Container)buildingI).setKeyName(Double.toString(Math.random()));
 				key=CMClass.getItem("GenKey");
 				((DoorKey)key).setKey(((Container)buildingI).keyName());
-				key.setName(_("a key"));
-				key.setDisplayText(_("a small key sits here"));
-				key.setDescription(_("looks like a key to @x1",buildingI.name()));
+				key.setName(L("a key"));
+				key.setDisplayText(L("a small key sits here"));
+				key.setDescription(L("looks like a key to @x1",buildingI.name()));
 				key.recoverPhyStats();
 				key.text();
 			}
@@ -356,9 +356,9 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 		{
 			messedUp=false;
 			duration=1;
-			verb=_("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
-			startStr=_("<S-NAME> start(s) @x1.",verb);
-			displayText=_("You are @x1",verb);
+			verb=L("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
+			startStr=L("<S-NAME> start(s) @x1.",verb);
+			displayText=L("You are @x1",verb);
 		}
 
 		if(parsedVars.autoGenerate>0)

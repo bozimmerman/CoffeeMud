@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_Arrest extends StdSkill
 {
 	@Override public String ID() { return "Skill_Arrest"; }
-	private final static String localizedName = CMLib.lang()._("Arrest");
+	private final static String localizedName = CMLib.lang().L("Arrest");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return 0;}
@@ -88,13 +88,13 @@ public class Skill_Arrest extends StdSkill
 		if(target==null) return false;
 		if((mob==target)&&(!auto))
 		{
-			mob.tell(_("You can not arrest yourself."));
+			mob.tell(L("You can not arrest yourself."));
 			return false;
 		}
 
 		if(Skill_Arrest.getWarrantsOf(target, CMLib.law().getLegalObject(mob.location().getArea())).size()==0)
 		{
-			mob.tell(_("@x1 has no warrants out here.",target.name(mob)));
+			mob.tell(L("@x1 has no warrants out here.",target.name(mob)));
 			return false;
 		}
 
@@ -109,7 +109,7 @@ public class Skill_Arrest extends StdSkill
 		{
 			if(mob.baseWeight()<(target.baseWeight()-450))
 			{
-				mob.tell(_("@x1 is way to big for you!",target.name(mob)));
+				mob.tell(L("@x1 is way to big for you!",target.name(mob)));
 				return false;
 			}
 		}
@@ -139,11 +139,11 @@ public class Skill_Arrest extends StdSkill
 				A=CMClass.getAbility("Skill_HandCuff");
 				if(A!=null)	A.invoke(mob,target,true,0);
 				makePeace(mob.location(),mob,target);
-				mob.tell(_("You'll have to PULL @x1 to the judge now before he gets out of the cuffs.",target.charStats().himher()));
+				mob.tell(L("You'll have to PULL @x1 to the judge now before he gets out of the cuffs.",target.charStats().himher()));
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,_("<S-NAME> rear(s) back and attempt(s) to knock <T-NAMESELF> out, but fail(s)."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> rear(s) back and attempt(s) to knock <T-NAMESELF> out, but fail(s)."));
 
 		// return whether it worked
 		return success;

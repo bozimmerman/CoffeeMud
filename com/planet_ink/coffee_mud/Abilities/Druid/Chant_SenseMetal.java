@@ -38,9 +38,9 @@ import java.util.*;
 public class Chant_SenseMetal extends Chant
 {
 	@Override public String ID() { return "Chant_SenseMetal"; }
-	private final static String localizedName = CMLib.lang()._("Sense Metal");
+	private final static String localizedName = CMLib.lang().L("Sense Metal");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Sensing Metal)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Sensing Metal)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
@@ -54,7 +54,7 @@ public class Chant_SenseMetal extends Chant
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("Your senses are no longer tuned to metals."));
+			mob.tell(L("Your senses are no longer tuned to metals."));
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class Chant_SenseMetal extends Chant
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 		&&(((((Room)msg.target()).myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
 		   ||((((Room)msg.target()).myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL)))
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,_("You sense metals strongly in the earth here."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,L("You sense metals strongly in the earth here."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 		super.executeMsg(host,msg);
 	}
 
@@ -87,14 +87,14 @@ public class Chant_SenseMetal extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already sensing metals."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already sensing metals."));
 			return false;
 		}
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) metallic senses!"):_("^S<S-NAME> chant(s) softly, attaining metallic senses!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> gain(s) metallic senses!"):L("^S<S-NAME> chant(s) softly, attaining metallic senses!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -102,7 +102,7 @@ public class Chant_SenseMetal extends Chant
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) softly, but nothing happens."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> chant(s) softly, but nothing happens."));
 
 		return success;
 	}

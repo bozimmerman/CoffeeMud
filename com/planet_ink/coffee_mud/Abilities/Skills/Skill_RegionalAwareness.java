@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_RegionalAwareness extends StdSkill
 {
 	@Override public String ID() { return "Skill_RegionalAwareness"; }
-	private final static String localizedName = CMLib.lang()._("Regional Awareness");
+	private final static String localizedName = CMLib.lang().L("Regional Awareness");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
@@ -214,14 +214,14 @@ public class Skill_RegionalAwareness extends StdSkill
 
 		if((!auto)&&((mob.location().domainType()&Room.INDOORS)==Room.INDOORS))
 		{
-			mob.tell(_("This only works outdoors."));
+			mob.tell(L("This only works outdoors."));
 			return false;
 		}
 
 		if((!auto)
 		&&(!CMLib.flags().canBeSeenBy(mob.location(),mob)))
 		{
-			mob.tell(_("You need to be able to see your surroundings to do that."));
+			mob.tell(L("You need to be able to see your surroundings to do that."));
 			return false;
 		}
 
@@ -231,7 +231,7 @@ public class Skill_RegionalAwareness extends StdSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_LOOK,auto?"":_("<S-NAME> peer(s) at the horizon with a distant expression."));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_LOOK,auto?"":L("<S-NAME> peer(s) at the horizon with a distant expression."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -242,7 +242,7 @@ public class Skill_RegionalAwareness extends StdSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> peer(s) around distantly, looking frustrated."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> peer(s) around distantly, looking frustrated."));
 		return success;
 	}
 }

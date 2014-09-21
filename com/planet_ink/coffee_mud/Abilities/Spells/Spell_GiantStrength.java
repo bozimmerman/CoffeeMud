@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_GiantStrength extends Spell
 {
 	@Override public String ID() { return "Spell_GiantStrength"; }
-	private final static String localizedName = CMLib.lang()._("Giant Strength");
+	private final static String localizedName = CMLib.lang().L("Giant Strength");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Giant-Strength spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Giant-Strength spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -81,7 +81,7 @@ public class Spell_GiantStrength extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> muscles shrink back to their normal size."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> muscles shrink back to their normal size."));
 	}
 
 	@Override
@@ -107,16 +107,16 @@ public class Spell_GiantStrength extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> cast(s) a spell on <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> cast(s) a spell on <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> grow(s) huge muscles!"));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> grow(s) huge muscles!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> speak(s) strongly to <T-NAMESELF>, but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> speak(s) strongly to <T-NAMESELF>, but nothing more happens."));
 
 
 		// return whether it worked

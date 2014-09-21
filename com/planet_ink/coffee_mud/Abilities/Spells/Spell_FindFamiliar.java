@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_FindFamiliar extends Spell
 {
 	@Override public String ID() { return "Spell_FindFamiliar"; }
-	private final static String localizedName = CMLib.lang()._("Find Familiar");
+	private final static String localizedName = CMLib.lang().L("Find Familiar");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Find Familiar)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Find Familiar)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -74,7 +74,7 @@ public class Spell_FindFamiliar extends Spell
 	{
 		if((mob.numFollowers()>0)||(mob.isMonster()))
 		{
-			mob.tell(_("You cannot have any followers when casting this spell."));
+			mob.tell(L("You cannot have any followers when casting this spell."));
 			return false;
 		}
 
@@ -83,14 +83,14 @@ public class Spell_FindFamiliar extends Spell
 
 		final int experienceToLose=getXPCOSTAdjustment(mob,100);
 		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
-		mob.tell(_("The effort causes you to lose @x1 experience.",""+experienceToLose));
+		mob.tell(L("The effort causes you to lose @x1 experience.",""+experienceToLose));
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> call(s) for a familiar.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> call(s) for a familiar.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -99,11 +99,11 @@ public class Spell_FindFamiliar extends Spell
 				CMLib.commands().postFollow(target,mob,true);
 				invoker=mob;
 				if(target.amFollowing()!=mob)
-					mob.tell(_("@x1 seems unwilling to follow you.",target.name(mob)));
+					mob.tell(L("@x1 seems unwilling to follow you.",target.name(mob)));
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> call(s), but choke(s) on the words."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> call(s), but choke(s) on the words."));
 
 		// return whether it worked
 		return success;
@@ -120,65 +120,65 @@ public class Spell_FindFamiliar extends Spell
 		switch(choice)
 		{
 		case 0:
-			newMOB.setName(_("a dog"));
-			newMOB.setDisplayText(_("a dog is sniffing around here"));
-			newMOB.setDescription(_("She looks like a nice loyal companion."));
+			newMOB.setName(L("a dog"));
+			newMOB.setDisplayText(L("a dog is sniffing around here"));
+			newMOB.setDescription(L("She looks like a nice loyal companion."));
 			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'F');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Dog"));
 			break;
 		case 1:
-			newMOB.setName(_("a turtle"));
-			newMOB.setDisplayText(_("a turtle is crawling around here"));
-			newMOB.setDescription(_("Not very fast, but pretty cute."));
+			newMOB.setName(L("a turtle"));
+			newMOB.setDisplayText(L("a turtle is crawling around here"));
+			newMOB.setDescription(L("Not very fast, but pretty cute."));
 			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'F');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Turtle"));
 			break;
 		case 2:
-			newMOB.setName(_("a cat"));
-			newMOB.setDisplayText(_("a cat is prowling around here"));
-			newMOB.setDescription(_("She looks busy ignoring you."));
+			newMOB.setName(L("a cat"));
+			newMOB.setDisplayText(L("a cat is prowling around here"));
+			newMOB.setDescription(L("She looks busy ignoring you."));
 			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'F');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Cat"));
 			break;
 		case 3:
-			newMOB.setName(_("a bat"));
-			newMOB.setDisplayText(_("a bat is flying around here"));
-			newMOB.setDescription(_("The darn thing just won`t stay still!"));
+			newMOB.setName(L("a bat"));
+			newMOB.setDisplayText(L("a bat is flying around here"));
+			newMOB.setDescription(L("The darn thing just won`t stay still!"));
 			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Bat"));
 			break;
 		case 4:
-			newMOB.setName(_("a rat"));
-			newMOB.setDisplayText(_("a rat scurries nearby"));
-			newMOB.setDescription(_("Such a cute, furry little guy!"));
+			newMOB.setName(L("a rat"));
+			newMOB.setDisplayText(L("a rat scurries nearby"));
+			newMOB.setDescription(L("Such a cute, furry little guy!"));
 			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Rodent"));
 			break;
 		case 5:
-			newMOB.setName(_("a snake"));
-			newMOB.setDisplayText(_("a snake is slithering around"));
-			newMOB.setDescription(_("..red on yellow..., how did that go again?"));
+			newMOB.setName(L("a snake"));
+			newMOB.setDisplayText(L("a snake is slithering around"));
+			newMOB.setDescription(L("..red on yellow..., how did that go again?"));
 			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Snake"));
 			break;
 		case 6:
-			newMOB.setName(_("an owl"));
-			newMOB.setDisplayText(_("an owl is flying around here"));
-			newMOB.setDescription(_("He looks wise beyond his years."));
+			newMOB.setName(L("an owl"));
+			newMOB.setDisplayText(L("an owl is flying around here"));
+			newMOB.setDescription(L("He looks wise beyond his years."));
 			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Owl"));
 			break;
 		case 7:
-			newMOB.setName(_("a rabbit"));
-			newMOB.setDisplayText(_("a cute little rabbit is watching you"));
-			newMOB.setDescription(_("Don`t blink, or she may twitch her nose."));
+			newMOB.setName(L("a rabbit"));
+			newMOB.setDisplayText(L("a cute little rabbit is watching you"));
+			newMOB.setDescription(L("Don`t blink, or she may twitch her nose."));
 			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'F');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Rabbit"));
 			break;
 		case 8:
-			newMOB.setName(_("a raven"));
-			newMOB.setDisplayText(_("a raven is pearched nearby"));
-			newMOB.setDescription(_("You think he`s watching you."));
+			newMOB.setName(L("a raven"));
+			newMOB.setDisplayText(L("a raven is pearched nearby"));
+			newMOB.setDescription(L("You think he`s watching you."));
 			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Raven"));
 			break;
@@ -203,7 +203,7 @@ public class Spell_FindFamiliar extends Spell
 		newMOB.text();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 		caster.location().recoverRoomStats();
 		return(newMOB);
 

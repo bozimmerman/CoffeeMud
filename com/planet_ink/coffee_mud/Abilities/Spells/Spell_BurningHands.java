@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_BurningHands extends Spell
 {
 	@Override public String ID() { return "Spell_BurningHands"; }
-	private final static String localizedName = CMLib.lang()._("Burning Hands");
+	private final static String localizedName = CMLib.lang().L("Burning Hands");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Burning Hands spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Burning Hands spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
@@ -66,7 +66,7 @@ public class Spell_BurningHands extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_HANDS|verbalCastCode(mob,target,auto),_((auto?"":"^S<S-NAME> incant(s) and reach(es) for <T-NAMESELF>.  ")+"A fan of flames erupts!^?")+CMLib.protocol().msp("fireball.wav",40));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_HANDS|verbalCastCode(mob,target,auto),L((auto?"":"^S<S-NAME> incant(s) and reach(es) for <T-NAMESELF>.  ")+"A fan of flames erupts!^?")+CMLib.protocol().msp("fireball.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_FIRE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
@@ -83,7 +83,7 @@ public class Spell_BurningHands extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) and reach(es) for <T-NAMESELF>, but flub(s) the spell."));
+			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) and reach(es) for <T-NAMESELF>, but flub(s) the spell."));
 
 
 		// return whether it worked

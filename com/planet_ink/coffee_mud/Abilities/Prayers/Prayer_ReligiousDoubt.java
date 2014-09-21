@@ -40,7 +40,7 @@ public class Prayer_ReligiousDoubt extends Prayer
 	public static final long DOUBT_TIME=TimeManager.MILI_HOUR;
 
 	@Override public String ID() { return "Prayer_ReligiousDoubt"; }
-	private final static String localizedName = CMLib.lang()._("Religious Doubt");
+	private final static String localizedName = CMLib.lang().L("Religious Doubt");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override
@@ -93,7 +93,7 @@ public class Prayer_ReligiousDoubt extends Prayer
 			&&(msg.tool() instanceof Ability)
 			&&(msg.tool().ID().equalsIgnoreCase("Skill_Convert")))
 			{
-				msg.source().tell((MOB)msg.target(),null,null,_("<S-NAME> is not interested in hearing your religious beliefs."));
+				msg.source().tell((MOB)msg.target(),null,null,L("<S-NAME> is not interested in hearing your religious beliefs."));
 				return false;
 			}
 		}
@@ -116,16 +116,16 @@ public class Prayer_ReligiousDoubt extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 for <T-NAMESELF>.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 for <T-NAMESELF>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> questioning <S-HIS-HER> faith, but does not seem convinced yet."));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> questioning <S-HIS-HER> faith, but does not seem convinced yet."));
 				beneficialAffect(mob,target,asLevel,(int)(DOUBT_TIME/CMProps.getTickMillis()));
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for <T-NAMESELF>, but the magic fades.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for <T-NAMESELF>, but the magic fades.",prayWord(mob)));
 
 
 		// return whether it worked

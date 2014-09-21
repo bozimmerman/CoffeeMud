@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_IceStorm extends Spell
 {
 	@Override public String ID() { return "Spell_IceStorm"; }
-	private final static String localizedName = CMLib.lang()._("Ice Storm");
+	private final static String localizedName = CMLib.lang().L("Ice Storm");
 	@Override public String name() { return localizedName; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
 	@Override public int minRange(){return 1;}
@@ -49,7 +49,7 @@ public class Spell_IceStorm extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth storming."));
+			mob.tell(L("There doesn't appear to be anyone here worth storming."));
 			return false;
 		}
 
@@ -64,7 +64,7 @@ public class Spell_IceStorm extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),_(auto?"A ferocious ice storm appears!":"^S<S-NAME> evoke(s) a ferocious ice storm!^?")+CMLib.protocol().msp("spelldam2.wav",40)))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"A ferocious ice storm appears!":"^S<S-NAME> evoke(s) a ferocious ice storm!^?")+CMLib.protocol().msp("spelldam2.wav",40)))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -92,7 +92,7 @@ public class Spell_IceStorm extends Spell
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> attempt(s) to evoke an ice storm, but the spell fizzles."));
+			return maliciousFizzle(mob,null,L("<S-NAME> attempt(s) to evoke an ice storm, but the spell fizzles."));
 
 		return success;
 	}

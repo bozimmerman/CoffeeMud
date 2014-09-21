@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_MountainTactics extends Fighter_FieldTactics
 {
 	@Override public String ID() { return "Fighter_MountainTactics"; }
-	private final static String localizedName = CMLib.lang()._("Mountain Tactics");
+	private final static String localizedName = CMLib.lang().L("Mountain Tactics");
 	@Override public String name() { return localizedName; }
 	private static final Integer[] landClasses = {Integer.valueOf(Room.DOMAIN_OUTDOORS_MOUNTAINS)};
 	@Override public Integer[] landClasses(){return landClasses;}

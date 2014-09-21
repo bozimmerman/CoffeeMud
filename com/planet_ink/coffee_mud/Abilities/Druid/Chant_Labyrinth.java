@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_Labyrinth extends Chant
 {
 	@Override public String ID() { return "Chant_Labyrinth"; }
-	private final static String localizedName = CMLib.lang()._("Labyrinth");
+	private final static String localizedName = CMLib.lang().L("Labyrinth");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Labyrinth)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Labyrinth)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -99,7 +99,7 @@ public class Chant_Labyrinth extends Chant
 	{
 		if(mob.location().roomID().length()==0)
 		{
-			mob.tell(_("You cannot invoke the labyrinth here."));
+			mob.tell(L("You cannot invoke the labyrinth here."));
 			return false;
 		}
 
@@ -119,16 +119,16 @@ public class Chant_Labyrinth extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto), auto?"":_("^S<S-NAME> chant(s) twistedly!^?"));
+			final CMMsg msg = CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto), auto?"":L("^S<S-NAME> chant(s) twistedly!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("Something is happening..."));
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("Something is happening..."));
 
 				final Room newRoom=CMClass.getLocale("CaveMaze");
 				((GridLocale)newRoom).setXGridSize(10);
 				((GridLocale)newRoom).setYGridSize(10);
-				newRoom.setDisplayText(_("The Labyrinth"));
+				newRoom.setDisplayText(L("The Labyrinth"));
 				newRoom.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));
 				final StringBuffer desc=new StringBuffer("");
 				desc.append("You are lost in dark twisting caverns.  The darkness covers you like a blanket. Every turn looks the same.");
@@ -159,8 +159,8 @@ public class Chant_Labyrinth extends Chant
 					final MOB follower=(MOB)everyone.elementAt(m);
 					if(follower==null) continue;
 					final Room newerRoom=((GridLocale)newRoom).getRandomGridChild();
-					final CMMsg enterMsg=CMClass.getMsg(follower,newerRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> appears out of thin air."));
-					final CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,verbalCastCode(mob,oldRoom,auto),_("<S-NAME> disappear(s) into the labyrinth."));
+					final CMMsg enterMsg=CMClass.getMsg(follower,newerRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> appears out of thin air."));
+					final CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,verbalCastCode(mob,oldRoom,auto),L("<S-NAME> disappear(s) into the labyrinth."));
 					if(oldRoom.okMessage(follower,leaveMsg)&&newerRoom.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())
@@ -168,14 +168,14 @@ public class Chant_Labyrinth extends Chant
 						oldRoom.send(follower,leaveMsg);
 						newerRoom.bringMobHere(follower,false);
 						newerRoom.send(follower,enterMsg);
-						follower.tell(_("\n\r\n\r"));
+						follower.tell(L("\n\r\n\r"));
 						CMLib.commands().postLook(follower,true);
 					}
 				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) twistedly, but the magic fades."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) twistedly, but the magic fades."));
 
 		// return whether it worked
 		return success;

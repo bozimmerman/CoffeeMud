@@ -36,9 +36,9 @@ import java.util.*;
 public class Prayer_InfuseUnholiness extends Prayer
 {
 	@Override public String ID() { return "Prayer_InfuseUnholiness"; }
-	private final static String localizedName = CMLib.lang()._("Infuse Unholiness");
+	private final static String localizedName = CMLib.lang().L("Infuse Unholiness");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Infused Unholiness)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Infused Unholiness)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}
@@ -66,7 +66,7 @@ public class Prayer_InfuseUnholiness extends Prayer
 			return;
 		if(canBeUninvoked())
 			if(affected instanceof MOB)
-				((MOB)affected).tell(_("Your infused unholiness fades."));
+				((MOB)affected).tell(L("Your infused unholiness fades."));
 
 		super.unInvoke();
 
@@ -82,7 +82,7 @@ public class Prayer_InfuseUnholiness extends Prayer
 		{
 			if(msg.source().getWorshipCharID().equalsIgnoreCase(((MOB)msg.target()).getWorshipCharID()))
 			{
-				msg.source().tell(_("Not right now -- you're in a service."));
+				msg.source().tell(L("Not right now -- you're in a service."));
 				msg.source().makePeace();
 				((MOB)msg.target()).makePeace();
 				return false;
@@ -90,7 +90,7 @@ public class Prayer_InfuseUnholiness extends Prayer
 		}
 		if((msg.sourceMinor() == CMMsg.TYP_LEAVE)&&(msg.source().isMonster()))
 		{
-			msg.source().tell(_("Not right now -- you're in a service."));
+			msg.source().tell(L("Not right now -- you're in a service."));
 			return false;
 		}
 		return super.okMessage(myHost, msg);
@@ -125,9 +125,9 @@ public class Prayer_InfuseUnholiness extends Prayer
 
 			if(target instanceof Room) D=CMLib.law().getClericInfused((Room)target);
 			if(D!=null)
-				mob.tell(_("There is already an infused aura of @x1 around @x2.",D.Name(),target.name(mob)));
+				mob.tell(L("There is already an infused aura of @x1 around @x2.",D.Name(),target.name(mob)));
 			else
-				mob.tell(_("There is already an infused aura around @x1.",target.name(mob)));
+				mob.tell(L("There is already an infused aura around @x1.",target.name(mob)));
 			return false;
 		}
 
@@ -136,7 +136,7 @@ public class Prayer_InfuseUnholiness extends Prayer
 		{
 			if(D==null)
 			{
-				mob.tell(_("The faithless may not infuse unholiness in a room."));
+				mob.tell(L("The faithless may not infuse unholiness in a room."));
 				return false;
 			}
 			final Area A=mob.location().getArea();
@@ -146,7 +146,7 @@ public class Prayer_InfuseUnholiness extends Prayer
 				R=(Room)e.nextElement();
 				if(CMLib.law().getClericInfused((Room)target)==D)
 				{
-					mob.tell(_("There is already an unholy place of @x1 in this area at @x2.",D.Name(),R.displayText(mob)));
+					mob.tell(L("There is already an unholy place of @x1 in this area at @x2.",D.Name(),R.displayText(mob)));
 					return false;
 				}
 			}
@@ -159,7 +159,7 @@ public class Prayer_InfuseUnholiness extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("An unholy aura appears around <T-NAME>."):_("^S<S-NAME> @x1 to infuse an unholy aura around <T-NAMESELF>.^?",prayForWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("An unholy aura appears around <T-NAME>."):L("^S<S-NAME> @x1 to infuse an unholy aura around <T-NAMESELF>.^?",prayForWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -176,7 +176,7 @@ public class Prayer_InfuseUnholiness extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 to infuse an unholy aura in <T-NAMESELF>, but fail(s).",prayForWord(mob)));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 to infuse an unholy aura in <T-NAMESELF>, but fail(s).",prayForWord(mob)));
 
 		return success;
 	}

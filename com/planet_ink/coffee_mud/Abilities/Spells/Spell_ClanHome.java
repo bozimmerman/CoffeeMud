@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_ClanHome extends Spell
 {
 	@Override public String ID() { return "Spell_ClanHome"; }
-	private final static String localizedName = CMLib.lang()._("Clan Home");
+	private final static String localizedName = CMLib.lang().L("Clan Home");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
@@ -48,13 +48,13 @@ public class Spell_ClanHome extends Spell
 	{
 		if(!mob.clans().iterator().hasNext())
 		{
-			mob.tell(_("You aren't even a member of a clan."));
+			mob.tell(L("You aren't even a member of a clan."));
 			return false;
 		}
 		final Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.CLAN_BENEFITS);
 		if(clanPair==null)
 		{
-			mob.tell(_("You are not authorized to draw from the power of your clan."));
+			mob.tell(L("You are not authorized to draw from the power of your clan."));
 			return false;
 		}
 		final Clan C=clanPair.first;
@@ -62,17 +62,17 @@ public class Spell_ClanHome extends Spell
 		clanHomeRoom=CMLib.map().getRoom(C.getRecall());
 		if(clanHomeRoom==null)
 		{
-			mob.tell(_("Your clan does not have a clan home."));
+			mob.tell(L("Your clan does not have a clan home."));
 			return false;
 		}
 		if(!CMLib.flags().canAccess(mob,clanHomeRoom))
 		{
-			mob.tell(_("You can't use this magic to get there from here."));
+			mob.tell(L("You can't use this magic to get there from here."));
 			return false;
 		}
 		if(!CMLib.law().doesOwnThisProperty(C.clanID(),clanHomeRoom))
 		{
-			mob.tell(_("Your clan no longer owns that room."));
+			mob.tell(L("Your clan no longer owns that room."));
 			return false;
 		}
 
@@ -83,7 +83,7 @@ public class Spell_ClanHome extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|verbalCastCode(mob,mob,auto),_("^S<S-NAME> invoke(s) a teleportation spell.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|verbalCastCode(mob,mob,auto),L("^S<S-NAME> invoke(s) a teleportation spell.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -94,8 +94,8 @@ public class Spell_ClanHome extends Spell
 				for (final Object element : h)
 				{
 					final MOB follower=(MOB)element;
-					final CMMsg enterMsg=CMClass.getMsg(follower,clanHomeRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> appears in a puff of red smoke."));
-					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,_("<S-NAME> disappear(s) in a puff of red smoke."));
+					final CMMsg enterMsg=CMClass.getMsg(follower,clanHomeRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> appears in a puff of red smoke."));
+					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,L("<S-NAME> disappear(s) in a puff of red smoke."));
 					if(thisRoom.okMessage(follower,leaveMsg)&&clanHomeRoom.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())
@@ -106,7 +106,7 @@ public class Spell_ClanHome extends Spell
 						thisRoom.send(follower,leaveMsg);
 						clanHomeRoom.bringMobHere(follower,false);
 						clanHomeRoom.send(follower,enterMsg);
-						follower.tell(_("\n\r\n\r"));
+						follower.tell(L("\n\r\n\r"));
 						CMLib.commands().postLook(follower,true);
 					}
 				}
@@ -114,7 +114,7 @@ public class Spell_ClanHome extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to invoke transportation, but fizzle(s) the spell."));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to invoke transportation, but fizzle(s) the spell."));
 
 
 		// return whether it worked

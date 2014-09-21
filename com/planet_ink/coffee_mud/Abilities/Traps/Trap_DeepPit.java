@@ -34,7 +34,7 @@ import java.util.*;
 public class Trap_DeepPit extends Trap_RoomPit
 {
 	@Override public String ID() { return "Trap_DeepPit"; }
-	private final static String localizedName = CMLib.lang()._("deep pit");
+	private final static String localizedName = CMLib.lang().L("deep pit");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -45,10 +45,10 @@ public class Trap_DeepPit extends Trap_RoomPit
 	public void finishSpringing(MOB target)
 	{
 		if((!invoker().mayIFight(target))||(target.phyStats().weight()<5))
-			target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> float(s) gently into the pit!"));
+			target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> float(s) gently into the pit!"));
 		else
 		{
-			target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> hit(s) the pit floor with a THUMP!"));
+			target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> hit(s) the pit floor with a THUMP!"));
 			int damage=CMLib.dice().roll(trapLevel()+abilityCode(),15,1);
 			final int maxDamage = (int)Math.round(CMath.mul(target.baseState().getHitPoints(), .95));
 			if(damage >= maxDamage) damage=maxDamage;

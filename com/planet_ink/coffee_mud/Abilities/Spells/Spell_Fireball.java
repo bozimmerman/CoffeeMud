@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_Fireball extends Spell
 {
 	@Override public String ID() { return "Spell_Fireball"; }
-	private final static String localizedName = CMLib.lang()._("Fireball");
+	private final static String localizedName = CMLib.lang().L("Fireball");
 	@Override public String name() { return localizedName; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
 	@Override public int minRange(){return 1;}
@@ -63,7 +63,7 @@ public class Spell_Fireball extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),_(auto?"A huge fireball appears and blazes towards <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, shooting forth a blazing fireball!^?")+CMLib.protocol().msp("fireball.wav",40));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),L(auto?"A huge fireball appears and blazes towards <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, shooting forth a blazing fireball!^?")+CMLib.protocol().msp("fireball.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_FIRE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 			{
@@ -78,7 +78,7 @@ public class Spell_Fireball extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> point(s) at <T-NAMESELF>, but nothing more happens."));
+			return maliciousFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF>, but nothing more happens."));
 
 		return success;
 	}

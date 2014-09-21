@@ -50,34 +50,34 @@ public class Password extends StdCommand
 		if(sess!=null)
 		sess.prompt(new InputCallback(InputCallback.Type.PROMPT)
 		{
-			@Override public void showPrompt() { sess.promptPrint(_("Enter your old password : ")); }
+			@Override public void showPrompt() { sess.promptPrint(L("Enter your old password : ")); }
 			@Override public void timedOut() { }
 			@Override public void callBack()
 			{
 				final String old=this.input;
 				sess.prompt(new InputCallback(InputCallback.Type.PROMPT)
 				{
-					@Override public void showPrompt() { sess.promptPrint(_("Enter a new password    : ")); }
+					@Override public void showPrompt() { sess.promptPrint(L("Enter a new password    : ")); }
 					@Override public void timedOut() { }
 					@Override public void callBack()
 					{
 						final String nep=this.input;
 						sess.prompt(new InputCallback(InputCallback.Type.PROMPT)
 						{
-							@Override public void showPrompt() { sess.promptPrint(_("Enter new password again: ")); }
+							@Override public void showPrompt() { sess.promptPrint(L("Enter new password again: ")); }
 							@Override public void timedOut() { }
 							@Override public void callBack()
 							{
 								final String ne2=this.input;
 								if(!pstats.matchesPassword(old))
-									mob.tell(_("Your old password was not entered correctly."));
+									mob.tell(L("Your old password was not entered correctly."));
 								else
 								if(!nep.equals(ne2))
-									mob.tell(_("Your new password was not entered the same way twice!"));
+									mob.tell(L("Your new password was not entered the same way twice!"));
 								else
 								{
 									pstats.setPassword(nep);
-									mob.tell(_("Your password has been changed."));
+									mob.tell(L("Your password has been changed."));
 									if(pstats.getAccount()!=null)
 										CMLib.database().DBUpdateAccount(pstats.getAccount());
 									CMLib.database().DBUpdatePassword(mob.Name(),pstats.getPasswordStr());

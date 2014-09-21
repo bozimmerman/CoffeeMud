@@ -36,12 +36,12 @@ import java.util.*;
 public class Prayer_ProtDisease extends Prayer
 {
 	@Override public String ID() { return "Prayer_ProtDisease"; }
-	private final static String localizedName = CMLib.lang()._("Protection Disease");
+	private final static String localizedName = CMLib.lang().L("Protection Disease");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Protection Disease)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Protection Disease)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -58,7 +58,7 @@ public class Prayer_ProtDisease extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your natural defences against disease take over."));
+			mob.tell(L("Your natural defences against disease take over."));
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class Prayer_ProtDisease extends Prayer
 			   &&(CMLib.dice().rollPercentage()>50)
 			   &&((msg.targetMinor()==CMMsg.TYP_DISEASE)))
 			{
-				msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> magically repell(s) the disease."));
+				msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> magically repell(s) the disease."));
 				return false;
 			}
 
@@ -100,7 +100,7 @@ public class Prayer_ProtDisease extends Prayer
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> protection from disease."));
+			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> protection from disease."));
 			return false;
 		}
 
@@ -115,7 +115,7 @@ public class Prayer_ProtDisease extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> attain(s) disease protection."):_("^S<S-NAME> @x1 for protection from diseases.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> attain(s) disease protection."):L("^S<S-NAME> @x1 for protection from diseases.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -123,7 +123,7 @@ public class Prayer_ProtDisease extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for protection from diseases, but go(es) unanswered.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for protection from diseases, but go(es) unanswered.",prayWord(mob)));
 
 
 		// return whether it worked

@@ -66,7 +66,7 @@ public class AutoInvoke extends StdCommand
 				effects.addElement(A.ID());
 		}
 
-		final StringBuffer str=new StringBuffer(_("^xAuto-invoking abilities:^?^.\n\r^N"));
+		final StringBuffer str=new StringBuffer(L("^xAuto-invoking abilities:^?^.\n\r^N"));
 		int col=0;
 		for(int a=0;a<abilities.size();a++)
 		{
@@ -74,9 +74,9 @@ public class AutoInvoke extends StdCommand
 			if(A!=null)
 			{
 				if(effects.contains(A.ID()))
-					str.append(_("@x1.^xACTIVE^?^.^N ",CMStrings.padRightWith(A.Name(),'.',30)));
+					str.append(L("@x1.^xACTIVE^?^.^N ",CMStrings.padRightWith(A.Name(),'.',30)));
 				else
-					str.append(_("@x1^xINACTIVE^?^.^N",CMStrings.padRightWith(A.Name(),'.',30)));
+					str.append(L("@x1^xINACTIVE^?^.^N",CMStrings.padRightWith(A.Name(),'.',30)));
 				if(++col==2)
 				{
 					col=0;
@@ -95,7 +95,7 @@ public class AutoInvoke extends StdCommand
 		{
 			session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 			{
-				@Override public void showPrompt() { session.promptPrint(_("Enter one to toggle or RETURN: "));}
+				@Override public void showPrompt() { session.promptPrint(L("Enter one to toggle or RETURN: "));}
 				@Override public void timedOut() { }
 				@Override public void callBack()
 				{
@@ -117,7 +117,7 @@ public class AutoInvoke extends StdCommand
 							{ foundA=A; break;}
 						}
 						if(foundA==null)
-							mob.tell(_("'@x1' is invalid.",s));
+							mob.tell(L("'@x1' is invalid.",s));
 						else
 						if(effects.contains(foundA.ID()))
 						{
@@ -126,18 +126,18 @@ public class AutoInvoke extends StdCommand
 							{
 								mob.delEffect(foundA);
 								if(mob.fetchEffect(foundA.ID())!=null)
-									mob.tell(_("@x1 failed to successfully deactivate.",foundA.name()));
+									mob.tell(L("@x1 failed to successfully deactivate.",foundA.name()));
 								else
-									mob.tell(_("@x1 successfully deactivated.",foundA.name()));
+									mob.tell(L("@x1 successfully deactivated.",foundA.name()));
 							}
 						}
 						else
 						{
 							foundA.autoInvocation(mob);
 							if(mob.fetchEffect(foundA.ID())!=null)
-								mob.tell(_("@x1 successfully invoked.",foundA.name()));
+								mob.tell(L("@x1 successfully invoked.",foundA.name()));
 							else
-								mob.tell(_("@x1 failed to successfully invoke.",foundA.name()));
+								mob.tell(L("@x1 failed to successfully invoke.",foundA.name()));
 						}
 					}
 				}

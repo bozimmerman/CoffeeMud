@@ -46,14 +46,14 @@ public class As extends StdCommand
 		commands.removeElementAt(0);
 		if(commands.size()<2)
 		{
-			mob.tell(_("As whom do what?"));
+			mob.tell(L("As whom do what?"));
 			return false;
 		}
 		final String cmd=(String)commands.firstElement();
 		commands.removeElementAt(0);
 		if((!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AS))||(mob.isMonster()))
 		{
-			mob.tell(_("You aren't powerful enough to do that."));
+			mob.tell(L("You aren't powerful enough to do that."));
 			return false;
 		}
 		final Session mySession=mob.session();
@@ -72,24 +72,24 @@ public class As extends StdCommand
 		}
 		if(M==null)
 		{
-			mob.tell(_("You don't know of anyone by that name."));
+			mob.tell(L("You don't know of anyone by that name."));
 			return false;
 		}
 		if(M.soulMate()!=null)
 		{
-			mob.tell(_("@x1 is being possessed at the moment.",M.Name()));
+			mob.tell(L("@x1 is being possessed at the moment.",M.Name()));
 			return false;
 		}
 		if((CMSecurity.isASysOp(M))&&(!CMSecurity.isASysOp(mob)))
 		{
-			mob.tell(_("You aren't powerful enough to do that."));
+			mob.tell(L("You aren't powerful enough to do that."));
 			return false;
 		}
 		if(!M.isMonster())
 		{
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ORDER))
 			{
-				mob.tell(_("You can't do things as players if you can't order them."));
+				mob.tell(L("You can't do things as players if you can't order them."));
 				return false;
 			}
 		}

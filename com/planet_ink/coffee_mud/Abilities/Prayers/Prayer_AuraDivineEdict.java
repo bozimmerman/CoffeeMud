@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_AuraDivineEdict extends Prayer
 {
 	@Override public String ID() { return "Prayer_AuraDivineEdict"; }
-	private final static String localizedName = CMLib.lang()._("Aura of the Divine Edict");
+	private final static String localizedName = CMLib.lang().L("Aura of the Divine Edict");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Edict Aura)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Edict Aura)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -62,7 +62,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(mob.location()!=null)&&(!mob.amDead()))
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("The divine edict aura around <S-NAME> fades."));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("The divine edict aura around <S-NAME> fades."));
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 		if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS)
 		   ||CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		{
-			msg.source().tell(_("@x1 DEMANDS NO FIGHTING!",godName));
+			msg.source().tell(L("@x1 DEMANDS NO FIGHTING!",godName));
 			msg.source().makePeace();
 			return false;
 		}
@@ -97,7 +97,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 			   ||CMClass.classID(O).equalsIgnoreCase("SELL")
 			   ||CMClass.classID(O).equalsIgnoreCase("GIVE")))
 			{
-			   msg.source().tell(_("The divine care not about such orders."));
+			   msg.source().tell(L("The divine care not about such orders."));
 			   return false;
 			}
 			noRecurse=true;
@@ -128,7 +128,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 			final MOB M=R.fetchInhabitant(i);
 			if((M!=null)&&(M.isInCombat()))
 			{
-				M.tell(_("@x1 DEMANDS NO FIGHTING!",invoker().getWorshipCharID().toUpperCase()));
+				M.tell(L("@x1 DEMANDS NO FIGHTING!",invoker().getWorshipCharID().toUpperCase()));
 				M.makePeace();
 			}
 		}
@@ -155,7 +155,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("The aura of the divine edict is already with <S-NAME>."));
+			mob.tell(target,null,null,L("The aura of the divine edict is already with <S-NAME>."));
 			return false;
 		}
 
@@ -170,7 +170,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 for the aura of the divine edict.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 for the aura of the divine edict.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -181,7 +181,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for an aura of divine edict, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for an aura of divine edict, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
 
 
 		// return whether it worked

@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_WaterBreathing extends Spell
 {
 	@Override public String ID() { return "Spell_WaterBreathing"; }
-	private final static String localizedName = CMLib.lang()._("Water Breathing");
+	private final static String localizedName = CMLib.lang().L("Water Breathing");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Water Breathing)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Water Breathing)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -57,7 +57,7 @@ public class Spell_WaterBreathing extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> ability to breathe underwater fades."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> ability to breathe underwater fades."));
 	}
 
 	@Override
@@ -90,16 +90,16 @@ public class Spell_WaterBreathing extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> whistle(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> whistle(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> attain(s) an aquatic aura!"));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> attain(s) an aquatic aura!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> whistle(s) to <T-NAMESELF>, but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> whistle(s) to <T-NAMESELF>, but nothing happens."));
 
 		return success;
 	}

@@ -38,9 +38,9 @@ import java.util.*;
 public class Chant_ChargeMetal extends Chant
 {
 	@Override public String ID() { return "Chant_ChargeMetal"; }
-	private final static String localizedName = CMLib.lang()._("Charge Metal");
+	private final static String localizedName = CMLib.lang().L("Charge Metal");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Charged)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Charged)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -102,7 +102,7 @@ public class Chant_ChargeMetal extends Chant
 		&&((lastMsg==null)||(lastMsg.get()!=msg)))
 		{
 			lastMsg=new WeakReference<CMMsg>(msg);
-			msg.source().location().show(mob,null,I,CMMsg.MSG_OK_VISUAL,_("<O-NAME> attracts a charge to <S-NAME>!"));
+			msg.source().location().show(mob,null,I,CMMsg.MSG_OK_VISUAL,L("<O-NAME> attracts a charge to <S-NAME>!"));
 			if(mob.okMessage(mob, msg))
 				msg.modify(msg.source(),
 							mob,
@@ -175,7 +175,7 @@ public class Chant_ChargeMetal extends Chant
 		else
 		if(target instanceof Item)
 		{
-			mob.tell(_("@x1 is not made of metal!",target.name(mob)));
+			mob.tell(L("@x1 is not made of metal!",target.name(mob)));
 			return false;
 		}
 		// the invoke method for spells receives as
@@ -194,7 +194,7 @@ public class Chant_ChargeMetal extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) upon <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) upon <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -203,7 +203,7 @@ public class Chant_ChargeMetal extends Chant
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens."));
 
 		// return whether it worked
 		return success;

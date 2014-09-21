@@ -42,9 +42,9 @@ public class IMC2 extends StdCommand
 	public void IMC2Error(MOB mob)
 	{
 		if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMC2))
-			mob.tell(_("Try IMC2 LIST, IMC2 INFO [MUD], IMC2 LOCATE, IMC2 RESTART, or IMC2 CHANNELS."));
+			mob.tell(L("Try IMC2 LIST, IMC2 INFO [MUD], IMC2 LOCATE, IMC2 RESTART, or IMC2 CHANNELS."));
 		else
-			mob.tell(_("Try IMC2 LIST, IMC2 INFO [MUD], IMC2 LOCATE"));
+			mob.tell(L("Try IMC2 LIST, IMC2 INFO [MUD], IMC2 LOCATE"));
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class IMC2 extends StdCommand
 	{
 		if(!(CMLib.intermud().imc2online()))
 		{
-			mob.tell(_("IMC2 is unavailable."));
+			mob.tell(L("IMC2 is unavailable."));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -64,7 +64,7 @@ public class IMC2 extends StdCommand
 		}
 		final String str=(String)commands.firstElement();
 		if(!(CMLib.intermud().imc2online()))
-			mob.tell(_("IMC2 is unavailable."));
+			mob.tell(L("IMC2 is unavailable."));
 		else
 		if(str.equalsIgnoreCase("list"))
 			CMLib.intermud().giveIMC2MudList(mob);

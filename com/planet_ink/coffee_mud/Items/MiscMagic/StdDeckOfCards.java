@@ -74,7 +74,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 	{
 		super();
 		name="A deck of cards";
-		displayText=_("A deck of cards has been left here.");
+		displayText=L("A deck of cards has been left here.");
 		secretIdentity="A magical deck of cards.  Say \"Shuffle\" to me.";
 		recoverPhyStats();
 	}
@@ -286,13 +286,13 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 		&&(msg.targetMessage().toUpperCase().indexOf("SHUFFLE")>0))
 		{
 			if(!shuffleDeck())
-				msg.source().tell(_("There are no cards left in the deck"));
+				msg.source().tell(L("There are no cards left in the deck"));
 			else
 			{
 				final Room R=CMLib.map().roomLocation(this);
 				if(R!=null)
 					R.show(msg.source(),null,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_QUIETMOVEMENT,
-							_("<S-NAME> <S-HAS-HAVE> thoroughly shuffled <O-NAMESELF>."));
+							L("<S-NAME> <S-HAS-HAVE> thoroughly shuffled <O-NAMESELF>."));
 			}
 			return false;
 		}

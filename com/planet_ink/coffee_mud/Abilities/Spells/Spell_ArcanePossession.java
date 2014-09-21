@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_ArcanePossession extends Spell
 {
 	@Override public String ID() { return "Spell_ArcanePossession"; }
-	private final static String localizedName = CMLib.lang()._("Arcane Possession");
+	private final static String localizedName = CMLib.lang().L("Arcane Possession");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
@@ -63,7 +63,7 @@ public class Spell_ArcanePossession extends Spell
 		   ||(msg.targetMinor()==CMMsg.TYP_WIELD))
 		&&(msg.source()!=owner))
 		{
-			msg.source().location().show(msg.source(),null,affected,CMMsg.MSG_OK_ACTION,_("<O-NAME> flashes and flies out of <S-HIS-HER> hands!"));
+			msg.source().location().show(msg.source(),null,affected,CMMsg.MSG_OK_ACTION,L("<O-NAME> flashes and flies out of <S-HIS-HER> hands!"));
 			CMLib.commands().postDrop(msg.source(),affected,true,false,false);
 			return false;
 		}
@@ -97,11 +97,11 @@ public class Spell_ArcanePossession extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> hold(s) a <T-NAMESELF> tightly and cast(s) a spell.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> hold(s) a <T-NAMESELF> tightly and cast(s) a spell.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> glows slightly!"));
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glows slightly!"));
 				setMiscText(mob.Name());
 				beneficialAffect(mob,target,asLevel,0);
 				target.recoverPhyStats();
@@ -110,7 +110,7 @@ public class Spell_ArcanePossession extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> hold(s) <T-NAMESELF> tightly and whisper(s), but fail(s) to cast a spell."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> hold(s) <T-NAMESELF> tightly and whisper(s), but fail(s) to cast a spell."));
 
 
 		// return whether it worked

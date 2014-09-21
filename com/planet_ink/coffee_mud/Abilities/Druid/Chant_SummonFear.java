@@ -36,9 +36,9 @@ import java.util.*;
 public class Chant_SummonFear extends Chant
 {
 	@Override public String ID() { return "Chant_SummonFear"; }
-	private final static String localizedName = CMLib.lang()._("Summon Fear");
+	private final static String localizedName = CMLib.lang().L("Summon Fear");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Afraid)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Afraid)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -62,7 +62,7 @@ public class Chant_SummonFear extends Chant
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth scaring."));
+			mob.tell(L("There doesn't appear to be anyone here worth scaring."));
 			return false;
 		}
 
@@ -85,7 +85,7 @@ public class Chant_SummonFear extends Chant
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("^S<S-NAME> frighten(s) <T-NAMESELF> with <S-HIS-HER> chant.^?"));
+				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> frighten(s) <T-NAMESELF> with <S-HIS-HER> chant.^?"));
 				final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_MIND,null);
 				if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 				{
@@ -103,7 +103,7 @@ public class Chant_SummonFear extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) in a frightening way, but the magic fades."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) in a frightening way, but the magic fades."));
 
 
 		// return whether it worked

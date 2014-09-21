@@ -98,11 +98,11 @@ public class Spell_StoreSpell extends Spell
 					A=CMClass.getAbility(text().substring(0,x));
 				}
 				if(A==null)
-					mob.tell(_("Something seems wrong with @x1.",me.name()));
+					mob.tell(L("Something seems wrong with @x1.",me.name()));
 				else
 				if(charges<=0)
 				{
-					mob.tell(_("@x1 seems spent.",me.name()));
+					mob.tell(L("@x1 seems spent.",me.name()));
 					me.delEffect(this);
 				}
 				else
@@ -113,7 +113,7 @@ public class Spell_StoreSpell extends Spell
 					if(target!=null)
 						V.addElement(target.name());
 					V.addElement(message);
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("@x1 glows brightly.",me.name()));
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly.",me.name()));
 					A.invoke(mob, V, target, true,0);
 				}
 			}
@@ -164,18 +164,18 @@ public class Spell_StoreSpell extends Spell
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("Store which spell onto what?"));
+			mob.tell(L("Store which spell onto what?"));
 			return false;
 		}
 		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",((String)commands.lastElement())));
+			mob.tell(L("You don't see '@x1' here.",((String)commands.lastElement())));
 			return false;
 		}
 		if(!(target instanceof Item))
 		{
-			mob.tell(_("You can't enchant '@x1'.",target.name(mob)));
+			mob.tell(L("You can't enchant '@x1'.",target.name(mob)));
 			return false;
 		}
 
@@ -197,19 +197,19 @@ public class Spell_StoreSpell extends Spell
 		}
 		if(wandThis==null)
 		{
-			mob.tell(_("You don't know how to enchant anything with '@x1'.",spellName));
+			mob.tell(L("You don't know how to enchant anything with '@x1'.",spellName));
 			return false;
 		}
 		if((CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())>24)
 		||(((StdAbility)wandThis).usageCost(null,true)[0]>45))
 		{
-			mob.tell(_("That spell is too powerful to store."));
+			mob.tell(L("That spell is too powerful to store."));
 			return false;
 		}
 		Ability A=item.fetchEffect(ID());
 		if((A!=null)&&(A.text().length()>0)&&(!A.text().startsWith(wandThis.ID()+"/")))
 		{
-			mob.tell(_("'@x1' already has a different spell stored in it.",item.name()));
+			mob.tell(L("'@x1' already has a different spell stored in it.",item.name()));
 			return false;
 		}
 		else
@@ -237,7 +237,7 @@ public class Spell_StoreSpell extends Spell
 		if(success)
 		{
 			setMiscText(wandThis.ID());
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -247,12 +247,12 @@ public class Spell_StoreSpell extends Spell
 					target.addNonUninvokableEffect(A);
 				}
 				A.setMiscText(wandThis.ID()+"/"+(charges+1));
-				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,_("<T-NAME> glow(s) softly."));
+				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glow(s) softly."));
 			}
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly, and looking very frustrated."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly, and looking very frustrated."));
 
 
 		// return whether it worked

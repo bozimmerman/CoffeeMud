@@ -37,9 +37,9 @@ public class Skill_Dirt extends StdSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Skill_Dirt"; }
-	private final static String localizedName = CMLib.lang()._("Dirt");
+	private final static String localizedName = CMLib.lang().L("Dirt");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Dirt in your eyes)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Dirt in your eyes)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -81,7 +81,7 @@ public class Skill_Dirt extends StdSkill
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("You can see again!"));
+			mob.tell(L("You can see again!"));
 	}
 
 	@Override
@@ -140,19 +140,19 @@ public class Skill_Dirt extends StdSkill
 		if(!hereOK(mob))
 		{
 			if(!auto)
-				mob.tell(_("There's no dirt here to kick!"));
+				mob.tell(L("There's no dirt here to kick!"));
 			return false;
 		}
 
 		if((!auto)&&(mob.charStats().getBodyPart(Race.BODY_FOOT)<=0))
 		{
-			mob.tell(_("You need feet to kick."));
+			mob.tell(L("You need feet to kick."));
 			return false;
 		}
 
 		if((!auto)&&(target.charStats().getBodyPart(Race.BODY_EYE)==0))
 		{
-			mob.tell(_("@x1 has no eyes, and would not be affected.",target.name(mob)));
+			mob.tell(L("@x1 has no eyes, and would not be affected.",target.name(mob)));
 			return false;
 		}
 
@@ -162,14 +162,14 @@ public class Skill_Dirt extends StdSkill
 			if(CMLib.flags().isSleeping(target))
 			{
 				if(!auto)
-					mob.tell(_("@x1 has @x2 eyes closed.",target.name(mob),target.charStats().hisher()));
+					mob.tell(L("@x1 has @x2 eyes closed.",target.name(mob),target.charStats().hisher()));
 				return false;
 			}
 		}
 
 		if((!auto)&&CMLib.flags().isFlying(mob))
 		{
-			mob.tell(_("You are too far from the ground to kick dirt."));
+			mob.tell(L("You are too far from the ground to kick dirt."));
 			return false;
 		}
 
@@ -180,17 +180,17 @@ public class Skill_Dirt extends StdSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?_("Dirt flies at <T-NAME>!"):_("^F^<FIGHT^><S-NAME> kick(s) dirt at <T-NAMESELF>.^</FIGHT^>^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?L("Dirt flies at <T-NAME>!"):L("^F^<FIGHT^><S-NAME> kick(s) dirt at <T-NAMESELF>.^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> blinded!"));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> blinded!"));
 				maliciousAffect(mob,target,asLevel,3+(getXLEVELLevel(mob)/3),-1);
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to kick dirt at <T-NAMESELF>, but miss(es)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to kick dirt at <T-NAMESELF>, but miss(es)."));
 		return success;
 	}
 }

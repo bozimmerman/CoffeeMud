@@ -847,9 +847,9 @@ public class StdArea implements Area
 				if(room!=null)
 				{
 					if(room.getArea()==this)
-						room.showHappens(CMMsg.MSG_OK_VISUAL,_("Magic doesn't seem to work here."));
+						room.showHappens(CMMsg.MSG_OK_VISUAL,L("Magic doesn't seem to work here."));
 					else
-						room.showHappens(CMMsg.MSG_OK_VISUAL,_("Magic doesn't seem to work there."));
+						room.showHappens(CMMsg.MSG_OK_VISUAL,L("Magic doesn't seem to work there."));
 				}
 
 				return false;
@@ -895,7 +895,7 @@ public class StdArea implements Area
 					&&(msg.source().location()!=null))
 						room=msg.source().location();
 					if(room!=null)
-						room.showHappens(CMMsg.MSG_OK_VISUAL,_("Technology doesn't seem to work here."));
+						room.showHappens(CMMsg.MSG_OK_VISUAL,L("Technology doesn't seem to work here."));
 					return false;
 				}
 				break;
@@ -1967,7 +1967,7 @@ public class StdArea implements Area
 		return true;
 	}
 
-	@Override public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+	@Override public String L(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 
 	@Override public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
 	protected static final String[] STDAREACODES={"CLASS",

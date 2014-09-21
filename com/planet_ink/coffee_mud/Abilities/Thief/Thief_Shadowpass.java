@@ -36,7 +36,7 @@ import java.util.Map.Entry;
 public class Thief_Shadowpass extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Shadowpass"; }
-	private final static String localizedName = CMLib.lang()._("Shadowpass");
+	private final static String localizedName = CMLib.lang().L("Shadowpass");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
@@ -53,7 +53,7 @@ public class Thief_Shadowpass extends ThiefSkill
 		Room R=mob.location();
 		if((!auto)&&(!CMLib.flags().isInDark(R))||(R==null))
 		{
-			mob.tell(_("You can only shadowpass from the shadows to the shadows."));
+			mob.tell(L("You can only shadowpass from the shadows to the shadows."));
 			return false;
 		}
 		final List<Integer> trail=new Vector<Integer>();
@@ -96,7 +96,7 @@ public class Thief_Shadowpass extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success && (mob.location()!=R))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,R,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,_("You begin the shadowpass ..."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,R,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,L("You begin the shadowpass ..."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if((mob.location().okMessage(mob,msg))&&(R!=null)&&(R.okMessage(mob,msg)))
 			{
 				mob.location().send(mob,msg);
@@ -111,7 +111,7 @@ public class Thief_Shadowpass extends ThiefSkill
 						if((!CMLib.tracking().walk(mob,dir,false,true,true))||(!CMLib.flags().isInDark(mob.location())))
 						{
 							CMLib.commands().postLook(mob,true);
-							return beneficialVisualFizzle(mob,null,_("<S-NAME> do(es) not know <S-HIS-HER> way through shadowpass."));
+							return beneficialVisualFizzle(mob,null,L("<S-NAME> do(es) not know <S-HIS-HER> way through shadowpass."));
 						}
 						CMLib.combat().expendEnergy(mob,true);
 					}
@@ -132,7 +132,7 @@ public class Thief_Shadowpass extends ThiefSkill
 			if((!CMLib.tracking().walk(mob,dir,false,true,true))||(!CMLib.flags().isInDark(mob.location())))
 			{
 				CMLib.commands().postLook(mob,true);
-				return beneficialVisualFizzle(mob,null,_("<S-NAME> lose(s) <S-HIS-HER> way through shadowpass."));
+				return beneficialVisualFizzle(mob,null,L("<S-NAME> lose(s) <S-HIS-HER> way through shadowpass."));
 			}
 			CMLib.combat().expendEnergy(mob,true);
 			CMLib.combat().expendEnergy(mob,true);

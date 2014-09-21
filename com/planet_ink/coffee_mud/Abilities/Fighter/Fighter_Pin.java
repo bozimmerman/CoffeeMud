@@ -37,7 +37,7 @@ import java.util.*;
 public class Fighter_Pin extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Pin"; }
-	private final static String localizedName = CMLib.lang()._("Pin");
+	private final static String localizedName = CMLib.lang().L("Pin");
 	@Override public String name() { return localizedName; }
 	@Override
 	public String displayText()
@@ -81,7 +81,7 @@ public class Fighter_Pin extends FighterSkill
 			||(msg.sourceMajor(CMMsg.MASK_MOVE)))
 			{
 				if(msg.sourceMessage()!=null)
-					mob.tell(_("You are pinned!"));
+					mob.tell(L("You are pinned!"));
 				return false;
 			}
 		}
@@ -130,16 +130,16 @@ public class Fighter_Pin extends FighterSkill
 				if(mob==invoker)
 				{
 					if(mob.location()!=null)
-						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> release(s) <S-HIS-HER> pin."));
+						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> release(s) <S-HIS-HER> pin."));
 					else
-						mob.tell(_("You release your pin."));
+						mob.tell(L("You release your pin."));
 				}
 				else
 				{
 					if(mob.location()!=null)
-						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> <S-IS-ARE> released from the pin"));
+						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> <S-IS-ARE> released from the pin"));
 					else
-						mob.tell(_("You are released from the pin."));
+						mob.tell(L("You are released from the pin."));
 				}
 				CMLib.commands().postStand(mob,true);
 			}
@@ -156,13 +156,13 @@ public class Fighter_Pin extends FighterSkill
 
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell(_("You are too far away from your target to pin them!"));
+			mob.tell(L("You are too far away from your target to pin them!"));
 			return false;
 		}
 
 		if((!auto)&&(mob.baseWeight()<(target.baseWeight()-200)))
 		{
-			mob.tell(_("@x1 is too big to pin!",target.name(mob)));
+			mob.tell(L("@x1 is too big to pin!",target.name(mob)));
 			return false;
 		}
 
@@ -189,7 +189,7 @@ public class Fighter_Pin extends FighterSkill
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?_("<T-NAME> get(s) pinned!"):_("^F^<FIGHT^><S-NAME> pin(s) <T-NAMESELF> to the floor!^</FIGHT^>^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?L("<T-NAME> get(s) pinned!"):L("^F^<FIGHT^><S-NAME> pin(s) <T-NAMESELF> to the floor!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -212,7 +212,7 @@ public class Fighter_Pin extends FighterSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to pin <T-NAMESELF>, but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to pin <T-NAMESELF>, but fail(s)."));
 
 		// return whether it worked
 		return success;

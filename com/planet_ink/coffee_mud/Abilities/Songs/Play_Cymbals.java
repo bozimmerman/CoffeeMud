@@ -34,7 +34,7 @@ import java.util.*;
 public class Play_Cymbals extends Play_Instrument
 {
 	@Override public String ID() { return "Play_Cymbals"; }
-	private final static String localizedName = CMLib.lang()._("Cymbals");
+	private final static String localizedName = CMLib.lang().L("Cymbals");
 	@Override public String name() { return localizedName; }
 	@Override protected int requiredInstrumentType(){return MusicalInstrument.TYPE_CYMBALS;}
 	@Override public String mimicSpell(){return "Spell_Knock";}
@@ -96,13 +96,13 @@ public class Play_Cymbals extends Play_Instrument
 					if(levelDiff<0) levelDiff=0;
 					if(proficiencyCheck(mob,-(levelDiff*25),false))
 					{
-						CMMsg msg=CMClass.getMsg(mob,P,this,CMMsg.MSG_CAST_VERBAL_SPELL,_("@x1 begin(s) to glow!",P.name()));
+						CMMsg msg=CMClass.getMsg(mob,P,this,CMMsg.MSG_CAST_VERBAL_SPELL,L("@x1 begin(s) to glow!",P.name()));
 						if(R.okMessage(mob,msg))
 						{
 							R.send(mob,msg);
 							msg=CMClass.getMsg(mob,P,null,CMMsg.MSG_UNLOCK,null);
 							CMLib.utensils().roomAffectFully(msg,R,dirCode);
-							msg=CMClass.getMsg(mob,P,null,CMMsg.MSG_OPEN,_("<T-NAME> opens."));
+							msg=CMClass.getMsg(mob,P,null,CMMsg.MSG_OPEN,L("<T-NAME> opens."));
 							CMLib.utensils().roomAffectFully(msg,R,dirCode);
 						}
 					}

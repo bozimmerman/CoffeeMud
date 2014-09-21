@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_SummonArmy extends Spell
 {
 	@Override public String ID() { return "Spell_SummonArmy"; }
-	private final static String localizedName = CMLib.lang()._("Summon Army");
+	private final static String localizedName = CMLib.lang().L("Summon Army");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Monster Summoning)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Monster Summoning)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
@@ -101,7 +101,7 @@ public class Spell_SummonArmy extends Spell
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> summon(s) help from the Java Plane.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> summon(s) help from the Java Plane.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -119,7 +119,7 @@ public class Spell_SummonArmy extends Spell
 					newMOB.resetToMaxState();
 					newMOB.bringToLife(mob.location(),true);
 					CMLib.beanCounter().clearZeroMoney(newMOB,null);
-					newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
+					newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 					newMOB.setStartRoom(null); // keep before postFollow for Conquest
 					newMOB.setVictim(mob.getVictim());
 					CMLib.commands().postFollow(newMOB,mob,true);
@@ -133,7 +133,7 @@ public class Spell_SummonArmy extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> call(s) for magical help, but chokes on the words."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> call(s) for magical help, but chokes on the words."));
 
 		// return whether it worked
 		return success;

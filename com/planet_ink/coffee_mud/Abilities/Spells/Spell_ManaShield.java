@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_ManaShield extends Spell
 {
 	@Override public String ID() { return "Spell_ManaShield"; }
-	private final static String localizedName = CMLib.lang()._("Mana Shield");
+	private final static String localizedName = CMLib.lang().L("Mana Shield");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Mana Shield)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Mana Shield)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -58,7 +58,7 @@ public class Spell_ManaShield extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("The mana shield around <S-NAME> fades."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("The mana shield around <S-NAME> fades."));
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class Spell_ManaShield extends Spell
 		}
 		if(oldOne)
 		{
-			mob.tell(mob,target,null,_("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));
+			mob.tell(mob,target,null,L("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));
 			return false;
 		}
 
@@ -114,16 +114,16 @@ public class Spell_ManaShield extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> invoke(s)@x1 protective shield.^?",adjective()));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> invoke(s)@x1 protective shield.^?",adjective()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("@x1 protective aura of mana surrounds <T-NAME>.",CMStrings.capitalizeAndLower(adjective()).trim()));
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 protective aura of mana surrounds <T-NAME>.",CMStrings.capitalizeAndLower(adjective()).trim()));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke@x1 protective shield, but mess(es) up.",adjective()));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke@x1 protective shield, but mess(es) up.",adjective()));
 
 
 		// return whether it worked

@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_Reabsorb extends Chant
 {
 	@Override public String ID() { return "Chant_Reabsorb"; }
-	private final static String localizedName = CMLib.lang()._("Reabsorb");
+	private final static String localizedName = CMLib.lang().L("Reabsorb");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
@@ -86,13 +86,13 @@ public class Chant_Reabsorb extends Chant
 			&&(D.playerCorpse())
 			&&(!D.mobName().equals(mob.Name())))
 			{
-				mob.tell(_("You are not allowed to reabsorb a player corpse."));
+				mob.tell(L("You are not allowed to reabsorb a player corpse."));
 				return false;
 			}
 		}
 		if(!(target.owner() instanceof Room))
 		{
-			mob.tell(_("You need to put @x1 on the ground first.",target.name(mob)));
+			mob.tell(L("You need to put @x1 on the ground first.",target.name(mob)));
 			return false;
 		}
 		final int type=mob.location().domainType();
@@ -107,7 +107,7 @@ public class Chant_Reabsorb extends Chant
 			||(type==Room.DOMAIN_OUTDOORS_UNDERWATER)
 			||(type==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			mob.tell(_("That magic won't work here."));
+			mob.tell(L("That magic won't work here."));
 			return false;
 		}
 
@@ -122,19 +122,19 @@ public class Chant_Reabsorb extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> starts vibrating!"):_("^S<S-NAME> chant(s), causing <T-NAMESELF> to decay!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> starts vibrating!"):L("^S<S-NAME> chant(s), causing <T-NAMESELF> to decay!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The ground reabsorbs @x1.",target.name()));
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The ground reabsorbs @x1.",target.name()));
 					target.destroy();
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAME>, but nothing happens."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAME>, but nothing happens."));
 
 
 		// return whether it worked

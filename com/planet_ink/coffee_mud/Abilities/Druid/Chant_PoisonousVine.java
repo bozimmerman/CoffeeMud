@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_PoisonousVine extends Chant_SummonVine
 {
 	@Override public String ID() { return "Chant_PoisonousVine"; }
-	private final static String localizedName = CMLib.lang()._("Poisonous Vine");
+	private final static String localizedName = CMLib.lang().L("Poisonous Vine");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Poisonous Vine)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Poisonous Vine)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -59,7 +59,7 @@ public class Chant_PoisonousVine extends Chant_SummonVine
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Vine"));
 		final String name="a poisonous vine";
 		newMOB.setName(name);
-		newMOB.setDisplayText(_("@x1 looks enraged!",name));
+		newMOB.setDisplayText(L("@x1 looks enraged!",name));
 		newMOB.setDescription("");
 		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 		Ability A=CMClass.getAbility("Fighter_Rescue");
@@ -99,11 +99,11 @@ public class Chant_PoisonousVine extends Chant_SummonVine
 		newMOB.setStartRoom(null); // keep before postFollow for Conquest
 		CMLib.commands().postFollow(newMOB,caster,true);
 		if(newMOB.amFollowing()!=caster)
-			caster.tell(_("@x1 seems unwilling to follow you.",newMOB.name()));
+			caster.tell(L("@x1 seems unwilling to follow you.",newMOB.name()));
 		else
 		{
 			if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
-			newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,_("<S-NAME> start(s) attacking <T-NAMESELF>!"));
+			newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,L("<S-NAME> start(s) attacking <T-NAMESELF>!"));
 		}
 		return(newMOB);
 	}

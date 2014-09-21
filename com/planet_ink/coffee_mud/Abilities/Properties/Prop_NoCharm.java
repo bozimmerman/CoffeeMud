@@ -58,7 +58,7 @@ public class Prop_NoCharm extends Property
 			||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 			||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 			||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
-				msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,_("Magic energy fizzles and is absorbed into the air."));
+				msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
 			return false;
 		}
 		return true;

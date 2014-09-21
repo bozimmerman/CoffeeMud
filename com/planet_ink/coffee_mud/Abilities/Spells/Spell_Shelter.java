@@ -38,9 +38,9 @@ import java.util.*;
 public class Spell_Shelter extends Spell
 {
 	@Override public String ID() { return "Spell_Shelter"; }
-	private final static String localizedName = CMLib.lang()._("Shelter");
+	private final static String localizedName = CMLib.lang().L("Shelter");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(In a shelter)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(In a shelter)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -82,9 +82,9 @@ public class Spell_Shelter extends Spell
 			for(final MOB mob : mobs)
 			{
 				if(mob==null) break;
-				mob.tell(_("You return to your previous location."));
+				mob.tell(L("You return to your previous location."));
 
-				final CMMsg enterMsg=CMClass.getMsg(mob,previousLocation,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> appears out of nowhere!"));
+				final CMMsg enterMsg=CMClass.getMsg(mob,previousLocation,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> appears out of nowhere!"));
 				backToRoom=getPreviousLocation(mob);
 				if(backToRoom==null)
 					backToRoom=mob.getStartRoom();
@@ -146,7 +146,7 @@ public class Spell_Shelter extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> wave(s) <S-HIS-HER> arms, speak(s), and suddenly vanish(es)!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> arms, speak(s), and suddenly vanish(es)!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -162,8 +162,8 @@ public class Spell_Shelter extends Spell
 				for (final Object element : h)
 				{
 					final MOB follower=(MOB)element;
-					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> appears out of nowhere."));
-					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,verbalCastCode(mob,newRoom,auto),_("<S-NAME> disappear(s) into oblivion."));
+					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> appears out of nowhere."));
+					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,verbalCastCode(mob,newRoom,auto),L("<S-NAME> disappear(s) into oblivion."));
 					if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())
@@ -175,7 +175,7 @@ public class Spell_Shelter extends Spell
 						newRoom.bringMobHere(follower,false);
 						thisRoom.delInhabitant(follower);
 						newRoom.send(follower,enterMsg);
-						follower.tell(_("\n\r\n\r"));
+						follower.tell(L("\n\r\n\r"));
 						CMLib.commands().postLook(follower,true);
 						if(follower==mob)
 							beneficialAffect(mob,mob,asLevel,999999);
@@ -184,7 +184,7 @@ public class Spell_Shelter extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> wave(s) <S-HIS-HER> arms and and speak(s), but nothing happens."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> wave(s) <S-HIS-HER> arms and and speak(s), but nothing happens."));
 
 		return success;
 	}

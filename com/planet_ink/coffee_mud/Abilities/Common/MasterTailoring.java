@@ -38,7 +38,7 @@ import java.util.*;
 public class MasterTailoring extends Tailoring
 {
 	@Override public String ID() { return "MasterTailoring"; }
-	private final static String localizedName = CMLib.lang()._("Master Tailoring");
+	private final static String localizedName = CMLib.lang().L("Master Tailoring");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"MASTERKNIT","MKNIT","MTAILOR","MTAILORING","MASTERTAILOR","MASTERTAILORING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -66,7 +66,7 @@ public class MasterTailoring extends Tailoring
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,_("Knit what? Enter \"mknit list\" for a list, \"mknit refit <item>\" to resize, \"mknit learn <item>\", \"mknit scan\", \"mknit mend <item>\", or \"mknit stop\" to cancel."));
+			commonTell(mob,L("Knit what? Enter \"mknit list\" for a list, \"mknit refit <item>\" to resize, \"mknit learn <item>\", \"mknit scan\", \"mknit mend <item>\", or \"mknit stop\" to cancel."));
 			return false;
 		}
 		if(parsedVars.autoGenerate>0)

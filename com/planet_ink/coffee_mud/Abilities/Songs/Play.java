@@ -37,7 +37,7 @@ import java.util.*;
 public class Play extends StdAbility
 {
 	@Override public String ID() { return "Play"; }
-	private final static String localizedName = CMLib.lang()._("a song played");
+	private final static String localizedName = CMLib.lang().L("a song played");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText() { return "("+songOf()+")"; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -197,7 +197,7 @@ public class Play extends StdAbility
 			&&(instrument.amWearingAt(Wearable.WORN_MOUTH)))
 			{
 				if(msg.source().location()!=null)
-					msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,_("<S-NAME> stop(s) playing."));
+					msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,L("<S-NAME> stop(s) playing."));
 				unInvoke();
 			}
 			else
@@ -207,7 +207,7 @@ public class Play extends StdAbility
 			&&(instrument.amWearingAt(Wearable.WORN_HELD)))
 			{
 				if(msg.source().location()!=null)
-					msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,_("<S-NAME> stop(s) playing."));
+					msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,L("<S-NAME> stop(s) playing."));
 				unInvoke();
 			}
 		}
@@ -266,7 +266,7 @@ public class Play extends StdAbility
 			if(!usingInstrument((MusicalInstrument)mob.riding(),mob))
 			{
 				if(noisy)
-					mob.tell(CMLib.lang()._("You need to free your hands to play @x1.",mob.riding().name()));
+					mob.tell(CMLib.lang().L("You need to free your hands to play @x1.",mob.riding().name()));
 				return null;
 			}
 			instrument=(MusicalInstrument)mob.riding();
@@ -284,13 +284,13 @@ public class Play extends StdAbility
 		if(instrument==null)
 		{
 			if(noisy)
-				mob.tell(CMLib.lang()._("You need an instrument!"));
+				mob.tell(CMLib.lang().L("You need an instrument!"));
 			return null;
 		}
 		if((requiredInstrumentType>=0)&&(instrument.instrumentType()!=requiredInstrumentType))
 		{
 			if(noisy)
-				mob.tell(CMLib.lang()._("This song can only be played on @x1.",MusicalInstrument.TYPE_DESC[requiredInstrumentType].toLowerCase()));
+				mob.tell(CMLib.lang().L("This song can only be played on @x1.",MusicalInstrument.TYPE_DESC[requiredInstrumentType].toLowerCase()));
 			return null;
 		}
 		return instrument;
@@ -356,9 +356,9 @@ public class Play extends StdAbility
 			if(!songOf.equals(this.instrumentName()))
 				songOf="the "+songOf;
 			if(dir>=0)
-				msgStr=_("^SYou hear @x1 being played @x2!^?",songOf,Directions.getInDirectionName(dir));
+				msgStr=L("^SYou hear @x1 being played @x2!^?",songOf,Directions.getInDirectionName(dir));
 			else
-				msgStr=_("^SYou hear @x1 being played nearby!^?",songOf);
+				msgStr=L("^SYou hear @x1 being played nearby!^?",songOf);
 		}
 		return msgStr;
 	}
@@ -400,7 +400,7 @@ public class Play extends StdAbility
 			{
 				if(!usingInstrument((MusicalInstrument)mob.riding(),mob))
 				{
-					mob.tell(_("You need to free your hands to play @x1.",mob.riding().name()));
+					mob.tell(L("You need to free your hands to play @x1.",mob.riding().name()));
 					return false;
 				}
 				instrument=(MusicalInstrument)mob.riding();
@@ -417,12 +417,12 @@ public class Play extends StdAbility
 			}
 			if(instrument==null)
 			{
-				mob.tell(_("You need an instrument!"));
+				mob.tell(L("You need an instrument!"));
 				return false;
 			}
 			if((requiredInstrumentType()>=0)&&(instrument.instrumentType()!=requiredInstrumentType()))
 			{
-				mob.tell(_("This song can only be played on @x1.",MusicalInstrument.TYPE_DESC[requiredInstrumentType()].toLowerCase()));
+				mob.tell(L("This song can only be played on @x1.",MusicalInstrument.TYPE_DESC[requiredInstrumentType()].toLowerCase()));
 				return false;
 			}
 		}
@@ -435,7 +435,7 @@ public class Play extends StdAbility
 		&&(mob.location()!=null)
 		&&(CMLib.dice().rollPercentage()<50))
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> fumble(s) playing @x1 due to <S-HIS-HER> armor!",name()));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> fumble(s) playing @x1 due to <S-HIS-HER> armor!",name()));
 			return false;
 		}
 
@@ -455,11 +455,11 @@ public class Play extends StdAbility
 			invoker=mob;
 			originRoom=mob.location();
 			commonRoomSet=getInvokerScopeRoomSet(null);
-			String songOfStr=_("@x1 on ",songOf());
+			String songOfStr=L("@x1 on ",songOf());
 			if(songOf().equalsIgnoreCase(instrumentName())) songOfStr="";
-			String str=auto?_("^S@x1 begins to play!^?",songOf()):_("^S<S-NAME> begin(s) to play @x1@x2.^?",songOfStr,instrumentName());
+			String str=auto?L("^S@x1 begins to play!^?",songOf()):L("^S<S-NAME> begin(s) to play @x1@x2.^?",songOfStr,instrumentName());
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
-				str=_("^S<S-NAME> start(s) playing @x1@x2 again.^?",songOfStr,instrumentName());
+				str=L("^S<S-NAME> start(s) playing @x1@x2 again.^?",songOfStr,instrumentName());
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
 				final Room R=(Room)commonRoomSet.elementAt(v);
@@ -519,7 +519,7 @@ public class Play extends StdAbility
 			}
 		}
 		else
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> hit(s) a foul note."));
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,L("<S-NAME> hit(s) a foul note."));
 
 		return success;
 	}

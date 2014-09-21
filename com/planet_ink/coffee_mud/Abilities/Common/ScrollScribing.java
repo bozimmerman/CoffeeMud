@@ -39,7 +39,7 @@ import java.util.*;
 public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "ScrollScribing"; }
-	private final static String localizedName = CMLib.lang()._("Scroll Scribing");
+	private final static String localizedName = CMLib.lang().L("Scroll Scribing");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"ENSCRIBE","SCROLLSCRIBE","SCROLLSCRIBING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -65,8 +65,8 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			if(tickUp==0)
 			{
 				commonEmote(mob,"<S-NAME> start(s) scribing "+buildingI.name()+".");
-				displayText=_("You are scribing @x1",buildingI.name());
-				verb=_("scribing @x1",buildingI.name());
+				displayText=L("You are scribing @x1",buildingI.name());
+				verb=L("scribing @x1",buildingI.name());
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -88,7 +88,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 					if(messedUp)
 					{
 						if(oldName.length()>0)
-							commonTell(mob,_("Something went wrong! @x1 explodes!",(Character.toUpperCase(oldName.charAt(0))+oldName.substring(1))));
+							commonTell(mob,L("Something went wrong! @x1 explodes!",(Character.toUpperCase(oldName.charAt(0))+oldName.substring(1))));
 					}
 					else
 						mob.addItem(buildingI);
@@ -127,8 +127,8 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 	{
 		buildingI=CMClass.getItem("GenScroll");
 		((Scroll)buildingI).setSpellList(theSpell.ID());
-		buildingI.setName(_("a scroll of @x1",theSpell.name().toLowerCase()));
-		buildingI.setDisplayText(_("a scroll of @x1 sits here.",theSpell.name().toLowerCase()));
+		buildingI.setName(L("a scroll of @x1",theSpell.name().toLowerCase()));
+		buildingI.setDisplayText(L("a scroll of @x1 sits here.",theSpell.name().toLowerCase()));
 		buildingI.setDescription("");
 		buildingI.basePhyStats().setLevel(level);
 		buildingI.phyStats().setLevel(level);
@@ -164,7 +164,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,0);
 		if(commands.size()<1)
 		{
-			commonTell(mob,_("Enscribe what? Enter \"enscribe list\" for a list, or \"enscribe stop\" to cancel."));
+			commonTell(mob,L("Enscribe what? Enter \"enscribe list\" for a list, or \"enscribe stop\" to cancel."));
 			return false;
 		}
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
@@ -178,9 +178,9 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 				allFlag=true;
 				mask="";
 			}
-			final StringBuffer buf=new StringBuffer(_("Scrolls you know how to enscribe:\n\r"));
+			final StringBuffer buf=new StringBuffer(L("Scrolls you know how to enscribe:\n\r"));
 			final int colWidth=ListingLibrary.ColFixer.fixColWidth(25,mob.session());
-			buf.append(CMStrings.padRight(_("Spell"),colWidth)+" "+CMStrings.padRight(_("Spell"),colWidth)+" "+CMStrings.padRight(_("Spell"),colWidth));
+			buf.append(CMStrings.padRight(L("Spell"),colWidth)+" "+CMStrings.padRight(L("Spell"),colWidth)+" "+CMStrings.padRight(L("Spell"),colWidth));
 			int toggler=1;
 			final int toggleTop=3;
 			for(int r=0;r<recipes.size();r++)
@@ -217,22 +217,22 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			if(buildingI==null) return false;
 			if(!mob.isMine(buildingI))
 			{
-				commonTell(mob,_("You'll need to pick that up first."));
+				commonTell(mob,L("You'll need to pick that up first."));
 				return false;
 			}
 			if(!CMath.bset(buildingI.material(),RawMaterial.MATERIAL_PAPER))
 			{
-				commonTell(mob,_("@x1 isn't even made of paper!",buildingI.name(mob)));
+				commonTell(mob,L("@x1 isn't even made of paper!",buildingI.name(mob)));
 				return false;
 			}
 			if(!(buildingI instanceof Scroll))
 			{
-				commonTell(mob,_("There's can't enscribe magic on @x1!",buildingI.name(mob)));
+				commonTell(mob,L("There's can't enscribe magic on @x1!",buildingI.name(mob)));
 				return false;
 			}
 			if(((Scroll)buildingI).getSpells().size()>0)
 			{
-				commonTell(mob,_("You can only scribe on blank scrolls."));
+				commonTell(mob,L("You can only scribe on blank scrolls."));
 				return false;
 			}
 			final String recipeName=CMParms.combine(commands,0);
@@ -258,7 +258,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			}
 			if(theSpell==null)
 			{
-				commonTell(mob,_("You don't know how to enscribe '@x1'.  Try \"enscribe list\" for a list.",recipeName));
+				commonTell(mob,L("You don't know how to enscribe '@x1'.  Try \"enscribe list\" for a list.",recipeName));
 				return false;
 			}
 			int experienceToLose=10;
@@ -289,7 +289,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			playSound=null;
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 			CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
-			commonTell(mob,_("You lose @x1 experience points for the effort.",""+experienceToLose));
+			commonTell(mob,L("You lose @x1 experience points for the effort.",""+experienceToLose));
 			oldName=buildingI.name();
 			buildingI.destroy();
 			buildingI=buildItem(theSpell, theSpellLevel);

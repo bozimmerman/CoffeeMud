@@ -42,7 +42,7 @@ public class Config extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		final StringBuffer msg=new StringBuffer(_("^HYour configuration flags:^?\n\r"));
+		final StringBuffer msg=new StringBuffer(L("^HYour configuration flags:^?\n\r"));
 		for(int i=0;i<MOB.AUTODESC.length;i++)
 		{
 			if((MOB.AUTODESC[i].equalsIgnoreCase("SYSMSGS"))&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SYSMSGS))))
@@ -53,16 +53,16 @@ public class Config extends StdCommand
 			msg.append(CMStrings.padRight(MOB.AUTODESC[i],15)+": ");
 			boolean set=CMath.isSet(mob.getBitmap(),i);
 			if(MOB.AUTOREV[i]) set=!set;
-			msg.append(set?_("ON"):_("OFF"));
+			msg.append(set?L("ON"):L("OFF"));
 			msg.append("\n\r");
 		}
 		if(mob.playerStats()!=null)
 		{
 			final String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):"Disabled";
-			msg.append(CMStrings.padRight(_("LINEWRAP"),15)+": "+wrap);
+			msg.append(CMStrings.padRight(L("LINEWRAP"),15)+": "+wrap);
 			msg.append("\n\r");
 			final String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"Disabled";
-			msg.append(CMStrings.padRight(_("PAGEBREAK"),15)+": "+pageBreak);
+			msg.append(CMStrings.padRight(L("PAGEBREAK"),15)+": "+pageBreak);
 			msg.append("\n\r");
 		}
 		mob.tell(msg.toString());

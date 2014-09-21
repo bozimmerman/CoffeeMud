@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_DetectWeaknesses extends Spell
 {
 	@Override public String ID() { return "Spell_DetectWeaknesses"; }
-	private final static String localizedName = CMLib.lang()._("Detect Weaknesses");
+	private final static String localizedName = CMLib.lang().L("Detect Weaknesses");
 	@Override public String name() { return localizedName; }
 	@Override
 	public String displayText()
@@ -131,7 +131,7 @@ public class Spell_DetectWeaknesses extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.tell(mob,null,null,_("<S-YOUPOSS> knowledge of @x1 fades.",text()));
+				mob.tell(mob,null,null,L("<S-YOUPOSS> knowledge of @x1 fades.",text()));
 	}
 
 	@Override
@@ -142,13 +142,13 @@ public class Spell_DetectWeaknesses extends Spell
 			target=(MOB)givenTarget;
 		if(!target.isInCombat())
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> not in combat."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> not in combat."));
 			return false;
 		}
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already knowledgable about <S-HIS-HER> target."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already knowledgable about <S-HIS-HER> target."));
 			return false;
 		}
 
@@ -161,7 +161,7 @@ public class Spell_DetectWeaknesses extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> knowingly cast(s) a spell concerning <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> knowingly cast(s) a spell concerning <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -173,13 +173,13 @@ public class Spell_DetectWeaknesses extends Spell
 					{
 						A.spottedM=victim;
 						A.setMiscText(victim.Name());
-						mob.location().show(target,victim,CMMsg.MSG_OK_VISUAL,_("<S-NAME> attain(s) knowledge of <T-YOUPOSS> weaknesses!"));
+						mob.location().show(target,victim,CMMsg.MSG_OK_VISUAL,L("<S-NAME> attain(s) knowledge of <T-YOUPOSS> weaknesses!"));
 					}
 				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> speak(s) knowingly about <T-NAMESELF>, but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> speak(s) knowingly about <T-NAMESELF>, but nothing more happens."));
 
 
 		// return whether it worked

@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_CaveFishing extends Chant
 {
 	@Override public String ID() { return "Chant_CaveFishing"; }
-	private final static String localizedName = CMLib.lang()._("Cave Fishing");
+	private final static String localizedName = CMLib.lang().L("Cave Fishing");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -51,7 +51,7 @@ public class Chant_CaveFishing extends Chant
 		if((affected instanceof Room)
 		&&(this.canBeUninvoked()))
 		{
-			((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,_("The fish start to disappear!"));
+			((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,L("The fish start to disappear!"));
 			((Room)affected).setResource(previousResource);
 		}
 	}
@@ -80,13 +80,13 @@ public class Chant_CaveFishing extends Chant
 			}
 			if(waterSrc==null)
 			{
-				mob.tell(_("There is no water source here to fish in."));
+				mob.tell(L("There is no water source here to fish in."));
 				return false;
 			}
 		}
 		else
 		{
-			mob.tell(_("This chant cannot be used outdoors."));
+			mob.tell(L("This chant cannot be used outdoors."));
 			return false;
 		}
 
@@ -106,18 +106,18 @@ public class Chant_CaveFishing extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to <T-NAME>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAME>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("Fish start swimming around in @x1!",target.name()));
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("Fish start swimming around in @x1!",target.name()));
 					beneficialAffect(mob, target, asLevel,0);
 					final Chant_CaveFishing A=(Chant_CaveFishing)target.fetchEffect(ID());
 					if(A!=null)
 					{
-						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("Fish start swimming around in @x1!",target.name()));
+						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("Fish start swimming around in @x1!",target.name()));
 						A.previousResource=target.myResource();
 						target.setResource(RawMaterial.CODES.FISHES()[CMLib.dice().roll(1,RawMaterial.CODES.FISHES().length,-1)]);
 					}
@@ -125,7 +125,7 @@ public class Chant_CaveFishing extends Chant
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAME>, but the magic fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAME>, but the magic fades."));
 		// return whether it worked
 		return success;
 	}

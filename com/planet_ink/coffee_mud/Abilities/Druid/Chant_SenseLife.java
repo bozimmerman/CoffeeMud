@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_SenseLife extends Chant
 {
 	@Override public String ID() { return "Chant_SenseLife"; }
-	private final static String localizedName = CMLib.lang()._("Life Echoes");
+	private final static String localizedName = CMLib.lang().L("Life Echoes");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Life Echoes)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Life Echoes)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
@@ -57,7 +57,7 @@ public class Chant_SenseLife extends Chant
 		if(canBeUninvoked())
 		{
 			lastRoom=null;
-			mob.tell(_("Your life echo sensations fade."));
+			mob.tell(L("Your life echo sensations fade."));
 		}
 	}
 
@@ -99,12 +99,12 @@ public class Chant_SenseLife extends Chant
 		}
 
 		if((dirs.length()==0)&&(last.length()==0))
-			mob.tell(_("You do not feel any life beyond your own."));
+			mob.tell(L("You do not feel any life beyond your own."));
 		else
 		if(dirs.length()==0)
-			mob.tell(_("You feel a life force coming from @x1.",last));
+			mob.tell(L("You feel a life force coming from @x1.",last));
 		else
-			mob.tell(_("You feel a life force coming from @x1, and @x2.",dirs.substring(2),last));
+			mob.tell(L("You feel a life force coming from @x1, and @x2.",dirs.substring(2),last));
 	}
 
 	@Override
@@ -133,7 +133,7 @@ public class Chant_SenseLife extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already sensing life echoes."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already sensing life echoes."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -147,7 +147,7 @@ public class Chant_SenseLife extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) life-senses!"):_("^S<S-NAME> chant(s) softly, and then stop(s) to listen.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> gain(s) life-senses!"):L("^S<S-NAME> chant(s) softly, and then stop(s) to listen.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -155,7 +155,7 @@ public class Chant_SenseLife extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) softly, but nothing happens."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) softly, but nothing happens."));
 
 
 		// return whether it worked

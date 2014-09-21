@@ -36,9 +36,9 @@ import java.util.*;
 public class Prayer_ProtGood extends Prayer
 {
 	@Override public String ID() { return "Prayer_ProtGood"; }
-	private final static String localizedName = CMLib.lang()._("Protection Good");
+	private final static String localizedName = CMLib.lang().L("Protection Good");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Protection from Good)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Protection from Good)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
@@ -81,7 +81,7 @@ public class Prayer_ProtGood extends Prayer
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY))
 			&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
 			{
-				msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,_("The unholy field around <S-NAME> protect(s) <S-HIM-HER> from the goodly magic attack of @x1.",msg.source().name()));
+				msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,L("The unholy field around <S-NAME> protect(s) <S-HIM-HER> from the goodly magic attack of @x1.",msg.source().name()));
 				return false;
 			}
 
@@ -117,7 +117,7 @@ public class Prayer_ProtGood extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your protection from goodness fades."));
+			mob.tell(L("Your protection from goodness fades."));
 	}
 
 	@Override
@@ -139,7 +139,7 @@ public class Prayer_ProtGood extends Prayer
 		if((auto)&&(givenTarget!=null)) target=givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,target,null,_("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));
+			mob.tell(mob,target,null,L("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));
 			return false;
 		}
 
@@ -154,7 +154,7 @@ public class Prayer_ProtGood extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) protected from goodness."):_("^S<S-NAME> @x1 for protection from goodness.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) protected from goodness."):L("^S<S-NAME> @x1 for protection from goodness.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -162,7 +162,7 @@ public class Prayer_ProtGood extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 for protection, but there is no answer.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 for protection, but there is no answer.",prayWord(mob)));
 
 
 		// return whether it worked

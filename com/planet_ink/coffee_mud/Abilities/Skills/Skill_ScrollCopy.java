@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_ScrollCopy extends StdSkill
 {
 	@Override public String ID() { return "Skill_ScrollCopy"; }
-	private final static String localizedName = CMLib.lang()._("Memorize");
+	private final static String localizedName = CMLib.lang().L("Memorize");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
@@ -52,25 +52,25 @@ public class Skill_ScrollCopy extends StdSkill
 
 		if(commands.size()<2)
 		{
-			mob.tell(_("Memorize what from what?"));
+			mob.tell(L("Memorize what from what?"));
 			return false;
 		}
 		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,CMParms.combine(commands,1));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",CMParms.combine(commands,1)));
+			mob.tell(L("You don't see '@x1' here.",CMParms.combine(commands,1)));
 			return false;
 		}
 
 		if(!(target instanceof Scroll))
 		{
-			mob.tell(_("You can't memorize from that."));
+			mob.tell(L("You can't memorize from that."));
 			return false;
 		}
 
 		if(((Scroll)target).usesRemaining()<1)
 		{
-			mob.tell(_("The scroll appears to be faded."));
+			mob.tell(L("The scroll appears to be faded."));
 			return false;
 		}
 
@@ -88,7 +88,7 @@ public class Skill_ScrollCopy extends StdSkill
 
 		if(thisSpell==null)
 		{
-			mob.tell(_("That is not written on @x1.",target.name(mob)));
+			mob.tell(L("That is not written on @x1.",target.name(mob)));
 			return false;
 		}
 
@@ -109,7 +109,7 @@ public class Skill_ScrollCopy extends StdSkill
 
 		if(success)
 		{
-			if(mob.location().show(mob,target,this,CMMsg.MSG_HANDS,_("<S-NAME> memorize(s) '@x1' from <T-NAME>.",thisSpell.name())))
+			if(mob.location().show(mob,target,this,CMMsg.MSG_HANDS,L("<S-NAME> memorize(s) '@x1' from <T-NAME>.",thisSpell.name())))
 			{
 				thisSpell.teach(T,mob);
 				if((mob.fetchAbility(thisSpell.ID())!=null)
@@ -123,7 +123,7 @@ public class Skill_ScrollCopy extends StdSkill
 			}
 		}
 		else
-			mob.location().show(mob,null,CMMsg.MSG_HANDS,_("<S-NAME> attempt(s) to memorize '@x1' from @x2, but fail(s).",thisSpell.name(),target.name()));
+			mob.location().show(mob,null,CMMsg.MSG_HANDS,L("<S-NAME> attempt(s) to memorize '@x1' from @x2, but fail(s).",thisSpell.name(),target.name()));
 		return success;
 	}
 

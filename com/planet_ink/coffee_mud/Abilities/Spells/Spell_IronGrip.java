@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_IronGrip extends Spell
 {
 	@Override public String ID() { return "Spell_IronGrip"; }
-	private final static String localizedName = CMLib.lang()._("Iron Grip");
+	private final static String localizedName = CMLib.lang().L("Iron Grip");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Iron Grip)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Iron Grip)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -55,7 +55,7 @@ public class Spell_IronGrip extends Spell
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> weapon hand becomes flesh again."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> weapon hand becomes flesh again."));
 
 		super.unInvoke();
 
@@ -72,7 +72,7 @@ public class Spell_IronGrip extends Spell
 			&&(msg.tool()!=null)
 			&&(msg.tool().ID().toUpperCase().indexOf("DISARM")>=0))
 			{
-				mob.location().show(msg.source(),mob,CMMsg.MSG_OK_ACTION,_("<S-NAME> attempt(s) to disarm <T-NAME>, but the grip is too strong!"));
+				mob.location().show(msg.source(),mob,CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to disarm <T-NAME>, but the grip is too strong!"));
 				return false;
 			}
 			else
@@ -83,10 +83,10 @@ public class Spell_IronGrip extends Spell
 			&&(mob.isMine(msg.target()))
 			&&(((Item)msg.target()).amWearingAt(Wearable.WORN_WIELD)))
 			{
-				mob.location().show(mob,null,msg.target(),CMMsg.MSG_OK_ACTION,_("<S-NAME> attempt(s) to let go of <O-NAME>, but <S-HIS-HER> grip is too strong!"));
+				mob.location().show(mob,null,msg.target(),CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to let go of <O-NAME>, but <S-HIS-HER> grip is too strong!"));
 				if((!mob.isInCombat())&&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTODRAW)))
 				{
-					mob.tell(_("** Autodraw has been turned OFF. **"));
+					mob.tell(L("** Autodraw has been turned OFF. **"));
 					mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTODRAW));
 				}
 				return false;
@@ -100,7 +100,7 @@ public class Spell_IronGrip extends Spell
 			&&(mob.isMine(msg.target()))
 			&&(((Item)msg.target()).amWearingAt(Wearable.WORN_WIELD)))
 			{
-				mob.location().show(mob,null,msg.target(),CMMsg.MSG_OK_ACTION,_("<S-NAME> attempt(s) to let go of <O-NAME>, but <S-HIS-HER> grip is too strong!"));
+				mob.location().show(mob,null,msg.target(),CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to let go of <O-NAME>, but <S-HIS-HER> grip is too strong!"));
 				return false;
 			}
 			else
@@ -110,7 +110,7 @@ public class Spell_IronGrip extends Spell
 			&&(!((Item)msg.tool()).amWearingAt(Wearable.IN_INVENTORY))
 			&&(mob.isMine(msg.tool())))
 			{
-				mob.location().show(mob,null,msg.tool(),CMMsg.MSG_OK_ACTION,_("<S-NAME> attempt(s) to let go of <O-NAME>, but <S-HIS-HER> grip is too strong!"));
+				mob.location().show(mob,null,msg.tool(),CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to let go of <O-NAME>, but <S-HIS-HER> grip is too strong!"));
 				return false;
 			}
 		}
@@ -129,7 +129,7 @@ public class Spell_IronGrip extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> watch(es) <T-HIS-HER> weapon hand turn to iron!"):_("^S<S-NAME> invoke(s) a spell on <T-NAMESELF> and <T-HIS-HER> weapon hand turns into iron!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> watch(es) <T-HIS-HER> weapon hand turn to iron!"):L("^S<S-NAME> invoke(s) a spell on <T-NAMESELF> and <T-HIS-HER> weapon hand turns into iron!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -137,7 +137,7 @@ public class Spell_IronGrip extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a spell, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a spell, but fail(s)."));
 
 		return success;
 	}

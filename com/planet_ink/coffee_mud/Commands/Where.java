@@ -86,8 +86,8 @@ public class Where extends StdCommand
 		&&(!overrideSet))
 		{
 			final StringBuffer lines=new StringBuffer("^x");
-			lines.append(CMStrings.padRight(_("Name"),17)+"| ");
-			lines.append(CMStrings.padRight(_("Location"),17)+"^.^N\n\r");
+			lines.append(CMStrings.padRight(L("Name"),17)+"| ");
+			lines.append(CMStrings.padRight(L("Location"),17)+"^.^N\n\r");
 			String who=CMParms.combineWithQuotes(commands,1);
 			if(who.length()==0)
 			{
@@ -112,7 +112,7 @@ public class Where extends StdCommand
 					}
 					else
 					{
-						lines.append(CMStrings.padRight(_("NAMELESS"),17)+"| ");
+						lines.append(CMStrings.padRight(L("NAMELESS"),17)+"| ");
 						lines.append("NOWHERE");
 						lines.append("\n\r");
 					}
@@ -168,7 +168,7 @@ public class Where extends StdCommand
 					mobOnly=true;
 					zapperMask=true;
 					who=who.substring(8).trim();
-					mob.tell(_("^xMask used:^?^.^N @x1\n\r",CMLib.masking().maskDesc(who)));
+					mob.tell(L("^xMask used:^?^.^N @x1\n\r",CMLib.masking().maskDesc(who)));
 					compiledZapperMask=CMLib.masking().maskCompile(who);
 				}
 				else
@@ -177,7 +177,7 @@ public class Where extends StdCommand
 					itemOnly=true;
 					zapperMask=true;
 					who=who.substring(9).trim();
-					mob.tell(_("^xMask used:^?^.^N @x1\n\r",CMLib.masking().maskDesc(who)));
+					mob.tell(L("^xMask used:^?^.^N @x1\n\r",CMLib.masking().maskDesc(who)));
 					compiledZapperMask=CMLib.masking().maskCompile(who);
 				}
 				else
@@ -185,7 +185,7 @@ public class Where extends StdCommand
 				{
 					mobOnly=true;
 					zapperMask2=true;
-					mob.tell(_("^xMask used:^?^.^N @x1\n\r",CMLib.masking().maskDesc(who)));
+					mob.tell(L("^xMask used:^?^.^N @x1\n\r",CMLib.masking().maskDesc(who)));
 					who=who.substring(9).trim();
 				}
 				else
@@ -193,7 +193,7 @@ public class Where extends StdCommand
 				{
 					itemOnly=true;
 					zapperMask2=true;
-					mob.tell(_("^xMask used:^?^.^N @x1\n\r",CMLib.masking().maskDesc(who)));
+					mob.tell(L("^xMask used:^?^.^N @x1\n\r",CMLib.masking().maskDesc(who)));
 					who=who.substring(10).trim();
 				}
 
@@ -477,9 +477,9 @@ public class Where extends StdCommand
 					whereAdd(alignVec,A,alignDiff);
 				}
 			}
-			final StringBuffer msg=new StringBuffer(_("You are currently in: ^H@x1^?\n\r",mob.location().getArea().name()));
+			final StringBuffer msg=new StringBuffer(L("You are currently in: ^H@x1^?\n\r",mob.location().getArea().name()));
 			if((!CMSecurity.isDisabled(CMSecurity.DisFlag.ROOMVISITS))&&(mob.playerStats()!=null))
-				msg.append(_("You have explored @x1% of this area and @x2% of the world.\n\r",""+mob.playerStats().percentVisited(mob,mob.location().getArea()),""+mob.playerStats().percentVisited(mob,null)));
+				msg.append(L("You have explored @x1% of this area and @x2% of the world.\n\r",""+mob.playerStats().percentVisited(mob,mob.location().getArea()),""+mob.playerStats().percentVisited(mob,null)));
 			final DVector scores=new DVector(2);
 			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
@@ -505,8 +505,8 @@ public class Where extends StdCommand
 					}
 				}
 			}
-			msg.append(_("\n\r^HThe best areas for you to try appear to be: ^?\n\r\n\r"));
-			msg.append("^x"+CMStrings.padRight(_("Area Name"),35)+CMStrings.padRight(_("Level"),6)+CMStrings.padRight(_("Alignment"),20)+CMStrings.padRight(_("Pop"),10)+"^.^?\n\r");
+			msg.append(L("\n\r^HThe best areas for you to try appear to be: ^?\n\r\n\r"));
+			msg.append("^x"+CMStrings.padRight(L("Area Name"),35)+CMStrings.padRight(L("Level"),6)+CMStrings.padRight(L("Alignment"),20)+CMStrings.padRight(L("Pop"),10)+"^.^?\n\r");
 			final List<Area> finalScoreList = new ArrayList<Area>();
 			for(int i=scores.size()-1;((i>=0)&&(i>=(scores.size()-15)));i--)
 				finalScoreList.add((Area)scores.elementAt(i,1));
@@ -532,7 +532,7 @@ public class Where extends StdCommand
 				   .append(CMStrings.padRight(Integer.toString(A.getAreaIStats()[Area.Stats.POPULATION.ordinal()]),10))
 				   .append("\n\r");
 			}
-			msg.append(_("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?"));
+			msg.append(L("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?"));
 			if(!mob.isMonster())
 				mob.session().colorOnlyPrintln(msg.toString()+"\n\r");
 		}

@@ -36,7 +36,7 @@ import java.util.*;
 public class Gaoler extends StdCharClass
 {
 	@Override public String ID(){return "Gaoler";}
-	private final static String localizedStaticName = CMLib.lang()._("Gaoler");
+	private final static String localizedStaticName = CMLib.lang().L("Gaoler");
 	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return "Commoner";}
 	@Override public int getBonusPracLevel(){return 2;}
@@ -188,7 +188,7 @@ public class Gaoler extends StdCharClass
 		&&(CMLib.map().getStartArea(host)!=null)
 		&&(((MOB)host).charStats().getClassLevel(this)>0))
 		{
-			final CMMsg msg2=CMClass.getMsg((MOB)msg.target(),null,null,CMMsg.MSG_NOISE,_("<S-NAME> scream(s) in agony, AAAAAAARRRRGGGHHH!!@x1",CMLib.protocol().msp("scream.wav",40)));
+			final CMMsg msg2=CMClass.getMsg((MOB)msg.target(),null,null,CMMsg.MSG_NOISE,L("<S-NAME> scream(s) in agony, AAAAAAARRRRGGGHHH!!@x1",CMLib.protocol().msp("scream.wav",40)));
 			if(((MOB)msg.target()).location().okMessage(msg.target(),msg2))
 			{
 				final int xp=(int)Math.round(10.0*CMath.div(((MOB)msg.target()).phyStats().level(),((MOB)host).charStats().getClassLevel(this)));
@@ -206,10 +206,10 @@ public class Gaoler extends StdCharClass
 					{
 						done[1]+=xp;
 						CMLib.leveler().postExperience((MOB)host,null,null,xp,true);
-						msg2.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,_("The sweet screams of your victim earns you @x1 experience points.",""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+						msg2.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,L("The sweet screams of your victim earns you @x1 experience points.",""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 					}
 					else
-						msg2.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,_("The screams of your victims bore you now."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+						msg2.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,L("The screams of your victims bore you now."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 					msg.addTrailerMsg(msg2);
 				}
 			}

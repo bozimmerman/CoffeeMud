@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_InstrumentBash extends BardSkill
 {
 	@Override public String ID() { return "Skill_InstrumentBash"; }
-	private final static String localizedName = CMLib.lang()._("Instrument Bash");
+	private final static String localizedName = CMLib.lang().L("Instrument Bash");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -71,7 +71,7 @@ public class Skill_InstrumentBash extends BardSkill
 
 		if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
 		{
-			mob.tell(_("@x1 must stand up first!",target.name(mob)));
+			mob.tell(L("@x1 must stand up first!",target.name(mob)));
 			return false;
 		}
 
@@ -83,7 +83,7 @@ public class Skill_InstrumentBash extends BardSkill
 		String str=null;
 		if(success)
 		{
-			str=auto?_("<T-NAME> is bashed!"):_("^F^<FIGHT^><S-NAME> bash(es) <T-NAMESELF> with @x1!^</FIGHT^>^?",instrument.name());
+			str=auto?L("<T-NAME> is bashed!"):L("^F^<FIGHT^><S-NAME> bash(es) <T-NAMESELF> with @x1!^</FIGHT^>^?",instrument.name());
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),str);
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
@@ -101,7 +101,7 @@ public class Skill_InstrumentBash extends BardSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to bash <T-NAMESELF> with @x1, but end(s) up looking silly.",instrument.name()));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to bash <T-NAMESELF> with @x1, but end(s) up looking silly.",instrument.name()));
 
 		return success;
 	}

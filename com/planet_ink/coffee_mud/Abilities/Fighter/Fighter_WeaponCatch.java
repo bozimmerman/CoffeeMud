@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_WeaponCatch extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_WeaponCatch"; }
-	private final static String localizedName = CMLib.lang()._("Weapon Catch");
+	private final static String localizedName = CMLib.lang().L("Weapon Catch");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -62,9 +62,9 @@ public class Fighter_WeaponCatch extends FighterSkill
 		&&(mob.rangeToTarget()==0))
 		{
 			final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,
-					_("<T-NAME> disarms <S-NAMESELF>, but <S-NAME> catch the weapon!"),
-					_("<T-NAME> disarm <S-NAMESELF>, but <S-NAME> catches the weapon!"),
-					_("<T-NAME> disarms <S-NAMESELF>, but <S-NAME> catches the weapon!"));
+					L("<T-NAME> disarms <S-NAMESELF>, but <S-NAME> catch the weapon!"),
+					L("<T-NAME> disarm <S-NAMESELF>, but <S-NAME> catches the weapon!"),
+					L("<T-NAME> disarms <S-NAMESELF>, but <S-NAME> catches the weapon!"));
 			if(mob.location().okMessage(mob,msg2))
 			{
 				mob.location().send(mob,msg2);

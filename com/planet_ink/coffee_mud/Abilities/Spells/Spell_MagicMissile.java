@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_MagicMissile extends Spell
 {
 	@Override public String ID() { return "Spell_MagicMissile"; }
-	private final static String localizedName = CMLib.lang()._("Magic Missile");
+	private final static String localizedName = CMLib.lang().L("Magic Missile");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Magic Missile spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Magic Missile spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -65,7 +65,7 @@ public class Spell_MagicMissile extends Spell
 			final Room R=target.location();
 			for(int i=0;(i<numMissiles) && (target.location()==R);i++)
 			{
-				final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),(i==0)?_((auto?"A magic missile appears hurling full speed at <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, shooting forth a magic missile!^?")+CMLib.protocol().msp("spelldam2.wav",40)):null);
+				final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),(i==0)?L((auto?"A magic missile appears hurling full speed at <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, shooting forth a magic missile!^?")+CMLib.protocol().msp("spelldam2.wav",40)):null);
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
@@ -87,7 +87,7 @@ public class Spell_MagicMissile extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> point(s) at <T-NAMESELF>, but fizzle(s) the spell."));
+			return maliciousFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF>, but fizzle(s) the spell."));
 
 
 		// return whether it worked

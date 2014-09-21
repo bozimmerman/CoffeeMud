@@ -35,9 +35,9 @@ import java.util.*;
 public class Thief_Distract extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Distract"; }
-	private final static String localizedName = CMLib.lang()._("Distract");
+	private final static String localizedName = CMLib.lang().L("Distract");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Distracted)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Distracted)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -78,7 +78,7 @@ public class Thief_Distract extends ThiefSkill
 			&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(CharStats.STAT_WISDOM)*2))
 			&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK))
 			{
-				invoker.location().show(invoker,mob,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> distract(s) <T-NAME>."));
+				invoker.location().show(invoker,mob,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> distract(s) <T-NAME>."));
 				return false;
 			}
 		}
@@ -96,9 +96,9 @@ public class Thief_Distract extends ThiefSkill
 			if(!mob.amDead())
 			{
 				if((invoker!=null)&&(invoker.location()==mob.location())&&(!invoker.amDead()))
-					invoker.tell(invoker,mob,null,_("You are no longer distracting <T-NAMESELF>."));
+					invoker.tell(invoker,mob,null,L("You are no longer distracting <T-NAMESELF>."));
 				if((mob.location()!=null)&&(!mob.amDead()))
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> no longer so distracted."));
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> no longer so distracted."));
 			}
 		}
 		super.unInvoke();
@@ -127,7 +127,7 @@ public class Thief_Distract extends ThiefSkill
 
 		if((CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob)))
 		{
-			mob.tell(_("You are on the floor!"));
+			mob.tell(L("You are on the floor!"));
 			return false;
 		}
 
@@ -135,7 +135,7 @@ public class Thief_Distract extends ThiefSkill
 			return false;
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell(_("You are too far away to distract @x1!",mob.getVictim().name()));
+			mob.tell(L("You are too far away to distract @x1!",mob.getVictim().name()));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -149,7 +149,7 @@ public class Thief_Distract extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,auto?_("<T-NAME> seem(s) distracted!"):_("<S-NAME> distract(s) <T-NAMESELF>!"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,auto?L("<T-NAME> seem(s) distracted!"):L("<S-NAME> distract(s) <T-NAMESELF>!"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -157,7 +157,7 @@ public class Thief_Distract extends ThiefSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to distract <T-NAMESELF>, but flub(s) it."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to distract <T-NAMESELF>, but flub(s) it."));
 		return success;
 	}
 }

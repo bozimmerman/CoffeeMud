@@ -36,7 +36,7 @@ import java.util.*;
 public class Chant_SummonFlower extends Chant_SummonPlants
 {
 	@Override public String ID() { return "Chant_SummonFlower"; }
-	private final static String localizedName = CMLib.lang()._("Summon Flower");
+	private final static String localizedName = CMLib.lang().L("Summon Flower");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -76,28 +76,28 @@ public class Chant_SummonFlower extends Chant_SummonPlants
 		switch(CMLib.dice().roll(1,5,0))
 		{
 		case 1:
-			newItem.setName(_("a red rose"));
-			newItem.setDisplayText(_("a red rose is growing here."));
+			newItem.setName(L("a red rose"));
+			newItem.setDisplayText(L("a red rose is growing here."));
 			newItem.setDescription("");
 			break;
 		case 2:
-			newItem.setName(_("a nice daisy"));
-			newItem.setDisplayText(_("a nice daisy is growing here."));
+			newItem.setName(L("a nice daisy"));
+			newItem.setDisplayText(L("a nice daisy is growing here."));
 			newItem.setDescription("");
 			break;
 		case 3:
-			newItem.setName(_("a white carnation"));
-			newItem.setDisplayText(_("a beautiful white carnation is growing here"));
+			newItem.setName(L("a white carnation"));
+			newItem.setDisplayText(L("a beautiful white carnation is growing here"));
 			newItem.setDescription("");
 			break;
 		case 4:
-			newItem.setName(_("a happy sunflower"));
-			newItem.setDisplayText(_("a happy sunflower is growing here."));
-			newItem.setDescription(_("Happy flowers have little yellow blooms."));
+			newItem.setName(L("a happy sunflower"));
+			newItem.setDisplayText(L("a happy sunflower is growing here."));
+			newItem.setDescription(L("Happy flowers have little yellow blooms."));
 			break;
 		case 5:
-			newItem.setName(_("a lovely gladiola"));
-			newItem.setDisplayText(_("a lovely gladiola is growing here."));
+			newItem.setName(L("a lovely gladiola"));
+			newItem.setDisplayText(L("a lovely gladiola is growing here."));
 			newItem.setDescription("");
 			break;
 		}
@@ -107,7 +107,7 @@ public class Chant_SummonFlower extends Chant_SummonPlants
 		final Chant_SummonFlower newChant=new Chant_SummonFlower();
 		newItem.basePhyStats().setLevel(10+newChant.getX1Level(mob));
 		newItem.setExpirationDate(0);
-		room.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang()._("Suddenly, @x1 sprout(s) up here.",newItem.name()));
+		room.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang().L("Suddenly, @x1 sprout(s) up here.",newItem.name()));
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
 		if(CMLib.law().doesOwnThisProperty(mob,room))

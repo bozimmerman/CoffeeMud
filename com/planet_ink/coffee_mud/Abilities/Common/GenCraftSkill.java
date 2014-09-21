@@ -412,7 +412,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		{
 			if(!quiet)
 			{
-				commonTell(mob,_("That can't be mended with this skill."));
+				commonTell(mob,L("That can't be mended with this skill."));
 			}
 			return false;
 		}
@@ -475,7 +475,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 				allFlag=true;
 				mask="";
 			}
-			final StringBuffer buf=new StringBuffer(_("Item <S-NAME> <S-IS-ARE> skilled at @x1:\n\r",verbing));
+			final StringBuffer buf=new StringBuffer(L("Item <S-NAME> <S-IS-ARE> skilled at @x1:\n\r",verbing));
 			int toggler=1;
 			final int toggleTop=2;
 			final int[] cols={
@@ -484,7 +484,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 					ListingLibrary.ColFixer.fixColWidth(4,mob.session())
 				};
 			for(int r=0;r<toggleTop;r++)
-				buf.append((r>0?" ":"")+CMStrings.padRight(_("Item"),cols[0])+" "+CMStrings.padRight(_("Lvl"),cols[1])+" "+CMStrings.padRight(_("Mats"),cols[2]));
+				buf.append((r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Mats"),cols[2]));
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -527,9 +527,9 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr=_("<S-NAME> start(s) mending @x1.",buildingI.name());
-			displayText=_("You are mending @x1",buildingI.name());
-			verb=_("mending @x1",buildingI.name());
+			startStr=L("<S-NAME> start(s) mending @x1.",buildingI.name());
+			displayText=L("You are mending @x1",buildingI.name());
+			verb=L("mending @x1",buildingI.name());
 		}
 		else
 		if(str.equalsIgnoreCase("refit") && canRefitB.booleanValue())
@@ -542,25 +542,25 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			if(buildingI==null) return false;
 			if((!this.mayICraft(mob, buildingI))&&(!super.isMadeOfSupportedResource(buildingI)))
 			{
-				commonTell(mob,_("That's can't be refitted with this skill."));
+				commonTell(mob,L("That's can't be refitted with this skill."));
 				return false;
 			}
 			if(!(buildingI instanceof Armor))
 			{
-				commonTell(mob,_("You don't know how to refit that sort of thing."));
+				commonTell(mob,L("You don't know how to refit that sort of thing."));
 				return false;
 			}
 			if(buildingI.phyStats().height()==0)
 			{
-				commonTell(mob,_("@x1 is already the right size.",buildingI.name(mob)));
+				commonTell(mob,L("@x1 is already the right size.",buildingI.name(mob)));
 				return false;
 			}
 			activity = CraftingActivity.REFITTING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr=_("<S-NAME> start(s) refitting @x1.",buildingI.name());
-			displayText=_("You are refitting @x1",buildingI.name());
-			verb=_("refitting @x1",buildingI.name());
+			startStr=L("<S-NAME> start(s) refitting @x1.",buildingI.name());
+			displayText=L("You are refitting @x1",buildingI.name());
+			verb=L("refitting @x1",buildingI.name());
 		}
 		else
 		{
@@ -593,7 +593,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,_("You don't know how to @x1 a '@x2'.  Try \"@x3 list\" for a list.",noun.toLowerCase(),recipeName,noun.toLowerCase()));
+				commonTell(mob,L("You don't know how to @x1 a '@x2'.  Try \"@x3 list\" for a list.",noun.toLowerCase(),recipeName,noun.toLowerCase()));
 				return false;
 			}
 
@@ -626,7 +626,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(buildingI==null)
 			{
-				commonTell(mob,_("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
+				commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
@@ -636,11 +636,11 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			else
 				itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);
-			startStr=_("<S-NAME> start(s) @x1 @x2.",verbing,buildingI.name());
-			displayText=_("You are @x1 @x2",verbing,buildingI.name());
+			startStr=L("<S-NAME> start(s) @x1 @x2.",verbing,buildingI.name());
+			displayText=L("You are @x1 @x2",verbing,buildingI.name());
 			playSound=(String)V(ID,V_SOND);
 			verb=verbing+" "+buildingI.name();
-			buildingI.setDisplayText(_("@x1 lies here",itemName));
+			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
 			buildingI.basePhyStats().setWeight(getStandardWeight(numRequired, bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
@@ -673,9 +673,9 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 					((Container)buildingI).setKeyName(Double.toString(Math.random()));
 					key=(DoorKey)CMClass.getItem("GenKey");
 					key.setKey(((Container)buildingI).keyName());
-					key.setName(_("a key"));
-					key.setDisplayText(_("a small key sits here"));
-					key.setDescription(_("looks like a key to @x1",buildingI.name()));
+					key.setName(L("a key"));
+					key.setDisplayText(L("a small key sits here"));
+					key.setDescription(L("looks like a key to @x1",buildingI.name()));
 					key.recoverPhyStats();
 					key.text();
 				}
@@ -734,9 +734,9 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		{
 			messedUp=false;
 			duration=1;
-			verb=_("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
-			startStr=_("<S-NAME> start(s) @x1.",verb);
-			displayText=_("You are @x1",verb);
+			verb=L("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
+			startStr=L("<S-NAME> start(s) @x1.",verb);
+			displayText=L("You are @x1",verb);
 		}
 
 		if(parsedVars.autoGenerate>0)

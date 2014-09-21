@@ -35,9 +35,9 @@ import java.util.*;
 public class Thief_Sap extends ThiefSkill implements HealthCondition
 {
 	@Override public String ID() { return "Thief_Sap"; }
-	private final static String localizedName = CMLib.lang()._("Sap");
+	private final static String localizedName = CMLib.lang().L("Sap");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Knocked out)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Knocked out)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -72,7 +72,7 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 			||(msg.sourceMajor(CMMsg.MASK_MOVE)))
 			{
 				if(msg.sourceMessage()!=null)
-					mob.tell(_("You are way too drowsy."));
+					mob.tell(L("You are way too drowsy."));
 				return false;
 			}
 		}
@@ -104,11 +104,11 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> regain(s) consciousness."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> regain(s) consciousness."));
 				CMLib.commands().postStand(mob,true);
 			}
 			else
-				mob.tell(_("You regain consciousness."));
+				mob.tell(L("You regain consciousness."));
 		}
 	}
 
@@ -139,19 +139,19 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 		{
 			if(mob.isInCombat())
 			{
-				mob.tell(_("Not while you are fighting!"));
+				mob.tell(L("Not while you are fighting!"));
 				return false;
 			}
 
 			if(CMLib.flags().canBeSeenBy(mob,target))
 			{
-				mob.tell(_("@x1 is watching you way too closely.",target.name(mob)));
+				mob.tell(L("@x1 is watching you way too closely.",target.name(mob)));
 				return false;
 			}
 
 			if(mob.baseWeight()<(target.baseWeight()-100))
 			{
-				mob.tell(_("@x1 is too big to knock out!",target.name(mob)));
+				mob.tell(L("@x1 is too big to knock out!",target.name(mob)));
 				return false;
 			}
 		}
@@ -178,14 +178,14 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT|CMMsg.MASK_SOUND|CMMsg.MSK_MALICIOUS_MOVE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":_("^F^<FIGHT^><S-NAME> sneak(s) up behind <T-NAMESELF> and whack(s) <T-HIM-HER> on the head!^</FIGHT^>^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT|CMMsg.MASK_SOUND|CMMsg.MSK_MALICIOUS_MOVE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("^F^<FIGHT^><S-NAME> sneak(s) up behind <T-NAMESELF> and whack(s) <T-HIM-HER> on the head!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					target.location().show(target,null, CMMsg.MSG_OK_ACTION,_("<S-NAME> hit(s) the floor!"));
+					target.location().show(target,null, CMMsg.MSG_OK_ACTION,L("<S-NAME> hit(s) the floor!"));
 					success=maliciousAffect(mob,target,asLevel,3,-1);
 					final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 					MOB M=null;
@@ -199,7 +199,7 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> sneak(s) up and attempt(s) to knock <T-NAMESELF> out, but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> sneak(s) up and attempt(s) to knock <T-NAMESELF> out, but fail(s)."));
 
 		// return whether it worked
 		return success;

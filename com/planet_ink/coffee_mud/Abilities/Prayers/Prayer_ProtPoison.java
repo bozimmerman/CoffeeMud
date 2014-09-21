@@ -36,9 +36,9 @@ import java.util.*;
 public class Prayer_ProtPoison extends Prayer
 {
 	@Override public String ID() { return "Prayer_ProtPoison"; }
-	private final static String localizedName = CMLib.lang()._("Protection Poison");
+	private final static String localizedName = CMLib.lang().L("Protection Poison");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Protection/Poison)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Protection/Poison)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -57,7 +57,7 @@ public class Prayer_ProtPoison extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your natural defences against poison take over."));
+			mob.tell(L("Your natural defences against poison take over."));
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class Prayer_ProtPoison extends Prayer
 			   &&(CMLib.dice().rollPercentage()>50)
 			   &&((msg.targetMinor()==CMMsg.TYP_POISON)))
 			{
-				msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> magically repell(s) the poison."));
+				msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> magically repell(s) the poison."));
 				return false;
 			}
 
@@ -99,7 +99,7 @@ public class Prayer_ProtPoison extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> protection from poison."));
+			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> protection from poison."));
 			return false;
 		}
 
@@ -114,7 +114,7 @@ public class Prayer_ProtPoison extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> attain(s) a anitidotal protection."):_("^S<S-NAME> @x1 for protection from poisons.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> attain(s) a anitidotal protection."):L("^S<S-NAME> @x1 for protection from poisons.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -122,7 +122,7 @@ public class Prayer_ProtPoison extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for protection from poisons, but go(es) unanswered.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for protection from poisons, but go(es) unanswered.",prayWord(mob)));
 
 
 		// return whether it worked

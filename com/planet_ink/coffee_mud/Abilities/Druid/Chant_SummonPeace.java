@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_SummonPeace extends Chant
 {
 	@Override public String ID() { return "Chant_SummonPeace"; }
-	private final static String localizedName = CMLib.lang()._("Summon Peace");
+	private final static String localizedName = CMLib.lang().L("Summon Peace");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -66,7 +66,7 @@ public class Chant_SummonPeace extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?_("A feeling of peace descends."):_("^S<S-NAME> chant(s) for peace.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?L("A feeling of peace descends."):L("^S<S-NAME> chant(s) for peace.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -75,14 +75,14 @@ public class Chant_SummonPeace extends Chant
 					final MOB inhab=mob.location().fetchInhabitant(i);
 					if((inhab!=null)&&(inhab.isInCombat()))
 					{
-						inhab.tell(_("You feel at peace."));
+						inhab.tell(L("You feel at peace."));
 						inhab.makePeace();
 					}
 				}
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) for peace, but nothing happens."));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) for peace, but nothing happens."));
 
 
 		// return whether it worked

@@ -38,7 +38,7 @@ import java.util.*;
 public class Prayer_Heresy extends Prayer
 {
 	@Override public String ID() { return "Prayer_Heresy"; }
-	private final static String localizedName = CMLib.lang()._("Heresy");
+	private final static String localizedName = CMLib.lang().L("Heresy");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	@Override protected int canAffectCode(){return 0;}
@@ -64,7 +64,7 @@ public class Prayer_Heresy extends Prayer
 		final MOB oldVictim=mob.getVictim();
 		if((success)&&(B!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> accuse(s) <T-NAMESELF> of heresy@x1!^?",againstTheGods(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> accuse(s) <T-NAMESELF> of heresy@x1!^?",againstTheGods(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -101,7 +101,7 @@ public class Prayer_Heresy extends Prayer
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> accuse(s) <T-NAMESELF> of heresy@x1, but nothing happens.",againstTheGods(mob)));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> accuse(s) <T-NAMESELF> of heresy@x1, but nothing happens.",againstTheGods(mob)));
 		mob.setVictim(oldVictim);
 		if(oldVictim==null) mob.makePeace();
 

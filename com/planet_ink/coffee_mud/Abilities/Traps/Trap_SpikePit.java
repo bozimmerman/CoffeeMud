@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_SpikePit extends Trap_RoomPit
 {
 	@Override public String ID() { return "Trap_SpikePit"; }
-	private final static String localizedName = CMLib.lang()._("spike pit");
+	private final static String localizedName = CMLib.lang().L("spike pit");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -99,7 +99,7 @@ public class Trap_SpikePit extends Trap_RoomPit
 		{
 			if(getDagger(mob)==null)
 			{
-				mob.tell(_("You'll need to set down some dagger-class weapons first."));
+				mob.tell(L("You'll need to set down some dagger-class weapons first."));
 				return false;
 			}
 		}
@@ -110,10 +110,10 @@ public class Trap_SpikePit extends Trap_RoomPit
 	public void finishSpringing(MOB target)
 	{
 		if((!invoker().mayIFight(target))||(target.phyStats().weight()<5))
-			target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> float(s) gently into the pit!"));
+			target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> float(s) gently into the pit!"));
 		else
 		{
-			target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> hit(s) the pit floor!"));
+			target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> hit(s) the pit floor!"));
 			int damage=CMLib.dice().roll(trapLevel()+abilityCode(),6,1);
 			if((daggerDamages!=null)&&(daggerDamages.size()>0))
 			{

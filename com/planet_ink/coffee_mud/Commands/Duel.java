@@ -48,7 +48,7 @@ public class Duel extends StdCommand
 		MOB target=null;
 		if(commands.size()<2)
 		{
-			mob.tell(_("Duel whom?"));
+			mob.tell(L("Duel whom?"));
 			return false;
 		}
 
@@ -56,15 +56,15 @@ public class Duel extends StdCommand
 		target=mob.location().fetchInhabitant(whomToKill);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("I don't see '@x1' here.",whomToKill));
+			mob.tell(L("I don't see '@x1' here.",whomToKill));
 			return false;
 		}
 
 		if(mob==target)
-			mob.tell(_("You may not duel yourself."));
+			mob.tell(L("You may not duel yourself."));
 		else
 		if((mob.isMonster()))
-			mob.tell(_("You are not allowed to duel @x1.",target.name(mob)));
+			mob.tell(L("You are not allowed to duel @x1.",target.name(mob)));
 		else
 		{
 			final Tattoo uiT=target.findTattoo("IDUEL");
@@ -77,14 +77,14 @@ public class Duel extends StdCommand
 				mob.addTattoo(new Tattoo("IDUEL",duelTicks));
 				target.addTattoo(new Tattoo("UDUEL",duelTicks));
 				final long time = CMProps.getTickMillis() * duelTicks;
-				mob.location().show(mob, target, CMMsg.MSG_DUELCHALLENGE, _("^X<S-NAME> <S-HAS-HAVE> challenged <T-NAME> to a duel, which <T-HE-SHE> <T-HAS-HAVE> @x1 seconds to consider.^.^N",""+(time/1000)));
-				target.tell(_("^NEnter ^HDUEL @x1^N to accept this challenge and begin fighting.",mob.name(target)));
+				mob.location().show(mob, target, CMMsg.MSG_DUELCHALLENGE, L("^X<S-NAME> <S-HAS-HAVE> challenged <T-NAME> to a duel, which <T-HE-SHE> <T-HAS-HAVE> @x1 seconds to consider.^.^N",""+(time/1000)));
+				target.tell(L("^NEnter ^HDUEL @x1^N to accept this challenge and begin fighting.",mob.name(target)));
 				return true;
 			}
 			else
 			if((uiT != null)&&(iuT != null))
 			{
-				target.tell(mob,target,null,_("^X<T-NAME> <T-HAS-HAVE> ACCEPTED <T-YOUPOSS> CHALLENGE!^.^N"));
+				target.tell(mob,target,null,L("^X<T-NAME> <T-HAS-HAVE> ACCEPTED <T-YOUPOSS> CHALLENGE!^.^N"));
 				final Item weapon=mob.fetchWieldedItem();
 				if(weapon==null)
 				{
@@ -109,13 +109,13 @@ public class Duel extends StdCommand
 			else
 			if(uiT!=null)
 			{
-				mob.tell(mob,target,null,_("<T-NAME> is awaiting a response to a previous challenge and cannot be challenged at this time."));
+				mob.tell(mob,target,null,L("<T-NAME> is awaiting a response to a previous challenge and cannot be challenged at this time."));
 				return false;
 			}
 			else
 			if(uuT!=null)
 			{
-				mob.tell(mob,target,null,_("<T-NAME> is considering a response to a previous challenger and cannot be challenged at this time."));
+				mob.tell(mob,target,null,L("<T-NAME> is considering a response to a previous challenger and cannot be challenged at this time."));
 				return false;
 			}
 			else
@@ -123,7 +123,7 @@ public class Duel extends StdCommand
 			{
 				final int duelTicks=CMProps.getIntVar(CMProps.Int.DUELTICKDOWN);
 				final long time = CMProps.getTickMillis() * duelTicks;
-				mob.tell(mob,target,null,_("Your previous challenge has not yet expired.  Please wait @x1 seconds longer and try again.",""+(time/1000)));
+				mob.tell(mob,target,null,L("Your previous challenge has not yet expired.  Please wait @x1 seconds longer and try again.",""+(time/1000)));
 				return false;
 			}
 		}

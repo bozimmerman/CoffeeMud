@@ -37,7 +37,7 @@ import java.util.*;
 public class Apprentice extends StdCharClass
 {
 	@Override public String ID(){return "Apprentice";}
-	private final static String localizedStaticName = CMLib.lang()._("Apprentice");
+	private final static String localizedStaticName = CMLib.lang().L("Apprentice");
 	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return "Commoner";}
 	@Override public int getBonusPracLevel(){return 5;}
@@ -85,7 +85,7 @@ public class Apprentice extends StdCharClass
 			if(currentApprentices.contains(ticking))
 			{
 				currentApprentices.remove(ticking);
-				((MOB)ticking).tell(_("\n\r\n\r^ZYou are no longer an apprentice!!!!^N\n\r\n\r"));
+				((MOB)ticking).tell(L("\n\r\n\r^ZYou are no longer an apprentice!!!!^N\n\r\n\r"));
 				CMLib.leveler().postExperience((MOB)ticking,null,null,1000,false);
 			}
 		}

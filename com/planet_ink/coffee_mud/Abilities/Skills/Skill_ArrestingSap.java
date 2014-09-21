@@ -37,9 +37,9 @@ import java.util.*;
 public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 {
 	@Override public String ID() { return "Skill_ArrestingSap"; }
-	private final static String localizedName = CMLib.lang()._("Arresting Sap");
+	private final static String localizedName = CMLib.lang().L("Arresting Sap");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return _("(Knocked out: "+tickDown+")"); }
+	@Override public String displayText() { return L("(Knocked out: "+tickDown+")"); }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -77,7 +77,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 			||(msg.sourceMajor(CMMsg.MASK_MOVE)))
 			{
 				if(msg.sourceMessage()!=null)
-					mob.tell(_("You are way too drowsy."));
+					mob.tell(L("You are way too drowsy."));
 				return false;
 			}
 		}
@@ -90,7 +90,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 			&&(affected instanceof MOB)))
 			{
 				if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))&&(affected!=msg.source()))
-					msg.source().tell((MOB)affected,null,null,_("<S-NAME> is already out!"));
+					msg.source().tell((MOB)affected,null,null,L("<S-NAME> is already out!"));
 				makeMyPeace((MOB)affected);
 				return false;
 			}
@@ -139,13 +139,13 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> regain(s) consciousness."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> regain(s) consciousness."));
 				CMLib.commands().postStand(mob,true);
 				if((utterSafety)&&(mob.isMonster()))
 					CMLib.tracking().wanderAway(mob,false,true);
 			}
 			else
-				mob.tell(_("You regain consciousness."));
+				mob.tell(L("You regain consciousness."));
 		}
 	}
 
@@ -200,12 +200,12 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 		{
 			if(mob.baseWeight()<(target.baseWeight()-450))
 			{
-				mob.tell(_("@x1 is way to big to knock out!",target.name(mob)));
+				mob.tell(L("@x1 is way to big to knock out!",target.name(mob)));
 				return false;
 			}
 			if(Skill_Arrest.getWarrantsOf(target, CMLib.law().getLegalObject(mob.location().getArea())).size()==0)
 			{
-				mob.tell(_("@x1 has no warrants out here.",target.name(mob)));
+				mob.tell(L("@x1 has no warrants out here.",target.name(mob)));
 				return false;
 			}
 		}
@@ -225,7 +225,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:CMMsg.MASK_MALICIOUS),(mob==target)?_("<T-NAME> hit(s) the floor!"):_("^F^<FIGHT^><S-NAME> rear(s) back and sap(s) <T-NAMESELF>, knocking <T-HIM-HER> out!^</FIGHT^>^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:CMMsg.MASK_MALICIOUS),(mob==target)?L("<T-NAME> hit(s) the floor!"):L("^F^<FIGHT^><S-NAME> rear(s) back and sap(s) <T-NAMESELF>, knocking <T-HIM-HER> out!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(target.riding()!=null)
 				msg.addTrailerMsg(CMClass.getMsg(target,target.riding(),CMMsg.TYP_DISMOUNT,null));
@@ -242,7 +242,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> rear(s) back and attempt(s) to knock <T-NAMESELF> out, but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> rear(s) back and attempt(s) to knock <T-NAMESELF> out, but fail(s)."));
 
 		// return whether it worked
 		return success;

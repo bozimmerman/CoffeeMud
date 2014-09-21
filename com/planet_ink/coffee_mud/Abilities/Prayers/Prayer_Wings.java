@@ -36,9 +36,9 @@ import java.util.*;
 public class Prayer_Wings extends Prayer
 {
 	@Override public String ID() { return "Prayer_Wings"; }
-	private final static String localizedName = CMLib.lang()._("Wings");
+	private final static String localizedName = CMLib.lang().L("Wings");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Wings)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Wings)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -59,7 +59,7 @@ public class Prayer_Wings extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> wings vanish."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> wings vanish."));
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class Prayer_Wings extends Prayer
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> wings."));
+			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> wings."));
 			return false;
 		}
 
@@ -92,16 +92,16 @@ public class Prayer_Wings extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 that <T-NAME> be given the gift of flight.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 that <T-NAME> be given the gift of flight.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> grow(s) an enormous pair of wings!"));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> grow(s) an enormous pair of wings!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for wings, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for wings, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
 
 
 		// return whether it worked

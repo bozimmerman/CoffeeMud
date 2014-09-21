@@ -51,7 +51,7 @@ public class ClanWho extends Who
 		{
 			final Clan C=CMLib.clans().findClan(clanName);
 			if(C==null)
-				mob.tell(_("There's no such clan as '@x1'.",clanName));
+				mob.tell(L("There's no such clan as '@x1'.",clanName));
 			else
 				clanList.add(C.clanID());
 		}
@@ -61,7 +61,7 @@ public class ClanWho extends Who
 				clanList.add(c.first.clanID());
 			if(clanList.size()==0)
 			{
-				mob.tell(_("You need to specify a clan."));
+				mob.tell(L("You need to specify a clan."));
 				return false;
 			}
 		}

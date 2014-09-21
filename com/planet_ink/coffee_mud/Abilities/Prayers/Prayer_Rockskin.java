@@ -36,9 +36,9 @@ import java.util.*;
 public class Prayer_Rockskin extends Prayer
 {
 	@Override public String ID() { return "Prayer_Rockskin"; }
-	private final static String localizedName = CMLib.lang()._("Rockskin");
+	private final static String localizedName = CMLib.lang().L("Rockskin");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Rockskin)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Rockskin)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
@@ -67,7 +67,7 @@ public class Prayer_Rockskin extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> skin softens."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> skin softens."));
 	}
 
 
@@ -90,7 +90,7 @@ public class Prayer_Rockskin extends Prayer
 			&&(msg.tool() instanceof Weapon))
 			{
 				msg.modify(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
-				msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),msg.source(),CMMsg.MSG_OK_VISUAL,_("The rock skin around <S-NAME> absorbs the attack from <T-NAME>.")));
+				msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),msg.source(),CMMsg.MSG_OK_VISUAL,L("The rock skin around <S-NAME> absorbs the attack from <T-NAME>.")));
 				if((--HitsRemaining)<=0)
 					unInvoke();
 			}
@@ -121,17 +121,17 @@ public class Prayer_Rockskin extends Prayer
 			// what happened.
 			invoker=mob;
 
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 wave(s) <S-HIS-HER> hands around <T-NAMESELF>.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 wave(s) <S-HIS-HER> hands around <T-NAMESELF>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> watch(es) <S-HIS-HER> skin turn hard as rock!"));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> watch(es) <S-HIS-HER> skin turn hard as rock!"));
 				HitsRemaining=3+(adjustedLevel(mob,asLevel)/10);
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1, but fail(s) miserably.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1, but fail(s) miserably.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

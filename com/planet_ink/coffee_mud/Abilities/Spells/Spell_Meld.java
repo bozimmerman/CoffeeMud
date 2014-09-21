@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_Meld extends Spell
 {
 	@Override public String ID() { return "Spell_Meld"; }
-	private final static String localizedName = CMLib.lang()._("Meld");
+	private final static String localizedName = CMLib.lang().L("Meld");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
@@ -83,19 +83,19 @@ public class Spell_Meld extends Spell
 		//
 		if(commands.size()<2)
 		{
-			mob.tell(_("Meld what and what else together?"));
+			mob.tell(L("Meld what and what else together?"));
 			return false;
 		}
 		final Item itemOne=mob.findItem(null,(String)commands.elementAt(0));
 		if((itemOne==null)||(!CMLib.flags().canBeSeenBy(itemOne,mob)))
 		{
-			mob.tell(_("You don't seem to have a '@x1'.",((String)commands.elementAt(0))));
+			mob.tell(L("You don't seem to have a '@x1'.",((String)commands.elementAt(0))));
 			return false;
 		}
 		final Item itemTwo=mob.findItem(null,CMParms.combine(commands,1));
 		if((itemTwo==null)||(!CMLib.flags().canBeSeenBy(itemTwo,mob)))
 		{
-			mob.tell(_("You don't seem to have a '@x1'.",CMParms.combine(commands,1)));
+			mob.tell(L("You don't seem to have a '@x1'.",CMParms.combine(commands,1)));
 			return false;
 		}
 
@@ -107,12 +107,12 @@ public class Spell_Meld extends Spell
 			final Armor armorTwo=(Armor)itemTwo;
 			if(armorOne.getClothingLayer()!=armorTwo.getClothingLayer())
 			{
-				mob.tell(_("This spell can only be cast on items worn at the same layer."));
+				mob.tell(L("This spell can only be cast on items worn at the same layer."));
 				return false;
 			}
 			if(armorOne.getLayerAttributes()!=armorTwo.getLayerAttributes())
 			{
-				mob.tell(_("Those items are too different to meld together."));
+				mob.tell(L("Those items are too different to meld together."));
 				return false;
 			}
 
@@ -135,7 +135,7 @@ public class Spell_Meld extends Spell
 			}
 			else
 			{
-				mob.tell(_("@x1 and @x2 aren't worn in compatible places, and thus can't be melded.",itemOne.name(),itemTwo.name()));
+				mob.tell(L("@x1 and @x2 aren't worn in compatible places, and thus can't be melded.",itemOne.name(),itemTwo.name()));
 				return false;
 			}
 		}
@@ -144,22 +144,22 @@ public class Spell_Meld extends Spell
 		{
 			if(!itemOne.fitsOn(Wearable.WORN_HELD))
 			{
-				mob.tell(_("@x1 can't be held, and thus can't be melded with @x2.",itemOne.name(),itemTwo.name()));
+				mob.tell(L("@x1 can't be held, and thus can't be melded with @x2.",itemOne.name(),itemTwo.name()));
 				return false;
 			}
 			if(!itemTwo.fitsOn(Wearable.WORN_HELD))
 			{
-				mob.tell(_("@x1 can't be held, and thus can't be melded with @x2.",itemTwo.name(),itemOne.name()));
+				mob.tell(L("@x1 can't be held, and thus can't be melded with @x2.",itemTwo.name(),itemOne.name()));
 				return false;
 			}
 			if(itemOne.rawLogicalAnd())
 			{
-				mob.tell(_("@x1 is two handed, and thus can't be melded with @x2.",itemOne.name(),itemTwo.name()));
+				mob.tell(L("@x1 is two handed, and thus can't be melded with @x2.",itemOne.name(),itemTwo.name()));
 				return false;
 			}
 			if(itemTwo.rawLogicalAnd())
 			{
-				mob.tell(_("@x1 is two handed, and thus can't be melded with @x2.",itemTwo.name(),itemOne.name()));
+				mob.tell(L("@x1 is two handed, and thus can't be melded with @x2.",itemTwo.name(),itemOne.name()));
 				return false;
 			}
 		}
@@ -170,13 +170,13 @@ public class Spell_Meld extends Spell
 		}
 		else
 		{
-			mob.tell(_("You can't meld those together."));
+			mob.tell(L("You can't meld those together."));
 			return false;
 		}
 
 		if(itemOne==itemTwo)
 		{
-			mob.tell(_("You can't meld something to itself."));
+			mob.tell(L("You can't meld something to itself."));
 			return false;
 		}
 
@@ -196,7 +196,7 @@ public class Spell_Meld extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,itemOne,this,verbalCastCode(mob,itemOne,auto),_("^S<S-NAME> meld(s) @x1 and @x2.^?",itemOne.name(),itemTwo.name()));
+			final CMMsg msg=CMClass.getMsg(mob,itemOne,this,verbalCastCode(mob,itemOne,auto),L("^S<S-NAME> meld(s) @x1 and @x2.^?",itemOne.name(),itemTwo.name()));
 			final CMMsg msg2=CMClass.getMsg(mob,itemTwo,this,verbalCastCode(mob,itemOne,auto),null);
 			if(mob.location().okMessage(mob,msg)&&mob.location().okMessage(mob,msg2))
 			{
@@ -266,8 +266,8 @@ public class Spell_Meld extends Spell
 					final Armor gc=CMClass.getArmor("GenArmor");
 					gc.setMaterial(material);
 					gc.setName(newName);
-					gc.setDisplayText(_("@x1 sits here.",newName));
-					gc.setDescription(_("It looks like someone melded @x1 and @x2",itemOneName,itemTwoName));
+					gc.setDisplayText(L("@x1 sits here.",newName));
+					gc.setDescription(L("It looks like someone melded @x1 and @x2",itemOneName,itemTwoName));
 					gc.setSecretIdentity(itemOne.rawSecretIdentity()+", "+itemTwo.rawSecretIdentity());
 					gc.setBaseValue(itemOne.baseGoldValue()+itemTwo.baseGoldValue());
 					gc.basePhyStats().setWeight(itemOne.basePhyStats().weight()+itemTwo.basePhyStats().weight());
@@ -297,8 +297,8 @@ public class Spell_Meld extends Spell
 					final Weapon gc=CMClass.getWeapon("GenWeapon");
 					gc.setMaterial(material);
 					gc.setName(newName);
-					gc.setDisplayText(_("@x1 sits here.",newName));
-					gc.setDescription(_("It looks like someone melded @x1 and @x2",itemOneName,itemTwoName));
+					gc.setDisplayText(L("@x1 sits here.",newName));
+					gc.setDescription(L("It looks like someone melded @x1 and @x2",itemOneName,itemTwoName));
 					gc.setSecretIdentity(itemOne.rawSecretIdentity()+", "+itemTwo.rawSecretIdentity());
 					gc.setBaseValue(itemOne.baseGoldValue()+itemTwo.baseGoldValue());
 					gc.basePhyStats().setWeight(itemOne.basePhyStats().weight()+itemTwo.basePhyStats().weight());
@@ -345,8 +345,8 @@ public class Spell_Meld extends Spell
 					final Container gc=(Container)CMClass.getItem("GenContainer");
 					gc.setMaterial(material);
 					gc.setName(newName);
-					gc.setDisplayText(_("@x1 sits here.",newName));
-					gc.setDescription(_("It looks like someone melded @x1 and @x2",itemOneName,itemTwoName));
+					gc.setDisplayText(L("@x1 sits here.",newName));
+					gc.setDescription(L("It looks like someone melded @x1 and @x2",itemOneName,itemTwoName));
 					CMLib.flags().setGettable(gc,CMLib.flags().isGettable(itemOne)&&CMLib.flags().isGettable(itemTwo));
 					gc.setBaseValue(itemOne.baseGoldValue()+itemTwo.baseGoldValue());
 					gc.basePhyStats().setWeight(itemOne.basePhyStats().weight()+itemTwo.basePhyStats().weight());
@@ -397,7 +397,7 @@ public class Spell_Meld extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) @x1 and @x2, but fail(s).",itemOne.name(),itemTwo.name()));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) @x1 and @x2, but fail(s).",itemOne.name(),itemTwo.name()));
 
 		// return whether it worked
 		return success;

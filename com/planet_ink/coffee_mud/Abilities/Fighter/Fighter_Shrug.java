@@ -36,9 +36,9 @@ import java.util.*;
 public class Fighter_Shrug extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Shrug"; }
-	private final static String localizedName = CMLib.lang()._("Shrug Off");
+	private final static String localizedName = CMLib.lang().L("Shrug Off");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Braced for a hit)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Braced for a hit)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	private static final String[] triggerStrings =_i(new String[] {"BRACE"});
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -61,7 +61,7 @@ public class Fighter_Shrug extends FighterSkill
 		&&(msg.tool() instanceof Weapon))
 		{
 			final MOB mob=(MOB)affected;
-			if(mob.location().show(mob,msg.source(),this,CMMsg.MSG_OK_ACTION,_("<S-NAME> shrug(s) off the attack from <T-NAME>.")))
+			if(mob.location().show(mob,msg.source(),this,CMMsg.MSG_OK_ACTION,L("<S-NAME> shrug(s) off the attack from <T-NAME>.")))
 			{
 				unInvoke();
 				return false;
@@ -86,7 +86,7 @@ public class Fighter_Shrug extends FighterSkill
 	{
 		if((!auto)&&(!mob.isInCombat()))
 		{
-			mob.tell(_("You must be in combat first!"));
+			mob.tell(L("You must be in combat first!"));
 			return false;
 		}
 
@@ -109,7 +109,7 @@ public class Fighter_Shrug extends FighterSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,auto?_("<T-NAME> is braced for an attack!"):_("<S-NAME> brace(s) for an attack!"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,auto?L("<T-NAME> is braced for an attack!"):L("<S-NAME> brace(s) for an attack!"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -117,7 +117,7 @@ public class Fighter_Shrug extends FighterSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to brace <S-HIM-HERSELF>, but get(s) distracted."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to brace <S-HIM-HERSELF>, but get(s) distracted."));
 
 		// return whether it worked
 		return success;

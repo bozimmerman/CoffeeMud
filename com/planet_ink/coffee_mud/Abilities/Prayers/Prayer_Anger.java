@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Anger extends Prayer
 {
 	@Override public String ID() { return "Prayer_Anger"; }
-	private final static String localizedName = CMLib.lang()._("Anger");
+	private final static String localizedName = CMLib.lang().L("Anger");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -84,7 +84,7 @@ public class Prayer_Anger extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?_("A feeling of anger descends"):_("^S<S-NAME> rage(s) for anger.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?L("A feeling of anger descends"):L("^S<S-NAME> rage(s) for anger.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -108,7 +108,7 @@ public class Prayer_Anger extends Prayer
 						final CMMsg amsg=CMClass.getMsg(mob,inhab,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 						if((target!=null)&&(mob.location().okMessage(mob,amsg)))
 						{
-							inhab.tell(_("You feel angry."));
+							inhab.tell(L("You feel angry."));
 							inhab.setVictim(target);
 						}
 					}
@@ -116,7 +116,7 @@ public class Prayer_Anger extends Prayer
 			}
 		}
 		else
-			maliciousFizzle(mob,null,_("<S-NAME> @x1 for rage, but nothing happens.",prayWord(mob)));
+			maliciousFizzle(mob,null,L("<S-NAME> @x1 for rage, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

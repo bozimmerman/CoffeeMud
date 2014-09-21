@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_SlowProjectiles extends Spell
 {
 	@Override public String ID() { return "Spell_SlowProjectiles"; }
-	private final static String localizedName = CMLib.lang()._("Slow Projectiles");
+	private final static String localizedName = CMLib.lang().L("Slow Projectiles");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Slow Projectiles)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Slow Projectiles)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
@@ -59,9 +59,9 @@ public class Spell_SlowProjectiles extends Spell
 		&&(!msg.source().amDead()))
 		{
 			if(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN)
-				msg.source().location().show(msg.source(),null,msg.tool(),CMMsg.MSG_OK_VISUAL,_("<O-NAME> flies slowly by."));
+				msg.source().location().show(msg.source(),null,msg.tool(),CMMsg.MSG_OK_VISUAL,L("<O-NAME> flies slowly by."));
 			else
-				msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_VISUAL,_("The shot from @x1 flies slowly by.",msg.tool().name()));
+				msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_VISUAL,L("The shot from @x1 flies slowly by.",msg.tool().name()));
 			final int damage=(msg.value())/2;
 			msg.setValue(damage);
 		}
@@ -77,7 +77,7 @@ public class Spell_SlowProjectiles extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,null,null,_("Projectiles are already slow here!"));
+			mob.tell(mob,null,null,L("Projectiles are already slow here!"));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -86,7 +86,7 @@ public class Spell_SlowProjectiles extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> incant(s) slowly.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> incant(s) slowly.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -94,7 +94,7 @@ public class Spell_SlowProjectiles extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a field of slowness, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a field of slowness, but fail(s)."));
 
 		return success;
 	}

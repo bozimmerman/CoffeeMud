@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Toadstool extends Spell
 {
 	@Override public String ID() { return "Spell_Toadstool"; }
-	private final static String localizedName = CMLib.lang()._("Toadstool");
+	private final static String localizedName = CMLib.lang().L("Toadstool");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Toadstool)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Toadstool)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -53,9 +53,9 @@ public class Spell_Toadstool extends Spell
 		if(newRace!=null)
 		{
 			if(affected.name().indexOf(' ')>0)
-				affectableStats.setName(_("a @x1 called @x2",newRace.name(),affected.name()));
+				affectableStats.setName(L("a @x1 called @x2",newRace.name(),affected.name()));
 			else
-				affectableStats.setName(_("@x1 the @x2",affected.name(),newRace.name()));
+				affectableStats.setName(L("@x1 the @x2",affected.name(),newRace.name()));
 			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			newRace.setHeightWeight(affectableStats,'M');
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
@@ -96,7 +96,7 @@ public class Spell_Toadstool extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> morph(s) back into <S-HIM-HERSELF> again."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> morph(s) back into <S-HIM-HERSELF> again."));
 	}
 
 	@Override
@@ -107,7 +107,7 @@ public class Spell_Toadstool extends Spell
 
 		if(target.baseCharStats().getMyRace() != target.charStats().getMyRace())
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already polymorphed."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already polymorphed."));
 			return false;
 		}
 
@@ -128,14 +128,14 @@ public class Spell_Toadstool extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> form(s) a spell around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> form(s) a spell around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
 					newRace=CMClass.getRace("Toadstool");
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> become(s) a @x1!",newRace.name()));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) a @x1!",newRace.name()));
 					success=beneficialAffect(mob,target,asLevel,0);
 					target.makePeace();
 					for(int i=0;i<mob.location().numInhabitants();i++)
@@ -151,7 +151,7 @@ public class Spell_Toadstool extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> form(s) a spell around <T-NAMESELF>, but the spell fizzles."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> form(s) a spell around <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

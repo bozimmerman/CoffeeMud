@@ -37,9 +37,9 @@ public class Fighter_CircleTrip extends FighterSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Fighter_CircleTrip"; }
-	private final static String localizedName = CMLib.lang()._("Circle Trip");
+	private final static String localizedName = CMLib.lang().L("Circle Trip");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Tripped)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Tripped)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -85,7 +85,7 @@ public class Fighter_CircleTrip extends FighterSkill
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> regain(s) <S-HIS-HER> feet."));
+				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> regain(s) <S-HIS-HER> feet."));
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
@@ -93,7 +93,7 @@ public class Fighter_CircleTrip extends FighterSkill
 				}
 			}
 			else
-				mob.tell(_("You regain your feet."));
+				mob.tell(L("You regain your feet."));
 		}
 	}
 
@@ -121,19 +121,19 @@ public class Fighter_CircleTrip extends FighterSkill
 	{
 		if(CMLib.flags().isSitting(mob))
 		{
-			mob.tell(_("You need to stand up!"));
+			mob.tell(L("You need to stand up!"));
 			return false;
 		}
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
 			return false;
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell(_("You are too far away to circle trip!"));
+			mob.tell(L("You are too far away to circle trip!"));
 			return false;
 		}
 		if(mob.charStats().getBodyPart(Race.BODY_LEG)<=1)
 		{
-			mob.tell(_("You need at least two legs to do this."));
+			mob.tell(L("You need at least two legs to do this."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -142,12 +142,12 @@ public class Fighter_CircleTrip extends FighterSkill
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth tripping."));
+			mob.tell(L("There doesn't appear to be anyone here worth tripping."));
 			return false;
 		}
 
 		boolean success=true;
-		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":_("^F^<FIGHT^><S-NAME> slide(s) into a circle trip!^<FIGHT^>^?"));
+		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("^F^<FIGHT^><S-NAME> slide(s) into a circle trip!^<FIGHT^>^?"));
 		CMLib.color().fixSourceFightColor(msg);
 		if(mob.location().okMessage(mob,msg))
 		{
@@ -158,18 +158,18 @@ public class Fighter_CircleTrip extends FighterSkill
 
 				if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
 				{
-					mob.tell(_("@x1 is already on the floor!",target.name(mob)));
+					mob.tell(L("@x1 is already on the floor!",target.name(mob)));
 					return false;
 				}
 
 				if(target.riding()!=null)
 				{
-					mob.tell(_("You can't trip someone @x1 @x2!",target.riding().stateString(target),target.riding().name()));
+					mob.tell(L("You can't trip someone @x1 @x2!",target.riding().stateString(target),target.riding().name()));
 					return false;
 				}
 				if(CMLib.flags().isInFlight(target))
 				{
-					mob.tell(_("@x1 is flying and can't be tripped!",target.name(mob)));
+					mob.tell(L("@x1 is flying and can't be tripped!",target.name(mob)));
 					return false;
 				}
 
@@ -184,17 +184,17 @@ public class Fighter_CircleTrip extends FighterSkill
 				success=success&&(target.charStats().getBodyPart(Race.BODY_LEG)>0);
 				if(success)
 				{
-					msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?_("<T-NAME> trip(s)!"):_("^F^<FIGHT^><S-NAME> trip(s) <T-NAMESELF>!^</FIGHT^>^?"));
+					msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?L("<T-NAME> trip(s)!"):L("^F^<FIGHT^><S-NAME> trip(s) <T-NAMESELF>!^</FIGHT^>^?"));
 					CMLib.color().fixSourceFightColor(msg);
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);
 						maliciousAffect(mob,target,asLevel,2,-1);
-						target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> hit(s) the floor!"));
+						target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> hit(s) the floor!"));
 					}
 				}
 				else
-					return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to circle trip <T-NAMESELF>, but fail(s)."));
+					return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to circle trip <T-NAMESELF>, but fail(s)."));
 			}
 		}
 		else

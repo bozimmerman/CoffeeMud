@@ -38,7 +38,7 @@ import java.util.*;
 public class Druid_RecoverVoice extends StdAbility
 {
 	@Override public String ID() { return "Druid_RecoverVoice"; }
-	private final static String localizedName = CMLib.lang()._("Recover Voice");
+	private final static String localizedName = CMLib.lang().L("Recover Voice");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return 0;}
@@ -94,7 +94,7 @@ public class Druid_RecoverVoice extends StdAbility
 
 		final List<Ability> offensiveAffects=returnOffensiveAffects(mob,mob);
 		if((!success)||(offensiveAffects.size()==0))
-			mob.tell(_("You failed in your vocal meditation."));
+			mob.tell(L("You failed in your vocal meditation."));
 		else
 		{
 			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.TYP_GENERAL|CMMsg.MASK_ALWAYS|CMMsg.MASK_MAGIC,null);

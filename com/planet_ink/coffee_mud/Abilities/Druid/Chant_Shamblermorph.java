@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_Shamblermorph extends Chant
 {
 	@Override public String ID() { return "Chant_Shamblermorph"; }
-	private final static String localizedName = CMLib.lang()._("Shamblermorph");
+	private final static String localizedName = CMLib.lang().L("Shamblermorph");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Shamblermorph)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Shamblermorph)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
@@ -71,9 +71,9 @@ public class Chant_Shamblermorph extends Chant
 		if((treeForm!=null)&&(affected instanceof MOB))
 		{
 			if(affected.name().indexOf(' ')>0)
-				affectableStats.setName(_("a shambling mound called @x1",affected.name()));
+				affectableStats.setName(L("a shambling mound called @x1",affected.name()));
 			else
-				affectableStats.setName(_("@x1 the shambling mound",affected.name()));
+				affectableStats.setName(L("@x1 the shambling mound",affected.name()));
 			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			treeForm.setHeightWeight(affectableStats,'M');
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
@@ -92,7 +92,7 @@ public class Chant_Shamblermorph extends Chant
 		if(canBeUninvoked())
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> no longer a shambling mound."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> no longer a shambling mound."));
 			CMLib.commands().postStand(mob,true);
 		}
 	}
@@ -122,13 +122,13 @@ public class Chant_Shamblermorph extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,(malicious?CMMsg.MASK_MALICIOUS:0)|verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) at <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(malicious?CMMsg.MASK_MALICIOUS:0)|verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) at <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("Leaves sprout from <S-YOUPOSS> skin as <S-HE-SHE> grow(s) into a Shambling Mound!"));
+					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("Leaves sprout from <S-YOUPOSS> skin as <S-HE-SHE> grow(s) into a Shambling Mound!"));
 					if(malicious)
 						maliciousAffect(mob,target,asLevel,0,-1);
 					else
@@ -139,9 +139,9 @@ public class Chant_Shamblermorph extends Chant
 		}
 		else
 		if(malicious)
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAMESELF>, but the magic fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAMESELF>, but the magic fades."));
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAMESELF>, but the magic fades."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAMESELF>, but the magic fades."));
 
 		// return whether it worked
 		return success;

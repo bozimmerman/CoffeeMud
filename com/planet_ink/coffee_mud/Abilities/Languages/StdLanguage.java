@@ -40,7 +40,7 @@ import java.util.*;
 public class StdLanguage extends StdAbility implements Language
 {
 	@Override public String ID() { return "StdLanguage"; }
-	private final static String localizedName = CMLib.lang()._("Languages");
+	private final static String localizedName = CMLib.lang().L("Languages");
 	@Override public String name() { return localizedName; }
 	@Override public String writtenName() { return name();}
 	private static final String[] triggerStrings =_i(new String[] {"SPEAK"});
@@ -257,7 +257,7 @@ public class StdLanguage extends StdAbility implements Language
 				final Ability A=a.nextElement();
 				if((A instanceof Language)&&(!A.ID().equals(ID())))
 				{
-					msg.source().tell(_("@x1 is already written in @x2 and can not have @x3 writing added.",P.name(msg.source()),A.name(),writtenName()));
+					msg.source().tell(L("@x1 is already written in @x2 and can not have @x3 writing added.",P.name(msg.source()),A.name(),writtenName()));
 					return false;
 				}
 			}
@@ -384,8 +384,8 @@ public class StdLanguage extends StdAbility implements Language
 		final int numLanguages=numLanguagesKnown(student);
 		if((C.maxLanguages()>0)&&(C.maxLanguages()<=numLanguages))
 		{
-			teacher.tell(_("@x1 can not learn any more languages.",student.name()));
-			student.tell(_("You may only learn @x1 languages.",""+C.maxLanguages()));
+			teacher.tell(L("@x1 can not learn any more languages.",student.name()));
+			student.tell(L("You may only learn @x1 languages.",""+C.maxLanguages()));
 			return false;
 		}
 		return true;
@@ -404,10 +404,10 @@ public class StdLanguage extends StdAbility implements Language
 			final int numLanguages=numLanguagesKnown(student);
 			final int remaining = C.maxLanguages() - numLanguages;
 			if(remaining<=0)
-				student.tell(_("@x1 may not learn any more languages.",student.name()));
+				student.tell(L("@x1 may not learn any more languages.",student.name()));
 			else
 			if(remaining<Integer.MAX_VALUE/2)
-				student.tell(_("@x1 may learn @x2 more languages.",student.name(),""+remaining));
+				student.tell(L("@x1 may learn @x2 more languages.",student.name(),""+remaining));
 		}
 	}
 
@@ -430,7 +430,7 @@ public class StdLanguage extends StdAbility implements Language
 				}
 			}
 			isAnAutoEffect=false;
-			mob.tell(_("You are now speaking @x1.",name()));
+			mob.tell(L("You are now speaking @x1.",name()));
 		}
 		else
 			setBeingSpoken(ID(),true);
@@ -444,7 +444,7 @@ public class StdLanguage extends StdAbility implements Language
 			String otherMes=msg.othersMessage();
 			if(msg.target()!=null)
 				otherMes=CMLib.coffeeFilter().fullOutFilter(null,(MOB)affected,msg.source(),msg.target(),msg.tool(),otherMes,false);
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.othersCode(),_("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,sourceWords),name()),CMMsg.NO_EFFECT,null));
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.othersCode(),L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,sourceWords),name()),CMMsg.NO_EFFECT,null));
 			return true;
 		}
 		return false;
@@ -457,7 +457,7 @@ public class StdLanguage extends StdAbility implements Language
 			String otherMes=msg.targetMessage();
 			if(msg.target()!=null)
 				otherMes=CMLib.coffeeFilter().fullOutFilter(null,(MOB)affected,msg.source(),msg.target(),msg.tool(),otherMes,false);
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.targetCode(),_("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,sourceWords),name()),CMMsg.NO_EFFECT,null));
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.targetCode(),L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,sourceWords),name()),CMMsg.NO_EFFECT,null));
 			return true;
 		}
 		return false;
@@ -467,7 +467,7 @@ public class StdLanguage extends StdAbility implements Language
 	{
 		if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
 		{
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),_("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(msg.othersMessage(),sourceWords),name())));
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(msg.othersMessage(),sourceWords),name())));
 			return true;
 		}
 		return false;
@@ -557,16 +557,16 @@ public class StdLanguage extends StdAbility implements Language
 			}
 			int numToMess=numChars(str);
 			if(numToMess==0)
-				msg.source().tell(_("There is nothing written on @x1.",affected.name()));
+				msg.source().tell(L("There is nothing written on @x1.",affected.name()));
 			else
 			{
 				if(L!=null)
 					numToMess=(int)Math.round(CMath.mul(numChars(str),CMath.div(100-L.getProficiency(ID()),100)));
 				final String original=messChars(ID(),str,numToMess);
 				str=scrambleAll(ID(),str,numToMess);
-				msg.source().tell(_("It says '@x1'",str));
+				msg.source().tell(L("It says '@x1'",str));
 				if((L!=null)&&(!original.equals(str)))
-					msg.source().tell(_("It says '@x1' (translated from @x2).",original,L.writtenName()));
+					msg.source().tell(L("It says '@x1' (translated from @x2).",original,L.writtenName()));
 			}
 		}
 	}

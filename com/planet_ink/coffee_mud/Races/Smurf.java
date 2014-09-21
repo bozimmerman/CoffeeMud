@@ -69,35 +69,35 @@ public class Smurf extends StdRace
 					case 1:
 					case 2:
 					case 3:
-					naturalWeapon.setName(_("a smurfy punch"));
+					naturalWeapon.setName(L("a smurfy punch"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 					case 4:
-					naturalWeapon.setName(_("some smurfy teeth"));
+					naturalWeapon.setName(L("some smurfy teeth"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
 					break;
 					case 5:
-					naturalWeapon.setName(_("a smurfy elbow"));
+					naturalWeapon.setName(L("a smurfy elbow"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_NATURAL);
 					break;
 					case 6:
-					naturalWeapon.setName(_("a smurfy backhand"));
+					naturalWeapon.setName(L("a smurfy backhand"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 					case 7:
-					naturalWeapon.setName(_("a smurfy jab"));
+					naturalWeapon.setName(L("a smurfy jab"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 					case 8:
-					naturalWeapon.setName(_("a smurfy poke"));
+					naturalWeapon.setName(L("a smurfy poke"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 					case 9:
-					naturalWeapon.setName(_("a smurfy knee"));
+					naturalWeapon.setName(L("a smurfy knee"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 					case 10:
-					naturalWeapon.setName(_("a smurfy head butt"));
+					naturalWeapon.setName(L("a smurfy head butt"));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 				}

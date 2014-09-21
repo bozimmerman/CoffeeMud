@@ -104,7 +104,7 @@ public class Say extends StdCommand
 		final Room R=mob.location();
 		if((commands.size()==1)||(R==null))
 		{
-			mob.tell(_("@x1 what?",theWord));
+			mob.tell(L("@x1 what?",theWord));
 			return false;
 		}
 
@@ -239,12 +239,12 @@ public class Say extends StdCommand
 			combinedCommands=CMParms.combineWithQuotes(commands,1);
 		if(combinedCommands.equals(""))
 		{
-			mob.tell(_("@x1  what?",theWord));
+			mob.tell(L("@x1  what?",theWord));
 			return false;
 		}
 		if(toFlag&&((target==null)||(!CMLib.flags().canBeSeenBy(target,mob))))
 		{
-			mob.tell(_("you don't see @x1 here to speak to.",whom));
+			mob.tell(L("you don't see @x1 here to speak to.",whom));
 			return false;
 		}
 		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.Str.SAYFILTER);
@@ -257,7 +257,7 @@ public class Say extends StdCommand
 		final String fromSelf="^T^<SAY \""+CMStrings.removeColors((target!=null)?target.name():mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+theWordSuffix+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
 		final String toTarget="^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+theWordSuffix+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
 		if(target==null)
-			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,_("^T^<SAY \"@x1\"^><S-NAME> @x2@x3 '@x4'^</SAY^>^?",CMStrings.removeColors(mob.name()),theWord.toLowerCase(),theWordSuffix,combinedCommands));
+			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,L("^T^<SAY \"@x1\"^><S-NAME> @x2@x3 '@x4'^</SAY^>^?",CMStrings.removeColors(mob.name()),theWord.toLowerCase(),theWordSuffix,combinedCommands));
 		else
 			msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,fromSelf,toTarget,fromSelf);
 
@@ -292,7 +292,7 @@ public class Say extends StdCommand
 					if(dirCode>=0)
 						opDirCode=Directions.getOpDirectionCode(dirCode);
 					final String inDirName=(dirCode<0)?"":(useShipDirs?Directions.getShipInDirectionName(opDirCode):Directions.getInDirectionName(opDirCode));
-					msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,_("^TYou hear someone yell '@x1' @x2^?",combinedCommands,inDirName));
+					msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,L("^TYou hear someone yell '@x1' @x2^?",combinedCommands,inDirName));
 					if((R2.okMessage(mob,msg))
 					&&((tool==null)||(tool.okMessage(mob,msg))))
 					{

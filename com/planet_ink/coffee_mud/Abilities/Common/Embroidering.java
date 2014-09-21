@@ -36,7 +36,7 @@ import java.util.*;
 public class Embroidering extends CommonSkill
 {
 	@Override public String ID() { return "Embroidering"; }
-	private final static String localizedName = CMLib.lang()._("Embroidering");
+	private final static String localizedName = CMLib.lang().L("Embroidering");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"EMBROIDER","EMBROIDERING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -47,8 +47,8 @@ public class Embroidering extends CommonSkill
 	public Embroidering()
 	{
 		super();
-		displayText=_("You are embroidering...");
-		verb=_("embroidering");
+		displayText=L("You are embroidering...");
+		verb=L("embroidering");
 	}
 	@Override protected boolean canBeDoneSittingDown() { return true; }
 
@@ -61,7 +61,7 @@ public class Embroidering extends CommonSkill
 			{
 				final MOB mob=(MOB)affected;
 				if(writing.length()==0)
-					commonTell(mob,_("You mess up your embroidery."));
+					commonTell(mob,L("You mess up your embroidery."));
 				else
 				{
 					String desc=found.description();
@@ -69,7 +69,7 @@ public class Embroidering extends CommonSkill
 					final int y=desc.lastIndexOf('`');
 					if((x>=0)&&(y>x))
 						desc=desc.substring(0,x);
-					found.setDescription(_("@x1 Embroidered on it are the words `@x2`.",desc,writing));
+					found.setDescription(L("@x1 Embroidered on it are the words `@x2`.",desc,writing));
 				}
 			}
 		}
@@ -83,13 +83,13 @@ public class Embroidering extends CommonSkill
 			return true;
 		if(commands.size()<2)
 		{
-			commonTell(mob,_("You must specify what you want to embroider onto, and what words to embroider on it."));
+			commonTell(mob,L("You must specify what you want to embroider onto, and what words to embroider on it."));
 			return false;
 		}
 		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.firstElement());
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTell(mob,_("You don't seem to have a '@x1'.",((String)commands.firstElement())));
+			commonTell(mob,L("You don't seem to have a '@x1'.",((String)commands.firstElement())));
 			return false;
 		}
 		commands.remove(commands.firstElement());
@@ -97,7 +97,7 @@ public class Embroidering extends CommonSkill
 		final Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)
 		{
-			commonTell(mob,_("You must know how to write to embroider."));
+			commonTell(mob,L("You must know how to write to embroider."));
 			return false;
 		}
 
@@ -105,19 +105,19 @@ public class Embroidering extends CommonSkill
 			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER))
 		||(!target.isGeneric()))
 		{
-			commonTell(mob,_("You can't embroider onto that material."));
+			commonTell(mob,L("You can't embroider onto that material."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		writing=CMParms.combine(commands,0);
-		verb=_("embroidering on @x1",target.name());
-		displayText=_("You are @x1",verb);
+		verb=L("embroidering on @x1",target.name());
+		displayText=L("You are @x1",verb);
 		found=target;
 		if((!proficiencyCheck(mob,0,auto))||(!write.proficiencyCheck(mob,0,auto)))
 			writing="";
 		final int duration=getDuration(30,mob,1,3);
-		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),_("<S-NAME> start(s) embroidering on <T-NAME>."));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),L("<S-NAME> start(s) embroidering on <T-NAME>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

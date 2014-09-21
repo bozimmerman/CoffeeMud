@@ -36,7 +36,7 @@ import java.util.*;
 public class Power_TrapSense extends SuperPower
 {
 	@Override public String ID() { return "Power_TrapSense"; }
-	private final static String localizedName = CMLib.lang()._("Trap Sense");
+	private final static String localizedName = CMLib.lang().L("Trap Sense");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -92,7 +92,7 @@ public class Power_TrapSense extends SuperPower
 			final List<Item> V=C.getContents();
 			for(int v=0;v<V.size();v++)
 				if(trapCheck(V.get(v)).length()>0)
-					msg.append(_("@x1 contains something trapped.\n",C.name()));
+					msg.append(L("@x1 contains something trapped.\n",C.name()));
 		}
 		else
 		if((P instanceof Item)&&(CMLib.flags().canBeSeenBy(P,mob)))
@@ -145,10 +145,10 @@ public class Power_TrapSense extends SuperPower
 				}
 			}
 			if((dirs.length()==0)&&(last.length()>0))
-				mob.tell(_("You sense a trap to @x1.",last));
+				mob.tell(L("You sense a trap to @x1.",last));
 			else
 			if((dirs.length()>2)&&(last.length()>0))
-				mob.tell(_("You sense a trap to @x1, and @x2.",dirs.substring(2),last));
+				mob.tell(L("You sense a trap to @x1, and @x2.",dirs.substring(2),last));
 		}
 	}
 

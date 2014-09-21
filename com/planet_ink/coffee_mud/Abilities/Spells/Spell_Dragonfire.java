@@ -35,9 +35,9 @@ import java.util.*;
 public class Spell_Dragonfire extends Spell
 {
 	@Override public String ID() { return "Spell_Dragonfire"; }
-	private final static String localizedName = CMLib.lang()._("Dragonfire");
+	private final static String localizedName = CMLib.lang().L("Dragonfire");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Dragonfire)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Dragonfire)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(3);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -50,13 +50,13 @@ public class Spell_Dragonfire extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth burning."));
+			mob.tell(L("There doesn't appear to be anyone here worth burning."));
 			return false;
 		}
 
 		if(!CMLib.flags().canBreatheHere(mob,mob.location()))
 		{
-			mob.tell(_("You can't breathe!"));
+			mob.tell(L("You can't breathe!"));
 			return false;
 		}
 
@@ -72,7 +72,7 @@ public class Spell_Dragonfire extends Spell
 		if(success)
 		{
 
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),_(auto?"A blast of flames erupt!":"^S<S-NAME> blast(s) flames from <S-HIS-HER> mouth!^?")+CMLib.protocol().msp("fireball.wav",40)))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"A blast of flames erupt!":"^S<S-NAME> blast(s) flames from <S-HIS-HER> mouth!^?")+CMLib.protocol().msp("fireball.wav",40)))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -98,7 +98,7 @@ public class Spell_Dragonfire extends Spell
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> puff(s) smoke from <S-HIS-HER> mouth."));
+			return maliciousFizzle(mob,null,L("<S-NAME> puff(s) smoke from <S-HIS-HER> mouth."));
 
 
 		// return whether it worked

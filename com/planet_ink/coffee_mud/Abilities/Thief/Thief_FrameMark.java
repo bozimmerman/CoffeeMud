@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_FrameMark extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_FrameMark"; }
-	private final static String localizedName = CMLib.lang()._("Frame Mark");
+	private final static String localizedName = CMLib.lang().L("Frame Mark");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -66,7 +66,7 @@ public class Thief_FrameMark extends ThiefSkill
 		final MOB target=getMark(mob);
 		if(target==null)
 		{
-			mob.tell(_("You need to have marked someone before you can frame him or her."));
+			mob.tell(L("You need to have marked someone before you can frame him or her."));
 			return false;
 		}
 
@@ -75,7 +75,7 @@ public class Thief_FrameMark extends ThiefSkill
 		if((B==null)
 		||(!B.hasWarrant(CMLib.law().getLegalObject(mob.location()),mob)))
 		{
-			mob.tell(_("You aren't wanted for anything here."));
+			mob.tell(L("You aren't wanted for anything here."));
 			return false;
 		}
 		final double goldRequired=target.phyStats().level() * 1000.0;
@@ -83,7 +83,7 @@ public class Thief_FrameMark extends ThiefSkill
 		if(CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
 		{
 			final String costWords=CMLib.beanCounter().nameCurrencyShort(localCurrency,goldRequired);
-			mob.tell(_("You'll need at least @x1 on hand to frame @x2.",costWords,target.name(mob)));
+			mob.tell(L("You'll need at least @x1 on hand to frame @x2.",costWords,target.name(mob)));
 			return false;
 		}
 
@@ -95,13 +95,13 @@ public class Thief_FrameMark extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 		if(!success)
 		{
-			maliciousFizzle(mob,target,_("<S-NAME> attempt(s) frame <T-NAMESELF>, but <S-IS-ARE> way too obvious."));
+			maliciousFizzle(mob,target,L("<S-NAME> attempt(s) frame <T-NAMESELF>, but <S-IS-ARE> way too obvious."));
 			return false;
 		}
 
 		CMLib.beanCounter().subtractMoney(mob,localCurrency,goldRequired);
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,_("<S-NAME> frame(s) <T-NAMESELF>."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,L("<S-NAME> frame(s) <T-NAMESELF>."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

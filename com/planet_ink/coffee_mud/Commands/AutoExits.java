@@ -48,12 +48,12 @@ public class AutoExits extends StdCommand
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOEXITS));
-			mob.tell(_("Autoexits has been turned off."));
+			mob.tell(L("Autoexits has been turned off."));
 		}
 		else
 		{
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOEXITS));
-			mob.tell(_("Autoexits has been turned on."));
+			mob.tell(L("Autoexits has been turned on."));
 		}
 		return false;
 	}

@@ -67,9 +67,9 @@ public class Expire extends StdCommand
 		if(commands.size()<1)
 		{
 			if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
-				mob.tell(_("You must use the format EXPIRE [ACCOUNT NAME] or EXPIRE [ACCOUNT NAME] [NUMBER OF DAYS/NEVER/NOW]"));
+				mob.tell(L("You must use the format EXPIRE [ACCOUNT NAME] or EXPIRE [ACCOUNT NAME] [NUMBER OF DAYS/NEVER/NOW]"));
 			else
-				mob.tell(_("You must use the format EXPIRE [PLAYER NAME] or EXPIRE [PLAYER NAME] [NUMBER OF DAYS/NEVER/NOW]"));
+				mob.tell(L("You must use the format EXPIRE [PLAYER NAME] or EXPIRE [PLAYER NAME] [NUMBER OF DAYS/NEVER/NOW]"));
 			return false;
 		}
 		else
@@ -87,15 +87,15 @@ public class Expire extends StdCommand
 			}
 			if(stats==null)
 			{
-				mob.tell(_("No player/account named '@x1' was found.",playerName));
+				mob.tell(L("No player/account named '@x1' was found.",playerName));
 				return false;
 			}
 			unprotect(stats);
 			final long timeLeft=stats.getAccountExpiration()-System.currentTimeMillis();
 			if(timeLeft<=0)
-				mob.tell(_("Player/Account '@x1' is now expired.",playerName));
+				mob.tell(L("Player/Account '@x1' is now expired.",playerName));
 			else
-				mob.tell(_("Player/Account '@x1' currently has @x2 left.",playerName,(CMLib.english().returnTime(timeLeft,0))));
+				mob.tell(L("Player/Account '@x1' currently has @x2 left.",playerName,(CMLib.english().returnTime(timeLeft,0))));
 			return false;
 		}
 		else
@@ -110,7 +110,7 @@ public class Expire extends StdCommand
 			else
 			if(!CMath.isLong(howLong))
 			{
-				mob.tell(_("'@x1' is now a proper value.  Try a number of days, the word NOW or the word NEVER.",howLong));
+				mob.tell(L("'@x1' is now a proper value.  Try a number of days, the word NOW or the word NEVER.",howLong));
 				return false;
 			}
 			else
@@ -127,7 +127,7 @@ public class Expire extends StdCommand
 			}
 			if(stats==null)
 			{
-				mob.tell(_("No player/account named '@x1' was found.",playerName));
+				mob.tell(L("No player/account named '@x1' was found.",playerName));
 				return false;
 			}
 			stats.setLastUpdated(System.currentTimeMillis());
@@ -149,7 +149,7 @@ public class Expire extends StdCommand
 					final PlayerAccount A=(PlayerAccount)stats;
 					A.setFlag(PlayerAccount.FLAG_NOEXPIRE, true);
 				}
-				mob.tell(_("Player/Account '@x1' is now protected from expiration.",playerName));
+				mob.tell(L("Player/Account '@x1' is now protected from expiration.",playerName));
 			}
 			else
 			{
@@ -157,9 +157,9 @@ public class Expire extends StdCommand
 				stats.setAccountExpiration(days+System.currentTimeMillis());
 				final long timeLeft=stats.getAccountExpiration()-System.currentTimeMillis();
 				if(timeLeft<=0)
-					mob.tell(_("Player/Account '@x1' is now expired.",playerName));
+					mob.tell(L("Player/Account '@x1' is now expired.",playerName));
 				else
-					mob.tell(_("Player/Account '@x1' now has @x2 days left.",playerName,(CMLib.english().returnTime(timeLeft,0))));
+					mob.tell(L("Player/Account '@x1' now has @x2 days left.",playerName,(CMLib.english().returnTime(timeLeft,0))));
 			}
 			return false;
 		}

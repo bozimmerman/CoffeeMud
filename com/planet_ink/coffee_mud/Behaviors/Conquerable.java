@@ -101,45 +101,45 @@ public class Conquerable extends Arrest
 		if((totalControlPoints<0)&&(myArea!=null))
 			recalculateControlPoints(myArea);
 		if((holdingClan.length()==0)||(totalControlPoints<0))
-			str.append(_("Area '@x1' is not currently controlled by any clan.\n\r",myArea.name()));
+			str.append(L("Area '@x1' is not currently controlled by any clan.\n\r",myArea.name()));
 		else
 		{
 			final Clan C=CMLib.clans().getClan(holdingClan);
 			if(C!=null)
 			{
 				if(isFullyControlled())
-					str.append(_("Area '@x1' is controlled by @x2 @x3.\n\r",myArea.name(),C.getGovernmentName(),C.name()));
+					str.append(L("Area '@x1' is controlled by @x2 @x3.\n\r",myArea.name(),C.getGovernmentName(),C.name()));
 				else
 				{
-					str.append(_("Area '@x1' is occupied by @x2 @x3.\n\r",myArea.name(),C.getGovernmentName(),C.name()));
+					str.append(L("Area '@x1' is occupied by @x2 @x3.\n\r",myArea.name(),C.getGovernmentName(),C.name()));
 					final long remain=CONTROLTIME-(System.currentTimeMillis()-conquestDate);
 					final String remainStr=myArea.getTimeObj().deriveEllapsedTimeString(remain);
-					str.append(_("Full control will automatically be achieved in @x1.\n\r",remainStr));
+					str.append(L("Full control will automatically be achieved in @x1.\n\r",remainStr));
 				}
 
 				if(C.isLoyaltyThroughItems())
 				{
 					final int pts=calcItemControlPoints(myArea);
 					final int chance=calcRevoltChance(myArea);
-					str.append(_("@x1 has handed out clan items here for @x2 loyalty points.\n\r",C.name(),""+pts));
-					str.append(_("There is currently a @x1% chance of revolt here.\n\r",""+chance));
+					str.append(L("@x1 has handed out clan items here for @x2 loyalty points.\n\r",C.name(),""+pts));
+					str.append(L("There is currently a @x1% chance of revolt here.\n\r",""+chance));
 				}
 			}
 			else
 			{
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST)) Log.debugOut("Conquest",holdingClan+" has laid waste to "+myArea.name()+".");
 				endClanRule();
-				str.append(_("This area is laid waste by @x1.\n\r",holdingClan));
+				str.append(L("This area is laid waste by @x1.\n\r",holdingClan));
 			}
 		}
 		if((totalControlPoints<0)&&(myArea!=null))
 			recalculateControlPoints(myArea);
 		if(totalControlPoints<0)
-			str.append(_("This area has not yet calculated its required control points.\n\r"));
+			str.append(L("This area has not yet calculated its required control points.\n\r"));
 		else
-			str.append(_("This area requires @x1 points to control.\n\r",""+totalControlPoints));
+			str.append(L("This area requires @x1 points to control.\n\r",""+totalControlPoints));
 		if(clanControlPoints.size()==0)
-			str.append(_("There are no control points won at present by any clan.\n\r"));
+			str.append(L("There are no control points won at present by any clan.\n\r"));
 		synchronized(clanControlPoints)
 		{
 			for(int i=0;i<clanControlPoints.size();i++)
@@ -148,7 +148,7 @@ public class Conquerable extends Arrest
 				final int[] ic=(int[])clanControlPoints.elementAt(i,2);
 				final Clan C=CMLib.clans().getClan(clanID);
 				if((C!=null)&&(C.getGovernment().isConquestEnabled()))
-					str.append(_("@x1 @x2 has @x3 control points.\n\r",C.getGovernmentName(),C.name(),""+ic[0]));
+					str.append(L("@x1 @x2 has @x3 control points.\n\r",C.getGovernmentName(),C.name(),""+ic[0]));
 			}
 		}
 		return str.toString();
@@ -391,7 +391,7 @@ public class Conquerable extends Arrest
 			if((S.mob()!=null)
 			&&(S.mob().location()!=null)
 			&&(area.inMyMetroArea(S.mob().location().getArea())))
-				S.println(_("@x1 @x2 control points.",clanID,(amount<0?"loses "+(-amount):"gains "+amount)));
+				S.println(L("@x1 @x2 control points.",clanID,(amount<0?"loses "+(-amount):"gains "+amount)));
 		}
 	}
 
@@ -774,7 +774,7 @@ public class Conquerable extends Arrest
 			&&(!CMLib.flags().isAnimalIntelligence(msg.source())))
 			{
 				final MOB target=(MOB)msg.target();
-				msg.source().tell(_("@x1 is a fellow @x2 member, and you must respect @x3.",target.name(msg.source()),holdingClan,target.charStats().himher()));
+				msg.source().tell(L("@x1 is a fellow @x2 member, and you must respect @x3.",target.name(msg.source()),holdingClan,target.charStats().himher()));
 				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();
@@ -842,7 +842,7 @@ public class Conquerable extends Arrest
 				||(CMLib.clans().getClan(holdingClan)==null)
 				||(!CMLib.clans().getClan(holdingClan).isWorshipConquest()))
 				{
-					msg.source().tell(_("Only a member of a conquering deity clan can pray for that here."));
+					msg.source().tell(L("Only a member of a conquering deity clan can pray for that here."));
 					return false;
 				}
 			}
@@ -881,7 +881,7 @@ public class Conquerable extends Arrest
 		mob.setName(clanID);
 		if(myArea!=null)
 			for(final Enumeration e=myArea.getMetroMap();e.hasMoreElements();)
-				if(!((Room)e.nextElement()).show(mob,myArea,null,CMMsg.MSG_AREAAFFECT,null,CMMsg.MSG_AREAAFFECT,_("CONQUEST"),CMMsg.MSG_AREAAFFECT,null))
+				if(!((Room)e.nextElement()).show(mob,myArea,null,CMMsg.MSG_AREAAFFECT,null,CMMsg.MSG_AREAAFFECT,L("CONQUEST"),CMMsg.MSG_AREAAFFECT,null))
 				{
 					Log.errOut("Conquest","Conquest was stopped in "+myArea.name()+" for "+clanID+".");
 					return;

@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_ChainStrike extends Prayer
 {
 	@Override public String ID() { return "Prayer_ChainStrike"; }
-	private final static String localizedName = CMLib.lang()._("Chain Strike");
+	private final static String localizedName = CMLib.lang().L("Chain Strike");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_AIRBASED;}
@@ -63,7 +63,7 @@ public class Prayer_ChainStrike extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),_(auto?"A thunderous crack of electricity erupts!":"^S<S-NAME> "+prayForWord(mob)+" to send down a thunderous crack of electricity.^?")+CMLib.protocol().msp("lightning.wav",40)))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"A thunderous crack of electricity erupts!":"^S<S-NAME> "+prayForWord(mob)+" to send down a thunderous crack of electricity.^?")+CMLib.protocol().msp("lightning.wav",40)))
 			{
 				while(damage>0)
 				{
@@ -119,7 +119,7 @@ public class Prayer_ChainStrike extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> @x1 for a ferocious spell, but nothing happens.",prayWord(mob)));
+			return maliciousFizzle(mob,null,L("<S-NAME> @x1 for a ferocious spell, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

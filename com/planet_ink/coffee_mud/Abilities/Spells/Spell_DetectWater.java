@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_DetectWater extends Spell
 {
 	@Override public String ID() { return "Spell_DetectWater"; }
-	private final static String localizedName = CMLib.lang()._("Detect Water");
+	private final static String localizedName = CMLib.lang().L("Detect Water");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Detecting Water)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Detecting Water)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -57,7 +57,7 @@ public class Spell_DetectWater extends Spell
 			lastRoom=null;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("Your senses are no longer sensitive to liquids."));
+			mob.tell(L("Your senses are no longer sensitive to liquids."));
 	}
 	public String waterCheck(MOB mob, Item I, Item container, StringBuffer msg)
 	{
@@ -67,12 +67,12 @@ public class Spell_DetectWater extends Spell
 			if(((I instanceof Drink))
 			&&(((Drink)I).containsDrink())
 			&&(CMLib.flags().canBeSeenBy(I,mob)))
-				msg.append(_("@x1 contains some sort of liquid.\n\r",I.name(mob)));
+				msg.append(L("@x1 contains some sort of liquid.\n\r",I.name(mob)));
 		}
 		else
 		if((I.container()!=null)&&(I.container().container()==container))
 			if(msg.toString().indexOf(I.container().name()+" contains some sort of liquid.")<0)
-				msg.append(_("@x1 contains some sort of liquid.\n\r",I.container().name()));
+				msg.append(L("@x1 contains some sort of liquid.\n\r",I.container().name()));
 		return msg.toString();
 	}
 	public String waterHere(MOB mob, Environmental E, Item container)
@@ -86,20 +86,20 @@ public class Spell_DetectWater extends Spell
 			||(room.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
 			||(room.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
 			||(room.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
-				msg.append(_("Your liquid senses are saturated.  This is a very wet place.\n\r"));
+				msg.append(L("Your liquid senses are saturated.  This is a very wet place.\n\r"));
 			else
 			if(CMath.bset(room.getClimateType(),Places.CLIMASK_WET))
-				msg.append(_("Your liquid senses are saturated.  This is a damp place.\n\r"));
+				msg.append(L("Your liquid senses are saturated.  This is a damp place.\n\r"));
 			else
 			if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_RAIN)
 			||(room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_THUNDERSTORM))
-				msg.append(_("It is raining here! Your liquid senses are saturated!\n\r"));
+				msg.append(L("It is raining here! Your liquid senses are saturated!\n\r"));
 			else
 			if(room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_HAIL)
-				msg.append(_("It is hailing here! Your liquid senses are saturated!\n\r"));
+				msg.append(L("It is hailing here! Your liquid senses are saturated!\n\r"));
 			else
 			if(room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_SNOW)
-				msg.append(_("It is snowing here! Your liquid senses are saturated!\n\r"));
+				msg.append(L("It is snowing here! Your liquid senses are saturated!\n\r"));
 			else
 			{
 				for(int i=0;i<room.numItems();i++)
@@ -194,9 +194,9 @@ public class Spell_DetectWater extends Spell
 		if((dirs.length()!=0)||(last.length()!=0))
 		{
 			if(dirs.length()==0)
-				mob.tell(_("Water smells are coming from @x1.",last));
+				mob.tell(L("Water smells are coming from @x1.",last));
 			else
-				mob.tell(_("Water smells are coming from @x1, and @x2.",dirs.substring(2),last));
+				mob.tell(L("Water smells are coming from @x1, and @x2.",dirs.substring(2),last));
 		}
 	}
 	@Override
@@ -265,7 +265,7 @@ public class Spell_DetectWater extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already detecting liquid things."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already detecting liquid things."));
 			return false;
 		}
 
@@ -277,7 +277,7 @@ public class Spell_DetectWater extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) liquid sensitivities!"):_("^S<S-NAME> incant(s) softly, and gain(s) liquid sensitivities!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> gain(s) liquid sensitivities!"):L("^S<S-NAME> incant(s) softly, and gain(s) liquid sensitivities!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -285,7 +285,7 @@ public class Spell_DetectWater extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> incant(s) and open(s) <S-HIS-HER> liquified eyes, but the spell fizzles."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> incant(s) and open(s) <S-HIS-HER> liquified eyes, but the spell fizzles."));
 
 		return success;
 	}

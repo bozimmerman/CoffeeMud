@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_Awe extends Spell
 {
 	@Override public String ID() { return "Spell_Awe"; }
-	private final static String localizedName = CMLib.lang()._("Awe");
+	private final static String localizedName = CMLib.lang().L("Awe");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Awe spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Awe spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -58,7 +58,7 @@ public class Spell_Awe extends Spell
 			&&(msg.source().location()==target.location())
 			&&(CMLib.dice().rollPercentage()>((msg.source().phyStats().level()-(target.phyStats().level()+(2*getXLEVELLevel(invoker()))))*10)))
 			{
-				msg.source().tell(_("You are too much in awe of @x1",target.name(msg.source())));
+				msg.source().tell(L("You are too much in awe of @x1",target.name(msg.source())));
 				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();
@@ -95,7 +95,7 @@ public class Spell_Awe extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) less awesome."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) less awesome."));
 	}
 
 
@@ -124,16 +124,16 @@ public class Spell_Awe extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> invoke(s) a spell.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> invoke(s) a spell.^?"));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				R.show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) awesome!"));
+				R.show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) awesome!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a spell, but fail(s) miserably."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a spell, but fail(s) miserably."));
 
 		// return whether it worked
 		return success;

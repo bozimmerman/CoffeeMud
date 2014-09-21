@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Invigorate extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_Invigorate"; }
-	private final static String localizedName = CMLib.lang()._("Invigorate");
+	private final static String localizedName = CMLib.lang().L("Invigorate");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
@@ -83,19 +83,19 @@ public class Prayer_Invigorate extends Prayer implements MendingSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("A soft white glow surrounds <T-NAME>."):_("^S<S-NAME> @x1, delivering a strong invigorating touch to <T-NAMESELF>.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("A soft white glow surrounds <T-NAME>."):L("^S<S-NAME> @x1, delivering a strong invigorating touch to <T-NAMESELF>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final int healing=CMLib.dice().roll(10,adjustedLevel(mob,asLevel),50);
 				target.curState().setFatigue(0);
 				target.curState().adjMovement(healing,target.maxState());
-				target.tell(_("You feel really invigorated!"));
+				target.tell(L("You feel really invigorated!"));
 				lastCastHelp=System.currentTimeMillis();
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
+			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
 		// return whether it worked
 		return success;
 	}

@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_ShrinkMouth extends Spell
 {
 	@Override public String ID() { return "Spell_ShrinkMouth"; }
-	private final static String localizedName = CMLib.lang()._("Shrink Mouth");
+	private final static String localizedName = CMLib.lang().L("Shrink Mouth");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Shrunken Mouth)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Shrunken Mouth)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -56,7 +56,7 @@ public class Spell_ShrinkMouth extends Spell
 			{
 				final MOB mob=(MOB)affected;
 				if((mob.location()!=null)&&(!mob.amDead()))
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> mouth returns to its normal size."));
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> mouth returns to its normal size."));
 			}
 		}
 		super.unInvoke();
@@ -71,7 +71,7 @@ public class Spell_ShrinkMouth extends Spell
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)))
 		{
-			msg.source().tell(_("Your mouth is too tiny to eat!"));
+			msg.source().tell(L("Your mouth is too tiny to eat!"));
 			return false;
 		}
 		return true;
@@ -89,7 +89,7 @@ public class Spell_ShrinkMouth extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> cast(s) a puckering spell on <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> cast(s) a puckering spell on <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -104,13 +104,13 @@ public class Spell_ShrinkMouth extends Spell
 				{
 					beneficialAffect(mob,target,asLevel,0);
 					if((!auto)&&(target.location()!=null))
-						target.location().show(mob, target, CMMsg.MSG_OK_VISUAL, _("<T-YOUPOSS> mouth shrinks!"));
+						target.location().show(mob, target, CMMsg.MSG_OK_VISUAL, L("<T-YOUPOSS> mouth shrinks!"));
 					CMLib.utensils().confirmWearability(target);
 				}
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to cast a puckering spell, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to cast a puckering spell, but fail(s)."));
 
 		return success;
 	}

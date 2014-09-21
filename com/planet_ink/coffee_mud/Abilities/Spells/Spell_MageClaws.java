@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_MageClaws extends Spell
 {
 	@Override public String ID() { return "Spell_MageClaws"; }
-	private final static String localizedName = CMLib.lang()._("Mage Claws");
+	private final static String localizedName = CMLib.lang().L("Mage Claws");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Mage Claws spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Mage Claws spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -72,7 +72,7 @@ public class Spell_MageClaws extends Spell
 			{
 				final int level=super.adjustedLevel(mob, 0);
 				naturalWeapon=(Weapon)CMClass.getItem("GenWeapon");
-				naturalWeapon.setName(_("a pair of jagged claws"));
+				naturalWeapon.setName(L("a pair of jagged claws"));
 				naturalWeapon.setWeaponType(Weapon.TYPE_SLASHING);
 				naturalWeapon.setWeaponClassification(Weapon.CLASS_NATURAL);
 				naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
@@ -103,7 +103,7 @@ public class Spell_MageClaws extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> claws return to normal."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> claws return to normal."));
 	}
 
 
@@ -116,13 +116,13 @@ public class Spell_MageClaws extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> already <S-HAS-HAVE> mage claws."));
+			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> mage claws."));
 			return false;
 		}
 
 		if(!freeHands(target))
 		{
-			mob.tell(target,null,null,_("<S-NAME> do(es) not have <S-HIS-HER> hands free."));
+			mob.tell(target,null,null,L("<S-NAME> do(es) not have <S-HIS-HER> hands free."));
 			return false;
 		}
 
@@ -142,16 +142,16 @@ public class Spell_MageClaws extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> invoke(s) a spell.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> invoke(s) a spell.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> watch(es) <S-HIS-HER> hands turn into brutal claws!"));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> watch(es) <S-HIS-HER> hands turn into brutal claws!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a spell, but fail(s) miserably."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a spell, but fail(s) miserably."));
 
 		// return whether it worked
 		return success;

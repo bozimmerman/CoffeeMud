@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_StripItem extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_StripItem"; }
-	private final static String localizedName = CMLib.lang()._("Strip Item");
+	private final static String localizedName = CMLib.lang().L("Strip Item");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -73,7 +73,7 @@ public class Thief_StripItem extends ThiefSkill
 		{
 			if(commands.size()<2)
 			{
-				mob.tell(_("Strip what off of whom?"));
+				mob.tell(L("Strip what off of whom?"));
 				return false;
 			}
 			itemToSteal=(String)commands.elementAt(0);
@@ -86,13 +86,13 @@ public class Thief_StripItem extends ThiefSkill
 			target=mob.location().fetchInhabitant(CMParms.combine(commands,1));
 		if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",CMParms.combine(commands,1)));
+			mob.tell(L("You don't see '@x1' here.",CMParms.combine(commands,1)));
 			return false;
 		}
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
 		if((!target.mayIFight(mob))||(levelDiff>15))
 		{
-			mob.tell(_("You cannot strip anything off of @x1.",target.charStats().himher()));
+			mob.tell(L("You cannot strip anything off of @x1.",target.charStats().himher()));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -101,12 +101,12 @@ public class Thief_StripItem extends ThiefSkill
 		final Item stolen=target.fetchItem(null,Wearable.FILTER_WORNONLY,itemToSteal);
 		if((stolen==null)||(!CMLib.flags().canBeSeenBy(stolen,mob)))
 		{
-			mob.tell(_("@x1 doesn't seem to be wearing '@x2'.",target.name(mob),itemToSteal));
+			mob.tell(L("@x1 doesn't seem to be wearing '@x2'.",target.name(mob),itemToSteal));
 			return false;
 		}
 		if(stolen.amWearingAt(Wearable.WORN_WIELD))
 		{
-			mob.tell(_("@x1 is wielding @x2! Try disarm!",target.name(mob),stolen.name()));
+			mob.tell(L("@x1 is wielding @x2! Try disarm!",target.name(mob),stolen.name()));
 			return false;
 		}
 
@@ -119,14 +119,14 @@ public class Thief_StripItem extends ThiefSkill
 		if(!success)
 		{
 			if((target.isMonster())&&(mob.getVictim()==null)) mob.setVictim(target);
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":_("You fumble the attempt to strip @x1 off <T-NAME>; <T-NAME> spots you!",stolen.name()),CMMsg.MSG_NOISYMOVEMENT,auto?"":_("<S-NAME> tries to strip @x1 off you and fails!",stolen.name()),CMMsg.MSG_NOISYMOVEMENT,auto?"":_("<S-NAME> tries to strip @x1 off <T-NAME> and fails!",stolen.name()));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":L("You fumble the attempt to strip @x1 off <T-NAME>; <T-NAME> spots you!",stolen.name()),CMMsg.MSG_NOISYMOVEMENT,auto?"":L("<S-NAME> tries to strip @x1 off you and fails!",stolen.name()),CMMsg.MSG_NOISYMOVEMENT,auto?"":L("<S-NAME> tries to strip @x1 off <T-NAME> and fails!",stolen.name()));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
 			String str=null;
-			if(!auto) str=_("<S-NAME> strip(s) @x1 off <T-NAMESELF>.",stolen.name());
+			if(!auto) str=L("<S-NAME> strip(s) @x1 off <T-NAMESELF>.",stolen.name());
 
 			final boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
 			final String hisStr=str;

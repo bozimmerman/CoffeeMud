@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_RemovePoison extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_RemovePoison"; }
-	private final static String localizedName = CMLib.lang()._("Remove Poison");
+	private final static String localizedName = CMLib.lang().L("Remove Poison");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
@@ -95,7 +95,7 @@ public class Prayer_RemovePoison extends Prayer implements MendingSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> feel(s) purified of <T-HIS-HER> poisons."):_("^S<S-NAME> @x1 that <T-NAME> be purified of <T-HIS-HER> poisons.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> feel(s) purified of <T-HIS-HER> poisons."):L("^S<S-NAME> @x1 that <T-NAME> be purified of <T-HIS-HER> poisons.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -110,7 +110,7 @@ public class Prayer_RemovePoison extends Prayer implements MendingSkill
 				{
 					if(target instanceof MOB)
 					{
-						((MOB)target).tell(_("You feel much better!"));
+						((MOB)target).tell(L("You feel much better!"));
 						((MOB)target).recoverCharStats();
 						((MOB)target).recoverMaxState();
 					}
@@ -120,7 +120,7 @@ public class Prayer_RemovePoison extends Prayer implements MendingSkill
 		}
 		else
 		if(!auto)
-			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> @x1 that <T-NAME> be purified of <T-HIS-HER> poisons, but there is no answer.",prayWord(mob)));
+			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> @x1 that <T-NAME> be purified of <T-HIS-HER> poisons, but there is no answer.",prayWord(mob)));
 
 
 		// return whether it worked

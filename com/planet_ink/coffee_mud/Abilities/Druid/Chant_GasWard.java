@@ -38,9 +38,9 @@ import java.util.*;
 public class Chant_GasWard extends Chant
 {
 	@Override public String ID() { return "Chant_GasWard"; }
-	private final static String localizedName = CMLib.lang()._("Gas Ward");
+	private final static String localizedName = CMLib.lang().L("Gas Ward");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Gas Ward)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Gas Ward)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
@@ -53,7 +53,7 @@ public class Chant_GasWard extends Chant
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("Your filtering protection dissipates."));
+			mob.tell(L("Your filtering protection dissipates."));
 
 		super.unInvoke();
 
@@ -75,7 +75,7 @@ public class Chant_GasWard extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already warding gas."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already warding gas."));
 			return false;
 		}
 
@@ -85,7 +85,7 @@ public class Chant_GasWard extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("A filtering field of protection appears around <T-NAME>."):_("^S<S-NAME> chant(s) for a filtering field of protection around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("A filtering field of protection appears around <T-NAME>."):L("^S<S-NAME> chant(s) for a filtering field of protection around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -93,7 +93,7 @@ public class Chant_GasWard extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) for a filtering shield, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) for a filtering shield, but fail(s)."));
 
 		return success;
 	}

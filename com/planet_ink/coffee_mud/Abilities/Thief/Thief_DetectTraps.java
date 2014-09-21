@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_DetectTraps extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_DetectTraps"; }
-	private final static String localizedName = CMLib.lang()._("Detect Traps");
+	private final static String localizedName = CMLib.lang().L("Detect Traps");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
@@ -104,7 +104,7 @@ public class Thief_DetectTraps extends ThiefSkill
 			}
 		}
 		final String add=(dirCode>=0)?" "+Directions.getInDirectionName(dirCode):"";
-		final CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,auto?null:_("<S-NAME> look(s) @x1@x2 over very carefully.",((unlockThis==null)?"":unlockThis.name()),add));
+		final CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,auto?null:L("<S-NAME> look(s) @x1@x2 over very carefully.",((unlockThis==null)?"":unlockThis.name()),add));
 		if((unlockThis!=null)&&(mob.location().okMessage(mob,msg)))
 		{
 			mob.location().send(mob,msg);
@@ -113,18 +113,18 @@ public class Thief_DetectTraps extends ThiefSkill
 			if((!success)||(theTrap==null))
 			{
 				if(!auto)
-					mob.tell(_("You don't find any traps on @x1@x2.",unlockThis.name(),add));
+					mob.tell(L("You don't find any traps on @x1@x2.",unlockThis.name(),add));
 				success=false;
 			}
 			else
 			{
 				if(theTrap.disabled())
-					mob.tell(_("@x1@x2 is trapped, but the trap looks disabled for the moment.",unlockThis.name(),add));
+					mob.tell(L("@x1@x2 is trapped, but the trap looks disabled for the moment.",unlockThis.name(),add));
 				else
 				if(theTrap.sprung())
-					mob.tell(_("@x1@x2 is trapped, and the trap looks sprung.",unlockThis.name(),add));
+					mob.tell(L("@x1@x2 is trapped, and the trap looks sprung.",unlockThis.name(),add));
 				else
-					mob.tell(_("@x1@x2 definitely looks trapped.",unlockThis.name(),add));
+					mob.tell(L("@x1@x2 definitely looks trapped.",unlockThis.name(),add));
 			}
 			lastChecked=unlockThis;
 		}

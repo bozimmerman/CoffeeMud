@@ -63,7 +63,7 @@ public class ATopics extends StdCommand
 			Resources.submitResource(resName,topicBuffer);
 		}
 		if((mob!=null)&&(!mob.isMonster()))
-			mob.session().colorOnlyPrintln(CMLib.lang()._("@x1\n\r\n\rEnter @x2 (TOPIC NAME) for more information.",topicBuffer.toString(),helpName),false);
+			mob.session().colorOnlyPrintln(CMLib.lang().L("@x1\n\r\n\rEnter @x2 (TOPIC NAME) for more information.",topicBuffer.toString(),helpName),false);
 	}
 
 
@@ -75,7 +75,7 @@ public class ATopics extends StdCommand
 		if(arcHelpFile.size()==0)
 		{
 			if(mob!=null)
-				mob.tell(_("No archon help is available."));
+				mob.tell(L("No archon help is available."));
 			return false;
 		}
 

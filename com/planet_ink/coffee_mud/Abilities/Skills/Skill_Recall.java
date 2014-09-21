@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Recall extends StdSkill
 {
 	@Override public String ID() { return "Skill_Recall"; }
-	private final static String localizedName = CMLib.lang()._("Recall");
+	private final static String localizedName = CMLib.lang().L("Recall");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
@@ -65,10 +65,10 @@ public class Skill_Recall extends StdSkill
 
 			if(recallRoom == null)
 			{
-				mob.tell(_("You've nowhere to recall TO!"));
+				mob.tell(L("You've nowhere to recall TO!"));
 				return false;
 			}
-			CMMsg msg=CMClass.getMsg(mob,recalledRoom,this,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,auto?_("<S-NAME> disappear(s) into the Java Plane!"):_("<S-NAME> recall(s) body and spirit to the Java Plane!"));
+			CMMsg msg=CMClass.getMsg(mob,recalledRoom,this,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,auto?L("<S-NAME> disappear(s) into the Java Plane!"):L("<S-NAME> recall(s) body and spirit to the Java Plane!"));
 			CMMsg msg2=CMClass.getMsg(mob,recallRoom,this,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,null);
 			if(((recalledRoom.okMessage(mob,msg))&&(recallRoom.okMessage(mob,msg2)))
 			||CMSecurity.isAllowed(mob,recalledRoom,CMSecurity.SecFlag.GOTO))
@@ -80,7 +80,7 @@ public class Skill_Recall extends StdSkill
 				if(recalledRoom.isInhabitant(mob))
 				{
 					if(recallRoom.isInhabitant(mob)&&(recallRoom==recalledRoom))
-						beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to recall, but go(es) nowhere."));
+						beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to recall, but go(es) nowhere."));
 					else
 						recallRoom.bringMobHere(mob,false);
 				}
@@ -96,7 +96,7 @@ public class Skill_Recall extends StdSkill
 					{
 						Room fRecalledRoom=recalledRoom;
 						if(group)fRecalledRoom=follower.location();
-						msg=CMClass.getMsg(follower,fRecalledRoom,this,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,auto?_("<S-NAME> disappear(s) into the Java Plane!"):_("<S-NAME> <S-IS-ARE> sucked into the vortex created by @x1s recall.",mob.name()));
+						msg=CMClass.getMsg(follower,fRecalledRoom,this,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,auto?L("<S-NAME> disappear(s) into the Java Plane!"):L("<S-NAME> <S-IS-ARE> sucked into the vortex created by @x1s recall.",mob.name()));
 						if(((follower.location()==fRecalledRoom))
 						&&(fRecalledRoom.isInhabitant(follower))
 						&&(fRecalledRoom.okMessage(follower,msg)||CMSecurity.isAllowed(mob,recalledRoom,CMSecurity.SecFlag.GOTO)))
@@ -116,7 +116,7 @@ public class Skill_Recall extends StdSkill
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to recall, but <S-HIS-HER> plea goes unheard."));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to recall, but <S-HIS-HER> plea goes unheard."));
 
 		// return whether it worked
 		return success;

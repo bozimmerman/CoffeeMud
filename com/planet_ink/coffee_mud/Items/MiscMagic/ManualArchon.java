@@ -70,7 +70,7 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 			case CMMsg.TYP_READ:
 				if(mob.isMine(this))
 				{
-					mob.tell(_("The manual glows softly, enveloping you in its magical energy."));
+					mob.tell(L("The manual glows softly, enveloping you in its magical energy."));
 					final Session session=mob.session();
 					final CharClass newClass=CMClass.getCharClass("Archon");
 					if((session!=null)&&(newClass!=null))
@@ -112,7 +112,7 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 						CMLib.database().DBUpdatePlayer(mob);
 					}
 				}
-				mob.tell(_("The book vanishes out of your hands."));
+				mob.tell(L("The book vanishes out of your hands."));
 				destroy();
 				msg.source().location().recoverRoomStats();
 				return;

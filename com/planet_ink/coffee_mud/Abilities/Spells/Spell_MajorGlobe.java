@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_MajorGlobe extends Spell
 {
 	@Override public String ID() { return "Spell_MajorGlobe"; }
-	private final static String localizedName = CMLib.lang()._("Greater Globe");
+	private final static String localizedName = CMLib.lang().L("Greater Globe");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Greater Globe/Invul.)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Greater Globe/Invul.)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -55,7 +55,7 @@ public class Spell_MajorGlobe extends Spell
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> greater anti-magic globe fades."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> greater anti-magic globe fades."));
 
 		super.unInvoke();
 
@@ -82,7 +82,7 @@ public class Spell_MajorGlobe extends Spell
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 		{
 			amountAbsorbed+=CMLib.ableMapper().lowestQualifyingLevel(msg.tool().ID());
-			mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,_("The globe around <S-NAME> absorbs the @x1 from <T-NAME>!",msg.tool().name()));
+			mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,L("The globe around <S-NAME> absorbs the @x1 from <T-NAME>!",msg.tool().name()));
 			return false;
 		}
 		if((invoker!=null)&&(amountAbsorbed>((invoker.phyStats().level()+(2*getXLEVELLevel(invoker)))*4)))
@@ -103,7 +103,7 @@ public class Spell_MajorGlobe extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_(auto?"A great anti-magic field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) a great anti-magic globe of protection around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"A great anti-magic field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) a great anti-magic globe of protection around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				amountAbsorbed=0;
@@ -112,7 +112,7 @@ public class Spell_MajorGlobe extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a great anti-magic globe, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a great anti-magic globe, but fail(s)."));
 
 		return success;
 	}

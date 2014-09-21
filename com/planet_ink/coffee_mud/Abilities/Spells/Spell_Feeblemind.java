@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Feeblemind extends Spell
 {
 	@Override public String ID() { return "Spell_Feeblemind"; }
-	private final static String localizedName = CMLib.lang()._("Feeblemind");
+	private final static String localizedName = CMLib.lang().L("Feeblemind");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Feeblemind spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Feeblemind spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -62,7 +62,7 @@ public class Spell_Feeblemind extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("You begin to remember some rather simple things--like your name.  The feeblemind spell must be wearing off."));
+			mob.tell(L("You begin to remember some rather simple things--like your name.  The feeblemind spell must be wearing off."));
 	}
 
 
@@ -91,7 +91,7 @@ public class Spell_Feeblemind extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> cast(s) at <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> cast(s) at <T-NAMESELF>.^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((R.okMessage(mob,msg))&&(R.okMessage(mob,msg2)))
 			{
@@ -99,13 +99,13 @@ public class Spell_Feeblemind extends Spell
 				R.send(mob,msg2);
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
-					R.show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> begin(s) to feel a bit stupid."));
+					R.show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> begin(s) to feel a bit stupid."));
 					success=maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> cast(s) to <T-NAMESELF>, but the spell fizzles."));
+			return maliciousFizzle(mob,target,L("<S-NAME> cast(s) to <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

@@ -79,7 +79,7 @@ public class Chicken extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName(_("a menacing beak"));
+			naturalWeapon.setName(L("a menacing beak"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 			naturalWeapon.setUsesRemaining(1000);
 			naturalWeapon.setWeaponType(Weapon.TYPE_NATURAL);
@@ -172,10 +172,10 @@ public class Chicken extends StdRace
 			if((CMLib.dice().rollPercentage()>99)&&(((MOB)ticking).numItems()<9))
 			{
 				final Item I=CMClass.getItem("GenFoodResource");
-				I.setName(_("an egg"));
-				I.setDisplayText(_("an egg has been left here."));
+				I.setName(L("an egg"));
+				I.setDisplayText(L("an egg has been left here."));
 				I.setMaterial(RawMaterial.RESOURCE_EGGS);
-				I.setDescription(_("It looks like a chicken egg!"));
+				I.setDescription(L("It looks like a chicken egg!"));
 				I.basePhyStats().setWeight(1);
 				CMLib.materials().addEffectsToResource(I);
 				((MOB)ticking).addItem((Item)I.copyOf());
@@ -187,7 +187,7 @@ public class Chicken extends StdRace
 				final Item I=((MOB)ticking).findItem("an egg");
 				if(I!=null)
 				{
-					((MOB)ticking).location().show(((MOB)ticking),null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> lay(s) an egg."));
+					((MOB)ticking).location().show(((MOB)ticking),null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> lay(s) an egg."));
 					I.removeFromOwnerContainer();
 					I.executeMsg((MOB)ticking,CMClass.getMsg((MOB)ticking,I,null,CMMsg.TYP_ROOMRESET,null));
 					((MOB)ticking).location().addItem(I,ItemPossessor.Expire.Resource);

@@ -339,7 +339,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		S.setVarScope("*");
 		S.setScript("LOAD="+scriptFilename);
 		S.setVar(mob.Name(),"VALUE", oldValue);
-		final CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,_("COMMANDJOURNAL_@x1",CMJ.NAME()));
+		final CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,L("COMMANDJOURNAL_@x1",CMJ.NAME()));
 		S.executeMsg(mob, msg2);
 		S.dequeResponses();
 		S.tick(mob,Tickable.TICKID_MOB);
@@ -529,7 +529,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			"^XQ)^.^Wuit without saving";
 
 		final String addModeMessage="^ZYou are now in Add Text mode.\n\r^ZEnter . on a blank line to exit.^.^N";
-		mob.tell(_("^HCoffeeMud Message Maker^N"));
+		mob.tell(L("^HCoffeeMud Message Maker^N"));
 		boolean menuMode=!autoAdd;
 		if(autoAdd) sess.println(addModeMessage);
 		while((mob.session()!=null)&&(!sess.isStopped()))
@@ -546,7 +546,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			else
 			{
 				final LinkedList<String> paramsOut=new LinkedList<String>();
-				final String option=sess.choose(_("^HMenu ^N(?/A/D/L/I/E/R/S/Q@x1)^H: ^N",(canExtEdit?"/W":"")),_("ADLIERSQ?@x1",(canExtEdit?"W":"")),"?",-1,paramsOut);
+				final String option=sess.choose(L("^HMenu ^N(?/A/D/L/I/E/R/S/Q@x1)^H: ^N",(canExtEdit?"/W":"")),L("ADLIERSQ?@x1",(canExtEdit?"W":"")),"?",-1,paramsOut);
 				final String paramAll=(paramsOut.size()>0)?CMParms.combine(paramsOut,0):null;
 				final String param1=(paramsOut.size()>0)?paramsOut.getFirst():null;
 				final String param2=(paramsOut.size()>1)?CMParms.combine(paramsOut,1):null;
@@ -554,81 +554,81 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				{
 				case 'S':
 					if(((paramAll!=null)&&(paramAll.equalsIgnoreCase("Y")))
-					||(sess.confirm(_("Save and exit, are you sure (N/y)? "),_("N"))))
+					||(sess.confirm(L("Save and exit, are you sure (N/y)? "),L("N"))))
 					{
 						return MsgMkrResolution.SAVEFILE;
 					}
 					break;
 				case 'Q':
 					if(((paramAll!=null)&&(paramAll.equalsIgnoreCase("Y")))
-					||(sess.confirm(_("Quit without saving (N/y)? "),_("N"))))
+					||(sess.confirm(L("Quit without saving (N/y)? "),L("N"))))
 						return MsgMkrResolution.CANCELFILE;
 					break;
 				case 'R':
 				{
 					if(vbuf.size()==0)
-						mob.tell(_("The file is empty!"));
+						mob.tell(L("The file is empty!"));
 					else
 					{
 						String line=param1;
 						if(line==null)
-							line=sess.prompt(_("Text to search for (case sensitive): "),"");
+							line=sess.prompt(L("Text to search for (case sensitive): "),"");
 						if(line.length()>0)
 						{
 							String str=param2;
 							if(str==null)
-								str=sess.prompt(_("Text to replace it with: "),"");
+								str=sess.prompt(L("Text to replace it with: "),"");
 							for(int i=0;i<vbuf.size();i++)
 								vbuf.set(i,CMStrings.replaceAll(vbuf.get(i),line,str));
 						}
 						else
-							mob.tell(_("(aborted)"));
+							mob.tell(L("(aborted)"));
 					}
 					break;
 				}
 				case 'E':
 				{
 					if(vbuf.size()==0)
-						mob.tell(_("The file is empty!"));
+						mob.tell(L("The file is empty!"));
 					else
 					{
 						String line=param1;
 						if(line==null)
-							line=sess.prompt(_("Line to edit (0-@x1): ",""+(vbuf.size()-1)),"");
+							line=sess.prompt(L("Line to edit (0-@x1): ",""+(vbuf.size()-1)),"");
 						if((CMath.isInteger(line))&&(CMath.s_int(line)>=0)&&(CMath.s_int(line)<(vbuf.size())))
 						{
 							final int ln=CMath.s_int(line);
-							mob.tell(_("Current: \n\r@x1) @x2",CMStrings.padRight(""+ln,3),vbuf.get(ln)));
+							mob.tell(L("Current: \n\r@x1) @x2",CMStrings.padRight(""+ln,3),vbuf.get(ln)));
 							String str=param2;
 							if(str==null)
-								str=sess.prompt(_("Rewrite: \n\r"));
+								str=sess.prompt(L("Rewrite: \n\r"));
 							if(str.length()==0)
-								mob.tell(_("(no change)"));
+								mob.tell(L("(no change)"));
 							else
 								vbuf.set(ln,str);
 						}
 						else
-							mob.tell(_("'@x1' is not a valid line number.",line));
+							mob.tell(L("'@x1' is not a valid line number.",line));
 					}
 					break;
 				}
 				case 'D':
 				{
 					if(vbuf.size()==0)
-						mob.tell(_("The file is empty!"));
+						mob.tell(L("The file is empty!"));
 					else
 					{
 						String line=paramAll;
 						if(line==null)
-							line=sess.prompt(_("Line to delete (0-@x1): ",""+(vbuf.size()-1)),"");
+							line=sess.prompt(L("Line to delete (0-@x1): ",""+(vbuf.size()-1)),"");
 						if((CMath.isInteger(line))&&(CMath.s_int(line)>=0)&&(CMath.s_int(line)<(vbuf.size())))
 						{
 							final int ln=CMath.s_int(line);
 							vbuf.remove(ln);
-							mob.tell(_("Line @x1 deleted.",""+ln));
+							mob.tell(L("Line @x1 deleted.",""+ln));
 						}
 						else
-							mob.tell(_("'@x1' is not a valid line number.",""+line));
+							mob.tell(L("'@x1' is not a valid line number.",""+line));
 					}
 					break;
 				}
@@ -646,13 +646,13 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						vbuf.clear();
 						mob.session().sendGMCPEvent("IRE.Composer.Edit", "{\"title\":\""+MiniJSON.toJSONString(messageTitle)+"\",\"text\":\""+MiniJSON.toJSONString(oldDoc.toString())+"\"}");
 						oldDoc=null;
-						final String newText=mob.session().prompt(_("Re-Enter the whole doc using your GMCP editor.\n\rIf the editor has not popped up, just hit enter and QUIT Without Saving immediately.\n\rProceed: "));
+						final String newText=mob.session().prompt(L("Re-Enter the whole doc using your GMCP editor.\n\rIf the editor has not popped up, just hit enter and QUIT Without Saving immediately.\n\rProceed: "));
 						final String[] newDoc=newText.split("\\\\n");
 						for(final String s : newDoc)
 							vbuf.add(s);
 						if(newDoc.length>1)
 						{
-							mob.tell(_("\n\r^HNew text successfully imported.^N"));
+							mob.tell(L("\n\r^HNew text successfully imported.^N"));
 						}
 					}
 					break;
@@ -668,22 +668,22 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				case 'I':
 				{
 					if(vbuf.size()==0)
-						mob.tell(_("The file is empty!"));
+						mob.tell(L("The file is empty!"));
 					else
 					{
 						String line=param1;
 						if(line==null)
-							line=sess.prompt(_("Line to insert before (0-@x1): ",""+(vbuf.size()-1)),"");
+							line=sess.prompt(L("Line to insert before (0-@x1): ",""+(vbuf.size()-1)),"");
 						if((CMath.isInteger(line))&&(CMath.s_int(line)>=0)&&(CMath.s_int(line)<(vbuf.size())))
 						{
 							final int ln=CMath.s_int(line);
 							String str=param2;
 							if(str==null)
-								str=sess.prompt(_("Enter text to insert here.\n\r: "));
+								str=sess.prompt(L("Enter text to insert here.\n\r: "));
 							vbuf.add(ln,str);
 						}
 						else
-							mob.tell(_("'@x1' is not a valid line number.",""+line));
+							mob.tell(L("'@x1' is not a valid line number.",""+line));
 					}
 					break;
 				}

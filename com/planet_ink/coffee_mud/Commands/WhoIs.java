@@ -47,7 +47,7 @@ public class WhoIs extends Who
 		String mobName=CMParms.combine(commands,1);
 		if((mobName==null)||(mobName.length()==0))
 		{
-			mob.tell(_("whois whom?"));
+			mob.tell(L("whois whom?"));
 			return false;
 		}
 
@@ -56,7 +56,7 @@ public class WhoIs extends Who
 		{
 			if((!(CMLib.intermud().i3online()))
 			&&(!CMLib.intermud().imc2online()))
-				mob.tell(_("Intermud is unavailable."));
+				mob.tell(L("Intermud is unavailable."));
 			else
 			if(x==0)
 				CMLib.intermud().i3who(mob,mobName.substring(1));
@@ -69,7 +69,7 @@ public class WhoIs extends Who
 					mudName=Intermud.translateName(mudName);
 					if(!Intermud.isUp(mudName))
 					{
-						mob.tell(_("@x1 is not available.",mudName));
+						mob.tell(L("@x1 is not available.",mudName));
 						return false;
 					}
 				}
@@ -92,7 +92,7 @@ public class WhoIs extends Who
 				msg.append(showWhoShort(mob2,colWidths));
 		}
 		if(msg.length()==0)
-			mob.tell(_("That person doesn't appear to be online.\n\r"));
+			mob.tell(L("That person doesn't appear to be online.\n\r"));
 		else
 		{
 			mob.tell(getHead(colWidths)+msg.toString());

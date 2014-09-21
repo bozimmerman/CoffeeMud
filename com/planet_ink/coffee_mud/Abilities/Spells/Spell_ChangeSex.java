@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_ChangeSex extends Spell
 {
 	@Override public String ID() { return "Spell_ChangeSex"; }
-	private final static String localizedName = CMLib.lang()._("Change Sex");
+	private final static String localizedName = CMLib.lang().L("Change Sex");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Change Sex)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Change Sex)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -128,7 +128,7 @@ public class Spell_ChangeSex extends Spell
 				setChildStuff(mob, target);
 				final Room R=CMLib.map().roomLocation(target);
 				if(R!=null)
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> feel(s) like <S-HIS-HER> old self again."));
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) like <S-HIS-HER> old self again."));
 
 			}
 
@@ -140,7 +140,7 @@ public class Spell_ChangeSex extends Spell
 			super.unInvoke();
 			if(canBeUninvoked())
 				if((mob.location()!=null)&&(!mob.amDead()))
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> feel(s) like <S-HIS-HER> old self again."));
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) like <S-HIS-HER> old self again."));
 		}
 	}
 
@@ -155,14 +155,14 @@ public class Spell_ChangeSex extends Spell
 		{
 			if(!(target instanceof CagedAnimal))
 			{
-				mob.tell(_("This spell won't have much effect on @x1.",target.name(mob)));
+				mob.tell(L("This spell won't have much effect on @x1.",target.name(mob)));
 				return false;
 			}
 		}
 		else
 		if(!(target instanceof MOB))
 		{
-			mob.tell(_("This spell won't have much effect on @x1.",target.name(mob)));
+			mob.tell(L("This spell won't have much effect on @x1.",target.name(mob)));
 			return false;
 		}
 
@@ -182,7 +182,7 @@ public class Spell_ChangeSex extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> sing(s) a spell to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> sing(s) a spell to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -215,12 +215,12 @@ public class Spell_ChangeSex extends Spell
 						return false;
 					M.recoverCharStats();
 					target.recoverPhyStats();
-					mob.location().show(M,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> become(s) @x1!",M.charStats().genderName()));
+					mob.location().show(M,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) @x1!",M.charStats().genderName()));
 				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> sing(s) a spell to <T-NAMESELF>, but the spell fizzles."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> sing(s) a spell to <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

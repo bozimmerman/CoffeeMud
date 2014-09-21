@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_AntTrain extends Chant
 {
 	@Override public String ID() { return "Chant_AntTrain"; }
-	private final static String localizedName = CMLib.lang()._("Ant Train");
+	private final static String localizedName = CMLib.lang().L("Ant Train");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
@@ -65,9 +65,9 @@ public class Chant_AntTrain extends Chant
 			if(item.amWearingAt(Wearable.WORN_FLOATING_NEARBY))
 			{
 				if(wasntMine)
-					mob.location().show(mob,item,CMMsg.MSG_OK_VISUAL,_("<T-NAME> floating near <S-NAME>, is left behind by a departing train of ants."));
+					mob.location().show(mob,item,CMMsg.MSG_OK_VISUAL,L("<T-NAME> floating near <S-NAME>, is left behind by a departing train of ants."));
 				else
-					mob.location().show(mob,item,CMMsg.MSG_OK_VISUAL,_("<T-NAME> floating near <S-NAME>, is carried back into <S-HIS-HER> hands by a departing train of ants."));
+					mob.location().show(mob,item,CMMsg.MSG_OK_VISUAL,L("<T-NAME> floating near <S-NAME>, is carried back into <S-HIS-HER> hands by a departing train of ants."));
 				item.unWear();
 			}
 			if(wasntMine)
@@ -105,13 +105,13 @@ public class Chant_AntTrain extends Chant
 		if((!(target instanceof Item))
 		||(!CMLib.flags().isGettable(((Item)target))))
 		{
-			mob.tell(_("The ants can't carry @x1!",target.name(mob)));
+			mob.tell(L("The ants can't carry @x1!",target.name(mob)));
 			return false;
 		}
 
 		if(mob.freeWearPositions(Wearable.WORN_FLOATING_NEARBY,(short)0,(short)0)==0)
 		{
-			mob.tell(_("There is no more room around you to float anything!"));
+			mob.tell(L("There is no more room around you to float anything!"));
 			return false;
 		}
 
@@ -143,7 +143,7 @@ public class Chant_AntTrain extends Chant
 				target.delEffect(this);
 				target.recoverPhyStats();
 			}
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> begin(s) to float around."):_("^S<S-NAME> chant(s), and a train of ants appears to carry <T-NAMESELF> for <S-HIM-HER>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> begin(s) to float around."):L("^S<S-NAME> chant(s), and a train of ants appears to carry <T-NAMESELF> for <S-HIM-HER>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -163,7 +163,7 @@ public class Chant_AntTrain extends Chant
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) for ants, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) for ants, but fail(s)."));
 
 
 

@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_PlantSelf extends Chant
 {
 	@Override public String ID() { return "Chant_PlantSelf"; }
-	private final static String localizedName = CMLib.lang()._("Plant Self");
+	private final static String localizedName = CMLib.lang().L("Plant Self");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Planted)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Planted)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
@@ -59,9 +59,9 @@ public class Chant_PlantSelf extends Chant
 			if(!mob.amDead())
 			{
 				if(mob.location()!=null)
-					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> uproot(s) <S-HIM-HERSELF>."));
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> uproot(s) <S-HIM-HERSELF>."));
 				else
-					mob.tell(_("You uproot yourself."));
+					mob.tell(L("You uproot yourself."));
 			}
 		}
 	}
@@ -117,16 +117,16 @@ public class Chant_PlantSelf extends Chant
 					CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), -oneHalfPct);
 				switch(CMLib.dice().roll(1,10,0))
 				{
-				case 0: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> whisper(s) to the wind.")); break;
-				case 1: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> lean(s) towards the sun.")); break;
-				case 2: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> feel(s) the life of the insects.")); break;
-				case 3: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> feed(s) on the moisture of the earth.")); break;
-				case 4: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> take(s) in the energy of the sun.")); break;
-				case 5: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> feel(s) <S-HIM-HERSELF> grow.")); break;
-				case 6: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> become(s) one with the earth.")); break;
-				case 7: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> seek(s) the inner beauty of the natural order.")); break;
-				case 8: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> expunge(s) <S-HIS-HER> unnatural thoughts.")); break;
-				case 9: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,_("<S-NAME> find(s) clarity in the natural world.")); break;
+				case 0: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> whisper(s) to the wind.")); break;
+				case 1: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> lean(s) towards the sun.")); break;
+				case 2: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> feel(s) the life of the insects.")); break;
+				case 3: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> feed(s) on the moisture of the earth.")); break;
+				case 4: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> take(s) in the energy of the sun.")); break;
+				case 5: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> feel(s) <S-HIM-HERSELF> grow.")); break;
+				case 6: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> become(s) one with the earth.")); break;
+				case 7: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> seek(s) the inner beauty of the natural order.")); break;
+				case 8: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> expunge(s) <S-HIS-HER> unnatural thoughts.")); break;
+				case 9: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> find(s) clarity in the natural world.")); break;
 				}
 			}
 		}
@@ -143,17 +143,17 @@ public class Chant_PlantSelf extends Chant
 	{
 		if(mob.isInCombat())
 		{
-			mob.tell(_("You can't commune while in combat!"));
+			mob.tell(L("You can't commune while in combat!"));
 			return false;
 		}
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell(_("You must be outdoors for this chant to work."));
+			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
 		if(!mob.location().getArea().getClimateObj().canSeeTheSun(mob.location()))
 		{
-			mob.tell(_("You won't feel the sun here."));
+			mob.tell(L("You won't feel the sun here."));
 			return false;
 		}
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
@@ -165,7 +165,7 @@ public class Chant_PlantSelf extends Chant
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			mob.tell(_("This magic will not work here."));
+			mob.tell(L("This magic will not work here."));
 			return false;
 		}
 
@@ -178,7 +178,7 @@ public class Chant_PlantSelf extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),_("^S<S-NAME> plant(s) <S-HIM-HERSELF> in the earth while chanting softly...^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),L("^S<S-NAME> plant(s) <S-HIM-HERSELF> in the earth while chanting softly...^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -187,7 +187,7 @@ public class Chant_PlantSelf extends Chant
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) to the earth, but lose(s) concentration."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> chant(s) to the earth, but lose(s) concentration."));
 
 		// return whether it worked
 		return success;

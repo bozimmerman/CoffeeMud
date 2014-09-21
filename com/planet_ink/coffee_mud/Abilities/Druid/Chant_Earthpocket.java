@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_Earthpocket extends Chant
 {
 	@Override public String ID() { return "Chant_Earthpocket"; }
-	private final static String localizedName = CMLib.lang()._("Earthpocket");
+	private final static String localizedName = CMLib.lang().L("Earthpocket");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return _("(Earthpocket: "+(super.tickDown/CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY))+")"); }
+	@Override public String displayText() { return L("(Earthpocket: "+(super.tickDown/CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY))+")"); }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
@@ -56,7 +56,7 @@ public class Chant_Earthpocket extends Chant
 
 		if(canBeUninvoked())
 		{
-			mob.tell(_("Your earthpocket fades away, dumping its contents into your inventory!"));
+			mob.tell(L("Your earthpocket fades away, dumping its contents into your inventory!"));
 			final List<Item> V=pocket.getContents();
 			for(int v=0;v<V.size();v++)
 			{
@@ -78,7 +78,7 @@ public class Chant_Earthpocket extends Chant
 		   ||CMath.bset(msg.sourceMajor(),CMMsg.MASK_DELICATE)
 		   ||CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH)))
 		{
-			msg.source().tell(_("The dark pocket draws away from you, preventing your action."));
+			msg.source().tell(L("The dark pocket draws away from you, preventing your action."));
 			return false;
 		}
 		return true;
@@ -147,13 +147,13 @@ public class Chant_Earthpocket extends Chant
 
 		if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
 		{
-			mob.tell(_("The earthpocket can only be summoned or seen in a cave."));
+			mob.tell(L("The earthpocket can only be summoned or seen in a cave."));
 			return false;
 		}
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already connected with an earthpocket."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already connected with an earthpocket."));
 			return false;
 		}
 
@@ -173,7 +173,7 @@ public class Chant_Earthpocket extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) for a connection with a mystical dimension!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) for a connection with a mystical dimension!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -182,17 +182,17 @@ public class Chant_Earthpocket extends Chant
 				pocket.basePhyStats().setSensesMask(PhyStats.SENSE_ITEMNOTGET);
 				pocket.basePhyStats().setWeight(0);
 				pocket.setMaterial(RawMaterial.RESOURCE_NOTHING);
-				pocket.setName(_("an earthpocket"));
-				pocket.setDisplayText(_("an empty pitch-black pocket is in the wall here."));
-				pocket.setDescription(_("It looks like an endless black hole in the wall.  Very mystical."));
+				pocket.setName(L("an earthpocket"));
+				pocket.setDisplayText(L("an empty pitch-black pocket is in the wall here."));
+				pocket.setDescription(L("It looks like an endless black hole in the wall.  Very mystical."));
 				pocket.recoverPhyStats();
 				target.location().addItem(pocket);
 				beneficialAffect(mob,target,asLevel,CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH));
-				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("A dark pocket of energy appears in a nearby wall."));
+				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("A dark pocket of energy appears in a nearby wall."));
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s), but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s), but nothing more happens."));
 
 		// return whether it worked
 		return success;

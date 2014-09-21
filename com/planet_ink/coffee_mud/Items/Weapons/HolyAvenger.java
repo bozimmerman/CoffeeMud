@@ -77,7 +77,7 @@ public class HolyAvenger extends TwoHandedSword
 			||(!CMLib.flags().isGood(msg.source())))
 			{
 				unWear();
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("@x1 flashes and flies out of <S-HIS-HER> hands!",name()));
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 flashes and flies out of <S-HIS-HER> hands!",name()));
 				if(msg.source().isMine(this))
 					CMLib.commands().postDrop(msg.source(),this,true,false,false);
 				return false;
@@ -108,7 +108,7 @@ public class HolyAvenger extends TwoHandedSword
 				int damage=CMLib.dice().roll(1,15,0);
 				if(msg.value()>0)
 					damage=damage/2;
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),CMMsg.MSG_OK_ACTION,_("@x1 dispels evil within <T-NAME> and @x2 <T-HIM-HER>>!",name(),CMLib.combat().standardHitWord(Weapon.TYPE_BURSTING,damage))));
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),CMMsg.MSG_OK_ACTION,L("@x1 dispels evil within <T-NAME> and @x2 <T-HIM-HER>>!",name(),CMLib.combat().standardHitWord(Weapon.TYPE_BURSTING,damage))));
 				final CMMsg msg3=CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_DAMAGE,CMMsg.NO_EFFECT,null);
 				msg3.setValue(damage);
 				msg.addTrailerMsg(msg3);

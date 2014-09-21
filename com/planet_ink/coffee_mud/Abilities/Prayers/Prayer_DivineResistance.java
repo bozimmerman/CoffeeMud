@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_DivineResistance extends Prayer
 {
 	@Override public String ID() { return "Prayer_DivineResistance"; }
-	private final static String localizedName = CMLib.lang()._("Divine Resistance");
+	private final static String localizedName = CMLib.lang().L("Divine Resistance");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Divine Resistance)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Divine Resistance)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
@@ -82,7 +82,7 @@ public class Prayer_DivineResistance extends Prayer
 				if(msg.tool()!=null)
 					permProts.add(msg.tool());
 				prots--;
-				msg.source().location().show((MOB)msg.target(),msg.source(),this,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> divine protection glows!"));
+				msg.source().location().show((MOB)msg.target(),msg.source(),this,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> divine protection glows!"));
 				if(prots==0)
 					unInvoke();
 			}
@@ -102,7 +102,7 @@ public class Prayer_DivineResistance extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> divine resistance fades."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> divine resistance fades."));
 	}
 
 	@Override
@@ -122,7 +122,7 @@ public class Prayer_DivineResistance extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_(auto?"<T-NAME> become(s) protected by divine resistance.":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to be protected by divine resistance.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> become(s) protected by divine resistance.":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to be protected by divine resistance.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -131,7 +131,7 @@ public class Prayer_DivineResistance extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for <T-NAMESELF> to have divine resistance, but nothing happens.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for <T-NAMESELF> to have divine resistance, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

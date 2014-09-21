@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_DivineBeauty extends Spell
 {
 	@Override public String ID() { return "Spell_DivineBeauty"; }
-	private final static String localizedName = CMLib.lang()._("Divine Beauty");
+	private final static String localizedName = CMLib.lang().L("Divine Beauty");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Divine Beauty)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Divine Beauty)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -65,7 +65,7 @@ public class Spell_DivineBeauty extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> begin(s) to look like <S-HIS-HER> old ugly self."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> begin(s) to look like <S-HIS-HER> old ugly self."));
 	}
 
 	@Override
@@ -106,19 +106,19 @@ public class Spell_DivineBeauty extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> speak(s) beautifully to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> speak(s) beautifully to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(target.location()==mob.location())
 				{
-					target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> become(s) divinely beautiful!!!"));
+					target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> become(s) divinely beautiful!!!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> speak(s) beautifully to <T-NAMESELF>, but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> speak(s) beautifully to <T-NAMESELF>, but nothing more happens."));
 
 
 		// return whether it worked

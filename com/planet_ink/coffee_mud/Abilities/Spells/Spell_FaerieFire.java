@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_FaerieFire extends Spell
 {
 	@Override public String ID() { return "Spell_FaerieFire"; }
-	private final static String localizedName = CMLib.lang()._("Faerie Fire");
+	private final static String localizedName = CMLib.lang().L("Faerie Fire");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Faerie Fire)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Faerie Fire)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -52,7 +52,7 @@ public class Spell_FaerieFire extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL, _("The faerie fire around <S-NAME> fades."));
+			mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL, L("The faerie fire around <S-NAME> fades."));
 		super.unInvoke();
 	}
 
@@ -107,7 +107,7 @@ public class Spell_FaerieFire extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),_((auto?"A ":"^S<S-NAME> speak(s) and gesture(s) and a ")+"twinkling fire envelopes <T-NAME>.^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),L((auto?"A ":"^S<S-NAME> speak(s) and gesture(s) and a ")+"twinkling fire envelopes <T-NAME>.^?"));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
@@ -115,7 +115,7 @@ public class Spell_FaerieFire extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> mutter(s) about a faerie fire, but the spell fizzles."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> mutter(s) about a faerie fire, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

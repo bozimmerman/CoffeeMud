@@ -44,7 +44,7 @@ public class Mount extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("@x1 what?",((String)commands.elementAt(0))));
+			mob.tell(L("@x1 what?",((String)commands.elementAt(0))));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -79,12 +79,12 @@ public class Mount extends StdCommand
 				{
 					if(!CMLib.flags().canBeSeenBy(M,mob))
 					{
-						mob.tell(_("You don't see @x1 here.",((String)commands.firstElement())));
+						mob.tell(L("You don't see @x1 here.",((String)commands.firstElement())));
 						return false;
 					}
 					if((!CMLib.flags().isBoundOrHeld(M))&&(!M.willFollowOrdersOf(mob)))
 					{
-						mob.tell(_("Only the bound or servants can be mounted unwillingly."));
+						mob.tell(L("Only the bound or servants can be mounted unwillingly."));
 						return false;
 					}
 					RI=M;
@@ -100,23 +100,23 @@ public class Mount extends StdCommand
 			recipient=mob.location().fetchFromRoomFavorMOBs(null,CMParms.combine(commands,0));
 		if((recipient==null)||(!CMLib.flags().canBeSeenBy(recipient,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",CMParms.combine(commands,0)));
+			mob.tell(L("You don't see '@x1' here.",CMParms.combine(commands,0)));
 			return false;
 		}
 		String mountStr=null;
 		if(recipient instanceof Rideable)
 		{
 			if(RI!=null)
-				mountStr=_("<S-NAME> mount(s) <O-NAME> onto <T-NAMESELF>.");
+				mountStr=L("<S-NAME> mount(s) <O-NAME> onto <T-NAMESELF>.");
 			else
 				mountStr="<S-NAME> "+((Rideable)recipient).mountString(CMMsg.TYP_MOUNT,mob)+" <T-NAMESELF>.";
 		}
 		else
 		{
 			if(RI!=null)
-				mountStr=_("<S-NAME> mount(s) <O-NAME> to <T-NAMESELF>.");
+				mountStr=L("<S-NAME> mount(s) <O-NAME> to <T-NAMESELF>.");
 			else
-				mountStr=_("<S-NAME> mount(s) <T-NAMESELF>.");
+				mountStr=L("<S-NAME> mount(s) <T-NAMESELF>.");
 		}
 		final CMMsg msg=CMClass.getMsg(mob,recipient,RI,CMMsg.MSG_MOUNT,mountStr);
 		if(mob.location().okMessage(mob,msg))

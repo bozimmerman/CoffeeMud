@@ -38,9 +38,9 @@ import java.util.*;
 public class Chant_SummonDustdevil extends Chant
 {
 	@Override public String ID() { return "Chant_SummonDustdevil"; }
-	private final static String localizedName = CMLib.lang()._("Summon Dustdevil");
+	private final static String localizedName = CMLib.lang().L("Summon Dustdevil");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Summon Dustdevil)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Summon Dustdevil)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -93,7 +93,7 @@ public class Chant_SummonDustdevil extends Chant
 						}
 						for(int i=0;i<V.size();i++)
 						{
-							final CMMsg msg=CMClass.getMsg(mob,invoker,(Item)V.elementAt(i),CMMsg.MSG_GIVE,_("<S-NAME> whirl(s) <O-NAME> to <T-NAMESELF>."));
+							final CMMsg msg=CMClass.getMsg(mob,invoker,(Item)V.elementAt(i),CMMsg.MSG_GIVE,L("<S-NAME> whirl(s) <O-NAME> to <T-NAMESELF>."));
 							if(mob.location().okMessage(mob,msg))
 								mob.location().send(mob,msg);
 							else
@@ -120,7 +120,7 @@ public class Chant_SummonDustdevil extends Chant
 			}
 			if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			{
-				msg.source().tell(_("You can't fight!"));
+				msg.source().tell(L("You can't fight!"));
 				msg.source().setVictim(null);
 				return false;
 			}
@@ -135,7 +135,7 @@ public class Chant_SummonDustdevil extends Chant
 		if((canBeUninvoked())&&(mob!=null))
 		if(mob.location()!=null)
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> dissipate(s)."));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> dissipate(s)."));
 			final Vector V=new Vector();
 			for(int i=0;i<mob.numItems();i++)
 				V.addElement(mob.getItem(i));
@@ -194,13 +194,13 @@ public class Chant_SummonDustdevil extends Chant
 	{
 		if((!auto)&&(mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell(_("You must be outdoors for this chant to work."));
+			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			mob.tell(_("This magic will not work here."));
+			mob.tell(L("This magic will not work here."));
 			return false;
 		}
 
@@ -214,7 +214,7 @@ public class Chant_SummonDustdevil extends Chant
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) and summon(s) help from the air.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) and summon(s) help from the air.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -225,12 +225,12 @@ public class Chant_SummonDustdevil extends Chant
 					beneficialAffect(mob,target,asLevel,0);
 					CMLib.commands().postFollow(target,mob,true);
 					if(target.amFollowing()!=mob)
-						mob.tell(_("@x1 seems unwilling to follow you.",target.name(mob)));
+						mob.tell(L("@x1 seems unwilling to follow you.",target.name(mob)));
 				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s), but nothing happens."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s), but nothing happens."));
 
 		// return whether it worked
 		return success;
@@ -243,7 +243,7 @@ public class Chant_SummonDustdevil extends Chant
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("AirElemental"));
 		final String name="a dustdevil";
 		newMOB.setName(name);
-		newMOB.setDisplayText(_("@x1 whirls around here",name));
+		newMOB.setDisplayText(L("@x1 whirls around here",name));
 		newMOB.setDescription("");
 		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 		newMOB.basePhyStats().setAbility(25);
@@ -266,7 +266,7 @@ public class Chant_SummonDustdevil extends Chant
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appear(s)!"));
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appear(s)!"));
 		newMOB.setStartRoom(null);
 		return(newMOB);
 	}

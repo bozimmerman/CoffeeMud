@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_SummonSeed extends Chant
 {
 	@Override public String ID() { return "Chant_SummonSeed"; }
-	private final static String localizedName = CMLib.lang()._("Summon Seeds");
+	private final static String localizedName = CMLib.lang().L("Summon Seeds");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}
@@ -55,7 +55,7 @@ public class Chant_SummonSeed extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final String s=CMParms.combine(commands,0);
-		final StringBuffer buf=new StringBuffer(_("Seed types known:\n\r"));
+		final StringBuffer buf=new StringBuffer(L("Seed types known:\n\r"));
 		int material=0;
 		String foundShortName=null;
 		int col=0;
@@ -83,12 +83,12 @@ public class Chant_SummonSeed extends Chant
 		}
 		if(s.length()==0)
 		{
-			mob.tell(_("Summon what kind of seed?  Try LIST as a parameter..."));
+			mob.tell(L("Summon what kind of seed?  Try LIST as a parameter..."));
 			return false;
 		}
 		if(foundShortName==null)
 		{
-			mob.tell(_("'@x1' is an unknown type of vegetation.",s));
+			mob.tell(L("'@x1' is an unknown type of vegetation.",s));
 			return false;
 		}
 
@@ -99,7 +99,7 @@ public class Chant_SummonSeed extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) to <S-HIS-HER> hands.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) to <S-HIS-HER> hands.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -110,7 +110,7 @@ public class Chant_SummonSeed extends Chant
 					if(name.endsWith("ies")) name=name.substring(0,name.length()-3)+"y";
 					if(name.endsWith("s")) name=name.substring(0,name.length()-1);
 					newItem.setName(CMLib.english().startWithAorAn(name+" seed"));
-					newItem.setDisplayText(_("@x1 is here.",newItem.name()));
+					newItem.setDisplayText(L("@x1 is here.",newItem.name()));
 					newItem.setDescription("");
 					newItem.setMaterial(material);
 					newItem.basePhyStats().setWeight(0);
@@ -118,12 +118,12 @@ public class Chant_SummonSeed extends Chant
 					newItem.setMiscText(newItem.text());
 					mob.addItem(newItem);
 				}
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("Some seeds appear!"));
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("Some seeds appear!"));
 				mob.location().recoverPhyStats();
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) to <S-HIS-HER> hands, but nothing happens."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) to <S-HIS-HER> hands, but nothing happens."));
 
 		// return whether it worked
 		return success;

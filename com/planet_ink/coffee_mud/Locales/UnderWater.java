@@ -91,10 +91,10 @@ public class UnderWater extends StdRoom implements Drink
 			final boolean thirsty=mob.curState().getThirst()<=0;
 			final boolean full=!mob.curState().adjThirst(((Drink)room).thirstQuenched(),mob.maxState().maxThirst(mob.baseWeight()));
 			if(thirsty)
-				mob.tell(CMLib.lang()._("You are no longer thirsty."));
+				mob.tell(CMLib.lang().L("You are no longer thirsty."));
 			else
 			if(full)
-				mob.tell(CMLib.lang()._("You have drunk all you can."));
+				mob.tell(CMLib.lang().L("You have drunk all you can."));
 		}
 
 		CMLib.commands().handleHygienicMessage(msg, 100, PlayerStats.HYGIENE_WATERCLEAN);
@@ -170,7 +170,7 @@ public class UnderWater extends StdRoom implements Drink
 		||(msg.targetMinor()==CMMsg.TYP_GAS)||(msg.sourceMinor()==CMMsg.TYP_GAS))
 		{
 			if((!CMath.bset(msg.sourceMajor(), CMMsg.MASK_ALWAYS))&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_ALWAYS)))
-				msg.source().tell(CMLib.lang()._("That won't work underwater."));
+				msg.source().tell(CMLib.lang().L("That won't work underwater."));
 			return -1;
 		}
 		else
@@ -195,7 +195,7 @@ public class UnderWater extends StdRoom implements Drink
 		{
 			if(((Drink)room).liquidType()==RawMaterial.RESOURCE_SALTWATER)
 			{
-				msg.source().tell(CMLib.lang()._("You don't want to be drinking saltwater."));
+				msg.source().tell(CMLib.lang().L("You don't want to be drinking saltwater."));
 				return -1;
 			}
 			return 1;

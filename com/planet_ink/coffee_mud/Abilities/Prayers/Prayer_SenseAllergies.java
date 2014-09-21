@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_SenseAllergies extends Prayer
 {
 	@Override public String ID() { return "Prayer_SenseAllergies"; }
-	private final static String localizedName = CMLib.lang()._("Sense Allergies");
+	private final static String localizedName = CMLib.lang().L("Sense Allergies");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -67,7 +67,7 @@ public class Prayer_SenseAllergies extends Prayer
 				mob.location().send(mob,msg);
 				final Ability A=target.fetchEffect("Allergies");
 				if(A==null)
-					mob.tell(mob,target,null,_("<T-NAME> seem(s) like <T-HE-SHE> is not allergic to anything."));
+					mob.tell(mob,target,null,L("<T-NAME> seem(s) like <T-HE-SHE> is not allergic to anything."));
 				else
 				{
 
@@ -84,15 +84,15 @@ public class Prayer_SenseAllergies extends Prayer
 								allergies.addElement(R.name());
 						}
 					}
-					mob.tell(mob,target,null,_("<T-NAME> seem(s) like <T-HE-SHE> is allergic to @x1.",CMParms.toStringList(V)));
+					mob.tell(mob,target,null,L("<T-NAME> seem(s) like <T-HE-SHE> is allergic to @x1.",CMParms.toStringList(V)));
 				}
 			}
 		}
 		else
 		if(mob==target)
-			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> close(s) <T-HIS-HER> eyes and peer(s) into <T-HIS-HER> own nostrils, but then blink(s)."));
+			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> close(s) <T-HIS-HER> eyes and peer(s) into <T-HIS-HER> own nostrils, but then blink(s)."));
 		else
-			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> peer(s) into the nostrils of <T-NAMESELF>, but then blink(s)."));
+			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> peer(s) into the nostrils of <T-NAMESELF>, but then blink(s)."));
 
 
 		// return whether it worked

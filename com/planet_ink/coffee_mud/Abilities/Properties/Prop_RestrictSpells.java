@@ -69,14 +69,14 @@ public class Prop_RestrictSpells extends Property
 			||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
 			{
 				if(roomS!=null)
-					roomS.showHappens(CMMsg.MSG_OK_VISUAL,_("Magic energy fizzles and is absorbed into the air."));
+					roomS.showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
 				if(roomD!=null)
-					roomD.showHappens(CMMsg.MSG_OK_VISUAL,_("Magic energy fizzles and is absorbed into the air."));
+					roomD.showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
 				if((msg.source()!=null)
 				&&(msg.source().location()!=null)
 				&&(msg.source().location()!=roomS)
 				&&(msg.source().location()!=roomD))
-					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,_("Magic energy fizzles and is absorbed into the air."));
+					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
 			}
 			return false;
 		}

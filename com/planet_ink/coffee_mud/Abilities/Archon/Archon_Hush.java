@@ -37,9 +37,9 @@ public class Archon_Hush extends ArchonSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Archon_Hush"; }
-	private final static String localizedName = CMLib.lang()._("Hush");
+	private final static String localizedName = CMLib.lang().L("Hush");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Hushed)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Hushed)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -64,7 +64,7 @@ public class Archon_Hush extends ArchonSkill
 				&&(msg.source().isMonster())
 				&&(msg.source().willFollowOrdersOf((MOB)affected)))))
 		{
-			msg.source().tell(_("Your message drifts into oblivion."));
+			msg.source().tell(L("Your message drifts into oblivion."));
 			return false;
 		}
 		return true;
@@ -80,7 +80,7 @@ public class Archon_Hush extends ArchonSkill
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("You are no longer hushed!"));
+			mob.tell(L("You are no longer hushed!"));
 	}
 
 	@Override
@@ -93,7 +93,7 @@ public class Archon_Hush extends ArchonSkill
 		if(A!=null)
 		{
 			A.unInvoke();
-			mob.tell(_("@x1 is released from his hushing.",target.Name()));
+			mob.tell(L("@x1 is released from his hushing.",target.Name()));
 			return true;
 		}
 
@@ -104,18 +104,18 @@ public class Archon_Hush extends ArchonSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?_("Silence falls upon <T-NAME>!"):_("^F<S-NAME> hush(es) <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?L("Silence falls upon <T-NAME>!"):L("^F<S-NAME> hush(es) <T-NAMESELF>.^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> hushed!"));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> hushed!"));
 				beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
 				Log.sysOut("Banish",mob.Name()+" hushed "+target.name()+".");
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to hush <T-NAMESELF>, but fail(s)."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to hush <T-NAMESELF>, but fail(s)."));
 		return success;
 	}
 }

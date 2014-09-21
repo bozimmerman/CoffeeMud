@@ -92,7 +92,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 			}
 		}
 		this.setName(newName+".");
-		this.setDescription(_("Looks like @x1.",newName));
+		this.setDescription(L("Looks like @x1.",newName));
 		//myMap=null;
 	}
 
@@ -604,7 +604,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 					}
 					if((map.length>1)||(map[0].length>1))
 						if(name().length()>0)
-							mob.session().rawPrintln(_("Section: @x1",sec));
+							mob.session().rawPrintln(L("Section: @x1",sec));
 					mob.session().rawPrint(map[x][y].toString());
 					if((map.length>1)||(map[0].length>1))
 					{
@@ -614,14 +614,14 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 								letsec+='Z';
 						letsec=letsec.substring(0,letsec.length()-1)+((char)((('A')+map.length%26)-1));
 						if(name().length()>0)
-							mob.session().rawPrintln(_("(@x1) Use 'READ SEC MAPNAME' to read sections A0 through @x2@x3 (A-@x4, 0-@x5).",sec,letsec,""+(map[0].length-1),letsec,""+(map[0].length-1)));
+							mob.session().rawPrintln(L("(@x1) Use 'READ SEC MAPNAME' to read sections A0 through @x2@x3 (A-@x4, 0-@x5).",sec,letsec,""+(map[0].length-1),letsec,""+(map[0].length-1)));
 					}
 				}
 				else
-					mob.tell(_("@x1 appears to be blank.",name()));
+					mob.tell(L("@x1 appears to be blank.",name()));
 			}
 			else
-				mob.tell(_("You can't see that!"));
+				mob.tell(L("You can't see that!"));
 			return;
 		}
 		super.executeMsg(myHost,msg);

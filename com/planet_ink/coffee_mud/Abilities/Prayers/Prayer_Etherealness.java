@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_Etherealness extends Prayer
 {
 	@Override public String ID() { return "Prayer_Etherealness"; }
-	private final static String localizedName = CMLib.lang()._("Etherealness");
+	private final static String localizedName = CMLib.lang().L("Etherealness");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Etherealness)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Etherealness)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -60,7 +60,7 @@ public class Prayer_Etherealness extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> return(s) to material form."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> return(s) to material form."));
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class Prayer_Etherealness extends Prayer
 				&&(!((Exit)msg.tool()).isOpen())
 				&&(msg.source().numItems()>0))
 				{
-					msg.source().tell(_("Your corporeal equipment, suspended in your form, will not pass through the door."));
+					msg.source().tell(L("Your corporeal equipment, suspended in your form, will not pass through the door."));
 					return false;
 				}
 				break;
@@ -107,18 +107,18 @@ public class Prayer_Etherealness extends Prayer
 			case CMMsg.TYP_LOCK:
 			case CMMsg.TYP_UNLOCK:
 			case CMMsg.TYP_HANDS:
-				msg.source().tell(_("You fail to manipulate matter in this form."));
+				msg.source().tell(L("You fail to manipulate matter in this form."));
 				return false;
 			case CMMsg.TYP_KNOCK:
 			case CMMsg.TYP_PULL:
 			case CMMsg.TYP_PUSH:
 			case CMMsg.TYP_OPEN:
 			case CMMsg.TYP_CLOSE:
-				msg.source().tell(_("You fail your attempt to affect matter in this form."));
+				msg.source().tell(L("You fail your attempt to affect matter in this form."));
 				return false;
 			case CMMsg.TYP_THROW:
 			case CMMsg.TYP_WEAPONATTACK:
-				msg.source().tell(_("You fail your attempt to affect matter in this form."));
+				msg.source().tell(L("You fail your attempt to affect matter in this form."));
 				msg.source().makePeace();
 				return false;
 			}
@@ -148,7 +148,7 @@ public class Prayer_Etherealness extends Prayer
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already ethereal."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already ethereal."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -162,16 +162,16 @@ public class Prayer_Etherealness extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 that <T-NAME> be given an ethereal form.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 that <T-NAME> be given an ethereal form.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> shimmer(s) and become(s) ethereal!"));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> shimmer(s) and become(s) ethereal!"));
 				beneficialAffect(mob,target,asLevel,3);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for a new form, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for a new form, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
 
 
 		// return whether it worked

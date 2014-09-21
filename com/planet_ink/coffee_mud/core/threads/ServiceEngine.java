@@ -59,7 +59,7 @@ public class ServiceEngine implements ThreadEngine
 	@Override public String ID(){return "ServiceEngine";}
 	@Override public String name() { return ID();}
 	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new ServiceEngine();}}
-	@Override public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+	@Override public String L(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 
 	@Override
 	public void initializeClass()

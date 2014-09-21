@@ -76,9 +76,9 @@ public class Wand_Nourishment extends StdWand
 				&&(msg.targetMessage()!=null))
 					if(msg.targetMessage().toUpperCase().indexOf("SHAZAM")>=0)
 						if(mob.curState().adjHunger(50,mob.maxState().maxHunger(mob.baseWeight())))
-							mob.tell(_("You are full."));
+							mob.tell(L("You are full."));
 						else
-							mob.tell(_("You feel nourished."));
+							mob.tell(L("You feel nourished."));
 				return;
 			default:
 				break;

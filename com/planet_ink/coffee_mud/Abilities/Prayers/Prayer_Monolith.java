@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_Monolith extends Prayer
 {
 	@Override public String ID() { return "Prayer_Monolith"; }
-	private final static String localizedName = CMLib.lang()._("Monolith");
+	private final static String localizedName = CMLib.lang().L("Monolith");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Monolith)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Monolith)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
 	@Override public int minRange(){return 1;}
@@ -79,7 +79,7 @@ public class Prayer_Monolith extends Prayer
 					if(w==null) w=mob.myNaturalWeapon();
 					if(w==null) return false;
 					final Room room=mob.location();
-					final CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,_("^F^<FIGHT^><S-NAME> hack(s) at the monolith of ice with @x1.^</FIGHT^>^?",w.name()));
+					final CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,L("^F^<FIGHT^><S-NAME> hack(s) at the monolith of ice with @x1.^</FIGHT^>^?",w.name()));
 					CMLib.color().fixSourceFightColor(msg2);
 					if(room.okMessage(mob,msg2))
 					{
@@ -97,7 +97,7 @@ public class Prayer_Monolith extends Prayer
 								&&(!M.amDead()))
 									CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(M.phyStats().level()/2,4,0),CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_COLD,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
 							}
-							mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The monolith of ice shatters!!!"));
+							mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The monolith of ice shatters!!!"));
 							((Item)affected).destroy();
 						}
 					}
@@ -119,10 +119,10 @@ public class Prayer_Monolith extends Prayer
 			&&(!((Weapon)msg.tool()).amWearingAt(Wearable.IN_INVENTORY))
 			&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED))
 			{
-				mob.location().show(mob,invoker,CMMsg.MSG_OK_VISUAL,_("<S-NAME> fire(s) @x1 at <T-NAME>.  The missile enters the monolith of air.",msg.tool().name()));
+				mob.location().show(mob,invoker,CMMsg.MSG_OK_VISUAL,L("<S-NAME> fire(s) @x1 at <T-NAME>.  The missile enters the monolith of air.",msg.tool().name()));
 				final MOB M=CMClass.getFactoryMOB();
 				M.setLocation(mob.location());
-				M.setName(_("The monolith of air"));
+				M.setName(L("The monolith of air"));
 				M.setVictim(mob);
 				M.setAtRange(mob.rangeToTarget());
 				CMLib.combat().postWeaponDamage(M,mob,(Weapon)msg.tool(),true);
@@ -145,12 +145,12 @@ public class Prayer_Monolith extends Prayer
 					Item w=mob.fetchWieldedItem();
 					if(w==null) w=mob.myNaturalWeapon();
 					if(w==null) return false;
-					if(mob.location().show(mob,null,w,CMMsg.MSG_WEAPONATTACK,_("^F^<FIGHT^><S-NAME> hack(s) at the monolith of stone with <O-NAME>.^</FIGHT^>^?")))
+					if(mob.location().show(mob,null,w,CMMsg.MSG_WEAPONATTACK,L("^F^<FIGHT^><S-NAME> hack(s) at the monolith of stone with <O-NAME>.^</FIGHT^>^?")))
 					{
 						amountRemaining-=mob.phyStats().damage();
 						if(amountRemaining<0)
 						{
-							mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("The monolith of stone is destroyed!"));
+							mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The monolith of stone is destroyed!"));
 							((Item)affected).destroy();
 						}
 					}
@@ -178,16 +178,16 @@ public class Prayer_Monolith extends Prayer
 				switch(wallType)
 				{
 				case TYP_FIRE:
-					((Room)theWall.owner()).show(actorM,null,CMMsg.MSG_OK_VISUAL,_("The monolith of fire fades."));
+					((Room)theWall.owner()).show(actorM,null,CMMsg.MSG_OK_VISUAL,L("The monolith of fire fades."));
 					break;
 				case TYP_AIR:
-					((Room)theWall.owner()).show(actorM,null,CMMsg.MSG_OK_VISUAL,_("The monolith of air dissipates."));
+					((Room)theWall.owner()).show(actorM,null,CMMsg.MSG_OK_VISUAL,L("The monolith of air dissipates."));
 					break;
 				case TYP_ICE:
-					((Room)theWall.owner()).show(actorM,null,CMMsg.MSG_OK_VISUAL,_("The monolith of ice melts."));
+					((Room)theWall.owner()).show(actorM,null,CMMsg.MSG_OK_VISUAL,L("The monolith of ice melts."));
 					break;
 				case TYP_EARTH:
-					((Room)theWall.owner()).show(actorM,null,CMMsg.MSG_OK_VISUAL,_("The monolith of stone crumbles."));
+					((Room)theWall.owner()).show(actorM,null,CMMsg.MSG_OK_VISUAL,L("The monolith of stone crumbles."));
 					break;
 				}
 				final Item wall=theWall;
@@ -248,7 +248,7 @@ public class Prayer_Monolith extends Prayer
 	{
 		if((!mob.isInCombat())||(mob.rangeToTarget()<1))
 		{
-			mob.tell(_("You really should be in ranged combat to cast this."));
+			mob.tell(L("You really should be in ranged combat to cast this."));
 			return false;
 		}
 		for(int i=0;i<mob.location().numItems();i++)
@@ -256,7 +256,7 @@ public class Prayer_Monolith extends Prayer
 			final Item I=mob.location().getItem(i);
 			if((I!=null)&&(I.fetchEffect(ID())!=null))
 			{
-				mob.tell(_("There is already a monolith here."));
+				mob.tell(L("There is already a monolith here."));
 				return false;
 			}
 		}
@@ -299,38 +299,38 @@ public class Prayer_Monolith extends Prayer
 			case TYP_EARTH:
 				amountRemaining=mob.baseState().getHitPoints()/6;
 				I=CMClass.getItem("GenItem");
-				I.setName(_("a monolith of stone"));
-				I.setDisplayText(_("a monolith of stone has been erected here"));
-				I.setDescription(_("The bricks are sold and sturdy."));
+				I.setName(L("a monolith of stone"));
+				I.setDisplayText(L("a monolith of stone has been erected here"));
+				I.setDescription(L("The bricks are sold and sturdy."));
 				I.setMaterial(RawMaterial.RESOURCE_STONE);
 				break;
 			case TYP_ICE:
 				amountRemaining=20;
 				I=CMClass.getItem("GenItem");
-				I.setName(_("a monolith of ice"));
-				I.setDisplayText(_("a monolith of ice has been erected here"));
-				I.setDescription(_("The ice is crystal clear."));
+				I.setName(L("a monolith of ice"));
+				I.setDisplayText(L("a monolith of ice has been erected here"));
+				I.setDescription(L("The ice is crystal clear."));
 				I.setMaterial(RawMaterial.RESOURCE_GLASS);
 				break;
 			case TYP_AIR:
 				I=CMClass.getItem("GenItem");
-				I.setName(_("a monolith of air"));
+				I.setName(L("a monolith of air"));
 				I.setDisplayText("");
-				I.setDescription(_("The air is swirling dangerously."));
+				I.setDescription(L("The air is swirling dangerously."));
 				I.setMaterial(RawMaterial.RESOURCE_NOTHING);
 				break;
 			case TYP_FIRE:
 				I=CMClass.getItem("GenItem");
-				I.setName(_("a monolith of fire"));
-				I.setDisplayText(_("a monolith of fire is burning here"));
-				I.setDescription(_("The flames are high and hot."));
+				I.setName(L("a monolith of fire"));
+				I.setDisplayText(L("a monolith of fire is burning here"));
+				I.setDescription(L("The flames are high and hot."));
 				I.setMaterial(RawMaterial.RESOURCE_NOTHING);
 				I.basePhyStats().setDisposition(I.basePhyStats().disposition()|PhyStats.IS_LIGHTSOURCE);
 				break;
 			}
 			if(I!=null)
 			{
-				final CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("@x1 appears!",I.name()):_("^S<S-NAME> @x1 to construct @x2!^?",prayForWord(mob),I.name()));
+				final CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("@x1 appears!",I.name()):L("^S<S-NAME> @x1 to construct @x2!^?",prayForWord(mob),I.name()));
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
@@ -343,7 +343,7 @@ public class Prayer_Monolith extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

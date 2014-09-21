@@ -39,9 +39,9 @@ import java.util.Vector;
 public class Chant_DeathMoon extends Chant
 {
 	@Override public String ID() { return "Chant_DeathMoon"; }
-	private final static String localizedName = CMLib.lang()._("Death Moon");
+	private final static String localizedName = CMLib.lang().L("Death Moon");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Death Moon)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Death Moon)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
@@ -53,7 +53,7 @@ public class Chant_DeathMoon extends Chant
 	{
 		if(canBeUninvoked())
 			if(affected instanceof Room)
-				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,_("The death moon sets."));
+				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,L("The death moon sets."));
 
 		super.unInvoke();
 
@@ -121,12 +121,12 @@ public class Chant_DeathMoon extends Chant
 		if(target==null) return false;
 		if(!target.getArea().getClimateObj().canSeeTheMoon(target,null))
 		{
-			mob.tell(_("You must be able to see the moon for this magic to work."));
+			mob.tell(L("You must be able to see the moon for this magic to work."));
 			return false;
 		}
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("This place is already under the death moon."));
+			mob.tell(L("This place is already under the death moon."));
 			return false;
 		}
 		for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
@@ -135,7 +135,7 @@ public class Chant_DeathMoon extends Chant
 			if((A!=null)
 			&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONALTERING))
 			{
-				mob.tell(_("The moon is already under @x1, and can not be changed until this magic is gone.",A.name()));
+				mob.tell(L("The moon is already under @x1, and can not be changed until this magic is gone.",A.name()));
 				return false;
 			}
 		}
@@ -156,7 +156,7 @@ public class Chant_DeathMoon extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to the sky.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to the sky.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -168,13 +168,13 @@ public class Chant_DeathMoon extends Chant
 						if((M!=null)&&(mob!=M))
 							mob.location().show(mob,M,CMMsg.MASK_MALICIOUS|CMMsg.TYP_OK_VISUAL,null);
 					}
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The Death Moon Rises!"));
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The Death Moon Rises!"));
 					beneficialAffect(mob,target,asLevel,10);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) to the sky, but the magic fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to the sky, but the magic fades."));
 		// return whether it worked
 		return success;
 	}

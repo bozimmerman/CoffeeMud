@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_ArcaneMark extends Spell
 {
 	@Override public String ID() { return "Spell_ArcaneMark"; }
-	private final static String localizedName = CMLib.lang()._("Arcane Mark");
+	private final static String localizedName = CMLib.lang().L("Arcane Mark");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}
@@ -48,18 +48,18 @@ public class Spell_ArcaneMark extends Spell
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("You must specify what object you want the spell cast on, and the message you wish the object have marked upon it. "));
+			mob.tell(L("You must specify what object you want the spell cast on, and the message you wish the object have marked upon it. "));
 			return false;
 		}
 		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,((String)commands.elementAt(0)),Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",((String)commands.elementAt(0))));
+			mob.tell(L("You don't see '@x1' here.",((String)commands.elementAt(0))));
 			return false;
 		}
 		if((!(target instanceof Item))||(!target.isGeneric()))
 		{
-			mob.tell(_("You can't can't cast this on @x1.",target.name(mob)));
+			mob.tell(L("You can't can't cast this on @x1.",target.name(mob)));
 			return false;
 		}
 		final String message=CMParms.combine(commands,1);
@@ -71,19 +71,19 @@ public class Spell_ArcaneMark extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("^S<S-NAME> invoke(s) a spell upon <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> invoke(s) a spell upon <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(target.description().indexOf("Some markings on it say")>=0)
-					target.setDescription(_("@x1 Some other markings say `@x2`.",target.description(),message));
+					target.setDescription(L("@x1 Some other markings say `@x2`.",target.description(),message));
 				else
-					target.setDescription(_("@x1 Some markings on it say `@x2`.",target.description(),message));
+					target.setDescription(L("@x1 Some markings on it say `@x2`.",target.description(),message));
 			}
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a spell upon <T-NAMESELF>, but the spell fizzles."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a spell upon <T-NAMESELF>, but the spell fizzles."));
 
 
 		// return whether it worked

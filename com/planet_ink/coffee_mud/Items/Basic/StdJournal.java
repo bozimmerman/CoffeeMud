@@ -67,7 +67,7 @@ public class StdJournal extends StdItem
 			&&(!admin)
 			&&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
 			{
-				msg.source().tell(_("You are not allowed to write on @x1",name()));
+				msg.source().tell(L("You are not allowed to write on @x1",name()));
 				return false;
 			}
 			return true;
@@ -85,7 +85,7 @@ public class StdJournal extends StdItem
 		{
 		case CMMsg.TYP_READ:
 			if(!CMLib.flags().canBeSeenBy(this,mob))
-				mob.tell(_("You can't see that!"));
+				mob.tell(L("You can't see that!"));
 			else
 			if((!mob.isMonster())
 			&&(mob.playerStats()!=null))
@@ -96,7 +96,7 @@ public class StdJournal extends StdItem
 				final long lastTime=mob.playerStats().getLastDateTime();
 				if((!admin)&&(!CMLib.masking().maskCheck(getReadReq(),mob,true)))
 				{
-					mob.tell(_("You are not allowed to read @x1.",name()));
+					mob.tell(L("You are not allowed to read @x1.",name()));
 					return;
 				}
 				int which=-1;
@@ -200,13 +200,13 @@ public class StdJournal extends StdItem
 									final MOB M=CMLib.players().getLoadPlayer(from);
 									if((M==null)||(M.playerStats()==null)||(M.playerStats().getEmail().indexOf('@')<0))
 									{
-										mob.tell(_("Player '@x1' does not exist, or has no email address.",from));
+										mob.tell(L("Player '@x1' does not exist, or has no email address.",from));
 										repeat=true;
 									}
 									else
-									if(!mob.session().choose(_("Send email to @x1 (Y/n)?",M.Name()),_("YN\n"),_("Y")).equalsIgnoreCase("N"))
+									if(!mob.session().choose(L("Send email to @x1 (Y/n)?",M.Name()),L("YN\n"),L("Y")).equalsIgnoreCase("N"))
 									{
-										final String replyMsg=mob.session().prompt(_("Enter your email response\n\r: "));
+										final String replyMsg=mob.session().prompt(L("Enter your email response\n\r: "));
 										if((replyMsg.trim().length()>0) && (read != null))
 										{
 											CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX),
@@ -214,11 +214,11 @@ public class StdJournal extends StdItem
 																			  M.Name(),
 																			  "RE: "+read.subj,
 																			  replyMsg);
-											mob.tell(_("Email queued."));
+											mob.tell(L("Email queued."));
 										}
 										else
 										{
-											mob.tell(_("Aborted."));
+											mob.tell(L("Aborted."));
 											repeat=true;
 										}
 									}
@@ -230,11 +230,11 @@ public class StdJournal extends StdItem
 								{
 									String journal;
 									try {
-										journal=mob.session().prompt(_("Enter the journal to transfer this msg to: "),"",30000);
+										journal=mob.session().prompt(L("Enter the journal to transfer this msg to: "),"",30000);
 									}
 									catch(final IOException e)
 									{
-										mob.tell(_("Timed out."));
+										mob.tell(L("Timed out."));
 										repeat=true;
 										continue;
 									}
@@ -257,7 +257,7 @@ public class StdJournal extends StdItem
 										if(realName==null)
 											realName=CMLib.database().DBGetRealJournalName(journal.toUpperCase());
 										if(realName==null)
-											mob.tell(_("The journal '@x1' does not presently exist.  Aborted.",journal));
+											mob.tell(L("The journal '@x1' does not presently exist.  Aborted.",journal));
 										else
 										{
 											final List<JournalsLibrary.JournalEntry> journal2=CMLib.database().DBReadJournalMsgs(Name());
@@ -270,10 +270,10 @@ public class StdJournal extends StdItem
 																			  entry2.msg);
 											msg.setValue(-1);
 										}
-										mob.tell(_("Message transferred."));
+										mob.tell(L("Message transferred."));
 									}
 									else
-										mob.tell(_("Aborted."));
+										mob.tell(L("Aborted."));
 								}
 								else
 								if(s.equalsIgnoreCase("D"))
@@ -283,25 +283,25 @@ public class StdJournal extends StdItem
 									{
 										CMLib.database().DBDeleteJournal(Name(),read.key);
 										msg.setValue(-1);
-										mob.tell(_("Entry deleted."));
+										mob.tell(L("Entry deleted."));
 									}
 									else
-										mob.tell(_("Failed to delete entry."));
+										mob.tell(L("Failed to delete entry."));
 								}
 								else
 								if(s.equalsIgnoreCase("R"))
 								{
 									if(read != null)
 									{
-										final String replyMsg=mob.session().prompt(_("Enter your response\n\r: "));
+										final String replyMsg=mob.session().prompt(L("Enter your response\n\r: "));
 										if(replyMsg.trim().length()>0)
 										{
 											CMLib.database().DBWriteJournalReply(Name(),read.key,mob.Name(),"","",replyMsg);
-											mob.tell(_("Reply added."));
+											mob.tell(L("Reply added."));
 										}
 										else
 										{
-											mob.tell(_("Aborted."));
+											mob.tell(L("Aborted."));
 											repeat=true;
 										}
 									}
@@ -317,7 +317,7 @@ public class StdJournal extends StdItem
 					if(which<0)
 						mob.tell(description());
 					else
-						mob.tell(_("That message is private."));
+						mob.tell(L("That message is private."));
 				}
 				return;
 			}
@@ -332,7 +332,7 @@ public class StdJournal extends StdItem
 				   &&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS)||admin)
 				   &&(!mob.isMonster()))
 				{
-					if(mob.session().confirm(_("Delete all journal entries? Are you sure (y/N)?"),_("N")))
+					if(mob.session().confirm(L("Delete all journal entries? Are you sure (y/N)?"),L("N")))
 						CMLib.database().DBDeleteJournal(name(),null);
 				}
 				else
@@ -343,43 +343,43 @@ public class StdJournal extends StdItem
 						to=mob.Name();
 					else
 					if(CMath.s_bool(getParm("MAILBOX"))
-					||mob.session().confirm(_("Is this a private message (y/N)?"),_("N")))
+					||mob.session().confirm(L("Is this a private message (y/N)?"),L("N")))
 					{
-						to=mob.session().prompt(_("To whom:"));
+						to=mob.session().prompt(L("To whom:"));
 						if(((!to.toUpperCase().trim().startsWith("MASK=")
 								||(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS)&&(!admin))))
 						&&(!CMLib.players().playerExists(to)))
 						{
-							mob.tell(_("I'm sorry, there is no such user."));
+							mob.tell(L("I'm sorry, there is no such user."));
 							return;
 						}
 					}
-					String subject=mob.session().prompt(_("Enter a subject: "));
+					String subject=mob.session().prompt(L("Enter a subject: "));
 					if(subject.trim().length()==0)
 					{
-						mob.tell(_("Aborted."));
+						mob.tell(L("Aborted."));
 						return;
 					}
 					if((subject.toUpperCase().startsWith("MOTD")||subject.toUpperCase().startsWith("MOTM")||subject.toUpperCase().startsWith("MOTY"))
 					   &&(!admin)
 					   &&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS))))
 						subject=subject.substring(4);
-					final String message=mob.session().prompt(_("Enter your message\n\r: "));
+					final String message=mob.session().prompt(L("Enter your message\n\r: "));
 					if(message.trim().length()==0)
 					{
-						mob.tell(_("Aborted."));
+						mob.tell(L("Aborted."));
 						return;
 					}
 					if(message.startsWith("<cmvp>")
 					&&(!admin)
 					&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS))))
 					{
-						mob.tell(_("Illegal code, aborted."));
+						mob.tell(L("Illegal code, aborted."));
 						return;
 					}
 
 					CMLib.database().DBWriteJournal(Name(),mob.Name(),to,subject,message);
-					mob.tell(_("Journal entry added."));
+					mob.tell(L("Journal entry added."));
 				}
 				return;
 			}
@@ -402,7 +402,7 @@ public class StdJournal extends StdItem
 			{
 				lastReadTo=msg.source();
 				lastDateRead=newestDate;
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,_("@x1 has @x2 new messages.",name(),""+newestDate[1]),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,L("@x1 has @x2 new messages.",name(),""+newestDate[1]),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 			}
 		}
 		else
@@ -418,7 +418,7 @@ public class StdJournal extends StdItem
 			{
 				lastReadTo=msg.source();
 				lastDateRead=newestDate;
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,_("@x1 has @x2 new messages.",name(),""+newestDate[1]),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,L("@x1 has @x2 new messages.",name(),""+newestDate[1]),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 			}
 		}
 		super.executeMsg(myHost,msg);
@@ -433,9 +433,9 @@ public class StdJournal extends StdItem
 		{
 			buf.append("#\n\r "+CMStrings.padRight("#",6)
 					   +((shortFormat)?"":""
-					   +CMStrings.padRight(_("From"),11)
-					   +CMStrings.padRight(_("To"),11))
-					   +CMStrings.padRight(_("Date"),20)
+					   +CMStrings.padRight(L("From"),11)
+					   +CMStrings.padRight(L("To"),11))
+					   +CMStrings.padRight(L("Date"),20)
 					   +"Subject\n\r");
 			buf.append("-------------------------------------------------------------------------\n\r");
 			if(journal==null)
@@ -517,7 +517,7 @@ public class StdJournal extends StdItem
 				buf.append((StringBuffer)selections.elementAt(v));
 			}
 			if(notify)
-				buf.append(_("\n\rUse READ ALL [JOURNAL] to see missing entries."));
+				buf.append(L("\n\rUse READ ALL [JOURNAL] to see missing entries."));
 		}
 		else
 		{

@@ -36,7 +36,7 @@ import java.util.*;
 public class Paladin_Courage extends PaladinSkill
 {
 	@Override public String ID() { return "Paladin_Courage"; }
-	private final static String localizedName = CMLib.lang()._("Paladin`s Courage");
+	private final static String localizedName = CMLib.lang().L("Paladin`s Courage");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
 	public Paladin_Courage()
@@ -72,8 +72,8 @@ public class Paladin_Courage extends PaladinSkill
 				||(str1.indexOf("FEAR")>=0))
 				{
 					final MOB mob=(MOB)msg.target();
-					mob.location().showSource(mob,null,CMMsg.MSG_OK_VISUAL,_("Your courage protects you from the @x1 attack.",msg.tool().name()));
-					mob.location().showOthers(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME>'s courage protects <S-HIM-HER> from the @x1 attack.",msg.tool().name()));
+					mob.location().showSource(mob,null,CMMsg.MSG_OK_VISUAL,L("Your courage protects you from the @x1 attack.",msg.tool().name()));
+					mob.location().showOthers(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME>'s courage protects <S-HIM-HER> from the @x1 attack.",msg.tool().name()));
 					return false;
 				}
 			}

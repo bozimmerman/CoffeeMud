@@ -38,9 +38,9 @@ public class Fighter_Gouge extends MonkSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Fighter_Gouge"; }
-	private final static String localizedName = CMLib.lang()._("Gouge");
+	private final static String localizedName = CMLib.lang().L("Gouge");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Gouged Eyes)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Gouged Eyes)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -82,7 +82,7 @@ public class Fighter_Gouge extends MonkSkill
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your eyes feel better."));
+			mob.tell(L("Your eyes feel better."));
 	}
 
 	@Override
@@ -119,19 +119,19 @@ public class Fighter_Gouge extends MonkSkill
 		||((mob.charStats().getMyRace().bodyMask()[Race.BODY_HAND]<=0)
 		   &&(mob.charStats().getBodyPart(Race.BODY_FOOT)<=0)))
 		{
-			mob.tell(_("You need hands to gouge."));
+			mob.tell(L("You need hands to gouge."));
 			return false;
 		}
 
 		if((!auto)&&(target.charStats().getBodyPart(Race.BODY_EYE)<=0))
 		{
-			mob.tell(_("@x1 has no eyes!",target.name(mob)));
+			mob.tell(L("@x1 has no eyes!",target.name(mob)));
 			return false;
 		}
 
 		if((!auto)&&(anyWeapons(mob)))
 		{
-			mob.tell(_("Your hands must be free to gouge."));
+			mob.tell(L("Your hands must be free to gouge."));
 			return false;
 		}
 
@@ -142,12 +142,12 @@ public class Fighter_Gouge extends MonkSkill
 		final boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
 		if((success)&&(hit))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":_("^F^<FIGHT^><S-NAME> gouge(s) at <T-YOUPOSS> eyes!^</FIGHT^>^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("^F^<FIGHT^><S-NAME> gouge(s) at <T-YOUPOSS> eyes!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> blinded!"));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> blinded!"));
 				maliciousAffect(mob,target,asLevel,5,-1);
 				Amputator A=(Amputator)target.fetchEffect("Amputation");
 				if(A==null) A=(Amputator)CMClass.getAbility("Amputation");
@@ -165,7 +165,7 @@ public class Fighter_Gouge extends MonkSkill
 					if(A2!=null)
 					{
 						A2.setMiscText(mob.Name()+"/"+gone);
-						final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_DAMAGE,_("<DAMAGE> <T-NAME>."));
+						final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_DAMAGE,L("<DAMAGE> <T-NAME>."));
 						msg2.setValue(target.maxState().getHitPoints()/(20-getXLEVELLevel(mob)));
 						if(!A2.invoke(mob,new XVector(msg2),target,true,0))
 						{
@@ -181,7 +181,7 @@ public class Fighter_Gouge extends MonkSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to gouge <T-YOUPOSS> eyes, but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to gouge <T-YOUPOSS> eyes, but fail(s)."));
 		return success;
 	}
 }

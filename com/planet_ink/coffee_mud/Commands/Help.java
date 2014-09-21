@@ -46,7 +46,7 @@ public class Help extends StdCommand
 		final String helpStr=CMParms.combine(commands,1);
 		if(CMLib.help().getHelpFile().size()==0)
 		{
-			mob.tell(_("No help is available."));
+			mob.tell(L("No help is available."));
 			return false;
 		}
 		StringBuilder thisTag=null;
@@ -65,9 +65,9 @@ public class Help extends StdCommand
 				CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP)?CMLib.help().getArcHelpFile():null,
 				mob);
 			if((thisList!=null)&&(thisList.length()>0))
-				mob.tell(_("No help is available on '@x1'.\n\rHowever, here are some search matches:\n\r^N@x2",helpStr,thisList.toString().replace('_',' ')));
+				mob.tell(L("No help is available on '@x1'.\n\rHowever, here are some search matches:\n\r^N@x2",helpStr,thisList.toString().replace('_',' ')));
 			else
-				mob.tell(_("No help is available on '@x1'.\n\rEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list, or 'HELPLIST' to search.",helpStr));
+				mob.tell(L("No help is available on '@x1'.\n\rEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list, or 'HELPLIST' to search.",helpStr));
 			Log.helpOut("Help",mob.Name()+" wanted help on "+helpStr);
 		}
 		else

@@ -36,9 +36,9 @@ import java.util.*;
 public class Fighter_Rallycry extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Rallycry"; }
-	private final static String localizedName = CMLib.lang()._("Rally Cry");
+	private final static String localizedName = CMLib.lang().L("Rally Cry");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Rally Cry)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Rally Cry)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	private static final String[] triggerStrings =_i(new String[] {"RALLYCRY"});
@@ -81,7 +81,7 @@ public class Fighter_Rallycry extends FighterSkill
 
 		if(canBeUninvoked())
 		{
-			mob.tell(_("You feel less rallied."));
+			mob.tell(L("You feel less rallied."));
 			mob.recoverMaxState();
 			if(mob.curState().getHitPoints()>mob.maxState().getHitPoints())
 				mob.curState().setHitPoints(mob.maxState().getHitPoints());
@@ -97,7 +97,7 @@ public class Fighter_Rallycry extends FighterSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_SPEAK,auto?"":_("^S<S-NAME> scream(s) a mighty RALLYING CRY!!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_SPEAK,auto?"":L("^S<S-NAME> scream(s) a mighty RALLYING CRY!!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -106,7 +106,7 @@ public class Fighter_Rallycry extends FighterSkill
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
-					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) rallied!"));
+					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) rallied!"));
 					timesTicking=0;
 					hpUp=mob.phyStats().level()+(2*getXLEVELLevel(mob));
 					beneficialAffect(mob,target,asLevel,0);
@@ -117,7 +117,7 @@ public class Fighter_Rallycry extends FighterSkill
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,auto?"":_("<S-NAME> mumble(s) a weak rally cry."));
+			beneficialWordsFizzle(mob,null,auto?"":L("<S-NAME> mumble(s) a weak rally cry."));
 
 		// return whether it worked
 		return success;

@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Puppeteer extends BardSkill
 {
 	@Override public String ID() { return "Skill_Puppeteer"; }
-	private final static String localizedName = CMLib.lang()._("Puppeteer");
+	private final static String localizedName = CMLib.lang().L("Puppeteer");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
@@ -73,7 +73,7 @@ public class Skill_Puppeteer extends BardSkill
 				||(msg.targetMajor(CMMsg.MASK_MALICIOUS)))
 					msg.source().setVictim((MOB)msg.target());
 			}
-			invoker().location().show(invoker(),puppet,CMMsg.MSG_OK_ACTION,_("<S-NAME> animate(s) <T-NAMESELF>."));
+			invoker().location().show(invoker(),puppet,CMMsg.MSG_OK_ACTION,L("<S-NAME> animate(s) <T-NAMESELF>."));
 			return false;
 		}
 		else
@@ -106,7 +106,7 @@ public class Skill_Puppeteer extends BardSkill
 				final boolean isHit=(CMLib.combat().rollToHit(CMLib.combat().adjustedAttackBonus(M,M.getVictim())+(5*getXLEVELLevel(M))
 							+((Item)affected).phyStats().attackAdjustment(),CMLib.combat().adjustedArmor(M.getVictim()), 0));
 				if(!isHit)
-					M.location().show(M,M.getVictim(),affected,CMMsg.MSG_OK_ACTION,_("<O-NAME> attacks <T-NAME> and misses!"));
+					M.location().show(M,M.getVictim(),affected,CMMsg.MSG_OK_ACTION,L("<O-NAME> attacks <T-NAME> and misses!"));
 				else
 					CMLib.combat().postDamage(M,M.getVictim(),affected,
 											CMLib.dice().roll(1,affected.phyStats().level()+(2*getXLEVELLevel(M)),1),
@@ -118,19 +118,19 @@ public class Skill_Puppeteer extends BardSkill
 			switch(CMLib.dice().roll(1,5,0))
 			{
 			case 1:
-				M.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 walks around.",affected.name()));
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 walks around.",affected.name()));
 				break;
 			case 2:
-				M.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 waves its little arms.",affected.name()));
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 waves its little arms.",affected.name()));
 				break;
 			case 3:
-				M.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 hugs you.",affected.name()));
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 hugs you.",affected.name()));
 				break;
 			case 4:
-				M.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 makes a few fake attacks.",affected.name()));
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 makes a few fake attacks.",affected.name()));
 				break;
 			case 5:
-				M.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 dances around.",affected.name()));
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 dances around.",affected.name()));
 				break;
 			}
 		}
@@ -146,7 +146,7 @@ public class Skill_Puppeteer extends BardSkill
 		&&(affected instanceof Item)
 		&&(((Item)affected).owner()!=null)
 		&&(((Item)affected).owner() instanceof Room))
-			((Room)((Item)affected).owner()).showHappens(CMMsg.MSG_OK_ACTION,_("@x1 stops moving.",affected.name()));
+			((Room)((Item)affected).owner()).showHappens(CMMsg.MSG_OK_ACTION,L("@x1 stops moving.",affected.name()));
 		super.unInvoke();
 	}
 
@@ -164,13 +164,13 @@ public class Skill_Puppeteer extends BardSkill
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("@x1 is already animated!",target.name(mob)));
+			mob.tell(L("@x1 is already animated!",target.name(mob)));
 			return false;
 		}
 		if((!target.Name().toLowerCase().endsWith(" puppet"))
 		&&(!target.Name().toLowerCase().endsWith(" marionette")))
 		{
-			mob.tell(_("That's not a puppet!"));
+			mob.tell(L("That's not a puppet!"));
 			return false;
 		}
 
@@ -187,15 +187,15 @@ public class Skill_Puppeteer extends BardSkill
 				mob.location().send(mob,msg);
 				target.unWear();
 				if(mob.isMine(target))
-					mob.location().show(mob,target,CMMsg.MSG_DROP,_("<S-NAME> start(s) animating <T-NAME>!"));
+					mob.location().show(mob,target,CMMsg.MSG_DROP,L("<S-NAME> start(s) animating <T-NAME>!"));
 				else
-					mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<S-NAME> start(s) animating <T-NAME>!"));
+					mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("<S-NAME> start(s) animating <T-NAME>!"));
 				if(mob.location().isContent(target))
 					beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> twitch(es) oddly, but does nothing more."));
+			mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> twitch(es) oddly, but does nothing more."));
 
 
 		// return whether it worked

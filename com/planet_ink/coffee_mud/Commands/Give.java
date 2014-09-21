@@ -45,20 +45,20 @@ public class Give extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("Give what to whom?"));
+			mob.tell(L("Give what to whom?"));
 			return false;
 		}
 		commands.removeElementAt(0);
 		if(commands.size()<2)
 		{
-			mob.tell(_("To whom should I give that?"));
+			mob.tell(L("To whom should I give that?"));
 			return false;
 		}
 
 		final MOB recipient=mob.location().fetchInhabitant((String)commands.lastElement());
 		if((recipient==null)||(!CMLib.flags().canBeSeenBy(recipient,mob)))
 		{
-			mob.tell(_("I don't see anyone called @x1 here.",(String)commands.lastElement()));
+			mob.tell(L("I don't see anyone called @x1 here.",(String)commands.lastElement()));
 			return false;
 		}
 		commands.removeElementAt(commands.size()-1);
@@ -100,7 +100,7 @@ public class Give extends StdCommand
 				{
 					if((!(giveThis).amWearingAt(Wearable.WORN_HELD))&&(!(giveThis).amWearingAt(Wearable.WORN_WIELD)))
 					{
-						mob.tell(_("You must remove that first."));
+						mob.tell(L("You must remove that first."));
 						return false;
 					}
 					final CMMsg newMsg=CMClass.getMsg(mob,giveThis,null,CMMsg.MSG_REMOVE,null);
@@ -122,12 +122,12 @@ public class Give extends StdCommand
 		}
 
 		if(V.size()==0)
-			mob.tell(_("You don't seem to be carrying that."));
+			mob.tell(L("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<V.size();i++)
 		{
 			giveThis=(Item)V.elementAt(i);
-			final CMMsg newMsg=CMClass.getMsg(mob,recipient,giveThis,CMMsg.MSG_GIVE,_("<S-NAME> give(s) <O-NAME> to <T-NAMESELF>."));
+			final CMMsg newMsg=CMClass.getMsg(mob,recipient,giveThis,CMMsg.MSG_GIVE,L("<S-NAME> give(s) <O-NAME> to <T-NAMESELF>."));
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);
 			if(giveThis instanceof Coins)

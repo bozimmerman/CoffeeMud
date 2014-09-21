@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_KineticBubble extends Spell
 {
 	@Override public String ID() { return "Spell_KineticBubble"; }
-	private final static String localizedName = CMLib.lang()._("Kinetic Bubble");
+	private final static String localizedName = CMLib.lang().L("Kinetic Bubble");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Kinetic Bubble)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Kinetic Bubble)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -54,7 +54,7 @@ public class Spell_KineticBubble extends Spell
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> Kinetic Bubble pops."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> Kinetic Bubble pops."));
 
 		super.unInvoke();
 	}
@@ -108,7 +108,7 @@ public class Spell_KineticBubble extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?_("<T-NAME> <T-IS-ARE> surrounded by a Kinetic Bubble!"):_("^S<S-NAME> invoke(s) a Kinetic Bubble around <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?L("<T-NAME> <T-IS-ARE> surrounded by a Kinetic Bubble!"):L("^S<S-NAME> invoke(s) a Kinetic Bubble around <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -117,7 +117,7 @@ public class Spell_KineticBubble extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a Kinetic Bubble, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a Kinetic Bubble, but fail(s)."));
 
 		return success;
 	}

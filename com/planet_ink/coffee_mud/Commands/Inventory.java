@@ -92,7 +92,7 @@ public class Inventory extends StdCommand
 		final StringBuilder msg=new StringBuilder("");
 		if(list.moneyItems.size()>0)
 		{
-			msg.append(_("\n\r^HMoney:^N\n\r"));
+			msg.append(L("\n\r^HMoney:^N\n\r"));
 			Item I=null;
 			for(final Enumeration e=list.moneyItems.keys();e.hasMoreElements();)
 			{
@@ -149,16 +149,16 @@ public class Inventory extends StdCommand
 		if((list.viewItems.size()==0)&&(list.moneyItems.size()==0))
 		{
 			if((mask!=null)&&(mask.trim().length()>0))
-				msg.append(_("(nothing like that you can see right now)"));
+				msg.append(L("(nothing like that you can see right now)"));
 			else
-				msg.append(_("(nothing you can see right now)"));
+				msg.append(L("(nothing you can see right now)"));
 		}
 		else
 		{
 			if(list.viewItems.size()>0)
 				msg.append(CMLib.lister().lister(seer,list.viewItems,true,"MItem","",false,CMath.bset(seer.getBitmap(),MOB.ATT_COMPRESS)));
 			if(list.foundButUnseen)
-				msg.append(_("(stuff you can't see right now)"));
+				msg.append(L("(stuff you can't see right now)"));
 
 			msg.append(getShowableMoney(list));
 		}
@@ -177,10 +177,10 @@ public class Inventory extends StdCommand
 		}
 		final StringBuilder msg=getInventory(mob,mob,CMParms.combine(commands,1));
 		if(msg.length()==0)
-			mob.tell(_("^HYou are carrying:\n\r^!Nothing!^?\n\r"));
+			mob.tell(L("^HYou are carrying:\n\r^!Nothing!^?\n\r"));
 		else
 		if(!mob.isMonster())
-			mob.session().wraplessPrintln(_("^HYou are carrying:^?\n\r@x1",msg.toString()));
+			mob.session().wraplessPrintln(L("^HYou are carrying:^?\n\r@x1",msg.toString()));
 		return false;
 	}
 

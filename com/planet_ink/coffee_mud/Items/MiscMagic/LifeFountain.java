@@ -71,7 +71,7 @@ public class LifeFountain extends StdDrink implements MiscMagic
 					return true;
 				break;
 			case CMMsg.TYP_FILL:
-				mob.tell(_("You can't fill the fountain of life."));
+				mob.tell(L("You can't fill the fountain of life."));
 				return false;
 			default:
 				break;

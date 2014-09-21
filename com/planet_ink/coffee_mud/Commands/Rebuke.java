@@ -44,7 +44,7 @@ public class Rebuke extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("Rebuke whom?"));
+			mob.tell(L("Rebuke whom?"));
 			return false;
 		}
 		final String str=CMParms.combine(commands,1);
@@ -60,18 +60,18 @@ public class Rebuke extends StdCommand
 
 		if(target==null)
 		{
-			mob.tell(_("You don't see anybody called '@x1' or you aren't serving '@x2'.",CMParms.combine(commands,1),CMParms.combine(commands,1)));
+			mob.tell(L("You don't see anybody called '@x1' or you aren't serving '@x2'.",CMParms.combine(commands,1),CMParms.combine(commands,1)));
 			return false;
 		}
 
 		CMMsg msg=null;
-		msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_REBUKE,_("<S-NAME> rebuke(s) @x1.",target.Name()));
+		msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_REBUKE,L("<S-NAME> rebuke(s) @x1.",target.Name()));
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		if((target.amFollowing()==mob)&&(target.location()!=null))
 		{
 			final Room R=target.location();
-			msg=CMClass.getMsg(target,target.amFollowing(),null,CMMsg.MSG_NOFOLLOW,_("<S-NAME> stop(s) following <T-NAMESELF>."));
+			msg=CMClass.getMsg(target,target.amFollowing(),null,CMMsg.MSG_NOFOLLOW,L("<S-NAME> stop(s) following <T-NAMESELF>."));
 			// no room OKaffects, since the damn leader may not be here.
 			if(target.okMessage(mob,msg))
 				R.send(mob,msg);

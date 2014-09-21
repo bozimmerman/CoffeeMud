@@ -67,12 +67,12 @@ public class ClanReject extends StdCommand
 		{
 			if(C==null)
 			{
-				mob.tell(_("You aren't allowed to reject anyone from @x1.",((clanName.length()==0)?"anything":clanName)));
+				mob.tell(L("You aren't allowed to reject anyone from @x1.",((clanName.length()==0)?"anything":clanName)));
 				return false;
 			}
 			if(C.getGovernment().getAutoRole() == C.getGovernment().getAcceptPos())
 			{
-				mob.tell(_("Everyone is already accepted."));
+				mob.tell(L("Everyone is already accepted."));
 				return false;
 			}
 			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.REJECT,false))
@@ -80,7 +80,7 @@ public class ClanReject extends StdCommand
 				final List<MemberRecord> apps=C.getMemberList(C.getGovernment().getAutoRole());
 				if(apps.size()<1)
 				{
-					mob.tell(_("There are no applicants to your @x1.",C.getGovernmentName()));
+					mob.tell(L("There are no applicants to your @x1.",C.getGovernmentName()));
 					return false;
 				}
 				memberStr=CMStrings.capitalizeAndLower(memberStr);
@@ -96,31 +96,31 @@ public class ClanReject extends StdCommand
 					final MOB M=CMLib.players().getLoadPlayer(memberStr);
 					if(M==null)
 					{
-						mob.tell(_("@x1 was not found.  Could not reject from @x2.",memberStr,C.getGovernmentName()));
+						mob.tell(L("@x1 was not found.  Could not reject from @x2.",memberStr,C.getGovernmentName()));
 						return false;
 					}
 					if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.REJECT,true))
 					{
 						C.delMember(M);
-						mob.tell(_("@x1 has been denied acceptance to @x2 '@x3'.",M.Name(),C.getGovernmentName(),C.clanID()));
+						mob.tell(L("@x1 has been denied acceptance to @x2 '@x3'.",M.Name(),C.getGovernmentName(),C.clanID()));
 						if((M.session()!=null)&&(M.session().mob()==M))
-							M.tell(_("You have been rejected as a member of @x1 '@x2'.",C.getGovernmentName(),C.clanID()));
+							M.tell(L("You have been rejected as a member of @x1 '@x2'.",C.getGovernmentName(),C.clanID()));
 						return false;
 					}
 				}
 				else
 				{
-					msg.append(_("@x1 isn't a member of your @x2.",memberStr,C.getGovernmentName()));
+					msg.append(L("@x1 isn't a member of your @x2.",memberStr,C.getGovernmentName()));
 				}
 			}
 			else
 			{
-			  msg.append(_("You aren't in the right position to reject applicants to your @x1.",C.getGovernmentName()));
+			  msg.append(L("You aren't in the right position to reject applicants to your @x1.",C.getGovernmentName()));
 			}
 		}
 		else
 		{
-			msg.append(_("You haven't specified which applicant you are rejecting."));
+			msg.append(L("You haven't specified which applicant you are rejecting."));
 		}
 		mob.tell(msg.toString());
 		return false;

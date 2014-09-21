@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_AcidSpray extends Spell
 {
 	@Override public String ID() { return "Spell_AcidSpray"; }
-	private final static String localizedName = CMLib.lang()._("Acid Spray");
+	private final static String localizedName = CMLib.lang().L("Acid Spray");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Acid Spray)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Acid Spray)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -79,7 +79,7 @@ public class Spell_AcidSpray extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),_(auto?"<T-NAME> <T-IS-ARE> sprayed with acid.":"^S<S-NAME> reach(es) for <T-NAMESELF>, spraying acid all over <T-HIM-HER>!^?")+CMLib.protocol().msp("spelldam1.wav",40));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),L(auto?"<T-NAME> <T-IS-ARE> sprayed with acid.":"^S<S-NAME> reach(es) for <T-NAMESELF>, spraying acid all over <T-HIM-HER>!^?")+CMLib.protocol().msp("spelldam1.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ACID|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 			{
@@ -95,7 +95,7 @@ public class Spell_AcidSpray extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> reach(es) for <T-NAMESELF>, but nothing more happens."));
+			return maliciousFizzle(mob,target,L("<S-NAME> reach(es) for <T-NAMESELF>, but nothing more happens."));
 
 		return success;
 	}

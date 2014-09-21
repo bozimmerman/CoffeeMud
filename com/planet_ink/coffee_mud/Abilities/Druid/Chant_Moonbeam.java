@@ -38,9 +38,9 @@ import java.util.*;
 public class Chant_Moonbeam extends Chant
 {
 	@Override public String ID() { return "Chant_Moonbeam"; }
-	private final static String localizedName = CMLib.lang()._("Moonbeam");
+	private final static String localizedName = CMLib.lang().L("Moonbeam");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Moonbeam)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Moonbeam)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONSUMMONING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
@@ -62,7 +62,7 @@ public class Chant_Moonbeam extends Chant
 		final MOB mob=(MOB)affected;
 		final Room room=((MOB)affected).location();
 		if(canBeUninvoked())
-			room.show(mob,null,CMMsg.MSG_OK_VISUAL,_("The moonbeam shining down from above <S-NAME> dims."));
+			room.show(mob,null,CMMsg.MSG_OK_VISUAL,L("The moonbeam shining down from above <S-NAME> dims."));
 		super.unInvoke();
 		room.recoverRoomStats();
 	}
@@ -87,7 +87,7 @@ public class Chant_Moonbeam extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			target.tell(_("The moonbeam is already with you."));
+			target.tell(L("The moonbeam is already with you."));
 			return false;
 		}
 
@@ -98,10 +98,10 @@ public class Chant_Moonbeam extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
 		{
-			return beneficialWordsFizzle(mob,mob.location(),_("<S-NAME> chant(s) for a moonbeam, but fail(s)."));
+			return beneficialWordsFizzle(mob,mob.location(),L("<S-NAME> chant(s) for a moonbeam, but fail(s)."));
 		}
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("A moonbeam begin(s) to follow <T-NAME> around!"):_("^S<S-NAME> chant(s), causing a moonbeam to follow <S-HIM-HER> around!^?"));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("A moonbeam begin(s) to follow <T-NAME> around!"):L("^S<S-NAME> chant(s), causing a moonbeam to follow <S-HIM-HER> around!^?"));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -38,7 +38,7 @@ import java.util.*;
 public class MasterArmorsmithing extends Armorsmithing implements ItemCraftor
 {
 	@Override public String ID() { return "MasterArmorsmithing"; }
-	private final static String localizedName = CMLib.lang()._("Master Armorsmithing");
+	private final static String localizedName = CMLib.lang().L("Master Armorsmithing");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"MARMORSMITH","MASTERARMORSMITHING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -79,7 +79,7 @@ public class MasterArmorsmithing extends Armorsmithing implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,_("Make what? Enter \"marmorsmith list\" for a list,\"marmorsmith scan\", \"marmorsmith learn <item>\", \"marmorsmith mend <item>\", or \"marmorsmith stop\" to cancel."));
+			commonTell(mob,L("Make what? Enter \"marmorsmith list\" for a list,\"marmorsmith scan\", \"marmorsmith learn <item>\", \"marmorsmith mend <item>\", or \"marmorsmith stop\" to cancel."));
 			return false;
 		}
 		if(parsedVars.autoGenerate>0)

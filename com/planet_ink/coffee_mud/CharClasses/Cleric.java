@@ -37,7 +37,7 @@ import java.util.*;
 public class Cleric extends StdCharClass
 {
 	@Override public String ID(){return "Cleric";}
-	private final static String localizedStaticName = CMLib.lang()._("Cleric");
+	private final static String localizedStaticName = CMLib.lang().L("Cleric");
 	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return ID();}
 	@Override public int getBonusPracLevel(){return 2;}
@@ -299,7 +299,7 @@ public class Cleric extends StdCharClass
 			case 0:
 				if(CMLib.flags().isEvil(myChar))
 				{
-					myChar.tell(_("Your immoral strife disrupts the prayer."));
+					myChar.tell(L("Your immoral strife disrupts the prayer."));
 					return false;
 				}
 				if(hq==0) basis=100;
@@ -307,7 +307,7 @@ public class Cleric extends StdCharClass
 			case 500:
 				if(CMLib.flags().isNeutral(myChar))
 				{
-					myChar.tell(_("Your moral weakness disrupts the prayer."));
+					myChar.tell(L("Your moral weakness disrupts the prayer."));
 					return false;
 				}
 				if(hq==500) basis=100;
@@ -315,7 +315,7 @@ public class Cleric extends StdCharClass
 			case 1000:
 				if(CMLib.flags().isGood(myChar))
 				{
-					myChar.tell(_("Your moral confusion disrupts the prayer."));
+					myChar.tell(L("Your moral confusion disrupts the prayer."));
 					return false;
 				}
 				if(hq==1000) basis=100;
@@ -338,16 +338,16 @@ public class Cleric extends StdCharClass
 				return true;
 
 			if(hq==0)
-				myChar.tell(_("The evil nature of @x1 disrupts your prayer.",A.name()));
+				myChar.tell(L("The evil nature of @x1 disrupts your prayer.",A.name()));
 			else
 			if(hq==1000)
-				myChar.tell(_("The goodness of @x1 disrupts your prayer.",A.name()));
+				myChar.tell(L("The goodness of @x1 disrupts your prayer.",A.name()));
 			else
 			if(CMLib.flags().isGood(myChar))
-				myChar.tell(_("The anti-good nature of @x1 disrupts your thought.",A.name()));
+				myChar.tell(L("The anti-good nature of @x1 disrupts your thought.",A.name()));
 			else
 			if(CMLib.flags().isEvil(myChar))
-				myChar.tell(_("The anti-evil nature of @x1 disrupts your thought.",A.name()));
+				myChar.tell(L("The anti-evil nature of @x1 disrupts your thought.",A.name()));
 			return false;
 		}
 		return true;

@@ -49,14 +49,14 @@ public class PollCmd extends StdCommand
 		{
 			if((commands!=null)&&(mypolls[1].size()==0))
 			{
-				mob.tell(_("No polls are available at this time."));
+				mob.tell(L("No polls are available at this time."));
 				return false;
 			}
 			else
 			if(commands==null)
 			{
 				if(mypolls[1].size()>0)
-					mob.tell(_("@x1 poll(s) <-IS-ARE> awaiting your participation.",""+mypolls[1].size()));
+					mob.tell(L("@x1 poll(s) <-IS-ARE> awaiting your participation.",""+mypolls[1].size()));
 				return false;
 			}
 		}
@@ -67,15 +67,15 @@ public class PollCmd extends StdCommand
 			if(P.mayISeeResults(mob))
 			{
 				CMLib.polls().processResults(P, mob);
-				mob.session().prompt(_("Press ENTER to continue:\n\r"));
+				mob.session().prompt(L("Press ENTER to continue:\n\r"));
 			}
 		}
 		if(commands==null)
 		{
 			if(mypolls[1].size()==1)
-				mob.tell(_("\n\r^H@x1 other poll(s) <-IS-ARE> awaiting your participation.^N\n\r",""+mypolls[1].size()));
+				mob.tell(L("\n\r^H@x1 other poll(s) <-IS-ARE> awaiting your participation.^N\n\r",""+mypolls[1].size()));
 			if(mypolls[2].size()>0)
-				mob.tell(_("\n\r^HResults from @x1 poll(s) <-IS-ARE> still available.^N\n\r",""+mypolls[2].size()));
+				mob.tell(L("\n\r^HResults from @x1 poll(s) <-IS-ARE> still available.^N\n\r",""+mypolls[2].size()));
 			return true;
 		}
 		for(final Poll P : mypolls[1])
@@ -84,12 +84,12 @@ public class PollCmd extends StdCommand
 			if(P.mayISeeResults(mob))
 			{
 				CMLib.polls().processResults(P, mob);
-				mob.session().prompt(_("Press ENTER to continue:"));
+				mob.session().prompt(L("Press ENTER to continue:"));
 			}
 		}
 
 		if(mypolls[2].size()>0)
-			mob.tell(_("\n\r^HPrevious polling results:^N\n\r"));
+			mob.tell(L("\n\r^HPrevious polling results:^N\n\r"));
 		int i=0;
 		for(final Poll P : mypolls[2])
 		{
@@ -97,7 +97,7 @@ public class PollCmd extends StdCommand
 			{
 				CMLib.polls().processResults(P, mob);
 				if(i<mypolls[2].size()-1)
-					mob.session().prompt(_("Press ENTER to continue:\n\r"));
+					mob.session().prompt(L("Press ENTER to continue:\n\r"));
 			}
 			i++;
 		}

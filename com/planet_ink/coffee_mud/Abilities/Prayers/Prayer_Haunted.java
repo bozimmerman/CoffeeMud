@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_Haunted extends Prayer
 {
 	@Override public String ID() { return "Prayer_Haunted"; }
-	private final static String localizedName = CMLib.lang()._("Haunted");
+	private final static String localizedName = CMLib.lang().L("Haunted");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Haunted)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Haunted)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
@@ -64,7 +64,7 @@ public class Prayer_Haunted extends Prayer
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(R!=null))
-		   R.showHappens(CMMsg.MSG_OK_VISUAL,_("The haunted aura fades."));
+		   R.showHappens(CMMsg.MSG_OK_VISUAL,L("The haunted aura fades."));
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class Prayer_Haunted extends Prayer
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("This place is already haunted."));
+			mob.tell(L("This place is already haunted."));
 			return false;
 		}
 
@@ -120,7 +120,7 @@ public class Prayer_Haunted extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 to haunt this place.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 to haunt this place.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -137,7 +137,7 @@ public class Prayer_Haunted extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for a haunting, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for a haunting, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
 
 
 		// return whether it worked

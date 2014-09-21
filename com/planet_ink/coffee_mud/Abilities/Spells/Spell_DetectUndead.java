@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_DetectUndead extends Spell
 {
 	@Override public String ID() { return "Spell_DetectUndead"; }
-	private final static String localizedName = CMLib.lang()._("Detect Undead");
+	private final static String localizedName = CMLib.lang().L("Detect Undead");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Detecting Undead)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Detecting Undead)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -56,7 +56,7 @@ public class Spell_DetectUndead extends Spell
 		lastRoom=null;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("Your senses are no longer as dark."));
+			mob.tell(L("Your senses are no longer as dark."));
 	}
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -74,7 +74,7 @@ public class Spell_DetectUndead extends Spell
 			{
 				final MOB mob=lastRoom.fetchInhabitant(i);
 				if((mob!=null)&&(mob!=affected)&&(mob.charStats()!=null)&&(mob.charStats().getMyRace()!=null)&&(mob.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead")))
-					((MOB)affected).tell(mob,null,null,_("<S-NAME> gives off a cold dark vibe."));
+					((MOB)affected).tell(mob,null,null,L("<S-NAME> gives off a cold dark vibe."));
 			}
 		}
 		return true;
@@ -102,7 +102,7 @@ public class Spell_DetectUndead extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> detecting undead things."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> detecting undead things."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -113,7 +113,7 @@ public class Spell_DetectUndead extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) dark cold senses!"):_("^S<S-NAME> incant(s) softly, and gain(s) dark cold senses!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> gain(s) dark cold senses!"):L("^S<S-NAME> incant(s) softly, and gain(s) dark cold senses!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -121,7 +121,7 @@ public class Spell_DetectUndead extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> incant(s) and open(s) <S-HIS-HER> cold eyes, but the spell fizzles."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> incant(s) and open(s) <S-HIS-HER> cold eyes, but the spell fizzles."));
 
 		return success;
 	}

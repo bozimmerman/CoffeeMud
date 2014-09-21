@@ -38,7 +38,7 @@ import java.util.Map.Entry;
 public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "EnhancedCraftingSkill"; }
-	private final static String localizedName = CMLib.lang()._("Enhanced Crafting Skill");
+	private final static String localizedName = CMLib.lang().L("Enhanced Crafting Skill");
 	@Override public String name() { return localizedName; }
 
 	public Hashtable parametersFields(){ return new Hashtable();}
@@ -302,7 +302,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 			}
 		}
 		if(extras.length()>0)
-			commonTell(mob,_("You can use your expertises to enhance this skill by prepending one or more of the following words to the name of the item you wish to craft: @x1.",extras.substring(0,extras.length()-2)));
+			commonTell(mob,L("You can use your expertises to enhance this skill by prepending one or more of the following words to the name of the item you wish to craft: @x1.",extras.substring(0,extras.length()-2)));
 	}
 
 	public List<ExpertiseLibrary.ExpertiseDefinition> getAllThisSkillsDefinitions()
@@ -485,7 +485,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				case TYPE_DURACRAFT:
 				{
 					if(!(item instanceof Armor))
-						commonTell(mob,_("@x1 only applies to armor.",def.data[stage]));
+						commonTell(mob,L("@x1 only applies to armor.",def.data[stage]));
 					else
 					switch(stage)
 					{
@@ -538,7 +538,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				case TYPE_LTHLCRAFT:
 				{
 					if(!(item instanceof Weapon))
-						commonTell(mob,_("@x1 only applies to weapons.",def.data[stage]));
+						commonTell(mob,L("@x1 only applies to weapons.",def.data[stage]));
 					else
 					switch(stage)
 					{
@@ -568,7 +568,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				case TYPE_CNTRCRAFT:
 				{
 					if(!(item instanceof Weapon))
-						commonTell(mob,_("@x1 only applies to weapons.",def.data[stage]));
+						commonTell(mob,L("@x1 only applies to weapons.",def.data[stage]));
 					else
 					switch(stage)
 					{

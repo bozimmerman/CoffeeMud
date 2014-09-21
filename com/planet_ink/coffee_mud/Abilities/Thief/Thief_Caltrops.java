@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_Caltrops extends ThiefSkill implements Trap
 {
 	@Override public String ID() { return "Thief_Caltrops"; }
-	private final static String localizedName = CMLib.lang()._("Caltrops");
+	private final static String localizedName = CMLib.lang().L("Caltrops");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
@@ -68,7 +68,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		if((!invoker().mayIFight(mob))
 		||(invoker().getGroupMembers(new HashSet<MOB>()).contains(mob))
 		||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
-			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,_("<S-NAME> avoid(s) some @x1caltrops on the floor.",caltropTypeName()));
+			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,L("<S-NAME> avoid(s) some @x1caltrops on the floor.",caltropTypeName()));
 		else
 			CMLib.combat().postDamage(invoker(),mob,null,CMLib.dice().roll(1,6,adjustedLevel(invoker(),0)),
 					CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,"The "+caltropTypeName()+"caltrops on the ground <DAMAGE> <T-NAME>.");
@@ -113,7 +113,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		final Physical target=(givenTarget!=null)?givenTarget:mob.location();
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("@x1Caltrops have already been tossed down here.",CMStrings.capitalizeFirstLetter(caltropTypeName())));
+			mob.tell(L("@x1Caltrops have already been tossed down here.",CMStrings.capitalizeFirstLetter(caltropTypeName())));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -122,13 +122,13 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			if(mob.location().show(mob,target,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT,_("<S-NAME> throw(s) down @x1caltrops!",caltropTypeName())))
+			if(mob.location().show(mob,target,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT,L("<S-NAME> throw(s) down @x1caltrops!",caltropTypeName())))
 				maliciousAffect(mob,target,asLevel,0,-1);
 			else
 				success=false;
 		}
 		else
-			maliciousFizzle(mob,target,_("<S-NAME> fail(s) to throw down <S-HIS-HER> @x1caltrops properly.",caltropTypeName()));
+			maliciousFizzle(mob,target,L("<S-NAME> fail(s) to throw down <S-HIS-HER> @x1caltrops properly.",caltropTypeName()));
 		return success;
 	}
 }

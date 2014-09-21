@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Haggle extends StdSkill
 {
 	@Override public String ID() { return "Skill_Haggle"; }
-	private final static String localizedName = CMLib.lang()._("Haggle");
+	private final static String localizedName = CMLib.lang().L("Haggle");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -61,7 +61,7 @@ public class Skill_Haggle extends StdSkill
 
 		if((commands.size()<2)||((!cmd.equals("BUY")&&(!cmd.equals("SELL")))))
 		{
-			mob.tell(_("You must specify BUY, SELL, an item, and possibly a ShopKeeper (unless it is implied)."));
+			mob.tell(L("You must specify BUY, SELL, an item, and possibly a ShopKeeper (unless it is implied)."));
 			return false;
 		}
 
@@ -69,7 +69,7 @@ public class Skill_Haggle extends StdSkill
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
-			mob.tell(_("@x1 what?",CMStrings.capitalizeAndLower(cmd)));
+			mob.tell(L("@x1 what?",CMStrings.capitalizeAndLower(cmd)));
 			return false;
 		}
 
@@ -79,7 +79,7 @@ public class Skill_Haggle extends StdSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,shopkeeper,this,CMMsg.MSG_SPEAK,auto?"":_("<S-NAME> haggle(s) with <T-NAMESELF>."));
+			final CMMsg msg=CMClass.getMsg(mob,shopkeeper,this,CMMsg.MSG_SPEAK,auto?"":L("<S-NAME> haggle(s) with <T-NAMESELF>."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -94,7 +94,7 @@ public class Skill_Haggle extends StdSkill
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,shopkeeper,_("<S-NAME> haggle(s) with <T-NAMESELF>, but <S-IS-ARE> unconvincing."));
+			beneficialWordsFizzle(mob,shopkeeper,L("<S-NAME> haggle(s) with <T-NAMESELF>, but <S-IS-ARE> unconvincing."));
 
 		// return whether it worked
 		return success;

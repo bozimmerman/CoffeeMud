@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_IdentifyObject extends Spell
 {
 	@Override public String ID() { return "Spell_IdentifyObject"; }
-	private final static String localizedName = CMLib.lang()._("Identify Object");
+	private final static String localizedName = CMLib.lang().L("Identify Object");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
@@ -55,7 +55,7 @@ public class Spell_IdentifyObject extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> stud(ys) <T-NAMESELF> very closely.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> stud(ys) <T-NAMESELF> very closely.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -68,7 +68,7 @@ public class Spell_IdentifyObject extends Spell
 
 		}
 		else
-			beneficialVisualFizzle(mob,target,_("<S-NAME> stud(ys) <T-NAMESELF>, looking more frustrated every second."));
+			beneficialVisualFizzle(mob,target,L("<S-NAME> stud(ys) <T-NAMESELF>, looking more frustrated every second."));
 
 
 		// return whether it worked

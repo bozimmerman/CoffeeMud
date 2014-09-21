@@ -66,15 +66,15 @@ public class After extends StdCommand implements Tickable
 		{
 			afterCmds.clear();
 			CMLib.threads().deleteTick(this,Tickable.TICKID_AREA);
-			mob.tell(_("Ok."));
+			mob.tell(L("Ok."));
 			return false;
 		}
 		if(((String)commands.elementAt(0)).equalsIgnoreCase("list"))
 		{
 			//afterCmds.clear();
 			int s=0;
-			final StringBuffer str=new StringBuffer(_("^xCurrently scheduled AFTERs: ^?^.^?\n\r"));
-			str.append(_("@x1 @x2 @x3 Command\n\r",CMStrings.padRight(_("Next run"),20),CMStrings.padRight(_(" Interval"),20),CMStrings.padRight(_("Who"),10)));
+			final StringBuffer str=new StringBuffer(L("^xCurrently scheduled AFTERs: ^?^.^?\n\r"));
+			str.append(L("@x1 @x2 @x3 Command\n\r",CMStrings.padRight(L("Next run"),20),CMStrings.padRight(L(" Interval"),20),CMStrings.padRight(L("Who"),10)));
 			while(s<afterCmds.size())
 			{
 				final AfterCommand V=afterCmds.get(s);
@@ -92,14 +92,14 @@ public class After extends StdCommand implements Tickable
 		{ every=true; commands.removeElementAt(0);}
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
 		long time=CMath.s_long((String)commands.elementAt(0));
-		if(time==0) { mob.tell(_("Time may not be 0.@x1",afterErr)); return false;}
+		if(time==0) { mob.tell(L("Time may not be 0.@x1",afterErr)); return false;}
 		commands.removeElementAt(0);
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
 		final String s=(String)commands.elementAt(0);
 		final long multiplier=CMLib.english().getMillisMultiplierByName(s);
 		if(multiplier<0)
 		{
-			mob.tell(_("'@x1 Time may not be 0. @x2",s,afterErr));
+			mob.tell(L("'@x1 Time may not be 0. @x2",s,afterErr));
 			return false;
 		}
 		else
@@ -115,7 +115,7 @@ public class After extends StdCommand implements Tickable
 		V.metaFlags=metaFlags;
 		afterCmds.add(V);
 		CMLib.threads().startTickDown(this,Tickable.TICKID_AREA,1);
-		mob.tell(_("Ok."));
+		mob.tell(L("Ok."));
 		return false;
 	}
 

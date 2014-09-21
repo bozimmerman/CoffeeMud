@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_Hide extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Hide"; }
-	private final static String localizedName = CMLib.lang()._("Hide");
+	private final static String localizedName = CMLib.lang().L("Hide");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -137,13 +137,13 @@ public class Thief_Hide extends ThiefSkill
 		final Room room=mob.location();
 		if((mob.fetchEffect(this.ID())!=null)||(room==null))
 		{
-			mob.tell(_("You are already hiding."));
+			mob.tell(L("You are already hiding."));
 			return false;
 		}
 
 		if(mob.isInCombat())
 		{
-			mob.tell(_("Not while in combat!"));
+			mob.tell(L("Not while in combat!"));
 			return false;
 		}
 
@@ -153,16 +153,16 @@ public class Thief_Hide extends ThiefSkill
 		final MOB highestMOB=getHighestLevelMOB(mob,null);
 		final int levelDiff=(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
 
-		final String str=_("You creep into a shadow and remain completely still.");
+		final String str=L("You creep into a shadow and remain completely still.");
 
 		boolean success=(highestMOB==null)||proficiencyCheck(mob,levelDiff*10,auto);
 
 		if(!success)
 		{
 			if(highestMOB!=null)
-				beneficialVisualFizzle(mob,highestMOB,_("<S-NAME> attempt(s) to hide from <T-NAMESELF> and fail(s)."));
+				beneficialVisualFizzle(mob,highestMOB,L("<S-NAME> attempt(s) to hide from <T-NAMESELF> and fail(s)."));
 			else
-				beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to hide and fail(s)."));
+				beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to hide and fail(s)."));
 		}
 		else
 		{

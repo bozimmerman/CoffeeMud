@@ -53,9 +53,9 @@ public class Formation extends StdCommand
 				if(done[i]!=null)
 				{
 					if(i==0)
-						str.append(_("^xfront  - ^.^?"));
+						str.append(L("^xfront  - ^.^?"));
 					else
-						str.append(_("^xrow +@x1 - ^.^?",""+i));
+						str.append(L("^xrow +@x1 - ^.^?",""+i));
 					for(int i2=0;i2<done[i].size();i2++)
 						str.append(((i2>0)?", ":"")+done[i].get(i2).name());
 					str.append("\n\r");
@@ -64,10 +64,10 @@ public class Formation extends StdCommand
 		}
 		else
 		if(commands.size()==1)
-			mob.tell(_("Put whom in what row?"));
+			mob.tell(L("Put whom in what row?"));
 		else
 		if(mob.numFollowers()==0)
-			mob.tell(_("Noone is following you!"));
+			mob.tell(L("Noone is following you!"));
 		else
 		{
 			String row=(String)commands.lastElement();
@@ -79,7 +79,7 @@ public class Formation extends StdCommand
 			if(CMLib.english().containsString(mob.name(),name)
 			   ||CMLib.english().containsString(mob.Name(),name))
 			{
-				mob.tell(_("You can not move your own position.  You are always the leader of your party."));
+				mob.tell(L("You can not move your own position.  You are always the leader of your party."));
 				return false;
 			}
 			for(int f=0;f<mob.numFollowers();f++)
@@ -92,11 +92,11 @@ public class Formation extends StdCommand
 			}
 			if(who==null)
 			{
-				mob.tell(_("There is noone following you called @x1.",name));
+				mob.tell(L("There is noone following you called @x1.",name));
 				return false;
 			}
 			if((!CMath.isNumber(row))||(CMath.s_int(row)<0))
-				mob.tell(_("'@x1' is not a valid row in which to put @x2.  Try number greater than 0.",row,who.name()));
+				mob.tell(L("'@x1' is not a valid row in which to put @x2.  Try number greater than 0.",row,who.name()));
 			else
 			{
 				int leaderRow=-1;
@@ -107,14 +107,14 @@ public class Formation extends StdCommand
 						break;
 					}
 				if(leaderRow<0)
-					mob.tell(_("You do not exist."));
+					mob.tell(L("You do not exist."));
 				else
 				if(CMath.s_int(row)<leaderRow)
-					mob.tell(_("You can not place @x1 behind your own position, which is @x2.",who.name(),""+leaderRow));
+					mob.tell(L("You can not place @x1 behind your own position, which is @x2.",who.name(),""+leaderRow));
 				else
 				{
 					mob.addFollower(who,CMath.s_int(row)-leaderRow);
-					mob.tell(_("You have positioned @x1 to row @x2",who.name(),""+CMath.s_int(row)));
+					mob.tell(L("You have positioned @x1 to row @x2",who.name(),""+CMath.s_int(row)));
 				}
 			}
 		}

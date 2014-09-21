@@ -43,12 +43,12 @@ public class Copy extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
+		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 		commands.removeElementAt(0); // copy
 		if(commands.size()<1)
 		{
-			mob.tell(_("You have failed to specify the proper fields.\n\rThe format is COPY (NUMBER) ([ITEM NAME]/[MOB NAME][ROOM ID] [DIRECTIONS]/[DIRECTIONS])\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
+			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is COPY (NUMBER) ([ITEM NAME]/[MOB NAME][ROOM ID] [DIRECTIONS]/[DIRECTIONS])\n\r"));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		int number=1;
@@ -79,8 +79,8 @@ public class Copy extends StdCommand
 						srchContainer=I;
 					else
 					{
-						mob.tell(_("MOB or Container '@x1' not found.",rest));
-						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
+						mob.tell(L("MOB or Container '@x1' not found.",rest));
+						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 						return false;
 					}
 				}
@@ -122,16 +122,16 @@ public class Copy extends StdCommand
 							}
 							else
 							{
-								mob.tell(_("@x1' should be 'room' or 'exit'.",name));
-								mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
+								mob.tell(L("@x1' should be 'room' or 'exit'.",name));
+								mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 								return false;
 							}
 						}
 					}
 					if(E==null)
 					{
-						mob.tell(_("Room ID '@x1' does not exist.  You can also try exit <dir> and room <dir>.",name));
-						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
+						mob.tell(L("Room ID '@x1' does not exist.  You can also try exit <dir> and room <dir>.",name));
+						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 						return false;
 					}
 				}
@@ -163,8 +163,8 @@ public class Copy extends StdCommand
 		}
 		if(E==null)
 		{
-			mob.tell(_("There's no such thing in the living world as a '@x1'.\n\r",name));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
+			mob.tell(L("There's no such thing in the living world as a '@x1'.\n\r",name));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
 		Room room=mob.location();
@@ -174,7 +174,7 @@ public class Copy extends StdCommand
 			{
 				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COPYMOBS))
 				{
-					mob.tell(_("You are not allowed to copy @x1",E.name()));
+					mob.tell(L("You are not allowed to copy @x1",E.name()));
 					return false;
 				}
 				final MOB newMOB=(MOB)E.copyOf();
@@ -189,9 +189,9 @@ public class Copy extends StdCommand
 				if(i==0)
 				{
 					if(number>1)
-						room.show(newMOB,null,CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 @x2s instantiate from the Java Plane.",""+number,newMOB.name()));
+						room.show(newMOB,null,CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 @x2s instantiate from the Java Plane.",""+number,newMOB.name()));
 					else
-						room.show(newMOB,null,CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 instantiates from the Java Plane.",newMOB.name()));
+						room.show(newMOB,null,CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 instantiates from the Java Plane.",newMOB.name()));
 					Log.sysOut("SysopUtils",mob.Name()+" copied "+number+" mob "+newMOB.Name()+".");
 				}
 			}
@@ -200,7 +200,7 @@ public class Copy extends StdCommand
 			{
 				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COPYITEMS))
 				{
-					mob.tell(_("You are not allowed to copy @x1",E.name()));
+					mob.tell(L("You are not allowed to copy @x1",E.name()));
 					return false;
 				}
 				final Item newItem=(Item)E.copyOf();
@@ -220,12 +220,12 @@ public class Copy extends StdCommand
 					if(number>1)
 					{
 						if(newItem.name().toLowerCase().endsWith("s"))
-							room.showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 @x2 falls @x3.",""+number,newItem.name(),end));
+							room.showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 @x2 falls @x3.",""+number,newItem.name(),end));
 						else
-							room.showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 @x2s falls @x3.",""+number,newItem.name(),end));
+							room.showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 @x2s falls @x3.",""+number,newItem.name(),end));
 					}
 					else
-						room.showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 fall @x2.",newItem.name(),end));
+						room.showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 fall @x2.",newItem.name(),end));
 					Log.sysOut("SysopUtils",mob.Name()+" "+number+" copied "+newItem.ID()+" item.");
 				}
 			}
@@ -234,13 +234,13 @@ public class Copy extends StdCommand
 			{
 				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COPYROOMS))
 				{
-					mob.tell(_("You are not allowed to copy @x1",E.name()));
+					mob.tell(L("You are not allowed to copy @x1",E.name()));
 					return false;
 				}
 				if(room.getRoomInDir(dirCode)!=null)
 				{
 					final boolean useShipDirs=(room instanceof SpaceShip)||(room.getArea() instanceof SpaceShip);
-					mob.tell(_("A room already exists @x1!",(useShipDirs?Directions.getShipInDirectionName(dirCode):Directions.getInDirectionName(dirCode))));
+					mob.tell(L("A room already exists @x1!",(useShipDirs?Directions.getShipInDirectionName(dirCode):Directions.getInDirectionName(dirCode))));
 					return false;
 				}
 				synchronized(("SYNC"+room.roomID()).intern())
@@ -262,8 +262,8 @@ public class Copy extends StdCommand
 					newRoom.setRoomID(room.getArea().getNewRoomID(room,dirCode));
 					if(newRoom.roomID().length()==0)
 					{
-						mob.tell(_("A room may not be created in that direction.  Are you sure you havn't reached the edge of a grid?"));
-						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
+						mob.tell(L("A room may not be created in that direction.  Are you sure you havn't reached the edge of a grid?"));
+						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 						return false;
 					}
 					newRoom.setArea(room.getArea());
@@ -280,13 +280,13 @@ public class Copy extends StdCommand
 					if(i==0)
 					{
 						if(number>1)
-							room.showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 @x2s fall @x3.",""+number,newRoom.displayText(mob),inDirName));
+							room.showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 @x2s fall @x3.",""+number,newRoom.displayText(mob),inDirName));
 						else
-							room.showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 falls @x2.",newRoom.displayText(mob),inDirName));
+							room.showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 falls @x2.",newRoom.displayText(mob),inDirName));
 						Log.sysOut("SysopUtils",mob.Name()+" copied "+number+" rooms "+newRoom.roomID()+".");
 					}
 					else
-						room.showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 falls @x2.",newRoom.displayText(mob),inDirName));
+						room.showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 falls @x2.",newRoom.displayText(mob),inDirName));
 					room=newRoom;
 				}
 			}
@@ -295,7 +295,7 @@ public class Copy extends StdCommand
 			{
 				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COPYROOMS))
 				{
-					mob.tell(_("You are not allowed to copy @x1",E.name()));
+					mob.tell(L("You are not allowed to copy @x1",E.name()));
 					return false;
 				}
 				Room editRoom=room;
@@ -305,7 +305,7 @@ public class Copy extends StdCommand
 					dirCode=Directions.getOpDirectionCode(dirCode);
 					if((editRoom==null)||(editRoom.getRoomInDir(dirCode)==null))
 					{
-						mob.tell(_("No opposite room exists to copy this exit into."));
+						mob.tell(L("No opposite room exists to copy this exit into."));
 						return false;
 					}
 				}
@@ -319,7 +319,7 @@ public class Copy extends StdCommand
 					}
 					final boolean useShipDirs=(editRoom instanceof SpaceShip)||(editRoom.getArea() instanceof SpaceShip);
 					final String inDirName=useShipDirs?Directions.getShipInDirectionName(dirCode):Directions.getInDirectionName(dirCode);
-					room.showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 falls @x2.",E.name(),inDirName));
+					room.showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 falls @x2.",E.name(),inDirName));
 				}
 			}
 			else
@@ -328,12 +328,12 @@ public class Copy extends StdCommand
 				if((!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDAREAS))
 				||(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COPYROOMS)))
 				{
-					mob.tell(_("You are not allowed to copy @x1",E.name()));
+					mob.tell(L("You are not allowed to copy @x1",E.name()));
 					return false;
 				}
 				final Area newArea=(Area)E.copyOf();
 				while(CMLib.map().getArea(newArea.Name())!=null)
-					newArea.setName(_("Copy of @x1",newArea.Name()));
+					newArea.setName(L("Copy of @x1",newArea.Name()));
 				newArea.setSavable(true);
 				if(!CMSecurity.isASysOp(mob))
 					newArea.addSubOp(mob.Name());
@@ -371,13 +371,13 @@ public class Copy extends StdCommand
 					CMLib.database().DBUpdateExits(R);
 					R.startItemRejuv();
 				}
-				room.show(mob,null,CMMsg.MSG_OK_ACTION,_("Suddenly, a massive new landscape instantiates from the Java Plane."));
+				room.show(mob,null,CMMsg.MSG_OK_ACTION,L("Suddenly, a massive new landscape instantiates from the Java Plane."));
 				Log.sysOut("SysopUtils",mob.Name()+" copied area "+E.Name());
 			}
 			else
 			{
-				mob.tell(_("I can't just make a copy of a '@x1'.\n\r",E.name()));
-				room.showOthers(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> flub(s) a spell.."));
+				mob.tell(L("I can't just make a copy of a '@x1'.\n\r",E.name()));
+				room.showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 				break;
 			}
 		}

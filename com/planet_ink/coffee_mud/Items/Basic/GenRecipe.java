@@ -61,11 +61,11 @@ public class GenRecipe extends GenReadable implements Recipe
 			final Ability A=CMClass.getAbility( getCommonSkillID() );
 			if(getTotalRecipePages() > 1)
 			{
-				str.append( _("@x1 contains @x2 recipe(s)/schematic(s) out of @x3 total entries.\n\r",name(),""+recipeLines.length,""+getTotalRecipePages()));
-				if(A!=null) str.append( _("The following recipes are for the @x1 skill:\n\r",A.name()));
+				str.append( L("@x1 contains @x2 recipe(s)/schematic(s) out of @x3 total entries.\n\r",name(),""+recipeLines.length,""+getTotalRecipePages()));
+				if(A!=null) str.append( L("The following recipes are for the @x1 skill:\n\r",A.name()));
 			}
 			else
-				if(A!=null) str.append( _("The following recipe is for the @x1 skill:\n\r",A.name()));
+				if(A!=null) str.append( L("The following recipe is for the @x1 skill:\n\r",A.name()));
 			if(A instanceof ItemCraftor)
 			{
 				final ItemCraftor C=(ItemCraftor)A;
@@ -78,9 +78,9 @@ public class GenRecipe extends GenReadable implements Recipe
 
 					str.append( name).append(", level "+nameAndLevel.second);
 					if(CMath.s_int(components)>0)
-						str.append( _(", which requires @x1 standard components.\n\r",components));
+						str.append( L(", which requires @x1 standard components.\n\r",components));
 					else
-						str.append( _(", which requires: @x1.\n\r",components));
+						str.append( L(", which requires: @x1.\n\r",components));
 				}
 			}
 			super.setReadableText( str.substring( 0, str.length()-2 ));

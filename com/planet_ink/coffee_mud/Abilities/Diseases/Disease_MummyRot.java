@@ -37,9 +37,9 @@ import java.util.*;
 public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 {
 	@Override public String ID() { return "Disease_MummyRot"; }
-	private final static String localizedName = CMLib.lang()._("Mummy Rot");
+	private final static String localizedName = CMLib.lang().L("Mummy Rot");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Mummy Rot)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Mummy Rot)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -72,7 +72,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=10;
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> rotting away..."));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> rotting away..."));
 			conDown++;
 			mob.recoverCharStats();
 			return true;
@@ -94,7 +94,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 		{
 			if(!mob.amDead())
 				spreadImmunity(mob);
-			mob.tell(_("The rot is cured."));
+			mob.tell(L("The rot is cured."));
 		}
 	}
 
@@ -117,7 +117,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell(_("You are too far away to touch!"));
+			mob.tell(L("You are too far away to touch!"));
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
@@ -131,14 +131,14 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 		String str=null;
 		if(success)
 		{
-			str=auto?"":_("^S<S-NAME> extend(s) a rotting hand to <T-NAMESELF>!^?");
+			str=auto?"":L("^S<S-NAME> extend(s) a rotting hand to <T-NAMESELF>!^?");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> turn(s) grey!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> turn(s) grey!"));
 					conDown=1;
 					success=maliciousAffect(mob,target,asLevel,0,-1);
 				}
@@ -147,7 +147,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> extend(s) a rotting hand to <T-NAMESELF>, but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> extend(s) a rotting hand to <T-NAMESELF>, but fail(s)."));
 
 		return success;
 	}

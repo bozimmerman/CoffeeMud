@@ -54,7 +54,7 @@ public class Top extends StdCommand
 				doPlayers=false;
 			else
 			{
-				mob.tell(_("'@x1' is unknown.  Try PLAYERS or ACCOUNTS",what));
+				mob.tell(L("'@x1' is unknown.  Try PLAYERS or ACCOUNTS",what));
 				return true;
 			}
 		}
@@ -70,8 +70,8 @@ public class Top extends StdCommand
 		for(final TimePeriod period : new TimePeriod[]{TimePeriod.ALLTIME,TimePeriod.MONTH})
 		{
 			final String desc=(period==TimePeriod.ALLTIME)?"All Time":"This Month";
-			str.append(_("^xTop @x1 @x2\n\r^x@x3^.^N ^x@x4^.^N ^x@x5^.^N\n\r",(doPlayers?"Characters":"Accounts"),desc,slashes,slashes,slashes));
-			str.append(CMStrings.padRight(_("^HPVP Kills"), width)+"^. "+CMStrings.padRight(_("^HXP Gained"), width)+"^. "+CMStrings.padRight(_("^HQuests Completed"), width)+"^.^N\n\r");
+			str.append(L("^xTop @x1 @x2\n\r^x@x3^.^N ^x@x4^.^N ^x@x5^.^N\n\r",(doPlayers?"Characters":"Accounts"),desc,slashes,slashes,slashes));
+			str.append(CMStrings.padRight(L("^HPVP Kills"), width)+"^. "+CMStrings.padRight(L("^HXP Gained"), width)+"^. "+CMStrings.padRight(L("^HQuests Completed"), width)+"^.^N\n\r");
 			set1=doPlayers?
 				CMLib.players().getTopPridePlayers(period, AccountStats.PrideStat.PVPKILLS):
 				CMLib.players().getTopPrideAccounts(period, AccountStats.PrideStat.PVPKILLS);
@@ -92,7 +92,7 @@ public class Top extends StdCommand
 				str.append(CMStrings.padRight("^H"+(i+1)+((i>=9)?"":" ")+". ^N"+data,width)+"^.^N\n\r");
 			}
 			str.append("\n\r");
-			str.append(CMStrings.padRight(_("^HMins Online"), width)+"^. "+CMStrings.padRight(_("^HRooms Explored"), width)+"^. "+CMStrings.padRight(_("^HQuestPoints Earned"), width)+"^.^N\n\r");
+			str.append(CMStrings.padRight(L("^HMins Online"), width)+"^. "+CMStrings.padRight(L("^HRooms Explored"), width)+"^. "+CMStrings.padRight(L("^HQuestPoints Earned"), width)+"^.^N\n\r");
 			set1=doPlayers?
 					CMLib.players().getTopPridePlayers(period, AccountStats.PrideStat.MINUTES_ON):
 					CMLib.players().getTopPrideAccounts(period, AccountStats.PrideStat.MINUTES_ON);

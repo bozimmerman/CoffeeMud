@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_Endurance extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Endurance"; }
-	private final static String localizedName = CMLib.lang()._("Endurance");
+	private final static String localizedName = CMLib.lang().L("Endurance");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}

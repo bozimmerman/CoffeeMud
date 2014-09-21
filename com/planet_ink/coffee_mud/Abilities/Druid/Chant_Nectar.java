@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_Nectar extends Chant
 {
 	@Override public String ID() { return "Chant_Nectar"; }
-	private final static String localizedName = CMLib.lang()._("Nectar");
+	private final static String localizedName = CMLib.lang().L("Nectar");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
@@ -59,7 +59,7 @@ public class Chant_Nectar extends Chant
 			final Item littleSpring=(Item)affected;
 			final Room SpringLocation=CMLib.map().roomLocation(littleSpring);
 			if(canBeUninvoked())
-				SpringLocation.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 dries up.",littleSpring.name()));
+				SpringLocation.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 dries up.",littleSpring.name()));
 			super.unInvoke();
 			if(canBeUninvoked())
 			{
@@ -133,7 +133,7 @@ public class Chant_Nectar extends Chant
 		{
 			if((mob.location().domainType()&Room.INDOORS)>0)
 			{
-				mob.tell(_("You must be outdoors for this chant to work."));
+				mob.tell(L("You must be outdoors for this chant to work."));
 				return false;
 			}
 			if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
@@ -142,7 +142,7 @@ public class Chant_Nectar extends Chant
 			   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
 			   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 			{
-				mob.tell(_("This magic will not work here."));
+				mob.tell(L("This magic will not work here."));
 				return false;
 			}
 		}
@@ -155,19 +155,19 @@ public class Chant_Nectar extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) for nectar.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) for nectar.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final Item newItem=CMClass.getItem("Spring");
-				newItem.setName(_("an enormous flower"));
-				newItem.setDisplayText(_("an enormous flower is dripping with nectar"));
-				newItem.setDescription(_("The closer you look, the more illusive the flower becomes.  There must be druid magic at work here!"));
+				newItem.setName(L("an enormous flower"));
+				newItem.setDisplayText(L("an enormous flower is dripping with nectar"));
+				newItem.setDescription(L("The closer you look, the more illusive the flower becomes.  There must be druid magic at work here!"));
 				final Ability A=CMClass.getAbility("Poison_Liquor");
 				if(A!=null) newItem.addNonUninvokableEffect(A);
 
 				mob.location().addItem(newItem);
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("Suddenly, @x1 starts flowing here.",newItem.name()));
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 starts flowing here.",newItem.name()));
 				drank=new Vector();
 				lastNum=-1;
 				beneficialAffect(mob,newItem,asLevel,0);
@@ -175,7 +175,7 @@ public class Chant_Nectar extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) for nectar, but nothing happens."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) for nectar, but nothing happens."));
 
 		// return whether it worked
 		return success;

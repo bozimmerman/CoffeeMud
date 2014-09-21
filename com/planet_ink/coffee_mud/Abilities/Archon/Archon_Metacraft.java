@@ -36,7 +36,7 @@ import java.util.*;
 public class Archon_Metacraft extends ArchonSkill
 {
 	@Override public String ID() { return "Archon_Metacraft"; }
-	private final static String localizedName = CMLib.lang()._("Metacrafting");
+	private final static String localizedName = CMLib.lang().L("Metacrafting");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"METACRAFT"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -81,7 +81,7 @@ public class Archon_Metacraft extends ArchonSkill
 		}
 		if(commands.size()<1)
 		{
-			mob.tell(_("Metacraft what (recipe, everything, every x), (optionally) out of what material, and (optionally) to self, to here, or to file [FILENAME]?"));
+			mob.tell(L("Metacraft what (recipe, everything, every x), (optionally) out of what material, and (optionally) to self, to here, or to file [FILENAME]?"));
 			return false;
 		}
 		String mat=null;
@@ -127,7 +127,7 @@ public class Archon_Metacraft extends ArchonSkill
 			material=RawMaterial.CODES.FIND_StartsWith(mat);
 		if((mat!=null)&&(material<0))
 		{
-			mob.tell(_("'@x1' is not a recognized material.",mat));
+			mob.tell(L("'@x1' is not a recognized material.",mat));
 			return false;
 		}
 		ItemCraftor skill=null;
@@ -177,7 +177,7 @@ public class Archon_Metacraft extends ArchonSkill
 		}
 		if(skillsToUse.size()==0)
 		{
-			mob.tell(_("'@x1' can not be made with any of the known crafting skills.",recipe));
+			mob.tell(L("'@x1' can not be made with any of the known crafting skills.",recipe));
 			return false;
 		}
 
@@ -250,12 +250,12 @@ public class Archon_Metacraft extends ArchonSkill
 					if(toWHERE.equals("HERE"))
 					{
 						mob.location().addItem(building,ItemPossessor.Expire.Player_Drop);
-						mob.location().show(mob,null,null,CMMsg.MSG_OK_ACTION,_("@x1 appears here.",building.name()));
+						mob.location().show(mob,null,null,CMMsg.MSG_OK_ACTION,L("@x1 appears here.",building.name()));
 					}
 					else
 					{
 						mob.moveItemTo(building);
-						mob.location().show(mob,null,null,CMMsg.MSG_OK_ACTION,_("@x1 appears in <S-YOUPOSS> hands.",building.name()));
+						mob.location().show(mob,null,null,CMMsg.MSG_OK_ACTION,L("@x1 appears in <S-YOUPOSS> hands.",building.name()));
 					}
 				}
 			else
@@ -269,7 +269,7 @@ public class Archon_Metacraft extends ArchonSkill
 		{
 			final CMFile file = new CMFile(toWHERE,mob);
 			if(!file.canWrite())
-				mob.tell(_("Unable to open file '@x1' for writing.",toWHERE));
+				mob.tell(L("Unable to open file '@x1' for writing.",toWHERE));
 			else
 			{
 				xml.append("</ITEMS>");
@@ -292,12 +292,12 @@ public class Archon_Metacraft extends ArchonSkill
 					xml.append(str);
 				}
 				file.saveText(xml);
-				mob.tell(_("File '@x1' written.",file.getAbsolutePath()));
+				mob.tell(L("File '@x1' written.",file.getAbsolutePath()));
 			}
 		}
 		if(!success)
 		{
-			mob.tell(_("The metacraft failed."));
+			mob.tell(L("The metacraft failed."));
 			return false;
 		}
 		return true;

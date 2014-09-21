@@ -97,13 +97,13 @@ public class Prop_ReqStat extends Property implements TriggeredAffect
 				{
 				case '=':
 				case '!':
-					mob.tell(_("You aren't the right @x1 to @x2.",CMStrings.capitalizeAndLower(CharStats.CODES.NAME(c)),msg));
+					mob.tell(L("You aren't the right @x1 to @x2.",CMStrings.capitalizeAndLower(CharStats.CODES.NAME(c)),msg));
 					break;
 				case '<':
-					mob.tell(_("You are too @x1 to @x2.",CMStrings.capitalizeAndLower(CharStats.CODES.ATTDESC(c)),msg));
+					mob.tell(L("You are too @x1 to @x2.",CMStrings.capitalizeAndLower(CharStats.CODES.ATTDESC(c)),msg));
 					break;
 				case '>':
-					mob.tell(_("You are not @x1 enough to @x2.",CMStrings.capitalizeAndLower(CharStats.CODES.ATTDESC(c)),msg));
+					mob.tell(L("You are not @x1 enough to @x2.",CMStrings.capitalizeAndLower(CharStats.CODES.ATTDESC(c)),msg));
 					break;
 				}
 				return false;

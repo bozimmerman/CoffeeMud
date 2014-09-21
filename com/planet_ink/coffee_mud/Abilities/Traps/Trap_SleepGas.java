@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_SleepGas extends StdTrap
 {
 	@Override public String ID() { return "Trap_SleepGas"; }
-	private final static String localizedName = CMLib.lang()._("sleep gas");
+	private final static String localizedName = CMLib.lang().L("sleep gas");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -109,7 +109,7 @@ public class Trap_SleepGas extends StdTrap
 		if((I==null)
 		&&(mob!=null))
 		{
-			mob.tell(_("You'll need to set down some slumberall poison first."));
+			mob.tell(L("You'll need to set down some slumberall poison first."));
 			return false;
 		}
 		return true;
@@ -121,9 +121,9 @@ public class Trap_SleepGas extends StdTrap
 		{
 			if((doesSaveVsTraps(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) setting off a needle trap!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) setting off a needle trap!"));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> set(s) off a needle trap!")))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> set(s) off a needle trap!")))
 			{
 				super.spring(target);
 				Ability A=CMClass.getAbility(text());

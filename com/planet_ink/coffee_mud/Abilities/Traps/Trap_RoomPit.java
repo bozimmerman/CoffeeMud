@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_RoomPit extends StdTrap
 {
 	@Override public String ID() { return "Trap_RoomPit"; }
-	private final static String localizedName = CMLib.lang()._("pit trap");
+	private final static String localizedName = CMLib.lang().L("pit trap");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -102,7 +102,7 @@ public class Trap_RoomPit extends StdTrap
 		{
 			if(((Room)P).getRoomInDir(Directions.DOWN)!=null)
 			{
-				mob.tell(_("The flooring here won't support a pit."));
+				mob.tell(L("The flooring here won't support a pit."));
 				return false;
 			}
 		}
@@ -135,8 +135,8 @@ public class Trap_RoomPit extends StdTrap
 			myPitUp.setSavable(false);
 			myPitUp.setArea(target.location().getArea());
 			myPitUp.basePhyStats().setDisposition(myPitUp.basePhyStats().disposition()|PhyStats.IS_DARK);
-			myPitUp.setDisplayText(_("Inside a dark pit"));
-			myPitUp.setDescription(_("The walls here are slick and tall.  The trap door is just above you."));
+			myPitUp.setDisplayText(L("Inside a dark pit"));
+			myPitUp.setDescription(L("The walls here are slick and tall.  The trap door is just above you."));
 			myPitUp.recoverPhyStats();
 
 			final Exit exit=CMClass.getExit("StdOpenDoorway");
@@ -145,8 +145,8 @@ public class Trap_RoomPit extends StdTrap
 			myPit.setRoomID("");
 			myPit.setArea(target.location().getArea());
 			myPit.basePhyStats().setDisposition(myPit.basePhyStats().disposition()|PhyStats.IS_DARK);
-			myPit.setDisplayText(_("Inside a dark pit"));
-			myPit.setDescription(_("The walls here are slick and tall.  You can barely see the trap door well above you."));
+			myPit.setDisplayText(L("Inside a dark pit"));
+			myPit.setDescription(L("The walls here are slick and tall.  You can barely see the trap door well above you."));
 			myPit.setRawExit(Directions.UP,exit);
 			myPit.rawDoors()[Directions.UP]=myPitUp;
 			myPitUp.setRawExit(Directions.DOWN,exit);
@@ -184,10 +184,10 @@ public class Trap_RoomPit extends StdTrap
 	public void finishSpringing(MOB target)
 	{
 		if((!invoker().mayIFight(target))||(target.phyStats().weight()<5))
-			target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> float(s) gently into the pit!"));
+			target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> float(s) gently into the pit!"));
 		else
 		{
-			target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> hit(s) the pit floor with a THUMP!"));
+			target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> hit(s) the pit floor with a THUMP!"));
 			final int damage=CMLib.dice().roll(trapLevel()+abilityCode(),6,1);
 			CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,-1,null);
 		}
@@ -204,9 +204,9 @@ public class Trap_RoomPit extends StdTrap
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) falling into a pit!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) falling into a pit!"));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> fall(s) into a pit!")))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> fall(s) into a pit!")))
 			{
 				super.spring(target);
 				makePit(target);

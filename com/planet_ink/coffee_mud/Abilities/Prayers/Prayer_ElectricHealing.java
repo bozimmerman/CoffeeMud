@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_ElectricHealing extends Prayer
 {
 	@Override public String ID() { return "Prayer_ElectricHealing"; }
-	private final static String localizedName = CMLib.lang()._("Electric Healing");
+	private final static String localizedName = CMLib.lang().L("Electric Healing");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Electric Healing)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Electric Healing)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -59,7 +59,7 @@ public class Prayer_ElectricHealing extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("The aura of electric healing around you fades."));
+			mob.tell(L("The aura of electric healing around you fades."));
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class Prayer_ElectricHealing extends Prayer
 		   &&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
 			final int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("The electric attack heals <S-NAME> @x1 points.",""+recovery));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("The electric attack heals <S-NAME> @x1 points.",""+recovery));
 			CMLib.combat().postHealing(mob,mob,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,recovery,null);
 			return false;
 		}
@@ -90,7 +90,7 @@ public class Prayer_ElectricHealing extends Prayer
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("You already healed by electricity."));
+			mob.tell(L("You already healed by electricity."));
 			return false;
 		}
 
@@ -108,16 +108,16 @@ public class Prayer_ElectricHealing extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 for electric healing.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 for electric healing.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("An aura surrounds <S-NAME>."));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("An aura surrounds <S-NAME>."));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for electric healing, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for electric healing, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
 
 
 		// return whether it worked

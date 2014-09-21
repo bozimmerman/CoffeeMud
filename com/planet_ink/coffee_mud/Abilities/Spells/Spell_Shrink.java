@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_Shrink extends Spell
 {
 	@Override public String ID() { return "Spell_Shrink"; }
-	private final static String localizedName = CMLib.lang()._("Shrink");
+	private final static String localizedName = CMLib.lang().L("Shrink");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Shrunk)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Shrunk)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_ITEMS|CAN_MOBS;}
@@ -57,7 +57,7 @@ public class Spell_Shrink extends Spell
 			{
 				final MOB mob=(MOB)affected;
 				if((mob.location()!=null)&&(!mob.amDead()))
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> return(s) to <S-HIS-HER> normal size."));
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> return(s) to <S-HIS-HER> normal size."));
 				recheckMOB=mob;
 			}
 			else
@@ -67,11 +67,11 @@ public class Spell_Shrink extends Spell
 				if(item.owner()!=null)
 				{
 					if(item.owner() instanceof Room)
-						((Room)item.owner()).showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 returns to its proper size.",item.name()));
+						((Room)item.owner()).showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 returns to its proper size.",item.name()));
 					else
 					if(item.owner() instanceof MOB)
 					{
-						((MOB)item.owner()).tell(_("@x1 returns to its proper size.",item.name()));
+						((MOB)item.owner()).tell(L("@x1 returns to its proper size.",item.name()));
 						recheckMOB=(MOB)item.owner();
 					}
 				}
@@ -114,7 +114,7 @@ public class Spell_Shrink extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if((success)&&((target instanceof MOB)||(target instanceof Item)))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> feel(s) somewhat smaller."):_("^S<S-NAME> cast(s) a small spell on <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> feel(s) somewhat smaller."):L("^S<S-NAME> cast(s) a small spell on <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -148,7 +148,7 @@ public class Spell_Shrink extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to cast a small spell, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to cast a small spell, but fail(s)."));
 
 		return success;
 	}

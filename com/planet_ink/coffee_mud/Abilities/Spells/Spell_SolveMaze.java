@@ -38,7 +38,7 @@ import java.util.*;
 public class Spell_SolveMaze extends Spell
 {
 	@Override public String ID() { return "Spell_SolveMaze"; }
-	private final static String localizedName = CMLib.lang()._("Solve Maze");
+	private final static String localizedName = CMLib.lang().L("Solve Maze");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canTargetCode(){return 0;}
@@ -51,7 +51,7 @@ public class Spell_SolveMaze extends Spell
 		final Room targetR=mob.location();
 		if((targetR==null) || (targetR.getGridParent()==null))
 		{
-			mob.tell(_("This spell only works when you are in a maze"));
+			mob.tell(L("This spell only works when you are in a maze"));
 			return false;
 		}
 
@@ -100,18 +100,18 @@ public class Spell_SolveMaze extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success && (outRoom !=null) )
 		{
-			final CMMsg msg=CMClass.getMsg(mob,targetR,this,somanticCastCode(mob,targetR,auto),auto?"":_("^S<S-NAME> wave(s) <S-HIS-HER> hands around, pointing in different directions.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,targetR,this,somanticCastCode(mob,targetR,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> hands around, pointing in different directions.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(outRoom instanceof GridLocale)
 					outRoom=((GridLocale)outRoom).prepareGridLocale(targetR,outRoom, direction);
 				final int radius = (grid.xGridSize()*grid.yGridSize())+2;
-				mob.tell(_("The directions are taking shape in your mind: \n\r@x1",CMLib.tracking().getTrailToDescription(targetR, new Vector<Room>(), CMLib.map().getExtendedRoomID(outRoom), false, false, radius, null,1)));
+				mob.tell(L("The directions are taking shape in your mind: \n\r@x1",CMLib.tracking().getTrailToDescription(targetR, new Vector<Room>(), CMLib.map().getExtendedRoomID(outRoom), false, false, radius, null,1)));
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,targetR,_("<S-NAME> wave(s) <S-HIS-HER> hands around, looking more frustrated every second."));
+			beneficialVisualFizzle(mob,targetR,L("<S-NAME> wave(s) <S-HIS-HER> hands around, looking more frustrated every second."));
 
 
 		// return whether it worked

@@ -36,12 +36,12 @@ import java.util.*;
 public class Prayer_SunCurse extends Prayer
 {
 	@Override public String ID() { return "Prayer_SunCurse"; }
-	private final static String localizedName = CMLib.lang()._("Sun Curse");
+	private final static String localizedName = CMLib.lang().L("Sun Curse");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Sun Curse)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Sun Curse)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -69,7 +69,7 @@ public class Prayer_SunCurse extends Prayer
 		&&(mob.location().getArea().getClimateObj().canSeeTheSun(mob.location()))
 		&&(CMLib.flags().isInTheGame(mob,false)))
 		{
-			mob.tell(_("\n\r\n\r\n\r\n\r**THE SUN IS BEATING ONTO YOUR SKIN**\n\r\n\r"));
+			mob.tell(L("\n\r\n\r\n\r\n\r**THE SUN IS BEATING ONTO YOUR SKIN**\n\r\n\r"));
 			final Ability A=CMClass.getAbility("Spell_FleshStone");
 			if(A!=null)	A.invoke(mob,mob,true,0);
 			unInvoke();
@@ -89,7 +89,7 @@ public class Prayer_SunCurse extends Prayer
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(mob.fetchEffect("Spell_FleshStone")==null))
-			mob.tell(_("Your sun curse is lifted."));
+			mob.tell(L("Your sun curse is lifted."));
 	}
 
 	@Override
@@ -113,7 +113,7 @@ public class Prayer_SunCurse extends Prayer
 		&&(target.location()!=null)
 		&&(target.location().getArea().getClimateObj().canSeeTheSun(target.location())))
 		{
-			mob.tell(_("This cannot be prayed for while the sun is shining on you."));
+			mob.tell(L("This cannot be prayed for while the sun is shining on you."));
 			return false;
 		}
 
@@ -128,19 +128,19 @@ public class Prayer_SunCurse extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 for an unholy sun curse upon <T-NAMESELF>.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 for an unholy sun curse upon <T-NAMESELF>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
 					success=maliciousAffect(mob,target,asLevel,0,-1);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> under a mighty sun curse!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> under a mighty sun curse!"));
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to sun curse <T-NAMESELF>, but flub(s) it."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to sun curse <T-NAMESELF>, but flub(s) it."));
 
 
 		// return whether it worked

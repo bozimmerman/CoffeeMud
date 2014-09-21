@@ -56,7 +56,7 @@ public class Push extends Go
 				||(mob.location().getExitInDir(dirCode)==null)
 				||(!mob.location().getExitInDir(dirCode).isOpen()))
 				{
-					mob.tell(_("You can't push anything that way."));
+					mob.tell(L("You can't push anything that way."));
 					return false;
 				}
 				E=mob.location().getRoomInDir(dirCode);
@@ -79,7 +79,7 @@ public class Push extends Go
 
 		if((pushThis==null)||(!CMLib.flags().canBeSeenBy(pushThis,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",itemName));
+			mob.tell(L("You don't see '@x1' here.",itemName));
 			return false;
 		}
 		final int malmask=(pushThis instanceof MOB)?CMMsg.MASK_MALICIOUS:0;

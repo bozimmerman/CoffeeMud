@@ -36,7 +36,7 @@ import java.util.*;
 public class Dance_Morris extends Dance
 {
 	@Override public String ID() { return "Dance_Morris"; }
-	private final static String localizedName = CMLib.lang()._("Morris");
+	private final static String localizedName = CMLib.lang().L("Morris");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected String danceOf(){return name()+" Dance";}
@@ -66,7 +66,7 @@ public class Dance_Morris extends Dance
 		&&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.STAT_SAVE_MIND)))
 		{
 			missedLastOne=true;
-			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> become(s) distracted."));
+			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> become(s) distracted."));
 			return false;
 		}
 		missedLastOne=false;

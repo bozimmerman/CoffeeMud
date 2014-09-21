@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_Feint extends StdSkill
 {
 	@Override public String ID() { return "Skill_Feint"; }
-	private final static String localizedName = CMLib.lang()._("Feint");
+	private final static String localizedName = CMLib.lang().L("Feint");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -111,12 +111,12 @@ public class Skill_Feint extends StdSkill
 	{
 		if(!mob.isInCombat())
 		{
-			mob.tell(_("You must be in combat to do this!"));
+			mob.tell(L("You must be in combat to do this!"));
 			return false;
 		}
 		if(mob.rangeToTarget()>0)
 		{
-			mob.tell(_("You can't do that from this range."));
+			mob.tell(L("You can't do that from this range."));
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
@@ -129,7 +129,7 @@ public class Skill_Feint extends StdSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":_("^F^<FIGHT^><S-NAME> feint(s) at <T-NAMESELF>!^</FIGHT^>^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("^F^<FIGHT^><S-NAME> feint(s) at <T-NAMESELF>!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -139,7 +139,7 @@ public class Skill_Feint extends StdSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> feint(s) at <T-NAMESELF>, but <T-HE-SHE> do(es)n't buy it."));
+			return maliciousFizzle(mob,target,L("<S-NAME> feint(s) at <T-NAMESELF>, but <T-HE-SHE> do(es)n't buy it."));
 		return success;
 	}
 }

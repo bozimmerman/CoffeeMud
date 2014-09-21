@@ -38,9 +38,9 @@ import java.util.*;
 public class Spell_FeignDeath extends Spell
 {
 	@Override public String ID() { return "Spell_FeignDeath"; }
-	private final static String localizedName = CMLib.lang()._("Feign Death");
+	private final static String localizedName = CMLib.lang().L("Feign Death");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Feign Death)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Feign Death)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
@@ -56,7 +56,7 @@ public class Spell_FeignDeath extends Spell
 		final MOB mob=(MOB)affected;
 
 		if(canBeUninvoked())
-			mob.tell(_("Your death is no longer feigned."));
+			mob.tell(L("Your death is no longer feigned."));
 		if((Body!=null)&&(deathRoom!=null)&&(deathRoom.isContent(Body)))
 		{
 			Body.destroy();
@@ -88,7 +88,7 @@ public class Spell_FeignDeath extends Spell
 		{
 			if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			{
-				mob.tell(_("You are unable to attack in this semi-incorporeal form."));
+				mob.tell(L("You are unable to attack in this semi-incorporeal form."));
 				peaceAt(mob);
 				return false;
 			}
@@ -97,9 +97,9 @@ public class Spell_FeignDeath extends Spell
 			||(msg.sourceMajor(CMMsg.MASK_MOUTH)))
 			{
 				if(msg.sourceMajor(CMMsg.MASK_SOUND))
-					mob.tell(_("You are unable to make sounds in this semi-incorporeal form."));
+					mob.tell(L("You are unable to make sounds in this semi-incorporeal form."));
 				else
-					mob.tell(_("You are unable to do that in this semi-incorporeal form."));
+					mob.tell(L("You are unable to do that in this semi-incorporeal form."));
 				peaceAt(mob);
 				return false;
 			}
@@ -108,7 +108,7 @@ public class Spell_FeignDeath extends Spell
 		if((msg.amITarget(mob))&&(!msg.amISource(mob))
 		   &&(!msg.targetMajor(CMMsg.MASK_ALWAYS)))
 		{
-			msg.source().tell(_("@x1 doesn't seem to be here.",mob.name(msg.source())));
+			msg.source().tell(L("@x1 doesn't seem to be here.",mob.name(msg.source())));
 			return false;
 		}
 		return true;
@@ -139,10 +139,10 @@ public class Spell_FeignDeath extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
 		{
-			return maliciousFizzle(mob,mob.location(),_("<S-NAME> point(s) to <T-NAMESELF> and yell(s), but nothing happens."));
+			return maliciousFizzle(mob,mob.location(),L("<S-NAME> point(s) to <T-NAMESELF> and yell(s), but nothing happens."));
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> point(s) to <T-NAMESELF> and yell(s) for death!^?"));
+		CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> point(s) to <T-NAMESELF> and yell(s) for death!^?"));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -162,14 +162,14 @@ public class Spell_FeignDeath extends Spell
 			}
 			final String msp=CMLib.protocol().msp("death"+CMLib.dice().roll(1,4,0)+".wav",50);
 			msg=CMClass.getMsg(target,null,null,
-					CMMsg.MSG_OK_VISUAL,_("^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r@x1",msp),
+					CMMsg.MSG_OK_VISUAL,L("^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r@x1",msp),
 					CMMsg.MSG_OK_VISUAL,null,
-					CMMsg.MSG_OK_VISUAL,_("^F^<FIGHT^><S-NAME> is DEAD!!!^</FIGHT^>^?\n\r@x1",msp));
+					CMMsg.MSG_OK_VISUAL,L("^F^<FIGHT^><S-NAME> is DEAD!!!^</FIGHT^>^?\n\r@x1",msp));
 			if(deathRoom.okMessage(target,msg))
 			{
 				deathRoom.send(target,msg);
-				Body.setName(_("the body of @x1",target.name()));
-				Body.setDisplayText(_("the body of @x1 lies here.",target.name()));
+				Body.setName(L("the body of @x1",target.name()));
+				Body.setDisplayText(L("the body of @x1 lies here.",target.name()));
 				Body.basePhyStats().setWeight(target.phyStats().weight()+100);
 				Body.setSecretIdentity("FAKE");
 				deathRoom.addItem(Body,ItemPossessor.Expire.Monster_Body);

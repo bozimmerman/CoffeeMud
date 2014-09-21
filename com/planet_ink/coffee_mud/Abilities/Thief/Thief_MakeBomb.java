@@ -37,7 +37,7 @@ import java.util.*;
 public class Thief_MakeBomb extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_MakeBomb"; }
-	private final static String localizedName = CMLib.lang()._("Make Bombs");
+	private final static String localizedName = CMLib.lang().L("Make Bombs");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
@@ -68,7 +68,7 @@ public class Thief_MakeBomb extends ThiefSkill
 		else
 		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
 		{
-			final StringBuffer buf=new StringBuffer(_("@x1 Requires\n\r",CMStrings.padRight(_("Bomb Name"),colWidth)));
+			final StringBuffer buf=new StringBuffer(L("@x1 Requires\n\r",CMStrings.padRight(L("Bomb Name"),colWidth)));
 			for(int r=0;r<traps.size();r++)
 			{
 				final Trap T=(Trap)traps.elementAt(r);
@@ -82,7 +82,7 @@ public class Thief_MakeBomb extends ThiefSkill
 		{
 			if(commands.size()<2)
 			{
-				mob.tell(_("Make a bomb from what, with what kind of bomb? Use bomb list for a list."));
+				mob.tell(L("Make a bomb from what, with what kind of bomb? Use bomb list for a list."));
 				return false;
 			}
 			final String name=(String)commands.lastElement();
@@ -95,7 +95,7 @@ public class Thief_MakeBomb extends ThiefSkill
 			}
 			if(theTrap==null)
 			{
-				mob.tell(_("'@x1' is not a valid bomb name.  Try BOMB LIST.",name));
+				mob.tell(L("'@x1' is not a valid bomb name.  Try BOMB LIST.",name));
 				return false;
 			}
 
@@ -122,13 +122,13 @@ public class Thief_MakeBomb extends ThiefSkill
 			}
 		}
 
-		final CMMsg msg=CMClass.getMsg(mob,trapThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_ALWAYS|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_OK_ACTION,(auto?_("@x1 begins to glow!",trapThis.name()):_("<S-NAME> attempt(s) to make a bomb out of <T-NAMESELF>.")));
+		final CMMsg msg=CMClass.getMsg(mob,trapThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_ALWAYS|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_OK_ACTION,(auto?L("@x1 begins to glow!",trapThis.name()):L("<S-NAME> attempt(s) to make a bomb out of <T-NAMESELF>.")));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			if(success)
 			{
-				mob.tell(_("You have completed your task."));
+				mob.tell(L("You have completed your task."));
 				theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel),false);
 			}
 			else
@@ -136,12 +136,12 @@ public class Thief_MakeBomb extends ThiefSkill
 				if(CMLib.dice().rollPercentage()>50)
 				{
 					final Trap T=theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel),false);
-					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> set(s) the bomb off on accident!"));
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> set(s) the bomb off on accident!"));
 					T.spring(mob);
 				}
 				else
 				{
-					mob.tell(_("You fail in your attempt."));
+					mob.tell(L("You fail in your attempt."));
 				}
 			}
 		}

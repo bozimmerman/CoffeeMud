@@ -37,10 +37,10 @@ import java.util.*;
 public class Chant_AnimalGrowth extends Chant
 {
 	@Override public String ID() { return "Chant_AnimalGrowth"; }
-	private final static String localizedName = CMLib.lang()._("Animal Growth");
+	private final static String localizedName = CMLib.lang().L("Animal Growth");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Animal Growth)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Animal Growth)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -58,7 +58,7 @@ public class Chant_AnimalGrowth extends Chant
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(mob.location()!=null)&&(!mob.amDead()))
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> shrink(s) back down to size."));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> shrink(s) back down to size."));
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class Chant_AnimalGrowth extends Chant
 			oldName=affected.Name().substring(4).trim();
 		else
 			oldName=affected.Name();
-		affectedStats.setName(_("An ENORMOUS @x1",oldName));
+		affectedStats.setName(L("An ENORMOUS @x1",oldName));
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public class Chant_AnimalGrowth extends Chant
 		if(target==null) return false;
 		if(!CMLib.flags().isAnimalIntelligence(target))
 		{
-			mob.tell(_("This chant only works on animals."));
+			mob.tell(L("This chant only works on animals."));
 			return false;
 		}
 
@@ -127,17 +127,17 @@ public class Chant_AnimalGrowth extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> grow(s) to an ENORMOUS size!"));
+				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> grow(s) to an ENORMOUS size!"));
 				beneficialAffect(mob,target,asLevel,0);
 				mob.location().recoverRoomStats();
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

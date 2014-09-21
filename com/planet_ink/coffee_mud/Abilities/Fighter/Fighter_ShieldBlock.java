@@ -37,7 +37,7 @@ public class Fighter_ShieldBlock extends FighterSkill
 {
 	public int hits=0;
 	@Override public String ID() { return "Fighter_ShieldBlock"; }
-	private final static String localizedName = CMLib.lang()._("Shield Block");
+	private final static String localizedName = CMLib.lang().L("Shield Block");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -65,7 +65,7 @@ public class Fighter_ShieldBlock extends FighterSkill
 		&&(proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90+(2*getXLEVELLevel(mob)),false))
 		&&(msg.source().getVictim()==mob))
 		{
-			final CMMsg msg2=CMClass.getMsg(msg.source(),mob,mob.fetchHeldItem(),CMMsg.MSG_QUIETMOVEMENT,_("<T-NAME> block(s) <S-YOUPOSS> attack with <O-NAME>!"));
+			final CMMsg msg2=CMClass.getMsg(msg.source(),mob,mob.fetchHeldItem(),CMMsg.MSG_QUIETMOVEMENT,L("<T-NAME> block(s) <S-YOUPOSS> attack with <O-NAME>!"));
 			if(mob.location().okMessage(mob,msg2))
 			{
 				mob.location().send(mob,msg2);

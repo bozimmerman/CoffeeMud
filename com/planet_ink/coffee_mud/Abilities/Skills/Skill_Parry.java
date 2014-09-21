@@ -34,7 +34,7 @@ import java.util.*;
 public class Skill_Parry extends StdSkill
 {
 	@Override public String ID() { return "Skill_Parry"; }
-	private final static String localizedName = CMLib.lang()._("Parry");
+	private final static String localizedName = CMLib.lang().L("Parry");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -86,7 +86,7 @@ public class Skill_Parry extends StdSkill
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_RANGED)
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_THROWN))
 				{
-					final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> parr(ys) @x1 attack from <T-NAME>!",attackerWeapon.name()));
+					final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> parr(ys) @x1 attack from <T-NAME>!",attackerWeapon.name()));
 					if((proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90+(getXLEVELLevel(mob)),false))
 					&&(mob.location().okMessage(mob,msg2)))
 					{

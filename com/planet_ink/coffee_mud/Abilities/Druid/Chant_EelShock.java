@@ -36,9 +36,9 @@ import java.util.*;
 public class Chant_EelShock extends Chant
 {
 	@Override public String ID() { return "Chant_EelShock"; }
-	private final static String localizedName = CMLib.lang()._("Eel Shock");
+	private final static String localizedName = CMLib.lang().L("Eel Shock");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Stunned)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Stunned)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int maxRange() {return 3;}
@@ -58,7 +58,7 @@ public class Chant_EelShock extends Chant
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.tell(_("<S-YOUPOSS> are no longer stunned."));
+				mob.tell(L("<S-YOUPOSS> are no longer stunned."));
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class Chant_EelShock extends Chant
 		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 		&&(msg.sourceMajor()>0))
 		{
-			mob.tell(_("You are stunned."));
+			mob.tell(L("You are stunned."));
 			return false;
 		}
 		return super.okMessage(myHost,msg);
@@ -130,7 +130,7 @@ public class Chant_EelShock extends Chant
 		final Set<MOB> h=CMLib.combat().properTargets(this,mob,auto);
 		if(h==null)
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth shocking."));
+			mob.tell(L("There doesn't appear to be anyone here worth shocking."));
 			return false;
 		}
 
@@ -138,7 +138,7 @@ public class Chant_EelShock extends Chant
 
 		if(!roomWet(location))
 		{
-				mob.tell(_("It's too dry to invoke this chant."));
+				mob.tell(L("It's too dry to invoke this chant."));
 				return false;
 		}
 
@@ -153,7 +153,7 @@ public class Chant_EelShock extends Chant
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),_("^S<S-NAME> chant(s) and electrical sparks dance across <S-HIS-HER> skin.^?")))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L("^S<S-NAME> chant(s) and electrical sparks dance across <S-HIS-HER> skin.^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -162,7 +162,7 @@ public class Chant_EelShock extends Chant
 					// and add it to the affects list of the
 					// affected MOB.  Then tell everyone else
 					// what happened.
-					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_ELECTRIC,_("<T-NAME> is stunned."));
+					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_ELECTRIC,L("<T-NAME> is stunned."));
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);
@@ -172,7 +172,7 @@ public class Chant_EelShock extends Chant
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> sees tiny sparks dance across <S-HIS-HER> skin, but nothing more happens."));
+			return maliciousFizzle(mob,null,L("<S-NAME> sees tiny sparks dance across <S-HIS-HER> skin, but nothing more happens."));
 		// return whether it worked
 		return success;
 	}

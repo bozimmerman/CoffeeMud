@@ -36,9 +36,9 @@ import java.util.*;
 public class Prayer_SenseDisease extends Prayer
 {
 	@Override public String ID() { return "Prayer_SenseDisease"; }
-	private final static String localizedName = CMLib.lang()._("Sense Disease");
+	private final static String localizedName = CMLib.lang().L("Sense Disease");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Sense Disease)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Sense Disease)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -60,7 +60,7 @@ public class Prayer_SenseDisease extends Prayer
 		if(canBeUninvoked())
 		{
 			lastRoom=null;
-			mob.tell(_("Your disease sensations fade."));
+			mob.tell(L("Your disease sensations fade."));
 		}
 	}
 
@@ -143,12 +143,12 @@ public class Prayer_SenseDisease extends Prayer
 		}
 
 		if((dirs.length()==0)&&(last.length()==0))
-			mob.tell(_("You do not sense any disease."));
+			mob.tell(L("You do not sense any disease."));
 		else
 		if(dirs.length()==0)
-			mob.tell(_("You sense disease coming from @x1.",last));
+			mob.tell(L("You sense disease coming from @x1.",last));
 		else
-			mob.tell(_("You sense disease coming from @x1, and @x2.",dirs.substring(2),last));
+			mob.tell(L("You sense disease coming from @x1, and @x2.",dirs.substring(2),last));
 	}
 
 	@Override
@@ -185,7 +185,7 @@ public class Prayer_SenseDisease extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> attain(s) disease senses!"):_("^S<S-NAME> listen(s) for a message from @x1.^?",hisHerDiety(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> attain(s) disease senses!"):L("^S<S-NAME> listen(s) for a message from @x1.^?",hisHerDiety(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -193,7 +193,7 @@ public class Prayer_SenseDisease extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> listen(s) to @x1 for a message, but there is no answer.",hisHerDiety(mob)));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> listen(s) to @x1 for a message, but there is no answer.",hisHerDiety(mob)));
 
 
 		// return whether it worked

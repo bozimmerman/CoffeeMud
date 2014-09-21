@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_FutureDeath extends Spell
 {
 	@Override public String ID() { return "Spell_FutureDeath"; }
-	private final static String localizedName = CMLib.lang()._("Future Death");
+	private final static String localizedName = CMLib.lang().L("Future Death");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -53,7 +53,7 @@ public class Spell_FutureDeath extends Spell
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(getXLEVELLevel(mob)));
 		if((!target.mayIFight(mob))||(levelDiff>=(3+((mob.phyStats().level()+(getXLEVELLevel(mob)))/10))))
 		{
-			mob.tell(_("@x1 looks too powerful.",target.charStats().HeShe()));
+			mob.tell(L("@x1 looks too powerful.",target.charStats().HeShe()));
 			return false;
 		}
 
@@ -73,7 +73,7 @@ public class Spell_FutureDeath extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			String str=auto?"":_("^S<S-NAME> incant(s) at <T-NAMESELF>^?");
+			String str=auto?"":L("^S<S-NAME> incant(s) at <T-NAMESELF>^?");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),str);
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
@@ -86,34 +86,34 @@ public class Spell_FutureDeath extends Spell
 					switch(CMLib.dice().roll(1,10,0))
 					{
 					case 1:
-						str=_("<S-NAME> grab(s) at <S-HIS-HER> throat and choke(s) to death!");
+						str=L("<S-NAME> grab(s) at <S-HIS-HER> throat and choke(s) to death!");
 						break;
 					case 2:
-						str=_("<S-NAME> wave(s) <S-HIS-HER> arms and look(s) down as if falling. Then <S-HE-SHE> hit(s).");
+						str=L("<S-NAME> wave(s) <S-HIS-HER> arms and look(s) down as if falling. Then <S-HE-SHE> hit(s).");
 						break;
 					case 3:
-						str=_("<S-NAME> defend(s) <S-HIM-HERSELF> from unseen blows, then fall(s) dead.");
+						str=L("<S-NAME> defend(s) <S-HIM-HERSELF> from unseen blows, then fall(s) dead.");
 						break;
 					case 4:
-						str=_("<S-NAME> gasp(s) for breathe, as if underwater, and drown(s).");
+						str=L("<S-NAME> gasp(s) for breathe, as if underwater, and drown(s).");
 						break;
 					case 5:
-						str=_("<S-NAME> kneel(s) and lower(s) <S-HIS-HER> head, as if on the block.  In one last whimper, <S-HE-SHE> die(s).");
+						str=L("<S-NAME> kneel(s) and lower(s) <S-HIS-HER> head, as if on the block.  In one last whimper, <S-HE-SHE> die(s).");
 						break;
 					case 6:
-						str=_("<S-NAME> jerk(s) as if being struck by a thousand arrows, and die(s).");
+						str=L("<S-NAME> jerk(s) as if being struck by a thousand arrows, and die(s).");
 						break;
 					case 7:
-						str=_("<S-NAME> writhe(s) as if being struck by a powerful electric spell, and die(s).");
+						str=L("<S-NAME> writhe(s) as if being struck by a powerful electric spell, and die(s).");
 						break;
 					case 8:
-						str=_("<S-NAME> lie(s) on the ground, take(s) on a sickly expression, and die(s).");
+						str=L("<S-NAME> lie(s) on the ground, take(s) on a sickly expression, and die(s).");
 						break;
 					case 9:
-						str=_("<S-NAME> grab(s) at <S-HIS-HER> heart, and then it stops.");
+						str=L("<S-NAME> grab(s) at <S-HIS-HER> heart, and then it stops.");
 						break;
 					case 10:
-						str=_("<S-NAME> stand(s) on <S-HIS-HER> toes, stick(s) out <S-HIS-HER> tongue, and die(s).");
+						str=L("<S-NAME> stand(s) on <S-HIS-HER> toes, stick(s) out <S-HIS-HER> tongue, and die(s).");
 						break;
 					}
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,str);
@@ -122,7 +122,7 @@ public class Spell_FutureDeath extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) at <T-NAMESELF>, but nothing happens."));
+			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) at <T-NAMESELF>, but nothing happens."));
 
 		// return whether it worked
 		return success;

@@ -38,9 +38,9 @@ import java.util.*;
 public class Chant_SummonAnimal extends Chant
 {
 	@Override public String ID() { return "Chant_SummonAnimal"; }
-	private final static String localizedName = CMLib.lang()._("Summon Animal");
+	private final static String localizedName = CMLib.lang().L("Summon Animal");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Animal Summoning)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Animal Summoning)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -117,14 +117,14 @@ public class Chant_SummonAnimal extends Chant
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell(_("You must be outdoors for this chant to work."));
+			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
 		final Vector choices=outdoorChoices(mob.location());
 		int fromDir=-1;
 		if(choices.size()==0)
 		{
-			mob.tell(_("You must be further outdoors to summon an animal."));
+			mob.tell(L("You must be further outdoors to summon an animal."));
 			return false;
 		}
 		fromDir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
@@ -139,7 +139,7 @@ public class Chant_SummonAnimal extends Chant
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) and summon(s) a companion from the Java Plane.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) and summon(s) a companion from the Java Plane.^?"));
 			final Room room=mob.location();
 			if(room.okMessage(mob,msg))
 			{
@@ -147,7 +147,7 @@ public class Chant_SummonAnimal extends Chant
 				final MOB target = determineMonster(mob, adjustedLevel(mob,asLevel));
 				target.bringToLife(newRoom,true);
 				CMLib.beanCounter().clearZeroMoney(target,null);
-				newRoom.showOthers(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
+				newRoom.showOthers(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
 				if(target.isInCombat()) target.makePeace();
@@ -158,7 +158,7 @@ public class Chant_SummonAnimal extends Chant
 					CMLib.commands().postFollow(target,mob,true);
 					beneficialAffect(mob,target,asLevel,0);
 					if(target.amFollowing()!=mob)
-						mob.tell(_("@x1 seems unwilling to follow you.",target.name(mob)));
+						mob.tell(L("@x1 seems unwilling to follow you.",target.name(mob)));
 				}
 				else
 				{
@@ -168,10 +168,10 @@ public class Chant_SummonAnimal extends Chant
 				invoker=mob;
 			}
 			else
-				return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) and summon(s), but nothing happens."));
+				return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) and summon(s), but nothing happens."));
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) and summon(s), but nothing happens."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) and summon(s), but nothing happens."));
 
 		// return whether it worked
 		return success;

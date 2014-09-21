@@ -62,7 +62,7 @@ public class Beggar extends StdBehavior
 			return;
 		final MOB mob=(MOB)oking;
 		if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_GIVE))
-			msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),CMMsg.MSG_SPEAK,_("^T<S-NAME> say(s) 'Thank you gov'ner!' to <T-NAME> ^?")));
+			msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) 'Thank you gov'ner!' to <T-NAME> ^?")));
 	}
 
 	@Override
@@ -89,34 +89,34 @@ public class Beggar extends StdBehavior
 				switch(CMLib.dice().roll(1,10,0))
 				{
 				case 1:
-					CMLib.commands().postSay(mob,mob2,_("A little something for a vet please?"),false,false);
+					CMLib.commands().postSay(mob,mob2,L("A little something for a vet please?"),false,false);
 					break;
 				case 2:
-					CMLib.commands().postSay(mob,mob2,_("Spare a gold piece @x1",((mob2.charStats().getStat(CharStats.STAT_GENDER)=='M')?"mister?":"madam?")),false,false);
+					CMLib.commands().postSay(mob,mob2,L("Spare a gold piece @x1",((mob2.charStats().getStat(CharStats.STAT_GENDER)=='M')?"mister?":"madam?")),false,false);
 					break;
 				case 3:
-					CMLib.commands().postSay(mob,mob2,_("Spare some change?"),false,false);
+					CMLib.commands().postSay(mob,mob2,L("Spare some change?"),false,false);
 					break;
 				case 4:
-					CMLib.commands().postSay(mob,mob2,_("Please @x1, a little something for an old @x2 down on @x3 luck?",((mob2.charStats().getStat(CharStats.STAT_GENDER)=='M')?"mister":"madam"),((mob.charStats().getStat(CharStats.STAT_GENDER)=='M')?"man":"woman"),mob.charStats().hisher()),false,false);
+					CMLib.commands().postSay(mob,mob2,L("Please @x1, a little something for an old @x2 down on @x3 luck?",((mob2.charStats().getStat(CharStats.STAT_GENDER)=='M')?"mister":"madam"),((mob.charStats().getStat(CharStats.STAT_GENDER)=='M')?"man":"woman"),mob.charStats().hisher()),false,false);
 					break;
 				case 5:
-					CMLib.commands().postSay(mob,mob2,_("Hey, I lost my 'Will Work For Food' sign.  Can you spare me the money to buy one?"),false,false);
+					CMLib.commands().postSay(mob,mob2,L("Hey, I lost my 'Will Work For Food' sign.  Can you spare me the money to buy one?"),false,false);
 					break;
 				case 6:
-					CMLib.commands().postSay(mob,mob2,_("Spread a little joy to an old fogie?"),false,false);
+					CMLib.commands().postSay(mob,mob2,L("Spread a little joy to an old fogie?"),false,false);
 					break;
 				case 7:
-					CMLib.commands().postSay(mob,mob2,_("Change?"),false,false);
+					CMLib.commands().postSay(mob,mob2,L("Change?"),false,false);
 					break;
 				case 8:
-					CMLib.commands().postSay(mob,mob2,_("Can you spare a little change?"),false,false);
+					CMLib.commands().postSay(mob,mob2,L("Can you spare a little change?"),false,false);
 					break;
 				case 9:
-					CMLib.commands().postSay(mob,mob2,_("Can you spare a little gold?"),false,false);
+					CMLib.commands().postSay(mob,mob2,L("Can you spare a little gold?"),false,false);
 					break;
 				case 10:
-					CMLib.commands().postSay(mob,mob2,_("Gold piece for a poor fogie down on @x1 luck?",mob.charStats().hisher()),false,false);
+					CMLib.commands().postSay(mob,mob2,L("Gold piece for a poor fogie down on @x1 luck?",mob.charStats().hisher()),false,false);
 					break;
 				}
 				mobsHitUp.addElement(mob2);

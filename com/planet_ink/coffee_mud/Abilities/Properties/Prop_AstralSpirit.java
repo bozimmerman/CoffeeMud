@@ -35,7 +35,7 @@ public class Prop_AstralSpirit extends Property
 {
 	@Override public String ID() { return "Prop_AstralSpirit"; }
 	@Override public String name(){ return "Astral Spirit";}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Spirit Form)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Spirit Form)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	private Race race=null;
@@ -100,7 +100,7 @@ public class Prop_AstralSpirit extends Property
 				final Vector<String> V=CMParms.parse(text().toUpperCase());
 				if(!V.contains("SELF-RES"))
 				{
-					mob.tell(_("You lack that power"));
+					mob.tell(L("You lack that power"));
 					return false;
 				}
 			}
@@ -109,7 +109,7 @@ public class Prop_AstralSpirit extends Property
 			else
 			if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			{
-				mob.tell(_("You are unable to attack in this incorporeal form."));
+				mob.tell(L("You are unable to attack in this incorporeal form."));
 				peaceAt(mob);
 				return false;
 			}
@@ -118,9 +118,9 @@ public class Prop_AstralSpirit extends Property
 			||(msg.sourceMajor(CMMsg.MASK_MOUTH)))
 			{
 				if(msg.sourceMajor(CMMsg.MASK_SOUND))
-					mob.tell(_("You are unable to make sounds in this incorporeal form."));
+					mob.tell(L("You are unable to make sounds in this incorporeal form."));
 				else
-					mob.tell(_("You are unable to do that this incorporeal form."));
+					mob.tell(L("You are unable to do that this incorporeal form."));
 				peaceAt(mob);
 				return false;
 			}
@@ -129,7 +129,7 @@ public class Prop_AstralSpirit extends Property
 		if((msg.amITarget(mob))&&(!msg.amISource(mob))
 		   &&(!msg.targetMajor(CMMsg.MASK_ALWAYS)))
 		{
-			mob.tell(_("@x1 doesn't seem to be here.",mob.name()));
+			mob.tell(L("@x1 doesn't seem to be here.",mob.name()));
 			return false;
 		}
 		return true;
@@ -151,7 +151,7 @@ public class Prop_AstralSpirit extends Property
 		// can get them out of it.
 		affectableStats.setWeight(0);
 		affectableStats.setHeight(-1);
-		affectableStats.setName(_("The spirit of @x1",affected.name()));
+		affectableStats.setName(L("The spirit of @x1",affected.name()));
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_INVISIBLE);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_NOT_SEEN);

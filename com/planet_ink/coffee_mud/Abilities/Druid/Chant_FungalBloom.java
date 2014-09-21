@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_FungalBloom extends Chant
 {
 	@Override public String ID() { return "Chant_FungalBloom"; }
-	private final static String localizedName = CMLib.lang()._("Fungal Bloom");
+	private final static String localizedName = CMLib.lang().L("Fungal Bloom");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
@@ -86,7 +86,7 @@ public class Chant_FungalBloom extends Chant
 		||(mob.location().domainType()==Room.DOMAIN_INDOORS_AIR)
 		||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			mob.tell(_("This magic will not work here."));
+			mob.tell(L("This magic will not work here."));
 			return false;
 		}
 
@@ -104,7 +104,7 @@ public class Chant_FungalBloom extends Chant
 		}
 		if(target.material()!=RawMaterial.RESOURCE_MUSHROOMS)
 		{
-			mob.tell(_("@x1 is not a fungus!",target.name(mob)));
+			mob.tell(L("@x1 is not a fungus!",target.name(mob)));
 			return false;
 		}
 
@@ -115,12 +115,12 @@ public class Chant_FungalBloom extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				target.setDescription(_("It seems to be getting puffier and puffier!"));
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 seems to be puffing up!",target.name()));
+				target.setDescription(L("It seems to be getting puffier and puffier!"));
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 seems to be puffing up!",target.name()));
 				Ability A=CMClass.getAbility("Bomb_Poison");
 				A.setMiscText("Poison_Bloodboil");
 				A.setInvoker(mob);
@@ -132,7 +132,7 @@ public class Chant_FungalBloom extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to the <T-NAMESELF>, but nothing happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to the <T-NAMESELF>, but nothing happens."));
 
 		// return whether it worked
 		return success;

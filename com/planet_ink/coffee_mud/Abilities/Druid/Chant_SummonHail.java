@@ -70,14 +70,14 @@ public class Chant_SummonHail extends Chant
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
-			mob.tell(_("You must be outdoors for this chant to work."));
+			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
 		if((!auto)
 		&&((mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_WINTER_COLD)
 			&&(mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_HAIL)))
 		{
-			mob.tell(_("This chant requires a cold snap or a hail storm!"));
+			mob.tell(L("This chant requires a cold snap or a hail storm!"));
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
@@ -95,7 +95,7 @@ public class Chant_SummonHail extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_(auto?"^JHailstones falling from the sky whack <T-NAME>.^?":"^S<S-NAME> chant(s) to <T-NAMESELF>.  Suddenly a volley of hailstones assaults <T-HIM-HER>!^?")+CMLib.protocol().msp("hail.wav",40));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"^JHailstones falling from the sky whack <T-NAME>.^?":"^S<S-NAME> chant(s) to <T-NAMESELF>.  Suddenly a volley of hailstones assaults <T-HIM-HER>!^?")+CMLib.protocol().msp("hail.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_WATER,null);
 			if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 			{
@@ -120,7 +120,7 @@ public class Chant_SummonHail extends Chant
 						I=null;
 					}
 					if((I!=null)&&(I.amWearingAt(Wearable.WORN_HEAD)))
-						target.location().show(target,I,null,CMMsg.MSG_OK_ACTION,_("Hailstones bounce harmlessly off <T-NAME> being worn by <S-NAME>."));
+						target.location().show(target,I,null,CMMsg.MSG_OK_ACTION,L("Hailstones bounce harmlessly off <T-NAME> being worn by <S-NAME>."));
 					else
 						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_WATER,Weapon.TYPE_BASHING,"The hailstones <DAMAGE> <T-NAME>!");
 				}
@@ -135,7 +135,7 @@ public class Chant_SummonHail extends Chant
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAMESELF>, but the magic fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAMESELF>, but the magic fades."));
 
 
 		// return whether it worked

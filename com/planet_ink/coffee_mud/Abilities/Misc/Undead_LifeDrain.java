@@ -37,7 +37,7 @@ import java.util.*;
 public class Undead_LifeDrain extends StdAbility
 {
 	@Override public String ID() { return "Undead_LifeDrain"; }
-	private final static String localizedName = CMLib.lang()._("Drain Life");
+	private final static String localizedName = CMLib.lang().L("Drain Life");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return 0;}
@@ -71,7 +71,7 @@ public class Undead_LifeDrain extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			int much=mob.phyStats().level();
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),auto?"":_("^S<S-NAME> clutch(es) <T-NAMESELF>, and drain(s) <T-HIS-HER> life!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("^S<S-NAME> clutch(es) <T-NAMESELF>, and drain(s) <T-HIS-HER> life!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -82,7 +82,7 @@ public class Undead_LifeDrain extends StdAbility
 			}
 		}
 		else
-			maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to drain life from <T-NAMESELF>, but fail(s)."));
+			maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to drain life from <T-NAMESELF>, but fail(s)."));
 
 		// return whether it worked
 		return success;

@@ -38,7 +38,7 @@ import java.util.*;
 public class Spell_EnchantArrows extends Spell
 {
 	@Override public String ID() { return "Spell_EnchantArrows"; }
-	private final static String localizedName = CMLib.lang()._("Enchant Arrows");
+	private final static String localizedName = CMLib.lang().L("Enchant Arrows");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
@@ -62,7 +62,7 @@ public class Spell_EnchantArrows extends Spell
 
 		if((!(target instanceof Ammunition))||(!((Ammunition)target).ammunitionType().equalsIgnoreCase("arrows")))
 		{
-			mob.tell(mob,target,null,_("You can't enchant <T-NAME> ith an Enchant Arrows spell!"));
+			mob.tell(mob,target,null,L("You can't enchant <T-NAME> ith an Enchant Arrows spell!"));
 			return false;
 		}
 
@@ -71,22 +71,22 @@ public class Spell_EnchantArrows extends Spell
 
 		final int experienceToLose=getXPCOSTAdjustment(mob,5);
 		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
-		mob.tell(_("The effort causes you to lose @x1 experience.",""+experienceToLose));
+		mob.tell(L("The effort causes you to lose @x1 experience.",""+experienceToLose));
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> hold(s) <T-NAMESELF> and cast(s) a spell.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> hold(s) <T-NAMESELF> and cast(s) a spell.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Ability A=target.fetchEffect(ID());
 				if((A!=null)&&(CMath.s_int(A.text())>2))
-					mob.tell(_("You are not able to enchant @x1 further.",target.name(mob)));
+					mob.tell(L("You are not able to enchant @x1 further.",target.name(mob)));
 				else
 				{
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,_("<T-NAME> glows!"));
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glows!"));
 					if(A==null){ A=(Ability)copyOf(); target.addNonUninvokableEffect(A);}
 					A.setMiscText(""+(CMath.s_int(A.text())+1));
 					target.recoverPhyStats();
@@ -96,7 +96,7 @@ public class Spell_EnchantArrows extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> hold(s) <T-NAMESELF> tightly and whisper(s), but fail(s) to cast a spell."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> hold(s) <T-NAMESELF> tightly and whisper(s), but fail(s) to cast a spell."));
 
 
 		// return whether it worked

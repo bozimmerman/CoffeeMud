@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_Poison extends Chant
 {
 	@Override public String ID() { return "Chant_Poison"; }
-	private final static String localizedName = CMLib.lang()._("Venomous Bite");
+	private final static String localizedName = CMLib.lang().L("Venomous Bite");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int canAffectCode(){return 0;}
@@ -61,7 +61,7 @@ public class Chant_Poison extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":_("^S<S-NAME> chant(s) at <T-NAMESELF> and bite(s) <T-HIM-HER>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":L("^S<S-NAME> chant(s) at <T-NAMESELF> and bite(s) <T-HIM-HER>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -75,7 +75,7 @@ public class Chant_Poison extends Chant
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

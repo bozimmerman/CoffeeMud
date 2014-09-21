@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_DetectPoison extends Spell
 {
 	@Override public String ID() { return "Spell_DetectPoison"; }
-	private final static String localizedName = CMLib.lang()._("Detect Poison");
+	private final static String localizedName = CMLib.lang().L("Detect Poison");
 	@Override public String name() { return localizedName; }
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
@@ -100,13 +100,13 @@ public class Spell_DetectPoison extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> incant(s) over <T-NAME>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> incant(s) over <T-NAME>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final StringBuffer buf=new StringBuffer(_("@x1 contains: ",target.name(mob)));
+				final StringBuffer buf=new StringBuffer(L("@x1 contains: ",target.name(mob)));
 				if(offensiveAffects.size()==0)
-					buf.append(_("weak impurities, "));
+					buf.append(L("weak impurities, "));
 				else
 				for(int i=0;i<offensiveAffects.size();i++)
 					buf.append(offensiveAffects.get(i).name()+", ");
@@ -114,7 +114,7 @@ public class Spell_DetectPoison extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> incant(s) over <T-NAME>, but receives no insight."));
+			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> incant(s) over <T-NAME>, but receives no insight."));
 
 
 		// return whether it worked

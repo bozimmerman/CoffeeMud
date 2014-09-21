@@ -37,7 +37,7 @@ import java.util.*;
 public class Fighter_BodyToss extends MonkSkill
 {
 	@Override public String ID() { return "Fighter_BodyToss"; }
-	private final static String localizedName = CMLib.lang()._("Body Toss");
+	private final static String localizedName = CMLib.lang().L("Body Toss");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"BODYTOSS"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -74,32 +74,32 @@ public class Fighter_BodyToss extends MonkSkill
 		final MOB target=mob.getVictim();
 		if(target==null)
 		{
-			mob.tell(_("You can only do this in combat!"));
+			mob.tell(L("You can only do this in combat!"));
 			return false;
 		}
 		if(anyWeapons(mob))
 		{
-			mob.tell(_("You must be unarmed to use this skill."));
+			mob.tell(L("You must be unarmed to use this skill."));
 			return false;
 		}
 		if(mob.rangeToTarget()>0)
 		{
-			mob.tell(_("You must get closer to @x1 first!",target.charStats().himher()));
+			mob.tell(L("You must get closer to @x1 first!",target.charStats().himher()));
 			return false;
 		}
 		if(CMLib.flags().isSitting(mob))
 		{
-			mob.tell(_("You need to stand up!"));
+			mob.tell(L("You need to stand up!"));
 			return false;
 		}
 		if(mob.charStats().getBodyPart(Race.BODY_ARM)<=1)
 		{
-			mob.tell(_("You need arms to do this."));
+			mob.tell(L("You need arms to do this."));
 			return false;
 		}
 		if(target.basePhyStats().weight()>(mob.basePhyStats().weight()*2))
 		{
-			mob.tell(_("@x1 is too big for you to toss!",target.name(mob)));
+			mob.tell(L("@x1 is too big for you to toss!",target.name(mob)));
 			return false;
 		}
 
@@ -118,7 +118,7 @@ public class Fighter_BodyToss extends MonkSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),_("^F^<FIGHT^><S-NAME> pick(s) up <T-NAMESELF> and toss(es) <T-HIM-HER> into the air!^</FIGHT^>^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),L("^F^<FIGHT^><S-NAME> pick(s) up <T-NAMESELF> and toss(es) <T-HIM-HER> into the air!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -133,7 +133,7 @@ public class Fighter_BodyToss extends MonkSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to pick up <T-NAMESELF>, but fail(s)."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to pick up <T-NAMESELF>, but fail(s)."));
 
 		// return whether it worked
 		return success;

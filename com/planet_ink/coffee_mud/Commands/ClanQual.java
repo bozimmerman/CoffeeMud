@@ -61,13 +61,13 @@ public class ClanQual extends StdCommand
 		final Clan C=chkC;
 		if(C==null)
 		{
-			mob.tell(_("You aren't allowed to set qualifications for @x1.",((clanName.length()==0)?"anything":clanName)));
+			mob.tell(L("You aren't allowed to set qualifications for @x1.",((clanName.length()==0)?"anything":clanName)));
 			return false;
 		}
 
 		if((!skipChecks)&&(!CMLib.clans().goForward(mob,C,commands,Clan.Function.PREMISE,false)))
 		{
-			mob.tell(_("You aren't in the right position to set the qualifications to your @x1.",C.getGovernmentName()));
+			mob.tell(L("You aren't in the right position to set the qualifications to your @x1.",C.getGovernmentName()));
 			return false;
 		}
 
@@ -84,7 +84,7 @@ public class ClanQual extends StdCommand
 		final InputCallback[] IC=new InputCallback[1];
 		IC[0]=new InputCallback(InputCallback.Type.PROMPT,"",0)
 		{
-			@Override public void showPrompt() { session.promptPrint(_("Describe your @x1's Qualification Code (?)\n\r: ",C.getGovernmentName()));}
+			@Override public void showPrompt() { session.promptPrint(L("Describe your @x1's Qualification Code (?)\n\r: ",C.getGovernmentName()));}
 			@Override public void timedOut() { }
 			@Override public void callBack()
 			{
@@ -103,8 +103,8 @@ public class ClanQual extends StdCommand
 				{
 					@Override public void showPrompt()
 					{
-						session.println(_("Your qualifications will be as follows: @x1\n\r",CMLib.masking().maskDesc(qualMask)));
-						session.promptPrint(_("Is this correct (Y/n)?"));
+						session.println(L("Your qualifications will be as follows: @x1\n\r",CMLib.masking().maskDesc(qualMask)));
+						session.promptPrint(L("Is this correct (Y/n)?"));
 					}
 					@Override public void timedOut() { }
 					@Override public void callBack()
@@ -133,7 +133,7 @@ public class ClanQual extends StdCommand
 	{
 		C.setAcceptanceSettings(qualMask);
 		C.update();
-		CMLib.clans().clanAnnounce(mob,_("The qualifications of @x1 @x2 have been changed.",C.getGovernmentName(),C.clanID()));
+		CMLib.clans().clanAnnounce(mob,L("The qualifications of @x1 @x2 have been changed.",C.getGovernmentName(),C.clanID()));
 	}
 
 	@Override public boolean canBeOrdered(){return false;}

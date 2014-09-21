@@ -39,9 +39,9 @@ import java.util.*;
 public class Ranger_WoodlandCreep extends StdAbility
 {
 	@Override public String ID() { return "Ranger_WoodlandCreep"; }
-	private final static String localizedName = CMLib.lang()._("Woodland Creep");
+	private final static String localizedName = CMLib.lang().L("Woodland Creep");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Creeping through foliage)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Creeping through foliage)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -102,13 +102,13 @@ public class Ranger_WoodlandCreep extends StdAbility
 
 		if(mob.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(_("You are already creeping around."));
+			mob.tell(L("You are already creeping around."));
 			return false;
 		}
 
 		if(mob.isInCombat())
 		{
-			mob.tell(_("Not while in combat!"));
+			mob.tell(L("Not while in combat!"));
 			return false;
 		}
 
@@ -117,15 +117,15 @@ public class Ranger_WoodlandCreep extends StdAbility
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WOODS)
 		&&(!auto))
 		{
-			mob.tell(_("You don't know how to creep around in a place like this."));
+			mob.tell(L("You don't know how to creep around in a place like this."));
 			return false;
 		}
 
-		final String str=_("You creep into some foliage.");
+		final String str=L("You creep into some foliage.");
 		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
-			beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to creep into the foliage and fail(s)."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to creep into the foliage and fail(s)."));
 		else
 		{
 			final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),str,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);

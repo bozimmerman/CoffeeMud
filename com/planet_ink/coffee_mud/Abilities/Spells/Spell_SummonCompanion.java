@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_SummonCompanion extends Spell
 {
 	@Override public String ID() { return "Spell_SummonCompanion"; }
-	private final static String localizedName = CMLib.lang()._("Summon Companion");
+	private final static String localizedName = CMLib.lang().L("Summon Companion");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
@@ -51,7 +51,7 @@ public class Spell_SummonCompanion extends Spell
 		final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 		if((H.size()==0)||((H.size()==1)&&(H.contains(mob))))
 		{
-			mob.tell(_("You don't have any companions!"));
+			mob.tell(L("You don't have any companions!"));
 			return false;
 		}
 
@@ -72,13 +72,13 @@ public class Spell_SummonCompanion extends Spell
 		}
 		if((target==null)&&(allHere))
 		{
-			mob.tell(_("Better look around first."));
+			mob.tell(L("Better look around first."));
 			return false;
 		}
 
 		if(target==null)
 		{
-			mob.tell(_("You can't seem to fixate on your companions."));
+			mob.tell(L("You can't seem to fixate on your companions."));
 			return false;
 		}
 
@@ -90,7 +90,7 @@ public class Spell_SummonCompanion extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> summon(s) <S-HIS-HER> companion in a mighty cry!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> summon(s) <S-HIS-HER> companion in a mighty cry!^?"));
 			if((mob.location().okMessage(mob,msg))&&(oldRoom!=null)&&(oldRoom.okMessage(mob,msg)))
 			{
 				mob.location().send(mob,msg);
@@ -98,7 +98,7 @@ public class Spell_SummonCompanion extends Spell
 				final MOB follower=target;
 				final Room newRoom=mob.location();
 				final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,("<S-NAME> appear(s) in a burst of light.")+CMLib.protocol().msp("appear.wav",10));
-				final CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,_("<S-NAME> disappear(s) in a great summoning swirl created by @x1.",mob.name()));
+				final CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,L("<S-NAME> disappear(s) in a great summoning swirl created by @x1.",mob.name()));
 				if(oldRoom.okMessage(follower,leaveMsg))
 				{
 					if(newRoom.okMessage(follower,enterMsg))
@@ -107,19 +107,19 @@ public class Spell_SummonCompanion extends Spell
 						oldRoom.send(follower,leaveMsg);
 						newRoom.bringMobHere(follower,true);
 						newRoom.send(follower,enterMsg);
-						follower.tell(_("\n\r\n\r"));
+						follower.tell(L("\n\r\n\r"));
 						CMLib.commands().postLook(follower,true);
 					}
 					else
-						mob.tell(_("Some powerful magic stifles the spell."));
+						mob.tell(L("Some powerful magic stifles the spell."));
 				}
 				else
-					mob.tell(_("Some powerful magic stifles the spell."));
+					mob.tell(L("Some powerful magic stifles the spell."));
 			}
 
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to summon <S-HIS-HER> companion, but fail(s)."));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to summon <S-HIS-HER> companion, but fail(s)."));
 
 		// return whether it worked
 		return success;

@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_UndergroundConnections extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_UndergroundConnections"; }
-	private final static String localizedName = CMLib.lang()._("Underground Connections");
+	private final static String localizedName = CMLib.lang().L("Underground Connections");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return 0;}
@@ -63,7 +63,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 				unInvoke();
 			else
 			{
-				currRoom.showHappens(CMMsg.MSG_OK_ACTION,_("@x1 goes by.",theNoun));
+				currRoom.showHappens(CMMsg.MSG_OK_ACTION,L("@x1 goes by.",theNoun));
 				currRoom=currRoom.getRoomInDir(pathOut.get(0).intValue());
 				pathOut.remove(0);
 				if(currRoom!=null)
@@ -78,16 +78,16 @@ public class Thief_UndergroundConnections extends ThiefSkill
 							if(M.playerStats()!=null) M.playerStats().adjHygiene(hygieneLoss);
 							switch(CMLib.dice().roll(1,10,0))
 							{
-							case 1: M.tell(_("You think you are being taken through '@x1'.",roomDesc)); break;
-							case 2: M.tell(_("You might be going through '@x1' now.",roomDesc)); break;
-							case 3: M.tell(_("Now you are definitely going through '@x1'.",roomDesc)); break;
-							case 4: M.tell(_("You are being taken through '@x1', you think.",roomDesc)); break;
-							case 5: M.tell(_("Sounds like '@x1' now.",roomDesc)); break;
-							case 6: M.tell(_("Now this might be '@x1'.",roomDesc)); break;
-							case 7: M.tell(_("You're going through '@x1'.",roomDesc)); break;
-							case 8: M.tell(_("Sounds like this could be '@x1'.",roomDesc)); break;
-							case 9: M.tell(_("You are probably going through '@x1' now.",roomDesc)); break;
-							case 10: M.tell(_("Sounds like you are being taken through '@x1'.",roomDesc)); break;
+							case 1: M.tell(L("You think you are being taken through '@x1'.",roomDesc)); break;
+							case 2: M.tell(L("You might be going through '@x1' now.",roomDesc)); break;
+							case 3: M.tell(L("Now you are definitely going through '@x1'.",roomDesc)); break;
+							case 4: M.tell(L("You are being taken through '@x1', you think.",roomDesc)); break;
+							case 5: M.tell(L("Sounds like '@x1' now.",roomDesc)); break;
+							case 6: M.tell(L("Now this might be '@x1'.",roomDesc)); break;
+							case 7: M.tell(L("You're going through '@x1'.",roomDesc)); break;
+							case 8: M.tell(L("Sounds like this could be '@x1'.",roomDesc)); break;
+							case 9: M.tell(L("You are probably going through '@x1' now.",roomDesc)); break;
+							case 10: M.tell(L("Sounds like you are being taken through '@x1'.",roomDesc)); break;
 							}
 						}
 					}
@@ -120,7 +120,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			for(int g=0;g<theGroup.size();g++)
 			{
 				final MOB M=(MOB)theGroup.elementAt(g);
-				M.tell(_("You are told that it's safe and released."));
+				M.tell(L("You are told that it's safe and released."));
 				currRoom.bringMobHere(M,false);
 				CMLib.commands().postStand(M,true);
 				CMLib.commands().postLook(M,true);
@@ -162,7 +162,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 	public boolean bringMOBHere(Room newRoom, MOB follower, String leaveStr, String enterStr)
 	{
 		final Room thisRoom=follower.location();
-		final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,enterStr,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("You are joined by <S-NAME>."));
+		final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,enterStr,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("You are joined by <S-NAME>."));
 		final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE,leaveStr,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,leaveStr);
 		if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 		{
@@ -177,7 +177,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			newRoom.send(follower,enterMsg);
 			follower.basePhyStats().setDisposition(follower.basePhyStats().disposition()|PhyStats.IS_SITTING);
 			follower.phyStats().setDisposition(follower.phyStats().disposition()|PhyStats.IS_SITTING);
-			//follower.tell(_("\n\r\n\r"));
+			//follower.tell(L("\n\r\n\r"));
 			//CMLib.commands().postLook(follower,true);
 			return true;
 		}
@@ -210,7 +210,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			target=(MOB)givenTarget;
 		if(target.isInCombat())
 		{
-			mob.tell(target,null,null,_("Not while <S-NAME> <S-IS-ARE> fighting."));
+			mob.tell(target,null,null,L("Not while <S-NAME> <S-IS-ARE> fighting."));
 			return false;
 		}
 		final Room thisRoom=target.location();
@@ -218,14 +218,14 @@ public class Thief_UndergroundConnections extends ThiefSkill
 
 		if((!auto)&&(thisRoom.domainType()!=Room.DOMAIN_OUTDOORS_CITY))
 		{
-			mob.tell(_("You must be out on a street to contact your underground connections."));
+			mob.tell(L("You must be out on a street to contact your underground connections."));
 			return false;
 		}
 		final Area A=CMLib.map().areaLocation(target);
 		if((!CMLib.law().isACity(A))
 		&&(!auto))
 		{
-			mob.tell(_("You can only use this skill in cities."));
+			mob.tell(L("You can only use this skill in cities."));
 			return false;
 		}
 
@@ -269,7 +269,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 		}
 		if(allTrails.size()==0)
 		{
-			mob.tell(_("Your informants tell you that there's no way they can get you out of here."));
+			mob.tell(L("Your informants tell you that there's no way they can get you out of here."));
 			return false;
 		}
 		final List<Integer> theTrail=allTrails.get(CMLib.dice().roll(1,allTrails.size(),-1));
@@ -279,9 +279,9 @@ public class Thief_UndergroundConnections extends ThiefSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":_("<S-NAME> contact(s) <S-HIS-HER> underground connections here."));
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":L("<S-NAME> contact(s) <S-HIS-HER> underground connections here."));
 		if(!success)
-			return beneficialVisualFizzle(mob,null,auto?"":_("<S-NAME> can't seem to contact <S-HIS-HER> underground connections here."));
+			return beneficialVisualFizzle(mob,null,auto?"":L("<S-NAME> can't seem to contact <S-HIS-HER> underground connections here."));
 		else
 		if(mob.location().okMessage(mob,msg))
 		{
@@ -311,7 +311,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 				case 1:
 				{
 					underA.theNoun="a strange horse drawn cart";
-					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,_("A horse drawn wagon filled with hay pulls up.\n\rTwo large farmers jump out."));
+					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,L("A horse drawn wagon filled with hay pulls up.\n\rTwo large farmers jump out."));
 					final Room destR=makeNewRoom(area,"A bundle of straw","Your eyes, mouth, and ears are filled with the stuff. This trip better be short!");
 					rooms.addElement(destR);
 					bringMOBSHere(destR,group,"","<S-NAME> <S-IS-ARE> picked up and stuffed into the piles of hay");
@@ -320,7 +320,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 				case 2:
 				{
 					underA.theNoun="a large group of teamsters carrying potato sacks";
-					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,_("A group of large teamsters with big empty potato sacks approaches."));
+					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,L("A group of large teamsters with big empty potato sacks approaches."));
 					final Room destR=makeNewRoom(area,"A potato sack","Once you get past the musty rotten smell, this is really uncomfortable!");
 					bringMOBSLikeHere(rooms,destR,group,"","<S-NAME> <S-IS-ARE> picked up and stuffed into a sack");
 					break;
@@ -328,7 +328,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 				case 3:
 				{
 					underA.theNoun="a pullcart full of plague victims";
-					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,_("A pullcart full of the decaying bodies of plague victims pulls up."));
+					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,L("A pullcart full of the decaying bodies of plague victims pulls up."));
 					final Room destR=makeNewRoom(area,"A pile of bodies","There is a finger in your ear, and you aren't sure whose it is.");
 					rooms.addElement(destR);
 					bringMOBSHere(destR,group,"","<S-NAME> <S-IS-ARE> picked up and stuffed into the bottom of the pile");
@@ -337,7 +337,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 				case 4:
 				{
 					underA.theNoun="a horse drawn cart full of empty vinegar barrels";
-					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,_("A horse drawn cart full of empty vinegar barrels pulls up."));
+					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,L("A horse drawn cart full of empty vinegar barrels pulls up."));
 					final Room destR=makeNewRoom(area,"A vinegar barrel","You feel thoroughly pickled!");
 					bringMOBSLikeHere(rooms,destR,group,"","<S-NAME> <S-IS-ARE> picked up and stuffed into an empty barrel.");
 					break;

@@ -104,7 +104,7 @@ public class Mold extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName(_("a moldy surface"));
+			naturalWeapon.setName(L("a moldy surface"));
 			naturalWeapon.setRanges(0,5);
 			naturalWeapon.setUsesRemaining(1000);
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BARLEY);
@@ -124,7 +124,7 @@ public class Mold extends StdRace
 					||(msg.sourceMinor()==CMMsg.TYP_ADVANCE)
 					||(msg.sourceMinor()==CMMsg.TYP_RETREAT)))
 				{
-					msg.source().tell(_("You can't really go anywhere -- you are a mold!"));
+					msg.source().tell(L("You can't really go anywhere -- you are a mold!"));
 					return false;
 				}
 			}

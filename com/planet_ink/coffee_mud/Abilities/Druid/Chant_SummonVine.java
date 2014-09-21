@@ -38,9 +38,9 @@ import java.util.*;
 public class Chant_SummonVine extends Chant
 {
 	@Override public String ID() { return "Chant_SummonVine"; }
-	private final static String localizedName = CMLib.lang()._("Summon Vine");
+	private final static String localizedName = CMLib.lang().L("Summon Vine");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Summon Vine)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Summon Vine)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -98,7 +98,7 @@ public class Chant_SummonVine extends Chant
 		if((canBeUninvoked())&&(mob!=null))
 		{
 			if(mob.location()!=null)
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> grow(s) still and plant-like."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> grow(s) still and plant-like."));
 			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
 		}
@@ -147,7 +147,7 @@ public class Chant_SummonVine extends Chant
 	{
 		if((!auto)&&(mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell(_("You must be outdoors for this chant to work."));
+			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
@@ -156,13 +156,13 @@ public class Chant_SummonVine extends Chant
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			mob.tell(_("This magic will not work here."));
+			mob.tell(L("This magic will not work here."));
 			return false;
 		}
 
 		if(!mob.isInCombat())
 		{
-			mob.tell(_("Only the anger of combat can summon fighting vines."));
+			mob.tell(L("Only the anger of combat can summon fighting vines."));
 			return false;
 		}
 		final int material=RawMaterial.RESOURCE_HEMP;
@@ -175,7 +175,7 @@ public class Chant_SummonVine extends Chant
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) and summon(s) help from the vines.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) and summon(s) help from the vines.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -185,11 +185,11 @@ public class Chant_SummonVine extends Chant
 					beneficialAffect(mob,target,asLevel,0);
 				}
 				else
-					mob.tell(_("Nature seems unwilling to heed to your call."));
+					mob.tell(L("Nature seems unwilling to heed to your call."));
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s), but nothing happens."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s), but nothing happens."));
 
 		// return whether it worked
 		return success;
@@ -205,7 +205,7 @@ public class Chant_SummonVine extends Chant
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Vine"));
 		final String name="a vine";
 		newMOB.setName(name);
-		newMOB.setDisplayText(_("@x1 looks enraged!",name));
+		newMOB.setDisplayText(L("@x1 looks enraged!",name));
 		newMOB.setDescription("");
 		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 		final Ability A=CMClass.getAbility("Fighter_Rescue");
@@ -231,11 +231,11 @@ public class Chant_SummonVine extends Chant
 		newMOB.setStartRoom(null); // keep before postFollow for Conquest
 		CMLib.commands().postFollow(newMOB,caster,true);
 		if(newMOB.amFollowing()!=caster)
-			caster.tell(_("@x1 seems unwilling to follow you.",newMOB.name()));
+			caster.tell(L("@x1 seems unwilling to follow you.",newMOB.name()));
 		else
 		{
 			if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
-			newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,_("<S-NAME> start(s) attacking <T-NAMESELF>!"));
+			newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,L("<S-NAME> start(s) attacking <T-NAMESELF>!"));
 		}
 		return(newMOB);
 	}

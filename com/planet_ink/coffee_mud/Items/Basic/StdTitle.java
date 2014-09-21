@@ -269,7 +269,7 @@ public class StdTitle extends StdItem implements LandTitle
 		&&(msg.amITarget(this)))
 		{
 			final MOB mob=msg.source();
-			mob.tell(_("You shouldn't write on @x1.",name()));
+			mob.tell(L("You shouldn't write on @x1.",name()));
 			return false;
 		}
 		else
@@ -281,7 +281,7 @@ public class StdTitle extends StdItem implements LandTitle
 			if(A==null)
 			{
 				destroy();
-				msg.source().tell(_("You can't buy that."));
+				msg.source().tell(L("You can't buy that."));
 				return false;
 			}
 			if(A.getOwnerName().length()==0)
@@ -307,11 +307,11 @@ public class StdTitle extends StdItem implements LandTitle
 				||(((SK.isSold(ShopKeeper.DEAL_POSTMAN))||(SK.isSold(ShopKeeper.DEAL_CLANPOSTMAN)))
 						&&(!A.getOwnerName().equals(msg.source().Name()))))
 				{
-					final String str=_("I'm sorry, '@x1 is not for sale.  It already belongs to @x2.  It should be destroyed.",msg.tool().Name(),A.getOwnerName());
+					final String str=L("I'm sorry, '@x1 is not for sale.  It already belongs to @x2.  It should be destroyed.",msg.tool().Name(),A.getOwnerName());
 					if(((MOB)msg.target()).isMonster())
 						CMLib.commands().postSay((MOB)msg.target(),msg.source(),str,false,false);
 					else
-						((MOB)msg.target()).tell(_("@x1 You might want to tell the customer.",str));
+						((MOB)msg.target()).tell(L("@x1 You might want to tell the customer.",str));
 					SK.getShop().removeStock(Name(),msg.source());
 					destroy();
 					return false;
@@ -332,11 +332,11 @@ public class StdTitle extends StdItem implements LandTitle
 				&&(!((msg.source().isMarriedToLiege())&&(A.getOwnerName().equals(msg.source().getLiegeID()))))
 				&&(msg.source().getClanRole(A.getOwnerName())==null))))
 			{
-				final String str=_("I'm sorry, '@x1 must be destroyed.",msg.tool().Name());
+				final String str=L("I'm sorry, '@x1 must be destroyed.",msg.tool().Name());
 				if(((MOB)msg.target()).isMonster())
 					CMLib.commands().postSay((MOB)msg.target(),msg.source(),str,false,false);
 				else
-					((MOB)msg.target()).tell(_("@x1 You might want to tell the customer.",str));
+					((MOB)msg.target()).tell(L("@x1 You might want to tell the customer.",str));
 				final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(msg.target());
 				if(SK!=null) SK.getShop().removeStock(msg.tool().Name(),msg.source());
 				destroy();
@@ -355,15 +355,15 @@ public class StdTitle extends StdItem implements LandTitle
 			if(CMLib.flags().canBeSeenBy(this,msg.source()))
 			{
 				if((landPropertyID()==null)||(landPropertyID().length()==0))
-					msg.source().tell(_("It appears to be a blank property title."));
+					msg.source().tell(L("It appears to be a blank property title."));
 				else
 				if((getOwnerName()==null)||(getOwnerName().length()==0))
-					msg.source().tell(_("It states that the property herein known as '@x1' is available for ownership.",landPropertyID()));
+					msg.source().tell(L("It states that the property herein known as '@x1' is available for ownership.",landPropertyID()));
 				else
-					msg.source().tell(_("It states that the property herein known as '@x1' is deeded to @x2.",landPropertyID(),getOwnerName()));
+					msg.source().tell(L("It states that the property herein known as '@x1' is deeded to @x2.",landPropertyID(),getOwnerName()));
 			}
 			else
-				msg.source().tell(_("You can't see that!"));
+				msg.source().tell(L("You can't see that!"));
 			msg.modify(msg.source(),msg.target(),msg.tool(),msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),"CANCEL",msg.othersCode(),msg.othersMessage());
 		}
 
@@ -421,9 +421,9 @@ public class StdTitle extends StdItem implements LandTitle
 			updateTitle();
 			updateLot(null);
 			recoverPhyStats();
-			msg.source().tell(_("@x1 is now signed over to @x2.",name(),A.getOwnerName()));
+			msg.source().tell(L("@x1 is now signed over to @x2.",name(),A.getOwnerName()));
 			if(A.rentalProperty())
-				msg.source().tell(_("This property is a rental.  Your rent will be paid every mud-month out of your bank account."));
+				msg.source().tell(L("This property is a rental.  Your rent will be paid every mud-month out of your bank account."));
 			else
 			{
 				final List<Room> allRooms=getAllTitledRooms();
@@ -445,7 +445,7 @@ public class StdTitle extends StdItem implements LandTitle
 							{
 								final String taxs=(String)theLaw.taxLaws().get("PROPERTYTAX");
 								if((taxs!=null)&&(taxs.length()==0)&&(CMath.s_double(taxs)>0.0))
-									msg.source().tell(_("A property tax of @x1% of @x2 will be paid monthly out of your bank account.",""+CMath.s_double(taxs),""+A.getPrice()));
+									msg.source().tell(L("A property tax of @x1% of @x2 will be paid monthly out of your bank account.",""+CMath.s_double(taxs),""+A.getPrice()));
 							}
 						}
 					}
@@ -481,7 +481,7 @@ public class StdTitle extends StdItem implements LandTitle
 					setBackTaxes(0);
 					updateTitle();
 					updateLot(null);
-					msg.source().tell(_("@x1 is now signed over to @x2.",name(),A.getOwnerName()));
+					msg.source().tell(L("@x1 is now signed over to @x2.",name(),A.getOwnerName()));
 				}
 			}
 			recoverPhyStats();

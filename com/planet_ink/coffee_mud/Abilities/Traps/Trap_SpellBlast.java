@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_SpellBlast extends StdTrap
 {
 	@Override public String ID() { return "Trap_SpellBlast"; }
-	private final static String localizedName = CMLib.lang()._("spell blast");
+	private final static String localizedName = CMLib.lang().L("spell blast");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -93,7 +93,7 @@ public class Trap_SpellBlast extends StdTrap
 		if((I==null)
 		&&(mob!=null))
 		{
-			mob.tell(_("You'll need to set down a scroll with a spell first."));
+			mob.tell(L("You'll need to set down a scroll with a spell first."));
 			return false;
 		}
 		return true;
@@ -108,9 +108,9 @@ public class Trap_SpellBlast extends StdTrap
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) setting off a trap!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) setting off a trap!"));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> set(s) off a trap!")))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> set(s) off a trap!")))
 			{
 				super.spring(target);
 				Ability A=CMClass.getAbility(text());

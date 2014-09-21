@@ -115,7 +115,7 @@ public class Qualify  extends Skills
 			if(thisLine.length()>0)
 			{
 				if(msg.length()==0)
-					msg.append(_("\n\r^N[^HLvl^?] Name                Requires     [^HLvl^?] Name                Requires\n\r"));
+					msg.append(L("\n\r^N[^HLvl^?] Name                Requires     [^HLvl^?] Name                Requires\n\r"));
 				msg.append(thisLine);
 			}
 		}
@@ -198,7 +198,7 @@ public class Qualify  extends Skills
 					}
 					thisLine.append("^N[^H"+CMStrings.padRight(""+1,COL_LEN1)+"^?] "
 					+CMStrings.padRight("^<HELP^>"+C.name()+"^</HELP^>",COL_LEN2)+" "
-					+CMStrings.padRight(_("1 train"),(col==2)?COL_LEN3:COL_LEN4));
+					+CMStrings.padRight(L("1 train"),(col==2)?COL_LEN3:COL_LEN4));
 				}
 				if(thisLine.length()>0)
 				{
@@ -224,7 +224,7 @@ public class Qualify  extends Skills
 			{
 				if(showAll)
 				{
-					msg.append(_("\n\r^HExpertises:^?\n\r"));
+					msg.append(L("\n\r^HExpertises:^?\n\r"));
 					ExpertiseLibrary.ExpertiseDefinition def=null;
 					int col=0;
 					final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,mob);
@@ -292,9 +292,9 @@ public class Qualify  extends Skills
 			if(msg.length()==0)
 			{
 				if(qual.length()>0)
-					mob.tell(_("You don't appear to qualify for any '@x1'. Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPERTISES, or LANGUAGES.",qual));
+					mob.tell(L("You don't appear to qualify for any '@x1'. Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPERTISES, or LANGUAGES.",qual));
 				else
-					mob.tell(_("You don't appear to qualify for anything! Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPERTISES, or LANGUAGES."));
+					mob.tell(L("You don't appear to qualify for anything! Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPERTISES, or LANGUAGES."));
 			}
 			else
 			if(!mob.isMonster())
@@ -303,19 +303,19 @@ public class Qualify  extends Skills
 				if(limits.commonSkills<0)
 					limits.commonSkills=0;
 				if(limits.commonSkills < Integer.MAX_VALUE/2)
-					msg.append(_("\n\r^HYou may learn ^w@x1^H more common skills.^N",""+limits.commonSkills));
+					msg.append(L("\n\r^HYou may learn ^w@x1^H more common skills.^N",""+limits.commonSkills));
 				if(limits.craftingSkills<0)
 					limits.craftingSkills=0;
 				if(limits.craftingSkills < Integer.MAX_VALUE/2)
-					msg.append(_("\n\r^HYou may learn ^w@x1^H more crafting skills.^N",""+limits.craftingSkills));
+					msg.append(L("\n\r^HYou may learn ^w@x1^H more crafting skills.^N",""+limits.craftingSkills));
 				if(limits.nonCraftingSkills<0)
 					limits.nonCraftingSkills=0;
 				if(limits.nonCraftingSkills < Integer.MAX_VALUE/2)
-					msg.append(_("\n\r^HYou may learn ^w@x1^H more non-crafting common skills.^N",""+limits.nonCraftingSkills));
-				mob.session().wraplessPrintln(_("^!You now qualify for the following unknown abilities:^?@x1",msg.toString()));
-				mob.tell(_("\n\rUse the GAIN command with your teacher to gain new skills, spells, and expertises."));
+					msg.append(L("\n\r^HYou may learn ^w@x1^H more non-crafting common skills.^N",""+limits.nonCraftingSkills));
+				mob.session().wraplessPrintln(L("^!You now qualify for the following unknown abilities:^?@x1",msg.toString()));
+				mob.tell(L("\n\rUse the GAIN command with your teacher to gain new skills, spells, and expertises."));
 				if(classesFound)
-					mob.tell(_("\n\rUse the TRAIN command to train for a new class."));
+					mob.tell(L("\n\rUse the TRAIN command to train for a new class."));
 			}
 		}
 		return false;

@@ -65,7 +65,7 @@ public class GenInstrument extends GenItem implements MusicalInstrument
 			  ||(!(msg.tool() instanceof Weapon))
 			  ||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)))
 		{
-			msg.source().location().show(msg.source(),null,this,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> play(s) <O-NAME>."));
+			msg.source().location().show(msg.source(),null,this,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> play(s) <O-NAME>."));
 			return false;
 		}
 

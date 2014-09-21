@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Enlightenment extends Spell
 {
 	@Override public String ID() { return "Spell_Enlightenment"; }
-	private final static String localizedName = CMLib.lang()._("Enlightenment");
+	private final static String localizedName = CMLib.lang().L("Enlightenment");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Enlightenment spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Enlightenment spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -79,7 +79,7 @@ public class Spell_Enlightenment extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("Your newfound intellect quickly fades...."));
+			mob.tell(L("Your newfound intellect quickly fades...."));
 	}
 
 
@@ -107,16 +107,16 @@ public class Spell_Enlightenment extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> educate(s) <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> educate(s) <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> look(s) at things with a new understanding!"));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> look(s) at things with a new understanding!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to educate <T-NAMESELF>, but look(s) perplexed."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to educate <T-NAMESELF>, but look(s) perplexed."));
 
 
 		// return whether it worked

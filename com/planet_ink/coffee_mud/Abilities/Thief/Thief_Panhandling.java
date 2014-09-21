@@ -37,9 +37,9 @@ import java.util.*;
 public class Thief_Panhandling extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Panhandling"; }
-	private final static String localizedName = CMLib.lang()._("Panhandling");
+	private final static String localizedName = CMLib.lang().L("Panhandling");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Panhandling)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Panhandling)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -68,7 +68,7 @@ public class Thief_Panhandling extends ThiefSkill
 				unInvoke();
 			else
 			if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_GIVE))
-				msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),CMMsg.MSG_SPEAK,_("^T<S-NAME> say(s) 'Thank you gov'ner!' to <T-NAME> ^?")));
+				msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) 'Thank you gov'ner!' to <T-NAME> ^?")));
 		}
 	}
 
@@ -96,34 +96,34 @@ public class Thief_Panhandling extends ThiefSkill
 					switch(CMLib.dice().roll(1,10,0))
 					{
 					case 1:
-						CMLib.commands().postSay(mob,mob2,_("A little something for a vet please?"),false,false);
+						CMLib.commands().postSay(mob,mob2,L("A little something for a vet please?"),false,false);
 						break;
 					case 2:
-						CMLib.commands().postSay(mob,mob2,_("Spare a gold piece @x1",((mob2.charStats().getStat(CharStats.STAT_GENDER)=='M')?"mister?":"madam?")),false,false);
+						CMLib.commands().postSay(mob,mob2,L("Spare a gold piece @x1",((mob2.charStats().getStat(CharStats.STAT_GENDER)=='M')?"mister?":"madam?")),false,false);
 						break;
 					case 3:
-						CMLib.commands().postSay(mob,mob2,_("Spare some change?"),false,false);
+						CMLib.commands().postSay(mob,mob2,L("Spare some change?"),false,false);
 						break;
 					case 4:
-						CMLib.commands().postSay(mob,mob2,_("Please @x1, a little something for an poor soul down on @x2 luck?",((mob2.charStats().getStat(CharStats.STAT_GENDER)=='M')?"mister":"madam"),mob.charStats().hisher()),false,false);
+						CMLib.commands().postSay(mob,mob2,L("Please @x1, a little something for an poor soul down on @x2 luck?",((mob2.charStats().getStat(CharStats.STAT_GENDER)=='M')?"mister":"madam"),mob.charStats().hisher()),false,false);
 						break;
 					case 5:
-						CMLib.commands().postSay(mob,mob2,_("Hey, I lost my 'Will Work For Food' sign.  Can you spare me the money to buy one?"),false,false);
+						CMLib.commands().postSay(mob,mob2,L("Hey, I lost my 'Will Work For Food' sign.  Can you spare me the money to buy one?"),false,false);
 						break;
 					case 6:
-						CMLib.commands().postSay(mob,mob2,_("Spread a little joy to an poor soul?"),false,false);
+						CMLib.commands().postSay(mob,mob2,L("Spread a little joy to an poor soul?"),false,false);
 						break;
 					case 7:
-						CMLib.commands().postSay(mob,mob2,_("Change?"),false,false);
+						CMLib.commands().postSay(mob,mob2,L("Change?"),false,false);
 						break;
 					case 8:
-						CMLib.commands().postSay(mob,mob2,_("Can you spare a little change?"),false,false);
+						CMLib.commands().postSay(mob,mob2,L("Can you spare a little change?"),false,false);
 						break;
 					case 9:
-						CMLib.commands().postSay(mob,mob2,_("Can you spare a little gold?"),false,false);
+						CMLib.commands().postSay(mob,mob2,L("Can you spare a little gold?"),false,false);
 						break;
 					case 10:
-						CMLib.commands().postSay(mob,mob2,_("Gold piece for a poor soul down on @x1 luck?",mob.charStats().hisher()),false,false);
+						CMLib.commands().postSay(mob,mob2,L("Gold piece for a poor soul down on @x1 luck?",mob.charStats().hisher()),false,false);
 						break;
 					}
 					if(CMLib.dice().rollPercentage()>(mob2.charStats().getSave(CharStats.STAT_SAVE_JUSTICE)+(CMLib.flags().isGood(mob)?10:0)))
@@ -164,7 +164,7 @@ public class Thief_Panhandling extends ThiefSkill
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(mob.location()!=null))
-			mob.tell(_("You stop panhandling."));
+			mob.tell(L("You stop panhandling."));
 	}
 
 
@@ -176,18 +176,18 @@ public class Thief_Panhandling extends ThiefSkill
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already panhandling."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already panhandling."));
 			return false;
 		}
 
 		if(!CMLib.flags().isSitting(mob))
 		{
-			mob.tell(_("You must be sitting!"));
+			mob.tell(L("You must be sitting!"));
 			return false;
 		}
 		if(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_CITY)
 		{
-			mob.tell(_("You must be on a city street to panhandle."));
+			mob.tell(L("You must be on a city street to panhandle."));
 			return false;
 		}
 
@@ -196,9 +196,9 @@ public class Thief_Panhandling extends ThiefSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":_("<S-NAME> start(s) panhandling."));
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":L("<S-NAME> start(s) panhandling."));
 		if(!success)
-			return beneficialVisualFizzle(mob,null,auto?"":_("<S-NAME> can't seem to get <S-HIS-HER> panhandling act started."));
+			return beneficialVisualFizzle(mob,null,auto?"":L("<S-NAME> can't seem to get <S-HIS-HER> panhandling act started."));
 		else
 		if(mob.location().okMessage(mob,msg))
 		{

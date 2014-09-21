@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_FeelTheVoid extends Spell
 {
 	@Override public String ID() { return "Spell_FeelTheVoid"; }
-	private final static String localizedName = CMLib.lang()._("Feel The Void");
+	private final static String localizedName = CMLib.lang().L("Feel The Void");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(In a Void)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(In a Void)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -76,7 +76,7 @@ public class Spell_FeelTheVoid extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("You are no longer in the void."));
+			mob.tell(L("You are no longer in the void."));
 	}
 
 
@@ -103,7 +103,7 @@ public class Spell_FeelTheVoid extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> invoke(s) the void at <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> invoke(s) the void at <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -111,14 +111,14 @@ public class Spell_FeelTheVoid extends Spell
 				{
 					if(target.location()==mob.location())
 					{
-						target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> stand(s) dazed and quiet!"));
+						target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> stand(s) dazed and quiet!"));
 						success=maliciousAffect(mob,target,asLevel,0,-1);
 					}
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> invoke(s) at <T-NAMESELF>, but the spell fizzles."));
+			return maliciousFizzle(mob,target,L("<S-NAME> invoke(s) at <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

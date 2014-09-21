@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_AweOther extends Spell
 {
 	@Override public String ID() { return "Spell_AweOther"; }
-	private final static String localizedName = CMLib.lang()._("Awe Other");
+	private final static String localizedName = CMLib.lang().L("Awe Other");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return _("(Awe of "+text()+")"); }
+	@Override public String displayText() { return L("(Awe of "+text()+")"); }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
@@ -57,7 +57,7 @@ public class Spell_AweOther extends Spell
 			&&(msg.source().getVictim()!=target)
 			&&(msg.source().location()==target.location()))
 			{
-				msg.source().tell(_("You are too much in awe of @x1",target.name(msg.source())));
+				msg.source().tell(L("You are too much in awe of @x1",target.name(msg.source())));
 				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();
@@ -94,7 +94,7 @@ public class Spell_AweOther extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) less in awe of @x1.",text()));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) less in awe of @x1.",text()));
 	}
 
 
@@ -104,7 +104,7 @@ public class Spell_AweOther extends Spell
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("Invoke awe on whom and of whom?"));
+			mob.tell(L("Invoke awe on whom and of whom?"));
 			return false;
 		}
 		final String aweWhom=CMParms.combine(commands,1);
@@ -129,7 +129,7 @@ public class Spell_AweOther extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> invoke(s) a spell on <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> invoke(s) a spell on <T-NAMESELF>.^?"));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
@@ -139,13 +139,13 @@ public class Spell_AweOther extends Spell
 					if(A!=null)
 					{
 						A.setMiscText(CMStrings.capitalizeAndLower(aweWhom));
-						R.show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> gain(s) a new awe of @x1!",CMStrings.capitalizeAndLower(aweWhom)));
+						R.show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> gain(s) a new awe of @x1!",CMStrings.capitalizeAndLower(aweWhom)));
 					}
 				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a spell on <T-NAMESELF>, but fail(s) miserably."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a spell on <T-NAMESELF>, but fail(s) miserably."));
 
 		// return whether it worked
 		return success;

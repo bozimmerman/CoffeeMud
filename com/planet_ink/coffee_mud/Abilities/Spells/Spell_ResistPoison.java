@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_ResistPoison extends Spell
 {
 	@Override public String ID() { return "Spell_ResistPoison"; }
-	private final static String localizedName = CMLib.lang()._("Resist Poison");
+	private final static String localizedName = CMLib.lang().L("Resist Poison");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Resist Poison)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Resist Poison)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -53,7 +53,7 @@ public class Spell_ResistPoison extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("Your anti-venom protection dissipates."));
+			mob.tell(L("Your anti-venom protection dissipates."));
 
 		super.unInvoke();
 
@@ -78,7 +78,7 @@ public class Spell_ResistPoison extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> feel(s) well protected."):_("^S<S-NAME> invoke(s) an anti-venom field of protection around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> feel(s) well protected."):L("^S<S-NAME> invoke(s) an anti-venom field of protection around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -86,7 +86,7 @@ public class Spell_ResistPoison extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke an anti-venom field, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke an anti-venom field, but fail(s)."));
 
 		return success;
 	}

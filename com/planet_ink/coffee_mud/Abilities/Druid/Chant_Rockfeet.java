@@ -36,9 +36,9 @@ import java.util.*;
 public class Chant_Rockfeet extends Chant
 {
 	@Override public String ID() { return "Chant_Rockfeet"; }
-	private final static String localizedName = CMLib.lang()._("Rockfeet");
+	private final static String localizedName = CMLib.lang().L("Rockfeet");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Rockfeet)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Rockfeet)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
@@ -56,7 +56,7 @@ public class Chant_Rockfeet extends Chant
 			M=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(M!=null)&&(!M.amDead()))
-			M.tell(_("Your hands and feet don't seem so heavy any more."));
+			M.tell(L("Your hands and feet don't seem so heavy any more."));
 	}
 
 	@Override
@@ -107,7 +107,7 @@ public int castingQuality(MOB mob, Physical target)
 		&&(target.getWearPositions(Wearable.WORN_FEET)==0))
 		{
 			if(!auto)
-				mob.tell(_("@x1 doesn't have hands or feet to affect...",target.name(mob)));
+				mob.tell(L("@x1 doesn't have hands or feet to affect...",target.name(mob)));
 			return false;
 		}
 
@@ -126,19 +126,19 @@ public int castingQuality(MOB mob, Physical target)
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) at <T-NAME> heavily!^?"));
+			final CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) at <T-NAME> heavily!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
 					maliciousAffect(mob,target,asLevel,0,-1);
-					target.tell(_("Your hands and feet feel extremely heavy!"));
+					target.tell(L("Your hands and feet feel extremely heavy!"));
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAME>, but the magic fizzles."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAME>, but the magic fizzles."));
 
 		// return whether it worked
 		return success;

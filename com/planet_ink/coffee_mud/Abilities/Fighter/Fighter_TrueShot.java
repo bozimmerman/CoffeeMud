@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_TrueShot extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_TrueShot"; }
-	private final static String localizedName = CMLib.lang()._("True Shot");
+	private final static String localizedName = CMLib.lang().L("True Shot");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}

@@ -37,7 +37,7 @@ import java.util.*;
 public class Thief_IdentifyBombs extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_IdentifyBombs"; }
-	private final static String localizedName = CMLib.lang()._("Identify Bombs");
+	private final static String localizedName = CMLib.lang().L("Identify Bombs");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -85,7 +85,7 @@ public class Thief_IdentifyBombs extends ThiefSkill
 						helpProficiency((MOB)affected, 0);
 						affected.recoverPhyStats();
 					}
-					msg.append(_("@x1 contains a bomb.",C.name()));
+					msg.append(L("@x1 contains a bomb.",C.name()));
 				}
 		}
 		else

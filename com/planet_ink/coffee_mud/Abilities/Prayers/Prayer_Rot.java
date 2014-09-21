@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_Rot extends Prayer
 {
 	@Override public String ID() { return "Prayer_Rot"; }
-	private final static String localizedName = CMLib.lang()._("Rot");
+	private final static String localizedName = CMLib.lang().L("Rot");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
@@ -210,7 +210,7 @@ public class Prayer_Rot extends Prayer
 		if((!(target instanceof Food))
 			&&(!(target instanceof Drink)))
 		{
-			mob.tell(_("You cannot rot @x1!",target.name(mob)));
+			mob.tell(L("You cannot rot @x1!",target.name(mob)));
 			return false;
 		}
 
@@ -226,9 +226,9 @@ public class Prayer_Rot extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
-									auto?"":_("^S<S-NAME> rot <T-NAMESELF>@x1.^?",inTheNameOf(mob)),
-									auto?"":_("^S<S-NAME> rots <T-NAMESELF>@x1.^?",inTheNameOf(mob)),
-									auto?"":_("^S<S-NAME> rots <T-NAMESELF>@x1.^?",inTheNameOf(mob)));
+									auto?"":L("^S<S-NAME> rot <T-NAMESELF>@x1.^?",inTheNameOf(mob)),
+									auto?"":L("^S<S-NAME> rots <T-NAMESELF>@x1.^?",inTheNameOf(mob)),
+									auto?"":L("^S<S-NAME> rots <T-NAMESELF>@x1.^?",inTheNameOf(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -253,13 +253,13 @@ public class Prayer_Rot extends Prayer
 					((Potion)target).setSpellList("Prayer_DrunkenStupor");
 				}
 				if(doneSomething)
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 appears rotted!",target.name()));
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 appears rotted!",target.name()));
 				target.recoverPhyStats();
 				mob.location().recoverRoomStats();
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for rotting, but nothing happens.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for rotting, but nothing happens.",prayWord(mob)));
 		// return whether it worked
 		return success;
 	}

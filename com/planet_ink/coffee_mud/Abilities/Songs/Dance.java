@@ -37,9 +37,9 @@ import java.util.*;
 public class Dance extends StdAbility
 {
 	@Override public String ID() { return "Dance"; }
-	private final static String localizedName = CMLib.lang()._("a Dance");
+	private final static String localizedName = CMLib.lang().L("a Dance");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return _("("+danceOf()+")"); }
+	@Override public String displayText() { return L("("+danceOf()+")"); }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	private static final String[] triggerStrings =_i(new String[] {"DANCE","DA"});
@@ -136,7 +136,7 @@ public class Dance extends StdAbility
 		if(invokerManaCost<0) invokerManaCost=usageCost(invoker(),false)[1];
 		if(!mob.curState().adjMovement(-(invokerManaCost/15),mob.maxState()))
 		{
-			mob.tell(_("The dancing exhausts you."));
+			mob.tell(L("The dancing exhausts you."));
 			undanceAll(mob,null);
 			return false;
 		}
@@ -245,9 +245,9 @@ public class Dance extends StdAbility
 		{
 			final int dir=this.getCorrectDirToOriginRoom(R,v);
 			if(dir>=0)
-				msgStr=_("^SYou see the @x1 being performed @x2!^?",danceOf(),Directions.getInDirectionName(dir));
+				msgStr=L("^SYou see the @x1 being performed @x2!^?",danceOf(),Directions.getInDirectionName(dir));
 			else
-				msgStr=_("^SYou see the @x1 being performed nearby!^?",danceOf());
+				msgStr=L("^SYou see the @x1 being performed nearby!^?",danceOf());
 		}
 		return msgStr;
 	}
@@ -288,7 +288,7 @@ public class Dance extends StdAbility
 		&&(msg.targetMinor()==CMMsg.TYP_WEAR))
 		{
 			if(msg.source().location()!=null)
-				msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,_("<S-NAME> stop(s) dancing."));
+				msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,L("<S-NAME> stop(s) dancing."));
 			unInvoke();
 		}
 		super.executeMsg(host,msg);
@@ -324,7 +324,7 @@ public class Dance extends StdAbility
 		&&(mob.location()!=null)
 		&&(CMLib.dice().rollPercentage()<50))
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> fumble(s) the @x1 due to <S-HIS-HER> armor!",name()));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> fumble(s) the @x1 due to <S-HIS-HER> armor!",name()));
 			return false;
 		}
 
@@ -343,9 +343,9 @@ public class Dance extends StdAbility
 			invoker=mob;
 			originRoom=mob.location();
 			commonRoomSet=getInvokerScopeRoomSet(null);
-			String str=auto?_("^SThe @x1 begins!^?",danceOf()):_("^S<S-NAME> begin(s) to dance the @x1.^?",danceOf());
+			String str=auto?L("^SThe @x1 begins!^?",danceOf()):L("^S<S-NAME> begin(s) to dance the @x1.^?",danceOf());
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
-				str=_("^S<S-NAME> start(s) the @x1 over again.^?",danceOf());
+				str=L("^S<S-NAME> start(s) the @x1 over again.^?",danceOf());
 
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
@@ -402,7 +402,7 @@ public class Dance extends StdAbility
 			}
 		}
 		else
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> make(s) a false step."));
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,L("<S-NAME> make(s) a false step."));
 
 		return success;
 	}

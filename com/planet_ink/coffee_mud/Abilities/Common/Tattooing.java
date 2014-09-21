@@ -37,7 +37,7 @@ import java.util.*;
 public class Tattooing extends CommonSkill
 {
 	@Override public String ID() { return "Tattooing"; }
-	private final static String localizedName = CMLib.lang()._("Tattooing");
+	private final static String localizedName = CMLib.lang().L("Tattooing");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"TATTOO","TATTOOING"});
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
@@ -47,8 +47,8 @@ public class Tattooing extends CommonSkill
 	public Tattooing()
 	{
 		super();
-		displayText=_("You are tattooing...");
-		verb=_("tattooing");
+		displayText=L("You are tattooing...");
+		verb=L("tattooing");
 	}
 
 	@Override
@@ -90,7 +90,7 @@ public class Tattooing extends CommonSkill
 	{
 		if(commands.size()<3)
 		{
-			commonTell(mob,_("You must specify whom you want to tattoo, what body part to tattoo, and what the tattoo looks like. Use 'REMOVE' as the description to remove a tattoo."));
+			commonTell(mob,L("You must specify whom you want to tattoo, what body part to tattoo, and what the tattoo looks like. Use 'REMOVE' as the description to remove a tattoo."));
 			return false;
 		}
 		final String whom=(String)commands.firstElement();
@@ -127,7 +127,7 @@ public class Tattooing extends CommonSkill
 		}
 		if(partNum<0)
 		{
-			commonTell(mob,_("'@x1' is not a valid location.  Valid locations include: @x2",part,allParts.toString().substring(2)));
+			commonTell(mob,L("'@x1' is not a valid location.  Valid locations include: @x2",part,allParts.toString().substring(2)));
 			return false;
 		}
 		final long wornCode=codes.get(partNum);
@@ -138,12 +138,12 @@ public class Tattooing extends CommonSkill
 
 		if(target.getWearPositions(wornCode)<=0)
 		{
-			commonTell(mob,_("That location is not available for tattooing."));
+			commonTell(mob,L("That location is not available for tattooing."));
 			return false;
 		}
 		if(target.freeWearPositions(wornCode,(short)(Short.MIN_VALUE+1),(short)0)<=0)
 		{
-			commonTell(mob,_("That location is currently covered by something."));
+			commonTell(mob,L("That location is currently covered by something."));
 			return false;
 		}
 
@@ -163,27 +163,27 @@ public class Tattooing extends CommonSkill
 		{
 			if(tatToRemove==null)
 			{
-				commonTell(mob,_("There is no tattoo there to remove."));
+				commonTell(mob,L("There is no tattoo there to remove."));
 				return false;
 			}
 		}
 		else
 		if(numTattsDone>=target.getWearPositions(codes.get(partNum)))
 		{
-			commonTell(mob,_("That location is already completely decorated."));
+			commonTell(mob,L("That location is already completely decorated."));
 			return false;
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		writing=wornName.toUpperCase()+":A tattoo of "+message;
-		verb=_("tattooing @x1 on the @x2",target.name(),wornName);
-		displayText=_("You are @x1",verb);
+		verb=L("tattooing @x1 on the @x2",target.name(),wornName);
+		displayText=L("You are @x1",verb);
 		if(!proficiencyCheck(mob,0,auto)) writing="";
 		final int duration=getDuration(35,mob,1,6);
-		String str=_("<S-NAME> start(s) tattooing @x1 on <T-YOUPOSS> @x2.",message,wornName.toLowerCase());
+		String str=L("<S-NAME> start(s) tattooing @x1 on <T-YOUPOSS> @x2.",message,wornName.toLowerCase());
 		if("REMOVE".startsWith(message.toUpperCase()))
-			str=_("<S-NAME> remove(s) the tattoo on <T-YOUPOSS> @x1.",wornName.toLowerCase());
+			str=L("<S-NAME> remove(s) the tattoo on <T-YOUPOSS> @x1.",wornName.toLowerCase());
 
 		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),str);
 		if(mob.location().okMessage(mob,msg))

@@ -39,7 +39,7 @@ import java.util.*;
 public class Painting extends CommonSkill
 {
 	@Override public String ID() { return "Painting"; }
-	private final static String localizedName = CMLib.lang()._("Painting");
+	private final static String localizedName = CMLib.lang().L("Painting");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"PAINT","PAINTING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -70,7 +70,7 @@ public class Painting extends CommonSkill
 				if((building!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonTell(mob,_("<S-NAME> mess(es) up painting @x1.",building.name()));
+						commonTell(mob,L("<S-NAME> mess(es) up painting @x1.",building.name()));
 					else
 						mob.location().addItem(building,ItemPossessor.Expire.Player_Drop);
 				}
@@ -88,7 +88,7 @@ public class Painting extends CommonSkill
 			return true;
 		if(commands.size()==0)
 		{
-			commonTell(mob,_("Paint on what? Enter \"paint [canvas name]\" or paint \"wall\"."));
+			commonTell(mob,L("Paint on what? Enter \"paint [canvas name]\" or paint \"wall\"."));
 			return false;
 		}
 		String paintingKeyWords=null;
@@ -125,7 +125,7 @@ public class Painting extends CommonSkill
 			S=mob.amFollowing().session();
 		if(S==null)
 		{
-			commonTell(mob,_("I can't work! I need a player to follow!"));
+			commonTell(mob,L("I can't work! I need a player to follow!"));
 			return false;
 		}
 
@@ -134,7 +134,7 @@ public class Painting extends CommonSkill
 		{
 			if(!CMLib.law().doesOwnThisProperty(mob,mob.location()))
 			{
-				commonTell(mob,_("You need the owners permission to paint the walls here."));
+				commonTell(mob,L("You need the owners permission to paint the walls here."));
 				return false;
 			}
 		}
@@ -143,7 +143,7 @@ public class Painting extends CommonSkill
 			canvasI=mob.location().findItem(null,str);
 			if((canvasI==null)||(!CMLib.flags().canBeSeenBy(canvasI,mob)))
 			{
-				commonTell(mob,_("You don't see any canvases called '@x1' sitting here.",str));
+				commonTell(mob,L("You don't see any canvases called '@x1' sitting here.",str));
 				return false;
 			}
 			if((canvasI.material()!=RawMaterial.RESOURCE_COTTON)
@@ -151,7 +151,7 @@ public class Painting extends CommonSkill
 			&&(!canvasI.Name().toUpperCase().endsWith("CANVAS"))
 			&&(!canvasI.Name().toUpperCase().endsWith("SILKSCREEN")))
 			{
-				commonTell(mob,_("You cannot paint on '@x1'.",str));
+				commonTell(mob,L("You cannot paint on '@x1'.",str));
 				return false;
 			}
 		}
@@ -173,7 +173,7 @@ public class Painting extends CommonSkill
 			{
 				session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 				{
-					@Override public void showPrompt() {session.promptPrint(_("Enter the key words (not the description) for this work.\n\r: "));}
+					@Override public void showPrompt() {session.promptPrint(L("Enter the key words (not the description) for this work.\n\r: "));}
 					@Override public void timedOut() {}
 					@Override public void callBack()
 					{
@@ -195,7 +195,7 @@ public class Painting extends CommonSkill
 									final String dupWord=vstr.trim().toLowerCase();
 									session.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N",0)
 									{
-										@Override public void showPrompt() {session.promptPrint(_("\n\r'@x1' already shares one of these key words ('@x2').  Would you like to destroy it (y/N)? ",dupI.name(),dupWord));}
+										@Override public void showPrompt() {session.promptPrint(L("\n\r'@x1' already shares one of these key words ('@x2').  Would you like to destroy it (y/N)? ",dupI.name(),dupWord));}
 										@Override public void timedOut() {}
 										@Override public void callBack()
 										{
@@ -211,7 +211,7 @@ public class Painting extends CommonSkill
 						}
 						session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 						{
-							@Override public void showPrompt() {session.promptPrint(_("\n\rEnter a description for this.\n\r:"));}
+							@Override public void showPrompt() {session.promptPrint(L("\n\rEnter a description for this.\n\r:"));}
 							@Override public void timedOut() {}
 							@Override public void callBack()
 							{
@@ -220,7 +220,7 @@ public class Painting extends CommonSkill
 									return;
 								session.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N",0)
 								{
-									@Override public void showPrompt() {session.promptPrint(_("Wall art key words: '@x1', description: '@x2'.  Correct (Y/n)? ",name,desc));}
+									@Override public void showPrompt() {session.promptPrint(L("Wall art key words: '@x1', description: '@x2'.  Correct (Y/n)? ",name,desc));}
 									@Override public void timedOut() {}
 									@Override public void callBack()
 									{
@@ -248,8 +248,8 @@ public class Painting extends CommonSkill
 			if((paintingKeyWords!=null)&&(paintingDesc!=null))
 			{
 				building=CMClass.getItem("GenItem");
-				building.setName(_("a painting of @x1",paintingKeyWords));
-				building.setDisplayText(_("a painting of @x1 is here.",paintingKeyWords));
+				building.setName(L("a painting of @x1",paintingKeyWords));
+				building.setDisplayText(L("a painting of @x1 is here.",paintingKeyWords));
 				building.setDescription(paintingDesc);
 				building.basePhyStats().setWeight(canvasI.basePhyStats().weight());
 				building.setBaseValue(canvasI.baseGoldValue()*(CMLib.dice().roll(1,5,0)));
@@ -262,7 +262,7 @@ public class Painting extends CommonSkill
 			{
 				session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 				{
-					@Override public void showPrompt() {session.promptPrint(_("\n\rIn brief, what is this a painting of?\n\r: "));}
+					@Override public void showPrompt() {session.promptPrint(L("\n\rIn brief, what is this a painting of?\n\r: "));}
 					@Override public void timedOut() {}
 					@Override public void callBack()
 					{
@@ -271,7 +271,7 @@ public class Painting extends CommonSkill
 							return;
 						session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 						{
-							@Override public void showPrompt() {session.promptPrint(_("\n\rPlease describe this painting.\n\r: "));}
+							@Override public void showPrompt() {session.promptPrint(L("\n\rPlease describe this painting.\n\r: "));}
 							@Override public void timedOut() {}
 							@Override public void callBack()
 							{
@@ -299,9 +299,9 @@ public class Painting extends CommonSkill
 			return false;
 		}
 
-		final String startStr=_("<S-NAME> start(s) painting @x1.",building.name());
-		displayText=_("You are painting @x1",building.name());
-		verb=_("painting @x1",building.name());
+		final String startStr=L("<S-NAME> start(s) painting @x1.",building.name());
+		displayText=L("You are painting @x1",building.name());
+		verb=L("painting @x1",building.name());
 		building.recoverPhyStats();
 		building.text();
 		building.recoverPhyStats();

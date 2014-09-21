@@ -38,7 +38,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class Thief_KillLog extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_KillLog"; }
-	private final static String localizedName = CMLib.lang()._("Kill Log");
+	private final static String localizedName = CMLib.lang().L("Kill Log");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -111,7 +111,7 @@ public class Thief_KillLog extends ThiefSkill
 				set[3]="0";
 				theList.put(mark.Name(),set);
 				final MOB mob=(MOB)affected;
-				mob.tell(_("Ah, a new one for your kill log."));
+				mob.tell(L("Ah, a new one for your kill log."));
 				CMLib.leveler().postExperience(mob,null,null,mark.phyStats().level(),false);
 			}
 			set[1]=""+mark.phyStats().level();
@@ -196,7 +196,7 @@ public class Thief_KillLog extends ThiefSkill
 					ListingLibrary.ColFixer.fixColWidth(20,mob.session()),
 					ListingLibrary.ColFixer.fixColWidth(6,mob.session())
 				};
-			str.append(_("@x1@x2Kill Pct.\n\r",CMStrings.padRight(_("Name"),cols[0]),CMStrings.padRight(_("Level"),cols[1])));
+			str.append(L("@x1@x2Kill Pct.\n\r",CMStrings.padRight(L("Name"),cols[0]),CMStrings.padRight(L("Level"),cols[1])));
 			final Vector<String[]> order=new Vector<String[]>();
 			int lowLevel=Integer.MIN_VALUE;
 			String[] addOne=null;
@@ -231,7 +231,7 @@ public class Thief_KillLog extends ThiefSkill
 				mob.session().rawPrintln(str.toString());
 			return true;
 		}
-		mob.tell(_("You failed to recall your log."));
+		mob.tell(L("You failed to recall your log."));
 		return false;
 	}
 }

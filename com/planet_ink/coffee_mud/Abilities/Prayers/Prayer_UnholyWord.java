@@ -36,9 +36,9 @@ import java.util.*;
 public class Prayer_UnholyWord extends Prayer
 {
 	@Override public String ID() { return "Prayer_UnholyWord"; }
-	private final static String localizedName = CMLib.lang()._("Unholy Word");
+	private final static String localizedName = CMLib.lang().L("Unholy Word");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Unholy Word)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Unholy Word)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -81,7 +81,7 @@ public class Prayer_UnholyWord extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("The unholy word has been spoken."));
+			mob.tell(L("The unholy word has been spoken."));
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class Prayer_UnholyWord extends Prayer
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		final String str=auto?_("The unholy word is spoken."):_("^S<S-NAME> speak(s) the unholy word@x1 to <T-NAMESELF>.^?",ofDiety(mob));
+		final String str=auto?L("The unholy word is spoken."):L("^S<S-NAME> speak(s) the unholy word@x1 to <T-NAMESELF>.^?",ofDiety(mob));
 
 		final Room room=mob.location();
 		if(room!=null)
@@ -130,18 +130,18 @@ public class Prayer_UnholyWord extends Prayer
 						}
 						else
 						if(CMath.bset(affectType,CMMsg.MASK_MALICIOUS))
-							maliciousFizzle(mob,target,_("<T-NAME> did not hear the unholy word!"));
+							maliciousFizzle(mob,target,L("<T-NAME> did not hear the unholy word!"));
 						else
-							beneficialWordsFizzle(mob,target,_("<T-NAME> did not hear the unholy word!"));
+							beneficialWordsFizzle(mob,target,L("<T-NAME> did not hear the unholy word!"));
 					}
 				}
 			}
 			else
 			{
 				if(CMath.bset(affectType,CMMsg.MASK_MALICIOUS))
-					maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to speak the unholy word to <T-NAMESELF>, but flub(s) it."));
+					maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to speak the unholy word to <T-NAMESELF>, but flub(s) it."));
 				else
-					beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to speak the unholy word to <T-NAMESELF>, but flub(s) it."));
+					beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to speak the unholy word to <T-NAMESELF>, but flub(s) it."));
 				return false;
 			}
 		}

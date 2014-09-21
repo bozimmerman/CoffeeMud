@@ -38,9 +38,9 @@ import java.util.*;
 public class Chant_Feralness extends Chant
 {
 	@Override public String ID() { return "Chant_Feralness"; }
-	private final static String localizedName = CMLib.lang()._("Feralness");
+	private final static String localizedName = CMLib.lang().L("Feralness");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Feralness)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Feralness)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -95,7 +95,7 @@ public class Chant_Feralness extends Chant
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			mob.tell(_("You don't feel quite so feral."));
+			mob.tell(L("You don't feel quite so feral."));
 			if(lostpoints>=mob.curState().getHitPoints())
 				mob.curState().setHitPoints(1);
 			else
@@ -126,7 +126,7 @@ public class Chant_Feralness extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already feral."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already feral."));
 			return false;
 		}
 
@@ -146,7 +146,7 @@ public class Chant_Feralness extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?_("<T-NAME> go(es) feral!"):_("^S<S-NAME> chant(s) to <S-NAMESELF> and become(s) feral!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?L("<T-NAME> go(es) feral!"):L("^S<S-NAME> chant(s) to <S-NAMESELF> and become(s) feral!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -157,7 +157,7 @@ public class Chant_Feralness extends Chant
 				}
 				if(!Druid_ShapeShift.isShapeShifted(mob))
 				{
-					mob.tell(_("You failed to shapeshift."));
+					mob.tell(L("You failed to shapeshift."));
 					return false;
 				}
 				hpAdjustment=(int)Math.round(CMath.div(target.maxState().getHitPoints(),5.0));
@@ -168,7 +168,7 @@ public class Chant_Feralness extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) to <S-NAMESELF>, but nothing happens"));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) to <S-NAMESELF>, but nothing happens"));
 
 		// return whether it worked
 		return success;

@@ -675,7 +675,7 @@ public class MOBloader
 			if(bringToLife)
 			{
 				newMOB.bringToLife(mob.location(),true);
-				mob.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,CMLib.lang()._("<S-NAME> appears!"));
+				mob.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,CMLib.lang().L("<S-NAME> appears!"));
 			}
 		}
 	}

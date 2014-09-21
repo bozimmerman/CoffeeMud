@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_Shadow extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Shadow"; }
-	private final static String localizedName = CMLib.lang()._("Shadow");
+	private final static String localizedName = CMLib.lang().L("Shadow");
 	@Override public String name() { return localizedName; }
 		// can NOT have a display text since the ability instance
 		// is shared between the invoker and the target
@@ -135,7 +135,7 @@ public class Thief_Shadow extends ThiefSkill
 		{
 			if((invoker!=null)&&(shadowing!=null))
 			{
-				invoker.tell(_("You lost @x1.",shadowing.charStats().himher()));
+				invoker.tell(L("You lost @x1.",shadowing.charStats().himher()));
 				unInvoke();
 				return false;
 			}
@@ -180,7 +180,7 @@ public class Thief_Shadow extends ThiefSkill
 			{
 				invoker.delEffect(this);
 				setAffectedOne(shadowing);
-				invoker.tell(_("You are no longer shadowing @x1.",shadowing.name()));
+				invoker.tell(L("You are no longer shadowing @x1.",shadowing.name()));
 			}
 			shadowing=null;
 		}
@@ -208,29 +208,29 @@ public class Thief_Shadow extends ThiefSkill
 		}
 		if(commands.size()<1)
 		{
-			mob.tell(_("Shadow whom?"));
+			mob.tell(L("Shadow whom?"));
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if(target==mob)
 		{
-			mob.tell(_("You cannot shadow yourself?!"));
+			mob.tell(L("You cannot shadow yourself?!"));
 			return false;
 		}
 		if(mob.getGroupMembers(new HashSet<MOB>()).size()>1)
 		{
-			mob.tell(_("You cannot shadow someone while part of a group."));
+			mob.tell(L("You cannot shadow someone while part of a group."));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell(_("Not while you are fighting!"));
+			mob.tell(L("Not while you are fighting!"));
 			return false;
 		}
 		if(CMLib.flags().canBeSeenBy(mob,target))
 		{
-			mob.tell(_("@x1 is watching you too closely.",target.name(mob)));
+			mob.tell(L("@x1 is watching you too closely.",target.name(mob)));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -243,13 +243,13 @@ public class Thief_Shadow extends ThiefSkill
 
 		if(!success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":_("Your attempt to shadow <T-NAMESELF> fails; <T-NAME> spots you!"),CMMsg.MSG_OK_VISUAL,auto?"":_("You spot <S-NAME> trying to shadow you."),CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":L("Your attempt to shadow <T-NAMESELF> fails; <T-NAME> spots you!"),CMMsg.MSG_OK_VISUAL,auto?"":L("You spot <S-NAME> trying to shadow you."),CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_THIEF_ACT,_("You are now shadowing <T-NAME>.  Enter 'shadow' again to disengage."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_THIEF_ACT,L("You are now shadowing <T-NAME>.  Enter 'shadow' again to disengage."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

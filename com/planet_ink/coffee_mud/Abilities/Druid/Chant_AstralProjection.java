@@ -39,9 +39,9 @@ import java.util.*;
 public class Chant_AstralProjection extends Chant
 {
 	@Override public String ID() { return "Chant_AstralProjection"; }
-	private final static String localizedName = CMLib.lang()._("Astral Projection");
+	private final static String localizedName = CMLib.lang().L("Astral Projection");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Astral Projection)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Astral Projection)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
@@ -59,7 +59,7 @@ public class Chant_AstralProjection extends Chant
 			s.setMob(invoker.soulMate());
 			mob.setSession(s);
 			invoker.setSession(null);
-			mob.tell(_("^HYour astral spirit has returned to your body...\n\r\n\r^N"));
+			mob.tell(L("^HYour astral spirit has returned to your body...\n\r\n\r^N"));
 			invoker.setSoulMate(null);
 			invoker.destroy();
 		}
@@ -141,7 +141,7 @@ public class Chant_AstralProjection extends Chant
 		if(CMLib.flags().isGolem(target)
 		&&((target.phyStats().height()<=0)||(target.phyStats().weight()<=0)))
 		{
-			mob.tell(_("You are already as astral spirit."));
+			mob.tell(L("You are already as astral spirit."));
 			return false;
 		}
 
@@ -151,22 +151,22 @@ public class Chant_AstralProjection extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
 		{
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) softly, but nothing happens"));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) softly, but nothing happens"));
 		}
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) softly.^?"));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) softly.^?"));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			target.makePeace();
 			peaceAt(target);
 			final MOB spirit=CMClass.getFactoryMOB();
-			spirit.setName(_("The Spirit of @x1",target.Name()));
+			spirit.setName(L("The Spirit of @x1",target.Name()));
 			spirit.baseCharStats().setMyRace(CMClass.getRace("Spirit"));
 			spirit.setPlayerStats(target.playerStats());
 			spirit.setLocation(target.location());
 			spirit.setBitmap(target.getBitmap());
-			mob.location().show(target,null,CMMsg.MSG_OK_ACTION,_("^Z<S-NAME> go(es) limp!^.^?\n\r"));
+			mob.location().show(target,null,CMMsg.MSG_OK_ACTION,L("^Z<S-NAME> go(es) limp!^.^?\n\r"));
 			CMLib.threads().startTickDown(spirit,Tickable.TICKID_MOB,1);
 			beneficialAffect(spirit,target,asLevel,0);
 			final Ability A=CMClass.getAbility("Prop_AstralSpirit");

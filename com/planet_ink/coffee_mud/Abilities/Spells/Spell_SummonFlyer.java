@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_SummonFlyer extends Spell
 {
 	@Override public String ID() { return "Spell_SummonFlyer"; }
-	private final static String localizedName = CMLib.lang()._("Summon Flyer");
+	private final static String localizedName = CMLib.lang().L("Summon Flyer");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Summon Flyer)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Summon Flyer)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -97,7 +97,7 @@ public class Spell_SummonFlyer extends Spell
 				else
 				if((mob.amFollowing()==null)&&(mob.curState().getHitPoints()<((mob.maxState().getHitPoints()/10)*3)))
 				{
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> flees."));
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> flees."));
 					mob.delEffect(this);
 					if(mob.amDead()) mob.setLocation(null);
 					mob.destroy();
@@ -117,7 +117,7 @@ public class Spell_SummonFlyer extends Spell
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> magically call(s) for a loyal steed.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> magically call(s) for a loyal steed.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -130,17 +130,17 @@ public class Spell_SummonFlyer extends Spell
 					CMLib.commands().postFollow(target,mob,true);
 					invoker=mob;
 					if (target.amFollowing() != mob)
-						mob.tell(_("@x1 seems unwilling to follow you.",target.name(mob)));
+						mob.tell(L("@x1 seems unwilling to follow you.",target.name(mob)));
 				}
 				else
 				{
-					squabble.location().showOthers(squabble,target,CMMsg.MSG_OK_ACTION,_("^F^<FIGHT^><S-NAME> bares its teeth at <T-NAME> and begins to attack!^</FIGHT^>^?"));
+					squabble.location().showOthers(squabble,target,CMMsg.MSG_OK_ACTION,L("^F^<FIGHT^><S-NAME> bares its teeth at <T-NAME> and begins to attack!^</FIGHT^>^?"));
 					target.setVictim(squabble);
 				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> call(s) for a steed, but choke(s) on the words."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> call(s) for a steed, but choke(s) on the words."));
 
 		// return whether it worked
 		return success;
@@ -164,9 +164,9 @@ public class Spell_SummonFlyer extends Spell
 		newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
 		newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
 		newMOB.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
-		newMOB.setName(_("a flying warhorse"));
-		newMOB.setDisplayText(_("a warhorse with broad powerful wings stands here"));
-		newMOB.setDescription(_("A ferocious, fleet of foot, flying friend."));
+		newMOB.setName(L("a flying warhorse"));
+		newMOB.setDisplayText(L("a warhorse with broad powerful wings stands here"));
+		newMOB.setDescription(L("A ferocious, fleet of foot, flying friend."));
 		ride.setRideBasis(Rideable.RIDEABLE_AIR);
 		ride.setRiderCapacity(2);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
@@ -178,7 +178,7 @@ public class Spell_SummonFlyer extends Spell
 		newMOB.text();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 		caster.location().recoverRoomStats();
 		newMOB.setStartRoom(null);
 		return(newMOB);

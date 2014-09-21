@@ -37,7 +37,7 @@ import java.util.*;
 public class Power_OctoGrapple extends SuperPower
 {
 	@Override public String ID() { return "Power_OctoGrapple"; }
-	private final static String localizedName = CMLib.lang()._("Octo-Grapple");
+	private final static String localizedName = CMLib.lang().L("Octo-Grapple");
 	@Override public String name() { return localizedName; }
 	@Override
 	public String displayText()
@@ -77,7 +77,7 @@ public class Power_OctoGrapple extends SuperPower
 			{
 				if(msg.sourceMessage()!=null)
 				{
-					if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> struggle(s) against the grappling arms.")))
+					if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> struggle(s) against the grappling arms.")))
 					{
 						if(CMLib.dice().rollPercentage()<mob.charStats().getStat(CharStats.STAT_STRENGTH))
 						{
@@ -131,16 +131,16 @@ public class Power_OctoGrapple extends SuperPower
 				if(mob==invoker)
 				{
 					if(mob.location()!=null)
-						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> release(s) <S-HIS-HER> grapple."));
+						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> release(s) <S-HIS-HER> grapple."));
 					else
-						mob.tell(_("You release your grapple."));
+						mob.tell(L("You release your grapple."));
 				}
 				else
 				{
 					if(mob.location()!=null)
-						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> <S-IS-ARE> released from the grapple"));
+						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> <S-IS-ARE> released from the grapple"));
 					else
-						mob.tell(_("You are released from the grapple."));
+						mob.tell(L("You are released from the grapple."));
 				}
 				CMLib.commands().postStand(mob,true);
 			}
@@ -157,7 +157,7 @@ public class Power_OctoGrapple extends SuperPower
 
 		if((!auto)&&(mob.baseWeight()<(target.baseWeight()-200)))
 		{
-			mob.tell(_("@x1 is too big to grapple!",target.name(mob)));
+			mob.tell(L("@x1 is too big to grapple!",target.name(mob)));
 			return false;
 		}
 
@@ -184,7 +184,7 @@ public class Power_OctoGrapple extends SuperPower
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?_("<T-NAME> get(s) grappled!"):_("^F^<FIGHT^><S-NAME> grab(s) <T-NAMESELF> with <S-HIS-HER> huge metallic arms!^</FIGHT^>^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?L("<T-NAME> get(s) grappled!"):L("^F^<FIGHT^><S-NAME> grab(s) <T-NAMESELF> with <S-HIS-HER> huge metallic arms!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if((mob.location().okMessage(mob,msg))&&(msg.value()<=0))
 			{
@@ -194,7 +194,7 @@ public class Power_OctoGrapple extends SuperPower
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to grab <T-NAMESELF>, but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to grab <T-NAMESELF>, but fail(s)."));
 
 		// return whether it worked
 		return success;

@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_RepairingAura extends Spell
 {
 	@Override public String ID() { return "Spell_RepairingAura"; }
-	private final static String localizedName = CMLib.lang()._("Repairing Aura");
+	private final static String localizedName = CMLib.lang().L("Repairing Aura");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
@@ -67,10 +67,10 @@ public class Spell_RepairingAura extends Spell
 			if((I.subjectToWearAndTear())&&(I.usesRemaining()<100))
 			{
 				if(I.owner() instanceof Room)
-					((Room)I.owner()).showHappens(CMMsg.MSG_OK_VISUAL,I,_("<S-NAME> is magically repairing itself."));
+					((Room)I.owner()).showHappens(CMMsg.MSG_OK_VISUAL,I,L("<S-NAME> is magically repairing itself."));
 				else
 				if(I.owner() instanceof MOB)
-					((MOB)I.owner()).tell(_("@x1 is magically repairing itself.",I.name()));
+					((MOB)I.owner()).tell(L("@x1 is magically repairing itself.",I.name()));
 				I.setUsesRemaining(I.usesRemaining()+1);
 			}
 		}
@@ -85,12 +85,12 @@ public class Spell_RepairingAura extends Spell
 		if(target==null) return false;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(_("@x1 is already repairing!",target.name(mob)));
+			mob.tell(L("@x1 is already repairing!",target.name(mob)));
 			return false;
 		}
 		if((!(target instanceof Item))&&(!(target instanceof MOB)))
 		{
-			mob.tell(_("@x1 would not be affected by this spell.",target.name(mob)));
+			mob.tell(L("@x1 would not be affected by this spell.",target.name(mob)));
 			return false;
 		}
 
@@ -132,7 +132,7 @@ public class Spell_RepairingAura extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?"));
 			final CMMsg msg2=(target==realTarget)?null:CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 			if(mob.location().okMessage(mob,msg)
 			&&(realTarget!=null)
@@ -140,7 +140,7 @@ public class Spell_RepairingAura extends Spell
 			{
 				mob.location().send(mob,msg);
 				if(msg2!=null) mob.location().send(mob,msg2);
-				mob.location().show(mob,realTarget,CMMsg.MSG_OK_ACTION,_("<T-NAME> attain(s) a repairing aura."));
+				mob.location().show(mob,realTarget,CMMsg.MSG_OK_ACTION,L("<T-NAME> attain(s) a repairing aura."));
 				beneficialAffect(mob,realTarget,asLevel,0);
 				final Spell_RepairingAura A=(Spell_RepairingAura)realTarget.fetchEffect(ID());
 				if(A!=null) A.adjustedLevel=adjustedLevel(mob,asLevel);
@@ -150,7 +150,7 @@ public class Spell_RepairingAura extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting, but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting, but nothing happens."));
 
 		// return whether it worked
 		return success;

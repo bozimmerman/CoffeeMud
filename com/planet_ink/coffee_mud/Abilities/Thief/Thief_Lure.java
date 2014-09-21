@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_Lure extends ThiefSkill implements Trap
 {
 	@Override public String ID() { return "Thief_Lure"; }
-	private final static String localizedName = CMLib.lang()._("Lure");
+	private final static String localizedName = CMLib.lang().L("Lure");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -71,12 +71,12 @@ public class Thief_Lure extends ThiefSkill implements Trap
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("Lure whom which direction?"));
+			mob.tell(L("Lure whom which direction?"));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell(_("Not while you are fighting!"));
+			mob.tell(L("Not while you are fighting!"));
 			return false;
 		}
 		String str=(String)commands.lastElement();
@@ -84,7 +84,7 @@ public class Thief_Lure extends ThiefSkill implements Trap
 		final int dirCode=Directions.getGoodDirectionCode(str);
 		if((dirCode<0)||(mob.location()==null)||(mob.location().getRoomInDir(dirCode)==null)||(mob.location().getExitInDir(dirCode)==null))
 		{
-			mob.tell(_("'@x1' is not a valid direction.",str));
+			mob.tell(L("'@x1' is not a valid direction.",str));
 			return false;
 		}
 		final String direction=Directions.getInDirectionName(dirCode);
@@ -101,7 +101,7 @@ public class Thief_Lure extends ThiefSkill implements Trap
 		success=success&&(CMLib.dice().rollPercentage()+(getXLEVELLevel(mob)*3)>target.charStats().getSave(CharStats.STAT_SAVE_TRAPS));
 		success=success&&(CMLib.dice().rollPercentage()+(getXLEVELLevel(mob)*3)>target.charStats().getSave(CharStats.STAT_SAVE_MIND));
 
-		str=_("<S-NAME> attempt(s) to lure <T-NAME> @x1.",direction);
+		str=L("<S-NAME> attempt(s) to lure <T-NAME> @x1.",direction);
 		final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_SPEAK,str);
 		if(mob.location().okMessage(mob,msg))
 		{

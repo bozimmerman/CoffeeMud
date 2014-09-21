@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_LowerResists extends Spell
 {
 	@Override public String ID() { return "Spell_LowerResists"; }
-	private final static String localizedName = CMLib.lang()._("Lower Resistance");
+	private final static String localizedName = CMLib.lang().L("Lower Resistance");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Lowered Resistances)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Lowered Resistances)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -55,7 +55,7 @@ public class Spell_LowerResists extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("Your cold weakness is now gone."));
+			mob.tell(L("Your cold weakness is now gone."));
 
 		super.unInvoke();
 
@@ -81,7 +81,7 @@ public class Spell_LowerResists extends Spell
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("A shimmering unresistable field appears around <T-NAMESELF>."):_("^S<S-NAME> invoke(s) a shimmering unresistable field around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("A shimmering unresistable field appears around <T-NAMESELF>."):L("^S<S-NAME> invoke(s) a shimmering unresistable field around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -104,7 +104,7 @@ public class Spell_LowerResists extends Spell
 			}
 		}
 		else
-			maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to invoke lowered resistances on <T-NAMESELF>, but fail(s)."));
+			maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to invoke lowered resistances on <T-NAMESELF>, but fail(s)."));
 
 		return success;
 	}

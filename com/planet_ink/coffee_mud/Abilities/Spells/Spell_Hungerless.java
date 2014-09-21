@@ -35,9 +35,9 @@ import java.util.*;
 public class Spell_Hungerless extends Spell
 {
 	@Override public String ID() { return "Spell_Hungerless"; }
-	private final static String localizedName = CMLib.lang()._("Hungerless");
+	private final static String localizedName = CMLib.lang().L("Hungerless");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Hungerless)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Hungerless)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -70,7 +70,7 @@ public class Spell_Hungerless extends Spell
 
 		if(canBeUninvoked())
 		{
-			mob.tell(_("You are starting to feel hungrier."));
+			mob.tell(L("You are starting to feel hungrier."));
 			mob.curState().setHunger(0);
 		}
 	}
@@ -110,16 +110,16 @@ public class Spell_Hungerless extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> cast(s) a spell on <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> cast(s) a spell on <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
-				target.tell(_("You feel full!"));
+				target.tell(L("You feel full!"));
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> speak(s) hungrily to <T-NAMESELF>, but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> speak(s) hungrily to <T-NAMESELF>, but nothing more happens."));
 
 		// return whether it worked
 		return success;

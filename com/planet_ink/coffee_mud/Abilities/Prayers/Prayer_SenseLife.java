@@ -36,9 +36,9 @@ import java.util.*;
 public class Prayer_SenseLife extends Prayer
 {
 	@Override public String ID() { return "Prayer_SenseLife"; }
-	private final static String localizedName = CMLib.lang()._("Sense Life");
+	private final static String localizedName = CMLib.lang().L("Sense Life");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Sense Life)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Sense Life)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -60,7 +60,7 @@ public class Prayer_SenseLife extends Prayer
 		if(canBeUninvoked())
 		{
 			lastRoom=null;
-			mob.tell(_("Your life sensations fade."));
+			mob.tell(L("Your life sensations fade."));
 		}
 	}
 
@@ -102,12 +102,12 @@ public class Prayer_SenseLife extends Prayer
 		}
 
 		if((dirs.length()==0)&&(last.length()==0))
-			mob.tell(_("You do not sense any life beyond your own."));
+			mob.tell(L("You do not sense any life beyond your own."));
 		else
 		if(dirs.length()==0)
-			mob.tell(_("You sense a life force coming from @x1.",last));
+			mob.tell(L("You sense a life force coming from @x1.",last));
 		else
-			mob.tell(_("You sense a life force coming from @x1, and @x2.",dirs.substring(2),last));
+			mob.tell(L("You sense a life force coming from @x1, and @x2.",dirs.substring(2),last));
 	}
 
 	@Override
@@ -144,7 +144,7 @@ public class Prayer_SenseLife extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> attain(s) life-like senses!"):_("^S<S-NAME> listen(s) for a message from @x1.^?",hisHerDiety(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> attain(s) life-like senses!"):L("^S<S-NAME> listen(s) for a message from @x1.^?",hisHerDiety(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -152,7 +152,7 @@ public class Prayer_SenseLife extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> listen(s) to @x1 for a message, but there is no answer.",hisHerDiety(mob)));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> listen(s) to @x1 for a message, but there is no answer.",hisHerDiety(mob)));
 
 
 		// return whether it worked

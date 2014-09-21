@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_Satire extends BardSkill
 {
 	@Override public String ID() { return "Skill_Satire"; }
-	private final static String localizedName = CMLib.lang()._("Satire");
+	private final static String localizedName = CMLib.lang().L("Satire");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -62,7 +62,7 @@ public class Skill_Satire extends BardSkill
 		if(target==null) return false;
 		if(mob==target)
 		{
-			mob.tell(_("Mock whom?!"));
+			mob.tell(L("Mock whom?!"));
 			return false;
 		}
 		LegalBehavior B=null;
@@ -77,7 +77,7 @@ public class Skill_Satire extends BardSkill
 		A2=CMLib.law().getLegalObject(room);
 		if((B==null)||((!B.isAnyOfficer(A2, target))&&(!B.isJudge(A2, target))))
 		{
-			mob.tell(mob,target,null,_("<T-NAME> is not an officer here."));
+			mob.tell(mob,target,null,L("<T-NAME> is not an officer here."));
 			return false;
 		}
 		final Set<MOB> group = mob.getGroupMembers(new HashSet<MOB>());
@@ -93,13 +93,13 @@ public class Skill_Satire extends BardSkill
 
 		if(!CMLib.flags().canBeHeardSpeakingBy(mob, target))
 		{
-			mob.tell(mob,target,null,_("<T-NAME> can't hear you."));
+			mob.tell(mob,target,null,L("<T-NAME> can't hear you."));
 			return false;
 		}
 
 		if(forgivables.size()==0)
 		{
-			mob.tell(_("Noone you know is wanted for anything here."));
+			mob.tell(L("Noone you know is wanted for anything here."));
 			return false;
 		}
 
@@ -116,12 +116,12 @@ public class Skill_Satire extends BardSkill
 
 		if(!success)
 		{
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to mock <T-NAME>, but <S-IS-ARE> not funny."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to mock <T-NAME>, but <S-IS-ARE> not funny."));
 			if(CMLib.dice().rollPercentage()>mob.charStats().getStat(CharStats.STAT_CHARISMA))
 				criminalFail(B,A2,mob,target);
 			return false;
 		}
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_JUSTICE,_("<S-NAME> mock(s) <T-NAME>."));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_JUSTICE,L("<S-NAME> mock(s) <T-NAME>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -129,7 +129,7 @@ public class Skill_Satire extends BardSkill
 			{
 				if(B.aquit(A2, M, null))
 				{
-					room.show(M, target, CMMsg.MSG_OK_VISUAL, _("<T-NAME>, smiling, forget(s) <S-YOUPOSS> crime."));
+					room.show(M, target, CMMsg.MSG_OK_VISUAL, L("<T-NAME>, smiling, forget(s) <S-YOUPOSS> crime."));
 					return false;
 				}
 			}

@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_MoonCalf extends Chant
 {
 	@Override public String ID() { return "Chant_MoonCalf"; }
-	private final static String localizedName = CMLib.lang()._("Moon Calf");
+	private final static String localizedName = CMLib.lang().L("Moon Calf");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Moon Calf)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Moon Calf)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONALTERING;}
@@ -53,14 +53,14 @@ public class Chant_MoonCalf extends Chant
 		if(!(affected instanceof MOB))
 		{
 			if(affected instanceof Room)
-				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,_("The moon calf sets."));
+				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,L("The moon calf sets."));
 			super.unInvoke();
 			return;
 		}
 
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("You are no longer under the moon calf."));
+			mob.tell(L("You are no longer under the moon calf."));
 
 		super.unInvoke();
 
@@ -136,12 +136,12 @@ public class Chant_MoonCalf extends Chant
 		if(target==null) return false;
 		if(!target.getArea().getClimateObj().canSeeTheMoon(target,null))
 		{
-			mob.tell(_("You must be able to see the moon for this magic to work."));
+			mob.tell(L("You must be able to see the moon for this magic to work."));
 			return false;
 		}
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("This place is already under the moon calf."));
+			mob.tell(L("This place is already under the moon calf."));
 			return false;
 		}
 		for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
@@ -150,7 +150,7 @@ public class Chant_MoonCalf extends Chant
 			if((A!=null)
 			&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONALTERING))
 			{
-				mob.tell(_("The moon is already under @x1, and can not be changed until this magic is gone.",A.name()));
+				mob.tell(L("The moon is already under @x1, and can not be changed until this magic is gone.",A.name()));
 				return false;
 			}
 		}
@@ -170,19 +170,19 @@ public class Chant_MoonCalf extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to the sky.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to the sky.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The Moon Calf Rises!"));
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The Moon Calf Rises!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) to the sky, but the magic fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to the sky, but the magic fades."));
 		// return whether it worked
 		return success;
 	}

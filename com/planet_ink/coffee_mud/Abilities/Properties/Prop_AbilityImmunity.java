@@ -97,14 +97,14 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 				||(CMLib.english().containsString(d.name(),diseases.get(i))))
 				{
 					if(msg.target() instanceof MOB)
-						((MOB)msg.target()).tell(_("You are immune to @x1.",msg.tool().name()));
+						((MOB)msg.target()).tell(L("You are immune to @x1.",msg.tool().name()));
 					if(msg.source()!=msg.target())
 					{
 						final String s=(String)messages.elementAt(i);
 						if(s.length()>0)
 							msg.source().tell(msg.source(),msg.target(),msg.tool(),s);
 						else
-							msg.source().tell(msg.source(),msg.target(),msg.tool(),_("<T-NAME> seem(s) immune to <O-NAME>."));
+							msg.source().tell(msg.source(),msg.target(),msg.tool(),L("<T-NAME> seem(s) immune to <O-NAME>."));
 					}
 					return false;
 				}

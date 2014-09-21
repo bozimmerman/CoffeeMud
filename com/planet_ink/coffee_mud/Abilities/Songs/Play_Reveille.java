@@ -37,7 +37,7 @@ import java.util.*;
 public class Play_Reveille extends Play
 {
 	@Override public String ID() { return "Play_Reveille"; }
-	private final static String localizedName = CMLib.lang()._("Reveille");
+	private final static String localizedName = CMLib.lang().L("Reveille");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return 0;}
@@ -68,9 +68,9 @@ public class Play_Reveille extends Play
 			invoker=mob;
 			originRoom=mob.location();
 			commonRoomSet=getInvokerScopeRoomSet(null);
-			String str=auto?_("^S@x1 begins to play!^?",songOf()):_("^S<S-NAME> begin(s) to play @x1 on @x2.^?",songOf(),instrumentName());
+			String str=auto?L("^S@x1 begins to play!^?",songOf()):L("^S<S-NAME> begin(s) to play @x1 on @x2.^?",songOf(),instrumentName());
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
-				str=_("^S<S-NAME> start(s) playing @x1 on @x2 again.^?",songOf(),instrumentName());
+				str=L("^S<S-NAME> start(s) playing @x1 on @x2 again.^?",songOf(),instrumentName());
 
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
@@ -132,7 +132,7 @@ public class Play_Reveille extends Play
 			}
 		}
 		else
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> hit(s) a foul note."));
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,L("<S-NAME> hit(s) a foul note."));
 
 		return success;
 	}

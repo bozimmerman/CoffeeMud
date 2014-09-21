@@ -48,7 +48,7 @@ public class Drop extends StdCommand
 		final Room R=mob.location();
 		if(R==null) return false;
 		final int msgCode=(optimize?CMMsg.MASK_OPTIMIZE:0)|(intermediate?CMMsg.MASK_INTERMSG:0)|CMMsg.MSG_DROP;
-		final CMMsg msg=CMClass.getMsg(mob,dropThis,null,msgCode,quiet?null:_("<S-NAME> drop(s) <T-NAME>."));
+		final CMMsg msg=CMClass.getMsg(mob,dropThis,null,msgCode,quiet?null:L("<S-NAME> drop(s) <T-NAME>."));
 		if(R.okMessage(mob,msg))
 		{
 			R.send(mob,msg);
@@ -107,7 +107,7 @@ public class Drop extends StdCommand
 
 		if(commands.size()<2)
 		{
-			mob.tell(_("Drop what?"));
+			mob.tell(L("Drop what?"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -152,7 +152,7 @@ public class Drop extends StdCommand
 				{
 					if((!dropThis.amWearingAt(Wearable.WORN_HELD))&&(!dropThis.amWearingAt(Wearable.WORN_WIELD)))
 					{
-						mob.tell(_("You must remove that first."));
+						mob.tell(L("You must remove that first."));
 						return false;
 					}
 					final CMMsg newMsg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
@@ -175,7 +175,7 @@ public class Drop extends StdCommand
 		}
 
 		if(V.size()==0)
-			mob.tell(_("You don't seem to be carrying that."));
+			mob.tell(L("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<V.size();i++)
 			drop(mob,(Item)V.elementAt(i),false,true,false);

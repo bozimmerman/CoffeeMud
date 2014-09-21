@@ -37,9 +37,9 @@ import java.util.Vector;
 public class Chant_CheetahBurst extends Chant
 {
 	@Override public String ID() { return "Chant_CheetahBurst"; }
-	private final static String localizedName = CMLib.lang()._("Cheetah Burst");
+	private final static String localizedName = CMLib.lang().L("Cheetah Burst");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Cheetah Burst)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Cheetah Burst)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -71,7 +71,7 @@ public class Chant_CheetahBurst extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("You begin to slow down to a normal speed."));
+			mob.tell(L("You begin to slow down to a normal speed."));
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class Chant_CheetahBurst extends Chant
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already at a cheetah's speed."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already at a cheetah's speed."));
 			return false;
 		}
 
@@ -122,13 +122,13 @@ public class Chant_CheetahBurst extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) and snarl(s)!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) and snarl(s)!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(target.location()==mob.location())
 				{
-					target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> gain(s) cheetah-like reflexes!"));
+					target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> gain(s) cheetah-like reflexes!"));
 					beneficialAffect(mob,target,asLevel,0);
 					final Chant_CheetahBurst A=(Chant_CheetahBurst)target.fetchEffect(ID());
 					if(A!=null) A.cheetahTick=3;
@@ -136,7 +136,7 @@ public class Chant_CheetahBurst extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) and snarl(s), but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) and snarl(s), but nothing more happens."));
 
 		// return whether it worked
 		return success;

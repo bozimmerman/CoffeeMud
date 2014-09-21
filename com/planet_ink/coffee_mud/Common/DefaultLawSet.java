@@ -304,7 +304,7 @@ public class DefaultLawSet implements Law
 									}
 									else
 									if(CMLib.players().getPlayer(T.getOwnerName())!=null)
-										CMLib.players().getPlayer(T.getOwnerName()).tell(CMLib.lang()._("You have lost the title to @x1 due to failure to pay property taxes.",T.landPropertyID()));
+										CMLib.players().getPlayer(T.getOwnerName()).tell(CMLib.lang().L("You have lost the title to @x1 due to failure to pay property taxes.",T.landPropertyID()));
 									T.setOwnerName("");
 									T.updateTitle();
 								}

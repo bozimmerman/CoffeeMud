@@ -37,7 +37,7 @@ import java.util.*;
 public class Spell_Scatter extends Spell
 {
 	@Override public String ID() { return "Spell_Scatter"; }
-	private final static String localizedName = CMLib.lang()._("Scatter");
+	private final static String localizedName = CMLib.lang().L("Scatter");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -107,7 +107,7 @@ public class Spell_Scatter extends Spell
 		{
 			target=getItem(mobTarget);
 			if(target==null)
-				return maliciousFizzle(mob,mobTarget,_("<S-NAME> attempt(s) a scattering spell at <T-NAMESELF>, but nothing happens."));
+				return maliciousFizzle(mob,mobTarget,L("<S-NAME> attempt(s) a scattering spell at <T-NAMESELF>, but nothing happens."));
 		}
 
 		List<Item> targets=new Vector();
@@ -120,7 +120,7 @@ public class Spell_Scatter extends Spell
 		{
 			targets=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_ANY,true);
 			if(targets.size()==0)
-				mob.tell(_("You don't seem to be carrying that."));
+				mob.tell(L("You don't seem to be carrying that."));
 		}
 
 		if(targets.size()==0) return false;
@@ -138,9 +138,9 @@ public class Spell_Scatter extends Spell
 			// what happened.
 			String str=null;
 			if(mobTarget==null)
-				str=auto?_("<S-NAME> <S-IS-ARE> enveloped in a scattering field!"):_("^S<S-NAME> utter(s) a scattering spell!^?");
+				str=auto?L("<S-NAME> <S-IS-ARE> enveloped in a scattering field!"):L("^S<S-NAME> utter(s) a scattering spell!^?");
 			else
-				str=auto?_("<T-NAME> <T-IS-ARE> enveloped in a scattering field!"):_("^S<S-NAME> utter(s) a scattering spell, causing <T-NAMESELF> to resonate.^?");
+				str=auto?L("<T-NAME> <T-IS-ARE> enveloped in a scattering field!"):L("^S<S-NAME> utter(s) a scattering spell, causing <T-NAMESELF> to resonate.^?");
 			CMMsg msg=CMClass.getMsg(mob,mobTarget,this,verbalCastCode(mob,target,auto),str);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -163,13 +163,13 @@ public class Spell_Scatter extends Spell
 								if(target.owner() instanceof MOB)
 								{
 									final MOB owner=(MOB)target.owner();
-									mob.location().show(owner,room,target,CMMsg.MASK_ALWAYS|CMMsg.MSG_THROW,_("<O-NAME> vanishes from <S-YOUPOSS> inventory!"));
-									room.showOthers(owner,room,target,CMMsg.MASK_ALWAYS|CMMsg.MSG_THROW,_("<O-NAME> appears from out of nowhere!"));
+									mob.location().show(owner,room,target,CMMsg.MASK_ALWAYS|CMMsg.MSG_THROW,L("<O-NAME> vanishes from <S-YOUPOSS> inventory!"));
+									room.showOthers(owner,room,target,CMMsg.MASK_ALWAYS|CMMsg.MSG_THROW,L("<O-NAME> appears from out of nowhere!"));
 								}
 								else
 								{
-									mob.location().show(mob,room,target,CMMsg.MASK_ALWAYS|CMMsg.MSG_THROW,_("<O-NAME> vanishes!"));
-									room.showOthers(mob,room,target,CMMsg.MASK_ALWAYS|CMMsg.MSG_THROW,_("<O-NAME> appears from out of nowhere!"));
+									mob.location().show(mob,room,target,CMMsg.MASK_ALWAYS|CMMsg.MSG_THROW,L("<O-NAME> vanishes!"));
+									room.showOthers(mob,room,target,CMMsg.MASK_ALWAYS|CMMsg.MSG_THROW,L("<O-NAME> appears from out of nowhere!"));
 								}
 								if(!room.isContent(target))
 									room.moveItemTo(target,ItemPossessor.Expire.Player_Drop,ItemPossessor.Move.Followers);
@@ -181,7 +181,7 @@ public class Spell_Scatter extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,mobTarget,_("<S-NAME> attempt(s) a scattering spell, but nothing happens."));
+			return maliciousFizzle(mob,mobTarget,L("<S-NAME> attempt(s) a scattering spell, but nothing happens."));
 
 
 		// return whether it worked

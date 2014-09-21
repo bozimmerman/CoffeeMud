@@ -70,7 +70,7 @@ public class Consider extends StdCommand
 	{
 		final Room R=mob.location();
 		if(R==null) return 0;
-		final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MASK_EYES|CMMsg.TYP_OK_VISUAL,null,_("<S-NAME> consider(s) <T-NAMESELF>."),_("<S-NAME> consider(s) <T-NAMESELF>."));
+		final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MASK_EYES|CMMsg.TYP_OK_VISUAL,null,L("<S-NAME> consider(s) <T-NAMESELF>."),L("<S-NAME> consider(s) <T-NAMESELF>."));
 		if(R.okMessage(mob,msg))
 			R.send(mob,msg);
 		int lvlDiff=0;
@@ -89,70 +89,70 @@ public class Consider extends StdCommand
 
 			StringBuilder levelMsg=new StringBuilder("");
 			if(lvlDiff==0)
-				levelMsg.append(_(targetMOB.charStats().HeShe()+" is your equal"));
+				levelMsg.append(L(targetMOB.charStats().HeShe()+" is your equal"));
 			else
 			if(lvlDiff<-CMProps.getIntVar(CMProps.Int.EXPRATE))
-				levelMsg.append(_(targetMOB.charStats().HeShe()+" is vastly inferior to you"));
+				levelMsg.append(L(targetMOB.charStats().HeShe()+" is vastly inferior to you"));
 			else
 			if(lvlDiff>CMProps.getIntVar(CMProps.Int.EXPRATE))
-				levelMsg.append(_(targetMOB.charStats().HeShe()+" is far superior to you"));
+				levelMsg.append(L(targetMOB.charStats().HeShe()+" is far superior to you"));
 			else
 			if(CMProps.getIntVar(CMProps.Int.EXPRATE)!=0)
 			{
 				final int relLvlDiff=(lvlDiff<0)?-lvlDiff:lvlDiff;
 				final double pct=CMath.div(relLvlDiff,CMProps.getIntVar(CMProps.Int.EXPRATE));
 				if((lvlDiff<0)&&(pct<0.5))
-					levelMsg.append(_(targetMOB.charStats().HeShe()+" is almost your equal"));
+					levelMsg.append(L(targetMOB.charStats().HeShe()+" is almost your equal"));
 				else
 				if((lvlDiff<0)&&(pct<=1.0))
-					levelMsg.append(_(targetMOB.charStats().HeShe()+" is somewhat inferior to you"));
+					levelMsg.append(L(targetMOB.charStats().HeShe()+" is somewhat inferior to you"));
 				else
 				if((lvlDiff<0))
-					levelMsg.append(_(targetMOB.charStats().HeShe()+" is inferior to you"));
+					levelMsg.append(L(targetMOB.charStats().HeShe()+" is inferior to you"));
 				else
 				if((lvlDiff>0)&&(pct<0.5))
-					levelMsg.append(_("You are almost "+targetMOB.charStats().hisher()+" equal"));
+					levelMsg.append(L("You are almost "+targetMOB.charStats().hisher()+" equal"));
 				else
 				if((lvlDiff>0)&&(pct<0.8))
-					levelMsg.append(_(targetMOB.charStats().HeShe()+" is somewhat superior to you"));
+					levelMsg.append(L(targetMOB.charStats().HeShe()+" is somewhat superior to you"));
 				else
-					levelMsg.append(_(targetMOB.charStats().HeShe()+" is superior to you"));
+					levelMsg.append(L(targetMOB.charStats().HeShe()+" is superior to you"));
 			}
 
 			final int levelDiff=Math.abs(realDiff);
 			if(levelDiff<theDiff)
 			{
-				levelMsg.append(_((lvlDiff!=0)?" but ":" and "));
-				levelMsg.append(_("the perfect match!"));
+				levelMsg.append(L((lvlDiff!=0)?" but ":" and "));
+				levelMsg.append(L("the perfect match!"));
 			}
 			else
 			if(realDiff<0)
 			{
-				levelMsg.append(_((lvlDiff<0)?" and ":" but "));
+				levelMsg.append(L((lvlDiff<0)?" and ":" but "));
 				if(realDiff>-(2*theDiff))
-					levelMsg.append(_(targetMOB.charStats().heshe()+" might actually give you a fight."));
+					levelMsg.append(L(targetMOB.charStats().heshe()+" might actually give you a fight."));
 				else
 				if(realDiff>-(3*theDiff))
-					levelMsg.append(_(targetMOB.charStats().heshe()+" won't put up a big fight."));
+					levelMsg.append(L(targetMOB.charStats().heshe()+" won't put up a big fight."));
 				else
 				if(realDiff>-(4*theDiff))
-					levelMsg.append(_(targetMOB.charStats().heshe()+" is basically a pushover."));
+					levelMsg.append(L(targetMOB.charStats().heshe()+" is basically a pushover."));
 				else
-					levelMsg.append(_(targetMOB.charStats().heshe()+" is an easy kill."));
+					levelMsg.append(L(targetMOB.charStats().heshe()+" is an easy kill."));
 			}
 			else
 			{
-				levelMsg.append(_((lvlDiff>0)?" and ":" but "));
+				levelMsg.append(L((lvlDiff>0)?" and ":" but "));
 				if(realDiff<(2*theDiff))
-					levelMsg.append(_(targetMOB.charStats().heshe()+" looks a little tough."));
+					levelMsg.append(L(targetMOB.charStats().heshe()+" looks a little tough."));
 				else
 				if(realDiff<(3*theDiff))
-					levelMsg.append(_(targetMOB.charStats().heshe()+" is a serious threat."));
+					levelMsg.append(L(targetMOB.charStats().heshe()+" is a serious threat."));
 				else
 				if(realDiff<(4*theDiff))
-					levelMsg.append(_(targetMOB.charStats().heshe()+" will clean your clock."));
+					levelMsg.append(L(targetMOB.charStats().heshe()+" will clean your clock."));
 				else
-					levelMsg.append(_(targetMOB.charStats().heshe()+" WILL KILL YOU DEAD!"));
+					levelMsg.append(L(targetMOB.charStats().heshe()+" WILL KILL YOU DEAD!"));
 			}
 			mob.tell(levelMsg.toString());
 		}
@@ -168,19 +168,19 @@ public class Consider extends StdCommand
 		{
 			final Ability A=(Ability)mendors.elementAt(m);
 			if(m==0)
-				withWhat.append(_("You could probably help @x1 out with your @x2 skill",target.name(mob),A.name()));
+				withWhat.append(L("You could probably help @x1 out with your @x2 skill",target.name(mob),A.name()));
 			else
 			if(m<mendors.size()-1)
-				withWhat.append(_(", your @x1 skill",A.name()));
+				withWhat.append(L(", your @x1 skill",A.name()));
 			else
-				withWhat.append(_(" or your @x1 skill",A.name()));
+				withWhat.append(L(" or your @x1 skill",A.name()));
 		}
 
 		if(withWhat.length()>0)
 			mob.tell(withWhat.toString()+".");
 		else
 		if(!(target instanceof MOB))
-			mob.tell(_("You don't have any particular thoughts about that."));
+			mob.tell(L("You don't have any particular thoughts about that."));
 		return lvlDiff;
 	}
 
@@ -191,7 +191,7 @@ public class Consider extends StdCommand
 		Physical target=null;
 		if(commands.size()<2)
 		{
-			mob.tell(_("Consider whom or what?"));
+			mob.tell(L("Consider whom or what?"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -202,7 +202,7 @@ public class Consider extends StdCommand
 			target=mob.location().fetchFromMOBRoomFavorsMOBs(mob,null,targetName,Wearable.FILTER_ANY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("I don't see '@x1' here.",targetName));
+			mob.tell(L("I don't see '@x1' here.",targetName));
 			return false;
 		}
 		doConsider(mob,target);

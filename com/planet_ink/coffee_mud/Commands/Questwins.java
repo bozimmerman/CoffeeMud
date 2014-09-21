@@ -59,7 +59,7 @@ public class Questwins extends StdCommand
 				}
 			}
 			Collections.sort(qVec);
-			final StringBuffer msg=new StringBuffer(_("^HQuests you are listed as having won:^?^N\n\r"));
+			final StringBuffer msg=new StringBuffer(L("^HQuests you are listed as having won:^?^N\n\r"));
 			for(int i=0;i<qVec.size();i++)
 				msg.append(((String)qVec.elementAt(i))+"^N\n\r");
 			if(!mob.isMonster())
@@ -85,7 +85,7 @@ public class Questwins extends StdCommand
 			final Quest Q=CMLib.quests().findQuest(rest);
 			if(Q==null)
 			{
-				mob.tell(_("There is no such quest as '@x1'.",rest));
+				mob.tell(L("There is no such quest as '@x1'.",rest));
 				return false;
 			}
 			for(final Enumeration<ScriptingEngine> e=mob.scripts();e.hasMoreElements();)
@@ -98,14 +98,14 @@ public class Questwins extends StdCommand
 			}
 			if(foundS==null)
 			{
-				mob.tell(_("You have not accepted a quest called '@x1'.  Enter QUESTS for a list.",rest));
+				mob.tell(L("You have not accepted a quest called '@x1'.  Enter QUESTS for a list.",rest));
 				return false;
 			}
-			if((!mob.isMonster()&&(mob.session().confirm(_("Drop the quest '@x1', are you sure (y/N)?",Q.name()),_("N")))))
+			if((!mob.isMonster()&&(mob.session().confirm(L("Drop the quest '@x1', are you sure (y/N)?",Q.name()),L("N")))))
 			{
 				CMLib.coffeeTables().bump(Q,CoffeeTableRow.STAT_QUESTDROPPED);
 				mob.delScript(foundS);
-				mob.tell(_("Quest dropped."));
+				mob.tell(L("Quest dropped."));
 				return false;
 			}
 		}
@@ -121,11 +121,11 @@ public class Questwins extends StdCommand
 					qVec.addElement(name);
 			}
 			Collections.sort(qVec);
-			final StringBuffer msg=new StringBuffer(_("^HQuests you are listed as having accepted:^?^N\n\r"));
+			final StringBuffer msg=new StringBuffer(L("^HQuests you are listed as having accepted:^?^N\n\r"));
 			for(int i=0;i<qVec.size();i++)
 				msg.append((qVec.elementAt(i))+"^N\n\r");
 			if(!mob.isMonster())
-				mob.tell(_("@x1\n\r^HEnter QUEST [QUEST NAME] for more information.^N^.",msg.toString()));
+				mob.tell(L("@x1\n\r^HEnter QUEST [QUEST NAME] for more information.^N^.",msg.toString()));
 
 		}
 		else
@@ -134,7 +134,7 @@ public class Questwins extends StdCommand
 			final Quest Q=CMLib.quests().findQuest(rest);
 			if(Q==null)
 			{
-				mob.tell(_("There is no such quest as '@x1'.",rest));
+				mob.tell(L("There is no such quest as '@x1'.",rest));
 				return false;
 			}
 			ScriptingEngine foundS=null;
@@ -148,13 +148,13 @@ public class Questwins extends StdCommand
 			}
 			if(foundS==null)
 			{
-				mob.tell(_("You have not accepted a quest called '@x1'.  Enter QUESTS for a list.",rest));
+				mob.tell(L("You have not accepted a quest called '@x1'.  Enter QUESTS for a list.",rest));
 				return false;
 			}
 			String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
 			if(!Q.name().equals(name))
 				name+=" ("+Q.name()+")";
-			mob.tell(_("^HQuest Information: ^w@x1^N",name));
+			mob.tell(L("^HQuest Information: ^w@x1^N",name));
 			String instructions=foundS.getVar("*","INSTRUCTIONS");
 			if((instructions==null)||(instructions.length()==0))
 				instructions=Q.isStat("INSTRUCTIONS")?Q.getStat("INSTRUCTIONS"):null;
@@ -181,9 +181,9 @@ public class Questwins extends StdCommand
 			final String progress=foundS.getVar("*","PROGRESS");
 			mob.tell("^w"+instructions+"^N");
 			if((timeRemaining!=null)&&(timeRemaining.length()>0))
-				mob.tell(_("\n\r^yTime Remaining: ^w@x1^N",timeRemaining));
+				mob.tell(L("\n\r^yTime Remaining: ^w@x1^N",timeRemaining));
 			if((progress!=null)&&(progress.length()>0))
-				mob.tell(_("\n\r^yProgress: ^w@x1^N",progress));
+				mob.tell(L("\n\r^yProgress: ^w@x1^N",progress));
 		}
 		return false;
 	}

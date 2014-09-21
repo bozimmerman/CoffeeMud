@@ -38,9 +38,9 @@ import java.util.*;
 public class Prayer_CurseMetal extends Prayer
 {
 	@Override public String ID() { return "Prayer_CurseMetal"; }
-	private final static String localizedName = CMLib.lang()._("Curse Metal");
+	private final static String localizedName = CMLib.lang().L("Curse Metal");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Cursed)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Cursed)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
@@ -67,7 +67,7 @@ public class Prayer_CurseMetal extends Prayer
 
 		if(msg.targetMajor(CMMsg.MASK_HANDS))
 		{
-			msg.source().tell(_("@x1 is filled with unholy heat!",affected.name()));
+			msg.source().tell(L("@x1 is filled with unholy heat!",affected.name()));
 			return false;
 		}
 		return true;
@@ -167,7 +167,7 @@ public class Prayer_CurseMetal extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1 to curse <T-NAMESELF>.^?",prayForWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 to curse <T-NAMESELF>.^?",prayForWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -176,7 +176,7 @@ public class Prayer_CurseMetal extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> @x1 to curse <T-NAMESELF>, but the spell fizzles.",prayForWord(mob)));
+			return maliciousFizzle(mob,target,L("<S-NAME> @x1 to curse <T-NAMESELF>, but the spell fizzles.",prayForWord(mob)));
 
 		// return whether it worked
 		return success;

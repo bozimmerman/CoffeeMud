@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_Goodberry extends Chant
 {
 	@Override public String ID() { return "Chant_Goodberry"; }
-	private final static String localizedName = CMLib.lang()._("Goodberry");
+	private final static String localizedName = CMLib.lang().L("Goodberry");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -94,18 +94,18 @@ public class Chant_Goodberry extends Chant
 		if((!(target instanceof Food))
 		||(!isBerry(target)))
 		{
-			mob.tell(_("This magic will not work on @x1.",target.name(mob)));
+			mob.tell(L("This magic will not work on @x1.",target.name(mob)));
 			return false;
 		}
 
 		if(success)
 		{
 			int numAffected=CMLib.dice().roll(1,adjustedLevel(mob,asLevel)/7,1);
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> begin to glow!"));
+				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> begin to glow!"));
 				if(owner instanceof MOB)
 					for(int i=0;i<((MOB)owner).numItems();i++)
 					{
@@ -131,7 +131,7 @@ public class Chant_Goodberry extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

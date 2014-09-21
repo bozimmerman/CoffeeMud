@@ -36,7 +36,7 @@ import java.util.*;
 public class Dance_Basse extends Dance
 {
 	@Override public String ID() { return "Dance_Basse"; }
-	private final static String localizedName = CMLib.lang()._("Basse");
+	private final static String localizedName = CMLib.lang().L("Basse");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected String danceOf(){return name()+" Dance";}
@@ -54,7 +54,7 @@ public class Dance_Basse extends Dance
 			&&(msg.source().location()==target.location())
 			&&(CMLib.dice().rollPercentage()>((msg.source().phyStats().level()-(target.phyStats().level()+getXLEVELLevel(invoker()))*10))))
 			{
-				msg.source().tell(_("You are too much in awe of @x1",target.name(msg.source())));
+				msg.source().tell(L("You are too much in awe of @x1",target.name(msg.source())));
 				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();

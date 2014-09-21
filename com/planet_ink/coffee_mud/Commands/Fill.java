@@ -45,7 +45,7 @@ public class Fill extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("Fill what, from what?"));
+			mob.tell(L("Fill what, from what?"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -64,7 +64,7 @@ public class Fill extends StdCommand
 
 		if((commands.size()<2)&&(!(mob.location() instanceof Drink)))
 		{
-			mob.tell(_("From what should I fill the @x1?",(String)commands.elementAt(0)));
+			mob.tell(L("From what should I fill the @x1?",(String)commands.elementAt(0)));
 			return false;
 		}
 		Environmental fillFromThis=null;
@@ -83,7 +83,7 @@ public class Fill extends StdCommand
 			fillFromThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFillFrom,Wearable.FILTER_ANY);
 			if((fillFromThis==null)||(!CMLib.flags().canBeSeenBy(fillFromThis,mob)))
 			{
-				mob.tell(_("I don't see @x1 here.",thingToFillFrom));
+				mob.tell(L("I don't see @x1 here.",thingToFillFrom));
 				return false;
 			}
 			while(commands.size()>=(fromDex+1))
@@ -113,12 +113,12 @@ public class Fill extends StdCommand
 		}
 
 		if(V.size()==0)
-			mob.tell(_("You don't seem to have '@x1'.",thingToFill));
+			mob.tell(L("You don't seem to have '@x1'.",thingToFill));
 		else
 		for(int i=0;i<V.size();i++)
 		{
 			final Environmental fillThis=(Environmental)V.elementAt(i);
-			final CMMsg fillMsg=CMClass.getMsg(mob,fillThis,fillFromThis,CMMsg.MSG_FILL,_("<S-NAME> fill(s) <T-NAME> from <O-NAME>."));
+			final CMMsg fillMsg=CMClass.getMsg(mob,fillThis,fillFromThis,CMMsg.MSG_FILL,L("<S-NAME> fill(s) <T-NAME> from <O-NAME>."));
 			if((!mob.isMine(fillThis))&&(fillThis instanceof Item))
 			{
 				if(CMLib.commands().postGet(mob,null,(Item)fillThis,false))

@@ -81,7 +81,7 @@ public class StdClanItem extends StdItem implements ClanItem
 					removeFromOwnerContainer();
 					if(owner()!=R) R.moveItemTo(this,ItemPossessor.Expire.Player_Drop);
 					if(R!=null)
-						R.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 is dropped!",name()));
+						R.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 is dropped!",name()));
 				}
 			}
 			lastClanCheck=System.currentTimeMillis();
@@ -140,7 +140,7 @@ public class StdClanItem extends StdItem implements ClanItem
 					CI.setRightfulOwner(null);
 					if(CI.owner()!=M.location())
 						M.location().moveItemTo(CI,ItemPossessor.Expire.Player_Drop);
-					M.location().show(M,CI,CMMsg.MSG_OK_VISUAL,CMLib.lang()._("<S-NAME> drop(s) <T-NAME>."));
+					M.location().show(M,CI,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("<S-NAME> drop(s) <T-NAME>."));
 					return false;
 				}
 			}
@@ -246,18 +246,18 @@ public class StdClanItem extends StdItem implements ClanItem
 			if(alreadyHasOne!=null)
 			{
 				if(giver!=null)
-					giver.tell(CMLib.lang()._("@x1 already has @x2, and cannot have another Clan Item.",targetMOB.name(),alreadyHasOne.name()));
+					giver.tell(CMLib.lang().L("@x1 already has @x2, and cannot have another Clan Item.",targetMOB.name(),alreadyHasOne.name()));
 				else
-					targetMOB.location().show(targetMOB,null,myHost,CMMsg.MSG_OK_VISUAL,CMLib.lang()._("<S-NAME> can't seem to find the room for <O-NAME>."));
+					targetMOB.location().show(targetMOB,null,myHost,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("<S-NAME> can't seem to find the room for <O-NAME>."));
 				return false;
 			}
 			if((((ClanItem)myHost).ciType()==ClanItem.CI_BANNER)
 			&&(!CMLib.flags().isMobile(targetMOB)))
 			{
 				if(giver!=null)
-					giver.tell(CMLib.lang()._("This item should only be given to those who roam the area."));
+					giver.tell(CMLib.lang().L("This item should only be given to those who roam the area."));
 				else
-					targetMOB.location().show(targetMOB,null,myHost,CMMsg.MSG_OK_VISUAL,CMLib.lang()._("<S-NAME> do(es)n't seem mobile enough to take <O-NAME>."));
+					targetMOB.location().show(targetMOB,null,myHost,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("<S-NAME> do(es)n't seem mobile enough to take <O-NAME>."));
 				return false;
 			}
 			final Room startRoom=targetMOB.getStartRoom();
@@ -272,9 +272,9 @@ public class StdClanItem extends StdItem implements ClanItem
 				&&(targetMOB.getClanRole(theLaw.rulingOrganization())!=null))
 				{
 					if(giver!=null)
-						giver.tell(CMLib.lang()._("You can only give a clan item to a conquered mob within the conquered area."));
+						giver.tell(CMLib.lang().L("You can only give a clan item to a conquered mob within the conquered area."));
 					else
-						targetMOB.location().show(targetMOB,null,myHost,CMMsg.MSG_OK_VISUAL,CMLib.lang()._("<S-NAME> can't seem to take <O-NAME> here."));
+						targetMOB.location().show(targetMOB,null,myHost,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("<S-NAME> can't seem to take <O-NAME> here."));
 					return false;
 				}
 			}
@@ -295,7 +295,7 @@ public class StdClanItem extends StdItem implements ClanItem
 			if((targetMOB.getClanRole(((ClanItem)myHost).clanID())==null)
 			&&(((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA))
 			{
-				msg.source().tell(CMLib.lang()._("You cannot give this item to @x1.",targetMOB.name()));
+				msg.source().tell(CMLib.lang().L("You cannot give this item to @x1.",targetMOB.name()));
 				return false;
 			}
 			else
@@ -313,7 +313,7 @@ public class StdClanItem extends StdItem implements ClanItem
 			{
 				if(CMLib.clans().findRivalrousClan(msg.source())==null)
 				{
-					msg.source().tell(CMLib.lang()._("You must belong to an elligible clan to do that to a clan item."));
+					msg.source().tell(CMLib.lang().L("You must belong to an elligible clan to do that to a clan item."));
 					return false;
 				}
 				else
@@ -321,7 +321,7 @@ public class StdClanItem extends StdItem implements ClanItem
 					final Clan itemC=CMLib.clans().getClan(((ClanItem)myHost).clanID());
 					if(itemC==null)
 					{
-						msg.source().tell(CMLib.lang()._("This ancient relic from a lost clan fades out of existence."));
+						msg.source().tell(CMLib.lang().L("This ancient relic from a lost clan fades out of existence."));
 						((ClanItem)myHost).destroy();
 						return false;
 					}
@@ -341,7 +341,7 @@ public class StdClanItem extends StdItem implements ClanItem
 						}
 						if(relation!=Clan.REL_WAR)
 						{
-							msg.source().tell(CMLib.lang()._("You must be at war with this clan to take one of their items."));
+							msg.source().tell(CMLib.lang().L("You must be at war with this clan to take one of their items."));
 							return false;
 						}
 						final Room room=msg.source().location();
@@ -350,12 +350,12 @@ public class StdClanItem extends StdItem implements ClanItem
 							final LegalBehavior theLaw=CMLib.law().getLegalBehavior(room.getArea());
 							if((theLaw!=null)&&(theLaw.rulingOrganization()!=null)&&(theLaw.rulingOrganization().equals(itemC.clanID())))
 							{
-								msg.source().tell(CMLib.lang()._("You'll need to conquer this area to do that."));
+								msg.source().tell(CMLib.lang().L("You'll need to conquer this area to do that."));
 								return false;
 							}
 							if((theLaw!=null)&&(!theLaw.isFullyControlled()))
 							{
-								msg.source().tell(CMLib.lang()._("Your clan does not yet fully control the area."));
+								msg.source().tell(CMLib.lang().L("Your clan does not yet fully control the area."));
 								return false;
 							}
 						}
@@ -384,7 +384,7 @@ public class StdClanItem extends StdItem implements ClanItem
 			else
 			{
 				if(M.location()!=null)
-					M.location().show(M,myHost,CMMsg.MSG_OK_ACTION,CMLib.lang()._("<T-NAME> is destroyed by <S-YOUPOSS> touch!"));
+					M.location().show(M,myHost,CMMsg.MSG_OK_ACTION,CMLib.lang().L("<T-NAME> is destroyed by <S-YOUPOSS> touch!"));
 				for(final Pair<Clan,Integer> clanP : CMLib.clans().findRivalrousClans(M))
 				{
 					final Clan C=clanP.first;
@@ -398,7 +398,7 @@ public class StdClanItem extends StdItem implements ClanItem
 							if(exp>0)
 							{
 								C.setExp(C.getExp()+exp);
-								M.tell(CMLib.lang()._("@x1 gains @x2 experience points for this capture.",CMStrings.capitalizeFirstLetter(C.getName()),""+exp));
+								M.tell(CMLib.lang().L("@x1 gains @x2 experience points for this capture.",CMStrings.capitalizeFirstLetter(C.getName()),""+exp));
 							}
 							break;
 						}

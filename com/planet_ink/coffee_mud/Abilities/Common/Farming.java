@@ -36,7 +36,7 @@ import java.util.*;
 public class Farming extends GatheringSkill
 {
 	@Override public String ID() { return "Farming"; }
-	private final static String localizedName = CMLib.lang()._("Farming");
+	private final static String localizedName = CMLib.lang().L("Farming");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"PLANT","FARM","FARMING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -50,8 +50,8 @@ public class Farming extends GatheringSkill
 	public Farming()
 	{
 		super();
-		displayText=_("You are planting...");
-		verb=_("planting");
+		displayText=L("You are planting...");
+		verb=L("planting");
 	}
 
 	protected int getDuration(MOB mob, int level)
@@ -70,7 +70,7 @@ public class Farming extends GatheringSkill
 			{
 				if(found==null)
 				{
-					commonTell(mob,_("Your @x1 crop has failed.\n\r",foundShortName));
+					commonTell(mob,L("Your @x1 crop has failed.\n\r",foundShortName));
 					unInvoke();
 				}
 			}
@@ -92,7 +92,7 @@ public class Farming extends GatheringSkill
 					final int amount=CMLib.dice().roll(1,7,0)*(abilityCode());
 					String s="s";
 					if(amount==1) s="";
-					room.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 pound@x2 of @x3 have grown here.",""+amount,s,foundShortName));
+					room.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 pound@x2 of @x3 have grown here.",""+amount,s,foundShortName));
 					for(int i=0;i<amount;i++)
 					{
 						final Item newFound=(Item)found.copyOf();
@@ -157,10 +157,10 @@ public class Farming extends GatheringSkill
 			return false;
 		}
 
-		verb=_("planting");
+		verb=L("planting");
 		if((!auto)&&((mob.location().domainType()&Room.INDOORS)>0))
 		{
-			commonTell(mob,_("You can't plant anything indoors!"));
+			commonTell(mob,L("You can't plant anything indoors!"));
 			return false;
 		}
 		if((!auto)
@@ -168,17 +168,17 @@ public class Farming extends GatheringSkill
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_PLAINS)
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_SWAMP))
 		{
-			commonTell(mob,_("The land is not suitable for farming here."));
+			commonTell(mob,L("The land is not suitable for farming here."));
 			return false;
 		}
 		if((!auto)&&(mob.location().getArea().getClimateObj().weatherType(mob.location())==Climate.WEATHER_DROUGHT))
 		{
-			commonTell(mob,_("The current drought conditions make planting useless."));
+			commonTell(mob,L("The current drought conditions make planting useless."));
 			return false;
 		}
 		if(mob.location().fetchEffect(ID())!=null)
 		{
-			commonTell(mob,_("It looks like a crop is already growing here."));
+			commonTell(mob,L("It looks like a crop is already growing here."));
 			return false;
 		}
 		if(mob.isMonster()
@@ -212,14 +212,14 @@ public class Farming extends GatheringSkill
 			}
 			if(mine==null)
 			{
-				commonTell(mob,_("You don't have anything you can plant."));
+				commonTell(mob,L("You don't have anything you can plant."));
 				return false;
 			}
 		}
 		else
 		if(commands.size()==0)
 		{
-			commonTell(mob,_("Grow what?"));
+			commonTell(mob,L("Grow what?"));
 			return false;
 		}
 		int code=-1;
@@ -256,7 +256,7 @@ public class Farming extends GatheringSkill
 			}
 		if(code<0)
 		{
-			commonTell(mob,_("You've never heard of '@x1'.",CMParms.combine(commands,0)));
+			commonTell(mob,L("You've never heard of '@x1'.",CMParms.combine(commands,0)));
 			return false;
 		}
 
@@ -269,19 +269,19 @@ public class Farming extends GatheringSkill
 		}
 		if(mine==null)
 		{
-			commonTell(mob,_("You'll need to have some @x1 to seed from on the ground first.",foundShortName));
+			commonTell(mob,L("You'll need to have some @x1 to seed from on the ground first.",foundShortName));
 			return false;
 		}
 		final String mineName=mine.name();
 		mine=(Item)CMLib.materials().unbundle(mine,-1,null);
 		if(mine==null)
 		{
-			commonTell(mob,_("'@x1' is not suitable for use as a seed crop.",mineName));
+			commonTell(mob,L("'@x1' is not suitable for use as a seed crop.",mineName));
 			return false;
 		}
 		if(!(isPotentialCrop(mob.location(),code)))
 		{
-			commonTell(mob,_("'@x1' does not seem to be taking root here.",mineName));
+			commonTell(mob,L("'@x1' does not seem to be taking root here.",mineName));
 			return false;
 		}
 
@@ -305,9 +305,9 @@ public class Farming extends GatheringSkill
 
 		mine.destroy();
 		final int duration=getDuration(mob,1);
-		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),_("<S-NAME> start(s) planting @x1.",foundShortName));
-		verb=_("planting @x1",foundShortName);
-		displayText=_("You are planting @x1",foundShortName);
+		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),L("<S-NAME> start(s) planting @x1.",foundShortName));
+		verb=L("planting @x1",foundShortName);
+		displayText=L("You are planting @x1",foundShortName);
 		room=mob.location();
 		if(mob.location().okMessage(mob,msg))
 		{

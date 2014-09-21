@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_GreatCurse extends Prayer
 {
 	@Override public String ID() { return "Prayer_GreatCurse"; }
-	private final static String localizedName = CMLib.lang()._("Great Curse");
+	private final static String localizedName = CMLib.lang().L("Great Curse");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Cursed)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Cursed)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
@@ -70,7 +70,7 @@ public class Prayer_GreatCurse extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("The great curse is lifted."));
+			mob.tell(L("The great curse is lifted."));
 	}
 
 
@@ -91,7 +91,7 @@ public class Prayer_GreatCurse extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?_("<T-NAME> <T-IS-ARE> horribly cursed!"):_("^S<S-NAME> curse(s) <T-NAMESELF> horribly.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?L("<T-NAME> <T-IS-ARE> horribly cursed!"):L("^S<S-NAME> curse(s) <T-NAMESELF> horribly.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -109,7 +109,7 @@ public class Prayer_GreatCurse extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to horribly curse <T-NAMESELF> , but nothing happens."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to horribly curse <T-NAMESELF> , but nothing happens."));
 
 
 		// return whether it worked

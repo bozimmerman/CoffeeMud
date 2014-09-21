@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_Countertracking extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Countertracking"; }
-	private final static String localizedName = CMLib.lang()._("Counter-Tracking");
+	private final static String localizedName = CMLib.lang().L("Counter-Tracking");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -58,7 +58,7 @@ public class Thief_Countertracking extends ThiefSkill
 		&&(proficiencyCheck(mob,0,false))
 		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRACKING)))
 		{
-			msg.source().tell(_("You can't get a bead on him."));
+			msg.source().tell(L("You can't get a bead on him."));
 			return false;
 		}
 		return super.okMessage(myHost,msg);

@@ -37,7 +37,7 @@ import java.util.*;
 public class Prancer extends StdCharClass
 {
 	@Override public String ID(){return "Prancer";}
-	private final static String localizedStaticName = CMLib.lang()._("Dancer");
+	private final static String localizedStaticName = CMLib.lang().L("Dancer");
 	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return "Bard";}
 	@Override public String getMovementFormula(){return "18*((@x2<@x3)/18)"; }
@@ -227,7 +227,7 @@ public class Prancer extends StdCharClass
 		super.level(mob, newAbilityIDs);
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))  return;
 		final int attArmor=(((int)Math.round(CMath.div(mob.charStats().getStat(CharStats.STAT_DEXTERITY),9.0)))+1);
-		mob.tell(_("^NYour grace grants you a defensive bonus of ^H@x1^?.^N",""+attArmor));
+		mob.tell(L("^NYour grace grants you a defensive bonus of ^H@x1^?.^N",""+attArmor));
 	}
 }
 

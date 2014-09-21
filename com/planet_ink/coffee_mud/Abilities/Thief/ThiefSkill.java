@@ -36,7 +36,7 @@ import java.util.*;
 public class ThiefSkill extends StdAbility
 {
 	@Override public String ID() { return "ThiefSkill"; }
-	private final static String localizedName = CMLib.lang()._("a Thief Skill");
+	private final static String localizedName = CMLib.lang().L("a Thief Skill");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -58,7 +58,7 @@ public class ThiefSkill extends StdAbility
 		&&(mob.location()!=null)
 		&&(CMLib.dice().rollPercentage()<50))
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> fumble(s) @x1 due to <S-HIS-HER> clumsy armor!",name()));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> fumble(s) @x1 due to <S-HIS-HER> clumsy armor!",name()));
 			return false;
 		}
 		return true;
@@ -114,9 +114,9 @@ public class ThiefSkill extends StdAbility
 			if(((Exit)unlockThis).isOpen()==failOnOpen)
 			{
 				if(failOnOpen)
-					mob.tell(mob,unlockThis,null,_("<T-NAME> is open!"));
+					mob.tell(mob,unlockThis,null,L("<T-NAME> is open!"));
 				else
-					mob.tell(mob,unlockThis,null,_("<T-NAME> is closed!"));
+					mob.tell(mob,unlockThis,null,L("<T-NAME> is closed!"));
 				return null;
 			}
 
@@ -127,15 +127,15 @@ public class ThiefSkill extends StdAbility
 			if(((Container)unlockThis).isOpen()==failOnOpen)
 			{
 				if(failOnOpen)
-					mob.tell(mob,unlockThis,null,_("<T-NAME> is open!"));
+					mob.tell(mob,unlockThis,null,L("<T-NAME> is open!"));
 				else
-					mob.tell(mob,unlockThis,null,_("<T-NAME> is closed!"));
+					mob.tell(mob,unlockThis,null,L("<T-NAME> is closed!"));
 				return null;
 			}
 		}
 		else
 		{
-			mob.tell(mob,unlockThis,null,_("You can't do that to <T-NAME>."));
+			mob.tell(mob,unlockThis,null,L("You can't do that to <T-NAME>."));
 			return null;
 		}
 		return unlockThis;

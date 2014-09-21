@@ -109,7 +109,7 @@ public class Wyvern extends StdMOB
 			if (roll<20)
 			{
 				// Sting was successful
- 				final CMMsg msg=CMClass.getMsg(this, target, null, CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON, _("^F^<FIGHT^><S-NAME> sting(s) <T-NAMESELF>!^</FIGHT^>^?"));
+ 				final CMMsg msg=CMClass.getMsg(this, target, null, CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON, L("^F^<FIGHT^><S-NAME> sting(s) <T-NAMESELF>!^</FIGHT^>^?"));
 				CMLib.color().fixSourceFightColor(msg);
 				if(location().okMessage(target,msg))
 				{

@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_Sacrifice extends Prayer
 {
 	@Override public String ID() { return "Prayer_Sacrifice"; }
-	private final static String localizedName = CMLib.lang()._("Sacrifice");
+	private final static String localizedName = CMLib.lang().L("Sacrifice");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
@@ -71,7 +71,7 @@ public class Prayer_Sacrifice extends Prayer
 		if((!(target instanceof DeadBody))
 		   ||(target.rawSecretIdentity().toUpperCase().indexOf("FAKE")>=0))
 		{
-			mob.tell(_("You may only sacrifice the dead."));
+			mob.tell(L("You may only sacrifice the dead."));
 			return false;
 		}
 
@@ -79,7 +79,7 @@ public class Prayer_Sacrifice extends Prayer
 		&&(!((DeadBody)target).mobName().equals(mob.Name()))
 		&&(((DeadBody)target).getContents().size()>0))
 		{
-			mob.tell(_("You are not allowed to sacrifice that corpse."));
+			mob.tell(L("You are not allowed to sacrifice that corpse."));
 			return false;
 		}
 
@@ -94,7 +94,7 @@ public class Prayer_Sacrifice extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> sacrifice(s) <T-HIM-HERSELF>."):_("^S<S-NAME> sacrifice(s) <T-NAMESELF> to @x1.^?",hisHerDiety(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> sacrifice(s) <T-HIM-HERSELF>."):L("^S<S-NAME> sacrifice(s) <T-NAMESELF> to @x1.^?",hisHerDiety(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -112,7 +112,7 @@ public class Prayer_Sacrifice extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":_("<S-NAME> attempt(s) to sacrifice <T-NAMESELF>, but fail(s)."));
+			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> attempt(s) to sacrifice <T-NAMESELF>, but fail(s)."));
 
 		// return whether it worked
 		return success;

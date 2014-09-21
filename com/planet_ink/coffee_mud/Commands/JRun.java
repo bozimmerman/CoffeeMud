@@ -46,7 +46,7 @@ public class JRun extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("jrun filename1 parm1 parm2 ..."));
+			mob.tell(L("jrun filename1 parm1 parm2 ..."));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -55,7 +55,7 @@ public class JRun extends StdCommand
 		final StringBuffer ft = new CMFile(fn,mob,CMFile.FLAG_LOGERRORS).text();
 		if((ft==null)||(ft.length()==0))
 		{
-			mob.tell(_("File '@x1' could not be found.",fn));
+			mob.tell(L("File '@x1' could not be found.",fn));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -71,7 +71,7 @@ public class JRun extends StdCommand
 		}
 		catch(final Exception e)
 		{
-			mob.tell(_("JavaScript error: @x1",e.getMessage()));
+			mob.tell(L("JavaScript error: @x1",e.getMessage()));
 		}
 		Context.exit();
 		return false;

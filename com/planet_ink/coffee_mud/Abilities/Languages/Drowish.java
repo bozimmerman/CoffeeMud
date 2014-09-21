@@ -35,7 +35,7 @@ import java.util.*;
 public class Drowish extends StdLanguage
 {
 	@Override public String ID() { return "Drowish"; }
-	private final static String localizedName = CMLib.lang()._("Drowish");
+	private final static String localizedName = CMLib.lang().L("Drowish");
 	@Override public String name() { return localizedName; }
 	public static List<String[]> wordLists=null;
 	public Drowish()

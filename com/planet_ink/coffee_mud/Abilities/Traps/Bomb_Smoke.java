@@ -35,7 +35,7 @@ import java.util.*;
 public class Bomb_Smoke extends StdBomb
 {
 	@Override public String ID() { return "Bomb_Smoke"; }
-	private final static String localizedName = CMLib.lang()._("smoke bomb");
+	private final static String localizedName = CMLib.lang().L("smoke bomb");
 	@Override public String name() { return localizedName; }
 	@Override protected int trapLevel(){return 2;}
 	@Override public String requiresToSet(){return "something wooden";}
@@ -55,7 +55,7 @@ public class Bomb_Smoke extends StdBomb
 		||((((Item)P).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN))
 		{
 			if(mob!=null)
-				mob.tell(_("You something wooden to make this out of."));
+				mob.tell(L("You something wooden to make this out of."));
 			return false;
 		}
 		return true;
@@ -70,9 +70,9 @@ public class Bomb_Smoke extends StdBomb
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) the smoke bomb!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) the smoke bomb!"));
 			else
-			if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("@x1 explodes smoke into <T-YOUPOSS> eyes!",affected.name())))
+			if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("@x1 explodes smoke into <T-YOUPOSS> eyes!",affected.name())))
 			{
 				super.spring(target);
 				final Ability A=CMClass.getAbility("Spell_Blindness");

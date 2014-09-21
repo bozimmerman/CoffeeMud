@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Enthrall extends Spell
 {
 	@Override public String ID() { return "Spell_Enthrall"; }
-	private final static String localizedName = CMLib.lang()._("Enthrall");
+	private final static String localizedName = CMLib.lang().L("Enthrall");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Enthralled)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Enthralled)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -96,7 +96,7 @@ public class Spell_Enthrall extends Spell
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.target()==mob.amFollowing()))
 		{
-			mob.tell(_("You like @x1 too much.",mob.amFollowing().charStats().himher()));
+			mob.tell(L("You like @x1 too much.",mob.amFollowing().charStats().himher()));
 			return false;
 		}
 		else
@@ -107,7 +107,7 @@ public class Spell_Enthrall extends Spell
 		&&(mob.amFollowing()!=null)
 		&&(((Room)msg.target()).isInhabitant(mob.amFollowing())))
 		{
-			mob.tell(_("You don't want to leave your friend."));
+			mob.tell(L("You don't want to leave your friend."));
 			return false;
 		}
 		else
@@ -115,7 +115,7 @@ public class Spell_Enthrall extends Spell
 		&&(mob.amFollowing()!=null)
 		&&(msg.sourceMinor()==CMMsg.TYP_NOFOLLOW))
 		{
-			mob.tell(_("You like @x1 too much.",mob.amFollowing().name()));
+			mob.tell(L("You like @x1 too much.",mob.amFollowing().name()));
 			return false;
 		}
 		return super.okMessage(myHost,msg);
@@ -151,7 +151,7 @@ public class Spell_Enthrall extends Spell
 
 		if((canBeUninvoked()&&(!mob.amDead())))
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> free-will returns."));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> free-will returns."));
 			if(mob.amFollowing()!=null)
 				CMLib.commands().postFollow(mob,null,false);
 			CMLib.commands().postStand(mob,true);
@@ -198,7 +198,7 @@ public class Spell_Enthrall extends Spell
 
 		if(!CMLib.flags().canSpeak(mob))
 		{
-			mob.tell(_("You can't speak!"));
+			mob.tell(L("You can't speak!"));
 			return false;
 		}
 
@@ -206,7 +206,7 @@ public class Spell_Enthrall extends Spell
 		// won't happen
 		if((!auto)&&(!CMLib.flags().canBeHeardSpeakingBy(mob,target)))
 		{
-			mob.tell(_("@x1 can't hear your words.",target.charStats().HeShe()));
+			mob.tell(L("@x1 can't hear your words.",target.charStats().HeShe()));
 			return false;
 		}
 
@@ -226,7 +226,7 @@ public class Spell_Enthrall extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final String str=auto?"":_("^S<S-NAME> smile(s) powerfully at <T-NAMESELF>.^?");
+			final String str=auto?"":L("^S<S-NAME> smile(s) powerfully at <T-NAMESELF>.^?");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_VERBAL_SPELL,str);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -240,13 +240,13 @@ public class Spell_Enthrall extends Spell
 						CMLib.commands().postFollow(target,mob,false);
 						CMLib.combat().makePeaceInGroup(mob);
 						if(target.amFollowing()!=mob)
-							mob.tell(_("@x1 seems unwilling to follow you.",target.name(mob)));
+							mob.tell(L("@x1 seems unwilling to follow you.",target.name(mob)));
 					}
 				}
 			}
 		}
 		if(!success)
-			return maliciousFizzle(mob,target,_("<S-NAME> smile(s) powerfully at <T-NAMESELF>, but nothing happens."));
+			return maliciousFizzle(mob,target,L("<S-NAME> smile(s) powerfully at <T-NAMESELF>, but nothing happens."));
 
 		// return whether it worked
 		return success;

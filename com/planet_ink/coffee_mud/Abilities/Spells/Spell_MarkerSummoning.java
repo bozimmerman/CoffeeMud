@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_MarkerSummoning extends Spell
 {
 	@Override public String ID() { return "Spell_MarkerSummoning"; }
-	private final static String localizedName = CMLib.lang()._("Marker Summoning");
+	private final static String localizedName = CMLib.lang().L("Marker Summoning");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
@@ -71,13 +71,13 @@ public class Spell_MarkerSummoning extends Spell
 		}catch(final NoSuchElementException nse){}
 		if(oldRoom==null)
 		{
-			mob.tell(_("You can't seem to focus on your marker.  Are you sure you've already summoned it?"));
+			mob.tell(L("You can't seem to focus on your marker.  Are you sure you've already summoned it?"));
 			return false;
 		}
 		final Room newRoom=mob.location();
 		if(oldRoom==newRoom)
 		{
-			mob.tell(_("But your marker is HERE!"));
+			mob.tell(L("But your marker is HERE!"));
 			return false;
 		}
 
@@ -103,22 +103,22 @@ public class Spell_MarkerSummoning extends Spell
 
 		if((success)&&(inhabs.size()>0))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> summon(s) the power of <S-HIS-HER> marker energy!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> summon(s) the power of <S-HIS-HER> marker energy!^?"));
 			if((mob.location().okMessage(mob,msg))&&(oldRoom.okMessage(mob,msg)))
 			{
 				mob.location().send(mob,msg);
 				for(int i=0;i<inhabs.size();i++)
 				{
 					final MOB follower=(MOB)inhabs.elementAt(i);
-					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> appear(s) in a burst of light."));
-					final CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,_("<S-NAME> disappear(s) in a great summoning swirl."));
+					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> appear(s) in a burst of light."));
+					final CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,L("<S-NAME> disappear(s) in a great summoning swirl."));
 					if(oldRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 					{
 						follower.makePeace();
 						oldRoom.send(follower,leaveMsg);
 						newRoom.bringMobHere(follower,false);
 						newRoom.send(follower,enterMsg);
-						follower.tell(_("\n\r\n\r"));
+						follower.tell(L("\n\r\n\r"));
 						CMLib.commands().postLook(follower,true);
 					}
 				}
@@ -131,15 +131,15 @@ public class Spell_MarkerSummoning extends Spell
 				for(int i=0;i<items.size();i++)
 				{
 					final Item I=(Item)items.elementAt(i);
-					oldRoom.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 disappears in a summoning swirl!",I.name()));
+					oldRoom.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 disappears in a summoning swirl!",I.name()));
 					newRoom.moveItemTo(I);
-					newRoom.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 appears in a burst of light!",I.name()));
+					newRoom.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 appears in a burst of light!",I.name()));
 				}
 			}
 
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to summon <S-HIS-HER> marker energy, but fail(s)."));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to summon <S-HIS-HER> marker energy, but fail(s)."));
 
 
 		// return whether it worked

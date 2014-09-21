@@ -36,7 +36,7 @@ import java.util.*;
 public class Poison_Glowgell extends Poison
 {
 	@Override public String ID() { return "Poison_Glowgell"; }
-	private final static String localizedName = CMLib.lang()._("Glowgell");
+	private final static String localizedName = CMLib.lang().L("Glowgell");
 	@Override public String name() { return localizedName; }
 	@Override
 	protected int canAffectCode(){return Ability.CAN_MOBS

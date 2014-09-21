@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_Conviction extends Prayer
 {
 	@Override public String ID() { return "Prayer_Conviction"; }
-	private final static String localizedName = CMLib.lang()._("Conviction");
+	private final static String localizedName = CMLib.lang().L("Conviction");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Conviction)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Conviction)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
@@ -78,7 +78,7 @@ public class Prayer_Conviction extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your enhanced conviction fades."));
+			mob.tell(L("Your enhanced conviction fades."));
 	}
 
 	@Override
@@ -105,12 +105,12 @@ public class Prayer_Conviction extends Prayer
 		if(target==null) return false;
 		if(mob.getWorshipCharID().length()==0)
 		{
-			mob.tell(_("You must worship a god for this prayer to work."));
+			mob.tell(L("You must worship a god for this prayer to work."));
 			return false;
 		}
 		if(!target.getWorshipCharID().equals(mob.getWorshipCharID()))
 		{
-			mob.tell(_("@x1 must worship your god for this prayer to work.",target.name(mob)));
+			mob.tell(L("@x1 must worship your god for this prayer to work.",target.name(mob)));
 			return false;
 		}
 
@@ -125,7 +125,7 @@ public class Prayer_Conviction extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) filled with conviction!"):_("^S<S-NAME> @x1 for <T-YOUPOSS> religious conviction!^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) filled with conviction!"):L("^S<S-NAME> @x1 for <T-YOUPOSS> religious conviction!^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -133,7 +133,7 @@ public class Prayer_Conviction extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 for <T-YOUPOSS> conviction, but there is no answer.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 for <T-YOUPOSS> conviction, but there is no answer.",prayWord(mob)));
 
 
 		// return whether it worked

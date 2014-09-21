@@ -483,12 +483,12 @@ public class Clans extends StdLibrary implements ClanManager
 			if((CV.voteStarter.equalsIgnoreCase(mob.Name()))
 			&&(CV.voteStatus==Clan.VSTAT_STARTED))
 			{
-				mob.tell(_("This matter must be voted upon, but you already have a vote underway."));
+				mob.tell(L("This matter must be voted upon, but you already have a vote underway."));
 				return false;
 			}
 			if(CV.matter.equalsIgnoreCase(matter))
 			{
-				mob.tell(_("This matter must be voted upon, and is already BEING voted upon.  Use CLANVOTE to see."));
+				mob.tell(L("This matter must be voted upon, and is already BEING voted upon.  Use CLANVOTE to see."));
 				return false;
 			}
 		}
@@ -498,7 +498,7 @@ public class Clans extends StdLibrary implements ClanManager
 			final int numVotes=C.getNumVoters(function);
 			if(numVotes==1) return true;
 
-			if(mob.session().confirm(_("This matter must be voted upon.  Would you like to start the vote now (y/N)?"),_("N")))
+			if(mob.session().confirm(L("This matter must be voted upon.  Would you like to start the vote now (y/N)?"),L("N")))
 			{
 				final Clan.ClanVote CV=new Clan.ClanVote();
 				CV.matter=matter;
@@ -541,12 +541,12 @@ public class Clans extends StdLibrary implements ClanManager
 								+list+" should use CLANVOTE to participate.");
 					}
 				}
-				mob.tell(_("Your vote has started.  Use CLANVOTE to cast your vote."));
+				mob.tell(L("Your vote has started.  Use CLANVOTE to cast your vote."));
 				return false;
 			}
 		}
 		catch(final java.io.IOException e){}
-		mob.tell(_("Without a vote, this command can not be executed."));
+		mob.tell(L("Without a vote, this command can not be executed."));
 		return false;
 	}
 
@@ -619,7 +619,7 @@ public class Clans extends StdLibrary implements ClanManager
 		P1.setID("APPLICANT");
 		P1.setRoleID(0);
 		P1.setRank(0);
-		P1.setName(_("Applicant"));
+		P1.setName(L("Applicant"));
 		P1.setPluralName("Applicants");
 		P1.setMax(Integer.MAX_VALUE);
 		P1.setInnerMaskStr("");
@@ -629,7 +629,7 @@ public class Clans extends StdLibrary implements ClanManager
 		P2.setID("MEMBER");
 		P2.setRoleID(1);
 		P2.setRank(1);
-		P2.setName(_("Member"));
+		P2.setName(L("Member"));
 		P2.setPluralName("Members");
 		P2.setMax(Integer.MAX_VALUE);
 		P2.setInnerMaskStr("");
@@ -651,7 +651,7 @@ public class Clans extends StdLibrary implements ClanManager
 
 		final ClanGovernment G=(ClanGovernment)CMClass.getCommon("DefaultClanGovernment");
 		G.setID(id);
-		G.setName(_("Sample Govt"));
+		G.setName(L("Sample Govt"));
 		G.setCategory("");
 		G.setPositions(new ClanPosition[]{P1,P2});
 		G.setAutoRole(0);
@@ -1296,7 +1296,7 @@ public class Clans extends StdLibrary implements ClanManager
 					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.Members.flagNum())))
 					{
 						C.setTrophies(C.getTrophies()-Trophy.Members.flagNum());
-						C.clanAnnounce(_("The @x1 @x2 has lost control of the trophy for @x3.",C.getGovernmentName(),C.name(),Trophy.Members.description));
+						C.clanAnnounce(L("The @x1 @x2 has lost control of the trophy for @x3.",C.getGovernmentName(),C.name(),Trophy.Members.description));
 					}
 				}
 			}
@@ -1329,7 +1329,7 @@ public class Clans extends StdLibrary implements ClanManager
 					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.MemberLevel.flagNum())))
 					{
 						C.setTrophies(C.getTrophies()-Trophy.MemberLevel.flagNum());
-						C.clanAnnounce(_("The @x1 @x2 has lost control of the trophy for @x3.",C.getGovernmentName(),C.name(),Trophy.MemberLevel.description));
+						C.clanAnnounce(L("The @x1 @x2 has lost control of the trophy for @x3.",C.getGovernmentName(),C.name(),Trophy.MemberLevel.description));
 					}
 				}
 			}
@@ -1357,7 +1357,7 @@ public class Clans extends StdLibrary implements ClanManager
 					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.Experience.flagNum())))
 					{
 						C.setTrophies(C.getTrophies()-Trophy.Experience.flagNum());
-						C.clanAnnounce(_("The @x1 @x2 has lost control of the trophy for @x3.",C.getGovernmentName(),C.name(),Trophy.Experience.description));
+						C.clanAnnounce(L("The @x1 @x2 has lost control of the trophy for @x3.",C.getGovernmentName(),C.name(),Trophy.Experience.description));
 					}
 				}
 			}
@@ -1387,7 +1387,7 @@ public class Clans extends StdLibrary implements ClanManager
 					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.PlayerKills.flagNum())))
 					{
 						C.setTrophies(C.getTrophies()-Trophy.PlayerKills.flagNum());
-						C.clanAnnounce(_("The @x1 @x2 has lost control of the trophy for @x3.",C.getGovernmentName(),C.name(),Trophy.PlayerKills.description));
+						C.clanAnnounce(L("The @x1 @x2 has lost control of the trophy for @x3.",C.getGovernmentName(),C.name(),Trophy.PlayerKills.description));
 					}
 				}
 			}
@@ -1443,7 +1443,7 @@ public class Clans extends StdLibrary implements ClanManager
 					&&(CMath.bset(C.getTrophies(),Trophy.Areas.flagNum())))
 					{
 						C.setTrophies(C.getTrophies()-Trophy.Areas.flagNum());
-						C.clanAnnounce(_("The @x1 @x2 has lost control of the trophy for @x3.",C.getGovernmentName(),C.name(),Trophy.Areas.description));
+						C.clanAnnounce(L("The @x1 @x2 has lost control of the trophy for @x3.",C.getGovernmentName(),C.name(),Trophy.Areas.description));
 					}
 				}
 				if((winnerMostControlPointsC!=null)
@@ -1463,7 +1463,7 @@ public class Clans extends StdLibrary implements ClanManager
 					&&(CMath.bset(C.getTrophies(),Trophy.Points.flagNum())))
 					{
 						C.setTrophies(C.getTrophies()-Trophy.Points.flagNum());
-						C.clanAnnounce(_("The @x1 @x2 has lost control of the trophy for @x3.",C.getGovernmentName(),C.name(),Trophy.Points.description));
+						C.clanAnnounce(L("The @x1 @x2 has lost control of the trophy for @x3.",C.getGovernmentName(),C.name(),Trophy.Points.description));
 					}
 				}
 			}

@@ -37,7 +37,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Immunities extends StdAbility
 {
 	@Override public String ID() { return "Immunities"; }
-	private final static String localizedName = CMLib.lang()._("Immunities");
+	private final static String localizedName = CMLib.lang().L("Immunities");
 	@Override public String name() { return localizedName; }
 	protected String displayText="";
 	@Override public String displayText(){ return displayText;}
@@ -102,9 +102,9 @@ public class Immunities extends StdAbility
 			{
 				final Room R=CMLib.map().roomLocation(msg.target());
 				if(msg.target()!=msg.source())
-					R.show(msg.source(),msg.target(),CMMsg.MSG_OK_VISUAL,_("<T-NAME> seem(s) immune to @x1 attacks from <S-NAME>.",immunityName));
+					R.show(msg.source(),msg.target(),CMMsg.MSG_OK_VISUAL,L("<T-NAME> seem(s) immune to @x1 attacks from <S-NAME>.",immunityName));
 				else
-					R.show(msg.source(),msg.target(),CMMsg.MSG_OK_VISUAL,_("<T-NAME> seem(s) immune to @x1.",immunityName));
+					R.show(msg.source(),msg.target(),CMMsg.MSG_OK_VISUAL,L("<T-NAME> seem(s) immune to @x1.",immunityName));
 			}
 			return false;
 		}

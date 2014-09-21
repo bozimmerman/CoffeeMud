@@ -38,9 +38,9 @@ import java.util.*;
 public class Chant_SummonElemental extends Chant
 {
 	@Override public String ID() { return "Chant_SummonElemental"; }
-	private final static String localizedName = CMLib.lang()._("Summon Elemental");
+	private final static String localizedName = CMLib.lang().L("Summon Elemental");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Summon Elemental)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Summon Elemental)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -104,7 +104,7 @@ public class Chant_SummonElemental extends Chant
 	{
 		if(CMLib.flags().hasAControlledFollower(mob, this))
 		{
-			mob.tell(_("You can only control one elemental."));
+			mob.tell(L("You can only control one elemental."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -115,7 +115,7 @@ public class Chant_SummonElemental extends Chant
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) and summon(s) help from another Plain.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) and summon(s) help from another Plain.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -124,11 +124,11 @@ public class Chant_SummonElemental extends Chant
 				if(target.isInCombat()) target.makePeace();
 				CMLib.commands().postFollow(target,mob,true);
 				if(target.amFollowing()!=mob)
-					mob.tell(_("@x1 seems unwilling to follow you.",target.name(mob)));
+					mob.tell(L("@x1 seems unwilling to follow you.",target.name(mob)));
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s), but nothing happens."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s), but nothing happens."));
 
 		// return whether it worked
 		return success;
@@ -140,34 +140,34 @@ public class Chant_SummonElemental extends Chant
 		switch(CMLib.dice().roll(1,4,0))
 		{
 		case 1:
-			newMOB.setName(_("a fire elemental"));
-			newMOB.setDisplayText(_("a fire elemental is flaming nearby."));
-			newMOB.setDescription(_("A large beast, wreathed in flame, with sparkling eyes and a hot temper."));
+			newMOB.setName(L("a fire elemental"));
+			newMOB.setDisplayText(L("a fire elemental is flaming nearby."));
+			newMOB.setDescription(L("A large beast, wreathed in flame, with sparkling eyes and a hot temper."));
 			newMOB.basePhyStats().setDisposition(newMOB.basePhyStats().disposition()|PhyStats.IS_LIGHTSOURCE);
 			CMLib.factions().setAlignment(newMOB,Faction.Align.EVIL);
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("FireElemental"));
 			newMOB.addAbility(CMClass.getAbility("Firebreath"));
 			break;
 		case 2:
-			newMOB.setName(_("an ice elemental"));
-			newMOB.setDisplayText(_("an ice elemental is chilling out here."));
-			newMOB.setDescription(_("A large beast, made of ice, with crytaline eyes and a cold disposition."));
+			newMOB.setName(L("an ice elemental"));
+			newMOB.setDisplayText(L("an ice elemental is chilling out here."));
+			newMOB.setDescription(L("A large beast, made of ice, with crytaline eyes and a cold disposition."));
 			CMLib.factions().setAlignment(newMOB,Faction.Align.GOOD);
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("WaterElemental"));
 			newMOB.addAbility(CMClass.getAbility("Frostbreath"));
 			break;
 		case 3:
-			newMOB.setName(_("an earth elemental"));
-			newMOB.setDisplayText(_("an earth elemental looks right at home."));
-			newMOB.setDescription(_("A large beast, made of rock and dirt, with a hard stare."));
+			newMOB.setName(L("an earth elemental"));
+			newMOB.setDisplayText(L("an earth elemental looks right at home."));
+			newMOB.setDescription(L("A large beast, made of rock and dirt, with a hard stare."));
 			CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("EarthElemental"));
 			newMOB.addAbility(CMClass.getAbility("Gasbreath"));
 			break;
 		case 4:
-			newMOB.setName(_("an air elemental"));
-			newMOB.setDisplayText(_("an air elemental blows right by."));
-			newMOB.setDescription(_("A large beast, made of swirling clouds and air."));
+			newMOB.setName(L("an air elemental"));
+			newMOB.setDisplayText(L("an air elemental blows right by."));
+			newMOB.setDescription(L("A large beast, made of swirling clouds and air."));
 			CMLib.factions().setAlignment(newMOB,Faction.Align.GOOD);
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("AirElemental"));
 			newMOB.addAbility(CMClass.getAbility("Lighteningbreath"));
@@ -192,7 +192,7 @@ public class Chant_SummonElemental extends Chant
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 		newMOB.setStartRoom(null);
 		newMOB.addNonUninvokableEffect(this);
 		return(newMOB);

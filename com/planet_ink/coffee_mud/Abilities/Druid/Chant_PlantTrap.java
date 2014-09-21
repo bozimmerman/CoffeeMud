@@ -35,7 +35,7 @@ import java.util.*;
 public class Chant_PlantTrap extends Chant implements Trap
 {
 	@Override public String ID() { return "Chant_PlantTrap"; }
-	private final static String localizedName = CMLib.lang()._("Plant Trap");
+	private final static String localizedName = CMLib.lang().L("Plant Trap");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -72,9 +72,9 @@ public class Chant_PlantTrap extends Chant implements Trap
 			if((!invoker().mayIFight(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) some aggressive plants!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) some aggressive plants!"));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> <S-IS-ARE> assaulted by the plants!")))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> <S-IS-ARE> assaulted by the plants!")))
 			{
 				final Vector them=new XVector<String>(choices);
 				if(invoker()!=null)
@@ -139,18 +139,18 @@ public class Chant_PlantTrap extends Chant implements Trap
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("This place is already trapped."));
+			mob.tell(L("This place is already trapped."));
 			return false;
 		}
 		if(!helpfulAbilityFound(mob))
 		{
-			mob.tell(_("You must know plant choke or plant constriction for this chant to work."));
+			mob.tell(L("You must know plant choke or plant constriction for this chant to work."));
 			return false;
 		}
 
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
-			mob.tell(_("You must be outdoors for this chant to work."));
+			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
 		if(((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
@@ -160,7 +160,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		&&(!auto))
 		{
-			mob.tell(_("This chant does not work here."));
+			mob.tell(L("This chant does not work here."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -174,7 +174,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("This area seems to writh with malicious plants."):_("^S<S-NAME> chant(s), stirring the plant life into maliciousness.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("This area seems to writh with malicious plants."):L("^S<S-NAME> chant(s), stirring the plant life into maliciousness.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -182,7 +182,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s), but the magic fades."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s), but the magic fades."));
 
 		// return whether it worked
 		return success;

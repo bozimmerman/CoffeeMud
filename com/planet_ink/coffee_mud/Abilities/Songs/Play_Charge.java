@@ -37,7 +37,7 @@ import java.util.*;
 public class Play_Charge extends Play
 {
 	@Override public String ID() { return "Play_Charge"; }
-	private final static String localizedName = CMLib.lang()._("Charge!");
+	private final static String localizedName = CMLib.lang().L("Charge!");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return 0;}
@@ -71,7 +71,7 @@ public class Play_Charge extends Play
 	{
 		if((commands.size()==0)&&(!mob.isInCombat()))
 		{
-			mob.tell(_("Play charge at whom?"));
+			mob.tell(L("Play charge at whom?"));
 			return false;
 		}
 		if(commands.size()==0)

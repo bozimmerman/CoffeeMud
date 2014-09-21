@@ -35,7 +35,7 @@ import java.util.*;
 public class Prayer_MassHarm extends Prayer
 {
 	@Override public String ID() { return "Prayer_MassHarm"; }
-	private final static String localizedName = CMLib.lang()._("Mass Harm");
+	private final static String localizedName = CMLib.lang().L("Mass Harm");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -78,7 +78,7 @@ public class Prayer_MassHarm extends Prayer
 					// affected MOB.  Then tell everyone else
 					// what happened.
 					final Room R=target.location();
-					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?_("<T-NAME> become(s) surrounded by a dark cloud."):_("^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, @x1.^?",prayingWord(mob)));
+					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?L("<T-NAME> become(s) surrounded by a dark cloud."):L("^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, @x1.^?",prayingWord(mob)));
 					final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
 					if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 					{
@@ -92,7 +92,7 @@ public class Prayer_MassHarm extends Prayer
 					}
 				}
 				else
-					maliciousFizzle(mob,target,_("<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, @x1, but @x2 does not heed.",prayingWord(mob),hisHerDiety(mob)));
+					maliciousFizzle(mob,target,L("<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, @x1, but @x2 does not heed.",prayingWord(mob),hisHerDiety(mob)));
 			}
 		}
 

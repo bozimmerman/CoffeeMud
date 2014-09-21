@@ -226,7 +226,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			}
 			case CMMsg.TYP_BID:
 			{
-				CMLib.commands().postSay(this,msg.source(),_("I'm afraid my prices are firm."),false,false);
+				CMLib.commands().postSay(this,msg.source(),L("I'm afraid my prices are firm."),false,false);
 				return false;
 			}
 			case CMMsg.TYP_BUY:
@@ -271,7 +271,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						||(CMSecurity.isAllowed(msg.source(),location(),CMSecurity.SecFlag.CMDROOMS)&&(isMonster()))))
 					&&((doISellThis(msg.tool()))||(isSold(DEAL_INVENTORYONLY))))
 					{
-						CMLib.commands().postSay(this,msg.source(),_("Yes, I will now sell @x1.",msg.tool().name()),false,false);
+						CMLib.commands().postSay(this,msg.source(),L("Yes, I will now sell @x1.",msg.tool().name()),false,false);
 						getShop().addStoreInventory(msg.tool(),1,-1);
 						if(isGeneric()) text();
 						return;
@@ -283,7 +283,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			{
 				super.executeMsg(myHost,msg);
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
-					CMLib.commands().postSay(this,mob,_("I'll give you @x1 for @x2.",CMLib.beanCounter().nameCurrencyShort(this,CMLib.coffeeShops().pawningPrice(this,mob,msg.tool(),this).absoluteGoldPrice),msg.tool().name()),true,false);
+					CMLib.commands().postSay(this,mob,L("I'll give you @x1 for @x2.",CMLib.beanCounter().nameCurrencyShort(this,CMLib.coffeeShops().pawningPrice(this,mob,msg.tool(),this).absoluteGoldPrice),msg.tool().name()),true,false);
 				break;
 			}
 			case CMMsg.TYP_SELL: // sell TO -- this is a shopkeeper purchasing from a player

@@ -46,7 +46,7 @@ public class At extends StdCommand
 		commands.removeElementAt(0);
 		if(commands.size()==0)
 		{
-			mob.tell(_("At where do what?"));
+			mob.tell(L("At where do what?"));
 			return false;
 		}
 		final String cmd=(String)commands.firstElement();
@@ -55,14 +55,14 @@ public class At extends StdCommand
 		if(room==null)
 		{
 			if(CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.AT))
-				mob.tell(_("At where? Try a Room ID, player name, area name, or room text!"));
+				mob.tell(L("At where? Try a Room ID, player name, area name, or room text!"));
 			else
-				mob.tell(_("You aren't powerful enough to do that."));
+				mob.tell(L("You aren't powerful enough to do that."));
 			return false;
 		}
 		if(!CMSecurity.isAllowed(mob,room,CMSecurity.SecFlag.AT))
 		{
-			mob.tell(_("You aren't powerful enough to do that there."));
+			mob.tell(L("You aren't powerful enough to do that there."));
 			return false;
 		}
 		final Room R=mob.location();

@@ -36,7 +36,7 @@ import java.util.*;
 public class Fighter_CoupDeGrace extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_CoupDeGrace"; }
-	private final static String localizedName = CMLib.lang()._("Coup de Grace");
+	private final static String localizedName = CMLib.lang().L("Coup de Grace");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"COUP","COUPDEGRACE"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -73,12 +73,12 @@ public class Fighter_CoupDeGrace extends FighterSkill
 	{
 		if(!mob.isInCombat())
 		{
-			mob.tell(_("You must be in combat to do this!"));
+			mob.tell(L("You must be in combat to do this!"));
 			return false;
 		}
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell(_("You are too far away to try that!"));
+			mob.tell(L("You are too far away to try that!"));
 			return false;
 		}
 		final Item w=mob.fetchWieldedItem();
@@ -87,27 +87,27 @@ public class Fighter_CoupDeGrace extends FighterSkill
 		{
 			if((w==null)||(!(w instanceof Weapon)))
 			{
-				mob.tell(_("You cannot coup de grace without a weapon!"));
+				mob.tell(L("You cannot coup de grace without a weapon!"));
 				return false;
 			}
 			ww=(Weapon)w;
 			if((ww.weaponType()!=Weapon.TYPE_SLASHING)
 			&&(ww.weaponType()!=Weapon.TYPE_PIERCING))
 			{
-				mob.tell(_("You cannot coup de grace with a @x1!",ww.name()));
+				mob.tell(L("You cannot coup de grace with a @x1!",ww.name()));
 				return false;
 			}
 			if(mob.curState().getMovement()<150)
 			{
-				mob.tell(_("You don't have the energy to try it."));
+				mob.tell(L("You don't have the energy to try it."));
 				return false;
 			}
 			if(!CMLib.flags().isSleeping(mob.getVictim()))
 			{
 				if(CMLib.flags().isSitting(mob.getVictim()))
-					mob.tell(_("@x1 is on the ground, but not prone!",mob.getVictim().charStats().HeShe()));
+					mob.tell(L("@x1 is on the ground, but not prone!",mob.getVictim().charStats().HeShe()));
 				else
-					mob.tell(_("@x1 is not prone!",mob.getVictim().charStats().HeShe()));
+					mob.tell(L("@x1 is not prone!",mob.getVictim().charStats().HeShe()));
 				return false;
 			}
 		}
@@ -138,7 +138,7 @@ public class Fighter_CoupDeGrace extends FighterSkill
 		}
 		else
 		{
-			final String str=auto?"":_("<S-NAME> attempt(s) a Coup-de-Grace and fail(s)!");
+			final String str=auto?"":L("<S-NAME> attempt(s) a Coup-de-Grace and fail(s)!");
 			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MASK_MALICIOUS|CMMsg.MSG_OK_ACTION,str);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);

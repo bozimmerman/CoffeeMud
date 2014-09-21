@@ -81,23 +81,23 @@ public class SmallElfKin extends StdRace
 			outfitChoices=new Vector();
 			// Have to, since it requires use of special constructor
 			final Armor s1=CMClass.getArmor("GenShirt");
-			s1.setName(_("a delicate green shirt"));
-			s1.setDisplayText(_("a delicate green shirt sits gracefully here."));
-			s1.setDescription(_("Obviously fine craftmenship, with sharp folds and intricate designs."));
+			s1.setName(L("a delicate green shirt"));
+			s1.setDisplayText(L("a delicate green shirt sits gracefully here."));
+			s1.setDescription(L("Obviously fine craftmenship, with sharp folds and intricate designs."));
 			s1.text();
 			outfitChoices.add(s1);
 
 			final Armor s2=CMClass.getArmor("GenShoes");
-			s2.setName(_("a pair of sandals"));
-			s2.setDisplayText(_("a pair of sandals lie here."));
-			s2.setDescription(_("Obviously fine craftmenship, these light leather sandals have tiny woodland drawings in them."));
+			s2.setName(L("a pair of sandals"));
+			s2.setDisplayText(L("a pair of sandals lie here."));
+			s2.setDescription(L("Obviously fine craftmenship, these light leather sandals have tiny woodland drawings in them."));
 			s2.text();
 			outfitChoices.add(s2);
 
 			final Armor p1=CMClass.getArmor("GenPants");
-			p1.setName(_("some delicate leggings"));
-			p1.setDisplayText(_("a pair delicate brown leggings sit here."));
-			p1.setDescription(_("Obviously fine craftmenship, with sharp folds and intricate designs.  They look perfect for dancing in!"));
+			p1.setName(L("some delicate leggings"));
+			p1.setDisplayText(L("a pair delicate brown leggings sit here."));
+			p1.setDescription(L("Obviously fine craftmenship, with sharp folds and intricate designs.  They look perfect for dancing in!"));
 			p1.text();
 			outfitChoices.add(p1);
 

@@ -48,7 +48,7 @@ public class Remove extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("Remove what?"));
+			mob.tell(L("Remove what?"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -56,7 +56,7 @@ public class Remove extends StdCommand
 		{
 			final boolean quiet=((commands.size()>1)&&(commands.lastElement() instanceof String)&&(((String)commands.lastElement()).equalsIgnoreCase("QUIETLY")));
 			final Item item=(Item)commands.firstElement();
-			final CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_REMOVE,quiet?null:_("<S-NAME> remove(s) <T-NAME>."));
+			final CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_REMOVE,quiet?null:L("<S-NAME> remove(s) <T-NAME>."));
 			if(mob.location().okMessage(mob,newMsg))
 			{
 				mob.location().send(mob,newMsg);
@@ -67,12 +67,12 @@ public class Remove extends StdCommand
 
 		final List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_WORNONLY,false);
 		if(items.size()==0)
-			mob.tell(_("You don't seem to be wearing that."));
+			mob.tell(L("You don't seem to be wearing that."));
 		else
 		for(int i=0;i<items.size();i++)
 		{
 			final Item item=items.get(i);
-			final CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_REMOVE,_("<S-NAME> remove(s) <T-NAME>."));
+			final CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_REMOVE,L("<S-NAME> remove(s) <T-NAME>."));
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);
 		}

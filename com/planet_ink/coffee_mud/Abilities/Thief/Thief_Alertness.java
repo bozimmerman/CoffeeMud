@@ -37,9 +37,9 @@ import java.util.*;
 public class Thief_Alertness extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Alertness"; }
-	private final static String localizedName = CMLib.lang()._("Alertness");
+	private final static String localizedName = CMLib.lang().L("Alertness");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Alertness)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Alertness)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -98,7 +98,7 @@ public class Thief_Alertness extends ThiefSkill
 		final MOB M=(MOB)affected;
 		super.unInvoke();
 		if((M!=null)&&(!M.amDead()))
-			M.tell(_("You don't feel quite so alert any more."));
+			M.tell(L("You don't feel quite so alert any more."));
 	}
 
 	@Override
@@ -109,7 +109,7 @@ public class Thief_Alertness extends ThiefSkill
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already alert."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already alert."));
 			return false;
 		}
 
@@ -119,9 +119,9 @@ public class Thief_Alertness extends ThiefSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_EYES),auto?_("<T-NAME> become(s) alert."):_("<S-NAME> become(s) suddenly alert."));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_EYES),auto?L("<T-NAME> become(s) alert."):L("<S-NAME> become(s) suddenly alert."));
 		if(!success)
-			return beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to look alert, but become(s) distracted."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to look alert, but become(s) distracted."));
 		else
 		if(mob.location().okMessage(mob,msg))
 		{

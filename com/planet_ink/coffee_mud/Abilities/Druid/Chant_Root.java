@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_Root extends Chant
 {
 	@Override public String ID() { return "Chant_Root"; }
-	private final static String localizedName = CMLib.lang()._("Root");
+	private final static String localizedName = CMLib.lang().L("Root");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Rooted)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Rooted)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -57,7 +57,7 @@ public class Chant_Root extends Chant
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> roots are pulled up."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> roots are pulled up."));
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class Chant_Root extends Chant
 				{
 					if(!uprooted)
 					{
-						msg.source().tell(_("You can't really go anywhere -- you are rooted!"));
+						msg.source().tell(L("You can't really go anywhere -- you are rooted!"));
 						return false;
 					}
 					uprooted=false;
@@ -89,7 +89,7 @@ public class Chant_Root extends Chant
 				{
 					if(!uprooted)
 					{
-						msg.source().tell((MOB)affected,null,null,_("<S-NAME> <S-IS-ARE> rooted and can't go anywhere."));
+						msg.source().tell((MOB)affected,null,null,L("<S-NAME> <S-IS-ARE> rooted and can't go anywhere."));
 						return false;
 					}
 					uprooted=false;
@@ -122,7 +122,7 @@ public class Chant_Root extends Chant
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already rooted."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already rooted."));
 			return false;
 		}
 
@@ -142,7 +142,7 @@ public class Chant_Root extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<S-NAME> become(s) rooted to the ground!"):_("^S<S-NAME> chant(s) as <S-HIS-HER> feet become rooted in the ground!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<S-NAME> become(s) rooted to the ground!"):L("^S<S-NAME> chant(s) as <S-HIS-HER> feet become rooted in the ground!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -150,7 +150,7 @@ public class Chant_Root extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s), but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s), but nothing more happens."));
 
 		// return whether it worked
 		return success;

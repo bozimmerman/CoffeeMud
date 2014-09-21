@@ -36,9 +36,9 @@ import java.util.*;
 public class Prayer_SenseEvil extends Prayer
 {
 	@Override public String ID() { return "Prayer_SenseEvil"; }
-	private final static String localizedName = CMLib.lang()._("Sense Evil");
+	private final static String localizedName = CMLib.lang().L("Sense Evil");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Sense Evil)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Sense Evil)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -68,7 +68,7 @@ public class Prayer_SenseEvil extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("The red fades from <S-YOUPOSS> eyes."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("The red fades from <S-YOUPOSS> eyes."));
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class Prayer_SenseEvil extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> attain(s) glowing red eyes!"):_("^S<S-NAME> @x1 for divine revelation, and <S-HIS-HER> eyes turn red.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> attain(s) glowing red eyes!"):L("^S<S-NAME> @x1 for divine revelation, and <S-HIS-HER> eyes turn red.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -96,7 +96,7 @@ public class Prayer_SenseEvil extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> @x1 for divine revelation, but <S-HIS-HER> prayer is not heard.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 for divine revelation, but <S-HIS-HER> prayer is not heard.",prayWord(mob)));
 
 
 		// return whether it worked

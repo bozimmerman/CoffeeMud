@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_IllusionaryForest extends Chant
 {
 	@Override public String ID() { return "Chant_IllusionaryForest"; }
-	private final static String localizedName = CMLib.lang()._("Illusionary Forest");
+	private final static String localizedName = CMLib.lang().L("Illusionary Forest");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Illusionary Fores)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Illusionary Fores)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -57,7 +57,7 @@ public class Chant_IllusionaryForest extends Chant
 			return;
 		final Room room=(Room)affected;
 		if(canBeUninvoked())
-			room.showHappens(CMMsg.MSG_OK_VISUAL, _("The appearance of this place changes..."));
+			room.showHappens(CMMsg.MSG_OK_VISUAL, L("The appearance of this place changes..."));
 		super.unInvoke();
 	}
 
@@ -101,44 +101,44 @@ public class Chant_IllusionaryForest extends Chant
 		switch(CMLib.dice().roll(1,10,0))
 		{
 		case 1:
-			newRoom.setDisplayText(_("Forest glade"));
-			newRoom.setDescription(_("This quaint forest glade is surrounded by tall oak trees.  A gentle breeze tosses leaves up into the air."));
+			newRoom.setDisplayText(L("Forest glade"));
+			newRoom.setDescription(L("This quaint forest glade is surrounded by tall oak trees.  A gentle breeze tosses leaves up into the air."));
 			break;
 		case 2:
-			newRoom.setDisplayText(_("Dark Forest"));
-			newRoom.setDescription(_("The forest is dark and thick here.  Ominous looking trees seem to block every path, and the air is perfectly still."));
+			newRoom.setDisplayText(L("Dark Forest"));
+			newRoom.setDescription(L("The forest is dark and thick here.  Ominous looking trees seem to block every path, and the air is perfectly still."));
 			break;
 		case 3:
-			newRoom.setDisplayText(_("Light Forest"));
-			newRoom.setDescription(_("A light growth of tall evergreens surrounds you on all sides.  There are no apparant paths, but you can still see the sky through the leaves."));
+			newRoom.setDisplayText(L("Light Forest"));
+			newRoom.setDescription(L("A light growth of tall evergreens surrounds you on all sides.  There are no apparant paths, but you can still see the sky through the leaves."));
 			break;
 		case 4:
-			newRoom.setDisplayText(_("Forest by the stream"));
-			newRoom.setDescription(_("A light growth of tall evergreens surrounds you on all sides.  You can hear the sound of a running brook, but can't tell which direction its coming from."));
+			newRoom.setDisplayText(L("Forest by the stream"));
+			newRoom.setDescription(L("A light growth of tall evergreens surrounds you on all sides.  You can hear the sound of a running brook, but can't tell which direction its coming from."));
 			break;
 		case 5:
-			newRoom.setDisplayText(_("Dark Forest"));
-			newRoom.setDescription(_("The trees around you are dark and old, their branches seeming to reach towards you.  In the distance, a wolfs howl can be heard."));
+			newRoom.setDisplayText(L("Dark Forest"));
+			newRoom.setDescription(L("The trees around you are dark and old, their branches seeming to reach towards you.  In the distance, a wolfs howl can be heard."));
 			break;
 		case 6:
-			newRoom.setDisplayText(_("End of the path"));
-			newRoom.setDescription(_("The forest path seems to end at the base of a copse of tall evergreens.  Behind you, the path has mysteriously vanished."));
+			newRoom.setDisplayText(L("End of the path"));
+			newRoom.setDescription(L("The forest path seems to end at the base of a copse of tall evergreens.  Behind you, the path has mysteriously vanished."));
 			break;
 		case 7:
-			newRoom.setDisplayText(_("Forest"));
-			newRoom.setDescription(_("You are standing in the middle of a light forest.  How you got here, you can't really say."));
+			newRoom.setDisplayText(L("Forest"));
+			newRoom.setDescription(L("You are standing in the middle of a light forest.  How you got here, you can't really say."));
 			break;
 		case 8:
-			newRoom.setDisplayText(_("Dark Forest"));
-			newRoom.setDescription(_("You are standing in the middle of a thick dark forest.  You wish you knew how you got here."));
+			newRoom.setDisplayText(L("Dark Forest"));
+			newRoom.setDescription(L("You are standing in the middle of a thick dark forest.  You wish you knew how you got here."));
 			break;
 		case 9:
-			newRoom.setDisplayText(_("Dark Forest"));
-			newRoom.setDescription(_("The trees here seem to tower endlessly into the sky.  Their branches blocking out all but the smallest glimpses of the sky."));
+			newRoom.setDisplayText(L("Dark Forest"));
+			newRoom.setDescription(L("The trees here seem to tower endlessly into the sky.  Their branches blocking out all but the smallest glimpses of the sky."));
 			break;
 		case 10:
-			newRoom.setDisplayText(_("Druidic Forest"));
-			newRoom.setDescription(_("A forest seems to have grown up all around you.  The strange magical nature of the mushroom like trees makes you think you've entered a druidic grove."));
+			newRoom.setDisplayText(L("Druidic Forest"));
+			newRoom.setDescription(L("A forest seems to have grown up all around you.  The strange magical nature of the mushroom like trees makes you think you've entered a druidic grove."));
 			break;
 		}
 		return newRoom;
@@ -164,11 +164,11 @@ public class Chant_IllusionaryForest extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			newRoom();
-			final CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto), auto?"":_("^S<S-NAME> chant(s) dramatically!^?"));
+			final CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto), auto?"":L("^S<S-NAME> chant(s) dramatically!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The appearance of this place changes..."));
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The appearance of this place changes..."));
 				if(CMLib.law().doesOwnThisProperty(mob,mob.location()))
 				{
 					mob.location().addNonUninvokableEffect((Ability)copyOf());
@@ -179,7 +179,7 @@ public class Chant_IllusionaryForest extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) dramatically, but the magic fades."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) dramatically, but the magic fades."));
 
 		// return whether it worked
 		return success;

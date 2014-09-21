@@ -35,7 +35,7 @@ import java.util.*;
 public class Skill_Flee extends StdSkill
 {
 	@Override public String ID() { return "Skill_Flee"; }
-	private final static String localizedName = CMLib.lang()._("Flee");
+	private final static String localizedName = CMLib.lang().L("Flee");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
@@ -58,7 +58,7 @@ public class Skill_Flee extends StdSkill
 			CMLib.commands().forceStandardCommand(mob, "FLEE", V);
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to flee, but fail(s) to get away"));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to flee, but fail(s) to get away"));
 
 		// return whether it worked
 		return success;

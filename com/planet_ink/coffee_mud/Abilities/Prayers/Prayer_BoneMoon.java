@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_BoneMoon extends Prayer
 {
 	@Override public String ID() { return "Prayer_BoneMoon"; }
-	private final static String localizedName = CMLib.lang()._("Bone Moon");
+	private final static String localizedName = CMLib.lang().L("Bone Moon");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Bone Moon)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Bone Moon)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
@@ -57,7 +57,7 @@ public class Prayer_BoneMoon extends Prayer
 		{
 			final Room R=CMLib.map().roomLocation(affected);
 			if((R!=null)&&(CMLib.flags().isInTheGame(affected,true)))
-				R.showHappens(CMMsg.MSG_OK_VISUAL,_("The bone moon fades."));
+				R.showHappens(CMMsg.MSG_OK_VISUAL,L("The bone moon fades."));
 		}
 		super.unInvoke();
 	}
@@ -120,7 +120,7 @@ public int castingQuality(MOB mob, Physical target)
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("This place is already under a bone moon."));
+			mob.tell(L("This place is already under a bone moon."));
 			return false;
 		}
 		for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
@@ -129,7 +129,7 @@ public int castingQuality(MOB mob, Physical target)
 			if((A!=null)
 			&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONALTERING))
 			{
-				mob.tell(_("The moon is already under @x1, and can not be changed until this magic is gone.",A.name()));
+				mob.tell(L("The moon is already under @x1, and can not be changed until this magic is gone.",A.name()));
 				return false;
 			}
 		}
@@ -145,11 +145,11 @@ public int castingQuality(MOB mob, Physical target)
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("The Bone Moon rises over <S-NAME>."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("The Bone Moon rises over <S-NAME>."));
 				level=1;
 				if(CMLib.law().doesOwnThisProperty(mob,target))
 				{
@@ -161,7 +161,7 @@ public int castingQuality(MOB mob, Physical target)
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for the Bone Moon, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for the Bone Moon, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
 
 
 		// return whether it worked

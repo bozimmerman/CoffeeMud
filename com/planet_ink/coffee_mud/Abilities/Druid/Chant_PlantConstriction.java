@@ -37,10 +37,10 @@ import java.util.*;
 public class Chant_PlantConstriction extends Chant
 {
 	@Override public String ID() { return "Chant_PlantConstriction"; }
-	private final static String localizedName = CMLib.lang()._("Plant Constriction");
+	private final static String localizedName = CMLib.lang().L("Plant Constriction");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Plant Constriction)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Plant Constriction)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
 	@Override public int minRange(){return 0;}
@@ -63,7 +63,7 @@ public class Chant_PlantConstriction extends Chant
 			if((!mob.amDead())
 			&&(CMLib.flags().isInTheGame(mob,false)))
 			{
-				mob.tell(_("@x1 loosens its grip on you and falls off.",I.name(mob)));
+				mob.tell(L("@x1 loosens its grip on you and falls off.",I.name(mob)));
 				I.setRawWornCode(0);
 				mob.location().moveItemTo(I,ItemPossessor.Expire.Player_Drop);
 			}
@@ -99,7 +99,7 @@ public class Chant_PlantConstriction extends Chant
 		{
 			if(CMLib.dice().rollPercentage()>(msg.source().charStats().getStat(CharStats.STAT_STRENGTH)*4))
 			{
-				msg.source().location().show(msg.source(),affected,CMMsg.MSG_OK_VISUAL,_("<S-NAME> struggle(s) to remove <T-NAME> and fail(s)."));
+				msg.source().location().show(msg.source(),affected,CMMsg.MSG_OK_VISUAL,L("<S-NAME> struggle(s) to remove <T-NAME> and fail(s)."));
 				return false;
 			}
 		}
@@ -158,7 +158,7 @@ public class Chant_PlantConstriction extends Chant
 				myPlant=new Chant_SummonPlants().buildPlant(mob,mob.location());
 			else
 			{
-				mob.tell(_("There doesn't appear to be any of your plants here to choke with."));
+				mob.tell(L("There doesn't appear to be any of your plants here to choke with."));
 				return false;
 			}
 		}
@@ -170,7 +170,7 @@ public class Chant_PlantConstriction extends Chant
 		if(positionChoices.size()==0)
 		{
 			if(!auto)
-				mob.tell(_("Ummm, @x1 doesn't have arms or legs to constrict...",target.name(mob)));
+				mob.tell(L("Ummm, @x1 doesn't have arms or legs to constrict...",target.name(mob)));
 			return false;
 		}
 
@@ -189,7 +189,7 @@ public class Chant_PlantConstriction extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) at <T-NAME> while pointing at @x1!^?",myPlant.name()));
+			final CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) at <T-NAME> while pointing at @x1!^?",myPlant.name()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -197,14 +197,14 @@ public class Chant_PlantConstriction extends Chant
 				final Long II=(Long)positionChoices.elementAt(CMLib.dice().roll(1,positionChoices.size(),-1));
 				myPlant.setRawWornCode(II.longValue());
 				if(II.longValue()==Wearable.WORN_ARMS)
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("@x1 jumps up and wraps itself around <S-YOUPOSS> arms!",myPlant.name()));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("@x1 jumps up and wraps itself around <S-YOUPOSS> arms!",myPlant.name()));
 				else
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("@x1 jumps up and wraps itself around <S-YOUPOSS> legs!",myPlant.name()));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("@x1 jumps up and wraps itself around <S-YOUPOSS> legs!",myPlant.name()));
 				beneficialAffect(mob,myPlant,asLevel,20);
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) at <T-NAME>, but the magic fizzles."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAME>, but the magic fizzles."));
 
 		// return whether it worked
 		return success;

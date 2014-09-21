@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_ElectricStrike extends Prayer
 {
 	@Override public String ID() { return "Prayer_ElectricStrike"; }
-	private final static String localizedName = CMLib.lang()._("Electric Strike");
+	private final static String localizedName = CMLib.lang().L("Electric Strike");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -61,7 +61,7 @@ public class Prayer_ElectricStrike extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			final Prayer_ElectricStrike newOne=(Prayer_ElectricStrike)this.copyOf();
-			final CMMsg msg=CMClass.getMsg(mob,target,newOne,verbalCastCode(mob,target,auto),_(auto?"<T-NAME> is filled with a holy charge!":"^S<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+"!^?")+CMLib.protocol().msp("lightning.wav",40));
+			final CMMsg msg=CMClass.getMsg(mob,target,newOne,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> is filled with a holy charge!":"^S<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+"!^?")+CMLib.protocol().msp("lightning.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ELECTRIC|(auto?CMMsg.MASK_ALWAYS:0),null);
 			final Room R=target.location();
 			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
@@ -76,7 +76,7 @@ public class Prayer_ElectricStrike extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
+			return maliciousFizzle(mob,target,L("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

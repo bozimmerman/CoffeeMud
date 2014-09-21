@@ -49,7 +49,7 @@ public class Buy extends StdCommand
 			final MOB M=mob.location().fetchInhabitant((String)commands.lastElement());
 			if(M==null)
 			{
-				mob.tell(_("There is noone called '@x1' here.",((String)commands.lastElement())));
+				mob.tell(L("There is noone called '@x1' here.",((String)commands.lastElement())));
 				return false;
 			}
 			commands.removeElementAt(commands.size()-1);
@@ -61,12 +61,12 @@ public class Buy extends StdCommand
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
 		{
-			mob.tell(_("Buy what?"));
+			mob.tell(L("Buy what?"));
 			return false;
 		}
 		if(CMLib.coffeeShops().getShopKeeper(shopkeeper)==null)
 		{
-			mob.tell(_("@x1 is not a shopkeeper!",shopkeeper.name()));
+			mob.tell(L("@x1 is not a shopkeeper!",shopkeeper.name()));
 			return false;
 		}
 
@@ -107,12 +107,12 @@ public class Buy extends StdCommand
 		}
 
 		if(V.size()==0)
-			mob.tell(mob,shopkeeper,null,_("<T-NAME> do(es)n't appear to have any '@x1' for sale.  Try LIST.",whatName));
+			mob.tell(mob,shopkeeper,null,L("<T-NAME> do(es)n't appear to have any '@x1' for sale.  Try LIST.",whatName));
 		else
 		for(int v=0;v<V.size();v++)
 		{
 			final Environmental thisThang=(Environmental)V.elementAt(v);
-			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_BUY,_("<S-NAME> buy(s) <O-NAME> from <T-NAMESELF>@x1.",forName));
+			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_BUY,L("<S-NAME> buy(s) <O-NAME> from <T-NAMESELF>@x1.",forName));
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);
 		}

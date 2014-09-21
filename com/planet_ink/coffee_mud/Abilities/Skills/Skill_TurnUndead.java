@@ -35,9 +35,9 @@ import java.util.*;
 public class Skill_TurnUndead extends StdSkill
 {
 	@Override public String ID() { return "Skill_TurnUndead"; }
-	private final static String localizedName = CMLib.lang()._("Turn Undead");
+	private final static String localizedName = CMLib.lang().L("Turn Undead");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Turned)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Turned)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -72,13 +72,13 @@ public class Skill_TurnUndead extends StdSkill
 		if((target.baseCharStats().getMyRace()==null)
 		   ||(!target.baseCharStats().getMyRace().racialCategory().equals("Undead")))
 		{
-			mob.tell(auto?_("Only the undead can be turned."):_("You can only turn the undead."));
+			mob.tell(auto?L("Only the undead can be turned."):L("You can only turn the undead."));
 			return false;
 		}
 
 		if(CMLib.flags().isEvil(mob))
 		{
-			mob.tell(_("Only the riteous may turn the undead."));
+			mob.tell(L("Only the riteous may turn the undead."));
 			return false;
 		}
 
@@ -97,7 +97,7 @@ public class Skill_TurnUndead extends StdSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_ATTACK_SOMANTIC_SPELL|(auto?CMMsg.MASK_ALWAYS:0),auto?_("<T-NAME> turn(s) away."):_("^S<S-NAME> turn(s) <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_ATTACK_SOMANTIC_SPELL|(auto?CMMsg.MASK_ALWAYS:0),auto?L("<T-NAME> turn(s) away."):L("^S<S-NAME> turn(s) <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -105,12 +105,12 @@ public class Skill_TurnUndead extends StdSkill
 				{
 					if((mob.phyStats().level()-target.phyStats().level())>6)
 					{
-						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,_("<T-NAME> wither(s)"+(auto?".":" under <S-HIS-HER> holy power!")));
+						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> wither(s)"+(auto?".":" under <S-HIS-HER> holy power!")));
 						CMLib.combat().postDamage(mob,target,this,target.curState().getHitPoints(),CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,-1,null);
 					}
 					else
 					{
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> shake(s) in fear!"));
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> shake(s) in fear!"));
 						CMLib.commands().postFlee(target,"");
 					}
 					invoker=mob;
@@ -118,7 +118,7 @@ public class Skill_TurnUndead extends StdSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to turn <T-NAMESELF>, but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to turn <T-NAMESELF>, but fail(s)."));
 
 
 		// return whether it worked

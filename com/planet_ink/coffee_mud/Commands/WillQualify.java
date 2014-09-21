@@ -117,14 +117,14 @@ public class WillQualify  extends Skills
 			if (thisLine.length() > 0)
 			{
 				if (msg.length() == 0)
-						msg.append(_("\n\r^N[^HLvl^?] Name                Requires     [^HLvl^?] Name                Requires\n\r"));
+						msg.append(L("\n\r^N[^HLvl^?] Name                Requires     [^HLvl^?] Name                Requires\n\r"));
 				msg.append(thisLine);
 			}
 		}
 		if (msg.length() == 0)
 				return msg;
 		msg.insert(0, prefix);
-		msg.append(_("\n\r* This skill is automatically granted."));
+		msg.append(L("\n\r* This skill is automatically granted."));
 		return msg;
 	}
 
@@ -171,7 +171,7 @@ public class WillQualify  extends Skills
 					&&!str.equalsIgnoreCase("EXPERTISE")
 					&&!str.equalsIgnoreCase("EXPERTISES"))
 					{
-						mob.tell(_("'@x1' is not a valid skill type, domain, expertise, or character class.",str));
+						mob.tell(L("'@x1' is not a valid skill type, domain, expertise, or character class.",str));
 						mob.tell(willQualErr);
 						return false;
 					}
@@ -183,7 +183,7 @@ public class WillQualify  extends Skills
 			commands.removeElementAt(0);
 		}
 
-		msg.append(_("At level @x1 of class '@x2', you could qualify for:\n\r",""+level,C.name()));
+		msg.append(L("At level @x1 of class '@x2', you could qualify for:\n\r",""+level,C.name()));
 		msg.append(getQualifiedAbilities(mob,mob,C.ID(),level,"",types));
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());

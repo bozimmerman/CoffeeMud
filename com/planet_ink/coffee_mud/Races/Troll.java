@@ -97,7 +97,7 @@ public class Troll extends StdRace
 			if((room!=null)&&(!M.amDead()))
 			{
 				if(M.curState().adjHitPoints((int)Math.round(CMath.div(M.phyStats().level(),2.0)),M.maxState()))
-					M.location().show(M,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> regenerate(s)."));
+					M.location().show(M,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> regenerate(s)."));
 				final Area A=room.getArea();
 				if(A!=null)
 				{
@@ -149,7 +149,7 @@ public class Troll extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName(_("huge clawed hands"));
+			naturalWeapon.setName(L("huge clawed hands"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 			naturalWeapon.setUsesRemaining(1000);
 			naturalWeapon.setWeaponType(Weapon.TYPE_SLASHING);

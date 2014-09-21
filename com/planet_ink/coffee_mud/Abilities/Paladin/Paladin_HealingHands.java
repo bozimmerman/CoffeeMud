@@ -37,7 +37,7 @@ import java.util.*;
 public class Paladin_HealingHands extends StdAbility
 {
 	@Override public String ID() { return "Paladin_HealingHands"; }
-	private final static String localizedName = CMLib.lang()._("Healing Hands");
+	private final static String localizedName = CMLib.lang().L("Healing Hands");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"HANDS"});
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
@@ -56,14 +56,14 @@ public class Paladin_HealingHands extends StdAbility
 
 		if((!auto)&&(!(CMLib.flags().isGood(mob))))
 		{
-			mob.tell(_("Your alignment has alienated your god from you."));
+			mob.tell(L("Your alignment has alienated your god from you."));
 			return false;
 		}
 
 		final int healing=1+((int)Math.round(CMath.div(adjustedLevel(mob,asLevel),4.0)));
 		if(mob.curState().getMana()<healing)
 		{
-			mob.tell(_("You don't have enough mana to do that."));
+			mob.tell(L("You don't have enough mana to do that."));
 			return false;
 		}
 
@@ -80,7 +80,7 @@ public class Paladin_HealingHands extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_SOMANTIC_SPELL,auto?_("A pair of celestial hands surround <T-NAME>"):_("^S<S-NAME> lay(s) <S-HIS-HER> healing hands onto <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_SOMANTIC_SPELL,auto?L("A pair of celestial hands surround <T-NAME>"):L("^S<S-NAME> lay(s) <S-HIS-HER> healing hands onto <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -88,12 +88,12 @@ public class Paladin_HealingHands extends StdAbility
 				if(manaLost>0) manaLost=manaLost*-1;
 				mob.curState().adjMana(manaLost,mob.maxState());
 				CMLib.combat().postHealing(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,healing,null);
-				target.tell(_("You feel a little better!"));
+				target.tell(L("You feel a little better!"));
 				lastCastHelp=System.currentTimeMillis();
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,mob,_("<S-NAME> lay(s) <S-HIS-HER> healing hands onto <T-NAMESELF>, but <S-HIS-HER> god does not heed."));
+			return beneficialVisualFizzle(mob,mob,L("<S-NAME> lay(s) <S-HIS-HER> healing hands onto <T-NAMESELF>, but <S-HIS-HER> god does not heed."));
 
 
 		// return whether it worked

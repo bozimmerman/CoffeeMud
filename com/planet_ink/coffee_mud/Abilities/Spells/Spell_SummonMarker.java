@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_SummonMarker extends Spell
 {
 	@Override public String ID() { return "Spell_SummonMarker"; }
-	private final static String localizedName = CMLib.lang()._("Summon Marker");
+	private final static String localizedName = CMLib.lang().L("Summon Marker");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
@@ -48,7 +48,7 @@ public class Spell_SummonMarker extends Spell
 	{
 
 		if((canBeUninvoked())&&(invoker()!=null)&&(affected!=null)&&(affected instanceof Room))
-			invoker().tell(_("Your marker in '@x1' dissipates.",((Room)affected).displayText()));
+			invoker().tell(L("Your marker in '@x1' dissipates.",((Room)affected).displayText()));
 		super.unInvoke();
 	}
 
@@ -81,17 +81,17 @@ public class Spell_SummonMarker extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> summon(s) <S-HIS-HER> marker energy to this place!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> summon(s) <S-HIS-HER> marker energy to this place!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,mob.location(),CMMsg.MSG_OK_VISUAL,_("The spot <S-NAME> pointed to glows for brief moment."));
+				mob.location().show(mob,mob.location(),CMMsg.MSG_OK_VISUAL,L("The spot <S-NAME> pointed to glows for brief moment."));
 				beneficialAffect(mob,mob.location(),0,(adjustedLevel(mob,asLevel)*240)+450);
 			}
 
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to summon <S-HIS-HER> marker energy, but fail(s)."));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to summon <S-HIS-HER> marker energy, but fail(s)."));
 
 
 		// return whether it worked

@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_EarthMud extends Prayer
 {
 	@Override public String ID() { return "Prayer_EarthMud"; }
-	private final static String localizedName = CMLib.lang()._("Earth to Mud");
+	private final static String localizedName = CMLib.lang().L("Earth to Mud");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
@@ -49,7 +49,7 @@ public class Prayer_EarthMud extends Prayer
 	public void unInvoke()
 	{
 		if((canBeUninvoked())&&(affected!=null)&&(affected instanceof Room))
-			((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,_("The mud in '@x1' dries up.",((Room)affected).displayText()));
+			((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,L("The mud in '@x1' dries up.",((Room)affected).displayText()));
 		super.unInvoke();
 	}
 
@@ -110,7 +110,7 @@ public class Prayer_EarthMud extends Prayer
 			||(type==Room.DOMAIN_OUTDOORS_UNDERWATER)
 			||(type==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			mob.tell(_("That magic won't work here."));
+			mob.tell(L("That magic won't work here."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -120,17 +120,17 @@ public class Prayer_EarthMud extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":_("^S<S-NAME> @x1.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":L("^S<S-NAME> @x1.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("The ground here turns to MUD!"));
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The ground here turns to MUD!"));
 				beneficialAffect(mob,mob.location(),asLevel,0);
 			}
 
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

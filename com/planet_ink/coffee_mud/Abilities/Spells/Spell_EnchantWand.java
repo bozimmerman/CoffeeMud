@@ -38,7 +38,7 @@ import java.util.*;
 public class Spell_EnchantWand extends Spell
 {
 	@Override public String ID() { return "Spell_EnchantWand"; }
-	private final static String localizedName = CMLib.lang()._("Enchant Wand");
+	private final static String localizedName = CMLib.lang().L("Enchant Wand");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
@@ -51,18 +51,18 @@ public class Spell_EnchantWand extends Spell
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("Enchant which spell onto what?"));
+			mob.tell(L("Enchant which spell onto what?"));
 			return false;
 		}
 		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",((String)commands.lastElement())));
+			mob.tell(L("You don't see '@x1' here.",((String)commands.lastElement())));
 			return false;
 		}
 		if(!(target instanceof Wand))
 		{
-			mob.tell(mob,target,null,_("You can't enchant <T-NAME>."));
+			mob.tell(mob,target,null,L("You can't enchant <T-NAME>."));
 			return false;
 		}
 
@@ -94,27 +94,27 @@ public class Spell_EnchantWand extends Spell
 			}
 		if(wandThis==null)
 		{
-			mob.tell(_("You don't know how to enchant anything with '@x1'.",spellName));
+			mob.tell(L("You don't know how to enchant anything with '@x1'.",spellName));
 			return false;
 		}
 
 		if((CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())>24)
 		||(((StdAbility)wandThis).usageCost(null,true)[0]>45))
 		{
-			mob.tell(_("That spell is too powerful to enchant into wands."));
+			mob.tell(L("That spell is too powerful to enchant into wands."));
 			return false;
 		}
 
 		if(wand.getSpell()!=null)
 		{
-			mob.tell(_("A spell has already been enchanted into '@x1'.",wand.name()));
+			mob.tell(L("A spell has already been enchanted into '@x1'.",wand.name()));
 			return false;
 		}
 
 		int experienceToLose=10*CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID());
 		if((mob.getExperience()-experienceToLose)<0)
 		{
-			mob.tell(_("You don't have enough experience to cast this spell."));
+			mob.tell(L("You don't have enough experience to cast this spell."));
 			return false;
 		}
 		// lose all the mana!
@@ -123,14 +123,14 @@ public class Spell_EnchantWand extends Spell
 
 		experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
-		mob.tell(_("You lose @x1 experience points for the effort.",""+experienceToLose));
+		mob.tell(L("You lose @x1 experience points for the effort.",""+experienceToLose));
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
 			setMiscText(wandThis.ID());
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -145,7 +145,7 @@ public class Spell_EnchantWand extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly, and looking very frustrated."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly, and looking very frustrated."));
 
 
 		// return whether it worked

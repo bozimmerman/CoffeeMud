@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_HideOther extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_HideOther"; }
-	private final static String localizedName = CMLib.lang()._("Hide Other");
+	private final static String localizedName = CMLib.lang().L("Hide Other");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -138,18 +138,18 @@ public class Thief_HideOther extends ThiefSkill
 		if(target==null) return false;
 		if((target==mob)&&(!auto)&&(givenTarget!=mob))
 		{
-			mob.tell(_("Just use HIDE!"));
+			mob.tell(L("Just use HIDE!"));
 			return false;
 		}
 		if((mob.isInCombat())||(target.isInCombat()))
 		{
-			mob.tell(_("Not while in combat!"));
+			mob.tell(L("Not while in combat!"));
 			return false;
 		}
 		final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 		if(!H.contains(target))
 		{
-			mob.tell(_("You can only hide a group member."));
+			mob.tell(L("You can only hide a group member."));
 			return false;
 		}
 
@@ -159,16 +159,16 @@ public class Thief_HideOther extends ThiefSkill
 		final MOB highestMOB=getHighestLevelMOB(mob,new XVector(target));
 		final int levelDiff=(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
 
-		final String str=_("You carefully hide <T-NAMESELF> and direct <T-HIM-HER> to hold still.");
+		final String str=L("You carefully hide <T-NAMESELF> and direct <T-HIM-HER> to hold still.");
 
 		boolean success=proficiencyCheck(mob,levelDiff*10,auto);
 
 		if(!success)
 		{
 			if(highestMOB!=null)
-				beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to hide <T-NAMESELF> from @x1 and fail(s).",highestMOB.name(mob)));
+				beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to hide <T-NAMESELF> from @x1 and fail(s).",highestMOB.name(mob)));
 			else
-				beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to hide <T-NAMESELF> and fail(s)."));
+				beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to hide <T-NAMESELF> and fail(s)."));
 		}
 		else
 		{

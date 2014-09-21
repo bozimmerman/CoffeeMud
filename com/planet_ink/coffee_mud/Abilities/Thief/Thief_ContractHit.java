@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_ContractHit extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_ContractHit"; }
-	private final static String localizedName = CMLib.lang()._("Contract Hit");
+	private final static String localizedName = CMLib.lang().L("Contract Hit");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -158,8 +158,8 @@ public class Thief_ContractHit extends ThiefSkill
 		{
 			if(M.location()!=null)
 			{
-				M.location().showHappens(CMMsg.MSG_OK_VISUAL,_("Someone steps out of the shadows and whispers something to @x1.",M.name()));
-				M.tell(_("'It is done.'"));
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,L("Someone steps out of the shadows and whispers something to @x1.",M.name()));
+				M.tell(L("'It is done.'"));
 			}
 		}
 		for(int i=0;i<hitmen.size();i++)
@@ -191,18 +191,18 @@ public class Thief_ContractHit extends ThiefSkill
 	{
 		if(commands.size()<1)
 		{
-			mob.tell(_("Who would you like to put a hit out on?"));
+			mob.tell(L("Who would you like to put a hit out on?"));
 			return false;
 		}
 		if(mob.location()==null) return false;
 		if(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_CITY)
 		{
-			mob.tell(_("You need to be on the streets to put out a hit."));
+			mob.tell(L("You need to be on the streets to put out a hit."));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell(_("You are too busy to get that done right now."));
+			mob.tell(L("You are too busy to get that done right now."));
 			return false;
 		}
 
@@ -216,17 +216,17 @@ public class Thief_ContractHit extends ThiefSkill
 			target=V.get(CMLib.dice().roll(1,V.size(),-1));
 		if(target==null)
 		{
-			mob.tell(_("You've never heard of '@x1'.",CMParms.combine(commands,0)));
+			mob.tell(L("You've never heard of '@x1'.",CMParms.combine(commands,0)));
 			return false;
 		}
 		if(target==mob)
 		{
-			mob.tell(_("You cannot hit yourself!"));
+			mob.tell(L("You cannot hit yourself!"));
 			return false;
 		}
 		if(!mob.mayIFight(target))
 		{
-			mob.tell(_("You are not allowed to put out a hit on @x1.",target.name(mob)));
+			mob.tell(L("You are not allowed to put out a hit on @x1.",target.name(mob)));
 			return false;
 		}
 
@@ -237,7 +237,7 @@ public class Thief_ContractHit extends ThiefSkill
 		if(CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
 		{
 			final String costWords=CMLib.beanCounter().nameCurrencyShort(localCurrency,goldRequired);
-			mob.tell(_("You'll need at least @x1 to put a hit out on @x2.",costWords,target.name(mob)));
+			mob.tell(L("You'll need at least @x1 to put a hit out on @x2.",costWords,target.name(mob)));
 			return false;
 		}
 
@@ -249,7 +249,7 @@ public class Thief_ContractHit extends ThiefSkill
 		levelDiff*=10;
 		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_THIEF_ACT,CMMsg.MSG_THIEF_ACT,_("<S-NAME> whisper(s) to a dark figure stepping out of the shadows.  The person nods and slips away."));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_THIEF_ACT,CMMsg.MSG_THIEF_ACT,L("<S-NAME> whisper(s) to a dark figure stepping out of the shadows.  The person nods and slips away."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

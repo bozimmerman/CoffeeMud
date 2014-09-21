@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_DetectGold extends Spell
 {
 	@Override public String ID() { return "Spell_DetectGold"; }
-	private final static String localizedName = CMLib.lang()._("Detect Gold");
+	private final static String localizedName = CMLib.lang().L("Detect Gold");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Detecting Gold)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Detecting Gold)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -58,7 +58,7 @@ public class Spell_DetectGold extends Spell
 			lastRoom=null;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("Your senses are no longer as golden."));
+			mob.tell(L("Your senses are no longer as golden."));
 	}
 	public String metalCheck(MOB mob, Item I, Item container, StringBuffer msg)
 	{
@@ -67,12 +67,12 @@ public class Spell_DetectGold extends Spell
 		{
 			if((I.material()==RawMaterial.RESOURCE_GOLD)
 			&&(CMLib.flags().canBeSeenBy(I,mob)))
-				msg.append(_("@x1 glows golden.\n\r",I.name(mob)));
+				msg.append(L("@x1 glows golden.\n\r",I.name(mob)));
 		}
 		else
 		if((I.container()!=null)&&(I.container().container()==container))
 			if(msg.toString().indexOf(I.container().name()+" contains some sort of gold.")<0)
-				msg.append(_("@x1 contains some sort of gold.\n\r",I.container().name()));
+				msg.append(L("@x1 contains some sort of gold.\n\r",I.container().name()));
 		return msg.toString();
 	}
 	public String metalHere(MOB mob, Environmental E, Item container)
@@ -152,9 +152,9 @@ public class Spell_DetectGold extends Spell
 		if((dirs.length()!=0)||(last.length()!=0))
 		{
 			if(dirs.length()==0)
-				mob.tell(_("You sense golden emanations coming from @x1.",last));
+				mob.tell(L("You sense golden emanations coming from @x1.",last));
 			else
-				mob.tell(_("You sense golden emanations coming from @x1, and @x2.",dirs.substring(2),last));
+				mob.tell(L("You sense golden emanations coming from @x1, and @x2.",dirs.substring(2),last));
 		}
 	}
 	@Override
@@ -224,7 +224,7 @@ public class Spell_DetectGold extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already detecting golden things."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already detecting golden things."));
 			return false;
 		}
 
@@ -236,7 +236,7 @@ public class Spell_DetectGold extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> gain(s) golden senses!"):_("^S<S-NAME> incant(s) softly, and gain(s) golden senses!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> gain(s) golden senses!"):L("^S<S-NAME> incant(s) softly, and gain(s) golden senses!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -244,7 +244,7 @@ public class Spell_DetectGold extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> incant(s) and open(s) <S-HIS-HER> golden eyes, but the spell fizzles."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> incant(s) and open(s) <S-HIS-HER> golden eyes, but the spell fizzles."));
 
 		return success;
 	}

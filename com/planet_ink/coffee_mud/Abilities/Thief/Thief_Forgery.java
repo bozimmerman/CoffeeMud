@@ -37,7 +37,7 @@ import java.util.*;
 public class Thief_Forgery extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Forgery"; }
-	private final static String localizedName = CMLib.lang()._("Forgery");
+	private final static String localizedName = CMLib.lang().L("Forgery");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -51,13 +51,13 @@ public class Thief_Forgery extends ThiefSkill
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("What would you like to forge, and onto what?"));
+			mob.tell(L("What would you like to forge, and onto what?"));
 			return false;
 		}
 		final Item target=mob.findItem(null,(String)commands.lastElement());
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",((String)commands.lastElement())));
+			mob.tell(L("You don't see '@x1' here.",((String)commands.lastElement())));
 			return false;
 		}
 		commands.removeElementAt(commands.size()-1);
@@ -65,14 +65,14 @@ public class Thief_Forgery extends ThiefSkill
 		if((!target.isGeneric())
 		   ||((!(target instanceof Scroll))&&(!target.isReadable())))
 		{
-			mob.tell(_("You can't forge anything on that."));
+			mob.tell(L("You can't forge anything on that."));
 			return false;
 		}
 
 		String forgeWhat=CMParms.combine(commands,0);
 		if(forgeWhat.length()==0)
 		{
-			mob.tell(_("Forge what onto '@x1'?  Try a spell name, a room ID, or a bank note name.",target.name(mob)));
+			mob.tell(L("Forge what onto '@x1'?  Try a spell name, a room ID, or a bank note name.",target.name(mob)));
 			return false;
 		}
 
@@ -95,7 +95,7 @@ public class Thief_Forgery extends ThiefSkill
 			final Ability A=CMClass.findAbility(forgeWhat);
 			if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_SPELL))
 			{
-				mob.tell(_("You can't forge '@x1'.",A.name()));
+				mob.tell(L("You can't forge '@x1'.",A.name()));
 				return false;
 			}
 			else
@@ -103,13 +103,13 @@ public class Thief_Forgery extends ThiefSkill
 			{
 				if(!(target instanceof Scroll))
 				{
-					mob.tell(_("You can only forge a spell onto real scrollpaper."));
+					mob.tell(L("You can only forge a spell onto real scrollpaper."));
 					return false;
 				}
 				else
 				if(((Scroll)target).getSpells().size()>0)
 				{
-					mob.tell(_("That already has real spells on it!"));
+					mob.tell(L("That already has real spells on it!"));
 					return false;
 				}
 				else
@@ -139,7 +139,7 @@ public class Thief_Forgery extends ThiefSkill
 		}
 		if(newName.length()==0)
 		{
-			mob.tell(_("You don't know how to forge a '@x1'.  Try a spell name, a room ID, or a bank note name.",forgeWhat));
+			mob.tell(L("You don't know how to forge a '@x1'.  Try a spell name, a room ID, or a bank note name.",forgeWhat));
 			return false;
 		}
 		forgeWhat=newName;
@@ -154,7 +154,7 @@ public class Thief_Forgery extends ThiefSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,_("<S-NAME> forge(s) @x1 on <T-NAMESELF>.",forgeWhat));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,L("<S-NAME> forge(s) @x1 on <T-NAMESELF>.",forgeWhat));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -165,7 +165,7 @@ public class Thief_Forgery extends ThiefSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to forge @x1, but fail(s).",forgeWhat));
+			beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to forge @x1, but fail(s).",forgeWhat));
 		return success;
 	}
 }

@@ -193,12 +193,12 @@ public class Merge extends StdCommand
 		commands.removeElementAt(0);
 		if(commands.size()==0)
 		{
-			mob.tell(_("Merge what? Try DATABASE or a filename"));
+			mob.tell(L("Merge what? Try DATABASE or a filename"));
 			return false;
 		}
 		if(mob.isMonster())
 		{
-			mob.tell(_("No can do."));
+			mob.tell(L("No can do."));
 			return false;
 		}
 		if((commands.size()>0)&&
@@ -217,7 +217,7 @@ public class Merge extends StdCommand
 			sortEnumeratedList(CMClass.clanItems(),allKnownFields,allFieldsMsg);
 			sortEnumeratedList(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
 			sortEnumeratedList(CMClass.tech(),allKnownFields,allFieldsMsg);
-			mob.tell(_("Valid field names are @x1",allFieldsMsg.toString()));
+			mob.tell(L("Valid field names are @x1",allFieldsMsg.toString()));
 			return false;
 		}
 		String scope="WORLD";
@@ -226,7 +226,7 @@ public class Merge extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.MERGE))
 			{
-				mob.tell(_("You are not allowed to do that here."));
+				mob.tell(L("You are not allowed to do that here."));
 				return false;
 			}
 			commands.removeElementAt(0);
@@ -238,7 +238,7 @@ public class Merge extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.MERGE))
 			{
-				mob.tell(_("You are not allowed to do that here."));
+				mob.tell(L("You are not allowed to do that here."));
 				return false;
 			}
 			commands.removeElementAt(0);
@@ -250,7 +250,7 @@ public class Merge extends StdCommand
 		{
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.MERGE))
 			{
-				mob.tell(_("You are not allowed to do that."));
+				mob.tell(L("You are not allowed to do that."));
 				return false;
 			}
 			commands.removeElementAt(0);
@@ -259,7 +259,7 @@ public class Merge extends StdCommand
 		}
 		if(commands.size()==0)
 		{
-			mob.tell(_("Merge what? DATABASE or filename"));
+			mob.tell(L("Merge what? DATABASE or filename"));
 			return false;
 		}
 		String firstWord=(String)commands.firstElement();
@@ -268,7 +268,7 @@ public class Merge extends StdCommand
 			commands.removeElementAt(0);
 			if(commands.size()==0)
 			{
-				mob.tell(_("Merge parameters missing: DBCLASS, DBSERVICE, DBUSER, DBPASS"));
+				mob.tell(L("Merge parameters missing: DBCLASS, DBSERVICE, DBUSER, DBPASS"));
 				return false;
 			}
 			firstWord=(String)commands.firstElement();
@@ -279,7 +279,7 @@ public class Merge extends StdCommand
 		final StringBuffer buf=new CMFile(filename,mob,CMFile.FLAG_LOGERRORS).text();
 		if((buf==null)||(buf.length()==0))
 		{
-			mob.tell(_("File not found at: '@x1'!",filename));
+			mob.tell(L("File not found at: '@x1'!",filename));
 			return false;
 		}
 
@@ -293,13 +293,13 @@ public class Merge extends StdCommand
 		if((buf.length()>20)&&(buf.substring(0,20).indexOf("<MOBS>")>=0))
 		{
 			if(mob.session()!=null)
-				mob.session().rawPrint(_("Unpacking mobs from file: '@x1'...",filename));
+				mob.session().rawPrint(L("Unpacking mobs from file: '@x1'...",filename));
 			final String error=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),things,mob.session());
 			if(mob.session()!=null)    mob.session().rawPrintln("!");
 			if(error.length()>0)
 			{
-				mob.tell(_("An error occurred on merge: @x1",error));
-				mob.tell(_("Please correct the problem and try the import again."));
+				mob.tell(L("An error occurred on merge: @x1",error));
+				mob.tell(L("Please correct the problem and try the import again."));
 				return false;
 			}
 			aremobs=true;
@@ -308,24 +308,24 @@ public class Merge extends StdCommand
 		if((buf.length()>20)&&(buf.substring(0,20).indexOf("<ITEMS>")>=0))
 		{
 			if(mob.session()!=null)
-				mob.session().rawPrint(_("Unpacking items from file: '@x1'...",filename));
+				mob.session().rawPrint(L("Unpacking items from file: '@x1'...",filename));
 			final String error=CMLib.coffeeMaker().addItemsFromXML(buf.toString(),things,mob.session());
 			if(mob.session()!=null)    mob.session().rawPrintln("!");
 			if(error.length()>0)
 			{
-				mob.tell(_("An error occurred on merge: @x1",error));
-				mob.tell(_("Please correct the problem and try the import again."));
+				mob.tell(L("An error occurred on merge: @x1",error));
+				mob.tell(L("Please correct the problem and try the import again."));
 				return false;
 			}
 		}
 		else
 		{
-			mob.tell(_("Files of this type are not yet supported by MERGE.  You must merge an ITEMS or MOBS file at this time."));
+			mob.tell(L("Files of this type are not yet supported by MERGE.  You must merge an ITEMS or MOBS file at this time."));
 			return false;
 		}
 		if(things.size()==0)
 		{
-			mob.tell(_("Nothing was found in the file to merge!"));
+			mob.tell(L("Nothing was found in the file to merge!"));
 			return false;
 		}
 		final StringBuffer allFieldsMsg=new StringBuffer("");
@@ -342,7 +342,7 @@ public class Merge extends StdCommand
 		}
 
 		allKnownFields.add("REJUV");
-		allFieldsMsg.append(_("REJUV "));
+		allFieldsMsg.append(L("REJUV "));
 
 		for(int i=0;i<commands.size();i++)
 		{
@@ -370,14 +370,14 @@ public class Merge extends StdCommand
 				{
 					if(use==null)
 					{
-						mob.tell(_("'@x1' is an unknown parameter!",str));
+						mob.tell(L("'@x1' is an unknown parameter!",str));
 						return false;
 					}
 					if(allKnownFields.contains(s))
 						use.add(s);
 					else
 					{
-						mob.tell(_("'@x1' is an unknown field name.  Valid fields include: @x2",s,allFieldsMsg.toString()));
+						mob.tell(L("'@x1' is an unknown field name.  Valid fields include: @x2",s,allFieldsMsg.toString()));
 						return false;
 					}
 				}
@@ -388,21 +388,21 @@ public class Merge extends StdCommand
 			{
 				if(use==null)
 				{
-					mob.tell(_("'@x1' is an unknown parameter!",str));
+					mob.tell(L("'@x1' is an unknown parameter!",str));
 					return false;
 				}
 				if(allKnownFields.contains(str))
 					use.add(str);
 				else
 				{
-					mob.tell(_("'@x1' is an unknown field name.  Valid fields include: @x2",str,allFieldsMsg.toString()));
+					mob.tell(L("'@x1' is an unknown field name.  Valid fields include: @x2",str,allFieldsMsg.toString()));
 					return false;
 				}
 			}
 		}
 		if((onfields.size()==0)&&(ignore.size()==0)&&(changes.size()==0))
 		{
-			mob.tell(_("You must specify either an ON, CHANGES, or IGNORE parameter for valid matches to be made."));
+			mob.tell(L("You must specify either an ON, CHANGES, or IGNORE parameter for valid matches to be made."));
 			return false;
 		}
 		if(placesToDo.size()==0)
@@ -415,7 +415,7 @@ public class Merge extends StdCommand
 		}
 		if(placesToDo.size()==0)
 		{
-			mob.tell(_("There are no rooms to merge into!"));
+			mob.tell(L("There are no rooms to merge into!"));
 			return false;
 		}
 		for(int i=placesToDo.size()-1;i>=0;i--)
@@ -439,7 +439,7 @@ public class Merge extends StdCommand
 		}
 		// now do the merge...
 		if(mob.session()!=null)
-			mob.session().rawPrint(_("Merging and saving..."));
+			mob.session().rawPrint(L("Merging and saving..."));
 		if(noisy) mergedebugtell(mob,"Rooms to do: "+placesToDo.size());
 		if(noisy) mergedebugtell(mob,"Things loaded: "+things.size());
 		if(noisy) mergedebugtell(mob,"On fields="+CMParms.toStringList(onfields));
@@ -513,7 +513,7 @@ public class Merge extends StdCommand
 			}
 		}
 
-		if(mob.session()!=null)    mob.session().rawPrintln(_("!\n\rDone!"));
+		if(mob.session()!=null)    mob.session().rawPrintln(L("!\n\rDone!"));
 		Area A=null;
 		for(int i=0;i<placesToDo.size();i++)
 		{
@@ -565,7 +565,7 @@ public class Merge extends StdCommand
 			final Physical dbPM=(Physical)dbM;
 			if(CMLib.flags().isCataloged(PM))
 			{
-				mob.tell(_("^H**Warning: Changes will remove this object from the catalog."));
+				mob.tell(L("^H**Warning: Changes will remove this object from the catalog."));
 				PM.basePhyStats().setDisposition(CMath.unsetb(PM.basePhyStats().disposition(),PhyStats.IS_CATALOGED));
 			}
 			if(CMLib.flags().isCataloged(dbPM))
@@ -596,9 +596,9 @@ public class Merge extends StdCommand
 					continue;
 				++showNumber;
 				if((showFlag>0)&&(showFlag!=showNumber)) continue;
-				mob.tell(_("^H@x1. @x2\n\rValue: ^W'@x3'\n\r^HDBVal: ^N'@x4'",""+showNumber,promptStr,loVal,dbVal));
+				mob.tell(L("^H@x1. @x2\n\rValue: ^W'@x3'\n\r^HDBVal: ^N'@x4'",""+showNumber,promptStr,loVal,dbVal));
 				if((showFlag!=showNumber)&&(showFlag>-999)) continue;
-				final String res=mob.session().choose(_("D)atabase Value, E)dit Value, or N)o Change, or Q)uit All: "),_("DENQ"), _("N"));
+				final String res=mob.session().choose(L("D)atabase Value, E)dit Value, or N)o Change, or Q)uit All: "),L("DENQ"), L("N"));
 				if(res.trim().equalsIgnoreCase("N")) continue;
 				if(res.trim().equalsIgnoreCase("Q")) throw new CMException("Cancelled by user.");
 				didSomething=true;
@@ -612,7 +612,7 @@ public class Merge extends StdCommand
 			if(showNumber==0) return didSomething;
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
-			showFlag=CMath.s_int(mob.session().prompt(_("Edit which? "),""));
+			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
 				showFlag=-1;
@@ -646,22 +646,22 @@ public class Merge extends StdCommand
 		final MaskingLibrary.CompiledZapperMask mask=CMLib.masking().maskCompile(maskStr);
 		if(dbClass.length()==0)
 		{
-			mob.tell(_("This command requires DBCLASS= to be set."));
+			mob.tell(L("This command requires DBCLASS= to be set."));
 			return false;
 		}
 		if(dbService.length()==0)
 		{
-			mob.tell(_("This command requires DBSERVICE= to be set."));
+			mob.tell(L("This command requires DBSERVICE= to be set."));
 			return false;
 		}
 		if(dbUser.length()==0)
 		{
-			mob.tell(_("This command requires DBUSER= to be set."));
+			mob.tell(L("This command requires DBUSER= to be set."));
 			return false;
 		}
 		if(dbPass.length()==0)
 		{
-			mob.tell(_("This command requires DBPASS= to be set."));
+			mob.tell(L("This command requires DBPASS= to be set."));
 			return false;
 		}
 
@@ -671,11 +671,11 @@ public class Merge extends StdCommand
 
 		final DBConnection DBTEST=dbConnector.DBFetch();
 		if(DBTEST!=null) dbConnector.DBDone(DBTEST);
-		mob.tell(_("Loading database rooms..."));
+		mob.tell(L("Loading database rooms..."));
 		final List<Room> rooms = new LinkedList<Room>();
 		if((!dbConnector.amIOk())||(!dbInterface.isConnected()))
 		{
-			mob.tell(_("Failed to connect to database."));
+			mob.tell(L("Failed to connect to database."));
 			return false;
 		}
 		if(scope.equalsIgnoreCase("AREA"))
@@ -692,12 +692,12 @@ public class Merge extends StdCommand
 			rooms.addAll(Arrays.asList(dbInterface.DBReadRoomObjects(e.nextElement().Name(), false)));
 		if(rooms.size()==0)
 		{
-			mob.tell(_("No rooms found."));
+			mob.tell(L("No rooms found."));
 			return false;
 		}
 		for(final Room R : rooms)
 			dbInterface.DBReadContent(R.roomID(),R,false);
-		mob.tell(_("Data loaded, starting scan."));
+		mob.tell(L("Data loaded, starting scan."));
 		final Comparator<MOB> convM=new Comparator<MOB>()
 		{
 			@Override
@@ -765,7 +765,7 @@ public class Merge extends StdCommand
 					{
 						if(amMerging(doType,mask,dbM)&&(!ignore.contains("MISSING")))
 						{
-							if(mob.session().confirm(_("MOB: @x1.@x2 not in local room.\n\rWould you like to add it (y/N)?",dbR.roomID(),rName), _("N")))
+							if(mob.session().confirm(L("MOB: @x1.@x2 not in local room.\n\rWould you like to add it (y/N)?",dbR.roomID(),rName), L("N")))
 							{
 								M=(MOB)dbM.copyOf();
 								M.bringToLife(R, true);
@@ -818,7 +818,7 @@ public class Merge extends StdCommand
 							{
 								if(amMerging(doType,mask,dbI)&&(!ignore.contains("MISSING")))
 								{
-									if(mob.session().confirm(_("Item: @x1.@x2.@x3 not in local room.\n\rWould you like to add it (y/N)?",dbR.roomID(),dbM.Name(),rIName), _("N")))
+									if(mob.session().confirm(L("Item: @x1.@x2.@x3 not in local room.\n\rWould you like to add it (y/N)?",dbR.roomID(),dbM.Name(),rIName), L("N")))
 									{
 										I=(Item)dbI.copyOf();
 										M.addItem(I);
@@ -853,7 +853,7 @@ public class Merge extends StdCommand
 							final Item I=i.nextElement();
 							if(amMerging(doType,mask,I)&&(!doneI.contains(I))&&(!ignore.contains("EXTRA")))
 							{
-								if(mob.session().confirm(_("Item: @x1.@x2.@x3 not in database.\n\rWould you like to delete it (y/N)?",R.roomID(),M.Name(),I.Name()), _("N")))
+								if(mob.session().confirm(L("Item: @x1.@x2.@x3 not in database.\n\rWould you like to delete it (y/N)?",R.roomID(),M.Name(),I.Name()), L("N")))
 								{
 									M.delItem(I);
 									updateMobs=true;
@@ -869,7 +869,7 @@ public class Merge extends StdCommand
 					final MOB M=r.nextElement();
 					if(amMerging(doType,mask,M)&&(!doneM.contains(M))&&(M.isMonster())&&(!ignore.contains("EXTRA")))
 					{
-						if(mob.session().confirm(_("MOB: @x1.@x2 not in database.\n\rWould you like to delete it (y/N)?",R.roomID(),M.Name()), _("N")))
+						if(mob.session().confirm(L("MOB: @x1.@x2 not in database.\n\rWould you like to delete it (y/N)?",R.roomID(),M.Name()), L("N")))
 						{
 							R.delInhabitant(M);
 							updateMobs=true;
@@ -905,7 +905,7 @@ public class Merge extends StdCommand
 					{
 						if(amMerging(doType,mask,dbI)&&(!ignore.contains("MISSING")))
 						{
-							if(mob.session().confirm(_("Item: @x1.@x2 not in local room.\n\rWould you like to add it (y/N)?",dbR.roomID(),rName), _("N")))
+							if(mob.session().confirm(L("Item: @x1.@x2 not in local room.\n\rWould you like to add it (y/N)?",dbR.roomID(),rName), L("N")))
 							{
 								I=(Item)dbI.copyOf();
 								R.addItem(I);
@@ -940,7 +940,7 @@ public class Merge extends StdCommand
 					final Item I=i.nextElement();
 					if(amMerging(doType,mask,I)&&(!doneI.contains(I))&&(!ignore.contains("EXTRA")))
 					{
-						if(mob.session().confirm(_("Item: @x1.@x2 not in database.\n\rWould you like to delete it (y/N)?",R.roomID(),I.Name()), _("N")))
+						if(mob.session().confirm(L("Item: @x1.@x2 not in database.\n\rWould you like to delete it (y/N)?",R.roomID(),I.Name()), L("N")))
 						{
 							R.delItem(I);
 							updateItems=true;
@@ -956,10 +956,10 @@ public class Merge extends StdCommand
 			}
 			dbR.destroy();
 		}
-		mob.tell(_("Done"));
+		mob.tell(L("Done"));
 		}catch(final CMException cme)
 		{
-			mob.tell(_("Cancelled."));
+			mob.tell(L("Cancelled."));
 		}
 		dbInterface.shutdown();
 		return true;

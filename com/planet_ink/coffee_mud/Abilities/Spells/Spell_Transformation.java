@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Transformation extends Spell
 {
 	@Override public String ID() { return "Spell_Transformation"; }
-	private final static String localizedName = CMLib.lang()._("Transformation");
+	private final static String localizedName = CMLib.lang().L("Transformation");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Transformation)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Transformation)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
@@ -51,7 +51,7 @@ public class Spell_Transformation extends Spell
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> <S-IS-ARE> no longer so brutish."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> no longer so brutish."));
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class Spell_Transformation extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already transformed."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already transformed."));
 			return false;
 		}
 
@@ -91,7 +91,7 @@ public class Spell_Transformation extends Spell
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> become(s) a large, brutish warrior!"):_("^S<S-NAME> incant(s), transforming into a large brutish warrior!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) a large, brutish warrior!"):L("^S<S-NAME> incant(s), transforming into a large brutish warrior!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -100,7 +100,7 @@ public class Spell_Transformation extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> incant(s), but fizzle(s) the spell."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> incant(s), but fizzle(s) the spell."));
 
 		// return whether it worked
 		return success;

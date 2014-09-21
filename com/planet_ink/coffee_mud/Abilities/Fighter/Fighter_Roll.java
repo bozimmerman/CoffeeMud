@@ -36,7 +36,7 @@ public class Fighter_Roll extends FighterSkill
 {
 	int regain=-1;
 	@Override public String ID() { return "Fighter_Roll"; }
-	private final static String localizedName = CMLib.lang()._("Roll With Blows");
+	private final static String localizedName = CMLib.lang().L("Roll With Blows");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
@@ -97,7 +97,7 @@ public class Fighter_Roll extends FighterSkill
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(regain>0))
 		{
-			msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> roll(s) with the hit.")));
+			msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> roll(s) with the hit.")));
 			helpProficiency(mob, 0);
 			regain=-1;
 		}

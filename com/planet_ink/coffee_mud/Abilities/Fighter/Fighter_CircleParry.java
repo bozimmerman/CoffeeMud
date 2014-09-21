@@ -35,7 +35,7 @@ import java.util.*;
 public class Fighter_CircleParry extends MonkSkill
 {
 	@Override public String ID() { return "Fighter_CircleParry"; }
-	private final static String localizedName = CMLib.lang()._("Circle Parry");
+	private final static String localizedName = CMLib.lang().L("Circle Parry");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -73,7 +73,7 @@ public class Fighter_CircleParry extends MonkSkill
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_RANGED)
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_THROWN))
 				{
-					final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> circle-parr(ys) @x1 attack from <T-NAME>!",attackerWeapon.name()));
+					final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> circle-parr(ys) @x1 attack from <T-NAME>!",attackerWeapon.name()));
 					if((proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90+(2*getXLEVELLevel(mob)),false))
 					&&(!lastTime)
 					&&(mob.location().okMessage(mob,msg2)))

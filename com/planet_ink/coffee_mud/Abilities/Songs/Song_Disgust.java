@@ -36,7 +36,7 @@ import java.util.*;
 public class Song_Disgust extends Song
 {
 	@Override public String ID() { return "Song_Disgust"; }
-	private final static String localizedName = CMLib.lang()._("Disgust");
+	private final static String localizedName = CMLib.lang().L("Disgust");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
@@ -57,7 +57,7 @@ public class Song_Disgust extends Song
 			final MOB newMOB=room.fetchRandomInhabitant();
 			if(newMOB!=mob)
 			{
-				room.show(mob,newMOB,CMMsg.MSG_OK_ACTION,_("<S-NAME> appear(s) disgusted with <T-NAMESELF>."));
+				room.show(mob,newMOB,CMMsg.MSG_OK_ACTION,L("<S-NAME> appear(s) disgusted with <T-NAMESELF>."));
 				CMLib.combat().postAttack(mob,newMOB,mob.fetchWieldedItem());
 			}
 		}

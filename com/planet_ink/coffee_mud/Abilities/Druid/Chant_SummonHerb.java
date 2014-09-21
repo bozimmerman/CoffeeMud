@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_SummonHerb extends Chant
 {
 	@Override public String ID() { return "Chant_SummonHerb"; }
-	private final static String localizedName = CMLib.lang()._("Summon Herbs");
+	private final static String localizedName = CMLib.lang().L("Summon Herbs");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}
@@ -50,7 +50,7 @@ public class Chant_SummonHerb extends Chant
 
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
-			mob.tell(_("You must be outdoors to try this."));
+			mob.tell(L("You must be outdoors to try this."));
 			return false;
 		}
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
@@ -59,7 +59,7 @@ public class Chant_SummonHerb extends Chant
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			mob.tell(_("This magic will not work here."));
+			mob.tell(L("This magic will not work here."));
 			return false;
 		}
 
@@ -70,15 +70,15 @@ public class Chant_SummonHerb extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> chant(s) to the ground.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) to the ground.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				for(int i=0;i<((adjustedLevel(mob,asLevel)/4)+1);i++)
 				{
 					final Food newItem=(Food)CMClass.getBasicItem("GenFoodResource");
-					newItem.setName(_("some herbs"));
-					newItem.setDisplayText(_("Some herbs are growing here."));
+					newItem.setName(L("some herbs"));
+					newItem.setDisplayText(L("Some herbs are growing here."));
 					newItem.setDescription("");
 					newItem.setMaterial(RawMaterial.RESOURCE_HERBS);
 					newItem.setNourishment(1);
@@ -86,12 +86,12 @@ public class Chant_SummonHerb extends Chant
 					newItem.setMiscText(newItem.text());
 					mob.location().addItem(newItem,ItemPossessor.Expire.Resource);
 				}
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,_("Some herbs quickly begin to grow here."));
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("Some herbs quickly begin to grow here."));
 				mob.location().recoverPhyStats();
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s) to the ground, but nothing happens."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) to the ground, but nothing happens."));
 
 		// return whether it worked
 		return success;

@@ -37,7 +37,7 @@ import java.util.*;
 public class Fighter_WeaponBreak extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_WeaponBreak"; }
-	private final static String localizedName = CMLib.lang()._("Weapon Break");
+	private final static String localizedName = CMLib.lang().L("Weapon Break");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"BREAK"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -75,17 +75,17 @@ public class Fighter_WeaponBreak extends FighterSkill
 		final MOB victim=mob.getVictim();
 		if((!mob.isInCombat())||(victim==null))
 		{
-			mob.tell(_("You must be in combat to do this!"));
+			mob.tell(L("You must be in combat to do this!"));
 			return false;
 		}
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell(_("You are too far away to try that!"));
+			mob.tell(L("You are too far away to try that!"));
 			return false;
 		}
 		if((!auto)&&(mob.fetchWieldedItem()==null))
 		{
-			mob.tell(_("You need a weapon to break someone elses!"));
+			mob.tell(L("You need a weapon to break someone elses!"));
 			return false;
 		}
 		final Item item=victim.fetchWieldedItem();
@@ -93,7 +93,7 @@ public class Fighter_WeaponBreak extends FighterSkill
 		||(!(item instanceof Weapon))
 		||(((Weapon)item).weaponClassification()==Weapon.CLASS_NATURAL))
 		{
-			mob.tell(_("@x1 is not wielding a weapon!",victim.charStats().HeShe()));
+			mob.tell(L("@x1 is not wielding a weapon!",victim.charStats().HeShe()));
 			return false;
 		}
 
@@ -116,7 +116,7 @@ public class Fighter_WeaponBreak extends FighterSkill
 		&&((hisWeapon.rawProperLocationBitmap()==Wearable.WORN_WIELD)
 		   ||(hisWeapon.rawProperLocationBitmap()==Wearable.WORN_WIELD+Wearable.WORN_HELD)))
 		{
-			final String str=auto?_("@x1 break(s) in <T-HIS-HER> hands!",hisWeapon.name()):_("<S-NAME> attack(s) <T-NAMESELF> and destroy(s) @x1!",hisWeapon.name());
+			final String str=auto?L("@x1 break(s) in <T-HIS-HER> hands!",hisWeapon.name()):L("<S-NAME> attack(s) <T-NAMESELF> and destroy(s) @x1!",hisWeapon.name());
 			hisWeapon.unWear();
 			final CMMsg msg=CMClass.getMsg(mob,victim,this,CMMsg.MSG_NOISYMOVEMENT,str);
 			final CMMsg msg2=CMClass.getMsg(mob,hisWeapon,this,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_CAST_SPELL,null);
@@ -131,9 +131,9 @@ public class Fighter_WeaponBreak extends FighterSkill
 		}
 		else
 		if(hisWeapon != null)
-			return maliciousFizzle(mob,victim,_("<S-NAME> attempt(s) to destroy @x1 and fail(s)!",hisWeapon.name()));
+			return maliciousFizzle(mob,victim,L("<S-NAME> attempt(s) to destroy @x1 and fail(s)!",hisWeapon.name()));
 		else
-			return maliciousFizzle(mob,victim,_("<S-NAME> attempt(s) to destroy <T-YOUPOSS> non-existant weapon and fail(s)!"));
+			return maliciousFizzle(mob,victim,L("<S-NAME> attempt(s) to destroy <T-YOUPOSS> non-existant weapon and fail(s)!"));
 		return success;
 	}
 

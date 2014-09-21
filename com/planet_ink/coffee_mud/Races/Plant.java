@@ -91,7 +91,7 @@ public class Plant extends Vine
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName(_("a nasty vine"));
+			naturalWeapon.setName(L("a nasty vine"));
 			naturalWeapon.setRanges(0,3);
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 			naturalWeapon.setUsesRemaining(1000);
@@ -110,7 +110,7 @@ public class Plant extends Vine
 				||(msg.sourceMinor()==CMMsg.TYP_ADVANCE)
 				||(msg.sourceMinor()==CMMsg.TYP_RETREAT)))
 			{
-				msg.source().tell(_("You can't really go anywhere -- you are rooted!"));
+				msg.source().tell(L("You can't really go anywhere -- you are rooted!"));
 				return false;
 			}
 		}

@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Forget extends Spell
 {
 	@Override public String ID() { return "Spell_Forget"; }
-	private final static String localizedName = CMLib.lang()._("Forget");
+	private final static String localizedName = CMLib.lang().L("Forget");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Forgetful)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Forgetful)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -60,7 +60,7 @@ public class Spell_Forget extends Spell
 				return true;
 			if(forgotten.contains(msg.tool()))
 			{
-				mob.tell(_("You still can't remember @x1!",msg.tool().name()));
+				mob.tell(L("You still can't remember @x1!",msg.tool().name()));
 				return false;
 			}
 			if(mob.fetchAbility(msg.tool().ID())==msg.tool())
@@ -68,7 +68,7 @@ public class Spell_Forget extends Spell
 				if(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.STAT_SAVE_MIND)+25))
 				{
 					forgotten.add((Ability)msg.tool());
-					mob.tell(_("You can't remember @x1!",msg.tool().name()));
+					mob.tell(L("You can't remember @x1!",msg.tool().name()));
 					return false;
 				}
 				else
@@ -89,7 +89,7 @@ public class Spell_Forget extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("You start remembering things again."));
+			mob.tell(L("You start remembering things again."));
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public class Spell_Forget extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final String str=auto?"":_("^S<S-NAME> incant(s) confusingly at <T-NAMESELF>^?");
+			final String str=auto?"":L("^S<S-NAME> incant(s) confusingly at <T-NAMESELF>^?");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),str);
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
@@ -127,12 +127,12 @@ public class Spell_Forget extends Spell
 				{
 					success=maliciousAffect(mob,target,asLevel,-levelDiff,-1);
 					if(success)
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) forgetful!"));
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) forgetful!"));
 				}
 			}
 		}
 		if(!success)
-			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) confusingly at <T-NAMESELF>, but nothing happens."));
+			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) confusingly at <T-NAMESELF>, but nothing happens."));
 
 		// return whether it worked
 		return success;

@@ -37,9 +37,9 @@ import java.util.*;
 public class Fighter_LightningStrike extends MonkSkill
 {
 	@Override public String ID() { return "Fighter_LightningStrike"; }
-	private final static String localizedName = CMLib.lang()._("Lightning Strike");
+	private final static String localizedName = CMLib.lang().L("Lightning Strike");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Exhausted)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Exhausted)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	private static final String[] triggerStrings =_i(new String[] {"LIGHTNINGSTRIKE","LSTRIKE"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -68,7 +68,7 @@ public class Fighter_LightningStrike extends MonkSkill
 			||(msg.sourceMajor(CMMsg.MASK_MOVE)))
 			{
 				if(msg.sourceMessage()!=null)
-					mob.tell(_("You are way too drowsy."));
+					mob.tell(L("You are way too drowsy."));
 				return false;
 			}
 		}
@@ -101,9 +101,9 @@ public class Fighter_LightningStrike extends MonkSkill
 			if(!mob.amDead())
 			{
 				if(mob.location()!=null)
-					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> seem(s) less drowsy."));
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> seem(s) less drowsy."));
 				else
-					mob.tell(_("You feel less drowsy."));
+					mob.tell(L("You feel less drowsy."));
 				CMLib.commands().postStand(mob,true);
 			}
 		}
@@ -134,23 +134,23 @@ public class Fighter_LightningStrike extends MonkSkill
 
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell(_("You are too far away from your target to strike!"));
+			mob.tell(L("You are too far away from your target to strike!"));
 			return false;
 		}
 		if((!auto)&&(mob.charStats().getStat(CharStats.STAT_DEXTERITY)<CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)))
 		{
-			mob.tell(_("You need at least an @x1 dexterity to do that.",""+CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)));
+			mob.tell(L("You need at least an @x1 dexterity to do that.",""+CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)));
 			return false;
 		}
 
 		if((!auto)&&(anyWeapons(mob)))
 		{
-			mob.tell(_("You must be unarmed to perform the strike."));
+			mob.tell(L("You must be unarmed to perform the strike."));
 			return false;
 		}
 		if(mob.charStats().getBodyPart(Race.BODY_HAND)<2)
 		{
-			mob.tell(_("You need at least two hands to do this."));
+			mob.tell(L("You need at least two hands to do this."));
 			return false;
 		}
 
@@ -176,7 +176,7 @@ public class Fighter_LightningStrike extends MonkSkill
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":_("^F^<FIGHT^><S-NAME> unleash(es) a flurry of lightning strikes against <T-NAMESELF>!^</FIGHT^>^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("^F^<FIGHT^><S-NAME> unleash(es) a flurry of lightning strikes against <T-NAMESELF>!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -188,13 +188,13 @@ public class Fighter_LightningStrike extends MonkSkill
 						CMLib.combat().postAttack(mob,target,null);
 				if((!anyWeapons(mob))&&(msg.value()<=0))
 				{
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> collapse(s) in exhaustion."));
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> collapse(s) in exhaustion."));
 					success=maliciousAffect(mob,mob,asLevel,9,-1);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to flurry <T-NAMESELF> with lighting strikes, but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to flurry <T-NAMESELF> with lighting strikes, but fail(s)."));
 
 		// return whether it worked
 		return success;

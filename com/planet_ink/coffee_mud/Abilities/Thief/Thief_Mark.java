@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_Mark extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Mark"; }
-	private final static String localizedName = CMLib.lang()._("Mark");
+	private final static String localizedName = CMLib.lang().L("Mark");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -76,7 +76,7 @@ public class Thief_Mark extends ThiefSkill
 		&&(CMLib.flags().canBeSeenBy(mark,msg.source())))
 		{
 			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,
-										  CMMsg.MSG_OK_VISUAL,_("\n\r^x@x1 is your mark.^?^.\n\r",mark.name(msg.source())),
+										  CMMsg.MSG_OK_VISUAL,L("\n\r^x@x1 is your mark.^?^.\n\r",mark.name(msg.source())),
 										  CMMsg.NO_EFFECT,null,
 										  CMMsg.NO_EFFECT,null));
 		}
@@ -146,21 +146,21 @@ public class Thief_Mark extends ThiefSkill
 	{
 		if(commands.size()<1)
 		{
-			mob.tell(_("Who would you like to mark?"));
+			mob.tell(L("Who would you like to mark?"));
 			return false;
 		}
 		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if(target==mob)
 		{
-			mob.tell(_("You cannot mark yourself!"));
+			mob.tell(L("You cannot mark yourself!"));
 			return false;
 		}
 		Ability A=mob.fetchEffect(ID());
 		if((A!=null)&&(((Thief_Mark)A).mark==target))
 		{
 			mob.delEffect(A);
-			mob.tell(_("You remove your mark from @x1",target.name(mob)));
+			mob.tell(L("You remove your mark from @x1",target.name(mob)));
 			return true;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -172,8 +172,8 @@ public class Thief_Mark extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 
 		if(!success)
-			return beneficialVisualFizzle(mob,target,_("<S-NAME> lose(s) <S-HIS-HER> concentration on <T-NAMESELF>."));
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,_("<S-NAME> mark(s) <T-NAMESELF>."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> lose(s) <S-HIS-HER> concentration on <T-NAMESELF>."));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,L("<S-NAME> mark(s) <T-NAMESELF>."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -187,7 +187,7 @@ public class Thief_Mark extends ThiefSkill
 			((Thief_Mark)A).mark=target;
 			((Thief_Mark)A).ticks=0;
 			A.setMiscText(target.Name()+"/0");
-			mob.tell(_("You may use the mark skill again to unmark them."));
+			mob.tell(L("You may use the mark skill again to unmark them."));
 		}
 		return success;
 	}

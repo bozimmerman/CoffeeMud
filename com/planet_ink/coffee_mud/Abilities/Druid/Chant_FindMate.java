@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_FindMate extends Chant
 {
 	@Override public String ID() { return "Chant_FindMate"; }
-	private final static String localizedName = CMLib.lang()._("Find Mate");
+	private final static String localizedName = CMLib.lang().L("Find Mate");
 	@Override public String name() { return localizedName; }
-	protected String displayText=_("(Tracking a mate)");
+	protected String displayText=L("(Tracking a mate)");
 	@Override public String displayText(){ return displayText;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -74,7 +74,7 @@ public class Chant_FindMate extends Chant
 				}
 				if(mate!=null)
 				{
-					mob.tell(_("You peer longingly at @x1.",mate.name()));
+					mob.tell(L("You peer longingly at @x1.",mate.name()));
 
 					Item I=mob.fetchFirstWornItem(Wearable.WORN_WAIST);
 					if(I!=null)    CMLib.commands().postRemove(mob,I,false);
@@ -94,21 +94,21 @@ public class Chant_FindMate extends Chant
 
 			if(nextDirection==999)
 			{
-				mob.tell(_("Your yearning for a mate seems to fade."));
+				mob.tell(L("Your yearning for a mate seems to fade."));
 				nextDirection=-2;
 				unInvoke();
 			}
 			else
 			if(nextDirection==-1)
 			{
-				mob.tell(_("You no longer want to continue."));
+				mob.tell(L("You no longer want to continue."));
 				nextDirection=-999;
 				unInvoke();
 			}
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell(_("You want to continue @x1.",Directions.getDirectionName(nextDirection)));
+				mob.tell(L("You want to continue @x1.",Directions.getDirectionName(nextDirection)));
 				final Room nextRoom=mob.location().getRoomInDir(nextDirection);
 				if((nextRoom!=null)&&(nextRoom.getArea()==mob.location().getArea()))
 				{
@@ -173,7 +173,7 @@ public class Chant_FindMate extends Chant
 		if((target.charStats().getStat(CharStats.STAT_GENDER)!='M')
 		&&(target.charStats().getStat(CharStats.STAT_GENDER)!='F'))
 		{
-			mob.tell(_("@x1 is incapable of mating!",target.name(mob)));
+			mob.tell(L("@x1 is incapable of mating!",target.name(mob)));
 			return false;
 		}
 
@@ -181,7 +181,7 @@ public class Chant_FindMate extends Chant
 		for(final Ability A : V) A.unInvoke();
 		if(V.size()>0)
 		{
-			target.tell(_("You stop tracking."));
+			target.tell(L("You stop tracking."));
 			return true;
 		}
 
@@ -223,7 +223,7 @@ public class Chant_FindMate extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?null:_("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?null:L("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -231,7 +231,7 @@ public class Chant_FindMate extends Chant
 				final Chant_FindMate A=(Chant_FindMate)target.fetchEffect(ID());
 				if(A!=null)
 				{
-					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> yearn(s) for a mate!"));
+					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> yearn(s) for a mate!"));
 					A.makeLongLasting();
 					A.nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),true);
 					target.recoverPhyStats();
@@ -239,7 +239,7 @@ public class Chant_FindMate extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happen(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happen(s)."));
 
 
 		// return whether it worked

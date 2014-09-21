@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_MassSleep extends Spell
 {
 	@Override public String ID() { return "Spell_MassSleep"; }
-	private final static String localizedName = CMLib.lang()._("Mass Sleep");
+	private final static String localizedName = CMLib.lang().L("Mass Sleep");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -62,7 +62,7 @@ public class Spell_MassSleep extends Spell
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth putting to sleep."));
+			mob.tell(L("There doesn't appear to be anyone here worth putting to sleep."));
 			return false;
 		}
 
@@ -77,7 +77,7 @@ public class Spell_MassSleep extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> whisper(s) and wave(s) <S-HIS-HER> arms.^?")))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> whisper(s) and wave(s) <S-HIS-HER> arms.^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -101,17 +101,17 @@ public class Spell_MassSleep extends Spell
 								spell.setProficiency(proficiency());
 								success=spell.maliciousAffect(mob,target,asLevel,2,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0));
 								if(success)
-									target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> fall(s) asleep!!"));
+									target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> fall(s) asleep!!"));
 							}
 						}
 						if(oldVictim==null) mob.setVictim(null);
 					}
 					else
-						maliciousFizzle(mob,target,_("<T-NAME> seem(s) unaffected by the Sleep spell from <S-NAME>."));
+						maliciousFizzle(mob,target,L("<T-NAME> seem(s) unaffected by the Sleep spell from <S-NAME>."));
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> whisper(s) a sleeping spell, but the spell fizzles."));
+			return maliciousFizzle(mob,null,L("<S-NAME> whisper(s) a sleeping spell, but the spell fizzles."));
 
 
 		// return whether it worked

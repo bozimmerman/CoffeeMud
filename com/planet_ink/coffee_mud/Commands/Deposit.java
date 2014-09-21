@@ -47,12 +47,12 @@ public class Deposit extends StdCommand
 		if(shopkeeper==null) return false;
 		if((!(SHOP instanceof Banker))&&(!(SHOP instanceof PostOffice)))
 		{
-			mob.tell(_("You can not deposit anything with @x1.",shopkeeper.name()));
+			mob.tell(L("You can not deposit anything with @x1.",shopkeeper.name()));
 			return false;
 		}
 		if(commands.size()==0)
 		{
-			mob.tell(_("Deposit what or how much?"));
+			mob.tell(L("Deposit what or how much?"));
 			return false;
 		}
 		final String thisName=CMParms.combine(commands,0);
@@ -62,7 +62,7 @@ public class Deposit extends StdCommand
 			thisThang=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,thisName);
 			if((thisThang==null)||(!CMLib.flags().canBeSeenBy(thisThang,mob)))
 			{
-				mob.tell(_("You don't seem to be carrying that."));
+				mob.tell(L("You don't seem to be carrying that."));
 				return false;
 			}
 		}
@@ -71,9 +71,9 @@ public class Deposit extends StdCommand
 			return false;
 		CMMsg newMsg=null;
 		if(SHOP instanceof Banker)
-			newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_DEPOSIT,_("<S-NAME> deposit(s) <O-NAME> into <S-HIS-HER> account with <T-NAMESELF>."));
+			newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_DEPOSIT,L("<S-NAME> deposit(s) <O-NAME> into <S-HIS-HER> account with <T-NAMESELF>."));
 		else
-			newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_DEPOSIT,_("<S-NAME> mail(s) <O-NAME>."));
+			newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_DEPOSIT,L("<S-NAME> mail(s) <O-NAME>."));
 		if(mob.location().okMessage(mob,newMsg))
 			mob.location().send(mob,newMsg);
 		return false;

@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer extends StdAbility
 {
 	@Override public String ID() { return "Prayer"; }
-	private final static String localizedName = CMLib.lang()._("a Prayer");
+	private final static String localizedName = CMLib.lang().L("a Prayer");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return 0;}
@@ -130,16 +130,16 @@ public class Prayer extends StdAbility
 				return true;
 
 			if(hq==0)
-				mob.tell(_("The evil nature of @x1 disrupts your prayer.",name()));
+				mob.tell(L("The evil nature of @x1 disrupts your prayer.",name()));
 			else
 			if(hq==1000)
-				mob.tell(_("The goodness of @x1 disrupts your prayer.",name()));
+				mob.tell(L("The goodness of @x1 disrupts your prayer.",name()));
 			else
 			if(CMLib.flags().isGood(mob))
-				mob.tell(_("The anti-good nature of @x1 disrupts your thought.",name()));
+				mob.tell(L("The anti-good nature of @x1 disrupts your thought.",name()));
 			else
 			if(CMLib.flags().isEvil(mob))
-				mob.tell(_("The anti-evil nature of @x1 disrupts your thought.",name()));
+				mob.tell(L("The anti-evil nature of @x1 disrupts your thought.",name()));
 			return false;
 		}
 		return true;

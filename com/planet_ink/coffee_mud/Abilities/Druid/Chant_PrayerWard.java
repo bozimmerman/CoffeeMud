@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_PrayerWard extends Chant
 {
 	@Override public String ID() { return "Chant_PrayerWard"; }
-	private final static String localizedName = CMLib.lang()._("Prayer Ward");
+	private final static String localizedName = CMLib.lang().L("Prayer Ward");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Prayer Ward)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Prayer Ward)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -53,7 +53,7 @@ public class Chant_PrayerWard extends Chant
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("Your ward against prayers fades."));
+			mob.tell(L("Your ward against prayers fades."));
 
 		super.unInvoke();
 
@@ -91,7 +91,7 @@ public class Chant_PrayerWard extends Chant
 		&&(!mob.amDead())
 		&&(CMLib.dice().rollPercentage()<35))
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("The ward around <S-NAME> inhibits @x1!",msg.tool().name()));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("The ward around <S-NAME> inhibits @x1!",msg.tool().name()));
 			return false;
 		}
 		return super.okMessage(myHost,msg);
@@ -106,7 +106,7 @@ public class Chant_PrayerWard extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already affected by @x1.",name()));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already affected by @x1.",name()));
 			return false;
 		}
 
@@ -117,7 +117,7 @@ public class Chant_PrayerWard extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> <T-IS-ARE> protected from prayers."):_("^S<S-NAME> chant(s) for a ward against prayers around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> <T-IS-ARE> protected from prayers."):L("^S<S-NAME> chant(s) for a ward against prayers around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -125,7 +125,7 @@ public class Chant_PrayerWard extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) for a ward, but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) for a ward, but nothing happens."));
 
 		return success;
 	}

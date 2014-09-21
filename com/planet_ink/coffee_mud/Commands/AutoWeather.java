@@ -49,12 +49,12 @@ public class AutoWeather extends StdCommand
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOWEATHER))
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOWEATHER));
-			mob.tell(_("Weather descriptions are now off."));
+			mob.tell(L("Weather descriptions are now off."));
 		}
 		else
 		{
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOWEATHER));
-			mob.tell(_("Weather descriptions are now on."));
+			mob.tell(L("Weather descriptions are now on."));
 		}
 		return false;
 	}

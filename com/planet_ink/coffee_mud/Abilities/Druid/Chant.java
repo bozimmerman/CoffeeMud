@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant extends StdAbility
 {
 	@Override public String ID() { return "Chant"; }
-	private final static String localizedName = CMLib.lang()._("a Druidic Chant");
+	private final static String localizedName = CMLib.lang().L("a Druidic Chant");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText() { return "("+name()+")"; }
 	protected boolean renderedMundane=false;
@@ -120,13 +120,13 @@ public class Chant extends StdAbility
 		{
 			if(!appropriateToMyFactions(mob))
 			{
-				mob.tell(_("Extreme emotions disrupt your chant."));
+				mob.tell(L("Extreme emotions disrupt your chant."));
 				return false;
 			}
 			else
 			if(!CMLib.utensils().armorCheck(mob,CharClass.ARMOR_LEATHER))
 			{
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!"));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!"));
 				return false;
 			}
 		}

@@ -36,9 +36,9 @@ import java.util.*;
 public class Chant_Earthquake extends Chant
 {
 	@Override public String ID() { return "Chant_Earthquake"; }
-	private final static String localizedName = CMLib.lang()._("Quake");
+	private final static String localizedName = CMLib.lang().L("Quake");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Quaking)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Quaking)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -76,7 +76,7 @@ public class Chant_Earthquake extends Chant
 			if(!oncePerRd)
 			{
 				oncePerRd=true;
-				mob.location().show(mob,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> attempt(s) to stand up, and falls back down!"));
+				mob.location().show(mob,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> attempt(s) to stand up, and falls back down!"));
 			}
 			return false;
 		}
@@ -97,7 +97,7 @@ public class Chant_Earthquake extends Chant
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> regain(s) <S-HIS-HER> feet as the ground stops shaking."));
+				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> regain(s) <S-HIS-HER> feet as the ground stops shaking."));
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
@@ -105,7 +105,7 @@ public class Chant_Earthquake extends Chant
 				}
 			}
 			else
-				mob.tell(_("The movement under your feet stops."));
+				mob.tell(L("The movement under your feet stops."));
 		}
 	}
 
@@ -130,7 +130,7 @@ public class Chant_Earthquake extends Chant
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
-			mob.tell(_("There doesn't appear to be anyone here worth shaking up."));
+			mob.tell(L("There doesn't appear to be anyone here worth shaking up."));
 			return false;
 		}
 
@@ -146,7 +146,7 @@ public class Chant_Earthquake extends Chant
 		if(success)
 		{
 
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),_(auto?"":"^S<S-NAME> chant(s) thunderously.^?")+CMLib.protocol().msp("earthquake.wav",40)))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"":"^S<S-NAME> chant(s) thunderously.^?")+CMLib.protocol().msp("earthquake.wav",40)))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -157,7 +157,7 @@ public class Chant_Earthquake extends Chant
 					// what happened.
 					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 					if(CMLib.flags().isInFlight(target))
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) unaffected."));
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) unaffected."));
 					else
 					if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 					{
@@ -174,13 +174,13 @@ public class Chant_Earthquake extends Chant
 								}
 							}
 							else
-								mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) unaffected by the quake."));
+								mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) unaffected by the quake."));
 						}
 					}
 				}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> attempt(s) to invoke a thunderous spell, but the spell fizzles."));
+			return maliciousFizzle(mob,null,L("<S-NAME> attempt(s) to invoke a thunderous spell, but the spell fizzles."));
 
 
 		// return whether it worked

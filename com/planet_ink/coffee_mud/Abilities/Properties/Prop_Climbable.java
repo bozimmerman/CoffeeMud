@@ -78,7 +78,7 @@ public class Prop_Climbable extends Property
 				if((!CMLib.flags().isClimbing(msg.source()))
 				&&(!CMLib.flags().isFalling(msg.source())))
 				{
-					msg.source().tell(_("You need to climb that way, if you know how."));
+					msg.source().tell(L("You need to climb that way, if you know how."));
 					return false;
 				}
 			}

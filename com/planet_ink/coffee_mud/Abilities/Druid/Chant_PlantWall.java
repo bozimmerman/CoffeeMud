@@ -38,10 +38,10 @@ import java.util.*;
 public class Chant_PlantWall extends Chant
 {
 	@Override public String ID() { return "Chant_PlantWall"; }
-	private final static String localizedName = CMLib.lang()._("Plant Wall");
+	private final static String localizedName = CMLib.lang().L("Plant Wall");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Plant Wall)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Plant Wall)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
 	@Override public int minRange(){return 1;}
@@ -73,7 +73,7 @@ public class Chant_PlantWall extends Chant
 			&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)
 			&&(msg.tool().maxRange()>0))
 			{
-				final CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,_("^F^<FIGHT^><S-NAME> fire(s) at the plant wall with @x1.^</FIGHT^>^?",msg.tool().name()));
+				final CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,L("^F^<FIGHT^><S-NAME> fire(s) at the plant wall with @x1.^</FIGHT^>^?",msg.tool().name()));
 				CMLib.color().fixSourceFightColor(msg2);
 				if(mob.location().okMessage(mob,msg2))
 				{
@@ -93,7 +93,7 @@ public class Chant_PlantWall extends Chant
 				Item w=mob.fetchWieldedItem();
 				if(w==null) w=mob.myNaturalWeapon();
 				if(w==null) return false;
-				final CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,_("^F<S-NAME> hack(s) at the plant wall with @x1.^?",w.name()));
+				final CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,L("^F<S-NAME> hack(s) at the plant wall with @x1.^?",w.name()));
 				CMLib.color().fixSourceFightColor(msg2);
 				if(mob.location().okMessage(mob,msg2))
 				{
@@ -114,7 +114,7 @@ public class Chant_PlantWall extends Chant
 			&&(msg.tool() instanceof Ability)
 			&&(msg.tool().maxRange()>0))
 			{
-				final CMMsg msg2=CMClass.getMsg(mob,null,msg.tool(),CMMsg.MSG_OK_VISUAL,_("^F^<FIGHT^>The plant wall absorbs <O-NAME> from <S-NAME>.^</FIGHT^>^?"));
+				final CMMsg msg2=CMClass.getMsg(mob,null,msg.tool(),CMMsg.MSG_OK_VISUAL,L("^F^<FIGHT^>The plant wall absorbs <O-NAME> from <S-NAME>.^</FIGHT^>^?"));
 				CMLib.color().fixSourceFightColor(msg2);
 				if(mob.location().okMessage(mob,msg2))
 					mob.location().send(mob,msg2);
@@ -163,12 +163,12 @@ public class Chant_PlantWall extends Chant
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
-			mob.tell(_("You must be outdoors for this chant to work."));
+			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
 		if((!mob.isInCombat())||(mob.rangeToTarget()<1))
 		{
-			mob.tell(_("You really should be in ranged combat to use this chant."));
+			mob.tell(L("You really should be in ranged combat to use this chant."));
 			return false;
 		}
 		for(int i=0;i<mob.location().numItems();i++)
@@ -176,7 +176,7 @@ public class Chant_PlantWall extends Chant
 			final Item I=mob.location().getItem(i);
 			if((I!=null)&&(I.fetchEffect(ID())!=null))
 			{
-				mob.tell(_("There is already a plant wall here."));
+				mob.tell(L("There is already a plant wall here."));
 				return false;
 			}
 		}
@@ -200,15 +200,15 @@ public class Chant_PlantWall extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("A plant wall appears!"):_("^S<S-NAME> chant(s) for a plant wall!^?"));
+			final CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("A plant wall appears!"):L("^S<S-NAME> chant(s) for a plant wall!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				amountRemaining=(mob.baseState().getHitPoints()/6)+(2*(super.getX1Level(invoker())+super.getXLEVELLevel(invoker())));
 				final Item I=CMClass.getItem("GenItem");
-				I.setName(_("a plant wall"));
-				I.setDisplayText(_("a writhing plant wall has grown here"));
-				I.setDescription(_("The wall is thick and stringy."));
+				I.setName(L("a plant wall"));
+				I.setDisplayText(L("a writhing plant wall has grown here"));
+				I.setDescription(L("The wall is thick and stringy."));
 				I.setMaterial(RawMaterial.RESOURCE_GREENS);
 				CMLib.flags().setGettable(I,false);
 				I.recoverPhyStats();
@@ -219,7 +219,7 @@ public class Chant_PlantWall extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> incant(s), but the magic fizzles."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> incant(s), but the magic fizzles."));
 
 		// return whether it worked
 		return success;

@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_Greasy extends StdTrap
 {
 	@Override public String ID() { return "Trap_Greasy"; }
-	private final static String localizedName = CMLib.lang()._("greasy");
+	private final static String localizedName = CMLib.lang().L("greasy");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -87,7 +87,7 @@ public class Trap_Greasy extends StdTrap
 		if((I==null)
 		&&(mob!=null))
 		{
-			mob.tell(_("You'll need to set down a container of lamp oil first."));
+			mob.tell(L("You'll need to set down a container of lamp oil first."));
 			return false;
 		}
 		return true;
@@ -100,12 +100,12 @@ public class Trap_Greasy extends StdTrap
 		{
 			if((doesSaveVsTraps(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) setting off a trap!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) setting off a trap!"));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("@x1 is covered in grease!",CMStrings.capitalizeAndLower(affected.name()))))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("@x1 is covered in grease!",CMStrings.capitalizeAndLower(affected.name()))))
 			{
 				super.spring(target);
-				target.location().show(target,affected,null,CMMsg.MSG_DROP,_("<S-NAME> drop(s) the greasy <T-NAME>!"));
+				target.location().show(target,affected,null,CMMsg.MSG_DROP,L("<S-NAME> drop(s) the greasy <T-NAME>!"));
 				if(((--times)<=0)&&(canBeUninvoked())&&(affected instanceof Item))
 					disable();
 				else

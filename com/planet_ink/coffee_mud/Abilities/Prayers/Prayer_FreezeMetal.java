@@ -38,9 +38,9 @@ import java.util.*;
 public class Prayer_FreezeMetal extends Prayer
 {
 	@Override public String ID() { return "Prayer_FreezeMetal"; }
-	private final static String localizedName = CMLib.lang()._("Freeze Metal");
+	private final static String localizedName = CMLib.lang().L("Freeze Metal");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Frozen)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Frozen)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -71,9 +71,9 @@ public class Prayer_FreezeMetal extends Prayer
 		if(msg.targetMinor()==CMMsg.TYP_REMOVE)
 		{
 			if(I.amWearingAt(Wearable.IN_INVENTORY))
-				msg.source().tell(_("@x1 is too cold!",affected.name()));
+				msg.source().tell(L("@x1 is too cold!",affected.name()));
 			else
-				msg.source().tell(_("@x1 is frozen stuck!",affected.name()));
+				msg.source().tell(L("@x1 is frozen stuck!",affected.name()));
 			return false;
 		}
 		return true;
@@ -162,7 +162,7 @@ public class Prayer_FreezeMetal extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> point(s) at <T-NAMESELF> and @x1.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> point(s) at <T-NAMESELF> and @x1.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -171,7 +171,7 @@ public class Prayer_FreezeMetal extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> point(s) at <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
+			return maliciousFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

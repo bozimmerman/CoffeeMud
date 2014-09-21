@@ -39,7 +39,7 @@ import java.util.*;
 public class Druid_MyPlants extends StdAbility
 {
 	@Override public String ID() { return "Druid_MyPlants"; }
-	private final static String localizedName = CMLib.lang()._("My Plants");
+	private final static String localizedName = CMLib.lang().L("My Plants");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return 0;}
@@ -124,7 +124,7 @@ public class Druid_MyPlants extends StdAbility
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
-			mob.tell(_("Your plant senses fail you."));
+			mob.tell(L("Your plant senses fail you."));
 		else
 		{
 			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_QUIETMOVEMENT|CMMsg.MASK_MAGIC,null);
@@ -157,9 +157,9 @@ public class Druid_MyPlants extends StdAbility
 					}
 				}
 				if(V.size()==0)
-					mob.tell(_("You don't sense that there are ANY plants which are attuned to you."));
+					mob.tell(L("You don't sense that there are ANY plants which are attuned to you."));
 				else
-					mob.tell(_("### Plant Name           Location\n\r@x1",yourPlants.toString()));
+					mob.tell(L("### Plant Name           Location\n\r@x1",yourPlants.toString()));
 			}
 		}
 		return success;

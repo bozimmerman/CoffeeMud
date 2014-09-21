@@ -39,7 +39,7 @@ public class Archon_Record extends ArchonSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Archon_Record"; }
-	private final static String localizedName = CMLib.lang()._("Record");
+	private final static String localizedName = CMLib.lang().L("Record");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -96,7 +96,7 @@ public class Archon_Record extends ArchonSkill
 		{
 			target.delEffect(A);
 			if(target.playerStats()!=null) target.playerStats().setLastUpdated(0);
-			mob.tell(_("@x1 will no longer be recorded.",target.Name()));
+			mob.tell(L("@x1 will no longer be recorded.",target.Name()));
 			return true;
 		}
 
@@ -107,7 +107,7 @@ public class Archon_Record extends ArchonSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),_("^F<S-NAME> begin(s) recording <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),L("^F<S-NAME> begin(s) recording <T-NAMESELF>.^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -130,12 +130,12 @@ public class Archon_Record extends ArchonSkill
 						target.setSession(F);
 					A2.sess=F;
 					target.addNonUninvokableEffect(A2);
-					mob.tell(_("Enter RECORD @x1 again to stop recording.",target.Name()));
+					mob.tell(L("Enter RECORD @x1 again to stop recording.",target.Name()));
 				}
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,_("<S-NAME> attempt(s) to hush <T-NAMESELF>, but fail(s)."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to hush <T-NAMESELF>, but fail(s)."));
 		return success;
 	}
 }

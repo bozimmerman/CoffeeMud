@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_BigMouth extends Spell
 {
 	@Override public String ID() { return "Spell_BigMouth"; }
-	private final static String localizedName = CMLib.lang()._("Big Mouth");
+	private final static String localizedName = CMLib.lang().L("Big Mouth");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Big Mouth)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Big Mouth)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -65,7 +65,7 @@ public class Spell_BigMouth extends Spell
 				final int maxInhabitants=1+((mob.fetchAbility(ID())!=null)?super.getXLEVELLevel(mob):0);
 				if((Stomach()!=null)&&(Stomach().numInhabitants()>maxInhabitants))
 				{
-					mob.tell(_("Your stomach is too full."));
+					mob.tell(L("Your stomach is too full."));
 					return false;
 				}
 
@@ -75,7 +75,7 @@ public class Spell_BigMouth extends Spell
 					final boolean isHit=CMLib.combat().rollToHit(msg.source(),target);
 					if(!isHit)
 					{
-						mob.tell(_("You fail to eat @x1.",target.name(mob)));
+						mob.tell(L("You fail to eat @x1.",target.name(mob)));
 						if((!target.isInCombat())&&(target.isMonster())&&(target!=msg.source())
 						&&(target.location()==msg.source().location())&&(target.location().isInhabitant(msg.source()))
 						&&(CMLib.flags().canBeSeenBy(msg.source(),target)))
@@ -92,7 +92,7 @@ public class Spell_BigMouth extends Spell
 				else
 				if((!CMLib.flags().isGettable((Item)msg.target()))||(msg.target().displayText().length()==0))
 				{
-					mob.tell(_("You can not eat @x1.",((Item)msg.target()).name(mob)));
+					mob.tell(L("You can not eat @x1.",((Item)msg.target()).name(mob)));
 					return false;
 				}
 
@@ -104,7 +104,7 @@ public class Spell_BigMouth extends Spell
 			}
 			else
 			{
-				mob.tell(_("@x1 is just too large for you to eat!",((Physical)msg.target()).name(mob)));
+				mob.tell(L("@x1 is just too large for you to eat!",((Physical)msg.target()).name(mob)));
 				return false;
 			}
 		}
@@ -140,7 +140,7 @@ public class Spell_BigMouth extends Spell
 						if(msg2.value()<=0)
 						{
 							Stomach().bringMobHere(TastyMorsel,false);
-							final CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach(),null,CMMsg.MSG_ENTER,_("<S-NAME> <S-IS-ARE> swallowed whole by @x1!",mob.name()),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> slide(s) down the gullet into the stomach!"));
+							final CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach(),null,CMMsg.MSG_ENTER,L("<S-NAME> <S-IS-ARE> swallowed whole by @x1!",mob.name()),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> slide(s) down the gullet into the stomach!"));
 							Stomach().send(TastyMorsel,enterMsg);
 						}
 					}
@@ -176,8 +176,8 @@ public class Spell_BigMouth extends Spell
 		{
 			myStomach = CMClass.getLocale("StdRoom");
 			myStomach.setArea(CMLib.map().getRandomArea());
-			myStomach.setName(_("The Stomach of @x1",affected.name()));
-			myStomach.setDescription(_("You are in the stomach of @x1.  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been swallowed whole and are being digested.",affected.name()));
+			myStomach.setName(L("The Stomach of @x1",affected.name()));
+			myStomach.setDescription(L("You are in the stomach of @x1.  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been swallowed whole and are being digested.",affected.name()));
 		}
 		return myStomach;
 	}
@@ -233,7 +233,7 @@ public class Spell_BigMouth extends Spell
 											   TastyMorsel,
 											   null,
 											   CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,
-											   _("<S-NAME> digest(s) <T-NAMESELF>!!"));
+											   L("<S-NAME> digest(s) <T-NAMESELF>!!"));
 					// no OKaffectS, since the dragon is not in his own stomach.
 					Stomach().send(mob,DigestMsg);
 					int damage=(int)Math.round(CMath.div(TastyMorsel.curState().getHitPoints(),2));
@@ -265,7 +265,7 @@ public class Spell_BigMouth extends Spell
 		{
 			if(thang instanceof MOB)
 			{
-				((MOB)thang).tell(_("Your mouth shrinks to normal size."));
+				((MOB)thang).tell(L("Your mouth shrinks to normal size."));
 				if((Stomach()!=null)&&(Stomach().numInhabitants()>0))
 				{
 					unInvoked=false;
@@ -288,7 +288,7 @@ public class Spell_BigMouth extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already the owner of a huge mouth."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already the owner of a huge mouth."));
 			return false;
 		}
 
@@ -308,16 +308,16 @@ public class Spell_BigMouth extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> invoke(s) a spell.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> invoke(s) a spell.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> feel(s) <S-HIS-HER> mouth grow to an enormous size!"));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) <S-HIS-HER> mouth grow to an enormous size!"));
 				beneficialAffect(mob,target,asLevel,4);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a spell, but fail(s) miserably."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a spell, but fail(s) miserably."));
 
 		// return whether it worked
 		return success;

@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_NeedlePrick extends StdTrap
 {
 	@Override public String ID() { return "Trap_NeedlePrick"; }
-	private final static String localizedName = CMLib.lang()._("poisoned pricker");
+	private final static String localizedName = CMLib.lang().L("poisoned pricker");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -107,7 +107,7 @@ public class Trap_NeedlePrick extends StdTrap
 		if((I==null)
 		&&(mob!=null))
 		{
-			mob.tell(_("You'll need to set down some poison first."));
+			mob.tell(L("You'll need to set down some poison first."));
 			return false;
 		}
 		return true;
@@ -122,9 +122,9 @@ public class Trap_NeedlePrick extends StdTrap
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) touching a needle!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) touching a needle!"));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> prick(s) <S-HIM-HERSELF> on needle trap!")))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> prick(s) <S-HIM-HERSELF> on needle trap!")))
 			{
 				super.spring(target);
 				Ability A=CMClass.getAbility(text());

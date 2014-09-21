@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_Command extends Spell
 {
 	@Override public String ID() { return "Spell_Command"; }
-	private final static String localizedName = CMLib.lang()._("Command");
+	private final static String localizedName = CMLib.lang().L("Command");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
@@ -60,20 +60,20 @@ public class Spell_Command extends Spell
 				commands.addElement("FLEE");
 			else
 			{
-				mob.tell(_("Command @x1 to do what?",((String)V.elementAt(0))));
+				mob.tell(L("Command @x1 to do what?",((String)V.elementAt(0))));
 				return false;
 			}
 		}
 
 		if((!target.mayIFight(mob))||(!target.isMonster()))
 		{
-			mob.tell(_("You can't command @x1.",target.name(mob)));
+			mob.tell(L("You can't command @x1.",target.name(mob)));
 			return false;
 		}
 
 		if(((String)commands.elementAt(0)).toUpperCase().startsWith("FOL"))
 		{
-			mob.tell(_("You can't command someone to follow."));
+			mob.tell(L("You can't command someone to follow."));
 			return false;
 		}
 
@@ -82,7 +82,7 @@ public class Spell_Command extends Spell
 		{
 			if((!((Command)O).canBeOrdered())||(!((Command)O).securityCheck(mob))||(((Command)O).ID().equals("Sleep")))
 			{
-				mob.tell(_("You can't command someone to doing that."));
+				mob.tell(L("You can't command someone to doing that."));
 				return false;
 			}
 		}
@@ -94,7 +94,7 @@ public class Spell_Command extends Spell
 			{
 				if(CMath.bset(((Ability)O).flags(),Ability.FLAG_NOORDERING))
 				{
-					mob.tell(_("You can't command @x1 to do that.",target.name(mob)));
+					mob.tell(L("You can't command @x1 to do that.",target.name(mob)));
 					return false;
 				}
 			}
@@ -115,7 +115,7 @@ public class Spell_Command extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> command(s) <T-NAMESELF> to '@x1'.^?",CMParms.combine(commands,0)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> command(s) <T-NAMESELF> to '@x1'.^?",CMParms.combine(commands,0)));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			final CMMsg omsg=CMClass.getMsg(mob,target,null,CMMsg.MSG_ORDER,null);
 			if((mob.location().okMessage(mob,msg))
@@ -137,7 +137,7 @@ public class Spell_Command extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to command <T-NAMESELF>, but it definitely didn't work."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to command <T-NAMESELF>, but it definitely didn't work."));
 
 
 		// return whether it worked

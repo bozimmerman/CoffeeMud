@@ -37,7 +37,7 @@ import java.util.*;
 public class Thief_Steal extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Steal"; }
-	private final static String localizedName = CMLib.lang()._("Steal");
+	private final static String localizedName = CMLib.lang().L("Steal");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -98,7 +98,7 @@ public class Thief_Steal extends ThiefSkill
 		{
 			if(commands.size()<2)
 			{
-				mob.tell(_("Steal what from whom?"));
+				mob.tell(L("Steal what from whom?"));
 				return false;
 			}
 			itemToSteal=(String)commands.elementAt(0);
@@ -111,24 +111,24 @@ public class Thief_Steal extends ThiefSkill
 			target=mob.location().fetchInhabitant(CMParms.combine(commands,1));
 		if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",CMParms.combine(commands,1)));
+			mob.tell(L("You don't see '@x1' here.",CMParms.combine(commands,1)));
 			return false;
 		}
 		if((mob.isInCombat())&&(CMLib.flags().aliveAwakeMobile(target,true)||(mob.getVictim()!=target)))
 		{
-			mob.tell(mob,mob.getVictim(),null,_("Not while you are fighting <T-NAME>!"));
+			mob.tell(mob,mob.getVictim(),null,L("Not while you are fighting <T-NAME>!"));
 			return false;
 		}
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
 
 		if((!target.mayIFight(mob))||(levelDiff>15))
 		{
-			mob.tell(_("You cannot steal from @x1.",target.charStats().himher()));
+			mob.tell(L("You cannot steal from @x1.",target.charStats().himher()));
 			return false;
 		}
 		if(target==mob)
 		{
-			mob.tell(_("You cannot steal from yourself."));
+			mob.tell(L("You cannot steal from yourself."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -137,7 +137,7 @@ public class Thief_Steal extends ThiefSkill
 		final Item stolen=target.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemToSteal);
 		if(stolen instanceof Coins)
 		{
-			mob.tell(_("You'll need to try and SWIPE that."));
+			mob.tell(L("You'll need to try and SWIPE that."));
 			return false;
 		}
 
@@ -164,12 +164,12 @@ public class Thief_Steal extends ThiefSkill
 			if(CMLib.dice().rollPercentage()>discoverChance)
 			{
 				if((target.isMonster())&&(mob.getVictim()==null)) mob.setVictim(target);
-				final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":_("You fumble the attempt to steal; <T-NAME> spots you!"),CMMsg.MSG_NOISYMOVEMENT,auto?"":_("<S-NAME> tries to steal from you and fails!"),CMMsg.MSG_NOISYMOVEMENT,auto?"":_("<S-NAME> tries to steal from <T-NAME> and fails!"));
+				final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":L("You fumble the attempt to steal; <T-NAME> spots you!"),CMMsg.MSG_NOISYMOVEMENT,auto?"":L("<S-NAME> tries to steal from you and fails!"),CMMsg.MSG_NOISYMOVEMENT,auto?"":L("<S-NAME> tries to steal from <T-NAME> and fails!"));
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
 			else
-				mob.tell(auto?"":_("You fumble the attempt to steal."));
+				mob.tell(auto?"":L("You fumble the attempt to steal."));
 		}
 		else
 		{
@@ -177,11 +177,11 @@ public class Thief_Steal extends ThiefSkill
 			int code=CMMsg.MSG_THIEF_ACT;
 			if(!auto)
 				if((stolen!=null)&&(stolen.amWearingAt(Wearable.IN_INVENTORY)))
-					str=_("<S-NAME> steal(s) @x1 from <T-NAMESELF>.",stolen.name());
+					str=L("<S-NAME> steal(s) @x1 from <T-NAMESELF>.",stolen.name());
 				else
 				{
 					code=CMMsg.MSG_QUIETMOVEMENT;
-					str=_("<S-NAME> attempt(s) to steal from <T-HIM-HER>, but it doesn't appear @x1 has that in <T-HIS-HER> inventory!",target.charStats().heshe());
+					str=L("<S-NAME> attempt(s) to steal from <T-HIM-HER>, but it doesn't appear @x1 has that in <T-HIS-HER> inventory!",target.charStats().heshe());
 				}
 
 			final boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);

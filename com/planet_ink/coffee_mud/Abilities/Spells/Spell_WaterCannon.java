@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_WaterCannon extends Spell
 {
 	@Override public String ID() { return "Spell_WaterCannon"; }
-	private final static String localizedName = CMLib.lang()._("Water Cannon");
+	private final static String localizedName = CMLib.lang().L("Water Cannon");
 	@Override public String name() { return localizedName; }
 	@Override public int minRange(){return 2;}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(3);}
@@ -76,7 +76,7 @@ public void affectPhyStats(Physical affected, PhyStats affectableStats)
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("<S-NAME> incant(s) at <T-NAMESELF> and geyser of water blasts towards <T-HIM-HER>."));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("<S-NAME> incant(s) at <T-NAMESELF> and geyser of water blasts towards <T-HIM-HER>."));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_WATER|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
@@ -96,7 +96,7 @@ public void affectPhyStats(Physical affected, PhyStats affectableStats)
 				final int percentage = CMLib.dice().roll(1, 100, 0);
 				if(percentage < 10)
 				{
-	  				final CMMsg msg3=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_("<T-NAME> is knocked down by the water cannon."));
+	  				final CMMsg msg3=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("<T-NAME> is knocked down by the water cannon."));
 					if(mob.location().okMessage(mob,msg3))
 					{
 					   mob.location().send(mob, msg3);
@@ -106,7 +106,7 @@ public void affectPhyStats(Physical affected, PhyStats affectableStats)
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) and point(s) at <T-NAMESELF>, but flub(s) the spell."));
+			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) and point(s) at <T-NAMESELF>, but flub(s) the spell."));
 
 		// return whether it worked
 		return success;

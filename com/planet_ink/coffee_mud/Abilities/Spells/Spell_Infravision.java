@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_Infravision extends Spell
 {
 	@Override public String ID() { return "Spell_Infravision"; }
-	private final static String localizedName = CMLib.lang()._("Infravision");
+	private final static String localizedName = CMLib.lang().L("Infravision");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Infravision)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Infravision)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -57,7 +57,7 @@ public class Spell_Infravision extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> eyes cease to sparkle."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> eyes cease to sparkle."));
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class Spell_Infravision extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already using infravision."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already using infravision."));
 			return false;
 		}
 
@@ -96,7 +96,7 @@ public class Spell_Infravision extends Spell
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> attain(s) glowing eyes!"):_("^S<S-NAME> invoke(s) glowing red eyes!^?"));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> attain(s) glowing eyes!"):L("^S<S-NAME> invoke(s) glowing red eyes!^?"));
 		if(mob.location().okMessage(mob,msg))
 		{
 			successfulObservation=success;

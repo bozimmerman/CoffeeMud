@@ -36,7 +36,7 @@ import java.util.*;
 public class Song_Nothing extends Song
 {
 	@Override public String ID() { return "Song_Nothing"; }
-	private final static String localizedName = CMLib.lang()._("Nothing");
+	private final static String localizedName = CMLib.lang().L("Nothing");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected boolean skipStandardSongInvoke(){return true;}
@@ -61,11 +61,11 @@ public class Song_Nothing extends Song
 		unsingAllByThis(mob,mob);
 		if(!foundOne)
 		{
-			mob.tell(auto?_("There is no song playing."):_("You aren't singing."));
+			mob.tell(auto?L("There is no song playing."):L("You aren't singing."));
 			return true;
 		}
 
-		mob.location().show(mob,null,CMMsg.MSG_NOISE,auto?_("Silence."):_("<S-NAME> stop(s) singing."));
+		mob.location().show(mob,null,CMMsg.MSG_NOISE,auto?L("Silence."):L("<S-NAME> stop(s) singing."));
 		mob.location().recoverRoomStats();
 		return true;
 	}

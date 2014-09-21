@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Avatar extends Prayer
 {
 	@Override public String ID() { return "Prayer_Avatar"; }
-	private final static String localizedName = CMLib.lang()._("Avatar");
+	private final static String localizedName = CMLib.lang().L("Avatar");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -64,7 +64,7 @@ public class Prayer_Avatar extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your unholy alliance has been severed."));
+			mob.tell(L("Your unholy alliance has been severed."));
 	}
 
 	@Override
@@ -86,9 +86,9 @@ public class Prayer_Avatar extends Prayer
 		{
 			final MOB mob=(MOB)affected;
 			if(mob.getMyDeity()!=null)
-				affectedStats.setName(_("@x1, the Avatar of @x2",mob.name(),mob.getMyDeity().name()));
+				affectedStats.setName(L("@x1, the Avatar of @x2",mob.name(),mob.getMyDeity().name()));
 			else
-				affectedStats.setName(_("@x1, the Avatar",mob.name()));
+				affectedStats.setName(L("@x1, the Avatar",mob.name()));
 		}
 	}
 
@@ -150,7 +150,7 @@ public class Prayer_Avatar extends Prayer
 					if(dir>=0)
 					{
 						final String godName=mob.getWorshipCharID().length()==0?"Your god":mob.getWorshipCharID();
-						mob.tell(_("@x1 directs you @x2.",godName,Directions.getInDirectionName(dir)));
+						mob.tell(L("@x1 directs you @x2.",godName,Directions.getInDirectionName(dir)));
 						CMLib.tracking().walk(mob,dir,false,false);
 					}
 				}
@@ -171,7 +171,7 @@ public class Prayer_Avatar extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already the AVATAR."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already the AVATAR."));
 			return false;
 		}
 
@@ -181,7 +181,7 @@ public class Prayer_Avatar extends Prayer
 		else
 		if(!mob.charStats().getCurrentClass().ID().equals("Avatar"))
 		{
-			mob.tell(_("You have lost this ability for all time."));
+			mob.tell(L("You have lost this ability for all time."));
 			return false;
 		}
 		else
@@ -199,16 +199,16 @@ public class Prayer_Avatar extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> @x1.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> become(s) the AVATAR!"));
+				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) the AVATAR!"));
 				beneficialAffect(mob,target,asLevel,levels);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

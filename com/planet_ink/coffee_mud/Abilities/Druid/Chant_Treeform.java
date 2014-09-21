@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_Treeform extends Chant
 {
 	@Override public String ID() { return "Chant_Treeform"; }
-	private final static String localizedName = CMLib.lang()._("Treeform");
+	private final static String localizedName = CMLib.lang().L("Treeform");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Treeform)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Treeform)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -80,7 +80,7 @@ public class Chant_Treeform extends Chant
 			if((!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 			&&(msg.sourceMajor()>0))
 			{
-				mob.tell(_("Trees can't do that."));
+				mob.tell(L("Trees can't do that."));
 				return false;
 			}
 		}
@@ -88,7 +88,7 @@ public class Chant_Treeform extends Chant
 		{
 			if((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)||(CMath.bset(msg.targetMajor(), CMMsg.MASK_MALICIOUS)))
 			{
-				msg.source().tell(_("Attack a tree?!"));
+				msg.source().tell(L("Attack a tree?!"));
 				msg.source().setVictim(null);
 				mob.setVictim(null);
 				return false;
@@ -126,7 +126,7 @@ public class Chant_Treeform extends Chant
 		// it should consistantly put the mob into
 		// a sleeping state, so that nothing they do
 		// can get them out of it.
-		affectableStats.setName(_("a tree that reminds you of @x1",affected.name()));
+		affectableStats.setName(L("a tree that reminds you of @x1",affected.name()));
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_HEAR);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SMELL);
@@ -147,7 +147,7 @@ public class Chant_Treeform extends Chant
 		if(canBeUninvoked())
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> body is no longer treeish."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> body is no longer treeish."));
 			if(oldState!=null)
 			{
 				mob.curState().setHitPoints(oldState.getHitPoints());
@@ -175,7 +175,7 @@ public class Chant_Treeform extends Chant
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell(_("You must be outdoors to try this."));
+			mob.tell(L("You must be outdoors to try this."));
 			return false;
 		}
 
@@ -185,7 +185,7 @@ public class Chant_Treeform extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already a tree."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already a tree."));
 			return false;
 		}
 
@@ -206,7 +206,7 @@ public class Chant_Treeform extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -218,14 +218,14 @@ public class Chant_Treeform extends Chant
 					success=beneficialAffect(mob,target,asLevel,(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*50);
 					if(success)
 					{
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> transform(s) into a tree!!"));
-						target.tell(_("To return to your flesh body, try to leave this area."));
+						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> transform(s) into a tree!!"));
+						target.tell(L("To return to your flesh body, try to leave this area."));
 					}
 				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
 
 		// return whether it worked
 		return success;

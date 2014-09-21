@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_GravitySlam extends Spell
 {
 	@Override public String ID() { return "Spell_GravitySlam"; }
-	private final static String localizedName = CMLib.lang()._("Gravity Slam");
+	private final static String localizedName = CMLib.lang().L("Gravity Slam");
 	@Override public String name() { return localizedName; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -65,7 +65,7 @@ public class Spell_GravitySlam extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_(auto?"":"^S<S-NAME> incant(s) and point(s) at <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"":"^S<S-NAME> incant(s) and point(s) at <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -87,16 +87,16 @@ public class Spell_GravitySlam extends Spell
 				if(msg.value()>0)
 					damage = (int)Math.round(CMath.div(damage,2.0));
 				if(!CMLib.flags().isInFlight(target))
-					mob.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> <S-IS-ARE> hurled up into the air and **SLAMMED** back down!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> <S-IS-ARE> hurled up into the air and **SLAMMED** back down!"));
 				else
-					mob.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> <S-IS-ARE> hurled even higher into the air and **SLAMMED** back down!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> <S-IS-ARE> hurled even higher into the air and **SLAMMED** back down!"));
 
 				if(target.location()==mob.location())
 					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,"The fall <DAMAGE> <T-NAME>!");
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) and point(s) at <T-NAMESELF>, but flub(s) the spell."));
+			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) and point(s) at <T-NAMESELF>, but flub(s) the spell."));
 
 
 		// return whether it worked

@@ -38,7 +38,7 @@ import java.util.*;
 public class Ranger extends StdCharClass
 {
 	@Override public String ID(){return "Ranger";}
-	private final static String localizedStaticName = CMLib.lang()._("Ranger");
+	private final static String localizedStaticName = CMLib.lang().L("Ranger");
 	@Override public String name() { return localizedStaticName; }
 	@Override public String baseClass(){return "Fighter";}
 	@Override public int getBonusPracLevel(){return 0;}
@@ -208,7 +208,7 @@ public class Ranger extends StdCharClass
 		{
 			if(((Ability)msg.tool()).appropriateToMyFactions(myChar))
 				return true;
-			myChar.tell(_("Extreme emotions disrupt your chant."));
+			myChar.tell(L("Extreme emotions disrupt your chant."));
 			return false;
 		}
 		return true;

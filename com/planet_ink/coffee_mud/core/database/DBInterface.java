@@ -88,7 +88,7 @@ public class DBInterface implements DatabaseEngine
 	@Override public void initializeClass(){}
 	@Override public CMObject copyOf(){try{return (CMObject)this.clone();}catch(final Exception e){return newInstance();}}
 	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	@Override public String _(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+	@Override public String L(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
 	@Override public DBConnector getConnector(){ return DB;}
 
 	@Override public boolean activate(){ return true;}

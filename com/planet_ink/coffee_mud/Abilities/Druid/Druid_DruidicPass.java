@@ -38,9 +38,9 @@ import java.util.*;
 public class Druid_DruidicPass extends StdAbility
 {
 	@Override public String ID() { return "Druid_DruidicPass"; }
-	private final static String localizedName = CMLib.lang()._("Druidic Pass");
+	private final static String localizedName = CMLib.lang().L("Druidic Pass");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(druidic passage)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(druidic passage)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings =_i(new String[] {"PASS"});
@@ -63,20 +63,20 @@ public class Druid_DruidicPass extends StdAbility
 
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
-			mob.tell(_("You must be outdoors to perform the Druidic Pass."));
+			mob.tell(L("You must be outdoors to perform the Druidic Pass."));
 			return false;
 		}
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
 		||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
 		{
-			mob.tell(_("You must be in the wild to perform the Druidic Pass."));
+			mob.tell(L("You must be in the wild to perform the Druidic Pass."));
 			return false;
 		}
 		final String whatToOpen=CMParms.combine(commands,0);
 		final int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 		if(dirCode<0)
 		{
-			mob.tell(_("Pass which direction?!"));
+			mob.tell(L("Pass which direction?!"));
 			return false;
 		}
 
@@ -85,7 +85,7 @@ public class Druid_DruidicPass extends StdAbility
 
 		if((exit==null)||(room==null)||(!CMLib.flags().canBeSeenBy(exit,mob)))
 		{
-			mob.tell(_("You can't see anywhere to pass that way."));
+			mob.tell(L("You can't see anywhere to pass that way."));
 			return false;
 		}
 		final Exit opExit=room.getReverseExit(dirCode);
@@ -101,7 +101,7 @@ public class Druid_DruidicPass extends StdAbility
 			if(exit.isOpen())
 				CMLib.tracking().walk(mob,dirCode,false,false);
 			else
-				beneficialVisualFizzle(mob,null,_("<S-NAME> walk(s) @x1, but go(es) no further.",Directions.getDirectionName(dirCode)));
+				beneficialVisualFizzle(mob,null,L("<S-NAME> walk(s) @x1, but go(es) no further.",Directions.getDirectionName(dirCode)));
 		}
 		else
 		if(exit.isOpen())
@@ -127,7 +127,7 @@ public class Druid_DruidicPass extends StdAbility
 				exit.setDoorsNLocks(exit.hasADoor(),true,exit.defaultsClosed(),exit.hasALock(),false,exit.defaultsLocked());
 				if(opExit!=null)
 					opExit.setDoorsNLocks(exit.hasADoor(),true,exit.defaultsClosed(),exit.hasALock(),false,exit.defaultsLocked());
-				mob.tell(_("\n\r\n\r"));
+				mob.tell(L("\n\r\n\r"));
 				if(mob.fetchEffect(ID())==null)
 				{
 					mob.addEffect(this);

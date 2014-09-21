@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_Disarm extends StdSkill
 {
 	@Override public String ID() { return "Skill_Disarm"; }
-	private final static String localizedName = CMLib.lang()._("Disarm");
+	private final static String localizedName = CMLib.lang().L("Disarm");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -73,7 +73,7 @@ public class Skill_Disarm extends StdSkill
 	{
 		if(!mob.isInCombat())
 		{
-			mob.tell(_("You must be in combat to do this!"));
+			mob.tell(L("You must be in combat to do this!"));
 			return false;
 		}
 		final MOB victim=super.getTarget(mob, commands, givenTarget);
@@ -81,12 +81,12 @@ public class Skill_Disarm extends StdSkill
 		if(((victim==mob.getVictim())&&(mob.rangeToTarget()>0))
 		||((victim.getVictim()==mob)&&(victim.rangeToTarget()>0)))
 		{
-			mob.tell(_("You are too far away to disarm!"));
+			mob.tell(L("You are too far away to disarm!"));
 			return false;
 		}
 		if(mob.fetchWieldedItem()==null)
 		{
-			mob.tell(_("You need a weapon to disarm someone!"));
+			mob.tell(L("You need a weapon to disarm someone!"));
 			return false;
 		}
 		Item hisWeapon=victim.fetchWieldedItem();
@@ -95,7 +95,7 @@ public class Skill_Disarm extends StdSkill
 		||(!(hisWeapon instanceof Weapon))
 		||((((Weapon)hisWeapon).weaponClassification()==Weapon.CLASS_NATURAL)))
 		{
-			mob.tell(_("@x1 is not wielding a weapon!",victim.charStats().HeShe()));
+			mob.tell(L("@x1 is not wielding a weapon!",victim.charStats().HeShe()));
 			return false;
 		}
 
@@ -119,12 +119,12 @@ public class Skill_Disarm extends StdSkill
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(victim,msg);
-					mob.location().show(mob,victim,CMMsg.MSG_NOISYMOVEMENT,auto?_("<T-NAME> is disarmed!"):_("<S-NAME> disarm(s) <T-NAMESELF>!"));
+					mob.location().show(mob,victim,CMMsg.MSG_NOISYMOVEMENT,auto?L("<T-NAME> is disarmed!"):L("<S-NAME> disarm(s) <T-NAMESELF>!"));
 				}
 			}
 		}
 		else
-			maliciousFizzle(mob,victim,_("<S-NAME> attempt(s) to disarm <T-NAMESELF> and fail(s)!"));
+			maliciousFizzle(mob,victim,L("<S-NAME> attempt(s) to disarm <T-NAMESELF> and fail(s)!"));
 		return success;
 	}
 

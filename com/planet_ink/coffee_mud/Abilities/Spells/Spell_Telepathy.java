@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_Telepathy extends Spell
 {
 	@Override public String ID() { return "Spell_Telepathy"; }
-	private final static String localizedName = CMLib.lang()._("Telepathy");
+	private final static String localizedName = CMLib.lang().L("Telepathy");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}
@@ -55,7 +55,7 @@ public class Spell_Telepathy extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":_("^S<S-NAME> concentrate(s) on <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> concentrate(s) on <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -122,15 +122,15 @@ public class Spell_Telepathy extends Spell
 				if(target.charStats().getStat(CharStats.STAT_WISDOM)<10)
 					adjective+="unwise, ";
 
-				mob.tell(_("@x1 is a @x2@x3 @x4.",target.Name(),adjective,target.charStats().getMyRace().name(),target.charStats().getCurrentClass().name()));
+				mob.tell(L("@x1 is a @x2@x3 @x4.",target.Name(),adjective,target.charStats().getMyRace().name(),target.charStats().getCurrentClass().name()));
 				if(thoughts.length()==0)
-					mob.tell(_("You don't detect any other thoughts."));
+					mob.tell(L("You don't detect any other thoughts."));
 				else
 					mob.tell(thoughts.toString());
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,_("<S-NAME> concentrate(s) on <T-NAMESELF>, but look(s) frustrated."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> concentrate(s) on <T-NAMESELF>, but look(s) frustrated."));
 
 		// return whether it worked
 		return success;

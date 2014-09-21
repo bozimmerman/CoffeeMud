@@ -36,7 +36,7 @@ import java.util.*;
 public class Scalp extends CommonSkill
 {
 	@Override public String ID() { return "Scalp"; }
-	private final static String localizedName = CMLib.lang()._("Scalping");
+	private final static String localizedName = CMLib.lang().L("Scalping");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"SCALP","SCALPING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -48,8 +48,8 @@ public class Scalp extends CommonSkill
 	public Scalp()
 	{
 		super();
-		displayText=_("You are scalping something...");
-		verb=_("scalping");
+		displayText=L("You are scalping something...");
+		verb=L("scalping");
 	}
 
 	@Override
@@ -74,10 +74,10 @@ public class Scalp extends CommonSkill
 				if((body!=null)&&(!aborted))
 				{
 					if((failed)||(!mob.location().isContent(body)))
-						commonTell(mob,_("You messed up your scalping completely."));
+						commonTell(mob,L("You messed up your scalping completely."));
 					else
 					{
-						mob.location().show(mob,null,body,getActivityMessageType(),_("<S-NAME> manage(s) to scalp <O-NAME>."));
+						mob.location().show(mob,null,body,getActivityMessageType(),L("<S-NAME> manage(s) to scalp <O-NAME>."));
 						lastSoManyScalps.addElement(body);
 						if(lastSoManyScalps.size()>100)
 							lastSoManyScalps.removeElementAt(0);
@@ -86,15 +86,15 @@ public class Scalp extends CommonSkill
 						if((body.charStats()!=null)&&(body.charStats().getMyRace()!=null))
 							race=" "+body.charStats().getMyRace().name();
 						if(body.name().startsWith("the body"))
-							scalp.setName(_("the@x1 scalp@x2",race,body.name().substring(8)));
+							scalp.setName(L("the@x1 scalp@x2",race,body.name().substring(8)));
 						else
-							scalp.setName(_("a@x1 scalp",race));
+							scalp.setName(L("a@x1 scalp",race));
 						if(body.displayText().startsWith("the body"))
-							scalp.setDisplayText(_("the@x1 scalp@x2",race,body.displayText().substring(8)));
+							scalp.setDisplayText(L("the@x1 scalp@x2",race,body.displayText().substring(8)));
 						else
-							scalp.setDisplayText(_("a@x1 scalp sits here",race));
+							scalp.setDisplayText(L("a@x1 scalp sits here",race));
 						scalp.setBaseValue(1);
-						scalp.setDescription(_("This is the bloody top of that poor creatures head."));
+						scalp.setDescription(L("This is the bloody top of that poor creatures head."));
 						scalp.setMaterial(RawMaterial.RESOURCE_MEAT);
 						scalp.setSecretIdentity("This scalp was cut by "+mob.name()+".");
 						mob.location().addItem(scalp,ItemPossessor.Expire.Monster_EQ);
@@ -138,25 +138,25 @@ public class Scalp extends CommonSkill
 		   ||(((DeadBody)I).charStats().getMyRace()==null)
 		   ||(((DeadBody)I).charStats().getMyRace().bodyMask()[Race.BODY_HEAD]==0))
 		{
-			commonTell(mob,_("You can't scalp @x1.",I.name(mob)));
+			commonTell(mob,L("You can't scalp @x1.",I.name(mob)));
 			return false;
 		}
 		if(lastSoManyScalps.contains(I))
 		{
-			commonTell(mob,_("@x1 has already been scalped.",I.name(mob)));
+			commonTell(mob,L("@x1 has already been scalped.",I.name(mob)));
 			return false;
 
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		failed=!proficiencyCheck(mob,0,auto);
-		final CMMsg msg=CMClass.getMsg(mob,I,this,getActivityMessageType(),getActivityMessageType(),getActivityMessageType(),_("<S-NAME> start(s) scalping <T-NAME>."));
+		final CMMsg msg=CMClass.getMsg(mob,I,this,getActivityMessageType(),getActivityMessageType(),getActivityMessageType(),L("<S-NAME> start(s) scalping <T-NAME>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			I=(Item)msg.target();
 			body=(DeadBody)I;
-			verb=_("scalping @x1",I.name());
+			verb=L("scalping @x1",I.name());
 			playSound="ripping.wav";
 			int duration=(I.phyStats().weight()/(10+getXLEVELLevel(mob)));
 			if(duration<3) duration=3;

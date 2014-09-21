@@ -41,7 +41,7 @@ import java.util.*;
 public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override public String ID() { return "JewelMaking"; }
-	private final static String localizedName = CMLib.lang()._("Jewel Making");
+	private final static String localizedName = CMLib.lang().L("Jewel Making");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"JEWEL","JEWELMAKING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -238,7 +238,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 		||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
-				commonTell(mob,_("That's not an jewelworked item."));
+				commonTell(mob,L("That's not an jewelworked item."));
 			return false;
 		}
 		return true;
@@ -266,7 +266,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,_("Make what? Enter \"jewel list\" for a list.  You may also enter jewel encrust <gem name> <item name>, jewel mount <gem name> <item name>, jewel refit <item name>, jewel learn <item>, jewel scan, jewel mend <item name>, or jewel stop to cancel."));
+			commonTell(mob,L("Make what? Enter \"jewel list\" for a list.  You may also enter jewel encrust <gem name> <item name>, jewel mount <gem name> <item name>, jewel refit <item name>, jewel learn <item>, jewel scan, jewel mend <item name>, or jewel stop to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -303,7 +303,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 					ListingLibrary.ColFixer.fixColWidth(5,mob.session())
 				};
 			for(int r=0;r<toggleTop;r++)
-				buf.append((r>0?" ":"")+CMStrings.padRight(_("Item"),cols[0])+" "+CMStrings.padRight(_("Lvl"),cols[1])+" "+CMStrings.padRight(_("Metal"),cols[2]));
+				buf.append((r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Metal"),cols[2]));
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -341,7 +341,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			final String word=str.toLowerCase();
 			if(commands.size()<3)
 			{
-				commonTell(mob,_("@x1 what jewel onto what item?",CMStrings.capitalizeAndLower(word)));
+				commonTell(mob,L("@x1 what jewel onto what item?",CMStrings.capitalizeAndLower(word)));
 				return false;
 			}
 			final Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
@@ -356,25 +356,25 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			final Environmental thangE=mob.location().fetchFromMOBRoomFavorsItems(mob,null,rest,Wearable.FILTER_UNWORNONLY);
 			if((jewelE==null)||(!CMLib.flags().canBeSeenBy(jewelE,mob)))
 			{
-				commonTell(mob,_("You don't see any '@x1' here.",jewel));
+				commonTell(mob,L("You don't see any '@x1' here.",jewel));
 				return false;
 			}
 			if((thangE==null)||(!CMLib.flags().canBeSeenBy(thangE,mob)))
 			{
-				commonTell(mob,_("You don't see any '@x1' here.",rest));
+				commonTell(mob,L("You don't see any '@x1' here.",rest));
 				return false;
 			}
 			if((!(jewelE instanceof RawMaterial))||(!(jewelE instanceof Item))
 			   ||(((((Item)jewelE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PRECIOUS)
 				  &&((((Item)jewelE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_GLASS)))
 			{
-				commonTell(mob,_("A @x1 is not suitable to @x2 on anything.",jewelE.name(),word));
+				commonTell(mob,L("A @x1 is not suitable to @x2 on anything.",jewelE.name(),word));
 				return false;
 			}
 			final Item jewelI=(Item)CMLib.materials().unbundle((Item)jewelE,1,null);
 			if(jewelI==null)
 			{
-				commonTell(mob,_("@x1 is not pure enough to be @x2ed with.  You will need to use a gathered one.",jewelE.name(),word));
+				commonTell(mob,L("@x1 is not pure enough to be @x2ed with.  You will need to use a gathered one.",jewelE.name(),word));
 				return false;
 			}
 			if((!(thangE instanceof Item))
@@ -387,7 +387,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				  &&((((Item)thangE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
 				  &&((((Item)thangE).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER)))
 			{
-				commonTell(mob,_("A @x1 is not suitable to be @x2ed on.",thangE.name(),word));
+				commonTell(mob,L("A @x1 is not suitable to be @x2ed on.",thangE.name(),word));
 				return false;
 			}
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -398,17 +398,17 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			if(word.equals("encrust"))
 			{
 				beingDone.addElement(CMStrings.capitalizeAndLower(buildingI.name())+" is encrusted with bits of "+materialName+".");
-				startStr=_("<S-NAME> start(s) encrusting @x1 with @x2.",buildingI.name(),materialName);
-				displayText=_("You are encrusting @x1 with @x2",buildingI.name(),materialName);
-				verb=_("encrusting @x1 with bits of @x2",buildingI.name(),materialName);
+				startStr=L("<S-NAME> start(s) encrusting @x1 with @x2.",buildingI.name(),materialName);
+				displayText=L("You are encrusting @x1 with @x2",buildingI.name(),materialName);
+				verb=L("encrusting @x1 with bits of @x2",buildingI.name(),materialName);
 			}
 			else
 			{
 				materialName=CMLib.english().startWithAorAn(materialName).toLowerCase();
 				beingDone.addElement(CMStrings.capitalizeAndLower(buildingI.name())+" has "+materialName+" mounted on it.");
-				startStr=_("<S-NAME> start(s) mounting @x1 onto @x2.",materialName,buildingI.name());
-				displayText=_("You are mounting @x1 onto @x2",materialName,buildingI.name());
-				verb=_("mounting @x1 onto @x2",materialName,buildingI.name());
+				startStr=L("<S-NAME> start(s) mounting @x1 onto @x2.",materialName,buildingI.name());
+				displayText=L("You are mounting @x1 onto @x2",materialName,buildingI.name());
+				verb=L("mounting @x1 onto @x2",materialName,buildingI.name());
 			}
 			beingDone.addElement(jewelI);
 			messedUp=!proficiencyCheck(mob,0,auto);
@@ -439,9 +439,9 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr=_("<S-NAME> start(s) mending @x1.",buildingI.name());
-			displayText=_("You are mending @x1",buildingI.name());
-			verb=_("mending @x1",buildingI.name());
+			startStr=L("<S-NAME> start(s) mending @x1.",buildingI.name());
+			displayText=L("You are mending @x1",buildingI.name());
+			verb=L("mending @x1",buildingI.name());
 		}
 		else
 		if(str.equalsIgnoreCase("refit"))
@@ -458,15 +458,15 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				return false;
 			if(buildingI.phyStats().height()==0)
 			{
-				commonTell(mob,_("@x1 is already the right size.",buildingI.name(mob)));
+				commonTell(mob,L("@x1 is already the right size.",buildingI.name(mob)));
 				return false;
 			}
 			activity = CraftingActivity.REFITTING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr=_("<S-NAME> start(s) refitting @x1.",buildingI.name());
-			displayText=_("You are refitting @x1",buildingI.name());
-			verb=_("refitting @x1",buildingI.name());
+			startStr=L("<S-NAME> start(s) refitting @x1.",buildingI.name());
+			displayText=L("You are refitting @x1",buildingI.name());
+			verb=L("refitting @x1",buildingI.name());
 		}
 		else
 		{
@@ -508,7 +508,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,_("You don't know how to make a '@x1'.  Try \"jewel list\" for a list.",recipeName));
+				commonTell(mob,L("You don't know how to make a '@x1'.  Try \"jewel list\" for a list.",recipeName));
 				return false;
 			}
 			misctype=foundRecipe.get(RCP_MISCTYPE);
@@ -549,7 +549,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				final Physical target=givenTarget;
 				session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 				{
-					@Override public void showPrompt() {session.promptPrint(_("What is this item a representation of?\n\r: "));}
+					@Override public void showPrompt() {session.promptPrint(L("What is this item a representation of?\n\r: "));}
 					@Override public void timedOut() {}
 					@Override public void callBack()
 					{
@@ -575,7 +575,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(buildingI==null)
 			{
-				commonTell(mob,_("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
+				commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
@@ -589,16 +589,16 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			else
 				itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);
-			startStr=_("<S-NAME> start(s) making @x1.",buildingI.name());
-			displayText=_("You are making @x1",buildingI.name());
-			verb=_("making @x1",buildingI.name());
+			startStr=L("<S-NAME> start(s) making @x1.",buildingI.name());
+			displayText=L("You are making @x1",buildingI.name());
+			verb=L("making @x1",buildingI.name());
 			playSound="tinktinktink.wav";
-			buildingI.setDisplayText(_("@x1 lies here",itemName));
+			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			if((data[1][FOUND_CODE]>0)
 			&&(((data[0][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
 			   ||((data[0][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL))
 			&&(((data[1][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PRECIOUS)))
-				buildingI.setDescription(_("@x1 made of @x2.",itemName,RawMaterial.CODES.NAME(data[0][FOUND_CODE]).toLowerCase()));
+				buildingI.setDescription(L("@x1 made of @x2.",itemName,RawMaterial.CODES.NAME(data[0][FOUND_CODE]).toLowerCase()));
 			else
 				buildingI.setDescription(itemName+". ");
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
@@ -627,9 +627,9 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			&&(statue!=null)
 			&&(statue.trim().length()>0))
 			{
-				buildingI.setName(_("@x1 of @x2",itemName,statue.trim()));
-				buildingI.setDisplayText(_("@x1 of @x2 is here",itemName,statue.trim()));
-				buildingI.setDescription(_("@x1 of @x2. ",itemName,statue.trim()));
+				buildingI.setName(L("@x1 of @x2",itemName,statue.trim()));
+				buildingI.setDisplayText(L("@x1 of @x2 is here",itemName,statue.trim()));
+				buildingI.setDescription(L("@x1 of @x2. ",itemName,statue.trim()));
 			}
 			if(bundling) buildingI.setBaseValue(lostValue);
 			buildingI.recoverPhyStats();
@@ -644,9 +644,9 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 		{
 			messedUp=false;
 			duration=1;
-			verb=_("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
-			startStr=_("<S-NAME> start(s) @x1.",verb);
-			displayText=_("You are @x1",verb);
+			verb=L("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
+			startStr=L("<S-NAME> start(s) @x1.",verb);
+			displayText=L("You are @x1",verb);
 		}
 
 		if(parsedVars.autoGenerate>0)

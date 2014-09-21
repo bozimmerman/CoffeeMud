@@ -59,16 +59,16 @@ public class Deities extends StdCommand
 			msg.append(D.getWorshipRequirementsDesc()+"\n\r");
 		if(D.numBlessings()>0)
 		{
-			msg.append(_("\n\r^HBlessings: ^N"));
+			msg.append(L("\n\r^HBlessings: ^N"));
 			for(int b=0;b<D.numBlessings();b++)
 			{
 				msg.append(D.fetchBlessing(b).name());
 				if(D.fetchBlessingCleric(b))
-					msg.append(_(" (Clerics only)"));
+					msg.append(L(" (Clerics only)"));
 				if(b<D.numBlessings()-1)
 					msg.append(", ");
 			}
-			msg.append(_("\n\r^HBlessing Instructions: ^N"));
+			msg.append(L("\n\r^HBlessing Instructions: ^N"));
 			if((mob==null)||(CMSecurity.isASysOp(mob)))
 			{
 				msg.append(D.getClericTriggerDesc()+"\n\r");
@@ -84,17 +84,17 @@ public class Deities extends StdCommand
 		{
 			if(D.numPowers()>0)
 			{
-				msg.append(_("\n\r^HGranted Powers: ^N"));
+				msg.append(L("\n\r^HGranted Powers: ^N"));
 				for(int b=0;b<D.numPowers();b++)
 				{
 					msg.append(D.fetchPower(b).name());
 					if(b<D.numPowers()-1)
 						msg.append(", ");
 				}
-				msg.append(_("\n\r^HPowers Instructions: ^N"));
+				msg.append(L("\n\r^HPowers Instructions: ^N"));
 				msg.append(D.getClericPowerupDesc()+"\n\r");
 			}
-			msg.append(_("\n\r^HService Instructions: ^N"));
+			msg.append(L("\n\r^HService Instructions: ^N"));
 			msg.append(D.getServiceTriggerDesc()+"\n\r");
 		}
 		return msg.toString();
@@ -115,9 +115,9 @@ public class Deities extends StdCommand
 		final String str=CMParms.combine(commands,1).toUpperCase();
 		final StringBuffer msg=new StringBuffer("");
 		if(str.length()==0)
-			msg.append(_("\n\r^xThe known deities:^.^? \n\r\n\r"));
+			msg.append(L("\n\r^xThe known deities:^.^? \n\r\n\r"));
 		else
-			msg.append(_("\n\r^HThe known deities named '@x1':^? \n\r",str));
+			msg.append(L("\n\r^HThe known deities named '@x1':^? \n\r",str));
 		int col=0;
 		final int colWidth=ListingLibrary.ColFixer.fixColWidth(18,mob.session());
 		for(final Enumeration d=CMLib.map().deities();d.hasMoreElements();)
@@ -134,7 +134,7 @@ public class Deities extends StdCommand
 			}
 		}
 		if(str.length()==0)
-			msg.append(_("\n\r\n\r^xUse DEITIES <NAME> to see important details on each deity!^.^N\n\r"));
+			msg.append(L("\n\r\n\r^xUse DEITIES <NAME> to see important details on each deity!^.^N\n\r"));
 		mob.tell(msg.toString());
 		return false;
 	}

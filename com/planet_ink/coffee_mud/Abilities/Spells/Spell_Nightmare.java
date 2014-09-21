@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Nightmare extends Spell
 {
 	@Override public String ID() { return "Spell_Nightmare"; }
-	private final static String localizedName = CMLib.lang()._("Nightmare");
+	private final static String localizedName = CMLib.lang().L("Nightmare");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Having a nightmare)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Having a nightmare)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
@@ -77,66 +77,66 @@ public class Spell_Nightmare extends Spell
 					{
 					case 1:
 						I=mob.fetchWieldedItem();
-						if(I!=null) mob.tell(mob,I,null,_("<T-NAME> rips away your flesh."));
+						if(I!=null) mob.tell(mob,I,null,L("<T-NAME> rips away your flesh."));
 						break;
 					case 2:
 						I=mob.fetchWieldedItem();
-						if(I!=null) mob.tell(mob,I,null,_("<T-NAME> seems to wrap itself around you."));
+						if(I!=null) mob.tell(mob,I,null,L("<T-NAME> seems to wrap itself around you."));
 						break;
 					case 3:
 						I=mob.fetchWieldedItem();
-						if(I!=null) mob.tell(mob,I,null,_("<T-NAME> seems to bend around your hands."));
+						if(I!=null) mob.tell(mob,I,null,L("<T-NAME> seems to bend around your hands."));
 						break;
 					case 4:
-						mob.tell(_("You see your flesh melting away in large chunks."));
+						mob.tell(L("You see your flesh melting away in large chunks."));
 						break;
 					case 5:
 						M=R.fetchRandomInhabitant();
-						if(M!=null) mob.tell(mob,M,null,_("<T-NAME> glare(s) at you, taking on a horrifying form."));
+						if(M!=null) mob.tell(mob,M,null,L("<T-NAME> glare(s) at you, taking on a horrifying form."));
 						break;
 					case 6:
 						M=R.fetchRandomInhabitant();
-						if(M!=null) mob.tell(mob,M,null,_("<T-NAME> rip(s) open <T-HIS-HER> jaws and stuff(s) you in it."));
+						if(M!=null) mob.tell(mob,M,null,L("<T-NAME> rip(s) open <T-HIS-HER> jaws and stuff(s) you in it."));
 						break;
 					case 7:
 						M=R.fetchRandomInhabitant();
-						if(M!=null) mob.tell(mob,M,null,_("<T-NAME> rip(s) up <T-HIS-HER> flesh in front of you."));
+						if(M!=null) mob.tell(mob,M,null,L("<T-NAME> rip(s) up <T-HIS-HER> flesh in front of you."));
 						break;
 					case 8:
 						M=R.fetchRandomInhabitant();
-						if(M!=null) mob.tell(mob,M,null,_("<T-NAME> become(s) a horrifying image of terror."));
+						if(M!=null) mob.tell(mob,M,null,L("<T-NAME> become(s) a horrifying image of terror."));
 						break;
 					case 9:
-						mob.tell(mob,null,null,_("The nightmare consumes your mind, taking you into madness."));
+						mob.tell(mob,null,null,L("The nightmare consumes your mind, taking you into madness."));
 						break;
 					case 10:
 						M=R.fetchRandomInhabitant();
-						if(M!=null) mob.tell(mob,M,null,_("<T-NAME> <T-IS-ARE> trying to take control of your mind."));
+						if(M!=null) mob.tell(mob,M,null,L("<T-NAME> <T-IS-ARE> trying to take control of your mind."));
 						break;
 					}
 					notAgainThisRound=true;
 					switch(CMLib.dice().roll(1,10,0))
 					{
 					case 1:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						_("<S-NAME> struggle(s) with an imaginary foe.")); break;
+						L("<S-NAME> struggle(s) with an imaginary foe.")); break;
 					case 2:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						_("<S-NAME> scream(s) in horror!")); break;
+						L("<S-NAME> scream(s) in horror!")); break;
 					case 3:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						_("<S-NAME> beg(s) for mercy.")); break;
+						L("<S-NAME> beg(s) for mercy.")); break;
 					case 4:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						_("<S-NAME> grab(s) <S-HIS-HER> head and cr(ys).")); break;
+						L("<S-NAME> grab(s) <S-HIS-HER> head and cr(ys).")); break;
 					case 5:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						_("<S-NAME> whimper(s).")); break;
+						L("<S-NAME> whimper(s).")); break;
 					case 6:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						_("<S-NAME> look(s) terrified!")); break;
+						L("<S-NAME> look(s) terrified!")); break;
 					case 7:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						_("<S-NAME> swipe(s) at <S-HIS-HER> feet and arms.")); break;
+						L("<S-NAME> swipe(s) at <S-HIS-HER> feet and arms.")); break;
 					case 8:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						_("<S-NAME> claw(s) at the air.")); break;
+						L("<S-NAME> claw(s) at the air.")); break;
 					case 9:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						_("<S-NAME> shiver(s) in fear.")); break;
+						L("<S-NAME> shiver(s) in fear.")); break;
 					case 10:mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						_("<S-NAME> shake(s) in anticipation of horror!")); break;
+						L("<S-NAME> shake(s) in anticipation of horror!")); break;
 					}
 					amountRemaining-=(int)Math.round(CMath.mul(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE),2.5));
 					if(amountRemaining<0)
@@ -159,7 +159,7 @@ public class Spell_Nightmare extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		if((!mob.amDead())&&(mob.location()!=null))
-			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> manage(s) to wake up from <S-HIS-HER> nightmare."));
+			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> manage(s) to wake up from <S-HIS-HER> nightmare."));
 	}
 
 	@Override
@@ -193,7 +193,7 @@ public class Spell_Nightmare extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> whisper(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> whisper(s) to <T-NAMESELF>.^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))||(mob.location().okMessage(mob,msg2)))
 			{
@@ -203,12 +203,12 @@ public class Spell_Nightmare extends Spell
 				{
 					amountRemaining=100;
 					maliciousAffect(mob,target,asLevel,10,-1);
-					target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> go(es) into the throes of a horrendous nightmare!!"));
+					target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> go(es) into the throes of a horrendous nightmare!!"));
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> whisper(s) to <T-NAMESELF>, but the spell fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> whisper(s) to <T-NAMESELF>, but the spell fades."));
 
 		// return whether it worked
 		return success;

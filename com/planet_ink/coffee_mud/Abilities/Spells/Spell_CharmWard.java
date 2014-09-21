@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_CharmWard extends Spell
 {
 	@Override public String ID() { return "Spell_CharmWard"; }
-	private final static String localizedName = CMLib.lang()._("Charm Ward");
+	private final static String localizedName = CMLib.lang().L("Charm Ward");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Charm Ward)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Charm Ward)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
@@ -55,7 +55,7 @@ public class Spell_CharmWard extends Spell
 		}
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("Your charm ward dissipates."));
+			mob.tell(L("Your charm ward dissipates."));
 
 		super.unInvoke();
 
@@ -83,7 +83,7 @@ public class Spell_CharmWard extends Spell
 				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
-					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,_("Magical energy fizzles and is absorbed into the air!"));
+					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,L("Magical energy fizzles and is absorbed into the air!"));
 				return false;
 			}
 		}
@@ -96,8 +96,8 @@ public class Spell_CharmWard extends Spell
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING)))
 			{
 				if((msg.source().location()!=null)&&(msg.source().location()!=R))
-					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,_("Magical energy fizzles and is absorbed into the air!"));
-				R.showHappens(CMMsg.MSG_OK_VISUAL,_("Magical energy fizzles and is absorbed into the air!"));
+					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,L("Magical energy fizzles and is absorbed into the air!"));
+				R.showHappens(CMMsg.MSG_OK_VISUAL,L("Magical energy fizzles and is absorbed into the air!"));
 				return false;
 			}
 		}
@@ -148,7 +148,7 @@ public class Spell_CharmWard extends Spell
 		}
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(_("This place is already charmed."));
+			mob.tell(L("This place is already charmed."));
 			return false;
 		}
 
@@ -158,7 +158,7 @@ public class Spell_CharmWard extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> seem(s) magically protected."):_("^S<S-NAME> invoke(s) a charm ward upon <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> seem(s) magically protected."):L("^S<S-NAME> invoke(s) a charm ward upon <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -173,7 +173,7 @@ public class Spell_CharmWard extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke a charm ward, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a charm ward, but fail(s)."));
 
 		return success;
 	}

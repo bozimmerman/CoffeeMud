@@ -64,7 +64,7 @@ public class Get extends StdCommand
 				return false;
 			R.send(mob,msg);
 		}
-		final CMMsg msg=CMClass.getMsg(mob,target,tool,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_GET,quiet?null:CMLib.lang()._("<S-NAME> @x1(s) @x2.",getWord,theWhat));
+		final CMMsg msg=CMClass.getMsg(mob,target,tool,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_GET,quiet?null:CMLib.lang().L("<S-NAME> @x1(s) @x2.",getWord,theWhat));
 		if(!R.okMessage(mob,msg))
 			return false;
 		// we do this next step because, when a container is involved,
@@ -113,7 +113,7 @@ public class Get extends StdCommand
 
 		if(commands.size()<2)
 		{
-			mob.tell(_("Get what?"));
+			mob.tell(L("Get what?"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -206,23 +206,23 @@ public class Get extends StdCommand
 			{
 				final Container container=containers.get(0);
 				if(container.isOpen())
-					mob.tell(mob,container,null,_("You don't see '@x1' in <T-NAME>.",unmodifiedWhatToGet));
+					mob.tell(mob,container,null,L("You don't see '@x1' in <T-NAME>.",unmodifiedWhatToGet));
 				else
-					mob.tell(_("@x1 is closed.",container.name()));
+					mob.tell(L("@x1 is closed.",container.name()));
 			}
 			else
 			if(containerName.equalsIgnoreCase("all"))
-				mob.tell(_("You don't see anything here."));
+				mob.tell(L("You don't see anything here."));
 			else
 			{
 				final java.util.List<Container> V=CMLib.english().possibleContainers(mob,containerCommands,Wearable.FILTER_ANY,false);
 				if(V.size()==0)
-					mob.tell(_("You don't see '@x1' here.",containerName));
+					mob.tell(L("You don't see '@x1' here.",containerName));
 				else
 				if(V.size()==1)
-					mob.tell(mob,V.get(0),null,_("You don't see '@x1' in <T-NAME> here.",unmodifiedWhatToGet));
+					mob.tell(mob,V.get(0),null,L("You don't see '@x1' in <T-NAME> here.",unmodifiedWhatToGet));
 				else
-					mob.tell(_("You don't see '@x1' in any '@x2'.",unmodifiedWhatToGet,containerName));
+					mob.tell(L("You don't see '@x1' in any '@x2'.",unmodifiedWhatToGet,containerName));
 			}
 		}
 		return false;

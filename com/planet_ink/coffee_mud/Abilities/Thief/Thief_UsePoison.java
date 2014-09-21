@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_UsePoison extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_UsePoison"; }
-	private final static String localizedName = CMLib.lang()._("Use Poison");
+	private final static String localizedName = CMLib.lang().L("Use Poison");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
@@ -63,32 +63,32 @@ public class Thief_UsePoison extends ThiefSkill
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("What would you like to poison, and which poison would you use?"));
+			mob.tell(L("What would you like to poison, and which poison would you use?"));
 			return false;
 		}
 		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.elementAt(0));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",((String)commands.elementAt(0))));
+			mob.tell(L("You don't see '@x1' here.",((String)commands.elementAt(0))));
 			return false;
 		}
 		if((!(target instanceof Food))
 		&&(!(target instanceof Drink))
 		&&(!(target instanceof Weapon)))
 		{
-			mob.tell(_("You don't know how to poison @x1.",target.name(mob)));
+			mob.tell(L("You don't know how to poison @x1.",target.name(mob)));
 			return false;
 		}
 		final Item poison=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,CMParms.combine(commands,1));
 		if((poison==null)||(!CMLib.flags().canBeSeenBy(poison,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",CMParms.combine(commands,1)));
+			mob.tell(L("You don't see '@x1' here.",CMParms.combine(commands,1)));
 			return false;
 		}
 		final List<Ability> V=returnOffensiveAffects(poison);
 		if((V.size()==0)||(!(poison instanceof Drink)))
 		{
-			mob.tell(_("@x1 is not a poison!",poison.name()));
+			mob.tell(L("@x1 is not a poison!",poison.name()));
 			return false;
 		}
 		final Drink dPoison=(Drink)poison;
@@ -98,7 +98,7 @@ public class Thief_UsePoison extends ThiefSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,_("<S-NAME> attempt(s) to poison <T-NAMESELF>."));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,L("<S-NAME> attempt(s) to poison <T-NAMESELF>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

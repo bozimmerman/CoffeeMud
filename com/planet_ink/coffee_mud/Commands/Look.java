@@ -88,7 +88,7 @@ public class Look extends StdCommand
 				thisThang=R.fetchFromMOBRoomFavorsItems(mob,null,ID2,Wearable.FILTER_ANY);
 				if((thisThang!=null)&&((!(thisThang instanceof Container))||(((Container)thisThang).capacity()==0)))
 				{
-					mob.tell(_("That's not a container."));
+					mob.tell(L("That's not a container."));
 					return false;
 				}
 			}
@@ -108,7 +108,7 @@ public class Look extends StdCommand
 					}
 					else
 					{
-						mob.tell(_("You don't see anything that way."));
+						mob.tell(L("You don't see anything that way."));
 						return false;
 					}
 				}
@@ -137,14 +137,14 @@ public class Look extends StdCommand
 					R.send(mob,msg);
 			}
 			else
-				mob.tell(_("You don't see that here!"));
+				mob.tell(L("You don't see that here!"));
 		}
 		else
 		{
 			if((commands!=null)&&(commands.size()>0))
 				if(((String)commands.elementAt(0)).toUpperCase().startsWith("E"))
 				{
-					mob.tell(_("Examine what?"));
+					mob.tell(L("Examine what?"));
 					return false;
 				}
 

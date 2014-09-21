@@ -37,7 +37,7 @@ import java.util.*;
 public class Dueler extends StdAbility
 {
 	@Override public String ID() { return "Dueler"; }
-	private final static String localizedName = CMLib.lang()._("Dueler");
+	private final static String localizedName = CMLib.lang().L("Dueler");
 	@Override public String name() { return localizedName; }
 	protected Dueler otherDueler = null;
 	protected MOB otherDuelPartner=null;
@@ -76,7 +76,7 @@ public class Dueler extends StdAbility
 				if((canBeUninvoked())
 				&&(!mob.amDead())
 				&&(CMLib.flags().isInTheGame(mob,true)))
-					mob.tell(_("Your duel has ended."));
+					mob.tell(L("Your duel has ended."));
 				if(!oldPVPStatus)
 					mob.setBitmap(CMath.unsetb(mob.getBitmap(), MOB.ATT_PLAYERKILL));
 				oldCurState.copyInto(mob.curState());
@@ -133,9 +133,9 @@ public class Dueler extends StdAbility
 			final Room deathRoom=target.location();
 			final String msp=CMLib.protocol().msp("death"+CMLib.dice().roll(1,7,0)+".wav",50);
 			final CMMsg msg2=CMClass.getMsg(target,null,otherDuelPartner,
-					CMMsg.MSG_OK_VISUAL,_("^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEFEATED!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r@x1",msp),
+					CMMsg.MSG_OK_VISUAL,L("^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEFEATED!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r@x1",msp),
 					CMMsg.MSG_OK_VISUAL,null,
-					CMMsg.MSG_OK_VISUAL,_("^F^<FIGHT^><S-NAME> is DEFEATED!!!^</FIGHT^>^?\n\r@x1",msp));
+					CMMsg.MSG_OK_VISUAL,L("^F^<FIGHT^><S-NAME> is DEFEATED!!!^</FIGHT^>^?\n\r@x1",msp));
 			deathRoom.send(target, msg2);
 			CMLib.combat().doDeathPostProcessing(msg);
 			target.makePeace();
@@ -210,7 +210,7 @@ public class Dueler extends StdAbility
 		if(target==null) target=mob;
 		if(!(target instanceof MOB)) return false;
 		if(((MOB)target).location()==null) return false;
-		if(((MOB)target).location().show(mob,target,this,CMMsg.MSG_OK_VISUAL,_("^R<S-NAME> and <T-NAME> start(s) dueling!^?")))
+		if(((MOB)target).location().show(mob,target,this,CMMsg.MSG_OK_VISUAL,L("^R<S-NAME> and <T-NAME> start(s) dueling!^?")))
 		{
 			final MOB tmob = (MOB)target;
 			Dueler A;

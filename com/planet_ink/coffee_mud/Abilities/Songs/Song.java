@@ -37,7 +37,7 @@ import java.util.*;
 public class Song extends StdAbility
 {
 	@Override public String ID() { return "Song"; }
-	private final static String localizedName = CMLib.lang()._("a Song");
+	private final static String localizedName = CMLib.lang().L("a Song");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText() { return "("+songOf()+")"; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -53,7 +53,7 @@ public class Song extends StdAbility
 	protected boolean skipStandardSongTick(){return false;}
 	protected boolean maliciousButNotAggressiveFlag(){return false;}
 	protected boolean skipSimpleStandardSongTickToo(){return false;}
-	protected String songOf(){return _("Song of ")+name();}
+	protected String songOf(){return L("Song of ")+name();}
 	protected long timeOut = 0;
 	protected Vector commonRoomSet=null;
 	protected Room originRoom=null;
@@ -91,7 +91,7 @@ public class Song extends StdAbility
 			&&(!msg.sourceMajor(CMMsg.MASK_CHANNEL)))
 			{
 				if(msg.source().location()!=null)
-					msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,_("<S-NAME> stop(s) singing."));
+					msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,L("<S-NAME> stop(s) singing."));
 				unInvoke();
 			}
 			else
@@ -100,7 +100,7 @@ public class Song extends StdAbility
 			&&(CMath.bset(((Armor)msg.target()).rawProperLocationBitmap(),Wearable.WORN_MOUTH)))
 			{
 				if(msg.source().location()!=null)
-					msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,_("<S-NAME> stop(s) singing."));
+					msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,L("<S-NAME> stop(s) singing."));
 				unInvoke();
 			}
 		}
@@ -280,9 +280,9 @@ public class Song extends StdAbility
 		{
 			final int dir=this.getCorrectDirToOriginRoom(R,v);
 			if(dir>=0)
-				msgStr=_("^SYou hear the @x1 being sung @x2!^?",songOf(),Directions.getInDirectionName(dir));
+				msgStr=L("^SYou hear the @x1 being sung @x2!^?",songOf(),Directions.getInDirectionName(dir));
 			else
-				msgStr=_("^SYou hear the @x1 being sung nearby!^?",songOf());
+				msgStr=L("^SYou hear the @x1 being sung nearby!^?",songOf());
 		}
 		return msgStr;
 	}
@@ -327,7 +327,7 @@ public class Song extends StdAbility
 		&&(mob.location()!=null)
 		&&(CMLib.dice().rollPercentage()<50))
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> hit(s) a foul note on @x1 due to <S-HIS-HER> armor!",name()));
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> hit(s) a foul note on @x1 due to <S-HIS-HER> armor!",name()));
 			return false;
 		}
 
@@ -336,7 +336,7 @@ public class Song extends StdAbility
 
 		if((!auto)&&(!CMLib.flags().canSpeak(mob)))
 		{
-			mob.tell(_("You can't sing!"));
+			mob.tell(L("You can't sing!"));
 			return false;
 		}
 
@@ -347,9 +347,9 @@ public class Song extends StdAbility
 			invoker=mob;
 			originRoom=mob.location();
 			commonRoomSet=getInvokerScopeRoomSet(null);
-			String str=auto?_("^SThe @x1 begins to play!^?",songOf()):_("^S<S-NAME> begin(s) to sing the @x1.^?",songOf());
+			String str=auto?L("^SThe @x1 begins to play!^?",songOf()):L("^S<S-NAME> begin(s) to sing the @x1.^?",songOf());
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
-				str=_("^S<S-NAME> start(s) the @x1 over again.^?",songOf());
+				str=L("^S<S-NAME> start(s) the @x1 over again.^?",songOf());
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
 				final Room R=(Room)commonRoomSet.elementAt(v);
@@ -400,7 +400,7 @@ public class Song extends StdAbility
 			}
 		}
 		else
-			mob.location().show(mob,null,CMMsg.MSG_NOISE,_("<S-NAME> hit(s) a foul note."));
+			mob.location().show(mob,null,CMMsg.MSG_NOISE,L("<S-NAME> hit(s) a foul note."));
 
 		return success;
 	}

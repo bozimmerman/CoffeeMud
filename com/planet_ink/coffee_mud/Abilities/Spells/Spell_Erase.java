@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_Erase extends Spell
 {
 	@Override public String ID() { return "Spell_Erase"; }
-	private final static String localizedName = CMLib.lang()._("Erase Scroll");
+	private final static String localizedName = CMLib.lang().L("Erase Scroll");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode() {	return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
@@ -48,7 +48,7 @@ public class Spell_Erase extends Spell
 
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell(_("Erase what?."));
+			mob.tell(L("Erase what?."));
 			return false;
 		}
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
@@ -56,7 +56,7 @@ public class Spell_Erase extends Spell
 
 		if(!(target instanceof Scroll)&&(!target.isReadable()))
 		{
-			mob.tell(_("You can't erase that."));
+			mob.tell(L("You can't erase that."));
 			return false;
 		}
 
@@ -67,7 +67,7 @@ public class Spell_Erase extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("The words on <T-NAME> fade."):_("^S<S-NAME> whisper(s), and then rub(s) on <T-NAMESELF>, making the words fade.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("The words on <T-NAME> fade."):L("^S<S-NAME> whisper(s), and then rub(s) on <T-NAMESELF>, making the words fade.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -78,7 +78,7 @@ public class Spell_Erase extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> whisper(s), and then rub(s) on <T-NAMESELF>, but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> whisper(s), and then rub(s) on <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

@@ -36,7 +36,7 @@ import java.util.*;
 public class Chant_SpeedAging extends Chant
 {
 	@Override public String ID() { return "Chant_SpeedAging"; }
-	private final static String localizedName = CMLib.lang()._("Speed Aging");
+	private final static String localizedName = CMLib.lang().L("Speed Aging");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
@@ -89,7 +89,7 @@ public class Chant_SpeedAging extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,type,auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,type,auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -100,7 +100,7 @@ public class Chant_SpeedAging extends Chant
 				{
 					if(target instanceof Food)
 					{
-						mob.tell(_("@x1 rots away!",target.name(mob)));
+						mob.tell(L("@x1 rots away!",target.name(mob)));
 						((Item)target).destroy();
 					}
 					else
@@ -115,19 +115,19 @@ public class Chant_SpeedAging extends Chant
 							case RawMaterial.MATERIAL_VEGETATION:
 							case RawMaterial.MATERIAL_WOODEN:
 							{
-								mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 rots away!",target.name()));
+								mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 rots away!",target.name()));
 								if(target instanceof Container)
 									((Container)target).emptyPlease(false);
 								((Item)target).destroy();
 								break;
 							}
 						default:
-							mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 ages, but nothing happens to it.",target.name()));
+							mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 ages, but nothing happens to it.",target.name()));
 							break;
 						}
 					}
 					else
-						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 ages, but nothing happens to it.",target.name()));
+						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 ages, but nothing happens to it.",target.name()));
 					success=false;
 				}
 				else
@@ -135,7 +135,7 @@ public class Chant_SpeedAging extends Chant
 				&&((A==null)||(A.displayText().length()==0)))
 				{
 					final MOB M=(MOB)target;
-					mob.location().show(M,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> age(s) a bit."));
+					mob.location().show(M,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> age(s) a bit."));
 					if(M.baseCharStats().getStat(CharStats.STAT_AGE)<=0)
 						M.setAgeMinutes(M.getAgeMinutes()+(M.getAgeMinutes()/10));
 					else
@@ -179,20 +179,20 @@ public class Chant_SpeedAging extends Chant
 						ageBy=millisPerYear+1;
 					A.setMiscText(""+(start-ageBy));
 					if(target instanceof MOB)
-						mob.location().show((MOB)target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> age(s) a bit."));
+						mob.location().show((MOB)target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> age(s) a bit."));
 					else
-						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 ages a bit.",target.name()));
+						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 ages a bit.",target.name()));
 					target.recoverPhyStats();
 				}
 				else
-					return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
+					return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
 			}
 		}
 		else
 		if(CMath.bset(type,CMMsg.MASK_MALICIOUS))
-			return maliciousFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
 
 
 		// return whether it worked

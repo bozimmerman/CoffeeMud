@@ -38,9 +38,9 @@ import java.util.*;
 public class Chant_SpeedTime extends Chant
 {
 	@Override public String ID() { return "Chant_SpeedTime"; }
-	private final static String localizedName = CMLib.lang()._("Speed Time");
+	private final static String localizedName = CMLib.lang().L("Speed Time");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Speed Time)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Speed Time)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONSUMMONING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
@@ -57,7 +57,7 @@ public class Chant_SpeedTime extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?_("Something is happening!"):_("^S<S-NAME> begin(s) to chant...^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?L("Something is happening!"):L("^S<S-NAME> begin(s) to chant...^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				final int mana=mob.curState().getMana();
@@ -66,11 +66,11 @@ public class Chant_SpeedTime extends Chant
 					CMLib.threads().tickAllTickers(mob.location());
 				if(mob.curState().getMana()>mana)
 					mob.curState().setMana(mana);
-				mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?_("It stops."):_("^S<S-NAME> stop(s) chanting.^?"));
+				mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?L("It stops."):L("^S<S-NAME> stop(s) chanting.^?"));
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s), but nothing happens."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> chant(s), but nothing happens."));
 
 		return success;
 	}

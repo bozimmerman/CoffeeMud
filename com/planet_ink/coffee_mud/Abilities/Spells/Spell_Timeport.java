@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Timeport extends Spell
 {
 	@Override public String ID() { return "Spell_Timeport"; }
-	private final static String localizedName = CMLib.lang()._("Timeport");
+	private final static String localizedName = CMLib.lang().L("Timeport");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Time Travelling)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Time Travelling)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -85,7 +85,7 @@ public class Spell_Timeport extends Spell
 		}
 		super.unInvoke();
 		if(room!=null)
-			room.show(mob, null, CMMsg.MSG_OK_VISUAL, _("<S-NAME> reappear(s)!"));
+			room.show(mob, null, CMMsg.MSG_OK_VISUAL, L("<S-NAME> reappear(s)!"));
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class Spell_Timeport extends Spell
 		{
 			if(!canBeUninvoked())
 			{
-				msg.source().tell(_("The timeport spell on you fizzles away."));
+				msg.source().tell(L("The timeport spell on you fizzles away."));
 				affected.delEffect(this);
 			}
 			else
@@ -111,7 +111,7 @@ public class Spell_Timeport extends Spell
 				if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 				&&(!CMath.bset(msg.targetMajor(),CMMsg.MASK_ALWAYS)))
 				{
-					msg.source().tell(_("Nothing just happened.  You are time travelling, and can't do that."));
+					msg.source().tell(L("Nothing just happened.  You are time travelling, and can't do that."));
 					return false;
 				}
 		}
@@ -140,7 +140,7 @@ public class Spell_Timeport extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),_(auto?"":"^S<S-NAME> speak(s) and gesture(s)")+"!^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),L(auto?"":"^S<S-NAME> speak(s) and gesture(s)")+"!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -152,7 +152,7 @@ public class Spell_Timeport extends Spell
 					if((M!=null)&&(M.getVictim()==target))
 						M.makePeace();
 				}
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> vanish(es)!"));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> vanish(es)!"));
 				CMLib.threads().suspendTicking(target,-1);
 				beneficialAffect(mob,target,asLevel,3);
 				final Ability A=target.fetchEffect(ID());
@@ -160,7 +160,7 @@ public class Spell_Timeport extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> incant(s) for awhile, but the spell fizzles."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> incant(s) for awhile, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

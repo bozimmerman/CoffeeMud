@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_SnuffFlame extends Chant
 {
 	@Override public String ID() { return "Chant_SnuffFlame"; }
-	private final static String localizedName = CMLib.lang()._("Snuff Flame");
+	private final static String localizedName = CMLib.lang().L("Snuff Flame");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return 0;}
@@ -62,7 +62,7 @@ public class Chant_SnuffFlame extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) over <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) over <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -72,7 +72,7 @@ public class Chant_SnuffFlame extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) over <T-NAMESELF>, but nothing happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) over <T-NAMESELF>, but nothing happens."));
 		// return whether it worked
 		return success;
 	}

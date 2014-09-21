@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_WordRecall extends Spell
 {
 	@Override public String ID() { return "Spell_WordRecall"; }
-	private final static String localizedName = CMLib.lang()._("Word of Recall");
+	private final static String localizedName = CMLib.lang().L("Word of Recall");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
@@ -64,7 +64,7 @@ public class Spell_WordRecall extends Spell
 			final int AUTO=auto?CMMsg.MASK_ALWAYS:0;
 			final Room recalledRoom=mob.location();
 			final Room recallRoom=mob.getStartRoom();
-			CMMsg msg=CMClass.getMsg(mob,recalledRoom,this,verbalCastCode(mob,recalledRoom,auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MSG_LEAVE,verbalCastCode(mob,recalledRoom,auto),auto?_("<S-NAME> disappear(s) into the Java Plane!"):_("<S-NAME> recall(s) body and spirit to the Java Plane!"));
+			CMMsg msg=CMClass.getMsg(mob,recalledRoom,this,verbalCastCode(mob,recalledRoom,auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MSG_LEAVE,verbalCastCode(mob,recalledRoom,auto),auto?L("<S-NAME> disappear(s) into the Java Plane!"):L("<S-NAME> recall(s) body and spirit to the Java Plane!"));
 			CMMsg msg2=CMClass.getMsg(mob,recallRoom,this,verbalCastCode(mob,recallRoom,auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,verbalCastCode(mob,recallRoom,auto),null);
 			if((recalledRoom.okMessage(mob,msg))&&(recallRoom.okMessage(mob,msg2)))
 			{
@@ -76,7 +76,7 @@ public class Spell_WordRecall extends Spell
 				{
 					final MOB follower=mob.fetchFollower(f);
 
-					msg=CMClass.getMsg(follower,recalledRoom,this,verbalCastCode(mob,recalledRoom,auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MSG_LEAVE,verbalCastCode(mob,recalledRoom,auto),auto?_("<S-NAME> disappear(s) into the Java Plane!"):_("<S-NAME> <S-IS-ARE> sucked into the vortex created by @x1s recall.",mob.name()));
+					msg=CMClass.getMsg(follower,recalledRoom,this,verbalCastCode(mob,recalledRoom,auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MSG_LEAVE,verbalCastCode(mob,recalledRoom,auto),auto?L("<S-NAME> disappear(s) into the Java Plane!"):L("<S-NAME> <S-IS-ARE> sucked into the vortex created by @x1s recall.",mob.name()));
 					if((follower!=null)
 					&&(follower.isMonster())
 					&&(!follower.isPossessing())
@@ -96,7 +96,7 @@ public class Spell_WordRecall extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,_("<S-NAME> attempt(s) to recall, but <S-HIS-HER> plea goes unheard."));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to recall, but <S-HIS-HER> plea goes unheard."));
 
 		// return whether it worked
 		return success;

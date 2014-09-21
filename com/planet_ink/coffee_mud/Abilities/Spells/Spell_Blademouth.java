@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_Blademouth extends Spell
 {
 	@Override public String ID() { return "Spell_Blademouth"; }
-	private final static String localizedName = CMLib.lang()._("Blademouth");
+	private final static String localizedName = CMLib.lang().L("Blademouth");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(blades in your mouth)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(blades in your mouth)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -88,7 +88,7 @@ public class Spell_Blademouth extends Spell
 		if(target.charStats().getMyRace().bodyMask()[Race.BODY_MOUTH]<=0)
 		{
 			if(!auto)
-				mob.tell(_("There is no mouth on @x1 to fill with blades!",target.name(mob)));
+				mob.tell(L("There is no mouth on @x1 to fill with blades!",target.name(mob)));
 			return false;
 		}
 
@@ -108,7 +108,7 @@ public class Spell_Blademouth extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_(auto?"!":"^S<S-NAME> invoke(s) a sharp spell upon <T-NAMESELF>"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"!":"^S<S-NAME> invoke(s) a sharp spell upon <T-NAMESELF>"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -116,7 +116,7 @@ public class Spell_Blademouth extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> incant(s) sharply at <T-NAMESELF>, but flub(s) the spell."));
+			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) sharply at <T-NAMESELF>, but flub(s) the spell."));
 
 
 		// return whether it worked

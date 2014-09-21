@@ -49,7 +49,7 @@ public class Teach extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(_("Teach who what?"));
+			mob.tell(L("Teach who what?"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -58,7 +58,7 @@ public class Teach extends StdCommand
 		final MOB student=mob.location().fetchInhabitant((String)commands.elementAt(0));
 		if((student==null)||(!CMLib.flags().canBeSeenBy(student,mob)))
 		{
-			mob.tell(_("That person doesn't seem to be here."));
+			mob.tell(L("That person doesn't seem to be here."));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -108,7 +108,7 @@ public class Teach extends StdCommand
 			{
 				return CMLib.expertises().postTeach(mob,student,theExpertise);
 			}
-			mob.tell(_("You don't seem to know @x1.",abilityName));
+			mob.tell(L("You don't seem to know @x1.",abilityName));
 			return false;
 		}
 		return CMLib.expertises().postTeach(mob,student,myAbility);

@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Friends extends Spell
 {
 	@Override public String ID() { return "Spell_Friends"; }
-	private final static String localizedName = CMLib.lang()._("Friends");
+	private final static String localizedName = CMLib.lang().L("Friends");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Friends spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Friends spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -61,7 +61,7 @@ public class Spell_Friends extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("You begin to feel more like your regular cranky self."));
+			mob.tell(L("You begin to feel more like your regular cranky self."));
 	}
 
 
@@ -93,16 +93,16 @@ public class Spell_Friends extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> speak(s) and gesture(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> speak(s) and gesture(s) to <T-NAMESELF>.^?"));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				R.show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) much more likeable!"));
+				R.show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) much more likeable!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> incant(s) gracefully to <T-NAMESELF>, but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> incant(s) gracefully to <T-NAMESELF>, but nothing more happens."));
 
 
 		// return whether it worked

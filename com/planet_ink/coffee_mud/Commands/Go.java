@@ -84,7 +84,7 @@ public class Go extends StdCommand
 		{
 			if(!CMath.bset(R.domainType(),Room.INDOORS))
 			{
-				mob.tell(_("You aren't indoors."));
+				mob.tell(L("You aren't indoors."));
 				return false;
 			}
 
@@ -96,7 +96,7 @@ public class Go extends StdCommand
 				{
 					if(direction>=0)
 					{
-						mob.tell(_("Which way out?  Try @x1.",validDirs));
+						mob.tell(L("Which way out?  Try @x1.",validDirs));
 						return false;
 					}
 					direction=d;
@@ -104,7 +104,7 @@ public class Go extends StdCommand
 			}
 			if(direction<0)
 			{
-				mob.tell(_("There is no direct way out of this place.  Try a direction."));
+				mob.tell(L("There is no direct way out of this place.  Try a direction."));
 				return false;
 			}
 		}
@@ -184,7 +184,7 @@ public class Go extends StdCommand
 					break;
 			}
 			if(!doneAnything)
-				mob.tell(_("@x1 which direction?\n\rTry @x2.",CMStrings.capitalizeAndLower(doing),validDirs.toLowerCase()));
+				mob.tell(L("@x1 which direction?\n\rTry @x2.",CMStrings.capitalizeAndLower(doing),validDirs.toLowerCase()));
 		}
 		return false;
 	}

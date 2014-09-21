@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Desecrate extends Prayer
 {
 	@Override public String ID() { return "Prayer_Desecrate"; }
-	private final static String localizedName = CMLib.lang()._("Desecrate");
+	private final static String localizedName = CMLib.lang().L("Desecrate");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
@@ -57,14 +57,14 @@ public class Prayer_Desecrate extends Prayer
 		if((!(target instanceof DeadBody))
 		   ||(target.rawSecretIdentity().toUpperCase().indexOf("FAKE")>=0))
 		{
-			mob.tell(_("You may only desecrate the dead."));
+			mob.tell(L("You may only desecrate the dead."));
 			return false;
 		}
 		if((((DeadBody)target).playerCorpse())
 		&&(!((DeadBody)target).mobName().equals(mob.Name()))
 		&&(((DeadBody)target).getContents().size()>0))
 		{
-			mob.tell(_("You are not allowed to desecrate a players corpse."));
+			mob.tell(L("You are not allowed to desecrate a players corpse."));
 			return false;
 		}
 
@@ -79,7 +79,7 @@ public class Prayer_Desecrate extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> feel(s) desecrated!"):_("^S<S-NAME> desecrate(s) <T-NAMESELF> before @x1.^?",hisHerDiety(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> feel(s) desecrated!"):L("^S<S-NAME> desecrate(s) <T-NAMESELF> before @x1.^?",hisHerDiety(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -97,7 +97,7 @@ public class Prayer_Desecrate extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to desecrate <T-NAMESELF>, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to desecrate <T-NAMESELF>, but fail(s)."));
 
 		// return whether it worked
 		return success;

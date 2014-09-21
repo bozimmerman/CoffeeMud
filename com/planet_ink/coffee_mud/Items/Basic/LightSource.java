@@ -74,7 +74,7 @@ public class LightSource extends StdItem implements Light
 		case CMMsg.TYP_HOLD:
 			if(getDuration()==0)
 			{
-				mob.tell(_("@x1 looks used up.",name()));
+				mob.tell(L("@x1 looks used up.",name()));
 				return false;
 			}
 			final Room room=mob.location();
@@ -85,7 +85,7 @@ public class LightSource extends StdItem implements Light
 				   &&(getDuration()>0)
 				   &&(mob.isMine(this)))
 				{
-					mob.tell(_("It's too wet to light @x1 here.",name()));
+					mob.tell(L("It's too wet to light @x1 here.",name()));
 					return false;
 				}
 			}
@@ -93,7 +93,7 @@ public class LightSource extends StdItem implements Light
 		case CMMsg.TYP_EXTINGUISH:
 			if((getDuration()==0)||(!isLit()))
 			{
-				mob.tell(_("@x1 is not lit!",name()));
+				mob.tell(L("@x1 is not lit!",name()));
 				return false;
 			}
 			return true;
@@ -125,7 +125,7 @@ public class LightSource extends StdItem implements Light
 				{
 					final Room R=(Room)owner();
 					if(R.numInhabitants()>0)
-						R.showHappens(CMMsg.MSG_OK_VISUAL,_("@x1 flickers and burns out.",name()));
+						R.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 flickers and burns out.",name()));
 					if(destroyedWhenBurnedOut())
 						destroy();
 					R.recoverRoomStats();
@@ -134,7 +134,7 @@ public class LightSource extends StdItem implements Light
 				if(owner() instanceof MOB)
 				{
 					final MOB M=(MOB)owner();
-					M.tell(M,null,this,_("<O-NAME> flickers and burns out."));
+					M.tell(M,null,this,L("<O-NAME> flickers and burns out."));
 					setDuration(0);
 					if(destroyedWhenBurnedOut())
 						destroy();
@@ -192,9 +192,9 @@ public class LightSource extends StdItem implements Light
 		   ||((room.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(room.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE))))
 		{
 			if(LightSource.inTheWater(msg.source(),room))
-				mob.tell(_("The water makes @x1 go out.",name()));
+				mob.tell(L("The water makes @x1 go out.",name()));
 			else
-				mob.tell(_("The rain makes @x1 go out.",name()));
+				mob.tell(L("The rain makes @x1 go out.",name()));
 			tick(this,Tickable.TICKID_LIGHT_FLICKERS);
 		}
 
@@ -214,9 +214,9 @@ public class LightSource extends StdItem implements Light
 				if(getDuration()>0)
 				{
 					if(!isLit())
-						msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> light(s) up @x1.",name())));
+						msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> light(s) up @x1.",name())));
 					else
-						mob.tell(_("@x1 is already lit.",name()));
+						mob.tell(L("@x1 is already lit.",name()));
 					light(true);
 					CMLib.threads().startTickDown(this,Tickable.TICKID_LIGHT_FLICKERS,getDuration());
 					recoverPhyStats();

@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_Boulders extends StdTrap
 {
 	@Override public String ID() { return "Trap_Boulders"; }
-	private final static String localizedName = CMLib.lang()._("boulders");
+	private final static String localizedName = CMLib.lang().L("boulders");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -73,7 +73,7 @@ public class Trap_Boulders extends StdTrap
 			if((I==null)
 			||(super.findNumberOfResource(mob.location(),I.material())<50))
 			{
-				mob.tell(_("You'll need to set down at least 50 pounds of rock first."));
+				mob.tell(L("You'll need to set down at least 50 pounds of rock first."));
 				return false;
 			}
 			if(P instanceof Room)
@@ -84,7 +84,7 @@ public class Trap_Boulders extends StdTrap
 				   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS)
 				   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_HILLS))
 				{
-					mob.tell(_("You can only set this trap in caves, or by mountains or hills."));
+					mob.tell(L("You can only set this trap in caves, or by mountains or hills."));
 					return false;
 				}
 			}
@@ -102,9 +102,9 @@ public class Trap_Boulders extends StdTrap
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) setting off a boulder trap!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) setting off a boulder trap!"));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> trigger(s) a trap!")))
+			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> trigger(s) a trap!")))
 			{
 				super.spring(target);
 				final int damage=CMLib.dice().roll(trapLevel()+abilityCode(),20,1);

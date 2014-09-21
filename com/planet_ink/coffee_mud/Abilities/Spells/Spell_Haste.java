@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_Haste extends Spell
 {
 	@Override public String ID() { return "Spell_Haste"; }
-	private final static String localizedName = CMLib.lang()._("Haste");
+	private final static String localizedName = CMLib.lang().L("Haste");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Haste spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Haste spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -63,7 +63,7 @@ public class Spell_Haste extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> slow(s) back down to normal speed."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> slow(s) back down to normal speed."));
 	}
 
 
@@ -90,19 +90,19 @@ public class Spell_Haste extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> cast(s) a spell on <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> cast(s) a spell on <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(target.location()==mob.location())
 				{
-					target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> speed(s) up!"));
+					target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> speed(s) up!"));
 					beneficialAffect(mob,target,asLevel,0);
 				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> speak(s) quickly to <T-NAMESELF>, but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> speak(s) quickly to <T-NAMESELF>, but nothing more happens."));
 
 		// return whether it worked
 		return success;

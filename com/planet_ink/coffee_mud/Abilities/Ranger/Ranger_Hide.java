@@ -39,7 +39,7 @@ import java.util.*;
 public class Ranger_Hide extends StdAbility
 {
 	@Override public String ID() { return "Ranger_Hide"; }
-	private final static String localizedName = CMLib.lang()._("Woodland Hide");
+	private final static String localizedName = CMLib.lang().L("Woodland Hide");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -133,37 +133,37 @@ public class Ranger_Hide extends StdAbility
 
 		if(mob.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(_("You are already hiding."));
+			mob.tell(L("You are already hiding."));
 			return false;
 		}
 
 		if(mob.isInCombat())
 		{
-			mob.tell(_("Not while in combat!"));
+			mob.tell(L("Not while in combat!"));
 			return false;
 		}
 
 		if((((mob.location().domainType()&Room.INDOORS)>0))&&(!auto))
 		{
-			mob.tell(_("You only know how to hide outdoors."));
+			mob.tell(L("You only know how to hide outdoors."));
 			return false;
 		}
 		if(((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
 		&&(!auto))
 		{
-			mob.tell(_("You don't know how to hide in a place like this."));
+			mob.tell(L("You don't know how to hide in a place like this."));
 			return false;
 		}
 
 		final MOB highestMOB=this.getHighestLevelMOB(mob,null);
 		final int levelDiff=(mob.phyStats().level()+(2*getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
 
-		String str=_("You creep into some foliage and remain completely still.");
+		String str=L("You creep into some foliage and remain completely still.");
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_ROCKS)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_MOUNTAINS)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_DESERT))
-			str=_("You creep behind some rocks and remain completely still.");
+			str=L("You creep behind some rocks and remain completely still.");
 
 
 		boolean success=(highestMOB==null)||proficiencyCheck(mob,levelDiff*10,auto);
@@ -171,9 +171,9 @@ public class Ranger_Hide extends StdAbility
 		if(!success)
 		{
 			if(highestMOB!=null)
-				beneficialVisualFizzle(mob,highestMOB,_("<S-NAME> attempt(s) to hide from <T-NAMESELF> and fail(s)."));
+				beneficialVisualFizzle(mob,highestMOB,L("<S-NAME> attempt(s) to hide from <T-NAMESELF> and fail(s)."));
 			else
-				beneficialVisualFizzle(mob,null,_("<S-NAME> attempt(s) to hide and fail(s)."));
+				beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to hide and fail(s)."));
 		}
 		else
 		{

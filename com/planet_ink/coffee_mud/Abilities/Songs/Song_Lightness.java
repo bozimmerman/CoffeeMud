@@ -36,7 +36,7 @@ import java.util.*;
 public class Song_Lightness extends Song
 {
 	@Override public String ID() { return "Song_Lightness"; }
-	private final static String localizedName = CMLib.lang()._("Lightness");
+	private final static String localizedName = CMLib.lang().L("Lightness");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
@@ -74,7 +74,7 @@ public class Song_Lightness extends Song
 			if((((Item)msg.target()).phyStats().weight()>(mob.maxCarry()-mobWeight(mob)))
 			&&(!mob.isMine(msg.target())))
 			{
-				mob.tell(_("@x1 is too heavy.",((Item)msg.target()).name(mob)));
+				mob.tell(L("@x1 is too heavy.",((Item)msg.target()).name(mob)));
 				return false;
 			}
 		}
@@ -91,7 +91,7 @@ public class Song_Lightness extends Song
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your normal weight returns."));
+			mob.tell(L("Your normal weight returns."));
 	}
 
 	@Override

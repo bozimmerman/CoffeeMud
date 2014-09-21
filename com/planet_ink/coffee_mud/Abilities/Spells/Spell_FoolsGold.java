@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_FoolsGold extends Spell
 {
 	@Override public String ID() { return "Spell_FoolsGold"; }
-	private final static String localizedName = CMLib.lang()._("Fools Gold");
+	private final static String localizedName = CMLib.lang().L("Fools Gold");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -70,7 +70,7 @@ public class Spell_FoolsGold extends Spell
 	{
 		if((commands.size()==0)||(CMath.s_int(CMParms.combine(commands,0))==0))
 		{
-			mob.tell(_("You must specify how big of a pile of gold to create."));
+			mob.tell(L("You must specify how big of a pile of gold to create."));
 			return false;
 		}
 		final int amount=CMath.s_int(CMParms.combine(commands,0));
@@ -81,7 +81,7 @@ public class Spell_FoolsGold extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":_("^S<S-NAME> wave(s) <S-HIS-HER> arms around dramatically.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> arms around dramatically.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -89,28 +89,28 @@ public class Spell_FoolsGold extends Spell
 				switch(amount)
 				{
 				case 1:
-					gold.setName(_("a gold coin"));
-					gold.setDisplayText(_("a gold coin sits here"));
+					gold.setName(L("a gold coin"));
+					gold.setDisplayText(L("a gold coin sits here"));
 					break;
 				case 2:
-					gold.setName(_("two gold coins"));
-					gold.setDisplayText(_("two gold coins sit here"));
+					gold.setName(L("two gold coins"));
+					gold.setDisplayText(L("two gold coins sit here"));
 					break;
 				default:
-					gold.setName(_("a pile of @x1 gold coins",""+amount));
-					gold.setDisplayText(_("@x1 sit here",gold.name()));
+					gold.setName(L("a pile of @x1 gold coins",""+amount));
+					gold.setDisplayText(L("@x1 sit here",gold.name()));
 					break;
 				}
 				gold.basePhyStats().setWeight(0);
 				gold.recoverPhyStats();
 				mob.addItem(gold);
-				mob.location().show(mob,null,gold,CMMsg.MSG_OK_ACTION,_("Suddenly, <S-NAME> hold(s) <O-NAME>."));
+				mob.location().show(mob,null,gold,CMMsg.MSG_OK_ACTION,L("Suddenly, <S-NAME> hold(s) <O-NAME>."));
 				destroyOnNextTick=false;
 				beneficialAffect(mob,gold,asLevel,0);
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> wave(s) <S-HIS-HER> arms around dramatically, but fizzle(s) the spell."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> wave(s) <S-HIS-HER> arms around dramatically, but fizzle(s) the spell."));
 
 
 		// return whether it worked

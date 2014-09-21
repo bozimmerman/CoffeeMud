@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_FakeWeapon extends Spell
 {
 	@Override public String ID() { return "Spell_FakeWeapon"; }
-	private final static String localizedName = CMLib.lang()._("Fake Weapon");
+	private final static String localizedName = CMLib.lang().L("Fake Weapon");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -88,13 +88,13 @@ public class Spell_FakeWeapon extends Spell
 						room=msg.source().location();
 					if(room==null) room=CMLib.map().roomLocation(affected);
 					if(room!=null)
-						room.showHappens(CMMsg.MSG_OK_VISUAL,_("Magic energy fizzles around @x1 and is absorbed into the air.",affected.Name()));
+						room.showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles around @x1 and is absorbed into the air.",affected.Name()));
 					return false;
 				}
 				else
 				if(msg.tool() instanceof Ability)
 				{
-					msg.source().tell(_("That doesn't appear to work on @x1",affected.name()));
+					msg.source().tell(L("That doesn't appear to work on @x1",affected.name()));
 					return false;
 				}
 			}
@@ -115,7 +115,7 @@ public class Spell_FakeWeapon extends Spell
 		}
 		if(choice<0)
 		{
-			mob.tell(_("You must specify what kind of weapon to create: sword, dagger, mace, flail, staff, axe, or hammer."));
+			mob.tell(L("You must specify what kind of weapon to create: sword, dagger, mace, flail, staff, axe, or hammer."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -124,7 +124,7 @@ public class Spell_FakeWeapon extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":_("^S<S-NAME> wave(s) <S-HIS-HER> arms around dramatically.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> arms around dramatically.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -136,51 +136,51 @@ public class Spell_FakeWeapon extends Spell
 				switch(choice)
 				{
 				case 0:
-					weapon.setName(_("a fancy sword"));
-					weapon.setDisplayText(_("a fancy sword sits here"));
-					weapon.setDescription(_("looks fit to cut something up!"));
+					weapon.setName(L("a fancy sword"));
+					weapon.setDisplayText(L("a fancy sword sits here"));
+					weapon.setDescription(L("looks fit to cut something up!"));
 					weapon.setWeaponClassification(Weapon.CLASS_SWORD);
 					weapon.setWeaponType(Weapon.TYPE_SLASHING);
 					break;
 				case 1:
-					weapon.setName(_("a sharp dagger"));
-					weapon.setDisplayText(_("a sharp dagger sits here"));
-					weapon.setDescription(_("looks fit to cut something up!"));
+					weapon.setName(L("a sharp dagger"));
+					weapon.setDisplayText(L("a sharp dagger sits here"));
+					weapon.setDescription(L("looks fit to cut something up!"));
 					weapon.setWeaponClassification(Weapon.CLASS_DAGGER);
 					weapon.setWeaponType(Weapon.TYPE_PIERCING);
 					break;
 				case 2:
-					weapon.setName(_("a large mace"));
-					weapon.setDisplayText(_("a large mace sits here"));
-					weapon.setDescription(_("looks fit to whomp on something with!"));
+					weapon.setName(L("a large mace"));
+					weapon.setDisplayText(L("a large mace sits here"));
+					weapon.setDescription(L("looks fit to whomp on something with!"));
 					weapon.setWeaponClassification(Weapon.CLASS_BLUNT);
 					weapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 				case 3:
-					weapon.setName(_("a quarterstaff"));
-					weapon.setDisplayText(_("a quarterstaff sits here"));
-					weapon.setDescription(_("looks like a reliable weapon"));
+					weapon.setName(L("a quarterstaff"));
+					weapon.setDisplayText(L("a quarterstaff sits here"));
+					weapon.setDescription(L("looks like a reliable weapon"));
 					weapon.setWeaponClassification(Weapon.CLASS_STAFF);
 					weapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 				case 4:
-					weapon.setName(_("a deadly axe"));
-					weapon.setDisplayText(_("a deadly axe sits here"));
-					weapon.setDescription(_("looks fit to shop something up!"));
+					weapon.setName(L("a deadly axe"));
+					weapon.setDisplayText(L("a deadly axe sits here"));
+					weapon.setDescription(L("looks fit to shop something up!"));
 					weapon.setWeaponClassification(Weapon.CLASS_AXE);
 					weapon.setWeaponType(Weapon.TYPE_SLASHING);
 					break;
 				case 5:
-					weapon.setName(_("a large hammer"));
-					weapon.setDisplayText(_("a large hammer sits here"));
-					weapon.setDescription(_("looks fit to pound something into a pulp!"));
+					weapon.setName(L("a large hammer"));
+					weapon.setDisplayText(L("a large hammer sits here"));
+					weapon.setDescription(L("looks fit to pound something into a pulp!"));
 					weapon.setWeaponClassification(Weapon.CLASS_HAMMER);
 					weapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 				case 6:
-					weapon.setName(_("a large flail"));
-					weapon.setDisplayText(_("a large flail sits here"));
-					weapon.setDescription(_("looks fit to pound something into a pulp!"));
+					weapon.setName(L("a large flail"));
+					weapon.setDisplayText(L("a large flail sits here"));
+					weapon.setDescription(L("looks fit to pound something into a pulp!"));
 					weapon.setWeaponClassification(Weapon.CLASS_FLAILED);
 					weapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
@@ -189,12 +189,12 @@ public class Spell_FakeWeapon extends Spell
 				weapon.setBaseValue(0);
 				weapon.recoverPhyStats();
 				mob.addItem(weapon);
-				mob.location().show(mob,null,weapon,CMMsg.MSG_OK_ACTION,_("Suddenly, <S-NAME> own(s) <O-NAME>!"));
+				mob.location().show(mob,null,weapon,CMMsg.MSG_OK_ACTION,L("Suddenly, <S-NAME> own(s) <O-NAME>!"));
 				beneficialAffect(mob,weapon,asLevel,0);
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> dramatically wave(s) <S-HIS-HER> arms around, but fizzle(s) the spell."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> dramatically wave(s) <S-HIS-HER> arms around, but fizzle(s) the spell."));
 
 
 		// return whether it worked

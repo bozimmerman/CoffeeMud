@@ -37,9 +37,9 @@ import java.util.*;
 public class Prisoner extends StdAbility
 {
 	@Override public String ID() { return "Prisoner"; }
-	private final static String localizedName = CMLib.lang()._("Prisoner");
+	private final static String localizedName = CMLib.lang().L("Prisoner");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Prisoner's Geas)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Prisoner's Geas)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -51,20 +51,20 @@ public class Prisoner extends StdAbility
 			if(msg.sourceMinor()==CMMsg.TYP_RECALL)
 			{
 				if((msg.source()!=null)&&(msg.source().location()!=null))
-					msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,_("<S-NAME> attempt(s) to recall, but a geas prevents <S-HIM-HER>."));
+					msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to recall, but a geas prevents <S-HIM-HER>."));
 				return false;
 			}
 			else
 			if(msg.sourceMinor()==CMMsg.TYP_FLEE)
 			{
-				msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,_("<S-NAME> attempt(s) to flee, but a geas prevents <S-HIM-HER>."));
+				msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to flee, but a geas prevents <S-HIM-HER>."));
 				return false;
 			}
 			else
 			if((msg.tool()!=null)&&(msg.tool() instanceof Ability)
 			   &&(msg.targetMinor()==CMMsg.TYP_LEAVE))
 			{
-				msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,_("<S-NAME> attempt(s) to escape parole, but a geas prevents <S-HIM-HER>."));
+				msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to escape parole, but a geas prevents <S-HIM-HER>."));
 				return false;
 			}
 			else
@@ -74,7 +74,7 @@ public class Prisoner extends StdAbility
 			   &&(msg.source().location()!=null)
 			   &&(!msg.source().location().getArea().name().equals(((Room)msg.target()).getArea().name())))
 			{
-				msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,_("<S-NAME> attempt(s) to escape parole, but a geas prevents <S-HIM-HER>."));
+				msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to escape parole, but a geas prevents <S-HIM-HER>."));
 				return false;
 			}
 		return super.okMessage(myHost,msg);
@@ -91,6 +91,6 @@ public class Prisoner extends StdAbility
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(_("Your sentence has been served."));
+			mob.tell(L("Your sentence has been served."));
 	}
 }

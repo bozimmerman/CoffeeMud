@@ -35,7 +35,7 @@ import java.util.*;
 public class Spell_FakeFood extends Spell
 {
 	@Override public String ID() { return "Spell_FakeFood"; }
-	private final static String localizedName = CMLib.lang()._("Fake Food");
+	private final static String localizedName = CMLib.lang().L("Fake Food");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
@@ -51,32 +51,32 @@ public class Spell_FakeFood extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> invoke(s) a spell dramatically.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> invoke(s) a spell dramatically.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final Food F=(Food)CMClass.getItem("GenFood");
 				switch(CMLib.dice().roll(1,5,0))
 				{
-				case 1: F.setName(_("a shiny apple"));
-						F.setDisplayText(_("A shiny red apple sits here."));
-						F.setDescription(_("It looks tasty and crisp!"));
+				case 1: F.setName(L("a shiny apple"));
+						F.setDisplayText(L("A shiny red apple sits here."));
+						F.setDescription(L("It looks tasty and crisp!"));
 						break;
-				case 2: F.setName(_("a nice peach"));
-						F.setDisplayText(_("A nice peach sits here."));
-						F.setDescription(_("It looks tasty!"));
+				case 2: F.setName(L("a nice peach"));
+						F.setDisplayText(L("A nice peach sits here."));
+						F.setDescription(L("It looks tasty!"));
 						break;
-				case 3: F.setName(_("a big pot pie"));
-						F.setDisplayText(_("A big pot pie has been left here."));
-						F.setDescription(_("It sure looks good!"));
+				case 3: F.setName(L("a big pot pie"));
+						F.setDisplayText(L("A big pot pie has been left here."));
+						F.setDescription(L("It sure looks good!"));
 						break;
-				case 4: F.setName(_("a juicy steak"));
-						F.setDisplayText(_("A juicy steak has been left here."));
-						F.setDescription(_("It sure looks good!"));
+				case 4: F.setName(L("a juicy steak"));
+						F.setDisplayText(L("A juicy steak has been left here."));
+						F.setDescription(L("It sure looks good!"));
 						break;
-				case 5: F.setName(_("a bit of food"));
-						F.setDisplayText(_("A bit of food has been left here."));
-						F.setDescription(_("It sure looks good!"));
+				case 5: F.setName(L("a bit of food"));
+						F.setDisplayText(L("A bit of food has been left here."));
+						F.setDescription(L("It sure looks good!"));
 						break;
 				}
 				F.setNourishment(0);
@@ -86,12 +86,12 @@ public class Spell_FakeFood extends Spell
 					final Food F2=(Food)F.copyOf();
 					F2.recoverPhyStats();
 					mob.location().addItem(F2,ItemPossessor.Expire.Resource);
-					mob.location().show(mob,null,F2,CMMsg.MSG_OK_VISUAL,_("<O-NAME> appears!"));
+					mob.location().show(mob,null,F2,CMMsg.MSG_OK_VISUAL,L("<O-NAME> appears!"));
 				}
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,_("<S-NAME> dramatically attempt(s) to invoke a spell, but fizzle(s) the spell."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> dramatically attempt(s) to invoke a spell, but fizzle(s) the spell."));
 
 
 		// return whether it worked

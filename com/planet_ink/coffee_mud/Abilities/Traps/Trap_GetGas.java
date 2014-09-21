@@ -35,7 +35,7 @@ import java.util.*;
 public class Trap_GetGas extends Trap_Get
 {
 	@Override public String ID() { return "Trap_GetGas"; }
-	private final static String localizedName = CMLib.lang()._("Get Gas Trap");
+	private final static String localizedName = CMLib.lang().L("Get Gas Trap");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}

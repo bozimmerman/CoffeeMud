@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Omnipresence extends Prayer
 {
 	@Override public String ID() { return "Prayer_Omnipresence"; }
-	private final static String localizedName = CMLib.lang()._("Omnipresence");
+	private final static String localizedName = CMLib.lang().L("Omnipresence");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){ return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
@@ -50,10 +50,10 @@ public class Prayer_Omnipresence extends Prayer
 			return false;
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
-			this.beneficialVisualFizzle(mob,null,_("<S-NAME> @x1, but the is unanswered.",prayWord(mob)));
+			this.beneficialVisualFizzle(mob,null,L("<S-NAME> @x1, but the is unanswered.",prayWord(mob)));
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),_("^S<S-NAME> @x1 for the power of omnipresence.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),L("^S<S-NAME> @x1 for the power of omnipresence.^?",prayWord(mob)));
 			int numLayers=super.getXLEVELLevel(mob) + 1;
 			if(CMLib.ableMapper().qualifyingLevel(mob, this)>1)
 				numLayers += ((super.adjustedLevel(mob, 0) / CMLib.ableMapper().qualifyingLevel(mob, this)));
@@ -65,7 +65,7 @@ public class Prayer_Omnipresence extends Prayer
 														.plus(TrackingLibrary.TrackingFlag.NOAIR)
 														.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 														.plus(TrackingLibrary.TrackingFlag.NOWATER);
-				mob.tell(_("Your mind is filled with visions as your presence expands...."));
+				mob.tell(L("Your mind is filled with visions as your presence expands...."));
 				final List<Room> list = CMLib.tracking().getRadiantRooms(thatRoom, flags, numLayers);
 				for(final Room R : list)
 				{

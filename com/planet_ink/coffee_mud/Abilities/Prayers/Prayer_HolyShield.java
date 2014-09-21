@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_HolyShield extends Prayer
 {
 	@Override public String ID() { return "Prayer_HolyShield"; }
-	private final static String localizedName = CMLib.lang()._("Holy Shield");
+	private final static String localizedName = CMLib.lang().L("Holy Shield");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Holy Shield)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Holy Shield)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
@@ -63,7 +63,7 @@ public class Prayer_HolyShield extends Prayer
 		&&((msg.sourceMinor()==CMMsg.TYP_UNDEAD)||(msg.targetMinor()==CMMsg.TYP_UNDEAD))
 		&&(msg.source().location()!=null))
 		{
-			msg.source().location().show((MOB)msg.target(),msg.source(),this,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> holy shield block(s) the unholy magic from <T-NAMESELF>."));
+			msg.source().location().show((MOB)msg.target(),msg.source(),this,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> holy shield block(s) the unholy magic from <T-NAMESELF>."));
 			return false;
 		}
 		return super.okMessage(host,msg);
@@ -81,7 +81,7 @@ public class Prayer_HolyShield extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-YOUPOSS> holy shield fades."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> holy shield fades."));
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public class Prayer_HolyShield extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),_(auto?"<T-NAME> become(s) protected by the holy shield.":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to be protected by the holy shield.^?")+CMLib.protocol().msp("bless.wav",10));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> become(s) protected by the holy shield.":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to be protected by the holy shield.^?")+CMLib.protocol().msp("bless.wav",10));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -110,7 +110,7 @@ public class Prayer_HolyShield extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for a holy shield, but nothing happens.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for a holy shield, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

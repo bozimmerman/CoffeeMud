@@ -43,9 +43,9 @@ public class Spell_Siphon extends Spell
 		   randomizer = new Random(System.currentTimeMillis());
 	}
 	@Override public String ID() { return "Spell_Siphon"; }
-	private final static String localizedName = CMLib.lang()._("Siphon");
+	private final static String localizedName = CMLib.lang().L("Siphon");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Siphon spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Siphon spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
@@ -63,7 +63,7 @@ public class Spell_Siphon extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> feel(s) a thirst for the energy of others."):_("^S<S-NAME> invoke(s) an area deprived of energy around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> feel(s) a thirst for the energy of others."):L("^S<S-NAME> invoke(s) an area deprived of energy around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -71,7 +71,7 @@ public class Spell_Siphon extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke an energy thirst, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke an energy thirst, but fail(s)."));
 
 		return success;
 	}
@@ -85,7 +85,7 @@ public void unInvoke()
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		mob.tell(_("You no longer feel a thirst for the energy of others."));
+		mob.tell(L("You no longer feel a thirst for the energy of others."));
 	}
 
 	@Override
@@ -106,7 +106,7 @@ public void unInvoke()
 		&&(msg.source().curState().getMana()>0))
 		{
 			final MOB sourceM = msg.source();
-			final CMMsg msg2=CMClass.getMsg(mob,sourceM,null,CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> siphon(s) mana from <T-NAME>!"));
+			final CMMsg msg2=CMClass.getMsg(mob,sourceM,null,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> siphon(s) mana from <T-NAME>!"));
 			if(mob.location().okMessage(mob,msg2))
 			{
 				final int maxManaRestore = 3;

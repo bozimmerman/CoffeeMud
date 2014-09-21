@@ -41,7 +41,7 @@ import java.util.*;
 public class Smelting extends CraftingSkill
 {
 	@Override public String ID() { return "Smelting"; }
-	private final static String localizedName = CMLib.lang()._("Smelting");
+	private final static String localizedName = CMLib.lang().L("Smelting");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =_i(new String[] {"SMELT","SMELTING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
@@ -115,7 +115,7 @@ public class Smelting extends CraftingSkill
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,0);
 		if(commands.size()==0)
 		{
-			commonTell(mob,_("Make what? Enter \"smelt list\" for a list, or \"smelt stop\" to cancel."));
+			commonTell(mob,L("Make what? Enter \"smelt list\" for a list, or \"smelt stop\" to cancel."));
 			return false;
 		}
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
@@ -136,7 +136,7 @@ public class Smelting extends CraftingSkill
 					ListingLibrary.ColFixer.fixColWidth(3,mob.session()),
 					ListingLibrary.ColFixer.fixColWidth(16,mob.session())
 				};
-			final StringBuffer buf=new StringBuffer(_("@x1 @x2 @x3 Metal #2\n\r",CMStrings.padRight(_("Item"),cols[0]),CMStrings.padRight(_("Lvl"),cols[1]),CMStrings.padRight(_("Metal #1"),cols[2])));
+			final StringBuffer buf=new StringBuffer(L("@x1 @x2 @x3 Metal #2\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1]),CMStrings.padRight(L("Metal #1"),cols[2])));
 			for(int r=0;r<recipes.size();r++)
 			{
 				final List<String> V=recipes.get(r);
@@ -184,7 +184,7 @@ public class Smelting extends CraftingSkill
 		}
 		if(foundRecipe==null)
 		{
-			commonTell(mob,_("You don't know how to make '@x1'.  Try \"smelt list\" for a list.",recipeName));
+			commonTell(mob,L("You don't know how to make '@x1'.  Try \"smelt list\" for a list.",recipeName));
 			return false;
 		}
 		final String doneResourceDesc=foundRecipe.get(RCP_FINALNAME);
@@ -195,19 +195,19 @@ public class Smelting extends CraftingSkill
 		final int doneResourceCode=RawMaterial.CODES.FIND_IgnoreCase(doneResourceDesc);
 		if((resourceCode1<0)||(resourceCode2<0)||(doneResourceCode<0))
 		{
-			commonTell(mob,_("CoffeeMud error in this alloy.  Please let your local Archon know."));
+			commonTell(mob,L("CoffeeMud error in this alloy.  Please let your local Archon know."));
 			return false;
 		}
 		final int amountResource1=CMLib.materials().findNumberOfResource(mob.location(),RawMaterial.CODES.GET(resourceCode1));
 		final int amountResource2=CMLib.materials().findNumberOfResource(mob.location(),RawMaterial.CODES.GET(resourceCode2));
 		if(amountResource1==0)
 		{
-			commonTell(mob,_("There is no @x1 here to make @x2 from.  It might need to be put down first.",resourceDesc1,doneResourceDesc));
+			commonTell(mob,L("There is no @x1 here to make @x2 from.  It might need to be put down first.",resourceDesc1,doneResourceDesc));
 			return false;
 		}
 		if(amountResource2==0)
 		{
-			commonTell(mob,_("There is no @x1 here to make @x2 from.  It might need to be put down first.",resourceDesc2,doneResourceDesc));
+			commonTell(mob,L("There is no @x1 here to make @x2 from.  It might need to be put down first.",resourceDesc2,doneResourceDesc));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -220,10 +220,10 @@ public class Smelting extends CraftingSkill
 		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),6);
 		amountMaking+=amountMaking;
 		buildingI=(Item)CMLib.materials().makeResource(RawMaterial.CODES.GET(doneResourceCode),null,false,null);
-		startStr=_("<S-NAME> start(s) smelting @x1.",doneResourceDesc.toLowerCase());
-		displayText=_("You are smelting @x1",doneResourceDesc.toLowerCase());
+		startStr=L("<S-NAME> start(s) smelting @x1.",doneResourceDesc.toLowerCase());
+		displayText=L("You are smelting @x1",doneResourceDesc.toLowerCase());
 		playSound="sizzling.wav";
-		verb=_("smelting @x1",doneResourceDesc.toLowerCase());
+		verb=L("smelting @x1",doneResourceDesc.toLowerCase());
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 

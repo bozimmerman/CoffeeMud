@@ -37,7 +37,7 @@ import java.util.*;
 public class Thief_Embezzle extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Embezzle"; }
-	private final static String localizedName = CMLib.lang()._("Embezzle");
+	private final static String localizedName = CMLib.lang().L("Embezzle");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -84,7 +84,7 @@ public class Thief_Embezzle extends ThiefSkill
 			   ||(msg.targetMinor()==CMMsg.TYP_VALUE)
 			   ||(msg.targetMinor()==CMMsg.TYP_VIEW))
 			{
-				msg.source().tell(_("@x1 looks unwilling to do business with you.",affected.name()));
+				msg.source().tell(L("@x1 looks unwilling to do business with you.",affected.name()));
 				return false;
 			}
 		}
@@ -107,7 +107,7 @@ public class Thief_Embezzle extends ThiefSkill
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell(_("Embezzle money from whose accounts?"));
+			mob.tell(L("Embezzle money from whose accounts?"));
 			return false;
 		}
 		MOB target=null;
@@ -117,31 +117,31 @@ public class Thief_Embezzle extends ThiefSkill
 			target=mob.location().fetchInhabitant(CMParms.combine(commands,0));
 		if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",CMParms.combine(commands,1)));
+			mob.tell(L("You don't see '@x1' here.",CMParms.combine(commands,1)));
 			return false;
 		}
 		if(!(target instanceof Banker))
 		{
-			mob.tell(_("You can't embezzle from @x1's accounts.",target.name(mob)));
+			mob.tell(L("You can't embezzle from @x1's accounts.",target.name(mob)));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell(_("You are too busy to embezzle."));
+			mob.tell(L("You are too busy to embezzle."));
 			return false;
 		}
 		final Banker bank=(Banker)target;
 		final Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
-			mob.tell(_("@x1 is watching @x2 books too closely.",target.name(mob),target.charStats().hisher()));
+			mob.tell(L("@x1 is watching @x2 books too closely.",target.name(mob),target.charStats().hisher()));
 			return false;
 		}
 		final int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 
 		if(!target.mayIFight(mob))
 		{
-			mob.tell(_("You cannot embezzle from @x1.",target.charStats().himher()));
+			mob.tell(L("You cannot embezzle from @x1.",target.charStats().himher()));
 			return false;
 		}
 
@@ -158,7 +158,7 @@ public class Thief_Embezzle extends ThiefSkill
 		myCoins=bank.findDepositInventory(myAcct,"1");
 		if((myCoins==null)||(!(myCoins instanceof Coins)))
 		{
-			mob.tell(_("You don't have your own account with @x1.",target.name(mob)));
+			mob.tell(L("You don't have your own account with @x1.",target.name(mob)));
 			return false;
 		}
 		final List<String> accounts=bank.getAccountNames();
@@ -191,7 +191,7 @@ public class Thief_Embezzle extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,(-(levelDiff+(timesPicked(mob)*50))),auto);
 		if((success)&&(hisAmount>0)&&(hisCoins!=null))
 		{
-			final String str=_("<S-NAME> embezzle(s) @x1 from the @x2 account maintained by <T-NAME>.",CMLib.beanCounter().nameCurrencyShort(target,hisAmount),victim);
+			final String str=L("<S-NAME> embezzle(s) @x1 from the @x2 account maintained by <T-NAME>.",CMLib.beanCounter().nameCurrencyShort(target,hisAmount),victim);
 			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT,str,null,str);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -208,7 +208,7 @@ public class Thief_Embezzle extends ThiefSkill
 			}
 		}
 		else
-			maliciousFizzle(mob,target,_("<T-NAME> catch(es) <S-NAME> trying to embezzle money!"));
+			maliciousFizzle(mob,target,L("<T-NAME> catch(es) <S-NAME> trying to embezzle money!"));
 		return success;
 	}
 

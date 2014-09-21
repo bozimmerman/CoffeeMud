@@ -45,12 +45,12 @@ public class Undress extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(_("Undress whom? What would you like to remove?"));
+			mob.tell(L("Undress whom? What would you like to remove?"));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell(_("Not while you are in combat!"));
+			mob.tell(L("Not while you are in combat!"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -60,7 +60,7 @@ public class Undress extends StdCommand
 		final MOB target=mob.location().fetchInhabitant(whom);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(_("I don't see @x1 here.",whom));
+			mob.tell(L("I don't see @x1 here.",whom));
 			return false;
 		}
 		if(target.willFollowOrdersOf(mob)||(CMLib.flags().isBoundOrHeld(target)))
@@ -70,12 +70,12 @@ public class Undress extends StdCommand
 			   ||(!CMLib.flags().canBeSeenBy(item,mob))
 			   ||(item.amWearingAt(Wearable.IN_INVENTORY)))
 			{
-				mob.tell(_("@x1 doesn't seem to be equipped with '@x2'.",target.name(mob),what));
+				mob.tell(L("@x1 doesn't seem to be equipped with '@x2'.",target.name(mob),what));
 				return false;
 			}
 			if(target.isInCombat())
 			{
-				mob.tell(_("Not while @x1 is in combat!",target.name(mob)));
+				mob.tell(L("Not while @x1 is in combat!",target.name(mob)));
 				return false;
 			}
 			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_QUIETMOVEMENT,null);
@@ -90,17 +90,17 @@ public class Undress extends StdCommand
 					{
 						mob.location().send(mob,msg);
 						if(CMLib.commands().postGet(mob,null,item,true))
-							mob.location().show(mob,target,item,CMMsg.MASK_ALWAYS|CMMsg.MSG_QUIETMOVEMENT,_("<S-NAME> take(s) <O-NAME> off <T-NAMESELF>."));
+							mob.location().show(mob,target,item,CMMsg.MASK_ALWAYS|CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> take(s) <O-NAME> off <T-NAMESELF>."));
 					}
 					else
-						mob.tell(_("You cannot seem to get @x1 off @x2.",item.name(),target.name(mob)));
+						mob.tell(L("You cannot seem to get @x1 off @x2.",item.name(),target.name(mob)));
 				}
 				else
-					mob.tell(_("You cannot seem to get @x1 off of @x2.",item.name(),target.name(mob)));
+					mob.tell(L("You cannot seem to get @x1 off of @x2.",item.name(),target.name(mob)));
 			}
 		}
 		else
-			mob.tell(_("@x1 won't let you.",target.name(mob)));
+			mob.tell(L("@x1 won't let you.",target.name(mob)));
 		return false;
 	}
 	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}

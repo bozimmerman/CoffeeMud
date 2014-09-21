@@ -35,7 +35,7 @@ import java.util.*;
 public class Power_SuperClimb extends SuperPower
 {
 	@Override public String ID() { return "Power_SuperClimb"; }
-	private final static String localizedName = CMLib.lang()._("Super Climb");
+	private final static String localizedName = CMLib.lang().L("Super Climb");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -57,18 +57,18 @@ public class Power_SuperClimb extends SuperPower
 		final int dirCode=Directions.getDirectionCode(CMParms.combine(commands,0));
 		if(dirCode<0)
 		{
-			mob.tell(_("Climb where?"));
+			mob.tell(L("Climb where?"));
 			return false;
 		}
 		if((mob.location().getRoomInDir(dirCode)==null)
 		||(mob.location().getExitInDir(dirCode)==null))
 		{
-			mob.tell(_("You can't climb that way."));
+			mob.tell(L("You can't climb that way."));
 			return false;
 		}
 		if(CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob))
 		{
-			mob.tell(_("You need to stand up first!"));
+			mob.tell(L("You need to stand up first!"));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_Nondetection extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Nondetection"; }
-	private final static String localizedName = CMLib.lang()._("Nondetection");
+	private final static String localizedName = CMLib.lang().L("Nondetection");
 	@Override public String name() { return localizedName; }
 	@Override
 	public String displayText()

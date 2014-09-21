@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_Brittle extends Chant
 {
 	@Override public String ID() { return "Chant_Brittle"; }
-	private final static String localizedName = CMLib.lang()._("Brittle");
+	private final static String localizedName = CMLib.lang().L("Brittle");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
@@ -59,7 +59,7 @@ public class Chant_Brittle extends Chant
 				{
 					final Room R=CMLib.map().roomLocation(E);
 					if(R!=null)
-						R.showHappens(CMMsg.MSG_OK_ACTION,_("@x1 is destroyed!",E.name()));
+						R.showHappens(CMMsg.MSG_OK_ACTION,L("@x1 is destroyed!",E.name()));
 					((Item)E).destroy();
 				}
 				noRecurse=false;
@@ -127,7 +127,7 @@ public class Chant_Brittle extends Chant
 		{
 			target=getItem(mobTarget);
 			if(target==null)
-				return maliciousFizzle(mob,mobTarget,_("<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens."));
+				return maliciousFizzle(mob,mobTarget,L("<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens."));
 		}
 
 		if(target==null)
@@ -146,7 +146,7 @@ public class Chant_Brittle extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> becomes brittle!"):_("^S<S-NAME> chant(s), causing <T-NAMESELF> to grow brittle!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> becomes brittle!"):L("^S<S-NAME> chant(s), causing <T-NAMESELF> to grow brittle!^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,mobTarget,this,verbalCastCode(mob,mobTarget,auto),null);
 			if((mob.location().okMessage(mob,msg))&&((mobTarget==null)||(mob.location().okMessage(mob,msg2))))
 			{
@@ -162,7 +162,7 @@ public class Chant_Brittle extends Chant
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,_("<S-NAME> chant(s), but nothing happens."));
+			return maliciousFizzle(mob,null,L("<S-NAME> chant(s), but nothing happens."));
 
 
 		// return whether it worked

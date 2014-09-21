@@ -44,7 +44,7 @@ public class Compare extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("Compare what to what?"));
+			mob.tell(L("Compare what to what?"));
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -67,13 +67,13 @@ public class Compare extends StdCommand
 				}
 				if((compareThis==null)||(!CMLib.flags().canBeSeenBy(compareThis,mob)))
 				{
-					mob.tell(_("You don't have a @x1.",( (String) commands.elementAt(0))));
+					mob.tell(L("You don't have a @x1.",( (String) commands.elementAt(0))));
 					return false;
 				}
 			}
 			else
 			{
-				mob.tell(_("You don't have a @x1.",( (String) commands.elementAt(0))));
+				mob.tell(L("You don't have a @x1.",( (String) commands.elementAt(0))));
 				return false;
 			}
 		}
@@ -109,7 +109,7 @@ public class Compare extends StdCommand
 			if(toThis==null) toThis=possible;
 			if((toThis==null)||(!CMLib.flags().canBeSeenBy(toThis,mob)))
 			{
-				mob.tell(_("Compare a @x1 to what?",compareThis.name()));
+				mob.tell(L("Compare a @x1 to what?",compareThis.name()));
 				return false;
 			}
 		}
@@ -117,7 +117,7 @@ public class Compare extends StdCommand
 			toThis=mob.findItem(null,CMParms.combine(commands,1));
 		if((toThis==null)||(!CMLib.flags().canBeSeenBy(toThis,mob)))
 		{
-			mob.tell(_("You don't have a @x1.",((String)commands.elementAt(1))));
+			mob.tell(L("You don't have a @x1.",((String)commands.elementAt(1))));
 			return false;
 		}
 
@@ -128,28 +128,28 @@ public class Compare extends StdCommand
 			cDmg+=(int)Math.round(CMath.div(compareThis.basePhyStats().attackAdjustment()-toThis.basePhyStats().attackAdjustment(),100.0)*cDmg);
 
 			if(cDmg==tDmg)
-				mob.tell(_("@x1 and @x2 look about the same.",compareThis.name(),toThis.name()));
+				mob.tell(L("@x1 and @x2 look about the same.",compareThis.name(),toThis.name()));
 			else
 			if(cDmg>tDmg)
-				mob.tell(_("@x1 looks better than @x2.",compareThis.name(),toThis.name()));
+				mob.tell(L("@x1 looks better than @x2.",compareThis.name(),toThis.name()));
 			else
-				mob.tell(_("@x1 looks worse than @x2.",compareThis.name(),toThis.name()));
+				mob.tell(L("@x1 looks worse than @x2.",compareThis.name(),toThis.name()));
 		}
 		else
 		if((compareThis instanceof Armor)&&(toThis instanceof Armor))
 		{
 			if(!compareThis.compareProperLocations(toThis))
 			{
-				mob.tell(_("@x1 is not worn the same way as @x2, and can't be compared to it.",compareThis.name(),toThis.name()));
+				mob.tell(L("@x1 is not worn the same way as @x2, and can't be compared to it.",compareThis.name(),toThis.name()));
 				return false;
 			}
 			if(compareThis.basePhyStats().armor()==toThis.basePhyStats().armor())
-				mob.tell(_("@x1 and @x2 look about the same.",compareThis.name(),toThis.name()));
+				mob.tell(L("@x1 and @x2 look about the same.",compareThis.name(),toThis.name()));
 			else
 			if(compareThis.basePhyStats().armor()>toThis.basePhyStats().armor())
-				mob.tell(_("@x1 looks better than @x2.",compareThis.name(),toThis.name()));
+				mob.tell(L("@x1 looks better than @x2.",compareThis.name(),toThis.name()));
 			else
-				mob.tell(_("@x1 looks worse than @x2.",compareThis.name(),toThis.name()));
+				mob.tell(L("@x1 looks worse than @x2.",compareThis.name(),toThis.name()));
 
 		}
 		else
@@ -157,12 +157,12 @@ public class Compare extends StdCommand
 		&&(((Container)compareThis).capacity()>0)&&(((Container)toThis).capacity()>0))
 		{
 			if(((Container)compareThis).capacity()>((Container)toThis).capacity())
-				mob.tell(_("@x1 looks like it holds more than @x2.",compareThis.name(),toThis.name()));
+				mob.tell(L("@x1 looks like it holds more than @x2.",compareThis.name(),toThis.name()));
 			else
-				mob.tell(_("@x1 looks like it holds less than @x2.",compareThis.name(),toThis.name()));
+				mob.tell(L("@x1 looks like it holds less than @x2.",compareThis.name(),toThis.name()));
 		}
 		else
-			mob.tell(_("You can't compare @x1 and @x2.",compareThis.name(),toThis.name()));
+			mob.tell(L("You can't compare @x1 and @x2.",compareThis.name(),toThis.name()));
 		return false;
 	}
 	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}

@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_DispelMagic extends Spell
 {
 	@Override public String ID() { return "Spell_DispelMagic"; }
-	private final static String localizedName = CMLib.lang()._("Dispel Magic");
+	private final static String localizedName = CMLib.lang().L("Dispel Magic");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS|CAN_ROOMS;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
@@ -113,12 +113,12 @@ public class Spell_DispelMagic extends Spell
 		if(revokeThis==null)
 		{
 			if(foundSomethingAtLeast)
-				mob.tell(mob,target,null,_("The magic on <T-NAME> appears too powerful to dispel."));
+				mob.tell(mob,target,null,L("The magic on <T-NAME> appears too powerful to dispel."));
 			else
 			if(auto)
-				mob.tell(_("Nothing seems to be happening."));
+				mob.tell(L("Nothing seems to be happening."));
 			else
-				mob.tell(mob,target,null,_("<T-NAME> do(es) not appear to be affected by anything you can dispel."));
+				mob.tell(mob,target,null,L("<T-NAME> do(es) not appear to be affected by anything you can dispel."));
 			return false;
 		}
 
@@ -140,7 +140,7 @@ public class Spell_DispelMagic extends Spell
 				affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 			if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 
-			final CMMsg msg=CMClass.getMsg(mob,target,this,affectType,auto?_("@x1 is dispelled from <T-NAME>.",revokeThis.name()):_("^S<S-NAME> dispel(s) @x1 from <T-NAMESELF>.^?",revokeThis.name()));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,affectType,auto?L("@x1 is dispelled from <T-NAME>.",revokeThis.name()):L("^S<S-NAME> dispel(s) @x1 from <T-NAMESELF>.^?",revokeThis.name()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -148,7 +148,7 @@ public class Spell_DispelMagic extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to dispel @x1 from <T-NAMESELF>, but flub(s) it.",revokeThis.name()));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to dispel @x1 from <T-NAMESELF>, but flub(s) it.",revokeThis.name()));
 
 
 		// return whether it worked

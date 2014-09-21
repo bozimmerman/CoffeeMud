@@ -36,7 +36,7 @@ import java.util.*;
 public class Prayer_CauseFatigue extends Prayer
 {
 	@Override public String ID() { return "Prayer_CauseFatigue"; }
-	private final static String localizedName = CMLib.lang()._("Cause Fatigue");
+	private final static String localizedName = CMLib.lang().L("Cause Fatigue");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
@@ -59,7 +59,7 @@ public class Prayer_CauseFatigue extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|verbalCastCode(mob,target,auto),_(auto?"A light fatigue overcomes <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for light fatigue to overcome <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|verbalCastCode(mob,target,auto),L(auto?"A light fatigue overcomes <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for light fatigue to overcome <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -69,12 +69,12 @@ public class Prayer_CauseFatigue extends Prayer
 					if(target.maxState().getFatigue()>Long.MIN_VALUE/2)
 						target.curState().adjFatigue((target.curState().getFatigue()/2),target.maxState());
 					target.curState().adjMovement(-harming,target.maxState());
-					target.tell(_("You feel slightly more fatigued!"));
+					target.tell(L("You feel slightly more fatigued!"));
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> point(s) at <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
+			return maliciousFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
 
 		// return whether it worked
 		return success;

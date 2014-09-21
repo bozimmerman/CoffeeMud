@@ -46,7 +46,7 @@ public class AHelp extends StdCommand
 		final String helpStr=CMParms.combine(commands,1);
 		if(CMLib.help().getArcHelpFile().size()==0)
 		{
-			mob.tell(_("No archon help is available."));
+			mob.tell(L("No archon help is available."));
 			return false;
 		}
 		StringBuffer thisTag=null;
@@ -150,7 +150,7 @@ public class AHelp extends StdCommand
 		}
 		if(thisTag==null)
 		{
-			mob.tell(_("No archon help is available on @x1 .\n\rEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list.",helpStr));
+			mob.tell(L("No archon help is available on @x1 .\n\rEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list.",helpStr));
 			Log.errOut("Help: "+mob.Name()+" wanted archon help on "+helpStr);
 		}
 		else

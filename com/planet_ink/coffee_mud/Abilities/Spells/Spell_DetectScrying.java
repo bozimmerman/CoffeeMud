@@ -37,7 +37,7 @@ import java.util.*;
 public class Spell_DetectScrying extends Spell
 {
 	@Override public String ID() { return "Spell_DetectScrying"; }
-	private final static String localizedName = CMLib.lang()._("Detect Scrying");
+	private final static String localizedName = CMLib.lang().L("Detect Scrying");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
@@ -72,7 +72,7 @@ public class Spell_DetectScrying extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> incant(s) softly to <T-NAMESELF>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> incant(s) softly to <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -80,23 +80,23 @@ public class Spell_DetectScrying extends Spell
 				if(target.session()!=null)
 					for(final Session S1 : CMLib.sessions().localOnlineIterable())
 						if(target.session().isBeingSnoopedBy(S1))
-							str.append(_("@x1 is snooping on <T-NAME>.  ",S1.mob().name()));
+							str.append(L("@x1 is snooping on <T-NAME>.  ",S1.mob().name()));
 				Ability A=target.fetchEffect("Spell_Scry");
 				if((A!=null)&&(A.invoker()!=null))
-					str.append(_("@x1 is scrying on <T-NAME>.",A.invoker().name()));
+					str.append(L("@x1 is scrying on <T-NAME>.",A.invoker().name()));
 				A=target.fetchEffect("Spell_Claireaudience");
 				if((A!=null)&&(A.invoker()!=null))
-					str.append(_("@x1 is listening to <T-NAME>.",A.invoker().name()));
+					str.append(L("@x1 is listening to <T-NAME>.",A.invoker().name()));
 				A=target.fetchEffect("Spell_Clairevoyance");
 				if((A!=null)&&(A.invoker()!=null))
-					str.append(_("@x1 is watching <T-NAME>.",A.invoker().name()));
+					str.append(L("@x1 is watching <T-NAME>.",A.invoker().name()));
 				if(str.length()==0)
-					str.append(_("There doesn't seem to be anyone scrying on <T-NAME>."));
+					str.append(L("There doesn't seem to be anyone scrying on <T-NAME>."));
 				CMLib.commands().postSay(mob,target,str.toString(),false,false);
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,target,_("<S-NAME> incant(s) to <T-NAMESELF>, but the spell fizzles."));
+			beneficialVisualFizzle(mob,target,L("<S-NAME> incant(s) to <T-NAMESELF>, but the spell fizzles."));
 
 		return success;
 	}

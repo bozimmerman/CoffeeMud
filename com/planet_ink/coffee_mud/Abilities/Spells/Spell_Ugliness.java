@@ -37,9 +37,9 @@ public class Spell_Ugliness extends Spell
 {
 
 	@Override public String ID() { return "Spell_Ugliness";}
-	private final static String localizedName = CMLib.lang()._("Ugliness");
+	private final static String localizedName = CMLib.lang().L("Ugliness");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Ugliness spell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Ugliness spell)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -62,7 +62,7 @@ public class Spell_Ugliness extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("You begin to feel more like your regular pleasant self."));
+			mob.tell(L("You begin to feel more like your regular pleasant self."));
 	}
 
 	@Override
@@ -104,16 +104,16 @@ public class Spell_Ugliness extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> speak(s) and gesture(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> speak(s) and gesture(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> seem(s) too hideous to look at!"));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) too hideous to look at!"));
 				maliciousAffect(mob,target,asLevel,0,-1);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> incant(s) harshly to <T-NAMESELF>, but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> incant(s) harshly to <T-NAMESELF>, but nothing more happens."));
 
 
 		// return whether it worked

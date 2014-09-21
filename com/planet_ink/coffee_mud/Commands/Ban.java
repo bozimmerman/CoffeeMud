@@ -46,16 +46,16 @@ public class Ban extends StdCommand
 		String banMe=CMParms.combine(commands,0);
 		if(banMe.length()==0)
 		{
-			mob.tell(_("Ban what?  Enter an IP address or name mask."));
+			mob.tell(L("Ban what?  Enter an IP address or name mask."));
 			return false;
 		}
 		banMe=banMe.toUpperCase().trim();
 		final int b=CMSecurity.ban(banMe);
 		if(b<0)
-			mob.tell(_("Logins and IPs matching @x1 are now banned.",banMe));
+			mob.tell(L("Logins and IPs matching @x1 are now banned.",banMe));
 		else
 		{
-			mob.tell(_("That is already banned.  Do LIST BANNED and check out #@x1.",""+(b+1)));
+			mob.tell(L("That is already banned.  Do LIST BANNED and check out #@x1.",""+(b+1)));
 			return false;
 		}
 		return true;

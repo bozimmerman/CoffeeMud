@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_SpeedBirth extends Chant
 {
 	@Override public String ID() { return "Chant_SpeedBirth"; }
-	private final static String localizedName = CMLib.lang()._("Speed Birth");
+	private final static String localizedName = CMLib.lang().L("Speed Birth");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
@@ -88,13 +88,13 @@ public class Chant_SpeedBirth extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(remain<=20000)
 				{
-					mob.tell(_("Birth is imminent!"));
+					mob.tell(L("Birth is imminent!"));
 					return true;
 				}
 				else
@@ -106,11 +106,11 @@ public class Chant_SpeedBirth extends Chant
 				else
 					remain=remain/2;
 				A.setMiscText((start-remain)+"/"+(end-remain)+rest);
-				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> appear(s) even MORE pregnant!"));
+				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> appear(s) even MORE pregnant!"));
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
 
 
 		// return whether it worked

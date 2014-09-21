@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_ResistAcid extends Spell
 {
 	@Override public String ID() { return "Spell_ResistAcid"; }
-	private final static String localizedName = CMLib.lang()._("Resist Acid");
+	private final static String localizedName = CMLib.lang().L("Resist Acid");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Resist Acid)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Resist Acid)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -53,7 +53,7 @@ public class Spell_ResistAcid extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("Your oily protection dries up."));
+			mob.tell(L("Your oily protection dries up."));
 
 		super.unInvoke();
 	}
@@ -79,7 +79,7 @@ public class Spell_ResistAcid extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> feel(s) oilily protected."):_("^S<S-NAME> invoke(s) a oily field of protection around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> feel(s) oilily protected."):L("^S<S-NAME> invoke(s) a oily field of protection around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -87,7 +87,7 @@ public class Spell_ResistAcid extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to invoke acid protection, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke acid protection, but fail(s)."));
 
 		return success;
 	}

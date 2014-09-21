@@ -202,10 +202,10 @@ public class Prop_ReqTattoo extends Property implements TriggeredAffect
 						return super.okMessage(myHost,msg);
 				}
 				if(msg.target() instanceof Room)
-					msg.source().tell(themsg.length()==0?_("You have not been granted authorization to go that way."):themsg);
+					msg.source().tell(themsg.length()==0?L("You have not been granted authorization to go that way."):themsg);
 				else
 				if(msg.source().location()!=null)
-					msg.source().location().show(msg.source(),null,affected,CMMsg.MSG_OK_ACTION,themsg.length()==0?_("<O-NAME> flashes and flies out of <S-HIS-HER> hands!"):themsg);
+					msg.source().location().show(msg.source(),null,affected,CMMsg.MSG_OK_ACTION,themsg.length()==0?L("<O-NAME> flashes and flies out of <S-HIS-HER> hands!"):themsg);
 				return false;
 			}
 		}

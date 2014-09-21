@@ -36,9 +36,9 @@ import java.util.*;
 public class Chant_Hibernation extends Chant
 {
 	@Override public String ID() { return "Chant_Hibernation"; }
-	private final static String localizedName = CMLib.lang()._("Hibernation");
+	private final static String localizedName = CMLib.lang().L("Hibernation");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Hibernating)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Hibernating)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
@@ -60,9 +60,9 @@ public class Chant_Hibernation extends Chant
 			if(!mob.amDead())
 			{
 				if(mob.location()!=null)
-					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> end(s) <S-HIS-HER> hibernation."));
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> end(s) <S-HIS-HER> hibernation."));
 				else
-					mob.tell(_("Your hibernation ends."));
+					mob.tell(L("Your hibernation ends."));
 			}
 		}
 	}
@@ -96,7 +96,7 @@ public class Chant_Hibernation extends Chant
 		{
 			if(roundsHibernating<10)
 			{
-				mob.tell(_("You can't withdraw from hibernation just yet."));
+				mob.tell(L("You can't withdraw from hibernation just yet."));
 				return false;
 			}
 			unInvoke();
@@ -151,12 +151,12 @@ public class Chant_Hibernation extends Chant
 	{
 		if(mob.isInCombat())
 		{
-			mob.tell(_("You can't hibernate while in combat!"));
+			mob.tell(L("You can't hibernate while in combat!"));
 			return false;
 		}
 		if(!CMLib.flags().isSitting(mob))
 		{
-			mob.tell(_("You must be in a sitting, restful position to hibernate."));
+			mob.tell(L("You must be in a sitting, restful position to hibernate."));
 			return false;
 		}
 		// now see if it worked
@@ -168,7 +168,7 @@ public class Chant_Hibernation extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_SLEEP|CMMsg.MASK_MAGIC,_("<S-NAME> begin(s) to hibernate..."));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_SLEEP|CMMsg.MASK_MAGIC,L("<S-NAME> begin(s) to hibernate..."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -178,7 +178,7 @@ public class Chant_Hibernation extends Chant
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,_("<S-NAME> chant(s) to hibernate, but lose(s) concentration."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> chant(s) to hibernate, but lose(s) concentration."));
 
 		// return whether it worked
 		return success;

@@ -46,19 +46,19 @@ public class Bid extends StdCommand
 		if(shopkeeper==null) return false;
 		if(commands.size()<2)
 		{
-			mob.tell(_("Bid how much on what?"));
+			mob.tell(L("Bid how much on what?"));
 			return false;
 		}
 		if(!(CMLib.coffeeShops().getShopKeeper(shopkeeper) instanceof Auctioneer))
 		{
-			mob.tell(_("@x1 is not an auctioneer!",shopkeeper.name()));
+			mob.tell(L("@x1 is not an auctioneer!",shopkeeper.name()));
 			return false;
 		}
 
 		String bidStr=(String)commands.firstElement();
 		if(CMLib.english().numPossibleGold(mob,bidStr)<=0)
 		{
-			mob.tell(_("It does not look like '@x1' is enough to offer.",bidStr));
+			mob.tell(L("It does not look like '@x1' is enough to offer.",bidStr));
 			return false;
 		}
 		final Object[] bidThang=CMLib.english().parseMoneyStringSDL(mob,bidStr,null);
@@ -93,15 +93,15 @@ public class Bid extends StdCommand
 			++addendum;
 		}
 		if(V.size()==0)
-			mob.tell(mob,shopkeeper,null,_("<T-NAME> do(es)n't appear to have any '@x1' available for auction.  Try LIST.",whatName));
+			mob.tell(mob,shopkeeper,null,L("<T-NAME> do(es)n't appear to have any '@x1' available for auction.  Try LIST.",whatName));
 		else
 		for(int v=0;v<V.size();v++)
 		{
 			final Environmental thisThang=(Environmental)V.elementAt(v);
 			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,
-					CMMsg.MSG_BID,_("<S-NAME> bid(s) @x1 on <O-NAME> with <T-NAMESELF>.",bidStr),
-					CMMsg.MSG_BID,_("<S-NAME> bid(s) '@x1' on <O-NAME> with <T-NAMESELF>.",bidStr),
-					CMMsg.MSG_BID,_("<S-NAME> place(s) a bid with <T-NAMESELF>."));
+					CMMsg.MSG_BID,L("<S-NAME> bid(s) @x1 on <O-NAME> with <T-NAMESELF>.",bidStr),
+					CMMsg.MSG_BID,L("<S-NAME> bid(s) '@x1' on <O-NAME> with <T-NAMESELF>.",bidStr),
+					CMMsg.MSG_BID,L("<S-NAME> place(s) a bid with <T-NAMESELF>."));
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);
 		}

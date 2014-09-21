@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_CarefulStep extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_CarefulStep"; }
-	private final static String localizedName = CMLib.lang()._("Careful Step");
+	private final static String localizedName = CMLib.lang().L("Careful Step");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
@@ -58,21 +58,21 @@ public class Thief_CarefulStep extends ThiefSkill
 			final int dirCode=Directions.getGoodDirectionCode(dir);
 			if(dirCode<0)
 			{
-				mob.tell(_("Step where?"));
+				mob.tell(L("Step where?"));
 				return false;
 			}
 			if(mob.isInCombat())
 			{
-				mob.tell(_("Not while you are fighting!"));
+				mob.tell(L("Not while you are fighting!"));
 				return false;
 			}
 
 			if((mob.location().getRoomInDir(dirCode)==null)||(mob.location().getExitInDir(dirCode)==null))
 			{
-				mob.tell(_("Step where?"));
+				mob.tell(L("Step where?"));
 				return false;
 			}
-			final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,_("<S-NAME> start(s) walking carefully @x1.",Directions.getDirectionName(dirCode)));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,L("<S-NAME> start(s) walking carefully @x1.",Directions.getDirectionName(dirCode)));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			else
@@ -96,7 +96,7 @@ public class Thief_CarefulStep extends ThiefSkill
 			return false;
 
 		boolean success=false;
-		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,_("<S-NAME> walk(s) carefully @x1.",Directions.getDirectionName(dirCode)));
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,L("<S-NAME> walk(s) carefully @x1.",Directions.getDirectionName(dirCode)));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -36,7 +36,7 @@ import java.util.*;
 public class Chant_PlantPass extends Chant
 {
 	@Override public String ID() { return "Chant_PlantPass"; }
-	private final static String localizedName = CMLib.lang()._("Plant Pass");
+	private final static String localizedName = CMLib.lang().L("Plant Pass");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -49,7 +49,7 @@ public class Chant_PlantPass extends Chant
 	{
 		if(commands.size()<1)
 		{
-			mob.tell(_("You must specify the name of the location of one of your plants.  Use your 'My Plants' skill if necessary."));
+			mob.tell(L("You must specify the name of the location of one of your plants.  Use your 'My Plants' skill if necessary."));
 			return false;
 		}
 		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
@@ -57,7 +57,7 @@ public class Chant_PlantPass extends Chant
 		final Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
 		if(myPlant==null)
 		{
-			mob.tell(_("There doesn't appear to be any of your plants here to travel through."));
+			mob.tell(L("There doesn't appear to be any of your plants here to travel through."));
 			return false;
 		}
 
@@ -74,7 +74,7 @@ public class Chant_PlantPass extends Chant
 		}
 		if(newRoom==null)
 		{
-			mob.tell(_("You can't seem to fixate on a place called '@x1', perhaps you have nothing growing there?",CMParms.combine(commands,0)));
+			mob.tell(L("You can't seem to fixate on a place called '@x1', perhaps you have nothing growing there?",CMParms.combine(commands,0)));
 			return false;
 		}
 
@@ -85,7 +85,7 @@ public class Chant_PlantPass extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,myPlant,this,CMMsg.MASK_MOVE|verbalCastCode(mob,myPlant,auto),auto?"":_("^S<S-NAME> chant(s) to <T-NAMESELF> and <S-IS-ARE> drawn into it!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,myPlant,this,CMMsg.MASK_MOVE|verbalCastCode(mob,myPlant,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF> and <S-IS-ARE> drawn into it!^?"));
 			if((mob.location().okMessage(mob,msg))&&(newRoom.okMessage(mob,msg)))
 			{
 				mob.location().send(mob,msg);
@@ -96,8 +96,8 @@ public class Chant_PlantPass extends Chant
 				for (final Object element : h)
 				{
 					final MOB follower=(MOB)element;
-					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,_("<S-NAME> emerge(s) from the ground."));
-					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,_("<S-NAME> <S-IS-ARE> sucked into @x1.",myPlant.name()));
+					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> emerge(s) from the ground."));
+					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,L("<S-NAME> <S-IS-ARE> sucked into @x1.",myPlant.name()));
 					if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())
@@ -108,7 +108,7 @@ public class Chant_PlantPass extends Chant
 						thisRoom.send(follower,leaveMsg);
 						newRoom.bringMobHere(follower,false);
 						newRoom.send(follower,enterMsg);
-						follower.tell(_("\n\r\n\r"));
+						follower.tell(L("\n\r\n\r"));
 						CMLib.commands().postLook(follower,true);
 					}
 				}
@@ -116,7 +116,7 @@ public class Chant_PlantPass extends Chant
 
 		}
 		else
-			beneficialVisualFizzle(mob,myPlant,_("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
+			beneficialVisualFizzle(mob,myPlant,L("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

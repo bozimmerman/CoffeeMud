@@ -44,15 +44,15 @@ public class Vassals extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		mob.tell(_("The following players are in your service:"));
+		mob.tell(L("The following players are in your service:"));
 		List<PlayerLibrary.ThinPlayer> players=CMLib.database().vassals(mob,mob.Name());
 		final StringBuilder str=new StringBuilder("");
 		str.append("[");
-		str.append(CMStrings.padRight(_("Race"),8)+" ");
-		str.append(CMStrings.padRight(_("Class"),10)+" ");
-		str.append(CMStrings.padRight(_("Lvl"),4)+" ");
-		str.append(CMStrings.padRight(_("Exp/Lvl"),17));
-		str.append(_("] Character name\n\r"));
+		str.append(CMStrings.padRight(L("Race"),8)+" ");
+		str.append(CMStrings.padRight(L("Class"),10)+" ");
+		str.append(CMStrings.padRight(L("Lvl"),4)+" ");
+		str.append(CMStrings.padRight(L("Exp/Lvl"),17));
+		str.append(L("] Character name\n\r"));
 		for(PlayerLibrary.ThinPlayer tM : players)
 		{
 			final MOB M=CMLib.players().getPlayer(tM.name);

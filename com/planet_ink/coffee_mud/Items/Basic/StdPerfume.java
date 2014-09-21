@@ -77,7 +77,7 @@ public class StdPerfume extends StdDrink implements Perfume
 	{
 		Ability E=mob.fetchEffect("Prop_MOBEmoter");
 		if(E!=null)
-			mob.tell(_("You can't put any perfume on right now."));
+			mob.tell(L("You can't put any perfume on right now."));
 		else
 		{
 			E=CMClass.getAbility("Prop_MOBEmoter");
@@ -104,7 +104,7 @@ public class StdPerfume extends StdDrink implements Perfume
 				return false;
 			if(msg.targetMinor()==CMMsg.TYP_DRINK)
 			{
-				msg.source().tell(_("You don't want to be drinking that."));
+				msg.source().tell(L("You don't want to be drinking that."));
 				return false;
 			}
 			return true;

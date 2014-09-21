@@ -45,25 +45,25 @@ public class Hold extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(_("Hold what?"));
+			mob.tell(L("Hold what?"));
 			return false;
 		}
 		commands.removeElementAt(0);
 		final List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,false);
 		if(items.size()==0)
-			mob.tell(_("You don't seem to be carrying that."));
+			mob.tell(L("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<items.size();i++)
 			if((items.size()==1)||(items.get(i).canWear(mob,Wearable.WORN_HELD)))
 			{
 				final Item item=items.get(i);
 				int msgType=CMMsg.MSG_HOLD;
-				String str=_("<S-NAME> hold(s) <T-NAME>.");
+				String str=L("<S-NAME> hold(s) <T-NAME>.");
 				if((mob.freeWearPositions(Wearable.WORN_WIELD,(short)0,(short)0)>0)
 				&&((item.rawProperLocationBitmap()==Wearable.WORN_WIELD)
 				||(item.rawProperLocationBitmap()==(Wearable.WORN_HELD|Wearable.WORN_WIELD))))
 				{
-					str=_("<S-NAME> wield(s) <T-NAME>.");
+					str=L("<S-NAME> wield(s) <T-NAME>.");
 					msgType=CMMsg.MSG_WIELD;
 				}
 				final CMMsg newMsg=CMClass.getMsg(mob,item,null,msgType,str);

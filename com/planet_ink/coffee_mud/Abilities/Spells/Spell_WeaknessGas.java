@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_WeaknessGas extends Spell
 {
 	@Override public String ID() { return "Spell_WeaknessGas"; }
-	private final static String localizedName = CMLib.lang()._("Weakness to Gas");
+	private final static String localizedName = CMLib.lang().L("Weakness to Gas");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Weakness to Gas)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Weakness to Gas)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -72,7 +72,7 @@ public class Spell_WeaknessGas extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("Your weakness to gasses is now gone."));
+			mob.tell(L("Your weakness to gasses is now gone."));
 
 		super.unInvoke();
 
@@ -96,7 +96,7 @@ public class Spell_WeaknessGas extends Spell
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("A shimmering porous field appears around <T-NAMESELF>."):_("^S<S-NAME> invoke(s) a porous field around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("A shimmering porous field appears around <T-NAMESELF>."):L("^S<S-NAME> invoke(s) a porous field around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -105,7 +105,7 @@ public class Spell_WeaknessGas extends Spell
 			}
 		}
 		else
-			maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to invoke weakness to gas, but fail(s)."));
+			maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to invoke weakness to gas, but fail(s)."));
 
 		return success;
 	}

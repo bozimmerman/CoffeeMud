@@ -44,7 +44,7 @@ public class Sleep extends StdCommand
 	{
 		if(CMLib.flags().isSleeping(mob))
 		{
-			mob.tell(_("You are already asleep!"));
+			mob.tell(L("You are already asleep!"));
 			return false;
 		}
 		final Room R=mob.location();
@@ -52,7 +52,7 @@ public class Sleep extends StdCommand
 			return false;
 		if(commands.size()<=1)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SLEEP,_("<S-NAME> lay(s) down and take(s) a nap."));
+			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SLEEP,L("<S-NAME> lay(s) down and take(s) a nap."));
 			if(R.okMessage(mob,msg))
 				R.send(mob,msg);
 			return false;
@@ -61,14 +61,14 @@ public class Sleep extends StdCommand
 		final Environmental E=R.fetchFromRoomFavorItems(null,possibleRideable);
 		if((E==null)||(!CMLib.flags().canBeSeenBy(E,mob)))
 		{
-			mob.tell(_("You don't see '@x1' here.",possibleRideable));
+			mob.tell(L("You don't see '@x1' here.",possibleRideable));
 			return false;
 		}
 		String mountStr=null;
 		if(E instanceof Rideable)
 			mountStr="<S-NAME> "+((Rideable)E).mountString(CMMsg.TYP_SLEEP,mob)+" <T-NAME>.";
 		else
-			mountStr=_("<S-NAME> sleep(s) on <T-NAME>.");
+			mountStr=L("<S-NAME> sleep(s) on <T-NAME>.");
 		String sourceMountStr=null;
 		if(!CMLib.flags().canBeSeenBy(E,mob))
 			sourceMountStr=mountStr;

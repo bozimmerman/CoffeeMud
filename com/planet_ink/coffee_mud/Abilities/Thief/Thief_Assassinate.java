@@ -36,9 +36,9 @@ import java.util.*;
 public class Thief_Assassinate extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Assassinate"; }
-	private final static String localizedName = CMLib.lang()._("Assassinate");
+	private final static String localizedName = CMLib.lang().L("Assassinate");
 	@Override public String name() { return localizedName; }
-	protected String displayText=_("(Tracking)");
+	protected String displayText=L("(Tracking)");
 	@Override public String displayText(){ return displayText;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -109,21 +109,21 @@ public class Thief_Assassinate extends ThiefSkill
 
 			if(nextDirection==999)
 			{
-				mob.tell(_("The trail seems to pause here."));
+				mob.tell(L("The trail seems to pause here."));
 				nextDirection=-2;
 				unInvoke();
 			}
 			else
 			if(nextDirection==-1)
 			{
-				mob.tell(_("The trail dries up here."));
+				mob.tell(L("The trail dries up here."));
 				nextDirection=-999;
 				unInvoke();
 			}
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell(_("The trail seems to continue @x1.",Directions.getDirectionName(nextDirection)));
+				mob.tell(L("The trail seems to continue @x1.",Directions.getDirectionName(nextDirection)));
 				if(mob.isMonster())
 				{
 					final Room nextRoom=room.getRoomInDir(nextDirection);
@@ -212,7 +212,7 @@ public class Thief_Assassinate extends ThiefSkill
 
 		if((!auto)&&(!CMLib.flags().canBeSeenBy(mob.location(),mob)))
 		{
-			mob.tell(_("You can't see anything to track!"));
+			mob.tell(L("You can't see anything to track!"));
 			return false;
 		}
 
@@ -220,7 +220,7 @@ public class Thief_Assassinate extends ThiefSkill
 		for(final Ability A : V) A.unInvoke();
 		if(V.size()>0)
 		{
-			mob.tell(_("You stop tracking."));
+			mob.tell(L("You stop tracking."));
 			if(commands.size()==0) return true;
 		}
 
@@ -235,7 +235,7 @@ public class Thief_Assassinate extends ThiefSkill
 			if(A!=null) tracking=A.mark;
 			if(tracking==null)
 			{
-				mob.tell(_("You'll need to Mark someone first."));
+				mob.tell(L("You'll need to Mark someone first."));
 				return false;
 			}
 		}
@@ -249,7 +249,7 @@ public class Thief_Assassinate extends ThiefSkill
 				tracking=(MOB)givenTarget;
 			if(mobName.length()==0)
 			{
-				mob.tell(_("Assassinate whom?"));
+				mob.tell(L("Assassinate whom?"));
 				return false;
 			}
 			final MOB M=((givenTarget instanceof MOB)&&(((MOB)givenTarget).location()==mob.location()))?
@@ -318,14 +318,14 @@ public class Thief_Assassinate extends ThiefSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,tracking,this,CMMsg.MSG_THIEF_ACT,mob.isMonster()?null:_("<S-NAME> begin(s) to track <T-NAMESELF> for assassination."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			final CMMsg msg=CMClass.getMsg(mob,tracking,this,CMMsg.MSG_THIEF_ACT,mob.isMonster()?null:L("<S-NAME> begin(s) to track <T-NAMESELF> for assassination."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if((mob.location().okMessage(mob,msg))
 			&&(tracking.okMessage(tracking,msg)))
 			{
 				mob.location().send(mob,msg);
 				tracking.executeMsg(tracking,msg);
 				invoker=mob;
-				displayText=_("(tracking @x1)",tracking.name());
+				displayText=L("(tracking @x1)",tracking.name());
 				final Thief_Assassinate newOne=(Thief_Assassinate)this.copyOf();
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
@@ -334,7 +334,7 @@ public class Thief_Assassinate extends ThiefSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,tracking,_("<S-NAME> attempt(s) to track <T-NAMESELF> for assassination, but fail(s)."));
+			return beneficialVisualFizzle(mob,tracking,L("<S-NAME> attempt(s) to track <T-NAMESELF> for assassination, but fail(s)."));
 
 
 		// return whether it worked

@@ -37,7 +37,7 @@ import java.util.*;
 public class Chant_SensePregnancy extends Chant
 {
 	@Override public String ID() { return "Chant_SensePregnancy"; }
-	private final static String localizedName = CMLib.lang()._("Sense Pregnancy");
+	private final static String localizedName = CMLib.lang().L("Sense Pregnancy");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
@@ -60,24 +60,24 @@ public class Chant_SensePregnancy extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) over <T-YOUPOSS> stomach.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) over <T-YOUPOSS> stomach.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final Ability A=target.fetchEffect("Pregnancy");
 				if((A==null)||(A.displayText().length()==0))
-					mob.tell(_("@x1 is not pregnant.",target.name(mob)));
+					mob.tell(L("@x1 is not pregnant.",target.name(mob)));
 				else
 				{
 					String s=A.displayText();
 					if(s.startsWith("(")) s=s.substring(1);
 					if(s.endsWith(")")) s=s.substring(0,s.length()-1);
-					mob.tell(_("@x1 is @x2.",target.name(mob),s));
+					mob.tell(L("@x1 is @x2.",target.name(mob),s));
 				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) over <T-YOUPOSS> stomach, but the magic fades."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) over <T-YOUPOSS> stomach, but the magic fades."));
 
 		// return whether it worked
 		return success;

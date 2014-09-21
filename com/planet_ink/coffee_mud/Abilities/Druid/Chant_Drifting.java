@@ -37,9 +37,9 @@ import java.util.*;
 public class Chant_Drifting extends Chant
 {
 	@Override public String ID() { return "Chant_Drifting"; }
-	private final static String localizedName = CMLib.lang()._("Drifting");
+	private final static String localizedName = CMLib.lang().L("Drifting");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Drifting)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Drifting)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
@@ -62,7 +62,7 @@ public class Chant_Drifting extends Chant
 			if((msg.sourceMinor()==CMMsg.TYP_ADVANCE)
 			||(msg.sourceMinor()==CMMsg.TYP_RETREAT))
 			{
-				mob.tell(_("You can't seem to drift accurately enough to advance or retreat!"));
+				mob.tell(L("You can't seem to drift accurately enough to advance or retreat!"));
 				return false;
 			}
 			else
@@ -73,7 +73,7 @@ public class Chant_Drifting extends Chant
 			&&((mob.location().getRoomInDir(Directions.UP)==msg.target())
 			   ||(mob.location().getRoomInDir(Directions.DOWN)==msg.target())))
 			{
-				mob.tell(_("You can not seem to direct your flying that way."));
+				mob.tell(L("You can not seem to direct your flying that way."));
 				return false;
 			}
 		}
@@ -125,7 +125,7 @@ public class Chant_Drifting extends Chant
 		{
 			final Ability A=mob.fetchEffect("Falling");
 			if(A!=null) A.unInvoke();
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> float(s) back down."));
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> float(s) back down."));
 			CMLib.commands().postStand(mob,true);
 		}
 	}
@@ -138,7 +138,7 @@ public class Chant_Drifting extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already @x1.",name()));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already @x1.",name()));
 			return false;
 		}
 
@@ -153,19 +153,19 @@ public class Chant_Drifting extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) <S-HIM-HERSELF> off the ground.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) <S-HIM-HERSELF> off the ground.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
 					success=beneficialAffect(mob,target,asLevel,0);
-					target.location().show(target,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> start(s) drifting up!"));
+					target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> start(s) drifting up!"));
 				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> chant(s), but fail(s) to leave the ground."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s), but fail(s) to leave the ground."));
 		// return whether it worked
 		return success;
 	}

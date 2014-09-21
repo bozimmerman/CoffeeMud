@@ -70,16 +70,16 @@ public class NoChannel extends StdCommand
 		if((channelNum<0)
 		||(!CMLib.masking().maskCheck(CMLib.channels().getChannel(channelNum).mask,mob,true)))
 		{
-			mob.tell(_("This channel is not available to you."));
+			mob.tell(L("This channel is not available to you."));
 			return false;
 		}
 		if(!CMath.isSet(pstats.getChannelMask(),channelNum))
 		{
 			pstats.setChannelMask(pstats.getChannelMask()|(1<<channelNum));
-			mob.tell(_("The @x1 channel has been turned off.  Use `@x2` to turn it back on.",channelName,channelName.toUpperCase()));
+			mob.tell(L("The @x1 channel has been turned off.  Use `@x2` to turn it back on.",channelName,channelName.toUpperCase()));
 		}
 		else
-			mob.tell(_("The @x1 channel is already off.",channelName));
+			mob.tell(L("The @x1 channel is already off.",channelName));
 		return false;
 	}
 

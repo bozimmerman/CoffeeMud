@@ -36,9 +36,9 @@ import java.util.*;
 public class Spell_SummonSteed extends Spell
 {
 	@Override public String ID() { return "Spell_SummonSteed"; }
-	private final static String localizedName = CMLib.lang()._("Summon Steed");
+	private final static String localizedName = CMLib.lang().L("Summon Steed");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Summon Steed)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Summon Steed)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -84,7 +84,7 @@ public class Spell_SummonSteed extends Spell
 				&&(mob.location()!=null)
 				&&(mob.curState().getHitPoints()<((mob.maxState().getHitPoints()/10)*3)))
 				{
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,_("<S-NAME> flees."));
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> flees."));
 					mob.delEffect(this);
 					if(mob.amDead()) mob.setLocation(null);
 					mob.destroy();
@@ -119,7 +119,7 @@ public class Spell_SummonSteed extends Spell
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":_("^S<S-NAME> call(s) for a loyal steed.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> call(s) for a loyal steed.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -132,18 +132,18 @@ public class Spell_SummonSteed extends Spell
 					CMLib.commands().postFollow(target,mob,true);
 					invoker=mob;
 					if (target.amFollowing() != mob)
-						mob.tell(_("@x1 seems unwilling to follow you.",target.name(mob)));
+						mob.tell(L("@x1 seems unwilling to follow you.",target.name(mob)));
 				}
 				else
 				if(squabble.location()!=null)
 				{
-					squabble.location().showOthers(squabble,target,CMMsg.MSG_OK_ACTION,_("^F^<FIGHT^><S-NAME> bares its teeth at <T-NAME> and begins to attack!^</FIGHT^>^?"));
+					squabble.location().showOthers(squabble,target,CMMsg.MSG_OK_ACTION,L("^F^<FIGHT^><S-NAME> bares its teeth at <T-NAME> and begins to attack!^</FIGHT^>^?"));
 					target.setVictim(squabble);
 				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> call(s) for a loyal steed, but choke(s) on the words."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> call(s) for a loyal steed, but choke(s) on the words."));
 
 		// return whether it worked
 		return success;
@@ -162,33 +162,33 @@ public class Spell_SummonSteed extends Spell
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		if(level<4)
 		{
-			newMOB.setName(_("a pony"));
-			newMOB.setDisplayText(_("a very pretty pony stands here"));
-			newMOB.setDescription(_("She looks loyal, and oh so pretty."));
+			newMOB.setName(L("a pony"));
+			newMOB.setDisplayText(L("a very pretty pony stands here"));
+			newMOB.setDescription(L("She looks loyal, and oh so pretty."));
 			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'F');
 			ride.setRiderCapacity(1);
 		}
 		else
 		if(level<10)
 		{
-			newMOB.setName(_("a pack horse"));
-			newMOB.setDisplayText(_("a sturdy pack horse stands here"));
-			newMOB.setDescription(_("A strong and loyal beast, who looks like he`s seen his share of work."));
+			newMOB.setName(L("a pack horse"));
+			newMOB.setDisplayText(L("a sturdy pack horse stands here"));
+			newMOB.setDescription(L("A strong and loyal beast, who looks like he`s seen his share of work."));
 			ride.setRiderCapacity(2);
 		}
 		else
 		if(level<18)
 		{
-			newMOB.setName(_("a riding horse"));
-			newMOB.setDisplayText(_("a loyal riding horse stands here"));
-			newMOB.setDescription(_("A proud and noble companion; brown hair with a long black mane."));
+			newMOB.setName(L("a riding horse"));
+			newMOB.setDisplayText(L("a loyal riding horse stands here"));
+			newMOB.setDescription(L("A proud and noble companion; brown hair with a long black mane."));
 			ride.setRiderCapacity(2);
 		}
 		else
 		{
-			newMOB.setName(_("a warhorse"));
-			newMOB.setDisplayText(_("a mighty warhorse stands here"));
-			newMOB.setDescription(_("Ferocious, fleet of foot, and strong, a best of breed!"));
+			newMOB.setName(L("a warhorse"));
+			newMOB.setDisplayText(L("a mighty warhorse stands here"));
+			newMOB.setDescription(L("Ferocious, fleet of foot, and strong, a best of breed!"));
 			ride.setRiderCapacity(3);
 		}
 		newMOB.recoverPhyStats();
@@ -206,7 +206,7 @@ public class Spell_SummonSteed extends Spell
 		newMOB.text();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,_("<S-NAME> appears!"));
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 		caster.location().recoverRoomStats();
 		newMOB.setStartRoom(null);
 		return(newMOB);

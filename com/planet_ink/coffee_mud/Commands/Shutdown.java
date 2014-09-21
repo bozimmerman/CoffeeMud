@@ -54,7 +54,7 @@ public class Shutdown extends StdCommand implements Tickable
 		else
 			tm=" in "+tm;
 		for(final Session S : CMLib.sessions().allIterable())
-		  S.colorOnlyPrintln(_("\n\r\n\r^Z@x1 will be @x2@x3^.^?\n\r",CMProps.getVar(CMProps.Str.MUDNAME),(keepItDown?"shutting down":"restarting"),tm));
+		  S.colorOnlyPrintln(L("\n\r\n\r^Z@x1 will be @x2@x3^.^?\n\r",CMProps.getVar(CMProps.Str.MUDNAME),(keepItDown?"shutting down":"restarting"),tm));
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class Shutdown extends StdCommand implements Tickable
 			{
 				if(shuttingDownMob==null)
 				{
-					mob.tell(_("Either no shutdown has been scheduled or is already underway and can't be cancelled."));
+					mob.tell(L("Either no shutdown has been scheduled or is already underway and can't be cancelled."));
 					return false;
 				}
 				shuttingDownMob=null;
@@ -96,10 +96,10 @@ public class Shutdown extends StdCommand implements Tickable
 				final long timeMultiplier=CMLib.english().getMillisMultiplierByName(multiplier);
 				if((timeMultiplier<0)||(wait<=0))
 				{
-				   mob.tell(_("I don't know how to shutdown within the next @x1 @x2; try `5 minutes` or something similar.",""+wait,multiplier));
+				   mob.tell(L("I don't know how to shutdown within the next @x1 @x2; try `5 minutes` or something similar.",""+wait,multiplier));
 				   return false;
 				}
-				if((!mob.session().confirm(_("Shutdown @x1 in @x2 @x3 (y/N)?",CMProps.getVar(CMProps.Str.MUDNAME),""+wait,multiplier.toLowerCase()),_("N"))))
+				if((!mob.session().confirm(L("Shutdown @x1 in @x2 @x3 (y/N)?",CMProps.getVar(CMProps.Str.MUDNAME),""+wait,multiplier.toLowerCase()),L("N"))))
 				   return false;
 				shuttingDownCompletes=System.currentTimeMillis()+(wait * timeMultiplier)-1;
 				shuttingDownNextAnnounce=System.currentTimeMillis() + ((wait * timeMultiplier)/2)-100;
@@ -113,7 +113,7 @@ public class Shutdown extends StdCommand implements Tickable
 			externalCommand=CMParms.combine(commands,1);
 
 		if((!noPrompt)
-		&&(!mob.session().confirm(_("Shutdown @x1 (y/N)?",CMProps.getVar(CMProps.Str.MUDNAME)),_("N"))))
+		&&(!mob.session().confirm(L("Shutdown @x1 (y/N)?",CMProps.getVar(CMProps.Str.MUDNAME)),L("N"))))
 			return false;
 		shuttingDownMob=null;
 		this.externalCommand=externalCommand;
@@ -134,7 +134,7 @@ public class Shutdown extends StdCommand implements Tickable
 			public void run()
 			{
 				for(final Session S : CMLib.sessions().allIterable())
-					S.colorOnlyPrintln(_("\n\r\n\r^Z@x1 is now @x2!^.^?\n\r",CMProps.getVar(CMProps.Str.MUDNAME),(keepItDown?"shutting down":"restarting")));
+					S.colorOnlyPrintln(L("\n\r\n\r^Z@x1 is now @x2!^.^?\n\r",CMProps.getVar(CMProps.Str.MUDNAME),(keepItDown?"shutting down":"restarting")));
 				if(keepItDown)
 					Log.errOut("CommandProcessor",mob.Name()+" starts system shutdown...");
 				else
@@ -142,7 +142,7 @@ public class Shutdown extends StdCommand implements Tickable
 					Log.errOut("CommandProcessor",mob.Name()+" starts system restarting '"+externalCommand+"'...");
 				else
 					Log.errOut("CommandProcessor",mob.Name()+" starts system restart...");
-				mob.tell(_("Starting @x1...",(keepItDown?"shutdown":"restart")));
+				mob.tell(L("Starting @x1...",(keepItDown?"shutdown":"restart")));
 				com.planet_ink.coffee_mud.application.MUD.globalShutdown(mob.session(),keepItDown,externalCommand);
 			}
 		}.start();

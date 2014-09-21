@@ -35,7 +35,7 @@ import java.util.*;
 public class Thief_RunningFight extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_RunningFight"; }
-	private final static String localizedName = CMLib.lang()._("Running Fight");
+	private final static String localizedName = CMLib.lang().L("Running Fight");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -87,7 +87,7 @@ public class Thief_RunningFight extends ThiefSkill
 			final MOB M=mob.getVictim();
 			if((M==null)||(M.getVictim()!=mob))
 			{
-				mob.tell(M,null,null,_("<S-NAME> is not fighting you!"));
+				mob.tell(M,null,null,L("<S-NAME> is not fighting you!"));
 				return false;
 			}
 			int dir=-1;

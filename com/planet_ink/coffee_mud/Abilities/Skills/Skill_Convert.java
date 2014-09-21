@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_Convert extends StdSkill
 {
 	@Override public String ID() { return "Skill_Convert"; }
-	private final static String localizedName = CMLib.lang()._("Convert");
+	private final static String localizedName = CMLib.lang().L("Convert");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -62,7 +62,7 @@ public class Skill_Convert extends StdSkill
 		if(canBeUninvoked())
 		{
 			if(text().length()>0)
-				mob.tell(_("You start to have doubts about @x1.",text()));
+				mob.tell(L("You start to have doubts about @x1.",text()));
 			mob.setWorshipCharID(priorFaith);
 		}
 	}
@@ -80,9 +80,9 @@ public class Skill_Convert extends StdSkill
 	{
 		if(commands.size()==0)
 		{
-			mob.tell(_("You must specify either a deity to convert yourself to, or a player to convert to your religion."));
+			mob.tell(L("You must specify either a deity to convert yourself to, or a player to convert to your religion."));
 			if(mob.isMonster())
-				CMLib.commands().postSay(mob,null,_("I am unable to convert."),false,false);
+				CMLib.commands().postSay(mob,null,L("I am unable to convert."),false,false);
 			return false;
 		}
 
@@ -94,32 +94,32 @@ public class Skill_Convert extends StdSkill
 			target=getTarget(mob,commands,givenTarget,false,true);
 			if(target==null)
 			{
-				mob.tell(_("You've also never heard of a deity called '@x1'.",CMParms.combine(commands,0)));
+				mob.tell(L("You've also never heard of a deity called '@x1'.",CMParms.combine(commands,0)));
 				if(mob.isMonster())
-					CMLib.commands().postSay(mob,target,_("I've never heard of '@x1'.",CMParms.combine(commands,0)),false,false);
+					CMLib.commands().postSay(mob,target,L("I've never heard of '@x1'.",CMParms.combine(commands,0)),false,false);
 				return false;
 			}
 			if(D==null)
 			{
-				mob.tell(_("A faithless one cannot convert @x1.",target.name(mob)));
+				mob.tell(L("A faithless one cannot convert @x1.",target.name(mob)));
 				if(mob.isMonster())
-					CMLib.commands().postSay(mob,target,_("I am faithless, and can not convert you."),false,false);
+					CMLib.commands().postSay(mob,target,L("I am faithless, and can not convert you."),false,false);
 				return false;
 			}
 		}
 		if((CMLib.flags().isAnimalIntelligence(target))
 		||((target.isMonster())&&(target.phyStats().level()>mob.phyStats().level())))
 		{
-			mob.tell(_("You can't convert @x1.",target.name(mob)));
+			mob.tell(L("You can't convert @x1.",target.name(mob)));
 			if(mob.isMonster())
-				CMLib.commands().postSay(mob,target,_("I can not convert you."),false,false);
+				CMLib.commands().postSay(mob,target,L("I can not convert you."),false,false);
 			return false;
 		}
 		if(target.getMyDeity()==D)
 		{
-			mob.tell(_("@x1 already worships @x2.",target.name(mob),D.name()));
+			mob.tell(L("@x1 already worships @x2.",target.name(mob),D.name()));
 			if(mob.isMonster())
-				CMLib.commands().postSay(mob,target,_("You already worship @x1.",D.Name()),false,false);
+				CMLib.commands().postSay(mob,target,L("You already worship @x1.",D.Name()),false,false);
 			return false;
 		}
 		if(!auto)
@@ -132,9 +132,9 @@ public class Skill_Convert extends StdSkill
 			}
 			if(convertStack.containsFirst(target))
 			{
-				mob.tell(_("@x1 must wait to be converted again.",target.name(mob)));
+				mob.tell(L("@x1 must wait to be converted again.",target.name(mob)));
 				if(mob.isMonster())
-					CMLib.commands().postSay(mob,target,_("You must wait to be converted again."),false,false);
+					CMLib.commands().postSay(mob,target,L("You must wait to be converted again."),false,false);
 				return false;
 			}
 		}
@@ -144,18 +144,18 @@ public class Skill_Convert extends StdSkill
 		if(CMSecurity.isASysOp(mob)) targetMadeSave=false;
 		if((!target.isMonster())&&(success)&&(targetMadeSave)&&(target.getMyDeity()!=null))
 		{
-			mob.tell(_("@x1 is worshipping @x2.  @x3 must REBUKE @x4 first.",target.name(mob),target.getMyDeity().name(),target.charStats().HeShe(),target.getMyDeity().charStats().himher()));
+			mob.tell(L("@x1 is worshipping @x2.  @x3 must REBUKE @x4 first.",target.name(mob),target.getMyDeity().name(),target.charStats().HeShe(),target.getMyDeity().charStats().himher()));
 			if(mob.isMonster())
-				CMLib.commands().postSay(mob,target,_("You already worship @x1.",target.getMyDeity().Name()),false,false);
+				CMLib.commands().postSay(mob,target,L("You already worship @x1.",target.getMyDeity().Name()),false,false);
 			return false;
 		}
 		if((success)&&(targetMadeSave)&&(!target.isMonster())&&(target!=mob))
 		{
 			try
 			{
-				if(!target.session().confirm(_("\n\r@x1 is trying to convert you to the worship of @x2.  Is this what you want (N/y)?",mob.name(target),D.name()),_("N")))
+				if(!target.session().confirm(L("\n\r@x1 is trying to convert you to the worship of @x2.  Is this what you want (N/y)?",mob.name(target),D.name()),L("N")))
 				{
-					mob.location().show(mob,target,CMMsg.MSG_SPEAK,_("<S-YOUPOSS> attempt to convert <T-NAME> to the worship of @x1 is rejected.",D.name()));
+					mob.location().show(mob,target,CMMsg.MSG_SPEAK,L("<S-YOUPOSS> attempt to convert <T-NAME> to the worship of @x1 is rejected.",D.name()));
 					return false;
 				}
 				targetMadeSave=!success;
@@ -183,7 +183,7 @@ public class Skill_Convert extends StdSkill
 					if(dRoom!=null) dRoom.send(target,msg2);
 				}
 			}
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,auto?_("<T-NAME> <T-IS-ARE> converted!"):_("<S-NAME> convert(s) <T-NAMESELF> to the worship of @x1.",D.name()));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,auto?L("<T-NAME> <T-IS-ARE> converted!"):L("<S-NAME> convert(s) <T-NAMESELF> to the worship of @x1.",D.name()));
 			final CMMsg msg2=CMClass.getMsg(target,D,this,CMMsg.MSG_SERVE,null);
 			if((mob.location().okMessage(mob,msg))
 			   &&(mob.location().okMessage(mob,msg2))
@@ -216,7 +216,7 @@ public class Skill_Convert extends StdSkill
 				if(A!=null) A.invoke(mob,target,true,asLevel);
 			}
 			else
-				beneficialWordsFizzle(mob,target,_("<S-NAME> attempt(s) to convert <T-NAMESELF>, but <S-IS-ARE> unconvincing."));
+				beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to convert <T-NAMESELF>, but <S-IS-ARE> unconvincing."));
 		}
 
 		// return whether it worked

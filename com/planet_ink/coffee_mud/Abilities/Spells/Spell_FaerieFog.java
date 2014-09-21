@@ -37,9 +37,9 @@ import java.util.*;
 public class Spell_FaerieFog extends Spell
 {
 	@Override public String ID() { return "Spell_FaerieFog"; }
-	private final static String localizedName = CMLib.lang()._("Faerie Fog");
+	private final static String localizedName = CMLib.lang().L("Faerie Fog");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Faerie Fog)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Faerie Fog)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
@@ -58,7 +58,7 @@ public class Spell_FaerieFog extends Spell
 		if(canBeUninvoked())
 		{
 			final Room room=(Room)affected;
-			room.showHappens(CMMsg.MSG_OK_VISUAL, _("The faerie fog starts to clear out."));
+			room.showHappens(CMMsg.MSG_OK_VISUAL, L("The faerie fog starts to clear out."));
 		}
 		super.unInvoke();
 	}
@@ -141,7 +141,7 @@ public class Spell_FaerieFog extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(mob,null,null,_("A faerie fog is already here."));
+			mob.tell(mob,null,null,L("A faerie fog is already here."));
 			return false;
 		}
 
@@ -155,7 +155,7 @@ public class Spell_FaerieFog extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),_((auto?"A ":"^S<S-NAME> speak(s) and gesture(s) and a ")+"sparkling fog envelopes the area.^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),L((auto?"A ":"^S<S-NAME> speak(s) and gesture(s) and a ")+"sparkling fog envelopes the area.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -163,7 +163,7 @@ public class Spell_FaerieFog extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,_("<S-NAME> mutter(s) about a faerie fog, but the spell fizzles."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> mutter(s) about a faerie fog, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

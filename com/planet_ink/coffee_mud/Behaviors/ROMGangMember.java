@@ -82,25 +82,25 @@ public class ROMGangMember extends StdBehavior
 		switch (CMLib.dice().roll(1,7,-1))
 		{
 		case 0:
-			observer.location().show(observer,null,CMMsg.MSG_SPEAK,_("^T<S-NAME> yell(s) 'I've been looking for you, punk!'^?"));
+			observer.location().show(observer,null,CMMsg.MSG_SPEAK,L("^T<S-NAME> yell(s) 'I've been looking for you, punk!'^?"));
 			break;
 		case 1:
-			observer.location().show(observer,victim,CMMsg.MSG_NOISYMOVEMENT,_("With a scream of rage, <S-NAME> attack(s) <T-NAME>."));
+			observer.location().show(observer,victim,CMMsg.MSG_NOISYMOVEMENT,L("With a scream of rage, <S-NAME> attack(s) <T-NAME>."));
 			break;
 		case 2:
-			observer.location().show(observer,victim,CMMsg.MSG_SPEAK,_("^T<S-NAME> say(s) 'What's slimy @x1 trash like you doing around here?'^?",vicParms));
+			observer.location().show(observer,victim,CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) 'What's slimy @x1 trash like you doing around here?'^?",vicParms));
 			break;
 		case 3:
-			observer.location().show(observer,victim,CMMsg.MSG_SPEAK,_("^T<S-NAME> crack(s) <S-HIS-HER> knuckles and say(s) 'Do ya feel lucky?'^?"));
+			observer.location().show(observer,victim,CMMsg.MSG_SPEAK,L("^T<S-NAME> crack(s) <S-HIS-HER> knuckles and say(s) 'Do ya feel lucky?'^?"));
 			break;
 		case 4:
-			observer.location().show(observer,victim,CMMsg.MSG_SPEAK,_("^T<S-NAME> say(s) 'There's no cops to save you this time!'^?"));
+			observer.location().show(observer,victim,CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) 'There's no cops to save you this time!'^?"));
 			break;
 		case 5:
-			observer.location().show(observer,victim,CMMsg.MSG_SPEAK,_("^T<S-NAME> say(s) 'Time to join your brother, spud.'^?"));
+			observer.location().show(observer,victim,CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) 'Time to join your brother, spud.'^?"));
 			break;
 		case 6:
-			observer.location().show(observer,victim,CMMsg.MSG_SPEAK,_("^T<S-NAME> say(s) 'Let's rock.'^?"));
+			observer.location().show(observer,victim,CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) 'Let's rock.'^?"));
 			break;
 		}
 

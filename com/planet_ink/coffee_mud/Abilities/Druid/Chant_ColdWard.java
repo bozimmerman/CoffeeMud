@@ -38,9 +38,9 @@ import java.util.Vector;
 public class Chant_ColdWard extends Chant
 {
 	@Override public String ID() { return "Chant_ColdWard"; }
-	private final static String localizedName = CMLib.lang()._("Cold Ward");
+	private final static String localizedName = CMLib.lang().L("Cold Ward");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Cold Ward)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Cold Ward)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
@@ -54,7 +54,7 @@ public class Chant_ColdWard extends Chant
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell(_("Your warm protection cools."));
+			mob.tell(L("Your warm protection cools."));
 
 		super.unInvoke();
 
@@ -75,7 +75,7 @@ public class Chant_ColdWard extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,_("<S-NAME> <S-IS-ARE> already warding the cold."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already warding the cold."));
 			return false;
 		}
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -87,7 +87,7 @@ public class Chant_ColdWard extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":_("^S<S-NAME> chant(s) for a warm field of protection around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) for a warm field of protection around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -95,7 +95,7 @@ public class Chant_ColdWard extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,_("<S-NAME> chant(s) for warmth, but fail(s)."));
+			beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) for warmth, but fail(s)."));
 
 		return success;
 	}

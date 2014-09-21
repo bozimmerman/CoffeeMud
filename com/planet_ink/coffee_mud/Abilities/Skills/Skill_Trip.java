@@ -37,9 +37,9 @@ public class Skill_Trip extends StdSkill
 {
 	boolean doneTicking=false;
 	@Override public String ID() { return "Skill_Trip"; }
-	private final static String localizedName = CMLib.lang()._("Trip");
+	private final static String localizedName = CMLib.lang().L("Trip");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Tripped)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Tripped)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
@@ -89,7 +89,7 @@ public class Skill_Trip extends StdSkill
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,_("<S-NAME> regain(s) <S-HIS-HER> feet."));
+				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> regain(s) <S-HIS-HER> feet."));
 				if(mob.location().okMessage(mob,msg)&&(!mob.amDead()))
 				{
 					mob.location().send(mob,msg);
@@ -97,7 +97,7 @@ public class Skill_Trip extends StdSkill
 				}
 			}
 			else
-				mob.tell(_("You regain your feet."));
+				mob.tell(L("You regain your feet."));
 		}
 	}
 
@@ -128,33 +128,33 @@ public class Skill_Trip extends StdSkill
 
 		if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
 		{
-			mob.tell(target,null,null,_("<S-NAME> is already on the floor!"));
+			mob.tell(target,null,null,L("<S-NAME> is already on the floor!"));
 			return false;
 		}
 
 		if((!CMLib.flags().aliveAwakeMobile(mob,true)||(CMLib.flags().isSitting(mob))))
 		{
-			mob.tell(_("You need to stand up!"));
+			mob.tell(L("You need to stand up!"));
 			return false;
 		}
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell(_("You are too far away to trip!"));
+			mob.tell(L("You are too far away to trip!"));
 			return false;
 		}
 		if((mob.charStats().getBodyPart(Race.BODY_LEG)<=0)&&(mob.charStats().getBodyPart(Race.BODY_TAIL)<=0))
 		{
-			mob.tell(_("You need legs or a tail to trip someone."));
+			mob.tell(L("You need legs or a tail to trip someone."));
 			return false;
 		}
 		if(target.riding()!=null)
 		{
-			mob.tell(_("You can't trip someone @x1 @x2!",target.riding().stateString(target),target.riding().name()));
+			mob.tell(L("You can't trip someone @x1 @x2!",target.riding().stateString(target),target.riding().name()));
 			return false;
 		}
 		if(CMLib.flags().isInFlight(target))
 		{
-			mob.tell(_("@x1 is flying and can't be tripped!",target.name(mob)));
+			mob.tell(L("@x1 is flying and can't be tripped!",target.name(mob)));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -171,7 +171,7 @@ public class Skill_Trip extends StdSkill
 		success=success&&(target.charStats().getBodyPart(Race.BODY_LEG)>0);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?_("<T-NAME> trip(s)!"):_("^F^<FIGHT^><S-NAME> trip(s) <T-NAMESELF>!^</FIGHT^>^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?L("<T-NAME> trip(s)!"):L("^F^<FIGHT^><S-NAME> trip(s) <T-NAMESELF>!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -179,12 +179,12 @@ public class Skill_Trip extends StdSkill
 				if(msg.value()<=0)
 				{
 					maliciousAffect(mob,target,asLevel,2,-1);
-					target.tell(_("You hit the floor!"));
+					target.tell(L("You hit the floor!"));
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to trip <T-NAMESELF>, but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to trip <T-NAMESELF>, but fail(s)."));
 		return success;
 	}
 }

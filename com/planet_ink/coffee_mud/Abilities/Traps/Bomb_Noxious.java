@@ -35,7 +35,7 @@ import java.util.*;
 public class Bomb_Noxious extends StdBomb
 {
 	@Override public String ID() { return "Bomb_Noxious"; }
-	private final static String localizedName = CMLib.lang()._("stink bomb");
+	private final static String localizedName = CMLib.lang().L("stink bomb");
 	@Override public String name() { return localizedName; }
 	@Override protected int trapLevel(){return 12;}
 	@Override public String requiresToSet(){return "an egg";}
@@ -55,7 +55,7 @@ public class Bomb_Noxious extends StdBomb
 		||(((Item)P).material()!=RawMaterial.RESOURCE_EGGS))
 		{
 			if(mob!=null)
-				mob.tell(_("You an egg to make this out of."));
+				mob.tell(L("You an egg to make this out of."));
 			return false;
 		}
 		return true;
@@ -70,9 +70,9 @@ public class Bomb_Noxious extends StdBomb
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(doesSaveVsTraps(target)))
-				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("<S-NAME> avoid(s) the stink bomb!"));
+				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) the stink bomb!"));
 			else
-			if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,_("@x1 explodes stink into <T-YOUPOSS> eyes!",affected.name())))
+			if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("@x1 explodes stink into <T-YOUPOSS> eyes!",affected.name())))
 			{
 				super.spring(target);
 				Ability A=CMClass.getAbility("Spell_StinkingCloud");

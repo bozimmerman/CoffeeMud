@@ -102,25 +102,25 @@ public class ItemMender extends StdBehavior
 			final Item tool=(Item)msg.tool();
 			if(!tool.subjectToWearAndTear())
 			{
-				CMLib.commands().postSay(observer,source,_("I'm sorry, I can't work on these."),true,false);
+				CMLib.commands().postSay(observer,source,L("I'm sorry, I can't work on these."),true,false);
 				return false;
 			}
 			else
 			if(tool.usesRemaining()>100)
 			{
-				CMLib.commands().postSay(observer,source,_("Take this thing away from me.  It's so perfect, it's scary."),true,false);
+				CMLib.commands().postSay(observer,source,L("Take this thing away from me.  It's so perfect, it's scary."),true,false);
 				return false;
 			}
 			else
 			if(tool.usesRemaining()==100)
 			{
-				CMLib.commands().postSay(observer,source,_("@x1 doesn't require repair.",tool.name()),true,false);
+				CMLib.commands().postSay(observer,source,L("@x1 doesn't require repair.",tool.name()),true,false);
 				return false;
 			}
 			if(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),observer)<(cost))
 			{
 				final String costStr=CMLib.beanCounter().nameCurrencyShort(observer,cost);
-				CMLib.commands().postSay(observer,source,_("You'll need @x1 for me to repair that.",costStr),true,false);
+				CMLib.commands().postSay(observer,source,L("You'll need @x1 for me to repair that.",costStr),true,false);
 				return false;
 			}
 			return true;
@@ -150,9 +150,9 @@ public class ItemMender extends StdBehavior
 			final String costStr=CMLib.beanCounter().nameCurrencyLong(observer,cost);
 			source.recoverPhyStats();
 			((Item)msg.tool()).setUsesRemaining(100);
-			CMMsg newMsg=CMClass.getMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,_("<S-NAME> give(s) <O-NAME> to <T-NAMESELF> and charges <T-NAMESELF> @x1.",costStr));
+			CMMsg newMsg=CMClass.getMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,L("<S-NAME> give(s) <O-NAME> to <T-NAMESELF> and charges <T-NAMESELF> @x1.",costStr));
 			msg.addTrailerMsg(newMsg);
-			newMsg=CMClass.getMsg(observer,source,null,CMMsg.MSG_SPEAK,_("^T<S-NAME> say(s) 'There she is, good as new!  Thanks for your business' to <T-NAMESELF>.^?"));
+			newMsg=CMClass.getMsg(observer,source,null,CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) 'There she is, good as new!  Thanks for your business' to <T-NAMESELF>.^?"));
 			msg.addTrailerMsg(newMsg);
 			newMsg=CMClass.getMsg(observer,msg.tool(),null,CMMsg.MSG_DROP,null);
 			msg.addTrailerMsg(newMsg);

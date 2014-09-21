@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_Flay extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Flay"; }
-	private final static String localizedName = CMLib.lang()._("Flay");
+	private final static String localizedName = CMLib.lang().L("Flay");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -59,7 +59,7 @@ public class Thief_Flay extends ThiefSkill
 		&&((CMath.bset(((Item)msg.target()).rawProperLocationBitmap(),Wearable.WORN_BACK))
 		||(CMath.bset(((Item)msg.target()).rawProperLocationBitmap(),Wearable.WORN_TORSO))))
 		{
-			msg.source().tell(_("The flayed marks on your back make wearing that too painful."));
+			msg.source().tell(L("The flayed marks on your back make wearing that too painful."));
 			return false;
 		}
 		return true;
@@ -90,7 +90,7 @@ public class Thief_Flay extends ThiefSkill
 	{
 		if(mob.isInCombat())
 		{
-			mob.tell(_("Not while in combat!"));
+			mob.tell(L("Not while in combat!"));
 			return false;
 		}
 		final MOB target=getTarget(mob,commands,givenTarget);
@@ -98,14 +98,14 @@ public class Thief_Flay extends ThiefSkill
 
 		if(CMLib.flags().isSitting(mob))
 		{
-			mob.tell(_("You need to stand up!"));
+			mob.tell(L("You need to stand up!"));
 			return false;
 		}
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
 			return false;
 		if((!auto)&&(!CMLib.flags().isBoundOrHeld(target))&&(!CMLib.flags().isSleeping(target)))
 		{
-			mob.tell(_("@x1 must be prone or bound first.",target.name(mob)));
+			mob.tell(L("@x1 must be prone or bound first.",target.name(mob)));
 			return false;
 		}
 		for(int i=0;i<target.numItems();i++)
@@ -113,7 +113,7 @@ public class Thief_Flay extends ThiefSkill
 			final Item I=target.getItem(i);
 			if((I!=null)&&((I.amWearingAt(Wearable.WORN_BACK))||(I.amWearingAt(Wearable.WORN_TORSO))))
 			{
-				mob.tell(_("@x1 must be remove items worn on the torso or back first.",target.name(mob)));
+				mob.tell(L("@x1 must be remove items worn on the torso or back first.",target.name(mob)));
 				return false;
 			}
 		}
@@ -124,23 +124,23 @@ public class Thief_Flay extends ThiefSkill
 		{
 			if((w==null)||(!(w instanceof Weapon)))
 			{
-				mob.tell(_("You cannot flay without a weapon!"));
+				mob.tell(L("You cannot flay without a weapon!"));
 				return false;
 			}
 			ww=(Weapon)w;
 			if(ww.weaponClassification()!=Weapon.CLASS_FLAILED)
 			{
-				mob.tell(_("You cannot flay with a @x1, you need a flailing weapon!",ww.name()));
+				mob.tell(L("You cannot flay with a @x1, you need a flailing weapon!",ww.name()));
 				return false;
 			}
 			if(w.material()!=RawMaterial.RESOURCE_LEATHER)
 			{
-				mob.tell(_("You cannot flay with a @x1, you need a weapon made of leather!",ww.name()));
+				mob.tell(L("You cannot flay with a @x1, you need a weapon made of leather!",ww.name()));
 				return false;
 			}
 			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 			{
-				mob.tell(_("You are too far away to try that!"));
+				mob.tell(L("You are too far away to try that!"));
 				return false;
 			}
 		}
@@ -149,7 +149,7 @@ public class Thief_Flay extends ThiefSkill
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,_("<S-NAME> flay(s) the bare back of <T-NAMESELF>!"));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,L("<S-NAME> flay(s) the bare back of <T-NAMESELF>!"));
 		final boolean makePeace = CMLib.flags().isBound(target) && (mob.getVictim() == null) && (target.getVictim() == null);
 
 		if(success)
@@ -171,7 +171,7 @@ public class Thief_Flay extends ThiefSkill
 			}
 		}
 		else
-			maliciousFizzle(mob,target,_("<S-NAME> attempt(s) flay <T-NAMESELF>, but fail(s)."));
+			maliciousFizzle(mob,target,L("<S-NAME> attempt(s) flay <T-NAMESELF>, but fail(s)."));
 		return success;
 	}
 }

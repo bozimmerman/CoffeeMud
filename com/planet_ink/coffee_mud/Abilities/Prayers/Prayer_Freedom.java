@@ -37,7 +37,7 @@ import java.util.*;
 public class Prayer_Freedom extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_Freedom"; }
-	private final static String localizedName = CMLib.lang()._("Freedom");
+	private final static String localizedName = CMLib.lang().L("Freedom");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
@@ -120,18 +120,18 @@ public class Prayer_Freedom extends Prayer implements MendingSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> feel(s) lightly touched."):_("^S<S-NAME> @x1 to deliver a light unbinding touch to <T-NAMESELF>.^?",prayForWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> feel(s) lightly touched."):L("^S<S-NAME> @x1 to deliver a light unbinding touch to <T-NAMESELF>.^?",prayForWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
 					offensiveAffects.get(a).unInvoke();
 				if(!CMLib.flags().stillAffectedBy(target,offensiveAffects,false))
-					target.tell(_("You feel less constricted!"));
+					target.tell(L("You feel less constricted!"));
 			}
 		}
 		else
-			this.beneficialWordsFizzle(mob,target,_("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
+			this.beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
 		// return whether it worked
 		return success;
 	}

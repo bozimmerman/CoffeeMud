@@ -268,7 +268,7 @@ public class Factions extends StdLibrary implements FactionManager
 		final StringBuffer msg=new StringBuffer();
 		msg.append("\n\r^.^N");
 		msg.append("+--------------------------------+-----------------------------------------+\n\r");
-		msg.append(_("| ^HFaction Name^N                   | ^HFaction INI Source File (Faction ID)^N    |\n\r"));
+		msg.append(L("| ^HFaction Name^N                   | ^HFaction INI Source File (Faction ID)^N    |\n\r"));
 		msg.append("+--------------------------------+-----------------------------------------+\n\r");
 		for(final Enumeration<Faction> e=factionSet.elements();e.hasMoreElements();)
 		{
@@ -676,7 +676,7 @@ public class Factions extends StdLibrary implements FactionManager
 		{
 			int showNumber=0;
 			// name
-			me.setName(CMLib.genEd().prompt(mob,me.name(),++showNumber,showFlag,_("Name")));
+			me.setName(CMLib.genEd().prompt(mob,me.name(),++showNumber,showFlag,L("Name")));
 
 			// ranges
 			++showNumber;
@@ -685,7 +685,7 @@ public class Factions extends StdLibrary implements FactionManager
 			while((mob.session()!=null)&&(!mob.session().isStopped())&&(!((showFlag>0)&&(showFlag!=showNumber))))
 			{
 				final StringBuffer list=new StringBuffer(showNumber+". Faction Division/Ranges List:\n\r");
-				list.append(CMStrings.padRight(_("   Code"),16)+CMStrings.padRight(_("Name"),21)+CMStrings.padRight(_("Min"),11)+CMStrings.padRight(_("Max"),11)+CMStrings.padRight(_("Align"),6)+"\n\r");
+				list.append(CMStrings.padRight(L("   Code"),16)+CMStrings.padRight(L("Name"),21)+CMStrings.padRight(L("Min"),11)+CMStrings.padRight(L("Max"),11)+CMStrings.padRight(L("Align"),6)+"\n\r");
 				for(final Enumeration<FRange> e=me.ranges();e.hasMoreElements();)
 				{
 					final Faction.FRange FR=e.nextElement();
@@ -697,33 +697,33 @@ public class Factions extends StdLibrary implements FactionManager
 				}
 				mob.tell(list.toString());
 				if((showFlag!=showNumber)&&(showFlag>-999)) break;
-				String which=mob.session().prompt(_("Enter a CODE to add, remove, or modify:"),"");
+				String which=mob.session().prompt(L("Enter a CODE to add, remove, or modify:"),"");
 				if(which.length()==0)
 					break;
 				which=which.trim().toUpperCase();
 				if(which.indexOf(' ')>=0)
 				{
-					mob.tell(_("Faction Range code names may not contain spaces."));
+					mob.tell(L("Faction Range code names may not contain spaces."));
 					break;
 				}
 				Faction.FRange FR=me.fetchRange(which);
 				if(FR==null)
 				{
-					if(mob.session().confirm(_("Create a new range code named '@x1' (y/N): ",which),_("N")))
+					if(mob.session().confirm(L("Create a new range code named '@x1' (y/N): ",which),L("N")))
 					{
 						FR=me.addRange("0;100;Change My Name;"+which+";");
 					}
 				}
 				else
-				if(mob.session().choose(_("Would you like to M)odify or D)elete this range (M/d): "),_("MD"),_("M")).toUpperCase().startsWith("D"))
+				if(mob.session().choose(L("Would you like to M)odify or D)elete this range (M/d): "),L("MD"),L("M")).toUpperCase().startsWith("D"))
 				{
 					me.delRange(FR);
-					mob.tell(_("Range deleted."));
+					mob.tell(L("Range deleted."));
 					FR=null;
 				}
 				if(FR!=null)
 				{
-					String newName=mob.session().prompt(_("Enter a new name (@x1)\n\r: ",FR.name()),FR.name());
+					String newName=mob.session().prompt(L("Enter a new name (@x1)\n\r: ",FR.name()),FR.name());
 					boolean error99=false;
 					if(newName.length()==0)
 						error99=true;
@@ -732,20 +732,20 @@ public class Factions extends StdLibrary implements FactionManager
 					{
 						final Faction.FRange FR3=e.nextElement();
 						if(FR3.name().equalsIgnoreCase(FR.name())&&(FR3!=FR))
-						{ mob.tell(_("A range already exists with that name!")); error99=true; break;}
+						{ mob.tell(L("A range already exists with that name!")); error99=true; break;}
 					}
 					if(error99)
-						mob.tell(_("(no change)"));
+						mob.tell(L("(no change)"));
 					else
 						FR.setName(newName);
-					newName=mob.session().prompt(_("Enter the low end of the range (@x1)\n\r: ",""+FR.low()),""+FR.low());
+					newName=mob.session().prompt(L("Enter the low end of the range (@x1)\n\r: ",""+FR.low()),""+FR.low());
 					if(!CMath.isInteger(newName))
-						mob.tell(_("(no change)"));
+						mob.tell(L("(no change)"));
 					else
 						FR.setLow(CMath.s_int(newName));
-					newName=mob.session().prompt(_("Enter the high end of the range (@x1)\n\r: ",""+FR.high()),""+FR.high());
+					newName=mob.session().prompt(L("Enter the high end of the range (@x1)\n\r: ",""+FR.high()),""+FR.high());
 					if((!CMath.isInteger(newName))||(CMath.s_int(newName)<FR.low()))
-						mob.tell(_("(no change)"));
+						mob.tell(L("(no change)"));
 					else
 						FR.setHigh(CMath.s_int(newName));
 					final StringBuffer prompt=new StringBuffer("Select the 'virtue' (if any) of this range:\n\r");
@@ -758,16 +758,16 @@ public class Factions extends StdLibrary implements FactionManager
 						else
 							prompt.append(i.ordinal()+") "+i.toString().toLowerCase()+"\n\r");
 					}
-					FR.setAlignEquiv(Faction.Align.values()[CMath.s_int(mob.session().choose(_("@x1Enter alignment equivalency or 0: ",prompt.toString()),choices.toString(),""+FR.alignEquiv().ordinal()))]);
+					FR.setAlignEquiv(Faction.Align.values()[CMath.s_int(mob.session().choose(L("@x1Enter alignment equivalency or 0: ",prompt.toString()),choices.toString(),""+FR.alignEquiv().ordinal()))]);
 				}
 			}
 
 
 			// show in score
-			me.setShowInScore(CMLib.genEd().prompt(mob,me.showInScore(),++showNumber,showFlag,_("Show in 'Score'")));
+			me.setShowInScore(CMLib.genEd().prompt(mob,me.showInScore(),++showNumber,showFlag,L("Show in 'Score'")));
 
 			// show in factions
-			me.setShowInFactionsCommand(CMLib.genEd().prompt(mob,me.showInFactionsCommand(),++showNumber,showFlag,_("Show in 'Factions' command")));
+			me.setShowInFactionsCommand(CMLib.genEd().prompt(mob,me.showInFactionsCommand(),++showNumber,showFlag,L("Show in 'Factions' command")));
 
 			// show in special reports
 			boolean alreadyReporter=false;
@@ -777,14 +777,14 @@ public class Factions extends StdLibrary implements FactionManager
 				if(F2.showInSpecialReported()) alreadyReporter=true;
 			}
 			if(!alreadyReporter)
-				me.setShowInSpecialReported(CMLib.genEd().prompt(mob,me.showInSpecialReported(),++showNumber,showFlag,_("Show in Reports")));
+				me.setShowInSpecialReported(CMLib.genEd().prompt(mob,me.showInSpecialReported(),++showNumber,showFlag,L("Show in Reports")));
 
 			// show in editor
-			me.setShowInEditor(CMLib.genEd().prompt(mob,me.showInEditor(),++showNumber,showFlag,_("Show in MOB Editor")));
+			me.setShowInEditor(CMLib.genEd().prompt(mob,me.showInEditor(),++showNumber,showFlag,L("Show in MOB Editor")));
 
 			// auto defaults
 			boolean error=true;
-			me.setAutoDefaults(CMParms.parseSemicolons(CMLib.genEd().prompt(mob,CMParms.toSemicolonList(me.autoDefaults()),++showNumber,showFlag,_("Optional automatic assigned values with zapper masks (semicolon delimited).\n\r    ")),true));
+			me.setAutoDefaults(CMParms.parseSemicolons(CMLib.genEd().prompt(mob,CMParms.toSemicolonList(me.autoDefaults()),++showNumber,showFlag,L("Optional automatic assigned values with zapper masks (semicolon delimited).\n\r    ")),true));
 
 			// non-auto defaults
 			error=true;
@@ -794,24 +794,24 @@ public class Factions extends StdLibrary implements FactionManager
 			while(error&&(mob.session()!=null)&&(!mob.session().isStopped()))
 			{
 				error=false;
-				final String newDefaults=CMLib.genEd().prompt(mob,CMParms.toSemicolonList(me.defaults()),showNumber,showFlag,_("Other default values with zapper masks (semicolon delimited).\n\r    "));
+				final String newDefaults=CMLib.genEd().prompt(mob,CMParms.toSemicolonList(me.defaults()),showNumber,showFlag,L("Other default values with zapper masks (semicolon delimited).\n\r    "));
 				if((showFlag!=showNumber)&&(showFlag>-999)) break;
 				final List<String> V=CMParms.parseSemicolons(newDefaults,true);
 				if(V.size()==0)
 				{
-					mob.tell(_("This field may not be empty."));
+					mob.tell(L("This field may not be empty."));
 					error=true;
 				}
 				me.setDefaults(CMParms.parseSemicolons(newDefaults,true));
 			}
 
 			// choices and choice intro
-			me.setChoices(CMParms.parseSemicolons(CMLib.genEd().prompt(mob,CMParms.toSemicolonList(me.choices()),++showNumber,showFlag,_("Optional new player value choices (semicolon-delimited).\n\r    ")),true));
+			me.setChoices(CMParms.parseSemicolons(CMLib.genEd().prompt(mob,CMParms.toSemicolonList(me.choices()),++showNumber,showFlag,L("Optional new player value choices (semicolon-delimited).\n\r    ")),true));
 			if(me.choices().hasMoreElements())
-				me.setChoiceIntro(CMLib.genEd().prompt(mob,me.choiceIntro(),++showNumber,showFlag,_("Optional choices introduction text. Filename")));
+				me.setChoiceIntro(CMLib.genEd().prompt(mob,me.choiceIntro(),++showNumber,showFlag,L("Optional choices introduction text. Filename")));
 
 			// rate modifier
-			final String newModifier=CMLib.genEd().prompt(mob,CMath.toPct(me.rateModifier()),++showNumber,showFlag,_("Rate modifier"));
+			final String newModifier=CMLib.genEd().prompt(mob,CMath.toPct(me.rateModifier()),++showNumber,showFlag,L("Rate modifier"));
 			if((CMath.isNumber(newModifier))||(CMath.isPct(newModifier)))
 				me.setRateModifier(CMath.s_pct(newModifier));
 
@@ -832,7 +832,7 @@ public class Factions extends StdLibrary implements FactionManager
 				if(myval<0){ me.setExperienceFlag("NONE"); myval=0;}
 				if((showFlag!=showNumber)&&(showFlag>-999))
 				{
-					mob.tell(_("@x1. Affect on experience: @x2",""+showNumber,Faction.EXPAFFECT_NAMES[myval]));
+					mob.tell(L("@x1. Affect on experience: @x2",""+showNumber,Faction.EXPAFFECT_NAMES[myval]));
 					break;
 				}
 				final String prompt="Affect on experience:  "+Faction.EXPAFFECT_NAMES[myval]+nextPrompt.toString()+"\n\rSelect a value: ";
@@ -840,7 +840,7 @@ public class Factions extends StdLibrary implements FactionManager
 				if((showFlag!=showNumber)&&(showFlag>-999)) break;
 				if((mynewval<=0)||(mynewval>Faction.EXPAFFECT_NAMES.length))
 				{
-					mob.tell(_("That value is not valid."));
+					mob.tell(L("That value is not valid."));
 					error2=true;
 				}
 				else
@@ -852,7 +852,7 @@ public class Factions extends StdLibrary implements FactionManager
 			while((mob.session()!=null)&&(!mob.session().isStopped())&&(!((showFlag>0)&&(showFlag!=showNumber))))
 			{
 				final StringBuffer list=new StringBuffer(showNumber+". Faction change adjustment Factors with Zapper Masks:\n\r");
-				list.append("    #) "+CMStrings.padRight(_("Zapper Mask"),31)+CMStrings.padRight(_("Gain"),6)+CMStrings.padRight(_("Loss"),6)+"\n\r");
+				list.append("    #) "+CMStrings.padRight(L("Zapper Mask"),31)+CMStrings.padRight(L("Gain"),6)+CMStrings.padRight(L("Loss"),6)+"\n\r");
 				final StringBuffer choices=new StringBuffer("");
 				int numFactors=0;
 				for(final Enumeration<Faction.FZapFactor> e=me.factors();e.hasMoreElements();)
@@ -867,7 +867,7 @@ public class Factions extends StdLibrary implements FactionManager
 				}
 				mob.tell(list.toString());
 				if((showFlag!=showNumber)&&(showFlag>-999)) break;
-				final String which=mob.session().choose(_("Enter a # to remove, or modify, or enter 0 to Add:"),"0"+choices.toString(),"").trim().toUpperCase();
+				final String which=mob.session().choose(L("Enter a # to remove, or modify, or enter 0 to Add:"),"0"+choices.toString(),"").trim().toUpperCase();
 				final int factorNum=choices.toString().indexOf(which);
 				if((which.length()!=1)
 				||((!which.equalsIgnoreCase("0"))
@@ -878,10 +878,10 @@ public class Factions extends StdLibrary implements FactionManager
 				{
 					factor=me.getFactor(factorNum);
 					if(factor!=null)
-						if(mob.session().choose(_("Would you like to M)odify or D)elete this range (M/d): "),_("MD"),_("M")).toUpperCase().startsWith("D"))
+						if(mob.session().choose(L("Would you like to M)odify or D)elete this range (M/d): "),L("MD"),L("M")).toUpperCase().startsWith("D"))
 						{
 							me.delFactor(factor);
-							mob.tell(_("Factor deleted."));
+							mob.tell(L("Factor deleted."));
 							factor=null;
 						}
 				}
@@ -889,18 +889,18 @@ public class Factions extends StdLibrary implements FactionManager
 					factor=me.addFactor(1.0,1.0,"");
 				if(factor!=null)
 				{
-					final String mask=mob.session().prompt(_("Enter a new zapper mask (@x1)\n\r: ",factor.MOBMask()),factor.MOBMask());
+					final String mask=mob.session().prompt(L("Enter a new zapper mask (@x1)\n\r: ",factor.MOBMask()),factor.MOBMask());
 					double newHigh=factor.gainFactor();
-					String newName=mob.session().prompt(_("Enter gain adjustment (@x1): ",CMath.toPct(newHigh)),CMath.toPct(newHigh));
+					String newName=mob.session().prompt(L("Enter gain adjustment (@x1): ",CMath.toPct(newHigh)),CMath.toPct(newHigh));
 					if((!CMath.isNumber(newName))&&(!CMath.isPct(newName)))
-						mob.tell(_("(no change)"));
+						mob.tell(L("(no change)"));
 					else
 						newHigh=CMath.s_pct(newName);
 
 					double newLow=factor.lossFactor();
-					newName=mob.session().prompt(_("Enter loss adjustment (@x1): ",CMath.toPct(newLow)),CMath.toPct(newLow));
+					newName=mob.session().prompt(L("Enter loss adjustment (@x1): ",CMath.toPct(newLow)),CMath.toPct(newLow));
 					if((!CMath.isNumber(newName))&&(!CMath.isPct(newName)))
-						mob.tell(_("(no change)"));
+						mob.tell(L("(no change)"));
 					else
 						newLow=CMath.s_pct(newName);
 					me.delFactor(factor);
@@ -928,7 +928,7 @@ public class Factions extends StdLibrary implements FactionManager
 				}
 				mob.tell(list.toString());
 				if((showFlag!=showNumber)&&(showFlag>-999)) break;
-				final String which=mob.session().prompt(_("Enter a faction to add, remove, or modify relations:"),"");
+				final String which=mob.session().prompt(L("Enter a faction to add, remove, or modify relations:"),"");
 				if(which.length()==0)
 					break;
 				Faction theF=null;
@@ -944,27 +944,27 @@ public class Factions extends StdLibrary implements FactionManager
 					Faction possibleF=CMLib.factions().getFaction(which);
 					if(possibleF==null) possibleF=CMLib.factions().getFactionByName(which);
 					if(possibleF==null)
-						mob.tell(_("'@x1' is not a valid faction.",which));
+						mob.tell(L("'@x1' is not a valid faction.",which));
 					else
-					if(mob.session().confirm(_("Create a new relation for faction  '@x1' (y/N):",possibleF.name()),_("N")))
+					if(mob.session().confirm(L("Create a new relation for faction  '@x1' (y/N):",possibleF.name()),L("N")))
 					{
 						theF=possibleF;
 						me.addRelation(theF.factionID(),1.0);
 					}
 				}
 				else
-				if(mob.session().choose(_("Would you like to M)odify or D)elete this relation (M/d): "),_("MD"),_("M")).toUpperCase().startsWith("D"))
+				if(mob.session().choose(L("Would you like to M)odify or D)elete this relation (M/d): "),L("MD"),L("M")).toUpperCase().startsWith("D"))
 				{
 					me.delRelation(theF.factionID());
-					mob.tell(_("Relation deleted."));
+					mob.tell(L("Relation deleted."));
 					theF=null;
 				}
 				if(theF!=null)
 				{
 					final String amount=CMath.toPct(me.getRelation(theF.factionID()));
-					final String newName=mob.session().prompt(_("Enter a relation amount (@x1): ",amount),""+amount);
+					final String newName=mob.session().prompt(L("Enter a relation amount (@x1): ",amount),""+amount);
 					if((!CMath.isNumber(newName))&&(!CMath.isPct(newName)))
-						mob.tell(_("(no change)"));
+						mob.tell(L("(no change)"));
 					me.delRelation(theF.factionID());
 					me.addRelation(theF.factionID(),CMath.s_pct(newName));
 				}
@@ -975,10 +975,10 @@ public class Factions extends StdLibrary implements FactionManager
 			while((mob.session()!=null)&&(!mob.session().isStopped())&&(!((showFlag>0)&&(showFlag!=showNumber))))
 			{
 				final StringBuffer list=new StringBuffer(showNumber+". Faction Change Triggers:\n\r");
-				list.append("    "+CMStrings.padRight(_("Type"),15)
-						+" "+CMStrings.padRight(_("Direction"),10)
-						+" "+CMStrings.padRight(_("Factor"),10)
-						+" "+CMStrings.padRight(_("Flags"),20)
+				list.append("    "+CMStrings.padRight(L("Type"),15)
+						+" "+CMStrings.padRight(L("Direction"),10)
+						+" "+CMStrings.padRight(L("Factor"),10)
+						+" "+CMStrings.padRight(L("Flags"),20)
 						+" Mask\n\r");
 				int numChanges=0;
 				final StringBuffer choices=new StringBuffer("");
@@ -1007,27 +1007,27 @@ public class Factions extends StdLibrary implements FactionManager
 				}
 				mob.tell(list.toString());
 				if((showFlag!=showNumber)&&(showFlag>-999)) break;
-				String which=mob.session().prompt(_("Select a ID to add, remove, or modify:"),"");
+				String which=mob.session().prompt(L("Select a ID to add, remove, or modify:"),"");
 				which=which.toUpperCase().trim();
 				if(which.length()==0) continue;
 				Faction.FactionChangeEvent CE=(which.length()>0)?choicesHashed.get(Character.valueOf(which.charAt(0))):null;
 				if(CE==null)
 				{
-					final String newID=mob.session().prompt(_("Enter a new change ID (?): ")).toUpperCase().trim();
+					final String newID=mob.session().prompt(L("Enter a new change ID (?): ")).toUpperCase().trim();
 					if(newID.length()==0) break;
 					if(newID.equalsIgnoreCase("?"))
 					{
-						mob.tell(_("Valid triggers: \n\r@x1",me.ALL_CHANGE_EVENT_TYPES()));
+						mob.tell(L("Valid triggers: \n\r@x1",me.ALL_CHANGE_EVENT_TYPES()));
 						continue;
 					}
 					CE=me.createChangeEvent(newID);
 					if(CE==null)
 					{
-						mob.tell(_("That ID is invalid.  Try '?'."));
+						mob.tell(L("That ID is invalid.  Try '?'."));
 						continue;
 					}
 					else
-					if(!mob.session().confirm(_("Create a new trigger using ID '@x1' (y/N): ",newID),_("N")))
+					if(!mob.session().confirm(L("Create a new trigger using ID '@x1' (y/N): ",newID),L("N")))
 					{
 						me.delChangeEvent(CE);
 						CE=null;
@@ -1035,18 +1035,18 @@ public class Factions extends StdLibrary implements FactionManager
 					}
 				}
 				else
-				if(mob.session().choose(_("Would you like to M)odify or D)elete this trigger (M/d): "),_("MD"),_("M")).toUpperCase().startsWith("D"))
+				if(mob.session().choose(L("Would you like to M)odify or D)elete this trigger (M/d): "),L("MD"),L("M")).toUpperCase().startsWith("D"))
 				{
 					me.delChangeEvent(CE);
-					mob.tell(_("Trigger deleted."));
+					mob.tell(L("Trigger deleted."));
 					CE=null;
 				}
 
 				if(CE!=null)
 				{
-					final String newFlags=mob.session().prompt(_("Trigger parms (@x1): ",CE.triggerParameters()),CE.triggerParameters());
+					final String newFlags=mob.session().prompt(L("Trigger parms (@x1): ",CE.triggerParameters()),CE.triggerParameters());
 					if((newFlags.length()==0)||(newFlags.equals(CE.triggerParameters())))
-						mob.tell(_("(no change)"));
+						mob.tell(L("(no change)"));
 					else
 						CE.setTriggerParameters(newFlags.trim());
 				}
@@ -1059,9 +1059,9 @@ public class Factions extends StdLibrary implements FactionManager
 						directions.append(((char)('A'+i))+") "+Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS[i]+"\n\r");
 						cmds.append((char)('A'+i));
 					}
-					final String str=mob.session().choose(_("@x1\n\rSelect a new direction (@x2): ",directions.toString(),Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS[CE.direction()]),cmds.toString()+"\n\r","");
+					final String str=mob.session().choose(L("@x1\n\rSelect a new direction (@x2): ",directions.toString(),Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS[CE.direction()]),cmds.toString()+"\n\r","");
 					if((str.length()==0)||str.equals("\n")||str.equals("\r")||(cmds.toString().indexOf(str.charAt(0))<0))
-						mob.tell(_("(no change)"));
+						mob.tell(L("(no change)"));
 					else
 						CE.setDirection((cmds.toString().indexOf(str.charAt(0))));
 				}
@@ -1069,26 +1069,26 @@ public class Factions extends StdLibrary implements FactionManager
 				{
 					if(CE.factor()==0.0) CE.setFactor(1.0);
 					final String amount=CMath.toPct(CE.factor());
-					final String newName=mob.session().prompt(_("Enter the amount factor (@x1): ",amount),""+amount);
+					final String newName=mob.session().prompt(L("Enter the amount factor (@x1): ",amount),""+amount);
 					if((!CMath.isNumber(newName))&&(!CMath.isPct(newName)))
-						mob.tell(_("(no change)"));
+						mob.tell(L("(no change)"));
 					else
 						CE.setFactor(CMath.s_pct(newName));
 				}
 				if(CE!=null)
 				{
-					mob.tell(_("Valid flags include: @x1\n\r",CMParms.toStringList(Faction.FactionChangeEvent.FLAG_DESCS)));
-					final String newFlags=mob.session().prompt(_("Enter new flag(s) (@x1): @x2",CE.flagCache(),CE.flagCache()),CE.flagCache());
+					mob.tell(L("Valid flags include: @x1\n\r",CMParms.toStringList(Faction.FactionChangeEvent.FLAG_DESCS)));
+					final String newFlags=mob.session().prompt(L("Enter new flag(s) (@x1): @x2",CE.flagCache(),CE.flagCache()),CE.flagCache());
 					if((newFlags.length()==0)||(newFlags.equals(CE.flagCache())))
-						mob.tell(_("(no change)"));
+						mob.tell(L("(no change)"));
 					else
 						CE.setFlags(newFlags);
 				}
 				if(CE!=null)
 				{
-					final String newFlags=mob.session().prompt(_("Zapper mask (@x1): @x2",CE.targetZapper(),CE.targetZapper()),CE.targetZapper());
+					final String newFlags=mob.session().prompt(L("Zapper mask (@x1): @x2",CE.targetZapper(),CE.targetZapper()),CE.targetZapper());
 					if((newFlags.length()==0)||(newFlags.equals(CE.targetZapper())))
-						mob.tell(_("(no change)"));
+						mob.tell(L("(no change)"));
 					else
 						CE.setTargetZapper(newFlags);
 				}
@@ -1101,9 +1101,9 @@ public class Factions extends StdLibrary implements FactionManager
 				if((showFlag>0)&&(showFlag!=showNumber)) break;
 				final StringBuffer list=new StringBuffer(showNumber+". Ability allowances:\n\r");
 				list.append("    #) "
-						+CMStrings.padRight(_("Ability masks"),40)
-						+" "+CMStrings.padRight(_("Low value"),10)
-						+" "+CMStrings.padRight(_("High value"),10)
+						+CMStrings.padRight(L("Ability masks"),40)
+						+" "+CMStrings.padRight(L("Low value"),10)
+						+" "+CMStrings.padRight(L("High value"),10)
 						+"\n\r");
 				int numUsages=0;
 				final StringBuffer choices=new StringBuffer("0\n\r");
@@ -1123,7 +1123,7 @@ public class Factions extends StdLibrary implements FactionManager
 				}
 				mob.tell(list.toString());
 				if((showFlag!=showNumber)&&(showFlag>-999)) break;
-				String which=mob.session().choose(_("Select an allowance to remove or modify, or enter 0 to Add:"),choices.toString(),"");
+				String which=mob.session().choose(L("Select an allowance to remove or modify, or enter 0 to Add:"),choices.toString(),"");
 				if(which.length()!=1)
 					break;
 				which=which.toUpperCase().trim();
@@ -1136,18 +1136,18 @@ public class Factions extends StdLibrary implements FactionManager
 					CA=me.getAbilityUsage(num);
 					if(CA==null)
 					{
-						mob.tell(_("That allowance is invalid.."));
+						mob.tell(L("That allowance is invalid.."));
 						continue;
 					}
-					if(mob.session().choose(_("Would you like to M)odify or D)elete this allowance (M/d): "),_("MD"),_("M")).toUpperCase().startsWith("D"))
+					if(mob.session().choose(L("Would you like to M)odify or D)elete this allowance (M/d): "),L("MD"),L("M")).toUpperCase().startsWith("D"))
 					{
 						me.delAbilityUsage(CA);
-						mob.tell(_("Allowance deleted."));
+						mob.tell(L("Allowance deleted."));
 						CA=null;
 					}
 				}
 				else
-				if(!mob.session().confirm(_("Create a new allowance (y/N): "),_("N")))
+				if(!mob.session().confirm(L("Create a new allowance (y/N): "),L("N")))
 				{
 					continue;
 				}
@@ -1158,7 +1158,7 @@ public class Factions extends StdLibrary implements FactionManager
 					boolean cont=false;
 					while((!cont)&&(!mob.session().isStopped()))
 					{
-						final String newFlags=mob.session().prompt(_("Ability determinate masks or ? (@x1): @x2",CA.abilityFlags(),CA.abilityFlags()),CA.abilityFlags());
+						final String newFlags=mob.session().prompt(L("Ability determinate masks or ? (@x1): @x2",CA.abilityFlags(),CA.abilityFlags()),CA.abilityFlags());
 						if(newFlags.equalsIgnoreCase("?"))
 						{
 							final StringBuffer vals=new StringBuffer("Valid masks: \n\r");
@@ -1176,7 +1176,7 @@ public class Factions extends StdLibrary implements FactionManager
 						{
 							cont=true;
 							if((newFlags.length()==0)||(newFlags.equals(CA.abilityFlags())))
-								mob.tell(_("(no change)"));
+								mob.tell(L("(no change)"));
 							else
 							{
 								final List<String> unknowns=CA.setAbilityFlag(newFlags);
@@ -1186,20 +1186,20 @@ public class Factions extends StdLibrary implements FactionManager
 											unknowns.remove(i);
 								if(unknowns.size()>0)
 								{
-									mob.tell(_("The following are unknown masks: '@x1'.  Please correct them.",CMParms.toStringList(unknowns)));
+									mob.tell(L("The following are unknown masks: '@x1'.  Please correct them.",CMParms.toStringList(unknowns)));
 									cont=false;
 								}
 							}
 						}
 					}
-					String newName=mob.session().prompt(_("Enter the minimum value to use the ability (@x1): ",""+CA.low()),""+CA.low());
+					String newName=mob.session().prompt(L("Enter the minimum value to use the ability (@x1): ",""+CA.low()),""+CA.low());
 					if((!CMath.isInteger(newName))||(CA.low()==CMath.s_int(newName)))
-						mob.tell(_("(no change)"));
+						mob.tell(L("(no change)"));
 					else
 						CA.setLow(CMath.s_int(newName));
-					newName=mob.session().prompt(_("Enter the maximum value to use the ability (@x1): ",""+CA.high()),""+CA.high());
+					newName=mob.session().prompt(L("Enter the maximum value to use the ability (@x1): ",""+CA.high()),""+CA.high());
 					if((!CMath.isInteger(newName))||(CA.high()==CMath.s_int(newName)))
-						mob.tell(_("(no change)"));
+						mob.tell(L("(no change)"));
 					else
 						CA.setHigh(CMath.s_int(newName));
 					if(CA.high()<CA.low()) CA.setHigh(CA.low());
@@ -1214,9 +1214,9 @@ public class Factions extends StdLibrary implements FactionManager
 				if((showFlag>0)&&(showFlag!=showNumber)) break;
 				final StringBuffer list=new StringBuffer(showNumber+". Effects/Behaviors:\n\r");
 				list.append("    #) "
-						+CMStrings.padRight(_("Ability/Behavior ID"),25)
-						+" "+CMStrings.padRight(_("MOB Mask"),20)
-						+" "+CMStrings.padRight(_("Parameters"),20)
+						+CMStrings.padRight(L("Ability/Behavior ID"),25)
+						+" "+CMStrings.padRight(L("MOB Mask"),20)
+						+" "+CMStrings.padRight(L("Parameters"),20)
 						+"\n\r");
 				int numAffBehavs=0;
 				final StringBuffer choices=new StringBuffer("0\n\r");
@@ -1237,7 +1237,7 @@ public class Factions extends StdLibrary implements FactionManager
 				}
 				mob.tell(list.toString());
 				if((showFlag!=showNumber)&&(showFlag>-999)) break;
-				String which=mob.session().choose(_("Select an ability/behavior ID to remove or modify, or enter 0 to Add:"),choices.toString(),"");
+				String which=mob.session().choose(L("Select an ability/behavior ID to remove or modify, or enter 0 to Add:"),choices.toString(),"");
 				if(which.length()!=1)
 					break;
 				which=which.toUpperCase().trim();
@@ -1248,10 +1248,10 @@ public class Factions extends StdLibrary implements FactionManager
 						break;
 					ID=IDs.elementAt(num);
 					final String type=getWordAffOrBehav(ID);
-					if(mob.session().choose(_("Would you like to M)odify or D)elete this @x1 (M/d): ",type),_("MD"),_("M")).toUpperCase().startsWith("D"))
+					if(mob.session().choose(L("Would you like to M)odify or D)elete this @x1 (M/d): ",type),L("MD"),L("M")).toUpperCase().startsWith("D"))
 					{
 						me.delAffectBehav(ID);
-						mob.tell(_("@x1 deleted.",CMStrings.capitalizeAndLower(type)));
+						mob.tell(L("@x1 deleted.",CMStrings.capitalizeAndLower(type)));
 						ID=null;
 					}
 				}
@@ -1261,7 +1261,7 @@ public class Factions extends StdLibrary implements FactionManager
 					while((cont)&&(!mob.session().isStopped()))
 					{
 						cont=false;
-						ID=mob.session().prompt(_("Enter a new Ability or Behavior ID or ?: "));
+						ID=mob.session().prompt(L("Enter a new Ability or Behavior ID or ?: "));
 						if(ID.equalsIgnoreCase("?"))
 						{
 							final StringBuffer vals=new StringBuffer("Valid IDs: \n\r");
@@ -1274,18 +1274,18 @@ public class Factions extends StdLibrary implements FactionManager
 						{
 							if((ID.length()==0)||(me.getAffectBehav(ID)!=null))
 							{
-								mob.tell(_("(nothing done)"));
+								mob.tell(L("(nothing done)"));
 								ID=null;
 								break;
 							}
 							final String type=getWordAffOrBehav(ID);
 							if(type==null)
 							{
-								mob.tell(_("'@x1 is neither a valid behavior ID or ability ID.  Use ? for a list.",ID));
+								mob.tell(L("'@x1 is neither a valid behavior ID or ability ID.  Use ? for a list.",ID));
 								cont=true;
 							}
 							else
-							if(!mob.session().confirm(_("Create a new @x1 (y/N): ",type),_("N")))
+							if(!mob.session().confirm(L("Create a new @x1 (y/N): ",type),L("N")))
 							{
 								ID=null;
 								break;
@@ -1304,7 +1304,7 @@ public class Factions extends StdLibrary implements FactionManager
 					while((cont)&&(!mob.session().isStopped()))
 					{
 						cont=false;
-						final String mask=mob.session().prompt(_("Enter a new Zapper Mask or ? (@x1)\n\r: ",oldData[1]),oldData[1]);
+						final String mask=mob.session().prompt(L("Enter a new Zapper Mask or ? (@x1)\n\r: ",oldData[1]),oldData[1]);
 						if(mask.equalsIgnoreCase("?"))
 						{
 							mob.tell(CMLib.masking().maskHelp("\n\r","disallow"));
@@ -1319,7 +1319,7 @@ public class Factions extends StdLibrary implements FactionManager
 					while((cont)&&(!mob.session().isStopped()))
 					{
 						cont=false;
-						final String parms=mob.session().prompt(_("Enter new @x1 parameters for @x2 or ? (@x3)\n\r: ",type,ID,oldData[0]),oldData[0]);
+						final String parms=mob.session().prompt(L("Enter new @x1 parameters for @x2 or ? (@x3)\n\r: ",type,ID,oldData[0]),oldData[0]);
 						if(parms.equalsIgnoreCase("?"))
 						{
 							mob.tell(CMLib.help().getHelpText(ID,mob,true).toString());
@@ -1349,10 +1349,10 @@ public class Factions extends StdLibrary implements FactionManager
 				if((showFlag>0)&&(showFlag!=showNumber)) break;
 				final StringBuffer list=new StringBuffer(showNumber+". Reaction Commands/Effects/Behaviors:\n\r");
 				list.append("    #) "
-						+CMStrings.padRight(_("Range"),15)
-						+" "+CMStrings.padRight(_("MOB Mask"),18)
-						+" "+CMStrings.padRight(_("Able/Beh/Cmd"),15)
-						+" "+CMStrings.padRight(_("Parameters"),18)
+						+CMStrings.padRight(L("Range"),15)
+						+" "+CMStrings.padRight(L("MOB Mask"),18)
+						+" "+CMStrings.padRight(L("Able/Beh/Cmd"),15)
+						+" "+CMStrings.padRight(L("Parameters"),18)
 						+"\n\r");
 				int numReactions=0;
 				final StringBuffer choices=new StringBuffer("0\n\r");
@@ -1373,7 +1373,7 @@ public class Factions extends StdLibrary implements FactionManager
 				}
 				mob.tell(list.toString());
 				if((showFlag!=showNumber)&&(showFlag>-999)) break;
-				String which=mob.session().choose(_("Select one to remove or modify, or enter 0 to Add:"),choices.toString(),"");
+				String which=mob.session().choose(L("Select one to remove or modify, or enter 0 to Add:"),choices.toString(),"");
 				if(which.length()!=1)
 					break;
 				which=which.toUpperCase().trim();
@@ -1385,10 +1385,10 @@ public class Factions extends StdLibrary implements FactionManager
 						break;
 					item=reactions.elementAt(num);
 					final String type=getWordAffOrBehav(item.reactionObjectID());
-					if(mob.session().choose(_("Would you like to M)odify or D)elete this @x1 (M/d): ",type),_("MD"),_("M")).toUpperCase().startsWith("D"))
+					if(mob.session().choose(L("Would you like to M)odify or D)elete this @x1 (M/d): ",type),L("MD"),L("M")).toUpperCase().startsWith("D"))
 					{
 						me.delReaction(item);
-						mob.tell(_("@x1 deleted.",CMStrings.capitalizeAndLower(type)));
+						mob.tell(L("@x1 deleted.",CMStrings.capitalizeAndLower(type)));
 						item=null;
 					}
 				}
@@ -1410,7 +1410,7 @@ public class Factions extends StdLibrary implements FactionManager
 				{
 					cont=false;
 
-					final String rangeCode=mob.session().prompt(_("Enter a new range code or ? (@x1)\n\r: ",oldData[0]),oldData[0]).toUpperCase().trim();
+					final String rangeCode=mob.session().prompt(L("Enter a new range code or ? (@x1)\n\r: ",oldData[0]),oldData[0]).toUpperCase().trim();
 					if(rangeCode.equalsIgnoreCase("?"))
 					{
 						final StringBuffer str=new StringBuffer("");
@@ -1433,7 +1433,7 @@ public class Factions extends StdLibrary implements FactionManager
 								cont=false;
 							}
 						if(cont)
-							mob.tell(_("'@x1' is not a valid range code.  Use ?",rangeCode));
+							mob.tell(L("'@x1' is not a valid range code.  Use ?",rangeCode));
 					}
 				}
 
@@ -1442,7 +1442,7 @@ public class Factions extends StdLibrary implements FactionManager
 				{
 					cont=false;
 
-					final String mask=mob.session().prompt(_("Enter a new Zapper Mask or ? (@x1)\n\r: ",oldData[1]),oldData[1]);
+					final String mask=mob.session().prompt(L("Enter a new Zapper Mask or ? (@x1)\n\r: ",oldData[1]),oldData[1]);
 					if(mask.equalsIgnoreCase("?"))
 					{
 						mob.tell(CMLib.masking().maskHelp("\n\r","disallow"));
@@ -1457,7 +1457,7 @@ public class Factions extends StdLibrary implements FactionManager
 				while((cont)&&(!mob.session().isStopped()))
 				{
 					cont=false;
-					final String ID=mob.session().prompt(_("Enter a new Ability, Behavior, or Command ID (@x1)\n\r: ",oldData[2]),oldData[2]);
+					final String ID=mob.session().prompt(L("Enter a new Ability, Behavior, or Command ID (@x1)\n\r: ",oldData[2]),oldData[2]);
 					if(ID.equalsIgnoreCase("?"))
 					{
 						final StringBuffer vals=new StringBuffer("Valid IDs: \n\r");
@@ -1472,7 +1472,7 @@ public class Factions extends StdLibrary implements FactionManager
 						type=getWordAffOrBehav(ID);
 						if(type==null)
 						{
-							mob.tell(_("'@x1 is neither a valid behavior, command, ability ID. Use ? for a list.",ID));
+							mob.tell(L("'@x1 is neither a valid behavior, command, ability ID. Use ? for a list.",ID));
 							cont=true;
 						}
 						else
@@ -1484,7 +1484,7 @@ public class Factions extends StdLibrary implements FactionManager
 				while((cont)&&(!mob.session().isStopped()))
 				{
 					cont=false;
-					final String parms=mob.session().prompt(_("Enter new @x1 parameters for @x2 or ? (@x3)\n\r: ",type,newData[2],oldData[3]),oldData[3]);
+					final String parms=mob.session().prompt(L("Enter new @x1 parameters for @x2 or ? (@x3)\n\r: ",type,newData[2],oldData[3]),oldData[3]);
 					if(parms.equalsIgnoreCase("?"))
 					{
 						mob.tell(CMLib.help().getHelpText(newData[3],mob,true).toString());
@@ -1509,13 +1509,13 @@ public class Factions extends StdLibrary implements FactionManager
 				}
 			}
 			if(me.reactions().hasMoreElements())
-				me.setLightReactions(CMLib.genEd().prompt(mob,me.useLightReactions(),++showNumber,showFlag,_("Use 'Light' Reactions")));
+				me.setLightReactions(CMLib.genEd().prompt(mob,me.useLightReactions(),++showNumber,showFlag,L("Use 'Light' Reactions")));
 			else
 				me.setLightReactions(false);
 
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
-			showFlag=CMath.s_int(mob.session().prompt(_("Edit which? "),""));
+			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
 				showFlag=-1;

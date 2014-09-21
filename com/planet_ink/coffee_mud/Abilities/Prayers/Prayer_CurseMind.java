@@ -37,9 +37,9 @@ import java.util.*;
 public class Prayer_CurseMind extends Prayer
 {
 	@Override public String ID() { return "Prayer_CurseMind"; }
-	private final static String localizedName = CMLib.lang()._("Curse Mind");
+	private final static String localizedName = CMLib.lang().L("Curse Mind");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang()._("(Cursed Mind)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Cursed Mind)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
@@ -75,7 +75,7 @@ public class Prayer_CurseMind extends Prayer
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(_("Your mind feels less cursed."));
+			mob.tell(L("Your mind feels less cursed."));
 		CMLib.commands().postStand(mob,true);
 	}
 
@@ -109,7 +109,7 @@ public class Prayer_CurseMind extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?_("<T-NAME> feel(s) <T-HIS-HER> mind become cursed!"):_("^S<S-NAME> @x1 to curse the mind of <T-NAMESELF>!^?",prayForWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> feel(s) <T-HIS-HER> mind become cursed!"):L("^S<S-NAME> @x1 to curse the mind of <T-NAMESELF>!^?",prayForWord(mob)));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
@@ -120,7 +120,7 @@ public class Prayer_CurseMind extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> @x1 to curse the mind of <T-NAMESELF>, but nothing happens.",prayForWord(mob)));
+			return maliciousFizzle(mob,target,L("<S-NAME> @x1 to curse the mind of <T-NAMESELF>, but nothing happens.",prayForWord(mob)));
 
 		// return whether it worked
 		return success;

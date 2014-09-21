@@ -36,7 +36,7 @@ import java.util.*;
 public class Skill_FireBreathing extends BardSkill
 {
 	@Override public String ID() { return "Skill_FireBreathing"; }
-	private final static String localizedName = CMLib.lang()._("Fire Breathing");
+	private final static String localizedName = CMLib.lang().L("Fire Breathing");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return 0;}
@@ -79,7 +79,7 @@ public class Skill_FireBreathing extends BardSkill
 		final Item fireSource=getFireSource(mob);
 		if((!auto)&&(fireSource==null))
 		{
-			mob.tell(_("You need to be holding some fire source to breathe fire."));
+			mob.tell(L("You need to be holding some fire source to breathe fire."));
 			return false;
 		}
 		// the invoke method for spells receives as
@@ -97,7 +97,7 @@ public class Skill_FireBreathing extends BardSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),(auto?_("Suddenly flames come up and attack <T-HIM-HER>!^?"):((fireSource!=null)?_("^S<S-NAME> hold(s) @x1 up and puff(s) fire at <T-NAMESELF>!^?",fireSource.name()):_("<S-NAME> breath(es) fire at <T-NAMESELF>!^?")))+CMLib.protocol().msp("fireball.wav",40));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),(auto?L("Suddenly flames come up and attack <T-HIM-HER>!^?"):((fireSource!=null)?L("^S<S-NAME> hold(s) @x1 up and puff(s) fire at <T-NAMESELF>!^?",fireSource.name()):L("<S-NAME> breath(es) fire at <T-NAMESELF>!^?")))+CMLib.protocol().msp("fireball.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_FIRE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 			{
@@ -115,7 +115,7 @@ public class Skill_FireBreathing extends BardSkill
 				fireSource.destroy();
 		}
 		else
-			return maliciousFizzle(mob,target,_("<S-NAME> attempt(s) to breathe fire at <T-NAMESELF>, but only puff(s) smoke."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to breathe fire at <T-NAMESELF>, but only puff(s) smoke."));
 
 
 		// return whether it worked

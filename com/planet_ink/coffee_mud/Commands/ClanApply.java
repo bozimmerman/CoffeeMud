@@ -55,7 +55,7 @@ public class ClanApply extends StdCommand
 				if(C.isOnlyFamilyApplicants()
 				&&(!CMLib.clans().isFamilyOfMembership(mob,C.getMemberList())))
 				{
-					mob.tell(_("The clan  @x1 is a family.  You can not join a family, you must be born or married into it.",C.clanID()));
+					mob.tell(L("The clan  @x1 is a family.  You can not join a family, you must be born or married into it.",C.clanID()));
 					return false;
 				}
 
@@ -65,16 +65,16 @@ public class ClanApply extends StdCommand
 					if(oldList.size()>0)
 					{
 						final Pair<Clan,Integer> p=oldList.get(0);
-						mob.tell(_("You are already a member of @x1. You need to resign before you can apply to another.",p.first.getName()));
+						mob.tell(L("You are already a member of @x1. You need to resign before you can apply to another.",p.first.getName()));
 					}
 					else
-						mob.tell(_("You are not elligible to apply to this clan."));
+						mob.tell(L("You are not elligible to apply to this clan."));
 					return false;
 				}
 
 				if(!CMLib.masking().maskCheck(C.getBasicRequirementMask(), mob, true))
 				{
-					mob.tell(_("You are not of the right qualities to join @x1. Use CLANDETAILS \"@x2\" for more information.",C.clanID(),C.clanID()));
+					mob.tell(L("You are not of the right qualities to join @x1. Use CLANDETAILS \"@x2\" for more information.",C.clanID(),C.clanID()));
 					return false;
 				}
 
@@ -98,8 +98,8 @@ public class ClanApply extends StdCommand
 							if((newRole.second.intValue()!=C.getGovernment().getAcceptPos())
 							&&(newRole.second.intValue()==C.getGovernment().getAutoRole()))
 							{
-								CMLib.clans().clanAnnounce(mob,_("The @x1 @x2 has a new Applicant: @x3",C.getGovernmentName(),C.clanID(),mob.Name()));
-								mob.tell(_("You have successfully applied for membership in clan @x1.  Your application will be reviewed by management.  Use SCORE to check for a change in status.",C.clanID()));
+								CMLib.clans().clanAnnounce(mob,L("The @x1 @x2 has a new Applicant: @x3",C.getGovernmentName(),C.clanID(),mob.Name()));
+								mob.tell(L("You have successfully applied for membership in clan @x1.  Your application will be reviewed by management.  Use SCORE to check for a change in status.",C.clanID()));
 							}
 							else
 							{
@@ -109,38 +109,38 @@ public class ClanApply extends StdCommand
 									S.setSavable(false);
 									S.setVarScope("*");
 									S.setScript(C.getGovernment().getEntryScript());
-									final CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,_("CLANENTRY"));
+									final CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,L("CLANENTRY"));
 									S.executeMsg(mob, msg2);
 									S.dequeResponses();
 									S.tick(mob,Tickable.TICKID_MOB);
 								}
-								CMLib.clans().clanAnnounce(mob,_("The @x1 @x2 has a new member: @x3",C.getGovernmentName(),C.clanID(),mob.Name()));
-								mob.tell(_("You have successfully joined @x1.  Use CLANDETAILS for information.",C.clanID()));
+								CMLib.clans().clanAnnounce(mob,L("The @x1 @x2 has a new member: @x3",C.getGovernmentName(),C.clanID(),mob.Name()));
+								mob.tell(L("You have successfully joined @x1.  Use CLANDETAILS for information.",C.clanID()));
 							}
 						}
 						else
 						{
-							msg.append(_("This @x1 already has the maximum number of members (@x2/@x3) and can not accept new applicants.",C.getGovernmentName(),""+numMembers,""+maxMembers));
+							msg.append(L("This @x1 already has the maximum number of members (@x2/@x3) and can not accept new applicants.",C.getGovernmentName(),""+numMembers,""+maxMembers));
 						}
 					}
 					else
 					{
-						msg.append(_("You must be at least level @x1 to join a clan.",""+CMProps.getIntVar(CMProps.Int.MINCLANLEVEL)));
+						msg.append(L("You must be at least level @x1 to join a clan.",""+CMProps.getIntVar(CMProps.Int.MINCLANLEVEL)));
 					}
 				}
 				else
 				{
-					msg.append(_("You are not of the right qualities to join @x1. Use CLANDETAILS \"@x2\" for more information.",C.clanID(),C.clanID()));
+					msg.append(L("You are not of the right qualities to join @x1. Use CLANDETAILS \"@x2\" for more information.",C.clanID(),C.clanID()));
 				}
 			}
 			else
 			{
-				msg.append(_("There is no clan named @x1.",clanName));
+				msg.append(L("There is no clan named @x1.",clanName));
 			}
 		}
 		else
 		{
-			msg.append(_("You haven't specified which clan you are applying to."));
+			msg.append(L("You haven't specified which clan you are applying to."));
 		}
 		mob.tell(msg.toString());
 		return false;

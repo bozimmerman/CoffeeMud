@@ -36,7 +36,7 @@ import java.util.*;
 public class Thief_Shadowstrike extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Shadowstrike"; }
-	private final static String localizedName = CMLib.lang()._("Shadowstrike");
+	private final static String localizedName = CMLib.lang().L("Shadowstrike");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return 0;}
@@ -77,7 +77,7 @@ public class Thief_Shadowstrike extends ThiefSkill
 	{
 		if(mob.isInCombat())
 		{
-			mob.tell(_("Not while in combat!"));
+			mob.tell(L("Not while in combat!"));
 			return false;
 		}
 		final MOB target=getTarget(mob,commands,givenTarget);
@@ -85,20 +85,20 @@ public class Thief_Shadowstrike extends ThiefSkill
 
 		if(CMLib.flags().isSitting(mob))
 		{
-			mob.tell(_("You need to stand up!"));
+			mob.tell(L("You need to stand up!"));
 			return false;
 		}
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
 			return false;
 		if(CMLib.flags().canBeSeenBy(mob,target))
 		{
-			mob.tell(_("@x1 is watching you too closely.",target.name(mob)));
+			mob.tell(L("@x1 is watching you too closely.",target.name(mob)));
 			return false;
 		}
 		final Item w=mob.fetchWieldedItem();
 		if((w==null)||(w.minRange()>0)||(w.maxRange()>0))
 		{
-			mob.tell(_("You need a close melee weapon to shadowstrike."));
+			mob.tell(L("You need a close melee weapon to shadowstrike."));
 			return false;
 		}
 
@@ -107,7 +107,7 @@ public class Thief_Shadowstrike extends ThiefSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 		final int code=CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT;
-		final String str=auto?"":_("<S-NAME> strike(s) <T-NAMESELF> from the shadows!");
+		final String str=auto?"":L("<S-NAME> strike(s) <T-NAMESELF> from the shadows!");
 		final int otherCode=success?code:CMMsg.NO_EFFECT;
 		final String otherStr=success?str:null;
 		final CMMsg msg=CMClass.getMsg(mob,target,this,code,str,otherCode,otherStr,otherCode,otherStr);
