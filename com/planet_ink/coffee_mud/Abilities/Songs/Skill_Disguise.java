@@ -70,6 +70,25 @@ public class Skill_Disguise extends BardSkill
 		for(int i=0;i<values.length;i++)
 			values[i]=null;
 	}
+
+	@Override
+	public String text()
+	{
+		final StringBuilder str=new StringBuilder("");
+		for(int i=0;i<whats.length;i++)
+			if(values[i]!=null)
+				str.append(" ").append(whats[i]).append("=\"").append(values[i]).append("\"");
+		return str.toString();
+	}
+	
+	@Override
+	public void setMiscText(final String txt)
+	{
+		values=new String[whats.length];
+		for(int i=0;i<values.length;i++)
+			values[i] = CMParms.getParmStr(txt, whats[i], null);
+	}
+	
 	@Override
 	public void affectPhyStats(Physical myHost, PhyStats affectableStats)
 	{
