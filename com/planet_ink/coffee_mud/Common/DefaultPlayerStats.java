@@ -590,7 +590,7 @@ public class DefaultPlayerStats implements PlayerStats
 		return (R.getAgingChart()[Race.AGE_YOUNGADULT]+clock.getYear()-birthday[2]);
 	}
 
-	protected String getPrivateList(Set<String> h)
+	protected String getPrivateList(final Set<String> h)
 	{
 		if((h==null)||(h.size()==0)) return "";
 		final StringBuffer list=new StringBuffer("");
@@ -600,7 +600,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void bumpPrideStat(PrideStat stat, int amt)
+	public void bumpPrideStat(final PrideStat stat, final int amt)
 	{
 		final long now=System.currentTimeMillis();
 		if(stat!=null)
@@ -622,7 +622,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public int getPrideStat(TimePeriod period, PrideStat stat)
+	public int getPrideStat(final TimePeriod period, final PrideStat stat)
 	{
 		if((period==null)||(stat==null))
 			return 0;
