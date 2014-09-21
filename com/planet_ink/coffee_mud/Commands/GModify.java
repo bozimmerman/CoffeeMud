@@ -55,27 +55,54 @@ public class GModify extends StdCommand
 
 	public static String getStat(Environmental E, String stat)
 	{
-		if((stat!=null)
-		&&(stat.length()>0)
-		&&(stat.equalsIgnoreCase("REJUV"))
-		&&(E instanceof Physical))
+		if((stat!=null)&&(stat.length()>0))
 		{
-			if(((Physical)E).basePhyStats().rejuv()==PhyStats.NO_REJUV)
-				return "0";
-			return ""+((Physical)E).basePhyStats().rejuv();
+			if((stat.equalsIgnoreCase("REJUV"))
+			&&(E instanceof Physical))
+			{
+				if(((Physical)E).basePhyStats().rejuv()==PhyStats.NO_REJUV)
+					return "0";
+				return ""+((Physical)E).basePhyStats().rejuv();
+			}
+			return E.getStat(stat);
 		}
-		return E.getStat(stat);
+		return "";
 	}
 
 	public static void setStat(Environmental E, String stat, String value)
 	{
-		if((stat!=null)
-		&&(stat.length()>0)
-		&&(stat.equalsIgnoreCase("REJUV"))
-		&&(E instanceof Physical))
-			((Physical)E).basePhyStats().setRejuv(CMath.s_int(value));
-		else
-			E.setStat(stat,value);
+		if((stat!=null)&&(stat.length()>0))
+		{
+			if((stat.equalsIgnoreCase("REJUV"))
+			&&(E instanceof Physical))
+				((Physical)E).basePhyStats().setRejuv(CMath.s_int(value));
+			else
+			if((stat.equalsIgnoreCase("ADDABILITY"))
+			&&(E instanceof AbilityContainer))
+				((AbilityContainer)E).addAbility(CMClass.getAbility(value));
+			else
+			if((stat.equalsIgnoreCase("ADDAFFECT"))
+			&&(E instanceof Affectable))
+				((Affectable)E).addNonUninvokableEffect(CMClass.getAbility(value));
+			else
+			if((stat.equalsIgnoreCase("ADDBEHAVIOR"))
+			&&(E instanceof Behavable))
+				((Behavable)E).addBehavior(CMClass.getBehavior(value));
+			else
+			if((stat.equalsIgnoreCase("DELABILITY"))
+			&&(E instanceof AbilityContainer))
+				((AbilityContainer)E).delAbility(((AbilityContainer)E).fetchAbility(value));
+			else
+			if((stat.equalsIgnoreCase("DELAFFECT"))
+			&&(E instanceof Affectable))
+				((Affectable)E).delEffect(((Affectable)E).fetchEffect(value));
+			else
+			if((stat.equalsIgnoreCase("DELBEHAVIOR"))
+			&&(E instanceof Behavable))
+				((Behavable)E).delBehavior(((Behavable)E).fetchBehavior(value));
+			else
+				E.setStat(stat,value);
+		}
 	}
 
 	public static void gmodifydebugtell(MOB mob, String msg)
@@ -322,7 +349,7 @@ public class GModify extends StdCommand
 		return didAnything;
 	}
 
-	public void sortEnumeratedList(Enumeration<? extends Environmental> e, Vector<String> allKnownFields, StringBuffer allFieldsMsg)
+	public void addEnumeratedStatCodes(Enumeration<? extends Environmental> e, Set<String> allKnownFields, StringBuffer allFieldsMsg)
 	{
 		for(;e.hasMoreElements();)
 		{
@@ -331,7 +358,7 @@ public class GModify extends StdCommand
 			for(int x=0;x<fields.length;x++)
 				if(!allKnownFields.contains(fields[x]))
 				{
-					allKnownFields.addElement(fields[x]);
+					allKnownFields.add(fields[x]);
 					allFieldsMsg.append(fields[x]+" ");
 				}
 		}
@@ -359,14 +386,15 @@ public class GModify extends StdCommand
 		   ((String)commands.elementAt(0)).equalsIgnoreCase("?"))
 		{
 			final StringBuffer allFieldsMsg=new StringBuffer("");
-			final Vector allKnownFields=new Vector();
-			sortEnumeratedList(CMClass.mobTypes(),allKnownFields,allFieldsMsg);
-			sortEnumeratedList(CMClass.basicItems(),allKnownFields,allFieldsMsg);
-			sortEnumeratedList(CMClass.weapons(),allKnownFields,allFieldsMsg);
-			sortEnumeratedList(CMClass.armor(),allKnownFields,allFieldsMsg);
-			sortEnumeratedList(CMClass.clanItems(),allKnownFields,allFieldsMsg);
-			sortEnumeratedList(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
-			sortEnumeratedList(CMClass.tech(),allKnownFields,allFieldsMsg);
+			final Set<String> allKnownFields=new TreeSet<String>();
+			addEnumeratedStatCodes(CMClass.mobTypes(),allKnownFields,allFieldsMsg);
+			addEnumeratedStatCodes(CMClass.basicItems(),allKnownFields,allFieldsMsg);
+			addEnumeratedStatCodes(CMClass.weapons(),allKnownFields,allFieldsMsg);
+			addEnumeratedStatCodes(CMClass.armor(),allKnownFields,allFieldsMsg);
+			addEnumeratedStatCodes(CMClass.clanItems(),allKnownFields,allFieldsMsg);
+			addEnumeratedStatCodes(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
+			addEnumeratedStatCodes(CMClass.tech(),allKnownFields,allFieldsMsg);
+			allFieldsMsg.append("ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT REJUV DESTROY ");
 			mob.tell(_("Valid field names are @x1",allFieldsMsg.toString()));
 			return false;
 		}
@@ -408,21 +436,19 @@ public class GModify extends StdCommand
 		final DVector changes=new DVector(5);
 		final DVector onfields=new DVector(5);
 		DVector use=null;
-		final Vector allKnownFields=new Vector();
+		final Set<String> allKnownFields=new HashSet<String>();
 		final StringBuffer allFieldsMsg=new StringBuffer("");
-		sortEnumeratedList(CMClass.mobTypes(),allKnownFields,allFieldsMsg);
-		sortEnumeratedList(CMClass.basicItems(),allKnownFields,allFieldsMsg);
-		sortEnumeratedList(CMClass.weapons(),allKnownFields,allFieldsMsg);
-		sortEnumeratedList(CMClass.armor(),allKnownFields,allFieldsMsg);
-		sortEnumeratedList(CMClass.clanItems(),allKnownFields,allFieldsMsg);
-		sortEnumeratedList(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
-		sortEnumeratedList(CMClass.tech(),allKnownFields,allFieldsMsg);
-		sortEnumeratedList(CMClass.locales(),allKnownFields,allFieldsMsg);
-
-		allKnownFields.addElement("REJUV");
-		allFieldsMsg.append("REJUV ");
-		allKnownFields.addElement("DESTROY");
-		allFieldsMsg.append("DESTROY ");
+		addEnumeratedStatCodes(CMClass.mobTypes(),allKnownFields,allFieldsMsg);
+		addEnumeratedStatCodes(CMClass.basicItems(),allKnownFields,allFieldsMsg);
+		addEnumeratedStatCodes(CMClass.weapons(),allKnownFields,allFieldsMsg);
+		addEnumeratedStatCodes(CMClass.armor(),allKnownFields,allFieldsMsg);
+		addEnumeratedStatCodes(CMClass.clanItems(),allKnownFields,allFieldsMsg);
+		addEnumeratedStatCodes(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
+		addEnumeratedStatCodes(CMClass.tech(),allKnownFields,allFieldsMsg);
+		addEnumeratedStatCodes(CMClass.locales(),allKnownFields,allFieldsMsg);
+		allFieldsMsg.append("REJUV DESTROY ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT ");
+		allKnownFields.addAll(Arrays.asList(new String[]{"REJUV","DESTROY","ADDABILITY","DELABILITY","ADDBEHAVIOR","DELBEHAVIOR","ADDAFFECT","DELAFFECT"}));
+		
 		use=onfields;
 		final Vector newSet=new Vector();
 		StringBuffer s=new StringBuffer("");
