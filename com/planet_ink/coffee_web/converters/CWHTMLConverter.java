@@ -113,13 +113,16 @@ public class CWHTMLConverter implements HTTPOutputConverter
 							switch(m)
 							{
 							case URLPATH:
-								out.write((""+request.getUrlPath()).getBytes());
+								if(request != null)
+									out.write((""+request.getUrlPath()).getBytes());
 								break;
 							case HTTPSTATUS:
-								out.write((""+status.getStatusCode()).getBytes());
+								if(status != null)
+									out.write((""+status.getStatusCode()).getBytes());
 								break;
 							case HTTPSTATUSINFO:
-								out.write(status.description().getBytes());
+								if(status != null)
+									out.write(status.description().getBytes());
 								break;
 							case WEBSERVERVERSION:
 								out.write((""+WebServer.VERSION).getBytes());
@@ -161,7 +164,8 @@ public class CWHTMLConverter implements HTTPOutputConverter
 								if((files != null) && (fileLoopCounter >=0) && (fileLoopCounter < files.length))
 								{
 									final File file=files[fileLoopCounter];
-									out.write((request.getUrlPath()+file.getName()).getBytes());
+									if(request != null)
+										out.write((request.getUrlPath()+file.getName()).getBytes());
 									if(file.isDirectory())
 										out.write("/".getBytes());
 								}
