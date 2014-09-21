@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -111,16 +110,14 @@ public class Prayer_InfuseUnholiness extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
+		Physical target;
+		if((givenTarget == null)
+		&&(CMParms.combine(commands,0).equalsIgnoreCase("room")||CMParms.combine(commands,0).equalsIgnoreCase("here")))
+			target=mob.location();
+		else
+			target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null)
-		{
-			if((CMLib.law().doesOwnThisProperty(mob,mob.location()))
-			&&(CMParms.combine(commands,0).equalsIgnoreCase("room")
-				||CMParms.combine(commands,0).equalsIgnoreCase("here")))
-				target=mob.location();
-			else
-				return false;
-		}
+			return false;
 
 		Deity D=null;
 		if(CMLib.law().getClericInfusion(target)!=null)
