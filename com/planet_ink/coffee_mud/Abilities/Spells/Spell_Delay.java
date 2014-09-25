@@ -45,7 +45,7 @@ public class Spell_Delay extends Spell
 	private Ability shooter=null;
 	protected Vector parameters=null;
 	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	protected int overridemana(){return Ability.COST_ALL;}
+	@Override protected int overrideMana(){return Ability.COST_ALL;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	@Override

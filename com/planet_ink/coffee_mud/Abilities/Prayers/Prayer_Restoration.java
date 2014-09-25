@@ -41,7 +41,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALINGMAGIC;}
-	protected int overridemana(){return Ability.COST_ALL;}
+	@Override protected int overrideMana(){return Ability.COST_ALL;}
 
 	@Override
 	public boolean supportsMending(Physical item)

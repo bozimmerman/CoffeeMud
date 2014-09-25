@@ -46,7 +46,7 @@ public class Prayer_HolyDay extends Prayer
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected int overridemana(){return Ability.COST_ALL;}
+	@Override protected int overrideMana(){return Ability.COST_ALL;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected String godName="the gods";
 

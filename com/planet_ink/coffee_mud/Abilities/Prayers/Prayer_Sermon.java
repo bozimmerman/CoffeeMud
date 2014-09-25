@@ -44,7 +44,7 @@ public class Prayer_Sermon extends Prayer
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public long flags(){return Ability.FLAG_CHARMING|Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	protected int overridemana(){return Ability.COST_ALL;}
+	@Override protected int overrideMana(){return Ability.COST_ALL;}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)

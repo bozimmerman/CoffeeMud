@@ -41,7 +41,7 @@ public class Spell_Duplicate extends Spell
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	protected int overridemana(){return Ability.COST_ALL;}
+	@Override protected int overrideMana(){return Ability.COST_ALL;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	@Override

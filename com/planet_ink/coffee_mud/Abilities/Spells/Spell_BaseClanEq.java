@@ -46,7 +46,7 @@ public class Spell_BaseClanEq extends Spell
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	@Override public long flags(){return super.flags()|Ability.FLAG_CLANMAGIC;}
-	protected int overridemana(){return Ability.COST_ALL;}
+	@Override protected int overrideMana(){return Ability.COST_ALL;}
 	protected String type="";
 	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
 

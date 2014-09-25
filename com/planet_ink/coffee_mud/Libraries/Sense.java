@@ -288,6 +288,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isUnattackable(Physical P)
 	{ return (P!=null)&&((P.phyStats().disposition()&PhyStats.IS_UNATTACKABLE)==PhyStats.IS_UNATTACKABLE); }
+	
 	@Override
 	public boolean isInvisible(Physical P)
 	{ return (P!=null)&&((P.phyStats().disposition()&PhyStats.IS_INVISIBLE)==PhyStats.IS_INVISIBLE); }

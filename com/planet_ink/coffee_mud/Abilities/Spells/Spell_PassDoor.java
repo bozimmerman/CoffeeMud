@@ -41,7 +41,7 @@ public class Spell_PassDoor extends Spell
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Pass Door)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canTargetCode(){return 0;}
-	protected int overridemana(){return Ability.COST_ALL;}
+	@Override protected int overrideMana(){return Ability.COST_ALL;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	@Override public long flags(){return Ability.FLAG_TRANSPORTING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}

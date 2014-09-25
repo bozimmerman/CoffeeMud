@@ -43,7 +43,7 @@ public class Spell_EnchantWand extends Spell
 	@Override protected int canTargetCode(){return CAN_ITEMS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	@Override public long flags(){return Ability.FLAG_NOORDERING;}
-	protected int overridemana(){return Ability.COST_ALL;}
+	@Override protected int overrideMana(){return Ability.COST_ALL;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	@Override

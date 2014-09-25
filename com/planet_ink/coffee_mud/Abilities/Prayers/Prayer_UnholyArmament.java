@@ -43,7 +43,7 @@ public class Prayer_UnholyArmament extends Prayer
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	protected int overridemana(){return Ability.COST_ALL;}
+	@Override protected int overrideMana(){return Ability.COST_ALL;}
 	public static final long[] checkOrder={
 		Wearable.WORN_WIELD,
 		Wearable.WORN_TORSO,

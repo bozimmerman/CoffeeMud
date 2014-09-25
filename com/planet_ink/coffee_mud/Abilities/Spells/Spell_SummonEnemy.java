@@ -44,7 +44,7 @@ public class Spell_SummonEnemy extends Spell
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	@Override public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_SUMMONING;}
-	protected int overridemana(){return Ability.COST_PCT+50;}
+	@Override protected int overrideMana(){return Ability.COST_PCT+50;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
