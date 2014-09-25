@@ -134,8 +134,14 @@ public class Kill extends StdCommand
 			}
 		}
 
-		if((!mob.mayPhysicallyAttack(target)))
-			mob.tell(L("You are not allowed to attack @x1.",target.name(mob)));
+		if(!mob.mayPhysicallyAttack(target))
+		{
+			// some properties may be protecting the target -- give them a chance to complain
+			final CMMsg msg=CMClass.getMsg(mob,target,CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_MALICIOUS,null);
+			final Room R=target.location();
+			if((R==null)||(R.okMessage(mob, msg)))
+				mob.tell(L("You are not allowed to attack @x1.",target.name(mob)));
+		}
 		else
 		{
 			final Item weapon=mob.fetchWieldedItem();
