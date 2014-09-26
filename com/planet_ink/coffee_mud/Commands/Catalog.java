@@ -109,6 +109,7 @@ public class Catalog extends StdCommand
 		else
 		{
 			CMLib.catalog().addCatalog(newCat,P);
+			CMLib.catalog().updateCatalog(P);
 		}
 		R.show(mob,P,CMMsg.MSG_OK_VISUAL,msg);
 		return true;
