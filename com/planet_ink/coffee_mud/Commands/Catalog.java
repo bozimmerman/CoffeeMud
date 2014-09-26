@@ -104,13 +104,10 @@ public class Catalog extends StdCommand
 			msg="<S-NAME> modif(ys) the cataloged version of <T-NAMESELF>.";
 			if((data!=null)&&(!data.category().equals(newCat)))
 				CMLib.catalog().updateCatalogCatagory(cataP,newCat);
-			CMLib.catalog().updateCatalog(P);
 		}
 		else
-		{
 			CMLib.catalog().addCatalog(newCat,P);
-			CMLib.catalog().updateCatalog(P);
-		}
+		CMLib.catalog().updateCatalog(P);
 		R.show(mob,P,CMMsg.MSG_OK_VISUAL,msg);
 		return true;
 	}
