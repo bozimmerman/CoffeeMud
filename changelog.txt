@@ -8,7 +8,7 @@
    7. Portals can now be entered using the CLIMB skill, and their put, mount, and dismount strings are modifiable.
    8. New Property: Prop_Climbable - use for making rooms, exits, or portals require climbing (and benefit from ropes and ladders).
    9. New Guide in guides/randomareas.html.  Also, random races are easier to build now.
-  10. New Assassin skill: Scratch
+  10. New Assassin skill: Scratch, for doing very very little damage without entering combat.
    *. finish collision management, against space ships at least.
    *. interacting items of diff tech level might damage each other
    *. personal scanner/tricorder software: mineral scanner, computer interface (with ship perhaps?)!
