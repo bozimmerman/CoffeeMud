@@ -234,7 +234,14 @@ public class StdAbility implements Ability
 		return USAGE_MANA;
 	}
 
-	protected int overrideMana(){return -1;} //-1=normal, Ability.COST_ALL=all, Ability.COST_PCT
+	/**
+	 *  -1=normal, Ability.COST_ALL=all, Ability.COST_PCT
+	 * @return
+	 */
+	protected int overrideMana()
+	{
+		return Ability.COST_NORMAL;
+	}
 
 	@Override
 	public int abstractQuality()
@@ -470,7 +477,8 @@ public class StdAbility implements Ability
 	public void setProficiency(int newProficiency)
 	{
 		proficiency=newProficiency;
-		if(proficiency>100) proficiency=100;
+		if(proficiency>100) 
+			proficiency=100;
 	}
 
 	protected int addedTickTime(MOB invokerMOB, int baseTickTime)
