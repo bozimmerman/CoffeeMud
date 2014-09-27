@@ -613,6 +613,8 @@ public interface Ability extends Environmental
 	public final static int COST_ALL=Integer.MAX_VALUE;
 	/** Constant for overrideMana to denote that the skill uses a % of a players mana @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageCost(MOB,boolean) */
 	public final static int COST_PCT=Integer.MAX_VALUE-100;
+	/** Constant for overrideMana to denote that the skill uses base mana formula @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageCost(MOB,boolean) */
+	public final static int COST_NORMAL=-1;
 
 	/** index into usageCost(MOB,boolean) array for the amount of mana this skill costs @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageCost(MOB,boolean) */
 	public final static int USAGEINDEX_MANA=0;
