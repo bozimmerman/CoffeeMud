@@ -241,10 +241,15 @@ public class CharGen extends StdCommand
 	{
 		final MOB avgMob=levelMOBup(level,C, player);
 		int tries=1;
+		final Session sess=(mob!=null)?mob.session():null;
 		for(;tries<numTries;tries++)
 		{
-			if(((tries % 20)==0)&&(mob!=null))
-				mob.session().print(".");
+			if(((tries % 20)==0)&&(sess!=null))
+			{
+				if(sess.isStopped())
+					return avgMob;
+				sess.print(".");
+			}
 			final MOB mob2=levelMOBup(level,C, player);
 			addHimIn(avgMob,mob2);
 		}
