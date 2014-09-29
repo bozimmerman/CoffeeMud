@@ -3064,7 +3064,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		str.append(CMLib.xml().convertXMLtoTag("ATTA",mob.basePhyStats().attackAdjustment()));
 		str.append(CMLib.xml().convertXMLtoTag("AMOR",mob.basePhyStats().armor()));
 		str.append(CMLib.xml().convertXMLtoTag("DAMG",mob.basePhyStats().damage()));
-		str.append(CMLib.xml().convertXMLtoTag("BTMP",mob.getBitmap()));
+		str.append(CMLib.xml().convertXMLtoTag("BTMP",mob.getAttributesBitmap()));
 		str.append(CMLib.xml().convertXMLtoTag("LEIG",mob.getLiegeID()));
 		str.append(CMLib.xml().convertXMLtoTag("HEIT",mob.basePhyStats().height()));
 		str.append(CMLib.xml().convertXMLtoTag("WEIT",mob.basePhyStats().weight()));
@@ -3163,7 +3163,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			mob.basePhyStats().setAttackAdjustment(CMLib.xml().getIntFromPieces(mblk.contents,"ATTA"));
 			mob.basePhyStats().setArmor(CMLib.xml().getIntFromPieces(mblk.contents,"AMOR"));
 			mob.basePhyStats().setDamage(CMLib.xml().getIntFromPieces(mblk.contents,"DAMG"));
-			mob.setBitmap(CMLib.xml().getIntFromPieces(mblk.contents,"BTMP"));
+			mob.setAttributesBitmap(CMLib.xml().getIntFromPieces(mblk.contents,"BTMP"));
 			mob.setLiegeID(CMLib.xml().getValFromPieces(mblk.contents,"LEIG"));
 			mob.basePhyStats().setHeight(CMLib.xml().getIntFromPieces(mblk.contents,"HEIT"));
 			mob.basePhyStats().setWeight(CMLib.xml().getIntFromPieces(mblk.contents,"WEIT"));

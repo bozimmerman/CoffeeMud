@@ -2797,7 +2797,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
-				if(CMath.bset(((MOB)E).getBitmap(),MOB.ATT_PLAYERKILL))
+				if(((MOB)E).isAttribute(MOB.Attrib.PLAYERKILL))
 					returnable=true;
 				else
 					returnable=false;
@@ -5093,7 +5093,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((E==null)||(!(E instanceof MOB)))
 					results.append("false");
 				else
-				if(CMath.bset(((MOB)E).getBitmap(),MOB.ATT_PLAYERKILL))
+				if(((MOB)E).isAttribute(MOB.Attrib.PLAYERKILL))
 					results.append("true");
 				else
 					results.append("false");

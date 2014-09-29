@@ -14,8 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -255,7 +253,8 @@ public class Chant_SaplingWorkers extends Chant
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		newMOB.setBitmap(MOB.ATT_AUTOASSIST);
+		newMOB.setAttributesBitmap(0);
+		newMOB.setAttribute(MOB.Attrib.AUTOASSIST,true);
 		newMOB.setStartRoom(null);
 		newMOB.location().show(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> start(s) looking around!"));
 		if((start)&&(A!=null)) A.invoke(newMOB,null,false,0);

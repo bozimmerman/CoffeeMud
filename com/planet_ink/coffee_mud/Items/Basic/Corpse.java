@@ -202,7 +202,7 @@ public class Corpse extends GenContainer implements DeadBody
 				else
 				if(CMProps.getVar(CMProps.Str.CORPSEGUARD).equalsIgnoreCase("PKONLY"))
 				{
-					if(!(CMath.bset((msg.source()).getBitmap(), MOB.ATT_PLAYERKILL)))
+					if(!((msg.source()).isAttribute(MOB.Attrib.PLAYERKILL)))
 					{
 						msg.source().tell(L("You can not get that.  You are not a player killer."));
 						return false;

@@ -552,7 +552,7 @@ public class StdRace implements Race
 		bodyI.basePhyStats().setWeight(mob.basePhyStats().weight());
 		bodyI.setPlayerCorpse(!mob.isMonster());
 		bodyI.setTimeOfDeath(System.currentTimeMillis());
-		bodyI.setMobPKFlag(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL));
+		bodyI.setMobPKFlag(mob.isAttribute(MOB.Attrib.PLAYERKILL));
 		bodyI.setName(L("the body of @x1",mob.Name().replace('\'','`')));
 		bodyI.setMobName(mob.Name().replace('\'','`'));
 		bodyI.setMobDescription(mob.description().replace('\'','`'));

@@ -213,7 +213,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		final boolean nameTagParm=((tagParm!=null)&&(tagParm.indexOf('*')>=0));
 		final StringBuilder say=new StringBuilder("");
 		Environmental item=null;
-		final boolean sysmsgs=(viewerM!=null)?CMath.bset(viewerM.getBitmap(),MOB.ATT_SYSOPMSGS):false;
+		final boolean sysmsgs=(viewerM!=null)?viewerM.isAttribute(MOB.Attrib.SYSOPMSGS):false;
 		int numShown=0;
 		final int maxToShow=CMProps.getIntVar(CMProps.Int.MAXITEMSHOWN);
 		while(items.size()>0)

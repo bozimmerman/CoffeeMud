@@ -46,14 +46,14 @@ public class AutoWeather extends StdCommand
 		throws java.io.IOException
 
 	{
-		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOWEATHER))
+		if(mob.isAttribute(MOB.Attrib.AUTOWEATHER))
 		{
-			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOWEATHER));
+			mob.setAttribute(MOB.Attrib.AUTOWEATHER,false);
 			mob.tell(L("Weather descriptions are now off."));
 		}
 		else
 		{
-			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOWEATHER));
+			mob.setAttribute(MOB.Attrib.AUTOWEATHER,true);
 			mob.tell(L("Weather descriptions are now on."));
 		}
 		return false;

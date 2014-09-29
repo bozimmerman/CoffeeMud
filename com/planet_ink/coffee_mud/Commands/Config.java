@@ -43,16 +43,17 @@ public class Config extends StdCommand
 		throws java.io.IOException
 	{
 		final StringBuffer msg=new StringBuffer(L("^HYour configuration flags:^?\n\r"));
-		for(int i=0;i<MOB.AUTODESC.length;i++)
+		for(MOB.Attrib a : MOB.Attrib.values())
 		{
-			if((MOB.AUTODESC[i].equalsIgnoreCase("SYSMSGS"))&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SYSMSGS))))
+			if((a==MOB.Attrib.SYSOPMSGS)&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SYSMSGS))))
 				continue;
-			if((MOB.AUTODESC[i].equalsIgnoreCase("AUTOMAP"))&&(CMProps.getIntVar(CMProps.Int.AWARERANGE)<=0))
+			if((a==MOB.Attrib.AUTOMAP)&&(CMProps.getIntVar(CMProps.Int.AWARERANGE)<=0))
 				continue;
 
-			msg.append(CMStrings.padRight(MOB.AUTODESC[i],15)+": ");
-			boolean set=CMath.isSet(mob.getBitmap(),i);
-			if(MOB.AUTOREV[i]) set=!set;
+			msg.append(CMStrings.padRight(a.getName(),15)+": ");
+			boolean set=mob.isAttribute(a);
+			if(a.isAutoReversed()) 
+				set=!set;
 			msg.append(set?L("ON"):L("OFF"));
 			msg.append("\n\r");
 		}

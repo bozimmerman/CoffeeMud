@@ -84,10 +84,10 @@ public class Spell_IronGrip extends Spell
 			&&(((Item)msg.target()).amWearingAt(Wearable.WORN_WIELD)))
 			{
 				mob.location().show(mob,null,msg.target(),CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to let go of <O-NAME>, but <S-HIS-HER> grip is too strong!"));
-				if((!mob.isInCombat())&&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTODRAW)))
+				if((!mob.isInCombat())&&(mob.isAttribute(MOB.Attrib.AUTODRAW)))
 				{
 					mob.tell(L("** Autodraw has been turned OFF. **"));
-					mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTODRAW));
+					mob.setAttribute(MOB.Attrib.AUTODRAW,false);
 				}
 				return false;
 			}

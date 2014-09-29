@@ -48,9 +48,9 @@ public class NoANSI extends StdCommand
 			if(mob.playerStats()!=null)
 				acct = mob.playerStats().getAccount();
 			if(acct != null) acct.setFlag(PlayerAccount.FLAG_ANSI, false);
-			if(CMath.bset(mob.getBitmap(),MOB.ATT_ANSI))
+			if(mob.isAttribute(MOB.Attrib.ANSI))
 			{
-				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_ANSI));
+				mob.setAttribute(MOB.Attrib.ANSI,false);
 				mob.tell(L("ANSI colour disabled.\n\r"));
 			}
 			else

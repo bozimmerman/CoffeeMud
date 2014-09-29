@@ -45,17 +45,17 @@ public class AutoGuard extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if((!CMath.bset(mob.getBitmap(),MOB.ATT_AUTOGUARD))
+		if((!mob.isAttribute(MOB.Attrib.AUTOGUARD))
 		   ||((commands.size()>0)&&(((String)commands.firstElement()).toUpperCase().startsWith("G"))))
 		{
-			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOGUARD));
+			mob.setAttribute(MOB.Attrib.AUTOGUARD,true);
 			mob.tell(L("You are now on guard. You will no longer follow group leaders."));
 			if(mob.isMonster())
 				CMLib.commands().postSay(mob,null,L("I am now on guard."),false,false);
 		}
 		else
 		{
-			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOGUARD));
+			mob.setAttribute(MOB.Attrib.AUTOGUARD,false);
 			mob.tell(L("You are no longer on guard.  You will now follow group leaders."));
 			if(mob.isMonster())
 				CMLib.commands().postSay(mob,null,L("I will now follow my group leader."),false,false);

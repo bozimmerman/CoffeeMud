@@ -108,7 +108,7 @@ public class MOBloader
 				mob.basePhyStats().setAttackAdjustment(CMath.s_int(DBConnections.getRes(R,"CMATTA")));
 				mob.basePhyStats().setArmor(CMath.s_int(DBConnections.getRes(R,"CMAMOR")));
 				mob.basePhyStats().setDamage(CMath.s_int(DBConnections.getRes(R,"CMDAMG")));
-				mob.setBitmap(CMath.s_int(DBConnections.getRes(R,"CMBTMP")));
+				mob.setAttributesBitmap(CMath.s_int(DBConnections.getRes(R,"CMBTMP")));
 				mob.setLiegeID(DBConnections.getRes(R,"CMLEIG"));
 				mob.basePhyStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
 				mob.basePhyStats().setWeight((int)DBConnections.getLongRes(R,"CMWEIT"));
@@ -942,7 +942,7 @@ public class MOBloader
 				+", CMATTA="+mob.basePhyStats().attackAdjustment()
 				+", CMAMOR="+mob.basePhyStats().armor()
 				+", CMDAMG="+mob.basePhyStats().damage()
-				+", CMBTMP="+mob.getBitmap()
+				+", CMBTMP="+mob.getAttributesBitmap()
 				+", CMLEIG='"+mob.getLiegeID()+"'"
 				+", CMHEIT="+mob.basePhyStats().height()
 				+", CMWEIT="+mob.basePhyStats().weight()
@@ -1582,7 +1582,7 @@ public class MOBloader
 			if((M.Name().equalsIgnoreCase(name))&&(M.playerStats()!=null))
 			{
 				data[0]=M.playerStats().getEmail();
-				data[1]=""+((M.getBitmap()&MOB.ATT_AUTOFORWARD)==MOB.ATT_AUTOFORWARD);
+				data[1]=""+M.isAttribute(MOB.Attrib.AUTOFORWARD);
 				return data;
 			}
 		}
@@ -1597,7 +1597,7 @@ public class MOBloader
 				final int btmp=CMath.s_int(DB.getRes(R,"CMBTMP"));
 				final String temail=DB.getRes(R,"CMEMAL");
 				data[0]=temail;
-				data[1]=""+((btmp&MOB.ATT_AUTOFORWARD)==MOB.ATT_AUTOFORWARD);
+				data[1]=""+((btmp&MOB.Attrib.AUTOFORWARD.getBitCode())!=0);
 				return data;
 			}
 		}

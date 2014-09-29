@@ -44,14 +44,14 @@ public class AutoImprovement extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOIMPROVE))
+		if(mob.isAttribute(MOB.Attrib.AUTOIMPROVE))
 		{
-			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOIMPROVE));
+			mob.setAttribute(MOB.Attrib.AUTOIMPROVE,false);
 			mob.tell(L("Skill improvement notifications are now off."));
 		}
 		else
 		{
-			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOIMPROVE));
+			mob.setAttribute(MOB.Attrib.AUTOIMPROVE,true);
 			mob.tell(L("Skill improvement notifications are now on."));
 		}
 		return false;

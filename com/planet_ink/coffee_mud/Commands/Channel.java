@@ -75,7 +75,7 @@ public class Channel extends StdCommand
 			return false;
 		}
 
-		if(CMath.bset(mob.getBitmap(),MOB.ATT_QUIET))
+		if(mob.isAttribute(MOB.Attrib.QUIET))
 		{
 			mob.tell(L("You have QUIET mode on.  You must turn it off first."));
 			return false;

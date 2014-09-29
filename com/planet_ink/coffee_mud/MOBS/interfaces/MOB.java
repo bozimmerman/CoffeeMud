@@ -42,8 +42,10 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 {
 	public static long AGE_MILLIS_THRESHOLD = 120000;
 
-	public int getBitmap();
-	public void setBitmap(int bitmap);
+	public int getAttributesBitmap();
+	public void setAttributesBitmap(int bitmap);
+	public void setAttribute(MOB.Attrib attrib, boolean set);
+	public boolean isAttribute(MOB.Attrib attrib);
 	public String titledName();
 	public String genericName();
 
@@ -289,83 +291,64 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 		public List<String>	commandVector = null;
 	}
 
-	public static final int ATT_AUTOGOLD=1;
-	public static final int ATT_AUTOLOOT=2;
-	public static final int ATT_AUTOEXITS=4;
-	public static final int ATT_AUTOASSIST=8;
-	public static final int ATT_ANSI=16;
-	public static final int ATT_SYSOPMSGS=32;
-	public static final int ATT_AUTOMELEE=64;
-	public static final int ATT_PLAYERKILL=128;
-	public static final int ATT_BRIEF=256;
-	public static final int ATT_NOFOLLOW=512;
-	public static final int ATT_AUTOWEATHER=1024;
-	public static final int ATT_AUTODRAW=2048;
-	public static final int ATT_AUTOGUARD=4096;
-	public static final int ATT_SOUND=8192;
-	public static final int ATT_AUTOIMPROVE=16384;
-	public static final int ATT_NOTEACH=32768;
-	public static final int ATT_AUTONOTIFY=65536;
-	public static final int ATT_AUTOFORWARD=131072;
-	public static final int ATT_DAILYMESSAGE=262144;
-	public static final int ATT_QUIET=524288;
-	public static final int ATT_MXP=1048576;
-	public static final int ATT_COMPRESS=2097152;
-	public static final int ATT_AUTORUN=4194304;
-	public static final int ATT_AUTOMAP=8388608;
-	// maybe 9 more?
+	public static enum Attrib
+	{
+		AUTOGOLD(false),
+		AUTOLOOT(false),
+		AUTOEXITS(false),
+		AUTOASSIST(true),
+		ANSI(false,"ANSI COLOR"),
+		SYSOPMSGS(false,"SYSMSGS"),
+		AUTOMELEE(true),
+		PLAYERKILL(false),
+		BRIEF(false),
+		NOFOLLOW(false),
+		AUTOWEATHER(false),
+		AUTODRAW(false),
+		AUTOGUARD(false),
+		SOUND(false,"SOUNDS"),
+		AUTOIMPROVE(false,"AUTOIMPROVEMENT"),
+		NOTEACH(false),
+		AUTONOTIFY(false),
+		AUTOFORWARD(true),
+		DAILYMESSAGE(true,"MOTD"),
+		QUIET(false),
+		MXP(false),
+		COMPRESS(false,"COMPRESSED"),
+		AUTORUN(false),
+		AUTOMAP(true)
+		;
+		private final int bitCode;
+		private final boolean autoReverse;
+		private final String desc;
+		private Attrib(boolean reversed, String desc)
+		{
+			this.autoReverse=reversed;
+			this.desc=desc;
+			this.bitCode=(int)Math.round(Math.pow(2,this.ordinal()));
+		}
+		private Attrib(boolean reversed)
+		{
+			this.autoReverse=reversed;
+			this.desc=this.name();
+			this.bitCode=(int)Math.round(Math.pow(2,this.ordinal()));
+		}
+		public int getBitCode()
+		{
+			return bitCode;
+		}
+		public boolean isAutoReversed()
+		{
+			return autoReverse;
+		}
+		public String getName()
+		{
+			return desc;
+		}
+		
+	}
 
 
 	public static final long START_SHEATH_TIME=3*CMProps.getTickMillis();
 	public static final long END_SHEATH_TIME=6*CMProps.getTickMillis();
-
-	public static final boolean[] AUTOREV={false,
-										   false,
-										   false,
-										   true,
-										   false,
-										   false,
-										   true,
-										   false,
-										   false,
-										   false,
-										   false,
-										   false,
-										   false,
-										   false,
-										   false,
-										   false,
-										   false,
-										   true,
-										   true,
-										   false,
-										   false,
-										   false,
-										   false,
-										   true};
-	public static final String[] AUTODESC={"AUTOGOLD",
-										   "AUTOLOOT",
-										   "AUTOEXITS",
-										   "AUTOASSIST",
-										   "ANSI COLOR",
-										   "SYSMSGS",
-										   "AUTOMELEE",
-										   "PLAYERKILL",
-										   "BRIEF",
-										   "NOFOLLOW",
-										   "AUTOWEATHER",
-										   "AUTODRAW",
-										   "AUTOGUARD",
-										   "SOUNDS",
-										   "AUTOIMPROVEMENT",
-										   "NOTEACH",
-										   "AUTONOTIFY",
-										   "AUTOFORWARD",
-										   "MOTD",
-										   "QUIET",
-										   "MXP",
-										   "COMPRESSED",
-										   "AUTORUN",
-										   "AUTOMAP"};
-
 }

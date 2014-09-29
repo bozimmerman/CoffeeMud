@@ -213,7 +213,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 			room=CMLib.map().getRoom(V.get(CMLib.dice().roll(1,V.size(),-1)));
 		if(room==null) return empty;
 		final StringBuilder Say=new StringBuilder("");
-		if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
+		if(mob.isAttribute(MOB.Attrib.SYSOPMSGS))
 		{
 			Say.append("^H("+CMLib.map().getExtendedRoomID(room)+")^? "+room.displayText(mob)+CMLib.flags().colorCodes(room,mob)+" ");
 			Say.append("via ^H("+ID()+")^? "+(isOpen()?name():closedText()));

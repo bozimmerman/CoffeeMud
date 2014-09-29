@@ -43,14 +43,14 @@ public class AutoMap extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(!CMath.bset(mob.getBitmap(),MOB.ATT_AUTOMAP))
+		if(!mob.isAttribute(MOB.Attrib.AUTOMAP))
 		{
-			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOMAP));
+			mob.setAttribute(MOB.Attrib.AUTOMAP,true);
 			mob.tell(L("Automap has been turned off."));
 		}
 		else
 		{
-			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOMAP));
+			mob.setAttribute(MOB.Attrib.AUTOMAP,false);
 			mob.tell(L("Automap has been turned on."));
 		}
 		return false;

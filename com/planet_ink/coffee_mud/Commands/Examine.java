@@ -61,7 +61,7 @@ public class Examine extends StdCommand
 			if((ID.toUpperCase().startsWith("EXIT")&&(commands.size()==2)))
 			{
 				final CMMsg exitMsg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_LOOK_EXITS,null);
-				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=CMath.bset(mob.getBitmap(), MOB.ATT_BRIEF))
+				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=mob.isAttribute(MOB.Attrib.BRIEF))
 					exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
 				if(mob.location().okMessage(mob, exitMsg))
 					mob.location().send(mob, exitMsg);
@@ -104,7 +104,7 @@ public class Examine extends StdCommand
 				final CMMsg msg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_EXAMINE,L("@x1@x2 closely.",textMsg,name));
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
-				if((CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))&&(thisThang instanceof Room))
+				if((mob.isAttribute(MOB.Attrib.AUTOEXITS))&&(thisThang instanceof Room))
 					msg.addTrailerMsg(CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_LOOK_EXITS,null));
 			}
 			else
@@ -113,7 +113,7 @@ public class Examine extends StdCommand
 		else
 		{
 			final CMMsg msg=CMClass.getMsg(mob,mob.location(),null,CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"around carefully."),CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"at you."),CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"around carefully."));
-			if((CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))&&(CMLib.flags().canBeSeenBy(mob.location(),mob)))
+			if((mob.isAttribute(MOB.Attrib.AUTOEXITS))&&(CMLib.flags().canBeSeenBy(mob.location(),mob)))
 				msg.addTrailerMsg(CMClass.getMsg(mob,mob.location(),null,CMMsg.MSG_LOOK_EXITS,null));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);

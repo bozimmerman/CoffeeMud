@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -152,10 +151,10 @@ public class Prop_WizInvis extends Property
 				disabled=true;
 			else
 			if((msg.amISource((MOB)affected))
-			&&(CMath.bset(msg.source().getBitmap(),MOB.ATT_SYSOPMSGS))
+			&&(msg.source().isAttribute(MOB.Attrib.SYSOPMSGS))
 			&&(msg.source().location()!=null)
 			&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.SYSMSGS)))
-				msg.source().setBitmap(CMath.unsetb(msg.source().getBitmap(),MOB.ATT_SYSOPMSGS));
+				msg.source().setAttribute(MOB.Attrib.SYSOPMSGS,false);
 		}
 
 		return super.okMessage(myHost,msg);

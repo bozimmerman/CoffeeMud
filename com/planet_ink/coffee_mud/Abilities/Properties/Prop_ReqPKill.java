@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -57,20 +56,20 @@ public class Prop_ReqPKill extends Property implements TriggeredAffect
 		&&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 		{
 			if((!msg.source().isMonster())
-			   &&(!CMath.bset(msg.source().getBitmap(),MOB.ATT_PLAYERKILL)))
+			   &&(!msg.source().isAttribute(MOB.Attrib.PLAYERKILL)))
 			{
 				msg.source().tell(L("You must have your playerkill flag set to enter here."));
 				return false;
 			}
 		}
 		if((!msg.source().isMonster())
- 		&&(!CMath.bset(msg.source().getBitmap(),MOB.ATT_PLAYERKILL)))
+ 		&&(!msg.source().isAttribute(MOB.Attrib.PLAYERKILL)))
 		{
 			final Room R=CMLib.map().roomLocation(msg.source());
 			if((R!=null)&&((R==affected)||(R.getArea()==affected)||((affected instanceof Area)&&(((Area)affected).inMyMetroArea(R.getArea())))))
 			{
 				msg.source().tell(L("Your PLAYERKILL flag is now ON!"));
-				msg.source().setBitmap(CMath.setb(msg.source().getBitmap(),MOB.ATT_PLAYERKILL));
+				msg.source().setAttribute(MOB.Attrib.PLAYERKILL,true);
 			}
 		}
 		return super.okMessage(myHost,msg);

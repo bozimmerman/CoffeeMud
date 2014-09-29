@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -49,7 +48,7 @@ public class Thief_TurfWar extends ThiefSkill
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
 	public static Ability sparringRoomA=null;
 	protected MOB defender=null;
-	protected long defenderPKILLMask=0;
+	protected boolean defenderPKILLON=false;
 
 
 	protected long timeToNextCast = 0;
@@ -128,8 +127,8 @@ public class Thief_TurfWar extends ThiefSkill
 				{
 					defender=M;
 					R.showHappens(CMMsg.MSG_OK_ACTION,L("@x1 arrives to defend this turf! Let the war begin!",M.name()));
-					defenderPKILLMask=defender.getBitmap() & MOB.ATT_PLAYERKILL;
-					defender.setBitmap(defender.getBitmap() | MOB.ATT_PLAYERKILL);
+					defenderPKILLON=defender.isAttribute(MOB.Attrib.PLAYERKILL);
+					defender.setAttribute(MOB.Attrib.PLAYERKILL,true);
 					attacker.setVictim(defender);
 					defender.setVictim(attacker);
 					// this is a safe fight, so nothing matters but the blows.
@@ -160,8 +159,7 @@ public class Thief_TurfWar extends ThiefSkill
 		if(defender!=null)
 		{
 			defender.makePeace();
-			if(defenderPKILLMask==0)
-				defender.setBitmap(CMath.unsetb(defender.getBitmap(),MOB.ATT_PLAYERKILL));
+			defender.setAttribute(MOB.Attrib.PLAYERKILL,this.defenderPKILLON);
 		}
 
 		if(affected instanceof Room)
@@ -198,7 +196,7 @@ public class Thief_TurfWar extends ThiefSkill
 			return false;
 		}
 
-		if(!CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL))
+		if(!mob.isAttribute(MOB.Attrib.PLAYERKILL))
 		{
 			mob.tell(L("You must turn on your playerkill flag first."));
 			return false;

@@ -544,15 +544,15 @@ public class DefaultSession implements Session
 	}
 
 	@Override
-	public void initTelnetMode(int mobbitmap)
+	public void initTelnetMode(int attributesBitmap)
 	{
-		setServerTelnetMode(TELNET_ANSI,CMath.bset(mobbitmap,MOB.ATT_ANSI));
-		setClientTelnetMode(TELNET_ANSI,CMath.bset(mobbitmap,MOB.ATT_ANSI));
+		setServerTelnetMode(TELNET_ANSI,CMath.bset(attributesBitmap,MOB.Attrib.ANSI.getBitCode()));
+		setClientTelnetMode(TELNET_ANSI,CMath.bset(attributesBitmap,MOB.Attrib.ANSI.getBitCode()));
 		boolean changedSomething=false;
-		final boolean mxpSet=(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP))&&CMath.bset(mobbitmap,MOB.ATT_MXP);
+		final boolean mxpSet=(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP))&&CMath.bset(attributesBitmap,MOB.Attrib.MXP.getBitCode());
 		if(mxpSet!=getClientTelnetMode(TELNET_MXP))
 		{ changeTelnetMode(TELNET_MXP,!getClientTelnetMode(TELNET_MXP)); changedSomething=true;}
-		final boolean mspSet=(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP))&&CMath.bset(mobbitmap,MOB.ATT_SOUND);
+		final boolean mspSet=(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP))&&CMath.bset(attributesBitmap,MOB.Attrib.SOUND.getBitCode());
 		if(mspSet!=getClientTelnetMode(TELNET_MSP))
 		{ changeTelnetMode(TELNET_MSP,!getClientTelnetMode(TELNET_MSP)); changedSomething=true;}
 		try{if(changedSomething) blockingIn(500);}catch(final Exception e){}
@@ -2246,12 +2246,12 @@ public class DefaultSession implements Session
 						userLoginTime=System.currentTimeMillis();
 						final StringBuilder loginMsg=new StringBuilder("");
 						loginMsg.append(getAddress()).append(" "+terminalType)
-						.append(((CMath.bset(mob.getBitmap(),MOB.ATT_MXP)&&getClientTelnetMode(Session.TELNET_MXP)))?" MXP":"")
+						.append(((mob.isAttribute(MOB.Attrib.MXP)&&getClientTelnetMode(Session.TELNET_MXP)))?" MXP":"")
 						.append(getClientTelnetMode(Session.TELNET_MSDP)?" MSDP":"")
 						.append(getClientTelnetMode(Session.TELNET_ATCP)?" ATCP":"")
 						.append(getClientTelnetMode(Session.TELNET_GMCP)?" GMCP":"")
 						.append((getClientTelnetMode(Session.TELNET_COMPRESS)||getClientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
-						.append(((CMath.bset(mob.getBitmap(),MOB.ATT_ANSI)&&getClientTelnetMode(Session.TELNET_ANSI)))?" ANSI":"")
+						.append(((mob.isAttribute(MOB.Attrib.ANSI)&&getClientTelnetMode(Session.TELNET_ANSI)))?" ANSI":"")
 						.append(", character login: "+mob.Name());
 						Log.sysOut(loginMsg.toString());
 						if(loginResult != CharCreationLibrary.LoginResult.NO_LOGIN)

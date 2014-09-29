@@ -60,7 +60,7 @@ public class Teacher extends StdMOB
 		basePhyStats().setAbility(10);
 		basePhyStats().setLevel(25);
 		basePhyStats().setArmor(-500);
-		setBitmap(getBitmap() & ~MOB.ATT_NOTEACH);
+		setAttribute(MOB.Attrib.NOTEACH,false);
 
 		baseState.setHitPoints(4999);
 		baseState.setMana(4999);

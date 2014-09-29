@@ -758,7 +758,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(seen==null) return true;
 
 		if((seer!=null)
-		&&(CMath.bset(seer.getBitmap(),MOB.ATT_SYSOPMSGS)))
+		&&(seer.isAttribute(MOB.Attrib.SYSOPMSGS)))
 			return true;
 
 		if(!canSee(seer)) return false;

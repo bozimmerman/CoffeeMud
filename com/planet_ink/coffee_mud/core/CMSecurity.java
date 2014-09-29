@@ -254,7 +254,7 @@ public class CMSecurity
 		return CMLib.masking().maskCheck(i().compiledSysop,mob,true)
 				||((mob!=null)
 					&&(mob.soulMate()!=null)
-					&&(CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))
+					&&(mob.soulMate().isAttribute(MOB.Attrib.SYSOPMSGS))
 					&&(isASysOp(mob.soulMate())));
 	}
 
@@ -268,7 +268,7 @@ public class CMSecurity
 		if(isASysOp(mob)) return true;
 		if(mob==null) return false;
 		if((mob.playerStats()==null)
-		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))))
+		||((mob.soulMate()!=null)&&(!mob.soulMate().isAttribute(MOB.Attrib.SYSOPMSGS))))
 			return false;
 		if((mob.playerStats().getSecurityFlags().size()==0)
 		&&(mob.baseCharStats().getCurrentClass().getSecurityFlags(mob.baseCharStats().getCurrentClassLevel()).size()==0))
@@ -282,7 +282,7 @@ public class CMSecurity
 		if(isASysOp(mob)){ DIRSV.add("/"); return DIRSV; }
 		if(mob==null) return DIRSV;
 		if((mob.playerStats()==null)
-		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))))
+		||((mob.soulMate()!=null)&&(!mob.soulMate().isAttribute(MOB.Attrib.SYSOPMSGS))))
 			return DIRSV;
 		final boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
 		final Iterator[] allGroups={mob.playerStats().getSecurityFlags().paths(),
@@ -343,7 +343,7 @@ public class CMSecurity
 		if(isASysOp(mob)) return true;
 		if(mob==null) return false;
 		if((mob.playerStats()==null)
-		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))))
+		||((mob.soulMate()!=null)&&(!mob.soulMate().isAttribute(MOB.Attrib.SYSOPMSGS))))
 			return false;
 		final boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
 		final Iterator[] allGroups={mob.playerStats().getSecurityFlags().paths(),
@@ -362,7 +362,7 @@ public class CMSecurity
 		if(isASysOp(mob)) return true;
 		if(mob==null) return false;
 		if((mob.playerStats()==null)
-		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))))
+		||((mob.soulMate()!=null)&&(!mob.soulMate().isAttribute(MOB.Attrib.SYSOPMSGS))))
 			return false;
 		path=CMFile.vfsifyFilename(path.trim()).toUpperCase();
 		if(path.equals("/")||path.equals(".")) path="";
@@ -389,7 +389,7 @@ public class CMSecurity
 		if(mob==null) return false;
 		if(isASysOp(mob)) return true;
 		if((mob.playerStats()==null)
-		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))))
+		||((mob.soulMate()!=null)&&(!mob.soulMate().isAttribute(MOB.Attrib.SYSOPMSGS))))
 			return false;
 		path=CMFile.vfsifyFilename(path.trim()).toUpperCase();
 		if(path.equals("/")||path.equals(".")) path="";
@@ -433,7 +433,7 @@ public class CMSecurity
 		if(mob==null) return false;
 		if(isASysOp(mob)) return true;
 		if((mob.playerStats()==null)
-		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))))
+		||((mob.soulMate()!=null)&&(!mob.soulMate().isAttribute(MOB.Attrib.SYSOPMSGS))))
 			return false;
 		if(mob.playerStats().getSecurityFlags().contains(journalFlagName))
 			return true;
@@ -447,7 +447,7 @@ public class CMSecurity
 		if(mob==null) return false;
 		if(isASysOp(mob)) return true;
 		if((mob.playerStats()==null)
-		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))))
+		||((mob.soulMate()!=null)&&(!mob.soulMate().isAttribute(MOB.Attrib.SYSOPMSGS))))
 			return false;
 		final boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
 		if(mob.playerStats().getSecurityFlags().containsAny(secGroup, subop))
@@ -462,7 +462,7 @@ public class CMSecurity
 		if(mob==null) return false;
 		if(isASysOp(mob)) return true;
 		if((mob.playerStats()==null)
-		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))))
+		||((mob.soulMate()!=null)&&(!mob.soulMate().isAttribute(MOB.Attrib.SYSOPMSGS))))
 			return false;
 		final boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
 		if(mob.playerStats().getSecurityFlags().contains(flag, subop))
@@ -477,7 +477,7 @@ public class CMSecurity
 		if(mob==null) return false;
 		if(isASysOp(mob)) return true;
 		if((mob.playerStats()==null)
-		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))))
+		||((mob.soulMate()!=null)&&(!mob.soulMate().isAttribute(MOB.Attrib.SYSOPMSGS))))
 			return false;
 		for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 		{
@@ -503,7 +503,7 @@ public class CMSecurity
 		if(mob==null) return false;
 		if(isASysOp(mob)) return true;
 		if((mob.playerStats()==null)
-		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))))
+		||((mob.soulMate()!=null)&&(!mob.soulMate().isAttribute(MOB.Attrib.SYSOPMSGS))))
 			return false;
 		if(mob.playerStats().getSecurityFlags().contains(flag, false))
 			return true;
@@ -517,7 +517,7 @@ public class CMSecurity
 		if(mob==null) return false;
 		if(isASysOp(mob)) return true;
 		if((mob.playerStats()==null)
-		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))))
+		||((mob.soulMate()!=null)&&(!mob.soulMate().isAttribute(MOB.Attrib.SYSOPMSGS))))
 			return false;
 		if(isAllowedEverywhere(mob,flag.getRegularAlias()))
 			return true;

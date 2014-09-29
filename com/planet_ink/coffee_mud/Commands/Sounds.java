@@ -52,7 +52,7 @@ public class Sounds extends StdCommand
 					if(o.toString().equalsIgnoreCase("force"))
 						force=true;
 			final Session session=mob.session();
-			if((!CMath.bset(mob.getBitmap(),MOB.ATT_SOUND))
+			if((!mob.isAttribute(MOB.Attrib.SOUND))
 			||(!session.getClientTelnetMode(Session.TELNET_MSP)))
 			{
 				session.changeTelnetMode(Session.TELNET_MSP,true);
@@ -62,7 +62,7 @@ public class Sounds extends StdCommand
 				}
 				if(session.getClientTelnetMode(Session.TELNET_MSP))
 				{
-					mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_SOUND));
+					mob.setAttribute(MOB.Attrib.SOUND,true);
 					mob.tell(L("MSP Sound/Music enabled.\n\r"));
 				}
 				else
@@ -70,7 +70,7 @@ public class Sounds extends StdCommand
 				{
 					session.setClientTelnetMode(Session.TELNET_MSP, true);
 					session.setServerTelnetMode(Session.TELNET_MSP, true);
-					mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_SOUND));
+					mob.setAttribute(MOB.Attrib.SOUND,true);
 					mob.tell(L("MSP Sound/Music has been forceably enabled.\n\r"));
 				}
 				else

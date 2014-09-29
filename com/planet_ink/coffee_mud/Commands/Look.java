@@ -66,7 +66,7 @@ public class Look extends StdCommand
 			if((ID.toUpperCase().startsWith("EXIT")&&(commands.size()==2))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1))
 			{
 				final CMMsg exitMsg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK_EXITS,null);
-				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=CMath.bset(mob.getBitmap(), MOB.ATT_BRIEF))
+				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=mob.isAttribute(MOB.Attrib.BRIEF))
 					exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
 				if(R.okMessage(mob, exitMsg))
 					R.send(mob, exitMsg);
@@ -126,10 +126,10 @@ public class Look extends StdCommand
 								Directions.getShipDirectionName(dirCode):Directions.getDirectionName(dirCode);
 				}
 				final CMMsg msg=CMClass.getMsg(mob,thisThang,lookingTool,CMMsg.MSG_LOOK,textMsg+name+".");
-				if((thisThang instanceof Room)&&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1))
+				if((thisThang instanceof Room)&&(mob.isAttribute(MOB.Attrib.AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1))
 				{
 					final CMMsg exitMsg=CMClass.getMsg(mob,thisThang,lookingTool,CMMsg.MSG_LOOK_EXITS,null);
-					if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=CMath.bset(mob.getBitmap(), MOB.ATT_BRIEF))
+					if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=mob.isAttribute(MOB.Attrib.BRIEF))
 						exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
 					msg.addTrailerMsg(exitMsg);
 				}
@@ -149,10 +149,10 @@ public class Look extends StdCommand
 				}
 
 			final CMMsg msg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK,(quiet?null:textMsg+"around."),CMMsg.MSG_LOOK,(quiet?null:textMsg+"at you."),CMMsg.MSG_LOOK,(quiet?null:textMsg+"around."));
-			if((CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1)&&(CMLib.flags().canBeSeenBy(R,mob)))
+			if((mob.isAttribute(MOB.Attrib.AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1)&&(CMLib.flags().canBeSeenBy(R,mob)))
 			{
 				final CMMsg exitMsg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK_EXITS,null);
-				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=CMath.bset(mob.getBitmap(), MOB.ATT_BRIEF))
+				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=mob.isAttribute(MOB.Attrib.BRIEF))
 					exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
 				msg.addTrailerMsg(exitMsg);
 			}

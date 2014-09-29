@@ -56,7 +56,7 @@ public class Order extends StdCommand
 		}
 		if((!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ORDER))
 		&&(!mob.isMonster())
-		&&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOASSIST)))
+		&&(mob.isAttribute(MOB.Attrib.AUTOASSIST)))
 		{
 			mob.tell(L("You may not order someone around with your AUTOASSIST flag off."));
 			return false;

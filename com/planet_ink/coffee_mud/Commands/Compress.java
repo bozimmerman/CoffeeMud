@@ -42,14 +42,14 @@ public class Compress extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(CMath.bset(mob.getBitmap(),MOB.ATT_COMPRESS))
+		if(mob.isAttribute(MOB.Attrib.COMPRESS))
 		{
-			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_COMPRESS));
+			mob.setAttribute(MOB.Attrib.COMPRESS,false);
 			mob.tell(L("Compressed views are now inactive."));
 		}
 		else
 		{
-			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_COMPRESS));
+			mob.setAttribute(MOB.Attrib.COMPRESS,true);
 			mob.tell(L("Compressed views are now active."));
 		}
 		return false;

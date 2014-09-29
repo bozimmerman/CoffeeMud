@@ -43,14 +43,14 @@ public class AutoRun extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTORUN))
+		if(mob.isAttribute(MOB.Attrib.AUTORUN))
 		{
-			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTORUN));
+			mob.setAttribute(MOB.Attrib.AUTORUN,false);
 			mob.tell(L("Auto-Run has been turned off."));
 		}
 		else
 		{
-			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTORUN));
+			mob.setAttribute(MOB.Attrib.AUTORUN,true);
 			mob.tell(L("Auto-Run has been turned on."));
 		}
 		return false;

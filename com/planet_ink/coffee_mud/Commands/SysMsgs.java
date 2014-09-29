@@ -42,11 +42,11 @@ public class SysMsgs extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
-			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
+		if(mob.isAttribute(MOB.Attrib.SYSOPMSGS))
+			mob.setAttribute(MOB.Attrib.SYSOPMSGS,false);
 		else
-			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
-		mob.tell(L("Extended messages are now : @x1",((CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))?"ON":"OFF")));
+			mob.setAttribute(MOB.Attrib.SYSOPMSGS,true);
+		mob.tell(L("Extended messages are now : @x1",((mob.isAttribute(MOB.Attrib.SYSOPMSGS))?"ON":"OFF")));
 		return false;
 	}
 

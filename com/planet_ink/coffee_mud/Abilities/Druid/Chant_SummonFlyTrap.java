@@ -190,7 +190,8 @@ public class Chant_SummonFlyTrap extends Chant
 		newMOB.basePhyStats().setSensesMask(newMOB.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
 		newMOB.setLocation(caster.location());
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
-		newMOB.setBitmap(MOB.ATT_AUTOASSIST);
+		newMOB.setAttributesBitmap(0);
+		newMOB.setAttribute(MOB.Attrib.AUTOASSIST,true);
 		newMOB.setMiscText(newMOB.text());
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();

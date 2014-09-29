@@ -48,7 +48,7 @@ public class North extends Go
 			mob.tell(L("You need to stand up first."));
 			return false;
 		}
-		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTORUN))
+		if(mob.isAttribute(MOB.Attrib.AUTORUN))
 			CMLib.tracking().run(mob, Directions.NORTH, false,false,false);
 		else
 			CMLib.tracking().walk(mob, Directions.NORTH, false,false,false);

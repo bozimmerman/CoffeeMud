@@ -42,7 +42,7 @@ public class Tell extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if((!mob.isMonster())&&CMath.bset(mob.getBitmap(),MOB.ATT_QUIET))
+		if((!mob.isMonster())&&mob.isAttribute(MOB.Attrib.QUIET))
 		{
 			mob.tell(L("You have QUIET mode on.  You must turn it off first."));
 			return false;
@@ -116,7 +116,7 @@ public class Tell extends StdCommand
 			return false;
 		}
 
-		if(CMath.bset(targetM.getBitmap(),MOB.ATT_QUIET))
+		if(targetM.isAttribute(MOB.Attrib.QUIET))
 		{
 			mob.tell(L("That person can not hear you."));
 			return false;

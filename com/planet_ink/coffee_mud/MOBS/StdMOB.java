@@ -85,7 +85,7 @@ public class StdMOB implements MOB
 	protected long				ageMinutes		= 0;
 	protected int				money			= 0;
 	protected double			moneyVariation	= 0.0;
-	protected int				attributesBitmap= MOB.ATT_NOTEACH;
+	protected int				attributesBitmap= MOB.Attrib.NOTEACH.getBitCode();
 	protected String			databaseID		= "";
 
 	protected int				tickCounter		= 0;
@@ -240,7 +240,7 @@ public class StdMOB implements MOB
 	}
 
 	@Override
-	public int getBitmap()
+	public int getAttributesBitmap()
 	{
 		return attributesBitmap;
 	}
@@ -287,9 +287,28 @@ public class StdMOB implements MOB
 	}
 
 	@Override
-	public void setBitmap(int newVal)
+	public void setAttributesBitmap(final int bitmap)
 	{
-		attributesBitmap = newVal;
+		this.attributesBitmap = bitmap;
+	}
+	
+	@Override
+	public void setAttribute(final Attrib attrib, final boolean set)
+	{
+		if(set) 
+		{
+			attributesBitmap = attributesBitmap | attrib.getBitCode();
+		}
+		else
+		{
+			attributesBitmap = attributesBitmap & ~attrib.getBitCode();
+		}
+	}
+	
+	@Override
+	public boolean isAttribute(MOB.Attrib attrib)
+	{
+		return (attributesBitmap & attrib.getBitCode()) != 0;
 	}
 
 	@Override
@@ -1317,16 +1336,16 @@ public class StdMOB implements MOB
 			return false;
 		if (CMLib.clans().isAtClanWar(this, mob))
 			return true;
-		if (CMath.bset(getBitmap(), MOB.ATT_PLAYERKILL))
+		if (this.isAttribute(MOB.Attrib.PLAYERKILL))
 		{
-			if (CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.PKILL) || (CMath.bset(mob.getBitmap(), MOB.ATT_PLAYERKILL)))
+			if (CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.PKILL) || (mob.isAttribute(MOB.Attrib.PLAYERKILL)))
 				return true;
 			return false;
 		}
 		else
-		if (CMath.bset(mob.getBitmap(), MOB.ATT_PLAYERKILL))
+		if (mob.isAttribute(MOB.Attrib.PLAYERKILL))
 		{
-			if (CMSecurity.isAllowed(mob, location(), CMSecurity.SecFlag.PKILL) || (CMath.bset(getBitmap(), MOB.ATT_PLAYERKILL)))
+			if (CMSecurity.isAllowed(mob, location(), CMSecurity.SecFlag.PKILL) || (this.isAttribute(MOB.Attrib.PLAYERKILL)))
 				return true;
 			return false;
 		}
@@ -1573,7 +1592,7 @@ public class StdMOB implements MOB
 	public void setSession(Session newSession)
 	{
 		mySession = newSession;
-		setBitmap(getBitmap());
+		setAttributesBitmap(getAttributesBitmap()); 
 	}
 
 	@Override
@@ -3013,7 +3032,7 @@ public class StdMOB implements MOB
 				{
 					final int channelCode = msg.targetMinor() - CMMsg.TYP_CHANNEL;
 					if ((playerStats() != null)
-					&& (!CMath.bset(getBitmap(), MOB.ATT_QUIET))
+					&& (!this.isAttribute(MOB.Attrib.QUIET))
 					&& (!CMath.isSet(playerStats().getChannelMask(), channelCode)))
 						tell(srcM, msg.target(), msg.tool(), msg.targetMessage());
 				}
@@ -3074,7 +3093,7 @@ public class StdMOB implements MOB
 			{
 				final int channelCode = ((msg.othersCode() - CMMsg.MASK_CHANNEL) - CMMsg.TYP_CHANNEL);
 				if ((playerStats() != null)
-				&& (!CMath.bset(getBitmap(), MOB.ATT_QUIET))
+				&& (!this.isAttribute(MOB.Attrib.QUIET))
 				&& (!CMath.isSet(playerStats().getChannelMask(), channelCode)))
 					tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
 			}
@@ -3278,7 +3297,7 @@ public class StdMOB implements MOB
 				else
 				{
 					peaceTime += CMProps.getTickMillis();
-					if (CMath.bset(getBitmap(), MOB.ATT_AUTODRAW)
+					if (this.isAttribute(MOB.Attrib.AUTODRAW)
 					&& (peaceTime >= START_SHEATH_TIME)
 					&& (peaceTime < END_SHEATH_TIME) && (CMLib.flags().aliveAwakeMobileUnbound(this, true)))
 						CMLib.commands().postSheath(this, true);

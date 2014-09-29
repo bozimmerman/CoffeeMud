@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -51,8 +50,8 @@ public class Prop_StatTrainer extends Property
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
-		if((!noteach)&&(CMath.bset(affectedMOB.getBitmap(),MOB.ATT_NOTEACH)))
-			affectedMOB.setBitmap(CMath.unsetb(affectedMOB.getBitmap(),MOB.ATT_NOTEACH));
+		if((!noteach)&&(affectedMOB.isAttribute(MOB.Attrib.NOTEACH)))
+			affectedMOB.setAttribute(MOB.Attrib.NOTEACH,false);
 
 		for(final int i: CharStats.CODES.BASECODES())
 			affectableStats.setStat(i,stats[i]);

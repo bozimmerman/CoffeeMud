@@ -1155,7 +1155,7 @@ public class StdAbility implements Ability
 					&&(effA.invoker()==mob)
 					&&(effA.proficiency()<maxProficiency))
 						effA.setProficiency(A.proficiency());
-					if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOIMPROVE))
+					if(mob.isAttribute(MOB.Attrib.AUTOIMPROVE))
 						mob.tell(L("You become better at @x1.",A.name()));
 					((StdAbility)A).lastCastHelp=System.currentTimeMillis();
 				}
@@ -1481,7 +1481,7 @@ public class StdAbility implements Ability
 	@Override
 	public boolean canBeTaughtBy(MOB teacher, MOB student)
 	{
-		if(CMath.bset(teacher.getBitmap(),MOB.ATT_NOTEACH))
+		if(teacher.isAttribute(MOB.Attrib.NOTEACH))
 		{
 			teacher.tell(L("You are refusing to teach right now."));
 			student.tell(L("@x1 is refusing to teach right now.",teacher.name()));
@@ -1534,7 +1534,7 @@ public class StdAbility implements Ability
 			student.tell(L("You do not have enough @x1.",ofWhat));
 			return false;
 		}
-		if((CMath.bset(student.getBitmap(),MOB.ATT_NOTEACH))
+		if((student.isAttribute(MOB.Attrib.NOTEACH))
 		&&((!student.isMonster())||(!student.willFollowOrdersOf(teacher))))
 		{
 			teacher.tell(L("@x1 is refusing training at this time.",student.name()));
@@ -1666,13 +1666,13 @@ public class StdAbility implements Ability
 			return false;
 		}
 
-		if(CMath.bset(teacher.getBitmap(),MOB.ATT_NOTEACH))
+		if(teacher.isAttribute(MOB.Attrib.NOTEACH))
 		{
 			teacher.tell(L("You are refusing to teach right now."));
 			student.tell(L("@x1 is refusing to teach right now.",teacher.name()));
 			return false;
 		}
-		if((CMath.bset(student.getBitmap(),MOB.ATT_NOTEACH))
+		if((student.isAttribute(MOB.Attrib.NOTEACH))
 		&&((!student.isMonster())||(!student.willFollowOrdersOf(teacher))))
 		{
 			teacher.tell(L("@x1 is refusing training at this time.",student.name()));

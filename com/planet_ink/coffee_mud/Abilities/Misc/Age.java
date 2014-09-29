@@ -269,7 +269,7 @@ public class Age extends StdAbility
 			if(getMyRace()==null) return;
 			if((babe.getLiegeID().length()==0)&&(!following.getLiegeID().equals(affected.Name())))
 				babe.setLiegeID(following.Name());
-			babe.setBitmap(CMath.unsetb(babe.getBitmap(),MOB.ATT_AUTOASSIST));
+			babe.setAttribute(MOB.Attrib.AUTOASSIST,false);
 			if((ellapsed>=myRace.getAgingChart()[2])
 			&&(babe.fetchBehavior("MudChat")==null))
 			{
@@ -333,7 +333,7 @@ public class Age extends StdAbility
 					newMan.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
 					if(liege!=null)	newMan.copyFactions(liege);
 					newMan.basePhyStats().setLevel(1);
-					newMan.setBitmap(babe.getBitmap());
+					newMan.setAttributesBitmap(babe.getAttributesBitmap());
 					for(final Enumeration<MOB.Tattoo> e=babe.tattoos();e.hasMoreElements();)
 						newMan.addTattoo(e.nextElement());
 					String highestBaseClass="Orphan";
@@ -536,7 +536,7 @@ public class Age extends StdAbility
 		{
 			final MOB babe=(MOB)affected;
 			if(getMyRace()==null) return;
-			babe.setBitmap(CMath.setb(babe.getBitmap(),MOB.ATT_AUTOASSIST));
+			babe.setAttribute(MOB.Attrib.AUTOASSIST,true);
 			if(ellapsed>=myRace.getAgingChart()[2])
 			{
 				final Room R=CMLib.map().roomLocation(affected);

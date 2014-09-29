@@ -371,12 +371,13 @@ public class PlayerData extends StdWebMacro
 			final boolean firstTime=(!httpReq.isUrlParameter("ACTION"))
 							||(httpReq.getUrlParameter("ACTION")).equals("FIRSTTIME");
 			final StringBuffer str=new StringBuffer("");
-			for(int i=0;i<MOB.AUTODESC.length;i++)
+			for(MOB.Attrib a : MOB.Attrib.values())
 			{
-				if(parms.containsKey(MOB.AUTODESC[i]))
+				if(parms.containsKey(a.getName()))
 				{
-					boolean set=CMath.isSet(M.getBitmap(),i);
-					if(MOB.AUTOREV[i]) set=!set;
+					boolean set=M.isAttribute(a);
+					if(a.isAutoReversed()) 
+						set=!set;
 					str.append((set?"ON":"OFF")+",");
 				}
 			}

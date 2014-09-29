@@ -284,7 +284,7 @@ public class WeatherAffects extends PuddleMaker
 							if((mob!=null)
 							&&(!mob.isMonster())
 							&&(CMLib.flags().aliveAwakeMobile(mob,true))
-							&&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOWEATHER)))
+							&&(mob.isAttribute(MOB.Attrib.AUTOWEATHER)))
 								mob.tell(C.getWeatherDescription(A));
 						}
 				}
@@ -429,7 +429,7 @@ public class WeatherAffects extends PuddleMaker
 				||(S.mob().location()==null)
 				||(S.mob().location().getArea()!=A)
 				||(S.mob().isMonster())
-				||(!CMath.bset(S.mob().getBitmap(),MOB.ATT_AUTOWEATHER)))
+				||(!S.mob().isAttribute(MOB.Attrib.AUTOWEATHER)))
 					continue;
 				final Room R=S.mob().location();
 				if(R!=null)

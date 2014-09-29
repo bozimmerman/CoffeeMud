@@ -78,7 +78,7 @@ public class Dueler extends StdAbility
 				&&(CMLib.flags().isInTheGame(mob,true)))
 					mob.tell(L("Your duel has ended."));
 				if(!oldPVPStatus)
-					mob.setBitmap(CMath.unsetb(mob.getBitmap(), MOB.ATT_PLAYERKILL));
+					mob.setAttribute(MOB.Attrib.PLAYERKILL,false);
 				oldCurState.copyInto(mob.curState());
 				final LinkedList<Ability> cleanOut=new LinkedList<Ability>();
 				for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
@@ -187,8 +187,8 @@ public class Dueler extends StdAbility
 
 	public void init(MOB mob)
 	{
-		oldPVPStatus=CMath.bset(mob.getBitmap(), MOB.ATT_PLAYERKILL);
-		mob.setBitmap(mob.getBitmap()|MOB.ATT_PLAYERKILL);
+		oldPVPStatus=mob.isAttribute(MOB.Attrib.PLAYERKILL);
+		mob.setAttribute(MOB.Attrib.PLAYERKILL,true);
 		oldCurState=(CharState)mob.curState().copyOf();
 		oldEffects.clear();
 		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)

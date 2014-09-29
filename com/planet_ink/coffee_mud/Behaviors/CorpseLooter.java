@@ -51,7 +51,7 @@ public class CorpseLooter extends StdBehavior
 
 		if(tickID!=Tickable.TICKID_MOB) return true;
 		if(--tickTock>0) return true;
-		((MOB)ticking).setBitmap(CMath.setb(((MOB)ticking).getBitmap(),MOB.ATT_AUTOLOOT));
+		((MOB)ticking).setAttribute(MOB.Attrib.AUTOLOOT,true);
 		if((++tickTocker)==100) tickTocker=99;
 		tickTock=tickTocker;
 		return true;

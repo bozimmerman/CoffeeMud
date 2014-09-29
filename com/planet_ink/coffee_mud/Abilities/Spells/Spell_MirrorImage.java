@@ -115,7 +115,7 @@ public class Spell_MirrorImage extends Spell
 		&&((CMLib.flags().canBeSeenBy(mob,msg.source()))&&(mob.displayText(msg.source()).length()>0)))
 		{
 			final StringBuffer Say=new StringBuffer("");
-			final boolean compress=CMath.bset(msg.source().getBitmap(),MOB.ATT_COMPRESS);
+			final boolean compress=msg.source().isAttribute(MOB.Attrib.COMPRESS);
 			for(int i=0;i<numberOfImages;i++)
 			{
 				Say.append("^M");

@@ -89,7 +89,7 @@ public class Affect extends StdCommand
 		if(mob.riding()!=null)
 			msg.append(L("^!You are @x1 @x2.^?\n\r",mob.riding().stateString(mob),mob.riding().name()));
 
-		if(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL))
+		if(mob.isAttribute(MOB.Attrib.PLAYERKILL))
 			msg.append(L("^!Your playerkill flag is on.^?\n\r"));
 
 		if(CMLib.flags().isInvisible(mob))
@@ -98,7 +98,7 @@ public class Affect extends StdCommand
 			msg.append(L("^!You are hidden.^?\n\r"));// ("+CMLib.flags().getHideScore(mob)+").^?\n\r");
 		if(CMLib.flags().isSneaking(mob))
 			msg.append(L("^!You are sneaking.^?\n\r"));
-		if(CMath.bset(mob.getBitmap(),MOB.ATT_QUIET))
+		if(mob.isAttribute(MOB.Attrib.QUIET))
 			msg.append(L("^!You are in QUIET mode.^?\n\r"));
 
 		if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS)
@@ -189,7 +189,7 @@ public class Affect extends StdCommand
 					{
 						if(S==mob.session())
 							S.colorOnlyPrint(L(" \n\r^!@x1 is affected by: ^?",P.name()));
-						final String msg=getAffects(S,P,true,CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
+						final String msg=getAffects(S,P,true,mob.isAttribute(MOB.Attrib.SYSOPMSGS));
 						if(msg.length()<5)
 							S.colorOnlyPrintln(L("Nothing!\n\r^N"));
 						else
@@ -203,7 +203,7 @@ public class Affect extends StdCommand
 				S.colorOnlyPrintln("\n\r"+getMOBState(mob)+"\n\r");
 			if(S==mob.session())
 				S.colorOnlyPrint(L("^!You are affected by: ^?"));
-			final String msg=getAffects(S,mob,CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS),CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
+			final String msg=getAffects(S,mob,mob.isAttribute(MOB.Attrib.SYSOPMSGS),mob.isAttribute(MOB.Attrib.SYSOPMSGS));
 			if(msg.length()<5)
 				S.colorOnlyPrintln(L("Nothing!\n\r^N"));
 			else

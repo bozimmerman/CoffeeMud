@@ -58,7 +58,7 @@ public class Foreward extends Go
 			mob.tell(L("You need to stand up first."));
 			return false;
 		}
-		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTORUN))
+		if(mob.isAttribute(MOB.Attrib.AUTORUN))
 			CMLib.tracking().run(mob, direction, false,false,false);
 		else
 			CMLib.tracking().walk(mob, direction, false,false,false);

@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -57,11 +56,11 @@ public class Run extends Go
 	{
 		if(mob==null)
 			return super.execute(mob, commands,metaFlags);
-		final boolean wasSet = CMath.bset(mob.getBitmap(),MOB.ATT_AUTORUN);
-		mob.setBitmap(mob.getBitmap() | MOB.ATT_AUTORUN);
+		final boolean wasSet = mob.isAttribute(MOB.Attrib.AUTORUN);
+		mob.setAttribute(MOB.Attrib.AUTORUN,true);
 		final boolean returnValue = super.execute(mob, commands,metaFlags);
 		if(!wasSet)
-			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTORUN));
+			mob.setAttribute(MOB.Attrib.AUTORUN,false);
 		return returnValue;
 	}
 }

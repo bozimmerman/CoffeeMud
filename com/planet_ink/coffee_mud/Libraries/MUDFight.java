@@ -423,7 +423,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if((attacker==null)||(!attacker.mayPhysicallyAttack(target)))
 			return false;
 		if((weapon==null)
-		&&(CMath.bset(attacker.getBitmap(),MOB.ATT_AUTODRAW)))
+		&&(attacker.isAttribute(MOB.Attrib.AUTODRAW)))
 		{
 			CMLib.commands().postDraw(attacker,false,true);
 			weapon=attacker.fetchWieldedItem();
@@ -1023,7 +1023,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		final Vector<MOB> goldLooters=new Vector<MOB>();
 		for (final MOB M : beneficiaries)
 		{
-			if(((CMath.bset(M.getBitmap(),MOB.ATT_AUTOGOLD))
+			if(((M.isAttribute(MOB.Attrib.AUTOGOLD))
 			&&(!goldLooters.contains(M)))
 			&&(M!=target)
 			&&(M.location()==deathRoom)
@@ -1085,7 +1085,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			&&(body!=null)
 			&&(source.location()==bodyRoom)
 			&&(bodyRoom.isInhabitant(source))
-			&&(CMath.bset(source.getBitmap(),MOB.ATT_AUTOLOOT)))
+			&&(source.isAttribute(MOB.Attrib.AUTOLOOT)))
 			{
 				if((source.riding()!=null)&&(source.riding() instanceof MOB))
 					source.tell(L("You'll need to dismount to loot the body."));
@@ -1621,7 +1621,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if((target==observer)||(source==observer)) return;
 		if((target.location()!=observer.location())||(target.location()!=source.location()))
 			return;
-		if((CMath.bset(observer.getBitmap(),MOB.ATT_AUTOASSIST))) return;
+		if((observer.isAttribute(MOB.Attrib.AUTOASSIST))) return;
 		if(observer.isInCombat()) return;
 		final MOB observerFollows=observer.amFollowing();
 		final MOB targetFollows=target.amFollowing();
@@ -1739,7 +1739,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	{
 		if((weapon!=null)&&(weapon.amWearingAt(Wearable.IN_INVENTORY)))
 			weapon=fighter.fetchWieldedItem();
-		if((!CMath.bset(fighter.getBitmap(),MOB.ATT_AUTOMELEE)))
+		if((!fighter.isAttribute(MOB.Attrib.AUTOMELEE)))
 			postAttack(fighter,fighter.getVictim(),weapon);
 		else
 		{
@@ -1848,7 +1848,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	{
 		Item weapon=fighter.fetchWieldedItem();
 
-		if((CMath.bset(fighter.getBitmap(),MOB.ATT_AUTODRAW))&&(weapon==null))
+		if((fighter.isAttribute(MOB.Attrib.AUTODRAW))&&(weapon==null))
 		{
 			CMLib.commands().postDraw(fighter,false,true);
 			weapon=fighter.fetchWieldedItem();
@@ -1858,7 +1858,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 		subtickBeforeAttack(fighter, combatSystem);
 
-		final int folrange=(CMath.bset(fighter.getBitmap(),MOB.ATT_AUTOMELEE)
+		final int folrange=(fighter.isAttribute(MOB.Attrib.AUTOMELEE)
 						&&(fighter.amFollowing()!=null)
 						&&(fighter.amFollowing().getVictim()==fighter.getVictim())
 						&&(fighter.amFollowing().rangeToTarget()>=0)

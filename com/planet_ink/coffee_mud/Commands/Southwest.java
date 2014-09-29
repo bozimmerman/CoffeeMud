@@ -48,7 +48,7 @@ public class Southwest extends Go
 			mob.tell(L("You need to stand up first."));
 			return false;
 		}
-		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTORUN))
+		if(mob.isAttribute(MOB.Attrib.AUTORUN))
 			CMLib.tracking().run(mob, Directions.SOUTHWEST, false,false,false);
 		else
 			CMLib.tracking().walk(mob, Directions.SOUTHWEST, false,false,false);

@@ -44,16 +44,16 @@ public class AutoMelee extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(!CMath.bset(mob.getBitmap(),MOB.ATT_AUTOMELEE))
+		if(!mob.isAttribute(MOB.Attrib.AUTOMELEE))
 		{
-			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOMELEE));
+			mob.setAttribute(MOB.Attrib.AUTOMELEE,true);
 			mob.tell(L("Automelee has been turned off.  You will no longer charge into melee combat from a ranged position."));
 			if(mob.isMonster())
 				CMLib.commands().postSay(mob,null,L("I will no longer charge into melee."),false,false);
 		}
 		else
 		{
-			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOMELEE));
+			mob.setAttribute(MOB.Attrib.AUTOMELEE,false);
 			mob.tell(L("Automelee has been turned back on.  You will now enter melee combat normally."));
 			if(mob.isMonster())
 				CMLib.commands().postSay(mob,null,L("I will now enter melee combat normally."),false,false);

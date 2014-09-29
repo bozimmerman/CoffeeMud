@@ -152,13 +152,13 @@ public class Follow extends StdCommand
 			mob.tell(L("You cannot follow '@x1'.",target.name(mob)));
 			return false;
 		}
-		if(CMath.bset(target.getBitmap(),MOB.ATT_NOFOLLOW))
+		if(target.isAttribute(MOB.Attrib.NOFOLLOW))
 		{
 			mob.tell(L("@x1 is not accepting followers.",target.name(mob)));
 			return false;
 		}
 		final MOB ultiTarget=target.amUltimatelyFollowing();
-		if((ultiTarget!=null)&&(CMath.bset(ultiTarget.getBitmap(),MOB.ATT_NOFOLLOW)))
+		if((ultiTarget!=null)&&(ultiTarget.isAttribute(MOB.Attrib.NOFOLLOW)))
 		{
 			mob.tell(L("@x1 is not accepting followers.",ultiTarget.name()));
 			return false;

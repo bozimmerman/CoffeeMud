@@ -45,14 +45,14 @@ public class AutoNotify extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTONOTIFY))
+		if(mob.isAttribute(MOB.Attrib.AUTONOTIFY))
 		{
-			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTONOTIFY));
+			mob.setAttribute(MOB.Attrib.AUTONOTIFY,false);
 			mob.tell(L("Notification of the arrival of your FRIENDS is now off."));
 		}
 		else
 		{
-			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTONOTIFY));
+			mob.setAttribute(MOB.Attrib.AUTONOTIFY,true);
 			mob.tell(L("Notification of the arrival of your FRIENDS is now on."));
 		}
 		return false;

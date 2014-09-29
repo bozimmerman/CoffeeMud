@@ -364,7 +364,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				if((inhab.session()!=null)
 				&&(CMSecurity.isAllowed(inhab,R,CMSecurity.SecFlag.CMDMOBS)||CMSecurity.isAllowed(inhab,R,CMSecurity.SecFlag.CMDROOMS))
 				&&(CMLib.flags().isInTheGame(inhab, true))
-				&&(CMath.bset(inhab.getBitmap(), MOB.ATT_SYSOPMSGS)))
+				&&(inhab.isAttribute(MOB.Attrib.SYSOPMSGS)))
 					return true;
 			}
 		}
@@ -938,7 +938,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		{
 			CMLib.commands().postLook(mob,true);
 			if((!mob.isMonster())
-			&&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOWEATHER))
+			&&(mob.isAttribute(MOB.Attrib.AUTOWEATHER))
 			&&(((Room)enterMsg.target())!=null)
 			&&((thisRoom.domainType()&Room.INDOORS)>0)
 			&&((((Room)enterMsg.target()).domainType()&Room.INDOORS)==0)
@@ -961,7 +961,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				{
 					if((follower.location()==thisRoom)&&(CMLib.flags().aliveAwakeMobile(follower,true)))
 					{
-						if(CMath.bset(follower.getBitmap(),MOB.ATT_AUTOGUARD))
+						if(follower.isAttribute(MOB.Attrib.AUTOGUARD))
 							thisRoom.show(follower,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> remain(s) on guard here."));
 						else
 						{

@@ -168,7 +168,7 @@ public class Who extends StdCommand
 			for(final Session S : CMLib.sessions().allIterable())
 			{
 				final MOB mob2=S.mob();
-				if((mob2!=null)&&(CMath.bset(mob2.getBitmap(),MOB.ATT_PLAYERKILL)))
+				if((mob2!=null)&&(mob2.isAttribute(MOB.Attrib.PLAYERKILL)))
 					friends.add(mob2.Name());
 			}
 		}

@@ -54,7 +54,7 @@ public class PlayerKill extends StdCommand
 			mob.tell(L("YOU CANNOT TOGGLE THIS FLAG WHILE IN COMBAT!"));
 			return false;
 		}
-		if(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL))
+		if(mob.isAttribute(MOB.Attrib.PLAYERKILL))
 		{
 			if(CMProps.getVar(CMProps.Str.PKILL).startsWith("ONEWAY"))
 			{
@@ -70,7 +70,7 @@ public class PlayerKill extends StdCommand
 				return false;
 			}
 
-			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_PLAYERKILL));
+			mob.setAttribute(MOB.Attrib.PLAYERKILL,false);
 			mob.tell(L("Your playerkill flag has been turned off."));
 		}
 		else
@@ -81,7 +81,7 @@ public class PlayerKill extends StdCommand
 				mob.tell(L("Once turned on, this flag may not be turned off again."));
 			if(mob.session().confirm(L("Are you absolutely sure (y/N)?"),L("N")))
 			{
-				mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_PLAYERKILL));
+				mob.setAttribute(MOB.Attrib.PLAYERKILL,true);
 				mob.tell(L("Your playerkill flag has been turned on."));
 			}
 			else

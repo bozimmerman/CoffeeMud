@@ -208,12 +208,12 @@ public class Train extends StdCommand
 			mob.tell(L("You cannot train with yourself!"));
 			return false;
 		}
-		if(CMath.bset(teacher.getBitmap(),MOB.ATT_NOTEACH))
+		if(teacher.isAttribute(MOB.Attrib.NOTEACH))
 		{
 			mob.tell(L("@x1 is refusing to teach right now.",teacher.name()));
 			return false;
 		}
-		if(CMath.bset(mob.getBitmap(),MOB.ATT_NOTEACH))
+		if(mob.isAttribute(MOB.Attrib.NOTEACH))
 		{
 			mob.tell(L("You are refusing training at this time."));
 			return false;

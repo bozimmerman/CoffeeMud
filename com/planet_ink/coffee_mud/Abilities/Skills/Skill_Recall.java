@@ -92,7 +92,7 @@ public class Skill_Recall extends StdSkill
 					&&(follower.isMonster())
 					&&(!follower.isPossessing())
 					&&(CMLib.flags().isInTheGame(follower,true))
-					&&(!CMath.bset(follower.getBitmap(),MOB.ATT_AUTOGUARD)))
+					&&(!follower.isAttribute(MOB.Attrib.AUTOGUARD)))
 					{
 						Room fRecalledRoom=recalledRoom;
 						if(group)fRecalledRoom=follower.location();

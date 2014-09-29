@@ -45,12 +45,12 @@ public class NOMXP extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
-			if((CMath.bset(mob.getBitmap(),MOB.ATT_MXP))
+			if((mob.isAttribute(MOB.Attrib.MXP))
 			||(mob.session().getClientTelnetMode(Session.TELNET_MXP)))
 			{
 				if(mob.session().getClientTelnetMode(Session.TELNET_MXP))
 					mob.session().rawOut("\033[3z \033[7z");
-				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_MXP));
+				mob.setAttribute(MOB.Attrib.MXP,false);
 				mob.session().changeTelnetMode(Session.TELNET_MXP,false);
 				mob.session().setClientTelnetMode(Session.TELNET_MXP,false);
 				mob.tell(L("MXP codes are disabled.\n\r"));

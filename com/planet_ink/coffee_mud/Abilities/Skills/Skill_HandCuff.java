@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -157,9 +156,9 @@ public class Skill_HandCuff extends StdSkill
 			if(!mob.amDead())
 				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> <S-IS-ARE> released from the handcuffs."));
 			if(!oldAssist)
-				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOASSIST));
+				mob.setAttribute(MOB.Attrib.AUTOASSIST,false);
 			if(oldGuard)
-				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOGUARD));
+				mob.setAttribute(MOB.Attrib.AUTOGUARD,false);
 			CMLib.commands().postStand(mob,true);
 		}
 	}
@@ -250,21 +249,21 @@ public class Skill_HandCuff extends StdSkill
 								A.amountRemaining = amountToRemain;
 								if(auto) A.makeLongLasting();
 							}
-							oldAssist=CMath.bset(target.getBitmap(),MOB.ATT_AUTOASSIST);
+							oldAssist=target.isAttribute(MOB.Attrib.AUTOASSIST);
 							if(!oldAssist)
-								target.setBitmap(CMath.setb(target.getBitmap(),MOB.ATT_AUTOASSIST));
-							oldGuard=CMath.bset(target.getBitmap(),MOB.ATT_AUTOASSIST);
+								target.setAttribute(MOB.Attrib.AUTOASSIST,true);
+							oldGuard=target.isAttribute(MOB.Attrib.AUTOASSIST);
 							if(oldGuard)
-								target.setBitmap(CMath.unsetb(target.getBitmap(),MOB.ATT_AUTOGUARD));
-							final boolean oldNOFOL=CMath.bset(target.getBitmap(),MOB.ATT_NOFOLLOW);
+								target.setAttribute(MOB.Attrib.AUTOGUARD,false);
+							final boolean oldNOFOL=target.isAttribute(MOB.Attrib.NOFOLLOW);
 							if(target.numFollowers()>0)
 								CMLib.commands().forceStandardCommand(target,"NoFollow",new XVector("UNFOLLOW","QUIETLY"));
-							target.setBitmap(CMath.unsetb(target.getBitmap(),MOB.ATT_NOFOLLOW));
+							target.setAttribute(MOB.Attrib.NOFOLLOW,false);
 							CMLib.commands().postFollow(target,mob,true);
 							if(oldNOFOL)
-								target.setBitmap(CMath.setb(target.getBitmap(),MOB.ATT_NOFOLLOW));
+								target.setAttribute(MOB.Attrib.NOFOLLOW,true);
 							else
-								target.setBitmap(CMath.unsetb(target.getBitmap(),MOB.ATT_NOFOLLOW));
+								target.setAttribute(MOB.Attrib.NOFOLLOW,false);
 							target.setFollowing(mob);
 							A = (Skill_HandCuff)target.fetchEffect(ID());
 							if(A!=null)

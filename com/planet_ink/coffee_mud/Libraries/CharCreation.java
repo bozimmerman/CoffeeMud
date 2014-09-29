@@ -220,8 +220,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		final Session S=mob.session();
 		if(S==null) return;
 
-		S.initTelnetMode(mob.getBitmap());
-		if((CMath.bset(mob.getBitmap(),MOB.ATT_MXP))
+		S.initTelnetMode(mob.getAttributesBitmap());
+		if((mob.isAttribute(MOB.Attrib.MXP))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
 		{
 			if(S.getClientTelnetMode(Session.TELNET_MXP))
@@ -240,7 +240,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			S.setClientTelnetMode(Session.TELNET_MXP,false);
 		}
 
-		if((CMath.bset(mob.getBitmap(),MOB.ATT_SOUND))
+		if((mob.isAttribute(MOB.Attrib.SOUND))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP)))
 		{
 			if(!S.getClientTelnetMode(Session.TELNET_MSP))
@@ -263,7 +263,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 		if((mob.session()==null)
 		||(mob.isMonster())
-		||(CMath.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE)))
+		||(mob.isAttribute(MOB.Attrib.DAILYMESSAGE)))
 			return;
 
 		C=CMClass.getCommand("MOTD");
@@ -571,7 +571,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				if((listenerM!=null)
 				&&(listenerM!=mob)
 				&&((!CMLib.flags().isCloaked(mob))||(CMSecurity.isASysOp(listenerM)))
-				&&(CMath.bset(listenerM.getBitmap(),MOB.ATT_AUTONOTIFY)))
+				&&(listenerM.isAttribute(MOB.Attrib.AUTONOTIFY)))
 				{
 					final PlayerStats listenerPStats=listenerM.playerStats();
 					if((listenerPStats!=null)
@@ -1858,7 +1858,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		session.setMob(mob);
 		if(mob.playerStats()==null)
 			mob.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
-		mob.setBitmap(MOB.ATT_AUTOEXITS|MOB.ATT_AUTOWEATHER);
+		mob.setAttributesBitmap(0);
+		mob.setAttribute(MOB.Attrib.AUTOEXITS, true);
+		mob.setAttribute(MOB.Attrib.AUTOWEATHER, true);
 		setGlobalBitmaps(mob);
 
 		if((acct==null)||(acct.getPasswordStr().length()==0))
@@ -1869,18 +1871,18 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 		if((acct!=null)&&(acct.getEmail().length()>0))
 		{
-			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOFORWARD));
+			mob.setAttribute(MOB.Attrib.AUTOFORWARD,true);
 			loginObj.state=LoginState.CHARCR_EMAILDONE;
 		}
 		else
 		if(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("DISABLE"))
 		{
-			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOFORWARD));
+			mob.setAttribute(MOB.Attrib.AUTOFORWARD,false);
 			loginObj.state=LoginState.CHARCR_EMAILSTART;
 		}
 		else
 		{
-			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOFORWARD));
+			mob.setAttribute(MOB.Attrib.AUTOFORWARD,false);
 			loginObj.state=LoginState.CHARCR_EMAILDONE;
 		}
 		return null;
@@ -1930,7 +1932,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 	protected LoginResult charcrEmailConfirmed(final LoginSession loginObj, final Session session)
 	{
-		final MOB mob=loginObj.mob;
 		final boolean emailReq=(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("OPTION"));
 		final String newEmail=loginObj.savedInput;
 		boolean emailConfirmed=false;
@@ -1940,7 +1941,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(emailConfirmed||((!emailReq)&&(newEmail.trim().length()==0)))
 		{
 			loginObj.mob.playerStats().setEmail(newEmail);
-			loginObj.mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOFORWARD));
+			loginObj.mob.setAttribute(MOB.Attrib.AUTOFORWARD,true);
 			loginObj.state=LoginState.CHARCR_EMAILDONE;
 			return null;
 		}
@@ -1968,10 +1969,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(acct!=null)
 		{
 			if(acct.isSet(PlayerAccount.FLAG_ANSI))
-				mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_ANSI));
+				mob.setAttribute(MOB.Attrib.ANSI,true);
 			else
 			{
-				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_ANSI));
+				mob.setAttribute(MOB.Attrib.ANSI,false);
 				session.setServerTelnetMode(Session.TELNET_ANSI,false);
 				session.setClientTelnetMode(Session.TELNET_ANSI,false);
 			}
@@ -1993,7 +1994,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		final String input=loginObj.lastInput.trim().toUpperCase();
 		if(input.startsWith("N"))
 		{
-			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_ANSI));
+			mob.setAttribute(MOB.Attrib.ANSI,false);
 			session.setServerTelnetMode(Session.TELNET_ANSI,false);
 			session.setClientTelnetMode(Session.TELNET_ANSI,false);
 		}
@@ -2004,7 +2005,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			return LoginResult.INPUT_REQUIRED;
 		}
 		else
-			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_ANSI));
+			mob.setAttribute(MOB.Attrib.ANSI,true);
 		loginObj.state=LoginState.CHARCR_ANSIDONE;
 		return null;
 	}
@@ -2015,10 +2016,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		session.setMob(loginObj.mob);
 		if((session.getClientTelnetMode(Session.TELNET_MSP))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP)))
-			mob.setBitmap(mob.getBitmap()|MOB.ATT_SOUND);
+			mob.setAttribute(MOB.Attrib.SOUND,true);
 		if((session.getClientTelnetMode(Session.TELNET_MXP))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
-			mob.setBitmap(mob.getBitmap()|MOB.ATT_MXP);
+			mob.setAttribute(MOB.Attrib.MXP,true);
 
 		executeScript(mob,getLoginScripts().get("ANSI"));
 
@@ -2887,11 +2888,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		CMProps.addNewUserByIP(session.getAddress());
 		notifyFriends(mob,"^X"+mob.Name()+" has just been created.^.^?");
 		if((CMProps.getVar(CMProps.Str.PKILL).startsWith("ALWAYS"))
-		&&(!CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
-			mob.setBitmap(mob.getBitmap()|MOB.ATT_PLAYERKILL);
+		&&(!mob.isAttribute(MOB.Attrib.PLAYERKILL)))
+			mob.setAttribute(MOB.Attrib.PLAYERKILL,true);
 		if((CMProps.getVar(CMProps.Str.PKILL).startsWith("NEVER"))
-		&&(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
-			mob.setBitmap(mob.getBitmap()-MOB.ATT_PLAYERKILL);
+		&&(mob.isAttribute(MOB.Attrib.PLAYERKILL)))
+			mob.setAttribute(MOB.Attrib.PLAYERKILL,false);
 		CMLib.database().DBUpdatePlayer(mob);
 		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
 		for(int i=0;i<channels.size();i++)
@@ -3045,9 +3046,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		final List<String> defaultFlagsV=CMParms.parseCommas(CMProps.getVar(CMProps.Str.DEFAULTPLAYERFLAGS).toUpperCase(),true);
 		for(int v=0;v<defaultFlagsV.size();v++)
 		{
-			final int x=CMParms.indexOf(MOB.AUTODESC,defaultFlagsV.get(v));
-			if(x>=0)
-				mob.setBitmap(mob.getBitmap()|(int)CMath.pow(2,x));
+			final String flagName = defaultFlagsV.get(v); 
+			for(MOB.Attrib a : MOB.Attrib.values())
+			{
+				if(a.getName().equals(flagName) || a.name().equals(flagName))
+					mob.setAttribute(a,true);
+			}
 		}
 	}
 
@@ -3178,11 +3182,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			mob.playerStats().setLastIP(session.getAddress());
 		notifyFriends(mob,"^X"+mob.Name()+" has logged on.^.^?");
 		if((CMProps.getVar(CMProps.Str.PKILL).startsWith("ALWAYS"))
-		&&(!CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
-			mob.setBitmap(mob.getBitmap()|MOB.ATT_PLAYERKILL);
+		&&(!mob.isAttribute(MOB.Attrib.PLAYERKILL)))
+			mob.setAttribute(MOB.Attrib.PLAYERKILL,true);
 		if((CMProps.getVar(CMProps.Str.PKILL).startsWith("NEVER"))
-		&&(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
-			mob.setBitmap(mob.getBitmap()-MOB.ATT_PLAYERKILL);
+		&&(mob.isAttribute(MOB.Attrib.PLAYERKILL)))
+			mob.setAttribute(MOB.Attrib.PLAYERKILL,false);
 		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGINS);
 		if(!CMLib.flags().isCloaked(mob))
 			for(int i=0;i<channels.size();i++)
@@ -3420,12 +3424,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	public CharClass promptCharClass(int theme, MOB mob, Session session) throws IOException
 	{
 		final LoginSession loginObj=new LoginSession();
-		if(mob.playerStats()!=null)
-			loginObj.acct=mob.playerStats().getAccount();
+		final PlayerStats pStats=mob.playerStats();
+		if(pStats!=null)
+			loginObj.acct=pStats.getAccount();
 		loginObj.login=mob.Name();
 		loginObj.mob=mob;
 		LoginResult res=charcrClassInit(loginObj, session);
-		while(!session.isStopped())
+		while((session!=null)&&(!session.isStopped()))
 		{
 			if(res==LoginResult.INPUT_REQUIRED)
 				loginObj.lastInput=session.blockingIn(90000);

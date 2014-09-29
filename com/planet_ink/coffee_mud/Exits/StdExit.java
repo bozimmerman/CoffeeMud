@@ -461,7 +461,7 @@ public class StdExit implements Exit
 	public StringBuilder viewableText(MOB mob, Room room)
 	{
 		final StringBuilder Say=new StringBuilder("");
-		if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
+		if(mob.isAttribute(MOB.Attrib.SYSOPMSGS))
 		{
 			if(room==null)
 				Say.append("^Z(null)^.^? ");

@@ -215,7 +215,7 @@ public class Necromancer extends Cleric
 					&&(aChar!=M)
 					&&(M.baseCharStats().getClassLevel(this)>14)
 					&&(CMLib.flags().isInTheGame(M,true))
-					&&(!CMath.bset(M.getBitmap(),MOB.ATT_QUIET)))
+					&&(!M.isAttribute(MOB.Attrib.QUIET)))
 					{
 						if(!aChar.isMonster())
 							M.tell(L("^RYou just felt the death of @x1.^N",aChar.Name()));

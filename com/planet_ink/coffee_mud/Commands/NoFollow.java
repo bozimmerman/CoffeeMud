@@ -68,15 +68,15 @@ public class NoFollow extends Follow
 			mob.tell(L("There is noone called '@x1' following you!",CMParms.combine(commands,1)));
 			return false;
 		}
-		if(!CMath.bset(mob.getBitmap(),MOB.ATT_NOFOLLOW))
+		if(!mob.isAttribute(MOB.Attrib.NOFOLLOW))
 		{
-			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_NOFOLLOW));
+			mob.setAttribute(MOB.Attrib.NOFOLLOW,true);
 			//unfollow(mob,false);
 			mob.tell(L("You are no longer accepting new followers."));
 		}
 		else
 		{
-			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_NOFOLLOW));
+			mob.setAttribute(MOB.Attrib.NOFOLLOW,false);
 			mob.tell(L("You are now accepting new followers."));
 		}
 		return false;

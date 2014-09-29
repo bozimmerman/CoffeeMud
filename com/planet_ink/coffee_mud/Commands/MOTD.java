@@ -191,7 +191,7 @@ public class MOTD extends StdCommand
 				if(CJseparator)
 					buf.append("\n\r--------------------------------------\n\r");
 
-				if((!CMath.bset(mob.getBitmap(),MOB.ATT_AUTOFORWARD))
+				if((!mob.isAttribute(MOB.Attrib.AUTOFORWARD))
 				&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0))
 				{
 					final List<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(CMProps.getVar(CMProps.Str.MAILBOX));
@@ -241,9 +241,9 @@ public class MOTD extends StdCommand
 		}
 		if(parm.equalsIgnoreCase("ON"))
 		{
-			if(CMath.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE))
+			if(mob.isAttribute(MOB.Attrib.DAILYMESSAGE))
 			{
-				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_DAILYMESSAGE));
+				mob.setAttribute(MOB.Attrib.DAILYMESSAGE,false);
 				mob.tell(L("The daily messages have been turned on."));
 			}
 			else
@@ -254,9 +254,9 @@ public class MOTD extends StdCommand
 		else
 		if(parm.equalsIgnoreCase("OFF"))
 		{
-			if(!CMath.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE))
+			if(!mob.isAttribute(MOB.Attrib.DAILYMESSAGE))
 			{
-				mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_DAILYMESSAGE));
+				mob.setAttribute(MOB.Attrib.DAILYMESSAGE,true);
 				mob.tell(L("The daily messages have been turned off."));
 			}
 			else

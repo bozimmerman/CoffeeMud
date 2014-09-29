@@ -1407,10 +1407,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						if(mob.getVictim()!=null)
 							state=8;
 						else
-						if(CMath.bset(mob.getBitmap(), MOB.ATT_SYSOPMSGS))
+						if(mob.isAttribute(MOB.Attrib.SYSOPMSGS))
 							state=6;
 						else
-						if(CMath.bset(mob.getBitmap(), MOB.ATT_AUTORUN))
+						if(mob.isAttribute(MOB.Attrib.AUTORUN))
 							state=12;
 						doc.append("\"state\":").append(state).append(",");
 						doc.append("\"pos\":\"").append(

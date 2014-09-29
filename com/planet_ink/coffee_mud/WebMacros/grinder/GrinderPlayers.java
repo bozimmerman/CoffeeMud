@@ -359,16 +359,16 @@ public class GrinderPlayers extends GrinderMobs
 			M.delItem(I);
 		}
 
-		for(int i=0;i<MOB.AUTODESC.length;i++)
+		for(MOB.Attrib a : MOB.Attrib.values())
 		{
-			if(httpReq.isUrlParameter(MOB.AUTODESC[i]))
+			if(httpReq.isUrlParameter(a.getName()))
 			{
-				String old=httpReq.getUrlParameter(MOB.AUTODESC[i]);
+				String old=httpReq.getUrlParameter(a.getName());
 				if(old==null) old="";
 				if(old.equalsIgnoreCase("on"))
-					M.setBitmap((int)(M.getBitmap()|CMath.pow(2,i)));
+					M.setAttribute(a,true);
 				else
-					M.setBitmap((int)CMath.unsetb(M.getBitmap(),CMath.pow(2,i)));
+					M.setAttribute(a,false);
 			}
 		}
 		for(final int i : CharStats.CODES.ALLCODES())

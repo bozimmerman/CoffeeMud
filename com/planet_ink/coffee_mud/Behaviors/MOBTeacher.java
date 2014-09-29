@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.Expertise
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -300,8 +299,8 @@ public class MOBTeacher extends CombatAbilities
 	{
 		if(host instanceof MOB)
 		{
-			if(CMath.bset(((MOB)host).getBitmap(),MOB.ATT_NOTEACH))
-				((MOB)host).setBitmap(CMath.unsetb(((MOB)host).getBitmap(),MOB.ATT_NOTEACH));
+			if(((MOB)host).isAttribute(MOB.Attrib.NOTEACH))
+				((MOB)host).setAttribute(MOB.Attrib.NOTEACH,false);
 		}
 		return super.okMessage(host,msg);
 	}

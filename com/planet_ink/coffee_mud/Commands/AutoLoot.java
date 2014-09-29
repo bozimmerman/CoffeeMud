@@ -44,14 +44,14 @@ public class AutoLoot extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOLOOT))
+		if(mob.isAttribute(MOB.Attrib.AUTOLOOT))
 		{
-			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOLOOT));
+			mob.setAttribute(MOB.Attrib.AUTOLOOT,false);
 			mob.tell(L("Autolooting has been turned off."));
 		}
 		else
 		{
-			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOLOOT));
+			mob.setAttribute(MOB.Attrib.AUTOLOOT,true);
 			mob.tell(L("Autolooting has been turned on."));
 		}
 		return false;
