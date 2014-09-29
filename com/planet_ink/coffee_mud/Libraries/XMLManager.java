@@ -138,14 +138,28 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			case '&':
 				if(loop<buf.length()-3)
 				{
-					if(buf.substring(loop+1,loop+4).equalsIgnoreCase("lt;"))
-						buf.replace(loop,loop+4,"<");
-					else
-					if(buf.substring(loop+1,loop+4).equalsIgnoreCase("gt;"))
-						buf.replace(loop,loop+4,">");
-					else
-					if(buf.substring(loop+1,loop+6).equalsIgnoreCase("quot;"))
-						buf.replace(loop,loop+6,"\"");
+					switch(buf.charAt(loop+1))
+					{
+					case 'l':
+						if(buf.substring(loop+1,loop+4).equalsIgnoreCase("lt;"))
+							buf.replace(loop,loop+4,"<");
+						break;
+					case 'g':
+						if(buf.substring(loop+1,loop+4).equalsIgnoreCase("gt;"))
+							buf.replace(loop,loop+4,">");
+						break;
+					case 'q':
+						if(buf.substring(loop+1,loop+6).equalsIgnoreCase("quot;"))
+							buf.replace(loop,loop+6,"\"");
+						break;
+					case 'a':
+						if(buf.substring(loop+1,loop+6).equalsIgnoreCase("amp;"))
+							buf.replace(loop,loop+5,"&");
+						else
+						if(buf.substring(loop+1,loop+6).equalsIgnoreCase("apos;"))
+							buf.replace(loop,loop+6,"'");
+						break;
+					}
 				}
 				break;
 			case '%':
