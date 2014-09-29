@@ -49,7 +49,7 @@ public class Ranger extends StdCharClass
 	@Override public int getPracsFirstLevel(){return 3;}
 	@Override public int getTrainsFirstLevel(){return 4;}
 	@Override public String getHitPointsFormula(){return "((@x6<@x7)/2)+(2*(1?6))"; }
-	@Override public String getManaFormula(){return "((@x4<@x5)/8)+(1*(1?3))"; }
+	@Override public String getManaFormula(){return "((@x4<@x5)/7)+(1*(1?3))"; }
 	@Override public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
 
 	public Ranger()
