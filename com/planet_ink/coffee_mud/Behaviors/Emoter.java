@@ -51,7 +51,7 @@ public class Emoter extends ActiveTicker
 	{
 		super.setParms(newParms);
 		expires=CMParms.getParmInt(parms,"expires",0);
-		inroomIDs=CMParms.parseSemicolons(CMParms.getParmStr(parms,"inroom","").toUpperCase().trim(),true);
+		inroomIDs=CMParms.parseCommas(CMParms.getParmStr(parms,"inroom","").toUpperCase().trim(),true);
 		emotes=null;
 		smells=null;
 	}

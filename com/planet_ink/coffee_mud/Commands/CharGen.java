@@ -39,7 +39,7 @@ public class CharGen extends StdCommand
 	private final String[] access=_i(new String[]{"CHARGEN"});
 	@Override public String[] getAccessWords(){return access;}
 
-	protected void equipPlayer(MOB M)
+	protected void equipPlayer(final MOB M)
 	{
 		final int level = M.basePhyStats().level();
 		final CharClass C=M.baseCharStats().getCurrentClass();
@@ -140,7 +140,7 @@ public class CharGen extends StdCommand
 	}
 
 
-	protected MOB levelMOBup(int level, CharClass C, boolean player)
+	protected MOB levelMOBup(final int level, final CharClass C, final boolean player)
 	{
 		final MOB mob=CMClass.getFactoryMOB();
 		CMLib.factions().setAlignment(mob,Faction.Align.NEUTRAL);
@@ -208,7 +208,7 @@ public class CharGen extends StdCommand
 		return mob;
 	}
 
-	public void averageout(MOB avgMob, int tries)
+	public void averageout(final MOB avgMob, final int tries)
 	{
 		for(final int i : CharStats.CODES.BASECODES())
 			avgMob.baseCharStats().setStat(i,(int)Math.round(CMath.div(avgMob.baseCharStats().getStat(i),tries)));
@@ -223,7 +223,7 @@ public class CharGen extends StdCommand
 		avgMob.setTrains(0);
 	}
 
-	public void addHimIn(MOB avgMob, MOB mob2)
+	public void addHimIn(final MOB avgMob, final MOB mob2)
 	{
 		for(final int i : CharStats.CODES.BASECODES())
 			avgMob.baseCharStats().setStat(i,avgMob.baseCharStats().getStat(i)+mob2.baseCharStats().getStat(i));
@@ -237,7 +237,7 @@ public class CharGen extends StdCommand
 		avgMob.resetToMaxState();
 	}
 
-	public MOB AverageClassMOB(MOB mob, int level, CharClass C, int numTries, boolean player)
+	public MOB AverageClassMOB(final MOB mob, final int level, final CharClass C, final int numTries, final boolean player)
 	{
 		final MOB avgMob=levelMOBup(level,C, player);
 		int tries=1;
@@ -427,9 +427,6 @@ public class CharGen extends StdCommand
 				c.skipLevels=15;
 		}
 
-
-
-
 		c.A=CMClass.getAreaType("StdArea");
 		c.A.setName(L("UNKNOWNAREA"));
 		CMLib.map().addArea(c.A);
@@ -458,7 +455,6 @@ public class CharGen extends StdCommand
 			"BestHitSkill",//19
 			"BestSingleHitSkill",//20
 		};
-
 
 		final boolean[] aborted = new boolean[1];
 		aborted[0]=false;
@@ -676,7 +672,6 @@ public class CharGen extends StdCommand
 							String ZEROSKILL2=null;
 							String ALMOSTZEROSKILL=null;
 							int l1=0, l2=0;
-
 
 							//chargen combat charclasses export=test.tab iterations=100 skiplevels=20 1 91
 							while((M1.getVictim()==M2)
@@ -1058,6 +1053,4 @@ public class CharGen extends StdCommand
 
 	@Override public boolean canBeOrdered(){return true;}
 	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CHARGEN);}
-
-
 }
