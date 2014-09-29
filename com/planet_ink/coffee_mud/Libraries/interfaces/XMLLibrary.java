@@ -393,7 +393,8 @@ public interface XMLLibrary extends CMLibrary
 		public void addContent(XMLpiece x)
 		{
 			if (x == null) return;
-			if (contents == null) contents = new XVector<XMLpiece>();
+			if (contents == null) 
+				contents = new XVector<XMLpiece>();
 			x.parent=this;
 			contents.add(x);
 		}

@@ -131,14 +131,14 @@ See guides/RandomAreas.html for information about documents of this type.
 	
 <MOB class="GenMob" level="$level_range" id="mountain_giant_mob" race="Giant" gender="$anygender">
 	<NAME select="all">
-		<NAME condition="$mob_level<10">a toddler storm giant</NAME>
-		<NAME condition="$mob_level<20 and $mob_level>=10">a very young storm giant</NAME>
-		<NAME condition="$mob_level<30 and $mob_level>=20">a young storm giant</NAME>
-		<NAME condition="$mob_level<40 and $mob_level>=30">a subadult storm giant</NAME>
-		<NAME condition="$mob_level<70 and $mob_level>=40">an adult storm giant</NAME>
-		<NAME condition="$mob_level<80 and $mob_level>=70">a great storm giant</NAME>
-		<NAME condition="$mob_level<85 and $mob_level>=80">an enormous storm giant</NAME>
-		<NAME condition="$mob_level>=85">a monstrous storm giant</NAME>
+		<NAME condition="$mob_level &lt; 10">a toddler storm giant</NAME>
+		<NAME condition="$mob_level &lt; 20 and $mob_level &gt;=  10">a very young storm giant</NAME>
+		<NAME condition="$mob_level &lt; 30 and $mob_level &gt;=  20">a young storm giant</NAME>
+		<NAME condition="$mob_level &lt; 40 and $mob_level &gt;=  30">a subadult storm giant</NAME>
+		<NAME condition="$mob_level &lt; 70 and $mob_level &gt;=  40">an adult storm giant</NAME>
+		<NAME condition="$mob_level &lt; 80 and $mob_level &gt;=  70">a great storm giant</NAME>
+		<NAME condition="$mob_level &lt; 85 and $mob_level &gt;=  80">an enormous storm giant</NAME>
+		<NAME condition="$mob_level &gt;=  85">a monstrous storm giant</NAME>
 	</NAME>
 	<DISPLAY select="pick-1">
 		<DISPLAY pickweight="1">$mob_name towers over you.</DISPLAY>
@@ -152,15 +152,15 @@ See guides/RandomAreas.html for information about documents of this type.
 	</BEHAVIOR>
 	<AFFECT class="Spell_ResistCold" parms="" />
 	<ABILITY select="all">
-		<ABILITY condition="$mob_level>=10" class="Spell_Frost" parms="" />
-		<ABILITY condition="$mob_level>=20" class="Chant_SummonRain" parms="" />
-		<ABILITY condition="$mob_level>=30" class="Spell_Lightning" parms="" />
-		<ABILITY condition="$mob_level>=40" class="Chant_Boulderbash" parms="" />
-		<ABILITY condition="$mob_level>=50" class="Spell_ChainLightening" parms="" />
-		<ABILITY condition="$mob_level>=60" class="Chant_FeelCold" parms="" />
-		<ABILITY condition="$mob_level>=70" class="Chant_SummonTornado" parms="" />
-		<ABILITY condition="$mob_level>=80" class="Chant_SummonRockGolem" parms="" />
-		<ABILITY condition="$mob_level>=90" class="Chant_FeelElectricity" parms="" />
+		<ABILITY condition="$mob_level &gt;=  10" class="Spell_Frost" parms="" />
+		<ABILITY condition="$mob_level &gt;=  20" class="Chant_SummonRain" parms="" />
+		<ABILITY condition="$mob_level &gt;=  30" class="Spell_Lightning" parms="" />
+		<ABILITY condition="$mob_level &gt;=  40" class="Chant_Boulderbash" parms="" />
+		<ABILITY condition="$mob_level &gt;=  50" class="Spell_ChainLightening" parms="" />
+		<ABILITY condition="$mob_level &gt;=  60" class="Chant_FeelCold" parms="" />
+		<ABILITY condition="$mob_level &gt;=  70" class="Chant_SummonTornado" parms="" />
+		<ABILITY condition="$mob_level &gt;=  80" class="Chant_SummonRockGolem" parms="" />
+		<ABILITY condition="$mob_level &gt;=  90" class="Chant_FeelElectricity" parms="" />
 	</ABILITY>
 </MOB>
 
