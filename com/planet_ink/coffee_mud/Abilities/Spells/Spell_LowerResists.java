@@ -100,7 +100,7 @@ public class Spell_LowerResists extends Spell
 				}
 				amount=((mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level())*5;
 				if(amount<5) amount=5;
-				success=maliciousAffect(mob,target,asLevel,0,-1);
+				success=maliciousAffect(mob,target,asLevel,0,-1)!=null;
 			}
 		}
 		else

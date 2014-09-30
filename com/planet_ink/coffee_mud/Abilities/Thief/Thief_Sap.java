@@ -186,7 +186,7 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 				if(msg.value()<=0)
 				{
 					target.location().show(target,null, CMMsg.MSG_OK_ACTION,L("<S-NAME> hit(s) the floor!"));
-					success=maliciousAffect(mob,target,asLevel,3,-1);
+					success=maliciousAffect(mob,target,asLevel,3,-1)!=null;
 					final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 					MOB M=null;
 					mob.makePeace();

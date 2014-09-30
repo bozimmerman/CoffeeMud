@@ -123,7 +123,7 @@ public class Chant_HoldAnimal extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=maliciousAffect(mob,target,asLevel,8,-1);
+					success=maliciousAffect(mob,target,asLevel,8,-1)!=null;
 					if(success)
 						if(target.location()==mob.location())
 							target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> become(s) perfectly still!!"));

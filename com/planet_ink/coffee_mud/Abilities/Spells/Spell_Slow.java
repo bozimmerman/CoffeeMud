@@ -100,7 +100,7 @@ public class Spell_Slow extends Spell
 					R.show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> slow(s) down!"));
 					final Ability A=target.fetchEffect("Spell_MassSlow");
 					if(A!=null)A.unInvoke();
-					success=maliciousAffect(mob,target,asLevel,0,-1);
+					success=maliciousAffect(mob,target,asLevel,0,-1)!=null;
 				}
 			}
 		}

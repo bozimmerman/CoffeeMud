@@ -189,8 +189,8 @@ public class Power_OctoGrapple extends SuperPower
 			if((mob.location().okMessage(mob,msg))&&(msg.value()<=0))
 			{
 				mob.location().send(mob,msg);
-				success=maliciousAffect(mob,target,asLevel,10,-1);
-				success=maliciousAffect(mob,mob,asLevel,10,-1);
+				success=maliciousAffect(mob,target,asLevel,10,-1)!=null;
+				success=maliciousAffect(mob,mob,asLevel,10,-1)!=null;
 			}
 		}
 		else

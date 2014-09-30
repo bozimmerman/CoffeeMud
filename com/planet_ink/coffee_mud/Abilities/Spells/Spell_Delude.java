@@ -102,7 +102,7 @@ public class Spell_Delude extends Spell
 					previousAlignment=target.fetchFaction(CMLib.factions().AlignID());
 
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> undergo(es) a change of attitude"));
-					success=beneficialAffect(mob,target,asLevel,0);
+					success=beneficialAffect(mob,target,asLevel,0)!=null;
 					if(success)
 					{
 						int which=0;

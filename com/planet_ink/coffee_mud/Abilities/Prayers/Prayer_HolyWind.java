@@ -149,7 +149,7 @@ public class Prayer_HolyWind extends Prayer
 							{
 								mob.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> fall(s) down!"));
 								doneTicking=false;
-								success=maliciousAffect(mob,target,asLevel,howLong,-1);
+								success=maliciousAffect(mob,target,asLevel,howLong,-1)!=null;
 							}
 							if(target.getVictim()!=null)
 								target.getVictim().setAtRange(target.rangeToTarget());

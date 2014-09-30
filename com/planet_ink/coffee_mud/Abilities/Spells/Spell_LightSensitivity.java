@@ -131,9 +131,9 @@ public class Spell_LightSensitivity extends Spell
 					else
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) blinded by the light."));
 					if(castingQuality(mob,target)==Ability.QUALITY_MALICIOUS)
-						success=maliciousAffect(mob,target,asLevel,0,-1);
+						success=maliciousAffect(mob,target,asLevel,0,-1)!=null;
 					else
-						success=beneficialAffect(mob,target,asLevel,0);
+						success=beneficialAffect(mob,target,asLevel,0)!=null;
 				}
 			}
 		}

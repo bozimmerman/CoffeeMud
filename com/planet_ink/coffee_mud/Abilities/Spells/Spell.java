@@ -49,14 +49,14 @@ public class Spell extends StdAbility
 	protected static final int CHAIN_LENGTH=4;
 
 	@Override
-	public boolean maliciousAffect(MOB mob,
+	public Ability maliciousAffect(MOB mob,
 								   Physical target,
 								   int asLevel,
 								   int tickAdjustmentFromStandard,
 								   int additionAffectCheckCode)
 	{
-		final boolean truefalse=super.maliciousAffect(mob,target,asLevel,tickAdjustmentFromStandard,additionAffectCheckCode);
-		if(truefalse
+		final Ability doneA=super.maliciousAffect(mob,target,asLevel,tickAdjustmentFromStandard,additionAffectCheckCode);
+		if((doneA!=null)
 		&&(target!=null)
 		&&(target instanceof MOB)
 		&&(mob!=target)
@@ -84,7 +84,7 @@ public class Spell extends StdAbility
 				}
 			}
 		}
-		return truefalse;
+		return doneA;
 	}
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)

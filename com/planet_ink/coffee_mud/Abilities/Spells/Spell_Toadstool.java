@@ -136,7 +136,7 @@ public class Spell_Toadstool extends Spell
 				{
 					newRace=CMClass.getRace("Toadstool");
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) a @x1!",newRace.name()));
-					success=beneficialAffect(mob,target,asLevel,0);
+					success=beneficialAffect(mob,target,asLevel,0)!=null;
 					target.makePeace();
 					for(int i=0;i<mob.location().numInhabitants();i++)
 					{

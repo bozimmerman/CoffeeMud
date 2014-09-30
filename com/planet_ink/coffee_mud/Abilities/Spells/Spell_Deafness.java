@@ -109,7 +109,7 @@ public class Spell_Deafness extends Spell
 				R.send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=maliciousAffect(mob,target,asLevel,0,-1);
+					success=maliciousAffect(mob,target,asLevel,0,-1)!=null;
 					R.show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> go(es) deaf!"));
 				}
 			}

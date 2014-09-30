@@ -161,7 +161,7 @@ public class Chant_Feralness extends Chant
 					return false;
 				}
 				hpAdjustment=(int)Math.round(CMath.div(target.maxState().getHitPoints(),5.0));
-				success=beneficialAffect(mob,target,asLevel,0);
+				success=beneficialAffect(mob,target,asLevel,0)!=null;
 				target.curState().setHitPoints(target.curState().getHitPoints()+hpAdjustment);
 				target.recoverMaxState();
 				target.location().recoverRoomStats();

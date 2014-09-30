@@ -378,9 +378,9 @@ public class GenAbility extends StdAbility
 					if((canAffectCode()!=0)&&(target!=null))
 					{
 						if(abstractQuality()==Ability.QUALITY_MALICIOUS)
-							success[0]=maliciousAffect(mob,target,asLevel,tickOverride(),-1);
+							success[0]=maliciousAffect(mob,target,asLevel,tickOverride(),-1)!=null;
 						else
-							success[0]=beneficialAffect(mob,target,asLevel,tickOverride());
+							success[0]=beneficialAffect(mob,target,asLevel,tickOverride())!=null;
 					}
 					setTimeOfNextCast(mob);
 

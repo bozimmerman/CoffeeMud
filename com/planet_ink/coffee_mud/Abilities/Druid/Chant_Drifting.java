@@ -159,7 +159,7 @@ public class Chant_Drifting extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=beneficialAffect(mob,target,asLevel,0);
+					success=beneficialAffect(mob,target,asLevel,0)!=null;
 					target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> start(s) drifting up!"));
 				}
 			}

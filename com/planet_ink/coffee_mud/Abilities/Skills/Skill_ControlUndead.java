@@ -252,7 +252,7 @@ public class Skill_ControlUndead extends StdSkill
 					if(((mob.phyStats().level()-target.phyStats().level())>1)||(target.phyStats().level()==1))
 					{
 						if(!target.isMonster())
-							success=maliciousAffect(mob,target,asLevel,0,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_MIND|CMMsg.MASK_ALWAYS);
+							success=maliciousAffect(mob,target,asLevel,0,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_MIND|CMMsg.MASK_ALWAYS)!=null;
 						if(success)
 						{
 							mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> now controlled."));

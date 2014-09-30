@@ -123,7 +123,7 @@ public class Spell_MageArmor extends Spell
 				mob.addItem(theArmor);
 				theArmor.wearAt(Wearable.WORN_TORSO);
 				theArmor.recoverPhyStats();
-				success=beneficialAffect(mob,target,asLevel,0);
+				success=beneficialAffect(mob,target,asLevel,0)!=null;
 				mob.location().recoverRoomStats();
 			}
 		}

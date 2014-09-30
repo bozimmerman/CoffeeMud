@@ -247,7 +247,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 				if(msg.value()<=0)
 				{
 					R.show(target,null,CMMsg.MSG_OK_VISUAL,DISEASE_START());
-					success=maliciousAffect(mob,target,asLevel,DISEASE_TICKS(),-1);
+					success=maliciousAffect(mob,target,asLevel,DISEASE_TICKS(),-1)!=null;
 				}
 				else
 					spreadImmunity(target);

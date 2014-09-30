@@ -107,7 +107,7 @@ public class Prayer_Earthshield extends Prayer
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=beneficialAffect(mob,target,asLevel,0);
+					success=beneficialAffect(mob,target,asLevel,0)!=null;
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> covered by an Earth Shield!"));
 				}
 			}

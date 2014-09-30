@@ -144,7 +144,7 @@ public class Spell_ManaBurn extends Spell
 				{
 					target.curState().adjMana(-50,target.maxState());
 					curMana=target.curState().getMana();
-					success=maliciousAffect(mob,target,asLevel,-levelDiff,-1);
+					success=maliciousAffect(mob,target,asLevel,-levelDiff,-1)!=null;
 					if(success)
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) drained!"));
 				}

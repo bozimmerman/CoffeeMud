@@ -236,7 +236,7 @@ public class Spell_Charm extends Spell
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=maliciousAffect(mob,target,asLevel,-levelDiff,CMMsg.MASK_MALICIOUS|CMMsg.MSK_CAST_SOMANTIC|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0));
+					success=maliciousAffect(mob,target,asLevel,-levelDiff,CMMsg.MASK_MALICIOUS|CMMsg.MSK_CAST_SOMANTIC|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0))!=null;
 					if(success)
 					{
 						if(target.isInCombat()) target.makePeace();

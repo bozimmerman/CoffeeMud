@@ -109,7 +109,7 @@ public class Chant_Rockthought extends Chant
 				if(msg.value()<=0)
 				{
 					stubb=null;
-					success=maliciousAffect(mob,target,asLevel,20,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0));
+					success=maliciousAffect(mob,target,asLevel,20,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0))!=null;
 					if(success)
 					{
 						if(target.isInCombat()) target.makePeace();

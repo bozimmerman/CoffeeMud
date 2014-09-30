@@ -112,7 +112,7 @@ public class Spell_FeelTheVoid extends Spell
 					if(target.location()==mob.location())
 					{
 						target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> stand(s) dazed and quiet!"));
-						success=maliciousAffect(mob,target,asLevel,0,-1);
+						success=maliciousAffect(mob,target,asLevel,0,-1)!=null;
 					}
 				}
 			}

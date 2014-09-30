@@ -530,7 +530,7 @@ public interface Ability extends Environmental
 	public int adjustedLevel(MOB mob, int asLevel);
 
 	/**
-	 * Adds this Ability object as an effect on the given affected target, and
+	 * Adds THIS Ability object as an effect on the given affected target, and
 	 * sets it to unInvoke after the given number of ticks.  This method
 	 * intelligently determines whether the target is already going to provide
 	 * tick events to the Ability (like a mob) or whether the system should

@@ -154,7 +154,7 @@ public class Spell_FlamingEnsnarement extends Spell
 							amountRemaining=60;
 							if(target.location()==mob.location())
 							{
-								success=maliciousAffect(mob,target,asLevel,0,-1);
+								success=maliciousAffect(mob,target,asLevel,0,-1)!=null;
 								target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> become(s) ensnared in the flaming tendrils erupting from the ground, and is unable to move <S-HIS-HER> feet!"));
 							}
 						}

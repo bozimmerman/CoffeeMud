@@ -155,7 +155,7 @@ public class Power_WebSpinning extends SuperPower
 					amountRemaining=160;
 					if(CMLib.map().roomLocation(target)==mob.location())
 					{
-						success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1);
+						success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1)!=null;
 						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> become(s) stuck in a mass of web!"));
 					}
 				}

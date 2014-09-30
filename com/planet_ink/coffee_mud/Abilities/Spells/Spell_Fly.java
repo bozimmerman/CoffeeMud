@@ -100,7 +100,7 @@ public class Spell_Fly extends Spell
 				if(target.location()==mob.location())
 				{
 					target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> start(s) to fly around!"));
-					success=beneficialAffect(mob,target,asLevel,0);
+					success=beneficialAffect(mob,target,asLevel,0)!=null;
 				}
 			}
 		}

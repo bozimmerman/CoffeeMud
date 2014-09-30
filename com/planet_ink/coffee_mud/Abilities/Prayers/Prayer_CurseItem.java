@@ -174,7 +174,7 @@ public class Prayer_CurseItem extends Prayer
 				if(msg.value()<=0)
 				{
 					Prayer_Curse.endLowerBlessings(target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
-					success=maliciousAffect(mob,target,asLevel,0,-1);
+					success=maliciousAffect(mob,target,asLevel,0,-1)!=null;
 					target.recoverPhyStats();
 					mob.recoverPhyStats();
 				}

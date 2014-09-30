@@ -100,7 +100,7 @@ public class Chant_Barkskin extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				success=beneficialAffect(mob,target,asLevel,0);
+				success=beneficialAffect(mob,target,asLevel,0)!=null;
 				target.location().recoverRoomStats();
 			}
 		}

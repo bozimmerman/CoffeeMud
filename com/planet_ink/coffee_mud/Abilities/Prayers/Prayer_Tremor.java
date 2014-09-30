@@ -151,7 +151,7 @@ public class Prayer_Tremor extends Prayer
 						{
 							if(target.charStats().getBodyPart(Race.BODY_LEG)>0)
 							{
-								success=maliciousAffect(mob,target,asLevel,2,-1);
+								success=maliciousAffect(mob,target,asLevel,2,-1)!=null;
 								if(success)
 								{
 									if(target.location()==mob.location())

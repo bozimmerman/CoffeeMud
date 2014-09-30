@@ -133,7 +133,7 @@ public class Spell_AweOther extends Spell
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				if(maliciousAffect(mob,target,asLevel,0,-1))
+				if(maliciousAffect(mob,target,asLevel,0,-1)!=null)
 				{
 					final Ability A=target.fetchEffect(ID());
 					if(A!=null)

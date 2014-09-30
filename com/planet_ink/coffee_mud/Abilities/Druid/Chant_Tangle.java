@@ -156,7 +156,7 @@ public class Chant_Tangle extends Chant
 						amountRemaining=200;
 						if(target.location()==mob.location())
 						{
-							success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1);
+							success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1)!=null;
 							target.location().show(target,null,thePlants,CMMsg.MSG_OK_ACTION,L("<S-NAME> become(s) stuck in <O-NAME> as they grow and twist around <S-HIM-HER>!"));
 						}
 					}

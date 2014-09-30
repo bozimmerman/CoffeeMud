@@ -125,7 +125,7 @@ public class Spell_WeaknessElectricity extends Spell
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
-					success=maliciousAffect(mob,target,asLevel,0,-1);
+					success=maliciousAffect(mob,target,asLevel,0,-1)!=null;
 			}
 		}
 		else

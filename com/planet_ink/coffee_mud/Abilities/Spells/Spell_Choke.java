@@ -92,7 +92,7 @@ public class Spell_Choke extends Spell
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=maliciousAffect(mob,target,asLevel,5+super.getXLEVELLevel(mob),-1);
+					success=maliciousAffect(mob,target,asLevel,5+super.getXLEVELLevel(mob),-1)!=null;
 					if(target.location()==mob.location())
 						target.location().show(target,null,CMMsg.MSG_OK_ACTION,("<S-NAME> start(s) choking!"+CMLib.protocol().msp("choke.wav",40)));
 				}

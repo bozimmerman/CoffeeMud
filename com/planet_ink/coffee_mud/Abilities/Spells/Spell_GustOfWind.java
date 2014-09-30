@@ -140,7 +140,7 @@ public class Spell_GustOfWind extends Spell
 							{
 								R.show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> fall(s) down!"));
 								doneTicking=false;
-								success=maliciousAffect(mob,target,asLevel,2,-1);
+								success=maliciousAffect(mob,target,asLevel,2,-1)!=null;
 							}
 							victim=target.getVictim();
 							if(victim!=null)

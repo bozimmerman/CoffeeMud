@@ -489,7 +489,8 @@ public class StdAbility implements Ability
 	@Override
 	public void startTickDown(MOB invokerMOB, Physical affected, int tickTime)
 	{
-		if(invokerMOB!=null) invoker=invokerMOB;
+		if(invokerMOB!=null) 
+			invoker=invokerMOB;
 
 		savable=false; // makes it so that the effect does not save!
 
@@ -503,7 +504,8 @@ public class StdAbility implements Ability
 		{
 			final MOB mob=(MOB)affected;
 			final Room room=mob.location();
-			if(room==null) return;
+			if(room==null) 
+				return;
 			if(affected.fetchEffect(ID())==null)
 				affected.addEffect(this);
 			room.recoverRoomStats();
@@ -1324,31 +1326,29 @@ public class StdAbility implements Ability
 	}
 
 
-	public boolean maliciousAffect(MOB mob, Physical target, int asLevel, int tickAdjustmentFromStandard, int additionAffectCheckCode)
+	public Ability maliciousAffect(MOB mob, Physical target, int asLevel, int tickAdjustmentFromStandard, int additionAffectCheckCode)
 	{
-		boolean ok=true;
 		final Room room=mob.location();
-		if(room==null) return false;
+		if(room==null) 
+			return null;
 		if(additionAffectCheckCode>=0)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.NO_EFFECT,additionAffectCheckCode,CMMsg.NO_EFFECT,null);
 			if(room.okMessage(mob,msg))
 			{
 				room.send(mob,msg);
-				ok=(msg.value()<=0);
+				if(msg.value()>0)
+					return null;
 			}
 			else
-				ok=false;
+				return null;
 		}
-		if(ok)
-		{
-			invoker=mob;
-			final Ability newOne=(Ability)copyOf();
-			((StdAbility)newOne).canBeUninvoked=true;
-			tickAdjustmentFromStandard=getMaliciousTickdownTime(mob,target,tickAdjustmentFromStandard,asLevel);
-			newOne.startTickDown(invoker,target,tickAdjustmentFromStandard);
-		}
-		return ok;
+		invoker=mob;
+		final Ability newOne=(Ability)copyOf();
+		((StdAbility)newOne).canBeUninvoked=true;
+		tickAdjustmentFromStandard=getMaliciousTickdownTime(mob,target,tickAdjustmentFromStandard,asLevel);
+		newOne.startTickDown(invoker,target,tickAdjustmentFromStandard);
+		return newOne;
 	}
 
 	public boolean beneficialWordsFizzle(MOB mob, Environmental target, String message)
@@ -1401,18 +1401,14 @@ public class StdAbility implements Ability
 		return tickAdjustmentFromStandard;
 	}
 
-	public boolean beneficialAffect(MOB mob, Physical target, int asLevel, int tickAdjustmentFromStandard)
+	public Ability beneficialAffect(MOB mob, Physical target, int asLevel, int tickAdjustmentFromStandard)
 	{
-		final boolean ok=true;
-		if(ok)
-		{
-			invoker=mob;
-			final Ability newOne=(Ability)this.copyOf();
-			((StdAbility)newOne).canBeUninvoked=true;
-			tickAdjustmentFromStandard=getBeneficialTickdownTime(mob,target,tickAdjustmentFromStandard,asLevel);
-			newOne.startTickDown(invoker,target,tickAdjustmentFromStandard);
-		}
-		return ok;
+		invoker=mob;
+		final Ability newOne=(Ability)this.copyOf();
+		((StdAbility)newOne).canBeUninvoked=true;
+		tickAdjustmentFromStandard=getBeneficialTickdownTime(mob,target,tickAdjustmentFromStandard,asLevel);
+		newOne.startTickDown(invoker,target,tickAdjustmentFromStandard);
+		return newOne;
 	}
 
 	public void spreadImmunity(MOB mob)

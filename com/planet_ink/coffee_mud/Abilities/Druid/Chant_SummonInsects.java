@@ -143,7 +143,7 @@ public class Chant_SummonInsects extends Chant
 						if((msg.value()<=0)&&(target.location()==mob.location()))
 						{
 							castingLocation=mob.location();
-							success=maliciousAffect(mob,target,asLevel,((mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*10),-1);
+							success=maliciousAffect(mob,target,asLevel,((mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*10),-1)!=null;
 							target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> become(s) enveloped by the swarm of stinging insects!"));
 						}
 					}

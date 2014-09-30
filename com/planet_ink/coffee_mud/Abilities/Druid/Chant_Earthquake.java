@@ -166,7 +166,7 @@ public class Chant_Earthquake extends Chant
 						{
 							if(target.charStats().getBodyPart(Race.BODY_LEG)>0)
 							{
-								success=maliciousAffect(mob,target,asLevel,3,-1);
+								success=maliciousAffect(mob,target,asLevel,3,-1)!=null;
 								if(success)
 								{
 									if(target.location()==mob.location())

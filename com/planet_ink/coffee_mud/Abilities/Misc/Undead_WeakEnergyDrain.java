@@ -155,7 +155,7 @@ public class Undead_WeakEnergyDrain extends StdAbility
 						direction=1;
 						if(target.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))
 							direction=-1;
-						success=maliciousAffect(mob,target,asLevel,10,-1);
+						success=maliciousAffect(mob,target,asLevel,10,-1)!=null;
 					}
 				}
 			}

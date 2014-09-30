@@ -205,7 +205,7 @@ public class Chant_FurCoat extends Chant
 				theArmor.text();
 				target.addItem(theArmor);
 				theArmor.wearAt(wornCode);
-				success=beneficialAffect(mob,target,asLevel,0);
+				success=beneficialAffect(mob,target,asLevel,0)!=null;
 				mob.location().recoverRoomStats();
 			}
 		}

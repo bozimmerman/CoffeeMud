@@ -248,13 +248,13 @@ public class Poison extends StdAbility implements HealthCondition
 						else
 							R.show((MOB)target,null,CMMsg.MSG_OK_VISUAL,POISON_START());
 						if(POISON_AFFECTTARGET())
-							success=maliciousAffect(mob,(MOB)target,asLevel,POISON_TICKS(),-1);
+							success=maliciousAffect(mob,(MOB)target,asLevel,POISON_TICKS(),-1)!=null;
 						else
 							success=true;
 					}
 					else
 					if(target instanceof Physical)
-						success=maliciousAffect(mob,(Physical)target,asLevel,100,-1);
+						success=maliciousAffect(mob,(Physical)target,asLevel,100,-1)!=null;
 				}
 				else
 					success=false;

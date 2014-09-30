@@ -172,7 +172,7 @@ public class Spell_PolymorphSelf extends Spell
 				{
 					newRace=R;
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) a @x1!",CMLib.english().startWithAorAn(newRace.name())));
-					success=beneficialAffect(mob,target,asLevel,0);
+					success=beneficialAffect(mob,target,asLevel,0)!=null;
 					target.recoverCharStats();
 					CMLib.utensils().confirmWearability(target);
 				}

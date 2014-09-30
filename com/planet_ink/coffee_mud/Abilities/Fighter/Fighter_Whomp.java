@@ -184,7 +184,7 @@ public class Fighter_Whomp extends FighterSkill implements HealthCondition
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
-					success=maliciousAffect(mob,target,asLevel,2,-1);
+					success=maliciousAffect(mob,target,asLevel,2,-1)!=null;
 			}
 		}
 		else

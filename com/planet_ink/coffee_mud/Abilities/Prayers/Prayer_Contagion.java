@@ -135,7 +135,7 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
 				if((msg.value()<=0)&&(msg2.value()<=0))
-					success=maliciousAffect(mob,target,asLevel,0,-1);
+					success=maliciousAffect(mob,target,asLevel,0,-1)!=null;
 				else
 					spreadImmunity(target);
 			}

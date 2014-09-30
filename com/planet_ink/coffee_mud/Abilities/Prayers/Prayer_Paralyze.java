@@ -115,7 +115,7 @@ public class Prayer_Paralyze extends Prayer
 				{
 					int duration = 8 - levelDiff;
 					if(duration < 2) duration = 2;
-					success=maliciousAffect(mob,target,asLevel,duration,-1);
+					success=maliciousAffect(mob,target,asLevel,duration,-1)!=null;
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> can't move!"));
 				}
 			}

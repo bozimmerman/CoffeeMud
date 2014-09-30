@@ -89,7 +89,7 @@ public class Spell_MassHold extends Spell
 
 								final Spell_Hold spell=new Spell_Hold();
 								spell.setProficiency(proficiency());
-								success=spell.maliciousAffect(mob,target,asLevel,7-levelDiff,-1);
+								success=spell.maliciousAffect(mob,target,asLevel,7-levelDiff,-1)!=null;
 								if(success)
 									if(target.location()==mob.location())
 										target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> become(s) perfectly still!!"));

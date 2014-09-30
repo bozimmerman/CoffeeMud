@@ -153,7 +153,7 @@ public class Chant_MagneticField extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=maliciousAffect(mob,target,asLevel,-levelDiff,-1);
+					success=maliciousAffect(mob,target,asLevel,-levelDiff,-1)!=null;
 					if(success)
 						if(target.location()==mob.location())
 							target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> become(s) surrounded by a powerful magnetic field!!"));

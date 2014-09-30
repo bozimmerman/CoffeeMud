@@ -134,7 +134,7 @@ public class Immunities extends StdAbility
 			return false;
 		if(immunes.length()>0)
 		{
-			if(!beneficialAffect(mob, mob, asLevel, ticksOverride))
+			if(beneficialAffect(mob, mob, asLevel, ticksOverride)==null)
 				return false;
 			final Immunities A=(Immunities)mob.fetchEffect(ID());
 			if(A==null)

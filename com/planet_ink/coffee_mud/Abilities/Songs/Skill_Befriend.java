@@ -38,13 +38,32 @@ public class Skill_Befriend extends BardSkill
 	@Override public String ID() { return "Skill_Befriend"; }
 	private final static String localizedName = CMLib.lang().L("Befriend");
 	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings =_i(new String[] {"BEFRIEND"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_INFLUENTIAL;}
 	@Override public int usageType(){return USAGE_MANA;}
+	
+	@Override 
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if(ticking instanceof MOB)
+		{
+			final MOB mob=(MOB)ticking;
+			if(((mob.amFollowing()==null)||(mob.amFollowing().isMonster()))
+			&&(mob.getStartRoom()!=null)
+			&&(mob.getStartRoom() != mob.location()))
+			{
+				CMLib.tracking().wanderAway(mob, false, true);
+				return false;
+			}
+		}
+		return true;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
@@ -137,6 +156,16 @@ public class Skill_Befriend extends BardSkill
 				CMLib.combat().makePeaceInGroup(mob);
 				if(target.amFollowing()!=mob)
 					mob.tell(L("@x1 seems unwilling to be your friend.",target.name(mob)));
+				else
+				{
+					Ability A=super.beneficialAffect(mob, target, asLevel, Ability.TICKS_FOREVER);
+					if(A!=null)
+					{
+						A.makeNonUninvokable();
+						A.makeLongLasting();
+						A.setSavable(false);
+					}
+				}
 			}
 		}
 		else

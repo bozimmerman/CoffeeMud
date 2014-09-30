@@ -191,7 +191,7 @@ public class Spell_Grease extends Spell
 					if(target.location()==mob.location())
 					{
 						target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> begin(s) to slip and slide!"));
-						success=maliciousAffect(mob,target,asLevel,8,-1);
+						success=maliciousAffect(mob,target,asLevel,8,-1)!=null;
 					}
 				}
 			}

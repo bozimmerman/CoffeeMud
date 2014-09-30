@@ -211,7 +211,7 @@ public class Spell_SpottersOrders extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(beneficialAffect(mob,target,asLevel,0))
+				if(beneficialAffect(mob,target,asLevel,0)!=null)
 				{
 					final Spell_SpottersOrders A=(Spell_SpottersOrders)target.fetchEffect(ID());
 					final MOB victim=target.getVictim();

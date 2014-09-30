@@ -149,7 +149,7 @@ public class Spell_Levitate extends Spell
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=maliciousAffect(mob,target,asLevel,5+super.getXLEVELLevel(mob),-1);
+					success=maliciousAffect(mob,target,asLevel,5+super.getXLEVELLevel(mob),-1)!=null;
 					if(target instanceof MOB)
 						((MOB)target).location().show((MOB)target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> float(s) straight up!"));
 					else

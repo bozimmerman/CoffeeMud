@@ -131,7 +131,7 @@ public class Spell_Polymorph extends Spell
 					||((newRace==target.charStats().getMyRace())))
 						newRace=CMClass.randomRace();
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) a @x1!",newRace.name()));
-					success=beneficialAffect(mob,target,asLevel,0);
+					success=beneficialAffect(mob,target,asLevel,0)!=null;
 					target.recoverCharStats();
 					CMLib.utensils().confirmWearability(target);
 				}

@@ -196,8 +196,8 @@ public class Fighter_Pin extends FighterSkill
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=maliciousAffect(mob,target,asLevel,5,-1);
-					success=maliciousAffect(mob,mob,asLevel,5,-1);
+					success=maliciousAffect(mob,target,asLevel,5,-1)!=null;
+					success=maliciousAffect(mob,mob,asLevel,5,-1)!=null;
 					Fighter_Pin targetPin = (Fighter_Pin)target.fetchEffect(ID());
 					Fighter_Pin sourcePin = (Fighter_Pin)mob.fetchEffect(ID());
 					if((targetPin != null) && (sourcePin == null))

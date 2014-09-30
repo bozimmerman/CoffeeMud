@@ -215,7 +215,7 @@ public class Chant_Treeform extends Chant
 					target.makePeace();
 					CMLib.commands().postStand(target,true);
 					oldState=(CharState)target.curState().copyOf();
-					success=beneficialAffect(mob,target,asLevel,(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*50);
+					success=beneficialAffect(mob,target,asLevel,(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*50)!=null;
 					if(success)
 					{
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> transform(s) into a tree!!"));

@@ -97,7 +97,7 @@ public class WeakParalysis extends StdAbility
 				target.location().send(target,msg);
 				if(msg.value()<=0)
 				{
-					success=maliciousAffect(mob,target,asLevel,5,-1);
+					success=maliciousAffect(mob,target,asLevel,5,-1)!=null;
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> can't move!"));
 				}
 			}

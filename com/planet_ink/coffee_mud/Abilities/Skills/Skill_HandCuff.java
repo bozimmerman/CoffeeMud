@@ -240,7 +240,7 @@ public class Skill_HandCuff extends StdSkill
 					amountRemaining=amountToRemain;
 					if(target.location()==mob.location())
 					{
-						success=maliciousAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER,-1);
+						success=maliciousAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER,-1)!=null;
 						if(success)
 						{
 							Skill_HandCuff A = (Skill_HandCuff)target.fetchEffect(ID());

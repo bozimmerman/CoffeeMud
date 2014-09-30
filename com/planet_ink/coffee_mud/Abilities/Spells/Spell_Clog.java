@@ -107,7 +107,7 @@ public class Spell_Clog extends Spell
 					if(target.location()==mob.location())
 					{
 						target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> start(s) gagging and spitting as <S-HIS-HER> mouth shrinks!"));
-						success=maliciousAffect(mob,target,asLevel,0,-1);
+						success=maliciousAffect(mob,target,asLevel,0,-1)!=null;
 					}
 				}
 			}

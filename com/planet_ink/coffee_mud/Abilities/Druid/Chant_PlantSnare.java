@@ -176,7 +176,7 @@ public class Chant_PlantSnare extends Chant
 							amountRemaining=400+(100*super.getXLEVELLevel(mob));
 							if(troom==room)
 							{
-								success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1);
+								success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1)!=null;
 								troom.show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> become(s) stuck as tangling mass of plant life grows onto <S-HIM-HER>!"));
 							}
 						}

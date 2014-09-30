@@ -199,7 +199,7 @@ public class Chant_ChargeMetal extends Chant
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
-					success=maliciousAffect(mob,I,asLevel,0,-1);
+					success=maliciousAffect(mob,I,asLevel,0,-1)!=null;
 			}
 		}
 		else

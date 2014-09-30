@@ -191,7 +191,7 @@ public class Spell_ChangeSex extends Spell
 					MOB M=null;
 					if(target instanceof MOB)
 					{
-						success=beneficialAffect(mob,target,asLevel,0);
+						success=beneficialAffect(mob,target,asLevel,0)!=null;
 						M=(MOB)target;
 						M.recoverCharStats();
 						M.recoverPhyStats();

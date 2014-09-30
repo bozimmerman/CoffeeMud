@@ -157,7 +157,7 @@ public class Prayer_Curse extends Prayer
 						I.recoverPhyStats();
 					}
 					endLowerBlessings(target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
-					success=maliciousAffect(mob,target,asLevel,0,-1);
+					success=maliciousAffect(mob,target,asLevel,0,-1)!=null;
 					target.recoverPhyStats();
 				}
 			}

@@ -197,7 +197,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 			if(target.location().okMessage(target,msg))
 			{
 				target.location().send(target,msg);
-				success=beneficialAffect(mob,target,asLevel,0);
+				success=beneficialAffect(mob,target,asLevel,0)!=null;
 			}
 		}
 

@@ -140,7 +140,7 @@ public class Spell_Web extends Spell
 							amountRemaining=super.adjustedLevel(mob, asLevel)*10;
 							if(target.location()==mob.location())
 							{
-								success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1);
+								success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1)!=null;
 								target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> become(s) stuck in a mass of web!"));
 							}
 						}

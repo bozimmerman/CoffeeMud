@@ -151,7 +151,7 @@ public class Prayer_Stoning extends Prayer
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=maliciousAffect(mob,target,asLevel,0,CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE);
+					success=maliciousAffect(mob,target,asLevel,0,CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE)!=null;
 					for(int i=0;i<warrants.size();i++)
 					{
 						final LegalWarrant W=warrants.get(i);

@@ -153,7 +153,7 @@ public class Undead_EnergyDrain extends StdAbility
 						direction=1;
 						if(target.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))
 							direction=-1;
-						success=maliciousAffect(mob,target,asLevel,0,-1);
+						success=maliciousAffect(mob,target,asLevel,0,-1)!=null;
 
 					}
 				}

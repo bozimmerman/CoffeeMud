@@ -150,7 +150,7 @@ public class Truce extends StdAbility
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=beneficialAffect(mob,target,asLevel,auto?3:0);
+					success=beneficialAffect(mob,target,asLevel,auto?3:0)!=null;
 					final Ability A=target.fetchEffect(ID());
 					if(A!=null)A.setMiscText(target.Name());
 				}

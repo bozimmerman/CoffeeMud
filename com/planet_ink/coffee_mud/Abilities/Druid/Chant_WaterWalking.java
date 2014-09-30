@@ -163,7 +163,7 @@ public class Chant_WaterWalking extends Chant
 				if(target.location()==mob.location())
 				{
 					target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> feel(s) a little lighter!"));
-					success=beneficialAffect(mob,target,asLevel,0);
+					success=beneficialAffect(mob,target,asLevel,0)!=null;
 				}
 			}
 		}

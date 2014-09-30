@@ -127,7 +127,7 @@ public class Spell_AcidFog extends Spell
 						if((msg.value()<=0)&&(msg2.value()<=0)&&(target.location()==mob.location()))
 						{
 							castingLocation=mob.location();
-							success=maliciousAffect(mob,target,asLevel,((mob.phyStats().level()+super.getXLEVELLevel(mob)+(2*super.getX1Level(mob)))*10),-1);
+							success=maliciousAffect(mob,target,asLevel,((mob.phyStats().level()+super.getXLEVELLevel(mob)+(2*super.getX1Level(mob)))*10),-1)!=null;
 							target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> become(s) enveloped in the acid fog!"));
 						}
 					}

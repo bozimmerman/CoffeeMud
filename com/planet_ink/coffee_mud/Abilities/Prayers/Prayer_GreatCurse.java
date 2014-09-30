@@ -104,7 +104,7 @@ public class Prayer_GreatCurse extends Prayer
 						I.recoverPhyStats();
 					}
 					Prayer_Curse.endLowerBlessings(target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
-					success=maliciousAffect(mob,target,asLevel,0,-1);
+					success=maliciousAffect(mob,target,asLevel,0,-1)!=null;
 				}
 			}
 		}

@@ -234,7 +234,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 				mob.location().send(mob,msg);
 				if(target.riding()!=null)
 					target.setRiding(null);
-				success=maliciousAffect(mob,target,asLevel,ticks,-1);
+				success=maliciousAffect(mob,target,asLevel,ticks,-1)!=null;
 				if(mob.getVictim()==target) mob.setVictim(null);
 				final Skill_ArrestingSap A=(Skill_ArrestingSap)target.fetchEffect(ID());
 				if(A!=null) A.utterSafety=safety;

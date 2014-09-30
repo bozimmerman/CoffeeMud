@@ -161,7 +161,7 @@ public class Chant_CaveIn extends Chant
 						CMLib.combat().postDamage(mob,(MOB)target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BASHING,"The falling rubble <DAMAGE> <T-NAME>!");
 				}
 				if(msg.value()<=0)
-					success=maliciousAffect(mob,target,asLevel,(target instanceof Exit)?0:10,0);
+					success=maliciousAffect(mob,target,asLevel,(target instanceof Exit)?0:10,0)!=null;
 			}
 		}
 		else
