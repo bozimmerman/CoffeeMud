@@ -277,7 +277,6 @@ public class Archon_Banish extends ArchonSkill
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> banished to @x1!",A.prison().displayText()));
 					Log.sysOut("Banish",mob.Name()+" banished "+target.name()+" to "+CMLib.map().getExtendedRoomID(A.prison())+".");
 				}
-
 			}
 		}
 		else

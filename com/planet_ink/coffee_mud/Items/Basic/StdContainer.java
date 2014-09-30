@@ -167,8 +167,7 @@ public class StdContainer extends StdItem implements Container
 				}
 				break;
 			case CMMsg.TYP_GET:
-				if((msg.tool()!=null)
-				&&(msg.tool() instanceof Item))
+				if(msg.tool() instanceof Item)
 				{
 					final Item newitem=(Item)msg.tool();
 					if(newitem.container()==this)

@@ -9,6 +9,9 @@
    8. New Property: Prop_Climbable - use for making rooms, exits, or portals require climbing (and benefit from ropes and ladders).
    9. New Guide in guides/randomareas.html.  Also, random races are easier to build now.
   10. New Assassin skill: Scratch, for doing very very little damage without entering combat.
+  11. Emoter behavior's "inroom" parameter changed to comma delimited -- it just wasn't working the other way. 
+  12. Scriptable GET_PROG is now functional on container items, as it will match the item being retreived, not the container.
+  13. Default XP chart (lists.ini) modified to make low levels faster, and level off around 5k per level.
    *. finish collision management, against space ships at least.
    *. interacting items of diff tech level might damage each other
    *. personal scanner/tricorder software: mineral scanner, computer interface (with ship perhaps?)!

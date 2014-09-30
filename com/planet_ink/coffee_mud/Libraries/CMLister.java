@@ -266,7 +266,8 @@ public class CMLister extends StdLibrary implements ListingLibrary
 					final List<Item> V=new Vector<Item>();
 					V.addAll(((Container)item).getContents());
 					Item item2=null;
-					if(compress&&V.size()>0) say.append("{");
+					if(compress&&V.size()>0) 
+						say.append("{");
 					while(V.size()>0)
 					{
 						item2=V.get(0);
@@ -277,7 +278,8 @@ public class CMLister extends StdLibrary implements ListingLibrary
 							||sysmsgs
 							||(useName)))
 						{
-							if(!compress) say.append("      ");
+							if(!compress) 
+								say.append("      ");
 							appendReps(reps2,say,compress);
 							if((!compress)&&(viewerM!=null)&&(!viewerM.isMonster())&&(viewerM.session().getClientTelnetMode(Session.TELNET_MXP)))
 								say.append(CMLib.protocol().mxpImage(item," H=10 W=10",""," "));

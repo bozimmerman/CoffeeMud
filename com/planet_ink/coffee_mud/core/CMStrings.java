@@ -681,18 +681,19 @@ public class CMStrings
 			return;
 		final int valueLen=(numValues<=10)?1:Integer.toString(numValues).length();
 		for(int i=firstIndex;i<str.length()-(1+valueLen);i++)
+		{
 			if((str.charAt(i)=='@') && (str.charAt(i+1)=='x') && (Character.isDigit(str.charAt(i+2))))
 			{
 				int endDex=1;
 				while((endDex < valueLen) && (Character.isDigit(str.charAt(i+2+endDex))))
 					endDex++;
 				final int variableIndex = Integer.valueOf(str.substring(i+2,i+2+endDex)).intValue();
-				@SuppressWarnings("null")
-				final String newValue = ((variableIndex >0) && (variableIndex <= numValues))?values[variableIndex-1]:"";
 				str.delete(i, i+2+endDex);
-				str.insert(i, newValue);
+				if((variableIndex >0) && (variableIndex <= numValues) && (values != null))
+					str.insert(i, values[variableIndex-1]);
 				i--;
 			}
+		}
 	}
 
 	/**

@@ -2219,10 +2219,10 @@ public class StdRoom implements Room
 		final Item goodLocation=null;
 		PhysicalAgent found=null;
 		final int dirCode = Directions.getGoodDirectionCode(thingName);
-		if(dirCode>=0) return getRoomInDir(dirCode);
+		if(dirCode>=0) found=getRoomInDir(dirCode);
 		if(found==null) found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,true);
 		if((found==null)&&(contents.size()>0)) found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,true);
-		if(inhabitants.size()>0) found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,true);
+		if((found==null)&&(inhabitants.size()>0)) found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,true);
 		if(found==null) found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,false);
 		if((found==null)&&(contents.size()>0)) found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,false);
 		if((found==null)&&(inhabitants.size()>0)) found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,false);

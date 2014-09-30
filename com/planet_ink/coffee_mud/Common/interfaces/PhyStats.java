@@ -519,13 +519,13 @@ public interface PhyStats extends CMCommon, Modifiable
 	public final static int IS_FLYING=2048;
 	/** a bit setting, as from disposition(), flagging this object as swimming */
 	public final static int IS_SWIMMING=4096;
-	/** a bit setting, as from disposition(), flagging this object as glowing */
+	/** a bit setting, as from disposition(), flagging this object as glowing, which is an ambiance */
 	public final static int IS_GLOWING=8192;
 	/** a bit setting, as from disposition(), flagging this object as climbing */
 	public final static int IS_CLIMBING=16384;
 	/** a bit setting, as from disposition(), flagging this object as falling */
 	public final static int IS_FALLING=32768;
-	/** a bit setting, as from disposition(), flagging this object as being a lightsource */
+	/** a bit setting, as from disposition(), flagging this object as being a lightsource, which is NOT an ambiance, but is contageous */
 	public final static int IS_LIGHTSOURCE=65536;
 	/** a bit setting, as from disposition(), flagging this object as being bound */
 	public final static int IS_BOUND=131072;

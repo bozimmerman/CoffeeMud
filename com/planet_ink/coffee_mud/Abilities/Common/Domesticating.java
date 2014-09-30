@@ -89,6 +89,8 @@ public class Domesticating extends CommonSkill
 							CMLib.commands().postFollow(taming,mob,true);
 							if(taming.amFollowing()==mob)
 								mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to domesticate @x1.",taming.name()));
+							else
+								mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> domesticate(s) @x1, but @x1 won't follow <S-HIM-HER>.",taming.name()));
 						}
 					}
 				}
