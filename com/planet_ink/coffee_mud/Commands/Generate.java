@@ -48,7 +48,7 @@ public class Generate extends StdCommand
 			{"ITEM",CMClass.CMObjectType.ITEM},
 	});
 
-	private final String[] access=_i(new String[]{"GENERATE"});
+	private final String[] access=I(new String[]{"GENERATE"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public void createNewPlace(MOB mob, Room oldR, Room R, int direction)

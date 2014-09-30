@@ -36,7 +36,7 @@ public class Yell extends StdCommand
 {
 	public Yell(){}
 
-	private final String[] access=_i(new String[]{"YELL","Y"});
+	private final String[] access=I(new String[]{"YELL","Y"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

@@ -36,7 +36,7 @@ public class PreviousCmd extends StdCommand
 {
 	public PreviousCmd(){}
 
-	private final String[] access=_i(new String[]{"!"});
+	private final String[] access=I(new String[]{"!"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

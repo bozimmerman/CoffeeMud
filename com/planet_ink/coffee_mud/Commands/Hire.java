@@ -36,7 +36,7 @@ public class Hire extends StdCommand
 {
 	public Hire(){}
 
-	private final String[] access=_i(new String[]{"HIRE"});
+	private final String[] access=I(new String[]{"HIRE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

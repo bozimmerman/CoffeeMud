@@ -38,7 +38,7 @@ public class Autoforward extends StdCommand
 {
 	public Autoforward(){}
 
-	private final String[] access=_i(new String[]{"AUTOFORWARD"});
+	private final String[] access=I(new String[]{"AUTOFORWARD"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

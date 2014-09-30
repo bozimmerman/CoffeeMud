@@ -36,7 +36,7 @@ public class Say extends StdCommand
 {
 	public Say(){}
 
-	private final String[] access=_i(new String[]{"SAY",
+	private final String[] access=I(new String[]{"SAY",
 							 "ASK",
 							 "`",
 							 "SA",

@@ -36,7 +36,7 @@ public class Cloak extends StdCommand
 {
 	public Cloak(){}
 
-	private final String[] access=_i(new String[]{"CLOAK"});
+	private final String[] access=I(new String[]{"CLOAK"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

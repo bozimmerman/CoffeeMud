@@ -36,7 +36,7 @@ public class Foreward extends Go
 {
 	public Foreward(){}
 
-	private final String[] access=_i(new String[]{"FOREWARD","FORE"});
+	private final String[] access=I(new String[]{"FOREWARD","FORE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

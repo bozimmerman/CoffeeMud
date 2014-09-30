@@ -36,7 +36,7 @@ public class Order extends StdCommand
 {
 	public Order(){}
 
-	private final String[] access=_i(new String[]{"ORDER"});
+	private final String[] access=I(new String[]{"ORDER"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

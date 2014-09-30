@@ -43,7 +43,7 @@ public class Thief_HideOther extends ThiefSkill
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
-	private static final String[] triggerStrings =_i(new String[] {"OTHERHIDE"});
+	private static final String[] triggerStrings =I(new String[] {"OTHERHIDE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int code=0;

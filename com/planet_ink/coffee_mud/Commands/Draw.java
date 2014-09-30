@@ -37,7 +37,7 @@ public class Draw extends Get
 {
 	public Draw(){}
 
-	private final String[] access=_i(new String[]{"DRAW"});
+	private final String[] access=I(new String[]{"DRAW"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public Vector getSheaths(MOB mob)

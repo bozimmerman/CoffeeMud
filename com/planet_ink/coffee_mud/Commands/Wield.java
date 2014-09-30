@@ -37,7 +37,7 @@ public class Wield extends StdCommand
 {
 	public Wield(){}
 
-	private final String[] access=_i(new String[]{"WIELD"});
+	private final String[] access=I(new String[]{"WIELD"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

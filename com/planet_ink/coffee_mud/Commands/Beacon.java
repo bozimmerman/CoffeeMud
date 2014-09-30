@@ -36,7 +36,7 @@ public class Beacon extends StdCommand
 {
 	public Beacon(){}
 
-	private final String[] access=_i(new String[]{"BEACON"});
+	private final String[] access=I(new String[]{"BEACON"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

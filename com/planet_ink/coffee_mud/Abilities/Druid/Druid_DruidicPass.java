@@ -43,7 +43,7 @@ public class Druid_DruidicPass extends StdAbility
 	private final static String localizedStaticDisplay = CMLib.lang().L("(druidic passage)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	private static final String[] triggerStrings =_i(new String[] {"PASS"});
+	private static final String[] triggerStrings =I(new String[] {"PASS"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

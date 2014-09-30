@@ -38,7 +38,7 @@ public class Archon_Metacraft extends ArchonSkill
 	@Override public String ID() { return "Archon_Metacraft"; }
 	private final static String localizedName = CMLib.lang().L("Metacrafting");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"METACRAFT"});
+	private static final String[] triggerStrings =I(new String[] {"METACRAFT"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	public static List<Ability> craftingSkills=new Vector<Ability>();

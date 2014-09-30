@@ -43,7 +43,7 @@ public class Thief_DampenAuras extends ThiefSkill
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =_i(new String[] {"DAMPENAURAS"});
+	private static final String[] triggerStrings =I(new String[] {"DAMPENAURAS"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	@Override

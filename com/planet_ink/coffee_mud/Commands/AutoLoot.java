@@ -37,7 +37,7 @@ public class AutoLoot extends StdCommand
 {
 	public AutoLoot(){}
 
-	private final String[] access=_i(new String[]{"AUTOLOOT"});
+	private final String[] access=I(new String[]{"AUTOLOOT"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

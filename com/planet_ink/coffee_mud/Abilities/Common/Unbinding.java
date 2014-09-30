@@ -39,7 +39,7 @@ public class Unbinding extends CommonSkill
 	@Override public String ID() { return "Unbinding"; }
 	private final static String localizedName = CMLib.lang().L("Unbinding");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"UNBIND","UNTIE"});
+	private static final String[] triggerStrings =I(new String[] {"UNBIND","UNTIE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_BINDING; }
 	@Override protected int canAffectCode(){return 0;}

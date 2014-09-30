@@ -42,7 +42,7 @@ public class Fighter_AtemiStrike extends MonkSkill
 	@Override public String name() { return localizedName; }
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Atemi Strike)");
 	@Override public String displayText() { return localizedStaticDisplay; }
-	private static final String[] triggerStrings =_i(new String[] {"ATEMI"});
+	private static final String[] triggerStrings =I(new String[] {"ATEMI"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return 0; }

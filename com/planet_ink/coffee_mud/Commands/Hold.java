@@ -37,7 +37,7 @@ public class Hold extends StdCommand
 {
 	public Hold(){}
 
-	private final String[] access=_i(new String[]{"HOLD","HOL","HO","H"});
+	private final String[] access=I(new String[]{"HOLD","HOL","HO","H"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

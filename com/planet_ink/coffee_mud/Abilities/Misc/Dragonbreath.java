@@ -44,7 +44,7 @@ public class Dragonbreath extends StdAbility
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	@Override public boolean putInCommandlist(){return false;}
-	private static final String[] triggerStrings =_i(new String[] {"DRAGONBREATH"});
+	private static final String[] triggerStrings =I(new String[] {"DRAGONBREATH"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_RACIALABILITY;}
 	private final static String[][] DragonColors={

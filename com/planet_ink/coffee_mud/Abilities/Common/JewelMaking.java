@@ -43,7 +43,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 	@Override public String ID() { return "JewelMaking"; }
 	private final static String localizedName = CMLib.lang().L("Jewel Making");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"JEWEL","JEWELMAKING"});
+	private static final String[] triggerStrings =I(new String[] {"JEWEL","JEWELMAKING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "GLASS|PRECIOUS|SAND";}
 	@Override

@@ -36,7 +36,7 @@ public class Boot extends StdCommand
 {
 	public Boot(){}
 
-	private final String[] access=_i(new String[]{"BOOT"});
+	private final String[] access=I(new String[]{"BOOT"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

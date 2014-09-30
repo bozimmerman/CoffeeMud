@@ -37,7 +37,7 @@ public class AutoAssist extends StdCommand
 {
 	public AutoAssist(){}
 
-	private final String[] access=_i(new String[]{"AUTOASSIST"});
+	private final String[] access=I(new String[]{"AUTOASSIST"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

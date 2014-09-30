@@ -37,7 +37,7 @@ public class Get extends StdCommand
 {
 	public Get(){}
 
-	private final String[] access=_i(new String[]{"GET","G"});
+	private final String[] access=I(new String[]{"GET","G"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public static boolean get(MOB mob, Item container, Item getThis, boolean quiet)

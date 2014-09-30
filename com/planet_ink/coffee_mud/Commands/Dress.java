@@ -36,7 +36,7 @@ public class Dress extends StdCommand
 {
 	public Dress(){}
 
-	private final String[] access=_i(new String[]{"DRESS"});
+	private final String[] access=I(new String[]{"DRESS"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

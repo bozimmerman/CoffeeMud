@@ -42,7 +42,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 	@Override public String ID() { return "Cobbling"; }
 	private final static String localizedName = CMLib.lang().L("Cobbling");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"COBBLE","COBBLING"});
+	private static final String[] triggerStrings =I(new String[] {"COBBLE","COBBLING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "WOODEN|METAL";}
 	@Override

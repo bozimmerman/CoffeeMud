@@ -41,7 +41,7 @@ public class Skill_Convert extends StdSkill
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =_i(new String[] {"CONVERT"});
+	private static final String[] triggerStrings =I(new String[] {"CONVERT"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_EVANGELISM;}
 	protected static PairVector<MOB,Long> convertStack=new PairVector<MOB,Long>();

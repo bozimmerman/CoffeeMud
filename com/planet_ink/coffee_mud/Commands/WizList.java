@@ -37,7 +37,7 @@ public class WizList extends StdCommand
 {
 	public WizList(){}
 
-	private final String[] access=_i(new String[]{"WIZLIST"});
+	private final String[] access=I(new String[]{"WIZLIST"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

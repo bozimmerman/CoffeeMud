@@ -45,7 +45,7 @@ public class WingFlying extends StdAbility implements HealthCondition
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public boolean putInCommandlist(){return false;}
-	private static final String[] triggerStrings =_i(new String[] {"FLAP"});
+	private static final String[] triggerStrings =I(new String[] {"FLAP"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_RACIALABILITY;}
 	@Override public int usageType(){return USAGE_MOVEMENT;}

@@ -41,7 +41,7 @@ public class Construction extends CraftingSkill
 	@Override public String ID() { return "Construction"; }
 	private final static String localizedName = CMLib.lang().L("Construction");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"CONSTRUCT"});
+	private static final String[] triggerStrings =I(new String[] {"CONSTRUCT"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "WOODEN";}
 

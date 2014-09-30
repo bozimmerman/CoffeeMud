@@ -41,7 +41,7 @@ public class Thief_SilentDrop extends ThiefSkill
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
-	private static final String[] triggerStrings =_i(new String[] {"SILENTDROP","SDROP"});
+	private static final String[] triggerStrings =I(new String[] {"SILENTDROP","SDROP"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int code=0;

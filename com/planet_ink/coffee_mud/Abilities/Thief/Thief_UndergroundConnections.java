@@ -42,7 +42,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	private static final String[] triggerStrings =_i(new String[] {"UNDERGROUNDCONNECTIONS"});
+	private static final String[] triggerStrings =I(new String[] {"UNDERGROUNDCONNECTIONS"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}

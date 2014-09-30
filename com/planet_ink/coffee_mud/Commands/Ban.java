@@ -36,7 +36,7 @@ public class Ban extends StdCommand
 {
 	public Ban(){}
 
-	private final String[] access=_i(new String[]{"BAN"});
+	private final String[] access=I(new String[]{"BAN"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

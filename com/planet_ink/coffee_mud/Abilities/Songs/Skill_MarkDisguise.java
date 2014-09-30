@@ -39,7 +39,7 @@ public class Skill_MarkDisguise extends Skill_Disguise
 	@Override public String ID() { return "Skill_MarkDisguise"; }
 	private final static String localizedName = CMLib.lang().L("Mark Disguise");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"MARKDISGUISE"});
+	private static final String[] triggerStrings =I(new String[] {"MARKDISGUISE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	public MOB mark=null;
 

@@ -37,7 +37,7 @@ public class Knock extends StdCommand
 {
 	public Knock(){}
 
-	private final String[] access=_i(new String[]{"KNOCK"});
+	private final String[] access=I(new String[]{"KNOCK"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

@@ -40,7 +40,7 @@ public class Destroy extends StdCommand
 {
 	public Destroy(){}
 
-	private final String[] access=_i(new String[]{"DESTROY","JUNK"});
+	private final String[] access=I(new String[]{"DESTROY","JUNK"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public boolean errorOut(MOB mob)

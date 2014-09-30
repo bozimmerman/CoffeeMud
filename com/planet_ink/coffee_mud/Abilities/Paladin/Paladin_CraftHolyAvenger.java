@@ -41,7 +41,7 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 	@Override public String ID() { return "Paladin_CraftHolyAvenger"; }
 	private final static String localizedName = CMLib.lang().L("Craft Holy Avenger");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"CRAFTHOLY","CRAFTHOLYAVENGER","CRAFTAVENGER"});
+	private static final String[] triggerStrings =I(new String[] {"CRAFTHOLY","CRAFTHOLYAVENGER","CRAFTAVENGER"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	@Override

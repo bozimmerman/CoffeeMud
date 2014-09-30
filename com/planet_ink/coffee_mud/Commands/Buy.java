@@ -36,7 +36,7 @@ public class Buy extends StdCommand
 {
 	public Buy(){}
 
-	private final String[] access=_i(new String[]{"BUY"});
+	private final String[] access=I(new String[]{"BUY"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

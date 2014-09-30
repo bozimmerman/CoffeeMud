@@ -38,7 +38,7 @@ public class Drilling extends GatheringSkill
 	@Override public String ID() { return "Drilling"; }
 	private final static String localizedName = CMLib.lang().L("Drilling");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"DRILL","DRILLING"});
+	private static final String[] triggerStrings =I(new String[] {"DRILL","DRILLING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}
 	@Override protected boolean allowedWhileMounted(){return false;}

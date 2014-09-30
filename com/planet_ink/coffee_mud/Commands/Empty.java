@@ -37,7 +37,7 @@ public class Empty extends Drop
 {
 	public Empty(){}
 
-	private final String[] access=_i(new String[]{"EMPTY","EMP"});
+	private final String[] access=I(new String[]{"EMPTY","EMP"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

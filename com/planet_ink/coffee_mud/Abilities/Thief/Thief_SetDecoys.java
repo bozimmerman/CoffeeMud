@@ -41,7 +41,7 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings =_i(new String[] {"SETDECOYS","DECOYS"});
+	private static final String[] triggerStrings =I(new String[] {"SETDECOYS","DECOYS"});
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DECEPTIVE;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}

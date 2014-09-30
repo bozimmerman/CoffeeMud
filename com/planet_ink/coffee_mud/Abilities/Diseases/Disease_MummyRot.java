@@ -45,7 +45,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public boolean putInCommandlist(){return false;}
-	private static final String[] triggerStrings =_i(new String[] {"MUMMYROT"});
+	private static final String[] triggerStrings =I(new String[] {"MUMMYROT"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_DISEASE;}
 	@Override public int abilityCode(){return 0;}

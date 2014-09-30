@@ -37,7 +37,7 @@ public class NOMXP extends StdCommand
 {
 	public NOMXP(){}
 
-	private final String[] access=_i(new String[]{"NOMXP"});
+	private final String[] access=I(new String[]{"NOMXP"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

@@ -38,7 +38,7 @@ public class AutoDraw extends StdCommand
 {
 	public AutoDraw(){}
 
-	private final String[] access=_i(new String[]{"AUTODRAW"});
+	private final String[] access=I(new String[]{"AUTODRAW"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

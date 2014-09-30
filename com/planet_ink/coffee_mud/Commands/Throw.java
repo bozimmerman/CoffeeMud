@@ -36,7 +36,7 @@ public class Throw extends StdCommand
 {
 	public Throw(){}
 
-	private final String[] access=_i(new String[]{"THROW","TOSS"});
+	private final String[] access=I(new String[]{"THROW","TOSS"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

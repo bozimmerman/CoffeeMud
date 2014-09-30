@@ -43,7 +43,7 @@ public class Druid_PackCall extends StdAbility
 	@Override public String name() { return localizedName; }
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Pack Call)");
 	@Override public String displayText() { return localizedStaticDisplay; }
-	private static final String[] triggerStrings =_i(new String[] {"PACKCALL"});
+	private static final String[] triggerStrings =I(new String[] {"PACKCALL"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}

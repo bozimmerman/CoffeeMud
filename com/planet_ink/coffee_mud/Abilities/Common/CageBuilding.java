@@ -39,7 +39,7 @@ public class CageBuilding extends Wainwrighting
 	@Override public String ID() { return "CageBuilding"; }
 	private final static String localizedName = CMLib.lang().L("Cage Building");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"BUILDCAGE","CAGEBUILDING"});
+	private static final String[] triggerStrings =I(new String[] {"BUILDCAGE","CAGEBUILDING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "WOODEN";}
 

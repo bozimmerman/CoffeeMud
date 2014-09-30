@@ -36,7 +36,7 @@ public class Topics extends ATopics
 {
 	public Topics(){}
 
-	private final String[] access=_i(new String[]{"TOPICS"});
+	private final String[] access=I(new String[]{"TOPICS"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

@@ -38,7 +38,7 @@ public class Scalp extends CommonSkill
 	@Override public String ID() { return "Scalp"; }
 	private final static String localizedName = CMLib.lang().L("Scalping");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"SCALP","SCALPING"});
+	private static final String[] triggerStrings =I(new String[] {"SCALP","SCALPING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	public static Vector lastSoManyScalps=new Vector();
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}

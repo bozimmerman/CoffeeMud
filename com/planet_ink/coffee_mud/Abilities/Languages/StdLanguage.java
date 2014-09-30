@@ -43,7 +43,7 @@ public class StdLanguage extends StdAbility implements Language
 	private final static String localizedName = CMLib.lang().L("Languages");
 	@Override public String name() { return localizedName; }
 	@Override public String writtenName() { return name();}
-	private static final String[] triggerStrings =_i(new String[] {"SPEAK"});
+	private static final String[] triggerStrings =I(new String[] {"SPEAK"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

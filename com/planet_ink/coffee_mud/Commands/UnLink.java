@@ -36,7 +36,7 @@ public class UnLink extends StdCommand
 {
 	public UnLink(){}
 
-	private final String[] access=_i(new String[]{"UNLINK"});
+	private final String[] access=I(new String[]{"UNLINK"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

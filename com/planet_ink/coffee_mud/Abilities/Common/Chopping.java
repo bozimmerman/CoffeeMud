@@ -38,7 +38,7 @@ public class Chopping extends GatheringSkill
 	@Override public String ID() { return "Chopping"; }
 	private final static String localizedName = CMLib.lang().L("Wood Chopping");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"CHOP","CHOPPING"});
+	private static final String[] triggerStrings =I(new String[] {"CHOP","CHOPPING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}
 	@Override protected boolean allowedWhileMounted(){return false;}

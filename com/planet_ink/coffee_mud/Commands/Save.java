@@ -36,7 +36,7 @@ public class Save extends StdCommand
 {
 	public Save(){}
 
-	private final String[] access=_i(new String[]{"SAVE"});
+	private final String[] access=I(new String[]{"SAVE"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public void clearSaveAndRestart(Room room, int taskCode)

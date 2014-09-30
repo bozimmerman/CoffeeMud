@@ -39,7 +39,7 @@ public class Catalog extends StdCommand
 {
 	public Catalog(){}
 
-	private final String[] access=_i(new String[]{"CATALOG"});
+	private final String[] access=I(new String[]{"CATALOG"});
 	@Override public String[] getAccessWords(){return access;}
 
 	protected TreeMap<String,String> currentCats=new TreeMap<String,String>();

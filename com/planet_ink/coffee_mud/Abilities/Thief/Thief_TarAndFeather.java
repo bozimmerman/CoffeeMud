@@ -42,7 +42,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings =_i(new String[] {"TARANDFEATHER","TAR"});
+	private static final String[] triggerStrings =I(new String[] {"TARANDFEATHER","TAR"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int overrideMana(){return 100;}
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}

@@ -42,7 +42,7 @@ public class Skill_Imitation extends BardSkill
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	private static final String[] triggerStrings =_i(new String[] {"IMITATE"});
+	private static final String[] triggerStrings =I(new String[] {"IMITATE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public boolean isAutoInvoked(){return true;}
 	@Override public boolean canBeUninvoked(){return false;}

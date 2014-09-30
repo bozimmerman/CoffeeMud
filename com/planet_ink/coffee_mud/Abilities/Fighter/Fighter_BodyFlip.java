@@ -45,7 +45,7 @@ public class Fighter_BodyFlip extends FighterSkill
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings =_i(new String[] {"BODYFLIP"});
+	private static final String[] triggerStrings =I(new String[] {"BODYFLIP"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_GRAPPLING;}
 	@Override public int usageType(){return USAGE_MOVEMENT;}

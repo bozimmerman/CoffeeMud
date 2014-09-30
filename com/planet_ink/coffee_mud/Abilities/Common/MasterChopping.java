@@ -37,7 +37,7 @@ public class MasterChopping extends Chopping
 	@Override public String ID() { return "MasterChopping"; }
 	private final static String localizedName = CMLib.lang().L("Master Wood Chopping");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"MCHOP","MASTERCHOP","MCHOPPING","MASTERCHOPPING"});
+	private static final String[] triggerStrings =I(new String[] {"MCHOP","MASTERCHOP","MCHOPPING","MASTERCHOPPING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	@Override

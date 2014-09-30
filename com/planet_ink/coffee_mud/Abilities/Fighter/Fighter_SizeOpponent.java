@@ -38,7 +38,7 @@ public class Fighter_SizeOpponent extends FighterSkill
 	@Override public String ID() { return "Fighter_SizeOpponent"; }
 	private final static String localizedName = CMLib.lang().L("Opponent Knowledge");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"SIZEUP","OPPONENT"});
+	private static final String[] triggerStrings =I(new String[] {"SIZEUP","OPPONENT"});
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return 0;}

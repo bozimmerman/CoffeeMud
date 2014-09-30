@@ -39,7 +39,7 @@ public class PlantLore extends CommonSkill
 	@Override public String ID() { return "PlantLore"; }
 	private final static String localizedName = CMLib.lang().L("Plant Lore");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"PLANTLORE","PSPECULATE"});
+	private static final String[] triggerStrings =I(new String[] {"PLANTLORE","PSPECULATE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }
 

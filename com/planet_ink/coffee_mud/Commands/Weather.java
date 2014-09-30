@@ -36,7 +36,7 @@ public class Weather extends StdCommand
 {
 	public Weather(){}
 
-	private final String[] access=_i(new String[]{"WEATHER"});
+	private final String[] access=I(new String[]{"WEATHER"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

@@ -38,7 +38,7 @@ public class AutoGuard extends StdCommand
 {
 	public AutoGuard(){}
 
-	private final String[] access=_i(new String[]{"AUTOGUARD","GUARD"});
+	private final String[] access=I(new String[]{"AUTOGUARD","GUARD"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

@@ -41,7 +41,7 @@ public class Skill_Mimicry extends BardSkill
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	private static final String[] triggerStrings =_i(new String[] {"MIMICRY","MIMIC"});
+	private static final String[] triggerStrings =I(new String[] {"MIMICRY","MIMIC"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
 	protected CMMsg lastMsg=null;

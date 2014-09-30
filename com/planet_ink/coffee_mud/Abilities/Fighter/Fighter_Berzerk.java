@@ -41,7 +41,7 @@ public class Fighter_Berzerk extends FighterSkill
 	@Override public String name() { return localizedName; }
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Berzerk)");
 	@Override public String displayText() { return localizedStaticDisplay; }
-	private static final String[] triggerStrings =_i(new String[] {"BERZERK"});
+	private static final String[] triggerStrings =I(new String[] {"BERZERK"});
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

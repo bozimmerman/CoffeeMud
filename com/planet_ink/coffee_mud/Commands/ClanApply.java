@@ -36,7 +36,7 @@ public class ClanApply extends StdCommand
 {
 	public ClanApply(){}
 
-	private final String[] access=_i(new String[]{"CLANAPPLY"});
+	private final String[] access=I(new String[]{"CLANAPPLY"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

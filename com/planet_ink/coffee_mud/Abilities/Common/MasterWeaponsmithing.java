@@ -40,7 +40,7 @@ public class MasterWeaponsmithing extends Weaponsmithing implements ItemCraftor
 	@Override public String ID() { return "MasterWeaponsmithing"; }
 	private final static String localizedName = CMLib.lang().L("Master Weaponsmithing");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"MWEAPONSMITH","MASTERWEAPONSMITHING"});
+	private static final String[] triggerStrings =I(new String[] {"MWEAPONSMITH","MASTERWEAPONSMITHING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int displayColumns(){return 2;}
 

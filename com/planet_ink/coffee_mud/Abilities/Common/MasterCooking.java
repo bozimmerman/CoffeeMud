@@ -41,7 +41,7 @@ public class MasterCooking extends Cooking
 	private String cookingID="";
 	@Override public String ID() { return "MasterCooking"+cookingID; }
 	@Override public String name() { return L("Master Cooking"+cookingID); }
-	private static final String[] triggerStrings =_i(new String[] {"MCOOK","MCOOKING","MASTERCOOK","MASTERCOOKING"});
+	private static final String[] triggerStrings =I(new String[] {"MCOOK","MCOOKING","MASTERCOOK","MASTERCOOKING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	protected List<String> noUninvokes=new ArrayList<String>(0);
 	@Override protected List<String> getUninvokeException() { return noUninvokes; }

@@ -55,7 +55,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public boolean putInCommandlist(){return false;}
-	private static final String[] triggerStrings =_i(new String[] {"AMPUTATE"});
+	private static final String[] triggerStrings =I(new String[] {"AMPUTATE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public boolean canBeUninvoked(){return false;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}

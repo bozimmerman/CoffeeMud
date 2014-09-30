@@ -38,7 +38,7 @@ public class ClanAccept extends StdCommand
 {
 	public ClanAccept(){}
 
-	private final String[] access=_i(new String[]{"CLANACCEPT"});
+	private final String[] access=I(new String[]{"CLANACCEPT"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

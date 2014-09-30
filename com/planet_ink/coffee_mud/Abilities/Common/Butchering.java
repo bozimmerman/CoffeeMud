@@ -38,7 +38,7 @@ public class Butchering extends GatheringSkill
 	@Override public String ID() { return "Butchering"; }
 	private final static String localizedName = CMLib.lang().L("Butchering");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"BUTCHER","BUTCHERING","SKIN"});
+	private static final String[] triggerStrings =I(new String[] {"BUTCHER","BUTCHERING","SKIN"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	@Override public String supportedResourceString(){return "FLESH|LEATHER|BLOOD|BONE|MILK|EGGS|WOOL";}

@@ -36,7 +36,7 @@ public class Languages extends Skills
 {
 	public Languages(){}
 
-	private final String[] access=_i(new String[]{"LANGUAGES","LANGS"});
+	private final String[] access=I(new String[]{"LANGUAGES","LANGS"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

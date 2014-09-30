@@ -38,7 +38,7 @@ public class Load extends StdCommand
 {
 	public Load(){}
 
-	private final String[] access=_i(new String[]{"LOAD"});
+	private final String[] access=I(new String[]{"LOAD"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public final String[] combine(final String[] set1, final CMClass.CMObjectType[] set2)

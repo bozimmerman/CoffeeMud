@@ -41,7 +41,7 @@ public class MOTD extends StdCommand
 {
 	public MOTD(){}
 
-	private final String[] access=_i(new String[]{"MOTD","NEWS"});
+	private final String[] access=I(new String[]{"MOTD","NEWS"});
 	@Override public String[] getAccessWords(){return access;}
 	private static Vector<String> DEFAULT_CMD=new ReadOnlyVector<String>(new String[]{"MOTD","AGAIN"});
 

@@ -38,7 +38,7 @@ public class Digging extends GatheringSkill
 	@Override public String ID() { return "Digging"; }
 	private final static String localizedName = CMLib.lang().L("Gem Digging");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"GDIG","GDIGGING","GEMDIGGING"});
+	private static final String[] triggerStrings =I(new String[] {"GDIG","GDIGGING","GEMDIGGING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}
 	@Override protected boolean allowedWhileMounted(){return false;}

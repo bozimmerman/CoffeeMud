@@ -40,7 +40,7 @@ public class Druid_GolemForm extends StdAbility
 	private final static String localizedName = CMLib.lang().L("Golem Form");
 	@Override public String name() { return localizedName; }
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	private static final String[] triggerStrings =_i(new String[] {"GOLEMFORM"});
+	private static final String[] triggerStrings =I(new String[] {"GOLEMFORM"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

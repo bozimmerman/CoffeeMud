@@ -36,7 +36,7 @@ public class Below extends Go
 {
 	public Below(){}
 
-	private final String[] access=_i(new String[]{"BELOW"});
+	private final String[] access=I(new String[]{"BELOW"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

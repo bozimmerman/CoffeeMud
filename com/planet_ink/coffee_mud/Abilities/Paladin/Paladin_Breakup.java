@@ -39,7 +39,7 @@ public class Paladin_Breakup extends StdAbility
 	@Override public String ID() { return "Paladin_Breakup"; }
 	private final static String localizedName = CMLib.lang().L("Breakup Fight");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"BREAKUP"});
+	private static final String[] triggerStrings =I(new String[] {"BREAKUP"});
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return 0;}

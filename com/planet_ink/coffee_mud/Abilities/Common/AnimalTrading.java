@@ -38,7 +38,7 @@ public class AnimalTrading extends CommonSkill
 	@Override public String ID() { return "AnimalTrading"; }
 	private final static String localizedName = CMLib.lang().L("Animal Trading");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"ANIMALTRADING","ANIMALTRADE","ANIMALSELL","ASELL"});
+	private static final String[] triggerStrings =I(new String[] {"ANIMALTRADING","ANIMALTRADE","ANIMALSELL","ASELL"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}

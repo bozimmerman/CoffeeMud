@@ -38,7 +38,7 @@ public class Learn extends StdCommand
 {
 	public Learn(){}
 
-	private final String[] access=_i(new String[]{"LEARN"});
+	private final String[] access=I(new String[]{"LEARN"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

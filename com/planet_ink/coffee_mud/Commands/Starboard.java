@@ -36,7 +36,7 @@ public class Starboard extends Go
 {
 	public Starboard(){}
 
-	private final String[] access=_i(new String[]{"STARBOARD","STB"});
+	private final String[] access=I(new String[]{"STARBOARD","STB"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

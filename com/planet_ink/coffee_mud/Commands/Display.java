@@ -37,7 +37,7 @@ public class Display extends StdCommand
 {
 	public Display(){}
 
-	private final String[] access=_i(new String[]{"DISPLAY","SHOW"});
+	private final String[] access=I(new String[]{"DISPLAY","SHOW"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

@@ -36,7 +36,7 @@ public class SysMsgs extends StdCommand
 {
 	public SysMsgs(){}
 
-	private final String[] access=_i(new String[]{"SYSMSGS"});
+	private final String[] access=I(new String[]{"SYSMSGS"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

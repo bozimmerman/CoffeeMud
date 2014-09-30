@@ -37,7 +37,7 @@ public class ClanWho extends Who
 {
 	public ClanWho(){}
 
-	private final String[] access=_i(new String[]{"CLANWHO","CLWH"});
+	private final String[] access=I(new String[]{"CLANWHO","CLWH"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

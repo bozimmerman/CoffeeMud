@@ -37,7 +37,7 @@ public class Restring extends StdCommand
 {
 	public Restring(){}
 
-	private final String[] access=_i(new String[]{"RESTRING"});
+	private final String[] access=I(new String[]{"RESTRING"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public boolean errorOut(MOB mob)

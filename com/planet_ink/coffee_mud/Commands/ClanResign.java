@@ -38,7 +38,7 @@ public class ClanResign extends StdCommand
 {
 	public ClanResign(){}
 
-	private final String[] access=_i(new String[]{"CLANRESIGN"});
+	private final String[] access=I(new String[]{"CLANRESIGN"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

@@ -36,7 +36,7 @@ public class Chants extends Skills
 {
 	public Chants(){}
 
-	private final String[] access=_i(new String[]{"CHANTS"});
+	private final String[] access=I(new String[]{"CHANTS"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

@@ -39,7 +39,7 @@ public class MPRun extends StdCommand
 {
 	public MPRun(){}
 
-	private final String[] access=_i(new String[]{"MPRUN"});
+	private final String[] access=I(new String[]{"MPRUN"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

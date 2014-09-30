@@ -43,7 +43,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 	@Override public String ID() { return "ClanCrafting"; }
 	private final static String localizedName = CMLib.lang().L("Clan Crafting");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"CLANCRAFT"});
+	private static final String[] triggerStrings =I(new String[] {"CLANCRAFT"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "WOODEN|METAL|MITHRIL";}
 	protected int expRequired = 0;

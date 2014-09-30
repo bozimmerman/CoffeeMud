@@ -39,7 +39,7 @@ public class Poison_Liquor extends Poison_Alcohol
 	@Override public String ID() { return "Poison_Liquor"; }
 	private final static String localizedName = CMLib.lang().L("Liquor");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"LIQUORUP"});
+	private static final String[] triggerStrings =I(new String[] {"LIQUORUP"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_POISON;}
 

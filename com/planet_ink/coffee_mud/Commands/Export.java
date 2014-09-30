@@ -36,7 +36,7 @@ public class Export extends StdCommand
 {
 	public Export(){}
 
-	private final String[] access=_i(new String[]{"EXPORT"});
+	private final String[] access=I(new String[]{"EXPORT"});
 	@Override public String[] getAccessWords(){return access;}
 
 	private final static Class[][] internalParameters=new Class[][]{

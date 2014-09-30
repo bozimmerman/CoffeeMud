@@ -36,7 +36,7 @@ public class Examine extends StdCommand
 {
 	public Examine(){}
 
-	private final String[] access=_i(new String[]{"EXAMINE","EXAM","EXA","LONGLOOK","LLOOK","LL"});
+	private final String[] access=I(new String[]{"EXAMINE","EXAM","EXA","LONGLOOK","LLOOK","LL"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

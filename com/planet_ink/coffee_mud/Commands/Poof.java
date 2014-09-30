@@ -38,7 +38,7 @@ public class Poof extends StdCommand
 {
 	public Poof(){}
 
-	private final String[] access=_i(new String[]{"POOF"});
+	private final String[] access=I(new String[]{"POOF"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public boolean errorOut(MOB mob)

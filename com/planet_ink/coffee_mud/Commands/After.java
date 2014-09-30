@@ -51,7 +51,7 @@ public class After extends StdCommand implements Tickable
 		int metaFlags=0;
 	}
 
-	private final String[] access=_i(new String[]{"AFTER"});
+	private final String[] access=I(new String[]{"AFTER"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

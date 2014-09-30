@@ -36,7 +36,7 @@ public class Sell extends StdCommand
 {
 	public Sell(){}
 
-	private final String[] access=_i(new String[]{"SELL"});
+	private final String[] access=I(new String[]{"SELL"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

@@ -36,7 +36,7 @@ public class Northwest extends Go
 {
 	public Northwest(){}
 
-	private final String[] access=_i(new String[]{"NORTHWEST","NW"});
+	private final String[] access=I(new String[]{"NORTHWEST","NW"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

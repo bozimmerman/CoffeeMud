@@ -38,7 +38,7 @@ public class ClanTax extends StdCommand
 {
 	public ClanTax(){}
 
-	private final String[] access=_i(new String[]{"CLANTAX"});
+	private final String[] access=I(new String[]{"CLANTAX"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(final MOB mob, Vector commands, int metaFlags)

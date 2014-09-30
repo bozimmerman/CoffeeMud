@@ -36,7 +36,7 @@ public class As extends StdCommand
 {
 	public As(){}
 
-	private final String[] access=_i(new String[]{"AS"});
+	private final String[] access=I(new String[]{"AS"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

@@ -41,7 +41,7 @@ public class Skill_ScrollCopy extends StdSkill
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =_i(new String[] {"MEMORIZE"});
+	private static final String[] triggerStrings =I(new String[] {"MEMORIZE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_CALLIGRAPHY;}
 	@Override protected int overrideMana(){return 0;} //-1=normal, Ability.COST_ALL=all, Ability.COST_PCT

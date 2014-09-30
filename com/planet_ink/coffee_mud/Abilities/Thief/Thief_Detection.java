@@ -43,7 +43,7 @@ public class Thief_Detection extends ThiefSkill
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =_i(new String[] {"DETECT","DETECTION"});
+	private static final String[] triggerStrings =I(new String[] {"DETECT","DETECTION"});
 	@Override public int classificationCode(){	return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	protected Room lastRoom=null;

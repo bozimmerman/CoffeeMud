@@ -36,7 +36,7 @@ public class Whisper extends StdCommand
 {
 	public Whisper(){}
 
-	private final String[] access=_i(new String[]{"WHISPER"});
+	private final String[] access=I(new String[]{"WHISPER"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

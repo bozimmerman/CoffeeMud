@@ -40,7 +40,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	@Override public String ID() { return "Merchant"; }
 	private final static String localizedName = CMLib.lang().L("Marketeering");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"MARKET"});
+	private static final String[] triggerStrings =I(new String[] {"MARKET"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int overrideMana(){return 5;}
 	@Override public boolean isAutoInvoked(){return true;}

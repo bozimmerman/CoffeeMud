@@ -36,7 +36,7 @@ public class AHelp extends StdCommand
 {
 	public AHelp(){}
 
-	private final String[] access=_i(new String[]{"ARCHELP","AHELP"});
+	private final String[] access=I(new String[]{"ARCHELP","AHELP"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

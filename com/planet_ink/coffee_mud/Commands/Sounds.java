@@ -38,7 +38,7 @@ public class Sounds extends StdCommand
 {
 	public Sounds(){}
 
-	private final String[] access=_i(new String[]{"SOUNDS","MSP"});
+	private final String[] access=I(new String[]{"SOUNDS","MSP"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

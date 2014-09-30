@@ -42,7 +42,7 @@ public class Skill_Cage extends StdSkill
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings =_i(new String[] {"CAGE"});
+	private static final String[] triggerStrings =I(new String[] {"CAGE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;}
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}

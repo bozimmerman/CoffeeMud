@@ -41,7 +41,7 @@ public class Herbology extends CommonSkill
 	@Override public String ID() { return "Herbology"; }
 	private final static String localizedName = CMLib.lang().L("Herbology");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"HERBOLOGY"});
+	private static final String[] triggerStrings =I(new String[] {"HERBOLOGY"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }
 	public String parametersFormat(){ return "HERB_NAME";}

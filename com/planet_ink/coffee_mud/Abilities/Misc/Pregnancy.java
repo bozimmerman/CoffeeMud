@@ -79,7 +79,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public boolean putInCommandlist(){return false;}
-	private static final String[] triggerStrings =_i(new String[] {"IMPREGNATE"});
+	private static final String[] triggerStrings =I(new String[] {"IMPREGNATE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public boolean canBeUninvoked(){return false;}
 	@Override public boolean isAutoInvoked(){return false;}

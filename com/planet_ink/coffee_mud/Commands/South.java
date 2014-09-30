@@ -36,7 +36,7 @@ public class South extends Go
 {
 	public South(){}
 
-	private final String[] access=_i(new String[]{"SOUTH","S"});
+	private final String[] access=I(new String[]{"SOUTH","S"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

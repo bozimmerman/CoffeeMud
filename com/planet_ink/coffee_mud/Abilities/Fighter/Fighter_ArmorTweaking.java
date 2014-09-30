@@ -40,7 +40,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 	@Override public String ID() { return "Fighter_ArmorTweaking"; }
 	private final static String localizedName = CMLib.lang().L("Armor Tweaking");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"ARMORTWEAK","TWEAK"});
+	private static final String[] triggerStrings =I(new String[] {"ARMORTWEAK","TWEAK"});
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}

@@ -38,7 +38,7 @@ public class Drop extends StdCommand
 {
 	public Drop(){}
 
-	private final String[] access=_i(new String[]{"DROP","DRO"});
+	private final String[] access=I(new String[]{"DROP","DRO"});
 	@Override public String[] getAccessWords(){return access;}
 
 	private final static Class[][] internalParameters=new Class[][]{{Environmental.class,Boolean.class,Boolean.class,Boolean.class}};

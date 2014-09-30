@@ -43,7 +43,7 @@ public class Thief_Footlocks extends ThiefSkill
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_BINDING;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
-	private static final String[] triggerStrings =_i(new String[] {"FOOTLOCK"});
+	private static final String[] triggerStrings =I(new String[] {"FOOTLOCK"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int usageType(){return USAGE_MOVEMENT;}
 	public int code=0;

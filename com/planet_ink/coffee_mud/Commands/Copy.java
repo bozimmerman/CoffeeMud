@@ -36,7 +36,7 @@ public class Copy extends StdCommand
 {
 	public Copy(){}
 
-	private final String[] access=_i(new String[]{"COPY"});
+	private final String[] access=I(new String[]{"COPY"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

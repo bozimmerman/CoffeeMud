@@ -36,7 +36,7 @@ public class Serve extends StdCommand
 {
 	public Serve(){}
 
-	private final String[] access=_i(new String[]{"SERVE"});
+	private final String[] access=I(new String[]{"SERVE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

@@ -39,7 +39,7 @@ public class Thief_AutoMarkTraps extends ThiefSkill
 	@Override public String displayText() {return "(Automarking traps)";}
 	private final static String localizedName = CMLib.lang().L("AutoMark Traps");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"AUTOMARKTRAPS"});
+	private static final String[] triggerStrings =I(new String[] {"AUTOMARKTRAPS"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}

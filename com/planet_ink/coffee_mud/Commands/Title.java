@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Title extends StdCommand
 {
-	private final String[] access=_i(new String[]{"TITLE"});
+	private final String[] access=I(new String[]{"TITLE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(final MOB mob, Vector commands, int metaFlags)

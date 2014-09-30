@@ -40,7 +40,7 @@ public class Fighter_KiStrike extends FighterSkill
 	@Override public String name() { return localizedName; }
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Ki Strike)");
 	@Override public String displayText() { return localizedStaticDisplay; }
-	private static final String[] triggerStrings =_i(new String[] {"KISTRIKE","KI"});
+	private static final String[] triggerStrings =I(new String[] {"KISTRIKE","KI"});
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return 0;}

@@ -36,7 +36,7 @@ public class Sniff extends StdCommand
 {
 	public Sniff(){}
 
-	private final String[] access=_i(new String[]{"SNIFF","SMELL"});
+	private final String[] access=I(new String[]{"SNIFF","SMELL"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

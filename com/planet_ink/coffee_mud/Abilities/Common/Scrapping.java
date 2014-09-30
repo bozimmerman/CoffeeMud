@@ -40,7 +40,7 @@ public class Scrapping extends CommonSkill
 	@Override public String ID() { return "Scrapping"; }
 	private final static String localizedName = CMLib.lang().L("Scrapping");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"SCRAP","SCRAPPING"});
+	private static final String[] triggerStrings =I(new String[] {"SCRAP","SCRAPPING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }

@@ -37,7 +37,7 @@ public class ClanMorgueSet extends StdCommand
 {
 	public ClanMorgueSet(){}
 
-	private final String[] access=_i(new String[]{"CLANMORGUESET"});
+	private final String[] access=I(new String[]{"CLANMORGUESET"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

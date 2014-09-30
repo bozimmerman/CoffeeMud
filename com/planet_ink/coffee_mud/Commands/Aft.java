@@ -36,7 +36,7 @@ public class Aft extends Go
 {
 	public Aft(){}
 
-	private final String[] access=_i(new String[]{"AFT"});
+	private final String[] access=I(new String[]{"AFT"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

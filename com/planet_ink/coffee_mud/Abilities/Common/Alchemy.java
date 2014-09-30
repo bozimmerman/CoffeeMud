@@ -42,7 +42,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 	@Override public String ID() { return "Alchemy"; }
 	private final static String localizedName = CMLib.lang().L("Alchemy");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"BREW","ALCHEMY"});
+	private static final String[] triggerStrings =I(new String[] {"BREW","ALCHEMY"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "MISC";}
 	@Override public String parametersFormat(){ return "SPELL_ID\tRESOURCE_NAME";}

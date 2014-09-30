@@ -37,7 +37,7 @@ public class Unload extends StdCommand
 {
 	public Unload(){}
 
-	private final String[] access=_i(new String[]{"UNLOAD"});
+	private final String[] access=I(new String[]{"UNLOAD"});
 	@Override public String[] getAccessWords(){return access;}
 	final String[] ARCHON_LIST={"CLASS", "HELP", "USER", "AREA", "FACTION", "ALL", "FILE", "RESOURCE", "INIFILE", "[FILENAME]"};
 

@@ -37,7 +37,7 @@ public class Skills extends StdCommand
 {
 	public Skills(){}
 
-	private final String[] access=_i(new String[]{"SKILLS","SK"});
+	private final String[] access=I(new String[]{"SKILLS","SK"});
 	@Override public String[] getAccessWords(){return access;}
 
 	protected boolean parsedOutIndividualSkill(MOB mob, String qual, int acode)

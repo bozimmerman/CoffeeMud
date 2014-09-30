@@ -37,7 +37,7 @@ public class WhoIs extends Who
 {
 	public WhoIs(){}
 
-	private final String[] access=_i(new String[]{"WHOIS"});
+	private final String[] access=I(new String[]{"WHOIS"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

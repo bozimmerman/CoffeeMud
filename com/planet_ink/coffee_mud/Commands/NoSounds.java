@@ -37,7 +37,7 @@ public class NoSounds extends StdCommand
 {
 	public NoSounds(){}
 
-	private final String[] access=_i(new String[]{"NOSOUNDS","NOMSP"});
+	private final String[] access=I(new String[]{"NOSOUNDS","NOMSP"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

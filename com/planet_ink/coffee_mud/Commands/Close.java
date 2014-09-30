@@ -36,7 +36,7 @@ public class Close extends StdCommand
 {
 	public Close(){}
 
-	private final String[] access=_i(new String[]{"CLOSE","CLOS","CLO","CL"});
+	private final String[] access=I(new String[]{"CLOSE","CLOS","CLO","CL"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

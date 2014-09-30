@@ -36,7 +36,7 @@ public class Look extends StdCommand
 {
 	public Look(){}
 
-	private final String[] access=_i(new String[]{"LOOK","LOO","LO","L"});
+	private final String[] access=I(new String[]{"LOOK","LOO","LO","L"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

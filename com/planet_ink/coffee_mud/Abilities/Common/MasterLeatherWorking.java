@@ -42,7 +42,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 	@Override public String ID() { return "MasterLeatherWorking"; }
 	private final static String localizedName = CMLib.lang().L("Master Leather Working");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"MASTERLEATHERWORKING","MLEATHERWORK","MLEATHERWORKING"});
+	private static final String[] triggerStrings =I(new String[] {"MASTERLEATHERWORKING","MLEATHERWORK","MLEATHERWORKING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "LEATHER";}
 	@Override

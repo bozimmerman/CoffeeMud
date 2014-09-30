@@ -36,7 +36,7 @@ public class Stat  extends Skills
 {
 	public Stat(){}
 
-	private final String[] access=_i(new String[]{"STAT"});
+	private final String[] access=I(new String[]{"STAT"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public static final int ABLETYPE_EQUIPMENT=-2;

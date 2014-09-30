@@ -36,7 +36,7 @@ public class Down extends Go
 {
 	public Down(){}
 
-	private final String[] access=_i(new String[]{"DOWN","D"});
+	private final String[] access=I(new String[]{"DOWN","D"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

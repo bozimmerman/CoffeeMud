@@ -39,7 +39,7 @@ public class Fighter_AxKick extends FighterSkill
 	@Override public String ID() { return "Fighter_AxKick"; }
 	private final static String localizedName = CMLib.lang().L("Ax Kick");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"AXKICK"});
+	private static final String[] triggerStrings =I(new String[] {"AXKICK"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return 0;}

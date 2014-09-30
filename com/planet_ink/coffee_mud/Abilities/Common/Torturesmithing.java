@@ -41,7 +41,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 	@Override public String ID() { return "Torturesmithing"; }
 	private final static String localizedName = CMLib.lang().L("Torturesmithing");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"TORTURESMITH","TORTURESMITHING"});
+	private static final String[] triggerStrings =I(new String[] {"TORTURESMITH","TORTURESMITHING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "METAL|MITHRIL|CLOTH";}
 	@Override

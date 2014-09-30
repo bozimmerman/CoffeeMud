@@ -36,7 +36,7 @@ public class Report extends Skills
 {
 	public Report(){}
 
-	private final String[] access=_i(new String[]{"REPORT"});
+	private final String[] access=I(new String[]{"REPORT"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

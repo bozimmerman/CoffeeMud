@@ -36,6 +36,6 @@ public class Gasbreath extends Dragonbreath
 	@Override public String name() { return localizedName; }
 	@Override public String text(){return "gas";}
 	@Override public void setMiscText(String newText){super.setMiscText(text());}
-	private static final String[] triggerStrings =_i(new String[] {"GASBREATH"});
+	private static final String[] triggerStrings =I(new String[] {"GASBREATH"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 }

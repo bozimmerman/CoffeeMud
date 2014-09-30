@@ -38,7 +38,7 @@ public class AutoInvoke extends StdCommand
 {
 	public AutoInvoke(){}
 
-	private final String[] access=_i(new String[]{"AUTOINVOKE"});
+	private final String[] access=I(new String[]{"AUTOINVOKE"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

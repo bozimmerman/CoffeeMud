@@ -39,7 +39,7 @@ public class Taxidermy extends CraftingSkill
 	@Override public String ID() { return "Taxidermy"; }
 	private final static String localizedName = CMLib.lang().L("Taxidermy");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"STUFF","TAXIDERMY"});
+	private static final String[] triggerStrings =I(new String[] {"STUFF","TAXIDERMY"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "BODIES";}
 	public String parametersFormat(){ return "POSE_NAME\nPOSE_DESCRIPTION\n...\n";}

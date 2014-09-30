@@ -36,7 +36,7 @@ public class Wimpy extends StdCommand
 {
 	public Wimpy(){}
 
-	private final String[] access=_i(new String[]{"WIMPY"});
+	private final String[] access=I(new String[]{"WIMPY"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

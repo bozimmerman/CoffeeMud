@@ -36,7 +36,7 @@ public class Goto extends At
 {
 	public Goto(){}
 
-	private final String[] access=_i(new String[]{"GOTO"});
+	private final String[] access=I(new String[]{"GOTO"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

@@ -39,7 +39,7 @@ public class Fighter_Charge extends FighterSkill
 	@Override public String ID() { return "Fighter_Charge"; }
 	private final static String localizedName = CMLib.lang().L("Charge");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"CHARGE"});
+	private static final String[] triggerStrings =I(new String[] {"CHARGE"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Charging!!)");

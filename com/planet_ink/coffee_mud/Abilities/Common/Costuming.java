@@ -42,7 +42,7 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 	@Override public String ID() { return "Costuming"; }
 	private final static String localizedName = CMLib.lang().L("Costuming");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"COSTUME","COSTUMING"});
+	private static final String[] triggerStrings =I(new String[] {"COSTUME","COSTUMING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "CLOTH";}
 	@Override

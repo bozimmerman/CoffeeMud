@@ -37,7 +37,7 @@ public class Run extends Go
 {
 	public Run(){}
 
-	private final String[] access=_i(new String[]{"RUN"});
+	private final String[] access=I(new String[]{"RUN"});
 	@Override public String[] getAccessWords(){return access;}
 	public int energyExpenseFactor(){return 2;}
 	@Override

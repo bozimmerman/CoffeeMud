@@ -36,7 +36,7 @@ public class At extends StdCommand
 {
 	public At(){}
 
-	private final String[] access=_i(new String[]{"AT"});
+	private final String[] access=I(new String[]{"AT"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

@@ -36,7 +36,7 @@ public class Transfer extends At
 {
 	public Transfer(){}
 
-	private final String[] access=_i(new String[]{"TRANSFER"});
+	private final String[] access=I(new String[]{"TRANSFER"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

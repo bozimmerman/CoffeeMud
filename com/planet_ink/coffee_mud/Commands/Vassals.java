@@ -38,7 +38,7 @@ public class Vassals extends StdCommand
 {
 	public Vassals(){}
 
-	private final String[] access=_i(new String[]{"VASSALS"});
+	private final String[] access=I(new String[]{"VASSALS"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

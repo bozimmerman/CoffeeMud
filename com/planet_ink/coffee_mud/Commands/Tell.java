@@ -36,7 +36,7 @@ public class Tell extends StdCommand
 {
 	public Tell(){}
 
-	private final String[] access=_i(new String[]{"TELL","T"});
+	private final String[] access=I(new String[]{"TELL","T"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

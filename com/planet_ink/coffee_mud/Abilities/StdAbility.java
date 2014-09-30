@@ -263,7 +263,7 @@ public class StdAbility implements Ability
 		return CMLib.lang().fullSessionTranslation(str, xs);
 	}
 
-	public static String[] _i(final String[] str)
+	public static String[] I(final String[] str)
 	{
 		for(int i=0;i<str.length;i++)
 			str[i]=CMLib.lang().commandWordTranslation(str[i]);

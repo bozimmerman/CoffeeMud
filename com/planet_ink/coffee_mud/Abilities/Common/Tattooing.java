@@ -39,7 +39,7 @@ public class Tattooing extends CommonSkill
 	@Override public String ID() { return "Tattooing"; }
 	private final static String localizedName = CMLib.lang().L("Tattooing");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"TATTOO","TATTOOING"});
+	private static final String[] triggerStrings =I(new String[] {"TATTOO","TATTOOING"});
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	protected String writing="";

@@ -39,7 +39,7 @@ public class Druid_Bite extends StdAbility
 	@Override public String ID() { return "Druid_Bite"; }
 	private final static String localizedName = CMLib.lang().L("Bite");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"BITE"});
+	private static final String[] triggerStrings =I(new String[] {"BITE"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return 0;}

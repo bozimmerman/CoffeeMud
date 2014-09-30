@@ -39,7 +39,7 @@ public class Deviations extends StdCommand
 {
 	public Deviations(){}
 
-	private final String[] access=_i(new String[]{"DEVIATIONS"});
+	private final String[] access=I(new String[]{"DEVIATIONS"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override public boolean canBeOrdered(){return true;}

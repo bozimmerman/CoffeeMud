@@ -37,7 +37,7 @@ public class AutoRun extends StdCommand
 {
 	public AutoRun(){}
 
-	private final String[] access=_i(new String[]{"AUTORUN"});
+	private final String[] access=I(new String[]{"AUTORUN"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

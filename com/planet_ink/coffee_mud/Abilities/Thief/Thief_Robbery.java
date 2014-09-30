@@ -44,7 +44,7 @@ public class Thief_Robbery extends ThiefSkill
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
-	private static final String[] triggerStrings =_i(new String[] {"ROBBERY","ROB"});
+	private static final String[] triggerStrings =I(new String[] {"ROBBERY","ROB"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	public List<MOB> mobs=new Vector<MOB>();
 	private final PairVector<MOB,Integer> lastOnes=new PairVector<MOB,Integer>();

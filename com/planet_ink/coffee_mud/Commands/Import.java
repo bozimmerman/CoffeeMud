@@ -40,7 +40,7 @@ public class Import extends StdCommand
 {
 	public Import(){}
 
-	private final String[] access=_i(new String[]{"IMPORT"});
+	private final String[] access=I(new String[]{"IMPORT"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public static final String[][] objDescs={

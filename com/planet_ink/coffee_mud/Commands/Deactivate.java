@@ -37,7 +37,7 @@ public class Deactivate extends StdCommand
 {
 	public Deactivate(){}
 
-	private final String[] access=_i(new String[]{"DEACTIVATE","DEACT","DEA","<"});
+	private final String[] access=I(new String[]{"DEACTIVATE","DEACT","DEA","<"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

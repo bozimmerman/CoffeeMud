@@ -37,7 +37,7 @@ public class Package extends StdCommand
 {
 	public Package(){}
 
-	private final String[] access=_i(new String[]{"PACKAGE"});
+	private final String[] access=I(new String[]{"PACKAGE"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

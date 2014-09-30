@@ -42,7 +42,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 	@Override public String ID() { return "Wainwrighting"; }
 	private final static String localizedName = CMLib.lang().L("Wainwrighting");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"WAINWRIGHTING"});
+	private static final String[] triggerStrings =I(new String[] {"WAINWRIGHTING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "WOODEN";}
 	@Override

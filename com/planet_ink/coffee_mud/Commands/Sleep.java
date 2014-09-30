@@ -36,7 +36,7 @@ public class Sleep extends StdCommand
 {
 	public Sleep(){}
 
-	private final String[] access=_i(new String[]{"SLEEP","SL"});
+	private final String[] access=I(new String[]{"SLEEP","SL"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

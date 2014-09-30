@@ -37,7 +37,7 @@ public class GModify extends StdCommand
 {
 	public GModify(){}
 
-	private final String[] access=_i(new String[]{"GMODIFY"});
+	private final String[] access=I(new String[]{"GMODIFY"});
 	@Override public String[] getAccessWords(){return access;}
 
 	private static final int FLAG_CASESENSITIVE=1;

@@ -36,7 +36,7 @@ public class View extends StdCommand
 {
 	public View(){}
 
-	private final String[] access=_i(new String[]{"VIEW"});
+	private final String[] access=I(new String[]{"VIEW"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

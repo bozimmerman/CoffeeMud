@@ -41,7 +41,7 @@ public class Skill_RegionalAwareness extends StdSkill
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =_i(new String[] {"REGION","REGIONALAWARENESS"});
+	private static final String[] triggerStrings =I(new String[] {"REGION","REGIONALAWARENESS"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
 	@Override public int overrideMana(){return 0;}

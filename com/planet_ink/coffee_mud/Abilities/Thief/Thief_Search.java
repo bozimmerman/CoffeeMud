@@ -45,7 +45,7 @@ public class Thief_Search extends ThiefSkill
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
-	private static final String[] triggerStrings =_i(new String[] {"SEARCH"});
+	private static final String[] triggerStrings =I(new String[] {"SEARCH"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	private Room lastRoom=null;

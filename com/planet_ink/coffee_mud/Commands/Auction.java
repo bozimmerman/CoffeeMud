@@ -37,7 +37,7 @@ public class Auction extends Channel implements Tickable
 {
 	public Auction(){}
 
-	private final String[] access=_i(new String[]{"AUCTION"});
+	private final String[] access=I(new String[]{"AUCTION"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override public String name(){return "Auction";}
 	protected final static String MESSAGE_NOAUCTION(){return "There is not currently a live auction.  Use AUCTION UP syntax to add one, or visit an auctioneer for a long auction.";}

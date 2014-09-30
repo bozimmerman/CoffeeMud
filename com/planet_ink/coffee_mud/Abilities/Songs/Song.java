@@ -42,7 +42,7 @@ public class Song extends StdAbility
 	@Override public String displayText() { return "("+songOf()+")"; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
-	private static final String[] triggerStrings =_i(new String[] {"SING","SI"});
+	private static final String[] triggerStrings =I(new String[] {"SING","SI"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SONG|Ability.DOMAIN_SINGING;}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}

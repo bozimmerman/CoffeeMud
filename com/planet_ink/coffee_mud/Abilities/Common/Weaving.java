@@ -42,7 +42,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 	@Override public String ID() { return "Weaving"; }
 	private final static String localizedName = CMLib.lang().L("Weaving");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"WEAVING","WEAVE"});
+	private static final String[] triggerStrings =I(new String[] {"WEAVING","WEAVE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "WHEAT|VINE|SEAWEED|HEMP|SILK|COTTON";}
 	@Override

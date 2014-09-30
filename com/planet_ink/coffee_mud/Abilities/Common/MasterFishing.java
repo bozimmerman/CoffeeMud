@@ -37,7 +37,7 @@ public class MasterFishing extends Fishing
 	@Override public String ID() { return "MasterFishing"; }
 	private final static String localizedName = CMLib.lang().L("Master Fishing");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"MFISH","MASTERFISH"});
+	private static final String[] triggerStrings =I(new String[] {"MFISH","MASTERFISH"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	@Override

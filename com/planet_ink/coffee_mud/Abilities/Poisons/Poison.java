@@ -46,7 +46,7 @@ public class Poison extends StdAbility implements HealthCondition
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public boolean putInCommandlist(){return false;}
-	private static final String[] triggerStrings =_i(new String[] {"POISONSTING"});
+	private static final String[] triggerStrings =I(new String[] {"POISONSTING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_POISON;}
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}

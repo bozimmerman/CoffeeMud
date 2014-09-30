@@ -38,7 +38,7 @@ public class Poison_Alcohol extends Poison
 	@Override public String ID() { return "Poison_Alcohol"; }
 	private final static String localizedName = CMLib.lang().L("Alcohol");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"POISONALCOHOL"});
+	private static final String[] triggerStrings =I(new String[] {"POISONALCOHOL"});
 	@Override public String displayText(){ return (drunkness<=3)?"(Tipsy)":((drunkness<10)?"(Drunk)":"(Smashed)");}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public long flags(){return super.flags()|Ability.FLAG_INTOXICATING;}

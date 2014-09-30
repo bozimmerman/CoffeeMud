@@ -36,7 +36,7 @@ public class PlayerKill extends StdCommand
 {
 	public PlayerKill(){}
 
-	private final String[] access=_i(new String[]{"PLAYERKILL","PKILL","PVP"});
+	private final String[] access=I(new String[]{"PLAYERKILL","PKILL","PVP"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

@@ -36,7 +36,7 @@ public class Friends extends StdCommand
 {
 	public Friends(){}
 
-	private final String[] access=_i(new String[]{"FRIENDS"});
+	private final String[] access=I(new String[]{"FRIENDS"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

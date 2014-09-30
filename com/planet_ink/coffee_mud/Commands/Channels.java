@@ -37,7 +37,7 @@ public class Channels extends StdCommand
 {
 	public Channels(){}
 
-	private final String[] access=_i(new String[]{"CHANNELS"});
+	private final String[] access=I(new String[]{"CHANNELS"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

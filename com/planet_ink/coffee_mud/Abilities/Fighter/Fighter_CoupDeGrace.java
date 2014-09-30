@@ -38,7 +38,7 @@ public class Fighter_CoupDeGrace extends FighterSkill
 	@Override public String ID() { return "Fighter_CoupDeGrace"; }
 	private final static String localizedName = CMLib.lang().L("Coup de Grace");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"COUP","COUPDEGRACE"});
+	private static final String[] triggerStrings =I(new String[] {"COUP","COUPDEGRACE"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return 0;}

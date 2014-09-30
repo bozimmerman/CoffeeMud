@@ -38,7 +38,7 @@ public class Create extends StdCommand
 {
 	public Create(){}
 
-	private final String[] access=_i(new String[]{"CREATE"});
+	private final String[] access=I(new String[]{"CREATE"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public void exits(MOB mob, Vector commands)

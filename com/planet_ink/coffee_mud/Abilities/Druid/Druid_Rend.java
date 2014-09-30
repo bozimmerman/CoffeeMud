@@ -40,7 +40,7 @@ public class Druid_Rend extends StdAbility
 	@Override public String ID() { return "Druid_Rend"; }
 	private final static String localizedName = CMLib.lang().L("Rend");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"REND"});
+	private static final String[] triggerStrings =I(new String[] {"REND"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return 0;}

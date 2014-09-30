@@ -45,7 +45,7 @@ public class Undead_WeakEnergyDrain extends StdAbility
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public boolean putInCommandlist(){return false;}
-	private static final String[] triggerStrings =_i(new String[] {"DRAINWEAKENERGY"});
+	private static final String[] triggerStrings =I(new String[] {"DRAINWEAKENERGY"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
 	public int levelsDown=1;

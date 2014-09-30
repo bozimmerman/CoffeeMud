@@ -37,7 +37,7 @@ public class Take extends StdCommand
 {
 	public Take(){}
 
-	private final String[] access=_i(new String[]{"TAKE"});
+	private final String[] access=I(new String[]{"TAKE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

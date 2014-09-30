@@ -49,7 +49,7 @@ public class Skill_Track extends StdSkill
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ROOMS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	private static final String[] triggerStrings =_i(new String[] {"TRACKTO"});
+	private static final String[] triggerStrings =I(new String[] {"TRACKTO"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
 	@Override public long flags(){return Ability.FLAG_TRACKING;}

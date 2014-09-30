@@ -36,7 +36,7 @@ public class Quiet extends StdCommand
 {
 	public Quiet(){}
 
-	private final String[] access=_i(new String[]{"QUIET"});
+	private final String[] access=I(new String[]{"QUIET"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

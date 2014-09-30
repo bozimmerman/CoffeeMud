@@ -36,7 +36,7 @@ public class Brief extends StdCommand
 {
 	public Brief(){}
 
-	private final String[] access=_i(new String[]{"BRIEF"});
+	private final String[] access=I(new String[]{"BRIEF"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

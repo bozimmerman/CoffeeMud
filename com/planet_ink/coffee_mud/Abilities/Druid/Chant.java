@@ -64,7 +64,7 @@ public class Chant extends StdAbility
 		}
 		return super.verbalCastCode(mob,target,auto);
 	}
-	private static final String[] triggerStrings =_i(new String[] {"CHANT","CH"});
+	private static final String[] triggerStrings =I(new String[] {"CHANT","CH"});
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

@@ -36,7 +36,7 @@ public class Value extends StdCommand
 {
 	public Value(){}
 
-	private final String[] access=_i(new String[]{"VALUE","VAL","V"});
+	private final String[] access=I(new String[]{"VALUE","VAL","V"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

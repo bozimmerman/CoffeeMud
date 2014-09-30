@@ -38,7 +38,7 @@ public class Areas extends StdCommand
 {
 	public Areas(){}
 
-	private final String[] access=_i(new String[]{"AREAS"});
+	private final String[] access=I(new String[]{"AREAS"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

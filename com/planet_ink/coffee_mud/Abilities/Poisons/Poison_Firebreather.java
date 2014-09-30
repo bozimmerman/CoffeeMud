@@ -39,7 +39,7 @@ public class Poison_Firebreather extends Poison_Liquor
 	@Override public String ID() { return "Poison_Firebreather"; }
 	private final static String localizedName = CMLib.lang().L("Firebreather");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"LIQUORFIRE"});
+	private static final String[] triggerStrings =I(new String[] {"LIQUORFIRE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int POISON_TICKS(){return 35;}
 

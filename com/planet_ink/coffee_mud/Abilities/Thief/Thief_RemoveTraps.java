@@ -41,7 +41,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =_i(new String[] {"DETRAP","UNTRAP","REMOVETRAPS"});
+	private static final String[] triggerStrings =I(new String[] {"DETRAP","UNTRAP","REMOVETRAPS"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	public Environmental lastChecked=null;
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DETRAP;}

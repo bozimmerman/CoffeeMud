@@ -35,6 +35,6 @@ public class Lighteningbreath extends Dragonbreath
 	private final static String localizedName = CMLib.lang().L("Lightningbreath");
 	@Override public String name() { return localizedName; }
 	@Override public String text(){return "lightning";}
-	private static final String[] triggerStrings =_i(new String[] {"LIGHTNINGBREATH"});
+	private static final String[] triggerStrings =I(new String[] {"LIGHTNINGBREATH"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 }

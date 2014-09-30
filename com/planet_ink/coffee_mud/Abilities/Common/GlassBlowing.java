@@ -42,7 +42,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 	@Override public String ID() { return "GlassBlowing"; }
 	private final static String localizedName = CMLib.lang().L("Glass Blowing");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"GLASSBLOW","GLASSBLOWING"});
+	private static final String[] triggerStrings =I(new String[] {"GLASSBLOW","GLASSBLOWING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "_GLASS|SAND";}
 	@Override

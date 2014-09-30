@@ -41,7 +41,7 @@ public class GatheringSkill extends CommonSkill
 	@Override public String ID() { return "GatheringSkill"; }
 	private final static String localizedName = CMLib.lang().L("GatheringSkill");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"FLETCH","FLETCHING"});
+	private static final String[] triggerStrings =I(new String[] {"FLETCH","FLETCHING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "";}
 	protected static final Map<String,List<Integer>> supportedResources=new Hashtable();

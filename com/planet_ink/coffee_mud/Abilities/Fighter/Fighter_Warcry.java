@@ -41,7 +41,7 @@ public class Fighter_Warcry extends FighterSkill
 	private final static String localizedStaticDisplay = CMLib.lang().L("(War Cry)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	private static final String[] triggerStrings =_i(new String[] {"WARCRY"});
+	private static final String[] triggerStrings =I(new String[] {"WARCRY"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}

@@ -36,7 +36,7 @@ public class Replay extends StdCommand
 {
 	public Replay(){}
 
-	private final String[] access=_i(new String[]{"REPLAY"});
+	private final String[] access=I(new String[]{"REPLAY"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

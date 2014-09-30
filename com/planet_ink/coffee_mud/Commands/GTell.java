@@ -36,7 +36,7 @@ public class GTell extends StdCommand
 {
 	public GTell(){}
 
-	private final String[] access=_i(new String[]{"GTELL","GT"});
+	private final String[] access=I(new String[]{"GTELL","GT"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

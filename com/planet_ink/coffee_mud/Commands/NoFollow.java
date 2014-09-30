@@ -36,7 +36,7 @@ public class NoFollow extends Follow
 {
 	public NoFollow(){}
 
-	private final String[] access=_i(new String[]{"NOFOLLOW","NOFOL"});
+	private final String[] access=I(new String[]{"NOFOLLOW","NOFOL"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

@@ -38,7 +38,7 @@ public class Mining extends GatheringSkill
 	@Override public String ID() { return "Mining"; }
 	private final static String localizedName = CMLib.lang().L("Mining");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"MINE","MINING"});
+	private static final String[] triggerStrings =I(new String[] {"MINE","MINING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}
 	@Override protected boolean allowedWhileMounted(){return false;}

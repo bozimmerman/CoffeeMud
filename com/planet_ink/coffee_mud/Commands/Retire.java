@@ -38,7 +38,7 @@ public class Retire extends StdCommand
 {
 	public Retire(){}
 
-	private final String[] access=_i(new String[]{"RETIRE"});
+	private final String[] access=I(new String[]{"RETIRE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(final MOB mob, Vector commands, int metaFlags)

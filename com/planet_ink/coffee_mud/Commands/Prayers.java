@@ -36,7 +36,7 @@ public class Prayers extends Skills
 {
 	public Prayers(){}
 
-	private final String[] access=_i(new String[]{"PRAYERS"});
+	private final String[] access=I(new String[]{"PRAYERS"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

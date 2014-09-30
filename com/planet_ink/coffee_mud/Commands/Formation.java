@@ -36,7 +36,7 @@ public class Formation extends StdCommand
 {
 	public Formation(){}
 
-	private final String[] access=_i(new String[]{"FORMATION"});
+	private final String[] access=I(new String[]{"FORMATION"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override

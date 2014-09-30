@@ -36,7 +36,7 @@ public class DrinkCmd extends StdCommand
 {
 	public DrinkCmd(){}
 
-	private final String[] access=_i(new String[]{"DRINK","DR","DRI"});
+	private final String[] access=I(new String[]{"DRINK","DR","DRI"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

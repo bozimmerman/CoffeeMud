@@ -36,7 +36,7 @@ public class Credits extends StdCommand
 {
 	public Credits(){}
 
-	private final String[] access=_i(new String[]{"CREDITS"});
+	private final String[] access=I(new String[]{"CREDITS"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

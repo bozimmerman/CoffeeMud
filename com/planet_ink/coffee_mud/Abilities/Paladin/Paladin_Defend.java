@@ -39,7 +39,7 @@ public class Paladin_Defend extends StdAbility
 	@Override public String ID() { return "Paladin_Defend"; }
 	private final static String localizedName = CMLib.lang().L("All Defence");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"DEFENCE"});
+	private static final String[] triggerStrings =I(new String[] {"DEFENCE"});
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

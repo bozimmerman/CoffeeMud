@@ -37,7 +37,7 @@ public class Deities extends StdCommand
 {
 	public Deities(){}
 
-	private final String[] access=_i(new String[]{"DEITIES","GODS","DEITY"});
+	private final String[] access=I(new String[]{"DEITIES","GODS","DEITY"});
 	@Override public String[] getAccessWords(){return access;}
 
 	private final static Class[][] internalParameters=new Class[][]{{Deity.class}};

@@ -29,7 +29,7 @@ public class Experience extends StdCommand
 {
 	public Experience(){}
 
-	private final String[] access=_i(new String[]{"EXPERIENCE","EXPER","XP","EXP"});
+	private final String[] access=I(new String[]{"EXPERIENCE","EXPER","XP","EXP"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public StringBuffer getScore(MOB mob)

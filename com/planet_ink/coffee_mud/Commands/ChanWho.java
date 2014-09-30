@@ -37,7 +37,7 @@ public class ChanWho extends StdCommand
 {
 	public ChanWho(){}
 
-	private final String[] access=_i(new String[]{"CHANWHO"});
+	private final String[] access=I(new String[]{"CHANWHO"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

@@ -42,7 +42,7 @@ public class LockSmith extends CraftingSkill
 	@Override public String ID() { return "LockSmith"; }
 	private final static String localizedName = CMLib.lang().L("Locksmithing");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"LOCKSMITH","LOCKSMITHING"});
+	private static final String[] triggerStrings =I(new String[] {"LOCKSMITH","LOCKSMITHING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "METAL|MITHRIL";}
 

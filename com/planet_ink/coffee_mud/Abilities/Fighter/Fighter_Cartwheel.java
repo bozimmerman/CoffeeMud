@@ -37,7 +37,7 @@ public class Fighter_Cartwheel extends FighterSkill
 	@Override public String ID() { return "Fighter_Cartwheel"; }
 	private final static String localizedName = CMLib.lang().L("Cartwheel");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"CARTWHEEL"});
+	private static final String[] triggerStrings =I(new String[] {"CARTWHEEL"});
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return 0;}

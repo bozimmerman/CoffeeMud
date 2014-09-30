@@ -36,7 +36,7 @@ public class Reply extends StdCommand
 {
 	public Reply(){}
 
-	private final String[] access=_i(new String[]{"REPLY","REP","RE"});
+	private final String[] access=I(new String[]{"REPLY","REP","RE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

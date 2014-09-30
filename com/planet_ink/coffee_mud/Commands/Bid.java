@@ -36,7 +36,7 @@ public class Bid extends StdCommand
 {
 	public Bid(){}
 
-	private final String[] access=_i(new String[]{"BID"});
+	private final String[] access=I(new String[]{"BID"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

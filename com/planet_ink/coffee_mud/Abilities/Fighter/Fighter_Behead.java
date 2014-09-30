@@ -40,7 +40,7 @@ public class Fighter_Behead extends FighterSkill
 	@Override public String ID() { return "Fighter_Behead"; }
 	private final static String localizedName = CMLib.lang().L("Behead");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"BEHEAD"});
+	private static final String[] triggerStrings =I(new String[] {"BEHEAD"});
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected int canAffectCode(){return 0;}

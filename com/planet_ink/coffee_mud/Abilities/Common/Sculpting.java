@@ -43,7 +43,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 	@Override public String ID() { return "Sculpting"; }
 	private final static String localizedName = CMLib.lang().L("Sculpting");
 	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =_i(new String[] {"SCULPT","SCULPTING"});
+	private static final String[] triggerStrings =I(new String[] {"SCULPT","SCULPTING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "ROCK-BONE|STONE";}
 	@Override

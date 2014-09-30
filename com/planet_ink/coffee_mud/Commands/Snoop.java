@@ -36,7 +36,7 @@ public class Snoop extends StdCommand
 {
 	public Snoop(){}
 
-	private final String[] access=_i(new String[]{"SNOOP"});
+	private final String[] access=I(new String[]{"SNOOP"});
 	@Override public String[] getAccessWords(){return access;}
 
 	protected List<Session> snoopingOn(Session S)

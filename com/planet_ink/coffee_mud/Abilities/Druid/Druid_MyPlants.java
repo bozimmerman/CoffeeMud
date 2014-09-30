@@ -44,7 +44,7 @@ public class Druid_MyPlants extends StdAbility
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
-	private static final String[] triggerStrings =_i(new String[] {"MYPLANTS","PLANTS"});
+	private static final String[] triggerStrings =I(new String[] {"MYPLANTS","PLANTS"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
 
