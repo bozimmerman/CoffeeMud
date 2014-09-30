@@ -1206,7 +1206,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				{
 					final Ability A=a.nextElement();
 					if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)==domain))
-					{ V.addElement(A);}
+					{ 
+						V.addElement(A);
+					}
 				}
 			}
 			else
@@ -1214,7 +1216,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			{
 				final Ability A=a.nextElement();
 				if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==domain))
-				{ V.addElement(A);}
+				{ 
+					V.addElement(A);
+				}
 			}
 		return V;
 	}

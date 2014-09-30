@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Exits;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.EachApplicable.ApplyAffectPhyStats;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -52,6 +53,8 @@ public class StdExit implements Exit
 	protected SVector<ScriptingEngine>  scripts=null;
 	protected Exit 						me=this;
 
+	protected ApplyAffectPhyStats<Ability>	affectPhyStats = new ApplyAffectPhyStats<Ability>(this);
+	
 	public StdExit()
 	{
 		super();
@@ -110,15 +113,11 @@ public class StdExit implements Exit
 	{
 		return basePhyStats;
 	}
-	private final EachApplicable<Ability> recoverPhyStatsEffectApplicable=new EachApplicable<Ability>()
-	{
-		@Override public final void apply(final Ability A) { A.affectPhyStats(me,phyStats); }
-	};
 	@Override
 	public void recoverPhyStats()
 	{
 		basePhyStats.copyInto(phyStats);
-		eachEffect(recoverPhyStatsEffectApplicable);
+		eachEffect(affectPhyStats);
 	}
 	@Override
 	public void setBasePhyStats(PhyStats newStats)
@@ -193,6 +192,8 @@ public class StdExit implements Exit
 		basePhyStats=(PhyStats)X.basePhyStats().copyOf();
 		phyStats=(PhyStats)X.phyStats().copyOf();
 
+		affectPhyStats = new ApplyAffectPhyStats<Ability>(this);
+		
 		affects=null;
 		behaviors=null;
 		scripts=null;
@@ -460,53 +461,67 @@ public class StdExit implements Exit
 	@Override
 	public StringBuilder viewableText(MOB mob, Room room)
 	{
-		final StringBuilder Say=new StringBuilder("");
+		final StringBuilder viewMsg=new StringBuilder("");
 		if(mob.isAttribute(MOB.Attrib.SYSOPMSGS))
 		{
 			if(room==null)
-				Say.append("^Z(null)^.^? ");
+				viewMsg.append("^Z(null)^.^? ");
 			else
-				Say.append("^H("+CMLib.map().getExtendedRoomID(room)+")^? "+room.displayText(mob)+CMLib.flags().colorCodes(room,mob)+" ");
-			Say.append("via ^H("+ID()+")^? "+(isOpen()?displayText():closedText()));
+				viewMsg.append("^H("+CMLib.map().getExtendedRoomID(room)+")^? "+room.displayText(mob)+CMLib.flags().colorCodes(room,mob)+" ");
+			viewMsg.append("via ^H("+ID()+")^? "+(isOpen()?displayText():closedText()));
 		}
 		else
 		if(((CMLib.flags().canBeSeenBy(this,mob))||(isOpen()&&hasADoor()))
 		&&(CMLib.flags().isSeen(this)))
+		{
 			if(isOpen())
 			{
 				if((room!=null)&&(!CMLib.flags().canBeSeenBy(room,mob)))
-					Say.append("darkness");
+					viewMsg.append("darkness");
 				else
 				if(displayText().length()>0)
-					Say.append(displayText()+CMLib.flags().colorCodes(this,mob));
+					viewMsg.append(displayText()+CMLib.flags().colorCodes(this,mob));
 				else
 				if(room!=null)
-					Say.append(room.displayText(mob)+CMLib.flags().colorCodes(room,mob));
+					viewMsg.append(room.displayText(mob)+CMLib.flags().colorCodes(room,mob));
 			}
 			else
 			if((CMLib.flags().canBeSeenBy(this,mob))&&(closedText().trim().length()>0))
-				Say.append(closedText()+CMLib.flags().colorCodes(this,mob));
-		return Say;
+				viewMsg.append(closedText()+CMLib.flags().colorCodes(this,mob));
+		}
+		return viewMsg;
 	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		eachBehavior(new EachApplicable<Behavior>(){ @Override
-		public final void apply(final Behavior B)
-		{
-			B.executeMsg(me, msg);
-		} });
-		eachScript(new EachApplicable<ScriptingEngine>(){ @Override
-		public final void apply(final ScriptingEngine S)
-		{
-			S.executeMsg(me, msg);
-		} });
-		eachEffect(new EachApplicable<Ability>(){ @Override
-		public final void apply(final Ability A)
-		{
-			A.executeMsg(me,msg);
-		}});
+		if(numBehaviors()>0)
+			eachBehavior(new EachApplicable<Behavior>()
+			{ 
+				@Override
+				public final void apply(final Behavior B)
+				{
+					B.executeMsg(me, msg);
+				} 
+			});
+		if(numScripts()>0)
+			eachScript(new EachApplicable<ScriptingEngine>()
+			{ 
+				@Override
+				public final void apply(final ScriptingEngine S)
+				{
+					S.executeMsg(me, msg);
+				} 
+			});
+		if(numEffects()>0)
+			eachEffect(new EachApplicable<Ability>()
+			{ 
+				@Override
+				public final void apply(final Ability A)
+				{
+					A.executeMsg(me,msg);
+				}
+			});
 
 		final MOB mob=msg.source();
 		if((!msg.amITarget(this))&&(msg.tool()!=this))
@@ -575,26 +590,35 @@ public class StdExit implements Exit
 		else
 		if(tickID==Tickable.TICKID_EXIT_BEHAVIOR)
 		{
-			eachBehavior(new EachApplicable<Behavior>(){ @Override
-			public final void apply(final Behavior B)
-			{
-				B.tick(ticking, tickID);
-			} });
-			eachScript(new EachApplicable<ScriptingEngine>(){ @Override
-			public final void apply(final ScriptingEngine S)
-			{
-				S.tick(ticking, tickID);
-			} });
+			if(numBehaviors()>0)
+				eachBehavior(new EachApplicable<Behavior>(){ 
+					@Override
+					public final void apply(final Behavior B)
+					{
+						B.tick(ticking, tickID);
+					} 
+				});
+			if(numScripts()>0)
+				eachScript(new EachApplicable<ScriptingEngine>(){ 
+					@Override
+					public final void apply(final ScriptingEngine S)
+					{
+						S.tick(ticking, tickID);
+					} 
+				});
 			return !amDestroyed();
 		}
 		else
 		{
-			eachEffect(new EachApplicable<Ability>(){ @Override
-			public final void apply(final Ability A)
-			{
-				if(!A.tick(ticking,tickID))
-					A.unInvoke();
-			}});
+			if(numEffects()>0)
+				eachEffect(new EachApplicable<Ability>(){ 
+					@Override
+					public final void apply(final Ability A)
+					{
+						if(!A.tick(ticking,tickID))
+							A.unInvoke();
+					}
+				});
 			return true;
 		}
 	}

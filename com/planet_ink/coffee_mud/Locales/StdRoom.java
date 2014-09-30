@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Locales;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.EachApplicable.ApplyAffectPhyStats;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
 import com.planet_ink.coffee_mud.core.*;
@@ -61,6 +62,7 @@ public class StdRoom implements Room
 	protected boolean		skyedYet=false;
 	protected volatile short combatTurnMobIndex=0;
 	protected final short[]	 roomRecoverMarker=new short[1];
+	
 	protected SVector<Ability>			affects=null;
 	protected SVector<Behavior>			behaviors=null;
 	protected SVector<ScriptingEngine>	scripts=null;
@@ -68,6 +70,7 @@ public class StdRoom implements Room
 	protected SVector<Item>				contents=new SVector(1);
 	protected Room						me=this;
 
+	protected ApplyAffectPhyStats		affectPhyStats = new ApplyAffectPhyStats(this);
 	// base move points and thirst points per round
 
 	public StdRoom()
@@ -193,6 +196,8 @@ public class StdRoom implements Room
 		basePhyStats=(PhyStats)R.basePhyStats().copyOf();
 		phyStats=(PhyStats)R.phyStats().copyOf();
 
+		affectPhyStats = new ApplyAffectPhyStats(this);
+		
 		contents=new SVector<Item>();
 		inhabitants=new SVector<MOB>();
 		affects=null;
@@ -827,11 +832,14 @@ public class StdRoom implements Room
 				break;
 			}
 		}
-		eachItem(new EachApplicable<Item>(){ @Override
-		public final void apply(final Item I)
-		{
-			I.executeMsg(me, msg);
-		} });
+		if(numItems()>0)
+			eachItem(new EachApplicable<Item>(){ 
+				@Override
+				public final void apply(final Item I)
+				{
+					I.executeMsg(me, msg);
+				} 
+			});
 
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
@@ -840,21 +848,30 @@ public class StdRoom implements Room
 				E.executeMsg(this,msg);
 		}
 
-		eachBehavior(new EachApplicable<Behavior>(){ @Override
-		public final void apply(final Behavior B)
-		{
-			B.executeMsg(me, msg);
-		} });
-		eachScript(new EachApplicable<ScriptingEngine>(){ @Override
-		public final void apply(final ScriptingEngine S)
-		{
-			S.executeMsg(me, msg);
-		} });
-		eachEffect(new EachApplicable<Ability>(){ @Override
-		public final void apply(final Ability A)
-		{
-			A.executeMsg(me,msg);
-		} });
+		if(numBehaviors()>0)
+			eachBehavior(new EachApplicable<Behavior>(){ 
+				@Override
+				public final void apply(final Behavior B)
+				{
+					B.executeMsg(me, msg);
+				} 
+			});
+		if(numScripts()>0)
+			eachScript(new EachApplicable<ScriptingEngine>(){ 
+				@Override
+				public final void apply(final ScriptingEngine S)
+				{
+					S.executeMsg(me, msg);
+				} 
+			});
+		if(numEffects()>0)
+			eachEffect(new EachApplicable<Ability>(){ 
+				@Override
+				public final void apply(final Ability A)
+				{
+					A.executeMsg(me,msg);
+				} 
+			});
 
 		if(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
 		{
@@ -863,28 +880,32 @@ public class StdRoom implements Room
 				if(CMSecurity.isSaveFlag("ROOMMOBS"))
 				{
 					if(roomID().length()==0)
-						eachInhabitant(new EachApplicable<MOB>(){ @Override
-						public final void apply(final MOB M)
-						{
-							if((M.isSavable())
-							&&(M.getStartRoom()!=me)
-							&&(M.getStartRoom()!=null)
-							&&(M.getStartRoom().roomID().length()>0))
-								M.getStartRoom().bringMobHere(M,false);
-						} });
+						eachInhabitant(new EachApplicable<MOB>(){ 
+							@Override
+							public final void apply(final MOB M)
+							{
+								if((M.isSavable())
+								&&(M.getStartRoom()!=me)
+								&&(M.getStartRoom()!=null)
+								&&(M.getStartRoom().roomID().length()>0))
+									M.getStartRoom().bringMobHere(M,false);
+							} 
+						});
 				}
 				else
 				if(CMSecurity.isSaveFlag("ROOMSHOPS"))
 				{
-					eachInhabitant(new EachApplicable<MOB>(){ @Override
-					public final void apply(final MOB M)
-					{
-						if((M instanceof ShopKeeper)
-						&&(M.isSavable())
-						&&(M.getStartRoom()!=me)
-						&&(M.getStartRoom()!=null))
-							M.getStartRoom().bringMobHere(M,false);
-					} });
+					eachInhabitant(new EachApplicable<MOB>(){ 
+						@Override
+						public final void apply(final MOB M)
+						{
+							if((M instanceof ShopKeeper)
+							&&(M.isSavable())
+							&&(M.getStartRoom()!=me)
+							&&(M.getStartRoom()!=null))
+								M.getStartRoom().bringMobHere(M,false);
+						} 
+					});
 				}
 			}catch(final NoSuchElementException e){}
 		}
@@ -926,28 +947,32 @@ public class StdRoom implements Room
 					final Vector bodies=new Vector(1);
 					if(CMSecurity.isSaveFlag("ROOMMOBS"))
 					{
-						eachInhabitant(new EachApplicable<MOB>(){ @Override
-						public final void apply(final MOB M)
-						{
-							if(M.isSavable())
+						eachInhabitant(new EachApplicable<MOB>(){ 
+							@Override
+							public final void apply(final MOB M)
 							{
-								M.setStartRoom(me);
-								M.text(); // this permanizes his current state
-							}
-						} });
+								if(M.isSavable())
+								{
+									M.setStartRoom(me);
+									M.text(); // this permanizes his current state
+								}
+							} 
+						});
 						CMLib.database().DBUpdateMOBs(this);
 					}
 					else
 					if(CMSecurity.isSaveFlag("ROOMSHOPS"))
 					{
-						eachInhabitant(new EachApplicable<MOB>(){ @Override
-						public final void apply(final MOB M)
-						{
-							if((M.isSavable())
-							&&(M instanceof ShopKeeper)
-							&&(M.getStartRoom()==me))
-								shopmobs.addElement(M);
-						} });
+						eachInhabitant(new EachApplicable<MOB>(){ 
+							@Override
+							public final void apply(final MOB M)
+							{
+								if((M.isSavable())
+								&&(M instanceof ShopKeeper)
+								&&(M.getStartRoom()==me))
+									shopmobs.addElement(M);
+							} 
+						});
 						if(shopmobs.size()>0)
 							CMLib.database().DBUpdateTheseMOBs(this,shopmobs);
 					}
@@ -982,18 +1007,20 @@ public class StdRoom implements Room
 	@Override
 	public void startItemRejuv()
 	{
-		eachItem(new EachApplicable<Item>(){ @Override
-		public final void apply(final Item item)
-		{
-			if(item.container()==null)
+		eachItem(new EachApplicable<Item>(){ 
+			@Override
+			public final void apply(final Item item)
 			{
-				final ItemTicker I=(ItemTicker)CMClass.getAbility("ItemRejuv");
-				I.unloadIfNecessary(item);
-				if((item.phyStats().rejuv()!=PhyStats.NO_REJUV)
-				&&(item.phyStats().rejuv()>0))
-					I.loadMeUp(item,me);
-			}
-		} });
+				if(item.container()==null)
+				{
+					final ItemTicker I=(ItemTicker)CMClass.getAbility("ItemRejuv");
+					I.unloadIfNecessary(item);
+					if((item.phyStats().rejuv()!=PhyStats.NO_REJUV)
+					&&(item.phyStats().rejuv()>0))
+						I.loadMeUp(item,me);
+				}
+			} 
+		});
 	}
 
 	@Override
@@ -1010,27 +1037,34 @@ public class StdRoom implements Room
 		{
 			if((numBehaviors()<=0)&&(numScripts()<=0)) return false;
 			tickStatus=Tickable.STATUS_BEHAVIOR;
-			eachBehavior(new EachApplicable<Behavior>(){ @Override
-			public final void apply(final Behavior B)
-			{
-				B.tick(ticking, tickID);
-			} });
+			eachBehavior(new EachApplicable<Behavior>(){ 
+				@Override
+				public final void apply(final Behavior B)
+				{
+					B.tick(ticking, tickID);
+				} 
+			});
 			tickStatus=Tickable.STATUS_SCRIPT;
-			eachScript(new EachApplicable<ScriptingEngine>(){ @Override
-			public final void apply(final ScriptingEngine S)
-			{
-				S.tick(ticking, tickID);
-			} });
+			eachScript(new EachApplicable<ScriptingEngine>(){ 
+				@Override
+				public final void apply(final ScriptingEngine S)
+				{
+					S.tick(ticking, tickID);
+				} 
+			});
 		}
 		else
 		{
 			tickStatus=Tickable.STATUS_AFFECT;
-			eachEffect(new EachApplicable<Ability>(){ @Override
-			public final void apply(final Ability A)
-			{
-				if(!A.tick(ticking,tickID))
-					A.unInvoke();
-			} });
+			if(numEffects()>0)
+				eachEffect(new EachApplicable<Ability>(){ 
+					@Override
+					public final void apply(final Ability A)
+					{
+						if(!A.tick(ticking,tickID))
+							A.unInvoke();
+					} 
+				});
 		}
 		tickStatus=Tickable.STATUS_NOT;
 		return !amDestroyed();
@@ -1047,21 +1081,6 @@ public class StdRoom implements Room
 		return basePhyStats;
 	}
 
-	private final EachApplicable<Ability> recoverPhyStatsEffectApplicable=new EachApplicable<Ability>()
-	{
-		@Override public final void apply(final Ability A) { A.affectPhyStats(me,phyStats); }
-	};
-
-	private final EachApplicable<Item> recoverPhyStatsItemApplicable=new EachApplicable<Item>()
-	{
-		@Override public final void apply(final Item I){ I.affectPhyStats(me,phyStats);}
-	};
-
-	private final EachApplicable<MOB> recoverPhyStatsInhabitantApplicable=new EachApplicable<MOB>()
-	{
-		@Override public final void apply(final MOB M){ M.affectPhyStats(me,phyStats);}
-	};
-
 	@Override
 	public void recoverPhyStats()
 	{
@@ -1070,20 +1089,14 @@ public class StdRoom implements Room
 		if(myArea!=null)
 			myArea.affectPhyStats(this,phyStats());
 
-		eachEffect(recoverPhyStatsEffectApplicable);
-		eachItem(recoverPhyStatsItemApplicable);
-		eachInhabitant(recoverPhyStatsInhabitantApplicable);
+		eachEffect(affectPhyStats);
+		eachItem(affectPhyStats);
+		eachInhabitant(affectPhyStats);
 	}
 
-	private final EachApplicable<Item> recoverRoomStatsItemApplicable=new EachApplicable<Item>() {
-		@Override
-		public final void apply(final Item I)
-		{
-			I.recoverPhyStats();
-		}
-	};
+	private final static EachApplicable<Item> recoverRoomStatsItemApplicable=new EachApplicable.ApplyRecoverPhyStats<Item>();
 
-	private final EachApplicable<MOB> recoverRoomStatsInhabitantApplicable=new EachApplicable<MOB>()
+	private final static EachApplicable<MOB> recoverRoomStatsInhabitantApplicable=new EachApplicable<MOB>()
 	{
 		@Override
 		public final void apply(final MOB M)
@@ -1144,33 +1157,42 @@ public class StdRoom implements Room
 			&((~(PhyStats.IS_DARK|PhyStats.IS_LIGHTSOURCE|PhyStats.IS_SLEEPING|PhyStats.IS_HIDDEN)));
 		if(disposition>0)
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
-		eachEffect(new EachApplicable<Ability>(){ @Override
-		public final void apply(final Ability A)
-		{
-			if(A.bubbleAffect()) A.affectPhyStats(affected,affectableStats);
-		} });
+		eachEffect(new EachApplicable<Ability>(){ 
+			@Override
+			public final void apply(final Ability A)
+			{
+				if(A.bubbleAffect()) 
+					A.affectPhyStats(affected,affectableStats);
+			} 
+		});
 	}
 
 	@Override
 	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		getArea().affectCharStats(affectedMob,affectableStats);
-		eachEffect(new EachApplicable<Ability>(){ @Override
-		public final void apply(final Ability A)
-		{
-			if(A.bubbleAffect()) A.affectCharStats(affectedMob,affectableStats);
-		} });
+		eachEffect(new EachApplicable<Ability>(){ 
+			@Override
+			public final void apply(final Ability A)
+			{
+				if(A.bubbleAffect()) 
+					A.affectCharStats(affectedMob,affectableStats);
+			} 
+		});
 	}
 
 	@Override
 	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 		getArea().affectCharState(affectedMob,affectableMaxState);
-		eachEffect(new EachApplicable<Ability>(){ @Override
-		public final void apply(final Ability A)
-		{
-			if(A.bubbleAffect()) A.affectCharState(affectedMob,affectableMaxState);
-		} });
+		eachEffect(new EachApplicable<Ability>(){ 
+			@Override
+			public final void apply(final Ability A)
+			{
+				if(A.bubbleAffect()) 
+					A.affectCharState(affectedMob,affectableMaxState);
+			} 
+		});
 	}
 
 	@Override

@@ -247,11 +247,13 @@ public class StdSpaceShip implements Area, SpaceShip
 	public void recoverPhyStats()
 	{
 		basePhyStats.copyInto(phyStats);
-		eachEffect(new EachApplicable<Ability>(){ @Override
-		public final void apply(final Ability A)
-		{
-			if(A!=null) A.affectPhyStats(me,phyStats);
-		}});
+		eachEffect(new EachApplicable<Ability>(){ 
+			@Override
+			public final void apply(final Ability A)
+			{
+				if(A!=null) A.affectPhyStats(me,phyStats);
+			}
+		});
 	}
 
 
@@ -498,21 +500,30 @@ public class StdSpaceShip implements Area, SpaceShip
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		eachBehavior(new EachApplicable<Behavior>(){ @Override
-		public final void apply(final Behavior B)
-		{
-			B.executeMsg(me, msg);
-		} });
-		eachScript(new EachApplicable<ScriptingEngine>(){ @Override
-		public final void apply(final ScriptingEngine S)
-		{
-			S.executeMsg(me, msg);
-		} });
-		eachEffect(new EachApplicable<Ability>(){ @Override
-		public final void apply(final Ability A)
-		{
-			A.executeMsg(me,msg);
-		}});
+		if(numBehaviors()>0)
+			eachBehavior(new EachApplicable<Behavior>(){ 
+				@Override
+				public final void apply(final Behavior B)
+				{
+					B.executeMsg(me, msg);
+				} 
+			});
+		if(numScripts()>0)
+			eachScript(new EachApplicable<ScriptingEngine>(){ 
+				@Override
+				public final void apply(final ScriptingEngine S)
+				{
+					S.executeMsg(me, msg);
+				} 
+			});
+		if(numEffects()>0)
+			eachEffect(new EachApplicable<Ability>(){ 
+				@Override
+				public final void apply(final Ability A)
+				{
+					A.executeMsg(me,msg);
+				}
+			});
 		if((msg.sourceMinor()==CMMsg.TYP_DROP)||(msg.sourceMinor()==CMMsg.TYP_GET))
 			mass=-1;
 
@@ -678,24 +689,33 @@ public class StdSpaceShip implements Area, SpaceShip
 		{
 			getTimeObj().tick(this,tickID);
 			tickStatus=Tickable.STATUS_BEHAVIOR;
-			eachBehavior(new EachApplicable<Behavior>(){ @Override
-			public final void apply(final Behavior B)
-			{
-				B.tick(ticking,tickID);
-			} });
+			if(numBehaviors()>0)
+				eachBehavior(new EachApplicable<Behavior>(){ 
+					@Override
+					public final void apply(final Behavior B)
+					{
+						B.tick(ticking,tickID);
+					} 
+				});
 			tickStatus=Tickable.STATUS_SCRIPT;
-			eachScript(new EachApplicable<ScriptingEngine>(){ @Override
-			public final void apply(final ScriptingEngine S)
-			{
-				S.tick(ticking,tickID);
-			} });
+			if(numScripts()>0)
+				eachScript(new EachApplicable<ScriptingEngine>(){ 
+					@Override
+					public final void apply(final ScriptingEngine S)
+					{
+						S.tick(ticking,tickID);
+					} 
+				});
 			tickStatus=Tickable.STATUS_AFFECT;
-			eachEffect(new EachApplicable<Ability>(){ @Override
-			public final void apply(final Ability A)
-			{
-				if(!A.tick(ticking,tickID))
-					A.unInvoke();
-			}});
+			if(numEffects()>0)
+				eachEffect(new EachApplicable<Ability>(){ 
+					@Override
+					public final void apply(final Ability A)
+					{
+						if(!A.tick(ticking,tickID))
+							A.unInvoke();
+					}
+				});
 			doAtmosphereChanges();
 		}
 		tickStatus=Tickable.STATUS_NOT;
@@ -779,10 +799,14 @@ public class StdSpaceShip implements Area, SpaceShip
 	@Override
 	public int numEffects()
 	{
-		return affects.size();
+		return (affects==null)?0:affects.size();
 	}
 
-	@Override public Enumeration<Ability> effects(){return (affects==null)?EmptyEnumeration.INSTANCE:affects.elements();}
+	@Override 
+	public Enumeration<Ability> effects()
+	{
+		return (affects==null)?EmptyEnumeration.INSTANCE:affects.elements();
+	}
 
 	@Override
 	public Ability fetchEffect(int index)
@@ -814,7 +838,9 @@ public class StdSpaceShip implements Area, SpaceShip
 		if(A==this) return true;
 		return false;
 	}
+	
 	@Override public void fillInAreaRoom(Room R){}
+	
 	@Override
 	public void dockHere(LocationRoom roomR)
 	{
@@ -990,28 +1016,40 @@ public class StdSpaceShip implements Area, SpaceShip
 			if((B!=null)&&(B.ID().equals(to.ID())))
 				return;
 		}
+		if(behaviors==null)
+			behaviors=new SVector<Behavior>();
 		behaviors.addElement(to);
 	}
 	@Override
 	public void delBehavior(Behavior to)
 	{
-		behaviors.removeElement(to);
+		if(behaviors!=null)
+			behaviors.removeElement(to);
 	}
+
 	@Override
 	public void delAllBehaviors()
 	{
 		final boolean didSomething=(behaviors!=null)&&(behaviors.size()>0);
-		if(didSomething) behaviors.clear();
+		if(didSomething) 
+			behaviors.clear();
 		behaviors=null;
 		if(didSomething && ((scripts==null)||(scripts.size()==0)))
 			CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
 	}
+
 	@Override
 	public int numBehaviors()
 	{
-		return behaviors.size();
+		return (behaviors==null)?0:behaviors.size();
 	}
-	@Override public Enumeration<Behavior> behaviors() { return behaviors.elements();}
+
+	@Override 
+	public Enumeration<Behavior> behaviors() 
+	{ 
+		return (behaviors!=null)?behaviors.elements():EmptyEnumeration.INSTANCE;
+	}
+
 	@Override public int maxRange(){return Integer.MAX_VALUE;}
 	@Override public int minRange(){return Integer.MIN_VALUE;}
 

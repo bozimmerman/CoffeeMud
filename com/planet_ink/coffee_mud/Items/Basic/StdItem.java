@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Items.Basic;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.EachApplicable.ApplyAffectPhyStats;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -58,14 +59,16 @@ public class StdItem implements Item
 	protected boolean 		destroyed=false;
 	protected Item 			me=this;
 
+	protected PhyStats phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+	protected PhyStats basePhyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+
 	protected volatile Container	   myContainer=null;
 	protected volatile ItemPossessor   owner=null;
 	protected SVector<Ability>  	   affects=null;
 	protected SVector<Behavior> 	   behaviors=null;
 	protected SVector<ScriptingEngine> scripts=null;
-
-	protected PhyStats phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-	protected PhyStats basePhyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+	
+	protected ApplyAffectPhyStats	   affectPhyStats = new ApplyAffectPhyStats(this);
 
 	public StdItem()
 	{
@@ -135,15 +138,11 @@ public class StdItem implements Item
 		return basePhyStats;
 	}
 
-	private final EachApplicable<Ability> recoverPhyStatsEffectApplicable=new EachApplicable<Ability>()
-	{
-		@Override public final void apply(final Ability A) { A.affectPhyStats(me,phyStats); }
-	};
 	@Override
 	public void recoverPhyStats()
 	{
 		basePhyStats.copyInto(phyStats);
-		eachEffect(recoverPhyStatsEffectApplicable);
+		eachEffect(affectPhyStats);
 		if(((phyStats().ability()>0)&&abilityImbuesMagic())||(this instanceof MiscMagic))
 			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_BONUS);
 		if((owner()!=null)
@@ -177,6 +176,8 @@ public class StdItem implements Item
 		me=this;
 		basePhyStats=(PhyStats)I.basePhyStats().copyOf();
 		phyStats=(PhyStats)I.phyStats().copyOf();
+		
+		affectPhyStats = new ApplyAffectPhyStats(this);
 
 		affects=null;
 		behaviors=null;
@@ -573,17 +574,23 @@ public class StdItem implements Item
 		if(tickID==Tickable.TICKID_ITEM_BEHAVIOR)
 		{
 			tickStatus=Tickable.STATUS_BEHAVIOR;
-			eachBehavior(new EachApplicable<Behavior>(){ @Override
-			public final void apply(final Behavior B)
-			{
-				B.tick(ticking,tickID);
-			} });
+			if(numBehaviors()>0)
+				eachBehavior(new EachApplicable<Behavior>(){ 
+					@Override
+					public final void apply(final Behavior B)
+					{
+						B.tick(ticking,tickID);
+					} 
+				});
 			tickStatus=Tickable.STATUS_SCRIPT;
-			eachScript(new EachApplicable<ScriptingEngine>(){ @Override
-			public final void apply(final ScriptingEngine S)
-			{
-				S.tick(ticking,tickID);
-			} });
+			if(numScripts()>0)
+				eachScript(new EachApplicable<ScriptingEngine>(){ 
+					@Override
+					public final void apply(final ScriptingEngine S)
+					{
+						S.tick(ticking,tickID);
+					} 
+				});
 			if((numBehaviors()==0)&&(numScripts()==0))
 				return false;
 		}
@@ -591,12 +598,15 @@ public class StdItem implements Item
 		if((tickID!=Tickable.TICKID_CLANITEM)&&(tickID!=Tickable.TICKID_ELECTRONICS))
 		{
 			tickStatus=Tickable.STATUS_AFFECT;
-			eachEffect(new EachApplicable<Ability>(){ @Override
-			public final void apply(final Ability A)
-			{
-				if(!A.tick(ticking,tickID))
-					A.unInvoke();
-			} });
+			if(numEffects()>0)
+			eachEffect(new EachApplicable<Ability>(){ 
+				@Override
+				public final void apply(final Ability A)
+				{
+					if(!A.tick(ticking,tickID))
+						A.unInvoke();
+				} 
+			});
 		}
 		tickStatus=Tickable.STATUS_NOT;
 		return !amDestroyed();
@@ -1265,21 +1275,30 @@ public class StdItem implements Item
 	{
 		// the order that these things are checked in should
 		// be holy, and etched in stone.
-		eachBehavior(new EachApplicable<Behavior>(){ @Override
-		public final void apply(final Behavior B)
-		{
-			B.executeMsg(me,msg);
-		} });
-		eachScript(new EachApplicable<ScriptingEngine>(){ @Override
-		public final void apply(final ScriptingEngine S)
-		{
-			S.executeMsg(me,msg);
-		} });
-		eachEffect(new EachApplicable<Ability>(){ @Override
-		public final void apply(final Ability A)
-		{
-			A.executeMsg(me, msg);
-		}});
+		if(numBehaviors()>0)
+			eachBehavior(new EachApplicable<Behavior>(){ 
+				@Override
+				public final void apply(final Behavior B)
+				{
+					B.executeMsg(me,msg);
+				} 
+			});
+		if(numScripts()>0)
+			eachScript(new EachApplicable<ScriptingEngine>(){ 
+				@Override
+				public final void apply(final ScriptingEngine S)
+				{
+					S.executeMsg(me,msg);
+				} 
+			});
+		if(numEffects()>0)
+			eachEffect(new EachApplicable<Ability>(){ 
+				@Override
+				public final void apply(final Ability A)
+				{
+					A.executeMsg(me, msg);
+				}
+			});
 
 		final MOB mob=msg.source();
 		if((msg.tool()==this)
@@ -1712,12 +1731,15 @@ public class StdItem implements Item
 		final StringBuilder identity=new StringBuilder("");
 		if(numEffects()>0)
 			identity.append("\n\rHas the following magical properties: ");
-		eachEffect(new EachApplicable<Ability>(){ @Override
-		public final void apply(final Ability A)
-		{
-			if(A.accountForYourself().length()>0)
-				identity.append("\n\r"+A.accountForYourself());
-		}});
+		if(numEffects()>0)
+			eachEffect(new EachApplicable<Ability>(){ 
+				@Override
+				public final void apply(final Ability A)
+				{
+					if(A.accountForYourself().length()>0)
+						identity.append("\n\r"+A.accountForYourself());
+				}
+			});
 		return identity.toString();
 	}
 

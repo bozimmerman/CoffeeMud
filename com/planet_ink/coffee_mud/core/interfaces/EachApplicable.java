@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.core.interfaces;
 
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
+
 /*
 Copyright 2000-2014 Bo Zimmerman
 
@@ -27,4 +29,34 @@ public interface EachApplicable<T>
 	 * @param a the object to work on
 	 */
 	public void apply(final T a);
+	
+	/**
+	 * Example class that affect phyStats
+	 */
+	public static class ApplyAffectPhyStats<T extends StatsAffecting> implements EachApplicable<T>
+	{
+		protected final Physical me;
+		public ApplyAffectPhyStats(Physical me)
+		{
+			this.me=me;
+		}
+		@Override
+		public void apply(T a) 
+		{
+			a.affectPhyStats(me, me.phyStats());
+		}
+	}
+	
+	/**
+	 * Example class that recovers phyStats
+	 */
+	public static class ApplyRecoverPhyStats<T extends Affectable> implements EachApplicable<T>
+	{
+		@Override
+		public void apply(T a) 
+		{
+			a.recoverPhyStats();
+		}
+	}
+	
 }

@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.MOBS;
 
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.EachApplicable.ApplyAffectPhyStats;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -134,8 +135,14 @@ public class StdMOB implements MOB
 	protected volatile WeakReference<Item>		 possWieldedItem= null;
 	protected volatile WeakReference<Item>	 	 possHeldItem	= null;
 
+	protected 		   ApplyAffectPhyStats	   	 affectPhyStats = new ApplyAffectPhyStats(this);
+	protected		   ApplyRecAffectPhyStats	 recoverAffectP	= new ApplyRecAffectPhyStats(this);
+	protected		   ApplyAffectCharStats      affectCharStats= new ApplyAffectCharStats(this);
+	protected		   ApplyAffectCharState      affectCharState= new ApplyAffectCharState(this);
+	
 	protected		   OrderedMap<String,Pair<Clan,Integer>> 	clans = new OrderedMap<String,Pair<Clan,Integer>>();
 
+	
 	public StdMOB()
 	{
 		super();
@@ -145,6 +152,57 @@ public class StdMOB implements MOB
 		xtraValues = CMProps.getExtraStatCodesHolder(this);
 	}
 
+	/**
+	 * EachApplicable class that recovers item and affect phyStats
+	 */
+	public static final class ApplyRecAffectPhyStats<T extends StatsAffecting> extends ApplyAffectPhyStats<T>
+	{
+		public ApplyRecAffectPhyStats(Physical me)
+		{
+			super(me);
+		}
+		@Override
+		public void apply(T a) 
+		{
+			((Affectable)a).recoverPhyStats();
+			super.apply(a);
+		}
+	}
+	
+	/**
+	 * EachApplicable class that affect charStats
+	 */
+	public static class ApplyAffectCharStats<T extends StatsAffecting> implements EachApplicable<T>
+	{
+		protected final MOB me;
+		public ApplyAffectCharStats(MOB me)
+		{
+			this.me=me;
+		}
+		@Override
+		public void apply(T a) 
+		{
+			a.affectCharStats(me, me.charStats());
+		}
+	}
+	
+	/**
+	 * EachApplicable class that affect charState
+	 */
+	public static class ApplyAffectCharState<T extends StatsAffecting> implements EachApplicable<T>
+	{
+		protected final MOB me;
+		public ApplyAffectCharState(MOB me)
+		{
+			this.me=me;
+		}
+		@Override
+		public void apply(T a) 
+		{
+			a.affectCharState(me, me.maxState());
+		}
+	}
+	
 	@Override
 	public long lastTickedDateTime()
 	{
@@ -547,6 +605,12 @@ public class StdMOB implements MOB
 			basePhyStats = (PhyStats) M.basePhyStats().copyOf();
 			phyStats = (PhyStats) M.phyStats().copyOf();
 		}
+		
+		affectPhyStats = new ApplyAffectPhyStats(this);
+		recoverAffectP	= new ApplyRecAffectPhyStats(this);
+		affectCharStats= new ApplyAffectCharStats(this);
+		affectCharState = new ApplyAffectCharState(this);
+		
 		affects	= new SVector<Ability>();
 		baseCharStats = (CharStats) M.baseCharStats().copyOf();
 		charStats = (CharStats) M.charStats().copyOf();
@@ -686,24 +750,6 @@ public class StdMOB implements MOB
 		return basePhyStats;
 	}
 
-	private final EachApplicable<Item> recoverPhyStatsItemApplier=new EachApplicable<Item>()
-	{
-		@Override
-		public final void apply(final Item I)
-		{
-			I.recoverPhyStats();
-			I.affectPhyStats(me, phyStats);
-		}
-	};
-	private final EachApplicable<Ability> recoverPhyStatsAffectApplier=new EachApplicable<Ability>()
-	{
-		@Override
-		public final void apply(final Ability A)
-		{
-			A.affectPhyStats(me, phyStats);
-		}
-	};
-
 	@Override
 	public void recoverPhyStats()
 	{
@@ -725,8 +771,8 @@ public class StdMOB implements MOB
 				cStats.getMyClass(c).affectPhyStats(this, phyStats);
 			cStats.getMyRace().affectPhyStats(this, phyStats);
 		}
-		eachItem(recoverPhyStatsItemApplier);
-		eachEffect(recoverPhyStatsAffectApplier);
+		eachItem(recoverAffectP);
+		eachEffect(affectPhyStats);
 		for (final Enumeration e = factions.elements(); e.hasMoreElements();)
 			((Faction.FData) e.nextElement()).affectPhyStats(this, phyStats);
 		/* the follower light exception */
@@ -803,23 +849,6 @@ public class StdMOB implements MOB
 		return charStats;
 	}
 
-	private final EachApplicable<Item> recoverCharStatsItemApplier=new EachApplicable<Item>()
-	{
-		@Override
-		public final void apply(final Item I)
-		{
-			I.affectCharStats(me, charStats);
-		}
-	};
-	private final EachApplicable<Ability> recoverCharStatsAffectApplier=new EachApplicable<Ability>()
-	{
-		@Override
-		public final void apply(final Ability A)
-		{
-			A.affectCharStats(me, charStats);
-		}
-	};
-
 	@Override
 	public void recoverCharStats()
 	{
@@ -839,8 +868,8 @@ public class StdMOB implements MOB
 			charStats.getMyClass(c).affectCharStats(this, charStats);
 		charStats.getMyRace().affectCharStats(this, charStats);
 		baseCharStats.getMyRace().agingAffects(this, baseCharStats, charStats);
-		eachEffect(recoverCharStatsAffectApplier);
-		eachItem(recoverCharStatsItemApplier);
+		eachEffect(affectCharStats);
+		eachItem(affectCharStats);
 		if (location() != null)
 			location().affectCharStats(this, charStats);
 		for (final Enumeration e = factions.elements(); e.hasMoreElements();)
@@ -944,23 +973,6 @@ public class StdMOB implements MOB
 		maxState.copyInto(curState);
 	}
 
-	private final EachApplicable<Item> recoverMaxStateItemApplier=new EachApplicable<Item>()
-	{
-		@Override
-		public final void apply(final Item I)
-		{
-			I.affectCharState(me, maxState);
-		}
-	};
-	private final EachApplicable<Ability> recoverMaxStateAffectApplier=new EachApplicable<Ability>()
-	{
-		@Override
-		public final void apply(final Ability A)
-		{
-			A.affectCharState(me, maxState);
-		}
-	};
-
 	@Override
 	public void recoverMaxState()
 	{
@@ -973,8 +985,8 @@ public class StdMOB implements MOB
 		final int num = charStats.numClasses();
 		for (int c = 0; c < num; c++)
 			charStats.getMyClass(c).affectCharState(this, maxState);
-		eachEffect(recoverMaxStateAffectApplier);
-		eachItem(recoverMaxStateItemApplier);
+		eachEffect(affectCharState);
+		eachItem(affectCharState);
 		for (final Enumeration e = factions.elements(); e.hasMoreElements();)
 			((Faction.FData) e.nextElement()).affectCharState(this, maxState);
 		if (location() != null)
@@ -2857,22 +2869,24 @@ public class StdMOB implements MOB
 			cStats.getMyRace().executeMsg(this, msg);
 		}
 
-		eachBehavior(new EachApplicable<Behavior>()
-		{
-			@Override
-			public final void apply(final Behavior B)
+		if(numBehaviors()>0)
+			eachBehavior(new EachApplicable<Behavior>()
 			{
-				B.executeMsg(me, msg);
-			}
-		});
-		eachScript(new EachApplicable<ScriptingEngine>()
-		{
-			@Override
-			public final void apply(final ScriptingEngine S)
+				@Override
+				public final void apply(final Behavior B)
+				{
+					B.executeMsg(me, msg);
+				}
+			});
+		if(numScripts()>0)
+			eachScript(new EachApplicable<ScriptingEngine>()
 			{
-				S.executeMsg(me, msg);
-			}
-		});
+				@Override
+				public final void apply(final ScriptingEngine S)
+				{
+					S.executeMsg(me, msg);
+				}
+			});
 
 		final MOB srcM = msg.source();
 
@@ -3130,23 +3144,25 @@ public class StdMOB implements MOB
 		}
 
 		// the order here is significant (between eff and item -- see focus)
-		eachItem(new EachApplicable<Item>()
-		{
-			@Override
-			public final void apply(final Item I)
+		if(numItems()>0)
+			eachItem(new EachApplicable<Item>()
 			{
-				I.executeMsg(me, msg);
-			}
-		});
+				@Override
+				public final void apply(final Item I)
+				{
+					I.executeMsg(me, msg);
+				}
+			});
 
-		eachEffect(new EachApplicable<Ability>()
-		{
-			@Override
-			public final void apply(final Ability A)
+		if(numAllEffects()>0)
+			eachEffect(new EachApplicable<Ability>()
 			{
-				A.executeMsg(me, msg);
-			}
-		});
+				@Override
+				public final void apply(final Ability A)
+				{
+					A.executeMsg(me, msg);
+				}
+			});
 
 		for (final Enumeration e = factions.elements(); e.hasMoreElements();)
 		{
@@ -3359,36 +3375,39 @@ public class StdMOB implements MOB
 			}
 
 			tickStatus = Tickable.STATUS_AFFECT;
-			eachEffect(new EachApplicable<Ability>()
-			{
-				@Override
-				public final void apply(final Ability A)
+			if(numAllEffects()>0)
+				eachEffect(new EachApplicable<Ability>()
 				{
-					if (!A.tick(ticking, tickID))
-						A.unInvoke();
-				}
-			});
+					@Override
+					public final void apply(final Ability A)
+					{
+						if (!A.tick(ticking, tickID))
+							A.unInvoke();
+					}
+				});
 
 			manaConsumeCter = CMLib.commands().tickManaConsumption(this, manaConsumeCter);
 
 			tickStatus = Tickable.STATUS_BEHAVIOR;
-			eachBehavior(new EachApplicable<Behavior>()
-			{
-				@Override
-				public final void apply(final Behavior B)
+			if(numBehaviors()>0)
+				eachBehavior(new EachApplicable<Behavior>()
 				{
-					B.tick(ticking, tickID);
-				}
-			});
+					@Override
+					public final void apply(final Behavior B)
+					{
+						B.tick(ticking, tickID);
+					}
+				});
 			tickStatus = Tickable.STATUS_SCRIPT;
-			eachScript(new EachApplicable<ScriptingEngine>()
-			{
-				@Override
-				public final void apply(final ScriptingEngine S)
+			if(numScripts()>0)
+				eachScript(new EachApplicable<ScriptingEngine>()
 				{
-					S.tick(ticking, tickID);
-				}
-			});
+					@Override
+					public final void apply(final ScriptingEngine S)
+					{
+						S.tick(ticking, tickID);
+					}
+				});
 			if (isMonster)
 			{
 				for (final Enumeration<Faction.FData> t = factions.elements(); t.hasMoreElements();)
