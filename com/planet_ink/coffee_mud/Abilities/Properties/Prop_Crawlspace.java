@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -57,14 +56,24 @@ public class Prop_Crawlspace extends Property
 		{
 			switch(msg.targetMinor())
 			{
+			case CMMsg.TYP_FLEE:
 			case CMMsg.TYP_ENTER:
 			case CMMsg.TYP_LEAVE:
-			case CMMsg.TYP_FLEE:
 				if(((msg.amITarget(affected))||(msg.tool()==affected))
 				&&(msg.sourceMinor()!=CMMsg.TYP_RECALL)
-				&&(msg.source().phyStats().height()>12)
+				&&(msg.source().phyStats().height()>24)
 				&&(!CMLib.flags().isSitting(msg.source())))
 				{
+					if(msg.targetMinor()==CMMsg.TYP_FLEE)
+					{
+						final CMMsg sitMsg=CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_SIT,null);
+						final Room R=msg.source().location();
+						if((R!=null)
+						&&(!CMLib.flags().isSitting(msg.source()))
+						&&(R.okMessage(msg.source(),sitMsg)))
+							R.send(msg.source(),sitMsg);
+					}
+					else
 					if(msg.source().phyStats().height()>120)
 					{
 						msg.source().tell(L("You cannot fit in there."));

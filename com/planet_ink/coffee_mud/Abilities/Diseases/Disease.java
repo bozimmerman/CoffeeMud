@@ -161,9 +161,8 @@ public class Disease extends StdAbility implements DiseaseAffect
 			&&(msg.target() instanceof MOB)
 			&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MOVE)||CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS))
 			&&((msg.tool()==null)
-				||(msg.tool()!=null)
-					&&(msg.tool() instanceof Weapon)
-					&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)))
+				||((msg.tool() instanceof Weapon)
+					&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL))))
 				catchIt(mob,msg.amITarget(mob)?msg.source():(MOB)msg.target());
 			else
 			if((CMath.bset(spreadBitmap(),DiseaseAffect.SPREAD_STD))
@@ -177,46 +176,52 @@ public class Disease extends StdAbility implements DiseaseAffect
 		else
 		if(affected instanceof Item)
 		{
-			if(!processing)
+			try
 			{
-				final Item myItem=(Item)affected;
-				if(myItem.owner()==null) return;
-				processing=true;
-				switch(msg.sourceMinor())
+				if(!processing)
 				{
-				case CMMsg.TYP_DRINK:
-					if((CMath.bset(spreadBitmap(),DiseaseAffect.SPREAD_CONSUMPTION))
-					||(CMath.bset(spreadBitmap(),DiseaseAffect.SPREAD_CONTACT)))
+					final Item myItem=(Item)affected;
+					if(myItem.owner()==null) return;
+					processing=true;
+					switch(msg.sourceMinor())
 					{
-						if((myItem instanceof Drink)
-						&&(msg.amITarget(myItem)))
-							catchIt(msg.source(),msg.source());
+					case CMMsg.TYP_DRINK:
+						if((CMath.bset(spreadBitmap(),DiseaseAffect.SPREAD_CONSUMPTION))
+						||(CMath.bset(spreadBitmap(),DiseaseAffect.SPREAD_CONTACT)))
+						{
+							if((myItem instanceof Drink)
+							&&(msg.amITarget(myItem)))
+								catchIt(msg.source(),msg.source());
+						}
+						break;
+					case CMMsg.TYP_EAT:
+						if((CMath.bset(spreadBitmap(),DiseaseAffect.SPREAD_CONSUMPTION))
+						||(CMath.bset(spreadBitmap(),DiseaseAffect.SPREAD_CONTACT)))
+						{
+	
+							if((myItem instanceof Food)
+							&&(msg.amITarget(myItem)))
+								catchIt(msg.source(),msg.source());
+						}
+						break;
+					case CMMsg.TYP_GET:
+					case CMMsg.TYP_PUSH:
+					case CMMsg.TYP_PULL:
+						if(CMath.bset(spreadBitmap(),DiseaseAffect.SPREAD_CONTACT))
+						{
+							if((!(myItem instanceof Drink))
+							  &&(!(myItem instanceof Food))
+							  &&(msg.amITarget(myItem)))
+								catchIt(msg.source(),msg.source());
+						}
+						break;
 					}
-					break;
-				case CMMsg.TYP_EAT:
-					if((CMath.bset(spreadBitmap(),DiseaseAffect.SPREAD_CONSUMPTION))
-					||(CMath.bset(spreadBitmap(),DiseaseAffect.SPREAD_CONTACT)))
-					{
-
-						if((myItem instanceof Food)
-						&&(msg.amITarget(myItem)))
-							catchIt(msg.source(),msg.source());
-					}
-					break;
-				case CMMsg.TYP_GET:
-				case CMMsg.TYP_PUSH:
-				case CMMsg.TYP_PULL:
-					if(CMath.bset(spreadBitmap(),DiseaseAffect.SPREAD_CONTACT))
-					{
-						if((!(myItem instanceof Drink))
-						  &&(!(myItem instanceof Food))
-						  &&(msg.amITarget(myItem)))
-							catchIt(msg.source(),msg.source());
-					}
-					break;
 				}
 			}
-			processing=false;
+			finally
+			{
+				processing=false;
+			}
 		}
 		super.executeMsg(myHost,msg);
 	}
