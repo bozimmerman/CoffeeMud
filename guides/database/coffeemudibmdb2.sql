@@ -51,7 +51,7 @@ CREATE TABLE CMvarchar (
 	CMLEVL varchar (50) ,
 	CMMANA int ,
 	CMMOVE int  ,
-	CMDESC varchar (255) ,
+	CMDESC CLOB ,
 	CMALIG int ,
 	CMEXPE int ,
 	CMEXLV int ,

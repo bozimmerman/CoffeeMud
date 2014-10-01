@@ -956,7 +956,7 @@ public class MOBloader
 				+", CMDESC=?"
 				+"  WHERE CMUSERID='"+mob.Name()+"'"
 				,new String[][]{{pstats.getPrompt(),pstats.getColorStr(),pstats.getEmail(),
-								 pfxml,mob.baseCharStats().getNonBaseStatsAsString(),cleanXML.toString(),mob.description()}});
+								 pfxml,mob.baseCharStats().getNonBaseStatsAsString(),cleanXML.toString(),mob.description()+" "}});
 		final List<String> clanStatements=new LinkedList<String>();
 		DBConnection D=null;
 		try

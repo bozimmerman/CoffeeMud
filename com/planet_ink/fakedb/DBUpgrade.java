@@ -652,6 +652,7 @@ public class DBUpgrade
 			return;
 		}
 
+		
 		// first, look for the CLAN conversion
 		if(newTables.containsKey("CMCHCL") && (!oldTables.containsKey("CMCHCL")))
 		{

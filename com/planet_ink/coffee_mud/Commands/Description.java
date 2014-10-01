@@ -37,6 +37,9 @@ public class Description extends StdCommand
 	public Description(){}
 
 	private final String[] access=I(new String[]{"DESCRIPTION"});
+	
+	private final int CHAR_LIMIT = 128 * 1024;
+	
 	@Override public String[] getAccessWords(){return access;}
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
@@ -48,9 +51,10 @@ public class Description extends StdCommand
 			mob.tell(L("\n\rEnter DESCRIPTION [NEW TEXT] to change."));
 			return false;
 		}
+		
 		final String s=CMParms.combine(commands,1);
-		if(s.length()>255)
-			mob.tell(L("Your description exceeds 255 characters in length.  Please re-enter a shorter one."));
+		if(s.length()>CHAR_LIMIT)
+			mob.tell(L("Your description exceeds @x1 characters in length.  Please re-enter a shorter one.",""+CHAR_LIMIT));
 		else
 		{
 			mob.setDescription(s);

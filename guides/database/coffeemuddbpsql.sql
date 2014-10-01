@@ -60,7 +60,7 @@ CREATE TABLE CMCHAR (
 	CMLEVL varchar(50) NULL ,
 	CMMANA int NULL ,
 	CMMOVE int NULL ,
-	CMDESC varchar(255) NULL ,
+	CMDESC text NULL ,
 	CMALIG int NULL ,
 	CMEXPE int NULL ,
 	CMEXLV int NULL ,

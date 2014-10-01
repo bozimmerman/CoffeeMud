@@ -1,4 +1,5 @@
 # Build 5.8.3 Release ??/??/2014
+   *. Database Schema Updated for CMCHAR.CMDESC column type. DBUpgrade will nicely copy everything over for you though.
    1. New GENERATEable themes in /resources/randreas/example.xml: forest, jungle, desert, swamp, mountains, snow, plains
    2. Generic Character Classes now support starting money values. (Standard support requires code).
    3. Socials action cost can now be controlled and tweeked from ini file/control panel.
@@ -17,6 +18,7 @@
   16. QUESTS command, used by an admin, can target other players to get info about them.  See AHELP QUESTS for more info on this.
   17. New property Prop_Uncampable -- prevents a mob or room from respawning if non-admin players are present.
   18. VIEW will now notify users if the armor they are interested in is too large or too small for them to wear.
+  19. Player description 256 char limit is now gone.  New limit is 128k.
 # Build 5.8.2 Release 6/13/2014
    0. Database Schema Updated! Run DBUpgrade, OR manually alter table CMCHCL to add CMCLSTS (see appropriate schema file)
    1. CM1Server has "FILE" command now for directory browsing/manipulation

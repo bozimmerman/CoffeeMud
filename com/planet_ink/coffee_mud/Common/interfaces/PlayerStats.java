@@ -711,7 +711,6 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	 */
 	public int getLegacyLevel(String category);
 
-
 	/** Constant for day of birthday, as from {@link PlayerStats#getBirthday()} */
 	public static final int BIRTHDEX_DAY = 0;
 	/** Constant for month of birthday, as from {@link PlayerStats#getBirthday()} */
