@@ -39,7 +39,7 @@ public class Thief_DazzlingCaltrops extends Thief_Caltrops
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =I(new String[] {"DAZZLINGCALTROPS"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String caltropTypeName(){return "dazzling ";}
+	@Override public String caltropTypeName(){return CMLib.lang().L("dazzling ");}
 
 	@Override
 	public void spring(MOB mob)
