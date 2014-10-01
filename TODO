@@ -1,0 +1,48 @@
+TECH
+   *. finish collision management, against space ships at least.
+   *. interacting items of diff tech level might damage each other
+   *. personal scanner/tricorder software: mineral scanner, computer interface (with ship perhaps?)!
+   *. entry systems for ships (default entry key card, voice code, identifying scanner)
+   *. work on automatic component values
+   *. make sure shopkeeper item techlevels watch the master tech level
+   *. make ship sensor systems
+   *. make tractor beam system -- esp important for pirates!
+   *. make ship shield systems murder motel again -- some good against phasers, some torpedos, some lasers
+   *. make ship phaser, laser systems murder motel again
+   *. make ship torpedo launchers and torpedo containers
+   *. make ship impulse and warp engines
+   *. make ship dampeners
+   *. damaged systems should sometimes require random parts, from particular manufacturers, that repair respects
+   *. finish main ship software for controlling all this stuff
+   *. add electronics to guides, how to make a ship, how to build space, etc, details about tech
+   *. add electronics to MG
+   *. add spaceobject stuff to MG
+   *. add spaceobject mapper system to MG
+   *. keep reviewing and updating the GameOverview.html doc
+   
+NON-TECH
+   *. Make Descriptions Longer than 250 chars.
+   *. the qual command would be nice if it accepted QUAL CRAFT/QUAL NON-CRAFT to support the limits on how many skills you can gain now
+   *. I`ll make the cost to do a social configurable in the next version.
+   *. A tool for quickly creating accounts and getting and/or resetting their passwords.
+   *. Tie races to mob classes for character creation purposes. (Can't you do this by making class requirements include only one race?)
+   *. TaxiBehavior - Wondering where I would start on making a taxi service for my mud. I would like to be able to "hail cab" and have a taxi pull up something 
+      like this: "A yellow taxi pulls up to let you in." or "A yellow taxi pulls over and the door slides open to the north." Then have the player either ENTER 
+      TAXI/CAB or type what ever direction the cab door opens from. After entering the cab I`d like the mob to say something like "Where ya headed?" and then 
+      have the player say any number of checkpoints like this: say library -- mob replies "No problem, that will be $5, is that ok?" -- say yes OR nod -- The taxi 
+      takes off through the city. After a given time, say maybe 5 seconds, the taxi pulls over and the door opens/opens to the south. Obviously here the player 
+      would either EXIT TAXI/CAB or type the direction the door opens. If I could get some pointers on where to start with this I would be most thankful. - Blake
+   *. Have Unlock automatically send an open message if it succeeds. Have Lock automatically close first, if possible.
+   *. Classes with insufficient unique skills: Charlatan (7), Alterer (9), Illusionist (10),  Ranger (10), Alterer (11), Evoker (11), Assassin (12), Paladin (12), 
+   *. A fireball type chant for Delvers or something, like Magma Cannon or Core Spike.
+   *. Transcribe -as a spell, allowing a mage to transcribe a spell from one scroll to another scroll.
+   *. Jewel making to include bars, rings, other thingies, to put in piercings.
+   *. retest private libs, private dbtables, private classes, private area objects, private players
+   *. OLC for players?  Play with PennMush more. Port 4201
+   *. Finish Player Simulator -- the Perpetual Project
+   *. Facebook interface?
+   *. Wants and Needs engine - similar to slavery system
+   *. MudFTP/DawnFTP support - lets you edit room descriptions etc. in your favourite text editor, or just for fun
+   *. RandomQuests based off the Percolator engine -- a way to randomly generate different quests.
+   *. Clan Calendar system, that can use mud and rl dates, for scheduling things. Might send reminders -- based on journaling system of course.
+   
