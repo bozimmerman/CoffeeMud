@@ -171,7 +171,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		final Ability A=CMClass.getAbility("WanderHomeLater");
 		if(A!=null)
 		{
+			A.setMiscText("ONCE=true");
 			M.addEffect(A);
+			A.setSavable(false);
 			A.makeLongLasting();
 		}
 	}

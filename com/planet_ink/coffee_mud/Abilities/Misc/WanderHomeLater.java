@@ -44,27 +44,67 @@ public class WanderHomeLater extends StdAbility
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 
+	private boolean areaOk = false;
+	private boolean ignorePCs = false;
+	private boolean ignoreFollow = false;
+	private boolean once = false;
+	private int currentWait = 0;
+	private int minTicks = 0;
+	private int maxTicks = 0;
+	
+	@Override
+	public void setMiscText(String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		areaOk=CMParms.getParmBool(newMiscText,"areaok", areaOk);
+		ignorePCs=CMParms.getParmBool(newMiscText,"ignorepcs", ignorePCs);
+		ignoreFollow=CMParms.getParmBool(newMiscText,"ignorefollow", ignoreFollow);
+		once=CMParms.getParmBool(newMiscText,"once", once);
+		minTicks=CMParms.getParmInt(newMiscText, "minticks", minTicks);
+		maxTicks=CMParms.getParmInt(newMiscText, "maxticks", maxTicks);
+		currentWait = minTicks + ((maxTicks <= minTicks)?0:CMLib.dice().roll(1, maxTicks-minTicks, 0));
+	}
+	
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(affected instanceof MOB)
 		{
 			final MOB M=(MOB)affected;
-			if(M.getStartRoom()==M.location())
+			if(currentWait > 0)
+			{
+				currentWait--;
+				if(currentWait > 0)
+					return super.tick(ticking, tickID);
+				currentWait = minTicks + ((maxTicks <= minTicks)?0:CMLib.dice().roll(1, maxTicks-minTicks, 0));
+			}
+			if((once) && (M.getStartRoom()==M.location()))
 				unInvoke();
 			else
-			if(M.amDead())
+			if(M.amDead() && (once))
 				unInvoke();
 			else
 			if(CMLib.flags().canActAtAll(M)
 			&&(!M.isInCombat())
-			&&(M.amFollowing()==null)
-			&&(M.getStartRoom()!=null)
-			&&(M.getStartRoom().numPCInhabitants()==0))
+			&&(ignoreFollow || (M.amFollowing()==null))
+			&&(M.getStartRoom()!=null))
 			{
-				CMLib.tracking().wanderAway(M, true, true);
-				if(M.getStartRoom()==M.location())
-					unInvoke();
+				final Room startRoom= M.getStartRoom();
+				final Room curRoom=M.location();
+				
+				if(areaOk && (startRoom != null) && (curRoom != null))
+				{
+					if(startRoom.getArea() == curRoom.getArea())
+						return super.tick(ticking, tickID);
+				}
+				
+				if(startRoom != curRoom)
+					CMLib.tracking().wanderAway(M, !ignorePCs, true);
+				if(once)
+				{
+					if(startRoom==M.location())
+						unInvoke();
+				}
 			}
 		}
 		return super.tick(ticking, tickID);
