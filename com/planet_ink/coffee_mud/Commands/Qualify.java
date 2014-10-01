@@ -40,6 +40,10 @@ public class Qualify  extends Skills
 
 	private final String[] access=I(new String[]{"QUALIFY","QUAL"});
 	@Override public String[] getAccessWords(){return access;}
+	
+	protected final static int SKILL_ANY=-1;
+	protected final static int SKILL_CRAFTING_ONLY=-2;
+	protected final static int SKILL_GATHERING_ONLY=-3;
 
 	public StringBuffer getQualifiedAbilities(MOB viewerM,
 											  MOB ableM,
@@ -48,6 +52,7 @@ public class Qualify  extends Skills
 											  String prefix,
 											  boolean shortOnly)
 	{
+		/*
 		final HashSet<Integer> V=new HashSet<Integer>();
 		int mask=Ability.ALL_ACODES;
 		if(ofDomain>=0)
@@ -56,13 +61,52 @@ public class Qualify  extends Skills
 			ofType=ofType|ofDomain;
 		}
 		V.add(Integer.valueOf(ofType));
-		return getQualifiedAbilities(viewerM,ableM,V,mask,prefix,shortOnly);
+		&&(ofTypes.contains(Integer.valueOf(A.classificationCode()&mask)))
+		*/
+		
+		final int checkCode = ofType;
+		final int badDomain;
+		final int checkDomain;
+		switch(ofDomain)
+		{
+		case SKILL_CRAFTING_ONLY:
+			badDomain = -1;
+			checkDomain = Ability.DOMAIN_CRAFTINGSKILL;
+			break;
+		case SKILL_GATHERING_ONLY:
+			badDomain = Ability.DOMAIN_CRAFTINGSKILL;
+			checkDomain = -1;
+			break;
+		case SKILL_ANY:
+		case 0:
+			badDomain = -1;
+			checkDomain = -1;
+			break;
+		default:
+			badDomain = -1;
+			checkDomain = ofDomain;
+		}
+		
+		final Filterer<Ability> newFilter=new Filterer<Ability>()
+		{
+			@Override
+			public boolean passesFilter(Ability A) 
+			{
+				if((A.classificationCode() & Ability.ALL_ACODES) != checkCode)
+					return false;
+				if((A.classificationCode() & Ability.ALL_DOMAINS) == badDomain)
+					return false;
+				if((checkDomain > 0) && ((A.classificationCode() & Ability.ALL_DOMAINS) != checkDomain))
+					return false;
+				return true;
+			}
+		};
+		return getQualifiedAbilities(viewerM,ableM,newFilter,prefix,shortOnly);
 	}
 
 	public StringBuffer getQualifiedAbilities(MOB viewerM,
 											  MOB ableM,
-											  HashSet<Integer> ofTypes,
-											  int mask,
+											  Filterer<Ability> filter,
 											  String prefix,
 											  boolean shortOnly)
 	{
@@ -77,7 +121,7 @@ public class Qualify  extends Skills
 			&&(!CMLib.ableMapper().getSecretSkill(ableM,A.ID()))
 			&&(level>highestLevel)
 			&&(level<(CMLib.ableMapper().qualifyingClassLevel(ableM,A)+1))
-			&&(ofTypes.contains(Integer.valueOf(A.classificationCode()&mask)))
+			&&(filter.passesFilter(A))
 			&&(CMLib.ableMapper().getCommonSkillRemainder(ableM, A).specificSkillLimit > 0)
 			&&(ableM.fetchAbility(A.ID())==null)
 			&&(!checkUnMet || CMLib.ableMapper().getUnmetPreRequisites(ableM,A).size()==0))
@@ -98,7 +142,7 @@ public class Qualify  extends Skills
 				   &&(CMLib.ableMapper().qualifyingLevel(ableM,A)==l)
 				   &&(!CMLib.ableMapper().getSecretSkill(ableM,A.ID()))
 				   &&(ableM.fetchAbility(A.ID())==null)
-				   &&(ofTypes.contains(Integer.valueOf(A.classificationCode()&mask)))
+				   &&(filter.passesFilter(A))
 				   &&(CMLib.ableMapper().getCommonSkillRemainder(ableM, A).specificSkillLimit > 0)
 				   &&(!checkUnMet || CMLib.ableMapper().getUnmetPreRequisites(ableM,A).size()==0))
 				{
@@ -135,25 +179,30 @@ public class Qualify  extends Skills
 		final boolean shortOnly=false;
 		final boolean showAll=qual.length()==0;
 		if(showAll||("SKILLS".startsWith(qual)))
-			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_SKILL,-1,"\n\r^HGeneral Skills:^? ",shortOnly));
+			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_SKILL,SKILL_ANY,"\n\r^HGeneral Skills:^? ",shortOnly));
 		if(showAll||("COMMON SKILLS").startsWith(qual))
-			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_COMMON_SKILL,-1,"\n\r^HCommon Skills:^? ",shortOnly));
+			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_COMMON_SKILL,SKILL_ANY,"\n\r^HCommon Skills:^? ",shortOnly));
+		else if ("CRAFTING SKILLS".startsWith(qual))
+			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_COMMON_SKILL,SKILL_CRAFTING_ONLY,"\n\r^HCrafting Skills:^? ",shortOnly));
+		else if ("GATHERING SKILLS".startsWith(qual)
+			||"NON CRAFTING SKILLS".startsWith(qual)||"NON-CRAFTING SKILLS".startsWith(qual)||"NONCRAFTING SKILLS".startsWith(qual))
+			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_COMMON_SKILL,SKILL_GATHERING_ONLY,"\n\r^HNon-Crafting Common Skills:^? ",shortOnly));
 		if(showAll||("THIEVES SKILLS".startsWith(qual))||"THIEF SKILLS".startsWith(qual))
-			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_THIEF_SKILL,-1,"\n\r^HThief Skills:^? ",shortOnly));
+			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_THIEF_SKILL,SKILL_ANY,"\n\r^HThief Skills:^? ",shortOnly));
 		if(showAll||"SPELLS".startsWith(qual)||"MAGE SPELLS".startsWith(qual))
-			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_SPELL,-1,"\n\r^HSpells:^? ",shortOnly));
+			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_SPELL,SKILL_ANY,"\n\r^HSpells:^? ",shortOnly));
 		if(showAll||"PRAYERS".startsWith(qual)||"CLERICAL PRAYERS".startsWith(qual))
-			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_PRAYER,-1,"\n\r^HPrayers:^? ",shortOnly));
+			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_PRAYER,SKILL_ANY,"\n\r^HPrayers:^? ",shortOnly));
 		if(showAll||"POWERS".startsWith(qual)||"SUPER POWERS".startsWith(qual))
-			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_SUPERPOWER,-1,"\n\r^HSuper Powers:^? ",shortOnly));
+			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_SUPERPOWER,SKILL_ANY,"\n\r^HSuper Powers:^? ",shortOnly));
 		if(showAll||"TECHS".startsWith(qual)||"TECH SKILLS".startsWith(qual))
-			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_TECH,-1,"\n\r^HTech Skills:^? ",shortOnly));
+			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_TECH,SKILL_ANY,"\n\r^HTech Skills:^? ",shortOnly));
 		if(showAll||"CHANTS".startsWith(qual)||"DRUID CHANTS".startsWith(qual))
-			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_CHANT,-1,"\n\r^HDruidic Chants:^? ",shortOnly));
+			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_CHANT,SKILL_ANY,"\n\r^HDruidic Chants:^? ",shortOnly));
 		if(showAll||"SONGS".startsWith(qual)||"BARD SONGS".startsWith(qual))
-			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_SONG,-1,"\n\r^HSongs:^? ",shortOnly));
+			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_SONG,SKILL_ANY,"\n\r^HSongs:^? ",shortOnly));
 		if(showAll||"LANGUAGES".startsWith(qual)||"LANGS".startsWith(qual))
-			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_LANGUAGE,-1,"\n\r^HLanguages:^? ",shortOnly));
+			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_LANGUAGE,SKILL_ANY,"\n\r^HLanguages:^? ",shortOnly));
 		int domain=-1;
 		String domainName="";
 		if(!showAll)
@@ -292,9 +341,9 @@ public class Qualify  extends Skills
 			if(msg.length()==0)
 			{
 				if(qual.length()>0)
-					mob.tell(L("You don't appear to qualify for any '@x1'. Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPERTISES, or LANGUAGES.",qual));
+					mob.tell(L("You don't appear to qualify for any '@x1'. Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPERTISES, LANGUAGES, CRAFTING, or NON-CRAFTING.",qual));
 				else
-					mob.tell(L("You don't appear to qualify for anything! Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPERTISES, or LANGUAGES."));
+					mob.tell(L("You don't appear to qualify for anything! Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPERTISES, LANGUAGES, CRAFTING, or NON-CRAFTING."));
 			}
 			else
 			if(!mob.isMonster())

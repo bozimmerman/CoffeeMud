@@ -18,7 +18,8 @@
   16. QUESTS command, used by an admin, can target other players to get info about them.  See AHELP QUESTS for more info on this.
   17. New property Prop_Uncampable -- prevents a mob or room from respawning if non-admin players are present.
   18. VIEW will now notify users if the armor they are interested in is too large or too small for them to wear.
-  19. Player description 256 char limit is now gone.  New limit is 128k.
+  19. Player description 256 char limit is now gone.  New limit is 128k, expandable in code.
+  20. QUALIFY command now has CRAFTING and NON-CRAFTING optional parameters.
 # Build 5.8.2 Release 6/13/2014
    0. Database Schema Updated! Run DBUpgrade, OR manually alter table CMCHCL to add CMCLSTS (see appropriate schema file)
    1. CM1Server has "FILE" command now for directory browsing/manipulation

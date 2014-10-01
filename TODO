@@ -21,8 +21,6 @@ TECH
    *. keep reviewing and updating the GameOverview.html doc
    
 NON-TECH
-   *. Make Descriptions Longer than 250 chars.
-   *. the qual command would be nice if it accepted QUAL CRAFT/QUAL NON-CRAFT to support the limits on how many skills you can gain now
    *. I`ll make the cost to do a social configurable in the next version.
    *. A tool for quickly creating accounts and getting and/or resetting their passwords.
    *. Tie races to mob classes for character creation purposes. (Can't you do this by making class requirements include only one race?)
