@@ -115,7 +115,8 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 		for(int i=0;i<contents.size();i++)
 		{
 			Item thisItem=(Item)contents.elementAt(i);
-			if(thisItem==null) continue;
+			if(thisItem!=null) 
+				continue;
 			if((!R.isContent(thisItem))
 			&&((!CMLib.flags().isMobile(thisItem)) || (!CMLib.flags().isInTheGame(thisItem,true))))
 			{
@@ -129,7 +130,8 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 						thatItem.setContainer((Container)newThisItem);
 				}
 				thisItem=newThisItem;
-				if(thisItem==null) continue;
+				if(thisItem==null) 
+					continue;
 				if(thisItem instanceof Container)
 				{
 					final Container C=(Container)thisItem;
@@ -143,6 +145,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 			thisItem.setContainer(((Item)ccontents.elementAt(i)).container());
 		}
 	}
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -156,6 +159,13 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 
 		if(tickID==Tickable.TICKID_ROOM_ITEM_REJUV)
 		{
+			if((CMLib.flags().canNotBeCamped(item)||CMLib.flags().canNotBeCamped(R))
+			&& (R.numPCInhabitants() > 0) 
+			&& (!CMLib.tracking().isAnAdminHere(R,false)))
+			{
+				CMLib.threads().setTickPending(ticking,Tickable.TICKID_ROOM_ITEM_REJUV);
+				return true; // it will just come back next time
+			}
 			verifyFixContents();
 			if((!R.isContent(item))
 			&&((!CMLib.flags().isMobile(item)) || (!CMLib.flags().isInTheGame(item,true))))

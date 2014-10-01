@@ -117,6 +117,12 @@ public class StdTickClient implements TickClient
 		if(tickID<arg0.getTickID()) return -1;
 		return 0;
 	}
+	
+	@Override
+	public void setCurrentTickDownPending()
+	{
+		tickDown = 1;
+	}
 
 	@Override
 	public boolean tickTicker(boolean forceTickDown)

@@ -356,7 +356,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		{ A.unInvoke(); mob.delEffect(A);}
 	}
 
-	public boolean isAnAdminHere(Room R)
+	@Override
+	public boolean isAnAdminHere(Room R, boolean sysMsgsOnly)
 	{
 		final Set<MOB> mobsThere=CMLib.players().getPlayersHere(R);
 		if(mobsThere.size()>0)
@@ -366,7 +367,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				if((inhab.session()!=null)
 				&&(CMSecurity.isAllowed(inhab,R,CMSecurity.SecFlag.CMDMOBS)||CMSecurity.isAllowed(inhab,R,CMSecurity.SecFlag.CMDROOMS))
 				&&(CMLib.flags().isInTheGame(inhab, true))
-				&&(inhab.isAttribute(MOB.Attrib.SYSOPMSGS)))
+				&&((!sysMsgsOnly) || inhab.isAttribute(MOB.Attrib.SYSOPMSGS)))
 					return true;
 			}
 		}
@@ -406,7 +407,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 
 		Room oldRoom=mob.location();
 
-		if(isAnAdminHere(oldRoom))
+		if(isAnAdminHere(oldRoom, true))
 		{
 			if(status!=null)status[0]=Tickable.STATUS_NOT;
 			return false;
@@ -429,7 +430,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			final Exit nextExit=oldRoom.getExitInDir(direction);
 			if((nextRoom!=null)&&(nextExit!=null))
 			{
-				if(isAnAdminHere(nextRoom))
+				if(isAnAdminHere(nextRoom, true))
 				{
 					direction=-1;
 					continue;

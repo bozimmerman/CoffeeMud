@@ -3203,9 +3203,20 @@ public class StdMOB implements MOB
 						phyStats().setRejuv(phyStats().rejuv() - 1);
 						if ((phyStats().rejuv() < 0) || (CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
 						{
+							final Room startRoom=CMLib.map().getStartRoom(this);
+							if((startRoom != null)
+							&&(CMLib.flags().canNotBeCamped(this)||CMLib.flags().canNotBeCamped(startRoom))
+							&& (startRoom.numPCInhabitants() > 0) 
+							&& (!CMLib.tracking().isAnAdminHere(startRoom,false)))
+							{
+								phyStats().setRejuv(0);
+								tickStatus = Tickable.STATUS_NOT;
+								lastTickedTime = System.currentTimeMillis();
+								return isOk;
+							}
 							tickStatus = Tickable.STATUS_REBIRTH;
 							cloneFix(CMClass.getMOBPrototype(ID()));
-							bringToLife(CMLib.map().getStartRoom(this), true);
+							bringToLife(startRoom, true);
 							final Room room = location();
 							if (room != null)
 							{

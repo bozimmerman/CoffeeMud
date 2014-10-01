@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 /*
    Copyright 2000-2014 Bo Zimmerman
@@ -52,6 +53,7 @@ public interface TrackingLibrary extends CMLibrary
 	public boolean run(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders, boolean always);
 	public int findExitDir(MOB mob, Room R, String desc);
 	public int findRoomDir(MOB mob, Room R);
+	public boolean isAnAdminHere(Room R, boolean sysMsgsOnly);
 	public void markToWanderHomeLater(MOB M);
 	public List<Integer> getShortestTrail(final List<List<Integer>> finalSets);
 	public List<List<Integer>> findAllTrails(Room from, Room to, List<Room> radiantTrail);

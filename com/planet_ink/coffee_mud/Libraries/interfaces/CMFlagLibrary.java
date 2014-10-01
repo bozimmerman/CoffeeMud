@@ -49,6 +49,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean canSeeInfrared(MOB M);
 	public boolean canHear(MOB M);
 	public boolean canMove(MOB M);
+	public boolean canNotBeCamped(Physical P);
 	public boolean allowsMovement(Room R);
 	public boolean allowsMovement(Area A);
 	public boolean canSmell(MOB M);

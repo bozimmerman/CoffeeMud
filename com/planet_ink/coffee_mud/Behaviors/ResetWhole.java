@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -39,6 +38,7 @@ public class ResetWhole extends StdBehavior
 	@Override protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
 
 	protected long lastAccess=-1;
+	long time=1800000;
 
 	@Override
 	public String accountForYourself()
@@ -46,6 +46,18 @@ public class ResetWhole extends StdBehavior
 		return "periodic resetting";
 	}
 
+	@Override
+	public void setParms(String parameters)
+	{
+		super.setParms(parameters);
+		try
+		{
+			time=Long.parseLong(parameters);
+			time=time*CMProps.getTickMillis();
+		}
+		catch(final Exception e){}
+	}
+	
 	@Override
 	public void executeMsg(Environmental E, CMMsg msg)
 	{
@@ -65,19 +77,23 @@ public class ResetWhole extends StdBehavior
 		}
 	}
 
+	private boolean isRoomBeingCamped(final Room R)
+	{
+		if(CMLib.flags().canNotBeCamped(R)
+		&& (R.numPCInhabitants() > 0) 
+		&& (!CMLib.tracking().isAnAdminHere(R,false)))
+		{
+			return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 		if(lastAccess<0) return true;
 
-		long time=1800000;
-		try
-		{
-			time=Long.parseLong(getParms());
-			time=time*CMProps.getTickMillis();
-		}
-		catch(final Exception e){}
 		if((lastAccess+time)<System.currentTimeMillis())
 		{
 			if(ticking instanceof Area)
@@ -91,17 +107,22 @@ public class ResetWhole extends StdBehavior
 						if((B!=null)&&(B.ID().equals(ID())))
 						{ R=null; break;}
 					}
-					if(R!=null)
+					if((R!=null)&&(!this.isRoomBeingCamped(R)))
+					{
 						CMLib.map().resetRoom(R, true);
+					}
 				}
 			}
 			else
 			if(ticking instanceof Room)
-				CMLib.map().resetRoom((Room)ticking, true);
+			{
+				if(!this.isRoomBeingCamped((Room)ticking))
+					CMLib.map().resetRoom((Room)ticking, true);
+			}
 			else
 			{
 				final Room room=super.getBehaversRoom(ticking);
-				if(room!=null)
+				if((room!=null) && (!this.isRoomBeingCamped(room)))
 					CMLib.map().resetRoom(room, true);
 			}
 			lastAccess=System.currentTimeMillis();

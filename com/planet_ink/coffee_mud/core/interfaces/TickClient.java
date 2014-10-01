@@ -131,4 +131,10 @@ public interface TickClient extends Comparable<TickClient>
 	 * @return the number of ticks remaining
 	 */
 	public int getCurrentTickDown();
+
+	/**
+	 * Sets the number of ticks remaining before the internal object is
+	 * allowed to get thread time to 1.
+	 */
+	public void setCurrentTickDownPending();
 }

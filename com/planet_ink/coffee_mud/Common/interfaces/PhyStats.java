@@ -365,6 +365,8 @@ public interface PhyStats extends CMCommon, Modifiable
 	public final static int CAN_NOT_WORK=262144;
 	/** a bit setting, as from sensesMask(), flagging this mob as unable to engage in standard combat ticks*/
 	public final static int CAN_NOT_AUTO_ATTACK=524288;
+	/** a bit setting, as from sensesMask(), flagging this mob as not respawning when being camped*/
+	public final static int CAN_NOT_BE_CAMPED=1048576;
 
 	/** STAT codes list, indexed by the 2nd root of the various sensesMask() CAN_SEE bitmasks */
 	public static final String[] CAN_SEE_CODES={"CANNOTSEE",
@@ -386,7 +388,8 @@ public interface PhyStats extends CMCommon, Modifiable
 												"CANSEEMETAL",
 												"CANNOTTHINK",
 												"CANNOTWORK",
-												"CANNOTAUTOATTACK"};
+												"CANNOTAUTOATTACK",
+												"CANNOTBECAMPED"};
 
 	/** Descriptions, indexed by the 2nd root of the various CAN_SEE sensesMask() bitmasks */
 	public static final String[] CAN_SEE_DESCS={"Is Blind",
@@ -408,7 +411,8 @@ public interface PhyStats extends CMCommon, Modifiable
 											 "Can detect metal",
 											 "Can not concentrate",
 											 "Is too busy",
-											 "Is not auto-attacking"};
+											 "Is not auto-attacking",
+											 "Can not be camped on"};
 
 	/** Descriptive verbs, indexed by the 2nd root of the various CAN_SEE sensesMask() bitmasks */
 	public static final String[] CAN_SEE_VERBS={"Causes Blindness",
@@ -430,7 +434,8 @@ public interface PhyStats extends CMCommon, Modifiable
 												"Allows detect metal",
 												"Befuddles the mind",
 												"Occupies time",
-												"Prevents auto attacking"};
+												"Prevents auto attacking",
+												"Prevents camping"};
 
 	// sensemask stuff not applicable to mobs
 	/** a bit setting, as from sensesMask(), flagging this item/room as being unlocatable */
@@ -467,7 +472,15 @@ public interface PhyStats extends CMCommon, Modifiable
 	//public final static int SENSE_ROOMCIRCUITED=32768;
 	/** a bit setting, as from sensesMask(), flagging this item/room and unable to be destroyed */
 	public final static int SENSE_UNDESTROYABLE=65536;
-
+	/** a bit setting, as from sensesMask(), flagging this ...  */
+	//public final static int SENSE_ROOMCIRCUITED=131072;
+	/** a bit setting, as from sensesMask(), flagging this ...  */
+	//public final static int SENSE_ROOMCIRCUITED=262144;
+	/** a bit setting, as from sensesMask(), flagging this ...  */
+	//public final static int SENSE_ROOMCIRCUITED=524288;
+	/** a bit setting, as from sensesMask(), flagging this mob as not respawning when being camped*/
+	public final static int SENSE_UNCAMPABLE=1048576;
+	
 	/** STAT codes list, indexed by the 2nd root of the various sensesMask() SENSE_ bitmasks */
 	public static final String[] SENSE_CODES={
 		"UNLOCATABLE",
@@ -487,6 +500,10 @@ public interface PhyStats extends CMCommon, Modifiable
 		"ITEMNOWISH",
 		"UNUSEDMASK",
 		"UNDESTROYABLE",
+		"UNUSEDMASK",
+		"UNUSEDMASK",
+		"UNUSEDMASK",
+		"UNCAMPABLE"
 	};
 
 		/** All bits in a Integer, cast into a long */

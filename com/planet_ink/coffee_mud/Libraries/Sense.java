@@ -113,6 +113,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean canBreathe(MOB M)
 	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_NOT_BREATHE)==0); }
 	@Override
+	public boolean canNotBeCamped(Physical P)
+	{ return (P!=null)&&((P.phyStats().sensesMask()&PhyStats.CAN_NOT_BE_CAMPED)!=0); }
+	@Override
 	public boolean canBreatheThis(MOB M, int atmoResource)
 	{
 		return (canBreathe(M)

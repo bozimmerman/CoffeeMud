@@ -45,7 +45,6 @@ public class ServiceEngine implements ThreadEngine
 	private static final long SHORT_TICK_TIMEOUT = (5*TimeManager.MILI_MINUTE);
 	private static final long LONG_TICK_TIMEOUT  = (120*TimeManager.MILI_MINUTE);
 
-
 	private Thread  					drivingThread=null;
 	private TickClient 					supportClient=null;
 	protected SLinkedList<TickableGroup>allTicks=new SLinkedList<TickableGroup>();
@@ -187,6 +186,7 @@ public class ServiceEngine implements ThreadEngine
 		if(drivingThread!=null)
 			drivingThread.interrupt();
 	}
+
 	protected void addTickGroup(TickableGroup tock)
 	{
 		if(!allTicks.contains(tock))
@@ -207,7 +207,7 @@ public class ServiceEngine implements ThreadEngine
 		return startTickDown(CMLib.map().getOwnedThreadGroup(E),E,tickID,TICK_TIME,numTicks);
 	}
 
-	public synchronized TickClient startTickDown(ThreadGroup group, Tickable E, int tickID, long TICK_TIME, int numTicks)
+	public synchronized TickClient startTickDown(ThreadGroup group, Tickable E, int tickID, long tickTime, int numTicks)
 	{
 		TickableGroup tock=null;
 		if(group==null)
@@ -218,7 +218,7 @@ public class ServiceEngine implements ThreadEngine
 			if(almostTock.contains(E,tickID))
 				return null;
 			if((tock==null)
-			&&(almostTock.getTickInterval()==TICK_TIME)
+			&&(almostTock.getTickInterval()==tickTime)
 			&&(!almostTock.isSolitaryTicker())
 			&&(almostTock.numTickers()<getMaxObjectsPerThread()))
 			{
@@ -231,7 +231,7 @@ public class ServiceEngine implements ThreadEngine
 		final boolean isSolitary = ((tickID&Tickable.TICKID_SOLITARYMASK)==Tickable.TICKID_SOLITARYMASK);
 		if((tock==null)||isSolitary)
 		{
-			tock=new StdTickGroup(this,TICK_TIME, Thread.currentThread().getThreadGroup().getName(), isSolitary);
+			tock=new StdTickGroup(this, tickTime, Thread.currentThread().getThreadGroup().getName(), isSolitary);
 			addTickGroup(tock);
 		}
 
@@ -243,15 +243,35 @@ public class ServiceEngine implements ThreadEngine
 	@Override
 	public synchronized boolean deleteTick(Tickable E, int tickID)
 	{
+		boolean foundOne=false;
 		for(final TickableGroup almostTock : allTicks)
 		{
 			final Iterator<TickClient> set=almostTock.getTickSet(E,tickID);
+			foundOne = foundOne || set.hasNext();
 			for(;set.hasNext();)
 				almostTock.delTicker(set.next());
 		}
-		return false;
+		return foundOne;
 	}
 
+
+	@Override
+	public synchronized boolean setTickPending(Tickable E, int tickID)
+	{
+		boolean foundOne=false;
+		for(final TickableGroup almostTock : allTicks)
+		{
+			final Iterator<TickClient> set=almostTock.getTickSet(E,tickID);
+			foundOne = foundOne || set.hasNext();
+			for(;set.hasNext();)
+			{
+				final TickClient C = set.next();
+				C.setCurrentTickDownPending();
+			}
+		}
+		return foundOne;
+	}
+	
 	@Override
 	public boolean isTicking(Tickable E, int tickID)
 	{
