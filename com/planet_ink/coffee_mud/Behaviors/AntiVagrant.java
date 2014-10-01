@@ -78,7 +78,10 @@ public class AntiVagrant extends ActiveTicker
 					target.tell(L("@x1 shakes you awake.",observer.name()));
 					CMLib.commands().postStand(target,true);
 					if((kickout)&&(CMLib.flags().isStanding(target)))
+					{
+						CMLib.commands().postSay(observer,target,L("Go home @x1!",target.name(observer)),false,false);
 						CMLib.tracking().beMobile(target,true,false,false,false,null,null);
+					}
 				}
 			}
 			else

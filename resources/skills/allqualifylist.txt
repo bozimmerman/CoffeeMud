@@ -20,7 +20,7 @@
 1 Common PROF=100 AUTOGAIN
 1 SmokeRings MASK=+CHA 5
 1 Bandaging
-3 FireBuilding
+3 FireBuilding AUTOGAIN
 4 Searching
 
 [ALL]

@@ -69,7 +69,6 @@ public class Gaoler extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"FireBuilding",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"ClanCrafting",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"SmokeRings",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Cooking",false);
