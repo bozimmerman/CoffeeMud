@@ -113,7 +113,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	}
 
 	@Override
-	public String getViewDescription(Environmental E)
+	public String getViewDescription(MOB viewerM, Environmental E)
 	{
 		final StringBuffer str=new StringBuffer("");
 		if(E==null) return str.toString();
@@ -156,6 +156,12 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				else
 				if(str.toString().endsWith(" or "))
 					str.delete(str.length()-4,str.length());
+				if(I.phyStats().height()>0)
+				{
+					Armor.SizeDeviation deviation=((Armor) I).getSizingDeviation(viewerM);
+					if(deviation != Armor.SizeDeviation.FITS)
+						str.append(L("\n\rSize       : ")+I.phyStats().height()+" ("+L(deviation.toString().toLowerCase().replace('_',' ')+")"));
+				}
 			}
 		}
 		str.append("\n\rDescription: "+E.description());

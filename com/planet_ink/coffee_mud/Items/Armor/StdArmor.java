@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Armor.SizeDeviation;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -87,14 +88,20 @@ public class StdArmor extends StdContainer implements Armor
 		{
 			switch(material()&RawMaterial.MATERIAL_MASK)
 			{
-			case RawMaterial.MATERIAL_CLOTH: return name()+" has a small tear ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_CLOTH: 
+				return name()+" has a small tear ("+usesRemaining()+"%)";
 			case RawMaterial.MATERIAL_SYNTHETIC:
-			case RawMaterial.MATERIAL_GLASS: return name()+" has a few hairline cracks ("+usesRemaining()+"%)";
-			case RawMaterial.MATERIAL_LEATHER: return name()+" is a bit scuffed ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_GLASS: 
+				return name()+" has a few hairline cracks ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_LEATHER: 
+				return name()+" is a bit scuffed ("+usesRemaining()+"%)";
 			case RawMaterial.MATERIAL_METAL:
-			case RawMaterial.MATERIAL_MITHRIL: return name()+" has some small dents ("+usesRemaining()+"%)";
-			case RawMaterial.MATERIAL_WOODEN: return name()+" has a few small splinters ("+usesRemaining()+"%)";
-			default: return name()+" is slightly damaged ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_MITHRIL: 
+				return name()+" has some small dents ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_WOODEN: 
+				return name()+" has a few small splinters ("+usesRemaining()+"%)";
+			default: 
+				return name()+" is slightly damaged ("+usesRemaining()+"%)";
 			}
 		}
 		else
@@ -103,17 +110,23 @@ public class StdArmor extends StdContainer implements Armor
 			switch(material()&RawMaterial.MATERIAL_MASK)
 			{
 			case RawMaterial.MATERIAL_CLOTH:
-			case RawMaterial.MATERIAL_PAPER: return name()+" has a a few tears and rips ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_PAPER: 
+				return name()+" has a a few tears and rips ("+usesRemaining()+"%)";
 			case RawMaterial.MATERIAL_ROCK:
 			case RawMaterial.MATERIAL_PRECIOUS:
 			case RawMaterial.MATERIAL_SYNTHETIC:
-			case RawMaterial.MATERIAL_GLASS: return name()+" is cracked ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_GLASS: 
+				return name()+" is cracked ("+usesRemaining()+"%)";
 			case RawMaterial.MATERIAL_FLESH:
-			case RawMaterial.MATERIAL_LEATHER: return name()+" is torn ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_LEATHER: 
+				return name()+" is torn ("+usesRemaining()+"%)";
 			case RawMaterial.MATERIAL_METAL:
-			case RawMaterial.MATERIAL_MITHRIL: return name()+" is dented ("+usesRemaining()+"%)";
-			case RawMaterial.MATERIAL_WOODEN: return name()+" is splintered ("+usesRemaining()+"%)";
-			default: return name()+" is damaged ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_MITHRIL: 
+				return name()+" is dented ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_WOODEN: 
+				return name()+" is splintered ("+usesRemaining()+"%)";
+			default: 
+				return name()+" is damaged ("+usesRemaining()+"%)";
 			}
 		}
 		else
@@ -122,17 +135,23 @@ public class StdArmor extends StdContainer implements Armor
 			switch(material()&RawMaterial.MATERIAL_MASK)
 			{
 			case RawMaterial.MATERIAL_PAPER:
-			case RawMaterial.MATERIAL_CLOTH: return name()+" has numerous tears and rips ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_CLOTH: 
+				return name()+" has numerous tears and rips ("+usesRemaining()+"%)";
 			case RawMaterial.MATERIAL_ROCK:
 			case RawMaterial.MATERIAL_PRECIOUS:
 			case RawMaterial.MATERIAL_SYNTHETIC:
-			case RawMaterial.MATERIAL_GLASS: return name()+" has numerous streaking cracks ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_GLASS: 
+				return name()+" has numerous streaking cracks ("+usesRemaining()+"%)";
 			case RawMaterial.MATERIAL_FLESH:
-			case RawMaterial.MATERIAL_LEATHER: return name()+" is badly torn up ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_LEATHER: 
+				return name()+" is badly torn up ("+usesRemaining()+"%)";
 			case RawMaterial.MATERIAL_METAL:
-			case RawMaterial.MATERIAL_MITHRIL: return name()+" is badly dented and cracked ("+usesRemaining()+"%)";
-			case RawMaterial.MATERIAL_WOODEN: return name()+" is badly cracked and splintered ("+usesRemaining()+"%)";
-			default: return name()+" is badly damaged ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_MITHRIL: 
+				return name()+" is badly dented and cracked ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_WOODEN: 
+				return name()+" is badly cracked and splintered ("+usesRemaining()+"%)";
+			default: 
+				return name()+" is badly damaged ("+usesRemaining()+"%)";
 			}
 		}
 		else
@@ -140,62 +159,105 @@ public class StdArmor extends StdContainer implements Armor
 			switch(material()&RawMaterial.MATERIAL_MASK)
 			{
 			case RawMaterial.MATERIAL_PAPER:
-			case RawMaterial.MATERIAL_CLOTH: return name()+" is a shredded mess ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_CLOTH: 
+				return name()+" is a shredded mess ("+usesRemaining()+"%)";
 			case RawMaterial.MATERIAL_ROCK:
 			case RawMaterial.MATERIAL_SYNTHETIC:
 			case RawMaterial.MATERIAL_PRECIOUS:
-			case RawMaterial.MATERIAL_GLASS: return name()+" is practically shards ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_GLASS: 
+				return name()+" is practically shards ("+usesRemaining()+"%)";
 			case RawMaterial.MATERIAL_FLESH:
-			case RawMaterial.MATERIAL_LEATHER: return name()+" is badly shredded and ripped ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_LEATHER: 
+				return name()+" is badly shredded and ripped ("+usesRemaining()+"%)";
 			case RawMaterial.MATERIAL_METAL:
-			case RawMaterial.MATERIAL_MITHRIL: return name()+" is a crumpled mess ("+usesRemaining()+"%)";
-			case RawMaterial.MATERIAL_WOODEN: return name()+" is nothing but splinters ("+usesRemaining()+"%)";
-			default: return name()+" is horribly damaged ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_MITHRIL: 
+				return name()+" is a crumpled mess ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_WOODEN: 
+				return name()+" is nothing but splinters ("+usesRemaining()+"%)";
+			default: 
+				return name()+" is horribly damaged ("+usesRemaining()+"%)";
 			}
 		}
 	}
 
-	public final static long strangeDeviations=Wearable.WORN_FLOATING_NEARBY|Wearable.WORN_MOUTH|Wearable.WORN_EYES|Wearable.WORN_EARS|Wearable.WORN_NECK;
-	public final static long deviation20=Wearable.WORN_TORSO|Wearable.WORN_LEGS|Wearable.WORN_WAIST|Wearable.WORN_ARMS|Wearable.WORN_HANDS|Wearable.WORN_FEET;
+	protected final static long STRANGE_DEVIATION_WEAR_LOCS=
+		Wearable.WORN_FLOATING_NEARBY|
+		Wearable.WORN_MOUTH|
+		Wearable.WORN_EYES|
+		Wearable.WORN_EARS|
+		Wearable.WORN_NECK;
+	
+	protected final static long SMALL_DEVIATION_WEAR_LOCS=
+		Wearable.WORN_TORSO|
+		Wearable.WORN_LEGS|
+		Wearable.WORN_WAIST|
+		Wearable.WORN_ARMS|
+		Wearable.WORN_HANDS|
+		Wearable.WORN_FEET;
 
+	@Override
+	public SizeDeviation getSizingDeviation(MOB mob)
+	{
+		if(mob == null)
+			return SizeDeviation.FITS;
+		
+		if((phyStats().height()>0)
+		&&(mob.phyStats().height()>0))
+		{
+			int devianceAllowed=200;
+			if((rawProperLocationBitmap()&SMALL_DEVIATION_WEAR_LOCS)>0)
+				devianceAllowed=20;
+			else
+			if((rawProperLocationBitmap()&STRANGE_DEVIATION_WEAR_LOCS)>0)
+			{
+				long wcode=rawProperLocationBitmap();
+
+				if(CMath.bset(wcode,Wearable.WORN_HELD))
+					wcode=wcode-Wearable.WORN_HELD;
+				if(wcode==Wearable.WORN_FLOATING_NEARBY) 
+					devianceAllowed=-1;
+				else
+				if(wcode==Wearable.WORN_MOUTH) 
+					devianceAllowed=-1;
+				else
+				if(wcode==Wearable.WORN_EYES) 
+					devianceAllowed=1000;
+				else
+				if(wcode==Wearable.WORN_EARS) 
+					devianceAllowed=1000;
+				else
+				if(wcode==Wearable.WORN_NECK) 
+					devianceAllowed=5000;
+			}
+			if((devianceAllowed>0)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.EQUIPSIZE)))
+			{
+				if(mob.phyStats().height()<(phyStats().height()-devianceAllowed))
+					return SizeDeviation.TOO_LARGE;
+				if(mob.phyStats().height()>(phyStats().height()+devianceAllowed))
+					return SizeDeviation.TOO_SMALL;
+			}
+		}
+		return SizeDeviation.FITS;
+	}
+	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
 		if((msg.amITarget(this))
-		&&(phyStats().height()>0)
-		&&(msg.source().phyStats().height()>0)
 		&&(msg.targetMinor()==CMMsg.TYP_WEAR))
 		{
-			int devianceAllowed=200;
-			if((rawProperLocationBitmap()&deviation20)>0)
-				devianceAllowed=20;
-			else
-			if((rawProperLocationBitmap()&strangeDeviations)>0)
+			Armor.SizeDeviation deviation = getSizingDeviation(msg.source());
+			if(deviation != Armor.SizeDeviation.FITS)
 			{
-				long wcode=rawProperLocationBitmap();
-
-				if(CMath.bset(wcode,Wearable.WORN_HELD))
-					wcode=wcode-Wearable.WORN_HELD;
-				if(wcode==Wearable.WORN_FLOATING_NEARBY) devianceAllowed=-1;
-				else
-				if(wcode==Wearable.WORN_MOUTH) devianceAllowed=-1;
-				else
-				if(wcode==Wearable.WORN_EYES) devianceAllowed=1000;
-				else
-				if(wcode==Wearable.WORN_EARS) devianceAllowed=1000;
-				else
-				if(wcode==Wearable.WORN_NECK) devianceAllowed=5000;
-			}
-			if((devianceAllowed>0)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.EQUIPSIZE)))
-			{
-				if(msg.source().phyStats().height()<(phyStats().height()-devianceAllowed))
+				if(deviation == Armor.SizeDeviation.TOO_LARGE)
 				{
 					msg.source().tell(L("@x1 doesn't fit you -- it's too big.",name()));
 					return false;
 				}
-				if(msg.source().phyStats().height()>(phyStats().height()+devianceAllowed))
+				else
+				if(deviation == Armor.SizeDeviation.TOO_SMALL)
 				{
 					msg.source().tell(L("@x1 doesn't fit you -- it's too small.",name()));
 					return false;

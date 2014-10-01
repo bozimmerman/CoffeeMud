@@ -38,4 +38,13 @@ public interface Armor extends Item
 	public void setClothingLayer(short newLayer);
 	public short getLayerAttributes();
 	public void setLayerAttributes(short newAttributes);
+	
+	public SizeDeviation getSizingDeviation(MOB mob);
+	
+	public enum SizeDeviation
+	{
+		TOO_LARGE,
+		TOO_SMALL,
+		FITS
+	}
 }

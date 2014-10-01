@@ -10,10 +10,10 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Armor.SizeDeviation;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-
 
 import java.util.*;
 
@@ -140,6 +140,12 @@ public class StdLimb extends StdItem implements FalseLimb
 		wearplace=wearPlace;
 	}
 
+	@Override
+	public SizeDeviation getSizingDeviation(MOB mob)
+	{
+		return SizeDeviation.FITS;
+	}
+	
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

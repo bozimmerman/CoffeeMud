@@ -378,7 +378,7 @@ public class Auction extends Channel implements Tickable
 			E=liveData.auctioningI;
 			mob.tell(L("Item: @x1",E.name()));
 			CMLib.commands().handleBeingLookedAt(CMClass.getMsg(mob,CMMsg.MASK_ALWAYS|CMMsg.MSG_EXAMINE,null));
-			mob.tell(CMLib.coffeeShops().getViewDescription(E));
+			mob.tell(CMLib.coffeeShops().getViewDescription(mob,E));
 			return true;
 		}
 		else

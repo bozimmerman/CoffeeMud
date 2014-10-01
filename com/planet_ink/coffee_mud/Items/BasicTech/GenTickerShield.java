@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Armor.SizeDeviation;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -123,6 +124,12 @@ public class GenTickerShield extends StdElecItem implements Armor
 		return true;
 	}
 
+	@Override
+	public SizeDeviation getSizingDeviation(MOB mob)
+	{
+		return SizeDeviation.FITS;
+	}
+	
 	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{

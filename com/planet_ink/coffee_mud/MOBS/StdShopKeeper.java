@@ -310,7 +310,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				{
 					if((msg.tool()!=null)&&(getShop().doIHaveThisInStock("$"+msg.tool().Name()+"$",mob)))
-						CMLib.commands().postSay(this,msg.source(),CMLib.coffeeShops().getViewDescription(msg.tool()),true,false);
+						CMLib.commands().postSay(this,msg.source(),CMLib.coffeeShops().getViewDescription(msg.source(),msg.tool()),true,false);
 				}
 				break;
 			}

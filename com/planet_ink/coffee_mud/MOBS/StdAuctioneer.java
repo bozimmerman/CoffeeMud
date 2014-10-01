@@ -607,7 +607,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 					{
 						final String price=CMLib.beanCounter().nameCurrencyShort(data.currency,data.bid);
 						final String buyOut=(data.buyOutPrice<=0.0)?null:CMLib.beanCounter().nameCurrencyShort(data.currency,data.buyOutPrice);
-						final StringBuffer str=new StringBuffer(L("@x1\n\r\n\rThe current bid on @x2 is @x3. Use the BID command to place your own bid.  ",CMLib.coffeeShops().getViewDescription(msg.tool()),msg.tool().name(),price));
+						final StringBuffer str=new StringBuffer(L("@x1\n\r\n\rThe current bid on @x2 is @x3. Use the BID command to place your own bid.  ",CMLib.coffeeShops().getViewDescription(mob,msg.tool()),msg.tool().name(),price));
 						if(buyOut!=null) str.append(L("You may also buy this item immediately for @x1 by using the BUY command.",buyOut));
 						CMLib.commands().postSay(this,mob,str.toString(),true,false);
 					}
