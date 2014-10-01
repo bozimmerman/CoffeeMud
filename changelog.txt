@@ -14,6 +14,7 @@
   13. Default XP chart (lists.ini) modified to make low levels faster, and level off around 5k per level.
   14. WanderHomeLater property expanded into more usefulness -- about 8 new parameters added.
   15. FireBuilding now gained by all classes at level 1
+  16. QUESTS command, used by an admin, can target other players to get info about them.  See AHELP QUESTS for more info on this.
    *. finish collision management, against space ships at least.
    *. interacting items of diff tech level might damage each other
    *. personal scanner/tricorder software: mineral scanner, computer interface (with ship perhaps?)!

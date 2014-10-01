@@ -38,6 +38,44 @@ public class Questwins extends StdCommand
 
 	private final String[] access=I(new String[]{"QUESTS","QUESTWINS"});
 	@Override public String[] getAccessWords(){return access;}
+	
+	public String getQuestsWonList(MOB mob, String pronoun)
+	{
+		final Vector qVec=new Vector();
+		for(int q=0;q<CMLib.quests().numQuests();q++)
+		{
+			final Quest Q=CMLib.quests().fetchQuest(q);
+			if(Q.wasWinner(mob.Name()))
+			{
+				final String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
+				if(!qVec.contains(name))
+					qVec.addElement(name);
+			}
+		}
+		Collections.sort(qVec);
+		final StringBuffer msg=new StringBuffer(L("^HQuests @x1 listed as having won:^?^N\n\r",pronoun));
+		for(int i=0;i<qVec.size();i++)
+			msg.append(((String)qVec.elementAt(i))+"^N\n\r");
+		return msg.toString();
+	}
+
+	public String getQuestsDoingList(MOB mob, String pronoun)
+	{
+		final List<Quest> qQVec=CMLib.quests().getPlayerPersistantQuests(mob);
+		final Vector<String> qVec = new Vector<String>();
+		for(final Quest Q : qQVec)
+		{
+			final String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
+			if(!qVec.contains(name))
+				qVec.addElement(name);
+		}
+		Collections.sort(qVec);
+		final StringBuffer msg=new StringBuffer(L("^HQuests @x1 listed as having accepted:^?^N\n\r",pronoun));
+		for(int i=0;i<qVec.size();i++)
+			msg.append((qVec.elementAt(i))+"^N\n\r");
+		return msg.toString();
+	}
+	
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
@@ -47,23 +85,9 @@ public class Questwins extends StdCommand
 
 		if((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("WON")))
 		{
-			final Vector qVec=new Vector();
-			for(int q=0;q<CMLib.quests().numQuests();q++)
-			{
-				final Quest Q=CMLib.quests().fetchQuest(q);
-				if(Q.wasWinner(mob.Name()))
-				{
-					final String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
-					if(!qVec.contains(name))
-						qVec.addElement(name);
-				}
-			}
-			Collections.sort(qVec);
-			final StringBuffer msg=new StringBuffer(L("^HQuests you are listed as having won:^?^N\n\r"));
-			for(int i=0;i<qVec.size();i++)
-				msg.append(((String)qVec.elementAt(i))+"^N\n\r");
+			final String msg=this.getQuestsWonList(mob, L("you are"));
 			if(!mob.isMonster())
-				mob.tell(msg.toString());
+				mob.tell(msg);
 		}
 		else
 		if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("DROP")))
@@ -72,10 +96,12 @@ public class Questwins extends StdCommand
 			for(final Enumeration<ScriptingEngine> e=mob.scripts();e.hasMoreElements();)
 			{
 				final ScriptingEngine SE=e.nextElement();
-				if(SE==null) continue;
-				if((SE.defaultQuestName().length()>0)
-				&&(CMLib.quests().findQuest(SE.defaultQuestName())==null))
-					foundS=SE;
+				if(SE!=null)
+				{
+					if((SE.defaultQuestName().length()>0)
+					&&(CMLib.quests().findQuest(SE.defaultQuestName())==null))
+						foundS=SE;
+				}
 			}
 			if(foundS!=null)
 				mob.delScript(foundS);
@@ -91,10 +117,12 @@ public class Questwins extends StdCommand
 			for(final Enumeration<ScriptingEngine> e=mob.scripts();e.hasMoreElements();)
 			{
 				final ScriptingEngine SE=e.nextElement();
-				if(SE==null) continue;
-				if((SE.defaultQuestName().length()>0)
-				&&(SE.defaultQuestName().equalsIgnoreCase(Q.name())))
-					foundS=SE;
+				if(SE!=null)
+				{
+					if((SE.defaultQuestName().length()>0)
+					&&(SE.defaultQuestName().equalsIgnoreCase(Q.name())))
+						foundS=SE;
+				}
 			}
 			if(foundS==null)
 			{
@@ -112,29 +140,36 @@ public class Questwins extends StdCommand
 		else
 		if(commands.size()==1)
 		{
-			final List<Quest> qQVec=CMLib.quests().getPlayerPersistantQuests(mob);
-			final Vector<String> qVec = new Vector<String>();
-			for(final Quest Q : qQVec)
-			{
-				final String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
-				if(!qVec.contains(name))
-					qVec.addElement(name);
-			}
-			Collections.sort(qVec);
-			final StringBuffer msg=new StringBuffer(L("^HQuests you are listed as having accepted:^?^N\n\r"));
-			for(int i=0;i<qVec.size();i++)
-				msg.append((qVec.elementAt(i))+"^N\n\r");
+			final String msg=getQuestsDoingList(mob, L("you are"));
 			if(!mob.isMonster())
 				mob.tell(L("@x1\n\r^HEnter QUEST [QUEST NAME] for more information.^N^.",msg.toString()));
 
 		}
 		else
 		{
+			final boolean admin=CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDQUESTS)
+								||CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDPLAYERS);
 			final String rest=CMParms.combine(commands,1);
+			if(admin)
+			{
+				final MOB M=CMLib.players().getLoadPlayer(rest);
+				if(M!=null)
+				{
+					String msg=getQuestsWonList(M, M.Name()+" is");
+					msg += "\n\r";
+					msg += getQuestsDoingList(M, M.Name()+" is");
+					if(!mob.isMonster())
+						mob.tell(msg);
+					return false;
+				}
+			}
 			final Quest Q=CMLib.quests().findQuest(rest);
 			if(Q==null)
 			{
-				mob.tell(L("There is no such quest as '@x1'.",rest));
+				if(admin)
+					mob.tell(L("There is no such quest or player as '@x1'.",rest));
+				else
+					mob.tell(L("There is no such quest as '@x1'.",rest));
 				return false;
 			}
 			ScriptingEngine foundS=null;
