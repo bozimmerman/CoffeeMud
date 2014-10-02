@@ -303,10 +303,11 @@ public class CharGen extends StdCommand
 	public void combatRun(MOB mob, Vector commands)
 	{
 		final CombatStats c=new CombatStats();
+		final Room room=mob.location();
 		c.mob=mob;
 		if(commands.size()==0)
 		{
-			mob.tell(L("USAGE: CHARGEN COMBAT ([CHARCLASS(S)]...) (EXPORT=FILENAME) (FAILCHECK) (ITERATIONS=[X]) (SKIPLEVELS=[X]) ([START LEVEL]) ([END LEVEL])"));
+			mob.tell(L("USAGE: CHARGEN COMBAT ([CHARCLASS(S)]...) (EXPORT=FILENAME) (FAILCHECK) (MOB=[MOB NAME]) (ITERATIONS=[X]) (SKIPLEVELS=[X]) ([START LEVEL]) ([END LEVEL])"));
 			return;
 		}
 		final String[][] CAMATCH={
@@ -339,6 +340,7 @@ public class CharGen extends StdCommand
 		boolean classCleared=false;
 		boolean nextLevel=false;
 		String fileExp=null;
+		MOB tempBadGuyM=null;
 		for(int i=0;i<commands.size();i++)
 		{
 			String s=(String)commands.elementAt(i);
@@ -368,6 +370,31 @@ public class CharGen extends StdCommand
 			else
 			if(s.toUpperCase().startsWith("EXPORT="))
 				fileExp=s.substring("EXPORT=".length());
+			else
+			if(s.toUpperCase().startsWith("MOB=") && (room!=null))
+			{
+				String mobName=s.substring("MOB=".length());
+				MOB M=room.fetchInhabitant(mobName);
+				if(M==null)
+				{
+					M=CMLib.catalog().getCatalogMob(mobName);
+					if(M!=null)
+					{
+						M=(MOB)M.copyOf();
+						CMLib.catalog().changeCatalogUsage(M,true);
+					}
+				}
+				if((M==null)&&(room.getArea()!=null))
+					M=CMLib.map().findFirstInhabitant(room.getArea().getMetroMap(), mob, mobName, 10);
+				if(M==null)
+					M=CMLib.map().findFirstInhabitant(CMLib.map().rooms(), mob, mobName, 10);
+				if(M==null)
+				{
+					mob.tell("Unknown mob '"+mobName+"'");
+					return;
+				}
+				tempBadGuyM=M;
+			}
 			else
 			if(s.toUpperCase().startsWith("SKIPLEVELS="))
 			{
@@ -420,6 +447,8 @@ public class CharGen extends StdCommand
 				c.failSkillCheck=new Hashtable();
 		}
 
+		final MOB badGuyM=tempBadGuyM;
+		
 		if(c.skipLevels<=0)
 		{
 			c.skipLevels=1;
@@ -611,27 +640,47 @@ public class CharGen extends StdCommand
 							playerArmor=CMLib.combat().adjustedArmor(M1);
 							playerAttack=CMLib.combat().adjustedAttackBonus(M1,null);
 
-							final MOB M2=CMClass.getFactoryMOB();  // MOB stat
-							final Behavior B2=CMClass.getBehavior("CombatAbilities");
-							M2.baseCharStats().setMyRace(humanR);
-							M2.basePhyStats().setLevel(level);
-							M2.setName(L("BADGUY"));
-							M2.recoverCharStats();
-							M2.recoverPhyStats();
-							M2.setLocation(R);
-							M2.baseCharStats().getMyRace().setHeightWeight(M2.basePhyStats(),(char)M2.baseCharStats().getStat(CharStats.STAT_GENDER));
-							M2.basePhyStats().setAbility(11);
-							M2.recoverCharStats();
-							M2.recoverPhyStats();
-							M2.recoverMaxState();
-							M2.resetToMaxState();
-							M2.addBehavior(B2);
-							M2.bringToLife(M2.location(),true);
-							CMLib.threads().deleteTick(M2,Tickable.TICKID_MOB);
-							CMLib.leveler().fillOutMOB(M2,level);
-							final int hp=CMLib.leveler().getPlayerHitPoints(M2);
-							if(hp>M2.baseState().getHitPoints())
-								M2.baseState().setHitPoints(hp);
+							final MOB M2;
+							final Behavior B2;
+							if(badGuyM!=null)
+							{
+								M2=(MOB)badGuyM.copyOf();
+								Behavior B=M2.fetchBehavior("CombatAbilities");
+								if(B!=null)
+									B2=B;
+								else
+								{
+									B2=CMClass.getBehavior("CombatAbilities");
+									M2.addBehavior(B2);
+								}
+								M2.setLocation(R);
+								M2.bringToLife(M2.location(),true);
+								CMLib.threads().deleteTick(M2,Tickable.TICKID_MOB);
+							}
+							else
+							{
+								M2=CMClass.getFactoryMOB();  // MOB stat
+								B2=CMClass.getBehavior("CombatAbilities");
+								M2.baseCharStats().setMyRace(humanR);
+								M2.basePhyStats().setLevel(level);
+								M2.setName(L("BADGUY"));
+								M2.recoverCharStats();
+								M2.recoverPhyStats();
+								M2.setLocation(R);
+								M2.baseCharStats().getMyRace().setHeightWeight(M2.basePhyStats(),(char)M2.baseCharStats().getStat(CharStats.STAT_GENDER));
+								M2.basePhyStats().setAbility(11);
+								M2.recoverCharStats();
+								M2.recoverPhyStats();
+								M2.recoverMaxState();
+								M2.resetToMaxState();
+								M2.addBehavior(B2);
+								M2.bringToLife(M2.location(),true);
+								CMLib.threads().deleteTick(M2,Tickable.TICKID_MOB);
+								CMLib.leveler().fillOutMOB(M2,level);
+								final int hp=CMLib.leveler().getPlayerHitPoints(M2);
+								if(hp>M2.baseState().getHitPoints())
+									M2.baseState().setHitPoints(hp);
+							}
 							M2.setWimpHitPoint(0);
 							M2.recoverMaxState();
 							M2.recoverCharStats();
@@ -640,7 +689,6 @@ public class CharGen extends StdCommand
 
 							M1.setVictim(M2);
 							M2.setVictim(M1);
-
 
 							if(!playerExampleShown)
 							{
