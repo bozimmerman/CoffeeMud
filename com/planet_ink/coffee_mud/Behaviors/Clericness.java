@@ -56,7 +56,7 @@ public class Clericness extends CombatAbilities
 		//%%%%%att,armor,damage,hp,mana,move
 		if((preCastSet==Integer.MAX_VALUE)||(preCastSet<=0))
 		{
-			setCombatStats(mob,0,0,-25,-30,+25,-50);
+			setCombatStats(mob,0,0,-10,0,10,-10);
 			setCharStats(mob);
 		}
 	}

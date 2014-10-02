@@ -57,7 +57,7 @@ public class Thiefness extends CombatAbilities
 		//%%%%%att,armor,damage,hp,mana,move
 		if((preCastSet==Integer.MAX_VALUE)||(preCastSet<=0))
 		{
-			setCombatStats(mob,0,50,-25,-35,-25,-25);
+			setCombatStats(mob,0,10,15,-15,-15,-15);
 			setCharStats(mob);
 		}
 	}

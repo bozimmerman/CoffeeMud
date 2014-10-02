@@ -557,7 +557,7 @@ public class CharGen extends StdCommand
 								if(mob.session()!=null) mob.session().print(".");
 							}
 							final Behavior B1=CMClass.getBehavior((String)classSet.elementAt(charClassDex,2));
-							B1.setParms(C.ID());
+							B1.setParms(C.ID()+" NOSTAT NOCOMBATSTAT");
 							switch(roomRobin)
 							{
 							case 0: R=CMClass.getLocale("Woods"); break;

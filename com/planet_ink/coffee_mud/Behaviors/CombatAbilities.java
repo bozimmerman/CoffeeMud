@@ -49,6 +49,7 @@ public class CombatAbilities extends StdBehavior
 	protected int			preCastDown	= Integer.MAX_VALUE;
 	protected String		lastSpell	= null;
 	protected boolean		noStat		= false;
+	protected boolean		noCombatStat= false;
 	protected StringBuffer	record		= null;
 	protected int			physicalDamageTaken=0;
 	protected InternalWeaponSet weaponSet	= new InternalWeaponSet();
@@ -183,6 +184,7 @@ public class CombatAbilities extends StdBehavior
 
 	public void setCombatStats(MOB mob, int attack, int armor, int damage, int hp, int mana, int move)
 	{
+		if(this.noCombatStat) return;
 		Ability A=mob.fetchEffect("Prop_CombatAdjuster");
 		if(A==null)
 		{
@@ -250,7 +252,8 @@ public class CombatAbilities extends StdBehavior
 
 	public void adjustAggro(MOB hostM, MOB attackerM, int amt)
 	{
-		if(aggro==null) aggro=new Hashtable<MOB,int[]>();
+		if(aggro==null) 
+			aggro=new Hashtable<MOB,int[]>();
 		synchronized(aggro)
 		{
 			int[] I = aggro.get(attackerM);
@@ -370,6 +373,9 @@ public class CombatAbilities extends StdBehavior
 			if(s.equalsIgnoreCase("nostat")||s.equalsIgnoreCase("nostats"))
 				noStat=true;
 			else
+			if(s.equalsIgnoreCase("noCombatStat")||s.equalsIgnoreCase("noCombatStats"))
+				noStat=true;
+			else
 			if((s.startsWith("-"))
 			&&((A=CMClass.getAbility(s.substring(1)))!=null))
 			{
@@ -384,8 +390,10 @@ public class CombatAbilities extends StdBehavior
 				skillsAlways.add(A.ID());
 			}
 		}
-		if(skillsNever instanceof Vector) ((Vector)skillsNever).trimToSize();
-		if(skillsAlways instanceof Vector) ((Vector)skillsAlways).trimToSize();
+		if(skillsNever instanceof Vector) 
+			((Vector)skillsNever).trimToSize();
+		if(skillsAlways instanceof Vector) 
+			((Vector)skillsAlways).trimToSize();
 	}
 
 	protected boolean isRightCombatAbilities(MOB mob)

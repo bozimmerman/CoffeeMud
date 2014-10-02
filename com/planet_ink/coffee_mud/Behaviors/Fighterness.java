@@ -54,7 +54,7 @@ public class Fighterness extends CombatAbilities
 		//%%%%%att,armor,damage,hp,mana,move
 		if((preCastSet==Integer.MAX_VALUE)||(preCastSet<=0))
 		{
-			setCombatStats(mob,25,25,25,-25,0,15);
+			setCombatStats(mob,0,15,0,15,-10,10);
 			setCharStats(mob);
 		}
 	}
