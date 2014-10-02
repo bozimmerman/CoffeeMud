@@ -8313,7 +8313,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			&&(!mob.session().isStopped()))
 			{
 				mob.tell(L("The name given cannot be chosen, as it is already being used."));
-				genName(mob,me,showNumber,showFlag);
+				genName(mob,me,showNumber,showNumber); // showNumber twice to force the issue
 				newName=CMStrings.capitalizeAndLower(me.Name());
 				me.setName(oldName);
 			}
@@ -8855,7 +8855,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			&&(mob.session()!=null)&&(!mob.session().isStopped()))
 			{
 				mob.tell(L("The name given cannot be chosen, as it is already being used."));
-				acctName=CMStrings.capitalizeAndLower(prompt(mob,acctName,showNumber,showFlag,"Name",true,false,null));
+				acctName=CMStrings.capitalizeAndLower(prompt(mob,acctName,showNumber,showNumber,"Name",true,false,null));
 			}
 			A.setAccountName(acctName);
 			genEmail(mob, A, ++showNumber, showFlag);
