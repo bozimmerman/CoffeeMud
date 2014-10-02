@@ -656,7 +656,7 @@ public class CMProps extends Properties
 		return getSkillCombatActionCost(ID,CMath.div(getIntVar(Int.DEFCOMABLETIME),100.0));
 	}
 
-	public static final double getSocialActionCost(final String baseName, final double defaultValue)
+	private static final double getSocialActionCost(final String baseName, final double defaultValue)
 	{
 		final Map<String,Double> overrides=p().socActionCostExceptions;
 		final String uID=baseName.toUpperCase();
@@ -665,7 +665,7 @@ public class CMProps extends Properties
 		return defaultValue;
 	}
 
-	public static final double getSocialCombatActionCost(final String baseName, final double defaultValue)
+	private static final double getSocialCombatActionCost(final String baseName, final double defaultValue)
 	{
 		final Map<String,Double> overrides=p().socComActionCostExceptions;
 		final String uID=baseName.toUpperCase();

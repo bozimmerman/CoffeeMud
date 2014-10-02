@@ -2468,14 +2468,14 @@ public class DefaultSession implements Session
 					final int minsIdle=(int)(getIdleMillis()/60000);
 					if(minsIdle>=CMath.s_int(V.firstElement()))
 					{
-						println("\n\r^ZYou are being logged out!^?");
+						println(CMLib.lang().L("\n\r^ZYou are being logged out!^?"));
 						setKillFlag(true);
 					}
 					else
 					if(minsIdle>=CMath.s_int(V.lastElement()))
 					{
 						final int remain=CMath.s_int(V.firstElement())-minsIdle;
-						println(mob(),null,null,"\n\r^ZIf you don't do something, you will be logged out in "+remain+" minute(s)!^?");
+						println(mob(),null,null,CMLib.lang().L("\n\r^ZIf you don't do something, you will be logged out in @x1 minute(s)!^?",""+remain));
 					}
 				}
 

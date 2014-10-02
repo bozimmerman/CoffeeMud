@@ -413,12 +413,12 @@ public class DefaultSocial implements Social
 	@Override
 	public double actionsCost(final MOB mob, final List<String> cmds)
 	{
-		return CMProps.getSocialActionCost(baseName(), 0.0);
+		return CMProps.getSocialActionCost(baseName());
 	}
 	@Override
 	public double combatActionsCost(MOB mob, List<String> cmds)
 	{
-		return CMProps.getSocialCombatActionCost(baseName(), 0.0);
+		return CMProps.getSocialCombatActionCost(baseName());
 	}
 	@Override
 	public double checkedActionsCost(final MOB mob, final List<String> cmds)
