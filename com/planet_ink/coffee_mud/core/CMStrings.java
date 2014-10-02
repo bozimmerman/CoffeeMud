@@ -57,6 +57,18 @@ public class CMStrings
 		return new String(buf);
 	}
 
+	public final static String repeatWithLimit(final char chr1, final int times, final int limit)
+	{
+		if(times<=0) return "";
+		if(times > limit)
+			return repeat(chr1,limit)+"x"+(times-limit);
+		final byte[] buf=new byte[times];
+		if(Character.charCount(chr1)>1)
+			return repeat(Character.toString(chr1), times);
+		Arrays.fill(buf, (byte)chr1);
+		return new String(buf);
+	}
+
 	public final static boolean isUpperCase(final String str)
 	{
 		if(str==null) return false;
