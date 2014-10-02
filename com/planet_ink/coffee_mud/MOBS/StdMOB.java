@@ -275,7 +275,7 @@ public class StdMOB implements MOB
 			return Integer.MAX_VALUE;
 		int ExpNextLevel = getExpNextLevel();
 		if (ExpNextLevel < getExperience())
-			ExpNextLevel = getExperience() + 1000;
+			ExpNextLevel = getExperience() + 1;
 		return ExpNextLevel - getExperience();
 	}
 
