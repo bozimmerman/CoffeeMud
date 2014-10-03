@@ -182,7 +182,7 @@ public class CombatAbilities extends StdBehavior
 		}
 	}
 
-	public void setCombatStats(MOB mob, int attack, int armor, int damage, int hp, int mana, int move)
+	public void setCombatStats(MOB mob, int attack, int armor, int damage, int hp, int mana, int move, boolean pushDownSpeed)
 	{
 		if(this.noCombatStat) return;
 		Ability A=mob.fetchEffect("Prop_CombatAdjuster");
@@ -192,12 +192,20 @@ public class CombatAbilities extends StdBehavior
 			if(A!=null)
 			{
 				String text="";
-				if(attack!=0) text+=" ATTACK"+(attack>0?"+":"")+attack;
-				if(armor!=0) text+=" ARMOR"+(armor>0?"+":"")+armor;
-				if(damage!=0) text+=" DAMAGE"+(damage>0?"+":"")+damage;
-				if(hp!=0) text+=" HP"+(hp>0?"+":"")+hp;
-				if(mana!=0) text+=" MANA"+(mana>0?"+":"")+mana;
-				if(move!=0) text+=" MOVE"+(move>0?"+":"")+move;
+				if(attack!=0) 
+					text+=" ATTACK"+(attack>0?"+":"")+attack;
+				if(armor!=0) 
+					text+=" ARMOR"+(armor>0?"+":"")+armor;
+				if(damage!=0) 
+					text+=" DAMAGE"+(damage>0?"+":"")+damage;
+				if(hp!=0) 
+					text+=" HP"+(hp>0?"+":"")+hp;
+				if(mana!=0) 
+					text+=" MANA"+(mana>0?"+":"")+mana;
+				if(move!=0) 
+					text+=" MOVE"+(move>0?"+":"")+move;
+				if(pushDownSpeed) 
+					text+=" SPEED=1";
 				if(text.length()>0)
 				{
 					mob.addPriorityEffect(A);
