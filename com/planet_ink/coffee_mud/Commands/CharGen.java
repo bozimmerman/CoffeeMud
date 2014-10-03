@@ -486,6 +486,7 @@ public class CharGen extends StdCommand
 		};
 
 		final boolean[] aborted = new boolean[1];
+		final Session sess=mob.session();
 		aborted[0]=false;
 		final java.util.concurrent.CountDownLatch latch = new java.util.concurrent.CountDownLatch(c.classSet.size());
 		final java.util.concurrent.atomic.AtomicInteger IDGEN=new java.util.concurrent.atomic.AtomicInteger(1);
@@ -721,6 +722,9 @@ public class CharGen extends StdCommand
 							String ALMOSTZEROSKILL=null;
 							int l1=0, l2=0;
 
+							if((sess!=null)&&(sess.isStopped() || sess.hotkey(1)=='x'))
+								aborted[0]=true;
+							
 							//chargen combat charclasses export=test.tab iterations=100 skiplevels=20 1 91
 							while((M1.getVictim()==M2)
 								 &&(M2.getVictim()==M1)
