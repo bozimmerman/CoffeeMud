@@ -40,7 +40,7 @@ public class Prop_CombatAdjuster extends Property implements TriggeredAffect
 	// attack, damage, armor, hp, mana, move, speed
 	protected double[] alladj={1.0,1.0,1.0,1.0,1.0,1.0,1.0};
 	// attack, damage, armor, hp, mana, move, speed
-	protected int[] allset={-1,-1,-1,-1,-1,-1};
+	protected int[] allset={-1,-1,-1,-1,-1,-1,-1};
 	@Override
 	public String accountForYourself()
 	{ return "Adjusted combat stats";	}
