@@ -99,7 +99,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 	{
 		if(mob!=null)
 		{
-			if(mob.isInCombat())
+			if(mob.isMonster())
 				return Ability.QUALITY_INDIFFERENT;
 		}
 		return super.castingQuality(mob,target);
