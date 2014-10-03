@@ -114,9 +114,10 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 		final Room R=myProperLocation;
 		for(int i=0;i<contents.size();i++)
 		{
-			Item thisItem=(Item)contents.elementAt(i);
+			final Item thisItem=(Item)contents.elementAt(i);
 			if(thisItem!=null)
 			{
+				final Container thisContainer=((Item)ccontents.elementAt(i)).container();
 				if((!R.isContent(thisItem))
 				&&((!CMLib.flags().isMobile(thisItem)) || (!CMLib.flags().isInTheGame(thisItem,true))))
 				{
@@ -138,10 +139,10 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 					newThisItem.setExpirationDate(0);
 					R.addItem(newThisItem);
 					
-					thisItem=newThisItem;
+					newThisItem.setContainer(thisContainer);
 				}
-				if(thisItem != null)
-					thisItem.setContainer(((Item)ccontents.elementAt(i)).container());
+				else
+					thisItem.setContainer(thisContainer);
 			}
 		}
 	}
