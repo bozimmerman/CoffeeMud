@@ -21,7 +21,6 @@ TECH
    *. keep reviewing and updating the GameOverview.html doc
    
 NON-TECH
-   *. A tool for quickly creating accounts and getting and/or resetting their passwords.
    *. Tie races to mob classes for character creation purposes. (Can't you do this by making class requirements include only one race?)
    *. TaxiBehavior - Wondering where I would start on making a taxi service for my mud. I would like to be able to "hail cab" and have a taxi pull up something 
       like this: "A yellow taxi pulls up to let you in." or "A yellow taxi pulls over and the door slides open to the north." Then have the player either ENTER 
