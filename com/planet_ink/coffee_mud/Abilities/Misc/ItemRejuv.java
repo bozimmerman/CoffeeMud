@@ -115,34 +115,34 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 		for(int i=0;i<contents.size();i++)
 		{
 			Item thisItem=(Item)contents.elementAt(i);
-			if(thisItem!=null) 
-				continue;
-			if((!R.isContent(thisItem))
-			&&((!CMLib.flags().isMobile(thisItem)) || (!CMLib.flags().isInTheGame(thisItem,true))))
+			if(thisItem!=null)
 			{
-				final Item newThisItem=(Item)((Item)ccontents.elementAt(i)).copyOf();
-
-				contents.setElementAt(newThisItem,i);
-				for(int c=0;c<ccontents.size();c++)
+				if((!R.isContent(thisItem))
+				&&((!CMLib.flags().isMobile(thisItem)) || (!CMLib.flags().isInTheGame(thisItem,true))))
 				{
-					final Item thatItem=(Item)ccontents.elementAt(c);
-					if((thatItem.container()==thisItem)&&(newThisItem instanceof Container))
-						thatItem.setContainer((Container)newThisItem);
+					final Item newThisItem=(Item)((Item)ccontents.elementAt(i)).copyOf();
+					contents.setElementAt(newThisItem,i);
+					for(int c=0;c<ccontents.size();c++)
+					{
+						final Item thatItem=(Item)ccontents.elementAt(c);
+						if((thatItem.container()==thisItem)&&(newThisItem instanceof Container))
+							thatItem.setContainer((Container)newThisItem);
+					}
+					if(newThisItem instanceof Container)
+					{
+						final Container C=(Container)newThisItem;
+						final boolean open=!C.hasALid();
+						final boolean locked=C.hasALock();
+						C.setLidsNLocks(C.hasALid(),open,C.hasALock(),locked);
+					}
+					newThisItem.setExpirationDate(0);
+					R.addItem(newThisItem);
+					
+					thisItem=newThisItem;
 				}
-				thisItem=newThisItem;
-				if(thisItem==null) 
-					continue;
-				if(thisItem instanceof Container)
-				{
-					final Container C=(Container)thisItem;
-					final boolean open=!C.hasALid();
-					final boolean locked=C.hasALock();
-					C.setLidsNLocks(C.hasALid(),open,C.hasALock(),locked);
-				}
-				thisItem.setExpirationDate(0);
-				R.addItem(thisItem);
+				if(thisItem != null)
+					thisItem.setContainer(((Item)ccontents.elementAt(i)).container());
 			}
-			thisItem.setContainer(((Item)ccontents.elementAt(i)).container());
 		}
 	}
 
