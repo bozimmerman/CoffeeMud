@@ -669,7 +669,11 @@ public class Stat  extends Skills
 			recoverMOB(target);
 		}
 		else
-			str=CMLib.commands().getScore(target);
+		{
+			if((target.playerStats()!=null)&&(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1))
+				str.append(L("\n\r^xMember of Account:^.^N ^w@x1^?",(target.playerStats().getAccount()!=null)?target.playerStats().getAccount().getAccountName():L("None"))).append("\n\r");
+			str.append(CMLib.commands().getScore(target));
+		}
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(str.toString());
 		return false;

@@ -8300,6 +8300,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		final String oldName=me.Name();
+		if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
+			mob.tell(L("*. Account: '@x1'.",((me.playerStats()!=null)&&(me.playerStats().getAccount()!=null))?me.playerStats().getAccount().getAccountName():L("None")));
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
 			int showNumber=0;
