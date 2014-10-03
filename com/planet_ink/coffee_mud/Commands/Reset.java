@@ -313,7 +313,10 @@ public class Reset extends StdCommand
 		commands.removeElementAt(0);
 		if(commands.size()<1)
 		{
-			mob.tell(L("Reset this ROOM, the whole AREA, or REJUV?"));
+			if(CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.CMDPLAYERS))
+				mob.tell(L("Reset this ROOM, the whole AREA, REJUV, or a PASSWORD?"));
+			else
+				mob.tell(L("Reset this ROOM, the whole AREA, or REJUV?"));
 			return false;
 		}
 		String s=(String)commands.elementAt(0);
@@ -361,6 +364,91 @@ public class Reset extends StdCommand
 						S.mob().tell(mob,null,null,L("<S-NAME> order(s) this room to normalcy."));
 				CMLib.map().resetRoom(mob.location(), true);
 				mob.tell(L("Done."));
+			}
+			else
+				mob.tell(L("Cancelled."));
+		}
+		else
+		if(s.equalsIgnoreCase("password") 
+		&&(CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.CMDPLAYERS)))
+		{
+			commands.removeElementAt(0);
+			if(commands.size()<1)
+			{
+				mob.tell(L("Reset password for what character/account?."));
+				return false;
+			}
+			final String name=CMParms.combine(commands,0);
+			String finalName= "";
+			AccountStats stat = null;
+			MOB M=null;
+			if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
+			{
+				final PlayerAccount A=CMLib.players().getLoadAccount(name);
+				if(A!=null)
+				{
+					stat=A;
+					finalName=A.getAccountName();
+				}
+			}
+			if(stat == null)
+			{
+				M=CMLib.players().getLoadPlayer(name);
+				if(M!=null)
+				{
+					final PlayerStats pStats=M.playerStats();
+					if(pStats!=null)
+					{
+						if((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
+						&&(pStats.getAccount()!=null))
+						{
+							stat=pStats.getAccount();
+							finalName=pStats.getAccount().getAccountName();
+						}
+						else
+						{
+							stat=pStats;
+							finalName=M.Name();
+						}
+					}
+				}
+			}
+			if(stat==null)
+			{
+				mob.tell(L("'@x1' is not a player or account.",name));
+				return false;
+			}
+			if(CMLib.smtp().isValidEmailAddress(stat.getEmail()))
+			{
+				if((mob.session()==null)||(mob.session().confirm(L("Generate a random password for '@x1' and email to '@x2' (Y/n)?",finalName,stat.getEmail()),L("Y"))))
+				{
+					String password=CMLib.encoder().generateRandomPassword();
+					stat.setPassword(password);
+					if(stat instanceof PlayerAccount)
+						CMLib.database().DBUpdateAccount((PlayerAccount)stat);
+					if(M!=null)
+						CMLib.database().DBUpdatePassword(M.Name(),stat.getPasswordStr());
+					CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), finalName, "noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), stat.getEmail(),
+							"Password for "+finalName,
+							"Your password for "+finalName+" at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" has been reset by "+mob.Name()+".  It is now: '"+password+"'.");
+					mob.tell(L("The password has been reset, and this action has been logged."));
+					Log.sysOut("Reset","Password for "+finalName+" has been reset by "+mob.Name());
+				}
+			}
+			else
+			if((mob.session()==null)||(mob.session().confirm(L("Would you like to set the password for '@x1' to '@x2' (Y/n)?",finalName,finalName.toLowerCase()),L("Y"))))
+			{
+				String password=finalName.toLowerCase();
+				stat.setPassword(password);
+				if(stat instanceof PlayerAccount)
+					CMLib.database().DBUpdateAccount((PlayerAccount)stat);
+				if(M!=null)
+					CMLib.database().DBUpdatePassword(M.Name(),stat.getPasswordStr());
+				CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), finalName, "noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), stat.getEmail(),
+						"Password for "+finalName,
+						"Your password for "+finalName+" at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" has been reset by "+mob.Name()+".  It is now: '"+password+"'.");
+				mob.tell(L("The password has been reset, and this action has been logged."));
+				Log.sysOut("Reset","Password for "+finalName+" has been reset by "+mob.Name());
 			}
 			else
 				mob.tell(L("Cancelled."));
@@ -1567,7 +1655,12 @@ public class Reset extends StdCommand
 			};
 		}
 		else
-			mob.tell(L("'@x1' is an unknown reset.  Try ROOM, AREA, MOBSTATS ROOM, MOBSTATS AREA *, MOBSTATS WORLD *, MOBSTATS CATALOG *, ITEMSTATS ROOM, ITEMSTATS AREA *, ITEMSTATS WORLD *, ITEMSTATS CATALOG *, AREARACEMAT *, AREAROOMIDS *, AREAINSTALL.\n\r * = Reset functions which may take a long time to complete.",s));
+		{
+			String firstPart="'@x1' is an unknown reset.  Try ROOM, AREA,";
+			if(CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.CMDPLAYERS))
+				firstPart+=" PASSWORD,";
+			mob.tell(L(firstPart+" MOBSTATS ROOM, MOBSTATS AREA *, MOBSTATS WORLD *, MOBSTATS CATALOG *, ITEMSTATS ROOM, ITEMSTATS AREA *, ITEMSTATS WORLD *, ITEMSTATS CATALOG *, AREARACEMAT *, AREAROOMIDS *, AREAINSTALL.\n\r * = Reset functions which may take a long time to complete.",s));
+		}
 		return false;
 	}
 
