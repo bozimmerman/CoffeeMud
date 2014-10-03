@@ -21,6 +21,8 @@
   19. Player description 256 char limit is now gone.  New limit is 128k, expandable in code.
   20. QUALIFY command now has CRAFTING and NON-CRAFTING optional parameters.
   21. RESET command can now be used to reset player/account passwords using RESET PASSWORD <name> syntax, assuming both cmdplayers and reset security.
+  22. STAT [player name] and MODIFY PLAYER [name] will now show common account information.  It was so annoying not having this.
+  23. 
 # Build 5.8.2 Release 6/13/2014
    0. Database Schema Updated! Run DBUpgrade, OR manually alter table CMCHCL to add CMCLSTS (see appropriate schema file)
    1. CM1Server has "FILE" command now for directory browsing/manipulation
