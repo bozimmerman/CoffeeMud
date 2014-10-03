@@ -460,11 +460,9 @@ public class Create extends StdCommand
 			return;
 		}
 
-		PlayerAccount thisAcct=null;
 		final String AcctName=CMStrings.capitalizeAndLower((String)commands.elementAt(2));
-		final String password=CMStrings.capitalizeAndLower(CMParms.combine(commands,3));
-		thisAcct=CMLib.players().getLoadAccount(AcctName);
-		if(thisAcct!=null)
+		final String password=CMParms.combine(commands,3).toLowerCase();
+		if(CMLib.players().accountExists(AcctName))
 		{
 			mob.tell(L("Account '@x1' already exists!\n\r",AcctName));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
@@ -476,7 +474,7 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
-		thisAcct=(PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
+		final PlayerAccount thisAcct=(PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
 		thisAcct.setAccountName(AcctName);
 		thisAcct.setAccountExpiration(0);
 		if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION))

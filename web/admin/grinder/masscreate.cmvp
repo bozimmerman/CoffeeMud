@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_CMDPLAYERS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+	<title>Mass Acount Creator</title>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
+	<script language=JavaScript>
+	<!--
+		function Clicked(action)
+		{
+			document.RESOURCES.action=action;
+			document.RESOURCES.submit();
+		}
+		function AddNew(action)
+		{
+			document.RESOURCES.DOSTUFF.value='TRUE';
+			document.RESOURCES.action=action;
+			document.RESOURCES.submit();
+		}
+		function Refresh()
+		{
+			document.location.href='masscreate.cmvp?AUTH=@Authenticate?AUTH@';
+		}
+	//-->
+	</script>
+</head>
+<body BGCOLOR=BLACK>
+	<TABLE WIDTH=100% BORDER=0><TR>
+	<TD WIDTH=33% ALIGN=LEFT VALIGN=TOP></TD>
+	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP>
+		<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0">
+	</TD>
+	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP>
+		<TABLE WIDTH=50% BORDER=1>
+		<TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
+		<TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
+		
+		@if?CheckAuthCode?AUTH_CMDPLAYERS=true@
+			<TR><TD><a href="javascript:Clicked('accounts.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Account Manager</B></FONT></A></TD></TR>
+		@endif@
+		
+		@if?CheckAuthCode?AUTH_BAN=true@
+			<TR><TD><a href="javascript:Clicked('banners.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Banned List</B></FONT></A></TD></TR>
+		@endif@
+		
+		<TR><TD><a href="javascript:Refresh();"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
+		</TABLE>
+	</TD>
+	</TR>
+	</TABLE>
+<CENTER>
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="masscreate.cmvp">
+	<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+	<INPUT TYPE=HIDDEN NAME=DOSTUFF VALUE="">
+	@if?CheckReqParm?DOSTUFF=TRUE@
+		<CENTER><FONT COLOR=RED><B>@MUDGrinder?MASSACCOUNTCREATE@</B></FONT></CENTER>
+		<BR>
+	@endif@
+	<TABLE WIDTH=100% BORDER=1>
+	<TR><TD WIDTH=100% COLSPAN=3 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>New Accounts List</H2></FONT></TD></TR>
+	<TR>
+		<TD COLSPAN=3 ALIGN=LEFT>
+			<FONT COLOR=WHITE>
+				Enter one account per line.  Each line starts with an account_name (no spaces!), followed optionally by a password and an email address.
+				If no password is given, one will be generated, shown on this screen, and sent to the email address if applicable.
+			</FONT>
+		</TD>
+	</TR>
+	<TR>
+	<TD COLSPAN=3 ALIGN=CENTER>
+		<TEXTAREA ROWS=10 COLS=80 WIDTH=100% NAME=ACCOUNTNAMES></TEXTAREA>
+	</TD>
+	</TR>
+	</TABLE>
+	<P>
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=50% ALIGN=CENTER>
+	</TD>
+	<TD WIDTH=50% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=ADDNEW VALUE="Add All" ONCLICK="AddNew('/grinder/masscreate.cmvp');">
+	</TD>
+	</TABLE>
+</BODY>
+</HTML>
+@endif@
+@endif@

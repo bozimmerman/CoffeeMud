@@ -947,6 +947,104 @@ public class MUDGrinder extends StdWebMacro
 			httpReq.addFakeUrlParameter("LINK","");
 		}
 		else
+		if(parms.containsKey("MASSACCOUNTCREATE"))
+		{
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			if(mob==null) return "@break@";
+			final String dataStr=httpReq.getUrlParameter("ACCOUNTNAMES");
+			if((dataStr==null)||(dataStr.length()==0))
+				return "No accounts created.";
+			final List<String> list = Resources.getFileLineVector(new StringBuffer(dataStr));
+			final StringBuffer response=new StringBuffer("");
+			int created=0;
+			int size=list.size();
+			for(final String line : list)
+			{
+				final List<String> set=CMParms.parseSpaces(line,true);
+				if(set.size()!=0)
+				{
+					final String accountName = CMStrings.capitalizeAndLower(set.get(0));
+					if(set.size()>3)
+					{
+						response.append("Error: '"+accountName+"' has too much data (extra spaces somewhere). Not created.\n\r<BR>");
+						continue;
+					}
+					if(CMLib.players().accountExists(accountName))
+					{
+						response.append("Error: '"+accountName+"' already exists.\n\r<BR>");
+						continue;
+					}
+					if(!CMLib.login().isOkName(accountName,false))
+					{
+						response.append("Error: '"+accountName+"' is not a valid name.\n\r<BR>");
+						continue;
+					}
+					final String password;
+					final String email;
+					if(set.size()==3)
+					{
+						password=set.get(1);
+						email=set.get(2);
+					}
+					else
+					if(set.size()==2)
+					{
+						if(CMLib.smtp().isValidEmailAddress(set.get(1)))
+						{
+							email=set.get(1);
+							password=CMLib.encoder().generateRandomPassword();
+						}
+						else
+						{
+							email="";
+							password=set.get(1);
+						}
+						
+					}
+					else
+					if(set.size()==1)
+					{
+						email="";
+						password=CMLib.encoder().generateRandomPassword();
+					}
+					else
+					{
+						response.append("Error: '"+accountName+"' has too much data (extra spaces somewhere). Not created.\n\r<BR>");
+						continue;
+					}
+					if((email.length()>0)&&(!CMLib.smtp().isValidEmailAddress(email)))
+					{
+						response.append("Error: '"+email+"' for account '"+accountName+"' is not a valid address. Not created.\n\r<BR>");
+						continue;
+					}
+					
+					PlayerAccount thisAcct=(PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
+					thisAcct.setAccountName(accountName);
+					thisAcct.setAccountExpiration(0);
+					thisAcct.setEmail(email);
+					if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION))
+						thisAcct.setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*(CMProps.getIntVar(CMProps.Int.TRIALDAYS))));
+					thisAcct.setLastDateTime(System.currentTimeMillis());
+					thisAcct.setLastUpdated(System.currentTimeMillis());
+					thisAcct.setPassword(password);
+					CMLib.database().DBCreateAccount(thisAcct);
+					CMLib.players().addAccount(thisAcct);
+					Log.sysOut("Create",mob.Name()+" mass created account "+thisAcct.getAccountName()+".");
+					if(email.length()>0)
+					{
+						CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), accountName, "noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), email,
+								"Password for "+accountName,
+								"Your password for "+accountName+" at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" is: '"+password+"'.");
+						response.append("Created: '"+accountName+"'\n\r<BR>");
+					}
+					else
+						response.append("Created: '"+accountName+"' with password '"+password+"'\n\r<BR>");
+					created++;
+				}
+			}
+			return response.toString()+"\n\r<BR>Created "+created+"/"+size+" accounts.\n\r<BR>";
+		}
+		else
 		if(parms.containsKey("PAINTROOMS"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);

@@ -48,6 +48,8 @@
 			<TR><TD><a href="javascript:Clicked('banners.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Banned List</B></FONT></A></TD></TR>
 		@endif@
 		
+		<TR><TD><a href="javascript:Clicked('masscreate.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Mass Creator</B></FONT></A></TD></TR>
+		
 		<TR><TD><a href="javascript:Sort('@RequestParameter?SORTBY@');"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
 		</TABLE>
 	</TD>
