@@ -199,9 +199,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		if(M!=null) return M;
 		if(playerExists(last))
 		{
-			M=CMClass.getMOB("StdMOB");
-			M.setName(CMStrings.capitalizeAndLower(last));
-			CMLib.database().DBReadPlayer(M);
+			M=CMLib.database().DBReadPlayer(CMStrings.capitalizeAndLower(last));
 			CMLib.database().DBReadFollowers(M,false);
 			if(M.playerStats()!=null)
 				M.playerStats().setLastUpdated(M.playerStats().getLastDateTime());

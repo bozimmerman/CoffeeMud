@@ -44,17 +44,30 @@ public class MOBloader
 	}
 	protected Room emptyRoom=null;
 
-	public String DBReadUserOnly(MOB mob)
+	public MOB DBReadUserOnly(final String name, final String[] locationID)
 	{
-		if(mob.Name().length()==0) return null;
-		String locID=null;
+		if((name==null)||(name.length()==0)) 
+			return null;
 		DBConnection D=null;
+		MOB mob=null;
+		int oldDisposition=0;
 		try
 		{
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMUSERID='"+mob.Name()+"'");
+			ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMUSERID='"+name+"'");
 			if(R.next())
 			{
+				mob=CMClass.getMOB(DBConnections.getRes(R,"CMCHID"));
+				if(mob == null)
+				{
+					mob=CMClass.getMOB("StdMOB");
+					if(mob == null)
+						return null;
+				}
+				oldDisposition=mob.basePhyStats().disposition();
+				mob.basePhyStats().setDisposition(PhyStats.IS_NOT_SEEN|PhyStats.IS_SNEAKING);
+				mob.phyStats().setDisposition(PhyStats.IS_NOT_SEEN|PhyStats.IS_SNEAKING);
+				
 				final CharStats stats=mob.baseCharStats();
 				final CharState state=mob.baseState();
 				final PlayerStats pstats=(PlayerStats)CMClass.getCommon("DefaultPlayerStats");
@@ -98,8 +111,8 @@ public class MOBloader
 				final int x=roomID.indexOf("||");
 				if(x>=0)
 				{
-					locID=roomID.substring(x+2);
-					mob.setLocation(CMLib.map().getRoom(locID));
+					locationID[0]=roomID.substring(x+2);
+					mob.setLocation(CMLib.map().getRoom(locationID[0]));
 					roomID=roomID.substring(0,x);
 				}
 				mob.setStartRoom(CMLib.map().getRoom(roomID));
@@ -114,7 +127,8 @@ public class MOBloader
 				mob.basePhyStats().setWeight((int)DBConnections.getLongRes(R,"CMWEIT"));
 				pstats.setPrompt(DBConnections.getRes(R,"CMPRPT"));
 				final String colorStr=DBConnections.getRes(R,"CMCOLR");
-				if((colorStr!=null)&&(colorStr.length()>0)&&(!colorStr.equalsIgnoreCase("NULL"))) pstats.setColorStr(colorStr);
+				if((colorStr!=null)&&(colorStr.length()>0)&&(!colorStr.equalsIgnoreCase("NULL"))) 
+					pstats.setColorStr(colorStr);
 				pstats.setLastIP(DBConnections.getRes(R,"CMLSIP"));
 				mob.setClan("", Integer.MIN_VALUE); // delete all sequence
 				pstats.setEmail(DBConnections.getRes(R,"CMEMAL"));
@@ -175,13 +189,14 @@ public class MOBloader
 				}
 			}
 			R.close();
-			R=D.query("SELECT * FROM CMCHCL WHERE CMUSERID='"+mob.Name()+"'");
-			while(R.next())
+			R=D.query("SELECT * FROM CMCHCL WHERE CMUSERID='"+name+"'");
+			while(R.next() && (mob!=null))
 			{
 				final String clanID=DBConnections.getRes(R,"CMCLAN");
 				final int clanRole = this.BuildClanMemberRole(R);
 				final Clan C=CMLib.clans().getClan(clanID);
-				if(C!=null) mob.setClan(C.clanID(), clanRole);
+				if(C!=null) 
+					mob.setClan(C.clanID(), clanRole);
 			}
 		}
 		catch(final Exception sqle)
@@ -192,23 +207,36 @@ public class MOBloader
 		{
 			DB.DBDone(D);
 		}
-		return locID;
+		if(mob != null)
+		{
+			mob.basePhyStats().setDisposition(oldDisposition);
+			mob.recoverPhyStats();
+		}
+		return mob;
 	}
 
-	public void DBRead(MOB mob)
+	public MOB DBRead(final String name)
 	{
-		if(mob.Name().length()==0) return;
-		if(emptyRoom==null) emptyRoom=CMClass.getLocale("StdRoom");
+		if((name==null)||(name.length()==0)) 
+			return null;
+		if(emptyRoom==null) 
+			emptyRoom=CMClass.getLocale("StdRoom");
+		final String[] oldLocID=new String[1];
+		if(CMLib.players().getPlayer(name)!=null)
+			return CMLib.players().getPlayer(name);
+		final MOB mob=DBReadUserOnly(name,oldLocID);
+		if(mob == null)
+			return null;
 		final int oldDisposition=mob.basePhyStats().disposition();
 		mob.basePhyStats().setDisposition(PhyStats.IS_NOT_SEEN|PhyStats.IS_SNEAKING);
 		mob.phyStats().setDisposition(PhyStats.IS_NOT_SEEN|PhyStats.IS_SNEAKING);
 		CMLib.players().addPlayer(mob);
-		final String oldLocID=DBReadUserOnly(mob);
 		mob.recoverPhyStats();
 		mob.recoverCharStats();
 		Room oldLoc=mob.location();
 		boolean inhab=false;
-		if(oldLoc!=null) inhab=oldLoc.isInhabitant(mob);
+		if(oldLoc!=null) 
+			inhab=oldLoc.isInhabitant(mob);
 		mob.setLocation(emptyRoom);
 		DBConnection D=null;
 		// now grab the items
@@ -270,7 +298,7 @@ public class MOBloader
 					{
 						final Area area=((SpaceShip)newItem).getShipArea();
 						if(area != null)
-							oldLoc=area.getRoom(oldLocID);
+							oldLoc=area.getRoom(oldLocID[0]);
 					}
 					final String loc=DBConnections.getResQuietly(R,"CMITLO");
 					if(loc.length()>0)
@@ -399,10 +427,7 @@ public class MOBloader
 		}
 		D=null;
 		mob.basePhyStats().setDisposition(oldDisposition);
-		mob.recoverCharStats();
 		mob.recoverPhyStats();
-		mob.recoverMaxState();
-		mob.resetToMaxState();
 		if(mob.baseCharStats()!=null)
 		{
 			mob.baseCharStats().getCurrentClass().startCharacter(mob,false,true);
@@ -417,7 +442,7 @@ public class MOBloader
 		mob.recoverMaxState();
 		mob.resetToMaxState();
 		CMLib.threads().suspendResumeRecurse(mob, false, true);
-		// wont add if same name already exists
+		return mob;
 	}
 
 	public List<String> getUserList()
@@ -913,6 +938,7 @@ public class MOBloader
 		cleanXML.append(CMLib.coffeeMaker().getFactionXML(mob));
 		DB.updateWithClobs(
 				 "UPDATE CMCHAR SET  CMPASS='"+pstats.getPasswordStr()+"'"
+				+", CMCHID='"+mob.ID()+"'"
 				+", CMCLAS='"+mob.baseCharStats().getMyClassesStr()+"'"
 				+", CMSTRE="+mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)
 				+", CMRACE='"+mob.baseCharStats().getMyRace().ID()+"'"
@@ -1357,8 +1383,8 @@ public class MOBloader
 		if(mob.Name().length()==0) return;
 		final PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return;
-		DB.update("INSERT INTO CMCHAR (CMUSERID, CMPASS, CMCLAS, CMRACE, CMGEND "
-				+") VALUES ('"+mob.Name()+"','"+pstats.getPasswordStr()+"','"+mob.baseCharStats().getMyClassesStr()
+		DB.update("INSERT INTO CMCHAR (CMCHID, CMUSERID, CMPASS, CMCLAS, CMRACE, CMGEND "
+				+") VALUES ('"+mob.ID()+"','"+mob.Name()+"','"+pstats.getPasswordStr()+"','"+mob.baseCharStats().getMyClassesStr()
 				+"','"+mob.baseCharStats().getMyRace().ID()+"','"+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER))
 				+"')");
 		final PlayerAccount account = pstats.getAccount();

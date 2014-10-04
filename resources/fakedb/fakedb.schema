@@ -5,6 +5,7 @@ CMABPF integer NULL
 CMABTX string NULL
 
 CMCHAR
+CMCHID string NULL,
 CMUSERID string KEY
 CMPASS string NULL
 CMCLAS string NULL
@@ -203,3 +204,5 @@ CMANAM string KEY
 CMPASS string NULL
 CMCHRS string NULL
 CMAXML string NULL
+
+#CONVERTER=com.planet_ink.coffee_mud.core.database.DBUpgradeConversions

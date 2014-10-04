@@ -35,7 +35,8 @@ CREATE TABLE CMPOLL (
 	PRIMARY KEY (CMNAME)
 );
 
-CREATE TABLE CMvarchar (
+CREATE TABLE CMCHAR (
+    CMCHID varchar (50) NOT NULL,
 	CMUSERID varchar (50)  NOT NULL ,
 	CMPASS varchar (50) ,
 	CMCLAS varchar (200) ,
@@ -46,7 +47,7 @@ CREATE TABLE CMvarchar (
 	CMGEND varchar (50) ,
 	CMWISD int ,
 	CMINTE int ,
-	CMvarchar int ,
+	CMCHAR int ,
 	CMHITP int ,
 	CMLEVL varchar (50) ,
 	CMMANA int ,

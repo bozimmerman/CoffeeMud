@@ -110,7 +110,7 @@ public interface DatabaseEngine extends CMLibrary
 	public void DBReadQuests(MudHost myHost);
 	public void DBReCreate(Room room, String oldID);
 	public void DBDeleteRoom(Room room);
-	public void DBReadPlayer(MOB mob);
+	public MOB DBReadPlayer(String name);
 	public List<MemberRecord> DBClanMembers(String clan);
 	public MemberRecord DBGetClanMember(String clan, String name);
 	public void DBUpdateClanKills(String clan, String name, int adjMobKills, int adjPlayerKills);
@@ -158,7 +158,6 @@ public interface DatabaseEngine extends CMLibrary
 	public void DBViewJournalMessage(String key, int views);
 	public void DBTouchJournalMessage(String key);
 	public void DBTouchJournalMessage(String key, long newDate);
-	public String DBReadUserOnly(MOB mob);
 	public PlayerLibrary.ThinnerPlayer DBUserSearch(String Login);
 	public List<PlayerLibrary.ThinPlayer> vassals(MOB mob, String liegeID);
 	public DVector worshippers(String deityID);

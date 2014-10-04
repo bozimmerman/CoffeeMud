@@ -37,6 +37,7 @@ CREATE TABLE CMPOLL (
 );
 
 CREATE TABLE CMCHAR (
+CMCHID nvarchar (50),
 CMUSERID nvarchar (50),
 CMPASS nvarchar (50) NULL,
 CMCLAS nvarchar (200) NULL,

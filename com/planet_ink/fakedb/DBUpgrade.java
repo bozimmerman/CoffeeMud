@@ -1,5 +1,7 @@
 package com.planet_ink.fakedb;
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.sql.*;
 
@@ -98,6 +100,7 @@ public class DBUpgrade
 		pl("");
 		pl("");
 		final Hashtable<String,List<String>> oldTables=new Hashtable<String,List<String>>();
+		Map<Object,Method> converters=new Hashtable<Object,Method>();
 		while(oldTables.size()==0)
 		{
 			pl("Enter the path to the 'fakedb.schema' file");
@@ -132,6 +135,11 @@ public class DBUpgrade
 					{
 						if(line.length()==0)
 							table=null;
+						else
+						if(line.startsWith("#"))
+						{
+							// just continue;
+						}
 						else
 						{
 							if(table==null)
@@ -213,6 +221,37 @@ public class DBUpgrade
 					{
 						if(line.trim().length()==0)
 							table=null;
+						else
+						if(line.startsWith("#"))
+						{
+							int x=line.indexOf('=');
+							if(x>1)
+							{
+								String command=line.substring(1,x).toUpperCase().trim();
+								String value=line.substring(x+1).trim();
+								if(command.equalsIgnoreCase("CONVERTER"))
+								{
+									Class C;
+									Object O;
+									try
+									{
+										C=Class.forName(value);
+										O=C.newInstance();
+									}
+									catch(Throwable t)
+									{
+										throw new Exception("Unable to load converter "+value+", are you sure it's in the classpath?");
+									}
+									if(C!=null)
+									{
+										Method M=C.getMethod("DBUpgradeConversionV1", Map.class,Map.class,Map.class,PrintStream.class);
+										if(M==null)
+											throw new Exception("Unable to load converter "+value+", are you sure it's in the classpath?");
+										converters.put(O,M);
+									}
+								}
+							}
+						}
 						else
 						{
 							if(table==null)
@@ -634,8 +673,10 @@ public class DBUpgrade
 					rows.addElement(row);
 					for(int s=0;s<fields.size();s++)
 					{
-						String S=R.getString(fields.get(s).substring(1));
-						if(S==null) S="";
+						final String field=fields.get(s).substring(1);
+						String S=R.getString(field);
+						if(S==null)
+							S="";
 						row.addElement(S);
 					}
 				}
@@ -652,46 +693,29 @@ public class DBUpgrade
 			return;
 		}
 
-		
-		// first, look for the CLAN conversion
-		if(newTables.containsKey("CMCHCL") && (!oldTables.containsKey("CMCHCL")))
+		for(Object o : converters.keySet())
 		{
-			final List<List<String>> charRows=data.get("CMCHAR");
-			List<List<String>> cmchclRows=data.get("CMCHCL");
-			if(cmchclRows==null)
+			Method M=converters.get(o);
+			try
 			{
-				cmchclRows=new Vector<List<String>>();
-				data.put("CMCHCL", cmchclRows);
+				M.invoke(o, oldTables, newTables, data, out);
 			}
-			pl(" ");
-			pl(" ");
-			p("Making CMCHCL conversion: ");
-			final List<String> ofields=oldTables.get("CMCHAR");
-			final List<String> nfields=newTables.get("CMCHCL");
-			final int cmUserIDIndex=ofields.indexOf("$CMUSERID");
-			final int cmClanIndex=ofields.indexOf("$CMCLAN");
-			final int cmClRoIndex=ofields.indexOf("#CMCLRO");
-			final int cm2UserIDIndex=nfields.indexOf("$CMUSERID");
-			final int cm2ClanIndex=nfields.indexOf("$CMCLAN");
-			final int cm2ClRoIndex=nfields.indexOf("#CMCLRO");
-			for(int r=0;r<charRows.size();r++)
+			catch (IllegalArgumentException e)
 			{
-				final List<String> row=charRows.get(r);
-				final String userID=row.get(cmUserIDIndex);
-				final String clanID=row.get(cmClanIndex);
-				final String clanRo=row.get(cmClRoIndex);
-				if((clanID==null)||(clanID.length()==0))
-					continue;
-				final Vector<String> newRow=new Vector<String>(3);
-				newRow.add(""); newRow.add(""); newRow.add("");
-				newRow.add(cm2UserIDIndex,userID);
-				newRow.add(cm2ClanIndex,clanID);
-				newRow.add(cm2ClRoIndex,clanRo);
-				cmchclRows.add(newRow);
+				e.printStackTrace();
 			}
-			if(cmchclRows.size()>0)
-				oldTables.put("CMCHCL", newTables.get("CMCHCL"));
+			catch (IllegalAccessException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (InvocationTargetException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+		
 		pl(" ");
 		pl(" ");
 		p("OK! Writing destination tables: ");

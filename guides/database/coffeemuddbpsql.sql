@@ -45,6 +45,7 @@ ALTER TABLE CMPOLL
 	
 	
 CREATE TABLE CMCHAR (
+    CMCHID varchar (50) NOT NULL,
 	CMUSERID varchar(50) NOT NULL ,
 	CMPASS varchar(50) NULL ,
 	CMCLAS varchar(200) NULL ,

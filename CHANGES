@@ -1,5 +1,5 @@
 # Build 5.8.3 Release ??/??/2014
-   *. Database Schema Updated for CMCHAR.CMDESC column type. DBUpgrade will nicely copy everything over for you though.
+   *. Database Schema Updated for CMCHAR.CMDESC and CMCHAR.CMCHID.  See the Installation Guide about running DBUpgrade.
    1. New GENERATEable themes in /resources/randreas/example.xml: forest, jungle, desert, swamp, mountains, snow, plains
    2. Generic Character Classes now support starting money values. (Standard support requires code).
    3. Socials action cost can now be controlled and tweeked from ini file/control panel.

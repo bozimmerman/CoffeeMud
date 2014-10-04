@@ -56,7 +56,8 @@ ALTER TABLE CMPOLL
 	);
 	
 CREATE TABLE CMCHAR (
-	CMUSERID char (50) NULL ,
+    CMCHID char (50),
+	CMUSERID char (50),
 	CMPASS char (50) NULL ,
 	CMCLAS char (200) NULL ,
 	CMSTRE int NULL ,

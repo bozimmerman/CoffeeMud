@@ -943,6 +943,8 @@ public class Backend
 				 break;
 			 if (fakeTableName.length()==0)
 				 throw new IOException("Can not read schema: tableName is null");
+			 if (fakeTableName.startsWith("#")) // comment
+				 continue;
 			 if (fakeTables.get(fakeTableName)!=null)
 				 throw new IOException("Can not read schema: tableName is missing: "+fakeTableName);
 

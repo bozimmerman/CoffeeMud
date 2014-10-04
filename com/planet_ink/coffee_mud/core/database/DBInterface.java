@@ -436,10 +436,6 @@ public class DBInterface implements DatabaseEngine
 	{return MOBloader.DBUserSearch(Login);}
 
 	@Override
-	public String DBReadUserOnly(MOB mob)
-	{return MOBloader.DBReadUserOnly(mob);}
-
-	@Override
 	public void DBCreateArea(Area A)
 	{RoomLoader.DBCreate(A);}
 
@@ -456,8 +452,8 @@ public class DBInterface implements DatabaseEngine
 	{RoomLoader.DBDelete(room);}
 
 	@Override
-	public void DBReadPlayer(MOB mob)
-	{MOBloader.DBRead(mob);}
+	public MOB DBReadPlayer(String name)
+	{return MOBloader.DBRead(name);}
 
 	@Override
 	public List<PlayerLibrary.ThinPlayer> getExtendedUserList()
