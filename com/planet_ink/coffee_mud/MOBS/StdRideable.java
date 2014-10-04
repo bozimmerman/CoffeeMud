@@ -349,6 +349,11 @@ public class StdRideable extends StdMOB implements Rideable
 					msg.source().tell(L("@x1 won't let you do that.",((MOB)msg.tool()).name(msg.source())));
 					return false;
 				}
+				if(isInCombat())
+				{
+					msg.source().tell(L("@x1 won't let you do that right now.",name(msg.source())));
+					return false;
+				}
 				if(riding()==whoWantsToRide)
 				{
 					if(msg.tool() instanceof Physical)
@@ -381,6 +386,11 @@ public class StdRideable extends StdMOB implements Rideable
 					msg.source().tell(L("No more can fit on @x1.",name(msg.source())));
 					// for mobs
 					// msg.source().tell(L("No more can fit on @x1.",name(msg.source())));
+					return false;
+				}
+				if((this.playerStats!=null)&&(!charStats().getMyRace().isRideable()))
+				{
+					msg.source().tell(L("@x1 won't let you do that.",name(msg.source())));
 					return false;
 				}
 				// protects from standard item rejection
@@ -435,6 +445,11 @@ public class StdRideable extends StdMOB implements Rideable
 						return false;
 					}
 				}
+			}
+			if((this.playerStats!=null)&&(!charStats().getMyRace().isRideable())&&(numRiders()>0))
+			{
+				msg.source().tell(L("@x1 is far too burdened!",name(msg.source())));
+				return false;
 			}
 			break;
 		case CMMsg.TYP_GIVE:
