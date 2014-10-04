@@ -43,13 +43,15 @@ public class Centaur extends StdRace
 	@Override public int weightVariance(){return 100;}
 	@Override public long forbiddenWornBits(){return Wearable.WORN_WAIST|Wearable.WORN_LEGS|Wearable.WORN_FEET;}
 	@Override public String racialCategory(){return "Equine";}
+	@Override public boolean isRideable() { return true; }
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
 	@Override public int[] bodyMask(){return parts;}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+//TODO:	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

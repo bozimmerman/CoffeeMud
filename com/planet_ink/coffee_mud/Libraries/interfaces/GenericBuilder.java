@@ -52,19 +52,15 @@ public interface GenericBuilder extends CMLibrary
 			"FACTIONS","VARMONEY"
 	};
 
-	public boolean get(int x, int m);
 	public String getGenMOBTextUnpacked(MOB mob, String newText);
 	public void resetGenMOB(MOB mob, String newText);
 	public int envFlags(Environmental E);
 	public void setEnvFlags(Environmental E, int f);
 	public String getGenAbilityXML(Ability A);
 	public String getPropertiesStr(Environmental E, boolean fromTop);
-	public String getOrdPropertiesStr(Environmental E);
-	public String getGenMobAbilities(MOB M);
 	public String getGenScripts(PhysicalAgent E, boolean includeVars);
 	public String getGenMobInventory(MOB M);
-	public String getGenPropertiesStr(Environmental E);
-	public String unpackErr(String where, String msg);
+	public void doGenPropertiesCopy(Environmental fromE, Environmental toE);
 	public String unpackRoomFromXML(String buf, boolean andContent);
 	public String unpackRoomFromXML(List<XMLpiece> xml, boolean andContent);
 	public String fillAreaAndCustomVectorFromXML(String buf,  List<XMLpiece> area, List<CMObject> custom, Map<String,String> externalFiles);
@@ -97,14 +93,9 @@ public interface GenericBuilder extends CMLibrary
 	public StringBuffer getRoomXML(Room room,  Set<CMObject> custom, Set<String> files, boolean andContent);
 	public Ammunition makeAmmunition(String ammunitionType, int number);
 	public void setPropertiesStr(Environmental E, String buf, boolean fromTop);
-	public void recoverPhysical(Physical P);
 	public void setPropertiesStr(Environmental E, List<XMLpiece> V, boolean fromTop);
-	public void setOrdPropertiesStr(Environmental E, List<XMLpiece> V);
-	public void setGenMobAbilities(MOB M, List<XMLpiece> buf);
 	public void setGenScripts(PhysicalAgent E, List<XMLpiece> buf, boolean restoreVars);
-	public void setGenMobInventory(MOB M, List<XMLpiece> buf);
 	public void populateShops(Environmental E, List<XMLpiece> buf);
-	public void setGenPropertiesStr(Environmental E, List<XMLpiece> buf);
 	public String getPlayerXML(MOB mob, Set<CMObject> custom, Set<String> files);
 	public String getAccountXML(PlayerAccount account, Set<CMObject> custom, Set<String> files);
 	public String addPlayersAndAccountsFromXML(String xmlBuffer, List<PlayerAccount> addAccounts, List<MOB> addMobs, Session S);
@@ -119,7 +110,6 @@ public interface GenericBuilder extends CMLibrary
 	public void setCharState(CharState E, String props);
 	public void setPhyStats(PhyStats E, String props);
 	public void setEnvProperties(Environmental E, List<XMLpiece> buf);
-	public String identifier(Environmental E, Environmental parent);
 	public void setExtraEnvProperties(Environmental E, List<XMLpiece> buf);
 	public void setAnyGenStat(Physical P, String stat, String value, boolean supportPlusMinusPrefix);
 	public void setAnyGenStat(Physical P, String stat, String value);

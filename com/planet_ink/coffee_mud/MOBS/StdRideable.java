@@ -72,6 +72,7 @@ public class StdRideable extends StdMOB implements Rideable
 		}
 		return super.killMeDead(createBody);
 	}
+	
 	@Override
 	public void destroy()
 	{
@@ -388,7 +389,8 @@ public class StdRideable extends StdMOB implements Rideable
 					// msg.source().tell(L("No more can fit on @x1.",name(msg.source())));
 					return false;
 				}
-				if((this.playerStats!=null)&&(!charStats().getMyRace().isRideable()))
+				if((this.playerStats!=null)
+				&&((!charStats().getMyRace().isRideable()))||(!getGroupMembers(new HashSet<MOB>()).contains(msg.source())))
 				{
 					msg.source().tell(L("@x1 won't let you do that.",name(msg.source())));
 					return false;

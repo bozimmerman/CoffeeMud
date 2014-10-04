@@ -45,8 +45,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	public Map<String,Integer> GENMOBCODESHASH=new Hashtable<String,Integer>();
 	public Map<String,Integer> GENITEMCODESHASH=new Hashtable<String,Integer>();
 
-	@Override
-	public boolean get(int x, int m)
+	protected boolean get(int x, int m)
 	{
 		return (x&m)==m;
 	}
@@ -206,7 +205,17 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	}
 
 	@Override
-	public String getOrdPropertiesStr(Environmental E)
+	public void doGenPropertiesCopy(Environmental fromE, Environmental toE)
+	{
+		final String xml = getGenPropertiesStr(fromE) + getOrdPropertiesStr(fromE);
+		final List<XMLLibrary.XMLpiece> xmlV = CMLib.xml().parseAllXML(xml);
+		this.setGenPropertiesStr(toE, xmlV);
+		this.setOrdPropertiesStr(toE, xmlV);
+		if(toE instanceof Physical)
+			recoverPhysical((Physical)toE);
+	}
+	
+	protected String getOrdPropertiesStr(Environmental E)
 	{
 		final StringBuilder str=new StringBuilder("");
 		if(E instanceof Room)
@@ -302,8 +311,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		return str.toString();
 	}
 
-	@Override
-	public String getGenMobAbilities(MOB M)
+	protected String getGenMobAbilities(MOB M)
 	{
 		final StringBuilder abilitystr=new StringBuilder("");
 		for(int b=0;b<M.numAbilities();b++)
@@ -377,8 +385,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		return (CMLib.xml().convertXMLtoTag("INVEN",itemstr.toString()));
 	}
 
-	@Override
-	public String getGenPropertiesStr(Environmental E)
+	protected String getGenPropertiesStr(Environmental E)
 	{
 		final StringBuilder text=new StringBuilder("");
 		text.append(getEnvPropertiesStr(E));
@@ -696,8 +703,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		return text.toString();
 	}
 
-	@Override
-	public String unpackErr(String where, String msg)
+	protected String unpackErr(String where, String msg)
 	{
 		Log.errOut("CoffeeMaker","unpack"+where+"FromXML: "+msg);
 		return msg;
@@ -1972,8 +1978,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			setPropertiesStr(E,V,fromTop);
 	}
 
-	@Override
-	public void recoverPhysical(Physical P)
+	protected void recoverPhysical(Physical P)
 	{
 		if(P==null) return;
 		P.recoverPhyStats();
@@ -2016,8 +2021,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			recoverPhysical((Physical)E);
 	}
 
-	@Override
-	public void setOrdPropertiesStr(Environmental E, List<XMLpiece> V)
+	protected void setOrdPropertiesStr(Environmental E, List<XMLpiece> V)
 	{
 		if(V==null)
 		{
@@ -2136,8 +2140,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 	}
 
-	@Override
-	public void setGenMobAbilities(MOB M, List<XMLLibrary.XMLpiece> buf)
+	protected void setGenMobAbilities(MOB M, List<XMLLibrary.XMLpiece> buf)
 	{
 		final List<XMLLibrary.XMLpiece> V=CMLib.xml().getContentsFromPieces(buf,"ABLTYS");
 		if(V==null)
@@ -2220,8 +2223,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 	}
 
-	@Override
-	public void setGenMobInventory(MOB M, List<XMLpiece> buf)
+	protected void setGenMobInventory(MOB M, List<XMLpiece> buf)
 	{
 		final List<XMLLibrary.XMLpiece> V=CMLib.xml().getContentsFromPieces(buf,"INVEN");
 		boolean variableEq=false;
@@ -2522,8 +2524,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			}
 	}
 
-	@Override
-	public void setGenPropertiesStr(Environmental E, List<XMLpiece> buf)
+	protected void setGenPropertiesStr(Environmental E, List<XMLpiece> buf)
 	{
 		if(buf==null)
 		{
@@ -3517,8 +3518,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			setGenScripts((PhysicalAgent)E,buf,false);
 	}
 
-	@Override
-	public String identifier(Environmental E, Environmental parent)
+	protected String identifier(Environmental E, Environmental parent)
 	{
 		final StringBuilder str=new StringBuilder("");
 		if((E instanceof MOB)&&(parent==null))

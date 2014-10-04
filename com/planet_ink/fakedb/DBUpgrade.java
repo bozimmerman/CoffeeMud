@@ -700,18 +700,8 @@ public class DBUpgrade
 			{
 				M.invoke(o, oldTables, newTables, data, out);
 			}
-			catch (IllegalArgumentException e)
+			catch (Exception e)
 			{
-				e.printStackTrace();
-			}
-			catch (IllegalAccessException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			catch (InvocationTargetException e)
-			{
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

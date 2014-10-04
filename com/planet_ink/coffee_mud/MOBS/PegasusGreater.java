@@ -33,6 +33,7 @@ import java.util.*;
 */
 public class PegasusGreater extends StdRideable
 {
+	@Override public String ID(){return "PegasusGreater";}
 	public PegasusGreater()
 	{
 		super();

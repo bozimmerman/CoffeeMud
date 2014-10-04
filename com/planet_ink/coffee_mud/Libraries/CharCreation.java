@@ -2114,9 +2114,30 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
+	protected MOB rideableMOBTypeSwitch(final LoginSession loginObj, final Session session)
+	{
+		MOB mob=loginObj.mob;
+		MOB rideableM = CMClass.getMOB("StdRideable");
+		CMLib.coffeeMaker().doGenPropertiesCopy(mob,rideableM);
+		rideableM.setPlayerStats(mob.playerStats());
+		rideableM.setBaseCharStats(mob.baseCharStats());
+		rideableM.setBasePhyStats(mob.basePhyStats());
+		rideableM.setBaseState(mob.baseState());
+		((Rideable)rideableM).setRiderCapacity(2);
+		((Rideable)rideableM).setRideBasis(Rideable.RIDEABLE_LAND);
+		rideableM.recoverCharStats();
+		rideableM.recoverPhyStats();
+		rideableM.recoverMaxState();
+		loginObj.mob=rideableM;
+		session.setMob(rideableM);
+		mob.setSession(null);
+		mob.destroy();
+		return rideableM;
+	}
+	
 	protected LoginResult charcrRaceStart(final LoginSession loginObj, final Session session)
 	{
-		final MOB mob=loginObj.mob;
+		MOB mob=loginObj.mob;
 		session.setMob(loginObj.mob);
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 		{
@@ -2125,6 +2146,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				newRace=CMClass.getRace("StdRace");
 			if(newRace != null)
 			{
+				if(newRace.isRideable())
+					mob=rideableMOBTypeSwitch(loginObj,session);
 				mob.baseCharStats().setMyRace(newRace);
 				loginObj.state=LoginState.CHARCR_RACEDONE;
 				return null;
@@ -2162,7 +2185,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult charcrRaceReEntered(final LoginSession loginObj, final Session session)
 	{
 		final String raceStr=loginObj.lastInput.trim();
-		final MOB mob=loginObj.mob;
+		MOB mob=loginObj.mob;
 
 		if(raceStr.trim().equalsIgnoreCase("?")||(raceStr.length()==0))
 			session.println(null,null,null,"\n\r"+new CMFile(Resources.buildResourcePath("text")+"races.txt",null,CMFile.FLAG_LOGERRORS).text().toString());
@@ -2204,6 +2227,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				final StringBuilder str=CMLib.help().getHelpText(newRace.ID().toUpperCase(),mob,false);
 				if(str!=null) session.println("\n\r^N"+str.toString()+"\n\r");
 				session.promptPrint(L("^!Is ^H@x1^N^! correct (Y/n)?^N",newRace.name()));
+				if(newRace.isRideable())
+					mob=rideableMOBTypeSwitch(loginObj,session);
 				mob.baseCharStats().setMyRace(newRace);
 				loginObj.state=LoginState.CHARCR_RACECONFIRMED;
 				return LoginResult.INPUT_REQUIRED;
@@ -2833,7 +2858,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		CMLib.utensils().outfit(mob,mob.baseCharStats().getCurrentClass().outfit(mob));
 		mob.setStartRoom(getDefaultStartRoom(mob));
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.ALL_AGEING))
-			mob.baseCharStats().setStat(CharStats.STAT_AGE,mob.playerStats().initializeBirthday(CMLib.time().localClock(mob.getStartRoom()),0,mob.baseCharStats().getMyRace()));
+		{
+			final Race R=mob.baseCharStats().getMyRace();
+			final Room startR=mob.getStartRoom();
+			final TimeClock C=CMLib.time().localClock(startR);
+			final PlayerStats pStats=mob.playerStats();
+			final int age=pStats.initializeBirthday(C,0,R);
+			mob.baseCharStats().setStat(CharStats.STAT_AGE,age);
+		}
 		final String startingMoney=mob.baseCharStats().getCurrentClass().getStartingMoney();
 		if((startingMoney!=null)&&(startingMoney.trim().length()>0))
 		{
