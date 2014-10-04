@@ -994,6 +994,16 @@ public class RaceData extends StdWebMacro
 						bodyKill=old.equalsIgnoreCase("on");
 					if(bodyKill) str.append(" CHECKED , ");
 				}
+				if(parms.containsKey("CANRIDE"))
+				{
+					final String old=httpReq.getUrlParameter("CANRIDE");
+					boolean canRide=false;
+					if(old==null)
+						canRide=R.isRideable();
+					else
+						canRide=old.equalsIgnoreCase("on");
+					if(canRide) str.append(" CHECKED , ");
+				}
 				if(parms.containsKey("DISFLAGS"))
 				{
 					if(!httpReq.isUrlParameter("DISFLAGS"))

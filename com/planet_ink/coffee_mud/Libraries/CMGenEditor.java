@@ -7501,6 +7501,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genRaceWearFlags(mob,me,++showNumber,showFlag);
 			genAgingChart(mob,me,++showNumber,showFlag);
 			promptStatBool(mob,me,++showNumber,showFlag,"Never create corpse","BODYKILL");
+			promptStatBool(mob,me,++showNumber,showFlag,"Rideable Player","CANRIDE");
 			genPStats(mob,me,++showNumber,showFlag);
 			genAStats(mob,me,"ASTATS","CharStat Adjustments",++showNumber,showFlag);
 			genAStats(mob,me,"CSTATS","CharStat Settings",++showNumber,showFlag);

@@ -298,6 +298,8 @@ public class GrinderRaces
 		R.setStat("WEAPONRACE",(old==null)?"WEAPONRACE":old);
 		old=httpReq.getUrlParameter("EVENTRACE");
 		R.setStat("EVENTRACE",(old==null)?"EVENTRACE":old);
+		old=httpReq.getUrlParameter("CANRIDE");
+		R.setStat("CANRIDE",(old==null)?"false":(""+old.equalsIgnoreCase("on")));
 		old=httpReq.getUrlParameter("GENHELP");
 		R.setStat("HELP", ((old==null)?"":old));
 		final StringBuffer bodyOld=new StringBuffer("");

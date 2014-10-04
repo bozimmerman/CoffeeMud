@@ -43,6 +43,7 @@ public class GenRace extends StdRace
 	public int availability=0;
 	public int[] agingChart=null;
 	protected String[] xtraValues=null;
+	public boolean isRideable=false;
 	public int shortestMale=24;
 	public int shortestFemale=24;
 	public int heightVariance=5;
@@ -233,6 +234,7 @@ public class GenRace extends StdRace
 		str.append(CMLib.xml().convertXMLtoTag("VWEIGHT",""+weightVariance()));
 		str.append(CMLib.xml().convertXMLtoTag("WEAR",""+forbiddenWornBits()));
 		str.append(CMLib.xml().convertXMLtoTag("AVAIL",""+availability));
+		str.append(CMLib.xml().convertXMLtoTag("RIDE", ""+isRideable()));
 		str.append(CMLib.xml().convertXMLtoTag("DESTROYBODY",""+destroyBodyAfterUse()));
 		final StringBuffer bbody=new StringBuffer("");
 		for(int i=0;i<bodyMask().length;i++)
@@ -396,6 +398,8 @@ public class GenRace extends StdRace
 		heightVariance=CMLib.xml().getIntFromPieces(raceData,"VHEIGHT");
 		shortestFemale=CMLib.xml().getIntFromPieces(raceData,"FHEIGHT");
 		shortestMale=CMLib.xml().getIntFromPieces(raceData,"MHEIGHT");
+		isRideable=CMLib.xml().getBoolFromPieces(raceData,"RIDE");
+		
 		helpEntry=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(raceData,"HELP"));
 		final String playerval=CMLib.xml().getValFromPieces(raceData,"PLAYER").trim().toUpperCase();
 		if(playerval.length()>0)
@@ -606,7 +610,7 @@ public class GenRace extends StdRace
 									 "NUMOFT","GETOFTID","GETOFTPARM","BODYKILL",
 									 "NUMREFF","GETREFF","GETREFFPARM","GETREFFLVL","AGING",
 									 "DISFLAGS","STARTASTATE","EVENTRACE","WEAPONRACE", "HELP",
-									 "BREATHES"
+									 "BREATHES","CANRIDE"
 									 };
 	@Override
 	public String getStat(String code)
@@ -673,6 +677,7 @@ public class GenRace extends StdRace
 		case 43: return getRaceLocatorID(weaponBuddy);
 		case 44: return helpEntry;
 		case 45: return CMParms.toStringList(sortedBreathables);
+		case 46: return ""+isRideable;
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -1102,6 +1107,11 @@ public class GenRace extends StdRace
 		{
 			sortedBreathables=CMParms.toIntArray(CMParms.parseCommas(val,true));
 			Arrays.sort(sortedBreathables);
+			break;
+		}
+		case 46:
+		{
+			isRideable=CMath.s_bool(val);
 			break;
 		}
 		default:

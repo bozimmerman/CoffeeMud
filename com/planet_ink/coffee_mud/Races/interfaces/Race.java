@@ -218,6 +218,11 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 */
 	public boolean isGeneric();
 	/**
+	 * Whether this race is usually rideable; helps determine the appropriate java class to use.
+	 * @return whether this race is generally rideable
+	 */
+	public boolean isRideable();
+	/**
 	 * If this race is modifiable at run time, this method will return an xml document
 	 * describing the several attributes of this race.
 	 * @see #isGeneric()
