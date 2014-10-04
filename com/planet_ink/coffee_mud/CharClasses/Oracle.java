@@ -157,7 +157,7 @@ public class Oracle extends Cleric
 	}
 
 	private final String[] raceRequiredList=new String[]{
-		"Humanoid","Dwarf","Elf","HalfElf","Elf-kin","Fairy-kin"
+		"Humanoid","Dwarf","Elf","HalfElf","Elf-kin","Fairy-kin","Centaur"
 	};
 	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 

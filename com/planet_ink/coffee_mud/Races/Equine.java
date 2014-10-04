@@ -38,8 +38,8 @@ public class Equine extends StdRace
 	@Override public int shortestMale(){return 60;}
 	@Override public int shortestFemale(){return 60;}
 	@Override public int heightVariance(){return 12;}
-	@Override public int lightestWeight(){return 350;}
-	@Override public int weightVariance(){return 100;}
+	@Override public int lightestWeight(){return 1250;}
+	@Override public int weightVariance(){return 400;}
 	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_HEAD|Wearable.WORN_EARS|Wearable.WORN_EYES);}
 	@Override public String racialCategory(){return "Equine";}
 	private final String[]racialAbilityNames={"Fighter_Kick"};
@@ -50,7 +50,7 @@ public class Equine extends StdRace
 	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
 	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
 	@Override protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
-	@Override public boolean isRideable() { return true; }
+	@Override public boolean useRideClass() { return true; }
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };

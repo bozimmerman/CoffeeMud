@@ -172,7 +172,7 @@ public class Beastmaster extends StdCharClass
 
 
 	private final String[] raceRequiredList=new String[]{
-		"Human","Humanoid","Elf","Dwarf","Giant-kin"
+		"Human","Humanoid","Elf","Dwarf","Giant-kin","Centaur"
 	};
 	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 

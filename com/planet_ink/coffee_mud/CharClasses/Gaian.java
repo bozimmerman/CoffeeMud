@@ -187,7 +187,7 @@ public class Gaian extends StdCharClass
 
 
 	private final String[] raceRequiredList=new String[]{
-		"Human","Elf","Vegetation","Humanoid","Halfling","Dwarf"
+		"Human","Elf","Vegetation","Humanoid","Halfling","Dwarf","Centaur"
 	};
 	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 

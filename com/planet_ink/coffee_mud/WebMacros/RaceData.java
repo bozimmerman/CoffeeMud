@@ -999,7 +999,7 @@ public class RaceData extends StdWebMacro
 					final String old=httpReq.getUrlParameter("CANRIDE");
 					boolean canRide=false;
 					if(old==null)
-						canRide=R.isRideable();
+						canRide=R.useRideClass();
 					else
 						canRide=old.equalsIgnoreCase("on");
 					if(canRide) str.append(" CHECKED , ");

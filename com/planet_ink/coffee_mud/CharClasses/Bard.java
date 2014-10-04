@@ -297,7 +297,7 @@ public class Bard extends StdCharClass
 
 
 	private final String[] raceRequiredList=new String[]{
-		"Human","Humanoid","Elf","Dwarf","Halfling","Elf-kin"
+		"Human","Humanoid","Elf","Dwarf","Halfling","Elf-kin","Centaur"
 	};
 	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 

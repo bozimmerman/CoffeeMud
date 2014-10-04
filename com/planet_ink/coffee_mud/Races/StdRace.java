@@ -74,7 +74,7 @@ public class StdRace implements Race
 	@Override public int[]		bodyMask(){return parts;}
 	@Override public int[]		getAgingChart(){return agingChart;}
 	@Override public int[]		getBreathables() { return breatheAirArray; }
-	@Override public boolean isRideable() { return false; }
+	@Override public boolean useRideClass() { return false; }
 
 	
 	protected int   	practicesAtFirstLevel(){return 0;}
@@ -794,7 +794,7 @@ public class StdRace implements Race
 		GR.setStat("BODYKILL",""+destroyBodyAfterUse());
 		GR.setStat("HELP",""+CMLib.help().getHelpText(name(),null,false));
 		GR.setStat("AGING",CMParms.toStringList(getAgingChart()));
-		GR.setStat("CANRIDE", ""+isRideable());
+		GR.setStat("CANRIDE", ""+useRideClass());
 		for(int i=0;i<Race.BODYPARTSTR.length;i++)
 				GR.bodyMask()[i]=bodyMask()[i];
 

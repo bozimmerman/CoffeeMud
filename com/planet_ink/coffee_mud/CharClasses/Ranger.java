@@ -179,7 +179,7 @@ public class Ranger extends StdCharClass
 	@Override public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg); Druid.doAnimalFollowerLevelingCheck(this,host,msg);}
 
 	private final String[] raceRequiredList=new String[]{
-		"Human","Humanoid","Troll-kin","Elf"
+		"Human","Humanoid","Troll-kin","Elf","Centaur"
 	};
 	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 

@@ -110,6 +110,7 @@ public class GenRace extends StdRace
 	@Override protected int[] racialEffectLevels(){return racialEffectLevels;}
 	@Override protected String[] racialEffectParms(){return racialEffectParms;}
 	@Override public int[] getBreathables() { return sortedBreathables; }
+	@Override public boolean useRideClass() { return isRideable; }
 
 	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
 	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
@@ -234,7 +235,7 @@ public class GenRace extends StdRace
 		str.append(CMLib.xml().convertXMLtoTag("VWEIGHT",""+weightVariance()));
 		str.append(CMLib.xml().convertXMLtoTag("WEAR",""+forbiddenWornBits()));
 		str.append(CMLib.xml().convertXMLtoTag("AVAIL",""+availability));
-		str.append(CMLib.xml().convertXMLtoTag("RIDE", ""+isRideable()));
+		str.append(CMLib.xml().convertXMLtoTag("RIDE", ""+useRideClass()));
 		str.append(CMLib.xml().convertXMLtoTag("DESTROYBODY",""+destroyBodyAfterUse()));
 		final StringBuffer bbody=new StringBuffer("");
 		for(int i=0;i<bodyMask().length;i++)

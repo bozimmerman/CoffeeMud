@@ -3039,6 +3039,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		pfxml.append(CMLib.xml().convertXMLtoTag("IMG",mob.rawImage()));
 
 		final StringBuilder str=new StringBuilder("");
+		str.append(CMLib.xml().convertXMLtoTag("CLASSID",mob.ID()));
 		str.append(CMLib.xml().convertXMLtoTag("NAME",mob.Name()));
 		str.append(CMLib.xml().convertXMLtoTag("PASS",pstats.getPasswordStr()));
 		str.append(CMLib.xml().convertXMLtoTag("CLASS",mob.baseCharStats().getMyClassesStr()));
@@ -3122,7 +3123,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			final XMLLibrary.XMLpiece mblk=mV.get(m);
 			if((!mblk.tag.equalsIgnoreCase("PLAYER"))||(mblk.contents==null))
 				return unpackErr("PLAYERs","bad 'mblk'");
-			final MOB mob=CMClass.getMOB("StdMOB");
+			String classID=CMLib.xml().getValFromPieces(mblk.contents, "CLASSID");
+			if((classID==null)||(classID.length()==0))
+				classID="StdMOB";
+			final MOB mob=CMClass.getMOB(classID);
 			mob.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
 			mob.setName(CMLib.xml().getValFromPieces(mblk.contents,"NAME"));
 			mob.playerStats().setPassword(CMLib.xml().getValFromPieces(mblk.contents,"PASS"));

@@ -389,11 +389,15 @@ public class StdRideable extends StdMOB implements Rideable
 					// msg.source().tell(L("No more can fit on @x1.",name(msg.source())));
 					return false;
 				}
-				if((this.playerStats!=null)
-				&&((!charStats().getMyRace().isRideable()))||(!getGroupMembers(new HashSet<MOB>()).contains(msg.source())))
+				if(this.playerStats!=null)
 				{
-					msg.source().tell(L("@x1 won't let you do that.",name(msg.source())));
-					return false;
+					if((!charStats().getMyRace().useRideClass())
+					||(playerStats.getIgnored().contains(msg.source().Name()))
+					||(!getGroupMembers(new HashSet<MOB>()).contains(msg.source())))
+					{
+						msg.source().tell(L("@x1 won't let you do that.",name(msg.source())));
+						return false;
+					}
 				}
 				// protects from standard item rejection
 				return true;
@@ -448,7 +452,7 @@ public class StdRideable extends StdMOB implements Rideable
 					}
 				}
 			}
-			if((this.playerStats!=null)&&(!charStats().getMyRace().isRideable())&&(numRiders()>0))
+			if((this.playerStats!=null)&&(!charStats().getMyRace().useRideClass())&&(numRiders()>0))
 			{
 				msg.source().tell(L("@x1 is far too burdened!",name(msg.source())));
 				return false;

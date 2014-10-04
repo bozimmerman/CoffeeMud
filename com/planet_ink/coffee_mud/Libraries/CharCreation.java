@@ -2123,13 +2123,16 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		rideableM.setBaseCharStats(mob.baseCharStats());
 		rideableM.setBasePhyStats(mob.basePhyStats());
 		rideableM.setBaseState(mob.baseState());
+		rideableM.setAttributesBitmap(mob.getAttributesBitmap());
 		((Rideable)rideableM).setRiderCapacity(2);
 		((Rideable)rideableM).setRideBasis(Rideable.RIDEABLE_LAND);
 		rideableM.recoverCharStats();
 		rideableM.recoverPhyStats();
 		rideableM.recoverMaxState();
+		rideableM.setDisplayText("");
 		loginObj.mob=rideableM;
 		session.setMob(rideableM);
+		rideableM.setSession(session);
 		mob.setSession(null);
 		mob.destroy();
 		return rideableM;
@@ -2146,7 +2149,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				newRace=CMClass.getRace("StdRace");
 			if(newRace != null)
 			{
-				if(newRace.isRideable())
+				if(newRace.useRideClass())
 					mob=rideableMOBTypeSwitch(loginObj,session);
 				mob.baseCharStats().setMyRace(newRace);
 				loginObj.state=LoginState.CHARCR_RACEDONE;
@@ -2227,7 +2230,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				final StringBuilder str=CMLib.help().getHelpText(newRace.ID().toUpperCase(),mob,false);
 				if(str!=null) session.println("\n\r^N"+str.toString()+"\n\r");
 				session.promptPrint(L("^!Is ^H@x1^N^! correct (Y/n)?^N",newRace.name()));
-				if(newRace.isRideable())
+				if(newRace.useRideClass())
 					mob=rideableMOBTypeSwitch(loginObj,session);
 				mob.baseCharStats().setMyRace(newRace);
 				loginObj.state=LoginState.CHARCR_RACECONFIRMED;
