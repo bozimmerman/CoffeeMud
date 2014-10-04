@@ -1021,6 +1021,7 @@ public class StdRace implements Race
 		}
 
 		GR.setStat("BODYKILL",""+otherRace.getStat("BODYKILL"));
+		GR.setStat("CANRIDE",""+otherRace.getStat("CANRIDE"));
 		GR.setStat("AGING",CMParms.toStringList(aging));
 		for(int i=0;i<Race.BODYPARTSTR.length;i++)
 			if((race1.bodyMask()[i]>0)&&(race2.bodyMask()[i]>0))
