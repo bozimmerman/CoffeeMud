@@ -28,7 +28,7 @@ NON-TECH
       takes off through the city. After a given time, say maybe 5 seconds, the taxi pulls over and the door opens/opens to the south. Obviously here the player 
       would either EXIT TAXI/CAB or type the direction the door opens. If I could get some pointers on where to start with this I would be most thankful. - Blake
    *. Have Unlock automatically send an open message if it succeeds. Have Lock automatically close first, if possible.
-   *. Classes with insufficient unique skills: Charlatan (7), Alterer (9), Illusionist (10),  Ranger (10), Alterer (11), Evoker (11), Assassin (12), Paladin (12), 
+   *. Classes with insufficient unique skills: Charlatan (7), Alterer (9), Illusionist (10),  Ranger (11), Alterer (11), Evoker (11), Assassin (12), Paladin (12), 
    *. A fireball type chant for Delvers or something, like Magma Cannon or Core Spike.
    *. Transcribe -as a spell, allowing a mage to transcribe a spell from one scroll to another scroll.
    *. Jewel making to include bars, rings, other thingies, to put in piercings.
