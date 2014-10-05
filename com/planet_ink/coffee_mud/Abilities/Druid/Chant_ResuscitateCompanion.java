@@ -36,11 +36,12 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings({"rawtypes"})
-public class Chant_ResuscitateAnimal extends Chant implements MendingSkill
+public class Chant_ResuscitateCompanion extends Chant implements MendingSkill
 {
-	@Override public String ID() { return "Chant_ResuscitateAnimal"; }
-	private final static String localizedName = CMLib.lang().L("Resuscitate Animal");
+	@Override public String ID() { return "Chant_ResuscitateCompanion"; }
+	private final static String localizedName = CMLib.lang().L("Resuscitate Companion");
 	@Override public String name() { return localizedName; }
+	@Override public String displayText() { return ""; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override public boolean isAutoInvoked() { return true; }
@@ -81,7 +82,7 @@ public class Chant_ResuscitateAnimal extends Chant implements MendingSkill
 			&&(CMLib.flags().isAnimalIntelligence(msg.source()))
 			&&(msg.source().amFollowing()==myChar))
 			{
-				final Chant_ResuscitateAnimal A=(Chant_ResuscitateAnimal)myChar.fetchAbility(ID());
+				final Chant_ResuscitateCompanion A=(Chant_ResuscitateCompanion)myChar.fetchAbility(ID());
 				final MOB aniM=msg.source();
 				final Room room=myChar.location();
 				if(A!=null)
@@ -95,6 +96,12 @@ public class Chant_ResuscitateAnimal extends Chant implements MendingSkill
 							&&(!aniM.amDestroyed())
 							&&(aniM.amDead()))
 							{
+								for(final Iterator<WeakReference<DeadBody>> m=companionMobs.iterator();m.hasNext();)
+								{
+									final WeakReference<DeadBody> wM=m.next();
+									if(wM.get()==null)
+										m.remove();
+								}
 								for(int i=room.numItems()-1;i>=0;i--)
 								{
 									final Item I=room.getItem(i);
@@ -103,12 +110,6 @@ public class Chant_ResuscitateAnimal extends Chant implements MendingSkill
 									&&(!isCompanionBody((DeadBody)I)))
 									{
 										final List<WeakReference<DeadBody>> companionMobs=A.companionMobs;
-										for(Iterator<WeakReference<DeadBody>> m=companionMobs.iterator();m.hasNext();)
-										{
-											final WeakReference<DeadBody> wM=m.next();
-											if((wM.get()==I)||(wM.get()==null))
-												m.remove();
-										}
 										while(companionMobs.size()>10)
 											companionMobs.remove(companionMobs.iterator().next());
 										companionMobs.add(new WeakReference<DeadBody>((DeadBody)I));
