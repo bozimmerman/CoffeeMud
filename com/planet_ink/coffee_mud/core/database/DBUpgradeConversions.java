@@ -33,7 +33,7 @@ public class DBUpgradeConversions
 		if(out!=null) 
 			out.print(str);
 	}
-
+	
 	public static void DBUpgradeConversionV1(
 											Map<String,List<String>> oldTables,
 											Map<String,List<String>> newTables,
@@ -44,58 +44,64 @@ public class DBUpgradeConversions
 		if(newTables.containsKey("CMCHCL") && (!oldTables.containsKey("CMCHCL")))
 		{
 			final List<List<String>> charRows=data.get("CMCHAR");
-			List<List<String>> cmchclRows=data.get("CMCHCL");
-			if(cmchclRows==null)
+			if(charRows != null)
 			{
-				cmchclRows=new Vector<List<String>>();
-				data.put("CMCHCL", cmchclRows);
+				List<List<String>> cmchclRows=data.get("CMCHCL");
+				if(cmchclRows==null)
+				{
+					cmchclRows=new Vector<List<String>>();
+					data.put("CMCHCL", cmchclRows);
+				}
+				pl(out," ");
+				pl(out," ");
+				p(out,"Making CMCHCL conversion: ");
+				final List<String> ofields=oldTables.get("CMCHAR");
+				final List<String> nfields=newTables.get("CMCHCL");
+				final int cmUserIDIndex=ofields.indexOf("$CMUSERID");
+				final int cmClanIndex=ofields.indexOf("$CMCLAN");
+				final int cmClRoIndex=ofields.indexOf("#CMCLRO");
+				final int cm2UserIDIndex=nfields.indexOf("$CMUSERID");
+				final int cm2ClanIndex=nfields.indexOf("$CMCLAN");
+				final int cm2ClRoIndex=nfields.indexOf("#CMCLRO");
+				for(int r=0;r<charRows.size();r++)
+				{
+					final List<String> row=charRows.get(r);
+					final String userID=row.get(cmUserIDIndex);
+					final String clanID=row.get(cmClanIndex);
+					final String clanRo=row.get(cmClRoIndex);
+					if((clanID==null)||(clanID.length()==0))
+						continue;
+					final Vector<String> newRow=new Vector<String>(3);
+					newRow.add(""); newRow.add(""); newRow.add("");
+					newRow.add(cm2UserIDIndex,userID);
+					newRow.add(cm2ClanIndex,clanID);
+					newRow.add(cm2ClRoIndex,clanRo);
+					cmchclRows.add(newRow);
+				}
+				if(cmchclRows.size()>0)
+					oldTables.put("CMCHCL", newTables.get("CMCHCL"));
 			}
-			pl(out," ");
-			pl(out," ");
-			p(out,"Making CMCHCL conversion: ");
-			final List<String> ofields=oldTables.get("CMCHAR");
-			final List<String> nfields=newTables.get("CMCHCL");
-			final int cmUserIDIndex=ofields.indexOf("$CMUSERID");
-			final int cmClanIndex=ofields.indexOf("$CMCLAN");
-			final int cmClRoIndex=ofields.indexOf("#CMCLRO");
-			final int cm2UserIDIndex=nfields.indexOf("$CMUSERID");
-			final int cm2ClanIndex=nfields.indexOf("$CMCLAN");
-			final int cm2ClRoIndex=nfields.indexOf("#CMCLRO");
-			for(int r=0;r<charRows.size();r++)
-			{
-				final List<String> row=charRows.get(r);
-				final String userID=row.get(cmUserIDIndex);
-				final String clanID=row.get(cmClanIndex);
-				final String clanRo=row.get(cmClRoIndex);
-				if((clanID==null)||(clanID.length()==0))
-					continue;
-				final Vector<String> newRow=new Vector<String>(3);
-				newRow.add(""); newRow.add(""); newRow.add("");
-				newRow.add(cm2UserIDIndex,userID);
-				newRow.add(cm2ClanIndex,clanID);
-				newRow.add(cm2ClRoIndex,clanRo);
-				cmchclRows.add(newRow);
-			}
-			if(cmchclRows.size()>0)
-				oldTables.put("CMCHCL", newTables.get("CMCHCL"));
 		}
 		
 		// now look for cmchid insertion
 		if(newTables.containsKey("CMCHAR") && (oldTables.containsKey("CMCHAR")))
 		{
 			final List<List<String>> charRows=data.get("CMCHAR");
-			final List<String> ofields=oldTables.get("CMCHAR");
-			final List<String> nfields=newTables.get("CMCHAR");
-			if(nfields.contains("$CMCHID") && (!ofields.contains("$CMCHID")))
+			if(charRows != null)
 			{
-				ofields.add("$CMCHID");
-				pl(out," ");
-				pl(out," ");
-				p(out,"Making CMCHID conversion: ");
-				for(int r=0;r<charRows.size();r++)
+				final List<String> ofields=oldTables.get("CMCHAR");
+				final List<String> nfields=newTables.get("CMCHAR");
+				if(nfields.contains("$CMCHID") && (!ofields.contains("$CMCHID")))
 				{
-					final List<String> row=charRows.get(r);
-					row.add("StdMOB");
+					ofields.add("$CMCHID");
+					pl(out," ");
+					pl(out," ");
+					p(out,"Making CMCHID conversion: ");
+					for(int r=0;r<charRows.size();r++)
+					{
+						final List<String> row=charRows.get(r);
+						row.add("StdMOB");
+					}
 				}
 			}
 		}

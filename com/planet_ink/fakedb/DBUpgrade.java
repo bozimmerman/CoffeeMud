@@ -94,17 +94,24 @@ public class DBUpgrade
 
 	public static void main(String a[]) throws IOException
 	{
-		pl("Welcome to the CoffeeMud Database Upgrade Tool!");
+		pl("Welcome to the FakeDB Database Upgrade Tool!");
 		pl("(C) 2003-2014 Bo Zimmerman");
 		pl("Another product of ...Planet Ink!");
 		pl("");
 		pl("");
+		long totMemory= Runtime.getRuntime().totalMemory();
+		if(totMemory < (6 * 1024 * 1024))
+		{
+			pl("* You aren't running this with much memory.  You might want to add  -Xms256m -Xmx1024m to the command line arguments.");
+			pl("");
+			pl("");
+		}
 		final Hashtable<String,List<String>> oldTables=new Hashtable<String,List<String>>();
 		Map<Object,Method> converters=new Hashtable<Object,Method>();
 		while(oldTables.size()==0)
 		{
 			pl("Enter the path to the 'fakedb.schema' file");
-			pl("for the **OLD** version of CoffeeMud.");
+			pl("for the **OLD** version.");
 			pl("It doesn't matter whether you are or are not using FakeDB.");
 			p(":");
 			String oldfakedbfile=in.readLine().trim();
@@ -190,7 +197,7 @@ public class DBUpgrade
 		while(newTables.size()==0)
 		{
 			pl("Enter the path to the 'fakedb.schema' file");
-			pl("for the **NEW** version of CoffeeMud.");
+			pl("for the **NEW** version.");
 			pl("It doesn't matter whether you are or are not using FakeDB.");
 			p(":");
 			String newfakedbfile=in.readLine().trim();
@@ -405,10 +412,13 @@ public class DBUpgrade
 				{
 					while(dirPath.endsWith(""+File.separatorChar))
 						dirPath=dirPath.substring(0,dirPath.length()-1);
-					F=new File(dirPath+File.separatorChar+"fakedb.data.CMROOM");
-					if((!F.exists())||(F.isDirectory()))
+					boolean found=false;
+					for(File f : F.listFiles())
+						if((f.getName().startsWith("fakedb.data."))&&(!f.isDirectory()))
+							found=true;
+					if(!found)
 					{
-						pl("That's not it. No fakedb.data.CMROOM file there. Try again.");
+						pl("That's not it. No fakedb.data.* files there. Try again.");
 						F=null;
 					}
 					else
@@ -455,7 +465,7 @@ public class DBUpgrade
 				Class.forName(sclass);
 				final java.sql.Connection myConnection=DriverManager.getConnection(sservice,slogin,spassword);
 				final java.sql.Statement myStatement=myConnection.createStatement(java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.CONCUR_READ_ONLY);
-				final java.sql.ResultSet R=myStatement.executeQuery("SELECT * FROM CMROOM");
+				final java.sql.ResultSet R=myStatement.executeQuery("SELECT * FROM "+oldTables.keys().nextElement());
 				if(R!=null)
 				{
 					tested=true;
@@ -645,153 +655,197 @@ public class DBUpgrade
 				pl(ce.getMessage());
 			}
 		}
+		
+		
+		HashSet<String> oldTablesAlreadyDone=new HashSet<String>();
+		int currentTableSkipRows=0;
+		
 		/////////////////////////////////////////////////////////////////////////////
 		/////// Start sucking data
 		/////////////////////////////////////////////////////////////////////////////
 		pl("");
 		pl("Ok, our destination database is all ready too!");
 		pl("Time to read in your source data and get this whole thing started.");
-		pl("");
-		pl("");
-		p("Reading source tables: ");
-		final Hashtable<String,List<List<String>>> data=new Hashtable<String,List<List<String>>>();
-		try
+		boolean allDone=false;
+		final int memoryAmount= 3 * 1024 * 1024;
+		while(!allDone)
 		{
-			Class.forName(sclass);
-			final java.sql.Connection myConnection=DriverManager.getConnection(sservice,slogin,spassword);
-			for(final Enumeration e=oldTables.keys();e.hasMoreElements();)
-			{
-				final String table=(String)e.nextElement();
-				final List<String> fields=oldTables.get(table);
-				final Vector<List<String>> rows=new Vector<List<String>>();
-				data.put(table,rows);
-				final java.sql.Statement myStatement=myConnection.createStatement(java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.CONCUR_READ_ONLY);
-				final java.sql.ResultSet R=myStatement.executeQuery("SELECT * FROM "+table);
-				while(R.next())
-				{
-					final Vector<String> row=new Vector<String>();
-					rows.addElement(row);
-					for(int s=0;s<fields.size();s++)
-					{
-						final String field=fields.get(s).substring(1);
-						String S=R.getString(field);
-						if(S==null)
-							S="";
-						row.addElement(S);
-					}
-				}
-				R.close();
-				myStatement.close();
-				p(table+"("+rows.size()+") ");
-			}
-		}
-		catch(final Exception ce)
-		{
-			pl("\n\nOops.. failed to read your old data!");
-			pl(ce.getMessage());
-			pl("Fix it and run this again!");
-			return;
-		}
-
-		for(Object o : converters.keySet())
-		{
-			Method M=converters.get(o);
+			pl("");
+			pl("");
+			p("Reading source tables: ");
+			final Hashtable<String,List<List<String>>> data=new Hashtable<String,List<List<String>>>();
 			try
 			{
-				M.invoke(o, oldTables, newTables, data, out);
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-		
-		pl(" ");
-		pl(" ");
-		p("OK! Writing destination tables: ");
-
-		try
-		{
-			Class.forName(dclass);
-			final java.sql.Connection myConnection=DriverManager.getConnection(dservice,dlogin,dpassword);
-			for(final Enumeration e=newTables.keys();e.hasMoreElements();)
-			{
-				final String table=(String)e.nextElement();
-				final List<String> ofields=oldTables.get(table);
-				final List<String> nfields=newTables.get(table);
-				final List rows=data.get(table);
-				p(table);
-				if((rows==null)||(rows.size()==0))
+				Class.forName(sclass);
+				final java.sql.Connection myConnection=DriverManager.getConnection(sservice,slogin,spassword);
+				boolean hasNextProbably=false;
+				for(final Enumeration e=oldTables.keys();e.hasMoreElements();)
 				{
-					p(" ");
-					continue;
-				}
-				final int[] matrix=getMatrix(ofields,nfields);
-
-				for(int r=0;r<rows.size();r++)
-				{
-					final List row=(List)rows.get(r);
-					try
+					final String table=(String)e.nextElement();
+					data.remove(table);
+					if(!oldTablesAlreadyDone.contains(table))
 					{
-						final StringBuffer str=new StringBuffer("INSERT INTO "+table+" (");
-						for(int i=0;i<nfields.size();i++)
-							str.append(nfields.get(i).substring(1)+",");
-						if(nfields.size()>0)
-							str.setCharAt(str.length()-1,' ');
-						str.append(") VALUES (");
-						for(int i=0;i<nfields.size();i++)
-							str.append("?,");
-						if(nfields.size()>0)
-							str.setCharAt(str.length()-1,')');
-						else
-							str.append(")");
-						final java.sql.PreparedStatement myStatement=myConnection.prepareStatement(str.toString());
-						for(int i=0;i<nfields.size();i++)
-						{
-							final String field=nfields.get(i);
-							final int oldIndex=matrix[i];
-							final Object value=getFieldValue(field,oldIndex,row);
-							if(value instanceof String)
-								myStatement.setString(i+1, (String)value);
-							else
-							if(value instanceof Long)
-								myStatement.setLong(i+1, ((Long)value).longValue());
-						}
-						if(debug) p(".");
-						myStatement.executeUpdate();
-						myStatement.close();
-					}
-					catch(final SQLException sqle)
-					{
-						final StringBuffer str=new StringBuffer("SELECT * FROM "+table+" WHERE ");
-						for(int i=0;i<2 && i<nfields.size();i++)
-						{
-							final String field=nfields.get(i).substring(1);
-							str.append((i>0)?" and ":"").append(field).append("=");
-							final int oldIndex=matrix[i];
-							str.append(getStringFieldValue(field,oldIndex,row));
-						}
+						final List<String> fields=oldTables.get(table);
+						final Vector<List<String>> rows=new Vector<List<String>>();
+						data.put(table,rows);
+						System.gc();
 						final java.sql.Statement myStatement=myConnection.createStatement(java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.CONCUR_READ_ONLY);
-						final java.sql.ResultSet R=myStatement.executeQuery(str.toString());
-						final boolean found=((R!=null)&&(R.next()));
-						if(R!=null) R.close();
+						final java.sql.ResultSet R=myStatement.executeQuery("SELECT * FROM "+table);
+						for(int i=0;i<currentTableSkipRows;i++)
+							R.next();
+						while(R.next())
+						{
+							final Vector<String> row=new Vector<String>();
+							rows.addElement(row);
+							currentTableSkipRows++;
+							for(int s=0;s<fields.size();s++)
+							{
+								final String field=fields.get(s).substring(1);
+								String S=R.getString(field);
+								if(S==null)
+									S="";
+								row.addElement(S);
+							}
+							if(Runtime.getRuntime().freeMemory() <memoryAmount)
+							{
+								System.gc();
+								try{Thread.sleep(1000);}catch(Exception e2){}
+								if(Runtime.getRuntime().freeMemory() < memoryAmount)
+								{
+									hasNextProbably=true;
+									break;
+								}
+							}
+						}
+						R.close();
 						myStatement.close();
-						if(found)
-							p("\n** Duplicate key detected -- no worries, just skipping this row\n");
+						p(table+"("+rows.size()+") ");
+						if(!hasNextProbably)
+						{
+							oldTablesAlreadyDone.add(table);
+							currentTableSkipRows=0;
+						}
 						else
-							throw sqle;
+							break;
 					}
 				}
-				p(" ");
+				if(!hasNextProbably)
+				{
+					allDone=true;
+				}
+				myConnection.close();
 			}
-		}
-		catch(final Exception ce)
-		{
-			pl("\n\nOops.. something bad happened writing to your target database!");
-			pl(ce.getMessage());
-			ce.printStackTrace(System.err);
-			pl("Probably out of luck -- was a good try though!");
-			return;
+			catch(final Exception ce)
+			{
+				pl("\n\nOops.. failed to read your old data!");
+				pl(ce.getMessage());
+				pl("Fix it and run this again!");
+				return;
+			}
+	
+			for(Object o : converters.keySet())
+			{
+				Method M=converters.get(o);
+				try
+				{
+					M.invoke(o, oldTables, newTables, data, out);
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+			
+			pl(" ");
+			pl(" ");
+			p("OK! Writing destination tables: ");
+	
+			try
+			{
+				Class.forName(dclass);
+				final java.sql.Connection myConnection=DriverManager.getConnection(dservice,dlogin,dpassword);
+				for(final Enumeration e=newTables.keys();e.hasMoreElements();)
+				{
+					final String table=(String)e.nextElement();
+					final List<String> ofields=oldTables.get(table);
+					final List<String> nfields=newTables.get(table);
+					final List rows=data.get(table);
+					if(rows != null)
+						p(table);
+					if((rows==null)||(rows.size()==0))
+					{
+						p(" ");
+						continue;
+					}
+					final int[] matrix=getMatrix(ofields,nfields);
+	
+					for(int r=0;r<rows.size();r++)
+					{
+						final List row=(List)rows.get(r);
+						try
+						{
+							final StringBuffer str=new StringBuffer("INSERT INTO "+table+" (");
+							for(int i=0;i<nfields.size();i++)
+								str.append(nfields.get(i).substring(1)+",");
+							if(nfields.size()>0)
+								str.setCharAt(str.length()-1,' ');
+							str.append(") VALUES (");
+							for(int i=0;i<nfields.size();i++)
+								str.append("?,");
+							if(nfields.size()>0)
+								str.setCharAt(str.length()-1,')');
+							else
+								str.append(")");
+							final java.sql.PreparedStatement myStatement=myConnection.prepareStatement(str.toString());
+							for(int i=0;i<nfields.size();i++)
+							{
+								final String field=nfields.get(i);
+								final int oldIndex=matrix[i];
+								final Object value=getFieldValue(field,oldIndex,row);
+								if(value instanceof String)
+									myStatement.setString(i+1, (String)value);
+								else
+								if(value instanceof Long)
+									myStatement.setLong(i+1, ((Long)value).longValue());
+							}
+							if(debug) p(".");
+							myStatement.executeUpdate();
+							myStatement.close();
+						}
+						catch(final SQLException sqle)
+						{
+							final StringBuffer str=new StringBuffer("SELECT * FROM "+table+" WHERE ");
+							for(int i=0;i<2 && i<nfields.size();i++)
+							{
+								final String field=nfields.get(i).substring(1);
+								str.append((i>0)?" and ":"").append(field).append("=");
+								final int oldIndex=matrix[i];
+								str.append(getStringFieldValue(field,oldIndex,row));
+							}
+							final java.sql.Statement myStatement=myConnection.createStatement(java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.CONCUR_READ_ONLY);
+							final java.sql.ResultSet R=myStatement.executeQuery(str.toString());
+							final boolean found=((R!=null)&&(R.next()));
+							if(R!=null) R.close();
+							myStatement.close();
+							if(found)
+								p("\n** Duplicate key detected -- no worries, just skipping this row\n");
+							else
+								throw sqle;
+						}
+					}
+					p(" ");
+				}
+				myConnection.close();
+			}
+			catch(final Exception ce)
+			{
+				pl("\n\nOops.. something bad happened writing to your target database!");
+				pl(ce.getMessage());
+				ce.printStackTrace(System.err);
+				pl("Probably out of luck -- was a good try though!");
+				return;
+			}
+			data.clear();
 		}
 		pl(" ");
 		pl(" ");
