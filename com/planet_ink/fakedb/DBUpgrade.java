@@ -102,7 +102,7 @@ public class DBUpgrade
 		long totMemory= Runtime.getRuntime().totalMemory();
 		if(totMemory < (6 * 1024 * 1024))
 		{
-			pl("* You aren't running this with much memory.  You might want to add  -Xms256m -Xmx1024m to the command line arguments.");
+			pl("* You aren't running this with much memory.  You might want to add  -Xms16m -Xmx256m to the command line arguments.");
 			pl("");
 			pl("");
 		}
