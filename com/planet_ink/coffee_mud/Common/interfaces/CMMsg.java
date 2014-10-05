@@ -684,7 +684,7 @@ public interface CMMsg extends CMCommon
 	public List<CMMsg> trailerMsgs();
 
 	/**
-	 * Appends to the Vector of other CMMsg events which are slated to be confirmed
+	 * Appends to the list of other CMMsg events which are slated to be confirmed
 	 * and executed AFTER this current message is handled.  This is implemented
 	 * by the Room object
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room#send(MOB, CMMsg)
@@ -692,6 +692,24 @@ public interface CMMsg extends CMCommon
 	 */
 	public void addTrailerMsg(final CMMsg msg);
 
+	/**
+	 * Returns a List of other Runnables which are slated to be 
+	 * and executed AFTER this current message is handled.  This is implemented
+	 * by the Room object
+	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room#send(MOB, CMMsg)
+	 * @return a List of Runnable objects
+	 */
+	public List<Runnable> trailerRunnables();
+	
+	/**
+	 * Appends to the list of Runnable objects which are slated to be confirmed
+	 * and executed AFTER this current message is handled.  This is implemented
+	 * by the Room object
+	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room#send(MOB, CMMsg)
+	 * @param runner the Runnable to append to this message.
+	 */
+	public void addTrailerRunnable(final Runnable runner);
+	
 	// 0-1999 are message types
 	// 2000-2047 are channels
 	// flags are 2048, 4096, 8192, 16384,

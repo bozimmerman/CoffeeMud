@@ -25,6 +25,7 @@
   23. Account Manager in MUDGrinder now has a page to create massive numbers of accounts.  Done for a teacher who emailed me once.
   24. Races now include an isRideable flag to help inform mob class choice during character creation.  Make rideable players!
   25. To go along with the above: Centaur is now a playable race.
+  26. New Ranger chant: Resuscitate Animal
 # Build 5.8.2 Release 6/13/2014
    0. Database Schema Updated! Run DBUpgrade, OR manually alter table CMCHCL to add CMCLSTS (see appropriate schema file)
    1. CM1Server has "FILE" command now for directory browsing/manipulation

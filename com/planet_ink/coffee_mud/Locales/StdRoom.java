@@ -1508,7 +1508,7 @@ public class StdRoom implements Room
 		// now handle trailer msgs
 		if(depth<3)
 		{
-			if((msg.trailerMsgs()!=null)&&(msg.trailerMsgs().size()>0))
+			if(msg.trailerMsgs()!=null)
 			{
 				for(final CMMsg msg2 : msg.trailerMsgs())
 					if((msg!=msg2)
@@ -1520,6 +1520,11 @@ public class StdRoom implements Room
 						source.executeMsg(source,msg2);
 						reallySend(source,msg2,depth+1);
 					}
+			}
+			if(msg.trailerRunnables()!=null)
+			{
+				for(final Runnable r : msg.trailerRunnables())
+					CMLib.threads().executeRunnable(r);
 			}
 		}
 	}

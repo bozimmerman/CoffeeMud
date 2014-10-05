@@ -52,8 +52,8 @@ public class DefaultMessage implements CMMsg
 	protected Environmental myTarget=null;
 	protected Environmental myTool=null;
 	protected int   		value=0;
-	protected SLinkedList<CMMsg>
-							trailMsgs=null;
+	protected List<CMMsg>	trailMsgs=null;
+	protected List<Runnable>trailRunnables=null;
 
 	@Override
 	public CMObject copyOf()
@@ -84,6 +84,7 @@ public class DefaultMessage implements CMMsg
 		myTarget=null;
 		myTool=null;
 		trailMsgs=null;
+		trailRunnables=null;
 		value=0;
 		if(!CMClass.returnMsg(this))
 			super.finalize();
@@ -218,12 +219,27 @@ public class DefaultMessage implements CMMsg
 	}
 
 	@Override
+	public List<Runnable> trailerRunnables()
+	{
+		return trailRunnables;
+	}
+
+	@Override
 	public void addTrailerMsg(final CMMsg msg)
 	{
-		if(trailMsgs==null) trailMsgs=new SLinkedList<CMMsg>();
+		if(trailMsgs==null) 
+			trailMsgs=new SLinkedList<CMMsg>();
 		trailMsgs.add(msg);
 	}
 
+	@Override
+	public void addTrailerRunnable(final Runnable r)
+	{
+		if(trailRunnables==null) 
+			trailRunnables=new SLinkedList<Runnable>();
+		trailRunnables.add(r);
+	}
+	
 	@Override
 	public void modify(final MOB source,
 					   final Environmental target,
