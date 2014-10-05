@@ -1607,8 +1607,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				{
 					CMLib.players().obliteratePlayer(M, true, false);
 				}
-				else
-					acct.delPlayer(delMe.name);
+				acct.delPlayer(delMe.name);
 				session.println(L("@x1 has been deleted.",delMe.name));
 			}
 			else
@@ -2045,9 +2044,18 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		final int themeCode=CMProps.getIntVar(CMProps.Int.MUDTHEME);
 		loginObj.theme=-1;
 		String selections="";
-		if(CMath.bset(themeCode,Area.THEME_FANTASY)){ selections+="/F";}
-		if(CMath.bset(themeCode,Area.THEME_HEROIC)){ selections+="/H";}
-		if(CMath.bset(themeCode,Area.THEME_TECHNOLOGY)){ selections+="/T";}
+		if(CMath.bset(themeCode,Area.THEME_FANTASY))
+		{ 
+			selections+="/F";
+		}
+		if(CMath.bset(themeCode,Area.THEME_HEROIC))
+		{ 
+			selections+="/H";
+		}
+		if(CMath.bset(themeCode,Area.THEME_TECHNOLOGY))
+		{ 
+			selections+="/T";
+		}
 		if(selections.length()==0)
 			selections="/F";
 		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"themes.txt",null,CMFile.FLAG_LOGERRORS).text();
@@ -2118,23 +2126,31 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	{
 		MOB mob=loginObj.mob;
 		MOB rideableM = CMClass.getMOB("StdRideable");
-		CMLib.coffeeMaker().doGenPropertiesCopy(mob,rideableM);
-		rideableM.setPlayerStats(mob.playerStats());
+		final PlayerStats playerStats=mob.playerStats();
+		PlayerAccount account=null;
+		if(playerStats!=null)
+			account=playerStats.getAccount();
+		rideableM.setName(mob.Name());
+		rideableM.setAttributesBitmap(mob.getAttributesBitmap());
+		rideableM.setDisplayText(mob.displayText());
+		rideableM.setDescription(mob.description());
+		rideableM.setPlayerStats(playerStats);
 		rideableM.setBaseCharStats(mob.baseCharStats());
 		rideableM.setBasePhyStats(mob.basePhyStats());
 		rideableM.setBaseState(mob.baseState());
-		rideableM.setAttributesBitmap(mob.getAttributesBitmap());
-		((Rideable)rideableM).setRiderCapacity(2);
-		((Rideable)rideableM).setRideBasis(Rideable.RIDEABLE_LAND);
 		rideableM.recoverCharStats();
 		rideableM.recoverPhyStats();
 		rideableM.recoverMaxState();
-		rideableM.setDisplayText("");
 		loginObj.mob=rideableM;
 		session.setMob(rideableM);
 		rideableM.setSession(session);
 		mob.setSession(null);
 		mob.destroy();
+		if(account!=null)
+		{
+			account.delPlayer(mob);
+			account.addNewPlayer(rideableM);
+		}
 		return rideableM;
 	}
 	
@@ -2163,7 +2179,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 		{
 			StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"races.txt",null,CMFile.FLAG_LOGERRORS).text();
-			try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(final Exception ex){}
+			try 
+			{ 
+				introText = CMLib.webMacroFilter().virtualPageFilter(introText);
+			}
+			catch(final Exception ex){}
 			session.println(null,null,null,introText.toString());
 		}
 		final StringBuffer listOfRaces=new StringBuffer("[");
@@ -2228,7 +2248,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			if(newRace!=null)
 			{
 				final StringBuilder str=CMLib.help().getHelpText(newRace.ID().toUpperCase(),mob,false);
-				if(str!=null) session.println("\n\r^N"+str.toString()+"\n\r");
+				if(str!=null) 
+					session.println("\n\r^N"+str.toString()+"\n\r");
 				session.promptPrint(L("^!Is ^H@x1^N^! correct (Y/n)?^N",newRace.name()));
 				if(newRace.useRideClass())
 					mob=rideableMOBTypeSwitch(loginObj,session);
