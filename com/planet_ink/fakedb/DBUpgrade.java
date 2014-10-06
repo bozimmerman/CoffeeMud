@@ -249,13 +249,10 @@ public class DBUpgrade
 									{
 										throw new Exception("Unable to load converter "+value+", are you sure it's in the classpath?");
 									}
-									if(C!=null)
-									{
-										Method M=C.getMethod("DBUpgradeConversionV1", Map.class,Map.class,Map.class,PrintStream.class);
-										if(M==null)
-											throw new Exception("Unable to load converter "+value+", are you sure it's in the classpath?");
-										converters.put(O,M);
-									}
+									Method M=C.getMethod("DBUpgradeConversionV1", Map.class,Map.class,Map.class,PrintStream.class);
+									if(M==null)
+										throw new Exception("Unable to load converter "+value+", are you sure it's in the classpath?");
+									converters.put(O,M);
 								}
 							}
 						}

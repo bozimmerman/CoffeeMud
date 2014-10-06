@@ -41,8 +41,9 @@ public class Skill_MarkDisguise extends Skill_Disguise
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =I(new String[] {"MARKDISGUISE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
-	public MOB mark=null;
-
+	
+	private MOB mark=null;
+	
 	public MOB getMark(MOB mob)
 	{
 		final Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");

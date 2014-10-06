@@ -44,13 +44,14 @@ public class Thief_Mark extends ThiefSkill
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public boolean isAutoInvoked(){return true;}
 	@Override public boolean canBeUninvoked(){return false;}
-	public int code=0;
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_COMBATLORE;}
 
 	@Override public int abilityCode(){return code;}
 	@Override public void setAbilityCode(int newCode){code=newCode;}
-	public MOB mark=null;
+	protected int code=0;
+	
 	public int ticks=0;
+	public MOB mark=null;
 
 	@Override
 	public String displayText()
@@ -63,24 +64,28 @@ public class Thief_Mark extends ThiefSkill
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if(msg.amISource(mark)&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
-		{
-			mark=null;
-			ticks=0;
-			setMiscText("");
-		}
-		else
-		if((msg.target()==mark)
-		&&(msg.source()==invoker)
-		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
-		&&(CMLib.flags().canBeSeenBy(mark,msg.source())))
-		{
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,
-										  CMMsg.MSG_OK_VISUAL,L("\n\r^x@x1 is your mark.^?^.\n\r",mark.name(msg.source())),
-										  CMMsg.NO_EFFECT,null,
-										  CMMsg.NO_EFFECT,null));
-		}
 		
+		final MOB mark=this.mark;
+		if(mark != null)
+		{
+			if(msg.amISource(mark)&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
+			{
+				this.mark=null;
+				ticks=0;
+				setMiscText("");
+			}
+			else
+			if((msg.target()==mark)
+			&&(msg.source()==invoker)
+			&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
+			&&(CMLib.flags().canBeSeenBy(mark,msg.source())))
+			{
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,
+											  CMMsg.MSG_OK_VISUAL,L("\n\r^x@x1 is your mark.^?^.\n\r",mark.name(msg.source())),
+											  CMMsg.NO_EFFECT,null,
+											  CMMsg.NO_EFFECT,null));
+			}
+		}
 		super.executeMsg(myHost,msg);
 	}
 
@@ -150,7 +155,8 @@ public class Thief_Mark extends ThiefSkill
 			return false;
 		}
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null) 
+			return false;
 		if(target==mob)
 		{
 			mob.tell(L("You cannot mark yourself!"));

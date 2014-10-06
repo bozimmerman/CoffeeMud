@@ -293,7 +293,7 @@ public class MOBloader
 					{
 						newItem.setMiscText(text);
 					}
-					if((oldLoc==null)&&(oldLocID!=null)
+					if((oldLoc==null)
 					&&(newItem instanceof SpaceShip))
 					{
 						final Area area=((SpaceShip)newItem).getShipArea();
