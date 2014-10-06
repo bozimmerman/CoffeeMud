@@ -18,7 +18,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 /*
-   Copyright 2000-2014 Bo Zimmerman
+   Copyright 2003-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

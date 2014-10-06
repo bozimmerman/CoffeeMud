@@ -21,7 +21,7 @@ import java.util.*;
 import java.io.IOException;
 
 /*
-   Copyright 2006-2011 Rob McClellan, Bo Zimmerman
+   Copyright 2008-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

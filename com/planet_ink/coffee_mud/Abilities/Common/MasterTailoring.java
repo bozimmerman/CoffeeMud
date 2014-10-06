@@ -19,7 +19,7 @@ import java.util.*;
 
 
 /*
-   Copyright 2004 Tim Kassebaum
+   Copyright 2004-2014 Tim Kassebaum
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
