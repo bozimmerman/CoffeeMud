@@ -45,6 +45,7 @@ public class Concierge extends StdBehavior
 	protected MOB fakeTalker=null;
 	protected Room startRoom=null;
 	protected boolean areaOnly=false;
+	protected String greeting="";
 	protected int maxRange = 100;
 	protected final TrackingLibrary.TrackingFlags trackingFlags = new TrackingLibrary.TrackingFlags().plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
 	
@@ -52,8 +53,6 @@ public class Concierge extends StdBehavior
 	{
 		return trackingFlags;
 	}
-	
-
 
 	@Override
 	public String accountForYourself()
@@ -61,6 +60,17 @@ public class Concierge extends StdBehavior
 		return "direction giving and selling";
 	}
 
+	protected String getGiveMoneyMessage(Environmental observer, Environmental destination, String moneyName)
+	{
+		if(observer instanceof MOB)
+			return L("Yep, I can help you find @x1, but you'll need to give me @x2 first.",getDestinationName(destination),moneyName);
+		else
+		if(observer instanceof Container)
+			return L("Yep, I can help you find @x1, but you'll need to put @x2 into @x3 first.",getDestinationName(destination),moneyName,observer.name());
+		else
+			return L("Yep, I can help you find @x1, but you'll need to drop @x2 first.",getDestinationName(destination),moneyName);
+	}
+	
 	protected final MOB getTalker(Environmental o, Room room)
 	{
 		if(o==null)
@@ -153,7 +163,7 @@ public class Concierge extends StdBehavior
 		basePrice=price;
 	}
 
-	public double getPrice(Environmental E)
+	protected double getPrice(Environmental E)
 	{
 		if(E==null) 
 			return basePrice;
@@ -165,7 +175,7 @@ public class Concierge extends StdBehavior
 		return rates.get(rateIndex).second.doubleValue();
 	}
 
-	public Environmental findDestination(final Environmental observer, final MOB mob, final Room centerRoom, final String where)
+	protected Environmental findDestination(final Environmental observer, final MOB mob, final Room centerRoom, final String where)
 	{
 		PairVector<String,Double> stringsToDo=null;
 		if(rates.size()==0) 
@@ -303,7 +313,7 @@ public class Concierge extends StdBehavior
 		return super.tick(ticking,tickID);
 	}
 
-	public String getDestination(MOB from, Environmental to)
+	protected String getDestination(MOB from, Environmental to)
 	{
 		String name=to.Name();
 		if(to instanceof Room) 
@@ -354,7 +364,7 @@ public class Concierge extends StdBehavior
 						CMLib.commands().postSay(conciergeM,source,L("Gee, thanks. :)"),true,false);
 				}
 				((Coins)possibleCoins).destroy();
-				thingsToSay.addElement(source,"Thank you. The way to "+destination.name()+" from here is: "+this.getDestination(conciergeM,destination));
+				this.giveMerchandise(source, destination, conciergeM, source.location());
 				destinations.removeElementFirst(source);
 			}
 			else
@@ -363,6 +373,16 @@ public class Concierge extends StdBehavior
 		}
 	}
 
+	protected String getDestinationName(Environmental destination)
+	{
+		return (destination instanceof Room)?destination.displayText():destination.name();
+	}
+	
+	protected void giveMerchandise(MOB whoM, Environmental destination, Environmental observer, Room room)
+	{
+		thingsToSay.addElement(whoM,L("Yes, the way to @x1 from here is: @x2",getDestinationName(destination),getDestination(getTalker(observer,room),destination)));
+	}
+	
 	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
@@ -381,11 +401,13 @@ public class Concierge extends StdBehavior
 			else 
 			if((msg.targetMinor()==CMMsg.TYP_DROP)
 			&&(!(observer instanceof Container))
+			&&((!(observer instanceof Rideable))||(msg.source().riding()==observer))
 			&&(!(observer instanceof MOB)))
 				executeMoneyDrop(source,getTalker(observer,room),msg.target(),msg);
 			else 
 			if((msg.amITarget(observer))
 			&&(msg.targetMinor()==CMMsg.TYP_PUT)
+			&&((!(observer instanceof Rideable))||(msg.source().riding()==observer))
 			&&(observer instanceof Container))
 				executeMoneyDrop(source,getTalker(observer,room),msg.tool(),msg);
 			else
@@ -401,6 +423,7 @@ public class Concierge extends StdBehavior
 			if((msg.targetMinor()==CMMsg.TYP_SPEAK)
 			&&(!msg.source().isMonster())
 			&&((msg.target()==observer)||(source.location().numPCInhabitants()==1)||(!(observer instanceof MOB)))
+			&&((!(observer instanceof Rideable))||(msg.source().riding()==observer))
 			&&(msg.sourceMessage()!=null))
 			{
 				final String say=CMStrings.getSayFromMessage(msg.sourceMessage());
@@ -410,7 +433,7 @@ public class Concierge extends StdBehavior
 					if(E==null)
 						synchronized(thingsToSay)
 						{
-							thingsToSay.addElement(msg.source(),"I'm sorry, I don't know where '"+say+"' is.");
+							thingsToSay.addElement(msg.source(),L("I'm sorry, I don't know where '@x1' is.",say));
 							return;
 						}
 					final int index=destinations.indexOfFirst(msg.source());
@@ -418,14 +441,12 @@ public class Concierge extends StdBehavior
 					destinations.removeElementFirst(msg.source());
 					final double rate=getPrice(E);
 					if(rate<=0.0)
-						thingsToSay.addElement(msg.source(),"Yes, the way to "+E.name()+" from here is: "+this.getDestination(getTalker(observer,room),E));
+						giveMerchandise(msg.source(), E, observer, room);
 					else
 					{
 						destinations.addElement(msg.source(),E,paid);
-						if(observer instanceof MOB)
-							thingsToSay.addElement(msg.source(),"Yep, I can help you find "+E.name()+", but you'll need to give me "+CMLib.beanCounter().nameCurrencyLong(getTalker(observer,room),rate)+" first.");
-						else
-							thingsToSay.addElement(msg.source(),"Yep, I can help you find "+E.name()+", but you'll need to drop "+CMLib.beanCounter().nameCurrencyLong(getTalker(observer,room),rate)+" first.");
+						final String moneyName=CMLib.beanCounter().nameCurrencyLong(getTalker(observer,room),rate);
+						thingsToSay.addElement(msg.source(),this.getGiveMoneyMessage(observer,E,moneyName));
 					}
 				}
 			}
