@@ -42,6 +42,7 @@ public class Concierge extends StdBehavior
 	protected TriadVector<MOB,Room,Double> destinations=new TriadVector<MOB,Room,Double>();
 	protected PairVector<MOB,String> thingsToSay=new PairVector<MOB,String>();
 	protected double basePrice=0.0;
+	protected double perRoomPrice=0.0;
 	protected String talkerName="";
 	protected MOB fakeTalker=null;
 	protected Room startRoom=null;
@@ -130,6 +131,7 @@ public class Concierge extends StdBehavior
 		greeting="Need directions? Just name the place!";
 		mountStr="";
 		maxRange = 100;
+		perRoomPrice = 0.0;
 		rates.clear();
 		ratesVec=null;
 		destinations.clear();
@@ -192,6 +194,12 @@ public class Concierge extends StdBehavior
 					continue;
 				}
 				else
+				if(s.equals("PERROOM"))
+				{
+					perRoomPrice=CMath.s_double(numStr);
+					continue;
+				}
+				else
 					price=CMath.s_double(numStr);
 			}
 			A=null;
@@ -209,15 +217,22 @@ public class Concierge extends StdBehavior
 		basePrice=price;
 	}
 
-	protected double getPrice(Environmental E)
+	protected double getPrice(final Room centerRoom, final Room  destR)
 	{
-		if(E==null) 
+		if(destR==null) 
 			return basePrice;
-		if(rates.size()==0) 
-			return basePrice;
-		final int rateIndex=rates.indexOfFirst(E);
-		if(rateIndex<0) 
-			return basePrice;
+		final int rateIndex=rates.indexOfFirst(destR);
+		if(rateIndex<0)
+		{
+			double price=basePrice;
+			if(this.perRoomPrice > 0.0)
+			{
+				List<Room> trail=CMLib.tracking().findBastardTheBestWay(centerRoom, destR, getTrackingFlags(), maxRange);
+				if(trail != null)
+					price = price + (perRoomPrice * trail.size());
+			}
+			return price;
+		}
 		return rates.get(rateIndex).second.doubleValue();
 	}
 
@@ -329,10 +344,8 @@ public class Concierge extends StdBehavior
 				CMLib.commands().postSay(conceirgeM,source,L("I'm sorry, I don't accept that kind of currency."),true,false);
 				return false;
 			}
-			final Environmental destination=destinations.get(destIndex).second;
-			final Double paid=destinations.get(destinations.indexOfFirst(source)).third;
-			final double owed=getPrice(destination)-paid.doubleValue();
-			if(owed<=0.0)
+			final Double owed=destinations.get(destinations.indexOfFirst(source)).third;
+			if(owed.doubleValue()<=0.0)
 			{
 				CMLib.commands().postSay(conceirgeM,source,L("Hey, you've already paid me!"),true,false);
 				return false;
@@ -403,21 +416,19 @@ public class Concierge extends StdBehavior
 			final int destIndex=destinations.indexOfFirst(source);
 			if(destIndex>=0)
 			{
-				final Room destR=destinations.elementAt(destIndex).second;
-				final Double paid=destinations.elementAt(destIndex).third;
-				double owed=getPrice(destR)-paid.doubleValue();
-				owed-=((Coins)possibleCoins).getTotalValue();
-				if(owed>0.0)
+				Triad<MOB,Room,Double> destT=destinations.get(destIndex);
+				final Room destR=destT.second;
+				final Double owed=Double.valueOf(destT.third.doubleValue() - ((Coins)possibleCoins).getTotalValue());
+				if(owed.doubleValue()>0.0)
 				{
-					Triad<MOB,Room,Double> t=destinations.get(destIndex);
-					t.third=Double.valueOf(owed);
-					CMLib.commands().postSay(conciergeM,source,L("Ok, you still owe @x1.",CMLib.beanCounter().nameCurrencyLong(conciergeM,owed)),true,false);
+					destT.third=owed;
+					CMLib.commands().postSay(conciergeM,source,L("Ok, you still owe @x1.",CMLib.beanCounter().nameCurrencyLong(conciergeM,owed.doubleValue())),true,false);
 					return;
 				}
 				else
-				if(owed<0.0)
+				if(owed.doubleValue()<0.0)
 				{
-					final double change=-owed;
+					final double change=-owed.doubleValue();
 					final Coins C=CMLib.beanCounter().makeBestCurrency(conciergeM,change);
 					if((change>0.0)&&(C!=null))
 					{
@@ -431,6 +442,7 @@ public class Concierge extends StdBehavior
 						C.setNumberOfCoins(num);
 						C.setCurrency(curr);
 						C.setDenomination(denom);
+						destT.third=Double.valueOf(0.0);
 						addToMsg.addTrailerMsg(newMsg);
 					}
 					else
@@ -515,15 +527,14 @@ public class Concierge extends StdBehavior
 								thingsToSay.addElement(msg.source(),L("I'm sorry, I don't know where '@x1' is.",say));
 								return;
 							}
-						final int index=destinations.indexOfFirst(msg.source());
-						final Double paid=(index>=0)?destinations.get(index).third:Double.valueOf(0.0);
+						final double rate=getPrice(room,roomR);
+						final Double owed=Double.valueOf(rate);
 						destinations.removeElementFirst(msg.source());
-						final double rate=getPrice(roomR);
-						if(rate<=0.0)
+						if(owed.doubleValue()<=0.0)
 							giveMerchandise(msg.source(), roomR, observer, room);
 						else
 						{
-							destinations.addElement(msg.source(),roomR,paid);
+							destinations.addElement(msg.source(),roomR,owed);
 							final String moneyName=CMLib.beanCounter().nameCurrencyLong(getTalker(observer,room),rate);
 							thingsToSay.addElement(msg.source(),this.getGiveMoneyMessage(observer,roomR,moneyName));
 						}
