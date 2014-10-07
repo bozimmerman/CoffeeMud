@@ -219,6 +219,8 @@ public class TaxiBehavior extends Concierge
 		destRoom = null;
 		trailTo= null;
 		riderM = null;
+		basePrice=10.0;
+		perRoomPrice=1.0;
 		super.resetDefaults();
 	}
 	
