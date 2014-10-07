@@ -21,12 +21,7 @@ TECH
    *. keep reviewing and updating the GameOverview.html doc
    
 NON-TECH
-   *. TaxiBehavior - Wondering where I would start on making a taxi service for my mud. I would like to be able to "hail cab" and have a taxi pull up something 
-      like this: "A yellow taxi pulls up to let you in." or "A yellow taxi pulls over and the door slides open to the north." Then have the player either ENTER 
-      TAXI/CAB or type what ever direction the cab door opens from. After entering the cab I`d like the mob to say something like "Where ya headed?" and then 
-      have the player say any number of checkpoints like this: say library -- mob replies "No problem, that will be $5, is that ok?" -- say yes OR nod -- The taxi 
-      takes off through the city. After a given time, say maybe 5 seconds, the taxi pulls over and the door opens/opens to the south. Obviously here the player 
-      would either EXIT TAXI/CAB or type the direction the door opens. If I could get some pointers on where to start with this I would be most thankful. - Blake
+   *. Test TaxiBehavior
    *. Have Unlock automatically send an open message if it succeeds. Have Lock automatically close first, if possible.
    *. Classes with insufficient unique skills: Charlatan (7), Alterer (9), Illusionist (10),  Ranger (11), Alterer (11), Evoker (11), Assassin (12), Paladin (12), 
    *. A fireball type chant for Delvers or something, like Magma Cannon or Core Spike.
