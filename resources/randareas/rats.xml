@@ -527,13 +527,13 @@ See guides/RandomAreas.html for information about documents of this type.
 		<TITLE>$a_streetprefix $_rats_hallways_street_name</TITLE>
 		<STRING id="rats_interior_desc" select="all">
 			<STRING select="any-1" action="PREPEND">
-				<STRING>You are standing  in (a(n)) $adj_any $_dungeon_tunnelword that branches $roomexits_desc_long.</STRING> 
-				<STRING>This $adj_any $_dungeon_tunnelword branches steeply $roomexits_desc_long.</STRING> 
-				<STRING>You are in (a(n)) $adj_any $_dungeon_tunnelword running $roomexits_desc_long.</STRING> 
-				<STRING>This $adj_any $_dungeon_tunnelword runs $roomexits_desc_long.</STRING> 
-				<STRING>You are walking through (a(n)) $adj_any $_dungeon_tunnelword heading $roomexits_desc_long.</STRING>
-				<STRING>This $adj_any $_dungeon_tunnelword heads $roomexits_desc_long.</STRING>
-				<STRING>This $adj_any $_dungeon_tunnelword seems to head $roomexits_desc_long.</STRING>
+				<STRING>You are standing  in (a(n)) $adj_any $_rats_tunnelword that branches $roomexits_desc_long.</STRING> 
+				<STRING>This $adj_any $_rats_tunnelword branches steeply $roomexits_desc_long.</STRING> 
+				<STRING>You are in (a(n)) $adj_any $_rats_tunnelword running $roomexits_desc_long.</STRING> 
+				<STRING>This $adj_any $_rats_tunnelword runs $roomexits_desc_long.</STRING> 
+				<STRING>You are walking through (a(n)) $adj_any $_rats_tunnelword heading $roomexits_desc_long.</STRING>
+				<STRING>This $adj_any $_rats_tunnelword heads $roomexits_desc_long.</STRING>
+				<STRING>This $adj_any $_rats_tunnelword seems to head $roomexits_desc_long.</STRING>
 			</STRING>
 			<STRING select="any-2" insert="rats_random_blurbs" action="APPEND" />
 			<STRING select="all" action="APPEND" insert="desc_exits" />
