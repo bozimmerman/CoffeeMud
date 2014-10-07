@@ -2393,7 +2393,9 @@ public class StdRoom implements Room
 			adjustment+=1;
 		if(CMath.bset(derivedClimate, Places.CLIMASK_WINDY))
 			adjustment+=1;
-		return getArea().getClimateObj().adjustWaterConsumption(baseThirst()+adjustment,mob,this);
+		if(getArea().getClimateObj()!=null)
+			return getArea().getClimateObj().adjustWaterConsumption(baseThirst()+adjustment,mob,this);
+		return 0;
 	}
 
 	@Override
