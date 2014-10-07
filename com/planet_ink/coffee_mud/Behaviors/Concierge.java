@@ -72,12 +72,12 @@ public class Concierge extends StdBehavior
 	protected String getGiveMoneyMessage(Environmental observer, Environmental destination, String moneyName)
 	{
 		if(observer instanceof MOB)
-			return L("Yep, I can help you find @x1, but you'll need to give me @x2 first.",getDestinationName(destination),moneyName);
+			return L("I can help you find @x1, but you'll need to give me @x2 first.",getDestinationName(destination),moneyName);
 		else
 		if(observer instanceof Container)
-			return L("Yep, I can help you find @x1, but you'll need to put @x2 into @x3 first.",getDestinationName(destination),moneyName,observer.name());
+			return L("I can help you find @x1, but you'll need to put @x2 into @x3 first.",getDestinationName(destination),moneyName,observer.name());
 		else
-			return L("Yep, I can help you find @x1, but you'll need to drop @x2 first.",getDestinationName(destination),moneyName);
+			return L("I can help you find @x1, but you'll need to drop @x2 first.",getDestinationName(destination),moneyName);
 	}
 	
 	protected MOB getTalker(Environmental o, Room room)
@@ -142,6 +142,7 @@ public class Concierge extends StdBehavior
 	public void setParms(String newParm)
 	{
 		super.setParms(newParm);
+		resetDefaults();
 		if((CMath.isInteger(newParm))
 		||(CMath.isDouble(newParm)))
 		{
@@ -470,13 +471,14 @@ public class Concierge extends StdBehavior
 		final Vector<Room> set=new Vector<Room>();
 		CMLib.tracking().getRadiantRooms(fromM.location(),set,getTrackingFlags(),null,maxRange,null);
 		String trailStr=CMLib.tracking().getTrailToDescription(fromM.location(),set,name,false,false,maxRange,null,1);
-		thingsToSay.addElement(whoM,L("Yes, the way to @x1 from here is: @x2",getDestinationName(destination),trailStr));
+		thingsToSay.addElement(whoM,L("The way to @x1 from here is: @x2",getDestinationName(destination),trailStr));
 	}
 	
 	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
+
 		if((!canFreelyBehaveNormal(affecting))&&(affecting instanceof MOB)) 
 			return;
 

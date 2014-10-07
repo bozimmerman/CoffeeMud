@@ -1024,7 +1024,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		if((thatRoom==null)||(E==null))
 			return false;
 		List<Rider> riders=null;
-		if((I instanceof Rideable)&&(thatRoom!=null))
+		if(I instanceof Rideable)
 		{
 			riders=new XVector<Rider>(((Rideable)I).riders());
 			final Exit opExit=thatRoom.getReverseExit(directionCode);
@@ -1068,9 +1068,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 
 		thisRoom.showHappens(CMMsg.MSG_OK_ACTION,I,L("<S-NAME> goes @x1.",Directions.getDirectionName(directionCode)));
-		if(thatRoom!=null)
-			thatRoom.moveItemTo(I);
-		if((I.owner()==thatRoom)&&(thatRoom!=null))
+		thatRoom.moveItemTo(I);
+		if(I.owner()==thatRoom)
 		{
 			thatRoom.showHappens(CMMsg.MSG_OK_ACTION,I,L("<S-NAME> arrives from @x1.",Directions.getFromDirectionName(Directions.getOpDirectionCode(directionCode))));
 			if(riders!=null)
@@ -1103,8 +1102,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 							R.setRiding(null);
 				}
 			}
+			return true;
 		}
-		return (thisRoom==thatRoom);
+		return false;
 	}
 	
 	@Override

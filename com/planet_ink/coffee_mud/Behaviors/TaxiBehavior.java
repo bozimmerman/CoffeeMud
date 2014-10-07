@@ -61,12 +61,12 @@ public class TaxiBehavior extends Concierge
 	protected String getGiveMoneyMessage(Environmental observer, Environmental destination, String moneyName)
 	{
 		if(observer instanceof MOB)
-			return L("Yep, I can take you to @x1, but you'll need to give me @x2 first.",getDestinationName(destination),moneyName);
+			return L("I can take you to @x1, but you'll need to give me @x2 first.",getDestinationName(destination),moneyName);
 		else
 		if(observer instanceof Container)
-			return L("Yep, I can take you to @x1, but you'll need to put @x2 into @x3 first.",getDestinationName(destination),moneyName,observer.name());
+			return L("I can take you to @x1, but you'll need to put @x2 into @x3 first.",getDestinationName(destination),moneyName,observer.name());
 		else
-			return L("Yep, I can take you to @x1, but you'll need to drop @x2 first.",getDestinationName(destination),moneyName);
+			return L("I can take you to @x1, but you'll need to drop @x2 first.",getDestinationName(destination),moneyName);
 	}
 	
 	@Override
@@ -115,9 +115,9 @@ public class TaxiBehavior extends Concierge
 			final Room room=CMLib.map().roomLocation(observer);
 			MOB conciergeM=this.getTalker(observer,room);
 			if(room==this.destRoom)
-				CMLib.commands().postSay(conciergeM,null,L("Looks like we're here.  Best of luck!."),true,false);
+				CMLib.commands().postSay(conciergeM,null,L("We're here.  Best of luck!."),true,false);
 			else
-				CMLib.commands().postSay(conciergeM,null,L("Looks like this is as far as I can go.  Best of luck!."),true,false);
+				CMLib.commands().postSay(conciergeM,null,L("This is as far as I can go.  Best of luck!."),true,false);
 			Rideable rideable = null;
 			if(observer instanceof Rideable)
 				rideable = (Rideable)observer;
@@ -172,7 +172,7 @@ public class TaxiBehavior extends Concierge
 		if((ticking instanceof Environmental) && (isEnRouter != null))
 		{
 			final Environmental observer=(Environmental)ticking;
-			if(!super.canFreelyBehaveNormal(ticking))
+			if((ticking instanceof MOB) && (!super.canFreelyBehaveNormal(ticking)))
 				endTheRide(observer);
 			else
 			{
@@ -212,6 +212,7 @@ public class TaxiBehavior extends Concierge
 	@Override
 	protected void resetDefaults()
 	{
+		super.resetDefaults();
 		greeting="Need a lift? If so, come aboard.";
 		mountStr="Where are you headed?";
 		isEnRouter = null;
@@ -221,7 +222,6 @@ public class TaxiBehavior extends Concierge
 		riderM = null;
 		basePrice=10.0;
 		perRoomPrice=1.0;
-		super.resetDefaults();
 	}
 	
 	@Override
