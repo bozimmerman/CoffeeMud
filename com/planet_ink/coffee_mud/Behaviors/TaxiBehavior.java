@@ -115,9 +115,9 @@ public class TaxiBehavior extends Concierge
 			final Room room=CMLib.map().roomLocation(observer);
 			MOB conciergeM=this.getTalker(observer,room);
 			if(room==this.destRoom)
-				CMLib.commands().postSay(conciergeM,null,L("We're here.  Best of luck!."),true,false);
+				CMLib.commands().postSay(conciergeM,null,L("We're here.  Best of luck!."),false,false);
 			else
-				CMLib.commands().postSay(conciergeM,null,L("This is as far as I can go.  Best of luck!."),true,false);
+				CMLib.commands().postSay(conciergeM,null,L("This is as far as I can go.  Best of luck!."),false,false);
 			Rideable rideable = null;
 			if(observer instanceof Rideable)
 				rideable = (Rideable)observer;
@@ -148,7 +148,7 @@ public class TaxiBehavior extends Concierge
 				if((observer instanceof Item)&&(room != null))
 				{
 					room.showHappens(CMMsg.MSG_OK_ACTION, observer.name()+" heads off.");
-					room.moveItemTo((Item)observer);
+					returnToRoom.moveItemTo((Item)observer);
 				}
 			}
 			if(isEnRouter != null)
@@ -187,6 +187,9 @@ public class TaxiBehavior extends Concierge
 					final Exit nextE=locR.getExitInDir(nextDirection);
 					if((nextR != null) && (nextE != null) && (nextE.isOpen()))
 					{
+						if((!indoorOK)&&((nextR.domainType()&Room.INDOORS)!=0))
+							endTheRide(observer);
+						else
 						if(observer instanceof MOB)
 						{
 							if(!CMLib.tracking().walk((MOB)observer, nextDirection,false,false))
@@ -213,6 +216,7 @@ public class TaxiBehavior extends Concierge
 	protected void resetDefaults()
 	{
 		super.resetDefaults();
+		indoorOK=false;
 		greeting="Need a lift? If so, come aboard.";
 		mountStr="Where are you headed?";
 		isEnRouter = null;

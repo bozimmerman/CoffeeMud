@@ -106,44 +106,65 @@ public interface TrackingLibrary extends CMLibrary
 
 	public static enum TrackingFlag
 	{
-		NOHOMES(new RFilter(){ @Override
-		public boolean isFilteredOut(final Room R, final Exit E, final int dir)
-		{
-			return CMLib.law().getLandTitle(R)!=null;
-		}}),
-		OPENONLY(new RFilter(){ @Override
-		public boolean isFilteredOut(final Room R, final Exit E, final int dir)
-		{
-			return !E.isOpen();
-		}}),
-		UNLOCKEDONLY(new RFilter(){ @Override
-		public boolean isFilteredOut(final Room R, final Exit E, final int dir)
-		{
-			return !E.hasALock();
-		}}),
-		AREAONLY(new RFilter(){ @Override
-		public boolean isFilteredOut(final Room R, final Exit E, final int dir)
-		{
-			return CMLib.law().getLandTitle(R)!=null;
-		}}),
-		NOEMPTYGRIDS(new RFilter(){ @Override
-		public boolean isFilteredOut(final Room R, final Exit E, final int dir)
-		{
-			return (R.getGridParent()!=null)&&(R.getGridParent().roomID().length()==0);
-		}}),
-		NOAIR(new RFilter(){ @Override
-		public boolean isFilteredOut(final Room R, final Exit E, final int dir)
-		{
-			return (R.domainType()==Room.DOMAIN_INDOORS_AIR) ||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR);
-		}}),
-		NOWATER(new RFilter(){  @Override
-		public boolean isFilteredOut(final Room R, final Exit E, final int dir)
-		{
-			return (R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
-				   ||(R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-				   ||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-				   ||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE);
-		}});
+		NOHOMES(new RFilter(){ 
+			@Override
+			public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+			{
+				return CMLib.law().getLandTitle(R)!=null;
+			}
+		}),
+		OPENONLY(new RFilter(){ 
+			@Override
+			public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+			{
+				return !E.isOpen();
+			}
+		}),
+		UNLOCKEDONLY(new RFilter(){ 
+			@Override
+			public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+			{
+				return !E.hasALock();
+			}
+		}),
+		AREAONLY(new RFilter(){ 
+			@Override
+			public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+			{
+				return CMLib.law().getLandTitle(R)!=null;
+			}
+		}),
+		NOEMPTYGRIDS(new RFilter(){ 
+			@Override
+			public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+			{
+				return (R.getGridParent()!=null)&&(R.getGridParent().roomID().length()==0);
+			}
+		}),
+		NOAIR(new RFilter(){ 
+			@Override
+			public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+			{
+				return (R.domainType()==Room.DOMAIN_INDOORS_AIR) ||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR);
+			}
+		}),
+		NOWATER(new RFilter(){
+			@Override
+			public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+			{
+				return (R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
+					   ||(R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
+					   ||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+					   ||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE);
+			}
+		}),
+		OUTDOORONLY(new RFilter(){ 
+			@Override
+			public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+			{
+				return (R.domainType()&Room.INDOORS) != 0;
+			}
+		});
 		public RFilter myFilter;
 		private TrackingFlag(RFilter filter)
 		{

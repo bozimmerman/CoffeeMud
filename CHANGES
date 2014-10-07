@@ -27,6 +27,7 @@
   25. To go along with the above: Centaur is now a playable race.
   26. New Ranger chant: Resuscitate Companion
   27. New GENERATEable themes in /resources/randreas/example.xml: forest, jungle, desert, swamp, mountains, snow, plains
+  28. New Behavior: TaxiBehavior.  Also, Concierge has more optional arguments.
 # Build 5.8.2 Release 6/13/2014
    0. Database Schema Updated! Run DBUpgrade, OR manually alter table CMCHCL to add CMCLSTS (see appropriate schema file)
    1. CM1Server has "FILE" command now for directory browsing/manipulation

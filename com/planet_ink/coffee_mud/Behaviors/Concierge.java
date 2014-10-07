@@ -47,6 +47,7 @@ public class Concierge extends StdBehavior
 	protected MOB fakeTalker=null;
 	protected Room startRoom=null;
 	protected boolean areaOnly=false;
+	protected boolean indoorOK=true;
 	protected String greeting="Need directions? Just name the place!";
 	protected String mountStr="";
 	protected int maxRange = 100;
@@ -125,6 +126,7 @@ public class Concierge extends StdBehavior
 	{
 		basePrice=0.0;
 		talkerName="";
+		indoorOK=true;
 		fakeTalker=null;
 		startRoom=null;
 		areaOnly=false;
@@ -168,6 +170,12 @@ public class Concierge extends StdBehavior
 				if(s.equals("AREAONLY"))
 				{
 					areaOnly=CMath.s_bool(numStr);
+					continue;
+				}
+				else
+				if(s.equals("INDOOROK"))
+				{
+					indoorOK=CMath.s_bool(numStr);
 					continue;
 				}
 				else
@@ -455,7 +463,7 @@ public class Concierge extends StdBehavior
 			}
 			else
 			if(!CMLib.flags().canBeSeenBy(source,conciergeM))
-				CMLib.commands().postSay(conciergeM,null,L("Wha?  Where did this come from?  Cool!"),true,false);
+				CMLib.commands().postSay(conciergeM,null,L("Wha?  Where did this come from?  Cool!"),false,false);
 		}
 	}
 
