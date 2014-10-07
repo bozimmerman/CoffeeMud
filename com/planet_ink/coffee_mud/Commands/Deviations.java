@@ -148,11 +148,12 @@ public class Deviations extends StdCommand
 		final int val2=CMath.s_int(vals.get(key));
 		return getDeviation(val,val2);
 	}
-	protected String getDeviation(int val, int val2)
+	
+	protected String getDeviation(double val, double val2)
 	{
 
 		if(val==val2) return "0%";
-		final int oval=val2-val;
+		final double oval=val2-val;
 		final int pval=(int)Math.round(CMath.div((oval<0)?(oval*-1):oval,val2==0?1:val2)*100.0);
 		if(oval>0) return "-"+pval+"%";
 		return "+"+pval+"%";
@@ -281,8 +282,8 @@ public class Deviations extends StdCommand
 												M.basePhyStats().armor(),
 												CMLib.leveler().getLevelMOBArmor(M)),5)+" ");
 				mobResults.append(CMStrings.padRight(""+getDeviation(
-												(int)Math.round(M.basePhyStats().speed()),
-												(int)Math.round(CMLib.leveler().getLevelMOBSpeed(M))),5)+" ");
+												M.basePhyStats().speed(),
+												CMLib.leveler().getLevelMOBSpeed(M)),5)+" ");
 				mobResults.append(CMStrings.padRight(""+((M.phyStats().rejuv()==PhyStats.NO_REJUV)?" MAX":""+M.phyStats().rejuv()) ,5)+" ");
 				if(useFaction!=null)
 					mobResults.append(CMStrings.padRight(""+(M.fetchFaction(useFaction.factionID())==Integer.MAX_VALUE?"N/A":""+M.fetchFaction(useFaction.factionID())),7)+" ");
@@ -297,7 +298,8 @@ public class Deviations extends StdCommand
 				mobResults.append("\n\r");
 			}
 		}
-		if(itemResults.length()>0) str.append(itemHeader()+itemResults.toString());
+		if(itemResults.length()>0) 
+			str.append(itemHeader()+itemResults.toString());
 		if(mobResults.length()>0) str.append(mobHeader(useFaction)+mobResults.toString());
 		return str;
 	}
