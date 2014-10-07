@@ -17,8 +17,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.lang.ref.WeakReference;
 import java.util.*;
 
@@ -199,6 +197,11 @@ public class Patroller extends ActiveTicker
 					tickStatus=Tickable.STATUS_NOT;
 					return true;
 				}
+			}
+			if((ticking instanceof Physical)&&(!CMLib.flags().canWorkOnSomething((Physical)ticking)) && (CMLib.dice().roll(1,100,0)>1))
+			{
+				tickStatus=Tickable.STATUS_NOT;
+				return true;
 			}
 			tickStatus=Tickable.STATUS_MISC+1;
 

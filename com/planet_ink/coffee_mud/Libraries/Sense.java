@@ -83,8 +83,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean canHear(MOB M)
 	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_NOT_HEAR)==0); }
 	@Override
-	public boolean canWorkOnSomething(MOB M)
-	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_NOT_WORK)==0); }
+	public boolean canWorkOnSomething(Physical P)
+	{ return (P!=null)&&((P.phyStats().sensesMask()&PhyStats.CAN_NOT_WORK)==0); }
 	@Override
 	public boolean canAutoAttack(MOB M)
 	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_NOT_AUTO_ATTACK)==0); }

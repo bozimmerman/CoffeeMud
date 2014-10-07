@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -136,6 +135,10 @@ public class RandomTeleporter extends ActiveTicker
 		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
 		{
 			final MOB mob=(MOB)ticking;
+			if((!CMLib.flags().canWorkOnSomething(mob)) && (CMLib.dice().roll(1,100,0)>1))
+			{
+				return true;
+			}
 			int tries=0;
 			Room R=null;
 			while(((++tries)<250)&&(R==null))

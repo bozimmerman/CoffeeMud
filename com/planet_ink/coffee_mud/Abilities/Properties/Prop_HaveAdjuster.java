@@ -160,14 +160,14 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		case PhyStats.STAT_ARMOR: phyStats.setArmor(phyStats.armor()+((Integer)changes[c+1]).intValue()); break;
 		case PhyStats.STAT_ATTACK: phyStats.setAttackAdjustment(phyStats.attackAdjustment()+((Integer)changes[c+1]).intValue()); break;
 		case PhyStats.STAT_DAMAGE: phyStats.setDamage(phyStats.damage()+((Integer)changes[c+1]).intValue()); break;
-		case PhyStats.STAT_DISPOSITION: phyStats.setDisposition(phyStats.disposition()+((Integer)changes[c+1]).intValue()); break;
+		case PhyStats.STAT_DISPOSITION: phyStats.setDisposition(phyStats.disposition()|((Integer)changes[c+1]).intValue()); break;
 		case PhyStats.STAT_LEVEL:  {
 			phyStats.setLevel(phyStats.level()+((Integer)changes[c+1]).intValue());
 			if(phyStats.level()<0) phyStats.setLevel(0);
 			break;
 		}
 		case PhyStats.STAT_REJUV: phyStats.setRejuv(phyStats.rejuv()+((Integer)changes[c+1]).intValue()); break;
-		case PhyStats.STAT_SENSES: phyStats.setSensesMask(phyStats.sensesMask()+((Integer)changes[c+1]).intValue()); break;
+		case PhyStats.STAT_SENSES: phyStats.setSensesMask(phyStats.sensesMask()|((Integer)changes[c+1]).intValue()); break;
 		case PhyStats.STAT_WEIGHT: phyStats.setWeight(phyStats.weight()+((Integer)changes[c+1]).intValue()); break;
 		case PhyStats.STAT_HEIGHT: phyStats.setHeight(phyStats.height()+((Integer)changes[c+1]).intValue()); break;
 		case PhyStats.NUM_STATS: phyStats.setSpeed(phyStats.speed()+((Double)changes[c+1]).doubleValue()); break;
@@ -201,7 +201,8 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
 		ensureStarted();
-		if(canApply(host)) phyStuff(phyStatsChanges,affectableStats);
+		if(canApply(host)) 
+			phyStuff(phyStatsChanges,affectableStats);
 		super.affectPhyStats(host,affectableStats);
 	}
 

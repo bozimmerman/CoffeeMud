@@ -14,8 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -37,7 +35,7 @@ public class Prop_Adjuster extends Prop_HaveAdjuster
 {
 	@Override public String ID() { return "Prop_Adjuster"; }
 	@Override public String name(){ return "Adjustments to stats";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_EXITS;}
 	@Override public boolean bubbleAffect(){return false;}
 	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
 	@Override
@@ -49,6 +47,16 @@ public class Prop_Adjuster extends Prop_HaveAdjuster
 		return false;
 	}
 
+	@Override
+	public boolean canApply(Environmental E)
+	{
+		if((affected!=null)
+		&&((mask==null)||(CMLib.masking().maskCheck(mask,E,true))))
+			return true;
+		return false;
+	}
+
+	
 	@Override
 	public int triggerMask()
 	{

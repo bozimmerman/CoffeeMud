@@ -51,6 +51,7 @@ public interface TrackingLibrary extends CMLibrary
 	public boolean run(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders);
 	public boolean walk(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders, boolean always);
 	public boolean run(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders, boolean always);
+	public boolean walk(Item I, int directionCode);
 	public int findExitDir(MOB mob, Room R, String desc);
 	public int findRoomDir(MOB mob, Room R);
 	public boolean isAnAdminHere(Room R, boolean sysMsgsOnly);

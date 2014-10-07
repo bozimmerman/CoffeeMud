@@ -1794,8 +1794,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				{
 					if(E!=null)
 						if(E.ID().equalsIgnoreCase(srchStr)
-						   ||E.name().equalsIgnoreCase(srchStr)
-						   ||E.Name().equalsIgnoreCase(srchStr))
+						||E.name().equalsIgnoreCase(srchStr)
+						||E.Name().equalsIgnoreCase(srchStr))
 							if((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0)))
 								if((--myOccurrance)<=0)
 									return E;
@@ -1829,6 +1829,53 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
+	public Environmental fetchEnvironmental(Iterator<? extends Environmental> iter, String srchStr, boolean exactOnly)
+	{
+		final FetchFlags flags=fetchFlags(srchStr);
+		if(flags==null) return null;
+
+		srchStr=flags.srchStr;
+		int myOccurrance=flags.occurrance;
+		final boolean allFlag=flags.allFlag;
+		try
+		{
+			if(exactOnly)
+			{
+				srchStr=cleanExtraneousDollarMarkers(srchStr);
+				for (;iter.hasNext();)
+				{
+					final Environmental E=iter.next();
+					if(E!=null)
+						if(E.ID().equalsIgnoreCase(srchStr)
+						||E.name().equalsIgnoreCase(srchStr)
+						||E.Name().equalsIgnoreCase(srchStr))
+							if((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0)))
+								if((--myOccurrance)<=0)
+									return E;
+				}
+			}
+			else
+			{
+				myOccurrance=flags.occurrance;
+				for (;iter.hasNext();)
+				{
+					final Environmental E=iter.next();
+					if((E!=null)
+					&&(containsString(E.name(),srchStr)
+						||containsString(E.Name(),srchStr)
+						||containsString(E.displayText(),srchStr)
+						||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr)))
+					&&((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0))))
+						if((--myOccurrance)<=0)
+							return E;
+				}
+			}
+		}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
+		return null;
+	}
+
+	@Override
 	public List<Environmental> fetchEnvironmentals(List<? extends Environmental> list, String srchStr, boolean exactOnly)
 	{
 		final Vector<Environmental> matches=new Vector<Environmental>(1);
@@ -1848,8 +1895,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				{
 					if(E!=null)
 						if(E.ID().equalsIgnoreCase(srchStr)
-						   ||E.name().equalsIgnoreCase(srchStr)
-						   ||E.Name().equalsIgnoreCase(srchStr))
+						||E.name().equalsIgnoreCase(srchStr)
+						||E.Name().equalsIgnoreCase(srchStr))
 							if((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0)))
 								if((--myOccurrance)<=0)
 									matches.addElement(E);
@@ -1862,7 +1909,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				{
 					if((E!=null)
 					&&(containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
-					   &&((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0))))
+					&&((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0))))
 						if((--myOccurrance)<=0)
 							matches.addElement(E);
 				}
@@ -1932,7 +1979,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				E=list.get(string);
 				if(E!=null)
 					if((containsString(E.displayText(),srchStr))
-					||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr)))
+					||((E instanceof MOB) && containsString(((MOB)E).genericName(),srchStr)))
 						if((--myOccurrance)<=0)
 							return E;
 			}
@@ -1961,8 +2008,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					if((I.container()==goodLocation)
 					&&(filter.passesFilter(I))
 					&&(I.ID().equalsIgnoreCase(srchStr)
-					   ||(I.Name().equalsIgnoreCase(srchStr))
-					   ||(I.name().equalsIgnoreCase(srchStr))))
+					  ||(I.Name().equalsIgnoreCase(srchStr))
+					  ||(I.name().equalsIgnoreCase(srchStr))))
 						if((!allFlag)||((I.displayText()!=null)&&(I.displayText().length()>0)))
 							if((--myOccurrance)<=0)
 								return I;
@@ -1979,8 +2026,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					if((I!=null)
 					&&(I.container()==goodLocation)
 					&&(filter.passesFilter(I))
-					&&((containsString(I.name(),srchStr)||containsString(I.Name(),srchStr))
-					   &&((!allFlag)||((I.displayText()!=null)&&(I.displayText().length()>0)))))
+					&&(containsString(I.name(),srchStr)||containsString(I.Name(),srchStr))
+					&&((!allFlag)||((I.displayText()!=null)&&(I.displayText().length()>0))))
 						if((--myOccurrance)<=0)
 							return I;
 				}
@@ -2040,8 +2087,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					if(I==null) continue;
 					if((I.container()==goodLocation)
 					&&(filter.passesFilter(I))
-					&&((containsString(I.name(),srchStr)||containsString(I.Name(),srchStr))
-					   &&((!allFlag)||((I.displayText()!=null)&&(I.displayText().length()>0)))))
+					&&(containsString(I.name(),srchStr)||containsString(I.Name(),srchStr))
+					&&((!allFlag)||((I.displayText()!=null)&&(I.displayText().length()>0))))
 						if((--myOccurrance)<=0)
 							matches.addElement(I);
 				}
@@ -2114,8 +2161,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						I=(Item)E;
 						if((I.container()==goodLocation)
 						&&(filter.passesFilter(I))
-						&&((containsString(I.name(),srchStr)||containsString(I.Name(),srchStr))
-						   &&((!allFlag)||(E instanceof Ability)||((I.displayText()!=null)&&(I.displayText().length()>0)))))
+						&&(containsString(I.name(),srchStr)||containsString(I.Name(),srchStr))
+						&&((!allFlag)||(E instanceof Ability)||((I.displayText()!=null)&&(I.displayText().length()>0))))
 							if((--myOccurrance)<=0)
 								return I;
 					}

@@ -1010,6 +1010,103 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return walk(mob,directionCode,flee,nolook,false);
 	}
 
+	
+	@Override
+	public boolean walk(Item I, int directionCode)
+	{
+		if(I==null)
+			return false;
+		final Room thisRoom=CMLib.map().roomLocation(I);
+		if(thisRoom==null)
+			return false;
+		final Room thatRoom = thisRoom.getRoomInDir(directionCode);
+		final Exit E=thisRoom.getExitInDir(directionCode);
+		if((thatRoom==null)||(E==null))
+			return false;
+		List<Rider> riders=null;
+		if((I instanceof Rideable)&&(thatRoom!=null))
+		{
+			riders=new XVector<Rider>(((Rideable)I).riders());
+			final Exit opExit=thatRoom.getReverseExit(directionCode);
+			for(int i=0;i<riders.size();i++)
+			{
+				final Rider R=riders.get(i);
+				if(R instanceof MOB)
+				{
+					final MOB mob=(MOB)R;
+					mob.setRiding((Rideable)I);
+					// overboard check
+					if(mob.isMonster()
+					&& mob.isSavable()
+					&& (mob.location() != thisRoom)
+					&& CMLib.flags().isInTheGame(mob,true))
+						thisRoom.bringMobHere(mob,false);
+
+					final CMMsg enterMsg=CMClass.getMsg(mob,thatRoom,E,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
+					final CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null);
+					if(!E.okMessage(mob,enterMsg))
+					{
+						return false;
+					}
+					else
+					if((opExit!=null)&&(!opExit.okMessage(mob,leaveMsg)))
+					{
+						return false;
+					}
+					else
+					if(!enterMsg.target().okMessage(mob,enterMsg))
+					{
+						return false;
+					}
+					else
+					if(!mob.okMessage(mob,enterMsg))
+					{
+						return false;
+					}
+				}
+			}
+		}
+
+		thisRoom.showHappens(CMMsg.MSG_OK_ACTION,I,L("<S-NAME> goes @x1.",Directions.getDirectionName(directionCode)));
+		if(thatRoom!=null)
+			thatRoom.moveItemTo(I);
+		if((I.owner()==thatRoom)&&(thatRoom!=null))
+		{
+			thatRoom.showHappens(CMMsg.MSG_OK_ACTION,I,L("<S-NAME> arrives from @x1.",Directions.getFromDirectionName(Directions.getOpDirectionCode(directionCode))));
+			if(riders!=null)
+			{
+				for(int i=0;i<riders.size();i++)
+				{
+					final Rider R=riders.get(i);
+					if(CMLib.map().roomLocation(R)!=thatRoom)
+						if((((Rideable)I).rideBasis()!=Rideable.RIDEABLE_SIT)
+						&&(((Rideable)I).rideBasis()!=Rideable.RIDEABLE_TABLE)
+						&&(((Rideable)I).rideBasis()!=Rideable.RIDEABLE_ENTERIN)
+						&&(((Rideable)I).rideBasis()!=Rideable.RIDEABLE_SLEEP)
+						&&(((Rideable)I).rideBasis()!=Rideable.RIDEABLE_LADDER))
+						{
+							if((R instanceof MOB)
+							&&(CMLib.flags().isInTheGame((MOB)R,true)))
+							{
+								thatRoom.bringMobHere((MOB)R,true);
+								((MOB)R).setRiding((Rideable)I);
+								CMLib.commands().postLook((MOB)R,true);
+								thatRoom.show((MOB)R,thatRoom,E,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,null);
+							}
+							else
+							if(R instanceof Item)
+							{
+								thatRoom.moveItemTo((Item)R);
+							}
+						}
+						else
+							R.setRiding(null);
+				}
+			}
+		}
+		return (thisRoom==thatRoom);
+	}
+	
 	@Override
 	public int findExitDir(MOB mob, Room R, String desc)
 	{

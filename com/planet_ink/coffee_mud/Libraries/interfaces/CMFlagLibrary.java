@@ -59,7 +59,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean canBreatheThis(MOB M, int atmoResource);
 	public boolean canBreatheHere(MOB M, Room R);
 	public boolean canSeeMetal(MOB M);
-	public boolean canWorkOnSomething(MOB M);
+	public boolean canWorkOnSomething(Physical P);
 	public boolean canAutoAttack(MOB M);
 	public boolean canConcentrate(MOB M);
 	public boolean isReadable(Item I);

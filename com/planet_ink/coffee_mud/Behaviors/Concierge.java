@@ -38,8 +38,8 @@ public class Concierge extends StdBehavior
 	@Override protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS|Behavior.CAN_ROOMS|Behavior.CAN_EXITS|Behavior.CAN_AREAS;}
 
 	protected PairVector<Object,Double> rates=new PairVector<Object,Double>();
-	protected List<Environmental> ratesVec=null;
-	protected TriadVector<MOB,Environmental,Double> destinations=new TriadVector<MOB,Environmental,Double>();
+	protected List<Room> ratesVec=null;
+	protected TriadVector<MOB,Room,Double> destinations=new TriadVector<MOB,Room,Double>();
 	protected PairVector<MOB,String> thingsToSay=new PairVector<MOB,String>();
 	protected double basePrice=0.0;
 	protected String talkerName="";
@@ -79,7 +79,7 @@ public class Concierge extends StdBehavior
 			return L("Yep, I can help you find @x1, but you'll need to drop @x2 first.",getDestinationName(destination),moneyName);
 	}
 	
-	protected final MOB getTalker(Environmental o, Room room)
+	protected MOB getTalker(Environmental o, Room room)
 	{
 		if(o==null)
 			return null;
@@ -96,6 +96,12 @@ public class Concierge extends StdBehavior
 			}
 		}
 		else
+		if(o instanceof Rideable)
+		{
+			Environmental E=CMLib.english().fetchEnvironmental(((Rideable)o).riders(),talkerName,true);
+			if(E instanceof MOB)
+				return (MOB)E;
+		}
 		if(fakeTalker==null)
 		{
 			fakeTalker=CMClass.getFactoryMOB();
@@ -107,6 +113,11 @@ public class Concierge extends StdBehavior
 		else
 			fakeTalker.setLocation(CMLib.map().roomLocation(o));
 		return fakeTalker;
+	}
+
+	protected Environmental getReceiver(Environmental o, Room room)
+	{
+		return o;
 	}
 
 	protected void resetDefaults()
@@ -224,13 +235,17 @@ public class Concierge extends StdBehavior
 			CMLib.tracking().getRadiantRooms(centerRoom,flags,maxRange);
 	}
 	
-	protected Environmental findDestination(final Environmental observer, final MOB mob, final Room centerRoom, final String where)
+	protected Room findDestination(final Environmental observer, final MOB mob, final Room centerRoom, final String where)
 	{
 		PairVector<String,Double> stringsToDo=null;
-		Environmental E=null;
+		Room roomR=null;
 		List<Room> roomsInRange=null;
 		if(rates.size()==0)
-			E=CMLib.map().findArea(where);
+		{
+			Area A=CMLib.map().findArea(where);
+			if(A!=null)
+				roomR=A.getRandomMetroRoom();
+		}
 		else
 		if(rates.size()>0)
 		{
@@ -262,23 +277,30 @@ public class Concierge extends StdBehavior
 			}
 			if(ratesVec==null)
 			{
-				ratesVec=new ArrayList<Environmental>();
+				ratesVec=new ArrayList<Room>();
 				for(Pair<Object,Double> p : rates)
-					if(p.first instanceof Environmental)
-						ratesVec.add((Environmental)p.first);
+					if(p.first instanceof Area)
+						ratesVec.add(((Area)p.first).getRandomMetroRoom());
+					else
+					if(p.first instanceof Room)
+						ratesVec.add((Room)p.first);
 			}
-			E=CMLib.english().fetchEnvironmental(ratesVec,where,true);
-			if(E==null)
-				E=CMLib.english().fetchEnvironmental(ratesVec,where,false);
-			if(E==null)
-				E=CMLib.map().findArea(where);
+			roomR=(Room)CMLib.english().fetchEnvironmental(ratesVec,where,true);
+			if(roomR==null)
+				roomR=(Room)CMLib.english().fetchEnvironmental(ratesVec,where,false);
+			if(roomR==null)
+			{
+				Area A=CMLib.map().findArea(where);
+				if(A!=null)
+					roomR=A.getRandomMetroRoom();
+			}
 		}
-		if(E==null)
+		if(roomR==null)
 		{
 			roomsInRange=getRoomsInRange(centerRoom,roomsInRange);
-			E=CMLib.map().findFirstRoom(new IteratorEnumeration<Room>(roomsInRange.iterator()), mob, where, false, 5);
+			roomR=CMLib.map().findFirstRoom(new IteratorEnumeration<Room>(roomsInRange.iterator()), mob, where, false, 5);
 		}
-		return E;
+		return roomR;
 	}
 
 	protected boolean mayGiveThisMoney(final MOB source, final MOB conceirgeM, final Room room, final Environmental possibleCoins)
@@ -333,7 +355,7 @@ public class Concierge extends StdBehavior
 		final Room room=source.location();
 		if(source != observer)
 		{
-			if((msg.amITarget(observer))
+			if((msg.amITarget(getReceiver(observer,room)))
 			&&(msg.targetMinor()==CMMsg.TYP_GIVE)
 			&&(!(observer instanceof Container))
 			&&(!(observer instanceof MOB)))
@@ -381,13 +403,13 @@ public class Concierge extends StdBehavior
 			final int destIndex=destinations.indexOfFirst(source);
 			if(destIndex>=0)
 			{
-				final Environmental destination=destinations.elementAt(destIndex).second;
+				final Room destR=destinations.elementAt(destIndex).second;
 				final Double paid=destinations.elementAt(destIndex).third;
-				double owed=getPrice(destination)-paid.doubleValue();
+				double owed=getPrice(destR)-paid.doubleValue();
 				owed-=((Coins)possibleCoins).getTotalValue();
 				if(owed>0.0)
 				{
-					Triad<MOB,Environmental,Double> t=destinations.get(destIndex);
+					Triad<MOB,Room,Double> t=destinations.get(destIndex);
 					t.third=Double.valueOf(owed);
 					CMLib.commands().postSay(conciergeM,source,L("Ok, you still owe @x1.",CMLib.beanCounter().nameCurrencyLong(conciergeM,owed)),true,false);
 					return;
@@ -415,7 +437,7 @@ public class Concierge extends StdBehavior
 						CMLib.commands().postSay(conciergeM,source,L("Gee, thanks. :)"),true,false);
 				}
 				((Coins)possibleCoins).destroy();
-				this.giveMerchandise(source, destination, conciergeM, source.location());
+				this.giveMerchandise(source, destR, conciergeM, source.location());
 				destinations.removeElementFirst(source);
 			}
 			else
@@ -429,12 +451,10 @@ public class Concierge extends StdBehavior
 		return (destination instanceof Room)?destination.displayText():destination.name();
 	}
 	
-	protected void giveMerchandise(MOB whoM, Environmental destination, Environmental observer, Room room)
+	protected void giveMerchandise(MOB whoM, Room destination, Environmental observer, Room room)
 	{
 		MOB fromM=getTalker(observer,room);
-		String name=destination.Name();
-		if(destination instanceof Room) 
-			name=CMLib.map().getExtendedRoomID((Room)destination);
+		String name=CMLib.map().getExtendedRoomID(destination);
 		final Vector<Room> set=new Vector<Room>();
 		CMLib.tracking().getRadiantRooms(fromM.location(),set,getTrackingFlags(),null,maxRange,null);
 		String trailStr=CMLib.tracking().getTrailToDescription(fromM.location(),set,name,false,false,maxRange,null,1);
@@ -456,7 +476,7 @@ public class Concierge extends StdBehavior
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_GIVE:
-				if(msg.amITarget(observer))
+				if(msg.amITarget(getReceiver(observer,room)))
 					executeMoneyDrop(source,getTalker(observer,room),msg.tool(),msg);
 				break;
 			case CMMsg.TYP_DROP:
@@ -488,8 +508,8 @@ public class Concierge extends StdBehavior
 					final String say=CMStrings.getSayFromMessage(msg.sourceMessage());
 					if((say!=null)&&(say.length()>0))
 					{
-						final Environmental E=findDestination(observer,msg.source(),room,say);
-						if(E==null)
+						final Room roomR=findDestination(observer,msg.source(),room,say);
+						if(roomR==null)
 							synchronized(thingsToSay)
 							{
 								thingsToSay.addElement(msg.source(),L("I'm sorry, I don't know where '@x1' is.",say));
@@ -498,14 +518,14 @@ public class Concierge extends StdBehavior
 						final int index=destinations.indexOfFirst(msg.source());
 						final Double paid=(index>=0)?destinations.get(index).third:Double.valueOf(0.0);
 						destinations.removeElementFirst(msg.source());
-						final double rate=getPrice(E);
+						final double rate=getPrice(roomR);
 						if(rate<=0.0)
-							giveMerchandise(msg.source(), E, observer, room);
+							giveMerchandise(msg.source(), roomR, observer, room);
 						else
 						{
-							destinations.addElement(msg.source(),E,paid);
+							destinations.addElement(msg.source(),roomR,paid);
 							final String moneyName=CMLib.beanCounter().nameCurrencyLong(getTalker(observer,room),rate);
-							thingsToSay.addElement(msg.source(),this.getGiveMoneyMessage(observer,E,moneyName));
+							thingsToSay.addElement(msg.source(),this.getGiveMoneyMessage(observer,roomR,moneyName));
 						}
 					}
 				}
