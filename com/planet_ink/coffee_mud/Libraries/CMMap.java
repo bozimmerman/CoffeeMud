@@ -792,9 +792,11 @@ public class CMMap extends StdLibrary implements WorldMap
 			addWorldRoomsLiberally(roomsV,getRoom(mob.location().getArea().Name()+srchStr));
 		else
 			addWorldRoomsLiberally(roomsV,getRoom(srchStr));
-		if(roomsV.size()>0) return roomsV.firstElement();
+		if(roomsV.size()>0) 
+			return roomsV.firstElement();
 		addWorldRoomsLiberally(roomsV,findRooms(rooms,mob,srchStr,displayOnly,true,timePct));
-		if(roomsV.size()>0) return roomsV.firstElement();
+		if(roomsV.size()>0) 
+			return roomsV.firstElement();
 		return null;
 	}
 

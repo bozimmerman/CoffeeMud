@@ -38,6 +38,7 @@ public class Concierge extends StdBehavior
 	@Override protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS|Behavior.CAN_ROOMS|Behavior.CAN_EXITS|Behavior.CAN_AREAS;}
 
 	protected PairVector<Object,Double> rates=new PairVector<Object,Double>();
+	protected List<Environmental> ratesVec=null;
 	protected TriadVector<MOB,Environmental,Double> destinations=new TriadVector<MOB,Environmental,Double>();
 	protected PairVector<MOB,String> thingsToSay=new PairVector<MOB,String>();
 	protected double basePrice=0.0;
@@ -45,9 +46,11 @@ public class Concierge extends StdBehavior
 	protected MOB fakeTalker=null;
 	protected Room startRoom=null;
 	protected boolean areaOnly=false;
-	protected String greeting="";
+	protected String greeting="Need directions? Just name the place!";
+	protected String mountStr="";
 	protected int maxRange = 100;
-	protected final TrackingLibrary.TrackingFlags trackingFlags = new TrackingLibrary.TrackingFlags().plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
+	
+	private final TrackingLibrary.TrackingFlags trackingFlags = new TrackingLibrary.TrackingFlags().plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
 	
 	protected TrackingLibrary.TrackingFlags getTrackingFlags()
 	{
@@ -58,6 +61,11 @@ public class Concierge extends StdBehavior
 	public String accountForYourself()
 	{
 		return "direction giving and selling";
+	}
+	
+	protected boolean disableComingsAndGoings()
+	{
+		return false;
 	}
 
 	protected String getGiveMoneyMessage(Environmental observer, Environmental destination, String moneyName)
@@ -100,18 +108,27 @@ public class Concierge extends StdBehavior
 			fakeTalker.setLocation(CMLib.map().roomLocation(o));
 		return fakeTalker;
 	}
-	
-	@Override
-	public void setParms(String newParm)
+
+	protected void resetDefaults()
 	{
-		super.setParms(newParm);
 		basePrice=0.0;
 		talkerName="";
 		fakeTalker=null;
 		startRoom=null;
 		areaOnly=false;
+		greeting="Need directions? Just name the place!";
+		mountStr="";
 		maxRange = 100;
 		rates.clear();
+		ratesVec=null;
+		destinations.clear();
+		thingsToSay.clear();
+	}
+	
+	@Override
+	public void setParms(String newParm)
+	{
+		super.setParms(newParm);
 		if((CMath.isInteger(newParm))
 		||(CMath.isDouble(newParm)))
 		{
@@ -146,6 +163,24 @@ public class Concierge extends StdBehavior
 					continue;
 				}
 				else
+				if(s.equals("GREETING"))
+				{
+					greeting=numStr;
+					continue;
+				}
+				else
+				if(s.equals("ENTERMSG"))
+				{
+					mountStr=numStr;
+					continue;
+				}
+				else
+				if(s.equals("TALKERNAME"))
+				{
+					talkerName=numStr;
+					continue;
+				}
+				else
 					price=CMath.s_double(numStr);
 			}
 			A=null;
@@ -175,48 +210,74 @@ public class Concierge extends StdBehavior
 		return rates.get(rateIndex).second.doubleValue();
 	}
 
+	protected final List<Room> getRoomsInRange(final Room centerRoom, final List<Room> roomsInRange)
+	{
+		if(roomsInRange != null)
+			return roomsInRange;
+		TrackingLibrary.TrackingFlags flags;
+		if(areaOnly)
+			flags = new TrackingLibrary.TrackingFlags()
+					.plus(TrackingLibrary.TrackingFlag.AREAONLY);
+		else
+			flags = new TrackingLibrary.TrackingFlags();
+		return
+			CMLib.tracking().getRadiantRooms(centerRoom,flags,maxRange);
+	}
+	
 	protected Environmental findDestination(final Environmental observer, final MOB mob, final Room centerRoom, final String where)
 	{
 		PairVector<String,Double> stringsToDo=null;
-		if(rates.size()==0) 
-			return CMLib.map().findArea(where);
-		for(int r=rates.size()-1;r>=0;r--)
-			if(rates.get(r).first instanceof String)
-			{
-				final String place=(String)rates.get(r).first;
-				if((observer!=null)&&(centerRoom!=null))
-				{
-					if(stringsToDo==null) stringsToDo=new PairVector<String,Double>();
-					stringsToDo.addElement(place,rates.get(r).second);
-				}
-				rates.removeElementAt(r);
-			}
-		if((stringsToDo!=null)&&(observer!=null))
+		Environmental E=null;
+		List<Room> roomsInRange=null;
+		if(rates.size()==0)
+			E=CMLib.map().findArea(where);
+		else
+		if(rates.size()>0)
 		{
-			TrackingLibrary.TrackingFlags flags;
-			flags = new TrackingLibrary.TrackingFlags()
-					.plus(TrackingLibrary.TrackingFlag.AREAONLY);
-			final List<Room> roomsInRange=
-				CMLib.tracking().getRadiantRooms(centerRoom,flags,50);
-			Room R=null;
-			String place=null;
-			for(int r=0;r<stringsToDo.size();r++)
+			for(int r=rates.size()-1;r>=0;r--)
+				if(rates.get(r).first instanceof String)
+				{
+					final String place=(String)rates.get(r).first;
+					if((observer!=null)&&(centerRoom!=null))
+					{
+						if(stringsToDo==null) stringsToDo=new PairVector<String,Double>();
+						stringsToDo.addElement(place,rates.get(r).second);
+					}
+					rates.removeElementAt(r);
+				}
+			if((stringsToDo!=null)&&(observer!=null))
 			{
-				place=stringsToDo.get(r).first;
-				R=(Room)CMLib.english().fetchEnvironmental(roomsInRange,place,false);
-				if(R!=null) 
-					rates.add(R,stringsToDo.get(r).second);
+				Room R=null;
+				String place=null;
+				for(int r=0;r<stringsToDo.size();r++)
+				{
+					roomsInRange=getRoomsInRange(centerRoom,roomsInRange);
+					place=stringsToDo.get(r).first;
+					R=(Room)CMLib.english().fetchEnvironmental(roomsInRange,place,false);
+					if(R!=null) 
+						rates.add(R,stringsToDo.get(r).second);
+				}
+				stringsToDo.clear();
+				stringsToDo=null;
 			}
-			stringsToDo.clear();
-			stringsToDo=null;
+			if(ratesVec==null)
+			{
+				ratesVec=new ArrayList<Environmental>();
+				for(Pair<Object,Double> p : rates)
+					if(p.first instanceof Environmental)
+						ratesVec.add((Environmental)p.first);
+			}
+			E=CMLib.english().fetchEnvironmental(ratesVec,where,true);
+			if(E==null)
+				E=CMLib.english().fetchEnvironmental(ratesVec,where,false);
+			if(E==null)
+				E=CMLib.map().findArea(where);
 		}
-		final List<Environmental> dimVec=new ArrayList<Environmental>();
-		for(Pair<Object,Double> p : rates)
-			if(p.first instanceof Environmental)
-				dimVec.add((Environmental)p.first);
-		Environmental E=CMLib.english().fetchEnvironmental(dimVec,where,true);
 		if(E==null)
-			E=CMLib.english().fetchEnvironmental(dimVec,where,false);
+		{
+			roomsInRange=getRoomsInRange(centerRoom,roomsInRange);
+			E=CMLib.map().findFirstRoom(new IteratorEnumeration<Room>(roomsInRange.iterator()), mob, where, false, 5);
+		}
 		return E;
 	}
 
@@ -313,16 +374,6 @@ public class Concierge extends StdBehavior
 		return super.tick(ticking,tickID);
 	}
 
-	protected String getDestination(MOB from, Environmental to)
-	{
-		String name=to.Name();
-		if(to instanceof Room) 
-			name=CMLib.map().getExtendedRoomID((Room)to);
-		final Vector<Room> set=new Vector<Room>();
-		CMLib.tracking().getRadiantRooms(from.location(),set,getTrackingFlags(),null,maxRange,null);
-		return CMLib.tracking().getTrailToDescription(from.location(),set,name,false,false,maxRange,null,1);
-	}
-	
 	protected void executeMoneyDrop(final MOB source, final MOB conciergeM, final Environmental possibleCoins, final CMMsg addToMsg)
 	{
 		if(possibleCoins instanceof Coins)
@@ -380,7 +431,14 @@ public class Concierge extends StdBehavior
 	
 	protected void giveMerchandise(MOB whoM, Environmental destination, Environmental observer, Room room)
 	{
-		thingsToSay.addElement(whoM,L("Yes, the way to @x1 from here is: @x2",getDestinationName(destination),getDestination(getTalker(observer,room),destination)));
+		MOB fromM=getTalker(observer,room);
+		String name=destination.Name();
+		if(destination instanceof Room) 
+			name=CMLib.map().getExtendedRoomID((Room)destination);
+		final Vector<Room> set=new Vector<Room>();
+		CMLib.tracking().getRadiantRooms(fromM.location(),set,getTrackingFlags(),null,maxRange,null);
+		String trailStr=CMLib.tracking().getTrailToDescription(fromM.location(),set,name,false,false,maxRange,null,1);
+		thingsToSay.addElement(whoM,L("Yes, the way to @x1 from here is: @x2",getDestinationName(destination),trailStr));
 	}
 	
 	@Override
@@ -395,66 +453,86 @@ public class Concierge extends StdBehavior
 		final Room room=source.location();
 		if(source!=observer)
 		{
-			if((msg.targetMinor()==CMMsg.TYP_GIVE)
-			&&(msg.amITarget(observer)))
-				executeMoneyDrop(source,getTalker(observer,room),msg.tool(),msg);
-			else 
-			if((msg.targetMinor()==CMMsg.TYP_DROP)
-			&&(!(observer instanceof Container))
-			&&((!(observer instanceof Rideable))||(msg.source().riding()==observer))
-			&&(!(observer instanceof MOB)))
-				executeMoneyDrop(source,getTalker(observer,room),msg.target(),msg);
-			else 
-			if((msg.amITarget(observer))
-			&&(msg.targetMinor()==CMMsg.TYP_PUT)
-			&&((!(observer instanceof Rideable))||(msg.source().riding()==observer))
-			&&(observer instanceof Container))
-				executeMoneyDrop(source,getTalker(observer,room),msg.tool(),msg);
-			else
-			if((msg.source()==getTalker(observer,room))
-			&&(msg.targetMinor()==CMMsg.TYP_SPEAK)
-			&&(msg.target() instanceof MOB)
-			&&(msg.tool() instanceof Coins)
-			&&(((Coins)msg.tool()).amDestroyed())
-			&&(!msg.source().isMine(msg.tool()))
-			&&(!((MOB)msg.target()).isMine(msg.tool())))
-				CMLib.beanCounter().giveSomeoneMoney(msg.source(),(MOB)msg.target(),((Coins)msg.tool()).getTotalValue());
-			else
-			if((msg.targetMinor()==CMMsg.TYP_SPEAK)
-			&&(!msg.source().isMonster())
-			&&((msg.target()==observer)||(source.location().numPCInhabitants()==1)||(!(observer instanceof MOB)))
-			&&((!(observer instanceof Rideable))||(msg.source().riding()==observer))
-			&&(msg.sourceMessage()!=null))
+			switch(msg.targetMinor())
 			{
-				final String say=CMStrings.getSayFromMessage(msg.sourceMessage());
-				if((say!=null)&&(say.length()>0))
+			case CMMsg.TYP_GIVE:
+				if(msg.amITarget(observer))
+					executeMoneyDrop(source,getTalker(observer,room),msg.tool(),msg);
+				break;
+			case CMMsg.TYP_DROP:
+				if((!(observer instanceof Container))
+				&&((!(observer instanceof Rideable))||(msg.source().riding()==observer))
+				&&(!(observer instanceof MOB)))
+					executeMoneyDrop(source,getTalker(observer,room),msg.target(),msg);
+				break;
+			case CMMsg.TYP_PUT:
+				if((msg.amITarget(observer))
+				&&((!(observer instanceof Rideable))||(msg.source().riding()==observer))
+				&&(observer instanceof Container))
+					executeMoneyDrop(source,getTalker(observer,room),msg.tool(),msg);
+				break;
+			case CMMsg.TYP_SPEAK:
+				if((msg.source()==getTalker(observer,room))
+				&&(msg.target() instanceof MOB)
+				&&(msg.tool() instanceof Coins)
+				&&(((Coins)msg.tool()).amDestroyed())
+				&&(!msg.source().isMine(msg.tool()))
+				&&(!((MOB)msg.target()).isMine(msg.tool())))
+					CMLib.beanCounter().giveSomeoneMoney(msg.source(),(MOB)msg.target(),((Coins)msg.tool()).getTotalValue());
+				else
+				if((!msg.source().isMonster())
+				&&((msg.target()==observer)||(source.location().numPCInhabitants()==1)||(!(observer instanceof MOB)))
+				&&((!(observer instanceof Rideable))||(msg.source().riding()==observer))
+				&&(msg.sourceMessage()!=null))
 				{
-					final Environmental E=findDestination(observer,msg.source(),room,say);
-					if(E==null)
-						synchronized(thingsToSay)
-						{
-							thingsToSay.addElement(msg.source(),L("I'm sorry, I don't know where '@x1' is.",say));
-							return;
-						}
-					final int index=destinations.indexOfFirst(msg.source());
-					final Double paid=(index>=0)?destinations.get(index).third:Double.valueOf(0.0);
-					destinations.removeElementFirst(msg.source());
-					final double rate=getPrice(E);
-					if(rate<=0.0)
-						giveMerchandise(msg.source(), E, observer, room);
-					else
+					final String say=CMStrings.getSayFromMessage(msg.sourceMessage());
+					if((say!=null)&&(say.length()>0))
 					{
-						destinations.addElement(msg.source(),E,paid);
-						final String moneyName=CMLib.beanCounter().nameCurrencyLong(getTalker(observer,room),rate);
-						thingsToSay.addElement(msg.source(),this.getGiveMoneyMessage(observer,E,moneyName));
+						final Environmental E=findDestination(observer,msg.source(),room,say);
+						if(E==null)
+							synchronized(thingsToSay)
+							{
+								thingsToSay.addElement(msg.source(),L("I'm sorry, I don't know where '@x1' is.",say));
+								return;
+							}
+						final int index=destinations.indexOfFirst(msg.source());
+						final Double paid=(index>=0)?destinations.get(index).third:Double.valueOf(0.0);
+						destinations.removeElementFirst(msg.source());
+						final double rate=getPrice(E);
+						if(rate<=0.0)
+							giveMerchandise(msg.source(), E, observer, room);
+						else
+						{
+							destinations.addElement(msg.source(),E,paid);
+							final String moneyName=CMLib.beanCounter().nameCurrencyLong(getTalker(observer,room),rate);
+							thingsToSay.addElement(msg.source(),this.getGiveMoneyMessage(observer,E,moneyName));
+						}
 					}
 				}
+				break;
+			case CMMsg.TYP_LEAVE:
+				if((msg.target()==room)
+				&&(!disableComingsAndGoings())
+				&&(destinations.containsFirst(msg.source())))
+					destinations.removeElementFirst(msg.source());
+				break;
+			case CMMsg.TYP_ENTER:
+				if((!msg.source().isMonster())
+				&&((greeting!=null)&&(greeting.length()>0))
+				&&(!disableComingsAndGoings())
+				&&(!destinations.containsFirst(msg.source()))
+				&&(msg.target()==CMLib.map().roomLocation(observer))
+				&&(CMLib.flags().canBeSeenBy(msg.source(), getTalker(observer,room))))
+					thingsToSay.addElement(msg.source(),greeting);
+				//$FALL-THROUGH$
+			case CMMsg.TYP_MOUNT:
+				if((!msg.source().isMonster())
+				&&(msg.target()==observer)
+				&&((mountStr!=null)&&(mountStr.length()>0))
+				&&(!destinations.containsFirst(msg.source()))
+				&&(CMLib.flags().canBeSeenBy(msg.source(), getTalker(observer,room))))
+					thingsToSay.addElement(msg.source(),mountStr);
 			}
-			else
-			if((msg.target()==room)
-			&&(msg.targetMinor()==CMMsg.TYP_LEAVE)
-			&&(destinations.containsFirst(msg.source())))
-				destinations.removeElementFirst(msg.source());
 		}
 	}
 }

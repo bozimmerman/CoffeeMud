@@ -36,10 +36,55 @@ public class TaxiBehavior extends Concierge
 {
 	@Override public String ID(){return "TaxiBehavior";}
 	@Override protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS;}
+	protected final TrackingLibrary.TrackingFlags taxiTrackingFlags = new TrackingLibrary.TrackingFlags().plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
+	
+	protected TrackingLibrary.TrackingFlags getTrackingFlags()
+	{
+		return taxiTrackingFlags;
+	}
 
 	@Override
 	public String accountForYourself()
 	{
-		return "direction giving and selling";
+		return "taking you from here to there";
+	}
+
+	@Override
+	protected String getGiveMoneyMessage(Environmental observer, Environmental destination, String moneyName)
+	{
+		if(observer instanceof MOB)
+			return L("Yep, I can take you to @x1, but you'll need to give me @x2 first.",getDestinationName(destination),moneyName);
+		else
+		if(observer instanceof Container)
+			return L("Yep, I can take you to @x1, but you'll need to put @x2 into @x3 first.",getDestinationName(destination),moneyName,observer.name());
+		else
+			return L("Yep, I can take you to @x1, but you'll need to drop @x2 first.",getDestinationName(destination),moneyName);
+	}
+	
+	@Override
+	protected void giveMerchandise(MOB whoM, Environmental destination, Environmental observer, Room room)
+	{
+		//TODO: start the car
+	}
+	
+	@Override
+	protected boolean disableComingsAndGoings()
+	{
+		return false; //TODO: only if moving
+	}
+
+	@Override
+	protected void resetDefaults()
+	{
+		talkerName="the driver";
+		greeting="Need a life? If so, just hop in.";
+		mountStr="Where are you headed?";
+		super.resetDefaults();
+	}
+	
+	@Override
+	public void setParms(String newParm)
+	{
+		super.setParms(newParm);
 	}
 }
