@@ -120,14 +120,17 @@ public class BodyPiercing extends CommonSkill
 
 		int partNum=-1;
 		final StringBuffer allParts=new StringBuffer("");
+		
 		final String[][] piercables={{"lip", "nose"},
-								{"ears","left ear","right ear"},
-							   {"eyebrows"},
-							   {"nipples","belly button"}};
+									{"ears","left ear","right ear"},
+									{"eyebrows"},
+									{"nipples","belly button"}};
+		
 		final long[] piercable={Wearable.WORN_HEAD,
-						  Wearable.WORN_EARS,
-						  Wearable.WORN_EYES,
-						  Wearable.WORN_TORSO};
+								Wearable.WORN_EARS,
+								Wearable.WORN_EYES,
+								Wearable.WORN_TORSO};
+		
 		String fullPartName=null;
 		final Wearable.CODES codes = Wearable.CODES.instance();
 		String wearLocName=null;
@@ -194,7 +197,8 @@ public class BodyPiercing extends CommonSkill
 			writing=wearLocName+":A pierced "+wornName.toLowerCase();
 		verb=L("piercing @x1 on the @x2",target.name(),wornName);
 		displayText=L("You are @x1",verb);
-		if(!proficiencyCheck(mob,0,auto)) writing="";
+		if(!proficiencyCheck(mob,0,auto)) 
+			writing="";
 		final int duration=getDuration(30,mob,1,6);
 		String msgStr=L("<S-NAME> start(s) piercing <T-NAMESELF> on the @x1.",wornName.toLowerCase());
 		if("REMOVE".equals(command))
@@ -209,7 +213,8 @@ public class BodyPiercing extends CommonSkill
 			{
 				beneficialAffect(mob,mob,asLevel,duration);
 				final BodyPiercing A=(BodyPiercing)mob.fetchEffect(ID());
-				if(A!=null) A.target=target;
+				if(A!=null) 
+					A.target=target;
 			}
 		}
 		return true;

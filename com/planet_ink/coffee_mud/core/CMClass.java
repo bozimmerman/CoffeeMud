@@ -401,7 +401,11 @@ public class CMClass extends ClassLoader
 		}
 	}
 
-	protected static final Object getClassSet(final String type) { return getClassSet(findObjectType(type));}
+	protected static final Object getClassSet(final String type) 
+	{ 
+		return getClassSet(findObjectType(type));
+	}
+	
 	protected static final Object getClassSet(final CMObjectType code)
 	{
 		switch(code)
@@ -1381,14 +1385,16 @@ public class CMClass extends ClassLoader
 		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
 			A=a.nextElement();
-			if(A!=null) As.add(A);
+			if(A!=null) 
+				As.add(A);
 		}
 		A=(Ability)CMLib.english().fetchEnvironmental(As,calledThis,true);
 		if(A==null)
 			A=(Ability)CMLib.english().fetchEnvironmental(As,calledThis,false);
 		if(A==null)
 			A=(Ability)getGlobal(c().abilities,calledThis);
-		if(A!=null)A=(Ability)A.newInstance();
+		if(A!=null)
+			A=(Ability)A.newInstance();
 		return A;
 	}
 
@@ -2022,9 +2028,17 @@ public class CMClass extends ClassLoader
 			else
 				throw e;
 		}
-		if (result==null){throw new ClassFormatError();}
-		if (resolveIt){resolveClass(result);}
+		if (result==null)
+		{
+			throw new ClassFormatError();
+		}
+		if (resolveIt)
+		{
+			resolveClass(result);
+		}
+		
 		if(debugging) Log.debugOut("CMClass","Loaded: "+result.getName());
+		
 		classes.put(className, result);
 		return result;
 	}
@@ -2046,7 +2060,8 @@ public class CMClass extends ClassLoader
 		throws ClassNotFoundException
 	{
 		String pathName=null;
-		if(className.endsWith(".class")) className=className.substring(0,className.length()-6);
+		if(className.endsWith(".class")) 
+			className=className.substring(0,className.length()-6);
 		if(className.toUpperCase().endsWith(".JS"))
 		{
 			pathName=className.substring(0,className.length()-3).replace('.','/')+className.substring(className.length()-3);
@@ -2099,7 +2114,10 @@ public class CMClass extends ClassLoader
 				if((extendsClass==null)&&V.get(v).trim().toUpperCase().startsWith("//EXTENDS "))
 				{
 					final String extendName=V.get(v).trim().substring(10).trim();
-					try{extendsClass=loadClass(extendName);}
+					try
+					{
+						extendsClass=loadClass(extendName);
+					}
 					catch(final ClassNotFoundException e)
 					{
 						Log.errOut("CMClass","Could not load "+CF.getName()+" from "+className+" because "+extendName+" is an invalid extension.");
@@ -2112,7 +2130,14 @@ public class CMClass extends ClassLoader
 				{
 					final String extendName=V.get(v).substring(13).trim();
 					Class<?> C=null;
-					try{C=loadClass(extendName);}catch(final ClassNotFoundException e){continue;}
+					try
+					{
+						C=loadClass(extendName);
+					}
+					catch(final ClassNotFoundException e)
+					{
+						continue;
+					}
 					implementsClasses.addElement(C);
 				}
 			}
@@ -2131,14 +2156,16 @@ public class CMClass extends ClassLoader
 			if(implementsClasses.size()>0)
 			{
 				final Class[] CS=new Class[implementsClasses.size()];
-				for(int i=0;i<implementsClasses.size();i++) CS[i]=(Class)implementsClasses.elementAt(i);
+				for(int i=0;i<implementsClasses.size();i++) 
+					CS[i]=(Class)implementsClasses.elementAt(i);
 				cc.setTargetImplements(CS);
 			}
 			final Object[] objs = cc.compileToClassFiles(str.toString(), "script", 1, name);
 			for (int i=0;i<objs.length;i+=2)
 			{
 				final Class<?> C=finishDefineClass((String)objs[i],(byte[])objs[i+1],overPackage,resolveIt);
-				if(mainClass==null) mainClass=C;
+				if(mainClass==null) 
+					mainClass=C;
 			}
 			Context.exit();
 			if((debugging)&&(mainClass!=null))
@@ -2183,15 +2210,24 @@ public class CMClass extends ClassLoader
 		final char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		// wait for baseC
 		while((tCode!=MudHost.MAIN_HOST)&&(!classLoaderSync[0]))
-		{try{Thread.sleep(500);}catch(final Exception e){ break;}}
-
+		{
+			try
+			{
+				Thread.sleep(500);
+			}
+			catch(final Exception e)
+			{ 
+				break;
+			}
+		}
 		try
 		{
 			final String prefix="com/planet_ink/coffee_mud/";
 			debugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.CLASSLOADER);
 
 			c.libraries=loadVectorListToObj(prefix+"Libraries/",page.getStr("LIBRARY"),CMObjectType.LIBRARY.ancestorName);
-			if(c.libraries.size()==0) return false;
+			if(c.libraries.size()==0) 
+				return false;
 			CMLib.registerLibraries(c.libraries.elements());
 			if(CMLib.unregistered().length()>0)
 			{
@@ -2228,7 +2264,8 @@ public class CMClass extends ClassLoader
 				c.races=loadVectorListToObj(prefix+"Races/",page.getStr("RACES"),CMObjectType.RACE.ancestorName);
 				//Log.sysOut(Thread.currentThread().getName(),"Races loaded      : "+c.races.size());
 			}
-			if(c.races.size()==0) return false;
+			if(c.races.size()==0) 
+				return false;
 
 			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("CHARCLASS")))
 				c.charClasses=baseC.charClasses;
@@ -2237,7 +2274,8 @@ public class CMClass extends ClassLoader
 				c.charClasses=loadVectorListToObj(prefix+"CharClasses/",page.getStr("CHARCLASSES"),CMObjectType.CHARCLASS.ancestorName);
 				//Log.sysOut(Thread.currentThread().getName(),"Classes loaded    : "+c.charClasses.size());
 			}
-			if(c.charClasses.size()==0) return false;
+			if(c.charClasses.size()==0) 
+				return false;
 
 			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("MOB")))
 				c.MOBs=baseC.MOBs;
@@ -2246,7 +2284,8 @@ public class CMClass extends ClassLoader
 				c.MOBs=loadVectorListToObj(prefix+"MOBS/",page.getStr("MOBS"),CMObjectType.MOB.ancestorName);
 				Log.sysOut(Thread.currentThread().getName(),"MOB Types loaded  : "+c.MOBs.size());
 			}
-			if(c.MOBs.size()==0) return false;
+			if(c.MOBs.size()==0) 
+				return false;
 
 			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("EXIT")))
 				c.exits=baseC.exits;
@@ -2255,7 +2294,8 @@ public class CMClass extends ClassLoader
 				c.exits=loadVectorListToObj(prefix+"Exits/",page.getStr("EXITS"),CMObjectType.EXIT.ancestorName);
 				Log.sysOut(Thread.currentThread().getName(),"Exit Types loaded : "+c.exits.size());
 			}
-			if(c.exits.size()==0) return false;
+			if(c.exits.size()==0)
+				return false;
 
 			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("AREA")))
 				c.areaTypes=baseC.areaTypes;
@@ -2264,7 +2304,8 @@ public class CMClass extends ClassLoader
 				c.areaTypes=loadVectorListToObj(prefix+"Areas/",page.getStr("AREAS"),CMObjectType.AREA.ancestorName);
 				Log.sysOut(Thread.currentThread().getName(),"Area Types loaded : "+c.areaTypes.size());
 			}
-			if(c.areaTypes.size()==0) return false;
+			if(c.areaTypes.size()==0) 
+				return false;
 
 			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("LOCALE")))
 				c.locales=baseC.locales;
@@ -2273,14 +2314,16 @@ public class CMClass extends ClassLoader
 				c.locales=loadVectorListToObj(prefix+"Locales/",page.getStr("LOCALES"),CMObjectType.LOCALE.ancestorName);
 				Log.sysOut(Thread.currentThread().getName(),"Locales loaded    : "+c.locales.size());
 			}
-			if(c.locales.size()==0) return false;
+			if(c.locales.size()==0) 
+				return false;
 
 			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("ABILITY")))
 				c.abilities=baseC.abilities;
 			else
 			{
 				c.abilities=loadVectorListToObj(prefix+"Abilities/",page.getStr("ABILITIES"),CMObjectType.ABILITY.ancestorName);
-				if(c.abilities.size()==0) return false;
+				if(c.abilities.size()==0) 
+					return false;
 				if((page.getStr("ABILITIES")!=null)
 				&&(page.getStr("ABILITIES").toUpperCase().indexOf("%DEFAULT%")>=0))
 				{
@@ -2469,7 +2512,8 @@ public class CMClass extends ClassLoader
 				c.behaviors=loadVectorListToObj(prefix+"Behaviors/",page.getStr("BEHAVIORS"),CMObjectType.BEHAVIOR.ancestorName);
 				Log.sysOut(Thread.currentThread().getName(),"Behaviors loaded  : "+c.behaviors.size());
 			}
-			if(c.behaviors.size()==0) return false;
+			if(c.behaviors.size()==0) 
+				return false;
 
 			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("COMMAND")))
 			{
@@ -2481,7 +2525,8 @@ public class CMClass extends ClassLoader
 				c.commands=loadVectorListToObj(prefix+"Commands/",page.getStr("COMMANDS"),CMObjectType.COMMAND.ancestorName);
 				Log.sysOut(Thread.currentThread().getName(),"Commands loaded   : "+c.commands.size());
 			}
-			if(c.commands.size()==0) return false;
+			if(c.commands.size()==0) 
+				return false;
 		}
 		catch(final Exception t)
 		{
@@ -2627,6 +2672,7 @@ public class CMClass extends ClassLoader
 	 */
 	public static final CMMsg getMsg(final MOB source, final int newAllCode, final String allMessage)
 	{ final CMMsg M=getMsg(); M.modify(source,newAllCode,allMessage); return M;}
+	
 	/**
 	 * Creates and configures a CMMsg object for use in the game
 	 * @param source @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()}

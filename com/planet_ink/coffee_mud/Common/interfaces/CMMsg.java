@@ -161,8 +161,9 @@ public interface CMMsg extends CMCommon
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_MAGIC
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#TYP_CAST_SPELL
 	 * @param code the new full bitmask/action type target event code
+	 * @return this
 	 */
-	public void setTargetCode(final int code);
+	public CMMsg setTargetCode(final int code);
 
 	/**
 	 * Returns the string seen by the target of the event, and only by
@@ -181,8 +182,9 @@ public interface CMMsg extends CMCommon
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMessage()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
 	 * @param str the string to show to the target, or NULL
+	 * @return this
 	 */
-	public void setTargetMessage(final String str);
+	public CMMsg setTargetMessage(final String str);
 
 	/**
 	 * Returns whether the given code or mask is either the minor code
@@ -319,8 +321,9 @@ public interface CMMsg extends CMCommon
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_MAGIC
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#TYP_CAST_SPELL
 	 * @param code the new full bitmask/action type source event code
+	 * @return this
 	 */
-	public void setSourceCode(final int code);
+	public CMMsg setSourceCode(final int code);
 
 	/**
 	 * Returns the string seen by the source of the event, and only by
@@ -339,8 +342,9 @@ public interface CMMsg extends CMCommon
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
 	 * @param str the string to show to the source, or NULL
+	 * @return this
 	 */
-	public void setSourceMessage(final String str);
+	public CMMsg setSourceMessage(final String str);
 
 	/**
 	 * Returns high order bitmask for the others code
@@ -419,8 +423,9 @@ public interface CMMsg extends CMCommon
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_MAGIC
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#TYP_CAST_SPELL
 	 * @param code the new full bitmask/action type others event code
+	 * @return this
 	 */
-	public void setOthersCode(final int code);
+	public CMMsg setOthersCode(final int code);
 
 	/**
 	 * Returns the string seen by the others of the event, and only by
@@ -437,8 +442,9 @@ public interface CMMsg extends CMCommon
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMessage()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersCode()
 	 * @param str the string to show to the others, or NULL
+	 * @return this
 	 */
-	public void setOthersMessage(final String str);
+	public CMMsg setOthersMessage(final String str);
 
 	/**
 	 * Returns whether the given Environmental object is neither the source
@@ -464,8 +470,9 @@ public interface CMMsg extends CMCommon
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()
 	 * @see com.planet_ink.coffee_mud.core.interfaces.Environmental
 	 * @param E the new target of this event
+	 * @return this
 	 */
-	public void setTarget(final Environmental E);
+	public CMMsg setTarget(final Environmental E);
 
 	/**
 	 * Returns the means, item, portal, or otherwise tool that helps the source
@@ -482,8 +489,9 @@ public interface CMMsg extends CMCommon
 	 * @see com.planet_ink.coffee_mud.core.interfaces.Environmental
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#tool()
 	 * @param E the new tool of this event
+	 * @return this
 	 */
-	public void setTool(final Environmental E);
+	public CMMsg setTool(final Environmental E);
 
 	/**
 	 * Returns the source of this event, a MOB object
@@ -498,8 +506,9 @@ public interface CMMsg extends CMCommon
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
 	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB
 	 * @param mob the new source of this event
+	 * @return this
 	 */
-	public void setSource(final MOB mob);
+	public CMMsg setSource(final MOB mob);
 
 	/**
 	 * Returns the arbitrary value integer associated with this event.  Values tend to
@@ -520,8 +529,9 @@ public interface CMMsg extends CMCommon
 	 * codebase message types, you should understand its meaning before doing anything with
 	 * it.
 	 * @param amount the integer value of this event
+	 * @return this
 	 */
-	public void setValue(final int amount);
+	public CMMsg setValue(final int amount);
 
 	/**
 	 * Modifies one of more fields in this event.
@@ -537,8 +547,9 @@ public interface CMMsg extends CMCommon
 	 * @param target the target of the event
 	 * @param newAllCode the source, target, and others code
 	 * @param allMessage the source, target, and others message
+	 * @return this
 	 */
-	public void modify(final MOB source, final Environmental target, final int newAllCode, final String allMessage);
+	public CMMsg modify(final MOB source, final Environmental target, final int newAllCode, final String allMessage);
 
 	/**
 	 * Modifies one of more fields in this event. Sets target and tool to NULL.
@@ -553,8 +564,9 @@ public interface CMMsg extends CMCommon
 	 * @param source the new source of this event
 	 * @param newAllCode the new source, target, and others code of this event
 	 * @param allMessage the new source, target, and others message of this event
+	 * @return this
 	 */
-	public void modify(final MOB source, final int newAllCode, final String allMessage);
+	public CMMsg modify(final MOB source, final int newAllCode, final String allMessage);
 
 	/**
 	 * Modifies one of more fields in this event. Sets target and tool to NULL.
@@ -571,8 +583,9 @@ public interface CMMsg extends CMCommon
 	 * @param newAllCode the new source, target, and others code of this event
 	 * @param allMessage the new source, target, and others message of this event
 	 * @param newValue the new value for this event
+	 * @return this
 	 */
-	public void modify(final MOB source, final int newAllCode, final String allMessage, final int newValue);
+	public CMMsg modify(final MOB source, final int newAllCode, final String allMessage, final int newValue);
 
 	/**
 	 * Modifies one of more fields in this event.
@@ -589,8 +602,9 @@ public interface CMMsg extends CMCommon
 	 * @param tool the new tool for this event
 	 * @param newAllCode the new source, target, and others code of this event
 	 * @param allMessage the new source, target, and others message of this event
+	 * @return this
 	 */
-	public void modify(final MOB source, final Environmental target, final Environmental tool, final int newAllCode, final String allMessage);
+	public CMMsg modify(final MOB source, final Environmental target, final Environmental tool, final int newAllCode, final String allMessage);
 
 	/**
 	 * Modifies one of more fields in this event.
@@ -609,14 +623,15 @@ public interface CMMsg extends CMCommon
 	 * @param sourceMessage the new source message for this event
 	 * @param targetMessage the new target message for this event
 	 * @param othersMessage the new others message for this event
+	 * @return this
 	 */
-	public void modify(final MOB source,
-					   final Environmental target,
-					   final Environmental tool,
-					   final int newAllCode,
-					   final String sourceMessage,
-					   final String targetMessage,
-					   final String othersMessage);
+	public CMMsg modify(final MOB source,
+						final Environmental target,
+						final Environmental tool,
+						final int newAllCode,
+						final String sourceMessage,
+						final String targetMessage,
+						final String othersMessage);
 
 	/**
 	 * Modifies one of more fields in this event.
@@ -637,16 +652,17 @@ public interface CMMsg extends CMCommon
 	 * @param targetMessage the new target message for this event
 	 * @param newOthersCode the new others code for this event
 	 * @param othersMessage the new others message for this event
+	 * @return this
 	 */
-	public void modify(final MOB source,
-					   final Environmental target,
-					   final Environmental tool,
-					   final int newSourceCode,
-					   final String sourceMessage,
-					   final int newTargetCode,
-					   final String targetMessage,
-					   final int newOthersCode,
-					   final String othersMessage);
+	public CMMsg modify(final MOB source,
+						final Environmental target,
+						final Environmental tool,
+						final int newSourceCode,
+						final String sourceMessage,
+						final int newTargetCode,
+						final String targetMessage,
+						final int newOthersCode,
+						final String othersMessage);
 
 	/**
 	 * Modifies one of more fields in this event.
@@ -665,14 +681,15 @@ public interface CMMsg extends CMCommon
 	 * @param newTargetCode the new target code for this event
 	 * @param newOthersCode the new others code for this event
 	 * @param allMessage the new source, target, and others message of this event
+	 * @return this
 	 */
-	public void modify(final MOB source,
-					   final Environmental target,
-					   final Environmental tool,
-					   final int newSourceCode,
-					   final int newTargetCode,
-					   final int newOthersCode,
-					   final String allMessage);
+	public CMMsg modify(final MOB source,
+						final Environmental target,
+						final Environmental tool,
+						final int newSourceCode,
+						final int newTargetCode,
+						final int newOthersCode,
+						final String allMessage);
 
 	/**
 	 * Returns a List of other CMMsg events which are slated to be confirmed
@@ -689,8 +706,9 @@ public interface CMMsg extends CMCommon
 	 * by the Room object
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room#send(MOB, CMMsg)
 	 * @param msg the CMMsg to append to this message.
+	 * @return this
 	 */
-	public void addTrailerMsg(final CMMsg msg);
+	public CMMsg addTrailerMsg(final CMMsg msg);
 
 	/**
 	 * Returns a List of other Runnables which are slated to be 
@@ -707,8 +725,9 @@ public interface CMMsg extends CMCommon
 	 * by the Room object
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room#send(MOB, CMMsg)
 	 * @param runner the Runnable to append to this message.
+	 * @return this
 	 */
-	public void addTrailerRunnable(final Runnable runner);
+	public CMMsg addTrailerRunnable(final Runnable runner);
 	
 	// 0-1999 are message types
 	// 2000-2047 are channels

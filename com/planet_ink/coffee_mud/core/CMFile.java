@@ -648,11 +648,23 @@ public class CMFile extends File
 	 */
 	public final boolean demandedLocal() { return demandLocal; }
 
-	@Override public final boolean isDirectory() { return exists() && CMath.bset(vfsBits,CMFile.VFS_MASK_DIRECTORY); }
+	@Override 
+	public final boolean isDirectory() 
+	{ 
+		return exists() && CMath.bset(vfsBits,CMFile.VFS_MASK_DIRECTORY); 
+	}
 
-	@Override public final boolean exists() { return !(CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADVFS)&&CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADLOCAL)); }
+	@Override 
+	public final boolean exists() 
+	{ 
+		return !(CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADVFS)&&CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADLOCAL)); 
+	}
 
-	@Override public final boolean isFile() { return canRead()&&(!CMath.bset(vfsBits,CMFile.VFS_MASK_DIRECTORY)); }
+	@Override 
+	public final boolean isFile() 
+	{ 
+		return canRead()&&(!CMath.bset(vfsBits,CMFile.VFS_MASK_DIRECTORY)); 
+	}
 
 	@Override public final long lastModified() { return modifiedDateTime; }
 	/**
@@ -687,11 +699,23 @@ public class CMFile extends File
 	 */
 	public final boolean canLocalEquiv() { return (!CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADLOCAL)); }
 
-	@Override public final String getName() { return name; }
+	@Override 
+	public final String getName() 
+	{ 
+		return name; 
+	}
 
-	@Override public final String getAbsolutePath() { return "/"+getVFSPathAndName(); }
+	@Override 
+	public final String getAbsolutePath() 
+	{ 
+		return "/"+getVFSPathAndName(); 
+	}
 
-	@Override public final String getCanonicalPath() { return getVFSPathAndName(); }
+	@Override 
+	public final String getCanonicalPath() 
+	{ 
+		return getVFSPathAndName(); 
+	}
 
 	/**
 	 * Returns local file path and name in simple form.
@@ -1729,9 +1753,16 @@ public class CMFile extends File
 		return obj==this;
 	}
 
-	@Override public File	getAbsoluteFile() { return this; }
+	@Override 
+	public File	getAbsoluteFile() 
+	{ 
+		return this; 
+	}
 
-	@Override public File	getCanonicalFile() { return this; }
+	@Override public File	getCanonicalFile() 
+	{ 
+		return this; 
+	}
 
 	@Override
 	public long	getFreeSpace()
@@ -1747,7 +1778,11 @@ public class CMFile extends File
 		return this.getParentFile().getAbsolutePath();
 	}
 
-	@Override public String getPath() { return this.getAbsolutePath(); }
+	@Override 
+	public String getPath() 
+	{
+		return this.getAbsolutePath(); 
+	}
 
 	@Override
 	public long	getTotalSpace()
@@ -1765,11 +1800,23 @@ public class CMFile extends File
 		return 65536;
 	}
 
-	@Override public int hashCode() { return this.getAbsolutePath().hashCode(); }
+	@Override 
+	public int hashCode() 
+	{ 
+		return this.getAbsolutePath().hashCode(); 
+	}
 
-	@Override public boolean isAbsolute() { return true; }
+	@Override 
+	public boolean isAbsolute() 
+	{ 
+		return true; 
+	}
 
-	@Override public boolean isHidden() { return false; }
+	@Override 
+	public boolean isHidden() 
+	{ 
+		return false; 
+	}
 
 	@Override
 	public long	length()
@@ -1860,23 +1907,59 @@ public class CMFile extends File
 		return false;
 	}
 
-	@Override public boolean setExecutable(boolean executable)  { return false; }
+	@Override 
+	public boolean setExecutable(boolean executable) 
+	{ 
+		return false; 
+	}
 
-	@Override public boolean setExecutable(boolean executable, boolean ownerOnly)  { return false; }
+	@Override 
+	public boolean setExecutable(boolean executable, boolean ownerOnly) 
+	{ 
+		return false; 
+	}
 
-	@Override public boolean setLastModified(long time)  { return false; }
+	@Override 
+	public boolean setLastModified(long time) 
+	{ 
+		return false; 
+	}
 
-	@Override public boolean setReadable(boolean readable) { return false; }
+	@Override 
+	public boolean setReadable(boolean readable) 
+	{ 
+		return false; 
+	}
 
-	@Override public boolean setReadable(boolean readable, boolean ownerOnly) { return false; }
+	@Override 
+	public boolean setReadable(boolean readable, boolean ownerOnly) 
+	{ 
+		return false; 
+	}
 
-	@Override public boolean setReadOnly() { return false; }
+	@Override 
+	public boolean setReadOnly() 
+	{ 
+		return false; 
+	}
 
-	@Override public boolean setWritable(boolean writable) { return false; }
+	@Override 
+	public boolean setWritable(boolean writable) 
+	{ 
+		return false; 
+	}
 
-	@Override public boolean setWritable(boolean writable, boolean ownerOnly) { return false; }
+	@Override 
+	public boolean setWritable(boolean writable, boolean ownerOnly) 
+	{ 
+		return false; 
+	}
 
-	@Override public String toString() { return this.getAbsolutePath(); }
+	@Override 
+	public String toString() 
+	{ 
+		return this.getAbsolutePath(); 
+	}
 
 	/**
 	 * FileManager handler for CMFile, used by WebServer
@@ -1911,18 +1994,24 @@ public class CMFile extends File
 		{
 			return createFileFromPath(parent.getAbsolutePath()+'/'+localPath);
 		}
-		@Override public byte[] readFile(File file) throws IOException, FileNotFoundException {
+		@Override 
+		public byte[] readFile(File file) throws IOException, FileNotFoundException 
+		{
 			return getFinalFile((CMFile)file).raw();
 		}
-		@Override public InputStream getFileStream(File file) throws IOException, FileNotFoundException {
+		@Override 
+		public InputStream getFileStream(File file) throws IOException, FileNotFoundException 
+		{
 			return getFinalFile((CMFile)file).getRawStream();
 		}
 		@Override
-		public RandomAccessFile getRandomAccessFile(File file) throws IOException, FileNotFoundException {
+		public RandomAccessFile getRandomAccessFile(File file) throws IOException, FileNotFoundException 
+		{
 			return new RandomAccessFile(new File(getFinalFile((CMFile)file).getLocalPathAndName()),"r");
 		}
 		@Override
-		public boolean supportsRandomAccess(File file) {
+		public boolean supportsRandomAccess(File file) 
+		{
 			return getFinalFile((CMFile)file).isLocalFile();
 		}
 		@Override
