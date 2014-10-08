@@ -171,7 +171,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 
 	/**
 	 * Returns the unparsed quest script as a single happy string.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setScript(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setScript(String, boolean)
 	 * @return the unparsed quest script as a single happy string.
 	 */
 	public String script();

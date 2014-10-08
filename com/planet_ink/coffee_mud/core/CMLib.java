@@ -966,7 +966,7 @@ public class CMLib
 	 * @see CMLib.Library
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CMLibrary
 	 * @param tcode the thread group code
-	 * @param lcodethe Library Enum
+	 * @param lcode the Library Enum
 	 * @return the appropriate library belonging to the thread group and code
 	 */
 	public final static CMLibrary library(final char tcode, final Library lcode)

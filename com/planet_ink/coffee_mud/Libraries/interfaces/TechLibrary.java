@@ -80,7 +80,7 @@ public interface TechLibrary extends CMLibrary
 	 * For the given key, return an eclusive list of all the electronics
 	 * that belong to that key.
 	 * @param key the key to return electronics for
-	 * @return
+	 * @return the list of electronic object of that key
 	 */
 	public List<Electronics> getMakeRegisteredElectronics(String key);
 

@@ -57,7 +57,7 @@ public interface Places extends PhysicalAgent
 	 * Return -1 to have this area inherit its atmosphere from parents (which
 	 * would ultimately go back to RESOURCE_AIR)
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial#MATERIAL_GAS
-	 * @return the RawMaterial resource, or -1
+	 * @param resourceCode the RawMaterial resource to use
 	 */
 	public void setAtmosphere(int resourceCode);
 

@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings({"rawtypes"})
 public class Chant_GrowFood extends Chant
 {
 	@Override public String ID() { return "Chant_GrowFood"; }
@@ -64,7 +64,7 @@ public class Chant_GrowFood extends Chant
 		}
 
 		int material=-1;
-		final Vector choices=new Vector();
+		final Vector<Integer> choices=new Vector<Integer>();
 		final String s=CMParms.combine(commands,0);
 
 		int col=0;
@@ -93,7 +93,7 @@ public class Chant_GrowFood extends Chant
 		}
 
 		if((material<0)&&(choices.size()>0))
-			material=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
+			material=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)).intValue();
 
 		if(material<0) return false;
 

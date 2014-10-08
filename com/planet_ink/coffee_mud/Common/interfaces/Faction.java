@@ -143,8 +143,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	/**
 	 * Disables this faction, as if it had been added to the DISABLE= entry in the
 	 * coffeemud.ini file.  See also {@link #isDisabled()}
-	 * @param disable true to disable, false otherwise
-	 * @return true if its disabled, false otherwise.
+	 * @param truefalse disable true to disable, false otherwise
 	 */
 	public void disable(boolean truefalse);
 

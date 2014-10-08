@@ -202,7 +202,7 @@ public interface XMLLibrary extends CMLibrary
 	 * <br><br><b>Usage:</b> String ThisColHead=getShortFromPieces(ThisRow,"TD");
 	 * @param V Pieces to search
 	 * @param tag Tag to search for
-	 * @param defValue the value to return if the tag doesn't exist
+	 * @param defVal the value to return if the tag doesn't exist
 	 * @return the tags value, or defValue
 	 */
 	public short getShortFromPieces(List<XMLpiece> V, String tag, short defVal);
@@ -214,7 +214,7 @@ public interface XMLLibrary extends CMLibrary
 	 * <br><br><b>Usage:</b> String ThisColHead=getIntFromPieces(ThisRow,"TD");
 	 * @param V Pieces to search
 	 * @param tag Tag to search for
-	 * @param defValue the value to return if the tag doesn't exist
+	 * @param defVal the value to return if the tag doesn't exist
 	 * @return the tags value, or defValue
 	 */
 	public int getIntFromPieces(List<XMLpiece> V, String tag, int defVal);
@@ -226,7 +226,7 @@ public interface XMLLibrary extends CMLibrary
 	 * <br><br><b>Usage:</b> String ThisColHead=getLongFromPieces(ThisRow,"TD");
 	 * @param V Pieces to search
 	 * @param tag Tag to search for
-	 * @param defValue the value to return if the tag doesn't exist
+	 * @param defVal the value to return if the tag doesn't exist
 	 * @return the tags value, or defValue
 	 */
 	public long getLongFromPieces(List<XMLpiece> V, String tag, long defVal);
@@ -238,7 +238,7 @@ public interface XMLLibrary extends CMLibrary
 	 * <br><br><b>Usage:</b> String ThisColHead=getDoubleFromPieces(ThisRow,"TD");
 	 * @param V Pieces to search
 	 * @param tag Tag to search for
-	 * @param defValue the value to return if the tag doesn't exist
+	 * @param defVal the value to return if the tag doesn't exist
 	 * @return the tags value, or defValue
 	 */
 	public double getDoubleFromPieces(List<XMLpiece> V, String tag, double defVal);

@@ -52,7 +52,7 @@ public interface Manufacturer extends CMCommon
 
 	/**
 	 * Sets the comma-delimited list of the types of things this manufacturer will make.
-	 * @return the comma-delimited list of the types of things this manufacturer will make.
+	 * @param list the comma-delimited list of the types of things this manufacturer will make.
 	 */
 	public void setManufactureredTypesList(String list);
 
@@ -102,7 +102,7 @@ public interface Manufacturer extends CMCommon
 	 * Sets a pct, from 0-2, to multiply by the power requirements
 	 * of electronic items for certain purposes.  A 1.0 means perfectly
 	 * standard.  A 2.0 means very inefficient.  A 0.5 means super efficient.
-	 * @param pct, from 0-2
+	 * @param pct from 0-2
 	 */
 	public void setEfficiencyPct(double pct);
 
@@ -119,7 +119,7 @@ public interface Manufacturer extends CMCommon
 	 * Sets a pct, from 0-2, to multiply by the amt of damage taken,
 	 * and the change of failure.  A 1.0 means perfectly
 	 * standard.  A 2.0 means super-standard.  A 0.5 means sub standard.
-	 * @param pct, from 0-2
+	 * @param pct from 0-2
 	 */
 	public void setReliabilityPct(double pct);
 

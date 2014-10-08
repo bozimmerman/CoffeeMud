@@ -428,7 +428,6 @@ public class RTree<T extends BoundedObject> {
 	/**
 	 * Adds items whose AABB intersects the query AABB to results
 	 * @param results A collection to store the query results
-	 * @param box The query
 	 */
 	public void query(Collection<T> results)
 	{

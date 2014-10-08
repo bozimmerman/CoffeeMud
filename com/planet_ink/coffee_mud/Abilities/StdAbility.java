@@ -235,8 +235,9 @@ public class StdAbility implements Ability
 	}
 
 	/**
+	 *  amount of mana/move used by this ability, overriding ini file
 	 *  -1=normal, Ability.COST_ALL=all, Ability.COST_PCT
-	 * @return
+	 * @return amount of mana/move used by this ability, overriding ini file
 	 */
 	protected int overrideMana()
 	{

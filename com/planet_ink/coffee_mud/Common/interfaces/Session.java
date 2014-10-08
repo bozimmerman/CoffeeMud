@@ -669,7 +669,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * Sets the tick/thread status of this session object.
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session.SessionStatus
-	 * @return the tick status
+	 * @param newStatus the tick status
 	 */
 	public void setStatus(SessionStatus newStatus);
 
@@ -859,8 +859,8 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * certain fundamental flags, like ANSI, MXP, and MSP.  It will use a bitmap of MOB flags
 	 * passed in as a guide.
 	 *
-	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#getBitmap()
-	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#ATT_MXP
+	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#getAttributesBitmap()
+	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#changeTelnetMode(int, boolean)
 	 * @param mobbitmap the mobbitmap the bitmap of mob flags to use as a guide in negotiation
 	 */

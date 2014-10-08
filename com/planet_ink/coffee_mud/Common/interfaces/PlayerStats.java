@@ -426,7 +426,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	 * Returns a 2-dimensional integer array with the players birth
 	 * day and month (in mud calendar)
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#initializeBirthday(int, Race)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#initializeBirthday(TimeClock, int, Race)
 	 *
 	 * @return a 2-dimensional integer array (day/month)
 	 */

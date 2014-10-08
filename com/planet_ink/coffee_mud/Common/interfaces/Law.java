@@ -249,7 +249,7 @@ public interface Law extends CMCommon
 	 * "substance" crime.  This Vectors entries match one for one with
 	 * the Vector returned by bannedBits()
 	 *
-	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial#DEFAULT_RESOURCE_DESCS
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Law#bannedBits()
 	 *
 	 * @return a Vector of item or resource names
