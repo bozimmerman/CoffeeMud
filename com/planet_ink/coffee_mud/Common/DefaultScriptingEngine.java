@@ -476,6 +476,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	@Override
 	public String getVar(String host, String var)
 	{
+		final String varVal = getVar(resources,host,var,null);
+		if(varVal != null)
+			return varVal;
+		if(resources == Resources.instance())
+			return "";
+		return getVar(Resources.instance(),host,var,"");
+	}
+	
+	public String getVar(final Resources resources, final String host, String var, String defaultVal)
+	{
 		if(host.equalsIgnoreCase("*"))
 		{
 			if(var.equals("COFFEEMUD_SYSTEM_INTERNAL_NONFILENAME_SCRIPT"))
@@ -498,7 +508,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(val!=null) return val;
 				}
 			}
-			return "";
+			return defaultVal;
 		}
 		final Hashtable H=(Hashtable)resources._getResource("SCRIPTVAR-"+host);
 		String val=null;
@@ -519,7 +529,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return SE.getVar(host,var);
 				}
 		}
-		if(val==null) return "";
+		if(val==null) 
+			return defaultVal;
 		return val;
 	}
 

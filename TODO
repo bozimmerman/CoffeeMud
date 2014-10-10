@@ -1,5 +1,6 @@
 TECH
    *. finish collision management, against space ships at least.
+   *. test launch and landing
    *. interacting items of diff tech level might damage each other
    *. personal scanner/tricorder software: mineral scanner, computer interface (with ship perhaps?)!
    *. entry systems for ships (default entry key card, voice code, identifying scanner)
