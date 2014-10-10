@@ -644,7 +644,7 @@ public class ListCmd extends StdCommand
 						final Session S=(Session)R;
 						final MOB mob=S.mob();
 						final String mobName=(mob==null)?"null":mob.Name();
-						summary="session "+mobName+": "+S.getStatus().toString()+": "+CMParms.combineWithQuotes(S.getPreviousCMD(),0);
+						summary="session "+mobName+": "+S.getStatus().toString()+": "+CMParms.combineQuoted(S.getPreviousCMD(),0);
 					}
 					else
 					if(R instanceof CMRunnable)

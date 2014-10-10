@@ -447,7 +447,7 @@ public class GenCharClass extends StdCharClass
 		for(int i=0;i<securityGroups.length;i++)
 		if(i<securityGroupLevels.length)
 		{
-			str.append(CMLib.xml().convertXMLtoTag("SSET"+i,CMParms.combineWithQuotes(securityGroups[i],0)));
+			str.append(CMLib.xml().convertXMLtoTag("SSET"+i,CMParms.combineQuoted(securityGroups[i],0)));
 			str.append(CMLib.xml().convertXMLtoTag("SSETLEVEL"+i,securityGroupLevels[i].intValue()));
 		}
 		str.append(CMLib.xml().convertXMLtoTag("MONEY",startingMoney));
@@ -795,7 +795,7 @@ public class GenCharClass extends StdCharClass
 				 break;
 		case 43: return ""+securityGroups.length;
 		case 44: if(num<securityGroups.length)
-					return CMParms.combineWithQuotes(securityGroups[num],0);
+					return CMParms.combineQuoted(securityGroups[num],0);
 				 break;
 		case 45: if(num<securityGroupLevels.length)
 					return ""+securityGroupLevels[num];

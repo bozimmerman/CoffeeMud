@@ -234,7 +234,7 @@ public class Quests extends StdLibrary implements QuestManager
 				if(contains)
 				{
 					final String name=CMParms.combine(nameLine,2);
-					str.append(CMStrings.padRight(""+s,3)+CMStrings.padRight(name,20)+CMStrings.padRight(CMParms.combineWithQuotes(areaLine,2),30)+"\n\r");
+					str.append(CMStrings.padRight(""+s,3)+CMStrings.padRight(name,20)+CMStrings.padRight(CMParms.combineQuoted(areaLine,2),30)+"\n\r");
 				}
 			}
 		}
@@ -486,7 +486,7 @@ public class Quests extends StdLibrary implements QuestManager
 				{
 					if(!settings.contains(var))
 					{
-						String str=CMParms.combineWithQuotes(lineV,2);
+						String str=CMParms.combineQuoted(lineV,2);
 						if(str.toUpperCase().startsWith("ANY ")) str=str.substring(4);
 						if(str.toUpperCase().startsWith("RESELECT MASK=")) str=str.substring(14);
 						if(str.toUpperCase().startsWith("MASK=")) str=str.substring(5);
@@ -501,18 +501,18 @@ public class Quests extends StdLibrary implements QuestManager
 				if(cmd.equals("GIVE")&&("BEHAVIOR".equalsIgnoreCase(var))&&(lineV.size()>2)&&(pricingMobIndex<0))
 				{
 					var=lineV.elementAt(2).toUpperCase();
-					behaviors.addElement(var,CMParms.combineWithQuotes(lineV,3),Integer.valueOf(v));
+					behaviors.addElement(var,CMParms.combineQuoted(lineV,3),Integer.valueOf(v));
 				}
 				if(cmd.equals("GIVE")&&("AFFECT".equalsIgnoreCase(var))&&(lineV.size()>2)&&(pricingMobIndex<0))
 				{
 					var=lineV.elementAt(2).toUpperCase();
-					properties.addElement(var,CMParms.combineWithQuotes(lineV,3),Integer.valueOf(v));
+					properties.addElement(var,CMParms.combineQuoted(lineV,3),Integer.valueOf(v));
 				}
 				if(cmd.equals("GIVE")&&("STAT".equalsIgnoreCase(var))&&(lineV.size()>2))
 				{
 					var=lineV.elementAt(2).toUpperCase();
 					if((pricingMobIndex<0)||(var.equals("PRICEMASKS")))
-						stats.addElement(var,CMParms.combineWithQuotes(lineV,3),Integer.valueOf(v));
+						stats.addElement(var,CMParms.combineQuoted(lineV,3),Integer.valueOf(v));
 				}
 			}
 		}

@@ -251,7 +251,7 @@ public class GrinderClasses
 		{
 			final String sec=(String)DV.elementAt(l,2);
 			V=CMParms.parseCommas(sec, true);
-			C.setStat("SSET"+l, CMParms.combineWithQuotes(V,0));
+			C.setStat("SSET"+l, CMParms.combineQuoted(V,0));
 			C.setStat("SSETLEVEL"+l, ((Integer)DV.elementAt(l,1)).toString());
 		}
 		id="";

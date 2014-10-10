@@ -1,20 +1,8 @@
 package com.planet_ink.coffee_mud.core;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
-import com.planet_ink.coffee_mud.Abilities.interfaces.*;
-import com.planet_ink.coffee_mud.Areas.interfaces.*;
-import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
-import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
-import com.planet_ink.coffee_mud.Commands.interfaces.*;
-import com.planet_ink.coffee_mud.Common.interfaces.*;
-import com.planet_ink.coffee_mud.Exits.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Locales.interfaces.*;
-import com.planet_ink.coffee_mud.MOBS.interfaces.*;
-import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -508,7 +496,7 @@ public class CMProps extends Properties
 	*/
 	public final String[][] getStrsStarting(String tagStartersToGet)
 	{
-		final DVector strBag = new DVector(2);
+		final PairVector<String,String> strBag = new PairVector<String,String>();
 		tagStartersToGet = tagStartersToGet.toUpperCase();
 		for(final Enumeration<?> e=propertyNames(); e.hasMoreElements();)
 		{
@@ -526,8 +514,8 @@ public class CMProps extends Properties
 		final String[][] strArray = new String[strBag.size()][2];
 		for(int s = 0; s < strBag.size(); s++)
 		{
-			strArray[s][0] = (String)strBag.elementAt(s,1);
-			strArray[s][1] = (String)strBag.elementAt(s,2);
+			strArray[s][0] = strBag.elementAt(s).first;
+			strArray[s][1] = strBag.elementAt(s).second;
 		}
 		return strArray;
 	}
@@ -1328,8 +1316,7 @@ public class CMProps extends Properties
 		setIntVar(Int.DEFCOMSOCTIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFCOMSOCTIME"),p().socComActionCostExceptions)*100.0));
 		setIntVar(Int.MANACOST,(int)CMProps.setExceptionCosts(getStr("MANACOST"),p().skillMaxManaExceptions));
 		setIntVar(Int.MANAMINCOST,(int)CMProps.setExceptionCosts(getStr("MANAMINCOST"),p().skillMinManaExceptions));
-		setIntVar(Int.EDITORTYPE,0);
-		if(getStr("EDITORTYPE").equalsIgnoreCase("WIZARD")) setIntVar(Int.EDITORTYPE,1);
+		setIntVar(Int.EDITORTYPE,(getStr("EDITORTYPE").equalsIgnoreCase("WIZARD")) ? 1 : 0);
 		setIntVar(Int.MINCLANMEMBERS,getStr("MINCLANMEMBERS"));
 		setIntVar(Int.MAXCLANMEMBERS,getStr("MAXCLANMEMBERS"));
 		setIntVar(Int.CLANCOST,getStr("CLANCOST"));
@@ -1377,25 +1364,15 @@ public class CMProps extends Properties
 		p().publicClanCats.add("");
 
 		V=CMParms.parseCommas(getStr("INJURYSYSTEM"),true);
-
-		if(V.size()>0) setIntVar(Int.INJPCTCHANCE,CMath.s_int(V.get(0)));
-		else setIntVar(Int.INJPCTCHANCE,100);
-		if(V.size()>1) setIntVar(Int.INJPCTHP,CMath.s_int(V.get(1)));
-		else setIntVar(Int.INJPCTHP,40);
-		if(V.size()>2) setIntVar(Int.INJPCTHPAMP,CMath.s_int(V.get(2)));
-		else setIntVar(Int.INJPCTHPAMP,10);
-		if(V.size()>3) setIntVar(Int.INJPCTCHANCEAMP,CMath.s_int(V.get(3)));
-		else setIntVar(Int.INJPCTCHANCEAMP,100);
-		if(V.size()>4) setIntVar(Int.INJMULTIPLIER,CMath.s_int(V.get(4)));
-		else setIntVar(Int.INJMULTIPLIER,4);
-		if(V.size()>5) setIntVar(Int.INJMINLEVEL,CMath.s_int(V.get(5)));
-		else setIntVar(Int.INJMINLEVEL,10);
-		if(V.size()>6) setIntVar(Int.INJBLEEDMINLEVEL,CMath.s_int(V.get(6)));
-		else setIntVar(Int.INJBLEEDMINLEVEL,15);
-		if(V.size()>7) setIntVar(Int.INJBLEEDPCTHP,CMath.s_int(V.get(7)));
-		else setIntVar(Int.INJBLEEDPCTHP,20);
-		if(V.size()>8) setIntVar(Int.INJBLEEDPCTCHANCE,CMath.s_int(V.get(8)));
-		else setIntVar(Int.INJBLEEDPCTCHANCE,100);
+		setIntVar(Int.INJPCTCHANCE,		(V.size()>0) ? CMath.s_int(V.get(0)) : 100);
+		setIntVar(Int.INJPCTHP,			(V.size()>1) ? CMath.s_int(V.get(1)) : 40);
+		setIntVar(Int.INJPCTHPAMP,		(V.size()>2) ? CMath.s_int(V.get(2)) : 10);
+		setIntVar(Int.INJPCTCHANCEAMP,	(V.size()>3) ? CMath.s_int(V.get(3)) : 100);
+		setIntVar(Int.INJMULTIPLIER,	(V.size()>4) ? CMath.s_int(V.get(4)) : 4);
+		setIntVar(Int.INJMINLEVEL,		(V.size()>5) ? CMath.s_int(V.get(5)) : 10);
+		setIntVar(Int.INJBLEEDMINLEVEL,	(V.size()>6) ? CMath.s_int(V.get(6)) : 15);
+		setIntVar(Int.INJBLEEDPCTHP,	(V.size()>7) ? CMath.s_int(V.get(7)) : 20);
+		setIntVar(Int.INJBLEEDPCTCHANCE,(V.size()>8) ? CMath.s_int(V.get(8)) : 100);
 
 		String stateVar=getStr("STARTHP");
 		if((stateVar.length()>0)&&(CMath.isNumber(stateVar)))
@@ -1508,6 +1485,7 @@ public class CMProps extends Properties
 				{
 
 					for(;fdex<len;fdex++)
+					{
 						if(!Character.isWhitespace(msg.charAt(fdex)))
 						{
 							if(newMsg==null) newMsg=new StringBuffer(msg);
@@ -1517,6 +1495,7 @@ public class CMProps extends Properties
 						}
 						else
 							fpIndex=0;
+					}
 					fdex=upp.indexOf(filterStr);
 				}
 				else
@@ -1526,7 +1505,8 @@ public class CMProps extends Properties
 					fdex=-1;
 			}
 		}
-		if(newMsg!=null) return newMsg.toString();
+		if(newMsg!=null) 
+			return newMsg.toString();
 		return msg;
 	}
 
@@ -1589,7 +1569,8 @@ public class CMProps extends Properties
 	public static final List<String> loadEnumerablePage(final String iniFile)
 	{
 		final StringBuffer str=new CMFile(iniFile,null,CMFile.FLAG_LOGERRORS).text();
-		if((str==null)||(str.length()==0)) return new Vector<String>();
+		if((str==null)||(str.length()==0)) 
+			return new Vector<String>();
 		final List<String> page=Resources.getFileLineVector(str);
 		for(int p=0;p<(page.size()-1);p++)
 		{
@@ -1626,7 +1607,8 @@ public class CMProps extends Properties
 	public static final List<String> getStatCodeExtensions(Class<?> C, final String ID)
 	{
 		final String[][] statCodeExtensions = p().statCodeExtensions;
-		if( statCodeExtensions == null) return null;
+		if( statCodeExtensions == null) 
+			return null;
 		final List<String> V=new Vector<String>();
 		String myClassName=ID;
 		V.add(myClassName.toUpperCase());

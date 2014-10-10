@@ -742,7 +742,7 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		final String parms=CMParms.combineWithQuotes(commands,2);
+		final String parms=CMParms.combineQuoted(commands,2);
 		final String skillID=parms.substring(0,parms.indexOf('='));
 		if(skillID.indexOf(' ')>=0)
 		{
@@ -791,7 +791,7 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		final String parms=CMParms.combineWithQuotes(commands,2);
+		final String parms=CMParms.combineQuoted(commands,2);
 		final String skillID=parms.substring(0,parms.indexOf('='));
 		if(CMLib.titles().isExistingAutoTitle(skillID))
 		{

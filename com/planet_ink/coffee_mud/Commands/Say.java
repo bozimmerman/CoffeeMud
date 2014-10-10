@@ -236,7 +236,7 @@ public class Say extends StdCommand
 		if(commands.size()==2)
 			combinedCommands=(String)commands.get(1);
 		else
-			combinedCommands=CMParms.combineWithQuotes(commands,1);
+			combinedCommands=CMParms.combineQuoted(commands,1);
 		if(combinedCommands.equals(""))
 		{
 			mob.tell(L("@x1  what?",theWord));

@@ -1370,7 +1370,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	private String makeParsableString(List V)
 	{
 		if((V==null)||(V.size()==0)) return "";
-		if(V.get(0) instanceof String) return CMParms.combineWithQuotes(V,0);
+		if(V.get(0) instanceof String) return CMParms.combineQuoted(V,0);
 		final StringBuffer ret=new StringBuffer("");
 		String S=null;
 		for(int v=0;v<V.size();v++)

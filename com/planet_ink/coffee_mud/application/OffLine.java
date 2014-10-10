@@ -426,7 +426,7 @@ public class OffLine extends Thread implements MudHost
 			for (final String element : a)
 				nameID+=" "+element;
 			nameID=nameID.trim();
-			final List<String> V=CMParms.paramParse(nameID);
+			final List<String> V=CMParms.cleanParameterList(nameID);
 			for(int v=0;v<V.size();v++)
 			{
 				final String s=V.get(v);

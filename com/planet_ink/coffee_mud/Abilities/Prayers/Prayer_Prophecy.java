@@ -143,7 +143,7 @@ public class Prayer_Prophecy extends Prayer
 					if(CMath.isNumber(V.get(v)))
 						V.remove(v);
 				}
-				name=CMParms.combineWithQuotes(V, 0);
+				name=CMParms.combineQuoted(V, 0);
 				final String ending;
 				if(Q.running())
 					ending=" will end in ";

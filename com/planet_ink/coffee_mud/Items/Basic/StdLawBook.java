@@ -486,7 +486,7 @@ public class StdLawBook extends StdItem
 							s2.append(" "+lastOle);
 						}
 					}
-					String restLoca=CMParms.combineWithQuotes(allloca1,0).trim();
+					String restLoca=CMParms.combineQuoted(allloca1,0).trim();
 					restLoca=mob.session().prompt(L("Enter any other location masks (@x1): ",restLoca),restLoca);
 					oldLaw[Law.BIT_CRIMELOCS]=(s2.toString()+" "+restLoca).trim();
 					break;
@@ -543,7 +543,7 @@ public class StdLawBook extends StdItem
 			str.append(CMStrings.padRight(L("#  Words"),20)+" "+shortLawHeader()+"\n\r");
 			for(int x=0;x<theLaw.otherCrimes().size();x++)
 			{
-				final String crime=CMParms.combineWithQuotes(theLaw.otherCrimes().get(x),0);
+				final String crime=CMParms.combineQuoted(theLaw.otherCrimes().get(x),0);
 				final String[] set=theLaw.otherBits().get(x);
 				str.append(CMStrings.padRight(""+(x+1)+". "+crime,20)+" "+shortLawDesc(set)+"\n\r");
 			}
@@ -595,7 +595,7 @@ public class StdLawBook extends StdItem
 						final String[] newBits=new String[theLaw.otherBits().size()];
 						for(int c=0;c<theLaw.otherCrimes().size();c++)
 						{
-							final String crimeWords=CMParms.combineWithQuotes(theLaw.otherCrimes().get(c),0);
+							final String crimeWords=CMParms.combineQuoted(theLaw.otherCrimes().get(c),0);
 							final String[] thisLaw=theLaw.otherBits().get(c);
 							final StringBuffer s2=new StringBuffer("");
 							for(int i=0;i<thisLaw.length;i++)
@@ -632,7 +632,7 @@ public class StdLawBook extends StdItem
 			str.append(CMStrings.padRight(L("#  Items"),20)+" "+shortLawHeader()+"\n\r");
 			for(int x=0;x<theLaw.bannedSubstances().size();x++)
 			{
-				final String crime=CMParms.combineWithQuotes(theLaw.bannedSubstances().get(x),0);
+				final String crime=CMParms.combineQuoted(theLaw.bannedSubstances().get(x),0);
 				final String[] set=theLaw.bannedBits().get(x);
 				str.append(CMStrings.padRight(""+(x+1)+". "+crime,20)+" "+shortLawDesc(set)+"\n\r");
 			}
@@ -692,7 +692,7 @@ public class StdLawBook extends StdItem
 						final String[] newBits=new String[theLaw.bannedBits().size()];
 						for(int c=0;c<theLaw.bannedSubstances().size();c++)
 						{
-							final String crimeWords=CMParms.combineWithQuotes(theLaw.bannedSubstances().get(c),0);
+							final String crimeWords=CMParms.combineQuoted(theLaw.bannedSubstances().get(c),0);
 							final String[] thisLaw=theLaw.bannedBits().get(c);
 							final StringBuffer s2=new StringBuffer("");
 							for(int i=0;i<thisLaw.length;i++)

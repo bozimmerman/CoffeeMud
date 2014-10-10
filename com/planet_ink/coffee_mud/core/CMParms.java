@@ -21,18 +21,51 @@ import com.planet_ink.coffee_mud.core.interfaces.Environmental;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * This singleton contains methods for parsing user input and arguments to
+ * behaviors and properties.  This library also has methods for reconstructing
+ * parseable user input from previously parsed input.  It is, the Parameter 
+ * Parsing Library for CoffeeMud.
+ * 
+ * @author BZ
+ */
 public class CMParms
 {
 	private CMParms(){super();}
 	private static CMParms inst=new CMParms();
 	public final static CMParms instance(){return inst;}
 	
-	public final static CMParms createDelimiter(final char[] chars)
+	private static final DelimiterChecker defaultDelimiter=new DelimiterChecker();
+	
+	/**
+	 * An overrideable class for supplying a delimiter determination tool
+	 * @see CMParms#createDelimiter(char[])
+	 * @see CMParms#parseEQParms(String, DelimiterChecker)
+	 * @author BZ
+	 *
+	 */
+	public static class DelimiterChecker
+	{
+		public boolean isDelimiter(final char c)
+		{
+			return Character.isWhitespace(c);
+		}
+	};
+	
+	/**
+	 * Create a DelimiterChecker from the given set of characters that will
+	 * be the delimiters.
+	 * @see CMParms.DelimiterChecker
+	 * @see CMParms#parseEQParms(String, DelimiterChecker)
+	 * @param chars the delimiters as a char array
+	 * @return the class you can use to check for them fast
+	 */
+	public final static DelimiterChecker createDelimiter(final char[] chars)
 	{
 		final boolean[] delims=new boolean[256];
 		for(char c : chars)
 			delims[(byte)c]=true;
-		return new CMParms()
+		return new DelimiterChecker()
 		{
 			@Override
 			public boolean isDelimiter(final char c)
@@ -42,81 +75,12 @@ public class CMParms
 		};
 	}
 	
-	public boolean isDelimiter(final char c)
-	{
-		return Character.isWhitespace(c);
-	}
-
-	public final static String combine(final List<?> commands)
-	{
-		final StringBuilder combined=new StringBuilder("");
-		if(commands!=null)
-		for(final Object o : commands)
-			combined.append(o.toString()+" ");
-		return combined.toString().trim();
-	}
-
-	public final static String combine(final List<?> commands, final int startAt)
-	{
-		final StringBuilder combined=new StringBuilder("");
-		if(commands!=null)
-		for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
-			combined.append(commands.get(commandIndex).toString()+" ");
-		return combined.toString().trim();
-	}
-
-	public final static String combine(final List<?> commands, final int startAt, final int endAt)
-	{
-		final StringBuilder combined=new StringBuilder("");
-		if(commands!=null)
-		for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
-			combined.append(commands.get(commandIndex).toString()+" ");
-		return combined.toString().trim();
-	}
-
-	public final static String combineWith(final List<?> commands, final char withChar, final int startAt, final int endAt)
-	{
-		final StringBuilder combined=new StringBuilder("");
-		if(commands!=null)
-		for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
-			combined.append(commands.get(commandIndex).toString()+withChar);
-		return combined.toString().trim();
-	}
-
-	public final static String combineWith(final List<?> commands, final char withChar)
-	{
-		final StringBuilder combined=new StringBuilder("");
-		if(commands!=null)
-		for(int commandIndex=0;commandIndex<commands.size();commandIndex++)
-			combined.append(commands.get(commandIndex).toString()+withChar);
-		return combined.toString().trim();
-	}
-
-	public final static String combineWithQuotes(final List<?> commands, final int startAt, final int endAt)
-	{
-		final StringBuffer Combined=new StringBuffer("");
-		if(commands!=null)
-		{
-			String s;
-			for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
-			{
-				s=commands.get(commandIndex).toString();
-				if(s.indexOf(' ')>=0) s="\""+s+"\"";
-				Combined.append(s+" ");
-			}
-		}
-		return Combined.toString().trim();
-	}
-
-	public final static String combineWith(final List<?> commands, final String withSeparator)
-	{
-		final StringBuilder combined=new StringBuilder("");
-		if(commands!=null)
-		for(int commandIndex=0;commandIndex<commands.size();commandIndex++)
-			combined.append(commands.get(commandIndex).toString()+withSeparator);
-		return combined.toString().trim();
-	}
-
+	/**
+	 * Combine two string arrays into a single one.
+	 * @param strs1 the first array
+	 * @param strs2 the second array
+	 * @return the combined array
+	 */
 	public final static String[] combine(final String[] strs1, final String[] strs2)
 	{
 		final int strs1Len = strs1.length;
@@ -127,76 +91,270 @@ public class CMParms
 		return array;
 	}
 
+	/**
+	 * Returns the given string, unless it contains a space, in which case
+	 * it returns the string with double-quotes around it.
+	 * @param str the string to check and return
+	 * @return the string, quoted it necessary
+	 */
 	public final static String quoteIfNecessary(final String str)
 	{
-		if(str==null) return str;
+		if(str==null) 
+			return str;
 		if(str.indexOf(' ')>=0)
 			return "\""+str+"\"";
 		return str;
 	}
 
-	public final static String combineAfterIndexWithQuotes(final Vector<?> commands, final String match)
+	/**
+	 * Returns a string containing the given objects, with toString()
+	 * called, and now space delimited.
+	 * @param commands the objects to combine into a single string
+	 * @return the single string
+	 */
+	public final static String combine(final List<?> commands)
 	{
-		final StringBuffer Combined=new StringBuffer("");
+		final StringBuilder combined=new StringBuilder("");
+		if(commands!=null)
+		{
+			for(final Object o : commands)
+				combined.append(o.toString()+" ");
+		}
+		return combined.toString().trim();
+	}
+
+	/**
+	 * Returns a string containing the given objects, with toString()
+	 * called, and now space delimited.
+	 * @param commands the objects to combine into a single string
+	 * @param startAt the index in the list to start at.
+	 * @return the single string
+	 */
+	public final static String combine(final List<?> commands, final int startAt)
+	{
+		final StringBuilder combined=new StringBuilder("");
+		if(commands!=null)
+		{
+			for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
+				combined.append(commands.get(commandIndex).toString()+" ");
+		}
+		return combined.toString().trim();
+	}
+
+	/**
+	 * Returns a string containing the given objects, with toString()
+	 * called, and now space delimited.
+	 * @param commands the objects to combine into a single string
+	 * @param startAt the index in the list to start at.
+	 * @param endAt the index in the list to end with
+	 * @return the single string
+	 */
+	public final static String combine(final List<?> commands, final int startAt, final int endAt)
+	{
+		final StringBuilder combined=new StringBuilder("");
+		if(commands!=null)
+		{
+			for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
+				combined.append(commands.get(commandIndex).toString()+" ");
+		}
+		return combined.toString().trim();
+	}
+
+	/**
+	 * Returns a string containing the given objects, with toString()
+	 * called, and now delimited by the character given.
+	 * @param commands the objects to combine into a single string
+	 * @param withChar the character to use as a delimiter
+	 * @param startAt the index in the list to start at.
+	 * @param endAt the index in the list to end with
+	 * @return the single string
+	 */
+	public final static String combineWith(final List<?> commands, final char withChar, final int startAt, final int endAt)
+	{
+		final StringBuilder combined=new StringBuilder("");
+		if(commands!=null)
+		{
+			for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
+				combined.append(commands.get(commandIndex).toString()+withChar);
+		}
+		return combined.toString().trim();
+	}
+
+	/**
+	 * Returns a string containing the given objects, with toString()
+	 * called, and now delimited by the character given.
+	 * @param commands the objects to combine into a single string
+	 * @param withChar the character to use as a delimiter
+	 * @return the single string
+	 */
+	public final static String combineWith(final List<?> commands, final char withChar)
+	{
+		final StringBuilder combined=new StringBuilder("");
+		if(commands!=null)
+		{
+			for(int commandIndex=0;commandIndex<commands.size();commandIndex++)
+				combined.append(commands.get(commandIndex).toString()+withChar);
+		}
+		return combined.toString().trim();
+	}
+
+	/**
+	 * Returns a string containing the given objects, with toString()
+	 * called, and now space delimited.  If any toString() calls
+	 * result in a string that contains spaces, then the string will
+	 * be surrounded by double-quotes (")
+	 * @param commands the objects to combine into a single string
+	 * @param startAt the index in the list to start at.
+	 * @param endAt the index in the list to end with
+	 * @return the single string
+	 */
+	public final static String combineQuoted(final List<?> commands, final int startAt, final int endAt)
+	{
+		final StringBuffer combined=new StringBuffer("");
 		if(commands!=null)
 		{
 			String s;
-			for(int commandIndex=0;commandIndex<0;commandIndex++)
+			for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
 			{
-				s=(String)commands.elementAt(commandIndex);
-				if(s.indexOf(' ')>=0) s="\""+s+"\"";
-				Combined.append(s+" ");
+				s=commands.get(commandIndex).toString();
+				if(s.indexOf(' ')>=0)
+					combined.append('\"').append(s).append("\" ");
+				else
+					combined.append(s).append(" ");
 			}
 		}
-		return Combined.toString().trim();
+		return combined.toString().trim();
 	}
 
-	public final static String combineWithQuotes(final List<?> commands, final int startAt)
+	/**
+	 * Returns a string containing the given objects, with toString()
+	 * called, and now delimited by the string given.
+	 * @param commands the objects to combine into a single string
+	 * @param withSeparator the string to use as a delimiter
+	 * @return the single string
+	 */
+	public final static String combineWith(final List<?> commands, final String withSeparator)
 	{
-		final StringBuffer Combined=new StringBuffer("");
+		final StringBuilder combined=new StringBuilder("");
+		if(commands!=null)
+		{
+			for(int commandIndex=0;commandIndex<commands.size();commandIndex++)
+				combined.append(commands.get(commandIndex).toString()).append(withSeparator);
+		}
+		return combined.toString().trim();
+	}
+
+	/**
+	 * Returns a string containing the given objects, with toString()
+	 * called, and now delimited by spaces.  If any of the objects evaluate to strings with
+	 * spaces, then they will be surrounded by double-quotes.
+	 * @param commands the objects to combine into a single string
+	 * @param startAt the first object in the list to use
+	 * @return the single string
+	 */
+	public final static String combineQuoted(final List<?> commands, final int startAt)
+	{
+		final StringBuffer combined=new StringBuffer("");
 		if(commands!=null)
 		{
 			String s;
 			for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
 			{
 				s=commands.get(commandIndex).toString();
-				if(s.indexOf(' ')>=0) s="\""+s+"\"";
-				Combined.append(s+" ");
+				if(s.indexOf(' ')>=0)
+					combined.append('\"').append(s).append("\" ");
+				else
+					combined.append(s).append(" ");
 			}
 		}
-		return Combined.toString().trim();
+		return combined.toString().trim();
 	}
 
+	/**
+	 * Returns a string containing the given objects, with toString()
+	 * called, and now delimited by tab characters.
+	 * @param commands the objects to combine into a single string
+	 * @param startAt the first object in the list to use
+	 * @return the single string
+	 */
 	public final static String combineWithTabs(final List<?> commands, final int startAt)
 	{
-		return combineWithX(commands,"\t",startAt);
+		return combineWithX(commands,'\t',startAt);
 	}
 
-	public final static String combineWithX(final List<?> commands, final String X, final int startAt)
+	/**
+	 * Returns a string containing the given objects, with toString()
+	 * called, and now delimited by the given X string.
+	 * @param commands the objects to combine into a single string
+	 * @param delimiter the delimiter to use
+	 * @param startAt the first object in the list to use
+	 * @return the single string
+	 */
+	public final static String combineWithX(final List<?> commands, final String delimiter, final int startAt)
 	{
-		final StringBuffer Combined=new StringBuffer("");
+		final StringBuffer combined=new StringBuffer("");
 		if(commands!=null)
 		{
 			String s;
 			for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
 			{
 				s=commands.get(commandIndex).toString();
-				Combined.append(s+X);
+				combined.append(s).append(delimiter);
 			}
 		}
-		return Combined.toString().trim();
+		return combined.toString().trim();
 	}
 
+
+	/**
+	 * Returns a string containing the given objects, with toString()
+	 * called, and now delimited by the given X character.
+	 * @param commands the objects to combine into a single string
+	 * @param delimiter the delimiter to use
+	 * @param startAt the first object in the list to use
+	 * @return the single string
+	 */
+	public final static String combineWithX(final List<?> commands, final char delimiter, final int startAt)
+	{
+		final StringBuffer combined=new StringBuffer("");
+		if(commands!=null)
+		{
+			String s;
+			for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
+			{
+				s=commands.get(commandIndex).toString();
+				combined.append(s).append(delimiter);
+			}
+		}
+		return combined.toString().trim();
+	}
+
+	/**
+	 * Returns a string containing the given objects, with toString()
+	 * called, and now space delimited.
+	 * @param commands the objects to combine into a single string
+	 * @return the single string
+	 */
 	public final static String combine(final Set<?> flags)
 	{
 		final StringBuffer combined=new StringBuffer("");
 		if(flags!=null)
+		{
 			for (final Object name : flags)
-				combined.append(name.toString()+" ");
+				combined.append(name.toString()).append(" ");
+		}
 		return combined.toString().trim();
 	}
 
-	public final static List<String> paramParse(final String str)
+	/**
+	 * Parses the given string space-delimited, with respect for quoted
+	 * strings.  It then returns them as a simple list in the form
+	 * PARAM=VALUE, one to each entry in the returned list.  Quotes
+	 * will have been removed if present, though the values intact.
+	 * @param str the string to parse
+	 * @return the list of strings, with PARAM=VALUE unsplit.
+	 */
+	public final static List<String> cleanParameterList(final String str)
 	{
 		final List<String> commands=parse(str);
 		String s;
@@ -231,15 +389,17 @@ public class CMParms
 		return commands;
 	}
 
+	/**
+	 * Parses the given string space-delimited, with respect for quoted
+	 * strings.  
+	 * @param str the string to parse
+	 * @return the list of parsed strings
+	 */
 	public final static Vector<String> parse(final String str)
 	{
-		return parse(str,-1);
-	}
-
-	public final static Vector<String> parse(final String str, final int upTo)
-	{
 		final Vector<String> commands=new Vector<String>();
-		if(str==null) return commands;
+		if(str==null) 
+			return commands;
 		final StringBuilder s=new StringBuilder();
 		final char[] cs=str.toCharArray();
 		int state=0;
@@ -289,14 +449,27 @@ public class CMParms
 		return commands;
 	}
 
+	/**
+	 * Parses the given string comma-delimited.
+	 * @param s the string to parse
+	 * @param ignoreNulls don't include any of the empty entries (,,)
+	 * @return the list of parsed strings
+	 */
 	public final static List<String> parseCommas(final String s, final boolean ignoreNulls)
 	{
 		return parseAny(s,',',ignoreNulls);
 	}
 
+	/**
+	 * Returns a list of those flag strings that appear in the given string.
+	 * @param s the string to search
+	 * @param flags the set of flags to look for
+	 * @return the list of found flag strings
+	 */
 	public final static List<String> parseCommandFlags(final String s, final String[] flags)
 	{
-		if((s==null)||(s.length()==0)) return new Vector<String>(1);
+		if((s==null)||(s.length()==0)) 
+			return new Vector<String>(1);
 		final List<String> V=parseCommas(s,true);
 		final Vector<String> finalV=new Vector<String>(V.size());
 		int index;
@@ -309,74 +482,112 @@ public class CMParms
 		return V;
 	}
 
+	/**
+	 * Parses the given string tab-delimited.
+	 * @param s the string to parse
+	 * @param ignoreNulls don't include any of the empty entries (-tab-tab)
+	 * @return the list of parsed strings
+	 */
 	public final static List<String> parseTabs(final String s, final boolean ignoreNulls)
 	{
 		return parseAny(s,'\t',ignoreNulls);
 	}
 
+	/**
+	 * Parses the given string by the given delimiter.
+	 * @param s the string to parse
+	 * @param delimeter the delimeter to use
+	 * @param ignoreNulls don't include any of the empty entries (-delim-delim)
+	 * @return the list of parsed strings
+	 */
 	public final static List<String> parseAny(final String s, final String delimeter, final boolean ignoreNulls)
 	{
 		final Vector<String> V=new Vector<String>(1);
-		if((s==null)||(s.length()==0)) return V;
+		if((s==null)||(s.length()==0)) 
+			return V;
 		if((delimeter==null)||(delimeter.length()==0))
 		{
-			V.add(s);
+			V.add(s.trim());
 			return V;
 		}
 		int last=0;
-		final char firstChar=delimeter.charAt(0);
-		for(int i=0;i<s.length()-delimeter.length()+1;i++)
-			if((s.charAt(i)==firstChar)
-			&&(s.substring(i,i+delimeter.length()).equals(delimeter)))
-			{
-				final String sub=s.substring(last,i).trim();
-				last=i+delimeter.length();
-				i+=delimeter.length()-1;
-				if(!ignoreNulls||(sub.length()>0))
-					V.add(sub);
-			}
+		int next=s.indexOf(delimeter);
+		if(next<0)
+		{
+			V.add(s.trim());
+			return V;
+		}
+		while(next >=0)
+		{
+			final String sub=s.substring(last,next).trim(); 
+			if(!ignoreNulls||(sub.length()>0))
+				V.add(sub);
+			last=next+delimeter.length();
+			next=s.indexOf(delimeter,last);
+		}
 		final String sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
 		if(!ignoreNulls||(sub.length()>0))
 			V.add(sub);
 		return V;
 	}
 
-	public final static List<String> parseAnyWords(final String s, final String delimeter, final boolean ignoreNulls)
+	/**
+	 * Parses the given string by the given delimiter, ignoring the delimeter case.
+	 * @param s the string to parse
+	 * @param delimeter the delimeter to use
+	 * @param ignoreNulls don't include any of the empty entries (-delim-delim)
+	 * @return the list of parsed strings
+	 */
+	public final static List<String> parseAnyIgnoreCase(final String s, final String delimeter, final boolean ignoreNulls)
 	{
 		final Vector<String> V=new Vector<String>(1);
-		if((s==null)||(s.length()==0)) return V;
+		if((s==null)||(s.length()==0)) 
+			return V;
 		if((delimeter==null)||(delimeter.length()==0))
 		{
-			V.add(s);
+			V.add(s.trim());
 			return V;
 		}
 		int last=0;
-		final String upDelimeter=delimeter.toUpperCase();
-		final char firstChar=upDelimeter.charAt(0);
-		final String tests=s.toUpperCase();
-		for(int i=0;i<tests.length()-upDelimeter.length()+1;i++)
-			if((tests.charAt(i)==firstChar)
-			&&(tests.substring(i,i+upDelimeter.length()).equals(upDelimeter)))
-			{
-				final String sub=s.substring(last,i).trim();
-				last=i+upDelimeter.length();
-				i+=upDelimeter.length()-1;
-				if(!ignoreNulls||(sub.length()>0))
-					V.add(sub);
-			}
+		final String upS=s.toUpperCase();
+		final String upD=delimeter.toUpperCase();
+		int next=upS.indexOf(upD);
+		if(next<0)
+		{
+			V.add(s.trim());
+			return V;
+		}
+		while(next >=0)
+		{
+			final String sub=s.substring(last,next).trim(); 
+			if(!ignoreNulls||(sub.length()>0))
+				V.add(sub);
+			last=next+delimeter.length();
+			next=upS.indexOf(upD,last);
+		}
 		final String sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
 		if(!ignoreNulls||(sub.length()>0))
 			V.add(sub);
 		return V;
 	}
 
+
+	/**
+	 * Parses the given string by the given delimiter.
+	 * @param s the string to parse
+	 * @param delimeter the delimeter to use
+	 * @param ignoreNulls don't include any of the empty entries (-delim-delim)
+	 * @return the list of parsed strings
+	 */
 	public final static List<String> parseAny(final String s, final char delimiter, final boolean ignoreNulls)
 	{
 		final Vector<String> V=new Vector<String>(1);
-		if((s==null)||(s.length()==0)) return V;
+		if((s==null)||(s.length()==0)) 
+			return V;
 		int last=0;
 		String sub;
 		for(int i=0;i<s.length();i++)
+		{
 			if(s.charAt(i)==delimiter)
 			{
 				sub=s.substring(last,i).trim();
@@ -384,21 +595,33 @@ public class CMParms
 				if(!ignoreNulls||(sub.length()>0))
 					V.add(sub);
 			}
+		}
 		sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
 		if(!ignoreNulls||(sub.length()>0))
 			V.add(sub);
 		return V;
 	}
 
+	/**
+	 * Parses the given string squiggle-delimited.
+	 * @param s the string to parse
+	 * @return the list of parsed strings
+	 */
 	public final static List<String> parseSquiggles(final String s)
 	{
 		return parseAny(s,'~',false);
 	}
 
+	/**
+	 * Parses the given string period-delimited.
+	 * @param s the string to parse
+	 * @return the list of parsed strings
+	 */
 	public final static List<String> parseSentences(final String s)
 	{
 		final Vector<String> V=new Vector<String>(1);
-		if((s==null)||(s.length()==0)) return V;
+		if((s==null)||(s.length()==0)) 
+			return V;
 		int last=0;
 		String sub;
 		for(int i=0;i<s.length();i++)
@@ -414,16 +637,34 @@ public class CMParms
 		return V;
 	}
 
+	/**
+	 * Parses the given string squiggle-delimited.
+	 * @param s the string to parse
+	 * @param ignoreNulls don't include any of the empty entries (~~)
+	 * @return the list of parsed strings
+	 */
 	public final static List<String> parseSquiggleDelimited(final String s, final boolean ignoreNulls)
 	{
 		return parseAny(s,'~',ignoreNulls);
 	}
 
+	/**
+	 * Parses the given string semicolon-delimited.
+	 * @param s the string to parse
+	 * @param ignoreNulls don't include any of the empty entries (;;)
+	 * @return the list of parsed strings
+	 */
 	public final static List<String> parseSemicolons(final String s, final boolean ignoreNulls)
 	{
 		return parseAny(s,';',ignoreNulls);
 	}
 
+	/**
+	 * Parses the given string space-delimited.
+	 * @param s the string to parse
+	 * @param ignoreNulls don't include any of the empty entries (-space-space)
+	 * @return the list of parsed strings
+	 */
 	public final static List<String> parseSpaces(final String s, final boolean ignoreNulls)
 	{
 		return parseAny(s,' ',ignoreNulls);
@@ -607,11 +848,16 @@ public class CMParms
 					&&(text.charAt(x)!='!')
 					&&(text.charAt(x)!='='))
 					x++;
+
 				if(x<text.length()-1)
 				{
 					final char comp=text.charAt(x);
 					boolean andEqual=(text.charAt(x)=='=');
-					if(text.charAt(x+1)=='='){ x++; andEqual=true;}
+					if(text.charAt(x+1)=='=')
+					{ 
+						x++; 
+						andEqual=true;
+					}
 					if(x<text.length()-1)
 					{
 						while((x<text.length())&&(!Character.isDigit(text.charAt(x))))
@@ -645,27 +891,37 @@ public class CMParms
 
 	private static int strIndex(final Vector<String> V, final String str, final int start)
 	{
-		if(str.indexOf(' ')<0) return V.indexOf(str,start);
+		if(str.indexOf(' ')<0) 
+			return V.indexOf(str,start);
 		final List<String> V2=CMParms.parse(str);
-		if(V2.size()==0) return -1;
+		if(V2.size()==0) 
+			return -1;
 		int x=V.indexOf(V2.get(0),start);
 		boolean found=false;
 		while((x>=0)&&((x+V2.size())<=V.size())&&(!found))
 		{
 			found=true;
 			for(int v2=1;v2<V2.size();v2++)
+			{
 				if(!V.get(x+v2).equals(V2.get(v2)))
-				{ found=false; break;}
-			if(!found) x=V.indexOf(V2.get(0),x+1);
+				{ 
+					found=false; 
+					break;
+				}
+			}
+			if(!found) 
+				x=V.indexOf(V2.get(0),x+1);
 		}
-		if(found) return x;
+		if(found) 
+			return x;
 		return -1;
 	}
 
 	private static int stringContains(final Vector<String> V, final char combiner, final StringBuffer buf, int lastIndex)
 	{
 		final String str=buf.toString().trim();
-		if(str.length()==0) return lastIndex;
+		if(str.length()==0) 
+			return lastIndex;
 		buf.setLength(0);
 		switch(combiner)
 		{
@@ -673,21 +929,26 @@ public class CMParms
 			lastIndex=strIndex(V,str,0);
 			return lastIndex;
 		case '|':
-			if(lastIndex>=0) return lastIndex;
+			if(lastIndex>=0) 
+				return lastIndex;
 			return strIndex(V,str,0);
 		case '>':
-			if(lastIndex<0) return lastIndex;
+			if(lastIndex<0) 
+				return lastIndex;
 			return strIndex(V,str,lastIndex<0?0:lastIndex+1);
 		case '<':
 		{
-			if(lastIndex<0) return lastIndex;
+			if(lastIndex<0) 
+				return lastIndex;
 			final int newIndex=strIndex(V,str,0);
-			if(newIndex<lastIndex) return newIndex;
+			if(newIndex<lastIndex) 
+				return newIndex;
 			return -1;
 		}
 		}
 		return -1;
 	}
+	
 	private static int stringContains(final Vector<String> V, final char[] str, final int[] index, final int depth)
 	{
 		final StringBuffer buf=new StringBuffer("");
@@ -842,10 +1103,10 @@ public class CMParms
 	
 	public final static Map<String,String> parseEQParms(final String parms)
 	{
-		return parseEQParms(parms,instance());
+		return parseEQParms(parms,defaultDelimiter);
 	}
 	
-	public final static Map<String,String> parseEQParms(final String parms, final CMParms delimiterCheck)
+	public final static Map<String,String> parseEQParms(final String parms, final DelimiterChecker delimiterCheck)
 	{
 		final Map<String,String> h=new Hashtable<String,String>();
 		int state=0;
@@ -998,12 +1259,20 @@ public class CMParms
 				y=-1;
 				int yy=0;
 				while(yy<s.length())
-					if((s.charAt(yy)==delim2)&&((yy<=0)||(s.charAt(yy-1)!='\\'))) {y=yy;break;}
+					if((s.charAt(yy)==delim2)
+					&&((yy<=0)||(s.charAt(yy-1)!='\\'))) 
+					{
+						y=yy;
+						break;
+					}
 					else
-					if(s.charAt(yy)=='\n'){y=yy;break;}
-					else
-					if(s.charAt(yy)=='\r'){y=yy;break;}
-					else yy++;
+					if((s.charAt(yy)=='\n')||(s.charAt(yy)=='\r'))
+					{
+						y=yy;
+						break;
+					}
+					else 
+						yy++;
 				String cmd="";
 				if(y<0)
 				{
@@ -1210,8 +1479,10 @@ public class CMParms
 				if((x<text.length())&&(text.charAt(x)=='='))
 				{
 					s=text.substring(x+1).trim();
-					if(Character.toUpperCase(s.charAt(0))=='T') return true;
-					if(Character.toUpperCase(s.charAt(0))=='T') return false;
+					if(Character.toUpperCase(s.charAt(0))=='T') 
+						return true;
+					if(Character.toUpperCase(s.charAt(0))=='T') 
+						return false;
 				}
 			}
 			x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
@@ -1245,7 +1516,8 @@ public class CMParms
 
 	public final static String[] toStringArray(final Object[] O)
 	{
-		if(O==null) return new String[0];
+		if(O==null) 
+			return new String[0];
 		final String[] s=new String[O.length];
 		for(int o=0;o<O.length;o++)
 			s[o]=(O[o]!=null)?O[o].toString():"";
@@ -1329,7 +1601,8 @@ public class CMParms
 
 	public final static String toSemicolonList(final List<?> bytes)
 	{
-		if((bytes==null)||(bytes.size()==0)) return "";
+		if((bytes==null)||(bytes.size()==0)) 
+			return "";
 		final StringBuffer str=new StringBuffer(""+bytes.get(0));
 		for(int b=1;b<bytes.size();b++)
 			str.append(';').append(""+bytes.get(b));
@@ -1366,7 +1639,8 @@ public class CMParms
 
 	public final static List<String> parseSafeSemicolonList(final String list, final boolean ignoreNulls)
 	{
-		if(list==null) return new Vector<String>();
+		if(list==null) 
+			return new Vector<String>();
 		final StringBuffer buf1=new StringBuffer(list);
 		int lastDex=0;
 		final Vector<String> V=new Vector<String>();
@@ -1427,7 +1701,8 @@ public class CMParms
 	public final static List<String> toNameVector(final Enumeration<? extends Environmental> V)
 	{
 		final Vector<String> s=new Vector<String>();
-		if(V==null) return s;
+		if(V==null) 
+			return s;
 		for(;V.hasMoreElements();)
 			s.add(V.nextElement().name());
 		return s;
@@ -1436,11 +1711,18 @@ public class CMParms
 	@SuppressWarnings("rawtypes")
 	public final static String toString(final Object o)
 	{
-		if(o==null) return "null";
-		if(o instanceof String) return (String)o;
-		if(o instanceof List) return toStringList((List)o);
-		if(o instanceof String[]) return toStringList((String[])o);
-		if(o instanceof Enumeration) return toStringList((Enumeration)o);
+		if(o==null) 
+			return "null";
+		if(o instanceof String) 
+			return (String)o;
+		if(o instanceof List) 
+			return toStringList((List)o);
+		if(o instanceof String[]) 
+			return toStringList((String[])o);
+		if(o instanceof Enumeration) 
+			return toStringList((Enumeration)o);
+		if(o instanceof Iterator) 
+			return toStringList((Iterator)o);
 		return o.toString();
 	}
 
@@ -1468,9 +1750,21 @@ public class CMParms
 		return s.toString();
 	}
 
+	public final static String toStringList(final Iterator<?> e)
+	{
+		if((e==null)||(!e.hasNext())) 
+			return "";
+		final Object o=e.next();
+		final StringBuilder s=new StringBuilder(""+o);
+		for(;e.hasNext();)
+			s.append(", "+e.next());
+		return s.toString();
+	}
+
 	public final static String toStringList(final Enumeration<?> e)
 	{
-		if(!e.hasMoreElements()) return "";
+		if((e==null)||(!e.hasMoreElements())) 
+			return "";
 		final Object o=e.nextElement();
 		final StringBuilder s=new StringBuilder(""+o);
 		for(;e.hasMoreElements();)
@@ -1480,7 +1774,8 @@ public class CMParms
 
 	public final static String toEnvironmentalStringList(final Enumeration<? extends Environmental> e)
 	{
-		if(!e.hasMoreElements()) return "";
+		if((e==null)||(!e.hasMoreElements())) 
+			return "";
 		final Environmental o=e.nextElement();
 		final StringBuilder s=new StringBuilder(o.name());
 		for(;e.hasMoreElements();)
@@ -1490,7 +1785,8 @@ public class CMParms
 
 	public final static String toCMObjectStringList(final Enumeration<? extends CMObject> e)
 	{
-		if(!e.hasMoreElements()) return "";
+		if((e==null)||(!e.hasMoreElements())) 
+			return "";
 		final CMObject o=e.nextElement();
 		final StringBuilder s=new StringBuilder(o.ID());
 		for(;e.hasMoreElements();)
@@ -1500,7 +1796,8 @@ public class CMParms
 
 	public final static String toCMObjectStringList(final CMObject[] e)
 	{
-		if((e==null)||(e.length==0)) return "";
+		if((e==null)||(e.length==0)) 
+			return "";
 		final StringBuilder s=new StringBuilder();
 		for(CMObject o : e)
 			s.append(", "+o.ID());
@@ -1509,7 +1806,8 @@ public class CMParms
 
 	public final static String toCMObjectStringList(final Iterator<? extends CMObject> e)
 	{
-		if(!e.hasNext()) return "";
+		if((e==null)||(!e.hasNext())) 
+			return "";
 		final CMObject o=e.next();
 		final StringBuilder s=new StringBuilder(o.ID());
 		for(;e.hasNext();)
@@ -1751,9 +2049,12 @@ public class CMParms
 
 	public final static String[] appendToArray(final String[] front, final String[] back)
 	{
-		if(back==null) return front;
-		if(front==null) return back;
-		if(back.length==0) return front;
+		if(back==null) 
+			return front;
+		if(front==null) 
+			return back;
+		if(back.length==0) 
+			return front;
 		final String[] newa = Arrays.copyOf(front, front.length + back.length);
 		for(int i=0;i<back.length;i++)
 			newa[newa.length-1-i]=back[back.length-1-i];
@@ -1807,8 +2108,10 @@ public class CMParms
 
 	public final static int indexOf(final String[] supported, final String expertise)
 	{
-		if(supported==null) return -1;
-		if(expertise==null) return -1;
+		if(supported==null) 
+			return -1;
+		if(expertise==null) 
+			return -1;
 		for(int i=0;i<supported.length;i++)
 			if(supported[i].equals(expertise))
 				return i;
@@ -1817,7 +2120,8 @@ public class CMParms
 
 	public final static int indexOfIgnoreCase(final Enumeration<?> supported, final String key)
 	{
-		if(supported==null) return -1;
+		if(supported==null) 
+			return -1;
 		int index = -1;
 		for(;supported.hasMoreElements();)
 		{
@@ -1830,7 +2134,8 @@ public class CMParms
 
 	public final static int indexOf(final int[] supported, final int x)
 	{
-		if(supported==null) return -1;
+		if(supported==null) 
+			return -1;
 		for(int i=0;i<supported.length;i++)
 			if(supported[i]==x)
 				return i;
@@ -1839,7 +2144,8 @@ public class CMParms
 
 	public final static int indexOf(final long[] supported, final long x)
 	{
-		if(supported==null) return -1;
+		if(supported==null) 
+			return -1;
 		for(int i=0;i<supported.length;i++)
 			if(supported[i]==x)
 				return i;
@@ -1848,7 +2154,8 @@ public class CMParms
 
 	public final static int indexOf(final Enumeration<?> supported, final Object key)
 	{
-		if(supported==null) return -1;
+		if(supported==null) 
+			return -1;
 		int index = -1;
 		for(;supported.hasMoreElements();)
 		{
@@ -1861,7 +2168,8 @@ public class CMParms
 
 	public final static int indexOfIgnoreCase(final Iterator<?> supported, final String key)
 	{
-		if(supported==null) return -1;
+		if(supported==null) 
+			return -1;
 		int index = -1;
 		for(;supported.hasNext();)
 		{
@@ -1874,7 +2182,8 @@ public class CMParms
 
 	public final static int indexOf(final Iterator<?> supported, final Object key)
 	{
-		if(supported==null) return -1;
+		if(supported==null) 
+			return -1;
 		int index = -1;
 		for(;supported.hasNext();)
 		{
@@ -1887,8 +2196,10 @@ public class CMParms
 
 	public final static int indexOfIgnoreCase(final String[] supported, final String expertise)
 	{
-		if(supported==null) return -1;
-		if(expertise==null) return -1;
+		if(supported==null) 
+			return -1;
+		if(expertise==null) 
+			return -1;
 		for(int i=0;i<supported.length;i++)
 			if(supported[i].equalsIgnoreCase(expertise))
 				return i;
@@ -1897,8 +2208,10 @@ public class CMParms
 
 	public final static int indexOfIgnoreCase(final List<?> supported, final String str)
 	{
-		if(supported==null) return -1;
-		if(str==null) return -1;
+		if(supported==null) 
+			return -1;
+		if(str==null) 
+			return -1;
 		for(int i=0;i<supported.size();i++)
 			if(supported.get(i).toString().equalsIgnoreCase(str))
 				return i;
@@ -1946,8 +2259,10 @@ public class CMParms
 
 	public final static int indexOf(final Object[] supported, final Object expertise)
 	{
-		if(supported==null) return -1;
-		if(expertise==null) return -1;
+		if(supported==null) 
+			return -1;
+		if(expertise==null) 
+			return -1;
 		for(int i=0;i<supported.length;i++)
 			if(supported[i].equals(expertise))
 				return i;
@@ -1982,8 +2297,10 @@ public class CMParms
 
 	public final static int startsWith(final String[] supported, final String expertise)
 	{
-		if(supported==null) return 0;
-		if(expertise==null) return -1;
+		if(supported==null) 
+			return 0;
+		if(expertise==null) 
+			return -1;
 		for(int i=0;i<supported.length;i++)
 			if(supported[i].startsWith(expertise))
 				return i;
@@ -1992,8 +2309,10 @@ public class CMParms
 
 	public final static int startsWithIgnoreCase(final String[] supported, final String expertise)
 	{
-		if(supported==null) return 0;
-		if(expertise==null) return -1;
+		if(supported==null) 
+			return 0;
+		if(expertise==null) 
+			return -1;
 		for(int i=0;i<supported.length;i++)
 			if(supported[i].toUpperCase().startsWith(expertise.toUpperCase()))
 				return i;
@@ -2012,8 +2331,10 @@ public class CMParms
 
 	public final static int endsWith(final String[] supported, final String expertise)
 	{
-		if(supported==null) return 0;
-		if(expertise==null) return -1;
+		if(supported==null) 
+			return 0;
+		if(expertise==null) 
+			return -1;
 		for(int i=0;i<supported.length;i++)
 			if(supported[i].endsWith(expertise))
 				return i;
@@ -2022,8 +2343,10 @@ public class CMParms
 
 	public final static int endsWithIgnoreCase(final String[] supported, final String expertise)
 	{
-		if(supported==null) return 0;
-		if(expertise==null) return -1;
+		if(supported==null) 
+			return 0;
+		if(expertise==null) 
+			return -1;
 		for(int i=0;i<supported.length;i++)
 			if(supported[i].toUpperCase().endsWith(expertise.toUpperCase()))
 				return i;

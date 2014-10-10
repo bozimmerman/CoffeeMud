@@ -214,9 +214,9 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 			||(V.firstElement().equalsIgnoreCase("AN"))))
 		{
 			V.removeElementAt(0);
-			return CMLib.english().startWithAorAn(CMParms.combineWithQuotes(V,0));
+			return CMLib.english().startWithAorAn(CMParms.combineQuoted(V,0));
 		}
-		return CMParms.combineWithQuotes(V,0);
+		return CMParms.combineQuoted(V,0);
 	}
 
 	protected void applyName(Item item, String word)

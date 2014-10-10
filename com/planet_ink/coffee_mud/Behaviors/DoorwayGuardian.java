@@ -90,7 +90,7 @@ public class DoorwayGuardian extends StdBehavior
 			}
 		}
 		if(V.size()>0)
-			mask=CMParms.combineWithQuotes(V,0);
+			mask=CMParms.combineQuoted(V,0);
 	}
 
 	public Exit[] getParmExits(MOB monster)

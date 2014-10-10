@@ -79,7 +79,7 @@ public class MPRun extends StdCommand
 		}
 		commands.removeElementAt(0);
 
-		final String cmd = CMParms.combineWithQuotes(commands, 0);
+		final String cmd = CMParms.combineQuoted(commands, 0);
 		executeScript(mob, cmd);
 		mob.tell(L("Completed."));
 		return false;

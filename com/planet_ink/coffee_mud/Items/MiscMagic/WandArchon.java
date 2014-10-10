@@ -137,7 +137,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 	{
 		if(message==null)
 			return false;
-		final List<String> parms=CMParms.paramParse(message.toUpperCase());
+		final List<String> parms=CMParms.cleanParameterList(message.toUpperCase());
 		for (final String element : MAGIC_WORDS)
 			if(parms.contains(element))
 			{

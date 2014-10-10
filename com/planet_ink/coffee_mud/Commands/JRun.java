@@ -92,7 +92,7 @@ public class JRun extends StdCommand
 			return (String)v.elementAt(i);
 		}
 		public static String[] functions = { "mob", "numParms", "getParm", "getParms", "toJavaString"};
-		public String getParms(){return (v==null)?"":CMParms.combineWithQuotes(v,0);}
+		public String getParms(){return (v==null)?"":CMParms.combineQuoted(v,0);}
 		public JScriptWindow(MOB executor, Vector parms){s=executor; v=parms;}
 		public String toJavaString(Object O){return Context.toString(O);}
 	}

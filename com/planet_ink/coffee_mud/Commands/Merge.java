@@ -631,7 +631,7 @@ public class Merge extends StdCommand
 		else
 			doType=CMClass.CMObjectType.LOCALE;
 
-		final String theRest = CMParms.combineWithQuotes(commands, 0);
+		final String theRest = CMParms.combineQuoted(commands, 0);
 		DBConnector dbConnector=null;
 		final String dbClass=CMParms.getParmStr(theRest,"DBCLASS","");
 		final String dbService=CMParms.getParmStr(theRest,"DBSERVICE","");

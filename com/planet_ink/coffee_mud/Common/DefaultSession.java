@@ -1807,7 +1807,7 @@ public class DefaultSession implements Session
 				YN=YN.toUpperCase();
 		}
 		if((rest!=null)&&(paramsOut!=null)&&(rest.length()>0))
-			paramsOut.addAll(CMParms.paramParse(rest));
+			paramsOut.addAll(CMParms.cleanParameterList(rest));
 		return YN;
 	}
 
@@ -2430,7 +2430,7 @@ public class DefaultSession implements Session
 						milliTotal+=(lastStop-lastStart);
 
 						lastStart=System.currentTimeMillis();
-						if(echoOn) rawPrintln(CMParms.combineWithQuotes(CMDS,0));
+						if(echoOn) rawPrintln(CMParms.combineQuoted(CMDS,0));
 						final List<List<String>> MORE_CMDS=CMLib.lang().preCommandParser(CMDS);
 						for(int m=0;m<MORE_CMDS.size();m++)
 							mob.enqueCommand(MORE_CMDS.get(m),metaFlags(),0);
@@ -2656,12 +2656,12 @@ public class DefaultSession implements Session
 		if(stat==null){ return "";}
 		switch(stat)
 		{
-		case PREVCMD: return CMParms.combineWithQuotes(getPreviousCMD(),0);
+		case PREVCMD: return CMParms.combineQuoted(getPreviousCMD(),0);
 		case ISAFK: return ""+isAfk();
 		case AFKMESSAGE: return getAfkMessage();
 		case ADDRESS: return getAddress();
 		case IDLETIME: return CMLib.time().date2String(System.currentTimeMillis()-getIdleMillis());
-		case LASTMSG: return CMParms.combineWithQuotes(getLastMsgs(),0);
+		case LASTMSG: return CMParms.combineQuoted(getLastMsgs(),0);
 		case LASTNPCFIGHT: return CMLib.time().date2String(getLastNPCFight());
 		case LASTPKFIGHT: return CMLib.time().date2String(getLastPKFight());
 		case TERMTYPE: return getTerminalType();

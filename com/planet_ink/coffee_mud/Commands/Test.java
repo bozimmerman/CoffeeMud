@@ -1589,6 +1589,35 @@ public class Test extends StdCommand
 				}
 
 			}
+			if((what.equalsIgnoreCase("all"))
+			||(what.equalsIgnoreCase("parseAny")))
+			{
+				final String t1="";
+				final String t2="]blah";
+				final String t3="]blah]";
+				final String t4="boo]blah]";
+				final String t5="boo]blah]poo";
+				if(CMParms.parseAny(t1, "]", true).size()!=0)
+				{ mob.tell(L("Error26-0")); return false;}
+				if(CMParms.parseAny(t1, "]", false).size()!=0)
+				{ mob.tell(L("Error26-1")); return false;}
+				if(!Arrays.deepEquals(CMParms.parseAny(t2, "]", true).toArray(),new Object[]{"blah"}))
+				{ mob.tell(L("Error26-2")); return false;}
+				if(!Arrays.deepEquals(CMParms.parseAny(t2, "]", false).toArray(),new Object[]{"","blah"}))
+				{ mob.tell(L("Error26-3")); return false;}
+				if(!Arrays.deepEquals(CMParms.parseAny(t3, "]", true).toArray(),new Object[]{"blah"}))
+				{ mob.tell(L("Error26-4")); return false;}
+				if(!Arrays.deepEquals(CMParms.parseAny(t3, "]", false).toArray(),new Object[]{"","blah",""}))
+				{ mob.tell(L("Error26-5")); return false;}
+				if(!Arrays.deepEquals(CMParms.parseAny(t4, "]", true).toArray(),new Object[]{"boo","blah"}))
+				{ mob.tell(L("Error26-6")); return false;}
+				if(!Arrays.deepEquals(CMParms.parseAny(t4, "]", false).toArray(),new Object[]{"boo","blah",""}))
+				{ mob.tell(L("Error26-7")); return false;}
+				if(!Arrays.deepEquals(CMParms.parseAny(t5, "]", true).toArray(),new Object[]{"boo","blah","poo"}))
+				{ mob.tell(L("Error26-8")); return false;}
+				if(!Arrays.deepEquals(CMParms.parseAny(t5, "]", false).toArray(),new Object[]{"boo","blah","poo"}))
+				{ mob.tell(L("Error26-9")); return false;}
+			}
 			if((what.equalsIgnoreCase("all"))||(what.equalsIgnoreCase("escapefilterbug")))
 			{
 				String str=L("@x1@x2^<CHANNEL \"TEST\"^>You TEST 'message'^</CHANNEL^>^N^.",ColorLibrary.COLOR_GREY,ColorLibrary.COLOR_BGGREEN);

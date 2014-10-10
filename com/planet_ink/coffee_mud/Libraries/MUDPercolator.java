@@ -47,7 +47,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	protected final static Triad<Integer,Integer,Class<?>[]> emptyMetacraftFilter = new Triad<Integer,Integer,Class<?>[]>(Integer.valueOf(-1),Integer.valueOf(-1),new Class<?>[0]);
 	protected final static String POST_PROCESSING_STAT_SETS="___POST_PROCESSING_SETS___";
 	protected final static Set<String> UPPER_REQUIRES_KEYWORDS=new XHashSet<String>(new String[]{"INT","INTEGER","$","STRING","ANY","DOUBLE","#","NUMBER"});
-	protected final static CMParms REQUIRES_DELIMITERS=CMParms.createDelimiter(new char[]{' ','\t',',','\r','\n'});
+	protected final static CMParms.DelimiterChecker REQUIRES_DELIMITERS=CMParms.createDelimiter(new char[]{' ','\t',',','\r','\n'});
 
 	private final SHashtable<String,Class<LayoutManager>> mgrs = new SHashtable<String,Class<LayoutManager>>();
 

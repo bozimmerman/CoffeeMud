@@ -831,7 +831,7 @@ public class MUD extends Thread implements MudHost
 						final Session S=(Session)R;
 						final MOB mob=S.mob();
 						final String mobName=(mob==null)?"null":mob.Name();
-						summary=": session "+mobName+": "+S.getStatus().toString()+": "+CMParms.combineWithQuotes(S.getPreviousCMD(),0);
+						summary=": session "+mobName+": "+S.getStatus().toString()+": "+CMParms.combineQuoted(S.getPreviousCMD(),0);
 					}
 					else
 					if(R instanceof CMRunnable)
@@ -1410,7 +1410,7 @@ public class MUD extends Thread implements MudHost
 			for (final String element : a)
 				nameID+=" "+element;
 			nameID=nameID.trim();
-			final List<String> V=CMParms.paramParse(nameID);
+			final List<String> V=CMParms.cleanParameterList(nameID);
 			for(int v=0;v<V.size();v++)
 			{
 				final String s=V.get(v);

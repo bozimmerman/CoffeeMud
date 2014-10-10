@@ -156,7 +156,7 @@ public class Areas extends StdCommand
 		StringBuffer msg=new StringBuffer(L("^HComplete areas list@x1:^?^N\n\r",append));
 		if(commands.size()>1)
 		{
-			expression=CMParms.combineWithQuotes(commands,1);
+			expression=CMParms.combineQuoted(commands,1);
 			msg=new StringBuffer(L("^HFiltered areas list@x1:^?^N\n\r",append));
 		}
 		final Vector areasVec=new Vector();

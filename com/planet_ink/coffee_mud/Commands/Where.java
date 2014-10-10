@@ -88,7 +88,7 @@ public class Where extends StdCommand
 			final StringBuffer lines=new StringBuffer("^x");
 			lines.append(CMStrings.padRight(L("Name"),17)+"| ");
 			lines.append(CMStrings.padRight(L("Location"),17)+"^.^N\n\r");
-			String who=CMParms.combineWithQuotes(commands,1);
+			String who=CMParms.combineQuoted(commands,1);
 			if(who.length()==0)
 			{
 				for(final Session S : CMLib.sessions().localOnlineIterable())
