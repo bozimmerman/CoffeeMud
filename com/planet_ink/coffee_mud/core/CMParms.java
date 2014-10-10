@@ -670,55 +670,113 @@ public class CMParms
 		return parseAny(s,' ',ignoreNulls);
 	}
 
+	/**
+	 * Returns the number of MOBPROG 'Bits' in this string.
+	 * Bits are space-delimited strings, which use single quotes for grouping
+	 * words with spaces
+	 * @param s the string to check
+	 * @return the numbre of bits
+	 */
 	public final static int numBits(final String s)
 	{
 		return ((Integer)getBitWork(s,Integer.MAX_VALUE,2)).intValue();
 	}
 
+	/**
+	 * This method removes any surrounding single quotes or spaces, and
+	 * replaces any remaining single quotes with input-friendly fake
+	 * single quotes (`).
+	 * @param s the string to clean
+	 * @return the cleaned string
+	 */
 	public final static String cleanBit(String s)
 	{
 		if(s.length()==0)
 			return s;
 		if((s.charAt(0)==' ')||(s.charAt(s.length()-1)==' '))
 			s=s.trim();
-		if(s.length()<2)
-			return s.replace('\'','`');
-		if(s.charAt(0)=='\'')
+		if(s.length()>=2)
 		{
-			if(s.charAt(s.length()-1)=='\'')
-				return s.substring(1,s.length()-1).replace('\'','`');
-			return s.substring(1).replace('\'','`');
-		}
-		if(s.charAt(0)=='`')
-		{
-			if(s.charAt(s.length()-1)=='`')
-				return s.substring(1,s.length()-1).replace('\'','`');
-			return s.substring(1).replace('\'','`');
+			if(s.charAt(0)=='\'')
+			{
+				if(s.charAt(s.length()-1)=='\'')
+					return s.substring(1,s.length()-1).replace('\'','`');
+				return s.substring(1).replace('\'','`');
+			}
+			if(s.charAt(0)=='`')
+			{
+				if(s.charAt(s.length()-1)=='`')
+					return s.substring(1,s.length()-1).replace('\'','`');
+				return s.substring(1).replace('\'','`');
+			}
 		}
 		return s.replace('\'','`');
 	}
 
+	/**
+	 * Returns the string bit at the given 0-based index, cleaned of quotes.
+	 * Bits are space-delimited strings, which use single quotes for grouping
+	 * words with spaces
+	 * @param s the string to parse
+	 * @param which the bit index to return
+	 * @return the string representing the given bit, or empty
+	 */
 	public final static String getCleanBit(final String s, final int which)
 	{
 		return cleanBit(getBit(s,which));
 	}
 
+	/**
+	 * Returns the remainder of the string after the string bit at the
+	 * given 0-based index, cleaned of quotes.
+	 * Bits are space-delimited strings, which use single quotes for grouping
+	 * words with spaces
+	 * @param s the string to parse
+	 * @param which the bit index to return
+	 * @return the string representing the given bit, or empty
+	 */
 	public final static String getPastBitClean(final String s, final int which)
 	{
 		return cleanBit(getPastBit(s,which));
 	}
 
+	/**
+	 * Returns the remainder of the string after the string bit at the
+	 * given 0-based index, which may still have single quotes.
+	 * Bits are space-delimited strings, which use single quotes for grouping
+	 * words with spaces
+	 * @param s the string to parse
+	 * @param which the bit index to return
+	 * @return the string representing the given bit, or empty
+	 */
 	public final static String getPastBit(final String s, final int which)
 	{
 		return (String)getBitWork(s,which,1);
 	}
 
+	
+	/**
+	 * Returns the string bit at the given 0-based index, which may still have its
+	 * single quotes surrounding it.
+	 * Bits are space-delimited strings, which use single quotes for grouping
+	 * words with spaces
+	 * @param s the string to parse
+	 * @param which the bit index to return
+	 * @return the string representing the given bit, or empty
+	 */
 	public final static String getBit(final String s, final int which)
 	{
 		return (String)getBitWork(s,which,0);
 	}
 
-	public final static Object getBitWork(final String s, final int which, final int op)
+	/**
+	 * Work method for MOBPROG bits
+	 * @param s string to parse
+	 * @param which which 0-based bit to return
+	 * @param op operation: 0=get it, 1=get passed bit, 2=get num bits
+	 * @return Integer or String, depending on the operation
+	 */
+	private final static Object getBitWork(final String s, final int which, final int op)
 	{
 		int currOne=0;
 		int start=-1;
