@@ -35,7 +35,7 @@ public class CMParms
 	private static CMParms inst=new CMParms();
 	public final static CMParms instance(){return inst;}
 	
-	private static final DelimiterChecker defaultDelimiter=new DelimiterChecker();
+	private static final DelimiterChecker spaceDelimiter=new DelimiterChecker();
 	
 	/**
 	 * An overrideable class for supplying a delimiter determination tool
@@ -978,6 +978,18 @@ public class CMParms
 		return false;
 	}
 
+	/**
+	 * Parses the given string for [PARAM]=[VALUE] or [PARAM]="[VALUE]" formatted key/pair
+	 * values, relying on the given parmList to provide possible [PARAM] values. 
+	 * Returns a map of the found parameters and their values.
+	 * This method is a sloppy, forgiving method doing KEY=VALUE value searches in a string.
+	 * The key is case insensitive, and start-partial.  For example, a key of NAME will match NAMEY or NAME12.
+	 * The value ends when the next parameter is encountered.  If it's not on the parmList, it 
+	 * is a value.
+	 * @param str the unparsed string
+	 * @param parmList exhaustive list of all parameters
+	 * @return the map of parameters
+	 */
 	public final static Map<String,String> parseEQParms(final String str, final String[] parmList)
 	{
 		final Hashtable<String,String> h=new Hashtable<String,String>();
@@ -1026,13 +1038,20 @@ public class CMParms
 		return h;
 	}
 
+	/**
+	 * Given a key/value parameter map, returns a string that is reparseable in a given
+	 * delimited way as KEY=VLUE, adding double quotes if any value has the delimiter.
+	 * @param parms the key/value pairs
+	 * @param delimiter the delimieter to use between key/pairs
+	 * @return the combined string
+	 */
 	public final static String combineEQParms(final Map<String,String> parms, final char delimiter)
 	{
 		final StringBuilder str=new StringBuilder("");
 		for(final String key : parms.keySet())
 		{
 			final String val=parms.get(key);
-			if(val.indexOf(' ')>0)
+			if(val.indexOf(delimiter)>0)
 				str.append(key).append("=\"").append(parms.get(key)).append('\"').append(delimiter);
 			else
 				str.append(key).append('=').append(parms.get(key)).append(delimiter);
@@ -1041,12 +1060,29 @@ public class CMParms
 			return "";
 		return str.substring(0,str.length()-1);
 	}
-	
+
+	/**
+	 * Parses the given string for [PARAM]=[VALUE] or [PARAM]="[VALUE]" formatted key/pair
+	 * values in space-delimited fashion, respecting quotes value.
+	 * Returns a map of the found parameters and their values, with keys normalized to
+	 * uppercase.
+	 * @param parms the string to parse
+	 * @return the map of key/value pairs found.
+	 */
 	public final static Map<String,String> parseEQParms(final String parms)
 	{
-		return parseEQParms(parms,defaultDelimiter);
+		return parseEQParms(parms,spaceDelimiter);
 	}
 	
+	/**
+	 * Parses the given string for [PARAM]=[VALUE] or [PARAM]="[VALUE]" formatted key/pair
+	 * values in given-delimited fashion, respecting quotes value.
+	 * Returns a map of the found parameters and their values, with keys normalized to
+	 * uppercase.
+	 * @param parms the string to parse
+	 * @param delimiterCheck the checker to determine if a character is the given delimiter
+	 * @return the map of key/value pairs found.
+	 */
 	public final static Map<String,String> parseEQParms(final String parms, final DelimiterChecker delimiterCheck)
 	{
 		final Map<String,String> h=new Hashtable<String,String>();
@@ -1160,14 +1196,31 @@ public class CMParms
 		return h;
 	}
 
-	public final static Map<String,String> parseEQParms(final List<String> parms, final int start, final int end)
+	/**
+	 * Parses the given strings in the given string list for [PARAM]=[VALUE] or 
+	 * [PARAM]="[VALUE]" formatted key/pairv values in space-delimited fashion, respecting quotes value.
+	 * Returns a map of the found parameters and their values, with keys normalized to
+	 * uppercase. The map is a combine of all the strings in the given list
+	 * @param parms the string list of parseable strings with key=value pairs
+	 * @param start the starting index in the list to use
+	 * @param end the last index in the list to use
+	 * @return the key/value mapping pairs combines
+	 */
+	public final static Map<String,String> parseEQParms(final List<String> parms, int start, final int end)
 	{
 		final Map<String,String> h=new Hashtable<String,String>();
-		for(final Object O : parms)
-			h.putAll(parseEQParms((String)O));
+		for(;start<end;start++)
+			h.putAll(parseEQParms(parms.get(start)));
 		return h;
 	}
 
+	/**
+	 * Parses the given string into a two-dimensional list, using the two given delimiters
+	 * @param text the string to parse
+	 * @param delim1 the 'outer' delimiter
+	 * @param delim2 the 'inner' delimiter
+	 * @return the two-dimensional string list
+	 */
 	public final static List<List<String>> parseDoubleDelimited(String text, final char delim1, final char delim2)
 	{
 		final List<String> preparseV=new Vector<String>();
@@ -1238,6 +1291,19 @@ public class CMParms
 		return parsedV;
 	}
 
+	/**
+	 * This method is a sloppy, forgiving method doing KEY+INT or KEY-INT value searches in a string.
+	 * Returns the value of the given key.  If the key is not found, it will
+	 * return 0.  The key is case insensitive, and start-partial.  For
+	 * example, a key of NAME will match NAMEY or NAME12.
+	 * No assumptions are made about the given text.  It could have other garbage data of
+	 * any format around it.  For example, if BOB is the key, then a text string like:
+	 * 'joe larry bibob+5 moe="uiuiui bob-2 lou", bob+2' will still return -2.
+	 * If the key is found, but followed by a =, 0 is returned.
+	 * @param text the string to search
+	 * @param key the key to search for, case insensitive
+	 * @return the value
+	 */
 	public final static int getParmPlus(String text, final String key)
 	{
 		int x=text.toUpperCase().indexOf(key.toUpperCase());
