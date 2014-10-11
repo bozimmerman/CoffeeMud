@@ -2351,6 +2351,213 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		stack.addElement(trueFalse?Boolean.TRUE:Boolean.FALSE);
 	}
 
+	/**
+	 * Returns the index, in the given string vector, of the given string, starting
+	 * from the given index.  If the string to search for contains more than one
+	 * "word", where a word is defined in space-delimited terms respecting double-quotes,
+	 * then it will return the index at which all the words in the parsed search string
+	 * are found in the given string list.
+	 * @param V the string list to search in
+	 * @param str the string to search for
+	 * @param start the index to start at (0 is good)
+	 * @return the index at which the search string was found in the string list, or -1
+	 */
+	private static int strIndex(final Vector<String> V, final String str, final int start)
+	{
+		if(str.indexOf(' ')<0) 
+			return V.indexOf(str,start);
+		final List<String> V2=CMParms.parse(str);
+		if(V2.size()==0) 
+			return -1;
+		int x=V.indexOf(V2.get(0),start);
+		boolean found=false;
+		while((x>=0)&&((x+V2.size())<=V.size())&&(!found))
+		{
+			found=true;
+			for(int v2=1;v2<V2.size();v2++)
+			{
+				if(!V.get(x+v2).equals(V2.get(v2)))
+				{ 
+					found=false; 
+					break;
+				}
+			}
+			if(!found) 
+				x=V.indexOf(V2.get(0),x+1);
+		}
+		if(found) 
+			return x;
+		return -1;
+	}
+
+	/**
+	 * Weird method.  Accepts a string list, a combiner (see below), a string buffer to search for, 
+	 * and a previously found index. The stringbuffer is always cleared during this call.
+	 * If the stringbuffer was empty, the previous found index is returned. Otherwise: 
+	 * If the combiner is '&', the first index of the given stringbuffer in the string list is returned (or -1).  
+	 * If the combiner is '|', the previous index is returned if it was found, otherwise the first index 
+	 * of the given stringbuffer in the string list is returned (or -1).
+	 * If the combiner is '>', then the previous index is returned if it was not found (-1), otherwise the
+	 * next highest found stringbuffer since the last string list search is returned, or (-1) if no more found.
+	 * If the combiner is '<', then the previous index is returned if it was not found (-1), otherwise the
+	 * first found stringbuffer index is returned if it is lower than the previously found index.
+	 * Other combiners return -1.
+	 * @param V the string list to search
+	 * @param combiner the combiner, either &,|,<,or >.
+	 * @param buf the stringbuffer to search for, which is always cleared
+	 * @param lastIndex the previously found index
+	 * @return the result of the search
+	 */
+	private static int stringContains(final Vector<String> V, final char combiner, final StringBuffer buf, int lastIndex)
+	{
+		final String str=buf.toString().trim();
+		if(str.length()==0) 
+			return lastIndex;
+		buf.setLength(0);
+		switch(combiner)
+		{
+		case '&':
+			lastIndex=strIndex(V,str,0);
+			return lastIndex;
+		case '|':
+			if(lastIndex>=0) 
+				return lastIndex;
+			return strIndex(V,str,0);
+		case '>':
+			if(lastIndex<0) 
+				return lastIndex;
+			return strIndex(V,str,lastIndex+1);
+		case '<':
+		{
+			if(lastIndex<0) 
+				return lastIndex;
+			final int newIndex=strIndex(V,str,0);
+			if(newIndex<lastIndex) 
+				return newIndex;
+			return -1;
+		}
+		}
+		return -1;
+	}
+	
+	/**
+	 * Main workhorse of the stringcontains mobprog function.
+	 * @param V parsed string to search
+	 * @param str the coded search function
+	 * @param index a 1-dim array of the index in the coded search str to start the search at
+	 * @param depth the number of close parenthesis to expect
+	 * @return the last index in the coded search function evaluated
+	 */
+	private static int stringContains(final Vector<String> V, final char[] str, final int[] index, final int depth)
+	{
+		final StringBuffer buf=new StringBuffer("");
+		int lastIndex=0;
+		boolean quoteMode=false;
+		char combiner='&';
+		for(int i=index[0];i<str.length;i++)
+		{
+			switch(str[i])
+			{
+			case ')':
+				if((depth>0)&&(!quoteMode))
+				{
+					index[0]=i;
+					return stringContains(V,combiner,buf,lastIndex);
+				}
+				buf.append(str[i]);
+				break;
+			case ' ':
+				buf.append(str[i]);
+				break;
+			case '&':
+			case '|':
+			case '>':
+			case '<':
+				if(quoteMode)
+					buf.append(str[i]);
+				else
+				{
+					lastIndex=stringContains(V,combiner,buf,lastIndex);
+					combiner=str[i];
+				}
+				break;
+			case '(':
+				if(!quoteMode)
+				{
+					lastIndex=stringContains(V,combiner,buf,lastIndex);
+					index[0]=i+1;
+					final int newIndex=stringContains(V,str,index,depth+1);
+					i=index[0];
+					switch(combiner)
+					{
+					case '&':
+						if((lastIndex<0)||(newIndex<0))
+							lastIndex=-1;
+						break;
+					case '|':
+						if(newIndex>=0)
+							lastIndex=newIndex;
+						break;
+					case '>':
+						if(newIndex<=lastIndex)
+							lastIndex=-1;
+						else
+							lastIndex=newIndex;
+						break;
+					case '<':
+						if((newIndex<0)||(newIndex>=lastIndex))
+							lastIndex=-1;
+						else
+							lastIndex=newIndex;
+						break;
+					}
+				}
+				else
+					buf.append(str[i]);
+				break;
+			case '\"':
+				quoteMode=(!quoteMode);
+				break;
+			case '\\':
+				if(i<str.length-1)
+				{
+					buf.append(str[i+1]);
+					i++;
+				}
+				break;
+			default:
+				if(Character.isLetter(str[i]))
+					buf.append(Character.toLowerCase(str[i]));
+				else
+					buf.append(str[i]);
+				break;
+			}
+		}
+		return stringContains(V,combiner,buf,lastIndex);
+	}
+
+	/**
+	 * As the name implies, this is the implementation of the stringcontains mobprog function
+	 * @param str1 the string to search in
+	 * @param str2 the coded search expression
+	 * @return the index of the found string in the first string
+	 */
+	protected final static int stringContainsFunctionImpl(final String str1, final String str2)
+	{
+		final StringBuffer buf1=new StringBuffer(str1.toLowerCase());
+		for(int i=buf1.length()-1;i>=0;i--)
+		{
+			if((buf1.charAt(i)!=' ')
+			&&(buf1.charAt(i)!='\'')
+			&&(buf1.charAt(i)!='\"')
+			&&(buf1.charAt(i)!='`')
+			&&(!Character.isLetterOrDigit(buf1.charAt(i))))
+				buf1.setCharAt(i,' ');
+		}
+		final Vector<String> V=CMParms.parse(buf1.toString());
+		return stringContains(V,str2.toCharArray(),new int[]{0},0);
+	}
+
 	@Override
 	public boolean eval(PhysicalAgent scripted,
 						MOB source,
@@ -3178,7 +3385,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				returnable=CMParms.stringContains(arg1,arg2)>=0;
+				returnable=stringContainsFunctionImpl(arg1,arg2)>=0;
 				break;
 			}
 			case 92: // isodd

@@ -50,7 +50,7 @@ public class CMParms
 		{
 			return Character.isWhitespace(c);
 		}
-	};
+	}
 	
 	/**
 	 * Create a DelimiterChecker from the given set of characters that will
@@ -839,6 +839,23 @@ public class CMParms
 		}
 	}
 
+	/**
+	 * This method is a sloppy, forgiving method doing KEY=VALUE value searches in a string.
+	 * Returns the value of the given key when the parameter is formatted in the given text
+	 * in the format [KEY]=[VALUE] or [KEY]="[VALUE]".  If the key is not found, it will
+	 * return the given defaultVal.  The key is case insensitive, and start-partial.  For
+	 * example, a key of NAME will match NAMEY or NAME12.
+	 * No assumptions are made about the given text.  It could have other garbage data of
+	 * any format around it.  For example, if BOB is the key, then a text string like:
+	 * 'joe larry bibob=hoo moe="uiuiui bob=goo lou", bob="yoo"' will still return "goo".
+	 * If the key is found, but followed by a + or -, the default value is always returned.
+	 * The value ends when either an end quote is encountered, or a whitespace, semicolon, or
+	 * comma.
+	 * @param text the string to search
+	 * @param key the key to search for, case insensitive
+	 * @param defaultVal the value to return if the key is not found
+	 * @return the value
+	 */
 	public final static String getParmStr(String text, final String key, final String defaultVal)
 	{
 		int x=text.toUpperCase().indexOf(key.toUpperCase());
@@ -868,11 +885,10 @@ public class CMParms
 					if(x<text.length())
 					{
 						text=text.substring(x);
-						x=0;
 						while((x<text.length())
 							&&((!endWithQuote)&&(!Character.isWhitespace(text.charAt(x)))&&(text.charAt(x)!=';')&&(text.charAt(x)!=','))
-							||((endWithQuote)&&(text.charAt(x)!='\"')))
-								x++;
+								||((endWithQuote)&&(text.charAt(x)!='\"')))
+									x++;
 						return text.substring(0,x).trim();
 					}
 
@@ -885,15 +901,23 @@ public class CMParms
 		return defaultVal;
 	}
 
-	private static int[] makeIntArray(final int x, final int y)
-	{
-		final int[] xy=new int[2];
-		xy[0]=x;
-		xy[1]=y;
-		return xy;
-	}
-
-	public final static int[] getParmCompare(String text, final String key, final int value)
+	/**
+	 * This method is a sloppy, forgiving method doing KEY>=[VALUE] value searches in a string.
+	 * Searches and finds the numeric value of the given key when the parameter is formatted in the given text
+	 * in the format [KEY]=[VALUE] where = may be ==,=,!=,>,>=,<,or <=.  The key is case insensitive, 
+	 * and start-partial.  For example, a key of NAME will match NAMEY or NAME12.
+	 * It will then do the given comparison against the value passed in, populate the comparator found array
+	 * with the comparator found, and the method returns the result of the compare.
+	 * No assumptions are made about the given text.  It could have other garbage data of
+	 * any format around it.  For example, if BOB is the key, and the value is 3, then a text string like:
+	 * 'joe larry bibob=2 moe="uiuiui bob>7 lou", bob=5' will return a comparator of > and the compare result of false.
+	 * @param text the string to search
+	 * @param key the key to search for, case insensitive
+	 * @param vaue the value to compare the found value against
+	 * @param comparatorFound a one-dimensional array to contain the found comparator
+	 * @return the result of comparing the found value with the given value
+	 */
+	public final static boolean getParmCompare(String text, final String key, final int value, char[] comparatorFound)
 	{
 		int x=text.toUpperCase().indexOf(key.toUpperCase());
 		while(x>=0)
@@ -918,24 +942,29 @@ public class CMParms
 					}
 					if(x<text.length()-1)
 					{
-						while((x<text.length())&&(!Character.isDigit(text.charAt(x))))
+						
+						while((x<text.length())&&(Character.isWhitespace(text.charAt(x))))
 							x++;
-						if(x<text.length())
+						if((x<text.length())&&(Character.isDigit(text.charAt(x))))
 						{
 							text=text.substring(x);
 							x=0;
 							while((x<text.length())&&(Character.isDigit(text.charAt(x))))
 								x++;
 							final int found=CMath.s_int(text.substring(0,x));
+							if((comparatorFound!=null)&&(comparatorFound.length>0))
+								comparatorFound[1]=comp;
 							if(andEqual&&(found==value))
-								return makeIntArray(comp,(comp=='!')?-1:1);
+							{
+								return comp != '!';
+							}
 							switch(comp)
 							{
-								case '>': return makeIntArray(comp,(value>found)?1:-1);
-								case '<': return makeIntArray(comp,(value<found)?1:-1);
-								case '!': makeIntArray(comp,1);
+								case '>': return value > found;
+								case '<': return value < found;
+								case '!': return true;
 							}
-							return makeIntArray(comp,0);
+							return false;
 						}
 					}
 				}
@@ -944,155 +973,9 @@ public class CMParms
 			else
 				x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
 		}
-		return makeIntArray('\0',0);
-	}
-
-	private static int strIndex(final Vector<String> V, final String str, final int start)
-	{
-		if(str.indexOf(' ')<0) 
-			return V.indexOf(str,start);
-		final List<String> V2=CMParms.parse(str);
-		if(V2.size()==0) 
-			return -1;
-		int x=V.indexOf(V2.get(0),start);
-		boolean found=false;
-		while((x>=0)&&((x+V2.size())<=V.size())&&(!found))
-		{
-			found=true;
-			for(int v2=1;v2<V2.size();v2++)
-			{
-				if(!V.get(x+v2).equals(V2.get(v2)))
-				{ 
-					found=false; 
-					break;
-				}
-			}
-			if(!found) 
-				x=V.indexOf(V2.get(0),x+1);
-		}
-		if(found) 
-			return x;
-		return -1;
-	}
-
-	private static int stringContains(final Vector<String> V, final char combiner, final StringBuffer buf, int lastIndex)
-	{
-		final String str=buf.toString().trim();
-		if(str.length()==0) 
-			return lastIndex;
-		buf.setLength(0);
-		switch(combiner)
-		{
-		case '&':
-			lastIndex=strIndex(V,str,0);
-			return lastIndex;
-		case '|':
-			if(lastIndex>=0) 
-				return lastIndex;
-			return strIndex(V,str,0);
-		case '>':
-			if(lastIndex<0) 
-				return lastIndex;
-			return strIndex(V,str,lastIndex<0?0:lastIndex+1);
-		case '<':
-		{
-			if(lastIndex<0) 
-				return lastIndex;
-			final int newIndex=strIndex(V,str,0);
-			if(newIndex<lastIndex) 
-				return newIndex;
-			return -1;
-		}
-		}
-		return -1;
-	}
-	
-	private static int stringContains(final Vector<String> V, final char[] str, final int[] index, final int depth)
-	{
-		final StringBuffer buf=new StringBuffer("");
-		int lastIndex=0;
-		boolean quoteMode=false;
-		char combiner='&';
-		for(int i=index[0];i<str.length;i++)
-		{
-			switch(str[i])
-			{
-			case ')':
-				if((depth>0)&&(!quoteMode))
-				{
-					index[0]=i;
-					return stringContains(V,combiner,buf,lastIndex);
-				}
-				buf.append(str[i]);
-				break;
-			case ' ':
-				buf.append(str[i]);
-				break;
-			case '&':
-			case '|':
-			case '>':
-			case '<':
-				if(quoteMode)
-					buf.append(str[i]);
-				else
-				{
-					lastIndex=stringContains(V,combiner,buf,lastIndex);
-					combiner=str[i];
-				}
-				break;
-			case '(':
-				if(!quoteMode)
-				{
-					lastIndex=stringContains(V,combiner,buf,lastIndex);
-					index[0]=i+1;
-					final int newIndex=stringContains(V,str,index,depth+1);
-					i=index[0];
-					switch(combiner)
-					{
-					case '&':
-						if((lastIndex<0)||(newIndex<0))
-							lastIndex=-1;
-						break;
-					case '|':
-						if(newIndex>=0)
-							lastIndex=newIndex;
-						break;
-					case '>':
-						if(newIndex<=lastIndex)
-							lastIndex=-1;
-						else
-							lastIndex=newIndex;
-						break;
-					case '<':
-						if((newIndex<0)||(newIndex>=lastIndex))
-							lastIndex=-1;
-						else
-							lastIndex=newIndex;
-						break;
-					}
-				}
-				else
-					buf.append(str[i]);
-				break;
-			case '\"':
-				quoteMode=(!quoteMode);
-				break;
-			case '\\':
-				if(i<str.length-1)
-				{
-					buf.append(str[i+1]);
-					i++;
-				}
-				break;
-			default:
-				if(Character.isLetter(str[i]))
-					buf.append(Character.toLowerCase(str[i]));
-				else
-					buf.append(str[i]);
-				break;
-			}
-		}
-		return stringContains(V,combiner,buf,lastIndex);
+		if((comparatorFound!=null)&&(comparatorFound.length>0))
+			comparatorFound[1]='\0';
+		return false;
 	}
 
 	public final static Map<String,String> parseEQParms(final String str, final String[] parmList)
@@ -1353,22 +1236,6 @@ public class CMParms
 				parsedV.add(groupV);
 		}
 		return parsedV;
-	}
-
-	public final static int stringContains(final String str1, final String str2)
-	{
-		final StringBuffer buf1=new StringBuffer(str1.toLowerCase());
-		for(int i=buf1.length()-1;i>=0;i--)
-		{
-			if((buf1.charAt(i)!=' ')
-			&&(buf1.charAt(i)!='\'')
-			&&(buf1.charAt(i)!='\"')
-			&&(buf1.charAt(i)!='`')
-			&&(!Character.isLetterOrDigit(buf1.charAt(i))))
-				buf1.setCharAt(i,' ');
-		}
-		final Vector<String> V=CMParms.parse(buf1.toString());
-		return stringContains(V,str2.toCharArray(),new int[]{0},0);
 	}
 
 	public final static int getParmPlus(String text, final String key)
