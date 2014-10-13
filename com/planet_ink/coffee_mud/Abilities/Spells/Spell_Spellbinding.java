@@ -108,7 +108,7 @@ public class Spell_Spellbinding extends Spell
 		{
 			try
 			{
-				final ByteArrayInputStream bytes=new ByteArrayInputStream(CMParms.fromByteList(text));
+				final ByteArrayInputStream bytes=new ByteArrayInputStream(CMParms.parseSemicolonByteList(text));
 				spellbindings=(DVector)new ObjectInputStream(bytes).readObject();
 			}
 			catch(final Exception e)

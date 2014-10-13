@@ -210,7 +210,7 @@ public class CMParms
 	 */
 	public final static String combineQuoted(final List<?> commands, final int startAt, final int endAt)
 	{
-		final StringBuffer combined=new StringBuffer("");
+		final StringBuilder combined=new StringBuilder("");
 		if(commands!=null)
 		{
 			String s;
@@ -254,7 +254,7 @@ public class CMParms
 	 */
 	public final static String combineQuoted(final List<?> commands, final int startAt)
 	{
-		final StringBuffer combined=new StringBuffer("");
+		final StringBuilder combined=new StringBuilder("");
 		if(commands!=null)
 		{
 			String s;
@@ -292,7 +292,7 @@ public class CMParms
 	 */
 	public final static String combineWithX(final List<?> commands, final String delimiter, final int startAt)
 	{
-		final StringBuffer combined=new StringBuffer("");
+		final StringBuilder combined=new StringBuilder("");
 		if(commands!=null)
 		{
 			String s;
@@ -316,7 +316,7 @@ public class CMParms
 	 */
 	public final static String combineWithX(final List<?> commands, final char delimiter, final int startAt)
 	{
-		final StringBuffer combined=new StringBuffer("");
+		final StringBuilder combined=new StringBuilder("");
 		if(commands!=null)
 		{
 			String s;
@@ -337,7 +337,7 @@ public class CMParms
 	 */
 	public final static String combine(final Set<?> flags)
 	{
-		final StringBuffer combined=new StringBuffer("");
+		final StringBuilder combined=new StringBuilder("");
 		if(flags!=null)
 		{
 			for (final Object name : flags)
@@ -1092,7 +1092,7 @@ public class CMParms
 		String parmName=null;
 		int lastPossibleStart=-1;
 		boolean lastWasWhitespace=false;
-		final StringBuffer str=new StringBuffer(parms);
+		final StringBuilder str=new StringBuilder(parms);
 		for(int x=0;x<=str.length();x++)
 		{
 			final char c=(x==str.length())?'\n':str.charAt(x);
@@ -1293,8 +1293,8 @@ public class CMParms
 	}
 
 	/**
-	 * This method is a sloppy, forgiving method doing KEY+INT or KEY-INT value searches in a string.
-	 * Returns the value of the given key.  If the key is not found, it will
+	 * This method is a sloppy, forgiving method doing KEY+[INT] or KEY-[INT] value searches 
+	 * in a string.  Returns the value of the given key.  If the key is not found, it will
 	 * return 0.  The key is case insensitive, and start-partial.  For
 	 * example, a key of NAME will match NAMEY or NAME12.
 	 * No assumptions are made about the given text.  It could have other garbage data of
@@ -1342,6 +1342,19 @@ public class CMParms
 		return 0;
 	}
 
+	/**
+	 * This method is a sloppy, forgiving method doing KEY+[DBL] or KEY-[DBL] value searches 
+	 * in a string.  Returns the double value of the given key.  If the key is not found, it will
+	 * return 0.  The key is case insensitive, and start-partial.  For
+	 * example, a key of NAME will match NAMEY or NAME12.
+	 * No assumptions are made about the given text.  It could have other garbage data of
+	 * any format around it.  For example, if BOB is the key, then a text string like:
+	 * 'joe larry bibob+5.2 moe="uiuiui bob-2.1 lou", bob+3.9' will still return -2.1
+	 * If the key is found, but followed by a =, 0.0 is returned.
+	 * @param text the string to search
+	 * @param key the key to search for, case insensitive
+	 * @return the value
+	 */
 	public final static double getParmDoublePlus(String text, final String key)
 	{
 		int x=text.toUpperCase().indexOf(key.toUpperCase());
@@ -1388,6 +1401,23 @@ public class CMParms
 		return 0.0;
 	}
 
+	/**
+	 * This method is a sloppy, forgiving method doing KEY=VALUE value searches in a string.
+	 * Returns the value of the given key when the parameter is formatted in the given text
+	 * in the format [KEY]=[VALUE].  If the key is not found, it will return the given 
+	 * defaultVal.  The key is case insensitive, and start-partial.  For example, a key of 
+	 * NAME will match NAMEY or NAME12.
+	 * No assumptions are made about the given text.  It could have other garbage data of
+	 * any format around it.  For example, if BOB is the key, then a text string like:
+	 * 'joe larry bibob=1.5 moe="uiuiui bob=2.1 lou", bob=3.7' will still return 2.1.
+	 * If the key is found, but followed by a + or -, the default value is always returned.
+	 * The value ends when either an end quote is encountered, or a whitespace, semicolon, or
+	 * comma.
+	 * @param text the string to search
+	 * @param key the key to search for, case insensitive
+	 * @param defaultVal the value to return if the key is not found
+	 * @return the value
+	 */
 	public final static double getParmDouble(String text, final String key, final double defaultValue)
 	{
 		int x=text.toUpperCase().indexOf(key.toUpperCase());
@@ -1423,7 +1453,23 @@ public class CMParms
 		return defaultValue;
 	}
 
-
+	/**
+	 * This method is a sloppy, forgiving method doing KEY=VALUE value searches in a string.
+	 * Returns the value of the given key when the parameter is formatted in the given text
+	 * in the format [KEY]=[VALUE].  If the key is not found, it will return the given 
+	 * defaultVal.  The key is case insensitive, and start-partial.  For example, a key of 
+	 * NAME will match NAMEY or NAME12.
+	 * No assumptions are made about the given text.  It could have other garbage data of
+	 * any format around it.  For example, if BOB is the key, then a text string like:
+	 * 'joe larry bibob=1 moe="uiuiui bob=2 lou", bob=3' will still return 2.
+	 * If the key is found, but followed by a + or -, the default value is always returned.
+	 * The value ends when either an end quote is encountered, or a whitespace, semicolon, or
+	 * comma.
+	 * @param text the string to search
+	 * @param key the key to search for, case insensitive
+	 * @param defaultVal the value to return if the key is not found
+	 * @return the value
+	 */
 	public final static int getParmInt(String text, final String key, final int defaultValue)
 	{
 		int x=text.toUpperCase().indexOf(key.toUpperCase());
@@ -1458,6 +1504,23 @@ public class CMParms
 		return defaultValue;
 	}
 
+	/**
+	 * This method is a sloppy, forgiving method doing KEY=VALUE value searches in a string.
+	 * Returns the boolean value of the given key when the parameter is formatted in the given text
+	 * in the format [KEY]=[VALUE].  If the key is not found, it will return the given 
+	 * defaultVal.  The key is case insensitive, and start-partial.  For example, a key of 
+	 * NAME will match NAMEY or NAME12.
+	 * No assumptions are made about the given text.  It could have other garbage data of
+	 * any format around it.  For example, if BOB is the key, then a text string like:
+	 * 'joe larry bibob=False moe="uiuiui bob=True lou", bob=False' will still return True.
+	 * If the key is found, but followed by a + or -, the default value is always returned.
+	 * The value ends when either an end quote is encountered, or a whitespace, semicolon, or
+	 * comma.
+	 * @param text the string to search
+	 * @param key the key to search for, case insensitive
+	 * @param defaultVal the value to return if the key is not found
+	 * @return the value
+	 */
 	public final static boolean getParmBool(String text, final String key, final boolean defaultValue)
 	{
 		int x=text.toUpperCase().indexOf(key.toUpperCase());
@@ -1482,6 +1545,12 @@ public class CMParms
 		return defaultValue;
 	}
 
+	/**
+	 * Converts the given object list to a string array by calling
+	 * "toString()" on all the objects
+	 * @param V the list to turn into a string array
+	 * @return the string array
+	 */
 	public final static String[] toStringArray(final List<?> V)
 	{
 		if((V==null)||(V.size()==0))
@@ -1495,8 +1564,17 @@ public class CMParms
 		return s;
 	}
 
+	/**
+	 * Copies the objects in the given list into the given string set
+	 * by calling toString() on all the object
+	 * @param V the list
+	 * @param S the set
+	 * @return the set, again
+	 */
 	public final static Set<String> toStringSet(final List<?> V, final Set<String> S)
 	{
+		if(S==null)
+			return toStringSet(V,new HashSet<String>());
 		if((V==null)||(V.size()==0))
 		{
 			return S;
@@ -1506,6 +1584,12 @@ public class CMParms
 		return S;
 	}
 
+	/**
+	 * Converts the given object array to a string array by calling
+	 * "toString()" on all the objects
+	 * @param O the objects to turn into a string array
+	 * @return the string array
+	 */
 	public final static String[] toStringArray(final Object[] O)
 	{
 		if(O==null) 
@@ -1516,6 +1600,12 @@ public class CMParms
 		return s;
 	}
 
+	/**
+	 * Converts the given object list to a long array by calling
+	 * "toString()" on all the objects and then converting those to longs.
+	 * @param V the list to turn into a long array
+	 * @return the long array
+	 */
 	public final static long[] toLongArray(final List<?> V)
 	{
 		if((V==null)||(V.size()==0))
@@ -1529,6 +1619,12 @@ public class CMParms
 		return s;
 	}
 
+	/**
+	 * Converts the given object list to a double array by calling
+	 * "toString()" on all the objects and then converting those to doubles.
+	 * @param V the list to turn into a double array
+	 * @return the double array
+	 */
 	public final static double[] toDoubleArray(final List<?> V)
 	{
 		if((V==null)||(V.size()==0))
@@ -1542,6 +1638,12 @@ public class CMParms
 		return s;
 	}
 
+	/**
+	 * Converts the given object list to a int array by calling
+	 * "toString()" on all the objects and then converting those to ints.
+	 * @param V the list to turn into a int array
+	 * @return the int array
+	 */
 	public final static int[] toIntArray(final List<?> V)
 	{
 		if((V==null)||(V.size()==0))
@@ -1555,64 +1657,111 @@ public class CMParms
 		return s;
 	}
 
+	/**
+	 * Converts the given bytes to their numeric string values
+	 * and returns them, semicolon delimited.
+	 * @param bytes the bytes to return
+	 * @return the semicolon delimited list
+	 */
 	public final static String toSemicolonList(final byte[] bytes)
 	{
-		final StringBuffer str=new StringBuffer("");
-		for(int b=0;b<bytes.length;b++)
-			str.append(Byte.toString(bytes[b])+(b<(bytes.length-1)?";":""));
+		if((bytes==null)||(bytes.length==0))
+			return "";
+		final StringBuilder str=new StringBuilder(Byte.toString(bytes[0]));
+		for(int b=1;b<bytes.length;b++)
+			str.append(";").append(Byte.toString(bytes[b]));
 		return str.toString();
 	}
 
+	/**
+	 * Returns the given strings combined, semicolon delimited.
+	 * @param bytes the strings to return
+	 * @return the semicolon delimited list
+	 */
 	public final static String toSemicolonList(final String[] bytes)
 	{
-		final StringBuffer str=new StringBuffer("");
-		for(int b=0;b<bytes.length;b++)
-			str.append(bytes[b]+(b<(bytes.length-1)?";":""));
+		if((bytes==null)||(bytes.length==0))
+			return "";
+		final StringBuilder str=new StringBuilder(bytes[0]);
+		for(int b=1;b<bytes.length;b++)
+			str.append(";").append(bytes[b]);
 		return str.toString();
 	}
 
+	/**
+	 * Converts the given objects to their string values
+	 * and returns them, semicolon delimited.
+	 * @param bytes the objects as strings to return
+	 * @return the semicolon delimited list
+	 */
 	public final static String toSemicolonList(final Object[] bytes)
 	{
-		final StringBuffer str=new StringBuffer("");
+		if((bytes==null)||(bytes.length==0))
+			return "";
+		final StringBuilder str=new StringBuilder(""+bytes[0]);
 		for(int b=0;b<bytes.length;b++)
-			str.append(bytes[b]+(b<(bytes.length-1)?";":""));
+			str.append(";").append(""+bytes[b]);
 		return str.toString();
 	}
 
+	/**
+	 * Converts the given objects to their string values
+	 * and returns them, semicolon delimited.
+	 * @param bytes the objects as strings to return
+	 * @return the semicolon delimited list
+	 */
 	public final static String toSemicolonList(final Enumeration<?> bytes)
 	{
-		final StringBuffer str=new StringBuffer("");
-		Object o;
+		if((bytes==null)||(!bytes.hasMoreElements()))
+			return "";
+		final StringBuilder str=new StringBuilder(""+bytes.nextElement());
 		for(;bytes.hasMoreElements();)
-		{
-			o=bytes.nextElement();
-			str.append(o.toString()+(bytes.hasMoreElements()?";":""));
-		}
+			str.append(";").append(""+bytes.nextElement());
 		return str.toString();
 	}
 
+	/**
+	 * Converts the given objects to their string values
+	 * and returns them, semicolon delimited.
+	 * @param bytes the objects as strings to return
+	 * @return the semicolon delimited list
+	 */
 	public final static String toSemicolonList(final List<?> bytes)
 	{
 		if((bytes==null)||(bytes.size()==0)) 
 			return "";
-		final StringBuffer str=new StringBuffer(""+bytes.get(0));
+		final StringBuilder str=new StringBuilder(""+bytes.get(0));
 		for(int b=1;b<bytes.size();b++)
 			str.append(';').append(""+bytes.get(b));
 		return str.toString();
 	}
 
+	/**
+	 * Converts the given objects to their string values
+	 * and returns them, semicolon delimited.  If any values contains
+	 * a semicolon, the semicolon is escaped.
+	 * @param list the objects as strings to return
+	 * @return the semicolon delimited list
+	 */
 	public final static String toSafeSemicolonList(final List<?> list)
 	{
 		return toSafeSemicolonList(list.toArray());
 	}
 
+	/**
+	 * Converts the given objects to their string values
+	 * and returns them, semicolon delimited.  If any values contains
+	 * a semicolon, the semicolon is escaped.
+	 * @param list the objects as strings to return
+	 * @return the semicolon delimited list
+	 */
 	public final static String toSafeSemicolonList(final Object[] list)
 	{
-		final StringBuffer buf1=new StringBuffer("");
-		StringBuffer s=null;
+		final StringBuilder buf1=new StringBuilder("");
+		StringBuilder s=null;
 		for(int l=0;l<list.length;l++)
 		{
-			s=new StringBuffer(list[l].toString());
+			s=new StringBuilder(list[l].toString());
 			for(int i=0;i<s.length();i++)
 				switch(s.charAt(i))
 				{
@@ -1629,11 +1778,19 @@ public class CMParms
 		return buf1.toString();
 	}
 
+	/**
+	 * Parses the given semicolon-delimited list of strings and returns
+	 * the list as a list.  If any of the values contained escaped-semicolons,
+	 * the values are unesccaped.
+	 * @param list semicolon-delimited list
+	 * @param ignoreNulls true to not return empty strings, false otherwise
+	 * @return the list of unescaped values
+	 */
 	public final static List<String> parseSafeSemicolonList(final String list, final boolean ignoreNulls)
 	{
 		if(list==null) 
-			return new Vector<String>();
-		final StringBuffer buf1=new StringBuffer(list);
+			return new Vector<String>(0);
+		final StringBuilder buf1=new StringBuilder(list);
 		int lastDex=0;
 		final Vector<String> V=new Vector<String>();
 		for(int l=0;l<buf1.length();l++)
@@ -1653,7 +1810,13 @@ public class CMParms
 		return V;
 	}
 
-	public final static byte[] fromByteList(final String str)
+	/**
+	 * Returns a byte array made from the semicolon-delimited list
+	 * of numeric values in the given string.
+	 * @param str the semicolon-delimited decimal byte list
+	 * @return the byte array.
+	 */
+	public final static byte[] parseSemicolonByteList(final String str)
 	{
 		final List<String> V=CMParms.parseSemicolons(str,true);
 		if(V.size()>0)
@@ -2033,7 +2196,7 @@ public class CMParms
 		{
 			return "";
 		}
-		final StringBuffer s=new StringBuffer("");
+		final StringBuilder s=new StringBuilder("");
 		for(final String KEY : V.keySet())
 			s.append(KEY+"="+(V.get(KEY).toString())+"/");
 		return s.toString();
@@ -2072,7 +2235,7 @@ public class CMParms
 		{
 			return "";
 		}
-		final StringBuffer s=new StringBuffer("");
+		final StringBuilder s=new StringBuilder("");
 		for(final String KEY : V.keySet())
 		{
 			String val = V.get(KEY).toString();
