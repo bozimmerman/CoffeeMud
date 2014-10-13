@@ -2342,17 +2342,22 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				defineReward(E,ignoreStats,defPrefix,CMLib.xml().getParmValue(piece.parms,"DEFINE"),valPiece,value,defined,true);
 
 			String action = CMLib.xml().getParmValue(valPiece.parms,"ACTION");
-			if((action==null)||(action.length()==0)) action="APPEND";
-			if(action.equalsIgnoreCase("REPLACE"))
-				finalValue = new StringBuffer(value);
-			else
-			if(action.equalsIgnoreCase("APPEND"))
+			if(action==null) 
 				finalValue.append(" ").append(value);
 			else
-			if(action.equalsIgnoreCase("PREPEND"))
-				finalValue.insert(0,' ').insert(0,value);
-			else
-				throw new CMException("Unknown action '"+action+" on subPiece "+valPiece.tag+" on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
+			{
+				action=action.toUpperCase().trim();
+				if((action.length()==0)||(action.equals("APPEND")))
+					finalValue.append(" ").append(value);
+				else
+				if(action.equals("REPLACE"))
+					finalValue = new StringBuffer(value);
+				else
+				if(action.equals("PREPEND"))
+					finalValue.insert(0,' ').insert(0,value);
+				else
+					throw new CMException("Unknown action '"+action+" on subPiece "+valPiece.tag+" on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
+			}
 		}
 		final String finalFinalValue=finalValue.toString().trim();
 		if(processDefined!=null)

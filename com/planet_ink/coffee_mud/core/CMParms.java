@@ -885,6 +885,7 @@ public class CMParms
 					if(x<text.length())
 					{
 						text=text.substring(x);
+						x=0;
 						while((x<text.length())
 							&&((!endWithQuote)&&(!Character.isWhitespace(text.charAt(x)))&&(text.charAt(x)!=';')&&(text.charAt(x)!=','))
 								||((endWithQuote)&&(text.charAt(x)!='\"')))
