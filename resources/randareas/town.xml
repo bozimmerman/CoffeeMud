@@ -422,7 +422,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			</DESCRIPTION>
 			<EXIT class="GenDoor" defclosed="false" />
 			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what spells are available, `buy [spellname]` to have a spell cast on you." />
-			<MOB class="GenShopKeeper" level="($level_range) * 1.05 > 30" race="$_humanoid_races" gender="$anygender" whatisell="caster">
+			<MOB class="GenShopKeeper" level="($level_range) * 1.05 &gt; 30" race="$_humanoid_races" gender="$anygender" whatisell="caster">
 				<NAME select="pick-1">
 					<NAME>${c:fantasy_name1}</NAME>
 					<NAME>Priest ${c:fantasy_name1}</NAME>
@@ -590,21 +590,21 @@ See guides/RandomAreas.html for information about documents of this type.
 					<ITEM select="all" condition="$shoptype='magic' and ($NOFANTASY != 'true')">
 						<ITEM class="metacraft:all-glassblowing<$mob_level=GenWand" number=20/>
 						<ITEM class="metacraft:all-blacksmithing<$mob_level=GenWand" material="$any_cheap_metal" number=20/>
-						<ITEM class="metacraft:any-scrollscribing < $level_range" number=20 price="$item_level * 100"/>
-						<ITEM class="metacraft:any-scrollscribing < $level_range" number=20 price="$item_level * 100"/>
-						<ITEM class="metacraft:any-scrollscribing < $level_range" number=20 price="$item_level * 100"/>
-						<ITEM class="metacraft:any-scrollscribing < $level_range" number=20 price="$item_level * 100"/>
-						<ITEM class="metacraft:any-scrollscribing < $level_range" number=20 price="$item_level * 100"/>
-						<ITEM class="metacraft:any-alchemy < $level_range" number=20 price="$item_level * 10"/>
-						<ITEM class="metacraft:any-alchemy < $level_range" number=20 price="$item_level * 10"/>
-						<ITEM class="metacraft:any-alchemy < $level_range" number=20 price="$item_level * 10"/>
-						<ITEM class="metacraft:any-alchemy < $level_range" number=20 price="$item_level * 10"/>
-						<ITEM class="metacraft:any-alchemy < $level_range" number=20 price="$item_level * 10"/>
-						<ITEM class="metacraft:any-herbalism < $level_range" number=20 price="$item_level * 10"/>
-						<ITEM class="metacraft:any-herbalism < $level_range" number=20 price="$item_level * 10"/>
-						<ITEM class="metacraft:any-herbalism < $level_range" number=20 price="$item_level * 10"/>
-						<ITEM class="metacraft:any-herbalism < $level_range" number=20 price="$item_level * 10"/>
-						<ITEM class="metacraft:any-herbalism < $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-scrollscribing &lt; $level_range" number=20 price="$item_level * 100"/>
+						<ITEM class="metacraft:any-scrollscribing &lt; $level_range" number=20 price="$item_level * 100"/>
+						<ITEM class="metacraft:any-scrollscribing &lt; $level_range" number=20 price="$item_level * 100"/>
+						<ITEM class="metacraft:any-scrollscribing &lt; $level_range" number=20 price="$item_level * 100"/>
+						<ITEM class="metacraft:any-scrollscribing &lt; $level_range" number=20 price="$item_level * 100"/>
+						<ITEM class="metacraft:any-alchemy &lt; $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-alchemy &lt; $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-alchemy &lt; $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-alchemy &lt; $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-alchemy &lt; $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-herbalism &lt; $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-herbalism &lt; $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-herbalism &lt; $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-herbalism &lt; $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-herbalism &lt; $level_range" number=20 price="$item_level * 10"/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='jewelry'">
 						<ITEM class="metacraft:all-jewelmaking<$mob_level" material="$any_cheap_metal" number=20/>

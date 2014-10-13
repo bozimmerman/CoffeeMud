@@ -24,7 +24,7 @@ import com.planet_ink.coffee_mud.core.interfaces.Environmental;
 /**
  * This singleton contains methods for parsing user input and arguments to
  * behaviors and properties.  This library also has methods for reconstructing
- * parseable user input from previously parsed input.  It is, the Parameter 
+ * parseable user input from previously parsed input.  It is: the Parameter 
  * Parsing Library for CoffeeMud.
  * 
  * @author BZ

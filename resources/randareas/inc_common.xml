@@ -19,15 +19,15 @@ See guides/RandomAreas.html for information about documents of this type.
 -->
 <!--  include file full of useful common string selectors for treasure, materials, and races -->
 
-<ITEM class="metacraft:any-alchemy < $level_range" id="any_alchemy_item" requires="level_range=int"/>
-<ITEM class="metacraft:any-herbalism < $level_range" id="any_herbalism_item" requires="level_range=int"/>
-<ITEM class="metacraft:any-apothecary < $level_range" id="any_apothecary_item" requires="level_range=int"/>
-<ITEM class="metacraft:any-distilling < $level_range" id="any_distilling_item" requires="level_range=int"/>
-<ITEM class="metacraft:any-scrollscribing < $level_range" id="any_scrollscribing_item" requires="level_range=int"/>
-<ITEM class="metacraft:any-cooking < $level_range" id="any_cooking_item" requires="level_range=int"/>
-<ITEM class="metacraft:any-baking < $level_range" id="any_baking_item" requires="level_range=int"/>
-<ITEM class="metacraft:any-foodprep < $level_range" id="any_foodprep_item" requires="level_range=int"/>
-<ITEM class="metacraft:any-tailoring < $level_range" id="any_tailoring_item" requires="level_range=int"/>
+<ITEM class="metacraft:any-alchemy &lt; $level_range" id="any_alchemy_item" requires="level_range=int"/>
+<ITEM class="metacraft:any-herbalism &lt; $level_range" id="any_herbalism_item" requires="level_range=int"/>
+<ITEM class="metacraft:any-apothecary &lt; $level_range" id="any_apothecary_item" requires="level_range=int"/>
+<ITEM class="metacraft:any-distilling &lt; $level_range" id="any_distilling_item" requires="level_range=int"/>
+<ITEM class="metacraft:any-scrollscribing &lt; $level_range" id="any_scrollscribing_item" requires="level_range=int"/>
+<ITEM class="metacraft:any-cooking &lt; $level_range" id="any_cooking_item" requires="level_range=int"/>
+<ITEM class="metacraft:any-baking &lt; $level_range" id="any_baking_item" requires="level_range=int"/>
+<ITEM class="metacraft:any-foodprep &lt; $level_range" id="any_foodprep_item" requires="level_range=int"/>
+<ITEM class="metacraft:any-tailoring &lt; $level_range" id="any_tailoring_item" requires="level_range=int"/>
 
 <STRING id="anygender" select="any-1"> <STRING>M</STRING> <STRING>F</STRING></STRING>
 
@@ -38,14 +38,14 @@ See guides/RandomAreas.html for information about documents of this type.
 <ITEM id="all_random_junk" select="all" insert="dungeon_junk" predefine="level_range=99,theme=random" />
 
 <ITEM id="dungeon_mundane_items" select="all" requires="level_range=int">
-	<ITEM class="metacraft:any-Weaponsmithing < $level_range" />
-	<ITEM class="metacraft:any-Armorsmithing < $level_range" />
-	<ITEM class="metacraft:any-Tailoring < $level_range" />
-	<ITEM class="metacraft:any-LeatherWorking < $level_range" />
-	<ITEM class="metacraft:any-MasterWeaponsmithing < $level_range"  condition="$level_range>10"/>
-	<ITEM class="metacraft:any-MasterArmorsmithing < $level_range"  condition="$level_range>10"/>
-	<ITEM class="metacraft:any-MasterTailoring < $level_range"  condition="$level_range>10"/>
-	<ITEM class="metacraft:any-MasterLeatherWorking < $level_range"  condition="$level_range>10"/>
+	<ITEM class="metacraft:any-Weaponsmithing &lt; $level_range" />
+	<ITEM class="metacraft:any-Armorsmithing &lt; $level_range" />
+	<ITEM class="metacraft:any-Tailoring &lt; $level_range" />
+	<ITEM class="metacraft:any-LeatherWorking &lt; $level_range" />
+	<ITEM class="metacraft:any-MasterWeaponsmithing &lt; $level_range"  condition="$level_range&gt;10"/>
+	<ITEM class="metacraft:any-MasterArmorsmithing &lt; $level_range"  condition="$level_range&gt;10"/>
+	<ITEM class="metacraft:any-MasterTailoring &lt; $level_range"  condition="$level_range&gt;10"/>
+	<ITEM class="metacraft:any-MasterLeatherWorking &lt; $level_range"  condition="$level_range&gt;10"/>
 	<ITEM class="genCoins" name="a pile of coins" ability="$level_range * 2"/>
 </ITEM>
 
@@ -71,8 +71,8 @@ See guides/RandomAreas.html for information about documents of this type.
 	<ITEM class="GenLiquidResource" name="a glob of blood"  display="$item_name is here" material="BLOOD" level="$level_range"  weight=1 LIQUIDHELD=1 />
 	<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken ${l:item_material} axe handle" display="$item_name lies here" material="$any_wood" level="$level_range" weight=3 />
 	<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken wooden helmet" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
-	<ITEM class="metacraft:any-Cooking < $level_range" name="some rotten $item_name" display="$item_name sits here" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
-	<ITEM class="metacraft:any-Baking < $level_range" name="some rotten $item_name" display="$item_name sits here" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
+	<ITEM class="metacraft:any-Cooking &lt; $level_range" name="some rotten $item_name" display="$item_name sits here" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
+	<ITEM class="metacraft:any-Baking &lt; $level_range" name="some rotten $item_name" display="$item_name sits here" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
 	<ITEM class="GenWeapon" name="(a(n)) $adj_wooden_broken wooden practice sword" display="$item_name lies here" material="$any_wood" level="$level_range" weight=3 damage="1"/>
 	<ITEM class="GenItem" name="a pair of small horns" display="$item_name lie here" material="BONE" level="$level_range" weight=1 />
 	<ITEM class="GenItem" name="(a(n)) $adj_metal_broken door hinge" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range" />
@@ -82,8 +82,8 @@ See guides/RandomAreas.html for information about documents of this type.
 	<ITEM class="GenItem" name="a collection of rat skulls" display="$item_name are here" material="BONE" level="$level_range" weight=1 />
 	<ITEM class="GenItem" name="a stick of $adj_colored_color chalk" display="$item_name lies here" material="STONE" level="$level_range" weight=1 />
 	<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} lockpick" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range" />
-	<ITEM class="metacraft:any-Cooking < $level_range" name="some half-eaten $item_name covered in mold" display="$item_name sits here" weight=1 description="Its been here awhile."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
-	<ITEM class="metacraft:any-Baking < $level_range" name="some half-eaten $item_name covered in mold" display="$item_name sits here" weight=1 description="Its been here awhile."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
+	<ITEM class="metacraft:any-Cooking &lt; $level_range" name="some half-eaten $item_name covered in mold" display="$item_name sits here" weight=1 description="Its been here awhile."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
+	<ITEM class="metacraft:any-Baking &lt; $level_range" name="some half-eaten $item_name covered in mold" display="$item_name sits here" weight=1 description="Its been here awhile."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
 	<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} holy symbol" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 />
 	<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken ${l:item_material} holy symbol" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
 	<ITEM class="GenLimb" name="a glass eyeball" display="$item_name lies here" material="GLASS" level="$level_range" weight=1 />
@@ -117,54 +117,54 @@ See guides/RandomAreas.html for information about documents of this type.
 	<ITEM class="GenItem" name="a dirty $adj_metal_broken horse shoe" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1/>
 	<ITEM class="GenItem" name="a bloody hair comb made of bone" display="$item_name lie here" material="BONE" level="$level_range" weight=1 />
 	<ITEM class="GenLimb" name="(a(n)) ${l:item_material} wooden leg" display="$item_name lies here" material="$any_wood" level="$level_range" weight=3 damage="1"/>
-	<ITEM class="metacraft:any-Weaponsmithing < $level_range" name="(a(n)) $adj_metal_broken bloody $item_name" display="$item_name lies here" damage=1  attack=-10 affbehav="<BEHAVES /><AFFECS />" />
-	<ITEM class="metacraft:any-Armorsmithing < $level_range" name="(a(n)) $adj_metal_broken bloody $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" />
-	<ITEM class="metacraft:any-MasterWeaponsmithing < $level_range" name="(a(n)) $adj_metal_broken bloody $item_name" display="$item_name lies here" damage=1 attack=-10 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
-	<ITEM class="metacraft:any-MasterArmorsmithing < $level_range" name="(a(n)) $adj_metal_broken bloody $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
+	<ITEM class="metacraft:any-Weaponsmithing &lt; $level_range" name="(a(n)) $adj_metal_broken bloody $item_name" display="$item_name lies here" damage=1  attack=-10 affbehav="<BEHAVES /><AFFECS />" />
+	<ITEM class="metacraft:any-Armorsmithing &lt; $level_range" name="(a(n)) $adj_metal_broken bloody $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" />
+	<ITEM class="metacraft:any-MasterWeaponsmithing &lt; $level_range" name="(a(n)) $adj_metal_broken bloody $item_name" display="$item_name lies here" damage=1 attack=-10 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
+	<ITEM class="metacraft:any-MasterArmorsmithing &lt; $level_range" name="(a(n)) $adj_metal_broken bloody $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
 </ITEM>
 
 <ITEM id="dungeon_treasure_items" select="all" requires="level_range=int"  insert="level_weighted_gemstones,level_weighted_gem_baubles,level_weighted_bars,level_weighted_metal_baubles,any_alchemy_item,any_apothecary_item,any_distilling_item,any_herbalism_item">
 	<ITEM class="genCoins" name="a pile of coins" ability="$level_range * 20" />
 	<ITEM id="dungeon_treasure_equipment" select="pick-1+($level_range/20)" requires="level_range=int">
-		<ITEM class="metacraft:any-Weaponsmithing < $level_range" ability="1?5"/>
-		<ITEM class="metacraft:any-Armorsmithing < $level_range"  ability="1?5"/>
-		<ITEM class="metacraft:any-Tailoring < $level_range"  ability="1?5"/>
-		<ITEM class="metacraft:any-LeatherWorking < $level_range"  ability="1?5"/>
-		<ITEM class="metacraft:any-MasterWeaponsmithing < $level_range"  ability="1?5" condition="$level_range>10"/>
-		<ITEM class="metacraft:any-MasterArmorsmithing < $level_range"  ability="1?5" condition="$level_range>10"/>
-		<ITEM class="metacraft:any-MasterTailoring < $level_range"  ability="1?5" condition="$level_range>10"/>
-		<ITEM class="metacraft:any-MasterLeatherWorking < $level_range"  ability="1?5" condition="$level_range>10"/>
+		<ITEM class="metacraft:any-Weaponsmithing &lt; $level_range" ability="1?5"/>
+		<ITEM class="metacraft:any-Armorsmithing &lt; $level_range"  ability="1?5"/>
+		<ITEM class="metacraft:any-Tailoring &lt; $level_range"  ability="1?5"/>
+		<ITEM class="metacraft:any-LeatherWorking &lt; $level_range"  ability="1?5"/>
+		<ITEM class="metacraft:any-MasterWeaponsmithing &lt; $level_range"  ability="1?5" condition="$level_range&gt;10"/>
+		<ITEM class="metacraft:any-MasterArmorsmithing &lt; $level_range"  ability="1?5" condition="$level_range&gt;10"/>
+		<ITEM class="metacraft:any-MasterTailoring &lt; $level_range"  ability="1?5" condition="$level_range&gt;10"/>
+		<ITEM class="metacraft:any-MasterLeatherWorking &lt; $level_range"  ability="1?5" condition="$level_range&gt;10"/>
 	</ITEM>
 </ITEM>
 
 <string id="level_weighted_gems" select="any-1" predefine="weighted_gem_chance=($level_range*7)" required="level_range=int">
-	<string define="last_gem_value=10" condition="$weighted_gem_chance>10">limestone</string>
-	<string define="last_gem_value=25" condition="$weighted_gem_chance>25">sandstone</string>
-	<string define="last_gem_value=50" condition="$weighted_gem_chance>50">quartz</string>
-	<string define="last_gem_value=50" condition="$weighted_gem_chance>50">jade</string>
-	<string define="last_gem_value=50" condition="$weighted_gem_chance>50">aquamarine</string>
-	<string define="last_gem_value=60" condition="$weighted_gem_chance>50">crysoberyl</string>
-	<string define="last_gem_value=65" condition="$weighted_gem_chance>60">soapstone</string>
-	<string define="last_gem_value=65" condition="$weighted_gem_chance>65">peridot</string>
-	<string define="last_gem_value=70" condition="$weighted_gem_chance>70">garnet</string>
-	<string define="last_gem_value=70" condition="$weighted_gem_chance>70">onyx</string>
-	<string define="last_gem_value=70" condition="$weighted_gem_chance>70">turquoise</string>
-	<string define="last_gem_value=70" condition="$weighted_gem_chance>70">lapis</string>
-	<string define="last_gem_value=80" condition="$weighted_gem_chance>80">opal</string>
-	<string define="last_gem_value=80" condition="$weighted_gem_chance>80">amber</string>
-	<string define="last_gem_value=85" condition="$weighted_gem_chance>85">bloodstone</string>
-	<string define="last_gem_value=90" condition="$weighted_gem_chance>90">moonstone</string>
-	<string define="last_gem_value=95" condition="$weighted_gem_chance>95">alexandrite</string>
-	<string define="last_gem_value=100" condition="$weighted_gem_chance>100">gem</string>
-	<string define="last_gem_value=100" condition="$weighted_gem_chance>100">agate</string>
-	<string define="last_gem_value=100" condition="$weighted_gem_chance>100">citrine</string>
-	<string define="last_gem_value=180" condition="$weighted_gem_chance>180">sapphire</string>
-	<string define="last_gem_value=200" condition="$weighted_gem_chance>200">topaz</string>
-	<string define="last_gem_value=200" condition="$weighted_gem_chance>200">emerald</string>
-	<string define="last_gem_value=300" condition="$weighted_gem_chance>300">amethyst</string>
-	<string define="last_gem_value=300" condition="$weighted_gem_chance>300">ruby</string>
-	<string define="last_gem_value=380" condition="$weighted_gem_chance>380">pearl</string>
-	<string define="last_gem_value=500" condition="$weighted_gem_chance>500">diamond</string>
+	<string define="last_gem_value=10" condition="$weighted_gem_chance&gt;=0">limestone</string>
+	<string define="last_gem_value=25" condition="$weighted_gem_chance&gt;25">sandstone</string>
+	<string define="last_gem_value=50" condition="$weighted_gem_chance&gt;50">quartz</string>
+	<string define="last_gem_value=50" condition="$weighted_gem_chance&gt;50">jade</string>
+	<string define="last_gem_value=50" condition="$weighted_gem_chance&gt;50">aquamarine</string>
+	<string define="last_gem_value=60" condition="$weighted_gem_chance&gt;50">crysoberyl</string>
+	<string define="last_gem_value=65" condition="$weighted_gem_chance&gt;60">soapstone</string>
+	<string define="last_gem_value=65" condition="$weighted_gem_chance&gt;65">peridot</string>
+	<string define="last_gem_value=70" condition="$weighted_gem_chance&gt;70">garnet</string>
+	<string define="last_gem_value=70" condition="$weighted_gem_chance&gt;70">onyx</string>
+	<string define="last_gem_value=70" condition="$weighted_gem_chance&gt;70">turquoise</string>
+	<string define="last_gem_value=70" condition="$weighted_gem_chance&gt;70">lapis</string>
+	<string define="last_gem_value=80" condition="$weighted_gem_chance&gt;80">opal</string>
+	<string define="last_gem_value=80" condition="$weighted_gem_chance&gt;80">amber</string>
+	<string define="last_gem_value=85" condition="$weighted_gem_chance&gt;85">bloodstone</string>
+	<string define="last_gem_value=90" condition="$weighted_gem_chance&gt;90">moonstone</string>
+	<string define="last_gem_value=95" condition="$weighted_gem_chance&gt;95">alexandrite</string>
+	<string define="last_gem_value=100" condition="$weighted_gem_chance&gt;100">gem</string>
+	<string define="last_gem_value=100" condition="$weighted_gem_chance&gt;100">agate</string>
+	<string define="last_gem_value=100" condition="$weighted_gem_chance&gt;100">citrine</string>
+	<string define="last_gem_value=180" condition="$weighted_gem_chance&gt;180">sapphire</string>
+	<string define="last_gem_value=200" condition="$weighted_gem_chance&gt;200">topaz</string>
+	<string define="last_gem_value=200" condition="$weighted_gem_chance&gt;200">emerald</string>
+	<string define="last_gem_value=300" condition="$weighted_gem_chance&gt;300">amethyst</string>
+	<string define="last_gem_value=300" condition="$weighted_gem_chance&gt;300">ruby</string>
+	<string define="last_gem_value=380" condition="$weighted_gem_chance&gt;380">pearl</string>
+	<string define="last_gem_value=500" condition="$weighted_gem_chance&gt;500">diamond</string>
 </string>
 
 <item id="level_weighted_gemstones" select="repeat-20" predefine="random_sum_max=($level_range*5),random_sum_sum=0,last_gem_value=99999,last_material=''">
@@ -178,20 +178,20 @@ See guides/RandomAreas.html for information about documents of this type.
 </item>
 
 <string id="level_weighted_metals" select="any-1" predefine="weighted_metal_chance=($level_range*7)" required="level_range=int">
-	<string define="last_metal_value=10" condition="$weighted_metal_chance>10">lead</string>
-	<string define="last_metal_value=10" condition="$weighted_metal_chance>25">bronze</string>
-	<string define="last_metal_value=10" condition="$weighted_metal_chance>50">zinc</string>
-	<string define="last_metal_value=10" condition="$weighted_metal_chance>50">copper</string>
-	<string define="last_metal_value=10" condition="$weighted_metal_chance>50">tin</string>
-	<string define="last_metal_value=20" condition="$weighted_metal_chance>50">iron</string>
-	<string define="last_metal_value=30" condition="$weighted_metal_chance>60">silver</string>
-	<string define="last_metal_value=75" condition="$weighted_metal_chance>65">steel</string>
-	<string define="last_metal_value=80" condition="$weighted_metal_chance>70">platinum</string>
-	<string define="last_metal_value=100" condition="$weighted_metal_chance>70">mithril</string>
-	<string define="last_metal_value=120" condition="$weighted_metal_chance>70">brass</string>
-	<string define="last_metal_value=150" condition="$weighted_metal_chance>70">gold</string>
-	<string define="last_metal_value=175" condition="$weighted_metal_chance>80">adamantite</string>
-	<string define="last_metal_value=200" condition="$weighted_metal_chance>80">atlantite</string>
+	<string define="last_metal_value=10" condition="$weighted_metal_chance&gt;=0">lead</string>
+	<string define="last_metal_value=10" condition="$weighted_metal_chance&gt;25">bronze</string>
+	<string define="last_metal_value=10" condition="$weighted_metal_chance&gt;50">zinc</string>
+	<string define="last_metal_value=10" condition="$weighted_metal_chance&gt;50">copper</string>
+	<string define="last_metal_value=10" condition="$weighted_metal_chance&gt;50">tin</string>
+	<string define="last_metal_value=20" condition="$weighted_metal_chance&gt;50">iron</string>
+	<string define="last_metal_value=30" condition="$weighted_metal_chance&gt;60">silver</string>
+	<string define="last_metal_value=75" condition="$weighted_metal_chance&gt;65">steel</string>
+	<string define="last_metal_value=80" condition="$weighted_metal_chance&gt;70">platinum</string>
+	<string define="last_metal_value=100" condition="$weighted_metal_chance&gt;70">mithril</string>
+	<string define="last_metal_value=120" condition="$weighted_metal_chance&gt;70">brass</string>
+	<string define="last_metal_value=150" condition="$weighted_metal_chance&gt;70">gold</string>
+	<string define="last_metal_value=175" condition="$weighted_metal_chance&gt;80">adamantite</string>
+	<string define="last_metal_value=200" condition="$weighted_metal_chance&gt;80">atlantite</string>
 </string>
 
 <item id="level_weighted_bars" select="repeat-20" predefine="random_sum_max=($level_range*5),random_sum_sum=0,last_metal_value=99999,last_material=''">

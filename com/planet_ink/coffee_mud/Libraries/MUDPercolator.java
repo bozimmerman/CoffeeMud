@@ -1167,21 +1167,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(M.isGeneric())
 			{
 				copyFilled = fillOutCopyCodes(M,ignoreStats,"MOB_",piece,defined);
-				final String name = fillOutStatCode(M,ignoreStats,"MOB_","NAME",piece,defined);
+				String name = fillOutStatCode(M,ignoreStats,"MOB_","NAME",piece,defined);
+				if((!copyFilled) && ((name == null)||(name.length()==0)))
+					name = fillOutStatCode(M,ignoreStats,"MOB_","NAME",piece,defined);
 				if((!copyFilled) && ((name == null)||(name.length()==0)))
 				{
-					//TODO: remove all except the last throw in this block
-					Log.debugOut("The piece without a name is: "+piece.toString());
-					Log.debugOut("IgnoredStats are: "+CMParms.toStringList(ignoreStats));
-					try
-					{
-						List<XMLLibrary.XMLpiece> choices = getAllChoices(M,ignoreStats,"MOB_","NAME", piece, defined,true);
-						Log.debugOut("Found choices are : "+CMParms.toStringList(choices));
-					}
-					catch(Exception e)
-					{
-						Log.debugOut("Found exceptions are : ",e);
-					}
 					throw new CMException("Unable to build a mob without a name, Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
 				}
 				if((name != null)&&(name.length()>0))
@@ -2458,7 +2448,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		final Map<String,Object> fixed=new HashMap<String,Object>();
 		try
 		{
-			if(condition == null) return true;
+			if(condition == null) 
+				return true;
 			fixed.putAll(defined);
 			final List<Varidentifier> ids=parseVariables(condition);
 			for(final Varidentifier id : ids)

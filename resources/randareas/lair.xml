@@ -742,8 +742,8 @@ See guides/RandomAreas.html for information about documents of this type.
 		<ITEM class="GenLiquidResource" name="a puddle of blood" display="$item_name is here" material="BLOOD" level="$level_range"  weight=1 LIQUIDHELD=1 />
 		<ITEM class="GenItem" name="(a(n)) ${l:item_material} axe head" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 />
 		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken wooden bracelet" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
-		<ITEM class="metacraft:any-Cooking < $level_range" name="some rotten $item_name" display="$item_name sits here" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
-		<ITEM class="metacraft:any-Baking < $level_range" name="some rotten $item_name" display="$item_name sits here" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
+		<ITEM class="metacraft:any-Cooking &lt; $level_range" name="some rotten $item_name" display="$item_name sits here" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
+		<ITEM class="metacraft:any-Baking &lt; $level_range" name="some rotten $item_name" display="$item_name sits here" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
 		<ITEM class="GenWeapon" name="(a(n)) $adj_wooden_broken wooden sword" display="$item_name lies here" material="$any_wood" level="$level_range" weight=3 damage="1"/>
 		<ITEM class="GenItem" name="a pair of bull horns" display="$item_name lie here" material="BONE" level="$level_range" weight=1 />
 		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken metal handle" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range" />
@@ -753,8 +753,8 @@ See guides/RandomAreas.html for information about documents of this type.
 		<ITEM class="GenItem" name="a rat skull" display="$item_name lies here" material="BONE" level="$level_range" weight=1 />
 		<ITEM class="GenItem" name="a stick of black chalk" display="$item_name lies here" material="STONE" level="$level_range" weight=1 />
 		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} lock" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range" />
-		<ITEM class="metacraft:any-Cooking < $level_range" name="some half-eaten $item_name covered in mold" display="$item_name sits here" weight=1 description="Its been here awhile."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
-		<ITEM class="metacraft:any-Baking < $level_range" name="some half-eaten $item_name covered in mold" display="$item_name sits here" weight=1 description="Its been here awhile."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
+		<ITEM class="metacraft:any-Cooking &lt; $level_range" name="some half-eaten $item_name covered in mold" display="$item_name sits here" weight=1 description="Its been here awhile."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
+		<ITEM class="metacraft:any-Baking &lt; $level_range" name="some half-eaten $item_name covered in mold" display="$item_name sits here" weight=1 description="Its been here awhile."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
 		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} holy symbol" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 />
 		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken ${l:item_material} holy symbol" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
 		<ITEM class="GenLimb" name="a cracked glass eye" display="$item_name lies here" material="GLASS" level="$level_range" weight=1 />
@@ -788,10 +788,10 @@ See guides/RandomAreas.html for information about documents of this type.
 		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken horse shoe" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1/>
 		<ITEM class="GenItem" name="a bloody comb" display="$item_name lie here" material="$random_cheap_metal" level="$level_range" weight=1 />
 		<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} chair leg" display="$item_name lies here" material="$any_wood" level="$level_range" weight=3 damage="1"/>
-		<ITEM class="metacraft:any-Weaponsmithing < $level_range" name="(a(n)) $adj_metal_broken $item_name" display="$item_name lies here" damage=1  attack=-10 affbehav="<BEHAVES /><AFFECS />" />
-		<ITEM class="metacraft:any-Armorsmithing < $level_range" name="(a(n)) $adj_metal_broken $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" />
-		<ITEM class="metacraft:any-MasterWeaponsmithing < $level_range" name="(a(n)) $adj_metal_broken $item_name" display="$item_name lies here" damage=1 attack=-10 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
-		<ITEM class="metacraft:any-MasterArmorsmithing < $level_range" name="(a(n)) $adj_metal_broken $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
+		<ITEM class="metacraft:any-Weaponsmithing &lt; $level_range" name="(a(n)) $adj_metal_broken $item_name" display="$item_name lies here" damage=1  attack=-10 affbehav="<BEHAVES /><AFFECS />" />
+		<ITEM class="metacraft:any-Armorsmithing &lt; $level_range" name="(a(n)) $adj_metal_broken $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" />
+		<ITEM class="metacraft:any-MasterWeaponsmithing &lt; $level_range" name="(a(n)) $adj_metal_broken $item_name" display="$item_name lies here" damage=1 attack=-10 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
+		<ITEM class="metacraft:any-MasterArmorsmithing &lt; $level_range" name="(a(n)) $adj_metal_broken $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
 	</ITEM>
 	<ITEM select="all" condition="$theme!='trolls'" insert="dungeon_junk" />
 </ITEM>
