@@ -83,7 +83,7 @@ public class GenPortal extends StdPortal
 		recoverPhyStats();
 	}
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD","EXITNAME","CLOSEDTEXT",
-											"PUTSTR","MOUNTSTR","DISMOUNTSTR"};
+											"PUTSTR","MOUNTSTR","DISMOUNTSTR","DEFCLOSED","DEFLOCKED"};
 	@Override
 	public String getStat(String code)
 	{
@@ -92,7 +92,7 @@ public class GenPortal extends StdPortal
 		switch(getCodeNum(code))
 		{
 		case 0: return ""+hasALock();
-		case 1: return ""+hasALid();
+		case 1: return ""+hasADoor();
 		case 2: return ""+capacity();
 		case 3: return ""+containTypes();
 		case 4: return ""+openDelayTicks();
@@ -103,6 +103,8 @@ public class GenPortal extends StdPortal
 		case 9: return putString;
 		case 10: return mountString;
 		case 11: return dismountString;
+		case 12: return ""+defaultsClosed();
+		case 13: return ""+defaultsLocked();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -115,8 +117,8 @@ public class GenPortal extends StdPortal
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setLidsNLocks(hasALid(),isOpen(),CMath.s_bool(val),false); break;
-		case 1: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
+		case 0: setDoorsNLocks(hasADoor(),isOpen(),defaultsClosed(),CMath.s_bool(val),false,CMath.s_bool(val)&&defaultsLocked()); break;
+		case 1: setDoorsNLocks(CMath.s_bool(val),isOpen(),CMath.s_bool(val)&&defaultsClosed(),hasALock(),isLocked(),defaultsLocked()); break;
 		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
 		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
 		case 4: setOpenDelayTicks(CMath.s_parseIntExpression(val)); break;
@@ -127,6 +129,8 @@ public class GenPortal extends StdPortal
 		case 9: putString=val; break;
 		case 10: mountString=val; break;
 		case 11: dismountString=val; break;
+		case 12: setDoorsNLocks(hasADoor(),isOpen(),CMath.s_bool(val),hasALock(),isLocked(),defaultsLocked()); break;
+		case 13: setDoorsNLocks(hasADoor(),isOpen(),defaultsClosed(),hasALock(),isLocked(),CMath.s_bool(val)); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

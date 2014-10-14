@@ -135,7 +135,7 @@ public class Prop_ReqStat extends Property implements TriggeredAffect
 			else
 			if((msg.target()==affected)
 			&&(affected instanceof Container)
-			&&(((Container)affected).hasALid()))
+			&&(((Container)affected).hasADoor()))
 			{
 				switch(msg.targetMinor())
 				{

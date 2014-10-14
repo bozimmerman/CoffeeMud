@@ -56,7 +56,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 		basePhyStats().setLevel(1);
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 		super.activate(true);
-		setLidsNLocks(false,true,false,false);
+		setDoorsNLocks(false,true,false,false,false,false);
 		setCapacity(3);
 		super.setPowerCapacity(1000);
 		super.setPowerRemaining(1000);

@@ -53,7 +53,7 @@ public class StdArmor extends StdContainer implements Armor
 		basePhyStats().setAbility(0);
 		baseGoldValue=150;
 		setCapacity(0);
-		setLidsNLocks(false,true,false,false);
+		setDoorsNLocks(false,true,false,false,false,false);
 		setUsesRemaining(100);
 		recoverPhyStats();
 	}

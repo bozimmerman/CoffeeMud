@@ -635,7 +635,7 @@ public class ItemData extends StdWebMacro
 						break;
 					case HASALID: // has a lid
 						if((firstTime)&&(I instanceof Container))
-							old=((Container)I).hasALid()?"checked":"";
+							old=((Container)I).hasADoor()?"checked":"";
 						else
 						if(old.equals("on"))
 							old="checked";
@@ -989,6 +989,22 @@ public class ItemData extends StdWebMacro
 						if(firstTime)
 							old=I.getStat("DISMOUNTSTR");
 						str.append(old+", ");
+						break;
+					case DEFAULTSCLOSED: // defaults closed
+						if((firstTime)&&(I instanceof Container))
+							old=((Container)I).defaultsClosed()?"checked":"";
+						else
+						if(old.equals("on"))
+							old="checked";
+						str.append(old);
+						break;
+					case DEFAULTSLOCKED: // has a lock
+						if((firstTime)&&(I instanceof Container))
+							old=((Container)I).defaultsLocked()?"checked":"";
+						else
+						if(old.equals("on"))
+							old="checked";
+						str.append(old);
 						break;
 					}
 					if(firstTime)

@@ -40,6 +40,8 @@ public class StdContainer extends StdItem implements Container
 	protected boolean hasALock=false;
 	protected boolean isOpen=true;
 	protected boolean hasALid=false;
+	protected boolean defaultsClosed=false;
+	protected boolean defaultsLocked=false;
 	protected int capacity=0;
 	protected long containType=0;
 	protected int openDelayTicks=30;
@@ -105,7 +107,7 @@ public class StdContainer extends StdItem implements Container
 						return false;
 					}
 					final Item newitem=(Item)msg.tool();
-					if(hasALid()&&(!isOpen()))
+					if(hasADoor()&&(!isOpen()))
 					{
 						mob.tell(L("@x1 is closed.",name()));
 						return false;
@@ -180,7 +182,7 @@ public class StdContainer extends StdItem implements Container
 							return false;
 						}
 						else
-						if(hasALid()&&(!isOpen()))
+						if(hasADoor()&&(!isOpen()))
 						{
 							mob.tell(L("@x1 is closed.",name()));
 							return false;
@@ -243,7 +245,7 @@ public class StdContainer extends StdItem implements Container
 							return false;
 						}
 						else
-						if(hasALid()&&(!isOpen()))
+						if(hasADoor()&&(!isOpen()))
 						{
 							mob.tell(L("@x1 is closed.",name()));
 							return false;
@@ -346,7 +348,7 @@ public class StdContainer extends StdItem implements Container
 	{
 		if(tickID==Tickable.TICKID_EXIT_REOPEN)
 		{
-			setLidsNLocks(hasALid,!hasALid,hasALock,hasALock);
+			setDoorsNLocks(hasALid,defaultsClosed,defaultsClosed,hasALock,defaultsLocked,defaultsLocked);
 			return false;
 		}
 		return super.tick(ticking,tickID);
@@ -531,15 +533,19 @@ public class StdContainer extends StdItem implements Container
 	@Override public boolean isLocked(){return isLocked;}
 	@Override public boolean hasALock(){return hasALock;}
 	@Override public boolean isOpen(){return isOpen;}
-	@Override public boolean hasALid(){return hasALid;}
+	@Override public boolean hasADoor(){return hasALid;}
+	@Override public boolean defaultsClosed(){return defaultsClosed;}
+	@Override public boolean defaultsLocked(){return defaultsLocked;}
 
 	@Override
-	public void setLidsNLocks(boolean newHasALid, boolean newIsOpen, boolean newHasALock, boolean newIsLocked)
+	public void setDoorsNLocks(boolean newHasALid, boolean newIsOpen, boolean newDefaultsClosed, boolean newHasALock, boolean newIsLocked, boolean newDefaultsLocked)
 	{
-		hasALid=newHasALid;
-		isOpen=newIsOpen;
-		hasALock=newHasALock;
-		isLocked=newIsLocked;
+		this.hasALid=newHasALid;
+		this.isOpen=newIsOpen;
+		this.hasALock=newHasALock;
+		this.isLocked=newIsLocked;
+		this.defaultsClosed=newDefaultsClosed;
+		this.defaultsLocked=newDefaultsLocked;
 	}
 
 	@Override

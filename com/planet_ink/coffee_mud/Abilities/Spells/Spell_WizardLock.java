@@ -100,7 +100,7 @@ public class Spell_WizardLock extends Spell
 			if(affected instanceof Container)
 			{
 				final Container container=(Container)affected;
-				container.setLidsNLocks(container.hasALid(),!container.hasALid(),container.hasALock(),container.hasALock());
+				container.setDoorsNLocks(container.hasADoor(),!container.hasADoor(),container.defaultsClosed(),container.hasALock(),container.hasALock(),container.defaultsLocked());
 			}
 		}
 		super.unInvoke();
@@ -133,7 +133,7 @@ public class Spell_WizardLock extends Spell
 		if(target instanceof Container)
 		{
 			final Container container=(Container)target;
-			if((!container.hasALid())||(!container.hasALock()))
+			if((!container.hasADoor())||(!container.hasALock()))
 			{
 				mob.tell(L("You can't lock that!"));
 				return false;
@@ -192,7 +192,7 @@ public class Spell_WizardLock extends Spell
 				{
 					beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
 					final Container container=(Container)target;
-					container.setLidsNLocks(container.hasALid(),false,container.hasALock(),true);
+					container.setDoorsNLocks(container.hasADoor(),false,container.defaultsClosed(),container.hasALock(),true,container.defaultsLocked());
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> look(s) shut tight!"));
 				}
 				final Ability lock=target.fetchEffect(ID());

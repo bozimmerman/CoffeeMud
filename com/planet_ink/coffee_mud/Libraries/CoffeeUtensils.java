@@ -139,7 +139,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		else
 		if(unlockThis instanceof Container)
 		{
-			if(((Container)unlockThis).hasALid())
+			if(((Container)unlockThis).hasADoor())
 			{
 				if(((Container)unlockThis).hasALock())
 				{

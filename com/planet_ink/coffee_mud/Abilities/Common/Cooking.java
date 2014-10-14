@@ -109,10 +109,10 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	public boolean meetsLidRequirements(MOB mob, Container cooking)
 	{
 		if(!requireLid()) return true;
-		if((cooking.hasALid())&&(!cooking.isOpen()))
+		if((cooking.hasADoor())&&(!cooking.isOpen()))
 			return true;
 		if((cooking.container()!=null)
-		&&(cooking.container().hasALid())
+		&&(cooking.container().hasADoor())
 		&&(!cooking.container().isOpen()))
 		   return true;
 		return false;

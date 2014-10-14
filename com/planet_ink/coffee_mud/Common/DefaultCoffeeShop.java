@@ -449,7 +449,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 			{
 				final String keyName=Double.toString(Math.random());
 				C.setKeyName(keyName);
-				C.setLidsNLocks(C.hasALid(),true,C.hasALock(),false);
+				C.setDoorsNLocks(C.hasADoor(),true,C.hasADoor(),C.hasALock(),false,C.defaultsLocked());
 				final DoorKey key=(DoorKey)CMClass.getItem("StdKey");
 				key.setKey(keyName);
 				key.setContainer(C);

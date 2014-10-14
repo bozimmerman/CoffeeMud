@@ -63,7 +63,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		rideBasis=Rideable.RIDEABLE_TABLE;
 		riderCapacity=1;
 		basePhyStats.setSensesMask(basePhyStats.sensesMask()|PhyStats.SENSE_ITEMREADABLE|PhyStats.SENSE_ITEMNOTGET);
-		setLidsNLocks(false,true,false,false);
+		setDoorsNLocks(false,true,false,false,false,false);
 		capacity=50;
 		material=RawMaterial.RESOURCE_STEEL;
 		setUsesRemaining(100);

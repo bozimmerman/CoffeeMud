@@ -286,7 +286,7 @@ public class StdTrap extends StdAbility implements Trap
 				}
 				else
 				if((affected instanceof Container)
-				&&(((Container)affected).hasALid())
+				&&(((Container)affected).hasADoor())
 				&&(((Container)affected).hasALock())
 				&&(((Container)affected).isLocked()))
 				{
@@ -402,7 +402,7 @@ public class StdTrap extends StdAbility implements Trap
 					mob.tell(L("@x1 has no door, so '@x2' cannot be set on it.",P.name(),name()));
 				return false;
 			}
-			if(((P instanceof Container)&&(!(((Container)P).hasALid()))))
+			if(((P instanceof Container)&&(!(((Container)P).hasADoor()))))
 			{
 				if(mob!=null)
 					mob.tell(L("@x1 has no lid, so '@x2' cannot be set on it.",P.name(),name()));

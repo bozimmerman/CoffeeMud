@@ -59,7 +59,8 @@ public class GrinderItems
 		CURRENCY,DENOM,ISRECIPE,RECIPESKILL,RECIPEDATA,
 		LAYER,SEETHRU,MULTIWEAR,ISCATALOGED,CATARATE,
 		CATALIVE,CATAMASK,BITE,MAXUSES,ISELECTRONIC,
-		CATACAT,ISPORTAL,PUTSTR,MOUNTSTR,DISMOUNTSTR;
+		CATACAT,ISPORTAL,PUTSTR,MOUNTSTR,DISMOUNTSTR,
+		DEFAULTSCLOSED,DEFAULTSLOCKED;
 		public boolean isGenField;
 		private ItemDataField(boolean isGeneric)
 		{
@@ -409,13 +410,13 @@ public class GrinderItems
 					break;
 				case HASALID: // has a lid
 					if(I instanceof Container)
-						((Container)I).setLidsNLocks(old.equals("on"),!old.equals("on"),((Container)I).hasALock(),((Container)I).hasALock());
+						((Container)I).setDoorsNLocks(old.equals("on"),!old.equals("on"),old.equals("on") && ((Container)I).defaultsClosed(),((Container)I).hasALock(),((Container)I).hasALock(),((Container)I).defaultsLocked());
 					break;
 				case HASALOCK: // has a lock
 					if(I instanceof Container)
 					{
-						final boolean hasALid=((Container)I).hasALid();
-						((Container)I).setLidsNLocks(hasALid||old.equals("on"),!(hasALid||old.equals("on")),old.equals("on"),old.equals("on"));
+						final boolean hasALid=((Container)I).hasADoor();
+						((Container)I).setDoorsNLocks(hasALid||old.equals("on"),!(hasALid||old.equals("on")),!(hasALid||old.equals("on")),old.equals("on"),old.equals("on"),old.equals("on"));
 					}
 					break;
 				case KEYCODE: // key code
@@ -622,6 +623,14 @@ public class GrinderItems
 				case ISSCROLL:
 					break;
 				case ISUNTWOHANDED:
+					break;
+				case DEFAULTSCLOSED: // defaultsClosed
+					if(I instanceof Container)
+						((Container)I).setDoorsNLocks(((Container)I).hasADoor(),((Container)I).isOpen(),old.equals("on"),((Container)I).hasALock(),((Container)I).hasALock(),((Container)I).defaultsLocked());
+					break;
+				case DEFAULTSLOCKED: // has a lock
+					if(I instanceof Container)
+						((Container)I).setDoorsNLocks(((Container)I).hasADoor(),((Container)I).isOpen(),((Container)I).defaultsClosed(),((Container)I).hasALock(),((Container)I).hasALock(),old.equals("on"));
 					break;
 				default:
 					break;

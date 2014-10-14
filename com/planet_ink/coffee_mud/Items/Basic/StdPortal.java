@@ -96,7 +96,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 						msg.source().tell(L("This portal is broken.. nowhere to go!"));
 						return false;
 					}
-					if(hasALid()&&(!isOpen()))
+					if(hasADoor()&&(!isOpen()))
 					{
 						msg.source().tell(L("@x1 is closed.",name()));
 						return false;
@@ -187,9 +187,9 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 		}
 	}
 
-	@Override public boolean hasADoor(){return super.hasALid();}
+	@Override public boolean hasADoor(){return super.hasADoor();}
 	@Override public boolean defaultsLocked(){return super.hasALock();}
-	@Override public boolean defaultsClosed(){return super.hasALid();}
+	@Override public boolean defaultsClosed(){return super.hasADoor();}
 	@Override
 	public void setDoorsNLocks(boolean hasADoor,
 							   boolean isOpen,
@@ -197,7 +197,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 							   boolean hasALock,
 							   boolean isLocked,
 							   boolean defaultsLocked)
-	{ super.setLidsNLocks(hasADoor,isOpen,hasALock,isLocked);}
+	{ super.setDoorsNLocks(hasADoor,isOpen,defaultsClosed,hasALock,isLocked,defaultsLocked);}
 
 	@Override public boolean isReadable(){return false;}
 	@Override public void setReadable(boolean isTrue){}

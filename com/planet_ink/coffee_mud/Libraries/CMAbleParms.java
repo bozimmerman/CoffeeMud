@@ -1623,7 +1623,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							return "";
 						final Container C=(Container)I;
 						if(C.hasALock()) return "LOCK";
-						if(C.hasALid()) return "LID";
+						if(C.hasADoor()) return "LID";
 						final StringBuilder str=new StringBuilder("");
 						for(int i=1;i<Container.CONTAIN_DESCS.length;i++)
 							if(CMath.isSet(C.containTypes(), i-1))
@@ -1824,7 +1824,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							return "";
 						final Container C=(Container)I;
 						if(C.hasALock()) return "LOCK";
-						if(C.hasALid()) return "LID";
+						if(C.hasADoor()) return "LID";
 						return "";
 					}
 				},

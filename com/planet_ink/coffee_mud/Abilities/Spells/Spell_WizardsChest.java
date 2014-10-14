@@ -92,7 +92,7 @@ public class Spell_WizardsChest extends Spell
 		&&(affected instanceof Container))
 		{
 			final Container container=(Container)affected;
-			container.setLidsNLocks(container.hasALid(),true,container.hasALock(),false);
+			container.setDoorsNLocks(container.hasADoor(),true,container.defaultsClosed(),container.hasALock(),false,container.defaultsLocked());
 			msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> pop(s) open!")));
 		}
 	}
@@ -109,7 +109,7 @@ public class Spell_WizardsChest extends Spell
 		target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null) return false;
 
-		if((!(target instanceof Container))||(!((Container)target).hasALock())||(!((Container)target).hasALid()))
+		if((!(target instanceof Container))||(!((Container)target).hasALock())||(!((Container)target).hasADoor()))
 		{
 			mob.tell(L("You can only enchant the locks on open containers with lids."));
 			return false;
@@ -142,7 +142,7 @@ public class Spell_WizardsChest extends Spell
 				{
 					beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
 					final Container container=(Container)target;
-					container.setLidsNLocks(container.hasALid(),false,container.hasALock(),true);
+					container.setDoorsNLocks(container.hasADoor(),false,container.defaultsClosed(),container.hasALock(),true,container.defaultsLocked());
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> look(s) well protected!"));
 				}
 			}

@@ -29,13 +29,8 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface Container extends Item
+public interface Container extends Item, CloseableLockable
 {
-	public boolean isLocked();
-	public boolean hasALock();
-	public boolean isOpen();
-	public boolean hasALid();
-	public void setLidsNLocks(boolean newHasALid, boolean newIsOpen, boolean newHasALock, boolean newIsLocked);
 	public ReadOnlyList<Item> getContents();
 	public int capacity();
 	public void setCapacity(int newValue);
@@ -44,25 +39,7 @@ public interface Container extends Item
 	public long containTypes();
 	public void setContainTypes(long containTypes);
 	public void emptyPlease(boolean flatten);
-	public int openDelayTicks();
-	public void setOpenDelayTicks(int ticksToReset);
-
-	/**
-	 * For containers with lids and locks, this returns the unique string
-	 * representing the key code required to unlock/lock the lid.
-	 * @see com.planet_ink.coffee_mud.Items.interfaces.Container#setKeyName(String)
-	 * @return the key code
-	 */
-	public String keyName();
-
-	/**
-	 * For containers with lids and locks, this sets the unique string
-	 * representing the key code required to unlock/lock the lid.
-	 * @see com.planet_ink.coffee_mud.Items.interfaces.Container#keyName()
-	 * @param keyName the new key code
-	 */
-	public void setKeyName(String keyName);
-
+	
 	public static final int CONTAIN_ANYTHING=0;
 	public static final int CONTAIN_LIQUID=1;
 	public static final int CONTAIN_COINS=2;

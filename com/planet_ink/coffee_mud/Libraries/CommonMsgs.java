@@ -998,7 +998,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				}
 			}
 			else
-			if((contitem.hasALid())&&((contitem.capacity()>0)||(contitem.getContents().size()>0)))
+			if((contitem.hasADoor())&&((contitem.capacity()>0)||(contitem.getContents().size()>0)))
 				buf.append(item.name()+" is closed.");
 		}
 		if(!msg.source().isMonster())

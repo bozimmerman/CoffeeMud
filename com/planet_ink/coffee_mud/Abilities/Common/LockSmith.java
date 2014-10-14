@@ -171,7 +171,7 @@ public class LockSmith extends CraftingSkill
 							}
 							else
 							{
-								((Container)workingOn).setLidsNLocks(true,false,!delock,!delock);
+								((Container)workingOn).setDoorsNLocks(true,false,((Container)workingOn).defaultsClosed(),!delock,!delock,!delock);
 								if(buildingI instanceof DoorKey)
 								{
 									if(((DoorKey)buildingI).getKey().length()==0)
@@ -263,7 +263,7 @@ public class LockSmith extends CraftingSkill
 		else
 		if(workingOn instanceof Container)
 		{
-			if(!((Container)workingOn).hasALid())
+			if(!((Container)workingOn).hasADoor())
 			{
 				commonTell(mob,L("That doesn't have a lid."));
 				return false;

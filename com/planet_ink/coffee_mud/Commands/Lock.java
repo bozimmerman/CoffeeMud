@@ -60,6 +60,16 @@ public class Lock extends StdCommand
 			mob.tell(L("You don't see '@x1' here.",whatTolock));
 			return false;
 		}
+		if(lockThis instanceof CloseableLockable)
+		{
+			final CloseableLockable cLock=(CloseableLockable)lockThis;
+			if(cLock.hasADoor() && cLock.isOpen())
+			{
+				Command C=CMClass.getCommand("Close");
+				if(!((Boolean)C.executeInternal(mob, metaFlags, lockThis, whatTolock, Integer.valueOf(dirCode))).booleanValue())
+					return false;
+			}
+		}
 		final String lockMsg="<S-NAME> lock(s) <T-NAMESELF>."+CMLib.protocol().msp("doorlock.wav",10);
 		final CMMsg msg=CMClass.getMsg(mob,lockThis,null,CMMsg.MSG_LOCK,lockMsg,whatTolock,lockMsg);
 		if(lockThis instanceof Exit)
@@ -72,7 +82,10 @@ public class Lock extends StdCommand
 				if(dirCode<0)
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					if(mob.location().getExitInDir(d)==lockThis)
-					{dirCode=d; break;}
+					{
+						dirCode=d; 
+						break;
+					}
 
 				if((dirCode>=0)&&(mob.location().getRoomInDir(dirCode)!=null))
 				{

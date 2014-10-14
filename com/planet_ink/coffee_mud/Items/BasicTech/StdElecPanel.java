@@ -45,7 +45,7 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 		setName("an engineering panel");
 		setDisplayText("");
 		setDescription("Usually seemless with the wall, these panels can be opened to install new equipment.");
-		super.setLidsNLocks(true, true, false, false);
+		super.setDoorsNLocks(true, true, true,false, false,false);
 		basePhyStats().setSensesMask(basePhyStats.sensesMask()|PhyStats.SENSE_ITEMNOTGET);
 		this.activated=true;
 		this.openDelayTicks=0;

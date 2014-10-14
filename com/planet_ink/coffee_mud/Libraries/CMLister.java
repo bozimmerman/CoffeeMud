@@ -260,7 +260,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 				&&(item instanceof Container)
 				&&(((Container)item).container()==null)
 				&&(((Container)item).isOpen())
-				&&(!((Container)item).hasALid())
+				&&(!((Container)item).hasADoor())
 				&&(!CMLib.flags().canBarelyBeSeenBy(item,viewerM)))
 				{
 					final List<Item> V=new Vector<Item>();

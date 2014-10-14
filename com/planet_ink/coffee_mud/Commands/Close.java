@@ -38,28 +38,12 @@ public class Close extends StdCommand
 
 	private final String[] access=I(new String[]{"CLOSE","CLOS","CLO","CL"});
 	@Override public String[] getAccessWords(){return access;}
-	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
-		throws java.io.IOException
+	
+	private final static Class[][] internalParameters=new Class[][]{{Environmental.class,String.class,Integer.class}};
+	
+	
+	public boolean closeMe(final MOB mob, final Environmental closeThis, final String whatToClose, int dirCode)
 	{
-		final String whatToClose=CMParms.combine(commands,1);
-		if(whatToClose.length()==0)
-		{
-			mob.tell(L("Close what?"));
-			return false;
-		}
-		Environmental closeThis=null;
-		int dirCode=Directions.getGoodDirectionCode(whatToClose);
-		if(dirCode>=0)
-			closeThis=mob.location().getExitInDir(dirCode);
-		if(closeThis==null)
-			closeThis=mob.location().fetchFromMOBRoomItemExit(mob,null,whatToClose,Wearable.FILTER_ANY);
-
-		if((closeThis==null)||(!CMLib.flags().canBeSeenBy(closeThis,mob)))
-		{
-			mob.tell(L("You don't see '@x1' here.",whatToClose));
-			return false;
-		}
 		final boolean useShipDirs=(mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip);
 		final String closeWord=(!(closeThis instanceof Exit))?"close":((Exit)closeThis).closeWord();
 		final String closeMsg="<S-NAME> "+closeWord+"(s) <T-NAMESELF>."+CMLib.protocol().msp("dooropen.wav",10);
@@ -91,13 +75,52 @@ public class Close extends StdCommand
 					&&(!((Exit)closeThis).isOpen()))
 					   opR.showHappens(CMMsg.MSG_OK_ACTION,L("@x1 @x2 closes.",opE.name(),(useShipDirs?Directions.getShipInDirectionName(opCode):Directions.getInDirectionName(opCode))));
 				}
+				return true;
 			}
 		}
 		else
 		if(mob.location().okMessage(mob,msg))
+		{
 			mob.location().send(mob,msg);
+			return true;
+		}
 		return false;
 	}
+	
+	@Override
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
+		throws java.io.IOException
+	{
+		final String whatToClose=CMParms.combine(commands,1);
+		if(whatToClose.length()==0)
+		{
+			mob.tell(L("Close what?"));
+			return false;
+		}
+		Environmental closeThis=null;
+		int dirCode=Directions.getGoodDirectionCode(whatToClose);
+		if(dirCode>=0)
+			closeThis=mob.location().getExitInDir(dirCode);
+		if(closeThis==null)
+			closeThis=mob.location().fetchFromMOBRoomItemExit(mob,null,whatToClose,Wearable.FILTER_ANY);
+
+		if((closeThis==null)||(!CMLib.flags().canBeSeenBy(closeThis,mob)))
+		{
+			mob.tell(L("You don't see '@x1' here.",whatToClose));
+			return false;
+		}
+		return closeMe(mob,closeThis,whatToClose,dirCode);
+	}
+	
+	@Override
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		if(!super.checkArguments(internalParameters, args))
+			return Boolean.FALSE;
+		return Boolean.valueOf(closeMe(mob, (Environmental)args[0], (String)args[1], ((Integer)args[2]).intValue()));
+	}
+	
+	
 	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
 	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
 	@Override public boolean canBeOrdered(){return true;}

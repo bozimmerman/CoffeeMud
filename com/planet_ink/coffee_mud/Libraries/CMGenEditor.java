@@ -2188,7 +2188,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genDoorsNLocks(MOB mob, Exit E, int showNumber, int showFlag)
+	protected void genDoorsNLocks(MOB mob, CloseableLockable E, String doorName, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2200,11 +2200,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		boolean DefaultsLocked=E.defaultsLocked();
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
-			mob.tell(L("@x1. Has a door: @x2\n\r   Has a lock  : @x3\n\r   Open ticks: @x4",""+showNumber,""+E.hasADoor(),""+E.hasALock(),""+E.openDelayTicks()));
+			mob.tell(L("@x1. Has a @x5: @x2\n\r   Has a lock  : @x3\n\r   Open ticks: @x4",""+showNumber,""+E.hasADoor(),""+E.hasALock(),""+E.openDelayTicks(),doorName));
 			return;
 		}
 
-		if(genGenericPrompt(mob,"Has a door",E.hasADoor()))
+		if(genGenericPrompt(mob,"Has a "+doorName,E.hasADoor()))
 		{
 			HasDoor=true;
 			DefaultsClosed=genGenericPrompt(mob,"Defaults closed",E.defaultsClosed());
@@ -2253,16 +2253,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		return canContain.substring(2);
 	}
 
-	protected void genLidsNLocks(MOB mob, Container E, int showNumber, int showFlag)
+	protected void genContainerTypes(MOB mob, Container E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
-			String containStr="Can contain : "+makeContainerTypes(E)+"\n\r   ";
-			if(E instanceof Electronics)
-				containStr="";
-			mob.tell(L("@x1. @x2Has a lid   : @x3\n\r   Has a lock  : @x4\n\r   Key name    : @x5",""+showNumber,containStr,""+E.hasALid(),""+E.hasALock(),E.keyName())); // portals use keys as roomids, showing is OK
+			mob.tell(L("@x1. Can contain : @x2",""+showNumber,makeContainerTypes(E))); // portals use keys as roomids, showing is OK
 			return;
 		}
 		String change="NO";
@@ -2292,36 +2289,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				else
 					E.setContainTypes(E.containTypes()|CMath.pow(2,found-1));
 			}
-		}
-
-		if(genGenericPrompt(mob,"Has a lid " ,E.hasALid()))
-		{
-			E.setLidsNLocks(true,false,E.hasALock(),E.isLocked());
-			if(genGenericPrompt(mob,"Has a lock",E.hasALock()))
-			{
-				E.setLidsNLocks(E.hasALid(),E.isOpen(),true,true);
-				if(!(E instanceof Exit)) // portals use key names as roomids
-				{
-					mob.tell(L("\n\rKey code: '@x1'.",E.keyName()));
-					final String newName=mob.session().prompt(L("Enter something new\n\r:"),"");
-					if(newName.length()>0)
-						E.setKeyName(newName);
-					else
-						mob.tell(L("(no change)"));
-				}
-			}
-			else
-			{
-				if(!(E instanceof Exit)) // portals use key names as roomids
-					E.setKeyName("");
-				E.setLidsNLocks(E.hasALid(),E.isOpen(),false,false);
-			}
-		}
-		else
-		{
-			if(!(E instanceof Exit)) // portals use key names as roomids
-				E.setKeyName("");
-			E.setLidsNLocks(false,true,false,false);
 		}
 	}
 
@@ -2645,12 +2612,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genCapacity(MOB mob, Container E, int showNumber, int showFlag) throws IOException
 	{ E.setCapacity(prompt(mob,E.capacity(),showNumber,showFlag,"Capacity")); }
-
-	protected void genOpenDelayTicks(MOB mob, Container E, int showNumber, int showFlag) throws IOException
-	{ E.setOpenDelayTicks(prompt(mob,E.openDelayTicks(),showNumber,showFlag,"Open Delay Ticks")); }
-
-	protected void genOpenDelayTicks(MOB mob, Exit E, int showNumber, int showFlag) throws IOException
-	{ E.setOpenDelayTicks(prompt(mob,E.openDelayTicks(),showNumber,showFlag,"Open Delay Ticks")); }
 
 	protected void genAttack(MOB mob, Physical P, int showNumber, int showFlag) throws IOException
 	{ P.basePhyStats().setAttackAdjustment(prompt(mob,P.basePhyStats().attackAdjustment(),showNumber,showFlag,"Attack Adjustment")); }
@@ -7731,7 +7692,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof Container)
 			{
 				genCapacity(mob,(Container)me,++showNumber,showFlag);
-				genOpenDelayTicks(mob,(Container)me,++showNumber,showFlag);
+				genDoorsNLocks(mob,(Container)me,L("lid"),++showNumber,showFlag);
 			}
 			if(me instanceof Perfume)
 				((Perfume)me).setSmellList(prompt(mob,((Perfume)me).getSmellList(),++showNumber,showFlag,"Smells list (; delimited)"));
@@ -7853,7 +7814,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genLevel(mob,me,++showNumber,showFlag);
 			genRejuv(mob,me,++showNumber,showFlag);
 			genCapacity(mob,me,++showNumber,showFlag);
-			genOpenDelayTicks(mob,me,++showNumber,showFlag);
 			if(me instanceof Electronics)
 			{
 				final Electronics E=(Electronics)me;
@@ -7886,7 +7846,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				final ShipComponent E=(ShipComponent)me;
 				E.setInstalledFactor((float)prompt(mob, E.getInstalledFactor(), ++showNumber, showFlag, "Installed Factor"));
 			}
-			genLidsNLocks(mob,me,++showNumber,showFlag);
+			if(!(me instanceof Electronics))
+			{
+				genContainerTypes(mob,me,++showNumber,showFlag);
+			}
+			genDoorsNLocks(mob,me,L("lid"),++showNumber,showFlag);
+			if(me.hasADoor() && me.hasALock() && !CMLib.flags().isReadable(me))
+				me.setKeyName(prompt(mob,me.keyName(),++showNumber,showFlag,"Key Code"));
 			genMaterialCode(mob,me,++showNumber,showFlag);
 			genSecretIdentity(mob,me,++showNumber,showFlag);
 			genValue(mob,me,++showNumber,showFlag);
@@ -8046,8 +8012,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof Container)
 			{
 				genCapacity(mob,(Container)me,++showNumber,showFlag);
-				genLidsNLocks(mob,(Container)me,++showNumber,showFlag);
-				genOpenDelayTicks(mob,(Container)me,++showNumber,showFlag);
+				if(!(me instanceof Electronics))
+				{
+					genContainerTypes(mob,(Container)me,++showNumber,showFlag);
+				}
+				genDoorsNLocks(mob,(Container)me,L("lid"),++showNumber,showFlag);
 			}
 			//genReadable1(mob,me,++showNumber,showFlag); // since they can have keys, no readability for you.
 			//genReadable2(mob,me,++showNumber,showFlag);
@@ -8143,14 +8112,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genDisplayText(mob,me,++showNumber,showFlag);
 			genDescription(mob,me,++showNumber,showFlag);
 			genLevel(mob,me,++showNumber,showFlag);
-			genDoorsNLocks(mob,me,++showNumber,showFlag);
+			genDoorsNLocks(mob,me,L("door"),++showNumber,showFlag);
 			if(me.hasADoor())
 			{
 				genClosedText(mob,me,++showNumber,showFlag);
 				genDoorName(mob,me,++showNumber,showFlag);
 				genOpenWord(mob,me,++showNumber,showFlag);
 				genCloseWord(mob,me,++showNumber,showFlag);
-				genOpenDelayTicks(mob,me,++showNumber,showFlag);
 			}
 			genExitMisc(mob,me,++showNumber,showFlag);
 			genDisposition(mob,me.basePhyStats(),++showNumber,showFlag);

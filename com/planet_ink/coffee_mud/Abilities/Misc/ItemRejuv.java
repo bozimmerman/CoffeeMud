@@ -132,9 +132,9 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 					if(newThisItem instanceof Container)
 					{
 						final Container C=(Container)newThisItem;
-						final boolean open=!C.hasALid();
-						final boolean locked=C.hasALock();
-						C.setLidsNLocks(C.hasALid(),open,C.hasALock(),locked);
+						final boolean locked=C.defaultsLocked();
+						final boolean open=(!locked) && (!C.defaultsClosed());
+						C.setDoorsNLocks(C.hasADoor(),open,C.defaultsClosed(),C.hasALock(),locked,C.defaultsLocked());
 					}
 					newThisItem.setExpirationDate(0);
 					R.addItem(newThisItem);
@@ -178,9 +178,9 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 			if(item instanceof Container)
 			{
 				final Container C=(Container)item;
-				final boolean open=!C.hasALid();
-				final boolean locked=C.hasALock();
-				C.setLidsNLocks(C.hasALid(),open,C.hasALock(),locked);
+				final boolean locked=C.defaultsLocked();
+				final boolean open=(!locked) && (!C.defaultsClosed());
+				C.setDoorsNLocks(C.hasADoor(),open,C.defaultsClosed(),C.hasALock(),locked,C.defaultsClosed());
 			}
 		}
 		return true;

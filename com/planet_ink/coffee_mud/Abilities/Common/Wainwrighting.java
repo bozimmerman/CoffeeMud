@@ -329,11 +329,11 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 				((Container)buildingI).setContainTypes(canContain);
 			}
 			if(misctype.equalsIgnoreCase("LID"))
-				((Container)buildingI).setLidsNLocks(true,false,false,false);
+				((Container)buildingI).setDoorsNLocks(true,false,true,false,false,false);
 			else
 			if(misctype.equalsIgnoreCase("LOCK"))
 			{
-				((Container)buildingI).setLidsNLocks(true,false,true,false);
+				((Container)buildingI).setDoorsNLocks(true,false,true,true,false,true);
 				((Container)buildingI).setKeyName(Double.toString(Math.random()));
 				key=CMClass.getItem("GenKey");
 				((DoorKey)key).setKey(((Container)buildingI).keyName());

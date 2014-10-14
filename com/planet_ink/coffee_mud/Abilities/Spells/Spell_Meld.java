@@ -351,7 +351,8 @@ public class Spell_Meld extends Spell
 					gc.setBaseValue(itemOne.baseGoldValue()+itemTwo.baseGoldValue());
 					gc.basePhyStats().setWeight(itemOne.basePhyStats().weight()+itemTwo.basePhyStats().weight());
 					gc.setCapacity(((Container)itemOne).capacity()+((Container)itemTwo).capacity());
-					gc.setLidsNLocks((((Container)itemOne).hasALid()||((Container)itemTwo).hasALid()),true,isLocked,false);
+					gc.setDoorsNLocks((((Container)itemOne).hasADoor()||((Container)itemTwo).hasADoor()),true,(((Container)itemOne).defaultsClosed()||((Container)itemTwo).defaultsClosed()),
+										isLocked,false,isLocked);
 					gc.setKeyName(keyName);
 
 					gc.basePhyStats().setLevel(itemOne.basePhyStats().level());

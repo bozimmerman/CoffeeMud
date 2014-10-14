@@ -75,7 +75,7 @@ public class Play_Cymbals extends Play_Instrument
 						if((I!=null)&&(I instanceof Container)&&(I.container()==null))
 						{
 							final Container C=(Container)I;
-							if(C.hasALid()&&C.hasALock()&&C.isLocked())
+							if(C.hasADoor()&&C.hasALock()&&C.isLocked())
 								knockables.add(C);
 						}
 					}
@@ -86,7 +86,7 @@ public class Play_Cymbals extends Play_Instrument
 					if((I!=null)&&(I instanceof Container)&&(I.container()==null))
 					{
 						final Container C=(Container)I;
-						if(C.hasALid()&&C.hasALock()&&C.isLocked())
+						if(C.hasADoor()&&C.hasALock()&&C.isLocked())
 							knockables.add(C);
 					}
 				}

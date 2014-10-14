@@ -119,7 +119,7 @@ public class Prop_Hidden extends Property
 			{
 				if((((Item)affected).owner() instanceof Room)
 				&&((!(affected instanceof Container))
-					||(!((Container)affected).hasALid())
+					||(!((Container)affected).hasADoor())
 					||(!((Container)affected).isOpen())))
 						affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
 			}

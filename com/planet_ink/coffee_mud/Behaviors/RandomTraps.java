@@ -330,7 +330,7 @@ public class RandomTraps extends ActiveTicker
 							{
 								tickStatus=Tickable.STATUS_MISC+24;
 								final Container C=(Container)I;
-								if(C.hasALid()&&(!C.isOpen()))
+								if(C.hasADoor()&&(!C.isOpen()))
 								{
 									if(C.hasALock()&&C.isLocked()&&(doLockedContainers))
 										elligible.addElement(I);

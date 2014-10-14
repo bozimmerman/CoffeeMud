@@ -3549,8 +3549,8 @@ public class Import extends StdCommand
 						 open=false;
 						 lid=true;
 					 }
-					 ((Container)I).setLidsNLocks(lid,open,lock,locked);
-					 if(((Container)I).hasALid()&&((Container)I).hasALock())
+					 ((Container)I).setDoorsNLocks(lid,open,!open,lock,locked,locked);
+					 if(((Container)I).hasADoor()&&((Container)I).hasALock())
 						 ((Container)I).setKeyName(areaName+"#"+val3);
 					 break;
 			case 16: I=CMClass.getBasicItem("GenItem"); break;

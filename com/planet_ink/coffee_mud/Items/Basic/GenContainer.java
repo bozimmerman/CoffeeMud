@@ -76,7 +76,7 @@ public class GenContainer extends StdContainer
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
 	}
-	private final static String[] MYCODES={"CLASS","HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME"};
+	private final static String[] MYCODES={"CLASS","HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","DEFCLOSED","DEFLOCKED"};
 	@Override
 	public String getStat(String code)
 	{
@@ -86,10 +86,12 @@ public class GenContainer extends StdContainer
 		{
 		case 0: return ID();
 		case 1: return ""+hasALock();
-		case 2: return ""+hasALid();
+		case 2: return ""+hasADoor();
 		case 3: return ""+capacity();
 		case 4: return ""+containTypes();
 		case 5: return ""+openDelayTicks();
+		case 6: return ""+defaultsClosed();
+		case 7: return ""+defaultsLocked();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -103,11 +105,13 @@ public class GenContainer extends StdContainer
 		switch(getCodeNum(code))
 		{
 		case 0: break;
-		case 1: setLidsNLocks(hasALid(),isOpen(),CMath.s_bool(val),false); break;
-		case 2: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
+		case 1: setDoorsNLocks(hasADoor(),isOpen(),defaultsClosed(),CMath.s_bool(val),false,CMath.s_bool(val)&&defaultsLocked()); break;
+		case 2: setDoorsNLocks(CMath.s_bool(val),isOpen(),CMath.s_bool(val)&&defaultsClosed(),hasALock(),isLocked(),defaultsLocked()); break;
 		case 3: setCapacity(CMath.s_parseIntExpression(val)); break;
 		case 4: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
 		case 5: setOpenDelayTicks(CMath.s_parseIntExpression(val)); break;
+		case 6: setDoorsNLocks(hasADoor(),isOpen(),CMath.s_bool(val),hasALock(),isLocked(),defaultsLocked()); break;
+		case 7: setDoorsNLocks(hasADoor(),isOpen(),defaultsClosed(),hasALock(),isLocked(),CMath.s_bool(val)); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

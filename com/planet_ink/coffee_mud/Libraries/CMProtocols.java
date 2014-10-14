@@ -458,7 +458,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		if(O instanceof Container)
 		{
 			image=getHashedMXPImage(H,"CONTAINER_"+((Container)O).ID().toUpperCase());
-			final String lid=((Container)O).hasALid()?"LID_":"";
+			final String lid=((Container)O).hasADoor()?"LID_":"";
 			if(image==null) image=getHashedMXPImage(H,"CONTAINER_"+lid+RawMaterial.Material.findByMask(((Container)O).material()&RawMaterial.MATERIAL_MASK).desc());
 			if(image==null) image=getHashedMXPImage(H,"CONTAINER_"+lid+"*");
 		}

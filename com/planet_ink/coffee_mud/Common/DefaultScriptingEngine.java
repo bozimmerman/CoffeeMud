@@ -8135,10 +8135,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(lastKnownLocation!=null) lastKnownLocation.recoverRoomStats();
 				}
 				else
-				if((newTarget instanceof Container)&&(((Container)newTarget).hasALid()))
+				if((newTarget instanceof Container)&&(((Container)newTarget).hasADoor()))
 				{
 					final Container E=(Container)newTarget;
-					E.setLidsNLocks(E.hasALid(),true,E.hasALock(),false);
+					E.setDoorsNLocks(E.hasADoor(),true,E.defaultsClosed(),E.hasALock(),false,E.defaultsLocked());
 					if(lastKnownLocation!=null) lastKnownLocation.recoverRoomStats();
 				}
 				break;
@@ -8158,10 +8158,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(lastKnownLocation!=null) lastKnownLocation.recoverRoomStats();
 				}
 				else
-				if((newTarget instanceof Container)&&(((Container)newTarget).hasALid())&&(((Container)newTarget).isOpen()))
+				if((newTarget instanceof Container)&&(((Container)newTarget).hasADoor())&&(((Container)newTarget).isOpen()))
 				{
 					final Container E=(Container)newTarget;
-					E.setLidsNLocks(E.hasALid(),false,E.hasALock(),false);
+					E.setDoorsNLocks(E.hasADoor(),false,E.defaultsClosed(),E.hasALock(),false,E.defaultsLocked());
 					if(lastKnownLocation!=null) lastKnownLocation.recoverRoomStats();
 				}
 				break;
@@ -8184,7 +8184,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((newTarget instanceof Container)&&(((Container)newTarget).hasALock()))
 				{
 					final Container E=(Container)newTarget;
-					E.setLidsNLocks(E.hasALid(),false,E.hasALock(),true);
+					E.setDoorsNLocks(E.hasADoor(),false,E.defaultsClosed(),E.hasALock(),true,E.defaultsLocked());
 					if(lastKnownLocation!=null) lastKnownLocation.recoverRoomStats();
 				}
 				break;
@@ -8207,7 +8207,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((newTarget instanceof Container)&&(((Container)newTarget).isLocked()))
 				{
 					final Container E=(Container)newTarget;
-					E.setLidsNLocks(E.hasALid(),false,E.hasALock(),false);
+					E.setDoorsNLocks(E.hasADoor(),false,E.defaultsClosed(),E.hasALock(),false,E.defaultsLocked());
 					if(lastKnownLocation!=null) lastKnownLocation.recoverRoomStats();
 				}
 				break;

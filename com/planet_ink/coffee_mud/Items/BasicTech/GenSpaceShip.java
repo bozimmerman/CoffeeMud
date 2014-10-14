@@ -837,7 +837,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD",
 											"FUELTYPE","POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","AREA","COORDS","RADIUS",
-											"ROLL","DIRECTION","SPEED","FACING","OWNER","PRICE"
+											"ROLL","DIRECTION","SPEED","FACING","OWNER","PRICE","DEFCLOSED","DEFLOCKED"
 										  };
 	@Override
 	public String getStat(String code)
@@ -847,7 +847,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		switch(getCodeNum(code))
 		{
 		case 0: return ""+hasALock();
-		case 1: return ""+hasALid();
+		case 1: return ""+hasADoor();
 		case 2: return ""+capacity();
 		case 3: return ""+containTypes();
 		case 4: return ""+openDelayTicks();
@@ -866,6 +866,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		case 17: return CMParms.toStringList(facing());
 		case 18: return getOwnerName();
 		case 19: return ""+getPrice();
+		case 20: return ""+defaultsClosed();
+		case 21: return ""+defaultsLocked();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -878,8 +880,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setLidsNLocks(hasALid(),isOpen(),CMath.s_bool(val),false); break;
-		case 1: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
+		case 0: setDoorsNLocks(hasADoor(),isOpen(),defaultsClosed(),CMath.s_bool(val),false,CMath.s_bool(val)&&defaultsLocked()); break;
+		case 1: setDoorsNLocks(CMath.s_bool(val),isOpen(),CMath.s_bool(val)&&defaultsClosed(),hasALock(),isLocked(),defaultsLocked()); break;
 		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
 		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
 		case 4: setOpenDelayTicks(CMath.s_parseIntExpression(val)); break;
@@ -898,6 +900,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		case 17: setFacing(CMParms.toDoubleArray(CMParms.parseCommas(val,true))); break;
 		case 18: setOwnerName(val); break;
 		case 19: setPrice(CMath.s_int(val)); break;
+		case 20: setDoorsNLocks(hasADoor(),isOpen(),CMath.s_bool(val),hasALock(),isLocked(),defaultsLocked()); break;
+		case 21: setDoorsNLocks(hasADoor(),isOpen(),defaultsClosed(),hasALock(),isLocked(),CMath.s_bool(val)); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

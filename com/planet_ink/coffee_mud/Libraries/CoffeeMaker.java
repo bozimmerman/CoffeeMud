@@ -45,11 +45,6 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	public Map<String,Integer> GENMOBCODESHASH=new Hashtable<String,Integer>();
 	public Map<String,Integer> GENITEMCODESHASH=new Hashtable<String,Integer>();
 
-	protected boolean get(int x, int m)
-	{
-		return (x&m)==m;
-	}
-
 	@Override
 	public String getGenMOBTextUnpacked(MOB mob, String newText)
 	{
@@ -104,39 +99,25 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(!CMath.bset(item.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOREMOVE))
 				f=f|8;
 		}
-		if(E instanceof Container)
-		{
-			final Container container=(Container)E;
-
-			if(container.hasALid())
-				f=f|32;
-			if(container.hasALock())
-				f=f|64;
-			// defaultsclosed 128
-			// defaultslocked 256
-		}
 		else
 		if(E instanceof Exit)
 		{
 			final Exit exit=(Exit)E;
 			if(exit.isReadable())
 				f=f|4;
-			//if(exit.isTrapped())
-			//    f=f|16;
-			if(exit.hasADoor())
+		}
+		if(E instanceof CloseableLockable)
+		{
+			f = f | 16; // new style flag
+			final CloseableLockable container=(CloseableLockable)E;
+			if(container.hasADoor())
 				f=f|32;
-			if(exit.hasALock())
+			if(container.hasALock())
 				f=f|64;
-			if(exit.defaultsClosed())
+			if(container.defaultsClosed())
 				f=f|128;
-			if(exit.defaultsLocked())
+			if(container.defaultsLocked())
 				f=f|256;
-			//if(exit.levelRestricted())
-			//    f=f|512;
-			//if(exit.classRestricted())
-			//    f=f|1024;
-			//if(exit.alignmentRestricted())
-			//    f=f|2048;
 		}
 		return f;
 	}
@@ -148,30 +129,35 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			final Item item=(Item)E;
 			// deprecated, but unfortunately, its here to stay.
-			CMLib.flags().setDroppable(item,get(f,1));
-			CMLib.flags().setGettable(item,get(f,2));
-			CMLib.flags().setReadable(item,get(f,4));
-			CMLib.flags().setRemovable(item,get(f,8));
-		}
-		if(E instanceof Container)
-		{
-			final Container container=(Container)E;
-			container.setLidsNLocks(get(f,32),!get(f,32),get(f,64),get(f,64));
+			CMLib.flags().setDroppable(item,CMath.bset(f,1));
+			CMLib.flags().setGettable(item,CMath.bset(f,2));
+			CMLib.flags().setReadable(item,CMath.bset(f,4));
+			CMLib.flags().setRemovable(item,CMath.bset(f,8));
 		}
 		else
 		if(E instanceof Exit)
 		{
 			final Exit exit=(Exit)E;
-			exit.setReadable(get(f,4));
-			if(get(f,16)) Log.errOut("CoffeeMaker","Exit "+identifier(E,null)+" has deprecated trap flag set!");
-			final boolean HasDoor=get(f,32);
-			final boolean HasLock=get(f,64);
-			final boolean DefaultsClosed=get(f,128);
-			final boolean DefaultsLocked=get(f,256);
-			if(get(f,512)) Log.errOut("CoffeeMaker","Exit "+identifier(E,null)+" has deprecated level restriction flag set!");
-			if(get(f,1024)) Log.errOut("CoffeeMaker","Exit "+identifier(E,null)+" has deprecated class restriction flag set!");
-			if(get(f,2048)) Log.errOut("CoffeeMaker","Exit "+identifier(E,null)+" has deprecated alignment restriction flag set!");
-			exit.setDoorsNLocks(HasDoor,(!HasDoor)||(!DefaultsClosed),DefaultsClosed,HasLock,HasLock&&DefaultsLocked,DefaultsLocked);
+			exit.setReadable(CMath.bset(f,4));
+		}
+		
+		if(E instanceof CloseableLockable)
+		{
+			final CloseableLockable container=(CloseableLockable)E;
+			if((CMath.bset(f, 16))||(E instanceof Exit)) // this will be a 'new method' flag
+			{
+				final boolean hasDoor=CMath.bset(f,32);
+				final boolean hasLock=CMath.bset(f,64);
+				final boolean defaultsClosed=CMath.bset(f,128);
+				final boolean defaultsLocked=CMath.bset(f,256);
+				container.setDoorsNLocks(hasDoor,(!hasDoor)||(!defaultsClosed),defaultsClosed,hasLock,hasLock&&defaultsLocked,defaultsLocked);
+			}
+			else
+			{
+				final boolean hasDoor=CMath.bset(f,32);
+				final boolean hasLock=CMath.bset(f,64);
+				container.setDoorsNLocks(hasDoor,!hasDoor,hasDoor,hasLock,hasLock,hasLock);
+			}
 		}
 	}
 
