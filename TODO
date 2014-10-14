@@ -20,7 +20,7 @@ TECH
    *. add spaceobject stuff to MG
    *. add spaceobject mapper system to MG
    *. keep reviewing and updating the GameOverview.html doc
-   
+
 NON-TECH
    *. Classes with insufficient unique skills: Charlatan (7), Alterer (9), Illusionist (10),  Ranger (11), Alterer (11), Evoker (11), Assassin (12), Paladin (12), 
    *. A fireball type chant for Delvers or something, like Magma Cannon or Core Spike.
@@ -37,5 +37,3 @@ NON-TECH
    *. Lich Phylactery -- acts as a recall beacon, but only during death. If the Phylactery is destroyed then the lich loses xp and must construct a new one,
       undergoing the ritual all over again. However if they have a phylactery when they die they do not lose experience but they do have to wait until their
       corperal body is remade, giving them a waiting period in an incorporeal state.
-      
-   

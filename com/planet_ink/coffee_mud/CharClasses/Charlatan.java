@@ -156,12 +156,24 @@ public class Charlatan extends StdCharClass
 		new Pair<String,Integer>("Charisma",Integer.valueOf(9)),
 		new Pair<String,Integer>("Wisdom",Integer.valueOf(9))
 	};
+	
 	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
-	@Override public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host,mob,victim,amount,6.0);}
+	@Override 
+	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount)
+	{ 
+		return Bard.bardAdjustExperienceGain(host,mob,victim,amount,6.0);
+	}
 
-	@Override public String getOtherLimitsDesc(){return "";}
-	@Override public String getOtherBonusDesc(){return "Receives 2% resistance per level to mind affects, 4% resistance per level to divination spells.  Non-class skills become cheaper at 30th level.  Gains a random non-class skill or spell every other level! Receives exploration and pub-finding experience based on danger level.";}
+	@Override 
+	public String getOtherLimitsDesc(){return "";}
+	
+	@Override 
+	public String getOtherBonusDesc()
+	{
+		return "Receives 2% resistance per level to mind affects, 4% resistance per level to divination spells.  Non-class skills become cheaper at 30th level.  Gains a random non-class skill or spell every other level! Receives exploration and pub-finding experience based on danger level.";
+	}
+	
 	@Override
 	public List<Item> outfit(MOB myChar)
 	{
@@ -196,7 +208,9 @@ public class Charlatan extends StdCharClass
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
+		if(!(myHost instanceof MOB))
+			return super.okMessage(myHost,msg);
+
 		final MOB myChar=(MOB)myHost;
 		if(msg.tool() instanceof Ability)
 		{
@@ -243,8 +257,10 @@ public class Charlatan extends StdCharClass
 		if(mob.playerStats()!=null)
 		{
 			final int classLevel=mob.baseCharStats().getClassLevel(this);
-			if(classLevel<2) return;
-			if((classLevel%2)!=0) return;
+			if(classLevel<2) 
+				return;
+			if((classLevel%2)!=0) 
+				return;
 
 			int maxSkills=classLevel/2;
 
