@@ -22,10 +22,13 @@ TECH
    *. keep reviewing and updating the GameOverview.html doc
 
 NON-TECH
-   *. Classes with insufficient unique skills: Charlatan (7), Alterer (9), Illusionist (10),  Ranger (11), Alterer (11), Evoker (11), Assassin (12), Paladin (12), 
+   *. Jewel making to include bars, rings, other thingies, to put in piercings.  Special GenArmor that checks for piercing tattoo before allowing.
    *. A fireball type chant for Delvers or something, like Magma Cannon or Core Spike.
    *. Transcribe -as a spell, allowing a mage to transcribe a spell from one scroll to another scroll.
-   *. Jewel making to include bars, rings, other thingies, to put in piercings.  Special GenArmor that checks for piercing tattoo before allowing.
+   *. Classes with insufficient unique skills: Charlatan (7), Alterer (9), Illusionist (10),  Ranger (11), Alterer (11), Evoker (11), Assassin (12), Paladin (12), 
+   *. With the Scrimshaw skill, make bone armor and shield for the evil clerics.
+   *. Shadow Focus for thieves, makes their next 100 moves or so completely silent and stealthy without using any more movement than regular movement.
+   *. Create Magi Robes(or whatever you wanted to call them) that would enhance his/her magic of their chosen field.
    *. retest private libs, private dbtables, private classes, private area objects, private players
    *. OLC for players?  Play with PennMush more. Port 4201
    *. Finish Player Simulator -- the Perpetual Project
