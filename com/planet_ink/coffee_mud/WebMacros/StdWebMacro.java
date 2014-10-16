@@ -337,7 +337,20 @@ public class StdWebMacro implements WebMacro
 		return requestParms;
 	}
 
-	protected String htmlIncomingFilter(String buf){return htmlIncomingFilter(new StringBuffer(buf)).toString();}
+	protected String safeIncomingfilter(final String buf)
+	{
+		if(buf==null)
+			return null;
+		if(buf.length()==0)
+			return "";
+		return CMLib.coffeeFilter().simpleInFilter(new StringBuilder(buf));
+	}
+	
+	protected String htmlIncomingFilter(String buf)
+	{
+		return htmlIncomingFilter(new StringBuffer(buf)).toString();
+	}
+	
 	protected StringBuffer htmlIncomingFilter(StringBuffer buf)
 	{
 		int loop=0;

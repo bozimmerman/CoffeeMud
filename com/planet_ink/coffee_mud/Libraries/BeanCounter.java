@@ -982,25 +982,28 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public void clearInventoryMoney(MOB mob, String currency)
 	{
-		if(mob==null) return;
-		Vector<Item> clear=null;
+		if(mob==null) 
+			return;
+		List<Item> clear=null;
 		Item I=null;
 		for(int i=0;i<mob.numItems();i++)
 		{
 			I=mob.getItem(i);
-			if(I instanceof Coins)
+			if((I instanceof Coins)
+			&&(((Coins)I).container()==null))
 			{
-				if(clear==null) clear=new Vector<Item>();
+				if(clear==null) 
+					clear=new ArrayList<Item>();
 				if(currency==null)
-					clear.addElement(I);
+					clear.add(I);
 				else
 				if(((Coins)I).getCurrency().equalsIgnoreCase(currency))
-					clear.addElement(I);
+					clear.add(I);
 			}
 		}
 		if(clear!=null)
 			for(int i=0;i<clear.size();i++)
-				clear.elementAt(i).destroy();
+				clear.get(i).destroy();
 	}
 
 	@Override

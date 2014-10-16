@@ -418,7 +418,7 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("ADDAREA"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			final String AREA=httpReq.getUrlParameter("AREA");
+			String AREA=httpReq.getUrlParameter("AREA");
 			if(AREA==null) return "false";
 			if(AREA.length()==0) return "false";
 			Area A=CMLib.map().getArea(AREA);
