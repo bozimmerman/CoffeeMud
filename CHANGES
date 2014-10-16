@@ -31,6 +31,7 @@
   29. Geeky MOBPROG change: can now Read variables in the global scope from script in a local scope when variable is not defined locally. No writing!
   30. Item container types now have their "defaultsClosed" property modifiable, instead of implied.
   31. Lock command will now close the thing first, if it's not closed.
+  32. Expanded GMCP support to include char.items package, support for mal-formed core.hello, room.wrongdir, and a few others.
 # Build 5.8.2 Release 6/13/2014
    0. Database Schema Updated! Run DBUpgrade, OR manually alter table CMCHCL to add CMCLSTS (see appropriate schema file)
    1. CM1Server has "FILE" command now for directory browsing/manipulation

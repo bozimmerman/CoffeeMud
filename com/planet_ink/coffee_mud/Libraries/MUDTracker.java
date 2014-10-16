@@ -822,6 +822,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		if(destRoom==null)
 		{
 			mob.tell(L("You can't go that way."));
+			final Session sess=mob.session();
+			if((sess!=null)&&(sess.getClientTelnetMode(Session.TELNET_GMCP)))
+				sess.sendGMCPEvent("room.wrongdir", "\""+Directions.getDirectionChar(directionCode)+"\"");
 			return false;
 		}
 

@@ -19,7 +19,6 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-
 import com.planet_ink.coffee_mud.core.MiniJSON;
 
 import java.io.ByteArrayOutputStream;
@@ -995,6 +994,12 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		}
 		return buf.toByteArray();
 	}
+	
+	protected String getAbilityGroupName(final int code)
+	{
+		return Ability.ACODE_DESCS[code&Ability.ALL_ACODES].toLowerCase()+
+				"-"+Ability.DOMAIN_DESCS[(code&Ability.ALL_DOMAINS)<<5].toLowerCase();
+	}
 
 	protected void resetMsdpConfigurable(final Session session, final String var)
 	{
@@ -1165,41 +1170,57 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		return bout.toByteArray();
 	}
 
-	public enum gmcpCommand
+	protected Map<Integer,List<Ability>> getSkillGroups(final MOB mob)
 	{
-		core_hello,
-		core_supports_set,
-		core_supports_add,
-		core_supports_remove,
-		core_keepalive,
-		core_ping,
-		core_goodbye,
-		char_vitals,
-		char_statusvars,
-		char_status,
-		char_base,
-		char_maxstats,
-		char_worth,
-		group,
-		room_info,
-		comm_channel,
-		ire_composer_setbuffer
+		final Map<Integer,List<Ability>> allMyGroups=new TreeMap<Integer,List<Ability>>();
+		for(int a=0;a<mob.numAllAbilities();a++)
+		{
+			final Ability A=mob.fetchAbility(a);
+			final Integer I=Integer.valueOf(A.abilityCode());
+			if(!allMyGroups.containsKey(I))
+				allMyGroups.put(I, new LinkedList<Ability>());
+			allMyGroups.get(I).add(A);
+		}
+		return allMyGroups;
+	}
+	
+	protected String makeGMCPAttribs(final Item I)
+	{
+		final StringBuffer attribs=new StringBuffer("");
+		if(I.amWearingAt(Item.WORN_WIELD))
+			attribs.append("l");
+		else
+		if(!I.amWearingAt(Item.IN_INVENTORY))
+			attribs.append("w");
+		else
+		if((I.rawProperLocationBitmap() != 0)&&(I.rawProperLocationBitmap() != Item.WORN_HELD))
+			attribs.append("W");
+		if(I instanceof Container)
+			attribs.append("c");
+		return attribs.toString();
 	}
 
-	protected String processGmcpStr(final Session session, final char[] data, final int dataSize, final Map<String,Double> supportables)
+	protected String processGmcpStr(final Session session, final String jsonData, final Map<String,Double> supportables)
 	{
 		final MiniJSON jsonParser=new MiniJSON();
 		try
 		{
 			final MOB mob=session.mob();
-			final String allDoc=new String(data).trim();
+			final String allDoc=jsonData.trim();
 			final int pkgSepIndex=allDoc.indexOf(' ');
 			String pkg;
 			MiniJSON.JSONObject json;
 			if(pkgSepIndex>0)
 			{
 				pkg=allDoc.substring(0,pkgSepIndex);
-				json=jsonParser.parseObject("{\"root\":"+allDoc.substring(pkgSepIndex)+"}");
+				final String jsonDoc=allDoc.substring(pkgSepIndex).trim();
+				if(jsonDoc.length()==0)
+					json=jsonParser.parseObject("{\"root\":{}}");
+				else
+				if(Character.isLetter(jsonDoc.charAt(0)))
+					json=jsonParser.parseObject("{\"root\":\""+jsonDoc+"\"}");
+				else
+					json=jsonParser.parseObject("{\"root\":"+jsonDoc+"}");
 			}
 			else
 			{
@@ -1219,7 +1240,14 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					if(json != null)
 					{
 						final String client=json.getCheckedString("client");
-						final double ver=json.getCheckedNumber("version");
+						final Object o = json.get("version");
+						double ver=0.0;
+						if(o!=null)
+						{
+							String oStr=o.toString().trim();
+							if(CMath.isNumber(oStr))
+								ver=CMath.s_double(oStr);
+						}
 						if(client != null)
 							supportables.put(client, Double.valueOf(ver));
 					}
@@ -1310,6 +1338,64 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						doc.append("\"moves\":").append(mob.curState().getMovement());
 						doc.append("}");
 						return doc.toString();
+					}
+					break;
+				}
+				case char_items_inv:
+				{
+					if(mob != null)
+					{
+						final StringBuilder doc=new StringBuilder("char.items.list {");
+						doc.append("\"location\":\"inv\",");
+						doc.append("\"items\":[");
+						for(int i=0;i<mob.numItems();i++)
+						{
+							final Item I=mob.getItem(i);
+							if(I!=null)
+							{
+								doc.append("{");
+								doc.append("\"id\":").append(I.hashCode()).append(",");
+								doc.append("\"name\":\"").append(MiniJSON.toJSONString(I.Name())).append("\",");
+								final String attribs = makeGMCPAttribs(I);
+								if(attribs.length()>0)
+									doc.append("\"attrib\":\"").append(attribs.toString()).append("\",");
+								doc.append("}");
+							}
+						}
+						doc.append("]");
+						doc.append("}");
+						return doc.toString();
+					}
+					break;
+				}
+				case char_items_contents:
+				{
+					if(mob != null)
+					{
+						if(json != null)
+						{
+							Long hashCode = json.getCheckedLong("root");
+							final StringBuilder doc=new StringBuilder("char.items.list {");
+							doc.append("\"location\":\""+hashCode+"\",");
+							doc.append("\"items\":[");
+							for(int i=0;i<mob.numItems();i++)
+							{
+								final Item I=mob.getItem(i);
+								if(I!=null)
+								{
+									doc.append("{");
+									doc.append("\"id\":").append(I.hashCode()).append(",");
+									doc.append("\"name\":\"").append(MiniJSON.toJSONString(I.Name())).append("\",");
+									final String attribs = makeGMCPAttribs(I);
+									if(attribs.length()>0)
+										doc.append("\"attrib\":\"").append(attribs.toString()).append("\",");
+									doc.append("}");
+								}
+							}
+							doc.append("]");
+							doc.append("}");
+							return doc.toString();
+						}
 					}
 					break;
 				}
@@ -1526,6 +1612,111 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					break;
 				case comm_channel:
 					break;
+				case comm_channel_players:
+					if(mob != null)
+					{
+						final StringBuilder doc=new StringBuilder("comm.channel.players [");
+						for(final Session sess : CMLib.sessions().allIterable())
+						{
+							if(sess != null)
+							{
+								MOB M=sess.mob();
+								if((M!=null)&&(M.soulMate()!=null))
+									M=M.soulMate();
+								if((M != null)
+								&&(M!=mob)
+								&&(((!CMLib.flags().isCloaked(M))
+									||((CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CLOAK)||CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.WIZINV))&&(mob.phyStats().level()>=M.phyStats().level()))))
+								&&(M.phyStats().level()>0))
+								{
+									doc.append("{");
+									doc.append("\"name\":\""+MiniJSON.toJSONString(M.name(mob))).append(",");
+									doc.append("\"channels\":[");
+									for(int i=0;i<CMLib.channels().getNumChannels();i++)
+									{
+										ChannelsLibrary.CMChannel channel=CMLib.channels().getChannel(i);
+										if(CMLib.channels().mayReadThisChannel(mob, true, M, i, false))
+											doc.append("\"").append(MiniJSON.toJSONString(channel.name.toLowerCase())).append("\",");
+									}
+									if(doc.charAt(doc.length()-1)==',')
+										doc.deleteCharAt(doc.length()-1);
+									doc.append("]}");
+								}
+							}
+						}
+						doc.append("]");
+					}
+					break;
+				case char_skills_get:
+					if(json!=null)
+						json=json.getCheckedJSONObject("root");
+					if((json != null)&&(mob!=null))
+					{
+						String group=null;
+						String name=null;
+						if(json.containsKey("group"))
+							group=json.getCheckedString("group").toLowerCase().trim();
+						if(json.containsKey("name"))
+							name=json.getCheckedString("name").toLowerCase().trim();
+						if((group != null)
+						&&(group.length()>0)
+						&&((name==null)||(name.length()==0)))
+						{
+							final Map<Integer,List<Ability>> allMyGroups=getSkillGroups(mob);
+							final StringBuilder doc=new StringBuilder("char.skills.list {");
+							for(Integer grp : allMyGroups.keySet())
+							{
+								final String groupName=this.getAbilityGroupName(grp.intValue());
+								if(groupName.equals(group))
+								{
+									doc.append("\"group\":\""+MiniJSON.toJSONString(groupName)+"\",");
+									doc.append("\"list\":[");
+									for(final Ability A : allMyGroups.get(grp))
+										doc.append("\"").append(MiniJSON.toJSONString(A.name().toLowerCase())).append("\",");
+									doc.setCharAt(doc.length()-1,']');
+									break;
+								}
+							}
+							doc.append("}");
+							return doc.toString();
+						}
+						if((group != null)&&(group.length()>0)&&(name!=null)&&(name.length()!=0))
+						{
+							final StringBuilder doc=new StringBuilder("char.skills.info {");
+							for(int a=0;a<mob.numAllAbilities();a++)
+							{
+								final Ability A=mob.fetchAbility(a);
+								if((A!=null)&&(A.name().toLowerCase().equals(name)))
+								{
+									doc.append("\"group\":\""+MiniJSON.toJSONString(getAbilityGroupName(A.abilityCode()))+"\",");
+									doc.append("\"skill\":\""+MiniJSON.toJSONString(name)+"\",");
+									doc.append("\"info\":\""+MiniJSON.toJSONString(CMLib.help().getHelpText(A.Name().toUpperCase(), mob, false).toString())+"\",");
+								}
+							}
+							doc.append("}");
+							return doc.toString();
+						}
+						else
+						{
+							final StringBuilder doc=new StringBuilder("char.skills.groups [");
+							final Map<Integer,List<Ability>> allMyGroups=getSkillGroups(mob);
+							if(allMyGroups.size()>0)
+							{
+								for(Integer grp : allMyGroups.keySet())
+								{
+									final String groupName=this.getAbilityGroupName(grp.intValue());
+									doc.append("\"").append(MiniJSON.toJSONString(groupName)).append("\",");
+								}
+								doc.setCharAt(doc.length()-1,']');
+							}
+							else
+								doc.append("]");
+							return doc.toString();
+						}
+					}
+					break;
+				default:
+					break;
 				}
 				return null;
 			}
@@ -1543,9 +1734,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	}
 
 	@Override
-	public byte[] processGmcp(final Session session, final char[] data, final int dataSize, final Map<String,Double> supportables)
+	public byte[] processGmcp(final Session session, final String data, final Map<String,Double> supportables)
 	{
-		final String doc=processGmcpStr(session, data, dataSize, supportables);
+		final String doc=processGmcpStr(session, data, supportables);
 		if(doc != null)
 		{
 			if(CMSecurity.isDebugging(DbgFlag.TELNET))
@@ -1557,8 +1748,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 
 	protected byte[] possiblePingGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables, final String command)
 	{
-		final char[] cmd=command.toCharArray();
-		final String chunkStr=processGmcpStr(session, cmd, cmd.length, supportables);
+		final String chunkStr=processGmcpStr(session, command, supportables);
 		if(chunkStr!=null)
 		{
 			final Long oldHash=reporteds.get(command);
@@ -1659,7 +1849,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 							reporteds.put("system.currentRoom", Long.valueOf(room.hashCode()));
 							final String command="room.info";
 							final char[] cmd=command.toCharArray();
-							buf=processGmcp(session, cmd, cmd.length, supportables);
+							buf=processGmcp(session, new String(cmd), supportables);
 							if(buf!=null) bout.write(buf);
 						}
 					}

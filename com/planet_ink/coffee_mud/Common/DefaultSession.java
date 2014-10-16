@@ -1199,7 +1199,7 @@ public class DefaultSession implements Session
 			break;
 		case TELNET_GMCP:
 			{
-				final byte[] resp=CMLib.protocol().processGmcp(this, suboptionData, dataSize, this.gmcpSupports);
+				final byte[] resp=CMLib.protocol().processGmcp(this, new String(suboptionData), this.gmcpSupports);
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
 				{
 					Log.debugOut("For suboption "+Session.TELNET_DESCS[optionCode]+", got "+dataSize+" bytes, sent "+((resp==null)?0:resp.length));
