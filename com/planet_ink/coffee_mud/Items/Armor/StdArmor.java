@@ -89,44 +89,44 @@ public class StdArmor extends StdContainer implements Armor
 			switch(material()&RawMaterial.MATERIAL_MASK)
 			{
 			case RawMaterial.MATERIAL_CLOTH: 
-				return name()+" has a small tear ("+usesRemaining()+"%)";
+				return L("@x1 has a small tear (@x2%)",name(),""+usesRemaining());
 			case RawMaterial.MATERIAL_SYNTHETIC:
 			case RawMaterial.MATERIAL_GLASS: 
-				return name()+" has a few hairline cracks ("+usesRemaining()+"%)";
+				return L("@x1 has a few hairline cracks (@x2%)",name(),""+usesRemaining());
 			case RawMaterial.MATERIAL_LEATHER: 
-				return name()+" is a bit scuffed ("+usesRemaining()+"%)";
+				return L("@x1 is a bit scuffed (@x2%)",name(),""+usesRemaining());
 			case RawMaterial.MATERIAL_METAL:
 			case RawMaterial.MATERIAL_MITHRIL: 
-				return name()+" has some small dents ("+usesRemaining()+"%)";
+				return L("@x1 has some small dents (@x2%)",name(),""+usesRemaining());
 			case RawMaterial.MATERIAL_WOODEN: 
-				return name()+" has a few small splinters ("+usesRemaining()+"%)";
+				return L("@x1 has a few small splinters (@x2%)",name(),""+usesRemaining());
 			default: 
-				return name()+" is slightly damaged ("+usesRemaining()+"%)";
+				return L("@x1 is slightly damaged (@x2%)",name(),""+usesRemaining());
 			}
 		}
-		else
+		else;
 		if(usesRemaining()>=50)
 		{
 			switch(material()&RawMaterial.MATERIAL_MASK)
 			{
 			case RawMaterial.MATERIAL_CLOTH:
 			case RawMaterial.MATERIAL_PAPER: 
-				return name()+" has a a few tears and rips ("+usesRemaining()+"%)";
+				return L("@x1 has a a few tears and rips (@x2%)",name(),""+usesRemaining());
 			case RawMaterial.MATERIAL_ROCK:
 			case RawMaterial.MATERIAL_PRECIOUS:
 			case RawMaterial.MATERIAL_SYNTHETIC:
 			case RawMaterial.MATERIAL_GLASS: 
-				return name()+" is cracked ("+usesRemaining()+"%)";
+				return L("@x1 is cracked (@x2%)",name(),""+usesRemaining());
 			case RawMaterial.MATERIAL_FLESH:
 			case RawMaterial.MATERIAL_LEATHER: 
-				return name()+" is torn ("+usesRemaining()+"%)";
+				return L("@x1 is torn (@x2%)",name(),""+usesRemaining());
 			case RawMaterial.MATERIAL_METAL:
 			case RawMaterial.MATERIAL_MITHRIL: 
-				return name()+" is dented ("+usesRemaining()+"%)";
+				return L("@x1 is dented (@x2%)",name(),""+usesRemaining());
 			case RawMaterial.MATERIAL_WOODEN: 
-				return name()+" is splintered ("+usesRemaining()+"%)";
+				return L("@x1 is splintered (@x2%)",name(),""+usesRemaining());
 			default: 
-				return name()+" is damaged ("+usesRemaining()+"%)";
+				return L("@x1 is damaged (@x2%)",name(),""+usesRemaining());
 			}
 		}
 		else
@@ -136,22 +136,22 @@ public class StdArmor extends StdContainer implements Armor
 			{
 			case RawMaterial.MATERIAL_PAPER:
 			case RawMaterial.MATERIAL_CLOTH: 
-				return name()+" has numerous tears and rips ("+usesRemaining()+"%)";
+				return L("@x1 has numerous tears and rips (@x2%)",name(),""+usesRemaining());
 			case RawMaterial.MATERIAL_ROCK:
 			case RawMaterial.MATERIAL_PRECIOUS:
 			case RawMaterial.MATERIAL_SYNTHETIC:
 			case RawMaterial.MATERIAL_GLASS: 
-				return name()+" has numerous streaking cracks ("+usesRemaining()+"%)";
+				return L("@x1 has numerous streaking cracks (@x2%)",name(),""+usesRemaining());
 			case RawMaterial.MATERIAL_FLESH:
 			case RawMaterial.MATERIAL_LEATHER: 
-				return name()+" is badly torn up ("+usesRemaining()+"%)";
+				return L("@x1 is badly torn up (@x2%)",name(),""+usesRemaining());
 			case RawMaterial.MATERIAL_METAL:
 			case RawMaterial.MATERIAL_MITHRIL: 
-				return name()+" is badly dented and cracked ("+usesRemaining()+"%)";
+				return L("@x1 is badly dented and cracked (@x2%)",name(),""+usesRemaining());
 			case RawMaterial.MATERIAL_WOODEN: 
-				return name()+" is badly cracked and splintered ("+usesRemaining()+"%)";
+				return L("@x1 is badly cracked and splintered (@x2%)",name(),""+usesRemaining());
 			default: 
-				return name()+" is badly damaged ("+usesRemaining()+"%)";
+				return L("@x1 is badly damaged (@x2%)",name(),""+usesRemaining());
 			}
 		}
 		else
@@ -160,22 +160,22 @@ public class StdArmor extends StdContainer implements Armor
 			{
 			case RawMaterial.MATERIAL_PAPER:
 			case RawMaterial.MATERIAL_CLOTH: 
-				return name()+" is a shredded mess ("+usesRemaining()+"%)";
+				return L("@x1 is a shredded mess (@x2%)",name(),""+usesRemaining());
 			case RawMaterial.MATERIAL_ROCK:
 			case RawMaterial.MATERIAL_SYNTHETIC:
 			case RawMaterial.MATERIAL_PRECIOUS:
 			case RawMaterial.MATERIAL_GLASS: 
-				return name()+" is practically shards ("+usesRemaining()+"%)";
+				return L("@x1 is practically shards (@x2%)",name(),""+usesRemaining());
 			case RawMaterial.MATERIAL_FLESH:
 			case RawMaterial.MATERIAL_LEATHER: 
-				return name()+" is badly shredded and ripped ("+usesRemaining()+"%)";
+				return L("@x1 is badly shredded and ripped (@x2%)",name(),""+usesRemaining());
 			case RawMaterial.MATERIAL_METAL:
 			case RawMaterial.MATERIAL_MITHRIL: 
-				return name()+" is a crumpled mess ("+usesRemaining()+"%)";
+				return L("@x1 is a crumpled mess (@x2%)",name(),""+usesRemaining());
 			case RawMaterial.MATERIAL_WOODEN: 
-				return name()+" is nothing but splinters ("+usesRemaining()+"%)";
+				return L("@x1 is nothing but splinters (@x2%)",name(),""+usesRemaining());
 			default: 
-				return name()+" is horribly damaged ("+usesRemaining()+"%)";
+				return L("@x1 is horribly damaged (@x2%)",name(),""+usesRemaining());
 			}
 		}
 	}
@@ -721,6 +721,6 @@ public class StdArmor extends StdContainer implements Armor
 		else
 		if(phyStats().ability()<0)
 			id=name()+" "+phyStats().ability()+((id.length()>0)?"\n\r":"")+id;
-		return id+"\n\rBase Protection: "+phyStats().armor();
+		return id+"\n\r"+L("Base Protection: @x1",""+phyStats().armor());
 	}
 }

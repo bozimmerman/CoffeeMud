@@ -60,7 +60,7 @@ public class GrinderItems
 		LAYER,SEETHRU,MULTIWEAR,ISCATALOGED,CATARATE,
 		CATALIVE,CATAMASK,BITE,MAXUSES,ISELECTRONIC,
 		CATACAT,ISPORTAL,PUTSTR,MOUNTSTR,DISMOUNTSTR,
-		DEFAULTSCLOSED,DEFAULTSLOCKED;
+		DEFAULTSCLOSED,DEFAULTSLOCKED,ISWEARANDTEAR;
 		public boolean isGenField;
 		private ItemDataField(boolean isGeneric)
 		{
@@ -613,6 +613,8 @@ public class GrinderItems
 				case BEINGWORN:
 					break;
 				case ISCOIN:
+					break;
+				case ISWEARANDTEAR:
 					break;
 				case ISELECTRONIC:
 					break;

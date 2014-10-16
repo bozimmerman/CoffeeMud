@@ -8003,7 +8003,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genLayer(mob,me,++showNumber,showFlag);
 			genRejuv(mob,me,++showNumber,showFlag);
 			genArmor(mob,me,++showNumber,showFlag);
-			genCondition(mob,me,++showNumber,showFlag);
+			if(me.subjectToWearAndTear())
+				genCondition(mob,me,++showNumber,showFlag);
+			else
+				genUses(mob,me,++showNumber,showFlag);
 			genAbility(mob,me,++showNumber,showFlag);
 			genSecretIdentity(mob,me,++showNumber,showFlag);
 			if(me instanceof ClanItem)
@@ -8020,10 +8023,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			//genReadable1(mob,me,++showNumber,showFlag); // since they can have keys, no readability for you.
 			//genReadable2(mob,me,++showNumber,showFlag);
-			if(me instanceof Light) genBurnout(mob,(Light)me,++showNumber,showFlag);
+			if(me instanceof Light) 
+				genBurnout(mob,(Light)me,++showNumber,showFlag);
 			genValue(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
-			genSize(mob,me,++showNumber,showFlag);
+			if(me instanceof Container) // because thin armor doesn't care about size
+				genSize(mob,me,++showNumber,showFlag);
 			genDisposition(mob,me.basePhyStats(),++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);

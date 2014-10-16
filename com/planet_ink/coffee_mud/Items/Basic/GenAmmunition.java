@@ -48,6 +48,8 @@ public class GenAmmunition extends StdItem implements Ammunition
 		recoverPhyStats();
 	}
 
+	@Override public boolean subjectToWearAndTear() { return false; }
+	
 	@Override public boolean isGeneric(){return true;}
 
 	@Override
