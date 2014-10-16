@@ -307,9 +307,13 @@ public class StdArea implements Area
 	@Override
 	public void setName(String newName)
 	{
-		name=newName;
-		CMLib.map().renamedArea(this);
+		if(newName != null)
+		{
+			name=newName.replace('\'', '`');
+			CMLib.map().renamedArea(this);
+		}
 	}
+	
 	@Override public String Name(){return name;}
 	
 	@Override
