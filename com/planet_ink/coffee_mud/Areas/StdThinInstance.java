@@ -154,6 +154,7 @@ public class StdThinInstance extends StdThinArea
 		{
 			final List<WeakReference<MOB>> V=instanceChildren.elementAt(index).mobs;
 			boolean anyInside=false;
+			final List<MOB> cleanTheseMobs=new ArrayList<MOB>();
 			for(final WeakReference<MOB> wmob : V)
 			{
 				final MOB M=wmob.get();
@@ -161,21 +162,33 @@ public class StdThinInstance extends StdThinArea
 				&&CMLib.flags().isInTheGame(M,true)
 				&&(M.location()!=null)
 				&&(M.location().getArea()==childA))
-				{
-					anyInside=true;
-					break;
-				}
+					cleanTheseMobs.add(M);
+			}
+			for(final Enumeration<MOB> m = CMLib.players().players();m.hasMoreElements();)
+			{
+				final MOB M=m.nextElement();
+				if((M!=null)
+				&&(M.location()!=null)
+				&&(M.location().getArea()==childA))
+					cleanTheseMobs.add(M);
 			}
 			if(!anyInside)
 			{
 				instanceChildren.remove(index);
-				for(final WeakReference<MOB> wmob : V)
+				for(final MOB wmob : cleanTheseMobs)
 				{
-					final MOB M=wmob.get();
-					if((M!=null)
-					&&(M.location()!=null)
-					&&(M.location().getArea()==this))
-						M.setLocation(M.getStartRoom());
+					if((wmob.location()!=null)
+					&&(wmob.location().getArea()==this))
+					{
+						final Room startRoom=wmob.getStartRoom();
+						if(startRoom != null)
+						{
+							if(wmob.location().isInhabitant(wmob))
+								startRoom.bringMobHere(wmob, true);
+							if(wmob.location()!=startRoom)
+								wmob.setLocation(startRoom);
+						}
+					}
 				}
 				final MOB mob=CMClass.sampleMOB();
 				for(final Enumeration<Room> e=childA.getProperMap();e.hasMoreElements();)
