@@ -104,7 +104,7 @@ public class StdArmor extends StdContainer implements Armor
 				return L("@x1 is slightly damaged (@x2%)",name(),""+usesRemaining());
 			}
 		}
-		else;
+		else
 		if(usesRemaining()>=50)
 		{
 			switch(material()&RawMaterial.MATERIAL_MASK)

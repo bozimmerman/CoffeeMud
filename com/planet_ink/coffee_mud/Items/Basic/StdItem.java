@@ -87,7 +87,8 @@ public class StdItem implements Item
 	@Override
 	public String name()
 	{
-		if(phyStats().newName()!=null) return phyStats().newName();
+		if(phyStats().newName()!=null) 
+			return phyStats().newName();
 		return Name();
 	}
 	@Override public String displayText(MOB viewerMob) { return displayText(); }
@@ -108,6 +109,7 @@ public class StdItem implements Item
 		}
 		return cachedImageName;
 	}
+	
 	@Override
 	public String rawImage()
 	{
@@ -115,6 +117,7 @@ public class StdItem implements Item
 			return "";
 		return rawImageName;
 	}
+	
 	@Override
 	public void setImage(String newImage)
 	{
@@ -169,7 +172,9 @@ public class StdItem implements Item
 		}
 		return new StdItem();
 	}
+	
 	@Override public boolean subjectToWearAndTear(){return false;}
+	
 	protected void cloneFix(Item I)
 	{
 		destroyed=false;
@@ -209,6 +214,7 @@ public class StdItem implements Item
 			}
 		}
 	}
+	
 	@Override
 	public CMObject copyOf()
 	{
@@ -228,7 +234,12 @@ public class StdItem implements Item
 		}
 	}
 
-	@Override public Rideable riding(){return riding;}
+	@Override 
+	public Rideable riding()
+	{
+		return riding;
+	}
+	
 	@Override
 	public void setRiding(Rideable ride)
 	{
@@ -241,7 +252,12 @@ public class StdItem implements Item
 			riding().addRider(this);
 	}
 
-	@Override public ItemPossessor owner(){return owner;}
+	@Override 
+	public ItemPossessor owner()
+	{
+		return owner;
+	}
+	
 	@Override
 	public void setOwner(ItemPossessor E)
 	{
@@ -684,7 +700,12 @@ public class StdItem implements Item
 		else
 			return (String)description;
 	}
-	@Override public String description(MOB viewerMob) { return description(); }
+	
+	@Override 
+	public String description(MOB viewerMob) 
+	{ 
+		return description(); 
+	}
 
 	@Override
 	public void setDescription(String newDescription)
@@ -734,7 +755,11 @@ public class StdItem implements Item
 		return true;
 	}
 
-	@Override public void setSavable(boolean truefalse){ CMLib.flags().setSavable(this, truefalse);}
+	@Override 
+	public void setSavable(boolean truefalse)
+	{ 
+		CMLib.flags().setSavable(this, truefalse);
+	}
 
 	protected boolean canWearComplete(MOB mob, long wearWhere)
 	{
@@ -1533,7 +1558,11 @@ public class StdItem implements Item
 		}
 	}
 
-	@Override public Enumeration<Ability> effects(){return (affects==null)?EmptyEnumeration.INSTANCE:affects.elements();}
+	@Override 
+	public Enumeration<Ability> effects()
+	{
+		return (affects==null)?EmptyEnumeration.INSTANCE:affects.elements();
+	}
 
 	@Override
 	public int numEffects()

@@ -36,6 +36,9 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class GenEarring extends GenThinArmor
 {
 	@Override public String ID(){	return "GenEarring";}
+	
+	private final String wearLoc = null;
+	
 	public GenEarring()
 	{
 		super();
