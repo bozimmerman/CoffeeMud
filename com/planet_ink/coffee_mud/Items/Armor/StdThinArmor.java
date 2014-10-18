@@ -34,7 +34,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class StdThinArmor extends StdItem implements Armor
 {
-	@Override public String ID(){	return "StdArmor";}
+	@Override public String ID(){	return "StdThinArmor";}
 	int sheath=0;
 	short layer=0;
 	short layerAttributes=0;
