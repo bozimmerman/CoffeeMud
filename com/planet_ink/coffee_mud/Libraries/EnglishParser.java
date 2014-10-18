@@ -40,7 +40,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 {
 	@Override public String ID(){return "EnglishParser";}
 	
-	private final static String[] articles={"a","an","all of","some one","a pair of","one of","all","the","some"};
+	private final static String[] ARTICLES={"a","an","all of","some one","a pair of","one of","all","the","some","each"};
 	public static boolean[] PUNCTUATION_TABLE=null;
 	public final static char[] ALL_CHRS="ALL".toCharArray();
 	public final static String[] fwords={"calf", "half", "knife", "life", "wife", "elf", "self", "shelf", "leaf", "sheaf", "thief", "loaf", "wolf"};
@@ -66,21 +66,23 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public String toEnglishStringList(final List<? extends Object> V)
+	public String toEnglishStringList(final Collection<? extends Object> V)
 	{
 		if((V==null)||(V.size()==0))
 		{
 			return "";
 		}
-		if(V.size()==1) return V.get(0).toString();
+		if(V.size()==1) return V.iterator().next().toString();
 		final StringBuffer s=new StringBuffer("");
-		for(int v=0;v<V.size()-1;v++)
+		for(Iterator<? extends Object> o=V.iterator();o.hasNext();)
 		{
-			if(v>0) s.append(", ");
-			s.append(V.get(v).toString());
+			if(s.length()>0) 
+				s.append(", ");
+			final Object O = o.next();
+			if(!o.hasNext())
+				s.append(" and ");
+			s.append(O.toString());
 		}
-		s.append(" and ");
-		s.append(V.get(V.size()-1).toString());
 		return s.toString();
 	}
 
@@ -88,7 +90,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	public boolean isAnArticle(String s)
 	{
 		s=s.toLowerCase();
-		for (final String article : articles)
+		for (final String article : ARTICLES)
 			if(s.equals(article))
 				return true;
 		return false;
@@ -118,7 +120,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	public String cleanArticles(String s)
 	{
 		final String lowStr=s.toLowerCase();
-		for (final String article : articles)
+		for (final String article : ARTICLES)
 			if(lowStr.startsWith(article+" "))
 				return s.substring(article.length()+1);
 		return s;
@@ -333,6 +335,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return str;
 	}
 
+
+	@Override
+	public boolean startsWithAnArticle(String s)
+	{
+		return isAnArticle(getFirstWord(s));
+	}
+	
 	@Override
 	public String insertUnColoredAdjective(String str, String adjective)
 	{

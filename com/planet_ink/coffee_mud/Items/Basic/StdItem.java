@@ -286,13 +286,10 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public boolean amWearingAt(long wornCode)
+	public boolean amWearingAt(final long wornCode)
 	{
-		if((myWornCode+wornCode)==0)
-			return true;
-		else
-		if(wornCode==0)
-			return false;
+		if(wornCode == 0)
+			return myWornCode == 0;
 		return (myWornCode & wornCode)==wornCode;
 	}
 

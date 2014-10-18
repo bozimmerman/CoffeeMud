@@ -38,12 +38,13 @@ public interface EnglishParsing extends CMLibrary
 {
 	public boolean isAnArticle(String s);
 	public String cleanArticles(String s);
+	public boolean startsWithAnArticle(String s);
 	public String stripPunctuation(String str);
 	public String makePlural(String str);
 	public String getFirstWord(final String str);
 	public String properIndefiniteArticle(String str);
 	public String toEnglishStringList(final String[] V);
-	public String toEnglishStringList(final List<? extends Object> V);
+	public String toEnglishStringList(final Collection<? extends Object> V);
 	public String insertUnColoredAdjective(String str, String adjective);
 	public String startWithAorAn(String str);
 	public CMObject findCommand(MOB mob, List<String> commands);

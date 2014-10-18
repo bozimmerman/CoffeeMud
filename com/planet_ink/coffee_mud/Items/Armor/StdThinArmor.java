@@ -70,7 +70,8 @@ public class StdThinArmor extends StdItem implements Armor
 	@Override
 	public boolean canWear(MOB mob, long where)
 	{
-		if(where==0) return (whereCantWear(mob)==0);
+		if(where==0) 
+			return (whereCantWear(mob)==0);
 		if((rawProperLocationBitmap()&where)!=where)
 			return false;
 		return mob.freeWearPositions(where,getClothingLayer(),getLayerAttributes())>0;

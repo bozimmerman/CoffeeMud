@@ -8,19 +8,28 @@
 % Necklace	6	30	2	200	GenArmor	MS-2:NECK		0	PRECIOUS	
 % Circlet	7	40	4	80	GenArmor	S-1:HEAD		0		
 % Choker	8	20	2	50	GenArmor	S0:NECK		0		
-% Earrings	9	20	1	20	GenArmor	MS0:EARS		0	PRECIOUS	
+% Clip Earrings	9	20	1	20	GenArmor	MS-4:EARS		0	PRECIOUS	
 % Hairpin	10	10	1	40	GenArmor	MS-3:HEAD		0	PRECIOUS	
 % Wedding Band	1	20	1	250	GenArmor	MS0:LEFT FINGER||RIGHT FINGER		0		*Prop_WearSpellCast;Prayer_Fidelity
 % Brooch	11	30	2	100	GenArmor	MS0:TORSO		0		
 % Eye Glasses	11	50	2	20	GenArmor	S0:EYES		0	GLASS	
+% Bodyring	12	20	1	20	GenEarring	M-10:TORSO		0	PRECIOUS	
+% Earring	13	20	1	20	GenEarring	M-10:EARS		0	PRECIOUS	
 % Tiara	13	80	10	200	GenArmor	1:HEAD		0		
 % Anklet	14	20	2	60	GenArmor	S-3:FEET		0		
 % Belly Chain	15	40	4	200	GenArmor	MS-3:WAIST		0		
 % Pendant	16	30	2	500	GenArmor	MS0:NECK		0	PRECIOUS	
 % Signet Ring	17	40	2	100	GenArmor	MS0:LEFT FINGER||RIGHT FINGER		0		
 % Diadem	18	50	8	400	GenArmor	MS-1:HEAD		0	PRECIOUS	
+% Post	19	20	1	20	GenEarring	M-10:HEAD||EYES||TORSO||EARS		0		
 % Crown	20	100	10	150	GenArmor	1:HEAD		1		
 % Monocle	21	30	1	20	GenArmor	S0:EYES		0	GLASS	
+% Body Hoop	22	20	1	20	GenEarring	M-10:TORSO		0		
+% Loop	23	23	1	20	GenEarring	M-10:HEAD||EYES||TORSO||EARS		0		
+% Stud	24	24	1	20	GenEarring	M-10:HEAD||EYES||TORSO||EARS		0	PRECIOUS	
+% Barbell	25	25	1	20	GenEarring	M-10:HEAD||EYES||TORSO||EARS		0		
+% Gauge	26	25	1	20	GenEarring	M-10:HEAD||EARS		0		
+% Body Chain	27	28	1	20	GenEarring	M-10:TORSO		0		
 % Sunglasses	30	60	2	50	GenArmor	EYES		0	GLASS	
 % Bangle Bracelet	19	50	3	250	GenArmor	MS1:LEFT WRIST||RIGHT WRIST		0	PRECIOUS	
 % Armlet	12	30	5	20	GenArmor	S0:ARMS		0		

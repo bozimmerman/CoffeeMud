@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.core;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.Map.Entry;
 import java.io.*;
@@ -29,12 +30,25 @@ public class CMath
 	private CMath(){super();}
 	private static final CMath inst=new CMath();
 	public static final CMath instance(){return inst;}
-	private static final String[] ROMAN_HUNDREDS={"C","CC","CCC","CD","D","DC","DCC","DCCC","CM","P"};
-	private static final String[] ROMAN_TENS={"X","XX","XXX","XL","L","LX","LXX","LXXX","XC","C"};
-	private static final String[] ROMAN_ONES={"I","II","III","IV","V","VI","VII","VIII","IX","X"};
-	private static final String   ROMAN_ALL="CDMPXLIV";
-	private static final java.text.DecimalFormat twoPlaces = new java.text.DecimalFormat("0.#####%");
-	private static Random rand = new Random(System.currentTimeMillis());
+	private static final String[]		ROMAN_HUNDREDS	= {"C","CC","CCC","CD","D","DC","DCC","DCCC","CM","P"};
+	private static final String[]		ROMAN_TENS		= {"X","XX","XXX","XL","L","LX","LXX","LXXX","XC","C"};
+	private static final String[]		ROMAN_ONES		= {"I","II","III","IV","V","VI","VII","VIII","IX","X"};
+	private static final String			ROMAN_ALL		= "CDMPXLIV";
+	private static final DecimalFormat	TWO_PLACES		= new DecimalFormat("0.#####%");
+	private static final int[]			INTEGER_BITMASKS= new int[31];
+	private static final long[]			LONG_BITMASKS	= new long[63];
+	private static Random 				rand			= new Random(System.currentTimeMillis());
+	
+	static
+	{
+		for(int l=0;l<63;l++)
+		{
+			if(l<INTEGER_BITMASKS.length)
+				INTEGER_BITMASKS[l]=1<<l;
+			if(l<LONG_BITMASKS.length)
+				LONG_BITMASKS[l]=1L<<l;
+		}
+	}
 
 	/** Convert an integer to its Roman Numeral equivalent
 	 *
@@ -613,6 +627,52 @@ public class CMath
 	}
 
 	/**
+	 * Given a bitmask, seperates the mask according to which
+	 * bits are set and returns those original values in an
+	 * array where each entry is the value of each bit
+	 * @param mask the mask to seperate
+	 * @return an entry for every set bit
+	 */
+	public final static int[] getSeperateBitMasks(int mask)
+	{
+		if(mask==0)
+			return new int[0];
+		int ct=0;
+		for(int i=0;i<INTEGER_BITMASKS.length;i++)
+			if((mask & INTEGER_BITMASKS[i])!=0)
+				ct++;
+		final int[] masks=new int[ct];
+		ct=0;
+		for(int i=0;i<INTEGER_BITMASKS.length;i++)
+			if((mask & INTEGER_BITMASKS[i])!=0)
+				masks[ct++] = (mask & INTEGER_BITMASKS[i]);
+		return masks;
+	}
+	
+	/**
+	 * Given a bitmask, seperates the mask according to which
+	 * bits are set and returns those original values in an
+	 * array where each entry is the value of each bit
+	 * @param mask the mask to seperate
+	 * @return an entry for every set bit
+	 */
+	public final static long[] getSeperateBitMasks(long mask)
+	{
+		if(mask==0)
+			return new long[0];
+		int ct=0;
+		for(int i=0;i<LONG_BITMASKS.length;i++)
+			if((mask & LONG_BITMASKS[i])!=0)
+				ct++;
+		final long[] masks=new long[ct];
+		ct=0;
+		for(int i=0;i<LONG_BITMASKS.length;i++)
+			if((mask & LONG_BITMASKS[i])!=0)
+				masks[ct++] = (mask & LONG_BITMASKS[i]);
+		return masks;
+	}
+	
+	/**
 	 * Returns true if the bitnumberth bit (0...) is set
 	 * in the given number
 	 * @param number the given number
@@ -718,7 +778,7 @@ public class CMath
 	 */
 	public final static String toPct(final double d)
 	{
-		final String s=twoPlaces.format(d);
+		final String s=TWO_PLACES.format(d);
 		if(s.endsWith("%%")) return s.substring(0,s.length()-1);
 		return s;
 	}

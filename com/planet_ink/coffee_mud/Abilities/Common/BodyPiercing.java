@@ -121,10 +121,12 @@ public class BodyPiercing extends CommonSkill
 		int partNum=-1;
 		final StringBuffer allParts=new StringBuffer("");
 		
-		final String[][] piercables={{"lip", "nose"},
-									{"ears","left ear","right ear"},
-									{"eyebrows"},
-									{"nipples","belly button"}};
+		final String[][] piercables={
+										{"lip", "nose"},
+										{"left ear","right ear", "ears"},
+										{"eyebrows"},
+										{"left nipple","right nipple","belly button","nipples"}
+									};
 		
 		final long[] piercable={Wearable.WORN_HEAD,
 								Wearable.WORN_EARS,
@@ -192,10 +194,15 @@ public class BodyPiercing extends CommonSkill
 		if((!super.invoke(mob,commands,givenTarget,auto,asLevel))||(wornName==null))
 			return false;
 		if(wornName.toLowerCase().endsWith("s"))
+		{
 			writing=wearLocName+":Pierced "+wornName.toLowerCase();
+			verb=L("piercing @x1 on  @x2",target.name(),wornName);
+		}
 		else
+		{
 			writing=wearLocName+":A pierced "+wornName.toLowerCase();
-		verb=L("piercing @x1 on the @x2",target.name(),wornName);
+			verb=L("piercing @x1 on the @x2",target.name(),wornName);
+		}
 		displayText=L("You are @x1",verb);
 		if(!proficiencyCheck(mob,0,auto)) 
 			writing="";
