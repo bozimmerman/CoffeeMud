@@ -549,6 +549,48 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		return true;
 	}
 
+	protected void stopThisShip(MOB mob)
+	{
+		setSpeed(0); // if you collide with something massive, your speed ENDS
+		List<Electronics> electronics=CMLib.tech().getMakeRegisteredElectronics(getShipArea().Name());
+		for(final Electronics E : electronics)
+		{
+			if(E instanceof ShipComponent.ShipEngine)
+			{
+				final String code=Technical.TechCommand.THRUST.makeCommand(ShipComponent.ShipEngine.ThrustPort.AFT,Integer.valueOf(0));
+				final CMMsg msg2=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+				if(E.owner() instanceof Room)
+				{
+					if(((Room)E.owner()).okMessage(mob, msg2))
+						((Room)E.owner()).send(mob, msg2);
+				}
+				else
+				if(E.okMessage(mob, msg2))
+					E.executeMsg(mob, msg2);
+			}
+		}
+	}
+
+	protected void sendComputerMessage(final MOB mob, final CMMsg msg)
+	{
+		List<Electronics> electronics = CMLib.tech().getMakeRegisteredElectronics(getShipArea().Name());
+		for(final Electronics E : electronics)
+		{
+			if(E instanceof Electronics.Computer)
+			{
+				if(E.owner() instanceof Room)
+				{
+					//TODO: teach computers to understand what a collision means!!!!
+					if(((Room)E.owner()).okMessage(mob, msg))
+						((Room)E.owner()).send(mob, msg);
+				}
+				else
+				if(E.okMessage(mob, msg))
+					E.executeMsg(mob, msg);
+			}
+		}
+	}
+	
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -613,32 +655,20 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			case CMMsg.TYP_COLLISION:
 			{
 				final MOB mob=msg.source();
-				List<Electronics> electronics = null;
+				final boolean hitSomethingMassive;
 				
 				if((msg.tool() instanceof SpaceObject) // we hit something very very big
 				&&(((SpaceObject)msg.tool()).getMass() >= (100 * SpaceObject.Distance.Kilometer.dm)))
 				{
-					setSpeed(0); // if you collide with something massive, your speed ENDS
-					electronics=CMLib.tech().getMakeRegisteredElectronics(getShipArea().Name());
-					for(final Electronics E : electronics)
-					{
-						if(E instanceof ShipComponent.ShipEngine)
-						{
-							final String code=Technical.TechCommand.THRUST.makeCommand(ShipComponent.ShipEngine.ThrustPort.AFT,Integer.valueOf(0));
-							final CMMsg msg2=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
-							if(E.owner() instanceof Room)
-							{
-								if(((Room)E.owner()).okMessage(mob, msg2))
-									((Room)E.owner()).send(mob, msg2);
-							}
-							else
-							if(E.okMessage(mob, msg2))
-								E.executeMsg(mob, msg2);
-						}
-					}
+					hitSomethingMassive=true;
+					stopThisShip(mob);
 				}
+				else
+					hitSomethingMassive=false;
 				
-				if((speed() <= SpaceObject.ACCELLERATION_DAMAGED)
+				// this only works because Areas don't move.
+				// the only way to hit one is to be moving towards it.
+				if((speed() <= SpaceObject.ACCELLERATION_DAMAGED) 
 				&&(msg.tool() instanceof Area))
 				{
 					long shortestDistance=Long.MAX_VALUE;
@@ -664,37 +694,39 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 					else
 					{
 						// we landed, but there was nowhere to dock!
+						stopThisShip(mob);
 					}
 				}
 				else
 				if(msg.tool() instanceof SpaceObject)
 				{
-					// we've been -- hit?
-					//TODO: add the speeds of both things * mass to calculate kenetic damage
-					//if a planet, need to do engine stop as above!
+					if(hitSomethingMassive)
+					{
+						//destroyThisShip(); //TODO:
+					}
+					else
+					{
+						// first, get the direction of the ship relative to the direction of the other object -- angle between two vectors
+						// if they are both going in the same direction, very little kenetic damage, speed of faster - speed of slower 
+						// if op directions, extra -- speed of both, otherwise normal, otherwise speed of faster
+						
+						int kineticDamage = 0; //TODO: add the speeds of both things * mass to calculate kenetic damage
+						
+						// we've been -- hit?
+						
+						//if a planet, just blow up!
+						for(final Enumeration<Room> r = getShipArea().getProperMap(); r.hasMoreElements();)
+						{
+							
+						}
+					}
 				}
 				else
 				{
 					//so there was a collision, but not with a space object?
 					Log.errOut("SpaceShip","Collided with "+msg.tool());
 				}
-				if(electronics == null)
-					electronics=CMLib.tech().getMakeRegisteredElectronics(getShipArea().Name());
-				for(final Electronics E : electronics)
-				{
-					if(E instanceof Electronics.Computer)
-					{
-						if(E.owner() instanceof Room)
-						{
-							//TODO: teach computers to understand what a collision means!!!!
-							if(((Room)E.owner()).okMessage(mob, msg))
-								((Room)E.owner()).send(mob, msg);
-						}
-						else
-						if(E.okMessage(mob, msg))
-							E.executeMsg(mob, msg);
-					}
-				}
+				sendComputerMessage(mob,msg);
 				break;
 			}
 			default:
