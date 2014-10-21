@@ -75,6 +75,7 @@ public class FireBuilding extends CommonSkill
 						lighting=I;
 					}
 					final Ability B=CMClass.getAbility("Burning");
+					B.setAbilityCode(512); // item destroyed on burn end
 					B.invoke(mob,lighting,true,durationOfBurn);
 				}
 				lighting=null;

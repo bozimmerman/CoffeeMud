@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -45,36 +44,79 @@ public class Burning extends StdAbility
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
+	
+	protected static final int FIREFLAG_WEATHERMASK = 255;
+	protected static final int FIREFLAG_PERSISTFLAGS = 256;
+	protected static final int FIREFLAG_DESTROYHOST = 512;
+	protected static final int FIREFLAG_NEVERDESTROYHOST = 1024;
+	
+	protected int abilityCode = 0;
+	
+	@Override
+	public int abilityCode()
+	{
+		return abilityCode;
+	}
+	
+	@Override
+	public void setAbilityCode(int newCode)
+	{
+		this.abilityCode = newCode;
+	}
 
+	@Override
+	public void unInvoke()
+	{
+		final Physical affected=this.affected;
+		super.unInvoke();
+		if(canBeUninvoked() && (affected != null) && (!affected.amDestroyed()))
+		{
+			if(isFlagSet(FIREFLAG_DESTROYHOST))
+				affected.destroy();
+		}
+	}
+	
+	public boolean isFlagSet(int flag)
+	{
+		if(abilityCode()<0)
+			return CMath.bset(-abilityCode(), flag);
+		else
+			return CMath.bset(abilityCode(), flag);
+	}
+	
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		Physical affected=this.affected;
 		if((affected instanceof Item)&&(((Item)affected).owner() instanceof Room))
 		{
-			int unInvokeChance=0;
+			int unInvokeChance;
+			if(abilityCode() < 0)
+				unInvokeChance=((-abilityCode()) & FIREFLAG_WEATHERMASK);
+			else
+				unInvokeChance=-(abilityCode() & FIREFLAG_WEATHERMASK);
 			String what=null;
 			switch(((Room)(((Item)affected).owner())).getArea().getClimateObj().weatherType(((Room)(((Item)affected).owner()))))
 			{
 			case Climate.WEATHER_RAIN:
 				what="rain";
-				unInvokeChance=10;
+				unInvokeChance+=10;
 				break;
 			case Climate.WEATHER_THUNDERSTORM:
 				what="pounding rain";
-				unInvokeChance=15;
+				unInvokeChance+=15;
 				break;
 			case Climate.WEATHER_SLEET:
 				what="sleet";
-				unInvokeChance=5;
+				unInvokeChance+=5;
 				break;
 			case Climate.WEATHER_BLIZZARD:
 				what="swirling snow";
-				unInvokeChance=10;
+				unInvokeChance+=10;
 				break;
 			case Climate.WEATHER_SNOW:
 				what="snow";
-				unInvokeChance=10;
+				unInvokeChance+=10;
 				break;
 			}
 			if(CMLib.dice().rollPercentage()<unInvokeChance)
@@ -83,6 +125,7 @@ public class Burning extends StdAbility
 				if(R.numInhabitants()>0)
 					R.showHappens(CMMsg.MSG_OK_ACTION,L("The @x1 puts out @x2.",what,affected.name()));
 				unInvoke();
+				
 				return false;
 			}
 		}
@@ -92,7 +135,10 @@ public class Burning extends StdAbility
 			{
 				final Environmental E=((Item)affected).owner();
 				if(E==null)
-					((Item)affected).destroy();
+				{
+					if(!isFlagSet(FIREFLAG_NEVERDESTROYHOST))
+						((Item)affected).destroy();
+				}
 				else
 				if(E instanceof Room)
 				{
@@ -109,8 +155,11 @@ public class Burning extends StdAbility
 							&&(I.material()==((Item)affected).material()))
 							{
 								int durationOfBurn=CMLib.flags().burnStatus(I);
-								if(durationOfBurn<=0) durationOfBurn=5;
+								if(durationOfBurn<=0) 
+									durationOfBurn=5;
 								final Burning B=new Burning();
+								if(isFlagSet(FIREFLAG_PERSISTFLAGS))
+									B.setAbilityCode(abilityCode());
 								B.invoke(invoker,I,true,durationOfBurn);
 								break;
 							}
@@ -145,7 +194,8 @@ public class Burning extends StdAbility
 								final MOB target=room.fetchInhabitant(i);
 								CMLib.combat().postDamage(invoker(),target,null,CMLib.dice().roll(affected.phyStats().level(),5,1),CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The blast <DAMAGE> <T-NAME>!");
 							}
-							((Item)affected).destroy();
+							if(!isFlagSet(FIREFLAG_NEVERDESTROYHOST))
+								((Item)affected).destroy();
 						}
 						else
 						{
@@ -169,7 +219,8 @@ public class Burning extends StdAbility
 								return super.tick(ticking,tickID);
 							}
 							room.showHappens(CMMsg.MSG_OK_VISUAL, L("@x1 is no longer burning.",affected.name()));
-							((Item)affected).destroy();
+							if(!isFlagSet(FIREFLAG_NEVERDESTROYHOST))
+								((Item)affected).destroy();
 						}
 						break;
 					}
@@ -190,7 +241,8 @@ public class Burning extends StdAbility
 					case RawMaterial.MATERIAL_UNKNOWN:
 						break;
 					default:
-						((Item)affected).destroy();
+						if(!isFlagSet(FIREFLAG_NEVERDESTROYHOST))
+							((Item)affected).destroy();
 						break;
 					}
 					((MOB)E).location().recoverRoomStats();

@@ -106,6 +106,7 @@ public class Chant_SummonFire extends Chant
 				I.setMaterial(RawMaterial.RESOURCE_NOTHING);
 				I.setMiscText(I.text());
 				final Ability B=CMClass.getAbility("Burning");
+				B.setAbilityCode(100 | 512); // can't be put out by weather, and item destroyed on burn end
 				I.addNonUninvokableEffect(B);
 
 				mob.location().addItem(I);
