@@ -46,7 +46,7 @@ public class TemporaryImmunity extends StdAbility
 	@Override public boolean canBeUninvoked(){return true;}
 	@Override public boolean isAutoInvoked(){return true;}
 	public final static long IMMUNITY_TIME=36000000;
-	protected PairVector<String,Long> set=new PairVector<String,Long>();
+	protected final PairVector<String,Long> set=new PairVector<String,Long>();
 
 	public TemporaryImmunity()
 	{
@@ -71,7 +71,11 @@ public class TemporaryImmunity extends StdAbility
 					set.removeElementAt(s);
 			}
 
-			if(set.size()==0){ unInvoke(); return false;}
+			if(set.size()==0)
+			{
+				unInvoke(); 
+				return false;
+			}
 		}
 		return super.tick(ticking,tickID);
 	}
@@ -92,8 +96,9 @@ public class TemporaryImmunity extends StdAbility
 		if(str.startsWith("+"))
 		{
 			str=str.substring(1);
-			if(set.indexOf(str)>=0)
-				set.setElementAt(new Pair<String,Long>(str,Long.valueOf(System.currentTimeMillis())),set.indexOfFirst(str));
+			final int x=set.indexOfFirst(str);
+			if(x>=0)
+				set.setElementAt(new Pair<String,Long>(str,Long.valueOf(System.currentTimeMillis())),x);
 			else
 				set.addElement(str,Long.valueOf(System.currentTimeMillis()));
 		}
@@ -114,18 +119,18 @@ public class TemporaryImmunity extends StdAbility
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!(affected instanceof MOB))
-			return true;
-
-		final MOB mob=(MOB)affected;
-		if((msg.amITarget(mob))
-		&&(!mob.amDead())
+		if((msg.amITarget(affected))
 		&&(msg.tool() instanceof Ability)
-		&&(set.contains(msg.tool().ID())))
+		&&(set.containsFirst(msg.tool().ID()))
+		&&(affected instanceof MOB))
 		{
-			if(msg.source()!=msg.target())
-				mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) immune to @x1.",msg.tool().name()));
-			return false;
+			final MOB mob=(MOB)affected;
+			if(!mob.amDead())
+			{
+				if(msg.source()!=msg.target())
+					mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) immune to @x1.",msg.tool().name()));
+				return false;
+			}
 		}
 		return true;
 	}
