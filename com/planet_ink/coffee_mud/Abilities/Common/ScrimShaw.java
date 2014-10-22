@@ -49,8 +49,9 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 	@Override
 	public String parametersFormat(){ return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
-		+"ITEM_CLASS_ID\tSTATUE||LID_LOCK||WEAPON_CLASS||RIDE_BASIS\t"
-		+"CONTAINER_CAPACITY||BASE_DAMAGE||LIGHT_DURATION";}
+		+"ITEM_CLASS_ID\tSTATUE||LID_LOCK||WEAPON_CLASS||RIDE_BASIS||CODED_WEAR_LOCATION\t"
+		+"BASE_ARMOR_AMOUNT||CONTAINER_CAPACITY||BASE_DAMAGE||LIGHT_DURATION\t"
+		+"CODED_SPELL_LIST";}
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
@@ -417,7 +418,8 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 				buildingI.setDescription(L("@x1 of @x2. ",itemName,statue.trim()));
 			}
 			else
-			if(buildingI instanceof Container)
+			if((buildingI instanceof Container)
+			&&(!(buildingI instanceof Armor)))
 			{
 				if(capacity>0)
 					((Container)buildingI).setCapacity(capacity+woodRequired);
@@ -445,6 +447,13 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 				buildingI.basePhyStats().setDamage(capacity);
 				((Weapon)buildingI).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 				((Weapon)buildingI).setRawLogicalAnd(false);
+			}
+			if((buildingI instanceof Armor)&&(!(buildingI instanceof FalseLimb)))
+			{
+				((Armor)buildingI).basePhyStats().setArmor(0);
+				if(capacity!=0)
+					((Armor)buildingI).basePhyStats().setArmor(capacity+(abilityCode()-1));
+				setWearLocation(buildingI,misctype,0);
 			}
 			if(buildingI instanceof Rideable)
 			{
