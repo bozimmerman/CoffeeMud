@@ -102,8 +102,11 @@ public class Prop_Doppleganger extends Property
 				I.setMaterial(asMaterial);
 			CMLib.itemBuilder().balanceItemByLevel(I);
 			I.setMaterial(oldMaterial);
-			I.basePhyStats().setLevel(((MOB)lastOwner).phyStats().level());
-			I.phyStats().setLevel(((MOB)lastOwner).phyStats().level());
+			level=((MOB)lastOwner).phyStats().level();
+			if(level<minLevel) level=minLevel;
+			if(level>maxLevel) level=maxLevel;
+			I.basePhyStats().setLevel(level);
+			I.phyStats().setLevel(level);
 			lastOwner.recoverPhyStats();
 			final Room R=((MOB)lastOwner).location();
 			if(R!=null) R.recoverRoomStats();
