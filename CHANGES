@@ -34,6 +34,8 @@
   32. Expanded GMCP support to include char.items package, support for mal-formed core.hello, room.wrongdir, and a few others.
   33. New Armor-Item type: StdThinArmor and GenThinArmor -- see Archon's Guide for more information
   34. Jewelmaking can now make jewelry that Requires piercings from BodyPierce.  Works off new class GenEarring.
+  35. ScrimShaw got some serious love, becoming only common skill that can make doppleganger items at high levels.
+  36. Prop_Doppleganger now supports ASMATERIAL argument to alter the way stats are calculated.
 # Build 5.8.2 Release 6/13/2014
    0. Database Schema Updated! Run DBUpgrade, OR manually alter table CMCHCL to add CMCLSTS (see appropriate schema file)
    1. CM1Server has "FILE" command now for directory browsing/manipulation

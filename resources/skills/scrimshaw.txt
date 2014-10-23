@@ -1,24 +1,43 @@
-% comb	1	5	1	1	GenItem		
-% Table	6	30	50	20	GenRideable	TABLE	150
-% Stool	6	30	10	6	GenChair	CHAIR	1
-% Chair	6	30	15	10	GenChair	CHAIR	1
-% Bench	6	40	30	15	GenChair	CHAIR	10
-% Bed	6	50	70	20	GenBed	BED	2
-% Statue	12	22	100	100	GenItem	STATUE	
-% Figurine	3	40	30	25	GenItem	STATUE	
-% Sword	11	20	6	320	GenWeapon	SWORD	10
-% Knife	5	10	2	42	GenWeapon	DAGGER	4
-% Spear	14	20	6	408	GenSpear	THROWN	12
-% Short sword	7	20	4	49	GenWeapon	SWORD	6
-% Club	1	10	10	218	GenWeapon	BLUNT	3
-% Great Club	21	20	30	1752	GenWeapon	BLUNT	24
-% Sliver	24	10	1	668	GenWeapon	EDGED	18
-% Flail	13	40	15	692	GenWeapon	FLAILED	14
-% Skull mace	50	80	12	3602	GenWeapon	BLUNT	41
-% Altar	10	100	100	200	GenRideable	TABLE	1000
-Sacrificial % Altar	30	200	150	500	GenRideable	TABLE	1000
-% Throne	25	40	50	150	GenRideable	CHAIR	1
-Drinking Horn	4	10	4	5	GenDrink		100
-% Spoon	8	10	1	2	GenDrink		1
-% Pipe	12	40	2	10	GenPipe		3
-% Wand	12	30	4	3	GenWand		
+% comb	1	5	1	1	GenItem			
+% toothpick	1	5	1	1	GenItem			
+Tiny % Club	1	10	10	18	GenWeapon	BLUNT	3	
+Small % Club	2	10	10	78	GenWeapon	BLUNT	4	
+% Figurine	3	40	30	25	GenItem	STATUE		
+Drinking Horn	4	10	4	5	GenDrink		100	
+% Knife	5	10	2	42	GenWeapon	DAGGER	4	
+% Table	6	30	50	20	GenRideable	TABLE	150	
+% Stool	6	30	10	6	GenChair	CHAIR	1	
+% Chair	7	30	15	10	GenChair	CHAIR	1	
+% Short sword	7	20	4	49	GenWeapon	SWORD	6	
+% Bench	8	40	30	15	GenChair	CHAIR	10	
+% Spoon	8	10	1	2	GenDrink		1	
+% Bed	9	50	70	20	GenBed	BED	2	
+% Club	9	10	10	218	GenWeapon	BLUNT	11	
+% Altar	10	100	100	200	GenRideable	TABLE	1000	
+% Sword	11	20	6	320	GenWeapon	SWORD	10	
+% Statue	12	22	100	100	GenItem	STATUE		
+% Pipe	12	40	2	10	GenPipe		3	
+% Wand	12	30	4	3	GenWand			
+% Flail	13	40	15	692	GenWeapon	FLAILED	14	
+% Spear	14	20	6	408	GenSpear	THROWN	12	
+Ornate % Table	15	40	60	80	GenRideable	TABLE	200	
+Elaborate % Stool	16	30	40	60	GenChair	CHAIR	1	
+% Throne	17	80	150	300	GenChair	CHAIR	1	
+Wicked % Short sword	17	140	8	149	GenWeapon	SWORD	16	
+Decorative % Bench	18	80	60	55	GenChair	CHAIR	10	
+Ominous % Bed	19	50	70	120	GenBed	BED	2	
+Spiked % Sword	20	50	32	620	GenWeapon	SWORD	21	
+% Great Club	21	20	30	752	GenWeapon	BLUNT	24	
+Spiked % Flail	22	80	30	892	GenWeapon	FLAILED	25	
+Wicked % Spear	23	40	52	608	GenSpear	THROWN	23	
+% Sliver	24	10	1	668	GenWeapon	EDGED	18	
+Spiked % Throne	25	40	50	650	GenRideable	CHAIR	1	
+Sacrificial % Altar	30	200	150	500	GenRideable	TABLE	1000	
+% Body Armor	30	100	300	500	GenArmor	S0:TORSO&&ARMS&&LEGS	70	Prop_Doppleganger;ASMATERIAL=IRON
+% Flail of skulls	40	80	120	1602	GenWeapon	FLAILED	31	Prop_Doppleganger;ASMATERIAL=IRON
+% Skull mace	50	80	120	1602	GenWeapon	BLUNT	48	Prop_Doppleganger;ASMATERIAL=IRON
+Spiked % Shield	55	100	150	500	GenShield	S0:HELD	70	Prop_Doppleganger;ASMATERIAL=IRON
+Skull-handled % sword	60	100	150	1802	GenWeapon	SWORD	58	Prop_Doppleganger;ASMATERIAL=IRON
+Spiked % Body Armor	70	200	600	2000	GenArmor	S0:TORSO&&ARMS&&LEGS	90	Prop_Doppleganger;ASMATERIAL=IRON LEVELADD=5
+Crown of %	80	250	400	300	GenArmor	0:HEAD	90	Prop_Doppleganger;ASMATERIAL=IRON LEVELADD=6
+Mask of %	90	250	500	450	GenArmor	0:HEAD	90	Prop_Doppleganger;ASMATERIAL=IRON LEVELADD=10

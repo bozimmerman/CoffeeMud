@@ -43,9 +43,10 @@ public class Prop_Doppleganger extends Property
 	private int minLevel=Integer.MIN_VALUE;
 	protected int lastLevel=Integer.MIN_VALUE;
 	protected int levelAdd=0;
-	protected double levelPct=0.0;
+	protected double levelPct=1.0;
 	protected boolean matchPlayersOnly=false;
 	protected boolean matchPlayersFollowersOnly=false;
+	protected int asMaterial=-1;
 
 	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
 
@@ -59,6 +60,7 @@ public class Prop_Doppleganger extends Property
 		super.setMiscText(text);
 		levelAdd=0;
 		levelPct=1.0;
+		asMaterial=-1;
 		maxLevel=Integer.MAX_VALUE;
 		minLevel=Integer.MIN_VALUE;
 		if(CMath.isInteger(text))
@@ -74,6 +76,9 @@ public class Prop_Doppleganger extends Property
 			levelPct=CMParms.getParmInt(text, "LEVELPCT", 100)/100.0;
 			matchPlayersFollowersOnly=CMParms.getParmBool(text, "PLAYERSNFOLS", false);
 			matchPlayersOnly=CMParms.getParmBool(text, "PLAYERSONLY", false);
+			final String asMat = CMParms.getParmStr(text, "ASMATERIAL", "");
+			if((asMat!=null)&&(asMat.trim().length()>0))
+				asMaterial = RawMaterial.CODES.FIND_IgnoreCase(asMat);
 		}
 	}
 
@@ -84,16 +89,21 @@ public class Prop_Doppleganger extends Property
 		&&((((Item)affected).owner()!=lastOwner)||((lastOwner!=null)&&(lastOwner.phyStats().level()!=lastLevel)))
 		&&(((Item)affected).owner() instanceof MOB))
 		{
-			lastOwner=((Item)affected).owner();
+			final Item I=(Item)affected;
+			lastOwner=I.owner();
 			lastLevel=lastOwner.phyStats().level();
 			int level=(int)Math.round(CMath.mul(((MOB)lastOwner).phyStats().level(),levelPct))+levelAdd;
 			if(level<minLevel) level=minLevel;
 			if(level>maxLevel) level=maxLevel;
-			((Item)affected).basePhyStats().setLevel(level);
-			((Item)affected).phyStats().setLevel(level);
-			CMLib.itemBuilder().balanceItemByLevel((Item)affected);
-			((Item)affected).basePhyStats().setLevel(((MOB)lastOwner).phyStats().level());
-			((Item)affected).phyStats().setLevel(((MOB)lastOwner).phyStats().level());
+			I.basePhyStats().setLevel(level);
+			I.phyStats().setLevel(level);
+			int oldMaterial=I.material();
+			if(asMaterial != -1)
+				I.setMaterial(asMaterial);
+			CMLib.itemBuilder().balanceItemByLevel(I);
+			I.setMaterial(oldMaterial);
+			I.basePhyStats().setLevel(((MOB)lastOwner).phyStats().level());
+			I.phyStats().setLevel(((MOB)lastOwner).phyStats().level());
 			lastOwner.recoverPhyStats();
 			final Room R=((MOB)lastOwner).location();
 			if(R!=null) R.recoverRoomStats();
