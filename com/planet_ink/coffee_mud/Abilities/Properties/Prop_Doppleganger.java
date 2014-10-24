@@ -167,7 +167,8 @@ public class Prop_Doppleganger extends Property
 				for(int i=0;i<R.numInhabitants();i++)
 				{
 					final MOB M=R.fetchInhabitant(i);
-					if((M!=mob)
+					if((M!=null)
+					&&(M!=mob)
 					&&((M.getVictim()==mob)||(victim==null))
 					&&((M!=victim)&&(M!=entrant))
 					&&(qualifies(M,R)))
