@@ -425,7 +425,7 @@ public interface RawMaterial extends Item
 		BLOOD(RESOURCE_BLOOD,1,100,0,1025,"strong salty","",null),
 		BONE(RESOURCE_BONE,1,100,5,1600,"","",null),
 		COAL(RESOURCE_COAL,1,50,1,1800,"chalky","",null),
-		LAMP_OIL(RESOURCE_LAMPOIL,1,10,1,880,"light oily","L",null),
+		LAMP_OIL(RESOURCE_LAMPOIL,1,10,1,880,"light oily","",null),
 		POISON(RESOURCE_POISON,1,1,1,1000,"","",null),
 		LIQUOR(RESOURCE_LIQUOR,10,1,1,790,"alcohol","",null),
 		SUGAR(RESOURCE_SUGAR,1,50,1,1600,"","",null),
