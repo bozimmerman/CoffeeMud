@@ -244,12 +244,13 @@ public class PlayerData extends StdWebMacro
 				 break;
 		case 51: if(M.playerStats()!=null)
 				 {
-					final long lastDateTime=-1;
+					long lastDateTime=-1;
 					for(int level=0;level<=M.phyStats().level();level++)
 					{
 						final long dateTime=M.playerStats().leveledDateTime(level);
 						if((dateTime>1529122205)&&(dateTime!=lastDateTime))
 						{
+							lastDateTime = dateTime;
 							str.append("<TR>");
 							if(level==0)
 							 	str.append("<TD><FONT COLOR=WHITE>Created</FONT></TD>");

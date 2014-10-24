@@ -78,7 +78,6 @@ public class DefaultPlayerStats implements PlayerStats
 	protected SecGroup		 securityFlags	= new SecGroup(new CMSecurity.SecFlag[]{});
 	protected long			 accountExpires	= 0;
 	protected RoomnumberSet  visitedRoomSet	= null;
-	protected DVector   	 levelInfo		= new DVector(3);
 	protected Set<String>	 introductions	= new SHashSet<String>();
 	protected long[]	 	 prideExpireTime= new long[TimeClock.TimePeriod.values().length];
 	protected int[][]		 prideStats		= new int[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
@@ -87,6 +86,8 @@ public class DefaultPlayerStats implements PlayerStats
 	protected Map<String,String>	alias	= new STreeMap<String,String>();
 	protected Map<String,Integer>	legacy	= new STreeMap<String,Integer>();
 
+	protected TriadVector<Integer, Long, String>	levelInfo		= new TriadVector<Integer, Long, String>();
+	
 	public DefaultPlayerStats()
 	{
 		super();
@@ -115,7 +116,8 @@ public class DefaultPlayerStats implements PlayerStats
 		try
 		{
 			final DefaultPlayerStats O=(DefaultPlayerStats)this.clone();
-			O.levelInfo=levelInfo.copyOf();
+			O.levelInfo=new TriadVector<Integer, Long, String>();
+			O.levelInfo.addAll(levelInfo);
 			if(visitedRoomSet!=null)
 				O.visitedRoomSet=(RoomnumberSet)visitedRoomSet.copyOf();
 			else
@@ -854,10 +856,10 @@ public class DefaultPlayerStats implements PlayerStats
 				if((twin.size()!=2)&&(twin.size()!=3))  continue;
 				if(CMath.s_int(twin.get(0))>=lastNum)
 				{
-					levelInfo.addElement(Integer.valueOf(CMath.s_int(twin.get(0))),
+					lastNum=CMath.s_int(twin.get(0));
+					levelInfo.addElement(Integer.valueOf(lastNum),
 											  Long.valueOf(CMath.s_long(twin.get(1))),
 											  (twin.size()>2)?(String)twin.get(2):"");
-					lastNum=CMath.s_int(twin.get(0));
 				}
 			}
 		}
@@ -898,13 +900,13 @@ public class DefaultPlayerStats implements PlayerStats
 	private String getLevelDateTimesStr()
 	{
 		if(levelInfo.size()==0)
-			levelInfo.addElement(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"");
-		final StringBuffer buf=new StringBuffer("");
+			levelInfo.add(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"");
+		final StringBuilder buf=new StringBuilder("");
 		for(int ss=0;ss<levelInfo.size();ss++)
 		{
-			buf.append(((Integer)levelInfo.elementAt(ss,1)).intValue()+",");
-			buf.append(((Long)levelInfo.elementAt(ss,2)).longValue()+",");
-			buf.append((String)levelInfo.elementAt(ss,3)+";");
+			buf.append(levelInfo.elementAtFirst(ss).toString()).append(",");
+			buf.append(levelInfo.elementAtSecond(ss).toString()).append(",");
+			buf.append(levelInfo.elementAtThird(ss)).append(";");
 		}
 		return buf.toString();
 	}
@@ -1057,13 +1059,13 @@ public class DefaultPlayerStats implements PlayerStats
 	public long leveledDateTime(int level)
 	{
 		if(levelInfo.size()==0)
-			levelInfo.addElement(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"");
-		long lowest=((Long)levelInfo.elementAt(0,2)).longValue();
+			levelInfo.add(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"");
+		long lowest=levelInfo.elementAtSecond(0).longValue();
 		for(int l=1;l<levelInfo.size();l++)
 		{
-			if(level<((Integer)levelInfo.elementAt(l,1)).intValue())
+			if(level<levelInfo.elementAtFirst(l).intValue())
 				return lowest;
-			lowest=((Long)levelInfo.elementAt(l,2)).longValue();
+			lowest=levelInfo.elementAtSecond(l).longValue();
 		}
 		return lowest;
 	}
@@ -1072,28 +1074,29 @@ public class DefaultPlayerStats implements PlayerStats
 	public void setLeveledDateTime(int level, Room R)
 	{
 		if(levelInfo.size()==0)
-			levelInfo.addElement(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"");
+			levelInfo.add(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"");
 		long lastTime=0;
 		for(int l=0;l<levelInfo.size();l++)
 		{
-			if(level==((Integer)levelInfo.elementAt(l,1)).intValue())
+			final Triad<Integer, Long, String> triad = levelInfo.elementAt(l);
+			if(level==triad.first.intValue())
 			{
-				levelInfo.setElementAt(l,2,Long.valueOf(System.currentTimeMillis()));
-				levelInfo.setElementAt(l,3,CMLib.map().getExtendedRoomID(R));
+				triad.second = Long.valueOf(System.currentTimeMillis());
+				triad.third = CMLib.map().getExtendedRoomID(R);
 				return;
 			}
 			else
-			if((System.currentTimeMillis()-lastTime)<TimeManager.MILI_HOUR)
+			if((System.currentTimeMillis()-lastTime)<TimeManager.MILI_SECOND)
 				return;
 			else
-			if(level<((Integer)levelInfo.elementAt(l,1)).intValue())
+			if(level<triad.first.intValue())
 			{
-				levelInfo.insertElementAt(l,Integer.valueOf(level),Long.valueOf(System.currentTimeMillis()),CMLib.map().getExtendedRoomID(R));
+				levelInfo.insertElementAt(new Triad<Integer,Long,String>(Integer.valueOf(level),Long.valueOf(System.currentTimeMillis()),CMLib.map().getExtendedRoomID(R)),l);
 				return;
 			}
-			lastTime=((Long)levelInfo.elementAt(l,2)).longValue();
+			lastTime=triad.second.longValue();
 		}
-		if((System.currentTimeMillis()-lastTime)<TimeManager.MILI_HOUR)
+		if((System.currentTimeMillis()-lastTime)<TimeManager.MILI_SECOND)
 			return;
 		levelInfo.addElement(Integer.valueOf(level),Long.valueOf(System.currentTimeMillis()),CMLib.map().getExtendedRoomID(R));
 	}
