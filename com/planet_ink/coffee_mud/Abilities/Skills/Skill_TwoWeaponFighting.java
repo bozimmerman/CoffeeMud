@@ -45,7 +45,7 @@ public class Skill_TwoWeaponFighting extends StdSkill
 	@Override public boolean isAutoInvoked(){return true;}
 	@Override public boolean canBeUninvoked(){return false;}
 
-	protected boolean attackedSinceLastTick=false;
+	protected volatile boolean attackedSinceLastTick=false;
 
 	protected Weapon getFirstWeapon(MOB mob)
 	{

@@ -1,5 +1,4 @@
 TECH
-   *. finish collision management, against space ships at least.
    *. test launch and landing
    *. interacting items of diff tech level might damage each other
    *. personal scanner/tricorder software: mineral scanner, computer interface (with ship perhaps?)!
@@ -22,7 +21,6 @@ TECH
    *. keep reviewing and updating the GameOverview.html doc
 
 NON-TECH
-   *. valhalla.com/vme-rh6.2/vme-2.0-2/ ZON file support for IMPORT command?
    *. A fireball type chant for Delvers or something, like Magma Cannon or Core Spike.
    *. Transcribe -as a spell, allowing a mage to transcribe a spell from one scroll to another scroll.
    *. Classes with insufficient unique skills: Charlatan (7), Alterer (9), Illusionist (10),  Ranger (11), Alterer (11), Evoker (11), Assassin (12), Paladin (12), 

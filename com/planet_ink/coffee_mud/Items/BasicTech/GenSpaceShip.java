@@ -66,16 +66,31 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		setDisplayText("a space ship is here.");
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 		setDescription("");
+		myUses=100;
 		basePhyStats().setWeight(10000);
 		recoverPhyStats();
 		//CMLib.flags().setGettable(this, false);
 		CMLib.flags().setSavable(this, false);
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override 
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
-	@Override public TechType getTechType() { return TechType.SHIP_SPACESHIP; }
+	@Override 
+	public TechType getTechType() 
+	{ 
+		return TechType.SHIP_SPACESHIP; 
+	}
 
+	@Override 
+	public boolean subjectToWearAndTear()
+	{
+		return true;
+	}
+	
 	@Override
 	public Area getShipArea()
 	{
@@ -536,7 +551,12 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			return false;
 		if(msg.amITarget(this))
 		{
-			if((msg.targetMinor()==CMMsg.TYP_OPEN)||(msg.targetMinor()==CMMsg.TYP_CLOSE)||(msg.targetMinor()==CMMsg.TYP_LOCK)||(msg.targetMinor()==CMMsg.TYP_UNLOCK))
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_OPEN:
+			case CMMsg.TYP_CLOSE:
+			case CMMsg.TYP_LOCK:
+			case CMMsg.TYP_UNLOCK:
 			{
 				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", L("a hatch on <T-NAME>")));
 				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", L("a hatch on <T-NAMESELF>")));
@@ -544,11 +564,51 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 				msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", L("a hatch on <T-NAMESELF>")));
 				msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", L("a hatch on <T-NAME>")));
 				msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", L("a hatch on <T-NAMESELF>")));
+				break;
+			}
+			case CMMsg.TYP_WEAPONATTACK:
+			{
+				if((msg.value() < 2) || (!okAreaMessage(msg)))
+					return false;
+				break;
+			}
 			}
 		}
 		return true;
 	}
 
+	protected synchronized void destroyThisShip()
+	{
+		if(this.getOwnerName().length()>0)
+		{
+			final MOB M = CMLib.players().getLoadPlayer(this.getOwnerName());
+			final PlayerStats pStats = (M!=null) ? M.playerStats() : null;
+			final ItemCollection items= (pStats != null) ? pStats.getExtItems() : null;
+			if(items != null)
+				items.delItem(this);
+		}
+		final CMMsg expireMsg=CMClass.getMsg(CMLib.map().deity(), this, CMMsg.MASK_ALWAYS|CMMsg.MSG_EXPIRE, "<T-NAME> is destroyed!");
+		for(final Enumeration<Room> r = getShipArea().getProperMap(); r.hasMoreElements();)
+		{
+			final Room R=r.nextElement();
+			if(R!=null)
+			{
+				expireMsg.setTarget(R);
+				final Set<MOB> players=CMLib.players().getPlayersHere(R);
+				if(players.size()>0)
+					for(final MOB M : players)
+					{
+						//players will get some fancy message when appearing in death room -- which means they should die!
+						M.executeMsg(expireMsg.source(), expireMsg);
+						CMLib.combat().justDie(expireMsg.source(), M);
+					}
+				R.send(expireMsg.source(), expireMsg);
+			}
+		}
+		getShipArea().destroy();
+		destroy();
+	}
+	
 	protected void stopThisShip(MOB mob)
 	{
 		setSpeed(0); // if you collide with something massive, your speed ENDS
@@ -571,6 +631,28 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		}
 	}
 
+	protected boolean okAreaMessage(final CMMsg msg)
+	{
+		boolean failed = false;
+		for(final Enumeration<Room> r = getShipArea().getProperMap(); r.hasMoreElements();)
+		{
+			final Room R=r.nextElement();
+			failed = failed || R.okMessage(R, msg);
+			if(failed)
+				break;
+		}
+		return failed;
+	}
+	
+	protected void sendAreaMessage(final CMMsg msg)
+	{
+		for(final Enumeration<Room> r = getShipArea().getProperMap(); r.hasMoreElements();)
+		{
+			final Room R=r.nextElement();
+			R.sendOthers(msg.source(), msg);
+		}
+	}
+	
 	protected void sendComputerMessage(final MOB mob, final CMMsg msg)
 	{
 		List<Electronics> electronics = CMLib.tech().getMakeRegisteredElectronics(getShipArea().Name());
@@ -580,7 +662,6 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			{
 				if(E.owner() instanceof Room)
 				{
-					//TODO: teach computers to understand what a collision means!!!!
 					if(((Room)E.owner()).okMessage(mob, msg))
 						((Room)E.owner()).send(mob, msg);
 				}
@@ -652,6 +733,22 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 					}
 				}
 				break;
+			case CMMsg.TYP_WEAPONATTACK: // kinetic damage taken
+			{
+				final long myMass=getMass();
+				if((msg.value() > 1)&&(myMass>0))
+				{
+					sendAreaMessage(msg);
+					double dmg = usesRemaining() * (msg.value() / myMass) ;
+					if(dmg >= usesRemaining())
+					{
+						destroyThisShip();
+					}
+					else
+						setUsesRemaining(usesRemaining() - (int)Math.round(dmg));
+				}
+				break;
+			}
 			case CMMsg.TYP_COLLISION:
 			{
 				final MOB mob=msg.source();
@@ -700,24 +797,30 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 				else
 				if(msg.tool() instanceof SpaceObject)
 				{
-					if(hitSomethingMassive)
+					SpaceObject O=(SpaceObject)msg.tool();
+					final long relSpeed = CMath.abs(speed() - O.speed());
+					if((hitSomethingMassive) || (relSpeed > SpaceObject.VELOCITY_LIGHT)) // you hit a planet, or something moving too fast
 					{
-						//destroyThisShip(); //TODO:
+						destroyThisShip();
 					}
 					else
 					{
-						// first, get the direction of the ship relative to the direction of the other object -- angle between two vectors
-						// if they are both going in the same direction, very little kenetic damage, speed of faster - speed of slower 
-						// if op directions, extra -- speed of both, otherwise normal, otherwise speed of faster
-						
-						int kineticDamage = 0; //TODO: add the speeds of both things * mass to calculate kenetic damage
-						
-						// we've been -- hit?
-						
-						//if a planet, just blow up!
-						for(final Enumeration<Room> r = getShipArea().getProperMap(); r.hasMoreElements();)
+						final long myMass=getMass();
+						final long dmgSpeed = CMath.abs(speed() - O.speed()) % SpaceObject.VELOCITY_LIGHT;
+						final long relMass = CMath.abs(myMass - O.getMass())  % (100 * SpaceObject.Distance.Kilometer.dm);
+						final int hardness = (int)(RawMaterial.CODES.HARDNESS(material()) * SpaceObject.Distance.Kilometer.dm);
+						final int kineticDamage = (hardness > 0) ? Math.round((dmgSpeed * relMass) / hardness ) : 0;
+						if(kineticDamage > 1)
 						{
-							
+							// we've been -- hit? It's up to the item itself to see to it's own explosion or whatever
+							final CMMsg kMsg=CMClass.getMsg(msg.source(),getShipArea(),O,CMMsg.MSG_WEAPONATTACK,L("You hear a crash and feel the ship shake."));
+							kMsg.setValue(kineticDamage);
+							if(O.okMessage(O, kMsg) && okMessage(O,kMsg))
+							{
+								O.executeMsg(O, kMsg);
+								if(kMsg.value() > 1)
+									executeMsg(this,kMsg);
+							}
 						}
 					}
 				}
