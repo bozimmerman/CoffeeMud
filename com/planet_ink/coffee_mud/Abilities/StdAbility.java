@@ -328,6 +328,7 @@ public class StdAbility implements Ability
 	protected int getX5Level(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_X5);}
 	protected int getXLEVELLevel(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_LEVEL);}
 	protected int getXLOWCOSTLevel(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_LOWCOST);}
+	protected int getXLOWFREECOSTLevel(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_LOWFREECOST);}
 	protected int getXMAXRANGELevel(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_MAXRANGE);}
 	protected int getXTIMELevel(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_TIME);}
 	protected int getXPCOSTLevel(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_XPCOST);}
@@ -969,19 +970,29 @@ public class StdAbility implements Ability
 			if(costDown>=consumed)
 				costDown=consumed/2;
 			minimum=(minimum-costDown);
-			if(minimum<5) minimum=5;
+			if(minimum<5) 
+				minimum=5;
+			int freeDown=getXLOWFREECOSTLevel(mob);
+			costDown += freeDown;
+			minimum=(minimum-freeDown);
+			if(minimum<0) 
+				minimum=0;
 		}
 		final boolean useMana=CMath.bset(usageType(),Ability.USAGE_MANA);
 		final boolean useMoves=CMath.bset(usageType(),Ability.USAGE_MOVEMENT);
 		final boolean useHits=CMath.bset(usageType(),Ability.USAGE_HITPOINTS);
 		int divider=1;
-		if((useMana)&&(useMoves)&&(useHits)) divider=3;
+		if((useMana)&&(useMoves)&&(useHits)) 
+			divider=3;
 		else
-		if((useMana)&&(useMoves)&&(!useHits)) divider=2;
+		if((useMana)&&(useMoves)&&(!useHits)) 
+			divider=2;
 		else
-		if((useMana)&&(!useMoves)&&(useHits)) divider=2;
+		if((useMana)&&(!useMoves)&&(useHits)) 
+			divider=2;
 		else
-		if((!useMana)&&(useMoves)&&(useHits)) divider=2;
+		if((!useMana)&&(useMoves)&&(useHits)) 
+			divider=2;
 
 		if(useMana)
 		{
@@ -996,7 +1007,8 @@ public class StdAbility implements Ability
 				usageCosts[0]=(int)(Math.round(CMath.mul(mob.maxState().getMana(),CMath.div((COST_ALL-consumed),100.0)))-costDown);
 			else
 				usageCosts[0]=((consumed-costDown)/divider);
-			if(usageCosts[0]<minimum) usageCosts[0]=minimum;
+			if(usageCosts[0]<minimum) 
+				usageCosts[0]=minimum;
 		}
 		if(useMoves)
 		{
@@ -1011,7 +1023,8 @@ public class StdAbility implements Ability
 				usageCosts[1]=(int)(Math.round(CMath.mul(mob.maxState().getMovement(),CMath.div((COST_ALL-consumed),100.0)))-costDown);
 			else
 				usageCosts[1]=((consumed-costDown)/divider);
-			if(usageCosts[1]<minimum) usageCosts[1]=minimum;
+			if(usageCosts[1]<minimum) 
+				usageCosts[1]=minimum;
 		}
 		if(useHits)
 		{
@@ -1026,7 +1039,8 @@ public class StdAbility implements Ability
 				usageCosts[2]=(int)(Math.round(CMath.mul(mob.maxState().getHitPoints(),CMath.div((COST_ALL-consumed),100.0)))-costDown);
 			else
 				usageCosts[2]=((consumed-costDown)/divider);
-			if(usageCosts[2]<minimum)    usageCosts[2]=minimum;
+			if(usageCosts[2]<minimum)
+				usageCosts[2]=minimum;
 		}
 		return usageCosts;
 	}

@@ -43,11 +43,12 @@ public interface ExpertiseLibrary extends CMLibrary
 	public static final int XFLAG_MAXRANGE=7;
 	public static final int XFLAG_LOWCOST=8;
 	public static final int XFLAG_XPCOST=9;
-	public static final int NUM_XFLAGS=10;
+	public static final int XFLAG_LOWFREECOST=10;
+	public static final int NUM_XFLAGS=11;
 	public static final String[] XFLAG_CODES={
 		"X1","X2","X3","X4","X5",
 		"LEVEL","TIME","MAXRANGE","LOWCOST",
-		"XPCOST"
+		"XPCOST","LOWFREECOST"
 	};
 	public static class ExpertiseDefinition implements CMObject
 	{

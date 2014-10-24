@@ -42,6 +42,9 @@ HELP_=<EXPERTISE>The ability to handle more difficult cases of thiefly detection
 STEALTH@x1=Stealthy @x2,10,LEVEL,-SKILLFLAG +STEALTHY,-MAXCLASSLEVEL +>={10+(5*@x1)},+DEX {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hide, sneak around, and conceal oneself in more difficult situations.
 
+SHADOW@x1=Shadow @x2,10,LOWFREECOST,-SKILL +Thief_Hide +Thief_Sneak +Thief_Shadow,-MAXCLASSLEVEL +>={15+(5*@x1)},+WIS {12+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to sneak around and hide using less mana and movement.
+
 STEALING@x1=Theft Mastery @x2,10,LEVEL,-SKILLFLAG +STEALING,-MAXCLASSLEVEL +>={10+(5*@x1)},+DEX {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to steal, swipe, and do unseemly slight of hand with more advanced foes.
 
