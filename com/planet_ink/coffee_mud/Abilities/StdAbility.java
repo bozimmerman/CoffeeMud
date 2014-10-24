@@ -972,7 +972,7 @@ public class StdAbility implements Ability
 			minimum=(minimum-costDown);
 			if(minimum<5) 
 				minimum=5;
-			int freeDown=getXLOWFREECOSTLevel(mob);
+			int freeDown=getXLOWFREECOSTLevel(mob) / 2;
 			costDown += freeDown;
 			minimum=(minimum-freeDown);
 			if(minimum<0) 
