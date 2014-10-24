@@ -1042,7 +1042,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					@Override
 					public String attempt() throws CMException, PostProcessException 
 					{
-						String value = findOptionalString(E,ignoreStats,defPrefix,stat,piece,this.defined);
+						String value;
+						if((E instanceof MOB) && (stat.equals("ABILITY")))
+							value = findOptionalString(E,ignoreStats,defPrefix,"HPMOD",piece,this.defined);
+						else
+							value = findOptionalString(E,ignoreStats,defPrefix,stat,piece,this.defined);
 						if(value != null)
 						{
 							E.setStat(stat, value);
@@ -1076,9 +1080,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if((E2 instanceof MOB)&&(!((MOB)E2).isGeneric()))
 		{
 			for(final String stat : GenericBuilder.GENMOBCODES)
-			{
-				E.setStat(stat, CMLib.coffeeMaker().getGenMobStat((MOB)E2,stat));
-			}
+				if(!stat.equals("ABILITY")) // because this screws up gen hit points
+				{
+					E.setStat(stat, CMLib.coffeeMaker().getGenMobStat((MOB)E2,stat));
+				}
 		}
 		else
 		if((E2 instanceof Item)&&(!((Item)E2).isGeneric()))

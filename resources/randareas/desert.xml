@@ -126,7 +126,7 @@ See guides/RandomAreas.html for information about documents of this type.
 	</ROOM>
 </ROOM>
 	
-<MOB class="GenMob" level="$level_range" id="desert_dragon_mob" race="Dragon" gender="$anygender">
+<MOB class="GenMob" level="$level_range" id="desert_dragon_mob" race="Dragon" gender="$anygender" hpmod="15">
 	<NAME select="all">
 		<NAME condition="$mob_level&lt;10">a hatchling blue dragon</NAME>
 		<NAME condition="$mob_level&lt;20 and $mob_level&gt;=10">a very young blue dragon</NAME>

@@ -10,11 +10,11 @@
    8. New Property: Prop_Climbable - use for making rooms, exits, or portals require climbing (and benefit from ropes and ladders).
    9. New Guide in guides/randomareas.html.  Also, random races are easier to build now.
   10. New Assassin skill: Scratch, for doing very very little damage without entering combat.
-  11. Emoter behavior's "inroom" parameter changed to comma delimited -- it just wasn't working the other way. 
+  11. Emoter behavior's "inroom" parameter changed to comma delimited -- it just wasn't working the other way.
   12. Scriptable GET_PROG is now functional on container items, as it will match the item being retreived, not the container.
   13. Default XP chart (lists.ini) modified to make low levels faster, and level off around 5k per level.
   14. WanderHomeLater property expanded into more usefulness -- about 8 new parameters added.
-  15. FireBuilding now gained by all classes at level 1
+  15. FireBuilding now gained by all classes at level 1.
   16. QUESTS command, used by an admin, can target other players to get info about them.  See AHELP QUESTS for more info on this.
   17. New property Prop_Uncampable -- prevents a mob or room from respawning if non-admin players are present.
   18. VIEW will now notify users if the armor they are interested in is too large or too small for them to wear.
@@ -32,7 +32,7 @@
   30. Item container types now have their "defaultsClosed" property modifiable, instead of implied.
   31. Lock command will now close the thing first, if it's not closed.
   32. Expanded GMCP support to include char.items package, support for mal-formed core.hello, room.wrongdir, and a few others.
-  33. New Armor-Item type: StdThinArmor and GenThinArmor -- see Archon's Guide for more information
+  33. New Armor-Item type: StdThinArmor and GenThinArmor -- see Archon's Guide for more information.
   34. Jewelmaking can now make jewelry that Requires piercings from BodyPierce.  Works off new class GenEarring.
   35. ScrimShaw got some serious love, becoming only common skill that can make doppleganger items at high levels.
   36. Prop_Doppleganger now supports ASMATERIAL argument to alter the way stats are calculated.

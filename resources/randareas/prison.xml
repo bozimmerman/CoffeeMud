@@ -358,7 +358,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
 			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
 			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
-			<MOB class="GenMob" level="(1.20 * ($level_range)) + 1" id="prison_warden" race="$_humanoid_races" gender="$anygender">
+			<MOB class="GenMob" level="(1.20 * ($level_range)) + 1" id="prison_warden" race="$_humanoid_races" gender="$anygender" hpmod="15">
 				<NAME>Warden $fantasy_name</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name stands around.</DISPLAY>

@@ -548,7 +548,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			</DESCRIPTION>			
 			<EXIT class="LockedDoor" text="$areaname thronekey"/>
 			<MOB select="repeat-5" insert="nasty_lair_guard" />
-			<MOB class="GenMob" level="(1.20 * ($level_range)) + 1" id="nasty_lair_king" race="$nasty_picked_race" gender="M">
+			<MOB class="GenMob" level="(1.20 * ($level_range)) + 1" id="nasty_lair_king" race="$nasty_picked_race" gender="M" hpmod="15">
 				<NAME>King $fantasy_name1</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name stands around.</DISPLAY>

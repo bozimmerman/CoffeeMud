@@ -1,11 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
   <meta name="generator" content="HTML Tidy, see www.w3.org" />
-  <title>Scripting in CoffeeMud 5.8</title>
-  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
-<!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog -->
-</head>
+  
+  <title>Scripting in CoffeeMud 5.8</title><link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head>
+
 <body>
 <center>
 <table style="width: 90%;" border="1" cellpadding="10" cellspacing="0">
@@ -37,8 +35,7 @@ Tags</a>
             <li><a href="#contenttag">Content</a></li>
             <li><a href="exittag">Exit</a></li>
             <li><a href="#racetag">Race</a></li>
-            <li><a href="#factiontag">Faction</a><span
- style="text-decoration: underline;"><br />
+            <li><a href="#factiontag">Faction</a><span style="text-decoration: underline;"><br />
               </span></li>
           </ul>
         </li>
@@ -73,11 +70,10 @@ and potentially the context in which each alternative applies or
 doesn't apply, and then makes selections and instantiates&nbsp;real
 mud objects based on those selections. &nbsp;The input to the
 engine is a very specifically built XML file, and the output is actual
-mud objects (mobs, items, areas, rooms, or all the above) in your game.<span
- style="font-weight: bold;" /></p>
-      <h2><a name="structure" />Overview of
-XML Tags</h2>
-The random generator works by reading a specially-written XML document
+mud objects (mobs, items, areas, rooms, or all the above) in your game.<span style="font-weight: bold;"></span></p>
+      <h2><a name="structure">Overview of
+XML Tags</a></h2>
+<a name="structure">The random generator works by reading a specially-written XML document
 that contains tags describing the object or objects to generate.
 &nbsp;For example, area generation looks for tags named
 &lt;AREA /&gt;, mobs for &lt;MOB /&gt;, items for
@@ -137,8 +133,7 @@ Tags are always evaluated recursively, from first to last.
 &nbsp;Any tag may contain zero or more of the following
 meta-attributes:<br />
 &nbsp;&nbsp;<br />
-      <table style="text-align: left; width: 100%;" border="1"
- cellpadding="2" cellspacing="2">
+      </a><table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td>id</td>
@@ -323,7 +318,7 @@ string values.</td>
           </tr>
         </tbody>
       </table>
-      <br />
+<a name="structure">      <br />
       <span style="font-weight: bold;">Tag values</span>:<br />
 A non-container non-basic tag will typically have a string
 value.&nbsp; This value may contain any embedded variables or
@@ -339,17 +334,17 @@ a string, so much the easier.<br />
 Defined variables or tag names can also be embedded in {} characters;
 for example: ${ame}. When embedded in this way, the name may be
 preceeded by:<br />
-      <ul>
-        <li>"u:" to force to all-uppercase</li>
+      </a><ul>
+<a name="structure">        <li>"u:" to force to all-uppercase</li>
         <li>"l:" to force all-lowercase</li>
         <li>"p:" to force plural</li>
         <li>"c:" to force to be capitalized (first letter upper,
 rest lower).</li>
-      </ul>
-      <span style="font-weight: bold;">Special embedded
+      </a></ul>
+<a name="structure">      <span style="font-weight: bold;">Special embedded
 variables</span>:<br />
-      <ul>
-        <li>$SYSTEM_RANDOM_NAME:[NUMX]-[NUMY] generate a random
+      </a><ul>
+<a name="structure">        <li>$SYSTEM_RANDOM_NAME:[NUMX]-[NUMY] generate a random
 name with between NUMX and NUMY syllables.</li>
         <li>${STAT:[STATNAME]} embed the value from another stat
 on the same object.&nbsp; STATs are things like NAME, DISPLAY,
@@ -370,8 +365,8 @@ work unlike some of the special ROOM_ tags.</li>
         <li>(a(n)) will remove any indefinite or definite
 articles from the string immediately following it and replace it (or
 insert) either "a" or "an" depending on the first letter of the word.</li>
-      </ul>
-      <h2><a name="using">Using the Random Generator</a></h2>
+      </a></ul>
+<a name="structure">      </a><h2><a name="using">Using the Random Generator</a></h2>
 There are currently two ways to use the Random Generator, one is the
 Archon GENERATE command, and the other is the Area type
 "StdAutoGenInstance".<br />
@@ -391,8 +386,7 @@ the&nbsp;content is built from the file in
 resources/randareas/example.xml, though the builder&nbsp;may
 specify his or her own xml file path as one of the many
 arguments.&nbsp; The arguments,&nbsp;briefly, are:<br />
-      <table style="text-align: left; width: 100%;" border="1"
- cellpadding="2" cellspacing="2">
+      <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td>OBJ TYPE</td>
@@ -641,7 +635,7 @@ catalog, in which case
       <p>Optional details: (See Archon's Guide)<br />
       </p>
       <ul>
-        <li>"RACE"</li>
+        <li>"RACE"</li><li>"HPMOD"</li>
         <li>"LEVEL"</li>
         <li>"NAME"</li>
         <li>"DISPLAY"</li>
@@ -856,5 +850,4 @@ Required details:&nbsp;</p>
   </tbody>
 </table>
 </center>
-</body>
-</html>
+</body></html>

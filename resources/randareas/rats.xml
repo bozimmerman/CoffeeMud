@@ -170,7 +170,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DESCRIPTION select="any-1">$rats_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$rats_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>			
-			<MOB class="GenMob" level="$level_range" id="rats_momma_dragon" race="Dragon" gender="F">
+			<MOB class="GenMob" level="$level_range" id="rats_momma_dragon" race="Dragon" gender="F" hpmod="15">
 				<NAME select="all">
 					<NAME condition="$mob_level &lt; 10">a hatchling $rats_dragoncolor dragon</NAME>
 					<NAME condition="$mob_level &lt; 20 and $mob_level &gt;=  10">a very young $rats_dragoncolor dragon</NAME>

@@ -127,7 +127,7 @@ See guides/RandomAreas.html for information about documents of this type.
 	</ROOM>
 </ROOM>
 	
-<MOB id="forest_faerie_mob" class="genmob" level="$level_range + 3" gender="$anygender" race="Faerie">
+<MOB id="forest_faerie_mob" class="genmob" level="$level_range + 3" gender="$anygender" race="Faerie" hpmod="15">
 	<NAME>(a(n)) $adj_primary_colored_color faerie</NAME>
 	<DISPLAY select="pick-1">
 		<DISPLAY pickweight="1">$mob_name flitters around you.</DISPLAY>
