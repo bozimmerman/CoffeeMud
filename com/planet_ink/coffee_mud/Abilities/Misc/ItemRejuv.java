@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class ItemRejuv extends StdAbility implements ItemTicker
 {
 	@Override public String ID() { return "ItemRejuv"; }
@@ -45,20 +44,20 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected Room myProperLocation=null;
-	protected Vector contents=new Vector();
-	protected Vector ccontents=new Vector();
+	protected Vector<Item> contents=new Vector<Item>();
+	protected Vector<Item> ccontents=new Vector<Item>();
 
 	public synchronized void loadContent(ItemTicker ticker, Item item, Room room)
 	{
 		if(ticker instanceof ItemRejuv)
 		{
 			final ItemRejuv ability=(ItemRejuv)ticker;
-			ability.contents.addElement(item);
+			ability.contents.add(item);
 
 			final Item newItem=(Item)item.copyOf();
 			newItem.stopTicking();
 			newItem.setContainer(item.container());
-			ability.ccontents.addElement(newItem);
+			ability.ccontents.add(newItem);
 
 			for(int r=0;r<room.numItems();r++)
 			{
@@ -77,8 +76,8 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 	public void loadMeUp(Item item, Room room)
 	{
 		unloadIfNecessary(item);
-		contents=new Vector();
-		ccontents=new Vector();
+		contents=new Vector<Item>();
+		ccontents=new Vector<Item>();
 		final ItemRejuv ability=new ItemRejuv();
 		ability.myProperLocation=room;
 		if(item.fetchEffect(ability.ID())==null)
@@ -114,18 +113,18 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 		final Room R=myProperLocation;
 		for(int i=0;i<contents.size();i++)
 		{
-			final Item thisItem=(Item)contents.elementAt(i);
+			final Item thisItem=contents.elementAt(i);
 			if(thisItem!=null)
 			{
-				final Container thisContainer=((Item)ccontents.elementAt(i)).container();
+				final Container thisContainer=ccontents.elementAt(i).container();
 				if((!R.isContent(thisItem))
 				&&((!CMLib.flags().isMobile(thisItem)) || (!CMLib.flags().isInTheGame(thisItem,true))))
 				{
-					final Item newThisItem=(Item)((Item)ccontents.elementAt(i)).copyOf();
+					final Item newThisItem=(Item)ccontents.elementAt(i).copyOf();
 					contents.setElementAt(newThisItem,i);
 					for(int c=0;c<ccontents.size();c++)
 					{
-						final Item thatItem=(Item)ccontents.elementAt(c);
+						final Item thatItem=ccontents.elementAt(c);
 						if((thatItem.container()==thisItem)&&(newThisItem instanceof Container))
 							thatItem.setContainer((Container)newThisItem);
 					}
@@ -172,7 +171,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 			&&((!CMLib.flags().isMobile(item)) || (!CMLib.flags().isInTheGame(item,true))))
 			{
 				unloadIfNecessary(item);
-				loadMeUp((Item)contents.elementAt(0),R);
+				loadMeUp(contents.elementAt(0),R);
 				return false;
 			}
 			if(item instanceof Container)
