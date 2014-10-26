@@ -45,6 +45,8 @@ public class Chant_Den extends Chant
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return CAN_ROOMS;}
+	
+	protected int denDirection = -1;
 
 	@Override
 	public void unInvoke()
@@ -55,9 +57,11 @@ public class Chant_Den extends Chant
 		if(!(affected instanceof Room))
 			return;
 		final Room room=(Room)affected;
-		if(canBeUninvoked())
+		if((canBeUninvoked())&&(denDirection >= 0))
 		{
-			final Room R=room.getRoomInDir(Directions.UP);
+			int denDirection=this.denDirection;
+			this.denDirection=-1;
+			final Room R=room.getRoomInDir(denDirection);
 			if((R!=null)&&(R.roomID().equalsIgnoreCase("")))
 			{
 				R.showHappens(CMMsg.MSG_OK_VISUAL,L("The den fades away..."));
@@ -72,8 +76,8 @@ public class Chant_Den extends Chant
 					if(I!=null) room.moveItemTo(I);
 				}
 				R.destroy();
-				room.rawDoors()[Directions.UP]=null;
-				room.setRawExit(Directions.UP,null);
+				room.rawDoors()[denDirection]=null;
+				room.setRawExit(denDirection,null);
 			}
 			room.clearSky();
 		}
@@ -139,6 +143,7 @@ public class Chant_Den extends Chant
 				newRoom.setArea(mob.location().getArea());
 				mob.location().rawDoors()[d]=newRoom;
 				mob.location().setRawExit(d,CMClass.getExit("HiddenWalkway"));
+				this.denDirection=d;
 				newRoom.rawDoors()[Directions.getOpDirectionCode(d)]=mob.location();
 				Ability A=CMClass.getAbility("Prop_RoomView");
 				A.setMiscText(CMLib.map().getExtendedRoomID(mob.location()));
