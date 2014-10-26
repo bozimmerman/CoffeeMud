@@ -33,54 +33,39 @@ import java.util.*;
 */
 
 @SuppressWarnings("rawtypes")
-public class Chant_BestowName extends Chant
+public class Chant_GiveLife extends Chant
 {
-	@Override public String ID() { return "Chant_BestowName"; }
-	private final static String localizedName = CMLib.lang().L("Bestow Name");
+	@Override public String ID() { return "Chant_GiveLife"; }
+	private final static String localizedName = CMLib.lang().L("Give Life");
 	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	@Override public String displayText(){return "";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
+	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-
-	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectedStats)
-	{
-		super.affectPhyStats(affected,affectedStats);
-		if((affected instanceof MOB)
-		&&(((MOB)affected).amFollowing()==null)
-		&&(CMLib.flags().isInTheGame((MOB)affected,true)))
-		{
-			affected.delEffect(affected.fetchEffect(ID()));
-			affectedStats.setName(null);
-		}
-		else
-		if((text().length()>0))
-			affectedStats.setName(text());
-	}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	@Override public long flags(){return Ability.FLAG_NOORDERING;}
 
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if(commands.size()<2)
+		int amount=100;
+		if(!auto)
 		{
-			mob.tell(L("You must specify the animal, and a name to give him."));
-			return false;
+			if((commands.size()==0)||(!CMath.isNumber((String)commands.lastElement())))
+			{
+				mob.tell(L("Give how much life experience?"));
+				return false;
+			}
+			amount=CMath.s_int((String)commands.lastElement());
+			if((amount<=0)||((amount>mob.getExperience())
+			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
+			&&!mob.charStats().getCurrentClass().expless()
+			&&!mob.charStats().getMyRace().expless()))
+			{
+				mob.tell(L("You cannot give @x1 life experience.",""+amount));
+				return false;
+			}
+			commands.removeElementAt(commands.size()-1);
 		}
-		String myName=((String)commands.lastElement()).trim();
-		commands.removeElementAt(commands.size()-1);
-		if(myName.length()==0)
-		{
-			mob.tell(L("You must specify a name."));
-			return false;
-		}
-		if(myName.indexOf(' ')>=0)
-		{
-			mob.tell(L("Your name may not contain a space."));
-			return false;
-		}
-
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if((!CMLib.flags().isAnimalIntelligence(target))||(!target.isMonster())||(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
@@ -88,15 +73,11 @@ public class Chant_BestowName extends Chant
 			mob.tell(L("This chant only works on non-player animals in your group."));
 			return false;
 		}
-
-		if((target.name().toUpperCase().startsWith("A "))
-		||(target.name().toUpperCase().startsWith("AN "))
-		||(target.name().toUpperCase().startsWith("SOME ")))
-			myName=target.name()+" named "+myName;
-		else
-		if(target.name().indexOf(' ')>=0)
-			myName=myName+", "+target.name();
-
+		if(mob.isMonster() && (!auto) && (givenTarget==null))
+		{
+			mob.tell(L("You cannot give your life."));
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -109,18 +90,34 @@ public class Chant_BestowName extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>, bestowing the name '@x1'.^?",myName));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> gain(s) life experience!":"^S<S-NAME> chant(s) to <T-NAMESELF>, feeding <T-HIM-HER> <S-HIS-HER> life experience.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final Chant_BestowName A=(Chant_BestowName)copyOf();
-				A.setMiscText(myName);
-				target.addNonUninvokableEffect(A);
-				mob.location().recoverRoomStats();
+				CMLib.leveler().postExperience(mob,null,null,-amount,false);
+				if((mob.phyStats().level()>target.phyStats().level())&&(target.isMonster()))
+					amount+=(mob.phyStats().level()-target.phyStats().level())
+						  *(mob.phyStats().level()/10);
+				CMLib.leveler().postExperience(target,null,null,amount,false);
+				if((CMLib.dice().rollPercentage() < amount)
+				&&(target.isMonster())
+				&&(target.fetchEffect("Loyalty")==null)
+				&&(target.fetchEffect("Chant_BestowName")!=null)
+				&&(target.amFollowing()==mob)
+				&&(mob.playerStats()!=null)
+				&&(!mob.isMonster())
+				&&(CMLib.flags().flaggedAnyAffects(target, Ability.FLAG_CHARMING).size()==0))
+				{
+					Ability A=CMClass.getAbility("Loyalty");
+					A.setMiscText("NAME="+mob.Name());
+					A.setSavable(true);
+					target.addNonUninvokableEffect(A);
+					mob.tell(mob,target,null,L("<T-NAME> is now loyal to you."));
+				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chants for <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

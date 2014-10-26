@@ -105,6 +105,20 @@ public class Prayer_FeedTheDead extends Prayer
 					amount+=(mob.phyStats().level()-target.phyStats().level())
 						  *(mob.phyStats().level()/10);
 				CMLib.leveler().postExperience(target,null,null,amount,false);
+				if((CMLib.dice().rollPercentage() < amount)
+				&&(target.isMonster())
+				&&(target.fetchEffect("Loyalty")==null)
+				&&(target.amFollowing()==mob)
+				&&(mob.playerStats()!=null)
+				&&(!mob.isMonster())
+				&&(target.fetchEffect("Prop_ModExperience")!=null))
+				{
+					Ability A=CMClass.getAbility("Loyalty");
+					A.setMiscText("NAME="+mob.Name());
+					A.setSavable(true);
+					target.addNonUninvokableEffect(A);
+					mob.tell(mob,target,null,L("<T-NAME> is now loyal to you."));
+				}
 			}
 		}
 		else

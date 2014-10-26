@@ -1134,7 +1134,6 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return (M!=null)&&(M.charStats().getMyRace().racialCategory().equalsIgnoreCase("Vegetation"));
 	}
 
-
 	@Override
 	public boolean isMobile(PhysicalAgent P)
 	{
@@ -1198,6 +1197,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		return domainAnyAffects(P,domain);
 	}
+	
 	@Override
 	public List<Ability> domainAbilities(final MOB M, final int domain)
 	{
@@ -1225,6 +1225,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			}
 		return V;
 	}
+	
 	@Override
 	public List<Ability> flaggedAnyAffects(final Physical P, final long flag)
 	{

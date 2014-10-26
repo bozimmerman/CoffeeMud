@@ -232,6 +232,11 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		theNews.append("^HYou are now a "+mob.charStats().displayClassLevel(mob,false)+".^N\n\r");
 
 		final int newHitPointGain = getPlayerHPBonusNextLevel(mob) * adjuster;
+		if(mob.getWimpHitPoint() > 0)
+		{
+			double wimpPct = CMath.div(mob.getWimpHitPoint(), mob.baseState().getHitPoints());
+			mob.setWimpHitPoint((int)Math.round(CMath.ceiling(CMath.mul(mob.baseState().getHitPoints()+newHitPointGain,wimpPct))));
+		}
 		mob.baseState().setHitPoints(mob.baseState().getHitPoints()+newHitPointGain);
 		if(mob.baseState().getHitPoints()<20) mob.baseState().setHitPoints(20);
 		mob.curState().setHitPoints(mob.curState().getHitPoints()+newHitPointGain);

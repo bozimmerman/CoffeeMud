@@ -606,32 +606,55 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	@Override
 	public void wanderAway(MOB M, boolean mindPCs, boolean andGoHome)
 	{
-		if(M==null) return;
+		if(M==null) 
+			return;
 		final Room R=M.location();
-		if(R==null) return;
+		if(R==null) 
+			return;
 		int tries=0;
-		while((M.location()==R)&&((++tries)<100)&&((!mindPCs)||(R.numPCInhabitants()>0)))
+		while((M.location()==R)&&((++tries)<10)&&((!mindPCs)||(R.numPCInhabitants()>0)))
 			beMobile(M,true,true,false,false,false,null,null);
 		if((M.getStartRoom()!=null)&&(andGoHome))
 			M.getStartRoom().bringMobHere(M,true);
 	}
 
 	@Override
-	public void wanderFromTo(MOB M, Room toHere, boolean mindPCs)
+	public boolean wanderCheckedAway(MOB M, boolean mindPCs, boolean andGoHome)
 	{
-		if(M==null) return;
-		if((M.location()!=null)&&(M.location().isInhabitant(M)))
-			wanderAway(M,mindPCs,false);
-		wanderIn(M,toHere);
+		if(M==null) 
+			return false;
+		final Room R=M.location();
+		if(R==null) 
+			return false;
+		int tries=0;
+		while((M.location()==R)&&((++tries)<10)&&((!mindPCs)||(R.numPCInhabitants()>0)))
+			beMobile(M,true,true,false,false,false,null,null);
+		if(M.location()==R)
+			return false;
+		if(andGoHome)
+		{
+			final Room startRoom=M.getStartRoom();
+			if(startRoom!=null)
+				startRoom.bringMobHere(M,true);
+			return true;
+		}
+		return true;
 	}
 
 	@Override
-	public void wanderIn(MOB M, Room toHere)
+	public void wanderFromTo(MOB M, Room toHere, boolean mindPCs)
 	{
-		if(toHere==null) return;
 		if(M==null) return;
-		int tries=0;
+		final Room oldRoom=M.location();
+		if((oldRoom!=null)&&(oldRoom.isInhabitant(M)))
+			wanderAway(M,mindPCs,false);
+		wanderIn(M,toHere);
+	}
+	
+	protected int getCheckedDir(final MOB M, final Room toHere)
+	{
 		int dir=-1;
+		int tries=0;
 		while((dir<0)&&((++tries)<100))
 		{
 			dir=CMLib.dice().roll(1,Directions.NUM_DIRECTIONS(),-1);
@@ -645,10 +668,59 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				||((R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(!CMLib.flags().isWaterWorthy(M)))
 				||((R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(!CMLib.flags().isWaterWorthy(M))))
 					dir=-1;
+				if(tries < 65)
+				{
+					final Exit E=toHere.getExitInDir(dir);
+					if((E==null)||(E.isLocked()))
+						dir=-1;
+				}
 			}
 			else
 				dir=-1;
 		}
+		return dir;
+	}
+
+	@Override
+	public boolean wanderCheckedFromTo(MOB M, Room toHere, boolean mindPCs)
+	{
+		if(M==null) 
+			return false;
+		if(toHere==null) 
+			return false;
+		final Room oldRoom=M.location();
+		if((oldRoom!=null)&&(oldRoom.isInhabitant(M)))
+			if(!wanderCheckedAway(M,mindPCs,false))
+				return false;
+		int dir = getCheckedDir(M,toHere);
+		final Exit exit = (dir < 0) ? null : toHere.getExitInDir(dir);
+		final CMMsg enterMsg=CMClass.getMsg(M,toHere,exit,CMMsg.MSG_ENTER,null);
+		if(toHere.okMessage(M, enterMsg))
+		{
+			if(dir<0)
+				toHere.show(M,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wanders in."));
+			else
+			{
+				final String inDir=((toHere instanceof SpaceShip)||(toHere.getArea() instanceof SpaceShip))?
+						Directions.getShipDirectionName(dir):Directions.getDirectionName(dir);
+				toHere.show(M,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wanders in from @x1.",inDir));
+			}
+			toHere.executeMsg(M, enterMsg);
+			if(M.location()!=toHere)
+				toHere.bringMobHere(M,true);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void wanderIn(MOB M, Room toHere)
+	{
+		if(toHere==null) 
+			return;
+		if(M==null) 
+			return;
+		int dir = getCheckedDir(M,toHere);
 		if(dir<0)
 			toHere.show(M,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wanders in."));
 		else
