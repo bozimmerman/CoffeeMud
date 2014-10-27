@@ -1469,8 +1469,6 @@ public class StdAbility implements Ability
 	@Override
 	public void makeNonUninvokable()
 	{
-if(ID().equals("Spell_Tourettes")) //BZ delme
-	new Exception().printStackTrace();
 		unInvoked=false;
 		canBeUninvoked=false;
 		savable=true;

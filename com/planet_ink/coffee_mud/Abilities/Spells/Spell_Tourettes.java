@@ -72,8 +72,6 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 				mob.tell(L("You feel more polite."));
 			}
 		}
-		else
-			System.out.println("yep!"); //BZ:delme
 	}
 
 
