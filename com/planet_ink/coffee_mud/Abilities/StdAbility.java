@@ -1328,7 +1328,11 @@ public class StdAbility implements Ability
 		{
 			tickAdjustmentFromStandard=((int)Math.round(CMath.mul(adjustedLevel(mob,asLevel),1.3)))+25;
 			if((target!=null)&&(asLevel<=0)&&(mob!=null)&&(!(target instanceof Room)))
-				tickAdjustmentFromStandard=(int)Math.round(CMath.mul(tickAdjustmentFromStandard,CMath.div(mob.phyStats().level(),target.phyStats().level())));
+			{
+				double levelDiff = CMath.div(mob.phyStats().level(),target.phyStats().level());
+				levelDiff = Math.max(levelDiff,CMProps.getIntVar(CMProps.Int.EXPRATE));
+				tickAdjustmentFromStandard=(int)Math.round(CMath.mul(tickAdjustmentFromStandard,levelDiff));
+			}
 
 			if((tickAdjustmentFromStandard>(CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)))
 			||(mob instanceof Deity))
@@ -1449,11 +1453,11 @@ public class StdAbility implements Ability
 		{
 			final Ability thisAbility=mob.fetchEffect(ID());
 			if(thisAbility!=null) return false;
-			final Ability thatAbility=(Ability)copyOf();
-			((StdAbility)thatAbility).canBeUninvoked=true;
+			final StdAbility thatAbility=(StdAbility)copyOf();
+			thatAbility.canBeUninvoked=true;
 			thatAbility.setSavable(false);
 			thatAbility.setInvoker(mob);
-			((StdAbility)thatAbility).isAnAutoEffect=true;
+			thatAbility.isAnAutoEffect=true;
 			mob.addEffect(thatAbility);
 			return true;
 		}
@@ -1462,6 +1466,8 @@ public class StdAbility implements Ability
 	@Override
 	public void makeNonUninvokable()
 	{
+if(ID().equals("Spell_Tourettes")) //BZ delme
+	new Exception().printStackTrace();
 		unInvoked=false;
 		canBeUninvoked=false;
 		savable=true;

@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -102,8 +101,13 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 				&&(target.fetchEffect(ID())==null))
 					if(CMLib.dice().rollPercentage()>target.charStats().getSave(CharStats.STAT_SAVE_DISEASE))
 					{
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> look(s) seriously ill!"));
-						maliciousAffect(invoker,target,0,0,-1);
+						final Room room=target.location();
+						final CMMsg msg=CMClass.getMsg(invoker,target,this,CMMsg.MSG_CAST_VERBAL_SPELL,L("<S-NAME> look(s) seriously ill!"));
+						if((room!=null)&&(room.okMessage(mob, msg)))
+						{
+							room.send(mob,msg);
+							maliciousAffect(invoker,target,0,0,-1);
+						}
 					}
 					else
 						spreadImmunity(target);

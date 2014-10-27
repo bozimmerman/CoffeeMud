@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -66,11 +65,15 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 		super.unInvoke();
 
 		if(canBeUninvoked())
+		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
 				spreadImmunity(mob);
 				mob.tell(L("You feel more polite."));
 			}
+		}
+		else
+			System.out.println("yep!"); //BZ:delme
 	}
 
 
@@ -135,8 +138,14 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 				{
 					if(CMLib.dice().rollPercentage()>target.charStats().getSave(CharStats.STAT_SAVE_DISEASE))
 					{
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) different somehow..."));
-						maliciousAffect(invoker,target,0,0,-1);
+						final Room room=target.location();
+						final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_VERBAL_SPELL,L("<T-NAME> get(s) an odd look on <T-HIS-HER> face."));
+						if((room!=null)&&(room.okMessage(mob, msg)))
+						{
+							room.send(mob,msg);
+							target.tell(L("You feel different somehow..."));
+							maliciousAffect(invoker,target,0,0,-1);
+						}
 					}
 					else
 						spreadImmunity(target);
