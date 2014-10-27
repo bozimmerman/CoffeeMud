@@ -5,7 +5,7 @@ CMABPF integer NULL
 CMABTX string NULL
 
 CMCHAR
-CMCHID string NULL,
+CMCHID string NULL
 CMUSERID string KEY
 CMPASS string NULL
 CMCLAS string NULL
