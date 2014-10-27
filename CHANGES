@@ -40,6 +40,7 @@
   38. Wimpy hit point score goes up and down with level hit point gains, maintaining roughly same percentage between levels.
   39. New Misc effect: Loyalty, for making mobs return to and follow players.  Prayer "Feed the Dead" and others will use it to protect companions.
   40. New Beastmaster chant: Give Life -- similar to feed the dead, leading perhaps to an animal follower role for that class.
+  41. New Archon command: EVERY, similar to AT, but allows applying a command to multiple rooms, and multiple targets in each room.
 # Build 5.8.2 Release 6/13/2014
    0. Database Schema Updated! Run DBUpgrade, OR manually alter table CMCHCL to add CMCLSTS (see appropriate schema file)
    1. CM1Server has "FILE" command now for directory browsing/manipulation

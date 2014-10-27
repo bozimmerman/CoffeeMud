@@ -1002,10 +1002,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	@Override
 	public String getContextName(Collection<? extends Environmental> list, Environmental E)
 	{
-		if(list==null) return E.name();
+		if(list==null) 
+			return E.name();
 		final int number=getContextNumber(list,E);
-		if(number<0) return null;
-		if(number<2) return E.name();
+		if(number<0) 
+			return null;
+		if(number<2) 
+			return E.name();
 		return E.name()+"."+number;
 	}
 
