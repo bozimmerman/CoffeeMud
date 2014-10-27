@@ -1330,8 +1330,11 @@ public class StdAbility implements Ability
 			if((target!=null)&&(asLevel<=0)&&(mob!=null)&&(!(target instanceof Room)))
 			{
 				double levelDiff = CMath.div(mob.phyStats().level(),target.phyStats().level());
-				levelDiff = Math.max(levelDiff,CMProps.getIntVar(CMProps.Int.EXPRATE));
+				levelDiff = Math.min(levelDiff,CMProps.getIntVar(CMProps.Int.EXPRATE));
 				tickAdjustmentFromStandard=(int)Math.round(CMath.mul(tickAdjustmentFromStandard,levelDiff));
+				if((tickAdjustmentFromStandard>(CMProps.getTicksPerHour()/3))
+				||(mob instanceof Deity))
+					tickAdjustmentFromStandard=(int)(CMProps.getTicksPerHour()/3);
 			}
 
 			if((tickAdjustmentFromStandard>(CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)))

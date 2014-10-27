@@ -1551,6 +1551,10 @@ public class CMProps extends Properties
 		return p().TICKS_PER_RLMIN;
 	}
 
+	/**
+	 * Returns the number of game ticks that occur every real life hour (60 min)
+	 * @return the number of game ticks that occur every real life hour (60 min)
+	 */
 	public static final long getTicksPerHour()
 	{
 		return p().TICKS_PER_RLHOUR;

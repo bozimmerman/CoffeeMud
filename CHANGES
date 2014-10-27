@@ -41,6 +41,7 @@
   39. New Misc effect: Loyalty, for making mobs return to and follow players.  Prayer "Feed the Dead" and others will use it to protect companions.
   40. New Beastmaster chant: Give Life -- similar to feed the dead, leading perhaps to an animal follower role for that class.
   41. New Archon command: EVERY, similar to AT, but allows applying a command to multiple rooms, and multiple targets in each room.
+  42. (Internal) Adjusted caps on spell effects based on level is now about 20 min, and about an hour after max adjustments.
 # Build 5.8.2 Release 6/13/2014
    0. Database Schema Updated! Run DBUpgrade, OR manually alter table CMCHCL to add CMCLSTS (see appropriate schema file)
    1. CM1Server has "FILE" command now for directory browsing/manipulation
