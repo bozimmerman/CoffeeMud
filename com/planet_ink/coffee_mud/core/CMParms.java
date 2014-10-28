@@ -1829,6 +1829,12 @@ public class CMParms
 		return new byte[0];
 	}
 
+	/**
+	 * Converts the objects in the given Set to a String array
+	 * by calling toString() on each object.
+	 * @param V the set to convert
+	 * @return a string array of the set
+	 */
 	public final static String[] toStringArray(final Set<?> V)
 	{
 		if((V==null)||(V.size()==0))
@@ -1843,6 +1849,12 @@ public class CMParms
 		return s;
 	}
 
+	/**
+	 * Converts the environmental objects in the given Set to a String List
+	 * by calling name() on each object.
+	 * @param V the set to convert
+	 * @return a string list of the set
+	 */
 	public final static List<String> toNameVector(final Set<? extends Environmental> V)
 	{
 		final Vector<String> s=new Vector<String>();
@@ -1853,6 +1865,12 @@ public class CMParms
 		return s;
 	}
 
+	/**
+	 * Converts the environmental objects in the given Enumeration to a String List
+	 * by calling name() on each object.
+	 * @param V the enumeration to convert
+	 * @return a string list of the set
+	 */
 	public final static List<String> toNameVector(final Enumeration<? extends Environmental> V)
 	{
 		final Vector<String> s=new Vector<String>();
@@ -1863,6 +1881,14 @@ public class CMParms
 		return s;
 	}
 
+
+	/**
+	 * Converts the given object to a string.  If the object is null, returns "null".
+	 * If the object is a List, Array, Iterator, or Enumeration, it converts it to a 
+	 * comma-delimited list. Returns toString() on the object. 
+	 * @param o the object to convert to something stringy
+	 * @return the string representation of the object
+	 */
 	@SuppressWarnings("rawtypes")
 	public final static String toString(final Object o)
 	{
@@ -1881,6 +1907,12 @@ public class CMParms
 		return o.toString();
 	}
 
+	/** 
+	 * Converts the given Array to a comma-delimited list, with
+	 * spaces after each comma.
+	 * @param V the array to convert to a string
+	 * @return the array as a comma-delimited list
+	 */
 	public final static String toStringList(final String[] V)
 	{
 		if((V==null)||(V.length==0))
@@ -1893,6 +1925,12 @@ public class CMParms
 		return s.toString();
 	}
 
+	/** 
+	 * Converts the given Array to a comma-delimited list, with
+	 * spaces after each comma by calling toString() on each object.
+	 * @param V the array to convert to a string
+	 * @return the array as a comma-delimited list
+	 */
 	public final static String toStringList(final Object[] V)
 	{
 		if((V==null)||(V.length==0))
@@ -1905,6 +1943,12 @@ public class CMParms
 		return s.toString();
 	}
 
+	/** 
+	 * Converts the given Iterator objects to a comma-delimited list, with
+	 * spaces after each comma by calling toString() on each object.
+	 * @param e the Iterator to convert objects in to a string
+	 * @return the objects as a comma-delimited list
+	 */
 	public final static String toStringList(final Iterator<?> e)
 	{
 		if((e==null)||(!e.hasNext())) 
@@ -1916,6 +1960,12 @@ public class CMParms
 		return s.toString();
 	}
 
+	/** 
+	 * Converts the given Enumeration objects to a comma-delimited list, with
+	 * spaces after each comma by calling toString() on each object.
+	 * @param e the Enumeration to convert objects in to a string
+	 * @return the objects as a comma-delimited list
+	 */
 	public final static String toStringList(final Enumeration<?> e)
 	{
 		if((e==null)||(!e.hasMoreElements())) 
@@ -1927,6 +1977,12 @@ public class CMParms
 		return s.toString();
 	}
 
+	/** 
+	 * Converts the given Enumeration objects to a comma-delimited list, with
+	 * spaces after each comma by calling name() on each object.
+	 * @param e the Enumeration to convert environmentals in to a string
+	 * @return the environmentals as a comma-delimited list
+	 */
 	public final static String toEnvironmentalStringList(final Enumeration<? extends Environmental> e)
 	{
 		if((e==null)||(!e.hasMoreElements())) 
@@ -1938,6 +1994,12 @@ public class CMParms
 		return s.toString();
 	}
 
+	/** 
+	 * Converts the given Enumeration CMObject to a comma-delimited list, with
+	 * spaces after each comma by calling ID() on each object.
+	 * @param e the Enumeration to convert CMObjects in to a string
+	 * @return the CMObjects as a comma-delimited list
+	 */
 	public final static String toCMObjectStringList(final Enumeration<? extends CMObject> e)
 	{
 		if((e==null)||(!e.hasMoreElements())) 
@@ -1949,6 +2011,12 @@ public class CMParms
 		return s.toString();
 	}
 
+	/** 
+	 * Converts the given Array of CMObjects to a comma-delimited list, with
+	 * spaces after each comma by calling ID() on each object.
+	 * @param e the Array to convert CMObjects in to a string
+	 * @return the CMObjects as a comma-delimited list
+	 */
 	public final static String toCMObjectStringList(final CMObject[] e)
 	{
 		if((e==null)||(e.length==0)) 
@@ -1959,6 +2027,12 @@ public class CMParms
 		return s.substring(2);
 	}
 
+	/** 
+	 * Converts the given Iterator CMObject to a comma-delimited list, with
+	 * spaces after each comma by calling ID() on each object.
+	 * @param e the Iterator to convert CMObjects in to a string
+	 * @return the CMObjects as a comma-delimited list
+	 */
 	public final static String toCMObjectStringList(final Iterator<? extends CMObject> e)
 	{
 		if((e==null)||(!e.hasNext())) 
@@ -1970,6 +2044,12 @@ public class CMParms
 		return s.toString();
 	}
 
+	/**
+	 * Converts the given array to a comma-delimited list string, with
+	 * spaces after each comma.
+	 * @param V the array to convert into a list string
+	 * @return the numbers in a comma-delimited list
+	 */
 	public final static String toStringList(final long[] V)
 	{
 		if((V==null)||(V.length==0))
@@ -1982,6 +2062,12 @@ public class CMParms
 		return s.toString();
 	}
 
+	/**
+	 * Converts the given array to a comma-delimited list string, with
+	 * spaces after each comma.
+	 * @param V the array to convert into a list string
+	 * @return the numbers in a comma-delimited list
+	 */
 	public final static String toStringList(final short[] V)
 	{
 		if((V==null)||(V.length==0))
@@ -1994,6 +2080,12 @@ public class CMParms
 		return s.toString();
 	}
 
+	/**
+	 * Converts the given array to a comma-delimited list string, with
+	 * spaces after each comma.
+	 * @param V the array to convert into a list string
+	 * @return the boolean values in a comma-delimited list
+	 */
 	public final static String toStringList(final boolean[] V)
 	{
 		if((V==null)||(V.length==0))
@@ -2006,6 +2098,12 @@ public class CMParms
 		return s.toString();
 	}
 
+	/**
+	 * Converts the given array to a comma-delimited list string, with
+	 * spaces after each comma.
+	 * @param V the array to convert into a list string
+	 * @return the numbers in a comma-delimited list
+	 */
 	public final static String toStringList(final byte[] V)
 	{
 		if((V==null)||(V.length==0))
@@ -2018,6 +2116,12 @@ public class CMParms
 		return s.toString();
 	}
 
+	/**
+	 * Converts the given array to a comma-delimited list string, with
+	 * spaces after each comma, casting the characters as numbers.
+	 * @param V the array to convert into a list string
+	 * @return the numbers in a comma-delimited list
+	 */
 	public final static String toStringList(final char[] V)
 	{
 		if((V==null)||(V.length==0))
@@ -2030,6 +2134,12 @@ public class CMParms
 		return s.toString();
 	}
 
+	/**
+	 * Converts the given array to a comma-delimited list string, with
+	 * spaces after each comma.
+	 * @param V the array to convert into a list string
+	 * @return the numbers in a comma-delimited list
+	 */
 	public final static String toStringList(final int[] V)
 	{
 		if((V==null)||(V.length==0))
@@ -2042,6 +2152,12 @@ public class CMParms
 		return s.toString();
 	}
 
+	/**
+	 * Converts the given array to a comma-delimited list string, with
+	 * spaces after each comma.
+	 * @param V the array to convert into a list string
+	 * @return the numbers in a comma-delimited list
+	 */
 	public final static String toStringList(final double[] V)
 	{
 		if((V==null)||(V.length==0))
@@ -2054,7 +2170,12 @@ public class CMParms
 		return s.toString();
 	}
 
-
+	/**
+	 * Converts the given List to a comma-delimited list string, with
+	 * spaces after each comma, by calling toString() on each object.
+	 * @param V the List to convert into a list string
+	 * @return the objects in a comma-delimited list
+	 */
 	public final static String toStringList(final List<?> V)
 	{
 		if((V==null)||(V.size()==0))
@@ -2067,6 +2188,12 @@ public class CMParms
 		return s.toString();
 	}
 
+	/**
+	 * Converts the given Set to a comma-delimited list string, with
+	 * spaces after each comma, by calling toString() on each object.
+	 * @param V the Set to convert into a list string
+	 * @return the objects in a comma-delimited list
+	 */
 	public final static String toStringList(final Set<?> V)
 	{
 		if((V==null)||(V.size()==0))
@@ -2080,6 +2207,11 @@ public class CMParms
 		return s.toString();
 	}
 
+	/**
+	 * Converts the given array to a comma-delimited list string.
+	 * @param V the array to convert into a list string
+	 * @return the numbers in a comma-delimited list
+	 */
 	public final static String toTightStringList(final long[] V)
 	{
 		if((V==null)||(V.length==0))
@@ -2092,6 +2224,11 @@ public class CMParms
 		return s.toString();
 	}
 
+	/**
+	 * Converts the given array to a comma-delimited list string.
+	 * @param V the array to convert into a list string
+	 * @return the numbers in a comma-delimited list
+	 */
 	public final static String toTightStringList(final short[] V)
 	{
 		if((V==null)||(V.length==0))
@@ -2104,6 +2241,11 @@ public class CMParms
 		return s.toString();
 	}
 
+	/**
+	 * Converts the given array to a comma-delimited list string.
+	 * @param V the array to convert into a list string
+	 * @return the boolean values in a comma-delimited list
+	 */
 	public final static String toTightStringList(final boolean[] V)
 	{
 		if((V==null)||(V.length==0))
@@ -2116,6 +2258,11 @@ public class CMParms
 		return s.toString();
 	}
 
+	/**
+	 * Converts the given array to a comma-delimited list string.
+	 * @param V the array to convert into a list string
+	 * @return the numbers in a comma-delimited list
+	 */
 	public final static String toTightStringList(final byte[] V)
 	{
 		if((V==null)||(V.length==0))
@@ -2128,6 +2275,12 @@ public class CMParms
 		return s.toString();
 	}
 
+	/**
+	 * Converts the given array to a comma-delimited list string, 
+	 * casting the characters as numbers.
+	 * @param V the array to convert into a list string
+	 * @return the numbers in a comma-delimited list
+	 */
 	public final static String toTightStringList(final char[] V)
 	{
 		if((V==null)||(V.length==0))
@@ -2140,6 +2293,11 @@ public class CMParms
 		return s.toString();
 	}
 
+	/**
+	 * Converts the given array to a comma-delimited list string.
+	 * @param V the array to convert into a list string
+	 * @return the numbers in a comma-delimited list
+	 */
 	public final static String toTightStringList(final int[] V)
 	{
 		if((V==null)||(V.length==0))
@@ -2152,6 +2310,11 @@ public class CMParms
 		return s.toString();
 	}
 
+	/**
+	 * Converts the given array to a comma-delimited list string.
+	 * @param V the array to convert into a list string
+	 * @return the numbers in a comma-delimited list
+	 */
 	public final static String toTightStringList(final double[] V)
 	{
 		if((V==null)||(V.length==0))
@@ -2164,7 +2327,12 @@ public class CMParms
 		return s.toString();
 	}
 
-
+	/**
+	 * Converts the given List to a comma-delimited list string,
+	 * by calling toString() on each object.
+	 * @param V the List to convert into a list string
+	 * @return the objects in a comma-delimited list
+	 */
 	public final static String toTightStringList(final List<?> V)
 	{
 		if((V==null)||(V.size()==0))
@@ -2177,6 +2345,12 @@ public class CMParms
 		return s.toString();
 	}
 
+	/**
+	 * Converts the given Set to a comma-delimited list string,
+	 * by calling toString() on each object.
+	 * @param V the Set to convert into a list string
+	 * @return the objects in a comma-delimited list
+	 */
 	public final static String toTightStringList(final Set<?> V)
 	{
 		if((V==null)||(V.size()==0))
@@ -2190,7 +2364,13 @@ public class CMParms
 		return s.toString();
 	}
 
-	public final static String toStringList(final Map<String,?> V)
+	/**
+	 * Returns the keys and values in the given may in the form
+	 * KEY=VALUE/KEY=VALUE/etc.. by calling toString() on each value.
+	 * @param V the map to convert
+	 * @return the key=value slash string
+	 */
+	public final static String toKeyValueSlashList(final Map<String,?> V)
 	{
 		if((V==null)||(V.size()==0))
 		{
@@ -2198,10 +2378,16 @@ public class CMParms
 		}
 		final StringBuilder s=new StringBuilder("");
 		for(final String KEY : V.keySet())
-			s.append(KEY+"="+(V.get(KEY).toString())+"/");
+			s.append(KEY+"="+(V.get(KEY).toString().replaceAll("/","\\/"))+"/");
 		return s.toString();
 	}
 
+	/**
+	 * Appends the given two arrays together.
+	 * @param front the front array
+	 * @param back the back array
+	 * @return the combined array
+	 */
 	public final static String[] appendToArray(final String[] front, final String[] back)
 	{
 		if(back==null) 
@@ -2216,19 +2402,36 @@ public class CMParms
 		return newa;
 	}
 
-	public final static Map<String,String> parseEQStringList(final String s)
+	
+	/**
+	 * Parses the given string of the form KEY=VALUE/KEY=VALUE/etc into a new
+	 * String key/value map.
+	 * @param s the slash-keyvalue pairs
+	 * @return the map of the keys and values.
+	 */
+	public final static Map<String,String> parseKeyValueSlashList(final String s)
 	{
 		final Hashtable<String,String> h=new Hashtable<String,String>();
-		final String[] allWords = s.split("/");
+		final String[] allWords = s.split("[^\\]/");
 		for(final String word : allWords)
 		{
-			final String[] set=word.split("=");
-			if(set.length==2)
-				h.put(set[0].toUpperCase().trim(), set[1]);
+			final int x=word.indexOf('=');
+			if(x>0)
+			{
+				final String key=word.substring(0,x).toUpperCase().trim();
+				final String value=word.substring(x+1).replaceAll("\\/","/");
+				h.put(key, value);
+			}
 		}
 		return h;
 	}
 
+	/**
+	 * Returns the key/value pairs in the given map as a single string of the form
+	 * KEY=VALUE KEY="VALUE" etc... by calling toString() on the objects.
+	 * @param V the map of key/value pairs
+	 * @return a single string list of all the key=value pairs
+	 */
 	public final static String toStringEqList(final Map<String,?> V)
 	{
 		if((V==null)||(V.size()==0))
@@ -2247,117 +2450,182 @@ public class CMParms
 	}
 
 
-	public final static List<Object> copyFlattenVector(final List<?> V)
+	/**
+	 * Flattens the given list by returning a new list will all of the
+	 * objects in it.  If the original list contained any lists, then
+	 * the objects in those lists would be added, and not the list itself.
+	 * @param V the list to flatten
+	 * @return a new flattened list
+	 */
+	public final static List<Object> copyFlattenList(final List<?> V)
 	{
 		final Vector<Object> V2=new Vector<Object>();
 		for(int v=0;v<V.size();v++)
 		{
 			final Object h=V.get(v);
 			if(h instanceof List<?>)
-				V2.addElement(copyFlattenVector((List<?>)h));
+				V2.addElement(copyFlattenList((List<?>)h));
 			else
 				V2.addElement(h);
 		}
 		return V2;
 	}
 
-	public final static int indexOf(final String[] supported, final String expertise)
+	/**
+	 * Returns the index of the given string in the given string array.
+	 * The search is case sensitive.
+	 * @param stringList the string array
+	 * @param str the string to search for
+	 * @return the index of the string in the list, or -1 if not found
+	 */
+	public final static int indexOf(final String[] stringList, final String str)
 	{
-		if(supported==null) 
+		if(stringList==null) 
 			return -1;
-		if(expertise==null) 
+		if(str==null) 
 			return -1;
-		for(int i=0;i<supported.length;i++)
-			if(supported[i].equals(expertise))
+		for(int i=0;i<stringList.length;i++)
+			if(stringList[i].equals(str))
 				return i;
 		return -1;
 	}
 
-	public final static int indexOfIgnoreCase(final Enumeration<?> supported, final String key)
+	/**
+	 * Returns the index of the given string in the given string array.
+	 * The search is case insensitive.
+	 * @param stringList the string array
+	 * @param str the string to search for
+	 * @return the index of the string in the list, or -1 if not found
+	 */
+	public final static int indexOfIgnoreCase(final String[] stringList, final String str)
 	{
-		if(supported==null) 
+		if(stringList==null) 
+			return -1;
+		if(str==null) 
+			return -1;
+		for(int i=0;i<stringList.length;i++)
+			if(stringList[i].equalsIgnoreCase(str))
+				return i;
+		return -1;
+	}
+
+	/**
+	 * Returns the index of the given number in the given array.
+	 * @param stringList the string array
+	 * @param str the string to search for
+	 * @return the index of the number in the list, or -1 if not found
+	 */
+	public final static int indexOf(final int[] theList, final int x)
+	{
+		if(theList==null) 
+			return -1;
+		for(int i=0;i<theList.length;i++)
+			if(theList[i]==x)
+				return i;
+		return -1;
+	}
+
+	/**
+	 * Returns the index of the given number in the given array.
+	 * @param stringList the string array
+	 * @param str the string to search for
+	 * @return the index of the number in the list, or -1 if not found
+	 */
+	public final static int indexOf(final long[] theList, final long x)
+	{
+		if(theList==null) 
+			return -1;
+		for(int i=0;i<theList.length;i++)
+			if(theList[i]==x)
+				return i;
+		return -1;
+	}
+
+	/**
+	 * Iterates through the given enumeration, returning which the number of
+	 * times it must be iterated through before the given object is found
+	 * @param e the enumeration of objects
+	 * @param key the object to look for
+	 * @return the index of the object in the enumeration
+	 */
+	public final static int indexOf(final Enumeration<?> e, final Object key)
+	{
+		if(e==null) 
 			return -1;
 		int index = -1;
-		for(;supported.hasMoreElements();)
+		for(;e.hasMoreElements();)
 		{
-			if(supported.nextElement().toString().equalsIgnoreCase(key))
+			if(e.nextElement().equals(key))
 				return index;
 			index++;
 		}
 		return -1;
 	}
 
-	public final static int indexOf(final int[] supported, final int x)
+	/**
+	 * Iterates through the given enumeration, returning which the number of
+	 * times it must be iterated through before the given string is found by
+	 * calling toString() on each object, and comparing their case insensitive
+	 * values.
+	 * @param e the enumeration of objects
+	 * @param str the String to look for
+	 * @return the index of the String in the enumeration
+	 */
+	public final static int indexOfIgnoreCase(final Enumeration<?> e, final String str)
 	{
-		if(supported==null) 
-			return -1;
-		for(int i=0;i<supported.length;i++)
-			if(supported[i]==x)
-				return i;
-		return -1;
-	}
-
-	public final static int indexOf(final long[] supported, final long x)
-	{
-		if(supported==null) 
-			return -1;
-		for(int i=0;i<supported.length;i++)
-			if(supported[i]==x)
-				return i;
-		return -1;
-	}
-
-	public final static int indexOf(final Enumeration<?> supported, final Object key)
-	{
-		if(supported==null) 
+		if(e==null) 
 			return -1;
 		int index = -1;
-		for(;supported.hasMoreElements();)
+		for(;e.hasMoreElements();)
 		{
-			if(supported.nextElement().equals(key))
+			if(e.nextElement().toString().equalsIgnoreCase(str))
 				return index;
 			index++;
 		}
 		return -1;
 	}
 
-	public final static int indexOfIgnoreCase(final Iterator<?> supported, final String key)
+	/**
+	 * Iterates through the given Iterator, returning which the number of
+	 * times it must be iterated through before the given object is found
+	 * @param i the Iterator of objects
+	 * @param key the object to look for
+	 * @return the index of the object in the Iterator
+	 */
+	public final static int indexOf(final Iterator<?> i, final Object key)
 	{
-		if(supported==null) 
+		if(i==null) 
 			return -1;
 		int index = -1;
-		for(;supported.hasNext();)
+		for(;i.hasNext();)
 		{
-			if(supported.next().toString().equalsIgnoreCase(key))
+			if(i.next().equals(key))
 				return index;
 			index++;
 		}
 		return -1;
 	}
 
-	public final static int indexOf(final Iterator<?> supported, final Object key)
+	/**
+	 * Iterates through the given Iterator, returning which the number of
+	 * times it must be iterated through before the given string is found by
+	 * calling toString() on each object, and comparing their case insensitive
+	 * values.
+	 * @param i the Iterator of objects
+	 * @param str the String to look for
+	 * @return the index of the String in the Iterator
+	 */
+	public final static int indexOfIgnoreCase(final Iterator<?> i, final String key)
 	{
-		if(supported==null) 
+		if(i==null) 
 			return -1;
 		int index = -1;
-		for(;supported.hasNext();)
+		for(;i.hasNext();)
 		{
-			if(supported.next().equals(key))
+			if(i.next().toString().equalsIgnoreCase(key))
 				return index;
 			index++;
 		}
-		return -1;
-	}
-
-	public final static int indexOfIgnoreCase(final String[] supported, final String expertise)
-	{
-		if(supported==null) 
-			return -1;
-		if(expertise==null) 
-			return -1;
-		for(int i=0;i<supported.length;i++)
-			if(supported[i].equalsIgnoreCase(expertise))
-				return i;
 		return -1;
 	}
 

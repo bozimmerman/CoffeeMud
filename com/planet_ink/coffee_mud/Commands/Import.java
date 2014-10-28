@@ -5842,7 +5842,7 @@ public class Import extends StdCommand
 					}
 					else
 					{
-						M=getMOB("#"+mobID,R,session,CMParms.copyFlattenVector(mobData),CMParms.copyFlattenVector(mobProgData),CMParms.copyFlattenVector(specialData),CMParms.copyFlattenVector(shopData),areaMOBS,doneMOBS,areaFileName,compileErrors,commands);
+						M=getMOB("#"+mobID,R,session,CMParms.copyFlattenList(mobData),CMParms.copyFlattenList(mobProgData),CMParms.copyFlattenList(specialData),CMParms.copyFlattenList(shopData),areaMOBS,doneMOBS,areaFileName,compileErrors,commands);
 						if(M==null)
 						{
 							if(multiArea)
@@ -5867,7 +5867,7 @@ public class Import extends StdCommand
 					else
 					{
 						final String itemID=CMParms.getCleanBit(s,2).trim();
-						final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenVector(objectData),CMParms.copyFlattenVector(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
+						final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
 						if(I==null)
 						{
 							if(multiArea) nextResetData.addElement(s);
@@ -5959,7 +5959,7 @@ public class Import extends StdCommand
 					else
 					{
 						final String itemID=CMParms.getCleanBit(s,5).trim();
-						final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenVector(objectData),CMParms.copyFlattenVector(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
+						final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
 						if(I==null)
 						{
 							if(multiArea)
@@ -5995,7 +5995,7 @@ public class Import extends StdCommand
 					else
 					{
 						final String itemID=CMParms.getCleanBit(s,2).trim();
-						final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenVector(objectData),CMParms.copyFlattenVector(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
+						final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
 						if(I==null)
 						{
 							if(multiArea)
@@ -6038,7 +6038,7 @@ public class Import extends StdCommand
 					}
 					else
 					{
-						final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenVector(objectData),CMParms.copyFlattenVector(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
+						final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
 						if(I==null)
 						{
 							if(multiArea) nextResetData.addElement(s);
@@ -6069,7 +6069,7 @@ public class Import extends StdCommand
 				{
 					final String itemID=CMParms.getCleanBit(s,2).trim();
 					final String containerID=CMParms.getCleanBit(s,4).trim();
-					final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenVector(objectData),CMParms.copyFlattenVector(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
+					final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
 					final Container C=(Container)containerHash.get(containerID);
 					if(I==null)
 					{

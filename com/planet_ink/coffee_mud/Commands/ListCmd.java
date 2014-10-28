@@ -1786,7 +1786,7 @@ public class ListCmd extends StdCommand
 			final Object o=Resources.getResource(key);
 			if(o instanceof List) str.append(CMParms.toStringList((List)o));
 			else
-			if(o instanceof Map) str.append(CMParms.toStringList((Map)o));
+			if(o instanceof Map) str.append(CMParms.toKeyValueSlashList((Map)o));
 			else
 			if(o instanceof Set) str.append(CMParms.toStringList((Set)o));
 			else

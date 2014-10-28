@@ -170,7 +170,7 @@ public class GenLanguage extends StdLanguage
 				   return CMParms.toStringList(((List<String[]>)V(ID,V_WSETS)).get(num-1));
 			   else
 				   return "";
-		case 4:	return CMParms.toStringList((Map<String,String>)V(ID,V_HSETS));
+		case 4:	return CMParms.toKeyValueSlashList((Map<String,String>)V(ID,V_HSETS));
 		case 5: return (String)V(ID,V_HELP);
 		default:
 			if(code.equalsIgnoreCase("allxml")) return getAllXML();
@@ -230,7 +230,7 @@ public class GenLanguage extends StdLanguage
 			   if((num==((List<String[]>)V(ID,V_WSETS)).size()+1)&&(val.length()>0))
 				   ((List<String[]>)V(ID,V_WSETS)).add(CMParms.parseCommas(val,true).toArray(new String[0]));
 			   break;
-		case 4:	SV(ID,V_HSETS,CMParms.parseEQStringList(val)); break;
+		case 4:	SV(ID,V_HSETS,CMParms.parseKeyValueSlashList(val)); break;
 		case 5: SV(ID,V_HELP,val); break;
 		default:
 			if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenLanguage")) parseAllXML(val);
