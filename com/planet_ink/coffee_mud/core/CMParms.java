@@ -332,7 +332,7 @@ public class CMParms
 	/**
 	 * Returns a string containing the given objects, with toString()
 	 * called, and now space delimited.
-	 * @param commands the objects to combine into a single string
+	 * @param flags the objects to combine into a single string
 	 * @return the single string
 	 */
 	public final static String combine(final Set<?> flags)
@@ -575,7 +575,7 @@ public class CMParms
 	/**
 	 * Parses the given string by the given delimiter.
 	 * @param s the string to parse
-	 * @param delimeter the delimeter to use
+	 * @param delimiter the delimiter to use
 	 * @param ignoreNulls don't include any of the empty entries (-delim-delim)
 	 * @return the list of parsed strings
 	 */
@@ -914,7 +914,7 @@ public class CMParms
 	 * 'joe larry bibob=2 moe="uiuiui bob>7 lou", bob=5' will return a comparator of > and the compare result of false.
 	 * @param text the string to search
 	 * @param key the key to search for, case insensitive
-	 * @param vaue the value to compare the found value against
+	 * @param value the value to compare the found value against
 	 * @param comparatorFound a one-dimensional array to contain the found comparator
 	 * @return the result of comparing the found value with the given value
 	 */
@@ -1415,7 +1415,7 @@ public class CMParms
 	 * comma.
 	 * @param text the string to search
 	 * @param key the key to search for, case insensitive
-	 * @param defaultVal the value to return if the key is not found
+	 * @param defaultValue the value to return if the key is not found
 	 * @return the value
 	 */
 	public final static double getParmDouble(String text, final String key, final double defaultValue)
@@ -1467,7 +1467,7 @@ public class CMParms
 	 * comma.
 	 * @param text the string to search
 	 * @param key the key to search for, case insensitive
-	 * @param defaultVal the value to return if the key is not found
+	 * @param defaultValue the value to return if the key is not found
 	 * @return the value
 	 */
 	public final static int getParmInt(String text, final String key, final int defaultValue)
@@ -1518,7 +1518,7 @@ public class CMParms
 	 * comma.
 	 * @param text the string to search
 	 * @param key the key to search for, case insensitive
-	 * @param defaultVal the value to return if the key is not found
+	 * @param defaultValue the value to return if the key is not found
 	 * @return the value
 	 */
 	public final static boolean getParmBool(String text, final String key, final boolean defaultValue)
@@ -2511,8 +2511,8 @@ public class CMParms
 
 	/**
 	 * Returns the index of the given number in the given array.
-	 * @param stringList the string array
-	 * @param str the string to search for
+	 * @param theList the string array
+	 * @param x the number to search for
 	 * @return the index of the number in the list, or -1 if not found
 	 */
 	public final static int indexOf(final int[] theList, final int x)
@@ -2527,8 +2527,8 @@ public class CMParms
 
 	/**
 	 * Returns the index of the given number in the given array.
-	 * @param stringList the string array
-	 * @param str the string to search for
+	 * @param theList the string array
+	 * @param x the number to search for
 	 * @return the index of the number in the list, or -1 if not found
 	 */
 	public final static int indexOf(final long[] theList, final long x)
@@ -2586,6 +2586,24 @@ public class CMParms
 	}
 
 	/**
+	 * Returns the index of the given Object appears in the given list.
+	 * @param theList the list
+	 * @param obj the Object to search for
+	 * @return the index of the object in the list, or -1 if not found
+	 */
+	public final static int indexOf(final Object[] theList, final Object obj)
+	{
+		if(theList==null) 
+			return -1;
+		if(obj==null) 
+			return -1;
+		for(int i=0;i<theList.length;i++)
+			if(theList[i].equals(obj))
+				return i;
+		return -1;
+	}
+
+	/**
 	 * Iterates through the given Iterator, returning which the number of
 	 * times it must be iterated through before the given object is found
 	 * @param i the Iterator of objects
@@ -2615,94 +2633,149 @@ public class CMParms
 	 * @param str the String to look for
 	 * @return the index of the String in the Iterator
 	 */
-	public final static int indexOfIgnoreCase(final Iterator<?> i, final String key)
+	public final static int indexOfIgnoreCase(final Iterator<?> i, final String str)
 	{
 		if(i==null) 
 			return -1;
 		int index = -1;
 		for(;i.hasNext();)
 		{
-			if(i.next().toString().equalsIgnoreCase(key))
+			if(i.next().toString().equalsIgnoreCase(str))
 				return index;
 			index++;
 		}
 		return -1;
 	}
 
-	public final static int indexOfIgnoreCase(final List<?> supported, final String str)
+	/**
+	 * Returns the index of the given string in the list by calling toString() 
+	 * and comparing their case insensitive values.
+	 * @param theList the List of objects
+	 * @param str the String to look for
+	 * @return the index of the String in the List
+	 */
+	public final static int indexOfIgnoreCase(final List<?> theList, final String str)
 	{
-		if(supported==null) 
+		if(theList==null) 
 			return -1;
 		if(str==null) 
 			return -1;
-		for(int i=0;i<supported.size();i++)
-			if(supported.get(i).toString().equalsIgnoreCase(str))
+		for(int i=0;i<theList.size();i++)
+			if(theList.get(i).toString().equalsIgnoreCase(str))
 				return i;
 		return -1;
 	}
 
-	public final static boolean contains(final String[] supported, final String expertise)
+	/**
+	 * Returns whether the given string appears in the given list.
+	 * It is case sensitive.
+	 * @param theList the list
+	 * @param str the string to search for
+	 * @return true if the string is in the list, false otherwise
+	 */
+	public final static boolean contains(final String[] theList, final String str)
 	{
-		return indexOf(supported,expertise)>=0;
+		return indexOf(theList,str)>=0;
 	}
 
-	public final static boolean contains(final Enumeration<String> supported, final String expertise)
+	/**
+	 * Returns whether the given string appears in the given enumeration of strings.
+	 * It is case sensitive.
+	 * @param e the enumeration
+	 * @param str the string to search for
+	 * @return true if the string is in the list, false otherwise
+	 */
+	public final static boolean contains(final Enumeration<String> e, final String str)
 	{
-		for(;supported.hasMoreElements();)
-			if(supported.nextElement().equalsIgnoreCase(expertise))
+		for(;e.hasMoreElements();)
+			if(e.nextElement().equalsIgnoreCase(str))
 				return true;
 		return false;
 	}
 
-	public final static boolean contains(final char[] supported, final char c)
+	/**
+	 * Returns whether the given char appears in the given list.
+	 * @param theList the list
+	 * @param c the char to search for
+	 * @return true if the char is in the list, false otherwise
+	 */
+	public final static boolean contains(final char[] theList, final char c)
 	{
-		for(final char c2 : supported)
+		for(final char c2 : theList)
 			if(c2==c)
 				return true;
 		return false;
 	}
 
-	public final static boolean contains(final byte[] supported, final byte b)
+	/**
+	 * Returns whether the given byte appears in the given list.
+	 * @param theList the list
+	 * @param b the byte to search for
+	 * @return true if the byte is in the list, false otherwise
+	 */
+	public final static boolean contains(final byte[] theList, final byte b)
 	{
-		for(final byte b2 : supported)
+		for(final byte b2 : theList)
 			if(b2==b)
 				return true;
 		return false;
 	}
 
-	public final static boolean containsIgnoreCase(final String[] supported, final String expertise)
+	/**
+	 * Returns whether the given string appears in the given list.
+	 * It is case insensitive.
+	 * @param theList the list
+	 * @param str the string to search for
+	 * @return true if the string is in the list, false otherwise
+	 */
+	public final static boolean containsIgnoreCase(final String[] theList, final String str)
 	{
-		return indexOfIgnoreCase(supported,expertise)>=0;
+		return indexOfIgnoreCase(theList,str)>=0;
 	}
 
-	public final static boolean containsIgnoreCase(final List<?> supported, final String str)
+	/**
+	 * Returns whether the given string appears in the given list.
+	 * It is case insensitive.
+	 * @param theList the list
+	 * @param str the string to search for
+	 * @return true if the string is in the list, false otherwise
+	 */
+	public final static boolean containsIgnoreCase(final List<?> theList, final String str)
 	{
-		return indexOfIgnoreCase(supported,str)>=0;
+		return indexOfIgnoreCase(theList,str)>=0;
 	}
 
-	public final static int indexOf(final Object[] supported, final Object expertise)
+	/**
+	 * Returns whether the given Object appears in the given list.
+	 * @param theList the list
+	 * @param obj the Object to search for
+	 * @return true if the Object is in the list, false otherwise
+	 */
+	public final static boolean contains(final Object[] theList, final Object obj)
 	{
-		if(supported==null) 
-			return -1;
-		if(expertise==null) 
-			return -1;
-		for(int i=0;i<supported.length;i++)
-			if(supported[i].equals(expertise))
-				return i;
-		return -1;
+		return indexOf(theList,obj)>=0;
 	}
 
-	public final static boolean contains(final Object[] supported, final Object expertise)
+	/**
+	 * Returns whether the given int appears in the given list.
+	 * @param theList the list
+	 * @param x the int to search for
+	 * @return true if the int is in the list, false otherwise
+	 */
+	public final static boolean contains(final int[] theList, final int x)
 	{
-		return indexOf(supported,expertise)>=0;
+		return indexOf(theList,x)>=0;
 	}
 
-	public final static boolean contains(final int[] supported, final int x)
-	{
-		return indexOf(supported,x)>=0;
-	}
-
-	public final static boolean contains(final ByteBuffer buf, final byte[] bytes, final int pos)
+	/**
+	 * Returns true if the given bytebuffer, starting at the given pos, is the
+	 * same as the given byte array.
+	 * @param buf the bytebuffer to compare
+	 * @param bytes the byte array to compare
+	 * @param pos the starting position in the bytebuffer
+	 * @return true if they match, false otherwise
+	 */
+	public final static boolean compareRange(final ByteBuffer buf, final byte[] bytes, final int pos)
 	{
 		for(int i=0;i<bytes.length && (i+pos)<buf.limit();i++)
 			if(buf.get(pos+i)!=bytes[i])
@@ -2710,80 +2783,145 @@ public class CMParms
 		return true;
 	}
 
+	/**
+	 * Compares the given bytebuffer, starting at the given pos, with each byte array
+	 * in the given byte array array, and returns the top level index of which byte
+	 * array matches the bytebuffer at that position.  What's this good for?
+	 * @param buf the bytebuffer
+	 * @param bytes the array of byte arrays
+	 * @param pos the starting position in the bytebuffer
+	 * @return which byte array matches, or -1
+	 */
 	public final static int containIndex(final ByteBuffer buf, final byte[][] bytes, final int pos)
 	{
 		for(int x=0;x<bytes.length;x++)
-			if(contains(buf,bytes[x],pos))
+			if(compareRange(buf,bytes[x],pos))
 				return x;
 		return -1;
 	}
 
-	public final static int startsWith(final String[] supported, final String expertise)
+	/**
+	 * Returns the index of the string in the string array that starts with 
+	 * the given string.  The search is case sensitive
+	 * @param theList the list of strings
+	 * @param str the string to look for
+	 * @return index of entry in the list that starts with the string, or -1
+	 */
+	public final static int startsWith(final String[] theList, final String str)
 	{
-		if(supported==null) 
+		if(theList==null) 
 			return 0;
-		if(expertise==null) 
+		if(str==null) 
 			return -1;
-		for(int i=0;i<supported.length;i++)
-			if(supported[i].startsWith(expertise))
+		for(int i=0;i<theList.length;i++)
+			if(theList[i].startsWith(str))
 				return i;
 		return -1;
 	}
 
-	public final static int startsWithIgnoreCase(final String[] supported, final String expertise)
+	/**
+	 * Returns the index of the string in the string array that starts with 
+	 * the given string.  The search is case insensitive
+	 * @param theList the list of strings
+	 * @param str the string to look for
+	 * @return index of entry in the list that starts with the string, or -1
+	 */
+	public final static int startsWithIgnoreCase(final String[] theList, final String str)
 	{
-		if(supported==null) 
+		if(theList==null) 
 			return 0;
-		if(expertise==null) 
+		if(str==null) 
 			return -1;
-		for(int i=0;i<supported.length;i++)
-			if(supported[i].toUpperCase().startsWith(expertise.toUpperCase()))
+		for(int i=0;i<theList.length;i++)
+			if(theList[i].toUpperCase().startsWith(str.toUpperCase()))
 				return i;
 		return -1;
 	}
 
-	public final static boolean startsAnyWith(final String[] supported, final String expertise)
+	/**
+	 * Returns true if any string in string array starts with 
+	 * the given string.  The search is case sensitive
+	 * @param theList the list of strings
+	 * @param str the string to look for
+	 * @return true if any string in the list starts with the str, or false
+	 */
+	public final static boolean startsAnyWith(final String[] theList, final String str)
 	{
-		return startsWith(supported,expertise)>=0;
+		return startsWith(theList,str)>=0;
 	}
 
-	public final static boolean startsAnyWithIgnoreCase(final String[] supported, final String expertise)
+	/**
+	 * Returns true if any string in string array starts with 
+	 * the given string.  The search is case insensitive
+	 * @param theList the list of strings
+	 * @param str the string to look for
+	 * @return true if any string in the list starts with the str, or false
+	 */
+	public final static boolean startsAnyWithIgnoreCase(final String[] theList, final String str)
 	{
-		return startsWithIgnoreCase(supported,expertise)>=0;
+		return startsWithIgnoreCase(theList,str)>=0;
 	}
 
-	public final static int endsWith(final String[] supported, final String expertise)
+	/**
+	 * Returns the index of the string in the string array that ends with 
+	 * the given string.  The search is case sensitive
+	 * @param theList the list of strings
+	 * @param str the string to look for
+	 * @return index of entry in the list that ends with the string, or -1
+	 */
+	public final static int endsWith(final String[] theList, final String str)
 	{
-		if(supported==null) 
+		if(theList==null) 
 			return 0;
-		if(expertise==null) 
+		if(str==null) 
 			return -1;
-		for(int i=0;i<supported.length;i++)
-			if(supported[i].endsWith(expertise))
+		for(int i=0;i<theList.length;i++)
+			if(theList[i].endsWith(str))
 				return i;
 		return -1;
 	}
 
-	public final static int endsWithIgnoreCase(final String[] supported, final String expertise)
+	/**
+	 * Returns the index of the string in the string array that ends with 
+	 * the given string.  The search is case insensitive
+	 * @param theList the list of strings
+	 * @param str the string to look for
+	 * @return index of entry in the list that ends with the string, or -1
+	 */
+	public final static int endsWithIgnoreCase(final String[] theList, final String str)
 	{
-		if(supported==null) 
+		if(theList==null) 
 			return 0;
-		if(expertise==null) 
+		if(str==null) 
 			return -1;
-		for(int i=0;i<supported.length;i++)
-			if(supported[i].toUpperCase().endsWith(expertise.toUpperCase()))
+		for(int i=0;i<theList.length;i++)
+			if(theList[i].toUpperCase().endsWith(str.toUpperCase()))
 				return i;
 		return -1;
 	}
 
-	public final static boolean endsAnyWith(final String[] supported, final String expertise)
+	/**
+	 * Returns true if any string in string array ends with 
+	 * the given string.  The search is case sensitive
+	 * @param theList the list of strings
+	 * @param str the string to look for
+	 * @return true if any string in the list ends with the str, or false
+	 */
+	public final static boolean endsAnyWith(final String[] theList, final String str)
 	{
-		return endsWith(supported,expertise)>=0;
+		return endsWith(theList,str)>=0;
 	}
 
-	public final static boolean endsAnyWithIgnoreCase(final String[] supported, final String expertise)
+	/**
+	 * Returns true if any string in string array ends with 
+	 * the given string.  The search is case insensitive
+	 * @param theList the list of strings
+	 * @param str the string to look for
+	 * @return true if any string in the list ends with the str, or false
+	 */
+	public final static boolean endsAnyWithIgnoreCase(final String[] theList, final String str)
 	{
-		return endsWithIgnoreCase(supported,expertise)>=0;
+		return endsWithIgnoreCase(theList,str)>=0;
 	}
 
 	/** constant value representing an undefined/unimplemented miscText/parms format.*/
