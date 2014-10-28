@@ -118,36 +118,36 @@ public class Dwarf extends StdRace
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name(viewer) + "^r is nearly dead!^N";
+			return L("^r@x1^r is nearly dead!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return "^r" + mob.name(viewer) + "^r is covered in blood.^N";
+			return L("^r@x1^r is covered in blood.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return "^r" + mob.name(viewer) + "^r is bleeding from cuts and gashes.^N";
+			return L("^r@x1^r is bleeding from cuts and gashes.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return "^y" + mob.name(viewer) + "^y has numerous wounds.^N";
+			return L("^y@x1^y has numerous wounds.^N",mob.name(viewer));
 		else
 		if(pct<.50)
-			return "^y" + mob.name(viewer) + "^y has some wounds.^N";
+			return L("^y@x1^y has some wounds.^N",mob.name(viewer));
 		else
 		if(pct<.60)
-			return "^p" + mob.name(viewer) + "^p has a few cuts.^N";
+			return L("^p@x1^p has a few cuts.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return "^p" + mob.name(viewer) + "^p is cut.^N";
+			return L("^p@x1^p is cut.^N",mob.name(viewer));
 		else
 		if(pct<.80)
-			return "^g" + mob.name(viewer) + "^g has some bruises.^N";
+			return L("^g@x1^g has some bruises.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return "^g" + mob.name(viewer) + "^g is very winded.^N";
+			return L("^g@x1^g is very winded.^N",mob.name(viewer));
 		else
 		if(pct<.99)
-			return "^g" + mob.name(viewer) + "^g is slightly winded.^N";
+			return L("^g@x1^g is slightly winded.^N",mob.name(viewer));
 		else
-			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
+			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
 	@Override
 	public List<RawMaterial> myResources()

@@ -96,36 +96,36 @@ public class AirElemental extends StdRace
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name(viewer) + "^r is almost blown away!^N";
+			return L("^r@x1^r is almost blown away!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return "^r" + mob.name(viewer) + "^r is swirling alot and is massively dissipated.^N";
+			return L("^r@x1^r is swirling alot and is massively dissipated.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return "^r" + mob.name(viewer) + "^r is swirling alot and is heavily dissipated.^N";
+			return L("^r@x1^r is swirling alot and is heavily dissipated.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return "^y" + mob.name(viewer) + "^y is swirling alot and dissipating more and more.^N";
+			return L("^y@x1^y is swirling alot and dissipating more and more.^N",mob.name(viewer));
 		else
 		if(pct<.50)
-			return "^y" + mob.name(viewer) + "^y is swirling and starting to dissipate.^N";
+			return L("^y@x1^y is swirling and starting to dissipate.^N",mob.name(viewer));
 		else
 		if(pct<.60)
-			return "^p" + mob.name(viewer) + "^p is swirling!.^N";
+			return L("^p@x1^p is swirling!.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return "^p" + mob.name(viewer) + "^p is starting to swirl.^N";
+			return L("^p@x1^p is starting to swirl.^N",mob.name(viewer));
 		else
 		if(pct<.80)
-			return "^g" + mob.name(viewer) + "^g is showing some swirls.^N";
+			return L("^g@x1^g is showing some swirls.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return "^g" + mob.name(viewer) + "^g is showing small swirls.^N";
+			return L("^g@x1^g is showing small swirls.^N",mob.name(viewer));
 		else
 		if(pct<.99)
-			return "^g" + mob.name(viewer) + "^g is no longer in perfect condition.^N";
+			return L("^g@x1^g is no longer in perfect condition.^N",mob.name(viewer));
 		else
-			return "^c" + mob.name(viewer) + "^c is in perfect condition.^N";
+			return L("^c@x1^c is in perfect condition.^N",mob.name(viewer));
 	}
 	
 	@Override 

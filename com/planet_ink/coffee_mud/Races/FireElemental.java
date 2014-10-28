@@ -94,36 +94,36 @@ public class FireElemental extends StdRace
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name(viewer) + "^r is almost put out!^N";
+			return L("^r@x1^r is almost put out!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return "^r" + mob.name(viewer) + "^r is flickering alot and is almost smoked out.^N";
+			return L("^r@x1^r is flickering alot and is almost smoked out.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return "^r" + mob.name(viewer) + "^r is flickering alot and smoking massively.^N";
+			return L("^r@x1^r is flickering alot and smoking massively.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return "^y" + mob.name(viewer) + "^y is flickering alot and smoking a lot.^N";
+			return L("^y@x1^y is flickering alot and smoking a lot.^N",mob.name(viewer));
 		else
 		if(pct<.50)
-			return "^y" + mob.name(viewer) + "^y is flickering and smoking.^N";
+			return L("^y@x1^y is flickering and smoking.^N",mob.name(viewer));
 		else
 		if(pct<.60)
-			return "^p" + mob.name(viewer) + "^p is flickering and smoking somewhat.^N";
+			return L("^p@x1^p is flickering and smoking somewhat.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return "^p" + mob.name(viewer) + "^p is showing large flickers.^N";
+			return L("^p@x1^p is showing large flickers.^N",mob.name(viewer));
 		else
 		if(pct<.80)
-			return "^g" + mob.name(viewer) + "^g is showing some flickers.^N";
+			return L("^g@x1^g is showing some flickers.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return "^g" + mob.name(viewer) + "^g is showing small flickers.^N";
+			return L("^g@x1^g is showing small flickers.^N",mob.name(viewer));
 		else
 		if(pct<.99)
-			return "^g" + mob.name(viewer) + "^g is no longer in perfect condition.^N";
+			return L("^g@x1^g is no longer in perfect condition.^N",mob.name(viewer));
 		else
-			return "^c" + mob.name(viewer) + "^c is in perfect condition.^N";
+			return L("^c@x1^c is in perfect condition.^N",mob.name(viewer));
 	}
 	
 	@Override 

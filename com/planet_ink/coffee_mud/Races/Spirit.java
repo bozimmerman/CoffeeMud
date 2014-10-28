@@ -112,36 +112,36 @@ public class Spirit extends Undead
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name(viewer) + "^r is near banishment!^N";
+			return L("^r@x1^r is near banishment!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return "^r" + mob.name(viewer) + "^r is massively weak and faded.^N";
+			return L("^r@x1^r is massively weak and faded.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return "^r" + mob.name(viewer) + "^r is very faded.^N";
+			return L("^r@x1^r is very faded.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return "^y" + mob.name(viewer) + "^y is somewhat faded.^N";
+			return L("^y@x1^y is somewhat faded.^N",mob.name(viewer));
 		else
 		if(pct<.50)
-			return "^y" + mob.name(viewer) + "^y is very weak and slightly faded.^N";
+			return L("^y@x1^y is very weak and slightly faded.^N",mob.name(viewer));
 		else
 		if(pct<.60)
-			return "^p" + mob.name(viewer) + "^p has lost stability and is weak.^N";
+			return L("^p@x1^p has lost stability and is weak.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return "^p" + mob.name(viewer) + "^p is unstable and slightly weak.^N";
+			return L("^p@x1^p is unstable and slightly weak.^N",mob.name(viewer));
 		else
 		if(pct<.80)
-			return "^g" + mob.name(viewer) + "^g is unbalanced and unstable.^N";
+			return L("^g@x1^g is unbalanced and unstable.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return "^g" + mob.name(viewer) + "^g is somewhat unbalanced.^N";
+			return L("^g@x1^g is somewhat unbalanced.^N",mob.name(viewer));
 		else
 		if(pct<.99)
-			return "^g" + mob.name(viewer) + "^g is no longer in perfect condition.^N";
+			return L("^g@x1^g is no longer in perfect condition.^N",mob.name(viewer));
 		else
-			return "^c" + mob.name(viewer) + "^c is in perfect condition.^N";
+			return L("^c@x1^c is in perfect condition.^N",mob.name(viewer));
 	}
 
 	@Override 

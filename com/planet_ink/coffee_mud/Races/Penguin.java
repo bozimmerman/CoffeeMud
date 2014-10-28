@@ -105,36 +105,36 @@ public class Penguin extends StdRace
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name(viewer) + "^r is hovering on deaths door!^N";
+			return L("^r@x1^r is hovering on deaths door!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return "^r" + mob.name(viewer) + "^r is covered in blood.^N";
+			return L("^r@x1^r is covered in blood.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return "^r" + mob.name(viewer) + "^r is bleeding badly from lots of wounds.^N";
+			return L("^r@x1^r is bleeding badly from lots of wounds.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return "^y" + mob.name(viewer) + "^y has numerous bloody wounds.^N";
+			return L("^y@x1^y has numerous bloody wounds.^N",mob.name(viewer));
 		else
 		if(pct<.50)
-			return "^y" + mob.name(viewer) + "^y has some bloody wounds.^N";
+			return L("^y@x1^y has some bloody wounds.^N",mob.name(viewer));
 		else
 		if(pct<.60)
-			return "^p" + mob.name(viewer) + "^p has a lot of nasty bruises.^N";
+			return L("^p@x1^p has a lot of nasty bruises.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return "^p" + mob.name(viewer) + "^p has a few nasty bruises.^N";
+			return L("^p@x1^p has a few nasty bruises.^N",mob.name(viewer));
 		else
 		if(pct<.80)
-			return "^g" + mob.name(viewer) + "^g has a nasty bruise.^N";
+			return L("^g@x1^g has a nasty bruise.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return "^g" + mob.name(viewer) + "^g has a few bumps.^N";
+			return L("^g@x1^g has a few bumps.^N",mob.name(viewer));
 		else
 		if(pct<.99)
-			return "^g" + mob.name(viewer) + "^g has a minor bump.^N";
+			return L("^g@x1^g has a minor bump.^N",mob.name(viewer));
 		else
-			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
+			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
 	@Override
 	public List<RawMaterial> myResources()

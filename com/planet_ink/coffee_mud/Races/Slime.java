@@ -116,36 +116,36 @@ public class Slime extends StdRace
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name(viewer) + "^r is unstable and almost disintegrated!^N";
+			return L("^r@x1^r is unstable and almost disintegrated!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return "^r" + mob.name(viewer) + "^r is nearing disintegration.^N";
+			return L("^r@x1^r is nearing disintegration.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return "^r" + mob.name(viewer) + "^r is noticeably disintegrating.^N";
+			return L("^r@x1^r is noticeably disintegrating.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return "^y" + mob.name(viewer) + "^y is very damaged and slightly disintegrated.^N";
+			return L("^y@x1^y is very damaged and slightly disintegrated.^N",mob.name(viewer));
 		else
 		if(pct<.50)
-			return "^y" + mob.name(viewer) + "^y is very damaged.^N";
+			return L("^y@x1^y is very damaged.^N",mob.name(viewer));
 		else
 		if(pct<.60)
-			return "^p" + mob.name(viewer) + "^p is starting to show major damage.^N";
+			return L("^p@x1^p is starting to show major damage.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return "^p" + mob.name(viewer) + "^p is definitely damaged.^N";
+			return L("^p@x1^p is definitely damaged.^N",mob.name(viewer));
 		else
 		if(pct<.80)
-			return "^g" + mob.name(viewer) + "^g is disheveled and mildly damaged.^N";
+			return L("^g@x1^g is disheveled and mildly damaged.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return "^g" + mob.name(viewer) + "^g is noticeably disheveled.^N";
+			return L("^g@x1^g is noticeably disheveled.^N",mob.name(viewer));
 		else
 		if(pct<.99)
-			return "^g" + mob.name(viewer) + "^g is slightly disheveled.^N";
+			return L("^g@x1^g is slightly disheveled.^N",mob.name(viewer));
 		else
-			return "^c" + mob.name(viewer) + "^c is in perfect condition.^N";
+			return L("^c@x1^c is in perfect condition.^N",mob.name(viewer));
 	}
 
 	@Override

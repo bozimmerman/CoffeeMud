@@ -118,36 +118,36 @@ public class Gnome extends StdRace
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name(viewer) + "^r is curiously close to death.^N";
+			return L("^r@x1^r is curiously close to death.^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return "^r" + mob.name(viewer) + "^r is covered in excessive bloody wounds.^N";
+			return L("^r@x1^r is covered in excessive bloody wounds.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return "^r" + mob.name(viewer) + "^r is bleeding badly from a plethora of small wounds.^N";
+			return L("^r@x1^r is bleeding badly from a plethora of small wounds.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return "^y" + mob.name(viewer) + "^y has numerous bloody wounds and unexpected gashes.^N";
+			return L("^y@x1^y has numerous bloody wounds and unexpected gashes.^N",mob.name(viewer));
 		else
 		if(pct<.50)
-			return "^y" + mob.name(viewer) + "^y has some alarming wounds and small gashes.^N";
+			return L("^y@x1^y has some alarming wounds and small gashes.^N",mob.name(viewer));
 		else
 		if(pct<.60)
-			return "^p" + mob.name(viewer) + "^p has some small unwanted bloody wounds.^N";
+			return L("^p@x1^p has some small unwanted bloody wounds.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return "^p" + mob.name(viewer) + "^p is cut and bruised in strange places.^N";
+			return L("^p@x1^p is cut and bruised in strange places.^N",mob.name(viewer));
 		else
 		if(pct<.80)
-			return "^g" + mob.name(viewer) + "^g has some small cuts and bruises.^N";
+			return L("^g@x1^g has some small cuts and bruises.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return "^g" + mob.name(viewer) + "^g has a few bruises and interesting scratches.^N";
+			return L("^g@x1^g has a few bruises and interesting scratches.^N",mob.name(viewer));
 		else
 		if(pct<.99)
-			return "^g" + mob.name(viewer) + "^g has a few small curious bruises.^N";
+			return L("^g@x1^g has a few small curious bruises.^N",mob.name(viewer));
 		else
-			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
+			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
 	@Override
 	public List<RawMaterial> myResources()

@@ -92,36 +92,36 @@ public class Giant extends StdRace
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name(viewer) + "^r is almost fallen!^N";
+			return L("^r@x1^r is almost fallen!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return "^r" + mob.name(viewer) + "^r is covered in blood.^N";
+			return L("^r@x1^r is covered in blood.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return "^r" + mob.name(viewer) + "^r is bleeding badly from lots of large wounds.^N";
+			return L("^r@x1^r is bleeding badly from lots of large wounds.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return "^y" + mob.name(viewer) + "^y has enormous bloody wounds and gashes.^N";
+			return L("^y@x1^y has enormous bloody wounds and gashes.^N",mob.name(viewer));
 		else
 		if(pct<.50)
-			return "^y" + mob.name(viewer) + "^y has some huge wounds and gashes.^N";
+			return L("^y@x1^y has some huge wounds and gashes.^N",mob.name(viewer));
 		else
 		if(pct<.60)
-			return "^p" + mob.name(viewer) + "^p has a few huge bloody wounds.^N";
+			return L("^p@x1^p has a few huge bloody wounds.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return "^p" + mob.name(viewer) + "^p has huge cuts and is heavily bruised.^N";
+			return L("^p@x1^p has huge cuts and is heavily bruised.^N",mob.name(viewer));
 		else
 		if(pct<.80)
-			return "^g" + mob.name(viewer) + "^g has some large cuts and huge bruises.^N";
+			return L("^g@x1^g has some large cuts and huge bruises.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return "^g" + mob.name(viewer) + "^g has large bruises and scratches.^N";
+			return L("^g@x1^g has large bruises and scratches.^N",mob.name(viewer));
 		else
 		if(pct<.99)
-			return "^g" + mob.name(viewer) + "^g has a few small(?) bruises.^N";
+			return L("^g@x1^g has a few small(?) bruises.^N",mob.name(viewer));
 		else
-			return "^c" + mob.name(viewer) + "^c is in towering health^N";
+			return L("^c@x1^c is in towering health^N",mob.name(viewer));
 	}
 	@Override
 	public List<RawMaterial> myResources()

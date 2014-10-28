@@ -101,27 +101,27 @@ public class Toadstool extends StdRace
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name(viewer) + "^r is almost squashed!^N";
+			return L("^r@x1^r is almost squashed!^N",mob.name(viewer));
 		else
 		if(pct<.25)
-			return "^y" + mob.name(viewer) + "^y is severely gashed and bruised.^N";
+			return L("^y@x1^y is severely gashed and bruised.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return "^p" + mob.name(viewer) + "^p has lots of gashes and bruises.^N";
+			return L("^p@x1^p has lots of gashes and bruises.^N",mob.name(viewer));
 		else
 		if(pct<.55)
-			return "^p" + mob.name(viewer) + "^p has some serious bruises.^N";
+			return L("^p@x1^p has some serious bruises.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return "^g" + mob.name(viewer) + "^g has some bruises.^N";
+			return L("^g@x1^g has some bruises.^N",mob.name(viewer));
 		else
 		if(pct<.85)
-			return "^g" + mob.name(viewer) + "^g has a few small bruises.^N";
+			return L("^g@x1^g has a few small bruises.^N",mob.name(viewer));
 		else
 		if(pct<.95)
-			return "^g" + mob.name(viewer) + "^g is barely bruised.^N";
+			return L("^g@x1^g is barely bruised.^N",mob.name(viewer));
 		else
-			return "^c" + mob.name(viewer) + "^c is in perfect condition^N";
+			return L("^c@x1^c is in perfect condition^N",mob.name(viewer));
 	}
 	@Override
 	public List<RawMaterial> myResources()

@@ -102,30 +102,30 @@ public class FaerieDragon extends StdRace
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name(viewer) + "^r is raging in bloody pain!^N";
+			return L("^r@x1^r is raging in bloody pain!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return "^r" + mob.name(viewer) + "^r is covered in blood.^N";
+			return L("^r@x1^r is covered in blood.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return "^r" + mob.name(viewer) + "^r is bleeding badly from lots of wounds.^N";
+			return L("^r@x1^r is bleeding badly from lots of wounds.^N",mob.name(viewer));
 		else
 		if(pct<.50)
-			return "^y" + mob.name(viewer) + "^y has some bloody wounds and gashed scales.^N";
+			return L("^y@x1^y has some bloody wounds and gashed scales.^N",mob.name(viewer));
 		else
 		if(pct<.60)
-			return "^p" + mob.name(viewer) + "^p has a few bloody wounds.^N";
+			return L("^p@x1^p has a few bloody wounds.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return "^p" + mob.name(viewer) + "^p is cut and bruised heavily.^N";
+			return L("^p@x1^p is cut and bruised heavily.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return "^g" + mob.name(viewer) + "^g has a few bruises and scratched scales.^N";
+			return L("^g@x1^g has a few bruises and scratched scales.^N",mob.name(viewer));
 		else
 		if(pct<.99)
-			return "^g" + mob.name(viewer) + "^g has a few small bruises.^N";
+			return L("^g@x1^g has a few small bruises.^N",mob.name(viewer));
 		else
-			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
+			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
 	@Override
 	public List<RawMaterial> myResources()

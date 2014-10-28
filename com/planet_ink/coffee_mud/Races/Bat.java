@@ -112,36 +112,36 @@ public class Bat extends StdRace
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name(viewer) + "^r is fluttering around dripping blood everywhere!^N";
+			return L("^r@x1^r is fluttering around dripping blood everywhere!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return "^r" + mob.name(viewer) + "^r is covered in bloody matted hair.^N";
+			return L("^r@x1^r is covered in bloody matted hair.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return "^r" + mob.name(viewer) + "^r is bleeding badly from lots of wounds.^N";
+			return L("^r@x1^r is bleeding badly from lots of wounds.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return "^y" + mob.name(viewer) + "^y has numerous bloody wounds and gashes.^N";
+			return L("^y@x1^y has numerous bloody wounds and gashes.^N",mob.name(viewer));
 		else
 		if(pct<.50)
-			return "^y" + mob.name(viewer) + "^y has some bloody wounds and gashes.^N";
+			return L("^y@x1^y has some bloody wounds and gashes.^N",mob.name(viewer));
 		else
 		if(pct<.60)
-			return "^p" + mob.name(viewer) + "^p has a few bloody wounds.^N";
+			return L("^p@x1^p has a few bloody wounds.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return "^p" + mob.name(viewer) + "^p is cut and no longer flying straight.^N";
+			return L("^p@x1^p is cut and no longer flying straight.^N",mob.name(viewer));
 		else
 		if(pct<.80)
-			return "^g" + mob.name(viewer) + "^g has some minor cuts and nicks.^N";
+			return L("^g@x1^g has some minor cuts and nicks.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return "^g" + mob.name(viewer) + "^g has a few nicks and scratches.^N";
+			return L("^g@x1^g has a few nicks and scratches.^N",mob.name(viewer));
 		else
 		if(pct<.99)
-			return "^g" + mob.name(viewer) + "^g has a few small scratches.^N";
+			return L("^g@x1^g has a few small scratches.^N",mob.name(viewer));
 		else
-			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
+			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
 	@Override
 	public List<RawMaterial> myResources()

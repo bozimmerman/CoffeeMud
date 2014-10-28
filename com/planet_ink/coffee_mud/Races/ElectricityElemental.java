@@ -89,36 +89,36 @@ public class ElectricityElemental extends StdRace
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name(viewer) + "^r is near destruction!^N";
+			return L("^r@x1^r is near destruction!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return "^r" + mob.name(viewer) + "^r is flickering alot and massively damaged.^N";
+			return L("^r@x1^r is flickering alot and massively damaged.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return "^r" + mob.name(viewer) + "^r is flickering alot and extremely damaged.^N";
+			return L("^r@x1^r is flickering alot and extremely damaged.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return "^y" + mob.name(viewer) + "^y is flickering alot and very damaged.^N";
+			return L("^y@x1^y is flickering alot and very damaged.^N",mob.name(viewer));
 		else
 		if(pct<.50)
-			return "^y" + mob.name(viewer) + "^y is flickering and damaged.^N";
+			return L("^y@x1^y is flickering and damaged.^N",mob.name(viewer));
 		else
 		if(pct<.60)
-			return "^p" + mob.name(viewer) + "^p is flickering and slightly damaged.^N";
+			return L("^p@x1^p is flickering and slightly damaged.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return "^p" + mob.name(viewer) + "^p is showing large flickers.^N";
+			return L("^p@x1^p is showing large flickers.^N",mob.name(viewer));
 		else
 		if(pct<.80)
-			return "^g" + mob.name(viewer) + "^g is showing some flickers.^N";
+			return L("^g@x1^g is showing some flickers.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return "^g" + mob.name(viewer) + "^g is showing small flickers.^N";
+			return L("^g@x1^g is showing small flickers.^N",mob.name(viewer));
 		else
 		if(pct<.99)
-			return "^g" + mob.name(viewer) + "^g is no longer in perfect condition.^N";
+			return L("^g@x1^g is no longer in perfect condition.^N",mob.name(viewer));
 		else
-			return "^c" + mob.name(viewer) + "^c is in perfect condition.^N";
+			return L("^c@x1^c is in perfect condition.^N",mob.name(viewer));
 	}
 	
 	@Override 

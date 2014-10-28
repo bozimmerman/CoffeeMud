@@ -112,36 +112,36 @@ public class Halfling extends StdRace
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name(viewer) + "^r has very little life left.^N";
+			return L("^r@x1^r has very little life left.^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return "^r" + mob.name(viewer) + "^r is covered in small streams of blood.^N";
+			return L("^r@x1^r is covered in small streams of blood.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return "^r" + mob.name(viewer) + "^r is bleeding badly from lots of small wounds.^N";
+			return L("^r@x1^r is bleeding badly from lots of small wounds.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return "^y" + mob.name(viewer) + "^y has numerous bloody wounds and small gashes.^N";
+			return L("^y@x1^y has numerous bloody wounds and small gashes.^N",mob.name(viewer));
 		else
 		if(pct<.50)
-			return "^y" + mob.name(viewer) + "^y has some bloody wounds and small gashes.^N";
+			return L("^y@x1^y has some bloody wounds and small gashes.^N",mob.name(viewer));
 		else
 		if(pct<.60)
-			return "^p" + mob.name(viewer) + "^p has a few small bloody wounds.^N";
+			return L("^p@x1^p has a few small bloody wounds.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return "^p" + mob.name(viewer) + "^p is cut and bruised in small places.^N";
+			return L("^p@x1^p is cut and bruised in small places.^N",mob.name(viewer));
 		else
 		if(pct<.80)
-			return "^g" + mob.name(viewer) + "^g has some small cuts and bruises.^N";
+			return L("^g@x1^g has some small cuts and bruises.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return "^g" + mob.name(viewer) + "^g has a few bruises and small scratches.^N";
+			return L("^g@x1^g has a few bruises and small scratches.^N",mob.name(viewer));
 		else
 		if(pct<.99)
-			return "^g" + mob.name(viewer) + "^g has a few small bruises.^N";
+			return L("^g@x1^g has a few small bruises.^N",mob.name(viewer));
 		else
-			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
+			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
 	@Override
 	public List<RawMaterial> myResources()

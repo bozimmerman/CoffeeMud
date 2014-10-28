@@ -109,36 +109,36 @@ public class UmberHulk extends StdRace
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name(viewer) + "^r is near to heartless death!^N";
+			return L("^r@x1^r is near to heartless death!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return "^r" + mob.name(viewer) + "^r is covered in torn slabs of flesh.^N";
+			return L("^r@x1^r is covered in torn slabs of flesh.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return "^r" + mob.name(viewer) + "^r is gored badly with lots of tears.^N";
+			return L("^r@x1^r is gored badly with lots of tears.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return "^y" + mob.name(viewer) + "^y has numerous gory tears and gashes.^N";
+			return L("^y@x1^y has numerous gory tears and gashes.^N",mob.name(viewer));
 		else
 		if(pct<.50)
-			return "^y" + mob.name(viewer) + "^y has some gory tears and gashes.^N";
+			return L("^y@x1^y has some gory tears and gashes.^N",mob.name(viewer));
 		else
 		if(pct<.60)
-			return "^p" + mob.name(viewer) + "^p has a few gory wounds.^N";
+			return L("^p@x1^p has a few gory wounds.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return "^p" + mob.name(viewer) + "^p is cut and bruised heavily.^N";
+			return L("^p@x1^p is cut and bruised heavily.^N",mob.name(viewer));
 		else
 		if(pct<.80)
-			return "^g" + mob.name(viewer) + "^g has some minor cuts and bruises.^N";
+			return L("^g@x1^g has some minor cuts and bruises.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return "^g" + mob.name(viewer) + "^g has a few bruises and scratches.^N";
+			return L("^g@x1^g has a few bruises and scratches.^N",mob.name(viewer));
 		else
 		if(pct<.99)
-			return "^g" + mob.name(viewer) + "^g has a few small bruises.^N";
+			return L("^g@x1^g has a few small bruises.^N",mob.name(viewer));
 		else
-			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
+			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
 	@Override
 	public List<RawMaterial> myResources()

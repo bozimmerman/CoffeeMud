@@ -61,36 +61,36 @@ public class Unique extends StdRace
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name(viewer) + "^r is pulsating in an unstable rage!^N";
+			return L("^r@x1^r is pulsating in an unstable rage!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return "^r" + mob.name(viewer) + "^r is massively and amazingly angry.^N";
+			return L("^r@x1^r is massively and amazingly angry.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return "^r" + mob.name(viewer) + "^r is very angry.^N";
+			return L("^r@x1^r is very angry.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return "^y" + mob.name(viewer) + "^y is somewhat angry.^N";
+			return L("^y@x1^y is somewhat angry.^N",mob.name(viewer));
 		else
 		if(pct<.50)
-			return "^y" + mob.name(viewer) + "^y is very irritated.^N";
+			return L("^y@x1^y is very irritated.^N",mob.name(viewer));
 		else
 		if(pct<.60)
-			return "^p" + mob.name(viewer) + "^p is starting to show irritation.^N";
+			return L("^p@x1^p is starting to show irritation.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return "^p" + mob.name(viewer) + "^p is definitely serious and concerned.^N";
+			return L("^p@x1^p is definitely serious and concerned.^N",mob.name(viewer));
 		else
 		if(pct<.80)
-			return "^g" + mob.name(viewer) + "^g is growing serious and concerned.^N";
+			return L("^g@x1^g is growing serious and concerned.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return "^g" + mob.name(viewer) + "^g is definitely unamused and is starting to notice.^N";
+			return L("^g@x1^g is definitely unamused and is starting to notice.^N",mob.name(viewer));
 		else
 		if(pct<.99)
-			return "^g" + mob.name(viewer) + "^g is no longer amused, though still unconcerned.^N";
+			return L("^g@x1^g is no longer amused, though still unconcerned.^N",mob.name(viewer));
 		else
-			return "^c" + mob.name(viewer) + "^c is in perfect condition.^N";
+			return L("^c@x1^c is in perfect condition.^N",mob.name(viewer));
 	}
 	@Override
 	public List<RawMaterial> myResources()

@@ -105,36 +105,36 @@ public class WaterElemental extends StdRace
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name(viewer) + "^r is almost dry!^N";
+			return L("^r@x1^r is almost dry!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return "^r" + mob.name(viewer) + "^r is dripping alot and is almost dried out.^N";
+			return L("^r@x1^r is dripping alot and is almost dried out.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return "^r" + mob.name(viewer) + "^r is dripping alot and steaming massively.^N";
+			return L("^r@x1^r is dripping alot and steaming massively.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return "^y" + mob.name(viewer) + "^y is dripping alot and steaming a lot.^N";
+			return L("^y@x1^y is dripping alot and steaming a lot.^N",mob.name(viewer));
 		else
 		if(pct<.50)
-			return "^y" + mob.name(viewer) + "^y is dripping and steaming.^N";
+			return L("^y@x1^y is dripping and steaming.^N",mob.name(viewer));
 		else
 		if(pct<.60)
-			return "^p" + mob.name(viewer) + "^p is dripping and starting to steam.^N";
+			return L("^p@x1^p is dripping and starting to steam.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return "^p" + mob.name(viewer) + "^p is dripping more.^N";
+			return L("^p@x1^p is dripping more.^N",mob.name(viewer));
 		else
 		if(pct<.80)
-			return "^g" + mob.name(viewer) + "^g is showing some dripping.^N";
+			return L("^g@x1^g is showing some dripping.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return "^g" + mob.name(viewer) + "^g is showing small drips.^N";
+			return L("^g@x1^g is showing small drips.^N",mob.name(viewer));
 		else
 		if(pct<.99)
-			return "^g" + mob.name(viewer) + "^g is no longer in perfect condition.^N";
+			return L("^g@x1^g is no longer in perfect condition.^N",mob.name(viewer));
 		else
-			return "^c" + mob.name(viewer) + "^c is in perfect condition.^N";
+			return L("^c@x1^c is in perfect condition.^N",mob.name(viewer));
 	}
 	
 	@Override 

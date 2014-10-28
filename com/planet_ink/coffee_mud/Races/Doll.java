@@ -79,36 +79,36 @@ public class Doll extends StdRace
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name(viewer) + "^r is nearly disassembled!^N";
+			return L("^r@x1^r is nearly disassembled!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return "^r" + mob.name(viewer) + "^r is covered in tears and cracks.^N";
+			return L("^r@x1^r is covered in tears and cracks.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return "^r" + mob.name(viewer) + "^r is broken badly with lots of tears.^N";
+			return L("^r@x1^r is broken badly with lots of tears.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return "^y" + mob.name(viewer) + "^y has numerous tears and gashes.^N";
+			return L("^y@x1^y has numerous tears and gashes.^N",mob.name(viewer));
 		else
 		if(pct<.50)
-			return "^y" + mob.name(viewer) + "^y has some tears and gashes.^N";
+			return L("^y@x1^y has some tears and gashes.^N",mob.name(viewer));
 		else
 		if(pct<.60)
-			return "^p" + mob.name(viewer) + "^p has a few cracks.^N";
+			return L("^p@x1^p has a few cracks.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return "^p" + mob.name(viewer) + "^p is scratched heavily.^N";
+			return L("^p@x1^p is scratched heavily.^N",mob.name(viewer));
 		else
 		if(pct<.80)
-			return "^g" + mob.name(viewer) + "^g has some minor scratches.^N";
+			return L("^g@x1^g has some minor scratches.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return "^g" + mob.name(viewer) + "^g is a bit disheveled.^N";
+			return L("^g@x1^g is a bit disheveled.^N",mob.name(viewer));
 		else
 		if(pct<.99)
-			return "^g" + mob.name(viewer) + "^g is no longer in perfect condition.^N";
+			return L("^g@x1^g is no longer in perfect condition.^N",mob.name(viewer));
 		else
-			return "^c" + mob.name(viewer) + "^c is in perfect condition^N";
+			return L("^c@x1^c is in perfect condition^N",mob.name(viewer));
 	}
 	@Override
 	public List<RawMaterial> myResources()

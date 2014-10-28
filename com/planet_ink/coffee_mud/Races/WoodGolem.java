@@ -83,36 +83,36 @@ public class WoodGolem extends StdRace
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name(viewer) + "^r is near destruction!^N";
+			return L("^r@x1^r is near destruction!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return "^r" + mob.name(viewer) + "^r is massively splintered and damaged.^N";
+			return L("^r@x1^r is massively splintered and damaged.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return "^r" + mob.name(viewer) + "^r is extremely splintered and damaged.^N";
+			return L("^r@x1^r is extremely splintered and damaged.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return "^y" + mob.name(viewer) + "^y is very splintered and damaged.^N";
+			return L("^y@x1^y is very splintered and damaged.^N",mob.name(viewer));
 		else
 		if(pct<.50)
-			return "^y" + mob.name(viewer) + "^y is splintered and damaged.^N";
+			return L("^y@x1^y is splintered and damaged.^N",mob.name(viewer));
 		else
 		if(pct<.60)
-			return "^p" + mob.name(viewer) + "^p is splintered and slightly damaged.^N";
+			return L("^p@x1^p is splintered and slightly damaged.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return "^p" + mob.name(viewer) + "^p is showing large splinters.^N";
+			return L("^p@x1^p is showing large splinters.^N",mob.name(viewer));
 		else
 		if(pct<.80)
-			return "^g" + mob.name(viewer) + "^g is showing some splinters.^N";
+			return L("^g@x1^g is showing some splinters.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return "^g" + mob.name(viewer) + "^g is showing small splinters.^N";
+			return L("^g@x1^g is showing small splinters.^N",mob.name(viewer));
 		else
 		if(pct<.99)
-			return "^g" + mob.name(viewer) + "^g is no longer in perfect condition.^N";
+			return L("^g@x1^g is no longer in perfect condition.^N",mob.name(viewer));
 		else
-			return "^c" + mob.name(viewer) + "^c is in perfect condition.^N";
+			return L("^c@x1^c is in perfect condition.^N",mob.name(viewer));
 	}
 	
 	@Override 

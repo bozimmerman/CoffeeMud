@@ -193,36 +193,36 @@ public class Mold extends StdRace
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name(viewer) + "^r is near destruction!^N";
+			return L("^r@x1^r is near destruction!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return "^r" + mob.name(viewer) + "^r is massively scrapped and damaged.^N";
+			return L("^r@x1^r is massively scrapped and damaged.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return "^r" + mob.name(viewer) + "^r is extremely scrapped and damaged.^N";
+			return L("^r@x1^r is extremely scrapped and damaged.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return "^y" + mob.name(viewer) + "^y is very scrapped and damaged.^N";
+			return L("^y@x1^y is very scrapped and damaged.^N",mob.name(viewer));
 		else
 		if(pct<.50)
-			return "^y" + mob.name(viewer) + "^y is scrapped and damaged.^N";
+			return L("^y@x1^y is scrapped and damaged.^N",mob.name(viewer));
 		else
 		if(pct<.60)
-			return "^p" + mob.name(viewer) + "^p is scrapped and slightly damaged.^N";
+			return L("^p@x1^p is scrapped and slightly damaged.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return "^p" + mob.name(viewer) + "^p is showing numerous scrapes.^N";
+			return L("^p@x1^p is showing numerous scrapes.^N",mob.name(viewer));
 		else
 		if(pct<.80)
-			return "^g" + mob.name(viewer) + "^g is showing some scrapes.^N";
+			return L("^g@x1^g is showing some scrapes.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return "^g" + mob.name(viewer) + "^g is showing small scrapes.^N";
+			return L("^g@x1^g is showing small scrapes.^N",mob.name(viewer));
 		else
 		if(pct<.99)
-			return "^g" + mob.name(viewer) + "^g is no longer in perfect condition.^N";
+			return L("^g@x1^g is no longer in perfect condition.^N",mob.name(viewer));
 		else
-			return "^c" + mob.name(viewer) + "^c is in perfect condition.^N";
+			return L("^c@x1^c is in perfect condition.^N",mob.name(viewer));
 	}
 }
 

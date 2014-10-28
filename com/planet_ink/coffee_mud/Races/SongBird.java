@@ -98,36 +98,36 @@ public class SongBird extends StdRace
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name(viewer) + "^r is hovering on deaths door!^N";
+			return L("^r@x1^r is hovering on deaths door!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return "^r" + mob.name(viewer) + "^r is covered in blood and matted feathers.^N";
+			return L("^r@x1^r is covered in blood and matted feathers.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return "^r" + mob.name(viewer) + "^r is bleeding badly from lots of wounds.^N";
+			return L("^r@x1^r is bleeding badly from lots of wounds.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return "^y" + mob.name(viewer) + "^y has numerous bloody matted feathers.^N";
+			return L("^y@x1^y has numerous bloody matted feathers.^N",mob.name(viewer));
 		else
 		if(pct<.50)
-			return "^y" + mob.name(viewer) + "^y has some bloody matted feathers.^N";
+			return L("^y@x1^y has some bloody matted feathers.^N",mob.name(viewer));
 		else
 		if(pct<.60)
-			return "^p" + mob.name(viewer) + "^p has a lot of missing feathers.^N";
+			return L("^p@x1^p has a lot of missing feathers.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return "^p" + mob.name(viewer) + "^p has a few missing feathers.^N";
+			return L("^p@x1^p has a few missing feathers.^N",mob.name(viewer));
 		else
 		if(pct<.80)
-			return "^g" + mob.name(viewer) + "^g has a missing feather.^N";
+			return L("^g@x1^g has a missing feather.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return "^g" + mob.name(viewer) + "^g has a few feathers out of place.^N";
+			return L("^g@x1^g has a few feathers out of place.^N",mob.name(viewer));
 		else
 		if(pct<.99)
-			return "^g" + mob.name(viewer) + "^g has a some ruffled feathers.^N";
+			return L("^g@x1^g has a some ruffled feathers.^N",mob.name(viewer));
 		else
-			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
+			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
 	@Override
 	public List<RawMaterial> myResources()

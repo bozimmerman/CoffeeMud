@@ -137,36 +137,36 @@ public class Vine extends StdRace
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name(viewer) + "^r is near destruction!^N";
+			return L("^r@x1^r is near destruction!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return "^r" + mob.name(viewer) + "^r is massively shredded and damaged.^N";
+			return L("^r@x1^r is massively shredded and damaged.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return "^r" + mob.name(viewer) + "^r is extremely shredded and damaged.^N";
+			return L("^r@x1^r is extremely shredded and damaged.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return "^y" + mob.name(viewer) + "^y is very shredded and damaged.^N";
+			return L("^y@x1^y is very shredded and damaged.^N",mob.name(viewer));
 		else
 		if(pct<.50)
-			return "^y" + mob.name(viewer) + "^y is shredded and damaged.^N";
+			return L("^y@x1^y is shredded and damaged.^N",mob.name(viewer));
 		else
 		if(pct<.60)
-			return "^p" + mob.name(viewer) + "^p is shredded and slightly damaged.^N";
+			return L("^p@x1^p is shredded and slightly damaged.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return "^p" + mob.name(viewer) + "^p is showing numerous threads.^N";
+			return L("^p@x1^p is showing numerous threads.^N",mob.name(viewer));
 		else
 		if(pct<.80)
-			return "^g" + mob.name(viewer) + "^g is showing some threads.^N";
+			return L("^g@x1^g is showing some threads.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return "^g" + mob.name(viewer) + "^g is showing small threads.^N";
+			return L("^g@x1^g is showing small threads.^N",mob.name(viewer));
 		else
 		if(pct<.99)
-			return "^g" + mob.name(viewer) + "^g is no longer in perfect condition.^N";
+			return L("^g@x1^g is no longer in perfect condition.^N",mob.name(viewer));
 		else
-			return "^c" + mob.name(viewer) + "^c is in perfect condition.^N";
+			return L("^c@x1^c is in perfect condition.^N",mob.name(viewer));
 	}
 	
 	@Override 

@@ -111,36 +111,36 @@ public class Goat extends StdRace
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name(viewer) + "^r is hovering on deaths door!^N";
+			return L("^r@x1^r is hovering on deaths door!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return "^r" + mob.name(viewer) + "^r is covered in blood and matted wool.^N";
+			return L("^r@x1^r is covered in blood and matted wool.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return "^r" + mob.name(viewer) + "^r is bleeding badly from lots of wounds.^N";
+			return L("^r@x1^r is bleeding badly from lots of wounds.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return "^y" + mob.name(viewer) + "^y has large patches of bloody matted hair.^N";
+			return L("^y@x1^y has large patches of bloody matted hair.^N",mob.name(viewer));
 		else
 		if(pct<.50)
-			return "^y" + mob.name(viewer) + "^y has some bloody matted wool.^N";
+			return L("^y@x1^y has some bloody matted wool.^N",mob.name(viewer));
 		else
 		if(pct<.60)
-			return "^p" + mob.name(viewer) + "^p has a lot of cuts and gashes.^N";
+			return L("^p@x1^p has a lot of cuts and gashes.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return "^p" + mob.name(viewer) + "^p has a few cut patches.^N";
+			return L("^p@x1^p has a few cut patches.^N",mob.name(viewer));
 		else
 		if(pct<.80)
-			return "^g" + mob.name(viewer) + "^g has a cut patch of wool.^N";
+			return L("^g@x1^g has a cut patch of wool.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return "^g" + mob.name(viewer) + "^g has some disheveled hairs.^N";
+			return L("^g@x1^g has some disheveled hairs.^N",mob.name(viewer));
 		else
 		if(pct<.99)
-			return "^g" + mob.name(viewer) + "^g has some misplaced hairs.^N";
+			return L("^g@x1^g has some misplaced hairs.^N",mob.name(viewer));
 		else
-			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
+			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
 	@Override
 	public List<RawMaterial> myResources()
