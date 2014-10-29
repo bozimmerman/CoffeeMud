@@ -53,7 +53,7 @@ public class Test extends StdCommand
 {
 	public Test(){}
 
-	private final String[] access=I(new String[]{"Test"});
+	private final String[] access=I(new String[]{"TEST"});
 	@Override public String[] getAccessWords(){return access;}
 
 	public static final String[] spells={"Spell_Blur","Spell_ResistMagicMissiles"};
