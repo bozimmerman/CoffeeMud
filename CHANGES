@@ -1,4 +1,6 @@
 # Build 5.8.4 Released 11/?/2014
+   *. Database Schema Updated for CMBKLG.  See the Installation Guide about running DBUpgrade.
+   1. Channels now save their back messages to the database for perpetual enjoyment. Can be turned off from INI file.
  
 # Build 5.8.3 Release 10/27/2014
    *. Database Schema Updated for CMCHAR.CMDESC and CMCHAR.CMCHID.  See the Installation Guide about running DBUpgrade.

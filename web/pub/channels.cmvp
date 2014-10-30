@@ -36,6 +36,8 @@
 		<P>
 		</CENTER>
 		@AddRequestParameter?CHANNEL=@@RequestParameter?CHANNELBACK@@ @
+		@AddRequestParameter?CHANNELBACKLOGPAGESIZE=10@
+		<INPUT TYPE=HIDDEN NAME=CHANNELBACKLOGPAGE VALUE="@RequestParameter?CHANNELBACKLOGPAGE@">
 		<P>
 		@if?!CheckReqParm?CHANNEL=@
 		<B>Back logs for @RequestParameter?CHANNEL@</B><BR>
@@ -43,6 +45,23 @@
 			@loop@
 			@ChannelBackLogNext@<P>
 			@back@
+			<TABLE WIDTH=100% BORDER=0>
+			<TR>
+				<TD WIDTH=20%>
+					@if?!CheckReqParm?CHANNELBACKLOGPAGE=&||CHANNELBACKLOGPAGE=0@
+						@AddRequestParameter?CHANNELBACKLOGPAGE=--@
+						<a href="channels.cmvp?CHANNELBACKLOGPAGE=@RequestParameter?CHANNELBACKLOGPAGE@&@RequestParametersEncoded@">Prev Page</a>
+						@AddRequestParameter?CHANNELBACKLOGPAGE=++@
+					@endif@
+				</TD>
+				<TD>
+					@if?CheckReqParm?CHANNELBACKLOGNEXTPAGE=true@
+						@AddRequestParameter?CHANNELBACKLOGPAGE=++@
+						<a href="channels.cmvp?CHANNELBACKLOGPAGE=@RequestParameter?CHANNELBACKLOGPAGE@&@RequestParametersEncoded@">Next Page</a>
+					@endif@
+				</TD>
+			</TR>
+			</TABLE>
 		@endif@
 	@endif@
 </body>

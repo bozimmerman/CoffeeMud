@@ -728,6 +728,29 @@ public interface CMMsg extends CMCommon
 	 * @return this
 	 */
 	public CMMsg addTrailerRunnable(final Runnable runner);
+
+	/**
+	 * Unserializes this message as well as it reasonably can.
+	 * It skips any trailer messages and runnables.
+	 * @See {@link CMMsg#toFlatString()}
+	 * @param flat the serialized message
+	 */
+	public void parseFlatString(final String flat);
+	
+	/**
+	 * Serializes this message as well as it reasonably can.
+	 * It skips any trailer messages and runnables.
+	 * @See {@link CMMsg#parseFlatString(String)}
+	 * @return the serialized message
+	 */
+	public String toFlatString();
+
+	/**
+	 * Whether this object instance is functionally identical to the object passed in.
+	 * @param E the object to compare this one to
+	 * @return whether this object is the same as the one passed in
+	 */
+	public boolean sameAs(CMMsg E);
 	
 	// 0-1999 are message types
 	// 2000-2047 are channels

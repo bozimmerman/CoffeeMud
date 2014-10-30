@@ -205,4 +205,10 @@ CMPASS string NULL
 CMCHRS string NULL
 CMAXML string NULL
 
+CMBKLG
+CMNAME string KEY
+CMINDX integer KEY
+CMDATE long NULL
+CMDATA string NULL
+
 #CONVERTER=com.planet_ink.coffee_mud.core.database.DBUpgradeConversions

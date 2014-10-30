@@ -586,4 +586,130 @@ public class DefaultMessage implements CMMsg
 		return super.hashCode();
 	}
 
+	@Override
+	public String toFlatString()
+	{
+		final StringBuilder str=new StringBuilder("");
+		str.append(targetMajorMask).append(",");
+		str.append(sourceMajorMask).append(",");
+		str.append(othersMajorMask).append(",");
+		str.append(targetMinorType).append(",");
+		str.append(sourceMinorType).append(",");
+		str.append(othersMinorType).append(",");
+		if(myAgent == null)
+			str.append(",");
+		else
+			str.append(myAgent.ID()).append(":").append(CMStrings.replaceAll(myAgent.Name(),",","&comma;")).append(",");
+		if(myTarget == null)
+			str.append(",");
+		else
+			str.append(myTarget.ID()).append(":").append(CMStrings.replaceAll(myTarget.Name(),",","&comma;")).append(",");
+		if(myTool == null)
+			str.append(",");
+		else
+			str.append(myTool.ID()).append(":").append(CMStrings.replaceAll(myTool.Name(),",","&comma;")).append(",");
+		str.append(sourceMsg != null ? CMStrings.replaceAll(sourceMsg,",","&comma;") : "&null;").append(",");
+		str.append(targetMsg != null ? CMStrings.replaceAll(targetMsg,",","&comma;") : "&null;").append(",");
+		str.append(othersMsg != null ? CMStrings.replaceAll(othersMsg,",","&comma;") : "&null;");
+		return str.toString();
+	}
+
+	protected CMObject parseFlatObject(final String part, final CMClass.CMObjectType preferClass)
+	{
+		if((part==null)||(part.length()==0))
+			return null;
+		final String[] subParts=part.split(":",2);
+		if(subParts.length < 2)
+			return null;
+		if(subParts[0].equals("StdMOB") || subParts[0].equals("StdRideable"))
+		{
+			final MOB M=CMLib.players().getLoadPlayer(subParts[1]);
+			if(M != null)
+				return M;
+		}
+		CMObject o;
+		o = CMClass.getCommon(subParts[0]);
+		if(o == null)
+			o = CMClass.getByType(subParts[0], preferClass);
+		if(o == null)
+			o = CMClass.getUnknown(subParts[0]);
+		if((o == null) || (o instanceof MOB))
+			o = CMClass.getFactoryMOB();
+		if(o instanceof Social)
+			o = CMLib.socials().fetchSocial(subParts[1], true);
+		else
+		if((o instanceof Ability) && (myAgent != null))
+		{
+			Ability eA=myAgent.fetchEffect(subParts[1]);
+			Ability A = null;
+			if((eA != null) && (eA.invoker() == myAgent))
+				o = eA;
+			else
+			{
+				A = myAgent.fetchAbility(subParts[1]);
+				if(A != null)
+					o = A;
+				else
+				if(eA != null)
+					o = eA;
+			}
+		}
+		else
+		if((o instanceof Environmental)&&(!o.name().equals(subParts[1])))
+			((Environmental)o).setName(subParts[1]);
+		if((o instanceof MOB)&&(((MOB)o).location()==null))
+			((MOB)o).setLocation(CMLib.map().getRandomRoom());
+		return o;
+	}
+	
+	@Override
+	public void parseFlatString(final String flat)
+	{
+		final String[] parts=flat.split(",");
+		if(parts.length < 12 )
+			throw new IllegalArgumentException("Wrong number of commas in argument: "+flat);
+		targetMajorMask = CMath.s_int(parts[0]);
+		sourceMajorMask = CMath.s_int(parts[1]);
+		othersMajorMask = CMath.s_int(parts[2]);
+		targetMinorType = CMath.s_int(parts[3]);
+		sourceMinorType = CMath.s_int(parts[4]);
+		othersMinorType = CMath.s_int(parts[5]);
+		CMObject o;
+		o = parseFlatObject(parts[6], CMClass.CMObjectType.MOB);
+		if(o instanceof MOB)
+			myAgent = (MOB)o;
+		else
+			throw new IllegalArgumentException("Agent is not a MOB: "+parts[6]);
+		o = parseFlatObject(parts[7], CMClass.CMObjectType.MOB);
+		if((o==null) || (o instanceof Environmental))
+			myTarget = (Environmental)o;
+		else
+			throw new IllegalArgumentException("Target is not an Environmental: "+parts[7]);
+		o = parseFlatObject(parts[8], CMClass.CMObjectType.ABILITY);
+		if((o==null) || (o instanceof Environmental))
+			myTool = (Environmental)o;
+		else
+			throw new IllegalArgumentException("Tool is not an Environmental: "+parts[8]);
+		sourceMsg=parts[9].equals("&null;") ? null : CMStrings.replaceAll(parts[9],"&comma;",",");
+		targetMsg=parts[10].equals("&null;") ? null : CMStrings.replaceAll(parts[10],"&comma;",",");
+		othersMsg=parts[11].equals("&null;") ? null : CMStrings.replaceAll(parts[11],"&comma;",",");
+	}
+	
+	@Override
+	public boolean sameAs(CMMsg E)
+	{
+		if(E==null)
+			return false;
+		if((E.source() != source())
+		||(E.target() != target())
+		||(E.tool() != tool())
+		||(E.sourceCode()!=sourceCode())
+		||(E.targetCode()!=targetCode())
+		||(E.othersCode()!=othersCode())
+		||(!(""+E.sourceMessage()).equals(sourceMessage()))
+		||(!(""+E.targetMessage()).equals(targetMessage()))
+		||(!(""+E.othersMessage()).equals(othersMessage())))
+			return false;
+		return true;
+	}
 }

@@ -41,36 +41,46 @@ public class ChannelBackLogNext extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("CHANNELBACKLOG");
+		String pageNumStr=httpReq.getUrlParameter("CHANNELBACKLOGPAGE");
+		String pageSizeStr=httpReq.getUrlParameter("CHANNELBACKLOGPAGESIZE");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("CHANNELBACKLOG");
+			if(last!=null)
+				httpReq.removeUrlParameter("CHANNELBACKLOG");
 			return "";
 		}
 		final String channel=httpReq.getUrlParameter("CHANNEL");
 		if(channel==null) return " @break@";
 		final int channelInt=CMLib.channels().getChannelIndex(channel);
 		if(channelInt<0) return " @break@";
+		httpReq.addFakeUrlParameter("CHANNELBACKLOGNEXTPAGE", "false");
 		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 		if(mob!=null)
 		{
 			if(CMLib.channels().mayReadThisChannel(mob,channelInt,true))
 			{
+				int pageSize = CMath.s_int(pageSizeStr);
+				if(pageSize <=0)
+					pageSize = 100;
+				int pageNum = CMath.s_int(pageNumStr); // page 0 is OK
 				@SuppressWarnings("unchecked")
-				List<ChannelsLibrary.ChannelMsg> que=(List<ChannelsLibrary.ChannelMsg>)httpReq.getRequestObjects().get("CHANNELMSG_"+channelInt+" QUE");
+				List<ChannelsLibrary.ChannelMsg> que=(List<ChannelsLibrary.ChannelMsg>)httpReq.getRequestObjects().get("CHANNELMSG_"+channelInt+" QUE "+pageSize+" "+pageNum);
 				if(que==null)
 				{
-					final List<ChannelsLibrary.ChannelMsg> oldQue=CMLib.channels().getChannelQue(channelInt);
+					final List<ChannelsLibrary.ChannelMsg> oldQue=CMLib.channels().getChannelQue(channelInt,pageNum * pageSize, pageSize);
 					que=new Vector<ChannelsLibrary.ChannelMsg>(oldQue.size());
 					que.addAll(oldQue);
-					httpReq.getRequestObjects().put("CHANNELMSG_"+channelInt+" QUE",que);
+					httpReq.getRequestObjects().put("CHANNELMSG_"+channelInt+" QUE "+pageSize+" "+pageNum,que);
 				}
+				httpReq.addFakeUrlParameter("CHANNELBACKLOGNEXTPAGE", Boolean.toString(que.size()>=pageSize));
 
 				while(true)
 				{
 					final int num=CMath.s_int(last);
+					final int doNum=que.size()-num-1;
 					last=""+(num+1);
 					httpReq.addFakeUrlParameter("CHANNELBACKLOG",last);
-					if((num<0)||(num>=que.size()))
+					if((doNum<0)||(doNum>=que.size()))
 					{
 						httpReq.addFakeUrlParameter("CHANNELBACKLOG","");
 						if(parms.containsKey("EMPTYOK"))
@@ -79,7 +89,7 @@ public class ChannelBackLogNext extends StdWebMacro
 					}
 					final boolean areareq=CMLib.channels().getChannel(channelInt).flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
 
-					final ChannelsLibrary.ChannelMsg cmsg=que.get(num);
+					final ChannelsLibrary.ChannelMsg cmsg=que.get(doNum);
 					final CMMsg msg=cmsg.msg;
 					String str=null;
 					if((mob==msg.source())&&(msg.sourceMessage()!=null))

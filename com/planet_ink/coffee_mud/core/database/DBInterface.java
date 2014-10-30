@@ -58,6 +58,7 @@ public class DBInterface implements DatabaseEngine
 	GRaceLoader GRaceLoader=null;
 	GCClassLoader GCClassLoader=null;
 	ClanLoader ClanLoader=null;
+	BackLogLoader BackLogLoader = null;
 	DBConnector DB=null;
 
 	public DBInterface(DBConnector DB, Set<String> privacyV)
@@ -79,6 +80,7 @@ public class DBInterface implements DatabaseEngine
 		this.JournalLoader=new JournalLoader((privacyV==null)||privacyV.contains(DatabaseTables.DBJOURNALS.toString())?DB:oldBaseDB);
 		this.QuestLoader=new QuestLoader((privacyV==null)||privacyV.contains(DatabaseTables.DBQUEST.toString())?DB:oldBaseDB);
 		this.ClanLoader=new ClanLoader((privacyV==null)||privacyV.contains(DatabaseTables.DBCLANS.toString())?DB:oldBaseDB);
+		this.BackLogLoader=new BackLogLoader((privacyV==null)||privacyV.contains(DatabaseTables.DBBACKLOG.toString())?DB:oldBaseDB);
 	}
 	@Override
 	public CMObject newInstance()
@@ -652,6 +654,15 @@ public class DBInterface implements DatabaseEngine
 	public void DBDeleteVFSFile(String filename)
 	{ VFSLoader.DBDelete(filename);}
 
+	@Override
+	public List<Pair<String,Long>> getBackLogEntries(String channelName, final int newestToSkip, final int numToReturn)
+	{ return BackLogLoader.getBackLogEntries(channelName, newestToSkip, numToReturn); }
+	
+	@Override
+	public void addBackLogEntry(String channelName, final String entry)
+	{ BackLogLoader.addBackLogEntry(channelName, entry); }
+
+	
 	@Override
 	public int DBRawExecute(String sql) throws CMException
 	{

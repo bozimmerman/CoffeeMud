@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.ChannelFlag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.ChannelMsg;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -59,16 +60,45 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	}
 
 	@Override
-	public List<ChannelMsg> getChannelQue(int i)
+	public List<ChannelMsg> getChannelQue(int i, int numNewToSkip, int numToReturn)
 	{
 		if((i>=0)&&(i<channelList.size()))
-			return channelList.get(i).queue;
+		{
+			final CMChannel channel = channelList.get(i);
+			List<ChannelMsg> msgs = channel.queue;
+			if((numNewToSkip>0)&&(numNewToSkip >= msgs.size()))
+			{
+				List<ChannelMsg> msgs2=new Vector<ChannelMsg>(numToReturn);
+				for(int x=numNewToSkip;x<msgs.size();x++)
+					msgs2.add(msgs.get(x));
+				msgs=msgs2;
+			}
+			if(msgs.size()>=numToReturn)
+				return msgs;
+			if(channel.flags.contains(ChannelsLibrary.ChannelFlag.NOBACKLOG))
+				return msgs;
+			final List<Pair<String,Long>> backLog=CMLib.database().getBackLogEntries(channel.name, numNewToSkip, numToReturn);
+			if(backLog.size()<=msgs.size())
+				return msgs;
+			final List<ChannelMsg> allMsgs = new XVector<ChannelMsg>();
+			for(int x=0;x<backLog.size()-msgs.size();x++)
+			{
+				final CMMsg msg=CMClass.getMsg();
+				msg.parseFlatString(backLog.get(x).first);
+				allMsgs.add(new ChannelMsg(msg,backLog.get(x).second.longValue()));
+			}
+			allMsgs.addAll(msgs);
+			return allMsgs;
+		}
 		return emptyQueue;
 	}
 
 	@Override
 	public boolean mayReadThisChannel(MOB sender, boolean areaReq, MOB M, int i)
-	{ return mayReadThisChannel(sender,areaReq,M,i,false);}
+	{ 
+		return mayReadThisChannel(sender,areaReq,M,i,false);
+	}
+	
 	@Override
 	public boolean mayReadThisChannel(MOB sender,
 									  boolean areaReq,
@@ -173,16 +203,19 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	}
 
 	@Override
-	public void channelQueUp(int i, CMMsg msg)
+	public void channelQueUp(final int i, final CMMsg msg)
 	{
 		CMLib.map().sendGlobalMessage(msg.source(),CMMsg.TYP_CHANNEL,msg);
-		final List<ChannelMsg> q=getChannelQue(i);
+		final CMChannel channel=getChannel(i);
+		final List<ChannelMsg> q=channel.queue;
 		synchronized(q)
 		{
 			if(q.size()>=QUEUE_SIZE)
 				q.remove(0);
 			q.add(new ChannelMsg(msg));
 		}
+		if(!channel.flags.contains(ChannelsLibrary.ChannelFlag.NOBACKLOG))
+			CMLib.database().addBackLogEntry(getChannel(i).name, msg.toFlatString());
 	}
 
 	@Override

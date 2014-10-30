@@ -54,7 +54,8 @@ public interface DatabaseEngine extends CMLibrary
 {
 	public static enum DatabaseTables {
 		DBABILITY,DBCHARCLASS,DBRACE,DBPLAYERS,DBMAP,
-		DBSTATS,DBPOLLS,DBVFS,DBJOURNALS,DBQUEST,DBCLANS
+		DBSTATS,DBPOLLS,DBVFS,DBJOURNALS,DBQUEST,DBCLANS,
+		DBBACKLOG
 	}
 
 	public String errorStatus();
@@ -205,6 +206,8 @@ public interface DatabaseEngine extends CMLibrary
 	public MOB.Tattoo parseTattoo(String tattoo);
 	public int DBRawExecute(String sql) throws CMException;
 	public List<String[]> DBRawQuery(String sql) throws CMException;
+	public void addBackLogEntry(String channelName, final String entry);
+	public List<Pair<String,Long>> getBackLogEntries(String channelName, final int newestToSkip, final int numToReturn);
 
 	public static class PlayerData
 	{

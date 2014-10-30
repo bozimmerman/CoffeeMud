@@ -35,7 +35,7 @@ public interface ChannelsLibrary extends CMLibrary
 
 	public int getNumChannels();
 	public CMChannel getChannel(int i);
-	public List<ChannelMsg> getChannelQue(int i);
+	public List<ChannelMsg> getChannelQue(int i, int numNewToSkip, int numToReturn);
 	public boolean mayReadThisChannel(MOB sender, boolean areaReq, MOB M, int i);
 	public boolean mayReadThisChannel(MOB sender, boolean areaReq, MOB M, int i, boolean offlineOK);
 	public boolean mayReadThisChannel(MOB sender, boolean areaReq, Session ses, int i);
@@ -80,6 +80,7 @@ public interface ChannelsLibrary extends CMLibrary
 		public final CMMsg msg;
 		public long ts;
 		public ChannelMsg(CMMsg msg){this.msg=msg; ts=System.currentTimeMillis();}
+		public ChannelMsg(CMMsg msg, long tm){this.msg=msg; ts=tm;}
 	}
 
 	public static enum ChannelFlag {
@@ -87,6 +88,6 @@ public interface ChannelsLibrary extends CMLibrary
 		EXECUTIONS,LOGINS,LOGOFFS,BIRTHS,MARRIAGES,
 		DIVORCES,CHRISTENINGS,LEVELS,DETAILEDLEVELS,DEATHS,DETAILEDDEATHS,
 		CONQUESTS,CONCEPTIONS,NEWPLAYERS,LOSTLEVELS,PLAYERPURGES,CLANINFO,
-		WARRANTS, PLAYERREADONLY, CLANALLYONLY, ACCOUNTOOC
+		WARRANTS, PLAYERREADONLY, CLANALLYONLY, ACCOUNTOOC, NOBACKLOG
 	}
 }

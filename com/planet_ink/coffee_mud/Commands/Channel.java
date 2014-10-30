@@ -83,7 +83,7 @@ public class Channel extends StdCommand
 
 		if(commands.size()==0)
 		{
-			int size = CMLib.channels().getChannelQue(channelInt).size();
+			int size = CMLib.channels().getChannelQue(channelInt, 0, 5).size();
 			if(size>0)
 			{
 				if(size>5) size=5;
@@ -127,7 +127,7 @@ public class Channel extends StdCommand
 		&&(CMath.isNumber((String)commands.lastElement())))
 		{
 			int num=CMath.s_int((String)commands.lastElement());
-			final List<ChannelsLibrary.ChannelMsg> que=CMLib.channels().getChannelQue(channelInt);
+			final List<ChannelsLibrary.ChannelMsg> que=CMLib.channels().getChannelQue(channelInt, 0, num);
 			boolean showedAny=false;
 			if(que.size()>0)
 			{
