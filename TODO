@@ -1,5 +1,6 @@
 TECH
    *. test launch and landing
+   *. Solve problems with ShipWide listeners/event pushers -- that way no room dropping of every msg
    *. interacting items of diff tech level might damage each other
    *. personal scanner/tricorder software: mineral scanner, computer interface (with ship perhaps?)!
    *. entry systems for ships (default entry key card, voice code, identifying scanner)

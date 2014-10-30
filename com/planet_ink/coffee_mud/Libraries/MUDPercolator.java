@@ -388,12 +388,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			}
 	}
 
-	protected void layoutFollow(LayoutNode n, LayoutTypes type, int direction, HashSet<LayoutNode> nodesDone, List<LayoutNode> group)
+	protected void layoutFollow(LayoutNode n, LayoutTypes type, int direction, HashSet<LayoutNode> nodesAlreadyGrouped, List<LayoutNode> group)
 	{
 		n=n.links().get(Integer.valueOf(direction));
-		while((n != null) &&(n.type()==LayoutTypes.street) &&(!group.contains(n) &&(!nodesDone.contains(n))))
+		while((n != null) &&(n.type()==LayoutTypes.street) &&(!group.contains(n) &&(!nodesAlreadyGrouped.contains(n))))
 		{
-			nodesDone.add(n);
+			nodesAlreadyGrouped.add(n);
 			group.add(n);
 			n=n.links().get(Integer.valueOf(direction));
 		}
@@ -490,13 +490,16 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	@SuppressWarnings("unchecked")
 	protected Room layOutRooms(Area A, LayoutManager layoutManager, int size, int direction, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
-		final List<LayoutNode> roomsLayout = layoutManager.generate(size,direction);
-		if((roomsLayout==null)||(roomsLayout.size()==0))
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
+			Log.debugOut("MudPercolator","Using LayoutManager:"+layoutManager.name());
+		final Random random=new Random(System.currentTimeMillis());
+		final List<LayoutNode> roomsToLayOut = layoutManager.generate(size,direction);
+		if((roomsToLayOut==null)||(roomsToLayOut.size()==0))
 			throw new CMException("Unable to fill area of size "+size+" off layout "+layoutManager.name());
 		int numLeafs=0;
-		for(int i=0;i<roomsLayout.size();i++)
+		for(int i=0;i<roomsToLayOut.size();i++)
 		{
-			final LayoutNode node=roomsLayout.get(i);
+			final LayoutNode node=roomsToLayOut.get(i);
 			if(node.type()==LayoutTypes.leaf)
 				numLeafs++;
 		}
@@ -504,37 +507,43 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 
 		// now break our rooms into logical groups, generate those rooms.
 		final List<List<LayoutNode>> roomGroups = new Vector<List<LayoutNode>>();
-		final LayoutNode magicRoomNode = roomsLayout.get(0);
-		final HashSet<LayoutNode> nodesDone=new HashSet<LayoutNode>();
+		final LayoutNode magicRoomNode = roomsToLayOut.get(0);
+		final HashSet<LayoutNode> nodesAlreadyGrouped=new HashSet<LayoutNode>();
 		boolean keepLooking=true;
 		while(keepLooking)
 		{
 			keepLooking=false;
-			for(int i=0;i<roomsLayout.size();i++)
+			for(int i=0;i<roomsToLayOut.size();i++)
 			{
-				final LayoutNode node=roomsLayout.get(i);
+				final LayoutNode node=roomsToLayOut.get(i);
 				if(node.type()==LayoutTypes.leaf)
 				{
 					final Vector<LayoutNode> group=new Vector<LayoutNode>();
 					group.add(node);
-					nodesDone.add(node);
+					nodesAlreadyGrouped.add(node);
 					for(final Integer linkDir : node.links().keySet())
 					{
 						final LayoutNode dirNode=node.links().get(linkDir);
-						if(!nodesDone.contains(dirNode))
+						if(!nodesAlreadyGrouped.contains(dirNode))
 						{
 							if((dirNode.type()==LayoutTypes.leaf)
 							||(dirNode.type()==LayoutTypes.interior)&&(node.isFlagged(LayoutFlags.offleaf)))
 							{
 								group.addElement(dirNode);
-								nodesDone.add(node);
+								nodesAlreadyGrouped.add(dirNode);
 							}
 						}
 					}
 					for(final LayoutNode n : group)
-						roomsLayout.remove(n);
+						roomsToLayOut.remove(n);
 					if(group.size()>0)
-						roomGroups.add(group);
+					{
+						// randomize the leafs a bit
+						if(roomGroups.size()==0)
+							roomGroups.add(group);
+						else 
+							roomGroups.add(random.nextInt(roomGroups.size()),group);
+					}
 					keepLooking=true;
 					break;
 				}
@@ -544,37 +553,37 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		while(keepLooking)
 		{
 			keepLooking=false;
-			for(int i=0;i<roomsLayout.size();i++)
+			for(int i=0;i<roomsToLayOut.size();i++)
 			{
-				final LayoutNode node=roomsLayout.get(i);
+				final LayoutNode node=roomsToLayOut.get(i);
 				if(node.type()==LayoutTypes.street)
 				{
 					final List<LayoutNode> group=new Vector<LayoutNode>();
 					group.add(node);
-					nodesDone.add(node);
+					nodesAlreadyGrouped.add(node);
 					final LayoutRuns run=node.getFlagRuns();
 					if(run==LayoutRuns.ns)
 					{
-						layoutFollow(node,LayoutTypes.street,Directions.NORTH,nodesDone,group);
-						layoutFollow(node,LayoutTypes.street,Directions.SOUTH,nodesDone,group);
+						layoutFollow(node,LayoutTypes.street,Directions.NORTH,nodesAlreadyGrouped,group);
+						layoutFollow(node,LayoutTypes.street,Directions.SOUTH,nodesAlreadyGrouped,group);
 					}
 					else
 					if(run==LayoutRuns.ew)
 					{
-						layoutFollow(node,LayoutTypes.street,Directions.EAST,nodesDone,group);
-						layoutFollow(node,LayoutTypes.street,Directions.WEST,nodesDone,group);
+						layoutFollow(node,LayoutTypes.street,Directions.EAST,nodesAlreadyGrouped,group);
+						layoutFollow(node,LayoutTypes.street,Directions.WEST,nodesAlreadyGrouped,group);
 					}
 					else
 					if(run==LayoutRuns.nesw)
 					{
-						layoutFollow(node,LayoutTypes.street,Directions.NORTHEAST,nodesDone,group);
-						layoutFollow(node,LayoutTypes.street,Directions.SOUTHWEST,nodesDone,group);
+						layoutFollow(node,LayoutTypes.street,Directions.NORTHEAST,nodesAlreadyGrouped,group);
+						layoutFollow(node,LayoutTypes.street,Directions.SOUTHWEST,nodesAlreadyGrouped,group);
 					}
 					else
 					if(run==LayoutRuns.nwse)
 					{
-						layoutFollow(node,LayoutTypes.street,Directions.NORTHWEST,nodesDone,group);
-						layoutFollow(node,LayoutTypes.street,Directions.SOUTHEAST,nodesDone,group);
+						layoutFollow(node,LayoutTypes.street,Directions.NORTHWEST,nodesAlreadyGrouped,group);
+						layoutFollow(node,LayoutTypes.street,Directions.SOUTHEAST,nodesAlreadyGrouped,group);
 					}
 					else
 					{
@@ -584,10 +593,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							if(node.links().get(Integer.valueOf(d))!=null)
 							{
 								final List<LayoutNode> grpCopy=new XVector<LayoutNode>(group);
-								final HashSet<LayoutNode> nodesDoneCopy=(HashSet<LayoutNode>)nodesDone.clone();
-								layoutFollow(node,LayoutTypes.street,d,nodesDoneCopy,grpCopy);
+								final HashSet<LayoutNode> nodesAlreadyGroupedCopy=(HashSet<LayoutNode>)nodesAlreadyGrouped.clone();
+								layoutFollow(node,LayoutTypes.street,d,nodesAlreadyGroupedCopy,grpCopy);
 								if(node.links().get(Integer.valueOf(Directions.getOpDirectionCode(d)))!=null)
-									layoutFollow(node,LayoutTypes.street,Directions.getOpDirectionCode(d),nodesDoneCopy,grpCopy);
+									layoutFollow(node,LayoutTypes.street,Directions.getOpDirectionCode(d),nodesAlreadyGroupedCopy,grpCopy);
 								if(grpCopy.size()>topSize)
 								{
 									topSize=grpCopy.size();
@@ -596,13 +605,13 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							}
 						if(topDir>=0)
 						{
-							layoutFollow(node,LayoutTypes.street,topDir,nodesDone,group);
+							layoutFollow(node,LayoutTypes.street,topDir,nodesAlreadyGrouped,group);
 							if(node.links().get(Integer.valueOf(Directions.getOpDirectionCode(topDir)))!=null)
-								layoutFollow(node,LayoutTypes.street,Directions.getOpDirectionCode(topDir),nodesDone,group);
+								layoutFollow(node,LayoutTypes.street,Directions.getOpDirectionCode(topDir),nodesAlreadyGrouped,group);
 						}
 					}
 					for(final LayoutNode n : group)
-						roomsLayout.remove(n);
+						roomsToLayOut.remove(n);
 					if(group.size()>0)
 						roomGroups.add(group);
 					keepLooking=true;
@@ -610,17 +619,18 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			}
 		}
 
-		while(roomsLayout.size() >0)
+		while(roomsToLayOut.size() >0)
 		{
-			final LayoutNode node=roomsLayout.get(0);
+			final LayoutNode node=roomsToLayOut.get(0);
 			final Vector<LayoutNode> group=new Vector<LayoutNode>();
 			group.add(node);
-			nodesDone.add(node);
-			layoutRecursiveFill(node,nodesDone,group,node.type());
+			nodesAlreadyGrouped.add(node);
+			layoutRecursiveFill(node,nodesAlreadyGrouped,group,node.type());
 			for(final LayoutNode n : group)
-				roomsLayout.remove(n);
+				roomsToLayOut.remove(n);
 			roomGroups.add(group);
 		}
+		
 		// make CERTAIN that the magic first room in the layout always
 		// gets ID#0.
 		List<LayoutNode> magicGroup=null;
@@ -647,6 +657,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			newDefined.putAll(defined);
 			groupDefinitions.put(group, newDefined);
 		}
+		
 		Map<String,Object> groupDefined = groupDefinitions.get(magicGroup);
 		final Room magicRoom = processRoom(A,direction,piece,magicRoomNode,groupDefined);
 		for(Map<String,Object> otherDefineds : groupDefinitions.values())
@@ -680,20 +691,37 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			}
 		}
 
+		for(final Integer linkDir : magicRoomNode.links().keySet())
+		{
+			final LayoutNode linkNode=magicRoomNode.getLink(linkDir.intValue());
+			if((magicRoom.getRawExit(linkDir.intValue())==null) || (linkNode.room() == null))
+				Log.errOut("MUDPercolator","Generated an unpaired node for "+magicRoom.roomID());
+			else
+				magicRoom.rawDoors()[linkDir.intValue()]=linkNode.room();
+		}
+		
 		//now do a final-link on the rooms
 		for(final List<LayoutNode> group : roomGroups)
 		{
 			for(final LayoutNode node : group)
 			{
 				final Room R=node.room();
-				for(final Integer linkDir : node.links().keySet())
+				if(node != magicRoomNode)
 				{
-					final LayoutNode linkNode=node.getLink(linkDir.intValue());
-					R.rawDoors()[linkDir.intValue()]=linkNode.room();
+					if((R==null)||(node.links().keySet().size()==0))
+						Log.errOut("MUDPercolator",layoutManager.name()+" generated a linkless node: "+node.toString());
+					else
+					for(final Integer linkDir : node.links().keySet())
+					{
+						final LayoutNode linkNode=node.getLink(linkDir.intValue());
+						if((R.getRawExit(linkDir.intValue())==null) || (linkNode.room() == null))
+							Log.errOut("MUDPercolator","Generated an unpaired node for "+R.roomID());
+						else
+							R.rawDoors()[linkDir.intValue()]=linkNode.room();
+					}
 				}
 			}
 		}
-
 		return magicRoom;
 	}
 
