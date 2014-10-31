@@ -10,11 +10,12 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.SkillCost;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
+import java.lang.ref.WeakReference;
 import java.util.*;
 
 /*
@@ -38,11 +39,12 @@ public class MOBEater extends ActiveTicker
 	@Override public String ID(){return "MOBEater";}
 	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	@Override public long flags() { return super.flags()|Behavior.FLAG_POTENTIALLYAUTODEATHING; }
-	protected Room Stomach = null;
+	protected Room stomachR = null;
 	protected int digestDown=4;
-	protected Room lastKnownLocation=null;
+	protected Room lastKnownLocationR=null;
+	protected MOB lastKnownEaterM = null;
 	protected int chanceToEat = 5;
-	protected int pctAcidHp = 50;
+	protected int pctAcidHp = 10;
 
 	@Override
 	public String accountForYourself()
@@ -67,67 +69,110 @@ public class MOBEater extends ActiveTicker
 	@Override
 	public void startBehavior(PhysicalAgent forMe)
 	{
-		if(Stomach==null)
-			Stomach = CMClass.getLocale("StdRoom");
 		if((forMe!=null)&&(forMe instanceof MOB))
 		{
-			lastKnownLocation=((MOB)forMe).location();
-			if(lastKnownLocation!=null)
-				Stomach.setArea(lastKnownLocation.getArea());
-			Stomach.setDisplayText(L("The Stomach of @x1",forMe.name()));
-			Stomach.setName(L("the stomach of @x1",forMe.name()));
-			Stomach.setDescription(L("You are in the stomach of @x1.  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.",forMe.name()));
-			Stomach.addNonUninvokableEffect(CMClass.getAbility("Prop_NoRecall"));
-			Stomach.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));
+			if(stomachR==null)
+				stomachR = CMClass.getLocale("StdRoom");
+			lastKnownEaterM=(MOB)forMe;
+			lastKnownLocationR=((MOB)forMe).location();
+			if(lastKnownLocationR!=null)
+				stomachR.setArea(lastKnownLocationR.getArea());
+			stomachR.setDisplayText(L("The Stomach of @x1",forMe.name()));
+			stomachR.setName(L("the stomach of @x1",forMe.name()));
+			stomachR.setDescription(L("You are in the stomach of @x1.  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.",forMe.name()));
+			stomachR.addNonUninvokableEffect(CMClass.getAbility("Prop_NoRecall"));
+			stomachR.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));
+			final ExtendableAbility A=(ExtendableAbility)CMClass.getAbility("ExtAbility");
+			final WeakReference<MOB> eater=new WeakReference<MOB>(lastKnownEaterM);
+			stomachR.addNonUninvokableEffect(A.setAbilityID("MOBEaterStomachWatcher").setMsgListener(new MsgListener(){
+				@Override
+				public void executeMsg(Environmental myHost, CMMsg msg) 
+				{
+					if(A.affecting() instanceof Room)
+					{
+						if((eater.get()==null)||(eater.get().amDestroyed())||(eater.get().amDead()))
+						{
+							CMLib.map().emptyRoom((Room)A.affecting(), null);
+						}
+					}
+				}
+				@Override
+				public boolean okMessage(Environmental myHost, CMMsg msg) 
+				{
+					return true;
+				}
+			}));
 		}
 	}
 
 	public void kill()
 	{
-		if(lastKnownLocation==null) return;
-		if(Stomach==null) return;
+		if((lastKnownLocationR==null)
+		||(stomachR==null)) 
+			return;
 
 		// ===== move all inhabitants to the dragons location
 		// ===== loop through all inhabitants of the stomach
 		final Vector these=new Vector();
-		for (int x=0;x<Stomach.numInhabitants();x++)
+		for (int x=0;x<stomachR.numInhabitants();x++)
 		{
 			// ===== get the tasty morsels
-			final MOB TastyMorsel = Stomach.fetchInhabitant(x);
-			if(TastyMorsel!=null)
-				these.addElement(TastyMorsel);
+			final MOB tastyMorselM = stomachR.fetchInhabitant(x);
+			if(tastyMorselM!=null)
+				these.addElement(tastyMorselM);
+		}
+		
+		for(Enumeration<MOB> p=CMLib.players().players();p.hasMoreElements();)
+		{
+			final MOB M=p.nextElement();
+			if((M!=null)&&(M.location()==stomachR)&&(!CMLib.flags().isInTheGame(M,true))&&(!these.contains(M)))
+			{
+				M.setLocation(lastKnownLocationR);
+				for(int f=0;f<M.numFollowers();f++)
+				{
+					MOB F=M.fetchFollower(f);
+					if((F!=null)&&(F.location()==stomachR)&&(!CMLib.flags().isInTheGame(F,true))&&(!these.contains(F)))
+						F.setLocation(lastKnownLocationR);
+				}
+				CMLib.database().DBUpdatePlayerMOBOnly(M);
+			}
 		}
 
 		// =====move the inventory of the stomach to the room
-		for (int y=0;y<Stomach.numItems();y++)
+		for (int y=0;y<stomachR.numItems();y++)
 		{
-			final Item PartiallyDigestedItem = Stomach.getItem(y);
+			final Item PartiallyDigestedItem = stomachR.getItem(y);
 			if((PartiallyDigestedItem!=null)&&(PartiallyDigestedItem.container()==null))
 				these.addElement(PartiallyDigestedItem);
 		}
+
 		for(int i=0;i<these.size();i++)
 		{
 			if(these.elementAt(i) instanceof Item)
-				lastKnownLocation.moveItemTo((Item)these.elementAt(i),ItemPossessor.Expire.Player_Drop);
+				lastKnownLocationR.moveItemTo((Item)these.elementAt(i),ItemPossessor.Expire.Player_Drop);
 			else
 			if(these.elementAt(i) instanceof MOB)
-				lastKnownLocation.bringMobHere((MOB)these.elementAt(i),false);
+				lastKnownLocationR.bringMobHere((MOB)these.elementAt(i),false);
 		}
-		Stomach.recoverPhyStats();
-		lastKnownLocation.recoverRoomStats();
-		lastKnownLocation=null;
+		stomachR.recoverPhyStats();
+		lastKnownLocationR.recoverRoomStats();
+		lastKnownLocationR=null;
 	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(ticking==null) return true;
-		if(!(ticking instanceof MOB)) return true;
+		if(ticking==null) 
+			return true;
+		if(!(ticking instanceof MOB))
+			return true;
 
 		final MOB mob=(MOB)ticking;
+		if(this.lastKnownEaterM!=mob)
+			this.lastKnownEaterM=mob;
 		if(mob.location()!=null)
-			lastKnownLocation=mob.location();
+			lastKnownLocationR=mob.location();
 
 		if((--digestDown)<=0)
 		{
@@ -141,43 +186,48 @@ public class MOBEater extends ActiveTicker
 			trySwallowWhole(mob);
 		return true;
 	}
+
 	@Override
-	public void executeMsg(Environmental mob, CMMsg msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if((mob instanceof MOB)
-		&&(msg.amISource((MOB)mob))
-		&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
-			kill();
-		super.executeMsg(mob,msg);
+		if(this.lastKnownEaterM != null)
+		{
+			if(((msg.amISource(this.lastKnownEaterM))&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
+			||(!CMLib.flags().isInTheGame(this.lastKnownEaterM, true)))
+				kill();
+		}
+		super.executeMsg(myHost,msg);
 	}
 	protected boolean trySwallowWhole(MOB mob)
 	{
-		if(Stomach==null) return true;
+		if(stomachR==null) 
+			return true;
 		if (CMLib.flags().aliveAwakeMobile(mob,true)
 			&&(mob.rangeToTarget()==0)
 			&&(CMLib.flags().canHear(mob)||CMLib.flags().canSee(mob)||CMLib.flags().canSmell(mob)))
 		{
-			final MOB TastyMorsel = mob.getVictim();
-			if(TastyMorsel==null) return true;
-			if (TastyMorsel.baseWeight()<(mob.phyStats().weight()/2))
+			final MOB tastyMorselM = mob.getVictim();
+			if(tastyMorselM==null) 
+				return true;
+			if (tastyMorselM.baseWeight()<(mob.phyStats().weight()/2))
 			{
 				// ===== The player has been eaten.
 				// ===== move the tasty morsel to the stomach
-				final CMMsg EatMsg=CMClass.getMsg(mob,
-										   TastyMorsel,
+				final CMMsg eatMsg=CMClass.getMsg(mob,
+										   tastyMorselM,
 										   null,
 										   CMMsg.MSG_EAT,
 										   CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,
 										   CMMsg.MSG_NOISYMOVEMENT,
 										   L("<S-NAME> swallow(es) <T-NAMESELF> WHOLE!"));
-				if(mob.location().okMessage(TastyMorsel,EatMsg))
+				if(mob.location().okMessage(tastyMorselM,eatMsg))
 				{
-					mob.location().send(TastyMorsel,EatMsg);
-					if(EatMsg.value()==0)
+					mob.location().send(tastyMorselM,eatMsg);
+					if(eatMsg.value()==0)
 					{
-						Stomach.bringMobHere(TastyMorsel,false);
-						final CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach,null,CMMsg.MSG_ENTER,Stomach.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> slide(s) down the gullet into the stomach!"));
-						Stomach.send(TastyMorsel,enterMsg);
+						stomachR.bringMobHere(tastyMorselM,false);
+						final CMMsg enterMsg=CMClass.getMsg(tastyMorselM,stomachR,null,CMMsg.MSG_ENTER,stomachR.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> slide(s) down the gullet into the stomach!"));
+						stomachR.send(tastyMorselM,enterMsg);
 					}
 				}
 			}
@@ -187,26 +237,29 @@ public class MOBEater extends ActiveTicker
 
 	protected boolean digestTastyMorsels(MOB mob)
 	{
-		if(Stomach==null) return true;
+		if(stomachR==null) 
+			return true;
 		// ===== loop through all inhabitants of the stomach
-		final int morselCount = Stomach.numInhabitants();
+		final int morselCount = stomachR.numInhabitants();
 		for (int x=0;x<morselCount;x++)
 		{
 			// ===== get a tasty morsel
-			final MOB TastyMorsel = Stomach.fetchInhabitant(x);
-			if (TastyMorsel != null)
+			final MOB tastyMorselM = stomachR.fetchInhabitant(x);
+			if (tastyMorselM != null)
 			{
 				final CMMsg DigestMsg=CMClass.getMsg(mob,
-										   TastyMorsel,
+										   tastyMorselM,
 										   null,
 										   CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,
 										   L("<S-NAME> digest(s) <T-NAMESELF>!!"));
 				// no OKaffectS, since the dragon is not in his own stomach.
-				Stomach.send(mob,DigestMsg);
-				int damage=(int)Math.round(TastyMorsel.curState().getHitPoints() * CMath.div(pctAcidHp, 100));
-				if(damage<(TastyMorsel.phyStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()+1;
-				if(DigestMsg.value()!=0) damage=damage/2;
-				CMLib.combat().postDamage(mob,TastyMorsel,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The stomach acid <DAMAGE> <T-NAME>!");
+				stomachR.send(mob,DigestMsg);
+				int damage=(int)Math.round(tastyMorselM.curState().getHitPoints() * CMath.div(pctAcidHp, 100));
+				if(damage<(tastyMorselM.phyStats().level()+6)) 
+					damage=tastyMorselM.curState().getHitPoints()+1;
+				if(DigestMsg.value()!=0) 
+					damage=damage/2;
+				CMLib.combat().postDamage(mob,tastyMorselM,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The stomach acid <DAMAGE> <T-NAME>!");
 			}
 		}
 		return true;
