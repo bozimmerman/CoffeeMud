@@ -659,6 +659,10 @@ public class DBInterface implements DatabaseEngine
 	{ return BackLogLoader.getBackLogEntries(channelName, newestToSkip, numToReturn); }
 	
 	@Override
+	public void trimBackLogEntries(final String[] channels, final int maxMessages, final long oldestTime)
+	{ BackLogLoader.trimBackLogEntries(channels, maxMessages, oldestTime); }
+	
+	@Override
 	public void addBackLogEntry(String channelName, final String entry)
 	{ BackLogLoader.addBackLogEntry(channelName, entry); }
 

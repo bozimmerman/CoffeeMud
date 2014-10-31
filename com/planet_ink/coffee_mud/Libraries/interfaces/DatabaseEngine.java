@@ -208,6 +208,7 @@ public interface DatabaseEngine extends CMLibrary
 	public List<String[]> DBRawQuery(String sql) throws CMException;
 	public void addBackLogEntry(String channelName, final String entry);
 	public List<Pair<String,Long>> getBackLogEntries(String channelName, final int newestToSkip, final int numToReturn);
+	public void trimBackLogEntries(final String[] channels, final int maxMessages, final long oldestTime);
 
 	public static class PlayerData
 	{

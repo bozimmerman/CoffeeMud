@@ -147,7 +147,8 @@ public class CMProps extends Properties
 		CLANFORUMDATA,
 		FORMULA_HITPOINTRECOVER,
 		FORMULA_MANARECOVER,
-		FORMULA_MOVESRECOVER
+		FORMULA_MOVESRECOVER,
+		CHANNELBACKLOG
 	}
 
 	public static enum Int {
@@ -1176,6 +1177,7 @@ public class CMProps extends Properties
 		setVar(Str.WIZLISTMASK,getStr("WIZLISTMASK"));
 		setUpLowVar(Str.DEFAULTPARENTAREA,getStr("DEFAULTPARENTAREA"));
 		setUpLowVar(Str.CLANWEBSITES,getStr("CLANWEBSITES"));
+		setVar(Str.CHANNELBACKLOG,getStr("CHANNELBACKLOG"));
 		setUpLowVar(Str.CLANFORUMDATA,getStr("CLANFORUMDATA"));
 		setUpLowVar(Str.STARTINGITEMS,getStr("STARTINGITEMS","1 Waterskin, 1 Ration, 1 Torch"));
 		setVar(Str.PREJUDICE,getStr("PREJUDICE"));

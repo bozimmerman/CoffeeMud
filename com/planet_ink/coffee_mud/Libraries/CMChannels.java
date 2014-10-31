@@ -1,6 +1,8 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -285,13 +287,6 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	private void clearChannels()
 	{
 		channelList=new Vector<CMChannel>();
-	}
-
-	@Override
-	public boolean shutdown()
-	{
-		clearChannels();
-		return true;
 	}
 
 	@Override
@@ -590,6 +585,81 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		if((CMLib.intermud().i3online()&&(CMLib.intermud().isI3channel(channelName)))
 		||(CMLib.intermud().imc2online()&&(CMLib.intermud().isIMC2channel(channelName))))
 			CMLib.intermud().i3channel(mob,channelName,message);
+	}
+
+	@Override
+	public boolean activate()
+	{
+		if(serviceClient==null)
+		{
+			name="THChannels"+Thread.currentThread().getThreadGroup().getName().charAt(0);
+			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, MudHost.TIME_UTILTHREAD_SLEEP, 1);
+		}
+		return true;
+	}
+
+	@Override 
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		try
+		{
+			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.UTILITHREAD))
+			{
+				tickStatus=Tickable.STATUS_ALIVE;
+				try
+				{
+					final String propStr=CMProps.getVar(CMProps.Str.CHANNELBACKLOG).toUpperCase().trim();
+					if((!CMSecurity.isDisabled(CMSecurity.DisFlag.CHANNELBACKLOGS))
+					&&(!propStr.equalsIgnoreCase("INFINITY"))
+					&&(!propStr.equalsIgnoreCase("FOREVER")))
+					{
+						if(CMath.isInteger(propStr))
+							CMLib.database().trimBackLogEntries(getChannelNames(), CMath.s_int(propStr), 0);
+						else
+						{
+							String[] ss=propStr.split(" ");
+							if((ss.length!=2)&&(!CMath.isInteger(ss[0])))
+								Log.errOut("CMChannels","Malformed CHANNELBACKLOG entry in coffeemud.ini file: "+propStr);
+							else
+							if(ss[1].equals("DAYS")||ss[1].equals("DAY"))
+								CMLib.database().trimBackLogEntries(getChannelNames(), Integer.MAX_VALUE, System.currentTimeMillis() - (CMath.s_int(ss[0]) * TimeManager.MILI_DAY));
+							else
+							if(ss[1].equals("WEEKS")||ss[1].equals("WEEK"))
+								CMLib.database().trimBackLogEntries(getChannelNames(), Integer.MAX_VALUE, System.currentTimeMillis() - (CMath.s_int(ss[0]) * TimeManager.MILI_WEEK));
+							else
+							if(ss[1].equals("MONTHS")||ss[1].equals("MONTHS"))
+								CMLib.database().trimBackLogEntries(getChannelNames(), Integer.MAX_VALUE, System.currentTimeMillis() - (CMath.s_int(ss[0]) * TimeManager.MILI_MONTH));
+							else
+							if(ss[1].equals("YEARSS")||ss[1].equals("YEAR"))
+								CMLib.database().trimBackLogEntries(getChannelNames(), Integer.MAX_VALUE, System.currentTimeMillis() - (CMath.s_int(ss[0]) * TimeManager.MILI_YEAR));
+							else
+								Log.errOut("CMChannels","Malformed CHANNELBACKLOG entry in coffeemud.ini file: "+propStr);
+						}
+					}
+				}
+				finally
+				{
+				}
+			}
+		}
+		finally
+		{
+			tickStatus=Tickable.STATUS_NOT;
+			setThreadStatus(serviceClient,"sleeping");
+		}
+		return true;
+	}
+
+	@Override
+	public boolean shutdown()
+	{
+		clearChannels();
+		if(CMLib.threads().isTicking(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK))
+		{
+			CMLib.threads().deleteTick(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
+			serviceClient=null;
+		}
+		return true;
 	}
 
 }

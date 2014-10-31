@@ -159,4 +159,39 @@ public class BackLogLoader
 		}
 		return list;
 	}
+	
+	public void trimBackLogEntries(final String[] channels, final int maxMessages, final long oldestTime)
+	{
+		for(final String channelName : channels)
+		{
+			final int counter = getCounter(channelName, false);
+			DBConnection D=null;
+			try
+			{
+				D=DB.DBFetch();
+				if((maxMessages == 0) && (D != null))
+				{
+					D.update("DELETE FROM CMBKLG WHERE CMNAME='"+channelName+"'",0);
+				}
+				else
+				if((maxMessages < counter) && (D != null))
+				{
+					final int oldestCounter = counter - maxMessages;
+					D.update("DELETE FROM CMBKLG WHERE CMNAME='"+channelName+"' AND CMINDX != 0 AND CMINDX < "+oldestCounter,0);
+				}
+				if((oldestTime > 0) && (D != null))
+				{
+					D.update("DELETE FROM CMBKLG WHERE CMNAME='"+channelName+"' AND CMINDX != 0 AND CMDATE < "+oldestTime,0);
+				}
+			}
+			catch(final Exception sqle)
+			{
+				Log.errOut("Journal",sqle);
+			}
+			finally
+			{
+				DB.DBDone(D);
+			}
+		}
+	}
 }

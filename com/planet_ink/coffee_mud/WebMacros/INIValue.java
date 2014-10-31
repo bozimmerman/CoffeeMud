@@ -159,7 +159,12 @@ public class INIValue extends StdWebMacro
 			return clearWebMacros(page.getStr(mask));
 		else
 		if(parms.containsKey("INIHELP"))
-			return clearWebMacros(getHelpFor(mask,mask));
+		{
+			if(parms.containsKey("NOCR"))
+				return clearWebMacros(CMStrings.replaceAll(getHelpFor(mask,mask),"<BR>","&nbsp;"));
+			else
+				return clearWebMacros(getHelpFor(mask,mask));
+		}
 		return "";
 	}
 }

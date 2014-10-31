@@ -1315,7 +1315,8 @@ public class CMSecurity
 		I3("intermud3"),
 		IMC2("intermud2"),
 		SLOW_AGEING("real ageing"),
-		ALL_AGEING("age system")
+		ALL_AGEING("age system"),
+		CHANNELBACKLOGS("channel backlog system")
 		;
 		private final String desc;
 		DisFlag(final String description){this.desc=description;}
