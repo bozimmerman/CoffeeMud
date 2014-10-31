@@ -43,7 +43,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 	public String displayText()
 	{
 		if(missingLimbNameSet().size()==0) return "";
-		return "(Missing your"+CMLib.english().toEnglishStringList(missingLimbNameSet())+")";
+		return "(Missing your "+CMLib.english().toEnglishStringList(missingLimbNameSet())+")";
 	}
 	@Override
 	public String getHealthConditionDesc()
