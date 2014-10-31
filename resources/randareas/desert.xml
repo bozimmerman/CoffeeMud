@@ -74,10 +74,6 @@ See guides/RandomAreas.html for information about documents of this type.
 				<STRING condition="$_desert_path_roomtype=0">You can $verb_desert_tread on through $roomexits_desc_long.</STRING>
 				<STRING condition="$_desert_path_roomtype=0">You can continue $roomexits_desc_long.</STRING>
 			</STRING>
-			<STRING select="any-1" action="APPEND">
-				<STRING>It looks like you might pick your way $roomexits_desc_long to ${l:STAT:ANYROOM:DISPLAY}.</STRING>
-				<STRING>You can $verb_desert_tread on through $roomexits_desc_long to ${l:STAT:ANYROOM:DISPLAY}.</STRING>
-			</STRING>
 		</STRING>
 		<EXIT class="Open" />
 		<MOB condition="1?2=1" select="any-1" insert="desert_mobs" />
@@ -108,8 +104,12 @@ See guides/RandomAreas.html for information about documents of this type.
 				<STRING>You feel a $noun_desert_wind blow over the $adj_phys_size_tall dunes of the $noun_desert_wind_adj desert. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
-				<STRING>It looks like you might pick your way $roomexits_desc_long to ${l:STAT:ANYROOM:DISPLAY}.</STRING>
-				<STRING>You can $verb_desert_tread on through $roomexits_desc_long to ${l:STAT:ANYROOM:DISPLAY}.</STRING>
+				<STRING>It looks like you might pick your way $roomexits_desc_long.</STRING>
+				<STRING>Openings in the $noun_desert_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING>You can $verb_desert_tread on through $roomexits_desc_long.</STRING>
+				<STRING>You can continue $roomexits_desc_long.</STRING>
+				<STRING condition="$roomtag_nodetype='leaf'">It looks like you might pick your way $roomexits_desc_long to ${l:STAT:ANYROOM:DISPLAY}.</STRING>
+				<STRING condition="$roomtag_nodetype='leaf'">You can $verb_desert_tread on through $roomexits_desc_long to ${l:STAT:ANYROOM:DISPLAY}.</STRING>
 			</STRING>
 		</STRING>
 		<EXIT class="Open" />
