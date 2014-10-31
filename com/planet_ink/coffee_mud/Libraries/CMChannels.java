@@ -216,7 +216,9 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				q.remove(0);
 			q.add(new ChannelMsg(msg));
 		}
-		if(!channel.flags.contains(ChannelsLibrary.ChannelFlag.NOBACKLOG))
+		if((!channel.flags.contains(ChannelsLibrary.ChannelFlag.NOBACKLOG))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.CHANNELBACKLOGS))
+		&&(!CMProps.getVar(CMProps.Str.CHANNELBACKLOG).equals("0")))
 			CMLib.database().addBackLogEntry(getChannel(i).name, msg.toFlatString());
 	}
 
