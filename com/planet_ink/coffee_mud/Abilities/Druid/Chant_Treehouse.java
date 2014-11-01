@@ -61,19 +61,13 @@ public class Chant_Treehouse extends Chant
 			if((R!=null)&&(R.roomID().equalsIgnoreCase("")))
 			{
 				R.showHappens(CMMsg.MSG_OK_VISUAL,L("The treehouse fades away..."));
-				while(R.numInhabitants()>0)
-				{
-					final MOB M=R.fetchInhabitant(0);
-					if(M!=null)	room.bringMobHere(M,false);
-				}
-				while(R.numItems()>0)
-				{
-					final Item I=R.getItem(0);
-					if(I!=null) room.moveItemTo(I);
-				}
-				R.destroy();
 				room.rawDoors()[Directions.UP]=null;
 				room.setRawExit(Directions.UP,null);
+				if(room.amDestroyed())
+					CMLib.map().emptyRoom(R, null, true);
+				else
+					CMLib.map().emptyRoom(R, room, true);
+				R.destroy();
 			}
 			room.clearSky();
 		}

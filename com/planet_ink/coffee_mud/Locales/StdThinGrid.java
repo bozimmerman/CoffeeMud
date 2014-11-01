@@ -685,8 +685,9 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	{
 		try
 		{
+			final WorldMap mapper=CMLib.map();
 			for(final ThinGridEntry entry : rooms)
-				CMLib.map().emptyRoom(entry.room,bringBackHere);
+				mapper.emptyRoom(entry.room,bringBackHere,true);
 			for(final ThinGridEntry entry : rooms)
 				entry.room.destroy();
 			rooms.clear();

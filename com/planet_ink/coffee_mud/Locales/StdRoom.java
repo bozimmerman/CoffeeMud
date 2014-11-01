@@ -538,20 +538,23 @@ public class StdRoom implements Room
 	@Override
 	public void clearSky()
 	{
-		if(!skyedYet) return;
+		if(!skyedYet) 
+			return;
 		final Room skyGridRoom=rawDoors()[Directions.UP];
-		if(skyGridRoom==null) return;
-		if(((skyGridRoom.roomID()==null)||(skyGridRoom.roomID().length()==0))
-		&&((skyGridRoom instanceof EndlessSky)||(skyGridRoom instanceof EndlessThinSky)))
+		if(skyGridRoom!=null)
 		{
-			((GridLocale)skyGridRoom).clearGrid(null);
-			rawDoors()[Directions.UP]=null;
-			setRawExit(Directions.UP,null);
-			skyGridRoom.rawDoors()[Directions.DOWN]=null;
-			skyGridRoom.setRawExit(Directions.DOWN,null);
-			CMLib.map().emptyRoom(skyGridRoom,null);
-			skyGridRoom.destroy();
-			skyedYet=false;
+			if(((skyGridRoom.roomID()==null)||(skyGridRoom.roomID().length()==0))
+			&&((skyGridRoom instanceof EndlessSky)||(skyGridRoom instanceof EndlessThinSky)))
+			{
+				((GridLocale)skyGridRoom).clearGrid(null);
+				rawDoors()[Directions.UP]=null;
+				setRawExit(Directions.UP,null);
+				skyGridRoom.rawDoors()[Directions.DOWN]=null;
+				skyGridRoom.setRawExit(Directions.DOWN,null);
+				CMLib.map().emptyRoom(skyGridRoom,null,true);
+				skyGridRoom.destroy();
+				skyedYet=false;
+			}
 		}
 	}
 
@@ -995,7 +998,7 @@ public class StdRoom implements Room
 				setGridParent(null);
 				if(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
 				{
-					CMLib.map().emptyRoom(this,null);
+					CMLib.map().emptyRoom(this,null,true);
 					destroy();
 					if(roomID.length()>0)
 						A.addProperRoomnumber(roomID);

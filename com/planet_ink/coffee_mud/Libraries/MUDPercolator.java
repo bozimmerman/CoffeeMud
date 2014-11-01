@@ -768,7 +768,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		catch(final Exception t)
 		{
 			CMLib.map().delArea(A);
-			CMLib.map().emptyArea(A);
+			CMLib.map().emptyAreaAndDestroyRooms(A);
 			A.destroy();
 			if(t instanceof CMException)
 				throw (CMException)t;

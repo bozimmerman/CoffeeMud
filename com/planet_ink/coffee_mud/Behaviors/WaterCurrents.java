@@ -207,6 +207,7 @@ public class WaterCurrents extends ActiveTicker
 	}
 	protected static final String[] empty={};
 	protected static final String[] CODES={"CLASS","TEXT"};
+	
 	protected static class AWaterCurrent implements Ability, Cloneable
 	{
 		public AWaterCurrent()

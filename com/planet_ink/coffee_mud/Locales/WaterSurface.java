@@ -113,19 +113,22 @@ public class WaterSurface extends StdRoom implements Drink
 	@Override
 	public void clearSky()
 	{
-		if(!skyedYet) return;
+		if(!skyedYet) 
+			return;
 		super.clearSky();
 		final Room room=rawDoors()[Directions.DOWN];
-		if(room==null) return;
-		if((room.roomID().length()==0)
-		&&(IsUnderWaterFatClass(room)))
+		if(room!=null)
 		{
-			((GridLocale)room).clearGrid(null);
-			rawDoors()[Directions.DOWN]=null;
-			setRawExit(Directions.DOWN,null);
-			CMLib.map().emptyRoom(room,null);
-			room.destroy();
-			skyedYet=false;
+			if((room.roomID().length()==0)
+			&&(IsUnderWaterFatClass(room)))
+			{
+				((GridLocale)room).clearGrid(null);
+				rawDoors()[Directions.DOWN]=null;
+				setRawExit(Directions.DOWN,null);
+				CMLib.map().emptyRoom(room,null,true);
+				room.destroy();
+				skyedYet=false;
+			}
 		}
 	}
 

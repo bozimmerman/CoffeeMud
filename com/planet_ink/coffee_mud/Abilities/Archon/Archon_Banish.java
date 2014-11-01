@@ -192,7 +192,7 @@ public class Archon_Banish extends ArchonSkill
 		mob.getStartRoom().bringMobHere(mob,true);
 		if(prisonRoom!=null)
 		{
-			CMLib.map().emptyRoom(prisonRoom, mob.getStartRoom());
+			CMLib.map().emptyRoom(prisonRoom, mob.getStartRoom(), true);
 			prisonRoom.destroy();
 			prisonRoom=null;
 		}

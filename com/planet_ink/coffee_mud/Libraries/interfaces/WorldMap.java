@@ -106,8 +106,8 @@ public interface WorldMap extends CMLibrary
 	public Room getStartRoom(Environmental E);
 	public Area getStartArea(Environmental E);
 	public Room roomLocation(Environmental E);
-	public void emptyRoom(Room room, Room bringBackHere);
-	public void emptyArea(Area A);
+	public void emptyRoom(Room room, Room toRoom, boolean clearPlayers);
+	public void emptyAreaAndDestroyRooms(Area A);
 	public boolean hasASky(Room room);
 	public boolean isClearableRoom(Room room);
 	public String createNewExit(Room from, Room room, int direction);

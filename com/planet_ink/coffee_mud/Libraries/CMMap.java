@@ -1578,13 +1578,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				}
 			}
 		}catch(final NoSuchElementException e){}
-		for(int m=deadRoom.numInhabitants()-1;m>=0;m--)
-		{
-			final MOB M=deadRoom.fetchInhabitant(m);
-			if((M!=null)&&(M.playerStats()!=null))
-				M.getStartRoom().bringMobHere(M,true);
-		}
-		emptyRoom(deadRoom,null);
+		emptyRoom(deadRoom,null,true);
 		deadRoom.destroy();
 		if(deadRoom instanceof GridLocale)
 			((GridLocale)deadRoom).clearGrid(null);
@@ -1592,7 +1586,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public void emptyArea(Area area)
+	public void emptyAreaAndDestroyRooms(Area area)
 	{
 		for(final Enumeration<Ability> a=area.effects();a.hasMoreElements();)
 		{
@@ -1606,7 +1600,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		for(final Enumeration<Room> e=area.getProperMap();e.hasMoreElements();)
 		{
 			final Room R=e.nextElement();
-			emptyRoom(R,null);
+			emptyRoom(R,null,true);
 			R.destroy();
 		}
 	}
@@ -1705,57 +1699,72 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public void emptyRoom(Room room, Room bringBackHere)
+	public void emptyRoom(Room room, Room toRoom, boolean clearPlayers)
 	{
-		if(room==null) return;
-		List<MOB> inhabs=new Vector<MOB>();
+		if(room==null) 
+			return;
 		MOB M=null;
-		for(int m=0;m<room.numInhabitants();m++)
+		if(toRoom != null)
 		{
-			M=room.fetchInhabitant(m);
-			if(M!=null) inhabs.add(M);
+			for(final Enumeration<MOB> i=room.inhabitants();i.hasMoreElements();)
+			{
+				M=i.nextElement();
+				if(M!=null)
+					toRoom.bringMobHere(M,false);
+			}
 		}
-		for(int m=0;m<inhabs.size();m++)
+		else
+		if(clearPlayers)
 		{
-			M=inhabs.get(m);
-			if(bringBackHere!=null)
-				bringBackHere.bringMobHere(M,false);
-			else
-			if(!M.isSavable())
-				continue;
-			else
-			if((M.getStartRoom()==null)
-			||(M.getStartRoom()==room)
-			||(M.getStartRoom().ID().length()==0))
-				M.destroy();
-			else
-				M.getStartRoom().bringMobHere(M,false);
+			for(final Enumeration<MOB> i=room.inhabitants();i.hasMoreElements();)
+			{
+				M=i.nextElement();
+				if((M!=null) && (M.isPlayer()))
+					M.getStartRoom().bringMobHere(M,true);
+			}
 		}
+		for(final Enumeration<MOB> i=room.inhabitants();i.hasMoreElements();)
+		{
+			M=i.nextElement();
+			if((M!=null)
+			&&(!M.isPlayer())
+			&&(M.isSavable())
+			&&((M.amFollowing()==null)||(!M.amFollowing().isPlayer())))
+			{
+				if((M.getStartRoom()==null)
+				||(M.getStartRoom()==room)
+				||(M.getStartRoom().ID().length()==0))
+					M.destroy();
+				else
+					M.getStartRoom().bringMobHere(M,false);
+			}
+		}
+		
 		Item I=null;
-		inhabs = null;
-
-		final Vector<Item> contents = new Vector<Item>();
-
-		for(int i=0;i<room.numItems();i++)
+		if(toRoom != null)
 		{
-			I=room.getItem(i);
-			if(I!=null) contents.addElement(I);
+			for(final Enumeration<Item> i=room.items();i.hasMoreElements();)
+			{
+				I=i.nextElement();
+				if(I!=null)
+					toRoom.moveItemTo(I,ItemPossessor.Expire.Player_Drop);
+			}
 		}
-		for(int i=0;i<contents.size();i++)
+		else
 		{
-			I=contents.elementAt(i);
-			if(bringBackHere!=null)
-				bringBackHere.moveItemTo(I,ItemPossessor.Expire.Player_Drop);
-			else
-				I.destroy();
+			for(final Enumeration<Item> i=room.items();i.hasMoreElements();)
+			{
+				I=i.nextElement();
+				if(I!=null)
+					I.destroy();
+			}
 		}
 		room.clearSky();
 		CMLib.threads().clearDebri(room,0);
 		if(room instanceof GridLocale)
 			for(final Iterator<Room> r=((GridLocale)room).getExistingRooms();r.hasNext();)
-				emptyRoom(r.next(), bringBackHere);
+				emptyRoom(r.next(), toRoom, clearPlayers);
 	}
-
 
 	@Override
 	public void obliterateArea(Area A)
@@ -1809,7 +1818,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			if(resetMsg==null) resetMsg=CMClass.getMsg(CMClass.sampleMOB(),room,CMMsg.MSG_ROOMRESET,null);
 			resetMsg.setTarget(room);
 			room.executeMsg(room,resetMsg);
-			emptyRoom(room,null);
+			emptyRoom(room,null,false);
 			for(final Enumeration<Ability> a=room.effects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();

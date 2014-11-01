@@ -92,7 +92,7 @@ public class MOBEater extends ActiveTicker
 					{
 						if((eater.get()==null)||(eater.get().amDestroyed())||(eater.get().amDead()))
 						{
-							CMLib.map().emptyRoom((Room)A.affecting(), null);
+							CMLib.map().emptyRoom((Room)A.affecting(), null, true);
 						}
 					}
 				}

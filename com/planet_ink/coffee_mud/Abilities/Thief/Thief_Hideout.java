@@ -54,11 +54,11 @@ public class Thief_Hideout extends ThiefSkill
 
 	public Room getPreviousLocation(MOB mob)
 	{
-		if(previousLocation==null)
+		if((previousLocation==null)||(previousLocation.amDestroyed()))
 		{
 			if(text().length()>0)
 				previousLocation=CMLib.map().getRoom(text());
-			while((previousLocation==null)||(!CMLib.flags().canAccess(mob, previousLocation)))
+			while((previousLocation==null)||(previousLocation.amDestroyed())||(!CMLib.flags().canAccess(mob, previousLocation)))
 				previousLocation=CMLib.map().getRandomRoom();
 		}
 		return previousLocation;

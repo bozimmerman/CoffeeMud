@@ -91,9 +91,10 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 
 	}
 
-	protected static boolean isCleanRoom(Room fromRoom, Room theRoom)
+	protected boolean isRetractableLink(Room fromRoom, Room theRoom)
 	{
-		if(theRoom==null) return true;
+		if(theRoom==null) 
+			return true;
 
 		if((theRoom.roomID().length()>0)
 		&&((CMLib.law().getLandTitle(theRoom)==null)
@@ -158,7 +159,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 						final Room R2=R.rawDoors()[d];
 						foundOne=foundOne||(R2!=null);
 						Exit E=R.getRawExit(d);
-						if((R2!=null)&&(isCleanRoom(R,R2)))
+						if((R2!=null)&&(isRetractableLink(R,R2)))
 						{
 							R.rawDoors()[d]=null;
 							R.setRawExit(d,null);
