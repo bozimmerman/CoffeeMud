@@ -50,7 +50,7 @@ public class Wizard extends Mage
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_Scribe",75,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Papermaking",75,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_ReadMagic",100,true);
-
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"ScrollScribing",100,true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_MagicMissile",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_ResistMagicMissiles",false);

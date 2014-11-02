@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.core;
 import java.nio.ByteBuffer;
 import java.util.*;
+import java.util.regex.Pattern;
 
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.interfaces.CMObject;
@@ -2412,7 +2413,7 @@ public class CMParms
 	public final static Map<String,String> parseKeyValueSlashList(final String s)
 	{
 		final Hashtable<String,String> h=new Hashtable<String,String>();
-		final String[] allWords = s.split("[^\\]/");
+		final String[] allWords = s.split("(?<!\\\\)" + Pattern.quote("/"));
 		for(final String word : allWords)
 		{
 			final int x=word.indexOf('=');

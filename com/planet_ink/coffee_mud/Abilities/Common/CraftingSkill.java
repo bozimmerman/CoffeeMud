@@ -141,7 +141,7 @@ public class CraftingSkill extends GatheringSkill
 				else
 					buildingI.setUsesRemaining(buildingI.usesRemaining()+10);
 			}
-			commonEmote(mob,"<S-NAME> mess(es) up mending "+buildingI.name()+".");
+			commonEmote(mob,L("<S-NAME> mess(es) up mending @x1.",buildingI.name()));
 		}
 
 	}

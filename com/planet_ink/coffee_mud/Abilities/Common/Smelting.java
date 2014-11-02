@@ -91,7 +91,7 @@ public class Smelting extends CraftingSkill
 				{
 					amountMaking=amountMaking*(abilityCode());
 					if(messedUp)
-						commonEmote(mob,"<S-NAME> ruin(s) "+buildingI.name()+"!");
+						commonEmote(mob,L("<S-NAME> ruin(s) @x1!",buildingI.name()));
 					else
 					for(int i=0;i<amountMaking;i++)
 					{

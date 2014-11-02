@@ -68,13 +68,13 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			{
 				if((theSpell.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 				{
-					commonEmote(mob,"<S-NAME> start(s) praying for "+buildingI.name()+".");
+					commonEmote(mob,L("<S-NAME> start(s) praying for @x1.",buildingI.name()));
 					displayText=L("You are praying for @x1",buildingI.name());
 					verb=L("praying for @x1",buildingI.name());
 				}
 				else
 				{
-					commonEmote(mob,"<S-NAME> start(s) brewing "+buildingI.name()+".");
+					commonEmote(mob,L("<S-NAME> start(s) brewing @x1.",buildingI.name()));
 					displayText=L("You are brewing @x1",buildingI.name());
 					verb=L("brewing @x1",buildingI.name());
 					playSound="hotspring.wav";
@@ -136,7 +136,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 					if(messedUp)
 					{
 						if(activity==CraftingActivity.LEARNING)
-							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+buildingI.name()+".");
+							commonEmote(mob,L("<S-NAME> fail(s) to learn how to make @x1.",buildingI.name()));
 						else
 						if(oldName.length()>0)
 							commonTell(mob,L("Something went wrong! @x1 explodes!",(Character.toUpperCase(oldName.charAt(0))+oldName.substring(1))));
@@ -263,7 +263,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		else
 		if((!auto)&&(commands.size()<2))
 		{
-			commonEmote(mob,"You must specify what magic you wish to brew, and the container to brew it in.");
+			commonEmote(mob,L("You must specify what magic you wish to brew, and the container to brew it in."));
 			return false;
 		}
 		else

@@ -2,6 +2,7 @@
    *. Database Schema Updated for CMBKLG.  See the Installation Guide about running DBUpgrade.
    1. Channels now save their back messages to the database for perpetual enjoyment. See DISABLE,CHANNELBACKLOG in coffeemud.ini.
    2. Bit geeky, but exposed the Cross Class skill analysis and Recovery Rates analysis from MUDGrinder (char class and control panel respec)
+   3. Scroll Scribing is now available to low level mages and arcanists for limited scroll making, and new transcribing feature.
 # Build 5.8.3 Release 10/27/2014
    *. Database Schema Updated for CMCHAR.CMDESC and CMCHAR.CMCHID.  See the Installation Guide about running DBUpgrade.
    1. (FakeDB): DBUpgrade is now application independent, and can handle big tables better.  See installation guide for new recommended usage.

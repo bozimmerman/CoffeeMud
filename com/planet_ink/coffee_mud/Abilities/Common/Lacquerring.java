@@ -100,7 +100,7 @@ public class Lacquerring extends CommonSkill
 			{
 				final MOB mob=(MOB)affected;
 				if(writing.length()==0)
-					commonEmote(mob,"<S-NAME> mess(es) up the lacquering.");
+					commonEmote(mob,L("<S-NAME> mess(es) up the lacquering."));
 				else
 				{
 					final StringBuffer desc=new StringBuffer(found.description());

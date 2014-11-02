@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -101,7 +100,8 @@ public class Spell_Scribe extends Spell
 		}
 
 		int numSpells=(CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().qualifyingLevel(mob,this));
-		if(numSpells<0) numSpells=1;
+		if(numSpells<0) 
+			numSpells=1;
 		if(scroll.getSpells().size()>numSpells)
 		{
 			mob.tell(L("You aren't powerful enough to scribe any more spells onto @x1.",scroll.name()));
@@ -116,7 +116,20 @@ public class Spell_Scribe extends Spell
 				return false;
 			}
 
-		int experienceToLose=10*CMLib.ableMapper().lowestQualifyingLevel(scrollThis.ID());
+		int level=25;
+		for(final Ability A : spells)
+		{
+			int lvl=CMLib.ableMapper().qualifyingLevel(mob,A);
+			if(lvl<0) lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+			level -= lvl;
+		}
+		if(level <= 0)
+		{
+			mob.tell(L("You can only scribe on blank scrolls, or scroll with less than 25 levels of spells on it."));
+			return false;
+		}
+		
+		int experienceToLose=5+CMLib.ableMapper().lowestQualifyingLevel(scrollThis.ID());
 		if((mob.getExperience()-experienceToLose)<0)
 		{
 			mob.tell(L("You don't have enough experience to cast this spell."));

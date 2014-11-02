@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 /*
    Copyright 2001-2014 Bo Zimmerman
@@ -39,7 +40,9 @@ public class DoorwayGuardian extends StdBehavior
 	private boolean always=false;
 	private String mask=null;
 	private static final String DEFAULT_MESSAGE="<S-NAME> won't let <T-NAME> through there.";
+	private static final String CHALLENGE_SAY="Halt! Who goes there?!";
 	private String message=DEFAULT_MESSAGE;
+	private String challenge=CHALLENGE_SAY;
 	Vector<Integer> dirs=new Vector<Integer>();
 
 	@Override
@@ -52,14 +55,19 @@ public class DoorwayGuardian extends StdBehavior
 	public void setParms(String parms)
 	{
 		super.setParms(parms);
-		final int x=parms.indexOf(';');
-		if(x>=0)
+		String[] parts=parms.split("(?<!\\\\)" + Pattern.quote(";"),3);
+		if(parts.length>1)
 		{
-			message=parms.substring(x+1);
-			parms=parms.substring(0,x);
+			message=CMStrings.replaceAll(parts[1],"\\;",";");
+			if(parts.length>2)
+				challenge=CMStrings.replaceAll(parts[2],"\\;",";");
+			parms=CMStrings.replaceAll(parts[0],"\\;",";");
 		}
 		else
+		{
 			message=DEFAULT_MESSAGE;
+			challenge=CHALLENGE_SAY;
+		}
 		final Vector<String> V=CMParms.parse(parms);
 		nosneak=false;
 		always=false;
@@ -125,11 +133,13 @@ public class DoorwayGuardian extends StdBehavior
 	@Override
 	public boolean okMessage(Environmental oking, CMMsg msg)
 	{
-		if(!super.okMessage(oking,msg)) return false;
+		if(!super.okMessage(oking,msg)) 
+			return false;
 		final MOB mob=msg.source();
 		if(always)
 		{
-			if(!canActAtAll(oking)) return true;
+			if(!canActAtAll(oking)) 
+				return true;
 		}
 		else
 		if(!canFreelyBehaveNormal(oking))

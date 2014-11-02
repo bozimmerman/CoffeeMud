@@ -275,7 +275,7 @@ public class Modify extends StdCommand
 			boolean reid=false;
 			if((A==null)&&(!CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDAREAS)))
 			{
-				mob.session().println("Not permitted.");
+				mob.session().println(L("Not permitted."));
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
 				return;
 			}

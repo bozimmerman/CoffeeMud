@@ -71,7 +71,7 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonEmote(mob,"<S-NAME> mess(es) up crafting the Holy Avenger.");
+						commonEmote(mob,L("<S-NAME> mess(es) up crafting the Holy Avenger."));
 					else
 						mob.location().addItem(buildingI,ItemPossessor.Expire.Player_Drop);
 				}

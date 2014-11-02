@@ -133,9 +133,9 @@ public class TaxiBehavior extends Concierge
 					if(!defaultRiders.contains(rider))
 					{
 						if(rider instanceof MOB)
-							room.show((MOB)rider, rideable, mob, CMMsg.MASK_ALWAYS|CMMsg.MSG_DISMOUNT, "<S-NAME> "+rideable.dismountString(rider)+" from <T-NAME>.");
+							room.show((MOB)rider, rideable, mob, CMMsg.MASK_ALWAYS|CMMsg.MSG_DISMOUNT, L("<S-NAME> @x1 from <T-NAME>.",rideable.dismountString(rider)));
 						else
-							room.show(mob, rideable, rider, CMMsg.MASK_ALWAYS|CMMsg.MSG_DISMOUNT, "<S-NAME> help(s) <O-NAME> off of <T-NAME>.");
+							room.show(mob, rideable, rider, CMMsg.MASK_ALWAYS|CMMsg.MSG_DISMOUNT, L("<S-NAME> help(s) <O-NAME> off of <T-NAME>."));
 						rider.setRiding(null);
 					}
 				}
@@ -147,7 +147,7 @@ public class TaxiBehavior extends Concierge
 				else
 				if((observer instanceof Item)&&(room != null))
 				{
-					room.showHappens(CMMsg.MSG_OK_ACTION, observer.name()+" heads off.");
+					room.showHappens(CMMsg.MSG_OK_ACTION, L("@x1 heads off.",observer.name()));
 					returnToRoom.moveItemTo((Item)observer);
 				}
 			}
@@ -218,7 +218,7 @@ public class TaxiBehavior extends Concierge
 		super.resetDefaults();
 		indoorOK=false;
 		greeting="Need a lift? If so, come aboard.";
-		mountStr="Where are you headed?";
+		mountStr=L("Where are you headed?");
 		isEnRouter = null;
 		returnToRoom = null;
 		destRoom = null;

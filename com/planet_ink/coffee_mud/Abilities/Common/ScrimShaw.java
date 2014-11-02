@@ -96,7 +96,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 						else
 						if(activity == CraftingActivity.LEARNING)
 						{
-							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+buildingI.name()+".");
+							commonEmote(mob,L("<S-NAME> fail(s) to learn how to make @x1.",buildingI.name()));
 							buildingI.destroy();
 						}
 						else

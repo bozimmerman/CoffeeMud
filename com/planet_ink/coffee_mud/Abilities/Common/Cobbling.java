@@ -96,14 +96,14 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 						else
 						if(activity == CraftingActivity.LEARNING)
 						{
-							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+buildingI.name()+".");
+							commonEmote(mob,L("<S-NAME> fail(s) to learn how to make @x1.",buildingI.name()));
 							buildingI.destroy();
 						}
 						else
 						if(activity == CraftingActivity.REFITTING)
-							commonEmote(mob,"<S-NAME> mess(es) up refitting "+buildingI.name()+".");
+							commonEmote(mob,L("<S-NAME> mess(es) up refitting @x1.",buildingI.name()));
 						else
-							commonEmote(mob,"<S-NAME> mess(es) up cobbling "+buildingI.name()+".");
+							commonEmote(mob,L("<S-NAME> mess(es) up cobbling @x1.",buildingI.name()));
 					}
 					else
 					{

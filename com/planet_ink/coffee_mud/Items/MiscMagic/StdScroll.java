@@ -51,6 +51,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		secretIdentity="";
 		material=RawMaterial.RESOURCE_PAPER;
 		baseGoldValue=200;
+		setUsesRemaining(0);
 		recoverPhyStats();
 	}
 

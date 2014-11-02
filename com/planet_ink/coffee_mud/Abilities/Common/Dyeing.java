@@ -107,7 +107,7 @@ public class Dyeing extends CommonSkill
 			{
 				final MOB mob=(MOB)affected;
 				if(writing.length()==0)
-					commonEmote(mob,"<S-NAME> mess(es) up the dyeing.");
+					commonEmote(mob,L("<S-NAME> mess(es) up the dyeing."));
 				else
 				{
 					final StringBuffer desc=new StringBuffer(found.description());

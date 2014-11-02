@@ -107,7 +107,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 					if((beingDone!=null)&&(beingDone.size()>=2))
 					{
 						if(messedUp)
-							commonEmote(mob,"<S-NAME> mess(es) up "+verb+".");
+							commonEmote(mob,L("<S-NAME> mess(es) up @x1.",verb));
 						else
 						{
 							final Item I=(Item)beingDone.elementAt(1);
@@ -124,14 +124,14 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 						else
 						if(activity == CraftingActivity.LEARNING)
 						{
-							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+buildingI.name()+".");
+							commonEmote(mob,L("<S-NAME> fail(s) to learn how to make @x1.",buildingI.name()));
 							buildingI.destroy();
 						}
 						else
 						if(activity == CraftingActivity.REFITTING)
-							commonEmote(mob,"<S-NAME> mess(es) up refitting "+buildingI.name()+".");
+							commonEmote(mob,L("<S-NAME> mess(es) up refitting @x1.",buildingI.name()));
 						else
-							commonEmote(mob,"<S-NAME> mess(es) up "+verb+".");
+							commonEmote(mob,L("<S-NAME> mess(es) up @x1.",verb));
 					}
 					else
 					{

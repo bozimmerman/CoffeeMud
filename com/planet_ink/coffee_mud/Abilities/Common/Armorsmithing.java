@@ -106,14 +106,14 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 						else
 						if(activity == CraftingActivity.LEARNING)
 						{
-							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+buildingI.name()+".");
+							commonEmote(mob,L("<S-NAME> fail(s) to learn how to make @x1.",buildingI.name()));
 							buildingI.destroy();
 						}
 						else
 						if(activity == CraftingActivity.REFITTING)
-							commonEmote(mob,"<S-NAME> mess(es) up refitting "+buildingI.name()+".");
+							commonEmote(mob,L("<S-NAME> mess(es) up refitting @x1.",buildingI.name()));
 						else
-							commonEmote(mob,"<S-NAME> mess(es) up smithing "+buildingI.name()+".");
+							commonEmote(mob,L("<S-NAME> mess(es) up smithing @x1.",buildingI.name()));
 					}
 					else
 					{

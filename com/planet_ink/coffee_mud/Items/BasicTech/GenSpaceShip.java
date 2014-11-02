@@ -587,7 +587,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			if(items != null)
 				items.delItem(this);
 		}
-		final CMMsg expireMsg=CMClass.getMsg(CMLib.map().deity(), this, CMMsg.MASK_ALWAYS|CMMsg.MSG_EXPIRE, "<T-NAME> is destroyed!");
+		final CMMsg expireMsg=CMClass.getMsg(CMLib.map().deity(), this, CMMsg.MASK_ALWAYS|CMMsg.MSG_EXPIRE, L("<T-NAME> is destroyed!"));
 		for(final Enumeration<Room> r = getShipArea().getProperMap(); r.hasMoreElements();)
 		{
 			final Room R=r.nextElement();

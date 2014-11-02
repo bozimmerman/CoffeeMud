@@ -73,6 +73,7 @@ public class Mage extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Climb",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_ScrollCopy",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"ScrollScribing",75,true);
 		// level 1
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_MagicMissile",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_ResistMagicMissiles",true);

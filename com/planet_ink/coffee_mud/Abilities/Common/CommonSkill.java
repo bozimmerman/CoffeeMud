@@ -543,12 +543,12 @@ public class CommonSkill extends StdAbility
 		aborted=false;
 		if(mob.isInCombat())
 		{
-			commonEmote(mob,"<S-NAME> <S-IS-ARE> in combat!");
+			commonEmote(mob,L("<S-NAME> <S-IS-ARE> in combat!"));
 			return false;
 		}
 		if((!allowedWhileMounted())&&(mob.riding()!=null))
 		{
-			commonEmote(mob,"You can't do that while "+mob.riding().stateString(mob)+" "+mob.riding().name()+".");
+			commonEmote(mob,L("You can't do that while @x1 @x2.",mob.riding().stateString(mob),mob.riding().name()));
 			return false;
 		}
 

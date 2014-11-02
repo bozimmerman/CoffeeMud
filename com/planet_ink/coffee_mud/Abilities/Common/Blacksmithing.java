@@ -154,7 +154,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 					if(messedUp)
 					{
 						if(activity == CraftingActivity.LEARNING)
-							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+buildingI.name()+".");
+							commonEmote(mob,L("<S-NAME> fail(s) to learn how to make @x1.",buildingI.name()));
 						else
 							commonTell(mob,L("You've ruined @x1!",buildingI.name(mob)));
 						buildingI.destroy();

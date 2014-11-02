@@ -89,7 +89,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 				{
 					if(messedUp)
 					{
-						commonEmote(mob,"<S-NAME> mess(es) up crafting "+buildingI.name()+".");
+						commonEmote(mob,L("<S-NAME> mess(es) up crafting @x1.",buildingI.name()));
 						if(myClan!=null)
 						{
 							myClan.setExp(myClan.getExp()+expRequired);

@@ -81,7 +81,7 @@ public class Every extends StdCommand
 		final EveryWhat what = (EveryWhat)CMath.s_valueOf(EveryWhat.class, which);
 		if(what==null)
 		{
-			mob.tell("Every what? MOB, ITEM, ROOM, or EXIT please.");
+			mob.tell(L("Every what? MOB, ITEM, ROOM, or EXIT please."));
 			return false;
 		}
 		final CMSecurity.SecFlag secFlag;
@@ -139,7 +139,7 @@ public class Every extends StdCommand
 				}
 				else
 				{
-					mob.tell("Not permitted.");
+					mob.tell(L("Not permitted."));
 					roomList = null;
 				}
 				commands.remove(0);
@@ -153,7 +153,7 @@ public class Every extends StdCommand
 				}
 				else
 				{
-					mob.tell("Not permitted.");
+					mob.tell(L("Not permitted."));
 					roomList = null;
 				}
 				commands.remove(0);
@@ -173,7 +173,7 @@ public class Every extends StdCommand
 				}
 				else
 				{
-					mob.tell("Not permitted.");
+					mob.tell(L("Not permitted."));
 					roomList = null;
 				}
 				commands.remove(0);
@@ -185,12 +185,12 @@ public class Every extends StdCommand
 		final Session session=mob.session();
 		if(roomList == null)
 		{
-			mob.tell("You failed.");
+			mob.tell(L("You failed."));
 			return false;
 		}
 		if(commands.size()==0)
 		{
-			mob.tell("Do what? How about a command?");
+			mob.tell(L("Do what? How about a command?"));
 			return false;
 		}
 		
@@ -245,7 +245,7 @@ public class Every extends StdCommand
 		}
 		if(mob.location()!=oldLocR) 
 			oldLocR.bringMobHere(mob,false);
-		mob.tell("Done.");
+		mob.tell(L("Done."));
 		return false;
 	}
 

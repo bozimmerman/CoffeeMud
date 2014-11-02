@@ -101,14 +101,14 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 						else
 						if(activity == CraftingActivity.LEARNING)
 						{
-							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+buildingI.name()+".");
+							commonEmote(mob,L("<S-NAME> fail(s) to learn how to make @x1.",buildingI.name()));
 							buildingI.destroy();
 						}
 						else
 						if(activity == CraftingActivity.REFITTING)
-							commonEmote(mob,"<S-NAME> mess(es) up refitting "+buildingI.name()+".");
+							commonEmote(mob,L("<S-NAME> mess(es) up refitting @x1.",buildingI.name()));
 						else
-							commonEmote(mob,"<S-NAME> mess(es) up making "+buildingI.name()+".");
+							commonEmote(mob,L("<S-NAME> mess(es) up making @x1.",buildingI.name()));
 					}
 					else
 					{

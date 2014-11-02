@@ -966,17 +966,17 @@ public class MUDGrinder extends StdWebMacro
 					final String accountName = CMStrings.capitalizeAndLower(set.get(0));
 					if(set.size()>3)
 					{
-						response.append("Error: '"+accountName+"' has too much data (extra spaces somewhere). Not created.\n\r<BR>");
+						response.append(L("Error: '@x1' has too much data (extra spaces somewhere). Not created.\n\r<BR>",accountName));
 						continue;
 					}
 					if(CMLib.players().accountExists(accountName))
 					{
-						response.append("Error: '"+accountName+"' already exists.\n\r<BR>");
+						response.append(L("Error: '@x1' already exists.\n\r<BR>",accountName));
 						continue;
 					}
 					if(!CMLib.login().isOkName(accountName,false))
 					{
-						response.append("Error: '"+accountName+"' is not a valid name.\n\r<BR>");
+						response.append(L("Error: '@x1' is not a valid name.\n\r<BR>",accountName));
 						continue;
 					}
 					final String password;
@@ -1009,12 +1009,12 @@ public class MUDGrinder extends StdWebMacro
 					}
 					else
 					{
-						response.append("Error: '"+accountName+"' has too much data (extra spaces somewhere). Not created.\n\r<BR>");
+						response.append(L("Error: '@x1' has too much data (extra spaces somewhere). Not created.\n\r<BR>",accountName));
 						continue;
 					}
 					if((email.length()>0)&&(!CMLib.smtp().isValidEmailAddress(email)))
 					{
-						response.append("Error: '"+email+"' for account '"+accountName+"' is not a valid address. Not created.\n\r<BR>");
+						response.append(L("Error: '@x1' for account '@x2' is not a valid address. Not created.\n\r<BR>",email,accountName));
 						continue;
 					}
 					
@@ -1035,10 +1035,10 @@ public class MUDGrinder extends StdWebMacro
 						CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), accountName, "noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), email,
 								"Password for "+accountName,
 								"Your password for "+accountName+" at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" is: '"+password+"'.");
-						response.append("Created: '"+accountName+"'\n\r<BR>");
+						response.append(L("Created: '@x1'\n\r<BR>",accountName));
 					}
 					else
-						response.append("Created: '"+accountName+"' with password '"+password+"'\n\r<BR>");
+						response.append(L("Created: '@x1' with password '@x2'\n\r<BR>",accountName,password));
 					created++;
 				}
 			}

@@ -60,10 +60,10 @@ public class Tattooing extends CommonSkill
 			{
 				final MOB mob=(MOB)affected;
 				if(writing.length()==0)
-					commonEmote(mob,"<S-NAME> mess(es) up the tattoo on "+target.name()+".");
+					commonEmote(mob,L("<S-NAME> mess(es) up the tattoo on @x1.",target.name()));
 				else
 				{
-					commonEmote(mob,"<S-NAME> complete(s) the tattoo on "+target.name()+".");
+					commonEmote(mob,L("<S-NAME> complete(s) the tattoo on @x1.",target.name()));
 					target.addTattoo(new MOB.Tattoo(writing));
 				}
 			}

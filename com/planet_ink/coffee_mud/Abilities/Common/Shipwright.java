@@ -95,11 +95,11 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 						else
 						if(activity == CraftingActivity.LEARNING)
 						{
-							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+buildingI.name()+".");
+							commonEmote(mob,L("<S-NAME> fail(s) to learn how to make @x1.",buildingI.name()));
 							buildingI.destroy();
 						}
 						else
-							commonEmote(mob,"<S-NAME> mess(es) up carving "+buildingI.name()+".");
+							commonEmote(mob,L("<S-NAME> mess(es) up carving @x1.",buildingI.name()));
 					}
 					else
 					{

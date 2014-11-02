@@ -76,7 +76,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			else
 			if(tickUp==0)
 			{
-				commonEmote(mob,"<S-NAME> start(s) brewing "+buildingI.name()+".");
+				commonEmote(mob,L("<S-NAME> start(s) brewing @x1.",buildingI.name()));
 				displayText=L("You are brewing @x1",buildingI.name());
 				verb=L("brewing @x1",buildingI.name());
 			}
@@ -164,7 +164,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 					if(messedUp)
 					{
 						if(activity == CraftingActivity.LEARNING)
-							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+buildingI.name()+".");
+							commonEmote(mob,L("<S-NAME> fail(s) to learn how to make @x1.",buildingI.name()));
 						else
 						if(oldName.length()>0)
 							commonTell(mob,L("Something went wrong! @x1 explodes!",(Character.toUpperCase(oldName.charAt(0))+oldName.substring(1))));
@@ -294,7 +294,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 		else
 		if(commands.size()<2)
 		{
-			commonEmote(mob,"You must specify what chant you wish to brew, and the container to brew it in.");
+			commonEmote(mob,L("You must specify what chant you wish to brew, and the container to brew it in."));
 			return false;
 		}
 		else

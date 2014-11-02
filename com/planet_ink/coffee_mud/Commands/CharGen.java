@@ -390,7 +390,7 @@ public class CharGen extends StdCommand
 					M=CMLib.map().findFirstInhabitant(CMLib.map().rooms(), mob, mobName, 10);
 				if(M==null)
 				{
-					mob.tell("Unknown mob '"+mobName+"'");
+					mob.tell(L("Unknown mob '@x1'",mobName));
 					return;
 				}
 				tempBadGuyM=M;
