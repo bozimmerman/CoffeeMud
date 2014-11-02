@@ -41,21 +41,11 @@ public class CrossBaseClassAbilities extends StdWebMacro
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		final StringBuffer buf=new StringBuffer("");
-
-		final Vector baseClasses=new Vector();
-		for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+		String baseClass=httpReq.getUrlParameter("BASECLASS");
+		if(baseClass==null) 
+			return " @break@";
+		if(baseClass.length()>0)
 		{
-			final CharClass C=(CharClass)c.nextElement();
-			if(CMProps.isTheme(C.availabilityCode()))
-			{
-				if(!baseClasses.contains(C.baseClass()))
-				   baseClasses.addElement(C.baseClass());
-			}
-		}
-
-		for(int b=0;b<baseClasses.size();b++)
-		{
-			final String baseClass=(String)baseClasses.elementAt(b);
 			final Vector charClasses=new Vector();
 			for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 			{
@@ -124,23 +114,23 @@ public class CrossBaseClassAbilities extends StdWebMacro
 			buf.append("<BR><BR><BR><B><H3>"+baseClass+"</H3></B>\n\r");
 			buf.append("<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=1>\n\r");
 			buf.append("<TR>");
-			buf.append("<TD><B>Skill</B></TD>");
+			buf.append("<TD><B><FONT COLOR=WHITE>Skill</FONT></B></TD>");
 			for(int c=0;c<charClasses.size();c++)
 			{
 				final String charClass=(String)charClasses.elementAt(c);
-				buf.append("<TD><B>"+charClass+"</B></TD>");
+				buf.append("<TD><B><FONT COLOR=WHITE>"+charClass+"</FONT></B></TD>");
 			}
 			buf.append("</TR>\n\r");
 			for(int a=0;a<sortedAbilities.size();a++)
 			{
 				final String able=(String)sortedAbilities.elementAt(a);
-				buf.append("<TR><TD><B>"+able+"</B></TD>");
+				buf.append("<TR><TD><B><FONT COLOR=WHITE>"+able+"</FONT></B></TD>");
 				for(int c=0;c<charClasses.size();c++)
 				{
 					final String charClass=(String)charClasses.elementAt(c);
 					final int level=CMLib.ableMapper().getQualifyingLevel(charClass,true,able);
 					if(level>=0)
-						buf.append("<TD>"+level+"</TD>");
+						buf.append("<TD><FONT COLOR=CYAN>"+level+"</FONT></TD>");
 					else
 						buf.append("<TD><BR></TD>");
 				}

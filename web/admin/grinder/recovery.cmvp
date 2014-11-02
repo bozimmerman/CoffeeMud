@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?SYSOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+	<link rel="coffeemud icon" href="images/coffeemud.ico" >
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
+	<title>Recovery Charts</title>
+	<Script language=JavaScript>
+	<!--
+		function reload()
+		{
+			document.POOPY.submit();
+		}
+	//-->
+	</SCRIPT>
+    <script language=JavaScript>
+    <!--
+        function Clicked(action)
+        {
+            document.POOPY.action=action;
+            document.POOPY.submit();
+        }
+        function Refresh()
+        {
+            document.POOPY.action='control.cmvp';
+            document.POOPY.submit();
+        }
+    //-->
+    </script>
+</head>
+
+<body BGCOLOR=BLACK>
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=33% ALIGN=LEFT VALIGN=TOP></TD>
+	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
+	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP>
+		<TABLE WIDTH=50% BORDER=1>
+			<TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
+			<TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
+			<TR><TD><A href="javascript:Clicked('/grinder/control.cmvp')"><FONT SIZE=-1 COLOR=WHITE><B>Control Panel</B></FONT></a></TD></TR>
+		</TABLE>
+	</TD>
+	</TR>
+	</TABLE>
+<FONT COLOR=WHITE>
+<h3>Stat Recovery Rates every 5 Ticks (20 seconds)</h3><P>
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=POOPY TARGET=_top METHOD=POST ACTION="/grinder/recovery.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<SELECT NAME=WHICH ONCHANGE="reload();">
+<OPTION VALUE=HP @if?CheckReqParm?WHICH=HP@SELECTED@endif@>Hit Points
+<OPTION VALUE=MN @if?CheckReqParm?WHICH=MN@SELECTED@endif@>Mana
+<OPTION VALUE=MV @if?CheckReqParm?WHICH=MV@SELECTED@endif@>Movement
+</SELECT>
+<TABLE WIDTH=100%>
+<TR>
+<TD WIDTH=25%><FONT COLOR=WHITE>
+<INPUT TYPE=CHECKBOX @if?!CheckReqParm?SITTING=@CHECKED@endif@ NAME=SITTING ONCLICK="reload();">Sitting
+</TD>
+<TD WIDTH=25%><FONT COLOR=WHITE>
+<INPUT TYPE=CHECKBOX @if?!CheckReqParm?SLEEPING=@CHECKED@endif@ NAME=SLEEPING ONCLICK="reload();">Sleeping
+</TD>
+<TD WIDTH=25%><FONT COLOR=WHITE>
+<INPUT TYPE=CHECKBOX @if?!CheckReqParm?SWIMMING=@CHECKED@endif@ NAME=SWIMMING ONCLICK="reload();">Swimming
+</TD>
+<TD WIDTH=25%><FONT COLOR=WHITE>
+<INPUT TYPE=CHECKBOX @if?!CheckReqParm?FLYING=@CHECKED@endif@ NAME=FLYING ONCLICK="reload();">Flying
+</TD>
+</TR><TR>
+<TD WIDTH=25%><FONT COLOR=WHITE>
+<INPUT TYPE=CHECKBOX @if?!CheckReqParm?RIDING=@CHECKED@endif@ NAME=RIDING ONCLICK="reload();">Riding something
+</TD>
+<TD WIDTH=25%><FONT COLOR=WHITE>
+<INPUT TYPE=CHECKBOX NAME=HUNGRY @if?!CheckReqParm?HUNGRY=@CHECKED@endif@ ONCLICK="reload();">Hungry
+</TD>
+<TD WIDTH=25%><FONT COLOR=WHITE>
+<INPUT TYPE=CHECKBOX NAME=THIRSTY @if?!CheckReqParm?THIRSTY=@CHECKED@endif@ ONCLICK="reload();">Thirsty
+</TD>
+<TD WIDTH=25%>
+</TD>
+</TR></TABLE>
+<P>
+Chart below shows: [average pool amount] / [the gain] = [the number of 20 second periods to recover from 0] for each level and relevant stat amount.
+<BR>
+	@StatRejuvCharts@
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@

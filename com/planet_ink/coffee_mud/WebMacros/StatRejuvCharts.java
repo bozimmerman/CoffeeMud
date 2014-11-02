@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.WebMacros;
 import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMath.CompiledOperation;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -15,6 +16,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -43,6 +45,22 @@ public class StatRejuvCharts extends StdWebMacro
 		return s;
 	}
 
+	public final int avgMath(final int stat, final int level, final int add, final LinkedList<CompiledOperation> formula)
+	{
+		final double[] variables={
+				level,
+				stat,
+				(double)stat+7,
+				stat,
+				(double)stat+7,
+				stat,
+				(double)stat+7,
+				stat,
+				stat
+			};
+		return add+(level*(int)Math.round(CMath.parseMathExpression(formula, variables, 0.0)));
+	}
+	
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
@@ -86,16 +104,67 @@ public class StatRejuvCharts extends StdWebMacro
 		mob.basePhyStats().setDisposition(disposition);
 		mob.recoverPhyStats();
 
+		final int MAX_STAT=25;
+		final int MAX_LEVEL=90;
+		final int SKIP_STAT=2;
+		final int SKIP_LEVEL=5;
+		
+		final int[][] hitpointcharts=new int[MAX_LEVEL+1][MAX_STAT+1];
+		final int[][] manacharts=new int[MAX_LEVEL+1][MAX_STAT+1];
+		final int[][] movementcharts=new int[MAX_LEVEL+1][MAX_STAT+1];
+		final int sh=CMProps.getIntVar(CMProps.Int.STARTHP);
+		final int sm=CMProps.getIntVar(CMProps.Int.STARTMANA);
+		final int sv=CMProps.getIntVar(CMProps.Int.STARTMOVE);
+		final Map<CharClass,LinkedList<CompiledOperation>> hpformulas=new Hashtable<CharClass,LinkedList<CompiledOperation>>(); 
+		final Map<CharClass,LinkedList<CompiledOperation>> mnformulas=new Hashtable<CharClass,LinkedList<CompiledOperation>>(); 
+		final Map<CharClass,LinkedList<CompiledOperation>> mvformulas=new Hashtable<CharClass,LinkedList<CompiledOperation>>(); 
+		for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+		{
+			final CharClass C1=c.nextElement();
+			hpformulas.put(C1, CMath.compileMathExpression(C1.getHitPointsFormula()));
+			mnformulas.put(C1, CMath.compileMathExpression(C1.getManaFormula()));
+			mvformulas.put(C1, CMath.compileMathExpression(C1.getMovementFormula()));
+		}
+		
+		for(int l=1;l<=MAX_LEVEL;l+=SKIP_LEVEL)
+			for(int s=4;s<=MAX_STAT;s+=SKIP_STAT)
+			{
+				int num=0;
+				for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+				{
+					final CharClass C1=c.nextElement();
+					num++;
+					hitpointcharts[l][s]+=avgMath(s,l,sh,hpformulas.get(C1));
+					manacharts[l][s]+=avgMath(s,l,sm,mnformulas.get(C1));
+					movementcharts[l][s]+=avgMath(s,l,sv,mvformulas.get(C1));
+				}
+				hitpointcharts[l][s]/=num;
+				manacharts[l][s]/=num;
+				movementcharts[l][s]/=num;
+			}
+		
+		
 		buf.append("<P><TABLE WIDTH=100% BORDER=1>");
-		buf.append("<TR><TD><B>STATS:</B></TD>");
-		for(int stats=4;stats<=25;stats++)
-			buf.append("<TD><B>"+stats+"</B></TD>");
+		buf.append("<TR><TD><B><FONT COLOR=WHITE>STATS:</FONT></B></TD>");
+		for(int stats=4;stats<=MAX_STAT;stats+=SKIP_STAT)
+			buf.append("<TD><B><FONT COLOR=WHITE>"+stats+"</FONT></B></TD>");
 		buf.append("</TR>");
-		for(int level=1;level<=30;level++)
+		
+		
+		LinkedList<CMath.CompiledOperation> stateHitPointRecoverFormula = null;
+		LinkedList<CMath.CompiledOperation> stateManaRecoverFormula = null;
+		LinkedList<CMath.CompiledOperation> stateMovesRecoverFormula  = null;
+		stateHitPointRecoverFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_HITPOINTRECOVER));
+		stateManaRecoverFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_MANARECOVER));
+		stateMovesRecoverFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_MOVESRECOVER));
+
+		
+		
+		for(int level=1;level<=MAX_LEVEL;level+=SKIP_LEVEL)
 		{
 			buf.append("<TR>");
-			buf.append("<TD><B>LVL "+level+"</B></TD>");
-			for(int stats=4;stats<=25;stats++)
+			buf.append("<TD><B><FONT COLOR=WHITE>LVL "+level+"</FONT></B></TD>");
+			for(int stats=4;stats<=MAX_STAT;stats+=SKIP_STAT)
 			{
 				for(final int c: CharStats.CODES.BASECODES())
 					mob.baseCharStats().setStat(c,stats);
@@ -106,92 +175,49 @@ public class StatRejuvCharts extends StdWebMacro
 				mob.curState().setMovement(0);
 				mob.curState().setHitPoints(0);
 
-				double con=mob.charStats().getStat(CharStats.STAT_CONSTITUTION);
-				double man=mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)+mob.charStats().getStat(CharStats.STAT_WISDOM);
-				double str=mob.charStats().getStat(CharStats.STAT_STRENGTH);
-				if(mob.curState().getHunger()<1)
-				{
-					con=con*0.85;
-					man=man*0.75;
-					str=str*0.85;
-				}
-				if(mob.curState().getThirst()<1)
-				{
-					con=con*0.85;
-					man=man*0.75;
-					str=str*0.85;
-				}
-				if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS)
-					man=man*.5;
+				final CharStats charStats=mob.charStats();
+				final CharState curState=mob.curState();
+				final boolean isSleeping=(CMLib.flags().isSleeping(mob));
+				final boolean isSittingOrRiding=(!isSleeping) && ((CMLib.flags().isSitting(mob))||(mob.riding()!=null));
+				final boolean isFlying=(!isSleeping) && (!isSittingOrRiding) && CMLib.flags().isFlying(mob);
+				final boolean isSwimming=(!isSleeping) && (!isSittingOrRiding) && (!isFlying) && CMLib.flags().isSwimming(mob);
+				final double[] vals=new double[]{
+					charStats.getStat(CharStats.STAT_CONSTITUTION),
+					mob.phyStats().level(),
+					(curState.getHunger()<1)?1.0:0.0,
+					(curState.getThirst()<1)?1.0:0.0,
+					(curState.getFatigue()>CharState.FATIGUED_MILLIS)?1.0:0.0,
+					isSleeping?1.0:0.0,
+					isSittingOrRiding?1.0:0.0,
+					isFlying?1.0:0.0,
+					isSwimming?1.0:0.0
+				};
 
-				final double lvl=mob.phyStats().level();
-				final double lvlby1p5=CMath.div(lvl,1.5);
-				//double lvlby2=CMath.div(lvl,2.0);
-				//double lvlby3=CMath.div(lvl,3.0);
-
-				double hpGain=(con>1.0)?((con/40.0)*lvlby1p5)+(con/4.5)+2.0:1.0;
-				double manaGain=(man>2.0)?((man/80.0)*lvl)+(man/4.5)+2.0:1.0;
-				double moveGain=(str>1.0)?((str/40.0)*lvl)+(str/3.0)+5.0:1.0;
-
-				if(CMLib.flags().isSleeping(mob))
-				{
-					hpGain+=(hpGain/2.0);
-					manaGain+=(manaGain/2.0);
-					moveGain+=(moveGain/2.0);
-					if((mob.riding()!=null)&&(mob.riding() instanceof Item))
-					{
-						hpGain+=(hpGain/8.0);
-						manaGain+=(manaGain/8.0);
-						moveGain+=(moveGain/8.0);
-					}
-				}
-				else
-				if((CMLib.flags().isSitting(mob))||(mob.riding()!=null))
-				{
-					hpGain+=(hpGain/4.0);
-					manaGain+=(manaGain/4.0);
-					moveGain+=(moveGain/4.0);
-					if((mob.riding()!=null)&&(mob.riding() instanceof Item))
-					{
-						hpGain+=(hpGain/8.0);
-						manaGain+=(manaGain/8.0);
-						moveGain+=(moveGain/8.0);
-					}
-				}
-				else
-				{
-					if(CMLib.flags().isFlying(mob))
-						moveGain+=(moveGain/8.0);
-					else
-					if(CMLib.flags().isSwimming(mob))
-					{
-						hpGain-=(hpGain/2.0);
-						manaGain-=(manaGain/4.0);
-						moveGain-=(moveGain/2.0);
-					}
-				}
-
-				if((!mob.isInCombat())
-				&&(!CMLib.flags().isClimbing(mob)))
-				{
-					if((hpGain>0)&&(!CMLib.flags().isGolem(mob)))
-						mob.curState().adjHitPoints((int)Math.round(hpGain),mob.maxState());
-					if(manaGain>0)
-						mob.curState().adjMana((int)Math.round(manaGain),mob.maxState());
-					if(moveGain>0)
-						mob.curState().adjMovement((int)Math.round(moveGain),mob.maxState());
-				}
 
 				if((which!=null)&&(which.equals("HP")))
-					buf.append("<TD>"+mob.curState().getHitPoints()+"</TD>");
+				{
+					final long hpGain = Math.round(CMath.parseMathExpression(stateHitPointRecoverFormula, vals, 0.0));
+					buf.append("<TD><FONT COLOR=CYAN>"+hitpointcharts[level][stats]+"/"+hpGain+"="+(hitpointcharts[level][stats]/hpGain)+"</FONT></TD>");
+				}
 				else
 				if((which!=null)&&(which.equals("MN")))
-					buf.append("<TD>"+mob.curState().getMana()+"</TD>");
+				{
+					vals[0]=((charStats.getStat(CharStats.STAT_INTELLIGENCE)+charStats.getStat(CharStats.STAT_WISDOM)));
+					final long manaGain = Math.round(CMath.parseMathExpression(stateManaRecoverFormula, vals, 0.0));
+					buf.append("<TD><FONT COLOR=PINK>"+manacharts[level][stats]+"/"+manaGain+"="+(manacharts[level][stats]/manaGain)+"</FONT></TD>");
+				}
 				else
 				if((which!=null)&&(which.equals("MV")))
-					buf.append("<TD>"+mob.curState().getMovement()+"</TD>");
+				{
+					vals[0]=charStats.getStat(CharStats.STAT_STRENGTH);
+					final long moveGain = Math.round(CMath.parseMathExpression(stateMovesRecoverFormula, vals, 0.0));
+					buf.append("<TD><FONT COLOR=YELLOW>"+movementcharts[level][stats]+"/"+moveGain+"="+(movementcharts[level][stats]/moveGain)+"</FONT></TD>");
+				}
 				else
-					buf.append("<TD>"+mob.curState().getHitPoints()+"</TD>");
+				{
+					final long hpGain = Math.round(CMath.parseMathExpression(stateHitPointRecoverFormula, vals, 0.0));
+					buf.append("<TD><FONT COLOR=CYAN>"+hitpointcharts[level][stats]+"/"+hpGain+"="+(hitpointcharts[level][stats]/hpGain)+"</FONT></TD>");
+				}
 			}
 			buf.append("</TR>");
 		}

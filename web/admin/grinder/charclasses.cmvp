@@ -41,6 +41,9 @@
         <TABLE WIDTH=50% BORDER=1>
         <TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
         <TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
+        @if?CheckAuthCode?SYSOP=true@
+        <TR><TD><A href="javascript:Clicked('/grinder/crossclass.cmvp')"><FONT SIZE=-1 COLOR=WHITE><B>Cross Class Analysis</B></FONT></a></TD></TR>
+        @endif@
         <TR><TD><a href="javascript:Refresh();"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
         </TABLE>
     </TD>
