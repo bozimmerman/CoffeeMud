@@ -457,7 +457,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		if(E instanceof Electronics.FuelConsumer)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("ECONSTYP",CMParms.toStringList(((Electronics.PowerGenerator)E).getConsumedFuelTypes())));
+			text.append(CMLib.xml().convertXMLtoTag("ECONSTYP",CMParms.toStringList(((Electronics.FuelConsumer)E).getConsumedFuelTypes())));
 		}
 		if(E instanceof Recipe)
 		{
