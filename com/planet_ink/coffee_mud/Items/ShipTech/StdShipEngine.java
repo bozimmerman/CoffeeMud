@@ -38,7 +38,7 @@ public class StdShipEngine extends StdCompGenerator implements ShipComponent.Shi
 	@Override public String ID(){	return "StdShipEngine";}
 
 	protected float 	installedFactor	= 1.0F;
-	protected int		maxThrust		= 1000;
+	protected int		maxThrust		= 8900000;
 	protected int		thrust			= 0;
 	protected long		specificImpulse	= SpaceObject.VELOCITY_SUBLIGHT;
 	protected double	fuelEfficiency	= 0.33;

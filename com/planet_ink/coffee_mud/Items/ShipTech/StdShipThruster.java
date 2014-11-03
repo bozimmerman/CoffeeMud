@@ -39,7 +39,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 	@Override public String ID(){	return "StdShipThruster";}
 
 	protected float 	installedFactor	= 1.0F;
-	protected int		maxThrust		= 1000;
+	protected int		maxThrust		= 900000;
 	protected int		thrust			= 0;
 	protected long		specificImpulse	= SpaceObject.VELOCITY_SUBLIGHT;
 	protected double	fuelEfficiency	= 0.33;
@@ -55,7 +55,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		basePhyStats().setLevel(1);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
-		setCapacity(basePhyStats.weight()+10000);
+		setCapacity(basePhyStats.weight()+100000);
 	}
 	@Override
 	public boolean sameAs(Environmental E)
