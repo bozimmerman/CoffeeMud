@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -104,6 +105,24 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		return false;
 	}
 
+	public static boolean tellWholeShip(final ShipEngine me, final MOB mob, final int msgCode, final String message)
+	{
+		Room R=CMLib.map().roomLocation(me);
+		if(R==null)
+			R=mob.location();
+		if(R!=null)
+		{
+			if(R.getArea() instanceof SpaceShip)
+			{
+				for(Enumeration<Room> r=R.getArea().getProperMap();r.hasMoreElements();)
+					r.nextElement().show(mob, null, msgCode, message);
+			}
+			else
+				R.show(mob, null, msgCode, message);
+		}
+		return false;
+	}
+
 	protected static void sendComputerMessage(final ShipEngine me, final String circuitKey, final MOB mob, final Item controlI, final String code)
 	{
 		for(final Iterator<Electronics.Computer> c=CMLib.tech().getComputers(circuitKey);c.hasNext();)
@@ -120,13 +139,14 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 	
 	public static boolean executeThrust(final ShipEngine me, final String circuitKey, final MOB mob, final Software controlI, final ShipEngine.ThrustPort portDir, final int amount)
 	{
+		final LanguageLibrary lang=CMLib.lang();
 		final SpaceObject obj=CMLib.map().getSpaceObject(me, true);
 		final Manufacturer manufacturer=me.getFinalManufacturer();
 		if(!(obj instanceof SpaceShip))
-			return reportError(me, controlI, mob, me.name(mob)+" rumbles and fires, but nothing happens.","Failure: "+me.name(mob)+": exhaust ports.");
+			return reportError(me, controlI, mob, lang.L("@x1 rumbles and fires, but nothing happens.",me.name(mob)), lang.L("Failure: @x1: exhaust ports.",me.name(mob)));
 		final SpaceShip ship=(SpaceShip)obj;
 		if((portDir==null)||(amount<0))
-			return reportError(me, controlI, mob, me.name(mob)+" rumbles loudly, but accomplishes nothing.","Failure: "+me.name(mob)+": exhaust control.");
+			return reportError(me, controlI, mob, lang.L("@x1 rumbles loudly, but accomplishes nothing.",me.name(mob)), lang.L("Failure: @x1: exhaust control.",me.name(mob)));
 		int thrust=Math.round(me.getInstalledFactor() * (amount + ship.getMass()));
 		if(thrust > me.getMaxThrust())
 			thrust=me.getMaxThrust();
@@ -136,11 +156,13 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 			me.setThrust(thrust);
 		final int fuelToConsume=(int)Math.round(CMath.ceiling(thrust*me.getFuelEfficiency()*manufacturer.getEfficiencyPct()));
 		final long accelleration=thrust/ship.getMass();
+		if(amount > 1)
+			tellWholeShip(me,mob,CMMsg.MSG_NOISE,CMLib.lang().L("You feel a rumble and hear the blast of @x1."));
 		if(accelleration == 0)
 		{
 			final String code=Technical.TechCommand.COMPONENTFAILURE.makeCommand(TechType.SHIP_ENGINE, "Failure: "+me.name()+": insufficient_thrust_capacity.");
 			sendComputerMessage(me,circuitKey,mob,controlI,code);
-			return reportError(me, controlI, mob, me.name(mob)+" rumbles very loudly, but nothing is happening.","Failure: "+me.name(mob)+": insufficient engine thrust capacity.");
+			return reportError(me, controlI, mob, lang.L("@x1 rumbles very loudly, but nothing is happening.",me.name(mob)), lang.L("Failure: @x1: insufficient engine thrust capacity.",me.name(mob)));
 		}
 		else
 		if(me.consumeFuel(fuelToConsume))
@@ -158,25 +180,26 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		{
 			final String code=Technical.TechCommand.COMPONENTFAILURE.makeCommand(TechType.SHIP_ENGINE, "Failure:_"+me.name().replace(' ','_')+":_insufficient_fuel.");
 			sendComputerMessage(me,circuitKey,mob,controlI,code);
-			return reportError(me, controlI, mob, me.name(mob)+" rumbles loudly, then sputters down.","Failure: "+me.name(mob)+": insufficient fuel.");
+			return reportError(me, controlI, mob, lang.L("@x1 rumbles loudly, then sputters down.",me.name(mob)), lang.L("Failure: @x1: insufficient fuel.",me.name(mob)));
 		}
 		return false;
 	}
 
 	public static boolean executeCommand(ShipEngine me, String circuitKey, CMMsg msg)
 	{
+		final LanguageLibrary lang=CMLib.lang();
 		final Software controlI=(msg.tool() instanceof Software)?((Software)msg.tool()):null;
 		final MOB mob=msg.source();
 		final String[] parts=msg.targetMessage().split(" ");
 		final TechCommand command=TechCommand.findCommand(parts);
 		if(command==null)
-			return reportError(me, controlI, mob, me.name(mob)+" does not respond.","Failure: "+me.name(mob)+": control failure.");
+			return reportError(me, controlI, mob, lang.L("@x1 does not respond.",me.name(mob)), lang.L("Failure: @x1: control failure.",me.name(mob)));
 		final Object[] parms=command.confirmAndTranslate(parts);
 		if(parms==null)
-			return reportError(me, controlI, mob, me.name(mob)+" did not respond.","Failure: "+me.name(mob)+": control syntax failure.");
+			return reportError(me, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
 		if(command == TechCommand.THRUST)
 			return executeThrust(me, circuitKey, mob, controlI, (ShipEngine.ThrustPort)parms[0],((Integer)parms[1]).intValue());
-		return reportError(me, controlI, mob, me.name(mob)+" refused to respond.","Failure: "+me.name(mob)+": control command failure.");
+		return reportError(me, controlI, mob, lang.L("@x1 refused to respond.",me.name(mob)), lang.L("Failure: @x1: control command failure.",me.name(mob)));
 	}
 
 	public static void executeThrusterMsg(ShipEngine me, Environmental myHost, String circuitKey, CMMsg msg)
