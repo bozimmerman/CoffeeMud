@@ -781,7 +781,7 @@ public class StdAbility implements Ability
 		if((thisThang!=null)
 		&&(thisThang instanceof Item)
 		&&(((Item)thisThang) instanceof Container)
-		&&((!withStuff)||(((Container)thisThang).getContents().size()>0)))
+		&&((!withStuff)||(((Container)thisThang).hasContent())))
 		{
 			commands.removeElementAt(commands.size()-1);
 			return (Item)thisThang;

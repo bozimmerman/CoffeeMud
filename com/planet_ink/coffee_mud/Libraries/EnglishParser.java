@@ -1542,7 +1542,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			if((E!=null)
 			&&(E instanceof Item)
 			&&(((Item)E) instanceof Container)
-			&&((!withContentOnly)||(((Container)E).getContents().size()>0))
+			&&((!withContentOnly)||(((Container)E).hasContent()))
 			&&(CMLib.flags().canBeSeenBy(E,mob)||mob.isMine(E)))
 			{
 				V.addElement((Container)E);
@@ -1600,7 +1600,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if((E!=null)
 		&&(E instanceof Item)
 		&&(((Item)E) instanceof Container)
-		&&((!withStuff)||(((Container)E).getContents().size()>0)))
+		&&((!withStuff)||(((Container)E).hasContent())))
 		{
 			while((fromDex>=0)&&(commands.size()>fromDex))
 				commands.remove(fromDex);

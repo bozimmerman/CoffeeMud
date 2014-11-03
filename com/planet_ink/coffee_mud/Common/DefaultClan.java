@@ -579,7 +579,7 @@ public class DefaultClan implements Clan
 						R=CMLib.map().getRoom(getRecall());
 					if(I instanceof Container)
 					{
-						final List<Item> V=((Container)I).getContents();
+						final List<Item> V=((Container)I).getDeepContents();
 						for(int v=0;v<V.size();v++)
 							V.get(v).setContainer(null);
 					}

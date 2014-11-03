@@ -31,9 +31,11 @@ import java.util.*;
 */
 public interface Container extends Item, CloseableLockable
 {
+	public ReadOnlyList<Item> getDeepContents();
 	public ReadOnlyList<Item> getContents();
 	public int capacity();
 	public void setCapacity(int newValue);
+	public boolean hasContent();
 	public boolean canContain(Environmental E);
 	public boolean isInside(Item I);
 	public long containTypes();

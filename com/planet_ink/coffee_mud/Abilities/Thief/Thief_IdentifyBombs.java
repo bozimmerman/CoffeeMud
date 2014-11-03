@@ -76,7 +76,7 @@ public class Thief_IdentifyBombs extends ThiefSkill
 		if((P instanceof Container)&&(CMLib.flags().canBeSeenBy(P,mob)))
 		{
 			final Container C=(Container)P;
-			final List<Item> V=C.getContents();
+			final List<Item> V=C.getDeepContents();
 			for(int v=0;v<V.size();v++)
 				if(trapCheck(V.get(v)).length()>0)
 				{

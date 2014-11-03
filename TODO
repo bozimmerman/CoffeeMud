@@ -22,19 +22,18 @@ TECH
    *. keep reviewing and updating the GameOverview.html doc
 
 NON-TECH
-   *. Make it easier to store containers of items in bank.  Like a deposit box or something.
    *. A fireball type chant for Delvers or something, like Magma Cannon or Core Spike.
    *. Fighter - Weapons Training (or Karate Training for Monks) -- non-kill way to gain xp, makes mobs slightly harder, 1 level up max.
    *. Fighter -- AUTOGUARD can start a little "Guarding" prog for, say, 10 rl minutes.
    *. Classes with insufficient unique skills: Charlatan (7), Alterer (9), Illusionist (10),  Ranger (11), Alterer (11), Evoker (11), Assassin (12), Paladin (12), 
    *. Create Magi Robes(or whatever you wanted to call them) that would enhance his/her magic of their chosen field.
+   *. Wants and Needs engine - similar to slavery system
+   *. RandomQuests based off the Percolator engine -- a way to randomly generate different quests.
    *. retest private libs, private dbtables, private classes, private area objects, private players
    *. OLC for players?  Play with PennMush more. Port 4201
    *. Finish Player Simulator -- the Perpetual Project
    *. Facebook interface?
-   *. Wants and Needs engine - similar to slavery system
    *. MudFTP/DawnFTP support - lets you edit room descriptions etc. in your favourite text editor, or just for fun
-   *. RandomQuests based off the Percolator engine -- a way to randomly generate different quests.
    *. Clan Calendar system, that can use mud and rl dates, for scheduling things. Might send reminders -- based on journaling system of course.
    *. Lich Phylactery -- acts as a recall beacon, but only during death. If the Phylactery is destroyed then the lich loses xp and must construct a new one,
       undergoing the ritual all over again. However if they have a phylactery when they die they do not lose experience but they do have to wait until their

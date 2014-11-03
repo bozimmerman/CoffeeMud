@@ -82,7 +82,7 @@ public class Chant_Dehydrate extends Chant
 					{
 						if(target instanceof Container)
 						{
-							final List<Item> V=((Container)target).getContents();
+							final List<Item> V=((Container)target).getDeepContents();
 							for(int i=0;i<V.size();i++)
 							{
 								final Item I=V.get(i);

@@ -120,7 +120,7 @@ public class Chant_Hippieness extends Chant
 				{
 					if((I instanceof Container)
 					&&(((Container)I).containTypes()==Container.CONTAIN_SMOKEABLES)
-					&&(((Container)I).getContents().size()==0))
+					&&(!((Container)I).hasContent()))
 					{
 						final Item smoke=CMClass.getItem("GenResource");
 						if(smoke!=null)

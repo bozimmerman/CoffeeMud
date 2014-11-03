@@ -87,7 +87,7 @@ public class BagOfEndlessness extends BagOfHolding implements ArchonOnly
 				allStuff.addElement(neweritem);
 				if(newitem instanceof Container)
 				{
-					final List<Item> V=((Container)newitem).getContents();
+					final List<Item> V=((Container)newitem).getDeepContents();
 					for(int v=0;v<V.size();v++)
 					{
 						final Item I=(Item)V.get(v).copyOf();

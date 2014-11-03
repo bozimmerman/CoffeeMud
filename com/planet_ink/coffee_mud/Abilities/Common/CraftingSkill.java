@@ -1173,7 +1173,7 @@ public class CraftingSkill extends GatheringSkill
 			commonTell(mob,L("You need to remove @x1 first.",buildingI.name(mob)));
 			return false;
 		}
-		if((buildingI instanceof Container)&&(((Container)buildingI).getContents().size()>0))
+		if((buildingI instanceof Container)&&(((Container)buildingI).hasContent()))
 		{
 			commonTell(mob,L("You need to empty @x1 first.",buildingI.name(mob)));
 			return false;

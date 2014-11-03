@@ -200,11 +200,11 @@ public class Thief_Embezzle extends ThiefSkill
 				bank.delDepositInventory(victim,hisCoins);
 				hisCoins=CMLib.beanCounter().makeBestCurrency(target,hisCoins.getTotalValue()-(hisAmount/3.0));
 				if(hisCoins.getNumberOfCoins()>0)
-					bank.addDepositInventory(victim,hisCoins);
+					bank.addDepositInventory(victim,hisCoins,null);
 				bank.delDepositInventory(myAcct,myCoins);
 				myCoins=CMLib.beanCounter().makeBestCurrency(mob,((Coins)myCoins).getTotalValue()+hisAmount);
 				if(((Coins)myCoins).getNumberOfCoins()>0)
-					bank.addDepositInventory(myAcct,myCoins);
+					bank.addDepositInventory(myAcct,myCoins,null);
 			}
 		}
 		else

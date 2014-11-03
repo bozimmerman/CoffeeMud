@@ -67,7 +67,7 @@ public class Prayer_Rot extends Prayer
 			else
 			if(host instanceof Container)
 			{
-				final List<Item> V=((Container)host).getContents();
+				final List<Item> V=((Container)host).getDeepContents();
 				for(int f=0;f<V.size();f++)
 					if(V.get(f) != null)
 					{
@@ -192,7 +192,7 @@ public class Prayer_Rot extends Prayer
 			else
 			if(host instanceof Container)
 			{
-				final List<Item> V=((Container)host).getContents();
+				final List<Item> V=((Container)host).getDeepContents();
 				for(int v=0;v<V.size();v++)
 					if(V.get(v) != null)
 						setRot(V.get(v));

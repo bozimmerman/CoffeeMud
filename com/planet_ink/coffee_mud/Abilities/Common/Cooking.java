@@ -167,7 +167,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			{
 				if((cookingPot!=null)&&(finalRecipe!=null)&&(buildingI!=null))
 				{
-					final List<Item> V=cookingPot.getContents();
+					final List<Item> V=cookingPot.getDeepContents();
 					for(int v=0;v<V.size();v++)
 						V.get(v).destroy();
 					if((cookingPot instanceof Drink)&&(buildingI instanceof Drink))
@@ -220,7 +220,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				h.put(RawMaterial.CODES.NAME(((Drink)pot).liquidType())+"/",Integer.valueOf(((Drink)pot).liquidRemaining()/10));
 		}
 		if(pot.owner()==null) return h;
-		final List<Item> V=pot.getContents();
+		final List<Item> V=pot.getDeepContents();
 		for(int v=0;v<V.size();v++)
 		{
 			final Item I=V.get(v);
@@ -957,7 +957,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			return false;
 		}
 
-		buildingI=buildItem(mob,finalRecipe,cookingPot.getContents());
+		buildingI=buildItem(mob,finalRecipe,cookingPot.getDeepContents());
 		duration=getDuration(mob, CMath.isInteger((String)finalRecipe.get(RCP_LEVEL))?CMath.s_int((String)finalRecipe.get(RCP_LEVEL)):1);
 		//***********************************************
 		//* done figuring out recipe

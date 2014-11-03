@@ -238,17 +238,21 @@ public class Nanny extends StdBehavior
 
 	public PhysicalAgent getDroppedOffObjIfAny(PhysicalAgent P)
 	{
-		if(P==null) return null;
-		if(isDroppedOff(P)) return P;
+		if(P==null) 
+			return null;
+		if(isDroppedOff(P)) 
+			return P;
+		
 		if(P instanceof Container)
 		{
-			final List<Item> V=((Container)P).getContents();
+			final List<Item> V=((Container)P).getDeepContents();
 			Item I=null;
 			for(int v=0;v<V.size();v++)
 			{
 				I=V.get(v);
 				P=getDroppedOffObjIfAny(I);
-				if(P!=null) return P;
+				if(P!=null) 
+					return P;
 			}
 		}
 		return null;

@@ -153,7 +153,7 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 				final Room locR=CMLib.map().roomLocation(this);
 				final MOB M=CMLib.map().getFactoryMOB(locR);
 				final CMMsg deactivateMsg = CMClass.getMsg(M, null, null, CMMsg.MASK_ALWAYS|CMMsg.MASK_CNTRLMSG|CMMsg.MSG_DEACTIVATE,null);
-				for(final Item I : this.getContents())
+				for(final Item I : this.getDeepContents())
 					if(I instanceof Electronics)
 					{
 						deactivateMsg.setTarget(I);
@@ -166,7 +166,7 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 			{
 				final Room R=CMLib.map().roomLocation(this);
 				int powerRemaining=msg.value();
-				final List<Item> contents=getContents();
+				final List<Item> contents=getDeepContents();
 				final CMMsg powerMsg=CMClass.getMsg(msg.source(), CMMsg.MSG_POWERCURRENT, null);
 				double totalPowerReq=0.0;
 				for(int i=contents.size()-1;i>=0;i--)

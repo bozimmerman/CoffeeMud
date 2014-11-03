@@ -67,7 +67,7 @@ public class HoleInTheGround extends StdContainer
 				if((owner() instanceof Room)
 				&&(((Room)owner()).numPCInhabitants()==0))
 				{
-					if(getContents().size()==0)
+					if(!hasContent())
 					{
 						destroy();
 						return true;
@@ -80,7 +80,7 @@ public class HoleInTheGround extends StdContainer
 				}
 				break;
 			case CMMsg.TYP_EXPIRE:
-				if(getContents().size()>0)
+				if(hasContent())
 				{
 					return false;
 				}
@@ -142,7 +142,7 @@ public class HoleInTheGround extends StdContainer
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_CLOSE:
-				if(getContents().size()==0)
+				if(!hasContent())
 					destroy();
 				else
 				{

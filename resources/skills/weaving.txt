@@ -1,16 +1,26 @@
-% Rope	5	20	10	15	GenRideable	LADDER	1		0	
-% Lasso	5	30	10	20	GenLasso	THROWN	0	0		
-% Net	10	50	20	15	GenNet	THROWN	0	0		
-% Basket	1	10	5	5	GenContainer		20		0	
-% Bag	1	10	5	5	GenContainer		30		0	
+% Basket	1	10	5	5	GenContainer		10		0	
 % Mat	1	5	5	0	GenItem					
-% Quilt	1	20	30	5	GenArmor	M3:BODY	0	1	0	Prop_HaveResister;Cold 10%
-% Hammock	5	40	30	10	GenRideable	BED	50		0	
-% Whip	5	10	10	272	GenWeapon	FLAILED	0	6		
-% Wig	12	20	3	20	GenArmor	-1:HEAD	0	1	0	
-% Snood	18	25	2	25	GenArmor	1:HEAD	0	2	0	
-% Solano	26	30	5	50	GenArmor	HEAD	0	3	0	
-% Sweater	15	60	10	30	GenArmor	1:BODY	0	6	0	Prop_HaveResister;Cold 10%
+Small % Bag	2	10	5	5	GenContainer		20		0	
+% Quilt	2	20	30	5	GenArmor	M3:BODY	0	1	0	Prop_HaveResister;Cold 10%
 Hair Ribbons	3	5	1	1	GenArmor	MS-4:HEAD	0	0	0	
+% Rope	4	20	10	15	GenRideable	LADDER	1		0	
+% Lasso	5	30	10	20	GenLasso	THROWN	0	0		
+Small % Sack	5	20	10	10	GenContainer		30		0	
+% Hammock	6	40	30	10	GenRideable	BED	50		0	
+% Whip	7	10	10	272	GenWeapon	FLAILED	0	6		
 % Boa	8	20	5	10	GenArmor	1:NECK	0	0	0	
+Regular % Bag	9	20	10	10	GenContainer		40		0	
+% Net	10	50	20	15	GenNet	THROWN	0	0		
+% Sack	11	30	15	15	GenContainer		60		0	
+% Wig	12	20	3	20	GenArmor	-1:HEAD	0	1	0	
+Warm % Quilt	13	40	60	10	GenArmor	M3:BODY	0	1	0	Prop_HaveResister;Cold 50%
+% Winter Cap	14	20	30	5	GenArmor	HEAD	0	1	0	Prop_HaveResister;Cold 10%
+% Sweater	15	60	10	30	GenArmor	1:BODY	0	6	0	Prop_HaveResister;Cold 10%
+Large % Bag	16	30	15	15	GenContainer		80		0	
+Large % Sack	17	40	20	20	GenContainer		100		0	
+% Snood	18	25	2	25	GenArmor	1:HEAD	0	2	0	
 % Belt	20	20	3	30	GenArmor	6:WAIST	0	0	0	
+Warm % Sweater	23	80	20	60	GenArmor	1:BODY	0	6	0	Prop_HaveResister;Cold 50%
+Huge % Bag	25	40	25	25	GenContainer		160		0	
+% Solano	26	30	5	50	GenArmor	HEAD	0	3	0	
+Huge % Sack	30	50	30	30	GenContainer		200		0	

@@ -104,26 +104,30 @@ public class Prayer_Divorce extends Prayer
 							if((M2!=null)&&(M2 instanceof Banker))
 							{
 								final Banker B=(Banker)M2;
-								final List<Item> V=B.getDepositedItems(maleName);
+								final List<Item> allMaleItems=B.getDepositedItems(maleName);
 								Item coins=B.findDepositInventory(femaleName,""+Integer.MAX_VALUE);
-								for(int v=0;v<V.size();v++)
+								for(int v=0;v<allMaleItems.size();v++)
 								{
-									final Item I=V.get(v);
-									if(I==null) break;
-									B.delDepositInventory(maleName,I);
-									if(I instanceof Coins)
+									final Item I=allMaleItems.get(v);
+									if((I!=null)&&(I.container()==null))
 									{
-										if(coins!=null)
-											B.delDepositInventory(femaleName,coins);
-										else
+										final List<Item> items=B.delDepositInventory(maleName,I);
+										if(I instanceof Coins)
 										{
-											coins=CMClass.getItem("StdCoins");
-											((Coins)coins).setNumberOfCoins(0);
+											if(coins!=null)
+												B.delDepositInventory(femaleName,coins);
+											else
+											{
+												coins=CMClass.getItem("StdCoins");
+												((Coins)coins).setNumberOfCoins(0);
+											}
+											((Coins)coins).setNumberOfCoins(((Coins)coins).getNumberOfCoins() + Math.round(((Coins)I).getTotalValue() / ((Coins)coins).getDenomination()));
+											B.addDepositInventory(femaleName,coins,null);
 										}
-										B.addDepositInventory(femaleName,coins);
+										else
+										for(Item oI : items)
+											B.addDepositInventory(femaleName,oI,oI.container());
 									}
-									else
-										B.addDepositInventory(femaleName,I);
 								}
 							}
 						}

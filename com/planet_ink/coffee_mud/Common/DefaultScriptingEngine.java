@@ -4903,9 +4903,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(E instanceof Container)
 				{
 					if(arg2.length()==0)
-						returnable=((Container)E).getContents().size()==0;
+						returnable=!((Container)E).hasContent();
 					else
-						returnable=CMLib.english().fetchEnvironmental(((Container)E).getContents(), arg2, false)!=null;
+						returnable=CMLib.english().fetchEnvironmental(((Container)E).getDeepContents(), arg2, false)!=null;
 				}
 				else
 					returnable=false;
@@ -5014,7 +5014,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(E instanceof Item)
 				{
 					if(E instanceof Container)
-						choices.addAll(((Container)E).getContents());
+						choices.addAll(((Container)E).getDeepContents());
 					else
 						choices.addElement(E);
 				}
@@ -5100,7 +5100,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((E instanceof Item)&&(!(((Item)E).amWearingAt(Wearable.IN_INVENTORY))))
 				{
 					if(E instanceof Container)
-						choices.addAll(((Container)E).getContents());
+						choices.addAll(((Container)E).getDeepContents());
 					else
 						choices.addElement(E);
 				}
@@ -6360,7 +6360,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						else
 						if(E instanceof Container)
 						{
-							final List<Item> V=((Container)E).getContents();
+							final List<Item> V=((Container)E).getDeepContents();
 							for(int v=0;v<V.size();v++)
 								results.append("\""+V.get(v).Name()+"\" ");
 						}
@@ -6424,7 +6424,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				if(E instanceof Container)
 				{
-					for (final Item item : ((Container)E).getContents())
+					for (final Item item : ((Container)E).getDeepContents())
 						results.append(CMParms.quoteIfNecessary(item.name())).append(" ");
 				}
 				break;

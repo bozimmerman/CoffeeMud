@@ -748,9 +748,11 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	{
 		synchronized(getSync(P).intern())
 		{
-			if(checkCatalogIntegrity(P)==null) return;
-			changeCatalogFlag(P,false);
-			P.text();
+			if(checkCatalogIntegrity(P)!=null)
+			{
+				changeCatalogFlag(P,false);
+				P.text();
+			}
 		}
 	}
 

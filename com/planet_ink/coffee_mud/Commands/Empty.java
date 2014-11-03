@@ -171,8 +171,8 @@ public class Empty extends Drop
 		for(int v=0;v<V.size();v++)
 		{
 			final Container C=(Container)V.elementAt(v);
-			if(C==target) continue;
-			final List<Item> V2=C.getContents();
+			if(C==target) 
+				continue;
 
 			boolean skipMessage=false;
 			if((C instanceof Drink)&&(((Drink)C).containsDrink()))
@@ -194,11 +194,15 @@ public class Empty extends Drop
 			final Room R=mob.location();
 			if(skipMessage||(R.okMessage(mob,msg)))
 			{
-				if(!skipMessage) R.send(mob,msg);
+				if(!skipMessage) 
+					R.send(mob,msg);
+				final List<Item> V2=C.getContents();
 				for(int v2=0;v2<V2.size();v2++)
 				{
 					final Item I=V2.get(v2);
-					if(I instanceof Coins) ((Coins)I).setContainer(null);
+					if(I instanceof Coins) 
+						((Coins)I).setContainer(null);
+
 					if(((I.container()==null)||(Get.get(mob,C,I,true,null,true)))
 					&&(I.container()==null))
 					{

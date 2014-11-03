@@ -882,7 +882,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			{
 				List<Item> V=null;
 				if(rawSoldItem instanceof Container)
-					V=((Container)rawSoldItem).getContents();
+					V=((Container)rawSoldItem).getDeepContents();
 				((Item)rawSoldItem).unWear();
 				((Item)rawSoldItem).removeFromOwnerContainer();
 				if(V!=null)

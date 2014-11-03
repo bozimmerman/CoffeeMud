@@ -287,7 +287,7 @@ public class Auction extends Channel implements Tickable
 				mob.tell(L("@x1 is not an item you can auction.",s));
 				return false;
 			}
-			if((E instanceof Container)&&(((Container)E).getContents().size()>0))
+			if((E instanceof Container)&&(((Container)E).hasContent()))
 			{
 				mob.tell(L("@x1 will have to be emptied first.",E.name()));
 				return false;

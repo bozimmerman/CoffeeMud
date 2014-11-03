@@ -950,7 +950,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			final Container contitem=(Container)item;
 			if((contitem.isOpen())
 			&&((contitem.capacity()>0)
-				||(contitem.getContents().size()>0)
+				||(contitem.hasContent())
 				||((contitem instanceof Drink)&&(((Drink)contitem).liquidRemaining()>0))))
 			{
 				buf.append(item.name()+" contains:^<!ENTITY container \""+CMStrings.removeColors(item.name())+"\"^>"+(mob.isAttribute(MOB.Attrib.COMPRESS)?" ":"\n\r"));
@@ -998,7 +998,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				}
 			}
 			else
-			if((contitem.hasADoor())&&((contitem.capacity()>0)||(contitem.getContents().size()>0)))
+			if((contitem.hasADoor())&&((contitem.capacity()>0)||(contitem.hasContent())))
 				buf.append(item.name()+" is closed.");
 		}
 		if(!msg.source().isMonster())

@@ -79,7 +79,7 @@ public class StdSmokable extends StdContainer implements Light
 		case CMMsg.TYP_WEAR:
 			if(capacity>0)
 			{
-				if(getContents().size()>0)
+				if(hasContent())
 					durationTicks=baseDuration;
 				else
 					durationTicks=0;

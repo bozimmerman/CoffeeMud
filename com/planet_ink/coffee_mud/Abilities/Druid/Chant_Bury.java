@@ -98,7 +98,7 @@ public class Chant_Bury extends Chant
 
 		if((((DeadBody)target).playerCorpse())
 		&&(!((DeadBody)target).mobName().equals(mob.Name()))
-		&&(((DeadBody)target).getContents().size()>0))
+		&&(((DeadBody)target).hasContent()))
 		{
 			mob.tell(L("You are not allowed to bury that corpse."));
 			return false;

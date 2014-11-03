@@ -113,7 +113,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 	private List<Item> fillInTheDeck()
 	{
 		alreadyFilled=true;
-		if(getContents().size()==0)
+		if(!hasContent())
 		{
 			final Vector allCards=makeAllCards();
 			for(int i=0;i<allCards.size();i++)

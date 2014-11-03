@@ -55,6 +55,7 @@ public interface CMMiscUtils extends CMLibrary
 	public boolean armorCheck(MOB mob, int allowedArmorLevel);
 	public boolean armorCheck(MOB mob, Item I, int allowedArmorLevel);
 	public void recursiveDropMOB(MOB mob, Room room, Item thisContainer, boolean bodyFlag);
+	public List<Item> deepCopyOf(Item theContainer);
 	public void confirmWearability(MOB mob);
 	public int processVariableEquipment(MOB mob);
 

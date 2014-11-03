@@ -1078,6 +1078,37 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
+	public List<Item> deepCopyOf(Item oldItem)
+	{
+		final List<Item> items=new ArrayList<Item>(1);
+		if(oldItem == null)
+			return items;
+		final Item newItem = (Item)oldItem.copyOf();
+		items.add(newItem);
+		if(newItem instanceof Container)
+		{
+			final Container newContainer=(Container)newItem;
+			for(final Item oldContentItem : ((Container)oldItem).getContents())
+			{
+				final Item newContentItem;
+				if(oldContentItem instanceof Container)
+				{
+					final List<Item> newContents=deepCopyOf(oldContentItem);
+					newContentItem = newContents.get(0);
+					items.addAll(newContents);
+				}
+				else
+				{
+					newContentItem = (Item)oldContentItem.copyOf();
+					items.add(newContentItem);
+				}
+				newContentItem.setContainer(newContainer);
+			}
+		}
+		return items;
+	}
+	
+	@Override
 	public String builtPrompt(MOB mob)
 	{
 		final StringBuffer buf=new StringBuffer("\n\r");

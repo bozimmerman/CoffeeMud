@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 
@@ -37,8 +38,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 {
 	@Override public String ID(){return "StdBanker";}
 
-	protected double coinInterest=-0.008;
-	protected double itemInterest=-0.001;
+	protected double coinInterest=-0.000;
+	protected double itemInterest=-0.0001;
 	protected double loanInterest=0.01;
 	protected static Hashtable<String,Long> bankTimes=new Hashtable<String,Long>();
 
@@ -82,18 +83,29 @@ public class StdBanker extends StdShopKeeper implements Banker
 	@Override public void setBankChain(String name){setMiscText(name);}
 
 	@Override
-	public void addDepositInventory(String depositorName, Item thisThang)
+	public void addDepositInventory(String depositorName, Item item, Item container)
 	{
-		String name=thisThang.ID();
-		if(thisThang instanceof Coins) name="COINS";
-		CMLib.catalog().updateCatalogIntegrity(thisThang);
-		CMLib.database().DBCreateData(depositorName,bankChain(),""+thisThang+Math.random(),name+";"+CMLib.coffeeMaker().getPropertiesStr(thisThang,true));
+		final String classID;
+		if((item instanceof Coins)&&(container == null)) 
+			classID="COINS";
+		else
+			classID=item.ID();
+		CMLib.catalog().updateCatalogIntegrity(item);
+		final String key=""+item+item.hashCode();
+		if(container != null)
+		{
+			final String containerKey=""+container+container.hashCode();
+			CMLib.database().DBCreateData(depositorName,bankChain(),key,classID+";CONTAINER="+containerKey+";"+CMLib.coffeeMaker().getPropertiesStr(item,true));
+		}
+		else
+			CMLib.database().DBCreateData(depositorName,bankChain(),key,classID+";"+CMLib.coffeeMaker().getPropertiesStr(item,true));
 	}
 
-	protected Item makeItem(String data)
+	protected Pair<Item,String> makeItemContainer(String data)
 	{
-		final int x=data.indexOf(';');
-		if(x<0) return null;
+		int x=data.indexOf(';');
+		if(x<0) 
+			return null;
 		Item I=null;
 		if(data.substring(0,x).equals("COINS"))
 			I=CMClass.getItem("StdCoins");
@@ -101,74 +113,185 @@ public class StdBanker extends StdShopKeeper implements Banker
 			I=CMClass.getItem(data.substring(0,x));
 		if(I!=null)
 		{
-			CMLib.coffeeMaker().setPropertiesStr(I,data.substring(x+1),true);
+			String container="";
+			String xml = data.substring(x+1);
+			if(xml.startsWith("CONTAINER="))
+			{
+				x=xml.indexOf(';');
+				if(x>0)
+				{
+					container=xml.substring(10,x);
+					xml=xml.substring(x+1);
+				}
+			}
+			CMLib.coffeeMaker().setPropertiesStr(I,xml,true);
 			if((I instanceof Coins)
 			&&(((Coins)I).getDenomination()==0.0)
 			&&(((Coins)I).getNumberOfCoins()>0))
 				((Coins)I).setDenomination(1.0);
 			I.recoverPhyStats();
 			I.text();
-			return I;
+			return new Pair<Item,String>(I,container);
 		}
 		return null;
 	}
-
-	@Override
-	public boolean delDepositInventory(String depositorName, Item thisThang)
+	
+	protected List<Item> findDeleteRecursiveDepositInventoryByContainerKey(Container C, List<PlayerData> rawInventoryV, String key)
 	{
-		final List<PlayerData> V=getRawPDDepositInventory(depositorName);
-		final boolean money=thisThang instanceof Coins;
-		boolean found=false;
-		for(int v=V.size()-1;v>=0;v--)
+		final List<Item> inventory=new LinkedList<Item>();
+		for(int v=rawInventoryV.size()-1;v>=0;v--)
 		{
-			final DatabaseEngine.PlayerData PD=V.get(v);
-			if(money&&(PD.xml).startsWith("COINS;"))
+			final DatabaseEngine.PlayerData PD=rawInventoryV.get(v);
+			final int IDx=PD.xml.indexOf(';');
+			if(IDx>0)
 			{
-				CMLib.database().DBDeleteData(PD.who,PD.section,PD.key);
-				found=true;
-			}
-			if(!money)
-			{
-				final Item I=makeItem(PD.xml);
-				if(I==null) continue;
-				if(thisThang.sameAs(I))
+				if(PD.xml.substring(IDx+1).startsWith("CONTAINER="+key+";"))
 				{
+					Item I=makeItemContainer(PD.xml).first;
+					I.setContainer(C);
+					inventory.add(I);
+					rawInventoryV.remove(v);
+					if(I instanceof Container)
+						inventory.addAll(findDeleteRecursiveDepositInventoryByContainerKey((Container)I,rawInventoryV,PD.key));
 					CMLib.database().DBDeleteData(PD.who,PD.section,PD.key);
-					return true;
 				}
 			}
 		}
-		return found;
+		return inventory;
 	}
+
+	@Override
+	public List<Item> delDepositInventory(String depositorName, Item likeItem)
+	{
+		final List<PlayerData> rawInventoryV=getRawPDDepositInventory(depositorName);
+		final List<Item> items = new ArrayList<Item>();
+		if(likeItem.container()==null)
+		{
+			if(likeItem instanceof Coins)
+			{
+				for(int v=rawInventoryV.size()-1;v>=0;v--)
+				{
+					final DatabaseEngine.PlayerData PD=rawInventoryV.get(v);
+					if(PD.xml.startsWith("COINS;"))
+					{
+						CMLib.database().DBDeleteData(PD.who,PD.section,PD.key);
+						items.add(makeItemContainer(PD.xml).first);
+					}
+				}
+			}
+			else
+			{
+				for(int v=rawInventoryV.size()-1;v>=0;v--)
+				{
+					final DatabaseEngine.PlayerData PD=rawInventoryV.get(v);
+					if(PD.xml.startsWith(likeItem.ID()+";") && (!PD.xml.startsWith(likeItem.ID()+";CONTAINER=")))
+					{
+						final Pair<Item,String> pI=makeItemContainer(PD.xml);
+						if((pI!=null) && likeItem.sameAs(pI.first))
+						{
+							pI.first.setContainer(null);
+							if(pI.first instanceof Container)
+							{
+								items.add(pI.first);
+								final Hashtable<String,List<DatabaseEngine.PlayerData>> pairings=new Hashtable<String,List<DatabaseEngine.PlayerData>>(); 
+								for(final PlayerData PDp : rawInventoryV)
+								{
+									final int IDx=PDp.xml.indexOf(';');
+									if(IDx>0)
+									{
+										final String subXML=PDp.xml.substring(IDx+1);
+										if(subXML.startsWith("CONTAINER="))
+										{
+											int x=subXML.indexOf(';');
+											if(x>0)
+											{
+												final String contKey=subXML.substring(10,x);
+												if(!pairings.containsKey(contKey))
+													pairings.put(contKey, new LinkedList<DatabaseEngine.PlayerData>());
+												pairings.get(contKey).add(PDp);
+											}
+										}
+									}
+								}
+								CMLib.database().DBDeleteData(PD.who,PD.section,PD.key);
+								final Map<String,Container> containerMap=new Hashtable<String,Container>();
+								containerMap.put(PD.key, (Container)pI.first);
+								while(containerMap.size()>0)
+								{
+									final String contKey=containerMap.keySet().iterator().next();
+									final Container container=containerMap.remove(contKey);
+									List<DatabaseEngine.PlayerData> contents=pairings.get(contKey);
+									if(contents != null)
+									{
+										for(DatabaseEngine.PlayerData PDi : contents)
+										{
+											Pair<Item,String> pairI=makeItemContainer(PDi.xml);
+											CMLib.database().DBDeleteData(PDi.who,PDi.section,PDi.key);
+											pairI.first.setContainer(container);
+											items.add(pairI.first);
+											if(pairI.first instanceof Container)
+												containerMap.put(PDi.key, (Container)pairI.first);
+										}
+									}
+								}
+							}
+							else
+							{
+								items.add(pI.first);
+								CMLib.database().DBDeleteData(PD.who,PD.section,PD.key);
+							}
+							break;
+						}
+					}
+				}
+			}
+		}
+		return items;
+	}
+	
 	@Override
 	public void delAllDeposits(String depositorName)
 	{
 		CMLib.database().DBDeleteData(depositorName,bankChain());
 	}
+	
 	@Override
 	public int numberDeposited(String depositorName)
 	{
 		return getRawPDDepositInventory(depositorName).size();
 	}
+	
 	@Override
 	public List<Item> getDepositedItems(String depositorName)
 	{
-		if((depositorName==null)||(depositorName.length()==0)) return new Vector<Item>();
-		final List<PlayerData> V=getRawPDDepositInventory(depositorName);
-		final Vector<Item> mine=new Vector<Item>();
-		for(int v=0;v<V.size();v++)
+		if((depositorName==null)||(depositorName.length()==0)) 
+			return new ArrayList<Item>();
+		final List<Item> items=new Vector<Item>();
+		final Hashtable<String,Pair<Item,String>> pairings=new Hashtable<String,Pair<Item,String>>(); 
+		for(final PlayerData PD : getRawPDDepositInventory(depositorName))
 		{
-			final DatabaseEngine.PlayerData PD=V.get(v);
-			final Item I=makeItem(PD.xml);
-			if(I!=null)	mine.addElement(I);
+			final Pair<Item,String> pair=makeItemContainer(PD.xml);
+			if(pair!=null)
+				pairings.put(PD.key, pair);
 		}
-		return mine;
+		for(final Pair<Item,String> pair : pairings.values())
+		{
+			if(pair.second.length()>0)
+			{
+				Pair<Item,String> otherPair = pairings.get(pair.second);
+				if((otherPair != null)&&(otherPair.first instanceof Container))
+					pair.first.setContainer((Container)otherPair.first);
+			}
+			items.add(pair.first);
+		}
+		return items;
 	}
-	@Override
-	public List<PlayerData> getRawPDDepositInventory(String depositorName)
+	
+	protected List<PlayerData> getRawPDDepositInventory(String depositorName)
 	{
 		return CMLib.database().DBReadData(depositorName,bankChain());
 	}
+	
 	@Override
 	public List<String> getAccountNames()
 	{
@@ -194,24 +317,31 @@ public class StdBanker extends StdShopKeeper implements Banker
 	}
 
 	@Override
-	public Item findDepositInventory(String depositorName, String likeThis)
+	public Item findDepositInventory(String depositorName, String itemName)
 	{
 		final List<PlayerData> V=getRawPDDepositInventory(depositorName);
-		if(CMath.s_int(likeThis)>0)
+		if(CMath.s_int(itemName)>0)
+		{
 			for(int v=0;v<V.size();v++)
 			{
 				final DatabaseEngine.PlayerData PD=V.get(v);
 				if(PD.xml.startsWith("COINS;"))
-					return makeItem(PD.xml);
+					return makeItemContainer(PD.xml).first;
 			}
+		}
 		else
 		for(int v=0;v<V.size();v++)
 		{
 			final DatabaseEngine.PlayerData PD=V.get(v);
-			final Item I=makeItem(PD.xml);
-			if(I==null) continue;
-			if(CMLib.english().containsString(I.Name(),likeThis))
-				return I;
+			if(PD.xml.lastIndexOf(";CONTAINER=",81)<0)
+			{
+				final Pair<Item,String> pair=makeItemContainer(PD.xml);
+				if(pair!=null)
+				{
+					if(CMLib.english().containsString(pair.first.Name(),itemName))
+						return pair.first;
+				}
+			}
 		}
 		return null;
 	}
@@ -371,7 +501,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							final String currency=CMLib.beanCounter().getCurrency(this);
 							coinItem=CMLib.beanCounter().makeBestCurrency(currency,newBalance);
 							if(coinItem!=null)
-								addDepositInventory(name,coinItem);
+								addDepositInventory(name,coinItem,null);
 						}
 					}
 					for(int d=debts.size()-1;d>=0;d--)
@@ -445,8 +575,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				{
 					String depositorName=getBankClientName(msg.source(),Clan.Function.DEPOSIT,false);
-					if(msg.tool() instanceof Container)
-						((Container)msg.tool()).emptyPlease(true);
+					//if(msg.tool() instanceof Container)
+					//	((Container)msg.tool()).emptyPlease(true);
 					CMMsg msg2=CMClass.getMsg(msg.source(),msg.tool(),null,CMMsg.MSG_DROP|CMMsg.MASK_INTERMSG,null,CMMsg.MSG_DROP|CMMsg.MASK_INTERMSG,null,CMMsg.MSG_DROP|CMMsg.MASK_INTERMSG,null);
 					location().send(this,msg2);
 					msg2=CMClass.getMsg((MOB)msg.target(),msg.tool(),null,CMMsg.MSG_GET|CMMsg.MASK_INTERMSG,null,CMMsg.MSG_GET|CMMsg.MASK_INTERMSG,null,CMMsg.MSG_GET|CMMsg.MASK_INTERMSG,null);
@@ -455,26 +585,27 @@ public class StdBanker extends StdShopKeeper implements Banker
 					{
 						final Coins older=(Coins)msg.tool();
 						double newValue=older.getTotalValue();
-						Item old=findDepositInventory(depositorName,""+Integer.MAX_VALUE);
-						if((old==null)
+						Item oldCoins=findDepositInventory(depositorName,""+Integer.MAX_VALUE);
+						if((oldCoins==null)
 						&&(!isSold(ShopKeeper.DEAL_CLANBANKER))
 						&&(msg.source().isMarriedToLiege()))
 						{
-							old=findDepositInventory(msg.source().getLiegeID(),""+Integer.MAX_VALUE);
-							if(old!=null)
+							oldCoins=findDepositInventory(msg.source().getLiegeID(),""+Integer.MAX_VALUE);
+							if(oldCoins!=null)
 							{
 								final MOB owner=CMLib.players().getPlayer(msg.source().getLiegeID());
 								if(owner != null)
 									depositorName=owner.Name();
 							}
 						}
-						if((old!=null)&&(old instanceof Coins))
-							newValue+=((Coins)old).getTotalValue();
-						final Coins item=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(this),newValue);
+						if((oldCoins!=null)&&(oldCoins instanceof Coins))
+							newValue+=((Coins)oldCoins).getTotalValue();
+						final Coins coins=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(this),newValue);
 						bankLedger(depositorName,"Deposit of "+CMLib.beanCounter().nameCurrencyShort(this,newValue)+": "+msg.source().Name());
-						if(old!=null) delDepositInventory(depositorName,old);
-						if(item!=null)
-							addDepositInventory(depositorName,item);
+						if(oldCoins!=null) 
+							delDepositInventory(depositorName,oldCoins);
+						if(coins!=null)
+							addDepositInventory(depositorName,coins,null);
 						if(isSold(ShopKeeper.DEAL_CLANBANKER))
 							CMLib.commands().postSay(this,mob,L("Ok, @x1 now has a balance of @x2.",CMStrings.capitalizeFirstLetter(depositorName),CMLib.beanCounter().nameCurrencyLong(this,getBalance(depositorName))),true,false);
 						else
@@ -490,15 +621,25 @@ public class StdBanker extends StdShopKeeper implements Banker
 					}
 					else
 					{
-						final Item item =(Item)msg.tool().copyOf();
-						if(!item.amDestroyed())
-						{
-							addDepositInventory(depositorName,item);
-							CMLib.commands().postSay(this,mob,L("Thank you, @x1 is safe with us.",item.name()),true,false);
-							((Item)msg.tool()).destroy();
-						}
+						List<Item> items;
+						if(msg.tool() instanceof Container)
+							items=CMLib.utensils().deepCopyOf((Item)msg.tool());
 						else
-							CMLib.commands().postSay(this,mob,L("Whoops! Where'd it go?"),true,false);
+							items=new XVector<Item>((Item)msg.tool().copyOf());
+						for(Item I : items)
+						{
+							if(!I.amDestroyed())
+							{
+								addDepositInventory(depositorName,I,I.container());
+							}
+							else
+							{
+								CMLib.commands().postSay(this,mob,L("Whoops! Where'd it go?"),true,false);
+								return;
+							}
+						}
+						CMLib.commands().postSay(this,mob,L("Thank you, @x1 is safe with us.",items.get(0).name()),true,false);
+						((Item)msg.tool()).destroy();
 					}
 				}
 				return;
@@ -534,14 +675,14 @@ public class StdBanker extends StdShopKeeper implements Banker
 				{
 					String withdrawerName=getBankClientName(msg.source(),Clan.Function.WITHDRAW,false);
 					final Item old=(Item)msg.tool();
-					if(old instanceof Coins)
+					if((old instanceof Coins)&&(old.container()==null))
 					{
 						Item depositInventoryItem=findDepositInventory(withdrawerName,""+Integer.MAX_VALUE);
 						if((!isSold(ShopKeeper.DEAL_CLANBANKER))
 						&&(msg.source().isMarriedToLiege())
 						&&((depositInventoryItem==null)
-								||((depositInventoryItem instanceof Coins)
-										&&(((Coins)depositInventoryItem).getTotalValue()<((Coins)old).getTotalValue()))))
+							||((depositInventoryItem instanceof Coins)
+								&&(((Coins)depositInventoryItem).getTotalValue()<((Coins)old).getTotalValue()))))
 						{
 							final Item item2=findDepositInventory(msg.source().getLiegeID(),""+Integer.MAX_VALUE);
 							if((item2!=null)&&(item2 instanceof Coins)&&(((Coins)item2).getTotalValue()>=((Coins)old).getTotalValue()))
@@ -552,8 +693,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 									withdrawerName=owner.Name();
 							}
 						}
-						if((depositInventoryItem!=null)
-						&&(depositInventoryItem instanceof Coins)
+						if((depositInventoryItem instanceof Coins)
 						&&(old instanceof Coins)
 						&&(((Coins)depositInventoryItem).getTotalValue()>=((Coins)old).getTotalValue()))
 						{
@@ -578,7 +718,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 									CMLib.commands().postSay(this,mob,L("I have closed that account. Thanks for your business."),true,false);
 								return;
 							}
-							addDepositInventory(withdrawerName,coins);
+							addDepositInventory(withdrawerName,coins,null);
 							if(isSold(ShopKeeper.DEAL_CLANBANKER))
 								CMLib.commands().postSay(this,mob,L("Ok, @x1 now has a balance of @x2.",CMStrings.capitalizeFirstLetter(withdrawerName),CMLib.beanCounter().nameCurrencyLong(this,coins.getTotalValue())),true,false);
 							else
@@ -590,17 +730,31 @@ public class StdBanker extends StdShopKeeper implements Banker
 					}
 					else
 					{
-						if((!delDepositInventory(withdrawerName,old))
+						List<Item> deletedItems=delDepositInventory(withdrawerName,old);
+						if((deletedItems.size()==0)
 						&&(!isSold(ShopKeeper.DEAL_CLANBANKER))
 						&&(msg.source().isMarriedToLiege()))
-							delDepositInventory(msg.source().getLiegeID(),old);
-
+							deletedItems = delDepositInventory(msg.source().getLiegeID(),old);
 						CMLib.commands().postSay(this,mob,L("Thank you for your trust."),true,false);
-						if(location()!=null)
-							location().addItem(old,ItemPossessor.Expire.Player_Drop);
-						final CMMsg msg2=CMClass.getMsg(mob,old,this,CMMsg.MSG_GET,null);
-						if(location().okMessage(mob,msg2))
-							location().send(mob,msg2);
+						for(Item I : deletedItems)
+						{
+							if((I instanceof Coins)&&(I.container()!=null))
+							{
+								mob.addItem(I);
+							}
+							else
+							{
+								final Container C=I.container();
+								if(location()!=null)
+									location().addItem(I,ItemPossessor.Expire.Player_Drop);
+								final CMMsg msg2=CMClass.getMsg(mob,I,this,CMMsg.MSG_GET,null);
+								if(location().okMessage(mob,msg2))
+								{
+									location().send(mob,msg2);
+									I.setContainer(C);
+								}
+							}
+						}
 					}
 
 				}
@@ -653,7 +807,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					for(int i=0;i<V.size();i++)
 					{
 						final Item I=V.get(i);
-						if(!(I instanceof Coins))
+						if((!(I instanceof Coins))&&(I.container()==null))
 						{
 							otherThanCoins=true;
 							String col=null;

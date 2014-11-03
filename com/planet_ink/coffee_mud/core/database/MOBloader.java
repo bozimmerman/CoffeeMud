@@ -1070,7 +1070,7 @@ public class MOBloader
 			{
 				if(thisItem instanceof Container)
 				{
-					final List<Item> contents=((Container)thisItem).getContents();
+					final List<Item> contents=((Container)thisItem).getDeepContents();
 					for(final Item I : contents)
 						if(!finalCollection.contains(I))
 							extraItems.add(I);
@@ -1218,7 +1218,7 @@ public class MOBloader
 		if(P instanceof Container)
 		{
 			final Container C=(Container)P;
-			final List<Item> contents=C.getContents();
+			final List<Item> contents=C.getDeepContents();
 			for(int c=0;c<contents.size();c++)
 				addFollowerDependent(contents.get(c),list,"@"+myCode+"C");
 		}

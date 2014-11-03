@@ -1085,8 +1085,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		{
 			final List<Item> V=new Vector<Item>();
 			if(P instanceof Container)
-				V.addAll(((Container)P).getContents());
-			if(!V.contains(P)) V.add((Item)P);
+				V.addAll(((Container)P).getDeepContents());
+			if(!V.contains(P)) 
+				V.add((Item)P);
 			long totalWeight=0;
 			long totalFloatilla=0;
 			final RawMaterial.CODES codes = RawMaterial.CODES.instance();

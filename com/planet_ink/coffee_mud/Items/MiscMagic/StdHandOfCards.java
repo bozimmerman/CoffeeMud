@@ -78,7 +78,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 		recoverPhyStats();
 	}
 
-	// getContents()
+	// getImmediateContents()
 	// this method is an override of the container object
 	// method of the same name.  If is necessary because
 	// if the hand or deck is owned by a mob or a room, then

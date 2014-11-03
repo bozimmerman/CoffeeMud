@@ -215,7 +215,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						return false;
 					}
 					final Item I=(Item)msg.tool();
-					if((I instanceof Container)&&(((Container)I).getContents().size()>0))
+					if((I instanceof Container)&&(((Container)I).hasContent()))
 					{
 						CMLib.commands().postSay(this,mob,L("@x1 will have to be emptied first.",I.name()),true,false);
 						return false;

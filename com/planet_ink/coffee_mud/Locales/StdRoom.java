@@ -1358,16 +1358,20 @@ public class StdRoom implements Room
 
 		List<Item> V=new Vector();
 		if(item instanceof Container)
-			V=((Container)item).getContents();
-		if(o instanceof MOB)((MOB)o).delItem(item);
-		if(o instanceof Room) ((Room)o).delItem(item);
+			V=((Container)item).getDeepContents();
+		if(o instanceof MOB)
+			((MOB)o).delItem(item);
+		if(o instanceof Room)
+			((Room)o).delItem(item);
 
 		addItem(item, expire);
 		for(int v=0;v<V.size();v++)
 		{
 			final Item i2=V.get(v);
-			if(o instanceof MOB) ((MOB)o).delItem(i2);
-			if(o instanceof Room) ((Room)o).delItem(i2);
+			if(o instanceof MOB) 
+				((MOB)o).delItem(i2);
+			if(o instanceof Room) 
+				((Room)o).delItem(i2);
 			addItem(i2);
 		}
 		item.setContainer(null);

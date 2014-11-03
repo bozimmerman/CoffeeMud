@@ -59,7 +59,7 @@ public class Prop_NoPurge extends Property
 				if(((Container)affected).owner() instanceof Room)
 				{
 					((Container)affected).setExpirationDate(0);
-					final List<Item> V=((Container)affected).getContents();
+					final List<Item> V=((Container)affected).getDeepContents();
 					for(int v=0;v<V.size();v++)
 						V.get(v).setExpirationDate(0);
 				}

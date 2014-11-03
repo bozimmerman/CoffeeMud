@@ -89,7 +89,7 @@ public class Power_TrapSense extends SuperPower
 		if((P instanceof Container)&&(CMLib.flags().canBeSeenBy(P,mob)))
 		{
 			final Container C=(Container)P;
-			final List<Item> V=C.getContents();
+			final List<Item> V=C.getDeepContents();
 			for(int v=0;v<V.size();v++)
 				if(trapCheck(V.get(v)).length()>0)
 					msg.append(L("@x1 contains something trapped.\n",C.name()));

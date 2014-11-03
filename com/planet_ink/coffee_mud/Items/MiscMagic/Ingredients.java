@@ -83,9 +83,9 @@ public class Ingredients extends BagOfEndlessness
 		if((!alreadyFilled)&&(owner()!=null))
 		{
 			alreadyFilled=true;
-			if(getContents().size()==0)
-			for(final int rsc : RawMaterial.CODES.ALL())
-				makeResource(RawMaterial.CODES.NAME(rsc).toLowerCase(),rsc);
+			if(!hasContent())
+				for(final int rsc : RawMaterial.CODES.ALL())
+					makeResource(RawMaterial.CODES.NAME(rsc).toLowerCase(),rsc);
 		}
 		else
 		if(msg.amITarget(this)

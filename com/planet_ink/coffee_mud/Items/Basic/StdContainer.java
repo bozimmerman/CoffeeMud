@@ -152,7 +152,7 @@ public class StdContainer extends StdItem implements Container
 						else
 						if((recursiveWeight()+newitem.phyStats().weight())>capacity)
 						{
-							if(getContents().size()==0)
+							if(!hasContent())
 								mob.tell(L("@x1 is too small.",name()));
 							else
 							if((newitem instanceof Software) && (this instanceof Electronics.Computer))
@@ -573,7 +573,7 @@ public class StdContainer extends StdItem implements Container
 			Item I;
 			if(flatten)
 			{
-				final List<Item> V=getContents();
+				final List<Item> V=getDeepContents();
 				for(int v=0;v<V.size();v++)
 				{
 					I=V.get(v);
@@ -593,23 +593,25 @@ public class StdContainer extends StdItem implements Container
 	@Override
 	public boolean isInside(Item I)
 	{
-		if(I.container()==null) return false;
-		if(I.container()==this) return true;
-		if(I.container()==I) return false;
+		if((I.container()==null)
+		||(I.container()==this)
+		||(I.container()==I))
+			return false;
 		return isInside(I.container());
 	}
 
 	@Override
 	public int numberOfItems()
 	{
-		return getContents().size()+1;
+		return getDeepContents().size()+1;
 	}
 
 	@Override
 	public int recursiveWeight()
 	{
 		int weight=phyStats().weight();
-		if(owner()==null) return weight;
+		if(owner()==null) 
+			return weight;
 		if(owner() instanceof MOB)
 		{
 			final MOB M=(MOB)owner();
@@ -635,7 +637,7 @@ public class StdContainer extends StdItem implements Container
 	}
 
 	@Override
-	public ReadOnlyList<Item> getContents()
+	public ReadOnlyList<Item> getDeepContents()
 	{
 		final List<Item> V=new Vector<Item>();
 		if(owner()!=null)
@@ -651,4 +653,38 @@ public class StdContainer extends StdItem implements Container
 		}
 		return new ReadOnlyList<Item>(V);
 	}
+	
+	@Override
+	public ReadOnlyList<Item> getContents()
+	{
+		final List<Item> V=new Vector<Item>();
+		if(owner()!=null)
+		{
+			Item I;
+			for(final Enumeration<Item> e = owner().items(); e.hasMoreElements();)
+			{
+				I=e.nextElement();
+				if((I!=null)&&(I.container()==this))
+					V.add(I);
+			}
+		}
+		return new ReadOnlyList<Item>(V);
+	}
+	
+	@Override
+	public boolean hasContent()
+	{
+		if(owner()!=null)
+		{
+			Item I;
+			for(final Enumeration<Item> e = owner().items(); e.hasMoreElements();)
+			{
+				I=e.nextElement();
+				if((I!=null)&&(I.container()==this))
+					return true;
+			}
+		}
+		return false;
+	}
+
 }

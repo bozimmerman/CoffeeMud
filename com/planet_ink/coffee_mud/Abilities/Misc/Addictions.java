@@ -102,10 +102,12 @@ public class Addictions extends StdAbility
 			&&(msg.targetMinor()==CMMsg.TYP_WEAR)
 			&&(msg.target() instanceof Light)
 			&&(msg.target() instanceof Container)
-			&&(CMath.bset(((Item)msg.target()).rawProperLocationBitmap(),Wearable.WORN_MOUTH))
-			&&(((Container)msg.target()).getContents().size()>0)
-			&&(CMLib.english().containsString(((Environmental)((Container)msg.target()).getContents().get(0)).Name(),text())))
-				puffCredit=(Item)msg.target();
+			&&(CMath.bset(((Item)msg.target()).rawProperLocationBitmap(),Wearable.WORN_MOUTH)))
+			{
+				final List<Item> contents=((Container)msg.target()).getContents();
+				if(CMLib.english().containsString(((Environmental)contents.get(0)).Name(),text()))
+					puffCredit=(Item)msg.target();
+			}
 		}
 		return true;
 	}
