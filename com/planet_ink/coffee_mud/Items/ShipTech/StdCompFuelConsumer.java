@@ -127,14 +127,14 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements Electro
 			&&(!I.amDestroyed())
 			&&CMParms.contains(this.getConsumedFuelTypes(), ((RawMaterial)I).material()))
 			{
-				amount-=CMLib.materials().destroyResourcesAmt(fuel, amount, ((RawMaterial)I).material());
+				amount-=CMLib.materials().destroyResourcesAmt(fuel, amount, ((RawMaterial)I).material(),this);
 				if(amount<=0)
 					break;
 			}
 		}
 		if(amount>0)
 			engineShutdown();
-		return amount>0;
+		return amount<=0;
 	}
 
 	@Override

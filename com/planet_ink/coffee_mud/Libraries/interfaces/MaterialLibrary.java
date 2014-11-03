@@ -51,9 +51,9 @@ public interface MaterialLibrary extends CMLibrary
 	public int destroyResourcesValue(MOB E, int howMuch, int finalMaterial, int otherMaterial, Item never);
 	public int destroyResourcesValue(Room E, int howMuch, int finalMaterial, int otherMaterial, Item never);
 	public int destroyResourcesValue(List<Item> V, int howMuch, int finalMaterial, int otherMaterial, Item never, Container C);
-	public int destroyResourcesAmt(MOB E, int howMuch, int finalMaterial);
-	public int destroyResourcesAmt(Room E, int howMuch, int finalMaterial);
-	public int destroyResourcesAmt(List<Item> V, int howMuch, int finalMaterial);
+	public int destroyResourcesAmt(MOB E, int howMuch, int finalMaterial,Container C);
+	public int destroyResourcesAmt(Room E, int howMuch, int finalMaterial,Container C);
+	public int destroyResourcesAmt(List<Item> V, int howMuch, int finalMaterial,Container C);
 	public Item fetchFoundOtherEncoded(Room E, String otherRequired);
 	public Item fetchFoundOtherEncoded(MOB E, String otherRequired);
 	public Item findMostOfMaterial(Room E, int material);

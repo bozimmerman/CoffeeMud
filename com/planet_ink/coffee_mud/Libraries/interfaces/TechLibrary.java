@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.Electronics.ElecPanel;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 /*
    Copyright 2013-2014 Bo Zimmerman
@@ -33,6 +34,16 @@ import java.util.*;
 */
 public interface TechLibrary extends CMLibrary
 {
+	
+	/**
+	 * Returns the appropriate electronics key for this electronic item,
+	 * area, or room.  It represents the electronical currents that tie
+	 * technology together.
+	 * @param o the object to inspect
+	 * @return the key to use, or null if none can be found
+	 */
+	public String getElectronicsKey(final CMObject o);
+
 	/**
 	 * Unregisters an electronic component that belonged
 	 * in a complex circuitry, like a panel or a

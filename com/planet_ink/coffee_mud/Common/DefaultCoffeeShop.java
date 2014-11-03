@@ -116,7 +116,9 @@ public class DefaultCoffeeShop implements CoffeeShop
 	protected void stopTicking(Environmental E)
 	{
 		if((E instanceof SpaceShip)&&(E instanceof Item))
+		{
 			((Item)E).stopTicking();
+		}
 		else
 		if(E!=null)
 			CMLib.threads().deleteTick(E, -1);

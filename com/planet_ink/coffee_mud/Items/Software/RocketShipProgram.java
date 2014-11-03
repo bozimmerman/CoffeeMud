@@ -288,7 +288,7 @@ public class RocketShipProgram extends GenShipProgram
 				super.addScreenMessage("Error: '"+parsed.get(parsed.size()-1)+"' is not a valid amount.");
 				return;
 			}
-			amount=CMath.s_int(parsed.get(1));
+			amount=CMath.s_int(parsed.get(parsed.size()-1));
 			if(parsed.size()==3)
 			{
 				portDir=(ShipEngine.ThrustPort)CMath.s_valueOf(ShipEngine.ThrustPort.class, parsed.get(1).toUpperCase().trim());

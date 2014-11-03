@@ -190,8 +190,10 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	{
 		final GenSpaceShip s=(GenSpaceShip)super.copyOf();
 		s.destroyed=false;
+		s.setOwnerName("");
 		final String xml=CMLib.coffeeMaker().getAreaObjectXML(getShipArea(), null, null, null, true).toString();
 		s.setShipArea(xml);
+		CMLib.tech().unregisterAllElectronics(CMLib.tech().getElectronicsKey(s.getShipArea()));
 		/*
 		if(s.getShipArea().Name().startsWith("UNNAMED_"))
 		{
@@ -212,10 +214,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		if(area!=null)
 		{
 			CMLib.threads().deleteAllTicks(area);
-			String key=area.Name();
-			final String registryNum=area.getBlurbFlag("REGISTRY");
-			if(registryNum!=null)
-				key+=registryNum;
+			final String key=CMLib.tech().getElectronicsKey(area);
 			CMLib.tech().unregisterAllElectronics(key);
 		}
 		super.stopTicking();
@@ -612,21 +611,14 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	protected void stopThisShip(MOB mob)
 	{
 		setSpeed(0); // if you collide with something massive, your speed ENDS
-		List<Electronics> electronics=CMLib.tech().getMakeRegisteredElectronics(getShipArea().Name());
+		final List<Electronics> electronics=CMLib.tech().getMakeRegisteredElectronics(CMLib.tech().getElectronicsKey(getShipArea()));
 		for(final Electronics E : electronics)
 		{
 			if(E instanceof ShipComponent.ShipEngine)
 			{
-				final String code=Technical.TechCommand.THRUST.makeCommand(ShipComponent.ShipEngine.ThrustPort.AFT,Integer.valueOf(0));
-				final CMMsg msg2=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
-				if(E.owner() instanceof Room)
-				{
-					if(((Room)E.owner()).okMessage(mob, msg2))
-						((Room)E.owner()).send(mob, msg2);
-				}
-				else
-				if(E.okMessage(mob, msg2))
-					E.executeMsg(mob, msg2);
+				final CMMsg msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE, null, CMMsg.NO_EFFECT,null);
+				if(E.okMessage(mob, msg))
+					E.executeMsg(mob, msg);
 			}
 		}
 	}
@@ -634,40 +626,52 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	protected boolean okAreaMessage(final CMMsg msg)
 	{
 		boolean failed = false;
-		for(final Enumeration<Room> r = getShipArea().getProperMap(); r.hasMoreElements();)
+		final Area ship=getShipArea();
+		if(ship!=null)
 		{
-			final Room R=r.nextElement();
-			failed = failed || R.okMessage(R, msg);
-			if(failed)
-				break;
+			for(final Enumeration<Room> r = ship.getProperMap(); r.hasMoreElements();)
+			{
+				final Room R=r.nextElement();
+				failed = failed || R.okMessage(R, msg);
+				if(failed)
+					break;
+			}
 		}
 		return failed;
 	}
 	
 	protected void sendAreaMessage(final CMMsg msg)
 	{
-		for(final Enumeration<Room> r = getShipArea().getProperMap(); r.hasMoreElements();)
+		final Area ship=getShipArea();
+		if(ship!=null)
 		{
-			final Room R=r.nextElement();
-			R.sendOthers(msg.source(), msg);
+			for(final Enumeration<Room> r = ship.getProperMap(); r.hasMoreElements();)
+			{
+				final Room R=r.nextElement();
+				R.sendOthers(msg.source(), msg);
+			}
 		}
 	}
 	
 	protected void sendComputerMessage(final MOB mob, final CMMsg msg)
 	{
-		List<Electronics> electronics = CMLib.tech().getMakeRegisteredElectronics(getShipArea().Name());
-		for(final Electronics E : electronics)
+		final Area ship=getShipArea();
+		if(ship!=null)
 		{
-			if(E instanceof Electronics.Computer)
+			List<Electronics> electronics = CMLib.tech().getMakeRegisteredElectronics(CMLib.tech().getElectronicsKey(ship));
+			for(final Electronics E : electronics)
 			{
-				if(E.owner() instanceof Room)
+				if(E instanceof Electronics.Computer)
 				{
-					if(((Room)E.owner()).okMessage(mob, msg))
-						((Room)E.owner()).send(mob, msg);
+					if(E.owner() instanceof Room)
+					{
+						if(((Room)E.owner()).okMessage(mob, msg))
+							((Room)E.owner()).send(mob, msg);
+					}
+					else
+					if(E.okMessage(mob, msg))
+						E.executeMsg(mob, msg);
 				}
-				else
-				if(E.okMessage(mob, msg))
-					E.executeMsg(mob, msg);
 			}
 		}
 	}
@@ -697,8 +701,6 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 						{
 							if(command==Technical.TechCommand.ACCELLLERATION)
 							{
-								if(getIsDocked()!=null)
-									unDock(true);
 								final ThrustPort dir=(ThrustPort)parms[0];
 								final int amount=((Integer)parms[1]).intValue();
 								//long specificImpulse=((Long)parms[2]).longValue();
@@ -720,6 +722,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 									break;
 								case AFT:
 								{
+									if((getIsDocked()!=null) && (amount > SpaceObject.ACCELLERATION_G))
+										unDock(true);
 									// this will move it, but will also update speed and direction -- all good!
 									final double inAirFactor=inAirFlag.booleanValue()?(1.0-getOMLCoeff()):1.0;
 									CMLib.map().moveSpaceObject(this,facing(),Math.round((((double)amount/(double)getMass())-1.0)*inAirFactor));

@@ -121,14 +121,15 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		if(portDir==ThrustPort.AFT) // when thrusting aft, the thrust is continual, so save it
 			me.setThrust(thrust);
 		final int fuelToConsume=(int)Math.round(CMath.ceiling(thrust*me.getFuelEfficiency()*manufacturer.getEfficiencyPct()));
-		final long accelleration=thrust/ship.getMass();
+		final long accelleration=thrust*15000L/ship.getMass();
 		if(me.consumeFuel(fuelToConsume))
 		{
+			final SpaceObject spaceObject=ship.getShipSpaceObject();
 			final String code=Technical.TechCommand.ACCELLLERATION.makeCommand(portDir,Integer.valueOf((int)accelleration),Long.valueOf(me.getSpecificImpulse()));
-			final CMMsg msg=CMClass.getMsg(mob, ship, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
-			if(ship.okMessage(mob, msg))
+			final CMMsg msg=CMClass.getMsg(mob, spaceObject, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+			if(spaceObject.okMessage(mob, msg))
 			{
-				ship.executeMsg(mob, msg);
+				spaceObject.executeMsg(mob, msg);
 				return true;
 			}
 		}

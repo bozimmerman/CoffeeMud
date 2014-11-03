@@ -111,7 +111,39 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				I.setDisplayText(L("@x1 is here.",newName));
 		}
 	}
-
+	
+	@Override
+	public String getElectronicsKey(final CMObject o)
+	{
+		if(o instanceof Electronics)
+		{
+			return getElectronicsKey(((Electronics)o).owner());
+		}
+		else
+		if(o instanceof Area)
+		{
+			final Area A=(Area)o;
+			String newKey=A.Name();
+			final String registryNum=A.getBlurbFlag("REGISTRY");
+			if(registryNum!=null)
+				newKey+=registryNum;
+			return newKey.toLowerCase();
+		}
+		else
+		if(o instanceof Room)
+		{
+			final Room R=(Room)o;
+			if(R.getArea() instanceof SpaceShip)
+				return getElectronicsKey(R.getArea());
+			final LandTitle title = CMLib.law().getLandTitle(R);
+			if(title != null)
+				return title.getUniqueLotID().toLowerCase();
+			else
+				return CMLib.map().getExtendedRoomID(R).toLowerCase();
+		}
+		return null;
+	}
+	
 	@Override
 	public synchronized String registerElectrics(final Electronics E, final String oldKey)
 	{
@@ -119,23 +151,16 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		if((E != null) && (possessor instanceof Room))
 		{
 			final Room R=(Room)possessor;
-			String newKey;
+			String newKey=getElectronicsKey(R);
 			if(R.getArea() instanceof SpaceShip)
 			{
-				newKey=R.getArea().Name();
-				final String registryNum=R.getArea().getBlurbFlag("REGISTRY");
-				if(registryNum!=null)
-					newKey+=registryNum;
+				if(((SpaceShip)R.getArea()).getShipSpaceObject() instanceof LandTitle)
+				{
+					// if this is from a ship for sale, don't register, and go home.
+					if(((LandTitle)((SpaceShip)R.getArea()).getShipSpaceObject()).getOwnerName().length()==0)
+						return newKey;
+				}
 			}
-			else
-			{
-				final LandTitle title = CMLib.law().getLandTitle(R);
-				if(title != null)
-					newKey=title.getUniqueLotID();
-				else
-					newKey=CMLib.map().getExtendedRoomID(R);
-			}
-			newKey=newKey.toLowerCase();
 			if(oldKey!=null)
 			{
 				if(newKey.equalsIgnoreCase(oldKey))
@@ -157,8 +182,10 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	@Override
 	public synchronized List<Electronics> getMakeRegisteredElectronics(String key)
 	{
-		final LinkedList<WeakReference<Electronics>> set=sets.get(key.toLowerCase());
 		final LinkedList<Electronics> list=new LinkedList<Electronics>();
+		if(key == null)
+			return list;
+		final LinkedList<WeakReference<Electronics>> set=sets.get(key.toLowerCase());
 		if(set==null)
 			return list;
 		for(final WeakReference<Electronics> e : set)

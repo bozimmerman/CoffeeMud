@@ -2329,6 +2329,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					LOCmap.put((Item)newOne,ILOC);
 			}
 			setPropertiesStr(newOne,idat,true);
+			if(newOne instanceof SpaceShip)
+			{
+				final String key=CMLib.tech().getElectronicsKey(((SpaceShip)newOne).getShipArea());
+				if(key != null)
+					CMLib.tech().unregisterAllElectronics(key);
+				if(newOne instanceof LandTitle)
+					((LandTitle)newOne).setOwnerName("");
+			}
 			if((newOne instanceof Physical)
 			&&(((Physical)newOne).basePhyStats().rejuv()>0)
 			&&(((Physical)newOne).basePhyStats().rejuv()!=PhyStats.NO_REJUV))

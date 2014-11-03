@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.io.IOException;
 import java.util.*;
 import java.util.regex.*;
@@ -727,14 +726,14 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 
 
 	@Override
-	public int destroyResourcesAmt(MOB E, int howMuch, int finalMaterial)
-	{ return destroyResourcesAmt(getAllItems(E),howMuch,finalMaterial);}
+	public int destroyResourcesAmt(MOB E, int howMuch, int finalMaterial,Container C)
+	{ return destroyResourcesAmt(getAllItems(E),howMuch,finalMaterial,C);}
 	@Override
-	public int destroyResourcesAmt(Room E, int howMuch, int finalMaterial)
-	{ return destroyResourcesAmt(getAllItems(E),howMuch,finalMaterial);}
+	public int destroyResourcesAmt(Room E, int howMuch, int finalMaterial,Container C)
+	{ return destroyResourcesAmt(getAllItems(E),howMuch,finalMaterial,C);}
 	@Override
-	public int destroyResourcesAmt(List<Item> V, int howMuch, int finalMaterial)
-	{	return destroyResourcesAll(V,howMuch,finalMaterial,-1,null,null)[1]; }
+	public int destroyResourcesAmt(List<Item> V, int howMuch, int finalMaterial,Container C)
+	{	return destroyResourcesAll(V,howMuch,finalMaterial,-1,null,C)[1]; }
 	@Override
 	public int destroyResourcesValue(Room E, int howMuch, int finalMaterial, int otherMaterial, Item never)
 	{ return destroyResourcesValue(getAllItems(E),howMuch,finalMaterial,otherMaterial,never,null);}
