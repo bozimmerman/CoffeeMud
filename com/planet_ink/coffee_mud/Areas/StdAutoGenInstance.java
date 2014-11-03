@@ -431,7 +431,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					if(!definedIDs.containsKey("AREASIZE"))
 						definedIDs.put("AREASIZE", "50");
 					if(!definedIDs.containsKey("LEVEL_RANGE"))
-						definedIDs.put("LEVEL_RANGE", (msg.source().basePhyStats().level()-3)+"?"+(msg.source().basePhyStats().level()+3));
+						definedIDs.put("LEVEL_RANGE", (msg.source().basePhyStats().level()-4)+"?"+(msg.source().basePhyStats().level()));
 					if(!definedIDs.containsKey("AGGROCHANCE"))
 						definedIDs.put("AGGROCHANCE", ""+msg.source().basePhyStats().level());
 					try
