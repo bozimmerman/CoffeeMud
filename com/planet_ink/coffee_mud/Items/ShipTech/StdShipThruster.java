@@ -89,7 +89,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 	}
 
 
-	public static boolean reportError(ShipEngine me, Software controlI, MOB mob, String literalMessage, String controlMessage)
+	public static boolean reportError(final ShipEngine me, final Software controlI, final MOB mob, final String literalMessage, final String controlMessage)
 	{
 		if((mob!=null) && (mob.location()==CMLib.map().roomLocation(me)) && (literalMessage!=null))
 			mob.tell(literalMessage);
@@ -104,7 +104,21 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		return false;
 	}
 
-	public static boolean executeThrust(ShipEngine me, String circuitKey, MOB mob, Software controlI, ShipEngine.ThrustPort portDir, final int amount)
+	protected static void sendComputerMessage(final ShipEngine me, final String circuitKey, final MOB mob, final Item controlI, final String code)
+	{
+		for(final Iterator<Electronics.Computer> c=CMLib.tech().getComputers(circuitKey);c.hasNext();)
+		{
+			final Electronics.Computer C=c.next();
+			if((controlI==null)||(C!=controlI.owner()))
+			{
+				final CMMsg msg2=CMClass.getMsg(mob, C, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+				if(C.okMessage(mob, msg2))
+					C.executeMsg(mob, msg2);
+			}
+		}
+	}
+	
+	public static boolean executeThrust(final ShipEngine me, final String circuitKey, final MOB mob, final Software controlI, final ShipEngine.ThrustPort portDir, final int amount)
 	{
 		final SpaceObject obj=CMLib.map().getSpaceObject(me, true);
 		final Manufacturer manufacturer=me.getFinalManufacturer();
@@ -113,7 +127,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		final SpaceShip ship=(SpaceShip)obj;
 		if((portDir==null)||(amount<0))
 			return reportError(me, controlI, mob, me.name(mob)+" rumbles loudly, but accomplishes nothing.","Failure: "+me.name(mob)+": exhaust control.");
-		int thrust=Math.round(me.getInstalledFactor() * amount);
+		int thrust=Math.round(me.getInstalledFactor() * (amount + ship.getMass()));
 		if(thrust > me.getMaxThrust())
 			thrust=me.getMaxThrust();
 		thrust=(int)Math.round(manufacturer.getReliabilityPct() * thrust);
@@ -121,7 +135,14 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		if(portDir==ThrustPort.AFT) // when thrusting aft, the thrust is continual, so save it
 			me.setThrust(thrust);
 		final int fuelToConsume=(int)Math.round(CMath.ceiling(thrust*me.getFuelEfficiency()*manufacturer.getEfficiencyPct()));
-		final long accelleration=thrust*15000L/ship.getMass();
+		final long accelleration=thrust/ship.getMass();
+		if(accelleration == 0)
+		{
+			final String code=Technical.TechCommand.COMPONENTFAILURE.makeCommand(TechType.SHIP_ENGINE, "Failure: "+me.name()+": insufficient_thrust_capacity.");
+			sendComputerMessage(me,circuitKey,mob,controlI,code);
+			return reportError(me, controlI, mob, me.name(mob)+" rumbles very loudly, but nothing is happening.","Failure: "+me.name(mob)+": insufficient engine thrust capacity.");
+		}
+		else
 		if(me.consumeFuel(fuelToConsume))
 		{
 			final SpaceObject spaceObject=ship.getShipSpaceObject();
@@ -136,16 +157,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		else
 		{
 			final String code=Technical.TechCommand.COMPONENTFAILURE.makeCommand(TechType.SHIP_ENGINE, "Failure:_"+me.name().replace(' ','_')+":_insufficient_fuel.");
-			for(final Iterator<Electronics.Computer> c=CMLib.tech().getComputers(circuitKey);c.hasNext();)
-			{
-				final Electronics.Computer C=c.next();
-				if((controlI==null)||(C!=controlI.owner()))
-				{
-					final CMMsg msg2=CMClass.getMsg(mob, C, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
-					if(C.okMessage(mob, msg2))
-						C.executeMsg(mob, msg2);
-				}
-			}
+			sendComputerMessage(me,circuitKey,mob,controlI,code);
 			return reportError(me, controlI, mob, me.name(mob)+" rumbles loudly, then sputters down.","Failure: "+me.name(mob)+": insufficient fuel.");
 		}
 		return false;
@@ -212,13 +224,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 					if(me.okMessage(msg.source(), msg2))
 						me.executeMsg(msg.source(), msg2);
 					final String code=Technical.TechCommand.COMPONENTFAILURE.makeCommand(TechType.SHIP_ENGINE, "Failure: "+me.name()+": insufficient_fuel.");
-					for(final Iterator<Electronics.Computer> c=CMLib.tech().getComputers(circuitKey);c.hasNext();)
-					{
-						final Electronics.Computer C=c.next();
-						msg2=CMClass.getMsg(msg.source(), C, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
-						if(C.okMessage(msg.source(), msg2))
-							C.executeMsg(msg.source(), msg2);
-					}
+					sendComputerMessage(me,circuitKey,msg.source(),null,code);
 				}
 				break;
 			}
