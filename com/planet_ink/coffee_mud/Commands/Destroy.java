@@ -413,6 +413,23 @@ public class Destroy extends StdCommand
 		Log.sysOut("Exits",mob.location().roomID()+" exits destroyed by "+mob.Name()+".");
 	}
 
+	private Item getItem(boolean allFlag, Room srchRoom, Item srchContainer, MOB srchMob, String itemID)
+	{
+		Item deadItem=null;
+		deadItem=(srchRoom==null)?null:srchRoom.findItem(srchContainer,itemID);
+		if((!allFlag)&&(deadItem==null))
+			deadItem=(srchMob==null)?null:srchMob.findItem(null,itemID);
+		if(deadItem==null)
+		{
+			Environmental E=CMLib.map().findSpaceObject(itemID,true);
+			if(!(E instanceof Item))
+				E=CMLib.map().findSpaceObject(itemID,false);
+			if(E instanceof Item)
+				deadItem=(Item)E;
+		}
+		return deadItem;
+	}
+	
 	public boolean items(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
@@ -457,28 +474,41 @@ public class Destroy extends StdCommand
 			}
 		}
 
+		int max=Integer.MAX_VALUE;
 		boolean allFlag=((String)commands.elementAt(2)).equalsIgnoreCase("all");
 		if(itemID.toUpperCase().startsWith("ALL.")){ allFlag=true; itemID="ALL "+itemID.substring(4);}
 		if(itemID.toUpperCase().endsWith(".ALL")){ allFlag=true; itemID="ALL "+itemID.substring(0,itemID.length()-4);}
 		boolean doneSomething=false;
-		Item deadItem=null;
-		deadItem=(srchRoom==null)?null:srchRoom.findItem(srchContainer,itemID);
-		if((!allFlag)&&(deadItem==null))
-			deadItem=(srchMob==null)?null:srchMob.findItem(null,itemID);
-		if(deadItem==null)
+		Item deadItem=getItem(allFlag,srchRoom,srchContainer,srchMob,itemID);
+		
+		int spaceDex=itemID.indexOf(' ');
+		if((deadItem == null)&&(spaceDex>0)&&(CMath.isInteger(itemID.substring(0,spaceDex))))
 		{
-			Environmental E=CMLib.map().findSpaceObject(itemID,true);
-			if(!(E instanceof Item))
-				E=CMLib.map().findSpaceObject(itemID,false);
-			if(E instanceof Item)
-				deadItem=(Item)E;
+			max=CMath.s_int(itemID.substring(0,spaceDex));
+			itemID=itemID.substring(spaceDex+1).trim();
+			deadItem=getItem(allFlag,srchRoom,srchContainer,srchMob,itemID);
+			if(max>1)
+				allFlag=true;
 		}
-		while(deadItem!=null)
+		
+		int num=0;
+		while((deadItem!=null)&&(max-->0))
 		{
-			mob.location().recoverRoomStats();
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 disintegrates!",deadItem.name()));
+			num++;
+			if((num==100)||(num==1000)||(num==10000)||(num==100000)||(num==1000000))
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("Things are disintegrating..."));
+			else
+			if((num<100)
+			||((num<1000)&&((num%100)==0))
+			||((num<10000)&&((num%1000)==0))
+			||((num<100000)&&((num%10000)==0))
+			||((num<1000000)&&((num%100000)==0)))
+			{
+				mob.location().recoverRoomStats();
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 disintegrates!",deadItem.name()));
+				Log.sysOut("Items",mob.Name()+" destroyed item "+deadItem.name()+".");
+			}
 			doneSomething=true;
-			Log.sysOut("Items",mob.Name()+" destroyed item "+deadItem.name()+".");
 			if(deadItem instanceof SpaceObject)
 			{
 				CMLib.database().DBDeleteItem("SPACE", deadItem);
@@ -503,6 +533,9 @@ public class Destroy extends StdCommand
 			if(!allFlag)
 				break;
 		}
+		if(num>=100)
+			Log.sysOut("Items",mob.Name()+" destroyed "+num+" items called '"+itemID+"'.");
+		mob.location().recoverRoomStats();
 		if(!doneSomething)
 		{
 			mob.tell(L("I don't see '@x1 here.\n\r",itemID));
@@ -1493,10 +1526,20 @@ public class Destroy extends StdCommand
 		}
 		else
 		{
-			final String allWord=CMParms.combine(commands,1);
+			String allWord=CMParms.combine(commands,1);
 			Environmental thang=mob.location().fetchFromRoomFavorItems(null,allWord);
 			if(thang==null)
 				thang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,allWord,Wearable.FILTER_ANY);
+			if((thang == null)&&(commands.size()>2)
+			&&(CMath.isInteger(commands.get(1).toString())||commands.get(1).toString().equalsIgnoreCase("all")))
+			{
+				allWord=CMParms.combine(commands,2);
+				thang=mob.location().fetchFromRoomFavorItems(null,allWord);
+				if(thang==null)
+					thang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,allWord,Wearable.FILTER_ANY);
+				if(!(thang instanceof Item))
+					thang=null;
+			}
 			if((thang!=null)&&(thang instanceof Item))
 			{
 				commands.insertElementAt("ITEM",1);
