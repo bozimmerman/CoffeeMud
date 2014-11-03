@@ -77,7 +77,7 @@ public class Spell_Frost extends Spell
 				invoker=mob;
 
 				int damage = 0;
-				final int maxDie =  (adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)))/4;
+				final int maxDie =  (Math.min(adjustedLevel(mob,asLevel),50)+(2*super.getX1Level(mob)))/4;
 				damage += CMLib.dice().roll(maxDie,6,5);
 				R.send(mob,msg2);
 				if((msg2.value()>0)||(msg.value()>0))
