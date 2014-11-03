@@ -61,7 +61,7 @@ public class Spell_MagicMissile extends Spell
 
 		if(success)
 		{
-			final int numMissiles=((int)Math.round(Math.floor(CMath.div(adjustedLevel(mob,asLevel),5)))+1);
+			final int numMissiles=Math.min((int)Math.round(Math.floor(CMath.div(adjustedLevel(mob,asLevel),5))+1),8);
 			final Room R=target.location();
 			for(int i=0;(i<numMissiles) && (target.location()==R);i++)
 			{
