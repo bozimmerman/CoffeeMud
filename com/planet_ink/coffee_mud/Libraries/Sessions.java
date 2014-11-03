@@ -119,7 +119,8 @@ public class Sessions extends StdLibrary implements SessionsList
 	@Override
 	public void stopSessionAtAllCosts(Session S)
 	{
-		if(S==null) return;
+		if(S==null)
+			return;
 		S.stopSession(true,true,false);
 		if(all.contains(S))
 		{
@@ -287,7 +288,8 @@ public class Sessions extends StdLibrary implements SessionsList
 	public MOB findPlayerOnline(String srchStr, boolean exactOnly)
 	{
 		final Session S=findPlayerSessionOnline(srchStr, exactOnly);
-		if(S==null) return null;
+		if(S==null)
+			return null;
 		return S.mob();
 	}
 

@@ -99,12 +99,14 @@ public class Duel extends StdCommand
 						if(possibleOtherWeapon.amWearingAt(Wearable.IN_INVENTORY))
 						{
 							final Command C=CMClass.getCommand("Wield");
-							if(C!=null) C.execute(mob,new XVector("WIELD",possibleOtherWeapon),metaFlags);
+							if(C!=null)
+								C.execute(mob,new XVector("WIELD",possibleOtherWeapon),metaFlags);
 						}
 					}
 				}
 				final Ability A=CMClass.getAbility("Dueler");
-				if(A!=null) A.invoke(target, mob, true, 0);
+				if(A!=null)
+					A.invoke(target, mob, true, 0);
 			}
 			else
 			if(uiT!=null)

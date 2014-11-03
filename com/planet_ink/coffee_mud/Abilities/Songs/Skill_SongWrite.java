@@ -91,7 +91,8 @@ public class Skill_SongWrite extends BardSkill
 			return false;
 		}
 		int numSpells=(CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob))-CMLib.ableMapper().qualifyingLevel(mob,this));
-		if(numSpells<0) numSpells=0;
+		if(numSpells<0)
+			numSpells=0;
 		if(scroll.getSpells().size()>numSpells)
 		{
 			mob.tell(L("You aren't powerful enough to write any more magic onto @x1.",scroll.name()));
@@ -110,7 +111,8 @@ public class Skill_SongWrite extends BardSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		if(!auto)mob.curState().setMana(0);
+		if(!auto)
+			mob.curState().setMana(0);
 
 		int experienceToLose=20*CMLib.ableMapper().lowestQualifyingLevel(scrollThis.ID());
 		experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);

@@ -103,11 +103,13 @@ public class Compare extends StdCommand
 					{
 						if(!I.amWearingAt(Wearable.IN_INVENTORY))
 						{ toThis=I; break;}
-						if(possible==null) possible=I;
+						if(possible==null)
+							possible=I;
 					}
 				}
 			}
-			if(toThis==null) toThis=possible;
+			if(toThis==null)
+				toThis=possible;
 			if((toThis==null)||(!CMLib.flags().canBeSeenBy(toThis,mob)))
 			{
 				mob.tell(L("Compare a @x1 to what?",compareThis.name()));

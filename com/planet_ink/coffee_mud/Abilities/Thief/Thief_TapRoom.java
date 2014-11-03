@@ -72,8 +72,10 @@ public class Thief_TapRoom extends ThiefSkill
 	{
 		final List<String> p=getParsedText();
 		Room R=null;
-		if(p.size()>=2)  R=CMLib.map().getRoom(p.get(1));
-		if(R==null) return null;
+		if(p.size()>=2)
+			R=CMLib.map().getRoom(p.get(1));
+		if(R==null)
+			return null;
 		Item I=null;
 		for(int i=0;i<R.numItems();i++)
 		{
@@ -85,7 +87,8 @@ public class Thief_TapRoom extends ThiefSkill
 		for(int m=0;m<R.numInhabitants();m++)
 		{
 			M=R.fetchInhabitant(m);
-			if(M==null)continue;
+			if(M==null)
+				continue;
 			for(int i=0;i<M.numItems();i++)
 			{
 				I=M.getItem(i);
@@ -122,7 +125,8 @@ public class Thief_TapRoom extends ThiefSkill
 	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
-		if(!super.okMessage(host,msg)) return false;
+		if(!super.okMessage(host,msg))
+			return false;
 		if(affected instanceof Item)
 		{
 			if((msg.targetMinor()==CMMsg.TYP_ENTER)
@@ -241,7 +245,8 @@ public class Thief_TapRoom extends ThiefSkill
 						{
 							final List<String> p=getParsedText();
 							Room R=null;
-							if(p.size()>=2)  R=CMLib.map().getRoom(p.get(1));
+							if(p.size()>=2)
+								R=CMLib.map().getRoom(p.get(1));
 							final CMMsg msg2=(CMMsg)msg.copyOf();
 							msg2.setOthersMessage("^TFrom "+I.name()+" "+msg2.othersMessage());
 							if((R!=null)&&(R.okMessage(msg.source(),msg2)))
@@ -345,7 +350,8 @@ public class Thief_TapRoom extends ThiefSkill
 			mob.tell(L("You'll need several pounds of raw cloth material (like cotton or wool) to start tapping a room."));
 			abort=true;
 		}
-		if(abort) return false;
+		if(abort)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

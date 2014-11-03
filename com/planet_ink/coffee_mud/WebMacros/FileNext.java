@@ -54,13 +54,16 @@ public class FileNext extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		String path=httpReq.getUrlParameter("PATH");
-		if(path==null) path="";
+		if(path==null)
+			path="";
 		final String last=httpReq.getUrlParameter("FILE");
 		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
-		if(M==null) return "[authentication error]";
+		if(M==null)
+			return "[authentication error]";
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("FILE");
+			if(last!=null)
+				httpReq.removeUrlParameter("FILE");
 			return "";
 		}
 		final String fileKey="CMFSFILE_"+trimSlash(path);

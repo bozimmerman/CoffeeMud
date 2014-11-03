@@ -124,7 +124,8 @@ public interface GenericEditor extends CMLibrary
 		@Override
 		public Object eval(Object val, Object[] choices, boolean emptyOK) throws CMException
 		{
-			if(choices.length==0) return "";
+			if(choices.length==0)
+				return "";
 			final String str=val.toString().trim();
 			for(final Object o : choices)
 				if(str.equalsIgnoreCase(o.toString()))

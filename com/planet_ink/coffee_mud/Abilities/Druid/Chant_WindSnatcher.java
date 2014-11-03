@@ -89,7 +89,8 @@ public class Chant_WindSnatcher extends Chant
 					for (final String windSpell : windSpells)
 						if(victim.fetchAbility(windSpell)!=null)
 						{ found=true; break;}
-					if(!found) return Ability.QUALITY_INDIFFERENT;
+					if(!found)
+						return Ability.QUALITY_INDIFFERENT;
 				}
 			}
 		}

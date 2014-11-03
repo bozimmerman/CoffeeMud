@@ -91,7 +91,8 @@ public class Scrapping extends CommonSkill
 					{
 						amount=amount*abilityCode();
 						String s="s";
-						if(amount==1) s="";
+						if(amount==1)
+							s="";
 						mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to scrap @x1 pound@x2 of @x3.",""+amount,s,foundShortName));
 						for(int i=0;i<amount;i++)
 						{
@@ -192,7 +193,8 @@ public class Scrapping extends CommonSkill
 		{
 			final Item fire=getRequiredFire(mob,0);
 			fireRequired=true;
-			if(fire==null) return false;
+			if(fire==null)
+				return false;
 		}
 
 		found=null;

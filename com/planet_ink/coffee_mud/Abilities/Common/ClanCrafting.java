@@ -113,7 +113,8 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 	{
 		if(!super.canBeLearnedBy(teacher,student))
 			return false;
-		if(student==null) return true;
+		if(student==null)
+			return true;
 		if(!student.clans().iterator().hasNext())
 		{
 			teacher.tell(L("@x1 is not a member of a clan.",student.name()));
@@ -297,7 +298,8 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			return false;
 		}
 		final int[][] data=fetchFoundResourceData(mob,amt1,mat1,null,amt2,mat2,null,false,parsedVars.autoGenerate,null);
-		if(data==null) return false;
+		if(data==null)
+			return false;
 		amt1=data[0][FOUND_AMT];
 		amt2=data[1][FOUND_AMT];
 		final String reqskill=foundRecipe.get(RCP_REQUIREDSKILL);
@@ -368,7 +370,8 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		buildingI.setMaterial(data[0][FOUND_CODE]);
 		final int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-6;
 		buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+(hardness*3));
-		if(buildingI.basePhyStats().level()<1) buildingI.basePhyStats().setLevel(1);
+		if(buildingI.basePhyStats().level()<1)
+			buildingI.basePhyStats().setLevel(1);
 		final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 		final long canContain=getContainerType(foundRecipe.get(RCP_CONTAINMASK));
 		final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));

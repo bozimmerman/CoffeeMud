@@ -48,8 +48,10 @@ public class Prayer_MassParalyze extends Prayer
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(affected==null) return;
-		if(!(affected instanceof MOB)) return;
+		if(affected==null)
+			return;
+		if(!(affected instanceof MOB))
+			return;
 
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
 	}
@@ -75,7 +77,8 @@ public class Prayer_MassParalyze extends Prayer
 			return false;
 
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
-		if(h==null) return false;
+		if(h==null)
+			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
 		boolean nothingDone=true;
@@ -93,8 +96,10 @@ public class Prayer_MassParalyze extends Prayer
 				if((target!=mob)&&(mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 				{
 					int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
-					if(levelDiff<0) levelDiff=0;
-					if(levelDiff>6) levelDiff=6;
+					if(levelDiff<0)
+						levelDiff=0;
+					if(levelDiff>6)
+						levelDiff=6;
 					mob.location().send(mob,msg);
 					mob.location().send(mob,msg2);
 					if((msg.value()<=0)&&(msg2.value()<=0))

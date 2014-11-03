@@ -115,16 +115,19 @@ public class WeatherAffects extends PuddleMaker
 
 	public int weather(Environmental host, Room room)
 	{
-		if(room==null) return 0;
+		if(room==null)
+			return 0;
 		final Area A=(host instanceof Area)?(Area)host:CMLib.map().roomLocation(host).getArea();
-		if(A!=null) return A.getClimateObj().weatherType(room);
+		if(A!=null)
+			return A.getClimateObj().weatherType(room);
 		return 0;
 	}
 
 	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
-		if(!super.okMessage(host,msg)) return false;
+		if(!super.okMessage(host,msg))
+			return false;
 
 		final Room R=msg.source().location();
 		if((host instanceof Area)
@@ -217,9 +220,11 @@ public class WeatherAffects extends PuddleMaker
 		if(!super.tick(ticking,tickID))
 			return false;
 		final Area A=CMLib.map().areaLocation(ticking);
-		if(A==null) return false;
+		if(A==null)
+			return false;
 		final Climate C=A.getClimateObj();
-		if(C==null) return false;
+		if(C==null)
+			return false;
 		lastWeather=realLastWeather;
 
 		// handle freeze overs
@@ -343,19 +348,25 @@ public class WeatherAffects extends PuddleMaker
 
 				if((R.getClimateType()&Places.CLIMASK_COLD)>0)
 				{
-					if(coldChance>0) coldChance+=10;
+					if(coldChance>0)
+						coldChance+=10;
 					if(coldChance>0) fluChance+=5; // yes, cold is related this way to flu
-					if(frostBiteChance>0) frostBiteChance=frostBiteChance+(int)Math.round(CMath.mul(frostBiteChance,0.5));
+					if(frostBiteChance>0)
+						frostBiteChance=frostBiteChance+(int)Math.round(CMath.mul(frostBiteChance,0.5));
 				}
 				if((R.getClimateType()&Places.CLIMASK_HOT)>0)
 				{
-					if(heatExhaustionChance>0) heatExhaustionChance+=10;
+					if(heatExhaustionChance>0)
+						heatExhaustionChance+=10;
 				}
 				if((R.getClimateType()&Places.CLIMASK_WET)>0)
 				{
-					if(coldChance>0) coldChance+=5;
-					if(heatExhaustionChance>5) heatExhaustionChance-=5;
-					if(frostBiteChance>0) frostBiteChance=frostBiteChance+(int)Math.round(CMath.mul(frostBiteChance,0.25));
+					if(coldChance>0)
+						coldChance+=5;
+					if(heatExhaustionChance>5)
+						heatExhaustionChance-=5;
+					if(frostBiteChance>0)
+						frostBiteChance=frostBiteChance+(int)Math.round(CMath.mul(frostBiteChance,0.25));
 				}
 				final int save=(M.charStats().getSave(CharStats.STAT_SAVE_COLD)+M.charStats().getSave(CharStats.STAT_SAVE_WATER))/2;
 				if((CMLib.dice().rollPercentage()<(coldChance-save))
@@ -642,7 +653,8 @@ public class WeatherAffects extends PuddleMaker
 					&&(!CMLib.flags().isSleeping(M)))
 					{
 						final Ability A2=CMClass.getAbility("Skill_Dirt");
-						if(A2!=null) A2.invoke(M,M,true,0);
+						if(A2!=null)
+							A2.invoke(M,M,true,0);
 					}
 				}
 			}
@@ -802,7 +814,8 @@ public class WeatherAffects extends PuddleMaker
 					for(int i=0;i<M.numItems();i++)
 					{
 						final Item I=M.getItem(i);
-						if(I==null) continue;
+						if(I==null)
+							continue;
 						if((!I.amWearingAt(Wearable.IN_INVENTORY))
 						&&(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL))
 						&&(I.subjectToWearAndTear())

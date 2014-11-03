@@ -59,13 +59,17 @@ public class Disease_Malaria extends Disease
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID))	return false;
-		if(affected==null) return false;
-		if(!(affected instanceof MOB)) return true;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
+		if(!(affected instanceof MOB))
+			return true;
 
 		final MOB mob=(MOB)affected;
 		MOB diseaser=invoker;
-		if(diseaser==null) diseaser=mob;
+		if(diseaser==null)
+			diseaser=mob;
 		if((!mob.amDead())&&((++tickUp)==CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)))
 		{
 			tickUp=0;
@@ -87,7 +91,8 @@ public class Disease_Malaria extends Disease
 			if(CMLib.dice().rollPercentage()==1)
 			{
 				final Ability A=CMClass.getAbility("Disease_Fever");
-				if(A!=null) A.invoke(diseaser,mob,true,0);
+				if(A!=null)
+					A.invoke(diseaser,mob,true,0);
 			}
 			return true;
 		}
@@ -97,7 +102,8 @@ public class Disease_Malaria extends Disease
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)-5);
 		if(affectableStats.getStat(CharStats.STAT_STRENGTH)<=0)
 			affectableStats.setStat(CharStats.STAT_STRENGTH,1);
@@ -106,7 +112,8 @@ public class Disease_Malaria extends Disease
 		{
 			conDown=-1;
 			MOB diseaser=invoker;
-			if(diseaser==null) diseaser=affected;
+			if(diseaser==null)
+				diseaser=affected;
 			norecurse=true;
 			CMLib.combat().postDeath(diseaser,affected,null);
 			norecurse=false;
@@ -116,7 +123,8 @@ public class Disease_Malaria extends Disease
 	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		affectableState.setMovement(affectableState.getMovement()/2);
 		affectableState.setMana(affectableState.getMana()-(affectableState.getMana()/3));
 		affectableState.setHitPoints(affectableState.getHitPoints()-affected.phyStats().level());

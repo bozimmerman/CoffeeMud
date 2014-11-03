@@ -88,7 +88,8 @@ public class Skill_Juggle extends BardSkill
 					if(I2.name().equals(I.name()))
 					{ back=true; break;}
 				}
-				if(back) continue;
+				if(back)
+					continue;
 				boolean morethanone=false;
 				for(int ii=i+1;ii<V.size();ii++)
 				{
@@ -123,16 +124,20 @@ public class Skill_Juggle extends BardSkill
 
 	protected void unJuggle(Item I)
 	{
-		if(I==null) return;
+		if(I==null)
+			return;
 		final Ability A=I.fetchEffect("Spell_Fly");
-		if(A!=null) A.unInvoke();
+		if(A!=null)
+			A.unInvoke();
 		juggles.removeElement(I);
 	}
 
 	public void juggleItem(Item I)
 	{
-		if(I==null) return;
-		if(juggles.contains(I)) return;
+		if(I==null)
+			return;
+		if(juggles.contains(I))
+			return;
 		if(I.fetchEffect("Spell_Fly")==null)
 		{
 			final Ability A=CMClass.getAbility("Spell_Fly");
@@ -154,7 +159,8 @@ public class Skill_Juggle extends BardSkill
 			return;
 		final MOB M=(MOB)affected;
 		final Room R=M.location();
-		if(R==null) return;
+		if(R==null)
+			return;
 		for(int i=0;i<juggles.size();i++)
 		{
 			Item I=null;
@@ -342,7 +348,8 @@ public class Skill_Juggle extends BardSkill
 				M.location().show(M,I,CMMsg.MSG_OK_ACTION,L("<S-NAME> stop(s) juggling <T-NAMESELF>."));
 				unJuggle(I);
 				I.unWear();
-				if(!M.isMine(I)) M.moveItemTo(I);
+				if(!M.isMine(I))
+					M.moveItemTo(I);
 			}
 		}
 		super.unInvoke();
@@ -412,7 +419,8 @@ public class Skill_Juggle extends BardSkill
 				if(!CMLib.commands().postRemove(mob,juggleThis,true))
 					return false;
 			}
-			if(juggleThis==null) break;
+			if(juggleThis==null)
+				break;
 			if((CMLib.flags().canBeSeenBy(juggleThis,mob))
 			&&((A==null)||(!A.juggles.contains(juggleThis)))
 			&&(!V.contains(juggleThis)))
@@ -437,7 +445,8 @@ public class Skill_Juggle extends BardSkill
 			{
 				beneficialAffect(mob,mob,asLevel,0);
 				A=(Skill_Juggle)mob.fetchEffect(ID());
-				if(A==null) return false;
+				if(A==null)
+					return false;
 			}
 			A.makeLongLasting();
 			A.pause=true;

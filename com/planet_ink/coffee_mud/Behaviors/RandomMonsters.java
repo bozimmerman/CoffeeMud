@@ -66,7 +66,8 @@ public class RandomMonsters extends ActiveTicker
 		if((start<0)||(start>20))
 		{
 			final int extraSemicolon=filename.indexOf(';');
-			if(extraSemicolon>=0) filename=filename.substring(0,extraSemicolon);
+			if(extraSemicolon>=0)
+				filename=filename.substring(0,extraSemicolon);
 			if(filename.trim().length()>0)
 				xmlfiles.addElement(filename.trim());
 			return xmlfiles;
@@ -91,7 +92,8 @@ public class RandomMonsters extends ActiveTicker
 			{
 				final String xtra=newParms.substring(x+1);
 				extraX=xtra.indexOf(';');
-				if(extraX>=0) extraParms=xtra.substring(extraX+1);
+				if(extraX>=0)
+					extraParms=xtra.substring(extraX+1);
 			}
 			final Vector<String> V=CMParms.parse(extraParms);
 			for(int v=0;v<V.size();v++)
@@ -148,7 +150,8 @@ public class RandomMonsters extends ActiveTicker
 		super.setParms(oldParms);
 		minMonsters=CMParms.getParmInt(oldParms,"minmonsters",1);
 		maxMonsters=CMParms.getParmInt(oldParms,"maxmonsters",1);
-		if(maxMonsters<minMonsters) maxMonsters=minMonsters;
+		if(maxMonsters<minMonsters)
+			maxMonsters=minMonsters;
 		avgMonsters=CMLib.dice().roll(1,(maxMonsters-minMonsters),minMonsters);
 		parms=newParms;
 		if((restrictedLocales!=null)&&(restrictedLocales.size()==0))
@@ -165,9 +168,12 @@ public class RandomMonsters extends ActiveTicker
 
 	public boolean okRoomForMe(MOB M, Room newRoom)
 	{
-		if(newRoom==null) return false;
-		if(M==null) return false;
-		if(restrictedLocales==null) return true;
+		if(newRoom==null)
+			return false;
+		if(M==null)
+			return false;
+		if(restrictedLocales==null)
+			return true;
 		return !restrictedLocales.contains(Integer.valueOf(newRoom.domainType()));
 	}
 
@@ -188,7 +194,8 @@ public class RandomMonsters extends ActiveTicker
 		String filename=(x>=0)?theseparms.substring(x+1):theseparms;
 		if(filename.trim().length()==0)
 		{
-			if(alreadyTriedLoad) return null;
+			if(alreadyTriedLoad)
+				return null;
 			alreadyTriedLoad=true;
 			Log.errOut("Blank XML/filename: '"+filename+"' on Behavior RandomMonsters on object "+thangName+" ("+thangID+").");
 			return null;
@@ -197,21 +204,25 @@ public class RandomMonsters extends ActiveTicker
 		if((start>=0)&&(start<=20))
 		{
 			int end=start+20;
-			if(end>filename.length()) end=filename.length();
+			if(end>filename.length())
+				end=filename.length();
 			monsters=(List<MOB>)Resources.getResource("RANDOMMONSTERS-XML/"+filename.length()+"/"+filename.hashCode());
-			if(monsters!=null) return monsters;
+			if(monsters!=null)
+				return monsters;
 			monsters=new Vector();
 			final String error=CMLib.coffeeMaker().addMOBsFromXML(filename,monsters,null);
 			if(error.length()>0)
 			{
-				if(alreadyTriedLoad) return null;
+				if(alreadyTriedLoad)
+					return null;
 				alreadyTriedLoad=true;
 				Log.errOut("RandomMonsters: Error on import of xml for '"+thangName+"' ("+thangID+"): "+error+".");
 				return null;
 			}
 			if(monsters.size()<=0)
 			{
-				if(alreadyTriedLoad) return null;
+				if(alreadyTriedLoad)
+					return null;
 				alreadyTriedLoad=true;
 				Log.errOut("RandomMonsters: No mobs loaded for '"+thangName+"' ("+thangID+").");
 				return null;
@@ -221,7 +232,8 @@ public class RandomMonsters extends ActiveTicker
 		else
 		{
 			final int extraSemicolon=filename.indexOf(';');
-			if(extraSemicolon>=0) filename=filename.substring(0,extraSemicolon);
+			if(extraSemicolon>=0)
+				filename=filename.substring(0,extraSemicolon);
 			filename=filename.trim();
 			monsters=(List<MOB>)Resources.getResource("RANDOMMONSTERS-"+filename);
 			if((monsters==null)&&(!alreadyTriedLoad))
@@ -260,7 +272,8 @@ public class RandomMonsters extends ActiveTicker
 
 	public boolean canFlyHere(MOB M, Room R)
 	{
-		if(R==null) return true;
+		if(R==null)
+			return true;
 		if(((R.domainType()&Room.DOMAIN_INDOORS_AIR)==Room.DOMAIN_INDOORS_AIR)
 		||((R.domainType()&Room.DOMAIN_OUTDOORS_AIR)==Room.DOMAIN_OUTDOORS_AIR))
 		{

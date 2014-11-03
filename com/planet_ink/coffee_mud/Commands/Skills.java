@@ -68,7 +68,8 @@ public class Skills extends StdCommand
 			else
 			{
 				int level=CMLib.ableMapper().qualifyingLevel(mob,A2);
-				if(level<0) level=0;
+				if(level<0)
+					level=0;
 				final StringBuffer line=new StringBuffer("");
 				line.append("\n\rLevel ^!"+level+"^?:\n\r");
 				line.append("^N[^H"+CMStrings.padRight(Integer.toString(A2.proficiency()),3)+"%^?]^N "+CMStrings.padRight("^<HELP^>"+A2.name()+"^</HELP^>",19));
@@ -157,7 +158,8 @@ public class Skills extends StdCommand
 		{
 			final Ability A=a.nextElement();
 			int level=CMLib.ableMapper().qualifyingLevel(ableM,A);
-			if(level<0) level=0;
+			if(level<0)
+				level=0;
 			if((A!=null)
 			&&(level>highestLevel)
 			&&(level<lowestLevel)
@@ -174,7 +176,8 @@ public class Skills extends StdCommand
 			{
 				final Ability A=a.nextElement();
 				int level=CMLib.ableMapper().qualifyingLevel(ableM,A);
-				if(level<0) level=0;
+				if(level<0)
+					level=0;
 				if((A!=null)
 				&&(level==l)
 				&&(ofTypes.contains(Integer.valueOf(A.classificationCode()&mask))))

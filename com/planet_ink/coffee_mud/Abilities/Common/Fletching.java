@@ -125,7 +125,8 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 	@Override
 	public boolean mayICraft(final Item I)
 	{
-		if(I==null) return false;
+		if(I==null)
+			return false;
 		if(!super.mayBeCrafted(I))
 			return false;
 		if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
@@ -144,7 +145,8 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
-		if(!super.canMend(mob,E,quiet)) return false;
+		if(!super.canMend(mob,E,quiet))
+			return false;
 		if((!(E instanceof Item))
 		||(!mayICraft((Item)E)))
 		{
@@ -221,14 +223,16 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 					final String wood=getComponentDescription(mob,V,RCP_WOOD);
 					if(wood.length()>5)
 					{
-						if(toggler>1) buf.append("\n\r");
+						if(toggler>1)
+							buf.append("\n\r");
 						toggler=toggleTop;
 					}
 					if(((level<=xlevel(mob))||allFlag)
 					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
 						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+CMStrings.padRightPreserve(""+wood,cols[2])+((toggler!=toggleTop)?" ":"\n\r"));
-						if(++toggler>toggleTop) toggler=1;
+						if(++toggler>toggleTop)
+							toggler=1;
 					}
 				}
 			}
@@ -253,7 +257,8 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			messedUp=false;
 			final Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
-			if(!canMend(mob,buildingI,false)) return false;
+			if(!canMend(mob,buildingI,false))
+				return false;
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
@@ -297,11 +302,13 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
-			if(componentsFoundList==null) return false;
+			if(componentsFoundList==null)
+				return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
 			woodRequired=adjustWoodRequired(woodRequired,mob);
 
-			if((amount>woodRequired)&&(woodRequired>0)) woodRequired=amount;
+			if((amount>woodRequired)&&(woodRequired>0))
+				woodRequired=amount;
 			final String otherRequired=foundRecipe.get(RCP_EXTRAREQ);
 			final int[] pm={RawMaterial.MATERIAL_WOODEN};
 			final int[][] data=fetchFoundResourceData(mob,
@@ -310,7 +317,8 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 												false,
 												parsedVars.autoGenerate,
 												enhancedTypes);
-			if(data==null) return false;
+			if(data==null)
+				return false;
 			fixDataForComponents(data,componentsFoundList);
 			woodRequired=data[0][FOUND_AMT];
 			if(((data[1][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
@@ -363,14 +371,16 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			else
 				buildingI.setMaterial(data[0][FOUND_CODE]);
 			final int level=CMath.s_int(foundRecipe.get(RCP_LEVEL));
-			if(woodRequired==0) hardness=0;
+			if(woodRequired==0)
+				hardness=0;
 			buildingI.basePhyStats().setLevel(level+hardness);
 			buildingI.setSecretIdentity(getBrand(mob));
 			final String ammotype=foundRecipe.get(RCP_AMMOTYPE);
 			final int capacity=CMath.s_int(foundRecipe.get(RCP_AMOCAPACITY));
 			final int maxrange=CMath.s_int(foundRecipe.get(RCP_MAXRANGE));
 			final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
-			if(bundling) buildingI.setBaseValue(lostValue);
+			if(bundling)
+				buildingI.setBaseValue(lostValue);
 			addSpells(buildingI,spell);
 			if(buildingI instanceof Weapon)
 			{

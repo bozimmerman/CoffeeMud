@@ -44,7 +44,8 @@ public class Trap_Enter extends Trap_Trap
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(sprung) return super.okMessage(myHost,msg);
+		if(sprung)
+			return super.okMessage(myHost,msg);
 		if(!super.okMessage(myHost,msg))
 			return false;
 

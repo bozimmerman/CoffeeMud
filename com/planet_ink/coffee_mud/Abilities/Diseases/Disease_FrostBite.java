@@ -87,7 +87,8 @@ public class Disease_FrostBite extends Disease
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		if(where==null)
 		{
 			final Vector choices=new Vector();

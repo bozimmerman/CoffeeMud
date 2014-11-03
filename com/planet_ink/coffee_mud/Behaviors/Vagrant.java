@@ -72,7 +72,8 @@ public class Vagrant extends StdBehavior
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Tickable.TICKID_MOB) return true;
+		if(tickID!=Tickable.TICKID_MOB)
+			return true;
 		final MOB mob=(MOB)ticking;
 		if((wakeForTicks<=0)&&(sleepForTicks<=0))
 		{

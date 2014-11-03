@@ -99,7 +99,8 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 	public Item findItem(String itemID)
 	{
 		Item item=(Item)CMLib.english().fetchEnvironmental(contents,itemID,true);
-		if(item==null) item=(Item)CMLib.english().fetchEnvironmental(contents,itemID,false);
+		if(item==null)
+			item=(Item)CMLib.english().fetchEnvironmental(contents,itemID,false);
 		return item;
 	}
 	@Override public Enumeration<Item> items() { return new IteratorEnumeration<Item>(contents.iterator()); }
@@ -108,7 +109,8 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 	public Item findItem(Item goodLocation, String itemID)
 	{
 		Item item=CMLib.english().fetchAvailableItem(contents,itemID,goodLocation,Wearable.FILTER_ANY,true);
-		if(item==null) item=CMLib.english().fetchAvailableItem(contents,itemID,goodLocation,Wearable.FILTER_ANY,false);
+		if(item==null)
+			item=CMLib.english().fetchAvailableItem(contents,itemID,goodLocation,Wearable.FILTER_ANY,false);
 		return item;
 	}
 
@@ -160,7 +162,8 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 			for(int i=numItems()-1;i>=0;i--)
 			{
 				final Item I=getItem(i);
-				if(I!=null) I.destroy();
+				if(I!=null)
+					I.destroy();
 			}
 		innerContents.clear();
 		contents.clear();
@@ -221,7 +224,8 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 	@Override
 	public Item getRandomItem()
 	{
-		if(numItems()==0) return null;
+		if(numItems()==0)
+			return null;
 		return getItem(CMLib.dice().roll(1,numItems(),-1));
 	}
 }

@@ -142,7 +142,8 @@ public class Fighter_WeaponSharpening extends FighterSkill
 			return false;
 		}
 		final Item weapon=super.getTarget(mob,null,givenTarget,null,commands,Wearable.FILTER_ANY);
-		if(weapon==null) return false;
+		if(weapon==null)
+			return false;
 		if(!(weapon instanceof Weapon))
 		{
 			mob.tell(mob,weapon,null,L("<T-NAME> is not a weapon."));

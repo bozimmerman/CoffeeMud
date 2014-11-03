@@ -82,7 +82,8 @@ public class Thief_Hideout extends ThiefSkill
 				mobs.add(m.nextElement());
 			for(final MOB mob : mobs)
 			{
-				if(mob==null) break;
+				if(mob==null)
+					break;
 				mob.tell(L("You slip back onto the streets."));
 
 				final CMMsg enterMsg=CMClass.getMsg(mob,previousLocation,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> walk(s) in out of nowhere."));

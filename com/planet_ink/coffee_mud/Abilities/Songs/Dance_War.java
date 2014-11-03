@@ -58,7 +58,8 @@ public class Dance_War extends Dance
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		final int bonus=adjustedLevel(invoker(),0);
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(bonus*2));
 		affectableStats.setArmor(affectableStats.armor()-(bonus*2));
@@ -68,7 +69,8 @@ public class Dance_War extends Dance
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(invoker==null) return;
+		if(invoker==null)
+			return;
 		for(final int i : CharStats.CODES.BASECODES())
 			affectableStats.setStat(i,affectableStats.getStat(i)+2);
 	}

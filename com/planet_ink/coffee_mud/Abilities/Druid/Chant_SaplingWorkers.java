@@ -92,7 +92,8 @@ public class Chant_SaplingWorkers extends Chant
 		{
 			if(mob.location()!=null)
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> grow(s) still and tree-like."));
-			if(mob.amDead()) mob.setLocation(null);
+			if(mob.amDead())
+				mob.setLocation(null);
 			mob.destroy();
 		}
 	}
@@ -107,7 +108,8 @@ public class Chant_SaplingWorkers extends Chant
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 		{
 			unInvoke();
-			if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
+			if(msg.source().playerStats()!=null)
+				msg.source().playerStats().setLastUpdated(0);
 		}
 	}
 
@@ -189,7 +191,8 @@ public class Chant_SaplingWorkers extends Chant
 	{
 		final MOB newMOB=CMClass.getMOB("GenMOB");
 		int level=adjustedLevel(caster,0)-6;
-		if(level<1) level=1;
+		if(level<1)
+			level=1;
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("TreeGolem"));
 		final String resourceName=RawMaterial.CODES.NAME(material).toLowerCase();
@@ -258,7 +261,8 @@ public class Chant_SaplingWorkers extends Chant
 		newMOB.setAttribute(MOB.Attrib.AUTOASSIST,true);
 		newMOB.setStartRoom(null);
 		newMOB.location().show(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> start(s) looking around!"));
-		if((start)&&(A!=null)) A.invoke(newMOB,null,false,0);
+		if((start)&&(A!=null))
+			A.invoke(newMOB,null,false,0);
 		return(newMOB);
 	}
 }

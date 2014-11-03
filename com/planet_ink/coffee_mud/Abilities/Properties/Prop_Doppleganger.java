@@ -94,8 +94,10 @@ public class Prop_Doppleganger extends Property
 			lastOwner=I.owner();
 			lastLevel=lastOwner.phyStats().level();
 			int level=(int)Math.round(CMath.mul(((MOB)lastOwner).phyStats().level(),levelPct))+levelAdd;
-			if(level<minLevel) level=minLevel;
-			if(level>maxLevel) level=maxLevel;
+			if(level<minLevel)
+				level=minLevel;
+			if(level>maxLevel)
+				level=maxLevel;
 			I.basePhyStats().setLevel(level);
 			I.phyStats().setLevel(level);
 			int oldMaterial=I.material();
@@ -104,21 +106,26 @@ public class Prop_Doppleganger extends Property
 			CMLib.itemBuilder().balanceItemByLevel(I);
 			I.setMaterial(oldMaterial);
 			level=((MOB)lastOwner).phyStats().level();
-			if(level<minLevel) level=minLevel;
-			if(level>maxLevel) level=maxLevel;
+			if(level<minLevel)
+				level=minLevel;
+			if(level>maxLevel)
+				level=maxLevel;
 			I.basePhyStats().setLevel(level);
 			I.phyStats().setLevel(level);
 			lastOwner.recoverPhyStats();
 			final Room R=((MOB)lastOwner).location();
-			if(R!=null) R.recoverRoomStats();
+			if(R!=null)
+				R.recoverRoomStats();
 		}
 		super.executeMsg(myHost,msg);
 	}
 
 	public boolean qualifies(MOB mob, Room R)
 	{
-		if((mob==affected)||(mob==null)) return false;
-		if(mob.fetchEffect(ID())!=null) return false;
+		if((mob==affected)||(mob==null))
+			return false;
+		if(mob.fetchEffect(ID())!=null)
+			return false;
 		if(mob.isMonster())
 		{
 			if(matchPlayersFollowersOnly)
@@ -181,8 +188,10 @@ public class Prop_Doppleganger extends Property
 				if(num>0)
 				{
 					int level=(int)Math.round(CMath.mul(CMath.div(total,num),levelPct))+levelAdd;
-					if(level<minLevel) level=minLevel;
-					if(level>maxLevel) level=maxLevel;
+					if(level<minLevel)
+						level=minLevel;
+					if(level>maxLevel)
+						level=maxLevel;
 					if(level!=mob.basePhyStats().level())
 					{
 						mob.basePhyStats().setLevel(level);

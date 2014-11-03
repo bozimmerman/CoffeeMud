@@ -124,7 +124,8 @@ public class Spell_Scatter extends Spell
 				mob.tell(L("You don't seem to be carrying that."));
 		}
 
-		if(targets.size()==0) return false;
+		if(targets.size()==0)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

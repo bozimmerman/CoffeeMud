@@ -69,7 +69,8 @@ public class Chant_SensePlants extends Chant
 	}
 	public String itsHere(MOB mob, Room R)
 	{
-		if(R==null) return "";
+		if(R==null)
+			return "";
 		if((okMaterials()!=null)&&(okMaterials().length>0))
 			for(int m=0;m<okMaterials().length;m++)
 				if((R.myResource()&RawMaterial.MATERIAL_MASK)==okMaterials()[m])

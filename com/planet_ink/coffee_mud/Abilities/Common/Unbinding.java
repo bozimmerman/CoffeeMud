@@ -128,7 +128,8 @@ public class Unbinding extends CommonSkill
 		if(super.checkStop(mob, commands))
 			return true;
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if((!auto)&&(target==mob))
 		{
 			mob.tell(L("You can't unbind yourself!"));
@@ -153,7 +154,8 @@ public class Unbinding extends CommonSkill
 			return false;
 
 		int duration=CMLib.ableMapper().lowestQualifyingLevel(A.ID())-(CMLib.ableMapper().qualifyingLevel(mob,A)+(2*getXLEVELLevel(mob)));
-		if(duration<5) duration=4;
+		if(duration<5)
+			duration=4;
 		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,L("<S-NAME> begin(s) to unbind <T-NAMESELF>."));
 		if(mob.location().okMessage(mob,msg))
 		{

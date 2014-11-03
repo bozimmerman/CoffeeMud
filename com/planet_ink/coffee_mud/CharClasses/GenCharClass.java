@@ -193,7 +193,8 @@ public class GenCharClass extends StdCharClass
 			str.append(".  ");
 		}
 
-		if(str.length()==0) str.append(L("No limitations."));
+		if(str.length()==0)
+			str.append(L("No limitations."));
 		return str.toString().trim();
 	}
 
@@ -244,8 +245,10 @@ public class GenCharClass extends StdCharClass
 
 	protected String getCharClassLocatorID(CharClass C)
 	{
-		if(C==null) return "";
-		if(C.isGeneric()) return C.ID();
+		if(C==null)
+			return "";
+		if(C.isGeneric())
+			return C.ID();
 		if(C==CMClass.getCharClass(C.ID()))
 			return C.ID();
 		return C.getClass().getName();
@@ -367,19 +370,24 @@ public class GenCharClass extends StdCharClass
 		}
 
 		str.append(CMLib.xml().convertXMLtoTag("HELP",CMLib.xml().parseOutAngleBrackets(helpEntry)));
-		if(adjPStats==null) str.append("<ESTATS/>");
+		if(adjPStats==null)
+			str.append("<ESTATS/>");
 		else
 			str.append(CMLib.xml().convertXMLtoTag("ESTATS",CMLib.coffeeMaker().getPhyStatsStr(adjPStats)));
-		if(adjStats==null) str.append("<ASTATS/>");
+		if(adjStats==null)
+			str.append("<ASTATS/>");
 		else
 			str.append(CMLib.xml().convertXMLtoTag("ASTATS",CMLib.coffeeMaker().getCharStatsStr(adjStats)));
-		if(setStats==null) str.append("<CSTATS/>");
+		if(setStats==null)
+			str.append("<CSTATS/>");
 		else
 			str.append(CMLib.xml().convertXMLtoTag("CSTATS",CMLib.coffeeMaker().getCharStatsStr(setStats)));
-		if(adjState==null) str.append("<ASTATE/>");
+		if(adjState==null)
+			str.append("<ASTATE/>");
 		else
 			str.append(CMLib.xml().convertXMLtoTag("ASTATE",CMLib.coffeeMaker().getCharStateStr(adjState)));
-		if(startAdjState==null) str.append("<STARTASTATE/>");
+		if(startAdjState==null)
+			str.append("<STARTASTATE/>");
 		else
 			str.append(CMLib.xml().convertXMLtoTag("STARTASTATE",CMLib.coffeeMaker().getCharStateStr(startAdjState)));
 		str.append(CMLib.xml().convertXMLtoTag("DISFLAGS",""+disableFlags));
@@ -431,7 +439,8 @@ public class GenCharClass extends StdCharClass
 			}
 			str.append("</NOWMATS>");
 		}
-		if((outfit(null)==null)||(outfit(null).size()==0))	str.append("<OUTFIT/>");
+		if((outfit(null)==null)||(outfit(null).size()==0))
+			str.append("<OUTFIT/>");
 		else
 		{
 			str.append("<OUTFIT>");
@@ -465,7 +474,8 @@ public class GenCharClass extends StdCharClass
 	@Override
 	public void setClassParms(String parms)
 	{
-		if(parms.trim().length()==0) return;
+		if(parms.trim().length()==0)
+			return;
 		final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(parms);
 		if(xml==null)
 		{
@@ -475,7 +485,8 @@ public class GenCharClass extends StdCharClass
 		final List<XMLLibrary.XMLpiece> classData=CMLib.xml().getContentsFromPieces(xml,"CCLASS");
 		if(classData==null){	Log.errOut("GenCharClass","Unable to get CCLASS data."); return;}
 		final String classID=CMLib.xml().getValFromPieces(classData,"ID");
-		if(classID.length()==0) return;
+		if(classID.length()==0)
+			return;
 		ID=classID;
 		final String singleName=CMLib.xml().getValFromPieces(classData,"NAME");
 		if((singleName!=null)&&(singleName.length()>0))
@@ -518,7 +529,8 @@ public class GenCharClass extends StdCharClass
 		if((hitPointsFormula==null)||(hitPointsFormula.length()==0))
 		{
 			int hpDivisor=CMLib.xml().getIntFromPieces(classData,"HPDIV");
-			if(hpDivisor==0) hpDivisor=3;
+			if(hpDivisor==0)
+				hpDivisor=3;
 			final int hpDice=CMLib.xml().getIntFromPieces(classData,"HPDICE");
 			final int hpDie=CMLib.xml().getIntFromPieces(classData,"HPDIE");
 			hitPointsFormula="((@x6<@x7)/"+hpDivisor+")+("+hpDice+"*(1?"+hpDie+"))";
@@ -528,7 +540,8 @@ public class GenCharClass extends StdCharClass
 		if((manaFormula==null)||(manaFormula.length()==0))
 		{
 			int manaDivisor=CMLib.xml().getIntFromPieces(classData,"MANADIV");
-			if(manaDivisor==0) manaDivisor=3;
+			if(manaDivisor==0)
+				manaDivisor=3;
 			final int manaDice=CMLib.xml().getIntFromPieces(classData,"MANADICE");
 			final int manaDie=CMLib.xml().getIntFromPieces(classData,"MANADIE");
 			manaFormula="((@x4<@x5)/"+manaDivisor+")+("+manaDice+"*(1?"+manaDie+"))";
@@ -598,7 +611,8 @@ public class GenCharClass extends StdCharClass
 					continue;
 				// I hate backwards compatibility.
 				String maxProff=CMLib.xml().getValFromPieces(iblk.contents,"CAMAXP");
-				if((maxProff==null)||(maxProff.trim().length()==0)) maxProff="100";
+				if((maxProff==null)||(maxProff.trim().length()==0))
+					maxProff="100";
 				CMLib.ableMapper().addCharAbilityMapping(ID(),
 									 CMLib.xml().getIntFromPieces(iblk.contents,"CALEVEL"),
 									 CMLib.xml().getValFromPieces(iblk.contents,"CACLASS"),
@@ -688,7 +702,8 @@ public class GenCharClass extends StdCharClass
 
 		requiredArmorSourceMinor=CMLib.xml().getIntFromPieces(classData,"ARMORMINOR");
 		startingMoney=CMLib.xml().getValFromPieces(classData,"MONEY");
-		if(startingMoney==null) startingMoney="";
+		if(startingMoney==null)
+			startingMoney="";
 		setStat("STATCLASS",CMLib.xml().getValFromPieces(classData,"STATCLASS"));
 		setStat("EVENTCLASS",CMLib.xml().getValFromPieces(classData,"EVENTCLASS"));
 		xtraValues=CMProps.getExtraStatCodesHolder(this);
@@ -738,7 +753,8 @@ public class GenCharClass extends StdCharClass
 	{
 		int num=0;
 		int numDex=code.length();
-		while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1)))) numDex--;
+		while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1))))
+			numDex--;
 		if(numDex<code.length())
 		{
 			num=CMath.s_int(code.substring(numDex));
@@ -827,7 +843,8 @@ public class GenCharClass extends StdCharClass
 	{
 		int num=0;
 		int numDex=code.length();
-		while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1)))) numDex--;
+		while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1))))
+			numDex--;
 		if(numDex<code.length())
 		{
 			num=CMath.s_int(code.substring(numDex));
@@ -948,7 +965,8 @@ public class GenCharClass extends StdCharClass
 				 break;
 		case 43:{
 				num=CMath.s_int(val);
-				if(num<0) num=0;
+				if(num<0)
+					num=0;
 				final List<String>[] newGroups=new Vector[num];
 				final Integer[] newLevels=new Integer[num];
 				for(int i=0;i<securityGroups.length;i++)
@@ -1053,7 +1071,8 @@ public class GenCharClass extends StdCharClass
 	@Override
 	public String[] getStatCodes()
 	{
-		if(codes!=null) return codes;
+		if(codes!=null)
+			return codes;
 		codes=CMProps.getStatCodesList(CODES,this);
 		return codes;
 	}
@@ -1063,13 +1082,15 @@ public class GenCharClass extends StdCharClass
 		while((code.length()>0)&&(Character.isDigit(code.charAt(code.length()-1))))
 			code=code.substring(0,code.length()-1);
 		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
+			if(code.equalsIgnoreCase(CODES[i]))
+				return i;
 		return -1;
 	}
 	@Override
 	public boolean sameAs(CharClass E)
 	{
-		if(!(E instanceof GenCharClass)) return false;
+		if(!(E instanceof GenCharClass))
+			return false;
 		if(E.classParms().equals(classParms()))
 			return true;
 		return false;

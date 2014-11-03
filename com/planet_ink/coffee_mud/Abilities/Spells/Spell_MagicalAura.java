@@ -86,7 +86,8 @@ public class Spell_MagicalAura extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(target.fetchEffect(this.ID())!=null)
 		{

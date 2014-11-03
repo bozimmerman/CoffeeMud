@@ -25,7 +25,8 @@ public class CMFactoryThread extends Thread
 	public CMFactoryThread(ThreadGroup group, Runnable runnable, String name)
 	{
 		super(group,runnable,name);
-		if(group==null) throw new java.lang.IllegalArgumentException();
+		if(group==null)
+			throw new java.lang.IllegalArgumentException();
 		//this.runnable=runnable; the factory does not send a REAL runnable
 	}
 

@@ -83,7 +83,8 @@ public class Spell_Shove extends Spell
 		}
 
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

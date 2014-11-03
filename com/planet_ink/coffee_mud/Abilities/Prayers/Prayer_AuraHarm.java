@@ -77,7 +77,8 @@ public class Prayer_AuraHarm extends Prayer
 		if((affected==null)||(!(affected instanceof Room)))
 			return super.tick(ticking,tickID);
 
-		if((--damageTickDown)>=0) return super.tick(ticking,tickID);
+		if((--damageTickDown)>=0)
+			return super.tick(ticking,tickID);
 		damageTickDown=4;
 
 		HashSet H=null;
@@ -130,7 +131,8 @@ public class Prayer_AuraHarm extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Room target=mob.location();
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell(L("The aura of harm is already here."));

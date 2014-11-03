@@ -52,7 +52,8 @@ public class Quit extends StdCommand
 		final Room room=mob.location();
 		if((room==null)||(room.okMessage(mob, msg))||force)
 		{
-			if(room!=null) room.send(mob, msg);
+			if(room!=null)
+				room.send(mob, msg);
 			mob.dispossess(true);
 		}
 	}

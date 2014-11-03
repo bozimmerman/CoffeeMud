@@ -409,7 +409,8 @@ public class Dragon extends StdMOB
 					int damage=((short)Math.round(CMath.div(CMath.mul(Math.random(),7*DragonAge()),2.0)));
 					if(Message.value()<=0)
 						damage=((short)Math.round(Math.random()*7)*DragonAge());
-					if(dragonbreath==null) dragonbreath=CMClass.getAbility("Dragonbreath");
+					if(dragonbreath==null)
+						dragonbreath=CMClass.getAbility("Dragonbreath");
 					CMLib.combat().postDamage(this,target,dragonbreath,damage,CMMsg.MASK_ALWAYS|AffectCode,WeaponType,"The blast <DAMAGE> <T-NAME>.");
 				}
 			}
@@ -419,13 +420,15 @@ public class Dragon extends StdMOB
 
 	protected boolean trySwallowWhole()
 	{
-		if(Stomach==null) return true;
+		if(Stomach==null)
+			return true;
 		if (CMLib.flags().aliveAwakeMobileUnbound(this,true)
 			&&(rangeToTarget()==0)
 			&&(CMLib.flags().canHear(this)||CMLib.flags().canSee(this)||CMLib.flags().canSmell(this)))
 		{
 			final MOB TastyMorsel = getVictim();
-			if(TastyMorsel==null) return true;
+			if(TastyMorsel==null)
+				return true;
 			if (TastyMorsel.phyStats().weight()<1500)
 			{
 				// ===== if it is less than three so roll for it
@@ -503,7 +506,8 @@ public class Dragon extends StdMOB
 
 	protected boolean digestTastyMorsels()
 	{
-		if(Stomach==null) return true;
+		if(Stomach==null)
+			return true;
 		// ===== loop through all inhabitants of the stomach
 		final int morselCount = Stomach.numInhabitants();
 		for (int x=0;x<morselCount;x++)
@@ -519,8 +523,10 @@ public class Dragon extends StdMOB
 										   L("<S-NAME> digest(s) <T-NAMESELF>!!"));
 				Stomach.send(this,DigestMsg);
 				int damage=((int)Math.round(CMath.div(TastyMorsel.curState().getHitPoints(),2)));
-				if(damage<(TastyMorsel.phyStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()+1;
-				if(DigestMsg.value()!=0) damage=damage/2;
+				if(damage<(TastyMorsel.phyStats().level()+6))
+					damage=TastyMorsel.curState().getHitPoints()+1;
+				if(DigestMsg.value()!=0)
+					damage=damage/2;
 				CMLib.combat().postDamage(this,TastyMorsel,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,"The stomach acid <DAMAGE> <T-NAME>!");
 			}
 		}
@@ -533,7 +539,8 @@ public class Dragon extends StdMOB
 		// ===== move all inhabitants to the dragons location
 		// ===== loop through all inhabitants of the stomach
 		Room room = location();
-		if(room == null) room = CMLib.map().getRandomRoom();
+		if(room == null)
+			room = CMLib.map().getRandomRoom();
 		if((Stomach!=null)&&(room != null))
 		{
 			final int morselCount = Stomach.numInhabitants();

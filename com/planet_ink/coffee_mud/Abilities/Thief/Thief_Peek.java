@@ -60,7 +60,8 @@ public class Thief_Peek extends ThiefSkill
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(target==mob)
 		{
@@ -79,8 +80,10 @@ public class Thief_Peek extends ThiefSkill
 							-(getX1Level(mob)*5);
 		if(!CMLib.flags().canBeSeenBy(mob,target))
 			discoverChance-=50;
-		if(discoverChance>95) discoverChance=95;
-		if(discoverChance<5) discoverChance=5;
+		if(discoverChance>95)
+			discoverChance=95;
+		if(discoverChance<5)
+			discoverChance=5;
 
 
 		if(!success)

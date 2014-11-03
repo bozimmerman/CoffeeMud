@@ -151,7 +151,8 @@ public class Chant_PlantMaze extends Chant
 				((GridLocale)newRoom).setXGridSize(10+super.getX1Level(invoker())+super.getXLEVELLevel(invoker()));
 				((GridLocale)newRoom).setYGridSize(10+super.getX1Level(invoker())+super.getXLEVELLevel(invoker()));
 				String s=CMParms.parse(thePlants.name()).lastElement().toLowerCase();
-				if(!s.endsWith("s"))s=s+"s";
+				if(!s.endsWith("s"))
+					s=s+"s";
 				final String nos=s.substring(0,s.length()-1).toLowerCase();
 				newRoom.setDisplayText(L("@x1 Maze",CMStrings.capitalizeAndLower(nos)));
 				newRoom.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));
@@ -200,7 +201,8 @@ public class Chant_PlantMaze extends Chant
 				for(int m=0;m<everyone.size();m++)
 				{
 					final MOB follower=(MOB)everyone.elementAt(m);
-					if(follower==null) continue;
+					if(follower==null)
+						continue;
 					final Room newerRoom=((GridLocale)newRoom).getRandomGridChild();
 					final CMMsg enterMsg=CMClass.getMsg(follower,newerRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> appears out of @x1.",thePlants.name()));
 					final CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,verbalCastCode(mob,oldRoom,auto),L("<S-NAME> disappear(s) into @x1.",thePlants.name()));

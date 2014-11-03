@@ -76,8 +76,10 @@ public class Disease_Obesity extends Disease
 	{
 		if((fatAmount<0)&&(CMath.isNumber(text())))
 			fatAmount=CMath.s_int(text());
-		if(fatAmount<0) fatAmount=0;
-		if(fatAmount>=0) return fatAmount;
+		if(fatAmount<0)
+			fatAmount=0;
+		if(fatAmount>=0)
+			return fatAmount;
 		return 1;
 	}
 
@@ -113,7 +115,8 @@ public class Disease_Obesity extends Disease
 		super.affectCharState(affected,affectableState);
 		final int oldMovement=affectableState.getMovement();
 		affectableState.setMovement(affectableState.getMovement()-(int)Math.round(CMath.mul(affectableState.getMovement(),CMath.div(CMath.s_int(text()),100.0))));
-		if((affectableState.getMovement()<20)&&(oldMovement>20)) affectableState.setMovement(20);
+		if((affectableState.getMovement()<20)&&(oldMovement>20))
+			affectableState.setMovement(20);
 	}
 
 	@Override
@@ -199,12 +202,14 @@ public class Disease_Obesity extends Disease
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(super.invoke(mob,commands,givenTarget,auto,asLevel))
 		{
 			final Ability A=target.fetchEffect(ID());
-			if(A!=null) A.setMiscText(""+CMLib.dice().roll(1,5,0));
+			if(A!=null)
+				A.setMiscText(""+CMLib.dice().roll(1,5,0));
 			return true;
 		}
 		return false;

@@ -71,19 +71,27 @@ public class StdMaze extends StdGrid
 
 	protected boolean goodDir(int x, int y, int dirCode)
 	{
-		if(dirCode==Directions.UP) return false;
-		if(dirCode==Directions.DOWN) return false;
-		if(dirCode>=Directions.GATE) return false;
-		if((x==0)&&(dirCode==Directions.WEST)) return false;
-		if((y==0)&&(dirCode==Directions.NORTH)) return false;
-		if((x>=(subMap.length-1))&&(dirCode==Directions.EAST)) return false;
-		if((y>=(subMap[0].length-1))&&(dirCode==Directions.SOUTH)) return false;
+		if(dirCode==Directions.UP)
+			return false;
+		if(dirCode==Directions.DOWN)
+			return false;
+		if(dirCode>=Directions.GATE)
+			return false;
+		if((x==0)&&(dirCode==Directions.WEST))
+			return false;
+		if((y==0)&&(dirCode==Directions.NORTH))
+			return false;
+		if((x>=(subMap.length-1))&&(dirCode==Directions.EAST))
+			return false;
+		if((y>=(subMap[0].length-1))&&(dirCode==Directions.SOUTH))
+			return false;
 		return true;
 	}
 
 	protected Room roomDir(int x, int y, int dirCode)
 	{
-		if(!goodDir(x,y,dirCode)) return null;
+		if(!goodDir(x,y,dirCode))
+			return null;
 		return subMap[getX(x,dirCode)][getY(y,dirCode)];
 	}
 
@@ -113,7 +121,8 @@ public class StdMaze extends StdGrid
 	protected void mazify(Hashtable visited, int x, int y)
 	{
 
-		if(visited.get(subMap[x][y])!=null) return;
+		if(visited.get(subMap[x][y])!=null)
+			return;
 		final Room room=subMap[x][y];
 		visited.put(room,room);
 		final Exit ox=CMClass.getExit("Open");
@@ -124,7 +133,8 @@ public class StdMaze extends StdGrid
 			okRoom=false;
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
-				if(d==Directions.GATE) continue;
+				if(d==Directions.GATE)
+					continue;
 				final Room possRoom=roomDir(x,y,d);
 				if(possRoom!=null)
 					if(visited.get(possRoom)==null)

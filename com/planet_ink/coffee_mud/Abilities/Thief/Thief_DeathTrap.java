@@ -70,7 +70,8 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
-		if(P==null) return null;
+		if(P==null)
+			return null;
 		final Trap T=(Trap)copyOf();
 		T.setInvoker(mob);
 		P.addEffect(T);
@@ -91,7 +92,8 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		if(super.miscText.length()==0)
 			return super.invoker();
 		MOB M=super.invoker();
-		if((M!=null)&&(M.Name().equals(miscText))) return M;
+		if((M!=null)&&(M.Name().equals(miscText)))
+			return M;
 		M=CMLib.players().getLoadPlayer(miscText);
 		if(M==null)
 			miscText="";
@@ -186,7 +188,8 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 				mob.tell(L("You have set the trap."));
 				setTrap(mob,trapThis,mob.charStats().getClassLevel(mob.charStats().getCurrentClass()),(CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().lowestQualifyingLevel(ID()))+1,false);
 				final Thief_DeathTrap T=(Thief_DeathTrap)trapThis.fetchEffect(ID());
-				if(T!=null) T.setMiscText(mob.Name());
+				if(T!=null)
+					T.setMiscText(mob.Name());
 			}
 			else
 			{

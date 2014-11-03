@@ -64,7 +64,8 @@ public class Chant_Chlorophyll extends Chant
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
 		if(!(affected instanceof MOB))
 		{
 			unInvoke();
@@ -102,7 +103,8 @@ public class Chant_Chlorophyll extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=super.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

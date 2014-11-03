@@ -133,7 +133,8 @@ public class Dance extends StdAbility
 		||(!CMLib.flags().canBeSeenBy(invoker,mob)))
 			return undanceMe(mob,null);
 
-		if(invokerManaCost<0) invokerManaCost=usageCost(invoker(),false)[1];
+		if(invokerManaCost<0)
+			invokerManaCost=usageCost(invoker(),false)[1];
 		if(!mob.curState().adjMovement(-(invokerManaCost/15),mob.maxState()))
 		{
 			mob.tell(L("The dancing exhausts you."));
@@ -170,7 +171,8 @@ public class Dance extends StdAbility
 
 	protected boolean undanceMe(MOB mob, MOB invoker)
 	{
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		final Ability A=mob.fetchEffect(ID());
 		if((A instanceof Dance)
 		&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
@@ -198,7 +200,8 @@ public class Dance extends StdAbility
 			return new Vector();
 		}
 		final int depth=super.getXMAXRANGELevel(invoker());
-		if(depth==0) return new XVector(invoker().location());
+		if(depth==0)
+			return new XVector(invoker().location());
 		final Vector rooms=new Vector();
 		// needs to be area-only, because of the aggro-tracking rule
 		TrackingLibrary.TrackingFlags flags;
@@ -214,7 +217,8 @@ public class Dance extends StdAbility
 
 	protected int getCorrectDirToOriginRoom(Room R, int v)
 	{
-		if(v<0) return -1;
+		if(v<0)
+			return -1;
 		int dir=-1;
 		Room R2=null;
 		Exit E2=null;
@@ -266,7 +270,8 @@ public class Dance extends StdAbility
 			R.delInhabitant(mob);
 			mob.setLocation(originRoom);
 		}
-		if(h==null) return null;
+		if(h==null)
+			return null;
 		if(R==originRoom)
 		{
 			if(!h.contains(mob))
@@ -355,7 +360,8 @@ public class Dance extends StdAbility
 				if(R.okMessage(mob,msg))
 				{
 					final Set<MOB> h=this.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
-					if(h==null) continue;
+					if(h==null)
+						continue;
 					invoker=mob;
 					final Dance newOne=(Dance)this.copyOf();
 					newOne.invoker=mob;
@@ -370,7 +376,8 @@ public class Dance extends StdAbility
 						int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
 						if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
 							affectType=affectType|CMMsg.MASK_MALICIOUS;
-						if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
+						if(auto)
+							affectType=affectType|CMMsg.MASK_ALWAYS;
 
 						if((R2!=null)&&(CMLib.flags().canBeSeenBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 						{

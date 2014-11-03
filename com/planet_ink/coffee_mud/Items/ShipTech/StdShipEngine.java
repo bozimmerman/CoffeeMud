@@ -58,7 +58,8 @@ public class StdShipEngine extends StdCompGenerator implements ShipComponent.Shi
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof StdShipEngine)) return false;
+		if(!(E instanceof StdShipEngine))
+			return false;
 		return super.sameAs(E);
 	}
 	@Override public double getFuelEfficiency() { return fuelEfficiency; }

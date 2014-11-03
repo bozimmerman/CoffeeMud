@@ -49,12 +49,14 @@ public class PlayerNext extends StdWebMacro
 		final String last=httpReq.getUrlParameter("PLAYER");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("PLAYER");
+			if(last!=null)
+				httpReq.removeUrlParameter("PLAYER");
 			return "";
 		}
 		String lastID="";
 		String sort=httpReq.getUrlParameter("SORTBY");
-		if(sort==null) sort="";
+		if(sort==null)
+			sort="";
 		final Enumeration pe=CMLib.players().thinPlayers(sort,httpReq.getRequestObjects());
 		for(;pe.hasMoreElements();)
 		{

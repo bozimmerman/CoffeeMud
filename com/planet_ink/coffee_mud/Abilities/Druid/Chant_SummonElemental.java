@@ -63,7 +63,8 @@ public class Chant_SummonElemental extends Chant
 				||(mob.location()!=invoker.location())))
 				{
 					mob.delEffect(this);
-					if(mob.amDead()) mob.setLocation(null);
+					if(mob.amDead())
+						mob.setLocation(null);
 					mob.destroy();
 				}
 			}
@@ -81,7 +82,8 @@ public class Chant_SummonElemental extends Chant
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 		{
 			unInvoke();
-			if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
+			if(msg.source().playerStats()!=null)
+				msg.source().playerStats().setLastUpdated(0);
 		}
 	}
 
@@ -122,7 +124,8 @@ public class Chant_SummonElemental extends Chant
 				mob.location().send(mob,msg);
 				final MOB target = determineMonster(mob, mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 				target.addNonUninvokableEffect((Ability)this.copyOf());
-				if(target.isInCombat()) target.makePeace();
+				if(target.isInCombat())
+					target.makePeace();
 				CMLib.commands().postFollow(target,mob,true);
 				if(target.amFollowing()!=mob)
 					mob.tell(L("@x1 seems unwilling to follow you.",target.name(mob)));

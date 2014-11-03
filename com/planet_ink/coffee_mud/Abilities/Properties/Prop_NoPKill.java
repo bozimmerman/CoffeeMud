@@ -57,7 +57,8 @@ public class Prop_NoPKill extends Property
 				return false;
 			}
 			int levelDiff=msg.source().phyStats().level()-((MOB)msg.target()).phyStats().level();
-			if(levelDiff<0) levelDiff=levelDiff*-1;
+			if(levelDiff<0)
+				levelDiff=levelDiff*-1;
 			if(levelDiff>CMath.s_int(text()))
 			{
 				msg.source().tell(L("Player killing is forbidden for characters whose level difference is greater than @x1.",""+CMath.s_int(text())));

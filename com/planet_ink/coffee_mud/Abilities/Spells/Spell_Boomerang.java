@@ -54,7 +54,8 @@ public class Spell_Boomerang extends Spell
 		&&(msg.sourceMinor()==CMMsg.TYP_SELL))
 		{
 			unInvoke();
-			if(affected!=null)	affected.delEffect(this);
+			if(affected!=null)
+				affected.delEffect(this);
 		}
 		return true;
 	}
@@ -151,7 +152,8 @@ public class Spell_Boomerang extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

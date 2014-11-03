@@ -51,7 +51,8 @@ public class Bomb_Smoke extends StdBomb
 	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,P)) return false;
+		if(!super.canSetTrapOn(mob,P))
+			return false;
 		if((!(P instanceof Item))
 		||((((Item)P).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN))
 		{
@@ -77,7 +78,8 @@ public class Bomb_Smoke extends StdBomb
 			{
 				super.spring(target);
 				final Ability A=CMClass.getAbility("Spell_Blindness");
-				if(A!=null) A.invoke(target,target,true,0);
+				if(A!=null)
+					A.invoke(target,target,true,0);
 			}
 		}
 	}

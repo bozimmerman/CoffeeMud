@@ -335,8 +335,10 @@ public class MovingRoom extends ActiveTicker
 							removeStubs(subwayRoom,currentStopRoom);
 							final String s1=(fixOutputString(theDescriptions.elementAt(CODE1_REVERSEINSIDECLOSED).toString(),nextStopRoom));
 							final String s2=(fixOutputString(theDescriptions.elementAt(CODE1_REVERSEOUTSIDECLOSED).toString(),nextStopRoom));
-							if(!stubs.contains(s1)) stubs.addElement(s1);
-							if(!stubs.contains(s2)) stubs.addElement(s2);
+							if(!stubs.contains(s1))
+								stubs.addElement(s1);
+							if(!stubs.contains(s2))
+								stubs.addElement(s2);
 							subwayRoom.setDescription(subwayRoom.description()+"  "+s1);
 							currentStopRoom.setDescription(currentStopRoom.description()+"  "+s2);
 						}
@@ -378,8 +380,10 @@ public class MovingRoom extends ActiveTicker
 							removeStubs(subwayRoom,currentStopRoom);
 							final String s1=(fixOutputString(theDescriptions.elementAt(CODE1_NORMALINSIDECLOSED).toString(),nextStopRoom));
 							final String s2=(fixOutputString(theDescriptions.elementAt(CODE1_NORMALOUTSIDECLOSED).toString(),nextStopRoom));
-							if(!stubs.contains(s1)) stubs.addElement(s1);
-							if(!stubs.contains(s2)) stubs.addElement(s2);
+							if(!stubs.contains(s1))
+								stubs.addElement(s1);
+							if(!stubs.contains(s2))
+								stubs.addElement(s2);
 							subwayRoom.setDescription(subwayRoom.description()+"  "+s1);
 							currentStopRoom.setDescription(currentStopRoom.description()+"  "+s2);
 						}
@@ -413,8 +417,10 @@ public class MovingRoom extends ActiveTicker
 							removeStubs(subwayRoom,nextStopRoom);
 							final String s1=(fixOutputString(theDescriptions.elementAt(CODE1_REVERSEINSIDEOPEN).toString(),nextStopRoom));
 							final String s2=(fixOutputString(theDescriptions.elementAt(CODE1_REVERSEOUTSIDEOPEN).toString(),nextStopRoom));
-							if(!stubs.contains(s1)) stubs.addElement(s1);
-							if(!stubs.contains(s2)) stubs.addElement(s2);
+							if(!stubs.contains(s1))
+								stubs.addElement(s1);
+							if(!stubs.contains(s2))
+								stubs.addElement(s2);
 							subwayRoom.setDescription(subwayRoom.description()+"  "+s1);
 							nextStopRoom.setDescription(nextStopRoom.description()+"  "+s2);
 						}
@@ -445,8 +451,10 @@ public class MovingRoom extends ActiveTicker
 							removeStubs(subwayRoom,nextStopRoom);
 							final String s1=(fixOutputString(theDescriptions.elementAt(CODE1_NORMALINSIDEOPEN).toString(),nextStopRoom));
 							final String s2=(fixOutputString(theDescriptions.elementAt(CODE1_NORMALOUTSIDEOPEN).toString(),nextStopRoom));
-							if(!stubs.contains(s1)) stubs.addElement(s1);
-							if(!stubs.contains(s2)) stubs.addElement(s2);
+							if(!stubs.contains(s1))
+								stubs.addElement(s1);
+							if(!stubs.contains(s2))
+								stubs.addElement(s2);
 							subwayRoom.setDescription(subwayRoom.description()+"  "+s1);
 							nextStopRoom.setDescription(nextStopRoom.description()+"  "+s2);
 						}

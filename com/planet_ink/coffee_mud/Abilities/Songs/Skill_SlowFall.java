@@ -50,7 +50,8 @@ public class Skill_SlowFall extends BardSkill
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(activated) affectableStats.setWeight(0);
+		if(activated)
+			affectableStats.setWeight(0);
 	}
 
 	@Override

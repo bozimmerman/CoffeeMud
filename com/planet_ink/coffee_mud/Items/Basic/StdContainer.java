@@ -377,11 +377,13 @@ public class StdContainer extends StdItem implements Container
 				}
 				break;
 			case CMMsg.TYP_CLOSE:
-				if((!hasALid)||(!isOpen)) return;
+				if((!hasALid)||(!isOpen))
+					return;
 				isOpen=false;
 				break;
 			case CMMsg.TYP_OPEN:
-				if((!hasALid)||(isOpen)||(isLocked)) return;
+				if((!hasALid)||(isOpen)||(isLocked))
+					return;
 				if((owner() instanceof Room)
 				&&(!CMLib.flags().isGettable(this))
 				&&(!CMLib.threads().isTicking(this,Tickable.TICKID_EXIT_REOPEN))
@@ -391,7 +393,8 @@ public class StdContainer extends StdItem implements Container
 				isOpen=true;
 				break;
 			case CMMsg.TYP_LOCK:
-				if((!hasALid)||(!hasALock)||(isLocked)) return;
+				if((!hasALid)||(!hasALock)||(isLocked))
+					return;
 				isOpen=false;
 				isLocked=true;
 				break;
@@ -439,7 +442,8 @@ public class StdContainer extends StdItem implements Container
 	public boolean canContain(Environmental E)
 	{
 		if (!(E instanceof Item)) return false;
-		if(containType==0) return true;
+		if(containType==0)
+			return true;
 		for(int i=0;i<Container.CONTAIN_DESCS.length;i++)
 			if(CMath.isSet((int)containType,i))
 				switch((int)CMath.pow(2,i))
@@ -553,7 +557,8 @@ public class StdContainer extends StdItem implements Container
 	public void setMiscText(String newMiscText)
 	{
 		miscText=newMiscText;
-		if(!isGeneric()) setKeyName(miscText);
+		if(!isGeneric())
+			setKeyName(miscText);
 	}
 	@Override
 	public String keyName()
@@ -585,7 +590,8 @@ public class StdContainer extends StdItem implements Container
 			for(final Enumeration<Item> e = C.items(); e.hasMoreElements();)
 			{
 				I=e.nextElement();
-				if(I==null) continue;
+				if(I==null)
+					continue;
 				if(I.container()==this)
 					I.setContainer(null);
 			}
@@ -647,7 +653,8 @@ public class StdContainer extends StdItem implements Container
 			for(final Enumeration<Item> e = owner().items(); e.hasMoreElements();)
 			{
 				I=e.nextElement();
-				if(I==null) continue;
+				if(I==null)
+					continue;
 				if(isInside(I))
 					V.add(I);
 			}

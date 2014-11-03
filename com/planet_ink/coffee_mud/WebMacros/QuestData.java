@@ -42,7 +42,8 @@ public class QuestData extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("QUEST");
-		if(last==null) return "";
+		if(last==null)
+			return "";
 		if(last.length()>0)
 		{
 			Quest Q=CMLib.quests().fetchQuest(last);
@@ -53,7 +54,8 @@ public class QuestData extends StdWebMacro
 					if((""+CMLib.quests().fetchQuest(q)).equals(newLast))
 					{ Q=CMLib.quests().fetchQuest(q); break;}
 			}
-			if(Q==null) return "";
+			if(Q==null)
+				return "";
 			if(parms.containsKey("NAME"))
 				return clearWebMacros(Q.name());
 			if(parms.containsKey("ID"))

@@ -53,9 +53,12 @@ public class Thief_SenseLaw extends ThiefSkill
 
 	public Vector getLawMen(Area legalObject, Room room, LegalBehavior B)
 	{
-		if(room==null) return empty;
-		if(room.numInhabitants()==0) return empty;
-		if(B==null) return empty;
+		if(room==null)
+			return empty;
+		if(room.numInhabitants()==0)
+			return empty;
+		if(B==null)
+			return empty;
 		final Vector V=new Vector();
 		for(int m=0;m<room.numInhabitants();m++)
 		{

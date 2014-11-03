@@ -126,8 +126,10 @@ public class Thief_SlipItem extends ThiefSkill
 							+(getX1Level(mob)*5);
 		if(!CMLib.flags().canBeSeenBy(mob,target))
 			discoverChance+=50;
-		if(discoverChance>95) discoverChance=95;
-		if(discoverChance<5) discoverChance=5;
+		if(discoverChance>95)
+			discoverChance=95;
+		if(discoverChance<5)
+			discoverChance=5;
 
 		if(levelDiff>0)
 			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?5:15));

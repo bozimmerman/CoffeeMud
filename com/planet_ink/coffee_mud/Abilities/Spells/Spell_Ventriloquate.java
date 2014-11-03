@@ -58,7 +58,8 @@ public class Spell_Ventriloquate extends Spell
 			mob.tell(L("You don't see '@x1' here.",((String)commands.elementAt(0))));
 			return false;
 		}
-		if(target==mob) return false;
+		if(target==mob)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

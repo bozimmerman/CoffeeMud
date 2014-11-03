@@ -115,7 +115,8 @@ public class GateGuard extends StdBehavior
 
 	protected int numValidPlayers(MOB mob, Room room)
 	{
-		if(room==null) return 0;
+		if(room==null)
+			return 0;
 		int num=0;
 		for(int i=0;i<room.numInhabitants();i++)
 		{
@@ -161,16 +162,20 @@ public class GateGuard extends StdBehavior
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Tickable.TICKID_MOB) return true;
-		if(!canFreelyBehaveNormal(ticking)) return true;
+		if(tickID!=Tickable.TICKID_MOB)
+			return true;
+		if(!canFreelyBehaveNormal(ticking))
+			return true;
 		final MOB mob=(MOB)ticking;
 		final int dir=findGate(mob);
-		if(dir<0) return true;
+		if(dir<0)
+			return true;
 		final Exit e=mob.location().getExitInDir(dir);
 		int numPlayers=numValidPlayers(mob,mob.location());
 		if(noticeTock==0)
 		{
-			if(heardKnock) numPlayers++;
+			if(heardKnock)
+				numPlayers++;
 			if((!allnight)&&(mob.location().getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.NIGHT))
 			{
 				if((!e.isLocked())&&(e.hasALock()))
@@ -218,7 +223,8 @@ public class GateGuard extends StdBehavior
 		else
 		if(noticeTock<0)
 		{
-			if(heardKnock) numPlayers++;
+			if(heardKnock)
+				numPlayers++;
 			if(mob.location().getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.NIGHT)
 				noticeTock=5;
 			else

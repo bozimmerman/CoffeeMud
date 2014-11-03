@@ -46,7 +46,8 @@ public class Auction extends Channel implements Tickable
 		if(liveData.auctioningI!=null)
 		{
 			String bidWords=CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid);
-			if(bidWords.length()==0) bidWords="0";
+			if(bidWords.length()==0)
+				bidWords="0";
 			return "Up for live auction: "+liveData.auctioningI.name()+".  The current bid is "+bidWords+".";
 		}
 		return "";
@@ -168,7 +169,8 @@ public class Auction extends Channel implements Tickable
 			liveData.auctioningI=(Item)target;
 			final String sb=CMParms.combine(commands,0);
 			liveData.currency=CMLib.english().numPossibleGoldCurrency(mob,sb);
-			if(liveData.currency.length()==0) liveData.currency=CMLib.beanCounter().getCurrency(mob);
+			if(liveData.currency.length()==0)
+				liveData.currency=CMLib.beanCounter().getCurrency(mob);
 			final double denomination=CMLib.english().numPossibleGoldDenomination(null,liveData.currency,sb);
 			final long num=CMLib.english().numPossibleGold(null,sb);
 			liveData.bid=CMath.mul(denomination,num);
@@ -180,11 +182,13 @@ public class Auction extends Channel implements Tickable
 			if(target instanceof Item)
 				mob.delItem((Item)target);
 			V.addElement("New live auction: "+liveData.auctioningI.name()+".  The opening bid is "+bidWords+".");
-			if(liveData.auctioningM!=null) liveData.auctioningM.doCommand(V,Command.METAFLAG_FORCED);
+			if(liveData.auctioningM!=null)
+				liveData.auctioningM.doCommand(V,Command.METAFLAG_FORCED);
 		}
 		else
 		{
-			if(liveData.state>0)	setLiveAuctionState(STATE_RUNOUT);
+			if(liveData.state>0)
+				setLiveAuctionState(STATE_RUNOUT);
 			String sb="";
 			if(commands!=null)
 				sb=CMParms.combine(commands,0);
@@ -195,8 +199,10 @@ public class Auction extends Channel implements Tickable
 			final String[] resp=CMLib.coffeeShops().bid(mob,amt,currency,liveData,liveData.auctioningI,V);
 			if(resp!=null)
 			{
-				if(resp[0]!=null) mob.tell(resp[0]);
-				if((resp[1]!=null)&&(M!=null)) M.tell(resp[1]);
+				if(resp[0]!=null)
+					mob.tell(resp[0]);
+				if((resp[1]!=null)&&(M!=null))
+					M.tell(resp[1]);
 			}
 			if((V.size()>2)
 			&&(liveData.auctioningM!=null))
@@ -230,7 +236,8 @@ public class Auction extends Channel implements Tickable
 		//mob.tell(L("Auctions are currently closed for maintenance.  When it re-opens, this command will continue to remain available for live auctions, and new auctioneer mobs will be placed in the major cities for doing multi-day auctions, so keep your eyes open for that coming soon!"));
 		//if((mob!=null)||(commands!=null)) return false;
 		final PlayerStats pstats=mob.playerStats();
-		if(pstats==null) return false;
+		if(pstats==null)
+			return false;
 		final int channelInt=CMLib.channels().getChannelIndex("AUCTION");
 		final int channelNum=CMLib.channels().getChannelCodeNumber("AUCTION");
 
@@ -318,7 +325,8 @@ public class Auction extends Channel implements Tickable
 			}
 			CMLib.beanCounter().subtractMoney(mob, CMLib.beanCounter().getCurrency(mob), deposit);
 			doLiveAuction(mob,V,E);
-			if(liveData.auctioningI!=null) liveData.auctioningM=mob;
+			if(liveData.auctioningI!=null)
+				liveData.auctioningM=mob;
 			return true;
 		}
 		else

@@ -135,7 +135,8 @@ public class Spell_TeleportationWard extends Spell
 		}
 		if(target==null)
 			target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if((target instanceof Room)&&(target.fetchEffect(ID())!=null))
 		{
 			mob.tell(L("This place is already under a teleportation ward."));

@@ -196,7 +196,8 @@ public class Shell extends StdCommand
 					filename=filename.substring(1);
 					didSomething=true;
 				}
-				while(filename.startsWith("/")) filename=filename.substring(1);
+				while(filename.startsWith("/"))
+					filename=filename.substring(1);
 			}
 			if((currentPath.length()>0)&&(filename.length()>0))
 				filename=currentPath+"/"+filename;
@@ -251,12 +252,14 @@ public class Shell extends StdCommand
 						if(x2!=x)
 						{
 							allcmds.append(SUB_CMDS[i][x2]);
-							if(x2<SUB_CMDS[i].length-1)allcmds.append("/");
+							if(x2<SUB_CMDS[i].length-1)
+								allcmds.append("/");
 						}
 					allcmds.append("), ");
 				}
 			}
-			if(cmd>=0) break;
+			if(cmd>=0)
+				break;
 		}
 		switch(cmd)
 		{
@@ -522,7 +525,8 @@ public class Shell extends StdCommand
 		case 6: // findfiles
 		{
 			String substring=CMParms.combine(commands,1).trim();
-			if(substring.length()==0) substring="*";
+			if(substring.length()==0)
+				substring="*";
 			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,substring),mob,true,true);
 			final StringBuffer msg=new StringBuffer("");
 			if(dirs.length==0)

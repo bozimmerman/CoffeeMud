@@ -41,7 +41,8 @@ public class GrinderHolidays {
 
 	protected static String setText(DVector sets, String var, String newVAL)
 	{
-		if(newVAL==null) newVAL="";
+		if(newVAL==null)
+			newVAL="";
 		//var=var.toUpperCase().trim();
 		final int index=sets.indexOf(var);
 		final String oldVal=index>=0?(String)sets.elementAt(index,2):"";
@@ -88,12 +89,15 @@ public class GrinderHolidays {
 		//int pricingMobIndex=((Integer)encodedData.elementAt(5)).intValue();
 
 		final String name=setText(settings,"NAME",httpReq.getUrlParameter("NAME"));
-		if((name==null)||(name.trim().length()==0)) return "A name is required.";
+		if((name==null)||(name.trim().length()==0))
+			return "A name is required.";
 
 		final String duration=setText(settings,"DURATION",httpReq.getUrlParameter("DURATION"));
-		if((duration==null)||(!CMath.isMathExpression(duration))) return "Duration is mal-formed.";
+		if((duration==null)||(!CMath.isMathExpression(duration)))
+			return "Duration is mal-formed.";
 
-		if(!httpReq.isUrlParameter("SCHEDULETYPE")) return "Schedule not found.";
+		if(!httpReq.isUrlParameter("SCHEDULETYPE"))
+			return "Schedule not found.";
 		final int typeIndex=CMath.s_int(httpReq.getUrlParameter("SCHEDULETYPE"));
 		final int mudDayIndex=settings.indexOf("MUDDAY");
 		final int dateIndex=settings.indexOf("DATE");
@@ -116,7 +120,8 @@ public class GrinderHolidays {
 		case 1:
 		case 2: {
 			final int dash=newWait.indexOf('-');
-			if(dash < 0) return "Given date is invalid. Use Month#-Day# format";
+			if(dash < 0)
+				return "Given date is invalid. Use Month#-Day# format";
 			if(!CMath.isInteger(newWait.substring(0,dash).trim()))
 				return "Month value in the given date is not valid.";
 			if(!CMath.isInteger(newWait.substring(dash+1).trim()))

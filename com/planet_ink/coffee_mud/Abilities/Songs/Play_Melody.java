@@ -45,7 +45,8 @@ public class Play_Melody extends Play
 	public void affectCharStats(MOB mob, CharStats stats)
 	{
 		super.affectCharStats(mob,stats);
-		if(mob==invoker) return;
+		if(mob==invoker)
+			return;
 		if(invoker()!=null)
 			stats.setStat(CharStats.STAT_SAVE_MIND,stats.getStat(CharStats.STAT_SAVE_MIND)
 										-(invoker().charStats().getStat(CharStats.STAT_CHARISMA)+(adjustedLevel(invoker(),0)*2)));

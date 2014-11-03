@@ -106,7 +106,8 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 	@Override
 	public boolean mayICraft(final Item I)
 	{
-		if(I==null) return false;
+		if(I==null)
+			return false;
 		if(!super.mayBeCrafted(I))
 			return false;
 		if(!CMLib.flags().isDeadlyOrMaliciousEffect(I))
@@ -133,7 +134,8 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
-		if(!super.canMend(mob,E,quiet)) return false;
+		if(!super.canMend(mob,E,quiet))
+			return false;
 		if((!(E instanceof Item))
 		||(!mayICraft((Item)E)))
 		{
@@ -189,7 +191,8 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
 					String mat=V.get(RCP_MATERIAL);
 					final String wood=getComponentDescription(mob,V,RCP_WOOD);
-					if(wood.length()>5) mat="";
+					if(wood.length()>5)
+						mat="";
 					if(((level<=xlevel(mob))||allFlag)
 					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 						buf.append(CMStrings.padRight(item,16)+" "+CMStrings.padRight(""+level,3)+" "+wood+" "+mat.toLowerCase()+"\n\r");
@@ -237,11 +240,13 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 
 		final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
-		if(componentsFoundList==null) return false;
+		if(componentsFoundList==null)
+			return false;
 		int woodRequired=CMath.s_int(woodRequiredStr);
 		woodRequired=adjustWoodRequired(woodRequired,mob);
 
-		if(amount>woodRequired) woodRequired=amount;
+		if(amount>woodRequired)
+			woodRequired=amount;
 		final String misctype=foundRecipe.get(RCP_MISCTYPE);
 		final String materialtype=foundRecipe.get(RCP_MATERIAL);
 		int[] pm=null;
@@ -270,7 +275,8 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 											bundling,
 											parsedVars.autoGenerate,
 											null);
-		if(data==null) return false;
+		if(data==null)
+			return false;
 		woodRequired=data[0][FOUND_AMT];
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -347,7 +353,8 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 				((Drink)buildingI).setLiquidRemaining(0);
 			}
 		}
-		if(bundling) buildingI.setBaseValue(lostValue);
+		if(bundling)
+			buildingI.setBaseValue(lostValue);
 		buildingI.recoverPhyStats();
 		buildingI.text();
 		buildingI.recoverPhyStats();

@@ -55,7 +55,8 @@ public class CommandJournalInfo extends StdWebMacro
 		if(last.length()>0)
 		{
 			final JournalsLibrary.CommandJournal C=CMLib.journals().getCommandJournal(last);
-			if(C==null) return " @break@";
+			if(C==null)
+				return " @break@";
 			if(parms.containsKey("ID"))
 				str.append(C.NAME()).append(", ");
 			if(parms.containsKey("NAME"))

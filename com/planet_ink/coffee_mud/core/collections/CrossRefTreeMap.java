@@ -52,8 +52,10 @@ public class CrossRefTreeMap<T, K>
 
 	public CrossRefTreeMap(int maxFirstForEachSecond, int maxSecondForEachFirst)
 	{
-		if(maxSecondForEachFirst<=0) maxSecondForEachFirst=1;
-		if(maxFirstForEachSecond<=0) maxFirstForEachSecond=1;
+		if(maxSecondForEachFirst<=0)
+			maxSecondForEachFirst=1;
+		if(maxFirstForEachSecond<=0)
+			maxFirstForEachSecond=1;
 		maxKsInMap1=maxSecondForEachFirst;
 		maxTsInMap2=maxFirstForEachSecond;
 	}

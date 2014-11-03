@@ -58,7 +58,8 @@ public class Thief_Pick extends ThiefSkill
 	{
 		final int[] dirCode=new int[]{-1};
 		final Physical unlockThis=super.getOpenable(mob, mob.location(), givenTarget, commands, dirCode, true);
-		if(unlockThis==null) return false;
+		if(unlockThis==null)
+			return false;
 
 		if(((unlockThis instanceof Exit)&&(!((Exit)unlockThis).hasALock()))
 		||((unlockThis instanceof Container)&&(!((Container)unlockThis).hasALock()))
@@ -72,7 +73,8 @@ public class Thief_Pick extends ThiefSkill
 			return false;
 
 		int adjustment=((mob.phyStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)))-unlockThis.phyStats().level())*5;
-		if(adjustment>0) adjustment=0;
+		if(adjustment>0)
+			adjustment=0;
 		final boolean success=proficiencyCheck(mob,adjustment,auto);
 
 		if(!success)
@@ -90,7 +92,8 @@ public class Thief_Pick extends ThiefSkill
 					msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,auto?L("<T-NAME> vibrate(s) and click(s)."):L("<S-NAME> pick(s) the lock on <T-NAME>."));
 				if(!lastDone.contains(""+unlockThis))
 				{
-					while(lastDone.size()>40) lastDone.removeElementAt(0);
+					while(lastDone.size()>40)
+						lastDone.removeElementAt(0);
 					lastDone.addElement(""+unlockThis);
 					msg.setValue(1); // this is to notify that the thief gets xp from doing this.
 				}

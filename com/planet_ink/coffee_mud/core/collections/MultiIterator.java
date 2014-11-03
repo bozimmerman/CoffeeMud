@@ -75,7 +75,8 @@ public class MultiIterator<K> implements Iterator<K>
 	@Override
 	public boolean hasNext()
 	{
-		if(iter.hasNext()) return true;
+		if(iter.hasNext())
+			return true;
 		while((!iter.hasNext())&&(++dex<iters.size()))
 			iter=iters.get(dex);
 		return iter.hasNext();

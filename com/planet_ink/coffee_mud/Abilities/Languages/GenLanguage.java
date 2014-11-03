@@ -59,7 +59,8 @@ public class GenLanguage extends StdLanguage
 
 	private static final Object V(String ID, int varNum)
 	{
-		if(vars.containsKey(ID)) return vars.get(ID)[varNum];
+		if(vars.containsKey(ID))
+			return vars.get(ID)[varNum];
 		final Object[] O=makeEmpty();
 		vars.put(ID,O);
 		return O[varNum];
@@ -133,7 +134,8 @@ public class GenLanguage extends StdLanguage
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
+			if(code.equalsIgnoreCase(CODES[i]))
+				return i;
 		return -1;
 	}
 
@@ -143,7 +145,8 @@ public class GenLanguage extends StdLanguage
 	{
 		int num=0;
 		int numDex=code.length();
-		while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1)))) numDex--;
+		while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1))))
+			numDex--;
 		if(numDex<code.length())
 		{
 			num=CMath.s_int(code.substring(numDex));
@@ -160,7 +163,8 @@ public class GenLanguage extends StdLanguage
 					final StringBuilder str=new StringBuilder("");
 					for(final String[] wset : words)
 					{
-						if(str.length()>0) str.append("/");
+						if(str.length()>0)
+							str.append("/");
 						str.append(CMParms.toStringList(wset));
 					}
 					return str.toString();
@@ -173,7 +177,8 @@ public class GenLanguage extends StdLanguage
 		case 4:	return CMParms.toKeyValueSlashList((Map<String,String>)V(ID,V_HSETS));
 		case 5: return (String)V(ID,V_HELP);
 		default:
-			if(code.equalsIgnoreCase("allxml")) return getAllXML();
+			if(code.equalsIgnoreCase("allxml"))
+				return getAllXML();
 			break;
 		}
 		return "";
@@ -185,7 +190,8 @@ public class GenLanguage extends StdLanguage
 	{
 		int num=0;
 		int numDex=code.length();
-		while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1)))) numDex--;
+		while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1))))
+			numDex--;
 		if(numDex<code.length())
 		{
 			num=CMath.s_int(code.substring(numDex));
@@ -233,7 +239,8 @@ public class GenLanguage extends StdLanguage
 		case 4:	SV(ID,V_HSETS,CMParms.parseKeyValueSlashList(val)); break;
 		case 5: SV(ID,V_HELP,val); break;
 		default:
-			if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenLanguage")) parseAllXML(val);
+			if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenLanguage"))
+				parseAllXML(val);
 			break;
 		}
 	}
@@ -241,16 +248,20 @@ public class GenLanguage extends StdLanguage
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenLanguage)) return false;
-		if(!((GenLanguage)E).ID().equals(ID)) return false;
-		if(!((GenLanguage)E).text().equals(text())) return false;
+		if(!(E instanceof GenLanguage))
+			return false;
+		if(!((GenLanguage)E).ID().equals(ID))
+			return false;
+		if(!((GenLanguage)E).text().equals(text()))
+			return false;
 		return true;
 	}
 
 	private void parseAllXML(String xml)
 	{
 		final List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(xml);
-		if((V==null)||(V.size()==0)) return;
+		if((V==null)||(V.size()==0))
+			return;
 		for(int c=0;c<getStatCodes().length;c++)
 			if(getStatCodes()[c].equals("CLASS"))
 				ID=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(V, getStatCodes()[c]));

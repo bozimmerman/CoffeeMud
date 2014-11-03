@@ -77,7 +77,8 @@ public class Who extends StdCommand
 		}
 		String levelStr=who.charStats().displayClassLevel(who,true).trim();
 		final int x=levelStr.lastIndexOf(' ');
-		if(x>=0) levelStr=levelStr.substring(x).trim();
+		if(x>=0)
+			levelStr=levelStr.substring(x).trim();
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 		{
 			if(who.charStats().getMyRace().classless())

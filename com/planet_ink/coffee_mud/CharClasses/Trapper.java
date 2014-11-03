@@ -148,7 +148,8 @@ public class Trapper extends Thief
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
+		if(!(myHost instanceof MOB))
+			return super.okMessage(myHost,msg);
 		final MOB myChar=(MOB)myHost;
 		if(msg.amISource(myChar)
 		&&(!myChar.isMonster())
@@ -168,7 +169,8 @@ public class Trapper extends Thief
 			&&(CMLib.map().areaLocation(myChar)!=CMLib.map().getStartArea(msg.target())))
 			{
 				int xp=(int)Math.round(10.0*CMath.div(((MOB)msg.target()).phyStats().level(),myChar.phyStats().level()));
-				if(xp>125) xp=125;
+				if(xp>125)
+					xp=125;
 				if((xp>0)&&CMLib.leveler().postExperience(myChar,null,null,xp,true))
 					msg.addTrailerMsg(CMClass.getMsg(myChar,null,null,CMMsg.MSG_OK_VISUAL,L("You gain @x1 experience for selling @x2.",""+xp,((MOB)msg.target()).name(myChar)),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 			}
@@ -183,7 +185,8 @@ public class Trapper extends Thief
 					for(int c=0;c<myChar.charStats().numClasses();c++)
 					{
 						C=myChar.charStats().getMyClass(c);
-						if(C==null) continue;
+						if(C==null)
+							continue;
 						final int qlvl=CMLib.ableMapper().getQualifyingLevel(C.ID(),false,msg.tool().ID());
 						if((qlvl>=0)
 						&&(myChar.charStats().getClassLevel(C)>=qlvl)

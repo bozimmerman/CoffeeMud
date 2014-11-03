@@ -157,14 +157,16 @@ public class LightSource extends StdItem implements Light
 
 	public static boolean inTheRain(Room room)
 	{
-		if(room==null) return false;
+		if(room==null)
+			return false;
 		return (((room.domainType()&Room.INDOORS)==0)
 				&&((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_RAIN)
 				   ||(room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_THUNDERSTORM)));
 	}
 	public static boolean inTheWater(MOB mob, Room room)
 	{
-		if((room==null)||(mob==null)) return false;
+		if((room==null)||(mob==null))
+			return false;
 		if((room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 		||(room.domainType()==Room.DOMAIN_INDOORS_UNDERWATER))
 			return true;
@@ -180,9 +182,11 @@ public class LightSource extends StdItem implements Light
 	{
 		super.executeMsg(myHost,msg);
 		final MOB mob=msg.source();
-		if(mob==null) return;
+		if(mob==null)
+			return;
 		final Room room=mob.location();
-		if(room==null) return;
+		if(room==null)
+			return;
 		if(((LightSource.inTheRain(room)&&goesOutInTheRain())
 				   ||(LightSource.inTheWater(msg.source(),room)))
 		&&(isLit())

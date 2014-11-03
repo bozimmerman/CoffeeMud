@@ -83,7 +83,8 @@ public class Prop_ReqStat extends Property implements TriggeredAffect
 
 	public boolean passesMuster(MOB mob, String msg)
 	{
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		if(CMLib.flags().isATrackingMonster(mob))
 			return true;
 		if(CMLib.flags().isSneaking(mob)&&(!noSneak))

@@ -40,7 +40,8 @@ public class CMStrings
 
 	public final static String repeat(final String str1, final int times)
 	{
-		if(times<=0) return "";
+		if(times<=0)
+			return "";
 		final StringBuffer str=new StringBuffer("");
 		for(int i=0;i<times;i++)
 			str.append(str1);
@@ -49,7 +50,8 @@ public class CMStrings
 
 	public final static String repeat(final char chr1, final int times)
 	{
-		if(times<=0) return "";
+		if(times<=0)
+			return "";
 		final byte[] buf=new byte[times];
 		if(Character.charCount(chr1)>1)
 			return repeat(Character.toString(chr1), times);
@@ -59,7 +61,8 @@ public class CMStrings
 
 	public final static String repeatWithLimit(final char chr1, final int times, final int limit)
 	{
-		if(times<=0) return "";
+		if(times<=0)
+			return "";
 		if(times > limit)
 			return repeat(chr1,limit)+"x"+(times-limit);
 		final byte[] buf=new byte[times];
@@ -71,7 +74,8 @@ public class CMStrings
 
 	public final static boolean isUpperCase(final String str)
 	{
-		if(str==null) return false;
+		if(str==null)
+			return false;
 		for(int c=0;c<str.length();c++)
 			if(!Character.isUpperCase(str.charAt(c)))
 				return false;
@@ -80,7 +84,8 @@ public class CMStrings
 
 	public final static boolean isLowerCase(final String str)
 	{
-		if(str==null) return false;
+		if(str==null)
+			return false;
 		for(int c=0;c<str.length();c++)
 			if(!Character.isLowerCase(str.charAt(c)))
 				return false;
@@ -89,25 +94,29 @@ public class CMStrings
 
 	public final static String s_uppercase(final String str)
 	{
-		if(str==null) return "";
+		if(str==null)
+			return "";
 		return str.toUpperCase();
 	}
 
 	public final static String s_lowercase(final String str)
 	{
-		if(str==null) return "";
+		if(str==null)
+			return "";
 		return str.toLowerCase();
 	}
 
 	public final static String endWithAPeriod(final String str)
 	{
-		if((str==null)||(str.length()==0)) return str;
+		if((str==null)||(str.length()==0))
+			return str;
 		int x=str.length()-1;
 		while((x>=0)
 		&&((Character.isWhitespace(str.charAt(x))) // possible #~ color concerns, but normally catches ^? at the end.
 			||((x>0)&&((str.charAt(x)!='^')&&(str.charAt(x-1)=='^')&&((--x)>=0)))))
 				x--;
-		if(x<0) return str;
+		if(x<0)
+			return str;
 		if((str.charAt(x)=='.')||(str.charAt(x)=='!')||(str.charAt(x)=='?'))
 			return str.trim()+" ";
 		return str.substring(0,x+1)+". "+str.substring(x+1).trim();
@@ -174,7 +183,8 @@ public class CMStrings
 
 	public final static int indexOfLastVowel(final String s)
 	{
-		if(s==null) return -1;
+		if(s==null)
+			return -1;
 		for(int i=s.length()-1;i>=0;i--)
 		{
 			if(isVowel(s.charAt(i)))
@@ -185,7 +195,8 @@ public class CMStrings
 
 	public final static String scrunchWord(String s, final int len)
 	{
-		if(s.length()<=len) return s;
+		if(s.length()<=len)
+			return s;
 		s=s.trim();
 		int x=s.lastIndexOf(' ');
 		while((s.length()>len)&&(x>0))
@@ -206,7 +217,8 @@ public class CMStrings
 
 	public final static int finalDigits(String s)
 	{
-		if((s==null)||(s.length()==0)) return -1;
+		if((s==null)||(s.length()==0))
+			return -1;
 		int x=s.length();
 		while((x>0)&&(Character.isDigit(s.charAt(x-1))))
 			x--;
@@ -439,7 +451,8 @@ public class CMStrings
 
 	public final static String capitalizeAndLower(final String name)
 	{
-		if((name==null)||(name.length()==0)) return "";
+		if((name==null)||(name.length()==0))
+			return "";
 		final char[] c=name.toCharArray();
 		int i=0;
 		for(;i<c.length;i++)
@@ -493,7 +506,8 @@ public class CMStrings
 
 	public final static String capitalizeAllFirstLettersAndLower(final String name)
 	{
-		if((name==null)||(name.length()==0)) return "";
+		if((name==null)||(name.length()==0))
+			return "";
 		final char[] c=name.toCharArray();
 		int i=0;
 		boolean firstLetter=true;
@@ -611,7 +625,8 @@ public class CMStrings
 
 	public final static String getSayFromMessage(final String msg)
 	{
-		if(msg==null) return null;
+		if(msg==null)
+			return null;
 		final int start=msg.indexOf('\'');
 		final int end=msg.lastIndexOf('\'');
 		if((start>0)&&(end>start))
@@ -620,7 +635,8 @@ public class CMStrings
 	}
 	public final static String substituteSayInMessage(final String affmsg, final String msg)
 	{
-		if(affmsg==null) return null;
+		if(affmsg==null)
+			return null;
 		final int start=affmsg.indexOf('\'');
 		final int end=affmsg.lastIndexOf('\'');
 		if((start>0)&&(end>start))
@@ -630,7 +646,8 @@ public class CMStrings
 
 	public final static boolean containsIgnoreCase(final String[] strs, final String str)
 	{
-		if((str==null)||(strs==null)) return false;
+		if((str==null)||(strs==null))
+			return false;
 		for (final String str2 : strs)
 			if(str2.equalsIgnoreCase(str))
 				return true;
@@ -642,8 +659,10 @@ public class CMStrings
 		if(((A1==null)||(A1.length==0))
 		&&((A2==null)||(A2.length==0)))
 			return true;
-		if((A1==null)||(A2==null)) return false;
-		if(A1.length!=A2.length) return false;
+		if((A1==null)||(A2==null))
+			return false;
+		if(A1.length!=A2.length)
+			return false;
 		for(int a1=0;a1<A1.length;a1++)
 		{
 			if(!A1[a1].equalsIgnoreCase(A2[a1]))
@@ -654,7 +673,8 @@ public class CMStrings
 
 	public final static boolean contains(final String[] strs, final String str)
 	{
-		if((str==null)||(strs==null)) return false;
+		if((str==null)||(strs==null))
+			return false;
 		for (final String str2 : strs)
 			if(str2.equals(str))
 				return true;
@@ -671,7 +691,8 @@ public class CMStrings
 
 	public final static boolean containsAny(final String str, final char[] anycs)
 	{
-		if((str==null)||(anycs==null)) return false;
+		if((str==null)||(anycs==null))
+			return false;
 		for(int i=0;i<str.length();i++)
 			if(contains(anycs,str.charAt(i)))
 				return true;
@@ -732,8 +753,10 @@ public class CMStrings
 	 */
 	public final static String removeColors(final String s)
 	{
-		if(s==null) return "";
-		if(s.indexOf('^')<0) return s;
+		if(s==null)
+			return "";
+		if(s.indexOf('^')<0)
+			return s;
 		final StringBuilder str=new StringBuilder(s);
 		int colorStart=-1;
 		for(int i=0;i<str.length();i++)
@@ -928,14 +951,16 @@ public class CMStrings
 			@SuppressWarnings("unchecked")
 			public int pop(String tag)
 			{
-				if(tagStack.size()==0) return -1;
+				if(tagStack.size()==0)
+					return -1;
 				final Stack<Object[]> backup=(Stack<Object[]>)tagStack.clone();
 				Object[] top;
 				do
 				{
 					top=tagStack.pop();
 				}
-				while((!((String)top[0]).equals(tag))&&(!tagStack.isEmpty()));
+				while((!((String)top[0]).equals(tag))&&(!tagStack.isEmpty()))
+					;
 				if(!((String)top[0]).equals(tag))
 				{
 					tagStack=backup;
@@ -1117,7 +1142,8 @@ public class CMStrings
 					if(CMStrings.contains(badBlockTags, tag))
 					{
 						final int x=stack.pop(tag);
-						if(x>=0) start=x;
+						if(x>=0)
+							start=x;
 					}
 					finalData.delete(start, i+1);
 					i=start-1;
@@ -1130,7 +1156,8 @@ public class CMStrings
 				{
 					final String code=finalData.substring(start+1,i).toLowerCase();
 					finalData.delete(start, i+1);
-					if(code.equals("nbsp")) finalData.insert(start,' ');
+					if(code.equals("nbsp"))
+						finalData.insert(start,' ');
 					else if(code.equals("amp")) finalData.insert(start,'&');
 					else if(code.equals("lt")) finalData.insert(start,'<');
 					else if(code.equals("gt")) finalData.insert(start,'>');
@@ -1256,7 +1283,8 @@ public class CMStrings
 			return removeColors(thisStr).substring(0,thisMuch);
 		final int size=(thisMuch-lenMinusColors)/2;
 		int rest=thisMuch-lenMinusColors-size;
-		if(rest<0) rest=0;
+		if(rest<0)
+			rest=0;
 		return SPACES.substring(0,size)+thisStr+SPACES.substring(0,rest);
 	}
 	public final static String padLeft(final String thisStr, final int thisMuch)
@@ -1417,7 +1445,8 @@ public class CMStrings
 
 	private static StringExpToken nextToken(final List<StringExpToken> tokens, final int[] index)
 	{
-		if(index[0]>=tokens.size()) return null;
+		if(index[0]>=tokens.size())
+			return null;
 		return tokens.get(index[0]++);
 	}
 
@@ -1911,7 +1940,8 @@ public class CMStrings
 			tokens.addElement(token);
 			token = nextStringToken(expression,i,variables, emptyVarsOK);
 		}
-		if(tokens.size()==0) return true;
+		if(tokens.size()==0)
+			return true;
 		i = new int[]{ 0 };
 		final Boolean value = matchExpression(tokens, i, variables);
 		if (value == null) 
@@ -1921,8 +1951,10 @@ public class CMStrings
 
 	public final static int countSubstrings(final String[] set, final String[] things)
 	{
-		if(set==null) return 0;
-		if(things==null) return 0;
+		if(set==null)
+			return 0;
+		if(things==null)
+			return 0;
 		int total=0;
 		for(final String longString : set)
 			for(final String subString : things)

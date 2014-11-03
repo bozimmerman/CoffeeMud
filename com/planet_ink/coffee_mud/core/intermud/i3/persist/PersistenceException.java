@@ -122,7 +122,8 @@ final class PersistenceExceptionEnumeration implements Enumeration {
 public boolean hasMoreElements()
   {
 
-	if( exception == null ) return false;
+	if( exception == null )
+		return false;
 	return true;
   }
 
@@ -131,7 +132,8 @@ public Object nextElement()
   {
 	Exception e;
 
-	if( exception == null ) throw new NoSuchElementException();
+	if( exception == null )
+		throw new NoSuchElementException();
 	e = exception;
 	if( e instanceof PersistenceException )
 	  exception = ((PersistenceException)e).getPriorException();

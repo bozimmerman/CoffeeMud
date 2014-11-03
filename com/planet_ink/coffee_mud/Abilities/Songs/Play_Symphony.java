@@ -74,7 +74,8 @@ public class Play_Symphony extends Play
 	public int getToDoCode()
 	{
 		if(instrument==null){ toDoCode=-1; return toDoCode;}
-		if(toDoCode>0) return toDoCode;
+		if(toDoCode>0)
+			return toDoCode;
 		final int ilvl=instrument.phyStats().level();
 		switch(instrument.instrumentType())
 		{
@@ -635,7 +636,8 @@ public class Play_Symphony extends Play
 			break;
 		case CODE_UPSTAT:
 			int lvl=adjustedLevel(invoker(),0)/10;
-			if(lvl<1) lvl=1;
+			if(lvl<1)
+				lvl=1;
 			stats.setStat(toDoVal,stats.getStat(toDoVal)+(lvl));
 			break;
 		case CODE_DOWNSAVE:
@@ -683,7 +685,8 @@ public class Play_Symphony extends Play
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
 		if(!(affected instanceof MOB))
 		   return true;
 		int per=-1;
@@ -751,7 +754,8 @@ public class Play_Symphony extends Play
 				final MOB M=(MOB)affected;
 				final MOB V=M.getVictim();
 				final Ability A=CMClass.getAbility(toDoString);
-				if(A==null) Log.errOut("Symphony","No spell- "+toDoString);
+				if(A==null)
+					Log.errOut("Symphony","No spell- "+toDoString);
 				else A.invoke(M,V,true,0);
 			}
 			break;
@@ -759,7 +763,8 @@ public class Play_Symphony extends Play
 			{
 				final MOB M=(MOB)affected;
 				final Ability A=CMClass.getAbility(toDoString);
-				if(A==null) Log.errOut("Symphony","No spell- "+toDoString);
+				if(A==null)
+					Log.errOut("Symphony","No spell- "+toDoString);
 				else A.invoke(M,M,true,0);
 			}
 			break;
@@ -775,7 +780,8 @@ public class Play_Symphony extends Play
 		if(!auto)
 		{
 			instrument=getInstrument(mob,requiredInstrumentType(),true);
-			if(instrument!=null) getToDoCode();
+			if(instrument!=null)
+				getToDoCode();
 		}
 		return super.invoke(mob,commands,givenTarget,auto,asLevel);
 	}

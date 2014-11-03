@@ -51,8 +51,10 @@ public class Prayer_SunCurse extends Prayer
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(!(affected instanceof MOB)) return;
-		if(((MOB)affected).location()==null) return;
+		if(!(affected instanceof MOB))
+			return;
+		if(((MOB)affected).location()==null)
+			return;
 		if(CMLib.flags().isInDark(((MOB)affected).location()))
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
 		else
@@ -62,7 +64,8 @@ public class Prayer_SunCurse extends Prayer
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
 		if(!(affected instanceof MOB))
 			return super.tick(ticking,tickID);
 		final MOB mob=(MOB)affected;
@@ -72,7 +75,8 @@ public class Prayer_SunCurse extends Prayer
 		{
 			mob.tell(L("\n\r\n\r\n\r\n\r**THE SUN IS BEATING ONTO YOUR SKIN**\n\r\n\r"));
 			final Ability A=CMClass.getAbility("Spell_FleshStone");
-			if(A!=null)	A.invoke(mob,mob,true,0);
+			if(A!=null)
+				A.invoke(mob,mob,true,0);
 			unInvoke();
 			return false;
 		}
@@ -108,7 +112,8 @@ public class Prayer_SunCurse extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if((!auto)
 		&&(target.location()!=null)

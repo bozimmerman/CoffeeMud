@@ -61,7 +61,8 @@ public class Chant_Reincarnation extends Chant
 				affectableStats.setName(L("@x1 the @x2",affected.name(),newRace.name()));
 			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			newRace.setHeightWeight(affectableStats,'M');
-			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
+			if(oldAdd>0)
+				affectableStats.setWeight(affectableStats.weight()+oldAdd);
 		}
 	}
 	@Override
@@ -161,7 +162,8 @@ public class Chant_Reincarnation extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget,false,true);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(target.fetchEffect(ID())!=null)
 		{
 			if(mob.location().show(mob,target,null,CMMsg.MSG_CAST,L("<S-NAME> lift(s) the reincarnation geas on <T-NAMESELF>.")))

@@ -137,7 +137,8 @@ public class Chant_PlantTrap extends Chant implements Trap
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Room target=mob.location();
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell(L("This place is already trapped."));

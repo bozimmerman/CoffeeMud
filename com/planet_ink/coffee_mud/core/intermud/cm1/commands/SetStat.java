@@ -245,7 +245,8 @@ public class SetStat extends GetStat
 					case 2:
 					{
 						ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().findDefinition(firstValue, true);
-						if(def==null) def=CMLib.expertises().findDefinition(firstValue, false);
+						if(def==null)
+							def=CMLib.expertises().findDefinition(firstValue, false);
 						if(def==null)
 							req.sendMsg("[FAIL "+firstValue+" NOT EXIST]");
 						else
@@ -278,7 +279,8 @@ public class SetStat extends GetStat
 						{
 							final Room R=CMLib.map().roomLocation((MOB)mod);
 							MOB M=null;
-							if(R!=null) M=R.fetchInhabitant(restValue);
+							if(R!=null)
+								M=R.fetchInhabitant(restValue);
 							if(M!=null)
 							{
 								M.setFollowing((MOB)mod);
@@ -311,9 +313,12 @@ public class SetStat extends GetStat
 						{
 							final Room R=CMLib.map().roomLocation((Physical)mod);
 							Item M=null;
-							if((R!=null)&&(mod instanceof MOB)) M=R.findItem(firstValue);
-							if((R!=null)&&(mod instanceof Room)) M=((MOB)mod).findItem(firstValue);
-							if(M==null) M=CMClass.getItem(firstValue);
+							if((R!=null)&&(mod instanceof MOB))
+								M=R.findItem(firstValue);
+							if((R!=null)&&(mod instanceof Room))
+								M=((MOB)mod).findItem(firstValue);
+							if(M==null)
+								M=CMClass.getItem(firstValue);
 							if(M!=null)
 							{
 								((ItemPossessor)mod).addItem(M);

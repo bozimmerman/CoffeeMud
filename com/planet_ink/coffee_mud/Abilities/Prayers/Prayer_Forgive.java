@@ -51,12 +51,16 @@ public class Prayer_Forgive extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		LegalBehavior B=null;
-		if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());
+		if(mob.location()!=null)
+			B=CMLib.law().getLegalBehavior(mob.location());
 
 		String name=CMParms.combine(commands,0);
-		if(name.startsWith("$")) name=name.substring(1);
-		if(name.endsWith("$")) name=name.substring(0,name.length()-1);
-		if((name.trim().length()==0)&&(givenTarget!=null)) name=givenTarget.Name();
+		if(name.startsWith("$"))
+			name=name.substring(1);
+		if(name.endsWith("$"))
+			name=name.substring(0,name.length()-1);
+		if((name.trim().length()==0)&&(givenTarget!=null))
+			name=givenTarget.Name();
 		if(name.trim().length()==0)
 		{
 			mob.tell(L("Forgive whom?"));

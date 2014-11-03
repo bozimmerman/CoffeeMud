@@ -76,7 +76,8 @@ public class MobileAggressive extends Mobile
 	@Override
 	public boolean grantsAggressivenessTo(MOB M)
 	{
-		if(M==null) return true;
+		if(M==null)
+			return true;
 		return CMLib.masking().maskCheck(getParms(),M,false);
 	}
 

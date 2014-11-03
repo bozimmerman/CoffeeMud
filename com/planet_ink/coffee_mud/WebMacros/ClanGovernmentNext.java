@@ -43,7 +43,8 @@ public class ClanGovernmentNext extends StdWebMacro
 		final String last=httpReq.getUrlParameter("GOVERNMENT");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("GOVERNMENT");
+			if(last!=null)
+				httpReq.removeUrlParameter("GOVERNMENT");
 			return "";
 		}
 		int lastID=-1;

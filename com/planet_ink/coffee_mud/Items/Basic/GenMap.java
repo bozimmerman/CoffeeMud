@@ -106,7 +106,8 @@ public class GenMap extends StdMap
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenMap)) return false;
+		if(!(E instanceof GenMap))
+			return false;
 		for(int i=0;i<getStatCodes().length;i++)
 			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
 				return false;

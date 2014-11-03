@@ -179,7 +179,8 @@ public class Taxidermy extends CraftingSkill
 											false,
 											0,
 											null);
-		if(data==null) return false;
+		if(data==null)
+			return false;
 		woodRequired=data[0][FOUND_AMT];
 
 		activity = CraftingActivity.CRAFTING;
@@ -188,9 +189,11 @@ public class Taxidermy extends CraftingSkill
 			return false;
 		CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],0,null);
 		messedUp=!proficiencyCheck(mob,0,auto);
-		if(buildingI!=null)    foundShortName=I.Name();
+		if(buildingI!=null)
+			foundShortName=I.Name();
 		int duration=15+(woodRequired/3);
-		if(duration>65) duration=65;
+		if(duration>65)
+			duration=65;
 		duration=getDuration(duration,mob,1,10);
 		buildingI=CMClass.getItem("GenItem");
 		buildingI.basePhyStats().setWeight(woodRequired);

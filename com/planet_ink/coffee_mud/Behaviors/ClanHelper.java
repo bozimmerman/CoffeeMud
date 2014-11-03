@@ -70,12 +70,14 @@ public class ClanHelper extends StdBehavior
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
-		if((msg.target()==null)||(!(msg.target() instanceof MOB))) return;
+		if((msg.target()==null)||(!(msg.target() instanceof MOB)))
+			return;
 		final MOB source=msg.source();
 		final MOB observer=(MOB)affecting;
 		final MOB target=(MOB)msg.target();
 
-		if((target==null)||(observer==null)) return;
+		if((target==null)||(observer==null))
+			return;
 		if((source!=observer)
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(target!=observer)

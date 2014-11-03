@@ -556,7 +556,8 @@ public class DefaultMessage implements CMMsg
 				for (final Object[] element : MISC_DESCS)
 					if(((String)element[0]).startsWith(code2))
 					{ I=(Integer)element[1]; break;}
-			if(I==null) return false;
+			if(I==null)
+				return false;
 		}
 		return matches(major, minor, I.intValue());
 	}

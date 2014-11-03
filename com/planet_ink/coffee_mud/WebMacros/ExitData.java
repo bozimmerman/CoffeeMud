@@ -72,12 +72,14 @@ public class ExitData extends StdWebMacro
 		final java.util.Map<String,String> parms=parseParms(parm);
 
 		final String last=httpReq.getUrlParameter("ROOM");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		Room R=(Room)httpReq.getRequestObjects().get(last);
 		if(R==null)
 		{
 			R=CMLib.map().getRoom(last);
-			if(R==null)	return "No Room?!";
+			if(R==null)
+				return "No Room?!";
 			httpReq.getRequestObjects().put(last,R);
 		}
 
@@ -85,9 +87,11 @@ public class ExitData extends StdWebMacro
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
 		final String linkdir=httpReq.getUrlParameter("LINK");
-		if(linkdir==null) return "@break@";
+		if(linkdir==null)
+			return "@break@";
 		final int link=Directions.getGoodDirectionCode(linkdir);
-		if((link<0)||(link>=Directions.NUM_DIRECTIONS())) return " @break@";
+		if((link<0)||(link>=Directions.NUM_DIRECTIONS()))
+			return " @break@";
 
 		Exit X=R.getRawExit(link);
 
@@ -100,23 +104,27 @@ public class ExitData extends StdWebMacro
 					||(!httpReq.getUrlParameter("ACTION").equals("MODIFYEXIT"))
 					||(((httpReq.isUrlParameter("CHANGEDCLASS"))&&(httpReq.getUrlParameter("CHANGEDCLASS")).equals("true")));
 
-		if(X==null) return "@break@";
+		if(X==null)
+			return "@break@";
 
 		final StringBuffer str=new StringBuffer("");
 		for(int o=0;o<okparms.length;o++)
 		if(parms.containsKey(okparms[o]))
 		{
 			String old=httpReq.getUrlParameter(okparms[o]);
-			if(old==null) old="";
+			if(old==null)
+				old="";
 			switch(o)
 			{
 			case 0: // name
-				if(firstTime) old=X.Name();
+				if(firstTime)
+					old=X.Name();
 				str.append(old);
 				break;
 			case 1: // classes
 				{
-					if(firstTime) old=CMClass.classID(X);
+					if(firstTime)
+						old=CMClass.classID(X);
 					Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-EXITS");
 					if(sorted==null)
 					{
@@ -137,15 +145,18 @@ public class ExitData extends StdWebMacro
 				}
 				break;
 			case 2: // displaytext
-				if(firstTime) old=X.displayText();
+				if(firstTime)
+					old=X.displayText();
 				str.append(old);
 				break;
 			case 3: // description
-				if(firstTime) old=X.description();
+				if(firstTime)
+					old=X.description();
 				str.append(old);
 				break;
 			case 4: // level
-				if(firstTime) old=""+X.basePhyStats().level();
+				if(firstTime)
+					old=""+X.basePhyStats().level();
 				str.append(old);
 				break;
 			case 5: // levelrestricted;
@@ -161,8 +172,10 @@ public class ExitData extends StdWebMacro
 				str.append(old);
 				break;
 			case 8: // closedtext
-				if(firstTime) old=X.closedText();
-				if(old.length()==0) old="a closed door";
+				if(firstTime)
+					old=X.closedText();
+				if(old.length()==0)
+					old="a closed door";
 				str.append(old);
 				break;
 			case 9: // defaultsclosed
@@ -174,13 +187,17 @@ public class ExitData extends StdWebMacro
 				str.append(old);
 				break;
 			case 10: // openword
-				if(firstTime) old=X.openWord();
-				if(old.length()==0) old="open";
+				if(firstTime)
+					old=X.openWord();
+				if(old.length()==0)
+					old="open";
 				str.append(old);
 				break;
 			case 11: // closeword
-				if(firstTime) old=X.closeWord();
-				if(old.length()==0) old="close";
+				if(firstTime)
+					old=X.closeWord();
+				if(old.length()==0)
+					old="close";
 				str.append(old);
 				break;
 			case 12: // hasalock
@@ -200,7 +217,8 @@ public class ExitData extends StdWebMacro
 				str.append(old);
 				break;
 			case 14: // keyname
-				if(firstTime) old=X.keyName();
+				if(firstTime)
+					old=X.keyName();
 				str.append(old);
 				break;
 			case 15: // isreadable
@@ -212,7 +230,8 @@ public class ExitData extends StdWebMacro
 				str.append(old);
 				break;
 			case 16: // readable text
-				if(firstTime) old=X.readableText();
+				if(firstTime)
+					old=X.readableText();
 				str.append(old);
 				break;
 			case 17: // isclassrestricuted
@@ -224,7 +243,8 @@ public class ExitData extends StdWebMacro
 			case 20: // restrictedalignments
 				break;
 			case 21: // misc text
-				if(firstTime) old=X.text();
+				if(firstTime)
+					old=X.text();
 				str.append(old);
 				break;
 			case 22: // is generic
@@ -232,12 +252,15 @@ public class ExitData extends StdWebMacro
 					return "true";
 				return "false";
 			case 23: // door name
-				if(firstTime) old=X.doorName();
-				if(old.length()==0) old="door";
+				if(firstTime)
+					old=X.doorName();
+				if(old.length()==0)
+					old="door";
 				str.append(old);
 				break;
 			case 24: // image
-				if(firstTime) old=X.rawImage();
+				if(firstTime)
+					old=X.rawImage();
 				str.append(old);
 				break;
 			case 25: // open ticks

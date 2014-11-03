@@ -46,8 +46,10 @@ public class Song_Mute extends Song
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(invoker==null) return;
-		if(affected==invoker) return;
+		if(invoker==null)
+			return;
+		if(affected==invoker)
+			return;
 
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SPEAK);
 	}

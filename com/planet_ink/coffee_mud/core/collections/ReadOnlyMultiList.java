@@ -164,7 +164,8 @@ public class ReadOnlyMultiList<K> implements List<K>
 		for(final List<K> l : lists)
 		{
 			final int x=l.indexOf(o);
-			if(x>=0) return ct+x;
+			if(x>=0)
+				return ct+x;
 			ct+=x;
 		}
 		return -1;
@@ -179,7 +180,8 @@ public class ReadOnlyMultiList<K> implements List<K>
 			final List<K> l=lists.get(i);
 			ct-=l.size();
 			final int x=l.lastIndexOf(o);
-			if(x>=0) return ct+x;
+			if(x>=0)
+				return ct+x;
 		}
 		return -1;
 	}

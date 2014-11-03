@@ -44,7 +44,8 @@ public class Boot extends StdCommand
 		throws java.io.IOException
 	{
 		commands.removeElementAt(0);
-		if(mob.session()==null) return false;
+		if(mob.session()==null)
+			return false;
 		if(commands.size()==0)
 		{
 			mob.tell(L("Boot out who?"));

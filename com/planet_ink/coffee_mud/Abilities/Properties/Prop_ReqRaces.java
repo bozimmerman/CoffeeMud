@@ -72,7 +72,8 @@ public class Prop_ReqRaces extends Property implements TriggeredAffect
 
 	public boolean passesMuster(MOB mob)
 	{
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		if(CMLib.flags().isATrackingMonster(mob))
 			return true;
 		if(CMLib.flags().isSneaking(mob)&&(!noSneak))

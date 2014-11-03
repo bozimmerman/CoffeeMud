@@ -82,7 +82,8 @@ public class Thief_Panhandling extends ThiefSkill
 		if(affected instanceof MOB)
 		{
 			tickTock++;
-			if(tickTock<2) return true;
+			if(tickTock<2)
+				return true;
 			tickTock=0;
 			final MOB mob=(MOB)affected;
 			for(int i=0;i<mob.location().numInhabitants();i++)
@@ -133,14 +134,16 @@ public class Thief_Panhandling extends ThiefSkill
 						if(total>1.0)
 						{
 							total=total/(20.0-getXLEVELLevel(mob));
-							if(total<1.0) total=1.0;
+							if(total<1.0)
+								total=1.0;
 							final Coins C=CMLib.beanCounter().makeBestCurrency(mob2,total);
 							if(C!=null)
 							{
 								CMLib.beanCounter().subtractMoney(mob2,total);
 								mob2.addItem(C);
 								mob2.doCommand(CMParms.parse("GIVE \""+C.name()+"\" \""+mob.Name()+"\""),Command.METAFLAG_FORCED);
-								if(!C.amDestroyed()) C.putCoinsBack();
+								if(!C.amDestroyed())
+									C.putCoinsBack();
 							}
 						}
 					}

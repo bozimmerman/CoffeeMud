@@ -52,7 +52,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	@Override
 	public boolean handleUnknownCommand(MOB mob, List<String> command)
 	{
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		final Room R=mob.location();
 		String msgStr;
 		if(R==null)
@@ -71,7 +72,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		else
 			msgStr=L("Huh?");
 		final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_HUH,msgStr,CMParms.combine(command,0),null);
-		if(!R.okMessage(mob,msg)) return false;
+		if(!R.okMessage(mob,msg))
+			return false;
 		R.send(mob,msg);
 		return true;
 	}
@@ -349,7 +351,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		text=CMProps.applyINIFilter(text,CMProps.Str.SAYFILTER);
 		if(target!=null)
 			location=target.location();
-		if(location==null) return;
+		if(location==null)
+			return;
 		if((isPrivate)&&(target!=null))
 		{
 			if(tellFlag)
@@ -477,7 +480,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 
 	public void handleBeingMobSniffed(CMMsg msg)
 	{
-		if(!(msg.target() instanceof MOB)) return;
+		if(!(msg.target() instanceof MOB))
+			return;
 		final MOB sniffingmob=msg.source();
 		final MOB sniffedmob=(MOB)msg.target();
 		if((sniffedmob.playerStats()!=null)
@@ -673,7 +677,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			CMLib.players().bumpPrideStat(mob,AccountStats.PrideStat.MINUTES_ON, (int)minutesEllapsed);
 
 		final PlayerStats stats = mob.playerStats();
-		if(stats==null) return;
+		if(stats==null)
+			return;
 		final int[] birthDay = stats.getBirthday();
 		if((mob.baseCharStats().getStat(CharStats.STAT_AGE)>0)
 		&&(birthDay!=null))
@@ -754,9 +759,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	{
 		final double d=CMath.div(C.getStat(stat),mob.charStats().getStat(stat));
 		String prepend="";
-		if((d<=0.5)||(d>=3.0)) prepend="much ";
-		if(d>=1.6) return mob.charStats().HeShe()+" appears "+prepend+weakword+" than the average "+mob.charStats().raceName()+".\n\r";
-		if(d<=0.67) return mob.charStats().HeShe()+" appears "+prepend+strongword+" than the average "+mob.charStats().raceName()+".\n\r";
+		if((d<=0.5)||(d>=3.0))
+			prepend="much ";
+		if(d>=1.6)
+			return mob.charStats().HeShe()+" appears "+prepend+weakword+" than the average "+mob.charStats().raceName()+".\n\r";
+		if(d<=0.67)
+			return mob.charStats().HeShe()+" appears "+prepend+strongword+" than the average "+mob.charStats().raceName()+".\n\r";
 		return "";
 	}
 
@@ -1127,11 +1135,16 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			else
 				domType=Room.indoorDomainDescs[CMath.unsetb(room.domainType(),Room.INDOORS)];
 			final int climateType=room.getClimateType();
-			if(CMath.bset(climateType, Places.CLIMASK_COLD)) domCond.append(" cold");
-			if(CMath.bset(climateType, Places.CLIMASK_WET)) domCond.append(" wet");
-			if(CMath.bset(climateType, Places.CLIMASK_HOT)) domCond.append(" hot");
-			if(CMath.bset(climateType, Places.CLIMASK_DRY)) domCond.append(" dry");
-			if(CMath.bset(climateType, Places.CLIMASK_WINDY)) domCond.append(" windy");
+			if(CMath.bset(climateType, Places.CLIMASK_COLD))
+				domCond.append(" cold");
+			if(CMath.bset(climateType, Places.CLIMASK_WET))
+				domCond.append(" wet");
+			if(CMath.bset(climateType, Places.CLIMASK_HOT))
+				domCond.append(" hot");
+			if(CMath.bset(climateType, Places.CLIMASK_DRY))
+				domCond.append(" dry");
+			if(CMath.bset(climateType, Places.CLIMASK_WINDY))
+				domCond.append(" windy");
 			Say.append("^!RoomID:^N "+CMLib.map().getExtendedRoomID(room)+"\n\r^!"+room.ID()+"^N: "+domType+" "+domCond.toString()+" <"+rscName+"> "+room.basePhyStats().weight()+"mv \n\r");
 		}
 		if(CMLib.flags().canBeSeenBy(room,mob))
@@ -1148,7 +1161,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					for(int c=0;c<room.numItems();c++)
 					{
 						final Item item=room.getItem(c);
-						if(item==null) continue;
+						if(item==null)
+							continue;
 						if((item.container()==null)
 						&&(item.displayText(mob).length()==0)
 						&&(CMLib.flags().canBeSeenBy(item,mob)))
@@ -1205,7 +1219,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		for(int c=0;c<room.numItems();c++)
 		{
 			final Item item=room.getItem(c);
-			if(item==null) continue;
+			if(item==null)
+				continue;
 
 			if(item.container()==null)
 			{
@@ -1234,7 +1249,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						if((!compress)&&(!mob.isMonster())&&(sess.getClientTelnetMode(Session.TELNET_MXP)))
 							Say.append(CMLib.protocol().mxpImage(mob2," H=10 W=10",""," "));
 						Say.append("^M^<RMob \""+CMStrings.removeColors(mob2.name())+"\"^>");
-						if(compress) Say.append(CMLib.flags().colorCodes(mob2,mob)+"^M ");
+						if(compress)
+							Say.append(CMLib.flags().colorCodes(mob2,mob)+"^M ");
 						if(displayText.length()>0)
 							Say.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(displayText)));
 						else
@@ -1258,7 +1274,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			mob.tell(L("You can't see anything!"));
 		else
 		{
-			if(compress) Say.append("\n\r");
+			if(compress)
+				Say.append("\n\r");
 			mob.tell(Say.toString());
 			if((CMProps.getIntVar(CMProps.Int.AWARERANGE)>0)
 			&&(!mob.isAttribute(MOB.Attrib.AUTOMAP)))
@@ -1352,9 +1369,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 
 	private static String getExitFragment(MOB mob, Room room, int dir, boolean style)
 	{
-		if(room==null) return "";
+		if(room==null)
+			return "";
 		final Exit exit = room.getExitInDir(dir);
-		if(exit == null) return "";
+		if(exit == null)
+			return "";
 		final boolean useShipDirs=(room instanceof SpaceShip)||(room.getArea() instanceof SpaceShip);
 		final String inDirName=useShipDirs?Directions.getShipInDirectionName(dir):Directions.getInDirectionName(dir);
 		if(style)
@@ -1466,7 +1485,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						for(int i=0;i<5;i++)
 						{
 							room=room.getRoomInDir(direction);
-							if(room==null) break;
+							if(room==null)
+								break;
 							final Exit E=room.getExitInDir(direction);
 							if((isAClearExitView(mob,room,E)))
 								view.add(room);
@@ -1478,12 +1498,14 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						for(int i=0;i<room.numItems();i++)
 						{
 							final Item E=room.getItem(i);
-							if(E!=null) items.add(E);
+							if(E!=null)
+								items.add(E);
 						}
 						for(int i=0;i<room.numInhabitants();i++)
 						{
 							final MOB E=room.fetchInhabitant(i);
-							if(E!=null) items.add(E);
+							if(E!=null)
+								items.add(E);
 						}
 					}
 					final StringBuilder seenThatWay=CMLib.lister().lister(msg.source(),items,true,"","",false,true);
@@ -1499,7 +1521,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				mob.tell(L("Misc   : @x1",exit.text()));
 			}
 			final String image=CMLib.protocol().mxpImage(exit," ALIGN=RIGHT H=70 W=70");
-			if((image!=null)&&(image.length()>0)) mob.tell(image);
+			if((image!=null)&&(image.length()>0))
+				mob.tell(image);
 		}
 		else
 			mob.tell(L("You can't see that way!"));
@@ -1598,7 +1621,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	@Override
 	public void handleBeingGivenTo(CMMsg msg)
 	{
-		if(!(msg.target() instanceof MOB)) return;
+		if(!(msg.target() instanceof MOB))
+			return;
 		final MOB givermob=msg.source();
 		final MOB giveemob=(MOB)msg.target();
 		if(giveemob.location()!=null)
@@ -1669,7 +1693,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	@Override
 	public void handleBeingGetted(CMMsg msg)
 	{
-		if(!(msg.target() instanceof Item)) return;
+		if(!(msg.target() instanceof Item))
+			return;
 		final Item item=(Item)msg.target();
 		final MOB mob=msg.source();
 		if(item instanceof Container)
@@ -1729,7 +1754,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	@Override
 	public void handleBeingDropped(CMMsg msg)
 	{
-		if(!(msg.target() instanceof Item)) return;
+		if(!(msg.target() instanceof Item))
+			return;
 		final Item item=(Item)msg.target();
 		final MOB mob=msg.source();
 		if(mob.isMine(item)&&(item instanceof Container))
@@ -1760,7 +1786,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	@Override
 	public void handleBeingRemoved(CMMsg msg)
 	{
-		if(!(msg.target() instanceof Item)) return;
+		if(!(msg.target() instanceof Item))
+			return;
 		final Item item=(Item)msg.target();
 		final MOB mob=msg.source();
 		if(item instanceof Container)
@@ -1775,7 +1802,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	@Override
 	public void handleBeingWorn(CMMsg msg)
 	{
-		if(!(msg.target() instanceof Item)) return;
+		if(!(msg.target() instanceof Item))
+			return;
 		final Item item=(Item)msg.target();
 		final long wearLocation = (msg.value()<=0)?0:((long)(1<<msg.value())/2);
 		final MOB mob=msg.source();
@@ -1793,7 +1821,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	@Override
 	public void handleBeingWielded(CMMsg msg)
 	{
-		if(!(msg.target() instanceof Item)) return;
+		if(!(msg.target() instanceof Item))
+			return;
 		final Item item=(Item)msg.target();
 		final MOB mob=msg.source();
 		if(item.wearIfPossible(mob,Wearable.WORN_WIELD))
@@ -1806,7 +1835,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	@Override
 	public void handleBeingHeld(CMMsg msg)
 	{
-		if(!(msg.target() instanceof Item)) return;
+		if(!(msg.target() instanceof Item))
+			return;
 		final Item item=(Item)msg.target();
 		final MOB mob=msg.source();
 		if(item.wearIfPossible(mob,Wearable.WORN_HELD))
@@ -1878,8 +1908,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	@Override
 	public void lookAtExitsShort(Room room, MOB mob)
 	{
-		if((mob==null)||(room==null)||(mob.isMonster())) return;
-		if(!CMLib.flags().canSee(mob)) return;
+		if((mob==null)||(room==null)||(mob.isMonster()))
+			return;
+		if(!CMLib.flags().canSee(mob))
+			return;
 
 		final boolean useShipNames=((room instanceof SpaceShip)||(room.getArea() instanceof SpaceShip));
 		final StringBuilder buf=new StringBuilder("^D[Exits: ");

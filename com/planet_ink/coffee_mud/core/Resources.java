@@ -38,7 +38,8 @@ public class Resources
 		{
 			if(o1==null)
 			{
-				if(o2==null) return 0;
+				if(o2==null)
+					return 0;
 				return -1;
 			}
 			else
@@ -58,7 +59,8 @@ public class Resources
 	{
 		super();
 		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
-		if(rscs[c]==null) rscs[c]=this;
+		if(rscs[c]==null)
+			rscs[c]=this;
 	}
 
 	public static void shareWith(char code)
@@ -80,7 +82,8 @@ public class Resources
 	public static final Resources instance()
 	{
 		final Resources r=r();
-		if(r==null) return new Resources();
+		if(r==null)
+			return new Resources();
 		return r;
 	}
 	public static final Resources instance(final char c){ return rscs[c];}
@@ -124,7 +127,8 @@ public class Resources
 	public static final List<String> getFileLineVector(final StringBuffer buf)
 	{
 		final Vector<String> V=new Vector<String>();
-		if(buf==null) return V;
+		if(buf==null)
+			return V;
 		final StringBuffer str=new StringBuffer("");
 		for(int i=0;i<buf.length();i++)
 		{
@@ -153,7 +157,8 @@ public class Resources
 
 	public static final String buildResourcePath(final String path)
 	{
-		if((path==null)||(path.length()==0)) return "resources/";
+		if((path==null)||(path.length()==0))
+			return "resources/";
 		return "resources/"+path+"/";
 	}
 
@@ -210,7 +215,8 @@ public class Resources
 		else
 			key = "PARSED_MULTI: "+filename.toUpperCase();
 		final Map<String,List<String>> H=(Map<String,List<String>>)getResource(key);
-		if(H==null) return false;
+		if(H==null)
+			return false;
 		updateMultiList(filename, H);
 		return true;
 	}
@@ -254,7 +260,8 @@ public class Resources
 
 	public static final String makeFileResourceName(final String filename)
 	{
-		if(filename==null) return "resources/";
+		if(filename==null)
+			return "resources/";
 		if(filename.startsWith("resources/")||filename.startsWith("/resources/"))
 			return filename;
 		if(filename.startsWith("/"))
@@ -301,9 +308,12 @@ public class Resources
 	@SuppressWarnings("rawtypes")
 	public static final Object prepareObject(final Object obj)
 	{
-		if(obj instanceof Vector) ((Vector)obj).trimToSize();
-		if(obj instanceof DVector) ((DVector)obj).trimToSize();
-		if(!compress) return obj;
+		if(obj instanceof Vector)
+			((Vector)obj).trimToSize();
+		if(obj instanceof DVector)
+			((DVector)obj).trimToSize();
+		if(!compress)
+			return obj;
 		if(obj instanceof StringBuffer)
 			return CMLib.encoder().compressString(((StringBuffer)obj).toString());
 		return obj;
@@ -331,7 +341,8 @@ public class Resources
 
 	public final boolean _isFileResource(final String filename)
 	{
-		if(_getResource(filename)!=null) return true;
+		if(_getResource(filename)!=null)
+			return true;
 		if(new CMFile(makeFileResourceName(filename),null).exists())
 			return true;
 		return false;
@@ -395,14 +406,18 @@ public class Resources
 				final int zb1=text.lastIndexOf("\n",x);
 				final int zb2=text.lastIndexOf("\r",x);
 				int zb=(zb2>zb1)?zb2:zb1;
-				if(zb<0) zb=0; else zb++;
+				if(zb<0)
+					zb=0; else zb++;
 				final int ze1=text.indexOf("\n",x);
 				final int ze2=text.indexOf("\r",x);
 				int ze=ze2+1;
-				if((ze1>zb)&&(ze1==ze2+1)) ze=ze1+1;
+				if((ze1>zb)&&(ze1==ze2+1))
+					ze=ze1+1;
 				else
-				if((ze2<0)&&(ze1>0)) ze=ze1+1;
-				if(ze<=0) ze=text.length();
+				if((ze2<0)&&(ze1>0))
+					ze=ze1+1;
+				if(ze<=0)
+					ze=text.length();
 				if(!text.substring(zb).trim().startsWith("#"))
 				{
 					text.delete(zb,ze);
@@ -412,7 +427,8 @@ public class Resources
 			}
 			x=text.toString().toUpperCase().indexOf(match.toUpperCase(),x+1);
 		}
-		if(removed) F.saveRaw(text);
+		if(removed)
+			F.saveRaw(text);
 		return removed;
 	}
 

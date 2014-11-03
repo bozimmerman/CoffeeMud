@@ -47,7 +47,8 @@ public class Spell_Reinforce extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Item target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_ANY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(!target.subjectToWearAndTear())
 		{	mob.tell(L("@x1 cannot be reinforced.",target.name(mob))); return false;}
 		else

@@ -48,7 +48,8 @@ public class QuestMgr extends StdWebMacro
 		{
 			Q=(Quest)CMClass.getCommon("DefaultQuest");
 			final String err=populateQuest(httpReq,Q,false);
-			if(err.length()>0) return err;
+			if(err.length()>0)
+				return err;
 			CMLib.quests().addQuest(Q);
 			CMLib.quests().save();
 			httpReq.addFakeUrlParameter("QUEST",Q.name());
@@ -57,7 +58,8 @@ public class QuestMgr extends StdWebMacro
 		}
 
 		final String last=httpReq.getUrlParameter("QUEST");
-		if(last==null) return "";
+		if(last==null)
+			return "";
 		if(last.length()>0)
 		{
 			Q=CMLib.quests().fetchQuest(last);
@@ -68,11 +70,13 @@ public class QuestMgr extends StdWebMacro
 					if((""+CMLib.quests().fetchQuest(q)).equals(newLast))
 					{ Q=CMLib.quests().fetchQuest(q); break;}
 			}
-			if(Q==null) return "";
+			if(Q==null)
+				return "";
 			if(parms.containsKey("MODIFY"))
 			{
 				final String err=populateQuest(httpReq,Q,parms.containsKey("REDIRECT"));
-				if(err.length()>0) return err;
+				if(err.length()>0)
+					return err;
 				httpReq.addFakeUrlParameter("QUEST",Q.name());
 				CMLib.quests().save();
 				Log.sysOut("QuestMgr",name+" modified quest '"+Q.name()+"'");

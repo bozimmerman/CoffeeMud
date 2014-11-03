@@ -60,7 +60,8 @@ public class Spell_AlternateReality extends Spell
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
 		if(!(affected instanceof MOB))
 			return false;
 		final MOB mob=(MOB)affected;
@@ -97,7 +98,8 @@ public class Spell_AlternateReality extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=super.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(target.getVictim()!=mob)
 		{
@@ -135,7 +137,8 @@ public class Spell_AlternateReality extends Spell
 						if(mob.getVictim()==target)
 							mob.setVictim(null);
 						final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
-						if(!H.contains(mob))H.add(mob);
+						if(!H.contains(mob))
+							H.add(mob);
 						final Vector badGuys=new Vector();
 						for(int i=0;i<R.numInhabitants();i++)
 						{

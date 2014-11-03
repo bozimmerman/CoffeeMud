@@ -62,7 +62,8 @@ public class Prayer_Rot extends Prayer
 				if(host instanceof Physical)
 				{
 					final Ability A=((Physical)host).fetchEffect("Poison_Rotten");
-					if(A!=null) ((Physical)host).delEffect(A);
+					if(A!=null)
+						((Physical)host).delEffect(A);
 				}
 			}
 			else
@@ -75,7 +76,8 @@ public class Prayer_Rot extends Prayer
 						if(V.get(f) instanceof Decayable)
 							((Decayable)V.get(f)).setDecayTime(0);
 						final Ability A=V.get(f).fetchEffect("Poison_Rotten");
-						if(A!=null) V.get(f).delEffect(A);
+						if(A!=null)
+							V.get(f).delEffect(A);
 					}
 			}
 		}
@@ -171,7 +173,8 @@ public class Prayer_Rot extends Prayer
 			if(I.fetchEffect("Poison_Rotten")==null)
 			{
 				final Ability A=CMClass.getAbility("Poison_Rotten");
-				if(A!=null) I.addNonUninvokableEffect(A);
+				if(A!=null)
+					I.addNonUninvokableEffect(A);
 			}
 			if(I instanceof Food)
 				((Food)I).setNourishment(0);
@@ -206,7 +209,8 @@ public class Prayer_Rot extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if((!(target instanceof Food))
 			&&(!(target instanceof Drink)))
@@ -240,7 +244,8 @@ public class Prayer_Rot extends Prayer
 					doneSomething=true;
 				}
 				final Ability A=CMClass.getAbility("Poison_Rotten");
-				if(A!=null) target.addNonUninvokableEffect(A);
+				if(A!=null)
+					target.addNonUninvokableEffect(A);
 				if((target instanceof Pill)
 				&&(!((Pill)target).getSpellList().equals("Prayer_DrunkenStupor")))
 				{

@@ -121,7 +121,8 @@ public class Skill_Disguise extends BardSkill
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg)) return false;
+		if(!super.okMessage(myHost,msg))
+			return false;
 		if((myHost==null)||(!(myHost instanceof MOB)))
 		   return true;
 		final MOB mob=(MOB)myHost;
@@ -163,8 +164,10 @@ public class Skill_Disguise extends BardSkill
 			}
 			int height=mob.phyStats().height();
 			int weight=mob.basePhyStats().weight();
-			if(values[0]!=null) weight=CMath.s_int(values[0]);
-			if(values[4]!=null) height=CMath.s_int(values[4]);
+			if(values[0]!=null)
+				weight=CMath.s_int(values[0]);
+			if(values[4]!=null)
+				height=CMath.s_int(values[4]);
 			if(height>0)
 				myDescription.append(mob.charStats().HeShe()+" is "+height+" inches tall and weighs "+weight+" pounds.\n\r");
 			myDescription.append(mob.healthText(msg.source())+"\n\r\n\r");
@@ -181,7 +184,8 @@ public class Skill_Disguise extends BardSkill
 			return super.invoke(mob,commands,givenTarget,auto,asLevel);
 
 		Skill_Disguise A=(Skill_Disguise)mob.fetchEffect("Skill_Disguise");
-		if(A==null) A=(Skill_Disguise)mob.fetchEffect("Skill_MarkDisguise");
+		if(A==null)
+			A=(Skill_Disguise)mob.fetchEffect("Skill_MarkDisguise");
 
 		final String validChoices="Weight, sex, race, height, age, name, level, class, or alignment";
 		if(commands.size()==0)
@@ -231,7 +235,8 @@ public class Skill_Disguise extends BardSkill
 				return false;
 			}
 			int x=mob.basePhyStats().weight()-CMath.s_int(how);
-			if(x<0) x=x*-1;
+			if(x<0)
+				x=x*-1;
 			adjustment=-((int)Math.round(CMath.div(x,mob.basePhyStats().weight())*100.0));
 			break;
 		}
@@ -244,15 +249,20 @@ public class Skill_Disguise extends BardSkill
 			how=Integer.toString(CMath.s_int(how));
 			break;
 		case 2: // sex
-			if(how.toUpperCase().startsWith("M")) how="male";
+			if(how.toUpperCase().startsWith("M"))
+				how="male";
 			else
-			if(how.toUpperCase().startsWith("F")) how="female";
+			if(how.toUpperCase().startsWith("F"))
+				how="female";
 			else
-			if(how.toUpperCase().startsWith("N")) how="neuter";
+			if(how.toUpperCase().startsWith("N"))
+				how="neuter";
 			else
-			if(how.toUpperCase().startsWith("B")) how="male";
+			if(how.toUpperCase().startsWith("B"))
+				how="male";
 			else
-			if(how.toUpperCase().startsWith("G")) how="girl";
+			if(how.toUpperCase().startsWith("G"))
+				how="girl";
 			else
 			{
 				mob.tell(L("'@x1' is a sex which cannot be guessed at!",how));
@@ -277,7 +287,8 @@ public class Skill_Disguise extends BardSkill
 				return false;
 			}
 			int x=mob.phyStats().height()-CMath.s_int(how);
-			if(x<0) x=x*-1;
+			if(x<0)
+				x=x*-1;
 			adjustment=-((int)Math.round(CMath.div(x,mob.phyStats().height())*100.0));
 			break;
 		}
@@ -336,7 +347,8 @@ public class Skill_Disguise extends BardSkill
 				return false;
 			}
 			int x=mob.baseCharStats().getStat(CharStats.STAT_AGE)-CMath.s_int(how);
-			if(x<0) x=x*-1;
+			if(x<0)
+				x=x*-1;
 			adjustment=-((int)Math.round(CMath.div(x,mob.baseCharStats().getStat(CharStats.STAT_AGE))*100.0));
 			break;
 		}
@@ -353,8 +365,10 @@ public class Skill_Disguise extends BardSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(A==null)	beneficialAffect(mob,mob,asLevel,0);
-				if(A==null) A=(Skill_Disguise)mob.fetchEffect("Skill_Disguise");
+				if(A==null)
+					beneficialAffect(mob,mob,asLevel,0);
+				if(A==null)
+					A=(Skill_Disguise)mob.fetchEffect("Skill_Disguise");
 				if(A!=null){ A.values[which]=how; A.makeLongLasting();}
 				mob.recoverCharStats();
 				mob.recoverPhyStats();

@@ -57,7 +57,8 @@ public class Spell_Clone extends Spell
 			&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 			{
 				unInvoke();
-				if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
+				if(msg.source().playerStats()!=null)
+					msg.source().playerStats().setLastUpdated(0);
 			}
 			else
 			if(msg.amISource((MOB)affected))
@@ -91,7 +92,8 @@ public class Spell_Clone extends Spell
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
-			if(mob.amDead()) mob.setLocation(null);
+			if(mob.amDead())
+				mob.setLocation(null);
 			mob.destroy();
 		}
 	}

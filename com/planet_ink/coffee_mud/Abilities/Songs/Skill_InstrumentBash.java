@@ -65,10 +65,12 @@ public class Skill_InstrumentBash extends BardSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		final Item instrument=Play.getInstrument(mob,-1,true);
-		if(instrument==null) return false;
+		if(instrument==null)
+			return false;
 
 		if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
 		{

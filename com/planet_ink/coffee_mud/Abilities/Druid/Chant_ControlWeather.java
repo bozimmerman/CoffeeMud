@@ -52,7 +52,8 @@ public class Chant_ControlWeather extends Chant
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg)) return false;
+		if(!super.okMessage(myHost,msg))
+			return false;
 		if((msg.tool() instanceof Ability)
 		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_WEATHERAFFECTING)))
 		{
@@ -97,8 +98,10 @@ public class Chant_ControlWeather extends Chant
 		}
 		int size=mob.location().getArea().numberOfProperIDedRooms();
 		size=size/(mob.phyStats().level()+(super.getXLEVELLevel(mob)));
-		if(size<0) size=0;
-		if(A!=null) size=size-((A.invoker().phyStats().level()-(mob.phyStats().level()+(super.getXLEVELLevel(mob))))*10);
+		if(size<0)
+			size=0;
+		if(A!=null)
+			size=size-((A.invoker().phyStats().level()-(mob.phyStats().level()+(super.getXLEVELLevel(mob))))*10);
 		final boolean success=proficiencyCheck(mob,-size,auto);
 		if(success)
 		{
@@ -108,7 +111,8 @@ public class Chant_ControlWeather extends Chant
 				mob.location().send(mob,msg);
 				if((A!=null)&&(A.invoker()!=mob))
 					mob.tell(L("You successfully wrest control of the weather from @x1.",A.invoker().name()));
-				if(A!=null) A.unInvoke();
+				if(A!=null)
+					A.unInvoke();
 				beneficialAffect(mob,mob.location().getArea(),asLevel,0);
 			}
 		}

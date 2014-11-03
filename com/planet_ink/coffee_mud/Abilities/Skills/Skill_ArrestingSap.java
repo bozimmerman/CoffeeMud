@@ -115,7 +115,8 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 	{
 		if((mob!=null)&&(target!=null))
 		{
-			if(!(target instanceof MOB)) return Ability.QUALITY_INDIFFERENT;
+			if(!(target instanceof MOB))
+				return Ability.QUALITY_INDIFFERENT;
 			final MOB targetM=(MOB)target;
 			if(mob.baseWeight()<(targetM.baseWeight()-450))
 				return Ability.QUALITY_INDIFFERENT;
@@ -188,7 +189,8 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 		}
 
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -236,10 +238,13 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 				if(target.riding()!=null)
 					target.setRiding(null);
 				success=maliciousAffect(mob,target,asLevel,ticks,-1)!=null;
-				if(mob.getVictim()==target) mob.setVictim(null);
+				if(mob.getVictim()==target)
+					mob.setVictim(null);
 				final Skill_ArrestingSap A=(Skill_ArrestingSap)target.fetchEffect(ID());
-				if(A!=null) A.utterSafety=safety;
-				if(safety) makeMyPeace(target);
+				if(A!=null)
+					A.utterSafety=safety;
+				if(safety)
+					makeMyPeace(target);
 			}
 		}
 		else

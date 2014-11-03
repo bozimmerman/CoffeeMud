@@ -76,8 +76,10 @@ public class Archon_Record extends ArchonSkill
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
-		if(sess==null) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(sess==null)
+			return false;
 		if((affected instanceof MOB)
 		&&(((MOB)affected).session()!=null)
 		&&(!(((MOB)affected).session().isBeingSnoopedBy(sess))))
@@ -89,14 +91,17 @@ public class Archon_Record extends ArchonSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=CMLib.players().getLoadPlayer(CMParms.combine(commands,0));
-		if(target==null) target=getTargetAnywhere(mob,commands,givenTarget,false,true,false);
-		if(target==null) return false;
+		if(target==null)
+			target=getTargetAnywhere(mob,commands,givenTarget,false,true,false);
+		if(target==null)
+			return false;
 
 		final Archon_Record A=(Archon_Record)target.fetchEffect(ID());
 		if(A!=null)
 		{
 			target.delEffect(A);
-			if(target.playerStats()!=null) target.playerStats().setLastUpdated(0);
+			if(target.playerStats()!=null)
+				target.playerStats().setLastUpdated(0);
 			mob.tell(L("@x1 will no longer be recorded.",target.Name()));
 			return true;
 		}

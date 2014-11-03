@@ -81,10 +81,13 @@ public class Thief_AutoDetectTraps extends ThiefSkill
 			{
 				R2=R.getRoomInDir(d);
 				E=R.getExitInDir(d);
-				if((E!=null)&&(CMLib.utensils().fetchMyTrap(E)!=null)) dropem((MOB)affected,E);
+				if((E!=null)&&(CMLib.utensils().fetchMyTrap(E)!=null))
+					dropem((MOB)affected,E);
 				E=R.getReverseExit(d);
-				if((E!=null)&&(CMLib.utensils().fetchMyTrap(E)!=null)) dropem((MOB)affected,E);
-				if((R2!=null)&&(CMLib.utensils().fetchMyTrap(R2)!=null)) dropem((MOB)affected,R2);
+				if((E!=null)&&(CMLib.utensils().fetchMyTrap(E)!=null))
+					dropem((MOB)affected,E);
+				if((R2!=null)&&(CMLib.utensils().fetchMyTrap(R2)!=null))
+					dropem((MOB)affected,R2);
 			}
 			for(int i=0;i<R.numItems();i++)
 			{
@@ -139,7 +142,8 @@ public class Thief_AutoDetectTraps extends ThiefSkill
 			target.tell(L("You will now automatically detect traps when you enter a room."));
 			beneficialAffect(mob,target,asLevel,0);
 			final Ability A=mob.fetchEffect(ID());
-			if(A!=null) A.makeLongLasting();
+			if(A!=null)
+				A.makeLongLasting();
 			dropem(target,target.location());
 		}
 		else

@@ -33,7 +33,8 @@ public class OrderedMap<K,J> extends Hashtable<K,J> implements Iterable<J>
 	@SuppressWarnings("unchecked")
 	@Override public Iterator<J> iterator()
 	{
-		if(size()==0) return empty;
+		if(size()==0)
+			return empty;
 		return list.iterator();
 	}
 

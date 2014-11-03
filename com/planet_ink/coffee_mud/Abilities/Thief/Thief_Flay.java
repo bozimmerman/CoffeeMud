@@ -52,7 +52,8 @@ public class Thief_Flay extends ThiefSkill
 	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
-		if(!super.okMessage(host,msg)) return false;
+		if(!super.okMessage(host,msg))
+			return false;
 		if((affected instanceof MOB)
 		&&msg.amISource((MOB)affected)
 		&&(msg.targetMinor()==CMMsg.TYP_WEAR)
@@ -95,7 +96,8 @@ public class Thief_Flay extends ThiefSkill
 			return false;
 		}
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(CMLib.flags().isSitting(mob))
 		{
@@ -162,7 +164,8 @@ public class Thief_Flay extends ThiefSkill
 				if(target.fetchEffect(ID())!=null)
 				{
 					final Ability A=CMClass.getAbility("Bleeding");
-					if(A!=null) A.invoke(mob,target,true,asLevel);
+					if(A!=null)
+						A.invoke(mob,target,true,asLevel);
 					if(makePeace)
 					{
 						mob.makePeace();

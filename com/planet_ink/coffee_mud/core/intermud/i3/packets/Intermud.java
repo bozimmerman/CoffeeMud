@@ -79,7 +79,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 */
 	static public void sendPacket(Packet p)
 	{
-		if(!isConnected()) return;
+		if(!isConnected())
+			return;
 		thread.send(p);
 	}
 
@@ -109,9 +110,11 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 */
 	static public String translateName(String mud)
 	{
-		if(!isConnected()) return "";
+		if(!isConnected())
+			return "";
 		final String s=thread.getMudNameFor(mud);
-		if(s!=null) return s;
+		if(s!=null)
+			return s;
 		mud = mud.toLowerCase().replace('.', ' ');
 		return mud;
 	}
@@ -124,7 +127,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 */
 	static public boolean isAPossibleMUDName(String mud)
 	{
-		if(!isConnected()) return false;
+		if(!isConnected())
+			return false;
 		return thread.getMudNameFor(mud) != null;
 	}
 
@@ -180,7 +184,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 */
 	static public String getLocalChannel(String c )
 	{
-		if(!isConnected()) return "";
+		if(!isConnected())
+			return "";
 		return thread.intermud.getLocalChannel(c);
 	}
 
@@ -195,7 +200,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 */
 	static public String getRemoteChannel(String c)
 	{
-		if(!isConnected()) return "";
+		if(!isConnected())
+			return "";
 		return thread.intermud.getRemoteChannel(c);
 	}
 
@@ -208,7 +214,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 */
 	static public boolean isUp(String mud)
 	{
-		if(!isConnected()) return false;
+		if(!isConnected())
+			return false;
 		final I3Mud m = thread.getMud(mud);
 
 		if( m == null )
@@ -365,16 +372,21 @@ public class Intermud implements Runnable, Persistent, Serializable
 
 	public static NameServer getNameServer()
 	{
-		if(thread==null) return null;
-		if(thread.currentRouter!=null) return thread.currentRouter;
-		if(thread.name_servers==null) return null;
-		if(thread.name_servers.size()==0) return null;
+		if(thread==null)
+			return null;
+		if(thread.currentRouter!=null)
+			return thread.currentRouter;
+		if(thread.name_servers==null)
+			return null;
+		if(thread.name_servers.size()==0)
+			return null;
 		return thread.name_servers.get(0);
 	}
 
 	private synchronized void connect()
 	{
-		if(shutdown) return;
+		if(shutdown)
+			return;
 		attempts++;
 		try
 		{
@@ -525,7 +537,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 
 	public static boolean isConnected()
 	{
-		if(thread==null) return false;
+		if(thread==null)
+			return false;
 		return thread.connected;
 	}
 
@@ -672,7 +685,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 				}
 				connect();
 				final String errMsg=e.getMessage()==null?e.toString():e.getMessage();
-				if(errMsg!=null) Log.errOut("InterMud","384-"+errMsg);
+				if(errMsg!=null)
+					Log.errOut("InterMud","384-"+errMsg);
 				return;
 			}
 			try
@@ -691,7 +705,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 			catch( final I3Exception e )
 			{
 				final String errMsg=e.getMessage()==null?e.toString():e.getMessage();
-				if(errMsg!=null) Log.errOut("InterMud","389-"+errMsg);
+				if(errMsg!=null)
+					Log.errOut("InterMud","389-"+errMsg);
 				continue;
 			}
 			// Figure out the packet type and send it to the mudlib
@@ -1092,7 +1107,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 */
 	public static MudList getAllMudsList()
 	{
-		if(!isConnected()) return new MudList(-1);
+		if(!isConnected())
+			return new MudList(-1);
 		return thread.muds;
 	}
 	/**
@@ -1100,7 +1116,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 */
 	public static ChannelList getAllChannelList()
 	{
-		if(!isConnected()) return new ChannelList();
+		if(!isConnected())
+			return new ChannelList();
 		return thread.channels;
 	}
 	/**

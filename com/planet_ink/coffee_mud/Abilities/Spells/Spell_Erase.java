@@ -53,7 +53,8 @@ public class Spell_Erase extends Spell
 			return false;
 		}
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!(target instanceof Scroll)&&(!target.isReadable()))
 		{

@@ -50,7 +50,8 @@ public class Prayer_Wave extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
-		if(h==null) return false;
+		if(h==null)
+			return false;
 		int dir=Directions.getGoodDirectionCode(CMParms.combine(commands,0));
 		if(dir<0)
 		{
@@ -63,7 +64,8 @@ public class Prayer_Wave extends Prayer
 					if((destRoom!=null)||(exitRoom!=null)||(d!=Directions.UP))
 					{ dir=d; break;}
 				}
-				if(dir<0) return false;
+				if(dir<0)
+					return false;
 			}
 			else
 			{

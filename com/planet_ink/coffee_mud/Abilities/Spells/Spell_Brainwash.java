@@ -58,7 +58,8 @@ public class Spell_Brainwash extends Spell
 		   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))))
 		{
 			String str=CMStrings.getSayFromMessage(msg.othersMessage());
-			if(str==null) str=CMStrings.getSayFromMessage(msg.targetMessage());
+			if(str==null)
+				str=CMStrings.getSayFromMessage(msg.targetMessage());
 			if(str!=null)
 			{
 				String smsg=CMStrings.getSayFromMessage(msg.sourceMessage());
@@ -72,7 +73,8 @@ public class Spell_Brainwash extends Spell
 				case 5:	lead=" You might also be curious to know that "; break;
 				case 6: lead=" "; break;
 				}
-				if(smsg!=null) smsg=smsg+lead+text();
+				if(smsg!=null)
+					smsg=smsg+lead+text();
 				str=str+lead+text();
 				msg.modify(msg.source(),
 						  msg.target(),
@@ -125,7 +127,8 @@ public class Spell_Brainwash extends Spell
 		else
 			message=CMParms.combine(commands,0);
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(CMLib.flags().isAnimalIntelligence(target))
 		{
@@ -158,7 +161,8 @@ public class Spell_Brainwash extends Spell
 				mob.location().send(mob,msg);
 				super.maliciousAffect(mob,target,asLevel,0,CMMsg.MASK_MALICIOUS|CMMsg.TYP_MIND);
 				final Ability A=target.fetchEffect(ID());
-				if(A!=null) A.setMiscText(message);
+				if(A!=null)
+					A.setMiscText(message);
 				if(mob.getVictim()!=oldVictim)
 					mob.setVictim(oldVictim);
 				if(target.getVictim()!=oldVictim2)

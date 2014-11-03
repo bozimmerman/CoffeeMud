@@ -92,7 +92,8 @@ public class Chant_PlantConstriction extends Chant
 	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
-		if(!super.okMessage(host,msg)) return false;
+		if(!super.okMessage(host,msg))
+			return false;
 		if((msg.targetMinor()==CMMsg.TYP_REMOVE)
 		&&(msg.target()==affected)
 		&&(affected instanceof Item)
@@ -151,7 +152,8 @@ public class Chant_PlantConstriction extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
 		if(myPlant==null)
 		{

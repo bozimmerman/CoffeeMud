@@ -84,7 +84,8 @@ public class Prop_HereSpellCast extends Prop_HaveSpellCast
 	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
-		if(processing) return;
+		if(processing)
+			return;
 		if((((msg.targetMinor()==CMMsg.TYP_ENTER)&&(msg.target()==affected))
 			||((msg.targetMinor()==CMMsg.TYP_RECALL)&&(msg.target()==affected)))
 		&&(affected instanceof Room))
@@ -99,7 +100,8 @@ public class Prop_HereSpellCast extends Prop_HaveSpellCast
 	@Override
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
-		if(processing) return;
+		if(processing)
+			return;
 		processing=true;
 		if((host instanceof MOB)&&(affected instanceof Room))
 			process((MOB)host, (Room)affected,0);

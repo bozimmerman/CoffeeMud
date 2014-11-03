@@ -43,10 +43,12 @@ public class Prompt extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(mob.session()==null) return false;
+		if(mob.session()==null)
+			return false;
 		final PlayerStats pstats=mob.playerStats();
 		final Session sess=mob.session();
-		if(pstats==null) return false;
+		if(pstats==null)
+			return false;
 
 		if(commands.size()==1)
 			sess.rawPrintln(L("Your prompt is currently set at:\n\r@x1",pstats.getPrompt()));

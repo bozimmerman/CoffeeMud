@@ -70,18 +70,22 @@ public class MassMailer implements Runnable
 	public int getFailureDays()
 	{
 		final String s=page.getStr("FAILUREDAYS");
-		if(s==null) return (365*20);
+		if(s==null)
+			return (365*20);
 		final int x=CMath.s_int(s);
-		if(x==0) return (365*20);
+		if(x==0)
+			return (365*20);
 		return x;
 	}
 
 	public int getEmailDays()
 	{
 		final String s=page.getStr("EMAILDAYS");
-		if(s==null) return (365*20);
+		if(s==null)
+			return (365*20);
 		final int x=CMath.s_int(s);
-		if(x==0) return (365*20);
+		if(x==0)
+			return (365*20);
 		return x;
 	}
 
@@ -111,7 +115,8 @@ public class MassMailer implements Runnable
 		IQE.setTimeInMillis(email);
 		final Calendar IQC=Calendar.getInstance();
 		IQC.setTimeInMillis(curr);
-		if(CMath.absDiff(email,curr)<(30*60*1000)) return true;
+		if(CMath.absDiff(email,curr)<(30*60*1000))
+			return true;
 		while(IQE.before(IQC))
 		{
 			if(CMath.absDiff(IQE.getTimeInMillis(),IQC.getTimeInMillis())<(30*60*1000))
@@ -139,9 +144,11 @@ public class MassMailer implements Runnable
 			final String subj=mail.subj;
 			final String msg=mail.msg.trim();
 
-			if(to.equalsIgnoreCase("ALL")||(to.toUpperCase().trim().startsWith("MASK="))) continue;
+			if(to.equalsIgnoreCase("ALL")||(to.toUpperCase().trim().startsWith("MASK=")))
+				continue;
 
-			if(!rightTimeToSendEmail(date)) continue;
+			if(!rightTimeToSendEmail(date))
+				continue;
 
 			// check for valid recipient
 			final String toEmail;

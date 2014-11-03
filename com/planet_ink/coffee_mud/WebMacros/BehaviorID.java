@@ -40,7 +40,8 @@ public class BehaviorID extends StdWebMacro
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		final String last=httpReq.getUrlParameter("BEHAVIOR");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		if(last.length()>0)
 		{
 			final Behavior B=CMClass.getBehavior(last);

@@ -50,12 +50,14 @@ public class Prayer_GodLight extends Prayer
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_LIGHTSOURCE);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GLOWING);
 		if(CMath.bset(affectableStats.disposition(),PhyStats.IS_DARK))
 			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_DARK);
-		if(!(affected instanceof MOB)) return;
+		if(!(affected instanceof MOB))
+			return;
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SEE);
 	}
 
@@ -111,7 +113,8 @@ public class Prayer_GodLight extends Prayer
 			if(target==null)
 				target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 		}
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if((target instanceof Room)&&(target.fetchEffect(ID())!=null))
 		{
 			mob.tell(L("This place already has the god light."));
@@ -135,7 +138,8 @@ public class Prayer_GodLight extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			if(target instanceof Room) mob.phyStats().setSensesMask(mob.phyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
+			if(target instanceof Room)
+				mob.phyStats().setSensesMask(mob.phyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":((target instanceof MOB)?"^S<S-NAME> point(s) to <T-NAMESELF> and "+prayWord(mob)+". A beam of bright sunlight flashes into <T-HIS-HER> eyes!^?":"^S<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+".^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

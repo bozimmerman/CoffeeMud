@@ -38,7 +38,8 @@ public class Triad<T,K,L> extends Pair<T,K>
 	@Override
 	public boolean equals(Object o)
 	{
-		if(o==this) return true;
+		if(o==this)
+			return true;
 		if(o instanceof Triad)
 		{
 			@SuppressWarnings("rawtypes")

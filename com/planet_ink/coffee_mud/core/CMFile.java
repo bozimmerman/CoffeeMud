@@ -124,7 +124,8 @@ public class CMFile extends File
 		logErrors=pleaseLogErrors;
 		demandLocal=absolutePath.trim().startsWith("//");
 		demandVFS=absolutePath.trim().startsWith("::");
-		if(accessor!=null) author=accessor.Name();
+		if(accessor!=null)
+			author=accessor.Name();
 		final String[] pathParts=parsePathParts(absolutePath);
 		absolutePath=pathParts[0];
 		path=pathParts[1];
@@ -193,7 +194,8 @@ public class CMFile extends File
 		else
 		{
 			modifiedDateTime=localFile.lastModified();
-			if(localFile.isHidden()) vfsBits=vfsBits|CMFile.VFS_MASK_HIDDEN;
+			if(localFile.isHidden())
+				vfsBits=vfsBits|CMFile.VFS_MASK_HIDDEN;
 		}
 
 		final boolean doesFilenameExistInVFS=(info!=null) && (info.path.equalsIgnoreCase(absolutePath) || info.path.equalsIgnoreCase(absolutePath+"/"));
@@ -212,21 +214,30 @@ public class CMFile extends File
 									&&(localFile.exists())
 									&&(allowedToWriteLocal||allowedToTraverseAsDirectory);
 
-		if(!allowedToReadVFS) vfsBits=vfsBits|CMFile.VFS_MASK_NOREADVFS;
+		if(!allowedToReadVFS)
+			vfsBits=vfsBits|CMFile.VFS_MASK_NOREADVFS;
 
-		if(!allowedToReadLocal) vfsBits=vfsBits|CMFile.VFS_MASK_NOREADLOCAL;
+		if(!allowedToReadLocal)
+			vfsBits=vfsBits|CMFile.VFS_MASK_NOREADLOCAL;
 
-		if(!allowedToWriteVFS) vfsBits=vfsBits|CMFile.VFS_MASK_NOWRITEVFS;
+		if(!allowedToWriteVFS)
+			vfsBits=vfsBits|CMFile.VFS_MASK_NOWRITEVFS;
 
-		if(!allowedToWriteLocal) vfsBits=vfsBits|CMFile.VFS_MASK_NOWRITELOCAL;
+		if(!allowedToWriteLocal)
+			vfsBits=vfsBits|CMFile.VFS_MASK_NOWRITELOCAL;
 
-		if(allowedToTraverseAsDirectory)  vfsBits=vfsBits|CMFile.VFS_MASK_DIRECTORY;
+		if(allowedToTraverseAsDirectory)
+			vfsBits=vfsBits|CMFile.VFS_MASK_DIRECTORY;
 
-		if((demandVFS)&&(!allowedToReadVFS))  vfsBits=vfsBits|CMFile.VFS_MASK_NOREADLOCAL;
-		if((demandVFS)&&(!allowedToWriteVFS))  vfsBits=vfsBits|CMFile.VFS_MASK_NOWRITELOCAL;
+		if((demandVFS)&&(!allowedToReadVFS))
+			vfsBits=vfsBits|CMFile.VFS_MASK_NOREADLOCAL;
+		if((demandVFS)&&(!allowedToWriteVFS))
+			vfsBits=vfsBits|CMFile.VFS_MASK_NOWRITELOCAL;
 
-		if((demandLocal)&&(!allowedToReadLocal))  vfsBits=vfsBits|CMFile.VFS_MASK_NOREADVFS;
-		if((demandLocal)&&(!allowedToWriteLocal))  vfsBits=vfsBits|CMFile.VFS_MASK_NOWRITEVFS;
+		if((demandLocal)&&(!allowedToReadLocal))
+			vfsBits=vfsBits|CMFile.VFS_MASK_NOREADVFS;
+		if((demandLocal)&&(!allowedToWriteLocal))
+			vfsBits=vfsBits|CMFile.VFS_MASK_NOWRITEVFS;
 
 		if((!demandVFS)
 		&&(demandLocal||((!allowedToReadVFS) && (allowedToWriteLocal))))
@@ -261,10 +272,14 @@ public class CMFile extends File
 			this.path=path;
 			this.fName=path;
 			int x=path.lastIndexOf('/');
-			if(x==path.length()-1) x=path.lastIndexOf('/',path.length()-2);
-			if(x>=0) this.fName=path.substring(x+1);
-			while(this.fName.startsWith("/")) this.fName=this.fName.substring(1);
-			while(this.fName.endsWith("/")) this.fName=this.fName.substring(0,this.fName.length()-1);
+			if(x==path.length()-1)
+				x=path.lastIndexOf('/',path.length()-2);
+			if(x>=0)
+				this.fName=path.substring(x+1);
+			while(this.fName.startsWith("/"))
+				this.fName=this.fName.substring(1);
+			while(this.fName.endsWith("/"))
+				this.fName=this.fName.substring(0,this.fName.length()-1);
 			this.uName=this.fName.toUpperCase();
 			this.mask=mask;
 			this.modifiedDateTime=modifiedDateTime;
@@ -437,7 +452,8 @@ public class CMFile extends File
 						else
 						if(!create)
 							return null;
-						if(files==null) currDir.files=new CMVFSFile[0];
+						if(files==null)
+							currDir.files=new CMVFSFile[0];
 						currDir.files=Arrays.copyOf(currDir.files, currDir.files.length+1);
 						currDir.files[currDir.files.length-1]=key;
 						Arrays.sort(currDir.files,fcomparator);
@@ -463,7 +479,8 @@ public class CMFile extends File
 			if(subDir!=null)
 			synchronized(subDir)
 			{
-				if(subDir.files==null) subDir.files=new CMVFSFile[0];
+				if(subDir.files==null)
+					subDir.files=new CMVFSFile[0];
 				final CMVFSFile old = subDir.get(f);
 				if(old!=null)
 					f.copyInto(old);
@@ -496,7 +513,8 @@ public class CMFile extends File
 		public final boolean delete(final CMVFSFile file)
 		{
 			final CMVFSDir dir = vfsV();
-			if(dir==null) return false;
+			if(dir==null)
+				return false;
 			final int x=file.path.lastIndexOf('/');
 			CMVFSDir subDir=dir;
 			if(x>0)
@@ -534,19 +552,23 @@ public class CMFile extends File
 		private final synchronized CMVFSFile get(final String fileName)
 		{
 			final CMVFSFile[] files=getFiles();
-			if(files==null) return null;
+			if(files==null)
+				return null;
 			final CMVFSFile key = new CMVFSFile(fileName, 0, 0, "");
 			final int dex = Arrays.binarySearch(files, key, fcomparator);
-			if(dex>=0) return files[dex];
+			if(dex>=0)
+				return files[dex];
 			return null;
 		}
 
 		private final synchronized CMVFSFile get(final CMVFSFile file)
 		{
 			final CMVFSFile[] files=getFiles();
-			if(files==null) return null;
+			if(files==null)
+				return null;
 			final int dex = Arrays.binarySearch(files, file, fcomparator);
-			if(dex>=0) return file;
+			if(dex>=0)
+				return file;
 			return null;
 		}
 
@@ -561,8 +583,10 @@ public class CMFile extends File
 			CMVFSDir dir = this;
 			if(x>=0)
 				dir = this.fetchSubDir(filePath.substring(0,x), false);
-			if(dir==null) return null;
-			if(x==filePath.length()-1) return dir;
+			if(dir==null)
+				return null;
+			if(x==filePath.length()-1)
+				return dir;
 			final String fileName=(x<0)?filePath:filePath.substring(x+1).trim();
 			if(fileName.length()==0)
 				return dir;
@@ -590,8 +614,10 @@ public class CMFile extends File
 			return ((localFile!=null)&&(localFile.isDirectory()));
 		String filename=getVFSPathAndName();
 		CMVFSFile info=getVFSInfo(filename);
-		if(!filename.endsWith("/")) filename=filename+"/";
-		if(info==null) info=getVFSInfo(filename);
+		if(!filename.endsWith("/"))
+			filename=filename+"/";
+		if(info==null)
+			info=getVFSInfo(filename);
 		return (info!=null);
 	}
 
@@ -604,7 +630,8 @@ public class CMFile extends File
 	@Override
 	public final boolean canRead()
 	{
-		if(!exists()) return false;
+		if(!exists())
+			return false;
 		if(CMath.bset(vfsBits,CMFile.VFS_MASK_ISLOCAL))
 		{
 			if(CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADLOCAL))
@@ -736,7 +763,8 @@ public class CMFile extends File
 	public final String getIOReadableLocalPathAndName()
 	{
 		final String s=getLocalPathAndName();
-		if(s.trim().length()==0) return ".";
+		if(s.trim().length()==0)
+			return ".";
 		return s;
 	}
 
@@ -758,7 +786,8 @@ public class CMFile extends File
 	 */
 	public final boolean mayDeleteIfDirectory()
 	{
-		if(!isDirectory()) return true;
+		if(!isDirectory())
+			return true;
 		if(localFile!=null)
 		{
 			if(!localFile.isDirectory())
@@ -778,11 +807,14 @@ public class CMFile extends File
 	 */
 	public final boolean deleteLocal()
 	{
-		if(!exists()) return false;
-		if(!canWrite()) return false;
+		if(!exists())
+			return false;
+		if(!canWrite())
+			return false;
 		if(CMath.bset(vfsBits, CMFile.VFS_MASK_NODELETEANY))
 			return false;
-		if(!mayDeleteIfDirectory()) return false;
+		if(!mayDeleteIfDirectory())
+			return false;
 		if((canLocalEquiv())&&(localFile!=null))
 			return localFile.delete();
 		return false;
@@ -795,15 +827,19 @@ public class CMFile extends File
 	 */
 	public final boolean deleteVFS()
 	{
-		if(!exists()) return false;
-		if(!canWrite()) return false;
+		if(!exists())
+			return false;
+		if(!canWrite())
+			return false;
 		if(CMath.bset(vfsBits, CMFile.VFS_MASK_NODELETEANY))
 			return false;
-		if(!mayDeleteIfDirectory()) return false;
+		if(!mayDeleteIfDirectory())
+			return false;
 		if(canVFSEquiv())
 		{
 			String name=getVFSPathAndName();
-			if(isDirectory()) name=name+"/";
+			if(isDirectory())
+				name=name+"/";
 			final CMVFSFile info=getVFSInfo(name);
 			if(info==null)
 				return false;
@@ -822,11 +858,14 @@ public class CMFile extends File
 	 */
 	public final boolean deleteAll()
 	{
-		if(!exists()) return false;
-		if(!canWrite()) return false;
+		if(!exists())
+			return false;
+		if(!canWrite())
+			return false;
 		if(CMath.bset(vfsBits, CMFile.VFS_MASK_NODELETEANY))
 			return false;
-		if(!mayDeleteIfDirectory()) return false;
+		if(!mayDeleteIfDirectory())
+			return false;
 		if(demandVFS)
 			return deleteVFS();
 		if(demandLocal)
@@ -839,11 +878,14 @@ public class CMFile extends File
 	@Override
 	public final boolean delete()
 	{
-		if(!exists()) return false;
-		if(!canWrite()) return false;
+		if(!exists())
+			return false;
+		if(!canWrite())
+			return false;
 		if(CMath.bset(vfsBits, CMFile.VFS_MASK_NODELETEANY))
 			return false;
-		if(!mayDeleteIfDirectory()) return false;
+		if(!mayDeleteIfDirectory())
+			return false;
 		if((isVFSDirectory())&&(!demandLocal))
 			return deleteVFS();
 		if((isLocalDirectory())&&(!demandVFS))
@@ -887,7 +929,8 @@ public class CMFile extends File
 			if(info!=null)
 			{
 				final Object data=getVFSData(getVFSPathAndName());
-				if(data==null) return buf;
+				if(data==null)
+					return buf;
 				if(data instanceof String)
 					return new StringBuffer((String)data);
 				if(data instanceof StringBuffer)
@@ -981,7 +1024,8 @@ public class CMFile extends File
 			if(info!=null)
 			{
 				final Object data=getVFSData(getVFSPathAndName());
-				if(data==null) return buf;
+				if(data==null)
+					return buf;
 				if(data instanceof String)
 					return new StringBuffer((String)data);
 				if(data instanceof StringBuffer)
@@ -1011,7 +1055,8 @@ public class CMFile extends File
 			while(F.ready())
 			{
 				c=(char)F.read();
-				if(c<0) break;
+				if(c<0)
+					break;
 				buf.append(c);
 			}
 		}
@@ -1067,7 +1112,8 @@ public class CMFile extends File
 			if(info!=null)
 			{
 				final Object data=getVFSData(getVFSPathAndName());
-				if(data==null) return buf;
+				if(data==null)
+					return buf;
 				if(data instanceof byte[])
 					return (byte[])data;
 				if(data instanceof String)
@@ -1178,7 +1224,8 @@ public class CMFile extends File
 				filename=info.path;
 				getVFSDirectory().delete(info);
 			}
-			if(vfsBits<0) vfsBits=0;
+			if(vfsBits<0)
+				vfsBits=0;
 			vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOREADVFS);
 			if(info!=null)
 				info.saveData(filename,vfsBits,author(),O);
@@ -1278,7 +1325,8 @@ public class CMFile extends File
 			O=new StringBuffer(data.toString());
 		if(!isLocalFile())
 		{
-			if(append) O=new StringBuffer(text().append(O).toString());
+			if(append)
+				O=new StringBuffer(text().append(O).toString());
 			String filename=getVFSPathAndName();
 			CMVFSFile info=getVFSInfo(filename);
 			if(info!=null)
@@ -1287,7 +1335,8 @@ public class CMFile extends File
 				if(vfsV()!=null)
 					vfsV().delete(info);
 			}
-			if(vfsBits<0) vfsBits=0;
+			if(vfsBits<0)
+				vfsBits=0;
 			vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOREADVFS);
 			// this weirdness is because of CMCatalog
 			if(info!=null)
@@ -1353,14 +1402,17 @@ public class CMFile extends File
 		{
 			String filename=getVFSPathAndName();
 			CMVFSFile info=getVFSInfo(filename);
-			if(!filename.endsWith("/")) filename=filename+"/";
-			if(info==null) info=getVFSInfo(filename);
+			if(!filename.endsWith("/"))
+				filename=filename+"/";
+			if(info==null)
+				info=getVFSInfo(filename);
 			if(info!=null)
 			{
 				Log.errOut("CMFile","File exists '"+getVFSPathAndName()+"'.");
 				return false;
 			}
-			if(vfsBits<0) vfsBits=0;
+			if(vfsBits<0)
+				vfsBits=0;
 			vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOREADVFS);
 			vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOWRITEVFS);
 			vfsBits=vfsBits|CMFile.VFS_MASK_DIRECTORY;
@@ -1381,7 +1433,8 @@ public class CMFile extends File
 		for(int p=parents.size()-1;p>=0;p--)
 		{
 			PF=parents.elementAt(p);
-			if((PF.exists())&&(PF.isDirectory())) continue;
+			if((PF.exists())&&(PF.isDirectory()))
+				continue;
 			if((PF.exists()&&(!PF.isDirectory()))||(!PF.mkdir()))
 			{
 				Log.errOut("CMFile","Unable to mkdir '"+PF.getAbsolutePath()+"'.");
@@ -1406,7 +1459,8 @@ public class CMFile extends File
 	@Override
 	public final String[] list()
 	{
-		if(!isDirectory()) return new String[0];
+		if(!isDirectory())
+			return new String[0];
 		final CMFile[] CF=listFiles();
 		final String[] list=new String[CF.length];
 		for(int f=0;f<CF.length;f++)
@@ -1417,7 +1471,8 @@ public class CMFile extends File
 	private static final CMVFSFile getVFSInfo(final String filename)
 	{
 		final CMVFSDir vfs=getVFSDirectory();
-		if(vfs==null) return null;
+		if(vfs==null)
+			return null;
 		final String vfsFilename=vfsifyFilename(filename);
 		return vfs.fetch(vfsFilename);
 	}
@@ -1438,7 +1493,8 @@ public class CMFile extends File
 	public final boolean isVFSDirectory()
 	{
 		String dir=getVFSPathAndName().toLowerCase();
-		if(!dir.endsWith("/")) dir+="/";
+		if(!dir.endsWith("/"))
+			dir+="/";
 		final CMVFSFile file=getVFSInfo(dir);
 		return (file instanceof CMVFSDir);
 	}
@@ -1463,7 +1519,8 @@ public class CMFile extends File
 		String thisDir=getVFSPathAndName();
 		CMVFSDir vfs=getVFSDirectory();
 		String vfsSrchDir=thisDir+"/";
-		if(thisDir.length()==0) vfsSrchDir="";
+		if(thisDir.length()==0)
+			vfsSrchDir="";
 		if(!demandLocal)
 		{
 			if(vfsSrchDir.length()>0)
@@ -1517,7 +1574,8 @@ public class CMFile extends File
 		CMVFSDir vvfs=vfsV();
 		if(vvfs==null)
 		{
-			if(CMLib.database()==null) return new CMVFSDir(null,"",CMFile.VFS_MASK_DIRECTORY,System.currentTimeMillis(),"SYS");
+			if(CMLib.database()==null)
+				return new CMVFSDir(null,"",CMFile.VFS_MASK_DIRECTORY,System.currentTimeMillis(),"SYS");
 			final char threadCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
 			if(threadCode==MudHost.MAIN_HOST)
 				vvfs=vfs[threadCode]=CMLib.database().DBReadVFSDirectory();
@@ -1539,7 +1597,8 @@ public class CMFile extends File
 		{
 			catalogPluginAdded=CMLib.catalog();
 			CMVFSDir dir=vvfs.fetchSubDir("/resources/catalog", false);
-			if(dir!=null) vvfs.delete(dir);
+			if(dir!=null)
+				vvfs.delete(dir);
 			dir=vvfs.fetchSubDir("/resources", true);
 			vvfs.add(CMLib.catalog().getCatalogRoot(dir));
 		}
@@ -1547,7 +1606,8 @@ public class CMFile extends File
 		{
 			mapPluginAdded=CMLib.map();
 			CMVFSDir dir=vvfs.fetchSubDir("/resources/map", false);
-			if(dir!=null) vvfs.delete(dir);
+			if(dir!=null)
+				vvfs.delete(dir);
 			dir=vvfs.fetchSubDir("/resources", true);
 			vvfs.add(CMLib.map().getMapRoot(dir));
 		}
@@ -1587,8 +1647,10 @@ public class CMFile extends File
 		&&(Character.isLetter(filename.charAt(0))
 		&&(filename.charAt(1)==':')))
 			filename=filename.substring(2);
-		while(filename.startsWith("/")) filename=filename.substring(1);
-		while(filename.startsWith("\\")) filename=filename.substring(1);
+		while(filename.startsWith("/"))
+			filename=filename.substring(1);
+		while(filename.startsWith("\\"))
+			filename=filename.substring(1);
 		while(filename.endsWith("/"))
 			filename=filename.substring(0,filename.length()-1);
 		while(filename.endsWith("\\"))
@@ -1662,9 +1724,11 @@ public class CMFile extends File
 				else
 				if(fixedName.charAt(f)=='*')
 				{
-					if(f==fixedName.length()-1) break;
+					if(f==fixedName.length()-1)
+						break;
 					int endOfMatchStr=fixedName.indexOf('*',f+1);
-					if(endOfMatchStr<0) endOfMatchStr=fixedName.indexOf('?',f+1);
+					if(endOfMatchStr<0)
+						endOfMatchStr=fixedName.indexOf('?',f+1);
 					int mbEnd = fixedName.length();
 					if(endOfMatchStr>f)
 						mbEnd = endOfMatchStr;
@@ -1689,7 +1753,8 @@ public class CMFile extends File
 					ismatch=false;
 					break;
 				}
-			if(ismatch) set.addElement(element);
+			if(ismatch)
+				set.addElement(element);
 		}
 		if(set.size()==1)
 		{
@@ -1828,14 +1893,16 @@ public class CMFile extends File
 		if(this.isLocalFile()&&(this.localFile!=null))
 			return this.localFile.length();
 		final byte[] buf=this.raw();
-		if(buf==null) return 0;
+		if(buf==null)
+			return 0;
 		return buf.length;
 	}
 
 	@Override
 	public String[]	list(FilenameFilter filter)
 	{
-		if(filter==null) return this.list();
+		if(filter==null)
+			return this.list();
 		final List<String> filteredList=new Vector<String>();
 		for(final CMFile f : this.listFiles())
 			if(filter.accept(f.getParentFile(), f.getName()))
@@ -1846,7 +1913,8 @@ public class CMFile extends File
 	@Override
 	public File[] listFiles(FileFilter filter)
 	{
-		if(filter==null) return this.listFiles();
+		if(filter==null)
+			return this.listFiles();
 		final List<CMFile> filteredList=new Vector<CMFile>();
 		for(final CMFile f : this.listFiles())
 			if(filter.accept(f))
@@ -1857,7 +1925,8 @@ public class CMFile extends File
 	@Override
 	public File[] listFiles(FilenameFilter filter)
 	{
-		if(filter==null) return this.listFiles();
+		if(filter==null)
+			return this.listFiles();
 		final List<CMFile> filteredList=new Vector<CMFile>();
 		for(final CMFile f : this.listFiles())
 			if(filter.accept(f.getParentFile(),f.getName()))

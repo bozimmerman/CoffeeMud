@@ -69,7 +69,8 @@ public class Spell_DetectWeaknesses extends Spell
 
 		if((affected instanceof MOB)&&(activated))
 		{
-			if(invoker==null) invoker=(MOB)affected;
+			if(invoker==null)
+				invoker=(MOB)affected;
 			final int xlvl=super.getXLEVELLevel(invoker);
 			final float f=(float)0.2*xlvl;
 			affectableStats.setDamage(affectableStats.damage()+(int)Math.round(CMath.div(affectableStats.damage(),4.0-f)));

@@ -134,7 +134,8 @@ public class Spell_Delirium extends Spell
 
 	protected String process(MOB mob, String str, Environmental obj)
 	{
-		if(obj==null) return str;
+		if(obj==null)
+			return str;
 
 		int x=str.indexOf("<S-NAME>");
 		if(x>=0)
@@ -244,7 +245,8 @@ public class Spell_Delirium extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

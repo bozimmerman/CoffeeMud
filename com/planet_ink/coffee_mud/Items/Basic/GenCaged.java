@@ -55,8 +55,10 @@ public class GenCaged extends GenItem implements CagedAnimal
 	@Override
 	public boolean cageMe(MOB M)
 	{
-		if(M==null) return false;
-		if(!M.isMonster()) return false;
+		if(M==null)
+			return false;
+		if(!M.isMonster())
+			return false;
 		name=M.Name();
 		displayText=M.displayText();
 		setDescription(M.description());
@@ -102,7 +104,8 @@ public class GenCaged extends GenItem implements CagedAnimal
 	public MOB unCageMe()
 	{
 		MOB M=null;
-		if(cageText().length()==0) return M;
+		if(cageText().length()==0)
+			return M;
 		final List<XMLLibrary.XMLpiece> buf=CMLib.xml().parseAllXML(cageText());
 		if(buf==null)
 		{

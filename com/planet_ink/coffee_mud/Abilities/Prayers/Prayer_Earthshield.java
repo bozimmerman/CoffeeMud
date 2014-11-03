@@ -52,8 +52,10 @@ public class Prayer_Earthshield extends Prayer
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(affected==null) return;
-		if(!(affected instanceof MOB)) return;
+		if(affected==null)
+			return;
+		if(!(affected instanceof MOB))
+			return;
 		affectableStats.setArmor(affectableStats.armor()-5 - (adjustedLevel(invoker(),0)/4));
 	}
 

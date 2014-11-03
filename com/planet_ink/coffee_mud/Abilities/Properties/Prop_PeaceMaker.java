@@ -81,7 +81,8 @@ public class Prop_PeaceMaker extends Property
 					msg.source().tell(t);
 				}
 				final MOB victim=msg.source().getVictim();
-				if(victim!=null) victim.makePeace();
+				if(victim!=null)
+					victim.makePeace();
 				msg.source().makePeace();
 				msg.modify(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,"",CMMsg.NO_EFFECT,"",CMMsg.NO_EFFECT,"");
 				return false;

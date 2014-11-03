@@ -66,7 +66,8 @@ public class Gigantic extends StdLanguage
 	}
 	public String tup(String msg)
 	{
-		if(msg==null) return msg;
+		if(msg==null)
+			return msg;
 		return msg.toUpperCase();
 	}
 

@@ -44,7 +44,8 @@ public class ClanNext extends StdWebMacro
 		final String last=httpReq.getUrlParameter("CLAN");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("CLAN");
+			if(last!=null)
+				httpReq.removeUrlParameter("CLAN");
 			return "";
 		}
 		String lastID="";

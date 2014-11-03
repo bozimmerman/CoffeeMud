@@ -91,7 +91,8 @@ public class Skill_Attack2 extends StdSkill
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking, tickID)) return false;
+		if(!super.tick(ticking, tickID))
+			return false;
 		roundOfNerfing++;
 		if(roundOfNerfing>roundToNerf())
 		{

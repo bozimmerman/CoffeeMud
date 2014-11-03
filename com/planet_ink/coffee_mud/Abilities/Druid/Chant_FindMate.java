@@ -77,9 +77,11 @@ public class Chant_FindMate extends Chant
 					mob.tell(L("You peer longingly at @x1.",mate.name()));
 
 					Item I=mob.fetchFirstWornItem(Wearable.WORN_WAIST);
-					if(I!=null)    CMLib.commands().postRemove(mob,I,false);
+					if(I!=null)
+						CMLib.commands().postRemove(mob,I,false);
 					I=mob.fetchFirstWornItem(Wearable.WORN_LEGS);
-					if(I!=null)    CMLib.commands().postRemove(mob,I,false);
+					if(I!=null)
+						CMLib.commands().postRemove(mob,I,false);
 
 					if((mob.fetchFirstWornItem(Wearable.WORN_WAIST)!=null)
 					||(mob.fetchFirstWornItem(Wearable.WORN_LEGS)!=null))
@@ -149,8 +151,10 @@ public class Chant_FindMate extends Chant
 
 	public boolean isSuitableMate(MOB mate, MOB forMe)
 	{
-		if(mate==forMe) return false;
-		if((mate==null)||(forMe==null)) return false;
+		if(mate==forMe)
+			return false;
+		if((mate==null)||(forMe==null))
+			return false;
 		if(mate.charStats().getStat(CharStats.STAT_GENDER)==forMe.charStats().getStat(CharStats.STAT_GENDER))
 			return false;
 		if((mate.charStats().getStat(CharStats.STAT_GENDER)!='M')
@@ -169,7 +173,8 @@ public class Chant_FindMate extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if((target.charStats().getStat(CharStats.STAT_GENDER)!='M')
 		&&(target.charStats().getStat(CharStats.STAT_GENDER)!='F'))
 		{

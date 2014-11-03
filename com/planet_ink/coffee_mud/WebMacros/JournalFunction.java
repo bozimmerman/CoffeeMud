@@ -43,7 +43,8 @@ public class JournalFunction extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String journalName=httpReq.getUrlParameter("JOURNAL");
-		if(journalName==null) return "Function not performed -- no Journal specified.";
+		if(journalName==null)
+			return "Function not performed -- no Journal specified.";
 
 		final Clan setClan=CMLib.clans().getClan(httpReq.getUrlParameter("CLAN"));
 		final JournalsLibrary.ForumJournal forum=CMLib.journals().getForumJournal(journalName,setClan);
@@ -83,13 +84,15 @@ public class JournalFunction extends StdWebMacro
 			return "Unsubscription from "+journalName+" failed -- were you ever subscribed?";
 		}
 		String from="Anonymous";
-		if(M!=null) from=M.Name();
+		if(M!=null)
+			from=M.Name();
 		if(parms.containsKey("NEWPOST"))
 		{
 			if((forum!=null)&&(!forum.authorizationCheck(M, ForumJournalFlags.POST)))
 				return "Post not submitted -- Unauthorized.";
 			String to=httpReq.getUrlParameter("TO");
-			if((to==null)||(M==null)||(to.equalsIgnoreCase("all"))) to="ALL";
+			if((to==null)||(M==null)||(to.equalsIgnoreCase("all")))
+				to="ALL";
 			if((!to.equals("ALL"))&&(!to.toUpperCase().trim().startsWith("MASK=")))
 			{
 				if(!CMLib.players().playerExists(to) && (!CMLib.players().accountExists(to)))
@@ -101,7 +104,8 @@ public class JournalFunction extends StdWebMacro
 			&&(!CMSecurity.isAllowedEverywhere(M,CMSecurity.SecFlag.JOURNALS)))
 				return "Post not submitted -- You are not authorized to send email to ALL.";
 			String subject=httpReq.getUrlParameter("SUBJECT");
-			if(subject==null) subject="";
+			if(subject==null)
+				subject="";
 			final String parent=httpReq.getUrlParameter("PARENT");
 			if((subject.length()==0)&&(parent==null))
 				return "Post not submitted -- No subject!";
@@ -185,9 +189,11 @@ public class JournalFunction extends StdWebMacro
 			return "Changed applied.";
 		}
 		String parent=httpReq.getUrlParameter("JOURNALPARENT");
-		if(parent==null) parent="";
+		if(parent==null)
+			parent="";
 		String dbsearch=httpReq.getUrlParameter("DBSEARCH");
-		if(dbsearch==null) dbsearch="";
+		if(dbsearch==null)
+			dbsearch="";
 		final String page=httpReq.getUrlParameter("JOURNALPAGE");
 		final String mpage=httpReq.getUrlParameter("MESSAGEPAGE");
 		final List<JournalsLibrary.JournalEntry> msgs=JournalInfo.getMessages(journalName,forum,page,mpage,parent,dbsearch,httpReq.getRequestObjects());
@@ -305,7 +311,8 @@ public class JournalFunction extends StdWebMacro
 						JournalInfo.clearJournalCache(httpReq, journalName);
 						httpReq.addFakeUrlParameter("JOURNALMESSAGE",entry.parent);
 						httpReq.addFakeUrlParameter("JOURNALPARENT","");
-						if(cardinalNumber==0) cardinalNumber=entry.cardinal;
+						if(cardinalNumber==0)
+							cardinalNumber=entry.cardinal;
 						if(cardinalNumber==0)
 							messages.append("Reply deleted.<BR>");
 						else
@@ -313,7 +320,8 @@ public class JournalFunction extends StdWebMacro
 					}
 					else
 					{
-						if(cardinalNumber==0) cardinalNumber=entry.cardinal;
+						if(cardinalNumber==0)
+							cardinalNumber=entry.cardinal;
 						if(cardinalNumber==0)
 							messages.append("Message deleted.<BR>");
 						else
@@ -339,7 +347,8 @@ public class JournalFunction extends StdWebMacro
 							if((forum!=null)&&(forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
 							{
 								String ISSTUCKY=httpReq.getUrlParameter("ISSTICKY"+fieldSuffix);
-								if(ISSTUCKY==null) ISSTUCKY=httpReq.getUrlParameter("ISSTUCKY"+fieldSuffix);
+								if(ISSTUCKY==null)
+									ISSTUCKY=httpReq.getUrlParameter("ISSTUCKY"+fieldSuffix);
 								if((ISSTUCKY!=null)&&(ISSTUCKY.equalsIgnoreCase("on")))
 									attributes|=JournalsLibrary.JournalEntry.ATTRIBUTE_STUCKY;
 								final String ISPROTECTED=httpReq.getUrlParameter("ISPROTECTED"+fieldSuffix);
@@ -347,7 +356,8 @@ public class JournalFunction extends StdWebMacro
 									attributes|=JournalsLibrary.JournalEntry.ATTRIBUTE_PROTECTED;
 							}
 							CMLib.database().DBUpdateJournal(entry.key, entry.subj, clearWebMacros(text), attributes);
-							if(cardinalNumber==0) cardinalNumber=entry.cardinal;
+							if(cardinalNumber==0)
+								cardinalNumber=entry.cardinal;
 							if(cardinalNumber==0)
 								messages.append("Message modified.<BR>");
 							else
@@ -427,7 +437,8 @@ public class JournalFunction extends StdWebMacro
 
 	public String fixForumString(String s)
 	{
-		if(s==null) return "";
+		if(s==null)
+			return "";
 		final int x=s.toUpperCase().indexOf("<P>");
 		final int y=s.toUpperCase().lastIndexOf("</P>");
 		if((x>=0)&&(y>x))

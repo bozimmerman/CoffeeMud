@@ -65,8 +65,10 @@ public class Prayer_BrighteningAura extends Prayer
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!super.okMessage(myHost, msg)) return true;
-		if(!(myHost instanceof MOB)) return true;
+		if(!super.okMessage(myHost, msg))
+			return true;
+		if(!(myHost instanceof MOB))
+			return true;
 		final MOB myChar=(MOB)myHost;
 		if(msg.amISource(myChar)
 		&&(!myChar.isMonster())
@@ -86,7 +88,8 @@ public class Prayer_BrighteningAura extends Prayer
 		MOB target=getTarget(mob,commands,givenTarget);
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
@@ -95,7 +98,8 @@ public class Prayer_BrighteningAura extends Prayer
 		}
 
 		Room R=CMLib.map().roomLocation(target);
-		if(R==null) R=mob.location();
+		if(R==null)
+			R=mob.location();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

@@ -56,15 +56,19 @@ public class Disease_Pneumonia extends Disease
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID))	return false;
-		if(affected==null) return false;
-		if(!(affected instanceof MOB)) return true;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
+		if(!(affected instanceof MOB))
+			return true;
 
 		final MOB mob=(MOB)affected;
 		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			MOB diseaser=invoker;
-			if(diseaser==null) diseaser=mob;
+			if(diseaser==null)
+				diseaser=mob;
 			diseaseTick=DISEASE_DELAY();
 			mob.location().show(mob,null,CMMsg.MSG_QUIETMOVEMENT,DISEASE_AFFECT());
 			final int damage=CMLib.dice().roll(4,mob.phyStats().level()+1,1);
@@ -74,7 +78,8 @@ public class Disease_Pneumonia extends Disease
 			if(CMLib.dice().rollPercentage()==1)
 			{
 				final Ability A2=CMClass.getAbility("Disease_Fever");
-				if(A2!=null) A2.invoke(diseaser,mob,true,0);
+				if(A2!=null)
+					A2.invoke(diseaser,mob,true,0);
 			}
 			return true;
 		}
@@ -84,7 +89,8 @@ public class Disease_Pneumonia extends Disease
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-8);
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)-10);
 		if(affectableStats.getStat(CharStats.STAT_CONSTITUTION)<=0)
@@ -96,7 +102,8 @@ public class Disease_Pneumonia extends Disease
 	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		affectableState.setMovement(10);
 		affectableState.setMana(affectableState.getMana()-(affectableState.getMana()/2));
 		affectableState.setHitPoints(affectableState.getHitPoints()-(affected.phyStats().level()*2));

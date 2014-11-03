@@ -127,7 +127,8 @@ public class LifeScanProgram extends GenSoftware
 
 	public int getScanMsg(Room R, Set<Room> roomsDone, String dirBuilder, int depthLeft, CMMsg scanMsg, StringBuilder str)
 	{
-		if((R==null)||(roomsDone.contains(R))) return 0;
+		if((R==null)||(roomsDone.contains(R)))
+			return 0;
 		roomsDone.add(R);
 		int numFound=0;
 		final boolean useShipDirs=(R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip);
@@ -188,7 +189,8 @@ public class LifeScanProgram extends GenSoftware
 						if(R2.getRoomInDir(d)==R)
 						{
 							final Exit E2=R2.getExitInDir(d);
-							if(E2==null) continue;
+							if(E2==null)
+								continue;
 							shipR=R2;
 							break;
 						}
@@ -207,7 +209,8 @@ public class LifeScanProgram extends GenSoftware
 			{
 				final Room R2=R.getRoomInDir(d);
 				final Exit E2=R.getExitInDir(d);
-				if((R2==null)||(E2==null)) continue;
+				if((R2==null)||(E2==null))
+					continue;
 				final boolean willIndoors=(R.domainType()&Room.INDOORS)==Room.INDOORS;
 				final boolean willADoor=E2.hasADoor() && !E2.isOpen();
 				final String dirBCode=willADoor?"D":
@@ -223,7 +226,8 @@ public class LifeScanProgram extends GenSoftware
 	public String getScanMsg()
 	{
 		final Room R=CMLib.map().roomLocation(this);
-		if(R==null) return "";
+		if(R==null)
+			return "";
 		final StringBuilder str=new StringBuilder("");
 		final int numFound=getScanMsg(R,new HashSet<Room>(), "",phyStats().weight()+1,getScanMsg(R),str);
 		if(activated)

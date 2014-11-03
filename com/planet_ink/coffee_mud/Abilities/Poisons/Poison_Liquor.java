@@ -57,7 +57,8 @@ public class Poison_Liquor extends Poison_Alcohol
 			if((CMLib.dice().rollPercentage()<(drunkness*10))&&(!((MOB)affected).isMonster()))
 			{
 				final Ability A=CMClass.getAbility("Disease_Migraines");
-				if(A!=null) A.invoke(mob,mob,true,0);
+				if(A!=null)
+					A.invoke(mob,mob,true,0);
 			}
 			CMLib.commands().postStand(mob,true);
 		}

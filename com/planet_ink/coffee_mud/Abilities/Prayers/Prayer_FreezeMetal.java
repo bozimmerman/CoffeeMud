@@ -60,14 +60,18 @@ public class Prayer_FreezeMetal extends Prayer
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg)) return false;
-		if(affected==null) return true;
-		if(!(affected instanceof MOB)) return true;
+		if(!super.okMessage(myHost,msg))
+			return false;
+		if(affected==null)
+			return true;
+		if(!(affected instanceof MOB))
+			return true;
 		if((msg.target()==null)
 		   ||(!(msg.target() instanceof Item)))
 			return true;
 		final MOB mob=(MOB)affected;
-		if(!mob.isMine(msg.target())) return true;
+		if(!mob.isMine(msg.target()))
+			return true;
 		final Item I=(Item)msg.target();
 		if(msg.targetMinor()==CMMsg.TYP_REMOVE)
 		{
@@ -85,7 +89,8 @@ public class Prayer_FreezeMetal extends Prayer
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(tickID!=Tickable.TICKID_MOB) return true;
+		if(tickID!=Tickable.TICKID_MOB)
+			return true;
 		if(!(affected instanceof MOB))
 			return true;
 		if(invoker==null)
@@ -145,7 +150,8 @@ public class Prayer_FreezeMetal extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

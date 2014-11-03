@@ -3989,15 +3989,18 @@ public class StdMOB implements MOB
 	public Ability fetchAbility(String ID)
 	{
 		Ability A=abilitys.find(ID);
-		if(A!=null) return A;
+		if(A!=null)
+			return A;
 		for(final Pair<Clan,Integer> p : clans())
 		{
 			A=p.first.clanAbilities(this).find(ID);
-			if(A!=null) return A;
+			if(A!=null)
+				return A;
 		}
 		final Race R = charStats().getMyRace();
 		A=R.racialAbilities(this).find(ID);
-		if(A!=null) return A;
+		if(A!=null)
+			return A;
 		for (final Enumeration<Ability> a = allAbilities(); a.hasMoreElements();)
 		{
 			A = a.nextElement();
@@ -4018,7 +4021,8 @@ public class StdMOB implements MOB
 			for(final Pair<Clan,Integer> p : clans())
 			{
 				A = (Ability) CMLib.english().fetchEnvironmental(p.first.clanAbilities(this), ID, true);
-				if(A!=null) return A;
+				if(A!=null)
+					return A;
 			}
 		if (A == null)
 			A = (Ability) CMLib.english().fetchEnvironmental(abilitys, ID, false);
@@ -4028,7 +4032,8 @@ public class StdMOB implements MOB
 			for(final Pair<Clan,Integer> p : clans())
 			{
 				A = (Ability) CMLib.english().fetchEnvironmental(p.first.clanAbilities(this), ID, false);
-				if(A!=null) return A;
+				if(A!=null)
+					return A;
 			}
 		if (A == null)
 			A = fetchAbility(ID);
@@ -4372,7 +4377,8 @@ public class StdMOB implements MOB
 
 	@Override public void delExpertise(String baseCode)
 	{
-		if(baseCode==null) return;
+		if(baseCode==null)
+			return;
 		if(expertises.remove(baseCode.toUpperCase())==null)
 		{
 			final Entry<String,Integer> p=CMath.getStringFollowedByNumber(baseCode, true);
@@ -4385,7 +4391,8 @@ public class StdMOB implements MOB
 
 	@Override public Pair<String, Integer> fetchExpertise(final String baseCode)
 	{
-		if(baseCode==null) return null;
+		if(baseCode==null)
+			return null;
 		final Entry<String,Integer> p=CMath.getStringFollowedByNumber(baseCode, true);
 		final String key=p.getKey().toUpperCase();
 		final Integer num=expertises.get(key);

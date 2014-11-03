@@ -51,7 +51,8 @@ public class Chant_CharmAnimal extends Chant
 	protected MOB charmer=null;
 	protected MOB getCharmer()
 	{
-		if(charmer!=null) return charmer;
+		if(charmer!=null)
+			return charmer;
 		if((invoker!=null)&&(invoker!=affected))
 			charmer=invoker;
 		else
@@ -61,7 +62,8 @@ public class Chant_CharmAnimal extends Chant
 			if(R!=null)
 				charmer=R.fetchInhabitant(text());
 		}
-		if(charmer==null) return invoker;
+		if(charmer==null)
+			return invoker;
 		return charmer;
 	}
 
@@ -76,7 +78,8 @@ public class Chant_CharmAnimal extends Chant
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 		{
 			unInvoke();
-			if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
+			if(msg.source().playerStats()!=null)
+				msg.source().playerStats().setLastUpdated(0);
 		}
 	}
 
@@ -192,9 +195,11 @@ public class Chant_CharmAnimal extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		Room R=CMLib.map().roomLocation(target);
-		if(R==null) R=mob.location();
+		if(R==null)
+			R=mob.location();
 
 		if(!CMLib.flags().isAnimalIntelligence(target))
 		{
@@ -227,7 +232,8 @@ public class Chant_CharmAnimal extends Chant
 					success=maliciousAffect(mob,target,asLevel,0,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0))!=null;
 					if(success)
 					{
-						if(target.isInCombat()) target.makePeace();
+						if(target.isInCombat())
+							target.makePeace();
 						CMLib.commands().postFollow(target,mob,false);
 						CMLib.combat().makePeaceInGroup(mob);
 						if(target.amFollowing()!=mob)

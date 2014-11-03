@@ -48,8 +48,10 @@ public class Song_Mana extends Song
 			return false;
 
 		final MOB mob=(MOB)affected;
-		if(mob==null) return true;
-		if(invoker==null) return true;
+		if(mob==null)
+			return true;
+		if(invoker==null)
+			return true;
 		//int level=invoker.phyStats().level();
 		//int mana=(int)Math.round(Integer.valueOf(level).doubleValue()/2.0);
 		mob.curState().adjMana((adjustedLevel(invoker(),0)*3),mob.maxState());

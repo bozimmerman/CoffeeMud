@@ -105,7 +105,8 @@ public class MobileGoodGuardian extends Mobile
 				}
 				tickStatus=Tickable.STATUS_MISC+80+d;
 			}
-			if(dirCode>=0) break;
+			if(dirCode>=0)
+				break;
 			tickStatus=Tickable.STATUS_MISC+100+d;
 		}
 		tickStatus=Tickable.STATUS_MISC+120;

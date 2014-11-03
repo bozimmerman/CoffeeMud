@@ -53,7 +53,8 @@ public class Spell_SummonMonster extends Spell
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
-			if(mob.amDead()) mob.setLocation(null);
+			if(mob.amDead())
+				mob.setLocation(null);
 			mob.destroy();
 		}
 	}
@@ -67,7 +68,8 @@ public class Spell_SummonMonster extends Spell
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 		{
 			unInvoke();
-			if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
+			if(msg.source().playerStats()!=null)
+				msg.source().playerStats().setLastUpdated(0);
 		}
 	}
 
@@ -107,7 +109,8 @@ public class Spell_SummonMonster extends Spell
 	public MOB determineMonster(MOB caster, int level)
 	{
 		final Room R=caster.location();
-		if(R==null) return null;
+		if(R==null)
+			return null;
 		MOB newMOB=null;
 		final Vector choices=new Vector();
 		MOB M=null;

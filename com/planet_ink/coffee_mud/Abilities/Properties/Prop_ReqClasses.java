@@ -71,7 +71,8 @@ public class Prop_ReqClasses extends Property implements TriggeredAffect
 
 	public boolean passesMuster(MOB mob)
 	{
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		if(CMLib.flags().isATrackingMonster(mob))
 			return true;
 
@@ -80,7 +81,8 @@ public class Prop_ReqClasses extends Property implements TriggeredAffect
 
 		final int x=text().toUpperCase().indexOf("ALL");
 		int y=text().toUpperCase().indexOf(mob.charStats().displayClassName().toUpperCase());
-		if(y<0) y=text().toUpperCase().indexOf(mob.charStats().getCurrentClass().baseClass().toUpperCase());
+		if(y<0)
+			y=text().toUpperCase().indexOf(mob.charStats().getCurrentClass().baseClass().toUpperCase());
 		if(((x>0)
 			&&(text().charAt(x-1)=='-')
 			&&((y<=0)

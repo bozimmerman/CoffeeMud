@@ -61,7 +61,8 @@ public class CM1Client
 	public synchronized List<String> transactMessages(String command)
 	{
 		final LinkedList<String> list=new LinkedList<String>();
-		if(command.trim().length()==0) return list;
+		if(command.trim().length()==0)
+			return list;
 		try
 		{
 			if((command.indexOf('\n')<0)&&(command.indexOf('\r')<0))
@@ -113,7 +114,8 @@ public class CM1Client
 	public synchronized String transact(String command)
 	{
 		final List<String> list=transactMessages(command);
-		if(list.size()==0) return "";
+		if(list.size()==0)
+			return "";
 		return list.get(0);
 	}
 

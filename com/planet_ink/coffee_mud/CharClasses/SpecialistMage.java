@@ -91,7 +91,8 @@ public class SpecialistMage extends Mage
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
+		if(!(myHost instanceof MOB))
+			return super.okMessage(myHost,msg);
 		final MOB myChar=(MOB)myHost;
 		if((msg.tool()==null)||(!(msg.tool() instanceof Ability)))
 		   return super.okMessage(myChar,msg);
@@ -115,7 +116,8 @@ public class SpecialistMage extends Mage
 			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==domain()))
 			{
 				int classLevel=myChar.charStats().getClassLevel(this);
-				if(classLevel>30) classLevel=30;
+				if(classLevel>30)
+					classLevel=30;
 				msg.setValue((int)Math.round(CMath.mul(msg.value(),1.0+CMath.mul(0.01,classLevel))));
 			}
 		}
@@ -126,7 +128,8 @@ public class SpecialistMage extends Mage
 		&&(msg.tool() instanceof Ability))
 		{
 			int classLevel=myChar.charStats().getClassLevel(this);
-			if(classLevel>30) classLevel=30;
+			if(classLevel>30)
+				classLevel=30;
 			if((domain==domain())
 			&&(classLevel>=5))
 				msg.setValue((int)Math.round(CMath.div((msg.value()),1.0+CMath.mul(0.01,classLevel))));
@@ -143,7 +146,8 @@ public class SpecialistMage extends Mage
 									 Ability skill,
 									 int duration)
 	{
-		if(myChar==null) return duration;
+		if(myChar==null)
+			return duration;
 		final boolean lessTen=myChar.charStats().getClassLevel(this)<10;
 
 		final int domain=skill.classificationCode()&Ability.ALL_DOMAINS;

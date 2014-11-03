@@ -210,7 +210,8 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 						{
 							final String s=V.get(0).toUpperCase().trim();
 							newState=this.getState(s);
-							if(newState==null) newState=mode;
+							if(newState==null)
+								newState=mode;
 						}
 					}
 					mode=newState;

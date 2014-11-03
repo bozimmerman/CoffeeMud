@@ -69,11 +69,14 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		int attStat= rawAttStat;
 		final int maxAttStat=(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.CODES.toMAXBASE(charClass.getAttackAttribute())));
-		if(attStat>=maxAttStat) attStat=maxAttStat;
+		if(attStat>=maxAttStat)
+			attStat=maxAttStat;
 		int attGain=(int)Math.floor(CMath.div(attStat,18.0))+charClass.getBonusAttackLevel();
-		if(attStat>=25)attGain+=2;
+		if(attStat>=25)
+			attGain+=2;
 		else
-		if(attStat>=22)attGain+=1;
+		if(attStat>=22)
+			attGain+=1;
 		return attGain;
 	}
 
@@ -174,7 +177,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 	public boolean isFilledOutMOB(MOB mob)
 	{
-		if(!mob.isMonster()) return false;
+		if(!mob.isMonster())
+			return false;
 		final PhyStats mobP=mob.basePhyStats();
 
 		final MOB filledM=fillOutMOB((MOB)null,mobP.level());
@@ -194,11 +198,14 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	@Override
 	public MOB fillOutMOB(MOB mob, int level)
 	{
-		if(mob==null) mob=CMClass.getFactoryMOB();
-		if(!mob.isMonster()) return mob;
+		if(mob==null)
+			mob=CMClass.getFactoryMOB();
+		if(!mob.isMonster())
+			return mob;
 
 		long rejuv=CMProps.getTicksPerMinute()+CMProps.getTicksPerMinute()+(level*CMProps.getTicksPerMinute()/2);
-		if(rejuv>(CMProps.getTicksPerMinute()*20)) rejuv=(CMProps.getTicksPerMinute()*20);
+		if(rejuv>(CMProps.getTicksPerMinute()*20))
+			rejuv=(CMProps.getTicksPerMinute()*20);
 		mob.basePhyStats().setLevel(level);
 		mob.basePhyStats().setRejuv((int)rejuv);
 		mob.basePhyStats().setSpeed(getLevelMOBSpeed(mob));
@@ -223,7 +230,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		mob.baseCharStats().setClassLevel(curClass,mob.baseCharStats().getClassLevel(curClass)+adjuster);
 		final int classLevel=mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass());
 		int gained=mob.getExperience()-mob.getExpNextLevel();
-		if(gained<50) gained=50;
+		if(gained<50)
+			gained=50;
 
 		final StringBuffer theNews=new StringBuffer("");
 
@@ -238,7 +246,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			mob.setWimpHitPoint((int)Math.round(CMath.ceiling(CMath.mul(mob.baseState().getHitPoints()+newHitPointGain,wimpPct))));
 		}
 		mob.baseState().setHitPoints(mob.baseState().getHitPoints()+newHitPointGain);
-		if(mob.baseState().getHitPoints()<20) mob.baseState().setHitPoints(20);
+		if(mob.baseState().getHitPoints()<20)
+			mob.baseState().setHitPoints(20);
 		mob.curState().setHitPoints(mob.curState().getHitPoints()+newHitPointGain);
 		theNews.append("^NYou have gained ^H"+newHitPointGain+"^? hit " +
 			(newHitPointGain!=1?"points":"point") + ", ^H");
@@ -294,12 +303,15 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		int prac2Stat=mob.charStats().getStat(CharStats.STAT_WISDOM);
 		final int maxPrac2Stat=(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_WISDOM)));
-		if(prac2Stat>maxPrac2Stat) prac2Stat=maxPrac2Stat;
+		if(prac2Stat>maxPrac2Stat)
+			prac2Stat=maxPrac2Stat;
 		int practiceGain=(int)Math.floor(CMath.div(prac2Stat,6.0))+curClass.getBonusPracLevel();
-		if(practiceGain<=0)practiceGain=1;
+		if(practiceGain<=0)
+			practiceGain=1;
 		mob.setPractices(mob.getPractices()-practiceGain);
 		int trainGain=0;
-		if(trainGain<=0)trainGain=1;
+		if(trainGain<=0)
+			trainGain=1;
 		mob.setTrains(mob.getTrains()-trainGain);
 
 		mob.recoverPhyStats();
@@ -410,7 +422,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	@Override
 	public int getLevelExperience(int level)
 	{
-		if(level<0) return 0;
+		if(level<0)
+			return 0;
 		final int[] levelingChart = CMProps.getListFileIntList(CMProps.ListFile.EXP_CHART);
 		if(level<levelingChart.length)
 			return levelingChart[level];
@@ -421,7 +434,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	@Override
 	public int getLevelExperienceJustThisLevel(int level)
 	{
-		if(level<0) return 0;
+		if(level<0)
+			return 0;
 		final int[] levelingChart = CMProps.getListFileIntList(CMProps.ListFile.EXP_CHART);
 		if(level==0)
 			return levelingChart[0];
@@ -456,7 +470,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			final Command C=CMClass.getCommand("GTell");
 			try
 			{
-				if(C!=null) C.execute(mob,new XVector<String>("GTELL",",<S-HAS-HAVE> gained a level."),Command.METAFLAG_FORCED);
+				if(C!=null)
+					C.execute(mob,new XVector<String>("GTELL",",<S-HAS-HAVE> gained a level."),Command.METAFLAG_FORCED);
 			}catch(final Exception e){}
 		}
 		final StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^.^N\n\r\n\r"+CMLib.protocol().msp("level_gain.wav",60));
@@ -480,15 +495,18 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		int prac2Stat=mob.charStats().getStat(CharStats.STAT_WISDOM);
 		final int maxPrac2Stat=(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_WISDOM)));
-		if(prac2Stat>maxPrac2Stat) prac2Stat=maxPrac2Stat;
+		if(prac2Stat>maxPrac2Stat)
+			prac2Stat=maxPrac2Stat;
 		int practiceGain=(int)Math.floor(CMath.div(prac2Stat,6.0))+curClass.getBonusPracLevel();
-		if(practiceGain<=0)practiceGain=1;
+		if(practiceGain<=0)
+			practiceGain=1;
 		mob.setPractices(mob.getPractices()+practiceGain);
 		theNews.append(" ^H" + practiceGain+"^N practice " +
 			( practiceGain != 1? "points" : "point" ) + ", ");
 
 		int trainGain=1;
-		if(trainGain<=0)trainGain=1;
+		if(trainGain<=0)
+			trainGain=1;
 		mob.setTrains(mob.getTrains()+trainGain);
 		theNews.append("and ^H"+trainGain+"^N training "+ (trainGain != 1? "sessions" : "session" )+".\n\r^N");
 
@@ -498,7 +516,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if(A!=null) oldAbilities.add(A.ID());
+			if(A!=null)
+				oldAbilities.add(A.ID());
 		}
 
 		curClass.grantAbilities(mob,false);
@@ -615,7 +634,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	@Override
 	public void gainExperience(MOB mob, MOB victim, String homageMessage, int amount, boolean quiet)
 	{
-		if(mob==null) return;
+		if(mob==null)
+			return;
 		if((Log.combatChannelOn())
 		&&((mob.location()!=null)
 			||((victim!=null)&&(victim.location()!=null))))
@@ -641,7 +661,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			if((sire!=null)&&(CMLib.flags().isInTheGame(sire,true)))
 			{
 				int sireShare=(int)Math.round(CMath.div(amount,10.0));
-				if(sireShare<=0) sireShare=1;
+				if(sireShare<=0)
+					sireShare=1;
 				amount-=sireShare;
 				CMLib.leveler().postExperience(sire,null," from "+mob.name(sire),sireShare,quiet);
 			}
@@ -649,7 +670,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 		CMLib.players().bumpPrideStat(mob,PrideStat.EXPERIENCE_GAINED, amount);
 		mob.setExperience(mob.getExperience()+amount);
-		if(homageMessage==null) homageMessage="";
+		if(homageMessage==null)
+			homageMessage="";
 		if(!quiet)
 		{
 			if(amount>1)

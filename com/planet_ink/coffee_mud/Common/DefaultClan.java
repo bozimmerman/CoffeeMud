@@ -298,7 +298,8 @@ public class DefaultClan implements Clan
 			{
 				final ClanVote CV=new ClanVote();
 				final String rawxml=V.get(v).xml;
-				if(rawxml.trim().length()==0) return new IteratorEnumeration<Clan.ClanVote>(voteList.iterator());
+				if(rawxml.trim().length()==0)
+					return new IteratorEnumeration<Clan.ClanVote>(voteList.iterator());
 				final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(rawxml);
 				if(xml==null)
 				{
@@ -354,7 +355,8 @@ public class DefaultClan implements Clan
 		{
 			final long oldxp=exp;
 			exp=newexp;
-			if(exp<0) exp=0;
+			if(exp<0)
+				exp=0;
 			final LinkedList<CMath.CompiledOperation> form = govt().getXPCalculationFormula();
 			if(oldxp < exp) // we gained
 			{
@@ -398,7 +400,8 @@ public class DefaultClan implements Clan
 	public int getClanRelations(String id)
 	{
 		final long i[]=relations.get(id.toUpperCase());
-		if(i!=null) return (int)i[0];
+		if(i!=null)
+			return (int)i[0];
 		return  REL_NEUTRAL;
 	}
 
@@ -406,7 +409,8 @@ public class DefaultClan implements Clan
 	public long getLastRelationChange(String id)
 	{
 		final long i[]=relations.get(id.toUpperCase());
-		if(i!=null) return i[1];
+		if(i!=null)
+			return i[1];
 		return 0;
 	}
 	@Override
@@ -509,7 +513,8 @@ public class DefaultClan implements Clan
 	public boolean updateClanPrivileges(MOB M)
 	{
 		boolean did=false;
-		if(M==null) return false;
+		if(M==null)
+			return false;
 		final Pair<Clan,Integer> p=M.getClanRole(clanID());
 
 		if((p!=null) && (getAuthority(p.second.intValue(),Function.CLAN_BENEFITS)!=Clan.Authority.CAN_NOT_DO))
@@ -620,9 +625,11 @@ public class DefaultClan implements Clan
 
 	protected CharClass getClanClassC()
 	{
-		if(clanClass.length()==0) return null;
+		if(clanClass.length()==0)
+			return null;
 		CharClass C=CMClass.getCharClass(clanClass);
-		if(C==null)C=CMClass.findCharClass(clanClass);
+		if(C==null)
+			C=CMClass.findCharClass(clanClass);
 		return C;
 	}
 
@@ -657,7 +664,8 @@ public class DefaultClan implements Clan
 		else
 			msg.append(L("^xQualifications  :^.^N Anyone may apply\n\r"));
 		final CharClass clanC=getClanClassC();
-		if(clanC!=null) msg.append(L("^xClass           :^.^N @x1\n\r",clanC.name()));
+		if(clanC!=null)
+			msg.append(L("^xClass           :^.^N @x1\n\r",clanC.name()));
 		msg.append(L("^xExp. Tax Rate   :^.^N @x1%\n\r",""+((int)Math.round(getTaxes()*100))));
 		if(member||sysmsgs)
 		{
@@ -761,7 +769,8 @@ public class DefaultClan implements Clan
 					final LegalBehavior B=CMLib.law().getLegalBehavior(A);
 					final Area legalA=CMLib.law().getLegalObject(A);
 					int pctRevolt=0;
-					if((B!=null)&&(legalA!=null)) pctRevolt=B.revoltChance();
+					if((B!=null)&&(legalA!=null))
+						pctRevolt=B.revoltChance();
 					msg.append("^c"+CMStrings.padRight(A.name()+"^N ("+pctRevolt+"%)",COL_LEN)+"^N");
 				}
 			}
@@ -843,8 +852,10 @@ public class DefaultClan implements Clan
 	@Override
 	public boolean canBeAssigned(MOB mob, int role)
 	{
-		if(mob==null) return false;
-		if((role<0)||(role>govt().getPositions().length)) return false;
+		if(mob==null)
+			return false;
+		if((role<0)||(role>govt().getPositions().length))
+			return false;
 		final ClanPosition pos = govt().getPositions()[role];
 		return CMLib.masking().maskCheck(fixRequirementMask(pos.getInnerMaskStr()), mob, true);
 	}
@@ -859,9 +870,11 @@ public class DefaultClan implements Clan
 
 	public String fixRequirementMask(final String oldMask)
 	{
-		if((oldMask==null)||(oldMask.trim().length()==0)) return "";
+		if((oldMask==null)||(oldMask.trim().length()==0))
+			return "";
 		final StringBuffer mask=new StringBuffer(oldMask.trim());
-		if(mask.length()==0) return "";
+		if(mask.length()==0)
+			return "";
 		final MOB M=getResponsibleMember();
 		int x=mask.indexOf("%[");
 		while(x>=0)
@@ -906,7 +919,8 @@ public class DefaultClan implements Clan
 	public List<MemberRecord> getRealMemberList(int PosFilter)
 	{
 		final List<MemberRecord> members=getMemberList(PosFilter);
-		if(members==null) return null;
+		if(members==null)
+			return null;
 		final List<MemberRecord> realMembers=new Vector<MemberRecord>();
 		for(final MemberRecord member : members)
 			if(CMLib.players().playerExists(member.name))
@@ -983,7 +997,8 @@ public class DefaultClan implements Clan
 		XMLLibrary.XMLpiece piece;
 		relations.clear();
 		government=0;
-		if(politics.trim().length()==0) return;
+		if(politics.trim().length()==0)
+			return;
 		final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(politics);
 		if(xml==null)
 		{
@@ -1161,14 +1176,16 @@ public class DefaultClan implements Clan
 	@Override
 	public int getTopQualifiedRoleID(Function func, MOB mob)
 	{
-		if(mob==null) return govt().getAutoRole();
+		if(mob==null)
+			return govt().getAutoRole();
 		ClanPosition topPos = null;
 		for(final ClanPosition pos : govt().getPositions())
 			if(canBeAssigned(mob,pos.getRoleID())
 			&&((topPos==null)||(pos.getRank() < topPos.getRank()))
 			&&((func==null)||(getAuthority(pos.getRoleID(),func)!=Authority.CAN_NOT_DO)))
 				topPos = pos;
-		if(topPos == null) return govt().getAutoRole();
+		if(topPos == null)
+			return govt().getAutoRole();
 		return topPos.getRoleID();
 	}
 
@@ -1367,7 +1384,8 @@ public class DefaultClan implements Clan
 						if((member.role<0)||(member.role>=govt().getPositions().length))
 							continue;
 						final MOB M=CMLib.players().getLoadPlayer(member.name);
-						if(M==null) continue;
+						if(M==null)
+							continue;
 						for(final Integer posI : highPositionList)
 							if((((System.currentTimeMillis()-member.timestamp)<deathMilis)||(deathMilis==0))
 							&&(canBeAssigned(M, posI.intValue())))
@@ -1392,14 +1410,16 @@ public class DefaultClan implements Clan
 					for(final MemberRecord member : highestQualifiedMembers)
 					{
 						final MOB M=CMLib.players().getLoadPlayer(member.name);
-						if(M==null) continue;
+						if(M==null)
+							continue;
 						if(M.basePhyStats().level() > highestLevel)
 							highestLevel=M.basePhyStats().level();
 					}
 					for(final Iterator<MemberRecord> i=highestQualifiedMembers.iterator();i.hasNext();)
 					{
 						final MOB M=CMLib.players().getLoadPlayer(i.next().name);
-						if(M==null) continue;
+						if(M==null)
+							continue;
 						if(M.basePhyStats().level()!=highestLevel)
 							i.remove();
 					}
@@ -1412,7 +1432,8 @@ public class DefaultClan implements Clan
 								if(!highestQualifiedMembers.contains(member))
 								{
 									final MOB M=CMLib.players().getLoadPlayer(member.name);
-									if(M==null) continue;
+									if(M==null)
+										continue;
 									clanAnnounce(member.name+" is now a "+newRole.getName()+" of the "+getGovernmentName()+" "+name()+".");
 									Log.sysOut("Clans",member.name+" of "+getGovernmentName()+" "+name()+" was autodemoted to "+newRole.getName()+".");
 									M.setClan(clanID(),newRole.getRoleID());
@@ -1424,7 +1445,8 @@ public class DefaultClan implements Clan
 							if(!highMembers.contains(member))
 							{
 								final MOB M=CMLib.players().getLoadPlayer(member.name);
-								if(M==null) continue;
+								if(M==null)
+									continue;
 								ClanPosition newRole=null;
 								for(final Integer posI : highPositionList)
 									if(canBeAssigned(M, posI.intValue()))
@@ -1477,7 +1499,8 @@ public class DefaultClan implements Clan
 				boolean updateVotes=false;
 				final Vector<ClanVote> votesToRemove=new Vector<ClanVote>();
 				long duration=govt().getMaxVoteDays();
-				if(duration<=0) duration=54;
+				if(duration<=0)
+					duration=54;
 				duration=duration*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*CMProps.getTickMillis();
 				for(final Enumeration<ClanVote> e=votes();e.hasMoreElements();)
 				{
@@ -1485,12 +1508,15 @@ public class DefaultClan implements Clan
 					final int numVotes=getNumVoters(Function.values()[CV.function]);
 					int quorum=govt().getVoteQuorumPct();
 					quorum=(int)Math.round(CMath.mul(CMath.div(quorum,100.0),numVotes));
-					if(quorum<2) quorum=2;
-					if(numVotes==1) quorum=1;
+					if(quorum<2)
+						quorum=2;
+					if(numVotes==1)
+						quorum=1;
 					final long endsOn=CV.voteStarted+duration;
 					if(CV.voteStatus==VSTAT_STARTED)
 					{
-						if(CV.votes==null) CV.votes=new PairVector<String,Boolean>();
+						if(CV.votes==null)
+							CV.votes=new PairVector<String,Boolean>();
 						boolean voteIsOver=false;
 						if(System.currentTimeMillis()>endsOn)
 							voteIsOver=true;
@@ -1654,7 +1680,8 @@ public class DefaultClan implements Clan
 					}
 				}
 			}
-		if(changed) update();
+		if(changed)
+			update();
 		return exp;
 	}
 
@@ -1698,7 +1725,8 @@ public class DefaultClan implements Clan
 	public String getStat(String code)
 	{
 		final int dex=CMParms.indexOf(getStatCodes(),code.toUpperCase().trim());
-		if(dex<0) return "";
+		if(dex<0)
+			return "";
 		switch(dex)
 		{
 		case 0: return getAcceptanceSettings();
@@ -1732,7 +1760,8 @@ public class DefaultClan implements Clan
 		}
 		case 16: {
 			final MOB M=getResponsibleMember();
-			if(M!=null) return M.Name();
+			if(M!=null)
+				return M.Name();
 			return "";
 		}
 		case 17: return Integer.toString(getClanLevel());
@@ -1749,7 +1778,8 @@ public class DefaultClan implements Clan
 	public void setStat(String code, String val)
 	{
 		final int dex=CMParms.indexOf(getStatCodes(),code.toUpperCase().trim());
-		if(dex<0) return;
+		if(dex<0)
+			return;
 		switch(dex)
 		{
 		case 0: setAcceptanceSettings(val); break;

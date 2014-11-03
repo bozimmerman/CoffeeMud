@@ -130,7 +130,8 @@ public class Spell_Cloudkill extends Spell
 							if((msg.value()>0)||(msg2.value()>0))
 								damage = (int)Math.round(CMath.div(damage,2.0));
 
-							if(damage<=0) damage=1;
+							if(damage<=0)
+								damage=1;
 							if(target.location()==mob.location())
 							{
 								String addOn = "";

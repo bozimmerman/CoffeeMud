@@ -133,13 +133,15 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					if(keyx>=0)
 					{
 						int keyy=mask.indexOf(' ',keyx+1);
-						if(keyy<0) keyy=mask.length();
+						if(keyy<0)
+							keyy=mask.length();
 						if((keyx==0)||(Character.isWhitespace(mask.charAt(keyx-1))))
 						{
 							String parm=mask.substring(keyx+flag.length(),keyy).trim();
 							if((parm.length()==0)||(parm.startsWith("=")))
 							{
-								if(parm.startsWith("=")) parm=parm.substring(1);
+								if(parm.startsWith("="))
+									parm=parm.substring(1);
 								flags.put(CommandJournalFlags.values()[pf],parm);
 								mask=mask.substring(0,keyx).trim()+" "+mask.substring(keyy).trim();
 							}
@@ -331,9 +333,11 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	public String getScriptValue(MOB mob, String journal, String oldValue)
 	{
 		final CommandJournal CMJ=getCommandJournal(journal);
-		if(CMJ==null) return oldValue;
+		if(CMJ==null)
+			return oldValue;
 		final String scriptFilename=CMJ.getScriptFilename();
-		if((scriptFilename==null)||(scriptFilename.trim().length()==0)) return oldValue;
+		if((scriptFilename==null)||(scriptFilename.trim().length()==0))
+			return oldValue;
 		final ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
 		S.setSavable(false);
 		S.setVarScope("*");
@@ -344,7 +348,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		S.dequeResponses();
 		S.tick(mob,Tickable.TICKID_MOB);
 		final String response=S.getVar("*","VALUE");
-		if(response!=null) return response;
+		if(response!=null)
+			return response;
 		return oldValue;
 	}
 
@@ -531,7 +536,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		final String addModeMessage="^ZYou are now in Add Text mode.\n\r^ZEnter . on a blank line to exit.^.^N";
 		mob.tell(L("^HCoffeeMud Message Maker^N"));
 		boolean menuMode=!autoAdd;
-		if(autoAdd) sess.println(addModeMessage);
+		if(autoAdd)
+			sess.println(addModeMessage);
 		while((mob.session()!=null)&&(!sess.isStopped()))
 		{
 			sess.setAfkFlag(false);
@@ -748,7 +754,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 
 		final Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
 		final List<String> mylist=lists.get(journalName);
-		if(mylist==null) return false;
+		if(mylist==null)
+			return false;
 		for(int l=mylist.size()-1;l>=0;l--)
 			if(mylist.get(l).equalsIgnoreCase(userName))
 			{

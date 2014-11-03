@@ -41,7 +41,8 @@ public class ClanID extends StdWebMacro
 	{
 		final String last=httpReq.getUrlParameter("CLAN");
 		final java.util.Map<String,String> parms=parseParms(parm);
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		if(last.length()>0)
 		{
 			final boolean webify=parms.containsKey("WEBCOLOR");

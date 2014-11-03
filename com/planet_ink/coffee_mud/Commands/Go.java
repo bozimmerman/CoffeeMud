@@ -52,7 +52,8 @@ public class Go extends StdCommand
 			ifneccvec.addElement("STAND");
 			ifneccvec.addElement("IFNECESSARY");
 		}
-		if(stander==null) stander=CMClass.getCommand("Stand");
+		if(stander==null)
+			stander=CMClass.getCommand("Stand");
 		if((stander!=null)&&(ifneccvec!=null))
 			stander.execute(mob,ifneccvec,metaFlags);
 	}
@@ -74,7 +75,8 @@ public class Go extends StdCommand
 		}
 		final String whereStr=CMParms.combine(commands,1);
 		final Room R=mob.location();
-		if(R==null) return false;
+		if(R==null)
+			return false;
 
 		final boolean inAShip =(R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip);
 		final String validDirs = inAShip?Directions.SHIP_NAMES_LIST() : Directions.NAMES_LIST();

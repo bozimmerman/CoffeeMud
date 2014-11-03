@@ -78,12 +78,18 @@ public interface BoundedObject
 		}
 		public void union(BoundedCube l)
 		{
-			if(l.lx < lx) lx=l.lx;
-			if(l.rx > rx) rx=l.rx;
-			if(l.ty < ty) ty=l.ty;
-			if(l.by > by) by=l.by;
-			if(l.iz < iz) iz=l.iz;
-			if(l.oz > oz) oz=l.oz;
+			if(l.lx < lx)
+				lx=l.lx;
+			if(l.rx > rx)
+				rx=l.rx;
+			if(l.ty < ty)
+				ty=l.ty;
+			if(l.by > by)
+				by=l.by;
+			if(l.iz < iz)
+				iz=l.iz;
+			if(l.oz > oz)
+				oz=l.oz;
 		}
 
 		public BoundedCube expand(double[] direction, long distance)
@@ -114,7 +120,8 @@ public interface BoundedObject
 
 		public boolean intersects(BoundedCube two)
 		{
-			if(two==null) return false;
+			if(two==null)
+				return false;
 			return (rx >=two.lx) && (lx <=two.rx)
 				&& (by >= two.ty) && (ty <= two.by)
 				&& (oz >= two.iz) && (iz <= two.oz);
@@ -134,18 +141,30 @@ public interface BoundedObject
 		@Override
 		public int compareTo(BoundedCube o)
 		{
-			if(lx<o.lx) return -1;
-			if(lx>o.lx) return 1;
-			if(rx<o.rx) return -1;
-			if(rx>o.rx) return 1;
-			if(ty<o.ty) return -1;
-			if(ty>o.ty) return 1;
-			if(by<o.by) return -1;
-			if(by>o.by) return 1;
-			if(iz<o.iz) return -1;
-			if(iz>o.iz) return 1;
-			if(oz<o.oz) return -1;
-			if(oz>o.oz) return 1;
+			if(lx<o.lx)
+				return -1;
+			if(lx>o.lx)
+				return 1;
+			if(rx<o.rx)
+				return -1;
+			if(rx>o.rx)
+				return 1;
+			if(ty<o.ty)
+				return -1;
+			if(ty>o.ty)
+				return 1;
+			if(by<o.by)
+				return -1;
+			if(by>o.by)
+				return 1;
+			if(iz<o.iz)
+				return -1;
+			if(iz>o.iz)
+				return 1;
+			if(oz<o.oz)
+				return -1;
+			if(oz>o.oz)
+				return 1;
 			return 0;
 		}
 	}

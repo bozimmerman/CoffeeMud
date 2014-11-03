@@ -58,7 +58,8 @@ public class AbilityData extends StdWebMacro
 		}
 
 		String last=httpReq.getUrlParameter("ABILITY");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		Ability A=null;
 		final String newAbilityID=httpReq.getUrlParameter("NEWABILITY");
 		final String newLanguageID=httpReq.getUrlParameter("NEWLANGUAGE");
@@ -119,13 +120,15 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("NAME"))
 				{
 					String old=httpReq.getUrlParameter("NAME");
-					if(old==null) old=A.name();
+					if(old==null)
+						old=A.name();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("GENHELP"))
 				{
 					String old=httpReq.getUrlParameter("GENHELP");
-					if(old==null) old=A.getStat("HELP");
+					if(old==null)
+						old=A.getStat("HELP");
 					str.append(old+", ");
 				}
 
@@ -264,7 +267,8 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("CLASSIFICATION_ACODE"))
 				{
 					String old=httpReq.getUrlParameter("CLASSIFICATION_ACODE");
-					if(old==null) old=""+(A.classificationCode()&Ability.ALL_ACODES);
+					if(old==null)
+						old=""+(A.classificationCode()&Ability.ALL_ACODES);
 					for(int i=0;i<Ability.ACODE_DESCS.length;i++)
 					{
 						if(A instanceof ItemCraftor)
@@ -286,7 +290,8 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("CLASSIFICATION_DOMAIN"))
 				{
 					String old=httpReq.getUrlParameter("CLASSIFICATION_DOMAIN");
-					if(old==null) old=""+((A.classificationCode()&Ability.ALL_DOMAINS)>>5);
+					if(old==null)
+						old=""+((A.classificationCode()&Ability.ALL_DOMAINS)>>5);
 					for(int i=0;i<Ability.DOMAIN_DESCS.length;i++)
 						str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[i]));
 					str.append(", ");
@@ -296,14 +301,16 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("TRIGSTR"))
 				{
 					String old=httpReq.getUrlParameter("TRIGSTR");
-					if(old==null) old=CMParms.toStringList(A.triggerStrings());
+					if(old==null)
+						old=CMParms.toStringList(A.triggerStrings());
 					// remember to sort by longest->shortest on put-back
 					str.append(old.toUpperCase().trim()+", ");
 				}
 				if(parms.containsKey("MINRANGE"))
 				{
 					String old=httpReq.getUrlParameter("MINRANGE");
-					if(old==null) old=""+A.minRange();
+					if(old==null)
+						old=""+A.minRange();
 					for(int i=0;i<Ability.RANGE_CHOICES.length;i++)
 						str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.RANGE_CHOICES[i]));
 					str.append(", ");
@@ -311,7 +318,8 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("MAXRANGE"))
 				{
 					String old=httpReq.getUrlParameter("MAXRANGE");
-					if(old==null) old=""+A.maxRange();
+					if(old==null)
+						old=""+A.maxRange();
 					for(int i=0;i<Ability.RANGE_CHOICES.length;i++)
 						str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.RANGE_CHOICES[i]));
 					str.append(", ");
@@ -319,19 +327,22 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("TICKSBETWEENCASTS"))
 				{
 					String old=httpReq.getUrlParameter("TICKSBETWEENCASTS");
-					if(old==null) old=""+A.getStat("TICKSBETWEENCASTS");
+					if(old==null)
+						old=""+A.getStat("TICKSBETWEENCASTS");
 					str.append(old+", ");
 				}
 				if(parms.containsKey("TICKSOVERRIDE"))
 				{
 					String old=httpReq.getUrlParameter("TICKSOVERRIDE");
-					if(old==null) old=""+A.getStat("TICKSOVERRIDE");
+					if(old==null)
+						old=""+A.getStat("TICKSOVERRIDE");
 					str.append(old+", ");
 				}
 				if(parms.containsKey("DISPLAY")) // affected string
 				{
 					String old=httpReq.getUrlParameter("DISPLAY");
-					if(old==null) old=A.displayText();
+					if(old==null)
+						old=A.displayText();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("AUTOINVOKE"))
@@ -373,7 +384,8 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("CUSTOMOVERRIDEMANA"))
 				{
 					String old=httpReq.getUrlParameter("OVERRIDEMANA");
-					if(old==null) old=""+A.getStat("OVERRIDEMANA");
+					if(old==null)
+						old=""+A.getStat("OVERRIDEMANA");
 					final int x=CMath.s_int(old);
 					if((x>0) && (x<Ability.COST_PCT))
 						str.append(old+", ");
@@ -381,7 +393,8 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("OVERRIDEMANA"))
 				{
 					String old=httpReq.getUrlParameter("OVERRIDEMANA");
-					if(old==null) old=""+A.getStat("OVERRIDEMANA");
+					if(old==null)
+						old=""+A.getStat("OVERRIDEMANA");
 					final int o=CMath.s_int(old);
 					str.append("<OPTION VALUE=\"-1\""+((o==-1)?" SELECTED":"")+">Use Default");
 					str.append("<OPTION VALUE=\"0\""+((o==0)?" SELECTED":"")+">None (free skill)");
@@ -444,7 +457,8 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("VQUALITY")) //QUALITY
 				{
 					String old=httpReq.getUrlParameter("VQUALITY");
-					if(old==null) old=""+A.abstractQuality();
+					if(old==null)
+						old=""+A.abstractQuality();
 					for(int i=0;i<Ability.QUALITY_DESCS.length;i++)
 						str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.QUALITY_DESCS[i]));
 					str.append(", ");
@@ -452,73 +466,85 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("HERESTATS")) // affect adj: Prop_HereAdjuster
 				{
 					String old=httpReq.getUrlParameter("HERESTATS");
-					if(old==null) old=A.getStat("HERESTATS");
+					if(old==null)
+						old=A.getStat("HERESTATS");
 					str.append(old+", ");
 				}
 				if(parms.containsKey("SCRIPT"))
 				{
 					String old=httpReq.getUrlParameter("SCRIPT");
-					if(old==null) old=A.getStat("SCRIPT");
+					if(old==null)
+						old=A.getStat("SCRIPT");
 					str.append(old+", ");
 				}
 				if(parms.containsKey("CASTMASK"))
 				{
 					String old=httpReq.getUrlParameter("CASTMASK");
-					if(old==null) old=A.getStat("CASTMASK");
+					if(old==null)
+						old=A.getStat("CASTMASK");
 					str.append(old+", ");
 				}
 				if(parms.containsKey("TARGETMASK"))
 				{
 					String old=httpReq.getUrlParameter("TARGETMASK");
-					if(old==null) old=A.getStat("TARGETMASK");
+					if(old==null)
+						old=A.getStat("TARGETMASK");
 					str.append(old+", ");
 				}
 				if(parms.containsKey("FIZZLEMSG"))
 				{
 					String old=httpReq.getUrlParameter("FIZZLEMSG");
-					if(old==null) old=A.getStat("FIZZLEMSG");
+					if(old==null)
+						old=A.getStat("FIZZLEMSG");
 					str.append(old+", ");
 				}
 				if(parms.containsKey("AUTOCASTMSG"))
 				{
 					String old=httpReq.getUrlParameter("AUTOCASTMSG");
-					if(old==null) old=A.getStat("AUTOCASTMSG");
+					if(old==null)
+						old=A.getStat("AUTOCASTMSG");
 					str.append(old+", ");
 				}
 				if(parms.containsKey("CASTMSG"))
 				{
 					String old=httpReq.getUrlParameter("CASTMSG");
-					if(old==null) old=A.getStat("CASTMSG");
+					if(old==null)
+						old=A.getStat("CASTMSG");
 					str.append(old+", ");
 				}
 				if(parms.containsKey("FILENAME"))
 				{
 					String old=httpReq.getUrlParameter("FILENAME");
-					if(old==null) old=A.getStat("FILENAME");
+					if(old==null)
+						old=A.getStat("FILENAME");
 					str.append(old+", ");
 				}
 				if(parms.containsKey("VERB"))
 				{
 					String old=httpReq.getUrlParameter("VERB");
-					if(old==null) old=A.getStat("VERB");
+					if(old==null)
+						old=A.getStat("VERB");
 					str.append(old+", ");
 				}
 				if(parms.containsKey("SOUND"))
 				{
 					String old=httpReq.getUrlParameter("SOUND");
-					if(old==null) old=A.getStat("SOUND");
+					if(old==null)
+						old=A.getStat("SOUND");
 					str.append(old+", ");
 				}
 				if(parms.containsKey("POSTCASTMSG"))
 				{
 					String old=httpReq.getUrlParameter("POSTCASTMSG");
-					if(old==null) old=A.getStat("POSTCASTMSG");
+					if(old==null)
+						old=A.getStat("POSTCASTMSG");
 					str.append(old+", ");
 				}
 				if(parms.containsKey("ATTACKCODE"))
 				{
 					String old=httpReq.getUrlParameter("ATTACKCODE");
-					if(old==null) old=""+CMParms.indexOf(CMMsg.TYPE_DESCS,A.getStat("ATTACKCODE"));
+					if(old==null)
+						old=""+CMParms.indexOf(CMMsg.TYPE_DESCS,A.getStat("ATTACKCODE"));
 					for(int i=0;i<CMMsg.TYPE_DESCS.length;i++)
 						str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(CMMsg.TYPE_DESCS[i]));
 					str.append(", ");
@@ -633,7 +659,8 @@ public class AbilityData extends StdWebMacro
 						Formula evaluates >0 for damage, <0 for healing. Requires Can Target!"
 					*/
 					String old=httpReq.getUrlParameter("POSTCASTDAMAGE");
-					if(old==null) old=A.getStat("POSTCASTDAMAGE");
+					if(old==null)
+						old=A.getStat("POSTCASTDAMAGE");
 					str.append(old+", ");
 				}
 
@@ -649,7 +676,8 @@ public class AbilityData extends StdWebMacro
 					if(s==null)
 						s=CMLib.help().getHelpText(A.Name(),null,false);
 					int limit=78;
-					if(parms.containsKey("LIMIT")) limit=CMath.s_int(parms.get("LIMIT"));
+					if(parms.containsKey("LIMIT"))
+						limit=CMath.s_int(parms.get("LIMIT"));
 					str.append(helpHelp(s,limit));
 				}
 				if(parms.containsKey("RANGES"))
@@ -762,7 +790,8 @@ public class AbilityData extends StdWebMacro
 						thang.setCharAt(0,Character.toUpperCase(thang.charAt(0)));
 
 						final int x=thang.toString().indexOf('/');
-						if(x>0) thang.setCharAt(x+1,Character.toUpperCase(thang.charAt(x+1)));
+						if(x>0)
+							thang.setCharAt(x+1,Character.toUpperCase(thang.charAt(x+1)));
 						str.append(thang.toString()+", ");
 					}
 				}

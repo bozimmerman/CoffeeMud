@@ -108,7 +108,8 @@ public class Spell_ChanneledMissiles extends Spell
 
 		super.unInvoke();
 
-		if(mob==null) return;
+		if(mob==null)
+			return;
 
 		if((canBeUninvoked()&&(!mob.amDead())))
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> stop(s) channeling missiles."));
@@ -118,7 +119,8 @@ public class Spell_ChanneledMissiles extends Spell
 	public boolean invoke(final MOB mob, final Vector commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB[] target=new MOB[]{this.getTarget(mob,commands,givenTarget)};
-		if(target[0]==null) return false;
+		if(target[0]==null)
+			return false;
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

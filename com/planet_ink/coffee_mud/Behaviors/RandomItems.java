@@ -66,7 +66,8 @@ public class RandomItems extends ActiveTicker
 		if((start<0)||(start>20))
 		{
 			final int extraSemicolon=filename.indexOf(';');
-			if(extraSemicolon>=0) filename=filename.substring(0,extraSemicolon);
+			if(extraSemicolon>=0)
+				filename=filename.substring(0,extraSemicolon);
 			if(filename.trim().length()>0)
 				xmlfiles.addElement(filename.trim());
 			return xmlfiles;
@@ -92,7 +93,8 @@ public class RandomItems extends ActiveTicker
 			{
 				final String xtra=newParms.substring(x+1);
 				extraX=xtra.indexOf(';');
-				if(extraX>=0) extraParms=xtra.substring(extraX+1);
+				if(extraX>=0)
+					extraParms=xtra.substring(extraX+1);
 			}
 			final Vector<String> V=CMParms.parse(extraParms);
 			for(int v=0;v<V.size();v++)
@@ -152,7 +154,8 @@ public class RandomItems extends ActiveTicker
 		super.setParms(oldParms);
 		minItems=CMParms.getParmInt(oldParms,"minitems",1);
 		maxItems=CMParms.getParmInt(oldParms,"maxitems",1);
-		if(minItems>maxItems) maxItems=minItems;
+		if(minItems>maxItems)
+			maxItems=minItems;
 		avgItems=CMLib.dice().roll(1,(maxItems-minItems),minItems);
 		parms=newParms;
 		alreadyTriedLoad=false;
@@ -169,19 +172,24 @@ public class RandomItems extends ActiveTicker
 
 	public boolean okRoomForMe(Room newRoom)
 	{
-		if(newRoom==null) return false;
-		if(restrictedLocales==null) return true;
+		if(newRoom==null)
+			return false;
+		if(restrictedLocales==null)
+			return true;
 		return !restrictedLocales.contains(Integer.valueOf(newRoom.domainType()));
 	}
 
 	public boolean isStillMaintained(Environmental thang, ShopKeeper SK, Item I)
 	{
-		if((I==null)||(I.amDestroyed())) return false;
-		if(SK!=null) return SK.getShop().doIHaveThisInStock(I.Name(),null);
+		if((I==null)||(I.amDestroyed()))
+			return false;
+		if(SK!=null)
+			return SK.getShop().doIHaveThisInStock(I.Name(),null);
 		if(thang instanceof Area)
 		{
 			final Room R=CMLib.map().roomLocation(I);
-			if(R==null) return false;
+			if(R==null)
+				return false;
 			return ((Area)thang).inMyMetroArea(R.getArea());
 		}
 		else
@@ -213,7 +221,8 @@ public class RandomItems extends ActiveTicker
 		String filename=(x>=0)?theseparms.substring(x+1):theseparms;
 		if(filename.trim().length()==0)
 		{
-			if(alreadyTriedLoad) return null;
+			if(alreadyTriedLoad)
+				return null;
 			alreadyTriedLoad=true;
 			Log.errOut("RandomItems: Blank XML/filename: '"+filename+"' on object "+thangName+" ("+thangID+").");
 			return null;
@@ -222,21 +231,25 @@ public class RandomItems extends ActiveTicker
 		if((start>=0)&&(start<=20))
 		{
 			int end=start+20;
-			if(end>filename.length()) end=filename.length();
+			if(end>filename.length())
+				end=filename.length();
 			items=(List<Item>)Resources.getResource("RANDOMITEMS-XML/"+filename.length()+"/"+filename.hashCode());
-			if(items!=null) return items;
+			if(items!=null)
+				return items;
 			items=new Vector();
 			final String error=CMLib.coffeeMaker().addItemsFromXML(filename,items,null);
 			if(error.length()>0)
 			{
-				if(alreadyTriedLoad) return null;
+				if(alreadyTriedLoad)
+					return null;
 				alreadyTriedLoad=true;
 				Log.errOut("RandomItems: Error on import of xml for '"+thangName+"' ("+thangID+"): "+error+".");
 				return null;
 			}
 			if(items.size()<=0)
 			{
-				if(alreadyTriedLoad) return null;
+				if(alreadyTriedLoad)
+					return null;
 				alreadyTriedLoad=true;
 				Log.errOut("RandomItems: No items loaded for '"+thangName+"' ("+thangID+").");
 				return null;
@@ -246,7 +259,8 @@ public class RandomItems extends ActiveTicker
 		else
 		{
 			final int extraSemicolon=filename.indexOf(';');
-			if(extraSemicolon>=0) filename=filename.substring(0,extraSemicolon);
+			if(extraSemicolon>=0)
+				filename=filename.substring(0,extraSemicolon);
 			filename=filename.trim();
 			items=(List<Item>)Resources.getResource("RANDOMITEMS-"+filename);
 			if((items==null)&&(!alreadyTriedLoad))
@@ -299,7 +313,8 @@ public class RandomItems extends ActiveTicker
 			try
 			{
 				I=(Item)maintained.elementAt(i);
-				if(!isStillMaintained(E,SK,I)) maintained.removeElement(I);
+				if(!isStillMaintained(E,SK,I))
+					maintained.removeElement(I);
 			}
 			catch(final Exception e){	}
 		}
@@ -308,7 +323,8 @@ public class RandomItems extends ActiveTicker
 		if((canAct(ticking,tickID))||(maintained.size()<minItems))
 		{
 			final List<Item> items=getItems(ticking,getParms());
-			if(items==null) return true;
+			if(items==null)
+				return true;
 			int attempts=10;
 			if((ticking instanceof Environmental)&&(((Environmental)ticking).amDestroyed()))
 				return false;

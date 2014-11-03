@@ -191,7 +191,8 @@ public class RocketShipProgram extends GenShipProgram
 	protected ShipEngine findEngineByName(String name)
 	{
 		final List<ShipEngine> engines=getEngines();
-		if(engines.size()==0) return null;
+		if(engines.size()==0)
+			return null;
 		name=name.toUpperCase();
 		if(name.startsWith("ENGINE"))
 		{

@@ -46,9 +46,11 @@ public class Play_Blues extends Play
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg)) return false;
+		if(!super.okMessage(myHost,msg))
+			return false;
 		// the sex rules
-		if(!(affected instanceof MOB)) return true;
+		if(!(affected instanceof MOB))
+			return true;
 
 		final MOB myChar=(MOB)affected;
 		if((msg.target()!=null)&&(msg.target() instanceof MOB)&&(myChar!=invoker()))
@@ -80,7 +82,8 @@ public class Play_Blues extends Play
 			if(CMLib.dice().rollPercentage()>(adjustedLevel(invoker(),0)/4))
 			{
 				final Ability A=CMClass.getAbility("Disease_Depression");
-				if(A!=null) A.invoke(invoker(),affected,true,0);
+				if(A!=null)
+					A.invoke(invoker(),affected,true,0);
 			}
 		}
 		return true;

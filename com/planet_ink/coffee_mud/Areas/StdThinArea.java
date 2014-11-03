@@ -42,12 +42,14 @@ public class StdThinArea extends StdArea
 	@Override
 	public void addProperRoom(Room R)
 	{
-		if(R!=null) R.setExpirationDate(WorldMap.ROOM_EXPIRATION_MILLIS);
+		if(R!=null)
+			R.setExpirationDate(WorldMap.ROOM_EXPIRATION_MILLIS);
 		super.addProperRoom(R);
 	}
 	public Room getProperRoom(String roomID)
 	{
-		if(!isRoom(roomID)) return null;
+		if(!isRoom(roomID))
+			return null;
 		final Room R=super.getRoom(roomID);
 		if(((R==null)||(R.amDestroyed()))&&(roomID!=null))
 			return null;
@@ -81,7 +83,8 @@ public class StdThinArea extends StdArea
 	@Override
 	public Room getRoom(String roomID)
 	{
-		if(!isRoom(roomID)) return null;
+		if(!isRoom(roomID))
+			return null;
 		Room R=super.getRoom(roomID);
 		if(((R==null)||(R.amDestroyed()))&&(roomID!=null))
 		{
@@ -105,8 +108,10 @@ public class StdThinArea extends StdArea
 	@Override
 	public boolean isRoom(Room R)
 	{
-		if(R==null) return false;
-		if(R.roomID().length()==0) return super.isRoom(R);
+		if(R==null)
+			return false;
+		if(R.roomID().length()==0)
+			return super.isRoom(R);
 		return isRoom(R.roomID());
 	}
 	@Override public Enumeration<Room> getCompleteMap(){return new CompleteRoomEnumerator(new RoomIDEnumerator(this));}

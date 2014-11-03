@@ -154,7 +154,8 @@ public class Spell_IceSheet extends Spell
 			||(mob.location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
 			||(mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
 				msgStr=L("the water freezes over!");
-			if(auto)msgStr=Character.toUpperCase(msgStr.charAt(0))+msgStr.substring(1);
+			if(auto)
+				msgStr=Character.toUpperCase(msgStr.charAt(0))+msgStr.substring(1);
 			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),L(auto?"":"^S<S-NAME> speak(s) and gesture(s) and ")+msgStr+"^?");
 			if(mob.location().okMessage(mob,msg))
 			{

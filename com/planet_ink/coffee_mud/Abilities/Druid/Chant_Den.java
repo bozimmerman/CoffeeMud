@@ -145,15 +145,20 @@ public class Chant_Den extends Chant
 				final Exit E=CMClass.getExit("Open");
 				E.addNonUninvokableEffect(A);
 				A=CMClass.getAbility("Prop_PeaceMaker");
-				if(A!=null) newRoom.addEffect(A);
+				if(A!=null)
+					newRoom.addEffect(A);
 				A=CMClass.getAbility("Prop_NoRecall");
-				if(A!=null) newRoom.addEffect(A);
+				if(A!=null)
+					newRoom.addEffect(A);
 				A=CMClass.getAbility("Prop_NoSummon");
-				if(A!=null) newRoom.addEffect(A);
+				if(A!=null)
+					newRoom.addEffect(A);
 				A=CMClass.getAbility("Prop_NoTeleport");
-				if(A!=null) newRoom.addEffect(A);
+				if(A!=null)
+					newRoom.addEffect(A);
 				A=CMClass.getAbility("Prop_NoTeleportOut");
-				if(A!=null) newRoom.addEffect(A);
+				if(A!=null)
+					newRoom.addEffect(A);
 
 				newRoom.setRawExit(Directions.getOpDirectionCode(d),E);
 				newRoom.getArea().fillInAreaRoom(newRoom);

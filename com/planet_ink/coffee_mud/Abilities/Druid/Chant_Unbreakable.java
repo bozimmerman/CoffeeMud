@@ -52,7 +52,8 @@ public class Chant_Unbreakable extends Chant
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(!(affected instanceof Item)) return;
+		if(!(affected instanceof Item))
+			return;
 		if(maintainCondition>0)
 			((Item)affected).setUsesRemaining(maintainCondition);
 	}
@@ -62,7 +63,8 @@ public class Chant_Unbreakable extends Chant
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(!(affected instanceof Item)) return true;
+		if(!(affected instanceof Item))
+			return true;
 		if(maintainCondition>0)
 			((Item)affected).setUsesRemaining(maintainCondition);
 		return true;
@@ -105,7 +107,8 @@ public class Chant_Unbreakable extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(target.fetchEffect(this.ID())!=null)
 		{

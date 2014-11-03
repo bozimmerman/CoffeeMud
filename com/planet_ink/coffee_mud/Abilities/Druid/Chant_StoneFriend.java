@@ -51,7 +51,8 @@ public class Chant_StoneFriend extends Chant
 	protected MOB charmer=null;
 	protected MOB getCharmer()
 	{
-		if(charmer!=null) return charmer;
+		if(charmer!=null)
+			return charmer;
 		if((invoker!=null)&&(invoker!=affected))
 			charmer=invoker;
 		else
@@ -61,7 +62,8 @@ public class Chant_StoneFriend extends Chant
 			if(R!=null)
 				charmer=R.fetchInhabitant(text());
 		}
-		if(charmer==null) return invoker;
+		if(charmer==null)
+			return invoker;
 		return charmer;
 	}
 
@@ -177,7 +179,8 @@ public class Chant_StoneFriend extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if((!target.charStats().getMyRace().racialCategory().equals("Earth Elemental"))
 		   &&(!target.charStats().getMyRace().racialCategory().equals("Stone Golem"))
@@ -212,7 +215,8 @@ public class Chant_StoneFriend extends Chant
 					success=maliciousAffect(mob,target,asLevel,0,-1)!=null;
 					if(success)
 					{
-						if(target.isInCombat()) target.makePeace();
+						if(target.isInCombat())
+							target.makePeace();
 						CMLib.commands().postFollow(target,mob,false);
 						CMLib.combat().makePeaceInGroup(mob);
 						if(target.amFollowing()!=mob)

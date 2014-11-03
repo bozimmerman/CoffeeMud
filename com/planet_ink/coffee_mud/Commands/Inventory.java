@@ -57,7 +57,8 @@ public class Inventory extends StdCommand
 		for(final Enumeration<Item> i=mob.items();i.hasMoreElements();)
 		{
 			final Item thisItem=i.nextElement();
-			if(thisItem==null) continue;
+			if(thisItem==null)
+				continue;
 			if((thisItem.container()==null)
 			&&(thisItem.amWearingAt(Wearable.IN_INVENTORY)))
 			{
@@ -105,14 +106,16 @@ public class Inventory extends StdCommand
 					I=V.elementAt(v);
 					if(I!=null)
 					{
-						if(v>0) msg.append(", ");
+						if(v>0)
+							msg.append(", ");
 						if(I instanceof Coins)
 							totalValue+=((Coins)I).getTotalValue();
 						msg.append(I.name());
 					}
 				}
 				msg.append(" ^N("+CMLib.beanCounter().abbreviatedPrice(key,totalValue)+")");
-				if(e.hasMoreElements()) msg.append("\n\r");
+				if(e.hasMoreElements())
+					msg.append("\n\r");
 			}
 		}
 		return msg.toString();
@@ -133,7 +136,8 @@ public class Inventory extends StdCommand
 		if((mask!=null)&&(mask.trim().length()>0))
 		{
 			mask=mask.trim().toUpperCase();
-			if(!mask.startsWith("all")) mask="all "+mask;
+			if(!mask.startsWith("all"))
+				mask="all "+mask;
 			final Vector<Item> V=(Vector<Item>)list.viewItems.clone();
 			list.viewItems.clear();
 			Item I=(V.size()>0)?(Item)V.firstElement():null;

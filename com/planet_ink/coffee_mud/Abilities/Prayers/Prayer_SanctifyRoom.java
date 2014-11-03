@@ -103,7 +103,8 @@ public class Prayer_SanctifyRoom extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Physical target=mob.location();
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell(L("This place is already a sanctified place."));

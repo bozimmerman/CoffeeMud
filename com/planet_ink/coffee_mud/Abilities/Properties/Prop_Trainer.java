@@ -70,7 +70,8 @@ public class Prop_Trainer extends Prop_StatTrainer
 			for(int v=0;v<V.size();v++)
 			{
 				s=V.elementAt(v);
-				if(s.equalsIgnoreCase("all")) continue;
+				if(s.equalsIgnoreCase("all"))
+					continue;
 				C=CMClass.getCharClass(s);
 				if(C!=null)
 				{
@@ -91,7 +92,8 @@ public class Prop_Trainer extends Prop_StatTrainer
 				else
 				{
 					final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(s);
-					if(def!=null) allowedExpertises.addElement(def);
+					if(def!=null)
+						allowedExpertises.addElement(def);
 				}
 			}
 			if(allowedClasses.size()==0)

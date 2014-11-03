@@ -59,13 +59,16 @@ public class AutoTitleData extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("AUTOTITLE");
-		if((last==null)&&(!parms.containsKey("EDIT"))) return " @break@";
+		if((last==null)&&(!parms.containsKey("EDIT")))
+			return " @break@";
 
 		if(parms.containsKey("EDIT"))
 		{
 			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
-			if(M==null) return "[authentication error]";
-			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.TITLES)) return "[authentication error]";
+			if(M==null)
+				return "[authentication error]";
+			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.TITLES))
+				return "[authentication error]";
 			final String req=httpReq.getUrlParameter("ISREQUIRED");
 			String newTitle=httpReq.getUrlParameter("TITLE");
 			if((req!=null)&&(req.equalsIgnoreCase("on")))
@@ -81,7 +84,8 @@ public class AutoTitleData extends StdWebMacro
 			}
 
 			final String error=CMLib.titles().evaluateAutoTitle(newTitle+"="+newMask,false);
-			if(error!=null) return "[error: "+error+"]";
+			if(error!=null)
+				return "[error: "+error+"]";
 
 			if((last!=null)&&(CMLib.titles().isExistingAutoTitle(last)))
 			{
@@ -101,17 +105,22 @@ public class AutoTitleData extends StdWebMacro
 		if(parms.containsKey("DELETE"))
 		{
 			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
-			if(M==null) return "[authentication error]";
-			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.TITLES)) return "[authentication error]";
-			if(last==null) return " @break@";
+			if(M==null)
+				return "[authentication error]";
+			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.TITLES))
+				return "[authentication error]";
+			if(last==null)
+				return " @break@";
 			if(!CMLib.titles().isExistingAutoTitle(last))
 				return "Unknown title!";
 			final String err=deleteTitle(last);
-			if(err==null) return "Auto-Title deleted.";
+			if(err==null)
+				return "Auto-Title deleted.";
 			return err;
 		}
 		else
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		final StringBuffer str=new StringBuffer("");
 
 		if(parms.containsKey("MASK"))

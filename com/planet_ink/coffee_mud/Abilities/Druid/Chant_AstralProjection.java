@@ -102,7 +102,8 @@ public class Chant_AstralProjection extends Chant
 	public void peaceAt(MOB mob)
 	{
 		final Room room=mob.location();
-		if(room==null) return;
+		if(room==null)
+			return;
 		for(int m=0;m<room.numInhabitants();m++)
 		{
 			final MOB inhab=room.fetchInhabitant(m);

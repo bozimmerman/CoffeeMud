@@ -96,9 +96,11 @@ public class Sounder extends StdBehavior
 				{
 					s=s.substring(6).trim();
 					final int x=s.indexOf(' ');
-					if(x<0) continue;
+					if(x<0)
+						continue;
 					final String y=s.substring(0,x);
-					if(!CMath.isNumber(y)) continue;
+					if(!CMath.isNumber(y))
+						continue;
 					triggers[v]=TICK_MASK+CMath.s_int(y);
 					s="^E"+s.substring(x+1).trim()+"^?";
 					strings[v]=s;
@@ -326,9 +328,11 @@ public class Sounder extends StdBehavior
 
 	protected void emoteHere(Room room, MOB emoter, String emote)
 	{
-		if(room==null) return;
+		if(room==null)
+			return;
 		final Room oldLoc=emoter.location();
-		if(emoter.location()!=room) emoter.setLocation(room);
+		if(emoter.location()!=room)
+			emoter.setLocation(room);
 		final CMMsg msg=CMClass.getMsg(emoter,null,CMMsg.MSG_EMOTE,emote);
 		if(room.okMessage(emoter,msg))
 		{

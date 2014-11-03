@@ -69,7 +69,8 @@ public class Prayer_Faithless extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if((!auto)&&(target.charStats().getCurrentClass().baseClass().equals("Cleric")))
 		{
 			mob.tell(L("@x1 can not be affected by this prayer.",target.name(mob)));
@@ -77,7 +78,8 @@ public class Prayer_Faithless extends Prayer
 		}
 		if(CMLib.flags().isAnimalIntelligence(target)||CMLib.flags().isGolem(target))
 		{
-			if(!auto)mob.tell(L("@x1 can not be affected by this prayer.",target.name(mob)));
+			if(!auto)
+				mob.tell(L("@x1 can not be affected by this prayer.",target.name(mob)));
 			return false;
 		}
 
@@ -85,7 +87,8 @@ public class Prayer_Faithless extends Prayer
 			return false;
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
-		if(levelDiff<0) levelDiff=0;
+		if(levelDiff<0)
+			levelDiff=0;
 		final boolean success=proficiencyCheck(mob,-(levelDiff*25),auto);
 		Deity D=null;
 		if(target.getWorshipCharID().length()>0)

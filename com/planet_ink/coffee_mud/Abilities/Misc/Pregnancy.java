@@ -51,7 +51,8 @@ public class Pregnancy extends StdAbility implements HealthCondition
 		{
 			final TimeClock C=CMLib.time().localClock(affected);
 			final int y=text().indexOf('/',x+1);
-			if(y<0) return "";
+			if(y<0)
+				return "";
 			final long start=CMath.s_long(text().substring(0,x));
 			final long divisor=CMProps.getTickMillis()*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
 			final long days=(System.currentTimeMillis()-start)/divisor; // down to days;
@@ -189,7 +190,8 @@ public class Pregnancy extends StdAbility implements HealthCondition
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
 		if((tickID==Tickable.TICKID_MOB)
 		&&(affected instanceof MOB)
 		&&(CMLib.flags().isInTheGame((MOB)affected,true)))
@@ -210,7 +212,8 @@ public class Pregnancy extends StdAbility implements HealthCondition
 					if(CMLib.dice().roll(1,200,0)==1)
 					{
 						final Ability A=CMClass.getAbility("Mood");
-						if(A!=null) A.invoke(mob,new XVector("RANDOM"),mob,true,0);
+						if(A!=null)
+							A.invoke(mob,new XVector("RANDOM"),mob,true,0);
 					}
 					if(daysRemaining<7) // BIRTH!
 					{
@@ -265,7 +268,8 @@ public class Pregnancy extends StdAbility implements HealthCondition
 								}
 							}
 							Race R=getRace(babe,race1,race2);
-							if(R==null) R=mob.baseCharStats().getMyRace();
+							if(R==null)
+								R=mob.baseCharStats().getMyRace();
 							String name=CMLib.english().startWithAorAn(R.makeMobName(gender, 2)).toLowerCase();
 							babe.setName(name);
 							CMLib.factions().setAlignment(babe,Faction.Align.GOOD);
@@ -303,7 +307,8 @@ public class Pregnancy extends StdAbility implements HealthCondition
 									else
 									{
 										A=CMClass.getAbility("Allergies");
-										if(A!=null) A.invoke(babe,babe,true,0);
+										if(A!=null)
+											A.invoke(babe,babe,true,0);
 									}
 								}
 								final Ability STAT=CMClass.getAbility("Prop_StatTrainer");
@@ -345,7 +350,8 @@ public class Pregnancy extends StdAbility implements HealthCondition
 								if((CMLib.dice().rollPercentage()<20)&&(mob.fetchEffect("Disease_Depression")==null))
 								{
 									final Ability A=CMClass.getAbility("Disease_Depression");
-									if(A!=null) A.invoke(mob,mob,true,0);
+									if(A!=null)
+										A.invoke(mob,mob,true,0);
 								}
 							}
 							if((mob.playerStats()!=null)||((otherParentM!=null)&&(otherParentM.playerStats()!=null)))
@@ -398,7 +404,8 @@ public class Pregnancy extends StdAbility implements HealthCondition
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		final boolean success=proficiencyCheck(mob,0,auto);
@@ -408,7 +415,8 @@ public class Pregnancy extends StdAbility implements HealthCondition
 		final TimeClock C=CMLib.time().localClock(target.getStartRoom());
 		tickspermudmonth=tickspermudmonth*C.getDaysInMonth();
 		int birthmonths=(int)Math.round(CMath.mul((R.getAgingChart()[1]-R.getAgingChart()[0])*C.getMonthsInYear(),0.75));
-		if(birthmonths<=0) birthmonths=5;
+		if(birthmonths<=0)
+			birthmonths=5;
 		final long ticksperbirthperiod=tickspermudmonth*birthmonths;
 		final long millisperbirthperiod=ticksperbirthperiod*CMProps.getTickMillis();
 

@@ -565,7 +565,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 						else
 						{
 							final Area A=CMLib.map().areaLocation(E);
-							if(A!=null) return A.getAreaState()==Area.State.ACTIVE;
+							if(A!=null)
+								return A.getAreaState()==Area.State.ACTIVE;
 						}
 					}
 					if(rawSet.size()==0)
@@ -692,7 +693,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	@Override
 	public void addManufacturer(Manufacturer manufacturer)
 	{
-		if((manufacturer==null)||(manufacturer==defaultManufacturer)) return;
+		if((manufacturer==null)||(manufacturer==defaultManufacturer))
+			return;
 		manufacturers.put(manufacturer.name().toUpperCase().trim(), manufacturer);
 		saveAllManufacturers();
 	}
@@ -700,7 +702,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	@Override
 	public void delManufacturer(Manufacturer manufacturer)
 	{
-		if((manufacturer==null)||(manufacturer==defaultManufacturer)) return;
+		if((manufacturer==null)||(manufacturer==defaultManufacturer))
+			return;
 		final Manufacturer found=getManufacturer(manufacturer.name());
 		if(found==manufacturer)
 			manufacturers.remove(manufacturer.name().toUpperCase().trim());
@@ -710,7 +713,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	@Override
 	public void updateManufacturer(Manufacturer manufacturer)
 	{
-		if((manufacturer==null)||(manufacturer==defaultManufacturer)) return;
+		if((manufacturer==null)||(manufacturer==defaultManufacturer))
+			return;
 		final Manufacturer found=getManufacturer(manufacturer.name());
 		if((found==null)||(found!=manufacturer))
 		{
@@ -728,7 +732,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	@Override
 	public Manufacturer getManufacturer(String name)
 	{
-		if(name==null) return null;
+		if(name==null)
+			return null;
 		if(name.equals("RANDOM"))
 			return null;
 		return manufacturers.get(name.toUpperCase().trim());
@@ -737,7 +742,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	@Override
 	public Manufacturer getManufacturerOf(Electronics E, String name)
 	{
-		if(name==null) return null;
+		if(name==null)
+			return null;
 		if(manufacturers.size()==0)
 			return getDefaultManufacturer();
 		if(name.equals("RANDOM"))

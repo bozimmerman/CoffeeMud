@@ -48,9 +48,12 @@ public class Dance_Flamenco extends Dance
 			return false;
 
 		final MOB mob=(MOB)affected;
-		if(mob==null) return false;
-		if(mob==invoker) return true;
-		if(invoker==null) return false;
+		if(mob==null)
+			return false;
+		if(mob==invoker)
+			return true;
+		if(invoker==null)
+			return false;
 
 		final int hpLoss=CMLib.dice().roll(adjustedLevel(invoker(),0),8,0)
 				  +CMLib.dice().roll(invoker().getGroupMembers(new HashSet<MOB>()).size()-1,8,0);

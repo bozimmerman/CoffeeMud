@@ -272,7 +272,8 @@ public class Spell_Spellbinding extends Spell
 				{
 					beneficialAffect(mob,target,asLevel,0);
 					priorBinding=(Spell_Spellbinding)target.fetchEffect(ID());
-					if(priorBinding==null) return false;
+					if(priorBinding==null)
+						return false;
 					priorBinding.makeLongLasting();
 				}
 				if(thePriorKey==null)

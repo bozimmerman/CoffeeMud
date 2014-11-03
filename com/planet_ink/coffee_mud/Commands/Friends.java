@@ -44,7 +44,8 @@ public class Friends extends StdCommand
 		throws java.io.IOException
 	{
 		final PlayerStats pstats=mob.playerStats();
-		if(pstats==null) return false;
+		if(pstats==null)
+			return false;
 		final Set<String> h=pstats.getFriends();
 
 		if((commands.size()<2)||(((String)commands.elementAt(1)).equalsIgnoreCase("list")))

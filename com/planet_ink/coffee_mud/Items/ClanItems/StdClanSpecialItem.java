@@ -133,7 +133,8 @@ public class StdClanSpecialItem extends StdClanItem
 				{
 					if((B==null)||(!B.ID().equals("TaxCollector")))
 						B=CMClass.getBehavior("TaxCollector");
-					if(B!=null) B.tick(owner(),Tickable.TICKID_MOB);
+					if(B!=null)
+						B.tick(owner(),Tickable.TICKID_MOB);
 					break;
 				}
 			}

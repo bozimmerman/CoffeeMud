@@ -47,7 +47,8 @@ public class Bomb_Poison extends StdBomb
 		final Vector V=new Vector();
 		final Item I=CMLib.materials().makeItemResource(RawMaterial.RESOURCE_POISON);
 		Ability A=CMClass.getAbility(text());
-		if(A==null) A=CMClass.getAbility("Poison");
+		if(A==null)
+			A=CMClass.getAbility("Poison");
 		I.addNonUninvokableEffect(A);
 		V.addElement(I);
 		return V;
@@ -68,7 +69,8 @@ public class Bomb_Poison extends StdBomb
 	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,P)) return false;
+		if(!super.canSetTrapOn(mob,P))
+			return false;
 		final List<Ability> V=returnOffensiveAffects(P);
 		if((!(P instanceof Drink))||(V.size()==0))
 		{
@@ -81,7 +83,8 @@ public class Bomb_Poison extends StdBomb
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
-		if(P==null) return null;
+		if(P==null)
+			return null;
 		final List<Ability> V=returnOffensiveAffects(P);
 		if(V.size()>0)
 			setMiscText(V.get(0).ID());
@@ -104,8 +107,10 @@ public class Bomb_Poison extends StdBomb
 			{
 				super.spring(target);
 				Ability A=CMClass.getAbility(text());
-				if(A==null) A=CMClass.getAbility("Poison");
-				if(A!=null) A.invoke(invoker(),target,true,0);
+				if(A==null)
+					A=CMClass.getAbility("Poison");
+				if(A!=null)
+					A.invoke(invoker(),target,true,0);
 			}
 		}
 	}

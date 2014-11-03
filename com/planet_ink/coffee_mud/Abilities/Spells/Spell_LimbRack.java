@@ -51,7 +51,8 @@ public class Spell_LimbRack extends Spell
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(invoker==null) return false;
+		if(invoker==null)
+			return false;
 		final MOB mob=(MOB)affected;
 		if((mob.location()!=null)
 		&&(mob.charStats().getMyRace().bodyMask()[Race.BODY_ARM]>=0)
@@ -81,7 +82,8 @@ public class Spell_LimbRack extends Spell
 				else
 					mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> has <S-HIS-HER> arms and legs TORN OFF!"));
 				Amputator A=(Amputator)mob.fetchEffect("Amputation");
-				if(A==null) A=(Amputator)CMClass.getAbility("Amputation");
+				if(A==null)
+					A=(Amputator)CMClass.getAbility("Amputation");
 				boolean success=true;
 				for(int i=0;i<limbsToRemove.size();i++)
 					success=success && (A.amputate(mob,A,limbsToRemove.get(i))!=null);
@@ -100,10 +102,12 @@ public class Spell_LimbRack extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		Amputator A=(Amputator)target.fetchEffect("Amputation");
-		if(A==null)	A=(Amputator)CMClass.getAbility("Amputation");
+		if(A==null)
+			A=(Amputator)CMClass.getAbility("Amputation");
 		final List<String> remainingLimbList=A.remainingLimbNameSet(target);
 		for(int i=remainingLimbList.size()-1;i>=0;i--)
 		{

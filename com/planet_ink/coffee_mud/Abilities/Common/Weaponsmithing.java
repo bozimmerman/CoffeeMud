@@ -179,7 +179,8 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		case Weapon.CLASS_RANGED: specialization="Specialization_Ranged"; break;
 		default: return false;
 		}
-		if(mob.fetchAbility(specialization)==null) return false;
+		if(mob.fetchAbility(specialization)==null)
+			return false;
 		return true;
 	}
 
@@ -195,7 +196,8 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 	@Override
 	public boolean mayICraft(final Item I)
 	{
-		if(I==null) return false;
+		if(I==null)
+			return false;
 		if(!super.mayBeCrafted(I))
 			return false;
 		if(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)
@@ -218,7 +220,8 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
-		if(!super.canMend(mob,E,quiet)) return false;
+		if(!super.canMend(mob,E,quiet))
+			return false;
 		if((!(E instanceof Item))
 		||(!mayICraft((Item)E)))
 		{
@@ -292,7 +295,8 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 					final String wood=getComponentDescription(mob,V,RCP_WOOD);
 					if(wood.length()>5)
 					{
-						if(toggler>1) buf.append("\n\r");
+						if(toggler>1)
+							buf.append("\n\r");
 						toggler=toggleTop;
 					}
 					if(((parsedVars.autoGenerate>0)
@@ -300,11 +304,13 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
 						buf.append(CMStrings.padRight(item,itemWidth)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRightPreserve(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
-						if(++toggler>toggleTop) toggler=1;
+						if(++toggler>toggleTop)
+							toggler=1;
 					}
 				}
 			}
-			if(toggler!=1) buf.append("\n\r");
+			if(toggler!=1)
+				buf.append("\n\r");
 			commonEmote(mob,buf.toString());
 			enhanceList(mob);
 			return true;
@@ -321,13 +327,15 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		if(str.equalsIgnoreCase("mend"))
 		{
 			final Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
-			if(fire==null) return false;
+			if(fire==null)
+				return false;
 			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
 			final Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
-			if(!canMend(mob,buildingI,false)) return false;
+			if(!canMend(mob,buildingI,false))
+				return false;
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
@@ -339,7 +347,8 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		{
 			activity = CraftingActivity.CRAFTING;
 			final Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
-			if(fire==null) return false;
+			if(fire==null)
+				return false;
 			buildingI=null;
 			messedUp=false;
 			aborted=false;
@@ -374,11 +383,13 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
-			if(componentsFoundList==null) return false;
+			if(componentsFoundList==null)
+				return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
 			woodRequired=adjustWoodRequired(woodRequired,mob);
 
-			if(amount>woodRequired) woodRequired=amount;
+			if(amount>woodRequired)
+				woodRequired=amount;
 			final String otherRequired=foundRecipe.get(RCP_EXTRAREQ);
 			final int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
 			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
@@ -389,7 +400,8 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 												false,
 												parsedVars.autoGenerate,
 												enhancedTypes);
-			if(data==null) return false;
+			if(data==null)
+				return false;
 			fixDataForComponents(data,componentsFoundList);
 			woodRequired=data[0][FOUND_AMT];
 
@@ -420,7 +432,8 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			buildingI.setMaterial(data[0][FOUND_CODE]);
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+(hardness*3));
 			buildingI.setSecretIdentity(getBrand(mob));
-			if(bundling) buildingI.setBaseValue(lostValue);
+			if(bundling)
+				buildingI.setBaseValue(lostValue);
 			addSpells(buildingI,spell);
 			if(buildingI instanceof Weapon)
 			{

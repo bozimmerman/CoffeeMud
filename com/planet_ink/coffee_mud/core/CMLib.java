@@ -66,7 +66,8 @@ public class CMLib
 	{
 		super();
 		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
-		if(libs[c]==null) libs[c]=this;
+		if(libs[c]==null)
+			libs[c]=this;
 	}
 
 	/**
@@ -824,7 +825,8 @@ public class CMLib
 		if(lbry!=null)
 		{
 			final int code=lbry.ordinal();
-			if(l()==null) CMLib.initialize();
+			if(l()==null)
+				CMLib.initialize();
 			if((!CMProps.isPrivateToMe(lbry.toString())
 			&&(libs[MudHost.MAIN_HOST]!=l())))
 			{
@@ -848,7 +850,8 @@ public class CMLib
 	 */
 	public static final void killThread(final Thread t, final long sleepTime, final int attempts)
 	{
-		if(t==null) return;
+		if(t==null)
+			return;
 		if(t==Thread.currentThread())
 			throw new java.lang.ThreadDeath();
 		try
@@ -1015,7 +1018,8 @@ public class CMLib
 	{
 		int x=0;
 		for (final boolean element : l().registered)
-			if(element) x++;
+			if(element)
+				x++;
 		return x;
 	}
 	
@@ -1028,7 +1032,8 @@ public class CMLib
 	{
 		final StringBuffer str=new StringBuffer("");
 		for(int i=0;i<l().registered.length;i++)
-			if(!l().registered[i]) str.append(""+i+", ");
+			if(!l().registered[i])
+				str.append(""+i+", ");
 		return str.toString();
 	}
 }

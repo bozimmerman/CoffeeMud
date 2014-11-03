@@ -92,7 +92,8 @@ public class Prayer_AuraFear extends Prayer
 		}
 		if((affected instanceof MOB)&&(affected!=invoker()))
 		{
-			if(H==null) H=new HashSet();
+			if(H==null)
+				H=new HashSet();
 			((MOB)affected).getGroupMembers(H);
 			H.add(affected);
 		}
@@ -118,7 +119,8 @@ public class Prayer_AuraFear extends Prayer
 							{
 								R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_HANDS|CMMsg.MASK_SOUND,L("<S-NAME> cringe(s) in fear at the sight of <O-NAME>."));
 								final Ability A=CMClass.getAbility("Spell_Fear");
-								if(A!=null) A.startTickDown(blame,M,Ability.TICKS_ALMOST_FOREVER);
+								if(A!=null)
+									A.startTickDown(blame,M,Ability.TICKS_ALMOST_FOREVER);
 							}
 						}
 						else
@@ -150,7 +152,8 @@ public class Prayer_AuraFear extends Prayer
 							{
 								R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_HANDS|CMMsg.MASK_SOUND,L("<S-NAME> cringe(s) in fear at the sight of <O-NAME>."));
 								final Ability A=CMClass.getAbility("Spell_Fear");
-								if(A!=null) A.startTickDown(blame,M,Ability.TICKS_ALMOST_FOREVER);
+								if(A!=null)
+									A.startTickDown(blame,M,Ability.TICKS_ALMOST_FOREVER);
 							}
 						}
 					}
@@ -164,7 +167,8 @@ public class Prayer_AuraFear extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell(L("The aura of fear is already surrounding @x1.",target.name(mob)));

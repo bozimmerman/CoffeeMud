@@ -106,7 +106,8 @@ public class Prop_WizInvis extends Property
 			return;
 		final MOB mob=(MOB)affected;
 
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		final Physical being=affected;
 
 		if(this.canBeUninvoked())

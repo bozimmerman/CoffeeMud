@@ -51,7 +51,8 @@ public class Thief_Sneak extends ThiefSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String dir=CMParms.combine(commands,0);
-		if(commands.size()>0) dir=(String)commands.lastElement();
+		if(commands.size()>0)
+			dir=(String)commands.lastElement();
 		final int dirCode=Directions.getGoodDirectionCode(dir);
 		if(dirCode<0)
 		{
@@ -97,7 +98,8 @@ public class Thief_Sneak extends ThiefSkill
 					mob.recoverPhyStats();
 				}
 				Ability toHide=mob.fetchAbility("Thief_Hide");
-				if(toHide==null) toHide=mob.fetchAbility("Ranger_Hide");
+				if(toHide==null)
+					toHide=mob.fetchAbility("Ranger_Hide");
 				if(toHide!=null)
 					toHide.invoke(mob,new Vector(),null,false,asLevel);
 			}

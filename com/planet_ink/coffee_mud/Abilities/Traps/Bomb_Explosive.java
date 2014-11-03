@@ -51,7 +51,8 @@ public class Bomb_Explosive extends StdBomb
 	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,P)) return false;
+		if(!super.canSetTrapOn(mob,P))
+			return false;
 		if((!(P instanceof Item))
 		||(((Item)P).material()!=RawMaterial.RESOURCE_COAL))
 		{

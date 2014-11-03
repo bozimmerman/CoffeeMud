@@ -99,7 +99,8 @@ public class GenTitle extends StdTitle
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenTitle)) return false;
+		if(!(E instanceof GenTitle))
+			return false;
 		for(int i=0;i<getStatCodes().length;i++)
 			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
 				return false;

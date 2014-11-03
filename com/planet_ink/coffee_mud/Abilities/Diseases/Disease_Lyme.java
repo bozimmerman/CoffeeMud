@@ -82,15 +82,19 @@ public class Disease_Lyme extends Disease
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID))	return false;
-		if(affected==null) return false;
-		if(!(affected instanceof MOB)) return true;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
+		if(!(affected instanceof MOB))
+			return true;
 
 		final MOB mob=(MOB)affected;
 		if((!mob.amDead())&&(getTickDownRemaining()==1))
 		{
 			MOB diseaser=invoker;
-			if(diseaser==null) diseaser=mob;
+			if(diseaser==null)
+				diseaser=mob;
 			Ability A=null;
 			if(CMLib.dice().rollPercentage()>50)
 				A=CMClass.getAbility("Disease_Fever");
@@ -106,7 +110,8 @@ public class Disease_Lyme extends Disease
 			{
 				A.invoke(diseaser,mob,true,0);
 				A=mob.fetchEffect(A.ID());
-				if(A!=null) A.makeLongLasting();
+				if(A!=null)
+					A.makeLongLasting();
 			}
 		}
 		else

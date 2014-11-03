@@ -56,9 +56,12 @@ public class Disease_Chlamydia extends Disease
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID))	return false;
-		if(affected==null) return false;
-		if(!(affected instanceof MOB)) return true;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
+		if(!(affected instanceof MOB))
+			return true;
 
 		final MOB mob=(MOB)affected;
 		if((!mob.amDead())&&((--diseaseTick)<=0))
@@ -80,7 +83,8 @@ public class Disease_Chlamydia extends Disease
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(affected==null) return super.okMessage(myHost,msg);
+		if(affected==null)
+			return super.okMessage(myHost,msg);
 		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;

@@ -85,11 +85,13 @@ public class Spell_ContinualLight extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=null;
-		if(commands.size()==0) target=mob;
+		if(commands.size()==0)
+			target=mob;
 		else
 		target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

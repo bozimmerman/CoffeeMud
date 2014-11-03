@@ -130,7 +130,8 @@ public class Spell_SummoningWard extends Spell
 		}
 		if(target==null)
 			target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if((target instanceof Room)&&(target.fetchEffect(ID())!=null))
 		{
 			mob.tell(L("This place is already under a summoning ward."));
@@ -144,7 +145,8 @@ public class Spell_SummoningWard extends Spell
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> seem(s) magically protected."):L("^S<S-NAME> invoke(s) a summoning ward upon <T-NAMESELF>.^?"));
-			if(target instanceof Room) quality=Ability.QUALITY_MALICIOUS;
+			if(target instanceof Room)
+				quality=Ability.QUALITY_MALICIOUS;
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -160,7 +162,8 @@ public class Spell_SummoningWard extends Spell
 					if(target instanceof Room)
 					{
 						final Spell_SummoningWard A=(Spell_SummoningWard)target.fetchEffect(ID());
-						if(A!=null) A.quality=Ability.QUALITY_MALICIOUS;
+						if(A!=null)
+							A.quality=Ability.QUALITY_MALICIOUS;
 					}
 				}
 			}

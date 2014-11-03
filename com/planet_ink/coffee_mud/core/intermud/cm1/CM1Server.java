@@ -179,7 +179,8 @@ public class CM1Server extends Thread
 					try
 					{
 						final RequestHandler handler=handlers.get(schan);
-						if(handler!=null)handler.shutdown();
+						if(handler!=null)
+							handler.shutdown();
 					}
 					catch(final Exception e){}
 				handlers.clear();

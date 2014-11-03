@@ -50,7 +50,8 @@ public class Chant_VampireVine extends Chant_SummonVine
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg)) return false;
+		if(!super.okMessage(myHost,msg))
+			return false;
 		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
@@ -76,7 +77,8 @@ public class Chant_VampireVine extends Chant_SummonVine
 		final MOB victim=caster.getVictim();
 		final MOB newMOB=CMClass.getMOB("GenMOB");
 		int level=adjustedLevel(caster,0);
-		if(level<1) level=1;
+		if(level<1)
+			level=1;
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.basePhyStats().setAbility(19);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Vine"));
@@ -111,7 +113,8 @@ public class Chant_VampireVine extends Chant_SummonVine
 			caster.tell(L("@x1 seems unwilling to follow you.",newMOB.name()));
 		else
 		{
-			if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
+			if(newMOB.getVictim()!=victim)
+				newMOB.setVictim(victim);
 			newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,L("<S-NAME> start(s) attacking <T-NAMESELF>!"));
 		}
 		return(newMOB);

@@ -46,8 +46,10 @@ public class Song_Serenity extends Song
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(affected==null) return super.okMessage(myHost,msg);
-		if(!(affected instanceof MOB)) return super.okMessage(myHost,msg);
+		if(affected==null)
+			return super.okMessage(myHost,msg);
+		if(!(affected instanceof MOB))
+			return super.okMessage(myHost,msg);
 		if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(CMLib.flags().canBeHeardSpeakingBy(invoker,msg.source()))
 		&&(msg.target()!=null))

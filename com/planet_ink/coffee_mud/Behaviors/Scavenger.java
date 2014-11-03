@@ -62,11 +62,13 @@ public class Scavenger extends ActiveTicker
 		{
 			final MOB mob=(MOB)ticking;
 			final Room thisRoom=mob.location();
-			if(origItems<0) origItems=mob.numItems();
+			if(origItems<0)
+				origItems=mob.numItems();
 			if((mob.phyStats().weight()>=(int)Math.round(CMath.mul(mob.maxCarry(),0.9)))
 			||(mob.numItems()>=mob.maxItems()))
 			{
-				if(CMLib.flags().isATrackingMonster(mob)) return true;
+				if(CMLib.flags().isATrackingMonster(mob))
+					return true;
 				final String trashRoomID=CMParms.getParmStr(getParms(),"TRASH","");
 				if(trashRoomID.equalsIgnoreCase("NO"))
 					return true;
@@ -112,7 +114,8 @@ public class Scavenger extends ActiveTicker
 								origItems--;
 							break;
 						}
-						if(I.owner()==null) I.setOwner(mob);
+						if(I.owner()==null)
+							I.setOwner(mob);
 						I.destroy();
 					}
 					mob.recoverPhyStats();
@@ -135,7 +138,8 @@ public class Scavenger extends ActiveTicker
 				&&(!(thisItem instanceof DeadBody)))
 					choices.add(thisItem);
 			}
-			if(choices.size()==0) return true;
+			if(choices.size()==0)
+				return true;
 			final Item I=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 			if(I!=null)
 				mob.doCommand(new XVector<String>("GET",I.Name()),Command.METAFLAG_FORCED);

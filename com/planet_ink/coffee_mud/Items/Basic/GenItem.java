@@ -93,7 +93,8 @@ public class GenItem extends StdItem
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenItem)) return false;
+		if(!(E instanceof GenItem))
+			return false;
 		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)
 			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))

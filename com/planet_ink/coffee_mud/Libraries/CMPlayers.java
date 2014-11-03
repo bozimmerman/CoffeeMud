@@ -66,8 +66,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	@Override
 	public synchronized void addPlayer(MOB newOne)
 	{
-		if(getPlayer(newOne.Name())!=null) return;
-		if(playersList.contains(newOne)) return;
+		if(getPlayer(newOne.Name())!=null)
+			return;
+		if(playersList.contains(newOne))
+			return;
 		PlayerAccount acct = null;
 		if(newOne.playerStats()!=null)
 			acct=newOne.playerStats().getAccount();
@@ -126,7 +128,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	public PlayerAccount getLoadAccount(String calledThis)
 	{
 		final PlayerAccount A = getAccount(calledThis);
-		if(A!=null) return A;
+		if(A!=null)
+			return A;
 		if(allAccountsLoaded)
 			return null;
 		return CMLib.database().DBReadAccount(calledThis);
@@ -135,8 +138,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	@Override
 	public synchronized void addAccount(PlayerAccount acct)
 	{
-		if(acct==null) return;
-		if(accountsList.contains(acct)) return;
+		if(acct==null)
+			return;
+		if(accountsList.contains(acct))
+			return;
 		for(final PlayerAccount A : accountsList) // dont consolodate this.
 			if(A.getAccountName().equals(acct.getAccountName()))
 				return;
@@ -151,12 +156,14 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		for(final Enumeration<PlayerAccount> e=accounts();e.hasMoreElements();)
 		{
 			final PlayerAccount P=e.nextElement();
-			if(P.getEmail().equalsIgnoreCase(email)) return P;
+			if(P.getEmail().equalsIgnoreCase(email))
+				return P;
 		}
 		for(final Enumeration<PlayerAccount> e=accounts("",null);e.hasMoreElements();)
 		{
 			final PlayerAccount P=e.nextElement();
-			if(P.getEmail().equalsIgnoreCase(email)) return P;
+			if(P.getEmail().equalsIgnoreCase(email))
+				return P;
 		}
 		return null;
 	}
@@ -196,7 +203,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return null;
 		MOB M=getPlayer(last);
-		if(M!=null) return M;
+		if(M!=null)
+			return M;
 		if(playerExists(last))
 		{
 			M=CMLib.database().DBReadPlayer(CMStrings.capitalizeAndLower(last));
@@ -209,7 +217,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			for(int a=0;a<M.numAbilities();a++)
 			{
 				A=M.fetchAbility(a);
-				if(A!=null) A.autoInvocation(M);
+				if(A!=null)
+					A.autoInvocation(M);
 			}
 		}
 		return M;
@@ -218,7 +227,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	@Override
 	public boolean accountExists(String name)
 	{
-		if(name==null) return false;
+		if(name==null)
+			return false;
 		name=CMStrings.capitalizeAndLower(name);
 		return getLoadAccount(name)!=null;
 	}
@@ -226,7 +236,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	@Override
 	public boolean playerExists(String name)
 	{
-		if(name==null) return false;
+		if(name==null)
+			return false;
 		name=CMStrings.capitalizeAndLower(name);
 		for(final MOB M: playersList)
 			if(M.Name().equals(name))
@@ -388,7 +399,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
 					{
 						final Ability A=a.nextElement();
-						if(A==null) continue;
+						if(A==null)
+							continue;
 						if(A instanceof LandTitle)
 						{
 							if(((LandTitle)A).getOwnerName().equals(oldName))
@@ -416,7 +428,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	@Override
 	public void obliteratePlayer(MOB deadMOB, boolean deleteAssets, boolean quiet)
 	{
-		if(deadMOB==null) return;
+		if(deadMOB==null)
+			return;
 		if(getPlayer(deadMOB.Name())!=null)
 		{
 		   deadMOB=getPlayer(deadMOB.Name());
@@ -483,7 +496,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	public synchronized void obliterateAccountOnly(PlayerAccount deadAccount)
 	{
 		deadAccount = getLoadAccount(deadAccount.getAccountName());
-		if(deadAccount==null) return;
+		if(deadAccount==null)
+			return;
 		accountsList.remove(deadAccount);
 
 		final StringBuffer newNoPurge=new StringBuffer("");
@@ -600,8 +614,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	public int getCharThinSortCode(String codeName, boolean loose)
 	{
 		int x=CMParms.indexOf(CHAR_THIN_SORT_CODES,codeName);
-		if(x<0)x=CMParms.indexOf(CHAR_THIN_SORT_CODES2,codeName);
-		if(!loose) return x;
+		if(x<0)
+			x=CMParms.indexOf(CHAR_THIN_SORT_CODES2,codeName);
+		if(!loose)
+			return x;
 		if(x<0)
 			for(int s=0;s<CHAR_THIN_SORT_CODES.length;s++)
 				if(CHAR_THIN_SORT_CODES[s].startsWith(codeName))
@@ -615,9 +631,11 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 
 	public int getAccountThinSortCode(String codeName, boolean loose)
 	{
-		if((codeName == null)||(codeName.length()==0)) return -1;
+		if((codeName == null)||(codeName.length()==0))
+			return -1;
 		int x=CMParms.indexOf(ACCOUNT_THIN_SORT_CODES,codeName);
-		if(!loose) return x;
+		if(!loose)
+			return x;
 		if(x<0)
 			for(int s=0;s<ACCOUNT_THIN_SORT_CODES.length;s++)
 				if(ACCOUNT_THIN_SORT_CODES[s].startsWith(codeName))
@@ -816,7 +834,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					continue;
 				}
 				final long val=set[0];
-				if(set[0]<=0) continue;
+				if(set[0]<=0)
+					continue;
 				final long prepurge=set[1];
 				long realVal=(val*TimeManager.MILI_DAY);
 				long purgePoint=realVal-(prepurge*TimeManager.MILI_DAY);
@@ -825,15 +844,18 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					realVal = 0;
 					purgePoint = 0;
 				}
-				if(autoPurgeDaysLevels[i]==0) autoPurgeDaysLevels[i]=realVal;
-				if(prePurgeLevels[i]==0) prePurgeLevels[i]=purgePoint;
+				if(autoPurgeDaysLevels[i]==0)
+					autoPurgeDaysLevels[i]=realVal;
+				if(prePurgeLevels[i]==0)
+					prePurgeLevels[i]=purgePoint;
 			}
 			this.autoPurgeHash=mask.hashCode();
 		}
 		setThreadStatus(serviceClient,"autopurge process");
 		final List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
 		List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
-		if(protectedOnes==null) protectedOnes=new Vector<String>();
+		if(protectedOnes==null)
+			protectedOnes=new Vector<String>();
 
 		for(final ThinPlayer user : allUsers)
 		{
@@ -933,8 +955,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				final long lastUpdatedPurge = PA.getLastUpdated() + (TimeManager.MILI_DAY * CMProps.getIntVar(CMProps.Int.ACCOUNTPURGEDAYS));
 				final long accountExpPurge = PA.getAccountExpiration() + (TimeManager.MILI_DAY * CMProps.getIntVar(CMProps.Int.ACCOUNTPURGEDAYS));
 				long lastTime = lastDateTimePurge;
-				if(lastUpdatedPurge > lastTime) lastTime=lastUpdatedPurge;
-				if(accountExpPurge > lastTime) lastTime=accountExpPurge;
+				if(lastUpdatedPurge > lastTime)
+					lastTime=lastUpdatedPurge;
+				if(accountExpPurge > lastTime)
+					lastTime=accountExpPurge;
 				if(System.currentTimeMillis()>lastTime)
 				{
 					Log.sysOut(serviceClient.getName(),"AutoPurged account "+PA.getAccountName()+".");
@@ -947,7 +971,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	private void warnPrePurge(MOB mob, long timeLeft)
 	{
 		// check for valid recipient
-		if(mob==null) return;
+		if(mob==null)
+			return;
 
 		if((mob.playerStats()==null)
 		||(mob.playerStats().getEmail().length()==0)) // no email addy to forward TO

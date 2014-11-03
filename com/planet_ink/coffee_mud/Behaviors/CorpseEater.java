@@ -92,7 +92,8 @@ public class CorpseEater extends ActiveTicker
 		{
 			final MOB mob=(MOB)ticking;
 			final Room thisRoom=mob.location();
-			if(thisRoom.numItems()==0) return true;
+			if(thisRoom.numItems()==0)
+				return true;
 			for(int i=0;i<thisRoom.numItems();i++)
 			{
 				final Item I=thisRoom.getItem(i);

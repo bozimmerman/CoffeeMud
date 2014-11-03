@@ -121,13 +121,18 @@ public class Dyeing extends CommonSkill
 							desc.setCharAt(x+1,writing.charAt(0));
 					}
 					final String d=desc.toString();
-					if(!d.endsWith("^?")) desc.append("^?");
-					if(!d.startsWith("^"+writing.charAt(0))) desc.insert(0,"^"+writing.charAt(0));
+					if(!d.endsWith("^?"))
+						desc.append("^?");
+					if(!d.startsWith("^"+writing.charAt(0)))
+						desc.insert(0,"^"+writing.charAt(0));
 					found.setDescription(desc.toString());
 					String prefix="";
-					if(brightFlag) prefix="bright ";
-					if(lightFlag) prefix="light ";
-					if(darkFlag) prefix="dark ";
+					if(brightFlag)
+						prefix="bright ";
+					if(lightFlag)
+						prefix="light ";
+					if(darkFlag)
+						prefix="dark ";
 
 					found.setName(fixColor(found.Name(),writing.charAt(0),prefix+writing));
 					found.setDisplayText(fixColor(found.displayText(),writing.charAt(0),prefix+writing));
@@ -198,7 +203,8 @@ public class Dyeing extends CommonSkill
 		verb=L("dyeing @x1 @x2@x3",target.name(),(darkFlag?"dark ":brightFlag?"bright ":lightFlag?"light ":""),writing);
 		displayText=L("You are @x1",verb);
 		found=target;
-		if(darkFlag) writing=CMStrings.capitalizeAndLower(writing);
+		if(darkFlag)
+			writing=CMStrings.capitalizeAndLower(writing);
 		if(!proficiencyCheck(mob,0,auto))
 			writing="";
 		int duration=30;

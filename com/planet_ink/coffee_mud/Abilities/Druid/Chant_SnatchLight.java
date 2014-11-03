@@ -80,7 +80,8 @@ public class Chant_SnatchLight extends Chant
 		{
 			final MOB mob=invoker;
 			final Room R=mob.location();
-			if(R==null) return true;
+			if(R==null)
+				return true;
 			if(R.fetchEffect(ID())==null)
 			{
 				final Ability A=(Ability)copyOf();
@@ -161,7 +162,8 @@ public class Chant_SnatchLight extends Chant
 					}
 				}
 				final Room R=CMLib.map().roomLocation(E);
-				if(R!=null) R.recoverRoomStats();
+				if(R!=null)
+					R.recoverRoomStats();
 			}
 			return;
 		}

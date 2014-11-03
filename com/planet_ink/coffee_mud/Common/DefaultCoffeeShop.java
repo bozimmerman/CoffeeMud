@@ -106,7 +106,8 @@ public class DefaultCoffeeShop implements CoffeeShop
 			if(I2!=null)
 			{
 				Environmental I3=copyFix.get(I2);
-				if(I3==null) I3=(Environmental)I2.copyOf();
+				if(I3==null)
+					I3=(Environmental)I2.copyOf();
 				stopTicking(I3);
 				enumerableInventory.addElement(I3);
 			}
@@ -137,8 +138,10 @@ public class DefaultCoffeeShop implements CoffeeShop
 
 	protected boolean shopCompare(Environmental thang1, Environmental thang2)
 	{
-		if((thang1==null)&&(thang2==null)) return true;
-		if((thang1==null)||(thang2==null)) return false;
+		if((thang1==null)&&(thang2==null))
+			return true;
+		if((thang1==null)||(thang2==null))
+			return false;
 		if((thang1 instanceof DoorKey)&&(thang2 instanceof DoorKey))
 			return thang1.sameAs(thang2);
 		else
@@ -159,7 +162,8 @@ public class DefaultCoffeeShop implements CoffeeShop
 		for(int x=0;x<enumerableInventory.size();x++)
 		{
 			final Environmental E=enumerableInventory.elementAt(x);
-			if(shopCompare(E,thisThang)) return true;
+			if(shopCompare(E,thisThang))
+				return true;
 		}
 		return false;
 	}
@@ -192,9 +196,11 @@ public class DefaultCoffeeShop implements CoffeeShop
 	{
 		final List<Environmental> storeInv=new ConvertingList<ShelfProduct,Environmental>(storeInventory,converter);
 		List<Environmental> V=CMLib.english().fetchEnvironmentals(storeInv, srchStr, true);
-		if((V!=null)&&(V.size()>0)) return V.iterator();
+		if((V!=null)&&(V.size()>0))
+			return V.iterator();
 		V=CMLib.english().fetchEnvironmentals(storeInv, srchStr, false);
-		if(V!=null) return V.iterator();
+		if(V!=null)
+			return V.iterator();
 		return new Vector<Environmental>(1).iterator();
 	}
 	@Override
@@ -215,7 +221,8 @@ public class DefaultCoffeeShop implements CoffeeShop
 	@Override
 	public Environmental addStoreInventory(Environmental thisThang, int number, int price)
 	{
-		if(number<0) number=1;
+		if(number<0)
+			number=1;
 		if((isSold(ShopKeeper.DEAL_INVENTORYONLY))&&(!inEnumerableInventory(thisThang)))
 		{
 			final Environmental E=preSaleCopyFix(thisThang);
@@ -250,7 +257,8 @@ public class DefaultCoffeeShop implements CoffeeShop
 					if(copy.Name().equals(thisThang.Name()))
 					{
 						SP.number+=number;
-						if(price>0) SP.price=price;
+						if(price>0)
+							SP.price=price;
 						return copy;
 					}
 				}
@@ -420,15 +428,18 @@ public class DefaultCoffeeShop implements CoffeeShop
 	@Override
 	public void emptyAllShelves()
 	{
-		if(storeInventory!=null)storeInventory.clear();
-		if(enumerableInventory!=null)enumerableInventory.clear();
+		if(storeInventory!=null)
+			storeInventory.clear();
+		if(enumerableInventory!=null)
+			enumerableInventory.clear();
 	}
 	@Override
 	public List<Environmental> removeSellableProduct(String named, MOB mob)
 	{
 		final Vector<Environmental> V=new Vector<Environmental>();
 		final Environmental product=removeStock(named,mob);
-		if(product==null) return V;
+		if(product==null)
+			return V;
 		V.addElement(product);
 		if(product instanceof Container)
 		{
@@ -493,7 +504,8 @@ public class DefaultCoffeeShop implements CoffeeShop
 		storeInventory=new SVector<ShelfProduct>();
 		enumerableInventory=new SVector<Environmental>();
 
-		if(text.length()==0) return;
+		if(text.length()==0)
+			return;
 		final ShopKeeper shop=shopKeeper();
 		if(shop==null)
 		{
@@ -511,15 +523,20 @@ public class DefaultCoffeeShop implements CoffeeShop
 				if(parm.equalsIgnoreCase(ShopKeeper.DEAL_DESCS[s]))
 					shop.setWhatIsSoldMask(s);
 			parm=CMParms.getParmStr(text,"IPREJ","");
-			if(parm!=null) shop.setPrejudiceFactors(parm);
+			if(parm!=null)
+				shop.setPrejudiceFactors(parm);
 			parm=CMParms.getParmStr(text,"IBUDJ","1000000");
-			if(parm!=null) shop.setBudget(parm);
+			if(parm!=null)
+				shop.setBudget(parm);
 			parm=CMParms.getParmStr(text,"IDVAL","");
-			if(parm!=null) shop.setDevalueRate(parm);
+			if(parm!=null)
+				shop.setDevalueRate(parm);
 			parm=CMParms.getParmStr(text,"IGNOR","");
-			if(parm!=null) shop.setIgnoreMask(parm);
+			if(parm!=null)
+				shop.setIgnoreMask(parm);
 			parm=CMParms.getParmStr(text,"PRICM","");
-			if(parm!=null) shop.setItemPricingAdjustments((parm.trim().length()==0)?new String[0]:CMParms.toStringArray(CMParms.parseCommas(parm,true)));
+			if(parm!=null)
+				shop.setItemPricingAdjustments((parm.trim().length()==0)?new String[0]:CMParms.toStringArray(CMParms.parseCommas(parm,true)));
 			return;
 		}
 
@@ -533,13 +550,17 @@ public class DefaultCoffeeShop implements CoffeeShop
 		if((parm!=null)&&(CMath.isNumber(parm)))
 			shop.setWhatIsSoldMask(CMath.s_long(parm));
 		parm=CMLib.xml().getValFromPieces(xmlV,"IPREJ");
-		if(parm!=null) shop.setPrejudiceFactors(parm);
+		if(parm!=null)
+			shop.setPrejudiceFactors(parm);
 		parm=CMLib.xml().getValFromPieces(xmlV,"IBUDJ");
-		if(parm!=null) shop.setBudget(parm);
+		if(parm!=null)
+			shop.setBudget(parm);
 		parm=CMLib.xml().getValFromPieces(xmlV,"IDVAL");
-		if(parm!=null) shop.setDevalueRate(parm);
+		if(parm!=null)
+			shop.setDevalueRate(parm);
 		parm=CMLib.xml().getValFromPieces(xmlV,"IGNOR");
-		if(parm!=null) shop.setIgnoreMask(parm);
+		if(parm!=null)
+			shop.setIgnoreMask(parm);
 
 		final List<XMLLibrary.XMLpiece> iV=CMLib.xml().getContentsFromPieces(xmlV,"INVS");
 		if(iV==null)
@@ -559,7 +580,8 @@ public class DefaultCoffeeShop implements CoffeeShop
 			final int itemnum=CMLib.xml().getIntFromPieces(iblk.contents,"INUM");
 			final int val=CMLib.xml().getIntFromPieces(iblk.contents,"IVAL");
 			PhysicalAgent newOne=CMClass.getItem(itemi);
-			if(newOne==null) newOne=CMClass.getMOB(itemi);
+			if(newOne==null)
+				newOne=CMClass.getMOB(itemi);
 			final List<XMLLibrary.XMLpiece> idat=CMLib.xml().getContentsFromPieces(iblk.contents,"IDATA");
 			if((idat==null)||(newOne==null)||(!(newOne instanceof Item)))
 			{

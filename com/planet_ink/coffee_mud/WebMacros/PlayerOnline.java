@@ -48,7 +48,8 @@ public class PlayerOnline extends StdWebMacro
 
 		final String last=httpReq.getUrlParameter("PLAYER");
 		final java.util.Map<String,String> parms=parseParms(parm);
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		if(last.length()>0)
 		{
 			if(parms.size()==0)
@@ -146,18 +147,22 @@ public class PlayerOnline extends StdWebMacro
 								&& (data.getContentType().startsWith("image")))
 								{
 									file=data.getVariables().get("filename");
-									if(file==null) file="";
+									if(file==null)
+										file="";
 									buf=data.getData();
 								}
 							}
-							if(file.length()==0) return "File not uploaded -- no name!";
+							if(file.length()==0)
+								return "File not uploaded -- no name!";
 							if(file.toUpperCase().endsWith(".GIF")
 							||file.toUpperCase().endsWith(".JPG")
 							||file.toUpperCase().endsWith(".JPEG")
 							||file.toUpperCase().endsWith(".BMP"))
 							{
-								if(buf==null) return "File `"+file+"` not uploaded -- no buffer!";
-								if(buf.length>MAX_IMAGE_SIZE) return "File `"+file+"` not uploaded -- size exceeds "+MAX_IMAGE_SIZE+" byte limit!";
+								if(buf==null)
+									return "File `"+file+"` not uploaded -- no buffer!";
+								if(buf.length>MAX_IMAGE_SIZE)
+									return "File `"+file+"` not uploaded -- size exceeds "+MAX_IMAGE_SIZE+" byte limit!";
 								final String encoded=B64Encoder.B64encodeBytes(buf);
 								M.setImage("PlayerPortrait?PLAYER="+M.Name()+"&FILENAME="+M.Name()+System.currentTimeMillis()+file);
 								CMLib.database().DBUpdatePlayerMOBOnly(M);

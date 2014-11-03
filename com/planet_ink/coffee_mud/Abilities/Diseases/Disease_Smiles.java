@@ -56,9 +56,12 @@ public class Disease_Smiles extends Disease
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID))	return false;
-		if(affected==null) return false;
-		if(!(affected instanceof MOB)) return true;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
+		if(!(affected instanceof MOB))
+			return true;
 
 		final MOB mob=(MOB)affected;
 		if((getTickDownRemaining()==1)
@@ -66,7 +69,8 @@ public class Disease_Smiles extends Disease
 		&&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.STAT_SAVE_DISEASE)))
 		{
 			MOB diseaser=invoker;
-			if(diseaser==null) diseaser=mob;
+			if(diseaser==null)
+				diseaser=mob;
 			mob.delEffect(this);
 			final Ability A=CMClass.getAbility("Disease_Giggles");
 			A.invoke(diseaser,mob,true,0);

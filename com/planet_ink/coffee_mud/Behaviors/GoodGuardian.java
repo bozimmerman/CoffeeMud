@@ -47,7 +47,8 @@ public class GoodGuardian extends StdBehavior
 
 	public static MOB anyPeaceToMake(Room room, MOB observer)
 	{
-		if(room==null) return null;
+		if(room==null)
+			return null;
 		MOB victim=null;
 		for(int i=0;i<room.numInhabitants();i++)
 		{
@@ -75,7 +76,8 @@ public class GoodGuardian extends StdBehavior
 
 	public static void keepPeace(MOB observer, MOB victim)
 	{
-		if(!canFreelyBehaveNormal(observer)) return;
+		if(!canFreelyBehaveNormal(observer))
+			return;
 
 		if(victim!=null)
 		{
@@ -107,7 +109,8 @@ public class GoodGuardian extends StdBehavior
 					{
 						observer.location().send(observer,msgs);
 						final MOB ivictim=inhab.getVictim();
-						if(ivictim!=null) ivictim.makePeace();
+						if(ivictim!=null)
+							ivictim.makePeace();
 						inhab.makePeace();
 					}
 				}
@@ -120,7 +123,8 @@ public class GoodGuardian extends StdBehavior
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Tickable.TICKID_MOB) return true;
+		if(tickID!=Tickable.TICKID_MOB)
+			return true;
 		if(!canFreelyBehaveNormal(ticking))
 		{
 			deepBreath=System.currentTimeMillis();

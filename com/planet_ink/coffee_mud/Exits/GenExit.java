@@ -169,7 +169,8 @@ public class GenExit extends StdExit implements Modifiable
 		if(keyName.startsWith("{#"))
 		{
 			final int x=keyName.indexOf("#}");
-			if(x>=0) keyName=keyName.substring(x+2);
+			if(x>=0)
+				keyName=keyName.substring(x+2);
 		}
 		if(link.length()>0)
 			keyName="{#"+link+"#}"+keyName;
@@ -188,7 +189,8 @@ public class GenExit extends StdExit implements Modifiable
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
+			if(code.equalsIgnoreCase(CODES[i]))
+				return i;
 		return -1;
 	}
 	@Override
@@ -264,7 +266,8 @@ public class GenExit extends StdExit implements Modifiable
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenExit)) return false;
+		if(!(E instanceof GenExit))
+			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))

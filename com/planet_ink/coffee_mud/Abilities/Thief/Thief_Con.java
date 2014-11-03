@@ -51,13 +51,15 @@ public class Thief_Con extends ThiefSkill
 	@Override
 	public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
 	{
-		if(commands!=null) commands=new XVector<String>(commands);
+		if(commands!=null)
+			commands=new XVector<String>(commands);
 		if(!conCheck(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		final Vector V=new Vector();
 		V.addElement(commands.get(0));
 		final MOB target=this.getTarget(mob,V,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		commands.remove(0);
 		if(secondsElapsed>0)
 		{
@@ -75,7 +77,8 @@ public class Thief_Con extends ThiefSkill
 
 	public boolean conCheck(MOB mob, List<String> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(commands!=null) commands= new XVector<String>(commands);
+		if(commands!=null)
+			commands= new XVector<String>(commands);
 		if(commands.size()<1)
 		{
 			mob.tell(L("Con whom into doing what?"));
@@ -84,7 +87,8 @@ public class Thief_Con extends ThiefSkill
 		final Vector V=new Vector();
 		V.addElement(commands.get(0));
 		final MOB target=this.getTarget(mob,V,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		commands.remove(0);
 
@@ -149,13 +153,15 @@ public class Thief_Con extends ThiefSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if(commands!=null) commands=new XVector(commands);
+		if(commands!=null)
+			commands=new XVector(commands);
 		if(!conCheck(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		final Vector V=new Vector();
 		V.addElement(commands.elementAt(0));
 		final MOB target=this.getTarget(mob,V,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		commands.removeElementAt(0);
 
 		final int oldProficiency=proficiency();
@@ -164,7 +170,8 @@ public class Thief_Con extends ThiefSkill
 			return false;
 
 		int levelDiff=((mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))-target.phyStats().level())*10;
-		if(levelDiff>0) levelDiff=0;
+		if(levelDiff>0)
+			levelDiff=0;
 		final boolean success=proficiencyCheck(mob,(mob.charStats().getStat(CharStats.STAT_CHARISMA)*2)+levelDiff,auto);
 
 		if(!success)

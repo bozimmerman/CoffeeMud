@@ -270,7 +270,8 @@ public class Arcanist extends Thief
 					&&(msg.target() instanceof MOB))
 					{
 						Ability A=((MOB)msg.target()).fetchAbility(msg.tool().text());
-						if(A==null) return;
+						if(A==null)
+							return;
 						final Ability myA=mob.fetchAbility(A.ID());
 						if(myA!=null)
 						{

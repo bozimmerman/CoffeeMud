@@ -59,34 +59,50 @@ public class Thief_Shadow extends ThiefSkill
 
 	public boolean stillAShadower()
 	{
-		if(invoker==null) return false;
+		if(invoker==null)
+			return false;
 		final MOB mob=invoker;
-		if(mob.amDead()) return false;
-		if(mob.isInCombat()) return false;
-		if(mob.location()==null) return false;
-		if(!CMLib.flags().aliveAwakeMobile(mob,true)) return false;
+		if(mob.amDead())
+			return false;
+		if(mob.isInCombat())
+			return false;
+		if(mob.location()==null)
+			return false;
+		if(!CMLib.flags().aliveAwakeMobile(mob,true))
+			return false;
 		return true;
 	}
 
 	public boolean stillAShadowee()
 	{
-		if(shadowing==null) return false;
-		if(shadowing.amDead()) return false;
-		if(shadowing.isInCombat()&&(shadowing.getVictim()==invoker)) return false;
-		if(shadowing.location()==null) return false;
-		if(!CMLib.flags().aliveAwakeMobile(shadowing,true)) return false;
+		if(shadowing==null)
+			return false;
+		if(shadowing.amDead())
+			return false;
+		if(shadowing.isInCombat()&&(shadowing.getVictim()==invoker))
+			return false;
+		if(shadowing.location()==null)
+			return false;
+		if(!CMLib.flags().aliveAwakeMobile(shadowing,true))
+			return false;
 		return true;
 	}
 
 	public boolean canShadow()
 	{
-		if(!stillAShadower()) return false;
-		if(!stillAShadowee()) return false;
+		if(!stillAShadower())
+			return false;
+		if(!stillAShadowee())
+			return false;
 		final MOB mob=invoker;
-		if(CMLib.flags().canBeSeenBy(mob,shadowing)) return false;
-		if(!CMLib.flags().canBeSeenBy(shadowing,mob)) return false;
-		if(mob.location()!=shadowing.location()) return false;
-		if(mob.getGroupMembers(new HashSet<MOB>()).size()>1) return false;
+		if(CMLib.flags().canBeSeenBy(mob,shadowing))
+			return false;
+		if(!CMLib.flags().canBeSeenBy(shadowing,mob))
+			return false;
+		if(mob.location()!=shadowing.location())
+			return false;
+		if(mob.getGroupMembers(new HashSet<MOB>()).size()>1)
+			return false;
 		return true;
 	}
 
@@ -127,8 +143,10 @@ public class Thief_Shadow extends ThiefSkill
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
-		if(lastTogether==0) return true;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(lastTogether==0)
+			return true;
 		if((shadowing!=null)&&(invoker!=null)&&(shadowing.location()==invoker.location()))
 			lastTogether=System.currentTimeMillis();
 		final long secondsago=System.currentTimeMillis()-10000;
@@ -213,7 +231,8 @@ public class Thief_Shadow extends ThiefSkill
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(target==mob)
 		{
 			mob.tell(L("You cannot shadow yourself?!"));

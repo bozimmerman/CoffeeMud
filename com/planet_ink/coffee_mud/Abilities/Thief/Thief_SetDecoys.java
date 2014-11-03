@@ -67,9 +67,11 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 	@Override
 	public void spring(MOB mob)
 	{
-		if((mob==null)||(invoker()==null)) return;
+		if((mob==null)||(invoker()==null))
+			return;
 		final Room R=mob.location();
-		if(R==null) return;
+		if(R==null)
+			return;
 		if((!invoker().mayIFight(mob))||(!mob.isInCombat())||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)-(getXLEVELLevel(invoker())*5)))
 			R.show(mob,affected,this,CMMsg.MSG_OK_ACTION,L("A decoy pops up, prompting <S-NAME> to glance toward(s) it, but <S-HE-SHE> <S-IS-ARE> not fooled."));
 		else
@@ -77,7 +79,8 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 		{
 			int max=R.maxRange();
 			final int level=getXLEVELLevel(invoker())+2;
-			if(level<max) max=level;
+			if(level<max)
+				max=level;
 			while((mob.isInCombat())&&(mob.rangeToTarget()<max))
 			{
 				final int r=mob.rangeToTarget();

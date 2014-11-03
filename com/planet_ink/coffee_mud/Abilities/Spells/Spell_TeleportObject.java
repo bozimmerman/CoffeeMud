@@ -77,18 +77,27 @@ public class Spell_TeleportObject extends Spell
 		if(commands.size()>2)
 		{
 			final String s=(String)commands.elementAt(1);
-			if(s.equalsIgnoreCase("room")) searchWhat="R";
-			if(s.equalsIgnoreCase("area")) searchWhat="E";
-			if(s.equalsIgnoreCase("mob")) searchWhat="M";
-			if(s.equalsIgnoreCase("monster")) searchWhat="M";
-			if(s.equalsIgnoreCase("player")) searchWhat="P";
-			if(s.equalsIgnoreCase("user")) searchWhat="P";
-			if(s.equalsIgnoreCase("item")) searchWhat="I";
-			if(s.equalsIgnoreCase("object")) searchWhat="I";
+			if(s.equalsIgnoreCase("room"))
+				searchWhat="R";
+			if(s.equalsIgnoreCase("area"))
+				searchWhat="E";
+			if(s.equalsIgnoreCase("mob"))
+				searchWhat="M";
+			if(s.equalsIgnoreCase("monster"))
+				searchWhat="M";
+			if(s.equalsIgnoreCase("player"))
+				searchWhat="P";
+			if(s.equalsIgnoreCase("user"))
+				searchWhat="P";
+			if(s.equalsIgnoreCase("item"))
+				searchWhat="I";
+			if(s.equalsIgnoreCase("object"))
+				searchWhat="I";
 			if(searchWhat!=null)
 				commands.removeElementAt(1);
 		}
-		if(searchWhat==null) searchWhat="ERIPM";
+		if(searchWhat==null)
+			searchWhat="ERIPM";
 		final String destinationString=CMParms.combine(commands,1).trim().toUpperCase();
 		final List<Room> candidates=CMLib.map().findWorldRoomsLiberally(mob,destinationString,searchWhat,10,600000);
 		if(candidates.size()==0)

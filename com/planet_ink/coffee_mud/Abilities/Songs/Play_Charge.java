@@ -62,7 +62,8 @@ public class Play_Charge extends Play
 		if(mob!=null)
 		{
 			final Ability A=CMClass.getAbility("Fighter_Charge");
-			if(A!=null) return A.castingQuality(mob, target);
+			if(A!=null)
+				return A.castingQuality(mob, target);
 		}
 		return super.castingQuality(mob,target);
 	}

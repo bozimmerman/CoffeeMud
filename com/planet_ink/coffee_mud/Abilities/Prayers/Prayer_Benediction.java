@@ -52,7 +52,8 @@ public class Prayer_Benediction extends Prayer
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(invoker==null)return;
+		if(invoker==null)
+			return;
 
 		final MOB mob=affected;
 		final int pts=adjustedLevel(invoker(),0)/5;
@@ -62,7 +63,8 @@ public class Prayer_Benediction extends Prayer
 			mob.charStats().getMyClass(c).affectCharStats(mob,chk);
 		int num=0;
 		for(final int i: CharStats.CODES.MAXCODES())
-			if(chk.getStat(i)>0) num++;
+			if(chk.getStat(i)>0)
+				num++;
 		for(final int i: CharStats.CODES.BASECODES())
 			if(chk.getStat(CharStats.CODES.toMAXBASE(i))>0)
 				affectableStats.setStat(i,affectableStats.getStat(i)+(pts/num));
@@ -86,7 +88,8 @@ public class Prayer_Benediction extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

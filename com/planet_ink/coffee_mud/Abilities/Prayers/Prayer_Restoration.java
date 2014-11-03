@@ -47,7 +47,8 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 	@Override
 	public boolean supportsMending(Physical item)
 	{
-		if(!(item instanceof MOB)) return false;
+		if(!(item instanceof MOB))
+			return false;
 
 		if(((((MOB)item).curState()).getHitPoints()<(((MOB)item).maxState()).getHitPoints()))
 			return true;
@@ -93,7 +94,8 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -126,7 +128,8 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 					target.delEffect(A);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> missing parts are restored!"));
 					A=target.fetchAbility(A.ID());
-					if(A!=null) target.delAbility(A);
+					if(A!=null)
+						target.delAbility(A);
 					target.recoverCharStats();
 					target.recoverPhyStats();
 					target.recoverMaxState();

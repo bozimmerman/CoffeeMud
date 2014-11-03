@@ -47,7 +47,8 @@ public class ROMPatrolman extends StdBehavior
 
 	public void keepPeace(MOB observer)
 	{
-		if(!canFreelyBehaveNormal(observer)) return;
+		if(!canFreelyBehaveNormal(observer))
+			return;
 		MOB victim=null;
 		for(int i=0;i<observer.location().numInhabitants();i++)
 		{
@@ -62,8 +63,10 @@ public class ROMPatrolman extends StdBehavior
 		}
 
 
-		if(victim==null) return;
-		if(BrotherHelper.isBrother(victim,observer,false)) return;
+		if(victim==null)
+			return;
+		if(BrotherHelper.isBrother(victim,observer,false))
+			return;
 		observer.location().show(observer,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> blow(s) down hard on <S-HIS-HER> whistle. ***WHEEEEEEEEEEEET***"));
 		for(final Enumeration r=observer.location().getArea().getMetroMap();r.hasMoreElements();)
 		{
@@ -73,7 +76,8 @@ public class ROMPatrolman extends StdBehavior
 		}
 
 		Item weapon=observer.fetchWieldedItem();
-		if(weapon==null) weapon=observer.myNaturalWeapon();
+		if(weapon==null)
+			weapon=observer.myNaturalWeapon();
 		boolean makePeace=false;
 		boolean fight=false;
 		switch(CMLib.dice().roll(1,7,-1))
@@ -123,7 +127,8 @@ public class ROMPatrolman extends StdBehavior
 					if(observer.location().okMessage(observer,msgs))
 					{
 						final MOB ivictim=inhab.getVictim();
-						if(ivictim!=null) ivictim.makePeace();
+						if(ivictim!=null)
+							ivictim.makePeace();
 					}
 				}
 			}
@@ -138,7 +143,8 @@ public class ROMPatrolman extends StdBehavior
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Tickable.TICKID_MOB) return true;
+		if(tickID!=Tickable.TICKID_MOB)
+			return true;
 		final MOB mob=(MOB)ticking;
 		tickTock--;
 		if(tickTock<=0)

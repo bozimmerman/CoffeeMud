@@ -38,7 +38,8 @@ public class Pair<T,K> implements Map.Entry<T, K>
 	@Override
 	public boolean equals(Object o)
 	{
-		if(o==this) return true;
+		if(o==this)
+			return true;
 		if(o instanceof Pair)
 		{
 			@SuppressWarnings("rawtypes")

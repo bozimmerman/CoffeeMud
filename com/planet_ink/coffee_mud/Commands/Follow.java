@@ -42,9 +42,11 @@ public class Follow extends StdCommand
 
 	public boolean nofollow(MOB mob, boolean errorsOk, boolean quiet)
 	{
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		final Room R=mob.location();
-		if(R==null) return false;
+		if(R==null)
+			return false;
 		if(mob.amFollowing()!=null)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,mob.amFollowing(),null,CMMsg.MSG_NOFOLLOW,quiet?null:L("<S-NAME> stop(s) following <T-NAMESELF>."));
@@ -67,7 +69,8 @@ public class Follow extends StdCommand
 		for(int f=0;f<mob.numFollowers();f++)
 		{
 			final MOB F=mob.fetchFollower(f);
-			if(F!=null) V.addElement(F);
+			if(F!=null)
+				V.addElement(F);
 		}
 		for(int v=0;v<V.size();v++)
 		{
@@ -79,9 +82,11 @@ public class Follow extends StdCommand
 
 	public boolean processFollow(MOB mob, MOB tofollow, boolean quiet)
 	{
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		final Room R=mob.location();
-		if(R==null) return false;
+		if(R==null)
+			return false;
 		if(tofollow!=null)
 		{
 			if(tofollow==mob)
@@ -116,9 +121,11 @@ public class Follow extends StdCommand
 	{
 		boolean quiet=false;
 
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		final Room R=mob.location();
-		if(R==null) return false;
+		if(R==null)
+			return false;
 		if((commands.size()>2)
 		&&(commands.lastElement() instanceof String)
 		&&(((String)commands.lastElement()).equalsIgnoreCase("UNOBTRUSIVELY")))

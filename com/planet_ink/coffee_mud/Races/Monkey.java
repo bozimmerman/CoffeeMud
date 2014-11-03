@@ -109,7 +109,8 @@ public class Monkey extends StdRace
 	{
 		super.executeMsg(myHost,msg);
 		// the sex rules
-		if(!(myHost instanceof MOB)) return;
+		if(!(myHost instanceof MOB))
+			return;
 
 		final MOB myChar=(MOB)myHost;
 		if((msg.amITarget(myChar))

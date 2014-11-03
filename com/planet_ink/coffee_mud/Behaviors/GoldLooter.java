@@ -51,10 +51,13 @@ public class GoldLooter extends StdBehavior
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Tickable.TICKID_MOB) return true;
-		if(--tickTock>0) return true;
+		if(tickID!=Tickable.TICKID_MOB)
+			return true;
+		if(--tickTock>0)
+			return true;
 		((MOB)ticking).setAttribute(MOB.Attrib.AUTOGOLD,true);
-		if((++tickTocker)==100) tickTocker=99;
+		if((++tickTocker)==100)
+			tickTocker=99;
 		tickTock=tickTocker;
 		return true;
 	}

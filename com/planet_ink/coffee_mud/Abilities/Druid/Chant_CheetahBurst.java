@@ -78,7 +78,8 @@ public class Chant_CheetahBurst extends Chant
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
 		if(!(affected instanceof MOB))
 			return true;
 		final MOB mob=(MOB)affected;
@@ -100,7 +101,8 @@ public class Chant_CheetahBurst extends Chant
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already at a cheetah's speed."));
@@ -132,7 +134,8 @@ public class Chant_CheetahBurst extends Chant
 					target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> gain(s) cheetah-like reflexes!"));
 					beneficialAffect(mob,target,asLevel,0);
 					final Chant_CheetahBurst A=(Chant_CheetahBurst)target.fetchEffect(ID());
-					if(A!=null) A.cheetahTick=3;
+					if(A!=null)
+						A.cheetahTick=3;
 				}
 			}
 		}

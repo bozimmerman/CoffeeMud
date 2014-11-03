@@ -170,11 +170,14 @@ public class Thief_Robbery extends ThiefSkill
 		int discoverChance=(mob.charStats().getStat(CharStats.STAT_CHARISMA)-(target.charStats().getStat(CharStats.STAT_WISDOM))*5)
 						+(getX1Level(mob)*5);
 		final int times=timesPicked(target);
-		if(times>5) discoverChance-=(20*(times-5));
+		if(times>5)
+			discoverChance-=(20*(times-5));
 		if(!CMLib.flags().canBeSeenBy(mob,target))
 			discoverChance+=50;
-		if(discoverChance>95) discoverChance=95;
-		if(discoverChance<5) discoverChance=5;
+		if(discoverChance>95)
+			discoverChance=95;
+		if(discoverChance<5)
+			discoverChance=5;
 		final boolean success=proficiencyCheck(mob,-(levelDiff),auto);
 
 		if(!success)
@@ -219,7 +222,8 @@ public class Thief_Robbery extends ThiefSkill
 			{
 				str+=" <T-NAME> spots you!";
 				hisCode=hisCode|((target.mayIFight(mob))?CMMsg.MASK_MALICIOUS:0);
-				if((target.isMonster())&&(mob.getVictim()==null)) mob.setVictim(target);
+				if((target.isMonster())&&(mob.getVictim()==null))
+					mob.setVictim(target);
 			}
 
 			CMMsg msg=CMClass.getMsg(mob,target,this,code,str,hisCode,hisStr,CMMsg.NO_EFFECT,null);
@@ -227,7 +231,8 @@ public class Thief_Robbery extends ThiefSkill
 			{
 				mob.location().send(mob,msg);
 				Thief_Robbery A=(Thief_Robbery)target.fetchEffect(ID());
-				if(A==null)	beneficialAffect(mob,target,asLevel,0);
+				if(A==null)
+					beneficialAffect(mob,target,asLevel,0);
 				A=(Thief_Robbery)target.fetchEffect(ID());
 				if(A!=null)
 					A.mobs.add(mob);

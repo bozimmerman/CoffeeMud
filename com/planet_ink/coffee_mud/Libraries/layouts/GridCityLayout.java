@@ -51,7 +51,8 @@ public class GridCityLayout extends AbstractLayout
 					lSet.use(n,LayoutTypes.street);
 					n.flagRun(LayoutRuns.ns);
 					LayoutNode nn = lSet.getNextNode(n, Directions.NORTH);
-					if(nn==null) nn=lSet.makeNextNode(n, Directions.NORTH);
+					if(nn==null)
+						nn=lSet.makeNextNode(n, Directions.NORTH);
 					n.crossLink(nn);
 					n=nn;
 				}
@@ -75,7 +76,8 @@ public class GridCityLayout extends AbstractLayout
 					lSet.use(n,LayoutTypes.street);
 					n.flagRun(LayoutRuns.ew);
 					LayoutNode nn = lSet.getNextNode(n, Directions.EAST);
-					if(nn==null) nn=lSet.makeNextNode(n, Directions.EAST);
+					if(nn==null)
+						nn=lSet.makeNextNode(n, Directions.EAST);
 					n.crossLink(nn);
 					n=nn;
 				}

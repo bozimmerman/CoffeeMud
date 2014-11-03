@@ -90,8 +90,10 @@ public class ThinRoom implements Room
 	@Override
 	public Room prepareRoomInDir(Room R, int direction)
 	{
-		if(R==null) return null;
-		if((roomID==null)||(roomID.length()==0)||(recurse)) return null;
+		if(R==null)
+			return null;
+		if((roomID==null)||(roomID.length()==0)||(recurse))
+			return null;
 		recurse=true;
 		Room myR=null;
 		synchronized(("SYNC"+roomID).intern())
@@ -104,7 +106,8 @@ public class ThinRoom implements Room
 				{
 					final Iterator<String> i=V.keySet().iterator();
 					myR=V.get(i.next());
-					while(i.hasNext()) V.remove(i.next());
+					while(i.hasNext())
+						V.remove(i.next());
 					CMLib.database().DBReadRoomExits(roomID,myR,false);
 					CMLib.database().DBReadContent(roomID,myR,true);
 					myR.getArea().fillInAreaRoom(R);
@@ -119,8 +122,10 @@ public class ThinRoom implements Room
 		&&(R.rawDoors()[direction]==this))
 			R.rawDoors()[direction]=myR;
 		recurse=false;
-		if(myR instanceof ThinRoom) return myR;
-		if(myR!=null) return myR.prepareRoomInDir(R,direction);
+		if(myR instanceof ThinRoom)
+			return myR;
+		if(myR!=null)
+			return myR.prepareRoomInDir(R,direction);
 		return null;
 	}
 
@@ -299,7 +304,8 @@ public class ThinRoom implements Room
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
+			if(code.equalsIgnoreCase(CODES[i]))
+				return i;
 		return -1;
 	}
 	@Override

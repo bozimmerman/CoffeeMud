@@ -205,7 +205,8 @@ public class Song extends StdAbility
 
 	protected boolean unsingMe(MOB mob, MOB invoker)
 	{
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		final Ability A=mob.fetchEffect(ID());
 		if((A instanceof Song)
 		&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
@@ -233,7 +234,8 @@ public class Song extends StdAbility
 			return new Vector();
 		}
 		final int depth=getXMAXRANGELevel(invoker());
-		if(depth==0) return new XVector(invoker().location());
+		if(depth==0)
+			return new XVector(invoker().location());
 		final Vector rooms=new Vector();
 		// needs to be area-only, because of the aggro-tracking rule
 		TrackingLibrary.TrackingFlags flags;
@@ -249,7 +251,8 @@ public class Song extends StdAbility
 
 	protected int getCorrectDirToOriginRoom(Room R, int v)
 	{
-		if(v<0) return -1;
+		if(v<0)
+			return -1;
 		int dir=-1;
 		Room R2=null;
 		Exit E2=null;
@@ -301,7 +304,8 @@ public class Song extends StdAbility
 			R.delInhabitant(mob);
 			mob.setLocation(originRoom);
 		}
-		if(h==null) return null;
+		if(h==null)
+			return null;
 		if(R==originRoom)
 		{
 			if(!h.contains(mob))
@@ -358,7 +362,8 @@ public class Song extends StdAbility
 				if(R.okMessage(mob,msg))
 				{
 					final Set<MOB> h=this.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
-					if(h==null) continue;
+					if(h==null)
+						continue;
 					final Song newOne=(Song)this.copyOf();
 					for (final Object element : h)
 					{
@@ -367,7 +372,8 @@ public class Song extends StdAbility
 
 						// malicious songs must not affect the invoker!
 						int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
-						if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
+						if(auto)
+							affectType=affectType|CMMsg.MASK_ALWAYS;
 						if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
 							affectType=affectType|CMMsg.MASK_MALICIOUS;
 

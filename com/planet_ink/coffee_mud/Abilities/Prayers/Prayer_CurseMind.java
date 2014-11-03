@@ -61,7 +61,8 @@ public class Prayer_CurseMind extends Prayer
 		if(mob.isInCombat())
 		{
 			final MOB newvictim=mob.location().fetchRandomInhabitant();
-			if(newvictim!=mob) mob.setVictim(newvictim);
+			if(newvictim!=mob)
+				mob.setVictim(newvictim);
 		}
 		return super.tick(ticking,tickID);
 	}
@@ -91,7 +92,8 @@ public class Prayer_CurseMind extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

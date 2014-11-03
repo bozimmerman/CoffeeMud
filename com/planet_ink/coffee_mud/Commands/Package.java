@@ -55,7 +55,8 @@ public class Package extends StdCommand
 		if(commands.size()>0)
 			whatName=(String)commands.lastElement();
 		final int maxToGet=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
-		if(maxToGet<0) return false;
+		if(maxToGet<0)
+			return false;
 
 		String whatToGet=CMParms.combine(commands,0);
 		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
@@ -68,7 +69,8 @@ public class Package extends StdCommand
 		{
 			Environmental getThis=null;
 			getThis=mob.location().fetchFromRoomFavorItems(null,whatToGet+addendumStr);
-			if(getThis==null) break;
+			if(getThis==null)
+				break;
 			if((getThis instanceof Item)
 			&&(CMLib.flags().canBeSeenBy(getThis,mob))
 			&&((!allFlag)||CMLib.flags().isGettable(((Item)getThis))||(getThis.displayText().length()>0))
@@ -76,7 +78,8 @@ public class Package extends StdCommand
 				V.addElement((Item)getThis);
 			addendumStr="."+(++addendum);
 		}
-		while((allFlag)&&(addendum<=maxToGet));
+		while((allFlag)&&(addendum<=maxToGet))
+			;
 
 		if(V.size()==0)
 		{
@@ -96,7 +99,8 @@ public class Package extends StdCommand
 			}
 		}
 		final PackagedItems thePackage=(PackagedItems)CMClass.getItem("GenPackagedItems");
-		if(thePackage==null) return false;
+		if(thePackage==null)
+			return false;
 		if(!thePackage.isPackagable(V))
 		{
 			mob.tell(L("All items in a package must be absolutely identical.  Some here are not."));

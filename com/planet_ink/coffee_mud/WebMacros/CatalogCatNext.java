@@ -45,7 +45,8 @@ public class CatalogCatNext extends StdWebMacro
 		String last=httpReq.getUrlParameter("CATACAT");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("CATACAT");
+			if(last!=null)
+				httpReq.removeUrlParameter("CATACAT");
 			return "";
 		}
 		final boolean mobs=parms.containsKey("MOBS")||parms.containsKey("MOB");

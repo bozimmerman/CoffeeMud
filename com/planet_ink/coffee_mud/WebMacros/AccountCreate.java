@@ -61,8 +61,10 @@ public class AccountCreate extends StdWebMacro
 			return " @break@";
 
 		String name=httpReq.getUrlParameter("ACCOUNTNAME");
-		if(name==null) name=httpReq.getUrlParameter("LOGIN");
-		if((name==null)||(name.length()==0)) return AccountCreateErrors.NO_NAME.toString();
+		if(name==null)
+			name=httpReq.getUrlParameter("LOGIN");
+		if((name==null)||(name.length()==0))
+			return AccountCreateErrors.NO_NAME.toString();
 		String password;
 		if(emailPassword)
 		{
@@ -73,16 +75,20 @@ public class AccountCreate extends StdWebMacro
 		else
 		{
 			password=httpReq.getUrlParameter("PASSWORD");
-			if((password==null)||(password.length()==0)) return AccountCreateErrors.NO_PASSWORD.toString();
+			if((password==null)||(password.length()==0))
+				return AccountCreateErrors.NO_PASSWORD.toString();
 			final String passwordagain=httpReq.getUrlParameter("PASSWORDAGAIN");
-			if((passwordagain==null)||(passwordagain.length()==0)) return AccountCreateErrors.NO_PASSWORDAGAIN.toString();
+			if((passwordagain==null)||(passwordagain.length()==0))
+				return AccountCreateErrors.NO_PASSWORDAGAIN.toString();
 			if(!password.equalsIgnoreCase(passwordagain))
 				return AccountCreateErrors.BAD_PASSWORDMATCH.toString();
 		}
 		final String verifykey=httpReq.getUrlParameter("VERIFYKEY");
-		if((verifykey==null)||(verifykey.length()==0)) return AccountCreateErrors.NO_VERIFYKEY.toString();
+		if((verifykey==null)||(verifykey.length()==0))
+			return AccountCreateErrors.NO_VERIFYKEY.toString();
 		final String verify=httpReq.getUrlParameter("VERIFY");
-		if((verify==null)||(verify.length()==0)) return AccountCreateErrors.NO_VERIFY.toString();
+		if((verify==null)||(verify.length()==0))
+			return AccountCreateErrors.NO_VERIFY.toString();
 		String emailAddress="";
 		if(!emailDisabled)
 		{

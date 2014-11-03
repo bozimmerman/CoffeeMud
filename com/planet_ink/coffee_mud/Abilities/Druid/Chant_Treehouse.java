@@ -142,15 +142,20 @@ public class Chant_Treehouse extends Chant
 				Exit E=CMClass.getExit("ClimbableExit");
 				E.addNonUninvokableEffect(A);
 				A=CMClass.getAbility("Prop_PeaceMaker");
-				if(A!=null) newRoom.addEffect(A);
+				if(A!=null)
+					newRoom.addEffect(A);
 				A=CMClass.getAbility("Prop_NoRecall");
-				if(A!=null) newRoom.addEffect(A);
+				if(A!=null)
+					newRoom.addEffect(A);
 				A=CMClass.getAbility("Prop_NoSummon");
-				if(A!=null) newRoom.addEffect(A);
+				if(A!=null)
+					newRoom.addEffect(A);
 				A=CMClass.getAbility("Prop_NoTeleport");
-				if(A!=null) newRoom.addEffect(A);
+				if(A!=null)
+					newRoom.addEffect(A);
 				A=CMClass.getAbility("Prop_NoTeleportOut");
-				if(A!=null) newRoom.addEffect(A);
+				if(A!=null)
+					newRoom.addEffect(A);
 
 				newRoom.setRawExit(Directions.DOWN,E);
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)

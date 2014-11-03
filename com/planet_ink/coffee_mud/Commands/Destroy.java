@@ -79,7 +79,8 @@ public class Destroy extends StdCommand
 			deadMOB.destroy();
 			mob.location().delInhabitant(deadMOB);
 			deadMOB=mob.location().fetchInhabitant(mobID);
-			if(!allFlag) break;
+			if(!allFlag)
+				break;
 		}
 		if(!doneSomething)
 		{
@@ -221,7 +222,8 @@ public class Destroy extends StdCommand
 				if (tgArray[i] != null)
 				{
 					final Thread t=findThreadGroup(threadName,tgArray[i]);
-					if(t!=null) return t;
+					if(t!=null)
+						return t;
 				}
 			}
 		}
@@ -461,7 +463,8 @@ public class Destroy extends StdCommand
 		boolean doneSomething=false;
 		Item deadItem=null;
 		deadItem=(srchRoom==null)?null:srchRoom.findItem(srchContainer,itemID);
-		if((!allFlag)&&(deadItem==null)) deadItem=(srchMob==null)?null:srchMob.findItem(null,itemID);
+		if((!allFlag)&&(deadItem==null))
+			deadItem=(srchMob==null)?null:srchMob.findItem(null,itemID);
 		if(deadItem==null)
 		{
 			Environmental E=CMLib.map().findSpaceObject(itemID,true);
@@ -492,10 +495,13 @@ public class Destroy extends StdCommand
 				deadItem.destroy();
 				mob.location().delItem(deadItem);
 				deadItem=null;
-				if(!allFlag) deadItem=(srchMob==null)?null:srchMob.findItem(null,itemID);
-				if(deadItem==null) deadItem=(srchRoom==null)?null:srchRoom.findItem(null,itemID);
+				if(!allFlag)
+					deadItem=(srchMob==null)?null:srchMob.findItem(null,itemID);
+				if(deadItem==null)
+					deadItem=(srchRoom==null)?null:srchRoom.findItem(null,itemID);
 			}
-			if(!allFlag) break;
+			if(!allFlag)
+				break;
 		}
 		if(!doneSomething)
 		{
@@ -615,7 +621,8 @@ public class Destroy extends StdCommand
 		CMLib.database().DBDeleteRace(R.ID());
 		CMClass.loadClass(CMObjectType.RACE,"com/planet_ink/coffee_mud/Races/"+oldRID+".class",true);
 		Race oldR=CMClass.getRace(oldRID);
-		if(oldR==null) oldR=CMClass.getRace("StdRace");
+		if(oldR==null)
+			oldR=CMClass.getRace("StdRace");
 		CMLib.utensils().swapRaces(oldR,R);
 		if(!oldR.ID().equals("StdRace"))
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The diversity of the world just changed?!"));
@@ -725,7 +732,8 @@ public class Destroy extends StdCommand
 		final String oldCID=C.ID();
 		CMClass.loadClass(CMObjectType.CHARCLASS,"com/planet_ink/coffee_mud/CharClasses/"+oldCID+".class",true);
 		CharClass oldC=CMClass.getCharClass(oldCID);
-		if(oldC==null) oldC=CMClass.getCharClass("StdCharClass");
+		if(oldC==null)
+			oldC=CMClass.getCharClass("StdCharClass");
 		CMLib.utensils().reloadCharClasses(C);
 		if(!oldC.ID().equals("StdCharClass"))
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The diversity of the world just changed?!"));
@@ -892,7 +900,8 @@ public class Destroy extends StdCommand
 			{
 				final Command C=CMClass.getCommand("Kill");
 				commands.insertElementAt("KILL",0);
-				if(C!=null) C.execute(mob,commands,metaFlags);
+				if(C!=null)
+					C.execute(mob,commands,metaFlags);
 				return false;
 			}
 
@@ -949,7 +958,8 @@ public class Destroy extends StdCommand
 						}
 					}
 				}
-				if(dropThis==null) break;
+				if(dropThis==null)
+					break;
 				if((CMLib.flags().canBeSeenBy(dropThis,mob))
 				&&(!V.contains(dropThis)))
 					V.addElement(dropThis);
@@ -1011,14 +1021,16 @@ public class Destroy extends StdCommand
 		}
 		if(commandType.equals("EXIT"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDEXITS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDEXITS))
+				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			exits(mob,commands);
 		}
 		else
 		if(commandType.equals("ITEM"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDITEMS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDITEMS))
+				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			items(mob,commands);
 		}
@@ -1037,70 +1049,80 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("RACE"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRACES)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRACES))
+				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			races(mob,commands);
 		}
 		else
 		if(commandType.equals("CLASS"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCLASSES)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCLASSES))
+				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			classes(mob,commands);
 		}
 		else
 		if(commandType.equals("ABILITY")||commandType.equals("LANGUAGE")||commandType.equals("CRAFTSKILL"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES))
+				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			abilities(mob,commands);
 		}
 		else
 		if(commandType.equals("ALLQUALIFY"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES))
+				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			allQualify(mob,commands);
 		}
 		else
 		if(commandType.equals("COMPONENT"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COMPONENTS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COMPONENTS))
+				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			components(mob,commands);
 		}
 		else
 		if(commandType.equals("EXPERTISE"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.EXPERTISES)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.EXPERTISES))
+				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			expertises(mob,commands);
 		}
 		else
 		if(commandType.equals("TITLE"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TITLES)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TITLES))
+				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			titles(mob,commands);
 		}
 		else
 	if(commandType.equals("USER")||commandType.equals("PLAYER"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS))
+				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			players(mob,commands);
 		}
 		else
 		if((commandType.equals("ACCOUNT"))&&(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS))
+				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			accounts(mob,commands);
 		}
 		else
 		if(commandType.equals("SOCIAL"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDSOCIALS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDSOCIALS))
+				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			socials(mob,commands);
 		}
@@ -1143,7 +1165,8 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("NOPURGE"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.NOPURGE)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.NOPURGE))
+				return errorOut(mob);
 			int which=-1;
 			if(commands.size()>2)
 				which=CMath.s_int((String)commands.elementAt(2));
@@ -1167,7 +1190,8 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("HOLIDAY"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDQUESTS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDQUESTS))
+				return errorOut(mob);
 			final String name=CMParms.combine(commands,2);
 			int num=-1;
 			if(CMath.isInteger(name))
@@ -1188,13 +1212,15 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("TICKS"))
 		{
-			if(!CMSecurity.isASysOp(mob)) return errorOut(mob);
+			if(!CMSecurity.isASysOp(mob))
+				return errorOut(mob);
 			final String which=CMParms.combine(commands,2);
 			List<Tickable> V=null;
 			if(which.length()>0)
 			{
 				V=CMLib.threads().getNamedTickingObjects(which);
-				if(V.size()==0) V=null;
+				if(V.size()==0)
+					V=null;
 			}
 			if(V==null)
 				mob.tell(L("Please enter a valid ticking object name to destroy.  Use List ticks for a list of groups and objects."));
@@ -1214,7 +1240,8 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("BAN"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.BAN)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.BAN))
+				return errorOut(mob);
 			int which=-1;
 			if(commands.size()>2)
 				which=CMath.s_int((String)commands.elementAt(2));
@@ -1229,7 +1256,8 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("THREAD"))
 		{
-			if(!CMSecurity.isASysOp(mob)) return errorOut(mob);
+			if(!CMSecurity.isASysOp(mob))
+				return errorOut(mob);
 			final String which=CMParms.combine(commands,2);
 			Thread whichT=null;
 			if(which.length()>0)
@@ -1246,7 +1274,8 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.startsWith("SESSION"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.BOOT)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.BOOT))
+				return errorOut(mob);
 			int which=-1;
 			if(commands.size()>2)
 				which=CMath.s_int((String)commands.elementAt(2));
@@ -1265,7 +1294,8 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("JOURNAL"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS))
+				return errorOut(mob);
 			if(commands.size()<3)
 			{
 				mob.tell(L("Destroy which journal? Try List Journal"));
@@ -1301,7 +1331,8 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("FACTION"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDFACTIONS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDFACTIONS))
+				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			if(commands.size()<3)
 				mob.tell(L("Destroy which faction?  Use list factions."));
@@ -1309,7 +1340,8 @@ public class Destroy extends StdCommand
 			{
 				final String name=CMParms.combine(commands,2);
 				Faction F=CMLib.factions().getFaction(name);
-				if(F==null) F=CMLib.factions().getFactionByName(name);
+				if(F==null)
+					F=CMLib.factions().getFactionByName(name);
 				if(F==null)
 					mob.tell(L("Faction '@x1' is unknown.  Try list factions.",name));
 				else
@@ -1337,21 +1369,24 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("MOB"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDMOBS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDMOBS))
+				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			mobs(mob,commands);
 		}
 		else
 		if(commandType.equals("MANUFACTURER"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDITEMS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDITEMS))
+				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			manufacturer(mob,commands);
 		}
 		else
 		if(commandType.equals("POLL"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.POLLS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.POLLS))
+				return errorOut(mob);
 			final String name=CMParms.combine(commands,2);
 			Poll P=null;
 			if(CMath.isInteger(name))
@@ -1378,7 +1413,8 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("QUEST"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDQUESTS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDQUESTS))
+				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			if(commands.size()<3)
 				mob.tell(L("Destroy which quest?  Use list quests."));
@@ -1389,14 +1425,17 @@ public class Destroy extends StdCommand
 				if(CMath.isInteger(name))
 				{
 					Q=CMLib.quests().fetchQuest(CMath.s_int(name)-1);
-					if(Q!=null) name=Q.name();
+					if(Q!=null)
+						name=Q.name();
 				}
-				if(Q==null) Q=CMLib.quests().fetchQuest(name);
+				if(Q==null)
+					Q=CMLib.quests().fetchQuest(name);
 				if(Q==null)
 					mob.tell(L("Quest '@x1' is unknown.  Try list quests.",name));
 				else
 				{
-					if(Q.running()&&(!Q.stopping())) Q.stopQuest();
+					if(Q.running()&&(!Q.stopping()))
+						Q.stopQuest();
 					mob.tell(L("Quest '@x1' is destroyed!",Q.name()));
 					CMLib.quests().delQuest(Q);
 				}
@@ -1405,7 +1444,8 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("CLAN"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCLANS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCLANS))
+				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			if(commands.size()<3)
 				mob.tell(L("Destroy which clan?  Use clanlist."));
@@ -1426,7 +1466,8 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("GOVERNMENT"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCLANS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCLANS))
+				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			if(commands.size()<3)
 				mob.tell(L("Destroy which government?  Use list governments."));

@@ -378,7 +378,8 @@ public class Mage extends StdCharClass
 		}
 		for(int i=0;i<numSpells;i++)
 		{
-			if(grantable.size()==0) break;
+			if(grantable.size()==0)
+				break;
 			final String AID=(String)grantable.elementAt(CMLib.dice().roll(1,grantable.size(),-1));
 			if(AID!=null)
 			{

@@ -228,7 +228,8 @@ public class Prayer_Prophecy extends Prayer
 			return false;
 
 		Physical target=mob;
-		if((auto)&&(givenTarget!=null)) target=givenTarget;
+		if((auto)&&(givenTarget!=null))
+			target=givenTarget;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

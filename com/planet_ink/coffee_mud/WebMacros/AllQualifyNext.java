@@ -44,16 +44,19 @@ public class AllQualifyNext extends StdWebMacro
 		final String last=httpReq.getUrlParameter("ALLQUALID");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("ALLQUALID");
+			if(last!=null)
+				httpReq.removeUrlParameter("ALLQUALID");
 			return "";
 		}
 		String which=httpReq.getUrlParameter("ALLQUALWHICH");
 		if(parms.containsKey("WHICH"))
 			which=parms.get("WHICH");
-		if((which==null)||(which.length()==0)) which="ALL";
+		if((which==null)||(which.length()==0))
+			which="ALL";
 		final Map<String,Map<String,AbilityMapper.AbilityMapping>> allQualMap=CMLib.ableMapper().getAllQualifiesMap(httpReq.getRequestObjects());
 		final Map<String,AbilityMapper.AbilityMapping> map=allQualMap.get(which.toUpperCase().trim());
-		if(map==null) return " @break@";
+		if(map==null)
+			return " @break@";
 
 		String lastID="";
 		String abilityID;

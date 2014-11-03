@@ -54,17 +54,22 @@ public class Fighter_CoupDeGrace extends FighterSkill
 	{
 		if((mob!=null)&&(target!=null))
 		{
-			if(!mob.isInCombat()) return Ability.QUALITY_INDIFFERENT;
-			if(mob.rangeToTarget()>0) return Ability.QUALITY_INDIFFERENT;
+			if(!mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+			if(mob.rangeToTarget()>0)
+				return Ability.QUALITY_INDIFFERENT;
 			final Item w=mob.fetchWieldedItem();
 			Weapon ww=null;
-			if((w==null)||(!(w instanceof Weapon))) return Ability.QUALITY_INDIFFERENT;
+			if((w==null)||(!(w instanceof Weapon)))
+				return Ability.QUALITY_INDIFFERENT;
 			ww=(Weapon)w;
 			if((ww.weaponType()!=Weapon.TYPE_SLASHING)
 			&&(ww.weaponType()!=Weapon.TYPE_PIERCING))
 				 return Ability.QUALITY_INDIFFERENT;
-			if(mob.curState().getMovement()<overrideMana()) return Ability.QUALITY_INDIFFERENT;
-			if(!CMLib.flags().isSleeping(mob.getVictim())) return Ability.QUALITY_INDIFFERENT;
+			if(mob.curState().getMovement()<overrideMana())
+				return Ability.QUALITY_INDIFFERENT;
+			if(!CMLib.flags().isSleeping(mob.getVictim()))
+				return Ability.QUALITY_INDIFFERENT;
 		}
 		return super.castingQuality(mob,target);
 	}

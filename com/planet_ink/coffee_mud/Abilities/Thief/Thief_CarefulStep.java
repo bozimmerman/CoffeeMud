@@ -55,7 +55,8 @@ public class Thief_CarefulStep extends ThiefSkill
 		if(secondsElapsed==0)
 		{
 			String dir=CMParms.combine(commands,0);
-			if(commands.size()>0) dir=commands.get(commands.size()-1);
+			if(commands.size()>0)
+				dir=commands.get(commands.size()-1);
 			final int dirCode=Directions.getGoodDirectionCode(dir);
 			if(dirCode<0)
 			{
@@ -85,7 +86,8 @@ public class Thief_CarefulStep extends ThiefSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String dir=CMParms.combine(commands,0);
-		if(commands.size()>0) dir=(String)commands.lastElement();
+		if(commands.size()>0)
+			dir=(String)commands.lastElement();
 		final int dirCode=Directions.getGoodDirectionCode(dir);
 		if(!preInvoke(mob,commands,givenTarget,auto,asLevel,0,0.0))
 			return false;

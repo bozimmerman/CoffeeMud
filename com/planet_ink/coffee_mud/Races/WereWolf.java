@@ -103,7 +103,8 @@ public class WereWolf extends GiantWolf
 					if(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE))
 					{
 						final Ability A=CMClass.getAbility("Disease_Lycanthropy");
-						if(A!=null)	meat.addNonUninvokableEffect(A);
+						if(A!=null)
+							meat.addNonUninvokableEffect(A);
 					}
 					resources.addElement(meat);
 					resources.addElement(makeResource

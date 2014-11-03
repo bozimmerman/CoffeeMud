@@ -72,13 +72,15 @@ public class Thief_PlantItem extends ThiefSkill
 		commands.removeElement(commands.lastElement());
 
 		final Item item=super.getTarget(mob,null,givenTarget,commands,Wearable.FILTER_UNWORNONLY);
-		if(item==null) return false;
+		if(item==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
-		if(levelDiff<0) levelDiff=0;
+		if(levelDiff<0)
+			levelDiff=0;
 		levelDiff*=5;
 		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 

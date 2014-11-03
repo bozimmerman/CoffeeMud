@@ -53,7 +53,8 @@ public class Clans extends StdLibrary implements ClanManager
 
 	public boolean isCommonClanRelations(Clan C1, Clan C2, int relation)
 	{
-		if((C1==null)||(C2==null)) return relation==Clan.REL_NEUTRAL;
+		if((C1==null)||(C2==null))
+			return relation==Clan.REL_NEUTRAL;
 		int i1=C1.getClanRelations(C2.clanID());
 		int i2=C2.getClanRelations(C1.clanID());
 		if((i1==i2)
@@ -75,9 +76,11 @@ public class Clans extends StdLibrary implements ClanManager
 					i2=Clan.REL_WAR;
 			}
 		}
-		if(i1==i2) return relation==i1;
+		if(i1==i2)
+			return relation==i1;
 
-		if(Clan.REL_NEUTRALITYGAUGE[i1]<Clan.REL_NEUTRALITYGAUGE[i2]) return relation==i1;
+		if(Clan.REL_NEUTRALITYGAUGE[i1]<Clan.REL_NEUTRALITYGAUGE[i2])
+			return relation==i1;
 		return relation==i2;
 	}
 
@@ -108,9 +111,11 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public boolean checkClanPrivilege(MOB mob, String clanID, Clan.Function func)
 	{
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		final Pair<Clan,Integer> c=mob.getClanRole(clanID);
-		if(c==null) return false;
+		if(c==null)
+			return false;
 		if(c.first.getAuthority(c.second.intValue(), func) != Clan.Authority.CAN_NOT_DO)
 			return true;
 		return false;
@@ -169,7 +174,8 @@ public class Clans extends StdLibrary implements ClanManager
 	public List<Triad<Clan,Integer,Integer>> findCommonRivalrousClans(MOB mob1, MOB mob2)
 	{
 		final List<Triad<Clan,Integer,Integer>> list=new XVector<Triad<Clan,Integer,Integer>>(1,true);
-		if((mob1==null)||(mob2==null)) return list;
+		if((mob1==null)||(mob2==null))
+			return list;
 		for(final Pair<Clan,Integer> c : mob1.clans())
 		{
 			if(c.first.isRivalrous())
@@ -196,7 +202,8 @@ public class Clans extends StdLibrary implements ClanManager
 	public List<Pair<Clan,Integer>> findRivalrousClans(MOB clanSourceMob, MOB filterMob)
 	{
 		final List<Pair<Clan,Integer>> list=new XVector<Pair<Clan,Integer>>(1,true);
-		if((clanSourceMob==null)||(filterMob==null)) return list;
+		if((clanSourceMob==null)||(filterMob==null))
+			return list;
 		for(final Pair<Clan,Integer> c : clanSourceMob.clans())
 		{
 			if(c.first.isRivalrous())
@@ -212,7 +219,8 @@ public class Clans extends StdLibrary implements ClanManager
 	public List<Pair<Clan,Clan>> findUncommonRivalrousClans(MOB M1, MOB M2)
 	{
 		final List<Pair<Clan,Clan>> list=new XVector<Pair<Clan,Clan>>(1,true);
-		if((M1==null)||(M2==null)) return list;
+		if((M1==null)||(M2==null))
+			return list;
 		// i need the disunion here (what's the word for that?), as a order-irrelevant set of pairs
 		for(final Pair<Clan,Integer> c : M1.clans())
 		{
@@ -234,7 +242,8 @@ public class Clans extends StdLibrary implements ClanManager
 	public List<Pair<Clan,Clan>> getAllClanPairs(MOB M1, MOB M2)
 	{
 		final List<Pair<Clan,Clan>> list=new XVector<Pair<Clan,Clan>>(1,true);
-		if((M1==null)||(M2==null)) return list;
+		if((M1==null)||(M2==null))
+			return list;
 		// i need the disunion here (what's the word for that?), as a order-irrelevant set of pairs
 		for(final Pair<Clan,Integer> c : M1.clans())
 			list.add(new Pair<Clan,Clan>(c.first,null));
@@ -248,12 +257,15 @@ public class Clans extends StdLibrary implements ClanManager
 
 	public int getClanRelations(Clan C1, Clan C2)
 	{
-		if((C1==null)||(C2==null)) return Clan.REL_NEUTRAL;
+		if((C1==null)||(C2==null))
+			return Clan.REL_NEUTRAL;
 		final int i1=C1.getClanRelations(C2.clanID());
 		final int i2=C2.getClanRelations(C1.clanID());
 		final int rel=Clan.RELATIONSHIP_VECTOR[i1][i2];
-		if(rel==Clan.REL_WAR) return Clan.REL_WAR;
-		if(rel==Clan.REL_ALLY) return Clan.REL_ALLY;
+		if(rel==Clan.REL_WAR)
+			return Clan.REL_WAR;
+		if(rel==Clan.REL_ALLY)
+			return Clan.REL_ALLY;
 		for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 		{
 			final Clan C=e.nextElement();
@@ -286,7 +298,8 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public boolean isAnyCommonClan(MOB M1, MOB M2)
 	{
-		if((M1==null)||(M2==null)) return false;
+		if((M1==null)||(M2==null))
+			return false;
 		for(final Pair<Clan,Integer> p : M1.clans())
 			if(M2.getClanRole(p.first.clanID())!=null)
 				return true;
@@ -296,9 +309,11 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public Clan getClan(String id)
 	{
-		if((id==null)||(id.length()==0)) return null;
+		if((id==null)||(id.length()==0))
+			return null;
 		Clan C=all.get(id.toUpperCase());
-		if(C!=null) return C;
+		if(C!=null)
+			return C;
 		for(final Enumeration<Clan> e=all.elements();e.hasMoreElements();)
 		{
 			C=e.nextElement();
@@ -312,7 +327,8 @@ public class Clans extends StdLibrary implements ClanManager
 	public Clan findClan(String id)
 	{
 		Clan C=getClan(id);
-		if(C!=null) return C;
+		if(C!=null)
+			return C;
 		for(final Enumeration<Clan> e=all.elements();e.hasMoreElements();)
 		{
 			C=e.nextElement();
@@ -430,7 +446,8 @@ public class Clans extends StdLibrary implements ClanManager
 			case Members: prizeStr=CMProps.getVar(CMProps.Str.CLANTROPMB); break;
 			case MemberLevel: prizeStr=CMProps.getVar(CMProps.Str.CLANTROPLVL); break;
 		}
-		if(prizeStr.length()==0) return "None";
+		if(prizeStr.length()==0)
+			return "None";
 		if(prizeStr.length()>0)
 		{
 			final Vector<String> V=CMParms.parse(prizeStr);
@@ -460,13 +477,17 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public boolean goForward(MOB mob, Clan C, Vector<? extends Object> commands, Clan.Function function, boolean voteIfNecessary)
 	{
-		if((mob==null)||(C==null)) return false;
+		if((mob==null)||(C==null))
+			return false;
 		final Pair<Clan,Integer> clanRole=mob.getClanRole(C.clanID());
-		if(clanRole==null) return false;
+		if(clanRole==null)
+			return false;
 		final int role=clanRole.second.intValue();
 		final Clan.Authority allowed=C.getAuthority(role,function);
-		if(allowed==Clan.Authority.CAN_DO) return true;
-		if(allowed==Clan.Authority.CAN_NOT_DO) return false;
+		if(allowed==Clan.Authority.CAN_DO)
+			return true;
+		if(allowed==Clan.Authority.CAN_NOT_DO)
+			return false;
 		if(function==Clan.Function.ASSIGN)
 		{
 			if(C.getAuthority(role,Clan.Function.VOTE_ASSIGN)!=Clan.Authority.CAN_DO)
@@ -475,7 +496,8 @@ public class Clans extends StdLibrary implements ClanManager
 		else
 		if(C.getAuthority(role,Clan.Function.VOTE_OTHER)!=Clan.Authority.CAN_DO)
 			return false;
-		if(!voteIfNecessary) return true;
+		if(!voteIfNecessary)
+			return true;
 		final String matter=CMParms.combine(commands,0);
 		for(final Enumeration<Clan.ClanVote> e=C.votes();e.hasMoreElements();)
 		{
@@ -492,11 +514,13 @@ public class Clans extends StdLibrary implements ClanManager
 				return false;
 			}
 		}
-		if(mob.session()==null) return false;
+		if(mob.session()==null)
+			return false;
 		try
 		{
 			final int numVotes=C.getNumVoters(function);
-			if(numVotes==1) return true;
+			if(numVotes==1)
+				return true;
 
 			if(mob.session().confirm(L("This matter must be voted upon.  Would you like to start the vote now (y/N)?"),L("N")))
 			{
@@ -568,7 +592,8 @@ public class Clans extends StdLibrary implements ClanManager
 		for(final ClanGovernment G : getStockGovernments())
 			if(G.getName().equalsIgnoreCase(named))
 				helpG=G;
-		if((helpG==null)&&(exact)) return null;
+		if((helpG==null)&&(exact))
+			return null;
 		if(helpG==null)
 			for(final ClanGovernment G : getStockGovernments())
 				if(G.getName().toUpperCase().startsWith(named.toUpperCase()))
@@ -586,7 +611,8 @@ public class Clans extends StdLibrary implements ClanManager
 					}
 			if(gtypes.size()==0)
 			{
-				if(exact) return null;
+				if(exact)
+					return null;
 				for(final ClanGovernment G : getStockGovernments())
 					for(final ClanPosition P : G.getPositions())
 						if(P.getName().toUpperCase().startsWith(named.toUpperCase())
@@ -715,10 +741,12 @@ public class Clans extends StdLibrary implements ClanManager
 	public boolean removeGovernment(ClanGovernment government)
 	{
 		final ClanGovernment[] gvts=getStockGovernments();
-		if(gvts.length==1) return false;
+		if(gvts.length==1)
+			return false;
 		final List<ClanGovernment> govts = new SVector<ClanGovernment>(gvts);
 		govts.remove(government);
-		if(govts.size()==gvts.length) return false;
+		if(govts.size()==gvts.length)
+			return false;
 		Resources.submitResource("parsed_clangovernments", govts.toArray(new ClanGovernment[0]));
 		return true;
 	}
@@ -914,8 +942,10 @@ public class Clans extends StdLibrary implements ClanManager
 	public List<Pair<Clan,Integer>> getClansByCategory(MOB M, String category)
 	{
 		final List<Pair<Clan,Integer>> list=new Vector<Pair<Clan,Integer>>(1);
-		if(M==null) return list;
-		if(category==null) category="";
+		if(M==null)
+			return list;
+		if(category==null)
+			category="";
 		for(final Pair<Clan,Integer> p : M.clans())
 			if(p.first.getCategory().equalsIgnoreCase(category))
 				list.add(p);
@@ -952,7 +982,8 @@ public class Clans extends StdLibrary implements ClanManager
 			final int typeID=CMath.s_int(clanTypePieceTag.parms.get("TYPEID"));
 			final boolean isDefault=CMath.s_bool(clanTypePieceTag.parms.get("ISDEFAULT"));
 			String category=clanTypePieceTag.parms.get("CATEGORY");
-			if(category==null) category="";
+			if(category==null)
+				category="";
 
 			final Authority[]	baseFunctionChart = new Authority[Function.values().length];
 			for(int i=0;i<Function.values().length;i++)

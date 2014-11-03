@@ -52,7 +52,8 @@ public class Prayer_BlessItem extends Prayer implements MendingSkill
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOOD);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BONUS);
 		if(affected instanceof MOB)
@@ -100,7 +101,8 @@ public class Prayer_BlessItem extends Prayer implements MendingSkill
 				Item I=Prayer_Bless.getSomething((MOB)target,true);
 				if(I==null)
 					I=Prayer_Bless.getSomething((MOB)target,false);
-				if(I==null) return Ability.QUALITY_INDIFFERENT;
+				if(I==null)
+					return Ability.QUALITY_INDIFFERENT;
 			}
 		}
 		return super.castingQuality(mob,target);
@@ -117,7 +119,8 @@ public class Prayer_BlessItem extends Prayer implements MendingSkill
 			target=Prayer_Bless.getSomething(mobTarget,false);
 		if(target==null)
 			target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(target instanceof Coins)
 		{

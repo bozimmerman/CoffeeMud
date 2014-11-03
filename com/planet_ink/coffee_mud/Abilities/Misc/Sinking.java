@@ -51,7 +51,8 @@ public class Sinking extends StdAbility
 
 	protected boolean isWaterSurface(Room R)
 	{
-		if(R==null) return false;
+		if(R==null)
+			return false;
 		if((R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
 		||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 			return true;
@@ -59,7 +60,8 @@ public class Sinking extends StdAbility
 	}
 	protected boolean isUnderWater(Room R)
 	{
-		if(R==null) return false;
+		if(R==null)
+			return false;
 		if((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
 		||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
 			return true;
@@ -150,9 +152,11 @@ public class Sinking extends StdAbility
 		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
-			if(mob==null) return false;
+			if(mob==null)
+				return false;
 			Room R=mob.location();
-			if(R==null) return false;
+			if(R==null)
+				return false;
 
 			if(!isWaterSurface(R)
 			||(CMLib.flags().isWaterWorthy(mob))
@@ -259,10 +263,13 @@ public class Sinking extends StdAbility
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if(!auto) return false;
+		if(!auto)
+			return false;
 		final Physical target=givenTarget;
-		if(target==null) return false;
-		if((target instanceof Item)&&(room==null)) return false;
+		if(target==null)
+			return false;
+		if((target instanceof Item)&&(room==null))
+			return false;
 		if(target.fetchEffect("Sinking")==null)
 		{
 			final Sinking F=new Sinking();

@@ -68,7 +68,8 @@ public class Thief_IdentifyTraps extends ThiefSkill
 			unlockThis=mob.location();
 		if(unlockThis==null)
 			unlockThis=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
-		if(unlockThis==null) return false;
+		if(unlockThis==null)
+			return false;
 
 		Ability detect=mob.fetchAbility("Thief_DetectTraps");
 		if(detect==null)
@@ -76,7 +77,8 @@ public class Thief_IdentifyTraps extends ThiefSkill
 			if(auto)
 			{
 				detect=CMClass.getAbility("Thief_DetectTraps");
-				if(detect!=null)detect.setProficiency(100);
+				if(detect!=null)
+					detect.setProficiency(100);
 			}
 			if(detect==null)
 			{
@@ -94,7 +96,8 @@ public class Thief_IdentifyTraps extends ThiefSkill
 		mob.curState().setHitPoints(savedState.getHitPoints());
 		mob.curState().setMana(savedState.getMana());
 		mob.curState().setMovement(savedState.getMovement());
-		if(!detected)return false;
+		if(!detected)
+			return false;
 
 		boolean success=proficiencyCheck(mob,+(((mob.phyStats().level()+(getXLEVELLevel(mob)*2))
 											 -unlockThis.phyStats().level())*3),auto);
@@ -109,8 +112,10 @@ public class Thief_IdentifyTraps extends ThiefSkill
 				final Exit exit=mob.location().getReverseExit(dirCode);
 				Trap opTrap=null;
 				Trap roomTrap=null;
-				if(nextRoom!=null) roomTrap=CMLib.utensils().fetchMyTrap(nextRoom);
-				if(exit!=null) opTrap=CMLib.utensils().fetchMyTrap(exit);
+				if(nextRoom!=null)
+					roomTrap=CMLib.utensils().fetchMyTrap(nextRoom);
+				if(exit!=null)
+					opTrap=CMLib.utensils().fetchMyTrap(exit);
 				if((theTrap!=null)&&(opTrap!=null))
 				{
 					if((theTrap.disabled())&&(!opTrap.disabled()))

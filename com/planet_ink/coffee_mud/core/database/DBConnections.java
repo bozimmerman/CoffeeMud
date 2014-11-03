@@ -507,7 +507,8 @@ public class DBConnections
 	 */
 	public void DBDone(DBConnection D)
 	{
-		if(D==null) return;
+		if(D==null)
+			return;
 		D.doneUsing("");
 		if(!D.ready())
 			connections.remove(D);

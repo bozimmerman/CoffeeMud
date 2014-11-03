@@ -62,7 +62,8 @@ public class GenPerfume extends StdPerfume
 	{
 		if((material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 			return material();
-		if(CMath.s_int(readableText)==0) return RawMaterial.RESOURCE_PERFUME;
+		if(CMath.s_int(readableText)==0)
+			return RawMaterial.RESOURCE_PERFUME;
 		return CMath.s_int(readableText);
 	}
 
@@ -133,14 +134,16 @@ public class GenPerfume extends StdPerfume
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
-			if(code.equalsIgnoreCase(MYCODES[i])) return i;
+			if(code.equalsIgnoreCase(MYCODES[i]))
+				return i;
 		return -1;
 	}
 	private static String[] codes=null;
 	@Override
 	public String[] getStatCodes()
 	{
-		if(codes!=null) return codes;
+		if(codes!=null)
+			return codes;
 		final String[] MYCODES=CMProps.getStatCodesList(GenPerfume.MYCODES,this);
 		final String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
@@ -154,7 +157,8 @@ public class GenPerfume extends StdPerfume
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenDrink)) return false;
+		if(!(E instanceof GenDrink))
+			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))

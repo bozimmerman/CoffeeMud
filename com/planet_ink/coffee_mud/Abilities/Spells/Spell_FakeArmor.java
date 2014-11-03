@@ -48,7 +48,8 @@ public class Spell_FakeArmor extends Spell
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(notAgainThisRound) notAgainThisRound=false;
+		if(notAgainThisRound)
+			notAgainThisRound=false;
 		return super.tick(ticking,tickID);
 	}
 
@@ -74,7 +75,8 @@ public class Spell_FakeArmor extends Spell
 	@Override
 	public void unInvoke()
 	{
-		if(myItem==null) return;
+		if(myItem==null)
+			return;
 		super.unInvoke();
 		if(canBeUninvoked())
 		{

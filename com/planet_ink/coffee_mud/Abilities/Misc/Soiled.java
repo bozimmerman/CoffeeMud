@@ -55,7 +55,8 @@ public class Soiled extends StdAbility
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)/2);
 	}
 
@@ -64,7 +65,8 @@ public class Soiled extends StdAbility
 	{
 		// undo the affects of this spell
 		final Environmental E=affected;
-		if(E==null) return;
+		if(E==null)
+			return;
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
@@ -179,7 +181,8 @@ public class Soiled extends StdAbility
 							mob.executeMsg(M,msg);
 					}
 				}
-				if(killmob) M.destroy();
+				if(killmob)
+					M.destroy();
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -202,7 +205,8 @@ public class Soiled extends StdAbility
 		Ability A=(Ability)copyOf();
 		A.startTickDown(mob,target,Ability.TICKS_ALMOST_FOREVER);
 		Environmental msgTarget=target;
-		if(target instanceof CagedAnimal) msgTarget=((CagedAnimal)target).unCageMe();
+		if(target instanceof CagedAnimal)
+			msgTarget=((CagedAnimal)target).unCageMe();
 		mob.location().show(mob,msgTarget,CMMsg.MSG_OK_VISUAL,L("<T-NAME> has soiled <T-HIM-HERSELF>!"));
 		if(target instanceof MOB)
 		{

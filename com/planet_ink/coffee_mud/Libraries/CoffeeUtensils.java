@@ -193,7 +193,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	@Override
 	public Trap fetchMyTrap(Physical myThang)
 	{
-		if(myThang==null) return null;
+		if(myThang==null)
+			return null;
 		for(final Enumeration<Ability> a=myThang.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
@@ -239,7 +240,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			final long m1 =rt.totalMemory() - rt.freeMemory() ;
 			final long dm = m1 - m0 ;
 			s = (double)dm / (double)n ;
-			if(s<0.0) return memoryUse(E,number);
+			if(s<0.0)
+				return memoryUse(E,number);
 		}
 		catch(final Exception e){return -1;}
 		return s;
@@ -267,12 +269,14 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			for(int m=0;m<R.numInhabitants();m++)
 			{
 				final MOB M=R.fetchInhabitant(m);
-				if(M!=null) extinguish(source,M,mundane);
+				if(M!=null)
+					extinguish(source,M,mundane);
 			}
 			for(int i=0;i<R.numItems();i++)
 			{
 				final Item I=R.getItem(i);
-				if(I!=null) extinguish(source,I,mundane);
+				if(I!=null)
+					extinguish(source,I,mundane);
 			}
 			return;
 		}
@@ -295,7 +299,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			for(int i=0;i<tmob.numItems();i++)
 			{
 				final Item I=tmob.getItem(i);
-				if(I!=null) extinguish(tmob,I,mundane);
+				if(I!=null)
+					extinguish(tmob,I,mundane);
 			}
 		}
 		if((target instanceof Light)&&(((Light)target).isLit()))
@@ -316,7 +321,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				if(room.getExitInDir(d)==msg.target()){ dirCode=d; break;}
 		}
-		if(dirCode<0) return;
+		if(dirCode<0)
+			return;
 		final Exit pair=room.getPairedExit(dirCode);
 		if(pair!=null)
 		{
@@ -376,14 +382,16 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 		if(target.amDestroyed())
 			return 0;
-		if(doneSomething) return level;
+		if(doneSomething)
+			return level;
 		return -999;
 	}
 
 	@Override
 	public boolean disInvokeEffects(Environmental E)
 	{
-		if(E==null) return false;
+		if(E==null)
+			return false;
 		if(E instanceof Affectable)
 		{
 			final Affectable aE=(Affectable)E;
@@ -565,7 +573,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	@Override
 	public MOB getMobPossessingAnother(MOB mob)
 	{
-		if(mob==null) return null;
+		if(mob==null)
+			return null;
 		MOB M=null;
 		for(final Session S : CMLib.sessions().localOnlineIterable())
 		{
@@ -659,7 +668,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	@Override
 	public boolean armorCheck(MOB mob, int allowedArmorLevel)
 	{
-		if(allowedArmorLevel==CharClass.ARMOR_ANY) return true;
+		if(allowedArmorLevel==CharClass.ARMOR_ANY)
+			return true;
 
 		for(int i=0;i<mob.numItems();i++)
 		{
@@ -704,7 +714,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			for(int p=0;p<lootPolicies.size();p++)
 			{
 				String s=lootPolicies.get(p).toUpperCase().trim();
-				if(s.length()==0) continue;
+				if(s.length()==0)
+					continue;
 				MaskingLibrary.CompiledZapperMask compiledMask=null;
 				final int maskDex=s.indexOf("MASK=");
 				if(maskDex>=0)
@@ -723,13 +734,18 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					if(CMath.isPct(parsed.elementAt(x)))
 						pct=(int)Math.round(CMath.s_pct(parsed.elementAt(x))*100.0);
 				int flags=0;
-				if(parsed.contains("RUIN")) flags|=CMMiscUtils.LOOTFLAG_RUIN;
+				if(parsed.contains("RUIN"))
+					flags|=CMMiscUtils.LOOTFLAG_RUIN;
 				else
-				if(parsed.contains("LOSS")) flags|=CMMiscUtils.LOOTFLAG_LOSS;
-				if(flags==0) flags|=CMMiscUtils.LOOTFLAG_LOSS;
-				if(parsed.contains("WORN")) flags|=CMMiscUtils.LOOTFLAG_WORN;
+				if(parsed.contains("LOSS"))
+					flags|=CMMiscUtils.LOOTFLAG_LOSS;
+				if(flags==0)
+					flags|=CMMiscUtils.LOOTFLAG_LOSS;
+				if(parsed.contains("WORN"))
+					flags|=CMMiscUtils.LOOTFLAG_WORN;
 				else
-				if(parsed.contains("UNWORN")) flags|=CMMiscUtils.LOOTFLAG_UNWORN;
+				if(parsed.contains("UNWORN"))
+					flags|=CMMiscUtils.LOOTFLAG_UNWORN;
 				policies.addElement(Integer.valueOf(pct),Integer.valueOf(flags),compiledMask);
 			}
 			lootPolicy=policies;
@@ -741,7 +757,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	@Override
 	public void confirmWearability(MOB mob)
 	{
-		if(mob==null) return;
+		if(mob==null)
+			return;
 		final Race R=mob.charStats().getMyRace();
 		final DVector reWearSet=new DVector(2);
 		Item item=null;
@@ -801,7 +818,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	@Override
 	public Item isRuinedLoot(MOB mob, Item I)
 	{
-		if(I==null) return null;
+		if(I==null)
+			return null;
 		if((CMath.bset(I.phyStats().disposition(),PhyStats.IS_UNSAVABLE))
 		||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ITEMNORUIN))
 		||(I instanceof Coins))
@@ -883,7 +901,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			for(int i=0;i<room.numInhabitants();i++)
 			{
 				final MOB M=room.fetchInhabitant(i);
-				if(M==null) continue;
+				if(M==null)
+					continue;
 				for(int c=0;c<M.baseCharStats().numClasses();c++)
 					if(M.baseCharStats().getMyClass(c)==oldC)
 					{
@@ -925,7 +944,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			for(int i=0;i<room.numInhabitants();i++)
 			{
 				final MOB M=room.fetchInhabitant(i);
-				if(M==null) continue;
+				if(M==null)
+					continue;
 				if(M.baseCharStats().getMyRace()==oldR)
 					M.baseCharStats().setMyRace(newR);
 				if(M.charStats().getMyRace()==oldR)
@@ -958,9 +978,11 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				corpseRoom.bringMobHere(rejuvedMOB,false);
 			}
 			Ability A=rejuvedMOB.fetchAbility("Prop_AstralSpirit");
-			if(A!=null) rejuvedMOB.delAbility(A);
+			if(A!=null)
+				rejuvedMOB.delAbility(A);
 			A=rejuvedMOB.fetchEffect("Prop_AstralSpirit");
-			if(A!=null) rejuvedMOB.delEffect(A);
+			if(A!=null)
+				rejuvedMOB.delEffect(A);
 
 			int it=0;
 			while(it<rejuvedMOB.location().numItems())
@@ -1033,7 +1055,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		for(String cond : condV)
 		{
 			final Vector<String> V=CMParms.parse(cond.trim());
-			if(V.size()<2) continue;
+			if(V.size()<2)
+				continue;
 			final long[] vals=new long[numDigits];
 			for(int i=0;i<numDigits;i++)
 				if(i+1<V.size())
@@ -1123,7 +1146,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				case '-':
 					if(c<(prompt.length()-2))
 					{
-						if(promptUp==null) promptUp=prompt.toUpperCase();
+						if(promptUp==null)
+							promptUp=prompt.toUpperCase();
 						final String promptSub=promptUp.substring(c+1);
 						final Wearable.CODES wcodes = Wearable.CODES.instance();
 						boolean isFound=false;

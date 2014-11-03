@@ -44,7 +44,8 @@ public class Yell extends StdCommand
 		throws java.io.IOException
 	{
 		final Command C=CMClass.getCommand("Say");
-		if(C!=null) C.execute(mob,CMParms.parse(CMParms.combine(commands,0).toUpperCase()),metaFlags);
+		if(C!=null)
+			C.execute(mob,CMParms.parse(CMParms.combine(commands,0).toUpperCase()),metaFlags);
 		return false;
 	}
 	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}

@@ -142,12 +142,18 @@ public class Bleeding extends StdAbility implements HealthCondition
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
 	{
-		if(target==null) target=mob;
-		if(!(target instanceof MOB)) return false;
-		if(CMLib.flags().isGolem(target)) return false;
-		if(((MOB)target).phyStats().level()<CMProps.getIntVar(CMProps.Int.INJBLEEDMINLEVEL)) return false;
-		if(((MOB)target).fetchEffect(ID())!=null) return false;
-		if(((MOB)target).location()==null) return false;
+		if(target==null)
+			target=mob;
+		if(!(target instanceof MOB))
+			return false;
+		if(CMLib.flags().isGolem(target))
+			return false;
+		if(((MOB)target).phyStats().level()<CMProps.getIntVar(CMProps.Int.INJBLEEDMINLEVEL))
+			return false;
+		if(((MOB)target).fetchEffect(ID())!=null)
+			return false;
+		if(((MOB)target).location()==null)
+			return false;
 		if(((MOB)target).location().show((MOB)target,null,this,CMMsg.MSG_OK_VISUAL,L("^R<S-NAME> start(s) BLEEDING!^?")))
 			beneficialAffect(mob,target,asLevel,0);
 		return true;

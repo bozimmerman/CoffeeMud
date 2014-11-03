@@ -54,7 +54,8 @@ public class Fighter_Warcry extends FighterSkill
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(invoker==null) return;
+		if(invoker==null)
+			return;
 		final float f=(float)CMath.mul(0.1,(float)getXLEVELLevel(invoker()));
 		affectableStats.setDamage(affectableStats.damage()+1+(int)Math.round(CMath.div(affectableStats.damage(),4.0-f)));
 	}
@@ -99,7 +100,8 @@ public class Fighter_Warcry extends FighterSkill
 			{
 				mob.location().send(mob,msg);
 				final Set<MOB> h=properTargets(mob,givenTarget,auto);
-				if(h==null) return false;
+				if(h==null)
+					return false;
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;

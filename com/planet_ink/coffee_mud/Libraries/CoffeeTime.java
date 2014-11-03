@@ -72,7 +72,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	public long string2Millis(String dateTimeStr)
 	{
 		final Calendar C=string2Date(dateTimeStr);
-		if(C!=null) return C.getTimeInMillis();
+		if(C!=null)
+			return C.getTimeInMillis();
 		return 0;
 	}
 
@@ -373,7 +374,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	public String twoDigits(long num)
 	{
 	   final String s=Long.toString(num);
-	   if(s.length()==1) return "0"+s;
+	   if(s.length()==1)
+	   	return "0"+s;
 	   return s;
 	}
 
@@ -496,7 +498,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		if(C.get(Calendar.AM_PM)==Calendar.PM)
 			AMPM="PM";
 		int Hour=C.get(Calendar.HOUR);
-		if(Hour==0) Hour=12;
+		if(Hour==0)
+			Hour=12;
 		String Year=Integer.toString(C.get(Calendar.YEAR));
 		if(Year.length()<4)
 		{
@@ -505,7 +508,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 			if(Year.length()<2)
 				Year=("0"+Year);
 			final int Yr=CMath.s_int(Year);
-			if(Yr<50)Year="20"+Year;
+			if(Yr<50)
+				Year="20"+Year;
 			else Year="19"+Year;
 		}
 		return (C.get(Calendar.MONTH)+1)+"/"+C.get(Calendar.DATE)+"/"+Year+" "+Hour+":"+MINUTE+" "+AMPM;
@@ -530,51 +534,62 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		}
 		if(time > (TimeManager.MILI_MONTH))
 		{
-			if(str.length()>0) str.append(shortest?" ":", ");
+			if(str.length()>0)
+				str.append(shortest?" ":", ");
 			final int num=(int)Math.round(CMath.div(time,TimeManager.MILI_MONTH));
 			time = time % TimeManager.MILI_MONTH;
 			str.append(num+(shortest?"M":" month(s)"));
 		}
 		if(time > (TimeManager.MILI_WEEK))
 		{
-			if(str.length()>0) str.append(shortest?" ":", ");
+			if(str.length()>0)
+				str.append(shortest?" ":", ");
 			final int num=(int)Math.round(CMath.div(time,TimeManager.MILI_WEEK));
 			time = time % TimeManager.MILI_WEEK;
 			str.append(num+(shortest?"w":" week(s)"));
 		}
 		if(time > (TimeManager.MILI_DAY))
 		{
-			if(str.length()>0) str.append(shortest?" ":", ");
+			if(str.length()>0)
+				str.append(shortest?" ":", ");
 			final int num=(int)Math.round(CMath.div(time,TimeManager.MILI_DAY));
 			time = time % TimeManager.MILI_DAY;
 			str.append(num+(shortest?"d":" day(s)"));
 		}
-		if(minUnit == TimeUnit.DAYS) return str.toString().trim();
+		if(minUnit == TimeUnit.DAYS)
+			return str.toString().trim();
 		if(time > (TimeManager.MILI_HOUR))
 		{
-			if(str.length()>0) str.append(shortest?" ":", ");
+			if(str.length()>0)
+				str.append(shortest?" ":", ");
 			final int num=(int)Math.round(CMath.div(time,TimeManager.MILI_HOUR));
 			time = time % TimeManager.MILI_HOUR;
 			str.append(num+(shortest?"h":" hour(s)"));
 		}
-		if(minUnit == TimeUnit.HOURS) return str.toString().trim();
+		if(minUnit == TimeUnit.HOURS)
+			return str.toString().trim();
 		if(time > (TimeManager.MILI_MINUTE))
 		{
-			if(str.length()>0) str.append(shortest?" ":", ");
+			if(str.length()>0)
+				str.append(shortest?" ":", ");
 			final int num=(int)Math.round(CMath.div(time,TimeManager.MILI_MINUTE));
 			time = time % TimeManager.MILI_MINUTE;
 			str.append(num+(shortest?"m":" minute(s)"));
 		}
-		if(minUnit == TimeUnit.MINUTES) return str.toString().trim();
+		if(minUnit == TimeUnit.MINUTES)
+			return str.toString().trim();
 		if(time > (TimeManager.MILI_SECOND))
 		{
-			if(str.length()>0) str.append(shortest?" ":", ");
+			if(str.length()>0)
+				str.append(shortest?" ":", ");
 			final int num=(int)Math.round(CMath.div(time,TimeManager.MILI_SECOND));
 			time = time % TimeManager.MILI_SECOND;
 			str.append(num+(shortest?"s":" second(s)"));
 		}
-		if(minUnit == TimeUnit.SECONDS) return str.toString().trim();
-		if(str.length()>0) str.append(shortest?" ":", ");
+		if(minUnit == TimeUnit.SECONDS)
+			return str.toString().trim();
+		if(str.length()>0)
+			str.append(shortest?" ":", ");
 		return str.append(time+(shortest?"ms":" milliseconds")).toString().trim();
 	}
 
@@ -622,7 +637,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	{
 		final Calendar C=makeCalendar(time);
 		final String StrDate=date2String(C);
-		if(StrDate.length()<3) return StrDate;
+		if(StrDate.length()<3)
+			return StrDate;
 		return (StrDate.substring(0,StrDate.length()-3)+":"+C.get(Calendar.SECOND)+" "+StrDate.substring(StrDate.length()-2));
 	}
 
@@ -630,7 +646,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	public String date2DateString(long time)
 	{
 		String T=date2String(time);
-		if(T.indexOf(' ')>0) T=T.substring(0,T.indexOf(' '));
+		if(T.indexOf(' ')>0)
+			T=T.substring(0,T.indexOf(' '));
 		return T.trim();
 	}
 
@@ -696,7 +713,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		if(globalClock==null)
 		{
 			globalClock=(TimeClock)CMClass.getCommon("DefaultTimeClock");
-			if(globalClock!=null) globalClock.setLoadName("GLOBAL");
+			if(globalClock!=null)
+				globalClock.setLoadName("GLOBAL");
 		}
 		return globalClock;
 	}
@@ -752,11 +770,14 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	public boolean isTickExpression(String val)
 	{
 		val=val.trim();
-		if(CMath.isMathExpression(val)) return true;
+		if(CMath.isMathExpression(val))
+			return true;
 		final int x=val.lastIndexOf(' ');
-		if(x<0) return CMath.isMathExpression(val);
+		if(x<0)
+			return CMath.isMathExpression(val);
 		final double multiPlier=getTickExpressionMultiPlier(val.substring(x+1));
-		if(multiPlier==0.0) return CMath.isMathExpression(val);
+		if(multiPlier==0.0)
+			return CMath.isMathExpression(val);
 		return CMath.isMathExpression(val.substring(0,x).trim());
 	}
 
@@ -768,9 +789,11 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		if(CMath.isMathExpression(val))
 			return CMath.s_parseIntExpression(val);
 		final int x=val.lastIndexOf(' ');
-		if(x<0) return CMath.s_parseIntExpression(val);
+		if(x<0)
+			return CMath.s_parseIntExpression(val);
 		final double multiPlier=getTickExpressionMultiPlier(val.substring(x+1));
-		if(multiPlier==0.0) return CMath.s_parseIntExpression(val);
+		if(multiPlier==0.0)
+			return CMath.s_parseIntExpression(val);
 		return (int)Math.round(CMath.mul(multiPlier,CMath.s_parseIntExpression(val.substring(0,x).trim())));
 	}
 

@@ -107,7 +107,8 @@ public class Drilling extends GatheringSkill
 							   (CMLib.dice().roll(1,10,0)*(abilityCode())):
 							   (CMLib.dice().roll(1,3,0)*(abilityCode()));
 					String s="s";
-					if(amount==1) s="";
+					if(amount==1)
+						s="";
 					if(amount>(container.liquidHeld()-container.liquidRemaining()))
 						amount=(container.liquidHeld()-container.liquidRemaining());
 					if(amount>((Container)container).capacity())
@@ -117,7 +118,8 @@ public class Drilling extends GatheringSkill
 					{
 						final Item newFound=(Item)found.copyOf();
 						final Room R=mob.location();
-						if(R==null) break;
+						if(R==null)
+							break;
 						R.addItem(newFound,ItemPossessor.Expire.Player_Drop);
 						if((container!=null)
 						&&(container instanceof Container))
@@ -157,7 +159,8 @@ public class Drilling extends GatheringSkill
 		}
 
 		final Item I=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
-		if(I==null) return false;
+		if(I==null)
+			return false;
 		if((!(I instanceof Container))
 		||(((Container)I).capacity()<=((Container)I).phyStats().weight()))
 		{

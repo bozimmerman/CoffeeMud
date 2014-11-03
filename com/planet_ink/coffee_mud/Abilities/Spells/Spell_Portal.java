@@ -131,7 +131,8 @@ public class Spell_Portal extends Spell
 			if(t!=null)
 			{
 				int adjustment=t.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
-				if(t.isMonster()) adjustment=adjustment*3;
+				if(t.isMonster())
+					adjustment=adjustment*3;
 				profNeg+=adjustment;
 			}
 		}

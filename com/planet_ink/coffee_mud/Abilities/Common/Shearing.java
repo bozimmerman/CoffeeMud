@@ -56,7 +56,8 @@ public class Shearing extends CommonSkill
 	{
 		int duration=((weight/(10+getXLEVELLevel(mob))));
 		duration = super.getDuration(duration, mob, 1, 10);
-		if(duration>40) duration=40;
+		if(duration>40)
+			duration=40;
 		return duration;
 	}
 	@Override protected int baseYield() { return 1; }
@@ -131,7 +132,8 @@ public class Shearing extends CommonSkill
 			return true;
 		MOB target=null;
 		final Room R=mob.location();
-		if(R==null) return false;
+		if(R==null)
+			return false;
 		sheep=null;
 		if((mob.isMonster()
 		&&(!CMLib.flags().isAnimalIntelligence(mob)))
@@ -153,7 +155,8 @@ public class Shearing extends CommonSkill
 		else
 			target=super.getTarget(mob,commands,givenTarget);
 
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if((getMyWool(target).size()<=0)
 		||(!target.okMessage(target,CMClass.getMsg(target,target,this,CMMsg.MSG_OK_ACTION,null))))
 		{

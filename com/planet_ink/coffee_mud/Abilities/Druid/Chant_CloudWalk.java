@@ -76,8 +76,10 @@ public class Chant_CloudWalk extends Chant
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
-		if(affected==null) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
 		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
@@ -113,7 +115,8 @@ public class Chant_CloudWalk extends Chant
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already a cloud walker"));

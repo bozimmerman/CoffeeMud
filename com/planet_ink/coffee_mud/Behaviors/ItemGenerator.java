@@ -129,7 +129,8 @@ public class ItemGenerator extends ActiveTicker
 		minItems=CMParms.getParmInt(parms,"minitems",1);
 		maxItems=CMParms.getParmInt(parms,"maxitems",1);
 		maxDups=CMParms.getParmInt(parms,"maxdups",Integer.MAX_VALUE);
-		if(minItems>maxItems) maxItems=minItems;
+		if(minItems>maxItems)
+			maxItems=minItems;
 		avgItems=CMLib.dice().roll(1,maxItems-minItems,minItems);
 		enchantPct=CMParms.getParmInt(parms,"enchanted",10);
 		if((restrictedLocales!=null)&&(restrictedLocales.size()==0))
@@ -145,19 +146,24 @@ public class ItemGenerator extends ActiveTicker
 
 	public boolean okRoomForMe(Room newRoom)
 	{
-		if(newRoom==null) return false;
-		if(restrictedLocales==null) return true;
+		if(newRoom==null)
+			return false;
+		if(restrictedLocales==null)
+			return true;
 		return !restrictedLocales.contains(Integer.valueOf(newRoom.domainType()));
 	}
 
 	public boolean isStillMaintained(Environmental thang, ShopKeeper SK, Item I)
 	{
-		if((I==null)||(I.amDestroyed())) return false;
-		if(SK!=null) return SK.getShop().doIHaveThisInStock(I.Name(),null);
+		if((I==null)||(I.amDestroyed()))
+			return false;
+		if(SK!=null)
+			return SK.getShop().doIHaveThisInStock(I.Name(),null);
 		if(thang instanceof Area)
 		{
 			final Room R=CMLib.map().roomLocation(I);
-			if(R==null) return false;
+			if(R==null)
+				return false;
 			return ((Area)thang).inMyMetroArea(R.getArea());
 		}
 		else
@@ -187,7 +193,8 @@ public class ItemGenerator extends ActiveTicker
 		public boolean tick(Tickable host, int tickID)
 		{
 			List<Item> allItems=(List<Item>)Resources.getResource("ITEMGENERATOR-ALLITEMS");
-			if(allItems!=null) return false;
+			if(allItems!=null)
+				return false;
 			allItems=new Vector<Item>();
 
 			final List<ItemCraftor> skills=new Vector<ItemCraftor>();
@@ -213,7 +220,8 @@ public class ItemGenerator extends ActiveTicker
 	public synchronized GeneratedItemSet getItems(Tickable thang, String theseparms)
 	{
 		String mask=parms;
-		if(mask.indexOf(';')>=0) mask=mask.substring(parms.indexOf(';')+1);
+		if(mask.indexOf(';')>=0)
+			mask=mask.substring(parms.indexOf(';')+1);
 		GeneratedItemSet items=(GeneratedItemSet)Resources.getResource("ITEMGENERATOR-"+mask.toUpperCase().trim());
 		if(items==null)
 		{
@@ -291,7 +299,8 @@ public class ItemGenerator extends ActiveTicker
 		if((canAct(ticking,tickID))||(maintained.size()<minItems))
 		{
 			final GeneratedItemSet items=getItems(ticking,getParms());
-			if(items==null) return true;
+			if(items==null)
+				return true;
 			if((ticking instanceof Environmental)&&(((Environmental)ticking).amDestroyed()))
 				return false;
 

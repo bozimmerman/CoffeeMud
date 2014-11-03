@@ -363,7 +363,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 	public MoneyLibrary.DebtItem getDebtInfo(String depositorName)
 	{
 		final Vector<MoneyLibrary.DebtItem> debt=CMLib.beanCounter().getDebtOwed(bankChain());
-		if(depositorName.length()==0) return null;
+		if(depositorName.length()==0)
+			return null;
 		for(int d=0;d<debt.size();d++)
 			if(debt.elementAt(d).debtor.equalsIgnoreCase(depositorName))
 				return debt.elementAt(d);
@@ -375,7 +376,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)) return true;
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+			return true;
 		try
 		{
 		if(tickID==Tickable.TICKID_MOB)
@@ -437,7 +439,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 								totalValue+=I.value();
 						}
 						double newBalance=0.0;
-						if(coinItem!=null) newBalance=coinItem.getTotalValue();
+						if(coinItem!=null)
+							newBalance=coinItem.getTotalValue();
 						newBalance+=CMath.mul(newBalance,coinInterest);
 						if(totalValue>0)
 							newBalance+=CMath.mul(totalValue,itemInterest);
@@ -612,12 +615,16 @@ public class StdBanker extends StdShopKeeper implements Banker
 							CMLib.commands().postSay(this,mob,L("Ok, your new balance is @x1.",CMLib.beanCounter().nameCurrencyLong(this,getBalance(depositorName))),true,false);
 						recoverPhyStats();
 
-						if(msg.sourceMessage()!=null) msg.setSourceMessage(CMStrings.replaceAll(msg.sourceMessage(),"<O-NAME>",msg.tool().name()));
-						if(msg.targetMessage()!=null) msg.setTargetMessage(CMStrings.replaceAll(msg.targetMessage(),"<O-NAME>",msg.tool().name()));
-						if(msg.othersMessage()!=null) msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(),"<O-NAME>",msg.tool().name()));
+						if(msg.sourceMessage()!=null)
+							msg.setSourceMessage(CMStrings.replaceAll(msg.sourceMessage(),"<O-NAME>",msg.tool().name()));
+						if(msg.targetMessage()!=null)
+							msg.setTargetMessage(CMStrings.replaceAll(msg.targetMessage(),"<O-NAME>",msg.tool().name()));
+						if(msg.othersMessage()!=null)
+							msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(),"<O-NAME>",msg.tool().name()));
 						((Coins)msg.tool()).setNumberOfCoins(0); // prevents banker from accumulating wealth
 						final double riches=CMLib.beanCounter().getTotalAbsoluteNativeValue(this);
-						if(riches>0.0) CMLib.beanCounter().subtractMoney(this,riches);
+						if(riches>0.0)
+							CMLib.beanCounter().subtractMoney(this,riches);
 					}
 					else
 					{
@@ -955,7 +962,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 						{
 							final MOB M=CMLib.players().getLoadPlayer(owner.getLiegeID());
 							double b=0.0;
-							if(M!=null) b=getBalance(M.Name());
+							if(M!=null)
+								b=getBalance(M.Name());
 							if((M!=null)&&(b>=((Coins)msg.tool()).getTotalValue()))
 							{
 								owner=M;
@@ -999,7 +1007,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 								CMLib.commands().postSay(this,mob,L("I'm sorry, you have only @x1 in that account.",CMLib.beanCounter().nameCurrencyShort(this,balance)),true,false);
 							return false;
 						}
-						if(minbalance==0) return true;
+						if(minbalance==0)
+							return true;
 						if(((Coins)msg.tool()).getTotalValue()>(balance-minbalance))
 						{
 							if((balance-minbalance)>0)

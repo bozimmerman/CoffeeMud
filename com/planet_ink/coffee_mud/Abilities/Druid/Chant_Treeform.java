@@ -60,7 +60,8 @@ public class Chant_Treeform extends Chant
 		if(mob.isInCombat())
 		{
 			final MOB victim=mob.getVictim();
-			if(victim!=null) victim.makePeace();
+			if(victim!=null)
+				victim.makePeace();
 			mob.makePeace();
 		}
 		mob.recoverMaxState();
@@ -113,7 +114,8 @@ public class Chant_Treeform extends Chant
 		if(mob.isInCombat())
 		{
 			final MOB victim=mob.getVictim();
-			if(victim!=null) victim.makePeace();
+			if(victim!=null)
+				victim.makePeace();
 			mob.makePeace();
 		}
 		return true;

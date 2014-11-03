@@ -147,7 +147,8 @@ public class Kobold extends StdRace
 		if((CMLib.dice().rollPercentage()<5)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
 			final Ability A=CMClass.getAbility("Disease_Lepresy");
-			if(A!=null)	meat.addNonUninvokableEffect(A);
+			if(A!=null)
+				meat.addNonUninvokableEffect(A);
 		}
 		return rsc;
 	}

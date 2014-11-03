@@ -97,7 +97,8 @@ public class Chant_IllusionaryForest extends Chant
 
 	public Room newRoom()
 	{
-		if(newRoom!=null) return newRoom;
+		if(newRoom!=null)
+			return newRoom;
 		newRoom=CMClass.getLocale("Woods");
 		switch(CMLib.dice().roll(1,10,0))
 		{

@@ -44,7 +44,8 @@ public class ClanGovernmentData extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("GOVERNMENT");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		if(last.length()>0)
 		{
 			ClanGovernment G=null;
@@ -199,13 +200,15 @@ public class ClanGovernmentData extends StdWebMacro
 			if(parms.containsKey("NAME"))
 			{
 				String old=httpReq.getUrlParameter("NAME");
-				if(old==null) old=G.getName();
+				if(old==null)
+					old=G.getName();
 				str.append(old+", ");
 			}
 			if(parms.containsKey("AUTOROLE"))
 			{
 				String old=httpReq.getUrlParameter("AUTOROLE");
-				if(old==null) old=""+G.getAutoRole();
+				if(old==null)
+					old=""+G.getAutoRole();
 				final int autoPos=CMath.s_int(old);
 				for(final ClanPosition pos : posList)
 					str.append("<OPTION VALUE="+pos.getRoleID()+" "+((autoPos==pos.getRoleID())?"SELECTED":"")+">"+pos.getName());
@@ -213,7 +216,8 @@ public class ClanGovernmentData extends StdWebMacro
 			if(parms.containsKey("ACCEPTPOS"))
 			{
 				String old=httpReq.getUrlParameter("ACCEPTPOS");
-				if(old==null) old=""+G.getAcceptPos();
+				if(old==null)
+					old=""+G.getAcceptPos();
 				final int autoPos=CMath.s_int(old);
 				for(final ClanPosition pos : posList)
 					str.append("<OPTION VALUE="+pos.getRoleID()+" "+((autoPos==pos.getRoleID())?"SELECTED":"")+">"+pos.getName());
@@ -221,103 +225,120 @@ public class ClanGovernmentData extends StdWebMacro
 			if(parms.containsKey("SHORTDESC"))
 			{
 				String old=httpReq.getUrlParameter("SHORTDESC");
-				if(old==null) old=G.getShortDesc();
+				if(old==null)
+					old=G.getShortDesc();
 				str.append(old+", ");
 			}
 			if(parms.containsKey("CATEGORY"))
 			{
 				String old=httpReq.getUrlParameter("CATEGORY");
-				if(old==null) old=G.getCategory();
+				if(old==null)
+					old=G.getCategory();
 				str.append(old+", ");
 			}
 			if(parms.containsKey("REQUIREDMASK"))
 			{
 				String old=httpReq.getUrlParameter("REQUIREDMASK");
-				if(old==null) old=G.getRequiredMaskStr();
+				if(old==null)
+					old=G.getRequiredMaskStr();
 				str.append(old+", ");
 			}
 			if(parms.containsKey("ENTRYSCRIPT"))
 			{
 				String old=httpReq.getUrlParameter("ENTRYSCRIPT");
-				if(old==null) old=G.getEntryScript();
+				if(old==null)
+					old=G.getEntryScript();
 				str.append(old+", ");
 			}
 			if(parms.containsKey("EXITSCRIPT"))
 			{
 				String old=httpReq.getUrlParameter("EXITSCRIPT");
-				if(old==null) old=G.getExitScript();
+				if(old==null)
+					old=G.getExitScript();
 				str.append(old+", ");
 			}
 			if(parms.containsKey("ISPUBLIC"))
 			{
 				String old=httpReq.getUrlParameter("ISPUBLIC");
-				if(old==null) old=G.isPublic()?"on":"";
+				if(old==null)
+					old=G.isPublic()?"on":"";
 				str.append(old.equalsIgnoreCase("on")?"checked, ":"");
 			}
 			if(parms.containsKey("ISDEFAULT"))
 			{
 				String old=httpReq.getUrlParameter("ISDEFAULT");
-				if(old==null) old=G.isDefault()?"on":"";
+				if(old==null)
+					old=G.isDefault()?"on":"";
 				str.append(old.equalsIgnoreCase("on")?"checked, ":"");
 			}
 			if(parms.containsKey("ISFAMILYONLY"))
 			{
 				String old=httpReq.getUrlParameter("ISFAMILYONLY");
-				if(old==null) old=G.isFamilyOnly()?"on":"";
+				if(old==null)
+					old=G.isFamilyOnly()?"on":"";
 				str.append(old.equalsIgnoreCase("on")?"checked, ":"");
 			}
 			if(parms.containsKey("OVERRIDEMINMEMBERS"))
 			{
 				String old=httpReq.getUrlParameter("OVERRIDEMINMEMBERS");
-				if(old==null) old=G.getOverrideMinMembers()==null?"":G.getOverrideMinMembers().toString();
+				if(old==null)
+					old=G.getOverrideMinMembers()==null?"":G.getOverrideMinMembers().toString();
 				str.append(old+", ");
 			}
 			if(parms.containsKey("CONQUESTENABLED"))
 			{
 				String old=httpReq.getUrlParameter("CONQUESTENABLED");
-				if(old==null) old=G.isConquestEnabled()?"on":"";
+				if(old==null)
+					old=G.isConquestEnabled()?"on":"";
 				str.append(old.equalsIgnoreCase("on")?"checked, ":"");
 			}
 			if(parms.containsKey("CONQUESTITEMLOYALTY"))
 			{
 				String old=httpReq.getUrlParameter("CONQUESTITEMLOYALTY");
-				if(old==null) old=G.isConquestItemLoyalty()?"on":"";
+				if(old==null)
+					old=G.isConquestItemLoyalty()?"on":"";
 				str.append(old.equalsIgnoreCase("on")?"checked, ":"");
 			}
 			if(parms.containsKey("CONQUESTDEITYBASIS"))
 			{
 				String old=httpReq.getUrlParameter("CONQUESTDEITYBASIS");
-				if(old==null) old=G.isConquestByWorship()?"on":"";
+				if(old==null)
+					old=G.isConquestByWorship()?"on":"";
 				str.append(old.equalsIgnoreCase("on")?"checked, ":"");
 			}
 			if(parms.containsKey("ISRIVALROUS"))
 			{
 				String old=httpReq.getUrlParameter("ISRIVALROUS");
-				if(old==null) old=G.isRivalrous()?"on":"";
+				if(old==null)
+					old=G.isRivalrous()?"on":"";
 				str.append(old.equalsIgnoreCase("on")?"checked, ":"");
 			}
 			if(parms.containsKey("MAXVOTEDAYS"))
 			{
 				String old=httpReq.getUrlParameter("MAXVOTEDAYS");
-				if(old==null) old=Integer.toString(G.getMaxVoteDays());
+				if(old==null)
+					old=Integer.toString(G.getMaxVoteDays());
 				str.append(CMath.s_int(old)+", ");
 			}
 			if(parms.containsKey("XPLEVELFORMULA"))
 			{
 				String old=httpReq.getUrlParameter("XPLEVELFORMULA");
-				if(old==null) old=G.getXpCalculationFormulaStr();
+				if(old==null)
+					old=G.getXpCalculationFormulaStr();
 				str.append(CMath.s_int(old)+", ");
 			}
 			if(parms.containsKey("VOTEQUORUMPCT"))
 			{
 				String old=httpReq.getUrlParameter("VOTEQUORUMPCT");
-				if(old==null) old=Integer.toString(G.getVoteQuorumPct());
+				if(old==null)
+					old=Integer.toString(G.getVoteQuorumPct());
 				str.append(CMath.s_int(old)+", ");
 			}
 			if(parms.containsKey("AUTOPROMOTEBY"))
 			{
 				String old=httpReq.getUrlParameter("AUTOPROMOTEBY");
-				if(old==null) old=""+G.getAutoPromoteBy().toString();
+				if(old==null)
+					old=""+G.getAutoPromoteBy().toString();
 				for(final Clan.AutoPromoteFlag flag : Clan.AutoPromoteFlag.values())
 					str.append("<OPTION VALUE="+flag.toString()+" "+((old.equals(flag.toString()))?"SELECTED":"")+">"+flag.toString());
 			}
@@ -348,14 +369,16 @@ public class ClanGovernmentData extends StdWebMacro
 				for(final Clan.Function func : Clan.Function.values())
 				{
 					str.append("<OPTION VALUE=\""+func.toString()+"\"");
-					if(voteFuncs.contains(func.toString())) str.append(" SELECTED");
+					if(voteFuncs.contains(func.toString()))
+						str.append(" SELECTED");
 					str.append(">"+func.toString());
 				}
 			}
 			if(parms.containsKey("LONGDESC"))
 			{
 				String old=httpReq.getUrlParameter("LONGDESC");
-				if(old==null) old=G.getLongDesc();
+				if(old==null)
+					old=G.getLongDesc();
 				str.append(old+", ");
 			}
 			if(parms.containsKey("RABLE"))

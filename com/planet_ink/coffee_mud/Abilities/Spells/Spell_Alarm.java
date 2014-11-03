@@ -60,7 +60,8 @@ public class Spell_Alarm extends Spell
 		if(msg.source()!=null)
 		{
 			myRoomContainer=msg.source().location();
-			if(msg.source()==invoker) return;
+			if(msg.source()==invoker)
+				return;
 		}
 
 		if(msg.amITarget(affected))
@@ -76,7 +77,8 @@ public class Spell_Alarm extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Physical target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

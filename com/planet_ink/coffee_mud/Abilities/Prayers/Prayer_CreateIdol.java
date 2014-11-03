@@ -64,9 +64,12 @@ public class Prayer_CreateIdol extends Prayer
 		super.affectCharStats(aff,affectableStats);
 		if((affected instanceof Item)&&(((Item)affected).container()==null))
 		{
-			if(affectableStats.getStat(CharStats.STAT_STRENGTH)>3) affectableStats.setStat(CharStats.STAT_STRENGTH,3);
-			if(affectableStats.getStat(CharStats.STAT_DEXTERITY)>2) affectableStats.setStat(CharStats.STAT_DEXTERITY,2);
-			if(affectableStats.getStat(CharStats.STAT_CONSTITUTION)>1) affectableStats.setStat(CharStats.STAT_CONSTITUTION,1);
+			if(affectableStats.getStat(CharStats.STAT_STRENGTH)>3)
+				affectableStats.setStat(CharStats.STAT_STRENGTH,3);
+			if(affectableStats.getStat(CharStats.STAT_DEXTERITY)>2)
+				affectableStats.setStat(CharStats.STAT_DEXTERITY,2);
+			if(affectableStats.getStat(CharStats.STAT_CONSTITUTION)>1)
+				affectableStats.setStat(CharStats.STAT_CONSTITUTION,1);
 		}
 	}
 

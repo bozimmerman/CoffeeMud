@@ -86,7 +86,8 @@ public class Power_OctoGrapple extends SuperPower
 							if((mob.fetchEffect(ID())==null)&&(invoker!=null)&&(invoker!=mob))
 							{
 								final Ability A=mob.fetchEffect(ID());
-								if(A!=null) A.unInvoke();
+								if(A!=null)
+									A.unInvoke();
 							}
 						}
 					}
@@ -154,7 +155,8 @@ public class Power_OctoGrapple extends SuperPower
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if((!auto)&&(mob.baseWeight()<(target.baseWeight()-200)))
 		{

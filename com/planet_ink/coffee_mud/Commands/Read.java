@@ -61,7 +61,8 @@ public class Read extends StdCommand
 		final String srcMsg="<S-NAME> read(s) <T-NAMESELF>.";
 		final String soMsg=(mob.isMine(thisThang)?srcMsg:null);
 		String tMsg=theRest;
-		if((tMsg==null)||(tMsg.trim().length()==0)||(thisThang instanceof MOB)) tMsg=soMsg;
+		if((tMsg==null)||(tMsg.trim().length()==0)||(thisThang instanceof MOB))
+			tMsg=soMsg;
 		final CMMsg newMsg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_READ,quiet?srcMsg:null,CMMsg.MSG_READ,tMsg,CMMsg.MSG_READ,quiet?null:soMsg);
 		if(mob.location().okMessage(mob,newMsg))
 		{
@@ -89,7 +90,8 @@ public class Read extends StdCommand
 
 		final int dir=Directions.getGoodDirectionCode(CMParms.combine(commands,0));
 		Environmental thisThang=null;
-		if(dir>=0)	thisThang=mob.location().getExitInDir(dir);
+		if(dir>=0)
+			thisThang=mob.location().getExitInDir(dir);
 		thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(), StdCommand.noCoinFilter);
 		if(thisThang==null)
 			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Wearable.FILTER_ANY);

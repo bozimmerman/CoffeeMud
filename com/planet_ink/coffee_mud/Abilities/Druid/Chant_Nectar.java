@@ -74,22 +74,30 @@ public class Chant_Nectar extends Chant
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
-		if(affected==null) return false;
-		if(!(affected instanceof Item)) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
+		if(!(affected instanceof Item))
+			return false;
 		final Item littleSpring=(Item)affected;
 		final Room R=CMLib.map().roomLocation(affected);
-		if(R==null) return false;
+		if(R==null)
+			return false;
 		if(lastNum!=R.numInhabitants())
 		{
 			lastNum=R.numInhabitants();
 			return true;
 		}
-		if(lastNum<1) return true;
+		if(lastNum<1)
+			return true;
 		final MOB M=R.fetchInhabitant(CMLib.dice().roll(1,lastNum,-1));
-		if(M==null) return true;
-		if(drank==null) drank=new Vector();
-		if(drank.contains(M)) return true;
+		if(M==null)
+			return true;
+		if(drank==null)
+			drank=new Vector();
+		if(drank.contains(M))
+			return true;
 		drank.addElement(M);
 		if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_MIND))
 		{
@@ -165,7 +173,8 @@ public class Chant_Nectar extends Chant
 				newItem.setDisplayText(L("an enormous flower is dripping with nectar"));
 				newItem.setDescription(L("The closer you look, the more illusive the flower becomes.  There must be druid magic at work here!"));
 				final Ability A=CMClass.getAbility("Poison_Liquor");
-				if(A!=null) newItem.addNonUninvokableEffect(A);
+				if(A!=null)
+					newItem.addNonUninvokableEffect(A);
 
 				mob.location().addItem(newItem);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 starts flowing here.",newItem.name()));

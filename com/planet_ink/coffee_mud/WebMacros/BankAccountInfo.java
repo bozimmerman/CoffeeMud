@@ -47,7 +47,8 @@ public class BankAccountInfo extends StdWebMacro
 	public static synchronized BankAccountStuff getMakeAccountInfo(HTTPRequest httpReq, Banker B, MOB playerM)
 	{
 		BankAccountStuff info=(BankAccountStuff)httpReq.getRequestObjects().get("BANKINFO: "+B.bankChain()+": "+playerM.Name());
-		if(info!=null) return info;
+		if(info!=null)
+			return info;
 		info=new BankAccountStuff();
 		if((B.isSold(ShopKeeper.DEAL_CLANBANKER))&&(playerM.getClanRole(playerM.Name())==null))
 		{
@@ -73,14 +74,17 @@ public class BankAccountInfo extends StdWebMacro
 		{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("BANKCHAIN");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
-		if(M==null) return " @break@";
+		if(M==null)
+			return " @break@";
 		String player=httpReq.getUrlParameter("PLAYER");
 		if((player==null)||(player.length()==0))
 			player=httpReq.getUrlParameter("CLAN");
 		final Banker B=CMLib.map().getBank(last,last);
-		if(B==null) return "BANKER not found?!";
+		if(B==null)
+			return "BANKER not found?!";
 		if((player!=null)&&(player.length()>0))
 		{
 			if((!M.Name().equalsIgnoreCase(player))
@@ -119,7 +123,8 @@ public class BankAccountInfo extends StdWebMacro
 		final double balance=acct.balance;
 		if(parms.containsKey("HASACCT"))
 			return (balance>0.0)?"true":"false";
-		if(balance<=0.0) return "";
+		if(balance<=0.0)
+			return "";
 		if(parms.containsKey("BALANCE"))
 			return CMLib.beanCounter().nameCurrencyLong(playerM,balance);
 		if((parms.containsKey("DEBTAMT"))
@@ -128,7 +133,8 @@ public class BankAccountInfo extends StdWebMacro
 		||(parms.containsKey("DEBTINT")))
 		{
 			final MoneyLibrary.DebtItem debt=acct.debt;
-			if((debt==null)||(debt.amt==0.0)) return "N/A";
+			if((debt==null)||(debt.amt==0.0))
+				return "N/A";
 			final double amt=debt.amt;
 			final String reason=debt.reason;
 			final String intRate=CMath.div((int)Math.round(debt.interest*10000.0),100.0)+"%";
@@ -149,13 +155,19 @@ public class BankAccountInfo extends StdWebMacro
 					dueDate=T.getShortTimeDescription();
 				}
 			}
-			if(parms.containsKey("DEBTAMT")) return CMLib.beanCounter().nameCurrencyLong(playerM,amt);
-			if(parms.containsKey("DEBTRSN")) return reason;
-			if(parms.containsKey("DEBTDUE")) return dueDate;
-			if(parms.containsKey("DEBTINT")) return intRate;
+			if(parms.containsKey("DEBTAMT"))
+				return CMLib.beanCounter().nameCurrencyLong(playerM,amt);
+			if(parms.containsKey("DEBTRSN"))
+				return reason;
+			if(parms.containsKey("DEBTDUE"))
+				return dueDate;
+			if(parms.containsKey("DEBTINT"))
+				return intRate;
 		}
-		if(parms.containsKey("NUMITEMS")) return ""+(B.getDepositedItems(playerM.Name()).size()-1);
-		if(parms.containsKey("ITEMSWORTH")) return CMLib.beanCounter().nameCurrencyLong(playerM,B.totalItemsWorth(playerM.Name()));
+		if(parms.containsKey("NUMITEMS"))
+			return ""+(B.getDepositedItems(playerM.Name()).size()-1);
+		if(parms.containsKey("ITEMSWORTH"))
+			return CMLib.beanCounter().nameCurrencyLong(playerM,B.totalItemsWorth(playerM.Name()));
 		if(parms.containsKey("ITEMSLIST"))
 		{
 			final List<Item> items=acct.items;
@@ -166,7 +178,8 @@ public class BankAccountInfo extends StdWebMacro
 					if(!(items.get(v) instanceof Coins))
 					{
 						list.append(((Environmental)items.get(v)).name());
-						if(v<(items.size()-1)) list.append(", ");
+						if(v<(items.size()-1))
+							list.append(", ");
 					}
 				return list.toString();
 			}

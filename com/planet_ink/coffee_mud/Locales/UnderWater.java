@@ -59,10 +59,12 @@ public class UnderWater extends StdRoom implements Drink
 
 	public static void makeSink(Physical P, Room room, int avg)
 	{
-		if((P==null)||(room==null)) return;
+		if((P==null)||(room==null))
+			return;
 
 		Room R=room.getRoomInDir(Directions.DOWN);
-		if(avg>0) R=room.getRoomInDir(Directions.UP);
+		if(avg>0)
+			R=room.getRoomInDir(Directions.UP);
 		if((R==null)
 		||((R.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
 		   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)))
@@ -156,7 +158,8 @@ public class UnderWater extends StdRoom implements Drink
 		for(final Physical P : mightNeedAdjusting)
 		{
 			final Ability A=P.fetchEffect("Sinking");
-			if(A!=null) A.setProficiency(avg);
+			if(A!=null)
+				A.setProficiency(avg);
 		}
 		for(final Physical P : needToSink)
 			makeSink(P,room,avg);

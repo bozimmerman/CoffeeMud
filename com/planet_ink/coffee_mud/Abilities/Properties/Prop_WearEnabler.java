@@ -58,7 +58,8 @@ public class Prop_WearEnabler extends Prop_HaveEnabler
 			checked=false;
 			return;
 		}
-		if(checked) return;
+		if(checked)
+			return;
 		Item I=null;
 		disabled=false;
 		for(int i=0;i<mob.numItems();i++)
@@ -111,7 +112,8 @@ public class Prop_WearEnabler extends Prop_HaveEnabler
 	@Override
 	public boolean addMeIfNeccessary(Environmental source, Environmental target, boolean makeLongLasting, short maxTicks)
 	{
-		if(disabled&&checked) return false;
+		if(disabled&&checked)
+			return false;
 		return super.addMeIfNeccessary(source,target,makeLongLasting, maxTicks);
 	}
 
@@ -122,7 +124,8 @@ public class Prop_WearEnabler extends Prop_HaveEnabler
 	@Override
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
-		if(processing) return;
+		if(processing)
+			return;
 		processing=true;
 		if(host instanceof Item)
 		{

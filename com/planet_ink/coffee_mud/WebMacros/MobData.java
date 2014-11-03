@@ -90,9 +90,11 @@ public class MobData extends StdWebMacro
 						if(player)
 						{
 							String prof=httpReq.getUrlParameter("ABPOF"+num);
-							if(prof==null) prof="0";
+							if(prof==null)
+								prof="0";
 							String text=httpReq.getUrlParameter("ABTXT"+num);
-							if(text==null) text="";
+							if(text==null)
+								text="";
 							theprofs.addElement(prof);
 							thetext.addElement(text);
 						}
@@ -254,7 +256,8 @@ public class MobData extends StdWebMacro
 				for(int r=0;r<clanPair.first.getRolesList().length;r++)
 				{
 					str.append("<OPTION VALUE="+r+" ");
-					if(r==clanPair.second.intValue()) str.append("SELECTED");
+					if(r==clanPair.second.intValue())
+						str.append("SELECTED");
 					str.append(">"+clanPair.first.getRolesList()[r]);
 				}
 				str.append("</SELECT>");
@@ -413,7 +416,8 @@ public class MobData extends StdWebMacro
 				int num=1;
 				String facti=httpReq.getUrlParameter("FACTION"+num);
 				String theparm=httpReq.getUrlParameter("FACTDATA"+num);
-				if(theparm==null) theparm="";
+				if(theparm==null)
+					theparm="";
 				while((facti!=null)&&(theparm!=null))
 				{
 					if(facti.length()>0)
@@ -443,7 +447,8 @@ public class MobData extends StdWebMacro
 			{
 				final String theclass=(String)theclasses.elementAt(i);
 				final Faction F=CMLib.factions().getFaction(theclass);
-				if(F==null) continue;
+				if(F==null)
+					continue;
 				String theparm=(String)theparms.elementAt(i);
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditFaction(this);\" NAME=FACTION"+(i+1)+">");
@@ -452,7 +457,8 @@ public class MobData extends StdWebMacro
 				str.append("</SELECT>");
 				str.append("</TD><TD WIDTH=50%>");
 				str.append("<SELECT NAME=FACTDATA"+(i+1)+">");
-				if(theparm.length()==0) theparm=""+F.findDefault(E);
+				if(theparm.length()==0)
+					theparm=""+F.findDefault(E);
 				final Faction.FRange FR=CMLib.factions().getRange(F.factionID(),CMath.s_int(theparm));
 				if(FR==null)
 					str.append("<OPTION VALUE=\""+CMath.s_int(theparm)+"\">"+CMath.s_int(theparm));
@@ -460,11 +466,15 @@ public class MobData extends StdWebMacro
 				{
 					final Faction.FRange FR2=(Faction.FRange)e.nextElement();
 					int value=FR2.low()+(FR2.high()-FR2.low());
-					if(FR2.low()==F.minimum()) value=FR2.low();
-					if(FR2.high()==F.maximum()) value=FR2.high();
-					if(FR2==FR) value=CMath.s_int(theparm);
+					if(FR2.low()==F.minimum())
+						value=FR2.low();
+					if(FR2.high()==F.maximum())
+						value=FR2.high();
+					if(FR2==FR)
+						value=CMath.s_int(theparm);
 					str.append("<OPTION VALUE=\""+value+"\"");
-					if(FR2==FR) str.append(" SELECTED");
+					if(FR2==FR)
+						str.append(" SELECTED");
 					str.append(">"+FR2.name());
 				}
 				str.append("</SELECT>");
@@ -512,7 +522,8 @@ public class MobData extends StdWebMacro
 				String theparm=httpReq.getUrlParameter("CHARCLASSLVL"+num);
 				while(facti!=null)
 				{
-					if(theparm==null) theparm="0";
+					if(theparm==null)
+						theparm="0";
 					if(facti.length()>0)
 					{
 						theclasses.addElement(facti);
@@ -548,7 +559,8 @@ public class MobData extends StdWebMacro
 			{
 				final String theclass=(String)theclasses.elementAt(i);
 				final CharClass C=CMClass.getCharClass(theclass);
-				if(C==null) continue;
+				if(C==null)
+					continue;
 				final String theparm=(String)theparms.elementAt(i);
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditFaction(this);\" NAME=CHARCLASS"+(i+1)+">");
@@ -721,7 +733,8 @@ public class MobData extends StdWebMacro
 					if(MATCHING.startsWith("CATALOG-"))
 					{
 						Environmental O=RoomData.getMOBFromCatalog(MATCHING);
-						if(O==null) O=RoomData.getItemFromAnywhere(null,MATCHING);
+						if(O==null)
+							O=RoomData.getItemFromAnywhere(null,MATCHING);
 						if(O!=null)
 							theclasses.addElement(O);
 					}
@@ -775,9 +788,12 @@ public class MobData extends StdWebMacro
 				for(final Iterator<Environmental> i=E.getShop().getStoreInventory();i.hasNext();)
 				{
 					final Environmental O=i.next();
-					if(O instanceof Item) itemClasses.addElement(O);
-					if(O instanceof MOB) mobClasses.addElement(O);
-					if(O instanceof Physical) CMLib.catalog().updateCatalogIntegrity((Physical)O);
+					if(O instanceof Item)
+						itemClasses.addElement(O);
+					if(O instanceof MOB)
+						mobClasses.addElement(O);
+					if(O instanceof Physical)
+						CMLib.catalog().updateCatalogIntegrity((Physical)O);
 					theclasses.addElement(O);
 					theparms.addElement(""+E.getShop().numberInStock(O));
 					theprices.addElement(""+E.getShop().stockPrice(O));
@@ -885,7 +901,8 @@ public class MobData extends StdWebMacro
 				{
 					final String MATCHING=httpReq.getUrlParameter("ITEM"+i);
 					final String WORN=httpReq.getUrlParameter("ITEMWORN"+i);
-					if(MATCHING==null) break;
+					if(MATCHING==null)
+						break;
 					final Item I2=RoomData.getItemFromAnywhere(M,MATCHING);
 					if(I2!=null)
 					{
@@ -988,9 +1005,11 @@ public class MobData extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("ROOM");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		final String mobCode=httpReq.getUrlParameter("MOB");
-		if(mobCode==null) return "@break@";
+		if(mobCode==null)
+			return "@break@";
 
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
@@ -1010,7 +1029,8 @@ public class MobData extends StdWebMacro
 		MOB M=null;
 		synchronized(("SYNC"+((R!=null)?R.roomID():"null")).intern())
 		{
-			if(R!=null) R=CMLib.map().getRoom(R);
+			if(R!=null)
+				R=CMLib.map().getRoom(R);
 			M=(MOB)httpReq.getRequestObjects().get(mobCode);
 			if(M==null)
 			{
@@ -1097,7 +1117,8 @@ public class MobData extends StdWebMacro
 			if(parms.containsKey(parmName))
 			{
 				String old=httpReq.getUrlParameter(parmName);
-				if(old==null) old="";
+				if(old==null)
+					old="";
 				switch(o)
 				{
 				case NAME: // name
@@ -1113,7 +1134,8 @@ public class MobData extends StdWebMacro
 					break;
 				case CLASSES: // classes
 					{
-						if(firstTime) old=CMClass.classID(M);
+						if(firstTime)
+							old=CMClass.classID(M);
 						Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-MOBS");
 						if(sorted==null)
 						{
@@ -1137,34 +1159,41 @@ public class MobData extends StdWebMacro
 					}
 					break;
 				case DISPLAYTEXT: // displaytext
-					if(firstTime) old=M.displayText();
+					if(firstTime)
+						old=M.displayText();
 					str.append(old);
 					break;
 				case DESCRIPTION: // description
-					if(firstTime) old=M.description();
+					if(firstTime)
+						old=M.description();
 					str.append(old);
 					break;
 				case LEVEL: // level
-					if(firstTime) old=""+M.basePhyStats().level();
+					if(firstTime)
+						old=""+M.basePhyStats().level();
 					str.append(old);
 					break;
 				case ABILITY: // ability;
-					if(firstTime) old=""+M.basePhyStats().ability();
+					if(firstTime)
+						old=""+M.basePhyStats().ability();
 					str.append(old);
 					break;
 				case REJUV: // rejuv;
-					if(firstTime) old=""+M.basePhyStats().rejuv();
+					if(firstTime)
+						old=""+M.basePhyStats().rejuv();
 					if(old.equals(""+Integer.MAX_VALUE))
 						str.append("0");
 					else
 						str.append(old);
 					break;
 				case MISCTEXT: // misctext
-					if(firstTime) old=M.text();
+					if(firstTime)
+						old=M.text();
 					str.append(old);
 					break;
 				case RACE: // race
-					if(firstTime) old=""+M.baseCharStats().getMyRace().ID();
+					if(firstTime)
+						old=""+M.baseCharStats().getMyRace().ID();
 					for(final Enumeration r=CMClass.races();r.hasMoreElements();)
 					{
 						final Race R2=(Race)r.nextElement();
@@ -1188,7 +1217,8 @@ public class MobData extends StdWebMacro
 					}
 					break;
 				case GENDER: // gender
-					if(firstTime) old=""+((char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
+					if(firstTime)
+						old=""+((char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
 					if(old.toUpperCase().startsWith("M"))
 					{
 						str.append("<INPUT TYPE=RADIO NAME=GENDER CHECKED VALUE=M>Male");
@@ -1210,33 +1240,40 @@ public class MobData extends StdWebMacro
 					}
 					break;
 				case HEIGHT: // height
-					if(firstTime) old=""+M.basePhyStats().height();
+					if(firstTime)
+						old=""+M.basePhyStats().height();
 					str.append(old);
 					break;
 				case WEIGHT: // weight
-					if(firstTime) old=""+M.basePhyStats().weight();
+					if(firstTime)
+						old=""+M.basePhyStats().weight();
 					str.append(old);
 					break;
 				case SPEED: // speed
-					if(firstTime) old=""+M.basePhyStats().speed();
+					if(firstTime)
+						old=""+M.basePhyStats().speed();
 					str.append(old);
 					break;
 				case ATTACK: // attack
-					if(firstTime) old=""+M.basePhyStats().attackAdjustment();
+					if(firstTime)
+						old=""+M.basePhyStats().attackAdjustment();
 					str.append(old);
 					break;
 				case DAMAGE: // damage
-					if(firstTime) old=""+M.basePhyStats().damage();
+					if(firstTime)
+						old=""+M.basePhyStats().damage();
 					str.append(old);
 					break;
 				case ARMOR: // armor
-					if(firstTime) old=""+M.basePhyStats().armor();
+					if(firstTime)
+						old=""+M.basePhyStats().armor();
 					str.append(old);
 					break;
 				case ALIGNMENT: // alignment
 					if(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null)
 					{
-						if(firstTime) old=""+M.fetchFaction(CMLib.factions().AlignID());
+						if(firstTime)
+							old=""+M.fetchFaction(CMLib.factions().AlignID());
 						for(final Faction.Align v : Faction.Align.values())
 						{
 							if(v!=Faction.Align.INDIFF)
@@ -1258,7 +1295,8 @@ public class MobData extends StdWebMacro
 					str.append(old);
 					break;
 				case ISRIDEABLE: // is rideable
-					if(M instanceof Rideable) return "true";
+					if(M instanceof Rideable)
+						return "true";
 					return "false";
 				case RIDEABLETYPE: // rideable type
 					if((firstTime)&&(M instanceof Rideable))
@@ -1277,7 +1315,8 @@ public class MobData extends StdWebMacro
 					str.append(old);
 					break;
 				case ISSHOPKEEPER: // is shopkeeper
-					if(M instanceof ShopKeeper) return "true";
+					if(M instanceof ShopKeeper)
+						return "true";
 					return "false";
 				case SHOPKEEPERTYPE: // shopkeeper type
 				{
@@ -1302,11 +1341,13 @@ public class MobData extends StdWebMacro
 					{
 						int r=ShopKeeper.DEAL_BANKER;
 						str.append("<OPTION VALUE=\""+r+"\"");
-						if(shopTypes.contains(Integer.valueOf(r))) str.append(" SELECTED");
+						if(shopTypes.contains(Integer.valueOf(r)))
+							str.append(" SELECTED");
 						str.append(">"+ShopKeeper.DEAL_DESCS[r]);
 						r=ShopKeeper.DEAL_CLANBANKER;
 						str.append("<OPTION VALUE=\""+r+"\"");
-						if(shopTypes.contains(Integer.valueOf(r))) str.append(" SELECTED");
+						if(shopTypes.contains(Integer.valueOf(r)))
+							str.append(" SELECTED");
 						str.append(">"+ShopKeeper.DEAL_DESCS[r]);
 					}
 					else
@@ -1314,11 +1355,13 @@ public class MobData extends StdWebMacro
 					{
 						int r=ShopKeeper.DEAL_POSTMAN;
 						str.append("<OPTION VALUE=\""+r+"\"");
-						if(shopTypes.contains(Integer.valueOf(r))) str.append(" SELECTED");
+						if(shopTypes.contains(Integer.valueOf(r)))
+							str.append(" SELECTED");
 						str.append(">"+ShopKeeper.DEAL_DESCS[r]);
 						r=ShopKeeper.DEAL_CLANPOSTMAN;
 						str.append("<OPTION VALUE=\""+r+"\"");
-						if(shopTypes.contains(Integer.valueOf(r))) str.append(" SELECTED");
+						if(shopTypes.contains(Integer.valueOf(r)))
+							str.append(" SELECTED");
 						str.append(">"+ShopKeeper.DEAL_DESCS[r]);
 					}
 					else
@@ -1330,17 +1373,20 @@ public class MobData extends StdWebMacro
 						&&(r!=ShopKeeper.DEAL_CLANPOSTMAN))
 						{
 							str.append("<OPTION VALUE=\""+r+"\"");
-							if(shopTypes.contains(Integer.valueOf(r))) str.append(" SELECTED");
+							if(shopTypes.contains(Integer.valueOf(r)))
+								str.append(" SELECTED");
 							str.append(">"+ShopKeeper.DEAL_DESCS[r]);
 						}
 					}
 					break;
 				}
 				case ISGENERIC:
-					if(M.isGeneric()) return "true";
+					if(M.isGeneric())
+						return "true";
 					return "false";
 				case ISBANKER: // is banker
-					if(M instanceof Banker) return "true";
+					if(M instanceof Banker)
+						return "true";
 					return "false";
 				case COININT: // coin interest
 					if((firstTime)&&(M instanceof Banker))
@@ -1363,7 +1409,8 @@ public class MobData extends StdWebMacro
 					str.append(old);
 					break;
 				case ISDEITY: // is deity
-					if(M instanceof Deity) return "true";
+					if(M instanceof Deity)
+						return "true";
 					return "false";
 				case CLEREQ: // cleric requirements
 					if((firstTime)&&(M instanceof Deity))
@@ -1451,7 +1498,8 @@ public class MobData extends StdWebMacro
 					str.append(old);
 					break;
 				case ISPOSTMAN: // ispostman
-					if(M instanceof PostOffice) return "true";
+					if(M instanceof PostOffice)
+						return "true";
 					return "false";
 				case POSTCHAIN: // postal chain
 					if((firstTime)&&(M instanceof PostOffice))
@@ -1512,7 +1560,8 @@ public class MobData extends StdWebMacro
 				case TIMELIST: // timed list
 					if((firstTime)&&(M instanceof Auctioneer))
 						old=""+((Auctioneer)M).timedListingPrice();
-					if(CMath.s_double(old)<0.0) old="";
+					if(CMath.s_double(old)<0.0)
+						old="";
 					str.append(old);
 					break;
 				case TIMELISTPCT: // timed list pct
@@ -1531,27 +1580,32 @@ public class MobData extends StdWebMacro
 				case TIMECUT: // timed cut pct
 					if((firstTime)&&(M instanceof Auctioneer))
 						old=""+(((Auctioneer)M).timedFinalCutPct()*100.0)+"%";
-					if(CMath.s_pct(old)<0.0) old="";
+					if(CMath.s_pct(old)<0.0)
+						old="";
 					str.append(old);
 					break;
 				case MAXDAYS: // max days
 					if((firstTime)&&(M instanceof Auctioneer))
 						old=""+((Auctioneer)M).maxTimedAuctionDays();
-					if(CMath.s_double(old)<0.0) old="";
+					if(CMath.s_double(old)<0.0)
+						old="";
 					str.append(old);
 					break;
 				case MINDAYS: // min days
 					if((firstTime)&&(M instanceof Auctioneer))
 						old=""+((Auctioneer)M).minTimedAuctionDays();
-					if(CMath.s_double(old)<0.0) old="";
+					if(CMath.s_double(old)<0.0)
+						old="";
 					str.append(old);
 					break;
 				case ISAUCTION: // is auction
-					if(M instanceof Auctioneer) return "true";
+					if(M instanceof Auctioneer)
+						return "true";
 					return "false";
 				case DEITYID: // deityid
 				{
-					if(firstTime) old=M.getWorshipCharID();
+					if(firstTime)
+						old=M.getWorshipCharID();
 					for(final Enumeration d=CMLib.map().deities();d.hasMoreElements();)
 					{
 						final Deity D=(Deity)d.nextElement();
@@ -1563,7 +1617,8 @@ public class MobData extends StdWebMacro
 					break;
 				}
 				case VARMONEY: // varmoney
-					if(firstTime) old=""+M.getMoneyVariation();
+					if(firstTime)
+						old=""+M.getMoneyVariation();
 					str.append(old);
 					break;
 				case CATACAT: // catacat

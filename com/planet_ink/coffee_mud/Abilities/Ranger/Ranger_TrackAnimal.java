@@ -126,7 +126,8 @@ public class Ranger_TrackAnimal extends StdAbility
 
 	public MOB animalHere(Room room)
 	{
-		if(room==null) return null;
+		if(room==null)
+			return null;
 
 		for(int i=0;i<room.numInhabitants();i++)
 		{
@@ -161,7 +162,8 @@ public class Ranger_TrackAnimal extends StdAbility
 		if(V.size()>0)
 		{
 			mob.tell(L("You stop tracking."));
-			if(commands.size()==0) return true;
+			if(commands.size()==0)
+				return true;
 		}
 
 		theTrail=null;

@@ -68,7 +68,8 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 		{
 			final MOB mob=(MOB)affected;
 			plagueDown=10;
-			if(invoker==null) invoker=mob;
+			if(invoker==null)
+				invoker=mob;
 			drawups+=.1;
 			if(drawups>=3.1)
 			{
@@ -97,7 +98,8 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		affectableState.setMovement((int)Math.round(CMath.div(affectableState.getMovement(),drawups+(0.1*super.getX1Level(invoker())))));
 	}
 
@@ -137,7 +139,8 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(target.charStats().getBodyPart(Race.BODY_FOOT)==0)
 		{

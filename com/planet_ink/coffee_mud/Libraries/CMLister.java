@@ -156,7 +156,8 @@ public class CMLister extends StdLibrary implements ListingLibrary
 				say.append("("+(reps+1)+") ");
 		}
 		else
-		if(reps==0) say.append("      ");
+		if(reps==0)
+			say.append("      ");
 		else
 		if(reps>=99)
 			say.append("("+CMStrings.padLeftPreserve(""+(reps+1),3)+") ");
@@ -187,8 +188,10 @@ public class CMLister extends StdLibrary implements ListingLibrary
 					restV.addElement(name);
 			}
 		}
-		if((restV.size()==0)&&(!otherItemsHere)) return "";
-		if(otherItemsHere) restV.addElement("other");
+		if((restV.size()==0)&&(!otherItemsHere))
+			return "";
+		if(otherItemsHere)
+			restV.addElement("other");
 		final StringBuilder theRest=new StringBuilder("");
 		for(int o=0;o<restV.size();o++)
 		{
@@ -284,14 +287,16 @@ public class CMLister extends StdLibrary implements ListingLibrary
 							if((!compress)&&(viewerM!=null)&&(!viewerM.isMonster())&&(viewerM.session().getClientTelnetMode(Session.TELNET_MXP)))
 								say.append(CMLib.protocol().mxpImage(item," H=10 W=10",""," "));
 							say.append("^I");
-							if(compress)say.append(CMLib.flags().colorCodes(item2,viewerM)+"^I");
+							if(compress)
+								say.append(CMLib.flags().colorCodes(item2,viewerM)+"^I");
 							say.append(CMStrings.endWithAPeriod(itemSeenString(viewerM,item2,useName,longLook,sysmsgs)));
 							if(!compress)
 								say.append(CMLib.flags().colorCodes(item2,viewerM)+"^N\n\r");
 							else
 								say.append("^N");
 						}
-						if(compress&&(V.size()==0)) say.append("} ");
+						if(compress&&(V.size()==0))
+							say.append("} ");
 					}
 				}
 			}
@@ -354,9 +359,11 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	@Override
 	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, Filterer<Object>[] filters, ListStringer stringer)
 	{
-		if(stringer==null) stringer=CMLister.stringer;
+		if(stringer==null)
+			stringer=CMLister.stringer;
 		final StringBuilder lines=new StringBuilder("");
-		if(these.size()==0) return lines;
+		if(these.size()==0)
+			return lines;
 		int column=0;
 		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(24.0, viewerM);
 		for(final String key : these.keySet())
@@ -394,9 +401,11 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	@Override
 	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these, Filterer<Object>[] filters, ListStringer stringer)
 	{
-		if(stringer==null) stringer=CMLister.stringer;
+		if(stringer==null)
+			stringer=CMLister.stringer;
 		final StringBuilder lines=new StringBuilder("");
-		if(!these.hasMoreElements()) return lines;
+		if(!these.hasMoreElements())
+			return lines;
 		int column=0;
 		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(24.0, viewerM);
 		for(final Enumeration<? extends Object> e=these;e.hasMoreElements();)
@@ -430,9 +439,11 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	@Override
 	public StringBuilder reallyList2Cols(MOB viewerM, Enumeration<? extends Object> these, Filterer<Object>[] filters, ListStringer stringer)
 	{
-		if(stringer==null) stringer=CMLister.stringer;
+		if(stringer==null)
+			stringer=CMLister.stringer;
 		final StringBuilder lines=new StringBuilder("");
-		if(!these.hasMoreElements()) return lines;
+		if(!these.hasMoreElements())
+			return lines;
 		int column=0;
 		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(37.0, viewerM);
 		for(final Enumeration<? extends Object> e=these;e.hasMoreElements();)
@@ -502,7 +513,8 @@ public class CMLister extends StdLibrary implements ListingLibrary
 			{
 				if(s.length()>colSize)
 				{
-					if(col == numCols) topicBuffer.append("\n\r");
+					if(col == numCols)
+						topicBuffer.append("\n\r");
 					topicBuffer.append(CMStrings.padRight(s,(colSize*2)+1)+" ");
 					++col;
 				}

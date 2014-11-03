@@ -49,7 +49,8 @@ public class Prop_TicketTaker extends Property
 	protected double cost()
 	{
 		int amount=CMath.s_int(text());
-		if(amount==0) amount=10;
+		if(amount==0)
+			amount=10;
 		return amount;
 	}
 
@@ -58,9 +59,12 @@ public class Prop_TicketTaker extends Property
 		if(host instanceof Rider)
 		{
 			final Rider mob=(Rider)host;
-			if(R==mob) return true;
-			if(mob.riding()==null) return false;
-			if(mob.riding()==R) return true;
+			if(R==mob)
+				return true;
+			if(mob.riding()==null)
+				return false;
+			if(mob.riding()==R)
+				return true;
 			if((R instanceof Rider)&&(((Rider)R).riding()==mob.riding()))
 				return true;
 			if((mob.riding() instanceof Rider)&&(((Rider)mob.riding()).riding()==R))
@@ -111,7 +115,8 @@ public class Prop_TicketTaker extends Property
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg)) return false;
+		if(!super.okMessage(myHost,msg))
+			return false;
 		if(((myHost instanceof Rider)&&(((Rider)myHost).riding()!=null))
 		   ||(myHost instanceof Rideable))
 		{

@@ -132,7 +132,8 @@ public class Chant_MagneticEarth extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Room target=mob.location();
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if((!auto)
 		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_CITY)

@@ -69,7 +69,8 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	 */
 	public PrioritizingLimitedMap(int itemLimit, long touchAgeLimitMillis, long maxAgeLimitMillis, int threshHoldToExpand)
 	{
-		if(itemLimit<=0) itemLimit=1;
+		if(itemLimit<=0)
+			itemLimit=1;
 		this.itemLimit=itemLimit;
 		this.origItemLimit=itemLimit;
 		this.touchAgeLimitMillis=(touchAgeLimitMillis > Integer.MAX_VALUE) ? Integer.MAX_VALUE : touchAgeLimitMillis;
@@ -261,7 +262,8 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	@Override
 	public synchronized K remove(Object arg0)
 	{
-		if(!map.containsKey(arg0)) return null;
+		if(!map.containsKey(arg0))
+			return null;
 		final LinkedEntry<T,K> p=map.remove(arg0);
 		if(map.size()==0)
 		{
@@ -275,8 +277,10 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 			pn.index++;
 			pn=pn.next;
 		}
-		if(head == p) head=p.next;
-		if(tail == p) tail=p.prev;
+		if(head == p)
+			head=p.next;
+		if(tail == p)
+			tail=p.prev;
 		if(p.prev != null)
 			p.prev.next=p.next;
 		if(p.next!=null)

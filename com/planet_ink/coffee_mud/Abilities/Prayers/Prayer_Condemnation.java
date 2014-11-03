@@ -51,10 +51,12 @@ public class Prayer_Condemnation extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		LegalBehavior B=null;
-		if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());
+		if(mob.location()!=null)
+			B=CMLib.law().getLegalBehavior(mob.location());
 
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		List<LegalWarrant> warrants=new Vector();
 		if(B!=null)
 			warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);

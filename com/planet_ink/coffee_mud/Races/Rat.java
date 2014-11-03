@@ -76,7 +76,8 @@ public class Rat extends Rodent
 		if((CMLib.dice().rollPercentage()<10)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
 			final Ability A=CMClass.getAbility("Disease_SARS");
-			if(A!=null)	meat.addNonUninvokableEffect(A);
+			if(A!=null)
+				meat.addNonUninvokableEffect(A);
 		}
 		rsc.addElement(meat);
 		return rsc;

@@ -44,8 +44,10 @@ public class Song_Lethargy extends Song
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(invoker==null) return;
-		if(invoker==affected) return;
+		if(invoker==null)
+			return;
+		if(invoker==affected)
+			return;
 
 		affectableStats.setSpeed(CMath.div(affectableStats.speed(),2.0+CMath.mul(0.25,getXLEVELLevel(invoker()))));
 	}

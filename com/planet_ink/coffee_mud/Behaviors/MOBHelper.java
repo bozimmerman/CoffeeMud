@@ -47,7 +47,8 @@ public class MOBHelper extends StdBehavior
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
-		if((msg.target()==null)||(!(msg.target() instanceof MOB))) return;
+		if((msg.target()==null)||(!(msg.target() instanceof MOB)))
+			return;
 		final MOB attacker=msg.source();
 		final MOB monster=(MOB)affecting;
 		final MOB victim=(MOB)msg.target();

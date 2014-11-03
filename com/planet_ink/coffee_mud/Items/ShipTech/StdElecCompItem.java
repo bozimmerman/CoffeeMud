@@ -61,7 +61,8 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof StdElecCompItem)) return false;
+		if(!(E instanceof StdElecCompItem))
+			return false;
 		return super.sameAs(E);
 	}
 

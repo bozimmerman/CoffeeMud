@@ -88,7 +88,8 @@ public class JournalInfo extends StdWebMacro
 				final JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(forumJournal);
 				final long pageDate = CMath.s_long(page);
 				int limit = CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
-				if(limit<=0) limit=Integer.MAX_VALUE;
+				if(limit<=0)
+					limit=Integer.MAX_VALUE;
 				msgs = new Vector<JournalsLibrary.JournalEntry>();
 				if((pageDate <= 0)
 				&& (stats.stuckyKeys!=null)
@@ -206,7 +207,8 @@ public class JournalInfo extends StdWebMacro
 		{
 			if(parms.containsKey("CANEDIT"))
 			{
-				if(M==null) return "false";
+				if(M==null)
+					return "false";
 				return String.valueOf(
 						entry.from.equals(M.Name())
 						|| priviledged
@@ -335,7 +337,8 @@ public class JournalInfo extends StdWebMacro
 				if(parms.containsKey("NOREPLIES"))
 				{
 					final int x=s.indexOf(JournalsLibrary.JOURNAL_BOUNDARY);
-					if(x>=0) s=s.substring(0,x);
+					if(x>=0)
+						s=s.substring(0,x);
 				}
 				if(parms.containsKey("PLAIN"))
 				{

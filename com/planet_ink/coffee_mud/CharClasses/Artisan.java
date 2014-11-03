@@ -193,7 +193,8 @@ public class Artisan extends StdCharClass
 				if(exp>0)
 				{
 					exp=exp/2;
-					if(exp<1) exp=1;
+					if(exp<1)
+						exp=1;
 					CMLib.leveler().postExperience(mob,null,null,exp,true);
 				}
 			}

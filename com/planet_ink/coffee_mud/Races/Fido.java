@@ -104,7 +104,8 @@ public class Fido extends StdRace
 		if((body!=null)&&(CMLib.dice().rollPercentage()<25)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
 			final Ability A=CMClass.getAbility("Disease_Fleas");
-			if(A!=null) body.addNonUninvokableEffect(A);
+			if(A!=null)
+				body.addNonUninvokableEffect(A);
 		}
 		return body;
 	}

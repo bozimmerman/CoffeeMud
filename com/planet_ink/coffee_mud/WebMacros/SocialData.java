@@ -56,25 +56,31 @@ public class SocialData extends StdWebMacro
 		if(parms.containsKey("NEWVFS"))
 		{
 			final CMFile lf=new CMFile("///resources/socials.txt",null,CMFile.FLAG_LOGERRORS);
-			if(!lf.exists()) return "true";
+			if(!lf.exists())
+				return "true";
 			final CMFile vf=new CMFile("::/resources/socials.txt",null,CMFile.FLAG_LOGERRORS);
-			if(!vf.exists()) return "false";
+			if(!vf.exists())
+				return "false";
 			return ""+(vf.lastModified() > lf.lastModified());
 		}
 		if(parms.containsKey("NEWLFS"))
 		{
 			final CMFile lf=new CMFile("///resources/socials.txt",null,CMFile.FLAG_LOGERRORS);
-			if(!lf.exists()) return "false";
+			if(!lf.exists())
+				return "false";
 			final CMFile vf=new CMFile("::/resources/socials.txt",null,CMFile.FLAG_LOGERRORS);
-			if(!vf.exists()) return "true";
+			if(!vf.exists())
+				return "true";
 			return ""+(vf.lastModified() < lf.lastModified());
 		}
 		if(parms.containsKey("TOVFS"))
 		{
 			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
-			if(M==null) return "[authentication error]";
+			if(M==null)
+				return "[authentication error]";
 			final CMFile lf=new CMFile("///resources/socials.txt",M,CMFile.FLAG_LOGERRORS);
-			if(!lf.exists()) return "No local file.";
+			if(!lf.exists())
+				return "No local file.";
 			CMFile vf=new CMFile("::/resources/socials.txt",M);
 			if(vf.exists())
 				if(!vf.delete())
@@ -91,9 +97,11 @@ public class SocialData extends StdWebMacro
 		if(parms.containsKey("TOLFS"))
 		{
 			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
-			if(M==null) return "[authentication error]";
+			if(M==null)
+				return "[authentication error]";
 			final CMFile lf=new CMFile("::/resources/socials.txt",M,CMFile.FLAG_LOGERRORS);
-			if(!lf.exists()) return "No vfs file.";
+			if(!lf.exists())
+				return "No vfs file.";
 			CMFile vf=new CMFile("///resources/socials.txt",M);
 			if(vf.exists())
 				if(!vf.delete())
@@ -110,7 +118,8 @@ public class SocialData extends StdWebMacro
 		if(parms.containsKey("NOVFS"))
 		{
 			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
-			if(M==null) return "[authentication error]";
+			if(M==null)
+				return "[authentication error]";
 			final CMFile vf=new CMFile("::/resources/socials.txt",M);
 			if(vf.exists())
 				if(!vf.delete())
@@ -121,7 +130,8 @@ public class SocialData extends StdWebMacro
 		if(parms.containsKey("NOLFS"))
 		{
 			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
-			if(M==null) return "[authentication error]";
+			if(M==null)
+				return "[authentication error]";
 			final CMFile vf=new CMFile("///resources/socials.txt",M);
 			if(vf.exists())
 				if(!vf.delete())
@@ -130,7 +140,8 @@ public class SocialData extends StdWebMacro
 			return "Socials file removed from local file system.";
 		}
 
-		if((last==null)&&(!parms.containsKey("EDIT"))) return " @break@";
+		if((last==null)&&(!parms.containsKey("EDIT")))
+			return " @break@";
 
 
 		final String replaceCommand=httpReq.getUrlParameter("REPLACE");
@@ -148,8 +159,10 @@ public class SocialData extends StdWebMacro
 		if(parms.containsKey("EDIT"))
 		{
 			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
-			if(M==null) return "[authentication error]";
-			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.CMDSOCIALS)) return "[authentication error]";
+			if(M==null)
+				return "[authentication error]";
+			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.CMDSOCIALS))
+				return "[authentication error]";
 
 			boolean create=false;
 			List<Social> SV=CMLib.socials().getSocialsSet(last);
@@ -201,7 +214,8 @@ public class SocialData extends StdWebMacro
 				final String EXTN=(String)EXTNS.elementAt(t);
 
 				old=httpReq.getUrlParameter("IS"+TYPE);
-				if((old==null)||(!old.equalsIgnoreCase("on"))) continue;
+				if((old==null)||(!old.equalsIgnoreCase("on")))
+					continue;
 
 				final Social S=CMLib.socials().makeDefaultSocial(last,EXTN);
 				final String field=(t<BTYPES.length)?BFIELDS[t]:BFIELDS[0];
@@ -258,9 +272,12 @@ public class SocialData extends StdWebMacro
 		if(parms.containsKey("DELETE"))
 		{
 			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
-			if(M==null) return "[authentication error]";
-			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.CMDSOCIALS)) return "[authentication error]";
-			if(last==null) return " @break@";
+			if(M==null)
+				return "[authentication error]";
+			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.CMDSOCIALS))
+				return "[authentication error]";
+			if(last==null)
+				return " @break@";
 			List<Social> SV=CMLib.socials().getSocialsSet(last);
 			if(SV==null)
 				return "Unknown social!";
@@ -273,7 +290,8 @@ public class SocialData extends StdWebMacro
 		}
 		else
 		{
-			if(last==null) return " @break@";
+			if(last==null)
+				return " @break@";
 			if(last.length()>0)
 			{
 				final String newSocialID=httpReq.getUrlParameter("NEWSOCIAL");

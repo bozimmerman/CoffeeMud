@@ -58,8 +58,10 @@ public class Trap_PoisonGas extends StdTrap
 
 	protected Item getPoison(MOB mob)
 	{
-		if(mob==null) return null;
-		if(mob.location()==null) return null;
+		if(mob==null)
+			return null;
+		if(mob.location()==null)
+			return null;
 		for(int i=0;i<mob.location().numItems();i++)
 		{
 			final Item I=mob.location().getItem(i);
@@ -80,7 +82,8 @@ public class Trap_PoisonGas extends StdTrap
 		final Vector V=new Vector();
 		final Item I=CMLib.materials().makeItemResource(RawMaterial.RESOURCE_POISON);
 		Ability A=CMClass.getAbility(text());
-		if(A==null) A=CMClass.getAbility("Poison");
+		if(A==null)
+			A=CMClass.getAbility("Poison");
 		I.addNonUninvokableEffect(A);
 		V.addElement(I);
 		return V;
@@ -88,7 +91,8 @@ public class Trap_PoisonGas extends StdTrap
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
-		if(P==null) return null;
+		if(P==null)
+			return null;
 		final Item I=getPoison(mob);
 		if(I!=null)
 		{
@@ -103,7 +107,8 @@ public class Trap_PoisonGas extends StdTrap
 	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,P)) return false;
+		if(!super.canSetTrapOn(mob,P))
+			return false;
 		final Item I=getPoison(mob);
 		if((I==null)
 		&&(mob!=null))
@@ -126,7 +131,8 @@ public class Trap_PoisonGas extends StdTrap
 			{
 				super.spring(target);
 				Ability A=CMClass.getAbility(text());
-				if(A==null) A=CMClass.getAbility("Poison");
+				if(A==null)
+					A=CMClass.getAbility("Poison");
 				for(int i=0;i<target.location().numInhabitants();i++)
 				{
 					final MOB M=target.location().fetchInhabitant(i);

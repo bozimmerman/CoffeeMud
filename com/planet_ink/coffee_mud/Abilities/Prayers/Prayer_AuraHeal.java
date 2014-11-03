@@ -76,7 +76,8 @@ public class Prayer_AuraHeal extends Prayer
 		if((affected==null)||(!(affected instanceof Room)))
 			return super.tick(ticking,tickID);
 
-		if((--ratingTickDown)>=0) return super.tick(ticking,tickID);
+		if((--ratingTickDown)>=0)
+			return super.tick(ticking,tickID);
 		ratingTickDown=4;
 
 		HashSet H=null;
@@ -137,7 +138,8 @@ public class Prayer_AuraHeal extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Room target=mob.location();
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell(L("The aura of healing is already here."));

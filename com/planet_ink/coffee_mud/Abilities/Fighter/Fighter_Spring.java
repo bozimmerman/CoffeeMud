@@ -84,7 +84,8 @@ public class Fighter_Spring extends FighterSkill
 		}
 
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

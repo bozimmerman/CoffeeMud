@@ -73,7 +73,8 @@ public class Chant_MassFungalGrowth extends Chant_SummonFungus
 			for(int v=0;v<V.size();v++)
 			{
 				final Room R=(Room)V.elementAt(v);
-				if(R==mob.location()) continue;
+				if(R==mob.location())
+					continue;
 				buildMyThing(mob,R);
 				if((done++)==adjustedLevel(mob,asLevel))
 					break;

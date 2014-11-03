@@ -53,7 +53,8 @@ public class Fighter_Cleave extends FighterSkill
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
 		if(!(affected instanceof MOB))
 			return true;
 
@@ -67,7 +68,8 @@ public class Fighter_Cleave extends FighterSkill
 		&&(mob.location().isInhabitant(nextTarget)))
 		{
 			Item w=mob.fetchWieldedItem();
-			if(w==null) w=mob.myNaturalWeapon();
+			if(w==null)
+				w=mob.myNaturalWeapon();
 			final CMMsg msg=CMClass.getMsg(mob,nextTarget,this,CMMsg.MSG_NOISYMOVEMENT,L("^F^<FIGHT^><S-NAME> CLEAVE(S) INTO <T-NAME>!!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))

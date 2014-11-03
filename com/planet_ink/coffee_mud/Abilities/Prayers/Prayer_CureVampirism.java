@@ -47,7 +47,8 @@ public class Prayer_CureVampirism extends Prayer implements MendingSkill
 	@Override
 	public boolean supportsMending(Physical item)
 	{
-		if(!(item instanceof MOB)) return false;
+		if(!(item instanceof MOB))
+			return false;
 		return item.fetchEffect("Prayer_Vampirism")!=null;
 	}
 
@@ -69,7 +70,8 @@ public class Prayer_CureVampirism extends Prayer implements MendingSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -87,9 +89,11 @@ public class Prayer_CureVampirism extends Prayer implements MendingSkill
 			{
 				mob.location().send(mob,msg);
 				Ability A=target.fetchEffect("Prayer_Vampirism");
-				if(A!=null) A.unInvoke();
+				if(A!=null)
+					A.unInvoke();
 				A=target.fetchEffect("Disease_Vampirism");
-				if(A!=null) A.unInvoke();
+				if(A!=null)
+					A.unInvoke();
 			}
 		}
 		else

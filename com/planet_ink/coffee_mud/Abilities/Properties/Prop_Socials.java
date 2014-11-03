@@ -87,22 +87,26 @@ public class Prop_Socials extends Property
 			final String mspFile=CMParms.getParmStr(social, "MSPFILE", "");
 			if(name.length()==0)
 			{
-				if(!forgive) Log.errOut("Prop_Socials","NAME not found in: "+social);
+				if(!forgive)
+					Log.errOut("Prop_Socials","NAME not found in: "+social);
 			}
 			else
 			if((srcCode.length()==0)||(srcCode.length()>1))
 			{
-				if(!forgive) Log.errOut("Prop_Socials","Bad SRCCODE letter '"+srcCode+"': "+social);
+				if(!forgive)
+					Log.errOut("Prop_Socials","Bad SRCCODE letter '"+srcCode+"': "+social);
 			}
 			else
 			if((othCode.length()==0)||(othCode.length()>1))
 			{
-				if(!forgive) Log.errOut("Prop_Socials","Bad OTHCODE letter '"+othCode+"': "+social);
+				if(!forgive)
+					Log.errOut("Prop_Socials","Bad OTHCODE letter '"+othCode+"': "+social);
 			}
 			else
 			if(youSee.length()==0)
 			{
-				if(!forgive) Log.errOut("Prop_Socials","Missing YOUSEE: "+social);
+				if(!forgive)
+					Log.errOut("Prop_Socials","Missing YOUSEE: "+social);
 			}
 			else
 			{
@@ -126,7 +130,8 @@ public class Prop_Socials extends Property
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(affected==null)	return true;
+		if(affected==null)
+			return true;
 		if((msg.targetMinor()==CMMsg.TYP_HUH)
 		&&(socials.size()>0)
 		&&(msg.targetMessage()!=null)
@@ -140,7 +145,8 @@ public class Prop_Socials extends Property
 		{
 			final Vector<String> V=CMParms.parse(msg.targetMessage());
 			Social S=CMLib.socials().fetchSocialFromSet(socials, V, true, true);
-			if(S==null) S=CMLib.socials().fetchSocialFromSet(socials, V, false, true);
+			if(S==null)
+				S=CMLib.socials().fetchSocialFromSet(socials, V, false, true);
 			if(S!=null)
 			{
 				S.invoke(msg.source(),V,null,false);

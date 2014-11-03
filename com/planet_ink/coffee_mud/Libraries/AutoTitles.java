@@ -44,17 +44,21 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 		if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0))
 			return null;
 		int x=row.indexOf('=');
-		while((x>=1)&&(row.charAt(x-1)=='\\')) x=row.indexOf('=',x+1);
+		while((x>=1)&&(row.charAt(x-1)=='\\'))
+			x=row.indexOf('=',x+1);
 		if(x<0)
 			return "Error: Invalid line! Not comment, whitespace, and does not contain an = sign!";
 		final String title=row.substring(0,x).trim();
 		final String mask=row.substring(x+1).trim();
 
-		if(title.length()==0)return "Error: Blank title: "+title+"="+mask+"!";
-		if(mask.length()==0)return "Error: Blank mask: "+title+"="+mask+"!";
+		if(title.length()==0)
+			return "Error: Blank title: "+title+"="+mask+"!";
+		if(mask.length()==0)
+			return "Error: Blank mask: "+title+"="+mask+"!";
 		if(addIfPossible)
 		{
-			if(autoTitles==null) reloadAutoTitles();
+			if(autoTitles==null)
+				reloadAutoTitles();
 			for(final Triad<String,String,MaskingLibrary.CompiledZapperMask> triad : autoTitles)
 				if(triad.first.equalsIgnoreCase(title))
 					return "Error: Duplicate title: "+title+"="+mask+"!";
@@ -65,7 +69,8 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 	@Override
 	public boolean isExistingAutoTitle(String title)
 	{
-		if(autoTitles==null) reloadAutoTitles();
+		if(autoTitles==null)
+			reloadAutoTitles();
 		title=title.trim();
 		for(final Triad<String,String,MaskingLibrary.CompiledZapperMask> triad : autoTitles)
 			if(triad.first.equalsIgnoreCase(title))
@@ -76,14 +81,16 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 	@Override
 	public Enumeration<String> autoTitles()
 	{
-		if(autoTitles==null) reloadAutoTitles();
+		if(autoTitles==null)
+			reloadAutoTitles();
 		return autoTitles.firstElements();
 	}
 
 	@Override
 	public String getAutoTitleMask(String title)
 	{
-		if(autoTitles==null) reloadAutoTitles();
+		if(autoTitles==null)
+			reloadAutoTitles();
 		for(final Triad<String,String,MaskingLibrary.CompiledZapperMask> triad : autoTitles)
 			if(triad.first.equalsIgnoreCase(title))
 				return triad.second;
@@ -93,10 +100,13 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 	@Override
 	public boolean evaluateAutoTitles(MOB mob)
 	{
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		final PlayerStats P=mob.playerStats();
-		if(P==null) return false;
-		if(autoTitles==null) reloadAutoTitles();
+		if(P==null)
+			return false;
+		if(autoTitles==null)
+			reloadAutoTitles();
 		String title=null;
 		MaskingLibrary.CompiledZapperMask mask=null;
 		int pdex=0;
@@ -192,7 +202,8 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 		{
 			final String row=V.get(v);
 			WKID=evaluateAutoTitle(row,true);
-			if(WKID==null) continue;
+			if(WKID==null)
+				continue;
 			if(WKID.startsWith("Error: "))
 				Log.errOut("CharCreation",WKID);
 		}

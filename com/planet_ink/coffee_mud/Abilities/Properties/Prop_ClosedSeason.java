@@ -60,15 +60,18 @@ public class Prop_ClosedSeason extends Property
 	public void executeMsg(Environmental E, CMMsg msg)
 	{
 		super.executeMsg(E,msg);
-		if(exitArea!=null) return;
-		if(!(affected instanceof Exit)) return;
+		if(exitArea!=null)
+			return;
+		if(!(affected instanceof Exit))
+			return;
 		if(msg.source().location()!=null)
 			exitArea=msg.source().location().getArea();
 	}
 
 	protected boolean closed(Area A)
 	{
-		if(A==null) return false;
+		if(A==null)
+			return false;
 
 		for(final Room.VariationCode code : Room.VariationCode.values())
 		{
@@ -95,7 +98,8 @@ public class Prop_ClosedSeason extends Property
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		if((affected instanceof MOB)||(affected instanceof Item))
 		{
 			final Room R=CMLib.map().roomLocation(affected);

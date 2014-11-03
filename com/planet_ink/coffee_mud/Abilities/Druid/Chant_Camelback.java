@@ -92,7 +92,8 @@ public class Chant_Camelback extends Chant
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> a camel's back."));

@@ -54,10 +54,13 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("AREAMAP"))
 		{
 			final String AREA=httpReq.getUrlParameter("AREA");
-			if(AREA==null) return "";
-			if(AREA.length()==0) return "";
+			if(AREA==null)
+				return "";
+			if(AREA.length()==0)
+				return "";
 			final Area A=CMLib.map().getArea(AREA);
-			if(A==null) return "";
+			if(A==null)
+				return "";
 			if((A.properSize()==0)&&(A.getRandomProperRoom()==null))
 				GrinderRooms.createLonelyRoom(A,null,0,false);
 			GrinderFlatMap map=null;
@@ -115,7 +118,8 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("AREALIST"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final Area pickedA=getLoggedArea(httpReq,mob);
 			final boolean noInstances=parms.containsKey("NOINSTANCE");
 			return GrinderAreas.getAreaList(CMLib.map().mundaneAreas(),pickedA,mob,noInstances);
@@ -124,7 +128,8 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("PLANETLIST"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final Area pickedA=getLoggedArea(httpReq,mob);
 			final boolean noInstances=parms.containsKey("NOINSTANCE");
 			return GrinderAreas.getAreaList(CMLib.map().spaceAreas(),pickedA,mob,noInstances);
@@ -138,9 +143,11 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("DELAREA"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final Area A=getLoggedArea(httpReq,mob);
-			if(A==null) return "@break@";
+			if(A==null)
+				return "@break@";
 			CMLib.map().obliterateArea(A);
 			Log.sysOut("Grinder",mob.Name()+" obliterated area "+A.Name());
 			return "The area "+A.Name()+" has been successfully deleted.";
@@ -149,15 +156,21 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("EDITACCOUNT"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final String last=httpReq.getUrlParameter("ACCOUNT");
-			if(last==null) return "@break@";
-			if(last.length()==0) return "@break@";
+			if(last==null)
+				return "@break@";
+			if(last.length()==0)
+				return "@break@";
 			final PlayerAccount A=CMLib.players().getLoadAccount(last);
-			if(A==null) return "@break@";
-			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDPLAYERS)) return "@break@";
+			if(A==null)
+				return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDPLAYERS))
+				return "@break@";
 			final String err=new GrinderAccounts().runMacro(httpReq,parm);
-			if(err.length()>0) return err;
+			if(err.length()>0)
+				return err;
 			Log.sysOut("Grinder",mob.Name()+" modified account "+A.getAccountName());
 			return "";
 		}
@@ -165,13 +178,18 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("DELACCOUNT"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final String last=httpReq.getUrlParameter("ACCOUNT");
-			if(last==null) return "@break@";
-			if(last.length()==0) return "@break@";
+			if(last==null)
+				return "@break@";
+			if(last.length()==0)
+				return "@break@";
 			final PlayerAccount A=CMLib.players().getLoadAccount(last);
-			if(A==null) return "@break@";
-			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDPLAYERS)) return "@break@";
+			if(A==null)
+				return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDPLAYERS))
+				return "@break@";
 			final String playerList = CMParms.toStringList(A.getPlayers());
 			for(final Enumeration<String> p=A.getPlayers();p.hasMoreElements();)
 			{
@@ -188,16 +206,21 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("DELCATALOGMOB"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			String last=httpReq.getUrlParameter("DELMOB");
-			if(last==null) return "@break@";
-			if(last.length()==0) return "@break@";
+			if(last==null)
+				return "@break@";
+			if(last.length()==0)
+				return "@break@";
 			if(last.startsWith("CATALOG-"))
 			{
 				last=last.substring(8);
 				final MOB M=CMLib.catalog().getCatalogMob(last);
-				if(M==null) return "@break@";
-				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CATALOG)) return "@break@";
+				if(M==null)
+					return "@break@";
+				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CATALOG))
+					return "@break@";
 				CMLib.catalog().delCatalog(M);
 				Log.sysOut("Grinder",mob.Name()+" destroyed catalog mob "+last);
 				return "The catalog mob "+last+" has been removed.";
@@ -208,16 +231,21 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("DELCATALOGITEM"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			String last=httpReq.getUrlParameter("DELITEM");
-			if(last==null) return "@break@";
-			if(last.length()==0) return "@break@";
+			if(last==null)
+				return "@break@";
+			if(last.length()==0)
+				return "@break@";
 			if(last.startsWith("CATALOG-"))
 			{
 				last=last.substring(8);
 				final Item I=CMLib.catalog().getCatalogItem(last);
-				if(I==null) return "@break@";
-				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CATALOG)) return "@break@";
+				if(I==null)
+					return "@break@";
+				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CATALOG))
+					return "@break@";
 				CMLib.catalog().delCatalog(I);
 				Log.sysOut("Grinder",mob.Name()+" destroyed catalog item "+last);
 				return "The catalog item "+last+" has been removed.";
@@ -228,13 +256,18 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("DELCOMPONENT"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final String last=httpReq.getUrlParameter("COMPONENT");
-			if(last==null) return "@break@";
-			if(last.length()==0) return "@break@";
+			if(last==null)
+				return "@break@";
+			if(last.length()==0)
+				return "@break@";
 			final List<AbilityComponent> list = CMLib.ableMapper().getAbilityComponentDVector(last);
-			if(list==null) return "@break@";
-			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.COMPONENTS)) return "@break@";
+			if(list==null)
+				return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.COMPONENTS))
+				return "@break@";
 			CMLib.ableMapper().getAbilityComponentMap().remove(last.toUpperCase().trim());
 			CMLib.ableMapper().alterAbilityComponentFile(last, true);
 			Log.sysOut("Grinder",mob.Name()+" destroyed component "+last);
@@ -244,13 +277,18 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("EDITCOMPONENT")||parms.containsKey("ADDCOMPONENT"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final String last=httpReq.getUrlParameter("COMPONENT");
-			if(last==null) return "@break@";
-			if(last.length()==0) return "@break@";
-			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.COMPONENTS)) return "@break@";
+			if(last==null)
+				return "@break@";
+			if(last.length()==0)
+				return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.COMPONENTS))
+				return "@break@";
 			final String err=new GrinderComponent().runMacro(httpReq,parm);
-			if(err.length()>0) return err;
+			if(err.length()>0)
+				return err;
 			Log.sysOut("Grinder",mob.Name()+" modified component "+last);
 			return "The component "+last+" has been successfully modified.";
 		}
@@ -258,11 +296,15 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("DELALLQUALIFY"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final String last=httpReq.getUrlParameter("ALLQUALID");
-			if(last==null) return "@break@";
-			if(last.length()==0) return "@break@";
-			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ABILITIES)) return "@break@";
+			if(last==null)
+				return "@break@";
+			if(last.length()==0)
+				return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ABILITIES))
+				return "@break@";
 			String which=httpReq.getUrlParameter("ALLQUALWHICH");
 			if(parms.containsKey("WHICH"))
 				which=parms.get("WHICH");
@@ -270,7 +312,8 @@ public class MUDGrinder extends StdWebMacro
 				return " @break@";
 			final Map<String,Map<String,AbilityMapper.AbilityMapping>> allQualMap=CMLib.ableMapper().getAllQualifiesMap(httpReq.getRequestObjects());
 			final Map<String,AbilityMapper.AbilityMapping> map=allQualMap.get(which.toUpperCase().trim());
-			if(map==null) return " @break@";
+			if(map==null)
+				return " @break@";
 			map.remove(last.toUpperCase().trim());
 			CMLib.ableMapper().saveAllQualifysFile(allQualMap);
 			Log.sysOut("Grinder",mob.Name()+" destroyed all qualify ability "+last);
@@ -280,13 +323,18 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("EDITALLQUALIFY")||parms.containsKey("ADDALLQUALIFY"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final String last=httpReq.getUrlParameter("ALLQUALID");
-			if(last==null) return "@break@";
-			if(last.length()==0) return "@break@";
-			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ABILITIES)) return "@break@";
+			if(last==null)
+				return "@break@";
+			if(last.length()==0)
+				return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ABILITIES))
+				return "@break@";
 			final String err=new GrinderAllQualifys().editAllQualify(httpReq, parms);
-			if(err.length()>0) return err;
+			if(err.length()>0)
+				return err;
 			Log.sysOut("Grinder",mob.Name()+" modified all qualify ability "+last);
 			return "The all qualify ability "+last+" has been successfully modified.";
 		}
@@ -294,13 +342,18 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("DELCLAN"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final String last=httpReq.getUrlParameter("CLAN");
-			if(last==null) return "@break@";
-			if(last.length()==0) return "@break@";
+			if(last==null)
+				return "@break@";
+			if(last.length()==0)
+				return "@break@";
 			final Clan C=CMLib.clans().getClan(last);
-			if(C==null) return "@break@";
-			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDCLANS)) return "@break@";
+			if(C==null)
+				return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDCLANS))
+				return "@break@";
 			C.destroyClan();
 			Log.sysOut("Grinder",mob.Name()+" destroyed clan "+C.clanID());
 			return "The clan "+C.clanID()+" has been successfully destroyed.";
@@ -309,15 +362,21 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("EDITCLAN"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final String last=httpReq.getUrlParameter("CLAN");
-			if(last==null) return "@break@";
-			if(last.length()==0) return "@break@";
+			if(last==null)
+				return "@break@";
+			if(last.length()==0)
+				return "@break@";
 			final Clan C=CMLib.clans().getClan(last);
-			if(C==null) return "@break@";
-			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDCLANS)) return "@break@";
+			if(C==null)
+				return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDCLANS))
+				return "@break@";
 			final String err=new GrinderClans().runMacro(httpReq,parm);
-			if(err.length()>0) return err;
+			if(err.length()>0)
+				return err;
 			C.update();
 			Log.sysOut("Grinder",mob.Name()+" modified clan "+C.clanID());
 			return "The clan "+C.clanID()+" has been successfully modified.";
@@ -326,16 +385,20 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("ADDCLAN"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final String last=httpReq.getUrlParameter("NEWCLANID");
-			if(last==null) return "@break@";
-			if(last.length()==0) return "@break@";
+			if(last==null)
+				return "@break@";
+			if(last.length()==0)
+				return "@break@";
 			final Clan C=CMLib.clans().findClan(last);
 			if((C!=null)
 			||CMLib.players().playerExists(last)
 			||(last.equalsIgnoreCase("All")))
 				return "@break@";
-			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDCLANS)) return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDCLANS))
+				return "@break@";
 			final Clan newClan=(Clan)CMClass.getCommon("DefaultClan");
 			newClan.setName(last);
 			newClan.setGovernmentID(CMLib.clans().getDefaultGovernment().getID());
@@ -349,13 +412,18 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("DELCLANGOVERNMENT"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final String last=httpReq.getUrlParameter("GOVERNMENT");
-			if(last==null) return "@break@";
-			if(last.length()==0) return "@break@";
+			if(last==null)
+				return "@break@";
+			if(last.length()==0)
+				return "@break@";
 			final ClanGovernment G=CMLib.clans().getStockGovernment(CMath.s_int(last));
-			if(G==null) return "@break@";
-			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDCLANS)) return "@break@";
+			if(G==null)
+				return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDCLANS))
+				return "@break@";
 			if(!CMLib.clans().removeGovernment(G))
 				return "Unable to remove last government.";
 			Log.sysOut("Grinder",mob.Name()+" destroyed clan government "+G.getName());
@@ -365,15 +433,21 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("EDITCLANGOVERNMENT"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final String last=httpReq.getUrlParameter("GOVERNMENT");
-			if(last==null) return "@break@";
-			if(last.length()==0) return "@break@";
+			if(last==null)
+				return "@break@";
+			if(last.length()==0)
+				return "@break@";
 			final ClanGovernment G=CMLib.clans().getStockGovernment(CMath.s_int(last));
-			if(G==null) return "@break@";
-			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDCLANS)) return "@break@";
+			if(G==null)
+				return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDCLANS))
+				return "@break@";
 			final String err=new GrinderClanGovernments().runMacro(httpReq,parm);
-			if(err.length()>0) return err;
+			if(err.length()>0)
+				return err;
 			CMLib.clans().reSaveGovernmentsXML();
 			Log.sysOut("Grinder",mob.Name()+" modified clan government "+G.getName());
 			return "The clan government "+G.getName()+" has been successfully modified.";
@@ -382,7 +456,8 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("IMPORTAREA"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			byte[] bufBytes=null;
 			String file="";
 			for(final MultiPartData d : httpReq.getMultiParts())
@@ -404,7 +479,8 @@ public class MUDGrinder extends StdWebMacro
 			V.addAll(CMParms.parse("IMPORT "+(deleteIfExists?"":"NODELETE ")+"NOPROMPT"));
 			V.add(buf);
 			final Command C=CMClass.getCommand("Import");
-			if(C==null) return null;
+			if(C==null)
+				return null;
 			try{C.execute(mob,V,0);}catch(final Exception e){return e.getMessage();}
 			if((V.size()==0)||(V.get(V.size()-1) instanceof StringBuffer))
 				return "<FONT COLOR=LIGHTGREEN>Your file was successfully imported.</FONT>";
@@ -419,14 +495,17 @@ public class MUDGrinder extends StdWebMacro
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			String AREA=httpReq.getUrlParameter("AREA");
-			if(AREA==null) return "false";
-			if(AREA.length()==0) return "false";
+			if(AREA==null)
+				return "false";
+			if(AREA.length()==0)
+				return "false";
 			Area A=CMLib.map().getArea(AREA);
 			if(A==null)
 			{
 				final String areaClass=httpReq.getUrlParameter("AREATYPE");
 				A=CMClass.getAreaType(areaClass);
-				if(A==null) return "false";
+				if(A==null)
+					return "false";
 				A.setName(AREA);
 				CMLib.map().addArea(A);
 				CMLib.database().DBCreateArea(A);
@@ -442,10 +521,13 @@ public class MUDGrinder extends StdWebMacro
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			String AREA=httpReq.getUrlParameter("AREA");
-			if(AREA==null) return "";
-			if(AREA.length()==0) return "";
+			if(AREA==null)
+				return "";
+			if(AREA.length()==0)
+				return "";
 			final Area A=CMLib.map().getArea(AREA);
-			if(A==null) return "";
+			if(A==null)
+				return "";
 			GrinderAreas.modifyArea(httpReq,parms);
 			AREA=httpReq.getUrlParameter("AREA");
 			Log.sysOut("Grinder",mob.Name()+" edited area "+A.Name());
@@ -454,11 +536,14 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("DELEXIT"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final Room R=CMLib.map().getRoom(httpReq.getUrlParameter("ROOM"));
-			if(R==null) return "@break@";
+			if(R==null)
+				return "@break@";
 			final int dir=Directions.getGoodDirectionCode(httpReq.getUrlParameter("LINK"));
-			if(dir<0) return "@break@";
+			if(dir<0)
+				return "@break@";
 			Log.sysOut("Grinder",mob.Name()+" deleted exit "+dir+" from "+R.roomID());
 			final String errMsg=GrinderExits.delExit(R,dir);
 			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
@@ -467,11 +552,14 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("EDITEXIT"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final Room R=CMLib.map().getRoom(httpReq.getUrlParameter("ROOM"));
-			if(R==null) return "@break@";
+			if(R==null)
+				return "@break@";
 			final int dir=Directions.getGoodDirectionCode(httpReq.getUrlParameter("LINK"));
-			if(dir<0) return "@break@";
+			if(dir<0)
+				return "@break@";
 			Log.sysOut("Grinder",mob.Name()+" modified exit "+dir+" from "+R.roomID());
 			final String errMsg=GrinderExits.editExit(R,dir,httpReq,parms);
 			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
@@ -480,12 +568,16 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("QUICKFIND"))
 		{
 			final String find=httpReq.getUrlParameter("QUICKFIND");
-			if(find==null) return "@break@";
+			if(find==null)
+				return "@break@";
 			final String AREA=httpReq.getUrlParameter("AREA");
-			if(AREA==null) return "";
-			if(AREA.length()==0) return "";
+			if(AREA==null)
+				return "";
+			if(AREA.length()==0)
+				return "";
 			final Area A=CMLib.map().getArea(AREA);
-			if(A==null) return "";
+			if(A==null)
+				return "";
 			final String roomID=quickfind(A,find.toUpperCase());
 			if(roomID!=null)
 				httpReq.addFakeUrlParameter("ROOM",roomID);
@@ -495,15 +587,20 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("LINKEXIT"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final Room R=CMLib.map().getRoom(httpReq.getUrlParameter("ROOM"));
-			if(R==null) return "@break@";
+			if(R==null)
+				return "@break@";
 			final int dir=Directions.getGoodDirectionCode(httpReq.getUrlParameter("LINK"));
-			if(dir<0) return "@break@";
+			if(dir<0)
+				return "@break@";
 			final Room R2=CMLib.map().getRoom(httpReq.getUrlParameter("OLDROOM"));
-			if(R2==null) return "@break@";
+			if(R2==null)
+				return "@break@";
 			final int dir2=Directions.getGoodDirectionCode(httpReq.getUrlParameter("OLDLINK"));
-			if(dir2<0) return "@break@";
+			if(dir2<0)
+				return "@break@";
 			Log.sysOut("Grinder",mob.Name()+" linked exit "+dir+" from "+R.roomID());
 			final String errMsg=GrinderExits.linkRooms(R,R2,dir,dir2);
 			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
@@ -512,13 +609,17 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("LINKAREA"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final Room R=CMLib.map().getRoom(httpReq.getUrlParameter("ROOM"));
-			if(R==null) return "@break@";
+			if(R==null)
+				return "@break@";
 			final int dir=Directions.getGoodDirectionCode(httpReq.getUrlParameter("LINK"));
-			if(dir<0) return "@break@";
+			if(dir<0)
+				return "@break@";
 			String oldroom=httpReq.getUrlParameter("OLDROOM");
-			if(oldroom==null) oldroom="";
+			if(oldroom==null)
+				oldroom="";
 			final Room R2=CMLib.map().getRoom(oldroom);
 			String errMsg="";
 			if(R2==null)
@@ -534,9 +635,11 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("EDITROOM"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			Room R=CMLib.map().getRoom(httpReq.getUrlParameter("ROOM"));
-			if(R==null) return "@break@";
+			if(R==null)
+				return "@break@";
 			final String multiFlagStr=httpReq.getUrlParameter("MULTIROOMFLAG");
 			final boolean multiFlag=(multiFlagStr!=null)&& multiFlagStr.equalsIgnoreCase("on");
 			final List<String> multiRoomList=CMParms.parseSemicolons(httpReq.getUrlParameter("MULTIROOMLIST"),false);
@@ -547,9 +650,11 @@ public class MUDGrinder extends StdWebMacro
 				final Pair<String,String> setPairs[]=RoomData.makeMergableRoomFields(R, multiRoomList);
 				for(final String id : multiRoomList)
 				{
-					if(id.length()==0) continue;
+					if(id.length()==0)
+						continue;
 					R=CMLib.map().getRoom(id);
-					if(R==null) return "@break@";
+					if(R==null)
+						return "@break@";
 					final HTTPRequest mergeReq=RoomData.mergeRoomFields(httpReq, setPairs, R);
 					errMsg+=GrinderRooms.editRoom(mergeReq,parms,mob,R);
 				}
@@ -562,11 +667,14 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("DELHOLIDAY"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final String last=httpReq.getUrlParameter("HOLIDAY");
-			if(last==null) return " @break@";
+			if(last==null)
+				return " @break@";
 			final int dex=CMLib.quests().getHolidayIndex(last);
-			if(dex<0) return "Holiday '" + last +"' does not exist.";
+			if(dex<0)
+				return "Holiday '" + last +"' does not exist.";
 			final String err=CMLib.quests().deleteHoliday(dex);
 			Log.sysOut("Grinder",mob.name()+" deleted holiday "+last);
 			return (err.length()>0)?err:"Holiday '"+last+"' deleted.";
@@ -575,9 +683,11 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("EDITHOLIDAY"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final String last=httpReq.getUrlParameter("HOLIDAY");
-			if(last==null) return " @break@";
+			if(last==null)
+				return " @break@";
 			final int holidayIndex=CMLib.quests().getHolidayIndex(last);
 			final String err=GrinderHolidays.createModifyHoliday(httpReq, parms, last);
 			if(holidayIndex<0)
@@ -590,10 +700,12 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("DELRACE"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			Race R=null;
 			final String last=httpReq.getUrlParameter("RACE");
-			if(last==null) return " @break@";
+			if(last==null)
+				return " @break@";
 			R=CMClass.getRace(last);
 			if((R==null)||(!R.isGeneric()))
 				return " @break@";
@@ -602,7 +714,8 @@ public class MUDGrinder extends StdWebMacro
 			CMLib.database().DBDeleteRace(R.ID());
 			CMClass.loadClass(CMObjectType.RACE,"com/planet_ink/coffee_mud/Races/"+oldRID+".class",true);
 			Race oldR=CMClass.getRace(oldRID);
-			if(oldR==null) oldR=CMClass.getRace("StdRace");
+			if(oldR==null)
+				oldR=CMClass.getRace("StdRace");
 			CMLib.utensils().swapRaces(oldR, R);
 			Log.sysOut("Grinder",mob.name()+" deleted race "+R.ID());
 			return "Race "+R.ID()+" deleted.";
@@ -611,19 +724,23 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("EDITRACE"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			Race R=null;
 			Race oldR=null;
 			final String last=httpReq.getUrlParameter("RACE");
-			if(last==null) return " @break@";
+			if(last==null)
+				return " @break@";
 			R=CMClass.getRace(last);
 			boolean create=false;
 			if((R==null)||(!R.isGeneric()))
 			{
 				create=true;
-				if(R!=null) oldR=R;
+				if(R!=null)
+					oldR=R;
 				R=(Race)CMClass.getRace("GenRace").copyOf();
-				if(R==null) return " @break@";
+				if(R==null)
+					return " @break@";
 				R.setRacialParms("<RACE><ID>"+last+"</ID><NAME>"+last+"</NAME></RACE>");
 			}
 			R=R.makeGenRace();
@@ -651,10 +768,12 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("DELCLASS"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			CharClass C=null;
 			final String last=httpReq.getUrlParameter("CLASS");
-			if(last==null) return " @break@";
+			if(last==null)
+				return " @break@";
 			C=CMClass.getCharClass(last);
 			if((C==null)||(!C.isGeneric()))
 				return " @break@";
@@ -663,7 +782,8 @@ public class MUDGrinder extends StdWebMacro
 			CMLib.database().DBDeleteClass(C.ID());
 			CMClass.loadClass(CMObjectType.CHARCLASS,"com/planet_ink/coffee_mud/CharClasses/"+oldCID+".class",true);
 			CharClass oldC=CMClass.getCharClass(oldCID);
-			if(oldC==null) oldC=CMClass.getCharClass("StdCharClass");
+			if(oldC==null)
+				oldC=CMClass.getCharClass("StdCharClass");
 			if((oldC!=null)&&(oldC!=C))
 				CMLib.utensils().reloadCharClasses(oldC);
 			Log.sysOut("Grinder",mob.name()+" deleted charclass "+C.ID());
@@ -673,19 +793,23 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("EDITCLASS"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			CharClass C=null;
 			CharClass oldC=null;
 			final String last=httpReq.getUrlParameter("CLASS");
-			if(last==null) return " @break@";
+			if(last==null)
+				return " @break@";
 			C=CMClass.getCharClass(last);
 			boolean create=false;
 			if((C==null)||(!C.isGeneric()))
 			{
 				create=true;
-				if(C!=null) oldC=C;
+				if(C!=null)
+					oldC=C;
 				C=(CharClass)CMClass.getCharClass("GenCharClass").copyOf();
-				if(C==null) return " @break@";
+				if(C==null)
+					return " @break@";
 				C.setClassParms("<CCLASS><ID>"+last+"</ID><NAME>"+last+"</NAME></CCLASS>");
 			}
 			C=C.makeGenCharClass();
@@ -713,14 +837,18 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("DELFACTION"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			Faction F=null;
 			final String last=httpReq.getUrlParameter("FACTION");
-			if(last==null) return " @break@";
+			if(last==null)
+				return " @break@";
 			F=CMLib.factions().getFaction(last);
-			if(F==null) return " @break@";
+			if(F==null)
+				return " @break@";
 			final CMFile F2=new CMFile(Resources.makeFileResourceName(CMLib.factions().makeFactionFilename(F.factionID())),null,CMFile.FLAG_LOGERRORS);
-			if(F2.exists()) F2.deleteAll();
+			if(F2.exists())
+				F2.deleteAll();
 			Log.sysOut("Grinder",mob.Name()+" destroyed Faction "+F.name()+" ("+F.factionID()+").");
 			Resources.removeResource(F.factionID());
 			F.destroy();
@@ -730,10 +858,12 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("EDITFACTION"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			Faction F=null;
 			final String last=httpReq.getUrlParameter("FACTION");
-			if(last==null) return " @break@";
+			if(last==null)
+				return " @break@";
 			F=CMLib.factions().getFaction(last);
 			//boolean create=false;
 			if(F==null)
@@ -746,7 +876,8 @@ public class MUDGrinder extends StdWebMacro
 				if(!Resources.saveFileResource("::"+CMLib.factions().makeFactionFilename(last),mob,template))
 					return "Unable to save "+Resources.buildResourcePath("")+CMLib.factions().makeFactionFilename(last);
 				F=(Faction)CMClass.getCommon("DefaultFaction");
-				if(F==null) return " @break@";
+				if(F==null)
+					return " @break@";
 				F.initializeFaction(template,last);
 				CMLib.factions().addFaction(F);
 			}
@@ -762,10 +893,12 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("DELABILITY"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			Ability A=null;
 			final String last=httpReq.getUrlParameter("ABILITY");
-			if(last==null) return " @break@";
+			if(last==null)
+				return " @break@";
 			A=CMClass.getAbility(last);
 			if((A==null)||(!A.isGeneric()))
 				return " @break@";
@@ -781,11 +914,13 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("EDITABILITY"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			Ability A=null;
 			Ability oldA=null;
 			final String last=httpReq.getUrlParameter("ABILITY");
-			if(last==null) return " @break@";
+			if(last==null)
+				return " @break@";
 			A=CMClass.getAbility(last);
 			oldA=A;
 			boolean create=false;
@@ -793,13 +928,16 @@ public class MUDGrinder extends StdWebMacro
 				return " @break@";
 			String type="GenAbility";
 			final int code=CMath.s_int(httpReq.getUrlParameter("CLASSIFICATION_ACODE"));
-			if(code==Ability.ACODE_LANGUAGE) type="GenLanguage";
-			if(code==Ability.ACODE_COMMON_SKILL) type="GenCraftSkill";
+			if(code==Ability.ACODE_LANGUAGE)
+				type="GenLanguage";
+			if(code==Ability.ACODE_COMMON_SKILL)
+				type="GenCraftSkill";
 			if(A==null)
 			{
 				create=true;
 				A=(Ability)CMClass.getAbility(type).copyOf();
-				if(A==null) return " @break@";
+				if(A==null)
+					return " @break@";
 				A.setStat("CLASS",last);
 			}
 			final String errMsg=GrinderAbilities.modifyAbility(httpReq, parms, (oldA==null)?A:oldA, A);
@@ -819,12 +957,14 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("EDITITEM"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final String player=httpReq.getUrlParameter("PLAYER");
 			final MOB playerM=(player!=null)?CMLib.players().getLoadPlayer(player):null;
 			final String roomID=httpReq.getUrlParameter("ROOM");
 			final Room R=CMLib.map().getRoom(roomID);
-			if((R==null)&&(playerM==null)&&((roomID==null)||(!roomID.equalsIgnoreCase("ANY")))) return "@break@";
+			if((R==null)&&(playerM==null)&&((roomID==null)||(!roomID.equalsIgnoreCase("ANY"))))
+				return "@break@";
 			final String errMsg=GrinderItems.editItem(httpReq,parms,mob,R,playerM);
 			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
 		}
@@ -832,10 +972,12 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("EDITMOB"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final String roomID=httpReq.getUrlParameter("ROOM");
 			final Room R=CMLib.map().getRoom(roomID);
-			if((R==null)&&((roomID==null)||(!roomID.equalsIgnoreCase("ANY")))) return "@break@";
+			if((R==null)&&((roomID==null)||(!roomID.equalsIgnoreCase("ANY"))))
+				return "@break@";
 			final String errMsg=GrinderMobs.editMob(httpReq,parms,mob,R);
 			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
 		}
@@ -843,9 +985,11 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("EDITPLAYER"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final MOB M=CMLib.players().getLoadPlayer(httpReq.getUrlParameter("PLAYER"));
-			if(M==null) return "@break@";
+			if(M==null)
+				return "@break@";
 			final String errMsg=GrinderPlayers.editPlayer(mob,httpReq,parms,M);
 			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
 		}
@@ -853,7 +997,8 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("DELROOM"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final String multiFlagStr=httpReq.getUrlParameter("MULTIROOMFLAG");
 			final boolean multiFlag=(multiFlagStr!=null)&& multiFlagStr.equalsIgnoreCase("on");
 			final List<String> multiRoomList=CMParms.parseSemicolons(httpReq.getUrlParameter("MULTIROOMLIST"),false);
@@ -862,16 +1007,19 @@ public class MUDGrinder extends StdWebMacro
 			{
 				for(final String id : multiRoomList)
 				{
-					if(id.length()==0) continue;
+					if(id.length()==0)
+						continue;
 					final Room R=CMLib.map().getRoom(id);
-					if(R==null) return "@break@";
+					if(R==null)
+						return "@break@";
 					rooms.add(R);
 				}
 			}
 			else
 			{
 				final Room R=CMLib.map().getRoom(httpReq.getUrlParameter("ROOM"));
-				if(R==null) return "@break@";
+				if(R==null)
+					return "@break@";
 				rooms.add(R);
 			}
 			String errMsg="";
@@ -896,7 +1044,8 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("RESETROOM"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final String multiFlagStr=httpReq.getUrlParameter("MULTIROOMFLAG");
 			final boolean multiFlag=(multiFlagStr!=null)&& multiFlagStr.equalsIgnoreCase("on");
 			final List<String> multiRoomList=CMParms.parseSemicolons(httpReq.getUrlParameter("MULTIROOMLIST"),false);
@@ -905,16 +1054,19 @@ public class MUDGrinder extends StdWebMacro
 			{
 				for(final String id : multiRoomList)
 				{
-					if(id.length()==0) continue;
+					if(id.length()==0)
+						continue;
 					final Room R=CMLib.map().getRoom(id);
-					if(R==null) return "@break@";
+					if(R==null)
+						return "@break@";
 					rooms.add(R);
 				}
 			}
 			else
 			{
 				final Room R=CMLib.map().getRoom(httpReq.getUrlParameter("ROOM"));
-				if(R==null) return "@break@";
+				if(R==null)
+					return "@break@";
 				rooms.add(R);
 			}
 			String errMsg="";
@@ -929,12 +1081,15 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("ADDROOM"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final String link=httpReq.getUrlParameter("LINK");
 			Room R=CMLib.map().getRoom(httpReq.getUrlParameter("ROOM"));
-			if(R==null) return "@break@";
+			if(R==null)
+				return "@break@";
 			final int dir=Directions.getGoodDirectionCode(link);
-			if(dir<0) return "@break@";
+			if(dir<0)
+				return "@break@";
 			final String copyThisOne=httpReq.getUrlParameter("COPYROOM");
 			final String errMsg=GrinderRooms.createRoom(R,dir,(copyThisOne!=null)&&(copyThisOne.equalsIgnoreCase("ON")));
 			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
@@ -950,7 +1105,8 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("MASSACCOUNTCREATE"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final String dataStr=httpReq.getUrlParameter("ACCOUNTNAMES");
 			if((dataStr==null)||(dataStr.length()==0))
 				return "No accounts created.";
@@ -1048,11 +1204,14 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("PAINTROOMS"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final String AREA=httpReq.getUrlParameter("AREA");
-			if(AREA==null) return "@break@";
+			if(AREA==null)
+				return "@break@";
 			final Area A=CMLib.map().getArea(AREA);
-			if(A==null) return "@break@";
+			if(A==null)
+				return "@break@";
 			String like=httpReq.getUrlParameter("ROOM");
 			final List<String> likeList=CMParms.parseCommas(like,true);
 			final Vector RS=new Vector();
@@ -1061,31 +1220,41 @@ public class MUDGrinder extends StdWebMacro
 				like=likeList.get(l);
 				final String roomID=quickfind(A,like.toUpperCase());
 				Room R=null;
-				if(roomID!=null) R=CMLib.map().getRoom(roomID);
+				if(roomID!=null)
+					R=CMLib.map().getRoom(roomID);
 				R=CMLib.map().getRoom(R);
-				if(R==null) return "The room you entered ("+like+") could not be found.";
+				if(R==null)
+					return "The room you entered ("+like+") could not be found.";
 				CMLib.map().resetRoom(R);
 				final Room likeRoom=(Room)CMLib.map().getRoom(R).copyOf();
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--) likeRoom.rawDoors()[d]=null;
 				RS.addElement(likeRoom);
 			}
-			if(RS.size()==0) return "You did not specify a room or room list to paint from!";
+			if(RS.size()==0)
+				return "You did not specify a room or room list to paint from!";
 			final boolean overwrite=httpReq.getUrlParameter("NOVERLAP")!=null
 								&&(httpReq.getUrlParameter("NOVERLAP").length()>0);
 			final int brushSize=CMath.s_int(httpReq.getUrlParameter("BRUSHSIZE"));
-			if(brushSize<=0) return "Your brush size should be a number greater than 0!";
+			if(brushSize<=0)
+				return "Your brush size should be a number greater than 0!";
 			final int[] coords=getAppropriateXY(A,httpReq.getUrlParameter("PAINTAT"));
-			if(coords==null) return "An error occurred trying to paint.  Relogin and try again.";
+			if(coords==null)
+				return "An error occurred trying to paint.  Relogin and try again.";
 			int radius=(int)Math.round(Math.floor(CMath.div(brushSize,2)));
-			if(radius<1) radius=1;
+			if(radius<1)
+				radius=1;
 			coords[4]-=radius;
 			coords[5]-=radius;
-			if(coords[4]<0) coords[4]=0;
-			if(coords[5]<0) coords[5]=0;
+			if(coords[4]<0)
+				coords[4]=0;
+			if(coords[5]<0)
+				coords[5]=0;
 			int endX=coords[4]+brushSize;
 			int endY=coords[5]+brushSize;
-			if(endX>=((GridZones)A).xGridSize()) endX=((GridZones)A).xGridSize()-1;
-			if(endY>=((GridZones)A).yGridSize()) endY=((GridZones)A).yGridSize()-1;
+			if(endX>=((GridZones)A).xGridSize())
+				endX=((GridZones)A).xGridSize()-1;
+			if(endY>=((GridZones)A).yGridSize())
+				endY=((GridZones)A).yGridSize()-1;
 			String roomID=null;
 			Room R=null;
 			if(overwrite)
@@ -1127,15 +1296,19 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("ADDGRIDROOM"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			if(mob==null) return "@break@";
+			if(mob==null)
+				return "@break@";
 			final String AREA=httpReq.getUrlParameter("AREA");
-			if(AREA==null) return "false";
+			if(AREA==null)
+				return "false";
 			final Area A=CMLib.map().getArea(AREA);
-			if(A==null) return "@break@";
+			if(A==null)
+				return "@break@";
 			final String roomID=httpReq.getUrlParameter("ROOM");
 			final String link=httpReq.getUrlParameter("AUTOLINK");
 			final Room R=CMLib.map().getRoom(roomID);
-			if((roomID==null)||(R!=null)||(roomID.length()==0)) return "@break@";
+			if((roomID==null)||(R!=null)||(roomID.length()==0))
+				return "@break@";
 			final String copyThisOne=httpReq.getUrlParameter("COPYROOM");
 			final Room copyRoom=CMLib.map().getRoom(copyThisOne);
 			final Room newRoom=GrinderRooms.createGridRoom(A,roomID,copyRoom,null,((link!=null)&&(link.length()>0)));
@@ -1196,10 +1369,13 @@ public class MUDGrinder extends StdWebMacro
 	protected Area getLoggedArea(HTTPRequest httpReq, MOB mob)
 	{
 		final String AREA=httpReq.getUrlParameter("AREA");
-		if(AREA==null) return null;
-		if(AREA.length()==0) return null;
+		if(AREA==null)
+			return null;
+		if(AREA.length()==0)
+			return null;
 		final Area A=CMLib.map().getArea(AREA);
-		if(A==null) return null;
+		if(A==null)
+			return null;
 		if(CMSecurity.isASysOp(mob)||A.amISubOp(mob.Name()))
 			return A;
 		return null;
@@ -1208,16 +1384,19 @@ public class MUDGrinder extends StdWebMacro
 	protected String quickfind(Area A, String find)
 	{
 		Room R=A.getRoom(find);
-		if((R!=null)&&(R.roomID().length()>0)) return R.roomID();
+		if((R!=null)&&(R.roomID().length()>0))
+			return R.roomID();
 		if(find.startsWith("#"))
 		{
 			R=A.getRoom(A.Name()+find);
-			if((R!=null)&&(R.roomID().length()>0)) return R.roomID();
+			if((R!=null)&&(R.roomID().length()>0))
+				return R.roomID();
 		}
 		if(CMath.isNumber(find))
 		{
 			R=A.getRoom(A.Name()+"#"+find);
-			if((R!=null)&&(R.roomID().length()>0)) return R.roomID();
+			if((R!=null)&&(R.roomID().length()>0))
+				return R.roomID();
 		}
 		for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 		{
@@ -1238,7 +1417,8 @@ public class MUDGrinder extends StdWebMacro
 				return R.roomID();
 		}
 		R=CMLib.map().getRoom(find);
-		if((R!=null)&&(R.roomID().length()>0)) return R.roomID();
+		if((R!=null)&&(R.roomID().length()>0))
+			return R.roomID();
 		return null;
 	}
 }

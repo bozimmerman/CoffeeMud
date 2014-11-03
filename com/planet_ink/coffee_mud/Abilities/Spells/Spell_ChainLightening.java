@@ -47,7 +47,8 @@ public class Spell_ChainLightening extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Set<MOB> h=properTargets(mob,givenTarget,auto);
-		if(h==null) h=new HashSet<MOB>();
+		if(h==null)
+			h=new HashSet<MOB>();
 
 		final Set<MOB> myGroup=mob.getGroupMembers(new HashSet<MOB>());
 		final Vector targets=new Vector(h);
@@ -56,7 +57,8 @@ public class Spell_ChainLightening extends Spell
 		for (final Object element : myGroup)
 		{
 			final MOB M=(MOB)element;
-			if((M!=mob)&&(!targets.contains(M))) targets.addElement(M);
+			if((M!=mob)&&(!targets.contains(M)))
+				targets.addElement(M);
 		}
 		if(!targets.contains(mob))
 			targets.addElement(mob);

@@ -103,7 +103,8 @@ public class DBConnector
 	{
 		if(dbConnections!=null){ dbConnections.deregisterDriver(); dbConnections.killConnections();}
 		dbConnections=new DBConnections(dbClass,dbService,dbUser,dbPass,numConnections,dbReuse,doErrorQueueing);
-		if(dbConnections.amIOk()&&newErrorQueueing) dbConnections.retryQueuedErrors();
+		if(dbConnections.amIOk()&&newErrorQueueing)
+			dbConnections.retryQueuedErrors();
 	}
 
 	public String service(){ return dbService;}
@@ -126,7 +127,8 @@ public class DBConnector
 
 	public boolean deregisterDriver()
 	{
-		if(dbConnections!=null) return dbConnections.deregisterDriver();
+		if(dbConnections!=null)
+			return dbConnections.deregisterDriver();
 		return false;
 	}
 	public boolean isFakeDB()
@@ -204,7 +206,8 @@ public class DBConnector
 
 	public String injectionClean(String s)
 	{
-		if(s==null) return null;
+		if(s==null)
+			return null;
 		return s.replace('\'', '`');
 	}
 
@@ -305,7 +308,8 @@ public class DBConnector
 	 */
 	public StringBuffer errorStatus()
 	{
-		if(dbConnections==null) return new StringBuffer("Not connected.");
+		if(dbConnections==null)
+			return new StringBuffer("Not connected.");
 		final StringBuffer status=dbConnections.errorStatus();
 		if(status.length()==0)
 			return new StringBuffer("OK! Connections in use="+dbConnections.numInUse()+"/"+dbConnections.numConnectionsMade());

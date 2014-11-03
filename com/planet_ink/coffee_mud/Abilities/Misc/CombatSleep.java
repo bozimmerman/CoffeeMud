@@ -125,12 +125,15 @@ public class CombatSleep extends StdAbility implements HealthCondition
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		// sleep has a 3 level difference for PCs, so check for this.
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
-		if(levelDiff<0) levelDiff=0;
-		if(levelDiff>2) levelDiff=2;
+		if(levelDiff<0)
+			levelDiff=0;
+		if(levelDiff>2)
+			levelDiff=2;
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

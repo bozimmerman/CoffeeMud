@@ -74,8 +74,10 @@ public class ProtectedCitizen extends ActiveTicker
 
 	public String getCityguardName()
 	{
-		if(cityguard!=null) return "-NAME \"+"+cityguard+"\"";
-		if(zapper!=null) return zapper;
+		if(cityguard!=null)
+			return "-NAME \"+"+cityguard+"\"";
+		if(zapper!=null)
+			return zapper;
 		final String s=getParmsNoTicks();
 		if(s.length()==0)
 		{ cityguard=defcityguard; return "-NAME \"+"+cityguard+"\"";}
@@ -102,7 +104,8 @@ public class ProtectedCitizen extends ActiveTicker
 
 	public String[] getClaims()
 	{
-		if(claims!=null) return claims;
+		if(claims!=null)
+			return claims;
 		String s=getParmsNoTicks();
 		if(s.length()==0)
 		{ claims=defclaims; return claims;}
@@ -121,10 +124,12 @@ public class ProtectedCitizen extends ActiveTicker
 		{
 			final String str=s.substring(0,x).trim();
 			s=s.substring(x+1).trim();
-			if(str.length()>0)V.addElement(str);
+			if(str.length()>0)
+				V.addElement(str);
 			x=s.indexOf(c);
 		}
-		if(s.length()>0)V.addElement(s);
+		if(s.length()>0)
+			V.addElement(s);
 		claims=new String[V.size()];
 		for(int i=0;i<V.size();i++)
 			claims[i]=(String)V.elementAt(i);
@@ -156,7 +161,8 @@ public class ProtectedCitizen extends ActiveTicker
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY);
-		if(!wander) flags.plus(TrackingLibrary.TrackingFlag.AREAONLY);
+		if(!wander)
+			flags.plus(TrackingLibrary.TrackingFlag.AREAONLY);
 		CMLib.tracking().getRadiantRooms(thisRoom,V,flags,null,radius,null);
 		for(int v=0;v<V.size();v++)
 		{

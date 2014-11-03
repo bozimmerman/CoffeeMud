@@ -49,7 +49,8 @@ public class Spell_FutureDeath extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(getXLEVELLevel(mob)));
 		if((!target.mayIFight(mob))||(levelDiff>=(3+((mob.phyStats().level()+(getXLEVELLevel(mob)))/10))))

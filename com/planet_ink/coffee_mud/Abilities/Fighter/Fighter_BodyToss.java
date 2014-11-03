@@ -125,7 +125,8 @@ public class Fighter_BodyToss extends MonkSkill
 			{
 				mob.location().send(mob,msg);
 				int dist=2+getXLEVELLevel(mob);
-				if(mob.location().maxRange()<2) dist=mob.location().maxRange();
+				if(mob.location().maxRange()<2)
+					dist=mob.location().maxRange();
 				mob.setAtRange(dist);
 				target.setAtRange(dist);
 				CMLib.combat().postDamage(mob,target,this,CMLib.dice().roll(1,12,0),CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,"The hard landing <DAMAGE> <T-NAME>!");

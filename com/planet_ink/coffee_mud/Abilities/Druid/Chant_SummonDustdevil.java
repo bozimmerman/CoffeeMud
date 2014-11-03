@@ -150,7 +150,8 @@ public class Chant_SummonDustdevil extends Chant
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
-			if(mob.amDead()) mob.setLocation(null);
+			if(mob.amDead())
+				mob.setLocation(null);
 			mob.destroy();
 		}
 	}
@@ -165,7 +166,8 @@ public class Chant_SummonDustdevil extends Chant
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 		{
 			unInvoke();
-			if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
+			if(msg.source().playerStats()!=null)
+				msg.source().playerStats().setLastUpdated(0);
 		}
 	}
 
@@ -222,7 +224,8 @@ public class Chant_SummonDustdevil extends Chant
 				final MOB target = determineMonster(mob, material);
 				if(target!=null)
 				{
-					if(target.isInCombat()) target.makePeace();
+					if(target.isInCombat())
+						target.makePeace();
 					beneficialAffect(mob,target,asLevel,0);
 					CMLib.commands().postFollow(target,mob,true);
 					if(target.amFollowing()!=mob)

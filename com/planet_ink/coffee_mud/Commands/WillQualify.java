@@ -137,7 +137,8 @@ public class WillQualify  extends Skills
 		int level=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
 		CharClass C=mob.charStats().getCurrentClass();
 		final HashSet<Object> types=new HashSet<Object>();
-		if(commands.size()>0) commands.removeElementAt(0);
+		if(commands.size()>0)
+			commands.removeElementAt(0);
 		if((commands.size()>0)&&(CMath.isNumber((String)commands.firstElement())))
 		{
 			level=CMath.s_int((String)commands.firstElement());
@@ -157,7 +158,8 @@ public class WillQualify  extends Skills
 		{
 			final String str=((String)commands.firstElement()).toUpperCase().trim();
 			int x=CMParms.indexOf(Ability.ACODE_DESCS,str);
-			if(x<0) x=CMParms.indexOf(Ability.ACODE_DESCS,str.replace(' ','_'));
+			if(x<0)
+				x=CMParms.indexOf(Ability.ACODE_DESCS,str.replace(' ','_'));
 			if(x>=0)
 				types.add(Integer.valueOf(x));
 			else

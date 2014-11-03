@@ -75,7 +75,8 @@ public class Prop_Smell extends Property
 	}
 	public DVector getSmells()
 	{
-		if(smells!=null) return smells;
+		if(smells!=null)
+			return smells;
 		final List<String> allsmells=CMParms.parseSemicolons(text(),true);
 		smells=new DVector(3);
 		for(int i=0;i<allsmells.size();i++)
@@ -131,7 +132,8 @@ public class Prop_Smell extends Property
 				if((!emoteOnly)||(CMath.bset(pct,FLAG_EMOTE)))
 					total+=pct&511;
 			}
-			if(total==0) return "";
+			if(total==0)
+				return "";
 			int draw=CMLib.dice().roll(1,total,0);
 			for(int i=0;i<smells.size();i++)
 			{
@@ -219,7 +221,8 @@ public class Prop_Smell extends Property
 						sm.addElement(smell,pct,I);
 					}
 					sm.removeElementAt(i);
-					if(I.intValue()<=0) redo=true;
+					if(I.intValue()<=0)
+						redo=true;
 				}
 			}
 			if(redo)

@@ -55,7 +55,8 @@ public class ResourceOverride extends ActiveTicker
 		rscs.clear();
 		roomTypes.clear();
 		final Vector<String> V=CMParms.parse(getParms());
-		if(V.size()==0) return;
+		if(V.size()==0)
+			return;
 		for(int v=0;v<V.size();v++)
 		{
 			// first try for a real one
@@ -63,14 +64,16 @@ public class ResourceOverride extends ActiveTicker
 			final String which=V.elementAt(v).toUpperCase().trim();
 			if(CMath.isInteger(which))
 				code=CMath.s_int(which);
-			if(code<0) code = RawMaterial.CODES.FIND_IgnoreCase(which);
+			if(code<0)
+				code = RawMaterial.CODES.FIND_IgnoreCase(which);
 			if(code<0)
 			{
 				final RawMaterial.Material m=RawMaterial.Material.findIgnoreCase(which);
 				if(m!=null)
 					code=RawMaterial.CODES.COMPOSE_RESOURCES(m.mask()).get(0).intValue();
 			}
-			if(code<0) code = RawMaterial.CODES.FIND_StartsWith(which);
+			if(code<0)
+				code = RawMaterial.CODES.FIND_StartsWith(which);
 			if(code<0)
 			{
 				final RawMaterial.Material m=RawMaterial.Material.startsWith(which);
@@ -100,7 +103,8 @@ public class ResourceOverride extends ActiveTicker
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(rscs.size()==0) return true;
+		if(rscs.size()==0)
+			return true;
 		if(super.canAct(ticking, tickID))
 		{
 			switch(tickID)

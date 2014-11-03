@@ -43,7 +43,8 @@ public class Quad<T,K,L,M> extends Triad<T,K,L>
 	@Override
 	public boolean equals(Object o)
 	{
-		if(o==this) return true;
+		if(o==this)
+			return true;
 		if(o instanceof Quad)
 		{
 			@SuppressWarnings("rawtypes")

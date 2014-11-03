@@ -161,9 +161,11 @@ public class CMath
 	 */
 	public final static boolean isRomanNumeral(final String s)
 	{
-		if(s==null) return false;
+		if(s==null)
+			return false;
 		final String ups=s.toUpperCase().trim();
-		if(ups.length()==0) return false;
+		if(ups.length()==0)
+			return false;
 		for(int c=0;c<ups.length();c++)
 			if(!isRomanDigit(ups.charAt(c)))
 				return false;
@@ -179,7 +181,8 @@ public class CMath
 	public final static long absDiff(final long x, final long y)
 	{
 		final long d=x-y;
-		if(d<0) return d*-1;
+		if(d<0)
+			return d*-1;
 		return d;
 	}
 
@@ -192,7 +195,8 @@ public class CMath
 	 */
 	public final static Object s_valueOf(Object[] o, String s)
 	{
-		if(s==null) return null;
+		if(s==null)
+			return null;
 		for(final Object a : o)
 			if(a.toString().equalsIgnoreCase(s.trim()))
 				return a;
@@ -232,7 +236,8 @@ public class CMath
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public final static Enum<? extends Enum> s_valueOf(Class<? extends Enum> c, String s)
 	{
-		if((c==null)||(s==null)) return null;
+		if((c==null)||(s==null))
+			return null;
 		try
 		{
 			return Enum.valueOf(c, s);
@@ -266,9 +271,11 @@ public class CMath
 	 */
 	public final static boolean isNumber(final String s)
 	{
-		if(s==null) return false;
+		if(s==null)
+			return false;
 		final String ups=s.trim();
-		if(ups.length()==0) return false;
+		if(ups.length()==0)
+			return false;
 		int start=0;
 		if(ups.startsWith("-"))
 			start=1;
@@ -693,9 +700,11 @@ public class CMath
 	 */
 	public final static boolean isPct(final String s)
 	{
-		if(s==null) return false;
+		if(s==null)
+			return false;
 		final String ts=s.trim();
-		if(!ts.endsWith("%")) return false;
+		if(!ts.endsWith("%"))
+			return false;
 		return isNumber(ts.substring(0,ts.length()-1));
 	}
 
@@ -746,12 +755,18 @@ public class CMath
 	 */
 	public final static int hexDigit(final char c)
 	{
-		if(c<'0') return -1;
-		if(c<'9') return c-'0';
-		if(c<'A') return -1;
-		if(c<'G') return (c-'A')+10;
-		if(c<'a') return -1;
-		if(c<'f') return (c-'a')+10;
+		if(c<'0')
+			return -1;
+		if(c<'9')
+			return c-'0';
+		if(c<'A')
+			return -1;
+		if(c<'G')
+			return (c-'A')+10;
+		if(c<'a')
+			return -1;
+		if(c<'f')
+			return (c-'a')+10;
 		return -1;
 	}
 
@@ -766,8 +781,10 @@ public class CMath
 	 */
 	public final static double s_pct(String s)
 	{
-		if(s==null) return 0.0;
-		while(s.trim().endsWith("%")) s=s.trim().substring(0,s.length()-1).trim();
+		if(s==null)
+			return 0.0;
+		while(s.trim().endsWith("%"))
+			s=s.trim().substring(0,s.length()-1).trim();
 		return s_double(s)/100.0;
 	}
 
@@ -779,7 +796,8 @@ public class CMath
 	public final static String toPct(final double d)
 	{
 		final String s=TWO_PLACES.format(d);
-		if(s.endsWith("%%")) return s.substring(0,s.length()-1);
+		if(s.endsWith("%%"))
+			return s.substring(0,s.length()-1);
 		return s;
 	}
 
@@ -816,7 +834,8 @@ public class CMath
 	 */
 	public final static boolean isMathExpression(final String st)
 	{
-		if((st==null)||(st.length()==0)) return false;
+		if((st==null)||(st.length()==0))
+			return false;
 		try{ parseMathExpression(st);}catch(final Exception e){ return false;}
 		return true;
 	}
@@ -832,7 +851,8 @@ public class CMath
 	 */
 	public final static boolean isMathExpression(final String st, final double[] vars)
 	{
-		if((st==null)||(st.length()==0)) return false;
+		if((st==null)||(st.length()==0))
+			return false;
 		try{ parseMathExpression(st,vars);}catch(final Exception e){ return false;}
 		return true;
 	}
@@ -1308,7 +1328,8 @@ public class CMath
 	 */
 	public final static int abs(final int val)
 	{
-		if(val>=0) return val;
+		if(val>=0)
+			return val;
 		return val*-1;
 	}
 
@@ -1319,7 +1340,8 @@ public class CMath
 	 */
 	public final static int bitNumber(final long mask)
 	{
-		if(mask<=0) return 0;
+		if(mask<=0)
+			return 0;
 		for(int i=0;i<64;i++)
 			if((mask&pow(2,i))>0)
 				return i+1;
@@ -1334,7 +1356,8 @@ public class CMath
 	 */
 	public final static long abs(final long val)
 	{
-		if(val>=0) return val;
+		if(val>=0)
+			return val;
 		return val*-1;
 	}
 
@@ -1347,7 +1370,8 @@ public class CMath
 	 */
 	public final static boolean s_bool(final String BOOL)
 	{
-		if(BOOL==null) return false;
+		if(BOOL==null)
+			return false;
 		return Boolean.valueOf(BOOL).booleanValue();
 	}
 
@@ -1437,8 +1461,10 @@ public class CMath
 	 */
 	public final static boolean isInteger(final String INT)
 	{
-		if(INT==null) return false;
-		if(INT.length()==0) return false;
+		if(INT==null)
+			return false;
+		if(INT.length()==0)
+			return false;
 		int i=0;
 		if(INT.charAt(0)=='-')
 			if(INT.length()>1)
@@ -1560,8 +1586,10 @@ public class CMath
 	 */
 	public final static boolean isDouble(final String DBL)
 	{
-		if(DBL==null) return false;
-		if(DBL.length()==0) return false;
+		if(DBL==null)
+			return false;
+		if(DBL.length()==0)
+			return false;
 		int i=0;
 		if(DBL.charAt(0)=='-')
 			if(DBL.length()>1)
@@ -1592,8 +1620,10 @@ public class CMath
 	 */
 	public final static boolean isNumberFollowedByString(final String str)
 	{
-		if((str==null)||(str.length()<2)) return false;
-		if(!Character.isDigit(str.charAt(0))) return false;
+		if((str==null)||(str.length()<2))
+			return false;
+		if(!Character.isDigit(str.charAt(0)))
+			return false;
 		int dex=1;
 		for(;dex<str.length();dex++)
 			if(Character.isLetter(str.charAt(dex)))
@@ -1618,8 +1648,10 @@ public class CMath
 	 */
 	public final static Entry<Integer,String> getNumberFollowedByString(final String str)
 	{
-		if((str==null)||(str.length()<2)) return null;
-		if(!Character.isDigit(str.charAt(0))) return null;
+		if((str==null)||(str.length()<2))
+			return null;
+		if(!Character.isDigit(str.charAt(0)))
+			return null;
 		int dex=1;
 		for(;dex<str.length();dex++)
 			if(Character.isLetter(str.charAt(dex)))

@@ -35,12 +35,14 @@ public class CMProps extends Properties
 	{
 		super();
 		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
-		if(props[c]==null) props[c]=this;
+		if(props[c]==null)
+			props[c]=this;
 	}
 	public static final CMProps instance()
 	{
 		final CMProps p=p();
-		if(p==null) return new CMProps();
+		if(p==null)
+			return new CMProps();
 		return p;
 	}
 	public static final CMProps instance(char c){ return props[c];}
@@ -358,7 +360,8 @@ public class CMProps extends Properties
 	public CMProps(InputStream in)
 	{
 		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
-		if(props[c]==null) props[c]=this;
+		if(props[c]==null)
+			props[c]=this;
 		try
 		{
 			this.load(in);
@@ -373,7 +376,8 @@ public class CMProps extends Properties
 	public CMProps(String filename)
 	{
 		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
-		if(props[c]==null) props[c]=this;
+		if(props[c]==null)
+			props[c]=this;
 		try
 		{
 			final CMFile F=new CMFile(filename,null);
@@ -409,7 +413,8 @@ public class CMProps extends Properties
 	{
 		super(p);
 		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
-		if(props[c]==null) props[c]=this;
+		if(props[c]==null)
+			props[c]=this;
 
 		try
 		{
@@ -444,7 +449,8 @@ public class CMProps extends Properties
 	public final String getPrivateStr(final String tagToGet)
 	{
 		final String s=getProperty(tagToGet);
-		if(s==null) return "";
+		if(s==null)
+			return "";
 		return s;
 	}
 
@@ -470,7 +476,8 @@ public class CMProps extends Properties
 		final String thisTag=this.getProperty(tagToGet);
 		if((thisTag==null)&&(props[MudHost.MAIN_HOST]!=null)&&(props[MudHost.MAIN_HOST]!=this))
 			return props[MudHost.MAIN_HOST].getStr(tagToGet);
-		if(thisTag==null) return "";
+		if(thisTag==null)
+			return "";
 		return thisTag;
 	}
 
@@ -485,7 +492,8 @@ public class CMProps extends Properties
 		String thisTag=this.getProperty(tagToGet);
 		if((thisTag==null)&&(props[MudHost.MAIN_HOST]!=null)&&(props[MudHost.MAIN_HOST]!=this))
 			thisTag=props[MudHost.MAIN_HOST].getStr(tagToGet);
-		if((thisTag==null)||(thisTag.length()==0)) return defaultVal;
+		if((thisTag==null)||(thisTag.length()==0))
+			return defaultVal;
 		return thisTag;
 	}
 
@@ -701,13 +709,15 @@ public class CMProps extends Properties
 
 	public static final void setBoolVar(final Bool varNum, final boolean val)
 	{
-		if(varNum==null) return;
+		if(varNum==null)
+			return;
 		p().sysBools[varNum.ordinal()]=Boolean.valueOf(val);
 	}
 
 	public static final void setBoolAllVar(final Bool varNum, final boolean val)
 	{
-		if(varNum==null) return;
+		if(varNum==null)
+			return;
 		for(final CMProps p : CMProps.props)
 			if(p!=null)
 				p.sysBools[varNum.ordinal()]=Boolean.valueOf(val);
@@ -715,35 +725,44 @@ public class CMProps extends Properties
 
 	public static final void setIntVar(final Int varNum, final int val)
 	{
-		if(varNum==null) return ;
+		if(varNum==null)
+			return ;
 		p().sysInts[varNum.ordinal()]=Integer.valueOf(val);
 	}
 
 	public static final void setIntVar(final Int varNum, String val)
 	{
-		if(varNum==null) return ;
-		if(val==null) val="0";
+		if(varNum==null)
+			return ;
+		if(val==null)
+			val="0";
 		p().sysInts[varNum.ordinal()]=Integer.valueOf(CMath.s_int(val.trim()));
 	}
 
 	public static final void setIntVar(final Int varNum, String val, final int defaultValue)
 	{
-		if(varNum==null) return ;
-		if((val==null)||(val.length()==0)) val=""+defaultValue;
+		if(varNum==null)
+			return ;
+		if((val==null)||(val.length()==0))
+			val=""+defaultValue;
 		p().sysInts[varNum.ordinal()]=Integer.valueOf(CMath.s_int(val.trim()));
 	}
 
 	public static final void setListVar(final StrList varType, String[] var)
 	{
-		if(varType==null) return ;
-		if(var==null) var=new String[0];
+		if(varType==null)
+			return ;
+		if(var==null)
+			var=new String[0];
 		p().sysLists[varType.ordinal()]=var;
 	}
 
 	public static final void addListVar(final StrList varType, String var)
 	{
-		if(varType==null) return ;
-		if(var==null) return;
+		if(varType==null)
+			return ;
+		if(var==null)
+			return;
 		final CMProps prop=p();
 		if(prop.sysLists[varType.ordinal()]==null)
 			setListVar(varType, new String[0]);
@@ -754,20 +773,24 @@ public class CMProps extends Properties
 
 	public static final void setVar(final Str varNum, String val, final boolean upperFy)
 	{
-		if(val==null) val="";
+		if(val==null)
+			val="";
 		setUpLowVar(varNum,upperFy?val.toUpperCase():val);
 	}
 
 	public static final void setVar(final Str varNum, String val)
 	{
-		if(val==null) val="";
+		if(val==null)
+			val="";
 		setUpLowVar(varNum,val.toUpperCase());
 	}
 
 	private static final void setUpLowVar(final CMProps props, final Str varNum, String val)
 	{
-		if(varNum==null) return ;
-		if(val==null) val="";
+		if(varNum==null)
+			return ;
+		if(val==null)
+			val="";
 		props.sysVars[varNum.ordinal()]=val;
 		if(varNum==Str.PKILL)
 		{
@@ -791,7 +814,8 @@ public class CMProps extends Properties
 
 	public static final void setWhitelist(final CMProps props, final int listNum, final String list)
 	{
-		if((listNum<0)||(listNum>=NUMWL_SYSTEM)) return ;
+		if((listNum<0)||(listNum>=NUMWL_SYSTEM))
+			return ;
 		if(props.whiteLists.length<=listNum)
 			props.whiteLists=Arrays.copyOf(props.whiteLists, listNum+1);
 		props.whiteLists[listNum]=new Pattern[0];
@@ -842,7 +866,8 @@ public class CMProps extends Properties
 		for(String field : fields)
 		{
 			field=field.trim();
-			if(field.length()==0) continue;
+			if(field.length()==0)
+				continue;
 			final int typeIndex=field.lastIndexOf(' ');
 			if(typeIndex<0)
 			{
@@ -888,8 +913,10 @@ public class CMProps extends Properties
 	{
 		final CMProps p=p();
 		ExpertiseLibrary.SkillCostDefinition pair=p.skillsCost.get(id.toUpperCase());
-		if(pair==null) pair=p.skillsCost.get("");
-		if(pair==null) pair=new ExpertiseLibrary.SkillCostDefinition(ExpertiseLibrary.CostType.TRAIN, "1");
+		if(pair==null)
+			pair=p.skillsCost.get("");
+		if(pair==null)
+			pair=new ExpertiseLibrary.SkillCostDefinition(ExpertiseLibrary.CostType.TRAIN, "1");
 		return pair;
 	}
 
@@ -897,8 +924,10 @@ public class CMProps extends Properties
 	{
 		final CMProps p=p();
 		ExpertiseLibrary.SkillCostDefinition pair=p.commonCost.get(id.toUpperCase());
-		if(pair==null) pair=p.commonCost.get("");
-		if(pair==null) pair=new ExpertiseLibrary.SkillCostDefinition(ExpertiseLibrary.CostType.TRAIN, "1");
+		if(pair==null)
+			pair=p.commonCost.get("");
+		if(pair==null)
+			pair=new ExpertiseLibrary.SkillCostDefinition(ExpertiseLibrary.CostType.TRAIN, "1");
 		return pair;
 	}
 
@@ -906,8 +935,10 @@ public class CMProps extends Properties
 	{
 		final CMProps p=p();
 		ExpertiseLibrary.SkillCostDefinition pair=p.languageCost.get(id.toUpperCase());
-		if(pair==null) pair=p.languageCost.get("");
-		if(pair==null) pair=new ExpertiseLibrary.SkillCostDefinition(ExpertiseLibrary.CostType.TRAIN, "1");
+		if(pair==null)
+			pair=p.languageCost.get("");
+		if(pair==null)
+			pair=new ExpertiseLibrary.SkillCostDefinition(ExpertiseLibrary.CostType.TRAIN, "1");
 		return pair;
 	}
 
@@ -954,7 +985,8 @@ public class CMProps extends Properties
 
 	private static final double setExceptionCosts(final String val, final Map<String,Double> set)
 	{
-		if(val==null) return 0;
+		if(val==null)
+			return 0;
 		set.clear();
 		final List<String> V=CMParms.parseCommas(val,true);
 		String s=null;
@@ -1000,13 +1032,15 @@ public class CMProps extends Properties
 			}
 		}
 		final String val = rawListData.getProperty(key);
-		if(val == null) Log.errOut("CMProps","Unable to load required list file entry: "+key);
+		if(val == null)
+			Log.errOut("CMProps","Unable to load required list file entry: "+key);
 		return val;
 	}
 
 	public static final int getListFileFirstInt(final ListFile var)
 	{
-		if(var==null) return -1;
+		if(var==null)
+			return -1;
 		if(p().sysLstFileLists[var.ordinal()]==null)
 			p().sysLstFileLists[var.ordinal()]=new int[]{(CMath.s_int(getRawListFileEntry(var.getKey())))};
 		return ((int[])p().sysLstFileLists[var.ordinal()])[0];
@@ -1014,7 +1048,8 @@ public class CMProps extends Properties
 
 	public static final String[] getListFileStringList(final ListFile var)
 	{
-		if(var==null) return new String[0];
+		if(var==null)
+			return new String[0];
 		if(p().sysLstFileLists[var.ordinal()]==null)
 			p().sysLstFileLists[var.ordinal()]=CMParms.toStringArray(CMParms.parseCommas(getRawListFileEntry(var.getKey()),true));
 		return ((String[])p().sysLstFileLists[var.ordinal()]);
@@ -1022,7 +1057,8 @@ public class CMProps extends Properties
 
 	public static final int[] getListFileIntList(final ListFile var)
 	{
-		if(var==null) return new int[0];
+		if(var==null)
+			return new int[0];
 		if(p().sysLstFileLists[var.ordinal()]==null)
 		{
 			final List<String> V=CMParms.parseCommas(getRawListFileEntry(var.getKey()), true);
@@ -1036,7 +1072,8 @@ public class CMProps extends Properties
 
 	private static final Object[][] getSLstFileVar(final ListFile var)
 	{
-		if(var==null) return new Object[0][];
+		if(var==null)
+			return new Object[0][];
 		if(p().sysLstFileLists[var.ordinal()]==null)
 		{
 			final String[] baseArray = CMParms.toStringArray(CMParms.parseCommas(getRawListFileEntry(var.getKey()),false));
@@ -1053,7 +1090,8 @@ public class CMProps extends Properties
 
 	public static final Object[][][] getListFileGrid(final ListFile var)
 	{
-		if(var==null) return new String[0][0][];
+		if(var==null)
+			return new String[0][0][];
 		if(p().sysLstFileLists[var.ordinal()]==null)
 		{
 			final List<String> V=CMParms.parseSemicolons(getRawListFileEntry(var.getKey()),true);
@@ -1078,7 +1116,8 @@ public class CMProps extends Properties
 	public static final String getListFileValue(final ListFile varCode, final int listIndex)
 	{
 		final Object[] set = getSLstFileVar(varCode)[listIndex];
-		if(set.length==1) return (String)set[0];
+		if(set.length==1)
+			return (String)set[0];
 		return (String)CMLib.dice().pick(set);
 	}
 
@@ -1086,7 +1125,8 @@ public class CMProps extends Properties
 	{
 		final Object[][] allVars = getSLstFileVar(varCode);
 		final Object[] set = allVars[hash % allVars.length];
-		if(set.length==1) return (String)set[0];
+		if(set.length==1)
+			return (String)set[0];
 		return (String)CMLib.dice().pick(set);
 	}
 
@@ -1129,7 +1169,8 @@ public class CMProps extends Properties
 			CMLib.lang().setLocale(getStr("LANGUAGE"),getStr("COUNTRY"));
 
 		TIME_TICK=getLong("TICKTIME");
-		if(TIME_TICK<500) TIME_TICK=4000;
+		if(TIME_TICK<500)
+			TIME_TICK=4000;
 		TIME_TICK_DOUBLE=TIME_TICK;
 		TICKS_PER_RLMIN=(int)Math.round(60000.0/TIME_TICK_DOUBLE);
 		TICKS_PER_RLHOUR=TICKS_PER_RLMIN * 60;
@@ -1238,7 +1279,8 @@ public class CMProps extends Properties
 				setListVar(strListVar, CMParms.parseCommas(list,false).toArray(new String[0]));
 		}
 
-		if(CMLib.color()!=null) CMLib.color().clearLookups();
+		if(CMLib.color()!=null)
+			CMLib.color().clearLookups();
 		if(getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))
 			setIntVar(Int.MANACONSUMEAMT,-100);
 		else
@@ -1473,7 +1515,8 @@ public class CMProps extends Properties
 		int fpIndex=0;
 		for(final String filterStr : filter)
 		{
-			if(filterStr.length()==0) continue;
+			if(filterStr.length()==0)
+				continue;
 			fdex=upp.indexOf(filterStr);
 			int ctr=0;
 			while((fdex>=0)&&((++ctr)<999))
@@ -1490,9 +1533,11 @@ public class CMProps extends Properties
 					{
 						if(!Character.isWhitespace(msg.charAt(fdex)))
 						{
-							if(newMsg==null) newMsg=new StringBuffer(msg);
+							if(newMsg==null)
+								newMsg=new StringBuffer(msg);
 							newMsg.setCharAt(fdex,filterPattern[fpIndex]);
-							if((++fpIndex)>=filterPattern.length) fpIndex=0;
+							if((++fpIndex)>=filterPattern.length)
+								fpIndex=0;
 							upp=newMsg.toString().toUpperCase();
 						}
 						else
@@ -1581,7 +1626,8 @@ public class CMProps extends Properties
 		for(int p=0;p<(page.size()-1);p++)
 		{
 			String s=page.get(p).trim();
-			if(s.startsWith("#")||s.startsWith("!")) continue;
+			if(s.startsWith("#")||s.startsWith("!"))
+				continue;
 			if((s.endsWith("\\"))&&(!s.endsWith("\\\\")))
 			{
 				s=s.substring(0,s.length()-1)+page.get(p+1).trim();

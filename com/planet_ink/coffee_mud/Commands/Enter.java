@@ -59,7 +59,8 @@ public class Enter extends Go
 				if(enterThis instanceof Rideable)
 				{
 					final Command C=CMClass.getCommand("Sit");
-					if(C!=null) return C.execute(mob,commands,metaFlags);
+					if(C!=null)
+						return C.execute(mob,commands,metaFlags);
 				}
 				else
 				if((enterThis instanceof DeadBody)

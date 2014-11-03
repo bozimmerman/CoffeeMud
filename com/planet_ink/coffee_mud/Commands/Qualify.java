@@ -300,7 +300,8 @@ public class Qualify  extends Skills
 							col=0;
 						}
 					}
-					if(!msg.toString().endsWith("\n\r")) msg.append("\n\r");
+					if(!msg.toString().endsWith("\n\r"))
+						msg.append("\n\r");
 				}
 				else
 				{

@@ -93,7 +93,8 @@ public class Chant_StarGazing extends Chant
 
 		final MOB mob=(MOB)affected;
 
-		if(tickID!=Tickable.TICKID_MOB) return true;
+		if(tickID!=Tickable.TICKID_MOB)
+			return true;
 		if(!mob.isInCombat())
 		{
 			if(!mob.location().getArea().getClimateObj().canSeeTheStars(mob.location()))

@@ -152,7 +152,8 @@ public class Templar extends Cleric
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!(ticking instanceof MOB)) return super.tick(ticking,tickID);
+		if(!(ticking instanceof MOB))
+			return super.tick(ticking,tickID);
 		final MOB myChar=(MOB)ticking;
 		if((tickID==Tickable.TICKID_MOB)&&((--tickDown)<=0))
 		{
@@ -160,7 +161,8 @@ public class Templar extends Cleric
 			if(myChar.fetchEffect("Prayer_AuraStrife")==null)
 			{
 				final Ability A=CMClass.getAbility("Prayer_AuraStrife");
-				if(A!=null) A.invoke(myChar,myChar,true,0);
+				if(A!=null)
+					A.invoke(myChar,myChar,true,0);
 			}
 		}
 		return super.tick(myChar,tickID);

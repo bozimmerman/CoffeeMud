@@ -107,7 +107,8 @@ public class Spell_ReverseGravity extends Spell
 				if(invoker!=null)
 				{
 					final Ability me=invoker.fetchEffect(ID());
-					if(me!=null) me.setProficiency(0);
+					if(me!=null)
+						me.setProficiency(0);
 				}
 			}
 			else
@@ -118,7 +119,8 @@ public class Spell_ReverseGravity extends Spell
 				{
 					mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL, L("Gravity returns to normal.."));
 					final Ability me=mob.location().fetchEffect(ID());
-					if(me!=null) me.setProficiency(0);
+					if(me!=null)
+						me.setProficiency(0);
 				}
 			}
 			while(childrenAffects.size()>0)

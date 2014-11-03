@@ -58,7 +58,8 @@ public class Prop_StayAboard extends Property
 			return false;
 		synchronized(this)
 		{
-			if(noRepeat) return true;
+			if(noRepeat)
+				return true;
 			try
 			{
 				noRepeat=true;
@@ -101,7 +102,8 @@ public class Prop_StayAboard extends Property
 		super.affectPhyStats(E, affectableStats);
 		synchronized(this)
 		{
-			if(noRepeat) return;
+			if(noRepeat)
+				return;
 			try
 			{
 				noRepeat=true;

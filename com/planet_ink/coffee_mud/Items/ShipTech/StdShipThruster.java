@@ -60,7 +60,8 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof StdShipThruster)) return false;
+		if(!(E instanceof StdShipThruster))
+			return false;
 		return super.sameAs(E);
 	}
 	@Override public double getFuelEfficiency() { return fuelEfficiency; }

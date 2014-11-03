@@ -103,7 +103,8 @@ public class StdPersonalShield extends StdElecItem implements Armor
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof StdPersonalShield)) return false;
+		if(!(E instanceof StdPersonalShield))
+			return false;
 		return super.sameAs(E);
 	}
 
@@ -147,7 +148,8 @@ public class StdPersonalShield extends StdElecItem implements Armor
 						weaponTech=((Electronics)msg.tool()).techLevel();
 					final int myTech=techLevel();
 					final int techDiff=Math.max(Math.min(myTech-weaponTech,10),-10);
-					if(techDiff!= 0) successFactor+=(0.05)*techDiff;
+					if(techDiff!= 0)
+						successFactor+=(0.05)*techDiff;
 					if(doesShield(mob, msg, successFactor))
 					{
 						final long powerConsumed=Math.round(msg.value()*m.getEfficiencyPct());
@@ -249,7 +251,8 @@ public class StdPersonalShield extends StdElecItem implements Armor
 	@Override
 	public boolean canWear(MOB mob, long where)
 	{
-		if(where==0) return (whereCantWear(mob)==0);
+		if(where==0)
+			return (whereCantWear(mob)==0);
 		if((rawProperLocationBitmap()&where)!=where)
 			return false;
 		return mob.freeWearPositions(where,getClothingLayer(),getLayerAttributes())>0;

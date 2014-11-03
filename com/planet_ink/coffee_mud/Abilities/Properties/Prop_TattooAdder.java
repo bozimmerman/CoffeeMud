@@ -41,8 +41,10 @@ public class Prop_TattooAdder extends Property
 
 	public int tattooCode()
 	{
-		if(tattooCode>=0) return tattooCode;
-		if(affected==null) return -1;
+		if(tattooCode>=0)
+			return tattooCode;
+		if(affected==null)
+			return -1;
 		if(affected instanceof Drink)
 			tattooCode= CMMsg.TYP_DRINK;
 		else
@@ -75,7 +77,8 @@ public class Prop_TattooAdder extends Property
 	public void applyTattooCodes(MOB mob, boolean addOnly, boolean subOnly)
 	{
 		String tattooName=text();
-		if(tattooName.length()==0) return;
+		if(tattooName.length()==0)
+			return;
 
 		boolean tattooPlus=true;
 		boolean tattooMinus=false;
@@ -98,10 +101,13 @@ public class Prop_TattooAdder extends Property
 		}
 
 		final boolean silent=tattooName.startsWith("~");
-		if(silent) tattooName=tattooName.substring(1);
+		if(silent)
+			tattooName=tattooName.substring(1);
 
-		if(addOnly) tattooMinus=false;
-		if(subOnly) tattooPlus=false;
+		if(addOnly)
+			tattooMinus=false;
+		if(subOnly)
+			tattooPlus=false;
 
 		final MOB.Tattoo pT=CMLib.database().parseTattoo(tattooName);
 		final MOB.Tattoo T = mob.findTattoo(pT.tattooName);

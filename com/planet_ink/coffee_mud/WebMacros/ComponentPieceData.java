@@ -41,9 +41,11 @@ public class ComponentPieceData extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String compID=httpReq.getUrlParameter("COMPONENT");
-		if(compID==null) return " @break@";
+		if(compID==null)
+			return " @break@";
 		final String last=httpReq.getUrlParameter("COMPONENTPIECE");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		if(last.length()>0)
 		{
 			final String fixedCompID=compID.replace(' ','_').toUpperCase();
@@ -51,7 +53,8 @@ public class ComponentPieceData extends StdWebMacro
 			if(parms.containsKey("MASK")||parms.containsKey("MASKEDIT"))
 			{
 				String s=httpReq.getUrlParameter(fixedCompID+"_PIECE_MASK_"+last);
-				if(s==null) s="";
+				if(s==null)
+					s="";
 				str.append(s);
 			}
 			if(parms.containsKey("STRING"))
@@ -68,7 +71,8 @@ public class ComponentPieceData extends StdWebMacro
 			{
 				final String type=httpReq.getUrlParameter(fixedCompID+"_PIECE_TYPE_"+last);
 				String strType=httpReq.getUrlParameter(fixedCompID+"_PIECE_STRING_"+last);
-				if(strType==null) strType="item name";
+				if(strType==null)
+					strType="item name";
 				final AbilityComponent.CompType C=(AbilityComponent.CompType)CMath.s_valueOf(AbilityComponent.CompType.values(), type);
 				if((C==null)||(C==AbilityComponent.CompType.STRING))
 				{
@@ -106,7 +110,8 @@ public class ComponentPieceData extends StdWebMacro
 			if(parms.containsKey("AMOUNT")||parms.containsKey("AMOUNTEDIT"))
 			{
 				String s=httpReq.getUrlParameter(fixedCompID+"_PIECE_AMOUNT_"+last);
-				if(s==null) s="1";
+				if(s==null)
+					s="1";
 				str.append(s);
 			}
 			if(parms.containsKey("CONSUMED"))

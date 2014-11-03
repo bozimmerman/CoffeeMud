@@ -88,7 +88,8 @@ public class Chant_CrystalGrowth extends Chant
 					break;
 				}
 				ItemCraftor.ItemKeyPair pair=null;
-				if(A!=null) pair=A.craftAnyItem(material);
+				if(A!=null)
+					pair=A.craftAnyItem(material);
 				if(pair==null)
 				{
 					mob.tell(L("The chant failed for some reason..."));
@@ -97,9 +98,11 @@ public class Chant_CrystalGrowth extends Chant
 				final Item building=pair.item;
 				final Item key=pair.key;
 				mob.location().addItem(building,ItemPossessor.Expire.Resource);
-				if(key!=null) mob.location().addItem(key,ItemPossessor.Expire.Resource);
+				if(key!=null)
+					mob.location().addItem(key,ItemPossessor.Expire.Resource);
 				final Ability A2=CMClass.getAbility("Chant_Brittle");
-				if(A2!=null) building.addNonUninvokableEffect(A2);
+				if(A2!=null)
+					building.addNonUninvokableEffect(A2);
 
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("a tiny crystal fragment drops out of the stone, swells and grows, forming into @x1.",building.name()));
 				mob.location().recoverPhyStats();

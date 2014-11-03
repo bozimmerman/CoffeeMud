@@ -114,7 +114,8 @@ public class Prayer_InfuseBalance extends Prayer
 		if(CMLib.law().getClericInfusion(target)!=null)
 		{
 
-			if(target instanceof Room) D=CMLib.law().getClericInfused((Room)target);
+			if(target instanceof Room)
+				D=CMLib.law().getClericInfused((Room)target);
 			if(D!=null)
 				mob.tell(L("There is already an infused aura of @x1 around @x2.",D.Name(),target.name(mob)));
 			else
@@ -153,7 +154,8 @@ public class Prayer_InfuseBalance extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(D!=null) setMiscText(D.Name());
+				if(D!=null)
+					setMiscText(D.Name());
 				if((target instanceof Room)
 				&&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
 				{

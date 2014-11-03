@@ -121,7 +121,8 @@ public class Prayer_AuraDivineEdict extends Prayer
 
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(invoker()==null) return true;
+		if(invoker()==null)
+			return true;
 
 		final Room R=invoker().location();
 		for(int i=0;i<R.numInhabitants();i++)

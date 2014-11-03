@@ -42,7 +42,8 @@ public class CheckAuthCode extends StdWebMacro
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return null;
 		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-		if(mob==null) return null;
+		if(mob==null)
+			return null;
 		Hashtable auths=(Hashtable)httpReq.getRequestObjects().get("AUTHS_"+mob.Name().toUpperCase().trim());
 		if(auths==null)
 		{
@@ -99,14 +100,16 @@ public class CheckAuthCode extends StdWebMacro
 		final java.util.Map<String,String> parms=parseParms(parm);
 		boolean finalCondition=false;
 		final Hashtable auths=getAuths(httpReq);
-		if(auths==null) return "false";
+		if(auths==null)
+			return "false";
 		final boolean sysop=((String)auths.get("SYSOP")).equalsIgnoreCase("true");
 		for(String key : parms.keySet())
 		{
 			final String equals=parms.get(key);
 			boolean not=false;
 			boolean thisCondition=true;
-			if(key.startsWith("||")) key=key.substring(2);
+			if(key.startsWith("||"))
+				key=key.substring(2);
 			if(key.startsWith("!"))
 			{
 				key=key.substring(1);

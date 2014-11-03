@@ -46,8 +46,10 @@ public class Trap_RatPit extends Trap_SnakePit
 	@Override
 	protected Item getCagedAnimal(MOB mob)
 	{
-		if(mob==null) return null;
-		if(mob.location()==null) return null;
+		if(mob==null)
+			return null;
+		if(mob.location()==null)
+			return null;
 		for(int i=0;i<mob.location().numItems();i++)
 		{
 			final Item I=mob.location().getItem(i);

@@ -59,7 +59,8 @@ public class Thief_Bribe extends ThiefSkill
 		final Vector V=new Vector();
 		V.addElement(commands.elementAt(0));
 		final MOB target=this.getTarget(mob,V,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		commands.removeElementAt(0);
 

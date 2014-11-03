@@ -44,7 +44,8 @@ public class Song_Knowledge extends Song
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(invoker==null) return;
+		if(invoker==null)
+			return;
 		affectableStats.setStat( CharStats.STAT_WISDOM, ( affectableStats.getStat( CharStats.STAT_WISDOM ) + 2 + getXLEVELLevel( invoker() ) ) );
 		affectableStats.setStat( CharStats.STAT_INTELLIGENCE, ( affectableStats.getStat( CharStats.STAT_INTELLIGENCE ) + 2 + getXLEVELLevel( invoker() ) ) );
 	}

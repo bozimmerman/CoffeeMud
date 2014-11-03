@@ -84,9 +84,11 @@ public class Thief_ContractHit extends ThiefSkill
 				hitting=true;
 				final int num=CMLib.dice().roll(1,3,3);
 				int level=mob.phyStats().level();
-				if(level>(invoker.phyStats().level()+(2*super.getXLEVELLevel(invoker)))) level=(invoker.phyStats().level()+(2*super.getXLEVELLevel(invoker)));
+				if(level>(invoker.phyStats().level()+(2*super.getXLEVELLevel(invoker))))
+					level=(invoker.phyStats().level()+(2*super.getXLEVELLevel(invoker)));
 				CharClass C=CMClass.getCharClass("StdCharClass");
-				if(C==null) C=mob.charStats().getCurrentClass();
+				if(C==null)
+					C=mob.charStats().getCurrentClass();
 				for(int i=0;i<num;i++)
 				{
 					final MOB M=CMClass.getMOB("Assassin");
@@ -112,9 +114,11 @@ public class Thief_ContractHit extends ThiefSkill
 					M.setVictim(mob);
 					mob.setVictim(M);
 					Ability A=M.fetchAbility("Thief_Hide");
-					if(A!=null) A.invoke(M,M,true,0);
+					if(A!=null)
+						A.invoke(M,M,true,0);
 					A=M.fetchAbility("Thief_BackStab");
-					if(A!=null) A.invoke(M,mob,false,0);
+					if(A!=null)
+						A.invoke(M,mob,false,0);
 				}
 			}
 			else
@@ -195,7 +199,8 @@ public class Thief_ContractHit extends ThiefSkill
 			mob.tell(L("Who would you like to put a hit out on?"));
 			return false;
 		}
-		if(mob.location()==null) return false;
+		if(mob.location()==null)
+			return false;
 		if(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_CITY)
 		{
 			mob.tell(L("You need to be on the streets to put out a hit."));
@@ -232,7 +237,8 @@ public class Thief_ContractHit extends ThiefSkill
 		}
 
 		int level=target.phyStats().level();
-		if(level>(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))) level=(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
+		if(level>(mob.phyStats().level()+(2*super.getXLEVELLevel(mob))))
+			level=(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 		final double goldRequired=100.0*level;
 		final String localCurrency=CMLib.beanCounter().getCurrency(mob.location());
 		if(CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
@@ -246,7 +252,8 @@ public class Thief_ContractHit extends ThiefSkill
 			return false;
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
-		if(levelDiff<0) levelDiff=0;
+		if(levelDiff<0)
+			levelDiff=0;
 		levelDiff*=10;
 		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 

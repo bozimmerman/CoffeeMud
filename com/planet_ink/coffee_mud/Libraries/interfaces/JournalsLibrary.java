@@ -98,8 +98,10 @@ public interface JournalsLibrary extends CMLibrary
 		@Override
 		public int compareTo(JournalEntry o)
 		{
-			if(date < o.date) return -1;
-			if(date > o.date) return 1;
+			if(date < o.date)
+				return -1;
+			if(date > o.date)
+				return 1;
 			return 0;
 		}
 		public StringBuffer derivedBuildMessage=null;
@@ -185,7 +187,8 @@ public interface JournalsLibrary extends CMLibrary
 		{
 			if(mask.length()>0)
 			{
-				if(M==null) return false;
+				if(M==null)
+					return false;
 				return CMLib.masking().maskCheck(mask, M, true);
 			}
 			return true;

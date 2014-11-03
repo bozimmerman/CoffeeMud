@@ -156,7 +156,8 @@ public class StdTickGroup implements TickableGroup, Cloneable
 				{
 					if(((MOB)C.getClientObject()).getStartRoom()==R)
 					{
-						if(localItems==null) localItems=new LinkedList<TickClient>();
+						if(localItems==null)
+							localItems=new LinkedList<TickClient>();
 						localItems.add(C);
 					}
 				}
@@ -164,7 +165,8 @@ public class StdTickGroup implements TickableGroup, Cloneable
 				if((C.getClientObject() instanceof ItemTicker)
 				&&((((ItemTicker)C.getClientObject()).properLocation()==R)))
 				{
-					if(localItems==null) localItems=new LinkedList<TickClient>();
+					if(localItems==null)
+						localItems=new LinkedList<TickClient>();
 					localItems.add(C);
 				}
 				break;
@@ -172,7 +174,8 @@ public class StdTickGroup implements TickableGroup, Cloneable
 				if((C.getClientObject() instanceof ItemTicker)
 				&&((((ItemTicker)C.getClientObject()).properLocation()==R)))
 				{
-					if(localItems==null) localItems=new LinkedList<TickClient>();
+					if(localItems==null)
+						localItems=new LinkedList<TickClient>();
 					localItems.add(C);
 				}
 				break;
@@ -180,13 +183,15 @@ public class StdTickGroup implements TickableGroup, Cloneable
 				if((C.getClientObject() instanceof MOB)
 				&&(((MOB)C.getClientObject()).getStartRoom()==R))
 				{
-					if(localItems==null) localItems=new LinkedList<TickClient>();
+					if(localItems==null)
+						localItems=new LinkedList<TickClient>();
 					localItems.add(C);
 				}
 				break;
 			}
 		}
-		if(localItems == null) return null;
+		if(localItems == null)
+			return null;
 		return localItems.iterator();
 	}
 

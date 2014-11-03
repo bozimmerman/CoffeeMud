@@ -48,8 +48,10 @@ public class EndlessThinSky extends StdThinGrid
 		setDescription("");
 		xsize=CMProps.getIntVar(CMProps.Int.SKYSIZE);
 		ysize=CMProps.getIntVar(CMProps.Int.SKYSIZE);
-		if(xsize<0) xsize=xsize*-1;
-		if(ysize<0) ysize=ysize*-1;
+		if(xsize<0)
+			xsize=xsize*-1;
+		if(ysize<0)
+			ysize=ysize*-1;
 		if((xsize==0)||(ysize==0))
 		{
 			xsize=3;
@@ -93,7 +95,8 @@ public class EndlessThinSky extends StdThinGrid
 		// the adjacent rooms created by this method should also take
 		// into account the possibility that they are on the edge.
 		// it does NOT
-		if(ox==null) ox=CMClass.getExit("Open");
+		if(ox==null)
+			ox=CMClass.getExit("Open");
 		Room R2=null;
 		final Room[] doorsR=R.rawDoors();
 		if((y==0)

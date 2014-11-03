@@ -132,7 +132,8 @@ public class Dance_Square extends Dance
 						int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
 						if((!friends.contains(follower))&&(follower!=mob))
 							affectType=affectType|CMMsg.MASK_MALICIOUS;
-						if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
+						if(auto)
+							affectType=affectType|CMMsg.MASK_ALWAYS;
 
 						if((CMLib.flags().canBeSeenBy(invoker,follower)
 							&&(follower.fetchEffect(this.ID())==null)))

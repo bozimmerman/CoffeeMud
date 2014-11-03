@@ -91,8 +91,10 @@ public class Chant_FeelCold extends Chant
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
-		if(tickID!=Tickable.TICKID_MOB) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(tickID!=Tickable.TICKID_MOB)
+			return false;
 		if((affecting()!=null)&&(affecting() instanceof MOB))
 		{
 			final MOB M=(MOB)affecting();
@@ -142,7 +144,8 @@ public class Chant_FeelCold extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

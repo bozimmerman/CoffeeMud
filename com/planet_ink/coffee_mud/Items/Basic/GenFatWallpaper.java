@@ -76,13 +76,15 @@ public class GenFatWallpaper extends GenWallpaper
 	protected int getMyCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
+			if(code.equalsIgnoreCase(CODES[i]))
+				return i;
 		return -1;
 	}
 	@Override
 	public String getStat(String code)
 	{
-		if(getMyCodeNum(code)<0) return super.getStat(code);
+		if(getMyCodeNum(code)<0)
+			return super.getStat(code);
 		switch(getMyCodeNum(code))
 		{
 		case 0:
@@ -104,8 +106,10 @@ public class GenFatWallpaper extends GenWallpaper
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenFatWallpaper)) return false;
-		if(!super.sameAs(E)) return false;
+		if(!(E instanceof GenFatWallpaper))
+			return false;
+		if(!super.sameAs(E))
+			return false;
 		for(int i=0;i<CODES.length;i++)
 			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
 			{

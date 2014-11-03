@@ -73,7 +73,8 @@ public class Spell_Teleport extends Spell
 		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
 		final Area A=CMLib.map().findArea(areaName);
 		final Vector candidates=new Vector();
-		if(A!=null) candidates.addAll(new XVector(A.getProperMap()));
+		if(A!=null)
+			candidates.addAll(new XVector(A.getProperMap()));
 		for(int c=candidates.size()-1;c>=0;c--)
 			if(!CMLib.flags().canAccess(mob,(Room)candidates.elementAt(c)))
 				candidates.removeElementAt(c);
@@ -136,7 +137,8 @@ public class Spell_Teleport extends Spell
 		{
 			mob.location().send(mob,msg);
 			final Set<MOB> h=properTargets(mob,givenTarget,false);
-			if(h==null) return false;
+			if(h==null)
+				return false;
 
 			final Room thisRoom=mob.location();
 			for (final Object element : h)

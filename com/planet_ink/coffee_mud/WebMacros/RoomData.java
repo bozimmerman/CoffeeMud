@@ -70,7 +70,8 @@ public class RoomData extends StdWebMacro
 
 	public static String getItemCode(Room R, Item I)
 	{
-		if(I==null) return "";
+		if(I==null)
+			return "";
 		for(int i=0;i<R.numItems();i++)
 			if(R.getItem(i)==I)
 				return Long.toString((I.ID()+"/"+I.Name()+"/"+I.displayText()).hashCode()<<5)+i;
@@ -79,7 +80,8 @@ public class RoomData extends StdWebMacro
 
 	public static String getItemCode(List<Item> allitems, Item I)
 	{
-		if(I==null) return "";
+		if(I==null)
+			return "";
 		int x=0;
 		for (final Item I2 : allitems)
 		{
@@ -99,7 +101,8 @@ public class RoomData extends StdWebMacro
 
 	public static String getItemCode(MOB M, Item I)
 	{
-		if(I==null) return "";
+		if(I==null)
+			return "";
 		for(int i=0;i<M.numItems();i++)
 			if(M.getItem(i)==I)
 				return Long.toString( ( I.ID() + "/" + I.Name() + "/" + I.displayText() ).hashCode() << 5 ) + i;
@@ -108,7 +111,8 @@ public class RoomData extends StdWebMacro
 
 	public static String getMOBCode(Room R, MOB M)
 	{
-		if(M==null) return "";
+		if(M==null)
+			return "";
 		int code=0;
 		for(int i=0;i<R.numInhabitants();i++)
 		{
@@ -124,7 +128,8 @@ public class RoomData extends StdWebMacro
 
 	public static String getMOBCode(List<MOB> mobs, MOB M)
 	{
-		if(M==null) return "";
+		if(M==null)
+			return "";
 		int i=0;
 		for (final MOB M2 : mobs)
 		{
@@ -137,11 +142,13 @@ public class RoomData extends StdWebMacro
 
 	public static Item getItemFromCode(MOB M, String code)
 	{
-		if(M==null) return getItemFromCode(getItemCache(),code);
+		if(M==null)
+			return getItemFromCode(getItemCache(),code);
 		for(int i=0;i<M.numItems();i++)
 			if(getItemCode(M,M.getItem(i)).equals(code))
 				return M.getItem(i);
-		if(code.length()>2) code=code.substring(0,code.length()-2);
+		if(code.length()>2)
+			code=code.substring(0,code.length()-2);
 		for(int i=0;i<M.numItems();i++)
 			if(getItemCode(M,M.getItem(i)).startsWith(code))
 				return M.getItem(i);
@@ -150,11 +157,13 @@ public class RoomData extends StdWebMacro
 
 	public static Item getItemFromCode(Room R, String code)
 	{
-		if(R==null) return getItemFromCode(getItemCache(),code);
+		if(R==null)
+			return getItemFromCode(getItemCache(),code);
 		for(int i=0;i<R.numItems();i++)
 			if(getItemCode(R,R.getItem(i)).equals(code))
 				return R.getItem(i);
-		if(code.length()>2) code=code.substring(0,code.length()-2);
+		if(code.length()>2)
+			code=code.substring(0,code.length()-2);
 		for(int i=0;i<R.numItems();i++)
 			if(getItemCode(R,R.getItem(i)).startsWith(code))
 				return R.getItem(i);
@@ -170,7 +179,8 @@ public class RoomData extends StdWebMacro
 			if(getItemCode(allitems,I).equals(code))
 				return I;
 		}
-		if(code.length()>2) code=code.substring(0,code.length()-2);
+		if(code.length()>2)
+			code=code.substring(0,code.length()-2);
 		for (final Item I : allitems)
 		{
 			if(getItemCode(allitems,I).startsWith(code))
@@ -181,11 +191,13 @@ public class RoomData extends StdWebMacro
 
 	public static MOB getMOBFromCode(Room R, String code)
 	{
-		if(R==null) return getMOBFromCode(getMOBCache(),code);
+		if(R==null)
+			return getMOBFromCode(getMOBCache(),code);
 		for(int i=0;i<R.numInhabitants();i++)
 			if(getMOBCode(R,R.fetchInhabitant(i)).equals(code))
 				return R.fetchInhabitant(i);
-		if(code.length()>2) code=code.substring(0,code.length()-2);
+		if(code.length()>2)
+			code=code.substring(0,code.length()-2);
 		for(int i=0;i<R.numInhabitants();i++)
 			if(getMOBCode(R,R.fetchInhabitant(i)).startsWith(code))
 				return R.fetchInhabitant(i);
@@ -201,7 +213,8 @@ public class RoomData extends StdWebMacro
 			if(getMOBCode(allmobs,M2).equals(code))
 				return M2;
 		}
-		if(code.length()>2) code=code.substring(0,code.length()-2);
+		if(code.length()>2)
+			code=code.substring(0,code.length()-2);
 		for (final MOB M2 : allmobs)
 		{
 			if(getMOBCode(allmobs,M2).startsWith(code))
@@ -281,27 +294,32 @@ public class RoomData extends StdWebMacro
 		else
 		{
 			final Item I=CMClass.getItem(MATCHING);
-			if((I!=null)&&(!(I instanceof ArchonOnly))) return I;
+			if((I!=null)&&(!(I instanceof ArchonOnly)))
+				return I;
 		}
 		return null;
 	}
 
 	public static MOB getReferenceMOB(MOB M)
 	{
-		if(M==null) return null;
+		if(M==null)
+			return null;
 		for (final MOB M2 : getMOBCache())
 		{
-			if(M.sameAs(M2)) return M2;
+			if(M.sameAs(M2))
+				return M2;
 		}
 		return null;
 	}
 
 	public static Item getReferenceItem(Item I)
 	{
-		if(I==null) return null;
+		if(I==null)
+			return null;
 		for (final Item I2 : getItemCache())
 		{
-			if(I.sameAs(I2)) return I2;
+			if(I.sameAs(I2))
+				return I2;
 		}
 		return null;
 	}
@@ -320,7 +338,8 @@ public class RoomData extends StdWebMacro
 					for(int i3=0;i3<M3.numItems();i3++)
 					{
 						final Item I3=M3.getItem(i3);
-						if(I3!=null) I3.stopTicking();
+						if(I3!=null)
+							I3.stopTicking();
 					}
 				}
 			}
@@ -330,7 +349,8 @@ public class RoomData extends StdWebMacro
 
 	public static boolean isAllNum(String str)
 	{
-		if(str.length()==0) return false;
+		if(str.length()==0)
+			return false;
 		for(int c=0;c<str.length();c++)
 			if((!Character.isDigit(str.charAt(c)))
 			&&(str.charAt(c)!='-'))
@@ -412,12 +432,14 @@ public class RoomData extends StdWebMacro
 			for(final Enumeration<Ability> a =R.effects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
-				if(A!=null) affects.add(A);
+				if(A!=null)
+					affects.add(A);
 			}
 			for(final Enumeration<Behavior> b=R.behaviors();b.hasMoreElements();)
 			{
 				final Behavior B=b.nextElement();
-				if(B!=null) behavs.add(B);
+				if(B!=null)
+					behavs.add(B);
 			}
 		}
 	}
@@ -464,7 +486,8 @@ public class RoomData extends StdWebMacro
 	public static String getPairValue(final List<Pair<String,String>> fixtures, final String var)
 	{
 		final Pair<String,String> p = getPair(fixtures,var);
-		if(p==null) return null;
+		if(p==null)
+			return null;
 		return p.second;
 	}
 
@@ -675,7 +698,8 @@ public class RoomData extends StdWebMacro
 		{
 			if(p.first.startsWith(vars[0]) && (p.first.length()>vars[0].length()) && Character.isDigit(p.first.charAt(vars[0].length())))
 			{
-				if(p.second==null) continue;
+				if(p.second==null)
+					continue;
 				final List<Pair<String,String>> mPs=findPairs(submittedRoomPairsList,vars[0],p.second);
 				boolean found=false;
 				for(final Pair<String,String> mP : mPs)
@@ -749,7 +773,8 @@ public class RoomData extends StdWebMacro
 		{
 			if((!foundSubmittedRoomPairsList.contains(p)) && p.first.startsWith(vars[0]) && (p.first.length()>vars[0].length()) && Character.isDigit(p.first.charAt(vars[0].length())))
 			{
-				if((p.second==null)||(p.second.length()==0)) continue;
+				if((p.second==null)||(p.second.length()==0))
+					continue;
 				final List<Pair<String,String>> sPs=findPairs(currentRoomPairsList,vars[0],p.second);
 				boolean found=false;
 				for(final Pair<String,String> sP : sPs)
@@ -863,10 +888,14 @@ public class RoomData extends StdWebMacro
 			else
 				mergeParams.put(p.first, p.second);
 		}
-		if(!mergeParams.containsKey("AFFECT1")) mergeParams.put("AFFECT1", "");
-		if(!mergeParams.containsKey("BEHAV1")) mergeParams.put("BEHAV1", "");
-		if(!mergeParams.containsKey("MOB1")) mergeParams.put("MOB1", "");
-		if(!mergeParams.containsKey("ITEM1")) mergeParams.put("ITEM1", "");
+		if(!mergeParams.containsKey("AFFECT1"))
+			mergeParams.put("AFFECT1", "");
+		if(!mergeParams.containsKey("BEHAV1"))
+			mergeParams.put("BEHAV1", "");
+		if(!mergeParams.containsKey("MOB1"))
+			mergeParams.put("MOB1", "");
+		if(!mergeParams.containsKey("ITEM1"))
+			mergeParams.put("ITEM1", "");
 		return mergeReq;
 	}
 
@@ -875,8 +904,10 @@ public class RoomData extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("ROOM");
-		if(last==null) return " @break@";
-		if(last.length()==0) return "";
+		if(last==null)
+			return " @break@";
+		if(last.length()==0)
+			return "";
 
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
@@ -1013,7 +1044,8 @@ public class RoomData extends StdWebMacro
 					final String climstr=Places.CLIMATE_DESCS[i];
 					final int mask=(int)CMath.pow(2,i-1);
 					str.append("<OPTION VALUE="+mask);
-					if((climate>=0)&&((climate&mask)>0)) str.append(" SELECTED");
+					if((climate>=0)&&((climate&mask)>0))
+						str.append(" SELECTED");
 					str.append(">"+climstr);
 				}
 			}
@@ -1164,7 +1196,8 @@ public class RoomData extends StdWebMacro
 					{
 						final String MATCHING=httpReq.getUrlParameter("ITEM"+i);
 						final String WORN=httpReq.getUrlParameter("ITEMWORN"+i);
-						if(MATCHING==null) break;
+						if(MATCHING==null)
+							break;
 						final Item I2=getItemFromAnywhere(R,MATCHING);
 						if(I2!=null)
 						{

@@ -48,13 +48,15 @@ public class InTheAir extends StdRoom
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg)) return false;
+		if(!super.okMessage(myHost,msg))
+			return false;
 		return isOkAirAffect(this,msg);
 	}
 
 	public static void airAffects(Room room, CMMsg msg)
 	{
-		if(CMLib.flags().isSleeping(room)) return;
+		if(CMLib.flags().isSleeping(room))
+			return;
 		boolean foundReversed=false;
 		boolean foundNormal=false;
 		final Vector<Physical> needToFall=new Vector<Physical>();
@@ -103,7 +105,8 @@ public class InTheAir extends StdRoom
 		for(final Physical P : mightNeedAdjusting)
 		{
 			final Ability A=P.fetchEffect("Falling");
-			if(A!=null) A.setProficiency(avg);
+			if(A!=null)
+				A.setProficiency(avg);
 		}
 		final TrackingLibrary tracker = CMLib.tracking();
 		for(final Physical P : needToFall)

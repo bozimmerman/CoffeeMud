@@ -60,7 +60,8 @@ public class Test extends StdCommand
 	public static String semiSpellList=null;
 	public static String semiSpellList()
 	{
-		if(semiSpellList!=null) return semiSpellList;
+		if(semiSpellList!=null)
+			return semiSpellList;
 		final StringBuffer str=new StringBuffer("");
 		for (final String spell : spells)
 			str.append(spell+";");
@@ -72,7 +73,8 @@ public class Test extends StdCommand
 	public static String maliciousSemiSpellList=null;
 	public static String maliciousSemiSpellList()
 	{
-		if(maliciousSemiSpellList!=null) return maliciousSemiSpellList;
+		if(maliciousSemiSpellList!=null)
+			return maliciousSemiSpellList;
 		final StringBuffer str=new StringBuffer("");
 		for (final String maliciousspell : maliciousspells)
 			str.append(maliciousspell+";");
@@ -147,7 +149,8 @@ public class Test extends StdCommand
 		if(code<2)
 		{
 			mob1.addItem(I1);
-			if(code==1) I1.wearEvenIfImpossible(mob1);
+			if(code==1)
+				I1.wearEvenIfImpossible(mob1);
 		}
 		else
 		{
@@ -166,7 +169,8 @@ public class Test extends StdCommand
 			if(code<2)
 			{
 				mob2.addItem(I2);
-				if(code==1) I2.wearEvenIfImpossible(mob2);
+				if(code==1)
+					I2.wearEvenIfImpossible(mob2);
 			}
 			else
 			{
@@ -426,7 +430,8 @@ public class Test extends StdCommand
 			if(what.equalsIgnoreCase("statcreationspeed"))
 			{
 				int times=CMath.s_int(CMParms.combine(commands,2));
-				if(times<=0) times=9999999;
+				if(times<=0)
+					times=9999999;
 				mob.tell(L("times=@x1",""+times));
 				Object newStats=null;
 				long time=System.currentTimeMillis();
@@ -1063,9 +1068,11 @@ public class Test extends StdCommand
 				mob.tell(L("Test#13-1: @x1",RideZapper.accountForYourself()));
 				IS=giveTo(CMClass.getItem("Boat"),RideZapper,mobs[0],mobs[1],3);
 				msg=CMClass.getMsg(mobs[0],IS[0],null,CMMsg.MSG_MOUNT,L("<S-NAME> mount(s) <T-NAMESELF>."));
-				if(R.okMessage(mobs[0],msg)) R.send(mobs[0],msg);
+				if(R.okMessage(mobs[0],msg))
+					R.send(mobs[0],msg);
 				msg=CMClass.getMsg(mobs[1],IS[1],null,CMMsg.MSG_MOUNT,L("<S-NAME> mount(s) <T-NAMESELF>."));
-				if(R.okMessage(mobs[1],msg)) R.send(mobs[1],msg);
+				if(R.okMessage(mobs[1],msg))
+					R.send(mobs[1],msg);
 				if(mobs[0].riding()!=IS[0]){ mob.tell(L("Error13-1")); return false;}
 				if(mobs[1].riding()==IS[1]){ mob.tell(L("Error13-2")); return false;}
 			}
@@ -1079,9 +1086,11 @@ public class Test extends StdCommand
 				mob.tell(L("Test#14-1: @x1",WearZapper.accountForYourself()));
 				IS=giveTo(CMClass.getWeapon("Sword"),WearZapper,mobs[0],mobs[1],0);
 				msg=CMClass.getMsg(mobs[0],IS[0],null,CMMsg.MSG_WIELD,L("<S-NAME> wield(s) <T-NAMESELF>."));
-				if(R.okMessage(mobs[0],msg)) R.send(mobs[0],msg);
+				if(R.okMessage(mobs[0],msg))
+					R.send(mobs[0],msg);
 				msg=CMClass.getMsg(mobs[1],IS[1],null,CMMsg.MSG_WIELD,L("<S-NAME> wield(s) <T-NAMESELF>."));
-				if(R.okMessage(mobs[1],msg)) R.send(mobs[1],msg);
+				if(R.okMessage(mobs[1],msg))
+					R.send(mobs[1],msg);
 				if(IS[0].amWearingAt(Wearable.IN_INVENTORY)){ mob.tell(L("Error14-1")); return false;}
 				if(!IS[1].amWearingAt(Wearable.IN_INVENTORY)){ mob.tell(L("Error14-2")); return false;}
 			}
@@ -1478,11 +1487,14 @@ public class Test extends StdCommand
 				for(int g=0;g<15;g++)
 				{
 					long gcenterX=r.nextLong();
-					if(gcenterX<0) gcenterX=gcenterX*-1;
+					if(gcenterX<0)
+						gcenterX=gcenterX*-1;
 					long gcenterY=r.nextLong();
-					if(gcenterY<0) gcenterY=gcenterY*-1;
+					if(gcenterY<0)
+						gcenterY=gcenterY*-1;
 					long gcenterZ=r.nextLong();
-					if(gcenterZ<0) gcenterZ=gcenterZ*-1;
+					if(gcenterZ<0)
+						gcenterZ=gcenterZ*-1;
 					final long grp=g;
 					for(int i=0;i<100;i++)
 					{

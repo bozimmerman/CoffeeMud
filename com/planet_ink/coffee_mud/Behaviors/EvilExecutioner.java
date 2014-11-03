@@ -60,8 +60,10 @@ public class EvilExecutioner  extends StdBehavior
 	@Override
 	public boolean grantsAggressivenessTo(MOB M)
 	{
-		if(M==null) return false;
-		if(CMLib.flags().isBoundOrHeld(M)) return false;
+		if(M==null)
+			return false;
+		if(CMLib.flags().isBoundOrHeld(M))
+			return false;
 		if((!M.isMonster())&&(!doPlayers))
 			return false;
 		for(final Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)

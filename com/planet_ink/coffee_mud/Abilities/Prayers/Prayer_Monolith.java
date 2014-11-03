@@ -77,8 +77,10 @@ public class Prayer_Monolith extends Prayer
 				if(msg.sourceMinor()==CMMsg.TYP_ADVANCE)
 				{
 					Item w=mob.fetchWieldedItem();
-					if(w==null) w=mob.myNaturalWeapon();
-					if(w==null) return false;
+					if(w==null)
+						w=mob.myNaturalWeapon();
+					if(w==null)
+						return false;
 					final Room room=mob.location();
 					final CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,L("^F^<FIGHT^><S-NAME> hack(s) at the monolith of ice with @x1.^</FIGHT^>^?",w.name()));
 					CMLib.color().fixSourceFightColor(msg2);
@@ -144,8 +146,10 @@ public class Prayer_Monolith extends Prayer
 				if(msg.sourceMinor()==CMMsg.TYP_ADVANCE)
 				{
 					Item w=mob.fetchWieldedItem();
-					if(w==null) w=mob.myNaturalWeapon();
-					if(w==null) return false;
+					if(w==null)
+						w=mob.myNaturalWeapon();
+					if(w==null)
+						return false;
 					if(mob.location().show(mob,null,w,CMMsg.MSG_WEAPONATTACK,L("^F^<FIGHT^><S-NAME> hack(s) at the monolith of stone with <O-NAME>.^</FIGHT^>^?")))
 					{
 						amountRemaining-=mob.phyStats().damage();

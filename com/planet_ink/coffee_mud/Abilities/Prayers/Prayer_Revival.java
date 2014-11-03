@@ -132,7 +132,8 @@ public class Prayer_Revival extends Prayer
 					if(M.getWorshipCharID().length()>0)
 					{
 						final Ability A=CMClass.getAbility("Prayer_Faithless");
-						if(A!=null) A.invoke(mob,M,true,0);
+						if(A!=null)
+							A.invoke(mob,M,true,0);
 					}
 					if(M.getWorshipCharID().length()==0)
 					{

@@ -84,7 +84,8 @@ public class Prayer_Absorption extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(target==mob)
 		{
 			mob.tell(L("Umm.. ok. Done."));

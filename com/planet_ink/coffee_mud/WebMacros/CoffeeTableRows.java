@@ -41,20 +41,26 @@ public class CoffeeTableRows extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		if(parm.length()==0) parm="DATERANGE&LOGINS&MOSTONLINE&AVERAGEONLINE&TOTALHOURS&NEWPLAYERS&DEATHS&PKDEATHS&CLASSCHANGES&PURGES&MARRIAGES&BIRTHS&DIVORCES";
+		if(parm.length()==0)
+			parm="DATERANGE&LOGINS&MOSTONLINE&AVERAGEONLINE&TOTALHOURS&NEWPLAYERS&DEATHS&PKDEATHS&CLASSCHANGES&PURGES&MARRIAGES&BIRTHS&DIVORCES";
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final PairSVector<String,String> orderedParms=parseOrderedParms(parm,false);
 		String header=parms.get("HEADER");
-		if(header==null) header="";
+		if(header==null)
+			header="";
 		String footer=parms.get("FOOTER");
-		if(footer==null) footer="";
+		if(footer==null)
+			footer="";
 		int scale=CMath.s_int(httpReq.getUrlParameter("SCALE"));
-		if(scale<=0) scale=1;
+		if(scale<=0)
+			scale=1;
 		int days=CMath.s_int(httpReq.getUrlParameter("DAYS"));
 		days=days*scale;
-		if(days<=0) days=0;
+		if(days<=0)
+			days=0;
 		String code=httpReq.getUrlParameter("CODE");
-		if((code==null)||(code.length()==0)) code="*";
+		if((code==null)||(code.length()==0))
+			code="*";
 
 		final Calendar ENDQ=Calendar.getInstance();
 		ENDQ.add(Calendar.DATE,-days);
@@ -121,7 +127,8 @@ public class CoffeeTableRows extends StdWebMacro
 					for(int x=0;x<allSkills.size();x++)
 						T.totalUp("A"+((Ability)allSkills.elementAt(x)).ID().toUpperCase(),totals[x]);
 				}
-				if(scale==0) break;
+				if(scale==0)
+					break;
 			}
 			int x=-1;
 			Ability A=null;
@@ -194,7 +201,8 @@ public class CoffeeTableRows extends StdWebMacro
 					for(int x=0;x<CMLib.quests().numQuests();x++)
 						T.totalUp("U"+T.tagFix(CMLib.quests().fetchQuest(x).name()),totals[x]);
 				}
-				if(scale==0) break;
+				if(scale==0)
+					break;
 			}
 			Quest Q=null;
 			for(int x=0;x<CMLib.quests().numQuests();x++)
@@ -254,7 +262,8 @@ public class CoffeeTableRows extends StdWebMacro
 			{
 				final CoffeeTableRow T=(CoffeeTableRow)set.elementAt(s);
 				T.totalUp(code,totals);
-				if(T.highestOnline()>highestOnline) highestOnline=T.highestOnline();
+				if(T.highestOnline()>highestOnline)
+					highestOnline=T.highestOnline();
 				numberOnlineTotal+=T.numberOnlineTotal();
 				numberOnlineCounter+=T.numberOnlineCounter();
 			}
@@ -266,7 +275,8 @@ public class CoffeeTableRows extends StdWebMacro
 			for(int i=0;i<orderedParms.size();i++)
 			{
 				final String key=orderedParms.getFirst(i);
-				if(key.equals("COLSPAN")) colspan=" COLSPAN="+orderedParms.getSecond(i);
+				if(key.equals("COLSPAN"))
+					colspan=" COLSPAN="+orderedParms.getSecond(i);
 				else if(key.equalsIgnoreCase("DATERANGE")) table.append("<TD"+colspan+">"+header+CMLib.time().date2DateString(curTime+1)+" - "+CMLib.time().date2DateString(lastCur-1)+footer+"</TD>");
 				else if(key.equalsIgnoreCase("DATESTART")) table.append("<TD"+colspan+">"+header+CMLib.time().date2DateString(curTime+1)+footer+"</TD>");
 				else if(key.equalsIgnoreCase("DATEEND")) table.append("<TD"+colspan+">"+header+CMLib.time().date2DateString(lastCur)+footer+"</TD>");
@@ -286,7 +296,8 @@ public class CoffeeTableRows extends StdWebMacro
 				else if(key.equalsIgnoreCase("LEVELSUP")) table.append("<TD"+colspan+">"+header+totals[CoffeeTableRow.STAT_LEVELSGAINED]+footer+"</TD>");
 			}
 			table.append("</TR>");
-			if(scale==0) break;
+			if(scale==0)
+				break;
 		}
 		return clearWebMacros(table);
 	}

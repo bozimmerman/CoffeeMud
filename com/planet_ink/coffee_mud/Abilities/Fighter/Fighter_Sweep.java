@@ -61,11 +61,13 @@ public class Fighter_Sweep extends FighterSkill
 		if((mob!=null)&&(target!=null))
 		{
 			final Set<MOB> h=properTargets(mob,target,false);
-			if(h.size()<2) return Ability.QUALITY_INDIFFERENT;
+			if(h.size()<2)
+				return Ability.QUALITY_INDIFFERENT;
 			for(final MOB M : h)
 				if((M.rangeToTarget()<0)||(M.rangeToTarget()>0))
 					h.remove(M);
-			if(h.size()<2) return Ability.QUALITY_INDIFFERENT;
+			if(h.size()<2)
+				return Ability.QUALITY_INDIFFERENT;
 		}
 		return super.castingQuality(mob,target);
 	}

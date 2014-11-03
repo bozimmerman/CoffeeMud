@@ -115,7 +115,8 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 	@Override
 	public void bumpVal(CMObject E, int type)
 	{
-		if((E instanceof MOB)&&(((MOB)E).isMonster())) return;
+		if((E instanceof MOB)&&(((MOB)E).isMonster()))
+			return;
 
 		if(type==STAT_SPECIAL_NUMONLINE)
 		{
@@ -145,8 +146,10 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 			bumpVal("J"+H.size(),type);
 			int pct=0;
 			for (final MOB mob2 : H)
-				if(!mob2.isMonster()) pct++;
-			if(pct==0)pct=1;
+				if(!mob2.isMonster())
+					pct++;
+			if(pct==0)
+				pct=1;
 			bumpVal("P"+pct,type);
 		}
 		else
@@ -165,7 +168,8 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 			startTime=start;
 			endTime=end;
 			final List<XMLLibrary.XMLpiece> all=CMLib.xml().parseAllXML(data);
-			if((all==null)||(all.size()==0)) return;
+			if((all==null)||(all.size()==0))
+				return;
 			highestOnline=CMLib.xml().getIntFromPieces(all,"HIGH");
 			numberOnlineTotal=CMLib.xml().getIntFromPieces(all,"NUMONLINE");
 			numberOnlineCounter=CMLib.xml().getIntFromPieces(all,"NUMCOUNT");

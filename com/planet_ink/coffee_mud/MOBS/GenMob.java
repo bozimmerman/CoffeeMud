@@ -93,7 +93,8 @@ public class GenMob extends StdMOB
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenMob)) return false;
+		if(!(E instanceof GenMob))
+			return false;
 		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)
 			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))

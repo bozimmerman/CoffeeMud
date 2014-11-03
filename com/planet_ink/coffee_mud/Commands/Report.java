@@ -60,7 +60,8 @@ public class Report extends Skills
 			   buf.append(L(", and need @x1 to level",""+mob.getExpNeededLevel()));
 			buf.append(".\"");
 			final Command C=CMClass.getCommand("Say");
-			if(C!=null) C.execute(mob,CMParms.parse(buf.toString()),metaFlags);
+			if(C!=null)
+				C.execute(mob,CMParms.parse(buf.toString()),metaFlags);
 		}
 		else
 		{
@@ -72,7 +73,8 @@ public class Report extends Skills
 
 				final StringBuffer aff=new StringBuffer("\n\r^!I am affected by:^? ");
 				final Command C=CMClass.getCommand("Affect");
-				if(C!=null) aff.append(C.executeInternal(mob,metaFlags,mob).toString());
+				if(C!=null)
+					aff.append(C.executeInternal(mob,metaFlags,mob).toString());
 				say.append(aff.toString());
 			}
 			if("STATS".startsWith(s)||(s.equalsIgnoreCase("ALL")))

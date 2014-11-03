@@ -132,7 +132,8 @@ public class Polls extends StdLibrary implements PollManager
 	public Iterator<Poll> getPollList()
 	{
 		final List<Poll> L=getCache();
-		if(L!=null) return L.iterator();
+		if(L!=null)
+			return L.iterator();
 		final List<DatabaseEngine.PollData> V=CMLib.database().DBReadPollList();
 		final List<Poll> list=new Vector<Poll>();
 		for(final DatabaseEngine.PollData data : V)
@@ -221,8 +222,10 @@ public class Polls extends StdLibrary implements PollManager
 			P.setName(possName);
 			P.setDescription(CMLib.genEd().prompt(mob,P.getDescription(),++showNumber,showFlag,L("Introduction")));
 			P.setSubject(CMLib.genEd().prompt(mob,P.getSubject(),++showNumber,showFlag,L("Results Header")));
-			if(P.getSubject().length()>250) P.setSubject(P.getSubject().substring(0,250));
-			if(P.getAuthor().length()==0) P.setAuthor(mob.Name());
+			if(P.getSubject().length()>250)
+				P.setSubject(P.getSubject().substring(0,250));
+			if(P.getAuthor().length()==0)
+				P.setAuthor(mob.Name());
 			P.setQualZapper(CMLib.genEd().prompt(mob,P.getQualZapper(),++showNumber,showFlag,L("Qual. Mask"),true));
 			P.setFlags((CMLib.genEd().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_ACTIVE),++showNumber,showFlag,L("Poll Active")))?
 				CMath.setb(P.getFlags(),Poll.FLAG_ACTIVE):CMath.unsetb(P.getFlags(),Poll.FLAG_ACTIVE));
@@ -237,7 +240,8 @@ public class Polls extends StdLibrary implements PollManager
 			P.setFlags((CMLib.genEd().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_NOTATLOGIN),++showNumber,showFlag,L("POLL CMD only")))?
 					CMath.setb(P.getFlags(),Poll.FLAG_NOTATLOGIN):CMath.unsetb(P.getFlags(),Poll.FLAG_NOTATLOGIN));
 			String expirationDate="NA";
-			if(P.getExpiration()>0) expirationDate=CMLib.time().date2String(P.getExpiration());
+			if(P.getExpiration()>0)
+				expirationDate=CMLib.time().date2String(P.getExpiration());
 
 			expirationDate=CMLib.genEd().prompt(mob,expirationDate,++showNumber,showFlag,L("Exp. Date (MM/DD/YYYY HH:MM AP)"),true);
 			if((expirationDate.trim().length()==0)||(expirationDate.equalsIgnoreCase("NA")))
@@ -250,7 +254,8 @@ public class Polls extends StdLibrary implements PollManager
 			{
 				final Poll.PollOption PO=P.getOptions().get(i);
 				PO.text=CMLib.genEd().prompt(mob,PO.text,++showNumber,showFlag,L("Vote Option"),true);
-				if(PO.text.length()==0) del.addElement(PO);
+				if(PO.text.length()==0)
+					del.addElement(PO);
 			}
 			for(int i=0;i<del.size();i++)
 				P.getOptions().remove(del.elementAt(i));
@@ -371,9 +376,11 @@ public class Polls extends StdLibrary implements PollManager
 	@Override
 	public boolean loadPollIfNecessary(Poll P)
 	{
-		if(P.loaded()) return true;
+		if(P.loaded())
+			return true;
 		final DatabaseEngine.PollData data =CMLib.database().DBReadPoll(P.getName());
-		if(data==null) return false;
+		if(data==null)
+			return false;
 		P.setName(data.name);
 		P.setAuthor(data.byName);
 		P.setSubject(data.subject);

@@ -82,7 +82,8 @@ public class RaceData extends StdWebMacro
 					if(!behav.equalsIgnoreCase("REJUV"))
 					{
 						String prof=httpReq.getUrlParameter(c+"ESTATSV"+num);
-						if(prof==null) prof="0";
+						if(prof==null)
+							prof="0";
 						prof=""+CMath.s_int(prof);
 						theclasses.addElement(behav,prof);
 					}
@@ -141,7 +142,8 @@ public class RaceData extends StdWebMacro
 				if(behav.length()>0)
 				{
 					String prof=httpReq.getUrlParameter(c+"CSTATSV"+num);
-					if(prof==null) prof="0";
+					if(prof==null)
+						prof="0";
 					prof=""+CMath.s_int(prof);
 					theclasses.addElement(behav,prof);
 				}
@@ -199,7 +201,8 @@ public class RaceData extends StdWebMacro
 				if(behav.length()>0)
 				{
 					String prof=httpReq.getUrlParameter(c+"CSTATEV"+num);
-					if(prof==null) prof="0";
+					if(prof==null)
+						prof="0";
 					prof=""+CMath.s_int(prof);
 					theclasses.addElement(behav,prof);
 				}
@@ -247,7 +250,8 @@ public class RaceData extends StdWebMacro
 
 	public static StringBuffer itemList(List<? extends Item> items, char c, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, boolean one)
 	{
-		if(items==null) items=new Vector();
+		if(items==null)
+			items=new Vector();
 		final StringBuffer str=new StringBuffer("");
 		final Vector classes=new Vector();
 		List<Item> itemlist=null;
@@ -268,7 +272,8 @@ public class RaceData extends StdWebMacro
 				}
 				if(I2!=null)
 					classes.addElement(I2);
-				if(one) break;
+				if(one)
+					break;
 			}
 		}
 		else
@@ -286,7 +291,8 @@ public class RaceData extends StdWebMacro
 			str.append("<TR>");
 			str.append("<TD WIDTH=90%>");
 			str.append("<SELECT ONCHANGE=\"AddItem(this);\" NAME="+c+"ITEM"+(numItems)+">");
-			if(!one) str.append("<OPTION VALUE=\"\">Delete!");
+			if(!one)
+				str.append("<OPTION VALUE=\"\">Delete!");
 			if(items.contains(I))
 				str.append("<OPTION SELECTED VALUE=\""+RoomData.getItemCode(classes,I)+"\">"+I.Name()+" ("+I.ID()+")");
 			else
@@ -302,7 +308,8 @@ public class RaceData extends StdWebMacro
 		}
 		str.append("<TR><TD WIDTH=90%>");
 		str.append("<SELECT ONCHANGE=\"AddItem(this);\" NAME="+c+"ITEM"+(numItems+1)+">");
-		if(!one) str.append("<OPTION SELECTED VALUE=\"\">Select a new Item");
+		if(!one)
+			str.append("<OPTION SELECTED VALUE=\"\">Select a new Item");
 		for(final Item I : itemlist)
 		{
 			if(one&&(classes.contains(I)))
@@ -366,11 +373,14 @@ public class RaceData extends StdWebMacro
 				if(behav.length()>0)
 				{
 					String prof=httpReq.getUrlParameter("RABPOF"+num);
-					if(prof==null) prof="0";
+					if(prof==null)
+						prof="0";
 					String qual=httpReq.getUrlParameter("RABQUA"+num);
-					if(qual==null) qual="";
+					if(qual==null)
+						qual="";
 					String levl=httpReq.getUrlParameter("RABLVL"+num);
-					if(levl==null) levl="0";
+					if(levl==null)
+						levl="0";
 					String roles=null;
 					if(supportsRoles)
 						roles=httpReq.getUrlParameter("RABROL"+num);
@@ -415,7 +425,8 @@ public class RaceData extends StdWebMacro
 				}
 			}
 		}
-		if(font==null) font="<FONT COLOR=WHITE><B>";
+		if(font==null)
+			font="<FONT COLOR=WHITE><B>";
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 		for(int i=0;i<theclasses.size();i++)
 		{
@@ -493,9 +504,11 @@ public class RaceData extends StdWebMacro
 				if(behav.length()>0)
 				{
 					String parm=httpReq.getUrlParameter("REFPRM"+num);
-					if(parm==null) parm="";
+					if(parm==null)
+						parm="";
 					String levl=httpReq.getUrlParameter("REFLVL"+num);
-					if(levl==null) levl="0";
+					if(levl==null)
+						levl="0";
 					String roles=null;
 					if(supportsRoles)
 						roles=httpReq.getUrlParameter("REFROL"+num);
@@ -534,7 +547,8 @@ public class RaceData extends StdWebMacro
 				theclasses.addElement(ableID,ableParm,qualifyingLevel+"",roles);
 			}
 		}
-		if(font==null) font="<FONT COLOR=WHITE><B>";
+		if(font==null)
+			font="<FONT COLOR=WHITE><B>";
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 		for(int i=0;i<theclasses.size();i++)
 		{
@@ -601,7 +615,8 @@ public class RaceData extends StdWebMacro
 				if(behav.length()>0)
 				{
 					String prof=httpReq.getUrlParameter("CABPOF"+num);
-					if(prof==null) prof="0";
+					if(prof==null)
+						prof="0";
 					theclasses.addElement(behav,prof);
 				}
 				num++;
@@ -614,7 +629,8 @@ public class RaceData extends StdWebMacro
 			for(int i=0;i<ables.size();i++)
 				theclasses.addElement(ables.getFirst(i),ables.getSecond(i).toString());
 		}
-		if(font==null) font="<FONT COLOR=WHITE><B>";
+		if(font==null)
+			font="<FONT COLOR=WHITE><B>";
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 		for(int i=0;i<theclasses.size();i++)
 		{
@@ -666,7 +682,8 @@ public class RaceData extends StdWebMacro
 		}
 
 		String last=httpReq.getUrlParameter("RACE");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		if(last.length()>0)
 		{
 			if(parms.containsKey("ISGENERIC"))
@@ -705,32 +722,37 @@ public class RaceData extends StdWebMacro
 						if(s.toString().startsWith("<RACE>"))
 							s=new StringBuilder(s.toString().substring(6));
 						int limit=78;
-						if(parms.containsKey("LIMIT")) limit=CMath.s_int(parms.get("LIMIT"));
+						if(parms.containsKey("LIMIT"))
+							limit=CMath.s_int(parms.get("LIMIT"));
 						str.append(helpHelp(s,limit));
 					}
 				}
 				if(parms.containsKey("NAME"))
 				{
 					String old=httpReq.getUrlParameter("NAME");
-					if(old==null) old=R.name();
+					if(old==null)
+						old=R.name();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("CAT"))
 				{
 					String old=httpReq.getUrlParameter("CAT");
-					if(old==null) old=R.racialCategory();
+					if(old==null)
+						old=R.racialCategory();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("VWEIGHT"))
 				{
 					String old=httpReq.getUrlParameter("VWEIGHT");
-					if(old==null) old=""+R.weightVariance();
+					if(old==null)
+						old=""+R.weightVariance();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("BWEIGHT"))
 				{
 					String old=httpReq.getUrlParameter("BWEIGHT");
-					if(old==null) old=""+R.lightestWeight();
+					if(old==null)
+						old=""+R.lightestWeight();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("WEIGHT"))
@@ -746,31 +768,36 @@ public class RaceData extends StdWebMacro
 				if(parms.containsKey("VHEIGHT"))
 				{
 					String old=httpReq.getUrlParameter("VHEIGHT");
-					if(old==null) old=""+R.heightVariance();
+					if(old==null)
+						old=""+R.heightVariance();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("MHEIGHT"))
 				{
 					String old=httpReq.getUrlParameter("MHEIGHT");
-					if(old==null) old=""+R.shortestMale();
+					if(old==null)
+						old=""+R.shortestMale();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("FHEIGHT"))
 				{
 					String old=httpReq.getUrlParameter("FHEIGHT");
-					if(old==null) old=""+R.shortestFemale();
+					if(old==null)
+						old=""+R.shortestFemale();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("LEAVESTR"))
 				{
 					String old=httpReq.getUrlParameter("LEAVESTR");
-					if(old==null) old=""+R.leaveStr();
+					if(old==null)
+						old=""+R.leaveStr();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("ARRIVESTR"))
 				{
 					String old=httpReq.getUrlParameter("ARRIVESTR");
-					if(old==null) old=""+R.arriveStr();
+					if(old==null)
+						old=""+R.arriveStr();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("GENHELP"))
@@ -856,12 +883,14 @@ public class RaceData extends StdWebMacro
 				{
 					str.append("<TABLE WIDTH=100% BORDER=0><TR>");
 					String font=parms.get("FONT");
-					if(font==null) font="";
+					if(font==null)
+						font="";
 					int col=-1;
 					for(int i=0;i<Race.BODYPARTSTR.length;i++)
 					{
 						String old=httpReq.getUrlParameter("BODYPART"+i);
-						if(old==null) old=""+R.bodyMask()[i];
+						if(old==null)
+							old=""+R.bodyMask()[i];
 						if((++col)==4)
 						{
 							col=0;
@@ -992,7 +1021,8 @@ public class RaceData extends StdWebMacro
 						bodyKill=CMath.s_bool(R.makeGenRace().getStat("BODYKILL"));
 					else
 						bodyKill=old.equalsIgnoreCase("on");
-					if(bodyKill) str.append(" CHECKED , ");
+					if(bodyKill)
+						str.append(" CHECKED , ");
 				}
 				if(parms.containsKey("CANRIDE"))
 				{
@@ -1002,7 +1032,8 @@ public class RaceData extends StdWebMacro
 						canRide=R.useRideClass();
 					else
 						canRide=old.equalsIgnoreCase("on");
-					if(canRide) str.append(" CHECKED , ");
+					if(canRide)
+						str.append(" CHECKED , ");
 				}
 				if(parms.containsKey("DISFLAGS"))
 				{

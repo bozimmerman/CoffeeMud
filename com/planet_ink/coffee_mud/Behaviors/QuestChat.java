@@ -78,7 +78,8 @@ public class QuestChat extends MudChat
 								 if(myQuest!=null)
 								 {
 									 String stat=myQuest.getStat("CHAT:"+speaker.Name().toUpperCase());
-									 if(stat.length()>0) stat+=" ";
+									 if(stat.length()>0)
+									 	stat+=" ";
 									 myQuest.setStat("CHAT:"+speaker.Name().toUpperCase(),stat+codeStr);
 								 }
 							 }

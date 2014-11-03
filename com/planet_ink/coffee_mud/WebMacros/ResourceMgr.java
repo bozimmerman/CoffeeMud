@@ -44,7 +44,8 @@ public class ResourceMgr extends StdWebMacro
 		final String last=httpReq.getUrlParameter("RESOURCE");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("RESOURCE");
+			if(last!=null)
+				httpReq.removeUrlParameter("RESOURCE");
 			return "";
 		}
 		else

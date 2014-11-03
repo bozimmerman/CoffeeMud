@@ -155,7 +155,8 @@ public class Skill_Buffoonery extends BardSkill
 		commands.removeElementAt(commands.size()-1);
 
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		final Item targetItem=targetItem(target);
 		if(targetItem==null)

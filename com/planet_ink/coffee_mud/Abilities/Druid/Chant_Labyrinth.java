@@ -158,7 +158,8 @@ public class Chant_Labyrinth extends Chant
 				for(int m=0;m<everyone.size();m++)
 				{
 					final MOB follower=(MOB)everyone.elementAt(m);
-					if(follower==null) continue;
+					if(follower==null)
+						continue;
 					final Room newerRoom=((GridLocale)newRoom).getRandomGridChild();
 					final CMMsg enterMsg=CMClass.getMsg(follower,newerRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> appears out of thin air."));
 					final CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,verbalCastCode(mob,oldRoom,auto),L("<S-NAME> disappear(s) into the labyrinth."));

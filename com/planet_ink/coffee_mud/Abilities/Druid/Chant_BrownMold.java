@@ -94,7 +94,8 @@ public class Chant_BrownMold extends Chant
 		{
 			if(mob.location()!=null)
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> wither(s) away."));
-			if(mob.amDead()) mob.setLocation(null);
+			if(mob.amDead())
+				mob.setLocation(null);
 			mob.destroy();
 		}
 	}
@@ -109,7 +110,8 @@ public class Chant_BrownMold extends Chant
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 		{
 			unInvoke();
-			if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
+			if(msg.source().playerStats()!=null)
+				msg.source().playerStats().setLastUpdated(0);
 		}
 	}
 
@@ -196,7 +198,8 @@ public class Chant_BrownMold extends Chant
 			caster.tell(L("@x1 seems unwilling to follow you.",newMOB.name()));
 		else
 		{
-			if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
+			if(newMOB.getVictim()!=victim)
+				newMOB.setVictim(victim);
 			newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,L("<S-NAME> start(s) attacking <T-NAMESELF>!"));
 		}
  		return(newMOB);

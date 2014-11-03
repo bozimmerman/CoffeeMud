@@ -147,7 +147,8 @@ public class Ranger_Track extends StdAbility
 		if(V.size()>0)
 		{
 			mob.tell(L("You stop tracking."));
-			if((commands.size()==0)||(CMParms.combine(commands,0).equalsIgnoreCase("stop"))) return true;
+			if((commands.size()==0)||(CMParms.combine(commands,0).equalsIgnoreCase("stop")))
+				return true;
 		}
 
 		theTrail=null;

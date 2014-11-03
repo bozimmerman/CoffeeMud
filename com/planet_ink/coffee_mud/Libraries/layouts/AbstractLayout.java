@@ -49,10 +49,14 @@ public abstract class AbstractLayout implements LayoutManager
 
 	public static int getDirection(LayoutNode from, LayoutNode to)
 	{
-		if(to.coord()[1]<from.coord()[1]) return Directions.NORTH;
-		if(to.coord()[1]>from.coord()[1]) return Directions.SOUTH;
-		if(to.coord()[0]<from.coord()[0]) return Directions.WEST;
-		if(to.coord()[0]>from.coord()[0]) return Directions.EAST;
+		if(to.coord()[1]<from.coord()[1])
+			return Directions.NORTH;
+		if(to.coord()[1]>from.coord()[1])
+			return Directions.SOUTH;
+		if(to.coord()[0]<from.coord()[0])
+			return Directions.WEST;
+		if(to.coord()[0]>from.coord()[0])
+			return Directions.EAST;
 		return -1;
 	}
 

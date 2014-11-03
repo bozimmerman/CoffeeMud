@@ -57,11 +57,14 @@ public class RandomTeleporter extends ActiveTicker
 
 	public boolean okRoomForMe(Room currentRoom, Room newRoom)
 	{
-		if(currentRoom==null) return false;
-		if(newRoom==null) return false;
+		if(currentRoom==null)
+			return false;
+		if(newRoom==null)
+			return false;
 		if((nowander)&&((currentRoom.getArea()!=newRoom.getArea())))
 			return false;
-		if(restrictedLocales==null) return true;
+		if(restrictedLocales==null)
+			return true;
 		return !restrictedLocales.contains(Integer.valueOf(newRoom.domainType()));
 	}
 

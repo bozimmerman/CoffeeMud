@@ -86,7 +86,8 @@ public class Fighter_ReturnProjectile extends FighterSkill
 				String ammo="";
 				if(neww instanceof AmmunitionWeapon)
 					ammo=((AmmunitionWeapon)w).ammunitionType();
-				if(ammo.length()==0) return true;
+				if(ammo.length()==0)
+					return true;
 				if(ammo.endsWith("s"))
 					ammo=ammo.substring(0,ammo.length()-1);
 				ammo=CMLib.english().startWithAorAn(ammo);

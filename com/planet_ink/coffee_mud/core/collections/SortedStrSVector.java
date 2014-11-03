@@ -43,7 +43,8 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 	@Override
 	public synchronized boolean add(T arg0)
 	{
-		if(arg0==null) return false;
+		if(arg0==null)
+			return false;
 		if(size()==0)
 			return super.add(arg0);
 		int start=0;
@@ -134,8 +135,10 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 	@Override
 	public synchronized int indexOf(Object arg0)
 	{
-		if(arg0==null) return -1;
-		if(size()==0) return -1;
+		if(arg0==null)
+			return -1;
+		if(size()==0)
+			return -1;
 		int start=0;
 		int end=size()-1;
 		if(arg0 instanceof CMObject)
@@ -177,8 +180,10 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 	@Override
 	public synchronized T find(String arg0)
 	{
-		if(arg0==null) return null;
-		if(size()==0) return null;
+		if(arg0==null)
+			return null;
+		if(size()==0)
+			return null;
 		int start=0;
 		int end=size()-1;
 		while(start<=end)
@@ -199,8 +204,10 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 	@Override
 	public synchronized T find(T arg0)
 	{
-		if(arg0==null) return null;
-		if(size()==0) return null;
+		if(arg0==null)
+			return null;
+		if(size()==0)
+			return null;
 		int start=0;
 		int end=size()-1;
 		while(start<=end)

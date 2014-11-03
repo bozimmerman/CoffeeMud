@@ -76,7 +76,8 @@ public class Take extends StdCommand
 				commands.removeElementAt(commands.size()-1);
 
 			final int maxToGive=CMLib.english().calculateMaxToGive(mob,commands,true,victim,false);
-			if(maxToGive<0) return false;
+			if(maxToGive<0)
+				return false;
 
 			String thingToGive=CMParms.combine(commands,0);
 			int addendum=1;
@@ -91,8 +92,10 @@ public class Take extends StdCommand
 			||(thingToGive.toUpperCase().endsWith(".QP")))
 			{
 				int numToTake=1;
-				if(allFlag) numToTake=victim.getQuestPoint();
-				if(numToTake>maxToGive) numToTake=maxToGive;
+				if(allFlag)
+					numToTake=victim.getQuestPoint();
+				if(numToTake>maxToGive)
+					numToTake=maxToGive;
 				if((victim.getQuestPoint()<=0)||(victim.getQuestPoint()<numToTake))
 				{
 					if(victim.getQuestPoint()<=0)
@@ -125,7 +128,8 @@ public class Take extends StdCommand
 				&&(addendumStr.length()==0)
 				&&(!allFlag))
 					giveThis=victim.findItem(thingToGive);
-				if(giveThis==null) break;
+				if(giveThis==null)
+					break;
 				if(giveThis instanceof Item)
 				{
 					((Item)giveThis).unWear();
@@ -144,7 +148,8 @@ public class Take extends StdCommand
 				final CMMsg newMsg=CMClass.getMsg(victim,mob,giveThis,CMMsg.MASK_ALWAYS|CMMsg.MSG_GIVE,L("<T-NAME> take(s) <O-NAME> from <S-NAMESELF>."));
 				if(victim.location().okMessage(victim,newMsg))
 					victim.location().send(victim,newMsg);
-				if(!mob.isMine(giveThis)) mob.moveItemTo(giveThis);
+				if(!mob.isMine(giveThis))
+					mob.moveItemTo(giveThis);
 				if(giveThis instanceof Coins)
 					((Coins)giveThis).putCoinsBack();
 				if(giveThis instanceof RawMaterial)
@@ -157,19 +162,22 @@ public class Take extends StdCommand
 			{
 				commands.removeElementAt(commands.size()-1);
 				final Command C=CMClass.getCommand("Remove");
-				if(C!=null) C.execute(mob,commands,metaFlags);
+				if(C!=null)
+					C.execute(mob,commands,metaFlags);
 			}
 			else
 			if((commands.size()>1)&&(((String)commands.elementAt(1)).equalsIgnoreCase("off")))
 			{
 				commands.removeElementAt(1);
 				final Command C=CMClass.getCommand("Remove");
-				if(C!=null) C.execute(mob,commands,metaFlags);
+				if(C!=null)
+					C.execute(mob,commands,metaFlags);
 			}
 			else
 			{
 				final Command C=CMClass.getCommand("Get");
-				if(C!=null) C.execute(mob,commands,metaFlags);
+				if(C!=null)
+					C.execute(mob,commands,metaFlags);
 			}
 		}
 		return false;

@@ -51,8 +51,10 @@ public class Prop_Transporter extends Property implements TriggeredAffect
 
 	public int transCode()
 	{
-		if(transCode>=0) return transCode;
-		if(affected==null) return -1;
+		if(transCode>=0)
+			return transCode;
+		if(affected==null)
+			return -1;
 		if(affected instanceof Drink)
 			transCode= CMMsg.TYP_DRINK;
 		else

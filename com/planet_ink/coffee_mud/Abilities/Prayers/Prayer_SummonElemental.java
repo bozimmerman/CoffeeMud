@@ -73,7 +73,8 @@ public class Prayer_SummonElemental extends Prayer
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 		{
 			unInvoke();
-			if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
+			if(msg.source().playerStats()!=null)
+				msg.source().playerStats().setLastUpdated(0);
 		}
 	}
 
@@ -84,7 +85,8 @@ public class Prayer_SummonElemental extends Prayer
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
-			if(mob.amDead()) mob.setLocation(null);
+			if(mob.amDead())
+				mob.setLocation(null);
 			mob.destroy();
 		}
 	}
@@ -158,7 +160,8 @@ public class Prayer_SummonElemental extends Prayer
 		for(int i=0;i<types.length;i++)
 			if(text().toUpperCase().indexOf(types[i])>=0)
 				type=i;
-		if(type<0) type=CMLib.dice().roll(1,types.length,-1);
+		if(type<0)
+			type=CMLib.dice().roll(1,types.length,-1);
 		switch(type)
 		{
 		case 0:
@@ -210,7 +213,8 @@ public class Prayer_SummonElemental extends Prayer
 		else
 		if(victim!=null)
 		{
-			if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
+			if(newMOB.getVictim()!=victim)
+				newMOB.setVictim(victim);
 			newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,L("<S-NAME> start(s) attacking <T-NAMESELF>!"));
 		}
 		return(newMOB);

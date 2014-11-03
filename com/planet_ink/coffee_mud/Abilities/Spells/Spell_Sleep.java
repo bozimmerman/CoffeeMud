@@ -113,12 +113,15 @@ public class Spell_Sleep extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		// sleep has a 3 level difference for PCs, so check for this.
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
-		if(levelDiff<0) levelDiff=0;
-		if(levelDiff>2) levelDiff=2;
+		if(levelDiff<0)
+			levelDiff=0;
+		if(levelDiff>2)
+			levelDiff=2;
 
 		if((!auto)&&target.isInCombat())
 		{
@@ -164,7 +167,8 @@ public class Spell_Sleep extends Spell
 						if(target.location()==mob.location())
 							target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> fall(s) asleep!!"));
 				}
-				if(oldVictim==null)	mob.setVictim(null);
+				if(oldVictim==null)
+					mob.setVictim(null);
 			}
 		}
 		else

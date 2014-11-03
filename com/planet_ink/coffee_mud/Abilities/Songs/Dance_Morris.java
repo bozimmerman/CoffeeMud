@@ -47,7 +47,8 @@ public class Dance_Morris extends Dance
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(affected==invoker) return;
+		if(affected==invoker)
+			return;
 		affectableStats.setArmor(affectableStats.armor()+(2*adjustedLevel(invoker(),0)));
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(2*adjustedLevel(invoker(),0)));
 	}
@@ -57,7 +58,8 @@ public class Dance_Morris extends Dance
 	{
 		if((affected==null)||(!(affected instanceof MOB))||(invoker==null))
 			return true;
-		if(affected==invoker) return true;
+		if(affected==invoker)
+			return true;
 
 		final MOB mob=(MOB)affected;
 		// preventing distracting player from doin anything else

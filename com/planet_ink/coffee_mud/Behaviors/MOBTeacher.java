@@ -194,7 +194,8 @@ public class MOBTeacher extends CombatAbilities
 		for(final Enumeration<Ability> a=myMOB.allAbilities();a.hasMoreElements();)
 		{
 			A=a.nextElement();
-			if(A!=null) myAbles.put(A.ID(),A);
+			if(A!=null)
+				myAbles.put(A.ID(),A);
 		}
 		myMOB.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,19);
 		myMOB.baseCharStats().setStat(CharStats.STAT_WISDOM,19);
@@ -271,7 +272,8 @@ public class MOBTeacher extends CombatAbilities
 		&&(teachEverything))
 			classAbles(myMOB,myAbles,pct);
 		int lvl=myMOB.phyStats().level()/myMOB.baseCharStats().numClasses();
-		if(lvl<1) lvl=1;
+		if(lvl<1)
+			lvl=1;
 		for(int i=0;i<myMOB.baseCharStats().numClasses();i++)
 		{
 			final CharClass C=myMOB.baseCharStats().getMyClass(i);
@@ -285,7 +287,8 @@ public class MOBTeacher extends CombatAbilities
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
-		if(myMOB==null) return;
+		if(myMOB==null)
+			return;
 		teachEverything=true;
 		noCommon=false;
 		noExpertises=false;
@@ -307,7 +310,8 @@ public class MOBTeacher extends CombatAbilities
 	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
-		if(myMOB==null) return;
+		if(myMOB==null)
+			return;
 		super.executeMsg(affecting,msg);
 		if(!canFreelyBehaveNormal(affecting))
 			return;
@@ -347,23 +351,31 @@ public class MOBTeacher extends CombatAbilities
 						s=s.substring(0,x);
 				}
 
-				if(s.startsWith("\"")) s=s.substring(1).trim();
-				if(s.endsWith("\"")) s=s.substring(0,s.length()-1);
+				if(s.startsWith("\""))
+					s=s.substring(1).trim();
+				if(s.endsWith("\""))
+					s=s.substring(0,s.length()-1);
 				if(s.toUpperCase().endsWith("PLEASE"))
 					s=s.substring(0,s.length()-6).trim();
-				if(s.startsWith("\"")) s=s.substring(1).trim();
-				if(s.endsWith("\"")) s=s.substring(0,s.length()-1);
+				if(s.startsWith("\""))
+					s=s.substring(1).trim();
+				if(s.endsWith("\""))
+					s=s.substring(0,s.length()-1);
 				if(s.toUpperCase().startsWith("PLEASE "))
 				{
 					giveABonus=true;
 					s=s.substring(6).trim();
 				}
-				if(s.startsWith("\"")) s=s.substring(1).trim();
-				if(s.endsWith("\"")) s=s.substring(0,s.length()-1);
+				if(s.startsWith("\""))
+					s=s.substring(1).trim();
+				if(s.endsWith("\""))
+					s=s.substring(0,s.length()-1);
 				if(s.toUpperCase().startsWith("ME "))
 					s=s.substring(3).trim();
-				if(s.startsWith("\"")) s=s.substring(1).trim();
-				if(s.endsWith("\"")) s=s.substring(0,s.length()-1);
+				if(s.startsWith("\""))
+					s=s.substring(1).trim();
+				if(s.endsWith("\""))
+					s=s.substring(0,s.length()-1);
 				if(s.toUpperCase().startsWith("PLEASE "))
 				{
 					giveABonus=true;
@@ -371,8 +383,10 @@ public class MOBTeacher extends CombatAbilities
 				}
 				if(s.toUpperCase().startsWith("ME "))
 					s=s.substring(3).trim();
-				if(s.startsWith("\"")) s=s.substring(1).trim();
-				if(s.endsWith("\"")) s=s.substring(0,s.length()-1);
+				if(s.startsWith("\""))
+					s=s.substring(1).trim();
+				if(s.endsWith("\""))
+					s=s.substring(0,s.length()-1);
 				if(s.trim().equalsIgnoreCase("LIST"))
 				{
 					CMLib.commands().postSay(monster,student,L("Try the QUALIFY command."),true,false);

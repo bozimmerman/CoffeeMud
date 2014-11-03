@@ -46,8 +46,10 @@ public class Dance_Musette extends Dance
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(invoker==null) return;
-		if(invoker==affected) return;
+		if(invoker==null)
+			return;
+		if(invoker==affected)
+			return;
 
 		affectableStats.setSpeed(CMath.div(affectableStats.speed(),2.0+CMath.mul(super.getXLEVELLevel(invoker()),0.30)));
 	}

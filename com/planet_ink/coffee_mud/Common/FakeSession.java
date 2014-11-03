@@ -132,7 +132,8 @@ public class FakeSession implements Session
 	public String prompt(String Message, String Default) {
 		onlyPrint(Message,false);
 		final String msg  = readlineContinue();
-		if(msg.length()==0) return Default;
+		if(msg.length()==0)
+			return Default;
 		return msg;
 	}
 	@Override
@@ -148,7 +149,8 @@ public class FakeSession implements Session
 	@Override
 	public boolean confirm(String Message, String Default)
 	{
-		if(Default.toUpperCase().startsWith("T")) Default="Y";
+		if(Default.toUpperCase().startsWith("T"))
+			Default="Y";
 		final String YN=choose(Message,"YN",Default,0);
 		return(YN.equals("Y"))?true:false;
 	}
@@ -157,7 +159,8 @@ public class FakeSession implements Session
 	public String choose(String Message, String Choices, String Default) {
 		onlyPrint(Message,false);
 		final String msg  = readlineContinue();
-		if(msg.length()==0) return Default;
+		if(msg.length()==0)
+			return Default;
 		if(Choices.toUpperCase().indexOf(msg.toUpperCase().trim())>=0)
 			return msg.toUpperCase().trim();
 		return Default;
@@ -172,7 +175,8 @@ public class FakeSession implements Session
 	{
 		synchronized(inputV)
 		{
-			if(inputV.size()==0) return "";
+			if(inputV.size()==0)
+				return "";
 			final String input = inputV.firstElement();
 			inputV.removeElementAt(0);
 			return input;

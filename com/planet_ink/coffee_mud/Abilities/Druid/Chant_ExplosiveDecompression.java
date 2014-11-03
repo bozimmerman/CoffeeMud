@@ -70,7 +70,8 @@ public class Chant_ExplosiveDecompression extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Room target=mob.location();
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if((!auto)&&((target.domainType()&Room.INDOORS)==0))
 		{
 			mob.tell(L("This chant only works indoors."));

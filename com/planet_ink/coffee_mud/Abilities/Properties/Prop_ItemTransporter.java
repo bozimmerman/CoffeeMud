@@ -51,8 +51,10 @@ public class Prop_ItemTransporter extends Property
 
 	public Item ultimateParent(Item item)
 	{
-		if(item==null) return null;
-		if(item.container()==null) return item;
+		if(item==null)
+			return null;
+		if(item.container()==null)
+			return item;
 		if(item.container().container()==item)
 			item.container().setContainer(null);
 		if(item.container()==item)
@@ -168,7 +170,8 @@ public class Prop_ItemTransporter extends Property
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if(affected==null) return true;
+		if(affected==null)
+			return true;
 
 		if(((msg.amITarget(affected))
 			&&((msg.targetMinor()==CMMsg.TYP_PUT)
@@ -204,7 +207,8 @@ public class Prop_ItemTransporter extends Property
 			Room roomMover=null;
 			MOB mobMover=null;
 			Item container=null;
-			if(affected==null) return;
+			if(affected==null)
+				return;
 			if(affected instanceof Room)
 				roomMover=(Room)affected;
 			else
@@ -274,7 +278,8 @@ public class Prop_ItemTransporter extends Property
 						else
 							mob.addItem(item);
 					}
-				if(room!=null) room.recoverRoomStats();
+				if(room!=null)
+					room.recoverRoomStats();
 				if(mob!=null)
 				{
 					mob.recoverCharStats();

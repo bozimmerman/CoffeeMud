@@ -180,7 +180,8 @@ public class DefaultPhyStats implements PhyStats
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
+			if(code.equalsIgnoreCase(CODES[i]))
+				return i;
 		return -1;
 	}
 	@Override

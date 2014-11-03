@@ -67,7 +67,8 @@ public class Spell_MarkerSummoning extends Spell
 							}
 						}
 					}
-				if(oldRoom!=null) break;
+				if(oldRoom!=null)
+					break;
 			}
 		}catch(final NoSuchElementException nse){}
 		if(oldRoom==null)
@@ -127,7 +128,8 @@ public class Spell_MarkerSummoning extends Spell
 				for(int i=oldRoom.numItems()-1;i>=0;i--)
 				{
 					final Item I=oldRoom.getItem(i);
-					if(I!=null) items.addElement(I);
+					if(I!=null)
+						items.addElement(I);
 				}
 				for(int i=0;i<items.size();i++)
 				{

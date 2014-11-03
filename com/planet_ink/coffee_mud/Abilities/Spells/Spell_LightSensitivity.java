@@ -49,8 +49,10 @@ public class Spell_LightSensitivity extends Spell
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(!(affected instanceof MOB)) return;
-		if(((MOB)affected).location()==null) return;
+		if(!(affected instanceof MOB))
+			return;
+		if(((MOB)affected).location()==null)
+			return;
 		if(CMLib.flags().isInDark(((MOB)affected).location()))
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
 		else
@@ -96,7 +98,8 @@ public class Spell_LightSensitivity extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if((!auto)&&(target.charStats().getBodyPart(Race.BODY_EYE)==0))
 		{

@@ -138,7 +138,8 @@ public class Possess extends StdCommand
 		final Room room=mob.location();
 		if((room==null)||(room.okMessage(mob, msg)))
 		{
-			if(room!=null) room.send(mob, msg);
+			if(room!=null)
+				room.send(mob, msg);
 			final Session s=mob.session();
 			s.setMob(target);
 			target.setSession(s);

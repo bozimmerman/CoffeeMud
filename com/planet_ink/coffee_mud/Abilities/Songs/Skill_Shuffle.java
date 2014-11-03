@@ -94,7 +94,8 @@ public class Skill_Shuffle extends BardSkill
 				while(V.size()>0)
 				{
 					final MOB M=(MOB)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
-					if(M.location()==R) R.addInhabitant(M);
+					if(M.location()==R)
+						R.addInhabitant(M);
 					V.removeElement(M);
 				}
 			}

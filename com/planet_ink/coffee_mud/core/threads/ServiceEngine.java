@@ -85,10 +85,12 @@ public class ServiceEngine implements ThreadEngine
 			threadGroupName = Thread.currentThread().getThreadGroup().getName();
 		final char threadGroupNum=threadGroupName.charAt(0);
 		final CMThreadPoolExecutor pool = threadPools[threadGroupNum];
-		if(pool != null) return pool;
+		if(pool != null)
+			return pool;
 		final int minThreads = CMProps.getIntVar(CMProps.Int.MINWORKERTHREADS);
 		int maxThreads = CMProps.getIntVar(CMProps.Int.MAXWORKERTHREADS);
-		if(maxThreads<=0) maxThreads=Integer.MAX_VALUE;
+		if(maxThreads<=0)
+			maxThreads=Integer.MAX_VALUE;
 		final String sessionThreadGroupName="Worker"+threadGroupNum;
 		threadPools[threadGroupNum] = new CMThreadPoolExecutor(sessionThreadGroupName,minThreads, maxThreads, CMProps.getTickMillis()*2, TimeUnit.MILLISECONDS, (LONG_TICK_TIMEOUT/60000), 1024);
 		threadPools[threadGroupNum].setThreadFactory(new CMThreadFactory(sessionThreadGroupName));
@@ -167,9 +169,11 @@ public class ServiceEngine implements ThreadEngine
 
 	public int getMaxObjectsPerThread()
 	{
-		if(max_objects_per_thread>0) return max_objects_per_thread;
+		if(max_objects_per_thread>0)
+			return max_objects_per_thread;
 		max_objects_per_thread = CMProps.getIntVar(CMProps.Int.OBJSPERTHREAD);
-		if(max_objects_per_thread>0) return max_objects_per_thread;
+		if(max_objects_per_thread>0)
+			return max_objects_per_thread;
 		max_objects_per_thread=0;
 		return 128;
 	}
@@ -402,7 +406,8 @@ public class ServiceEngine implements ThreadEngine
 				for(final Iterator<TickClient> et=almostTock.tickers();et.hasNext();)
 				{
 					final TickClient C=et.next();
-					if(C.getTickTotal()==0) continue;
+					if(C.getTickTotal()==0)
+						continue;
 					final Long avg=Long.valueOf(C.getMilliTotal()/C.getTickTotal());
 					int i=0;
 					for(;i<list.size();i++)
@@ -834,7 +839,8 @@ public class ServiceEngine implements ThreadEngine
 		else
 		if(which.toLowerCase().startsWith("tickerssize"))
 		{
-			if(grpstart<0) return"";
+			if(grpstart<0)
+				return"";
 			final int group=CMath.s_int(which.substring(grpstart));
 			if((group>=0)&&(group<allTicks.size()))
 			{
@@ -852,14 +858,18 @@ public class ServiceEngine implements ThreadEngine
 			client=CMath.s_int(which.substring(clistart+1));
 		}
 
-		if((group<0)||(client<0)||(group>=allTicks.size())) return "";
+		if((group<0)||(client<0)||(group>=allTicks.size()))
+			return "";
 		final List<TickableGroup> enumeratedTicks=new XVector<TickableGroup>(allTicks);
-		if((group<0)||(client<0)||(group>=enumeratedTicks.size())) return "";
+		if((group<0)||(client<0)||(group>=enumeratedTicks.size()))
+			return "";
 		final TickableGroup almostTock=enumeratedTicks.get(group);
 
-		if(client>=almostTock.numTickers()) return "";
+		if(client>=almostTock.numTickers())
+			return "";
 		final TickClient C=almostTock.fetchTickerByIndex(client);
-		if(C==null) return "";
+		if(C==null)
+			return "";
 
 		if(which.toLowerCase().startsWith("tickername"))
 		{
@@ -868,7 +878,8 @@ public class ServiceEngine implements ThreadEngine
 				E=((Ability)E).affecting();
 			if(E instanceof Room)
 				return CMLib.map().getExtendedRoomID((Room)E);
-			if(E!=null) return E.name();
+			if(E!=null)
+				return E.name();
 			return "!NULL!";
 		}
 		else
@@ -895,7 +906,8 @@ public class ServiceEngine implements ThreadEngine
 		else
 		if(which.toLowerCase().startsWith("tickermilliavg"))
 		{
-			if(C.getTickTotal()==0) return "0";
+			if(C.getTickTotal()==0)
+				return "0";
 			return ""+(C.getMilliTotal()/C.getTickTotal());
 		}
 		else
@@ -1027,7 +1039,8 @@ public class ServiceEngine implements ThreadEngine
 	@Override
 	public String getTickStatusSummary(Tickable obj)
 	{
-		if(obj==null) return "";
+		if(obj==null)
+			return "";
 		final long code=obj.getTickStatus();
 		if(obj instanceof Environmental)
 		{
@@ -1137,7 +1150,8 @@ public class ServiceEngine implements ThreadEngine
 		if(supportClient != null)
 		{
 			supportClient.setStatus(s);
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.UTILITHREAD)) Log.debugOut("ServiceEngine",s);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.UTILITHREAD))
+				Log.debugOut("ServiceEngine",s);
 		}
 	}
 

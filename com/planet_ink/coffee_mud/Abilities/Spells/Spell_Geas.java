@@ -129,7 +129,8 @@ public class Spell_Geas extends Spell
 		final Vector name=CMParms.parse((String)commands.elementAt(0));
 		commands.remove(commands.firstElement());
 		final MOB target=getTarget(mob,name,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<5)
 		{
 			mob.tell(L("@x1 is too stupid to understand the instructions!",target.name(mob)));

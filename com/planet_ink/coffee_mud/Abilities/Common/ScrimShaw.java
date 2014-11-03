@@ -135,7 +135,8 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 	@Override
 	public boolean mayICraft(final Item I)
 	{
-		if(I==null) return false;
+		if(I==null)
+			return false;
 		if(!super.mayBeCrafted(I))
 			return false;
 		if(I.material()!=RawMaterial.RESOURCE_BONE)
@@ -181,7 +182,8 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
-		if(!super.canMend(mob,E,quiet)) return false;
+		if(!super.canMend(mob,E,quiet))
+			return false;
 		if((!(E instanceof Item))||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
@@ -276,7 +278,8 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			messedUp=false;
 			final Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
-			if(!canMend(mob,buildingI,false)) return false;
+			if(!canMend(mob,buildingI,false))
+				return false;
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
@@ -330,7 +333,8 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
-			if(componentsFoundList==null) return false;
+			if(componentsFoundList==null)
+				return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
 			woodRequired=adjustWoodRequired(woodRequired,mob);
 
@@ -343,10 +347,12 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 												bundling,
 												parsedVars.autoGenerate,
 												enhancedTypes);
-			if(data==null) return false;
+			if(data==null)
+				return false;
 			fixDataForComponents(data,componentsFoundList);
 			woodRequired=data[0][FOUND_AMT];
-			if(amount>woodRequired) woodRequired=amount;
+			if(amount>woodRequired)
+				woodRequired=amount;
 
 			final Session session=mob.session();
 			if((misctype.equalsIgnoreCase("statue"))
@@ -405,7 +411,8 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			buildingI.setSecretIdentity(getBrand(mob));
 			final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
-			if(bundling) buildingI.setBaseValue(lostValue);
+			if(bundling)
+				buildingI.setBaseValue(lostValue);
 			addSpells(buildingI,spell);
 			key=null;
 

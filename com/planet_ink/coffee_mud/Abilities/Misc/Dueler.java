@@ -208,9 +208,12 @@ public class Dueler extends StdAbility
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
 	{
-		if(target==null) target=mob;
-		if(!(target instanceof MOB)) return false;
-		if(((MOB)target).location()==null) return false;
+		if(target==null)
+			target=mob;
+		if(!(target instanceof MOB))
+			return false;
+		if(((MOB)target).location()==null)
+			return false;
 		if(((MOB)target).location().show(mob,target,this,CMMsg.MSG_OK_VISUAL,L("^R<S-NAME> and <T-NAME> start(s) dueling!^?")))
 		{
 			final MOB tmob = (MOB)target;

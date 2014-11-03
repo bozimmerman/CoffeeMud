@@ -113,7 +113,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 		{
 			CharClass C=c.nextElement();
-			if(doneClasses.contains(C.ID())) continue;
+			if(doneClasses.contains(C.ID()))
+				continue;
 			C=CMClass.getCharClass(C.ID());
 			doneClasses.add(C.ID());
 			if(canChangeToThisClass(mob,C,theme))
@@ -130,7 +131,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 		{
 			Race R=r.nextElement();
-			if(doneRaces.contains(R.ID())) continue;
+			if(doneRaces.contains(R.ID()))
+				continue;
 			R=CMClass.getRace(R.ID());
 			doneRaces.add(R.ID());
 			if((CMProps.isTheme(R.availabilityCode()))
@@ -165,8 +167,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	@Override
 	public boolean isOkName(String login, boolean spacesOk)
 	{
-		if(login.length()>20) return false;
-		if(login.length()<3) return false;
+		if(login.length()>20)
+			return false;
+		if(login.length()<3)
+			return false;
 
 		if((!spacesOk)&&(login.trim().indexOf(' ')>=0))
 			return false;
@@ -215,10 +219,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	@Override
 	public void reloadTerminal(MOB mob)
 	{
-		if(mob==null) return;
+		if(mob==null)
+			return;
 
 		final Session S=mob.session();
-		if(S==null) return;
+		if(S==null)
+			return;
 
 		S.initTelnetMode(mob.getAttributesBitmap());
 		if((mob.isAttribute(MOB.Attrib.MXP))
@@ -336,7 +342,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 	private void executeScript(MOB mob, List<String> scripts)
 	{
-		if(scripts==null) return;
+		if(scripts==null)
+			return;
 		for(int s=0;s<scripts.size();s++)
 		{
 			final String script=scripts.get(s);
@@ -481,7 +488,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			for(int i=0;i<num;i++)
 			{
 				Item I=CMClass.getBasicItem(item);
-				if(I==null) I=CMClass.getItem(item);
+				if(I==null)
+					I=CMClass.getItem(item);
 				if(I==null)
 				{
 					I=CMLib.catalog().getCatalogItem(item);
@@ -1000,7 +1008,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			return null;
 		}
 		loginObj.savedInput=newEmail;
-		if(emailPassword) session.println(L("This email address will be used to send you a password."));
+		if(emailPassword)
+			session.println(L("This email address will be used to send you a password."));
 		if(emailReq||emailPassword)
 		{
 			session.promptPrint(L("Confirm that '@x1' is correct by re-entering.\n\rRe-enter: ",newEmail));
@@ -1363,7 +1372,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	{
 		final PlayerAccount acct=loginObj.acct;
 		final String s=loginObj.lastInput.trim();
-		if(s==null) return LoginResult.NO_LOGIN;
+		if(s==null)
+			return LoginResult.NO_LOGIN;
 		if(s.length()==0)
 		{
 			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
@@ -1918,7 +1928,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 
 		loginObj.savedInput=newEmail;
-		if(emailPassword) session.println(L("This email address will be used to send you a password."));
+		if(emailPassword)
+			session.println(L("This email address will be used to send you a password."));
 		if(emailReq||emailPassword)
 		{
 			session.promptPrint(L("Confirm that '@x1' is correct by re-entering.\n\rRe-enter: ",newEmail));
@@ -2483,7 +2494,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			boolean remove = prompt.startsWith("-");
 			int statPointsChange = 0;
-			if(remove) prompt = prompt.substring(1).trim();
+			if(remove)
+				prompt = prompt.substring(1).trim();
 			final int space = prompt.lastIndexOf(' ');
 			if((space > 0)&&(CMath.isInteger(prompt.substring(space+1).trim())||(prompt.substring(space+1).trim().startsWith("+"))))
 			{
@@ -2597,7 +2609,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 						return null;
 					}
 				}
-				if(remove) statPointsChange = statPointsChange * -1;
+				if(remove)
+					statPointsChange = statPointsChange * -1;
 				CT.setStat(statCode, CT.getStat(statCode)+statPointsChange);
 				loginObj.statPoints -= pointsCost;
 			}
@@ -2777,7 +2790,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.ALLERGIES))
 		{
 			final Ability A=CMClass.getAbility("Allergies");
-			if(A!=null) A.invoke(mob,mob,true,0);
+			if(A!=null)
+				A.invoke(mob,mob,true,0);
 		}
 
 		mob.recoverCharStats();
@@ -2894,7 +2908,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if((startingMoney!=null)&&(startingMoney.trim().length()>0))
 		{
 			String currency=CMLib.english().numPossibleGoldCurrency(mob,startingMoney);
-			if(currency.length()==0) currency=CMLib.beanCounter().getCurrency(mob);
+			if(currency.length()==0)
+				currency=CMLib.beanCounter().getCurrency(mob);
 			final double denomination=CMLib.english().numPossibleGoldDenomination(null,currency,startingMoney);
 			final long num=CMLib.english().numPossibleGold(null,startingMoney);
 			if((num>0)&&(denomination>0.0)&&(currency!=null))
@@ -3098,7 +3113,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 	public void setGlobalBitmaps(MOB mob)
 	{
-		if(mob==null) return;
+		if(mob==null)
+			return;
 		final List<String> defaultFlagsV=CMParms.parseCommas(CMProps.getVar(CMProps.Str.DEFAULTPLAYERFLAGS).toUpperCase(),true);
 		for(int v=0;v<defaultFlagsV.size();v++)
 		{
@@ -3199,13 +3215,15 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		for(int f=0;f<mob.numFollowers();f++)
 		{
 			final MOB follower=mob.fetchFollower(f);
-			if(follower==null) continue;
+			if(follower==null)
+				continue;
 			Room R=follower.location();
 			if((follower.isMonster())
 			&&(!follower.isPossessing())
 			&&((R==null)||(!R.isInhabitant(follower))))
 			{
-				if(R==null) R=mob.location();
+				if(R==null)
+					R=mob.location();
 				follower.setLocation(R);
 				follower.setFollowing(mob); // before for bestow names sake
 				follower.bringToLife(R,false);
@@ -3404,7 +3422,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if((curStat>=maxStat)&&(!quiet))
 		{
 			mob.tell(L("You cannot train that any further."));
-			if(val<=0) val=1;
+			if(val<=0)
+				val=1;
 			return -val;
 		}
 		return val;

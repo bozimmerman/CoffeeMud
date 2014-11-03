@@ -51,11 +51,14 @@ public class Prayer_UnholyWord extends Prayer
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(affected==null) return;
-		if(!(affected instanceof MOB)) return;
+		if(affected==null)
+			return;
+		if(!(affected instanceof MOB))
+			return;
 		final MOB mob=(MOB)affected;
 
-		if(mob==invoker) return;
+		if(mob==invoker)
+			return;
 
 		final int xlvl=super.getXLEVELLevel(invoker());
 		if(CMLib.flags().isEvil(mob))
@@ -99,9 +102,11 @@ public class Prayer_UnholyWord extends Prayer
 		for(int i=0;i<room.numInhabitants();i++)
 		{
 			final MOB target=room.fetchInhabitant(i);
-			if(target==null) break;
+			if(target==null)
+				break;
 			int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
-			if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
+			if(auto)
+				affectType=affectType|CMMsg.MASK_ALWAYS;
 			if(CMLib.flags().isGood(target))
 				affectType=affectType|CMMsg.MASK_MALICIOUS;
 

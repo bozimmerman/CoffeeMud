@@ -54,7 +54,8 @@ public class Paladin_Purity extends PaladinSkill
 			return false;
 		if((affected==null)||(!(CMLib.flags().isGood(affected))))
 			return true;
-		if(!(affected instanceof MOB)) return true;
+		if(!(affected instanceof MOB))
+			return true;
 
 		if((msg.sourceMinor()==CMMsg.TYP_FACTIONCHANGE)
 		&&(msg.source()==affected)

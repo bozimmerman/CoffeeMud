@@ -104,9 +104,12 @@ public class DoorwayGuardian extends StdBehavior
 
 	public Exit[] getParmExits(MOB monster)
 	{
-		if(monster==null) return null;
-		if(monster.location()==null) return null;
-		if(getParms().length()==0) return null;
+		if(monster==null)
+			return null;
+		if(monster.location()==null)
+			return null;
+		if(getParms().length()==0)
+			return null;
 		final Room room=monster.location();
 		if(dirs!=null)
 			for (final Integer integer : dirs)

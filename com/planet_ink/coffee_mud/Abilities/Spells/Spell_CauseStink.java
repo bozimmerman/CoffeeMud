@@ -60,14 +60,18 @@ public class Spell_CauseStink extends Spell
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
 		if(tickID==Tickable.TICKID_MOB)
 		{
-			if(CMLib.dice().rollPercentage()>20) return true;
-			if(!(affected instanceof MOB)) return false;
+			if(CMLib.dice().rollPercentage()>20)
+				return true;
+			if(!(affected instanceof MOB))
+				return false;
 			final MOB mob=(MOB)affected;
 			final Room room=mob.location();
-			if(room==null) return false;
+			if(room==null)
+				return false;
 
 			String str=null;
 			switch(cycle++)
@@ -124,7 +128,8 @@ public class Spell_CauseStink extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

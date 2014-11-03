@@ -128,7 +128,8 @@ public class After extends StdCommand implements Tickable
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(afterCmds.size()==0) return false;
+		if(afterCmds.size()==0)
+			return false;
 		int s=0;
 		while(s<afterCmds.size())
 		{

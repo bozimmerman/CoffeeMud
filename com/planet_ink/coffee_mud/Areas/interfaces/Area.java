@@ -673,9 +673,11 @@ public interface Area extends Economics, PhysicalAgent, Places
 		public Room nextElement()
 		{
 			final String roomID=roomIDEnumerator.nextElement();
-			if(roomID==null) return null;
+			if(roomID==null)
+				return null;
 			final Room R=area.getRoom(roomID);
-			if(R==null) return nextElement();
+			if(R==null)
+				return nextElement();
 			if(R.expirationDate()!=0)
 				R.setExpirationDate(R.expirationDate()+(1000*60*10));
 			return CMLib.map().getRoom(R);

@@ -79,7 +79,8 @@ public class GrinderItems
 								  MOB playerM)
 	{
 		final String itemCode=httpReq.getUrlParameter("ITEM");
-		if(itemCode==null) return "@break@";
+		if(itemCode==null)
+			return "@break@";
 
 		final String mobNum=httpReq.getUrlParameter("MOB");
 		final String newClassID=httpReq.getUrlParameter("CLASSES");
@@ -138,14 +139,16 @@ public class GrinderItems
 					for(int i=0;i<R.numItems();i++)
 					{
 						final Item I2=R.getItem(i);
-						if(I2!=null) str.append(I2.Name()+"="+RoomData.getItemCode(R,I2));
+						if(I2!=null)
+							str.append(I2.Name()+"="+RoomData.getItemCode(R,I2));
 					}
 				}
 				else
 					for(int i=0;i<M.numItems();i++)
 					{
 						final Item I2=M.getItem(i);
-						if(I2!=null) str.append(I2.Name()+"="+RoomData.getItemCode(M,I2));
+						if(I2!=null)
+							str.append(I2.Name()+"="+RoomData.getItemCode(M,I2));
 					}
 				return str.toString();
 			}
@@ -154,7 +157,8 @@ public class GrinderItems
 			if((newClassID!=null)&&(!newClassID.equals(CMClass.classID(I))))
 			{
 				I=CMClass.getItem(newClassID);
-				if(I==null) Log.errOut("GrinderItems","Error: bad class id: "+newClassID);
+				if(I==null)
+					Log.errOut("GrinderItems","Error: bad class id: "+newClassID);
 			}
 
 			if(I==null)
@@ -177,7 +181,8 @@ public class GrinderItems
 					continue;
 
 				String old=httpReq.getUrlParameter(fieldName);
-				if(old==null) old="";
+				if(old==null)
+					old="";
 
 				if((I.isGeneric()||(!generic)))
 				switch(o)
@@ -319,7 +324,8 @@ public class GrinderItems
 								if(aff.length()>0)
 								{
 									final Ability B=CMClass.getAbility(aff);
-									if(B==null) return "Unknown Ability '"+aff+"'.";
+									if(B==null)
+										return "Unknown Ability '"+aff+"'.";
 									if(sp.length()>0)
 										sp.append(";");
 									sp.append(B.ID());
@@ -521,7 +527,8 @@ public class GrinderItems
 					if(I instanceof Recipe)
 					{
 						final String recipeFieldName=parms.get("RECIPEFIELDNAME");
-						if(recipeFieldName==null) return "No recipefieldname!";
+						if(recipeFieldName==null)
+							return "No recipefieldname!";
 						int x=0;
 						String thisFieldname = CMStrings.replaceAll(recipeFieldName,"###", ""+x);
 						final List<String> finalData=new ArrayList<String>();
@@ -563,21 +570,24 @@ public class GrinderItems
 				case CATARATE: // catarate
 					if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
 					{
-						if(cataData==null) cataData=CMLib.catalog().sampleCataData("");
+						if(cataData==null)
+							cataData=CMLib.catalog().sampleCataData("");
 						cataData.setRate(CMath.s_pct(old));
 					}
 					break;
 				case CATALIVE: // catalive
 					if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
 					{
-						if(cataData==null) cataData=CMLib.catalog().sampleCataData("");
+						if(cataData==null)
+							cataData=CMLib.catalog().sampleCataData("");
 						cataData.setWhenLive((old.equalsIgnoreCase("on")));
 					}
 					break;
 				case CATAMASK: // catamask
 					if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
 					{
-						if(cataData==null) cataData=CMLib.catalog().sampleCataData("");
+						if(cataData==null)
+							cataData=CMLib.catalog().sampleCataData("");
 						cataData.setMaskStr(old);
 					}
 					break;
@@ -592,7 +602,8 @@ public class GrinderItems
 				case CATACAT: // catacat
 					if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
 					{
-						if(cataData==null) cataData=CMLib.catalog().sampleCataData("");
+						if(cataData==null)
+							cataData=CMLib.catalog().sampleCataData("");
 						cataData.setCatagory(old.toUpperCase().trim());
 					}
 					break;
@@ -641,11 +652,14 @@ public class GrinderItems
 			if(I.isGeneric()&&(!CMLib.flags().isCataloged(I)))
 			{
 				String error=GrinderExits.dispositions(I,httpReq,parms);
-				if(error.length()>0) return error;
+				if(error.length()>0)
+					return error;
 				error=GrinderAreas.doAffects(I,httpReq,parms);
-				if(error.length()>0) return error;
+				if(error.length()>0)
+					return error;
 				error=GrinderAreas.doBehavs(I,httpReq,parms);
-				if(error.length()>0) return error;
+				if(error.length()>0)
+					return error;
 			}
 
 			I.recoverPhyStats();
@@ -698,7 +712,8 @@ public class GrinderItems
 					M.recoverPhyStats();
 					if((mobNum==null)||(!mobNum.startsWith("CATALOG-")))
 						M.text();
-					if(R!=null) R.recoverRoomStats();
+					if(R!=null)
+						R.recoverRoomStats();
 				}
 			}
 			else
@@ -735,7 +750,8 @@ public class GrinderItems
 					M.recoverPhyStats();
 					if((mobNum==null)||(!mobNum.startsWith("CATALOG-")))
 						M.text();
-					if(R!=null) R.recoverRoomStats();
+					if(R!=null)
+						R.recoverRoomStats();
 					for(int i=0;i<M.numItems();i++)
 					{
 						final Item I2=M.getItem(i);

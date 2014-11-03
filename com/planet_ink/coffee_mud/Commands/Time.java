@@ -47,7 +47,8 @@ public class Time extends StdCommand
 		throws java.io.IOException
 	{
 		final Room room=mob.location();
-		if(room==null) return false;
+		if(room==null)
+			return false;
 		mob.tell(room.getArea().getTimeObj().timeDescription(mob,room));
 		if((mob.playerStats()!=null)&&(mob.playerStats().getBirthday()!=null))
 		{

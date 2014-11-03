@@ -59,7 +59,8 @@ public class Spell_Toadstool extends Spell
 				affectableStats.setName(L("@x1 the @x2",affected.name(),newRace.name()));
 			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			newRace.setHeightWeight(affectableStats,'M');
-			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
+			if(oldAdd>0)
+				affectableStats.setWeight(affectableStats.weight()+oldAdd);
 		}
 		affectableStats.setLevel(1);
 	}
@@ -104,7 +105,8 @@ public class Spell_Toadstool extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(target.baseCharStats().getMyRace() != target.charStats().getMyRace())
 		{

@@ -52,8 +52,10 @@ public class Fighter_BlindFighting extends FighterSkill
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(affected==null) return;
-		if(!(affected instanceof MOB)) return;
+		if(affected==null)
+			return;
+		if(!(affected instanceof MOB))
+			return;
 		if(seeEnabled)
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_VICTIM);
 	}
@@ -64,9 +66,11 @@ public class Fighter_BlindFighting extends FighterSkill
 		if(!super.tick(ticking, tickID))
 			return false;
 		seeEnabled = false;
-		if(!(ticking instanceof MOB)) return true;
+		if(!(ticking instanceof MOB))
+			return true;
 		final MOB mob=(MOB)ticking;
-		if(!mob.isInCombat()) return true;
+		if(!mob.isInCombat())
+			return true;
 		if((!CMLib.flags().canBeSeenBy(mob.getVictim(),mob))
 		&&(CMLib.flags().canBeHeardMovingBy(mob.getVictim(),mob))
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false)))

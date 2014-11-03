@@ -67,7 +67,8 @@ public class Skill_Haggle extends StdSkill
 		}
 
 		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,CMStrings.capitalizeAndLower(cmd)+" what to whom?");
-		if(shopkeeper==null) return false;
+		if(shopkeeper==null)
+			return false;
 		if(commands.size()==0)
 		{
 			mob.tell(L("@x1 what?",CMStrings.capitalizeAndLower(cmd)));

@@ -66,7 +66,8 @@ public class Chant_SenseSentience extends Chant
 				flags = new TrackingLibrary.TrackingFlags()
 						.plus(TrackingLibrary.TrackingFlag.AREAONLY);
 				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
-				if(!checkSet.contains(mob.location())) checkSet.add(mob.location());
+				if(!checkSet.contains(mob.location()))
+					checkSet.add(mob.location());
 				for (final Room room : checkSet)
 				{
 					final Room R=CMLib.map().getRoom(room);

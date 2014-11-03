@@ -128,9 +128,11 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 		mob.basePhyStats().setSensesMask(mob.basePhyStats().sensesMask()|CMParms.getParmPlus(readableText,"sen"));
 		mob.basePhyStats().setSpeed(mob.basePhyStats().speed()+CMParms.getParmPlus(readableText,"spe"));
 		mob.basePhyStats().setWeight(mob.basePhyStats().weight()+CMParms.getParmPlus(readableText,"wei"));
-		if(CMParms.getParmPlus(readableText,"wei")!=0) redress=true;
+		if(CMParms.getParmPlus(readableText,"wei")!=0)
+			redress=true;
 		mob.basePhyStats().setHeight(mob.basePhyStats().height()+CMParms.getParmPlus(readableText,"hei"));
-		if(CMParms.getParmPlus(readableText,"hei")!=0) redress=true;
+		if(CMParms.getParmPlus(readableText,"hei")!=0)
+			redress=true;
 
 		String val=CMParms.getParmStr(readableText,"gen","").toUpperCase();
 		if((val.length()>0)&&((val.charAt(0)=='M')||(val.charAt(0)=='F')||(val.charAt(0)=='N')))
@@ -176,13 +178,16 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 		if(qp>0)
 			CMLib.players().bumpPrideStat(mob,PrideStat.QUESTPOINTS_EARNED, qp);
 		final int newMoney=CMParms.getParmPlus(readableText,"coin");
-		if(newMoney!=0) CMLib.beanCounter().setMoney(mob,CMLib.beanCounter().getMoney(mob)+newMoney);
+		if(newMoney!=0)
+			CMLib.beanCounter().setMoney(mob,CMLib.beanCounter().getMoney(mob)+newMoney);
 		final int exp=CMParms.getParmPlus(readableText,"expe");
-		if(exp!=0) CMLib.leveler().postExperience(mob,null,null,exp,false);
+		if(exp!=0)
+			CMLib.leveler().postExperience(mob,null,null,exp,false);
 		mob.recoverCharStats();
 		mob.recoverPhyStats();
 		mob.recoverMaxState();
-		if(redress)	CMLib.utensils().confirmWearability(mob);
+		if(redress)
+			CMLib.utensils().confirmWearability(mob);
 	}
 
 	@Override

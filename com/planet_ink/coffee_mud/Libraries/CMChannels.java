@@ -108,15 +108,18 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 									  int i,
 									  boolean offlineOK)
 	{
-		if((sender==null)||(M==null)) return false;
+		if((sender==null)||(M==null))
+			return false;
 		final PlayerStats pstats=M.playerStats();
-		if(pstats==null) return false;
+		if(pstats==null)
+			return false;
 		final Room R=M.location();
 		if(((!offlineOK))
 		&&((M.amDead())||(R==null)))
 			return false;
 		final CMChannel chan=getChannel(i);
-		if(chan==null) return false;
+		if(chan==null)
+			return false;
 		if(chan.flags.contains(ChannelFlag.CLANONLY)||chan.flags.contains(ChannelFlag.CLANALLYONLY))
 		{
 			// only way to fail an all-clan send is to have NO clan.
@@ -153,12 +156,15 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		||(M.location()==null))
 			return false;
 		final PlayerStats pstats=M.playerStats();
-		if(pstats==null) return false;
+		if(pstats==null)
+			return false;
 		String senderName=sender.Name();
 		final int x=senderName.indexOf('@');
-		if(x>0) senderName=senderName.substring(0,x);
+		if(x>0)
+			senderName=senderName.substring(0,x);
 		final CMChannel chan=getChannel(i);
-		if(chan==null) return false;
+		if(chan==null)
+			return false;
 		if(chan.flags.contains(ChannelFlag.CLANONLY)||chan.flags.contains(ChannelFlag.CLANALLYONLY))
 		{
 			// only way to fail an all-clan send is to have NO clan.
@@ -186,13 +192,15 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	@Override
 	public boolean mayReadThisChannel(MOB M, int i, boolean zapCheckOnly)
 	{
-		if(M==null) return false;
+		if(M==null)
+			return false;
 
 		if(i>=getNumChannels())
 			return false;
 
 		final CMChannel chan=getChannel(i);
-		if(chan==null) return false;
+		if(chan==null)
+			return false;
 		if((chan.flags.contains(ChannelFlag.CLANONLY)||chan.flags.contains(ChannelFlag.CLANALLYONLY))
 		&&(!CMLib.clans().checkClanPrivilege(M, Clan.Function.CHANNEL)))
 			return false;
@@ -332,7 +340,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				&&(mySession.isBeingSnoopedBy(S))
 				&&(!mayReadThisChannel(S.mob(),channelCode,false)))
 				{
-					if(invalid==null) invalid=new Vector<Session>();
+					if(invalid==null)
+						invalid=new Vector<Session>();
 					invalid.add(S);
 					mySession.setBeingSnoopedBy(S,false);
 				}
@@ -344,7 +353,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	@Override
 	public void restoreInvalidSnoopers(Session mySession, List<Session> invalid)
 	{
-		if((mySession==null)||(invalid==null)) return;
+		if((mySession==null)||(invalid==null))
+			return;
 		for(int s=0;s<invalid.size();s++)
 			mySession.setBeingSnoopedBy(invalid.get(s), true);
 	}
@@ -429,7 +439,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			}
 			final int y1=item.indexOf(' ');
 			final int y2=item.lastIndexOf(' ');
-			if((y1<0)||(y2<=y1)) continue;
+			if((y1<0)||(y2<=y1))
+				continue;
 			final CMChannel chan=new CMChannel();
 			final String lvl=item.substring(y1+1,y2).trim();
 			final String ichan=item.substring(y2+1).trim();
@@ -458,7 +469,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			}
 			final int y1=item.indexOf(' ');
 			final int y2=item.lastIndexOf(' ');
-			if((y1<0)||(y2<=y1)) continue;
+			if((y1<0)||(y2<=y1))
+				continue;
 			final CMChannel chan=new CMChannel();
 			final String lvl=item.substring(y1+1,y2).trim();
 			final String ichan=item.substring(y2+1).trim();
@@ -515,7 +527,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	public void reallyChannel(MOB mob, String channelName, String message, boolean systemMsg)
 	{
 		final int channelInt=getChannelIndex(channelName);
-		if(channelInt<0) return;
+		if(channelInt<0)
+			return;
 
 		final PlayerStats pStats=mob.playerStats();
 
@@ -544,7 +557,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			String msgstr=message.substring(1);
 			final Vector<String> V=CMParms.parse(msgstr);
 			Social S=CMLib.socials().fetchSocial(V,true,false);
-			if(S==null) S=CMLib.socials().fetchSocial(V,false,false);
+			if(S==null)
+				S=CMLib.socials().fetchSocial(V,false,false);
 			if(S!=null)
 				msg=S.makeChannelMsg(mob,channelInt,channelName,V,false);
 			else

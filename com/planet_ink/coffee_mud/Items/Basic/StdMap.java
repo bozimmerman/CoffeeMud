@@ -105,8 +105,10 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		for(final Enumeration e=areaMap.elements();e.hasMoreElements();)
 		{
 			final MapRoom mr=(MapRoom)e.nextElement();
-			if(mr.x<xoffset) xoffset=mr.x;
-			if(mr.y<yoffset) yoffset=mr.y;
+			if(mr.x<xoffset)
+				xoffset=mr.x;
+			if(mr.y<yoffset)
+				yoffset=mr.y;
 		}
 
 		xoffset=xoffset*-1;
@@ -295,7 +297,8 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		}
 		for(int x=0;x<map.length;x++)
 			for(int y=0;y<map[x].length;y++)
-				if(map[x][y]==null) map[x][y]=new StringBuffer("");
+				if(map[x][y]==null)
+					map[x][y]=new StringBuffer("");
 		return map;
 	}
 
@@ -360,7 +363,8 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		dirCode=-1;
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			if(d==Directions.GATE) continue;
+			if(d==Directions.GATE)
+				continue;
 			if(room.r.getRoomInDir(d)==nextRoom.r)
 			{
 				dirCode=d;
@@ -466,7 +470,8 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 
 	public boolean okToPlace(MapRoom room)
 	{
-		if(room==null) return false;
+		if(room==null)
+			return false;
 
 		if(room.r.domainType()==Room.DOMAIN_OUTDOORS_AIR)
 			return false;
@@ -494,8 +499,10 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 
 	public boolean okToPlace(MapRoom room, Exit exit)
 	{
-		if(!okToPlace(room)) return false;
-		if(exit==null) return false;
+		if(!okToPlace(room))
+			return false;
+		if(exit==null)
+			return false;
 		if(phyStats().level()<2)
 		{
 			if((CMLib.flags().isHidden(exit)||CMLib.flags().isInvisible(exit)))
@@ -508,8 +515,10 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 
 	public void placeRooms(Hashtable areaMap)
 	{
-		if(areaMap==null) return;
-		if(areaMap.size()==0) return;
+		if(areaMap==null)
+			return;
+		if(areaMap.size()==0)
+			return;
 
 		for(final Enumeration e=areaMap.elements();e.hasMoreElements();)
 		{
@@ -637,8 +646,10 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 						  boolean passTwo,
 						  int depth)
 	{
-		if(room==null) return;
-		if(depth>500) return;
+		if(room==null)
+			return;
+		if(depth>500)
+			return;
 		final MapRoom anythingAt=getProcessedRoomAt(processed,favoredX,favoredY);
 		if(anythingAt!=null)
 		{

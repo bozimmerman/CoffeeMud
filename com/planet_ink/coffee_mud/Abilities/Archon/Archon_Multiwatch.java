@@ -73,7 +73,8 @@ public class Archon_Multiwatch extends ArchonSkill
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				final MOB M=R.fetchInhabitant(i);
-				if((M==null)||(M==me)) continue;
+				if((M==null)||(M==me))
+					continue;
 
 				if((M.session()!=null)&&(M.session().getAddress().equals(me.session().getAddress())))
 					return true;
@@ -93,7 +94,8 @@ public class Archon_Multiwatch extends ArchonSkill
 				DATA.put(msg.source(),new int[DATA_TOTAL]);
 			final int[] data=DATA.get(msg.source());
 
-			if(data==null) return;
+			if(data==null)
+				return;
 			if(msg.tool() instanceof Social)
 			{
 				if(nonIPnonMonsterWithMe(msg.source()))
@@ -145,7 +147,8 @@ public class Archon_Multiwatch extends ArchonSkill
 		&&(affected instanceof MOB))
 		{
 			final MOB mob=(MOB)affected;
-			if(!DATA.containsKey(mob))	DATA.put(mob,new int[DATA_TOTAL]);
+			if(!DATA.containsKey(mob))
+				DATA.put(mob,new int[DATA_TOTAL]);
 			final int[] data=DATA.get(mob);
 			if((mob.session()!=null)&&(mob.session().getPreviousCMD()!=null))
 			{
@@ -161,9 +164,12 @@ public class Archon_Multiwatch extends ArchonSkill
 					for(int v=0;v<V.size();v++)
 					{
 						final MOB M=V.get(v);
-						if(M==mob) continue;
-						if(M.session()==null) continue;
-						if(!CMLib.flags().isInTheGame(M,true)) continue;
+						if(M==mob)
+							continue;
+						if(M.session()==null)
+							continue;
+						if(!CMLib.flags().isInTheGame(M,true))
+							continue;
 						final String hisLastCmd=CMParms.combine(mob.session().getPreviousCMD(),0);
 						final Archon_Multiwatch A=(Archon_Multiwatch)M.fetchEffect(ID());
 						if(A!=null)
@@ -199,7 +205,8 @@ public class Archon_Multiwatch extends ArchonSkill
 						V=new Vector();
 						ipes.put(S.getAddress(),V);
 					}
-					if(!V.contains(S.mob())) V.add(S.mob());
+					if(!V.contains(S.mob()))
+						V.add(S.mob());
 				}
 			}
 			final StringBuffer rpt=new StringBuffer("");
@@ -225,7 +232,8 @@ public class Archon_Multiwatch extends ArchonSkill
 					rpt.append("\n\r");
 				}
 			}
-			if(rpt.length()==0) rpt.append("No users with duplicate IDs found.  Try MULTIWATCH ADD name1 name2 ... ");
+			if(rpt.length()==0)
+				rpt.append("No users with duplicate IDs found.  Try MULTIWATCH ADD name1 name2 ... ");
 			mob.tell(rpt.toString());
 			return true;
 		}
@@ -250,7 +258,8 @@ public class Archon_Multiwatch extends ArchonSkill
 				{
 					final MOB M=V.get(v);
 					final Ability A=M.fetchEffect(ID());
-					if(A!=null) M.delEffect(A);
+					if(A!=null)
+						M.delEffect(A);
 				}
 			}
 			for(final Session S : CMLib.sessions().localOnlineIterable())
@@ -259,7 +268,8 @@ public class Archon_Multiwatch extends ArchonSkill
 				{
 					final MOB M=S.mob();
 					final Ability A=M.fetchEffect(ID());
-					if(A!=null) M.delEffect(A);
+					if(A!=null)
+						M.delEffect(A);
 				}
 			}
 			mob.tell(L("Multiplay watcher is now turned off."));
@@ -310,7 +320,8 @@ public class Archon_Multiwatch extends ArchonSkill
 				{
 					final MOB M=V.get(v);
 					final int data[]=DATA.get(M);
-					if(data!=null) sync+=data[DATA_SYNCHROFOUND];
+					if(data!=null)
+						sync+=data[DATA_SYNCHROFOUND];
 				}
 				report.append("^x"+key+"^?^., Syncs: "+sync+"\n\r");
 				report.append(CMStrings.padRight(L("Name"),25)
@@ -323,7 +334,8 @@ public class Archon_Multiwatch extends ArchonSkill
 				{
 					final MOB M=V.get(v);
 					int data[]=DATA.get(M);
-					if(data==null) data=new int[DATA_TOTAL];
+					if(data==null)
+						data=new int[DATA_TOTAL];
 					report.append(CMStrings.padRight(M.Name(),25));
 					report.append(CMStrings.padRight(data[DATA_GOODSPEECH]
 												+"/"+data[DATA_DIRSPEECH]

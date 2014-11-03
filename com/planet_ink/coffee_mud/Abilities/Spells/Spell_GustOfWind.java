@@ -95,7 +95,8 @@ public class Spell_GustOfWind extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room R=CMLib.map().roomLocation(givenTarget);
-		if(R==null) R=mob.location();
+		if(R==null)
+			R=mob.location();
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if((h==null)||(h.size()==0))
 		{

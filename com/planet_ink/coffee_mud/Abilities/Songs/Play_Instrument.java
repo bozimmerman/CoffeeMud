@@ -62,7 +62,8 @@ public class Play_Instrument extends Play
 			&&((!(mob instanceof Rideable))||(((Rideable)mob).numRiders()==0)))
 			{
 				A=CMClass.getAbility("Thief_Assassinate");
-				if(A!=null) A.invoke(mob,invoker(),true,0);
+				if(A!=null)
+					A.invoke(mob,invoker(),true,0);
 			}
 		}
 	}
@@ -82,7 +83,8 @@ public class Play_Instrument extends Play
 	@Override
 	public int abstractQuality()
 	{
-		if(getSpell()!=null) return getSpell().abstractQuality();
+		if(getSpell()!=null)
+			return getSpell().abstractQuality();
 		return Ability.QUALITY_BENEFICIAL_OTHERS;
 	}
 	@Override protected boolean persistantSong(){return false;}

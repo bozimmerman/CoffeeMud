@@ -51,7 +51,8 @@ public class Thief_SlipperyMind extends ThiefSkill
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(unInvoked) return false;
+		if(unInvoked)
+			return false;
 		if((affected!=null)&&(affected instanceof MOB)&&(ticking instanceof MOB))
 		{
 			if(!super.tick(ticking,tickID))

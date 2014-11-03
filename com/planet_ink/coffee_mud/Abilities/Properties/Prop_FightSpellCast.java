@@ -55,9 +55,11 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if(processing) return;
+		if(processing)
+			return;
 
-		if(!(affected instanceof Item)) return;
+		if(!(affected instanceof Item))
+			return;
 		processing=true;
 
 		final Item myItem=(Item)affected;

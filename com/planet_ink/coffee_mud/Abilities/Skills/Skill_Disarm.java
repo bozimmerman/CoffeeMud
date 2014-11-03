@@ -60,7 +60,8 @@ public class Skill_Disarm extends StdSkill
 			if(mob.fetchWieldedItem()==null)
 				return Ability.QUALITY_INDIFFERENT;
 			Item hisWeapon=victim.fetchWieldedItem();
-			if(hisWeapon==null) hisWeapon=victim.fetchHeldItem();
+			if(hisWeapon==null)
+				hisWeapon=victim.fetchHeldItem();
 			if((hisWeapon==null)
 			||(!(hisWeapon instanceof Weapon))
 			||((((Weapon)hisWeapon).weaponClassification()==Weapon.CLASS_NATURAL)))
@@ -78,7 +79,8 @@ public class Skill_Disarm extends StdSkill
 			return false;
 		}
 		final MOB victim=super.getTarget(mob, commands, givenTarget);
-		if(victim==null) return false;
+		if(victim==null)
+			return false;
 		if(((victim==mob.getVictim())&&(mob.rangeToTarget()>0))
 		||((victim.getVictim()==mob)&&(victim.rangeToTarget()>0)))
 		{
@@ -91,7 +93,8 @@ public class Skill_Disarm extends StdSkill
 			return false;
 		}
 		Item hisWeapon=victim.fetchWieldedItem();
-		if(hisWeapon==null) hisWeapon=victim.fetchHeldItem();
+		if(hisWeapon==null)
+			hisWeapon=victim.fetchHeldItem();
 		if((hisWeapon==null)
 		||(!(hisWeapon instanceof Weapon))
 		||((((Weapon)hisWeapon).weaponClassification()==Weapon.CLASS_NATURAL)))

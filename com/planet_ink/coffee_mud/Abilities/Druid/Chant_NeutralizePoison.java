@@ -48,7 +48,8 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 	@Override
 	public boolean supportsMending(Physical item)
 	{
-		if(!(item instanceof MOB)) return false;
+		if(!(item instanceof MOB))
+			return false;
 		final boolean canMend=returnOffensiveAffects(item).size()>0;
 		return canMend;
 	}
@@ -85,7 +86,8 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

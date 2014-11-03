@@ -94,7 +94,8 @@ public class Fighter_SmokeSignals extends FighterSkill
 			return false;
 		}
 
-		if(getRequiredFire(mob)==null) return false;
+		if(getRequiredFire(mob)==null)
+			return false;
 		Room R=mob.location();
 		int weather=R.getArea().getClimateObj().weatherType(R);
 

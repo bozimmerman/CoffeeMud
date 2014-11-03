@@ -54,7 +54,8 @@ public class Disease_Aids extends Disease
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)-200);
 	}
 

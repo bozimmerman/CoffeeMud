@@ -43,7 +43,8 @@ public class PollCmd extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if((mob==null)||mob.isMonster()) return false;
+		if((mob==null)||mob.isMonster())
+			return false;
 		final java.util.List<Poll>[] mypolls=CMLib.polls().getMyPollTypes(mob,(commands==null));
 
 		if((mypolls[0].size()==0)&&(mypolls[2].size()==0))

@@ -61,7 +61,8 @@ public class Spell_PolymorphSelf extends Spell
 				affectableStats.setName(L("@x1 the @x2",affected.name(),newRace.name()));
 			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			newRace.setHeightWeight(affectableStats,'M');
-			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
+			if(oldAdd>0)
+				affectableStats.setWeight(affectableStats.weight()+oldAdd);
 		}
 	}
 	@Override

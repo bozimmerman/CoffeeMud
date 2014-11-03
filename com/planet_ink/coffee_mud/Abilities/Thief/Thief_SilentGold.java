@@ -82,7 +82,8 @@ public class Thief_SilentGold extends ThiefSkill
 							mob.location().send(mob,msg2);
 							CMLib.commands().postGet(mob,null,C,true);
 						}
-						if(victim!=null) mob.setVictim(victim);
+						if(victim!=null)
+							mob.setVictim(victim);
 					}
 				}
 			}
@@ -108,7 +109,8 @@ public class Thief_SilentGold extends ThiefSkill
 			mob.tell(L("You will now automatically loot gold from corpses silently."));
 			beneficialAffect(mob,mob,asLevel,0);
 			final Ability A=mob.fetchEffect(ID());
-			if(A!=null) A.makeLongLasting();
+			if(A!=null)
+				A.makeLongLasting();
 		}
 		else
 			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to start silently looting gold from corpses, but fail(s)."));

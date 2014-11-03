@@ -140,14 +140,17 @@ public class Mood extends StdAbility
 	public void affectPhyStats(Physical affected, PhyStats stats)
 	{
 		super.affectPhyStats(affected,stats);
-		if(moodCode>=0) stats.addAmbiance(MOODS[moodCode][2].toLowerCase());
+		if(moodCode>=0)
+			stats.addAmbiance(MOODS[moodCode][2].toLowerCase());
 	}
 
 	private String changeSay(String msg, String to)
 	{
-		if(msg==null) return null;
+		if(msg==null)
+			return null;
 		final int x=msg.indexOf('\'');
-		if(x<0) return msg;
+		if(x<0)
+			return msg;
 		final int y=msg.indexOf("say(s)");
 		if((y>=0)&&(y<x))
 			return msg.substring(0,y)+to+msg.substring(y+6);
@@ -162,11 +165,15 @@ public class Mood extends StdAbility
 
 	public MOB target(MOB mob, Environmental target)
 	{
-		if(target instanceof MOB) return (MOB)target;
-		if(mob==null) return null;
+		if(target instanceof MOB)
+			return (MOB)target;
+		if(mob==null)
+			return null;
 		final Room R=mob.location();
-		if(R==null) return null;
-		if(R.numInhabitants()==1) return null;
+		if(R==null)
+			return null;
+		if(R.numInhabitants()==1)
+			return null;
 		if(R.numInhabitants()==2)
 		for(int r=0;r<R.numInhabitants();r++)
 			if(R.fetchInhabitant(r)!=mob)
@@ -188,9 +195,12 @@ public class Mood extends StdAbility
 					players.addElement(M);
 			}
 		}
-		if(players.size()==1) return (MOB)players.firstElement();
-		if(players.size()>1) return null;
-		if(mobs.size()==1) return (MOB)mobs.firstElement();
+		if(players.size()==1)
+			return (MOB)players.firstElement();
+		if(players.size()>1)
+			return null;
+		if(mobs.size()==1)
+			return (MOB)mobs.firstElement();
 		return null;
 	}
 
@@ -211,7 +221,8 @@ public class Mood extends StdAbility
 			&&(moodCode>=0))
 			{
 				String str=CMStrings.getSayFromMessage(msg.othersMessage());
-				if(str==null) str=CMStrings.getSayFromMessage(msg.targetMessage());
+				if(str==null)
+					str=CMStrings.getSayFromMessage(msg.targetMessage());
 				if(str!=null)
 				{
 					final MOB M=target(msg.source(),msg.target());
@@ -585,7 +596,8 @@ public class Mood extends StdAbility
 						default:
 							break;
 						}
-						while(str.endsWith(".")) str=str.substring(0,str.length()-1);
+						while(str.endsWith("."))
+							str=str.substring(0,str.length()-1);
 						final int num=CMLib.dice().roll(1,10,3);
 						for(int i=0;i<num;i++)
 							str+="!";
@@ -677,7 +689,8 @@ public class Mood extends StdAbility
 					{
 						channelIndex=CMLib.channels().getChannelIndex(CHANNELS[c]);
 						channelC=c;
-						if(channelIndex>=0) break;
+						if(channelIndex>=0)
+							break;
 					}
 				if(channelIndex>=0)
 				{
@@ -722,7 +735,8 @@ public class Mood extends StdAbility
 			MOOD.setMiscText("NORMAL");
 		}
 		String moodCode = MOOD.text();
-		if(moodCode.trim().length()==0) moodCode="NORMAL";
+		if(moodCode.trim().length()==0)
+			moodCode="NORMAL";
 		final String moodName = CMLib.english().startWithAorAn(moodCode.toLowerCase());
 		if(entered.trim().length()==0)
 		{
@@ -802,7 +816,8 @@ public class Mood extends StdAbility
 						target.delEffect(MOOD);
 					else
 					{
-						if(add) target.addNonUninvokableEffect(MOOD);
+						if(add)
+							target.addNonUninvokableEffect(MOOD);
 						MOOD.setMiscText(choice);
 					}
 					target.recoverPhyStats();

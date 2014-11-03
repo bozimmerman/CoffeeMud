@@ -57,9 +57,12 @@ public class Disease_Infection extends Disease
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID))	return false;
-		if(affected==null) return false;
-		if(!(affected instanceof MOB)) return true;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
+		if(!(affected instanceof MOB))
+			return true;
 
 		final MOB mob=(MOB)affected;
 		if(mob.curState().getHitPoints()>=mob.maxState().getHitPoints())
@@ -68,7 +71,8 @@ public class Disease_Infection extends Disease
 			mob.curState().setHitPoints(mob.curState().getHitPoints()
 							-((mob.curState().getHitPoints()-lastHP)/2));
 		MOB diseaser=invoker;
-		if(diseaser==null) diseaser=mob;
+		if(diseaser==null)
+			diseaser=mob;
 		if((getTickDownRemaining()==1)
 		&&(!mob.amDead())
 		&&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.STAT_SAVE_DISEASE))
@@ -88,7 +92,8 @@ public class Disease_Infection extends Disease
 			if(CMLib.dice().rollPercentage()==1)
 			{
 				final Ability A=CMClass.getAbility("Disease_Fever");
-				if(A!=null) A.invoke(diseaser,mob,true,0);
+				if(A!=null)
+					A.invoke(diseaser,mob,true,0);
 			}
 			return true;
 		}

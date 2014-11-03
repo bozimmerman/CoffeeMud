@@ -46,9 +46,11 @@ public class Retire extends StdCommand
 		throws java.io.IOException
 	{
 		final Session session=mob.session();
-		if(session==null) return false;
+		if(session==null)
+			return false;
 		final PlayerStats pstats=mob.playerStats();
-		if(pstats==null) return false;
+		if(pstats==null)
+			return false;
 
 		mob.tell(L("^HThis will delete your player from the system FOREVER!"));
 		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",120000)

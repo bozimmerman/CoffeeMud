@@ -102,7 +102,8 @@ public class Mining extends GatheringSkill
 						amount=CMLib.dice().roll(1,25,0);
 					amount=amount*abilityCode();
 					String s="s";
-					if(amount==1) s="";
+					if(amount==1)
+						s="";
 					mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to mine @x1 pound@x2 of @x3.",""+amount,s,foundShortName));
 					for(int i=0;i<amount;i++)
 					{

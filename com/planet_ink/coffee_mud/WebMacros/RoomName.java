@@ -40,7 +40,8 @@ public class RoomName extends StdWebMacro
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		final String last=httpReq.getUrlParameter("ROOM");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		if(last.length()>0)
 		{
 			final Room R=CMLib.map().getRoom(last);

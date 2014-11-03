@@ -190,7 +190,8 @@ public class DefaultPlayerAccount implements PlayerAccount
 		while(x>=0)
 		{
 			final String fi=str.substring(0,x).trim();
-			if(fi.length()>0) h.add(fi);
+			if(fi.length()>0)
+				h.add(fi);
 			str=str.substring(x+1);
 			x=str.indexOf(';');
 		}
@@ -263,7 +264,8 @@ public class DefaultPlayerAccount implements PlayerAccount
 
 	protected String getPrivateList(Set<String> h)
 	{
-		if((h==null)||(h.size()==0)) return "";
+		if((h==null)||(h.size()==0))
+			return "";
 		final StringBuffer list=new StringBuffer("");
 		for (final String string : h)
 			list.append((string)+";");
@@ -302,7 +304,8 @@ public class DefaultPlayerAccount implements PlayerAccount
 		for (final String code : codes)
 		{
 			String val=libXML.getValFromPieces(xml,code.toUpperCase());
-			if(val==null) val="";
+			if(val==null)
+				val="";
 			setStat(code.toUpperCase(),libXML.restoreAngleBrackets(val));
 		}
 		final String[] nextPeriods=libXML.getValFromPieces(xml, "NEXTPRIDEPERIODS").split(",");
@@ -364,7 +367,8 @@ public class DefaultPlayerAccount implements PlayerAccount
 	@Override
 	public String findPlayer(String name)
 	{
-		if(name==null) return null;
+		if(name==null)
+			return null;
 		for(final String pName : players)
 			if(pName.equalsIgnoreCase(name))
 				return pName;
@@ -408,7 +412,8 @@ public class DefaultPlayerAccount implements PlayerAccount
 		for(final Enumeration<String> e=getPlayers();e.hasMoreElements();)
 		{
 			final MOB M=CMLib.players().getLoadPlayer(e.nextElement());
-			if(M!=null) mobs.addElement(M);
+			if(M!=null)
+				mobs.addElement(M);
 		}
 		return mobs.elements();
 	}
@@ -525,7 +530,8 @@ public class DefaultPlayerAccount implements PlayerAccount
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
+			if(code.equalsIgnoreCase(CODES[i]))
+				return i;
 		return -1;
 	}
 	public boolean sameAs(PlayerAccount E)

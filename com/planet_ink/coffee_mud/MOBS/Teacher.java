@@ -47,11 +47,14 @@ public class Teacher extends StdMOB
 		setWimpHitPoint(200);
 
 		Behavior B=CMClass.getBehavior("MOBTeacher");
-		if(B!=null) addBehavior(B);
+		if(B!=null)
+			addBehavior(B);
 		B=CMClass.getBehavior("MudChat");
-		if(B!=null) addBehavior(B);
+		if(B!=null)
+			addBehavior(B);
 		B=CMClass.getBehavior("CombatAbilities");
-		if(B!=null) addBehavior(B);
+		if(B!=null)
+			addBehavior(B);
 
 		for(final int i : CharStats.CODES.BASECODES())
 			baseCharStats().setStat(i,25);

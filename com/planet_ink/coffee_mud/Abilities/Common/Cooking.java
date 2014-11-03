@@ -108,7 +108,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 
 	public boolean meetsLidRequirements(MOB mob, Container cooking)
 	{
-		if(!requireLid()) return true;
+		if(!requireLid())
+			return true;
 		if((cooking.hasADoor())&&(!cooking.isOpen()))
 			return true;
 		if((cooking.container()!=null)
@@ -197,14 +198,17 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 
 	public boolean contentsSame(Hashtable h1, Hashtable h2)
 	{
-		if(h1.size()!=h2.size()) return false;
+		if(h1.size()!=h2.size())
+			return false;
 		for(final Enumeration e=h1.keys();e.hasMoreElements();)
 		{
 			final String key=(String)e.nextElement();
 			final Integer INT1=(Integer)h1.get(key);
 			final Integer INT2=(Integer)h2.get(key);
-			if((INT1==null)||(INT2==null)) return false;
-			if(INT1.intValue()!=INT2.intValue()) return false;
+			if((INT1==null)||(INT2==null))
+				return false;
+			if(INT1.intValue()!=INT2.intValue())
+				return false;
 		}
 		return true;
 	}
@@ -219,7 +223,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			else
 				h.put(RawMaterial.CODES.NAME(((Drink)pot).liquidType())+"/",Integer.valueOf(((Drink)pot).liquidRemaining()/10));
 		}
-		if(pot.owner()==null) return h;
+		if(pot.owner()==null)
+			return h;
 		final List<Item> V=pot.getDeepContents();
 		for(int v=0;v<V.size();v++)
 		{
@@ -243,7 +248,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			else
 				ing=I.name();
 			Integer INT=h.get(ing+"/"+I.secretIdentity().toUpperCase()+"/"+I.Name().toUpperCase()+"/");
-			if(INT==null) INT=Integer.valueOf(0);
+			if(INT==null)
+				INT=Integer.valueOf(0);
 			INT=Integer.valueOf(INT.intValue()+1);
 			h.put(ing+"/"+I.secretIdentity().toUpperCase()+"/"+I.Name().toUpperCase()+"/",INT);
 		}
@@ -276,9 +282,12 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				if(ingredient.length()>0)
 				{
 					int amount=1;
-					if(vr<Vr.size()-1)amount=CMath.s_int((String)Vr.get(vr+1));
-					if(amount==0) amount=1;
-					if(amount<0) amount=amount*-1;
+					if(vr<Vr.size()-1)
+						amount=CMath.s_int((String)Vr.get(vr+1));
+					if(amount==0)
+						amount=1;
+					if(amount<0)
+						amount=amount*-1;
 					if(ingredient.equalsIgnoreCase("water"))
 						amount=amount*10;
 					for(int i=0;i<contents.length;i++)
@@ -289,13 +298,16 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 						if((index==0)||((index>0)&&(!Character.isLetter(ingredient2.charAt(index-1)))))
 						{
 							amounts[i]=amount2-amount;
-							if(amounts[i]<0) NotEnoughForThisRun=true;
-							if(amounts[i]==0) RanOutOfSomething=true;
+							if(amounts[i]<0)
+								NotEnoughForThisRun=true;
+							if(amounts[i]==0)
+								RanOutOfSomething=true;
 						}
 					}
 				}
 			}
-			if(!NotEnoughForThisRun) amountMade++;
+			if(!NotEnoughForThisRun)
+				amountMade++;
 		}
 		if(NotEnoughForThisRun)
 		{
@@ -375,7 +387,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			if(ingredient.length()>0)
 			{
 				int amount=1;
-				if(vr<Vr.size()-1)amount=CMath.s_int(Vr.get(vr+1));
+				if(vr<Vr.size()-1)
+					amount=CMath.s_int(Vr.get(vr+1));
 				boolean found=false;
 				for(final Enumeration e=oldPotContents.keys();e.hasMoreElements();)
 				{
@@ -499,7 +512,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 						}
 					}
 				}
-				if(timesTwo) food.setNourishment(food.nourishment()*2);
+				if(timesTwo)
+					food.setNourishment(food.nourishment()*2);
 				if(food.nourishment()>300)
 					food.setBite((int)Math.round(Math.ceil(CMath.div(food.nourishment(),2))));
 			}
@@ -542,7 +556,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			food.setMaterial(material<0?RawMaterial.RESOURCE_BEEF:material);
 			if(mob!=null)
 				food.setNourishment((food.nourishment()+homeCookValue(mob,10))/finalAmount);
-			if(!messedUp) CMLib.materials().addEffectsToResource(food);
+			if(!messedUp)
+				CMLib.materials().addEffectsToResource(food);
 			food.basePhyStats().setWeight(food.basePhyStats().weight()/finalAmount);
 			playSound=defaultFoodSound;
 		}
@@ -580,11 +595,13 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				drink.setThirstQuenched(1);
 			}
 			drink.basePhyStats().setWeight(drink.basePhyStats().weight()/finalAmount);
-			if(messedUp)drink.setThirstQuenched(1);
+			if(messedUp)
+				drink.setThirstQuenched(1);
 			playSound=defaultDrinkSound;
 			buildingI.setMaterial(liquidType);
 			drink.setLiquidType(liquidType);
-			if(!messedUp) CMLib.materials().addEffectsToResource((Item)drink);
+			if(!messedUp)
+				CMLib.materials().addEffectsToResource((Item)drink);
 		}
 		else
 		if(CMClass.getItem(foodType)!=null)
@@ -620,7 +637,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				drink.setLiquidType(liquidType);
 			}
 			buildingI.basePhyStats().setWeight(buildingI.basePhyStats().weight()/finalAmount);
-			if(!messedUp) CMLib.materials().addEffectsToResource(buildingI);
+			if(!messedUp)
+				CMLib.materials().addEffectsToResource(buildingI);
 			playSound=defaultFoodSound;
 		}
 		else
@@ -712,7 +730,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 						{ finalRecipe=Vr; break;}
 					}
 				}
-			if(finalRecipe==null) return false;
+			if(finalRecipe==null)
+				return false;
 			buildingI=buildItem(mob,finalRecipe,null);
 			if(parsedVars.forceLevels)
 			{
@@ -743,7 +762,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				if(Vr.size()>0)
 				{
 					final String item=Vr.get(RCP_FINALFOOD);
-					if(item.length()==0) continue;
+					if(item.length()==0)
+						continue;
 					final int level=CMath.s_int(Vr.get(RCP_LEVEL));
 					if(((level<=xlevel(mob))||allFlag)
 					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
@@ -756,8 +776,10 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 							if(ingredient.length()>0)
 							{
 								int amount=1;
-								if(vr<Vr.size()-1)amount=CMath.s_int(Vr.get(vr+1));
-								if(amount==0) amount=1;
+								if(vr<Vr.size()-1)
+									amount=CMath.s_int(Vr.get(vr+1));
+								if(amount==0)
+									amount=1;
 								if(amount<0)
 								{
 									ingredient="~"+ingredient;
@@ -829,7 +851,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		if(requireFire())
 		{
 			final Item fire=getRequiredFire(mob,0);
-			if(fire==null) return false;
+			if(fire==null)
+				return false;
 		}
 
 		messedUp=!proficiencyCheck(mob,0,auto);
@@ -883,9 +906,11 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				{
 					final StringBuffer buf=new StringBuffer(L("If you are trying to make @x1, you need to remove ",recipeName));
 					for(int i=0;i<extra.size();i++)
-						if(i==0) buf.append(((String)extra.elementAt(i)).toLowerCase());
+						if(i==0)
+							buf.append(((String)extra.elementAt(i)).toLowerCase());
 						else
-						if(i==extra.size()-1) buf.append(L(", and @x1",((String)extra.elementAt(i)).toLowerCase()));
+						if(i==extra.size()-1)
+							buf.append(L(", and @x1",((String)extra.elementAt(i)).toLowerCase()));
 						else buf.append(", "+((String)extra.elementAt(i)).toLowerCase());
 					commonTell(mob,buf.toString()+".");
 				}
@@ -894,9 +919,11 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				{
 					final StringBuffer buf=new StringBuffer(L("If you are trying to make @x1, you need to add ",recipeName));
 					for(int i=0;i<missing.size();i++)
-						if(i==0) buf.append(((String)missing.elementAt(i)).toLowerCase());
+						if(i==0)
+							buf.append(((String)missing.elementAt(i)).toLowerCase());
 						else
-						if(i==missing.size()-1) buf.append(L(", and @x1",((String)missing.elementAt(i)).toLowerCase()));
+						if(i==missing.size()-1)
+							buf.append(L(", and @x1",((String)missing.elementAt(i)).toLowerCase()));
 						else buf.append(", "+((String)missing.elementAt(i)).toLowerCase());
 					commonTell(mob,buf.toString()+".");
 				}

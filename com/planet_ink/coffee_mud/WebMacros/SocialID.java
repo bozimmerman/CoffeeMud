@@ -40,7 +40,8 @@ public class SocialID extends StdWebMacro
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		final String last=httpReq.getUrlParameter("SOCIAL");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		return last;
 	}
 }

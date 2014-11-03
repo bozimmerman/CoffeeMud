@@ -42,8 +42,10 @@ public class CMColor extends StdLibrary implements ColorLibrary
 	@Override
 	public int translateSingleCMCodeToANSIOffSet(String code)
 	{
-		if(code.length()==0) return -1;
-		if(!code.startsWith("^")) return -1;
+		if(code.length()==0)
+			return -1;
+		if(!code.startsWith("^"))
+			return -1;
 		int i=code.length()-1;
 		while(i>=0)
 			if(Character.isLetter(code.charAt(i)))
@@ -55,8 +57,10 @@ public class CMColor extends StdLibrary implements ColorLibrary
 
 	public String translateCMCodeToFGNumber(String code)
 	{
-		if(code.length()==0) return code;
-		if(!code.startsWith("^")) return code;
+		if(code.length()==0)
+			return code;
+		if(!code.startsWith("^"))
+			return code;
 		final int background=code.indexOf('|');
 		if(background>0)
 			code=code.substring(0,background);
@@ -70,8 +74,10 @@ public class CMColor extends StdLibrary implements ColorLibrary
 	@Override
 	public String translateCMCodeToANSI(String code)
 	{
-		if(code.length()==0) return code;
-		if(!code.startsWith("^")) return code;
+		if(code.length()==0)
+			return code;
+		if(!code.startsWith("^"))
+			return code;
 		final int background=code.indexOf('|');
 		int bold=0;
 		for(int i=0;i<code.length();i++)
@@ -88,9 +94,12 @@ public class CMColor extends StdLibrary implements ColorLibrary
 	@Override
 	public String translateANSItoCMCode(String code)
 	{
-		if(code.length()==0) return code;
-		if(code.indexOf('^')==0) return code;
-		if(code.indexOf('|')>0) return code;
+		if(code.length()==0)
+			return code;
+		if(code.indexOf('^')==0)
+			return code;
+		if(code.indexOf('|')>0)
+			return code;
 		String code1=null;
 		String code2=null;
 		final boolean bold=(code.indexOf(";1;")>0)||(code.indexOf("[1;")>0);
@@ -144,11 +153,14 @@ public class CMColor extends StdLibrary implements ColorLibrary
 	@Override
 	public String mixColorCodes(String code1, String code2)
 	{
-		if((code1==null)||(code1.length()==0)) return code2;
-		if((code2==null)||(code2.length()==0)) return code1;
+		if((code1==null)||(code1.length()==0))
+			return code2;
+		if((code2==null)||(code2.length()==0))
+			return code1;
 		if(code1.charAt(code1.length()-1)!=code2.charAt(code2.length()-1))
 			return code1+code2;
-		if(code2.startsWith("\033["))code2=code2.substring("\033[".length());
+		if(code2.startsWith("\033["))
+			code2=code2.substring("\033[".length());
 		return code1.substring(0,code1.length()-1)+";"+code2;
 	}
 

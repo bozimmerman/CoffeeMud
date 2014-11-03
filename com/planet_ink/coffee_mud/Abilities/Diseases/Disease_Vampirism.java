@@ -57,8 +57,10 @@ public class Disease_Vampirism extends Disease
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(!(affected instanceof MOB)) return;
-		if(((MOB)affected).location()==null) return;
+		if(!(affected instanceof MOB))
+			return;
+		if(((MOB)affected).location()==null)
+			return;
 		if(CMLib.flags().isInDark(((MOB)affected).location()))
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
 		else
@@ -86,7 +88,8 @@ public class Disease_Vampirism extends Disease
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+1);
 	}
 }

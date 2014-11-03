@@ -84,7 +84,8 @@ public class Prayer_FleshRock extends Prayer
 			if(mob.isInCombat())
 			{
 				final MOB victim=mob.getVictim();
-				if(victim!=null) victim.makePeace();
+				if(victim!=null)
+					victim.makePeace();
 				mob.makePeace();
 			}
 			mob.recoverMaxState();
@@ -118,7 +119,8 @@ public class Prayer_FleshRock extends Prayer
 			if(mob.isInCombat())
 			{
 				final MOB victim=mob.getVictim();
-				if(victim!=null) victim.makePeace();
+				if(victim!=null)
+					victim.makePeace();
 				mob.makePeace();
 			}
 		}
@@ -157,10 +159,12 @@ public class Prayer_FleshRock extends Prayer
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			if(statue!=null) statue.destroy();
+			if(statue!=null)
+				statue.destroy();
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> flesh is no longer made of rock."));
-			if(prevState!=null) prevState.copyInto(mob.curState());
+			if(prevState!=null)
+				prevState.copyInto(mob.curState());
 			CMLib.commands().postStand(mob,true);
 		}
 	}
@@ -169,7 +173,8 @@ public class Prayer_FleshRock extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -180,7 +185,8 @@ public class Prayer_FleshRock extends Prayer
 
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
-		if(levelDiff<0) levelDiff=0;
+		if(levelDiff<0)
+			levelDiff=0;
 		boolean success=proficiencyCheck(mob,-(levelDiff*5),auto);
 
 		if(success)
@@ -201,16 +207,20 @@ public class Prayer_FleshRock extends Prayer
 					{
 						final Ability A=target.fetchEffect(a);
 						final int s=target.numEffects();
-						if(A!=null) A.unInvoke();
+						if(A!=null)
+							A.unInvoke();
 						if(target.numEffects()==s)
 							a++;
 					}
 					CMLib.commands().postStand(target,true);
 					statue=CMClass.getItem("GenItem");
 					String name=target.name();
-					if(name.startsWith("A ")) name="a "+name.substring(2);
-					if(name.startsWith("An ")) name="an "+name.substring(3);
-					if(name.startsWith("The ")) name="the "+name.substring(4);
+					if(name.startsWith("A "))
+						name="a "+name.substring(2);
+					if(name.startsWith("An "))
+						name="an "+name.substring(3);
+					if(name.startsWith("The "))
+						name="the "+name.substring(4);
 					statue.setName(L("a rocky statue of @x1",name));
 					statue.setDisplayText(L("a rocky statue of @x1 stands here.",name));
 					statue.setDescription(L("It`s a hard rocky statue, which looks exactly like @x1.",name));
@@ -219,7 +229,8 @@ public class Prayer_FleshRock extends Prayer
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> turn(s) into rock!!"));
 					success=maliciousAffect(mob,target,asLevel,(mob.phyStats().level()+(2*super.getXLEVELLevel(mob))),-1)!=null;
 					target.makePeace();
-					if(mob.getVictim()==target) mob.setVictim(null);
+					if(mob.getVictim()==target)
+						mob.setVictim(null);
 					final Ability A=target.fetchEffect(ID());
 					if(success&&(A!=null))
 					{

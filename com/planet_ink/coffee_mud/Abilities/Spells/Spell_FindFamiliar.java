@@ -50,9 +50,12 @@ public class Spell_FindFamiliar extends Spell
 	
 	public int castingQuality(MOB mob, MOB target)
 	{
-		if((target!=null)&&(mob!=target)) return Ability.QUALITY_INDIFFERENT;
-		if(mob.numFollowers()>0) return Ability.QUALITY_INDIFFERENT;
-		if(mob.isMonster()) return Ability.QUALITY_INDIFFERENT;
+		if((target!=null)&&(mob!=target))
+			return Ability.QUALITY_INDIFFERENT;
+		if(mob.numFollowers()>0)
+			return Ability.QUALITY_INDIFFERENT;
+		if(mob.isMonster())
+			return Ability.QUALITY_INDIFFERENT;
 		return abstractQuality();
 	}
 
@@ -96,7 +99,8 @@ public class Spell_FindFamiliar extends Spell
 			{
 				mob.location().send(mob,msg);
 				final MOB target = determineMonster(mob, mob.phyStats().level());
-				if(target.isInCombat()) target.makePeace();
+				if(target.isInCombat())
+					target.makePeace();
 				CMLib.commands().postFollow(target,mob,true);
 				invoker=mob;
 				if(target.amFollowing()!=mob)

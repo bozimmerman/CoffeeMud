@@ -50,7 +50,8 @@ public class Thief_ConcealWalkway extends ThiefSkill
 	@Override
 	public int abilityCode()
 	{
-		if(code<0) code=CMath.s_int(text());
+		if(code<0)
+			code=CMath.s_int(text());
 		return code;
 	}
 	@Override public void setAbilityCode(int newCode){code=newCode; super.miscText=""+newCode;}

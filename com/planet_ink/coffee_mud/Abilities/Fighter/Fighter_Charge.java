@@ -72,7 +72,8 @@ public class Fighter_Charge extends FighterSkill
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
-			if(done) unInvoke();
+			if(done)
+				unInvoke();
 		return super.tick(ticking,tickID);
 	}
 
@@ -104,7 +105,8 @@ public class Fighter_Charge extends FighterSkill
 	{
 		final boolean notInCombat=!mob.isInCombat();
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if((mob.isInCombat())
 		&&(mob.rangeToTarget()<=0))

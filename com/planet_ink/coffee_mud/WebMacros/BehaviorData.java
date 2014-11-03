@@ -41,7 +41,8 @@ public class BehaviorData extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("BEHAVIOR");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		if(last.length()>0)
 		{
 			final Behavior B=CMClass.getBehavior(last);
@@ -51,9 +52,11 @@ public class BehaviorData extends StdWebMacro
 				if(parms.containsKey("HELP"))
 				{
 					StringBuilder s=CMLib.help().getHelpText("BEHAVIOR_"+B.ID(),null,true);
-					if(s==null)	s=CMLib.help().getHelpText(B.ID(),null,true);
+					if(s==null)
+						s=CMLib.help().getHelpText(B.ID(),null,true);
 					int limit=78;
-					if(parms.containsKey("LIMIT")) limit=CMath.s_int(parms.get("LIMIT"));
+					if(parms.containsKey("LIMIT"))
+						limit=CMath.s_int(parms.get("LIMIT"));
 					str.append(helpHelp(s,limit));
 				}
 				String strstr=str.toString();

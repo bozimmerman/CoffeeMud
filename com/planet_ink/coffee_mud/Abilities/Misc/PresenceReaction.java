@@ -203,7 +203,8 @@ public class PresenceReaction extends StdAbility
 				{
 					previousMood="";
 					final Ability A=affected.fetchEffect("Mood");
-					if(A!=null) previousMood=A.text();
+					if(A!=null)
+						previousMood=A.text();
 					if(previousMood.trim().length()==0)
 						previousMood="NORMAL";
 				}
@@ -241,7 +242,8 @@ public class PresenceReaction extends StdAbility
 
 	protected void initializeAllManaged(MOB affected)
 	{
-		if(unmanagedYet.size()==0) return;
+		if(unmanagedYet.size()==0)
+			return;
 		initializeManagedObjects(affected);
 		while(unmanagedYet.size()>0)
 		{
@@ -265,7 +267,8 @@ public class PresenceReaction extends StdAbility
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(tickID!=Tickable.TICKID_MOB) return true;
+		if(tickID!=Tickable.TICKID_MOB)
+			return true;
 		if(reactToM==null)
 		{
 			// dont combine this if with the above
@@ -306,7 +309,8 @@ public class PresenceReaction extends StdAbility
 				shutdownPresence(mob);
 			return A!=null;
 		}
-		if(!(target instanceof MOB)) return false;
+		if(!(target instanceof MOB))
+			return false;
 		final PresenceReaction A=(PresenceReaction)this.copyOf();
 		A.reactToM=(MOB)target;
 		for(final Object O : commands)

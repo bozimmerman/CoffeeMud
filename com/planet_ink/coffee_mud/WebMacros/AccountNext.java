@@ -45,12 +45,14 @@ public class AccountNext extends StdWebMacro
 		final String last=httpReq.getUrlParameter("ACCOUNT");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("ACCOUNT");
+			if(last!=null)
+				httpReq.removeUrlParameter("ACCOUNT");
 			return "";
 		}
 		String lastID="";
 		String sort=httpReq.getUrlParameter("SORTBY");
-		if(sort==null) sort="";
+		if(sort==null)
+			sort="";
 		final Enumeration<PlayerAccount> pe=CMLib.players().accounts(sort,httpReq.getRequestObjects());
 		for(;pe.hasMoreElements();)
 		{

@@ -50,8 +50,10 @@ public class Song_Flight extends Song
 			return false;
 
 		final MOB mob=(MOB)affected;
-		if(mob==null) return false;
-		if(mob==invoker) return true;
+		if(mob==null)
+			return false;
+		if(mob==invoker)
+			return true;
 		if(mob.amFollowing()!=invoker)
 			return false;
 		return true;
@@ -89,7 +91,8 @@ public class Song_Flight extends Song
 				if(R.okMessage(mob,msg))
 				{
 					final Set<MOB> h=sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
-					if(h==null) continue;
+					if(h==null)
+						continue;
 
 					for (final Object element : h)
 					{
@@ -98,7 +101,8 @@ public class Song_Flight extends Song
 						int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 						if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
 							affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
-						if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
+						if(auto)
+							affectType=affectType|CMMsg.MASK_ALWAYS;
 
 						if((CMLib.flags().canBeHeardSpeakingBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 						{

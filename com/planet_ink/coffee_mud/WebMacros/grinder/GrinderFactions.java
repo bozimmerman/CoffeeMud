@@ -83,7 +83,8 @@ public class GrinderFactions {
 					code=CMStrings.replaceAll(old.toUpperCase().trim()," ","_");
 				final int low=CMath.s_int(httpReq.getUrlParameter("RANGELOW"+num));
 				int high=CMath.s_int(httpReq.getUrlParameter("RANGEHIGH"+num));
-				if(high<low) high=low;
+				if(high<low)
+					high=low;
 				final String flag=httpReq.getUrlParameter("RANGEFLAG"+num);
 				F.addRange(low+";"+high+";"+old+";"+code+";"+flag);
 			}

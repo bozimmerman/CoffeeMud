@@ -61,10 +61,14 @@ public class Song_Thanks extends Song
 			return false;
 
 		final MOB mob=(MOB)affected;
-		if(mob==null) return true;
-		if(mob==invoker) return true;
-		if(invoker==null) return true;
-		if(mob.location()!=invoker.location()) return true;
+		if(mob==null)
+			return true;
+		if(mob==invoker)
+			return true;
+		if(invoker==null)
+			return true;
+		if(mob.location()!=invoker.location())
+			return true;
 		//if(!mob.isMonster()) return true;
 		if((CMLib.dice().rollPercentage()<6)
 		   &&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.STAT_SAVE_MIND))
@@ -112,7 +116,8 @@ public class Song_Thanks extends Song
 				CMLib.beanCounter().subtractMoney(mob,CMath.mul(1.0,super.getXLEVELLevel(invoker())));
 				mob.addItem(C);
 				mob.doCommand(CMParms.parse("GIVE \""+C.name()+"\" \""+invoker.name()+"\""),Command.METAFLAG_FORCED);
-				if(!C.amDestroyed()) C.putCoinsBack();
+				if(!C.amDestroyed())
+					C.putCoinsBack();
 			}
 		}
 		return true;
@@ -149,7 +154,8 @@ public class Song_Thanks extends Song
 				if(mob.location().okMessage(mob,msg))
 				{
 					final Set<MOB> h=this.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
-					if(h==null) continue;
+					if(h==null)
+						continue;
 					final Song newOne=(Song)this.copyOf();
 
 					for (final Object element : h)
@@ -158,7 +164,8 @@ public class Song_Thanks extends Song
 
 						// malicious songs must not affect the invoker!
 						int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
-						if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
+						if(auto)
+							affectType=affectType|CMMsg.MASK_ALWAYS;
 
 						if((CMLib.flags().canBeHeardSpeakingBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 						{

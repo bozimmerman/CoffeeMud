@@ -197,7 +197,8 @@ public class SipletInterface extends StdWebMacro
 						while((tokenNum==0)&&((--tries)>0))
 						{
 							tokenNum = new Random().nextInt();
-							if(tokenNum<0) tokenNum = tokenNum * -1;
+							if(tokenNum<0)
+								tokenNum = tokenNum * -1;
 							hex=Integer.toHexString(tokenNum);
 							if(httpReq.isUrlParameter(hex))
 								tokenNum=0;

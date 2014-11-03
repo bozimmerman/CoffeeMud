@@ -120,7 +120,8 @@ public class Spell_Scribe extends Spell
 		for(final Ability A : spells)
 		{
 			int lvl=CMLib.ableMapper().qualifyingLevel(mob,A);
-			if(lvl<0) lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+			if(lvl<0)
+				lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 			level -= lvl;
 		}
 		if(level <= 0)

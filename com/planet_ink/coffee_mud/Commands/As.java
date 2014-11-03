@@ -123,7 +123,8 @@ public class As extends StdCommand
 					mob.location().bringMobHere(M,false);
 				commands.removeElementAt(0);
 			}
-			if(dead) M.bringToLife();
+			if(dead)
+				M.bringToLife();
 			if((M.location()==null)&&(oldRoom==null)&&(mob.location()!=null))
 			{
 				inside=false;
@@ -134,7 +135,8 @@ public class As extends StdCommand
 		M.doCommand(commands,metaFlags|Command.METAFLAG_AS);
 		synchronized(mySession)
 		{
-			if(M.playerStats()!=null) M.playerStats().setLastUpdated(0);
+			if(M.playerStats()!=null)
+				M.playerStats().setLastUpdated(0);
 			if((oldRoom!=null)&&(inside)&&(!oldRoom.isInhabitant(M)))
 				oldRoom.bringMobHere(M,false);
 			else
@@ -150,7 +152,8 @@ public class As extends StdCommand
 		}
 		CMLib.s_sleep(100);
 		//mySession.initTelnetMode(myBitmap);
-		if(dead) M.removeFromGame(true,true);
+		if(dead)
+			M.removeFromGame(true,true);
 		return false;
 	}
 

@@ -85,7 +85,8 @@ public class StdClanCommonContainer extends StdClanContainer
 								I=null;
 						}
 						final Vector V=new Vector();
-						if(I!=null)	V.addElement(I.name());
+						if(I!=null)
+							V.addElement(I.name());
 						A.invoke(M,V,null,false,phyStats().level());
 					}
 					else

@@ -32,7 +32,8 @@ public class BoxCityLayout extends AbstractLayout
 	public void halfLineN(LayoutSet lSet, int startX, int endX, int height, TreeSet<Integer> xposUsed)
 	{
 		final int x = startX + ((endX - startX)/2);
-		if((x-startX)<3) return;
+		if((x-startX)<3)
+			return;
 		LayoutNode n = lSet.getNode(new long[]{x,0});
 		if(n!=null)
 		{
@@ -42,7 +43,8 @@ public class BoxCityLayout extends AbstractLayout
 				lSet.use(n,LayoutTypes.street);
 				n.flagRun(LayoutRuns.ns);
 				LayoutNode nn = lSet.getNextNode(n, Directions.NORTH);
-				if(nn==null) nn=lSet.makeNextNode(n, Directions.NORTH);
+				if(nn==null)
+					nn=lSet.makeNextNode(n, Directions.NORTH);
 				n.crossLink(nn);
 				n=nn;
 			}
@@ -56,7 +58,8 @@ public class BoxCityLayout extends AbstractLayout
 	public void halfLineE(LayoutSet lSet, int startY, int endY, int width, TreeSet<Integer> yposUsed)
 	{
 		final int y = startY + ((endY - startY)/2);
-		if((startY-y)<3) return;
+		if((startY-y)<3)
+			return;
 		LayoutNode n = lSet.getNode(new long[]{0,y});
 		if(n!=null)
 		{
@@ -66,7 +69,8 @@ public class BoxCityLayout extends AbstractLayout
 				lSet.use(n,LayoutTypes.street);
 				n.flagRun(LayoutRuns.ew);
 				LayoutNode nn = lSet.getNextNode(n, Directions.EAST);
-				if(nn==null) nn=lSet.makeNextNode(n, Directions.EAST);
+				if(nn==null)
+					nn=lSet.makeNextNode(n, Directions.EAST);
 				n.crossLink(nn);
 				n=nn;
 			}
@@ -153,7 +157,8 @@ public class BoxCityLayout extends AbstractLayout
 				n=null;
 			if(n==null)
 			{
-				if(tryDiff>0) tryDiff=-tryDiff;
+				if(tryDiff>0)
+					tryDiff=-tryDiff;
 				else if(tryDiff<0) tryDiff=(-tryDiff)+1;
 				else tryDiff++;
 			}

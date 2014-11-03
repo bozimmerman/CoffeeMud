@@ -51,7 +51,8 @@ public class Age extends StdAbility
 	public String displayText()
 	{
 		final long start=CMath.s_long(text());
-		if(start<Short.MAX_VALUE) return "";
+		if(start<Short.MAX_VALUE)
+			return "";
 		final TimeClock C=CMLib.time().localClock(affected);
 		final long days=((System.currentTimeMillis()-start)/CMProps.getTickMillis())/CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY); // down to days;
 		final long months=days/C.getDaysInMonth();
@@ -178,12 +179,17 @@ public class Age extends StdAbility
 
 	protected void doThang()
 	{
-		if(affected==null) return;
-		if(text().length()==0) return;
+		if(affected==null)
+			return;
+		if(text().length()==0)
+			return;
 		final long l=CMath.s_long(text());
-		if(l==0) return;
-		if(norecurse) return;
-		if(l<Short.MAX_VALUE) return;
+		if(l==0)
+			return;
+		if(norecurse)
+			return;
+		if(l<Short.MAX_VALUE)
+			return;
 		norecurse=true;
 
 		if(divisor==0.0)
@@ -196,7 +202,8 @@ public class Age extends StdAbility
 		if((affected instanceof Item)&&(affected instanceof CagedAnimal)&&(!(affected instanceof DeadBody)))
 		{
 			((Item)affected).setExpirationDate(0);
-			if(getMyRace()==null) return;
+			if(getMyRace()==null)
+				return;
 			if(ellapsed>=myRace.getAgingChart()[1])
 			{
 				final Room R=CMLib.map().roomLocation(affected);
@@ -235,9 +242,11 @@ public class Age extends StdAbility
 						babe.recoverPhyStats();
 						babe.recoverMaxState();
 						final Age A=(Age)babe.fetchEffect(ID());
-						if(A!=null) A.setMiscText(text());
+						if(A!=null)
+							A.setMiscText(text());
 						final Ability B=I.fetchEffect(ID());
-						if(B!=null)	I.delEffect(B);
+						if(B!=null)
+							I.delEffect(B);
 						if(!CMLib.flags().isAnimalIntelligence(babe))
 						{
 							final Ability STAT=babe.fetchEffect("Prop_StatTrainer");
@@ -266,7 +275,8 @@ public class Age extends StdAbility
 		{
 			final MOB babe=(MOB)affected;
 			final MOB following=getFollowing(babe);
-			if(getMyRace()==null) return;
+			if(getMyRace()==null)
+				return;
 			if((babe.getLiegeID().length()==0)&&(!following.getLiegeID().equals(affected.Name())))
 				babe.setLiegeID(following.Name());
 			babe.setAttribute(MOB.Attrib.AUTOASSIST,false);
@@ -314,7 +324,8 @@ public class Age extends StdAbility
 			&&(babe.charStats().getStat(CharStats.STAT_INTELLIGENCE)>1))
 			{
 				Ability A=babe.fetchEffect("Prop_SafePet");
-				if(A!=null)babe.delEffect(A);
+				if(A!=null)
+					babe.delEffect(A);
 				CMLib.database().DBDeleteData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text());
 
 				final Room R=CMLib.map().roomLocation(affected);
@@ -325,13 +336,15 @@ public class Age extends StdAbility
 					MOB liege=null;
 					if(babe.getLiegeID().length()>0)
 						liege=CMLib.players().getLoadPlayer(babe.getLiegeID());
-					if(liege==null) liege=babe.amFollowing();
+					if(liege==null)
+						liege=babe.amFollowing();
 					final MOB newMan=CMClass.getMOB("StdMOB");
 					newMan.setAgeMinutes(babe.getAgeMinutes());
 					newMan.setBaseCharStats(babe.baseCharStats());
 					newMan.setBasePhyStats(babe.basePhyStats());
 					newMan.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
-					if(liege!=null)	newMan.copyFactions(liege);
+					if(liege!=null)
+						newMan.copyFactions(liege);
 					newMan.basePhyStats().setLevel(1);
 					newMan.setAttributesBitmap(babe.getAttributesBitmap());
 					for(final Enumeration<MOB.Tattoo> e=babe.tattoos();e.hasMoreElements();)
@@ -391,7 +404,8 @@ public class Age extends StdAbility
 					if(CMLib.clans().findRivalrousClan(newMan)!=null)
 					{
 						final Clan C = CMLib.clans().findRivalrousClan(newMan);
-						if(C!=null) C.addMember(newMan, C.getGovernment().getAcceptPos());
+						if(C!=null)
+							C.addMember(newMan, C.getGovernment().getAcceptPos());
 					}
 					newMan.setDescription(babe.description());
 					newMan.setDisplayText(babe.displayText());
@@ -505,7 +519,8 @@ public class Age extends StdAbility
 					MOB liege=null;
 					if(babe.getLiegeID().length()>0)
 						liege=CMLib.players().getLoadPlayer(babe.getLiegeID());
-					if(liege==null) liege=babe.amFollowing();
+					if(liege==null)
+						liege=babe.amFollowing();
 					if(babe.Name().indexOf(' ')>0)
 					{
 						final String name=CMLib.english().startWithAorAn(getMyRace().makeMobName((char)babe.baseCharStats().getStat(CharStats.STAT_GENDER), 4)).toLowerCase();
@@ -535,7 +550,8 @@ public class Age extends StdAbility
 		&&(CMLib.law().getLandOwnerName(((MOB)affected).location()).length()>0))
 		{
 			final MOB babe=(MOB)affected;
-			if(getMyRace()==null) return;
+			if(getMyRace()==null)
+				return;
 			babe.setAttribute(MOB.Attrib.AUTOASSIST,true);
 			if(ellapsed>=myRace.getAgingChart()[2])
 			{
@@ -574,7 +590,8 @@ public class Age extends StdAbility
 			if(ellapsed>=myRace.getAgingChart()[3])
 			{
 				final Ability A=babe.fetchEffect("Prop_SafePet");
-				if(A!=null)babe.delEffect(A);
+				if(A!=null)
+					babe.delEffect(A);
 
 				if(babe.Name().indexOf(' ')>0)
 				{
@@ -630,7 +647,8 @@ public class Age extends StdAbility
 		if((affected!=null)
 		&&(!affected.amDestroyed()))
 		{
-			if(getMyRace()==null) return;
+			if(getMyRace()==null)
+				return;
 			if((msg.target()==affected)
 			&&(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 			{
@@ -651,7 +669,8 @@ public class Age extends StdAbility
 						{
 							String s=displayText();
 							if(s.startsWith("("))s=s.substring(1);
-							if(s.endsWith(")"))s=s.substring(0,s.length()-1);
+							if(s.endsWith(")")
+								)s=s.substring(0,s.length()-1);
 							msg.source().tell(L("@x1 is @x2",Name(),s));
 						}
 					}
@@ -707,7 +726,8 @@ public class Age extends StdAbility
 					if(affected instanceof MOB)
 					{
 						mob=(MOB)affected;
-						if(getMyRace()==null) return;
+						if(getMyRace()==null)
+							return;
 						if(divisor==0.0)
 						{
 							final TimeClock C=CMLib.time().localClock(mob.getStartRoom());
@@ -732,7 +752,8 @@ public class Age extends StdAbility
 					if((soil)&&(affected.fetchEffect("Soiled")==null)&&(mob!=null))
 					{
 						final Ability A=CMClass.getAbility("Soiled");
-						if(A!=null) A.invoke(mob,affected,true,0);
+						if(A!=null)
+							A.invoke(mob,affected,true,0);
 					}
 				}
 			}

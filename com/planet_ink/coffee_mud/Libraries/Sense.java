@@ -162,7 +162,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public void setSavable(Physical P, boolean truefalse)
 	{
-		if(P==null) return;
+		if(P==null)
+			return;
 		if(CMath.bset(P.basePhyStats().disposition(),PhyStats.IS_UNSAVABLE))
 		{
 			if(truefalse)
@@ -181,7 +182,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public void setReadable(Item I, boolean truefalse)
 	{
-		if(I==null) return;
+		if(I==null)
+			return;
 		if(CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMREADABLE))
 		{
 			if(!truefalse)
@@ -217,7 +219,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public void setGettable(Item I, boolean truefalse)
 	{
-		if(I==null) return;
+		if(I==null)
+			return;
 		if(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOTGET))
 		{
 			if(!truefalse)
@@ -236,7 +239,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public void setDroppable(Item I, boolean truefalse)
 	{
-		if(I==null) return;
+		if(I==null)
+			return;
 		if(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNODROP))
 		{
 			if(!truefalse)
@@ -255,7 +259,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public void setRemovable(Item I, boolean truefalse)
 	{
-		if(I==null) return;
+		if(I==null)
+			return;
 		if(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOREMOVE))
 		{
 			if(!truefalse)
@@ -280,7 +285,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isHidden(Physical P)
 	{
-		if(P==null) return false;
+		if(P==null)
+			return false;
 		final boolean isInHide=((P.phyStats().disposition()&PhyStats.IS_HIDDEN)==PhyStats.IS_HIDDEN);
 		if((P instanceof MOB)
 		&&(isInHide)
@@ -299,7 +305,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isRejuvingItem(Item I)
 	{
-		if(I==null) return false;
+		if(I==null)
+			return false;
 		for(int i=0;i<I.numEffects();i++)
 			if(I.fetchEffect(i) instanceof ItemTicker)
 				return true;
@@ -329,7 +336,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isEvil(Physical P)
 	{
-		if(P==null) return false;
+		if(P==null)
+			return false;
 		if ((P.phyStats().disposition()&PhyStats.IS_EVIL)==PhyStats.IS_EVIL)
 			return true;
 		else
@@ -347,7 +355,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isATrackingMonster(MOB M)
 	{
-		if(M==null) return false;
+		if(M==null)
+			return false;
 		if(M.isMonster())
 			return flaggedAffects(M,Ability.FLAG_TRACKING).size()>0;
 		return false;
@@ -388,7 +397,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		{
 			String s=A.displayText();
 			if(s.startsWith("(")) s=s.substring(1);
-			if(s.endsWith(")")) s=s.substring(0,s.length()-1);
+			if(s.endsWith(")")
+				) s=s.substring(0,s.length()-1);
 			return s;
 		}
 	}
@@ -396,7 +406,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isGood(Physical P)
 	{
-		if(P==null) return false;
+		if(P==null)
+			return false;
 		if ((P.phyStats().disposition()&PhyStats.IS_GOOD)==PhyStats.IS_GOOD)
 			return true;
 		else
@@ -418,7 +429,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isDeadlyOrMaliciousEffect(final PhysicalAgent P)
 	{
-		if(P==null) return false;
+		if(P==null)
+			return false;
 		if(flaggedBehaviors(P, Behavior.FLAG_POTENTIALLYAUTODEATHING).size()>0)
 			return true;
 		if(isTrapped(P))
@@ -444,7 +456,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isPossiblyAggressive(MOB M)
 	{
-		if(M==null) return false;
+		if(M==null)
+			return false;
 		final List<Behavior> V=flaggedBehaviors(M,Behavior.FLAG_POTENTIALLYAGGRESSIVE);
 		return ((V==null)||(V.size()==0))? false:true;
 	}
@@ -452,9 +465,11 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isAggressiveTo(MOB M, MOB toM)
 	{
-		if((M==null)||(toM==null)) return false;
+		if((M==null)||(toM==null))
+			return false;
 		final List<Behavior> V=flaggedBehaviors(M,Behavior.FLAG_POTENTIALLYAGGRESSIVE);
-		if((V==null)||(V.size()==0)) return false;
+		if((V==null)||(V.size()==0))
+			return false;
 		for(final Behavior B : V)
 			if(B.grantsAggressivenessTo(toM))
 				return true;
@@ -493,7 +508,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isNeutral(Physical P)
 	{
-		if(P==null) return false;
+		if(P==null)
+			return false;
 		if(((P.phyStats().disposition()&PhyStats.IS_GOOD)==PhyStats.IS_GOOD)
 		|| ((P.phyStats().disposition()&PhyStats.IS_EVIL)==PhyStats.IS_EVIL))
 			return false;
@@ -564,9 +580,11 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isSwimmingInWater(Physical P)
 	{
-		if(!isSwimming(P)) return false;
+		if(!isSwimming(P))
+			return false;
 		final Room R=CMLib.map().roomLocation(P);
-		if(R==null) return false;
+		if(R==null)
+			return false;
 		switch(R.domainType())
 		{
 		case Room.DOMAIN_INDOORS_UNDERWATER:
@@ -581,7 +599,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean canBeHeardMovingBy(Physical heard , MOB hearer)
 	{
-		if(hearer==heard) return true;
+		if(hearer==heard)
+			return true;
 		if(hearer==null)
 			return false;
 		if(heard==null)
@@ -603,7 +622,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean canBeHeardSpeakingBy(Physical heard , MOB hearer)
 	{
-		if(hearer==heard) return true;
+		if(hearer==heard)
+			return true;
 		if(hearer==null)
 			return false;
 		if(heard==null)
@@ -648,7 +668,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean aliveAwakeMobile(final MOB mob, final boolean quiet)
 	{
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		if(quiet)
 		{
 			if(mob.amDead()
@@ -691,7 +712,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isBoundOrHeld(Physical P)
 	{
-		if(P==null) return false;
+		if(P==null)
+			return false;
 		if((P.phyStats().disposition()&PhyStats.IS_BOUND)==PhyStats.IS_BOUND)
 			return true;
 		return flaggedAnyAffects(P,Ability.FLAG_BINDING|Ability.FLAG_PARALYZING).size()>0;
@@ -699,7 +721,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isOnFire(Physical seen)
 	{
-		if(seen==null) return false;
+		if(seen==null)
+			return false;
 		if(seen.fetchEffect("Burning")!=null)
 			return true;
 		if(seen.fetchEffect("Prayer_FlameWeapon")!=null)
@@ -757,14 +780,17 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean canBeSeenBy(Environmental seen , MOB seer)
 	{
-		if(seer==seen) return true;
-		if(seen==null) return true;
+		if(seer==seen)
+			return true;
+		if(seen==null)
+			return true;
 
 		if((seer!=null)
 		&&(seer.isAttribute(MOB.Attrib.SYSOPMSGS)))
 			return true;
 
-		if(!canSee(seer)) return false;
+		if(!canSee(seer))
+			return false;
 		if(!(seen instanceof Physical))
 			return true;
 		final Physical seenP=(Physical)seen;
@@ -1075,8 +1101,10 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isWaterWorthy(Physical P)
 	{
-		if(P==null) return false;
-		if(isSwimming(P)) return true;
+		if(P==null)
+			return false;
+		if(isSwimming(P))
+			return true;
 		if((P instanceof Rider)&&(((Rider)P).riding()!=null))
 			return isWaterWorthy(((Rider)P).riding());
 		if((P instanceof Rideable)&&(((Rideable)P).rideBasis()==Rideable.RIDEABLE_WATER))
@@ -1106,7 +1134,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 					totalWeight+=cap-totalWeight;
 				}
 			}
-			if(totalWeight<=0) return true;
+			if(totalWeight<=0)
+				return true;
 
 			return (totalFloatilla/totalWeight)<=1000;
 		}
@@ -1117,8 +1146,10 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isInFlight(Physical P)
 	{
-		if(P==null) return false;
-		if(isFlying(P)) return true;
+		if(P==null)
+			return false;
+		if(isFlying(P))
+			return true;
 		if(P instanceof Rider)
 			return isInFlight(((Rider)P).riding());
 		return false;
@@ -1266,7 +1297,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean canAccess(MOB mob, Area A)
 	{
-		if(A==null) return false;
+		if(A==null)
+			return false;
 		if((isHidden(A)) && (mob==null))
 			return false;
 		if(((!isHidden(A))
@@ -1351,10 +1383,14 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isInTheGame(final Environmental E, final boolean reqInhabitation)
 	{
-		if(E instanceof MOB) return isInTheGame((MOB)E,reqInhabitation);
-		if(E instanceof Item) return isInTheGame((Item)E,reqInhabitation);
-		if(E instanceof Room) return isInTheGame((Room)E,reqInhabitation);
-		if(E instanceof Area) return isInTheGame((Area)E,reqInhabitation);
+		if(E instanceof MOB)
+			return isInTheGame((MOB)E,reqInhabitation);
+		if(E instanceof Item)
+			return isInTheGame((Item)E,reqInhabitation);
+		if(E instanceof Room)
+			return isInTheGame((Room)E,reqInhabitation);
+		if(E instanceof Area)
+			return isInTheGame((Area)E,reqInhabitation);
 		return true;
 	}
 	@Override
@@ -1408,7 +1444,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 
 	public boolean isAgingThing(Physical P)
 	{
-		if(P==null) return false;
+		if(P==null)
+			return false;
 		final Ability A=P.fetchEffect("Age");
 		if((A!=null)&&(CMath.isInteger(A.text())&&(CMath.s_long(A.text())>Short.MAX_VALUE)))
 			return true;
@@ -1450,7 +1487,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			if(CMath.isSet(disposition,i))
 				buf.append(PhyStats.IS_CODES[i]+", ");
 		String buff=buf.toString();
-		if(buff.endsWith(", ")) buff=buff.substring(0,buff.length()-2).trim();
+		if(buff.endsWith(", "))
+			buff=buff.substring(0,buff.length()-2).trim();
 		return buff;
 	}
 
@@ -1469,7 +1507,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			if(CMath.isSet(disposition,i))
 				buf.append(PhyStats.CAN_SEE_CODES[i]+", ");
 		String buff=buf.toString();
-		if(buff.endsWith(", ")) buff=buff.substring(0,buff.length()-2).trim();
+		if(buff.endsWith(", "))
+			buff=buff.substring(0,buff.length()-2).trim();
 		return buff;
 	}
 
@@ -1496,13 +1535,15 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public String getAbilityType(Ability A)
 	{
-		if(A==null) return "";
+		if(A==null)
+			return "";
 		return Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES];
 	}
 	@Override
 	public String getAbilityDomain(Ability A)
 	{
-		if(A==null) return "";
+		if(A==null)
+			return "";
 		return Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5];
 	}
 	@Override
@@ -1525,7 +1566,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isAControlledFollower(MOB invoker, MOB mob, Ability A)
 	{
-		if((mob==null)||(mob==invoker)||(!mob.isMonster())) return false;
+		if((mob==null)||(mob==invoker)||(!mob.isMonster()))
+			return false;
 		if(A==null)
 			return mob.getStartRoom()==null;
 		A = mob.fetchEffect(A.ID());
@@ -1539,9 +1581,11 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean hasAControlledFollower(MOB invoker, Ability A)
 	{
-		if(invoker==null) return false;
+		if(invoker==null)
+			return false;
 		final Room R = invoker.location();
-		if(R==null) return false;
+		if(R==null)
+			return false;
 		for(int r=0;r<R.numInhabitants();r++)
 			if(isAControlledFollower(invoker, R.fetchInhabitant(r), A))
 				return true;

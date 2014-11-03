@@ -60,7 +60,8 @@ public class GrinderRooms
 
 	public static String editRoom(HTTPRequest httpReq, java.util.Map<String,String> parms, MOB whom, Room R)
 	{
-		if(R==null) return "Old Room not defined!";
+		if(R==null)
+			return "Old Room not defined!";
 		boolean redoAllMyDamnRooms=false;
 		final Room oldR=R;
 
@@ -88,7 +89,8 @@ public class GrinderRooms
 				CMLib.threads().deleteTick(oldR,-1);
 				R.setRoomID(oldR.roomID());
 				final Area area=oldR.getArea();
-				if(area!=null) area.delProperRoom(oldR);
+				if(area!=null)
+					area.delProperRoom(oldR);
 				R.setArea(area);
 				for(int d=0;d<R.rawDoors().length;d++)
 					R.rawDoors()[d]=oldR.rawDoors()[d];
@@ -114,7 +116,8 @@ public class GrinderRooms
 
 			// description
 			String desc=httpReq.getUrlParameter("DESCRIPTION");
-			if(desc==null)desc="";
+			if(desc==null)
+				desc="";
 			R.setDescription(desc);
 
 			// climate
@@ -151,25 +154,30 @@ public class GrinderRooms
 			if(!skipImage)
 			{
 				String img=httpReq.getUrlParameter("IMAGE");
-				if(img==null)img="";
+				if(img==null)
+					img="";
 				R.setImage(img);
 			}
 
 			if(R instanceof GridLocale)
 			{
 				String x=httpReq.getUrlParameter("XGRID");
-				if(x==null)x="";
+				if(x==null)
+					x="";
 				((GridLocale)R).setXGridSize(CMath.s_int(x));
 				String y=httpReq.getUrlParameter("YGRID");
-				if(y==null)y="";
+				if(y==null)
+					y="";
 				((GridLocale)R).setYGridSize(CMath.s_int(y));
 				((GridLocale)R).clearGrid(null);
 			}
 
 			String error=GrinderAreas.doAffects(R,httpReq,parms);
-			if(error.length()>0) return error;
+			if(error.length()>0)
+				return error;
 			error=GrinderAreas.doBehavs(R,httpReq,parms);
-			if(error.length()>0) return error;
+			if(error.length()>0)
+				return error;
 
 			// here's where you resolve items and mobs
 			final Vector allmobs=new Vector();
@@ -266,7 +274,8 @@ public class GrinderRooms
 				for(int i=1;;i++)
 				{
 					final String MATCHING=httpReq.getUrlParameter("ITEM"+i);
-					if(MATCHING==null) break;
+					if(MATCHING==null)
+						break;
 					Item I2=RoomData.getItemFromAnywhere(allitems,MATCHING);
 					if(I2!=null)
 					{
@@ -287,7 +296,8 @@ public class GrinderRooms
 				for(int i=0;i<cstrings.size();i++)
 				{
 					final String CONTAINER=(String)cstrings.elementAt(i);
-					if(CONTAINER.length()==0) continue;
+					if(CONTAINER.length()==0)
+						continue;
 					final Item I2=(Item)items.elementAt(i);
 					final Item C2=(Item)CMLib.english().fetchEnvironmental(items,CONTAINER,true);
 					if(C2 instanceof Container)
@@ -375,7 +385,8 @@ public class GrinderRooms
 	{
 		Room newRoom=null;
 		final String newRoomID=A.getNewRoomID(linkTo,dir);
-		if(newRoomID.length()==0) return null;
+		if(newRoomID.length()==0)
+			return null;
 		if((copyThisOne)&&(linkTo!=null))
 		{
 			CMLib.map().resetRoom(linkTo);

@@ -132,7 +132,8 @@ public class GatheringSkill extends CommonSkill
 			return false;
 		}
 		int amount=CMath.s_int((String)what.elementAt(1));
-		if(((String)what.elementAt(1)).equalsIgnoreCase("ALL")) amount=Integer.MAX_VALUE;
+		if(((String)what.elementAt(1)).equalsIgnoreCase("ALL"))
+			amount=Integer.MAX_VALUE;
 		if(amount<=0)
 		{
 			commonTell(mob,L("@x1 is not an appropriate amount.",""+amount));
@@ -140,7 +141,8 @@ public class GatheringSkill extends CommonSkill
 		}
 		int numHere=0;
 		final Room R=mob.location();
-		if(R==null) return false;
+		if(R==null)
+			return false;
 		final String name=CMParms.combine(what,2);
 		int foundResource=-1;
 		Item foundAnyway=null;
@@ -153,7 +155,8 @@ public class GatheringSkill extends CommonSkill
 			final Item I=R.getItem(i);
 			if(CMLib.english().containsString(I.Name(),name))
 			{
-				if(foundAnyway==null) foundAnyway=I;
+				if(foundAnyway==null)
+					foundAnyway=I;
 				if((I instanceof RawMaterial)
 				&&(!CMLib.flags().isOnFire(I))
 				&&(!CMLib.flags().enchanted(I))
@@ -186,7 +189,8 @@ public class GatheringSkill extends CommonSkill
 				commonTell(mob,L("You don't see any @x1 on the ground here.",name));
 			return false;
 		}
-		if(amount==Integer.MAX_VALUE) amount=numHere;
+		if(amount==Integer.MAX_VALUE)
+			amount=numHere;
 		if(numHere<amount)
 		{
 			commonTell(mob,L("You only see @x1 pounds of @x2 on the ground here.",""+numHere,name));

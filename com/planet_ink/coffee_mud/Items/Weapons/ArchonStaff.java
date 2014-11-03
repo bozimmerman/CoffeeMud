@@ -120,10 +120,12 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 				final MOB target=(MOB)afftarget;
 				if(message.toUpperCase().indexOf("LEVEL ALL UP")>0)
 				{
-					if(!safetyCheck(mob,message)) return;
+					if(!safetyCheck(mob,message))
+						return;
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly at <T-NAME>.",this.name()));
 					int destLevel=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
-					if(destLevel==0) destLevel=30;
+					if(destLevel==0)
+						destLevel=30;
 					if(destLevel<=target.basePhyStats().level())
 						destLevel=100;
 					if((target.charStats().getCurrentClass().leveless())
@@ -145,11 +147,13 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 				else
 				if(message.toUpperCase().startsWith("LEVEL ")&&message.toUpperCase().endsWith(" UP"))
 				{
-					if(!safetyCheck(mob,message)) return;
+					if(!safetyCheck(mob,message))
+						return;
 					message=message.substring(6).trim();
 					message=message.substring(0,message.length()-2).trim();
 					int num=1;
-					if(CMath.isInteger(message)) num=CMath.s_int(message);
+					if(CMath.isInteger(message))
+						num=CMath.s_int(message);
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly at <T-NAME>.",this.name()));
 					if((target.charStats().getCurrentClass().leveless())
 					||(target.charStats().isLevelCapped(target.charStats().getCurrentClass()))
@@ -171,11 +175,13 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 				else
 				if(message.toUpperCase().startsWith("LEVEL ")&&message.toUpperCase().endsWith(" DOWN"))
 				{
-					if(!safetyCheck(mob,message)) return;
+					if(!safetyCheck(mob,message))
+						return;
 					message=message.substring(6).trim();
 					message=message.substring(0,message.length()-4).trim();
 					int num=1;
-					if(CMath.isInteger(message)) num=CMath.s_int(message);
+					if(CMath.isInteger(message))
+						num=CMath.s_int(message);
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly at <T-NAME>.",this.name()));
 					if((target.charStats().getCurrentClass().leveless())
 					||(target.charStats().isLevelCapped(target.charStats().getCurrentClass()))
@@ -201,7 +207,8 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 				else
 				if(message.toUpperCase().indexOf("RESTORE")>=0)
 				{
-					if(!safetyCheck(mob,message)) return;
+					if(!safetyCheck(mob,message))
+						return;
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly at <T-NAME>.",this.name()));
 					final List<Ability> diseaseV=CMLib.flags().domainAffects(target,Ability.ACODE_DISEASE);
 					if(diseaseV.size()>0){ final Ability A=CMClass.getAbility("Prayer_CureDisease"); if(A!=null) A.invoke(mob,target,true,0);}
@@ -219,7 +226,8 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 				else
 				if(message.toUpperCase().indexOf("REFRESH")>=0)
 				{
-					if(!safetyCheck(mob,message)) return;
+					if(!safetyCheck(mob,message))
+						return;
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly at <T-NAME>.",this.name()));
 					final Ability bleed=target.fetchEffect("Bleeding"); if(bleed!=null){ bleed.unInvoke(); target.delEffect(bleed);}
 					target.recoverMaxState();
@@ -230,7 +238,8 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 				else
 				if(message.toUpperCase().equals("BLAST"))
 				{
-					if(!safetyCheck(mob,message)) return;
+					if(!safetyCheck(mob,message))
+						return;
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 zaps <T-NAME> with unworldly energy.",this.name()));
 					target.curState().setHitPoints(1);
 					target.curState().setMana(1);
@@ -240,7 +249,8 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 				else
 				if(message.toUpperCase().indexOf("BURN")>=0)
 				{
-					if(!safetyCheck(mob,message)) return;
+					if(!safetyCheck(mob,message))
+						return;
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 wielded by <S-NAME> shoots forth magical green flames at <T-NAME>.",this.name()));
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= 3;

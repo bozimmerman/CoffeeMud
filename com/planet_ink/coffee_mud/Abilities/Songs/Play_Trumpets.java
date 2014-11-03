@@ -44,8 +44,10 @@ public class Play_Trumpets extends Play_Instrument
 	@Override
 	protected Ability getSpell()
 	{
-		if(theSpell!=null) return theSpell;
-		if(mimicSpell().length()==0) return null;
+		if(theSpell!=null)
+			return theSpell;
+		if(mimicSpell().length()==0)
+			return null;
 		theSpell=CMClass.getAbility(mimicSpell());
 		return theSpell;
 	}

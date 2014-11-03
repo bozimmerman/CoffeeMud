@@ -60,7 +60,8 @@ public class Emote extends StdCommand
 		while(x>0)
 		{
 			int y=CMStrings.indexOfEndOfWord(combinedCommands,x+1);
-			if(y<0) y=combinedCommands.length();
+			if(y<0)
+				y=combinedCommands.length();
 			String rest=combinedCommands.substring(x+1,y);
 			Pronoun P=Pronoun.NAME;
 			for(final Pronoun p : Pronoun.values())

@@ -272,7 +272,8 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 		@Override
 		public int compareTo(CMObject o)
 		{
-			if(o==null) return 1;
+			if(o==null)
+				return 1;
 			return (this==o)?0:this.ID().compareTo(o.ID());
 		}
 		@Override public String ID() { return tattooName; }

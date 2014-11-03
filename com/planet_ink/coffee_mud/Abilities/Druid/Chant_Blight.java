@@ -75,8 +75,10 @@ public class Chant_Blight extends Chant
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
-		if(affected==null) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
 		if(affected instanceof Room)
 		{
 			final Room R=(Room)affected;
@@ -129,7 +131,8 @@ public class Chant_Blight extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Room target=mob.location();
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell(L("This place is already blighted."));

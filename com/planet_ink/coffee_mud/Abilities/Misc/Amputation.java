@@ -43,7 +43,8 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 	@Override
 	public String displayText()
 	{
-		if(missingLimbNameSet().size()==0) return "";
+		if(missingLimbNameSet().size()==0)
+			return "";
 		return "(Missing your "+CMLib.english().toEnglishStringList(missingLimbNameSet())+")";
 	}
 	@Override
@@ -259,9 +260,11 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 	@Override
 	public List<String> missingLimbNameSet()
 	{
-		if(missingLimbs!=null) return missingLimbs;
+		if(missingLimbs!=null)
+			return missingLimbs;
 		missingLimbs=new Vector();
-		if(affected==null) return missingLimbs;
+		if(affected==null)
+			return missingLimbs;
 		if((!(affected instanceof MOB))&&(!(affected instanceof DeadBody)))
 		   return missingLimbs;
 		missingLimbs=CMParms.parseSemicolons(text(),true);
@@ -294,7 +297,8 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 	public List<String> completeLimbNameSet(Environmental E)
 	{
 		final Vector<String> V=new Vector<String>();
-		if(!(E instanceof MOB)) return V;
+		if(!(E instanceof MOB))
+			return V;
 		final MOB M=(MOB)E;
 		final int[] limbs=M.charStats().getMyRace().bodyMask();
 		for(int i=0;i<limbs.length;i++)
@@ -322,7 +326,8 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 	{
 		missingLimbNameSet();
 		final Vector V=new Vector();
-		if(!(P instanceof MOB)) return V;
+		if(!(P instanceof MOB))
+			return V;
 		final MOB M=(MOB)P;
 		final int[] limbs=new int[Race.BODY_PARTS];
 		for(int i=0;i<limbs.length;i++)
@@ -420,7 +425,8 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 	@Override
 	public Item amputate(Physical target, Amputator A, String gone)
 	{
-		if(A==null) return null;
+		if(A==null)
+			return null;
 		Race R=null;
 		if(target!=null)
 		{
@@ -501,7 +507,8 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 		if(!isFakeLimb)
 		{
 			final List<String> theRest=A.affectedLimbNameSet(target,gone,A.missingLimbNameSet());
-			if(!theRest.contains(gone)) theRest.add(gone);
+			if(!theRest.contains(gone))
+				theRest.add(gone);
 			for(int i=0;i<theRest.size();i++)
 				A.setMiscText(A.text()+(theRest.get(i))+";");
 		}
@@ -518,7 +525,8 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 					if(((String)((Object[])V.elementAt(v))[0]).equalsIgnoreCase(gone))
 					{
 						V.removeElementAt(v);
-						if(V.size()==0) I.injuries[i]=null;
+						if(V.size()==0)
+							I.injuries[i]=null;
 						break;
 					}
 			}
@@ -527,7 +535,8 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 		&&(CMLib.dice().roll(1,100,0)<=CMProps.getIntVar(CMProps.Int.INJBLEEDPCTCHANCE)))
 		{
 			final Ability A2=CMClass.getAbility("Bleeding");
-			if(A2!=null) A2.invoke(((MOB)target),((MOB)target),true,0);
+			if(A2!=null)
+				A2.invoke(((MOB)target),((MOB)target),true,0);
 		}
 		return limb;
 	}
@@ -580,11 +589,13 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 		if(choice.toUpperCase().startsWith("LEFT "))
 			choice=choice.substring(5).trim();
 		final MOB target=super.getTarget(mob,commands,givenTarget,false,true);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(!auto)
 		{
 			LegalBehavior B=null;
-			if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());
+			if(mob.location()!=null)
+				B=CMLib.law().getLegalBehavior(mob.location());
 			List<LegalWarrant> warrants=new Vector();
 			if(B!=null)
 				warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);

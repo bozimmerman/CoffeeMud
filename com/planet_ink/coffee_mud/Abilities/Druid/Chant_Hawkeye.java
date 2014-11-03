@@ -90,7 +90,8 @@ public class Chant_Hawkeye extends Chant
 						if((M!=null)&&(M!=mob)&&(M!=target)&&(CMLib.flags().isHidden(M)))
 						{ found=true; break;}
 					}
-				if(!found) return Ability.QUALITY_INDIFFERENT;
+				if(!found)
+					return Ability.QUALITY_INDIFFERENT;
 			}
 		}
 		return super.castingQuality(mob,target);

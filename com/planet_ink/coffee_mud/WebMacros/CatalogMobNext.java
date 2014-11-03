@@ -161,7 +161,8 @@ public class CatalogMobNext extends StdWebMacro
 			{
 				data=CMLib.catalog().getCatalogMobData(name2);
 				M=CMLib.catalog().getCatalogMob(name2);
-				if(M==null) continue;
+				if(M==null)
+					continue;
 				httpReq.addFakeUrlParameter("MOB",name);
 				for(int d=0;d<DATA.length;d++)
 					httpReq.addFakeUrlParameter(DATA[d],getCataStat(M,data,d,null));

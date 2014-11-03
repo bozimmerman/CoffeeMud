@@ -157,7 +157,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		{
 			wholeFile.addElement(filename,V.get(v));
 			s=V.get(v).trim();
-			if((s.startsWith("#"))||(s.trim().length()==0)) continue;
+			if((s.startsWith("#"))||(s.trim().length()==0))
+				continue;
 			if(s.startsWith("["))
 			{
 				final int x=s.lastIndexOf(']');
@@ -388,12 +389,14 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		final List<String> expansion=CMParms.parseAny(CMStrings.replaceAll(str,"\\t","\t"),'\n',false);
 		MORE_CMDS.set(m,expansion.get(0));
 		String expStr=expansion.get(0);
-		if(expStr.length()<=strLen) nothingDone=false;
+		if(expStr.length()<=strLen)
+			nothingDone=false;
 		final boolean insert=m<MORE_CMDS.size()-1;
 		for(int e=1;e<expansion.size();e++)
 		{
 			expStr=expansion.get(e);
-			if(expStr.length()<=strLen) nothingDone=false;
+			if(expStr.length()<=strLen)
+				nothingDone=false;
 			if(insert)
 				MORE_CMDS.add(m+e,expStr);
 			else
@@ -475,7 +478,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			case REPLACEALL:
 			{
 				rep=(String)parser.elementAt(p,2);
-				if(rep.length()==0) break;
+				if(rep.length()==0)
+					break;
 				for(int m=0;m<MORE_CMDS.size();m++)
 				{
 					str=MORE_CMDS.get(m);
@@ -498,7 +502,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			{
 				pattern=(Pattern)parser.elementAt(p,2);
 				matcher=pattern.matcher(combinedWithTabs);
-				if(matcher.find()) return new XVector<List<String>>();
+				if(matcher.find())
+					return new XVector<List<String>>();
 				break;
 			}
 			case IGNOREWHOLE:
@@ -510,7 +515,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			}
 			case AUTOIGNORE:
 				autoIgnoreLen=((Integer)parser.elementAt(p,2)).intValue();
-				if(autoIgnoreLen==0) autoIgnoreLen=100;
+				if(autoIgnoreLen==0)
+					autoIgnoreLen=100;
 				break;
 			}
 		}
@@ -539,9 +545,11 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	@SuppressWarnings("unchecked")
 	protected String basicParser(String str, String section, boolean nullIfLonger, boolean isParser)
 	{
-		if(str==null) return null;
+		if(str==null)
+			return null;
 		final DVector parser=isParser?getLanguageParser(section):getLanguageTranslator(section);
-		if(parser==null) return null;
+		if(parser==null)
+			return null;
 		Pattern pattern=null;
 		Matcher matcher=null;
 		final String oldStr=str;
@@ -570,19 +578,22 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			case REPLACEWHOLE:
 			{
 				rep=((Hashtable<String,String>)parser.elementAt(p,2)).get(str.toLowerCase());
-				if(rep!=null) return rep;
+				if(rep!=null)
+					return rep;
 				break;
 			}
 			case REPLACEEXACT:
 			{
 				rep=((Hashtable<String,String>)parser.elementAt(p,2)).get(str);
-				if(rep!=null) return rep;
+				if(rep!=null)
+					return rep;
 				break;
 			}
 			case REPLACEALL:
 			{
 				rep=(String)parser.elementAt(p,2);
-				if(rep.length()==0) break;
+				if(rep.length()==0)
+					break;
 				int x=str.toLowerCase().indexOf(rep);
 				while(x>=0)
 				{
@@ -596,7 +607,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			{
 				pattern=(Pattern)parser.elementAt(p,2);
 				matcher=pattern.matcher(str);
-				if(matcher.find()) return null;
+				if(matcher.find())
+					return null;
 				break;
 			}
 			case IGNOREWHOLE:
@@ -608,7 +620,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			}
 			case AUTOIGNORE:
 				autoIgnoreLen=((Integer)parser.elementAt(p,2)).intValue();
-				if(autoIgnoreLen==0) autoIgnoreLen=100;
+				if(autoIgnoreLen==0)
+					autoIgnoreLen=100;
 				break;
 			}
 		}
@@ -646,11 +659,14 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 
 	public void addAutoIgnoredString(String str, DVector fileData, DVector fileIndexes, String sectionName)
 	{
-		if((fileData==null)||(str==null)||(fileData.size()<1)) return;
+		if((fileData==null)||(str==null)||(fileData.size()<1))
+			return;
 		final String filename=(String)fileData.elementAt(0,1);
-		if(fileIndexes==null) return;
+		if(fileIndexes==null)
+			return;
 		int index=fileIndexes.indexOf(sectionName.toUpperCase().trim());
-		if(index<0) return;
+		if(index<0)
+			return;
 		index=((Integer)fileIndexes.elementAt(index,2)).intValue();
 		for(int f=0;f<fileIndexes.size();f++)
 			if(((Integer)fileIndexes.elementAt(f,2)).intValue()>index)

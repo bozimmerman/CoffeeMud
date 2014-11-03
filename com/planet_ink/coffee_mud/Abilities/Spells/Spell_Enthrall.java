@@ -49,7 +49,8 @@ public class Spell_Enthrall extends Spell
 	protected MOB charmer=null;
 	protected MOB getCharmer()
 	{
-		if(charmer!=null) return charmer;
+		if(charmer!=null)
+			return charmer;
 		if((invoker!=null)&&(invoker!=affected))
 			charmer=invoker;
 		else
@@ -59,7 +60,8 @@ public class Spell_Enthrall extends Spell
 			if(R!=null)
 				charmer=R.fetchInhabitant(text());
 		}
-		if(charmer==null) return invoker;
+		if(charmer==null)
+			return invoker;
 		return charmer;
 	}
 
@@ -73,7 +75,8 @@ public class Spell_Enthrall extends Spell
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 		{
 			unInvoke();
-			if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
+			if(msg.source().playerStats()!=null)
+				msg.source().playerStats().setLastUpdated(0);
 		}
 	}
 
@@ -84,7 +87,8 @@ public class Spell_Enthrall extends Spell
 			return true;
 
 		final MOB mob=(MOB)affected;
-		if(mob.amFollowing()==null) return super.okMessage(myHost,msg);
+		if(mob.amFollowing()==null)
+			return super.okMessage(myHost,msg);
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
@@ -192,10 +196,12 @@ public class Spell_Enthrall extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
-		if(levelDiff<0) levelDiff=0;
+		if(levelDiff<0)
+			levelDiff=0;
 
 		if(!CMLib.flags().canSpeak(mob))
 		{
@@ -237,7 +243,8 @@ public class Spell_Enthrall extends Spell
 					success=maliciousAffect(mob,target,asLevel,-levelDiff,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0))!=null;
 					if(success)
 					{
-						if(target.isInCombat()) target.makePeace();
+						if(target.isInCombat())
+							target.makePeace();
 						CMLib.commands().postFollow(target,mob,false);
 						CMLib.combat().makePeaceInGroup(mob);
 						if(target.amFollowing()!=mob)

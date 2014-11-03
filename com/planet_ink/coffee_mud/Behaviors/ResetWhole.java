@@ -93,7 +93,8 @@ public class ResetWhole extends StdBehavior
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(lastAccess<0) return true;
+		if(lastAccess<0)
+			return true;
 
 		if((lastAccess+time)<System.currentTimeMillis())
 		{

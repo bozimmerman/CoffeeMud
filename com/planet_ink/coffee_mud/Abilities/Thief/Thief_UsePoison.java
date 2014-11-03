@@ -114,7 +114,8 @@ public class Thief_UsePoison extends ThiefSkill
 						target.addNonUninvokableEffect(A);
 
 					int amountToTake=dPoison.thirstQuenched()/5;
-					if(amountToTake<1) amountToTake=1;
+					if(amountToTake<1)
+						amountToTake=1;
 					dPoison.setLiquidRemaining(dPoison.liquidRemaining()-amountToTake);
 					if(dPoison.disappearsAfterDrinking()
 					||((dPoison instanceof RawMaterial)&&(dPoison.liquidRemaining()<=0)))

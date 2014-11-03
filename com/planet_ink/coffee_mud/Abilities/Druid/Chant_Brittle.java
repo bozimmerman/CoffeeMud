@@ -109,7 +109,8 @@ public class Chant_Brittle extends Chant
 	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
-		if(!(target instanceof MOB)) return Ability.QUALITY_INDIFFERENT;
+		if(!(target instanceof MOB))
+			return Ability.QUALITY_INDIFFERENT;
 		if((mob!=null)&&(mob!=target))
 		{
 			final Item I=getItem((MOB)target);
@@ -134,7 +135,8 @@ public class Chant_Brittle extends Chant
 		if(target==null)
 			target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

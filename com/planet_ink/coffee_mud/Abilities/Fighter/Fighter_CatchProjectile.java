@@ -85,7 +85,8 @@ public class Fighter_CatchProjectile extends FighterSkill
 			{
 
 				String ammo=((AmmunitionWeapon)w).ammunitionType();
-				if(ammo.length()==0) return true;
+				if(ammo.length()==0)
+					return true;
 				if(ammo.endsWith("s"))
 					ammo=ammo.substring(0,ammo.length()-1);
 				final Item neww=CMLib.coffeeMaker().makeAmmunition(ammo,1);

@@ -44,9 +44,11 @@ public class PlayerDelete extends StdWebMacro
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
 		final String last=httpReq.getUrlParameter("PLAYER");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		final MOB M=CMLib.players().getLoadPlayer(last);
-		if(M==null) return " @break@";
+		if(M==null)
+			return " @break@";
 
 		CMLib.players().obliteratePlayer(M,true,true);
 		Log.sysOut("PlayerDelete","Someone destroyed the user "+M.Name()+".");

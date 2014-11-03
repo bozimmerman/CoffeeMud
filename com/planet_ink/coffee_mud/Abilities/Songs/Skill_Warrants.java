@@ -51,7 +51,8 @@ public class Skill_Warrants extends BardSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		LegalBehavior B=null;
-		if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());
+		if(mob.location()!=null)
+			B=CMLib.law().getLegalBehavior(mob.location());
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -82,7 +83,8 @@ public class Skill_Warrants extends BardSkill
 					buf.append(CMStrings.padRight(W.witness()!=null?W.witness().Name():L("N/A"),colWidth)+" ");
 					buf.append(CMLib.coffeeFilter().fullOutFilter(mob.session(),mob,W.criminal(),W.victim(),null,W.crime(),false)+"\n\r");
 				}
-				if(!mob.isMonster()) mob.session().rawPrintln(buf.toString());
+				if(!mob.isMonster())
+					mob.session().rawPrintln(buf.toString());
 			}
 		}
 		else

@@ -135,7 +135,8 @@ public class StdCoins extends StdItem implements Coins
 		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if(A!=null)	A.affectPhyStats(this,phyStats);
+			if(A!=null)
+				A.affectPhyStats(this,phyStats);
 		}
 	}
 

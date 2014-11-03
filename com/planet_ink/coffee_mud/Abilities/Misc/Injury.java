@@ -91,7 +91,8 @@ public class Injury extends StdAbility implements HealthCondition
 				}
 		}
 		catch(final Exception e){}
-		if(buf.length()==0) return "";
+		if(buf.length()==0)
+			return "";
 		return buf.substring(1);
 	}
 
@@ -99,7 +100,8 @@ public class Injury extends StdAbility implements HealthCondition
 	public String displayText()
 	{
 		final String buf=getHealthConditionDesc();
-		if(buf.length()==0) return "";
+		if(buf.length()==0)
+			return "";
 		return "(Injuries:"+buf+")";
 	}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -155,7 +157,8 @@ public class Injury extends StdAbility implements HealthCondition
 				final String chosenName=txt.substring(0,x);
 				final String amount=txt.substring(x+1);
 				Amputation A=(Amputation)mob.fetchEffect("Amputation");
-				if(A==null) A=new Amputation();
+				if(A==null)
+					A=new Amputation();
 				final List<String> remains=A.remainingLimbNameSet(mob);
 				if(mob.charStats().getBodyPart(Race.BODY_HEAD)>0)
 					remains.add("head");
@@ -263,7 +266,8 @@ public class Injury extends StdAbility implements HealthCondition
 				else
 				{
 					int pct=(int)Math.round(CMath.div(mob.curState().getHitPoints()-lastHP,mob.maxState().getHitPoints())*100.0);
-					if(pct<=0) pct=1;
+					if(pct<=0)
+						pct=1;
 					int tries=100;
 					while((pct>0)&&((--tries)>0)&&(choicesToHeal.size()>0))
 					{
@@ -278,7 +282,8 @@ public class Injury extends StdAbility implements HealthCondition
 								if(pct>((Integer)O[1]).intValue())
 								{
 									V.removeElement(O);
-									if(V.size()==0) injuries[choice[0]]=null;
+									if(V.size()==0)
+										injuries[choice[0]]=null;
 									pct-=((Integer)O[1]).intValue();
 									choicesToHeal.removeElementAt(which);
 								}
@@ -305,10 +310,13 @@ public class Injury extends StdAbility implements HealthCondition
 	};
 	public String fixMessageString(String message, String loc)
 	{
-		if(message==null) return null;
+		if(message==null)
+			return null;
 		int x=message.indexOf("<DAMAGE>");
-		if(x<0) x=message.indexOf("<DAMAGES>");
-		if(x<0) return message;
+		if(x<0)
+			x=message.indexOf("<DAMAGES>");
+		if(x<0)
+			return message;
 		int y=Integer.MAX_VALUE;
 		int which=-1;
 		for(int i=0;i<TRANSLATE.length;i++)
@@ -336,7 +344,8 @@ public class Injury extends StdAbility implements HealthCondition
 		{
 			final MOB mob=(MOB)msg.target();
 			Amputation A=(Amputation)mob.fetchEffect("Amputation");
-			if(A==null) A=new Amputation();
+			if(A==null)
+				A=new Amputation();
 			final List<String> remains=A.remainingLimbNameSet(mob);
 			if(mob.charStats().getBodyPart(Race.BODY_HEAD)>0)
 				remains.add("head");
@@ -390,7 +399,8 @@ public class Injury extends StdAbility implements HealthCondition
 					}
 					final int BodyPct=(int)Math.round(CMath.div(msg.value(),mob.maxState().getHitPoints())*100.0);
 					int LimbPct=BodyPct*CMProps.getIntVar(CMProps.Int.INJMULTIPLIER);
-					if(LimbPct<1) LimbPct=1;
+					if(LimbPct<1)
+						LimbPct=1;
 					int bodyLoc=-1;
 					for(int i=0;i<Race.BODY_PARTS;i++)
 						if((" "+remains.get(chosenOne).toUpperCase()).endsWith(" "+Race.BODYPARTSTR[i]))

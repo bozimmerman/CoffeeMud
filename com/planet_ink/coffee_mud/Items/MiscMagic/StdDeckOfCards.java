@@ -221,7 +221,8 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 	@Override
 	public HandOfCards addPlayerHand(MOB player, HandOfCards cards)
 	{
-		if(player==null) return null;
+		if(player==null)
+			return null;
 		if(hands.contains(player))
 			return (HandOfCards)hands.elementAt(hands.indexOf(player),2);
 		if(cards==null)
@@ -241,7 +242,8 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 	public void removePlayerHand(MOB player)
 	{
 		final HandOfCards cards=getPlayerHand(player);
-		if(cards==null) return;
+		if(cards==null)
+			return;
 		final List<Item> cardSet=cards.getContents();
 		for(int c=0;c<cardSet.size();c++)
 			addCard((PlayingCard)cardSet.get(c));
@@ -256,7 +258,8 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 	@Override
 	public boolean addCard(PlayingCard card)
 	{
-		if(card!=null) card.turnFaceDown();
+		if(card!=null)
+			card.turnFaceDown();
 		return super.addCard(card);
 	}
 

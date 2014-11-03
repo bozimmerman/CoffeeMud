@@ -56,7 +56,8 @@ public class Lich extends Skeleton
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!(ticking instanceof MOB)) return super.tick(ticking,tickID);
+		if(!(ticking instanceof MOB))
+			return super.tick(ticking,tickID);
 		final MOB myChar=(MOB)ticking;
 		if((tickID==Tickable.TICKID_MOB)&&(CMLib.dice().rollPercentage()<10))
 		{

@@ -96,18 +96,22 @@ public class Ranger_Hide extends StdAbility
 
 	public int getMOBLevel(MOB meMOB)
 	{
-		if(meMOB==null) return 0;
+		if(meMOB==null)
+			return 0;
 		return meMOB.phyStats().level();
 	}
 	public MOB getHighestLevelMOB(MOB meMOB, Vector not)
 	{
-		if(meMOB==null) return null;
+		if(meMOB==null)
+			return null;
 		final Room R=meMOB.location();
-		if(R==null) return null;
+		if(R==null)
+			return null;
 		int highestLevel=0;
 		MOB highestMOB=null;
 		final Set<MOB> H=meMOB.getGroupMembers(new HashSet<MOB>());
-		if(not!=null) H.addAll(not);
+		if(not!=null)
+			H.addAll(not);
 		for(int i=0;i<R.numInhabitants();i++)
 		{
 			final MOB M=R.fetchInhabitant(i);

@@ -43,12 +43,15 @@ public class Prop_UseSpellCast2 extends Prop_UseSpellCast
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if(processing) return;
+		if(processing)
+			return;
 		processing=true;
 
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		final Item myItem=(Item)affected;
-		if(myItem.owner()==null) return;
+		if(myItem.owner()==null)
+			return;
 		switch(msg.sourceMinor())
 		{
 		case CMMsg.TYP_DRINK:

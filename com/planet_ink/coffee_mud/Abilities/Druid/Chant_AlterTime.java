@@ -65,7 +65,8 @@ public class Chant_AlterTime extends Chant
 			{
 				mob.location().send(mob,msg);
 				int x=CMath.s_int(text());
-				while(x==0)	x=CMLib.dice().roll(1,3,-2);
+				while(x==0)
+						x=CMLib.dice().roll(1,3,-2);
 				if(x>0)
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("Time moves forwards!"));
 				else

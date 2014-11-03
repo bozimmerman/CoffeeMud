@@ -100,7 +100,8 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 	@Override
 	public boolean mayICraft(final Item I)
 	{
-		if(I==null) return false;
+		if(I==null)
+			return false;
 		if(!super.mayBeCrafted(I))
 			return false;
 		if(I instanceof Drink)
@@ -213,9 +214,11 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 		if(parsedVars.autoGenerate>0)
 		{
 			final Ability theSpell=super.getCraftableSpellRecipeSpell(commands);
-			if(theSpell==null) return false;
+			if(theSpell==null)
+				return false;
 			int level=super.getCraftableSpellLevel(commands);
-			if(level<0) level=1;
+			if(level<0)
+				level=1;
 			buildingI=buildItem(theSpell, level);
 			commands.addElement(buildingI);
 			return true;
@@ -259,8 +262,10 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 						for(int i=2;i<V.size();i++)
 						{
 							String s=V.get(i).toLowerCase();
-							if(s.trim().length()==0) continue;
-							if(s.endsWith("$")) s=s.substring(0,s.length()-1);
+							if(s.trim().length()==0)
+								continue;
+							if(s.endsWith("$"))
+								s=s.substring(0,s.length()-1);
 							if(fillUsage)
 							{
 								Integer I=(Integer)usage.get(s.toUpperCase().trim());
@@ -301,7 +306,8 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 		{
 			buildingI=getTarget(mob,null,givenTarget,CMParms.parse(pos),Wearable.FILTER_UNWORNONLY);
 			commands.remove(pos);
-			if(buildingI==null) return false;
+			if(buildingI==null)
+				return false;
 			if(!mob.isMine(buildingI))
 			{
 				commonTell(mob,L("You'll need to pick that up first."));
@@ -398,7 +404,8 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 				}
 			}
 
-			if(experienceToLose<10) experienceToLose=10;
+			if(experienceToLose<10)
+				experienceToLose=10;
 
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
@@ -412,7 +419,8 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			playSound="hotspring.wav";
 
 			int duration=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5;
-			if(duration<10) duration=10;
+			if(duration<10)
+				duration=10;
 
 			messedUp=!proficiencyCheck(mob,0,auto);
 			final CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),null);

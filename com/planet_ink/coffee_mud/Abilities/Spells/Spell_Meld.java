@@ -73,7 +73,8 @@ public class Spell_Meld extends Spell
 	protected int getHeiarchy(int material)
 	{
 		for(int i=0;i<heiarchy.length;i++)
-			if(heiarchy[i]==material) return i;
+			if(heiarchy[i]==material)
+				return i;
 		return 99;
 	}
 
@@ -210,9 +211,11 @@ public class Spell_Meld extends Spell
 				String itemOneName=itemOne.Name();
 				String itemTwoName=itemTwo.Name();
 				int x=itemOneName.indexOf("melded together");
-				if(x>0) itemOneName=itemOneName.substring(0,x).trim();
+				if(x>0)
+					itemOneName=itemOneName.substring(0,x).trim();
 				x=itemTwoName.indexOf("melded together");
-				if(x>0) itemTwoName=itemTwoName.substring(0,x).trim();
+				if(x>0)
+					itemTwoName=itemTwoName.substring(0,x).trim();
 
 				int material=itemOne.material();
 				if(getHeiarchy(material&RawMaterial.MATERIAL_MASK)<getHeiarchy(itemTwo.material()&RawMaterial.MATERIAL_MASK))

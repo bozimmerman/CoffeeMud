@@ -48,7 +48,8 @@ public class Spell_StoneFlesh extends Spell
 	{
 
 		final Physical target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		Ability revokeThis=null;
 		for(int a=0;a<target.numEffects();a++) // personal effects

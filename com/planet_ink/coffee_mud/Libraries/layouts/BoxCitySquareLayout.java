@@ -65,21 +65,29 @@ public class BoxCitySquareLayout extends BoxCityLayout
 		}
 		LayoutNode n2;
 		n = lSet.getNextNode( center, Directions.NORTH);
-		if(n != null) center.crossLink(n);
+		if(n != null)
+			center.crossLink(n);
 		n2 = lSet.getNextNode( n, Directions.NORTH);
-		if((n2 != null)&&(n!=null)) n.crossLink(n2);
+		if((n2 != null)&&(n!=null))
+			n.crossLink(n2);
 		n = lSet.getNextNode( center, Directions.SOUTH);
-		if(n != null) center.crossLink(n);
+		if(n != null)
+			center.crossLink(n);
 		n2 = lSet.getNextNode( n, Directions.SOUTH);
-		if((n2 != null)&&(n!=null)) n.crossLink(n2);
+		if((n2 != null)&&(n!=null))
+			n.crossLink(n2);
 		n = lSet.getNextNode( center, Directions.EAST);
-		if(n != null) center.crossLink(n);
+		if(n != null)
+			center.crossLink(n);
 		n2 = lSet.getNextNode( n, Directions.EAST);
-		if((n2 != null)&&(n!=null)) n.crossLink(n2);
+		if((n2 != null)&&(n!=null))
+			n.crossLink(n2);
 		n = lSet.getNextNode( center, Directions.WEST);
-		if(n != null) center.crossLink(n);
+		if(n != null)
+			center.crossLink(n);
 		n2 = lSet.getNextNode( n, Directions.WEST);
-		if((n2 != null)&&(n!=null)) n.crossLink(n2);
+		if((n2 != null)&&(n!=null))
+			n.crossLink(n2);
 		for(final long[] sq : square)
 		{
 			n = lSet.getNode(sq);
@@ -88,8 +96,10 @@ public class BoxCitySquareLayout extends BoxCityLayout
 				n2 = lSet.getNextNode( n, d);
 				if(n2!=null)
 				{
-					if(n.getLink(d)==n2) continue;
-					if(!n2.isStreetLike()) continue;
+					if(n.getLink(d)==n2)
+						continue;
+					if(!n2.isStreetLike())
+						continue;
 					final Enumeration<LayoutNode> nodes=n2.links().elements();
 					final LayoutNode p_1=nodes.nextElement();
 					final LayoutNode p_2=nodes.nextElement();

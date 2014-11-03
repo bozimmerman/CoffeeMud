@@ -59,7 +59,8 @@ public class Thief_SilentOpen extends ThiefSkill
 			return false;
 		}
 		final Environmental item=super.getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
-		if(item==null) return false;
+		if(item==null)
+			return false;
 		if((item instanceof MOB)
 		||(item instanceof Area)
 		||(item instanceof Room))

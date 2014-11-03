@@ -56,7 +56,8 @@ public class Catalog extends StdCommand
 			return false;
 		}
 		String newCat=currentCats.get(mob.Name());
-		if(newCat==null) newCat="";
+		if(newCat==null)
+			newCat="";
 		String msg="<S-NAME> catalog(s) <T-NAMESELF> into category '"+newCat+"'.";
 		final CataData data=CMLib.catalog().getCatalogData(cataP);
 		final String oldCat=(data!=null)?data.category():"";
@@ -120,7 +121,8 @@ public class Catalog extends StdCommand
 		{ data[0]=CMLib.catalog().getCatalogMob(ID); if(data[0]!=null) data[1]=Integer.valueOf(1);}
 		if((data[0]==null)&&((whatKind==0)||(whatKind==2)))
 		{ data[0]=CMLib.catalog().getCatalogItem(ID); if(data[0]!=null) data[1]=Integer.valueOf(2);}
-		if(exactOnly) return (Physical)data[0];
+		if(exactOnly)
+			return (Physical)data[0];
 		if((data[0]==null)&&((whatKind==0)||(whatKind==1)))
 		{
 			final String[] names=CMLib.catalog().getCatalogMobNames().clone();
@@ -188,7 +190,8 @@ public class Catalog extends StdCommand
 
 	public boolean checkUserRoomSetEntry(Vector commands)
 	{
-		if(commands.size()==0) return false;
+		if(commands.size()==0)
+			return false;
 		if((((String)commands.firstElement()).equalsIgnoreCase("ROOM"))
 		||(((String)commands.firstElement()).equalsIgnoreCase("AREA"))
 		||(((String)commands.firstElement()).equalsIgnoreCase("WORLD")))
@@ -202,7 +205,8 @@ public class Catalog extends StdCommand
 		throws java.io.IOException
 	{
 		Room R=mob.location();
-		if(R==null) return false;
+		if(R==null)
+			return false;
 		if((commands!=null)&&(commands.size()>1))
 		{
 			commands.removeElementAt(0);
@@ -231,7 +235,8 @@ public class Catalog extends StdCommand
 						for(final CatalogLibrary.RoomContent content : contents)
 						{
 							P=content.P();
-							if(P instanceof Coins) continue;
+							if(P instanceof Coins)
+								continue;
 							if((P instanceof MOB)&&(whatKind!=2))
 							{
 								if(catalog(R,mob,P))
@@ -270,7 +275,8 @@ public class Catalog extends StdCommand
 					ID="";
 				}
 				String oldCat=currentCats.get(mob.Name());
-				if(oldCat == null) oldCat="";
+				if(oldCat == null)
+					oldCat="";
 				mob.tell(L("Your current category is '@x1'.",oldCat));
 				if(commands.size()>0)
 				{
@@ -329,7 +335,8 @@ public class Catalog extends StdCommand
 				if((whatKind==0)||(whatKind==1))
 				{
 					String cat=currentCats.get(mob.Name());
-					if(cat==null) cat="";
+					if(cat==null)
+						cat="";
 					list.append("^HMobs ("+(cat)+")\n\r^N");
 					list.append(CMStrings.padRight(L("Name"),34)+" ");
 					list.append(CMStrings.padRight("#",3));
@@ -364,7 +371,8 @@ public class Catalog extends StdCommand
 				if((whatKind==0)||(whatKind==2))
 				{
 					String cat=currentCats.get(mob.Name());
-					if(cat==null) cat="";
+					if(cat==null)
+						cat="";
 					list.append("^HItems ("+(cat)+")\n\r^N");
 					list.append(CMStrings.padRight(L("Name"),34)+" ");
 					list.append(CMStrings.padRight("#",3)+" ");
@@ -550,12 +558,14 @@ public class Catalog extends StdCommand
 					{
 						roomID=(String)rooms.nextElement();
 						R=CMLib.map().getRoom(roomID);
-						if(db) R=CMLib.coffeeMaker().makeNewRoomContent(R,false);
+						if(db)
+							R=CMLib.coffeeMaker().makeNewRoomContent(R,false);
 						final Vector<CatalogLibrary.RoomContent> contents=CMLib.catalog().roomContent(R);
 						for(final CatalogLibrary.RoomContent content : contents)
 						{
 							P=content.P();
-							if(P instanceof Coins) continue;
+							if(P instanceof Coins)
+								continue;
 							if((P instanceof MOB)&&(whatKind!=2)&&(CMLib.flags().isCataloged(P)))
 								if(CMLib.catalog().getCatalogObj(P)!=null)
 									mob.tell(L("Check: MOB @x1 in @x2 is cataloged.",P.Name(),roomID));
@@ -568,7 +578,8 @@ public class Catalog extends StdCommand
 								else
 									mob.tell(L("Error: Item @x1 in @x2 is falsely cataloged.",P.Name(),roomID));
 						}
-						if(db) R.destroy();
+						if(db)
+							R.destroy();
 					}
 				}
 				else
@@ -593,12 +604,14 @@ public class Catalog extends StdCommand
 					{
 						roomID=(String)rooms.nextElement();
 						R=CMLib.map().getRoom(roomID);
-						if(db) R=CMLib.coffeeMaker().makeNewRoomContent(R,false);
+						if(db)
+							R=CMLib.coffeeMaker().makeNewRoomContent(R,false);
 						final Vector<CatalogLibrary.RoomContent> contents=CMLib.catalog().roomContent(R);
 						for(final CatalogLibrary.RoomContent content : contents)
 						{
 							E=content.P();
-							if(E instanceof Coins) continue;
+							if(E instanceof Coins)
+								continue;
 							if((E instanceof MOB)&&(whatKind!=2)&&(!CMLib.flags().isCataloged(E)))
 								if(CMLib.catalog().getCatalogMob(E.Name())!=null)
 									mob.tell(L("MOB @x1 in @x2 should be tied to the catalog.",E.Name(),roomID));
@@ -611,7 +624,8 @@ public class Catalog extends StdCommand
 								else
 									mob.tell(L("Item @x1 in @x2 is not cataloged.",E.Name(),roomID));
 						}
-						if(db) R.destroy();
+						if(db)
+							R.destroy();
 					}
 				}
 				else
@@ -642,7 +656,8 @@ public class Catalog extends StdCommand
 							for(final CatalogLibrary.RoomContent content : contents)
 							{
 								P=content.P();
-								if(P instanceof Coins) continue;
+								if(P instanceof Coins)
+									continue;
 								if((P instanceof MOB)&&(whatKind!=2))
 								{
 									if((CMLib.flags().isCataloged(P))

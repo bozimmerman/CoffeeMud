@@ -65,7 +65,8 @@ public class TimsItemTable extends StdWebMacro
 						final Item I=R.getItem(i);
 						if((endTime>0)&&(System.currentTimeMillis()>endTime))
 							break;
-						if(!doneBefore(onesDone,I)) str.append(addRow(I));
+						if(!doneBefore(onesDone,I))
+							str.append(addRow(I));
 					}
 					if((endTime>0)&&(System.currentTimeMillis()>endTime))
 						break;
@@ -74,17 +75,20 @@ public class TimsItemTable extends StdWebMacro
 						if((endTime>0)&&(System.currentTimeMillis()>endTime))
 							break;
 						final MOB M=R.fetchInhabitant(m);
-						if(M==null) continue;
+						if(M==null)
+							continue;
 						for(int i=0;i<M.numItems();i++)
 						{
 							final Item I=M.getItem(i);
 							if((endTime>0)&&(System.currentTimeMillis()>endTime))
 								break;
-							if(!doneBefore(onesDone,I)) str.append(addRow(I));
+							if(!doneBefore(onesDone,I))
+								str.append(addRow(I));
 						}
 						if((endTime>0)&&(System.currentTimeMillis()>endTime))
 							break;
-						if(!(M instanceof ShopKeeper)) continue;
+						if(!(M instanceof ShopKeeper))
+							continue;
 						final ShopKeeper SK=(ShopKeeper)M;
 						for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 						{
@@ -205,7 +209,8 @@ public class TimsItemTable extends StdWebMacro
 
 	public boolean doneBefore(Vector V, Item I)
 	{
-		if(I==null) return true;
+		if(I==null)
+			return true;
 		if((!(I instanceof Armor))&&(!(I instanceof Weapon)))
 			return true;
 		if(I.displayText().length()==0)
@@ -234,13 +239,17 @@ public class TimsItemTable extends StdWebMacro
 		int diff=tlvl-lvl; if(diff<0) diff=diff*-1;
 		row.append("<TD>"+diff+"</TD>");
 		int pct=0;
-		if((lvl<0)&&(tlvl>=0)) pct=(int)Math.round(CMath.div(tlvl+(lvl*-1),1)*100.0);
+		if((lvl<0)&&(tlvl>=0))
+			pct=(int)Math.round(CMath.div(tlvl+(lvl*-1),1)*100.0);
 		else
-		if((tlvl<=0)&&(lvl>0)) pct=(int)Math.round(CMath.div((tlvl-lvl),-1)*100.0);
+		if((tlvl<=0)&&(lvl>0))
+			pct=(int)Math.round(CMath.div((tlvl-lvl),-1)*100.0);
 		else
-		if((tlvl<0)&&(lvl==0)) pct=(int)Math.round(CMath.div(tlvl,-1)*100.0);
+		if((tlvl<0)&&(lvl==0))
+			pct=(int)Math.round(CMath.div(tlvl,-1)*100.0);
 		else
-		if(lvl==0) pct=(int)Math.round(CMath.div(tlvl,1)*100.0);
+		if(lvl==0)
+			pct=(int)Math.round(CMath.div(tlvl,1)*100.0);
 		else
 			pct=(int)Math.round(CMath.div(tlvl,lvl)*100.0);
 		row.append("<TD>"+pct+"%</TD>");
@@ -252,11 +261,14 @@ public class TimsItemTable extends StdWebMacro
 			row.append("<TD>&nbsp;</TD><TD>"+I.basePhyStats().attackAdjustment()+"</TD>");
 			row.append("<TD>"+I.basePhyStats().damage()+"</TD>");
 		}
-		if(ADJ!=null) row.append("<TD>"+ADJ.text()+"</TD>");
+		if(ADJ!=null)
+			row.append("<TD>"+ADJ.text()+"</TD>");
 		else row.append("<TD>&nbsp;</TD>");
-		if(CAST!=null) row.append("<TD>"+CAST.text()+"</TD>");
+		if(CAST!=null)
+			row.append("<TD>"+CAST.text()+"</TD>");
 		else row.append("<TD>&nbsp;</TD>");
-		if(RES!=null) row.append("<TD>"+RES.text()+"</TD>");
+		if(RES!=null)
+			row.append("<TD>"+RES.text()+"</TD>");
 		else row.append("<TD>&nbsp;</TD>");
 		row.append("</TR>");
 		return row.toString();

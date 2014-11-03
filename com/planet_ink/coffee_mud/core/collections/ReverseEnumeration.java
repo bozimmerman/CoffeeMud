@@ -32,7 +32,8 @@ public class ReverseEnumeration<K> implements Enumeration<K>
 	@Override
 	public boolean hasMoreElements()
 	{
-		while(index>set.size()) index--;
+		while(index>set.size())
+			 index--;
 		return (index>0);
 	}
 

@@ -53,7 +53,8 @@ public class GapExit extends StdExit
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg)) return false;
+		if(!super.okMessage(myHost,msg))
+			return false;
 		final MOB mob=msg.source();
 		if(((msg.amITarget(this))||(msg.tool()==this))
 		&&(msg.targetMinor()==CMMsg.TYP_ENTER)

@@ -69,7 +69,8 @@ public class Disease_Yawning extends Disease
 
 		final MOB mob=(MOB)affected;
 		MOB diseaser=invoker;
-		if(diseaser==null) diseaser=mob;
+		if(diseaser==null)
+			diseaser=mob;
 		if((getTickDownRemaining()==1)
 		&&(!mob.amDead())
 		&&(!CMLib.flags().isSleeping(mob))

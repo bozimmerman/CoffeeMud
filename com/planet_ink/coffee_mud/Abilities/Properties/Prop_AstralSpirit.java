@@ -68,7 +68,8 @@ public class Prop_AstralSpirit extends Property
 	public void peaceAt(MOB mob)
 	{
 		final Room room=mob.location();
-		if(room==null) return;
+		if(room==null)
+			return;
 		for(int m=0;m<room.numInhabitants();m++)
 		{
 			final MOB inhab=room.fetchInhabitant(m);
@@ -88,7 +89,8 @@ public class Prop_AstralSpirit extends Property
 			if((msg.sourceMinor()==CMMsg.TYP_DISPOSSESS)&&(msg.source().soulMate()!=null))
 			{
 				Ability A=msg.source().fetchEffect("Chant_AstralProjection");
-				if(A==null) A=msg.source().soulMate().fetchEffect("Chant_AstralProjection");
+				if(A==null)
+					A=msg.source().soulMate().fetchEffect("Chant_AstralProjection");
 				if(A!=null)
 				{
 					A.unInvoke();

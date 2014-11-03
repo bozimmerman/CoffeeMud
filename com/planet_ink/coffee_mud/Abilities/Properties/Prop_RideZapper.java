@@ -56,11 +56,14 @@ public class Prop_RideZapper extends Prop_HaveZapper
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(affected==null) return true;
-		if(!(affected instanceof Rideable)) return true;
+		if(affected==null)
+			return true;
+		if(!(affected instanceof Rideable))
+			return true;
 
 		final MOB mob=msg.source();
-		if(mob.location()==null) return true;
+		if(mob.location()==null)
+			return true;
 
 		if(msg.amITarget(affected))
 		switch(msg.targetMinor())

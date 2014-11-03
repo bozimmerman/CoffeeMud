@@ -162,7 +162,8 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 	public Collection<CMRunnable> getTimeoutOutRuns(int maxToKill)
 	{
 		final LinkedList<CMRunnable> timedOut=new LinkedList<CMRunnable>();
-		if(timeoutMillis<=0) return timedOut;
+		if(timeoutMillis<=0)
+			return timedOut;
 		final LinkedList<Thread> killedOut=new LinkedList<Thread>();
 		synchronized(active)
 		{

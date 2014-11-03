@@ -50,18 +50,22 @@ public interface Auctioneer extends ShopKeeper
 		public String   	 auctionDBKey="";
 		public int daysRemaining(MOB mob, MOB mob2)
 		{
-			if(System.currentTimeMillis()>=tickDown) return 0;
+			if(System.currentTimeMillis()>=tickDown)
+				return 0;
 			Area A=CMLib.map().getStartArea(mob);
-			if(A==null) A=CMLib.map().getStartArea(mob2);
+			if(A==null)
+				A=CMLib.map().getStartArea(mob2);
 			long daysRemain=tickDown-System.currentTimeMillis();
 			daysRemain=Math.round(Math.floor(CMath.div(CMath.div(daysRemain,CMProps.getMillisPerMudHour()),A.getTimeObj().getHoursInDay())));
 			return (int)daysRemain;
 		}
 		public int daysEllapsed(MOB mob, MOB mob2)
 		{
-			if(System.currentTimeMillis()<start) return 0;
+			if(System.currentTimeMillis()<start)
+				return 0;
 			Area A=CMLib.map().getStartArea(mob);
-			if(A==null) A=CMLib.map().getStartArea(mob2);
+			if(A==null)
+				A=CMLib.map().getStartArea(mob2);
 			long daysRemain=System.currentTimeMillis()-start;
 			daysRemain=Math.round(Math.floor(CMath.div(CMath.div(daysRemain,CMProps.getMillisPerMudHour()),A.getTimeObj().getHoursInDay())));
 			return (int)daysRemain;
@@ -126,7 +130,8 @@ public interface Auctioneer extends ShopKeeper
 		}
 		public AuctionRates(Auctioneer A)
 		{
-			if(A==null) return;
+			if(A==null)
+				return;
 			final AuctionRates base=new AuctionRates();
 			liveListPrice=base.liveListPrice;
 			timeListPrice=A.timedListingPrice()<0.0?base.timeListPrice:A.timedListingPrice();
@@ -135,7 +140,8 @@ public interface Auctioneer extends ShopKeeper
 			timeCutPct=A.timedFinalCutPct()<0.0?base.timeCutPct:A.timedFinalCutPct();
 			maxDays=A.maxTimedAuctionDays()<0?base.maxDays:A.maxTimedAuctionDays();
 			minDays=A.minTimedAuctionDays()<0?base.minDays:A.minTimedAuctionDays();
-			if(minDays>maxDays) minDays=maxDays;
+			if(minDays>maxDays)
+				minDays=maxDays;
 		}
 	}
 }

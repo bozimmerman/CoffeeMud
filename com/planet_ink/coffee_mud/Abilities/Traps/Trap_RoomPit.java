@@ -98,7 +98,8 @@ public class Trap_RoomPit extends StdTrap
 	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,P)) return false;
+		if(!super.canSetTrapOn(mob,P))
+			return false;
 		if(P instanceof Room)
 		{
 			if(((Room)P).getRoomInDir(Directions.DOWN)!=null)
@@ -180,7 +181,8 @@ public class Trap_RoomPit extends StdTrap
 			}
 		}
 		super.executeMsg(myHost,msg);
-		if(unSpring) sprung=false;
+		if(unSpring)
+			sprung=false;
 	}
 	public void finishSpringing(MOB target)
 	{

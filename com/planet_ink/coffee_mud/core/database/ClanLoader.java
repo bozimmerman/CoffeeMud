@@ -104,7 +104,8 @@ public class ClanLoader
 
 	public void DBCreate(Clan C)
 	{
-		if(C.clanID().length()==0) return;
+		if(C.clanID().length()==0)
+			return;
 		final String sql="INSERT INTO CMCLAN ("
 			+"CMCLID,"
 			+"CMTYPE,"

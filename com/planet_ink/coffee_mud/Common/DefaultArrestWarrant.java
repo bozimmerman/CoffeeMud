@@ -98,7 +98,8 @@ public class DefaultArrestWarrant implements LegalWarrant
 	public String getPunishmentParm(int code)
 	{
 		final int index=punishmentParms.indexOf(Integer.valueOf(code));
-		if(index<0) return "";
+		if(index<0)
+			return "";
 		return (String)punishmentParms.elementAt(index,2);
 	}
 	@Override

@@ -44,9 +44,11 @@ public class Song_Inebriation extends Song
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(invoker==null) return;
+		if(invoker==null)
+			return;
 
-		if(affected==invoker) return;
+		if(affected==invoker)
+			return;
 
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-adjustedLevel(invoker(),0));
 	}
@@ -56,8 +58,10 @@ public class Song_Inebriation extends Song
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(invoker==null) return;
-		if(affected==invoker) return;
+		if(invoker==null)
+			return;
+		if(affected==invoker)
+			return;
 
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,(affectableStats.getStat(CharStats.STAT_DEXTERITY)-(3+getXLEVELLevel(invoker()))));
 	}
@@ -76,8 +80,10 @@ public class Song_Inebriation extends Song
 			return false;
 
 		final MOB mob=(MOB)affected;
-		if(mob==null) return true;
-		if(mob==invoker) return true;
+		if(mob==null)
+			return true;
+		if(mob==invoker)
+			return true;
 		if((CMLib.dice().rollPercentage()<25)&&(CMLib.flags().canMove(mob)))
 		{
 			if(CMLib.flags().isEvil(mob))

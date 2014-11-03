@@ -130,7 +130,8 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 		int protection=remainingProtection;
 		if((System.currentTimeMillis()-lastProtection)>=CMProps.getTickMillis())
 		{    protection=(getProtection(kind)+(myLevel-hisLevel)); lastProtection=System.currentTimeMillis();}
-		if(protection<=0) return damage;
+		if(protection<=0)
+			return damage;
 		remainingProtection=protection-100;
 		if(protection>=100){ return 0;}
 		return (int)Math.round(CMath.mul(damage,1.0-CMath.div(protection,100.0)));
@@ -138,9 +139,12 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 
 	public void resistAffect(CMMsg msg, MOB mob, Ability me, String maskString)
 	{
-		if(mob.location()==null) return;
-		if(mob.amDead()) return;
-		if(!msg.amITarget(mob)) return;
+		if(mob.location()==null)
+			return;
+		if(mob.amDead())
+			return;
+		if(!msg.amITarget(mob))
+			return;
 
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&((msg.value())>0)

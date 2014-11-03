@@ -112,13 +112,17 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if(processing) return;
+		if(processing)
+			return;
 		processing=true;
 
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		final Item myItem=(Item)affected;
-		if(myItem.owner()==null) return;
-		if(!(myItem.owner() instanceof MOB)) return;
+		if(myItem.owner()==null)
+			return;
+		if(!(myItem.owner() instanceof MOB))
+			return;
 		if(msg.amISource((MOB)myItem.owner()))
 			switch(msg.sourceMinor())
 			{

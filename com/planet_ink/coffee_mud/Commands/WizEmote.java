@@ -48,7 +48,8 @@ public class WizEmote extends StdCommand
 			final String who=(String)commands.elementAt(1);
 			final String msg=CMParms.combineQuoted(commands,2);
 			Room R=CMLib.map().getRoom(who);
-			if(who.toUpperCase().equals("HERE")) R=mob.location();
+			if(who.toUpperCase().equals("HERE"))
+				R=mob.location();
 			final Area A=CMLib.map().findAreaStartsWith(who);
 			final Clan C=CMLib.clans().findClan(who);
 			if(who.toUpperCase().equals("ALL"))

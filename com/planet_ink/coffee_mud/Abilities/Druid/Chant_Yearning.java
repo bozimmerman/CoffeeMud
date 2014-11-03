@@ -49,10 +49,12 @@ public class Chant_Yearning extends Chant
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		int wis=affectableStats.getStat(CharStats.STAT_WISDOM);
 		wis=wis-5;
-		if(wis<1) wis=1;
+		if(wis<1)
+			wis=1;
 		affectableStats.setStat(CharStats.STAT_WISDOM,wis);
 	}
 
@@ -75,7 +77,8 @@ public class Chant_Yearning extends Chant
 	{
 		super.executeMsg(myHost,msg);
 		// the sex rules
-		if(!(affected instanceof MOB)) return;
+		if(!(affected instanceof MOB))
+			return;
 		final MOB myChar=(MOB)affected;
 
 		if((msg.amISource(myChar))
@@ -106,7 +109,8 @@ public class Chant_Yearning extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

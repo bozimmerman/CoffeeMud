@@ -54,7 +54,8 @@ public class Fighter_FieldTactics extends FighterSkill
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
 		if((affected!=null)&&(affected instanceof MOB)&&(activated))
 		{
 			if(hiding(affected))
@@ -79,7 +80,8 @@ public class Fighter_FieldTactics extends FighterSkill
 
 	public boolean hiding(Environmental mob)
 	{
-		if(!(mob instanceof MOB)) return false;
+		if(!(mob instanceof MOB))
+			return false;
 		return CMLib.flags().isSitting((MOB)mob)&&(((MOB)mob).riding()==null);
 	}
 	public boolean hiding(MOB mob)
@@ -99,7 +101,8 @@ public class Fighter_FieldTactics extends FighterSkill
 		&&(msg.tool() instanceof Weapon)
 		&&(msg.value()>0))
 		{
-			if(CMLib.dice().rollPercentage()<5) helpProficiency((MOB)affected, 0);
+			if(CMLib.dice().rollPercentage()<5)
+				helpProficiency((MOB)affected, 0);
 			msg.setValue(msg.value()+(int)Math.round(CMath.mul(msg.value(),CMath.div(proficiency(),400.0-(20.0*getXLEVELLevel(msg.source()))))));
 		}
 		else

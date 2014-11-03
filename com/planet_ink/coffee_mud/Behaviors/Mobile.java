@@ -79,11 +79,14 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 
 	public boolean okRoomForMe(MOB mob, Room currentRoom, Room newRoom)
 	{
-		if(newRoom==null) return false;
+		if(newRoom==null)
+			return false;
 		if(leash>0)
 		{
-			if(currentRoom==null) return false;
-			if(leashHash==null)    leashHash=new Hashtable();
+			if(currentRoom==null)
+				return false;
+			if(leashHash==null)
+				leashHash=new Hashtable();
 			Integer DISTNOW=leashHash.get(currentRoom);
 			Integer DISTLATER=leashHash.get(newRoom);
 			if(DISTNOW==null)
@@ -107,7 +110,8 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 		}
 		if((mob.charStats().getBreathables().length>0) && (Arrays.binarySearch(mob.charStats().getBreathables(), newRoom.getAtmosphere())<0))
 			return false;
-		if(restrictedLocales==null) return true;
+		if(restrictedLocales==null)
+			return true;
 		return !restrictedLocales.contains(Integer.valueOf(newRoom.domainType()));
 	}
 
@@ -229,7 +233,8 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 			if(canAct(ticking,tickID))
 			{
 				Vector objections=null;
-				if(room==null) return true;
+				if(room==null)
+					return true;
 
 				if((room.getArea()!=null)
 				&&(room.getArea().getAreaState()!=Area.State.ACTIVE))
@@ -245,7 +250,8 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 					final Room R=room.getRoomInDir(d);
 					if((R!=null)&&(!okRoomForMe(mob,room,R)))
 					{
-						if(objections==null) objections=new Vector();
+						if(objections==null)
+							objections=new Vector();
 						objections.addElement(R);
 					}
 				}

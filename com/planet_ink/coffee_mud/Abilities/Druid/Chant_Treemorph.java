@@ -95,7 +95,8 @@ public class Chant_Treemorph extends Chant
 			if(mob.isInCombat())
 			{
 				final MOB victim=mob.getVictim();
-				if(victim!=null) victim.makePeace();
+				if(victim!=null)
+					victim.makePeace();
 				mob.makePeace();
 			}
 			mob.recoverMaxState();
@@ -134,7 +135,8 @@ public class Chant_Treemorph extends Chant
 			if(mob.isInCombat())
 			{
 				final MOB victim=mob.getVictim();
-				if(victim!=null) victim.makePeace();
+				if(victim!=null)
+					victim.makePeace();
 				mob.makePeace();
 			}
 		}
@@ -157,7 +159,8 @@ public class Chant_Treemorph extends Chant
 				affectableStats.setName(L("@x1 the @x2",affected.name(),treeForm.name()));
 			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			treeForm.setHeightWeight(affectableStats,'M');
-			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
+			if(oldAdd>0)
+				affectableStats.setWeight(affectableStats.weight()+oldAdd);
 
 			//affectableStats.setReplacementName("a tree of "+affected.name());
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
@@ -179,7 +182,8 @@ public class Chant_Treemorph extends Chant
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			if(tree!=null) tree.destroy();
+			if(tree!=null)
+				tree.destroy();
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> no longer a tree."));
 			mob.curState().setHitPoints(1);
@@ -197,7 +201,8 @@ public class Chant_Treemorph extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -208,7 +213,8 @@ public class Chant_Treemorph extends Chant
 
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
-		if(levelDiff<0) levelDiff=0;
+		if(levelDiff<0)
+			levelDiff=0;
 		boolean success=proficiencyCheck(mob,-(levelDiff*10),auto);
 		treeForm=CMClass.getRace("TreeGolem");
 		if(success)
@@ -229,7 +235,8 @@ public class Chant_Treemorph extends Chant
 					{
 						final Ability A=target.fetchEffect(a);
 						final int s=target.numEffects();
-						if(A!=null) A.unInvoke();
+						if(A!=null)
+							A.unInvoke();
 						if(target.numEffects()==s)
 							a++;
 					}

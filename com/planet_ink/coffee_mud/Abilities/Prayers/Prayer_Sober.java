@@ -46,7 +46,8 @@ public class Prayer_Sober extends Prayer implements MendingSkill
 	@Override
 	public boolean supportsMending(Physical item)
 	{
-		if(!(item instanceof MOB)) return false;
+		if(!(item instanceof MOB))
+			return false;
 		final MOB caster=CMClass.getFactoryMOB();
 		caster.basePhyStats().setLevel(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL));
 		caster.phyStats().setLevel(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL));
@@ -92,7 +93,8 @@ public class Prayer_Sober extends Prayer implements MendingSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

@@ -94,7 +94,8 @@ public class Prop_CommonTwister extends Property
 						poss.addElement(changes.elementAt(v,3));
 				}
 			}
-			if(poss.size()==0) return true;
+			if(poss.size()==0)
+				return true;
 			final String var=(String)poss.elementAt(CMLib.dice().roll(1,poss.size(),-1));
 			final String newname=CMParms.getParmStr(var,"NAME","");
 			final String newdisp=CMParms.getParmStr(var,"DISPLAY","");
@@ -132,7 +133,8 @@ public class Prop_CommonTwister extends Property
 					if(newMatCode<0)
 					{
 						newMatCode=CMLib.materials().getMaterialCode(newmat,false);
-						if(newMatCode>0) newMatCode=CMLib.materials().getRandomResourceOfMaterial(newMatCode);
+						if(newMatCode>0)
+							newMatCode=CMLib.materials().getRandomResourceOfMaterial(newMatCode);
 					}
 					if(newMatCode>=0)
 					{

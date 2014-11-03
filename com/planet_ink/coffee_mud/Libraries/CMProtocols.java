@@ -50,7 +50,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	// info, and the info provided.
 	public String msp(final String soundName, final int volume, final int priority)
 	{
-		if((soundName==null)||(soundName.length()==0)||CMSecurity.isDisabled(CMSecurity.DisFlag.MSP)) return "";
+		if((soundName==null)||(soundName.length()==0)||CMSecurity.isDisabled(CMSecurity.DisFlag.MSP))
+			return "";
 		final String mspSoundPath=CMProps.getVar(Str.MSPPATH);
 		if(mspSoundPath.length()>0)
 			return " !!SOUND("+soundName+" V="+volume+" P="+priority+" U="+mspSoundPath+") ";
@@ -91,9 +92,11 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
 			return "";
 		final String image=E.image();
-		if(image.length()==0) return "";
+		if(image.length()==0)
+			return "";
 		final String[] fixedFilenames=mxpImagePath(image);
-		if(fixedFilenames[0].length()==0) return "";
+		if(fixedFilenames[0].length()==0)
+			return "";
 		return "^<IMAGE '"+fixedFilenames[1]+"' URL=\""+fixedFilenames[0]+"\" "+parms+"^>^N";
 	}
 
@@ -104,9 +107,11 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
 			return "";
 		final String image=E.image();
-		if(image.length()==0) return "";
+		if(image.length()==0)
+			return "";
 		final String[] fixedFilenames=mxpImagePath(image);
-		if(fixedFilenames[0].length()==0) return "";
+		if(fixedFilenames[0].length()==0)
+			return "";
 		return pre+"^<IMAGE '"+fixedFilenames[1]+"' URL=\""+fixedFilenames[0]+"\" "+parms+"^>^N"+post;
 	}
 
@@ -114,9 +119,11 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	public String getHashedMXPImage(final String key)
 	{
 		Map<String,String> H=(Map)Resources.getResource("MXP_IMAGES");
-		if(H==null) getDefaultMXPImage(null);
+		if(H==null)
+			getDefaultMXPImage(null);
 		H=(Map)Resources.getResource("MXP_IMAGES");
-		if(H==null) return "";
+		if(H==null)
+			return "";
 		return getHashedMXPImage(H,key);
 
 	}
@@ -129,11 +136,15 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 
 	public String getHashedMXPImage(final Map<String, String> H, final String key)
 	{
-		if(H==null) return "";
+		if(H==null)
+			return "";
 		final String s=H.get(key);
-		if(s==null) return null;
-		if(s.trim().length()==0) return null;
-		if(s.equalsIgnoreCase("NULL")) return "";
+		if(s==null)
+			return null;
+		if(s.trim().length()==0)
+			return null;
+		if(s.equalsIgnoreCase("NULL"))
+			return "";
 		return s;
 	}
 
@@ -158,7 +169,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					if(s.startsWith("//")||s.startsWith(";"))
 						continue;
 					x=s.indexOf('=');
-					if(x<0) continue;
+					if(x<0)
+						continue;
 					if(s.substring(x+1).trim().length()>0)
 						H.put(s.substring(0,x),s.substring(x+1));
 				}
@@ -169,9 +181,12 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		if(O instanceof Race)
 		{
 			image=getHashedMXPImage(H,"RACE_"+((Race)O).ID().toUpperCase());
-			if(image==null) image=getHashedMXPImage(H,"RACECAT_"+((Race)O).racialCategory().toUpperCase().replace(' ','_'));
-			if(image==null) image=getHashedMXPImage(H,"RACE_*");
-			if(image==null) image=getHashedMXPImage(H,"RACECAT_*");
+			if(image==null)
+				image=getHashedMXPImage(H,"RACECAT_"+((Race)O).racialCategory().toUpperCase().replace(' ','_'));
+			if(image==null)
+				image=getHashedMXPImage(H,"RACE_*");
+			if(image==null)
+				image=getHashedMXPImage(H,"RACECAT_*");
 		}
 		else
 		if(O instanceof MOB)
@@ -196,44 +211,52 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					image=getHashedMXPImage(H,"LOCALE_INDOOR_"+Room.indoorDomainDescs[((Room)O).domainType()-Room.INDOORS]);
 				else
 					image=getHashedMXPImage(H,"LOCALE_"+Room.outdoorDomainDescs[((Room)O).domainType()]);
-			if(image==null) image=getHashedMXPImage(H,"ROOM_*");
-			if(image==null) image=getHashedMXPImage(H,"LOCALE_*");
+			if(image==null)
+				image=getHashedMXPImage(H,"ROOM_*");
+			if(image==null)
+				image=getHashedMXPImage(H,"LOCALE_*");
 		}
 		else
 		if(O instanceof Exit)
 		{
 			image=getHashedMXPImage(H,"EXIT_"+((Exit)O).ID().toUpperCase());
-			if(image==null) image=getHashedMXPImage(H,"EXIT_"+((Exit)O).doorName().toUpperCase());
+			if(image==null)
+				image=getHashedMXPImage(H,"EXIT_"+((Exit)O).doorName().toUpperCase());
 			if(image==null)
 				if(((Exit)O).hasADoor())
 					image=getHashedMXPImage(H,"EXIT_WITHDOOR");
 				else
 					image=getHashedMXPImage(H,"EXIT_OPEN");
-			if(image==null) image=getHashedMXPImage(H,"EXIT_*");
+			if(image==null)
+				image=getHashedMXPImage(H,"EXIT_*");
 		}
 		else
 		if(O instanceof Rideable)
 		{
 			image=getHashedMXPImage(H,"RIDEABLE_"+Rideable.RIDEABLE_DESCS[((Rideable)O).rideBasis()]);
-			if(image==null) image=getHashedMXPImage(H,"RIDEABLE_*");
+			if(image==null)
+				image=getHashedMXPImage(H,"RIDEABLE_*");
 		}
 		else
 		if(O instanceof Shield)
 		{
 			image=getHashedMXPImage(H,"SHIELD_"+RawMaterial.Material.findByMask(((Shield)O).material()&RawMaterial.MATERIAL_MASK).desc());
-			if(image==null) image=getHashedMXPImage(H,"SHIELD_*");
+			if(image==null)
+				image=getHashedMXPImage(H,"SHIELD_*");
 		}
 		else
 		if(O instanceof Coins)
 		{
 			image=getHashedMXPImage(H,"COINS_"+RawMaterial.CODES.NAME(((Coins)O).material()));
-			if(image==null) image=getHashedMXPImage(H,"COINS_*");
+			if(image==null)
+				image=getHashedMXPImage(H,"COINS_*");
 		}
 		else
 		if(O instanceof Ammunition)
 		{
 			image=getHashedMXPImage(H,"AMMO_"+((Ammunition)O).ammunitionType().toUpperCase().replace(' ','_'));
-			if(image==null) image=getHashedMXPImage(H,"AMMO_*");
+			if(image==null)
+				image=getHashedMXPImage(H,"AMMO_*");
 		}
 		else
 		if(O instanceof CagedAnimal)
@@ -245,8 +268,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		if(O instanceof ClanItem)
 		{
 			image=getHashedMXPImage(H,"CLAN_"+((ClanItem)O).ID().toUpperCase());
-			if(image==null) image=getHashedMXPImage(H,"CLAN_"+ClanItem.CI_DESC[((ClanItem)O).ciType()].toUpperCase());
-			if(image==null) image=getHashedMXPImage(H,"CLAN_*");
+			if(image==null)
+				image=getHashedMXPImage(H,"CLAN_"+ClanItem.CI_DESC[((ClanItem)O).ciType()].toUpperCase());
+			if(image==null)
+				image=getHashedMXPImage(H,"CLAN_*");
 		}
 		else
 		if(O instanceof DeadBody)
@@ -255,10 +280,13 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			if(R!=null)
 			{
 				image=getHashedMXPImage(H,"CORPSE_"+R.ID().toUpperCase());
-				if(image==null) image=getHashedMXPImage(H,"CORPSECAT_"+R.racialCategory().toUpperCase().replace(' ','_'));
+				if(image==null)
+					image=getHashedMXPImage(H,"CORPSECAT_"+R.racialCategory().toUpperCase().replace(' ','_'));
 			}
-			if(image==null) image=getHashedMXPImage(H,"CORPSE_*");
-			if(image==null) image=getHashedMXPImage(H,"CORPSECAT_*");
+			if(image==null)
+				image=getHashedMXPImage(H,"CORPSE_*");
+			if(image==null)
+				image=getHashedMXPImage(H,"CORPSECAT_*");
 		}
 		else
 		if(O instanceof RawMaterial)
@@ -274,7 +302,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		{
 			image=getHashedMXPImage(H,"KEY_"+RawMaterial.CODES.NAME(((DoorKey)O).material()));
 			image=getHashedMXPImage(H,"KEY_"+RawMaterial.Material.findByMask(((DoorKey)O).material()&RawMaterial.MATERIAL_MASK).desc());
-			if(image==null) image=getHashedMXPImage(H,"KEY_*");
+			if(image==null)
+				image=getHashedMXPImage(H,"KEY_*");
 		}
 		else
 		if(O instanceof LandTitle)
@@ -288,7 +317,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			final List<Ability> V=((MagicDust)O).getSpells();
 			if(V.size()>0)
 				image=getHashedMXPImage(H,"DUST_"+V.get(0).ID().toUpperCase());
-			if(image==null) image=getHashedMXPImage(H,"DUST_*");
+			if(image==null)
+				image=getHashedMXPImage(H,"DUST_*");
 		}
 		else
 		if(O instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
@@ -297,7 +327,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		if(O instanceof MusicalInstrument)
 		{
 			image=getHashedMXPImage(H,"MUSINSTR_"+MusicalInstrument.TYPE_DESC[((MusicalInstrument)O).instrumentType()]);
-			if(image==null) image=getHashedMXPImage(H,"MUSINSTR_*");
+			if(image==null)
+				image=getHashedMXPImage(H,"MUSINSTR_*");
 		}
 		else
 		if(O instanceof PackagedItems)
@@ -311,7 +342,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			final List<Ability> V=((Pill)O).getSpells();
 			if(V.size()>0)
 				image=getHashedMXPImage(H,"PILL_"+V.get(0).ID().toUpperCase());
-			if(image==null) image=getHashedMXPImage(H,"PILL_*");
+			if(image==null)
+				image=getHashedMXPImage(H,"PILL_*");
 		}
 		else
 		if(O instanceof Potion)
@@ -319,7 +351,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			final List<Ability> V=((Potion)O).getSpells();
 			if(V.size()>0)
 				image=getHashedMXPImage(H,"POTION_"+V.get(0).ID().toUpperCase());
-			if(image==null) image=getHashedMXPImage(H,"POTION_*");
+			if(image==null)
+				image=getHashedMXPImage(H,"POTION_*");
 		}
 		else
 		if(O instanceof Recipe)
@@ -330,7 +363,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			final List<Ability> V=((Scroll)O).getSpells();
 			if(V.size()>0)
 				image=getHashedMXPImage(H,"SCROLL_"+V.get(0).ID().toUpperCase());
-			if(image==null) image=getHashedMXPImage(H,"SCROLL_*");
+			if(image==null)
+				image=getHashedMXPImage(H,"SCROLL_*");
 		}
 		else
 		if(O instanceof Electronics.PowerGenerator)
@@ -373,7 +407,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				image=getHashedMXPImage(H,key);
 			else
 				image=getHashedMXPImage(H,((ShipComponent) O).getTechType().toString());
-			if(image==null) image=getHashedMXPImage(H,"SHIPCOMP_*");
+			if(image==null)
+				image=getHashedMXPImage(H,"SHIPCOMP_*");
 		}
 		else
 		if(O instanceof Software)
@@ -388,7 +423,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			if(!H.containsKey(key))
 				key = "ELECTRONICS_*";
 			image=getHashedMXPImage(H,key);
-			if(image==null) image=getHashedMXPImage(H,"TECH_*");
+			if(image==null)
+				image=getHashedMXPImage(H,"TECH_*");
 		}
 		else
 		if(O instanceof Armor)
@@ -408,16 +444,20 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					image=getHashedMXPImage(H,"ARMOR_"+bitdesc[i]);
 					break;
 				}
-			if(image==null) image=getHashedMXPImage(H,"ARMOR_*");
+			if(image==null)
+				image=getHashedMXPImage(H,"ARMOR_*");
 		}
 		else
 		if(O instanceof Weapon)
 		{
 			image=getHashedMXPImage(H,"WEAPON_"+Weapon.CLASS_DESCS[((Weapon)O).weaponClassification()]);
-			if(image==null) image=getHashedMXPImage(H,"WEAPON_"+Weapon.TYPE_DESCS[((Weapon)O).weaponType()]);
+			if(image==null)
+				image=getHashedMXPImage(H,"WEAPON_"+Weapon.TYPE_DESCS[((Weapon)O).weaponType()]);
 			if(O instanceof AmmunitionWeapon)
-				if(image==null) image=getHashedMXPImage(H,"WEAPON_"+((AmmunitionWeapon)O).ammunitionType().toUpperCase().replace(' ','_'));
-			if(image==null) image=getHashedMXPImage(H,"WEAPON_*");
+				if(image==null)
+					image=getHashedMXPImage(H,"WEAPON_"+((AmmunitionWeapon)O).ammunitionType().toUpperCase().replace(' ','_'));
+			if(image==null)
+				image=getHashedMXPImage(H,"WEAPON_*");
 		}
 		else
 		if(O instanceof Wand)
@@ -426,40 +466,51 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			if(image==null)
 			{
 				final Ability A=((Wand)O).getSpell();
-				if(A!=null) image=getHashedMXPImage(H,"WAND_"+A.ID().toUpperCase());
+				if(A!=null)
+					image=getHashedMXPImage(H,"WAND_"+A.ID().toUpperCase());
 			}
-			if(image==null) image=getHashedMXPImage(H,"WAND_*");
+			if(image==null)
+				image=getHashedMXPImage(H,"WAND_*");
 		}
 		else
 		if(O instanceof Food)
 		{
 			image=getHashedMXPImage(H,"FOOD_"+((Food)O).ID().toUpperCase());
-			if(image==null) image=getHashedMXPImage(H,"FOOD_"+RawMaterial.CODES.NAME(((Food)O).material()));
-			if(image==null) image=getHashedMXPImage(H,"FOOD_"+RawMaterial.Material.findByMask(((Food)O).material()&RawMaterial.MATERIAL_MASK).desc());
-			if(image==null) image=getHashedMXPImage(H,"FOOD_*");
+			if(image==null)
+				image=getHashedMXPImage(H,"FOOD_"+RawMaterial.CODES.NAME(((Food)O).material()));
+			if(image==null)
+				image=getHashedMXPImage(H,"FOOD_"+RawMaterial.Material.findByMask(((Food)O).material()&RawMaterial.MATERIAL_MASK).desc());
+			if(image==null)
+				image=getHashedMXPImage(H,"FOOD_*");
 		}
 		else
 		if(O instanceof Drink)
 		{
 			image=getHashedMXPImage(H,"DRINK_"+((Drink)O).ID().toUpperCase());
-			if(image==null) image=getHashedMXPImage(H,"DRINK_"+RawMaterial.CODES.NAME(((Item)O).material()));
-			if(image==null) image=getHashedMXPImage(H,"DRINK_"+RawMaterial.Material.findByMask(((Item)O).material()&RawMaterial.MATERIAL_MASK).desc());
-			if(image==null) image=getHashedMXPImage(H,"DRINK_*");
+			if(image==null)
+				image=getHashedMXPImage(H,"DRINK_"+RawMaterial.CODES.NAME(((Item)O).material()));
+			if(image==null)
+				image=getHashedMXPImage(H,"DRINK_"+RawMaterial.Material.findByMask(((Item)O).material()&RawMaterial.MATERIAL_MASK).desc());
+			if(image==null)
+				image=getHashedMXPImage(H,"DRINK_*");
 		}
 		else
 		if(O instanceof Light)
 		{
 			image=getHashedMXPImage(H,"LIGHT_"+((Light)O).ID().toUpperCase());
 			image=getHashedMXPImage(H,"LIGHT_"+RawMaterial.Material.findByMask(((Light)O).material()&RawMaterial.MATERIAL_MASK).desc());
-			if(image==null) image=getHashedMXPImage(H,"LIGHT_*");
+			if(image==null)
+				image=getHashedMXPImage(H,"LIGHT_*");
 		}
 		else
 		if(O instanceof Container)
 		{
 			image=getHashedMXPImage(H,"CONTAINER_"+((Container)O).ID().toUpperCase());
 			final String lid=((Container)O).hasADoor()?"LID_":"";
-			if(image==null) image=getHashedMXPImage(H,"CONTAINER_"+lid+RawMaterial.Material.findByMask(((Container)O).material()&RawMaterial.MATERIAL_MASK).desc());
-			if(image==null) image=getHashedMXPImage(H,"CONTAINER_"+lid+"*");
+			if(image==null)
+				image=getHashedMXPImage(H,"CONTAINER_"+lid+RawMaterial.Material.findByMask(((Container)O).material()&RawMaterial.MATERIAL_MASK).desc());
+			if(image==null)
+				image=getHashedMXPImage(H,"CONTAINER_"+lid+"*");
 		}
 		else
 		if(O instanceof Electronics)
@@ -470,12 +521,17 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		if((image==null)&&(O instanceof Item))
 		{
 			image=getHashedMXPImage(H,"ITEM_"+((Item)O).ID().toUpperCase());
-			if(image==null) image=getHashedMXPImage(H,"ITEM_"+RawMaterial.CODES.NAME(((Item)O).material()));
-			if(image==null) image=getHashedMXPImage(H,"ITEM_"+RawMaterial.Material.findByMask(((Item)O).material()&RawMaterial.MATERIAL_MASK).desc());
-			if(image==null) image=getHashedMXPImage(H,"ITEM_*");
+			if(image==null)
+				image=getHashedMXPImage(H,"ITEM_"+RawMaterial.CODES.NAME(((Item)O).material()));
+			if(image==null)
+				image=getHashedMXPImage(H,"ITEM_"+RawMaterial.Material.findByMask(((Item)O).material()&RawMaterial.MATERIAL_MASK).desc());
+			if(image==null)
+				image=getHashedMXPImage(H,"ITEM_*");
 		}
-		if(image==null) image=getHashedMXPImage(H,"*");
-		if(image==null) return "";
+		if(image==null)
+			image=getHashedMXPImage(H,"*");
+		if(image==null)
+			return "";
 		return image;
 	}
 
@@ -789,7 +845,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				buf.write(Integer.toString(M.maxState().getHitPoints()).getBytes(Session.MSDP_CHARSET));
 			break;
 		case LEVEL:
-			if(M!=null) buf.write(Integer.toString(M.phyStats().level()).getBytes(Session.MSDP_CHARSET));
+			if(M!=null)
+				buf.write(Integer.toString(M.phyStats().level()).getBytes(Session.MSDP_CHARSET));
 			break;
 		case MANA:
 			if(M!=null)
@@ -831,7 +888,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			if((M!=null)&&(M.getVictim()!=null))
 			{
 				Command C=CMClass.getCommand("CONSIDER");
-				if(C==null) C=CMClass.getCommand("Consider");
+				if(C==null)
+					C=CMClass.getCommand("Consider");
 				try
 				{
 					buf.write(C.executeInternal(M, 0, M.getVictim()).toString().getBytes(Session.MSDP_CHARSET));
@@ -1416,7 +1474,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 							doc.append(",\"guild\":[");
 							for(int i=0;i<clans.size();i++)
 							{
-								if(i>0) doc.append(",");
+								if(i>0)
+									doc.append(",");
 								doc.append("\"").append(clans.get(i)).append("\"");
 							}
 							doc.append("]");
@@ -1448,7 +1507,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 							doc.append(",\"clan\":[");
 							for(int i=0;i<clans.size();i++)
 							{
-								if(i>0) doc.append(",");
+								if(i>0)
+									doc.append(",");
 								doc.append("\"").append(clans.get(i)).append("\"");
 							}
 							doc.append("]");
@@ -1563,7 +1623,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 									final String room2ID=CMLib.map().getExtendedRoomID(R2);
 									if(room2ID.length()>0)
 									{
-										if(comma) doc.append(","); comma=true;
+										if(comma)
+											doc.append(","); comma=true;
 										doc.append("\""+Directions.getDirectionChar(d)+"\":").append(room2ID.hashCode());
 									}
 								}
@@ -1588,7 +1649,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						boolean comma=false;
 						for(final MOB M : group)
 						{
-							if(comma) doc.append(",");
+							if(comma)
+								doc.append(",");
 							comma=true;
 							doc.append("{\"name\":\"").append(M.name(mob)).append("\",")
 								.append("{\"info\":{")
@@ -1780,7 +1842,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			if(charSupported||supportables.containsKey("char.vitals"))
 			{
 				buf=possiblePingGmcp(session, reporteds, supportables, "char.vitals");
-				if(buf!=null) bout.write(buf);
+				if(buf!=null)
+					bout.write(buf);
 			}
 			if((nextTruePingReport==null)||(now>nextTruePingReport.longValue()))
 			{
@@ -1801,14 +1864,16 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				if(charSupported||supportables.containsKey("char.status"))
 				{
 					buf=possiblePingGmcp(session, reporteds, supportables, "char.status");
-					if(buf!=null) bout.write(buf);
+					if(buf!=null)
+						bout.write(buf);
 				}
 				if((mob!=null)&&((mob.amFollowing()!=null)||(mob.numFollowers()>0)))
 				{
 					if(supportables.containsKey("group"))
 					{
 						buf=possiblePingGmcp(session, reporteds, supportables, "group");
-						if(buf!=null) bout.write(buf);
+						if(buf!=null)
+							bout.write(buf);
 					}
 				}
 			}
@@ -1818,22 +1883,26 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				if(charSupported||supportables.containsKey("char.worth"))
 				{
 					buf=possiblePingGmcp(session, reporteds, supportables, "char.worth");
-					if(buf!=null) bout.write(buf);
+					if(buf!=null)
+						bout.write(buf);
 				}
 				if(charSupported||supportables.containsKey("char.maxstats"))
 				{
 					buf=possiblePingGmcp(session, reporteds, supportables, "char.maxstats");
-					if(buf!=null) bout.write(buf);
+					if(buf!=null)
+						bout.write(buf);
 				}
 				if(charSupported||supportables.containsKey("char.base"))
 				{
 					buf=possiblePingGmcp(session, reporteds, supportables, "char.base");
-					if(buf!=null) bout.write(buf);
+					if(buf!=null)
+						bout.write(buf);
 				}
 				if(charSupported||supportables.containsKey("char.statusvars"))
 				{
 					buf=possiblePingGmcp(session, reporteds, supportables, "char.statusvars");
-					if(buf!=null) bout.write(buf);
+					if(buf!=null)
+						bout.write(buf);
 				}
 			}
 			if(supportables.containsKey("room.info")||supportables.containsKey("room"))
@@ -1850,7 +1919,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 							final String command="room.info";
 							final char[] cmd=command.toCharArray();
 							buf=processGmcp(session, new String(cmd), supportables);
-							if(buf!=null) bout.write(buf);
+							if(buf!=null)
+								bout.write(buf);
 						}
 					}
 				}

@@ -62,7 +62,8 @@ public class GenAmmunition extends StdItem implements Ammunition
 	@Override
 	public void setReadableText(String text)
 	{
-		if(isReadable()) CMLib.flags().setReadable(this,false);
+		if(isReadable())
+			CMLib.flags().setReadable(this,false);
 		readableText=text;
 	}
 	@Override public String ammunitionType(){return readableText;}

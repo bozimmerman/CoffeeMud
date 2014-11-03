@@ -279,7 +279,8 @@ public class Concierge extends StdBehavior
 					final String place=(String)rates.get(r).first;
 					if((observer!=null)&&(centerRoom!=null))
 					{
-						if(stringsToDo==null) stringsToDo=new PairVector<String,Double>();
+						if(stringsToDo==null)
+							stringsToDo=new PairVector<String,Double>();
 						stringsToDo.addElement(place,rates.get(r).second);
 					}
 					rates.removeElementAt(r);

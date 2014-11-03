@@ -45,12 +45,14 @@ public class ThinPlayerData extends StdWebMacro {
 
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("PLAYER");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		final StringBuffer str=new StringBuffer("");
 		if(last.length()>0)
 		{
 			String sort=httpReq.getUrlParameter("SORTBY");
-			if(sort==null) sort="";
+			if(sort==null)
+				sort="";
 			PlayerLibrary.ThinPlayer player = null;
 			final Enumeration pe=CMLib.players().thinPlayers(sort, httpReq.getRequestObjects());
 			for(;pe.hasMoreElements();)
@@ -62,7 +64,8 @@ public class ThinPlayerData extends StdWebMacro {
 					break;
 				}
 			}
-			if(player == null) return " @break@";
+			if(player == null)
+				return " @break@";
 			for(final String key : parms.keySet())
 			{
 				final int x=CMLib.players().getCharThinSortCode(key.toUpperCase().trim(),false);

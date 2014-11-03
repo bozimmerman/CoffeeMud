@@ -45,7 +45,8 @@ public class ExpertiseNext extends StdWebMacro
 		final String last=httpReq.getUrlParameter("EXPERTISE");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("EXPERTISE");
+			if(last!=null)
+				httpReq.removeUrlParameter("EXPERTISE");
 			return "";
 		}
 		String lastID="";
@@ -75,7 +76,8 @@ public class ExpertiseNext extends StdWebMacro
 						break;
 					}
 				}
-				if(!added) experts.addElement(Ename,E);
+				if(!added)
+					experts.addElement(Ename,E);
 			}
 			httpReq.getRequestObjects().put("SORTED_EXPERTISE",experts);
 		}
@@ -116,7 +118,8 @@ public class ExpertiseNext extends StdWebMacro
 				if(expertsAllows!=null)
 				{
 					qualLevel=(Integer)expertsAllows.get(E.ID);
-					if(qualLevel==null) continue;
+					if(qualLevel==null)
+						continue;
 					if((levelCheck>=0)&&(levelCheck!=qualLevel.intValue()))
 						continue;
 				}

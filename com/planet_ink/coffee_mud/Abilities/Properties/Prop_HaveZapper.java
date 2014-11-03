@@ -60,7 +60,8 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect
 	{
 		super.setMiscText(text);
 		actual=(text.toUpperCase()+" ").startsWith("ACTUAL ");
-		if(actual) text=text.substring(7);
+		if(actual)
+			text=text.substring(7);
 		percent=100;
 		int x=text.indexOf('%');
 		if(x>0)
@@ -90,7 +91,8 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(affected==null) return false;
+		if(affected==null)
+			return false;
 
 		final MOB mob=msg.source();
 		if(mob.location()==null)

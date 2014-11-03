@@ -56,13 +56,17 @@ public class Disease_Cold extends Disease
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID))	return false;
-		if(affected==null) return false;
-		if(!(affected instanceof MOB)) return true;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
+		if(!(affected instanceof MOB))
+			return true;
 
 		final MOB mob=(MOB)affected;
 		MOB diseaser=invoker;
-		if(diseaser==null) diseaser=mob;
+		if(diseaser==null)
+			diseaser=mob;
 		if((getTickDownRemaining()==1)
 		&&(CMLib.dice().rollPercentage()>mob.charStats().getSave(CharStats.STAT_SAVE_COLD))
 		&&(CMLib.dice().rollPercentage()<25-mob.charStats().getStat(CharStats.STAT_CONSTITUTION))
@@ -92,7 +96,8 @@ public class Disease_Cold extends Disease
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-2);
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)-3);
 		if(affectableStats.getStat(CharStats.STAT_CONSTITUTION)<=0)

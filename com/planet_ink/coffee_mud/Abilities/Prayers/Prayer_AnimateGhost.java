@@ -90,13 +90,15 @@ public class Prayer_AnimateGhost extends Prayer
 		}
 		Behavior B=CMClass.getBehavior("Aggressive");
 		if((B!=null)&&(mob!=null)){ B.setParms("+NAMES \"-"+mob.Name()+"\"");}
-		if(B!=null) newMOB.addBehavior(B);
+		if(B!=null)
+			newMOB.addBehavior(B);
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();
 		if(mob==null)
 		{
 			B=CMClass.getBehavior("Thiefness");
-			if(B!=null) newMOB.addBehavior(B);
+			if(B!=null)
+				newMOB.addBehavior(B);
 		}
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();
@@ -136,7 +138,8 @@ public class Prayer_AnimateGhost extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(target==mob)
 		{

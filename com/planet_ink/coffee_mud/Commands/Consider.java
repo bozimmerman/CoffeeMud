@@ -45,7 +45,8 @@ public class Consider extends StdCommand
 
 	public int relativeLevelDiff(MOB mob1, MOB mob2)
 	{
-		if((mob1==null)||(mob2==null)) return 0;
+		if((mob1==null)||(mob2==null))
+			return 0;
 		final int mob2Armor=CMLib.combat().adjustedArmor(mob2);
 		final int mob1Armor=CMLib.combat().adjustedArmor(mob1);
 		final double mob1Attack=CMLib.combat().adjustedAttackBonus(mob1,mob2);
@@ -70,7 +71,8 @@ public class Consider extends StdCommand
 	public int doConsider(MOB mob, Physical target)
 	{
 		final Room R=mob.location();
-		if(R==null) return 0;
+		if(R==null)
+			return 0;
 		final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MASK_EYES|CMMsg.TYP_OK_VISUAL,null,L("<S-NAME> consider(s) <T-NAMESELF>."),L("<S-NAME> consider(s) <T-NAMESELF>."));
 		if(R.okMessage(mob,msg))
 			R.send(mob,msg);
@@ -83,10 +85,14 @@ public class Consider extends StdCommand
 			final int realDiff=relDiff;//(relDiff+lvlDiff)/2;
 
 			int theDiff=2;
-			if(mob.phyStats().level()>20) theDiff=3;
-			if(mob.phyStats().level()>40) theDiff=4;
-			if(mob.phyStats().level()>60) theDiff=5;
-			if(mob.phyStats().level()>80) theDiff=6;
+			if(mob.phyStats().level()>20)
+				theDiff=3;
+			if(mob.phyStats().level()>40)
+				theDiff=4;
+			if(mob.phyStats().level()>60)
+				theDiff=5;
+			if(mob.phyStats().level()>80)
+				theDiff=6;
 
 			StringBuilder levelMsg=new StringBuilder("");
 			if(lvlDiff==0)

@@ -150,7 +150,8 @@ public class Listen extends CM1Command
 		private String minorDesc(int code)
 		{
 			String desc = CMMsg.Desc.getMSGDESC_TYPES().get(Integer.valueOf(code));
-			if(desc==null) desc = "?";
+			if(desc==null)
+				desc = "?";
 			return desc;
 
 		}

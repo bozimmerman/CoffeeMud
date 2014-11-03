@@ -50,7 +50,8 @@ public class Examine extends StdCommand
 			quiet=true;
 		}
 		final String textMsg="<S-NAME> examine(s) ";
-		if(mob.location()==null) return false;
+		if(mob.location()==null)
+			return false;
 		if((commands!=null)&&(commands.size()>1))
 		{
 			Environmental thisThang=null;

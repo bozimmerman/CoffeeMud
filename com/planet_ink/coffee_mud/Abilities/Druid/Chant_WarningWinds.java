@@ -114,7 +114,8 @@ public class Chant_WarningWinds extends Chant
 						{
 							String far="far ";
 							for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-								if(lastRoom.getRoomInDir(d)==R) far="";
+								if(lastRoom.getRoomInDir(d)==R)
+									far="";
 							dir=Directions.getOpDirectionCode(dir);
 							if(fighting)
 								((MOB)affected).tell(L("The winds tell of fighting @x1@x2.",far,Directions.getInDirectionName(dir)));

@@ -111,7 +111,8 @@ public class Skill_Dirt extends StdSkill
 	public boolean hereOK(MOB mob)
 	{
 		final Room R=mob.location();
-		if(R==null) return false;
+		if(R==null)
+			return false;
 		if(CMath.bset(R.getClimateType(),Places.CLIMASK_WET)
 		 ||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		 ||(R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
@@ -135,7 +136,8 @@ public class Skill_Dirt extends StdSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 
 		if(!hereOK(mob))

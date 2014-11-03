@@ -151,8 +151,10 @@ public class Thief_Embezzle extends ThiefSkill
 		if(bank.isSold(ShopKeeper.DEAL_CLANBANKER))
 		{
 			Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.WITHDRAW);
-			if(clanPair == null) clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.DEPOSIT_LIST);
-			if(clanPair == null) clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.DEPOSIT);
+			if(clanPair == null)
+				clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.DEPOSIT_LIST);
+			if(clanPair == null)
+				clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.DEPOSIT);
 			if(clanPair!=null)
 				myAcct=clanPair.first.clanID();
 		}

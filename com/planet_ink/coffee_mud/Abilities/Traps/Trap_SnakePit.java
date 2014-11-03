@@ -47,8 +47,10 @@ public class Trap_SnakePit extends Trap_RoomPit
 
 	protected Item getCagedAnimal(MOB mob)
 	{
-		if(mob==null) return null;
-		if(mob.location()==null) return null;
+		if(mob==null)
+			return null;
+		if(mob.location()==null)
+			return null;
 		for(int i=0;i<mob.location().numItems();i++)
 		{
 			final Item I=mob.location().getItem(i);
@@ -65,7 +67,8 @@ public class Trap_SnakePit extends Trap_RoomPit
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
-		if(P==null) return null;
+		if(P==null)
+			return null;
 		Item I=getCagedAnimal(mob);
 		final StringBuffer buf=new StringBuffer("<SNAKES>");
 		int num=0;
@@ -95,7 +98,8 @@ public class Trap_SnakePit extends Trap_RoomPit
 	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,P)) return false;
+		if(!super.canSetTrapOn(mob,P))
+			return false;
 		if(getCagedAnimal(mob)==null)
 		{
 			if(mob!=null)
@@ -145,7 +149,8 @@ public class Trap_SnakePit extends Trap_RoomPit
 			t=t.substring(x+10);
 			x=t.indexOf("</MOBITEM><MOBITEM>");
 		}
-		if(t.length()>0) snakes.addElement(t);
+		if(t.length()>0)
+			snakes.addElement(t);
 		if(snakes.size()>0)
 			monsters=new Vector();
 		for(int i=0;i<snakes.size();i++)

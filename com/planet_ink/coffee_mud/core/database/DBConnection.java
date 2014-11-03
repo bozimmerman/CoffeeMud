@@ -370,7 +370,8 @@ public class DBConnection
 	protected void doneUsing(String Closer)
 	{
 		closeStatements(Closer);
-		if(!isReusable) close();
+		if(!isReusable)
+			close();
 		inUse=false;
 	}
 

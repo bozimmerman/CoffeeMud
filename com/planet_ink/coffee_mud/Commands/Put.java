@@ -81,7 +81,8 @@ public class Put extends StdCommand
 		{
 			commands.removeElementAt(commands.size()-1);
 			final Command C=CMClass.getCommand("Wear");
-			if(C!=null) C.execute(mob,commands,metaFlags);
+			if(C!=null)
+				C.execute(mob,commands,metaFlags);
 			return false;
 		}
 
@@ -93,7 +94,8 @@ public class Put extends StdCommand
 				if(s.endsWith(" on "+codes.name(i).toLowerCase())||s.endsWith(" on my "+codes.name(i).toLowerCase()))
 				{
 					final Command C=CMClass.getCommand("Wear");
-					if(C!=null) C.execute(mob,commands,metaFlags);
+					if(C!=null)
+						C.execute(mob,commands,metaFlags);
 					return false;
 				}
 		}
@@ -102,7 +104,8 @@ public class Put extends StdCommand
 		{
 			commands.removeElementAt(1);
 			final Command C=CMClass.getCommand("Wear");
-			if(C!=null) C.execute(mob,commands,metaFlags);
+			if(C!=null)
+				C.execute(mob,commands,metaFlags);
 			return false;
 		}
 
@@ -127,7 +130,8 @@ public class Put extends StdCommand
 		}
 
 		final int maxToPut=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
-		if(maxToPut<0) return false;
+		if(maxToPut<0)
+			return false;
 
 		String thingToPut=CMParms.combine(commands,0);
 		int addendum=1;
@@ -155,7 +159,8 @@ public class Put extends StdCommand
 				putThis=null;
 			else
 			{
-				if(putThis==null) break;
+				if(putThis==null)
+					break;
 				if((CMLib.flags().canBeSeenBy(putThis,mob))
 				&&(!V.contains(putThis)))
 					V.addElement(putThis);

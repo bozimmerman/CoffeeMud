@@ -55,9 +55,11 @@ public class Thief_HideInPlainSight extends ThiefSkill
 
 	public Ability makeObscurinator(MOB mob)
 	{
-		if(obscureAbility!=null) return obscureAbility;
+		if(obscureAbility!=null)
+			return obscureAbility;
 		obscureAbility=CMClass.getAbility("Spell_ObscureSelf");
-		if(obscureAbility==null) return null;
+		if(obscureAbility==null)
+			return null;
 		obscureAbility.setAffectedOne(mob);
 		return obscureAbility;
 	}
@@ -170,7 +172,8 @@ public class Thief_HideInPlainSight extends ThiefSkill
 		if(mob.fetchEffect(this.ID())!=null)
 		{
 			Ability A=mob.fetchEffect(ID());
-			if(A!=null) A.unInvoke();
+			if(A!=null)
+				A.unInvoke();
 			A=mob.fetchEffect(ID());
 			if(A!=null)
 				mob.tell(L("You are already hiding in plain site."));

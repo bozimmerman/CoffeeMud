@@ -91,7 +91,8 @@ public class Spell_MassSlow extends Spell
 									target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> move(s) more slowly!!"));
 							}
 						}
-						if(oldVictim==null) mob.setVictim(null);
+						if(oldVictim==null)
+							mob.setVictim(null);
 					}
 					else
 						maliciousFizzle(mob,target,L("<T-NAME> seem(s) unaffected by the Slow spell from <S-NAME>."));

@@ -76,11 +76,13 @@ public class ProcessSMTPrequest implements Runnable
 				if(server.mailboxName().length()>0)
 				{
 					name=CMLib.database().DBPlayerEmailSearch(s);
-					if(name!=null) return name;
+					if(name!=null)
+						return name;
 					if(checkFROMcase) // accounts cannot receive emails
 					{
 						final PlayerAccount A=CMLib.players().getLoadAccountByEmail(s);
-						if(A!=null) return A.getAccountName();
+						if(A!=null)
+							return A.getAccountName();
 					}
 				}
 				return null;
@@ -104,7 +106,8 @@ public class ProcessSMTPrequest implements Runnable
 	public MOB getAccountMob(String s)
 	{
 		MOB M=CMLib.players().getPlayer(s);
-		if(M!=null) return M;
+		if(M!=null)
+			return M;
 		if(CMLib.players().playerExists(s))
 			return CMLib.players().getLoadPlayer(s);
 		if(CMLib.players().accountExists(s))
@@ -162,7 +165,8 @@ public class ProcessSMTPrequest implements Runnable
 			sout=new PrintWriter(new BufferedWriter(new OutputStreamWriter(sock.getOutputStream(),"US-ASCII")));
 			sin=new BufferedReader(new InputStreamReader(sock.getInputStream(),"US-ASCII"));
 			final String initialMsg = "220 ESMTP "+server.domainName()+" "+SMTPserver.ServerVersionString+"; "+CMLib.time().date2String(System.currentTimeMillis());
-			if(debug) Log.debugOut(runnableName,"Sent: "+initialMsg);
+			if(debug)
+				Log.debugOut(runnableName,"Sent: "+initialMsg);
 			sout.write(initialMsg+cr);
 			sout.flush();
 			boolean quitFlag=false;
@@ -188,7 +192,8 @@ public class ProcessSMTPrequest implements Runnable
 					}
 					if(c<0)
 					{
-						if(debug) Log.debugOut(runnableName,"Internal: EOF observed.");
+						if(debug)
+							Log.debugOut(runnableName,"Internal: EOF observed.");
 						throw new IOException("reset by peer");
 					}
 					if(c==65535)
@@ -197,7 +202,8 @@ public class ProcessSMTPrequest implements Runnable
 						if(ellapsed > IDLE_TIMEOUT)
 						{
 							quitFlag=true;
-							if(debug) Log.debugOut(runnableName,"Internal: generated timeout: "+msgsSent+" msgs sent");
+							if(debug)
+								Log.debugOut(runnableName,"Internal: generated timeout: "+msgsSent+" msgs sent");
 							break;
 						}
 						else
@@ -205,7 +211,8 @@ public class ProcessSMTPrequest implements Runnable
 					}
 					if(sock.isClosed())
 					{
-						if(debug) Log.debugOut(runnableName,"Internal: Noticed socket close.");
+						if(debug)
+							Log.debugOut(runnableName,"Internal: Noticed socket close.");
 						quitFlag=true;
 						break;
 					}
@@ -244,11 +251,13 @@ public class ProcessSMTPrequest implements Runnable
 						cmd=s.substring(0,cmdindex).toUpperCase();
 						parm=s.substring(cmdindex+1);
 					}
-					if(debug) Log.debugOut(runnableName,"Input: "+cmd+" "+parm);
+					if(debug)
+						Log.debugOut(runnableName,"Input: "+cmd+" "+parm);
 
 					if((dataMode)&&(s.equals(".")))
 					{
-						if(debug) Log.debugOut(runnableName,"End of data reached.");
+						if(debug)
+							Log.debugOut(runnableName,"End of data reached.");
 						dataMode=false;
 						boolean translateEqualSigns=false;
 						/*When the SMTP server accepts a message either for relaying or for final delivery, it inserts a trace record (also referred to interchangeably as a "time stamp line" or "Received" line) at the top of the mail data. This trace record indicates the identity of the host that sent the message, the identity of the host that received the message (and is inserting this time stamp), and the date and time the message was received.*/
@@ -276,13 +285,16 @@ public class ProcessSMTPrequest implements Runnable
 								while(true)
 								{
 									String s2=lineR.readLine();
-									if(s2==null) break;
+									if(s2==null)
+										break;
 									String s2u=s2.toUpperCase();
-									if(debug) Log.debugOut(runnableName,"Header State="+boundryState+", "+s2);
+									if(debug)
+										Log.debugOut(runnableName,"Header State="+boundryState+", "+s2);
 
 									if((startBuffering)&&(boundry!=null)&&(s2.indexOf(boundry)>=0))
 									{
-										if(debug) Log.debugOut(runnableName,"Multipart boundary "+boundry+" completed.");
+										if(debug)
+											Log.debugOut(runnableName,"Multipart boundary "+boundry+" completed.");
 										if(finalData.length()>0)
 											dataBlocks.put(Character.valueOf(bodyType), finalData);
 										finalData=new StringBuilder("");
@@ -341,7 +353,8 @@ public class ProcessSMTPrequest implements Runnable
 									else
 									if(boundryState==1)
 									{
-										if(debug) Log.debugOut(runnableName,"Boundary "+boundry+" spotted -- state is now 2.");
+										if(debug)
+											Log.debugOut(runnableName,"Boundary "+boundry+" spotted -- state is now 2.");
 										if(s2.indexOf(boundry)>=0)
 											boundryState=2;
 										continue;
@@ -350,7 +363,8 @@ public class ProcessSMTPrequest implements Runnable
 									if((s2u.startsWith("SUBJECT: "))&&(boundryState<2))
 									{
 										subject=s2.substring(9).trim();
-										if(debug) Log.debugOut(runnableName,"Subject="+subject);
+										if(debug)
+											Log.debugOut(runnableName,"Subject="+subject);
 									}
 									else
 									if((s2u.startsWith("CONTENT-TRANSFER-ENCODING: "))
@@ -361,7 +375,8 @@ public class ProcessSMTPrequest implements Runnable
 											translateEqualSigns=true;
 										else
 											translateEqualSigns=false;
-										if(debug) Log.debugOut(runnableName,"Transfer Equal Sign="+translateEqualSigns);
+										if(debug)
+											Log.debugOut(runnableName,"Transfer Equal Sign="+translateEqualSigns);
 									}
 									else
 									if((s2u.startsWith("CONTENT TYPE: ")||s2u.startsWith("CONTENT-TYPE: ")))
@@ -370,12 +385,14 @@ public class ProcessSMTPrequest implements Runnable
 										{
 											String contentType=s2.substring(14).trim();
 											int y=s2u.indexOf(';');
-											if(y>=0) contentType=s2.substring(14,y).trim();
+											if(y>=0)
+												contentType=s2.substring(14,y).trim();
 											int x=s2u.indexOf("BOUNDARY=");
 											for(int z=0;(z<5)&&(x<0);z++)
 											{
 												s2=lineR.readLine();
-												if(s2==null) break;
+												if(s2==null)
+													break;
 												s2u=s2.toUpperCase();
 												x=s2u.indexOf("BOUNDARY=");
 											}
@@ -389,7 +406,8 @@ public class ProcessSMTPrequest implements Runnable
 											{
 												boundry=s2.substring(x+9).trim();
 												y=s2.indexOf(';');
-												if(y>=0) s2=s2.substring(0,y).trim();
+												if(y>=0)
+													s2=s2.substring(0,y).trim();
 												if(boundry.startsWith("\"")&&boundry.endsWith("\""))
 													boundry=boundry.substring(1,boundry.length()-1).trim();
 												boundryState=0;
@@ -428,7 +446,8 @@ public class ProcessSMTPrequest implements Runnable
 								if((finalData.length()==0)&&(!startBuffering))
 								{
 									finalData=new StringBuilder(data.toString());
-									if(subject==null) subject="";
+									if(subject==null)
+										subject="";
 								}
 
 								if(dataBlocks.containsKey(Character.valueOf('h')))
@@ -482,10 +501,12 @@ public class ProcessSMTPrequest implements Runnable
 												{
 													final Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
 													List<String> mylist=null;
-													if(lists!=null)    mylist=lists.get(journal);
+													if(lists!=null)
+														mylist=lists.get(journal);
 													if((mylist==null)||(!mylist.contains(from)))
 													{
-														if(debug) Log.debugOut(runnableName,from+" is not in mailing list for journal "+journal);
+														if(debug)
+															Log.debugOut(runnableName,from+" is not in mailing list for journal "+journal);
 														replyData=("552 Mailbox '"+journal+"' only accepts messages from subscribers.  Send an email with 'subscribe' as the subject."+cr).getBytes();
 														break;
 													}
@@ -507,7 +528,8 @@ public class ProcessSMTPrequest implements Runnable
 												}
 											}
 
-											if(debug) Log.debugOut(runnableName,"Written: "+journal+"/"+from+"/ALL/"+bodyType);
+											if(debug)
+												Log.debugOut(runnableName,"Written: "+journal+"/"+from+"/ALL/"+bodyType);
 											final StringBuilder finalFinalData=new StringBuilder(finalData);
 											if(bodyType=='h')
 												cleanHtml(journal, finalFinalData);
@@ -518,7 +540,8 @@ public class ProcessSMTPrequest implements Runnable
 										else
 										if(finalData.toString().trim().length()>0)
 										{
-											if(debug) Log.debugOut(runnableName,"Written: "+server.mailboxName()+"/"+from+"/"+to.elementAt(i)+"/"+bodyType);
+											if(debug)
+												Log.debugOut(runnableName,"Written: "+server.mailboxName()+"/"+from+"/"+to.elementAt(i)+"/"+bodyType);
 											final StringBuilder finalFinalData=new StringBuilder(finalData);
 											if(bodyType=='h')
 												cleanHtml(journal, finalFinalData);
@@ -546,7 +569,8 @@ public class ProcessSMTPrequest implements Runnable
 					else
 					if(dataMode)
 					{
-						if(data==null) data=new StringBuffer("");
+						if(data==null)
+							data=new StringBuffer("");
 						if(data.length()<server.getMaxMsgSize())
 							data.append(s+cr);
 					}
@@ -932,7 +956,8 @@ public class ProcessSMTPrequest implements Runnable
 											if(!jerror)
 											{
 												replyData=("250 OK "+name+cr).getBytes();
-												if(to==null) to=new Vector<String>();
+												if(to==null)
+													to=new Vector<String>();
 												if(!to.contains(name))
 													to.addElement(name);
 											}
@@ -943,7 +968,8 @@ public class ProcessSMTPrequest implements Runnable
 										else
 										{
 											replyData=("250 OK "+name+cr).getBytes();
-											if(to==null) to=new Vector<String>();
+											if(to==null)
+												to=new Vector<String>();
 											if(!to.contains(name))
 												to.addElement(name);
 										}
@@ -964,7 +990,8 @@ public class ProcessSMTPrequest implements Runnable
 						{
 							// we should be looping through these .. why does ZD act so wierd?!
 							final byte [] resp=respQueue.getLast();
-							if(debug) Log.debugOut(runnableName,"Reply: "+CMStrings.replaceAll(new String(resp),cr,"\\r\\n"));
+							if(debug)
+								Log.debugOut(runnableName,"Reply: "+CMStrings.replaceAll(new String(resp),cr,"\\r\\n"));
 							// must insert a blank line before message body
 							sout.write(new String(resp));
 							sout.flush();

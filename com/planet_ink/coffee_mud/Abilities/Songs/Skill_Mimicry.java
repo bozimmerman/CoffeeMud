@@ -54,7 +54,8 @@ public class Skill_Mimicry extends BardSkill
 		super.executeMsg(affecting,msg);
 		if((affecting instanceof MOB)&&(!CMLib.flags().aliveAwakeMobileUnbound((MOB)affecting,true)))
 			return;
-		if(disabled) return;
+		if(disabled)
+			return;
 
 		if(((!(affecting instanceof MOB))||(!msg.amISource((MOB)affecting)))
 		&&((text().length()==0)||(text().equalsIgnoreCase(msg.source().Name())))
@@ -71,23 +72,35 @@ public class Skill_Mimicry extends BardSkill
 		//if(src!=null) src=CMStrings.replaceAll(src,"<S-NAME>",ticking.name());
 		//if(src!=null) src=CMStrings.replaceAll(src,"You ",ticking.name()+" ");
 		//if(src!=null) src=CMStrings.replaceAll(src,"Your ",ticking.name()+"`s ");
-		if(trg!=null) trg=CMStrings.replaceAll(trg,"<S-NAME>",ticking.name());
-		if(oth!=null) oth=CMStrings.replaceAll(oth,"<S-NAME>",ticking.name());
+		if(trg!=null)
+			trg=CMStrings.replaceAll(trg,"<S-NAME>",ticking.name());
+		if(oth!=null)
+			oth=CMStrings.replaceAll(oth,"<S-NAME>",ticking.name());
 		//if(src!=null) src=CMStrings.replaceAll(src,"<S-HIM-HERSELF>","itself");
-		if(trg!=null) trg=CMStrings.replaceAll(trg,"<S-HIM-HERSELF>","itself");
-		if(oth!=null) oth=CMStrings.replaceAll(oth,"<S-HIM-HERSELF>","itself");
+		if(trg!=null)
+			trg=CMStrings.replaceAll(trg,"<S-HIM-HERSELF>","itself");
+		if(oth!=null)
+			oth=CMStrings.replaceAll(oth,"<S-HIM-HERSELF>","itself");
 		//if(src!=null) src=CMStrings.replaceAll(src,"<S-HIS-HERSELF>","itself");
-		if(trg!=null) trg=CMStrings.replaceAll(trg,"<S-HIS-HERSELF>","itself");
-		if(oth!=null) oth=CMStrings.replaceAll(oth,"<S-HIS-HERSELF>","itself");
+		if(trg!=null)
+			trg=CMStrings.replaceAll(trg,"<S-HIS-HERSELF>","itself");
+		if(oth!=null)
+			oth=CMStrings.replaceAll(oth,"<S-HIS-HERSELF>","itself");
 		//if(src!=null) src=CMStrings.replaceAll(src,"<S-HIM-HER>","it");
-		if(trg!=null) trg=CMStrings.replaceAll(trg,"<S-HIM-HER>","it");
-		if(oth!=null) oth=CMStrings.replaceAll(oth,"<S-HIM-HER>","it");
+		if(trg!=null)
+			trg=CMStrings.replaceAll(trg,"<S-HIM-HER>","it");
+		if(oth!=null)
+			oth=CMStrings.replaceAll(oth,"<S-HIM-HER>","it");
 		//if(src!=null) src=CMStrings.replaceAll(src,"<S-HE-SHE>","it");
-		if(trg!=null) trg=CMStrings.replaceAll(trg,"<S-HE-SHE>","it");
-		if(oth!=null) oth=CMStrings.replaceAll(oth,"<S-HE-SHE>","it");
+		if(trg!=null)
+			trg=CMStrings.replaceAll(trg,"<S-HE-SHE>","it");
+		if(oth!=null)
+			oth=CMStrings.replaceAll(oth,"<S-HE-SHE>","it");
 		//if(src!=null) src=CMStrings.replaceAll(src,"<S-HIS-HER>","its");
-		if(trg!=null) trg=CMStrings.replaceAll(trg,"<S-HIS-HER>","its");
-		if(oth!=null) oth=CMStrings.replaceAll(oth,"<S-HIS-HER>","its");
+		if(trg!=null)
+			trg=CMStrings.replaceAll(trg,"<S-HIS-HER>","its");
+		if(oth!=null)
+			oth=CMStrings.replaceAll(oth,"<S-HIS-HER>","its");
 		msg.modify(sMOB,sMOB,msg.tool(),
 				   msg.sourceCode(),oth,
 				   msg.targetCode(),trg,
@@ -99,7 +112,8 @@ public class Skill_Mimicry extends BardSkill
 	{
 		super.tick(ticking,tickID);
 		CMMsg msg=lastMsg;
-		if(msg==null) return true;
+		if(msg==null)
+			return true;
 		lastMsg=null;
 		if(((affected instanceof MOB)&&(!CMLib.flags().aliveAwakeMobileUnbound((MOB)affected,true))))
 			return true;
@@ -170,7 +184,8 @@ public class Skill_Mimicry extends BardSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -185,7 +200,8 @@ public class Skill_Mimicry extends BardSkill
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob,asLevel,0);
 				final Ability A=mob.fetchEffect(ID());
-				if((A!=null)&&(target!=mob)) A.setMiscText(target.Name());
+				if((A!=null)&&(target!=mob))
+					A.setMiscText(target.Name());
 			}
 		}
 		else

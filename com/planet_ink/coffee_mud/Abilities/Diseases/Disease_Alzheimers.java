@@ -81,8 +81,10 @@ public class Disease_Alzheimers extends Disease
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID))	return false;
-		if(affected==null) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
 		if(((everyTick>0)||(CMLib.dice().roll(1,150,0)==1))
 		&&(affected instanceof MOB))
 		{
@@ -105,7 +107,8 @@ public class Disease_Alzheimers extends Disease
 						&&(R.getExitInDir(d)!=null)
 						&&(R.getExitInDir(d).isOpen()))
 							dirs.addElement(Integer.valueOf(d));
-					if(dirs.size()==0) everyTick=0;
+					if(dirs.size()==0)
+						everyTick=0;
 					else
 					{
 						final int dir=((Integer)dirs.elementAt(CMLib.dice().roll(1,dirs.size(),-1))).intValue();
@@ -120,7 +123,8 @@ public class Disease_Alzheimers extends Disease
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)/2);
 		if(affectableStats.getStat(CharStats.STAT_INTELLIGENCE)<=0)
 			affectableStats.setStat(CharStats.STAT_INTELLIGENCE,1);

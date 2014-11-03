@@ -64,22 +64,27 @@ public class INIModify extends StdWebMacro
 		if((authM==null)||(!CMSecurity.isASysOp(authM)))
 			return " @break@ ";
 		final java.util.Map<String,String> parms=parseParms(parm);
-		if(parms==null) return "";
+		if(parms==null)
+			return "";
 		final List<String> page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.Str.INIPATH));
 		if(parms.containsKey("ADDKEY"))
 		{
 			String key=parms.get("KEY");
-			if((key==null)||(key.trim().length()==0)) return "";
+			if((key==null)||(key.trim().length()==0))
+				return "";
 			key=key.trim().toUpperCase();
 			final CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
-			if((ipage==null)||(!ipage.isLoaded())) return "";
-			if(ipage.containsKey(key)) return "";
+			if((ipage==null)||(!ipage.isLoaded()))
+				return "";
+			if(ipage.containsKey(key))
+				return "";
 			int where=0;
 			if(parms.containsKey("NEAR"))
 			{
 				boolean found=false;
 				String near=parms.get("NEAR");
-				if(near.endsWith("*")) near=near.substring(0,near.length()-1);
+				if(near.endsWith("*"))
+					near=near.substring(0,near.length()-1);
 				for(int p=0;p<page.size();p++)
 				{
 					final String s=page.get(p).trim();
@@ -105,15 +110,19 @@ public class INIModify extends StdWebMacro
 		if(parms.containsKey("DELKEY"))
 		{
 			String key=parms.get("KEY");
-			if((key==null)||(key.trim().length()==0)) return "";
+			if((key==null)||(key.trim().length()==0))
+				return "";
 			key=key.trim().toUpperCase();
 			for(int p=0;p<page.size();p++)
 			{
 				final String s=page.get(p).trim();
-				if(s.startsWith("!")||s.startsWith("#")) continue;
+				if(s.startsWith("!")||s.startsWith("#"))
+					continue;
 				int x=s.indexOf('=');
-				if(x<0) x=s.indexOf(':');
-				if(x<0) continue;
+				if(x<0)
+					x=s.indexOf(':');
+				if(x<0)
+					continue;
 				final String thisKey=s.substring(0,x).trim().toUpperCase();
 				if(thisKey.equals(key))
 				{
@@ -132,14 +141,18 @@ public class INIModify extends StdWebMacro
 			if((factionID!=null)&&(factionID.length()>0))
 			{
 				final CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
-				if((ipage==null)||(!ipage.isLoaded())) return "";
+				if((ipage==null)||(!ipage.isLoaded()))
+					return "";
 				for(int p=0;p<page.size();p++)
 				{
 					final String s=page.get(p).trim();
-					if(s.startsWith("!")||s.startsWith("#")) continue;
+					if(s.startsWith("!")||s.startsWith("#"))
+						continue;
 					int x=s.indexOf('=');
-					if(x<0) x=s.indexOf(':');
-					if(x<0) continue;
+					if(x<0)
+						x=s.indexOf(':');
+					if(x<0)
+						continue;
 					final String thisKey=s.substring(0,x).trim().toUpperCase();
 					if(thisKey.equals("FACTIONS"))
 					{
@@ -197,14 +210,18 @@ public class INIModify extends StdWebMacro
 
 
 			CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
-			if((ipage==null)||(!ipage.isLoaded())) return "";
+			if((ipage==null)||(!ipage.isLoaded()))
+				return "";
 			for(int p=0;p<page.size();p++)
 			{
 				final String s=page.get(p).trim();
-				if(s.startsWith("!")||s.startsWith("#")) continue;
+				if(s.startsWith("!")||s.startsWith("#"))
+					continue;
 				int x=s.indexOf('=');
-				if(x<0) x=s.indexOf(':');
-				if(x<0) continue;
+				if(x<0)
+					x=s.indexOf(':');
+				if(x<0)
+					continue;
 				final String thisKey=s.substring(0,x).trim().toUpperCase();
 
 				if(httpReq.isUrlParameter(thisKey)
@@ -222,7 +239,8 @@ public class INIModify extends StdWebMacro
 				if(modified.contains("JSCRIPTS")) return ""; // never modified through this
 				updateINIFile(page);
 				ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
-				if((ipage==null)||(!ipage.isLoaded())) return "";
+				if((ipage==null)||(!ipage.isLoaded()))
+					return "";
 				ipage.resetSystemVars();
 				if(modified(modified,"SYSOPMASK"))
 					CMSecurity.setSysOp(ipage.getStr("SYSOPMASK"));

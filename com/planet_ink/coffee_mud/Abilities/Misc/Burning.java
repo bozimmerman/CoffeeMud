@@ -381,8 +381,10 @@ public class Burning extends StdAbility
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
 	{
-		if(!auto) return false;
-		if(target==null) return false;
+		if(!auto)
+			return false;
+		if(target==null)
+			return false;
 		if(target.fetchEffect("Burning")==null)
 		{
 			if(((target instanceof Item)&&(((Item)target).material()==RawMaterial.RESOURCE_NOTHING))
@@ -400,7 +402,8 @@ public class Burning extends StdAbility
 			}
 			if(asLevel == 0)
 				asLevel = CMLib.flags().burnStatus(target);
-			if(asLevel < 0) asLevel = 0;
+			if(asLevel < 0)
+				asLevel = 0;
 			beneficialAffect(mob,target,0,asLevel);
 			target.recoverPhyStats();
 			if(target instanceof Item)

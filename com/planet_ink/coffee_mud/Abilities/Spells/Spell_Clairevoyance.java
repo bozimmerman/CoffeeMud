@@ -52,7 +52,8 @@ public class Spell_Clairevoyance extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 
-		if(canBeUninvoked()) scries.removeElement(mob);
+		if(canBeUninvoked())
+			scries.removeElement(mob);
 		if((canBeUninvoked())&&(invoker!=null))
 			invoker.tell(invoker,mob,null,L("Your visions of <T-NAME> fade."));
 		super.unInvoke();
@@ -126,7 +127,8 @@ public class Spell_Clairevoyance extends Spell
 					target=targets.get(CMLib.dice().roll(1,targets.size(),-1));
 			}catch(final NoSuchElementException nse){}
 		}
-		if(target instanceof Deity) target=null;
+		if(target instanceof Deity)
+			target=null;
 		Room newRoom=mob.location();
 		if(target!=null)
 			newRoom=target.location();
@@ -167,7 +169,8 @@ public class Spell_Clairevoyance extends Spell
 			if((mob.location().okMessage(mob,msg))&&((newRoom==mob.location())||(newRoom.okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
-				if(newRoom!=mob.location()) newRoom.send(target,msg2);
+				if(newRoom!=mob.location())
+					newRoom.send(target,msg2);
 				scries.addElement(target,mob);
 				beneficialAffect(mob,target,asLevel,0);
 			}

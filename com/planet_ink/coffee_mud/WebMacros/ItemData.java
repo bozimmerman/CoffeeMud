@@ -52,9 +52,11 @@ public class ItemData extends StdWebMacro
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String player=httpReq.getUrlParameter("PLAYER");
 		final String last=httpReq.getUrlParameter("ROOM");
-		if((last==null)&&(player==null)) return " @break@";
+		if((last==null)&&(player==null))
+			return " @break@";
 		final String itemCode=httpReq.getUrlParameter("ITEM");
-		if(itemCode==null) return "@break@";
+		if(itemCode==null)
+			return "@break@";
 
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
@@ -82,7 +84,8 @@ public class ItemData extends StdWebMacro
 		final String sync=("SYNC"+((R!=null)?R.roomID():player));
 		synchronized(sync.intern())
 		{
-			if(R!=null) R=CMLib.map().getRoom(R);
+			if(R!=null)
+				R=CMLib.map().getRoom(R);
 
 			if((playerM!=null)&&(R==null))
 			{
@@ -199,14 +202,16 @@ public class ItemData extends StdWebMacro
 				for(int i=0;i<R.numItems();i++)
 				{
 					final Item I2=R.getItem(i);
-					if(I2!=null) str.append(I2.Name()+"="+RoomData.getItemCode(R,I2));
+					if(I2!=null)
+						str.append(I2.Name()+"="+RoomData.getItemCode(R,I2));
 				}
 			}
 			else
 				for(int i=0;i<M.numItems();i++)
 				{
 					final Item I2=M.getItem(i);
-					if(I2!=null) str.append(RoomData.getItemCode(M,I2));
+					if(I2!=null)
+						str.append(RoomData.getItemCode(M,I2));
 				}
 			return clearWebMacros(str);
 		}
@@ -219,7 +224,8 @@ public class ItemData extends StdWebMacro
 		&&(CMClass.getItem(newClassID)!=null))
 		{
 			I=CMClass.getItem(newClassID);
-			if(I instanceof ArchonOnly) I=oldI;
+			if(I instanceof ArchonOnly)
+				I=oldI;
 		}
 
 		final boolean changedClass=((httpReq.isUrlParameter("CHANGEDCLASS")
@@ -287,7 +293,8 @@ public class ItemData extends StdWebMacro
 				if(parms.containsKey(parmName))
 				{
 					String old=httpReq.getUrlParameter(parmName);
-					if(old==null) old="";
+					if(old==null)
+						old="";
 					switch(o)
 					{
 					case NAME: // name
@@ -303,7 +310,8 @@ public class ItemData extends StdWebMacro
 						break;
 					case CLASSES: // classes
 						{
-							if(firstTime) old=CMClass.classID(I);
+							if(firstTime)
+								old=CMClass.classID(I);
 							Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-ITEMS2:"+parms.containsKey("GENERICONLY"));
 							if(sorted==null)
 							{
@@ -326,34 +334,41 @@ public class ItemData extends StdWebMacro
 						}
 						break;
 					case DISPLAYTEXT: // displaytext
-						if(firstTime) old=I.displayText();
+						if(firstTime)
+							old=I.displayText();
 						str.append(old);
 						break;
 					case DESCRIPTION: // description
-						if(firstTime) old=I.description();
+						if(firstTime)
+							old=I.description();
 						str.append(old);
 						break;
 					case LEVEL: // level
-						if(firstTime) old=""+I.basePhyStats().level();
+						if(firstTime)
+							old=""+I.basePhyStats().level();
 						str.append(old);
 						break;
 					case ABILITY: // ability;
-						if(firstTime) old=""+I.basePhyStats().ability();
+						if(firstTime)
+							old=""+I.basePhyStats().ability();
 						str.append(old);
 						break;
 					case REJUV: // rejuv;
-						if(firstTime) old=""+I.basePhyStats().rejuv();
+						if(firstTime)
+							old=""+I.basePhyStats().rejuv();
 						if(old.equals(""+Integer.MAX_VALUE))
 							str.append("0");
 						else
 							str.append(old);
 						break;
 					case MISCTEXT: // misctext
-						if(firstTime) old=I.text();
+						if(firstTime)
+							old=I.text();
 						str.append(old);
 						break;
 					case MATERIALS: // materials
-						if(firstTime) old=""+I.material();
+						if(firstTime)
+							old=""+I.material();
 						for(final int r : RawMaterial.CODES.ALL_SBN())
 						{
 							str.append("<OPTION VALUE=\""+r+"\"");
@@ -367,7 +382,8 @@ public class ItemData extends StdWebMacro
 							return "true";
 						return "false";
 					case ISFOOD: // is food
-						if(I instanceof Food) return "true";
+						if(I instanceof Food)
+							return "true";
 						return "false";
 					case NOURISHMENT: // nourishment
 						if((firstTime)&&(I instanceof Food))
@@ -375,7 +391,8 @@ public class ItemData extends StdWebMacro
 						str.append(old);
 						break;
 					case ISDRINK: // is drink
-						if(I instanceof Drink) return "true";
+						if(I instanceof Drink)
+							return "true";
 						return "false";
 					case LIQUIDHELD: // liquid held
 						if((firstTime)&&(I instanceof Drink))
@@ -388,7 +405,8 @@ public class ItemData extends StdWebMacro
 						str.append(old);
 						break;
 					case ISCONTAINER: // is container
-						if(I instanceof Container) return "true";
+						if(I instanceof Container)
+							return "true";
 						return "false";
 					case CAPACITY: // capacity
 						if((firstTime)&&(I instanceof Container))
@@ -396,10 +414,12 @@ public class ItemData extends StdWebMacro
 						str.append(old);
 						break;
 					case ISARMOR: // is armor
-						if(I instanceof Armor) return "true";
+						if(I instanceof Armor)
+							return "true";
 						return "false";
 					case ARMOR: // armor
-						if(firstTime) old=""+I.basePhyStats().armor();
+						if(firstTime)
+							old=""+I.basePhyStats().armor();
 						str.append(old);
 						break;
 					case WORNDATA: // worn data
@@ -420,17 +440,20 @@ public class ItemData extends StdWebMacro
 							final String climstr=codes.name(i);
 							final long mask=codes.get(i);
 							str.append("<OPTION VALUE="+mask);
-							if((climate&mask)>0) str.append(" SELECTED");
+							if((climate&mask)>0)
+								str.append(" SELECTED");
 							str.append(">"+climstr);
 						}
 						}
 						break;
 					case HEIGHT: // height
-						if(firstTime) old=""+I.basePhyStats().height();
+						if(firstTime)
+							old=""+I.basePhyStats().height();
 						str.append(old);
 						break;
 					case ISWEAPON: // is weapon
-						if(I instanceof Weapon) return "true";
+						if(I instanceof Weapon)
+							return "true";
 						return "false";
 					case WEAPONTYPE: // weapon type
 						if((firstTime)&&(I instanceof Weapon))
@@ -455,23 +478,28 @@ public class ItemData extends StdWebMacro
 						}
 						break;
 					case ATTACK: // attack
-						if(firstTime) old=""+I.basePhyStats().attackAdjustment();
+						if(firstTime)
+							old=""+I.basePhyStats().attackAdjustment();
 						str.append(old);
 						break;
 					case DAMAGE: // damage
-						if(firstTime) old=""+I.basePhyStats().damage();
+						if(firstTime)
+							old=""+I.basePhyStats().damage();
 						str.append(old);
 						break;
 					case MINRANGE: // min range
-						if(firstTime) old=""+I.minRange();
+						if(firstTime)
+							old=""+I.minRange();
 						str.append(old);
 						break;
 					case MAXRANGE: // max range
-						if(firstTime) old=""+I.maxRange();
+						if(firstTime)
+							old=""+I.maxRange();
 						str.append(old);
 						break;
 					case SECRETIDENTITY: // secret identity
-						if(firstTime) old=I.rawSecretIdentity();
+						if(firstTime)
+							old=I.rawSecretIdentity();
 						str.append(old);
 						break;
 					case ISGETTABLE: // is gettable
@@ -513,22 +541,27 @@ public class ItemData extends StdWebMacro
 							str.append(readableSpells((SpellHolder)I,httpReq,parms,1));
 						break;
 					case ISWAND: // is wand
-						if(I instanceof Wand) return "true";
+						if(I instanceof Wand)
+							return "true";
 						return "false";
 					case USESREMAIN: // uses
-						if(firstTime) old=""+I.usesRemaining();
+						if(firstTime)
+							old=""+I.usesRemaining();
 						str.append(old);
 						break;
 					case VALUE: // value
-						if(firstTime) old=""+I.baseGoldValue();
+						if(firstTime)
+							old=""+I.baseGoldValue();
 						str.append(old);
 						break;
 					case WEIGHT: // weight
-						if(firstTime) old=""+I.basePhyStats().weight();
+						if(firstTime)
+							old=""+I.basePhyStats().weight();
 						str.append(old);
 						break;
 					case ISMAP: // is map
-						if(I instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap) return "true";
+						if(I instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
+							return "true";
 						return "false";
 					case MAPAREAS: // map areas
 						{
@@ -549,7 +582,8 @@ public class ItemData extends StdWebMacro
 							if(!(A2 instanceof SpaceObject))
 							{
 								str.append("<OPTION VALUE=\""+A2.Name()+"\"");
-								if(mask.indexOf(";"+A2.Name().toUpperCase()+";")>=0) str.append(" SELECTED");
+								if(mask.indexOf(";"+A2.Name().toUpperCase()+";")>=0)
+									str.append(" SELECTED");
 								str.append(">"+A2.name());
 							}
 						}
@@ -564,13 +598,16 @@ public class ItemData extends StdWebMacro
 						str.append(old);
 						break;
 					case ISPILL: // is pill
-						if(I instanceof Pill) return "true";
+						if(I instanceof Pill)
+							return "true";
 						return "false";
 					case ISSUPERPILL: // is super pill
-						if((I instanceof Pill)&&(CMClass.classID(I).indexOf("SuperPill")>0)) return "true";
+						if((I instanceof Pill)&&(CMClass.classID(I).indexOf("SuperPill")>0))
+							return "true";
 						return "false";
 					case ISPOTION: // is potion
-						if(I instanceof Potion) return "true";
+						if(I instanceof Potion)
+							return "true";
 						return "false";
 					case LIQUIDTYPES: // liquid types
 						if((firstTime)&&(I instanceof Drink))
@@ -615,7 +652,8 @@ public class ItemData extends StdWebMacro
 						}
 						break;
 					case ISRIDEABLE: // is rideable
-						if(I instanceof Rideable) return "true";
+						if(I instanceof Rideable)
+							return "true";
 						return "false";
 					case RIDEABLETYPE: // rideable type
 						if((firstTime)&&(I instanceof Rideable))
@@ -659,7 +697,8 @@ public class ItemData extends StdWebMacro
 							return "true";
 						return "false";
 					case READABLETEXT: // readabletext
-						if(firstTime) old=""+I.readableText();
+						if(firstTime)
+							old=""+I.readableText();
 						str.append(old);
 						break;
 					case CONTAINER:
@@ -667,7 +706,8 @@ public class ItemData extends StdWebMacro
 						//str.append(container(R,M,oldI,I,old,firstTime));
 						break;
 					case ISLIGHTSOURCE: // is light
-						if(I instanceof Light) return "true";
+						if(I instanceof Light)
+							return "true";
 						return "false";
 					case DURATION:
 						if((firstTime)&&(I instanceof Light))
@@ -680,19 +720,22 @@ public class ItemData extends StdWebMacro
 						else
 						{
 							old=httpReq.getUrlParameter("ISTWOHANDED");
-							if(old==null) old="";
+							if(old==null)
+								old="";
 							if(old.equals(""))
 								old="checked";
 						}
 						str.append(old);
 						break;
 					case ISCOIN:
-						if(I instanceof Coins) return "true";
+						if(I instanceof Coins)
+							return "true";
 						return "false";
 					case ISWEARANDTEAR:
 						return I.subjectToWearAndTear()?"true":"false";
 					case ISSCROLL:
-						if(I instanceof Scroll) return "true";
+						if(I instanceof Scroll)
+							return "true";
 						return "false";
 					case BEINGWORN: // being worn -- pushed back to mob/room
 						if(firstTime)
@@ -711,7 +754,8 @@ public class ItemData extends StdWebMacro
 						str.append(old);
 						break;
 					case ISKEY: // is key
-						if(I instanceof DoorKey) return "true";
+						if(I instanceof DoorKey)
+							return "true";
 						return "false";
 					case CONTENTTYPES: // content types
 						if(I instanceof Container)
@@ -728,20 +772,23 @@ public class ItemData extends StdWebMacro
 										break;
 							}
 							str.append("<OPTION VALUE=0");
-							if(contains==0) str.append(" SELECTED");
+							if(contains==0)
+								str.append(" SELECTED");
 							str.append(">"+Container.CONTAIN_DESCS[0]);
 							for(int i=1;i<Container.CONTAIN_DESCS.length;i++)
 							{
 								final String constr=Container.CONTAIN_DESCS[i];
 								final int mask=(int)CMath.pow(2,i-1);
 								str.append("<OPTION VALUE="+mask);
-								if((contains&mask)>0) str.append(" SELECTED");
+								if((contains&mask)>0)
+									str.append(" SELECTED");
 								str.append(">"+constr);
 							}
 						}
 						break;
 					case ISINSTRUMENT: // is instrument
-						if(I instanceof MusicalInstrument) return "true";
+						if(I instanceof MusicalInstrument)
+							return "true";
 						return "false";
 					case INSTRUMENTTYPE: // instrument types
 						if((firstTime)&&(I instanceof MusicalInstrument))
@@ -755,16 +802,20 @@ public class ItemData extends StdWebMacro
 						}
 						break;
 					case ISAMMO: // is ammunition
-						if(I instanceof Ammunition) return "true";
+						if(I instanceof Ammunition)
+							return "true";
 						return "false";
 					case ISMOBITEM: // is mob item
-						if(M!=null) return "true";
+						if(M!=null)
+							return "true";
 						return "false";
 					case ISDUST: // is dust
-						if(I instanceof MagicDust) return "true";
+						if(I instanceof MagicDust)
+							return "true";
 						return "false";
 					case ISPERFUME: // is perfume
-						if(I instanceof Perfume) return "true";
+						if(I instanceof Perfume)
+							return "true";
 						return "false";
 					case SMELLS: // smells
 						if((firstTime)&&(I instanceof Perfume))
@@ -777,7 +828,8 @@ public class ItemData extends StdWebMacro
 						str.append(old);
 						break;
 					case ISEXIT: // is exit
-						if(I instanceof Exit) return "true";
+						if(I instanceof Exit)
+							return "true";
 						return "false";
 					case EXITNAME: // exit name
 						if((firstTime)&&(I instanceof Exit))
@@ -831,7 +883,8 @@ public class ItemData extends StdWebMacro
 						break;
 					}
 					case ISRECIPE: // isrecipe
-						if(I instanceof Recipe) return "true";
+						if(I instanceof Recipe)
+							return "true";
 						return "false";
 					case RECIPESKILL: // recipeskill
 					{
@@ -856,9 +909,11 @@ public class ItemData extends StdWebMacro
 						if(I instanceof Recipe)
 						{
 							String prefix=parms.get("RECIPEPREFIX");
-							if(prefix==null) prefix="";
+							if(prefix==null)
+								prefix="";
 							String postfix=parms.get("RECIPEPOSTFIX");
-							if(postfix==null) postfix="";
+							if(postfix==null)
+								postfix="";
 							final String fieldName=parms.get("RECIPEFIELDNAME");
 							if(fieldName==null)
 								str.append("!!ERROR!!");

@@ -43,9 +43,11 @@ public class Reply extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		final PlayerStats pstats=mob.playerStats();
-		if(pstats==null) return false;
+		if(pstats==null)
+			return false;
 		if(pstats.getReplyToMOB()==null)
 		{
 			mob.tell(L("No one has told you anything yet!"));
@@ -80,9 +82,11 @@ public class Reply extends StdCommand
 		case PlayerStats.REPLY_TELL:
 		{
 			final Session S=pstats.getReplyToMOB().session();
-			if(S!=null) S.snoopSuspension(1);
+			if(S!=null)
+				S.snoopSuspension(1);
 			CMLib.commands().postSay(mob,pstats.getReplyToMOB(),CMParms.combine(commands,1),true,true);
-			if(S!=null) S.snoopSuspension(-11);
+			if(S!=null)
+				S.snoopSuspension(-11);
 			break;
 		}
 		case PlayerStats.REPLY_YELL:

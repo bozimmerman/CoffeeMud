@@ -99,7 +99,8 @@ public class Spell_Shrink extends Spell
 	{
 		super.affectPhyStats(host,affectedStats);
 		int height=(int)Math.round(affectedStats.height()*0.10);
-		if(height==0) height=1;
+		if(height==0)
+			height=1;
 		affectedStats.setHeight(height);
 	}
 
@@ -107,7 +108,8 @@ public class Spell_Shrink extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

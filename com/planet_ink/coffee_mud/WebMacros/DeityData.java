@@ -44,7 +44,8 @@ public class DeityData extends StdWebMacro
 	private DVector getDeityData(HTTPRequest httpReq, String deityName)
 	{
 		DVector folData=(DVector)httpReq.getRequestObjects().get("DEITYDATAFOR-"+deityName.toUpperCase().trim());
-		if(folData!=null) return folData;
+		if(folData!=null)
+			return folData;
 		folData = CMLib.database().worshippers(deityName);
 		httpReq.getRequestObjects().put("DEITYDATAFOR-"+deityName.toUpperCase().trim(),folData);
 		return folData;
@@ -55,7 +56,8 @@ public class DeityData extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("DEITY");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		if(last.length()>0)
 		{
 			Deity D=CMLib.map().getDeity(last);

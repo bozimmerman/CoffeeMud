@@ -148,7 +148,8 @@ public class QuestBound implements Ability
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
+			if(code.equalsIgnoreCase(CODES[i]))
+				return i;
 		return -1;
 	}
 	@Override
@@ -175,7 +176,8 @@ public class QuestBound implements Ability
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof QuestBound)) return false;
+		if(!(E instanceof QuestBound))
+			return false;
 		for(int i=0;i<CODES.length;i++)
 			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
 				return false;
@@ -227,7 +229,8 @@ public class QuestBound implements Ability
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((amDestroyed())||(affected==null)) return true;
+		if((amDestroyed())||(affected==null))
+			return true;
 		if((msg.targetMinor()==CMMsg.TYP_SHUTDOWN)
 		||((msg.targetMinor()==CMMsg.TYP_EXPIRE)
 			&&(msg.target()!=null)
@@ -244,7 +247,8 @@ public class QuestBound implements Ability
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if((amDestroyed())||(affected==null)) return;
+		if((amDestroyed())||(affected==null))
+			return;
 		if((msg.targetMinor()==CMMsg.TYP_SHUTDOWN)
 		||((msg.targetMinor()==CMMsg.TYP_EXPIRE)
 			&&(msg.target()!=null)

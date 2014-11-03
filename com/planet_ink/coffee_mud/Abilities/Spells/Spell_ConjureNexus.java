@@ -54,7 +54,8 @@ public class Spell_ConjureNexus extends Spell
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
 		if((affected==null)||(!(affected instanceof Room)))
 			return false;
 		final Room R=(Room)affected;

@@ -76,7 +76,8 @@ public class Prop_SparringRoom extends Property
 			for(int a=target.numEffects()-1;a>=0;a--) // personal effects
 			{
 				final Ability A=target.fetchEffect(a);
-				if(A!=null) A.unInvoke();
+				if(A!=null)
+					A.unInvoke();
 			}
 			target.setLocation(null);
 			while(target.numFollowers()>0)
@@ -92,7 +93,8 @@ public class Prop_SparringRoom extends Property
 			Room R=null;
 			if(text().trim().length()>0)
 				R=CMLib.map().getRoom(text().trim());
-			if(R==null) R=target.getStartRoom();
+			if(R==null)
+				R=target.getStartRoom();
 			R.bringMobHere(target,false);
 			target.bringToLife(R,true);
 			target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));

@@ -52,7 +52,8 @@ public class Prayer_SenseMagic extends Prayer
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(invoker==null) return;
+		if(invoker==null)
+			return;
 
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_BONUS);
 	}
@@ -76,7 +77,8 @@ public class Prayer_SenseMagic extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=mob;
-		if((auto)&&(givenTarget!=null)) target=givenTarget;
+		if((auto)&&(givenTarget!=null))
+			target=givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
 			mob.tell(mob,target,null,L("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));

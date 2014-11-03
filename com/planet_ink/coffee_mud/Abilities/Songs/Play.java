@@ -64,7 +64,8 @@ public class Play extends StdAbility
 
 	public String instrumentName()
 	{
-		if(instrument!=null) return instrument.name();
+		if(instrument!=null)
+			return instrument.name();
 		return "something";
 	}
 
@@ -98,7 +99,8 @@ public class Play extends StdAbility
 
 	public static boolean usingInstrument(MusicalInstrument I, MOB mob)
 	{
-		if((I==null)||(mob==null)) return false;
+		if((I==null)||(mob==null))
+			return false;
 		if(I instanceof Rideable)
 			return (((Rideable)I).amRiding(mob)
 					&&(mob.fetchFirstWornItem(Wearable.WORN_WIELD)==null)
@@ -240,7 +242,8 @@ public class Play extends StdAbility
 
 	protected boolean unplayMe(MOB mob, MOB invoker)
 	{
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		final Ability A=mob.fetchEffect(ID());
 		if((A instanceof Play)
 		&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
@@ -306,7 +309,8 @@ public class Play extends StdAbility
 			return new Vector();
 		}
 		final int depth=super.getXMAXRANGELevel(invoker());
-		if(depth==0) return new XVector(invoker().location());
+		if(depth==0)
+			return new XVector(invoker().location());
 		final Vector rooms=new Vector();
 		// needs to be area-only, because of the aggro-tracking rule
 		TrackingLibrary.TrackingFlags flags;
@@ -322,7 +326,8 @@ public class Play extends StdAbility
 
 	protected int getCorrectDirToOriginRoom(Room R, int v)
 	{
-		if(v<0) return -1;
+		if(v<0)
+			return -1;
 		int dir=-1;
 		Room R2=null;
 		Exit E2=null;
@@ -377,7 +382,8 @@ public class Play extends StdAbility
 			R.delInhabitant(mob);
 			mob.setLocation(originRoom);
 		}
-		if(h==null) return null;
+		if(h==null)
+			return null;
 		if(R==originRoom)
 		{
 			if(!h.contains(mob))
@@ -395,7 +401,8 @@ public class Play extends StdAbility
 		if(!auto)
 		{
 			instrument=getInstrument(mob,requiredInstrumentType(),true);
-			if(instrument==null) return false;
+			if(instrument==null)
+				return false;
 			if((mob.riding()!=null)&&(mob.riding() instanceof MusicalInstrument))
 			{
 				if(!usingInstrument((MusicalInstrument)mob.riding(),mob))
@@ -456,7 +463,8 @@ public class Play extends StdAbility
 			originRoom=mob.location();
 			commonRoomSet=getInvokerScopeRoomSet(null);
 			String songOfStr=L("@x1 on ",songOf());
-			if(songOf().equalsIgnoreCase(instrumentName())) songOfStr="";
+			if(songOf().equalsIgnoreCase(instrumentName()))
+				songOfStr="";
 			String str=auto?L("^S@x1 begins to play!^?",songOf()):L("^S<S-NAME> begin(s) to play @x1@x2.^?",songOfStr,instrumentName());
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str=L("^S<S-NAME> start(s) playing @x1@x2 again.^?",songOfStr,instrumentName());
@@ -470,7 +478,8 @@ public class Play extends StdAbility
 					final Play newOne=(Play)this.copyOf();
 
 					final Set<MOB> h=this.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
-					if(h==null) continue;
+					if(h==null)
+						continue;
 
 					for (final Object element : h)
 					{

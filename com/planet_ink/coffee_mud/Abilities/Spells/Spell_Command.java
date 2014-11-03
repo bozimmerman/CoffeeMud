@@ -53,7 +53,8 @@ public class Spell_Command extends Spell
 		}
 
 		final MOB target=getTarget(mob,V,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(commands.size()==0)
 		{

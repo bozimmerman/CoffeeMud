@@ -52,7 +52,8 @@ public class SoundEcho extends StdAbility
 	public static MOB bmob=null;
 	public synchronized MOB blindMOB()
 	{
-		if(bmob!=null) return bmob;
+		if(bmob!=null)
+			return bmob;
 		bmob=CMClass.getMOB("StdMOB");
 		if(bmob!=null)
 		{
@@ -75,7 +76,8 @@ public class SoundEcho extends StdAbility
 			synchronized(this)
 			{
 				int range=CMath.s_int(text());
-				if(range==0) range=10;
+				if(range==0)
+					range=10;
 				final Room sourceRoom=msg.source().location();
 				String str=msg.othersMessage();
 				str=CMLib.coffeeFilter().fullOutFilter(null,blindMOB(),msg.source(),msg.target(),msg.tool(),str,false);

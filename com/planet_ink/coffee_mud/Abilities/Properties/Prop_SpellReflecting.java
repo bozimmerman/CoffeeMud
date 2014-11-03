@@ -73,10 +73,12 @@ public class Prop_SpellReflecting extends Property implements TriggeredAffect
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(affected==null)	return true;
+		if(affected==null)
+			return true;
 		if((fade<=0)&&(abilityCode()<remaining))
 		{
-			if(lastFade==0) lastFade=System.currentTimeMillis();
+			if(lastFade==0)
+				lastFade=System.currentTimeMillis();
 			final long time=System.currentTimeMillis()-lastFade;
 			if(time>5*60000)
 			{
@@ -111,14 +113,20 @@ public class Prop_SpellReflecting extends Property implements TriggeredAffect
 			else
 				return true;
 
-			if(!msg.amITarget(target)) return true;
-			if(msg.amISource(target)) return true;
-			if(target.location()==null) return true;
+			if(!msg.amITarget(target))
+				return true;
+			if(msg.amISource(target))
+				return true;
+			if(target.location()==null)
+				return true;
 
 			int lvl=CMLib.ableMapper().qualifyingLevel(msg.source(),((Ability)msg.tool()));
-			if(lvl<=0) lvl=CMLib.ableMapper().lowestQualifyingLevel(((Ability)msg.tool()).ID());
-			if(lvl<=0) lvl=1;
-			if((lvl<minLevel)||(lvl>maxLevel)) return true;
+			if(lvl<=0)
+				lvl=CMLib.ableMapper().lowestQualifyingLevel(((Ability)msg.tool()).ID());
+			if(lvl<=0)
+				lvl=1;
+			if((lvl<minLevel)||(lvl>maxLevel))
+				return true;
 
 			target.location().show(target,affected,CMMsg.MSG_OK_VISUAL,L("The field around <T-NAMESELF> reflects the spell!"));
 			final Ability A=(Ability)msg.tool();

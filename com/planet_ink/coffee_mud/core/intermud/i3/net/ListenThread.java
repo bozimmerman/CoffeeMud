@@ -84,7 +84,8 @@ public class ListenThread extends Thread {
 	{
 		try
 		{
-			if(listen!=null) listen.close();
+			if(listen!=null)
+				listen.close();
 			clients.clear();
 			this.interrupt();
 		}

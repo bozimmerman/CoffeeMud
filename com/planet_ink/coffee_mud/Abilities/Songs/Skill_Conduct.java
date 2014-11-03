@@ -83,8 +83,10 @@ public class Skill_Conduct extends BardSkill
 				invoker=mob;
 
 				final Set<MOB> h=properTargets(mob,givenTarget,auto);
-				if(h==null) return false;
-				if(!h.contains(mob)) h.add(mob);
+				if(h==null)
+					return false;
+				if(!h.contains(mob))
+					h.add(mob);
 
 				for (final Object element : h)
 				{
@@ -92,7 +94,8 @@ public class Skill_Conduct extends BardSkill
 
 					// malicious songs must not affect the invoker!
 					int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
-					if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
+					if(auto)
+						affectType=affectType|CMMsg.MASK_ALWAYS;
 					if(CMLib.flags().canBeSeenBy(invoker,follower))
 					{
 						final CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);

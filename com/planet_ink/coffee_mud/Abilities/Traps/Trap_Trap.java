@@ -72,11 +72,14 @@ public class Trap_Trap extends StdAbility implements Trap
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
-		if(P==null) return null;
+		if(P==null)
+			return null;
 		int level=mob.phyStats().level();
-		if(level<qualifyingClassLevel) level=qualifyingClassLevel;
+		if(level<qualifyingClassLevel)
+			level=qualifyingClassLevel;
 		level+=trapBonus;
-		if(level>=100) level=99;
+		if(level>=100)
+			level=99;
 		final int rejuv=((100-level)*30);
 		final Trap T=(Trap)copyOf();
 		T.setReset(rejuv);
@@ -107,7 +110,8 @@ public class Trap_Trap extends StdAbility implements Trap
 				for(int i=0;i<mob.location().numInhabitants();i++)
 				{
 					final MOB target=mob.location().fetchInhabitant(i);
-					if(target==null) break;
+					if(target==null)
+						break;
 
 					int dmg=CMLib.dice().roll(target.phyStats().level(),10,1);
 					final CMMsg msg=CMClass.getMsg(invoker(),target,this,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_GAS,CMMsg.MSG_NOISYMOVEMENT,null);
@@ -153,7 +157,8 @@ public class Trap_Trap extends StdAbility implements Trap
 				CMLib.combat().postDamage(invoker(),target,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,"The needle <DAMAGE> <T-NAME>!");
 
 				final Ability P=CMClass.getAbility("Poison");
-				if(P!=null) P.invoke(invoker(),target,true,0);
+				if(P!=null)
+					P.invoke(invoker(),target,true,0);
 			}
 		}
 	}
@@ -174,7 +179,8 @@ public class Trap_Trap extends StdAbility implements Trap
 				if(msg.value()>0)
 					dmg=(int)Math.round(CMath.div(dmg,2.0));
 				final Ability P=CMClass.getAbility("Poison");
-				if(P!=null) P.invoke(invoker(),target,true,0);
+				if(P!=null)
+					P.invoke(invoker(),target,true,0);
 				CMLib.combat().postDamage(invoker(),target,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,"The blade <DAMAGE> <T-NAME>!");
 			}
 		}
@@ -269,7 +275,8 @@ public class Trap_Trap extends StdAbility implements Trap
 	@Override
 	public MOB invoker()
 	{
-		if(invoker==null) return benefactor;
+		if(invoker==null)
+			return benefactor;
 		return super.invoker();
 	}
 
@@ -339,8 +346,10 @@ public class Trap_Trap extends StdAbility implements Trap
 			myPit.rawDoors()[Directions.UP]=null;
 			myPit.getRawExit(Directions.UP]=null;
 			*/
-			if(myPit!=null) myPit.destroy();
-			if(myPitUp!=null) myPitUp.destroy();
+			if(myPit!=null)
+				myPit.destroy();
+			if(myPitUp!=null)
+				myPitUp.destroy();
 		}
 		super.unInvoke();
 	}

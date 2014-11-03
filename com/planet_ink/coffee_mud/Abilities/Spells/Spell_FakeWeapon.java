@@ -87,7 +87,8 @@ public class Spell_FakeWeapon extends Spell
 					if((msg.source()!=null)
 					&&(msg.source().location()!=null))
 						room=msg.source().location();
-					if(room==null) room=CMLib.map().roomLocation(affected);
+					if(room==null)
+						room=CMLib.map().roomLocation(affected);
 					if(room!=null)
 						room.showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles around @x1 and is absorbed into the air.",affected.Name()));
 					return false;

@@ -130,7 +130,8 @@ public class AHelp extends StdCommand
 					for(final Enumeration b=CMClass.behaviors();b.hasMoreElements();)
 					{
 						final Behavior B=(Behavior)b.nextElement();
-						if(B!=null) V.addElement(B.ID());
+						if(B!=null)
+							V.addElement(B.ID());
 					}
 					if(V.size()>0)
 					{

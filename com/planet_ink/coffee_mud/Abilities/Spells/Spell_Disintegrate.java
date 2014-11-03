@@ -49,7 +49,8 @@ public class Spell_Disintegrate extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		final List<DeadBody> DBs=CMLib.utensils().getDeadBodies(target);
 		for(int v=0;v<DBs.size();v++)
 		{
@@ -74,11 +75,14 @@ public class Spell_Disintegrate extends Spell
 				affectType=affectType|CMMsg.MASK_MALICIOUS;
 		}
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(getXLEVELLevel(mob)/2));
-		if(target instanceof MOB) levelDiff+=6;
-		if(levelDiff<0) levelDiff=0;
+		if(target instanceof MOB)
+			levelDiff+=6;
+		if(levelDiff<0)
+			levelDiff=0;
 		success=proficiencyCheck(mob,-(levelDiff*15),auto);
 
-		if(auto)affectType=affectType|CMMsg.MASK_ALWAYS;
+		if(auto)
+			affectType=affectType|CMMsg.MASK_ALWAYS;
 
 		if(success)
 		{

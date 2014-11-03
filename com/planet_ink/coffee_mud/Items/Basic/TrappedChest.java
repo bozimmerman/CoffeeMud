@@ -38,7 +38,8 @@ public class TrappedChest extends LargeChest
 	{
 		super();
 		final Trap t=(Trap)CMClass.getAbility("Trap_Trap");
-		if(t!=null) CMLib.utensils().setTrapped(this,t,true);
+		if(t!=null)
+			CMLib.utensils().setTrapped(this,t,true);
 		material=RawMaterial.RESOURCE_OAK;
 		isLocked=false;
 	}

@@ -92,7 +92,8 @@ public class Thief_Spying extends ThiefSkill
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(target==mob)
 		{
 			mob.tell(L("You cannot spy on yourself?!"));

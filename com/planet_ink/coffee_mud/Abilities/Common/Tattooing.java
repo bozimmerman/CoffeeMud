@@ -135,7 +135,8 @@ public class Tattooing extends CommonSkill
 		final String wornName=codes.name(partNum);
 
 		final MOB target=super.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(target.getWearPositions(wornCode)<=0)
 		{
@@ -180,7 +181,8 @@ public class Tattooing extends CommonSkill
 		writing=wornName.toUpperCase()+":A tattoo of "+message;
 		verb=L("tattooing @x1 on the @x2",target.name(),wornName);
 		displayText=L("You are @x1",verb);
-		if(!proficiencyCheck(mob,0,auto)) writing="";
+		if(!proficiencyCheck(mob,0,auto))
+			writing="";
 		final int duration=getDuration(35,mob,1,6);
 		String str=L("<S-NAME> start(s) tattooing @x1 on <T-YOUPOSS> @x2.",message,wornName.toLowerCase());
 		if("REMOVE".startsWith(message.toUpperCase()))
@@ -196,7 +198,8 @@ public class Tattooing extends CommonSkill
 			{
 				beneficialAffect(mob,mob,asLevel,duration);
 				final Tattooing A=(Tattooing)mob.fetchEffect(ID());
-				if(A!=null) A.target=target;
+				if(A!=null)
+					A.target=target;
 			}
 		}
 		return true;

@@ -52,7 +52,8 @@ public class Prayer_DivineGuidance extends Prayer
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(!(affected instanceof MOB)) return;
+		if(!(affected instanceof MOB))
+			return;
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOOD);
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+10+(2*getXLEVELLevel(invoker())));
 		affectableStats.setDamage(affectableStats.damage()+5+getXLEVELLevel(invoker()));
@@ -91,7 +92,8 @@ public class Prayer_DivineGuidance extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

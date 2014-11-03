@@ -97,7 +97,8 @@ public class QuestLoader
 
 	public void DBUpdateQuest(Quest Q)
 	{
-		if(Q==null) return;
+		if(Q==null)
+			return;
 		DB.update("DELETE FROM CMQUESTS WHERE CMQUESID='"+Q.name()+"'");
 		DB.updateWithClobs(
 		"INSERT INTO CMQUESTS ("
@@ -116,9 +117,11 @@ public class QuestLoader
 	}
 	public void DBUpdateQuests(List<Quest> quests)
 	{
-		if(quests==null) quests=new Vector<Quest>();
+		if(quests==null)
+			quests=new Vector<Quest>();
 		String quType="DefaultQuest";
-		if(quests.size()>0) quType=CMClass.classID(quests.get(0));
+		if(quests.size()>0)
+			quType=CMClass.classID(quests.get(0));
 		DBConnection D=null;
 		DB.update("DELETE FROM CMQUESTS WHERE CMQUTYPE='"+quType+"'");
 		try{Thread.sleep((1000+(quests.size()*100)));}catch(final Exception e){}
@@ -132,7 +135,8 @@ public class QuestLoader
 		for(int m=0;m<quests.size();m++)
 		{
 			final Quest Q=quests.get(m);
-			if(Q.isCopy()) continue;
+			if(Q.isCopy())
+				continue;
 			try
 			{
 				D.rePrepare(
@@ -157,7 +161,8 @@ public class QuestLoader
 				Log.errOut("Quest",sqle);
 			}
 		}
-		if(D!=null) DB.DBDone(D);
+		if(D!=null)
+			DB.DBDone(D);
 	}
 
 }

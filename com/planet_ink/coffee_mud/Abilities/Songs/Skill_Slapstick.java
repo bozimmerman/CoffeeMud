@@ -63,7 +63,8 @@ public class Skill_Slapstick extends BardSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -73,7 +74,8 @@ public class Skill_Slapstick extends BardSkill
 		String str=null;
 		if(success)
 		{
-			if(auto) str=L("<T-NAME> is drained of mana!");
+			if(auto)
+				str=L("<T-NAME> is drained of mana!");
 			else
 			switch(CMLib.dice().roll(1,10,0))
 			{

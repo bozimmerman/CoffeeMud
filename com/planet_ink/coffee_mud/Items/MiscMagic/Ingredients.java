@@ -68,7 +68,8 @@ public class Ingredients extends BagOfEndlessness
 		{
 			((Decayable)I).setDecayTime(0);
 			final Ability A=I.fetchEffect("Poison_Rotten");
-			if(A!=null) I.delEffect(A);
+			if(A!=null)
+				I.delEffect(A);
 		}
 		if(owner() instanceof Room)
 			((Room)owner()).addItem(I);
@@ -97,7 +98,8 @@ public class Ingredients extends BagOfEndlessness
 		{
 			((Decayable)msg.tool()).setDecayTime(0);
 			final Ability A=((Item)msg.tool()).fetchEffect("Poison_Rotten");
-			if(A!=null) ((Item)msg.tool()).delEffect(A);
+			if(A!=null)
+				((Item)msg.tool()).delEffect(A);
 		}
 		super.executeMsg(myHost,msg);
 	}

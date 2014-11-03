@@ -231,7 +231,8 @@ public interface WorldMap extends CMLibrary
 				{
 					final Area A=areaEnumerator.nextElement();
 					roomIDEnumerator=A.getProperRoomnumbers().getRoomIDs();
-					if(roomIDEnumerator.hasMoreElements()) return true;
+					if(roomIDEnumerator.hasMoreElements())
+						return true;
 				}
 			return ((roomIDEnumerator!=null)&&(roomIDEnumerator.hasMoreElements()));
 		}

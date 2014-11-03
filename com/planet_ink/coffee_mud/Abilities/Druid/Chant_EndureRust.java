@@ -80,7 +80,8 @@ public class Chant_EndureRust extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Physical target=this.getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(target instanceof Item)
 		{
 		}

@@ -52,7 +52,8 @@ public class Fighter_Rescue extends FighterSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		final MOB imfighting=mob.getVictim();
 		MOB target=null;
 
@@ -66,7 +67,8 @@ public class Fighter_Rescue extends FighterSkill
 		if(target==null)
 			target=getTarget(mob,commands,givenTarget);
 
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		final MOB monster=target.getVictim();
 
 		if((target.amDead())||(monster==null)||(monster.amDead()))

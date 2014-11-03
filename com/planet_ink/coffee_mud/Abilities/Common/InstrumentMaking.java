@@ -80,7 +80,8 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 	@Override
 	public boolean mayICraft(final Item I)
 	{
-		if(I==null) return false;
+		if(I==null)
+			return false;
 		if(!super.mayBeCrafted(I))
 			return false;
 		if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
@@ -185,7 +186,8 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
 					String type=V.get(RCP_MATERIAL);
 					final String wood=getComponentDescription(mob,V,RCP_WOOD);
-					if(wood.length()>5) type="";
+					if(wood.length()>5)
+						type="";
 					final String race=V.get(RCP_RACES).trim();
 					final String itype=CMStrings.capitalizeAndLower(V.get(RCP_TYPE).toLowerCase()).trim();
 					if(((level<=xlevel(mob))||allFlag)
@@ -236,11 +238,13 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 
 		final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
-		if(componentsFoundList==null) return false;
+		if(componentsFoundList==null)
+			return false;
 		int woodRequired=CMath.s_int(woodRequiredStr);
 		woodRequired=adjustWoodRequired(woodRequired,mob);
 
-		if(amount>woodRequired) woodRequired=amount;
+		if(amount>woodRequired)
+			woodRequired=amount;
 		final String materialRequired=foundRecipe.get(RCP_MATERIAL);
 		final String misctype=foundRecipe.get(RCP_MISCTYPE);
 		final int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
@@ -256,7 +260,8 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 											bundling,
 											parsedVars.autoGenerate,
 											null);
-		if(data==null) return false;
+		if(data==null)
+			return false;
 		woodRequired=data[0][FOUND_AMT];
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -286,7 +291,8 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
 		buildingI.setMaterial(data[0][FOUND_CODE]);
 		buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
-		if(buildingI.basePhyStats().level()<1) buildingI.basePhyStats().setLevel(1);
+		if(buildingI.basePhyStats().level()<1)
+			buildingI.basePhyStats().setLevel(1);
 		final String type=foundRecipe.get(RCP_TYPE);
 		for(int i=0;i<MusicalInstrument.TYPE_DESC.length;i++)
 			if(type.equalsIgnoreCase(MusicalInstrument.TYPE_DESC[i]))
@@ -304,7 +310,8 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		{
 			setWearLocation(buildingI,misctype,0);
 		}
-		if(bundling) buildingI.setBaseValue(lostValue);
+		if(bundling)
+			buildingI.setBaseValue(lostValue);
 		buildingI.recoverPhyStats();
 		buildingI.text();
 		buildingI.recoverPhyStats();

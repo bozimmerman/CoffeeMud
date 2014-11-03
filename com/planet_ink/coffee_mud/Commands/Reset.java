@@ -239,12 +239,14 @@ public class Reset extends StdCommand
 			if(roomWarning!=null)
 				warning.append(roomWarning);
 		}
-		if(warning.length()==0) return null;
+		if(warning.length()==0)
+			return null;
 		return warning.toString();
 	}
 	public String resetWarning(MOB mob, Room R)
 	{
-		if((mob==null)||(R==null)) return null;
+		if((mob==null)||(R==null))
+			return null;
 		final StringBuffer warning=new StringBuffer("");
 		for(final Session S : CMLib.sessions().localOnlineIterable())
 			if((S!=null)&&(S.mob()!=null)&&(S.mob()!=mob)&&(S.mob().location()==R))
@@ -263,16 +265,19 @@ public class Reset extends StdCommand
 			for(int r=0;r<rooms.size();r++)
 			{
 				final String s=resetWarning(mob,rooms.get(r));
-				if(s!=null) warning.append(s);
+				if(s!=null)
+					warning.append(s);
 			}
 		}
-		if(warning.length()==0) return null;
+		if(warning.length()==0)
+			return null;
 		return warning.toString();
 	}
 
 	private void reportChangesDestroyNewM(MOB oldM, MOB newM, StringBuffer changes)
 	{
-		if((changes == null)||(oldM==null)) return;
+		if((changes == null)||(oldM==null))
+			return;
 		changes.append(newM.name()+":"+newM.basePhyStats().level()+", ");
 		for(int i=0;i<oldM.getStatCodes().length;i++)
 			if((!oldM.getStat(oldM.getStatCodes()[i]).equals(newM.getStat(newM.getStatCodes()[i]))))
@@ -290,7 +295,8 @@ public class Reset extends StdCommand
 		||(M.basePhyStats().speed() != M2.basePhyStats().speed()))
 		{
 			final MOB oldM=M;
-			if(recordedChanges!=null) M=(MOB)M.copyOf();
+			if(recordedChanges!=null)
+				M=(MOB)M.copyOf();
 			M.basePhyStats().setAttackAdjustment(M2.basePhyStats().attackAdjustment());
 			M.basePhyStats().setArmor(M2.basePhyStats().armor());
 			M.basePhyStats().setDamage(M2.basePhyStats().damage());
@@ -332,8 +338,10 @@ public class Reset extends StdCommand
 			s=(String)commands.elementAt(0);
 			rest=(commands.size()>1)?CMParms.combine(commands,1):"";
 			int tickID=0;
-			if(rest.startsWith("MOB")) tickID=Tickable.TICKID_MOB;
-			if(rest.startsWith("ITEM")) tickID=Tickable.TICKID_ROOM_ITEM_REJUV;
+			if(rest.startsWith("MOB"))
+				tickID=Tickable.TICKID_MOB;
+			if(rest.startsWith("ITEM"))
+				tickID=Tickable.TICKID_ROOM_ITEM_REJUV;
 			if(s.equalsIgnoreCase("room"))
 			{
 				CMLib.threads().rejuv(mob.location(),tickID);
@@ -467,7 +475,8 @@ public class Reset extends StdCommand
 			if(A!=null)
 			{
 				final String warning=resetWarning(mob, A);
-				if(warning!=null) mob.tell(warning);
+				if(warning!=null)
+					mob.tell(warning);
 				if((mob.session()==null)||(mob.session().confirm(L("Reset the contents of the area '@x1', OK (Y/n)?",A.name()),L("Y"))))
 				{
 					for(final Session S : CMLib.sessions().localOnlineIterable())
@@ -758,7 +767,8 @@ public class Reset extends StdCommand
 				final String ID=V2.subj;
 				String classID=V2.to;
 				final String data=V2.msg;
-				if(ID.equalsIgnoreCase("COINS")) classID="COINS";
+				if(ID.equalsIgnoreCase("COINS"))
+					classID="COINS";
 				final Item I=(Item)CMClass.getItem("GenItem").copyOf();
 				CMLib.database().DBCreateData(name,bank,""+I,classID+";"+data);
 			}
@@ -769,8 +779,10 @@ public class Reset extends StdCommand
 		if(s.equalsIgnoreCase("mobstats")&&(CMSecurity.isASysOp(mob)))
 		{
 			s="room";
-			if(commands.size()>1) s=(String)commands.elementAt(1);
-			if(mob.session()==null) return false;
+			if(commands.size()>1)
+				s=(String)commands.elementAt(1);
+			if(mob.session()==null)
+				return false;
 			mob.session().print(L("working..."));
 			StringBuffer recordedChanges=null;
 			for(int i=1;i<commands.size();i++)
@@ -822,7 +834,8 @@ public class Reset extends StdCommand
 								skip=true;
 								break;
 							}
-						if(skip) continue;
+						if(skip)
+							continue;
 						for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 							rooms.addElement(r.nextElement());
 					}
@@ -842,7 +855,8 @@ public class Reset extends StdCommand
 				synchronized(("SYNC"+R.roomID()).intern())
 				{
 					R=CMLib.map().getRoom(R);
-					if(R==null) continue;
+					if(R==null)
+						continue;
 					if((recordedChanges!=null)&&(recordedChanges.length()>0))
 					{
 						mob.session().rawOut(recordedChanges.toString());
@@ -877,7 +891,8 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("groundlydoors")&&(CMSecurity.isASysOp(mob)))
 		{
-			if(mob.session()==null) return false;
+			if(mob.session()==null)
+				return false;
 			mob.session().print(L("working..."));
 			try
 			{
@@ -909,7 +924,8 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("allmobarmorfix")&&(CMSecurity.isASysOp(mob)))
 		{
-			if(mob.session()==null) return false;
+			if(mob.session()==null)
+				return false;
 			mob.session().print(L("working..."));
 			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
@@ -918,7 +934,8 @@ public class Reset extends StdCommand
 				for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					if(R.roomID().length()==0) continue;
+					if(R.roomID().length()==0)
+						continue;
 					synchronized(("SYNC"+R.roomID()).intern())
 					{
 						R=CMLib.map().getRoom(R);
@@ -953,7 +970,8 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("goldceilingfixer")&&(CMSecurity.isASysOp(mob)))
 		{
-			if(mob.session()==null) return false;
+			if(mob.session()==null)
+				return false;
 			mob.session().print(L("working..."));
 			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
@@ -962,7 +980,8 @@ public class Reset extends StdCommand
 				for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					if(R.roomID().length()==0) continue;
+					if(R.roomID().length()==0)
+						continue;
 					synchronized(("SYNC"+R.roomID()).intern())
 					{
 						R=CMLib.map().getRoom(R);
@@ -993,7 +1012,8 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("areainstall")&&(CMSecurity.isASysOp(mob)))
 		{
-			if(mob.session()==null) return false;
+			if(mob.session()==null)
+				return false;
 			if(commands.size()<2)
 			{
 				mob.tell(L("You need to specify a property or behavior to install."));
@@ -1001,7 +1021,8 @@ public class Reset extends StdCommand
 			}
 			final String ID=(String)commands.elementAt(1);
 			Object O=CMClass.getAbility(ID);
-			if(O==null) O=CMClass.getBehavior(ID);
+			if(O==null)
+				O=CMClass.getBehavior(ID);
 			if(O==null)
 			{
 				mob.tell(L("'@x1' is not a known property or behavior.  Try LIST.",ID));
@@ -1059,7 +1080,8 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("worldmatconfirm")&&(CMSecurity.isASysOp(mob)))
 		{
-			if(mob.session()==null) return false;
+			if(mob.session()==null)
+				return false;
 			mob.session().print(L("working..."));
 			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
@@ -1081,8 +1103,10 @@ public class Reset extends StdCommand
 							for(int m=0;m<R.numInhabitants();m++)
 							{
 								final MOB M=R.fetchInhabitant(m);
-								if(M==mob) continue;
-								if(!M.isSavable()) continue;
+								if(M==mob)
+									continue;
+								if(!M.isSavable())
+									continue;
 								for(int i=0;i<M.numItems();i++)
 									changedMOBS=changedMOBS||(rightImportMat(null,M.getItem(i),false)>=0);
 								final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
@@ -1125,9 +1149,11 @@ public class Reset extends StdCommand
 		if(s.equalsIgnoreCase("itemstats")&&(CMSecurity.isASysOp(mob)))
 		{
 			s="room";
-			if(commands.size()>1) s=(String)commands.elementAt(1);
+			if(commands.size()>1)
+				s=(String)commands.elementAt(1);
 
-			if(mob.session()==null) return false;
+			if(mob.session()==null)
+				return false;
 			mob.session().print(L("working..."));
 			StringBuffer recordedChanges=null;
 			for(int i=1;i<commands.size();i++)
@@ -1181,7 +1207,8 @@ public class Reset extends StdCommand
 								commands.removeElementAt(i);
 								break;
 							}
-						if(skip) continue;
+						if(skip)
+							continue;
 						for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 							rooms.addElement(r.nextElement());
 					}
@@ -1197,7 +1224,8 @@ public class Reset extends StdCommand
 			for(final Enumeration r=rooms.elements();r.hasMoreElements();)
 			{
 				Room R=CMLib.map().getRoom((Room)r.nextElement());
-				if((R==null)||(R.getArea()==null)||(R.roomID().length()==0)) continue;
+				if((R==null)||(R.getArea()==null)||(R.roomID().length()==0))
+					continue;
 				final Area A=R.getArea();
 				A.setAreaState(Area.State.FROZEN);
 				if((recordedChanges!=null)&&(recordedChanges.length()>0))
@@ -1221,8 +1249,10 @@ public class Reset extends StdCommand
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						final MOB M=R.fetchInhabitant(m);
-						if((M==mob)||(!M.isMonster())) continue;
-						if(!M.isSavable()) continue;
+						if((M==mob)||(!M.isMonster()))
+							continue;
+						if(!M.isSavable())
+							continue;
 						for(int i=0;i<M.numItems();i++)
 						{
 							final Item I=M.getItem(i);
@@ -1284,12 +1314,14 @@ public class Reset extends StdCommand
 		{
 			try
 			{
-				if(commands.size()>1) s=(String)commands.elementAt(1);
+				if(commands.size()>1)
+					s=(String)commands.elementAt(1);
 				boolean area=false;
 				if(s.equalsIgnoreCase("AREA"))
 				{
 					area=true;
-					if(commands.size()>2) s=(String)commands.elementAt(2);
+					if(commands.size()>2)
+						s=(String)commands.elementAt(2);
 				}
 				final MOB M=CMLib.players().getLoadPlayer(s);
 				if((M!=null)&&(M.playerStats()!=null))
@@ -1325,7 +1357,8 @@ public class Reset extends StdCommand
 					for(int i=R.numItems()-1;i>=0;i--)
 					{
 						final Item I=R.getItem(i);
-						if(I.ID().equalsIgnoreCase("GenWallpaper")) continue;
+						if(I.ID().equalsIgnoreCase("GenWallpaper"))
+							continue;
 						final int returned=resetAreaOramaManaI(mob,I,rememberI," ");
 						if(returned<0)
 						{
@@ -1343,8 +1376,10 @@ public class Reset extends StdCommand
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						final MOB M=R.fetchInhabitant(m);
-						if(M==mob) continue;
-						if(!M.isSavable()) continue;
+						if(M==mob)
+							continue;
+						if(!M.isSavable())
+							continue;
 						Race R2=(Race)rememberM.get(M.Name());
 						if(R2!=null)
 						{

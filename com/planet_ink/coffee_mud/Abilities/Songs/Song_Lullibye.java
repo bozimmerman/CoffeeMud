@@ -46,8 +46,10 @@ public class Song_Lullibye extends Song
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(invoker==null) return;
-		if(affected==invoker) return;
+		if(invoker==null)
+			return;
+		if(affected==invoker)
+			return;
 		if(asleep)
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SLEEPING);
 	}
@@ -60,8 +62,10 @@ public class Song_Lullibye extends Song
 			return false;
 
 		final MOB mob=(MOB)affected;
-		if(mob==null) return true;
-		if(mob==invoker) return true;
+		if(mob==null)
+			return true;
+		if(mob==invoker)
+			return true;
 		final boolean oldasleep=asleep;
 		if(CMLib.dice().rollPercentage()>(50-(2*getXLEVELLevel(invoker()))))
 			asleep=true;

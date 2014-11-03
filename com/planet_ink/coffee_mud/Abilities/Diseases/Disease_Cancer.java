@@ -57,9 +57,12 @@ public class Disease_Cancer extends Disease
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID))	return false;
-		if(affected==null) return false;
-		if(!(affected instanceof MOB)) return true;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
+		if(!(affected instanceof MOB))
+			return true;
 
 		final MOB mob=(MOB)affected;
 		if((!mob.amDead())&&((--diseaseTick)<=0))
@@ -76,14 +79,17 @@ public class Disease_Cancer extends Disease
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(affected==null) return;
-		if(conDown<0) return;
+		if(affected==null)
+			return;
+		if(conDown<0)
+			return;
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-conDown);
 		if((affectableStats.getStat(CharStats.STAT_CONSTITUTION)<=0)&&(!norecurse))
 		{
 			conDown=-1;
 			MOB diseaser=invoker;
-			if(diseaser==null) diseaser=affected;
+			if(diseaser==null)
+				diseaser=affected;
 			norecurse=true;
 			CMLib.combat().postDeath(diseaser,affected,null);
 			norecurse=false;
@@ -93,7 +99,8 @@ public class Disease_Cancer extends Disease
 	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		affectableState.setMovement(affectableState.getMovement()/conDown);
 		affectableState.setMana(affectableState.getMana()/conDown);
 		affectableState.setHitPoints(affectableState.getHitPoints()/conDown);

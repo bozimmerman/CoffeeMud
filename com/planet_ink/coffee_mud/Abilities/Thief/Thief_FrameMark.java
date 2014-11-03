@@ -72,7 +72,8 @@ public class Thief_FrameMark extends ThiefSkill
 		}
 
 		LegalBehavior B=null;
-		if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());
+		if(mob.location()!=null)
+			B=CMLib.law().getLegalBehavior(mob.location());
 		if((B==null)
 		||(!B.hasWarrant(CMLib.law().getLegalObject(mob.location()),mob)))
 		{
@@ -92,7 +93,8 @@ public class Thief_FrameMark extends ThiefSkill
 			return false;
 
 		int levelDiff=(target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*15);
-		if(levelDiff<0) levelDiff=0;
+		if(levelDiff<0)
+			levelDiff=0;
 		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 		if(!success)
 		{

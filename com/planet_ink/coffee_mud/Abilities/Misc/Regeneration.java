@@ -73,9 +73,12 @@ public class Regeneration extends StdAbility implements HealthCondition
 			return true;
 		regenTick=maxTickDown;
 		final MOB mob=(MOB)affected;
-		if(mob==null) return true;
-		if(mob.location()==null) return true;
-		if(mob.amDead()) return true;
+		if(mob==null)
+			return true;
+		if(mob.location()==null)
+			return true;
+		if(mob.amDead())
+			return true;
 
 		boolean doneAnything=false;
 		doneAnything=doneAnything||mob.curState().adjHitPoints((int)Math.round(CMath.div(mob.phyStats().level(),2.0)),mob.maxState());
@@ -185,7 +188,8 @@ public class Regeneration extends StdAbility implements HealthCondition
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

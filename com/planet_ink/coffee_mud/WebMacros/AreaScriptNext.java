@@ -74,13 +74,15 @@ public class AreaScriptNext extends StdWebMacro
 
 	public void addScripts(TreeMap<String,ArrayList<AreaScriptInstance>> list, ArrayList<String> prefix, PhysicalAgent E)
 	{
-		if(E==null) return;
+		if(E==null)
+			return;
 		for(final Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
 		{
 			final Behavior B=e.nextElement();
 			if(B instanceof ScriptingEngine)
 			{
-				if(!B.isSavable()) continue;
+				if(!B.isSavable())
+					continue;
 				final ScriptingEngine SE=(ScriptingEngine)B;
 				final List<String> files=B.externalFiles();
 				if(files!=null)
@@ -98,7 +100,8 @@ public class AreaScriptNext extends StdWebMacro
 		for(final Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
 		{
 			final ScriptingEngine SE=e.nextElement();
-			if(!SE.isSavable()) continue;
+			if(!SE.isSavable())
+				continue;
 			final List<String> files=SE.externalFiles();
 			for(int f=0;f<files.size();f++)
 				addScript(list, prefix, SE.getScriptResourceKey(),null,files.get(f).toLowerCase(), files.get(f));
@@ -114,7 +117,8 @@ public class AreaScriptNext extends StdWebMacro
 
 	public void addShopScripts(TreeMap<String,ArrayList<AreaScriptInstance>> list, ArrayList<String> prefix, PhysicalAgent E)
 	{
-		if(E==null) return;
+		if(E==null)
+			return;
 		final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(E);
 		if(SK!=null)
 		{
@@ -137,8 +141,10 @@ public class AreaScriptNext extends StdWebMacro
 		{
 			list=new TreeMap<String,ArrayList<AreaScriptInstance>>();
 			Area A=CMLib.map().getArea(area);
-			if(A==null) A=CMLib.map().findArea(area);
-			if(A==null) return list;
+			if(A==null)
+				A=CMLib.map().findArea(area);
+			if(A==null)
+				return list;
 			Room R=null;
 			WorldMap.LocatedPair LP=null;
 			PhysicalAgent AE=null;
@@ -185,11 +191,13 @@ public class AreaScriptNext extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String area=httpReq.getUrlParameter("AREA");
-		if((area==null)||(area.length()==0)) return "@break@";
+		if((area==null)||(area.length()==0))
+			return "@break@";
 		String last=httpReq.getUrlParameter("AREASCRIPT");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("AREASCRIPT");
+			if(last!=null)
+				httpReq.removeUrlParameter("AREASCRIPT");
 			return "";
 		}
 		String lastID="";

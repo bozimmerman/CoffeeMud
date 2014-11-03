@@ -107,7 +107,8 @@ public class MOBloader
 				mob.setWimpHitPoint(CMath.s_int(DBConnections.getRes(R,"CMWIMP")));
 				mob.setQuestPoint(CMath.s_int(DBConnections.getRes(R,"CMQUES")));
 				String roomID=DBConnections.getRes(R,"CMROID");
-				if(roomID==null) roomID="";
+				if(roomID==null)
+					roomID="";
 				final int x=roomID.indexOf("||");
 				if(x>=0)
 				{
@@ -434,8 +435,10 @@ public class MOBloader
 			final int oldWeight=mob.basePhyStats().weight();
 			final int oldHeight=mob.basePhyStats().height();
 			mob.baseCharStats().getMyRace().startRacing(mob,true);
-			if(oldWeight>0) mob.basePhyStats().setWeight(oldWeight);
-			if(oldHeight>0) mob.basePhyStats().setHeight(oldHeight);
+			if(oldWeight>0)
+				mob.basePhyStats().setWeight(oldWeight);
+			if(oldHeight>0)
+				mob.basePhyStats().setHeight(oldHeight);
 		}
 		mob.recoverCharStats();
 		mob.recoverPhyStats();
@@ -482,7 +485,8 @@ public class MOBloader
 			if((x>0)&&(x<cclass.length()-2))
 			{
 				C=CMClass.getCharClass(cclass.substring(x+1));
-				if(C!=null) cclass=C.name();
+				if(C!=null)
+					cclass=C.name();
 			}
 			thisUser.charClass=(cclass);
 			final String rrace=DBConnections.getRes(R,"CMRACE");
@@ -617,7 +621,8 @@ public class MOBloader
 				final String username=DBConnections.getRes(R,"CMUSERID");
 				String cclass=DBConnections.getRes(R,"CMCLAS");
 				final int x=cclass.lastIndexOf(';');
-				if((x>0)&&(x<cclass.length()-2)) cclass=CMClass.getCharClass(cclass.substring(x+1)).name();
+				if((x>0)&&(x<cclass.length()-2))
+					cclass=CMClass.getCharClass(cclass.substring(x+1)).name();
 				final String race=(CMClass.getRace(DBConnections.getRes(R,"CMRACE"))).name();
 				final List<String> lvls=CMParms.parseSemicolons(DBConnections.getRes(R,"CMLEVL"), true);
 				int level=0;
@@ -683,7 +688,8 @@ public class MOBloader
 	public void DBReadFollowers(MOB mob, boolean bringToLife)
 	{
 		Room location=mob.location();
-		if(location==null) location=mob.getStartRoom();
+		if(location==null)
+			location=mob.getStartRoom();
 		final List<MOB> V=DBScanFollowers(mob);
 		for(int v=0;v<V.size();v++)
 		{
@@ -708,7 +714,8 @@ public class MOBloader
 	public void DBUpdateEmail(MOB mob)
 	{
 		final PlayerStats pstats=mob.playerStats();
-		if(pstats==null) return;
+		if(pstats==null)
+			return;
 		DB.update("UPDATE CMCHAR SET CMEMAL='"+pstats.getEmail()+"' WHERE CMUSERID='"+mob.Name()+"'");
 	}
 
@@ -727,8 +734,10 @@ public class MOBloader
 		if(stats!=null)
 		{
 			final String[] splitstats=stats.split(";");
-			if(splitstats.length>0) mobpvps=CMath.s_int(splitstats[0]);
-			if(splitstats.length>1) playerpvps=CMath.s_int(splitstats[1]);
+			if(splitstats.length>0)
+				mobpvps=CMath.s_int(splitstats[0]);
+			if(splitstats.length>1)
+				playerpvps=CMath.s_int(splitstats[1]);
 		}
 		return new Clan.MemberRecord(username,clanRole,mobpvps,playerpvps);
 	}
@@ -882,7 +891,8 @@ public class MOBloader
 	private String getPlayerStatsXML(MOB mob)
 	{
 		final PlayerStats pstats=mob.playerStats();
-		if(pstats==null) return "";
+		if(pstats==null)
+			return "";
 		final StringBuilder pfxml=new StringBuilder(pstats.getXML());
 		if(mob.tattoos().hasMoreElements())
 		{
@@ -910,7 +920,8 @@ public class MOBloader
 			return;
 		}
 		final PlayerStats pstats=mob.playerStats();
-		if(pstats==null) return;
+		if(pstats==null)
+			return;
 		final String pfxml=getPlayerStatsXML(mob);
 		DB.updateWithClobs("UPDATE CMCHAR SET CMPFIL=? WHERE CMUSERID='"+mob.Name()+"'", pfxml.toString());
 	}
@@ -923,7 +934,8 @@ public class MOBloader
 			return;
 		}
 		final PlayerStats pstats=mob.playerStats();
-		if(pstats==null) return;
+		if(pstats==null)
+			return;
 		final String strStartRoomID=(mob.getStartRoom()!=null)?CMLib.map().getExtendedRoomID(mob.getStartRoom()):"";
 		String strOtherRoomID=(mob.location()!=null)?CMLib.map().getExtendedRoomID(mob.location()):"";
 
@@ -1097,7 +1109,8 @@ public class MOBloader
 
 	public void DBUpdateItems(MOB mob)
 	{
-		if(mob.Name().length()==0) return;
+		if(mob.Name().length()==0)
+			return;
 		final List<DBPreparedBatchEntry> statements=new LinkedList<DBPreparedBatchEntry>();
 		statements.add(new DBPreparedBatchEntry("DELETE FROM CMCHIT WHERE CMUSERID='"+mob.Name()+"'"));
 		statements.addAll(getDBItemUpdateStrings(mob));
@@ -1201,8 +1214,10 @@ public class MOBloader
 	// this method is unused, but is a good idea of how to collect riders, followers, carts, etc.
 	protected void addFollowerDependent(PhysicalAgent P, DVector list, String parent)
 	{
-		if(P==null) return;
-		if(list.contains(P)) return;
+		if(P==null)
+			return;
+		if(list.contains(P))
+			return;
 		if((P instanceof MOB)
 		&&((!((MOB)P).isMonster())||(((MOB)P).isPossessing())))
 			return;
@@ -1227,7 +1242,8 @@ public class MOBloader
 
 	public void DBUpdateFollowers(MOB mob)
 	{
-		if((mob==null)||(mob.Name().length()==0)) return;
+		if((mob==null)||(mob.Name().length()==0))
+			return;
 		final List<DBPreparedBatchEntry> statements=new LinkedList<DBPreparedBatchEntry>();
 		statements.add(new DBPreparedBatchEntry("DELETE FROM CMCHFO WHERE CMUSERID='"+mob.Name()+"'"));
 		for(int f=0;f<mob.numFollowers();f++)
@@ -1269,7 +1285,8 @@ public class MOBloader
 
 	public void DBDelete(MOB mob, boolean deleteAssets)
 	{
-		if(mob.Name().length()==0) return;
+		if(mob.Name().length()==0)
+			return;
 		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.PLAYERPURGES);
 		for(int i=0;i<channels.size();i++)
 			CMLib.commands().postChannel(channels.get(i),mob.clans(),mob.Name()+" has just been deleted.",true);
@@ -1280,14 +1297,16 @@ public class MOBloader
 		for(int i=0;i<mob.numItems();i++)
 		{
 			final Item I=mob.getItem(i);
-			if(I!=null) I.setContainer(null);
+			if(I!=null)
+				I.setContainer(null);
 		}
 		mob.delAllItems(false);
 		DBUpdateItems(mob);
 		while(mob.numFollowers()>0)
 		{
 			final MOB follower=mob.fetchFollower(0);
-			if(follower!=null) follower.setFollowing(null);
+			if(follower!=null)
+				follower.setFollowing(null);
 		}
 		if(deleteAssets)
 		{
@@ -1324,7 +1343,8 @@ public class MOBloader
 
 	public void DBUpdateAbilities(MOB mob)
 	{
-		if(mob.Name().length()==0) return;
+		if(mob.Name().length()==0)
+			return;
 		final List<DBPreparedBatchEntry> statements=new LinkedList<DBPreparedBatchEntry>();
 		statements.add(new DBPreparedBatchEntry("DELETE FROM CMCHAB WHERE CMUSERID='"+mob.Name()+"'"));
 		final HashSet<String> H=new HashSet<String>();
@@ -1337,7 +1357,8 @@ public class MOBloader
 				final Ability effectA=mob.fetchEffect(thisAbility.ID());
 				if(effectA!=null)
 				{
-					if((effectA.isSavable())&&(!effectA.canBeUninvoked())&&(!effectA.isAutoInvoked())) proficiency=proficiency-200;
+					if((effectA.isSavable())&&(!effectA.canBeUninvoked())&&(!effectA.isAutoInvoked()))
+						proficiency=proficiency-200;
 				}
 				H.add(thisAbility.ID());
 				final String sql="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
@@ -1380,9 +1401,11 @@ public class MOBloader
 
 	public void DBCreateCharacter(MOB mob)
 	{
-		if(mob.Name().length()==0) return;
+		if(mob.Name().length()==0)
+			return;
 		final PlayerStats pstats=mob.playerStats();
-		if(pstats==null) return;
+		if(pstats==null)
+			return;
 		DB.update("INSERT INTO CMCHAR (CMCHID, CMUSERID, CMPASS, CMCLAS, CMRACE, CMGEND "
 				+") VALUES ('"+mob.ID()+"','"+mob.Name()+"','"+pstats.getPasswordStr()+"','"+mob.baseCharStats().getMyClassesStr()
 				+"','"+mob.baseCharStats().getMyRace().ID()+"','"+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER))
@@ -1398,7 +1421,8 @@ public class MOBloader
 
 	public void DBUpdateAccount(PlayerAccount account)
 	{
-		if(account == null) return;
+		if(account == null)
+			return;
 		final String characters = CMParms.toSemicolonList(account.getPlayers());
 		DB.updateWithClobs("UPDATE CMACCT SET CMPASS='"+account.getPasswordStr()+"',  CMCHRS=?,  CMAXML=?  WHERE CMANAM='"+account.getAccountName()+"'",
 				new String[][]{{characters,account.getXML()}});
@@ -1406,13 +1430,15 @@ public class MOBloader
 
 	public void DBDeleteAccount(PlayerAccount account)
 	{
-		if(account == null) return;
+		if(account == null)
+			return;
 		DB.update("DELETE FROM CMACCT WHERE CMANAM='"+account.getAccountName()+"'");
 	}
 
 	public void DBCreateAccount(PlayerAccount account)
 	{
-		if(account == null) return;
+		if(account == null)
+			return;
 		account.setAccountName(CMStrings.capitalizeAndLower(account.getAccountName()));
 		final String characters = CMParms.toSemicolonList(account.getPlayers());
 		DB.updateWithClobs("INSERT INTO CMACCT (CMANAM, CMPASS, CMCHRS, CMAXML) "
@@ -1427,7 +1453,8 @@ public class MOBloader
 		final String chrs=DB.getRes(R,"CMCHRS");
 		final String xml=DB.getRes(R,"CMAXML");
 		final Vector<String> names = new Vector<String>();
-		if(chrs!=null) names.addAll(CMParms.parseSemicolons(chrs,true));
+		if(chrs!=null)
+			names.addAll(CMParms.parseSemicolons(chrs,true));
 		account.setAccountName(CMStrings.capitalizeAndLower(username));
 		account.setPassword(password);
 		account.setPlayerNames(names);
@@ -1470,7 +1497,8 @@ public class MOBloader
 		DBConnection D=null;
 		PlayerAccount account = null;
 		final Vector<PlayerAccount> accounts = new Vector<PlayerAccount>();
-		if(mask!=null) mask=mask.toLowerCase();
+		if(mask!=null)
+			mask=mask.toLowerCase();
 		try
 		{
 			// why in the hell is this a memory scan?
@@ -1644,7 +1672,8 @@ public class MOBloader
 		for(final Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
 		{
 			final MOB M=e.nextElement();
-			if((M.playerStats()!=null)&&(M.playerStats().getEmail().equalsIgnoreCase(email))) return M.Name();
+			if((M.playerStats()!=null)&&(M.playerStats().getEmail().equalsIgnoreCase(email)))
+				return M.Name();
 		}
 		try
 		{

@@ -139,7 +139,8 @@ public class Prayer_HolyDay extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Area target=mob.location().getArea();
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(target.fetchEffect(ID())!=null)
 		{
 			target.fetchEffect(ID()).unInvoke();

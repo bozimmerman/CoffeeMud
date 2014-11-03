@@ -45,7 +45,8 @@ public class CharClassNext extends StdWebMacro
 		final String base=httpReq.getUrlParameter("BASECLASS");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("CLASS");
+			if(last!=null)
+				httpReq.removeUrlParameter("CLASS");
 			return "";
 		}
 		String lastID="";

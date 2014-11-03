@@ -204,9 +204,12 @@ public class DefaultTimeClock implements TimeClock
 	public Season getSeasonCode()
 	{
 		final int div=(int)Math.round(Math.floor(CMath.div(getMonthsInYear(),4.0)));
-		if(month<div) return TimeClock.Season.WINTER;
-		if(month<(div*2)) return TimeClock.Season.SPRING;
-		if(month<(div*3)) return TimeClock.Season.SUMMER;
+		if(month<div)
+			return TimeClock.Season.WINTER;
+		if(month<(div*2))
+			return TimeClock.Season.SPRING;
+		if(month<(div*3))
+			return TimeClock.Season.SUMMER;
 		return TimeClock.Season.FALL;
 	}
 
@@ -308,23 +311,28 @@ public class DefaultTimeClock implements TimeClock
 			months=months-(years*getMonthsInYear());
 		}
 		final StringBuffer buf=new StringBuffer("");
-		if(years>0) buf.append(years+" years");
+		if(years>0)
+			buf.append(years+" years");
 		if(months>0)
 		{
-			if(buf.length()>0) buf.append(", ");
+			if(buf.length()>0)
+				buf.append(", ");
 			buf.append(months+" months");
 		}
 		if(days>0)
 		{
-			if(buf.length()>0) buf.append(", ");
+			if(buf.length()>0)
+				buf.append(", ");
 			buf.append(days+" days");
 		}
 		if(hours>0)
 		{
-			if(buf.length()>0) buf.append(", ");
+			if(buf.length()>0)
+				buf.append(", ");
 			buf.append(hours+" hours");
 		}
-		if(buf.length()==0) return "any second now";
+		if(buf.length()==0)
+			return "any second now";
 		return buf.toString();
 	}
 
@@ -332,16 +340,20 @@ public class DefaultTimeClock implements TimeClock
 	public long deriveMillisAfter(TimeClock C)
 	{
 		long numMudHours=0;
-		if(C.getYear()>getYear()) return -1;
+		if(C.getYear()>getYear())
+			return -1;
 		else
 		if(C.getYear()==getYear())
-			if(C.getMonth()>getMonth()) return -1;
+			if(C.getMonth()>getMonth())
+				return -1;
 			else
 			if(C.getMonth()==getMonth())
-				if(C.getDayOfMonth()>getDayOfMonth()) return -1;
+				if(C.getDayOfMonth()>getDayOfMonth())
+					return -1;
 				else
 				if(C.getDayOfMonth()==getDayOfMonth())
-					if(C.getHourOfDay()>getHourOfDay()) return -1;
+					if(C.getHourOfDay()>getHourOfDay())
+						return -1;
 		numMudHours+=(getYear()-C.getYear())*(getHoursInDay()*getDaysInMonth()*getMonthsInYear());
 		numMudHours+=(getMonth()-C.getMonth())*(getHoursInDay()*getDaysInMonth());
 		numMudHours+=(getDayOfMonth()-C.getDayOfMonth())*getHoursInDay();
@@ -433,7 +445,8 @@ public class DefaultTimeClock implements TimeClock
 				}
 			}
 		}
-		if(getTODCode()!=todCode) handleTimeChange();
+		if(getTODCode()!=todCode)
+			handleTimeChange();
 	}
 	@Override
 	public void save()

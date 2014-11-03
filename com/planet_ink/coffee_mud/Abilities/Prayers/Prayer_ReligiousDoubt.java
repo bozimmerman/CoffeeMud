@@ -46,7 +46,8 @@ public class Prayer_ReligiousDoubt extends Prayer
 	@Override
 	public String displayText()
 	{
-		if(otherSide) return "";
+		if(otherSide)
+			return "";
 		return "(Religious Doubt)";
 	}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
@@ -84,11 +85,14 @@ public class Prayer_ReligiousDoubt extends Prayer
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg)) return false;
-		if(otherSide) return true;
+		if(!super.okMessage(myHost,msg))
+			return false;
+		if(otherSide)
+			return true;
 		if(msg.target()==affected)
 		{
-			if(!(affected instanceof MOB)) return true;
+			if(!(affected instanceof MOB))
+				return true;
 			if((msg.source()!=msg.target())
 			&&(msg.tool() instanceof Ability)
 			&&(msg.tool().ID().equalsIgnoreCase("Skill_Convert")))
@@ -104,7 +108,8 @@ public class Prayer_ReligiousDoubt extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

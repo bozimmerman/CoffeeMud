@@ -59,7 +59,8 @@ public class Thief_SilentDrop extends ThiefSkill
 			return false;
 		}
 		final Item item=super.getTarget(mob,null,givenTarget,commands,Wearable.FILTER_UNWORNONLY);
-		if(item==null) return false;
+		if(item==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

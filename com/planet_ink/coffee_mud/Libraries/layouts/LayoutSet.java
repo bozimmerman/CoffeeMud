@@ -82,7 +82,8 @@ public class LayoutSet
 	public LayoutNode makeNextNode(LayoutNode n, int dir)
 	{
 		final long[] l = makeNextCoord(n.coord(),dir);
-		if(l!=null) return new DefaultLayoutNode(l);
+		if(l!=null)
+			return new DefaultLayoutNode(l);
 		return null;
 	}
 
@@ -101,7 +102,8 @@ public class LayoutSet
 		{
 			use(n,LayoutTypes.surround);
 			LayoutNode nn = getNextNode(n, Directions.NORTH);
-			if(nn==null) nn=makeNextNode(n, Directions.NORTH);
+			if(nn==null)
+				nn=makeNextNode(n, Directions.NORTH);
 			n.crossLink(nn);
 			nn.flagRun(LayoutRuns.ns);
 			n=nn;
@@ -114,7 +116,8 @@ public class LayoutSet
 		{
 			use(n,LayoutTypes.surround);
 			LayoutNode nn = getNextNode(n, Directions.NORTH);
-			if(nn==null) nn=makeNextNode(n, Directions.NORTH);
+			if(nn==null)
+				nn=makeNextNode(n, Directions.NORTH);
 			n.crossLink(nn);
 			nn.flagRun(LayoutRuns.ns);
 			n=nn;
@@ -127,7 +130,8 @@ public class LayoutSet
 		{
 			use(n,LayoutTypes.surround);
 			LayoutNode nn = getNextNode(n, Directions.EAST);
-			if(nn==null) nn=makeNextNode(n, Directions.EAST);
+			if(nn==null)
+				nn=makeNextNode(n, Directions.EAST);
 			n.crossLink(nn);
 			nn.flagRun(LayoutRuns.ew);
 			n=nn;
@@ -140,7 +144,8 @@ public class LayoutSet
 		{
 			use(n,LayoutTypes.surround);
 			LayoutNode nn = getNextNode(n, Directions.EAST);
-			if(nn==null) nn=makeNextNode(n, Directions.EAST);
+			if(nn==null)
+				nn=makeNextNode(n, Directions.EAST);
 			n.crossLink(nn);
 			nn.flagRun(LayoutRuns.ew);
 			n=nn;

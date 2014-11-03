@@ -228,7 +228,8 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 				g.que=new Vector<List<String>>();
 				for(int a=0;a<all.size();a++)
 					g.que.add(CMParms.parse(all.get(a)));
-				if(you!=null)   map.put("%c",you.name());
+				if(you!=null)
+					map.put("%c",you.name());
 				map.put("%n",me.name());
 				for(int q=0;q<g.que.size();q++)
 				{

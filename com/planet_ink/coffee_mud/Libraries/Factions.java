@@ -90,16 +90,19 @@ public class Factions extends StdLibrary implements FactionManager
 	public boolean isFactionedThisWay(MOB mob, Faction.FRange rangeCode)
 	{
 		final Faction.FRange FR=rangeCode;
-		if(FR==null) return false;
+		if(FR==null)
+			return false;
 		final Faction F=rangeCode.getFaction();
 		final Faction.FRange FR2=F.fetchRange(mob.fetchFaction(F.factionID()));
-		if(FR2==null) return false;
+		if(FR2==null)
+			return false;
 		return FR2.codeName().equalsIgnoreCase(FR.codeName());
 	}
 	@Override
 	public String rangeDescription(Faction.FRange FR, String andOr)
 	{
-		if(FR==null) return "";
+		if(FR==null)
+			return "";
 		final Faction F=FR.getFaction();
 		final Vector<FRange> relevantFactions=new Vector<FRange>();
 		for(final Enumeration<FRange> e=F.ranges();e.hasMoreElements();)
@@ -108,7 +111,8 @@ public class Factions extends StdLibrary implements FactionManager
 			if(FR2.codeName().equalsIgnoreCase(FR.codeName()))
 				relevantFactions.addElement(FR2);
 		}
-		if(relevantFactions.size()==0) return "";
+		if(relevantFactions.size()==0)
+			return "";
 		if(relevantFactions.size()==1)
 			return F.name()+" of "+relevantFactions.firstElement().name();
 		final StringBuffer buf=new StringBuffer(F.name()+" of ");
@@ -176,7 +180,8 @@ public class Factions extends StdLibrary implements FactionManager
 	@Override
 	public Faction getFaction(String factionID)
 	{
-		if(factionID==null) return null;
+		if(factionID==null)
+			return null;
 		Faction F=factionSet.get(factionID.toUpperCase());
 		if((F==null)&&(!factionID.toLowerCase().endsWith(".ini")))
 		{
@@ -193,7 +198,8 @@ public class Factions extends StdLibrary implements FactionManager
 			return null;
 		}
 		final CMFile f=new CMFile(Resources.makeFileResourceName(makeFactionFilename(factionID)),null,CMFile.FLAG_LOGERRORS);
-		if(!f.exists()) return null;
+		if(!f.exists())
+			return null;
 		final StringBuffer buf=f.text();
 		if((buf!=null)&&(buf.length()>0))
 		{
@@ -255,8 +261,10 @@ public class Factions extends StdLibrary implements FactionManager
 			return true;
 		}
 		F=getFactionByName(factionID);
-		if(F==null) F=getFaction(factionID);
-		if(F==null) return false;
+		if(F==null)
+			F=getFaction(factionID);
+		if(F==null)
+			return false;
 		Resources.removeResource(F.factionID());
 		factionSet.remove(F.factionID().toUpperCase());
 		return true;
@@ -295,14 +303,16 @@ public class Factions extends StdLibrary implements FactionManager
 	@Override
 	public Enumeration<Faction.FRange> getRanges(String factionID) {
 		final Faction f=getFaction(factionID);
-		if(f!=null) return f.ranges();
+		if(f!=null)
+			return f.ranges();
 		return null;
 	}
 	@Override
 	public double getRangePercent(String factionID, int faction)
 	{
 		final Faction F=getFaction(factionID);
-		if(F==null) return 0.0;
+		if(F==null)
+			return 0.0;
 		return CMath.div((int)Math.round(CMath.div((faction - F.minimum()),(F.maximum() - F.minimum())) * 10000.0),100.0);
 	}
 	@Override public int getTotal(String factionID) {  final Faction f=getFaction(factionID); if(f!=null) return (f.maximum()-f.minimum()); return 0; }
@@ -411,7 +421,8 @@ public class Factions extends StdLibrary implements FactionManager
 				F=getFaction("AREA_"+areaCode);
 				if(F==null)
 					F=makeReactionFaction("AREA_",A.ID(),A.Name(),areaCode,"examples/areareaction.ini");
-				if(F==null) return null;
+				if(F==null)
+					return null;
 				return new Faction[]{F};
 			}
 		}
@@ -432,7 +443,8 @@ public class Factions extends StdLibrary implements FactionManager
 						Fs.add(F);
 				}
 			}
-			if(Fs.size()==0) return null;
+			if(Fs.size()==0)
+				return null;
 			return Fs.toArray(new Faction[0]);
 		}
 		else
@@ -455,7 +467,8 @@ public class Factions extends StdLibrary implements FactionManager
 						Fs.add(F);
 				}
 			}
-			if(Fs.size()==0) return null;
+			if(Fs.size()==0)
+				return null;
 			return Fs.toArray(new Faction[0]);
 		}
 		return null;
@@ -585,8 +598,10 @@ public class Factions extends StdLibrary implements FactionManager
 			final Faction.FRange R=e.nextElement();
 			if(R.alignEquiv()==eq)
 			{
-				if(R.low()<bottom) bottom=R.low();
-				if(R.high()>top) top=R.high();
+				if(R.low()<bottom)
+					bottom=R.low();
+				if(R.high()>top)
+					top=R.high();
 			}
 		}
 		switch(eq)
@@ -609,14 +624,17 @@ public class Factions extends StdLibrary implements FactionManager
 		int bottom=Integer.MAX_VALUE;
 		int top=Integer.MIN_VALUE;
 		final Enumeration<FRange> e = getRanges(AlignID());
-		if(e==null) return 0;
+		if(e==null)
+			return 0;
 		for(;e.hasMoreElements();)
 		{
 			final Faction.FRange R=e.nextElement();
 			if(R.alignEquiv()==eq)
 			{
-				if(R.low()<bottom) bottom=R.low();
-				if(R.high()>top) top=R.high();
+				if(R.low()<bottom)
+					bottom=R.low();
+				if(R.high()>top)
+					top=R.high();
 			}
 		}
 		switch(eq)
@@ -696,7 +714,8 @@ public class Factions extends StdLibrary implements FactionManager
 					list.append(CMStrings.padRight(FR.alignEquiv().toString(),5)+"\n\r");
 				}
 				mob.tell(list.toString());
-				if((showFlag!=showNumber)&&(showFlag>-999)) break;
+				if((showFlag!=showNumber)&&(showFlag>-999))
+					break;
 				String which=mob.session().prompt(L("Enter a CODE to add, remove, or modify:"),"");
 				if(which.length()==0)
 					break;
@@ -774,7 +793,8 @@ public class Factions extends StdLibrary implements FactionManager
 			for(final Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 			{
 				final Faction F2=e.nextElement();
-				if(F2.showInSpecialReported()) alreadyReporter=true;
+				if(F2.showInSpecialReported())
+					alreadyReporter=true;
 			}
 			if(!alreadyReporter)
 				me.setShowInSpecialReported(CMLib.genEd().prompt(mob,me.showInSpecialReported(),++showNumber,showFlag,L("Show in Reports")));
@@ -795,7 +815,8 @@ public class Factions extends StdLibrary implements FactionManager
 			{
 				error=false;
 				final String newDefaults=CMLib.genEd().prompt(mob,CMParms.toSemicolonList(me.defaults()),showNumber,showFlag,L("Other default values with zapper masks (semicolon delimited).\n\r    "));
-				if((showFlag!=showNumber)&&(showFlag>-999)) break;
+				if((showFlag!=showNumber)&&(showFlag>-999))
+					break;
 				final List<String> V=CMParms.parseSemicolons(newDefaults,true);
 				if(V.size()==0)
 				{
@@ -837,7 +858,8 @@ public class Factions extends StdLibrary implements FactionManager
 				}
 				final String prompt="Affect on experience:  "+Faction.EXPAFFECT_NAMES[myval]+nextPrompt.toString()+"\n\rSelect a value: ";
 				final int mynewval=CMLib.genEd().prompt(mob,myval+1,showNumber,showFlag,prompt);
-				if((showFlag!=showNumber)&&(showFlag>-999)) break;
+				if((showFlag!=showNumber)&&(showFlag>-999))
+					break;
 				if((mynewval<=0)||(mynewval>Faction.EXPAFFECT_NAMES.length))
 				{
 					mob.tell(L("That value is not valid."));
@@ -866,7 +888,8 @@ public class Factions extends StdLibrary implements FactionManager
 					numFactors++;
 				}
 				mob.tell(list.toString());
-				if((showFlag!=showNumber)&&(showFlag>-999)) break;
+				if((showFlag!=showNumber)&&(showFlag>-999))
+					break;
 				final String which=mob.session().choose(L("Enter a # to remove, or modify, or enter 0 to Add:"),"0"+choices.toString(),"").trim().toUpperCase();
 				final int factorNum=choices.toString().indexOf(which);
 				if((which.length()!=1)
@@ -927,7 +950,8 @@ public class Factions extends StdLibrary implements FactionManager
 					}
 				}
 				mob.tell(list.toString());
-				if((showFlag!=showNumber)&&(showFlag>-999)) break;
+				if((showFlag!=showNumber)&&(showFlag>-999))
+					break;
 				final String which=mob.session().prompt(L("Enter a faction to add, remove, or modify relations:"),"");
 				if(which.length()==0)
 					break;
@@ -942,7 +966,8 @@ public class Factions extends StdLibrary implements FactionManager
 				if(theF==null)
 				{
 					Faction possibleF=CMLib.factions().getFaction(which);
-					if(possibleF==null) possibleF=CMLib.factions().getFactionByName(which);
+					if(possibleF==null)
+						possibleF=CMLib.factions().getFactionByName(which);
 					if(possibleF==null)
 						mob.tell(L("'@x1' is not a valid faction.",which));
 					else
@@ -1006,15 +1031,18 @@ public class Factions extends StdLibrary implements FactionManager
 					}
 				}
 				mob.tell(list.toString());
-				if((showFlag!=showNumber)&&(showFlag>-999)) break;
+				if((showFlag!=showNumber)&&(showFlag>-999))
+					break;
 				String which=mob.session().prompt(L("Select a ID to add, remove, or modify:"),"");
 				which=which.toUpperCase().trim();
-				if(which.length()==0) continue;
+				if(which.length()==0)
+					continue;
 				Faction.FactionChangeEvent CE=(which.length()>0)?choicesHashed.get(Character.valueOf(which.charAt(0))):null;
 				if(CE==null)
 				{
 					final String newID=mob.session().prompt(L("Enter a new change ID (?): ")).toUpperCase().trim();
-					if(newID.length()==0) break;
+					if(newID.length()==0)
+						break;
 					if(newID.equalsIgnoreCase("?"))
 					{
 						mob.tell(L("Valid triggers: \n\r@x1",me.ALL_CHANGE_EVENT_TYPES()));
@@ -1067,7 +1095,8 @@ public class Factions extends StdLibrary implements FactionManager
 				}
 				if(CE!=null)
 				{
-					if(CE.factor()==0.0) CE.setFactor(1.0);
+					if(CE.factor()==0.0)
+						CE.setFactor(1.0);
 					final String amount=CMath.toPct(CE.factor());
 					final String newName=mob.session().prompt(L("Enter the amount factor (@x1): ",amount),""+amount);
 					if((!CMath.isNumber(newName))&&(!CMath.isPct(newName)))
@@ -1098,7 +1127,8 @@ public class Factions extends StdLibrary implements FactionManager
 			++showNumber;
 			while((mob.session()!=null)&&(!mob.session().isStopped())&&(!((showFlag>0)&&(showFlag!=showNumber))))
 			{
-				if((showFlag>0)&&(showFlag!=showNumber)) break;
+				if((showFlag>0)&&(showFlag!=showNumber))
+					break;
 				final StringBuffer list=new StringBuffer(showNumber+". Ability allowances:\n\r");
 				list.append("    #) "
 						+CMStrings.padRight(L("Ability masks"),40)
@@ -1122,7 +1152,8 @@ public class Factions extends StdLibrary implements FactionManager
 					}
 				}
 				mob.tell(list.toString());
-				if((showFlag!=showNumber)&&(showFlag>-999)) break;
+				if((showFlag!=showNumber)&&(showFlag>-999))
+					break;
 				String which=mob.session().choose(L("Select an allowance to remove or modify, or enter 0 to Add:"),choices.toString(),"");
 				if(which.length()!=1)
 					break;
@@ -1202,7 +1233,8 @@ public class Factions extends StdLibrary implements FactionManager
 						mob.tell(L("(no change)"));
 					else
 						CA.setHigh(CMath.s_int(newName));
-					if(CA.high()<CA.low()) CA.setHigh(CA.low());
+					if(CA.high()<CA.low())
+						CA.setHigh(CA.low());
 				}
 			}
 
@@ -1211,7 +1243,8 @@ public class Factions extends StdLibrary implements FactionManager
 			++showNumber;
 			while((mob.session()!=null)&&(!mob.session().isStopped())&&(!((showFlag>0)&&(showFlag!=showNumber))))
 			{
-				if((showFlag>0)&&(showFlag!=showNumber)) break;
+				if((showFlag>0)&&(showFlag!=showNumber))
+					break;
 				final StringBuffer list=new StringBuffer(showNumber+". Effects/Behaviors:\n\r");
 				list.append("    #) "
 						+CMStrings.padRight(L("Ability/Behavior ID"),25)
@@ -1236,7 +1269,8 @@ public class Factions extends StdLibrary implements FactionManager
 					numAffBehavs++;
 				}
 				mob.tell(list.toString());
-				if((showFlag!=showNumber)&&(showFlag>-999)) break;
+				if((showFlag!=showNumber)&&(showFlag>-999))
+					break;
 				String which=mob.session().choose(L("Select an ability/behavior ID to remove or modify, or enter 0 to Add:"),choices.toString(),"");
 				if(which.length()!=1)
 					break;
@@ -1346,7 +1380,8 @@ public class Factions extends StdLibrary implements FactionManager
 			++showNumber;
 			while((mob.session()!=null)&&(!mob.session().isStopped())&&(!((showFlag>0)&&(showFlag!=showNumber))))
 			{
-				if((showFlag>0)&&(showFlag!=showNumber)) break;
+				if((showFlag>0)&&(showFlag!=showNumber))
+					break;
 				final StringBuffer list=new StringBuffer(showNumber+". Reaction Commands/Effects/Behaviors:\n\r");
 				list.append("    #) "
 						+CMStrings.padRight(L("Range"),15)
@@ -1372,7 +1407,8 @@ public class Factions extends StdLibrary implements FactionManager
 					numReactions++;
 				}
 				mob.tell(list.toString());
-				if((showFlag!=showNumber)&&(showFlag>-999)) break;
+				if((showFlag!=showNumber)&&(showFlag>-999))
+					break;
 				String which=mob.session().choose(L("Select one to remove or modify, or enter 0 to Add:"),choices.toString(),"");
 				if(which.length()!=1)
 					break;
@@ -1544,7 +1580,8 @@ public class Factions extends StdLibrary implements FactionManager
 			{
 				final String tag=s.substring(0,s.indexOf('=')).trim().toUpperCase();
 				final int tagRef=CMLib.factions().isFactionTag(tag);
-				if(tagRef>=0) defined[tagRef]=true;
+				if(tagRef>=0)
+					defined[tagRef]=true;
 			}
 		}
 		final boolean[] done=new boolean[Faction.TAG_NAMES.length];
@@ -1577,7 +1614,8 @@ public class Factions extends StdLibrary implements FactionManager
 						if(!Character.isLetterOrDigit(s.charAt(first)))
 							break;
 					first=CMLib.factions().isFactionTag(s.substring(first).trim().toUpperCase());
-					if(first>=0) lastCommented=first;
+					if(first>=0)
+						lastCommented=first;
 				}
 			}
 			else
@@ -1625,7 +1663,8 @@ public class Factions extends StdLibrary implements FactionManager
 		for (final String element : Ability.DOMAIN_DESCS)
 			if(element.equalsIgnoreCase(strflag))
 				return 2;
-		if(strflag.startsWith("!")) strflag=strflag.substring(1);
+		if(strflag.startsWith("!"))
+			strflag=strflag.substring(1);
 		for (final String element : Ability.FLAG_DESCS)
 			if(element.equalsIgnoreCase(strflag))
 				return 3;

@@ -41,7 +41,8 @@ public class StatRejuvCharts extends StdWebMacro
 	protected String getReq(HTTPRequest httpReq, String tag)
 	{
 		String s=httpReq.getUrlParameter(tag);
-		if(s==null) s="";
+		if(s==null)
+			s="";
 		return s;
 	}
 

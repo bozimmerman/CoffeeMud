@@ -44,7 +44,8 @@ public class ChannelNext extends StdWebMacro
 		String last=httpReq.getUrlParameter("CHANNEL");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("CHANNEL");
+			if(last!=null)
+				httpReq.removeUrlParameter("CHANNEL");
 			return "";
 		}
 		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);

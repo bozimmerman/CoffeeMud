@@ -44,7 +44,8 @@ public class Channels extends StdCommand
 		throws java.io.IOException
 	{
 		final PlayerStats pstats=mob.playerStats();
-		if(pstats==null) return false;
+		if(pstats==null)
+			return false;
 		final StringBuffer buf=new StringBuffer(L("Available channels: \n\r"));
 		int col=0;
 		final String[] names=CMLib.channels().getChannelNames();

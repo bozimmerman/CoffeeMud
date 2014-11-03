@@ -80,7 +80,8 @@ public class Cloak extends StdCommand
 			if(mob.fetchEffect(A.ID())==null)
 				mob.addPriorityEffect((Ability)A.copyOf());
 			A=mob.fetchEffect(A.ID());
-			if(A!=null) A.setAbilityCode(abilityCode);
+			if(A!=null)
+				A.setAbilityCode(abilityCode);
 
 			mob.recoverPhyStats();
 			mob.location().recoverRoomStats();

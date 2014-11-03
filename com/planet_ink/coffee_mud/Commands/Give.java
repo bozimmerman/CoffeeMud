@@ -67,7 +67,8 @@ public class Give extends StdCommand
 			commands.removeElementAt(commands.size()-1);
 
 		final int maxToGive=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
-		if(maxToGive<0) return false;
+		if(maxToGive<0)
+			return false;
 
 		String thingToGive=CMParms.combine(commands,0);
 		int addendum=1;
@@ -115,7 +116,8 @@ public class Give extends StdCommand
 				giveThis=null;
 			else
 			{
-				if(giveThis==null) break;
+				if(giveThis==null)
+					break;
 				if(CMLib.flags().canBeSeenBy(giveThis,mob))
 					V.addElement(giveThis);
 			}

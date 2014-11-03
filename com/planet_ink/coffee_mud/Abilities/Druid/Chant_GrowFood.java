@@ -96,7 +96,8 @@ public class Chant_GrowFood extends Chant
 		if((material<0)&&(choices.size()>0))
 			material=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)).intValue();
 
-		if(material<0) return false;
+		if(material<0)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

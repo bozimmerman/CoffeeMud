@@ -136,7 +136,8 @@ public class Thief_HideOther extends ThiefSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=super.getTarget(mob,commands,givenTarget,false,false);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if((target==mob)&&(!auto)&&(givenTarget!=mob))
 		{
 			mob.tell(L("Just use HIDE!"));

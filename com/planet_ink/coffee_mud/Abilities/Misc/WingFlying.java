@@ -61,8 +61,10 @@ public class WingFlying extends StdAbility implements HealthCondition
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(affected==null) return;
-		if(!(affected instanceof MOB)) return;
+		if(affected==null)
+			return;
+		if(!(affected instanceof MOB))
+			return;
 
 		if(!CMLib.flags().isSleeping(affected))
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
@@ -82,7 +84,8 @@ public class WingFlying extends StdAbility implements HealthCondition
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=mob;
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(target.charStats().getBodyPart(Race.BODY_WING)<=0)
 		{
 			mob.tell(L("You can't flap without wings."));
@@ -91,7 +94,8 @@ public class WingFlying extends StdAbility implements HealthCondition
 
 		final boolean wasFlying=CMLib.flags().isFlying(target);
 		Ability A=target.fetchEffect(ID());
-		if(A!=null) A.unInvoke();
+		if(A!=null)
+			A.unInvoke();
 		target.recoverPhyStats();
 		String str="";
 		if(wasFlying)
@@ -116,7 +120,8 @@ public class WingFlying extends StdAbility implements HealthCondition
 				target.location().send(target,msg);
 				beneficialAffect(mob,target,asLevel,9999);
 				A=target.fetchEffect(ID());
-				if(A!=null) A.makeLongLasting();
+				if(A!=null)
+					A.makeLongLasting();
 			}
 		}
 		else

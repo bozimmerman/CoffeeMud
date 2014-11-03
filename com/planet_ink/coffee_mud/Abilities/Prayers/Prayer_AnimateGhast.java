@@ -50,7 +50,8 @@ public class Prayer_AnimateGhast extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(target==mob)
 		{
@@ -126,7 +127,8 @@ public class Prayer_AnimateGhast extends Prayer
 				newMOB.resetToMaxState();
 				newMOB.addAbility(CMClass.getAbility("Paralysis"));
 				Behavior B=CMClass.getBehavior("CombatAbilities");
-				if(B!=null) newMOB.addBehavior(B);
+				if(B!=null)
+					newMOB.addBehavior(B);
 				B=CMClass.getBehavior("Aggressive");
 				if(B!=null){ B.setParms("+NAMES \"-"+mob.Name()+"\""); newMOB.addBehavior(B);}
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Spell_CauseStink"));

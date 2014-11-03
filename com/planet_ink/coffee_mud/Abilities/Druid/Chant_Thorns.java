@@ -67,13 +67,18 @@ public class Chant_Thorns extends Chant
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if(affected==null) return;
-		if(!(affected instanceof MOB)) return;
+		if(affected==null)
+			return;
+		if(!(affected instanceof MOB))
+			return;
 		final MOB mob=(MOB)affected;
-		if(msg.target()==null) return;
-		if(msg.source()==null) return;
+		if(msg.target()==null)
+			return;
+		if(msg.source()==null)
+			return;
 		final MOB source=msg.source();
-		if(source.location()==null) return;
+		if(source.location()==null)
+			return;
 
 
 		if(msg.amITarget(mob))
@@ -88,7 +93,8 @@ public class Chant_Thorns extends Chant
 					if(source.location().okMessage(source,msg2))
 					{
 						source.location().send(mob,msg2);
-						if(invoker==null) invoker=source;
+						if(invoker==null)
+							invoker=source;
 						if(msg2.value()<=0)
 						{
 							final int damage = CMLib.dice().roll( 1, (int)Math.round( (adjustedLevel( invoker(), 0 ) ) / 3.0 ), 1 );
@@ -106,8 +112,10 @@ public class Chant_Thorns extends Chant
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(affected==null) return;
-		if(!(affected instanceof MOB)) return;
+		if(affected==null)
+			return;
+		if(!(affected instanceof MOB))
+			return;
 		affectableStats.setArmor(affectableStats.armor()-10-(2*super.getXLEVELLevel(invoker())));
 	}
 

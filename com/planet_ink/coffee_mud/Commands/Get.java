@@ -133,7 +133,8 @@ public class Get extends StdCommand
 		int c=0;
 
 		int maxToGet=CMLib.english().calculateMaxToGive(mob,commands,containers.size()==0,R,true);
-		if(maxToGet<0) return false;
+		if(maxToGet<0)
+			return false;
 
 		String whatToGet=CMParms.combine(commands,0);
 		final String unmodifiedWhatToGet=whatToGet;
@@ -163,7 +164,8 @@ public class Get extends StdCommand
 					if(getThis==null)
 						getThis=R.fetchFromRoomFavorItems(container,whatToGet+addendumStr);
 				}
-				if(getThis==null) break;
+				if(getThis==null)
+					break;
 
 				if((maxToGet>1)&&(getThis instanceof RawMaterial)&&(container!=null)
 				&&(((RawMaterial)getThis).container()==container))
@@ -199,7 +201,8 @@ public class Get extends StdCommand
 			R.recoverRoomStats();
 			R.recoverRoomStats();
 
-			if(containers.size()==0) break;
+			if(containers.size()==0)
+				break;
 		}
 		if(!doneSomething)
 		{

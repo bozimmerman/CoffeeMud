@@ -54,9 +54,11 @@ public class JConsole extends StdCommand
 		throws java.io.IOException
 	{
 		String rest="";
-		if(commands.size()>1) rest=CMParms.combine(commands,1);
+		if(commands.size()>1)
+			rest=CMParms.combine(commands,1);
 		final Session session=mob.session();
-		if(session==null) return false;
+		if(session==null)
+			return false;
 
 		JScriptEvent scope=(JScriptEvent)Resources.getResource("JCONSOLE_"+mob.Name());
 		final Context cx=Context.enter();

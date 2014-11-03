@@ -166,9 +166,12 @@ public class Spell_BigMouth extends Spell
 		Room R=null;
 		if(affected instanceof MOB)
 			R=((MOB)affected).location();
-		if(R==null)R=CMLib.map().roomLocation(invoker());
-		if(R==null)R=CMLib.map().roomLocation(affected);
-		if(R!=null) lastKnownRoom=R;
+		if(R==null)
+			R=CMLib.map().roomLocation(invoker());
+		if(R==null)
+			R=CMLib.map().roomLocation(affected);
+		if(R!=null)
+			lastKnownRoom=R;
 		return lastKnownRoom;
 	}
 	protected Room Stomach()
@@ -218,8 +221,10 @@ public class Spell_BigMouth extends Spell
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
-		if(invoker()==null) return true;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(invoker()==null)
+			return true;
 		final MOB mob=invoker();
 		if((!mob.amDead())&&((--digestDown)<=0)&&(Stomach()!=null))
 		{
@@ -238,7 +243,8 @@ public class Spell_BigMouth extends Spell
 					// no OKaffectS, since the dragon is not in his own stomach.
 					Stomach().send(mob,DigestMsg);
 					int damage=(int)Math.round(CMath.div(TastyMorsel.curState().getHitPoints(),2));
-					if(damage<(TastyMorsel.phyStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()*100;
+					if(damage<(TastyMorsel.phyStats().level()+6))
+						damage=TastyMorsel.curState().getHitPoints()*100;
 					CMLib.combat().postDamage(mob,TastyMorsel,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The stomach acid <DAMAGE> <T-NAME>!");
 				}
 			}
@@ -257,7 +263,8 @@ public class Spell_BigMouth extends Spell
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if(affected==null) return;
+		if(affected==null)
+			return;
 
 		final Environmental thang=affected;
 		super.unInvoke();
@@ -284,7 +291,8 @@ public class Spell_BigMouth extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)

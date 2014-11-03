@@ -43,7 +43,8 @@ public class AbilityTypeNext extends StdWebMacro
 		final String last=httpReq.getUrlParameter("ABILITYTYPE");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("ABILITYTYPE");
+			if(last!=null)
+				httpReq.removeUrlParameter("ABILITYTYPE");
 			return "";
 		}
 		String lastID="";

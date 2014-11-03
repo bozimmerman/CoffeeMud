@@ -67,7 +67,8 @@ public class GenWallpaper implements Item
 	@Override
 	public String name()
 	{
-		if(phyStats().newName()!=null) return phyStats().newName();
+		if(phyStats().newName()!=null)
+			return phyStats().newName();
 		return Name();
 	}
 	@Override public void setName(String newName){name=newName;}
@@ -183,7 +184,8 @@ public class GenWallpaper implements Item
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(destroyed) return false;
+		if(destroyed)
+			return false;
 		return true;
 	}
 	@Override public Container container(){return null;}
@@ -299,7 +301,8 @@ public class GenWallpaper implements Item
 	@Override
 	public void destroy()
 	{
-		if(owner==null) return;
+		if(owner==null)
+			return;
 		CMLib.map().registerWorldObjectDestroyed(null,null,this);
 		destroyed=true;
 		removeFromOwnerContainer();
@@ -309,7 +312,8 @@ public class GenWallpaper implements Item
 	@Override
 	public void removeFromOwnerContainer()
 	{
-		if(owner==null) return;
+		if(owner==null)
+			return;
 		if (owner instanceof Room)
 		{
 			final Room thisRoom=(Room)owner;
@@ -357,7 +361,8 @@ public class GenWallpaper implements Item
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
+			if(code.equalsIgnoreCase(CODES[i]))
+				return i;
 		return -1;
 	}
 	@Override
@@ -389,7 +394,8 @@ public class GenWallpaper implements Item
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenWallpaper)) return false;
+		if(!(E instanceof GenWallpaper))
+			return false;
 		for(int i=0;i<CODES.length;i++)
 			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
 				return false;

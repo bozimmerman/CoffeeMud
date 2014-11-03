@@ -44,7 +44,8 @@ public class SocialNext extends StdWebMacro
 		final String last=httpReq.getUrlParameter("SOCIAL");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("SOCIAL");
+			if(last!=null)
+				httpReq.removeUrlParameter("SOCIAL");
 			return "";
 		}
 		String lastID="";

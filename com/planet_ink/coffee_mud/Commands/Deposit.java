@@ -45,7 +45,8 @@ public class Deposit extends StdCommand
 	{
 		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Deposit how much with whom?");
 		final ShopKeeper SHOP=CMLib.coffeeShops().getShopKeeper(shopkeeper);
-		if(shopkeeper==null) return false;
+		if(shopkeeper==null)
+			return false;
 		if((!(SHOP instanceof Banker))&&(!(SHOP instanceof PostOffice)))
 		{
 			mob.tell(L("You can not deposit anything with @x1.",shopkeeper.name()));

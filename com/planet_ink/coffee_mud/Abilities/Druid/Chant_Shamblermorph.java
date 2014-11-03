@@ -50,7 +50,8 @@ public class Chant_Shamblermorph extends Chant
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(treeForm==null) treeForm=CMClass.getRace("Shambler");
+		if(treeForm==null)
+			treeForm=CMClass.getRace("Shambler");
 		if(treeForm!=null)
 		{
 			final int oldCat=affected.baseCharStats().ageCategory();
@@ -77,7 +78,8 @@ public class Chant_Shamblermorph extends Chant
 				affectableStats.setName(L("@x1 the shambling mound",affected.name()));
 			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			treeForm.setHeightWeight(affectableStats,'M');
-			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
+			if(oldAdd>0)
+				affectableStats.setWeight(affectableStats.weight()+oldAdd);
 		}
 	}
 
@@ -102,7 +104,8 @@ public class Chant_Shamblermorph extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -113,7 +116,8 @@ public class Chant_Shamblermorph extends Chant
 
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
-		if(levelDiff<0) levelDiff=0;
+		if(levelDiff<0)
+			levelDiff=0;
 		final boolean success=proficiencyCheck(mob,-(levelDiff*10),auto);
 		final boolean malicious=!target.getGroupMembers(new HashSet<MOB>()).contains(mob);
 		if(success)

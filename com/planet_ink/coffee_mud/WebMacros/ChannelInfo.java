@@ -61,9 +61,11 @@ public class ChannelInfo extends StdWebMacro
 				if(parms.containsKey("HELP"))
 				{
 					StringBuilder s=CMLib.help().getHelpText("CHANNEL_"+last,null,false);
-					if(s==null) s=CMLib.help().getHelpText(last,null,false);
+					if(s==null)
+						s=CMLib.help().getHelpText(last,null,false);
 					int limit=78;
-					if(parms.containsKey("LIMIT")) limit=CMath.s_int(parms.get("LIMIT"));
+					if(parms.containsKey("LIMIT"))
+						limit=CMath.s_int(parms.get("LIMIT"));
 					str.append(helpHelp(s,limit)).append(", ");
 				}
 				if(parms.containsKey("ID"))

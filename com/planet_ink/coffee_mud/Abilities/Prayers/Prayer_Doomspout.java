@@ -71,8 +71,10 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 		{
 			final MOB mob=(MOB)affected;
 			plagueDown=4;
-			if(invoker==null) invoker=mob;
-			if(mob.location()==null) return false;
+			if(invoker==null)
+				invoker=mob;
+			if(mob.location()==null)
+				return false;
 			ispoke=false;
 			switch(CMLib.dice().roll(1,12,0))
 			{
@@ -121,7 +123,8 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		if(affectableStats.getStat(CharStats.STAT_INTELLIGENCE)>3)
 			affectableStats.setStat(CharStats.STAT_INTELLIGENCE,3);
 	}
@@ -169,7 +172,8 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

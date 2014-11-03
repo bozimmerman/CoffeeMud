@@ -131,7 +131,8 @@ public class StdRideable extends StdContainer implements Rideable
 	@Override
 	public Set<MOB> getRideBuddies(Set<MOB> list)
 	{
-		if(list==null) return list;
+		if(list==null)
+			return list;
 		for(int r=0;r<numRiders();r++)
 		{
 			final Rider R=fetchRider(r);

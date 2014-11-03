@@ -47,7 +47,8 @@ public class ROMGangMember extends StdBehavior
 
 	public void pickAFight(MOB observer)
 	{
-		if(!canFreelyBehaveNormal(observer)) return;
+		if(!canFreelyBehaveNormal(observer))
+			return;
 		if(observer.location().numPCInhabitants()==0)
 			return;
 
@@ -75,9 +76,11 @@ public class ROMGangMember extends StdBehavior
 		}
 
 
-		if(victim==null) return;
+		if(victim==null)
+			return;
 		Item weapon=observer.fetchWieldedItem();
-		if(weapon==null) weapon=observer.myNaturalWeapon();
+		if(weapon==null)
+			weapon=observer.myNaturalWeapon();
 
 		/* say something, then raise hell */
 		switch (CMLib.dice().roll(1,7,-1))
@@ -114,7 +117,8 @@ public class ROMGangMember extends StdBehavior
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Tickable.TICKID_MOB) return true;
+		if(tickID!=Tickable.TICKID_MOB)
+			return true;
 		final MOB mob=(MOB)ticking;
 		tickTock--;
 		if(tickTock<=0)

@@ -65,7 +65,8 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		}
 		int price=CMath.s_int(s.substring(index+1).trim());
 
-		if(price<=0) price=100000;
+		if(price<=0)
+			price=100000;
 		return price;
 	}
 
@@ -87,7 +88,8 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	@Override
 	public String getOwnerName()
 	{
-		if(text().indexOf('/')<0) return "";
+		if(text().indexOf('/')<0)
+			return "";
 		return text().substring(0,text().indexOf('/'));
 	}
 
@@ -103,9 +105,11 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	public CMObject getOwnerObject()
 	{
 		final String owner=getOwnerName();
-		if(owner.length()==0) return null;
+		if(owner.length()==0)
+			return null;
 		final Clan C=CMLib.clans().getClan(owner);
-		if(C!=null) return C;
+		if(C!=null)
+			return C;
 		return CMLib.players().getLoadPlayer(owner);
 	}
 
@@ -121,9 +125,11 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	@Override
 	public int backTaxes()
 	{
-		if(text().indexOf('/')<0) return 0;
+		if(text().indexOf('/')<0)
+			return 0;
 		final int x=text().indexOf("TAX",text().indexOf('/'));
-		if(x<0) return 0;
+		if(x<0)
+			return 0;
 		final String s=CMParms.parse(text().substring(x+3)).firstElement();
 		return CMath.s_int(s.substring(0,s.length()-1));
 	}
@@ -139,7 +145,8 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	@Override
 	public boolean rentalProperty()
 	{
-		if(text().indexOf('/')<0) return text().indexOf("RENTAL")>=0;
+		if(text().indexOf('/')<0)
+			return text().indexOf("RENTAL")>=0;
 		return text().indexOf("RENTAL",text().indexOf('/'))>0;
 	}
 	@Override
@@ -184,7 +191,8 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg)) return false;
+		if(!super.okMessage(myHost,msg))
+			return false;
 		Prop_RoomForSale.robberyCheck(this,msg);
 		return true;
 	}

@@ -71,11 +71,15 @@ public class Beggar extends StdBehavior
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Tickable.TICKID_MOB) return true;
-		if(!canFreelyBehaveNormal(ticking)) return true;
-		if(CMSecurity.isDisabled(CMSecurity.DisFlag.EMOTERS)) return true;
+		if(tickID!=Tickable.TICKID_MOB)
+			return true;
+		if(!canFreelyBehaveNormal(ticking))
+			return true;
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.EMOTERS))
+			return true;
 		tickTock++;
-		if(tickTock<5) return true;
+		if(tickTock<5)
+			return true;
 		tickTock=0;
 		final MOB mob=(MOB)ticking;
 		for(int i=0;i<mob.location().numInhabitants();i++)

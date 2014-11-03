@@ -90,7 +90,8 @@ public class Prayer_AuraStrife extends Prayer
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
 		if((tickID==Tickable.TICKID_MOB)
 		&&(invoker()!=null)
 		&&(affected!=null)
@@ -110,11 +111,13 @@ public class Prayer_AuraStrife extends Prayer
 					if(mob.isInCombat())
 					{
 						int levels=invoker().charStats().getClassLevel("Templar");
-						if(levels<0) levels=invoker().phyStats().level();
+						if(levels<0)
+							levels=invoker().phyStats().level();
 						if(CMLib.dice().rollPercentage()>=levels)
 						{
 							final MOB newvictim=mob.location().fetchRandomInhabitant();
-							if(newvictim!=mob) mob.setVictim(newvictim);
+							if(newvictim!=mob)
+								mob.setVictim(newvictim);
 						}
 					}
 				}
@@ -135,9 +138,11 @@ public class Prayer_AuraStrife extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		final Room targetRoom=target.location();
-		if(targetRoom==null) return false;
+		if(targetRoom==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

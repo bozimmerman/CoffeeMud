@@ -84,8 +84,10 @@ public class Chant_SummonTree extends Chant_SummonPlants
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
-		if((PlantsLocation==null)||(littlePlants==null)) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if((PlantsLocation==null)||(littlePlants==null))
+			return false;
 		if(PlantsLocation.myResource()!=littlePlants.material())
 		{
 			oldMaterial=PlantsLocation.myResource();

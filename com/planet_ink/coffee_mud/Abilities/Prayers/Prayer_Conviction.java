@@ -52,16 +52,20 @@ public class Prayer_Conviction extends Prayer
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(affected==null) return;
-		if(!(affected instanceof MOB)) return;
-		if(invoker==null)return;
+		if(affected==null)
+			return;
+		if(!(affected instanceof MOB))
+			return;
+		if(invoker==null)
+			return;
 
 		final MOB mob=(MOB)affected;
 		if((mob.getWorshipCharID().length()>0)
 		&&(mob.getWorshipCharID().equals(invoker().getWorshipCharID())))
 		{
 			int xlvl=super.getXLEVELLevel(invoker());
-			if(xlvl>7) xlvl=7;
+			if(xlvl>7)
+				xlvl=7;
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(affectableStats.attackAdjustment()/(8-xlvl)));
 			affectableStats.setDamage(affectableStats.damage()+3+xlvl);
 			affectableStats.setArmor(affectableStats.armor()-(20+(3*xlvl)));
@@ -103,7 +107,8 @@ public class Prayer_Conviction extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(mob.getWorshipCharID().length()==0)
 		{
 			mob.tell(L("You must worship a god for this prayer to work."));

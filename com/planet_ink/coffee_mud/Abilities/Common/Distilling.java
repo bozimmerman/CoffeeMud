@@ -62,7 +62,8 @@ public class Distilling extends Cooking
 	@Override
 	public boolean mayICraft(final Item I)
 	{
-		if(I==null) return false;
+		if(I==null)
+			return false;
 		if(!super.mayBeCrafted(I))
 			return false;
 		if(I instanceof Drink)

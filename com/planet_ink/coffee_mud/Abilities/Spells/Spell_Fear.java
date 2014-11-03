@@ -48,7 +48,8 @@ public class Spell_Fear extends Spell
 	{
 		MOB M=null;
 		final MOB oldI=invoker;
-		if(affected instanceof MOB) M=(MOB)affected;
+		if(affected instanceof MOB)
+			M=(MOB)affected;
 		super.unInvoke();
 		if(M!=null)
 		{

@@ -72,7 +72,8 @@ public class WimpyAggressive extends Aggressive
 
 	public static void pickAWimpyFight(MOB observer, boolean mobKiller, boolean misBehave, String attackMsg, String zapStr)
 	{
-		if(!canFreelyBehaveNormal(observer)) return;
+		if(!canFreelyBehaveNormal(observer))
+			return;
 		final Room R=observer.location();
 		if(R!=null)
 		for(int i=0;i<R.numInhabitants();i++)
@@ -84,16 +85,20 @@ public class WimpyAggressive extends Aggressive
 			&&(CMLib.masking().maskCheck(zapStr,observer,false)))
 			{
 				startFight(observer,mob,mobKiller,misBehave,attackMsg);
-				if(observer.isInCombat()) break;
+				if(observer.isInCombat())
+					break;
 			}
 		}
 	}
 
 	public static void tickWimpyAggressively(Tickable ticking, boolean mobKiller, boolean misBehave, int tickID, String attackMsg, String zapStr)
 	{
-		if(tickID!=Tickable.TICKID_MOB) return;
-		if(ticking==null) return;
-		if(!(ticking instanceof MOB)) return;
+		if(tickID!=Tickable.TICKID_MOB)
+			return;
+		if(ticking==null)
+			return;
+		if(!(ticking instanceof MOB))
+			return;
 
 		pickAWimpyFight((MOB)ticking,mobKiller,misBehave,attackMsg,zapStr);
 	}
@@ -101,7 +106,8 @@ public class WimpyAggressive extends Aggressive
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID!=Tickable.TICKID_MOB) return true;
+		if(tickID!=Tickable.TICKID_MOB)
+			return true;
 		if((--tickDown)<0)
 		{
 			tickDown=tickWait;

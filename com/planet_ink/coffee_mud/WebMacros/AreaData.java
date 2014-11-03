@@ -218,7 +218,8 @@ public class AreaData extends StdWebMacro
 			return ""+(A instanceof GridZones);
 		}
 		final String last=httpReq.getUrlParameter("AREA");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 
 		if(last.length()>0)
 		{
@@ -229,9 +230,11 @@ public class AreaData extends StdWebMacro
 				if(parms.containsKey("HELP"))
 				{
 					StringBuilder s=CMLib.help().getHelpText("AREA_"+A.Name(),null,false);
-					if(s==null)    s=CMLib.help().getHelpText("AREAHELP_"+A.Name(),null,false);
+					if(s==null)
+						s=CMLib.help().getHelpText("AREAHELP_"+A.Name(),null,false);
 					int limit=78;
-					if(parms.containsKey("LIMIT")) limit=CMath.s_int(parms.get("LIMIT"));
+					if(parms.containsKey("LIMIT"))
+						limit=CMath.s_int(parms.get("LIMIT"));
 					str.append(helpHelp(s,limit));
 				}
 				if(parms.containsKey("CLIMATES"))
@@ -263,7 +266,8 @@ public class AreaData extends StdWebMacro
 						final String climstr=Places.CLIMATE_DESCS[i];
 						final int mask=(int)CMath.pow(2,i-1);
 						str.append("<OPTION VALUE="+mask);
-						if((climate>=0)&&((climate&mask)>0)) str.append(" SELECTED");
+						if((climate>=0)&&((climate&mask)>0))
+							str.append(" SELECTED");
 						str.append(">"+climstr);
 					}
 				}
@@ -290,7 +294,8 @@ public class AreaData extends StdWebMacro
 					for(int i=1;i<Area.THEME_PHRASE.length;i++)
 					{
 						str.append("<OPTION VALUE="+i);
-						if(i==CMath.s_int(level)) str.append(" SELECTED");
+						if(i==CMath.s_int(level))
+							str.append(" SELECTED");
 						str.append(">"+Area.THEME_PHRASE[i]);
 					}
 				}
@@ -343,7 +348,8 @@ public class AreaData extends StdWebMacro
 				if(parms.containsKey("CURRENCIES"))
 				{
 					str.append("<OPTION VALUE=\"\"");
-					if(A.getCurrency().length()==0) str.append(" SELECTED");
+					if(A.getCurrency().length()==0)
+						str.append(" SELECTED");
 					str.append(L(">Default Currency"));
 					for(int i=1;i<CMLib.beanCounter().getAllCurrencies().size();i++)
 					{
@@ -351,7 +357,8 @@ public class AreaData extends StdWebMacro
 						if(s.length()>0)
 						{
 							str.append("<OPTION VALUE=\""+s+"\"");
-							if(s.equalsIgnoreCase(A.getCurrency())) str.append(" SELECTED");
+							if(s.equalsIgnoreCase(A.getCurrency()))
+								str.append(" SELECTED");
 							str.append(">"+s);
 						}
 					}

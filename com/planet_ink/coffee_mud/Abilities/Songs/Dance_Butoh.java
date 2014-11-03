@@ -62,8 +62,10 @@ public class Dance_Butoh extends Dance
 			return false;
 
 		final MOB mob=(MOB)affected;
-		if(mob==null) return true;
-		if(invoker==null) return true;
+		if(mob==null)
+			return true;
+		if(invoker==null)
+			return true;
 		mob.curState().adjMana(adjustedLevel(invoker(),0)*4,mob.maxState());
 		return true;
 	}

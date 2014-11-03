@@ -66,7 +66,8 @@ public class GrinderAreas
 				if(behav.length()>0)
 				{
 					final Behavior B=CMClass.getBehavior(behav);
-					if(B==null) return "Unknown behavior '"+behav+"'.";
+					if(B==null)
+						return "Unknown behavior '"+behav+"'.";
 					B.setParms(theparm);
 					E.addBehavior(B);
 					B.startBehavior(E);
@@ -92,7 +93,8 @@ public class GrinderAreas
 				if(aff.length()>0)
 				{
 					final Ability B=CMClass.getAbility(aff);
-					if(B==null) return "Unknown Effect '"+aff+"'.";
+					if(B==null)
+						return "Unknown Effect '"+aff+"'.";
 					B.setMiscText(theparm);
 					P.addNonUninvokableEffect(B);
 				}
@@ -108,9 +110,11 @@ public class GrinderAreas
 	{
 		final Vector areasNeedingUpdates=new Vector();
 		final String last=httpReq.getUrlParameter("AREA");
-		if((last==null)||(last.length()==0)) return "Old area name not defined!";
+		if((last==null)||(last.length()==0))
+			return "Old area name not defined!";
 		Area A=CMLib.map().getArea(last);
-		if(A==null) return "Old Area not defined!";
+		if(A==null)
+			return "Old Area not defined!";
 		areasNeedingUpdates.addElement(A);
 
 		boolean redoAllMyDamnRooms=false;
@@ -224,12 +228,14 @@ public class GrinderAreas
 		}
 		// description
 		String desc=httpReq.getUrlParameter("DESCRIPTION");
-		if(desc==null)desc="";
+		if(desc==null)
+			desc="";
 		A.setDescription(CMLib.coffeeFilter().safetyFilter(desc));
 
 		// image
 		String img=httpReq.getUrlParameter("IMAGE");
-		if(img==null)img="";
+		if(img==null)
+			img="";
 		A.setImage(CMLib.coffeeFilter().safetyFilter(img));
 
 		// gridy
@@ -243,48 +249,57 @@ public class GrinderAreas
 
 		// author
 		String author=httpReq.getUrlParameter("AUTHOR");
-		if(author==null)author="";
+		if(author==null)
+			author="";
 		A.setAuthorID(CMLib.coffeeFilter().safetyFilter(author));
 
 		// currency
 		String currency=httpReq.getUrlParameter("CURRENCY");
-		if(currency==null)currency="";
+		if(currency==null)
+			currency="";
 		A.setCurrency(CMLib.coffeeFilter().safetyFilter(currency));
 
 		// SHOPPREJ
 		String SHOPPREJ=httpReq.getUrlParameter("SHOPPREJ");
-		if(SHOPPREJ==null)SHOPPREJ="";
+		if(SHOPPREJ==null)
+			SHOPPREJ="";
 		A.setPrejudiceFactors(CMLib.coffeeFilter().safetyFilter(SHOPPREJ));
 
 		// BUDGET
 		String BUDGET=httpReq.getUrlParameter("BUDGET");
-		if(BUDGET==null)BUDGET="";
+		if(BUDGET==null)
+			BUDGET="";
 		A.setBudget(CMLib.coffeeFilter().safetyFilter(BUDGET));
 
 		// DEVALRATE
 		String DEVALRATE=httpReq.getUrlParameter("DEVALRATE");
-		if(DEVALRATE==null)DEVALRATE="";
+		if(DEVALRATE==null)
+			DEVALRATE="";
 		A.setDevalueRate(CMLib.coffeeFilter().safetyFilter(DEVALRATE));
 
 		// INVRESETRATE
 		String INVRESETRATE=httpReq.getUrlParameter("INVRESETRATE");
-		if(INVRESETRATE==null)INVRESETRATE="0";
+		if(INVRESETRATE==null)
+			INVRESETRATE="0";
 		A.setInvResetRate(CMath.s_int(CMLib.coffeeFilter().safetyFilter(INVRESETRATE)));
 
 		// IGNOREMASK
 		String IGNOREMASK=httpReq.getUrlParameter("IGNOREMASK");
-		if(IGNOREMASK==null)IGNOREMASK="";
+		if(IGNOREMASK==null)
+			IGNOREMASK="";
 		A.setIgnoreMask(CMLib.coffeeFilter().safetyFilter(IGNOREMASK));
 
 
 		if(A instanceof AutoGenArea)
 		{
 			String AGXMLPATH=httpReq.getUrlParameter("AGXMLPATH");
-			if(AGXMLPATH==null)AGXMLPATH="";
+			if(AGXMLPATH==null)
+				AGXMLPATH="";
 			((AutoGenArea) A).setGeneratorXmlPath(CMLib.coffeeFilter().safetyFilter(AGXMLPATH));
 
 			String AGAUTOVAR=httpReq.getUrlParameter("AGAUTOVAR");
-			if(AGAUTOVAR==null)AGAUTOVAR="";
+			if(AGAUTOVAR==null)
+				AGAUTOVAR="";
 			((AutoGenArea) A).setAutoGenVariables(CMLib.coffeeFilter().safetyFilter(AGAUTOVAR));
 		}
 
@@ -352,9 +367,11 @@ public class GrinderAreas
 		}
 
 		String error=GrinderAreas.doAffects(A,httpReq,parms);
-		if(error.length()>0) return error;
+		if(error.length()>0)
+			return error;
 		error=GrinderAreas.doBehavs(A,httpReq,parms);
-		if(error.length()>0) return error;
+		if(error.length()>0)
+			return error;
 
 		if((redoAllMyDamnRooms)&&(allMyDamnRooms!=null))
 			CMLib.map().renameRooms(A,oldName,allMyDamnRooms);

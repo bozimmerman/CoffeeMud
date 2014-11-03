@@ -78,7 +78,8 @@ public class Chant_Feralness extends Chant
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
 		if((affected instanceof MOB)
 		&&(!Druid_ShapeShift.isShapeShifted((MOB)affected)))
 			unInvoke();
@@ -154,7 +155,8 @@ public class Chant_Feralness extends Chant
 				if(!Druid_ShapeShift.isShapeShifted(mob))
 				{
 					final Ability A=mob.fetchAbility("Druid_ShapeShift");
-					if(A!=null) A.invoke(mob,new Vector(),null,false,asLevel);
+					if(A!=null)
+						A.invoke(mob,new Vector(),null,false,asLevel);
 				}
 				if(!Druid_ShapeShift.isShapeShifted(mob))
 				{

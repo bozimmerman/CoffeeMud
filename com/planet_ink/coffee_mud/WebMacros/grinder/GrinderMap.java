@@ -98,7 +98,8 @@ public class GrinderMap extends GrinderFlatMap
 			{
 				xoffset = GR.xy[0];
 				if (debug) Log.sysOut("GR-REGRID", "xoffset set0: " + xoffset);
-				if((debug) && (GR.xy[0]>0) ) Log.sysOut("GR-REGRID", "positive GRx: " + GR.xy[0]);
+				if((debug) && (GR.xy[0]>0) )
+					Log.sysOut("GR-REGRID", "positive GRx: " + GR.xy[0]);
 			}
 			if (GR.xy[1] < yoffset)
 				yoffset = GR.xy[1];
@@ -285,7 +286,8 @@ public class GrinderMap extends GrinderFlatMap
 		for (int x = 0; x < areaMap.size(); x++)
 		{
 			final GrinderRoom GR = areaMap.get(x);
-			if(GR.xy==null) Log.errOut("GrinderMap",GR.roomID+" not assigned an XY!");
+			if(GR.xy==null)
+				Log.errOut("GrinderMap",GR.roomID+" not assigned an XY!");
 			if (GR.z < minZ)
 			{
 				if (debug) Log.sysOut("GR-PLACERS", "minZ changed: " + minZ + " to " + GR.z);
@@ -480,7 +482,8 @@ public class GrinderMap extends GrinderFlatMap
 					 "; left: 0px; top: 10px; visibility: show\">");
 		buf.append("<select name=\"layerSelect\" size=\"18\" onChange=\"showSelected()\">");
 		String MaPlayer=httpReq.getUrlParameter("MAPLAYER");
-		if(MaPlayer==null) MaPlayer="";
+		if(MaPlayer==null)
+			MaPlayer="";
 		for (int z = minZ; z <= maxZ; z++)
 		{
 			buf.append("<option value=\"MapLayer" + z + "\"");

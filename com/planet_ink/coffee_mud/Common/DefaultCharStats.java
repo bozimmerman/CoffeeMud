@@ -50,7 +50,8 @@ public class DefaultCharStats implements CharStats
 		try
 		{
 			final DefaultCharStats newStats=getClass().newInstance();
-			if(newStats.myRace==null) newStats.myRace=CMClass.getRace("StdRace");
+			if(newStats.myRace==null)
+				newStats.myRace=CMClass.getRace("StdRace");
 			return newStats;
 		}
 		catch(final Exception e)
@@ -175,7 +176,8 @@ public class DefaultCharStats implements CharStats
 			if(theClass.length()>0)
 			{
 				C=CMClass.getCharClass(theClass);
-				if(C==null) C=CMClass.getCharClass("StdCharClass");
+				if(C==null)
+					C=CMClass.getCharClass("StdCharClass");
 				classV.add(C);
 			}
 			x=classes.indexOf(';');
@@ -183,7 +185,8 @@ public class DefaultCharStats implements CharStats
 		if(classes.trim().length()>0)
 		{
 			C=CMClass.getCharClass(classes.trim());
-			if(C==null) C=CMClass.getCharClass("StdCharClass");
+			if(C==null)
+				C=CMClass.getCharClass("StdCharClass");
 			classV.add(C);
 		}
 		myClasses=classV.toArray(new CharClass[0]);
@@ -210,7 +213,8 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public String getMyClassesStr()
 	{
-		if(myClasses==null)    return "StdCharClass";
+		if(myClasses==null)
+			return "StdCharClass";
 		String classStr="";
 		for (final CharClass myClasse : myClasses)
 			classStr+=";"+myClasse.ID();
@@ -221,7 +225,8 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public String getMyLevelsStr()
 	{
-		if(myLevels==null) return "";
+		if(myLevels==null)
+			return "";
 		String levelStr="";
 		for (final Integer myLevel : myLevels)
 			levelStr+=";"+myLevel.intValue();
@@ -235,7 +240,8 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public int numClasses()
 	{
-		if(myClasses==null) return 0;
+		if(myClasses==null)
+			return 0;
 		return myClasses.length;
 	}
 	@Override
@@ -266,7 +272,8 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public String displayClassName()
 	{
-		if(displayClassName!=null) return displayClassName;
+		if(displayClassName!=null)
+			return displayClassName;
 		return getCurrentClass().name(getCurrentClassLevel());
 	}
 	@Override public void setDisplayClassLevel(String newLevel){displayClassLevel=newLevel;}
@@ -279,7 +286,8 @@ public class DefaultCharStats implements CharStats
 				return displayClassName()+" "+displayClassLevel;
 			return "level "+displayClassLevel+" "+displayClassName;
 		}
-		if(mob==null) return "";
+		if(mob==null)
+			return "";
 		final int classLevel=getClassLevel(getCurrentClass());
 		String levelStr=null;
 		if(classLevel>=mob.phyStats().level())
@@ -294,7 +302,8 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public String displayClassLevelOnly(MOB mob)
 	{
-		if(mob==null) return "";
+		if(mob==null)
+			return "";
 		if(displayClassLevel!=null)
 			return displayClassLevel;
 		final int classLevel=getClassLevel(getCurrentClass());
@@ -341,8 +350,10 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public String raceName()
 	{
-		if(raceName!=null) return raceName;
-		if(myRace!=null) return myRace.name();
+		if(raceName!=null)
+			return raceName;
+		if(myRace!=null)
+			return myRace.name();
 		return "MOB";
 	}
 
@@ -359,7 +370,8 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public int getClassLevel(String aClass)
 	{
-		if(myClasses==null)    return -1;
+		if(myClasses==null)
+			return -1;
 		for(int i=0;i<myClasses.length;i++)
 			if((myClasses[i]!=null)
 			&&(myClasses[i].ID().equals(aClass))
@@ -371,7 +383,8 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public int getClassLevel(CharClass aClass)
 	{
-		if((myClasses==null)||(aClass==null))    return -1;
+		if((myClasses==null)||(aClass==null))
+			return -1;
 		for(int i=0;i<myClasses.length;i++)
 			if((myClasses[i]!=null)
 			&&(myClasses[i].ID().equals(aClass.ID()))
@@ -383,7 +396,8 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public void setClassLevel(CharClass aClass, int level)
 	{
-		if(aClass==null) return;
+		if(aClass==null)
+			return;
 		if(myClasses==null)
 		{
 			myClasses=new CharClass[1];
@@ -444,7 +458,8 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public void setCurrentClass(CharClass aClass)
 	{
-		if(aClass==null) return;
+		if(aClass==null)
+			return;
 		if(((myClasses==null)||(myLevels==null))
 		||((numClasses()==1)&&(myClasses[0].ID().equals("StdCharClass"))))
 		{
@@ -507,7 +522,8 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public int getCurrentClassLevel()
 	{
-		if(myLevels==null) return -1;
+		if(myLevels==null)
+			return -1;
 		return myLevels[myLevels.length-1].intValue();
 	}
 
@@ -539,9 +555,11 @@ public class DefaultCharStats implements CharStats
 	public int getBodyPart(int racialPartNumber)
 	{
 		int num=getMyRace().bodyMask()[racialPartNumber];
-		if((num<0)||(bodyAlterations==null)) return num;
+		if((num<0)||(bodyAlterations==null))
+			return num;
 		num+=bodyAlterations[racialPartNumber];
-		if(num<0) return 0;
+		if(num<0)
+			return 0;
 		return num;
 	}
 
@@ -561,23 +579,27 @@ public class DefaultCharStats implements CharStats
 		bodyAlterations=null;
 		for(int i=0;i<getMyRace().bodyMask().length;i++)
 		{
-			if(V.size()<=i) break;
+			if(V.size()<=i)
+				break;
 			final int val=CMath.s_int(V.get(i));
 			final int num=getMyRace().bodyMask()[i];
-			if(num!=val) alterBodypart(i,val-num);
+			if(num!=val)
+				alterBodypart(i,val-num);
 		}
 	}
 
 	@Override
 	public int getBodypartAlteration(int racialPartNumber)
 	{
-		if(bodyAlterations==null) return 0;
+		if(bodyAlterations==null)
+			return 0;
 		return bodyAlterations[racialPartNumber];
 	}
 	@Override
 	public void alterBodypart(int racialPartNumber, int deviation)
 	{
-		if(bodyAlterations==null) bodyAlterations=new short[Race.BODY_PARTS];
+		if(bodyAlterations==null)
+			bodyAlterations=new short[Race.BODY_PARTS];
 		bodyAlterations[racialPartNumber]+=deviation;
 	}
 
@@ -587,7 +609,8 @@ public class DefaultCharStats implements CharStats
 		final int age=getStat(STAT_AGE);
 		int cat=Race.AGE_INFANT;
 		final int[] chart=getMyRace().getAgingChart();
-		if(age<chart[1]) return cat;
+		if(age<chart[1])
+			return cat;
 		while((cat<=Race.AGE_ANCIENT)&&(age>=chart[cat]))
 			cat++;
 		return cat-1;
@@ -597,13 +620,15 @@ public class DefaultCharStats implements CharStats
 	public String ageName()
 	{
 		final int cat=ageCategory();
-		if(cat<Race.AGE_ANCIENT) return Race.AGE_DESCS[cat];
+		if(cat<Race.AGE_ANCIENT)
+			return Race.AGE_DESCS[cat];
 		int age=getStat(STAT_AGE);
 		final int[] chart=getMyRace().getAgingChart();
 		final int diff=chart[Race.AGE_ANCIENT]-chart[Race.AGE_VENERABLE];
 		age=age-chart[Race.AGE_ANCIENT];
 		final int num=(diff>0)?(int)Math.abs(Math.floor(CMath.div(age,diff))):0;
-		if(num<=0) return Race.AGE_DESCS[cat];
+		if(num<=0)
+			return Race.AGE_DESCS[cat];
 		return Race.AGE_DESCS[cat]+" "+CMath.convertToRoman(num);
 	}
 
@@ -811,7 +836,8 @@ public class DefaultCharStats implements CharStats
 		{
 			final int baseMax=CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
 			int currMax=getStat(CharStats.CODES.toMAXBASE(abilityCode))+baseMax;
-			if(currMax<=0) currMax=1;
+			if(currMax<=0)
+				currMax=1;
 			int curStat=getStat(abilityCode);
 			if(curStat > currMax*7)
 			{
@@ -867,7 +893,8 @@ public class DefaultCharStats implements CharStats
 	public String getStat(String abilityName)
 	{
 		final int dex=CMParms.indexOfIgnoreCase(getStatCodes(),abilityName);
-		if(dex>=0) return Integer.toString(getStat(dex));
+		if(dex>=0)
+			return Integer.toString(getStat(dex));
 
 		final String[] DESCS=CODES.DESCS();
 		for(final int i : CharStats.CODES.ALLCODES())

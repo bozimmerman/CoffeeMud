@@ -72,7 +72,8 @@ public class Sit extends StdCommand
 			if(E instanceof MOB)
 			{
 				final Command C=CMClass.getCommand("Mount");
-				if(C!=null) return C.execute(mob,commands,metaFlags);
+				if(C!=null)
+					return C.execute(mob,commands,metaFlags);
 			}
 		}
 		String mountStr=null;

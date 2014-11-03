@@ -134,7 +134,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 	@Override
 	public String clearWebMacros(String s)
 	{
-		if(s.length()==0) return "";
+		if(s.length()==0)
+			return "";
 		return clearWebMacros(new StringBuffer(s));
 	}
 
@@ -175,7 +176,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 	@Override
 	public String clearWebMacros(StringBuffer s)
 	{
-		if(s.length()==0) return "";
+		if(s.length()==0)
+			return "";
 		for(int i=0;i<s.length();i++)
 		{
 			if(s.charAt(i)=='@')
@@ -198,11 +200,13 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 					{
 						final int x=foundMacro.indexOf('?');
 						final int len=foundMacro.length();
-						if(x>=0) foundMacro=foundMacro.substring(0,x);
+						if(x>=0)
+							foundMacro=foundMacro.substring(0,x);
 						if(foundMacro!=null)
 						{
 							final WebMacro W=CMClass.getWebMacro(foundMacro.toUpperCase());
-							if(W!=null) s.replace(i,i+len+2,foundMacro);
+							if(W!=null)
+								s.replace(i,i+len+2,foundMacro);
 						}
 					}
 				}
@@ -225,7 +229,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		&&(processStartTime[0]>0)
 		&&(System.currentTimeMillis()-processStartTime[0])>(120*1000))
 		{
-			if(debugMacros) Log.infoOut(Thread.currentThread().getName(),"Encountered TIMEOUT!");
+			if(debugMacros)
+				Log.infoOut(Thread.currentThread().getName(),"Encountered TIMEOUT!");
 			return new StringBuffer("");
 		}
 		try
@@ -237,14 +242,16 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 					String foundMacro=parseFoundMacro(s,i,lastFoundMacro,false);
 					if((foundMacro!=null)&&(foundMacro.length()>0))
 					{
-						if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Found macro: "+foundMacro);
+						if(debugMacros)
+							Log.debugOut("ProcessHTTPRequest", "Found macro: "+foundMacro);
 						if(foundMacro.startsWith("if?")||foundMacro.startsWith("IF?"))
 						{
 							final int l=foundMacro.length()+2;
 							final int v=myEndif(s,i+l,lastFoundMacro);
 							if(v<0)
 							{
-								if(debugMacros) Log.debugOut("ProcessHTTPRequest", "if without endif");
+								if(debugMacros)
+									Log.debugOut("ProcessHTTPRequest", "if without endif");
 								s.replace(i,i+l,"[if without endif]");
 							}
 							else
@@ -259,12 +266,15 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 										foundMacro=foundMacro.substring(1);
 										compare="false";
 									}
-									if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Found IF macro: "+foundMacro);
+									if(debugMacros)
+										Log.debugOut("ProcessHTTPRequest", "Found IF macro: "+foundMacro);
 									final String q=runMacro(request,foundMacro,lastFoundMacro,isAdminServer);
-									if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Ran IF macro: "+foundMacro+"="+q);
+									if(debugMacros)
+										Log.debugOut("ProcessHTTPRequest", "Ran IF macro: "+foundMacro+"="+q);
 									if((q!=null)&&(q.equalsIgnoreCase(compare)))
 									{
-										if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Result IF macro: TRUE");
+										if(debugMacros)
+											Log.debugOut("ProcessHTTPRequest", "Result IF macro: TRUE");
 										if(v2>=0)
 											s.replace(v2,v+7,"");
 										else
@@ -273,7 +283,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 									}
 									else
 									{
-										if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Result IF macro: FALSE");
+										if(debugMacros)
+											Log.debugOut("ProcessHTTPRequest", "Result IF macro: FALSE");
 										if(v2>=0)
 											s.replace(i,v2+6,"");
 										else
@@ -282,7 +293,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 								}
 								catch (final HTTPRedirectException e)
 								{
-									if(debugMacros) Log.debugOut("ProcessHTTPRequest", "if exception: "+e.getMessage());
+									if(debugMacros)
+										Log.debugOut("ProcessHTTPRequest", "if exception: "+e.getMessage());
 									redirectTo = e.getMessage();
 								}
 							}
@@ -400,7 +412,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 								&&(processStartTime[0]>0)
 								&&(System.currentTimeMillis()-processStartTime[0])>(120*1000))
 								{
-									if(debugMacros) Log.infoOut(Thread.currentThread().getName(),"Encountered TIMEOUT!");
+									if(debugMacros)
+										Log.infoOut(Thread.currentThread().getName(),"Encountered TIMEOUT!");
 									return new StringBuffer("");
 								}
 							}
@@ -421,11 +434,14 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 							{
 								final String s2=s.substring(i+foundMacro.length()+2,v);
 								s.replace(i,v+6,"");
-								if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Found FOR macro: "+foundMacro);
+								if(debugMacros)
+									Log.debugOut("ProcessHTTPRequest", "Found FOR macro: "+foundMacro);
 								final String varName=forCond.substring(0,fc).trim().toUpperCase();
 								String q=runMacro(request,forCond.substring(fc+1).trim(),lastFoundMacro,isAdminServer);
-								if(q==null) q=forCond.substring(fc+1).trim();
-								if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Ran FOR macro: "+foundMacro+"="+q);
+								if(q==null)
+									q=forCond.substring(fc+1).trim();
+								if(debugMacros)
+									Log.debugOut("ProcessHTTPRequest", "Ran FOR macro: "+foundMacro+"="+q);
 								int ldex=i;
 								String s3=" ";
 								List<String> set;
@@ -453,7 +469,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 								&&(processStartTime[0]>0)
 								&&(System.currentTimeMillis()-processStartTime[0])>(120*1000))
 								{
-									if(debugMacros) Log.infoOut(Thread.currentThread().getName(),"Encountered TIMEOUT!");
+									if(debugMacros)
+										Log.infoOut(Thread.currentThread().getName(),"Encountered TIMEOUT!");
 									return new StringBuffer("");
 								}
 							}
@@ -462,7 +479,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						else
 						if(foundMacro.equalsIgnoreCase("break"))
 						{
-							if(debugMacros) Log.infoOut(Thread.currentThread().getName(),"Encountered BREAK! at "+i);
+							if(debugMacros)
+								Log.infoOut(Thread.currentThread().getName(),"Encountered BREAK! at "+i);
 							return new StringBuffer("");
 						}
 						else
@@ -508,7 +526,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 							{
 								final int l=foundMacro.length();
 								final String q=runMacro(request, foundMacro,lastFoundMacro, isAdminServer);
-								if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Ran Macro: "+foundMacro+"="+q);
+								if(debugMacros)
+									Log.debugOut("ProcessHTTPRequest", "Ran Macro: "+foundMacro+"="+q);
 								if (q != null)
 								{
 									if((debugMacros)&&(q.toUpperCase().indexOf("@BREAK@")>=0))

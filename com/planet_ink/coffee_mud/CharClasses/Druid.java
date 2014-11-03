@@ -254,7 +254,8 @@ public class Druid extends StdCharClass
 		}
 		for(int i=0;i<numChants;i++)
 		{
-			if(grantable.size()==0) break;
+			if(grantable.size()==0)
+				break;
 			final String AID=(String)grantable.elementAt(CMLib.dice().roll(1,grantable.size(),-1));
 			if(AID!=null)
 			{
@@ -300,7 +301,8 @@ public class Druid extends StdCharClass
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
+		if(!(myHost instanceof MOB))
+			return super.okMessage(myHost,msg);
 		final MOB myChar=(MOB)myHost;
 		if(!super.okMessage(myChar, msg))
 			return false;
@@ -425,7 +427,8 @@ public class Druid extends StdCharClass
 									 Ability skill,
 									 int duration)
 	{
-		if(myChar==null) return duration;
+		if(myChar==null)
+			return duration;
 		if(((skill.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
 		&&(myChar.charStats().getCurrentClass().ID().equals(ID()))
 		&&(!skill.ID().equals("FoodPrep"))

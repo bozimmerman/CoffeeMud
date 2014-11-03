@@ -78,7 +78,8 @@ public class Learn extends StdCommand
 			final Vector CC=CMParms.parse(sayTo+" "+teacherName+"I would like to be trained in "+what);
 			mob.doCommand(CC,metaFlags);
 			final Command C=CMClass.getCommand("TRAIN");
-			if(C!=null) C.execute(mob, commands,metaFlags);
+			if(C!=null)
+				C.execute(mob, commands,metaFlags);
 			return true;
 		}
 		if(CMClass.findAbility(what, mob)!=null)
@@ -118,7 +119,8 @@ public class Learn extends StdCommand
 				final Vector CC=CMParms.parse(sayTo+" "+teacherName+"I would like to be trained in "+what);
 				mob.doCommand(CC,metaFlags);
 				final Command C=CMClass.getCommand("TRAIN");
-				if(C!=null) C.execute(mob, commands,metaFlags);
+				if(C!=null)
+					C.execute(mob, commands,metaFlags);
 				return true;
 
 			}

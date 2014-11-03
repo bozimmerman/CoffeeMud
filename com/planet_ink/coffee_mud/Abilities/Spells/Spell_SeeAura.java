@@ -47,7 +47,8 @@ public class Spell_SeeAura extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(target==mob)
 		{
 			mob.tell(L("Um, you could just enter SCORE."));

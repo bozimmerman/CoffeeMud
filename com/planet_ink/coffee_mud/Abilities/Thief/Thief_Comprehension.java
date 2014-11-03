@@ -118,7 +118,8 @@ public class Thief_Comprehension extends ThiefSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)

@@ -73,7 +73,8 @@ public class Thief_Evesdrop extends ThiefSkill
 			if(targMsg != null)
 			{
 				final int x=targMsg.toUpperCase().indexOf("TELL(S) YOU");
-				if(x>=0) targMsg=targMsg.substring(0,x+8)+affected.Name()+targMsg.substring(x+11);
+				if(x>=0)
+					targMsg=targMsg.substring(0,x+8)+affected.Name()+targMsg.substring(x+11);
 			}
 			msg2.modify(msg.source(),invoker(),msg.tool(),msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),targMsg,CMMsg.NO_EFFECT,null);
 			invoker().executeMsg(invoker(),msg2);
@@ -100,7 +101,8 @@ public class Thief_Evesdrop extends ThiefSkill
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(target==mob)
 		{
 			mob.tell(L("You cannot evesdrop on yourself?!"));

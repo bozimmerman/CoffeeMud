@@ -52,7 +52,8 @@ public class Prayer_CurseItem extends Prayer
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_EVIL);
 		final int xlvl=super.getXLEVELLevel(invoker());
 		if(affected instanceof MOB)
@@ -88,8 +89,10 @@ public class Prayer_CurseItem extends Prayer
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if(affected==null) return true;
-		if(!(affected instanceof Item)) return true;
+		if(affected==null)
+			return true;
+		if(!(affected instanceof Item))
+			return true;
 
 		final Item item=(Item)affected;
 
@@ -134,7 +137,8 @@ public class Prayer_CurseItem extends Prayer
 				Item I=Prayer_Curse.getSomething((MOB)target,true);
 				if(I==null)
 					I=Prayer_Curse.getSomething((MOB)target,false);
-				if(I==null) return Ability.QUALITY_INDIFFERENT;
+				if(I==null)
+					return Ability.QUALITY_INDIFFERENT;
 			}
 		}
 		return super.castingQuality(mob,target);
@@ -152,7 +156,8 @@ public class Prayer_CurseItem extends Prayer
 		if(target==null)
 			target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

@@ -54,14 +54,16 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 	protected String getStrippedRoomID(String roomID)
 	{
 		final int x=roomID.indexOf('#');
-		if(x<0) return null;
+		if(x<0)
+			return null;
 		return roomID.substring(x);
 	}
 
 	protected String convertToMyArea(String roomID)
 	{
 		final String strippedID=getStrippedRoomID(roomID);
-		if(strippedID==null) return null;
+		if(strippedID==null)
+			return null;
 		return Name()+strippedID;
 	}
 
@@ -70,8 +72,10 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		if((parentArea!=null)&&(parentArea.get()!=null))
 			return parentArea.get();
 		final int x=Name().indexOf('_');
-		if(x<0) return null;
-		if(!CMath.isNumber(Name().substring(0,x))) return null;
+		if(x<0)
+			return null;
+		if(!CMath.isNumber(Name().substring(0,x)))
+			return null;
 		final Area parentA = CMLib.map().getArea(Name().substring(x+1));
 		if((parentA==null)
 		||(!CMath.bset(parentA.flags(),Area.FLAG_INSTANCE_PARENT))
@@ -307,7 +311,8 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 						for(int v=V.size()-1;v>=0;v--)
 						{
 							final WeakReference<MOB> wmob=V.get(v);
-							if(wmob==null) continue;
+							if(wmob==null)
+								continue;
 							final MOB M=wmob.get();
 							if(grp.contains(M))
 							{
@@ -377,7 +382,8 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 									for(int v=0;v<V.size();v++)
 									{
 										String s = V.get(v);
-										if(s.startsWith("$")) s=s.substring(1).trim();
+										if(s.startsWith("$"))
+											s=s.substring(1).trim();
 										final XMLLibrary.XMLpiece insertPiece =(XMLLibrary.XMLpiece)definedIDs.get(s.toUpperCase().trim());
 										if(insertPiece == null)
 											continue;
@@ -405,7 +411,8 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					final Object[] scriptObjs = new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
 					final List<Double> levels=new ArrayList<Double>();
 					final Set<MOB> followers=msg.source().getGroupMembers(new HashSet<MOB>());
-					if(!followers.contains(msg.source())) followers.add(msg.source());
+					if(!followers.contains(msg.source()))
+						followers.add(msg.source());
 					double totalLevels=0.0;
 					for(final MOB M : followers)
 					{
@@ -489,7 +496,8 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					if(R!=null)
 					{
 						Exit E=R.getExitInDir(Directions.getOpDirectionCode(direction));
-						if(E==null) E = CMClass.getExit("Open");
+						if(E==null)
+							E = CMClass.getExit("Open");
 						final int opDir=Directions.getOpDirectionCode(direction);
 						if(R.getRoomInDir(opDir)!=null)
 							msg.source().tell(L("An error has caused the following exit to be one-way."));
@@ -548,14 +556,16 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
-			if(code.equalsIgnoreCase(MYCODES[i])) return i;
+			if(code.equalsIgnoreCase(MYCODES[i]))
+				return i;
 		return -1;
 	}
 	private static String[] codes=null;
 	@Override
 	public String[] getStatCodes()
 	{
-		if(codes!=null) return codes;
+		if(codes!=null)
+			return codes;
 		final String[] MYCODES=CMProps.getStatCodesList(StdAutoGenInstance.MYCODES,this);
 		final String[] superCodes=STDAREACODES;
 		codes=new String[superCodes.length+MYCODES.length];
@@ -569,7 +579,8 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof StdAutoGenInstance)) return false;
+		if(!(E instanceof StdAutoGenInstance))
+			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))

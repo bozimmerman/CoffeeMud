@@ -46,7 +46,8 @@ public class ClanApply extends StdCommand
 	{
 		commands.setElementAt(getAccessWords()[0],0);
 		final String clanName=CMParms.combine(commands,1);
-		if(mob.isMonster()) return false;
+		if(mob.isMonster())
+			return false;
 		final StringBuffer msg=new StringBuffer("");
 		if(clanName.length()>0)
 		{

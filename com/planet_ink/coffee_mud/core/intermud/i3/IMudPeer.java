@@ -65,7 +65,8 @@ public class IMudPeer implements PersistentPeer
 			try
 			{
 				final CMFile F=new CMFile("resources/ppeer."+myID,null);
-				if(!F.exists()) return;
+				if(!F.exists())
+					return;
 
 				final ObjectInputStream in=new ObjectInputStream(new ByteArrayInputStream(F.raw()));
 				Object newobj;

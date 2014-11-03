@@ -48,7 +48,8 @@ public class Prayer_RemoveDeathMark extends Prayer implements MendingSkill
 	@Override
 	public boolean supportsMending(Physical item)
 	{
-		if(!(item instanceof MOB)) return false;
+		if(!(item instanceof MOB))
+			return false;
 		return (item.fetchEffect("Thief_Mark")!=null)||(item.fetchEffect("Thief_ContractHit")!=null);
 	}
 
@@ -70,7 +71,8 @@ public class Prayer_RemoveDeathMark extends Prayer implements MendingSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -78,9 +80,11 @@ public class Prayer_RemoveDeathMark extends Prayer implements MendingSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		final Hashtable remove=new Hashtable();
 		Ability E=target.fetchEffect("Thief_Mark");
-		if(E!=null) remove.put(E,target);
+		if(E!=null)
+			remove.put(E,target);
 		E=target.fetchEffect("Thief_ContractHit");
-		if(E!=null) remove.put(E,target);
+		if(E!=null)
+			remove.put(E,target);
 		for(final Enumeration e=CMLib.players().players();e.hasMoreElements();)
 		{
 			final MOB M=(MOB)e.nextElement();

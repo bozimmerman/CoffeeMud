@@ -44,7 +44,8 @@ public class Song_Blasting extends Song
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(invoker==null) return;
+		if(invoker==null)
+			return;
 
 		affectableStats.setDamage(affectableStats.damage()+1+(adjustedLevel(invoker(),0)/2));
 	}

@@ -802,8 +802,10 @@ public interface CharStats extends CMCommon, Modifiable
 		{
 			super();
 			final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
-			if(insts==null) insts=new CODES[256];
-			if(insts[c]==null) insts[c]=this;
+			if(insts==null)
+				insts=new CODES[256];
+			if(insts[c]==null)
+				insts[c]=this;
 
 			final String[][] addExtra = CMProps.instance().getStrsStarting("ADDCHARSTAT_");
 			final String[][] repExtra = CMProps.instance().getStrsStarting("REPLACECHARSTAT_");
@@ -839,7 +841,8 @@ public interface CharStats extends CMCommon, Modifiable
 					final String repStat=stat;
 					stat=type;
 					oldStatCode=CMParms.indexOf(DEFAULT_STAT_NAMES, repStat);
-					if(oldStatCode<0) oldStatCode=CMParms.indexOf(DEFAULT_STAT_DESCS, repStat);
+					if(oldStatCode<0)
+						oldStatCode=CMParms.indexOf(DEFAULT_STAT_DESCS, repStat);
 					if(oldStatCode>=0)
 						type="REPLACE";
 					else
@@ -885,7 +888,8 @@ public interface CharStats extends CMCommon, Modifiable
 		public static CODES instance()
 		{
 			CODES c=insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];
-			if(c==null) c=new CODES();
+			if(c==null)
+				c=new CODES();
 			return c;
 		}
 		public static void reset() {
@@ -1085,7 +1089,8 @@ public interface CharStats extends CMCommon, Modifiable
 				||(name.equalsIgnoreCase(abbr(i))))
 					return i;
 			}
-			if(exactOnly) return -1;
+			if(exactOnly)
+				return -1;
 			for(int i=0;i<total();i++)
 			{
 				if((name(i).toLowerCase().startsWith(name))||(desc(i).toLowerCase().startsWith(name)))

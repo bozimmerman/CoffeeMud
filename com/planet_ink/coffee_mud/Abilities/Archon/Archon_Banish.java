@@ -55,8 +55,10 @@ public class Archon_Banish extends ArchonSkill
 
 	protected String timeRemaining()
 	{
-		if(releaseTime<=0) return "indefinitely";
-		if(releaseTime<System.currentTimeMillis()) return "until any second now.";
+		if(releaseTime<=0)
+			return "indefinitely";
+		if(releaseTime<System.currentTimeMillis())
+			return "until any second now.";
 		return "for another "+CMLib.english().returnTime(releaseTime-System.currentTimeMillis(),0);
 	}
 
@@ -82,8 +84,10 @@ public class Archon_Banish extends ArchonSkill
 			prisonRoom.setDisplayText(L("The Hall of Lost Souls"));
 			prisonRoom.setRoomID("");
 			final Ability A2=CMClass.getAbility("Prop_HereSpellCast");
-			if(A2!=null) A2.setMiscText("Spell_Hungerless;Spell_Thirstless");
-			if(A2!=null) prisonRoom.addNonUninvokableEffect(A2);
+			if(A2!=null)
+				A2.setMiscText("Spell_Hungerless;Spell_Thirstless");
+			if(A2!=null)
+				prisonRoom.addNonUninvokableEffect(A2);
 		}
 		for(final int dir : Directions.CODES())
 		{
@@ -106,12 +110,15 @@ public class Archon_Banish extends ArchonSkill
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
 		final Room room=prison();
 		if((ticking instanceof MOB)&&(!room.isInhabitant((MOB)ticking)))
 			room.bringMobHere((MOB)ticking,false);
-		if(releaseTime<=0) return true;
-		if(releaseTime>System.currentTimeMillis()) return true;
+		if(releaseTime<=0)
+			return true;
+		if(releaseTime>System.currentTimeMillis())
+			return true;
 		unInvoke();
 		return false;
 	}
@@ -243,7 +250,8 @@ public class Archon_Banish extends ArchonSkill
 			myPrison = null;
 
 		final MOB target=getTargetAnywhere(mob,commands,givenTarget,false,true,false);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		Archon_Banish A=(Archon_Banish)target.fetchEffect(ID());
 		if(A!=null)
@@ -266,7 +274,8 @@ public class Archon_Banish extends ArchonSkill
 			{
 				A=(Archon_Banish)copyOf();
 				String prisonID="";
-				if(myPrison!=null) prisonID=CMLib.map().getExtendedRoomID(myPrison);
+				if(myPrison!=null)
+					prisonID=CMLib.map().getExtendedRoomID(myPrison);
 				A.setMiscText(prisonID+"<P>"+time);
 				target.addNonUninvokableEffect(A);
 				A=(Archon_Banish)target.fetchEffect(ID());

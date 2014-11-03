@@ -49,9 +49,12 @@ public class Song_Disgust extends Song
 			return false;
 
 		final MOB mob=(MOB)affected;
-		if(mob==null) return true;
-		if(mob==invoker) return true;
-		if(invoker==null) return true;
+		if(mob==null)
+			return true;
+		if(mob==invoker)
+			return true;
+		if(invoker==null)
+			return true;
 		final Room room=invoker.location();
 		if((!mob.isInCombat())&&(room!=null))
 		{

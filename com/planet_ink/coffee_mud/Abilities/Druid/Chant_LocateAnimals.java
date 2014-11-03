@@ -108,7 +108,8 @@ public class Chant_LocateAnimals extends Chant
 
 	public MOB animalHere(Room room)
 	{
-		if(room==null) return null;
+		if(room==null)
+			return null;
 		for(int i=0;i<room.numInhabitants();i++)
 		{
 			final MOB mob=room.fetchInhabitant(i);

@@ -136,7 +136,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 	@Override
 	public boolean mayICraft(final Item I)
 	{
-		if(I==null) return false;
+		if(I==null)
+			return false;
 		if(!super.mayBeCrafted(I))
 			return false;
 		if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
@@ -162,7 +163,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
-		if(!super.canMend(mob,E,quiet)) return false;
+		if(!super.canMend(mob,E,quiet))
+			return false;
 		if((!(E instanceof Item))||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
@@ -256,7 +258,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			messedUp=false;
 			final Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
-			if(!canMend(mob,buildingI,false)) return false;
+			if(!canMend(mob,buildingI,false))
+				return false;
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
@@ -301,11 +304,13 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
-			if(componentsFoundList==null) return false;
+			if(componentsFoundList==null)
+				return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
 			woodRequired=adjustWoodRequired(woodRequired,mob);
 
-			if(amount>woodRequired) woodRequired=amount;
+			if(amount>woodRequired)
+				woodRequired=amount;
 			final int[] pm={RawMaterial.MATERIAL_WOODEN};
 			final String misctype=foundRecipe.get(RCP_MISCTYPE);
 			bundling=misctype.equalsIgnoreCase("BUNDLE");
@@ -315,7 +320,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 												false,
 												parsedVars.autoGenerate,
 												null);
-			if(data==null) return false;
+			if(data==null)
+				return false;
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
@@ -350,7 +356,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			final long canContain=getContainerType(foundRecipe.get(RCP_CONTAINMASK));
 			final String capacity=foundRecipe.get(RCP_CAPACITY);
 			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
-			if(bundling) buildingI.setBaseValue(lostValue);
+			if(bundling)
+				buildingI.setBaseValue(lostValue);
 			addSpells(buildingI,spell);
 			key=null;
 			if(buildingI instanceof Rideable)

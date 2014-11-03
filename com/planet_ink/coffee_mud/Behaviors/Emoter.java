@@ -123,7 +123,8 @@ public class Emoter extends ActiveTicker
 
 	protected List<EmoteObj> parseEmotes()
 	{
-		if(emotes!=null) return emotes;
+		if(emotes!=null)
+			return emotes;
 		broadcast=false;
 		emoteType=EMOTE_TYPE.EMOTE_VISUAL;
 		emotes=new Vector<EmoteObj>();
@@ -161,7 +162,8 @@ public class Emoter extends ActiveTicker
 				{
 					if(emoteType==EMOTE_TYPE.EMOTE_SMELL)
 					{
-						if(smells==null) smells=new Vector();
+						if(smells==null)
+							smells=new Vector();
 						smells.add(new EmoteObj(emoteType,thisEmote,broadcast));
 					}
 					emotes.add(new EmoteObj(emoteType,thisEmote,broadcast));
@@ -216,8 +218,10 @@ public class Emoter extends ActiveTicker
 		if(inroomIDs.size()>0)
 		{
 			final String ID=CMLib.map().getExtendedRoomID(room).toUpperCase();
-			if(ID.length()==0) return false;
-			if(inroomIDs.contains(ID)) return true;
+			if(ID.length()==0)
+				return false;
+			if(inroomIDs.contains(ID))
+				return true;
 			for(final String roomID : inroomIDs)
 				if(ID.endsWith(roomID))
 					return true;
@@ -232,23 +236,28 @@ public class Emoter extends ActiveTicker
 							 MOB emoteTo,
 							 boolean Wrapper)
 	{
-		if(room==null) return;
-		if(!inRoom(room)) return;
+		if(room==null)
+			return;
+		if(!inRoom(room))
+			return;
 		CMMsg msg;
 		final Room oldLoc=emoter.location();
 		String str=emote.msg;
-		if(emoter.location()!=room) emoter.setLocation(room);
+		if(emoter.location()!=room)
+			emoter.setLocation(room);
 		if(emote.type==EMOTE_TYPE.EMOTE_SOCIAL)
 		{
 			Social S=CMLib.socials().fetchSocial(str,true);
-			if(S==null) S=CMLib.socials().fetchSocial(str,false);
+			if(S==null)
+				S=CMLib.socials().fetchSocial(str,false);
 			if(S!=null)
 			{
 				S.invoke(emoter,CMParms.parse(str),emoteTo,false);
 				return;
 			}
 		}
-		if(Wrapper) str="^E<S-NAME> "+str+" ^?";
+		if(Wrapper)
+			str="^E<S-NAME> "+str+" ^?";
 		if(emoteTo!=null)
 		{
 			emoteTo.tell(emoter,emoteTo,null,str);
@@ -263,20 +272,24 @@ public class Emoter extends ActiveTicker
 					switch(emote.type)
 					{
 					case EMOTE_VISUAL:
-						if(CMLib.flags().canBeSeenBy(emoter,M))	M.executeMsg(M,msg);
+						if(CMLib.flags().canBeSeenBy(emoter,M))
+							M.executeMsg(M,msg);
 						break;
 					case EMOTE_SOUND:
-						if(CMLib.flags().canBeHeardSpeakingBy(emoter,M)) M.executeMsg(M,msg);
+						if(CMLib.flags().canBeHeardSpeakingBy(emoter,M))
+							M.executeMsg(M,msg);
 						break;
 					case EMOTE_SMELL:
-						if(CMLib.flags().canSmell(M)) M.executeMsg(M,msg);
+						if(CMLib.flags().canSmell(M))
+							M.executeMsg(M,msg);
 						break;
 					case EMOTE_SOCIAL:
 						// handled above
 						break;
 					}
 			}
-		if(oldLoc!=null) emoter.setLocation(oldLoc);
+		if(oldLoc!=null)
+			emoter.setLocation(oldLoc);
 	}
 
 	@Override
@@ -316,7 +329,8 @@ public class Emoter extends ActiveTicker
 			}
 
 			final Room room=getBehaversRoom(ticking);
-			if(room==null) return true;
+			if(room==null)
+				return true;
 			boolean killEmoter=false;
 			if(ticking instanceof MOB)
 			{
@@ -344,7 +358,8 @@ public class Emoter extends ActiveTicker
 				else
 					emoter.setName(name);
 			}
-			if(emoter==null) return true;
+			if(emoter==null)
+				return true;
 			emoteHere(room,emoter,emote,null,true);
 
 			if(emote.broadcast)
@@ -368,7 +383,8 @@ public class Emoter extends ActiveTicker
 					}
 				}
 			}
-			if(killEmoter) emoter.destroy();
+			if(killEmoter)
+				emoter.destroy();
 		}
 		return true;
 	}

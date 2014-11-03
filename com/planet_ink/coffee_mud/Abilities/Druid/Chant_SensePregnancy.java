@@ -49,7 +49,8 @@ public class Chant_SensePregnancy extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -72,7 +73,8 @@ public class Chant_SensePregnancy extends Chant
 				{
 					String s=A.displayText();
 					if(s.startsWith("(")) s=s.substring(1);
-					if(s.endsWith(")")) s=s.substring(0,s.length()-1);
+					if(s.endsWith(")")
+						) s=s.substring(0,s.length()-1);
 					mob.tell(L("@x1 is @x2.",target.name(mob),s));
 				}
 			}

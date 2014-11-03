@@ -43,10 +43,12 @@ public class CommandJournal extends StdCommand
 	@Override
 	public String[] getAccessWords()
 	{
-		if(access!=null) return access;
+		if(access!=null)
+			return access;
 		synchronized(this)
 		{
-			if(access!=null) return access;
+			if(access!=null)
+				return access;
 
 			access=new String[CMLib.journals().getNumCommandJournals()];
 			int x=0;
@@ -84,7 +86,8 @@ public class CommandJournal extends StdCommand
 		final int count=CMath.s_int(second);
 		final List<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(journalID);
 		int size=0;
-		if(journal!=null) size=journal.size();
+		if(journal!=null)
+			size=journal.size();
 		if(size<=0)
 		{
 			mob.tell(L("There are no @x1 listed at this time.",journalWord));
@@ -154,7 +157,8 @@ public class CommandJournal extends StdCommand
 		{
 			final List<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(journalID);
 			int size=0;
-			if(journal!=null) size=journal.size();
+			if(journal!=null)
+				size=journal.size();
 			if(size<=0)
 				mob.tell(L("There are no @x1 listed at this time.",journalWord));
 			else

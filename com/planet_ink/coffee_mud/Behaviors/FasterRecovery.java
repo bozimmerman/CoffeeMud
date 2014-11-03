@@ -95,7 +95,8 @@ public class FasterRecovery extends StdBehavior
 
 	public void doBe(MOB M, int burst, int health, int hits, int mana, int move)
 	{
-		if(M==null) return;
+		if(M==null)
+			return;
 		for(int i2=0;i2<burst;i2++)
 			M.tick(M,Tickable.TICKID_MOB);
 		for(int i2=0;i2<health;i2++)
@@ -130,7 +131,8 @@ public class FasterRecovery extends StdBehavior
 	}
 	public void doBe(Room room, int burst, int health, int hits, int mana, int move)
 	{
-		if(room==null) return;
+		if(room==null)
+			return;
 		for(int i=0;i<room.numInhabitants();i++)
 		{
 			final MOB M=room.fetchInhabitant(i);
@@ -140,7 +142,8 @@ public class FasterRecovery extends StdBehavior
 	}
 	public void doBe(Area area, int burst, int health, int hits, int mana, int move)
 	{
-		if(area==null) return;
+		if(area==null)
+			return;
 		for(final Enumeration r=area.getMetroMap();r.hasMoreElements();)
 		{
 			final Room R=(Room)r.nextElement();

@@ -45,7 +45,8 @@ public class RaceCatNext extends StdWebMacro
 		final String last=httpReq.getUrlParameter("RACECAT");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("RACECAT");
+			if(last!=null)
+				httpReq.removeUrlParameter("RACECAT");
 			return "";
 		}
 		Vector raceCats=new Vector();

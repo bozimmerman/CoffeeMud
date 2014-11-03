@@ -170,7 +170,8 @@ public class Thief_Racketeer extends ThiefSkill
 			mob.tell(L("You cannot racketeer @x1.",target.charStats().himher()));
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto,asLevel)) return false;
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+			return false;
 		final double amount=CMLib.dice().roll(proficiency(),target.phyStats().level(),0);
 		final boolean success=proficiencyCheck(mob,-(levelDiff),auto);
 		if(success)

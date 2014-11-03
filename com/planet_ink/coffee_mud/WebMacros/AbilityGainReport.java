@@ -40,7 +40,8 @@ public class AbilityGainReport extends StdWebMacro
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		String className=httpReq.getUrlParameter("CLASS");
-		if(className==null) className="";
+		if(className==null)
+			className="";
 		final List<String> players=CMLib.database().getUserList();
 		final HashSet trainedFor=new HashSet();
 		final Hashtable profSpent=new Hashtable();
@@ -50,7 +51,8 @@ public class AbilityGainReport extends StdWebMacro
 			for(int a=0;a<player.numAbilities();a++)
 			{
 				final Ability A=player.fetchAbility(a);
-				if(A==null) continue;
+				if(A==null)
+					continue;
 				boolean autogains=false;
 				boolean qualifiesFor=false;
 				int bestProf=-1;

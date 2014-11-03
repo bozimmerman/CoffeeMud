@@ -180,10 +180,12 @@ public class Domesticating extends CommonSkill
 		taming=M;
 		verb=L("domesticating @x1",M.name());
 		int levelDiff=taming.phyStats().level()-xlevel(mob);
-		if(levelDiff<0) levelDiff=0;
+		if(levelDiff<0)
+			levelDiff=0;
 		messedUp=!proficiencyCheck(mob,-(levelDiff*5),auto);
 		int duration=35+levelDiff;
-		if(duration<10) duration=10;
+		if(duration<10)
+			duration=10;
 		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),
 			(newName!=null)?L("<S-NAME> name(s) @x1 '@x2'.",M.name(),theName):L("<S-NAME> start(s) domesticating @x1.",M.name()));
 		if(mob.location().okMessage(mob,msg))

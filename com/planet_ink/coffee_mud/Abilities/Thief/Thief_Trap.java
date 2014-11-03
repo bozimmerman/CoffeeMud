@@ -66,7 +66,8 @@ public class Thief_Trap extends ThiefSkill
 		Trap theTrap=null;
 		final Vector traps=new Vector();
 		int qualifyingClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(getXLEVELLevel(mob))-CMLib.ableMapper().qualifyingLevel(mob,this)+1;
-		if(qualifyingClassLevel>maxLevel()) qualifyingClassLevel=maxLevel();
+		if(qualifyingClassLevel>maxLevel())
+			qualifyingClassLevel=maxLevel();
 		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
@@ -106,7 +107,8 @@ public class Thief_Trap extends ThiefSkill
 					buf.append(CMStrings.padRight(L("Unknown"),17)+" ");
 				buf.append(T.requiresToSet()+"\n\r");
 			}
-			if(mob.session()!=null) mob.session().rawPrintln(buf.toString());
+			if(mob.session()!=null)
+				mob.session().rawPrintln(buf.toString());
 			return true;
 		}
 		else
@@ -162,7 +164,8 @@ public class Thief_Trap extends ThiefSkill
 				trapThis=mob.location().getExitInDir(dirCode);
 			if(trapThis==null)
 				trapThis=this.getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
-			if(trapThis==null) return false;
+			if(trapThis==null)
+				return false;
 			if((!auto)&&(!theTrap.canSetTrapOn(mob,trapThis)))
 				return false;
 		}

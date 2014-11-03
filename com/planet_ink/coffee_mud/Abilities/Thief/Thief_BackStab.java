@@ -88,7 +88,8 @@ public class Thief_BackStab extends ThiefSkill
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(CMLib.flags().canBeSeenBy(mob,target))
 		{

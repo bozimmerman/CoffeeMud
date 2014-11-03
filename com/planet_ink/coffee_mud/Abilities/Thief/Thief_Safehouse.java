@@ -88,7 +88,8 @@ public class Thief_Safehouse extends ThiefSkill
 
 	public boolean isLaw(MOB mob)
 	{
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		if(affected instanceof Room)
 		{
 			final LegalBehavior law=CMLib.law().getLegalBehavior((Room)affected);
@@ -112,7 +113,8 @@ public class Thief_Safehouse extends ThiefSkill
 
 	public boolean isGoodSafehouse(Room target)
 	{
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if((target.domainType()==Room.DOMAIN_INDOORS_WOOD)||(target.domainType()==Room.DOMAIN_INDOORS_STONE))
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
@@ -169,9 +171,11 @@ public class Thief_Safehouse extends ThiefSkill
 				int dir=CMLib.tracking().trackNextDirectionFromHere(V,target,true);
 				while(target!=R)
 				{
-					if((dir<0)||(dir>=Directions.NUM_DIRECTIONS())||(target==null)) break;
+					if((dir<0)||(dir>=Directions.NUM_DIRECTIONS())||(target==null))
+						break;
 					trail.append(Directions.getDirectionName(dir));
-					if(target.getRoomInDir(dir)!=R) trail.append(", ");
+					if(target.getRoomInDir(dir)!=R)
+						trail.append(", ");
 					target=target.getRoomInDir(dir);
 					dir=CMLib.tracking().trackNextDirectionFromHere(V,target,true);
 				}

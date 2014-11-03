@@ -74,7 +74,8 @@ public class Thief_AnalyzeMark extends ThiefSkill
 			&&(getMarkTicks(mob)>15)
 			&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false)))
 			{
-				if(CMLib.dice().rollPercentage()>50) helpProficiency((MOB)affected, 0);
+				if(CMLib.dice().rollPercentage()>50)
+					helpProficiency((MOB)affected, 0);
 				final StringBuilder str=CMLib.commands().getScore((MOB)msg.target());
 				if(!mob.isMonster())
 					mob.session().wraplessPrintln(str.toString());

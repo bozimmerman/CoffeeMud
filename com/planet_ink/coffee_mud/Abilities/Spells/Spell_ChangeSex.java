@@ -123,7 +123,8 @@ public class Spell_ChangeSex extends Spell
 			if(canBeUninvoked())
 			{
 				final Ability A=mob.fetchEffect(ID());
-				if(A!=null) mob.delEffect(A);
+				if(A!=null)
+					mob.delEffect(A);
 				mob.recoverCharStats();
 				mob.recoverPhyStats();
 				setChildStuff(mob, target);
@@ -151,7 +152,8 @@ public class Spell_ChangeSex extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(target instanceof Item)
 		{
 			if(!(target instanceof CagedAnimal))

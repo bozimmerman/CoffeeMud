@@ -104,14 +104,16 @@ public class Stat  extends Skills
 		{
 			skillUse=true;
 			final int x=rest.indexOf(' ');
-			if(x>0) rest=rest.substring(x+1).trim();
+			if(x>0)
+				rest=rest.substring(x+1).trim();
 			else rest="";
 		}
 		if(rest.toUpperCase().trim().startsWith("QUEST"))
 		{
 			questStats=true;
 			final int x=rest.indexOf(' ');
-			if(x>0) rest=rest.substring(x+1).trim();
+			if(x>0)
+				rest=rest.substring(x+1).trim();
 			else rest="";
 		}
 		table.append("^xStatistics since "+CMLib.time().date2String(ENDQ.getTimeInMillis())+":^.^N\n\r\n\r");
@@ -150,7 +152,8 @@ public class Stat  extends Skills
 		C.set(Calendar.MILLISECOND,999);
 		long curTime=C.getTimeInMillis();
 		String code="*";
-		if(rest.length()>0) code=""+rest.toUpperCase().charAt(0);
+		if(rest.length()>0)
+			code=""+rest.toUpperCase().charAt(0);
 		long lastCur=System.currentTimeMillis();
 		if(skillUse)
 		{
@@ -187,7 +190,8 @@ public class Stat  extends Skills
 					for(int x=0;x<allSkills.size();x++)
 						T.totalUp("A"+((Ability)allSkills.elementAt(x)).ID().toUpperCase(),totals[x]);
 				}
-				if(scale==0) break;
+				if(scale==0)
+					break;
 			}
 			boolean cr=false;
 			for(int x=0;x<allSkills.size();x++)
@@ -199,7 +203,8 @@ public class Stat  extends Skills
 				{
 					table.append(CMStrings.padRight(""+A.ID(),25)
 							+CMStrings.centerPreserve(""+totals[x][CoffeeTableRow.STAT_SKILLUSE],10));
-					if(cr) table.append("\n\r");
+					if(cr)
+						table.append("\n\r");
 					cr=!cr;
 				}
 				x++;
@@ -211,12 +216,14 @@ public class Stat  extends Skills
 
 						table.append(CMStrings.padRight(""+A.ID(),25)
 								+CMStrings.centerPreserve(""+totals[x][CoffeeTableRow.STAT_SKILLUSE],10));
-						if(cr) table.append("\n\r");
+						if(cr)
+							table.append("\n\r");
 						cr=!cr;
 					}
 				}
 			}
-			if(cr)table.append("\n\r");
+			if(cr)
+				table.append("\n\r");
 		}
 		else
 		if(questStats)
@@ -251,7 +258,8 @@ public class Stat  extends Skills
 					for(int x=0;x<CMLib.quests().numQuests();x++)
 						T.totalUp("U"+T.tagFix(CMLib.quests().fetchQuest(x).name()),totals[x]);
 				}
-				if(scale==0) break;
+				if(scale==0)
+					break;
 			}
 			for(int x=0;x<CMLib.quests().numQuests();x++)
 			{
@@ -302,7 +310,8 @@ public class Stat  extends Skills
 			{
 				final CoffeeTableRow T=(CoffeeTableRow)set.elementAt(s);
 				T.totalUp(code,totals);
-				if(T.highestOnline()>highestOnline) highestOnline=T.highestOnline();
+				if(T.highestOnline()>highestOnline)
+					highestOnline=T.highestOnline();
 				numberOnlineTotal+=T.numberOnlineTotal();
 				numberOnlineCounter+=T.numberOnlineCounter();
 			}
@@ -320,7 +329,8 @@ public class Stat  extends Skills
 						 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_CLASSCHANGE],5)
 						 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_PURGES],5)
 						 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_MARRIAGES],5)+"\n\r");
-			if(scale==0) break;
+			if(scale==0)
+				break;
 		}
 		mob.tell(table.toString());
 		return false;
@@ -351,7 +361,8 @@ public class Stat  extends Skills
 			mob.tell(msg.toString());
 			return false;
 		}
-		if(commands.size()==0) commands.addElement("TODAY");
+		if(commands.size()==0)
+			commands.addElement("TODAY");
 		final String s1=(commands.size()>0)?((String)commands.elementAt(0)).toUpperCase():"";
 		final String s2=(commands.size()>1)?((String)commands.elementAt(1)).toUpperCase():"";
 		if(s1.equalsIgnoreCase("TODAY"))
@@ -546,7 +557,8 @@ public class Stat  extends Skills
 				{
 					final Area A=(Area)e.nextElement();
 					final int pct=mob.playerStats().percentVisited(target, A);
-					if(pct>0) str.append("^H"+A.name()+"^N: "+pct+"%, ");
+					if(pct>0)
+						str.append("^H"+A.name()+"^N: "+pct+"%, ");
 				}
 				str=new StringBuilder(str.toString().substring(0,str.toString().length()-2)+"\n\r");
 			}

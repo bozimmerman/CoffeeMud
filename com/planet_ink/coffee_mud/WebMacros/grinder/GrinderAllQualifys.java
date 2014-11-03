@@ -51,7 +51,8 @@ public class GrinderAllQualifys
 			return " @break@";
 		final Map<String,Map<String,AbilityMapper.AbilityMapping>> allQualMap=CMLib.ableMapper().getAllQualifiesMap(httpReq.getRequestObjects());
 		final Map<String,AbilityMapper.AbilityMapping> map=allQualMap.get(which.toUpperCase().trim());
-		if(map==null) return " @break@";
+		if(map==null)
+			return " @break@";
 
 		AbilityMapper.AbilityMapping newMap=map.get(last.toUpperCase().trim());
 		if(newMap==null)
@@ -62,13 +63,17 @@ public class GrinderAllQualifys
 		}
 		String s;
 		s=httpReq.getUrlParameter("LEVEL");
-		if(s!=null) newMap.qualLevel=CMath.s_int(s);
+		if(s!=null)
+			newMap.qualLevel=CMath.s_int(s);
 		s=httpReq.getUrlParameter("PROF");
-		if(s!=null) newMap.defaultProficiency=CMath.s_int(s);
+		if(s!=null)
+			newMap.defaultProficiency=CMath.s_int(s);
 		s=httpReq.getUrlParameter("MASK");
-		if(s!=null) newMap.extraMask=s;
+		if(s!=null)
+			newMap.extraMask=s;
 		s=httpReq.getUrlParameter("AUTOGAIN");
-		if(s!=null) newMap.autoGain=s.equalsIgnoreCase("on");
+		if(s!=null)
+			newMap.autoGain=s.equalsIgnoreCase("on");
 		final StringBuilder preReqs=new StringBuilder("");
 		int curChkNum=1;
 		while(httpReq.isUrlParameter("REQABLE"+curChkNum))

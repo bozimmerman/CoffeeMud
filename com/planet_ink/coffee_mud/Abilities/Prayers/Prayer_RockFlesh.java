@@ -47,7 +47,8 @@ public class Prayer_RockFlesh extends Prayer implements MendingSkill
 	@Override
 	public boolean supportsMending(Physical item)
 	{
-		if(!(item instanceof MOB)) return false;
+		if(!(item instanceof MOB))
+			return false;
 		return (item.fetchEffect("Spell_FleshStone")!=null)||(item.fetchEffect("Prayer_FleshRock")!=null);
 	}
 
@@ -56,7 +57,8 @@ public class Prayer_RockFlesh extends Prayer implements MendingSkill
 	{
 
 		final Physical target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		Ability revokeThis=null;
 		for(int a=0;a<target.numEffects();a++) // personal affects

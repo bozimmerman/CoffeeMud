@@ -40,7 +40,8 @@ public class RaceID extends StdWebMacro
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		final String last=httpReq.getUrlParameter("RACE");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		if(last.length()>0)
 		{
 			final Race R=CMClass.getRace(last);

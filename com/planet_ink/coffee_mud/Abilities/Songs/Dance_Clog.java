@@ -46,8 +46,10 @@ public class Dance_Clog extends Dance
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(invoker==null) return;
-		if(affected==invoker) return;
+		if(invoker==null)
+			return;
+		if(affected==invoker)
+			return;
 
 		affectableStats.setAttackAdjustment((affectableStats.attackAdjustment()
 											-invoker().charStats().getStat(CharStats.STAT_CHARISMA))
@@ -57,8 +59,10 @@ public class Dance_Clog extends Dance
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(invoker==null) return;
-		if(affected==invoker) return;
+		if(invoker==null)
+			return;
+		if(affected==invoker)
+			return;
 
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,(int)Math.round(CMath.div(affectableStats.getStat(CharStats.STAT_DEXTERITY),2.0)));
 	}

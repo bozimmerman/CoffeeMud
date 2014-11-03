@@ -77,7 +77,8 @@ public class ProtectedCitizens extends ActiveTicker
 
 	public MaskingLibrary.CompiledZapperMask getProtectedZapper()
 	{
-		if(citizenZapper!=null) return citizenZapper;
+		if(citizenZapper!=null)
+			return citizenZapper;
 		final String s=getParmsNoTicks();
 		if(s.length()==0){ citizenZapper=MaskingLibrary.CompiledZapperMask.EMPTY(); return citizenZapper;}
 		final char c=';';
@@ -89,7 +90,8 @@ public class ProtectedCitizens extends ActiveTicker
 
 	public MaskingLibrary.CompiledZapperMask getCityguardZapper()
 	{
-		if(helperZapper!=null) return helperZapper;
+		if(helperZapper!=null)
+			return helperZapper;
 		String s=getParmsNoTicks();
 		if(s.length()==0){ helperZapper=MaskingLibrary.CompiledZapperMask.EMPTY(); return helperZapper;}
 		final char c=';';
@@ -104,7 +106,8 @@ public class ProtectedCitizens extends ActiveTicker
 
 	public String[] getClaims()
 	{
-		if(claims!=null) return claims;
+		if(claims!=null)
+			return claims;
 		String s=getParmsNoTicks();
 		if(s.length()==0)
 		{ claims=defclaims; return claims;}
@@ -124,10 +127,12 @@ public class ProtectedCitizens extends ActiveTicker
 		{
 			final String str=s.substring(0,x).trim();
 			s=s.substring(x+1).trim();
-			if(str.length()>0)V.addElement(str);
+			if(str.length()>0)
+				V.addElement(str);
 			x=s.indexOf(c);
 		}
-		if(s.length()>0)V.addElement(s);
+		if(s.length()>0)
+			V.addElement(s);
 		claims=new String[V.size()];
 		for(int i=0;i<V.size();i++)
 			claims[i]=(String)V.elementAt(i);

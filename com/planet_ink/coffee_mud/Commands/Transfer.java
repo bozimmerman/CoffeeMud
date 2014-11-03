@@ -96,7 +96,8 @@ public class Transfer extends At
 			if(!allFlag)
 			{
 				final Environmental E=curRoom.fetchFromMOBRoomFavorsItems(mob,null,mobname,Wearable.FILTER_UNWORNONLY);
-				if(E instanceof Item) V.addElement(E);
+				if(E instanceof Item)
+					V.addElement(E);
 			}
 			else
 			if(mobname.length()>0)
@@ -114,7 +115,8 @@ public class Transfer extends At
 			if(!allFlag)
 			{
 				final MOB M=CMLib.sessions().findPlayerOnline(mobname,true);
-				if(M!=null) V.add(M);
+				if(M!=null)
+					V.add(M);
 			}
 			if(V.size()==0)
 				for(final Enumeration<Room> r=mob.location().getArea().getProperMap();r.hasMoreElements();)
@@ -128,9 +130,11 @@ public class Transfer extends At
 						if((M!=null)&&(!V.contains(M)))
 							V.addElement(M);
 						num++;
-						if((!allFlag)&&(V.size()>0)) break;
+						if((!allFlag)&&(V.size()>0))
+							break;
 					}
-					if((!allFlag)&&(V.size()>0)) break;
+					if((!allFlag)&&(V.size()>0))
+						break;
 				}
 			if(V.size()==0)
 			{
@@ -147,9 +151,11 @@ public class Transfer extends At
 							if((M!=null)&&(!V.contains(M)))
 								V.addElement(M);
 							num++;
-							if((!allFlag)&&(V.size()>0)) break;
+							if((!allFlag)&&(V.size()>0))
+								break;
 						}
-						if((!allFlag)&&(V.size()>0)) break;
+						if((!allFlag)&&(V.size()>0))
+							break;
 					}
 				}catch(final NoSuchElementException nse){}
 			}

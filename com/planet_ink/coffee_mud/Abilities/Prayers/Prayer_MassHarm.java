@@ -63,7 +63,8 @@ public class Prayer_MassHarm extends Prayer
 			return false;
 
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
-		if(h==null) return false;
+		if(h==null)
+			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 		final int numEnemies=h.size();

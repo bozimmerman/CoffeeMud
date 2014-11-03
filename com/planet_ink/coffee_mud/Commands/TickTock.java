@@ -49,7 +49,8 @@ public class TickTock extends StdCommand
 			if(CMath.isInteger(s))
 			{
 				int h=CMath.s_int(s);
-				if(h==0) h=1;
+				if(h==0)
+					h=1;
 				mob.tell(L("..tick..tock.."));
 				mob.location().getArea().getTimeObj().tickTock(h);
 				mob.location().getArea().getTimeObj().save();

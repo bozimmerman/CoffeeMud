@@ -55,7 +55,8 @@ public class Throw extends StdCommand
 		commands.removeElement(str);
 		final String what=CMParms.combine(commands,0);
 		Item item=mob.fetchItem(null,Wearable.FILTER_WORNONLY,what);
-		if(item==null) item=mob.findItem(null,what);
+		if(item==null)
+			item=mob.findItem(null,what);
 		if((item==null)||(!CMLib.flags().canBeSeenBy(item,mob)))
 		{
 			mob.tell(L("You don't seem to have a '@x1'!",what));

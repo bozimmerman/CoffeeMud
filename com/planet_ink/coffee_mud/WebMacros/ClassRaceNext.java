@@ -43,13 +43,16 @@ public class ClassRaceNext extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String cclass=httpReq.getUrlParameter("CLASS");
-		if(cclass.trim().length()==0) return " @break@";
+		if(cclass.trim().length()==0)
+			return " @break@";
 		final CharClass C=CMClass.getCharClass(cclass.trim());
-		if(C==null) return " @break";
+		if(C==null)
+			return " @break";
 		final String last=httpReq.getUrlParameter("RACE");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("RACE");
+			if(last!=null)
+				httpReq.removeUrlParameter("RACE");
 			return "";
 		}
 		String lastID="";

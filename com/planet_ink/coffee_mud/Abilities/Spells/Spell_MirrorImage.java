@@ -69,7 +69,8 @@ public class Spell_MirrorImage extends Spell
 				return true;
 			}
 			int intAdjustment = (mob.charStats().getMaxStat(CharStats.STAT_INTELLIGENCE) - mob.charStats().getStat(CharStats.STAT_INTELLIGENCE))/2;
-			if(intAdjustment < 1) intAdjustment = 1;
+			if(intAdjustment < 1)
+				intAdjustment = 1;
 
 			final int numberOfTargets = numberOfImages + intAdjustment;
 			if(randomizer.nextInt() % numberOfTargets >= intAdjustment)
@@ -89,7 +90,8 @@ public class Spell_MirrorImage extends Spell
 		if(!(affected instanceof MOB))
 			return;
 
-		if(notAgain) return;
+		if(notAgain)
+			return;
 
 		final MOB mob=(MOB)affected;
 		if(msg.amISource(mob))
@@ -120,7 +122,8 @@ public class Spell_MirrorImage extends Spell
 			for(int i=0;i<numberOfImages;i++)
 			{
 				Say.append("^M");
-				if(compress) Say.append(CMLib.flags().colorCodes(mob,mob)+"^M ");
+				if(compress)
+					Say.append(CMLib.flags().colorCodes(mob,mob)+"^M ");
 				if(mob.displayText(msg.source()).length()>0)
 					Say.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob.displayText(msg.source()))));
 				else

@@ -42,7 +42,8 @@ public class PollData extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("POLL");
-		if((last==null)&&(!parms.containsKey("EDIT"))) return " @break@";
+		if((last==null)&&(!parms.containsKey("EDIT")))
+			return " @break@";
 
 
 		final String replaceCommand=httpReq.getUrlParameter("REPLACE");
@@ -60,8 +61,10 @@ public class PollData extends StdWebMacro
 		if(parms.containsKey("EDIT"))
 		{
 			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
-			if(M==null) return "[authentication error]";
-			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.POLLS)) return "[authentication error]";
+			if(M==null)
+				return "[authentication error]";
+			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.POLLS))
+				return "[authentication error]";
 			final String newTitle=httpReq.getUrlParameter("TITLE");
 			if((newTitle==null)||(newTitle.length()==0))
 				return "[missing data error]";
@@ -77,13 +80,17 @@ public class PollData extends StdWebMacro
 			}
 
 			String old=httpReq.getUrlParameter("TITLE");
-			if(old!=null) P.setName(old);
+			if(old!=null)
+				P.setName(old);
 			old=httpReq.getUrlParameter("SUBJECT");
-			if(old!=null) P.setSubject(old);
+			if(old!=null)
+				P.setSubject(old);
 			old=httpReq.getUrlParameter("DESCRIPTION");
-			if(old!=null) P.setDescription(old);
+			if(old!=null)
+				P.setDescription(old);
 			old=httpReq.getUrlParameter("QUALZAPPER");
-			if(old!=null) P.setQualZapper(old);
+			if(old!=null)
+				P.setQualZapper(old);
 			long flag=0;
 			old=httpReq.getUrlParameter("ISACTIVE");
 			if((old!=null)&&(old.equalsIgnoreCase("on")))
@@ -146,9 +153,12 @@ public class PollData extends StdWebMacro
 		if(parms.containsKey("DELETE"))
 		{
 			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
-			if(M==null) return "[authentication error]";
-			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.POLLS)) return "[authentication error]";
-			if(last==null) return " @break@";
+			if(M==null)
+				return "[authentication error]";
+			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.POLLS))
+				return "[authentication error]";
+			if(last==null)
+				return " @break@";
 			final Poll P=CMLib.polls().getPoll(last);
 			if(P==null)
 				return "Unknown poll!";
@@ -158,7 +168,8 @@ public class PollData extends StdWebMacro
 		}
 		else
 		{
-			if(last==null) return " @break@";
+			if(last==null)
+				return " @break@";
 			if(last.length()>0)
 			{
 				final String newPollID=httpReq.getUrlParameter("NEWPOLL");
@@ -291,7 +302,8 @@ public class PollData extends StdWebMacro
 						else
 						{
 							long time=P.getExpiration();
-							if(time<1000) time=System.currentTimeMillis();
+							if(time<1000)
+								time=System.currentTimeMillis();
 							exp.setTimeInMillis(time);
 						}
 						if(!input)
@@ -380,12 +392,18 @@ public class PollData extends StdWebMacro
 						else
 						{
 							final String s=sfont.toUpperCase().trim();
-							if(s.indexOf("<I>")>=0) efont+="</I>";
-							if(s.indexOf("<B>")>=0) efont+="</B>";
-							if(s.indexOf("<FONT")>=0) efont+="</FONT>";
-							if(s.indexOf("<P")>=0) efont+="</P>";
-							if(s.indexOf("<TD")>=0) efont+="</TD>";
-							if(s.indexOf("<TR")>=0) efont+="</TR>";
+							if(s.indexOf("<I>")>=0)
+								efont+="</I>";
+							if(s.indexOf("<B>")>=0)
+								efont+="</B>";
+							if(s.indexOf("<FONT")>=0)
+								efont+="</FONT>";
+							if(s.indexOf("<P")>=0)
+								efont+="</P>";
+							if(s.indexOf("<TD")>=0)
+								efont+="</TD>";
+							if(s.indexOf("<TR")>=0)
+								efont+="</TR>";
 						}
 
 						while(httpReq.isUrlParameter("OPTION"+(++num)))
@@ -439,12 +457,18 @@ public class PollData extends StdWebMacro
 						else
 						{
 							final String s=sfont.toUpperCase().trim();
-							if(s.indexOf("<I>")>=0) efont+="</I>";
-							if(s.indexOf("<B>")>=0) efont+="</B>";
-							if(s.indexOf("<FONT")>=0) efont+="</FONT>";
-							if(s.indexOf("<P")>=0) efont+="</P>";
-							if(s.indexOf("<TD")>=0) efont+="</TD>";
-							if(s.indexOf("<TR")>=0) efont+="</TR>";
+							if(s.indexOf("<I>")>=0)
+								efont+="</I>";
+							if(s.indexOf("<B>")>=0)
+								efont+="</B>";
+							if(s.indexOf("<FONT")>=0)
+								efont+="</FONT>";
+							if(s.indexOf("<P")>=0)
+								efont+="</P>";
+							if(s.indexOf("<TD")>=0)
+								efont+="</TD>";
+							if(s.indexOf("<TR")>=0)
+								efont+="</TR>";
 						}
 						final boolean pct=parms.containsKey("PCT")||parms.containsKey("PERCENT");
 						final boolean showNum=(!pct)||parms.containsKey("VOTES")||parms.containsKey("VOTE")||parms.containsKey("COUNT");

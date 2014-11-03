@@ -55,7 +55,8 @@ public class Snoop extends StdCommand
 		throws java.io.IOException
 	{
 		commands.removeElementAt(0);
-		if(mob.session()==null) return false;
+		if(mob.session()==null)
+			return false;
 		boolean doneSomething=false;
 		for(final Session S : CMLib.sessions().allIterable())
 			if(S.isBeingSnoopedBy(mob.session()))

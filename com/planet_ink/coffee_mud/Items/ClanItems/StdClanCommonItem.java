@@ -135,7 +135,8 @@ public class StdClanCommonItem extends StdClanItem
 		for(final RawMaterial.Material m : RawMaterial.Material.values())
 		{
 			final int x=req.indexOf(m.desc());
-			if(x<0) continue;
+			if(x<0)
+				continue;
 			if((x>0)&&Character.isLetter(req.charAt(x-1)))
 				continue;
 			if(((x+m.desc().length())<req.length())
@@ -148,7 +149,8 @@ public class StdClanCommonItem extends StdClanItem
 		{
 			final String S=codes.name(s);
 			final int x=req.indexOf(S);
-			if(x<0) continue;
+			if(x<0)
+				continue;
 			if((x>0)&&Character.isLetter(req.charAt(x-1)))
 				continue;
 			if(((x+S.length())<req.length())
@@ -375,7 +377,8 @@ public class StdClanCommonItem extends StdClanItem
 								I=null;
 						}
 						final Vector V=new Vector();
-						if(I!=null)	V.addElement(I.name());
+						if(I!=null)
+							V.addElement(I.name());
 						success=A.invoke(M,V,null,false,phyStats().level());
 					}
 					else

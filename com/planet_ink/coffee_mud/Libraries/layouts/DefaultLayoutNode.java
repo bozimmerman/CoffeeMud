@@ -78,7 +78,8 @@ public class DefaultLayoutNode implements LayoutNode
 	@Override
 	public boolean isStreetLike()
 	{
-		if(links.size()!=2) return false;
+		if(links.size()!=2)
+			return false;
 		final Enumeration<LayoutNode> linksE=links.elements();
 		final LayoutNode n1=linksE.nextElement();
 		final LayoutNode n2=linksE.nextElement();

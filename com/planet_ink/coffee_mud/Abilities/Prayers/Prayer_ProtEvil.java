@@ -70,8 +70,10 @@ public class Prayer_ProtEvil extends Prayer
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if(affected==null) return true;
-		if(!(affected instanceof MOB)) return true;
+		if(affected==null)
+			return true;
+		if(!(affected instanceof MOB))
+			return true;
 
 		if((msg.target()==affected)&&(msg.source()!=affected))
 		{
@@ -95,8 +97,10 @@ public class Prayer_ProtEvil extends Prayer
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(affected==null) return;
-		if(!(affected instanceof MOB)) return;
+		if(affected==null)
+			return;
+		if(!(affected instanceof MOB))
+			return;
 		final MOB mob=(MOB)affected;
 
 		if(mob.isInCombat())
@@ -137,7 +141,8 @@ public class Prayer_ProtEvil extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=mob;
-		if((auto)&&(givenTarget!=null)) target=givenTarget;
+		if((auto)&&(givenTarget!=null))
+			target=givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
 			mob.tell(mob,target,null,L("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));

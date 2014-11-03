@@ -79,8 +79,10 @@ public class Follower extends ActiveTicker
 		super.executeMsg(affecting,msg);
 
 		final MOB mob=msg.source();
-		if(mob.amDead()) return;
-		if(mob.location()==null) return;
+		if(mob.amDead())
+			return;
+		if(mob.location()==null)
+			return;
 
 		if(affecting instanceof MOB)
 		{
@@ -111,7 +113,8 @@ public class Follower extends ActiveTicker
 
 	public MOB pickRandomMOBHere(Environmental ticking, Room room)
 	{
-		if(room==null) return null;
+		if(room==null)
+			return null;
 		if((room.numInhabitants()!=lastNumPeople)
 		||(room!=lastRoom))
 		{
@@ -166,7 +169,8 @@ public class Follower extends ActiveTicker
 			if(!inventory)
 			{
 				final MOB M=pickRandomMOBHere(I,CMLib.map().roomLocation(I));
-				if(M!=null) lastOwner=M;
+				if(M!=null)
+					lastOwner=M;
 			}
 		}
 
@@ -228,10 +232,12 @@ public class Follower extends ActiveTicker
 		&&(lastOwner.location()!=null))
 		{
 			final Item I=(Item)ticking;
-			if(I.container()!=null) I.setContainer(null);
+			if(I.container()!=null)
+				I.setContainer(null);
 
 			final Room R=CMLib.map().roomLocation(I);
-			if(R==null)	return true;
+			if(R==null)
+				return true;
 
 			if(R!=lastOwner.location())
 				lastOwner.location().moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);

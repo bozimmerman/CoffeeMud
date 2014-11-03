@@ -76,7 +76,8 @@ public class Skill_Befriend extends BardSkill
 			return false;
 		}
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(target==mob)
 		{

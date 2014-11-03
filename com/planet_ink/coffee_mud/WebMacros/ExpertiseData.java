@@ -43,7 +43,8 @@ public class ExpertiseData extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("EXPERTISE");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		if(last.length()>0)
 		{
 			final ExpertiseLibrary.ExpertiseDefinition E=CMLib.expertises().getDefinition(last);
@@ -56,18 +57,23 @@ public class ExpertiseData extends StdWebMacro
 					if(s==null)
 						s=CMLib.help().getHelpText(E.name,null,false);
 					int limit=78;
-					if(parms.containsKey("LIMIT")) limit=CMath.s_int(parms.get("LIMIT"));
+					if(parms.containsKey("LIMIT"))
+						limit=CMath.s_int(parms.get("LIMIT"));
 					str.append(helpHelp(s,limit));
 				}
 				if(parms.containsKey("SHORTHELP"))
 				{
 					String s=CMLib.help().getHelpFile().getProperty(E.ID.toUpperCase());
-					if(s==null) s=CMLib.help().getArcHelpFile().getProperty(E.ID.toUpperCase());
-					if(s==null) s=CMLib.help().getHelpFile().getProperty(E.name.toUpperCase().replace(' ','_'));
-					if(s==null) s=CMLib.help().getArcHelpFile().getProperty(E.name.toUpperCase().replace(' ','_'));
+					if(s==null)
+						s=CMLib.help().getArcHelpFile().getProperty(E.ID.toUpperCase());
+					if(s==null)
+						s=CMLib.help().getHelpFile().getProperty(E.name.toUpperCase().replace(' ','_'));
+					if(s==null)
+						s=CMLib.help().getArcHelpFile().getProperty(E.name.toUpperCase().replace(' ','_'));
 					if(s!=null)
 					{
-						if(s.toUpperCase().trim().startsWith("<EXPERTISE>"))s=s.trim().substring(11);
+						if(s.toUpperCase().trim().startsWith("<EXPERTISE>"))
+							s=s.trim().substring(11);
 						str.append(helpHelp(new StringBuilder(s))+", ");
 					}
 					else
@@ -78,9 +84,12 @@ public class ExpertiseData extends StdWebMacro
 						str.append(helpHelp(s2));
 					}
 				}
-				if(parms.containsKey("NAME")) str.append(E.name+", ");
-				if(parms.containsKey("COST")) str.append(E.costDescription()+", ");
-				if(parms.containsKey("REQUIRES")) str.append(CMLib.masking().maskDesc(E.allRequirements())+", ");
+				if(parms.containsKey("NAME"))
+					str.append(E.name+", ");
+				if(parms.containsKey("COST"))
+					str.append(E.costDescription()+", ");
+				if(parms.containsKey("REQUIRES"))
+					str.append(CMLib.masking().maskDesc(E.allRequirements())+", ");
 				if(parms.containsKey("ALLOWS"))
 				{
 					ExpertiseLibrary.ExpertiseDefinition def=null;

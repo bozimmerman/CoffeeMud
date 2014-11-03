@@ -118,7 +118,8 @@ public class Prayer_MassMobility extends Prayer
 
 		final Room room=mob.location();
 		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
-		if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
+		if(auto)
+			affectType=affectType|CMMsg.MASK_ALWAYS;
 		if((success)&&(room!=null))
 		{
 			CMMsg msg=CMClass.getMsg(mob,null,this,affectType,auto?"":L("^S<S-NAME> @x1 for an aura of mobility!^?",prayWord(mob)));
@@ -128,7 +129,8 @@ public class Prayer_MassMobility extends Prayer
 				for(int i=0;i<room.numInhabitants();i++)
 				{
 					final MOB target=room.fetchInhabitant(i);
-					if(target==null) break;
+					if(target==null)
+						break;
 
 					// it worked, so build a copy of this ability,
 					// and add it to the affects list of the

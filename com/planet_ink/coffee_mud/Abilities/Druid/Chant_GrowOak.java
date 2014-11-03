@@ -80,10 +80,12 @@ public class Chant_GrowOak extends Chant_SummonPlants
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
 		final Room plantsLocation = PlantsLocation;
 		final MOB invoker = invoker();
-		if((plantsLocation==null)||(littlePlants==null)) return false;
+		if((plantsLocation==null)||(littlePlants==null))
+			return false;
 		if(invoker!=null)
 		{
 			if((lastHp>invoker.curState().getHitPoints())&&(lastHp>0))
@@ -109,7 +111,8 @@ public class Chant_GrowOak extends Chant_SummonPlants
 			{
 				final int dmg=CMLib.dice().roll(1,50,50);
 				hpRemaining-=dmg;
-				if(invoker!=null) invoker.tell(L("Your oak is being chopped down!"));
+				if(invoker!=null)
+					invoker.tell(L("Your oak is being chopped down!"));
 				CMLib.combat().postDamage(invoker,invoker,null,dmg/2,CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_SLASHING,"The chopping on your oak <DAMAGE> you!");
 				if(hpRemaining<0)
 				{

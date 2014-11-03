@@ -113,7 +113,8 @@ public class AnimalTaming extends CommonSkill
 							mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to tame @x1 @x2.",animal.name(),s));
 							for(int i=0;i<amount;i++)
 							{
-								if(animal.numBehaviors()==0) break;
+								if(animal.numBehaviors()==0)
+									break;
 								final Behavior B=animal.fetchBehavior(CMLib.dice().roll(1,animal.numBehaviors(),-1));
 								if(B!=null)	{
 									animal.delBehavior(B);

@@ -497,7 +497,8 @@ public class StdJournal extends StdItem
 				}
 			}
 			int numToAdd=CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
-			if((numToAdd==0)||(all)) numToAdd=Integer.MAX_VALUE;
+			if((numToAdd==0)||(all))
+				numToAdd=Integer.MAX_VALUE;
 			for(int v=selections.size()-1;v>=0;v--)
 			{
 				if(numToAdd==0){ selections.setElementAt("",v); continue;}
@@ -564,10 +565,12 @@ public class StdJournal extends StdItem
 
 	private String getParm(String parmName)
 	{
-		if(readableText().length()==0) return "";
+		if(readableText().length()==0)
+			return "";
 		final Map<String,String> h=CMParms.parseEQParms(readableText().toUpperCase(), new String[]{"READ","WRITE","REPLY","ADMIN","PRIVATE","MAILBOX"});
 		String req=h.get(parmName.toUpperCase().trim());
-		if(req==null) req="";
+		if(req==null)
+			req="";
 		return req;
 	}
 

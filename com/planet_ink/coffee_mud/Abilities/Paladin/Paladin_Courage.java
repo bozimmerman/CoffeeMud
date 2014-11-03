@@ -53,8 +53,10 @@ public class Paladin_Courage extends PaladinSkill
 			return false;
 		if((invoker==null)||(!(CMLib.flags().isGood(invoker))))
 			return true;
-		if(affected==null) return true;
-		if(!(affected instanceof MOB)) return true;
+		if(affected==null)
+			return true;
+		if(!(affected instanceof MOB))
+			return true;
 
 		if((msg.target()!=null)
 		   &&(paladinsGroup.contains(msg.target()))

@@ -58,7 +58,8 @@ public class ClanAssign extends StdCommand
 
 		Clan C=null;
 		final boolean skipChecks=mob.getClanRole(mob.Name())!=null;
-		if(skipChecks) C=mob.getClanRole(mob.Name()).first;
+		if(skipChecks)
+			C=mob.getClanRole(mob.Name()).first;
 
 		if(C==null)
 		for(final Pair<Clan,Integer> c : mob.clans())
@@ -147,7 +148,8 @@ public class ClanAssign extends StdCommand
 								currentMembersInNewPosV.removeElementAt(0);
 								CMLib.clans().clanAnnounce(mob,L(" @x1 of the @x2 @x3 is now a @x4.",s,C.getGovernmentName(),C.clanID(),C.getRoleName(C.getGovernment().getAcceptPos(),true,false)));
 								final MOB M2=CMLib.players().getPlayer(s);
-								if(M2!=null) M2.setClan(C.clanID(),C.getGovernment().getAcceptPos());
+								if(M2!=null)
+									M2.setClan(C.clanID(),C.getGovernment().getAcceptPos());
 								CMLib.database().DBUpdateClanMembership(s, C.clanID(), C.getGovernment().getAcceptPos());
 								C.updateClanPrivileges(M2);
 							}

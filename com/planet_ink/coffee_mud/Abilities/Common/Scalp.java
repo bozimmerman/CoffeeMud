@@ -133,7 +133,8 @@ public class Scalp extends CommonSkill
 		else
 			I=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 
-		if(I==null) return false;
+		if(I==null)
+			return false;
 		if((!(I instanceof DeadBody))
 		   ||(((DeadBody)I).charStats()==null)
 		   ||(((DeadBody)I).charStats().getMyRace()==null)
@@ -160,8 +161,10 @@ public class Scalp extends CommonSkill
 			verb=L("scalping @x1",I.name());
 			playSound="ripping.wav";
 			int duration=(I.phyStats().weight()/(10+getXLEVELLevel(mob)));
-			if(duration<3) duration=3;
-			if(duration>40) duration=40;
+			if(duration<3)
+				duration=3;
+			if(duration>40)
+				duration=40;
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;

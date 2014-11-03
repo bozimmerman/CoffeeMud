@@ -179,7 +179,8 @@ public class Painting extends CommonSkill
 					@Override public void callBack()
 					{
 						final String name=input.trim();
-						if(name.length()==0) return;
+						if(name.length()==0)
+							return;
 						final Vector<String> V=CMParms.parse(name.toUpperCase());
 						for(int v=0;v<V.size();v++)
 						{

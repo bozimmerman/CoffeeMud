@@ -63,7 +63,8 @@ public class NiceAbilities extends ActiveTicker
 		{
 			final MOB mob=(MOB)ticking;
 			final Room thisRoom=mob.location();
-			if(thisRoom==null) return true;
+			if(thisRoom==null)
+				return true;
 
 			final double aChance=CMath.div(mob.curState().getMana(),mob.maxState().getMana());
 			if((Math.random()>aChance)||(mob.curState().getMana()<50))

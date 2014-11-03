@@ -66,7 +66,8 @@ public class Chant_ControlPlant extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Item myPlant=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
-		if(myPlant==null) return false;
+		if(myPlant==null)
+			return false;
 
 		if(isPlant(myPlant)==null)
 		{
@@ -93,7 +94,8 @@ public class Chant_ControlPlant extends Chant
 			{
 				mob.location().send(mob,msg);
 				final Ability A=isPlant(myPlant);
-				if(A!=null)	A.setInvoker(mob);
+				if(A!=null)
+					A.setInvoker(mob);
 				mob.tell(L("You wrest control of @x1 from @x2.",myPlant.name(),myPlant.secretIdentity()));
 				myPlant.setSecretIdentity(mob.Name());
 			}

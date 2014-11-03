@@ -46,7 +46,8 @@ public class RandomAreaTemplates extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
-		if(M==null) return "[authentication error]";
+		if(M==null)
+			return "[authentication error]";
 		try
 		{
 			final String last=httpReq.getUrlParameter("RTEMPLATE");
@@ -54,10 +55,12 @@ public class RandomAreaTemplates extends StdWebMacro
 			{
 				if(parms.containsKey("RESET"))
 				{
-					if(last!=null) httpReq.removeUrlParameter("RTEMPLATE");
+					if(last!=null)
+						httpReq.removeUrlParameter("RTEMPLATE");
 					return "";
 				}
-				if(last==null) return " @break@";
+				if(last==null)
+					return " @break@";
 				List<String> fileList=(List<String>)httpReq.getRequestObjects().get("RANDOMAREATEMPLATESLIST");
 				if(fileList==null)
 				{

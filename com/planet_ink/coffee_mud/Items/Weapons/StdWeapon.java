@@ -157,7 +157,8 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 					}
 					if(I.usesRemaining()<=0)
 						I.destroy();
-					if(recover) recoverOwner();
+					if(recover)
+						recoverOwner();
 				}
 				break;
 			case CMMsg.TYP_UNLOAD:
@@ -273,7 +274,8 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 
 	protected boolean inventoryAmmoCheck(MOB M)
 	{
-		if(M==null) return false;
+		if(M==null)
+			return false;
 		for(int i=0;i<M.numItems();i++)
 		{
 			final Item I=M.getItem(i);
@@ -420,7 +422,8 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 					delEffect(A);
 				}
 			}
-			if(recover) recoverOwner();
+			if(recover)
+				recoverOwner();
 		}
 	}
 	@Override public int ammunitionCapacity(){return ammoCapacity;}

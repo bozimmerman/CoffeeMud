@@ -51,7 +51,8 @@ public class Spell_StoreSpell extends Spell
 				if(x>0)
 				{
 					A=CMClass.getAbility(text().substring(0,x));
-					if(A!=null)  spellName=A.name();
+					if(A!=null)
+						spellName=A.name();
 				}
 			}
 			return "Store Spell: "+spellName;
@@ -68,10 +69,14 @@ public class Spell_StoreSpell extends Spell
 	public String getSpeakableName(String name)
 	{
 		name=CMStrings.removeColors(name.toUpperCase());
-		if(name.startsWith("A ")) name=name.substring(2).trim();
-		if(name.startsWith("AN ")) name=name.substring(3).trim();
-		if(name.startsWith("THE ")) name=name.substring(4).trim();
-		if(name.startsWith("SOME ")) name=name.substring(5).trim();
+		if(name.startsWith("A "))
+			name=name.substring(2).trim();
+		if(name.startsWith("AN "))
+			name=name.substring(3).trim();
+		if(name.startsWith("THE "))
+			name=name.substring(4).trim();
+		if(name.startsWith("SOME "))
+			name=name.substring(5).trim();
 		return name;
 	}
 
@@ -88,7 +93,8 @@ public class Spell_StoreSpell extends Spell
 			{
 				message=message.substring(x+name.length());
 				final int y=message.indexOf('\'');
-				if(y>=0) message=message.substring(0,y);
+				if(y>=0)
+					message=message.substring(0,y);
 				message=message.trim();
 				x=text().indexOf('/');
 				int charges=0;
@@ -221,7 +227,8 @@ public class Spell_StoreSpell extends Spell
 		}
 		int charges=0;
 		final int x=A.text().indexOf('/');
-		if(x>=0) charges=CMath.s_int(A.text().substring(x+1));
+		if(x>=0)
+			charges=CMath.s_int(A.text().substring(x+1));
 		overridemana=-1;
 		int mana=usageCost(mob,true)[0]+wandThis.usageCost(mob,true)[0];
 		if(mana>mob.maxState().getMana())

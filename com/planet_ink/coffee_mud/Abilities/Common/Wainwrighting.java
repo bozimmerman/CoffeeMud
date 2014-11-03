@@ -84,7 +84,8 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 	@Override
 	public boolean mayICraft(final Item I)
 	{
-		if(I==null) return false;
+		if(I==null)
+			return false;
 		if(!super.mayBeCrafted(I))
 			return false;
 		if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
@@ -263,11 +264,13 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 
 		final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
-		if(componentsFoundList==null) return false;
+		if(componentsFoundList==null)
+			return false;
 		int woodRequired=CMath.s_int(woodRequiredStr);
 		woodRequired=adjustWoodRequired(woodRequired,mob);
 
-		if(amount>woodRequired) woodRequired=amount;
+		if(amount>woodRequired)
+			woodRequired=amount;
 		final int[] pm={RawMaterial.MATERIAL_WOODEN};
 		final String misctype=foundRecipe.get(RCP_MISCTYPE);
 		final int[][] data=fetchFoundResourceData(mob,
@@ -276,7 +279,8 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 											false,
 											parsedVars.autoGenerate,
 											null);
-		if(data==null) return false;
+		if(data==null)
+			return false;
 		woodRequired=data[0][FOUND_AMT];
 		bundling=misctype.equalsIgnoreCase("BUNDLE");
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -344,7 +348,8 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 				key.text();
 			}
 		}
-		if(bundling) buildingI.setBaseValue(lostValue);
+		if(bundling)
+			buildingI.setBaseValue(lostValue);
 		buildingI.recoverPhyStats();
 		buildingI.text();
 		buildingI.recoverPhyStats();

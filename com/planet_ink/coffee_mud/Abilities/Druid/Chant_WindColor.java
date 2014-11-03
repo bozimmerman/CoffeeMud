@@ -74,7 +74,8 @@ public class Chant_WindColor extends Chant
 		{
 			lastRoom=((MOB)affected).location();
 			final String prediction=getWindColor((MOB)affected,((MOB)affected).location());
-			if(prediction.length()>0) ((MOB)affected).tell(L("The winds are @x1.",prediction));
+			if(prediction.length()>0)
+				((MOB)affected).tell(L("The winds are @x1.",prediction));
 		}
 		return true;
 	}
@@ -98,8 +99,10 @@ public class Chant_WindColor extends Chant
 
 	public String getWindColor(MOB mob, Room R)
 	{
-		if((R==null)||(mob==null)) return "";
-		if(R.numInhabitants()==0) return "";
+		if((R==null)||(mob==null))
+			return "";
+		if(R.numInhabitants()==0)
+			return "";
 		int sourceCode=-1;
 		int levelCode=-1;
 		int[] colors=null;
@@ -110,7 +113,8 @@ public class Chant_WindColor extends Chant
 			if(I!=null)
 			{
 				int done=0;
-				if(colors==null) colors=new int[9];
+				if(colors==null)
+					colors=new int[9];
 				if(I.phyStats().level()>=(mob.phyStats().level()+25))
 					levelCode=4;
 				else
@@ -141,7 +145,8 @@ public class Chant_WindColor extends Chant
 				if(CMLib.flags().isEvil(I)){done++; colors[1]++;}
 				if(done>1)
 				{
-					if(sourceCode>=0) sourceCode=1;
+					if(sourceCode>=0)
+						sourceCode=1;
 					else sourceCode=0;
 				}
 			}
@@ -151,7 +156,8 @@ public class Chant_WindColor extends Chant
 			final MOB M=R.fetchInhabitant(i);
 			if((M!=null)&&(M!=mob)&&(!group.contains(M)))
 			{
-				if(colors==null) colors=new int[9];
+				if(colors==null)
+					colors=new int[9];
 				if(M.phyStats().level()>=(mob.phyStats().level()+25))
 					levelCode=4;
 				else
@@ -181,21 +187,27 @@ public class Chant_WindColor extends Chant
 				{ done++; colors[7]++;}
 				if(done>0)
 				{
-					if(sourceCode>=0) sourceCode=1;
+					if(sourceCode>=0)
+						sourceCode=1;
 					else sourceCode=0;
 				}
-				if(CMLib.flags().isGood(M)) colors[2]++;
+				if(CMLib.flags().isGood(M))
+					colors[2]++;
 				else
-				if(CMLib.flags().isEvil(M)) colors[1]++;
+				if(CMLib.flags().isEvil(M))
+					colors[1]++;
 				else
-				if((!CMLib.flags().isGood(M))&&(!CMLib.flags().isEvil(M))) colors[3]++;
+				if((!CMLib.flags().isGood(M))&&(!CMLib.flags().isEvil(M)))
+					colors[3]++;
 			}
 		}
-		if(colors==null) return "";
+		if(colors==null)
+			return "";
 		boolean foundOne=false;
 		for (final int color : colors)
 			if(color>0){foundOne=true; break;}
-		if(!foundOne) return "";
+		if(!foundOne)
+			return "";
 
 		final StringBuffer str=new StringBuffer("");
 		switch(sourceCode)
@@ -278,9 +290,11 @@ public class Chant_WindColor extends Chant
 		for(int i=0;i<V.size();i++)
 		{
 			final int x=((Integer)V.elementAt(i)).intValue();
-			if(i==V.size()-1) str.append(L("and @x1 ",getColor(x)));
+			if(i==V.size()-1)
+				str.append(L("and @x1 ",getColor(x)));
 			else
-			if(i>0) str.append(", "+getColor(x)+" ");
+			if(i>0)
+				str.append(", "+getColor(x)+" ");
 			else str.append(getColor(x)+" ");
 		}
 		return str.toString().trim();

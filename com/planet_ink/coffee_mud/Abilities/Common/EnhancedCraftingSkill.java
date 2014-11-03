@@ -75,16 +75,22 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				switch(stage)
 				{
 				case 0:
-					if(req1Required>0) req1Required=atLeast1(req1Required,-0.1);
-					if(req2Required>0) req2Required=atLeast1(req2Required,-0.1);
+					if(req1Required>0)
+						req1Required=atLeast1(req1Required,-0.1);
+					if(req2Required>0)
+						req2Required=atLeast1(req2Required,-0.1);
 					break;
 				case 1:
-					if(req1Required>0) req1Required=atLeast1(req1Required,-0.25);
-					if(req2Required>0) req2Required=atLeast1(req2Required,-0.25);
+					if(req1Required>0)
+						req1Required=atLeast1(req1Required,-0.25);
+					if(req2Required>0)
+						req2Required=atLeast1(req2Required,-0.25);
 					break;
 				case 2:
-					if(req1Required>0) req1Required=atLeast1(req1Required,-0.5);
-					if(req2Required>0) req2Required=atLeast1(req2Required,-0.5);
+					if(req1Required>0)
+						req1Required=atLeast1(req1Required,-0.5);
+					if(req2Required>0)
+						req2Required=atLeast1(req2Required,-0.5);
 					break;
 				}
 				break;
@@ -92,16 +98,22 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				switch(stage)
 				{
 				case 0:
-					if(req1Required>0) req1Required=atLeast1(req1Required,0.1);
-					if(req2Required>0) req2Required=atLeast1(req2Required,0.1);
+					if(req1Required>0)
+						req1Required=atLeast1(req1Required,0.1);
+					if(req2Required>0)
+						req2Required=atLeast1(req2Required,0.1);
 					break;
 				case 1:
-					if(req1Required>0) req1Required=atLeast1(req1Required,0.2);
-					if(req2Required>0) req2Required=atLeast1(req2Required,0.2);
+					if(req1Required>0)
+						req1Required=atLeast1(req1Required,0.2);
+					if(req2Required>0)
+						req2Required=atLeast1(req2Required,0.2);
 					break;
 				case 2:
-					if(req1Required>0) req1Required=atLeast1(req1Required,0.25);
-					if(req2Required>0) req2Required=atLeast1(req2Required,0.25);
+					if(req1Required>0)
+						req1Required=atLeast1(req1Required,0.25);
+					if(req2Required>0)
+						req2Required=atLeast1(req2Required,0.25);
 					break;
 				}
 				break;
@@ -133,12 +145,16 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				case 0:
 					break;
 				case 1:
-					if(req1Required>0) req1Required=atLeast1(req1Required,0.05);
-					if(req2Required>0) req2Required=atLeast1(req2Required,0.05);
+					if(req1Required>0)
+						req1Required=atLeast1(req1Required,0.05);
+					if(req2Required>0)
+						req2Required=atLeast1(req2Required,0.05);
 					break;
 				case 2:
-					if(req1Required>0) req1Required=atLeast1(req1Required,0.10);
-					if(req2Required>0) req2Required=atLeast1(req2Required,0.10);
+					if(req1Required>0)
+						req1Required=atLeast1(req1Required,0.10);
+					if(req2Required>0)
+						req2Required=atLeast1(req2Required,0.10);
 					break;
 				}
 				break;
@@ -180,12 +196,14 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		int change=(int)Math.round(CMath.mul(value,pct));
 		if(pct<0.0)
 		{
-			if((change==0)&&(value>1)) change-=1;
+			if((change==0)&&(value>1))
+				change-=1;
 			value+=change;
 		}
 		else
 		{
-			if(change==0) change+=1;
+			if(change==0)
+				change+=1;
 			value+=change;
 		}
 		return value;
@@ -193,7 +211,8 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 
 	protected int getLocalExpCode(String exp)
 	{
-		if(exp==null) return -1;
+		if(exp==null)
+			return -1;
 		exp=exp.toUpperCase();
 		for(int i=0;i<STAGE_KEY.length;i++)
 			if(exp.startsWith(STAGE_KEY[i]))
@@ -236,7 +255,8 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		for(int x=ExpertiseLibrary.XFLAG_X1;x<=ExpertiseLibrary.XFLAG_X5;x++)
 		{
 			final String s=CMLib.expertises().getApplicableExpertise(ID(),x);
-			if(s!=null) V.add(s);
+			if(s!=null)
+				V.add(s);
 		}
 		return V;
 	}
@@ -253,7 +273,8 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				levelParmPos=p;
 				break;
 			}
-		if(levelParmPos<0) return lists;
+		if(levelParmPos<0)
+			return lists;
 		final List<List<String>> sortedLists=new Vector<List<String>>();
 		while(lists.size()>0)
 		{
@@ -293,8 +314,10 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					{
 						stage=CMath.convertToRoman(s+1);
 						ExpertiseLibrary.ExpertiseDefinition def = CMLib.expertises().getDefinition(key+stage);
-						if(def==null) def=CMLib.expertises().getDefinition(key+(s+1));
-						if(def==null) def=CMLib.expertises().getDefinition(key);
+						if(def==null)
+							def=CMLib.expertises().getDefinition(key+(s+1));
+						if(def==null)
+							def=CMLib.expertises().getDefinition(key);
 						if(def!=null)
 							extras.append(def.data[s]+", ");
 					}
@@ -375,14 +398,17 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 									continue;
 								stage=CMath.convertToRoman(s+1);
 								ExpertiseLibrary.ExpertiseDefinition def = CMLib.expertises().getDefinition(key+stage);
-								if(def==null) def=CMLib.expertises().getDefinition(key+(s+1));
-								if(def==null) def=CMLib.expertises().getDefinition(key);
+								if(def==null)
+									def=CMLib.expertises().getDefinition(key+(s+1));
+								if(def==null)
+									def=CMLib.expertises().getDefinition(key);
 								if(def!=null)
 								{
 									if(cmd.equalsIgnoreCase(def.data[s]))
 									{
 										commands.removeElementAt(0);
-										if(types==null) types=new PairVector<Integer,Integer>();
+										if(types==null)
+											types=new PairVector<Integer,Integer>();
 										if(!types.contains(Integer.valueOf(code)))
 										{
 											types.addElement(Integer.valueOf(code),Integer.valueOf(s));
@@ -442,7 +468,8 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 
 	public void enhanceItem(MOB mob, Item item, PairVector<Integer,Integer> types)
 	{
-		if(types==null) return;
+		if(types==null)
+			return;
 		final EnhancedCraftingSkill affect=(EnhancedCraftingSkill)mob.fetchEffect(ID());
 		if((affect!=null)
 		&&(!affect.aborted)
@@ -455,9 +482,12 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				final int stage=types.elementAt(t).second.intValue();
 				final String expertiseID=CMLib.expertises().getApplicableExpertise(ID(),type);
 				ExpertiseLibrary.ExpertiseDefinition def = CMLib.expertises().getDefinition(expertiseID+CMath.convertToRoman(1));
-				if(def==null) def = CMLib.expertises().getDefinition(expertiseID+1);
-				if(def==null) def = CMLib.expertises().getDefinition(expertiseID);
-				if(def==null) continue;
+				if(def==null)
+					def = CMLib.expertises().getDefinition(expertiseID+1);
+				if(def==null)
+					def = CMLib.expertises().getDefinition(expertiseID);
+				if(def==null)
+					continue;
 				switch(type)
 				{
 				case TYPE_LITECRAFT:

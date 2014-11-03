@@ -45,7 +45,8 @@ public class AbilityNext extends StdWebMacro
 		final String last=httpReq.getUrlParameter("ABILITY");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("ABILITY");
+			if(last!=null)
+				httpReq.removeUrlParameter("ABILITY");
 			return "";
 		}
 		final String ableType=httpReq.getUrlParameter("ABILITYTYPE");
@@ -161,7 +162,8 @@ public class AbilityNext extends StdWebMacro
 				if(containsOne&&(!parms.containsKey(Ability.ACODE_DESCS[classType])))
 					okToShow=false;
 			}
-			if(notFlag) okToShow=!okToShow;
+			if(notFlag)
+				okToShow=!okToShow;
 			if(okToShow)
 			{
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!A.ID().equals(lastID))))

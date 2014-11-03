@@ -44,7 +44,8 @@ public class ComponentNext extends StdWebMacro
 		final String last=httpReq.getUrlParameter("COMPONENT");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("COMPONENT");
+			if(last!=null)
+				httpReq.removeUrlParameter("COMPONENT");
 			return "";
 		}
 		String lastID="";

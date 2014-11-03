@@ -93,7 +93,8 @@ public class Empty extends Drop
 		}
 
 		final int maxToDrop=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
-		if(maxToDrop<0) return false;
+		if(maxToDrop<0)
+			return false;
 
 		whatToDrop=CMParms.combine(commands,0);
 		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
@@ -135,7 +136,8 @@ public class Empty extends Drop
 						return false;
 				}
 			}
-			if(dropThis==null) break;
+			if(dropThis==null)
+				break;
 			if(dropThis instanceof Drink)
 				drink=(Drink)dropThis;
 			if((CMLib.flags().canBeSeenBy(dropThis,mob))
@@ -146,9 +148,11 @@ public class Empty extends Drop
 		}
 
 		String str=L("<S-NAME> empt(ys) <T-NAME>");
-		if(target instanceof Room) str+=" here.";
+		if(target instanceof Room)
+			str+=" here.";
 		else
-		if(target instanceof MOB) str+=".";
+		if(target instanceof MOB)
+			str+=".";
 		else str+=" into "+target.Name()+".";
 
 		if((V.size()==0)&&(drink!=null))

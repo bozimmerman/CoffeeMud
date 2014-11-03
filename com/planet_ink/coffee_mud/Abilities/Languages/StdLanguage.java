@@ -75,7 +75,8 @@ public class StdLanguage extends StdAbility implements Language
 	@Override
 	public String displayText()
 	{
-		if(beingSpoken(ID())) return "(Speaking "+name()+")";
+		if(beingSpoken(ID()))
+			return "(Speaking "+name()+")";
 		return "";
 	}
 
@@ -85,7 +86,8 @@ public class StdLanguage extends StdAbility implements Language
 		char lastLike=' ';
 		for(int x=0;x<make.length();x++)
 		{
-			if(x<like.length()) lastLike=like.charAt(x);
+			if(x<like.length())
+				lastLike=like.charAt(x);
 			s.setCharAt(x,fixCase(lastLike,make.charAt(x)));
 		}
 		return s.toString();
@@ -102,13 +104,15 @@ public class StdLanguage extends StdAbility implements Language
 		if(translationHash(language).containsKey(word.toUpperCase()))
 			return fixCase(word,translationHash(language).get(word.toUpperCase()));
 		final MOB M=CMLib.players().getPlayer(word);
-		if(M!=null) return word;
+		if(M!=null)
+			return word;
 		final List<String[]> translationVector=translationVector(language);
 		if(translationVector.size()>0)
 		{
 			String[] choices=null;
 			try{ choices=translationVector.get(word.length()-1);}catch(final Exception e){}
-			if(choices==null) choices=translationVector.get(translationVector.size()-1);
+			if(choices==null)
+				choices=translationVector.get(translationVector.size()-1);
 			return choices[CMath.abs(word.toLowerCase().hashCode()) % choices.length];
 		}
 		return word;
@@ -128,7 +132,8 @@ public class StdLanguage extends StdAbility implements Language
 	public String messChars(String language, String words, int numToMess)
 	{
 		numToMess=numToMess/2;
-		if(numToMess==0) return words;
+		if(numToMess==0)
+			return words;
 		final StringBuffer w=new StringBuffer(words);
 		while(numToMess>0)
 		{
@@ -191,7 +196,8 @@ public class StdLanguage extends StdAbility implements Language
 
 	protected Language getMyTranslator(String id, Physical P, Language winner)
 	{
-		if(P==null) return winner;
+		if(P==null)
+			return winner;
 		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
@@ -219,7 +225,8 @@ public class StdLanguage extends StdAbility implements Language
 	protected boolean processSourceMessage(CMMsg msg, String str, int numToMess)
 	{
 		String smsg=CMStrings.getSayFromMessage(msg.sourceMessage());
-		if(numToMess>0) smsg=messChars(ID(),smsg,numToMess);
+		if(numToMess>0)
+			smsg=messChars(ID(),smsg,numToMess);
 		msg.modify(msg.source(),
 					  msg.target(),
 					  this,
@@ -278,7 +285,8 @@ public class StdLanguage extends StdAbility implements Language
 			   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))))
 			{
 				String str=CMStrings.getSayFromMessage(msg.othersMessage());
-				if(str==null) str=CMStrings.getSayFromMessage(msg.targetMessage());
+				if(str==null)
+					str=CMStrings.getSayFromMessage(msg.targetMessage());
 				if(str!=null)
 				{
 					final int numToMess=(int)Math.round(CMath.mul(numChars(str),CMath.div(100-getProficiency(ID()),100)));
@@ -349,7 +357,8 @@ public class StdLanguage extends StdAbility implements Language
 	private int numLanguagesKnown(MOB student)
 	{
 		int numLanguages=0;
-		if(student==null) return Integer.MAX_VALUE;
+		if(student==null)
+			return Integer.MAX_VALUE;
 		final CharClass C=student.charStats().getCurrentClass();
 		final PairVector<String,Integer> culturalAbilitiesDV = student.baseCharStats().getMyRace().culturalAbilities();
 		final HashSet culturalAbilities=new HashSet();
@@ -376,9 +385,11 @@ public class StdLanguage extends StdAbility implements Language
 	{
 		if(!super.canBeLearnedBy(teacher,student))
 			return false;
-		if(student==null) return true;
+		if(student==null)
+			return true;
 		final CharClass C=student.charStats().getCurrentClass();
-		if(C.maxLanguages()==0) return true;
+		if(C.maxLanguages()==0)
+			return true;
 		if(CMLib.ableMapper().getQualifyingLevel(C.ID(), false, ID())>=0)
 			return true;
 		final int numLanguages=numLanguagesKnown(student);
@@ -398,7 +409,8 @@ public class StdLanguage extends StdAbility implements Language
 		if((student!=null)&&(student.fetchAbility(ID())!=null))
 		{
 			final CharClass C=student.charStats().getCurrentClass();
-			if(C.maxLanguages()==0) return;
+			if(C.maxLanguages()==0)
+				return;
 			if(CMLib.ableMapper().getQualifyingLevel(C.ID(), false, ID())>=0)
 				return;
 			final int numLanguages=numLanguagesKnown(student);

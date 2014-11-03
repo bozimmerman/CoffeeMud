@@ -67,7 +67,8 @@ public class Prayer_SenseLife extends Prayer
 
 	public boolean inhabitated(MOB mob, Room R)
 	{
-		if(R==null) return false;
+		if(R==null)
+			return false;
 		for(int i=0;i<R.numInhabitants();i++)
 		{
 			final MOB M=R.fetchInhabitant(i);
@@ -135,7 +136,8 @@ public class Prayer_SenseLife extends Prayer
 			return false;
 
 		Physical target=mob;
-		if((auto)&&(givenTarget!=null)) target=givenTarget;
+		if((auto)&&(givenTarget!=null))
+			target=givenTarget;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

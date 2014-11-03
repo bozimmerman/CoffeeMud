@@ -59,7 +59,8 @@ public class Archon_Wrath extends ArchonSkill
 			announce=true;
 		}
 		final MOB target=getTargetAnywhere(mob,commands,givenTarget,true);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

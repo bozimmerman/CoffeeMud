@@ -64,7 +64,8 @@ public class Spell_SpyingStone extends Spell
 				final StringBuilder str=new StringBuilder("");
 				for(final String m : msgs)
 					str.append(m).append("\n\r");
-				if(str.length()==0) str.append(L("Nothing!"));
+				if(str.length()==0)
+					str.append(L("Nothing!"));
 				room.showHappens(CMMsg.MSG_SPEAK, affected,L("^S<S-NAME> grow(s) a mouth and say(s) '^N@x1^S'^N",str.toString()));
 				msgs.clear();
 			}
@@ -80,7 +81,8 @@ public class Spell_SpyingStone extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Physical target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!(target instanceof Item))
 		{

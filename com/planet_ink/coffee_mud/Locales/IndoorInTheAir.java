@@ -49,7 +49,8 @@ public class IndoorInTheAir extends StdRoom
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg)) return false;
+		if(!super.okMessage(myHost,msg))
+			return false;
 		return InTheAir.isOkAirAffect(this,msg);
 	}
 	@Override

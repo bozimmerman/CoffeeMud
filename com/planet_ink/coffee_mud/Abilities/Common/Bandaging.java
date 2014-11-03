@@ -56,7 +56,8 @@ public class Bandaging extends CommonSkill implements MendingSkill
 	@Override
 	public boolean supportsMending(Physical item)
 	{
-		if(!(item instanceof MOB)) return false;
+		if(!(item instanceof MOB))
+			return false;
 		return (item.fetchEffect("Bleeding")!=null)||(item.fetchEffect("Injury")!=null);
 	}
 
@@ -99,9 +100,11 @@ public class Bandaging extends CommonSkill implements MendingSkill
 					else
 					{
 						Ability A=bandaging.fetchEffect("Bleeding");
-						if(A!=null) A.unInvoke();
+						if(A!=null)
+							A.unInvoke();
 						A=bandaging.fetchEffect("Injury");
-						if(A!=null) A.unInvoke();
+						if(A!=null)
+							A.unInvoke();
 					}
 				}
 			}
@@ -119,7 +122,8 @@ public class Bandaging extends CommonSkill implements MendingSkill
 		verb=L("bandaging");
 		bandaging=null;
 		final MOB target=super.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if((target.fetchEffect("Bleeding")==null)
 		&&(target.fetchEffect("Injury")==null))
 		{
@@ -130,7 +134,8 @@ public class Bandaging extends CommonSkill implements MendingSkill
 			return false;
 		messedUp=!proficiencyCheck(mob,0,auto);
 		int duration=3+(int)Math.round(10*(1.0-healthPct(target)))-getXLEVELLevel(mob);
-		if(duration<3) duration=3;
+		if(duration<3)
+			duration=3;
 		verb=L("bandaging @x1",target.name());
 		bandaging=target;
 		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,L("<S-NAME> begin(s) bandaging up <T-YOUPOSS> wounds."));

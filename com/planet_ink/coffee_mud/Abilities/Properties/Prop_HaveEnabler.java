@@ -156,7 +156,8 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 	@Override
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
-		if(processing) return;
+		if(processing)
+			return;
 		processing=true;
 		if(host instanceof Item)
 		{

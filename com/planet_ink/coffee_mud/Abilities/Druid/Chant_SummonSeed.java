@@ -108,8 +108,10 @@ public class Chant_SummonSeed extends Chant
 				{
 					final Item newItem=CMClass.getBasicItem("GenResource");
 					String name=foundShortName.toLowerCase();
-					if(name.endsWith("ies")) name=name.substring(0,name.length()-3)+"y";
-					if(name.endsWith("s")) name=name.substring(0,name.length()-1);
+					if(name.endsWith("ies"))
+						name=name.substring(0,name.length()-3)+"y";
+					if(name.endsWith("s"))
+						name=name.substring(0,name.length()-1);
 					newItem.setName(CMLib.english().startWithAorAn(name+" seed"));
 					newItem.setDisplayText(L("@x1 is here.",newItem.name()));
 					newItem.setDescription("");

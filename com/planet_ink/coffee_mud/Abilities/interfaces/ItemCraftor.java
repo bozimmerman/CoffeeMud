@@ -148,8 +148,10 @@ public interface ItemCraftor extends Ability
 		public List<Item> asList()
 		{
 			final List<Item> list = new LinkedList<Item>();
-			if(item!=null) list.add(item);
-			if(key != null) list.add(key);
+			if(item!=null)
+				list.add(item);
+			if(key != null)
+				list.add(key);
 			return list;
 		}
 

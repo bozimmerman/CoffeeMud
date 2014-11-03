@@ -66,7 +66,8 @@ public class Thief_Safecracking extends ThiefSkill
 			&&(CMLib.dice().rollPercentage()<proficiency()))
 			{
 				A=((Physical)msg.target()).fetchEffect("Spell_WizardLock");
-				if(A!=null) A.unInvoke();
+				if(A!=null)
+					A.unInvoke();
 			}
 		}
 		return super.okMessage(myHost,msg);

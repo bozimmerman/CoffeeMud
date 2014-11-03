@@ -87,7 +87,8 @@ public class Prayer_Fortress extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -107,7 +108,8 @@ public class Prayer_Fortress extends Prayer
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("A dark protective aura surrounds <S-NAME>."));
 				beneficialAffect(mob,target,asLevel,0);
 				final Ability A=target.fetchEffect("Prayer_Sanctuary");
-				if(A!=null) A.unInvoke();
+				if(A!=null)
+					A.unInvoke();
 			}
 		}
 		else

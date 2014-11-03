@@ -44,7 +44,8 @@ public class AddRandomFileFromDir extends StdWebMacro
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
-		if((parms==null)||(parms.size()==0)) return "";
+		if((parms==null)||(parms.size()==0))
+			return "";
 		final StringBuffer buf=new StringBuffer("");
 		final Vector fileList=new Vector();
 		boolean LINKONLY=false;
@@ -53,7 +54,8 @@ public class AddRandomFileFromDir extends StdWebMacro
 				LINKONLY=true;
 		for(String filePath : parms.values())
 		{
-			if(filePath.equalsIgnoreCase("LINKONLY")) continue;
+			if(filePath.equalsIgnoreCase("LINKONLY"))
+				continue;
 			final File directory=grabFile(httpReq,filePath);
 			if((!filePath.endsWith("/"))&&(!filePath.endsWith("/")))
 				filePath+="/";

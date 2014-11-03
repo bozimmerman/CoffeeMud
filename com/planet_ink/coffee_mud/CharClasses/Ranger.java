@@ -193,7 +193,8 @@ public class Ranger extends StdCharClass
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
+		if(!(myHost instanceof MOB))
+			return super.okMessage(myHost,msg);
 		final MOB myChar=(MOB)myHost;
 		if(!super.okMessage(myChar, msg))
 			return false;

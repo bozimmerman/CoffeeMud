@@ -50,9 +50,11 @@ public class ChannelBackLogNext extends StdWebMacro
 			return "";
 		}
 		final String channel=httpReq.getUrlParameter("CHANNEL");
-		if(channel==null) return " @break@";
+		if(channel==null)
+			return " @break@";
 		final int channelInt=CMLib.channels().getChannelIndex(channel);
-		if(channelInt<0) return " @break@";
+		if(channelInt<0)
+			return " @break@";
 		httpReq.addFakeUrlParameter("CHANNELBACKLOGNEXTPAGE", "false");
 		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 		if(mob!=null)

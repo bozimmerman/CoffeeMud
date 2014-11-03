@@ -45,8 +45,10 @@ public class Password extends StdCommand
 		throws java.io.IOException
 	{
 		final PlayerStats pstats=mob.playerStats();
-		if(pstats==null) return false;
-		if(mob.isMonster()) return false;
+		if(pstats==null)
+			return false;
+		if(mob.isMonster())
+			return false;
 		final Session sess=mob.session();
 		if(sess!=null)
 		sess.prompt(new InputCallback(InputCallback.Type.PROMPT)

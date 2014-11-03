@@ -43,7 +43,8 @@ public class PlayerList extends StdWebMacro
 		for(final Session S : CMLib.sessions().allIterable())
 		{
 			MOB m = S.mob();
-			if((m!=null)&&(CMLib.flags().isCloaked(m))) continue;
+			if((m!=null)&&(CMLib.flags().isCloaked(m)))
+				continue;
 
 			s.append("<li class=\"cmPlayerListEntry");
 

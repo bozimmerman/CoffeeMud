@@ -68,7 +68,8 @@ public class Prop_InstantDeath extends Property
 	public Set<MOB> getEveryoneHere(MOB spareMe, Room R)
 	{
 		final Set<MOB> V=new HashSet<MOB>();
-		if(R==null) return V;
+		if(R==null)
+			return V;
 		for(int i=0;i<R.numInhabitants();i++)
 		{
 			final MOB M=R.fetchInhabitant(i);
@@ -85,7 +86,8 @@ public class Prop_InstantDeath extends Property
 
 	protected MOB getTickersMOB(Tickable ticking)
 	{
-		if(ticking==null) return null;
+		if(ticking==null)
+			return null;
 
 		if(ticking instanceof MOB)
 			return (MOB)ticking;
@@ -100,7 +102,8 @@ public class Prop_InstantDeath extends Property
 
 	protected Room getTickersRoom(Tickable ticking)
 	{
-		if(ticking==null) return null;
+		if(ticking==null)
+			return null;
 
 		if(ticking instanceof Room)
 			return (Room)ticking;

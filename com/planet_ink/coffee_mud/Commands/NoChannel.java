@@ -44,7 +44,8 @@ public class NoChannel extends StdCommand
 		throws java.io.IOException
 	{
 		final PlayerStats pstats=mob.playerStats();
-		if(pstats==null) return false;
+		if(pstats==null)
+			return false;
 		String channelName=((String)commands.elementAt(0)).toUpperCase().trim().substring(2);
 		commands.removeElementAt(0);
 		int channelNum=-1;

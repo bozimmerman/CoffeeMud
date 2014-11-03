@@ -135,7 +135,8 @@ public class SMTPserver extends Thread implements Tickable
 
 		domain=CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase();
 		String mailbox=page.getStr("MAILBOX");
-		if(mailbox==null) mailbox="";
+		if(mailbox==null)
+			mailbox="";
 		CMProps.setVar(CMProps.Str.MAILBOX,mailbox.trim());
 		CMProps.setIntVar(CMProps.Int.MAXMAILBOX,getMaxMsgs());
 
@@ -235,7 +236,8 @@ public class SMTPserver extends Thread implements Tickable
 	public JournalsLibrary.SMTPJournal getAJournal(String journal)
 	{
 		final TreeMap<String, JournalsLibrary.SMTPJournal> set=getJournalSets();
-		if(set==null) return null;
+		if(set==null)
+			return null;
 		return set.get(journal.toUpperCase().trim());
 	}
 	public boolean isAForwardingJournal(String journal)
@@ -391,7 +393,8 @@ public class SMTPserver extends Thread implements Tickable
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickStatus!=STATUS_NOT) return true;
+		if(tickStatus!=STATUS_NOT)
+			return true;
 
 		boolean updatedMailingLists=false;
 		tickStatus=STATUS_START;
@@ -552,25 +555,31 @@ public class SMTPserver extends Thread implements Tickable
 	public int getMaxMsgs()
 	{
 		final String s=page.getStr("MAXMSGS");
-		if(s==null) return Integer.MAX_VALUE;
+		if(s==null)
+			return Integer.MAX_VALUE;
 		final int x=CMath.s_int(s);
-		if(x==0) return Integer.MAX_VALUE;
+		if(x==0)
+			return Integer.MAX_VALUE;
 		return x;
 	}
 	public int getJournalDays()
 	{
 		final String s=page.getStr("JOURNALDAYS");
-		if(s==null) return (365*20);
+		if(s==null)
+			return (365*20);
 		final int x=CMath.s_int(s);
-		if(x==0) return (365*20);
+		if(x==0)
+			return (365*20);
 		return x;
 	}
 	public long getMaxMsgSize()
 	{
 		final String s=page.getStr("MAXMSGSIZE");
-		if(s==null) return Long.MAX_VALUE;
+		if(s==null)
+			return Long.MAX_VALUE;
 		final long x=CMath.s_long(s);
-		if(x==0) return Long.MAX_VALUE;
+		if(x==0)
+			return Long.MAX_VALUE;
 		return x;
 	}
 }

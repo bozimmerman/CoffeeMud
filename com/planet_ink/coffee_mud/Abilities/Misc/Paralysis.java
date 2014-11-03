@@ -61,8 +61,10 @@ public class Paralysis extends StdAbility implements HealthCondition
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(affected==null) return;
-		if(!(affected instanceof MOB)) return;
+		if(affected==null)
+			return;
+		if(!(affected instanceof MOB))
+			return;
 
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
 	}
@@ -99,7 +101,8 @@ public class Paralysis extends StdAbility implements HealthCondition
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -118,7 +121,8 @@ public class Paralysis extends StdAbility implements HealthCondition
 				if(msg.value()<=0)
 				{
 					int levelDiff=(adjustedLevel(mob, asLevel)-target.phyStats().level());
-					if(levelDiff<0) levelDiff=0;
+					if(levelDiff<0)
+						levelDiff=0;
 					success=maliciousAffect(mob,target,asLevel,10 + (levelDiff/10),-1)!=null;
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> can't move!"));
 				}

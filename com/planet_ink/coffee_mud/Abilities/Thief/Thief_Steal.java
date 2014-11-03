@@ -145,11 +145,14 @@ public class Thief_Steal extends ThiefSkill
 							-(levelDiff*5)
 							+(getX1Level(mob)*5);
 		final int times=timesPicked(target);
-		if(times>5) discoverChance-=(20*(times-5));
+		if(times>5)
+			discoverChance-=(20*(times-5));
 		if(!CMLib.flags().canBeSeenBy(mob,target))
 			discoverChance+=50;
-		if(discoverChance>95) discoverChance=95;
-		if(discoverChance<5) discoverChance=5;
+		if(discoverChance>95)
+			discoverChance=95;
+		if(discoverChance<5)
+			discoverChance=5;
 
 		if(levelDiff>0)
 			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?5:15));
@@ -163,7 +166,8 @@ public class Thief_Steal extends ThiefSkill
 		{
 			if(CMLib.dice().rollPercentage()>discoverChance)
 			{
-				if((target.isMonster())&&(mob.getVictim()==null)) mob.setVictim(target);
+				if((target.isMonster())&&(mob.getVictim()==null))
+					mob.setVictim(target);
 				final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":L("You fumble the attempt to steal; <T-NAME> spots you!"),CMMsg.MSG_NOISYMOVEMENT,auto?"":L("<S-NAME> tries to steal from you and fails!"),CMMsg.MSG_NOISYMOVEMENT,auto?"":L("<S-NAME> tries to steal from <T-NAME> and fails!"));
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);

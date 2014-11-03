@@ -93,7 +93,8 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	@Override
 	public boolean isSold(int mask)
 	{
-		if(mask==0) return whatIsSoldMask==0;
+		if(mask==0)
+			return whatIsSoldMask==0;
 		if((whatIsSoldMask&255)==mask)
 			return true;
 		return CMath.bset(whatIsSoldMask>>8, CMath.pow(2,mask-1));
@@ -148,8 +149,10 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	protected Area getStartArea()
 	{
 		Area A=CMLib.map().getStartArea(affected);
-		if(A==null) CMLib.map().areaLocation(affected);
-		if(A==null) A=CMLib.map().areas().nextElement();
+		if(A==null)
+			CMLib.map().areaLocation(affected);
+		if(A==null)
+			A=CMLib.map().areas().nextElement();
 		return A;
 	}
 	@Override
@@ -206,7 +209,8 @@ public class Merchant extends CommonSkill implements ShopKeeper
 
 	public MOB deriveMerchant(MOB roomHelper)
 	{
-		if(affected ==null) return null;
+		if(affected ==null)
+			return null;
 		if(affected instanceof MOB)
 			return (MOB)affected;
 		if(affected instanceof Item)
@@ -219,7 +223,8 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		Room room=CMLib.map().roomLocation(affected);
 		if((affected instanceof Area)&&(roomHelper!=null))
 			room=roomHelper.location();
-		if(room==null) return null;
+		if(room==null)
+			return null;
 		if(staticMOB==null)
 		{
 			staticMOB=CMClass.getMOB("StdMOB");
@@ -408,10 +413,12 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				&&(merchantM.location()!=null))
 				{
 					final Environmental item=getShop().getStock("$"+msg.tool().Name()+"$",mobFor);
-					if(item!=null) CMLib.coffeeShops().transactMoneyOnly(merchantM,msg.source(),this,item,!merchantM.isMonster());
+					if(item!=null)
+						CMLib.coffeeShops().transactMoneyOnly(merchantM,msg.source(),this,item,!merchantM.isMonster());
 
 					final List<Environmental> products=getShop().removeSellableProduct("$"+msg.tool().Name()+"$",mobFor);
-					if(products.size()==0) break;
+					if(products.size()==0)
+						break;
 					final Environmental product=products.get(0);
 					if(product instanceof Item)
 					{
@@ -521,7 +528,8 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			if(CMath.isInteger(s))
 			{
 				val=CMath.s_int( s );
-				if(val>0) commands.removeElement(s);
+				if(val>0)
+					commands.removeElement(s);
 			}
 			else
 			{
@@ -533,7 +541,8 @@ public class Merchant extends CommonSkill implements ShopKeeper
 					if(denom>0.0)
 					{
 						val=CMath.mul(numberCoins,denom);
-						if(val>0) commands.removeElement(s);
+						if(val>0)
+							commands.removeElement(s);
 					}
 				}
 			}
@@ -551,7 +560,8 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		{
 			doBugFix=false;
 			final Item I=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemName+addendumStr);
-			if(I==null) break;
+			if(I==null)
+				break;
 			if(target==null)
 				target=I;
 			else
@@ -605,7 +615,8 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	@Override
 	public boolean autoInvocation(MOB mob)
 	{
-		if(mob instanceof ShopKeeper) return false;
+		if(mob instanceof ShopKeeper)
+			return false;
 		return super.autoInvocation(mob);
 	}
 }

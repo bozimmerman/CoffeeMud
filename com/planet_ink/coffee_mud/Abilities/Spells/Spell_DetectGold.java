@@ -63,7 +63,8 @@ public class Spell_DetectGold extends Spell
 	}
 	public String metalCheck(MOB mob, Item I, Item container, StringBuffer msg)
 	{
-		if(I==null) return "";
+		if(I==null)
+			return "";
 		if(I.container()==container)
 		{
 			if((I.material()==RawMaterial.RESOURCE_GOLD)
@@ -79,7 +80,8 @@ public class Spell_DetectGold extends Spell
 	public String metalHere(MOB mob, Environmental E, Item container)
 	{
 		final StringBuffer msg=new StringBuffer("");
-		if(E==null) return msg.toString();
+		if(E==null)
+			return msg.toString();
 		if((E instanceof Room)&&(CMLib.flags().canBeSeenBy(E,mob)))
 		{
 			for(int i=0;i<((Room)E).numItems();i++)

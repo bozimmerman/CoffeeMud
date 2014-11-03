@@ -47,9 +47,11 @@ public class Email extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(mob.session()==null)    return true;
+		if(mob.session()==null)
+			return true;
 		final PlayerStats pstats=mob.playerStats();
-		if(pstats==null) return true;
+		if(pstats==null)
+			return true;
 
 		if((commands!=null)
 		&&(commands.size()>1)
@@ -105,14 +107,17 @@ public class Email extends StdCommand
 					final Session S=mob.session();
 					try
 					{
-						if(S!=null) S.snoopSuspension(1);
+						if(S!=null)
+							S.snoopSuspension(1);
 						mob.tell(messages.toString());
 					}
 					finally
 					{
-						if(S!=null) S.snoopSuspension(-1);
+						if(S!=null)
+							S.snoopSuspension(-1);
 					}
-					if(mob.session()==null) continue;
+					if(mob.session()==null)
+						continue;
 					String s=mob.session().prompt(L("Enter a message #"),"");
 					if((!CMath.isInteger(s))||(mob.session().isStopped()))
 						return false;
@@ -137,14 +142,17 @@ public class Email extends StdCommand
 						messages.append(message+"\n\r\n\r");
 						try
 						{
-							if(S!=null) S.snoopSuspension(1);
+							if(S!=null)
+								S.snoopSuspension(1);
 							mob.tell(messages.toString());
 						}
 						finally
 						{
-							if(S!=null) S.snoopSuspension(-1);
+							if(S!=null)
+								S.snoopSuspension(-1);
 						}
-						if(mob.session()==null) continue;
+						if(mob.session()==null)
+							continue;
 						s=mob.session().choose(L("Would you like to D)elete, H)old, or R)eply (D/H/R)? "),L("DHR"),L("H"));
 						if(s.equalsIgnoreCase("H"))
 							break;
@@ -196,21 +204,24 @@ public class Email extends StdCommand
 						return false;
 					}
 				}
-				if(mob.session()==null) return false;
+				if(mob.session()==null)
+					return false;
 				final String subject=mob.session().prompt(L("Email Subject: "),"").trim();
 				if(subject.length()==0)
 				{
 					mob.tell(L("Aborted"));
 					return false;
 				}
-				if(mob.session()==null) return false;
+				if(mob.session()==null)
+					return false;
 				String message=mob.session().prompt(L("Enter your message\n\r: "),"").trim();
 				if(message.trim().length()==0)
 				{
 					mob.tell(L("Aborted"));
 					return false;
 				}
-				if(mob.session()==null) return false;
+				if(mob.session()==null)
+					return false;
 				message+="\n\r\n\rThis message was sent through the "+CMProps.getVar(CMProps.Str.MUDNAME)+" mail server at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+", port"+CMProps.getVar(CMProps.Str.MUDPORTS)+".  Please contact the administrators regarding any abuse of this system.\n\r";
 				CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX), mob.Name(), M.Name(), subject, message);
 				mob.tell(L("Your email has been sent."));
@@ -229,26 +240,34 @@ public class Email extends StdCommand
 		}
 		else
 		{
-			if(commands==null) return true;
+			if(commands==null)
+				return true;
 			final String change=mob.session().prompt(L("You currently have '@x1' set as the email address for this character.\n\rChange it (y/N)?",pstats.getEmail()),L("N"));
-			if(change.toUpperCase().startsWith("N")) return false;
+			if(change.toUpperCase().startsWith("N"))
+				return false;
 		}
 		if((CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
 		&&(commands!=null)
 		&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0))
 			mob.session().println(L("\n\r** Changing your email address will cause you to be logged off, and a new password to be generated and emailed to the new address. **\n\r"));
 		String newEmail=mob.session().prompt(L("New E-mail Address:"));
-		if(newEmail==null) return false;
+		if(newEmail==null)
+			return false;
 		newEmail=newEmail.trim();
 		if(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("OPTION"))
 		{
-			if(newEmail.length()<6) return false;
-			if(newEmail.indexOf('@')<0) return false;
+			if(newEmail.length()<6)
+				return false;
+			if(newEmail.indexOf('@')<0)
+				return false;
 			String confirmEmail=mob.session().prompt(L("Confirm that '@x1' is correct by re-entering.\n\rRe-enter:",newEmail));
-			if(confirmEmail==null) return false;
+			if(confirmEmail==null)
+				return false;
 			confirmEmail=confirmEmail.trim();
-			if(confirmEmail.length()==0) return false;
-			if(!(newEmail.equalsIgnoreCase(confirmEmail))) return false;
+			if(confirmEmail.length()==0)
+				return false;
+			if(!(newEmail.equalsIgnoreCase(confirmEmail)))
+				return false;
 		}
 		pstats.setEmail(newEmail);
 		CMLib.database().DBUpdateEmail(mob);

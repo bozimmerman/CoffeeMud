@@ -68,7 +68,8 @@ public class InstantDeath extends ActiveTicker
 
 	public void killEveryoneHere(MOB spareMe, Room R)
 	{
-		if(R==null) return;
+		if(R==null)
+			return;
 		final Vector V=new Vector();
 		for(int i=0;i<R.numInhabitants();i++)
 		{
@@ -91,7 +92,8 @@ public class InstantDeath extends ActiveTicker
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(!activated) return true;
+		if(!activated)
+			return true;
 		if(canAct(ticking,tickID))
 		{
 			if(ticking instanceof MOB)
@@ -106,9 +108,11 @@ public class InstantDeath extends ActiveTicker
 			{
 				final Item item=(Item)ticking;
 				final Environmental E=item.owner();
-				if(E==null) return true;
+				if(E==null)
+					return true;
 				final Room room=getBehaversRoom(ticking);
-				if(room==null) return true;
+				if(room==null)
+					return true;
 				if((E instanceof MOB)&&((mask==null)||(CMLib.masking().maskCheck(mask, E, false))))
 					CMLib.combat().postDeath(null,(MOB)E,null);
 				else
@@ -136,7 +140,8 @@ public class InstantDeath extends ActiveTicker
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
-		if(activated) return;
+		if(activated)
+			return;
 		if(msg.amITarget(affecting))
 		{
 			if(affecting instanceof MOB)

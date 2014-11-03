@@ -44,7 +44,8 @@ public class AutoTitleNext extends StdWebMacro
 		final String last=httpReq.getUrlParameter("AUTOTITLE");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("AUTOTITLE");
+			if(last!=null)
+				httpReq.removeUrlParameter("AUTOTITLE");
 			return "";
 		}
 		String lastID="";

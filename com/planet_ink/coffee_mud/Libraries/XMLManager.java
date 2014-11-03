@@ -128,7 +128,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	@Override
 	public String restoreAngleBrackets(String s)
 	{
-		if(s==null) return null;
+		if(s==null)
+			return null;
 		final StringBuffer buf=new StringBuffer(s);
 		int loop=0;
 		while(loop<buf.length())
@@ -325,18 +326,24 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	public String returnXMLBlock(String Blob, String Tag)
 	{
 		int foundb=Blob.indexOf("<"+Tag+">");
-		if(foundb<0) foundb=Blob.indexOf("<"+Tag+" ");
-		if(foundb<0) foundb=Blob.indexOf("<"+Tag+"/");
-		if(foundb<0) return "";
+		if(foundb<0)
+			foundb=Blob.indexOf("<"+Tag+" ");
+		if(foundb<0)
+			foundb=Blob.indexOf("<"+Tag+"/");
+		if(foundb<0)
+			return "";
 
 		int founde=Blob.indexOf("/"+Tag+">",foundb)-1;
-		if(founde<0) founde=Blob.indexOf("/"+Tag+" ",foundb)-1;
+		if(founde<0)
+			founde=Blob.indexOf("/"+Tag+" ",foundb)-1;
 		if(founde<0)
 		{
 			founde=Blob.indexOf('>',foundb);
-			if((founde>0)&&(Blob.charAt(founde-1)!='/')) founde=-1;
+			if((founde>0)&&(Blob.charAt(founde-1)!='/'))
+				founde=-1;
 		}
-		if(founde<0) return "";
+		if(founde<0)
+			return "";
 
 		Blob=Blob.substring(foundb,founde).trim();
 		return Blob;
@@ -361,14 +368,16 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	public List<XMLpiece> getContentsFromPieces(List<XMLpiece> V, String tag)
 	{
 		final XMLpiece x=getPieceFromPieces(V,tag);
-		if(x!=null)	return x.contents;
+		if(x!=null)
+			return x.contents;
 		return null;
 	}
 
 	@Override
 	public XMLpiece getPieceFromPieces(List<XMLpiece> V, String tag)
 	{
-		if(V==null) return null;
+		if(V==null)
+			return null;
 		for(int v=0;v<V.size();v++)
 			if(V.get(v).tag.equalsIgnoreCase(tag))
 				return V.get(v);
@@ -388,7 +397,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	@Override
 	public List<XMLpiece> getPiecesFromPieces(List<XMLpiece> V, String tag)
 	{
-		if(V==null) return null;
+		if(V==null)
+			return null;
 		final List<XMLpiece> pieces = new ArrayList<XMLpiece>();
 		for(int v=0;v<V.size();v++)
 			if(V.get(v).tag.equalsIgnoreCase(tag))
@@ -950,7 +960,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 
 		try
 		{
-			while((start<Blob.length())&&(Blob.charAt(start)!='>')) start++;
+			while((start<Blob.length())&&(Blob.charAt(start)!='>'))
+				start++;
 			if((start>=Blob.length())||(Blob.charAt(start-1)!='>')||(Blob.charAt(start-1)=='/'))
 				return "";
 		}
@@ -966,7 +977,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		Blob=returnXMLBlock(Blob,Tag);
 		try
 		{
-			while((start<Blob.length())&&(Blob.charAt(start)!='>')) start++;
+			while((start<Blob.length())&&(Blob.charAt(start)!='>'))
+				start++;
 			if((start>=Blob.length())||(Blob.charAt(start)!='>')||(Blob.charAt(start-1)=='/'))
 				return "";
 		}

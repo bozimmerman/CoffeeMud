@@ -62,9 +62,11 @@ public class Fighter_CalledStrike extends FighterSkill
 	protected boolean amputate()
 	{
 		final MOB mob=target;
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		Amputator A=(Amputator)mob.fetchEffect("Amputation");
-		if(A==null)	A=(Amputator)CMClass.getAbility("Amputation");
+		if(A==null)
+			A=(Amputator)CMClass.getAbility("Amputation");
 		if(A.amputate(mob,A,gone)!=null)
 		{
 			if(mob.fetchEffect(A.ID())==null)
@@ -139,7 +141,8 @@ public class Fighter_CalledStrike extends FighterSkill
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if(!prereqs(mob,false)) return false;
+		if(!prereqs(mob,false))
+			return false;
 
 		gone="";
 		hpReq=9;
@@ -172,7 +175,8 @@ public class Fighter_CalledStrike extends FighterSkill
 		}
 
 		Amputator A=(Amputator)target.fetchEffect("Amputation");
-		if(A==null)	A=(Amputator)CMClass.getAbility("Amputation");
+		if(A==null)
+			A=(Amputator)CMClass.getAbility("Amputation");
 
 		final List<String> remainingLimbList=A.remainingLimbNameSet(target);
 		if(remainingLimbList.size()==0)
@@ -239,7 +243,8 @@ public class Fighter_CalledStrike extends FighterSkill
 				invoker=mob;
 				beneficialAffect(mob,mob,asLevel,2);
 				final Ability A2=target.fetchEffect("Injury");
-				if(A2!=null) A2.setMiscText(mob.Name()+"/"+gone);
+				if(A2!=null)
+					A2.setMiscText(mob.Name()+"/"+gone);
 				mob.recoverPhyStats();
 			}
 		}

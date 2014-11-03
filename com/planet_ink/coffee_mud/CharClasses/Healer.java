@@ -162,9 +162,11 @@ public class Healer extends Cleric
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!(ticking instanceof MOB)) return super.tick(ticking,tickID);
+		if(!(ticking instanceof MOB))
+			return super.tick(ticking,tickID);
 		final MOB myChar=(MOB)ticking;
-		if(tickID!=Tickable.TICKID_MOB) return super.tick(ticking, tickID);
+		if(tickID!=Tickable.TICKID_MOB)
+			return super.tick(ticking, tickID);
 		if((System.currentTimeMillis() - auraCheckTime) > 2 * 60 * 1000)
 		{
 			if((System.currentTimeMillis() - auraCheckTime) > 3 * 60 * 1000)
@@ -217,7 +219,8 @@ public class Healer extends Cleric
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if(!(myHost instanceof MOB)) return;
+		if(!(myHost instanceof MOB))
+			return;
 		final MOB myChar=(MOB)myHost;
 		if(msg.amISource(myChar))
 		{

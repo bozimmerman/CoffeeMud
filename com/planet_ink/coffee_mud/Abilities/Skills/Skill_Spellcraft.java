@@ -95,9 +95,11 @@ public class Skill_Spellcraft extends StdSkill
 			final boolean hasAble=(mob.fetchAbility(ID())!=null);
 			final int lowestLevel=CMLib.ableMapper().lowestQualifyingLevel(msg.tool().ID());
 			int myLevel=0;
-			if(hasAble) myLevel=adjustedLevel(mob,0)-lowestLevel+1;
+			if(hasAble)
+				myLevel=adjustedLevel(mob,0)-lowestLevel+1;
 			final int lvl=(mob.phyStats().level()/3)+getXLEVELLevel(mob);
-			if(myLevel<lvl) myLevel=lvl;
+			if(myLevel<lvl)
+				myLevel=lvl;
 			if(((!hasAble)||proficiencyCheck(mob,0,false))&&(lowestLevel<=myLevel))
 			{
 				final Ability A=(Ability)copyOf();

@@ -109,7 +109,8 @@ public class Prop_ClosedDayNight extends Property
 	public void executeMsg(Environmental E, CMMsg msg)
 	{
 		super.executeMsg(E,msg);
-		if(exitRoom!=null) return;
+		if(exitRoom!=null)
+			return;
 		if(msg.source().location()!=null)
 			exitRoom=msg.source().location();
 	}
@@ -118,12 +119,15 @@ public class Prop_ClosedDayNight extends Property
 	{
 		boolean closed=false;
 		Room R=CMLib.map().roomLocation(E);
-		if(R==null) R=((exitRoom==null)?(Room)CMLib.map().rooms().nextElement():exitRoom);
-		if(R==null) return false;
+		if(R==null)
+			R=((exitRoom==null)?(Room)CMLib.map().rooms().nextElement():exitRoom);
+		if(R==null)
+			return false;
 		if((openTime<0)&&(closeTime<0))
 		{
 			closed=(R.getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.NIGHT);
-			if(dayFlag) closed=!closed;
+			if(dayFlag)
+				closed=!closed;
 		}
 		else
 		{
@@ -167,9 +171,11 @@ public class Prop_ClosedDayNight extends Property
 
 	protected Room getHomeRoom()
 	{
-		if(Home==null) return null;
+		if(Home==null)
+			return null;
 		Room R=CMLib.map().getRoom(Home);
-		if(R!=null) return R;
+		if(R!=null)
+			return R;
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			final MOB mob=(MOB)affected;
@@ -189,7 +195,8 @@ public class Prop_ClosedDayNight extends Property
 					{ R=R2; break;}
 				}
 			}
-			if(R!=null) return R;
+			if(R!=null)
+				return R;
 			try
 			{
 				final List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, Home,false,10);
@@ -209,7 +216,8 @@ public class Prop_ClosedDayNight extends Property
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(!((MOB)affected).amDead())
@@ -341,7 +349,8 @@ public class Prop_ClosedDayNight extends Property
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		if((affected instanceof MOB)
 		||(affected instanceof Item))
 		{

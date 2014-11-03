@@ -30,7 +30,8 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 	@Override
 	public synchronized boolean add(T arg0)
 	{
-		if(arg0==null) return false;
+		if(arg0==null)
+			return false;
 		if(list.size()==0)
 			return list.add(arg0);
 		int start=0;
@@ -127,7 +128,8 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 	@Override
 	public synchronized int indexOf(Object arg0)
 	{
-		if(list.size()==0) return -1;
+		if(list.size()==0)
+			return -1;
 		int start=0;
 		int end=list.size()-1;
 		while(start<=end)
@@ -162,7 +164,8 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 	public synchronized int lastIndexOf(Object arg0)
 	{
 		int firstIndex=indexOf(arg0);
-		if(firstIndex<0) return -1;
+		if(firstIndex<0)
+			return -1;
 		while((firstIndex<list.size())&&(compareTo(list.get(firstIndex),arg0)==0))
 			firstIndex++;
 		return firstIndex;

@@ -99,7 +99,8 @@ public class Thief_Swipe extends ThiefSkill
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if((mob.isInCombat())&&(CMLib.flags().aliveAwakeMobile(target,true)||(mob.getVictim()!=target)))
 		{
@@ -126,11 +127,14 @@ public class Thief_Swipe extends ThiefSkill
 							-(levelDiff*3)
 							+(getX1Level(mob)*5);
 		final int times=timesPicked(target);
-		if(times>5) discoverChance-=(20*(times-5));
+		if(times>5)
+			discoverChance-=(20*(times-5));
 		if(!CMLib.flags().canBeSeenBy(mob,target))
 			discoverChance+=50;
-		if(discoverChance>95) discoverChance=95;
-		if(discoverChance<5) discoverChance=5;
+		if(discoverChance>95)
+			discoverChance=95;
+		if(discoverChance<5)
+			discoverChance=5;
 
 		if(levelDiff>0)
 			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?5:15));
@@ -143,7 +147,8 @@ public class Thief_Swipe extends ThiefSkill
 		{
 			if(CMLib.dice().rollPercentage()>discoverChance)
 			{
-				if((target.isMonster())&&(mob.getVictim()==null)) mob.setVictim(target);
+				if((target.isMonster())&&(mob.getVictim()==null))
+					mob.setVictim(target);
 				final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":L("You fumble the swipe; <T-NAME> spots you!"),CMMsg.MSG_NOISYMOVEMENT,auto?"":L("<S-NAME> tries to pick your pocket and fails!"),CMMsg.MSG_OK_VISUAL,auto?"":L("<S-NAME> tries to pick <T-NAME>'s pocket and fails!"));
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
@@ -154,13 +159,17 @@ public class Thief_Swipe extends ThiefSkill
 		else
 		{
 			double pct=0.25;
-			if(levelDiff>0) pct=0.15;
-			if(levelDiff>5) pct=0.10;
-			if(levelDiff>10) pct=0.05;
+			if(levelDiff>0)
+				pct=0.15;
+			if(levelDiff>5)
+				pct=0.10;
+			if(levelDiff>10)
+				pct=0.05;
 			double goldTaken=CMLib.beanCounter().getTotalAbsoluteNativeValue(target)*pct*Math.random();
 			if(goldTaken<(CMLib.ableMapper().qualifyingClassLevel(mob,this)))
 				goldTaken=CMLib.ableMapper().qualifyingClassLevel(mob,this);
-			if(goldTaken>CMLib.beanCounter().getTotalAbsoluteNativeValue(target)) goldTaken=CMLib.beanCounter().getTotalAbsoluteNativeValue(target);
+			if(goldTaken>CMLib.beanCounter().getTotalAbsoluteNativeValue(target))
+				goldTaken=CMLib.beanCounter().getTotalAbsoluteNativeValue(target);
 			final String goldTakenStr=CMLib.beanCounter().nameCurrencyShort(target,goldTaken);
 
 			String str=null;

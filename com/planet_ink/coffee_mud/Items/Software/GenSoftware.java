@@ -96,7 +96,8 @@ public class GenSoftware extends StdProgram
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenSoftware)) return false;
+		if(!(E instanceof GenSoftware))
+			return false;
 		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)
 			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))

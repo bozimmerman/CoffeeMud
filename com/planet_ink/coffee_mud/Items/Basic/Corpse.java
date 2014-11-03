@@ -82,7 +82,8 @@ public class Corpse extends GenContainer implements DeadBody
 	public void setCharStats(CharStats newStats)
 	{
 		charStats=newStats;
-		if(charStats!=null) charStats=(CharStats)charStats.copyOf();
+		if(charStats!=null)
+			charStats=(CharStats)charStats.copyOf();
 	}
 
 	@Override

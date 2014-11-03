@@ -52,8 +52,10 @@ public class MoneyChanger extends StdBehavior
 	@Override
 	public void startBehavior(PhysicalAgent forMe)
 	{
-		if(forMe==null) return;
-		if(!(forMe instanceof MOB)) return;
+		if(forMe==null)
+			return;
+		if(!(forMe instanceof MOB))
+			return;
 		// i suppose this is for accepting heavy loads of coin
 		((MOB)forMe).baseCharStats().setStat(CharStats.STAT_STRENGTH,100);
 		super.startBehavior(forMe);
@@ -149,7 +151,8 @@ public class MoneyChanger extends StdBehavior
 		while(x>0)
 		{
 			int lastSp=newParm.lastIndexOf(' ',x);
-			if(lastSp<0) lastSp=0;
+			if(lastSp<0)
+				lastSp=0;
 			if((lastSp>=0)&&(lastSp<x-1)&&(Character.isLetter(newParm.charAt(x-1))))
 			{
 				String parm=newParm.substring(lastSp,x).trim().toUpperCase();

@@ -50,7 +50,8 @@ public class Skill_ControlUndead extends StdSkill
 	protected MOB charmer=null;
 	protected MOB getCharmer()
 	{
-		if(charmer!=null) return charmer;
+		if(charmer!=null)
+			return charmer;
 		if((invoker!=null)&&(invoker!=affected))
 			charmer=invoker;
 		else
@@ -60,7 +61,8 @@ public class Skill_ControlUndead extends StdSkill
 			if(R!=null)
 				charmer=R.fetchInhabitant(text());
 		}
-		if(charmer==null) return invoker;
+		if(charmer==null)
+			return invoker;
 		return charmer;
 	}
 
@@ -76,7 +78,8 @@ public class Skill_ControlUndead extends StdSkill
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 		{
 			unInvoke();
-			if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
+			if(msg.source().playerStats()!=null)
+				msg.source().playerStats().setLastUpdated(0);
 		}
 	}
 
@@ -197,7 +200,8 @@ public class Skill_ControlUndead extends StdSkill
 	{
 		if((mob!=null)&&(target!=null))
 		{
-			if(!(target instanceof MOB)) return Ability.QUALITY_INDIFFERENT;
+			if(!(target instanceof MOB))
+				return Ability.QUALITY_INDIFFERENT;
 			final MOB targetM=(MOB)target;
 			if((targetM.baseCharStats().getMyRace()==null)
 			||(!targetM.baseCharStats().getMyRace().racialCategory().equals("Undead")))
@@ -214,7 +218,8 @@ public class Skill_ControlUndead extends StdSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if((target.baseCharStats().getMyRace()==null)
 		||(!target.baseCharStats().getMyRace().racialCategory().equals("Undead")))

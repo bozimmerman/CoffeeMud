@@ -56,7 +56,8 @@ public class Spell_SummonEnemy extends Spell
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
-			if(mob.amDead()) mob.setLocation(null);
+			if(mob.amDead())
+				mob.setLocation(null);
 			mob.destroy();
 		}
 	}
@@ -71,7 +72,8 @@ public class Spell_SummonEnemy extends Spell
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 		{
 			unInvoke();
-			if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
+			if(msg.source().playerStats()!=null)
+				msg.source().playerStats().setLastUpdated(0);
 		}
 	}
 
@@ -115,9 +117,12 @@ public class Spell_SummonEnemy extends Spell
 	}
 	public MOB determineMonster(MOB caster, int level)
 	{
-		if(caster==null) return null;
-		if(caster.location()==null) return null;
-		if(caster.location().getArea()==null) return null;
+		if(caster==null)
+			return null;
+		if(caster.location()==null)
+			return null;
+		if(caster.location().getArea()==null)
+			return null;
 		MOB monster=null;
 		int tries=10000;
 		while((monster==null)&&((--tries)>0))
@@ -141,7 +146,8 @@ public class Spell_SummonEnemy extends Spell
 					monster=mob;
 			}
 		}
-		if(monster==null) return null;
+		if(monster==null)
+			return null;
 		monster=(MOB)monster.copyOf();
 		monster.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		monster.recoverCharStats();

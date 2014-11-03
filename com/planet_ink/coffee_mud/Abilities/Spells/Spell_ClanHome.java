@@ -89,7 +89,8 @@ public class Spell_ClanHome extends Spell
 			{
 				mob.location().send(mob,msg);
 				final Set<MOB> h=properTargets(mob,givenTarget,false);
-				if(h==null) return false;
+				if(h==null)
+					return false;
 
 				final Room thisRoom=mob.location();
 				for (final Object element : h)

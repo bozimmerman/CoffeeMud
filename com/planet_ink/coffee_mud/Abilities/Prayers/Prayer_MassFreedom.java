@@ -46,7 +46,8 @@ public class Prayer_MassFreedom extends Prayer implements MendingSkill
 	@Override
 	public boolean supportsMending(Physical item)
 	{
-		if(!(item instanceof MOB)) return false;
+		if(!(item instanceof MOB))
+			return false;
 		final MOB caster=CMClass.getFactoryMOB();
 		caster.basePhyStats().setLevel(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL));
 		caster.phyStats().setLevel(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL));
@@ -119,7 +120,8 @@ public class Prayer_MassFreedom extends Prayer implements MendingSkill
 				for(int i=0;i<room.numInhabitants();i++)
 				{
 					final MOB target=room.fetchInhabitant(i);
-					if(target==null) break;
+					if(target==null)
+						break;
 
 					final List<Ability> offensiveAffects=returnOffensiveAffects(mob,target);
 

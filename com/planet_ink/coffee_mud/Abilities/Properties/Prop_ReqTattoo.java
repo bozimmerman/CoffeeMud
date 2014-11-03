@@ -106,7 +106,8 @@ public class Prop_ReqTattoo extends Property implements TriggeredAffect
 
 	public boolean passesMuster(Vector mask, boolean[] flags, MOB mob)
 	{
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		if(CMLib.flags().isATrackingMonster(mob))
 			return true;
 		if(CMLib.flags().isSneaking(mob)&&(flags[1]))

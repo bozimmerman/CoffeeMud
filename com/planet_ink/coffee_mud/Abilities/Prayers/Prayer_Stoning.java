@@ -60,7 +60,8 @@ public class Prayer_Stoning extends Prayer
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
 		if(!(affected instanceof MOB))
 			return super.tick(ticking,tickID);
 		final MOB mob=(MOB)affected;
@@ -81,7 +82,8 @@ public class Prayer_Stoning extends Prayer
 					if(CMLib.dice().rollPercentage()>=50)
 					{
 						int dmg=mob.maxState().getHitPoints()/20;
-						if(dmg<1) dmg=1;
+						if(dmg<1)
+							dmg=1;
 						final Item W=M.fetchWieldedItem();
 						if(W!=null)
 						{
@@ -117,9 +119,11 @@ public class Prayer_Stoning extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		LegalBehavior B=null;
-		if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());
+		if(mob.location()!=null)
+			B=CMLib.law().getLegalBehavior(mob.location());
 		List<LegalWarrant> warrants=new Vector();
 		if(B!=null)
 			warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);

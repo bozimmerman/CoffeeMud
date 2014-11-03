@@ -1078,10 +1078,12 @@ public interface CMMsg extends CMCommon
 		 */
 		public static Map<String,Integer> getMSGTYPE_DESCS()
 		{
-			if(MSGTYPE_DESCS.size()!=0) return MSGTYPE_DESCS;
+			if(MSGTYPE_DESCS.size()!=0)
+				return MSGTYPE_DESCS;
 			synchronized(MSGTYPE_DESCS)
 			{
-				if(MSGTYPE_DESCS.size()!=0) return MSGTYPE_DESCS;
+				if(MSGTYPE_DESCS.size()!=0)
+					return MSGTYPE_DESCS;
 				for(int i=0;i<TYPE_DESCS.length;i++)
 					MSGTYPE_DESCS.put(TYPE_DESCS[i],Integer.valueOf(i));
 				for(int i=0;i<MASK_DESCS.length;i++)
@@ -1099,10 +1101,12 @@ public interface CMMsg extends CMCommon
 		 */
 		public static Map<Integer,String> getMSGDESC_TYPES()
 		{
-			if(MSGDESC_TYPES.size()!=0) return MSGDESC_TYPES;
+			if(MSGDESC_TYPES.size()!=0)
+				return MSGDESC_TYPES;
 			synchronized(MSGDESC_TYPES)
 			{
-				if(MSGDESC_TYPES.size()!=0) return MSGDESC_TYPES;
+				if(MSGDESC_TYPES.size()!=0)
+					return MSGDESC_TYPES;
 				for(int i=0;i<CMMsg.TYPE_DESCS.length;i++)
 					MSGDESC_TYPES.put(Integer.valueOf(i),CMMsg.TYPE_DESCS[i]);
 				for(int i=0;i<CMMsg.MASK_DESCS.length;i++)

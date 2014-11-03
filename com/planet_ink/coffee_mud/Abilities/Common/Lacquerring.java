@@ -114,8 +114,10 @@ public class Lacquerring extends CommonSkill
 							desc.setCharAt(x+1,writing.charAt(0));
 					}
 					final String d=desc.toString();
-					if(!d.endsWith("^?")) desc.append("^?");
-					if(!d.startsWith("^"+writing.charAt(0))) desc.insert(0,"^"+writing.charAt(0));
+					if(!d.endsWith("^?"))
+						desc.append("^?");
+					if(!d.startsWith("^"+writing.charAt(0)))
+						desc.insert(0,"^"+writing.charAt(0));
 					found.setDescription(desc.toString());
 					found.setName(fixColor(found.Name(),writing));
 					found.setDisplayText(fixColor(found.displayText(),writing));
@@ -194,8 +196,10 @@ public class Lacquerring extends CommonSkill
 		verb=L("lacquering @x1 @x2",target.name(),writing);
 		displayText=L("You are @x1",verb);
 		found=target;
-		if(darkFlag) writing=CMStrings.capitalizeAndLower(writing);
-		if(!proficiencyCheck(mob,0,auto)) writing="";
+		if(darkFlag)
+			writing=CMStrings.capitalizeAndLower(writing);
+		if(!proficiencyCheck(mob,0,auto))
+			writing="";
 		final int duration=getDuration(60,mob,1,12);
 		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),L("<S-NAME> start(s) lacquering <T-NAME>."));
 		if(mob.location().okMessage(mob,msg))

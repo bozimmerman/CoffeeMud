@@ -52,10 +52,12 @@ public class Prayer_Heresy extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		LegalBehavior B=null;
-		if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());
+		if(mob.location()!=null)
+			B=CMLib.law().getLegalBehavior(mob.location());
 
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -72,7 +74,8 @@ public class Prayer_Heresy extends Prayer
 				if(msg.value()<=0)
 				{
 					MOB D=null;
-					if(mob.getWorshipCharID().length()>0) D=CMLib.map().getDeity(mob.getWorshipCharID());
+					if(mob.getWorshipCharID().length()>0)
+						D=CMLib.map().getDeity(mob.getWorshipCharID());
 					String crime="heresy against <T-NAME>";
 					String desc=null;
 					if(D==null)
@@ -93,8 +96,10 @@ public class Prayer_Heresy extends Prayer
 					final int low=CMLib.ableMapper().lowestQualifyingLevel(ID());
 					final int me=CMLib.ableMapper().qualifyingClassLevel(mob,this);
 					int lvl=(me-low)/5;
-					if(lvl<0) lvl=0;
-					if(lvl>Law.PUNISHMENT_HIGHEST) lvl=Law.PUNISHMENT_HIGHEST;
+					if(lvl<0)
+						lvl=0;
+					if(lvl>Law.PUNISHMENT_HIGHEST)
+						lvl=Law.PUNISHMENT_HIGHEST;
 					final String sentence=Law.PUNISHMENT_DESCS[lvl];
 					B.addWarrant(CMLib.law().getLegalObject(mob.location()),target,D,crimeLocs,crimeFlags,crime,sentence,desc);
 				}
@@ -104,7 +109,8 @@ public class Prayer_Heresy extends Prayer
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> accuse(s) <T-NAMESELF> of heresy@x1, but nothing happens.",againstTheGods(mob)));
 		mob.setVictim(oldVictim);
-		if(oldVictim==null) mob.makePeace();
+		if(oldVictim==null)
+			mob.makePeace();
 
 		// return whether it worked
 		return success;

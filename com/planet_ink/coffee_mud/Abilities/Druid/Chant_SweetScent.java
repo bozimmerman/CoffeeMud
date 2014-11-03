@@ -50,7 +50,8 @@ public class Chant_SweetScent extends Chant
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
 		if((affected!=null)&&(affected instanceof Item))
 		{
 			final Item I=(Item)affected;
@@ -127,7 +128,8 @@ public class Chant_SweetScent extends Chant
 		}
 
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(!Druid_MyPlants.isMyPlant(target,mob))
 		{
 			mob.tell(L("@x1 is not one of your plants!",target.name(mob)));

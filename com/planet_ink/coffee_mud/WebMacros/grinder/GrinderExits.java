@@ -61,7 +61,8 @@ public class GrinderExits
 		{
 			R=CMLib.map().getRoom(R);
 			Exit X=R.getRawExit(dir);
-			if(X==null) return "No Exit to edit?!";
+			if(X==null)
+				return "No Exit to edit?!";
 
 			// important generic<->non generic swap!
 			final String newClassID=httpReq.getUrlParameter("CLASSES");
@@ -81,7 +82,8 @@ public class GrinderExits
 					parm=parm.substring(1);
 				}
 				String old=httpReq.getUrlParameter(parm);
-				if(old==null) old="";
+				if(old==null)
+					old="";
 				if(X.isGeneric()||(!generic))
 				switch(o)
 				{
@@ -138,7 +140,8 @@ public class GrinderExits
 					X.setReadable(old.equals("on"));
 					break;
 				case 16: // readable text
-					if(X.isReadable()) X.setReadableText(old);
+					if(X.isReadable())
+						X.setReadableText(old);
 					break;
 				case 17: // isclassrestricuted
 					break;
@@ -169,11 +172,14 @@ public class GrinderExits
 			if(X.isGeneric())
 			{
 				String error=GrinderExits.dispositions(X,httpReq,parms);
-				if(error.length()>0) return error;
+				if(error.length()>0)
+					return error;
 				error=GrinderAreas.doAffects(X,httpReq,parms);
-				if(error.length()>0) return error;
+				if(error.length()>0)
+					return error;
 				error=GrinderAreas.doBehavs(X,httpReq,parms);
-				if(error.length()>0) return error;
+				if(error.length()>0)
+					return error;
 			}
 
 			//adjustments
@@ -228,7 +234,8 @@ public class GrinderExits
 			if(R instanceof GridLocale)
 				((GridLocale)R).clearGrid(null);
 
-			if(R.rawDoors()[dir]==null) R.rawDoors()[dir]=R2;
+			if(R.rawDoors()[dir]==null)
+				R.rawDoors()[dir]=R2;
 
 			if(R.getRawExit(dir)==null)
 				R.setRawExit(dir,CMClass.getExit("StdOpenDoorway"));
@@ -243,7 +250,8 @@ public class GrinderExits
 			R2.clearSky();
 			if(R2 instanceof GridLocale)
 				((GridLocale)R2).clearGrid(null);
-			if(R2.rawDoors()[dir2]==null) R2.rawDoors()[dir2]=R;
+			if(R2.rawDoors()[dir2]==null)
+				R2.rawDoors()[dir2]=R;
 			if(R2.getRawExit(dir2)==null)
 				R2.setRawExit(dir2,CMClass.getExit("StdOpenDoorway"));
 			R.getArea().fillInAreaRoom(R2);

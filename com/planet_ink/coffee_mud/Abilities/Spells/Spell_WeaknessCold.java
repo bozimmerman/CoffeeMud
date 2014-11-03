@@ -71,8 +71,10 @@ public class Spell_WeaknessCold extends Spell
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
-		if(tickID!=Tickable.TICKID_MOB) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(tickID!=Tickable.TICKID_MOB)
+			return false;
 		if((affecting()!=null)&&(affecting() instanceof MOB))
 		{
 			final MOB M=(MOB)affecting();
@@ -141,7 +143,8 @@ public class Spell_WeaknessCold extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

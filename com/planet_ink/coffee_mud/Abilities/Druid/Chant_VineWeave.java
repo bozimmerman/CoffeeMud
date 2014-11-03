@@ -95,7 +95,8 @@ public class Chant_VineWeave extends Chant
 				mob.location().send(mob,msg);
 				final ItemCraftor A=(ItemCraftor)CMClass.getAbility("Weaving");
 				ItemCraftor.ItemKeyPair pair=null;
-				if(A!=null) pair=A.craftAnyItem(material);
+				if(A!=null)
+					pair=A.craftAnyItem(material);
 				if(pair==null)
 				{
 					mob.tell(L("The chant failed for some reason..."));
@@ -104,7 +105,8 @@ public class Chant_VineWeave extends Chant
 				final Item building=pair.item;
 				final Item key=pair.key;
 				mob.location().addItem(building,ItemPossessor.Expire.Resource);
-				if(key!=null) mob.location().addItem(key,ItemPossessor.Expire.Resource);
+				if(key!=null)
+					mob.location().addItem(key,ItemPossessor.Expire.Resource);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("@x1 twists out of some vines and grows still.",building.name()));
 				mob.location().recoverPhyStats();
 			}

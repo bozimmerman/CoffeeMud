@@ -43,7 +43,8 @@ public class AbilityDomainNext extends StdWebMacro
 		final String last=httpReq.getUrlParameter("DOMAIN");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("DOMAIN");
+			if(last!=null)
+				httpReq.removeUrlParameter("DOMAIN");
 			return "";
 		}
 		String lastID="";

@@ -63,8 +63,10 @@ public class CMClass extends ClassLoader
 	{
 		super();
 		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
-		if(clss==null) clss=new CMClass[256];
-		if(clss[c]==null) clss[c]=this;
+		if(clss==null)
+			clss=new CMClass[256];
+		if(clss[c]==null)
+			clss[c]=this;
 	}
 	public static final CMClass initialize(){ return new CMClass(); }
 
@@ -337,27 +339,48 @@ public class CMClass extends ClassLoader
 	 */
 	public final static CMObjectType getType(final Object O)
 	{
-		if(O instanceof Race) return CMObjectType.RACE;
-		if(O instanceof CharClass) return CMObjectType.CHARCLASS;
-		if(O instanceof Ability) return CMObjectType.ABILITY;
-		if(O instanceof Room) return CMObjectType.LOCALE;
-		if(O instanceof MOB) return CMObjectType.MOB;
-		if(O instanceof Exit) return CMObjectType.EXIT;
-		if(O instanceof Behavior) return CMObjectType.BEHAVIOR;
-		if(O instanceof WebMacro) return CMObjectType.WEBMACRO;
-		if(O instanceof Area) return CMObjectType.AREA;
-		if(O instanceof CMLibrary) return CMObjectType.LIBRARY;
-		if(O instanceof CMCommon) return CMObjectType.COMMON;
-		if(O instanceof Command) return CMObjectType.COMMAND;
-		if(O instanceof Clan) return CMObjectType.CLAN;
-		if(O instanceof ClanItem) return CMObjectType.CLANITEM;
-		if(O instanceof MiscMagic) return CMObjectType.MISCMAGIC;
-		if(O instanceof Armor) return CMObjectType.ARMOR;
-		if(O instanceof Weapon) return CMObjectType.WEAPON;
-		if(O instanceof Item) return CMObjectType.ITEM;
-		if(O instanceof Software) return CMObjectType.SOFTWARE;
-		if(O instanceof ShipComponent) return CMObjectType.SHIPTECH;
-		if(O instanceof Electronics) return CMObjectType.TECH;
+		if(O instanceof Race)
+			return CMObjectType.RACE;
+		if(O instanceof CharClass)
+			return CMObjectType.CHARCLASS;
+		if(O instanceof Ability)
+			return CMObjectType.ABILITY;
+		if(O instanceof Room)
+			return CMObjectType.LOCALE;
+		if(O instanceof MOB)
+			return CMObjectType.MOB;
+		if(O instanceof Exit)
+			return CMObjectType.EXIT;
+		if(O instanceof Behavior)
+			return CMObjectType.BEHAVIOR;
+		if(O instanceof WebMacro)
+			return CMObjectType.WEBMACRO;
+		if(O instanceof Area)
+			return CMObjectType.AREA;
+		if(O instanceof CMLibrary)
+			return CMObjectType.LIBRARY;
+		if(O instanceof CMCommon)
+			return CMObjectType.COMMON;
+		if(O instanceof Command)
+			return CMObjectType.COMMAND;
+		if(O instanceof Clan)
+			return CMObjectType.CLAN;
+		if(O instanceof ClanItem)
+			return CMObjectType.CLANITEM;
+		if(O instanceof MiscMagic)
+			return CMObjectType.MISCMAGIC;
+		if(O instanceof Armor)
+			return CMObjectType.ARMOR;
+		if(O instanceof Weapon)
+			return CMObjectType.WEAPON;
+		if(O instanceof Item)
+			return CMObjectType.ITEM;
+		if(O instanceof Software)
+			return CMObjectType.SOFTWARE;
+		if(O instanceof ShipComponent)
+			return CMObjectType.SHIPTECH;
+		if(O instanceof Electronics)
+			return CMObjectType.TECH;
 		return null;
 	}
 
@@ -370,7 +393,8 @@ public class CMClass extends ClassLoader
 	 */
 	public static CMObjectType getTypeByNameOrOrdinal(final Object nameOrOrdinal)
 	{
-		if(nameOrOrdinal==null) return null;
+		if(nameOrOrdinal==null)
+			return null;
 		if(nameOrOrdinal instanceof Integer)
 		{
 			final int itemtypeord = ((Integer)nameOrOrdinal).intValue();
@@ -384,7 +408,8 @@ public class CMClass extends ClassLoader
 			  return CMClass.CMObjectType.values()[itemtypeord];
 		}
 		final String s=nameOrOrdinal.toString();
-		if(s.length()==0) return null;
+		if(s.length()==0)
+			return null;
 		if(CMath.isInteger(s))
 		{
 			final int itemtypeord=CMath.s_int(s);
@@ -445,12 +470,18 @@ public class CMClass extends ClassLoader
 	public static final int numPrototypes(final CMObjectType type)
 	{
 		final Object o = getClassSet(type);
-		if(o instanceof Set) return ((Set)o).size();
-		if(o instanceof List) return ((List)o).size();
-		if(o instanceof Collection) return ((Collection)o).size();
-		if(o instanceof HashSet) return ((HashSet)o).size();
-		if(o instanceof Hashtable) return ((Hashtable)o).size();
-		if(o instanceof Vector) return ((Vector)o).size();
+		if(o instanceof Set)
+			return ((Set)o).size();
+		if(o instanceof List)
+			return ((List)o).size();
+		if(o instanceof Collection)
+			return ((Collection)o).size();
+		if(o instanceof HashSet)
+			return ((HashSet)o).size();
+		if(o instanceof Hashtable)
+			return ((Hashtable)o).size();
+		if(o instanceof Vector)
+			return ((Vector)o).size();
 		return 0;
 	}
 
@@ -725,11 +756,16 @@ public class CMClass extends ClassLoader
 	public static Item getItem(final String calledThis)
 	{
 		Item thisItem=(Item)getNewGlobal(c().items,calledThis);
-		if(thisItem==null) thisItem=(Item)getNewGlobal(c().armor,calledThis);
-		if(thisItem==null) thisItem=(Item)getNewGlobal(c().weapons,calledThis);
-		if(thisItem==null) thisItem=(Item)getNewGlobal(c().miscMagic,calledThis);
-		if(thisItem==null) thisItem=(Item)getNewGlobal(c().clanItems,calledThis);
-		if(thisItem==null) thisItem=(Item)getNewGlobal(c().tech,calledThis);
+		if(thisItem==null)
+			thisItem=(Item)getNewGlobal(c().armor,calledThis);
+		if(thisItem==null)
+			thisItem=(Item)getNewGlobal(c().weapons,calledThis);
+		if(thisItem==null)
+			thisItem=(Item)getNewGlobal(c().miscMagic,calledThis);
+		if(thisItem==null)
+			thisItem=(Item)getNewGlobal(c().clanItems,calledThis);
+		if(thisItem==null)
+			thisItem=(Item)getNewGlobal(c().tech,calledThis);
 		return thisItem;
 	}
 
@@ -754,11 +790,16 @@ public class CMClass extends ClassLoader
 	public static final Item getItemPrototype(final String itemID)
 	{
 		Item thisItem=(Item)getGlobal(c().items,itemID);
-		if(thisItem==null) thisItem=(Item)getGlobal(c().armor,itemID);
-		if(thisItem==null) thisItem=(Item)getGlobal(c().weapons,itemID);
-		if(thisItem==null) thisItem=(Item)getGlobal(c().miscMagic,itemID);
-		if(thisItem==null) thisItem=(Item)getGlobal(c().clanItems,itemID);
-		if(thisItem==null) thisItem=(Item)getGlobal(c().tech,itemID);
+		if(thisItem==null)
+			thisItem=(Item)getGlobal(c().armor,itemID);
+		if(thisItem==null)
+			thisItem=(Item)getGlobal(c().weapons,itemID);
+		if(thisItem==null)
+			thisItem=(Item)getGlobal(c().miscMagic,itemID);
+		if(thisItem==null)
+			thisItem=(Item)getGlobal(c().clanItems,itemID);
+		if(thisItem==null)
+			thisItem=(Item)getGlobal(c().tech,itemID);
 		return thisItem;
 	}
 
@@ -835,11 +876,13 @@ public class CMClass extends ClassLoader
 	 */
 	public static final boolean delClass(final CMObjectType type, final CMObject O)
 	{
-		if(O==null) return false;
+		if(O==null)
+			return false;
 		if(classes.containsKey(O.getClass().getName()))
 			classes.remove(O.getClass().getName());
 		final Object set=getClassSet(type);
-		if(set==null) return false;
+		if(set==null)
+			return false;
 		CMClass.lastUpdateTime=System.currentTimeMillis();
 		if(set instanceof List)
 		{
@@ -870,7 +913,8 @@ public class CMClass extends ClassLoader
 	public static final boolean addClass(final CMObjectType type, final CMObject O)
 	{
 		final Object set=getClassSet(type);
-		if(set==null) return false;
+		if(set==null)
+			return false;
 		CMClass.lastUpdateTime=System.currentTimeMillis();
 		if(set instanceof List)
 		{
@@ -966,7 +1010,8 @@ public class CMClass extends ClassLoader
 	{
 		debugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.CLASSLOADER);
 		final Object set=getClassSet(classType);
-		if(set==null) return false;
+		if(set==null)
+			return false;
 		CMClass.lastUpdateTime=System.currentTimeMillis();
 
 		if(!loadListToObj(set,path,classType.ancestorName,quiet))
@@ -976,8 +1021,10 @@ public class CMClass extends ClassLoader
 		{
 			if(set instanceof XVector)
 				((XVector)set).sort();
-			if(set==c().commands) reloadCommandWords();
-			if(set==c().libraries) CMLib.registerLibraries(c().libraries.elements());
+			if(set==c().commands)
+				reloadCommandWords();
+			if(set==c().libraries)
+				CMLib.registerLibraries(c().libraries.elements());
 		}
 		return true;
 	}
@@ -1077,7 +1124,8 @@ public class CMClass extends ClassLoader
 	public static final CMObject getPrototypeByID(final CMObjectType type, final String calledThis)
 	{
 		final Object set=getClassSet(type);
-		if(set==null) return null;
+		if(set==null)
+			return null;
 		CMObject thisItem;
 		if(set instanceof List)
 			thisItem=getGlobal((List)set,calledThis);
@@ -1110,7 +1158,8 @@ public class CMClass extends ClassLoader
 		for(final CMObjectType o : CMObjectType.values())
 		{
 			final Object thisItem=getPrototypeByID(o,shortThis);
-			if(thisItem!=null) return thisItem;
+			if(thisItem!=null)
+				return thisItem;
 		}
 		return null;
 	}
@@ -1124,13 +1173,20 @@ public class CMClass extends ClassLoader
 	public static final Environmental getUnknown(final String calledThis)
 	{
 		Environmental thisItem=(Environmental)getNewGlobal(c().items,calledThis);
-		if(thisItem==null) thisItem=(Environmental)getNewGlobal(c().armor,calledThis);
-		if(thisItem==null) thisItem=(Environmental)getNewGlobal(c().weapons,calledThis);
-		if(thisItem==null) thisItem=(Environmental)getNewGlobal(c().miscMagic,calledThis);
-		if(thisItem==null) thisItem=(Environmental)getNewGlobal(c().tech,calledThis);
-		if(thisItem==null) thisItem=(Environmental)getNewGlobal(c().MOBs,calledThis);
-		if(thisItem==null) thisItem=(Environmental)getNewGlobal(c().abilities,calledThis);
-		if(thisItem==null) thisItem=(Environmental)getNewGlobal(c().clanItems,calledThis);
+		if(thisItem==null)
+			thisItem=(Environmental)getNewGlobal(c().armor,calledThis);
+		if(thisItem==null)
+			thisItem=(Environmental)getNewGlobal(c().weapons,calledThis);
+		if(thisItem==null)
+			thisItem=(Environmental)getNewGlobal(c().miscMagic,calledThis);
+		if(thisItem==null)
+			thisItem=(Environmental)getNewGlobal(c().tech,calledThis);
+		if(thisItem==null)
+			thisItem=(Environmental)getNewGlobal(c().MOBs,calledThis);
+		if(thisItem==null)
+			thisItem=(Environmental)getNewGlobal(c().abilities,calledThis);
+		if(thisItem==null)
+			thisItem=(Environmental)getNewGlobal(c().clanItems,calledThis);
 		if((thisItem==null)&&(c().charClasses.size()>0)&&(calledThis.length()>0))
 			Log.sysOut("CMClass","Unknown Unknown '"+calledThis+"'.");
 		return thisItem;
@@ -1145,7 +1201,8 @@ public class CMClass extends ClassLoader
 	public static final Race findRace(final String calledThis)
 	{
 		final Race thisItem=getRace(calledThis);
-		if(thisItem!=null) return thisItem;
+		if(thisItem!=null)
+			return thisItem;
 		Race R;
 		final CMClass c=c();
 		for(int i=0;i<c.races.size();i++)
@@ -1166,7 +1223,8 @@ public class CMClass extends ClassLoader
 	public static final CharClass findCharClass(final String calledThis)
 	{
 		final CharClass thisItem=getCharClass(calledThis);
-		if(thisItem!=null) return thisItem;
+		if(thisItem!=null)
+			return thisItem;
 		CharClass C;
 		final CMClass c=c();
 		for(int i=0;i<c.charClasses.size();i++)
@@ -1188,7 +1246,8 @@ public class CMClass extends ClassLoader
 	public static final CMObject getNewGlobal(final List<? extends CMObject> list, final String ID)
 	{
 		final CMObject O=getGlobal(list,ID);
-		if(O!=null) return O.newInstance();
+		if(O!=null)
+			return O.newInstance();
 		return null;
 	}
 
@@ -1200,7 +1259,8 @@ public class CMClass extends ClassLoader
 	 */
 	public static final CMObject getGlobal(final List<? extends CMObject> list, final String ID)
 	{
-		if(list.size()==0) return null;
+		if(list.size()==0)
+			return null;
 		int start=0;
 		int end=list.size()-1;
 		while(start<=end)
@@ -1263,9 +1323,12 @@ public class CMClass extends ClassLoader
 			ableV = c().abilities;
 
 		A=(Ability)getGlobal(ableV,calledThis);
-		if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(ableV,calledThis,true);
-		if((A==null)&&(!exactOnly)) A=(Ability)CMLib.english().fetchEnvironmental(ableV,calledThis,false);
-		if(A!=null)A=(Ability)A.newInstance();
+		if(A==null)
+			A=(Ability)CMLib.english().fetchEnvironmental(ableV,calledThis,true);
+		if((A==null)&&(!exactOnly))
+			A=(Ability)CMLib.english().fetchEnvironmental(ableV,calledThis,false);
+		if(A!=null)
+			A=(Ability)A.newInstance();
 		return A;
 	}
 
@@ -1278,9 +1341,12 @@ public class CMClass extends ClassLoader
 	public static final Behavior findBehavior(final String calledThis)
 	{
 		Behavior B=(Behavior)getGlobal(c().behaviors,calledThis);
-		if(B==null) B=getBehaviorByName(calledThis,true);
-		if(B==null) B=getBehaviorByName(calledThis,false);
-		if(B!=null) B=(Behavior)B.copyOf();
+		if(B==null)
+			B=getBehaviorByName(calledThis,true);
+		if(B==null)
+			B=getBehaviorByName(calledThis,false);
+		if(B!=null)
+			B=(Behavior)B.copyOf();
 		return B;
 	}
 
@@ -1294,7 +1360,8 @@ public class CMClass extends ClassLoader
 	 */
 	public static final Behavior getBehaviorByName(final String calledThis, final boolean exact)
 	{
-		if(calledThis==null) return null;
+		if(calledThis==null)
+			return null;
 		Behavior B=null;
 		for(final Enumeration<Behavior> e=behaviors();e.hasMoreElements();)
 		{
@@ -1302,7 +1369,8 @@ public class CMClass extends ClassLoader
 			if(B.name().equalsIgnoreCase(calledThis))
 				return (Behavior)B.copyOf();
 		}
-		if(exact) return null;
+		if(exact)
+			return null;
 		for(final Enumeration<Behavior> e=behaviors();e.hasMoreElements();)
 		{
 			B=e.nextElement();
@@ -1321,7 +1389,8 @@ public class CMClass extends ClassLoader
 	 */
 	public static final Ability getAbilityByName(final String calledThis, final boolean exact)
 	{
-		if(calledThis==null) return null;
+		if(calledThis==null)
+			return null;
 		Ability A=null;
 		for(final Enumeration<Ability> e=abilities();e.hasMoreElements();)
 		{
@@ -1329,7 +1398,8 @@ public class CMClass extends ClassLoader
 			if(A.name().equalsIgnoreCase(calledThis))
 				return A;
 		}
-		if(exact) return null;
+		if(exact)
+			return null;
 		for(final Enumeration<Ability> e=abilities();e.hasMoreElements();)
 		{
 			A=e.nextElement();
@@ -1363,9 +1433,12 @@ public class CMClass extends ClassLoader
 			}
 		}
 		A=(Ability)CMLib.english().fetchEnvironmental(As,calledThis,true);
-		if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(As,calledThis,false);
-		if(A==null) A=(Ability)getGlobal(c().abilities,calledThis);
-		if(A!=null)A=(Ability)A.newInstance();
+		if(A==null)
+			A=(Ability)CMLib.english().fetchEnvironmental(As,calledThis,false);
+		if(A==null)
+			A=(Ability)getGlobal(c().abilities,calledThis);
+		if(A!=null)
+			A=(Ability)A.newInstance();
 		return A;
 	}
 
@@ -1409,7 +1482,8 @@ public class CMClass extends ClassLoader
 	public static final CMObject getNewGlobal(final Map<String,? extends CMObject> list, final String ID)
 	{
 		final CMObject O=getGlobal(list,ID);
-		if(O!=null) return O.newInstance();
+		if(O!=null)
+			return O.newInstance();
 		return null;
 	}
 
@@ -1773,7 +1847,8 @@ public class CMClass extends ClassLoader
 		for(int l=0;l<fileList.size();l++)
 		{
 			item=fileList.elementAt(l);
-			if(item.startsWith("/")) item=item.substring(1);
+			if(item.startsWith("/"))
+				item=item.substring(1);
 			try
 			{
 				Object O=null;
@@ -1800,7 +1875,8 @@ public class CMClass extends ClassLoader
 				{
 					String itemName=O.getClass().getName();
 					final int x=itemName.lastIndexOf('.');
-					if(x>=0) itemName=itemName.substring(x+1);
+					if(x>=0)
+						itemName=itemName.substring(x+1);
 					if(collection instanceof Map)
 					{
 						final Map H=(Map)collection;
@@ -1856,9 +1932,11 @@ public class CMClass extends ClassLoader
 	 */
 	public static final String getObjInstanceStr(Environmental E)
 	{
-		if(E==null) return "NULL";
+		if(E==null)
+			return "NULL";
 		final int x=E.toString().indexOf('@');
-		if(x<0) return E.Name()+E.toString();
+		if(x<0)
+			return E.Name()+E.toString();
 		return E.Name()+E.toString().substring(x);
 	}
 
@@ -1870,7 +1948,8 @@ public class CMClass extends ClassLoader
 	 */
 	public static final String getSimpleClassName(final Object O)
 	{
-		if(O==null) return "";
+		if(O==null)
+			return "";
 		return getSimpleClassName(O.getClass());
 	}
 
@@ -1882,7 +1961,8 @@ public class CMClass extends ClassLoader
 	 */
 	public static final String getSimpleClassName(final Class<?> C)
 	{
-		if(C==null) return "";
+		if(C==null)
+			return "";
 		final String name=C.getName();
 		final int lastDot=name.lastIndexOf('.');
 		if(lastDot>=0)
@@ -1908,10 +1988,13 @@ public class CMClass extends ClassLoader
 		loc=location.getPath();
 		loc=loc.replace('/',File.separatorChar);
 		String floc=new java.io.File(".").getAbsolutePath();
-		if(floc.endsWith(".")) floc=floc.substring(0,floc.length()-1);
-		if(floc.endsWith(File.separator)) floc=floc.substring(0,floc.length()-File.separator.length());
+		if(floc.endsWith("."))
+			floc=floc.substring(0,floc.length()-1);
+		if(floc.endsWith(File.separator))
+			floc=floc.substring(0,floc.length()-File.separator.length());
 		int x=floc.indexOf(File.separator);
-		if(x>=0)floc=floc.substring(File.separator.length());
+		if(x>=0)
+			floc=floc.substring(File.separator.length());
 		x=loc.indexOf(floc);
 		loc=loc.substring(x+floc.length());
 		loc=loc.replace(File.separatorChar,'/');
@@ -1944,7 +2027,8 @@ public class CMClass extends ClassLoader
 	{
 		final String ptr=""+e;
 		final int x=ptr.lastIndexOf('@');
-		if(x>0)return ptr.substring(x+1);
+		if(x>0)
+			return ptr.substring(x+1);
 		return ptr;
 	}
 
@@ -2037,7 +2121,8 @@ public class CMClass extends ClassLoader
 			resolveClass(result);
 		}
 		
-		if(debugging) Log.debugOut("CMClass","Loaded: "+result.getName());
+		if(debugging)
+			Log.debugOut("CMClass","Loaded: "+result.getName());
 		
 		classes.put(className, result);
 		return result;
@@ -2072,7 +2157,8 @@ public class CMClass extends ClassLoader
 		Class<?> result = classes.get(className);
 		if (result!=null)
 		{
-			if(debugging) Log.debugOut("CMClass","Loaded: "+result.getName());
+			if(debugging)
+				Log.debugOut("CMClass","Loaded: "+result.getName());
 			return result;
 		}
 		if((super.findLoadedClass(className)!=null)
@@ -2086,7 +2172,8 @@ public class CMClass extends ClassLoader
 				result=super.findSystemClass(className);
 				if(result!=null)
 				{
-					if(debugging) Log.debugOut("CMClass","Loaded: "+result.getName());
+					if(debugging)
+						Log.debugOut("CMClass","Loaded: "+result.getName());
 					return result;
 				}
 			}
@@ -2205,7 +2292,8 @@ public class CMClass extends ClassLoader
 	public static final boolean loadAllCoffeeMudClasses(final CMProps page)
 	{
 		CMClass c=c();
-		if(c==null) c=new CMClass();
+		if(c==null)
+			c=new CMClass();
 		final CMClass baseC=clss[MudHost.MAIN_HOST];
 		final char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		// wait for baseC
@@ -2342,15 +2430,18 @@ public class CMClass extends ClassLoader
 					c.abilities.addAll(tempV);
 
 					size+=tempV.size();
-					if(size>0) Log.sysOut(Thread.currentThread().getName(),"Fighter Skills    : "+size);
+					if(size>0)
+						Log.sysOut(Thread.currentThread().getName(),"Fighter Skills    : "+size);
 					c.abilities.addAll(tempV);
 
 					tempV=loadVectorListToObj(prefix+"Abilities/Druid/","%DEFAULT%",CMObjectType.ABILITY.ancestorName);
-					if(tempV.size()>0) Log.sysOut(Thread.currentThread().getName(),"Chants loaded     : "+tempV.size());
+					if(tempV.size()>0)
+						Log.sysOut(Thread.currentThread().getName(),"Chants loaded     : "+tempV.size());
 					c.abilities.addAll(tempV);
 
 					tempV=loadVectorListToObj(prefix+"Abilities/Languages/","%DEFAULT%",CMObjectType.ABILITY.ancestorName);
-					if(tempV.size()>0) Log.sysOut(Thread.currentThread().getName(),"Languages loaded  : "+tempV.size());
+					if(tempV.size()>0)
+						Log.sysOut(Thread.currentThread().getName(),"Languages loaded  : "+tempV.size());
 					c.abilities.addAll(tempV);
 
 					tempV=loadVectorListToObj(prefix+"Abilities/Properties/","%DEFAULT%",CMObjectType.ABILITY.ancestorName);
@@ -2393,28 +2484,34 @@ public class CMClass extends ClassLoader
 					tempV=loadVectorListToObj(prefix+"Abilities/Specializations/","%DEFAULT%",CMObjectType.ABILITY.ancestorName);
 					size+=tempV.size();
 					c.abilities.addAll(tempV);
-					if(size>0) Log.sysOut(Thread.currentThread().getName(),"Skills loaded     : "+size);
+					if(size>0)
+						Log.sysOut(Thread.currentThread().getName(),"Skills loaded     : "+size);
 
 					tempV=loadVectorListToObj(prefix+"Abilities/Songs/","%DEFAULT%",CMObjectType.ABILITY.ancestorName);
-					if(tempV.size()>0) Log.sysOut(Thread.currentThread().getName(),"Songs loaded      : "+tempV.size());
+					if(tempV.size()>0)
+						Log.sysOut(Thread.currentThread().getName(),"Songs loaded      : "+tempV.size());
 					c.abilities.addAll(tempV);
 
 					tempV=loadVectorListToObj(prefix+"Abilities/Spells/","%DEFAULT%",CMObjectType.ABILITY.ancestorName);
-					if(tempV.size()>0) Log.sysOut(Thread.currentThread().getName(),"Spells loaded     : "+tempV.size());
+					if(tempV.size()>0)
+						Log.sysOut(Thread.currentThread().getName(),"Spells loaded     : "+tempV.size());
 					c.abilities.addAll(tempV);
 
 					tempV=loadVectorListToObj(prefix+"Abilities/SuperPowers/","%DEFAULT%",CMObjectType.ABILITY.ancestorName);
 					size=tempV.size();
 					c.abilities.addAll(tempV);
-					if(size>0) Log.sysOut(Thread.currentThread().getName(),"Heroics loaded    : "+size);
+					if(size>0)
+						Log.sysOut(Thread.currentThread().getName(),"Heroics loaded    : "+size);
 
 					tempV=loadVectorListToObj(prefix+"Abilities/Tech/","%DEFAULT%",CMObjectType.ABILITY.ancestorName);
 					size=tempV.size();
 					c.abilities.addAll(tempV);
-					if(size>0) Log.sysOut(Thread.currentThread().getName(),"Tech Skills loaded: "+size);
+					if(size>0)
+						Log.sysOut(Thread.currentThread().getName(),"Tech Skills loaded: "+size);
 
 					tempV=loadVectorListToObj(prefix+"Abilities/Traps/","%DEFAULT%",CMObjectType.ABILITY.ancestorName);
-					if(tempV.size()>0) Log.sysOut(Thread.currentThread().getName(),"Traps loaded      : "+tempV.size());
+					if(tempV.size()>0)
+						Log.sysOut(Thread.currentThread().getName(),"Traps loaded      : "+tempV.size());
 					c.abilities.addAll(tempV);
 
 					c.abilities.sort();
@@ -2451,7 +2548,8 @@ public class CMClass extends ClassLoader
 			else
 			{
 				c.items=loadVectorListToObj(prefix+"Items/Basic/",page.getStr("ITEMS"),CMObjectType.ITEM.ancestorName);
-				if(c.items.size()>0) Log.sysOut(Thread.currentThread().getName(),"Basic Items loaded: "+c.items.size());
+				if(c.items.size()>0)
+					Log.sysOut(Thread.currentThread().getName(),"Basic Items loaded: "+c.items.size());
 			}
 
 			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("WEAPON")))
@@ -2459,7 +2557,8 @@ public class CMClass extends ClassLoader
 			else
 			{
 				c.weapons=loadVectorListToObj(prefix+"Items/Weapons/",page.getStr("WEAPONS"),CMObjectType.WEAPON.ancestorName);
-				if(c.weapons.size()>0) Log.sysOut(Thread.currentThread().getName(),"Weapons loaded    : "+c.weapons.size());
+				if(c.weapons.size()>0)
+					Log.sysOut(Thread.currentThread().getName(),"Weapons loaded    : "+c.weapons.size());
 			}
 
 			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("ARMOR")))
@@ -2467,7 +2566,8 @@ public class CMClass extends ClassLoader
 			else
 			{
 				c.armor=loadVectorListToObj(prefix+"Items/Armor/",page.getStr("ARMOR"),CMObjectType.ARMOR.ancestorName);
-				if(c.armor.size()>0) Log.sysOut(Thread.currentThread().getName(),"Armor loaded      : "+c.armor.size());
+				if(c.armor.size()>0)
+					Log.sysOut(Thread.currentThread().getName(),"Armor loaded      : "+c.armor.size());
 			}
 
 			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("MISCMAGIC")))
@@ -2475,7 +2575,8 @@ public class CMClass extends ClassLoader
 			else
 			{
 				c.miscMagic=loadVectorListToObj(prefix+"Items/MiscMagic/",page.getStr("MISCMAGIC"),CMObjectType.MISCMAGIC.ancestorName);
-				if(c.miscMagic.size()>0) Log.sysOut(Thread.currentThread().getName(),"Magic Items loaded: "+c.miscMagic.size());
+				if(c.miscMagic.size()>0)
+					Log.sysOut(Thread.currentThread().getName(),"Magic Items loaded: "+c.miscMagic.size());
 			}
 
 			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("CLANITEMS")))
@@ -2483,7 +2584,8 @@ public class CMClass extends ClassLoader
 			else
 			{
 				c.clanItems=loadVectorListToObj(prefix+"Items/ClanItems/",page.getStr("CLANITEMS"),CMObjectType.CLANITEM.ancestorName);
-				if(c.clanItems.size()>0) Log.sysOut(Thread.currentThread().getName(),"Clan Items loaded : "+c.clanItems.size());
+				if(c.clanItems.size()>0)
+					Log.sysOut(Thread.currentThread().getName(),"Clan Items loaded : "+c.clanItems.size());
 			}
 
 			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("TECH")))
@@ -2494,10 +2596,13 @@ public class CMClass extends ClassLoader
 				c.tech=loadVectorListToObj(prefix+"Items/BasicTech/",page.getStr("TECH"),CMObjectType.TECH.ancestorName);
 
 				tempV=loadVectorListToObj(prefix+"Items/ShipTech/",page.getStr("SHIPTECH"),CMObjectType.SHIPTECH.ancestorName);
-				if(tempV.size()>0) c.tech.addAll(tempV);
+				if(tempV.size()>0)
+					c.tech.addAll(tempV);
 				tempV=loadVectorListToObj(prefix+"Items/Software/",page.getStr("SOFTWARE"),CMObjectType.SOFTWARE.ancestorName);
-				if(tempV.size()>0) c.tech.addAll(tempV);
-				if(c.tech.size()>0) Log.sysOut(Thread.currentThread().getName(),"Electronics loaded: "+c.tech.size());
+				if(tempV.size()>0)
+					c.tech.addAll(tempV);
+				if(c.tech.size()>0)
+					Log.sysOut(Thread.currentThread().getName(),"Electronics loaded: "+c.tech.size());
 
 				c.tech.sort();
 			}

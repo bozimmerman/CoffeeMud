@@ -53,7 +53,8 @@ public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 	@Override
 	public boolean supportsMending(Physical item)
 	{
-		if(!(item instanceof MOB)) return false;
+		if(!(item instanceof MOB))
+			return false;
 		final boolean canMend=returnOffensiveAffects(item).size()>0;
 		return canMend;
 	}

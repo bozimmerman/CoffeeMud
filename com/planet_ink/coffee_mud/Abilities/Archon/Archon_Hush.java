@@ -88,7 +88,8 @@ public class Archon_Hush extends ArchonSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTargetAnywhere(mob,commands,givenTarget,false,true,false);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		final Ability A=target.fetchEffect(ID());
 		if(A!=null)

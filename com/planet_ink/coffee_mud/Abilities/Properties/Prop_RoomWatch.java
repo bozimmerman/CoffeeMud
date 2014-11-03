@@ -74,7 +74,8 @@ public class Prop_RoomWatch extends Property
 					}
 				}
 				final Room R=CMLib.map().getRoom(roomID);
-				if(R!=null) newRooms.addElement(R);
+				if(R!=null)
+					newRooms.addElement(R);
 			}
 		}
 

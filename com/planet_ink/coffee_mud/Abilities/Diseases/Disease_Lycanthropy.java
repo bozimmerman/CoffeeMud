@@ -60,8 +60,10 @@ public class Disease_Lycanthropy extends Disease
 	protected Race theRace=null;
 	protected Race lycanRace()
 	{
-		if(!changed) return null;
-		if(theRace==null) theRace=CMClass.getRace("WereWolf");
+		if(!changed)
+			return null;
+		if(theRace==null)
+			theRace=CMClass.getRace("WereWolf");
 		return theRace;
 	}
 
@@ -69,7 +71,8 @@ public class Disease_Lycanthropy extends Disease
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(!(affected instanceof MOB)) return;
+		if(!(affected instanceof MOB))
+			return;
 		if(lycanRace()!=null)
 		{
 			if(affected.name().indexOf(' ')>0)
@@ -93,8 +96,10 @@ public class Disease_Lycanthropy extends Disease
 
 	public MOB victimHere(Room room, MOB mob)
 	{
-		if(room==null) return null;
-		if(mob==null) return null;
+		if(room==null)
+			return null;
+		if(mob==null)
+			return null;
 		for(int i=0;i<room.numInhabitants();i++)
 		{
 			final MOB M=room.fetchInhabitant(i);
@@ -135,9 +140,12 @@ public class Disease_Lycanthropy extends Disease
 
 	public void tickLycanthropically(MOB mob)
 	{
-		if(mob==null) return;
-		if(mob.location()==null) return;
-		if(mob.isInCombat()) return;
+		if(mob==null)
+			return;
+		if(mob.location()==null)
+			return;
+		if(mob.isInCombat())
+			return;
 
 		if((CMLib.dice().rollPercentage()<15)
 		&&((mob.location().domainType()&Room.INDOORS)>0))
@@ -198,16 +206,21 @@ public class Disease_Lycanthropy extends Disease
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID))	return false;
-		if(affected==null) return false;
-		if(!(affected instanceof MOB)) return true;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
+		if(!(affected instanceof MOB))
+			return true;
 
 		final MOB mob=(MOB)affected;
-		if(mob.amDead()) return true;
+		if(mob.amDead())
+			return true;
 
 		if(!changed)
 		{
-			if(mob.location()==null) return true;
+			if(mob.location()==null)
+				return true;
 			final Area A=mob.location().getArea();
 			if(((A.getTimeObj().getTODCode()==TimeClock.TimeOfDay.DUSK)||(A.getTimeObj().getTODCode()==TimeClock.TimeOfDay.NIGHT))
 			&&(A.getTimeObj().getMoonPhase()==TimeClock.MoonPhase.FULL))
@@ -222,7 +235,8 @@ public class Disease_Lycanthropy extends Disease
 		}
 		else
 		{
-			if(mob.location()==null) return true;
+			if(mob.location()==null)
+				return true;
 			final Area A=mob.location().getArea();
 			if(((A.getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DUSK)&&(A.getTimeObj().getTODCode()!=TimeClock.TimeOfDay.NIGHT))
 			||(A.getTimeObj().getMoonPhase()!=TimeClock.MoonPhase.FULL))

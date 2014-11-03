@@ -59,9 +59,12 @@ public class Disease_Syphilis extends Disease
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID))	return false;
-		if(affected==null) return false;
-		if(!(affected instanceof MOB)) return true;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
+		if(!(affected instanceof MOB))
+			return true;
 
 		final MOB mob=(MOB)affected;
 		if((!mob.amDead())&&((--diseaseTick)<=0))
@@ -77,7 +80,8 @@ public class Disease_Syphilis extends Disease
 					A=CMClass.getAbility("Disease_Cold");
 				else
 					A=CMClass.getAbility("Disease_Fever");
-				if(A!=null)A.invoke(mob,mob,true,0);
+				if(A!=null)
+					A.invoke(mob,mob,true,0);
 			}
 			return true;
 		}
@@ -88,14 +92,17 @@ public class Disease_Syphilis extends Disease
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(affected==null) return;
-		if(conDown<=0) return;
+		if(affected==null)
+			return;
+		if(conDown<=0)
+			return;
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-conDown);
 		if((affectableStats.getStat(CharStats.STAT_CONSTITUTION)<=0)&&(!norecurse))
 		{
 			conDown=-1;
 			MOB diseaser=invoker;
-			if(diseaser==null) diseaser=affected;
+			if(diseaser==null)
+				diseaser=affected;
 			norecurse=true;
 			CMLib.combat().postDeath(diseaser,affected,null);
 			norecurse=false;
@@ -105,9 +112,11 @@ public class Disease_Syphilis extends Disease
 	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		int down=2;
-		if(conDown>down) down=conDown;
+		if(conDown>down)
+			down=conDown;
 		affectableState.setMovement(affectableState.getMovement()/down);
 		affectableState.setMana(affectableState.getMana()/down);
 		affectableState.setHitPoints(affectableState.getHitPoints()/down);

@@ -50,7 +50,8 @@ public class Spell_ClanDonate extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Item target=getTarget(mob,null,givenTarget,null,commands,Wearable.FILTER_UNWORNONLY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(!mob.isMine(target))
 		{
 			mob.tell(L("You aren't holding that!"));

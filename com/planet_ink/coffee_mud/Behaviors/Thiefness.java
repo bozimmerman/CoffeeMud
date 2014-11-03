@@ -50,7 +50,8 @@ public class Thiefness extends CombatAbilities
 	public void startBehavior(PhysicalAgent forMe)
 	{
 		super.startBehavior(forMe);
-		if(!(forMe instanceof MOB)) return;
+		if(!(forMe instanceof MOB))
+			return;
 		final MOB mob=(MOB)forMe;
 		combatMode=COMBAT_RANDOM;
 		makeClass(mob,getParmsMinusCombatMode(),"Thief");
@@ -68,9 +69,12 @@ public class Thiefness extends CombatAbilities
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Tickable.TICKID_MOB) return true;
-		if(!canActAtAll(ticking)) return true;
-		if(!(ticking instanceof MOB)) return true;
+		if(tickID!=Tickable.TICKID_MOB)
+			return true;
+		if(!canActAtAll(ticking))
+			return true;
+		if(!(ticking instanceof MOB))
+			return true;
 		final MOB mob=(MOB)ticking;
 		if((--tickDown)<=0)
 		if((CMLib.dice().rollPercentage()<10)&&(mob.location()!=null))

@@ -56,7 +56,8 @@ public class Disease_Arthritis extends Disease
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)-3);
 		if(affectableStats.getStat(CharStats.STAT_DEXTERITY)<=0)
 			affectableStats.setStat(CharStats.STAT_DEXTERITY,1);

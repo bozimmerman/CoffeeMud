@@ -57,7 +57,8 @@ public class Prop_RideSpellCast extends Prop_HaveSpellCast
 	@Override
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
-		if(processing) return;
+		if(processing)
+			return;
 		processing=true;
 		if(affected instanceof Rideable)
 		{

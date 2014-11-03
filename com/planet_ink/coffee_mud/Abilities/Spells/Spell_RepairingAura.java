@@ -83,7 +83,8 @@ public class Spell_RepairingAura extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(target.fetchEffect(this.ID())!=null)
 		{
 			mob.tell(L("@x1 is already repairing!",target.name(mob)));
@@ -140,11 +141,13 @@ public class Spell_RepairingAura extends Spell
 			&&((msg2==null)||mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
-				if(msg2!=null) mob.location().send(mob,msg2);
+				if(msg2!=null)
+					mob.location().send(mob,msg2);
 				mob.location().show(mob,realTarget,CMMsg.MSG_OK_ACTION,L("<T-NAME> attain(s) a repairing aura."));
 				beneficialAffect(mob,realTarget,asLevel,0);
 				final Spell_RepairingAura A=(Spell_RepairingAura)realTarget.fetchEffect(ID());
-				if(A!=null) A.adjustedLevel=adjustedLevel(mob,asLevel);
+				if(A!=null)
+					A.adjustedLevel=adjustedLevel(mob,asLevel);
 				realTarget.recoverPhyStats();
 				mob.recoverPhyStats();
 				mob.location().recoverRoomStats();

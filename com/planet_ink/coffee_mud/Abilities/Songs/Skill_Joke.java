@@ -49,7 +49,8 @@ public class Skill_Joke extends BardSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		// if they can't hear the sleep spell, it
 		// won't happen
@@ -67,7 +68,8 @@ public class Skill_Joke extends BardSkill
 		String str=null;
 		if(success)
 		{
-			if(auto) str=L("<T-NAME> remember(s) a joke!");
+			if(auto)
+				str=L("<T-NAME> remember(s) a joke!");
 			else
 			{
 				final List<String> insultd=Resources.getFileLineVector(Resources.getFileResource("skills/insultd.txt",true));
@@ -94,7 +96,8 @@ public class Skill_Joke extends BardSkill
 				{
 					final String targetName=target.name();
 					String jokerName=mob.name();
-					if(mob==target) jokerName="Someone";
+					if(mob==target)
+						jokerName="Someone";
 					joke= jokerName+": 'Knock, knock!'\n\r"
 						 +targetName+": 'Who's there?'\n\r"
 						 +jokerName+": 'A "+ob[1]+".'\n\r"

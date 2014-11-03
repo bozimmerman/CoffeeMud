@@ -71,7 +71,8 @@ public class Spell_DetectTraps extends Spell
 	public String trapHere(MOB mob, Physical P)
 	{
 		final StringBuffer msg=new StringBuffer("");
-		if(P==null) return msg.toString();
+		if(P==null)
+			return msg.toString();
 		if((P instanceof Room)&&(CMLib.flags().canBeSeenBy(P,mob)))
 			msg.append(trapCheck(mob.location()));
 		else

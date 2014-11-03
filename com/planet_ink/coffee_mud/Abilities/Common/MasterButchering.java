@@ -46,7 +46,8 @@ public class MasterButchering extends Butchering
 	{
 		int duration=(int)Math.round(((weight/(10+getXLEVELLevel(mob))))*2.5);
 		duration = super.getDuration(duration, mob, 1, 7);
-		if(duration>100) duration=100;
+		if(duration>100)
+			duration=100;
 		return duration;
 	}
 	@Override protected int baseYield() { return 3; }

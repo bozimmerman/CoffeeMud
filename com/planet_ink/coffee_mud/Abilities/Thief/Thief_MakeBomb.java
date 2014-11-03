@@ -75,7 +75,8 @@ public class Thief_MakeBomb extends ThiefSkill
 				buf.append(CMStrings.padRight(T.name(),colWidth)+" ");
 				buf.append(T.requiresToSet()+"\n\r");
 			}
-			if(mob.session()!=null) mob.session().rawPrintln(buf.toString());
+			if(mob.session()!=null)
+				mob.session().rawPrintln(buf.toString());
 			return true;
 		}
 		else
@@ -100,7 +101,8 @@ public class Thief_MakeBomb extends ThiefSkill
 			}
 
 			trapThis=this.getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
-			if(trapThis==null) return false;
+			if(trapThis==null)
+				return false;
 			if((!auto)&&(!theTrap.canSetTrapOn(mob,trapThis)))
 				return false;
 		}

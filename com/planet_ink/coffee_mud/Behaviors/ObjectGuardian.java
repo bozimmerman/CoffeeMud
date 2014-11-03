@@ -56,13 +56,16 @@ public class ObjectGuardian extends StdBehavior
 	@Override
 	public boolean okMessage(Environmental oking, CMMsg msg)
 	{
-		if(!super.okMessage(oking,msg)) return false;
+		if(!super.okMessage(oking,msg))
+			return false;
 		final MOB mob=msg.source();
 		final MOB monster=(MOB)oking;
 		if(sentinal)
 		{
-			if(!canActAtAll(monster)) return true;
-			if(monster.amFollowing()!=null)  return true;
+			if(!canActAtAll(monster))
+				return true;
+			if(monster.amFollowing()!=null)
+				return true;
 			if(monster.curState().getHitPoints()<((int)Math.round(monster.maxState().getHitPoints()/4.0)))
 				return true;
 		}

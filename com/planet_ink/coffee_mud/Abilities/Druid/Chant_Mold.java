@@ -64,7 +64,8 @@ public class Chant_Mold extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(((target instanceof Item)&&(!(target instanceof Food)))
 		   ||(target instanceof Room)
 		   ||(target instanceof Exit))

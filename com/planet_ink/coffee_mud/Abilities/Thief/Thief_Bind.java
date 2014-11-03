@@ -155,7 +155,8 @@ public class Thief_Bind extends ThiefSkill
 		{
 			commands.removeElementAt(0);
 			final MOB target=super.getTarget(mob,commands,givenTarget,false,true);
-			if(target==null) return false;
+			if(target==null)
+				return false;
 			final Ability A=target.fetchEffect(ID());
 			if(A!=null)
 			{
@@ -172,7 +173,8 @@ public class Thief_Bind extends ThiefSkill
 
 
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if((!CMLib.flags().isSleeping(target))&&(CMLib.flags().canMove(target)&&(!auto)))
 		{
@@ -190,7 +192,8 @@ public class Thief_Bind extends ThiefSkill
 
 		if(success)
 		{
-			if(auto) maxRange=10;
+			if(auto)
+				maxRange=10;
 			final String str=auto?L("<T-NAME> become(s) bound by @x1.",ropeName):L("<S-NAME> bind(s) <T-NAME> with @x1.",ropeName);
 			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT|CMMsg.MASK_SOUND|CMMsg.MASK_MALICIOUS,auto?"":str,str,str);
 			if((target.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
@@ -203,7 +206,8 @@ public class Thief_Bind extends ThiefSkill
 						maxRange=0;
 						double prof=0.0;
 						final Ability A=mob.fetchAbility("Specialization_Ranged");
-						if(A!=null) prof=CMath.div(A.proficiency(),20);
+						if(A!=null)
+							prof=CMath.div(A.proficiency(),20);
 						amountRemaining=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+mob.phyStats().level()+(2*getXLEVELLevel(mob)))*((int)Math.round(5.0+prof));
 					}
 					else
@@ -219,7 +223,8 @@ public class Thief_Bind extends ThiefSkill
 					for (final Object element : H)
 					{
 						M=(MOB)element;
-						if(M.getVictim()==target) M.setVictim(null);
+						if(M.getVictim()==target)
+							M.setVictim(null);
 					}
 				}
 			}

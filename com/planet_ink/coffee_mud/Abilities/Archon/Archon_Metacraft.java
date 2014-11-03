@@ -150,14 +150,16 @@ public class Archon_Metacraft extends ArchonSkill
 			{
 				skill=(ItemCraftor)craftingSkills.get(i);
 				final List<List<String>> V=skill.matchingRecipeNames(recipe,false);
-				if((V!=null)&&(V.size()>0)) skillsToUse.add(skill);
+				if((V!=null)&&(V.size()>0))
+					skillsToUse.add(skill);
 			}
 			if(skillsToUse.size()==0)
 			for(int i=0;i<craftingSkills.size();i++)
 			{
 				skill=(ItemCraftor)craftingSkills.get(i);
 				final List<List<String>> V=skill.matchingRecipeNames(recipe,true);
-				if((V!=null)&&(V.size()>0)) skillsToUse.add(skill);
+				if((V!=null)&&(V.size()>0))
+					skillsToUse.add(skill);
 			}
 		}
 		else
@@ -211,26 +213,31 @@ public class Archon_Metacraft extends ArchonSkill
 				if(material>=0)
 				{
 					final ItemCraftor.ItemKeyPair pair = skill.craftItem(recipe,material,false);
-					if(pair!=null) items.addAll(pair.asList());
+					if(pair!=null)
+						items.addAll(pair.asList());
 				}
 				else
 				{
 					final ItemCraftor.ItemKeyPair pair = skill.craftItem(recipe);
-					if(pair!=null) items.addAll(pair.asList());
+					if(pair!=null)
+						items.addAll(pair.asList());
 				}
 			}
 			else
 			if(material>=0)
 			{
 				final ItemCraftor.ItemKeyPair pair = skill.craftItem(recipe,material,false);
-				if(pair!=null) items.addAll(pair.asList());
+				if(pair!=null)
+					items.addAll(pair.asList());
 			}
 			else
 			{
 				final ItemCraftor.ItemKeyPair pair = skill.craftItem(recipe);
-				if(pair!=null) items.addAll(pair.asList());
+				if(pair!=null)
+					items.addAll(pair.asList());
 			}
-			if(items.size()==0) continue;
+			if(items.size()==0)
+				continue;
 			success=true;
 			if(toWHERE.equals("SELF")||toWHERE.equals("HERE"))
 				for(final Item building : items)
@@ -262,7 +269,8 @@ public class Archon_Metacraft extends ArchonSkill
 			else
 				xml.append(CMLib.coffeeMaker().getItemsXML(items,new Hashtable(),files,0));
 			mob.location().recoverPhyStats();
-			if(!everyFlag) break;
+			if(!everyFlag)
+				break;
 		}
 		if(success
 		&&(!toWHERE.equals("SELF"))

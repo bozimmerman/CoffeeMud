@@ -158,7 +158,8 @@ public class Kill extends StdCommand
 					if(possibleOtherWeapon.amWearingAt(Wearable.IN_INVENTORY))
 					{
 						final Command C=CMClass.getCommand("Wield");
-						if(C!=null) C.execute(mob,new XVector("WIELD",possibleOtherWeapon),metaFlags);
+						if(C!=null)
+							C.execute(mob,new XVector("WIELD",possibleOtherWeapon),metaFlags);
 					}
 				}
 			}

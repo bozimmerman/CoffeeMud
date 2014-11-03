@@ -66,7 +66,8 @@ public class Thief_Ambush extends ThiefSkill
 			return false;
 
 		final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
-		if(!H.contains(mob)) H.add(mob);
+		if(!H.contains(mob))
+			H.add(mob);
 		int numBesidesMe=0;
 		for (final Object element : H)
 		{

@@ -90,7 +90,8 @@ public class Thief_TrophyCount extends ThiefSkill
 				if((affected!=null)&&(affected instanceof MOB))
 				{
 					final Ability A=((MOB)affected).fetchAbility(ID());
-					if(A!=null)	A.setMiscText(text());
+					if(A!=null)
+						A.setMiscText(text());
 				}
 			}
 		}

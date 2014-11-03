@@ -62,7 +62,8 @@ public class Disease_HeatExhaustion extends Disease
 		&&(!R.getArea().isProperlyEmpty()))
 			theRoom=R.getArea().getRandomProperRoom();
 		theRoom=CMLib.map().getRoom(theRoom);
-		if(R==theRoom) theRoom=null;
+		if(R==theRoom)
+			theRoom=null;
 		return theRoom;
 	}
 
@@ -75,7 +76,8 @@ public class Disease_HeatExhaustion extends Disease
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
 		{
 			final Room R=room(msg.source().location());
-			if((R==null)||(R==msg.source().location())) return true;
+			if((R==null)||(R==msg.source().location()))
+				return true;
 			final CMMsg msg2=CMClass.getMsg(msg.source(),R,msg.tool(),
 						  msg.sourceCode(),msg.sourceMessage(),
 						  msg.targetCode(),msg.targetMessage(),

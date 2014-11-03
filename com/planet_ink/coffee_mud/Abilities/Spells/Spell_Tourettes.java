@@ -88,7 +88,8 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 		{
 			final MOB mob=(MOB)affected;
 			plagueDown=4;
-			if(invoker==null) invoker=mob;
+			if(invoker==null)
+				invoker=mob;
 
 			final MOB target=mob.location().fetchRandomInhabitant();
 			if((target!=null)
@@ -158,7 +159,8 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		affectableStats.setStat(CharStats.STAT_CHARISMA,2);
 	}
 
@@ -166,7 +168,8 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

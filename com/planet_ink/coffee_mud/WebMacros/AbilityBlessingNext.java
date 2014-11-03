@@ -45,7 +45,8 @@ public class AbilityBlessingNext extends StdWebMacro
 		final String last=httpReq.getUrlParameter("ABILITY");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("ABILITY");
+			if(last!=null)
+				httpReq.removeUrlParameter("ABILITY");
 			return "";
 		}
 

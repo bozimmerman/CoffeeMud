@@ -40,7 +40,8 @@ public class GrinderClanGovernments
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		final String last=httpReq.getUrlParameter("GOVERNMENT");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		if(last.length()>0)
 		{
 			ClanGovernment G=null;
@@ -69,15 +70,20 @@ public class GrinderClanGovernments
 
 			String str=null;
 			str=httpReq.getUrlParameter("NAME");
-			if(str!=null) G.setName(str);
+			if(str!=null)
+				G.setName(str);
 			str=httpReq.getUrlParameter("CATEGORY");
-			if(str!=null) G.setCategory(str);
+			if(str!=null)
+				G.setCategory(str);
 			str=httpReq.getUrlParameter("ACCEPTPOS");
-			if(str!=null) G.setAcceptPos(CMath.s_int(str));
+			if(str!=null)
+				G.setAcceptPos(CMath.s_int(str));
 			str=httpReq.getUrlParameter("AUTOROLE");
-			if(str!=null) G.setAutoRole(CMath.s_int(str));
+			if(str!=null)
+				G.setAutoRole(CMath.s_int(str));
 			str=httpReq.getUrlParameter("SHORTDESC");
-			if(str!=null) G.setShortDesc(str);
+			if(str!=null)
+				G.setShortDesc(str);
 			str=httpReq.getUrlParameter("REQUIREDMASK");
 			if(str!=null){ G.setRequiredMaskStr(str);}
 			str=httpReq.getUrlParameter("ENTRYSCRIPT");
@@ -89,9 +95,11 @@ public class GrinderClanGovernments
 			str=httpReq.getUrlParameter("ISFAMILYONLY");
 			G.setFamilyOnly((str==null)?false:str.equalsIgnoreCase("on"));
 			str=httpReq.getUrlParameter("XPLEVELFORMULA");
-			if(str!=null) G.setXpCalculationFormulaStr(str);
+			if(str!=null)
+				G.setXpCalculationFormulaStr(str);
 			str=httpReq.getUrlParameter("OVERRIDEMINMEMBERS");
-			if(str!=null) G.setOverrideMinMembers((str.trim().length()==0)?null:Integer.valueOf(CMath.s_int(str)));
+			if(str!=null)
+				G.setOverrideMinMembers((str.trim().length()==0)?null:Integer.valueOf(CMath.s_int(str)));
 			str=httpReq.getUrlParameter("CONQUESTENABLED");
 			G.setConquestEnabled((str==null)?false:str.equalsIgnoreCase("on"));
 			str=httpReq.getUrlParameter("CONQUESTITEMLOYALTY");
@@ -101,13 +109,17 @@ public class GrinderClanGovernments
 			str=httpReq.getUrlParameter("ISRIVALROUS");
 			G.setRivalrous((str==null)?false:str.equalsIgnoreCase("on"));
 			str=httpReq.getUrlParameter("MAXVOTEDAYS");
-			if(str!=null) G.setMaxVoteDays(CMath.s_int(str));
+			if(str!=null)
+				G.setMaxVoteDays(CMath.s_int(str));
 			str=httpReq.getUrlParameter("VOTEQUORUMPCT");
-			if(str!=null) G.setVoteQuorumPct(CMath.s_int(str));
+			if(str!=null)
+				G.setVoteQuorumPct(CMath.s_int(str));
 			str=httpReq.getUrlParameter("AUTOPROMOTEBY");
-			if(str!=null) G.setAutoPromoteBy((Clan.AutoPromoteFlag)CMath.s_valueOf(Clan.AutoPromoteFlag.values(), str));
+			if(str!=null)
+				G.setAutoPromoteBy((Clan.AutoPromoteFlag)CMath.s_valueOf(Clan.AutoPromoteFlag.values(), str));
 			str=httpReq.getUrlParameter("LONGDESC");
-			if(str!=null) G.setLongDesc(str);
+			if(str!=null)
+				G.setLongDesc(str);
 			final String old=httpReq.getUrlParameter("VOTEFUNCS");
 			final Set<String> voteFuncs=new HashSet<String>();
 			if((old!=null)&&(old.length()>0))

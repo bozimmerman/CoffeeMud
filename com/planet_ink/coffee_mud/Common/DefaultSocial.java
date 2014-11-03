@@ -54,7 +54,8 @@ public class DefaultSocial implements Social
 	public String baseName()
 	{
 		final int x=name().indexOf(' ');
-		if(x<0) return name();
+		if(x<0)
+			return name();
 		return name().substring(0,x);
 	}
 	@Override public String L(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
@@ -123,7 +124,8 @@ public class DefaultSocial implements Social
 			if((targetE!=null)&&(!targetable(targetE)))
 			{
 				final Social S=CMLib.socials().fetchSocial(baseName(),targetE, true);
-				if(S!=null) return S.invoke(mob, commands, targetE, auto);
+				if(S!=null)
+					return S.invoke(mob, commands, targetE, auto);
 			}
 		}
 
@@ -138,7 +140,8 @@ public class DefaultSocial implements Social
 			Third_party_sees=null;
 
 		String Target_sees=Target_sees();
-		if((Target_sees!=null)&&(Target_sees.trim().length()==0)) Target_sees=null;
+		if((Target_sees!=null)&&(Target_sees.trim().length()==0))
+			Target_sees=null;
 
 		String See_when_no_target=See_when_no_target();
 		if((See_when_no_target!=null)&&(See_when_no_target.trim().length()==0))
@@ -251,7 +254,8 @@ public class DefaultSocial implements Social
 		}
 
 		String mspFile=((MSPfile!=null)&&(MSPfile.length()>0))?CMLib.protocol().msp(MSPfile,10):"";
-		if(end.length()==0) mspFile="";
+		if(end.length()==0)
+			mspFile="";
 
 		int targetCode=fullCode;
 		int otherCode=fullCode;
@@ -323,7 +327,8 @@ public class DefaultSocial implements Social
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
+			if(code.equalsIgnoreCase(CODES[i]))
+				return i;
 		return -1;
 	}
 	@Override
@@ -348,7 +353,8 @@ public class DefaultSocial implements Social
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof Social)) return false;
+		if(!(E instanceof Social))
+			return false;
 		final String name=Social_name.toUpperCase().trim();
 		if(!(((Social)E).name().toUpperCase().equals(name.trim())))
 		   return false;

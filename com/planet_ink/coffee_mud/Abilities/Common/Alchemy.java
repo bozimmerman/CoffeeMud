@@ -105,10 +105,12 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 	@Override
 	public boolean mayICraft(final Item I)
 	{
-		if(I==null) return false;
+		if(I==null)
+			return false;
 		if(!super.mayBeCrafted(I))
 			return false;
-		if(!(I instanceof Potion)) return false;
+		if(!(I instanceof Potion))
+			return false;
 		final Potion P=(Potion)I;
 		if((P.liquidType()==RawMaterial.RESOURCE_LIQUOR)
 		||(P.liquidType()==RawMaterial.RESOURCE_POISON))
@@ -160,7 +162,8 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 	protected int spellLevel(MOB mob, Ability A)
 	{
 		int lvl=CMLib.ableMapper().qualifyingLevel(mob,A);
-		if(lvl<0) lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+		if(lvl<0)
+			lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 		switch(lvl)
 		{
 		case 0: return lvl;
@@ -201,7 +204,8 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		if(parsedVars.autoGenerate>0)
 		{
 			final Ability theSpell=super.getCraftableSpellRecipeSpell(commands);
-			if(theSpell==null) return false;
+			if(theSpell==null)
+				return false;
 			final int level=spellLevel(mob,theSpell);
 			buildingI=buildItem(theSpell, level);
 			commands.addElement(buildingI);
@@ -252,11 +256,13 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(spell,mask)))
 					{
 						buf.append(CMStrings.padRight(A.name(),cols[0])+((toggler!=toggleTop)?" ":"\n\r"));
-						if(++toggler>toggleTop) toggler=1;
+						if(++toggler>toggleTop)
+							toggler=1;
 					}
 				}
 			}
-			if(toggler!=1) buf.append("\n\r");
+			if(toggler!=1)
+				buf.append("\n\r");
 			commonTell(mob,buf.toString());
 			return true;
 		}
@@ -270,7 +276,8 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		{
 			buildingI=getTarget(mob,null,givenTarget,CMParms.parse(pos),Wearable.FILTER_UNWORNONLY);
 			commands.remove(pos);
-			if(buildingI==null) return false;
+			if(buildingI==null)
+				return false;
 			if(!mob.isMine(buildingI))
 			{
 				commonTell(mob,L("You'll need to pick that up first."));
@@ -334,7 +341,8 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			{
 				fireRequired=true;
 				final Item fire=getRequiredFire(mob,0);
-				if(fire==null) return false;
+				if(fire==null)
+					return false;
 				experienceToLose+=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*10;
 				experienceToLose-=CMLib.ableMapper().qualifyingClassLevel(mob,theSpell)*5;
 			}
@@ -371,7 +379,8 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 					return false;
 				}
 			}
-			if(experienceToLose<10) experienceToLose=10;
+			if(experienceToLose<10)
+				experienceToLose=10;
 
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
@@ -386,7 +395,8 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			buildingI.setSecretIdentity(getBrand(mob));
 
 			int duration=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5;
-			if(duration<10) duration=10;
+			if(duration<10)
+				duration=10;
 			messedUp=!proficiencyCheck(mob,0,auto);
 
 			final CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),null);

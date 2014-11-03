@@ -235,9 +235,11 @@ public interface SlaveryLibrary extends CMLibrary
 		public String step()
 		{
 			final MOB me=mySteps.me;
-			if(me==null) return "DONE";
+			if(me==null)
+				return "DONE";
 			final Room R=me.location();
-			if(R==null) return "HOLD";
+			if(R==null)
+				return "HOLD";
 			if(que.size()==0)
 			{
 				step=STEP_ALLDONE;
@@ -382,17 +384,23 @@ public interface SlaveryLibrary extends CMLibrary
 				String name=CMParms.combine(cur,1);
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
 					Log.debugOut("GEAS","MOBFIND: "+name);
-				if(name.equalsIgnoreCase("you")) name=me.name();
-				if(name.equalsIgnoreCase("yourself")) name=me.name();
+				if(name.equalsIgnoreCase("you"))
+					name=me.name();
+				if(name.equalsIgnoreCase("yourself"))
+					name=me.name();
 				if(you!=null)
 				{
-					if(name.equals("me")) name=you.name();
-					if(name.equals("myself")) name=you.name();
-					if(name.equals("my")) name=you.name();
+					if(name.equals("me"))
+						name=you.name();
+					if(name.equals("myself"))
+						name=you.name();
+					if(name.equals("my"))
+						name=you.name();
 				}
 
 				MOB M=R.fetchInhabitant(name);
-				if(M==me) M=R.fetchInhabitant(name+".2");
+				if(M==me)
+					M=R.fetchInhabitant(name+".2");
 				if((M!=null)&&(M!=me)&&(CMLib.flags().canBeSeenBy(M,me)))
 				{
 					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
@@ -422,13 +430,18 @@ public interface SlaveryLibrary extends CMLibrary
 				String name=CMParms.combine(cur,1);
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
 					Log.debugOut("GEAS","FIND: "+name);
-				if(name.equalsIgnoreCase("you")) name=me.name();
-				if(name.equalsIgnoreCase("yourself")) name=me.name();
+				if(name.equalsIgnoreCase("you"))
+					name=me.name();
+				if(name.equalsIgnoreCase("yourself"))
+					name=me.name();
 				if(you!=null)
 				{
-					if(name.equals("me")) name=you.name();
-					if(name.equals("myself")) name=you.name();
-					if(name.equals("my")) name=you.name();
+					if(name.equals("me"))
+						name=you.name();
+					if(name.equals("myself"))
+						name=you.name();
+					if(name.equals("my"))
+						name=you.name();
 				}
 				final int dirCode=Directions.getGoodDirectionCode(CMParms.parse(name).firstElement());
 				if((dirCode>=0)&&(R.getRoomInDir(dirCode)!=null))

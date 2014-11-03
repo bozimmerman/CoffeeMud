@@ -154,13 +154,16 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		ChattyGroup[] rsc=null;
 		String filename="chat.dat";
 		final int x=parms.indexOf('=');
-		if(x>0)    filename=parms.substring(0,x);
+		if(x>0)
+			filename=parms.substring(0,x);
 		rsc=(ChattyGroup[])Resources.getResource("MUDCHAT GROUPS-"+filename.toLowerCase());
-		if(rsc!=null) return rsc;
+		if(rsc!=null)
+			return rsc;
 		synchronized(("MUDCHAT GROUPS-"+filename.toLowerCase()).intern())
 		{
 			rsc=(ChattyGroup[])Resources.getResource("MUDCHAT GROUPS-"+filename.toLowerCase());
-			if(rsc!=null) return rsc;
+			if(rsc!=null)
+				return rsc;
 			rsc=loadChatData(filename);
 			Resources.submitResource("MUDCHAT GROUPS-"+filename.toLowerCase(),rsc);
 			return rsc;
@@ -223,7 +226,8 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				currentChatGroup.entries = currentChatEntries.toArray(new ChattyEntry[0]);
 				currentChatEntries.clear();
 				currentChatGroup=newChattyGroup(str.substring(1).trim());
-				if(currentChatGroup == null) return null;
+				if(currentChatGroup == null)
+					return null;
 				chatGroups.add(currentChatGroup);
 				currentChatEntry=null;
 				break;
@@ -279,11 +283,13 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		if((tsc!=null)&&(tsc.length()>0))
 		{
 			int y=tsc.toString().indexOf("\n\r");
-			if(y<0) y=tsc.toString().indexOf("\r\n");
+			if(y<0)
+				y=tsc.toString().indexOf("\r\n");
 			if(y<0)
 			{
 				y=tsc.toString().indexOf("\n");
-				if(y<0) y=tsc.toString().indexOf("\r");
+				if(y<0)
+					y=tsc.toString().indexOf("\r");
 				if(y<0)
 				{
 					tsc.setLength(0);
@@ -340,13 +346,17 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			if(getParms().substring(x+1).trim().length()>0)
 				matchedCG=matchChatGroup(forMe,getParms().substring(x+1),chatGroups);
 		}
-		if(matchedCG!=null) return matchedCG;
+		if(matchedCG!=null)
+			return matchedCG;
 		matchedCG=matchChatGroup(forMe,CMLib.english().cleanArticles(CMStrings.removeColors(myOldName.toUpperCase())),chatGroups);
-		if(matchedCG!=null) return matchedCG;
+		if(matchedCG!=null)
+			return matchedCG;
 		matchedCG=matchChatGroup(forMe,forMe.charStats().raceName(),chatGroups);
-		if(matchedCG!=null) return matchedCG;
+		if(matchedCG!=null)
+			return matchedCG;
 		matchedCG=matchChatGroup(forMe,forMe.charStats().getCurrentClass().name(),chatGroups);
-		if(matchedCG!=null) return matchedCG;
+		if(matchedCG!=null)
+			return matchedCG;
 		return chatGroups[0];
 	}
 
@@ -433,7 +443,8 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 	protected boolean match(MOB speaker, String expression, String message, String[] rest)
 	{
 		final int l=expression.length();
-		if(l==0) return true;
+		if(l==0)
+			return true;
 		if((expression.charAt(0)=='(')
 		&&(expression.charAt(l-1)==')'))
 			expression=expression.substring(1,expression.length()-1).trim();
@@ -501,7 +512,8 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 					if(expression.charAt(expEnd)==')')
 					{
 						parenCount--;
-						if(parenCount<=0) break;
+						if(parenCount<=0)
+							break;
 					}
 				if(expEnd<expression.length()&&(parenCount<=0))
 				{
@@ -567,10 +579,12 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 					final String expression=entry.expression;
 					if(entry.combatEntry)
 					{
-						if(!combat) continue;
+						if(!combat)
+							continue;
 					}
 					else
-					if(combat) continue;
+					if(combat)
+						continue;
 
 					if((expression.charAt(0)=='(')
 					&&(expression.charAt(expression.length()-1)==')'))
@@ -617,10 +631,12 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 						final String expression=entry.expression;
 						if(entry.combatEntry)
 						{
-							if(!combat) continue;
+							if(!combat)
+								continue;
 						}
 						else
-						if(combat) continue;
+						if(combat)
+							continue;
 
 
 						if((expression.charAt(0)==c1)
@@ -655,7 +671,8 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		&&(ticking instanceof MOB)
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MUDCHAT)))
 		{
-			if(talkDown>0) talkDown--;
+			if(talkDown>0)
+				talkDown--;
 
 			if(tickDown>=0)
 			{

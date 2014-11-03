@@ -86,7 +86,8 @@ public class Spell_FlamingSword extends Spell
 	{
 		// undo the affects of this spell
 		final Environmental item=affected;
-		if(item==null) return;
+		if(item==null)
+			return;
 		final Room room=CMLib.map().roomLocation(item);
 		if((canBeUninvoked())&&(room!=null))
 			room.showHappens(CMMsg.MSG_OK_VISUAL,item,L("<S-YOUPOSS> flaming sword is consumed!"));

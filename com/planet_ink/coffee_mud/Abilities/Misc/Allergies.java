@@ -60,7 +60,8 @@ public class Allergies extends StdAbility implements HealthCondition
 			list.add(RawMaterial.CODES.NAME(I.intValue()).toLowerCase());
 		for(final Race R : raceAllergies)
 			list.add(R.name()+" dander");
-		if(list.size()==0) return "";
+		if(list.size()==0)
+			return "";
 		return "Suffers from allergies to "+CMLib.english().toEnglishStringList(list)+".";
 	}
 
@@ -152,14 +153,16 @@ public class Allergies extends StdAbility implements HealthCondition
 					||((msg.target() instanceof MOB)&&(raceAllergies.contains(((MOB)msg.target()).charStats().getMyRace())))))
 				{
 					final Ability A=CMClass.getAbility("Poison_Heartstopper");
-					if(A!=null) A.invoke(msg.source(),msg.source(),true,0);
+					if(A!=null)
+						A.invoke(msg.source(),msg.source(),true,0);
 				}
 				else
 				if(((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL))
 				&&((msg.target() instanceof Item)&&(resourceAllergies.contains(Integer.valueOf(((Item)msg.target()).material())))))
 				{
 					final Ability A=CMClass.getAbility("Poison_Hives");
-					if(A!=null) A.invoke(msg.source(),msg.source(),true,0);
+					if(A!=null)
+						A.invoke(msg.source(),msg.source(),true,0);
 				}
 			}
 			else
@@ -172,7 +175,8 @@ public class Allergies extends StdAbility implements HealthCondition
 			&&((msg.tool()==null)||((!msg.tool().ID().equals("Poison_Hives"))&&(!msg.tool().ID().equals("Poison_Heartstopper")))))
 			{
 				final Ability A=CMClass.getAbility("Poison_Hives");
-				if(A!=null) A.invoke(msg.source(),affected,true,0);
+				if(A!=null)
+					A.invoke(msg.source(),affected,true,0);
 			}
 		}
 		super.executeMsg(myHost,msg);
@@ -198,8 +202,10 @@ public class Allergies extends StdAbility implements HealthCondition
 		}
 		final MOB target=getTarget(mob,commands,givenTarget);
 
-		if(target==null) return false;
-		if(target.fetchEffect(ID())!=null) return false;
+		if(target==null)
+			return false;
+		if(target.fetchEffect(ID())!=null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -229,7 +235,8 @@ public class Allergies extends StdAbility implements HealthCondition
 				if((CMLib.dice().roll(1,allChoices.size(),0)==1)
 				&&(!(((String)allChoices.elementAt(i)).equalsIgnoreCase(mob.charStats().getMyRace().ID().toUpperCase()))))
 					allergies+=" "+(String)allChoices.elementAt(i);
-			if(allergies.length()==0) return false;
+			if(allergies.length()==0)
+				return false;
 
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"");
 			if(target.location()!=null)

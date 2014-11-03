@@ -59,7 +59,8 @@ public class Aggressive extends StdBehavior
 	@Override
 	public boolean grantsAggressivenessTo(MOB M)
 	{
-		if(M==null) return true;
+		if(M==null)
+			return true;
 		return CMLib.masking().maskCheck(getParms(),M,false);
 	}
 
@@ -123,7 +124,8 @@ public class Aggressive extends StdBehavior
 	}
 	public boolean pickAFight(MOB observer, String zapStr, boolean mobKiller, boolean misBehave, String attackMsg)
 	{
-		if(!canFreelyBehaveNormal(observer)) return false;
+		if(!canFreelyBehaveNormal(observer))
+			return false;
 		final Room R=observer.location();
 		if((R!=null)&&(R.getArea().getAreaState()==Area.State.ACTIVE))
 		{
@@ -150,9 +152,12 @@ public class Aggressive extends StdBehavior
 
 	public void tickAggressively(Tickable ticking, int tickID, boolean mobKiller, boolean misBehave, String zapStr, String attackMsg)
 	{
-		if(tickID!=Tickable.TICKID_MOB) return;
-		if(ticking==null) return;
-		if(!(ticking instanceof MOB)) return;
+		if(tickID!=Tickable.TICKID_MOB)
+			return;
+		if(ticking==null)
+			return;
+		if(!(ticking instanceof MOB))
+			return;
 		pickAFight((MOB)ticking,zapStr,mobKiller,misBehave,attackMsg);
 	}
 
@@ -160,7 +165,8 @@ public class Aggressive extends StdBehavior
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(tickID!=Tickable.TICKID_MOB) return true;
+		if(tickID!=Tickable.TICKID_MOB)
+			return true;
 		if((--tickDown)<0)
 		{
 			tickDown=tickWait;

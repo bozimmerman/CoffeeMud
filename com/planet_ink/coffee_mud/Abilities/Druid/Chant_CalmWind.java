@@ -106,7 +106,8 @@ public class Chant_CalmWind extends Chant
 
 		int size=mob.location().getArea().numberOfProperIDedRooms();
 		size=size/(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
-		if(size<0) size=0;
+		if(size<0)
+			size=0;
 		final boolean success=proficiencyCheck(mob,-size,auto);
 		if(success)
 		{

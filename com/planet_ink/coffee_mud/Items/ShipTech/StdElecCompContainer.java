@@ -65,7 +65,8 @@ public class StdElecCompContainer extends StdElecContainer implements ShipCompon
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof StdElecCompContainer)) return false;
+		if(!(E instanceof StdElecCompContainer))
+			return false;
 		return super.sameAs(E);
 	}
 

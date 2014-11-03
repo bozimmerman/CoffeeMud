@@ -129,10 +129,12 @@ public interface QuestManager extends CMLibrary
 		}},
 		new GenericEditor.CMEval(){ @Override
 		public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //expression
-			if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
+			if(!(str instanceof String))
+				throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
 			if(((String)str).trim().length()==0)
 			{
-				if(emptyOK) return "";
+				if(emptyOK)
+					return "";
 				throw new CMException("You must enter an expression!");
 			}
 			if(!CMath.isMathExpression((String)str))
@@ -141,10 +143,12 @@ public interface QuestManager extends CMLibrary
 		}},
 		new GenericEditor.CMEval(){ @Override
 		public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //quest name
-			if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
+			if(!(str instanceof String))
+				throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
 			if(((String)str).trim().length()==0)
 			{
-				if(emptyOK) return "";
+				if(emptyOK)
+					return "";
 				throw new CMException("You must enter a quest name!");
 			}
 			for(int i=0;i<((String)str).length();i++)
@@ -158,11 +162,14 @@ public interface QuestManager extends CMLibrary
 		}},
 		new GenericEditor.CMEval(){ @Override
 		public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //choose
-			if((choices==null)||(choices.length==0)) throw new CMException("NO choices?!");
-			if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
+			if((choices==null)||(choices.length==0))
+				throw new CMException("NO choices?!");
+			if(!(str instanceof String))
+				throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
 			if(((String)str).trim().length()==0)
 			{
-				if(emptyOK) return "";
+				if(emptyOK)
+					return "";
 				throw new CMException("You must enter a value!");
 			}
 			final int x=CMParms.indexOf(choices,((String)str).toUpperCase().trim());
@@ -172,15 +179,19 @@ public interface QuestManager extends CMLibrary
 		}},
 		new GenericEditor.CMEval(){ @Override
 		public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //itemxml
-			if((choices==null)||(choices.length==0)) throw new CMException("NO choices?!");
-			if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
+			if((choices==null)||(choices.length==0))
+				throw new CMException("NO choices?!");
+			if(!(str instanceof String))
+				throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
 			StringBuffer choiceNames=new StringBuffer("");
 			for (final Object choice : choices)
 				choiceNames.append(((Environmental)choice).Name()+", ");
-			if(choiceNames.toString().endsWith(", ")) choiceNames=new StringBuffer(choiceNames.substring(0,choiceNames.length()-2));
+			if(choiceNames.toString().endsWith(", "))
+				choiceNames=new StringBuffer(choiceNames.substring(0,choiceNames.length()-2));
 			if(((String)str).trim().length()==0)
 			{
-				if(emptyOK) return "";
+				if(emptyOK)
+					return "";
 				throw new CMException("You must enter one of the following: "+choiceNames.toString());
 			}
 			final Environmental[] ES=new Environmental[choices.length];
@@ -192,24 +203,30 @@ public interface QuestManager extends CMLibrary
 		}},
 		new GenericEditor.CMEval(){ @Override
 		public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //string
-			if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
+			if(!(str instanceof String))
+				throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
 			if(((String)str).trim().length()==0)
 			{
-				if(emptyOK) return "";
+				if(emptyOK)
+					return "";
 				throw new CMException("You must enter a value!");
 			}
 			return str;
 		}},
 		new GenericEditor.CMEval(){ @Override
 		public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //roomid
-			if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
+			if(!(str instanceof String))
+				throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
 			if(((String)str).trim().length()==0)
 			{
-				if(emptyOK) return "";
+				if(emptyOK)
+					return "";
 				throw new CMException("You must enter an room id(s), name(s), keyword ANY, or ANY MASK=...");
 			}
-			if(((String)str).trim().equalsIgnoreCase("ANY")) return ((String)str).trim();
-			if(((String)str).trim().toUpperCase().startsWith("ANY MASK=")) return str;
+			if(((String)str).trim().equalsIgnoreCase("ANY"))
+				return ((String)str).trim();
+			if(((String)str).trim().toUpperCase().startsWith("ANY MASK="))
+				return str;
 			if(CMStrings.contains(Quest.ROOM_REFERENCE_QCODES,((String) str).toUpperCase().trim()))
 				return ((String) str).toUpperCase().trim();
 			if((((String)str).indexOf(' ')>0)&&(((String)str).indexOf('\"')<0))
@@ -222,22 +239,29 @@ public interface QuestManager extends CMLibrary
 				s=V.elementAt(v);
 				boolean found=false;
 				final Room R=CMLib.map().getRoom(s);
-				if(R!=null) found=true;
-				if(!found) found=CMLib.map().findWorldRoomLiberally(null,s,"R",50,30000)!=null;
-				if(!found) throw new CMException("'"+(V.elementAt(v))+"' is not a valid room name, id, or description.");
+				if(R!=null)
+					found=true;
+				if(!found)
+					found=CMLib.map().findWorldRoomLiberally(null,s,"R",50,30000)!=null;
+				if(!found)
+					throw new CMException("'"+(V.elementAt(v))+"' is not a valid room name, id, or description.");
 			}
 			return str;
 		}},
 		new GenericEditor.CMEval(){ @Override
 		public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //area
-			if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
+			if(!(str instanceof String))
+				throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
 			if(((String)str).trim().length()==0)
 			{
-				if(emptyOK) return "";
+				if(emptyOK)
+					return "";
 				throw new CMException("You must enter an area name(s), keyword ANY, or ANY MASK=...");
 			}
-			if(((String)str).trim().equalsIgnoreCase("ANY")) return ((String)str).trim();
-			if(((String)str).trim().toUpperCase().startsWith("ANY MASK=")) return str;
+			if(((String)str).trim().equalsIgnoreCase("ANY"))
+				return ((String)str).trim();
+			if(((String)str).trim().toUpperCase().startsWith("ANY MASK="))
+				return str;
 			if((((String)str).indexOf(' ')>0)&&(((String)str).indexOf('\"')<0))
 				throw new CMException("Multiple-word area names/ids must be grouped with double-quotes.  If this represents several names, put each name in double-quotes as so: \"name1\" \"name2\" \"multi word name\".");
 			final Vector<String> V=CMParms.parse((String)str);
@@ -246,22 +270,27 @@ public interface QuestManager extends CMLibrary
 			for(int v=0;v<V.size();v++)
 			{
 				final Area A=CMLib.map().findArea(V.elementAt(v));
-				if(A==null) throw new CMException("'"+(V.elementAt(v))+"' is not a valid area name.");
+				if(A==null)
+					throw new CMException("'"+(V.elementAt(v))+"' is not a valid area name.");
 				returnStr.append("\""+A.name()+"\" ");
 			}
 			return returnStr.toString().trim();
 		}},
 		new GenericEditor.CMEval(){ @Override
 		public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //mobxml
-			if((choices==null)||(choices.length==0)) throw new CMException("NO choices?!");
-			if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
+			if((choices==null)||(choices.length==0))
+				throw new CMException("NO choices?!");
+			if(!(str instanceof String))
+				throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
 			StringBuffer choiceNames=new StringBuffer("");
 			for (final Object choice : choices)
 				choiceNames.append(((Environmental)choice).Name()+", ");
-			if(choiceNames.toString().endsWith(", ")) choiceNames=new StringBuffer(choiceNames.substring(0,choiceNames.length()-2));
+			if(choiceNames.toString().endsWith(", "))
+				choiceNames=new StringBuffer(choiceNames.substring(0,choiceNames.length()-2));
 			if(((String)str).trim().length()==0)
 			{
-				if(emptyOK) return "";
+				if(emptyOK)
+					return "";
 				throw new CMException("You must enter one of the following: "+choiceNames.toString());
 			}
 			final Environmental[] ES=new Environmental[choices.length];
@@ -273,24 +302,30 @@ public interface QuestManager extends CMLibrary
 		}},
 		new GenericEditor.CMEval(){ @Override
 		public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //designame
-			if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
+			if(!(str instanceof String))
+				throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
 			if(((String)str).trim().length()==0)
 			{
-				if(emptyOK) return "";
+				if(emptyOK)
+					return "";
 				throw new CMException("You must enter a value!");
 			}
-			if(((String)str).trim().equalsIgnoreCase("ANY")) return ((String)str).trim();
-			if(((String)str).trim().toUpperCase().startsWith("ANY MASK=")) return str;
+			if(((String)str).trim().equalsIgnoreCase("ANY"))
+				return ((String)str).trim();
+			if(((String)str).trim().toUpperCase().startsWith("ANY MASK="))
+				return str;
 			if((((String)str).indexOf(' ')>0)&&(((String)str).indexOf('\"')<0))
 				throw new CMException("Multiple-word names must be grouped with double-quotes.  If this represents several names, put each name in double-quotes as so: \"name1\" \"name2\" \"multi word name\".");
 			return str;
 		}},
 		new GenericEditor.CMEval(){ @Override
 		public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //string
-			if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
+			if(!(str instanceof String))
+				throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
 			if(((String)str).trim().length()==0)
 			{
-				if(emptyOK) return "";
+				if(emptyOK)
+					return "";
 				throw new CMException("You must enter a value!");
 			}
 			str=CMStrings.replaceAll((String)str,"\n\r"," ");
@@ -309,7 +344,8 @@ public interface QuestManager extends CMLibrary
 		}},
 		new GenericEditor.CMEval(){ @Override
 		public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //zappermask
-			if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
+			if(!(str instanceof String))
+				throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
 			final Vector<String> errors=new Vector<String>(1);
 			if(!CMLib.masking().syntaxCheck((String)str,errors))
 				throw new CMException("Mask Error: "+CMParms.toStringList(errors));
@@ -317,17 +353,20 @@ public interface QuestManager extends CMLibrary
 		}},
 		new GenericEditor.CMEval(){ @Override
 		public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //ability
-			if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
+			if(!(str instanceof String))
+				throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
 			final StringBuffer list=new StringBuffer("");
 			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 				list.append(e.nextElement().ID()+", ");
 			if(((String)str).trim().length()==0)
 			{
-				if(emptyOK) return "";
+				if(emptyOK)
+					return "";
 				throw new CMException("You must enter an ability ID, choose from the following: "+list.toString());
 			}
 			Ability A=CMClass.getAbility((String)str);
-			if(A==null) A=CMClass.findAbility((String)str);
+			if(A==null)
+				A=CMClass.findAbility((String)str);
 			if((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
 				A=null;
 			if(A==null)
@@ -336,10 +375,12 @@ public interface QuestManager extends CMLibrary
 		}},
 		new GenericEditor.CMEval(){ @Override
 		public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //existing quest name
-			if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
+			if(!(str instanceof String))
+				throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
 			if(((String)str).trim().length()==0)
 			{
-				if(emptyOK) return "";
+				if(emptyOK)
+					return "";
 				throw new CMException("You must enter a quest name!");
 			}
 			final Quest Q=CMLib.quests().fetchQuest(((String)str).trim());
@@ -353,10 +394,12 @@ public interface QuestManager extends CMLibrary
 		}},
 		new GenericEditor.CMEval(){ @Override
 		public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //faction
-			if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
+			if(!(str instanceof String))
+				throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
 			if(((String)str).trim().length()==0)
 			{
-				if(emptyOK) return "";
+				if(emptyOK)
+					return "";
 				throw new CMException("You must enter a faction id!");
 			}
 			final Faction F=CMLib.factions().getFaction((String)str);
@@ -366,10 +409,12 @@ public interface QuestManager extends CMLibrary
 		}},
 		new GenericEditor.CMEval(){ @Override
 		public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //timeexpression
-			if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
+			if(!(str instanceof String))
+				throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
 			if(((String)str).trim().length()==0)
 			{
-				if(emptyOK) return "";
+				if(emptyOK)
+					return "";
 				throw new CMException("You must enter an expression!");
 			}
 			if(!CMLib.time().isTickExpression((String)str))

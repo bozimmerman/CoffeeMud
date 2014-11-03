@@ -70,9 +70,11 @@ public class MOBReSave extends ActiveTicker
 	@Override
 	public String getParms()
 	{
-		if(host==null) return super.getParms();
+		if(host==null)
+			return super.getParms();
 		final MOB M=(MOB)host.get();
-		if(M==null) return super.getParms();
+		if(M==null)
+			return super.getParms();
 		final StringBuffer rebuiltParms=new StringBuffer(super.rebuildParms());
 		for(final int c: CharStats.CODES.ALLCODES())
 			rebuiltParms.append(" "+CharStats.CODES.ABBR(c)+"="+M.baseCharStats().getStat(c));

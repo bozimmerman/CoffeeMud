@@ -45,7 +45,8 @@ public class JournalNext extends StdWebMacro
 		final String last=httpReq.getUrlParameter("JOURNAL");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("JOURNAL");
+			if(last!=null)
+				httpReq.removeUrlParameter("JOURNAL");
 			httpReq.getRequestObjects().remove("JOURNALLIST");
 			return "";
 		}

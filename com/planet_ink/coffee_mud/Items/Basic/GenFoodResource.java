@@ -66,7 +66,8 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 		if(rot==null)
 		{
 			rot=CMClass.getAbility("Prayer_Rot");
-			if(rot==null) return;
+			if(rot==null)
+				return;
 			rot.setAffectedOne(null);
 		}
 		rot.executeMsg(this,msg);
@@ -81,7 +82,8 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 		if(rot==null)
 		{
 			rot=CMClass.getAbility("Prayer_Rot");
-			if(rot==null) return true;
+			if(rot==null)
+				return true;
 			rot.setAffectedOne(null);
 		}
 		if(!rot.okMessage(this,msg))

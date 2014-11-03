@@ -297,7 +297,8 @@ public class Modify extends StdCommand
 								areaType="";
 							}
 						}
-						if(areaType.length()==0) areaType="StdArea";
+						if(areaType.length()==0)
+							areaType="StdArea";
 						A=CMClass.getAreaType(areaType);
 						A.setName(restStr);
 						CMLib.map().addArea(A);
@@ -486,8 +487,10 @@ public class Modify extends StdCommand
 	public void areas(MOB mob, Vector commands)
 		throws IOException
 	{
-		if(mob.location()==null) return;
-		if(mob.location().getArea()==null) return;
+		if(mob.location()==null)
+			return;
+		if(mob.location().getArea()==null)
+			return;
 		Area myArea=mob.location().getArea();
 
 		String oldName=myArea.Name();
@@ -718,9 +721,11 @@ public class Modify extends StdCommand
 			if(CMath.isInteger(name))
 			{
 				Q=CMLib.quests().fetchQuest(CMath.s_int(name)-1);
-				if(Q!=null) name=Q.name();
+				if(Q!=null)
+					name=Q.name();
 			}
-			if(Q==null) Q=CMLib.quests().fetchQuest(name);
+			if(Q==null)
+				Q=CMLib.quests().fetchQuest(name);
 			if(Q==null)
 			{
 				mob.tell(L("Quest '@x1' is unknown.  Try list quests.",name));
@@ -1267,7 +1272,8 @@ public class Modify extends StdCommand
 		}
 		final List<Social> oldSocials = new Vector();
 		List<Social> allSocials = CMLib.socials().getSocialsSet(name);
-		if(allSocials==null) allSocials=new Vector();
+		if(allSocials==null)
+			allSocials=new Vector();
 		for(int a = 0; a<allSocials.size();a++)
 			oldSocials.add((Social)allSocials.get(a).copyOf());
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around the idea of  @x1s.",S.name()));
@@ -1289,8 +1295,10 @@ public class Modify extends StdCommand
 					break;
 				}
 			}
-			if(!found) changed = true;
-			if(changed) break;
+			if(!found)
+				changed = true;
+			if(changed)
+				break;
 		}
 		if(changed)
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The happiness of all mankind has just fluxuated!"));
@@ -1544,20 +1552,23 @@ public class Modify extends StdCommand
 		}
 		if(commandType.equals("ITEM"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDITEMS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDITEMS))
+				return errorOut(mob);
 			items(mob,commands);
 		}
 		else
 		if(commandType.equals("MANUFACTURER"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDITEMS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDITEMS))
+				return errorOut(mob);
 			manufacturer(mob,commands);
 		}
 		else
 		if(commandType.equals("RECIPE"))
 		{
 			//mob.tell(L("Not yet implemented")); if(true) return true;
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRECIPES)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRECIPES))
+				return errorOut(mob);
 			if(commands.size()<3)
 			{
 				mob.tell(L("Modify which recipe?  Name a common skill ID -- use list abilities to find one."));
@@ -1589,101 +1600,117 @@ public class Modify extends StdCommand
 		else
 		if(commandType.equals("ROOM"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS))
+				return errorOut(mob);
 			rooms(mob,commands);
 		}
 		else
 		if((commandType.equals("ACCOUNT"))&&(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS))
+				return errorOut(mob);
 			accounts(mob,commands);
 		}
 		else
 		if(commandType.equals("RACE"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRACES)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRACES))
+				return errorOut(mob);
 			races(mob,commands);
 		}
 		else
 		if(commandType.equals("CLASS"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCLASSES)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCLASSES))
+				return errorOut(mob);
 			classes(mob,commands);
 		}
 		else
 		if(commandType.equals("ABILITY"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES))
+				return errorOut(mob);
 			abilities(mob,commands);
 		}
 		else
 		if(commandType.equals("LANGUAGE"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES))
+				return errorOut(mob);
 			languages(mob,commands);
 		}
 		else
 		if(commandType.equals("CRAFTSKILL"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES))
+				return errorOut(mob);
 			craftSkills(mob,commands);
 		}
 		else
 		if(commandType.equals("ALLQUALIFY"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES))
+				return errorOut(mob);
 			allQualify(mob,commands);
 		}
 		else
 		if(commandType.equals("AREA"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDAREAS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDAREAS))
+				return errorOut(mob);
 			areas(mob,commands);
 		}
 		else
 		if(commandType.equals("EXIT"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDEXITS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDEXITS))
+				return errorOut(mob);
 			exits(mob,commands);
 		}
 		else
 		if(commandType.equals("COMPONENT"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COMPONENTS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COMPONENTS))
+				return errorOut(mob);
 			components(mob,commands);
 			return false;
 		}
 		else
 		if(commandType.equals("EXPERTISE"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.EXPERTISES)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.EXPERTISES))
+				return errorOut(mob);
 			mob.tell(L("You can't modify components, you can only LIST, CREATE, and DESTROY them."));
 			return false;
 		}
 		else
 		if(commandType.equals("TITLE"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TITLES)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TITLES))
+				return errorOut(mob);
 			mob.tell(L("You can't modify titles, you can only LIST, CREATE, and DESTROY them."));
 			return false;
 		}
 		else
 		if(commandType.equals("SOCIAL"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDSOCIALS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDSOCIALS))
+				return errorOut(mob);
 			socials(mob,commands);
 		}
 		else
 		if(commandType.equals("MOB"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDMOBS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDMOBS))
+				return errorOut(mob);
 			mobs(mob,commands);
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("The space-time continuum shake(s) under the transforming power."));
 		}
 		else
 		if(commandType.equals("DAY"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TICKTOCK)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TICKTOCK))
+				return errorOut(mob);
 			if(commands.size()<3)
 			{
 				mob.tell(L("You have failed to specify the proper fields.\n\rThe format is MODIFY DAY [INT]\n\r"));
@@ -1697,7 +1724,8 @@ public class Modify extends StdCommand
 		else
 		if(commandType.equals("MONTH"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TICKTOCK)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TICKTOCK))
+				return errorOut(mob);
 			if(commands.size()<3)
 			{
 				mob.tell(L("You have failed to specify the proper fields.\n\rThe format is MODIFY MONTH [INT]\n\r"));
@@ -1711,7 +1739,8 @@ public class Modify extends StdCommand
 		else
 		if(commandType.equals("YEAR"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TICKTOCK)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TICKTOCK))
+				return errorOut(mob);
 			if(commands.size()<3)
 			{
 				mob.tell(L("You have failed to specify the proper fields.\n\rThe format is MODIFY YEAR [INT]\n\r"));
@@ -1725,7 +1754,8 @@ public class Modify extends StdCommand
 		else
 		if((commandType.equals("TIME"))||(commandType.equals("HOUR")))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TICKTOCK)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TICKTOCK))
+				return errorOut(mob);
 			if(commands.size()<3)
 			{
 				mob.tell(L("You have failed to specify the proper fields.\n\rThe format is MODIFY TIME [INT]\n\r"));
@@ -1773,13 +1803,15 @@ public class Modify extends StdCommand
 		else
 		if(commandType.equals("USER")||commandType.equals("PLAYER"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS))
+				return errorOut(mob);
 			players(mob,commands);
 		}
 		else
 		if(commandType.equals("POLL"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.POLLS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.POLLS))
+				return errorOut(mob);
 			final String name=CMParms.combine(commands,2);
 			Poll P=null;
 			if(CMath.isInteger(name))
@@ -1801,7 +1833,8 @@ public class Modify extends StdCommand
 		else
 		if(commandType.equals("HOLIDAY"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDQUESTS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDQUESTS))
+				return errorOut(mob);
 			final String name=CMParms.combine(commands,2);
 			int num=-1;
 			if(CMath.isInteger(name))
@@ -1841,13 +1874,15 @@ public class Modify extends StdCommand
 		else
 		if(commandType.equals("QUEST"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDQUESTS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDQUESTS))
+				return errorOut(mob);
 			quests(mob,commands);
 		}
 		else
 		if(commandType.equals("SQL"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDDATABASE)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDDATABASE))
+				return errorOut(mob);
 			try
 			{
 				final String sql=CMParms.combine(commands,2);
@@ -1900,7 +1935,8 @@ public class Modify extends StdCommand
 		else
 		if(commandType.equals("GOVERNMENT"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCLANS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCLANS))
+				return errorOut(mob);
 			if(commands.size()<3)
 				mob.tell(L("Modify which government?  Use list governments."));
 			else
@@ -1929,14 +1965,16 @@ public class Modify extends StdCommand
 		else
 		if(commandType.equals("FACTION"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDFACTIONS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDFACTIONS))
+				return errorOut(mob);
 			if(commands.size()<3)
 				mob.tell(L("Modify which faction?  Use list factions."));
 			else
 			{
 				final String name=CMParms.combine(commands,2);
 				Faction F=CMLib.factions().getFaction(name);
-				if(F==null) F=CMLib.factions().getFactionByName(name);
+				if(F==null)
+					F=CMLib.factions().getFactionByName(name);
 				if(F==null)
 					mob.tell(L("Faction '@x1' is unknown.  Try list factions.",name));
 				else
@@ -1951,7 +1989,8 @@ public class Modify extends StdCommand
 		else
 		if(commandType.equals("CLAN"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCLANS)) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCLANS))
+				return errorOut(mob);
 			if(commands.size()<3)
 				mob.tell(L("Modify which clan?  Use clanlist."));
 			else
@@ -2048,7 +2087,8 @@ public class Modify extends StdCommand
 				else
 				if(!((MOB)thang).isMonster())
 				{
-					if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)) return errorOut(mob);
+					if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS))
+						return errorOut(mob);
 					players(mob,CMParms.parse("MODIFY USER \""+thang.Name()+"\""));
 				}
 				else
@@ -2071,7 +2111,8 @@ public class Modify extends StdCommand
 
 				if(thang!=null)
 				{
-					if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDEXITS)) return errorOut(mob);
+					if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDEXITS))
+						return errorOut(mob);
 					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>."));
 					final Exit copyExit=(Exit)thang.copyOf();
 					CMLib.genEd().genMiscText(mob,thang,1,1);

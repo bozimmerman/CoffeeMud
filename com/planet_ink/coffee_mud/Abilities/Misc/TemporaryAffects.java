@@ -82,7 +82,8 @@ public class TemporaryAffects extends StdAbility
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		for(final Object[] A : affects)
 			if(A[0] instanceof StatsAffecting)
 				((StatsAffecting)A[0]).affectPhyStats(affected, affectableStats);
@@ -92,7 +93,8 @@ public class TemporaryAffects extends StdAbility
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected, affectableStats);
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		for(final Object[] A : affects)
 			if(A[0] instanceof StatsAffecting)
 				((StatsAffecting)A[0]).affectCharStats(affected, affectableStats);
@@ -102,7 +104,8 @@ public class TemporaryAffects extends StdAbility
 	public void affectCharState(MOB affected, CharState affectableStats)
 	{
 		super.affectCharState(affected, affectableStats);
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		for(final Object[] A : affects)
 			if(A[0] instanceof StatsAffecting)
 				((StatsAffecting)A[0]).affectCharState(affected, affectableStats);
@@ -176,7 +179,8 @@ public class TemporaryAffects extends StdAbility
 					unAffectAffected(A);
 
 			int x=txt.indexOf(' ');
-			if(x<0) return;
+			if(x<0)
+				return;
 			final String abilityStr=txt.substring(0,x).trim();
 			String numTicksStr=txt.substring(x+1).trim();
 			String parms="";
@@ -217,7 +221,8 @@ public class TemporaryAffects extends StdAbility
 
 	public void finishInit(CMObject A)
 	{
-		if(affected == null) return;
+		if(affected == null)
+			return;
 		if(A instanceof Ability)
 		{
 			((Ability)A).makeNonUninvokable();
@@ -295,7 +300,8 @@ public class TemporaryAffects extends StdAbility
 		}
 		final Vector V=new XVector(commands.firstElement());
 		final Physical target=getAnyTarget(mob,V,givenTarget, Wearable.FILTER_ANY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		commands.removeElementAt(0);
 
 		final String abilityStr = (String)commands.firstElement();

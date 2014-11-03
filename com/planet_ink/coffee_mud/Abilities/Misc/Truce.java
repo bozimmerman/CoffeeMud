@@ -128,7 +128,8 @@ public class Truce extends StdAbility
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -153,7 +154,8 @@ public class Truce extends StdAbility
 				{
 					success=beneficialAffect(mob,target,asLevel,auto?3:0)!=null;
 					final Ability A=target.fetchEffect(ID());
-					if(A!=null)A.setMiscText(target.Name());
+					if(A!=null)
+						A.setMiscText(target.Name());
 				}
 				target.makePeace();
 				if(mob.getVictim()==target)

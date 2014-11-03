@@ -70,9 +70,11 @@ public class Dance_Salsa extends Dance
 			if(CMLib.dice().rollPercentage()==1)
 			{
 				Item I=mob.fetchFirstWornItem(Wearable.WORN_WAIST);
-				if(I!=null)	CMLib.commands().postRemove(mob,I,false);
+				if(I!=null)
+					CMLib.commands().postRemove(mob,I,false);
 				I=mob.fetchFirstWornItem(Wearable.WORN_LEGS);
-				if(I!=null)	CMLib.commands().postRemove(mob,I,false);
+				if(I!=null)
+					CMLib.commands().postRemove(mob,I,false);
 				mob.doCommand(CMParms.parse("MATE "+M.Name()),Command.METAFLAG_FORCED);
 			}
 			else

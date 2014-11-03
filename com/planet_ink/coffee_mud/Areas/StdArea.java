@@ -173,9 +173,11 @@ public class StdArea implements Area
 	@Override
 	public void addBlurbFlag(String flagPlusDesc)
 	{
-		if(flagPlusDesc==null) return;
+		if(flagPlusDesc==null)
+			return;
 		flagPlusDesc=flagPlusDesc.trim();
-		if(flagPlusDesc.length()==0) return;
+		if(flagPlusDesc.length()==0)
+			return;
 		final int x=flagPlusDesc.indexOf(' ');
 		String flag=null;
 		if(x>=0)
@@ -195,9 +197,11 @@ public class StdArea implements Area
 	@Override
 	public void delBlurbFlag(String flagOnly)
 	{
-		if(flagOnly==null) return;
+		if(flagOnly==null)
+			return;
 		flagOnly=flagOnly.toUpperCase().trim();
-		if(flagOnly.length()==0) return;
+		if(flagOnly.length()==0)
+			return;
 		blurbFlags.remove(flagOnly);
 	}
 
@@ -218,7 +222,8 @@ public class StdArea implements Area
 	@Override
 	public TimeClock getTimeObj()
 	{
-		if(myClock==null) myClock=CMLib.time().globalClock();
+		if(myClock==null)
+			myClock=CMLib.time().globalClock();
 		return myClock;
 	}
 
@@ -279,7 +284,8 @@ public class StdArea implements Area
 	@Override
 	public String name()
 	{
-		if(phyStats().newName()!=null) return phyStats().newName();
+		if(phyStats().newName()!=null)
+			return phyStats().newName();
 		return name;
 	}
 	
@@ -467,8 +473,10 @@ public class StdArea implements Area
 						newnum=CMath.s_int(roomID);
 						if(newnum>=0)
 						{
-							if(newnum>=highest)	highest=newnum;
-							if(newnum<=lowest) lowest=newnum;
+							if(newnum>=highest)
+								highest=newnum;
+							if(newnum<=lowest)
+								lowest=newnum;
 							set.addx(newnum);
 						}
 					}
@@ -503,7 +511,8 @@ public class StdArea implements Area
 		&&(ID().equals("StdArea")))
 		{
 			final Area A=CMClass.getAreaType("StdThinArea");
-			if(A!=null) return A;
+			if(A!=null)
+				return A;
 		}
 		try
 		{
@@ -589,13 +598,15 @@ public class StdArea implements Area
 	public String finalPrejudiceFactors()
 	{
 		final String s=finalPrejudiceFactors(this);
-		if(s.length()>0) return s;
+		if(s.length()>0)
+			return s;
 		return CMProps.getVar(CMProps.Str.IGNOREMASK);
 	}
 	
 	protected String finalPrejudiceFactors(Area A)
 	{
-		if(A.prejudiceFactors().length()>0) return A.prejudiceFactors();
+		if(A.prejudiceFactors().length()>0)
+			return A.prejudiceFactors();
 		for(final Enumeration<Area> i=A.getParents();i.hasMoreElements();)
 		{
 			final String  s=finalPrejudiceFactors(i.nextElement());
@@ -613,7 +624,8 @@ public class StdArea implements Area
 	public String[] finalItemPricingAdjustments()
 	{
 		final String[] s=finalItemPricingAdjustments(this);
-		if(s.length>0) return s;
+		if(s.length>0)
+			return s;
 		return CMParms.toStringArray(CMParms.parseSemicolons(CMProps.getVar(CMProps.Str.PRICEFACTORS).trim(),true));
 	}
 
@@ -638,7 +650,8 @@ public class StdArea implements Area
 	public String finalIgnoreMask()
 	{
 		final String s=finalIgnoreMask(this);
-		if(s.length()>0) return s;
+		if(s.length()>0)
+			return s;
 		return CMProps.getVar(CMProps.Str.IGNOREMASK);
 	}
 	
@@ -663,7 +676,8 @@ public class StdArea implements Area
 	public String finalBudget()
 	{
 		final String s=finalBudget(this);
-		if(s.length()>0) return s;
+		if(s.length()>0)
+			return s;
 		return CMProps.getVar(CMProps.Str.BUDGET);
 	}
 	
@@ -688,7 +702,8 @@ public class StdArea implements Area
 	public String finalDevalueRate()
 	{
 		final String s=finalDevalueRate(this);
-		if(s.length()>0) return s;
+		if(s.length()>0)
+			return s;
 		return CMProps.getVar(CMProps.Str.DEVALUERATE);
 	}
 	
@@ -717,7 +732,8 @@ public class StdArea implements Area
 	public int finalInvResetRate()
 	{
 		final int x=finalInvResetRate(this);
-		if(x!=0) return x;
+		if(x!=0)
+			return x;
 		return CMath.s_int(CMProps.getVar(CMProps.Str.INVRESETRATE));
 	}
 
@@ -987,7 +1003,8 @@ public class StdArea implements Area
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		final int senses=phyStats.sensesMask()&(~(PhyStats.SENSE_UNLOCATABLE|PhyStats.CAN_NOT_SEE));
-		if(senses>0) affectableStats.setSensesMask(affectableStats.sensesMask()|senses);
+		if(senses>0)
+			affectableStats.setSensesMask(affectableStats.sensesMask()|senses);
 		int disposition=phyStats().disposition()
 			&((~(PhyStats.IS_SLEEPING|PhyStats.IS_HIDDEN)));
 		if((affected instanceof Room)
@@ -1008,7 +1025,8 @@ public class StdArea implements Area
 		eachEffect(new EachApplicable<Ability>(){ @Override
 		public final void apply(final Ability A)
 		{
-			if(A.bubbleAffect()) A.affectPhyStats(affected,affectableStats);
+			if(A.bubbleAffect())
+				A.affectPhyStats(affected,affectableStats);
 		} });
 	}
 	
@@ -1018,7 +1036,8 @@ public class StdArea implements Area
 		eachEffect(new EachApplicable<Ability>(){ @Override
 		public final void apply(final Ability A)
 		{
-			if(A.bubbleAffect()) A.affectCharStats(affectedMob,affectableStats);
+			if(A.bubbleAffect())
+				A.affectCharStats(affectedMob,affectableStats);
 		}});
 	}
 	
@@ -1028,15 +1047,18 @@ public class StdArea implements Area
 		eachEffect(new EachApplicable<Ability>(){ @Override
 		public final void apply(final Ability A)
 		{
-			if(A.bubbleAffect()) A.affectCharState(affectedMob,affectableMaxState);
+			if(A.bubbleAffect())
+				A.affectCharState(affectedMob,affectableMaxState);
 		} });
 	}
 
 	@Override
 	public void addNonUninvokableEffect(Ability to)
 	{
-		if(to==null) return;
-		if(fetchEffect(to.ID())!=null) return;
+		if(to==null)
+			return;
+		if(fetchEffect(to.ID())!=null)
+			return;
 		to.makeNonUninvokable();
 		to.makeLongLasting();
 		affects.addElement(to);
@@ -1046,8 +1068,10 @@ public class StdArea implements Area
 	@Override
 	public void addEffect(Ability to)
 	{
-		if(to==null) return;
-		if(fetchEffect(to.ID())!=null) return;
+		if(to==null)
+			return;
+		if(fetchEffect(to.ID())!=null)
+			return;
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
@@ -1065,13 +1089,15 @@ public class StdArea implements Area
 	public void eachEffect(final EachApplicable<Ability> applier)
 	{
 		final List<Ability> affects=this.affects;
-		if(affects==null) return;
+		if(affects==null)
+			return;
 		try
 		{
 			for(int a=0;a<affects.size();a++)
 			{
 				final Ability A=affects.get(a);
-				if(A!=null) applier.apply(A);
+				if(A!=null)
+					applier.apply(A);
 			}
 		}
 		catch(final ArrayIndexOutOfBoundsException e){}
@@ -1085,7 +1111,8 @@ public class StdArea implements Area
 			final Ability A=fetchEffect(a);
 			if(A!=null)
 			{
-				if(unInvoke) A.unInvoke();
+				if(unInvoke)
+					A.unInvoke();
 				A.setAffectedOne(null);
 			}
 		}
@@ -1157,7 +1184,8 @@ public class StdArea implements Area
 	@Override
 	public void fillInAreaRoom(Room R)
 	{
-		if(R==null) return;
+		if(R==null)
+			return;
 		R.clearSky();
 		if(R.roomID().length()>0)
 		{
@@ -1172,7 +1200,8 @@ public class StdArea implements Area
 	@Override
 	public void addBehavior(Behavior to)
 	{
-		if(to==null) return;
+		if(to==null)
+			return;
 		for(final Behavior B : behaviors)
 			if((B!=null)&&(B.ID().equals(to.ID())))
 				return;
@@ -1204,7 +1233,8 @@ public class StdArea implements Area
 	@Override
 	public void addScript(ScriptingEngine S)
 	{
-		if(S==null) return;
+		if(S==null)
+			return;
 		if(!scripts.contains(S))
 		{
 			ScriptingEngine S2=null;
@@ -1242,7 +1272,8 @@ public class StdArea implements Area
 			for(int a=0;a<scripts.size();a++)
 			{
 				final ScriptingEngine S=scripts.get(a);
-				if(S!=null) applier.apply(S);
+				if(S!=null)
+					applier.apply(S);
 			}
 		}
 		catch(final ArrayIndexOutOfBoundsException e){}
@@ -1391,8 +1422,10 @@ public class StdArea implements Area
 			s.append("Level range    : ^H"+statData[Area.Stats.MIN_LEVEL.ordinal()]+"^N to ^H"+statData[Area.Stats.MAX_LEVEL.ordinal()]+"^N\n\r");
 			s.append("Average level  : ^H"+statData[Area.Stats.AVG_LEVEL.ordinal()]+"^N\n\r");
 			s.append("Median level   : ^H"+statData[Area.Stats.MED_LEVEL.ordinal()]+"^N\n\r");
-			if(theFaction!=null) s.append("Avg. "+CMStrings.padRight(theFaction.name(),10)+": ^H"+theFaction.fetchRangeName(statData[Area.Stats.AVG_ALIGNMENT.ordinal()])+"^N\n\r");
-			if(theFaction!=null) s.append("Med. "+CMStrings.padRight(theFaction.name(),10)+": ^H"+theFaction.fetchRangeName(statData[Area.Stats.MED_ALIGNMENT.ordinal()])+"^N\n\r");
+			if(theFaction!=null)
+				s.append("Avg. "+CMStrings.padRight(theFaction.name(),10)+": ^H"+theFaction.fetchRangeName(statData[Area.Stats.AVG_ALIGNMENT.ordinal()])+"^N\n\r");
+			if(theFaction!=null)
+				s.append("Med. "+CMStrings.padRight(theFaction.name(),10)+": ^H"+theFaction.fetchRangeName(statData[Area.Stats.MED_ALIGNMENT.ordinal()])+"^N\n\r");
 			try
 			{
 				boolean blurbed=false;
@@ -1406,7 +1439,8 @@ public class StdArea implements Area
 						s.append(flag+"\n\r");
 					}
 				}
-				if(blurbed) s.append("\n\r");
+				if(blurbed)
+					s.append("\n\r");
 			}catch(final Exception e){}
 		}
 		return s;
@@ -1418,7 +1452,8 @@ public class StdArea implements Area
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return new StringBuffer("");
 		StringBuffer s=(StringBuffer)Resources.getResource("HELP_"+Name().toUpperCase());
-		if(s!=null) return s;
+		if(s!=null)
+			return s;
 		s=buildAreaStats(getAreaIStats());
 		//Resources.submitResource("HELP_"+Name().toUpperCase(),s); // the STAT_ data is cached instead.
 		return s;
@@ -1454,7 +1489,8 @@ public class StdArea implements Area
 			for(int a=0;a<behaviors.size();a++)
 			{
 				final Behavior B=behaviors.get(a);
-				if(B!=null) applier.apply(B);
+				if(B!=null)
+					applier.apply(B);
 			}
 		}
 		catch(final ArrayIndexOutOfBoundsException e){}
@@ -1474,7 +1510,8 @@ public class StdArea implements Area
 	@Override
 	public void addProperRoom(Room R)
 	{
-		if(R==null) return;
+		if(R==null)
+			return;
 		if(R.getArea()!=this)
 		{
 			R.setArea(this);
@@ -1585,7 +1622,8 @@ public class StdArea implements Area
 	@Override
 	public boolean isRoom(Room R)
 	{
-		if(R==null) return false;
+		if(R==null)
+			return false;
 		if(R.roomID().length()>0)
 			return getProperRoomnumbers().contains(R.roomID());
 		return properRooms.containsValue(R);
@@ -1594,7 +1632,8 @@ public class StdArea implements Area
 	@Override
 	public void delProperRoom(Room R)
 	{
-		if(R==null) return;
+		if(R==null)
+			return;
 		if(R instanceof GridLocale)
 			((GridLocale)R).clearGrid(null);
 		synchronized(properRooms)
@@ -1633,8 +1672,10 @@ public class StdArea implements Area
 	@Override
 	public Room getRoom(String roomID)
 	{
-		if(properRooms.size()==0) return null;
-		if(roomID.length()==0) return null;
+		if(properRooms.size()==0)
+			return null;
+		if(roomID.length()==0)
+			return null;
 		synchronized(properRooms)
 		{
 			if(roomID.toUpperCase().startsWith(Name().toUpperCase()+"#"))
@@ -1679,7 +1720,8 @@ public class StdArea implements Area
 	{
 		final String roomID=getProperRoomnumbers().random();
 		final Room R=CMLib.map().getRoom(roomID);
-		if(R instanceof GridLocale) return ((GridLocale)R).getRandomGridChild();
+		if(R instanceof GridLocale)
+			return ((GridLocale)R).getRandomGridChild();
 		if(R==null)
 			Log.errOut("StdArea","Unable to random-find: "+roomID);
 		return R;
@@ -1690,14 +1732,17 @@ public class StdArea implements Area
 	{
 		/*synchronized(metroRooms)
 		{
-			if(metroSize()==0) return null;
+			if(metroSize()==0)
+				return null;
 			Room R=(Room)metroRooms.elementAt(CMLib.dice().roll(1,metroRooms.size(),-1));
-			if(R instanceof GridLocale) return ((GridLocale)R).getRandomGridChild();
+			if(R instanceof GridLocale)
+				return ((GridLocale)R).getRandomGridChild();
 			return R;
 		}*/
 		final String roomID=metroRoomIDSet.random();
 		final Room R=CMLib.map().getRoom(roomID);
-		if(R instanceof GridLocale) return ((GridLocale)R).getRandomGridChild();
+		if(R instanceof GridLocale)
+			return ((GridLocale)R).getRandomGridChild();
 		if(R==null)
 			Log.errOut("StdArea","Unable to random-metro-find: "+roomID);
 		return R;
@@ -2082,7 +2127,8 @@ public class StdArea implements Area
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof StdArea)) return false;
+		if(!(E instanceof StdArea))
+			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))

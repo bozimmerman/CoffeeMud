@@ -67,7 +67,8 @@ public class Prayer_Position extends Prayer
 			final Room R=(Room)set.elementAt(i);
 			if(R==R2){ foundAt=i; break;}
 		}
-		if(foundAt<0) return "You can't get to '"+R2.roomID()+"' from here.";
+		if(foundAt<0)
+			return "You can't get to '"+R2.roomID()+"' from here.";
 		Room checkR=R2;
 		final Vector trailV=new Vector();
 		trailV.addElement(R2);
@@ -134,8 +135,10 @@ public class Prayer_Position extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if(lastPosition==null) lastPosition=mob.getStartRoom();
-		if(lastPosition==null) return false;
+		if(lastPosition==null)
+			lastPosition=mob.getStartRoom();
+		if(lastPosition==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

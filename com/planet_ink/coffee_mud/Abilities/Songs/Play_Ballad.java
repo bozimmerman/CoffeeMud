@@ -47,7 +47,8 @@ public class Play_Ballad extends Play
 	{
 		super.executeMsg(myHost,msg);
 		// the sex rules
-		if(!(affected instanceof MOB)) return;
+		if(!(affected instanceof MOB))
+			return;
 
 		final MOB myChar=(MOB)affected;
 		if((msg.target()!=null)&&(msg.target() instanceof MOB))

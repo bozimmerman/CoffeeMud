@@ -89,7 +89,8 @@ public class Areas extends StdCommand
 					{
 						final int lvl1=arg0.getAreaIStats()[Stats.MED_LEVEL.ordinal()];
 						final int lvl2=arg1.getAreaIStats()[Stats.MED_LEVEL.ordinal()];
-						if(lvl1==lvl2) return 1;
+						if(lvl1==lvl2)
+							return 1;
 						return Integer.valueOf(lvl1).compareTo(Integer.valueOf(lvl2));
 					}
 				});
@@ -141,7 +142,8 @@ public class Areas extends StdCommand
 					{
 						final int lvl1=arg0.getAreaIStats()[sortStat];
 						final int lvl2=arg1.getAreaIStats()[sortStat];
-						if(lvl1==lvl2) return 1;
+						if(lvl1==lvl2)
+							return 1;
 						return Integer.valueOf(lvl1).compareTo(Integer.valueOf(lvl2));
 					}
 				});
@@ -168,7 +170,8 @@ public class Areas extends StdCommand
 			if(CMLib.flags().canAccess(mob,A)&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD))&&(!(A instanceof SpaceObject)))
 			{
 				String levelStr = (addStat>=0?(Integer.toString(A.getAreaIStats()[addStat])+":"):"");
-				if(addStat==-999) levelStr=CMStrings.padRight(A.getAuthorID(),10)+":";
+				if(addStat==-999)
+					levelStr=CMStrings.padRight(A.getAuthorID(),10)+":";
 				String name=levelStr+((!CMLib.flags().isHidden(A))?" "+A.name():"("+A.name()+")");
 				if(sysop)
 				switch(A.getAreaState())

@@ -44,7 +44,8 @@ public class Bid extends StdCommand
 		throws java.io.IOException
 	{
 		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Bid how much, on what, with whom?");
-		if(shopkeeper==null) return false;
+		if(shopkeeper==null)
+			return false;
 		if(commands.size()<2)
 		{
 			mob.tell(L("Bid how much on what?"));
@@ -86,7 +87,8 @@ public class Bid extends StdCommand
 			doBugFix=false;
 			final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
 			final Environmental itemToDo=SK.getShop().getStock(whatName,mob);
-			if(itemToDo==null) break;
+			if(itemToDo==null)
+				break;
 			if(CMLib.flags().canBeSeenBy(itemToDo,mob))
 				V.addElement(itemToDo);
 			if(addendum>=CMLib.coffeeShops().getShopKeeper(shopkeeper).getShop().numberInStock(itemToDo))

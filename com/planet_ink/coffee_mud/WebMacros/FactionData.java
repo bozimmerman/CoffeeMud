@@ -58,7 +58,8 @@ public class FactionData extends StdWebMacro
 
 
 		String last=httpReq.getUrlParameter("FACTION");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		if(last.length()>0)
 		{
 			final String newFactionID=httpReq.getUrlParameter("NEWFACTION");
@@ -83,7 +84,8 @@ public class FactionData extends StdWebMacro
 				if(parms.containsKey("NAME"))
 				{
 					String old=httpReq.getUrlParameter("NAME");
-					if(old==null) old=F.name();
+					if(old==null)
+						old=F.name();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("MINRANGE"))
@@ -93,31 +95,36 @@ public class FactionData extends StdWebMacro
 				if(parms.containsKey("SHOWINSCORE"))
 				{
 					String old=httpReq.getUrlParameter("SHOWINSCORE");
-					if(old==null) old=F.showInScore()?"on":"";
+					if(old==null)
+						old=F.showInScore()?"on":"";
 					str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
 				}
 				if(parms.containsKey("SHOWINFACTIONS"))
 				{
 					String old=httpReq.getUrlParameter("SHOWINFACTIONS");
-					if(old==null) old=F.showInFactionsCommand()?"on":"";
+					if(old==null)
+						old=F.showInFactionsCommand()?"on":"";
 					str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
 				}
 				if(parms.containsKey("ISPRELOAD"))
 				{
 					String old=httpReq.getUrlParameter("PRELOAD"+F.factionID());
-					if(old==null) old=(F.isSavable() && F.isPreLoaded())?"on":"";
+					if(old==null)
+						old=(F.isSavable() && F.isPreLoaded())?"on":"";
 					str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
 				}
 				if(parms.containsKey("SHOWINEDITOR"))
 				{
 					String old=httpReq.getUrlParameter("SHOWINEDITOR");
-					if(old==null) old=F.showInEditor()?"on":"";
+					if(old==null)
+						old=F.showInEditor()?"on":"";
 					str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
 				}
 				if(parms.containsKey("SHOWINREPORTS"))
 				{
 					String old=httpReq.getUrlParameter("SHOWINREPORTS");
-					if(old==null) old=F.showInSpecialReported()?"on":"";
+					if(old==null)
+						old=F.showInSpecialReported()?"on":"";
 					str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
 				}
 				if(parms.containsKey("RANGES"))
@@ -154,7 +161,8 @@ public class FactionData extends StdWebMacro
 							oldHigh=httpReq.getUrlParameter("RANGEHIGH"+num);
 							code=httpReq.getUrlParameter("RANGECODE"+num);
 							align=httpReq.getUrlParameter("RANGEFLAG"+num);
-							if(CMath.s_int(oldHigh)<CMath.s_int(oldLow)) oldHigh=oldLow;
+							if(CMath.s_int(oldHigh)<CMath.s_int(oldLow))
+								oldHigh=oldLow;
 							str.append("<TR><TD>");
 							str.append("<INPUT TYPE=TEXT NAME=RANGENAME"+showNum+" SIZE=20 VALUE=\""+oldName+"\">");
 							str.append("</TD><TD>");
@@ -198,7 +206,8 @@ public class FactionData extends StdWebMacro
 				if(parms.containsKey("PLAYERCHOICETEXT"))
 				{
 					String oldName=httpReq.getUrlParameter("PLAYERCHOICETEXT");
-					if(oldName==null) oldName=F.choiceIntro();
+					if(oldName==null)
+						oldName=F.choiceIntro();
 					str.append(oldName+", ");
 				}
 
@@ -682,7 +691,8 @@ public class FactionData extends StdWebMacro
 				if(parms.containsKey("USELIGHTREACTIONS"))
 				{
 					String old=httpReq.getUrlParameter("USELIGHTREACTIONS");
-					if(old==null) old=F.useLightReactions()?"on":"";
+					if(old==null)
+						old=F.useLightReactions()?"on":"";
 					str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
 				}
 
@@ -719,7 +729,8 @@ public class FactionData extends StdWebMacro
 							str.append("<OPTION VALUE=\"\">Delete This Row");
 							final int x=rangeCodes.indexOfFirst(val);
 							String name="Unknown!";
-							if(x>=0) name=rangeCodes.getSecond(x);
+							if(x>=0)
+								name=rangeCodes.getSecond(x);
 							str.append("<OPTION VALUE=\""+val+"\" SELECTED>"+name);
 							str.append("</SELECT>");
 							str.append("</TD><TD VALIGN=TOP>");
@@ -729,7 +740,8 @@ public class FactionData extends StdWebMacro
 							str.append("<SELECT NAME=REACTIONABC"+showNum+">");
 							val=""+httpReq.getUrlParameter("REACTIONABC"+num);
 							name=getAbleBehavCmdName(val,true);
-							if(name==null) name="";
+							if(name==null)
+								name="";
 							str.append("<OPTION VALUE=\""+val+"\" SELECTED>"+name);
 							for(final Enumeration e=CMClass.behaviors();e.hasMoreElements();)
 							{
@@ -806,7 +818,8 @@ public class FactionData extends StdWebMacro
 				if(parms.containsKey("AFFECTONEXP"))
 				{
 					String old=httpReq.getUrlParameter("AFFECTONEXP");
-					if(old==null) old=F.experienceFlag();
+					if(old==null)
+						old=F.experienceFlag();
 					for(int i=0;i<Faction.EXPAFFECT_NAMES.length;i++)
 					{
 						str.append("<OPTION VALUE=\""+Faction.EXPAFFECT_NAMES[i]+"\" ");
@@ -848,12 +861,16 @@ public class FactionData extends StdWebMacro
 	public String getAbleBehavCmdName(String val, boolean includeCmd)
 	{
 		final Behavior B=CMClass.getBehavior(val);
-		if(B!=null) return CMStrings.limit(B.name(),20);
+		if(B!=null)
+			return CMStrings.limit(B.name(),20);
 		final Ability A=CMClass.getAbility(val);
-		if(A!=null) return CMStrings.limit(A.name(),20);
-		if(!includeCmd) return null;
+		if(A!=null)
+			return CMStrings.limit(A.name(),20);
+		if(!includeCmd)
+			return null;
 		final Command C=CMClass.getCommand(val);
-		if(C==null) return null;
+		if(C==null)
+			return null;
 		if((C.getAccessWords()!=null)&&(C.getAccessWords().length>0))
 			return CMStrings.capitalizeAndLower(C.getAccessWords()[0]);
 		return C.ID();

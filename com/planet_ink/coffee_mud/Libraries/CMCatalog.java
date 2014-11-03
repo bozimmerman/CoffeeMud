@@ -47,7 +47,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 
 	public void changeCatalogFlag(Physical P, boolean truefalse)
 	{
-		if(P==null) return;
+		if(P==null)
+			return;
 		if(CMath.bset(P.basePhyStats().disposition(),PhyStats.IS_CATALOGED))
 		{
 			if(!truefalse)
@@ -70,7 +71,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		{
 			try
 			{
-				if(list.size()==0) return null;
+				if(list.size()==0)
+					return null;
 				int start=0;
 				int end=list.size()-1;
 				while(start<=end)
@@ -222,8 +224,10 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	@Override
 	public boolean isCatalogObj(Environmental E)
 	{
-		if(E instanceof MOB) return getCatalogMob(E.Name()) != null;
-		if(E instanceof Item) return getCatalogItem(E.Name()) != null;
+		if(E instanceof MOB)
+			return getCatalogMob(E.Name()) != null;
+		if(E instanceof Item)
+			return getCatalogItem(E.Name()) != null;
 		return false;
 	}
 
@@ -231,7 +235,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	public boolean isCatalogObj(String name)
 	{
 		Object o=getCatalogMob(name);
-		if(o==null) o=getCatalogItem(name);
+		if(o==null)
+			o=getCatalogItem(name);
 		return o!=null;
 	}
 
@@ -259,9 +264,11 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			for(int s=0;s<shops.size();s++)
 			{
 				E=shops.get(s);
-				if(E==null) continue;
+				if(E==null)
+					continue;
 				SK=CMLib.coffeeShops().getShopKeeper(E);
-				if(SK==null) continue;
+				if(SK==null)
+					continue;
 				for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 				{
 					shopItem=i.next();
@@ -272,16 +279,19 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			for(int i=0;i<R.numItems();i++)
 			{
 				I=R.getItem(i);
-				if(I!=null) content.addElement(new RoomContentImpl(I));
+				if(I!=null)
+					content.addElement(new RoomContentImpl(I));
 			}
 			for(int m=0;m<R.numInhabitants();m++)
 			{
 				M=R.fetchInhabitant(m);
-				if(M==null) continue;
+				if(M==null)
+					continue;
 				for(int i=0;i<M.numItems();i++)
 				{
 					I=M.getItem(i);
-					if(I!=null) content.addElement(new RoomContentImpl(I,M));
+					if(I!=null)
+						content.addElement(new RoomContentImpl(I,M));
 				}
 				content.addElement(new RoomContentImpl(M));
 			}
@@ -417,10 +427,12 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 
 	public void submitToCatalog(String catagory, Physical P)
 	{
-		if(P==null) return;
+		if(P==null)
+			return;
 		synchronized(getSync(P).intern())
 		{
-			if(getCatalogObj(P)!=null) return;
+			if(getCatalogObj(P)!=null)
+				return;
 			changeCatalogFlag(P,false);
 			P.text(); // to get cataloged status into xml
 			if(P instanceof Item)
@@ -444,9 +456,11 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	@Override
 	public void delCatalog(Physical P)
 	{
-		if(P==null) return;
+		if(P==null)
+			return;
 		P=getCatalogObj(P);
-		if(P==null) return;
+		if(P==null)
+			return;
 		final CataData data=getCatalogData(P);
 		if(P instanceof Item)
 		{
@@ -506,7 +520,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 						}
 					}
 				}
-				if(dirty) updateRoomContent(R.roomID(),contents);
+				if(dirty)
+					updateRoomContent(R.roomID(),contents);
 				R.destroy();
 			}
 		}
@@ -651,7 +666,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			if((stats!=null)&&(CMath.bset(stats.disposition(),PhyStats.IS_CATALOGED)))
 			{
 				final CataData data=getCatalogData(P);
-				if(data!=null) data.addReference(P);
+				if(data!=null)
+					data.addReference(P);
 			}
 		}
 	}
@@ -665,7 +681,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			if((stats!=null)&&(CMath.bset(stats.disposition(),PhyStats.IS_CATALOGED)))
 			{
 				final CataData data=getCatalogData(P);
-				if(data!=null) data.bumpDeathPickup();
+				if(data!=null)
+					data.bumpDeathPickup();
 			}
 		}
 	}
@@ -681,14 +698,16 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 				{
 					changeCatalogFlag(P,true);
 					final CataData data=getCatalogData(P);
-					if(data!=null) data.addReference(P);
+					if(data!=null)
+						data.addReference(P);
 				}
 				else
 				if(CMLib.flags().isCataloged(P))
 				{
 					changeCatalogFlag(P,false);
 					final CataData data=getCatalogData(P);
-					if(data!=null) data.delReference(P);
+					if(data!=null)
+						data.delReference(P);
 				}
 			}
 		}
@@ -724,14 +743,16 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	@Override
 	public CataData getCatalogData(Physical P)
 	{
-		if(P==null) return null;
+		if(P==null)
+			return null;
 		return (P instanceof MOB)?getCatalogMobData(P.Name()):getCatalogItemData(P.Name());
 	}
 
 	@Override
 	public Physical getCatalogObj(Physical P)
 	{
-		if(P==null) return null;
+		if(P==null)
+			return null;
 		return (P instanceof MOB)?getCatalogMob(P.Name()):getCatalogItem(P.Name());
 	}
 
@@ -762,7 +783,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	@Override
 	public StringBuffer checkCatalogIntegrity(Physical P)
 	{
-		if(P==null) return null;
+		if(P==null)
+			return null;
 		synchronized(getSync(P).intern())
 		{
 			if(CMLib.flags().isCataloged(P))
@@ -793,7 +815,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 					if((P instanceof MOB)&&(cataE instanceof MOB))
 					{
 						boolean firstChecked=false;
-						if(diffs==null) diffs=new StringBuffer("");
+						if(diffs==null)
+							diffs=new StringBuffer("");
 						for(final Pair<Clan,Integer> p : ((MOB)P).clans())
 							if((((MOB)cataE).getClanRole(p.first.clanID())==null)||(((MOB)cataE).getClanRole(p.first.clanID()).second.intValue()!=p.second.intValue()))
 								firstChecked=true;
@@ -821,7 +844,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	@Override
 	public Item getDropItem(MOB M, boolean live)
 	{
-		if(M==null) return null;
+		if(M==null)
+			return null;
 		CatalogLibrary.CataData data=null;
 		Vector<Item> selections=null;
 		synchronized(icatalog)
@@ -845,7 +869,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			}
 			catch(final IndexOutOfBoundsException e) {}
 		}
-		if(selections==null) return null;
+		if(selections==null)
+			return null;
 		Item I=selections.elementAt(CMLib.dice().roll(1,selections.size(),-1));
 		I=(Item)I.copyOf();
 		changeCatalogUsage(I,true);
@@ -990,8 +1015,10 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			for(final Environmental E : items)
 			{
 				R=CMLib.map().getStartRoom(E);
-				if(R==null) R=CMLib.map().roomLocation(E);
-				if(R==null) continue;
+				if(R==null)
+					R=CMLib.map().roomLocation(E);
+				if(R==null)
+					continue;
 				if((E instanceof Item)
 				&&(((Item)E).owner() instanceof MOB)
 				&&(!((MOB)((Item)E).owner()).isMonster()))
@@ -1001,7 +1028,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 				else
 					set.add(CMLib.map().getExtendedRoomID(R));
 			}
-			if(set.roomCountAllAreas()>0) return set;
+			if(set.roomCountAllAreas()>0)
+				return set;
 			return homes;
 		}
 
@@ -1019,7 +1047,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		{
 			final RoomnumberSet set=getLocations();
 			final Iterator<String> e=set.getAreaNames();
-			if(!e.hasNext()) return "";
+			if(!e.hasNext())
+				return "";
 			String maxArea=e.next();
 			int maxCount=set.roomCount(maxArea);
 			for(;e.hasNext();)
@@ -1033,7 +1062,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 				}
 			}
 			final Area A=CMLib.map().getArea(maxArea);
-			if(A!=null) return A.Name();
+			if(A!=null)
+				return A.Name();
 			return maxArea;
 		}
 
@@ -1076,7 +1106,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		@Override
 		public Physical getLiveReference()
 		{
-			if(noRefs) return null;
+			if(noRefs)
+				return null;
 			Physical o=null;
 			try
 			{
@@ -1093,8 +1124,10 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		@Override
 		public synchronized void addReference(Physical P)
 		{
-			if(noRefs) return;
-			if(isReference(P)) return;
+			if(noRefs)
+				return;
+			if(isReference(P))
+				return;
 			Environmental o=null;
 			for(int r=0;r<refs.size();r++)
 			{
@@ -1112,14 +1145,16 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		public boolean isReference(Physical P)
 		{
 			for(int r=0;r<refs.size();r++)
-				if(refs.elementAt(r).get()==P) return true;
+				if(refs.elementAt(r).get()==P)
+					return true;
 			return false;
 		}
 
 		@Override
 		public synchronized void delReference(Physical P)
 		{
-			if(!isReference(P)) return;
+			if(!isReference(P))
+				return;
 			Environmental o=null;
 			for(int r=0;r<refs.size();r++)
 			{
@@ -1186,7 +1221,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 				if((piece!=null)&&(piece.contents!=null)&&(piece.contents.size()>0))
 				{
 					catagory=CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(piece.parms, "CATAGORY"));
-					if(catagory==null) catagory="";
+					if(catagory==null)
+						catagory="";
 					lmaskStr=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(piece.contents,"LMASK"));
 					final String ratestr=CMLib.xml().getValFromPieces(piece.contents,"RATE");
 					rate=CMath.s_pct(ratestr);
@@ -1211,7 +1247,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		if(catalogFileMobsRoot == null)
 		{
 			final CMFile.CMVFSDir newRoot=getCatalogRoot(mcatalog, "mobs", rootRoot);
-			if(newRoot==null) return null;
+			if(newRoot==null)
+				return null;
 			catalogFileMobsRoot=newRoot;
 		}
 		return catalogFileMobsRoot;
@@ -1222,7 +1259,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		if(catalogFileItemsRoot == null)
 		{
 			final CMFile.CMVFSDir newRoot=getCatalogRoot(icatalog, "items", rootRoot);
-			if(newRoot==null) return null;
+			if(newRoot==null)
+				return null;
 			catalogFileItemsRoot=newRoot;
 		}
 		return catalogFileItemsRoot;

@@ -161,7 +161,8 @@ public class Chant_SummonPlants extends Chant
 					if((newPct>=50)&&(A.fetchEffect("Chant_DruidicConnection")==null))
 					{
 						final Ability A2=CMClass.getAbility("Chant_DruidicConnection");
-						if(A2!=null) A2.invoke(mob,A,true,0);
+						if(A2!=null)
+							A2.invoke(mob,A,true,0);
 					}
 				}
 			}
@@ -229,7 +230,8 @@ public class Chant_SummonPlants extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if(!rightPlace(mob,auto)) return false;
+		if(!rightPlace(mob,auto))
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

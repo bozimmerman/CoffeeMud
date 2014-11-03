@@ -214,7 +214,8 @@ public class Monk extends StdCharClass
 	public void level(MOB mob, List<String> newAbilityIDs)
 	{
 		super.level(mob, newAbilityIDs);
-		if(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)) return;
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
+			return;
 		final int attArmor=(((int)Math.round(CMath.div(mob.charStats().getStat(CharStats.STAT_DEXTERITY),9.0)))+1);
 		mob.tell(L("^NYour dexterity grants you a defensive bonus of ^H@x1^?.^N",""+attArmor));
 	}

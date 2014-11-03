@@ -186,7 +186,8 @@ public class Beastmaster extends StdCharClass
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
+		if(!(myHost instanceof MOB))
+			return super.okMessage(myHost,msg);
 		final MOB myChar=(MOB)myHost;
 		if(!super.okMessage(myChar, msg))
 			return false;
@@ -271,7 +272,8 @@ public class Beastmaster extends StdCharClass
 									 Ability skill,
 									 int duration)
 	{
-		if(myChar==null) return duration;
+		if(myChar==null)
+			return duration;
 		if(((skill.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
 		&&(!skill.ID().equals("Herbalism"))
 		&&(!skill.ID().equals("Masonry")))

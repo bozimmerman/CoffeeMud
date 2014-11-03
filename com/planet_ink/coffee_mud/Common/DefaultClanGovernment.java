@@ -160,7 +160,8 @@ public class DefaultClanGovernment implements ClanGovernment
 	@Override
 	public void setCategory(String category)
 	{
-		if(category==null) category="";
+		if(category==null)
+			category="";
 		this.category=category.toUpperCase();
 	}
 	@Override
@@ -316,7 +317,8 @@ public class DefaultClanGovernment implements ClanGovernment
 	@Override
 	public void setXpCalculationFormulaStr(String newXpCalculationFormula)
 	{
-		if(newXpCalculationFormula==null) newXpCalculationFormula="";
+		if(newXpCalculationFormula==null)
+			newXpCalculationFormula="";
 		xpCalculationFormulaStr = newXpCalculationFormula;
 		if(xpCalculationFormulaStr.trim().length()==0)
 			this.xpCalculationFormula = CMath.compileMathExpression(DEFAULT_XP_FORMULA);
@@ -402,7 +404,8 @@ public class DefaultClanGovernment implements ClanGovernment
 	@Override
 	public ClanPosition getPosition(String pos)
 	{
-		if(pos==null) return null;
+		if(pos==null)
+			return null;
 		pos=pos.trim();
 		if(CMath.isInteger(pos))
 		{
@@ -419,7 +422,8 @@ public class DefaultClanGovernment implements ClanGovernment
 	@Override
 	public ClanPosition findPositionRole(String pos)
 	{
-		if(pos==null) return null;
+		if(pos==null)
+			return null;
 		pos=pos.trim();
 		if(positionMap.containsKey(pos))
 			return positionMap.get(pos);
@@ -482,7 +486,8 @@ public class DefaultClanGovernment implements ClanGovernment
 	{
 		final List<ClanPosition> newPos=new LinkedList<ClanPosition>();
 		for(final ClanPosition P : positions)
-			if(P!=pos) newPos.add(P);
+			if(P!=pos)
+				newPos.add(P);
 		positions=newPos.toArray(new ClanPosition[0]);
 		positionMap.clear();
 	}
@@ -541,7 +546,8 @@ public class DefaultClanGovernment implements ClanGovernment
 	{
 		int num=0;
 		int numDex=code.length();
-		while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1)))) numDex--;
+		while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1))))
+			numDex--;
 		if(numDex<code.length())
 		{
 			num=CMath.s_int(code.substring(numDex));
@@ -577,7 +583,8 @@ public class DefaultClanGovernment implements ClanGovernment
 				for(int a=0;a<Function.values().length;a++)
 					if(pos.getFunctionChart()[a]==Authority.MUST_VOTE_ON)
 					{
-						if(str.length()>0) str.append(",");
+						if(str.length()>0)
+							str.append(",");
 						str.append(Function.values()[a]);
 					}
 				break;
@@ -607,7 +614,8 @@ public class DefaultClanGovernment implements ClanGovernment
 	{
 		int num=0;
 		int numDex=code.length();
-		while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1)))) numDex--;
+		while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1))))
+			numDex--;
 		if(numDex<code.length())
 		{
 			num=CMath.s_int(code.substring(numDex));
@@ -628,7 +636,8 @@ public class DefaultClanGovernment implements ClanGovernment
 		case ISPUBLIC: isPublic=CMath.s_bool(val); break;
 		case ISFAMILYONLY: isFamilyOnly=CMath.s_bool(val); break;
 		case OVERRIDEMINMEMBERS: {
-			if(val.length()==0) overrideMinMembers = null;
+			if(val.length()==0)
+				overrideMinMembers = null;
 			else overrideMinMembers=Integer.valueOf(CMath.s_int(val));
 			break;
 		}
@@ -642,7 +651,8 @@ public class DefaultClanGovernment implements ClanGovernment
 		case EXITSCRIPT: this.exitScriptParam=val; break;
 		case AUTOPROMOTEBY:{
 			final Clan.AutoPromoteFlag flag=(Clan.AutoPromoteFlag)CMath.s_valueOf(Clan.AutoPromoteFlag.values(),val);
-			if(flag!=null) autoPromoteBy=flag;
+			if(flag!=null)
+				autoPromoteBy=flag;
 			break;
 		}
 		case VOTEFUNCS:{
@@ -655,7 +665,8 @@ public class DefaultClanGovernment implements ClanGovernment
 				for(final String funcName : funcs)
 				{
 					final Clan.Function func=(Clan.Function)CMath.s_valueOf(Function.values(), funcName);
-					if(func!=null) pos.getFunctionChart()[func.ordinal()] = Authority.MUST_VOTE_ON;
+					if(func!=null)
+						pos.getFunctionChart()[func.ordinal()] = Authority.MUST_VOTE_ON;
 				}
 			}
 			break;
@@ -1115,7 +1126,8 @@ public class DefaultClanGovernment implements ClanGovernment
 				@Override
 				public void rebuild(final ChameleonList<Ability> me)
 				{
-					if((mob==null)||(clan==null)) return;
+					if((mob==null)||(clan==null))
+						return;
 					if(mob.getClanRole(clan.clanID())!=null)
 						me.changeMeInto(clan.getGovernment().getClanLevelEffects(mob, clan, Integer.valueOf(clan.getClanLevel())));
 				}
@@ -1139,7 +1151,8 @@ public class DefaultClanGovernment implements ClanGovernment
 	@Override
 	public ChameleonList<Ability> getClanLevelEffects(final MOB mob, final Clan clan, final Integer level)
 	{
-		if(level == null) return getEmptyClanLevelEffects(mob, clan);
+		if(level == null)
+			return getEmptyClanLevelEffects(mob, clan);
 		final DefaultClanGovernment myGovt = this;
 		final Integer mobClanRole=getMobClanRoleOrNull(mob, clan);
 		final List<Ability> myList=getClanLevelEffectsList(mobClanRole, level);

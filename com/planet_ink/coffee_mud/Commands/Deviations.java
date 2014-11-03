@@ -153,10 +153,12 @@ public class Deviations extends StdCommand
 	protected String getDeviation(double val, double val2)
 	{
 
-		if(val==val2) return "0%";
+		if(val==val2)
+			return "0%";
 		final double oval=val2-val;
 		final int pval=(int)Math.round(CMath.div((oval<0)?(oval*-1):oval,val2==0?1:val2)*100.0);
-		if(oval>0) return "-"+pval+"%";
+		if(oval>0)
+			return "-"+pval+"%";
 		return "+"+pval+"%";
 	}
 
@@ -177,7 +179,8 @@ public class Deviations extends StdCommand
 		for(final Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 		{
 			final Faction F=e.nextElement();
-			if(F.showInSpecialReported()) useFaction=F;
+			if(F.showInSpecialReported())
+				useFaction=F;
 
 		}
 		final String where=V.elementAt(1).toLowerCase();
@@ -301,7 +304,8 @@ public class Deviations extends StdCommand
 		}
 		if(itemResults.length()>0) 
 			str.append(itemHeader()+itemResults.toString());
-		if(mobResults.length()>0) str.append(mobHeader(useFaction)+mobResults.toString());
+		if(mobResults.length()>0)
+			str.append(mobHeader(useFaction)+mobResults.toString());
 		return str;
 	}
 

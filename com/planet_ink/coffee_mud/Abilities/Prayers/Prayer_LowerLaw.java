@@ -52,7 +52,8 @@ public class Prayer_LowerLaw extends Prayer
 		if(L.basicCrimes().containsKey(code))
 		{
 			final String name=L.basicCrimes().get(code)[Law.BIT_CRIMENAME];
-			if(!V.contains(name)) V.add(name);
+			if(!V.contains(name))
+				V.add(name);
 		}
 	}
 
@@ -95,12 +96,14 @@ public class Prayer_LowerLaw extends Prayer
 					for(int x=0;x<L.bannedSubstances().size();x++)
 					{
 						final String name=L.bannedBits().get(x)[Law.BIT_CRIMENAME];
-						if(!crimes.contains(name)) crimes.add(name);
+						if(!crimes.contains(name))
+							crimes.add(name);
 					}
 					for(int x=0;x<L.otherCrimes().size();x++)
 					{
 						final String name=L.otherBits().get(x)[Law.BIT_CRIMENAME];
-						if(!crimes.contains(name)) crimes.add(name);
+						if(!crimes.contains(name))
+							crimes.add(name);
 					}
 					mob.tell(L("The following lower crimes are divinely revealed to you: @x1.",CMLib.english().toEnglishStringList(crimes.toArray(new String[0]))));
 				}

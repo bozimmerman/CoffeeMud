@@ -292,13 +292,15 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
+			if(code.equalsIgnoreCase(CODES[i]))
+				return i;
 		return -1;
 	}
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof StdScroll)) return false;
+		if(!(E instanceof StdScroll))
+			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))

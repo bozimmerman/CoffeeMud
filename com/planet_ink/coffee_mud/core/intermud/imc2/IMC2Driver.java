@@ -142,7 +142,8 @@ public final class IMC2Driver extends Thread {
 		else
 		{
 			final MOB M=CMLib.players().getPlayer(name);
-			if(M!=null) M.tell(text);
+			if(M!=null)
+				M.tell(text);
 		}
 	}
 
@@ -1041,7 +1042,8 @@ public final class IMC2Driver extends Thread {
 		out.type = "whois-reply";
 
 		final MOB M=CMLib.players().getPlayer(from.name);
-		if(M==null) return;
+		if(M==null)
+			return;
 		imc_addkey(out, "text", "imcpfind "+from.name+"@"+imc_name
 						+" is "+(CMLib.flags().isInTheGame(M,false) ? "online":"offline")+ ".");
 
@@ -1075,13 +1077,15 @@ public final class IMC2Driver extends Thread {
 			CMLib.commands().postSay(mob,smob,text,true,true);
 		final Room R=mob.location();
 		mob.destroy();
-		if(R!=null) R.destroy();
+		if(R!=null)
+			R.destroy();
 	}
 
 	public REMOTEINFO getIMC2Mud(String named)
 	{
 		final Hashtable l=query_muds();
-		if(l.containsKey(named)) return (REMOTEINFO)l.get(named);
+		if(l.containsKey(named))
+			return (REMOTEINFO)l.get(named);
 		for(final Enumeration e=l.elements();e.hasMoreElements();)
 		{
 			final REMOTEINFO m=(REMOTEINFO)e.nextElement();
@@ -1110,9 +1114,11 @@ public final class IMC2Driver extends Thread {
 		if(channelName.length()==0)
 			return;
 		channelName=read_channel_name(channelName);
-		if(channelName.length()==0) return;
+		if(channelName.length()==0)
+			return;
 		final int channelInt=CMLib.channels().getChannelIndex(channelName);
-		if(channelInt<0) return;
+		if(channelInt<0)
+			return;
 		String channelColor=CMLib.channels().getChannel(channelInt).colorOverride;
 		if(channelColor.length()==0)
 			channelColor="^Q";
@@ -1145,7 +1151,8 @@ public final class IMC2Driver extends Thread {
 		chanhist.put(channel, l);
 		final Room R=mob.location();
 		mob.destroy();
-		if(R!=null) R.destroy();
+		if(R!=null)
+			R.destroy();
 	}
 
 
@@ -1216,7 +1223,8 @@ public final class IMC2Driver extends Thread {
 
 	final String read_channel_name(String channame)
 	{
-		if(channame==null) return "";
+		if(channame==null)
+			return "";
 		channame=channame.toUpperCase();
 		for(final Enumeration e=chan_conf.keys();e.hasMoreElements();)
 		{
@@ -1459,7 +1467,8 @@ public final class IMC2Driver extends Thread {
 					else
 					{
 						final PACKET p = interpret2(s);
-						if(p!=null) exec_commands(p);
+						if(p!=null)
+							exec_commands(p);
 					}
 				}
 			}

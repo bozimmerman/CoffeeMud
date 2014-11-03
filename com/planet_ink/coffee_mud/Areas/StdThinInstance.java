@@ -49,14 +49,16 @@ public class StdThinInstance extends StdThinArea
 	protected String getStrippedRoomID(String roomID)
 	{
 		final int x=roomID.indexOf('#');
-		if(x<0) return null;
+		if(x<0)
+			return null;
 		return roomID.substring(x);
 	}
 
 	protected String convertToMyArea(String roomID)
 	{
 		final String strippedID=getStrippedRoomID(roomID);
-		if(strippedID==null) return null;
+		if(strippedID==null)
+			return null;
 		return Name()+strippedID;
 	}
 
@@ -65,8 +67,10 @@ public class StdThinInstance extends StdThinArea
 		if((parentArea!=null)&&(parentArea.get()!=null))
 			return parentArea.get();
 		final int x=Name().indexOf('_');
-		if(x<0) return null;
-		if(!CMath.isNumber(Name().substring(0,x))) return null;
+		if(x<0)
+			return null;
+		if(!CMath.isNumber(Name().substring(0,x)))
+			return null;
 		final Area parentA = CMLib.map().getArea(Name().substring(x+1));
 		if((parentA==null)
 		||(!CMath.bset(parentA.flags(),Area.FLAG_INSTANCE_PARENT))
@@ -82,17 +86,20 @@ public class StdThinInstance extends StdThinArea
 		if(!CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD))
 			return super.getRoom(roomID);
 
-		if(!isRoom(roomID)) return null;
+		if(!isRoom(roomID))
+			return null;
 		Room R=super.getRoom(roomID);
 		if(((R==null)||(R.amDestroyed()))&&(roomID!=null))
 		{
 			final Area parentA=getParentArea();
-			if(parentA==null) return null;
+			if(parentA==null)
+				return null;
 
 			if(roomID.toUpperCase().startsWith(Name().toUpperCase()+"#"))
 				roomID=Name()+roomID.substring(Name().length()); // for case sensitive situations
 			R=parentA.getRoom(parentA.Name()+getStrippedRoomID(roomID));
-			if(R==null) return null;
+			if(R==null)
+				return null;
 
 			final Room origRoom=R;
 			R=CMLib.database().DBReadRoomObject(R.roomID(), false);
@@ -374,7 +381,8 @@ public class StdThinInstance extends StdThinArea
 						for(int v=V.size()-1;v>=0;v--)
 						{
 							final WeakReference<MOB> wmob=V.get(v);
-							if(wmob==null) continue;
+							if(wmob==null)
+								continue;
 							final MOB M=wmob.get();
 							if(grp.contains(M))
 							{
@@ -420,7 +428,8 @@ public class StdThinInstance extends StdThinArea
 				if(redirectA instanceof StdThinInstance)
 				{
 					final Room R=redirectA.getRoom(((StdThinInstance)redirectA).convertToMyArea(CMLib.map().getExtendedRoomID((Room)msg.target())));
-					if(R!=null) msg.setTarget(R);
+					if(R!=null)
+						msg.setTarget(R);
 				}
 			}
 		}

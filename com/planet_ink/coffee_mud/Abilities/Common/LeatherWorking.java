@@ -162,7 +162,8 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 	@Override
 	public boolean mayICraft(final Item I)
 	{
-		if(I==null) return false;
+		if(I==null)
+			return false;
 		if(!super.mayBeCrafted(I))
 			return false;
 		if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER)
@@ -219,7 +220,8 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
-		if(!super.canMend(mob,E,quiet)) return false;
+		if(!super.canMend(mob,E,quiet))
+			return false;
 		if((!(E instanceof Item))||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
@@ -296,18 +298,21 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 					final String wood=getComponentDescription(mob,V,RCP_WOOD);
 					if(wood.length()>5)
 					{
-						if(toggler>1) buf.append("\n\r");
+						if(toggler>1)
+							buf.append("\n\r");
 						toggler=toggleTop;
 					}
 					if(((level<=xlevel(mob))||allFlag)
 					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
 						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+CMStrings.padRightPreserve(""+wood,cols[2])+((toggler!=toggleTop)?" ":"\n\r"));
-						if(++toggler>toggleTop) toggler=1;
+						if(++toggler>toggleTop)
+							toggler=1;
 					}
 				}
 			}
-			if(toggler!=1) buf.append("\n\r");
+			if(toggler!=1)
+				buf.append("\n\r");
 			commonTell(mob,buf.toString());
 			enhanceList(mob);
 			return true;
@@ -328,7 +333,8 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			messedUp=false;
 			final Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
-			if(!canMend(mob,buildingI,false)) return false;
+			if(!canMend(mob,buildingI,false))
+				return false;
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
@@ -344,7 +350,8 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			messedUp=false;
 			final Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
-			if(buildingI==null) return false;
+			if(buildingI==null)
+				return false;
 			if((buildingI.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER)
 			{
 				commonTell(mob,L("That's not made of leather.  That can't be refitted."));
@@ -411,11 +418,13 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
-			if(componentsFoundList==null) return false;
+			if(componentsFoundList==null)
+				return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
 			woodRequired=adjustWoodRequired(woodRequired,mob);
 
-			if(amount>woodRequired) woodRequired=amount;
+			if(amount>woodRequired)
+				woodRequired=amount;
 			final int[] pm={RawMaterial.MATERIAL_LEATHER};
 			final int[] pm1={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
 			final String misctype=foundRecipe.get(RCP_MISCTYPE);
@@ -428,7 +437,8 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 												bundling,
 												parsedVars.autoGenerate,
 												enhancedTypes);
-			if(data==null) return false;
+			if(data==null)
+				return false;
 			fixDataForComponents(data,componentsFoundList);
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -467,8 +477,10 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 			final long canContain=getContainerType(foundRecipe.get(RCP_CONTAINMASK));
 			int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
-			if(armordmg!=0) armordmg=armordmg+(multiplier-1);
-			if(bundling) buildingI.setBaseValue(lostValue);
+			if(armordmg!=0)
+				armordmg=armordmg+(multiplier-1);
+			if(bundling)
+				buildingI.setBaseValue(lostValue);
 			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 			addSpells(buildingI,spell);
 			if(buildingI instanceof Weapon)

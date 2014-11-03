@@ -158,7 +158,8 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
 					String material=V.get(RCP_WOODTYPE);
 					final String wood=getComponentDescription(mob,V,RCP_WOOD);
-					if(wood.length()>5) material="";
+					if(wood.length()>5)
+						material="";
 					if(((level<=xlevel(mob))||allFlag)
 					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+wood+" "+material.toLowerCase()+"\n\r");
@@ -211,7 +212,8 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 
 		final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
-		if(componentsFoundList==null) return false;
+		if(componentsFoundList==null)
+			return false;
 		int woodRequired=CMath.s_int(woodRequiredStr);
 		woodRequired=adjustWoodRequired(woodRequired,mob);
 
@@ -221,7 +223,8 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 											false,
 											parsedVars.autoGenerate,
 											null);
-		if(data==null) return false;
+		if(data==null)
+			return false;
 		woodRequired=data[0][FOUND_AMT];
 
 		final String misctype=(foundRecipe.size()>RCP_MISCTYPE)?foundRecipe.get(RCP_MISCTYPE).trim():"";

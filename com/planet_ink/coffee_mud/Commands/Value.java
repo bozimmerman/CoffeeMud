@@ -44,7 +44,8 @@ public class Value extends StdCommand
 		throws java.io.IOException
 	{
 		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Value what with whom?");
-		if(shopkeeper==null) return false;
+		if(shopkeeper==null)
+			return false;
 		if(commands.size()==0)
 		{
 			mob.tell(L("Value what?"));
@@ -71,7 +72,8 @@ public class Value extends StdCommand
 		{
 			doBugFix=false;
 			final Item itemToDo=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,whatName+addendumStr);
-			if(itemToDo==null) break;
+			if(itemToDo==null)
+				break;
 			if((CMLib.flags().canBeSeenBy(itemToDo,mob))
 			&&(!V.contains(itemToDo)))
 				V.addElement(itemToDo);

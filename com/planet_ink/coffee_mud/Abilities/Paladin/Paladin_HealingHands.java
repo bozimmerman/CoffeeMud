@@ -69,7 +69,8 @@ public class Paladin_HealingHands extends StdAbility
 		}
 
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		helpProficiency(mob, 0);
 
@@ -86,7 +87,8 @@ public class Paladin_HealingHands extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				int manaLost=healing;
-				if(manaLost>0) manaLost=manaLost*-1;
+				if(manaLost>0)
+					manaLost=manaLost*-1;
 				mob.curState().adjMana(manaLost,mob.maxState());
 				CMLib.combat().postHealing(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,healing,null);
 				target.tell(L("You feel a little better!"));

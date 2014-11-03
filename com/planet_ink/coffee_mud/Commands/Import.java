@@ -302,7 +302,8 @@ public class Import extends StdCommand
 					if(lineAfter.endsWith("~"))
 						lineAfter=lineAfter.substring(0,lineAfter.length()-1);
 					final int x=lineAfter.indexOf('}');
-					if(x>0) lineAfter=lineAfter.substring(x+1).trim();
+					if(x>0)
+						lineAfter=lineAfter.substring(x+1).trim();
 					if(CMParms.numBits(lineAfter)>1)
 						areaName=CMParms.getPastBit(lineAfter,0);
 					else
@@ -379,9 +380,11 @@ public class Import extends StdCommand
 		Room R=null;
 		if(areaHashedRoomSet!=null)
 			R=getRoom(areaHashedRoomSet,areaName,calledThis);
-		if(R!=null) return R;
+		if(R!=null)
+			return R;
 		R=getRoom(hashedRoomSet,areaName,calledThis);
-		if(R!=null) return R;
+		if(R!=null)
+			return R;
 		return CMLib.map().getRoom(areaName+"#"+calledThis);
 	}
 
@@ -511,7 +514,8 @@ public class Import extends StdCommand
 				if(s.trim().startsWith("{"))
 				{
 					int x=s.trim().indexOf('}');
-					if(x>0) s=s.substring(x+1).trim();
+					if(x>0)
+						s=s.substring(x+1).trim();
 					if(s.endsWith("~"))
 						s=s.substring(0,s.length()-1).trim();
 					x=s.indexOf(' ');
@@ -546,7 +550,8 @@ public class Import extends StdCommand
 				if(s.trim().startsWith("{"))
 				{
 					final int x=s.trim().indexOf('}');
-					if(x>0) s=s.substring(x+1).trim();
+					if(x>0)
+						s=s.substring(x+1).trim();
 				}
 				else
 				if((CMParms.parse(s).size()>2)
@@ -556,7 +561,8 @@ public class Import extends StdCommand
 				if(s.endsWith("~"))
 					s=s.substring(0,s.length()-1).trim();
 				final int x=s.indexOf(' ');
-				if(x>1) s=s.substring(0,x).trim();
+				if(x>1)
+					s=s.substring(0,x).trim();
 				if((s.length()==0)||(s.toUpperCase().equalsIgnoreCase("NONE")))
 					continue;
 				return s;
@@ -565,7 +571,8 @@ public class Import extends StdCommand
 			if(s.trim().startsWith("{"))
 			{
 				int x=s.trim().indexOf('}');
-				if(x>0) s=s.substring(x+1).trim();
+				if(x>0)
+					s=s.substring(x+1).trim();
 				if(s.endsWith("~"))
 					s=s.substring(0,s.length()-1).trim();
 				x=s.indexOf(' ');
@@ -584,7 +591,8 @@ public class Import extends StdCommand
 			if(s.trim().startsWith("["))
 			{
 				int x=s.trim().indexOf(']');
-				if(x>0) s=s.substring(x+1).trim();
+				if(x>0)
+					s=s.substring(x+1).trim();
 				if(s.endsWith("~"))
 					s=s.substring(0,s.length()-1).trim();
 				x=s.indexOf(' ');
@@ -713,12 +721,14 @@ public class Import extends StdCommand
 
 	protected static String nextLine(List<String> V)
 	{
-		if(V.size()==0) return "";
+		if(V.size()==0)
+			return "";
 		return V.get(0);
 	}
 	protected static String eatLine(List<String> V)
 	{
-		if(V.size()==0) return "";
+		if(V.size()==0)
+			return "";
 		final String s=V.get(0);
 		V.remove(0);
 		return s;
@@ -740,10 +750,12 @@ public class Import extends StdCommand
 			return R;
 		}
 		final Area area=R.getArea();
-		if(area!=null) area.delProperRoom(R);
+		if(area!=null)
+			area.delProperRoom(R);
 		R2.setRoomID(R.roomID());
 		R2.setArea(R.getArea());
-		if(R2.expirationDate()!=0) R2.setExpirationDate(R2.expirationDate()+(360000));
+		if(R2.expirationDate()!=0)
+			R2.setExpirationDate(R2.expirationDate()+(360000));
 		R2.setDescription(R.description());
 		R2.setDisplayText(R.displayText());
 		R2.setName(R.name());
@@ -801,7 +813,8 @@ public class Import extends StdCommand
 
 	protected static String eatLineSquiggle(List<String> V)
 	{
-		if(V.size()==0) return "";
+		if(V.size()==0)
+			return "";
 		String s=eatLine(V);
 		while(s.indexOf('~')<0)
 		{
@@ -813,7 +826,8 @@ public class Import extends StdCommand
 				s+="%0D";
 			else
 				s+=" "+l;
-			if(V.size()==0) break;
+			if(V.size()==0)
+				break;
 		}
 		s=trimSpacesOnly(s);
 
@@ -825,7 +839,8 @@ public class Import extends StdCommand
 		if(s.endsWith("~"))
 			s=s.substring(0,s.length()-1);
 
-		if(s.indexOf('^')>=0)	s=CMStrings.replaceAll(s,"^","^^");
+		if(s.indexOf('^')>=0)
+			s=CMStrings.replaceAll(s,"^","^^");
 
 		if((s.indexOf(""+((char)27))>=0)
 		||(s.indexOf('&')>=0)
@@ -842,9 +857,12 @@ public class Import extends StdCommand
 		if(x>=0)
 		{
 			int y=s.indexOf("@rus",x);
-			if(y<x) y=s.indexOf("@ger",x);
-			if(y<x) y=s.indexOf("@spa",x);
-			if(y<x) y=s.length();
+			if(y<x)
+				y=s.indexOf("@ger",x);
+			if(y<x)
+				y=s.indexOf("@spa",x);
+			if(y<x)
+				y=s.length();
 			s=s.substring(x+4,y);
 		}
 		return s.trim();
@@ -887,18 +905,23 @@ public class Import extends StdCommand
 
 	protected static boolean returnAnError(Session sess, String str, boolean compileErrors, Vector commands)
 	{
-		if((str==null)||(str.length()==0)) return true;
+		if((str==null)||(str.length()==0))
+			return true;
 		Log.errOut("Import",str);
-		if(sess!=null) sess.println(str);
-		if(compileErrors&&(commands!=null)) commands.addElement(str);
+		if(sess!=null)
+			sess.println(str);
+		if(compileErrors&&(commands!=null))
+			commands.addElement(str);
 		return false;
 	}
 
 	protected void importCustomFiles(MOB mob, Hashtable files, Set<String> customBother, boolean noPrompt, boolean noDelete)
 	throws IOException
 	{
-		if(files.size()==0) return;
-		if((!noPrompt)&&((mob==null)||(mob.session()==null))) return;
+		if(files.size()==0)
+			return;
+		if((!noPrompt)&&((mob==null)||(mob.session()==null)))
+			return;
 		for(final Enumeration e=files.keys();e.hasMoreElements();)
 		{
 			String filename=(String)e.nextElement();
@@ -929,8 +952,10 @@ public class Import extends StdCommand
 	protected void importCustomObjects(MOB mob, List<CMObject> custom, Set<String> customBother, boolean noPrompt, boolean noDelete)
 	throws IOException
 	{
-		if(custom.size()==0) return;
-		if((!noPrompt)&&((mob==null)||(mob.session()==null))) return;
+		if(custom.size()==0)
+			return;
+		if((!noPrompt)&&((mob==null)||(mob.session()==null)))
+			return;
 		for(int c=0;c<custom.size();c++)
 		{
 			if(custom.get(c) instanceof Race)
@@ -1056,306 +1081,457 @@ public class Import extends StdCommand
 			word=word.toUpperCase().trim();
 			if((word.startsWith("'"))||(word.startsWith("`")))
 			   word=word.substring(1);
-			if(word.length()<3)	return "";
-			if(word.startsWith("NONE")) i=-1;
+			if(word.length()<3)
+				return "";
+			if(word.startsWith("NONE"))
+				i=-1;
 			else
-			if(word.startsWith("COMPLETE HEAL")) i=209;
+			if(word.startsWith("COMPLETE HEAL"))
+				i=209;
 			else
-			if(word.startsWith("RESTORE MANA")) i=234;
+			if(word.startsWith("RESTORE MANA"))
+				i=234;
 			else
-			if(word.startsWith("ACID B")) i=70;
+			if(word.startsWith("ACID B"))
+				i=70;
 			else
-			if(word.startsWith("ARMOR")) i=1;
+			if(word.startsWith("ARMOR"))
+				i=1;
 			else
-			if(word.startsWith("ENHANCED ARMOR")) i=212;
+			if(word.startsWith("ENHANCED ARMOR"))
+				i=212;
 			else
-			if(word.startsWith("ENHANCE ARMOR")) i=212;
+			if(word.startsWith("ENHANCE ARMOR"))
+				i=212;
 			else
-			if(word.startsWith("BLESS")) i=3;
+			if(word.startsWith("BLESS"))
+				i=3;
 			else
-			if(word.startsWith("BLINDNE")) i=4;
+			if(word.startsWith("BLINDNE"))
+				i=4;
 			else
-			if(word.startsWith("BURNING H")) i=5;
+			if(word.startsWith("BURNING H"))
+				i=5;
 			else
-			if(word.startsWith("HASTE")) i=84;
+			if(word.startsWith("HASTE"))
+				i=84;
 			else
-			if(word.startsWith("CALL LIGH")) i=6;
+			if(word.startsWith("CALL LIGH"))
+				i=6;
 			else
-			if(word.startsWith("GENERAL PURPOSE")) i=-1;
+			if(word.startsWith("GENERAL PURPOSE"))
+				i=-1;
 			else
-			if(word.startsWith("CANCELLA")) i=59;
+			if(word.startsWith("CANCELLA"))
+				i=59;
 			else
-			if(word.startsWith("CAUSE CRI")) i=63;
+			if(word.startsWith("CAUSE CRI"))
+				i=63;
 			else
-			if(word.startsWith("CAUSE LI")) i=62;
+			if(word.startsWith("CAUSE LI"))
+				i=62;
 			else
-			if(word.startsWith("CAUSE SE")) i=222;
+			if(word.startsWith("CAUSE SE"))
+				i=222;
 			else
-			if(word.startsWith("CHANGE SE")) i=82;
+			if(word.startsWith("CHANGE SE"))
+				i=82;
 			else
-			if(word.startsWith("CHARM PER")) i=7;
+			if(word.startsWith("CHARM PER"))
+				i=7;
 			else
-			if(word.startsWith("CHILL TOU")) i=8;
+			if(word.startsWith("CHILL TOU"))
+				i=8;
 			else
-			if(word.startsWith("COLO")) i=10;
+			if(word.startsWith("COLO"))
+				i=10;
 			else
-			if(word.startsWith("RESERVED")) i=223;
+			if(word.startsWith("RESERVED"))
+				i=223;
 			else
-			if(word.startsWith("FIREBA")) i=26;
+			if(word.startsWith("FIREBA"))
+				i=26;
 			else
-			if(word.startsWith("FLAMESTR")) i=65;
+			if(word.startsWith("FLAMESTR"))
+				i=65;
 			else
-			if(word.startsWith("FLY")) i=56;
+			if(word.startsWith("FLY"))
+				i=56;
 			else
-			if(word.startsWith("GATE")) i=83;
+			if(word.startsWith("GATE"))
+				i=83;
 			else
-			if(word.startsWith("GIANT")) i=39;
+			if(word.startsWith("GIANT"))
+				i=39;
 			else
-			if(word.startsWith("HOLY STRE")) i=39;
+			if(word.startsWith("HOLY STRE"))
+				i=39;
 			else
-			if(word.startsWith("ENHANCED STRE")) i=39;
+			if(word.startsWith("ENHANCED STRE"))
+				i=39;
 			else
-			if(word.startsWith("HARM")) i=27;
+			if(word.startsWith("HARM"))
+				i=27;
 			else
-			if(word.startsWith("HOLY FIRE")) i=27;
+			if(word.startsWith("HOLY FIRE"))
+				i=27;
 			else
-			if(word.startsWith("HEAL")) i=28;
+			if(word.startsWith("HEAL"))
+				i=28;
 			else
-			if(word.startsWith("IDENTIFY")) i=53;
+			if(word.startsWith("IDENTIFY"))
+				i=53;
 			else
-			if(word.startsWith("INFRAVISION")) i=77;
+			if(word.startsWith("INFRAVISION"))
+				i=77;
 			else
-			if(word.startsWith("INVIS")) i=29;
+			if(word.startsWith("INVIS"))
+				i=29;
 			else
-			if(word.startsWith("KNOW")) i=58;
+			if(word.startsWith("KNOW"))
+				i=58;
 			else
-			if(word.startsWith("LIGHTNING BOLT")) i=30;
+			if(word.startsWith("LIGHTNING BOLT"))
+				i=30;
 			else
-			if(word.startsWith("LIGHTENING BOLT")) i=30;
+			if(word.startsWith("LIGHTENING BOLT"))
+				i=30;
 			else
-			if(word.startsWith("LIGHTNINGBOLT")) i=30;
+			if(word.startsWith("LIGHTNINGBOLT"))
+				i=30;
 			else
-			if(word.startsWith("LIGHTENINGBOLT")) i=30;
+			if(word.startsWith("LIGHTENINGBOLT"))
+				i=30;
 			else
-			if(word.startsWith("LOCATE")) i=31;
+			if(word.startsWith("LOCATE"))
+				i=31;
 			else
-			if(word.startsWith("CANCELL")) i=57;
+			if(word.startsWith("CANCELL"))
+				i=57;
 			else
-			if(word.startsWith("CONTINU")) i=57;
+			if(word.startsWith("CONTINU"))
+				i=57;
 			else
-			if(word.startsWith("CONTROL")) i=11;
+			if(word.startsWith("CONTROL"))
+				i=11;
 			else
-			if(word.startsWith("CREATE FO")) i=12;
+			if(word.startsWith("CREATE FO"))
+				i=12;
 			else
-			if(word.startsWith("CREATE SP")) i=80;
+			if(word.startsWith("CREATE SP"))
+				i=80;
 			else
-			if(word.startsWith("CREATE WA")) i=13;
+			if(word.startsWith("CREATE WA"))
+				i=13;
 			else
-			if(word.startsWith("CURE BLI")) i=14;
+			if(word.startsWith("CURE BLI"))
+				i=14;
 			else
-			if(word.startsWith("CURE CRI")) i=15;
+			if(word.startsWith("CURE CRI"))
+				i=15;
 			else
-			if(word.startsWith("CURE LI")) i=16;
+			if(word.startsWith("CURE LI"))
+				i=16;
 			else
-			if(word.startsWith("CURE PO")) i=43;
+			if(word.startsWith("CURE PO"))
+				i=43;
 			else
-			if(word.startsWith("CURE SE")) i=61;
+			if(word.startsWith("CURE SE"))
+				i=61;
 			else
-			if(word.startsWith("CURE D")) i=45;
+			if(word.startsWith("CURE D"))
+				i=45;
 			else
-			if(word.startsWith("DETECT E")) i=18;
+			if(word.startsWith("DETECT E"))
+				i=18;
 			else
-			if(word.startsWith("DETECT HI")) i=44;
+			if(word.startsWith("DETECT HI"))
+				i=44;
 			else
-			if(word.startsWith("DETECT I")) i=19;
+			if(word.startsWith("DETECT I"))
+				i=19;
 			else
-			if(word.startsWith("DETECT M")) i=20;
+			if(word.startsWith("DETECT M"))
+				i=20;
 			else
-			if(word.startsWith("DETECT P")) i=21;
+			if(word.startsWith("DETECT P"))
+				i=21;
 			else
-			if(word.startsWith("DISPEL E")) i=22;
+			if(word.startsWith("DISPEL E"))
+				i=22;
 			else
-			if(word.startsWith("DISPEL M")) i=59;
+			if(word.startsWith("DISPEL M"))
+				i=59;
 			else
-			if(word.startsWith("EARTHQ")) i=23;
+			if(word.startsWith("EARTHQ"))
+				i=23;
 			else
-			if(word.startsWith("ENCHANT W")) i=24;
+			if(word.startsWith("ENCHANT W"))
+				i=24;
 			else
-			if(word.startsWith("ENERGY DRA")) i=25;
+			if(word.startsWith("ENERGY DRA"))
+				i=25;
 			else
-			if(word.startsWith("FAERIE F")) i=72;
+			if(word.startsWith("FAERIE F"))
+				i=72;
 			else
-			if(word.startsWith("MAGIC MI")) i=32;
+			if(word.startsWith("MAGIC MI"))
+				i=32;
 			else
-			if(word.startsWith("MASS INV")) i=69;
+			if(word.startsWith("MASS INV"))
+				i=69;
 			else
-			if(word.startsWith("PASS D")) i=74;
+			if(word.startsWith("PASS D"))
+				i=74;
 			else
-			if(word.startsWith("POISON")) i=33;
+			if(word.startsWith("POISON"))
+				i=33;
 			else
-			if(word.startsWith("PROTECTION")) i=34;
+			if(word.startsWith("PROTECTION"))
+				i=34;
 			else
-			if(word.startsWith("REFRESH")) i=81;
+			if(word.startsWith("REFRESH"))
+				i=81;
 			else
-			if(word.startsWith("REMOVE CU")) i=35;
+			if(word.startsWith("REMOVE CU"))
+				i=35;
 			else
-			if(word.startsWith("SANCTUARY")) i=36;
+			if(word.startsWith("SANCTUARY"))
+				i=36;
 			else
-			if(word.startsWith("SHIELD")) i=67;
+			if(word.startsWith("SHIELD"))
+				i=67;
 			else
-			if(word.startsWith("SHOCKING G")) i=37;
+			if(word.startsWith("SHOCKING G"))
+				i=37;
 			else
-			if(word.startsWith("SLEEP")) i=38;
+			if(word.startsWith("SLEEP"))
+				i=38;
 			else
-			if(word.startsWith("STONE SK")) i=66;
+			if(word.startsWith("STONE SK"))
+				i=66;
 			else
-			if(word.startsWith("SUMMON")) i=40;
+			if(word.startsWith("SUMMON"))
+				i=40;
 			else
-			if(word.startsWith("TELEPORT")) i=2;
+			if(word.startsWith("TELEPORT"))
+				i=2;
 			else
-			if(word.startsWith("VENTRI")) i=41;
+			if(word.startsWith("VENTRI"))
+				i=41;
 			else
-			if(word.startsWith("WEAKEN")) i=68;
+			if(word.startsWith("WEAKEN"))
+				i=68;
 			else
-			if(word.startsWith("WORD OF R")) i=42;
+			if(word.startsWith("WORD OF R"))
+				i=42;
 			else
-			if(word.startsWith("ACID BR")) i=200;
+			if(word.startsWith("ACID BR"))
+				i=200;
 			else
-			if(word.startsWith("FIRE BR")) i=201;
+			if(word.startsWith("FIRE BR"))
+				i=201;
 			else
-			if(word.startsWith("FROST BR")) i=202;
+			if(word.startsWith("FROST BR"))
+				i=202;
 			else
-			if(word.startsWith("GAS BR")) i=203;
+			if(word.startsWith("GAS BR"))
+				i=203;
 			else
-			if(word.startsWith("LIGHTNING BR")) i=204;
+			if(word.startsWith("LIGHTNING BR"))
+				i=204;
 			else
-			if(word.startsWith("LIGHTENING BR")) i=204;
+			if(word.startsWith("LIGHTENING BR"))
+				i=204;
 			else
-			if(word.startsWith("FRENZY")) i=205;
+			if(word.startsWith("FRENZY"))
+				i=205;
 			else
-			if(word.startsWith("DISPEL G")) i=206;
+			if(word.startsWith("DISPEL G"))
+				i=206;
 			else
-			if(word.startsWith("CURSE")) i=17;
+			if(word.startsWith("CURSE"))
+				i=17;
 			else
-			if(word.startsWith("ENCHANT W")) i=207;
+			if(word.startsWith("ENCHANT W"))
+				i=207;
 			else
-			if(word.startsWith("ENCHANT A")) i=208;
+			if(word.startsWith("ENCHANT A"))
+				i=208;
 			else
-			if(word.startsWith("REJUV")) i=209;
+			if(word.startsWith("REJUV"))
+				i=209;
 			else
-			if(word.startsWith("PLAGUE")) i=213;
+			if(word.startsWith("PLAGUE"))
+				i=213;
 			else
-			if(word.startsWith("HEAT M")) i=210;
+			if(word.startsWith("HEAT M"))
+				i=210;
 			else
-			if(word.startsWith("HIGH EXP")) i=26;
+			if(word.startsWith("HIGH EXP"))
+				i=26;
 			else
-			if(word.startsWith("FARSIGHT")) i=211;
+			if(word.startsWith("FARSIGHT"))
+				i=211;
 			else
-			if(word.startsWith("SLOW")) i=214;
+			if(word.startsWith("SLOW"))
+				i=214;
 			else
-			if(word.startsWith("WEB")) i=215;
+			if(word.startsWith("WEB"))
+				i=215;
 			else
-			if(word.startsWith("CONFUSE")) i=216;
+			if(word.startsWith("CONFUSE"))
+				i=216;
 			else
-			if(word.startsWith("FIRESHIELD")) i=232;
+			if(word.startsWith("FIRESHIELD"))
+				i=232;
 			else
-			if(word.startsWith("ICESHIELD")) i=232;
+			if(word.startsWith("ICESHIELD"))
+				i=232;
 			else
-			if(word.startsWith("SHOCKSHIELD")) i=89;
+			if(word.startsWith("SHOCKSHIELD"))
+				i=89;
 			else
-			if(word.startsWith("BLADE BARRIER")) i=233;
+			if(word.startsWith("BLADE BARRIER"))
+				i=233;
 			else
-			if(word.startsWith("SENSE LI")) i=217;
+			if(word.startsWith("SENSE LI"))
+				i=217;
 			else
-			if(word.startsWith("MYSTERIOUS DR")) i=218;
+			if(word.startsWith("MYSTERIOUS DR"))
+				i=218;
 			else
-			if(word.startsWith("MIND LIGHT")) i=219;
+			if(word.startsWith("MIND LIGHT"))
+				i=219;
 			else
-			if(word.startsWith("ACUTE VIS")) i=44;
+			if(word.startsWith("ACUTE VIS"))
+				i=44;
 			else
-			if(word.startsWith("CALM")) i=220;
+			if(word.startsWith("CALM"))
+				i=220;
 			else
-			if(word.startsWith("DETECT G")) i=221;
+			if(word.startsWith("DETECT G"))
+				i=221;
 			else
-			if(word.startsWith("DEMONFIRE")) i=27;
+			if(word.startsWith("DEMONFIRE"))
+				i=27;
 			else
-			if(word.startsWith("BARK SKIN")) i=224;
+			if(word.startsWith("BARK SKIN"))
+				i=224;
 			else
-			if(word.startsWith("STEEL SKIN")) i=224;
+			if(word.startsWith("STEEL SKIN"))
+				i=224;
 			else
-			if(word.startsWith("LETHARGIC MIS")) i=214;
+			if(word.startsWith("LETHARGIC MIS"))
+				i=214;
 			else
-			if(word.startsWith("BLACK DEATH")) i=213;
+			if(word.startsWith("BLACK DEATH"))
+				i=213;
 			else
-			if(word.startsWith("DISGRACE")) i=225;
+			if(word.startsWith("DISGRACE"))
+				i=225;
 			else
-			if(word.startsWith("POWER WORD ST")) i=226;
+			if(word.startsWith("POWER WORD ST"))
+				i=226;
 			else
-			if(word.startsWith("MASTER HEAL")) i=227;
+			if(word.startsWith("MASTER HEAL"))
+				i=227;
 			else
-			if(word.startsWith("SCREAM")) i=32;
+			if(word.startsWith("SCREAM"))
+				i=32;
 			else
-			if(word.startsWith("SEVERITY FO")) i=23;
+			if(word.startsWith("SEVERITY FO"))
+				i=23;
 			else
-			if(word.startsWith("HOLY WORD")) i=228;
+			if(word.startsWith("HOLY WORD"))
+				i=228;
 			else
-			if(word.startsWith("MASS HEAL")) i=229;
+			if(word.startsWith("MASS HEAL"))
+				i=229;
 			else
-			if(word.startsWith("ACID RAIN")) i=230;
+			if(word.startsWith("ACID RAIN"))
+				i=230;
 			else
-			if(word.startsWith("ETHEREAL FORM")) i=231;
+			if(word.startsWith("ETHEREAL FORM"))
+				i=231;
 			else
-			if(word.startsWith("MANA")) i=234;
+			if(word.startsWith("MANA"))
+				i=234;
 			else
-			if(word.startsWith("CHAOS FIELD")) i=235;
+			if(word.startsWith("CHAOS FIELD"))
+				i=235;
 			else
-			if(word.startsWith("COMBAT MIND")) i=236;
+			if(word.startsWith("COMBAT MIND"))
+				i=236;
 			else
-			if(word.startsWith("DARK BLESSING")) i=17;
+			if(word.startsWith("DARK BLESSING"))
+				i=17;
 			else
-			if(word.startsWith("FLESH ARMOR")) i=224;
+			if(word.startsWith("FLESH ARMOR"))
+				i=224;
 			else
-			if(word.startsWith("TRUE SIGHT")) i=237;
+			if(word.startsWith("TRUE SIGHT"))
+				i=237;
 			else
-			if(word.startsWith("INERTIAL")) i=36;
+			if(word.startsWith("INERTIAL"))
+				i=36;
 			else
-			if(word.startsWith("PHASE SHIFT")) i=36;
+			if(word.startsWith("PHASE SHIFT"))
+				i=36;
 			else
-			if(word.startsWith("DISPLACEMENT")) i=244;
+			if(word.startsWith("DISPLACEMENT"))
+				i=244;
 			else
-			if(word.startsWith("THOUGHT SHIELD")) i=238;
+			if(word.startsWith("THOUGHT SHIELD"))
+				i=238;
 			else
-			if(word.startsWith("INTELLECT FORTRESS")) i=238;
+			if(word.startsWith("INTELLECT FORTRESS"))
+				i=238;
 			else
-			if(word.startsWith("MENTAL BARRIER")) i=238;
+			if(word.startsWith("MENTAL BARRIER"))
+				i=238;
 			else
-			if(word.startsWith("MENTAL BLOCK")) i=238;
+			if(word.startsWith("MENTAL BLOCK"))
+				i=238;
 			else
-			if(word.startsWith("SHATTER")) i=239;
+			if(word.startsWith("SHATTER"))
+				i=239;
 			else
-			if(word.startsWith("ICESTORM")) i=240;
+			if(word.startsWith("ICESTORM"))
+				i=240;
 			else
-			if(word.startsWith("DISINTEGRATE")) i=241;
+			if(word.startsWith("DISINTEGRATE"))
+				i=241;
 			else
-			if(word.startsWith("ANIMATE DEAD")) i=242;
+			if(word.startsWith("ANIMATE DEAD"))
+				i=242;
 			else
-			if(word.startsWith("VIBRATE")) i=243;
+			if(word.startsWith("VIBRATE"))
+				i=243;
 			else
-			if(word.startsWith("ULTRABLAST")) i=26;
+			if(word.startsWith("ULTRABLAST"))
+				i=26;
 			else
-			if(word.startsWith("FIELD OF DECAY")) i=245;
+			if(word.startsWith("FIELD OF DECAY"))
+				i=245;
 			else
-			if(word.startsWith("BIOFEEDBACK")) i=245;
+			if(word.startsWith("BIOFEEDBACK"))
+				i=245;
 			else
-			if(word.startsWith("DANCING LIGHTS")) i=246;
+			if(word.startsWith("DANCING LIGHTS"))
+				i=246;
 			else
-			if(word.startsWith("BIO-ACCELERATION")) i=227;
+			if(word.startsWith("BIO-ACCELERATION"))
+				i=227;
 			else
-			if(word.startsWith("CELL ADJUSTMENT")) i=227;
+			if(word.startsWith("CELL ADJUSTMENT"))
+				i=227;
 			else
-			if(word.startsWith("AURA SIGHT")) i=20;
+			if(word.startsWith("AURA SIGHT"))
+				i=20;
 			else
-			if(word.startsWith("ENERGY CONTAINMENT")) i=247;
+			if(word.startsWith("ENERGY CONTAINMENT"))
+				i=247;
 			else
 			{
 				Log.sysOut("Import","Unknown spell: "+word);
@@ -1942,7 +2118,8 @@ public class Import extends StdCommand
 			{ "lance","3"}
 		};
 		str1=str1.toLowerCase().trim();
-		if(str1.startsWith("'")) str1=str1.substring(1);
+		if(str1.startsWith("'"))
+			str1=str1.substring(1);
 		for (final String[] weaponType : weaponTypes)
 			if(str1.startsWith(weaponType[0]))
 			{ val1=CMath.s_int(weaponType[1]); break;}
@@ -1998,51 +2175,74 @@ public class Import extends StdCommand
 			str4=str4.toUpperCase().trim();
 			if(str4.startsWith("'"))
 			   str4=str4.substring(1);
-			if(str4.startsWith("POUND")) val4=7;
+			if(str4.startsWith("POUND"))
+				val4=7;
 			else
-			if(str4.startsWith("CRUSH")) val4=7;
+			if(str4.startsWith("CRUSH"))
+				val4=7;
 			else
-			if(str4.startsWith("SMASH")) val4=7;
+			if(str4.startsWith("SMASH"))
+				val4=7;
 			else
-			if(str4.startsWith("FLAMI")) val4=57;
+			if(str4.startsWith("FLAMI"))
+				val4=57;
 			else
-			if(str4.startsWith("SCORC")) val4=57;
+			if(str4.startsWith("SCORC"))
+				val4=57;
 			else
-			if(str4.startsWith("SEARI")) val4=57;
+			if(str4.startsWith("SEARI"))
+				val4=57;
 			else
-			if(str4.startsWith("GOUT")) val4=57;
+			if(str4.startsWith("GOUT"))
+				val4=57;
 			else
-			if(str4.startsWith("SCRATCH")) val4=22;
+			if(str4.startsWith("SCRATCH"))
+				val4=22;
 			else
-			if(str4.startsWith("CLAW")) val4=22;
+			if(str4.startsWith("CLAW"))
+				val4=22;
 			else
-			if(str4.startsWith("BITE")) val4=22;
+			if(str4.startsWith("BITE"))
+				val4=22;
 			else
-			if(str4.startsWith("PECK")) val4=22;
+			if(str4.startsWith("PECK"))
+				val4=22;
 			else
-			if(str4.startsWith("STING")) val4=22;
+			if(str4.startsWith("STING"))
+				val4=22;
 			else
-			if(str4.startsWith("BEAT")) val4=22;
+			if(str4.startsWith("BEAT"))
+				val4=22;
 			else
-			if(str4.startsWith("SLAP")) val4=22;
+			if(str4.startsWith("SLAP"))
+				val4=22;
 			else
-			if(str4.startsWith("PUNC")) val4=22;
+			if(str4.startsWith("PUNC"))
+				val4=22;
 			else
-			if(str4.startsWith("WHALL")) val4=22;
+			if(str4.startsWith("WHALL"))
+				val4=22;
 			else
-			if(str4.startsWith("STAB")) val4=2;
+			if(str4.startsWith("STAB"))
+				val4=2;
 			else
-			if(str4.startsWith("PIERCE")) val4=2;
+			if(str4.startsWith("PIERCE"))
+				val4=2;
 			else
-			if(str4.startsWith("CHOP")) val4=25;
+			if(str4.startsWith("CHOP"))
+				val4=25;
 			else
-			if(str4.startsWith("CLEA")) val4=25;
+			if(str4.startsWith("CLEA"))
+				val4=25;
 			else
-			if(str4.startsWith("SLIC")) val4=25;
+			if(str4.startsWith("SLIC"))
+				val4=25;
 			else
-			if(str4.startsWith("SLAS")) val4=25;
+			if(str4.startsWith("SLAS"))
+				val4=25;
 			else
-			if(str4.startsWith("WHIP")) val4=25;
+			if(str4.startsWith("WHIP"))
+				val4=25;
 		}
 		switch(val4)
 		{
@@ -2083,7 +2283,8 @@ public class Import extends StdCommand
 	public static int getDRoll(String str)
 	{
 		int i=str.indexOf('d');
-		if(i<0) return 11;
+		if(i<0)
+			return 11;
 		final int roll=CMath.s_int(str.substring(0,i).trim());
 		str=str.substring(i+1).trim();
 
@@ -2729,7 +2930,8 @@ public class Import extends StdCommand
 					if(B==null)
 					{
 						B=CMClass.getBehavior("Sounder");
-						if(B!=null) M.addBehavior(B);
+						if(B!=null)
+							M.addBehavior(B);
 					}
 					// no else please
 					if(B!=null)
@@ -2997,9 +3199,12 @@ public class Import extends StdCommand
 					if(special.startsWith("SPEC_ASSASSIN"))
 					{
 						Behavior B=M.fetchBehavior("Aggressive");
-						if(B==null)B=M.fetchBehavior("MobileAggressive");
-						if(B==null)B=M.fetchBehavior("VeryAggressive");
-						if(B==null)B=CMClass.getBehavior("Aggressive");
+						if(B==null)
+							B=M.fetchBehavior("MobileAggressive");
+						if(B==null)
+							B=M.fetchBehavior("VeryAggressive");
+						if(B==null)
+							B=CMClass.getBehavior("Aggressive");
 						B.setParms(B.getParms()+" MOBKILLER ");
 						M.addBehavior(B);
 					}
@@ -3161,7 +3366,8 @@ public class Import extends StdCommand
 					A.autoInvocation(M);
 			}
 			long rejuv=CMProps.getTicksPerMinute()+CMProps.getTicksPerMinute()+(CMProps.getTicksPerMinute()*M.basePhyStats().level()/2);
-			if(rejuv>(30*CMProps.getTicksPerMinute())) rejuv=(30*CMProps.getTicksPerMinute());
+			if(rejuv>(30*CMProps.getTicksPerMinute()))
+				rejuv=(30*CMProps.getTicksPerMinute());
 			M.basePhyStats().setRejuv((int)rejuv);
 			if(M.displayText().toUpperCase().indexOf("MONEY CHANGER")>=0)
 				M.addBehavior(CMClass.getBehavior("MoneyChanger"));
@@ -3740,7 +3946,8 @@ public class Import extends StdCommand
 				final int level=CMath.s_int(CMParms.getCleanBit(codeStr3,0).trim());
 				I.basePhyStats().setLevel(level);
 				I.basePhyStats().setWeight(CMath.s_int(CMParms.getCleanBit(codeStr3,1).trim()) / 10);
-				if(I.basePhyStats().weight()<1) I.basePhyStats().setWeight(1);
+				if(I.basePhyStats().weight()<1)
+					I.basePhyStats().setWeight(1);
 				if(I instanceof Rideable)
 					I.basePhyStats().setWeight(CMath.s_int(CMParms.getCleanBit(codeStr3,1).trim()) * 10);
 				I.setBaseValue(CMath.s_int(CMParms.getCleanBit(codeStr3,2).trim()));
@@ -3923,7 +4130,8 @@ public class Import extends StdCommand
 					if(B==null)
 					{
 						B=CMClass.getBehavior("Sounder");
-						if(B!=null) I.addBehavior(B);
+						if(B!=null)
+							I.addBehavior(B);
 					}
 					// no else please
 					if(B!=null)
@@ -4391,7 +4599,8 @@ public class Import extends StdCommand
 		str=CMStrings.replaceAll(str,"$e","<S-HE-SHE>");
 		str=CMStrings.replaceAll(str,"$E","<T-HE-SHE>");
 		str=CMStrings.replaceAll(str,"`","\'");
-		if(str.equals("$")) return "";
+		if(str.equals("$"))
+			return "";
 		return str.trim();
 	}
 
@@ -4457,7 +4666,8 @@ public class Import extends StdCommand
 		}
 		else
 		{
-			if(session==null) return false;
+			if(session==null)
+				return false;
 			if(commands.size()<1)
 				return returnAnError(session,"Import what?  Specify the path/filename!",compileErrors,commands);
 			// continue pre-processing
@@ -4623,10 +4833,12 @@ public class Import extends StdCommand
 		{
 			if((areaFileName!=null)&&(areaFileName.toUpperCase().trim().endsWith(".LST")))
 			{
-				if(session!=null) session.println(L("Unpacking areas lists from file : '@x1'...",areaFileName));
+				if(session!=null)
+					session.println(L("Unpacking areas lists from file : '@x1'...",areaFileName));
 				String filePrefix="";
 				int c=areaFileName.lastIndexOf('/');
-				if(c>=0) filePrefix=areaFileName.substring(0,c+1);
+				if(c>=0)
+					filePrefix=areaFileName.substring(0,c+1);
 				c=0;
 				String fn="";
 				while((buf!=null)&&(buf.length()>0)&&(c<buf.length()))
@@ -4667,12 +4879,16 @@ public class Import extends StdCommand
 				if(session!=null)
 					session.rawPrint(L("Unpacking area(s) from file: '@x1'...",areaFileName));
 				String error=CMLib.coffeeMaker().fillAreasVectorFromXML(buf.toString(),areas,custom,externalFiles);
-				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
-				if(error.length()==0) importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
-				if(error.length()>0) return false;
+				if(error.length()==0)
+					importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
+				if(error.length()==0)
+					importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
+				if(error.length()>0)
+					return false;
 				if(session!=null)
 					session.rawPrintln("!");
-				if(session!=null) session.println(L("Found @x1 areas.",""+areas.size()));
+				if(session!=null)
+					session.println(L("Found @x1 areas.",""+areas.size()));
 				final int num=areas.size();
 				int a=0;
 				while(areas.size()>0)
@@ -4691,7 +4907,8 @@ public class Import extends StdCommand
 						else
 						if(((!prompt)||((session!=null)&&session.confirm(L("Area: \"@x1\" exists, obliterate first?",areaName),L("N")))))
 						{
-							if(reLinkTable==null) reLinkTable=new Vector();
+							if(reLinkTable==null)
+								reLinkTable=new Vector();
 							if((mob.location()!=null)
 							&&(mob.location().getArea().Name().equalsIgnoreCase(areaName)))
 							{
@@ -4724,7 +4941,8 @@ public class Import extends StdCommand
 					}
 				}
 				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
-				if(session!=null) session.println(L("Area(s) successfully imported!"));
+				if(session!=null)
+					session.println(L("Area(s) successfully imported!"));
 				continue;
 			}
 			else
@@ -4743,8 +4961,10 @@ public class Import extends StdCommand
 					session.rawPrint(L("Unpacking area from file: '@x1'...",areaFileName));
 				final Vector areaD=new Vector();
 				String error=CMLib.coffeeMaker().fillAreaAndCustomVectorFromXML(buf.toString(),areaD,custom,externalFiles);
-				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
-				if(error.length()==0) importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
+				if(error.length()==0)
+					importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
+				if(error.length()==0)
+					importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
 				if(error.length()==0)
 					error=CMLib.coffeeMaker().unpackAreaFromXML(areaD,session,areaType,true);
 				if(session!=null)
@@ -4773,7 +4993,8 @@ public class Import extends StdCommand
 				if(error.length()>0)
 					return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,commands);
 				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
-				if(session!=null) session.println(L("Area successfully imported!"));
+				if(session!=null)
+					session.println(L("Area successfully imported!"));
 				continue;
 			}
 			else
@@ -4788,10 +5009,13 @@ public class Import extends StdCommand
 					buf=CF.textUnformatted();
 				if(buf == null)
 					buf = new StringBuffer("");
-				if(session!=null) session.println(L("Unpacking room from file: '@x1'...",areaFileName));
+				if(session!=null)
+					session.println(L("Unpacking room from file: '@x1'...",areaFileName));
 				String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
-				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
-				if(error.length()==0) importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
+				if(error.length()==0)
+					importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
+				if(error.length()==0)
+					importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
 				if(error.length()==0)
 					error=CMLib.coffeeMaker().unpackRoomFromXML(buf.toString(),true);
 				if(error.startsWith("Room Exists: "))
@@ -4823,7 +5047,8 @@ public class Import extends StdCommand
 				if(error.length()>0)
 					return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,commands);
 				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
-				if(session!=null) session.println(L("Room successfully imported!"));
+				if(session!=null)
+					session.println(L("Room successfully imported!"));
 				continue;
 			}
 			else
@@ -4842,11 +5067,14 @@ public class Import extends StdCommand
 					session.rawPrint(L("Unpacking mobs from file: '@x1'...",areaFileName));
 				final Vector mobs=new Vector();
 				String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
-				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
-				if(error.length()==0) importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
+				if(error.length()==0)
+					importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
+				if(error.length()==0)
+					importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
 				if(error.length()==0)
 					error=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),mobs,session);
-				if(session!=null)	session.rawPrintln("!");
+				if(session!=null)
+					session.rawPrintln("!");
 				if(error.length()>0)
 					return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,commands);
 				if(mob.location()==null)
@@ -4860,7 +5088,8 @@ public class Import extends StdCommand
 				}
 				mob.location().recoverRoomStats();
 				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
-				if(session!=null) session.println(L("MOB(s) successfully imported!"));
+				if(session!=null)
+					session.println(L("MOB(s) successfully imported!"));
 				continue;
 			}
 			else
@@ -4880,8 +5109,10 @@ public class Import extends StdCommand
 				final List<MOB> mobs=new Vector();
 				final List<PlayerAccount> accounts=new Vector();
 				String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
-				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
-				if(error.length()==0) importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
+				if(error.length()==0)
+					importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
+				if(error.length()==0)
+					importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
 				if(error.length()==0)
 					error=CMLib.coffeeMaker().addPlayersAndAccountsFromXML(buf.toString(),accounts,mobs,session);
 				if(session!=null)
@@ -4899,7 +5130,8 @@ public class Import extends StdCommand
 							if((commands.elementAt(af) instanceof String)
 							&&(A.getAccountName().equalsIgnoreCase((String)commands.elementAt(af))))
 							{
-								if(names==null) names=new Vector();
+								if(names==null)
+									names=new Vector();
 								names.addElement(commands.elementAt(af));
 							}
 					}
@@ -4912,7 +5144,8 @@ public class Import extends StdCommand
 						if((commands.elementAt(af) instanceof String)
 						&&(M.Name().equalsIgnoreCase((String)commands.elementAt(af))))
 						{
-							if(names==null) names=new Vector();
+							if(names==null)
+								names=new Vector();
 							names.addElement(commands.elementAt(af));
 						}
 				}
@@ -4987,7 +5220,8 @@ public class Import extends StdCommand
 					M.removeFromGame(false,true);
 				}
 				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
-				if(session!=null) session.println(L("Player(s)/Account(s) successfully imported!"));
+				if(session!=null)
+					session.println(L("Player(s)/Account(s) successfully imported!"));
 				continue;
 			}
 			else
@@ -5006,11 +5240,14 @@ public class Import extends StdCommand
 					session.rawPrint(L("Unpacking items from file: '@x1'...",areaFileName));
 				final Vector items=new Vector();
 				String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
-				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
-				if(error.length()==0) importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
+				if(error.length()==0)
+					importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
+				if(error.length()==0)
+					importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
 				if(error.length()==0)
 					error=CMLib.coffeeMaker().addItemsFromXML(buf.toString(),items,session);
-				if(session!=null)	session.rawPrintln("!");
+				if(session!=null)
+					session.rawPrintln("!");
 				if(error.length()>0)
 					return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,commands);
 				if(mob.location()==null)
@@ -5022,7 +5259,8 @@ public class Import extends StdCommand
 				}
 				mob.location().recoverRoomStats();
 				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
-				if(session!=null) session.println(L("Item(s) successfully imported!"));
+				if(session!=null)
+					session.println(L("Item(s) successfully imported!"));
 				continue;
 			}
 		}
@@ -5036,7 +5274,8 @@ public class Import extends StdCommand
 		final List<String> V=Resources.getFileLineVector(buf);
 
 		// sort the data into general blocks, and identify area
-		if(session!=null) session.println(L("\n\rSorting data from file '@x1'...",areaFileName));
+		if(session!=null)
+			session.println(L("\n\rSorting data from file '@x1'...",areaFileName));
 		Log.sysOut("Import","Importing data from file '"+areaFileName+"'");
 		readBlocks(V,areaData,roomData,mobData,resetData,objectData,mobProgData,objProgData,shopData,specialData,socialData,roomProgData);
 		boolean didSocials=false;
@@ -5050,7 +5289,8 @@ public class Import extends StdCommand
 					didSocials=true;
 					String word=codeLine.trim().toUpperCase();
 					final int x=word.indexOf(' ');
-					if(x>0) word=word.substring(0,x).trim();
+					if(x>0)
+						word=word.substring(0,x).trim();
 
 					Social S1=CMLib.socials().fetchSocial(word,true);
 					Social S2=CMLib.socials().fetchSocial(word+" <T-NAME>",true);
@@ -5065,7 +5305,8 @@ public class Import extends StdCommand
 					}
 
 					String str=socialFix(eatNextLine(socialData));
-					if(str.startsWith("#")) continue;
+					if(str.startsWith("#"))
+						continue;
 
 					if((S1.You_see()==null)||(!S1.You_see().equals(str)))
 					{
@@ -5076,7 +5317,8 @@ public class Import extends StdCommand
 					}
 
 					str=socialFix(eatNextLine(socialData));
-					if(str.startsWith("#")) continue;
+					if(str.startsWith("#"))
+						continue;
 
 					if((S1.Third_party_sees()==null)||(!S1.Third_party_sees().equals(str)))
 					{
@@ -5088,7 +5330,8 @@ public class Import extends StdCommand
 
 					changing=true;
 					str=socialFix(eatNextLine(socialData));
-					if(str.startsWith("#")) continue;
+					if(str.startsWith("#"))
+						continue;
 					if(S2==null)
 					{
 						S2=(Social)CMClass.getCommon("DefaultSocial");
@@ -5106,7 +5349,8 @@ public class Import extends StdCommand
 					}
 
 					str=socialFix(eatNextLine(socialData));
-					if(str.startsWith("#")) continue;
+					if(str.startsWith("#"))
+						continue;
 
 					if((S2.Third_party_sees()==null)||(!S2.Third_party_sees().equals(str)))
 					{
@@ -5117,7 +5361,8 @@ public class Import extends StdCommand
 					}
 
 					str=socialFix(eatNextLine(socialData));
-					if(str.startsWith("#")) continue;
+					if(str.startsWith("#"))
+						continue;
 
 					if((S2.Target_sees()==null)||(!S2.Target_sees().equals(str)))
 					{
@@ -5128,7 +5373,8 @@ public class Import extends StdCommand
 					}
 
 					str=socialFix(eatNextLine(socialData));
-					if(str.startsWith("#")) continue;
+					if(str.startsWith("#"))
+						continue;
 
 					if((S2.See_when_no_target()==null)||(!S2.See_when_no_target().equals(str)))
 					{
@@ -5140,7 +5386,8 @@ public class Import extends StdCommand
 
 					changing=true;
 					str=socialFix(eatNextLine(socialData));
-					if(str.startsWith("#")) continue;
+					if(str.startsWith("#"))
+						continue;
 					if(S3==null)
 					{
 						S3=(Social)CMClass.getCommon("DefaultSocial");
@@ -5158,7 +5405,8 @@ public class Import extends StdCommand
 					}
 
 					str=socialFix(eatNextLine(socialData));
-					if(str.startsWith("#")) continue;
+					if(str.startsWith("#"))
+						continue;
 
 					if((S3.Third_party_sees()==null)||(!S3.Third_party_sees().equals(str)))
 					{
@@ -5266,7 +5514,8 @@ public class Import extends StdCommand
 				return false;
 			}
 
-			if(session!=null) session.println(L("Loading and Linking Rooms..."));
+			if(session!=null)
+				session.println(L("Loading and Linking Rooms..."));
 			Log.sysOut("Import",mob.Name()+" imported "+areaName+" from "+areaFileName);
 			// begin initial room-read
 			// build first room structures, leaving rest for later.
@@ -5716,7 +5965,8 @@ public class Import extends StdCommand
 													continue;
 											}
 											linkRoom=R2;
-											if(opExit!=null) opExit.setTemporaryDoorLink("");
+											if(opExit!=null)
+												opExit.setTemporaryDoorLink("");
 											if((!doneRooms.containsValue(linkRoom))&&(!doneRooms.contains(linkRoom)))
 												CMLib.database().DBUpdateExits(linkRoom);
 										}
@@ -5758,8 +6008,10 @@ public class Import extends StdCommand
 					{
 						if(!nextLine.endsWith("~"))
 							nextLine+= eatLineSquiggle(roomV);
-						if(nextLine.startsWith("C ")) nextLine=nextLine.substring(2).trim();
-						if(nextLine.endsWith("~")) nextLine=nextLine.substring(0,nextLine.length()-1);
+						if(nextLine.startsWith("C "))
+							nextLine=nextLine.substring(2).trim();
+						if(nextLine.endsWith("~"))
+							nextLine=nextLine.substring(0,nextLine.length()-1);
 						final long codeBits=getBitMask(nextLine,0);
 						R=applyRoomCodeBits(R,lastRoom,petShops,codeBits,true);
 					}
@@ -5813,7 +6065,8 @@ public class Import extends StdCommand
 				}
 			}
 
-			if(session!=null) session.print(L("Loading objects.."));
+			if(session!=null)
+				session.print(L("Loading objects.."));
 			final Hashtable containerHash=new Hashtable();
 			MOB M=null;
 			Room R=null;
@@ -5822,7 +6075,8 @@ public class Import extends StdCommand
 			nextResetData.clear();
 			while(resetData.size()>0)
 			{
-				if(session!=null) session.print(".");
+				if(session!=null)
+					session.print(".");
 				final String s=eatNextLine(resetData).trim();
 				if((s.startsWith("#RE"))||(s.startsWith("*"))||(s.startsWith("S")))
 				{
@@ -5870,7 +6124,8 @@ public class Import extends StdCommand
 						final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
 						if(I==null)
 						{
-							if(multiArea) nextResetData.addElement(s);
+							if(multiArea)
+								nextResetData.addElement(s);
 							else
 							returnAnError(session,"Reset error (no item) on line: "+s+", area="+areaName,compileErrors,commands);
 						}
@@ -5885,7 +6140,8 @@ public class Import extends StdCommand
 									I.recoverPhyStats();
 								}
 								int num=CMath.s_int(CMParms.getCleanBit(s,3).trim());
-								if(num<0) num=100;
+								if(num<0)
+									num=100;
 								((ShopKeeper)M).getShop().addStoreInventory(I,num,-1);
 								if((I instanceof Light)&&(!((ShopKeeper)M).getShop().doIHaveThisInStock("OilFlask",null)))
 									((ShopKeeper)M).getShop().addStoreInventory(CMClass.getBasicItem("OilFlask"),num*2,-1);
@@ -5944,7 +6200,8 @@ public class Import extends StdCommand
 					String roomID=CMParms.getCleanBit(s,1).trim();
 					final String mobID=CMParms.getCleanBit(s,2).trim();
 					final int x=roomID.lastIndexOf('#');
-					if(x>=0) roomID=roomID.substring(x);
+					if(x>=0)
+						roomID=roomID.substring(x);
 					final Room R2=getRoom(areaRooms,doneRooms,areaName,roomID);
 					MOB M2=null;
 					if(R2!=null)
@@ -5988,7 +6245,8 @@ public class Import extends StdCommand
 				{
 					if(M==null)
 					{
-						if(multiArea) nextResetData.addElement(s);
+						if(multiArea)
+							nextResetData.addElement(s);
 						else
 						returnAnError(session,"Reset error (no mob) on line: "+s+", area="+areaName,compileErrors,commands);
 					}
@@ -6032,7 +6290,8 @@ public class Import extends StdCommand
 					R=getRoom(areaRooms,doneRooms,areaName,roomID);
 					if(R==null)
 					{
-						if(multiArea) nextResetData.addElement(s);
+						if(multiArea)
+							nextResetData.addElement(s);
 						else
 						returnAnError(session,"Reset error (no room) on line: "+s+"/"+roomID+"/"+roomID.length()+", area="+areaName,compileErrors,commands);
 					}
@@ -6041,7 +6300,8 @@ public class Import extends StdCommand
 						final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
 						if(I==null)
 						{
-							if(multiArea) nextResetData.addElement(s);
+							if(multiArea)
+								nextResetData.addElement(s);
 							else
 							returnAnError(session,"Reset error (no item) on line: "+s+", area="+areaName,compileErrors,commands);
 						}
@@ -6073,21 +6333,24 @@ public class Import extends StdCommand
 					final Container C=(Container)containerHash.get(containerID);
 					if(I==null)
 					{
-						if(multiArea) nextResetData.addElement(s);
+						if(multiArea)
+							nextResetData.addElement(s);
 						else
 						returnAnError(session,"Reset error (no item) on line: "+s+", area="+areaName,compileErrors,commands);
 					}
 					else
 					if(C==null)
 					{
-						if(multiArea) nextResetData.addElement(s);
+						if(multiArea)
+							nextResetData.addElement(s);
 						else
 						returnAnError(session,"Reset error (no container) on line: "+s+", area="+areaName,compileErrors,commands);
 					}
 					else
 					if(C.owner()==null)
 					{
-						if(multiArea) nextResetData.addElement(s);
+						if(multiArea)
+							nextResetData.addElement(s);
 						else
 						returnAnError(session,"Reset error (no container owner) on line: "+s+", area="+areaName,compileErrors,commands);
 					}
@@ -6127,7 +6390,8 @@ public class Import extends StdCommand
 					R=getRoom(areaRooms,doneRooms,areaName,roomID);
 					if(R==null)
 					{
-						if(multiArea) nextResetData.addElement(s);
+						if(multiArea)
+							nextResetData.addElement(s);
 						else
 						returnAnError(session,"Reset error (no room) on line: "+s+", area="+areaName,compileErrors,commands);
 					}
@@ -6285,22 +6549,26 @@ public class Import extends StdCommand
 					}
 				}
 			}
-			if(session!=null) session.print(L("\n\rResets..."));
+			if(session!=null)
+				session.print(L("\n\rResets..."));
 
 			processRoomRelinks(reLinkTable,areaName,areaRooms,doneRooms);
 
 			if(newRooms.size()==0)
 			{
-				if(session!=null) session.println(L("\nDone? No Room!\n\r"));
+				if(session!=null)
+					session.println(L("\nDone? No Room!\n\r"));
 			}
 			else
 			if(!multiArea)
 			{
-				if(session!=null) session.println(L("\nDone!!!!!!  A good room to look at would be @x1\n\r",((Room)newRooms.elementAt(0)).roomID()));
+				if(session!=null)
+					session.println(L("\nDone!!!!!!  A good room to look at would be @x1\n\r",((Room)newRooms.elementAt(0)).roomID()));
 			}
 			else
 			{
-				if(session!=null) session.println(L("Done!!!\n\r"));
+				if(session!=null)
+					session.println(L("Done!!!\n\r"));
 			}
 		}
 		catch(final Exception e)
@@ -6319,7 +6587,8 @@ public class Import extends StdCommand
 			Log.errOut("Import",nrf.toString());
 		}
 
-		if((doneRooms.size()>0)&&(session!=null)) session.print(L("\n\nSaving all areas imported..."));
+		if((doneRooms.size()>0)&&(session!=null))
+			session.print(L("\n\nSaving all areas imported..."));
 		for(final Enumeration e=doneRooms.elements();e.hasMoreElements();)
 		{
 			final Room saveRoom=(Room)e.nextElement();
@@ -6350,9 +6619,11 @@ public class Import extends StdCommand
 			CMLib.database().DBUpdateItems(saveRoom);
 			saveRoom.startItemRejuv();
 			saveRoom.recoverRoomStats();
-			if(session!=null) session.print(".");
+			if(session!=null)
+				session.print(".");
 		}
-		if(session!=null) session.println("!");
+		if(session!=null)
+			session.println("!");
 
 		if(laterLinks.size()>0)
 		{
@@ -6392,7 +6663,8 @@ public class Import extends StdCommand
 						{
 							R1=CMLib.map().getRoom(R1);
 							R1.rawDoors()[dir]=TR;
-							if(RE!=null) RE.setTemporaryDoorLink("");
+							if(RE!=null)
+								RE.setTemporaryDoorLink("");
 							CMLib.database().DBUpdateExits(R1);
 						}
 					}
@@ -6409,7 +6681,8 @@ public class Import extends StdCommand
 		if(doneRooms.elements().hasMoreElements())
 			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 				((Area)a.nextElement()).fillInAreaRooms();
-		if(session!=null) session.println(L("done!"));
+		if(session!=null)
+			session.println(L("done!"));
 		return true;
 	}
 

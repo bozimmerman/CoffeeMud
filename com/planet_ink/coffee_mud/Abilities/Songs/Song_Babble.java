@@ -66,7 +66,8 @@ public class Song_Babble extends Song
 	protected String messChars(String words, int numToMess)
 	{
 		numToMess=numToMess/2;
-		if(numToMess==0) return words;
+		if(numToMess==0)
+			return words;
 		final StringBuffer w=new StringBuffer(words);
 		while(numToMess>0)
 		{
@@ -97,8 +98,10 @@ public class Song_Babble extends Song
 		   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))))
 		{
 			String str=msg.othersMessage();
-			if(str==null) str=msg.targetMessage();
-			if(str!=null) str=CMStrings.getSayFromMessage(str);
+			if(str==null)
+				str=msg.targetMessage();
+			if(str!=null)
+				str=CMStrings.getSayFromMessage(str);
 			if(str!=null)
 			{
 				String smsg=CMStrings.getSayFromMessage(msg.sourceMessage());
@@ -164,7 +167,8 @@ public class Song_Babble extends Song
 				{
 					final Song newOne=(Song)this.copyOf();
 					final Set<MOB> h=sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
-					if(h==null) continue;
+					if(h==null)
+						continue;
 
 					for (final Object element : h)
 					{
@@ -172,7 +176,8 @@ public class Song_Babble extends Song
 
 						// malicious songs must not affect the invoker!
 						int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
-						if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
+						if(auto)
+							affectType=affectType|CMMsg.MASK_ALWAYS;
 
 						if((CMLib.flags().canBeHeardSpeakingBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 						{

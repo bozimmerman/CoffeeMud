@@ -129,7 +129,8 @@ public class Chant_FungalBloom extends Chant
 				((Trap)A).setReset(3);
 				target.addEffect(A);
 				A=target.fetchEffect(A.ID());
-				if(A!=null)	((Trap)A).activateBomb();
+				if(A!=null)
+					((Trap)A).activateBomb();
 			}
 		}
 		else

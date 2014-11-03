@@ -180,7 +180,8 @@ public class ColorSet extends StdCommand
 						buf.append(L("^N\n\rAvailable Colors: "));
 						for(int ii=0;ii<ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS.length;ii++)
 						{
-							if(ii>0) buf.append(", ");
+							if(ii>0)
+								buf.append(", ");
 							buf.append("^"+ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[ii]+CMStrings.capitalizeAndLower(ColorLibrary.COLOR_ALLCOLORNAMES[ii]));
 						}
 						session.println(buf.toString()+"^N");
@@ -209,7 +210,8 @@ public class ColorSet extends StdCommand
 						for(int ii=0;ii<ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS.length;ii++)
 							if(Character.isUpperCase(ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii].charAt(0)))
 							{
-								if(first)first=false; else buf.append(", ");
+								if(first)
+									first=false; else buf.append(", ");
 								if(ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii]==ColorLibrary.COLOR_BLACK)
 									buf.append("^"+ColorLibrary.COLOR_WHITE+CMStrings.capitalizeAndLower(ColorLibrary.COLOR_ALLCOLORNAMES[ii]));
 								else
@@ -220,7 +222,8 @@ public class ColorSet extends StdCommand
 						for(int ii=0;ii<ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS.length;ii++)
 							if(Character.isLowerCase(ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[ii].charAt(0)))
 							{
-								if(first)first=false; else buf.append(", ");
+								if(first)
+									first=false; else buf.append(", ");
 								buf.append("^"+ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[ii]+CMStrings.capitalizeAndLower(ColorLibrary.COLOR_ALLCOLORNAMES[ii]));
 							}
 						session.println(buf.toString()+"^N");

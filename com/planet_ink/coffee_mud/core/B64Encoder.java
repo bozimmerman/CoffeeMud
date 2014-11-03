@@ -128,7 +128,8 @@ public class B64Encoder
 		{
 			__bytes = _NATIVE_ALPHABET; // Fall back to native encoding
 		}   // end catch
-		if(ALPHABET==null) ALPHABET = __bytes;
+		if(ALPHABET==null)
+			ALPHABET = __bytes;
 	}
 
 	protected static byte[] encode3to4(byte[] source, int srcOffset, int numSigBytes,
@@ -672,7 +673,8 @@ public class B64Encoder
 					{
 						int b = 0;
 						do{ b = in.read(); }
-						while( b >= 0 && DECODABET[ b & 0x7f ] <= WHITE_SPACE_ENC );
+						while( b >= 0 && DECODABET[ b & 0x7f ] <= WHITE_SPACE_ENC )
+							;
 
 						if( b < 0 )
 							break; // Reads a -1 if end of stream

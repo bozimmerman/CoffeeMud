@@ -62,13 +62,15 @@ public class Skill_JailKey extends StdSkill
 		{
 			unlockThis=mob.location().getExitInDir(dirCode);
 			final Room unlockThat=mob.location().getRoomInDir(dirCode);
-			if(unlockThat==null) unlockThis=null;
+			if(unlockThat==null)
+				unlockThis=null;
 			if(unlockThis!=null)
 			{
 				LegalBehavior B=null;
 
 				final Area legalA=CMLib.law().getLegalObject(mob.location());
-				if(legalA!=null) B=CMLib.law().getLegalBehavior(legalA);
+				if(legalA!=null)
+					B=CMLib.law().getLegalBehavior(legalA);
 				if(B==null)
 					unlockThis=null;
 				else

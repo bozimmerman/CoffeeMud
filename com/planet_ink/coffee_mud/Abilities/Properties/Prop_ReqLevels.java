@@ -80,7 +80,8 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 
 	public boolean passesMuster(MOB mob, Environmental R)
 	{
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		if(CMLib.flags().isATrackingMonster(mob))
 			return true;
 
@@ -101,12 +102,15 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 		int lastPlace=0;
 		int x=0;
 		final String text=text().trim();
-		if(text.length()==0) return true;
+		if(text.length()==0)
+			return true;
 		while(x>=0)
 		{
 			x=text.indexOf('>',lastPlace);
-			if(x<0) x=text.indexOf('<',lastPlace);
-			if(x<0) x=text.indexOf('=',lastPlace);
+			if(x<0)
+				x=text.indexOf('<',lastPlace);
+			if(x<0)
+				x=text.indexOf('=',lastPlace);
 			if(x>=0)
 			{
 				final char primaryChar=text.charAt(x);
@@ -142,7 +146,8 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 					case '=': found=(lvl==cmpLevel); break;
 					}
 				}
-				if(found) return true;
+				if(found)
+					return true;
 			}
 		}
 		return false;

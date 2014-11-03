@@ -110,7 +110,8 @@ public class Chant_LocatePlants extends Chant
 	public String plantsHere(MOB mob, Room R)
 	{
 		final StringBuffer msg=new StringBuffer("");
-		if(R==null) return msg.toString();
+		if(R==null)
+			return msg.toString();
 		final Room room=R;
 		if((room.domainType()==Room.DOMAIN_OUTDOORS_WOODS)
 		||(room.domainType()==Room.DOMAIN_OUTDOORS_PLAINS)

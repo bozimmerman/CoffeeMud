@@ -59,7 +59,8 @@ public class Spell_ImprovedPolymorph extends Spell
 				affectableStats.setName(L("@x1 the @x2",affected.name(),newRace.name()));
 			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			newRace.setHeightWeight(affectableStats,'M');
-			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
+			if(oldAdd>0)
+				affectableStats.setWeight(affectableStats.weight()+oldAdd);
 		}
 	}
 	@Override
@@ -114,7 +115,8 @@ public class Spell_ImprovedPolymorph extends Spell
 		final String race=(String)commands.lastElement();
 		commands.removeElement(commands.lastElement());
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if((target==mob)&&(!auto))
 		{
 			mob.tell(L("You cannot hold enough energy to cast this on yourself."));
@@ -193,15 +195,22 @@ public class Spell_ImprovedPolymorph extends Spell
 			fakeStatTotal+=fakeMOB.charStats().getStat(s);
 
 		int statDiff=targetStatTotal-fakeStatTotal;
-		if(CMLib.flags().canMove(fakeMOB)!=CMLib.flags().canMove(target)) statDiff+=100;
-		if(CMLib.flags().canBreatheHere(fakeMOB,target.location())!=CMLib.flags().canBreatheHere(target,target.location())) statDiff+=50;
-		if(CMLib.flags().canSee(fakeMOB)!=CMLib.flags().canSee(target)) statDiff+=25;
-		if(CMLib.flags().canHear(fakeMOB)!=CMLib.flags().canHear(target)) statDiff+=10;
-		if(CMLib.flags().canSpeak(fakeMOB)!=CMLib.flags().canSpeak(target)) statDiff+=25;
-		if(CMLib.flags().canSmell(fakeMOB)!=CMLib.flags().canSmell(target)) statDiff+=5;
+		if(CMLib.flags().canMove(fakeMOB)!=CMLib.flags().canMove(target))
+			statDiff+=100;
+		if(CMLib.flags().canBreatheHere(fakeMOB,target.location())!=CMLib.flags().canBreatheHere(target,target.location()))
+			statDiff+=50;
+		if(CMLib.flags().canSee(fakeMOB)!=CMLib.flags().canSee(target))
+			statDiff+=25;
+		if(CMLib.flags().canHear(fakeMOB)!=CMLib.flags().canHear(target))
+			statDiff+=10;
+		if(CMLib.flags().canSpeak(fakeMOB)!=CMLib.flags().canSpeak(target))
+			statDiff+=25;
+		if(CMLib.flags().canSmell(fakeMOB)!=CMLib.flags().canSmell(target))
+			statDiff+=5;
 		fakeMOB.destroy();
 
-		if(statDiff<0) statDiff=statDiff*-1;
+		if(statDiff<0)
+			statDiff=statDiff*-1;
 		final int levelDiff=((mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level());
 		boolean success=proficiencyCheck(mob,levelDiff-statDiff,auto);
 		if(success&&(!auto)&&(!mob.mayIFight(target))&&(mob!=target)&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))

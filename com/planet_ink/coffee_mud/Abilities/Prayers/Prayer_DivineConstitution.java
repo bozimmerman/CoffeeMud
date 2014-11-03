@@ -55,7 +55,8 @@ public class Prayer_DivineConstitution extends Prayer
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION, affectableStats.getStat(CharStats.STAT_CONSTITUTION)+conPts);
 		affectableStats.setStat(CharStats.STAT_MAX_CONSTITUTION_ADJ, affectableStats.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)+conPts);
 	}
@@ -64,7 +65,8 @@ public class Prayer_DivineConstitution extends Prayer
 	public void affectCharState(MOB affected, CharState affectableMaxState)
 	{
 		super.affectCharState(affected, affectableMaxState);
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		affectableMaxState.setHitPoints(affectableMaxState.getHitPoints()+xtraHPs);
 	}
 
@@ -118,7 +120,8 @@ public class Prayer_DivineConstitution extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

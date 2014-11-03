@@ -41,7 +41,8 @@ public class AddRandomFile extends StdWebMacro
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
-		if((parms==null)||(parms.size()==0)) return "";
+		if((parms==null)||(parms.size()==0))
+			return "";
 		final StringBuffer buf=new StringBuffer("");
 		final int d=CMLib.dice().roll(1,parms.size(),0);
 		String file=null;
@@ -53,8 +54,10 @@ public class AddRandomFile extends StdWebMacro
 		for(final String val : parms.values())
 		{
 			file=val;
-			if(file.equalsIgnoreCase("LINKONLY")) continue;
-			if((++i)==d) break;
+			if(file.equalsIgnoreCase("LINKONLY"))
+				continue;
+			if((++i)==d)
+				break;
 		}
 		if((file!=null)&&(file.length()>0))
 		{

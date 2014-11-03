@@ -104,7 +104,8 @@ public class Spell_LocateObject extends Spell
 				final HashSet areasTried=new HashSet();
 				Area A=null;
 				int numAreas=(int)Math.round(CMath.mul(CMLib.map().numAreas(),0.90))+1;
-				if(numAreas>CMLib.map().numAreas()) numAreas=CMLib.map().numAreas();
+				if(numAreas>CMLib.map().numAreas())
+					numAreas=CMLib.map().numAreas();
 				int tries=numAreas*numAreas;
 				while((areas.size()<numAreas)&&(((--tries)>0)))
 				{
@@ -128,7 +129,8 @@ public class Spell_LocateObject extends Spell
 				for (final Room room2 : checkSet)
 				{
 					room=CMLib.map().getRoom(room2);
-					if(!CMLib.flags().canAccess(mob,room)) continue;
+					if(!CMLib.flags().canAccess(mob,room))
+						continue;
 
 					item=room.findItem(null,what);
 					if((item!=null)
@@ -140,7 +142,8 @@ public class Spell_LocateObject extends Spell
 					for(int i=0;i<room.numInhabitants();i++)
 					{
 						inhab=room.fetchInhabitant(i);
-						if(inhab==null) break;
+						if(inhab==null)
+							break;
 
 						item=inhab.findItem(what);
 						SK=CMLib.coffeeShops().getShopKeeper(inhab);
@@ -161,7 +164,8 @@ public class Spell_LocateObject extends Spell
 							}
 						}
 					}
-					if(itemsFound.size()>=maxFound) break;
+					if(itemsFound.size()>=maxFound)
+						break;
 				}
 				if(itemsFound.size()==0)
 					mob.tell(L("Your magic fails to focus on anything called '@x1'.",what));

@@ -52,7 +52,8 @@ public class INIValue extends StdWebMacro
 			else
 			if(s.startsWith("#")||s.startsWith("!"))
 			{
-				if(startOver) help.clear();
+				if(startOver)
+					help.clear();
 				startOver=false;
 				help.addElement(s.substring(1).trim());
 			}
@@ -80,17 +81,20 @@ public class INIValue extends StdWebMacro
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
-		if(parms==null) return "";
+		if(parms==null)
+			return "";
 		final String last=httpReq.getUrlParameter("INI");
 		if((parms.size()==0)&&(last!=null)&&(last.length()>0))
 		{
 			final CMProps page=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
-			if((page==null)||(!page.isLoaded())) return "";
+			if((page==null)||(!page.isLoaded()))
+				return "";
 			return page.getStr(last);
 		}
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("INI");
+			if(last!=null)
+				httpReq.removeUrlParameter("INI");
 			return "";
 		}
 		if(parms.containsKey("NEXT"))
@@ -106,8 +110,10 @@ public class INIValue extends StdWebMacro
 				if(s.startsWith("#")||s.startsWith("!"))
 					continue;
 				int x=s.indexOf('=');
-				if(x<0) x=s.indexOf(':');
-				if(x<0) continue;
+				if(x<0)
+					x=s.indexOf(':');
+				if(x<0)
+					continue;
 				final String id=s.substring(0,x).trim().toUpperCase();
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!id.equals(lastID))))
 				{
@@ -123,7 +129,8 @@ public class INIValue extends StdWebMacro
 					if(parms.containsKey("VALUE"))
 					{
 						final CMProps realPage=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
-						if(realPage!=null) return realPage.getStr(id);
+						if(realPage!=null)
+							return realPage.getStr(id);
 					}
 					return "";
 				}
@@ -138,7 +145,8 @@ public class INIValue extends StdWebMacro
 			return "'MASK' not found!";
 		final String mask=parms.get("MASK").toUpperCase();
 		final CMProps page=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
-		if((page==null)||(!page.isLoaded())) return "";
+		if((page==null)||(!page.isLoaded()))
+			return "";
 		if(mask.trim().endsWith("*"))
 			for(final Enumeration e=page.keys();e.hasMoreElements();)
 			{

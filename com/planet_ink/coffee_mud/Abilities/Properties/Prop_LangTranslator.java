@@ -57,13 +57,15 @@ public class Prop_LangTranslator extends Property implements Language
 		for(int v=0;v<V.size();v++)
 		{
 			String s=V.elementAt(v);
-			if(s.endsWith("%")) s=s.substring(0,s.length()-1);
+			if(s.endsWith("%"))
+				s=s.substring(0,s.length()-1);
 			if(CMath.isNumber(s))
 				lastpct=CMath.s_int(s);
 			else
 			{
 				final Ability A=CMClass.getAbility(s);
-				if(A!=null) langs.addElement(A.ID(),Integer.valueOf(lastpct));
+				if(A!=null)
+					langs.addElement(A.ID(),Integer.valueOf(lastpct));
 			}
 		}
 	}
@@ -101,7 +103,8 @@ public class Prop_LangTranslator extends Property implements Language
 			if(text().length()>0)
 			{
 				final int t=langs.indexOf(msg.tool().ID());
-				if(t<0) return;
+				if(t<0)
+					return;
 				final Integer I=(Integer)langs.elementAt(t,2);
 				if(CMLib.dice().rollPercentage()>I.intValue())
 					return;

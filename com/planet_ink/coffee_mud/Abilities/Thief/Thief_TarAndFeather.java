@@ -89,7 +89,8 @@ public class Thief_TarAndFeather extends ThiefSkill
 			return false;
 		}
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(CMLib.flags().isSitting(mob))
 		{

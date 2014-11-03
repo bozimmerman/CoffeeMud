@@ -193,7 +193,8 @@ public class Skill_HandCuff extends StdSkill
 		{
 			commands.removeElementAt(0);
 			final MOB target=super.getTarget(mob,commands,givenTarget,false,true);
-			if(target==null) return false;
+			if(target==null)
+				return false;
 			final Ability A=target.fetchEffect(ID());
 			if(A!=null)
 			{
@@ -208,7 +209,8 @@ public class Skill_HandCuff extends StdSkill
 			return false;
 		}
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(Skill_Arrest.getWarrantsOf(target, CMLib.law().getLegalObject(mob.location().getArea())).size()==0)
 		{
@@ -248,7 +250,8 @@ public class Skill_HandCuff extends StdSkill
 							if(A!=null)
 							{
 								A.amountRemaining = amountToRemain;
-								if(auto) A.makeLongLasting();
+								if(auto)
+									A.makeLongLasting();
 							}
 							oldAssist=target.isAttribute(MOB.Attrib.AUTOASSIST);
 							if(!oldAssist)
@@ -272,7 +275,8 @@ public class Skill_HandCuff extends StdSkill
 						}
 					}
 				}
-				if(mob.getVictim()==target) mob.setVictim(null);
+				if(mob.getVictim()==target)
+					mob.setVictim(null);
 			}
 		}
 		else

@@ -45,7 +45,8 @@ public class Play_Rhythm extends Play
 	public void affectCharStats(MOB mob, CharStats stats)
 	{
 		super.affectCharStats(mob,stats);
-		if(mob==invoker) return;
+		if(mob==invoker)
+			return;
 		if(invoker()!=null)
 			stats.setStat(CharStats.STAT_SAVE_MAGIC,stats.getStat(CharStats.STAT_SAVE_MAGIC)
 									-(invoker().charStats().getStat(CharStats.STAT_CHARISMA)

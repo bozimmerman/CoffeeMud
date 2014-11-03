@@ -57,7 +57,8 @@ public class Chant_SummonAnimal extends Chant
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
-			if(mob.amDead()) mob.setLocation(null);
+			if(mob.amDead())
+				mob.setLocation(null);
 			mob.destroy();
 		}
 	}
@@ -72,14 +73,16 @@ public class Chant_SummonAnimal extends Chant
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 		{
 			unInvoke();
-			if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
+			if(msg.source().playerStats()!=null)
+				msg.source().playerStats().setLastUpdated(0);
 		}
 	}
 
 	public Vector outdoorChoices(Room R)
 	{
 		final Vector choices=new Vector();
-		if(R==null) return choices;
+		if(R==null)
+			return choices;
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			final Room room=R.getRoomInDir(d);
@@ -151,11 +154,13 @@ public class Chant_SummonAnimal extends Chant
 				newRoom.showOthers(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
-				if(target.isInCombat()) target.makePeace();
+				if(target.isInCombat())
+					target.makePeace();
 				CMLib.tracking().walk(target,opDir,false,false);
 				if(target.location()==room)
 				{
-					if(target.isInCombat()) target.makePeace();
+					if(target.isInCombat())
+						target.makePeace();
 					CMLib.commands().postFollow(target,mob,true);
 					beneficialAffect(mob,target,asLevel,0);
 					if(target.amFollowing()!=mob)
@@ -163,7 +168,8 @@ public class Chant_SummonAnimal extends Chant
 				}
 				else
 				{
-					if(target.amDead()) target.setLocation(null);
+					if(target.amDead())
+						target.setLocation(null);
 					target.destroy();
 				}
 				invoker=mob;

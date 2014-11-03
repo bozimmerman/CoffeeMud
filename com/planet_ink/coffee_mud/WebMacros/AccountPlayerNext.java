@@ -46,17 +46,21 @@ public class AccountPlayerNext extends StdWebMacro
 		final String last=httpReq.getUrlParameter("PLAYER");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("PLAYER");
+			if(last!=null)
+				httpReq.removeUrlParameter("PLAYER");
 			return "";
 		}
 		final String accountName=httpReq.getUrlParameter("ACCOUNT");
-		if(accountName==null) return " @break@";
+		if(accountName==null)
+			return " @break@";
 		final PlayerAccount account=CMLib.players().getLoadAccount(accountName);
-		if(account==null) return "";
+		if(account==null)
+			return "";
 
 		String lastID="";
 		String sort=httpReq.getUrlParameter("SORTBY");
-		if(sort==null) sort="";
+		if(sort==null)
+			sort="";
 		final Enumeration pe=account.getThinPlayers();
 		for(;pe.hasMoreElements();)
 		{

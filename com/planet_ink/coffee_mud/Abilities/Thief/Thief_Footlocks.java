@@ -115,7 +115,8 @@ public class Thief_Footlocks extends ThiefSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(CMLib.flags().isSleeping(mob))
 		{
@@ -150,8 +151,10 @@ public class Thief_Footlocks extends ThiefSkill
 		else
 			levelDiff=0;
 
-		if(cloth!=null) CMLib.materials().destroyResourcesValue(mob,1,cloth.material(),-1,null);
-		if(wood!=null) CMLib.materials().destroyResourcesValue(mob,2,wood.material(),-1,null);
+		if(cloth!=null)
+			CMLib.materials().destroyResourcesValue(mob,1,cloth.material(),-1,null);
+		if(wood!=null)
+			CMLib.materials().destroyResourcesValue(mob,2,wood.material(),-1,null);
 
 		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 		if(success)
@@ -175,7 +178,8 @@ public class Thief_Footlocks extends ThiefSkill
 				{
 					target.addItem(foots);
 					foots.wearAt(Wearable.WORN_FEET);
-					if(target.location()!=null) target.location().recoverRoomStats();
+					if(target.location()!=null)
+						target.location().recoverRoomStats();
 				}
 			}
 		}

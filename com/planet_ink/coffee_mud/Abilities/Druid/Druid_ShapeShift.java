@@ -109,7 +109,8 @@ public class Druid_ShapeShift extends StdAbility
 			affectableStats.setName(CMLib.english().startWithAorAn(raceName.toLowerCase()));
 			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			newRace.setHeightWeight(affectableStats,(char)((MOB)affected).charStats().getStat(CharStats.STAT_GENDER));
-			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
+			if(oldAdd>0)
+				affectableStats.setWeight(affectableStats.weight()+oldAdd);
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+
 												(int)Math.round(CMath.mul(affectableStats.level()+xlvl,attadj[getRaceCode()])/2.0));
 			affectableStats.setArmor(affectableStats.armor()-
@@ -149,7 +150,8 @@ public class Druid_ShapeShift extends StdAbility
 	{
 		final int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
 		int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
-		if(qualClassLevel<0) classLevel=30;
+		if(qualClassLevel<0)
+			classLevel=30;
 		return classLevel;
 	}
 
@@ -208,7 +210,8 @@ public class Druid_ShapeShift extends StdAbility
 
 	public static boolean isShapeShifted(MOB mob)
 	{
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
@@ -230,7 +233,8 @@ public class Druid_ShapeShift extends StdAbility
 				{
 					final int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
 					int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
-					if(qualClassLevel<0) classLevel=30;
+					if(qualClassLevel<0)
+						classLevel=30;
 					if(getRaceLevel(classLevel)>=3)
 						return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
 				}
@@ -335,7 +339,8 @@ public class Druid_ShapeShift extends StdAbility
 				{
 					final Ability A=(Ability)V.elementAt(v);
 					int lvl=CMLib.ableMapper().qualifyingLevel(mob,A);
-					if(lvl<=0) lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+					if(lvl<=0)
+						lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 					lvl+=getXLEVELLevel(mob);
 					if(lvl<sortByLevel)
 					{
@@ -343,7 +348,8 @@ public class Druid_ShapeShift extends StdAbility
 						choice=A;
 					}
 				}
-				if(choice==null) break;
+				if(choice==null)
+					break;
 				allShapeshifts.addElement(choice);
 				V.removeElement(choice);
 			}
@@ -364,7 +370,8 @@ public class Druid_ShapeShift extends StdAbility
 						for(int i1=raceLevel;i1>=0;i1--)
 						{
 							list.append(shapes[i1][A.myRaceCode]);
-							if(i1!=0) list.append(", ");
+							if(i1!=0)
+								list.append(", ");
 						}
 						list.append("\n\r");
 						if(CMLib.english().containsString(A.raceName,parm))

@@ -43,11 +43,13 @@ public class AccountData extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("ACCOUNT");
-		if(last==null) return "";
+		if(last==null)
+			return "";
 		if(last.length()>0)
 		{
 			final PlayerAccount A = CMLib.players().getLoadAccount(last);
-			if(A==null) return "";
+			if(A==null)
+				return "";
 			if(parms.containsKey("NAME")||parms.containsKey("ACCOUNT"))
 				return clearWebMacros(A.getAccountName());
 			if(parms.containsKey("CLASS"))
@@ -89,7 +91,8 @@ public class AccountData extends StdWebMacro
 				for (final String element : PlayerAccount.FLAG_DESCS)
 				{
 					str.append("<OPTION VALUE=\""+element+"\"");
-					if(set.contains(element)) str.append(" SELECTED");
+					if(set.contains(element))
+						str.append(" SELECTED");
 					str.append(">"+CMStrings.capitalizeAndLower(element));
 				}
 				str.append(", ");

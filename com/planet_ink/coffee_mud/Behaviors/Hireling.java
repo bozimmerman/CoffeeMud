@@ -146,8 +146,10 @@ public class Hireling extends StdBehavior
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(tickID!=Tickable.TICKID_MOB) return true;
-		if(onTheJobUntil==0) return true;
+		if(tickID!=Tickable.TICKID_MOB)
+			return true;
+		if(onTheJobUntil==0)
+			return true;
 		final MOB observer=(MOB)ticking;
 		if(System.currentTimeMillis()>onTheJobUntil)
 		{
@@ -247,8 +249,10 @@ public class Hireling extends StdBehavior
 	{
 		super.executeMsg(affecting,msg);
 		final MOB source=msg.source();
-		if(!canActAtAll(affecting)) return;
-		if(!(affecting instanceof MOB)) return;
+		if(!canActAtAll(affecting))
+			return;
+		if(!(affecting instanceof MOB))
+			return;
 
 		final MOB observer=(MOB)affecting;
 		if((msg.sourceMinor()==CMMsg.TYP_QUIT)

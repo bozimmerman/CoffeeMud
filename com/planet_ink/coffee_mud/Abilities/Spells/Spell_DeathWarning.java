@@ -123,7 +123,8 @@ public class Spell_DeathWarning extends Spell
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
 				final Spell_DeathWarning A=(Spell_DeathWarning)target.fetchEffect(ID());
-				if(A!=null) A.commands=commands;
+				if(A!=null)
+					A.commands=commands;
 			}
 		}
 		else

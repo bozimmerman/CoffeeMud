@@ -79,7 +79,8 @@ public class StdClanItem extends StdItem implements ClanItem
 					setRightfulOwner(null);
 					unWear();
 					removeFromOwnerContainer();
-					if(owner()!=R) R.moveItemTo(this,ItemPossessor.Expire.Player_Drop);
+					if(owner()!=R)
+						R.moveItemTo(this,ItemPossessor.Expire.Player_Drop);
 					if(R!=null)
 						R.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 is dropped!",name()));
 				}
@@ -106,7 +107,8 @@ public class StdClanItem extends StdItem implements ClanItem
 
 	public static boolean wearingAClanItem(MOB mob)
 	{
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		Item I=null;
 		for(int i=0;i<mob.numItems();i++)
 		{
@@ -173,7 +175,8 @@ public class StdClanItem extends StdItem implements ClanItem
 	protected static List<List<String>> loadList(StringBuffer str)
 	{
 		final List<List<String>> V=new Vector();
-		if(str==null) return V;
+		if(str==null)
+			return V;
 		List<String> V2=new Vector();
 		boolean oneComma=false;
 		int start=0;
@@ -192,7 +195,8 @@ public class StdClanItem extends StdItem implements ClanItem
 				if(oneComma)
 				{
 					V2.add(str.substring(start,i));
-					if(V2.size()>longestList) longestList=V2.size();
+					if(V2.size()>longestList)
+						longestList=V2.size();
 					V.add(V2);
 					V2=new Vector();
 				}
@@ -204,7 +208,8 @@ public class StdClanItem extends StdItem implements ClanItem
 		{
 			if(oneComma)
 				V2.add(str.substring(start,str.length()));
-			if(V2.size()>longestList) longestList=V2.size();
+			if(V2.size()>longestList)
+				longestList=V2.size();
 			V.add(V2);
 		}
 		for(int v=0;v<V.size();v++)

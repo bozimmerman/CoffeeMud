@@ -154,7 +154,8 @@ public class Chant_TapGrapevine extends Chant
 				myChants=new Vector();
 				beneficialAffect(mob,mob,asLevel,0);
 				final Chant_TapGrapevine C=(Chant_TapGrapevine)mob.fetchEffect(ID());
-				if(C==null) return false;
+				if(C==null)
+					return false;
 				for(int i=0;i<myRooms.size();i++)
 				{
 					final Room R=(Room)myRooms.elementAt(i);
@@ -163,10 +164,12 @@ public class Chant_TapGrapevine extends Chant
 					while(myPlant!=null)
 					{
 						Ability A=myPlant.fetchEffect(ID());
-						if(A!=null) myPlant.delEffect(A);
+						if(A!=null)
+							myPlant.delEffect(A);
 						myPlant.addNonUninvokableEffect((Ability)C.copyOf());
 						A=myPlant.fetchEffect(ID());
-						if(A!=null) myChants.add(A);
+						if(A!=null)
+							myChants.add(A);
 						ii++;
 						myPlant=Druid_MyPlants.myPlant(R,tapped,ii);
 					}

@@ -81,7 +81,8 @@ public class Druid_PackCall extends StdAbility
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> wander(s) off."));
-			if(mob.amDead()) mob.setLocation(null);
+			if(mob.amDead())
+				mob.setLocation(null);
 			mob.destroy();
 		}
 	}
@@ -96,7 +97,8 @@ public class Druid_PackCall extends StdAbility
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 		{
 			unInvoke();
-			if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
+			if(msg.source().playerStats()!=null)
+				msg.source().playerStats().setLastUpdated(0);
 		}
 	}
 
@@ -199,14 +201,16 @@ public class Druid_PackCall extends StdAbility
 					final MOB victim=mob.getVictim();
 					final MOB newMOB=CMClass.getMOB("GenMOB");
 					final int MOBRaceCode=D.myRaceCode;
-					if(D.raceName==null) D.setRaceName(mob);
+					if(D.raceName==null)
+						D.setRaceName(mob);
 					int level=1;
 					while(!D.raceName.equals(D.getRaceName(level,MOBRaceCode)))
 						level++;
 					level--;
 					newMOB.basePhyStats().setLevel(level);
 					levelsRemaining-=level;
-					if(levelsRemaining<0) break;
+					if(levelsRemaining<0)
+						break;
 					newMOB.baseCharStats().setMyRace(D.getRace(level,MOBRaceCode));
 					final String raceName=D.getRaceName(level,MOBRaceCode).toLowerCase();
 					final String name=CMLib.english().startWithAorAn(raceName).toLowerCase();
@@ -233,9 +237,11 @@ public class Druid_PackCall extends StdAbility
 					newMOB.resetToMaxState();
 					newMOB.bringToLife(mob.location(),true);
 					CMLib.beanCounter().clearZeroMoney(newMOB,null);
-					if(victim.getVictim()!=newMOB) victim.setVictim(newMOB);
+					if(victim.getVictim()!=newMOB)
+						victim.setVictim(newMOB);
 					final int dir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
-					if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
+					if(newMOB.getVictim()!=victim)
+						newMOB.setVictim(victim);
 					newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,L("<S-NAME> arrive(s) @x1 and attack(s) <T-NAMESELF>!",Directions.getFromDirectionName(dir)));
 					newMOB.setStartRoom(null); // keep before postFollow for Conquest
 					CMLib.commands().postFollow(newMOB,mob,true);

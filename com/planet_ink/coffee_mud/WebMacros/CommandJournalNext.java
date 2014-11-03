@@ -45,7 +45,8 @@ public class CommandJournalNext extends StdWebMacro
 		String last=httpReq.getUrlParameter("COMMANDJOURNAL");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("COMMANDJOURNAL");
+			if(last!=null)
+				httpReq.removeUrlParameter("COMMANDJOURNAL");
 			return "";
 		}
 		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);

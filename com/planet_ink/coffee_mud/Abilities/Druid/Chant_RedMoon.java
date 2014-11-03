@@ -72,7 +72,8 @@ public class Chant_RedMoon extends Chant
 		{
 			final MOB mob=(MOB)msg.target();
 			int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
-			if(CMLib.flags().isEvil(mob)) recovery=recovery*-1;
+			if(CMLib.flags().isEvil(mob))
+				recovery=recovery*-1;
 			msg.setValue(msg.value()+recovery);
 		}
 		return true;
@@ -81,8 +82,10 @@ public class Chant_RedMoon extends Chant
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
-		if(affected==null) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
 		if(affected instanceof Room)
 		{
 			final Room R=(Room)affected;
@@ -125,7 +128,8 @@ public class Chant_RedMoon extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Room target=mob.location();
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(!target.getArea().getClimateObj().canSeeTheMoon(target,null))
 		{
 			mob.tell(L("You must be able to see the moon for this magic to work."));

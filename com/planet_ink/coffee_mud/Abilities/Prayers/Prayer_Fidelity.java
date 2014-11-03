@@ -63,8 +63,10 @@ public class Prayer_Fidelity extends Prayer
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg)) return false;
-		if(!(affected instanceof MOB)) return true;
+		if(!super.okMessage(myHost,msg))
+			return false;
+		if(!(affected instanceof MOB))
+			return true;
 
 		final MOB myChar=(MOB)affected;
 		if((msg.target()!=null)&&(msg.target() instanceof MOB))
@@ -88,7 +90,8 @@ public class Prayer_Fidelity extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

@@ -55,7 +55,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	public int getTickStatus()
 	{
 		final Tickable T=engine();
-		if(T!=null) return T.getTickStatus();
+		if(T!=null)
+			return T.getTickStatus();
 		return Tickable.STATUS_NOT;
 	}
 

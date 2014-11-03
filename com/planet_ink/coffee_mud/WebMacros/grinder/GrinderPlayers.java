@@ -119,7 +119,8 @@ public class GrinderPlayers extends GrinderMobs
 
 	public static String titleList(MOB E, HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
-		if(E.playerStats()==null) return "";
+		if(E.playerStats()==null)
+			return "";
 		E.playerStats().getTitles().clear();
 		if(httpReq.isUrlParameter("TITLE0"))
 		{
@@ -127,7 +128,8 @@ public class GrinderPlayers extends GrinderMobs
 			while(httpReq.isUrlParameter("TITLE"+num))
 			{
 				final String aff=httpReq.getUrlParameter("TITLE"+num);
-				if(aff.trim().length()>0) E.playerStats().getTitles().add(aff.trim());
+				if(aff.trim().length()>0)
+					E.playerStats().getTitles().add(aff.trim());
 				num++;
 			}
 		}
@@ -139,7 +141,8 @@ public class GrinderPlayers extends GrinderMobs
 		if(httpReq.isUrlParameter(BASICS[i]))
 		{
 			String old=httpReq.getUrlParameter(BASICS[i]);
-			if(old==null) old="";
+			if(old==null)
+				old="";
 			switch(i)
 			{
 			case 0: break; // dont set name!
@@ -307,7 +310,8 @@ public class GrinderPlayers extends GrinderMobs
 			while(httpReq.isUrlParameter("TITLE"+b))
 			{
 				String old=httpReq.getUrlParameter("TITLE"+b);
-				if(old==null) old="";
+				if(old==null)
+					old="";
 				M.playerStats().getTitles().add(old);
 				b++;
 			}
@@ -329,10 +333,12 @@ public class GrinderPlayers extends GrinderMobs
 				if(aff.length()>0)
 				{
 					final CharClass C=CMClass.getCharClass(aff);
-					if(C==null) return "Unknown class '"+aff+"'.";
+					if(C==null)
+						return "Unknown class '"+aff+"'.";
 					classList.append(C.ID()+";");
 					String lvl=httpReq.getUrlParameter("CHARCLASSLVL"+num);
-					if(lvl==null)lvl="0";
+					if(lvl==null)
+						lvl="0";
 					totalLevel+=CMath.s_int(lvl);
 					levelsList.append(lvl+";");
 				}
@@ -364,7 +370,8 @@ public class GrinderPlayers extends GrinderMobs
 			if(httpReq.isUrlParameter(a.getName()))
 			{
 				String old=httpReq.getUrlParameter(a.getName());
-				if(old==null) old="";
+				if(old==null)
+					old="";
 				if(old.equalsIgnoreCase("on"))
 					M.setAttribute(a,true);
 				else
@@ -378,7 +385,8 @@ public class GrinderPlayers extends GrinderMobs
 			if(httpReq.isUrlParameter(stat))
 			{
 				String old=httpReq.getUrlParameter(stat);
-				if(old==null) old="";
+				if(old==null)
+					old="";
 				if(!stat.equalsIgnoreCase("GENDER"))
 					C.setStat(i,CMath.s_int(old));
 				else
@@ -393,7 +401,8 @@ public class GrinderPlayers extends GrinderMobs
 			if(httpReq.isUrlParameter("BASE"+stat))
 			{
 				String old=httpReq.getUrlParameter("BASE"+stat);
-				if(old==null) old="";
+				if(old==null)
+					old="";
 				if(!stat.equalsIgnoreCase("GENDER"))
 					C.setStat(i,CMath.s_int(old));
 				else
@@ -424,27 +433,38 @@ public class GrinderPlayers extends GrinderMobs
 						CMLib.factions().setAlignment(M,v);
 		}
 		String error=GrinderExits.dispositions(M,httpReq,parms);
-		if(error.length()>0) return error;
+		if(error.length()>0)
+			return error;
 		error=GrinderMobs.senses(M,httpReq,parms);
-		if(error.length()>0) return error;
+		if(error.length()>0)
+			return error;
 		error=titleList(M,httpReq,parms);
-		if(error.length()>0) return error;
+		if(error.length()>0)
+			return error;
 		error=GrinderAreas.doAffects(M,httpReq,parms);
-		if(error.length()>0) return error;
+		if(error.length()>0)
+			return error;
 		error=GrinderAreas.doBehavs(M,httpReq,parms);
-		if(error.length()>0) return error;
+		if(error.length()>0)
+			return error;
 		error=GrinderMobs.factions(M,httpReq,parms);
-		if(error.length()>0) return error;
+		if(error.length()>0)
+			return error;
 		error=GrinderMobs.abilities(M,httpReq,parms);
-		if(error.length()>0) return error;
+		if(error.length()>0)
+			return error;
 		error=GrinderMobs.items(M,allitems,httpReq);
-		if(error.length()>0) return error;
+		if(error.length()>0)
+			return error;
 		error=GrinderMobs.expertiseList(M,httpReq,parms);
-		if(error.length()>0) return error;
+		if(error.length()>0)
+			return error;
 		error=GrinderMobs.clans(M,httpReq,parms);
-		if(error.length()>0) return error;
+		if(error.length()>0)
+			return error;
 		error=classList(M,httpReq,parms);
-		if(error.length()>0) return error;
+		if(error.length()>0)
+			return error;
 		M.recoverPhyStats();
 		M.recoverCharStats();
 		M.recoverMaxState();

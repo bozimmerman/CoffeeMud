@@ -54,7 +54,8 @@ public class Falling extends StdAbility
 
 	protected boolean isWaterSurface(Room R)
 	{
-		if(R==null) return false;
+		if(R==null)
+			return false;
 		if((R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
 		||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 			return true;
@@ -62,7 +63,8 @@ public class Falling extends StdAbility
 	}
 	protected boolean isUnderWater(Room R)
 	{
-		if(R==null) return false;
+		if(R==null)
+			return false;
 		if((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
 		||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
 			return true;
@@ -71,7 +73,8 @@ public class Falling extends StdAbility
 
 	protected boolean isAirRoom(Room R)
 	{
-		if(R==null) return false;
+		if(R==null)
+			return false;
 		if((R.domainType()==Room.DOMAIN_INDOORS_AIR)
 		||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR))
 			return true;
@@ -101,7 +104,8 @@ public class Falling extends StdAbility
 			if(!hitTheCeiling)
 			{
 				hitTheCeiling=true;
-				if(R!=null) R.show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> hit(s) the ceiling.@x1",CMLib.protocol().msp("splat.wav",50)));
+				if(R!=null)
+					R.show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> hit(s) the ceiling.@x1",CMLib.protocol().msp("splat.wav",50)));
 				CMLib.combat().postDamage(mob,mob,this,damageToTake,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,-1,null);
 			}
 			return true;
@@ -148,8 +152,10 @@ public class Falling extends StdAbility
 		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
-			if(mob==null) return false;
-			if(mob.location()==null) return false;
+			if(mob==null)
+				return false;
+			if(mob.location()==null)
+				return false;
 
 			if(CMLib.flags().isInFlight(mob))
 			{
@@ -289,10 +295,13 @@ public class Falling extends StdAbility
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
 	{
-		if(!auto) return false;
+		if(!auto)
+			return false;
 		final Physical P=target;
-		if(P==null) return false;
-		if((P instanceof Item)&&(room==null)) return false;
+		if(P==null)
+			return false;
+		if((P instanceof Item)&&(room==null))
+			return false;
 		if(P.fetchEffect("Falling")==null)
 		{
 			final Falling F=new Falling();

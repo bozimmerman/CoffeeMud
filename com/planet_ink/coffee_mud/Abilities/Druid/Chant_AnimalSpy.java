@@ -88,8 +88,10 @@ public class Chant_AnimalSpy extends Chant
 		try
 		{
 			super.executeMsg(myHost,msg);
-			if(spy==null) return;
-			if(invoker==null) return;
+			if(spy==null)
+				return;
+			if(invoker==null)
+				return;
 
 			if((msg.amISource(spy))
 			&&((msg.sourceMinor()==CMMsg.TYP_LOOK)||(msg.sourceMinor()==CMMsg.TYP_EXAMINE))
@@ -175,7 +177,8 @@ public class Chant_AnimalSpy extends Chant
 			if((mob.location().okMessage(mob,msg))&&((newRoom==mob.location())||(newRoom.okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
-				if(newRoom!=mob.location()) newRoom.send(target,msg2);
+				if(newRoom!=mob.location())
+					newRoom.send(target,msg2);
 				spy=target;
 				beneficialAffect(mob,spy,asLevel,0);
 				final Ability A=spy.fetchEffect(ID());

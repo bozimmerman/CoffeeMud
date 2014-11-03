@@ -60,14 +60,17 @@ public class DefaultClimate implements Climate
 	@Override
 	public int nextWeatherType(Room room)
 	{
-		if(room==null) return nextWeather;
-		if(!CMLib.map().hasASky(room)) return Climate.WEATHER_CLEAR;
+		if(room==null)
+			return nextWeather;
+		if(!CMLib.map().hasASky(room))
+			return Climate.WEATHER_CLEAR;
 		return nextWeather;
 	}
 	@Override
 	public String nextWeatherDescription(Room room)
 	{
-		if(!CMLib.map().hasASky(room)) return "You can't tell much about the weather from here.";
+		if(!CMLib.map().hasASky(room))
+			return "You can't tell much about the weather from here.";
 		return getNextWeatherDescription(room.getArea());
 	}
 	@Override
@@ -148,8 +151,10 @@ public class DefaultClimate implements Climate
 	@Override
 	public int weatherType(Room room)
 	{
-		if(room==null) return currentWeather;
-		if(!CMLib.map().hasASky(room)) return Climate.WEATHER_CLEAR;
+		if(room==null)
+			return currentWeather;
+		if(!CMLib.map().hasASky(room))
+			return Climate.WEATHER_CLEAR;
 		return currentWeather;
 	}
 	@Override
@@ -162,7 +167,8 @@ public class DefaultClimate implements Climate
 	@Override
 	public boolean canSeeTheMoon(Room room, Ability butNotA)
 	{
-		if(canSeeTheStars(room)) return true;
+		if(canSeeTheStars(room))
+			return true;
 		final List<Ability> V=CMLib.flags().domainAffects(room,Ability.DOMAIN_MOONSUMMONING);
 		for(int v=0;v<V.size();v++)
 			if(V.get(v)!=butNotA)
@@ -285,7 +291,8 @@ public class DefaultClimate implements Climate
 				// to a particular condition.
 				final int chance=seasonalNum+changeNum;
 				// total all the change chances, negative means NO chance of this change
-				if(chance>0) goodWeatherTotal+=chance;
+				if(chance>0)
+					goodWeatherTotal+=chance;
 			}
 
 			// some sort of debugging commentary

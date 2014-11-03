@@ -54,8 +54,10 @@ public class WaterSurface extends StdRoom implements Drink
 	@Override
 	public void giveASky(int depth)
 	{
-		if(skyedYet) return;
-		if(depth>1000) return;
+		if(skyedYet)
+			return;
+		if(depth>1000)
+			return;
 		super.giveASky(depth+1);
 		skyedYet=true;
 
@@ -101,7 +103,8 @@ public class WaterSurface extends StdRoom implements Drink
 					if(thatRoom!=null)
 					{
 						Exit xo=thatRoom.getRawExit(Directions.getOpDirectionCode(d));
-						if((xo==null)||(xo.hasADoor())) xo=upE;
+						if((xo==null)||(xo.hasADoor()))
+							xo=upE;
 						thatSea.setRawExit(Directions.getOpDirectionCode(d),xo);
 					}
 					((GridLocale)thatSea).clearGrid(null);

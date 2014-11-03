@@ -59,8 +59,10 @@ public class Prayer_Fertilize extends Prayer
 					if(M!=null)
 					{
 						Ability A=M.fetchEffect("Farming");
-						if(A==null) A=M.fetchEffect("Foraging");
-						if(A!=null) A.setAbilityCode(2);
+						if(A==null)
+							A=M.fetchEffect("Foraging");
+						if(A!=null)
+							A.setAbilityCode(2);
 					}
 				}
 		}

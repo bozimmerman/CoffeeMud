@@ -65,8 +65,10 @@ public class Spell_MindLight extends Spell
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
-		if(!(affected instanceof Room)) return true;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(!(affected instanceof Room))
+			return true;
 		final Room R=(Room)affected;
 		if((invoker()!=null)&&(canBeUninvoked()))
 		{

@@ -110,7 +110,8 @@ public class Chant_AnimalGrowth extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(!CMLib.flags().isAnimalIntelligence(target))
 		{
 			mob.tell(L("This chant only works on animals."));

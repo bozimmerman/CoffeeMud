@@ -86,7 +86,8 @@ public class GenCompGenerator extends StdCompGenerator
 			final StringBuilder str=new StringBuilder("");
 			for(int i=0;i<getConsumedFuelTypes().length;i++)
 			{
-				if(i>0) str.append(", ");
+				if(i>0)
+					str.append(", ");
 				str.append(RawMaterial.CODES.NAME(getConsumedFuelTypes()[i]));
 			}
 			return str.toString();
@@ -144,14 +145,16 @@ public class GenCompGenerator extends StdCompGenerator
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
-			if(code.equalsIgnoreCase(MYCODES[i])) return i;
+			if(code.equalsIgnoreCase(MYCODES[i]))
+				return i;
 		return -1;
 	}
 	private static String[] codes=null;
 	@Override
 	public String[] getStatCodes()
 	{
-		if(codes!=null) return codes;
+		if(codes!=null)
+			return codes;
 		final String[] MYCODES=CMProps.getStatCodesList(GenCompGenerator.MYCODES,this);
 		final String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
@@ -165,7 +168,8 @@ public class GenCompGenerator extends StdCompGenerator
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenCompGenerator)) return false;
+		if(!(E instanceof GenCompGenerator))
+			return false;
 		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)
 			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))

@@ -65,12 +65,15 @@ public class Prayer_HealingAura extends Prayer
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
 		if(!(affected instanceof MOB))
 		   return false;
-		if(tickID!=Tickable.TICKID_MOB) return true;
+		if(tickID!=Tickable.TICKID_MOB)
+			return true;
 		final MOB myChar=(MOB)affected;
-		if(((--fiveDown)>0)&&((--tenDown)>0)&&((--twentyDown)>0)) return true;
+		if(((--fiveDown)>0)&&((--tenDown)>0)&&((--twentyDown)>0))
+			return true;
 
 		final Set<MOB> followers=myChar.getGroupMembers(new HashSet<MOB>());
 		if(myChar.location()!=null)

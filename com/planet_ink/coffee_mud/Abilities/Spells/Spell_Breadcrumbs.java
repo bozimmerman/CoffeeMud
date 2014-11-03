@@ -105,7 +105,8 @@ public class Spell_Breadcrumbs extends Spell
 			int t=0;
 			while(t<trail.size())
 			{
-				if(kill) trail.removeElement(trail.elementAt(t));
+				if(kill)
+					trail.removeElement(trail.elementAt(t));
 				else
 				{
 					final Room R=(Room)trail.elementAt(t);
@@ -114,7 +115,8 @@ public class Spell_Breadcrumbs extends Spell
 					t++;
 				}
 			}
-			if(kill) return;
+			if(kill)
+				return;
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
 				final Room adjacentRoom=newRoom.getRoomInDir(d);
@@ -125,7 +127,8 @@ public class Spell_Breadcrumbs extends Spell
 					t=0;
 					while(t<trail.size())
 					{
-						if(kill) trail.removeElement(trail.elementAt(t));
+						if(kill)
+							trail.removeElement(trail.elementAt(t));
 						else
 						{
 							final Room R=(Room)trail.elementAt(t);
@@ -144,7 +147,8 @@ public class Spell_Breadcrumbs extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)

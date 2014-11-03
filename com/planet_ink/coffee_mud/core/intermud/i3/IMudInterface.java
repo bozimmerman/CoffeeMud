@@ -128,10 +128,14 @@ public class IMudInterface implements ImudServices, Serializable
 
 	public IMudInterface(String Name, String Version, int Port, String i3status, List<CMChannel> Channels)
 	{
-		if(Name!=null) name=Name;
-		if(i3status!=null) i3state=i3status;
-		if(Version!=null) version=Version;
-		if(Channels!=null) channels=Channels;
+		if(Name!=null)
+			name=Name;
+		if(i3status!=null)
+			i3state=i3status;
+		if(Version!=null)
+			version=Version;
+		if(Channels!=null)
+			channels=Channels;
 		port=Port;
 	}
 
@@ -208,7 +212,8 @@ public class IMudInterface implements ImudServices, Serializable
 		str=CMStrings.replaceAll(str,"$e","<S-HE-SHE>");
 		str=CMStrings.replaceAll(str,"$E","<T-HE-SHE>");
 		str=CMStrings.replaceAll(str,"`","\'");
-		if(str.equals("$")) return "";
+		if(str.equals("$"))
+			return "";
 		return str.trim();
 	}
 
@@ -308,7 +313,8 @@ public class IMudInterface implements ImudServices, Serializable
 					msg=CMClass.getMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelCode),str);
 				}
 				CMLib.commands().monitorGlobalMessage(mob.location(), msg);
-				if(channelInt>=0) CMLib.channels().channelQueUp(channelInt,msg);
+				if(channelInt>=0)
+					CMLib.channels().channelQueUp(channelInt,msg);
 				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
 					final MOB M=S.mob();
@@ -318,7 +324,8 @@ public class IMudInterface implements ImudServices, Serializable
 						M.executeMsg(M,msg);
 				}
 				mob.destroy();
-				if((targetMOB!=null)&&(killtargetmob)) targetMOB.destroy();
+				if((targetMOB!=null)&&(killtargetmob))
+					targetMOB.destroy();
 			}
 			break;
 		case Packet.LOCATE_QUERY:

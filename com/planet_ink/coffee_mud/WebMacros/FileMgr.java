@@ -43,8 +43,10 @@ public class FileMgr extends StdWebMacro
 
 	public boolean matches(String s1, String s2)
 	{
-		if(s1.length()==0) return true;
-		if(s2.length()==0) return false;
+		if(s1.length()==0)
+			return true;
+		if(s2.length()==0)
+			return false;
 		if(Pattern.matches(s1, s2))
 			return true;
 		if(s1.startsWith("*")&&(s1.endsWith("*")))
@@ -60,10 +62,12 @@ public class FileMgr extends StdWebMacro
 
 	public void compileFilenamesList(CMFile F, String regex, Vector V)
 	{
-		if((!F.canRead())||(!F.isDirectory())) return;
+		if((!F.canRead())||(!F.isDirectory()))
+			return;
 		final String[] list=F.list();
 		String path=F.getAbsolutePath();
-		if(!path.endsWith("/")) path+="/";
+		if(!path.endsWith("/"))
+			path+="/";
 		for(int l=0;l<list.length;l++)
 		{
 			final CMFile F2=new CMFile(path+list[l],null,CMFile.FLAG_LOGERRORS);
@@ -92,14 +96,16 @@ public class FileMgr extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		String path=httpReq.getUrlParameter("PATH");
-		if(path==null) path="";
+		if(path==null)
+			path="";
 		String file=httpReq.getUrlParameter("FILE");
 		if(file==null)
 		{
 			file="";
 		}
 		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
-		if(M==null) return "[authentication error]";
+		if(M==null)
+			return "[authentication error]";
 		try
 		{
 			String filePath=path;
@@ -132,7 +138,8 @@ public class FileMgr extends StdWebMacro
 			if(parms.containsKey("CREATE"))
 			{
 				final String s=httpReq.getUrlParameter("RAWTEXT");
-				if(s==null) return "File `"+last+"` not updated -- no buffer!";
+				if(s==null)
+					return "File `"+last+"` not updated -- no buffer!";
 				if(parms.containsKey("VFS")||parms.containsKey("LOCAL")||parms.containsKey("BOTH"))
 				{
 					final StringBuilder returnMsg=new StringBuilder("");
@@ -171,7 +178,8 @@ public class FileMgr extends StdWebMacro
 						||(!F.saveText(s)))
 							returnMsg.append(L("File `//@x1` not updated -- error!",last));
 					}
-					if(returnMsg.length()>0) return returnMsg.toString();
+					if(returnMsg.length()>0)
+						return returnMsg.toString();
 				}
 				else
 				if((!F.canWrite())||(!F.saveText(s)))
@@ -252,9 +260,11 @@ public class FileMgr extends StdWebMacro
 				if(F.getAbsolutePath().equals("/"))
 					return  "Error deleting directory!";
 				String newPath=F.getAbsolutePath();
-				if(newPath.endsWith("/")) newPath=newPath.substring(0,newPath.length()-1);
+				if(newPath.endsWith("/"))
+					newPath=newPath.substring(0,newPath.length()-1);
 				final int x=newPath.lastIndexOf('/');
-				if(x>0) newPath=newPath.substring(0,x);
+				if(x>0)
+					newPath=newPath.substring(0,x);
 				httpReq.addFakeUrlParameter("PATH",newPath);
 				httpReq.removeUrlParameter("FILE");
 				return "Deleted directory.";
@@ -263,7 +273,8 @@ public class FileMgr extends StdWebMacro
 			if(parms.containsKey("APPEND"))
 			{
 				final String s=httpReq.getUrlParameter("RAWTEXT");
-				if(s==null) return "File `"+last+"` not appended -- no buffer!";
+				if(s==null)
+					return "File `"+last+"` not appended -- no buffer!";
 				final StringBuffer buf=F.textUnformatted();
 				buf.append(s);
 				if((!F.canWrite())||(!F.saveText(buf)))
@@ -283,7 +294,8 @@ public class FileMgr extends StdWebMacro
 						buf=d.getData();
 					}
 				}
-				if(buf==null) return "File `"+last+"` not uploaded -- no buffer!";
+				if(buf==null)
+					return "File `"+last+"` not uploaded -- no buffer!";
 				if((!F.canWrite())||(!F.saveRaw(buf)))
 					return "File `"+F.getAbsolutePath()+"` not uploaded -- error!";
 				return "File `"+F.getAbsolutePath()+"` uploaded.";

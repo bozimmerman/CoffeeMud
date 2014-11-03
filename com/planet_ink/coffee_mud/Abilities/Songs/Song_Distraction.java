@@ -46,7 +46,8 @@ public class Song_Distraction extends Song
 	{
 		if(!(affected instanceof MOB))
 			return true;
-		if(affected==invoker) return true;
+		if(affected==invoker)
+			return true;
 
 		final MOB mob=(MOB)affected;
 

@@ -87,8 +87,10 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 	@Override
 	public boolean isPackagable(List<Item> V)
 	{
-		if(V==null) return false;
-		if(V.size()==0) return false;
+		if(V==null)
+			return false;
+		if(V.size()==0)
+			return false;
 		for(int v1=0;v1<V.size();v1++)
 		{
 			final Item I=V.get(v1);
@@ -102,7 +104,8 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 	@Override
 	public Item getItem()
 	{
-		if(packageText().length()==0) return null;
+		if(packageText().length()==0)
+			return null;
 		final List<XMLLibrary.XMLpiece> buf=CMLib.xml().parseAllXML(packageText());
 		if(buf==null)
 		{
@@ -138,7 +141,8 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 		final int itemWeight=basePhyStats().weight()/numberOfItemsInPackage();
 		final int itemValue=baseGoldValue()/numberOfItemsInPackage();
 		final Item I=getItem();
-		if(I==null) return V;
+		if(I==null)
+			return V;
 		I.recoverPhyStats();
 		for(int i=0;i<number;i++)
 			V.addElement(I.copyOf());

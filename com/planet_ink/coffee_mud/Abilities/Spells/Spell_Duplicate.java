@@ -48,7 +48,8 @@ public class Spell_Duplicate extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!mob.isMine(target))
 		{
@@ -74,7 +75,8 @@ public class Spell_Duplicate extends Spell
 		multiPlier+=(target instanceof Wand)?5:0;
 
 		int level=target.phyStats().level();
-		if(level<=0) level=1;
+		if(level<=0)
+			level=1;
 		int expLoss=(level*multiPlier);
 		if((mob.getExperience()-expLoss)<0)
 		{

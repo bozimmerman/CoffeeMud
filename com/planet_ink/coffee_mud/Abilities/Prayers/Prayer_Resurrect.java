@@ -75,7 +75,8 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 					allObjs.addElement(obj);
 				}
 			}
-			if(allObjs.size()==0) return false;
+			if(allObjs.size()==0)
+				return false;
 			final String name=CMParms.combine(commands,0);
 			if(name.equalsIgnoreCase("list"))
 			{
@@ -93,8 +94,10 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 				return false;
 			}
 			Physical P=(Physical)CMLib.english().fetchEnvironmental(allObjs,name,true);
-			if(P==null) P=(Physical)CMLib.english().fetchEnvironmental(allObjs,name,false);
-			if(P==null) return false;
+			if(P==null)
+				P=(Physical)CMLib.english().fetchEnvironmental(allObjs,name,false);
+			if(P==null)
+				return false;
 			for(int i=0;i<allObjs.size();i++)
 				if(allObjs.elementAt(i)==P)
 				{
@@ -105,7 +108,8 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 		}
 		if(nonPlayerData==null)
 		{
-			if(body==null) return false;
+			if(body==null)
+				return false;
 			if((!(body instanceof DeadBody))
 			||(((DeadBody)body).mobName().length()==0))
 			{
@@ -216,8 +220,10 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 			data=data.substring(x+1);
 		}
 		PhysicalAgent object=CMClass.getItem(classID);
-		if(object==null) object=CMClass.getMOB(classID);
-		if(object==null) return null;
+		if(object==null)
+			object=CMClass.getMOB(classID);
+		if(object==null)
+			return null;
 		object.setMiscText(data);
 		object.basePhyStats().setAbility(ability);
 		object.recoverPhyStats();

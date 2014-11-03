@@ -44,7 +44,8 @@ public class PollNext extends StdWebMacro
 		final String last=httpReq.getUrlParameter("POLL");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("POLL");
+			if(last!=null)
+				httpReq.removeUrlParameter("POLL");
 			return "";
 		}
 		String lastID="";

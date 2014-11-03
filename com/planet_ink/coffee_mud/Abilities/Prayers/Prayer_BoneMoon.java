@@ -53,7 +53,8 @@ public class Prayer_BoneMoon extends Prayer
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		if(canBeUninvoked())
 		{
 			final Room R=CMLib.map().roomLocation(affected);
@@ -118,7 +119,8 @@ public int castingQuality(MOB mob, Physical target)
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Room target=mob.location();
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell(L("This place is already under a bone moon."));

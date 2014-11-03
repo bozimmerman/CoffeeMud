@@ -84,7 +84,8 @@ public class StdWebMacro implements WebMacro
 
 	protected StringBuffer colorwebifyOnly(StringBuffer s)
 	{
-		if(s==null) return null;
+		if(s==null)
+			return null;
 		int i=0;
 		final String[] lookup=CMLib.color().standardHTMLlookups();
 		while(i<s.length())
@@ -126,7 +127,8 @@ public class StdWebMacro implements WebMacro
 
 	protected StringBuffer webify(StringBuffer s)
 	{
-		if(s==null) return null;
+		if(s==null)
+			return null;
 		int i=0;
 		while(i<s.length())
 		{

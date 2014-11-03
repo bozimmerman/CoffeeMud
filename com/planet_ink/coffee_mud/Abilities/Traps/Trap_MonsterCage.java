@@ -47,15 +47,18 @@ public class Trap_MonsterCage extends StdTrap
 
 	protected Item getCagedAnimal(MOB mob)
 	{
-		if(mob==null) return null;
-		if(mob.location()==null) return null;
+		if(mob==null)
+			return null;
+		if(mob.location()==null)
+			return null;
 		for(int i=0;i<mob.location().numItems();i++)
 		{
 			final Item I=mob.location().getItem(i);
 			if(I instanceof CagedAnimal)
 			{
 				final MOB M=((CagedAnimal)I).unCageMe();
-				if(M!=null) return I;
+				if(M!=null)
+					return I;
 			}
 		}
 		return null;
@@ -64,7 +67,8 @@ public class Trap_MonsterCage extends StdTrap
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
-		if(P==null) return null;
+		if(P==null)
+			return null;
 		final Item I=getCagedAnimal(mob);
 		if(I!=null)
 		{
@@ -112,7 +116,8 @@ public class Trap_MonsterCage extends StdTrap
 	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,P)) return false;
+		if(!super.canSetTrapOn(mob,P))
+			return false;
 		if(getCagedAnimal(mob)==null)
 		{
 			if(mob!=null)

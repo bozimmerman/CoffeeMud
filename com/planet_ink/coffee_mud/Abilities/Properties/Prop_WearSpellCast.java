@@ -61,7 +61,8 @@ public class Prop_WearSpellCast extends Prop_HaveSpellCast
 			checked=false;
 			return;
 		}
-		if(checked) return;
+		if(checked)
+			return;
 		Item I=null;
 		disabled=false;
 		for(int i=0;i<mob.numItems();i++)
@@ -114,14 +115,16 @@ public class Prop_WearSpellCast extends Prop_HaveSpellCast
 	@Override
 	public boolean addMeIfNeccessary(PhysicalAgent source, Physical target, boolean makeLongLasting, int asLevel, short maxTicks)
 	{
-		if(disabled&&checked) return false;
+		if(disabled&&checked)
+			return false;
 		return super.addMeIfNeccessary(source,target,makeLongLasting,asLevel,maxTicks);
 	}
 
 	@Override
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
-		if(processing) return;
+		if(processing)
+			return;
 		processing=true;
 		if((host!=null)&&(host instanceof Item))
 		{

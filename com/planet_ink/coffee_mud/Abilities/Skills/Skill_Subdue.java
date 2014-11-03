@@ -132,7 +132,8 @@ public class Skill_Subdue extends StdSkill
 		if(A!=null)
 			A.unInvoke();
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

@@ -65,11 +65,13 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 		xs=new int[0];
 		ys=new long[0];
 		txt=txt.trim();
-		if(txt.length()==0) return null;
+		if(txt.length()==0)
+			return null;
 		if((!txt.startsWith("{"))&&(!txt.endsWith("}")))
 			return null;
 		final int x=txt.indexOf("},{");
-		if(x<0) return null;
+		if(x<0)
+			return null;
 		final String Xstr=txt.substring(1,x);
 		final String Ystr=txt.substring(x+3,txt.length()-1);
 		final List<String> XV=CMParms.parseCommas(Xstr,true);
@@ -89,7 +91,8 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 	@Override
 	public boolean contains(long x)
 	{
-		if(x==-1) return true;
+		if(x==-1)
+			return true;
 		if(x<=NEXT_BITS)
 			return getXindex((int)x)>=0;
 		return getYindex(x)>=0;
@@ -236,7 +239,8 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 	public long random()
 	{
 		final int roomCount=roomCount();
-		if(roomCount<=0) return -1;
+		if(roomCount<=0)
+			return -1;
 		final int which=CMLib.dice().roll(1,roomCount,-1);
 		long count=0;
 		for(int i=0;i<xs.length;i++)
@@ -292,7 +296,8 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 	@Override
 	public synchronized CMIntegerGrouper remove(long x)
 	{
-		if(x==-1) return null;
+		if(x==-1)
+			return null;
 		if(x<=NEXT_BITS)
 			removex((int)x);
 		else
@@ -386,7 +391,8 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 	@Override
 	public CMIntegerGrouper add(CMIntegerGrouper grp)
 	{
-		if(grp==null) return this;
+		if(grp==null)
+			return this;
 		final long[] all=grp.allRoomNums();
 		for (final long element : all)
 			add(element);
@@ -396,7 +402,8 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 	@Override
 	public synchronized CMIntegerGrouper add(long x)
 	{
-		if(x==-1) return null;
+		if(x==-1)
+			return null;
 		if(x<=NEXT_BITS)
 			addx((int)x);
 		else
@@ -408,11 +415,14 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 	public void addy(long x)
 	{
 		int index=getYindex(x);
-		if(index>=0) return;
+		if(index>=0)
+			return;
 		index=(index+1)*-1;
-		if((index>0)&&((ys[index-1]&NEXT_FLAGL)>0)) index--;
+		if((index>0)&&((ys[index-1]&NEXT_FLAGL)>0))
+			index--;
 		int end=index+2;
-		if(end>ys.length) end=ys.length;
+		if(end>ys.length)
+			end=ys.length;
 		for(int i=index;i<end;i++)
 			if((ys[i]&NEXT_FLAGL)>0)
 			{
@@ -477,11 +487,14 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 	public void addx(int x)
 	{
 		int index=getXindex(x);
-		if(index>=0) return;
+		if(index>=0)
+			return;
 		index=(index+1)*-1;
-		if((index>0)&&((xs[index-1]&NEXT_FLAG)>0)) index--;
+		if((index>0)&&((xs[index-1]&NEXT_FLAG)>0))
+			index--;
 		int end=index+2;
-		if(end>xs.length) end=xs.length;
+		if(end>xs.length)
+			end=xs.length;
 		for(int i=index;i<end;i++)
 			if((xs[i]&NEXT_FLAG)>0)
 			{
@@ -545,14 +558,18 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 	public void removey(long x)
 	{
 		int index=getYindex(x);
-		if(index<0) return;
-		if((index>0)&&((ys[index-1]&NEXT_FLAGL)>0)) index--;
+		if(index<0)
+			return;
+		if((index>0)&&((ys[index-1]&NEXT_FLAGL)>0))
+			index--;
 		int end=index+2;
-		if(end>ys.length) end=ys.length;
+		if(end>ys.length)
+			end=ys.length;
 		for(int i=index;i<end;i++)
 			if((ys[i]&NEXT_FLAGL)>0)
 			{
-				if(x<(ys[i]&NEXT_BITSL)) return;
+				if(x<(ys[i]&NEXT_BITSL))
+					return;
 				if(x==(ys[i]&NEXT_BITSL))
 				{
 					ys[i]++;
@@ -605,14 +622,18 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 	public void removex(int x)
 	{
 		int index=getXindex(x);
-		if(index<0) return;
-		if((index>0)&&((xs[index-1]&NEXT_FLAG)>0)) index--;
+		if(index<0)
+			return;
+		if((index>0)&&((xs[index-1]&NEXT_FLAG)>0))
+			index--;
 		int end=index+2;
-		if(end>xs.length) end=xs.length;
+		if(end>xs.length)
+			end=xs.length;
 		for(int i=index;i<end;i++)
 			if((xs[i]&NEXT_FLAG)>0)
 			{
-				if(x<(xs[i]&NEXT_BITS)) return;
+				if(x<(xs[i]&NEXT_BITS))
+					return;
 				if(x==(xs[i]&NEXT_BITS))
 				{
 					xs[i]++;

@@ -62,8 +62,10 @@ public class Prayer_DivineLuck extends Prayer
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(affected==null) return;
-		if(!(affected instanceof MOB)) return;
+		if(affected==null)
+			return;
+		if(!(affected instanceof MOB))
+			return;
 		final MOB mob=(MOB)affected;
 		final int xlvl=super.getXLEVELLevel(invoker());
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+((affected.phyStats().level()+(2*xlvl))/5)+1);
@@ -97,7 +99,8 @@ public class Prayer_DivineLuck extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target=mob;
-		if((auto)&&(givenTarget!=null)) target=givenTarget;
+		if((auto)&&(givenTarget!=null))
+			target=givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
 			mob.tell(mob,target,null,L("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));

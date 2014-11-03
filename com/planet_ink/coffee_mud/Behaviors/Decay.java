@@ -69,9 +69,11 @@ public class Decay extends ActiveTicker
 	{
 		final String s=parms;
 		final int x=s.toUpperCase().indexOf("REMAIN=");
-		if(x<0) return "remain="+tickDown+" "+s;
+		if(x<0)
+			return "remain="+tickDown+" "+s;
 		int y=s.indexOf(' ',x+1);
-		if(y<0) y=s.length();
+		if(y<0)
+			y=s.length();
 		return ("remain="+tickDown+" "+s.substring(0,x)+s.substring(y).trim()).trim();
 	}
 
@@ -79,7 +81,8 @@ public class Decay extends ActiveTicker
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(!activated) return true;
+		if(!activated)
+			return true;
 		if(canAct(ticking,tickID))
 		{
 			if(ticking instanceof MOB)
@@ -88,7 +91,8 @@ public class Decay extends ActiveTicker
 				final Room room=mob.location();
 				if(room!=null)
 				{
-					if(mob.amDead()) mob.setLocation(null);
+					if(mob.amDead())
+						mob.setLocation(null);
 					mob.destroy();
 					room.recoverRoomStats();
 					if(answer.trim().length()>0)
@@ -100,9 +104,11 @@ public class Decay extends ActiveTicker
 			{
 				final Item item=(Item)ticking;
 				final Environmental E=item.owner();
-				if(E==null) return true;
+				if(E==null)
+					return true;
 				final Room room=getBehaversRoom(ticking);
-				if(room==null) return true;
+				if(room==null)
+					return true;
 				if(answer.trim().length()>0)
 				{
 					if(E instanceof MOB)
@@ -127,7 +133,8 @@ public class Decay extends ActiveTicker
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
-		if(activated) return;
+		if(activated)
+			return;
 		if(msg.amITarget(affecting))
 		{
 			if(affecting instanceof Rideable)

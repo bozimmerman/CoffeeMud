@@ -90,16 +90,20 @@ public class CraftingSkill extends GatheringSkill
 		if(withThis.length()==0)
 		{
 			int x=thisStr.indexOf("% ");
-			if(x>=0) return new StringBuffer(thisStr).replace(x,x+2,withThis).toString();
+			if(x>=0)
+				return new StringBuffer(thisStr).replace(x,x+2,withThis).toString();
 			x=thisStr.indexOf(" %");
-			if(x>=0) return new StringBuffer(thisStr).replace(x,x+2,withThis).toString();
+			if(x>=0)
+				return new StringBuffer(thisStr).replace(x,x+2,withThis).toString();
 			x=thisStr.indexOf('%');
-			if(x>=0) return new StringBuffer(thisStr).replace(x,x+1,withThis).toString();
+			if(x>=0)
+				return new StringBuffer(thisStr).replace(x,x+1,withThis).toString();
 		}
 		else
 		{
 			final int x=thisStr.indexOf('%');
-			if(x>=0) return new StringBuffer(thisStr).replace(x,x+1,withThis).toString();
+			if(x>=0)
+				return new StringBuffer(thisStr).replace(x,x+1,withThis).toString();
 		}
 		return thisStr;
 	}
@@ -148,7 +152,8 @@ public class CraftingSkill extends GatheringSkill
 
 	protected long getContainerType(final String s)
 	{
-		if(s.length()==0) return 0;
+		if(s.length()==0)
+			return 0;
 		if(CMath.isInteger(s))
 			return CMath.s_int(s);
 		long ret=0;
@@ -166,7 +171,8 @@ public class CraftingSkill extends GatheringSkill
 
 	protected List<List<String>> addRecipes(MOB mob, List<List<String>> recipes)
 	{
-		if(mob==null) return recipes;
+		if(mob==null)
+			return recipes;
 		Item I=null;
 		List<List<String>> V=null;
 		List<String> V2=null;
@@ -202,8 +208,10 @@ public class CraftingSkill extends GatheringSkill
 						else
 						{
 							Log.errOut(ID(),"Not enough parms ("+lastRecipeV.size()+"<="+V2.size()+"): "+CMParms.combine(V2));
-							while(V2.size()<lastRecipeV.size()) V2.add("");
-							while(V2.size()>lastRecipeV.size()) V2.remove(V2.size()-1);
+							while(V2.size()<lastRecipeV.size())
+								V2.add("");
+							while(V2.size()>lastRecipeV.size())
+								V2.remove(V2.size()-1);
 							recipes.add(V2);
 						}
 					}
@@ -254,8 +262,10 @@ public class CraftingSkill extends GatheringSkill
 
 	protected void addSpells(Physical P, String spells)
 	{
-		if(spells.length()==0) return;
-		if(spells.equalsIgnoreCase("bundle")) return;
+		if(spells.length()==0)
+			return;
+		if(spells.equalsIgnoreCase("bundle"))
+			return;
 		final List<Ability> V=CMLib.ableParms().getCodedSpells(spells);
 		for(int v=0;v<V.size();v++)
 			P.addNonUninvokableEffect(V.get(v));
@@ -289,7 +299,8 @@ public class CraftingSkill extends GatheringSkill
 	protected List<List<String>> loadList(StringBuffer str)
 	{
 		final List<List<String>> V=new Vector<List<String>>();
-		if(str==null) return V;
+		if(str==null)
+			return V;
 		List<String> V2=new Vector<String>();
 		boolean oneComma=false;
 		int start=0;
@@ -315,8 +326,10 @@ public class CraftingSkill extends GatheringSkill
 				if(oneComma)
 				{
 					V2.add(str.substring(start,i));
-					if(V2.size()>longestList) longestList=V2.size();
-					if(V2 instanceof Vector) ((Vector)V2).trimToSize();
+					if(V2.size()>longestList)
+						longestList=V2.size();
+					if(V2 instanceof Vector)
+						((Vector)V2).trimToSize();
 					V.add(V2);
 					V2=new Vector();
 				}
@@ -330,7 +343,8 @@ public class CraftingSkill extends GatheringSkill
 			V2.add(str.substring(start));
 		if(V2.size()>1)
 		{
-			if(V2.size()>longestList) longestList=V2.size();
+			if(V2.size()>longestList)
+				longestList=V2.size();
 			V.add(V2);
 		}
 		for(int v=0;v<V.size();v++)
@@ -360,7 +374,8 @@ public class CraftingSkill extends GatheringSkill
 	protected static final int FOUND_AMT=1;
 	protected int fixResourceRequirement(int resource, int amt)
 	{
-		if(amt<=0) return amt;
+		if(amt<=0)
+			return amt;
 		switch(resource)
 		{
 		case RawMaterial.RESOURCE_MITHRIL:
@@ -376,7 +391,8 @@ public class CraftingSkill extends GatheringSkill
 			amt=amt*2;
 			break;
 		}
-		if(amt<=0) amt=1;
+		if(amt<=0)
+			amt=1;
 		return amt;
 	}
 
@@ -397,8 +413,10 @@ public class CraftingSkill extends GatheringSkill
 											 PairVector<Integer,Integer> eduMods)
 	{
 		final int[][] data=new int[2][2];
-		if((req1Desc!=null)&&(req1Desc.length()==0)) req1Desc=null;
-		if((req2Desc!=null)&&(req2Desc.length()==0)) req2Desc=null;
+		if((req1Desc!=null)&&(req1Desc.length()==0))
+			req1Desc=null;
+		if((req2Desc!=null)&&(req2Desc.length()==0))
+			req2Desc=null;
 
 		// the fake resource generation:
 		if(autoGeneration>0)
@@ -421,7 +439,8 @@ public class CraftingSkill extends GatheringSkill
 				else
 					firstWood=CMLib.materials().findFirstResource(mob.location(),element);
 
-				if(firstWood!=null) break;
+				if(firstWood!=null)
+					break;
 			}
 		}
 		else
@@ -442,7 +461,8 @@ public class CraftingSkill extends GatheringSkill
 					firstOther=CMLib.materials().findMostOfMaterial(mob.location(),element);
 				else
 					firstOther=CMLib.materials().findFirstResource(mob.location(),element);
-				if(firstOther!=null) break;
+				if(firstOther!=null)
+					break;
 			}
 		}
 		else
@@ -462,7 +482,8 @@ public class CraftingSkill extends GatheringSkill
 					commonTell(mob,L("There is no @x1 here to make anything from!  It might need to be put down first.",req1Desc.toLowerCase()));
 				return null;
 			}
-			if(!bundle) req1Required=fixResourceRequirement(data[0][FOUND_CODE],req1Required);
+			if(!bundle)
+				req1Required=fixResourceRequirement(data[0][FOUND_CODE],req1Required);
 		}
 		if(req2Required>0)
 		{
@@ -476,7 +497,8 @@ public class CraftingSkill extends GatheringSkill
 						commonTell(mob,L("You need some @x1 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",req2Desc.toLowerCase()));
 					return null;
 				}
-			if(!bundle) req2Required=fixResourceRequirement(data[1][FOUND_CODE],req2Required);
+			if(!bundle)
+				req2Required=fixResourceRequirement(data[1][FOUND_CODE],req2Required);
 		}
 
 		if(req1Required>data[0][FOUND_AMT])
@@ -548,7 +570,8 @@ public class CraftingSkill extends GatheringSkill
 		if(material<0)
 		{
 			List<Integer> rscs=myResources();
-			if(rscs.size()==0) rscs=new XVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
+			if(rscs.size()==0)
+				rscs=new XVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
 			material=rscs.get(CMLib.dice().roll(1,rscs.size(),-1)).intValue();
 		}
 		while(((building==null)||(building.name().endsWith(" bundle")))&&(((++tries)<100)))
@@ -557,7 +580,8 @@ public class CraftingSkill extends GatheringSkill
 			V.addElement(Integer.valueOf(material));
 			if(forceLevels)
 				V.addElement(Boolean.TRUE);
-			if(recipeName!=null) V.addElement(recipeName);
+			if(recipeName!=null)
+				V.addElement(recipeName);
 			invoke(mob,V,null,true,-1);
 			if((V.size()>0)&&(V.lastElement() instanceof Item))
 			{
@@ -571,7 +595,8 @@ public class CraftingSkill extends GatheringSkill
 				building=null;
 		}
 		mob.destroy();
-		if(building==null) return null;
+		if(building==null)
+			return null;
 		building.setSecretIdentity("");
 		building.recoverPhyStats();
 		building.text();
@@ -599,7 +624,8 @@ public class CraftingSkill extends GatheringSkill
 			s=recipes.get(r).get(RCP_FINALNAME);
 			s=replacePercent(s,"").trim();
 			pair=craftItem(s,material,forceLevels);
-			if(pair==null) continue;
+			if(pair==null)
+				continue;
 			built=pair.item;
 			if(!usedNames.contains(built.Name()))
 			{
@@ -614,7 +640,8 @@ public class CraftingSkill extends GatheringSkill
 	public ItemKeyPair craftItem(String recipeName)
 	{
 		List<Integer> rscs=myResources();
-		if(rscs.size()==0) rscs=new XVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
+		if(rscs.size()==0)
+			rscs=new XVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
 		final int material=rscs.get(CMLib.dice().roll(1,rscs.size(),-1)).intValue();
 		return craftItem(recipeName,material,false);
 	}
@@ -624,11 +651,13 @@ public class CraftingSkill extends GatheringSkill
 		List<Integer> rscs=myResources();
 		final List<ItemKeyPair> allItems=new Vector<ItemKeyPair>();
 		List<ItemKeyPair> pairs=null;
-		if(rscs.size()==0) rscs=new XVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
+		if(rscs.size()==0)
+			rscs=new XVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
 		for(int r=0;r<rscs.size();r++)
 		{
 			pairs=craftAllItemSets(rscs.get(r).intValue(), forceLevels);
-			if((pairs==null)||(pairs.size()==0)) continue;
+			if((pairs==null)||(pairs.size()==0))
+				continue;
 			allItems.addAll(pairs);
 		}
 		return allItems;
@@ -642,7 +671,8 @@ public class CraftingSkill extends GatheringSkill
 	protected List<List<String>> matchingRecipeNames(List<List<String>> recipes, String recipeName, boolean beLoose)
 	{
 		final List<List<String>> matches=new Vector();
-		if(recipeName.length()==0) return matches;
+		if(recipeName.length()==0)
+			return matches;
 		for(int r=0;r<recipes.size();r++)
 		{
 			final List<String> V=recipes.get(r);
@@ -653,7 +683,8 @@ public class CraftingSkill extends GatheringSkill
 					matches.add(V);
 			}
 		}
-		if(matches.size()>0) return matches;
+		if(matches.size()>0)
+			return matches;
 		for(int r=0;r<recipes.size();r++)
 		{
 			final List<String> V=recipes.get(r);
@@ -664,7 +695,8 @@ public class CraftingSkill extends GatheringSkill
 					matches.add(V);
 			}
 		}
-		if(matches.size()>0) return matches;
+		if(matches.size()>0)
+			return matches;
 		if(beLoose)
 		{
 			for(int r=0;r<recipes.size();r++)
@@ -677,7 +709,8 @@ public class CraftingSkill extends GatheringSkill
 						matches.add(V);
 				}
 			}
-			if(matches.size()>0) return matches;
+			if(matches.size()>0)
+				return matches;
 			final String lastWord=CMParms.parse(recipeName).lastElement();
 			if(lastWord.length()>1)
 				for(int r=0;r<recipes.size();r++)
@@ -698,7 +731,8 @@ public class CraftingSkill extends GatheringSkill
 	protected Vector getAllMendable(MOB mob, Environmental from, Item contained)
 	{
 		Vector V=new Vector();
-		if(from==null) return V;
+		if(from==null)
+			return V;
 		if(from instanceof Room)
 		{
 			final Room R=(Room)from;
@@ -826,8 +860,10 @@ public class CraftingSkill extends GatheringSkill
 
 	protected boolean mayBeCrafted(final Item I)
 	{
-		if(I==null) return false;
-		if(I instanceof ArchonOnly) return false;
+		if(I==null)
+			return false;
+		if(I instanceof ArchonOnly)
+			return false;
 		//if(!(I.isGeneric())) return false;
 		if(I instanceof Food)
 			return false;
@@ -876,7 +912,8 @@ public class CraftingSkill extends GatheringSkill
 		name=CMLib.english().stripPunctuation(name);
 		final List<String> nameV=CMParms.parse(name.toUpperCase());
 		final List<List<String>> recipes = this.loadRecipes();
-		if(nameV.size()==0) return false;
+		if(nameV.size()==0)
+			return false;
 		TreeSet<String> allExpertiseWords=(TreeSet<String>)Resources.getResource("CRAFTING_SKILL_EXPERTISE_WORDS");
 		if(allExpertiseWords == null)
 		{
@@ -1052,7 +1089,8 @@ public class CraftingSkill extends GatheringSkill
 
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
-		if(E==null) return false;
+		if(E==null)
+			return false;
 		if(!(E instanceof Item))
 		{
 			if(!quiet)
@@ -1077,7 +1115,8 @@ public class CraftingSkill extends GatheringSkill
 
 	public List<Object> getAbilityComponents(MOB mob, String componentID, String doingWhat, int autoGenerate)
 	{
-		if(autoGenerate>0) return new LinkedList<Object>();
+		if(autoGenerate>0)
+			return new LinkedList<Object>();
 
 		final List<AbilityComponent> componentsRequirements;
 		if(componentID.trim().startsWith("("))

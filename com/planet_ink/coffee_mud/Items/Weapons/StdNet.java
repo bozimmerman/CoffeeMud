@@ -87,7 +87,8 @@ public class StdNet extends StdWeapon
 		{
 			final MOB M=(MOB)msg.target();
 			final Set<MOB> H=msg.source().getGroupMembers(new HashSet<MOB>());
-			if(H.contains(M)) H.remove(M);
+			if(H.contains(M))
+				H.remove(M);
 
 			for(int i=0;i<M.location().numInhabitants();i++)
 			{

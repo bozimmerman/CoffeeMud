@@ -42,7 +42,8 @@ public class ComponentPieceNext extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String compID=httpReq.getUrlParameter("COMPONENT");
-		if(compID==null) return " @break@";
+		if(compID==null)
+			return " @break@";
 		final String fixedCompID=compID.replace(' ','_').toUpperCase();
 		if(!httpReq.isUrlParameter(fixedCompID+"_PIECE_CONNECTOR_1"))
 		{
@@ -110,7 +111,8 @@ public class ComponentPieceNext extends StdWebMacro
 		final String last=httpReq.getUrlParameter("COMPONENTPIECE");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("COMPONENTPIECE");
+			if(last!=null)
+				httpReq.removeUrlParameter("COMPONENTPIECE");
 			return "";
 		}
 		String lastID="";

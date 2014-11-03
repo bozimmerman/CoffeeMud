@@ -353,7 +353,8 @@ public class Skill_Enslave extends StdSkill
 			return false;
 		}
 		final MOB target=getTarget(mob,commands,givenTarget,false,true);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<5)
 		{
 			mob.tell(L("@x1 would be too stupid to understand your instructions!",target.name(mob)));
@@ -380,8 +381,10 @@ public class Skill_Enslave extends StdSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(peace2) target.makePeace();
-				if(peace1) mob.makePeace();
+				if(peace2)
+					target.makePeace();
+				if(peace1)
+					mob.makePeace();
 				Ability A=target.fetchEffect(ID());
 				if(A==null)
 				{

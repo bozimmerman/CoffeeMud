@@ -76,7 +76,8 @@ public class Equipment extends StdCommand
 			final List<Item> wornHere=mob.fetchWornItems(wornCode,(short)(Short.MIN_VALUE+1),(short)0);
 			int shownThisLoc=0;
 			int numLocations=mob.getWearPositions(wornCode);
-			if(numLocations==0) numLocations=1;
+			if(numLocations==0)
+				numLocations=1;
 			int emptySlots=numLocations;
 			if(wornHere.size()>0)
 			{
@@ -93,7 +94,8 @@ public class Equipment extends StdCommand
 				for(int i=0;i<wornHere.size();i++)
 				{
 					I=wornHere.get(i);
-					if(I.container()!=null) continue;
+					if(I.container()!=null)
+						continue;
 					if(I instanceof Armor)
 					{
 						layer=((Armor)I).getClothingLayer();
@@ -180,10 +182,12 @@ public class Equipment extends StdCommand
 							if(paragraphView)
 							{
 								String name=thisItem.name();
-								if(!allPlaces) name=CMStrings.ellipse(name,wrap);
+								if(!allPlaces)
+									name=CMStrings.ellipse(name,wrap);
 								if(wornCode==Wearable.WORN_HELD)
 								{
-									if(msg.length()==0) msg.append(L("nothing."));
+									if(msg.length()==0)
+										msg.append(L("nothing."));
 									if(mob==seer)
 										msg.append(L("\n\rHolding ^<EItem^>@x1^</EItem^>@x2^N",name,CMLib.flags().colorCodes(thisItem,seer).toString().trim()));
 									else
@@ -192,7 +196,8 @@ public class Equipment extends StdCommand
 								else
 								if(wornCode==Wearable.WORN_WIELD)
 								{
-									if(msg.length()==0) msg.append(L("nothing."));
+									if(msg.length()==0)
+										msg.append(L("nothing."));
 									if(mob==seer)
 										msg.append(L("\n\rWielding ^<EItem^>@x1^</EItem^>@x2^N.",name,CMLib.flags().colorCodes(thisItem,seer).toString().trim()));
 									else
@@ -209,7 +214,8 @@ public class Equipment extends StdCommand
 							else
 							{
 								String name=thisItem.name();
-								if((name.length()>shortWrap)&&(!allPlaces)) name=name.substring(0,shortWrap)+"...";
+								if((name.length()>shortWrap)&&(!allPlaces))
+									name=name.substring(0,shortWrap)+"...";
 								if(mob==seer)
 									msg.append(header+"^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer).toString().trim()+"^?\n\r");
 								else
@@ -247,13 +253,15 @@ public class Equipment extends StdCommand
 						if(paragraphView)
 						{
 							tat=tat.substring(wornName.length()+1).toLowerCase();
-							if(tat.length()>wrap) tat=tat.substring(0,wrap)+"...";
+							if(tat.length()>wrap)
+								tat=tat.substring(0,wrap)+"...";
 							msg.append(header+tat+"^?,");
 						}
 						else
 						{
 							tat=CMStrings.capitalizeAndLower(tat.substring(wornName.length()+1).toLowerCase());
-							if(tat.length()>shortWrap) tat=tat.substring(0,shortWrap)+"...";
+							if(tat.length()>shortWrap)
+								tat=tat.substring(0,shortWrap)+"...";
 							msg.append(header+tat+"^?\n\r");
 						}
 						shownThisLoc++;

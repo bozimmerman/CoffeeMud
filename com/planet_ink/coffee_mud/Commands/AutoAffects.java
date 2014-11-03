@@ -47,7 +47,8 @@ public class AutoAffects extends StdCommand
 		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if(A==null) continue;
+			if(A==null)
+				continue;
 			final String disp=A.name();
 			if((A.displayText().length()==0)
 			&&((!(P instanceof MOB))||(((MOB)P).fetchAbility(A.ID())!=null))
@@ -55,7 +56,8 @@ public class AutoAffects extends StdCommand
 			{
 				if(((++colnum)>NUM_COLS)||(disp.length()>COL_LEN)){ msg.append("\n\r"); colnum=0;}
 				msg.append("^S"+CMStrings.padRightPreserve("^<HELPNAME NAME='"+A.Name()+"'^>"+disp+"^</HELPNAME^>",COL_LEN));
-				if(disp.length()>COL_LEN) colnum=99;
+				if(disp.length()>COL_LEN)
+					colnum=99;
 			}
 		}
 		msg.append("^N\n\r");

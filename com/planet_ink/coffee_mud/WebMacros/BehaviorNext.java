@@ -44,7 +44,8 @@ public class BehaviorNext extends StdWebMacro
 		final String last=httpReq.getUrlParameter("BEHAVIOR");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("BEHAVIOR");
+			if(last!=null)
+				httpReq.removeUrlParameter("BEHAVIOR");
 			return "";
 		}
 		String lastID="";

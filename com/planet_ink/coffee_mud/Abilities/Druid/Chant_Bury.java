@@ -88,7 +88,8 @@ public class Chant_Bury extends Chant
 			target=getBody(mob.location());
 		if(target==null)
 			target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if((!(target instanceof DeadBody))
 		||(((DeadBody)target).rawSecretIdentity().toUpperCase().indexOf("FAKE")>=0))

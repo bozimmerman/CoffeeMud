@@ -66,7 +66,8 @@ public class MOBHunter extends ActiveTicker
 	protected boolean isHunting(MOB mob)
 	{
 		final Ability A=mob.fetchEffect("Thief_Assasinate");
-		if(A!=null) return true;
+		if(A!=null)
+			return true;
 		return false;
 	}
 
@@ -111,14 +112,17 @@ public class MOBHunter extends ActiveTicker
 		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
 		{
 			final MOB mob=(MOB)ticking;
-			if(debug) Log.sysOut("ZAPHUNT", "Tick starting");
+			if(debug)
+				Log.sysOut("ZAPHUNT", "Tick starting");
 			if(!isHunting(mob))
 			{
-				if(debug) Log.sysOut("ZAPHUNT", "'"+mob.Name()+"' not hunting.");
+				if(debug)
+					Log.sysOut("ZAPHUNT", "'"+mob.Name()+"' not hunting.");
 				final MOB prey=findPrey(mob);
 				if(prey!=null)
 				{
-					if(debug) Log.sysOut("ZAPHUNT", "'"+mob.Name()+"' found prey: '"+prey.Name()+"'");
+					if(debug)
+						Log.sysOut("ZAPHUNT", "'"+mob.Name()+"' found prey: '"+prey.Name()+"'");
 					final Ability A=CMClass.getAbility("Thief_Assassinate");
 					A.setProficiency(100);
 					mob.curState().setMana(mob.maxState().getMana());

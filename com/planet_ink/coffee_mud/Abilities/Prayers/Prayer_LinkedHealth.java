@@ -65,7 +65,8 @@ public class Prayer_LinkedHealth extends Prayer
 			{
 				mob.tell(L("Your health is no longer linked with @x1.",buddy.name()));
 				final Ability A=buddy.fetchEffect(ID());
-				if(A!=null) A.unInvoke();
+				if(A!=null)
+					A.unInvoke();
 			}
 		}
 	}
@@ -95,7 +96,8 @@ public class Prayer_LinkedHealth extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(mob.fetchEffect(ID())!=null)
 		{
 			mob.tell(L("Your health is already linked with someones!"));

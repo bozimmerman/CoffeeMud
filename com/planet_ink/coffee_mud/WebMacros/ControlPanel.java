@@ -48,7 +48,8 @@ public class ControlPanel extends StdWebMacro
 		final String lastDisable=httpReq.getUrlParameter("DISABLEFLAG");
 		if(parms.containsKey("DISABLERESET"))
 		{
-			if(lastDisable!=null) httpReq.removeUrlParameter("DISABLEFLAG");
+			if(lastDisable!=null)
+				httpReq.removeUrlParameter("DISABLEFLAG");
 			return "";
 		}
 		if(parms.containsKey("DISABLENEXT"))
@@ -93,7 +94,8 @@ public class ControlPanel extends StdWebMacro
 		}
 		if(parms.containsKey("DEBUGRESET"))
 		{
-			if(lastDebug!=null) httpReq.removeUrlParameter("DEBUGFLAG");
+			if(lastDebug!=null)
+				httpReq.removeUrlParameter("DEBUGFLAG");
 			return "";
 		}
 		if(parms.containsKey("DEBUGNEXT"))

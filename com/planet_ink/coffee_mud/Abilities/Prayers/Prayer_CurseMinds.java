@@ -59,7 +59,8 @@ public class Prayer_CurseMinds extends Prayer
 		if(mob.isInCombat())
 		{
 			final MOB newvictim=mob.location().fetchRandomInhabitant();
-			if(newvictim!=mob) mob.setVictim(newvictim);
+			if(newvictim!=mob)
+				mob.setVictim(newvictim);
 		}
 		return super.tick(ticking,tickID);
 	}
@@ -93,7 +94,8 @@ public class Prayer_CurseMinds extends Prayer
 			return false;
 
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
-		if(h==null) return false;
+		if(h==null)
+			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
 		boolean nothingDone=true;

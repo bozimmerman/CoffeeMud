@@ -227,7 +227,8 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 		// For simplicity, there's no charges BUT use costs a flat 10% mana
 		manaRequired=(int)CMath.div(mob.maxState().getMana(),10);
 		manaRequired-=(5*level);
-		if(manaRequired<5) manaRequired=5;
+		if(manaRequired<5)
+			manaRequired=5;
 
 		if(manaRequired>mob.curState().getMana())
 		{
@@ -334,7 +335,8 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 		super.executeMsg(myHost,msg);
 		if(((System.currentTimeMillis()-LastChecked)>TimeManager.MILI_HOUR)&&(affected!=null))
 		{
-			if((clanName!=null)&&(clanName.length()>0)&&(CMLib.clans().getClan(clanName)==null)) affected.delEffect(this);
+			if((clanName!=null)&&(clanName.length()>0)&&(CMLib.clans().getClan(clanName)==null))
+				affected.delEffect(this);
 			LastChecked=System.currentTimeMillis();
 		}
 		MOB mob=null;
@@ -351,7 +353,8 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 			activated=true;
 		else
 			activated=false;
-		if(!activated) return;
+		if(!activated)
+			return;
 		if(msg.source()!=null)
 		{
 			source=msg.source();

@@ -62,7 +62,8 @@ public class TreeLayout extends AbstractLayout
 		{
 			final long[] nextCoord = getCoord(currNode.coord(),dir);
 			final TreeStem stem = new TreeStem(nextCoord,dir,lSet);
-			if(!lSet.use(stem.currNode,LayoutTypes.street)) return null;
+			if(!lSet.use(stem.currNode,LayoutTypes.street))
+				return null;
 			currNode.crossLink(stem.currNode);
 			patchRun(currNode,stem.currNode);
 			return stem;
@@ -76,10 +77,12 @@ public class TreeLayout extends AbstractLayout
 		public TreeStem firstBranch()
 		{
 			final int[] turns = getTurns(dir);
-			if((turns == null)||(turns.length<1)) return null;
+			if((turns == null)||(turns.length<1))
+				return null;
 			final long[] nextCoord = getCoord(currNode.coord(),turns[0]);
 			final TreeStem newStem =  new TreeStem(nextCoord,turns[0],lSet);
-			if(!lSet.use(newStem.currNode,LayoutTypes.street)) return null;
+			if(!lSet.use(newStem.currNode,LayoutTypes.street))
+				return null;
 			currNode.flag(LayoutFlags.corner);
 			currNode.crossLink(newStem.currNode);
 			patchRun(currNode,newStem.currNode);
@@ -88,10 +91,12 @@ public class TreeLayout extends AbstractLayout
 		public TreeStem secondBranch()
 		{
 			final int[] turns = getTurns(dir);
-			if((turns == null)||(turns.length<2)) return null;
+			if((turns == null)||(turns.length<2))
+				return null;
 			final long[] nextCoord = getCoord(currNode.coord(),turns[1]);
 			final TreeStem newStem =  new TreeStem(nextCoord,turns[1],lSet);
-			if(!lSet.use(newStem.currNode,LayoutTypes.street)) return null;
+			if(!lSet.use(newStem.currNode,LayoutTypes.street))
+				return null;
 			currNode.crossLink(newStem.currNode);
 			patchRun(currNode,newStem.currNode);
 			return newStem;
@@ -121,11 +126,14 @@ public class TreeLayout extends AbstractLayout
 			{
 				final TreeStem stem = i.next();
 				TreeStem branch = stem.nextNode();
-				if(branch != null) newOnes.add(branch);
+				if(branch != null)
+					newOnes.add(branch);
 				branch = stem.firstBranch();
-				if(branch != null) newOnes.add(branch);
+				if(branch != null)
+					newOnes.add(branch);
 				branch = stem.secondBranch();
-				if(branch != null) newOnes.add(branch);
+				if(branch != null)
+					newOnes.add(branch);
 			}
 			progress = new Vector<TreeStem>();
 			while(newOnes.size()> 0)

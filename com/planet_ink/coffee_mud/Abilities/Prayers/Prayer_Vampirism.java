@@ -66,10 +66,12 @@ public class Prayer_Vampirism extends Prayer
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(!(affected instanceof MOB)) return;
+		if(!(affected instanceof MOB))
+			return;
 		if(!((MOB)affected).isMonster())
 		{
-			if(((MOB)affected).location()==null) return;
+			if(((MOB)affected).location()==null)
+				return;
 			if(CMLib.flags().isInDark(((MOB)affected).location()))
 				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
 			else
@@ -98,7 +100,8 @@ public class Prayer_Vampirism extends Prayer
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+1);
 	}
 
@@ -191,7 +194,8 @@ public class Prayer_Vampirism extends Prayer
 				if(B!=null)
 				{
 					final Ability A=CMClass.getAbility("Butchering");
-					if(A!=null) A.invoke(M,CMParms.parse(B.Name()),B,true,0);
+					if(A!=null)
+						A.invoke(M,CMParms.parse(B.Name()),B,true,0);
 				}
 				else
 				if(CMLib.dice().rollPercentage()<10)
@@ -210,7 +214,8 @@ public class Prayer_Vampirism extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

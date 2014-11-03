@@ -48,7 +48,8 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 		&&(ID().equals("StdGridArea")))
 		{
 			final Area A=CMClass.getAreaType("StdThinGridArea");
-			if(A!=null) return A;
+			if(A!=null)
+				return A;
 		}
 		return super.newInstance();
 	}
@@ -92,7 +93,8 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 			for(int y=0;y<yGridSize();y++)
 			{
 				final Room R=getRoom(Name()+"#"+roomIDFromPos(x,y));
-				if(R==null) return Name()+"#"+roomIDFromPos(x,y);
+				if(R==null)
+					return Name()+"#"+roomIDFromPos(x,y);
 			}
 		// not even a next in line exists!
 		return "";
@@ -100,38 +102,47 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 
 	protected String roomIDFromPos(int x, int y)
 	{
-		if((x<0)||(y<0)||(y>=yGridSize())||(x>=xGridSize())) return null;
+		if((x<0)||(y<0)||(y>=yGridSize())||(x>=xGridSize()))
+			return null;
 		final String s=Integer.toString(y);
-		if(x>0) return x+(ZEROES.substring(ZEROES.length()-(yLength-s.length())))+s;
+		if(x>0)
+			return x+(ZEROES.substring(ZEROES.length()-(yLength-s.length())))+s;
 		return s;
 	}
 	@Override
 	public Room getGridChild(int x, int y)
 	{
 		final String roomID=roomIDFromPos(x,y);
-		if(roomID==null) return null;
+		if(roomID==null)
+			return null;
 		return getRoom(Name()+"#"+roomID);
 	}
 	@Override
 	public XYVector getRoomXY(String roomID)
 	{
-		if(roomID.length()==0) return null;
+		if(roomID.length()==0)
+			return null;
 		if(roomID.endsWith(")"))
 		{
 			final int y=roomID.lastIndexOf("#(");
-			if(y>0) roomID=roomID.substring(0,y);
+			if(y>0)
+				roomID=roomID.substring(0,y);
 		}
 		final int x=roomID.indexOf('#');
-		if(x<0) return null;
-		if(!roomID.substring(0,x).equalsIgnoreCase(Name())) return null;
+		if(x<0)
+			return null;
+		if(!roomID.substring(0,x).equalsIgnoreCase(Name()))
+			return null;
 		roomID=roomID.substring(x+1);
-		if(!CMath.isNumber(roomID)) return null;
+		if(!CMath.isNumber(roomID))
+			return null;
 		final int len=(""+ySize).length();
 		if(roomID.length()<=len)
 			return new XYVector(0,CMath.s_int(roomID));
 		final String xStr=roomID.substring(0,roomID.length()-len);
 		String yStr=roomID.substring(roomID.length()-len);
-		while(yStr.startsWith("0")) yStr=yStr.substring(1);
+		while(yStr.startsWith("0"))
+			yStr=yStr.substring(1);
 		final XYVector xy = new XYVector(CMath.s_int(xStr),CMath.s_int(yStr));
 		if((xy.x<0)||(xy.y<0)||(xy.x>=xGridSize())||(xy.y>=yGridSize()))
 			return null;
@@ -140,9 +151,11 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 	@Override public XYVector getRoomXY(Room room){ return posFromRoomID(room);}
 	protected XYVector posFromRoomID(Room loc)
 	{
-		if(loc==null) return null;
+		if(loc==null)
+			return null;
 		String roomID=loc.roomID();
-		if(roomID.length()==0) roomID=getGridChildCode(loc);
+		if(roomID.length()==0)
+			roomID=getGridChildCode(loc);
 		return getRoomXY(roomID);
 	}
 	@Override public int getGridChildX(Room loc){return posFromRoomID(loc).x;}
@@ -158,7 +171,8 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 	@Override
 	public Room getGridChild(XYVector xy)
 	{
-		if(xy==null) return null;
+		if(xy==null)
+			return null;
 		return getGridChild(xy.x,xy.y);
 	}
 }

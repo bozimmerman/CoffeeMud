@@ -56,7 +56,8 @@ public class Butchering extends GatheringSkill
 	{
 		int duration=((weight/(10+getXLEVELLevel(mob))));
 		duration = super.getDuration(duration, mob, 1, 3);
-		if(duration>40) duration=40;
+		if(duration>40)
+			duration=40;
 		return duration;
 	}
 	@Override protected int baseYield() { return 1; }

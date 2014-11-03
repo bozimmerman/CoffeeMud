@@ -291,7 +291,8 @@ public class JournalLoader
 				entry.cardinal = ++cardinal;
 				journalV.addElement(entry);
 			}
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader","Query ("+journalV.size()+"): "+sql);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL))
+				Log.debugOut("JournalLoader","Query ("+journalV.size()+"): "+sql);
 			if((journalV.size()>0)&&(parent!=null)) // set last entry -- make sure its not stucky
 			{
 				journalV.lastElement().isLastEntry=true;
@@ -344,7 +345,8 @@ public class JournalLoader
 				entry.cardinal = ++cardinal;
 				journalV.addElement(entry);
 			}
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader","Query ("+journalV.size()+"): "+sql);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL))
+				Log.debugOut("JournalLoader","Query ("+journalV.size()+"): "+sql);
 			if((journalV.size()>0)&&(!R.next()))
 				journalV.lastElement().isLastEntry=true;
 		}
@@ -498,7 +500,8 @@ public class JournalLoader
 		msg = DB.injectionClean(msg);
 
 		final String sql="UPDATE CMJRNL SET CMSUBJ=?, CMMSGT=?, CMATTR="+newAttributes+" WHERE CMJKEY='"+key+"'";
-		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader",sql);
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL))
+			Log.debugOut("JournalLoader",sql);
 		DB.updateWithClobs(sql,subject,msg);
 	}
 
@@ -523,7 +526,8 @@ public class JournalLoader
 				  +"CMATTR="+entry.attributes+" ,"
 				  +"CMDATA='"+entry.data+"' "
 				  +"WHERE CMJRNL='"+journal+"' AND CMJKEY='"+entry.key+"'";
-		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader",sql);
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL))
+			Log.debugOut("JournalLoader",sql);
 		DB.updateWithClobs(sql,entry.subj);
 
 		sql="UPDATE CMJRNL SET "
@@ -533,7 +537,8 @@ public class JournalLoader
 		  + "CMREPL="+entry.replies+", "
 		  + "CMMSGT=? "
 		  + "WHERE CMJRNL='"+journal+"' AND CMJKEY='"+entry.key+"'";
-		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader",sql);
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL))
+			Log.debugOut("JournalLoader",sql);
 		DB.updateWithClobs(sql, entry.msg);
 	}
 
@@ -546,7 +551,8 @@ public class JournalLoader
 	{
 		key = DB.injectionClean(key);
 		final String sql="UPDATE CMJRNL SET CMUPTM="+newDate+" WHERE CMJKEY='"+key+"'";
-		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader",sql);
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL))
+			Log.debugOut("JournalLoader",sql);
 		DB.update(sql);
 	}
 
@@ -554,7 +560,8 @@ public class JournalLoader
 	{
 		key = DB.injectionClean(key);
 		final String sql="UPDATE CMJRNL SET CMUPTM="+System.currentTimeMillis()+", CMREPL="+numReplies+" WHERE CMJKEY='"+key+"'";
-		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader",sql);
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL))
+			Log.debugOut("JournalLoader",sql);
 		DB.update(sql);
 	}
 
@@ -562,7 +569,8 @@ public class JournalLoader
 	{
 		key = DB.injectionClean(key);
 		final String sql="UPDATE CMJRNL SET CMVIEW="+views+" WHERE CMJKEY='"+key+"'";
-		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader",sql);
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL))
+			Log.debugOut("JournalLoader",sql);
 		DB.update(sql);
 	}
 
@@ -760,7 +768,8 @@ public class JournalLoader
 			{
 				sql="DELETE FROM CMJRNL WHERE CMJRNL='"+journal+"'";
 			}
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader",sql);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL))
+				Log.debugOut("JournalLoader",sql);
 			DB.update(sql);
 		}
 	}
@@ -779,7 +788,8 @@ public class JournalLoader
 		synchronized(journal.toUpperCase().intern())
 		{
 			final JournalsLibrary.JournalEntry entry=DBReadJournalEntry(journal, key);
-			if(entry==null) return;
+			if(entry==null)
+				return;
 			final long now=System.currentTimeMillis();
 			final String oldkey=entry.key;
 			final String oldmsg=entry.msg;
@@ -788,7 +798,8 @@ public class JournalLoader
 			 +"^yReply from^N: "+from+"    ^yDate/Time ^N: "+CMLib.time().date2String(now)+"%0D"
 			 +message;
 			final String sql="UPDATE CMJRNL SET CMUPTM="+now+", CMMSGT=?, CMREPL="+replies+" WHERE CMJKEY='"+oldkey+"'";
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader",sql);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL))
+				Log.debugOut("JournalLoader",sql);
 			DB.updateWithClobs(sql,message);
 		}
 	}
@@ -881,7 +892,8 @@ public class JournalLoader
 				+"',"+entry.views
 				+","+entry.replies
 				+",?)";
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader",sql);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL))
+				Log.debugOut("JournalLoader",sql);
 			DB.updateWithClobs(sql , entry.subj, entry.msg);
 			if((entry.parent!=null)&&(entry.parent.length()>0))
 			{

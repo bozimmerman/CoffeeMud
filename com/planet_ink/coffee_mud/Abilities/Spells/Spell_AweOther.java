@@ -110,9 +110,11 @@ public class Spell_AweOther extends Spell
 		}
 		final String aweWhom=CMParms.combine(commands,1);
 		final MOB target=getTarget(mob,new XVector(commands.firstElement()),givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		Room R=CMLib.map().roomLocation(target);
-		if(R==null) R=mob.location();
+		if(R==null)
+			R=mob.location();
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

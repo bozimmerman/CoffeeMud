@@ -87,7 +87,8 @@ public class Thief_Snipe extends ThiefSkill
 			return false;
 		}
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(CMLib.flags().isSitting(mob))
 		{
@@ -128,22 +129,27 @@ public class Thief_Snipe extends ThiefSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			final boolean alwaysInvis=CMath.bset(mob.basePhyStats().disposition(),PhyStats.IS_INVISIBLE);
-			if(!alwaysInvis) mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_INVISIBLE);
+			if(!alwaysInvis)
+				mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_INVISIBLE);
 			mob.recoverPhyStats();
 			mob.location().send(mob,msg);
 			CMLib.combat().postAttack(mob,target,w);
-			if(!alwaysInvis) mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()-PhyStats.IS_INVISIBLE);
+			if(!alwaysInvis)
+				mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()-PhyStats.IS_INVISIBLE);
 			mob.recoverPhyStats();
 			if(success)
 			{
 				final MOB oldVictim=target.getVictim();
 				final MOB oldVictim2=mob.getVictim();
-				if(oldVictim==mob) target.makePeace();
-				if(oldVictim2==target) mob.makePeace();
+				if(oldVictim==mob)
+					target.makePeace();
+				if(oldVictim2==target)
+					mob.makePeace();
 				if(mob.fetchEffect("Thief_Hide")==null)
 				{
 					final Ability hide=mob.fetchAbility("Thief_Hide");
-					if(hide!=null) hide.invoke(mob,null,false,asLevel);
+					if(hide!=null)
+						hide.invoke(mob,null,false,asLevel);
 
 					mob.location().recoverRoomStats();
 					if(CMLib.flags().canBeSeenBy(mob,target))

@@ -76,7 +76,8 @@ public class Hunting extends CommonSkill
 
 	public void moveFound()
 	{
-		if(found.location()==null) return;
+		if(found.location()==null)
+			return;
 
 		final Vector possibilities=new Vector();
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)

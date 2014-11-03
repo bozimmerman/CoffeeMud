@@ -168,7 +168,8 @@ public class FireBuilding extends CommonSkill
 		else
 		{
 			lighting=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
-			if(lighting==null) return false;
+			if(lighting==null)
+				return false;
 
 			if((lighting.displayText().length()==0)
 			||(!CMLib.flags().isGettable(lighting)))
@@ -247,7 +248,8 @@ public class FireBuilding extends CommonSkill
 		failed=!proficiencyCheck(mob,proficiencyAdjustment,auto);
 
 		durationOfBurn=durationOfBurn*abilityCode();
-		if(duration<4) duration=4;
+		if(duration<4)
+			duration=4;
 
 		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),auto?"":L("<S-NAME> start(s) building a fire."));
 		if(mob.location().okMessage(mob,msg))

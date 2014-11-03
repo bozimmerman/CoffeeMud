@@ -44,8 +44,10 @@ public class Song_Rage extends Song
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(invoker==null) return;
-		if(affected==invoker) return;
+		if(invoker==null)
+			return;
+		if(affected==invoker)
+			return;
 		affectableStats.setDamage(affectableStats.damage()+(int)Math.round(CMath.div(affectableStats.damage(),2.0+CMath.mul(0.25,super.getXLEVELLevel(invoker())))));
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(int)Math.round(CMath.div(affectableStats.attackAdjustment(),6.0+CMath.mul(0.5,super.getXLEVELLevel(invoker())))));
 		affectableStats.setArmor(affectableStats.armor()+super.adjustedLevel(invoker(),0));
@@ -58,9 +60,12 @@ public class Song_Rage extends Song
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if(msg.amISource(invoker)) return true;
-		if(msg.sourceMinor()!=CMMsg.TYP_FLEE) return true;
-		if(msg.source().fetchEffect(this.ID())==null) return true;
+		if(msg.amISource(invoker))
+			return true;
+		if(msg.sourceMinor()!=CMMsg.TYP_FLEE)
+			return true;
+		if(msg.source().fetchEffect(this.ID())==null)
+			return true;
 
 		msg.source().tell(L("You are too enraged to flee."));
 		return false;

@@ -171,7 +171,8 @@ public class Goat extends StdRace
 		if((body!=null)&&(CMLib.dice().roll(1,1000,0)==1)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
 			final Ability A=CMClass.getAbility("Disease_Anthrax");
-			if(A!=null) body.addNonUninvokableEffect(A);
+			if(A!=null)
+				body.addNonUninvokableEffect(A);
 		}
 		return body;
 	}

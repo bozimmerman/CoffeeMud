@@ -96,7 +96,8 @@ public class Log extends java.util.logging.Logger
 	static
 	{
 		for(int i=0;i<TYPE_LEVEL_MAP.length;i++)
-			if(i<=Level.FINEST.intValue()) TYPE_LEVEL_MAP[i]=Type.debug;
+			if(i<=Level.FINEST.intValue())
+				TYPE_LEVEL_MAP[i]=Type.debug;
 			else if(i<=Level.FINER.intValue()) TYPE_LEVEL_MAP[i]=Type.debug;
 			else if(i<=Level.FINE.intValue()) TYPE_LEVEL_MAP[i]=Type.access;
 			else if(i<=Level.CONFIG.intValue()) TYPE_LEVEL_MAP[i]=Type.info;
@@ -192,7 +193,8 @@ public class Log extends java.util.logging.Logger
 	 */
 	public static final boolean isMaskedErrMsg(final String str)
 	{
-		if(str==null) return false;
+		if(str==null)
+			return false;
 		final String upstr=str.toLowerCase();
 		for (final String maskErrMsg : maskErrMsgs)
 			if(upstr.indexOf(maskErrMsg)>=0)
@@ -309,8 +311,10 @@ public class Log extends java.util.logging.Logger
 		final PrintWriter[][] writers=config.writers;
 		if(writers[0]!=null)
 		{
-			if(priority<0) return writers[0][0];
-			if(priority>9) return writers[9][0];
+			if(priority<0)
+				return writers[0][0];
+			if(priority>9)
+				return writers[9][0];
 			return writers[priority][0];
 		}
 		switch(config.target)
@@ -349,8 +353,10 @@ public class Log extends java.util.logging.Logger
 			writers[i]=empty;
 		if((this.fileOutWriter[0]!=null) && (!WRITTEN.containsKey(fileOutWriter[0])))
 			WRITTEN.put(fileOutWriter[0], new long[2]);
-		if(priority<0) return writers[0][0];
-		if(priority>9) return writers[9][0];
+		if(priority<0)
+			return writers[0][0];
+		if(priority>9)
+			return writers[9][0];
 		return writers[priority][0];
 	}
 
@@ -421,7 +427,8 @@ public class Log extends java.util.logging.Logger
 		{
 			t=Target.OFF;
 		}
-		if( t==null) t=Target.OFF;
+		if( t==null)
+			t=Target.OFF;
 		if( t==Target.OWNFILE )
 			return new Conf(t,maxLevel,maxNumberOfLogs,maxNumberOfEntries,maxNumberOfBytes);
 		else
@@ -623,7 +630,8 @@ public class Log extends java.util.logging.Logger
 						line=reader.readLine();
 				}
 				catch ( final IOException ignore ){}
-				if(line==null) close();
+				if(line==null)
+					close();
 				return line;
 			}
 			@Override
@@ -1582,8 +1590,10 @@ public class Log extends java.util.logging.Logger
 	 */
 	private String toStringList(Object[] os)
 	{
-		if(os==null) return "";
-		if(os.length==0) return "";
+		if(os==null)
+			return "";
+		if(os.length==0)
+			return "";
 
 		final StringBuilder str=new StringBuilder((os[0]==null)?"null":os[0].toString());
 		for(int i=1;i<os.length;i++)
@@ -1690,12 +1700,18 @@ public class Log extends java.util.logging.Logger
 	public Level	getLevel()
 	{
 		final Log log=l();
-		if(log.isWriterOn(Type.access)) return Level.FINEST;
-		if(log.isWriterOn(Type.debug)) return Level.FINE;
-		if(log.isWriterOn(Type.info)) return Level.INFO;
-		if(log.isWriterOn(Type.warning)) return Level.WARNING;
-		if(log.isWriterOn(Type.error)) return Level.SEVERE;
-		if(log.isWriterOn(Type.access)) return Level.FINE;
+		if(log.isWriterOn(Type.access))
+			return Level.FINEST;
+		if(log.isWriterOn(Type.debug))
+			return Level.FINE;
+		if(log.isWriterOn(Type.info))
+			return Level.INFO;
+		if(log.isWriterOn(Type.warning))
+			return Level.WARNING;
+		if(log.isWriterOn(Type.error))
+			return Level.SEVERE;
+		if(log.isWriterOn(Type.access))
+			return Level.FINE;
 		return Level.OFF;
 	}
 	//Get the name for this logger.
@@ -1746,7 +1762,8 @@ public class Log extends java.util.logging.Logger
 	@Override
 	public void	log(final Level level, final String msg, final Throwable thrown)
 	{
-		if(thrown==null) log(level,msg);
+		if(thrown==null)
+			log(level,msg);
 		else standardExOut(getTypeFromLevel(level),toModuleName(msg),Integer.MIN_VALUE,thrown);
 	}
 	//Log a LogRecord.
@@ -1777,7 +1794,8 @@ public class Log extends java.util.logging.Logger
 	@Override
 	public void	logp(final Level level, final String sourceClass, final String sourceMethod, final String msg, final Throwable thrown)
 	{
-		if(thrown==null) log(level,msg);
+		if(thrown==null)
+			log(level,msg);
 		else standardExOut(getTypeFromLevel(level),toModuleName(sourceClass),Integer.MIN_VALUE,thrown);
 	}
 	//Log a message, specifying source class, method, and resource bundle name with no arguments.

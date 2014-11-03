@@ -50,12 +50,16 @@ public class CommonSpeaker extends StdBehavior
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Tickable.TICKID_MOB) return true;
-		if(--tickTock>0) return true;
+		if(tickID!=Tickable.TICKID_MOB)
+			return true;
+		if(--tickTock>0)
+			return true;
 
 		final Ability L=CMClass.getAbility("Common");
-		if(L!=null) L.invoke((MOB)ticking,null,true,0);
-		if((++tickTocker)==100) tickTocker=99;
+		if(L!=null)
+			L.invoke((MOB)ticking,null,true,0);
+		if((++tickTocker)==100)
+			tickTocker=99;
 		tickTock=tickTocker;
 		return true;
 	}

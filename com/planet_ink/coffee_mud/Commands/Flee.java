@@ -44,10 +44,13 @@ public class Flee extends Go
 		throws java.io.IOException
 	{
 		String direction="";
-		if(commands.size()>1) direction=CMParms.combine(commands,1);
-		if(mob==null) return false;
+		if(commands.size()>1)
+			direction=CMParms.combine(commands,1);
+		if(mob==null)
+			return false;
 		final Room R=mob.location();
-		if(R==null) return false;
+		if(R==null)
+			return false;
 		if((!mob.isMonster())||(mob.amFollowing()!=null))
 		{
 			if(!mob.isInCombat())
@@ -116,9 +119,11 @@ public class Flee extends Go
 			if(XPloss&&(fighting!=null))
 			{
 				final String whatToDo=CMProps.getVar(CMProps.Str.PLAYERFLEE);
-				if(whatToDo==null) return false;
+				if(whatToDo==null)
+					return false;
 				final int[] expLost={10+((mob.phyStats().level()-fighting.phyStats().level()))*5};
-				if(expLost[0]<10) expLost[0]=10;
+				if(expLost[0]<10)
+					expLost[0]=10;
 				final String[] cmds=CMParms.toStringArray(CMParms.parseCommas(whatToDo,true));
 				CMLib.combat().handleConsequences(mob,fighting,cmds,expLost,"You lose @x1 experience points for withdrawing.");
 				final double pctHPremaining=CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints());

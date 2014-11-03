@@ -54,7 +54,8 @@ public class Skill_CollectBounty extends StdSkill
 	public List<LegalWarrant> getWarrantsOf(MOB target, Area legalA)
 	{
 		LegalBehavior B=null;
-		if(legalA!=null) B=CMLib.law().getLegalBehavior(legalA);
+		if(legalA!=null)
+			B=CMLib.law().getLegalBehavior(legalA);
 		List<LegalWarrant> warrants=new Vector();
 		if(B!=null)
 		{
@@ -72,7 +73,8 @@ public class Skill_CollectBounty extends StdSkill
 	public MOB findElligibleOfficer(Area myArea, Area legalA)
 	{
 		LegalBehavior B=null;
-		if(legalA!=null) B=CMLib.law().getLegalBehavior(legalA);
+		if(legalA!=null)
+			B=CMLib.law().getLegalBehavior(legalA);
 		if((B!=null)&&(myArea!=null))
 		{
 			for(final Enumeration e=myArea.getMetroMap();e.hasMoreElements();)
@@ -103,7 +105,8 @@ public class Skill_CollectBounty extends StdSkill
 	public MOB getJudgeIfHere(MOB mob, MOB target, Room R)
 	{
 		LegalBehavior B=null;
-		if(R!=null) B=CMLib.law().getLegalBehavior(R);
+		if(R!=null)
+			B=CMLib.law().getLegalBehavior(R);
 		final Area legalA=CMLib.law().getLegalObject(R);
 		if((B!=null)&&(R!=null))
 			for(int i=0;i<R.numInhabitants();i++)
@@ -120,7 +123,8 @@ public class Skill_CollectBounty extends StdSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		final Room R=mob.location();
 		if(mob.fetchEffect(ID())!=null)
 		{
@@ -179,7 +183,8 @@ public class Skill_CollectBounty extends StdSkill
 				}
 				int gold=0;
 				Ability A=mob.fetchEffect("Skill_HandCuff");
-				if(A==null) A=mob.fetchEffect("Thief_Bind");
+				if(A==null)
+					A=mob.fetchEffect("Thief_Bind");
 				if((A!=null)&&(target.amFollowing()==mob))
 				{
 					A.setInvoker(officer);

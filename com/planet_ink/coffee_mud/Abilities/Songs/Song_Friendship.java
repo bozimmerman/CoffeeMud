@@ -100,7 +100,8 @@ public class Song_Friendship extends Song
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 		{
 			unInvoke();
-			if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
+			if(msg.source().playerStats()!=null)
+				msg.source().playerStats().setLastUpdated(0);
 		}
 	}
 
@@ -111,8 +112,10 @@ public class Song_Friendship extends Song
 			return false;
 
 		final MOB mob=(MOB)affected;
-		if(mob==null) return false;
-		if(mob==invoker) return true;
+		if(mob==null)
+			return false;
+		if(mob==invoker)
+			return true;
 		if(mob.amFollowing()!=invoker)
 		{
 			unInvoke();
@@ -186,7 +189,8 @@ public class Song_Friendship extends Song
 				{
 					final Song newOne=(Song)this.copyOf();
 					final Set<MOB> h=sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
-					if(h==null) continue;
+					if(h==null)
+						continue;
 
 					for (final Object element : h)
 					{
@@ -195,7 +199,8 @@ public class Song_Friendship extends Song
 						int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 						if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
 							affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
-						if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
+						if(auto)
+							affectType=affectType|CMMsg.MASK_ALWAYS;
 
 						if((CMLib.flags().canBeHeardSpeakingBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 						{
@@ -204,7 +209,8 @@ public class Song_Friendship extends Song
 							if((mindAttack())&&(follower!=mob))
 								msg2=CMClass.getMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 							int levelDiff=follower.phyStats().level()-(mob.phyStats().level()+(getXLEVELLevel(mob)*2));
-							if(levelDiff<0) levelDiff=0;
+							if(levelDiff<0)
+								levelDiff=0;
 
 							if((levelDiff>(3+((mob.phyStats().level()+(getXLEVELLevel(mob)*2))/10)))&&(mindAttack()))
 								mob.tell(mob,follower,null,L("<T-NAME> looks too powerful."));

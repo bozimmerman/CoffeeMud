@@ -48,7 +48,8 @@ public class AddRequestParameter extends StdWebMacro
 			if(key!=null)
 			{
 				String val=parms.get(key);
-				if(val==null) val="";
+				if(val==null)
+					val="";
 				if((val.equals("++")&&(httpReq.isUrlParameter(key))))
 					val=""+(CMath.s_int(httpReq.getUrlParameter(key))+1);
 				else

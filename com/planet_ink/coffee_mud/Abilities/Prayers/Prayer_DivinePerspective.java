@@ -65,7 +65,8 @@ public class Prayer_DivinePerspective extends Prayer
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if(noRecurse)return;
+		if(noRecurse)
+			return;
 
 		if((affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
@@ -117,7 +118,8 @@ public class Prayer_DivinePerspective extends Prayer
 			if((mob.location().okMessage(mob,msg))&&((newRoom==mob.location())||(newRoom.okMessage(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
-				if(newRoom!=mob.location()) newRoom.send(target,msg2);
+				if(newRoom!=mob.location())
+					newRoom.send(target,msg2);
 				beneficialAffect(mob,target,asLevel,10);
 			}
 

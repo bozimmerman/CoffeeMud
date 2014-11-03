@@ -43,14 +43,16 @@ public class CheckReqParm extends StdWebMacro
 		boolean finalCondition=false;
 		for(String key : parms.keySet())
 		{
-			if(key.length()==0) continue;
+			if(key.length()==0)
+				continue;
 			final String equals=parms.get(key);
 			boolean not=false;
 			boolean thisCondition=true;
 			boolean startswith=false;
 			boolean inside=false;
 			boolean endswith=false;
-			if(key.startsWith("||")) key=key.substring(2);
+			if(key.startsWith("||"))
+				key=key.substring(2);
 			if(key.startsWith("<"))
 			{
 				startswith=true;

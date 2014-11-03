@@ -51,7 +51,8 @@ public class Paladin_Aura extends PaladinSkill
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
 		pass=(invoker==null)||(invoker.fetchAbility(ID())==null)||proficiencyCheck(null,0,false);
 		if(pass)
 		for(int i=paladinsGroup.size()-1;i>=0;i--)
@@ -79,8 +80,10 @@ public class Paladin_Aura extends PaladinSkill
 			return false;
 		if((invoker==null)||(!(CMLib.flags().isGood(invoker))))
 			return true;
-		if(affected==null) return true;
-		if(!(affected instanceof MOB)) return true;
+		if(affected==null)
+			return true;
+		if(!(affected instanceof MOB))
+			return true;
 
 		if((msg.target()!=null)
 		   &&(paladinsGroup.contains(msg.target()))

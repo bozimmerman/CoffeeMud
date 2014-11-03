@@ -56,7 +56,8 @@ public class ArchonSkill extends StdAbility
 	public MOB getTargetAnywhere(MOB mob, Vector commands, Environmental givenTarget, boolean quiet, boolean alreadyAffOk, boolean playerOnly)
 	{
 		MOB target=super.getTarget(mob,commands,givenTarget,true,alreadyAffOk);
-		if(target!=null) return target;
+		if(target!=null)
+			return target;
 
 		String targetName=CMParms.combine(commands,0);
 		if((givenTarget!=null)&&(givenTarget instanceof MOB))

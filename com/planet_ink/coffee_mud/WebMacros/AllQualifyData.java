@@ -46,10 +46,12 @@ public class AllQualifyData extends StdWebMacro
 		if(parms.containsKey("WHICH"))
 			which=parms.get("WHICH");
 		final String origiWhich=which;
-		if((which==null)||(which.length()==0)) which="ALL";
+		if((which==null)||(which.length()==0))
+			which="ALL";
 		final Map<String,Map<String,AbilityMapper.AbilityMapping>> allQualMap=CMLib.ableMapper().getAllQualifiesMap(httpReq.getRequestObjects());
 		final Map<String,AbilityMapper.AbilityMapping> map=allQualMap.get(which.toUpperCase().trim());
-		if(map==null) return "";
+		if(map==null)
+			return "";
 
 		AbilityMapper.AbilityMapping mapped=map.get(last);
 		if(mapped==null)
@@ -90,14 +92,16 @@ public class AllQualifyData extends StdWebMacro
 		if(parms.containsKey("MASK"))
 		{
 			String s=httpReq.getUrlParameter("MASK");
-			if(s==null) s=mapped.extraMask;
+			if(s==null)
+				s=mapped.extraMask;
 			str.append(s).append(", ");
 		}
 
 		if(parms.containsKey("AUTOGAIN"))
 		{
 			String s=httpReq.getUrlParameter("AUTOGAIN");
-			if(s==null) s=mapped.autoGain?"on":"";
+			if(s==null)
+				s=mapped.autoGain?"on":"";
 			str.append(s.equalsIgnoreCase("on")?"true":"false").append(", ");
 		}
 

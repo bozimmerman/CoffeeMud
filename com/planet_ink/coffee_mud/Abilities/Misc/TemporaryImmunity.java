@@ -84,7 +84,8 @@ public class TemporaryImmunity extends StdAbility
 	@Override
 	public String text()
 	{
-		if(set.size()==0) return "";
+		if(set.size()==0)
+			return "";
 		final StringBuffer str=new StringBuffer("");
 		for(int s=0;s<set.size();s++)
 			str.append(set.elementAt(s).first+"/"+set.elementAt(s).second.longValue()+";");

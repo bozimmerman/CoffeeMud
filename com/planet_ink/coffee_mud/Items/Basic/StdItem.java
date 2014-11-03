@@ -191,12 +191,14 @@ public class StdItem implements Item
 		for(final Enumeration<Behavior> e=I.behaviors();e.hasMoreElements();)
 		{
 			final Behavior B=e.nextElement();
-			if(B!=null)	addBehavior((Behavior)B.copyOf());
+			if(B!=null)
+				addBehavior((Behavior)B.copyOf());
 		}
 		for(final Enumeration<ScriptingEngine> e=I.scripts();e.hasMoreElements();)
 		{
 			final ScriptingEngine SE=e.nextElement();
-			if(SE!=null) addScript((ScriptingEngine)SE.copyOf());
+			if(SE!=null)
+				addScript((ScriptingEngine)SE.copyOf());
 		}
 
 		Ability A;
@@ -297,7 +299,8 @@ public class StdItem implements Item
 	@Override
 	public boolean fitsOn(long wornCode)
 	{
-		if(wornCode<=0)	return true;
+		if(wornCode<=0)
+			return true;
 		return ((properWornBitmap & wornCode)==wornCode);
 	}
 
@@ -429,7 +432,8 @@ public class StdItem implements Item
 	@Override
 	public boolean canWear(MOB mob, long where)
 	{
-		if(where==0) return (whereCantWear(mob)==0);
+		if(where==0)
+			return (whereCantWear(mob)==0);
 		if((rawProperLocationBitmap()&where)!=where)
 			return false;
 		return mob.freeWearPositions(where,(short)0,(short)0)>0;
@@ -764,7 +768,8 @@ public class StdItem implements Item
 		if(!canWear(mob,wearWhere))
 		{
 			long cantWearAt=whereCantWear(mob);
-			if(wearWhere!=0) cantWearAt = cantWearAt & wearWhere;
+			if(wearWhere!=0)
+				cantWearAt = cantWearAt & wearWhere;
 			Item alreadyWearing=(cantWearAt==0)?null:mob.fetchFirstWornItem(cantWearAt);
 			final Wearable.CODES codes = Wearable.CODES.instance();
 			if(alreadyWearing!=null)
@@ -1452,7 +1457,8 @@ public class StdItem implements Item
 	{
 		myContainer=null;
 
-		if(owner==null) return;
+		if(owner==null)
+			return;
 
 		if (owner instanceof Room)
 		{
@@ -1487,9 +1493,12 @@ public class StdItem implements Item
 	@Override
 	public void addNonUninvokableEffect(Ability to)
 	{
-		if(to==null) return;
-		if(fetchEffect(to.ID())!=null) return;
-		if(affects==null) affects=new SVector<Ability>(1);
+		if(to==null)
+			return;
+		if(fetchEffect(to.ID())!=null)
+			return;
+		if(affects==null)
+			affects=new SVector<Ability>(1);
 		to.makeNonUninvokable();
 		to.makeLongLasting();
 		affects.addElement(to);
@@ -1498,16 +1507,20 @@ public class StdItem implements Item
 	@Override
 	public void addEffect(Ability to)
 	{
-		if(to==null) return;
-		if(fetchEffect(to.ID())!=null) return;
-		if(affects==null) affects=new SVector<Ability>(1);
+		if(to==null)
+			return;
+		if(fetchEffect(to.ID())!=null)
+			return;
+		if(affects==null)
+			affects=new SVector<Ability>(1);
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
 	@Override
 	public void delEffect(Ability to)
 	{
-		if(affects==null) return;
+		if(affects==null)
+			return;
 		if(affects.remove(to))
 			to.setAffectedOne(null);
 	}
@@ -1521,7 +1534,8 @@ public class StdItem implements Item
 			for(int a=0;a<affects.size();a++)
 			{
 				final Ability A=affects.get(a);
-				if(A!=null) applier.apply(A);
+				if(A!=null)
+					applier.apply(A);
 			}
 		}
 		catch(final ArrayIndexOutOfBoundsException e){}
@@ -1530,7 +1544,8 @@ public class StdItem implements Item
 	public void delAllEffects(boolean unInvoke)
 	{
 		final SVector<Ability> affects=this.affects;
-		if(affects==null) return;
+		if(affects==null)
+			return;
 		Ability keepThisOne=null;
 		for(int a=numEffects()-1;a>=0;a--)
 		{
@@ -1565,14 +1580,16 @@ public class StdItem implements Item
 	@Override
 	public int numEffects()
 	{
-		if(affects==null) return 0;
+		if(affects==null)
+			return 0;
 		return affects.size();
 	}
 
 	@Override
 	public Ability fetchEffect(int index)
 	{
-		if(affects==null) return null;
+		if(affects==null)
+			return null;
 		try
 		{
 			return affects.elementAt(index);
@@ -1584,7 +1601,8 @@ public class StdItem implements Item
 	@Override
 	public Ability fetchEffect(String ID)
 	{
-		if(affects==null) return null;
+		if(affects==null)
+			return null;
 		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
@@ -1599,8 +1617,10 @@ public class StdItem implements Item
 	@Override
 	public void addBehavior(Behavior to)
 	{
-		if(to==null) return;
-		if(behaviors==null) behaviors=new SVector<Behavior>(1);
+		if(to==null)
+			return;
+		if(behaviors==null)
+			behaviors=new SVector<Behavior>(1);
 		for(final Behavior B : behaviors)
 			if(B.ID().equals(to.ID()))
 				return;
@@ -1616,7 +1636,8 @@ public class StdItem implements Item
 	public void delAllBehaviors()
 	{
 		final boolean didSomething=(behaviors!=null)&&(behaviors.size()>0);
-		if(didSomething) behaviors.clear();
+		if(didSomething)
+			behaviors.clear();
 		behaviors=null;
 		if(didSomething && ((scripts==null)||(scripts.size()==0)))
 		  CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
@@ -1625,7 +1646,8 @@ public class StdItem implements Item
 	@Override
 	public void delBehavior(Behavior to)
 	{
-		if(behaviors==null) return;
+		if(behaviors==null)
+			return;
 		if(behaviors.remove(to))
 		{
 			if(((behaviors==null)||(behaviors.size()==0))&&((scripts==null)||(scripts.size()==0)))
@@ -1636,7 +1658,8 @@ public class StdItem implements Item
 	@Override
 	public int numBehaviors()
 	{
-		if(behaviors==null) return 0;
+		if(behaviors==null)
+			return 0;
 		return behaviors.size();
 	}
 
@@ -1649,7 +1672,8 @@ public class StdItem implements Item
 	@Override
 	public Behavior fetchBehavior(int index)
 	{
-		if(behaviors==null) return null;
+		if(behaviors==null)
+			return null;
 		try
 		{
 			return behaviors.elementAt(index);
@@ -1661,7 +1685,8 @@ public class StdItem implements Item
 	@Override
 	public Behavior fetchBehavior(String ID)
 	{
-		if(behaviors==null) return null;
+		if(behaviors==null)
+			return null;
 		for(final Behavior B : behaviors)
 			if((B!=null)&&(B.ID().equalsIgnoreCase(ID)))
 				return B;
@@ -1678,7 +1703,8 @@ public class StdItem implements Item
 			for(int a=0;a<behaviors.size();a++)
 			{
 				final Behavior B=behaviors.get(a);
-				if(B!=null) applier.apply(B);
+				if(B!=null)
+					applier.apply(B);
 			}
 		}
 		catch(final ArrayIndexOutOfBoundsException e){}
@@ -1690,7 +1716,8 @@ public class StdItem implements Item
 	{
 		if(scripts==null)
 			scripts=new SVector<ScriptingEngine>(1);
-		if(S==null) return;
+		if(S==null)
+			return;
 		if(!scripts.contains(S))
 		{
 			ScriptingEngine S2=null;
@@ -1725,7 +1752,8 @@ public class StdItem implements Item
 	public void delAllScripts()
 	{
 		final boolean didSomething=(scripts!=null)&&(scripts.size()>0);
-		if(didSomething) scripts.clear();
+		if(didSomething)
+			scripts.clear();
 		scripts=null;
 		if(didSomething && ((behaviors==null)||(behaviors.size()==0)))
 		  CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
@@ -1747,7 +1775,8 @@ public class StdItem implements Item
 			for(int a=0;a<scripts.size();a++)
 			{
 				final ScriptingEngine S=scripts.get(a);
-				if(S!=null) applier.apply(S);
+				if(S!=null)
+					applier.apply(S);
 			}
 		}
 		catch(final ArrayIndexOutOfBoundsException e){}
@@ -1805,13 +1834,15 @@ public class StdItem implements Item
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
+			if(code.equalsIgnoreCase(CODES[i]))
+				return i;
 		return -1;
 	}
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof StdItem)) return false;
+		if(!(E instanceof StdItem))
+			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))

@@ -99,7 +99,8 @@ public class Thief_MarkTrapped extends ThiefSkill
 			item=mob.location();
 		if(item==null)
 			item=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY,false,true);
-		if(item==null) return false;
+		if(item==null)
+			return false;
 
 		if((!auto)&&(item instanceof MOB))
 		{

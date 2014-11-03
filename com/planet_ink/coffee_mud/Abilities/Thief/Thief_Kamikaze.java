@@ -119,7 +119,8 @@ public class Thief_Kamikaze extends ThiefSkill
 		final String s=(String)commands.lastElement();
 		commands.removeElementAt(commands.size()-1);
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if((!target.mayIFight(mob))||(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<3))
 		{

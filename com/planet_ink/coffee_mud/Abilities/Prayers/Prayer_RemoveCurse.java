@@ -48,7 +48,8 @@ public class Prayer_RemoveCurse extends Prayer implements MendingSkill
 	@Override
 	public boolean supportsMending(Physical item)
 	{
-		if(!(item instanceof MOB)) return false;
+		if(!(item instanceof MOB))
+			return false;
 		return CMLib.flags().domainAffects(item,Ability.DOMAIN_CURSING).size()>0;
 	}
 
@@ -70,7 +71,8 @@ public class Prayer_RemoveCurse extends Prayer implements MendingSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

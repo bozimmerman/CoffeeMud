@@ -45,7 +45,8 @@ public class Trap_AcidPit extends Trap_RoomPit
 	public int baseRejuvTime(int level)
 	{
 		int time=super.baseRejuvTime(level);
-		if(time<15) time=15;
+		if(time<15)
+			time=15;
 		return time;
 	}
 

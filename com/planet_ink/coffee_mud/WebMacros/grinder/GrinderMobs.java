@@ -123,9 +123,11 @@ public class GrinderMobs
 						if(player)
 						{
 							String prof=httpReq.getUrlParameter("ABPOF"+num);
-							if(prof==null) prof="0";
+							if(prof==null)
+								prof="0";
 							String txt=httpReq.getUrlParameter("ABTXT"+num);
-							if(txt==null) txt="";
+							if(txt==null)
+								txt="";
 							B.setProficiency(CMath.s_int(prof));
 							B.setMiscText(txt);
 						}
@@ -160,8 +162,10 @@ public class GrinderMobs
 					if(F!=null)
 					{
 						int amt=Integer.valueOf(howMuch).intValue();
-						if(amt<F.minimum()) amt=F.minimum();
-						if(amt>F.maximum()) amt=F.maximum();
+						if(amt<F.minimum())
+							amt=F.minimum();
+						if(amt>F.maximum())
+							amt=F.maximum();
 						E.addFaction(F.factionID(),amt);
 					}
 				}
@@ -297,7 +301,8 @@ public class GrinderMobs
 			{
 				final String MATCHING=httpReq.getUrlParameter("ITEM"+i);
 				final String WORN=httpReq.getUrlParameter("ITEMWORN"+i);
-				if(MATCHING==null) break;
+				if(MATCHING==null)
+					break;
 				Item I2=RoomData.getItemFromAnywhere(allitems,MATCHING);
 				if(I2!=null)
 				{
@@ -308,7 +313,8 @@ public class GrinderMobs
 						final boolean worn=((WORN!=null)&&(WORN.equalsIgnoreCase("on")));
 						I2.setContainer(null);
 						I2.unWear();
-						if(worn) I2.wearEvenIfImpossible(M);
+						if(worn)
+							I2.wearEvenIfImpossible(M);
 						happilyAddItem(I2,M);
 						items.addElement(I2);
 						I2.setContainer(null);
@@ -320,7 +326,8 @@ public class GrinderMobs
 			for(int i=0;i<cstrings.size();i++)
 			{
 				final String CONTAINER=(String)cstrings.elementAt(i);
-				if(CONTAINER.length()==0) continue;
+				if(CONTAINER.length()==0)
+					continue;
 				final Item I2=(Item)items.elementAt(i);
 				final Item C2=(Item)CMLib.english().fetchEnvironmental(items,CONTAINER,true);
 				if(C2 instanceof Container)
@@ -378,7 +385,8 @@ public class GrinderMobs
 	public static String editMob(HTTPRequest httpReq, java.util.Map<String,String> parms, MOB whom, Room R)
 	{
 		final String mobCode=httpReq.getUrlParameter("MOB");
-		if(mobCode==null) return "@break@";
+		if(mobCode==null)
+			return "@break@";
 
 		final String newClassID=httpReq.getUrlParameter("CLASSES");
 		CatalogLibrary.CataData cataData=null;
@@ -431,7 +439,8 @@ public class GrinderMobs
 				final String parmName=o.name();
 				boolean generic=o.isGenField;
 				String old=httpReq.getUrlParameter(parmName);
-				if(old==null) old="";
+				if(old==null)
+					old="";
 				if((M.isGeneric()||(!generic)))
 				switch(o)
 				{
@@ -473,7 +482,8 @@ public class GrinderMobs
 					break;
 				case SPEED: // speed
 					double d=CMath.s_double(old);
-					if(d<0.0) d=1.0;
+					if(d<0.0)
+						d=1.0;
 					M.basePhyStats().setSpeed(d);
 					break;
 				case ATTACK: // attack
@@ -591,10 +601,12 @@ public class GrinderMobs
 								role=CMath.s_int(entry.substring(x+1));
 						}
 						Clan C=CMLib.clans().getClan(clanID);
-						if(C==null) C=CMLib.clans().findClan(clanID);
+						if(C==null)
+							C=CMLib.clans().findClan(clanID);
 						if(C!=null)
 						{
-							if(role<0) role=C.getGovernment().getAcceptPos();
+							if(role<0)
+								role=C.getGovernment().getAcceptPos();
 							M.setClan(C.clanID(), role);
 						}
 					}
@@ -740,7 +752,8 @@ public class GrinderMobs
 				case CATACAT: // catacat
 					if(mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-"))
 					{
-						if(cataData==null) cataData=CMLib.catalog().sampleCataData("");
+						if(cataData==null)
+							cataData=CMLib.catalog().sampleCataData("");
 						cataData.setCatagory(old.toUpperCase().trim());
 					}
 					break;
@@ -750,31 +763,42 @@ public class GrinderMobs
 			if(M.isGeneric())
 			{
 				String error=GrinderExits.dispositions(M,httpReq,parms);
-				if(error.length()>0) return error;
+				if(error.length()>0)
+					return error;
 				error=GrinderMobs.senses(M,httpReq,parms);
-				if(error.length()>0) return error;
+				if(error.length()>0)
+					return error;
 				error=GrinderAreas.doAffects(M,httpReq,parms);
-				if(error.length()>0) return error;
+				if(error.length()>0)
+					return error;
 				error=GrinderAreas.doBehavs(M,httpReq,parms);
-				if(error.length()>0) return error;
+				if(error.length()>0)
+					return error;
 				error=GrinderMobs.factions(M,httpReq,parms);
-				if(error.length()>0) return error;
+				if(error.length()>0)
+					return error;
 				error=GrinderMobs.abilities(M,httpReq,parms);
-				if(error.length()>0) return error;
+				if(error.length()>0)
+					return error;
 				error=GrinderMobs.clans(M,httpReq,parms);
-				if(error.length()>0) return error;
+				if(error.length()>0)
+					return error;
 				if(M instanceof Deity)
 				{
 					error=GrinderMobs.blessings((Deity)M,httpReq,parms);
-					if(error.length()>0) return error;
+					if(error.length()>0)
+						return error;
 					error=GrinderMobs.curses((Deity)M,httpReq,parms);
-					if(error.length()>0) return error;
+					if(error.length()>0)
+						return error;
 					error=GrinderMobs.powers((Deity)M,httpReq,parms);
-					if(error.length()>0) return error;
+					if(error.length()>0)
+						return error;
 				}
 
 				error=GrinderMobs.items(M,allitems,httpReq);
-				if(error.length()>0) return error;
+				if(error.length()>0)
+					return error;
 
 				if((M instanceof ShopKeeper)
 				&&(httpReq.isUrlParameter("SHP1")))

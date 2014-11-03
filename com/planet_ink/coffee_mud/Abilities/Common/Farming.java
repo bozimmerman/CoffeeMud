@@ -92,7 +92,8 @@ public class Farming extends GatheringSkill
 				{
 					final int amount=CMLib.dice().roll(1,7,0)*(abilityCode());
 					String s="s";
-					if(amount==1) s="";
+					if(amount==1)
+						s="";
 					room.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 pound@x2 of @x3 have grown here.",""+amount,s,foundShortName));
 					for(int i=0;i<amount;i++)
 					{
@@ -120,8 +121,10 @@ public class Farming extends GatheringSkill
 
 	public boolean isPotentialCrop(Room R, int code)
 	{
-		if(R==null) return false;
-		if(R.resourceChoices()==null) return false;
+		if(R==null)
+			return false;
+		if(R.resourceChoices()==null)
+			return false;
 		for(int i=0;i<R.resourceChoices().size();i++)
 			if(R.resourceChoices().get(i).intValue()==code)
 				return true;

@@ -43,7 +43,8 @@ public class HolidayData extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("HOLIDAY");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		boolean exists = false;
 		if(last.length()>0)
 		{
@@ -231,7 +232,8 @@ public class HolidayData extends StdWebMacro
 				if(parms.containsKey("SCHEDULETYPE")||parms.containsKey("SCHEDULETYPEID"))
 				{
 					String old=httpReq.getUrlParameter("SCHEDULETYPE");
-					if(old==null) old=httpReq.getUrlParameter("SCHEDULETYPEID");
+					if(old==null)
+						old=httpReq.getUrlParameter("SCHEDULETYPEID");
 					final String[] TYPES={"RANDOM INTERVAL","MUD-DAY","RL-DAY"};
 					if(old==null)
 					{
@@ -509,7 +511,8 @@ public class HolidayData extends StdWebMacro
 				String theparm=httpReq.getUrlParameter("PMASK"+num);
 				while((behav!=null)&&(theparm!=null))
 				{
-					if(!behav.trim().endsWith("%")) behav=behav.trim()+"%";
+					if(!behav.trim().endsWith("%"))
+						behav=behav.trim()+"%";
 					if((behav.length()>0)&&(CMath.isPct(behav)))
 					{
 						theclasses.addElement(behav);
@@ -702,7 +705,8 @@ public class HolidayData extends StdWebMacro
 	{
 		final Vector V=new Vector();
 		final Ability A=CMClass.getAbility("Mood");
-		if(A==null) return V;
+		if(A==null)
+			return V;
 		int x=0;
 		A.setMiscText(""+x);
 		while((A.text().length()>0)&&(!V.contains(A.text())))

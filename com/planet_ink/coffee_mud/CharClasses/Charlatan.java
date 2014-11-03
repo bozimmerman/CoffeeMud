@@ -305,7 +305,8 @@ public class Charlatan extends StdCharClass
 			if(choices.size()==0)
 				return;
 			final Ability A=choices.get(CMLib.dice().roll(1,choices.size(),-1));
-			if(A!=null)	giveMobAbility(mob,A,0,"",isBorrowedClass);
+			if(A!=null)
+				giveMobAbility(mob,A,0,"",isBorrowedClass);
 		}
 		else
 		{

@@ -45,8 +45,10 @@ public class UnderWaterGrid extends StdGrid
 		setDescription("");
 		xsize=CMProps.getIntVar(CMProps.Int.SKYSIZE);
 		ysize=CMProps.getIntVar(CMProps.Int.SKYSIZE);
-		if(xsize<0) xsize=xsize*-1;
-		if(ysize<0) ysize=ysize*-1;
+		if(xsize<0)
+			xsize=xsize*-1;
+		if(ysize<0)
+			ysize=ysize*-1;
 		if((xsize==0)||(ysize==0))
 		{
 			xsize=3;
@@ -102,7 +104,8 @@ public class UnderWaterGrid extends StdGrid
 		final Exit ox=CMClass.getExit("Open");
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			if(d==Directions.GATE) continue;
+			if(d==Directions.GATE)
+				continue;
 			final Room dirRoom=rawDoors()[d];
 			Exit dirExit=getRawExit(d);
 			if((dirExit==null)||(dirExit.hasADoor()))
@@ -110,7 +113,8 @@ public class UnderWaterGrid extends StdGrid
 			if(dirRoom!=null)
 			{
 				Exit altExit=dirRoom.getRawExit(Directions.getOpDirectionCode(d));
-				if(altExit==null) altExit=ox;
+				if(altExit==null)
+					altExit=ox;
 
 				switch(d)
 				{

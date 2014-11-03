@@ -108,7 +108,8 @@ public class GModify extends StdCommand
 
 	public static void gmodifydebugtell(MOB mob, String msg)
 	{
-		if(mob!=null) mob.tell(msg);
+		if(mob!=null)
+			mob.tell(msg);
 		Log.sysOut("GMODIFY",msg);
 	}
 
@@ -123,7 +124,8 @@ public class GModify extends StdCommand
 			return false;
 		try{Thread.sleep(1);}catch(final Exception e){mob.session().stopSession(false,false,false);return false;}
 		boolean didAnything=false;
-		if(noisy) gmodifydebugtell(mob,E.name()+"/"+CMClass.classID(E));
+		if(noisy)
+			gmodifydebugtell(mob,E.name()+"/"+CMClass.classID(E));
 		String field=null;
 		String value=null;
 		String equator=null;
@@ -141,7 +143,8 @@ public class GModify extends StdCommand
 			value=(String)onfields.elementAt(i,3);
 			codes=((Integer)onfields.elementAt(i,4)).intValue();
 			pattern=(Pattern)onfields.elementAt(i,5);
-			if(noisy) gmodifydebugtell(mob,field+"/"+getStat(E,field)+"/"+value+"/"+getStat(E,field).equals(value));
+			if(noisy)
+				gmodifydebugtell(mob,field+"/"+getStat(E,field)+"/"+value+"/"+getStat(E,field).equals(value));
 			int matchStart=-1;
 			int matchEnd=-1;
 			stat=getStat(E,field);
@@ -307,7 +310,8 @@ public class GModify extends StdCommand
 					}
 					continue;
 				}
-				if(noisy) gmodifydebugtell(mob,E.name()+" wants to change "+field+" value "+getStat(E,field)+" to "+value+"/"+(!getStat(E,field).equals(value)));
+				if(noisy)
+					gmodifydebugtell(mob,E.name()+" wants to change "+field+" value "+getStat(E,field)+" to "+value+"/"+(!getStat(E,field).equals(value)));
 				if(CMath.bset(codes,FLAG_SUBSTRING))
 				{
 					int matchStart=-1;
@@ -565,7 +569,8 @@ public class GModify extends StdCommand
 				while(val.trim().startsWith("["))
 				{
 					final int x2=val.indexOf(']');
-					if(x2<0) break;
+					if(x2<0)
+						break;
 					final String cd=val.trim().substring(1,x2);
 					if(cd.length()!=2)
 						break;
@@ -625,7 +630,8 @@ public class GModify extends StdCommand
 			}
 			else
 			if(placesToDo.elementAt(i) instanceof Room)
-				if(mob.session()!=null) mob.session().rawPrint(".");
+				if(mob.session()!=null)
+					mob.session().rawPrint(".");
 			else
 				return false;
 		}
@@ -637,16 +643,20 @@ public class GModify extends StdCommand
 			else
 				mob.session().rawPrint(L("Searching, modifying and saving..."));
 		}
-		if(noisy) gmodifydebugtell(mob,"Rooms to do: "+placesToDo.size());
-		if(noisy) gmodifydebugtell(mob,"When fields="+CMParms.toStringList(onfields.getDimensionVector(1)));
-		if(noisy) gmodifydebugtell(mob,"Change fields="+CMParms.toStringList(changes.getDimensionVector(1)));
+		if(noisy)
+			gmodifydebugtell(mob,"Rooms to do: "+placesToDo.size());
+		if(noisy)
+			gmodifydebugtell(mob,"When fields="+CMParms.toStringList(onfields.getDimensionVector(1)));
+		if(noisy)
+			gmodifydebugtell(mob,"Change fields="+CMParms.toStringList(changes.getDimensionVector(1)));
 		Log.sysOut("GModify",mob.Name()+" "+whole+".");
 		for(int r=0;r<placesToDo.size();r++)
 		{
 			Room R=(Room)placesToDo.elementAt(r);
 			if(!CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.GMODIFY))
 				continue;
-			if((R==null)||(R.roomID()==null)||(R.roomID().length()==0)) continue;
+			if((R==null)||(R.roomID()==null)||(R.roomID().length()==0))
+				continue;
 			synchronized(("SYNC"+R.roomID()).intern())
 			{
 				R=CMLib.map().getRoom(R);
@@ -657,14 +667,16 @@ public class GModify extends StdCommand
 				if(changes.size()==0)
 				{
 					R=CMLib.coffeeMaker().makeNewRoomContent(R,false);
-					if(R!=null) A.setAreaState(Area.State.FROZEN);
+					if(R!=null)
+						A.setAreaState(Area.State.FROZEN);
 				}
 				else
 				{
 					A.setAreaState(Area.State.FROZEN);
 					CMLib.map().resetRoom(R);
 				}
-				if(R==null) continue;
+				if(R==null)
+					continue;
 				boolean savemobs=false;
 				boolean saveitems=false;
 				boolean saveroom=false;
@@ -708,13 +720,17 @@ public class GModify extends StdCommand
 						}
 					}
 				}
-				if(saveroom) CMLib.database().DBUpdateRoom(R);
-				if(saveitems) CMLib.database().DBUpdateItems(R);
-				if(savemobs) CMLib.database().DBUpdateMOBs(R);
+				if(saveroom)
+					CMLib.database().DBUpdateRoom(R);
+				if(saveitems)
+					CMLib.database().DBUpdateItems(R);
+				if(savemobs)
+					CMLib.database().DBUpdateMOBs(R);
 				if((mob.session()!=null)&&(changes.size()>0))
 					mob.session().rawPrint(".");
 				A.setAreaState(oldFlag);
-				if(changes.size()==0) R.destroy();
+				if(changes.size()==0)
+					R.destroy();
 				if(saveroom)
 				{
 					final Room realR=CMLib.map().getRoom(R);
@@ -728,7 +744,8 @@ public class GModify extends StdCommand
 			}
 		}
 
-		if(mob.session()!=null) mob.session().rawPrintln(L("!\n\rDone!"));
+		if(mob.session()!=null)
+			mob.session().rawPrintln(L("!\n\rDone!"));
 		Area A=null;
 		for(int i=0;i<placesToDo.size();i++)
 		{

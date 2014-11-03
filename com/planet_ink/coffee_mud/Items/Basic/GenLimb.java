@@ -88,7 +88,8 @@ public class GenLimb extends StdLimb
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenLimb)) return false;
+		if(!(E instanceof GenLimb))
+			return false;
 		for(int i=0;i<getStatCodes().length;i++)
 			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
 				return false;

@@ -39,8 +39,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	@Override
 	public ShopKeeper getShopKeeper(Environmental E)
 	{
-		if(E==null) return null;
-		if(E instanceof ShopKeeper) return (ShopKeeper)E;
+		if(E==null)
+			return null;
+		if(E instanceof ShopKeeper)
+			return (ShopKeeper)E;
 		if(E instanceof Physical)
 		{
 			final Physical P=(Physical)E;
@@ -116,7 +118,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	public String getViewDescription(MOB viewerM, Environmental E)
 	{
 		final StringBuffer str=new StringBuffer("");
-		if(E==null) return str.toString();
+		if(E==null)
+			return str.toString();
 		str.append(L("Interested in @x1?",E.name()));
 		str.append(L(" Here is some information for you:"));
 		if(E instanceof Physical)
@@ -170,7 +173,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 
 	protected Ability getTrainableAbility(MOB teacher, Ability A)
 	{
-		if((teacher==null)||(A==null)) return A;
+		if((teacher==null)||(A==null))
+			return A;
 		Ability teachableA=teacher.fetchAbility(A.ID());
 		if(teachableA==null)
 		{
@@ -185,7 +189,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	{
 		if(CMSecurity.isAllowed(buyer,buyer.location(),CMSecurity.SecFlag.CMDMOBS))
 			return true;
-		if(seller == buyer) return true;
+		if(seller == buyer)
+			return true;
 		if(product instanceof Item)
 		{
 			if(((Item)product).container()!=null)
@@ -262,7 +267,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	public double prejudiceValueFromPart(MOB customer, boolean pawnTo, String part)
 	{
 		final int x=part.indexOf('=');
-		if(x<0) return 0.0;
+		if(x<0)
+			return 0.0;
 		final String sellorby=part.substring(0,x);
 		part=part.substring(x+1);
 		if(pawnTo&&(!sellorby.trim().equalsIgnoreCase("SELL")))
@@ -296,7 +302,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				if(bit.equalsIgnoreCase(V.elementAt(v)))
 				{ yes=true; break;}
 		}
-		if(yes) return d;
+		if(yes)
+			return d;
 		return 0.0;
 
 	}
@@ -323,17 +330,20 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			final String part=factors.substring(0,x).trim();
 			factors=factors.substring(x+1).trim();
 			final double d=prejudiceValueFromPart(customer,pawnTo,part);
-			if(d!=0.0) return d;
+			if(d!=0.0)
+				return d;
 			x=factors.indexOf(';');
 		}
 		final double d=prejudiceValueFromPart(customer,pawnTo,factors.trim());
-		if(d!=0.0) return d;
+		if(d!=0.0)
+			return d;
 		return 1.0;
 	}
 
 	public double itemPriceFactor(Environmental E, Room R, String[] priceFactors, boolean pawnTo)
 	{
-		if(priceFactors.length==0) return 1.0;
+		if(priceFactors.length==0)
+			return 1.0;
 		double factor=1.0;
 		int x=0;
 		String factorMask=null;
@@ -341,19 +351,22 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		if(E instanceof Item)
 		{
 			oldOwner=((Item)E).owner();
-			if(R!=null) ((Item)E).setOwner(R);
+			if(R!=null)
+				((Item)E).setOwner(R);
 		}
 		for (final String priceFactor : priceFactors)
 		{
 			factorMask=priceFactor.trim();
 			x=factorMask.indexOf(' ');
-			if(x<0) continue;
+			if(x<0)
+				continue;
 			if(CMLib.masking().maskCheck(factorMask.substring(x+1).trim(),E,false))
 				factor*=CMath.s_double(factorMask.substring(0,x).trim());
 		}
 		if(E instanceof Item)
 			((Item)E).setOwner(oldOwner);
-		if(factor!=0.0) return factor;
+		if(factor!=0.0)
+			return factor;
 		return 1.0;
 	}
 
@@ -366,7 +379,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	{
 		final double number=1.0;
 		final ShopKeeper.ShopPrice val=new ShopKeeper.ShopPrice();
-		if(product==null) return val;
+		if(product==null)
+			return val;
 		final int stockPrice=shop.getShop().stockPrice(product);
 		if(stockPrice<=-100)
 		{
@@ -422,7 +436,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	public double devalue(ShopKeeper shop, Environmental product)
 	{
 		final int num=shop.getShop().numberInStock(product);
-		if(num<=0) return 0.0;
+		if(num<=0)
+			return 0.0;
 		double resourceRate=0.0;
 		double itemRate=0.0;
 		final String s=shop.finalDevalueRate();
@@ -442,8 +457,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		}
 		double rate=(product instanceof RawMaterial)?resourceRate:itemRate;
 		rate=rate*num;
-		if(rate>1.0) rate=1.0;
-		if(rate<0.0) rate=0.0;
+		if(rate>1.0)
+			rate=1.0;
+		if(rate<0.0)
+			rate=0.0;
 		return rate;
 	}
 
@@ -463,14 +480,16 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		if(product==null)
 			return val;
 		final int stockPrice=shop.getShop().stockPrice(product);
-		if(stockPrice<=-100) return val;
+		if(stockPrice<=-100)
+			return val;
 
 		if(stockPrice>=0.0)
 			val.absoluteGoldPrice=stockPrice;
 		else
 			val.absoluteGoldPrice=rawSpecificGoldPrice(product,shop.getShop(),number);
 
-		if(buyer==null) return val;
+		if(buyer==null)
+			return val;
 
 		double prejudiceFactor=prejudiceFactor(buyer,shop.finalPrejudiceFactors(),true);
 		final Room loc=CMLib.map().roomLocation(shop);
@@ -499,7 +518,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	@Override
 	public double getSalesTax(Room homeRoom, MOB seller)
 	{
-		if((seller==null)||(homeRoom==null)) return 0.0;
+		if((seller==null)||(homeRoom==null))
+			return 0.0;
 		final Law theLaw=CMLib.law().getTheLaw(homeRoom,seller);
 		if(theLaw!=null)
 		{
@@ -707,7 +727,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					if(A.canTarget(Ability.CAN_ITEMS))
 					{
 						Item I=buyer.fetchWieldedItem();
-						if(I==null) I=buyer.fetchHeldItem();
+						if(I==null)
+							I=buyer.fetchHeldItem();
 						if(I==null)
 						{
 							CMLib.commands().postSay(seller,buyer,L("You need to be wielding or holding the item you want this cast on."),true,false);
@@ -820,7 +841,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	@Override
 	public String findInnRoom(InnKey key, String addThis, Room R)
 	{
-		if(R==null) return null;
+		if(R==null)
+			return null;
 		final String keyNum=key.getKey();
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
@@ -846,7 +868,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			if(V.elementAt(V.size()-2).equalsIgnoreCase("for"))
 			{
 				String s=V.lastElement();
-				if(s.endsWith(".")) s=s.substring(0,s.length()-1);
+				if(s.endsWith("."))
+					s=s.substring(0,s.length()-1);
 				final MOB M=buyer.location().fetchInhabitant("$"+s+"$");
 				if(M!=null)
 					mobFor=M;
@@ -905,7 +928,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				final MOB newMOB=(MOB)product.copyOf();
 				newMOB.setStartRoom(null);
 				final Ability A=newMOB.fetchEffect("Skill_Enslave");
-				if(A!=null) A.setMiscText("");
+				if(A!=null)
+					A.setMiscText("");
 				newMOB.setLiegeID("");
 				newMOB.setClan("", Integer.MIN_VALUE); // delete all sequence
 				shop.getShop().addStoreInventory(newMOB);
@@ -956,7 +980,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 						final double taxAmount=totalFunds-sellingPrice(seller,buyer,product,shop,false).absoluteGoldPrice;
 						totalFunds-=taxAmount;
 						final Coins COIN=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(seller),taxAmount,treasuryR,treasuryContainer);
-						if(COIN!=null) COIN.putCoinsBack();
+						if(COIN!=null)
+							COIN.putCoinsBack();
 					}
 				}
 			}
@@ -975,8 +1000,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			if(sellerGetsPaid)
 				CMLib.beanCounter().giveSomeoneMoney(seller,seller,CMLib.beanCounter().getCurrency(seller),totalFunds);
 		}
-		if(price.questPointPrice>0) buyer.setQuestPoint(buyer.getQuestPoint()-price.questPointPrice);
-		if(price.experiencePrice>0) CMLib.leveler().postExperience(buyer,null,null,-price.experiencePrice,false);
+		if(price.questPointPrice>0)
+			buyer.setQuestPoint(buyer.getQuestPoint()-price.questPointPrice);
+		if(price.experiencePrice>0)
+			CMLib.leveler().postExperience(buyer,null,null,-price.experiencePrice,false);
 		buyer.recoverPhyStats();
 	}
 
@@ -997,9 +1024,12 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			{
 				final InnKey item =(InnKey)baseProduct;
 				String buf=findInnRoom(item, "", room);
-				if(buf==null) buf=findInnRoom(item, "upstairs", room.getRoomInDir(Directions.UP));
-				if(buf==null) buf=findInnRoom(item, "downstairs", room.getRoomInDir(Directions.DOWN));
-				if(buf!=null) CMLib.commands().postSay(seller,mobFor,L("Your room is @x1.",buf),true,false);
+				if(buf==null)
+					buf=findInnRoom(item, "upstairs", room.getRoomInDir(Directions.UP));
+				if(buf==null)
+					buf=findInnRoom(item, "downstairs", room.getRoomInDir(Directions.DOWN));
+				if(buf!=null)
+					CMLib.commands().postSay(seller,mobFor,L("Your room is @x1.",buf),true,false);
 			}
 			return true;
 		}
@@ -1018,7 +1048,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		if(shop.isSold(ShopKeeper.DEAL_SLAVES))
 		{
 			slaveA=product.fetchEffect("Skill_Enslave");
-			if(slaveA!=null) slaveA.setMiscText("");
+			if(slaveA!=null)
+				slaveA.setMiscText("");
 			else
 			if(!CMLib.flags().isAnimalIntelligence(product))
 			{
@@ -1089,16 +1120,20 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			if(A.canTarget(Ability.CAN_ITEMS))
 			{
 				Item I=mobFor.fetchWieldedItem();
-				if(I==null) I=mobFor.fetchHeldItem();
-				if(I==null) I=mobFor.fetchItem(null,Wearable.FILTER_WORNONLY,"all");
-				if(I==null) I=mobFor.fetchItem(null,Wearable.FILTER_UNWORNONLY,"all");
+				if(I==null)
+					I=mobFor.fetchHeldItem();
+				if(I==null)
+					I=mobFor.fetchItem(null,Wearable.FILTER_WORNONLY,"all");
+				if(I==null)
+					I=mobFor.fetchItem(null,Wearable.FILTER_UNWORNONLY,"all");
 				if(I!=null)
 				{
 					V.addElement("$"+I.name()+"$");
 					seller.addItem(I);
 					A.invoke(seller,V,I,true,0);
 					seller.delItem(I);
-					if(!mobFor.isMine(I)) mobFor.addItem(I);
+					if(!mobFor.isMine(I))
+						mobFor.addItem(I);
 				}
 			}
 			if(seller.isMonster())
@@ -1114,7 +1149,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	@Override
 	public List<Environmental> addRealEstateTitles(List<Environmental> V, MOB buyer, CoffeeShop shop, Room myRoom)
 	{
-		if((myRoom==null)||(buyer==null)) return V;
+		if((myRoom==null)||(buyer==null))
+			return V;
 		final Area myArea=myRoom.getArea();
 		String name=buyer.Name();
 		Pair<Clan,Integer> buyerClanPair=null;
@@ -1189,7 +1225,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				}
 			}
 		}
-		if(V.size()<2) return V;
+		if(V.size()<2)
+			return V;
 		final Vector<Environmental> V2=new Vector<Environmental>(V.size());
 		LandTitle L=null;
 		LandTitle L2=null;
@@ -1242,7 +1279,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	@Override
 	public String storeKeeperString(CoffeeShop shop)
 	{
-		if(shop==null) return "";
+		if(shop==null)
+			return "";
 		if(shop.isSold(ShopKeeper.DEAL_ANYTHING))
 			return "*Anything*";
 
@@ -1410,7 +1448,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	{
 		if(thisThang instanceof PackagedItems)
 			thisThang=((PackagedItems)thisThang).getItem();
-		if(thisThang==null) return false;
+		if(thisThang==null)
+			return false;
 		if((thisThang instanceof Coins)
 		||(thisThang instanceof DeadBody)
 		||(CMLib.flags().isChild(thisThang)))
@@ -1517,7 +1556,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		for(int v=0;v<V.size();v++)
 			V2.addElement(V.get(v).auctioningI);
 		Environmental E=CMLib.english().fetchEnvironmental(V2,named,true);
-		if(!(E instanceof Item)) E=CMLib.english().fetchEnvironmental(V2,named,false);
+		if(!(E instanceof Item))
+			E=CMLib.english().fetchEnvironmental(V2,named,false);
 		if(E!=null)
 		for(int v=0;v<V.size();v++)
 			if(V.get(v).auctioningI==E)
@@ -1528,7 +1568,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	@Override
 	public void saveAuction(Auctioneer.AuctionData data, String auctionHouse, boolean updateOnly)
 	{
-		if(data.auctioningI instanceof Container) ((Container)data.auctioningI).emptyPlease(false);
+		if(data.auctioningI instanceof Container)
+			((Container)data.auctioningI).emptyPlease(false);
 		final StringBuffer xml=new StringBuffer("<AUCTION>");
 		xml.append("<PRICE>"+data.bid+"</PRICE>");
 		xml.append("<BUYOUT>"+data.buyOutPrice+"</BUYOUT>");
@@ -1606,7 +1647,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	@Override
 	public String getListForMask(String targetMessage)
 	{
-		if(targetMessage==null) return null;
+		if(targetMessage==null)
+			return null;
 		final int x=targetMessage.toUpperCase().lastIndexOf("FOR '");
 		if(x>0)
 		{
@@ -1635,7 +1677,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				&&((data.tickDown>System.currentTimeMillis())||(data.auctioningM==buyer)||(data.highBidderM==buyer)))
 				{
 					Area area=CMLib.map().getStartArea(seller);
-					if(area==null) area=CMLib.map().getStartArea(buyer);
+					if(area==null)
+						area=CMLib.map().getStartArea(buyer);
 					str.append(CMStrings.padRight(""+data.auctioningI.phyStats().level(),3)+" ");
 					str.append(CMStrings.padRight(data.auctioningI.name(),50)+" ");
 					if(data.tickDown>System.currentTimeMillis())

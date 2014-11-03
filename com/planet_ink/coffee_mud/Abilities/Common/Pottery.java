@@ -125,7 +125,8 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 	@Override
 	public boolean mayICraft(final Item I)
 	{
-		if(I==null) return false;
+		if(I==null)
+			return false;
 		if(!super.mayBeCrafted(I))
 			return false;
 		if((I.material()!=RawMaterial.RESOURCE_CLAY)&&((I.material()!=RawMaterial.RESOURCE_CHINA)))
@@ -240,7 +241,8 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 			return doLearnRecipe(mob, commands, givenTarget, auto, asLevel);
 		}
 		final Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
-		if(fire==null) return false;
+		if(fire==null)
+			return false;
 		activity = CraftingActivity.CRAFTING;
 		buildingI=null;
 		messedUp=false;
@@ -274,11 +276,13 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 
 		final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
-		if(componentsFoundList==null) return false;
+		if(componentsFoundList==null)
+			return false;
 		int woodRequired=CMath.s_int(woodRequiredStr);
 		woodRequired=adjustWoodRequired(woodRequired,mob);
 
-		if(amount>woodRequired) woodRequired=amount;
+		if(amount>woodRequired)
+			woodRequired=amount;
 		final String misctype=foundRecipe.get(RCP_MISCTYPE);
 		final int[] pm={RawMaterial.RESOURCE_CLAY,RawMaterial.RESOURCE_CHINA};
 		bundling=misctype.equalsIgnoreCase("BUNDLE");
@@ -288,7 +292,8 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 											bundling,
 											parsedVars.autoGenerate,
 											null);
-		if(data==null) return false;
+		if(data==null)
+			return false;
 		woodRequired=data[0][FOUND_AMT];
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -347,8 +352,10 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 					((Drink)buildingI).setThirstQuenched(capacity*50);
 			}
 		}
-		if(bundling) buildingI.setBaseValue(lostValue);
-		if(misctype.equalsIgnoreCase("stone")) buildingI.setMaterial(RawMaterial.RESOURCE_STONE);
+		if(bundling)
+			buildingI.setBaseValue(lostValue);
+		if(misctype.equalsIgnoreCase("stone"))
+			buildingI.setMaterial(RawMaterial.RESOURCE_STONE);
 		buildingI.recoverPhyStats();
 		buildingI.text();
 		buildingI.recoverPhyStats();

@@ -70,7 +70,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		if(I instanceof Weapon)
 		{
 			double weight=8;
-			if(weight<1.0) weight=1.0;
+			if(weight<1.0)
+				weight=1.0;
 			final double range=savedI.maxRange();
 			level=(int)Math.round(Math.floor((2.0*curDamage/(2.0*(I.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)))+1;
 		}
@@ -83,7 +84,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				if(CMath.isSet(worndata,i))
 				{
 					weightpts+=codes.location_strength_points()[i+1];
-					if(!I.rawLogicalAnd()) break;
+					if(!I.rawLogicalAnd())
+						break;
 				}
 			}
 			final int[] leatherPoints={ 0, 0, 1, 5,10,16,23,31,40,49,58,67,76,85,94};
@@ -112,7 +114,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				break;
 			}
 			int which=(int)Math.round(CMath.div(curArmor,weightpts)+1);
-			if(which<0) which=0;
+			if(which<0)
+				which=0;
 			if(which>=useArray.length)
 				which=useArray.length-1;
 			level=useArray[which];
@@ -128,17 +131,20 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			{
 				final String thisOne=names.substring(0,del);
 				final Ability A=CMClass.getAbility(thisOne);
-				if(A!=null)	theSpells.addElement(A);
+				if(A!=null)
+					theSpells.addElement(A);
 				names=names.substring(del+1);
 				del=names.indexOf(';');
 			}
 			Ability A=CMClass.getAbility(names);
-			if(A!=null) theSpells.addElement(A);
+			if(A!=null)
+				theSpells.addElement(A);
 			for(int v=0;v<theSpells.size();v++)
 			{
 				A=theSpells.elementAt(v);
 				int mul=1;
-				if(A.abstractQuality()==Ability.QUALITY_MALICIOUS) mul=-1;
+				if(A.abstractQuality()==Ability.QUALITY_MALICIOUS)
+					mul=-1;
 				if(ID.indexOf("HAVE")>=0)
 					level+=(mul*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
 				else
@@ -164,9 +170,11 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 
 
 			final int dis=CMParms.getParmPlus(newText,"dis");
-			if(dis!=0) level+=5;
+			if(dis!=0)
+				level+=5;
 			final int sen=CMParms.getParmPlus(newText,"sen");
-			if(sen!=0) level+=5;
+			if(sen!=0)
+				level+=5;
 			level+=(int)Math.round(5.0*CMParms.getParmDoublePlus(newText,"spe"));
 			for(final int i : CharStats.CODES.BASECODES())
 			{
@@ -238,7 +246,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 
 	private void reportChangesDestroyOldI(Item oldI, Item newI, StringBuffer changes,int OTLVL, int TLVL)
 	{
-		if((changes == null)||(oldI==null)) return;
+		if((changes == null)||(oldI==null))
+			return;
 		final Ability[] RET=getTimsAdjResCast(newI,new int[1]);
 		final Ability ADJ=RET[0];
 		final Ability RES=RET[1];
@@ -269,13 +278,15 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			else
 			if((I instanceof Wand)&&(((Wand)I).getSpell()!=null))
 				spells.add(((Wand)I).getSpell());
-			if(spells.size()==0) return false;
+			if(spells.size()==0)
+				return false;
 			int levels=0;
 			spells=(Vector<Ability>)spells.clone();
 			for (final Ability ability : spells)
 				levels+=CMLib.ableMapper().lowestQualifyingLevel(ability.ID());
 			final int level=(int)Math.round(CMath.div(levels, spells.size()));
-			if(level==I.basePhyStats().level()) return false;
+			if(level==I.basePhyStats().level())
+				return false;
 			I.basePhyStats().setLevel(level);
 			I.phyStats().setLevel(level);
 			if(CMLib.flags().isCataloged(I))
@@ -287,7 +298,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		if((I instanceof Weapon)||(I instanceof Armor))
 		{
 			int lvl=lvlOr0;
-			if(lvl <=0) lvl=I.basePhyStats().level();
+			if(lvl <=0)
+				lvl=I.basePhyStats().level();
 			I.basePhyStats().setLevel(lvl);
 			I.phyStats().setLevel(lvl);
 			final Ability[] RET=getTimsAdjResCast(I,new int[1]);
@@ -323,7 +335,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 						if(((highIndex<0)||(LVLS[i]>LVLS[highIndex]))
 						&&(!illegalNums.contains(Integer.valueOf(i))))
 							highIndex=i;
-					if(highIndex<0) break;
+					if(highIndex<0)
+						break;
 					switch(highIndex)
 					{
 					case 0:
@@ -385,10 +398,12 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		{
 			if(CMLib.flags().isCataloged(I))
 				CMLib.catalog().updateCatalog(I);
-			if(oldI!=null) oldI.destroy();
+			if(oldI!=null)
+				oldI.destroy();
 			return true;
 		}
-		if(oldI!=null) oldI.destroy();
+		if(oldI!=null)
+			oldI.destroy();
 		return false;
 	}
 
@@ -397,7 +412,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	{
 		int hands=0;
 		int weaponClass=0;
-		if(I instanceof Coins) return false;
+		if(I instanceof Coins)
+			return false;
 		if(I instanceof Weapon)
 		{
 			hands=I.rawLogicalAnd()?2:1;
@@ -469,7 +485,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			int basereach=0;
 			int maxreach=0;
 			int basematerial=RawMaterial.MATERIAL_WOODEN;
-			if(wclass==Weapon.CLASS_FLAILED) baseattack=-5;
+			if(wclass==Weapon.CLASS_FLAILED)
+				baseattack=-5;
 			if(wclass==Weapon.CLASS_POLEARM){ basereach=1; basematerial=RawMaterial.MATERIAL_METAL;}
 			if(wclass==Weapon.CLASS_RANGED){ basereach=1; maxreach=5;}
 			if(wclass==Weapon.CLASS_THROWN){ basereach=1; maxreach=5;}
@@ -477,9 +494,12 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			if(wclass==Weapon.CLASS_DAGGER){ baseattack=10; basematerial=RawMaterial.MATERIAL_METAL;}
 			if(wclass==Weapon.CLASS_SWORD){ basematerial=RawMaterial.MATERIAL_METAL;}
 			int weight = I.basePhyStats().weight();
-			if(weight<1) weight=8;
-			if(weight>40) weight=40;
-			if(basereach>maxreach) maxreach=basereach;
+			if(weight<1)
+				weight=8;
+			if(weight>40)
+				weight=40;
+			if(basereach>maxreach)
+				maxreach=basereach;
 			if(reach<basereach)
 			{
 				reach=basereach;
@@ -618,7 +638,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					break;
 				}
 			}
-			if(damage<=0) damage=1;
+			if(damage<=0)
+				damage=1;
 
 			vals.put("DAMAGE",""+damage);
 			vals.put("ATTACK",""+baseattack);
@@ -631,7 +652,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			final int[] clothPoints=  { 0, 3, 7,12,18,25,33,42,52,62,72,82,92,102};
 			final int[] metalPoints=  { 0, 0, 0, 0, 1, 3, 5, 8,12,17,23,30,38,46,54,62,70,78,86,94};
 			double pts=0.0;
-			if(level<0) level=0;
+			if(level<0)
+				level=0;
 			final int materialCode=material&RawMaterial.MATERIAL_MASK;
 			int[] useArray=null;
 			switch(materialCode)
@@ -696,7 +718,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 						weightpts+=codes.material_weight_points()[i+1][0];
 						break;
 					}
-					if(hands==1) break;
+					if(hands==1)
+						break;
 				}
 			}
 			final int cost=(int)Math.round(((pts*pts) + materialvalue)
@@ -741,7 +764,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		{
 			final int a=ADJ.text().toUpperCase().indexOf("DAMAGE+");
 			int a2=ADJ.text().toUpperCase().indexOf(' ',a+4);
-			if(a2<0) a2=ADJ.text().length();
+			if(a2<0)
+				a2=ADJ.text().length();
 			final int num=CMath.s_int(ADJ.text().substring(a+7,a2));
 			int newNum = (int)Math.round(CMath.mul(num,0.9));
 			if((newNum == num) && (newNum > 1))
@@ -756,7 +780,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		{
 			final int a=ADJ.text().toUpperCase().indexOf("ATTACK+");
 			int a2=ADJ.text().toUpperCase().indexOf(' ',a+4);
-			if(a2<0) a2=ADJ.text().length();
+			if(a2<0)
+				a2=ADJ.text().length();
 			final int num=CMath.s_int(ADJ.text().substring(a+7,a2));
 			int newNum = (int)Math.round(CMath.mul(num,0.9));
 			if((newNum == num) && (newNum > 1))
@@ -787,7 +812,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		{
 			final int a=ADJ.text().toUpperCase().indexOf("ARMOR-");
 			int a2=ADJ.text().toUpperCase().indexOf(' ',a+4);
-			if(a2<0) a2=ADJ.text().length();
+			if(a2<0)
+				a2=ADJ.text().length();
 			final int num=CMath.s_int(ADJ.text().substring(a+6,a2));
 			int newNum = (int)Math.round(CMath.mul(num,0.9));
 			if((newNum == num) && (newNum > 1))
@@ -817,7 +843,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		while(plusminus>=0)
 		{
 			int spaceafter=s.indexOf(' ',plusminus+1);
-			if(spaceafter<0) spaceafter=s.length();
+			if(spaceafter<0)
+				spaceafter=s.length();
 			if(spaceafter>plusminus)
 			{
 				final String number=s.substring(plusminus+1,spaceafter).trim();
@@ -825,7 +852,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				{
 					final int num=CMath.s_int(number);
 					int spacebefore=s.lastIndexOf(' ',plusminus);
-					if(spacebefore<0) spacebefore=0;
+					if(spacebefore<0)
+						spacebefore=0;
 					if(spacebefore<plusminus)
 					{
 						boolean proceed=true;
@@ -915,7 +943,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		if(I instanceof Weapon)
 		{
 			double weight=8;
-			if(weight<1.0) weight=1.0;
+			if(weight<1.0)
+				weight=1.0;
 			final double range=(I.maxRange());
 			level=(int)Math.round(Math.floor((2.0*curDamage/(2.0*(I.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)))+1;
 		}
@@ -929,7 +958,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				if(CMath.isSet(worndata,i))
 				{
 					weightpts+=codes.location_strength_points()[i+1];
-					if(!I.rawLogicalAnd()) break;
+					if(!I.rawLogicalAnd())
+						break;
 				}
 			}
 			final int[] leatherPoints={ 0, 0, 1, 5,10,16,23,31,40,49,58,67,76,85,94};
@@ -958,7 +988,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				break;
 			}
 			int which=(int)Math.round(CMath.div(curArmor,weightpts)+1);
-			if(which<0) which=0;
+			if(which<0)
+				which=0;
 			if(which>=useArray.length)
 				which=useArray.length-1;
 			level=useArray[which];
@@ -991,9 +1022,11 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			}
 			level+=ab*5;
 			final int dis=CMParms.getParmPlus(newText,"dis");
-			if(dis!=0) level+=10;
+			if(dis!=0)
+				level+=10;
 			final int sen=CMParms.getParmPlus(newText,"sen");
-			if(sen!=0) level+=10;
+			if(sen!=0)
+				level+=10;
 			level+=(int)Math.round(5.0*CMParms.getParmDoublePlus(newText,"spe"));
 			for(final int i: CharStats.CODES.BASECODES())
 			{
@@ -1027,17 +1060,20 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			{
 				final String thisOne=names.substring(0,del);
 				final Ability A=CMClass.getAbility(thisOne);
-				if(A!=null)	theSpells.addElement(A);
+				if(A!=null)
+					theSpells.addElement(A);
 				names=names.substring(del+1);
 				del=names.indexOf(';');
 			}
 			Ability A=CMClass.getAbility(names);
-			if(A!=null) theSpells.addElement(A);
+			if(A!=null)
+				theSpells.addElement(A);
 			for(int v=0;v<theSpells.size();v++)
 			{
 				A=theSpells.elementAt(v);
 				int mul=1;
-				if(A.abstractQuality()==Ability.QUALITY_MALICIOUS) mul=-1;
+				if(A.abstractQuality()==Ability.QUALITY_MALICIOUS)
+					mul=-1;
 				if(ID.indexOf("HAVE")>=0)
 					level+=(mul*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
 				else
@@ -1091,24 +1127,28 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	@Override
 	public Item enchant(Item I, int pct)
 	{
-		if(CMLib.dice().rollPercentage()>pct) return I;
+		if(CMLib.dice().rollPercentage()>pct)
+			return I;
 		int bump=0;
 		while((CMLib.dice().rollPercentage()<=10)||(bump==0))
 			bump=bump+((CMLib.dice().rollPercentage()<=80)?1:-1);
-		if(bump<0) CMLib.flags().setRemovable(I,false);
+		if(bump<0)
+			CMLib.flags().setRemovable(I,false);
 		I.basePhyStats().setDisposition(I.basePhyStats().disposition()|PhyStats.IS_BONUS);
 		I.recoverPhyStats();
 		if(I instanceof Ammunition)
 		{
 			int lvlChange=bump*3;
-			if(lvlChange<0) lvlChange=lvlChange*-1;
+			if(lvlChange<0)
+				lvlChange=lvlChange*-1;
 			I.basePhyStats().setLevel(I.basePhyStats().level()+lvlChange);
 			switch(CMLib.dice().roll(1,2,0))
 			{
 			case 1:
 			{
 				final Ability A=CMClass.getAbility("Prop_WearAdjuster");
-				if(A==null) return I;
+				if(A==null)
+					return I;
 				A.setMiscText("att"+((bump<0)?"":"+")+(bump*5)+" dam="+((bump<0)?"":"+")+bump);
 				I.addNonUninvokableEffect(A);
 				break;
@@ -1125,10 +1165,12 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					for(int a=0;a<bump;a++)
 					{
 						final Ability A2=getCombatSpell(true);
-						if(A2!=null) A.setMiscText(A.text()+";"+A2.ID());
+						if(A2!=null)
+							A.setMiscText(A.text()+";"+A2.ID());
 					}
 				}
-				if(A==null) return I;
+				if(A==null)
+					return I;
 				I.addNonUninvokableEffect(A);
 				break;
 			}
@@ -1157,11 +1199,13 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					for(int a=0;a<bump;a++)
 					{
 						final Ability A2=getCombatSpell(true);
-						if(A2!=null) A.setMiscText(A.text()+";"+A2.ID());
+						if(A2!=null)
+							A.setMiscText(A.text()+";"+A2.ID());
 					}
 					I.basePhyStats().setLevel(I.basePhyStats().level()+levelsFromCaster(I,A));
 				}
-				if(A==null) return I;
+				if(A==null)
+					return I;
 				I.addNonUninvokableEffect(A);
 				break;
 			}
@@ -1190,11 +1234,13 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					for(int a=0;a<bump;a++)
 					{
 						final Ability A2=getCombatSpell(false);
-						if(A2!=null) A.setMiscText(A.text()+";"+A2.ID());
+						if(A2!=null)
+							A.setMiscText(A.text()+";"+A2.ID());
 					}
 					I.basePhyStats().setLevel(I.basePhyStats().level()+levelsFromCaster(I,A));
 				}
-				if(A==null) return I;
+				if(A==null)
+					return I;
 				I.addNonUninvokableEffect(A);
 				break;
 			}

@@ -69,7 +69,8 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 			R=(Room)affected;
 		else
 			R=CMLib.map().getRoom(landPropertyID());
-		if(R!=null) fillCluster(R,V);
+		if(R!=null)
+			fillCluster(R,V);
 		return V;
 	}
 
@@ -127,7 +128,8 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 	@Override
 	public String getUniqueLotID()
 	{
-		if(uniqueLotID==null) updateTitle();
+		if(uniqueLotID==null)
+			updateTitle();
 		return uniqueLotID;
 	}
 

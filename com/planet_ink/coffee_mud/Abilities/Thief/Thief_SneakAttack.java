@@ -64,8 +64,10 @@ public class Thief_SneakAttack extends ThiefSkill
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg)) return false;
-		if((affected==null)||((!(affected instanceof MOB)))) return true;
+		if(!super.okMessage(myHost,msg))
+			return false;
+		if((affected==null)||((!(affected instanceof MOB))))
+			return true;
 		if(activated
 		   &&(!oncePerRound)
 		   &&msg.amISource((MOB)affected)
@@ -94,7 +96,8 @@ public class Thief_SneakAttack extends ThiefSkill
 			activated=false;
 			affected.recoverPhyStats();
 		}
-		if(oncePerRound) oncePerRound=false;
+		if(oncePerRound)
+			oncePerRound=false;
 		return super.tick(ticking,tickID);
 	}
 

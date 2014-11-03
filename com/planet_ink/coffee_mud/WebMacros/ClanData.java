@@ -182,7 +182,8 @@ public class ClanData extends StdWebMacro
 				for(final Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
 				{
 					CC=(Clan)e.nextElement();
-					if(CC==C) continue;
+					if(CC==C)
+						continue;
 					therelations.addElement(Integer.valueOf(C.getClanRelations(CC.clanID())));
 				}
 			}
@@ -191,7 +192,8 @@ public class ClanData extends StdWebMacro
 			for(final Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
 			{
 				CC=(Clan)e.nextElement();
-				if(CC==C) continue;
+				if(CC==C)
+					continue;
 				relat++;
 				final Integer relation=(Integer)therelations.elementAt(relat);
 				str.append("<TR><TD WIDTH=35%><FONT COLOR=YELLOW><B>"+CC.getName()+"</B></FONT>");
@@ -218,7 +220,8 @@ public class ClanData extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("CLAN");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		if(last.length()>0)
 		{
 			final Clan C=CMLib.clans().getClan(last);
@@ -254,31 +257,36 @@ public class ClanData extends StdWebMacro
 				if(parms.containsKey("PREMISE"))
 				{
 					String old=httpReq.getUrlParameter("PREMISE");
-					if(old==null) old=C.getPremise();
+					if(old==null)
+						old=C.getPremise();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("RECALLID") && authorized )
 				{
 					String old=httpReq.getUrlParameter("RECALLID");
-					if(old==null) old=C.getRecall();
+					if(old==null)
+						old=C.getRecall();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("RECALL") && authorized)
 				{
 					final Room R=CMLib.map().getRoom(C.getRecall());
-					if(R!=null)	str.append(R.displayText()+", ");
+					if(R!=null)
+						str.append(R.displayText()+", ");
 					else str.append("None, ");
 				}
 				if(parms.containsKey("MORGUEID") && authorized)
 				{
 					String old=httpReq.getUrlParameter("MORGUEID");
-					if(old==null) old=C.getMorgue();
+					if(old==null)
+						old=C.getMorgue();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("MORGUE") && authorized)
 				{
 					final Room R=CMLib.map().getRoom(C.getMorgue());
-					if(R!=null)	str.append(R.displayText()+", ");
+					if(R!=null)
+						str.append(R.displayText()+", ");
 					else str.append("None, ");
 				}
 				if(parms.containsKey("AUTOPOSITION"))
@@ -289,25 +297,29 @@ public class ClanData extends StdWebMacro
 				if(parms.containsKey("CATEGORY"))
 				{
 					String old=httpReq.getUrlParameter("CATEGORY");
-					if(old==null) old=C.getCategory();
+					if(old==null)
+						old=C.getCategory();
 					str.append(old);
 				}
 				if(parms.containsKey("MINMEMBERS"))
 				{
 					String old=httpReq.getUrlParameter("MINMEMBERS");
-					if(old==null) old=""+C.getMinClanMembers();
+					if(old==null)
+						old=""+C.getMinClanMembers();
 					str.append(old);
 				}
 				if(parms.containsKey("ISRIVALROUS"))
 				{
 					String old=httpReq.getUrlParameter("ISRIVALROUS");
-					if(old==null) old=C.isRivalrous()?"on":"";
+					if(old==null)
+						old=C.isRivalrous()?"on":"";
 					str.append(old.equalsIgnoreCase("on")?"checked, ":"");
 				}
 				if(parms.containsKey("AUTOPOSITIONID"))
 				{
 					String old=httpReq.getUrlParameter("AUTOPOSITIONID");
-					if(old==null) old=""+C.getAutoPosition();
+					if(old==null)
+						old=""+C.getAutoPosition();
 					final int autoPos=CMath.s_int(old);
 					final ClanGovernment govt=C.getGovernment();
 					for(final ClanPosition pos : govt.getPositions())
@@ -338,13 +350,15 @@ public class ClanData extends StdWebMacro
 				if(parms.containsKey("DONATIONID") && authorized)
 				{
 					String old=httpReq.getUrlParameter("DONATIONID");
-					if(old==null) old=C.getDonation();
+					if(old==null)
+						old=C.getDonation();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("DONATION") && authorized)
 				{
 					final Room R=CMLib.map().getRoom(C.getDonation());
-					if(R!=null)	str.append(R.displayText()+", ");
+					if(R!=null)
+						str.append(R.displayText()+", ");
 					else str.append("None, ");
 				}
 				if(parms.containsKey("TAX"))
@@ -359,7 +373,8 @@ public class ClanData extends StdWebMacro
 				if(parms.containsKey("CCLASSID"))
 				{
 					String old=httpReq.getUrlParameter("CCLASSID");
-					if(old==null) old=C.getClanClass();
+					if(old==null)
+						old=C.getClanClass();
 					str.append("<OPTION VALUE=\"\" "+((old.length()==0)?"SELECTED":"")+">None");
 					CharClass CC=null;
 					for(final Enumeration e=CMClass.charClasses();e.hasMoreElements();)
@@ -371,19 +386,23 @@ public class ClanData extends StdWebMacro
 				if(parms.containsKey("CCLASS"))
 				{
 					CharClass CC=CMClass.getCharClass(C.getClanClass());
-					if(CC==null)CC=CMClass.findCharClass(C.getClanClass());
-					if(CC!=null) str.append(CC.name()+", "); else str.append("");
+					if(CC==null)
+						CC=CMClass.findCharClass(C.getClanClass());
+					if(CC!=null)
+						str.append(CC.name()+", "); else str.append("");
 				}
 				if(parms.containsKey("EXP"))
 				{
 					String old=httpReq.getUrlParameter("EXP");
-					if(old==null) old=C.getExp()+"";
+					if(old==null)
+						old=C.getExp()+"";
 					str.append(old+", ");
 				}
 				if(parms.containsKey("LEVEL"))
 				{
 					String old=httpReq.getUrlParameter("LEVEL");
-					if(old==null) old=C.getClanLevel()+"";
+					if(old==null)
+						old=C.getClanLevel()+"";
 					str.append(old+", ");
 				}
 				if(parms.containsKey("STATUS"))
@@ -391,7 +410,8 @@ public class ClanData extends StdWebMacro
 				if(parms.containsKey("STATUSID"))
 				{
 					String old=httpReq.getUrlParameter("STATUSID");
-					if(old==null) old=C.getStatus()+"";
+					if(old==null)
+						old=C.getStatus()+"";
 					for(int i=0;i<Clan.CLANSTATUS_DESC.length;i++)
 						str.append("<OPTION VALUE="+i+" "+((old.equals(""+i))?"SELECTED":"")+">"+CMStrings.capitalizeAndLower(Clan.CLANSTATUS_DESC[i]));
 				}
@@ -400,7 +420,8 @@ public class ClanData extends StdWebMacro
 				if(parms.containsKey("ACCEPTANCEID"))
 				{
 					String old=httpReq.getUrlParameter("ACCEPTANCEID");
-					if(old==null) old=C.getAcceptanceSettings()+"";
+					if(old==null)
+						old=C.getAcceptanceSettings()+"";
 					str.append(old+", ");
 				}
 				if(parms.containsKey("TYPE"))
@@ -408,7 +429,8 @@ public class ClanData extends StdWebMacro
 				if(parms.containsKey("TYPEID"))
 				{
 					String old=httpReq.getUrlParameter("TYPEID");
-					if(old==null) old=C.getGovernmentID()+"";
+					if(old==null)
+						old=C.getGovernmentID()+"";
 					final ClanGovernment[] gvts=CMLib.clans().getStockGovernments();
 					for(final ClanGovernment gvt : gvts)
 						str.append("<OPTION VALUE="+gvt.getID()+" "+((old.equals(""+gvt.getID()))?"SELECTED":"")+">"+CMStrings.capitalizeAndLower(gvt.getName()));
@@ -484,8 +506,10 @@ public class ClanData extends StdWebMacro
 					final String cmember=httpReq.getUrlParameter("CLANMEMBER");
 					String lastID="";
 					String posFilter=httpReq.getUrlParameter("CLANFUNCFILTER");
-					if(posFilter==null) posFilter=parms.get("CLANFUNCFILTER");
-					if(posFilter==null) posFilter="";
+					if(posFilter==null)
+						posFilter=parms.get("CLANFUNCFILTER");
+					if(posFilter==null)
+						posFilter="";
 					final Clan.Function reqFunction = (Clan.Function)CMath.s_valueOf(Clan.Function.values(), posFilter);
 					final List<MemberRecord> members = getMembers(C,httpReq);
 					for(final MemberRecord member : members)
@@ -577,7 +601,8 @@ public class ClanData extends StdWebMacro
 					for(final Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
 					{
 						CC=(Clan)e.nextElement();
-						if(CC==C) continue;
+						if(CC==C)
+							continue;
 						final String name=CC.clanID();
 						if((member==null)||((member.length()>0)&&(member.equals(lastID))&&(!name.equals(lastID))))
 						{
@@ -595,7 +620,8 @@ public class ClanData extends StdWebMacro
 				{
 					final String member=httpReq.getUrlParameter("CLANID");
 					final Clan CC=CMLib.clans().getClan(member);
-					if(CC!=null) str.append(CC.getName()+", ");
+					if(CC!=null)
+						str.append(CC.getName()+", ");
 				}
 				str.append(ClanData.members(C,httpReq,parms,0));
 				str.append(ClanData.relations(C,httpReq,parms,0));

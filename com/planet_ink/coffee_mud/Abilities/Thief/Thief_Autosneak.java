@@ -72,7 +72,8 @@ public class Thief_Autosneak extends ThiefSkill
 			if(dir>=0)
 			{
 				Ability A=mob.fetchAbility("Thief_Sneak");
-				if(A==null) A=mob.fetchAbility("Ranger_Sneak");
+				if(A==null)
+					A=mob.fetchAbility("Ranger_Sneak");
 				if(A!=null)
 				{
 					noRepeat=true;
@@ -115,7 +116,8 @@ public class Thief_Autosneak extends ThiefSkill
 			mob.tell(L("You will now automatically sneak around while you move."));
 			beneficialAffect(mob,mob,asLevel,adjustedLevel(mob,asLevel));
 			final Ability A=mob.fetchEffect(ID());
-			if(A!=null) A.makeLongLasting();
+			if(A!=null)
+				A.makeLongLasting();
 		}
 		else
 			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to get into <S-HIS-HER> sneaking stance, but fail(s)."));

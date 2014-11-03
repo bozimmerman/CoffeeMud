@@ -66,7 +66,8 @@ public class Load extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(mob==null) return true;
+		if(mob==null)
+			return true;
 		boolean tryArchon=CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LOADUNLOAD);
 		if(commands.size()<3)
 		{
@@ -180,13 +181,15 @@ public class Load extends StdCommand
 				{
 					if(name.toUpperCase().endsWith(".JAVA"))
 					{
-						while(name.startsWith("/")) name=name.substring(1);
+						while(name.startsWith("/"))
+							name=name.substring(1);
 						Class<?> C=null;
 						Object CO=null;
 						try
 						{
 							C=Class.forName("com.sun.tools.javac.Main", true, CMClass.instance());
-							if(C!=null) CO=C.newInstance();
+							if(C!=null)
+								CO=C.newInstance();
 						}catch(final Exception e)
 						{
 							Log.errOut("Load",e.getMessage());
@@ -226,7 +229,8 @@ public class Load extends StdCommand
 						if(O!=null)
 						{
 							final CMClass.CMObjectType x=CMClass.getObjectType(O);
-							if(x!=null) what=x.toString();
+							if(x!=null)
+								what=x.toString();
 						}
 					}
 					final CMObjectType whatType=CMClass.findObjectType(what);

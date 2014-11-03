@@ -45,8 +45,10 @@ public class Play_LoveSong extends Play
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
-		if(affected==null) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
 		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
@@ -70,9 +72,11 @@ public class Play_LoveSong extends Play
 				if(CMLib.dice().rollPercentage()<=1)
 				{
 					Item I=mob.fetchFirstWornItem(Wearable.WORN_WAIST);
-					if(I!=null)	CMLib.commands().postRemove(mob,I,false);
+					if(I!=null)
+						CMLib.commands().postRemove(mob,I,false);
 					I=mob.fetchFirstWornItem(Wearable.WORN_LEGS);
-					if(I!=null)	CMLib.commands().postRemove(mob,I,false);
+					if(I!=null)
+						CMLib.commands().postRemove(mob,I,false);
 					mob.doCommand(CMParms.parse("MATE "+M.Name()),Command.METAFLAG_FORCED);
 				}
 				else

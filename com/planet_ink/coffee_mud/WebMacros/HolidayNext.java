@@ -45,7 +45,8 @@ public class HolidayNext extends StdWebMacro
 		final String last=httpReq.getUrlParameter("HOLIDAY");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("HOLIDAY");
+			if(last!=null)
+				httpReq.removeUrlParameter("HOLIDAY");
 			return "";
 		}
 		final Object resp=CMLib.quests().getHolidayFile();

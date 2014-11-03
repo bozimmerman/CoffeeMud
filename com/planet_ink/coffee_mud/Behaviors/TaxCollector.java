@@ -97,7 +97,8 @@ public class TaxCollector extends StdBehavior
 		if(B!=null)
 		{
 			final Area A2=CMLib.law().getLegalObject(M.location());
-			if(A2!=null) owed[OWE_FINES]=B.finesOwed(M);
+			if(A2!=null)
+				owed[OWE_FINES]=B.finesOwed(M);
 			if((A2!=null)
 			&&(!B.isAnyOfficer(A2,M))
 			&&(!B.isJudge(A2,M)))
@@ -130,7 +131,8 @@ public class TaxCollector extends StdBehavior
 			&&(msg.tool() instanceof Coins))
 			{
 				double paidAmount=((Coins)msg.tool()).getTotalValue();
-				if(paidAmount<=0.0) return;
+				if(paidAmount<=0.0)
+					return;
 				final double[] owed=totalMoneyOwed(mob,msg.source());
 				if(treasuryRoomID!=null)
 				{
@@ -138,7 +140,8 @@ public class TaxCollector extends StdBehavior
 					if(treasuryR!=null)
 					{
 						final Coins COIN=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(mob),paidAmount,treasuryR,treasuryContainer);
-						if(COIN!=null) COIN.putCoinsBack();
+						if(COIN!=null)
+							COIN.putCoinsBack();
 					}
 				}
 
@@ -151,7 +154,8 @@ public class TaxCollector extends StdBehavior
 						demanded.removeElementAt(demanDex);
 					}
 				}
-				if(paid.contains(msg.source())) paid.removeElement(msg.source());
+				if(paid.contains(msg.source()))
+					paid.removeElement(msg.source());
 				paid.addElement(msg.source(),Long.valueOf(System.currentTimeMillis()));
 
 				if(owed[OWE_FINES]>0)
@@ -278,8 +282,10 @@ public class TaxCollector extends StdBehavior
 			return true;
 
 		final MOB mob=(MOB)ticking;
-		if(demanded==null) demanded=new DVector(2);
-		if(paid==null) paid=new DVector(2);
+		if(demanded==null)
+			demanded=new DVector(2);
+		if(paid==null)
+			paid=new DVector(2);
 
 		for(int i=paid.size()-1;i>=0;i--)
 		{

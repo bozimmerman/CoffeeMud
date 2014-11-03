@@ -105,7 +105,8 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 	@Override
 	public boolean isVerifiedContents(Item item)
 	{
-		if(item==null) return false;
+		if(item==null)
+			return false;
 		return contents.contains(item);
 	}
 

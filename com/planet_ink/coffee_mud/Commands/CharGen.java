@@ -146,7 +146,8 @@ public class CharGen extends StdCommand
 		final MOB mob=CMClass.getFactoryMOB();
 		CMLib.factions().setAlignment(mob,Faction.Align.NEUTRAL);
 		mob.setName(L("Average Joe"));
-		if(player) mob.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
+		if(player)
+			mob.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
 		mob.baseCharStats().setMyRace(CMClass.getRace("Human"));
 		mob.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 		for(final int i : CharStats.CODES.BASECODES())
@@ -279,7 +280,8 @@ public class CharGen extends StdCommand
 					}
 					else
 						addHimIn(avgMob,mob2);
-					if(avgMob!=mob2) mob2.destroy();
+					if(avgMob!=mob2)
+						mob2.destroy();
 				}
 			}
 		}
@@ -400,7 +402,8 @@ public class CharGen extends StdCommand
 			if(s.toUpperCase().startsWith("SKIPLEVELS="))
 			{
 				c.skipLevels=CMath.s_int(s.substring("SKIPLEVELS=".length()));
-				if(c.skipLevels<1) c.skipLevels=1;
+				if(c.skipLevels<1)
+					c.skipLevels=1;
 			}
 			else
 			if(CMClass.findCharClass(s)!=null)
@@ -556,7 +559,8 @@ public class CharGen extends StdCommand
 							if((CMath.div(tries,c.TOTAL_ITERATIONS)*100.0)>=lastPct+5)
 							{
 								lastPct+=5;
-								if(mob.session()!=null) mob.session().print(".");
+								if(mob.session()!=null)
+									mob.session().print(".");
 							}
 							final Behavior B1=CMClass.getBehavior((String)classSet.elementAt(charClassDex,2));
 							B1.setParms(C.ID()+" NOSTAT NOCOMBATSTAT");
@@ -566,7 +570,8 @@ public class CharGen extends StdCommand
 							case 1: R=CMClass.getLocale("CaveRoom"); break;
 							case 2: R=CMClass.getLocale("CityStreet"); break;
 							}
-							if((++roomRobin)>2) roomRobin=0;
+							if((++roomRobin)>2)
+								roomRobin=0;
 							if(R!=null)
 							{
 								R.addNonUninvokableEffect(CMClass.getAbility("Spell_Light"));
@@ -749,8 +754,10 @@ public class CharGen extends StdCommand
 								final int L2=l2;
 								l1=CMath.s_int(B2.getStat("PHYSDAMTAKEN"));
 								l2=CMath.s_int(B1.getStat("PHYSDAMTAKEN"));
-								if(l1>L1) hits++;
-								if(l2>L2) ishits++;
+								if(l1>L1)
+									hits++;
+								if(l2>L2)
+									ishits++;
 								try
 								{
 									CMLib.commands().postStand(M1,true);
@@ -899,7 +906,8 @@ public class CharGen extends StdCommand
 						allSkills[charClassDex][level-levelStart][0]=bestIterSkill[0];
 						allSkills[charClassDex][level-levelStart][1]=bestHitSkill[0];
 						allSkills[charClassDex][level-levelStart][2]=bestSingleHitSkill[0];
-						if(mob.session()!=null) mob.session().println("!");
+						if(mob.session()!=null)
+							mob.session().println("!");
 						if(fileExp==null)
 						{
 							mob.tell(L("HITPOINTS: @x1 vs @x2",""+H1,""+H2));

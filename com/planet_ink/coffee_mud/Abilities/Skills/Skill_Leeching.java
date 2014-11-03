@@ -51,7 +51,8 @@ public class Skill_Leeching extends StdSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if((!auto)&&(mob!=target)&&(!target.willFollowOrdersOf(mob)))
 		{

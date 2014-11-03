@@ -164,15 +164,19 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 		respHeaders.clear();
 		respStatus=null;
 		outBody=null;
-		if(url == null) throw new IOException("Bad url");
+		if(url == null)
+			throw new IOException("Bad url");
 		final boolean ssl=url.toLowerCase().startsWith("https");
-		if(ssl) throw new IOException("Unsupported: ssl");
+		if(ssl)
+			throw new IOException("Unsupported: ssl");
 		int x=url.indexOf("://");
-		if(x>=0) url=url.substring(x+3);
+		if(x>=0)
+			url=url.substring(x+3);
 		String host;
 		String rest="/";
 		x=url.indexOf('/');
-		if(x<0) x=url.indexOf('?');
+		if(x<0)
+			x=url.indexOf('?');
 		if(x>=0)
 		{
 			host=url.substring(0,x);

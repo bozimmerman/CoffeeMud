@@ -82,8 +82,10 @@ public class Spell_PhantomHound extends Spell
 				if((!beast.isInCombat())||(beast.getVictim()!=victim))
 				{
 					final Room R=beast.location();
-					if(R!=null) R.show(beast, null,CMMsg.MSG_OK_VISUAL, L("<S-NAME> vanish(es)!"));
-					if(beast.amDead()) beast.setLocation(null);
+					if(R!=null)
+						R.show(beast, null,CMMsg.MSG_OK_VISUAL, L("<S-NAME> vanish(es)!"));
+					if(beast.amDead())
+						beast.setLocation(null);
 					beast.destroy();
 				}
 				else
@@ -96,8 +98,10 @@ public class Spell_PhantomHound extends Spell
 					if(pointsLeft<0)
 					{
 						final Room R=beast.location();
-						if(R!=null) R.show(victim, beast,CMMsg.MSG_OK_VISUAL, L("<S-NAME> disbelieve(s) <T-NAME>, who vanish(es)!"));
-						if(beast.amDead()) beast.setLocation(null);
+						if(R!=null)
+							R.show(victim, beast,CMMsg.MSG_OK_VISUAL, L("<S-NAME> disbelieve(s) <T-NAME>, who vanish(es)!"));
+						if(beast.amDead())
+							beast.setLocation(null);
 						beast.destroy();
 					}
 				}
@@ -117,7 +121,8 @@ public class Spell_PhantomHound extends Spell
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 		{
 			unInvoke();
-			if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
+			if(msg.source().playerStats()!=null)
+				msg.source().playerStats().setLastUpdated(0);
 		}
 	}
 
@@ -128,7 +133,8 @@ public class Spell_PhantomHound extends Spell
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
-			if(mob.amDead()) mob.setLocation(null);
+			if(mob.amDead())
+				mob.setLocation(null);
 			mob.destroy();
 		}
 	}

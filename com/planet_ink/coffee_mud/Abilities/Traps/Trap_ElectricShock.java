@@ -46,7 +46,8 @@ public class Trap_ElectricShock extends StdTrap
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
-		if(P==null) return null;
+		if(P==null)
+			return null;
 		if(mob!=null)
 		{
 			final Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_METAL);
@@ -68,7 +69,8 @@ public class Trap_ElectricShock extends StdTrap
 	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,P)) return false;
+		if(!super.canSetTrapOn(mob,P))
+			return false;
 		if(mob!=null)
 		{
 			final Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_METAL);

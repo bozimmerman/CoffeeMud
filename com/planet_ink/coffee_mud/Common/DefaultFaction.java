@@ -84,7 +84,8 @@ public class DefaultFaction implements Faction, MsgListener
 	public Enumeration<Faction.FReactionItem> reactions(String rangeName)
 	{
 		final SVector<Faction.FReactionItem> V=reactionHash.get(rangeName.toUpperCase().trim());
-		if(V!=null) return V.elements();
+		if(V!=null)
+			return V.elements();
 		return new Vector<Faction.FReactionItem>().elements();
 	}
 	protected Ability presenceReactionPrototype=null;
@@ -215,7 +216,8 @@ public class DefaultFaction implements Faction, MsgListener
 
 		ID = fID;
 		final CMProps alignProp = new CMProps(new ByteArrayInputStream(CMStrings.strToBytes(file.toString())));
-		if(alignProp.isEmpty()) return;
+		if(alignProp.isEmpty())
+			return;
 		name=alignProp.getStr("NAME");
 		choiceIntro=alignProp.getStr("CHOICEINTRO");
 		minimum=alignProp.getInt("MINIMUM");
@@ -227,7 +229,8 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 		recalc();
 		experienceFlag=alignProp.getStr("EXPERIENCE").toUpperCase().trim();
-		if(experienceFlag.length()==0) experienceFlag="NONE";
+		if(experienceFlag.length()==0)
+			experienceFlag="NONE";
 		rateModifier=alignProp.getDouble("RATEMODIFIER");
 		showInScore=alignProp.getBoolean("SCOREDISPLAY");
 		showInFactionsCommand=alignProp.getBoolean("SHOWINFACTIONSCMD");
@@ -246,11 +249,14 @@ public class DefaultFaction implements Faction, MsgListener
 		reactionHash=new SHashtable<String,SVector<FReactionItem>>();
 		for(final Enumeration<Object> e=alignProp.keys();e.hasMoreElements();)
 		{
-			if(debug) Log.sysOut("FACTIONS","Starting Key Loop");
+			if(debug)
+				Log.sysOut("FACTIONS","Starting Key Loop");
 			final String key = (String) e.nextElement();
-			if(debug) Log.sysOut("FACTIONS","  Key Found     :"+key);
+			if(debug)
+				Log.sysOut("FACTIONS","  Key Found     :"+key);
 			final String words = (String) alignProp.get(key);
-			if(debug) Log.sysOut("FACTIONS","  Words Found   :"+words);
+			if(debug)
+				Log.sysOut("FACTIONS","  Words Found   :"+words);
 			if(key.startsWith("RANGE"))
 				addRange(words);
 			if(key.startsWith("CHANGE"))
@@ -302,12 +308,16 @@ public class DefaultFaction implements Faction, MsgListener
 		for(final Enumeration<Faction.FRange> e=ranges();e.hasMoreElements();)
 		{
 			final Faction.FRange FR=e.nextElement();
-			if(FR.high()>maximum) maximum=FR.high();
-			if(FR.low()<minimum) minimum=FR.low();
+			if(FR.high()>maximum)
+				maximum=FR.high();
+			if(FR.low()<minimum)
+				minimum=FR.low();
 			num++;
 		}
-		if(minimum==Integer.MAX_VALUE) minimum=Integer.MIN_VALUE;
-		if(maximum==Integer.MIN_VALUE) maximum=Integer.MAX_VALUE;
+		if(minimum==Integer.MAX_VALUE)
+			minimum=Integer.MIN_VALUE;
+		if(maximum==Integer.MIN_VALUE)
+			maximum=Integer.MAX_VALUE;
 		if(maximum<minimum)
 		{
 			final int oldMin=minimum;
@@ -324,7 +334,8 @@ public class DefaultFaction implements Faction, MsgListener
 	public String getTagValue(String tag)
 	{
 		final int tagRef=CMLib.factions().isFactionTag(tag);
-		if(tagRef<0) return "";
+		if(tagRef<0)
+			return "";
 		int numCall=-1;
 		if((tagRef<TAG_NAMES.length)&&(TAG_NAMES[tagRef].endsWith("*")))
 			if(CMath.isInteger(tag.substring(TAG_NAMES[tagRef].length()-1)))
@@ -352,7 +363,8 @@ public class DefaultFaction implements Faction, MsgListener
 			for(final Enumeration<Faction.FRange> e=ranges();e.hasMoreElements();)
 			{
 				final Faction.FRange FR=e.nextElement();
-				if(x==numCall) return FR.toString();
+				if(x==numCall)
+					return FR.toString();
 				x++;
 			}
 			return "";
@@ -505,7 +517,8 @@ public class DefaultFaction implements Faction, MsgListener
 	@Override
 	public boolean addAffectBehav(String ID, String parms, String gainMask)
 	{
-		if(affBehavs.containsKey(ID.toUpperCase().trim())) return false;
+		if(affBehavs.containsKey(ID.toUpperCase().trim()))
+			return false;
 		if((CMClass.getBehavior(ID)==null)&&(CMClass.getAbility(ID)==null))
 			return false;
 		affBehavs.put(ID.toUpperCase().trim(),new String[]{parms,gainMask});
@@ -528,7 +541,8 @@ public class DefaultFaction implements Faction, MsgListener
 		if(V!=null)
 			V.remove(item);
 		final boolean res = reactions.remove(item);
-		if(reactions.size()==0) reactionHash.clear();
+		if(reactions.size()==0)
+			reactionHash.clear();
 		lastFactionDataChange[0]=System.currentTimeMillis();
 		return res;
 	}
@@ -587,7 +601,8 @@ public class DefaultFaction implements Faction, MsgListener
 	@Override
 	public FactionChangeEvent[] findAbilityChangeEvents(Ability key)
 	{
-		if(key==null) return null;
+		if(key==null)
+			return null;
 		// Direct ability ID's
 		if(abilityChangesCache.containsKey(key.ID().toUpperCase()))
 			return abilityChangesCache.get(key.ID().toUpperCase());
@@ -837,8 +852,10 @@ public class DefaultFaction implements Faction, MsgListener
 						double amount=CMath.s_double(eventC.getTriggerParm("AMOUNT"));
 						final double pctAmount = CMath.s_pct(eventC.getTriggerParm("PCT"))
 										 * CMLib.beanCounter().getTotalAbsoluteNativeValue((MOB)msg.target());
-						if(pctAmount>amount) amount=pctAmount;
-						if(amount==0) amount=1.0;
+						if(pctAmount>amount)
+							amount=pctAmount;
+						if(amount==0)
+							amount=1.0;
 						if(((Coins)msg.tool()).getTotalValue()>=amount)
 							executeChange(msg.source(),(MOB)msg.target(),eventC);
 					}
@@ -948,7 +965,8 @@ public class DefaultFaction implements Faction, MsgListener
 								if(addTime==null)
 								{
 									addTime=Long.valueOf(CMath.s_long(eventC.getTriggerParm("WAIT"))*CMProps.getTickMillis());
-									if(addTime.longValue()<CMProps.getTickMillis()) addTime=Long.valueOf(CMProps.getTickMillis());
+									if(addTime.longValue()<CMProps.getTickMillis())
+										addTime=Long.valueOf(CMProps.getTickMillis());
 									eventC.setStateVariable(1,addTime);
 								}
 								eventC.setStateVariable(0,Long.valueOf(System.currentTimeMillis()+addTime.longValue()));
@@ -1080,7 +1098,8 @@ public class DefaultFaction implements Faction, MsgListener
 					changeDir=(sourceFaction>middle)?1:-1;
 				else
 					changeDir=(targetFaction>middle)?-1:1;
-				if((sourceFaction>middle)&&(targetFaction>middle)) changeDir=-1;
+				if((sourceFaction>middle)&&(targetFaction>middle))
+					changeDir=-1;
 				baseChangeAmount=CMath.div(baseChangeAmount,2.0)
 								+(int)Math.round(CMath.div(baseChangeAmount,2.0)
 										*Math.abs((sourceFaction-targetFaction)
@@ -1126,7 +1145,8 @@ public class DefaultFaction implements Faction, MsgListener
 			factionAdj=(int)Math.round(CMath.mul(factionAdj,findFactor(source,(factionAdj>=0))));
 		}
 
-		if(factionAdj==0) return;
+		if(factionAdj==0)
+			return;
 
 		CMMsg FacMsg=CMClass.getMsg(source,target,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,ID);
 		FacMsg.setValue(factionAdj);
@@ -1180,7 +1200,8 @@ public class DefaultFaction implements Faction, MsgListener
 					 &&(!namesAdded.contains(R.name())))
 					 {
 						 namesAdded.add(R.name());
-						 if(rangeStr.length()>0) rangeStr.append(", ");
+						 if(rangeStr.length()>0)
+						 	rangeStr.append(", ");
 						 rangeStr.append(R.name());
 					 }
 				}
@@ -1194,7 +1215,8 @@ public class DefaultFaction implements Faction, MsgListener
 	public String ALL_CHANGE_EVENT_TYPES()
 	 {
 		 final StringBuffer ALL_TYPES=new StringBuffer("");
-		 if(_ALL_TYPES!=null) return _ALL_TYPES;
+		 if(_ALL_TYPES!=null)
+		 	return _ALL_TYPES;
 		 for (final String element : Faction.FactionChangeEvent.MISC_TRIGGERS)
 			ALL_TYPES.append(element+", ");
 		 for (final String element : Ability.ACODE_DESCS)
@@ -1211,7 +1233,8 @@ public class DefaultFaction implements Faction, MsgListener
 	public Faction.FactionChangeEvent createChangeEvent(String key)
 	 {
 		 Faction.FactionChangeEvent event;
-		 if(key==null) return null;
+		 if(key==null)
+		 	return null;
 		 if(key.indexOf(';')<0)
 		 {
 			 event=new DefaultFaction.DefaultFactionChangeEvent(this);
@@ -1233,7 +1256,8 @@ public class DefaultFaction implements Faction, MsgListener
 	 private boolean replaceEvents(String key, Faction.FactionChangeEvent event, boolean strict)
 	 {
 		 final Faction.FactionChangeEvent[] events=changes.get(key);
-		 if(events==null) return false;
+		 if(events==null)
+		 	return false;
 		 final Faction.FactionChangeEvent[] nevents=new Faction.FactionChangeEvent[events.length-1];
 		 int ne1=0;
 		 boolean done=false;
@@ -1342,7 +1366,8 @@ public class DefaultFaction implements Faction, MsgListener
 			if((triggerParms==null)||(triggerParms.length()==0))
 				return "";
 			final String S=savedTriggerParms.get(parmName);
-			if(S!=null) return S;
+			if(S!=null)
+				return S;
 			return "";
 		}
 
@@ -1465,9 +1490,12 @@ public class DefaultFaction implements Faction, MsgListener
 		{
 			flagCache=newFlagCache.toUpperCase().trim();
 			final Vector<String> flags=CMParms.parse(flagCache);
-			if(flags.contains("OUTSIDER")) outsiderTargetOK=true;
-			if(flags.contains("SELFOK")) selfTargetOK=true;
-			if(flags.contains("JUST100")) just100=true;
+			if(flags.contains("OUTSIDER"))
+				outsiderTargetOK=true;
+			if(flags.contains("SELFOK"))
+				selfTargetOK=true;
+			if(flags.contains("JUST100"))
+				just100=true;
 		}
 		@Override
 		public boolean applies(MOB source, MOB target)
@@ -1491,8 +1519,10 @@ public class DefaultFaction implements Faction, MsgListener
 		@Override
 		public void setStateVariable(int x, Object newVal)
 		{
-			if(x<0) return;
-			if(x>=stateVariables.length) stateVariables=Arrays.copyOf(stateVariables,x+1);
+			if(x<0)
+				return;
+			if(x>=stateVariables.length)
+				stateVariables=Arrays.copyOf(stateVariables,x+1);
 			stateVariables[x]=newVal;
 		}
 		@Override public Faction getFaction(){return myFaction;}
@@ -1509,7 +1539,8 @@ public class DefaultFaction implements Faction, MsgListener
 	@Override
 	public boolean delRange(FRange FR)
 	{
-		if(!ranges.containsKey(FR.codeName().toUpperCase().trim())) return false;
+		if(!ranges.containsKey(FR.codeName().toUpperCase().trim()))
+			return false;
 		ranges.remove(FR.codeName().toUpperCase().trim());
 		recalc();
 		return true;
@@ -1564,8 +1595,10 @@ public class DefaultFaction implements Faction, MsgListener
 		@Override
 		public int compareTo(FRange o)
 		{
-			if(low < o.low()) return -1;
-			if(high > o.high()) return 1;
+			if(low < o.low())
+				return -1;
+			if(high > o.high())
+				return 1;
 			return 0;
 		}
 	}
@@ -1720,7 +1753,8 @@ public class DefaultFaction implements Faction, MsgListener
 			for(int d=0;d<currentReactionSets.size();d++)
 				if(CMLib.masking().maskCheck((MaskingLibrary.CompiledZapperMask)currentReactionSets.elementAt(d,1),M,true))
 				{
-					if(myReactions==null) myReactions=new Vector<Object>();
+					if(myReactions==null)
+						myReactions=new Vector<Object>();
 					tempReactSet=(List)currentReactionSets.elementAt(d,2);
 					for(final Faction.FReactionItem reactionItem : tempReactSet)
 						myReactions.add(reactionItem.reactionObjectID()+"="+reactionItem.parameters());
@@ -1744,7 +1778,8 @@ public class DefaultFaction implements Faction, MsgListener
 		@Override
 		public void executeMsg(final Environmental myHost, final CMMsg msg)
 		{
-			if(noListeners) return;
+			if(noListeners)
+				return;
 			synchronized(lightPresenceAbilities)
 			{
 				if((currentReactionSets.size()>0)
@@ -1752,7 +1787,8 @@ public class DefaultFaction implements Faction, MsgListener
 				&&(msg.target() instanceof Room))
 				{
 					if(presenceReactionPrototype==null)
-						if((presenceReactionPrototype=CMClass.getAbility("PresenceReaction"))==null) return;
+						if((presenceReactionPrototype=CMClass.getAbility("PresenceReaction"))==null)
+							return;
 					if((msg.source()==myHost)
 					&&(!msg.source().isMonster()))
 					{
@@ -1835,7 +1871,8 @@ public class DefaultFaction implements Faction, MsgListener
 		@Override
 		public boolean okMessage(final Environmental myHost, final CMMsg msg)
 		{
-			if(noListeners) return true;
+			if(noListeners)
+				return true;
 			for(final Ability A : myEffects)
 				if(!A.okMessage(myHost, msg))
 					return false;
@@ -1850,7 +1887,8 @@ public class DefaultFaction implements Faction, MsgListener
 		@Override
 		public boolean tick(Tickable ticking, int tickID)
 		{
-			if(noTickers) return true;
+			if(noTickers)
+				return true;
 			for(final Ability A : myEffects)
 				if(!A.tick(ticking, tickID))
 					return false;
@@ -1987,7 +2025,8 @@ public class DefaultFaction implements Faction, MsgListener
 			{
 				String strflag=flags.elementAt(f);
 				final boolean not=strflag.startsWith("!");
-				if(not) strflag=strflag.substring(1);
+				if(not)
+					strflag=strflag.substring(1);
 				switch(CMLib.factions().getAbilityFlagType(strflag))
 				{
 				case 1:
@@ -2000,12 +2039,14 @@ public class DefaultFaction implements Faction, MsgListener
 					final int val=CMParms.indexOfIgnoreCase(Ability.FLAG_DESCS, strflag);
 					if(not)
 					{
-						if(notflag<0) notflag=0;
+						if(notflag<0)
+							notflag=0;
 						notflag=notflag|(int)CMath.pow(2,val);
 					}
 					else
 					{
-						if(flag<0) flag=0;
+						if(flag<0)
+							flag=0;
 						flag=flag|(int)CMath.pow(2,val);
 					}
 					break;

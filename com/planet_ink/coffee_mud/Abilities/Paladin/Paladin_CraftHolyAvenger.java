@@ -88,7 +88,8 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 	{
 		int completion=16;
 		final Item fire=getRequiredFire(mob,0);
-		if(fire==null) return false;
+		if(fire==null)
+			return false;
 		final PairVector<Integer,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		buildingI=null;
 		messedUp=false;
@@ -100,7 +101,8 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 											false,
 											auto?RawMaterial.RESOURCE_MITHRIL:0,
 											enhancedTypes);
-		if(data==null) return false;
+		if(data==null)
+			return false;
 		woodRequired=data[0][FOUND_AMT];
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -138,7 +140,8 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 		buildingI.recoverPhyStats();
 
 		messedUp=!proficiencyCheck(mob,0,auto);
-		if(completion<6) completion=6;
+		if(completion<6)
+			completion=6;
 		final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okMessage(mob,msg))
 		{

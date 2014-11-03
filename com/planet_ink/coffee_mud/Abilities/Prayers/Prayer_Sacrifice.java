@@ -67,7 +67,8 @@ public class Prayer_Sacrifice extends Prayer
 			target=Prayer_Sacrifice.getBody(mob.location());
 		if(target==null)
 			target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if((!(target instanceof DeadBody))
 		   ||(target.rawSecretIdentity().toUpperCase().indexOf("FAKE")>=0))
@@ -104,7 +105,8 @@ public class Prayer_Sacrifice extends Prayer
 					double exp=5.0;
 					final int levelLimit=CMProps.getIntVar(CMProps.Int.EXPRATE);
 					final int levelDiff=mob.phyStats().level()-target.phyStats().level();
-					if(levelDiff>levelLimit) exp=0.0;
+					if(levelDiff>levelLimit)
+						exp=0.0;
 					if(exp>0)
 						CMLib.leveler().postExperience(mob,null,null,(int)Math.round(exp)+(super.getXPCOSTLevel(mob)),false);
 				}

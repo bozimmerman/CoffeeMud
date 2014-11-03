@@ -61,7 +61,8 @@ public class Chant_CaveFishing extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Room target=mob.location();
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		Environmental waterSrc=null;
 		if((target.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)

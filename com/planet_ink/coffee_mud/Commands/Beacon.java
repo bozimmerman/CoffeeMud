@@ -58,7 +58,8 @@ public class Beacon extends StdCommand
 		{
 			final String name=CMParms.combine(commands,0);
 			MOB M=CMLib.sessions().findPlayerOnline(name,true);
-			if(M==null) M=CMLib.sessions().findPlayerOnline(name,false);
+			if(M==null)
+				M=CMLib.sessions().findPlayerOnline(name,false);
 			if(M==null)
 			{
 				mob.tell(L("No one is online called '@x1'!",name));

@@ -85,7 +85,8 @@ public class RandomTraps extends ActiveTicker
 		{
 			oldParms=newParms.substring(0,x).trim();
 			String p=CMParms.getParmStr(oldParms,"ROOMS","NO").toUpperCase().trim();
-			if(p.startsWith("Y")) doRooms=true;
+			if(p.startsWith("Y"))
+				doRooms=true;
 			p=CMParms.getParmStr(oldParms,"ITEMS","NO").toUpperCase().trim();
 			if(p.startsWith("Y"))
 			{
@@ -202,7 +203,8 @@ public class RandomTraps extends ActiveTicker
 		super.setParms(oldParms);
 		minTraps=CMParms.getParmInt(oldParms,"mintraps",1);
 		maxTraps=CMParms.getParmInt(oldParms,"maxtraps",1);
-		if(maxTraps<minTraps) maxTraps=minTraps;
+		if(maxTraps<minTraps)
+			maxTraps=minTraps;
 		avgTraps=CMLib.dice().roll(1,maxTraps-minTraps,minTraps);
 		parms=newParms;
 		if((restrictedLocales!=null)&&(restrictedLocales.size()==0))
@@ -211,7 +213,8 @@ public class RandomTraps extends ActiveTicker
 
 	protected void makeRoomElligible(Room R, Vector elligible)
 	{
-		if(R==null) return;
+		if(R==null)
+			return;
 		if((restrictedLocales!=null)
 		&&(restrictedLocales.contains(Integer.valueOf(R.domainType()))))
 		   return;
@@ -286,7 +289,8 @@ public class RandomTraps extends ActiveTicker
 					tickStatus=Tickable.STATUS_MISC+7;
 					Room R=null;
 					try{R=(Room)elligible.elementAt(r);}catch(final IndexOutOfBoundsException e){}
-					if(R==null) continue;
+					if(R==null)
+						continue;
 
 
 					if((doAnyDoors)||(doAnyLockedDoors))

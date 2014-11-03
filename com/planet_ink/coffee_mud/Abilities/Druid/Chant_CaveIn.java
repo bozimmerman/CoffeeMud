@@ -119,7 +119,8 @@ public class Chant_CaveIn extends Chant
 		}
 		if(target==null)
 			target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if((target instanceof Item)||(target instanceof Room))
 		{
 			mob.tell(L("This chant can only target exits or creatures."));

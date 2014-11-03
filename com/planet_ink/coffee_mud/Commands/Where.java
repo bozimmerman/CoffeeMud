@@ -42,7 +42,8 @@ public class Where extends StdCommand
 
 	protected void whereAdd(DVector V, Area area, int i)
 	{
-		if(V.contains(area)) return;
+		if(V.contains(area))
+			return;
 
 		for(int v=0;v<V.size();v++)
 		{
@@ -69,7 +70,8 @@ public class Where extends StdCommand
 
 	public String cataMark(Environmental E)
 	{
-		if(E==null) return "";
+		if(E==null)
+			return "";
 		if(CMLib.catalog().isCatalogObj(E))
 			return "^g";
 		return "";

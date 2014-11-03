@@ -249,8 +249,10 @@ public class StdRace implements Race
 					final int diff=chart[Race.AGE_ANCIENT]-chart[Race.AGE_VENERABLE];
 					final int age=baseStats.getStat(CharStats.STAT_AGE)-chart[Race.AGE_ANCIENT];
 					int num=(diff>0)?(int)Math.abs(Math.floor(CMath.div(age,diff)))-1:1;
-					if(num==0) num=1;
-					if(num>16) num=16;
+					if(num==0)
+						num=1;
+					if(num>16)
+						num=16;
 					charStats.setStat(CharStats.STAT_SAVE_MIND,charStats.getStat(CharStats.STAT_SAVE_MIND)+20+(5*num));
 					charStats.setStat(CharStats.STAT_SAVE_UNDEAD,charStats.getStat(CharStats.STAT_SAVE_UNDEAD)-50+15+(5*num));
 					charStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,charStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ)-(3+(1*num)));
@@ -289,7 +291,8 @@ public class StdRace implements Race
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		// the sex rules
-		if(!(myHost instanceof MOB)) return;
+		if(!(myHost instanceof MOB))
+			return;
 
 		final MOB myChar=(MOB)myHost;
 		if((msg.tool() instanceof Social)
@@ -310,7 +313,8 @@ public class StdRace implements Race
 					if(myChar.maxState().getFatigue()>Long.MIN_VALUE/2)
 						myChar.curState().adjFatigue(CharState.FATIGUED_MILLIS,myChar.maxState());
 					final Ability A=CMClass.getAbility("Spell_Blindness");
-					if(A!=null) A.invoke(myChar,myChar,true,myChar.phyStats().level());
+					if(A!=null)
+						A.invoke(myChar,myChar,true,myChar.phyStats().level());
 				}
 			}
 			else
@@ -417,13 +421,15 @@ public class StdRace implements Race
 						&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))
 						{
 
-							if(A.proficiency()>0) A.setProficiency(100);
+							if(A.proficiency()>0)
+								A.setProficiency(100);
 							A.invoke(mob,mob,false,0);
 							if(CMLib.flags().isChild(mob))
 							{
 								A=mob.fetchAbility("Common");
 								if(A==null){ A=CMClass.getAbility("Common"); if(A!=null)mob.addAbility(A);}
-								if(A!=null) A.setProficiency(100);
+								if(A!=null)
+									A.setProficiency(100);
 							}
 							break;
 						}
@@ -456,7 +462,8 @@ public class StdRace implements Race
 			for(int i=1;i<11;i++)
 			{
 				naturalWeapon=CMClass.getWeapon("StdWeapon");
-				if(naturalWeapon==null) continue;
+				if(naturalWeapon==null)
+					continue;
 				naturalWeapon.setMaterial(RawMaterial.RESOURCE_LEATHER);
 				switch(i)
 				{
@@ -542,7 +549,8 @@ public class StdRace implements Race
 	@Override
 	public DeadBody getCorpseContainer(MOB mob, Room room)
 	{
-		if(room==null) room=mob.location();
+		if(room==null)
+			room=mob.location();
 
 		final DeadBody bodyI=(DeadBody)CMClass.getItem("Corpse");
 		if((mob.amFollowing()!=null)
@@ -560,7 +568,8 @@ public class StdRace implements Race
 		bodyI.setMobDescription(mob.description().replace('\'','`'));
 		bodyI.setDisplayText(L("the body of @x1 lies here.",mob.Name().replace('\'','`')));
 		final Ability ageA=mob.fetchEffect("Age");
-		if(ageA!=null) bodyI.addNonUninvokableEffect(ageA);
+		if(ageA!=null)
+			bodyI.addNonUninvokableEffect(ageA);
 		if(room!=null)
 		{
 			final ItemPossessor.Expire expireCode;
@@ -606,8 +615,10 @@ public class StdRace implements Race
 				if(mob.isMonster())
 				{
 					Item newItem=CMLib.utensils().isRuinedLoot(mob,thisItem);
-					if(newItem==null) continue;
-					if(newItem==thisItem) newItem=(Item)thisItem.copyOf();
+					if(newItem==null)
+						continue;
+					if(newItem==thisItem)
+						newItem=(Item)thisItem.copyOf();
 					if(newItem != null)
 					{
 						if(newItem instanceof Container)
@@ -739,7 +750,8 @@ public class StdRace implements Race
 		&&(racialEffectParms()!=null))
 			racialEffectMap=new Hashtable<Integer,SearchIDList<Ability>>();
 
-		if(racialEffectMap==null) return empty;
+		if(racialEffectMap==null)
+			return empty;
 
 		final Integer level;
 		if(mob!=null)
@@ -877,7 +889,8 @@ public class StdRace implements Race
 								|(expless()?Race.GENFLAG_NOEXP:0)));
 
 		List<RawMaterial> rscs=myResources();
-		if(rscs==null)rscs=new Vector();
+		if(rscs==null)
+			rscs=new Vector();
 		String txt=null;
 		Item I;
 		GR.setStat("NUMRSC",""+rscs.size());
@@ -891,7 +904,8 @@ public class StdRace implements Race
 		}
 
 		List<Item> outfit=outfit(null);
-		if(outfit==null) outfit=new Vector();
+		if(outfit==null)
+			outfit=new Vector();
 		GR.setStat("NUMOFT",""+outfit.size());
 		for(int i=0;i<outfit.size();i++)
 			GR.setStat("GETOFTID"+i,outfit.get(i).ID());
@@ -944,8 +958,10 @@ public class StdRace implements Race
 		Race race1=this;
 		Race race2=race;
 		GR.setRacialParms("<RACE><ID>"+newRaceID+"</ID><NAME>"+newRaceName+"</NAME></RACE>");
-		if(!race1.isGeneric()) race1=race1.makeGenRace();
-		if(!race2.isGeneric()) race2=race2.makeGenRace();
+		if(!race1.isGeneric())
+			race1=race1.makeGenRace();
+		if(!race2.isGeneric())
+			race2=race2.makeGenRace();
 
 		final Race nonHuman=(race1.ID().equals("Human"))?race2:race1;
 		final Race otherRace=(nonHuman==race1)?race2:race1;
@@ -1013,7 +1029,8 @@ public class StdRace implements Race
 
 		GR.setStat("WEAR",""+finalWear);
 		Weapon W=otherRace.myNaturalWeapon();
-		if(W==null) W=nonHuman.myNaturalWeapon();
+		if(W==null)
+			W=nonHuman.myNaturalWeapon();
 		if(W!=null)
 		{
 			GR.setStat("WEAPONCLASS",W.ID());
@@ -1183,12 +1200,14 @@ public class StdRace implements Race
 		boolean skip=false;
 		for(final Ability A : race1.racialEffects(null))
 		{
-			if(!skip) data.add(A);
+			if(!skip)
+				data.add(A);
 			skip=!skip;
 		}
 		for(final Ability A : race2.racialEffects(null))
 		{
-			if(!skip) data.add(A);
+			if(!skip)
+				data.add(A);
 			skip=!skip;
 		}
 
@@ -1240,7 +1259,8 @@ public class StdRace implements Race
 											 "");
 			}
 		}
-		if(racialAbilityMap==null) return emptyIDs;
+		if(racialAbilityMap==null)
+			return emptyIDs;
 		Integer level=null;
 		if(mob!=null)
 			level=Integer.valueOf(mob.phyStats().level());
@@ -1428,12 +1448,14 @@ public class StdRace implements Race
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
+			if(code.equalsIgnoreCase(CODES[i]))
+				return i;
 		return -1;
 	}
 	public boolean sameAs(Race E)
 	{
-		if(!(E instanceof StdRace)) return false;
+		if(!(E instanceof StdRace))
+			return false;
 		for(int i=0;i<CODES.length;i++)
 			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
 				return false;

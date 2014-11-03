@@ -62,7 +62,8 @@ public class Prayer_Godstrike extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		final boolean undead=target.charStats().getMyRace().racialCategory().equals("Undead");
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -87,7 +88,8 @@ public class Prayer_Godstrike extends Prayer
 				int harming=CMLib.dice().roll(3,adjustedLevel(mob,asLevel)+8,adjustedLevel(mob,asLevel));
 				if((msg.value()>0)||(msg2.value()>0))
 					harming=(int)Math.round(CMath.div(harming,2.0));
-				if(undead) harming=harming*2;
+				if(undead)
+					harming=harming*2;
 				if(CMLib.flags().isEvil(target))
 					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BURSTING,"^SThe holy STRIKE of the gods <DAMAGE> <T-NAME>!^?");
 			}

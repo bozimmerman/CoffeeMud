@@ -40,7 +40,8 @@ public class GrinderAccounts
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		final String last=httpReq.getUrlParameter("ACCOUNT");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		if(last.length()>0)
 		{
 			final PlayerAccount A=CMLib.players().getLoadAccount(last);
@@ -59,9 +60,11 @@ public class GrinderAccounts
 						err="Account name '"+str+"' already exists";
 				}
 				str=httpReq.getUrlParameter("EMAIL");
-				if(str!=null) A.setEmail(str);
+				if(str!=null)
+					A.setEmail(str);
 				str=httpReq.getUrlParameter("NOTES");
-				if(str!=null) A.setNotes(str);
+				if(str!=null)
+					A.setNotes(str);
 				str=httpReq.getUrlParameter("EXPIRATION");
 				if(str!=null)
 				{

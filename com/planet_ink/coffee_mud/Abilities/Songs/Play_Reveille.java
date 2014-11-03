@@ -109,7 +109,8 @@ public class Play_Reveille extends Play
 
 						// malicious songs must not affect the invoker!
 						int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
-						if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
+						if(auto)
+							affectType=affectType|CMMsg.MASK_ALWAYS;
 						if((CMLib.flags().canBeHeardSpeakingBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 						{
 							final CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
@@ -122,7 +123,8 @@ public class Play_Reveille extends Play
 									if(!CMLib.flags().isSleeping(follower))
 									{
 										final Ability A=CMClass.getAbility("Searching");
-										if(A!=null)	A.invoke(follower,null,true,asLevel);
+										if(A!=null)
+											A.invoke(follower,null,true,asLevel);
 									}
 								}
 							}

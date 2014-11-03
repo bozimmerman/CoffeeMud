@@ -75,7 +75,8 @@ public class Spell_MassDisintegrate extends Spell
 			avgLevel=avgLevel/h.size();
 
 		int levelDiff=avgLevel-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
-		if(levelDiff<0) levelDiff=0;
+		if(levelDiff<0)
+			levelDiff=0;
 
 		boolean success=false;
 		success=proficiencyCheck(mob,-(levelDiff*25),auto);
@@ -117,7 +118,8 @@ public class Spell_MassDisintegrate extends Spell
 						&&(!((DeadBody)I).mobName().equals(mob.Name())))
 							ok=false;
 					}
-					if(ok) V.addElement(I);
+					if(ok)
+						V.addElement(I);
 				}
 			}
 			for(int i=0;i<V.size();i++)

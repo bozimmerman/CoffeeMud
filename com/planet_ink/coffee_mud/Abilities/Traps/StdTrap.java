@@ -67,9 +67,11 @@ public class StdTrap extends StdAbility implements Trap
 
 	public int baseRejuvTime(int level)
 	{
-		if(level>=30) level=29;
+		if(level>=30)
+			level=29;
 		int time=((30-level)*30);
-		if(time<1) time=1;
+		if(time<1)
+			time=1;
 		return time;
 	}
 	public int baseDestructTime(int level)
@@ -100,7 +102,8 @@ public class StdTrap extends StdAbility implements Trap
 
 	public boolean isLocalExempt(MOB target)
 	{
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		final Room R=target.location();
 		if((!canBeUninvoked())
 		&&(!isABomb())
@@ -359,10 +362,14 @@ public class StdTrap extends StdAbility implements Trap
 	@Override
 	public boolean maySetTrap(MOB mob, int asLevel)
 	{
-		if(mob==null) return false;
-		if(trapLevel()<0) return false;
-		if(asLevel<0) return true;
-		if(asLevel>=trapLevel()) return true;
+		if(mob==null)
+			return false;
+		if(trapLevel()<0)
+			return false;
+		if(asLevel<0)
+			return true;
+		if(asLevel>=trapLevel())
+			return true;
 		return false;
 	}
 
@@ -416,7 +423,8 @@ public class StdTrap extends StdAbility implements Trap
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
-		if(P==null) return null;
+		if(P==null)
+			return null;
 		final int rejuv=baseRejuvTime(qualifyingClassLevel+trapBonus);
 		final Trap T=(Trap)copyOf();
 		T.setReset(rejuv);

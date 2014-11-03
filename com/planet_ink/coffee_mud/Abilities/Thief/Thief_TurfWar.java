@@ -77,7 +77,8 @@ public class Thief_TurfWar extends ThiefSkill
 		if(!super.okMessage(host,msg))
 			return false;
 		final Ability A=getSparringRoom();
-		if(A==null) return true;
+		if(A==null)
+			return true;
 		if(!A.okMessage(host, msg))
 			return false;
 		return true;
@@ -85,9 +86,11 @@ public class Thief_TurfWar extends ThiefSkill
 
 	public boolean isADefender(Room R, MOB M)
 	{
-		if(R==null) return false;
+		if(R==null)
+			return false;
 		final Ability A=R.fetchEffect("Thief_TagTurf");
-		if(A==null) return false;
+		if(A==null)
+			return false;
 		final Pair<Clan,Integer> clanRole=M.getClanRole(A.text());
 		return (A.text().equals(M.Name())
 			||((clanRole!=null)&&(clanRole.second.intValue()>=clanRole.first.getGovernment().getAcceptPos())));
@@ -97,7 +100,8 @@ public class Thief_TurfWar extends ThiefSkill
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		final Ability A=getSparringRoom();
-		if(A!=null) A.executeMsg(host, msg);
+		if(A!=null)
+			A.executeMsg(host, msg);
 		super.executeMsg(host,msg);
 	}
 
@@ -109,7 +113,8 @@ public class Thief_TurfWar extends ThiefSkill
 		if(!(affected instanceof Room))
 			return false;
 		final Room R=(Room)affected;
-		if(R==null) return false;
+		if(R==null)
+			return false;
 		final MOB attacker=invoker();
 		if(attacker==null)
 			return false;
@@ -171,7 +176,8 @@ public class Thief_TurfWar extends ThiefSkill
 			{
 				R.showHappens(CMMsg.MSG_OK_ACTION,L("@x1 has won the turf war!",attacker.Name()));
 				final Ability A=R.fetchEffect("Thief_TagTurf");
-				if(A!=null) A.unInvoke();
+				if(A!=null)
+					A.unInvoke();
 			}
 			else
 			if((attacker!=null)&&(attacker.location()!=R)

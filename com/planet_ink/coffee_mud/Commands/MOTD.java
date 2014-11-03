@@ -279,7 +279,8 @@ public class MOTD extends StdCommand
 		else
 		{
 			final int x=branchName.indexOf('#');
-			if(x>=0) branchName=branchName.substring(0,x);
+			if(x>=0)
+				branchName=branchName.substring(0,x);
 		}
 		if(ct[0]>0)
 			return whom+" "+ct[0]+" new of "+ct[1]+" items at the "+branchName+" branch of the "+P.postalChain()+" post office.";
@@ -296,10 +297,12 @@ public class MOTD extends StdCommand
 			final String chain=letter.section;
 			String branch=letter.key;
 			final int x=branch.indexOf(';');
-			if(x<0) continue;
+			if(x<0)
+				continue;
 			branch=branch.substring(0,x);
 			P=CMLib.map().getPostOffice(chain,branch);
-			if(P==null) continue;
+			if(P==null)
+				continue;
 			final PostOffice.MailPiece pieces=P.parsePostalItemData(letter.xml);
 			int[] ct=results.get(P);
 			if(ct==null)

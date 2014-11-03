@@ -46,8 +46,10 @@ public class Trap_FloodRoom extends StdTrap
 
 	protected int numWaterskins(MOB mob)
 	{
-		if(mob==null) return 0;
-		if(mob.location()==null) return 0;
+		if(mob==null)
+			return 0;
+		if(mob.location()==null)
+			return 0;
 		int num=0;
 		for(int i=0;i<mob.location().numItems();i++)
 		{
@@ -71,8 +73,10 @@ public class Trap_FloodRoom extends StdTrap
 
 	protected void killWaterskins(MOB mob)
 	{
-		if(mob==null) return;
-		if(mob.location()==null) return;
+		if(mob==null)
+			return;
+		if(mob.location()==null)
+			return;
 		int num=10;
 		int i=0;
 		while((num>0)&&(i<mob.location().numItems()))
@@ -87,7 +91,8 @@ public class Trap_FloodRoom extends StdTrap
 				}
 				else
 					((Drink)I).setLiquidRemaining(0);
-				if((--num)<=0) break;
+				if((--num)<=0)
+					break;
 			}
 			i++;
 		}
@@ -97,12 +102,14 @@ public class Trap_FloodRoom extends StdTrap
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
-		if(P==null) return null;
+		if(P==null)
+			return null;
 		Item I=null;
 		if(mob!=null)
 		{
 			I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_ROCK);
-			if(I!=null)	super.destroyResources(mob.location(),I.material(),100);
+			if(I!=null)
+				super.destroyResources(mob.location(),I.material(),100);
 			killWaterskins(mob);
 		}
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
@@ -112,7 +119,8 @@ public class Trap_FloodRoom extends StdTrap
 	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,P)) return false;
+		if(!super.canSetTrapOn(mob,P))
+			return false;
 		if(mob!=null)
 		{
 			final Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_ROCK);

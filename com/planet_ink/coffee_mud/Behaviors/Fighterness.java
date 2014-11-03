@@ -47,7 +47,8 @@ public class Fighterness extends CombatAbilities
 	public void startBehavior(PhysicalAgent forMe)
 	{
 		super.startBehavior(forMe);
-		if(!(forMe instanceof MOB)) return;
+		if(!(forMe instanceof MOB))
+			return;
 		final MOB mob=(MOB)forMe;
 		combatMode=COMBAT_RANDOM;
 		makeClass(mob,getParmsMinusCombatMode(),"Fighter");

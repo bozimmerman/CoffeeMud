@@ -62,7 +62,8 @@ public class Spell_Phantasm extends Spell
 				if((myTarget!=mob.getVictim())
 				   ||(myTarget==null))
 				{
-					if(mob.amDead()) mob.setLocation(null);
+					if(mob.amDead())
+						mob.setLocation(null);
 					else
 					if(mob.location()!=null)
 						mob.location().show(mob,null,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> look(s) around for someone to fight..."));
@@ -76,7 +77,8 @@ public class Spell_Phantasm extends Spell
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg)) return false;
+		if(!super.okMessage(myHost,msg))
+			return false;
 		super.executeMsg(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof MOB))
@@ -102,7 +104,8 @@ public class Spell_Phantasm extends Spell
 			&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 			{
 				unInvoke();
-				if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
+				if(msg.source().playerStats()!=null)
+					msg.source().playerStats().setLastUpdated(0);
 			}
 			else
 			if(msg.amITarget(mob)&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
@@ -117,7 +120,8 @@ public class Spell_Phantasm extends Spell
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
-			if(mob.amDead()) mob.setLocation(null);
+			if(mob.amDead())
+				mob.setLocation(null);
 			mob.destroy();
 		}
 	}

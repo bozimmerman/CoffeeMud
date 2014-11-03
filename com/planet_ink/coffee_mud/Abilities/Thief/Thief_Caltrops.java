@@ -93,9 +93,12 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(affected==null) return super.okMessage(myHost,msg);
-		if(!(affected instanceof Room)) return super.okMessage(myHost,msg);
-		if(invoker()==null) return super.okMessage(myHost,msg);
+		if(affected==null)
+			return super.okMessage(myHost,msg);
+		if(!(affected instanceof Room))
+			return super.okMessage(myHost,msg);
+		if(invoker()==null)
+			return super.okMessage(myHost,msg);
 		final Room room=(Room)affected;
 		if((msg.amITarget(room)||room.isInhabitant(msg.source()))
 		&&(!msg.amISource(invoker()))

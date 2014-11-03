@@ -51,7 +51,8 @@ public class Bomb_Pepper extends StdBomb
 	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,P)) return false;
+		if(!super.canSetTrapOn(mob,P))
+			return false;
 		if((!(P instanceof Item))
 		||(((Item)P).material()!=RawMaterial.RESOURCE_PEPPERS))
 		{
@@ -77,7 +78,8 @@ public class Bomb_Pepper extends StdBomb
 			{
 				super.spring(target);
 				final Ability A=CMClass.getAbility("Spell_Irritation");
-				if(A!=null) A.invoke(target,target,true,invoker().phyStats().level()+abilityCode());
+				if(A!=null)
+					A.invoke(target,target,true,invoker().phyStats().level()+abilityCode());
 			}
 		}
 	}

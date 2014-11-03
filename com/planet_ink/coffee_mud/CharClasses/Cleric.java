@@ -54,8 +54,10 @@ public class Cleric extends StdCharClass
 	@Override
 	protected HashSet disallowedWeaponClasses(MOB mob)
 	{
-		if(CMLib.flags().isEvil(mob)) return disallowedWeaponsE;
-		if(CMLib.flags().isGood(mob)) return disallowedWeaponsG;
+		if(CMLib.flags().isEvil(mob))
+			return disallowedWeaponsE;
+		if(CMLib.flags().isGood(mob))
+			return disallowedWeaponsG;
 		return disallowedWeaponsN;
 	}
 	protected int alwaysFlunksThisQuality(){return -1;}
@@ -69,7 +71,8 @@ public class Cleric extends StdCharClass
 	public void initializeClass()
 	{
 		super.initializeClass();
-		if(!ID().equals(baseClass())) return;
+		if(!ID().equals(baseClass()))
+			return;
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Revoke",false);
@@ -217,7 +220,8 @@ public class Cleric extends StdCharClass
 			return;
 		}
 
-		if(!ID().equals("Cleric")) return;
+		if(!ID().equals("Cleric"))
+			return;
 
 		for(int a=0;a<mob.numAbilities();a++)
 		{
@@ -273,7 +277,8 @@ public class Cleric extends StdCharClass
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
+		if(!(myHost instanceof MOB))
+			return super.okMessage(myHost,msg);
 		final MOB myChar=(MOB)myHost;
 		if(!super.okMessage(myChar, msg))
 			return false;
@@ -302,7 +307,8 @@ public class Cleric extends StdCharClass
 					myChar.tell(L("Your immoral strife disrupts the prayer."));
 					return false;
 				}
-				if(hq==0) basis=100;
+				if(hq==0)
+					basis=100;
 				break;
 			case 500:
 				if(CMLib.flags().isNeutral(myChar))
@@ -310,7 +316,8 @@ public class Cleric extends StdCharClass
 					myChar.tell(L("Your moral weakness disrupts the prayer."));
 					return false;
 				}
-				if(hq==500) basis=100;
+				if(hq==500)
+					basis=100;
 				break;
 			case 1000:
 				if(CMLib.flags().isGood(myChar))
@@ -318,7 +325,8 @@ public class Cleric extends StdCharClass
 					myChar.tell(L("Your moral confusion disrupts the prayer."));
 					return false;
 				}
-				if(hq==1000) basis=100;
+				if(hq==1000)
+					basis=100;
 				break;
 			}
 			if(basis==0)

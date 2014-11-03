@@ -42,13 +42,15 @@ public class StdThinGridArea extends StdGridArea
 	@Override
 	public void addProperRoom(Room R)
 	{
-		if(R!=null) R.setExpirationDate(WorldMap.ROOM_EXPIRATION_MILLIS);
+		if(R!=null)
+			R.setExpirationDate(WorldMap.ROOM_EXPIRATION_MILLIS);
 		super.addProperRoom(R);
 	}
 	@Override
 	public Room getRoom(String roomID)
 	{
-		if(!isRoom(roomID)) return null;
+		if(!isRoom(roomID))
+			return null;
 		Room R=super.getRoom(roomID);
 		if(((R==null)||(R.amDestroyed()))&&(roomID!=null))
 		{
@@ -99,9 +101,12 @@ public class StdThinGridArea extends StdGridArea
 	@Override
 	public boolean isRoom(Room R)
 	{
-		if(R==null) return false;
-		if(super.isRoom(R)) return true;
-		if(R.roomID().length()==0) return false;
+		if(R==null)
+			return false;
+		if(super.isRoom(R))
+			return true;
+		if(R.roomID().length()==0)
+			return false;
 		return isRoom(R.roomID());
 	}
 	@Override public Enumeration<Room> getProperMap(){return new IteratorEnumeration<Room>(properRooms.values().iterator());}

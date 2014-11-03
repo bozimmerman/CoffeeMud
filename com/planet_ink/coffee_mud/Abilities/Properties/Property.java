@@ -164,7 +164,8 @@ public class Property implements Ability
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
+			if(code.equalsIgnoreCase(CODES[i]))
+				return i;
 		return -1;
 	}
 	@Override
@@ -189,7 +190,8 @@ public class Property implements Ability
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof Property)) return false;
+		if(!(E instanceof Property))
+			return false;
 		for(int i=0;i<CODES.length;i++)
 			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
 				return false;
@@ -228,13 +230,20 @@ public class Property implements Ability
 	@Override
 	public boolean canAffect(Physical P)
 	{
-		if((P==null)&&(canAffectCode()==0)) return true;
-		if(P==null) return false;
-		if((P instanceof MOB)&&((canAffectCode()&Ability.CAN_MOBS)>0)) return true;
-		if((P instanceof Item)&&((canAffectCode()&Ability.CAN_ITEMS)>0)) return true;
-		if((P instanceof Exit)&&((canAffectCode()&Ability.CAN_EXITS)>0)) return true;
-		if((P instanceof Room)&&((canAffectCode()&Ability.CAN_ROOMS)>0)) return true;
-		if((P instanceof Area)&&((canAffectCode()&Ability.CAN_AREAS)>0)) return true;
+		if((P==null)&&(canAffectCode()==0))
+			return true;
+		if(P==null)
+			return false;
+		if((P instanceof MOB)&&((canAffectCode()&Ability.CAN_MOBS)>0))
+			return true;
+		if((P instanceof Item)&&((canAffectCode()&Ability.CAN_ITEMS)>0))
+			return true;
+		if((P instanceof Exit)&&((canAffectCode()&Ability.CAN_EXITS)>0))
+			return true;
+		if((P instanceof Room)&&((canAffectCode()&Ability.CAN_ROOMS)>0))
+			return true;
+		if((P instanceof Area)&&((canAffectCode()&Ability.CAN_AREAS)>0))
+			return true;
 		return false;
 	}
 

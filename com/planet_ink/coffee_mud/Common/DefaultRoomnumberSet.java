@@ -80,7 +80,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 	public synchronized void remove(String str)
 	{
 		String areaName=str.toUpperCase().trim();
-		if(areaName.length()==0) return;
+		if(areaName.length()==0)
+			return;
 
 		String theRest=null;
 		long roomNum=-1;
@@ -98,7 +99,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 			theRest=areaName.substring(x+1).trim();
 			areaName=areaName.substring(0,x);
 			CI=getGrouper(areaName);
-			if(CI==null) return;
+			if(CI==null)
+				return;
 			x=theRest.indexOf("#(");
 			if((x>=0)&&(theRest.endsWith(")"))&&(CMath.isInteger(theRest.substring(0,x))))
 			{
@@ -108,14 +110,16 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 					roomNum=(Long.parseLong(theRest.substring(0,x))<<30);
 					roomNum+=(Long.parseLong(theRest.substring(x+2,comma))<<15);
 					roomNum+=Long.parseLong(theRest.substring(comma+1,theRest.length()-1));
-					if(roomNum<CMIntegerGrouper.NEXT_BITS) roomNum|=CMIntegerGrouper.GRID_FLAGL;
+					if(roomNum<CMIntegerGrouper.NEXT_BITS)
+						roomNum|=CMIntegerGrouper.GRID_FLAGL;
 				}
 			}
 			else
 			if(CMath.isInteger(theRest))
 				roomNum=Integer.parseInt(theRest.substring(x+1).trim());
 		}
-		if(CI==null) return;
+		if(CI==null)
+			return;
 		CI.remove(roomNum);
 		if(CI.roomCount()==0)
 			root.remove(areaName.toUpperCase());
@@ -161,7 +165,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 	public String random()
 	{
 		int total=roomCountAllAreas();
-		if(total<=0) return null;
+		if(total<=0)
+			return null;
 		final int which=CMLib.dice().roll(1,total,-1);
 		total=0;
 		String roomID=null;
@@ -179,7 +184,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 				break;
 			}
 		}
-		if(roomID==null) return null;
+		if(roomID==null)
+			return null;
 		if(CMI==null)
 		{
 			//Log.errOut("RNUMS","Unable to even select an integer group! Picked "+which+"/"+grandTotal);
@@ -191,7 +197,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 
 	public int[] convertRoomID(long coded)
 	{
-		if(coded==-1) return null;
+		if(coded==-1)
+			return null;
 		final int[] ids=new int[3];
 		ids[1]=-1;
 		ids[2]=-1;
@@ -212,7 +219,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 	}
 	public String convertRoomID(String prefix, long coded)
 	{
-		if(coded==-1) return prefix;
+		if(coded==-1)
+			return prefix;
 		if(coded<CMIntegerGrouper.NEXT_BITS)
 			return prefix+"#"+coded;
 		long mask=0;
@@ -242,7 +250,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 	@Override
 	public boolean contains(String str)
 	{
-		if(str==null) return false;
+		if(str==null)
+			return false;
 		String theRest=null;
 		long roomNum=0;
 		final int origX=str.indexOf('#');
@@ -260,7 +269,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 					roomNum=Long.parseLong(theRest.substring(0,x))<<30;
 					roomNum+=(Long.parseLong(theRest.substring(x+2,comma))<<15);
 					roomNum+=Long.parseLong(theRest.substring(comma+1,theRest.length()-1));
-					if(roomNum<CMIntegerGrouper.NEXT_BITS) roomNum|=CMIntegerGrouper.GRID_FLAGL;
+					if(roomNum<CMIntegerGrouper.NEXT_BITS)
+						roomNum|=CMIntegerGrouper.GRID_FLAGL;
 				}
 			}
 			else
@@ -271,7 +281,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		final CMIntegerGrouper myGrouper=getGrouper(str);
 		if((origX<0)&&(myGrouper==null)&&(isGrouper(str)))
 			return true;
-		if(myGrouper==null) return false;
+		if(myGrouper==null)
+			return false;
 		return myGrouper.contains(roomNum);
 	}
 
@@ -293,7 +304,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 	public void parseXML(String xml)
 	{
 		final List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(xml);
-		if((V==null)||(V.size()==0)) return;
+		if((V==null)||(V.size()==0))
+			return;
 		final List<XMLLibrary.XMLpiece> xV=CMLib.xml().getContentsFromPieces(V,"AREAS");
 		root.clear();
 		String ID=null;
@@ -318,7 +330,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 	public synchronized void add(String str)
 	{
 		String areaName=str.toUpperCase().trim();
-		if(areaName.length()==0) return;
+		if(areaName.length()==0)
+			return;
 
 		String theRest=null;
 		long roomNum=-1;
@@ -336,7 +349,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 					roomNum=(Long.parseLong(theRest.substring(0,x))<<30);
 					roomNum+=(Long.parseLong(theRest.substring(x+2,comma))<<15);
 					roomNum+=Long.parseLong(theRest.substring(comma+1,theRest.length()-1));
-					if(roomNum<CMIntegerGrouper.NEXT_BITS) roomNum|=CMIntegerGrouper.GRID_FLAGL;
+					if(roomNum<CMIntegerGrouper.NEXT_BITS)
+						roomNum|=CMIntegerGrouper.GRID_FLAGL;
 				}
 			}
 			else
@@ -367,13 +381,15 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		@Override
 		public boolean hasMoreElements()
 		{
-			if(nextID==null) getNextID();
+			if(nextID==null)
+				getNextID();
 			return nextID!=null;
 		}
 		@Override
 		public String nextElement()
 		{
-			if(nextID==null) getNextID();
+			if(nextID==null)
+				getNextID();
 			final String next=nextID;
 			nextID=null;
 			return next;

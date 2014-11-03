@@ -50,7 +50,8 @@ public class Prop_ModExperience extends Property
 
 	public int translateAmount(int amount, String val)
 	{
-		if(amount<0) amount=-amount;
+		if(amount<0)
+			amount=-amount;
 		if(val.endsWith("%"))
 			return (int)Math.round(CMath.mul(amount,CMath.div(CMath.s_int(val.substring(0,val.length()-1)),100)));
 		return CMath.s_int(val);

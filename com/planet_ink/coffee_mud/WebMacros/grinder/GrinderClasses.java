@@ -50,21 +50,27 @@ public class GrinderClasses
 				if(behav.length()>0)
 				{
 					String prof=httpReq.getUrlParameter("CABPOF"+num);
-					if(prof==null) prof="0";
+					if(prof==null)
+						prof="0";
 					String qual=httpReq.getUrlParameter("CABQUA"+num);
 					if(qual==null) qual="";// null means unchecked
 					String levl=httpReq.getUrlParameter("CABLVL"+num);
-					if(levl==null) levl="0";
+					if(levl==null)
+						levl="0";
 					String secr=httpReq.getUrlParameter("CABSCR"+num);
 					if(secr==null) secr="";// null means unchecked
 					Object parm=httpReq.getUrlParameter("CABPRM"+num);
-					if(parm==null) parm="";
+					if(parm==null)
+						parm="";
 					Object prereq=httpReq.getUrlParameter("CABPRE"+num);
-					if(prereq==null) prereq="";
+					if(prereq==null)
+						prereq="";
 					Object mask=httpReq.getUrlParameter("CABMSK"+num);
-					if(mask==null) mask="";
+					if(mask==null)
+						mask="";
 					String maxp=httpReq.getUrlParameter("CABMPOF"+num);
-					if(maxp==null) maxp="100";
+					if(maxp==null)
+						maxp="100";
 					theclasses.addElement(behav,levl,prof,qual,secr,parm,prereq,mask,maxp);
 				}
 				num++;
@@ -121,7 +127,8 @@ public class GrinderClasses
 					}
 				}
 			}
-		if(DV.size()==0) DV.addElement(Integer.valueOf(0),C.ID());
+		if(DV.size()==0)
+			DV.addElement(Integer.valueOf(0),C.ID());
 		C.setStat("NUMNAME",""+DV.size());
 		for(int l=0;l<DV.size();l++)
 		{

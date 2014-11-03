@@ -59,7 +59,8 @@ public class Generate extends StdCommand
 			R.setRoomID(oldR.getArea().getNewRoomID(oldR, direction));
 		}
 		Exit E=R.getExitInDir(Directions.getOpDirectionCode(direction));
-		if(E==null) E = CMClass.getExit("Open");
+		if(E==null)
+			E = CMClass.getExit("Open");
 		oldR.setRawExit(direction, E);
 		oldR.rawDoors()[direction]=R;
 		final int opDir=Directions.getOpDirectionCode(direction);
@@ -270,7 +271,8 @@ public class Generate extends StdCommand
 					CMLib.map().addArea(A);
 					CMLib.database().DBCreateArea(A);
 					Room R=A.getRoom(A.Name()+"#0");
-					if(R==null) R=A.getFilledProperMap().nextElement();
+					if(R==null)
+						R=A.getFilledProperMap().nextElement();
 					createNewPlace(mob,mob.location(),R,direction);
 					CMLib.percolator().postProcess(definedIDs);
 					mob.tell(L("Saving remaining rooms for area '@x1'...",A.name()));

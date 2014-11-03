@@ -108,7 +108,8 @@ public class Prayer_Gateway extends Prayer
 			if(t!=null)
 			{
 				int adjustment=t.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
-				if(t.isMonster()) adjustment=adjustment*3;
+				if(t.isMonster())
+					adjustment=adjustment*3;
 				profNeg+=adjustment;
 			}
 		}

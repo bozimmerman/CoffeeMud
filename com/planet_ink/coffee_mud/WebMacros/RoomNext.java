@@ -48,7 +48,8 @@ public class RoomNext extends StdWebMacro
 		final String last=httpReq.getUrlParameter("ROOM");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("ROOM");
+			if(last!=null)
+				httpReq.removeUrlParameter("ROOM");
 			return "";
 		}
 		String lastID="";

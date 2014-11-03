@@ -56,9 +56,12 @@ public class Disease_Magepox extends Disease
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID))	return false;
-		if(affected==null) return false;
-		if(!(affected instanceof MOB)) return true;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
+		if(!(affected instanceof MOB))
+			return true;
 
 		final MOB mob=(MOB)affected;
 		if((!mob.amDead())&&((--diseaseTick)<=0))
@@ -74,11 +77,14 @@ public class Disease_Magepox extends Disease
 	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		int hitsLost=affected.maxState().getHitPoints()-affected.curState().getHitPoints();
-		if(hitsLost<0) hitsLost=0;
+		if(hitsLost<0)
+			hitsLost=0;
 		int movesLost=(affected.maxState().getMovement()-affected.curState().getMovement());
-		if(movesLost<0) movesLost=0;
+		if(movesLost<0)
+			movesLost=0;
 		final int lostMana=hitsLost+movesLost;
 		affectableState.setMana(affectableState.getMana()-lostMana);
 		if(affectableState.getMana()<0)

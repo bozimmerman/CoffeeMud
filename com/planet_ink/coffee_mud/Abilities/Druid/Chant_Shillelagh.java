@@ -51,7 +51,8 @@ public class Chant_Shillelagh extends Chant
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BONUS);
 		if(affected instanceof Item)
 			affectableStats.setAbility(affectableStats.ability()+4);

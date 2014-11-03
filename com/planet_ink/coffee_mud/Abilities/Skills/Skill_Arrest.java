@@ -51,7 +51,8 @@ public class Skill_Arrest extends StdSkill
 	public static List<LegalWarrant> getWarrantsOf(MOB target, Area legalA)
 	{
 		LegalBehavior B=null;
-		if(legalA!=null) B=CMLib.law().getLegalBehavior(legalA);
+		if(legalA!=null)
+			B=CMLib.law().getLegalBehavior(legalA);
 		List<LegalWarrant> warrants=new Vector();
 		if(B!=null)
 		{
@@ -68,7 +69,8 @@ public class Skill_Arrest extends StdSkill
 
 	public void makePeace(Room R, MOB mob, MOB target)
 	{
-		if(R==null) return;
+		if(R==null)
+			return;
 		for(int i=0;i<R.numInhabitants();i++)
 		{
 			final MOB inhab=R.fetchInhabitant(i);
@@ -86,7 +88,8 @@ public class Skill_Arrest extends StdSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if((mob==target)&&(!auto))
 		{
 			mob.tell(L("You can not arrest yourself."));
@@ -136,9 +139,11 @@ public class Skill_Arrest extends StdSkill
 			{
 				makePeace(mob.location(),mob,target);
 				A=target.fetchEffect("Skill_ArrestingSap");
-				if(A!=null)A.unInvoke();
+				if(A!=null)
+					A.unInvoke();
 				A=CMClass.getAbility("Skill_HandCuff");
-				if(A!=null)	A.invoke(mob,target,true,0);
+				if(A!=null)
+					A.invoke(mob,target,true,0);
 				makePeace(mob.location(),mob,target);
 				mob.tell(L("You'll have to PULL @x1 to the judge now before he gets out of the cuffs.",target.charStats().himher()));
 			}

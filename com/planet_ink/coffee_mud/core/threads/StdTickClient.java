@@ -113,8 +113,10 @@ public class StdTickClient implements TickClient
 	{
 		if(clientObject != arg0.getClientObject())
 			return (clientObject.hashCode() > arg0.getClientObject().hashCode())?1:-1;
-		if(tickID>arg0.getTickID()) return 1;
-		if(tickID<arg0.getTickID()) return -1;
+		if(tickID>arg0.getTickID())
+			return 1;
+		if(tickID<arg0.getTickID())
+			return -1;
 		return 0;
 	}
 	

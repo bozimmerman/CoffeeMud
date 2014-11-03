@@ -126,7 +126,8 @@ public class Spell_Cogniportive extends Spell
 			else
 			{
 				final Set<MOB> h=properTargets(mob,null,false);
-				if(h==null) return;
+				if(h==null)
+					return;
 
 				final Room thisRoom=mob.location();
 				for (final Object element : h)

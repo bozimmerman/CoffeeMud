@@ -102,7 +102,8 @@ public int castingQuality(MOB mob, Physical target)
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if((target.getWearPositions(Wearable.WORN_HANDS)==0)
 		&&(target.getWearPositions(Wearable.WORN_FEET)==0))

@@ -56,7 +56,8 @@ public class Skill_Recall extends StdSkill
 		if(success)
 		{
 			final Room recalledRoom=mob.location();
-			if(recalledRoom == null) return false;
+			if(recalledRoom == null)
+				return false;
 			Room recallRoom=CMLib.map().getStartRoom(mob);
 			if((recallRoom==null)&&(!mob.isMonster()))
 			{
@@ -96,7 +97,8 @@ public class Skill_Recall extends StdSkill
 					&&(!follower.isAttribute(MOB.Attrib.AUTOGUARD)))
 					{
 						Room fRecalledRoom=recalledRoom;
-						if(group)fRecalledRoom=follower.location();
+						if(group)
+							fRecalledRoom=follower.location();
 						msg=CMClass.getMsg(follower,fRecalledRoom,this,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,auto?L("<S-NAME> disappear(s) into the Java Plane!"):L("<S-NAME> <S-IS-ARE> sucked into the vortex created by @x1s recall.",mob.name()));
 						if(((follower.location()==fRecalledRoom))
 						&&(fRecalledRoom.isInhabitant(follower))

@@ -571,7 +571,8 @@ public class RTree<T extends BoundedObject> {
 	 */
 	public boolean remove(T o)
 	{
-		if(root==null) return false;
+		if(root==null)
+			return false;
 		boolean removed=false;
 		TrackingVector<T> v=null;
 		synchronized(trackMap)
@@ -732,14 +733,20 @@ public class RTree<T extends BoundedObject> {
 	{
 		int total = 0;
 
-		if(two.lx < one.lx) total += one.lx - two.lx;
-		if(two.rx > one.rx) total += two.rx - one.rx;
+		if(two.lx < one.lx)
+			total += one.lx - two.lx;
+		if(two.rx > one.rx)
+			total += two.rx - one.rx;
 
-		if(two.ty < one.ty) total += one.ty - two.ty;
-		if(two.by > one.by) total += two.by - one.by;
+		if(two.ty < one.ty)
+			total += one.ty - two.ty;
+		if(two.by > one.by)
+			total += two.by - one.by;
 
-		if(two.iz < one.iz) total += one.iz - two.iz;
-		if(two.oz > one.oz) total += two.oz - one.oz;
+		if(two.iz < one.iz)
+			total += one.iz - two.iz;
+		if(two.oz > one.oz)
+			total += two.oz - one.oz;
 
 		return total;
 	}

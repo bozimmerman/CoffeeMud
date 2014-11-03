@@ -70,7 +70,8 @@ public class Chant_HowlersMoon extends Chant
 		if((canBeUninvoked())&&(mob.amFollowing()==null))
 		{
 			mob.tell(L("You are no longer under the howlers moon."));
-			if(mob.amDead()) mob.setLocation(null);
+			if(mob.amDead())
+				mob.setLocation(null);
 			mob.destroy();
 		}
 	}
@@ -78,15 +79,18 @@ public class Chant_HowlersMoon extends Chant
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
-		if(affected==null) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
 		if(affected instanceof Room)
 		{
 			final Room room=(Room)affected;
 			if(!room.getArea().getClimateObj().canSeeTheMoon(room,this))
 				unInvoke();
 
-			if((++ticksTicked)<20) return true;
+			if((++ticksTicked)<20)
+				return true;
 			int numWolfs=0;
 			for(int i=0;i<room.numInhabitants();i++)
 			{
@@ -109,7 +113,8 @@ public class Chant_HowlersMoon extends Chant
 			{
 				ticksTicked=0;
 				int level=CMLib.ableMapper().lowestQualifyingLevel(ID())+5;
-				if(invoker()!=null) level=invoker().phyStats().level()+5+(2*super.getXLEVELLevel(invoker()));
+				if(invoker()!=null)
+					level=invoker().phyStats().level()+5+(2*super.getXLEVELLevel(invoker()));
 				final MOB target = determineMonster(invoker(),level);
 				final Room newRoom=room.getRoomInDir(fromDir);
 				final int opDir=Directions.getOpDirectionCode(fromDir);
@@ -136,7 +141,8 @@ public class Chant_HowlersMoon extends Chant
 				}
 				else
 				{
-					if(target.amDead()) target.setLocation(null);
+					if(target.amDead())
+						target.setLocation(null);
 					target.destroy();
 				}
 			}
@@ -192,7 +198,8 @@ public class Chant_HowlersMoon extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Room target=mob.location();
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(!target.getArea().getClimateObj().canSeeTheMoon(target,null))
 		{
 			mob.tell(L("You must be able to see the moon for this magic to work."));
@@ -284,7 +291,8 @@ public class Chant_HowlersMoon extends Chant
 		newMOB.setDescription(L("Dark black fur, always standing on end surrounds its muscular body.  The eyes are deep red, and his teeth are bared, snarling at you."));
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		Behavior B=CMClass.getBehavior("CorpseEater");
-		if(B!=null) newMOB.addBehavior(B);
+		if(B!=null)
+			newMOB.addBehavior(B);
 		B=CMClass.getBehavior("Emoter");
 		if(B!=null)
 		{

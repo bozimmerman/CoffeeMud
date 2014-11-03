@@ -73,7 +73,8 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 		&&((msg.amITarget(affected))||(msg.tool()==affected)))
 		{
 			final MOB mob=msg.source();
-			if(CMLib.flags().isInFlight(mob)) return true;
+			if(CMLib.flags().isInFlight(mob))
+				return true;
 			if(!bridgeIsUp)
 			{
 				mob.tell(L("The bridge appears to be out."));
@@ -108,7 +109,8 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 		&&(!CMLib.flags().isFalling(msg.source())))
 		{
 			final MOB mob=msg.source();
-			if(CMLib.flags().isInFlight(mob)) return;
+			if(CMLib.flags().isInFlight(mob))
+				return;
 			if(bridgeIsUp)
 			{
 				if((weight(mob)>max)

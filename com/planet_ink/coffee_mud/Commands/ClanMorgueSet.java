@@ -48,7 +48,8 @@ public class ClanMorgueSet extends StdCommand
 
 		Clan C=null;
 		final boolean skipChecks=mob.getClanRole(mob.Name())!=null;
-		if(skipChecks) C=mob.getClanRole(mob.Name()).first;
+		if(skipChecks)
+			C=mob.getClanRole(mob.Name()).first;
 
 		if(C==null)
 		for(final Pair<Clan,Integer> c : mob.clans())

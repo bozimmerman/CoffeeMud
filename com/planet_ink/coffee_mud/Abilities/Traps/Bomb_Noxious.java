@@ -51,7 +51,8 @@ public class Bomb_Noxious extends StdBomb
 	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,P)) return false;
+		if(!super.canSetTrapOn(mob,P))
+			return false;
 		if((!(P instanceof Item))
 		||(((Item)P).material()!=RawMaterial.RESOURCE_EGGS))
 		{
@@ -81,7 +82,8 @@ public class Bomb_Noxious extends StdBomb
 				{
 					A.invoke(target,target,true,invoker().phyStats().level()+abilityCode());
 					A=target.fetchEffect(A.ID());
-					if(A!=null)A.setInvoker(invoker());
+					if(A!=null)
+						A.setInvoker(invoker());
 				}
 			}
 		}

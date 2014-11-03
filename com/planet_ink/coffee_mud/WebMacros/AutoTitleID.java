@@ -41,7 +41,8 @@ public class AutoTitleID extends StdWebMacro
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		final String last=httpReq.getUrlParameter("AUTOTITLE");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		final java.util.Map<String,String> parms=parseParms(parm);
 		try
 		{

@@ -74,7 +74,8 @@ public class Skill_Imitation extends BardSkill
 			&&(!immitations.containsKey(msg.tool().text())))
 			{
 				final Ability A=CMClass.getAbility(msg.tool().text());
-				if(A!=null)	immitations.put(A.name(),lastOnes[1]);
+				if(A!=null)
+					immitations.put(A.name(),lastOnes[1]);
 			}
 			else
 			if((msg.tool() instanceof Ability)
@@ -95,8 +96,10 @@ public class Skill_Imitation extends BardSkill
 		if(commands.size()>1)
 		{
 			target=mob.location().fetchFromRoomFavorMOBs(null,(String)commands.lastElement());
-			if(target==null) target=mob.findItem(null,(String)commands.lastElement());
-			if(target!=null) commands.removeElementAt(commands.size()-1);
+			if(target==null)
+				target=mob.findItem(null,(String)commands.lastElement());
+			if(target!=null)
+				commands.removeElementAt(commands.size()-1);
 		}
 		final String cmd=(commands.size()>0)?CMParms.combine(commands,0).toUpperCase():"";
 		final StringBuffer str=new StringBuffer("");
@@ -109,12 +112,15 @@ public class Skill_Imitation extends BardSkill
 		}
 		if((cmd.length()==0)||(found==null))
 		{
-			if(found!=null) mob.tell(L("'@x1' is not something you know how to imitate.",cmd));
+			if(found!=null)
+				mob.tell(L("'@x1' is not something you know how to imitate.",cmd));
 			mob.tell(L("Spells/Skills you may imitate: @x1.",str.toString()));
 			return true;
 		}
-		if(target==null) target=mob.getVictim();
-		if(target==null) target=mob;
+		if(target==null)
+			target=mob.getVictim();
+		if(target==null)
+			target=mob;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

@@ -113,7 +113,8 @@ public class StdClanCard extends StdClanItem
 					{
 						int roleID=0;
 						final Clan C=CMLib.clans().getClan(clanID());
-						if(C!=null) roleID=C.getGovernment().getAutoRole();
+						if(C!=null)
+							roleID=C.getGovernment().getAutoRole();
 						((MOB)owner()).setClan(clanID(),roleID);
 					}
 				}

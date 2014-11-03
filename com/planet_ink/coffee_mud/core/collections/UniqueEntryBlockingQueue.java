@@ -93,7 +93,8 @@ public class UniqueEntryBlockingQueue<K> extends ArrayBlockingQueue<K>
 	@Override
 	public synchronized boolean addAll(Collection<? extends K> c)
 	{
-		if(c==null) return true;
+		if(c==null)
+			return true;
 		for(final K k : c)
 			if(!contains(k))
 				add(k);

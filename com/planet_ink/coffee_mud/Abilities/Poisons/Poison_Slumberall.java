@@ -104,7 +104,8 @@ public class Poison_Slumberall extends Poison
 			return true;
 
 		final MOB mob=(MOB)affected;
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		if((!fallenYet)&&(mob.location()!=null))
 		{
 			fallenYet=true;

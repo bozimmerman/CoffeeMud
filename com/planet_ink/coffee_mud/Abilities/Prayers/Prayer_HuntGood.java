@@ -50,7 +50,8 @@ public class Prayer_HuntGood extends Prayer_HuntEvil
 	@Override
 	protected MOB gameHere(Room room)
 	{
-		if(room==null) return null;
+		if(room==null)
+			return null;
 		for(int i=0;i<room.numInhabitants();i++)
 		{
 			final MOB mob=room.fetchInhabitant(i);

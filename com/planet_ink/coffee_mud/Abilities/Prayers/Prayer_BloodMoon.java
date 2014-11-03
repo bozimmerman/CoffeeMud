@@ -53,7 +53,8 @@ public class Prayer_BloodMoon extends Prayer
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		if(canBeUninvoked())
 		{
 			final Room R=CMLib.map().roomLocation(affected);
@@ -77,7 +78,8 @@ public class Prayer_BloodMoon extends Prayer
 		   &&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
 			int recovery=(int)Math.round(CMath.div((msg.value()),10.0));
-			if(recovery<=0) recovery=1;
+			if(recovery<=0)
+				recovery=1;
 			msg.setValue(msg.value()+recovery);
 		}
 		return true;
@@ -86,7 +88,8 @@ public class Prayer_BloodMoon extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

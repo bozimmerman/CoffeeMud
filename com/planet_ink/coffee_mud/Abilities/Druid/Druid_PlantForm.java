@@ -109,7 +109,8 @@ public class Druid_PlantForm extends StdAbility
 			affectableStats.setName(CMLib.english().startWithAorAn(raceName.toLowerCase()));
 			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			newRace.setHeightWeight(affectableStats,'M');
-			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
+			if(oldAdd>0)
+				affectableStats.setWeight(affectableStats.weight()+oldAdd);
 		}
 	}
 
@@ -189,7 +190,8 @@ public class Druid_PlantForm extends StdAbility
 				{
 					final int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
 					int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
-					if(qualClassLevel<0) classLevel=30;
+					if(qualClassLevel<0)
+						classLevel=30;
 					if(getRaceLevel(classLevel)==3)
 						return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
 				}
@@ -200,7 +202,8 @@ public class Druid_PlantForm extends StdAbility
 
 	public static boolean isShapeShifted(MOB mob)
 	{
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
@@ -237,7 +240,8 @@ public class Druid_PlantForm extends StdAbility
 
 		final int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
 		int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
-		if(qualClassLevel<0) classLevel=30;
+		if(qualClassLevel<0)
+			classLevel=30;
 		final String choice=(mob.isMonster()||(commands.size()==0))?getRaceName(classLevel-1):CMParms.combine(commands,0);
 		if(choice.trim().length()>0)
 		{

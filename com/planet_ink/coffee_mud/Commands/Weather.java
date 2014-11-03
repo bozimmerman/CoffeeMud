@@ -44,7 +44,8 @@ public class Weather extends StdCommand
 		throws java.io.IOException
 	{
 		final Room room=mob.location();
-		if(room==null) return false;
+		if(room==null)
+			return false;
 		if((commands.size()>1)&&((room.domainType()&Room.INDOORS)==0)&&(((String)commands.elementAt(1)).equalsIgnoreCase("WORLD")))
 		{
 			final StringBuffer tellMe=new StringBuffer("");

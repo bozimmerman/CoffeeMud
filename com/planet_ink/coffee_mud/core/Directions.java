@@ -26,14 +26,16 @@ public class Directions
 	{
 		super();
 		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
-		if(dirs[c]==null) dirs[c]=this;
+		if(dirs[c]==null)
+			dirs[c]=this;
 	}
 	private static Directions d(){ return dirs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
 	public static Directions d(char c){return dirs[c];}
 	public static Directions instance()
 	{
 		final Directions d=d();
-		if(d==null) return new Directions();
+		if(d==null)
+			return new Directions();
 		return d;
 	}
 	private static final Directions[] dirs=new Directions[256];
@@ -271,7 +273,8 @@ public class Directions
 
 	public static final int getGoodDirectionCode(final String theDir)
 	{
-		if(theDir.length()==0) return -1;
+		if(theDir.length()==0)
+			return -1;
 		final String upDir=theDir.toUpperCase();
 		for (final Object[] element : DIRECTIONS_FULL_CHART)
 			if((element[0].toString().startsWith(upDir))
@@ -282,7 +285,8 @@ public class Directions
 
 	public static final int getGoodCompassDirectionCode(final String theDir)
 	{
-		if(theDir.length()==0) return -1;
+		if(theDir.length()==0)
+			return -1;
 		final String upDir=theDir.toUpperCase();
 		for (final Object[] element : DIRECTIONS_COMPASS_CHART)
 			if((element[0].toString().startsWith(upDir))
@@ -293,7 +297,8 @@ public class Directions
 
 	public static final int getGoodShipDirectionCode(final String theDir)
 	{
-		if(theDir.length()==0) return -1;
+		if(theDir.length()==0)
+			return -1;
 		final String upDir=theDir.toUpperCase();
 		for (final Object[] element : DIRECTIONS_SHIP_CHART)
 			if((element[0].toString().startsWith(upDir))

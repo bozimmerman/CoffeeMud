@@ -70,7 +70,8 @@ public class Thief_Graffiti extends ThiefSkill
 			return false;
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)));
-		if(levelDiff<0) levelDiff=0;
+		if(levelDiff<0)
+			levelDiff=0;
 		levelDiff*=5;
 		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 		if(success)

@@ -52,7 +52,8 @@ public class TrailTo extends StdCommand
 			if(s.toUpperCase().startsWith("RADIUS"))
 			{
 				s=s.substring(("RADIUS").length()).trim();
-				if(!s.startsWith("=")) continue;
+				if(!s.startsWith("="))
+					continue;
 				s=s.substring(1);
 				commands.removeElementAt(c);
 				radius=CMath.s_int(s);
@@ -61,7 +62,8 @@ public class TrailTo extends StdCommand
 			if(s.toUpperCase().startsWith("IGNOREROOMS"))
 			{
 				s=s.substring(("IGNOREROOMS").length()).trim();
-				if(!s.startsWith("=")) continue;
+				if(!s.startsWith("="))
+					continue;
 				s=s.substring(1);
 				commands.removeElementAt(c);
 				final List<String> roomList=CMParms.parseCommas(s,true);
@@ -70,7 +72,8 @@ public class TrailTo extends StdCommand
 				{
 					final Room R=CMLib.map().getRoom(roomList.get(v));
 					if(R==null){ return "Ignored room "+roomList.get(v)+" is unknown!";}
-					if(!ignoreRooms.contains(R))ignoreRooms.add(R);
+					if(!ignoreRooms.contains(R))
+						ignoreRooms.add(R);
 				}
 			}
 			else
@@ -81,8 +84,10 @@ public class TrailTo extends StdCommand
 			}
 		}
 		String where=CMParms.combine(commands,1);
-		if(where.length()==0) return "Trail to where? Try a Room ID, 'everyroom', or 'everyarea'.  You can also use the 'areanames', 'nohomes', 'ignorerooms=', and 'confirm!' flags.";
-		if(R1==null) return "Where are you?";
+		if(where.length()==0)
+			return "Trail to where? Try a Room ID, 'everyroom', or 'everyarea'.  You can also use the 'areanames', 'nohomes', 'ignorerooms=', and 'confirm!' flags.";
+		if(R1==null)
+			return "Where are you?";
 		boolean confirm=false;
 		boolean areaNames=false;
 		boolean justTheFacts=false;
@@ -115,7 +120,8 @@ public class TrailTo extends StdCommand
 					str.append(CMStrings.padRightPreserve(A.name(),30)+": "+trail+"\n\r");
 				}
 			}
-			if(confirm) Log.rawSysOut(str.toString());
+			if(confirm)
+				Log.rawSysOut(str.toString());
 			return str.toString();
 		}
 		else
@@ -134,14 +140,17 @@ public class TrailTo extends StdCommand
 					}
 				}
 			}catch(final NoSuchElementException nse){}
-			if(confirm) Log.rawSysOut(str.toString());
+			if(confirm)
+				Log.rawSysOut(str.toString());
 			return str.toString();
 		}
 		else
 		{
 			String str=CMLib.tracking().getTrailToDescription(R1,set,where,areaNames,confirm,radius,ignoreRooms,5);
-			if(!justTheFacts)str=CMStrings.padRightPreserve(where,30)+": "+str;
-			if(confirm) Log.rawSysOut(str);
+			if(!justTheFacts)
+				str=CMStrings.padRightPreserve(where,30)+": "+str;
+			if(confirm)
+				Log.rawSysOut(str);
 			return str;
 		}
 	}

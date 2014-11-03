@@ -74,9 +74,12 @@ public class Disease extends StdAbility implements DiseaseAffect
 	protected boolean catchIt(MOB mob, Physical target)
 	{
 		MOB diseased=invoker;
-		if(invoker==target) return true;
-		if(diseased==null) diseased=mob;
-		if((diseased==null)&&(target instanceof MOB)) diseased=(MOB)target;
+		if(invoker==target)
+			return true;
+		if(diseased==null)
+			diseased=mob;
+		if((diseased==null)&&(target instanceof MOB))
+			diseased=(MOB)target;
 
 		if((target!=null)
 		&&(diseased!=null)
@@ -107,8 +110,10 @@ public class Disease extends StdAbility implements DiseaseAffect
 	}
 	protected boolean catchIt(MOB mob)
 	{
-		if(mob==null) return false;
-		if(mob.location()==null) return false;
+		if(mob==null)
+			return false;
+		if(mob.location()==null)
+			return false;
 		final MOB target=mob.location().fetchRandomInhabitant();
 		return catchIt(mob,target);
 	}
@@ -137,7 +142,8 @@ public class Disease extends StdAbility implements DiseaseAffect
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
@@ -182,7 +188,8 @@ public class Disease extends StdAbility implements DiseaseAffect
 				if(!processing)
 				{
 					final Item myItem=(Item)affected;
-					if(myItem.owner()==null) return;
+					if(myItem.owner()==null)
+						return;
 					processing=true;
 					switch(msg.sourceMinor())
 					{
@@ -231,7 +238,8 @@ public class Disease extends StdAbility implements DiseaseAffect
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -263,8 +271,10 @@ public class Disease extends StdAbility implements DiseaseAffect
 			else
 			if(auto)
 			{
-				if(mob.getVictim()!=mvictim) mob.setVictim(mvictim);
-				if(target.getVictim()!=tvictim) target.setVictim(tvictim);
+				if(mob.getVictim()!=mvictim)
+					mob.setVictim(mvictim);
+				if(target.getVictim()!=tvictim)
+					target.setVictim(tvictim);
 			}
 
 		}

@@ -82,7 +82,8 @@ public class Fighter_AutoBash extends FighterSkill
 			&&(proficiencyCheck(null,0,false)))
 			{
 				final Ability A=mob.fetchAbility("Skill_Bash");
-				if(A!=null) A.invoke(mob,mob.getVictim(),false,adjustedLevel(mob,0));
+				if(A!=null)
+					A.invoke(mob,mob.getVictim(),false,adjustedLevel(mob,0));
 				if(CMLib.dice().rollPercentage()<(10/numberOfShields))
 					helpProficiency(mob, 0);
 			}
@@ -123,7 +124,8 @@ public class Fighter_AutoBash extends FighterSkill
 			mob.tell(L("You will now automatically bash opponents when you fight."));
 			beneficialAffect(mob,mob,asLevel,0);
 			final Ability A=mob.fetchEffect(ID());
-			if(A!=null) A.makeLongLasting();
+			if(A!=null)
+				A.makeLongLasting();
 		}
 		else
 			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to get into <S-HIS-HER> bashing mood, but fail(s)."));

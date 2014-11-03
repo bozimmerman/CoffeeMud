@@ -49,7 +49,8 @@ public class ClanPremise extends StdCommand
 
 		Clan chkC=null;
 		final boolean skipChecks=mob.getClanRole(mob.Name())!=null;
-		if(skipChecks) chkC=mob.getClanRole(mob.Name()).first;
+		if(skipChecks)
+			chkC=mob.getClanRole(mob.Name()).first;
 
 		if(chkC==null)
 		for(final Pair<Clan,Integer> c : mob.clans())

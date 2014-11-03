@@ -64,7 +64,8 @@ public class Mime extends ActiveTicker
 		super.executeMsg(affecting,msg);
 		if((affecting instanceof MOB)&&(!canFreelyBehaveNormal(affecting)))
 			return;
-		if(disabled) return;
+		if(disabled)
+			return;
 		if(((!(affecting instanceof MOB))||(!msg.amISource((MOB)affecting)))
 		&&(msg.sourceMinor()==CMMsg.TYP_EMOTE)
 		||(msg.tool() instanceof Social))
@@ -79,23 +80,35 @@ public class Mime extends ActiveTicker
 		//if(src!=null) src=CMStrings.replaceAll(src,"<S-NAME>",ticking.name());
 		//if(src!=null) src=CMStrings.replaceAll(src,"You ",ticking.name()+" ");
 		//if(src!=null) src=CMStrings.replaceAll(src,"Your ",ticking.name()+"`s ");
-		if(trg!=null) trg=CMStrings.replaceAll(trg,"<S-NAME>",ticking.name());
-		if(oth!=null) oth=CMStrings.replaceAll(oth,"<S-NAME>",ticking.name());
+		if(trg!=null)
+			trg=CMStrings.replaceAll(trg,"<S-NAME>",ticking.name());
+		if(oth!=null)
+			oth=CMStrings.replaceAll(oth,"<S-NAME>",ticking.name());
 		//if(src!=null) src=CMStrings.replaceAll(src,"<S-HIM-HERSELF>","itself");
-		if(trg!=null) trg=CMStrings.replaceAll(trg,"<S-HIM-HERSELF>","itself");
-		if(oth!=null) oth=CMStrings.replaceAll(oth,"<S-HIM-HERSELF>","itself");
+		if(trg!=null)
+			trg=CMStrings.replaceAll(trg,"<S-HIM-HERSELF>","itself");
+		if(oth!=null)
+			oth=CMStrings.replaceAll(oth,"<S-HIM-HERSELF>","itself");
 		//if(src!=null) src=CMStrings.replaceAll(src,"<S-HIS-HERSELF>","itself");
-		if(trg!=null) trg=CMStrings.replaceAll(trg,"<S-HIS-HERSELF>","itself");
-		if(oth!=null) oth=CMStrings.replaceAll(oth,"<S-HIS-HERSELF>","itself");
+		if(trg!=null)
+			trg=CMStrings.replaceAll(trg,"<S-HIS-HERSELF>","itself");
+		if(oth!=null)
+			oth=CMStrings.replaceAll(oth,"<S-HIS-HERSELF>","itself");
 		//if(src!=null) src=CMStrings.replaceAll(src,"<S-HIM-HER>","it");
-		if(trg!=null) trg=CMStrings.replaceAll(trg,"<S-HIM-HER>","it");
-		if(oth!=null) oth=CMStrings.replaceAll(oth,"<S-HIM-HER>","it");
+		if(trg!=null)
+			trg=CMStrings.replaceAll(trg,"<S-HIM-HER>","it");
+		if(oth!=null)
+			oth=CMStrings.replaceAll(oth,"<S-HIM-HER>","it");
 		//if(src!=null) src=CMStrings.replaceAll(src,"<S-HE-SHE>","it");
-		if(trg!=null) trg=CMStrings.replaceAll(trg,"<S-HE-SHE>","it");
-		if(oth!=null) oth=CMStrings.replaceAll(oth,"<S-HE-SHE>","it");
+		if(trg!=null)
+			trg=CMStrings.replaceAll(trg,"<S-HE-SHE>","it");
+		if(oth!=null)
+			oth=CMStrings.replaceAll(oth,"<S-HE-SHE>","it");
 		//if(src!=null) src=CMStrings.replaceAll(src,"<S-HIS-HER>","its");
-		if(trg!=null) trg=CMStrings.replaceAll(trg,"<S-HIS-HER>","its");
-		if(oth!=null) oth=CMStrings.replaceAll(oth,"<S-HIS-HER>","its");
+		if(trg!=null)
+			trg=CMStrings.replaceAll(trg,"<S-HIS-HER>","its");
+		if(oth!=null)
+			oth=CMStrings.replaceAll(oth,"<S-HIS-HER>","its");
 		msg.modify(sMOB,sMOB,msg.tool(),
 				   msg.sourceCode(),oth,
 				   msg.targetCode(),trg,
@@ -107,7 +120,8 @@ public class Mime extends ActiveTicker
 	{
 		super.tick(ticking,tickID);
 		CMMsg msg=lastMsg;
-		if(msg==null) return true;
+		if(msg==null)
+			return true;
 		lastMsg=null;
 		if(((ticking instanceof MOB)&&(!canFreelyBehaveNormal(ticking)))
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.EMOTERS))

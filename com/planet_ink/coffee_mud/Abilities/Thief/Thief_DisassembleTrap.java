@@ -65,7 +65,8 @@ public class Thief_DisassembleTrap extends ThiefSkill
 		final CharState oldState=(CharState)mob.curState().copyOf();
 		final boolean worked=A.invoke(mob,cmds,givenTarget,auto,asLevel);
 		oldState.copyInto(mob.curState());
-		if(!worked) return false;
+		if(!worked)
+			return false;
 		for(int c=0;c<cmds.size();c++)
 			if(cmds.elementAt(c) instanceof Trap)
 			{

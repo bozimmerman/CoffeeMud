@@ -113,7 +113,8 @@ public class StdClanFlag extends StdItem implements ClanItem
 				{
 					final LegalBehavior B=CMLib.law().getLegalBehavior(R);
 					String s="";
-					if(B!=null) s=B.conquestInfo(CMLib.law().getLegalObject(R));
+					if(B!=null)
+						s=B.conquestInfo(CMLib.law().getLegalObject(R));
 					if(s.length()>0)
 						msg.source().tell(s);
 					else
@@ -131,7 +132,8 @@ public class StdClanFlag extends StdItem implements ClanItem
 					if(msgIndex>=0)
 					{
 						final LegalBehavior B=CMLib.law().getLegalBehavior(R);
-						if(B!=null) B.setControlPoints(clanID(),B.controlPoints()+1);
+						if(B!=null)
+							B.setControlPoints(clanID(),B.controlPoints()+1);
 					}
 				}
 			}
@@ -174,7 +176,8 @@ public class StdClanFlag extends StdItem implements ClanItem
 						}
 						String rulingClan="";
 						final LegalBehavior B=CMLib.law().getLegalBehavior(R);
-						if(B!=null) rulingClan=B.rulingOrganization();
+						if(B!=null)
+							rulingClan=B.rulingOrganization();
 						if(msg.source().getClanRole(rulingClan)==null)
 						{
 							msg.source().tell(L("You must conquer and fully control this area to take the clan flag."));
@@ -209,7 +212,8 @@ public class StdClanFlag extends StdItem implements ClanItem
 						if(A!=null)
 						{
 							B=CMLib.law().getLegalBehavior(R);
-							if(B!=null) ok=B.controlPoints()>0;
+							if(B!=null)
+								ok=B.controlPoints()>0;
 						}
 						if(!ok)
 						{

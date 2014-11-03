@@ -75,7 +75,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		}
 		int price=CMath.s_int(s.substring(index+1).trim());
 
-		if(price<=0) price=100000;
+		if(price<=0)
+			price=100000;
 		return price;
 	}
 
@@ -94,7 +95,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	public String getOwnerName()
 	{
 		final int dex=text().indexOf('/');
-		if(dex<0) return "";
+		if(dex<0)
+			return "";
 		return text().substring(0,dex);
 	}
 
@@ -102,9 +104,11 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	public CMObject getOwnerObject()
 	{
 		final String owner=getOwnerName();
-		if(owner.length()==0) return null;
+		if(owner.length()==0)
+			return null;
 		final Clan C=CMLib.clans().getClan(owner);
-		if(C!=null) return C;
+		if(C!=null)
+			return C;
 		return CMLib.players().getLoadPlayer(owner);
 	}
 
@@ -123,9 +127,11 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	public int backTaxes()
 	{
 		final int dex=text().indexOf('/');
-		if(dex<0) return 0;
+		if(dex<0)
+			return 0;
 		final int x=text().indexOf("TAX",dex);
-		if(x<0) return 0;
+		if(x<0)
+			return 0;
 		final String s=CMParms.parse(text().substring(x+3)).firstElement();
 		return CMath.s_int(s.substring(0,s.length()-1));
 	}
@@ -143,7 +149,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	{
 		final String upperText=text().toUpperCase();
 		final int dex=upperText.indexOf('/');
-		if(dex<0) return upperText.indexOf("RENTAL")>=0;
+		if(dex<0)
+			return upperText.indexOf("RENTAL")>=0;
 		return upperText.indexOf("RENTAL",dex)>0;
 	}
 
@@ -165,7 +172,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		else
 		{
 			final Room R=CMLib.map().getRoom(landPropertyID());
-			if(R!=null) CMLib.database().DBUpdateRoom(R);
+			if(R!=null)
+				CMLib.database().DBUpdateRoom(R);
 		}
 	}
 
@@ -197,7 +205,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 
 	public static boolean shopkeeperMobPresent(Room R)
 	{
-		if(R==null) return false;
+		if(R==null)
+			return false;
 		MOB M=null;
 		for(int i=0;i<R.numInhabitants();i++)
 		{
@@ -241,7 +250,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 						D=C.getResponsibleMember();
 					else
 						D=CMLib.players().getLoadPlayer(A.getOwnerName());
-					if(D==null) return true;
+					if(D==null)
+						return true;
 					B.accuse(CMLib.law().getLegalObject(R),msg.source(),D,new String[]{"PROPERTYROB","THIEF_ROBBERY"});
 				}
 			}
@@ -289,7 +299,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg)) return false;
+		if(!super.okMessage(myHost,msg))
+			return false;
 		Prop_RoomForSale.robberyCheck(this,msg);
 		return true;
 	}
@@ -355,7 +366,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		else
 		{
 			final Room R=CMLib.map().getRoom(landPropertyID());
-			if(R!=null) V.add(R);
+			if(R!=null)
+				V.add(R);
 		}
 		return V;
 	}
@@ -379,7 +391,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				for(int i=R.numItems()-1;i>=0;i--)
 				{
 					I=R.getItem(i);
-					if((I==null)||(I.Name().equalsIgnoreCase("id"))) continue;
+					if((I==null)||(I.Name().equalsIgnoreCase("id")))
+						continue;
 					CMLib.catalog().updateCatalogIntegrity(I);
 					if(clearAllItems)
 					{
@@ -454,8 +467,10 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			&&(optPlayerList!=null))
 			{
 				boolean playerExists=(CMLib.players().getPlayer(T.getOwnerName())!=null);
-				if(!playerExists) playerExists=(CMLib.clans().getClan(T.getOwnerName())!=null);
-				if(!playerExists) playerExists=optPlayerList.contains(T.getOwnerName());
+				if(!playerExists)
+					playerExists=(CMLib.clans().getClan(T.getOwnerName())!=null);
+				if(!playerExists)
+					playerExists=optPlayerList.contains(T.getOwnerName());
 				if(!playerExists)
 				for(int i=0;i<optPlayerList.size();i++)
 					if(((String)optPlayerList.get(i)).equalsIgnoreCase(T.getOwnerName()))

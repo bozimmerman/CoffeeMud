@@ -93,7 +93,8 @@ public class Chant_Dragonsight extends Chant
 						&&(CMLib.flags().isHidden(M)||CMLib.flags().isInvisible(M)))
 						{ found=true; break;}
 					}
-				if(!found) return Ability.QUALITY_INDIFFERENT;
+				if(!found)
+					return Ability.QUALITY_INDIFFERENT;
 			}
 		}
 		return super.castingQuality(mob,target);
@@ -105,7 +106,8 @@ public class Chant_Dragonsight extends Chant
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> dragonsight."));

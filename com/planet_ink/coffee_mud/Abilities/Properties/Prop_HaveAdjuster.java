@@ -58,7 +58,8 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	public boolean addIfPlussed(String newText, String parm, int parmCode, Vector addTo)
 	{
 		final int val=CMParms.getParmPlus(newText,parm);
-		if(val==0) return false;
+		if(val==0)
+			return false;
 		addTo.addElement(Integer.valueOf(parmCode));
 		addTo.addElement(Integer.valueOf(val));
 		return true;
@@ -66,8 +67,10 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 
 	public Object[] makeObjectArray(Vector V)
 	{
-		if(V==null) return null;
-		if(V.size()==0) return null;
+		if(V==null)
+			return null;
+		if(V.size()==0)
+			return null;
 		final Object[] O=new Object[V.size()];
 		for(int i=0;i<V.size();i++)
 			O[i]=V.elementAt(i);
@@ -152,7 +155,8 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 
 	public void phyStuff(Object[] changes, PhyStats phyStats)
 	{
-		if(changes==null) return;
+		if(changes==null)
+			return;
 		for(int c=0;c<changes.length;c+=2)
 		switch(((Integer)changes[c]).intValue())
 		{
@@ -163,7 +167,8 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		case PhyStats.STAT_DISPOSITION: phyStats.setDisposition(phyStats.disposition()|((Integer)changes[c+1]).intValue()); break;
 		case PhyStats.STAT_LEVEL:  {
 			phyStats.setLevel(phyStats.level()+((Integer)changes[c+1]).intValue());
-			if(phyStats.level()<0) phyStats.setLevel(0);
+			if(phyStats.level()<0)
+				phyStats.setLevel(0);
 			break;
 		}
 		case PhyStats.STAT_REJUV: phyStats.setRejuv(phyStats.rejuv()+((Integer)changes[c+1]).intValue()); break;
@@ -208,7 +213,8 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 
 	public void adjCharStats(Object[] changes, CharStats charStats)
 	{
-		if(changes==null) return;
+		if(changes==null)
+			return;
 		for(int i=0;i<changes.length;i+=2)
 		{
 			if(changes[i] instanceof Integer)
@@ -226,7 +232,8 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 
 	public void adjCharState(Object[] changes, CharState charState)
 	{
-		if(changes==null) return;
+		if(changes==null)
+			return;
 		for(int c=0;c<changes.length;c+=2)
 		switch(((Integer)changes[c]).intValue())
 		{
@@ -242,14 +249,16 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		ensureStarted();
-		if(canApply(affectedMOB)) adjCharStats(charStatsChanges,affectedStats);
+		if(canApply(affectedMOB))
+			adjCharStats(charStatsChanges,affectedStats);
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
 	@Override
 	public void affectCharState(MOB affectedMOB, CharState affectedState)
 	{
 		ensureStarted();
-		if(canApply(affectedMOB)) adjCharState(charStateChanges,affectedState);
+		if(canApply(affectedMOB))
+			adjCharState(charStateChanges,affectedState);
 		super.affectCharState(affectedMOB,affectedState);
 	}
 

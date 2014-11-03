@@ -72,7 +72,8 @@ public class StdWand extends StdItem implements Wand
 		else
 			manaRequired=25;
 		manaRequired-=(2*level);
-		if(manaRequired<5) manaRequired=5;
+		if(manaRequired<5)
+			manaRequired=5;
 		if(manaRequired>mob.curState().getMana())
 		{
 			mob.tell(CMLib.lang().L("You don't have enough mana."));
@@ -93,7 +94,8 @@ public class StdWand extends StdItem implements Wand
 	public static String getWandWord(String from)
 	{
 		int hash=from.hashCode();
-		if(hash<0) hash=hash*-1;
+		if(hash<0)
+			hash=hash*-1;
 		return CMProps.getListFileValueByHash(CMProps.ListFile.MAGIC_WORDS,hash);
 	}
 
@@ -158,7 +160,8 @@ public class StdWand extends StdItem implements Wand
 			{
 				message=message.substring(x+me.magicWord().length());
 				final int y=message.indexOf('\'');
-				if(y>=0) message=message.substring(0,y);
+				if(y>=0)
+					message=message.substring(0,y);
 				message=message.trim();
 				final Ability wandUse=mob.fetchAbility("Skill_WandUse");
 				if((wandUse==null)||(!wandUse.proficiencyCheck(null,0,false)))
@@ -261,13 +264,15 @@ public class StdWand extends StdItem implements Wand
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
+			if(code.equalsIgnoreCase(CODES[i]))
+				return i;
 		return -1;
 	}
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof StdWand)) return false;
+		if(!(E instanceof StdWand))
+			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))

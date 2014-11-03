@@ -56,7 +56,8 @@ public class Chant_SummonMount extends Chant
 		if((canBeUninvoked())&&(mob!=null))
 		{
 			mob.setFollowing(null);
-			if(mob.amDead()) mob.setLocation(null);
+			if(mob.amDead())
+				mob.setLocation(null);
 			mob.destroy();
 		}
 	}
@@ -71,7 +72,8 @@ public class Chant_SummonMount extends Chant
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 		{
 			unInvoke();
-			if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
+			if(msg.source().playerStats()!=null)
+				msg.source().playerStats().setLastUpdated(0);
 		}
 	}
 
@@ -89,7 +91,8 @@ public class Chant_SummonMount extends Chant
 				{
 					mob.delEffect(this);
 					mob.setFollowing(null);
-					if(mob.amDead()) mob.setLocation(null);
+					if(mob.amDead())
+						mob.setLocation(null);
 					mob.destroy();
 					return false;
 				}
@@ -146,11 +149,13 @@ public class Chant_SummonMount extends Chant
 				target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
-				if(target.isInCombat()) target.makePeace();
+				if(target.isInCombat())
+					target.makePeace();
 				CMLib.tracking().walk(target,opDir,false,false);
 				if(target.location()==mob.location())
 				{
-					if(target.isInCombat()) target.makePeace();
+					if(target.isInCombat())
+						target.makePeace();
 					CMLib.commands().postFollow(target,mob,true);
 					if(target.amFollowing()!=mob)
 						mob.tell(L("@x1 seems unwilling to follow you.",target.name(mob)));

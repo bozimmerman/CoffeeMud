@@ -47,7 +47,8 @@ public class Song_Dexterity extends Song
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(invoker==null) return;
+		if(invoker==null)
+			return;
 		if(affected==invoker)
 			affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)-amount);
 		else

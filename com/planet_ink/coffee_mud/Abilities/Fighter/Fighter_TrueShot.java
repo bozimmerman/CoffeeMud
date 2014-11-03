@@ -50,9 +50,11 @@ public class Fighter_TrueShot extends FighterSkill
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		if(!(affected instanceof MOB)) return;
+		if(!(affected instanceof MOB))
+			return;
 		final Item w=((MOB)affected).fetchWieldedItem();
-		if((w==null)||(!(w instanceof Weapon))) return;
+		if((w==null)||(!(w instanceof Weapon)))
+			return;
 		if((((Weapon)w).weaponClassification()==Weapon.CLASS_RANGED)
 		||(((Weapon)w).weaponClassification()==Weapon.CLASS_THROWN))
 		{

@@ -91,7 +91,8 @@ public class StdBehavior implements Behavior
 	@Override public void destroy() {parms="";}
 	protected MOB getBehaversMOB(Tickable ticking)
 	{
-		if(ticking==null) return null;
+		if(ticking==null)
+			return null;
 
 		if(ticking instanceof MOB)
 			return (MOB)ticking;
@@ -106,7 +107,8 @@ public class StdBehavior implements Behavior
 
 	protected Room getBehaversRoom(Tickable ticking)
 	{
-		if(ticking==null) return null;
+		if(ticking==null)
+			return null;
 
 		if(ticking instanceof Room)
 			return (Room)ticking;
@@ -145,13 +147,20 @@ public class StdBehavior implements Behavior
 	@Override
 	public boolean canImprove(PhysicalAgent E)
 	{
-		if((E==null)&&(canImproveCode()==0)) return true;
-		if(E==null) return false;
-		if((E instanceof MOB)&&((canImproveCode()&Ability.CAN_MOBS)>0)) return true;
-		if((E instanceof Item)&&((canImproveCode()&Ability.CAN_ITEMS)>0)) return true;
-		if((E instanceof Exit)&&((canImproveCode()&Ability.CAN_EXITS)>0)) return true;
-		if((E instanceof Room)&&((canImproveCode()&Ability.CAN_ROOMS)>0)) return true;
-		if((E instanceof Area)&&((canImproveCode()&Ability.CAN_AREAS)>0)) return true;
+		if((E==null)&&(canImproveCode()==0))
+			return true;
+		if(E==null)
+			return false;
+		if((E instanceof MOB)&&((canImproveCode()&Ability.CAN_MOBS)>0))
+			return true;
+		if((E instanceof Item)&&((canImproveCode()&Ability.CAN_ITEMS)>0))
+			return true;
+		if((E instanceof Exit)&&((canImproveCode()&Ability.CAN_EXITS)>0))
+			return true;
+		if((E instanceof Room)&&((canImproveCode()&Ability.CAN_ROOMS)>0))
+			return true;
+		if((E instanceof Area)&&((canImproveCode()&Ability.CAN_AREAS)>0))
+			return true;
 		return false;
 	}
 	public static boolean canActAtAll(Tickable affecting)
@@ -191,7 +200,8 @@ public class StdBehavior implements Behavior
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
+			if(code.equalsIgnoreCase(CODES[i]))
+				return i;
 		return -1;
 	}
 	@Override
@@ -217,7 +227,8 @@ public class StdBehavior implements Behavior
 	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	public boolean sameAs(Behavior E)
 	{
-		if(!(E instanceof StdBehavior)) return false;
+		if(!(E instanceof StdBehavior))
+			return false;
 		for(int i=0;i<CODES.length;i++)
 			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
 				return false;

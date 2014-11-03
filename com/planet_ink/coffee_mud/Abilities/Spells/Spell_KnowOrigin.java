@@ -61,9 +61,11 @@ public class Spell_KnowOrigin extends Spell
 				// check mobs worn items first!
 				final String srchStr="$"+me.Name()+"$";
 				Environmental E=CMLib.map().findFirstShopStocker(CMLib.map().rooms(), mob, srchStr, 10);
-				if(E!=null) return CMLib.map().getStartRoom(E);
+				if(E!=null)
+					return CMLib.map().getStartRoom(E);
 				E=CMLib.map().findFirstInventory(CMLib.map().rooms(), mob, srchStr, 10);
-				if(E!=null) return CMLib.map().getStartRoom(E);
+				if(E!=null)
+					return CMLib.map().getStartRoom(E);
 				return CMLib.map().findWorldRoomLiberally(mob,srchStr, "I",10,600000);
 			}catch(final NoSuchElementException nse){}
 		}
@@ -74,7 +76,8 @@ public class Spell_KnowOrigin extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

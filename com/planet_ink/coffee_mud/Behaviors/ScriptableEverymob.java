@@ -136,7 +136,8 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 	@Override
 	public void dequeResponses()
 	{
-		if(sampleB!=null) sampleB.dequeResponses();
+		if(sampleB!=null)
+			sampleB.dequeResponses();
 	}
 	@Override public List<String> externalFiles(){return (sampleB==null)?null:sampleB.externalFiles();}
 	@Override
@@ -201,22 +202,26 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 	@Override
 	public void setLocalVarXML(String xml)
 	{
-		if(sampleB!=null) sampleB.setLocalVarXML(xml);
+		if(sampleB!=null)
+			sampleB.setLocalVarXML(xml);
 	}
 	@Override
 	public void setScript(String newParms)
 	{
-		if(sampleB!=null) sampleB.setScript(newParms);
+		if(sampleB!=null)
+			sampleB.setScript(newParms);
 	}
 	@Override
 	public void setVar(String context, String variable, String value)
 	{
-		if(sampleB!=null) sampleB.setVar(context, variable, value);
+		if(sampleB!=null)
+			sampleB.setVar(context, variable, value);
 	}
 	@Override
 	public void setVarScope(String scope)
 	{
-		if(sampleB!=null) sampleB.setVarScope(scope);
+		if(sampleB!=null)
+			sampleB.setVarScope(scope);
 	}
 	@Override
 	public String varify(MOB source, Environmental target,

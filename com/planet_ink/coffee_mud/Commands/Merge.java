@@ -71,7 +71,8 @@ public class Merge extends StdCommand
 
 	public static void mergedebugtell(MOB mob, String msg)
 	{
-		if(mob!=null) mob.tell(msg);
+		if(mob!=null)
+			mob.tell(msg);
 		Log.sysOut("MERGE",msg);
 	}
 
@@ -99,12 +100,15 @@ public class Merge extends StdCommand
 		for(int v=0;v<changes.size();v++)
 			if(efields.contains(changes.get(v)))
 				efields.remove(changes.get(v));
-		if(noisy) mergedebugtell(mob,"AllMy-"+CMParms.toStringList(allMyFields));
-		if(noisy) mergedebugtell(mob,"efields-"+CMParms.toStringList(efields));
+		if(noisy)
+			mergedebugtell(mob,"AllMy-"+CMParms.toStringList(allMyFields));
+		if(noisy)
+			mergedebugtell(mob,"efields-"+CMParms.toStringList(efields));
 		for(int t=0;t<things.size();t++)
 		{
 			final Environmental E2=(Environmental)things.get(t);
-			if(noisy) mergedebugtell(mob,E.name()+"/"+E2.name()+"/"+CMClass.classID(E)+"/"+CMClass.classID(E2));
+			if(noisy)
+				mergedebugtell(mob,E.name()+"/"+E2.name()+"/"+CMClass.classID(E)+"/"+CMClass.classID(E2));
 			if(CMClass.classID(E).equals(CMClass.classID(E2)))
 			{
 				Vector fieldsToCheck=null;
@@ -119,12 +123,14 @@ public class Merge extends StdCommand
 					fieldsToCheck=new XVector<String>(efields);
 
 				boolean checkedOut=fieldsToCheck.size()>0;
-				if(noisy) mergedebugtell(mob,"fieldsToCheck-"+CMParms.toStringList(fieldsToCheck));
+				if(noisy)
+					mergedebugtell(mob,"fieldsToCheck-"+CMParms.toStringList(fieldsToCheck));
 				if(checkedOut)
 				for(int i=0;i<fieldsToCheck.size();i++)
 				{
 					final String field=(String)fieldsToCheck.elementAt(i);
-					if(noisy) mergedebugtell(mob,field+"/"+getStat(E,field)+"/"+getStat(E2,field)+"/"+getStat(E,field).equals(getStat(E2,field)));
+					if(noisy)
+						mergedebugtell(mob,field+"/"+getStat(E,field)+"/"+getStat(E2,field)+"/"+getStat(E,field).equals(getStat(E2,field)));
 					if(!getStat(E,field).equals(getStat(E2,field)))
 					{ checkedOut=false; break;}
 				}
@@ -140,11 +146,13 @@ public class Merge extends StdCommand
 							if(allMyFields.contains(changes.get(v)))
 								fieldsToChange.add(changes.get(v));
 					}
-					if(noisy) mergedebugtell(mob,"fieldsToChange-"+CMParms.toStringList(fieldsToChange));
+					if(noisy)
+						mergedebugtell(mob,"fieldsToChange-"+CMParms.toStringList(fieldsToChange));
 					for(int i=0;i<fieldsToChange.size();i++)
 					{
 						final String field=fieldsToChange.get(i);
-						if(noisy) mergedebugtell(mob,E.name()+" wants to change "+field+" value "+getStat(E,field)+" to "+getStat(E2,field)+"/"+(!getStat(E,field).equals(getStat(E2,field))));
+						if(noisy)
+							mergedebugtell(mob,E.name()+" wants to change "+field+" value "+getStat(E,field)+" to "+getStat(E2,field)+"/"+(!getStat(E,field).equals(getStat(E2,field))));
 						if(!getStat(E,field).equals(getStat(E2,field)))
 						{
 							setStat(E,field,getStat(E2,field));
@@ -295,7 +303,8 @@ public class Merge extends StdCommand
 			if(mob.session()!=null)
 				mob.session().rawPrint(L("Unpacking mobs from file: '@x1'...",filename));
 			final String error=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),things,mob.session());
-			if(mob.session()!=null)    mob.session().rawPrintln("!");
+			if(mob.session()!=null)
+				mob.session().rawPrintln("!");
 			if(error.length()>0)
 			{
 				mob.tell(L("An error occurred on merge: @x1",error));
@@ -310,7 +319,8 @@ public class Merge extends StdCommand
 			if(mob.session()!=null)
 				mob.session().rawPrint(L("Unpacking items from file: '@x1'...",filename));
 			final String error=CMLib.coffeeMaker().addItemsFromXML(buf.toString(),things,mob.session());
-			if(mob.session()!=null)    mob.session().rawPrintln("!");
+			if(mob.session()!=null)
+				mob.session().rawPrintln("!");
 			if(error.length()>0)
 			{
 				mob.tell(L("An error occurred on merge: @x1",error));
@@ -433,25 +443,32 @@ public class Merge extends StdCommand
 			}
 			else
 			if(placesToDo.elementAt(i) instanceof Room)
-				if(mob.session()!=null)    mob.session().rawPrint(".");
+				if(mob.session()!=null)
+					mob.session().rawPrint(".");
 			else
 				return false;
 		}
 		// now do the merge...
 		if(mob.session()!=null)
 			mob.session().rawPrint(L("Merging and saving..."));
-		if(noisy) mergedebugtell(mob,"Rooms to do: "+placesToDo.size());
-		if(noisy) mergedebugtell(mob,"Things loaded: "+things.size());
-		if(noisy) mergedebugtell(mob,"On fields="+CMParms.toStringList(onfields));
-		if(noisy) mergedebugtell(mob,"Ignore fields="+CMParms.toStringList(ignore));
-		if(noisy) mergedebugtell(mob,"Change fields="+CMParms.toStringList(changes));
+		if(noisy)
+			mergedebugtell(mob,"Rooms to do: "+placesToDo.size());
+		if(noisy)
+			mergedebugtell(mob,"Things loaded: "+things.size());
+		if(noisy)
+			mergedebugtell(mob,"On fields="+CMParms.toStringList(onfields));
+		if(noisy)
+			mergedebugtell(mob,"Ignore fields="+CMParms.toStringList(ignore));
+		if(noisy)
+			mergedebugtell(mob,"Change fields="+CMParms.toStringList(changes));
 		Log.sysOut("Import",mob.Name()+" merge '"+filename+"'.");
 		for(int r=0;r<placesToDo.size();r++)
 		{
 			Room R=(Room)placesToDo.elementAt(r);
 			if(!CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.MERGE))
 				continue;
-			if(R.roomID().length()==0) continue;
+			if(R.roomID().length()==0)
+				continue;
 			synchronized(("SYNC"+R.roomID()).intern())
 			{
 				R=CMLib.map().getRoom(R);
@@ -506,14 +523,18 @@ public class Merge extends StdCommand
 						}
 					}
 				}
-				if(saveitems) CMLib.database().DBUpdateItems(R);
-				if(savemobs) CMLib.database().DBUpdateMOBs(R);
-				if(mob.session()!=null)    mob.session().rawPrint(".");
+				if(saveitems)
+					CMLib.database().DBUpdateItems(R);
+				if(savemobs)
+					CMLib.database().DBUpdateMOBs(R);
+				if(mob.session()!=null)
+					mob.session().rawPrint(".");
 				R.getArea().setAreaState(oldFlags);
 			}
 		}
 
-		if(mob.session()!=null)    mob.session().rawPrintln(L("!\n\rDone!"));
+		if(mob.session()!=null)
+			mob.session().rawPrintln(L("!\n\rDone!"));
 		Area A=null;
 		for(int i=0;i<placesToDo.size();i++)
 		{
@@ -551,7 +572,8 @@ public class Merge extends StdCommand
 	{
 		if(amMergingType(doType,E))
 		{
-			if(mask==null) return true;
+			if(mask==null)
+				return true;
 			return CMLib.masking().maskCheck(mask, E, true);
 		}
 		return false;
@@ -595,12 +617,16 @@ public class Merge extends StdCommand
 				if(dbVal.equals(loVal))
 					continue;
 				++showNumber;
-				if((showFlag>0)&&(showFlag!=showNumber)) continue;
+				if((showFlag>0)&&(showFlag!=showNumber))
+					continue;
 				mob.tell(L("^H@x1. @x2\n\rValue: ^W'@x3'\n\r^HDBVal: ^N'@x4'",""+showNumber,promptStr,loVal,dbVal));
-				if((showFlag!=showNumber)&&(showFlag>-999)) continue;
+				if((showFlag!=showNumber)&&(showFlag>-999))
+					continue;
 				final String res=mob.session().choose(L("D)atabase Value, E)dit Value, or N)o Change, or Q)uit All: "),L("DENQ"), L("N"));
-				if(res.trim().equalsIgnoreCase("N")) continue;
-				if(res.trim().equalsIgnoreCase("Q")) throw new CMException("Cancelled by user.");
+				if(res.trim().equalsIgnoreCase("N"))
+					continue;
+				if(res.trim().equalsIgnoreCase("Q"))
+					throw new CMException("Cancelled by user.");
 				didSomething=true;
 				if(res.trim().equalsIgnoreCase("D"))
 				{
@@ -609,7 +635,8 @@ public class Merge extends StdCommand
 				}
 				M.setStat(statCode,CMLib.genEd().prompt(mob,M.getStat(statCode),++showNumber,showFlag,promptStr));
 			}
-			if(showNumber==0) return didSomething;
+			if(showNumber==0)
+				return didSomething;
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
@@ -625,7 +652,8 @@ public class Merge extends StdCommand
 	public boolean doArchonDBCompare(MOB mob, String scope, String firstWord, Vector commands) throws java.io.IOException
 	{
 		CMClass.CMObjectType doType = OBJECT_TYPES.get(firstWord.toUpperCase());
-		if(doType==null) doType = OBJECT_TYPES.get(firstWord.toUpperCase()+"S");
+		if(doType==null)
+			doType = OBJECT_TYPES.get(firstWord.toUpperCase()+"S");
 		if(doType!=null)
 			commands.remove(0);
 		else
@@ -670,7 +698,8 @@ public class Merge extends StdCommand
 		final DBInterface dbInterface = new DBInterface(dbConnector,null);
 
 		final DBConnection DBTEST=dbConnector.DBFetch();
-		if(DBTEST!=null) dbConnector.DBDone(DBTEST);
+		if(DBTEST!=null)
+			dbConnector.DBDone(DBTEST);
 		mob.tell(L("Loading database rooms..."));
 		final List<Room> rooms = new LinkedList<Room>();
 		if((!dbConnector.amIOk())||(!dbInterface.isConnected()))
@@ -948,9 +977,12 @@ public class Merge extends StdCommand
 						}
 					}
 				}
-				if(updateRoom) CMLib.database().DBUpdateRoom(R);
-				if(updateItems) CMLib.database().DBUpdateItems(R);
-				if(updateMobs) CMLib.database().DBUpdateMOBs(R);
+				if(updateRoom)
+					CMLib.database().DBUpdateRoom(R);
+				if(updateItems)
+					CMLib.database().DBUpdateItems(R);
+				if(updateMobs)
+					CMLib.database().DBUpdateMOBs(R);
 				CMLib.map().resetRoom(R);
 				R.getArea().setAreaState(oldFlags);
 			}

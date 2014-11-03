@@ -49,7 +49,8 @@ public class Spell_WordRecall extends Spell
 	protected int verbalCastCode(MOB mob, Physical target, boolean auto)
 	{
 		int affectType=CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_RECALL;
-		if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
+		if(auto)
+			affectType=affectType|CMMsg.MASK_ALWAYS;
 		return affectType;
 	}
 

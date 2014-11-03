@@ -51,7 +51,8 @@ public class Prop_RoomView extends Property
 		||(newRoom.amDestroyed())
 		||(!CMLib.map().getExtendedRoomID(newRoom).equalsIgnoreCase(text().trim())))
 			newRoom=CMLib.map().getRoom(text());
-		if(newRoom==null) return super.okMessage(myHost,msg);
+		if(newRoom==null)
+			return super.okMessage(myHost,msg);
 
 		if((affected!=null)
 		&&((affected instanceof Room)||(affected instanceof Exit)||(affected instanceof Item))

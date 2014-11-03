@@ -78,14 +78,16 @@ public class Prayer_SenseDisease extends Prayer
 	private static final Vector empty=new ReadOnlyVector();
 	public Vector diseased(MOB mob, Room R)
 	{
-		if(R==null) return empty;
+		if(R==null)
+			return empty;
 		Vector V=null;
 		for(int i=0;i<R.numInhabitants();i++)
 		{
 			final MOB M=R.fetchInhabitant(i);
 			if((M!=null)&&(M!=mob)&&(getDisease(M)!=null))
 			{
-				if(V==null) V=new Vector();
+				if(V==null)
+					V=new Vector();
 				V.addElement(M);
 			}
 		}
@@ -96,7 +98,8 @@ public class Prayer_SenseDisease extends Prayer
 			&&(I.container()==null)
 			&&(getDisease(I)!=null))
 			{
-				if(V==null) V=new Vector();
+				if(V==null)
+					V=new Vector();
 				V.addElement(I);
 			}
 		}
@@ -176,7 +179,8 @@ public class Prayer_SenseDisease extends Prayer
 			return false;
 
 		Physical target=mob;
-		if((auto)&&(givenTarget!=null)) target=givenTarget;
+		if((auto)&&(givenTarget!=null))
+			target=givenTarget;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

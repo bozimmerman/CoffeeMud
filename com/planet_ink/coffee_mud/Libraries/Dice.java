@@ -80,7 +80,8 @@ public class Dice extends StdLibrary implements DiceLibrary
 	@Override
 	public int rollHP(int level, int code)
 	{
-		if(code<0) code=0;
+		if(code<0)
+			code=0;
 		// new old style
 		if(code<32768)
 			return (int)Math.round(CMath.parseMathExpression(baseNpcHitpointsFormula, new double[]{level,code,0,0,0,0,0,0,0,0,0},0.0));
@@ -130,9 +131,11 @@ public class Dice extends StdLibrary implements DiceLibrary
 	@Override
 	public Object doublePick(Object[][] set)
 	{
-		if(set.length==0) return null;
+		if(set.length==0)
+			return null;
 		final Object[] sset = set[randomizer.nextInt(set.length)];
-		if(sset.length==0) return null;
+		if(sset.length==0)
+			return null;
 		return sset[randomizer.nextInt(sset.length)];
 	}
 
@@ -159,7 +162,8 @@ public class Dice extends StdLibrary implements DiceLibrary
 	@Override
 	public Object pick(Object[] set)
 	{
-		if(set.length==0) return null;
+		if(set.length==0)
+			return null;
 		return set[randomizer.nextInt(set.length)];
 	}
 	@Override
@@ -214,14 +218,16 @@ public class Dice extends StdLibrary implements DiceLibrary
 	@Override
 	public int pick(int[] set)
 	{
-		if(set.length==0) return -1;
+		if(set.length==0)
+			return -1;
 		return set[randomizer.nextInt(set.length)];
 	}
 
 	@Override
 	public Object pick(List<? extends Object> set)
 	{
-		if(set.size()==0) return null;
+		if(set.size()==0)
+			return null;
 		return set.get(randomizer.nextInt(set.size()));
 	}
 
@@ -229,7 +235,8 @@ public class Dice extends StdLibrary implements DiceLibrary
 	public int getHPCode(String str)
 	{
 		int i=str.indexOf('d');
-		if(i<0) return 11;
+		if(i<0)
+			return 11;
 		final int roll=CMath.s_int(str.substring(0,i).trim());
 		str=str.substring(i+1).trim();
 
@@ -258,8 +265,10 @@ public class Dice extends StdLibrary implements DiceLibrary
 	@Override
 	public int getHPCode(int roll, int dice, int plus)
 	{
-		if(roll<=0) roll=1;
-		if(dice<=0) dice=0;
+		if(roll<=0)
+			roll=1;
+		if(dice<=0)
+			dice=0;
 
 		if(roll>255)
 		{
@@ -279,7 +288,8 @@ public class Dice extends StdLibrary implements DiceLibrary
 			plus=plus*-1;
 			mul=-1;
 		}
-		if(plus>32768) plus=32768;
+		if(plus>32768)
+			plus=32768;
 		return 	(plus+(dice<<15)+(roll<<(23)))*mul;
 	}
 

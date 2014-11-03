@@ -48,7 +48,8 @@ public class Play_Solo extends Play
 	@Override
 	public boolean okMessage(Environmental E, CMMsg msg)
 	{
-		if(!super.okMessage(E,msg)) return false;
+		if(!super.okMessage(E,msg))
+			return false;
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			final MOB myChar=(MOB)affected;

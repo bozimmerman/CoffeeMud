@@ -74,8 +74,10 @@ public class Prayer_ProtectHealth extends Prayer
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if(affected==null) return true;
-		if(!(affected instanceof MOB)) return true;
+		if(affected==null)
+			return true;
+		if(!(affected instanceof MOB))
+			return true;
 
 		if(msg.target()==affected)
 		{
@@ -105,7 +107,8 @@ public class Prayer_ProtectHealth extends Prayer
 			return false;
 		}
 		Room R=CMLib.map().roomLocation(target);
-		if(R==null) R=mob.location();
+		if(R==null)
+			R=mob.location();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

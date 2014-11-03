@@ -80,9 +80,11 @@ public class Spell_AlterSubstance extends Spell
 			commands.removeElement(material);
 		}
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		RawMaterial.Material m=RawMaterial.Material.findIgnoreCase(material);
-		if(m==null) m=RawMaterial.Material.startsWithIgnoreCase(material);
+		if(m==null)
+			m=RawMaterial.Material.startsWithIgnoreCase(material);
 		int newMaterial=(m==null)?-1:m.mask();
 		if((newMaterial>=0)&&(m!=null))
 		{

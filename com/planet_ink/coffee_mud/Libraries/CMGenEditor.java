@@ -135,9 +135,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	public boolean promptToggle(MOB mob, int showNumber, int showFlag, String FieldDisp)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return false;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return false;
 		mob.tell(showNumber+". "+FieldDisp);
-		if((showFlag!=showNumber)&&(showFlag>-999)) return false;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return false;
 		if(showFlag!=showNumber)
 			return mob.session().confirm(L("Toggle (y/N)?"),L("N"));
 		return true;
@@ -152,9 +154,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 								  CMEval eval,
 								  Object[] choices) throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return oldVal;
 		mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
-		if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return oldVal;
 		String newName="?";
 		final String promptStr=L("Enter a value to add/remove@x1\n\r:",(help!=null?" (?)":""));
 		final String oldOldVal=oldVal;
@@ -239,7 +243,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						 Object[] choices)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return oldVal;
 		String showVal=oldVal;
 		if((maxChars > 0)&&(showVal.length()>maxChars)&& (!((showFlag!=showNumber)&&(showFlag>-999))))
 			showVal=showVal.substring(0,maxChars)+"...";
@@ -247,7 +252,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mob.session().rawPrintln(showNumber+". "+FieldDisp+": '"+showVal+"'.");
 		else
 			mob.tell(showNumber+". "+FieldDisp+": '"+showVal+"'.");
-		if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return oldVal;
 		String newName="?";
 		final String promptStr=L("Enter a new value @x1@x2\n\r:",(emptyOK?"(or NULL)":""),(help!=null?" (?)":""));
 		while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().isStopped()))
@@ -296,9 +302,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	public boolean prompt(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp, String help)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return oldVal;
 		mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
-		if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return oldVal;
 		String newName="?";
 		while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().isStopped()))
 		{
@@ -328,9 +336,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	public double prompt(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp, String help, double minValue, double maxValue)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return oldVal;
 		mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
-		if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return oldVal;
 		String newName="?";
 		while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().isStopped()))
 		{
@@ -360,9 +370,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	public int prompt(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp, String help)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return oldVal;
 		mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
-		if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return oldVal;
 		String newName="?";
 		while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().isStopped()))
 		{
@@ -383,9 +395,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	public long prompt(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp, String help)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return oldVal;
 		mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
-		if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return oldVal;
 		String newName="?";
 		while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().isStopped()))
 		{
@@ -413,7 +427,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	public String promptMultiOrExtra(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, DVector choices)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return oldVal;
 		final Vector<String> oldVals = new Vector<String>();
 		if(CMath.s_int(oldVal) > 0)
 		{
@@ -425,7 +440,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if(choices.contains(oldVal.toUpperCase().trim()))
 			oldVals.addElement(oldVal);
 		mob.tell(showNumber+". "+FieldDisp+": '"+CMParms.toStringList(oldVals)+"'.");
-		if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return oldVal;
 		String newVal=oldVal;
 		String thisVal="?";
 		while(thisVal.equals("?")&&(mob.session()!=null)&&(!mob.session().isStopped()))
@@ -502,13 +518,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, DVector choices)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return oldVal;
 		String oldShowVal = oldVal;
 		for(int c=0;c<choices.size();c++)
 			if(((String)choices.elementAt(c,1)).equalsIgnoreCase(oldVal))
 				oldShowVal = (String)choices.elementAt(c,2);
 		mob.tell(showNumber+". "+FieldDisp+": '"+oldShowVal+"'.");
-		if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return oldVal;
 		String newVal="?";
 		while(newVal.equals("?")&&(mob.session()!=null)&&(!mob.session().isStopped()))
 		{
@@ -544,7 +562,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	public void genName(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException
 	{
 		final String newName=prompt(mob,E.Name(),showNumber,showFlag,"Name",false,false);
-		if(newName.equals(E.Name())) return;
+		if(newName.equals(E.Name()))
+			return;
 		if((mob.session()==null)
 		||((!(E instanceof MOB))&&(!(E instanceof Item)))
 		||(!CMLib.flags().isCataloged(E)))
@@ -638,16 +657,20 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genCorpseData(MOB mob, DeadBody I, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(L("@x1. Corpse Data: '@x2/@x3'.",""+showNumber,I.mobName(),I.killerName()));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		mob.tell(L("Dead MOB name: '@x1'.",I.mobName()));
 		String newName=mob.session().prompt(L("Enter a new name\n\r:"),"");
-		if(newName.length()>0) I.setMobName(newName);
+		if(newName.length()>0)
+			I.setMobName(newName);
 		else mob.tell(L("(no change)"));
 		mob.tell(L("Dead MOB Description: '@x1'.",I.mobDescription()));
 		newName=mob.session().prompt(L("Enter a new description\n\r:"),"");
-		if(newName.length()>0) I.setMobDescription(newName);
+		if(newName.length()>0)
+			I.setMobDescription(newName);
 		else mob.tell(L("(no change)"));
 		mob.tell(L("Is a Players corpse: @x1",""+I.playerCorpse()));
 		newName=mob.session().prompt(L("Enter a new true/false\n\r:"),"");
@@ -662,7 +685,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		genCharStats(mob,I.charStats());
 		mob.tell(L("Killers Name: '@x1'.",I.killerName()));
 		newName=mob.session().prompt(L("Enter a new killer\n\r:"),"");
-		if(newName.length()>0) I.setKillerName(newName);
+		if(newName.length()>0)
+			I.setKillerName(newName);
 		else mob.tell(L("(no change)"));
 		mob.tell(L("Killer is a player: @x1",""+I.killerPlayer()));
 		newName=mob.session().prompt(L("Enter a new true/false\n\r:"),"");
@@ -671,11 +695,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		else mob.tell(L("(no change)"));
 		mob.tell(L("Time of death: @x1",CMLib.time().date2String(I.timeOfDeath())));
 		newName=mob.session().prompt(L("Enter a new value\n\r:"),"");
-		if(newName.length()>0) I.setTimeOfDeath(CMLib.time().string2Millis(newName));
+		if(newName.length()>0)
+			I.setTimeOfDeath(CMLib.time().string2Millis(newName));
 		else mob.tell(L("(no change)"));
 		mob.tell(L("Last message string: @x1",I.lastMessage()));
 		newName=mob.session().prompt(L("Enter a new value\n\r:"),"");
-		if(newName.length()>0) I.setLastMessage(newName);
+		if(newName.length()>0)
+			I.setLastMessage(newName);
 		else mob.tell(L("(no change)"));
 	}
 
@@ -685,10 +711,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genPanelType(MOB mob, Electronics.ElecPanel S, int showNumber, int showFlag)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		final String componentType=CMStrings.capitalizeAndLower(S.panelType().name().toLowerCase());
 		mob.tell(L("@x1. Panel Type: '@x2'.",""+showNumber,componentType));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		boolean continueThis=true;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(continueThis))
 		{
@@ -724,11 +752,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genCurrency(MOB mob, Area A, int showNumber, int showFlag)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		final String currencyName=A.getCurrency().length()==0?"Default":A.getCurrency();
 		if(mob.session()!=null)
 			mob.session().colorOnlyPrintln(L("@x1. Currency: '@x2'.",""+showNumber,currencyName));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		final String newName=mob.session().prompt(L("Enter a new one or 'DEFAULT'\n\r:"),"");
 		if(newName.length()>0)
 		{
@@ -754,7 +784,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	throws IOException
 	{
 
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		final TimeClock TC=A.getTimeObj();
 		StringBuffer report=new StringBuffer("");
 		if(TC==CMLib.time().globalClock())
@@ -766,8 +797,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			report.append(TC.getMonthsInYear()+" mnths-yr");
 		}
 		mob.tell(L("@x1. Calendar: '@x2'.",""+showNumber,report.toString()));
-		if(TC==CMLib.time().globalClock()) return;
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if(TC==CMLib.time().globalClock())
+			return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		String newName="";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(newName.length()==0))
 		{
@@ -782,7 +815,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			report.append("8. Year Title(s): "+CMParms.toStringList(TC.getYearNames()));
 			mob.tell(report.toString());
 			newName=mob.session().prompt(L("Enter one to change:"),"");
-			if(newName.length()==0) break;
+			if(newName.length()==0)
+				break;
 			final int which=CMath.s_int(newName);
 
 			if((which<0)||(which>8))
@@ -869,7 +903,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				final StringBuilder clanList=new StringBuilder("");
 				for(final Pair<Clan,Integer> c : M.clans())
 					clanList.append(c.first.getName()).append(" (").append(c.first.getRoleName(c.second.intValue(), false, false)).append("), ");
-				if(clanList.length()>2) clanList.setLength(clanList.length()-2);
+				if(clanList.length()>2)
+					clanList.setLength(clanList.length()-2);
 				mob.tell(L("@x1. Clan(s): '@x2'.",""+showNumber,clanList.toString()));
 				if((showFlag==showNumber)||(showFlag<=-999))
 				{
@@ -955,7 +990,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	@Override
 	public Room changeRoomType(Room R, Room newRoom)
 	{
-		if((R==null)||(newRoom==null)) return R;
+		if((R==null)||(newRoom==null))
+			return R;
 		synchronized(("SYNC"+R.roomID()).intern())
 		{
 			R=CMLib.map().getRoom(R);
@@ -985,7 +1021,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			CMLib.threads().deleteTick(oldR,-1);
 			R.setRoomID(oldR.roomID());
 			final Area A=oldR.getArea();
-			if(A!=null) A.delProperRoom(oldR);
+			if(A!=null)
+				A.delProperRoom(oldR);
 			R.setArea(A);
 			for(int d=0;d<R.rawDoors().length;d++)
 				R.rawDoors()[d]=oldR.rawDoors()[d];
@@ -993,7 +1030,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				R.setRawExit(d,oldR);
 			R.setDisplayText(oldR.displayText());
 			R.setDescription(oldR.description());
-			if(R.image().equalsIgnoreCase(CMLib.protocol().getDefaultMXPImage(oldR))) R.setImage(null);
+			if(R.image().equalsIgnoreCase(CMLib.protocol().getDefaultMXPImage(oldR)))
+				R.setImage(null);
 			if((R instanceof GridLocale)&&(oldR instanceof GridLocale))
 			{
 				((GridLocale)R).setXGridSize(((GridLocale)oldR).xGridSize());
@@ -1050,7 +1088,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					M2.setStartRoom(R);
 					M2.setLocation(R);
 					long rejuv=CMProps.getTicksPerMinute()+CMProps.getTicksPerMinute()+(CMProps.getTicksPerMinute()/2);
-					if(rejuv>(CMProps.getTicksPerMinute()*20)) rejuv=(CMProps.getTicksPerMinute()*20);
+					if(rejuv>(CMProps.getTicksPerMinute()*20))
+						rejuv=(CMProps.getTicksPerMinute()*20);
 					M2.phyStats().setRejuv((int)rejuv);
 					M2.recoverCharStats();
 					M2.recoverPhyStats();
@@ -1110,9 +1149,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected Room genRoomType(MOB mob, Room R, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return R;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return R;
 		mob.tell(L("@x1. Type: '@x2'",""+showNumber,CMClass.classID(R)));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return R;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return R;
 		String newName="";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(newName.length()==0))
 		{
@@ -1155,9 +1196,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genPassword(MOB mob, MOB M, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(L("@x1. Password: ********.",""+showNumber));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		final String str=mob.session().prompt(L("Enter a new one to reset\n\r:"),"");
 		if((str.length()>0)&&(M.playerStats()!=null))
 		{
@@ -1170,23 +1213,27 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genEmail(MOB mob, AccountStats A, int showNumber, int showFlag) throws IOException
 	{
-		if(A==null) return;
+		if(A==null)
+			return;
 		A.setEmail(prompt(mob,A.getEmail(),showNumber,showFlag,"Email",true,false,null));
 	}
 
 	protected void genBirthday(MOB mob, PlayerStats A, int showNumber, int showFlag) throws IOException
 	{
-		if(A==null) return;
+		if(A==null)
+			return;
 		A.setStat("BIRTHDAY",prompt(mob,A.getStat("BIRTHDAY"),showNumber,showFlag,"Birthday (m,d,y)",true,false,null));
 	}
 
 	@Override
 	public void genDisplayText(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		if(mob.session()!=null)
 			mob.session().rawPrintln(L("@x1. Display: '@x2'.",""+showNumber,E.displayText()));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		String newName=null;
 		if(E instanceof Item)
 			newName=mob.session().prompt(L("Enter something new (null == blended)\n\r:"),"");
@@ -1210,10 +1257,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genMountText(MOB mob, Modifiable E, int showNumber, int showFlag)
 			throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		if(mob.session()==null) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
+		if(mob.session()==null)
+			return;
 		mob.session().rawPrintln(L("@x1. Mount Strings: '@x2'.",""+showNumber,E.getStat("PUTSTR")+"/"+E.getStat("MOUNTSTR")+"/"+E.getStat("DISMOUNTSTR")));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		String newName;
 		mob.session().rawPrintln(L("Enter new 'put' string (ENTER='"+E.getStat("PUTSTR")+"')"));
 		newName=mob.session().prompt(":","");
@@ -1238,12 +1288,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genClosedText(MOB mob, Exit E, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		if(E instanceof Item)
 			mob.tell(L("@x1. Exit Closed Text: '@x2'.",""+showNumber,E.closedText()));
 		else
 			mob.tell(L("@x1. Closed Text: '@x2'.",""+showNumber,E.closedText()));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		final String newName=mob.session().prompt(L("Enter something new (null=blank)\n\r:"),"");
 		if(newName.equals("null"))
 			E.setExitParams(E.doorName(),E.closeWord(),E.openWord(),"");
@@ -1256,12 +1308,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genDoorName(MOB mob, Exit E, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		if(E instanceof Item)
 			mob.tell(L("@x1. Exit Direction: '@x2'.",""+showNumber,E.doorName()));
 		else
 			mob.tell(L("@x1. Door Name: '@x2'.",""+showNumber,E.doorName()));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		final String newName=mob.session().prompt(L("Enter something new\n\r:"),"");
 		if(newName.length()>0)
 			E.setExitParams(newName,E.closeWord(),E.openWord(),E.closedText());
@@ -1271,18 +1325,22 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genBurnout(MOB mob, Light I, int showNumber, int showFlag)
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(L("@x1. Is destroyed after burnout: '@x2'.",""+showNumber,""+I.destroyedWhenBurnedOut()));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		I.setDestroyedWhenBurntOut(!I.destroyedWhenBurnedOut());
 	}
 
 	protected void genOpenWord(MOB mob, Exit E, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(L("@x1. Open Word: '@x2'.",""+showNumber,E.openWord()));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		final String newName=mob.session().prompt(L("Enter something new\n\r:"),"");
 		if(newName.length()>0)
 			E.setExitParams(E.doorName(),E.closeWord(),newName,E.closedText());
@@ -1293,12 +1351,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genSubOps(MOB mob, Area A, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		String str="Q";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(str.length()>0))
 		{
 			mob.tell(L("@x1. Area staff names: @x2",""+showNumber,A.getSubOpList()));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			str=mob.session().prompt(L("Enter a name to add or remove\n\r:"),"");
 			if(str.length()>0)
 			{
@@ -1322,7 +1382,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genParentAreas(MOB mob, Area A, int showNumber, int showFlag)
 			throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		String newArea="Q";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(newArea.length()>0))
 		{
@@ -1330,7 +1391,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			for(final Enumeration<Area> a = A.getParents(); a.hasMoreElements(); )
 				str.append(a.nextElement().Name()).append(";");
 			mob.tell(L("@x1. Parent Areas: @x2",""+showNumber,str.toString()));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			newArea=mob.session().prompt(L("Enter an area name to add or remove\n\r:"),"");
 			if(newArea.equalsIgnoreCase("*clear*"))
 			{
@@ -1377,7 +1439,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genChildAreas(MOB mob, Area A, int showNumber, int showFlag)
 			throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		String newArea="Q";
 		final Area defaultParentArea=CMLib.map().getDefaultParentArea();
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(newArea.length()>0))
@@ -1387,7 +1450,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			for(final Enumeration<Area> a = A.getChildren(); a.hasMoreElements(); )
 				str.append(a.nextElement().Name()).append(";");
 			mob.tell(L("@x1. Children areas: @x2",""+showNumber,str.toString()));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			newArea=mob.session().prompt(L("Enter an area name to add or remove\n\r:"),"");
 			if(newArea.equalsIgnoreCase("*clear*"))
 			{
@@ -1433,9 +1497,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genCloseWord(MOB mob, Exit E, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(L("@x1. Close Word: '@x2'.",""+showNumber,E.closeWord()));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		final String newName=mob.session().prompt(L("Enter something new\n\r:"),"");
 		if(newName.length()>0)
 			E.setExitParams(E.doorName(),newName,E.openWord(),E.closedText());
@@ -1446,12 +1512,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genExitMisc(MOB mob, Exit E, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		if(E.hasALock())
 		{
 			E.setReadable(false);
 			mob.tell(L("@x1. Assigned Key Item: '@x2'.",""+showNumber,E.keyName()));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			final String newName=mob.session().prompt(L("Enter something new (null=blank)\n\r:"),"");
 			if(newName.equalsIgnoreCase("null"))
 				E.setKeyName("");
@@ -1492,9 +1560,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genReadable1(MOB mob, Item E, int showNumber, int showFlag)
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 
-		if(E instanceof Electronics.Computer) return;
+		if(E instanceof Electronics.Computer)
+			return;
 
 		if((E instanceof Wand)
 		 ||(E instanceof SpellHolder)
@@ -1522,9 +1592,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genReadable2(MOB mob, Item E, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 
-		if(E instanceof Electronics.Computer) return;
+		if(E instanceof Electronics.Computer)
+			return;
 
 		if(E.isReadable()
 		 ||(E instanceof SpellHolder)
@@ -1586,7 +1658,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					ok=true;
 				}
 
-				if((showFlag!=showNumber)&&(showFlag>-999)) return;
+				if((showFlag!=showNumber)&&(showFlag>-999))
+					return;
 				String newName=null;
 
 				if((E instanceof Wand)
@@ -1611,7 +1684,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						if(E instanceof SpellHolder)
 						{
 							final String oldName=newName;
-							if(!newName.endsWith(";")) newName+=";";
+							if(!newName.endsWith(";"))
+								newName+=";";
 							int x=newName.indexOf(';');
 							while(x>=0)
 							{
@@ -1652,7 +1726,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if(E instanceof Drink)
 		{
 			mob.session().println(L("@x1. Current liquid type: @x2",""+showNumber,RawMaterial.CODES.NAME(((Drink)E).liquidType())));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			boolean q=false;
 			while((mob.session()!=null)&&(!mob.session().isStopped())&&(!q))
 			{
@@ -1684,7 +1759,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genRecipe(MOB mob, final Recipe E, int showNumber, int showFlag)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		StringBuilder str=new StringBuilder(showNumber+". Recipe Data: "+E.getCommonSkillID()+" ("+E.getTotalRecipePages()+"): ");
 		for(final String line : E.getRecipeCodeLines())
 		{
@@ -1694,7 +1770,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 		mob.tell(str.toString());
 		final Session S=mob.session();
-		if((S==null)||((showFlag!=showNumber)&&(showFlag>-999))) return;
+		if((S==null)||((showFlag!=showNumber)&&(showFlag>-999)))
+			return;
 		while(!S.isStopped())
 		{
 			final String newName=S.prompt(L("Enter new skill id (?)\n\r:"),"");
@@ -1816,7 +1893,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genGettable(MOB mob, Item I, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		if(I instanceof Potion)
 			((Potion)I).setDrunk(false);
 
@@ -1829,7 +1907,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mob.session().println(L("    D) Non-Locatable : @x1",(((I.basePhyStats().sensesMask()&PhyStats.SENSE_UNLOCATABLE)>0)?"true":"false")));
 			if(I instanceof Weapon)
 				mob.session().println(L("    E) Is Two-Handed : @x1",""+I.rawLogicalAnd()));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			c=mob.session().choose(L("Enter one to change, or ENTER when done:"),L("ABCDE\n"),"\n").toUpperCase();
 			switch(Character.toUpperCase(c.charAt(0)))
 			{
@@ -1860,7 +1939,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genDisposition(MOB mob, PhyStats E, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		final int[] disps={PhyStats.IS_INVISIBLE,
 					 PhyStats.IS_HIDDEN,
 					 PhyStats.IS_NOT_SEEN,
@@ -1957,7 +2037,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void toggleClimateMask(Places A, int mask)
 	{
 		int current=A.getClimateTypeCode();
-		if(current<0) current=0;
+		if(current<0)
+			current=0;
 		if((current&mask)==0)
 			A.setClimateType(current|mask);
 		else
@@ -1967,7 +2048,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genClimateType(MOB mob, Places A, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
 			final List<String> conditions=new Vector<String>();
@@ -2045,7 +2127,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genCharStats(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
 			final StringBuffer buf=new StringBuffer(showNumber+". Stats: ");
@@ -2085,7 +2168,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genCharState(MOB mob, MOB E, int showNumber, int showFlag)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		final CharState baseState=E.baseState();
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
@@ -2123,7 +2207,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genSensesMask(MOB mob, PhyStats E, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		final int[] senses={PhyStats.CAN_SEE_DARK,
 					  PhyStats.CAN_SEE_HIDDEN,
 					  PhyStats.CAN_SEE_INVISIBLE,
@@ -2191,7 +2276,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genDoorsNLocks(MOB mob, CloseableLockable E, String doorName, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		boolean HasDoor=E.hasADoor();
 		boolean Open=E.isOpen();
 		boolean DefaultsClosed=E.defaultsClosed();
@@ -2256,7 +2342,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genContainerTypes(MOB mob, Container E, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
 			mob.tell(L("@x1. Can contain : @x2",""+showNumber,makeContainerTypes(E))); // portals use keys as roomids, showing is OK
@@ -2268,7 +2355,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			mob.tell(L("\n\rCan only contain: @x1",makeContainerTypes(E)));
 			change=mob.session().prompt(L("Enter a type to add/remove (?)\n\r:"),"");
-			if(change.length()==0) break;
+			if(change.length()==0)
+				break;
 			int found=-1;
 			if(change.equalsIgnoreCase("?"))
 				for (final String element : Container.CONTAIN_DESCS)
@@ -2294,19 +2382,22 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genLevel(MOB mob, Physical P, int showNumber, int showFlag) throws IOException
 	{
-		if(P.basePhyStats().level()<0) P.basePhyStats().setLevel(1);
+		if(P.basePhyStats().level()<0)
+			P.basePhyStats().setLevel(1);
 		P.basePhyStats().setLevel(prompt(mob,P.basePhyStats().level(),showNumber,showFlag,"Level"));
 	}
 
 	protected void genRejuv(MOB mob, Physical P, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		if(P instanceof Item)
 			mob.tell(L("@x1. Rejuv/Pct: '@x2' (0=special).",""+showNumber,""+P.basePhyStats().rejuv()));
 		else
 			mob.tell(L("@x1. Rejuv Ticks: '@x2' (0=never).",""+showNumber,""+P.basePhyStats().rejuv()));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		final String rlevel=mob.session().prompt(L("Enter new amount\n\r:"),"");
 		final int newLevel=CMath.s_int(rlevel);
 		if((newLevel>0)||(rlevel.trim().equals("0")))
@@ -2337,7 +2428,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		try
 		{
-			if(E!=mob) CMLib.threads().suspendTicking(E, -1);
+			if(E!=mob)
+				CMLib.threads().suspendTicking(E, -1);
 			if(CMLib.flags().isCataloged(E))
 			{
 				if(CMLib.catalog().isCatalogObj(E.Name()))
@@ -2393,7 +2485,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 		finally
 		{
-			if(E!=mob) CMLib.threads().resumeTicking(E, -1);
+			if(E!=mob)
+				CMLib.threads().resumeTicking(E, -1);
 		}
 	}
 
@@ -2410,9 +2503,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genTitleRoom(MOB mob, LandTitle L, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(L("@x1. Land plot ID: '@x2'.",""+showNumber,L.landPropertyID()));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		String newText="?!?!";
 		while((mob.session()!=null)&&(!mob.session().isStopped())
 			&&((newText.length()>0)&&(CMLib.map().getRoom(newText)==null)))
@@ -2445,15 +2540,18 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genCoinStuff(MOB mob, Coins I, int showNumber, int showFlag)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(L("@x1. Money data: '@x2 x @x3'.",""+showNumber,""+I.getNumberOfCoins(),CMLib.beanCounter().getDenominationName(I.getCurrency(),I.getDenomination())));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		boolean gocontinue=true;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(gocontinue))
 		{
 			gocontinue=false;
 			String oldCurrency=I.getCurrency();
-			if(oldCurrency.length()==0) oldCurrency="Default";
+			if(oldCurrency.length()==0)
+				oldCurrency="Default";
 			oldCurrency=mob.session().prompt(L("Enter currency code (?):"),oldCurrency).trim().toUpperCase();
 			if(oldCurrency.equalsIgnoreCase("Default"))
 			{
@@ -2489,7 +2587,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			&&(!newDenom.equalsIgnoreCase("?")))
 			{
 				final double denom=CMLib.english().matchAnyDenomination(I.getCurrency(),newDenom);
-				if(denom>0.0) newDenom=""+denom;
+				if(denom>0.0)
+					newDenom=""+denom;
 			}
 			if((newDenom.length()==0)
 			||(CMath.isDouble(newDenom)
@@ -2534,9 +2633,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genClanItem(MOB mob, ClanItem I, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(L("@x1. Clan: '@x2', Type: @x3.",""+showNumber,I.clanID(),ClanItem.CI_DESC[I.ciType()]));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		final String clanID=I.clanID();
 		I.setClanID(mob.session().prompt(L("Enter a new clan\n\r:"),clanID));
 		if(I.clanID().equals(clanID))
@@ -2580,13 +2681,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	public void wornLayer(MOB mob, short[] layerAtt, short[] clothingLayer, int showNumber, int showFlag)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber))  return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		final boolean seeThroughBool=CMath.bset(layerAtt[0],Armor.LAYERMASK_SEETHROUGH);
 		final boolean multiWearBool=CMath.bset(layerAtt[0],Armor.LAYERMASK_MULTIWEAR);
 		final String seeThroughStr=(!seeThroughBool)?" (opaque)":" (see-through)";
 		final String multiWearStr=multiWearBool?" (multi)":"";
 		mob.tell(L("@x1. Layer: '@x2'@x3@x4.",""+showNumber,""+clothingLayer[0],seeThroughStr,multiWearStr));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		if((mob.session()!=null)&&(!mob.session().isStopped()))
 			clothingLayer[0] = CMath.s_short(mob.session().prompt(L("Enter a new layer\n\r:"),""+clothingLayer[0]));
 		boolean newSeeThrough=seeThroughBool;
@@ -2602,7 +2705,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genLayer(MOB mob, Armor E, int showNumber, int showFlag) throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber))  return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		final short[] layerAtt = new short[]{E.getLayerAttributes()};
 		final short[] clothingLayer = new short[]{E.getClothingLayer()};
 		wornLayer(mob,layerAtt,clothingLayer,showNumber,showFlag);
@@ -2656,7 +2760,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genWeaponAmmo(MOB mob, Weapon W, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		if(!(W instanceof AmmunitionWeapon))
 			return;
 		final AmmunitionWeapon AW=(AmmunitionWeapon)W;
@@ -2695,9 +2800,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genWeaponRanges(MOB mob, Weapon W, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(L("@x1. Minimum/Maximum Ranges: @x2/@x3.",""+showNumber,""+W.minRange(),""+W.maxRange()));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		final String newMinStr=mob.session().prompt(L("Enter a new minimum range\n\r:"),"");
 		final String newMaxStr=mob.session().prompt(L("Enter a new maximum range\n\r:"),"");
 		if((newMinStr.length()==0)&&(newMaxStr.length()==0))
@@ -2716,9 +2823,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genWeaponType(MOB mob, Weapon W, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(L("@x1. Weapon Attack Type: '@x2'.",""+showNumber,Weapon.TYPE_DESCS[W.weaponType()]));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		boolean q=false;
 		final String sel="NSPBFMR";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!q))
@@ -2747,9 +2856,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void getTheme(MOB mob, Area A, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(L("@x1. Theme setting: '@x2'.",""+showNumber,Area.THEME_PHRASE[A.getThemeCode()]));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		boolean q=false;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!q))
 		{
@@ -2782,7 +2893,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genConsumedMaterials(MOB mob, Electronics.FuelConsumer E, int showNumber, int showFlag) throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		boolean q=false;
 		final Session S=mob.session();
 		while((S!=null)&&(!S.isStopped())&&(!q))
@@ -2790,11 +2902,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			final StringBuilder str=new StringBuilder("");
 			for(int i=0;i<E.getConsumedFuelTypes().length;i++)
 			{
-				if(i>0) str.append(", ");
+				if(i>0)
+					str.append(", ");
 				str.append(RawMaterial.CODES.NAME(E.getConsumedFuelTypes()[i]));
 			}
 			mob.tell(L("@x1. Consumed Resources: '@x2'.",""+showNumber,str.toString()));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			final String newType=mob.session().prompt(L("Enter a resource to add/remove (?)\n\r:"),"");
 			if((newType==null)||(newType.length()==0))
 				return;
@@ -2837,17 +2951,20 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genMaterialCode(MOB mob, Item E, int showNumber, int showFlag)
 			throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		E.setMaterial(genAnyMaterialCode(mob,"Material Type",E.material(),false,showNumber,showFlag));
 	}
 
 	protected int genAnyMaterialCode(MOB mob, String prompt, int currMat, boolean inheritOk, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return currMat;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return currMat;
 		String matName=(currMat<0)?"Inherited":RawMaterial.CODES.NAME(currMat);
 		mob.tell(showNumber+". "+prompt+": '"+matName+"'.");
-		if((showFlag!=showNumber)&&(showFlag>-999)) return currMat;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return currMat;
 		boolean q=false;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!q))
 		{
@@ -2899,7 +3016,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				else
 					matName.append(RawMaterial.CODES.NAME(r));
 			mob.tell(L("@x1. Can breathe: '@x2'.",""+showNumber,matName.toString()));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			final String newType=mob.session().prompt(L("Enter a material to add/remove, or ANYTHING (?)\n\r:"),"");
 			if(newType.trim().length()==0)
 				return;
@@ -2966,9 +3084,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genInstrumentType(MOB mob, MusicalInstrument E, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(L("@x1. Instrument Type: '@x2'.",""+showNumber,MusicalInstrument.TYPE_DESC[E.instrumentType()]));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		boolean q=false;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!q))
 		{
@@ -2999,11 +3119,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genSpecialFaction(MOB mob, MOB E, int showNumber, int showFlag, Faction F)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		if(F==null) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
+		if(F==null)
+			return;
 		final Faction.FRange myFR=CMLib.factions().getRange(F.factionID(),E.fetchFaction(F.factionID()));
 		mob.tell(showNumber+". "+F.name()+": "+((myFR!=null)?myFR.name():"UNDEFINED")+" ("+E.fetchFaction(F.factionID())+")");
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		for(final Enumeration<Faction.FRange> e=F.ranges();e.hasMoreElements();)
 		{
 			final Faction.FRange FR=e.nextElement();
@@ -3035,7 +3158,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genFaction(MOB mob, MOB E, int showNumber, int showFlag)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		String newFact="Q";
 		final int wrap=ListingLibrary.ColFixer.fixColWidth(50,mob.session());
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(newFact.length()>0))
@@ -3044,12 +3168,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if((listing.length()>wrap)&&((showFlag!=showNumber)&&(showFlag>-999)))
 				listing=CMStrings.limit(listing, wrap)+((listing.length()>wrap)?"...":"");
 			mob.tell(L("@x1. Factions: @x2",""+showNumber,listing));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			newFact=mob.session().prompt(L("Enter a faction name to add or remove\n\r:"),"");
 			if(newFact.length()>0)
 			{
 				Faction lookedUp=CMLib.factions().getFactionByName(newFact);
-				if(lookedUp==null) lookedUp=CMLib.factions().getFaction(newFact);
+				if(lookedUp==null)
+					lookedUp=CMLib.factions().getFaction(newFact);
 				if(lookedUp!=null)
 				{
 					if (E.fetchFaction(lookedUp.factionID())!=Integer.MAX_VALUE)
@@ -3065,8 +3191,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						if(CMath.isInteger(howMuch))
 						{
 							int value =Integer.valueOf(howMuch).intValue();
-							if(value<lookedUp.minimum()) value=lookedUp.minimum();
-							if(value>lookedUp.maximum()) value=lookedUp.maximum();
+							if(value<lookedUp.minimum())
+								value=lookedUp.minimum();
+							if(value>lookedUp.maximum())
+								value=lookedUp.maximum();
 							E.addFaction(lookedUp.factionID(),value);
 							mob.tell(L("Faction '@x1' added.",lookedUp.name()));
 						}
@@ -3083,9 +3211,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genGender(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(L("@x1. Gender: '@x2'.",""+showNumber,""+Character.toUpperCase((char)E.baseCharStats().getStat(CharStats.STAT_GENDER))));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		final String newType=mob.session().choose(L("Enter a new gender (M/F/N)\n\r:"),L("MFN"),"");
 		int newValue=-1;
 		if(newType.length()>0)
@@ -3112,9 +3242,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genWeaponClassification(MOB mob, Weapon E, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(L("@x1. Weapon Classification: '@x2'.",""+showNumber,Weapon.CLASS_DESCS[E.weaponClassification()]));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		boolean q=false;
 		final String sel=("ABEFHKPRSDTN");
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!q))
@@ -3152,12 +3284,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genRace(MOB mob, MOB M, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		String raceID="begin!";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(raceID.length()>0))
 		{
 			mob.tell(L("@x1. Race: '@x2'.",""+showNumber,M.baseCharStats().getMyRace().ID()));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			raceID=mob.session().prompt(L("Enter a new race (?)\n\r:"),"").trim();
 			if(raceID.equalsIgnoreCase("?"))
 				mob.tell(CMLib.lister().reallyList(mob,CMClass.races(),-1).toString());
@@ -3182,7 +3316,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genCharClass(MOB mob, MOB M, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		String classID="begin!";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(classID.length()>0))
 		{
@@ -3193,7 +3328,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				str.append(C.ID()+"("+M.baseCharStats().getClassLevel(C)+") ");
 			}
 			mob.tell(L("@x1. Class: '@x2'.",""+showNumber,str.toString()));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			classID=mob.session().prompt(L("Enter a class to add/remove(?)\n\r:"),"").trim();
 			if(classID.equalsIgnoreCase("?"))
 				mob.tell(CMLib.lister().reallyList(mob,CMClass.charClasses(),-1).toString());
@@ -3248,7 +3384,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						{
 							lvl=mob.session().prompt(L("Levels to give this class (@x1)\n\r:",""+levels),""+levels).trim();
 							int lvl2=CMath.s_int(lvl);
-							if(lvl2>levels) lvl2=levels;
+							if(lvl2>levels)
+								lvl2=levels;
 							M.baseCharStats().setClassLevel(C,lvl2);
 						}
 						else
@@ -3256,7 +3393,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						{
 							lvl=mob.session().prompt(L("Levels to siphon from @x1 for this class (0)\n\r:",highestC.ID()),""+0).trim();
 							int lvl2=CMath.s_int(lvl);
-							if(lvl2>highLvl) lvl2=highLvl;
+							if(lvl2>highLvl)
+								lvl2=highLvl;
 							M.baseCharStats().setClassLevel(highestC,highLvl-lvl2);
 							M.baseCharStats().setClassLevel(C,lvl2);
 						}
@@ -3275,7 +3413,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genTattoos(MOB mob, MOB M, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		String behave="NO";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
 		{
@@ -3287,7 +3426,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if((tattoostr.length()>60)&&((showFlag!=showNumber)&&(showFlag>-999)))
 				tattoostr=tattoostr.substring(0,60)+"...";
 			mob.tell(L("@x1. Tattoos: '@x2'.",""+showNumber,tattoostr));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			behave=mob.session().prompt(L("Enter a tattoo to add/remove\n\r:"),"");
 			if(behave.length()>0)
 			{
@@ -3312,8 +3452,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genTitles(MOB mob, MOB M, int showNumber, int showFlag)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		if(M.playerStats()==null) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
+		if(M.playerStats()==null)
+			return;
 		String behave="NO";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
 		{
@@ -3321,12 +3463,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			for(int b=0;b<M.playerStats().getTitles().size();b++)
 			{
 				final String B=M.playerStats().getTitles().get(b);
-				if(B!=null) behaviorstr+=B+", ";
+				if(B!=null)
+					behaviorstr+=B+", ";
 			}
 			if(behaviorstr.length()>0)
 				behaviorstr=behaviorstr.substring(0,behaviorstr.length()-2);
 			mob.tell(L("@x1. Titles: '@x2'.",""+showNumber,behaviorstr));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			behave=mob.session().prompt(L("Enter a title to add or a number to remove\n\r:"),"");
 			if(behave.length()>0)
 			{
@@ -3361,7 +3505,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genExpertises(MOB mob, MOB M, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		String behave="NO";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
 		{
@@ -3376,7 +3521,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				behaviorstr.append("...");
 			}
 			mob.tell(L("@x1. Expertises: '@x2'.",""+showNumber,behaviorstr.toString()));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			behave=mob.session().prompt(L("Enter a lesson to add/remove\n\r:"),"");
 			if(behave.length()>0)
 			{
@@ -3405,15 +3551,18 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genSecurity(MOB mob, MOB M, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		final PlayerStats P=M.playerStats();
-		if(P==null) return;
+		if(P==null)
+			return;
 		String behave="NO";
 		final List<String> secFlags=CMParms.parseSemicolons(P.getSetSecurityFlags(null),true);
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
 		{
 			mob.tell(L("@x1. Security Groups: '@x2'.",""+showNumber,CMParms.toStringList(secFlags)));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			behave=mob.session().prompt(L("Enter a group to add/remove\n\r:"),"");
 			if(behave.length()>0)
 			{
@@ -3493,7 +3642,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	public void genBehaviors(MOB mob, final PhysicalAgent P, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		String behave="NO";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
 		{
@@ -3513,7 +3663,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(behaviorstr.length()>0)
 				behaviorstr=behaviorstr.substring(0,behaviorstr.length()-2);
 			mob.tell(L("@x1. Behaviors: '@x2'.",""+showNumber,behaviorstr));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			behave=mob.session().prompt(L("Enter a behavior to add/remove (?)\n\r:"),"");
 			if(behave.length()>0)
 			{
@@ -3593,7 +3744,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	public void genAffects(MOB mob, final Physical P, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		String behave="NO";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
 		{
@@ -3614,7 +3766,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(affectstr.length()>0)
 				affectstr=affectstr.substring(0,affectstr.length()-2);
 			mob.tell(L("@x1. Effects: '@x2'.",""+showNumber,affectstr));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			behave=mob.session().prompt(L("Enter an effect to add/remove (?)\n\r:"),"");
 			if(behave.length()>0)
 			{
@@ -3678,9 +3831,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genRideable1(MOB mob, Rideable R, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(L("@x1. Rideable Type: '@x2'.",""+showNumber,Rideable.RIDEABLE_DESCS[R.rideBasis()]));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		boolean q=false;
 		final String sel="LWACBTEDG";
 		while(!q)
@@ -3711,12 +3866,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genShopkeeper1(MOB mob, ShopKeeper M, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		final long oldMask=M.getWhatIsSoldMask();
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			mob.tell(L("@x1. Shopkeeper type: '@x2'.",""+showNumber,M.storeKeeperString()));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 
 			final StringBuffer buf=new StringBuffer("");
 			final StringBuffer codes=new StringBuffer("");
@@ -3800,7 +3957,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genShopkeeper2(MOB mob, ShopKeeper M, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		String itemstr="NO";
 		while(itemstr.length()>0)
 		{
@@ -3816,7 +3974,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(inventorystr.length()>0)
 				inventorystr=inventorystr.substring(0,inventorystr.length()-2);
 			mob.tell(L("@x1. Inventory: '@x2'.",""+showNumber,inventorystr));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			itemstr=mob.session().prompt(L("Enter something to add/remove (?)\n\r:"),"");
 			if(itemstr.length()>0)
 			{
@@ -3904,7 +4063,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genEconomics2(MOB mob, Economics E, int showNumber, int showFlag)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		final String header=L("@x1. Item Pricing Factors: ",""+showNumber);
 		String[] prics=E.itemPricingAdjustments();
 		if((showFlag!=showNumber)&&(showFlag>-999))
@@ -3968,7 +4128,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genAreaBlurbs(MOB mob, Area A, int showNumber, int showFlag)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		final String header=showNumber+". Area Blurb Flags: ";
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
@@ -4004,7 +4165,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(newValue.toUpperCase().equals("A"))
 			{
 				final String flag=mob.session().prompt(L("Enter a new flag: "));
-				if(flag.trim().length()==0) continue;
+				if(flag.trim().length()==0)
+					continue;
 				final String desc=mob.session().prompt(L("Enter a flag blurb (or nothing): "));
 				A.addBlurbFlag((flag.toUpperCase().trim()+" "+desc).trim());
 				mob.tell(L("@x1 added",flag.toUpperCase().trim()));
@@ -4033,7 +4195,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genAbilities(MOB mob, MOB M, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		String behave="NO";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
 		{
@@ -4049,7 +4212,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if((abilitiestr.length()>50)&&((showFlag!=showNumber)&&(showFlag>-999)))
 				abilitiestr=abilitiestr.substring(0,50)+"...";
 			mob.tell(L("@x1. Abilities: '@x2'.",""+showNumber,abilitiestr));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			behave=mob.session().prompt(L("Enter an ability to add/remove (?)\n\r:"),"");
 			if(behave.length()>0)
 			{
@@ -4106,7 +4270,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	@Override
 	public void spells(MOB mob, List<Ability> V, int showNumber, int showFlag, boolean inParms) throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		String behave="NO";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
 		{
@@ -4127,7 +4292,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(affectstr.length()>0)
 				affectstr=affectstr.substring(0,affectstr.length()-2);
 			mob.tell(L("@x1. Effects: '@x2'.",""+showNumber,affectstr));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			behave=mob.session().prompt(L("Enter a spell to add/remove (?)\n\r:"),"");
 			if(behave.length()>0)
 			{
@@ -4182,7 +4348,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genClanMembers(MOB mob, Clan E, int showNumber, int showFlag) throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		String behave="NO";
 		final List<MemberRecord> members=E.getMemberList();
 		final List<MemberRecord> membersCopy=new XVector<MemberRecord>(members);
@@ -4194,7 +4361,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(memberStr.length()>0)
 				memberStr=memberStr.substring(0,memberStr.length()-2);
 			mob.tell(L("@x1. Clan Members : '@x2'.",""+showNumber,memberStr));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			behave=mob.session().prompt(L("Enter a name to add/remove\n\r:"),"");
 			if(behave.length()>0)
 			{
@@ -4314,7 +4482,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genDeity5(MOB mob, Deity E, int showNumber, int showFlag) throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		String behave="NO";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
 		{
@@ -4328,7 +4497,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(abilitiestr.length()>0)
 				abilitiestr=abilitiestr.substring(0,abilitiestr.length()-2);
 			mob.tell(L("@x1. Blessings: '@x2'.",""+showNumber,abilitiestr));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			behave=mob.session().prompt(L("Enter an ability to add/remove (?)\n\r:"),"");
 			if(behave.length()>0)
 			{
@@ -4383,7 +4553,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genDeity6(MOB mob, Deity E, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		String behave="NO";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
 		{
@@ -4397,7 +4568,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(abilitiestr.length()>0)
 				abilitiestr=abilitiestr.substring(0,abilitiestr.length()-2);
 			mob.tell(L("@x1. Curses: '@x2'.",""+showNumber,abilitiestr));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			behave=mob.session().prompt(L("Enter an ability to add/remove (?)\n\r:"),"");
 			if(behave.length()>0)
 			{
@@ -4452,7 +4624,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genDeity7(MOB mob, Deity E, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		String behave="NO";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
 		{
@@ -4466,7 +4639,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(abilitiestr.length()>0)
 				abilitiestr=abilitiestr.substring(0,abilitiestr.length()-2);
 			mob.tell(L("@x1. Granted Powers: '@x2'.",""+showNumber,abilitiestr));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			behave=mob.session().prompt(L("Enter an ability to add/remove (?)\n\r:"),"");
 			if(behave.length()>0)
 			{
@@ -4557,7 +4731,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	public void genSpaceStuff(MOB mob, SpaceObject E, int showNumber, int showFlag) throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
 			final StringBuffer buf=new StringBuffer();
@@ -4669,7 +4844,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					else
 					{
 						valL[i]=newValue;
-						if(i==2) fail=false;
+						if(i==2)
+							fail=false;
 					}
 				}
 				if(!fail)
@@ -4731,7 +4907,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	public void wornLocation(MOB mob, long[] oldWornLocation, boolean[] logicalAnd, int showNumber, int showFlag)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
 			final StringBuffer buf=new StringBuffer(showNumber+". ");
@@ -4790,7 +4967,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genWornLocation(MOB mob, Item E, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		final long[] wornLoc = new long[]{E.rawProperLocationBitmap()};
 		final boolean[] logicalAnd = new boolean[]{E.rawLogicalAnd()};
 		wornLocation(mob,wornLoc,logicalAnd,showNumber,showFlag);
@@ -4810,9 +4988,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genAttackAttribute(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(showNumber+". "+FieldDisp+": '"+CharStats.CODES.DESC(CMath.s_int(E.getStat(Field)))+"'.");
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		final String newName=mob.session().prompt(L("Enter a new one\n\r:"),"");
 		String newStat="";
 		for(final int i : CharStats.CODES.BASECODES())
@@ -4826,9 +5006,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genArmorCode(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(showNumber+". "+FieldDisp+": '"+CharClass.ARMOR_LONGDESC[CMath.s_int(E.getStat(Field))]+"'.");
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		final String newName=mob.session().prompt(L("Enter (@x1)\n\r:",CMParms.toStringList(CharClass.ARMOR_DESCS)),"");
 		String newStat="";
 		for(int i=0;i<CharClass.ARMOR_DESCS.length;i++)
@@ -4842,9 +5024,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genQualifications(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(showNumber+". "+FieldDisp+": '"+CMLib.masking().maskDesc(E.getStat(Field))+"'.");
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		String newName="?";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(newName.equals("?")))
 		{
@@ -4863,14 +5047,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genWeaponRestr(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String FieldNum, String Field)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		final List<String> set=CMParms.parseCommas(E.getStat(Field),true);
 		final StringBuffer str=new StringBuffer("");
 		for(int v=0;v<set.size();v++)
 			str.append(" "+Weapon.CLASS_DESCS[CMath.s_int(set.get(v))].toLowerCase());
 
 		mob.tell(showNumber+". "+FieldDisp+": '"+str.toString()+"'.");
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		String newName="?";
 		boolean setChanged=false;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(newName.equals("?")))
@@ -4919,14 +5105,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genWeaponMaterials(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String FieldNum, String Field)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		final List<String> set=CMParms.parseCommas(E.getStat(Field),true);
 		final StringBuffer str=new StringBuffer("");
 		for(int v=0;v<set.size();v++)
 			str.append(" "+CMLib.materials().getMaterialDesc(CMath.s_int(set.get(v))));
 
 		mob.tell(showNumber+". "+FieldDisp+": '"+str.toString()+"'.");
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		String newName="?";
 		boolean setChanged=false;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(newName.equals("?")))
@@ -4938,7 +5126,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(newName.length()>0)
 			{
 				int foundCode=CMLib.materials().getMaterialCode(newName,true);
-				if(foundCode<0) foundCode=CMLib.materials().getMaterialCode(newName,false);
+				if(foundCode<0)
+					foundCode=CMLib.materials().getMaterialCode(newName,false);
 				if(foundCode<0)
 				{
 					mob.tell(L("'@x1' is not recognized.  Try '?'.",newName));
@@ -4975,7 +5164,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genDisableFlags(MOB mob, Race E, int showNumber, int showFlag)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		int flags=CMath.s_int(E.getStat("DISFLAGS"));
 		String newName="?";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(newName.equals("?")))
@@ -4986,7 +5176,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					disabled.append(Race.GENFLAG_DESCS[i]);
 
 			mob.tell(L("@x1. Disabled: '@x2'.",""+showNumber,disabled.toString()));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 
 			newName=mob.session().prompt(L("Enter flag to toggle (?)\n\r:"),"").toUpperCase();
 			if(newName.length()==0)
@@ -5017,7 +5208,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genRaceWearFlags(MOB mob, Race E, int showNumber, int showFlag)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		int flags=CMath.s_int(E.getStat("WEAR"));
 		String newName="?";
 		final Wearable.CODES codes = Wearable.CODES.instance();
@@ -5029,7 +5221,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					wearable.append(codes.name(i)+" ");
 
 			mob.tell(L("@x1. UNWearable locations: '@x2'.",""+showNumber,wearable.toString()));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 
 			newName=mob.session().prompt(L("Enter a location to toggle (?)\n\r:"),"").toUpperCase();
 			if(newName.length()==0)
@@ -5063,9 +5256,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genRaceAvailability(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(L("@x1. Availability: '@x2'.",""+showNumber,Area.THEME_PHRASE_EXT[CMath.s_int(E.getStat("AVAIL"))]));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		String newName="?";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(newName.equals("?")))
 		{
@@ -5091,9 +5286,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genClassAvailability(MOB mob, CharClass E, int showNumber, int showFlag)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(L("@x1. Availability: '@x2'.",""+showNumber,Area.THEME_PHRASE_EXT[CMath.s_int(E.getStat("PLAYER"))]));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		String newName="?";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(newName.equals("?")))
 		{
@@ -5119,9 +5316,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genCat(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(L("@x1. Racial Category: '@x2'.",""+showNumber,E.racialCategory()));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		String newName=mob.session().prompt(L("Enter a new one\n\r:"),"");
 		if(newName.length()>0)
 		{
@@ -5169,14 +5368,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genRaceBuddy(MOB mob, Race E, int showNumber, int showFlag, String prompt, String flag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(showNumber+". "+prompt+": '"+E.getStat(flag)+"'.");
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		final String newName=mob.session().prompt(L("Enter a new one\n\r:"),"");
 		if(newName.length()>0)
 		{
 			Race R2=CMClass.getRace(newName);
-			if(R2==null) R2=(Race)CMClass.getLoadNewClassInstance(CMObjectType.RACE,newName,true);
+			if(R2==null)
+				R2=(Race)CMClass.getLoadNewClassInstance(CMObjectType.RACE,newName,true);
 			if((R2!=null)&&(R2.isGeneric()))
 				R2=null;
 			if(R2==null)
@@ -5203,14 +5405,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genClassBuddy(MOB mob, CharClass E, int showNumber, int showFlag, String prompt, String flag)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(showNumber+". "+prompt+": '"+E.getStat(flag)+"'.");
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		final String newName=mob.session().prompt(L("Enter a new one\n\r:"),"");
 		if(newName.length()>0)
 		{
 			CharClass C2=CMClass.getCharClass(newName);
-			if(C2==null) C2=(CharClass)CMClass.getLoadNewClassInstance(CMObjectType.CHARCLASS,newName,true);
+			if(C2==null)
+				C2=(CharClass)CMClass.getLoadNewClassInstance(CMObjectType.CHARCLASS,newName,true);
 			if((C2!=null)&&(C2.isGeneric()))
 				C2=null;
 			if(C2==null)
@@ -5237,13 +5442,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genClassRaceQuals(MOB mob, CharClass E, int showNumber, int showFlag, String prompt, String flag)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		boolean cont=true;
 		final List<String> newRaces=new XVector<String>(CMParms.parseCommas(E.getStat(flag), true));
 		while((!mob.session().isStopped()) && (cont))
 		{
 			mob.tell(showNumber+". "+prompt+": '"+CMParms.toStringList(newRaces)+"'.");
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			final String newName=mob.session().prompt(L("Enter a race to add or remove\n\r:"),"");
 			if(newName.length()>0)
 			{
@@ -5295,12 +5502,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genBodyParts(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		final StringBuffer parts=new StringBuffer("");
 		for(int i=0;i<Race.BODYPARTSTR.length;i++)
-			if(E.bodyMask()[i]!=0) parts.append(Race.BODYPARTSTR[i].toLowerCase()+"("+E.bodyMask()[i]+") ");
+			if(E.bodyMask()[i]!=0)
+				parts.append(Race.BODYPARTSTR[i].toLowerCase()+"("+E.bodyMask()[i]+") ");
 		mob.tell(L("@x1. Body Parts: @x2.",""+showNumber,parts.toString()));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		String newName=mob.session().prompt(L("Enter a body part\n\r:"),"");
 		if(newName.length()>0)
 		{
@@ -5330,7 +5540,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genPStats(MOB mob, Race R, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		final PhyStats S=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 		S.setAllValues(0);
 		CMLib.coffeeMaker().setPhyStats(S,R.getStat("ESTATS"));
@@ -5339,7 +5550,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(CMath.s_int(S.getStat(S.getStatCodes()[i]))!=0)
 				parts.append(CMStrings.capitalizeAndLower(S.getStatCodes()[i])+"("+S.getStat(S.getStatCodes()[i])+") ");
 		mob.tell(L("@x1. PhysStat Adjustments: @x2.",""+showNumber,parts.toString()));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		boolean done=false;
 		while((!done)&&(mob.session()!=null)&&(!mob.session().isStopped()))
 		{
@@ -5412,7 +5624,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						  int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		final CharState S=(CharState)CMClass.getCommon("DefaultCharState"); S.setAllValues(0);
 		CMLib.coffeeMaker().setCharState(S,R.getStat(field));
 		final StringBuffer parts=new StringBuffer("");
@@ -5420,7 +5633,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(CMath.s_int(S.getStat(S.getStatCodes()[i]))!=0)
 				parts.append(CMStrings.capitalizeAndLower(S.getStatCodes()[i])+"("+S.getStat(S.getStatCodes()[i])+") ");
 		mob.tell(showNumber+". "+prompt+": "+parts.toString()+".");
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		boolean done=false;
 		while((!done)&&(mob.session()!=null)&&(!mob.session().isStopped()))
 		{
@@ -5469,7 +5683,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genAStats(MOB mob, Race R, String Field, String FieldName, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		final CharStats S=(CharStats)CMClass.getCommon("DefaultCharStats"); S.setAllValues(0);
 		CMLib.coffeeMaker().setCharStats(S,R.getStat(Field));
 		final StringBuffer parts=new StringBuffer("");
@@ -5477,7 +5692,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(S.getStat(i)!=0)
 				parts.append(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i))+"("+S.getStat(i)+") ");
 		mob.tell(showNumber+". "+FieldName+": "+parts.toString()+".");
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		boolean done=false;
 		while((!done)&&(mob.session()!=null)&&(!mob.session().isStopped()))
 		{
@@ -5538,7 +5754,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genPStats(MOB mob, CharClass R, int showNumber, int showFlag, boolean skipRejuv)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		final PhyStats S=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 		S.setAllValues(0);
 		CMLib.coffeeMaker().setPhyStats(S,R.getStat("ESTATS"));
@@ -5548,7 +5765,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(CMath.s_int(S.getStat(S.getStatCodes()[i]))!=0)
 					parts.append(CMStrings.capitalizeAndLower(S.getStatCodes()[i])+"("+S.getStat(S.getStatCodes()[i])+") ");
 		mob.tell(L("@x1. PhysStat Adjustments: @x2.",""+showNumber,parts.toString()));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		boolean done=false;
 		while((!done)&&(mob.session()!=null)&&(!mob.session().isStopped()))
 		{
@@ -5622,7 +5840,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						  int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		final CharState S=(CharState)CMClass.getCommon("DefaultCharState"); S.setAllValues(0);
 		CMLib.coffeeMaker().setCharState(S,R.getStat(field));
 		final StringBuffer parts=new StringBuffer("");
@@ -5630,7 +5849,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(CMath.s_int(S.getStat(S.getStatCodes()[i]))!=0)
 				parts.append(CMStrings.capitalizeAndLower(S.getStatCodes()[i])+"("+S.getStat(S.getStatCodes()[i])+") ");
 		mob.tell(showNumber+". "+prompt+": "+parts.toString()+".");
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		boolean done=false;
 		while((!done)&&(mob.session()!=null)&&(!mob.session().isStopped()))
 		{
@@ -5679,7 +5899,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genAStats(MOB mob, CharClass R, String Field, String FieldName, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		final CharStats S=(CharStats)CMClass.getCommon("DefaultCharStats"); S.setAllValues(0);
 		CMLib.coffeeMaker().setCharStats(S,R.getStat(Field));
 		final StringBuffer parts=new StringBuffer("");
@@ -5687,7 +5908,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(S.getStat(i)!=0)
 				parts.append(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i))+"("+S.getStat(i)+") ");
 		mob.tell(showNumber+". "+FieldName+": "+parts.toString()+".");
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		boolean done=false;
 		while((!done)&&(mob.session()!=null)&&(!mob.session().isStopped()))
 		{
@@ -5736,7 +5958,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genResources(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
 		{
 			final StringBuffer parts=new StringBuffer("");
@@ -5771,7 +5994,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(parts.toString().endsWith(", "))
 			{parts.deleteCharAt(parts.length()-1);parts.deleteCharAt(parts.length()-1);}
 			mob.tell(L("@x1. Resources: @x2.",""+showNumber,parts.toString()));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			final String newName=mob.session().prompt(L("Enter a resource name to remove or\n\rthe word new and an item name to add from your inventory\n\r:"),"");
 			if(newName.length()>0)
 			{
@@ -5853,7 +6077,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genOutfit(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
 		{
 			final StringBuffer parts=new StringBuffer("");
@@ -5873,7 +6098,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(parts.toString().endsWith(", "))
 			{parts.deleteCharAt(parts.length()-1);parts.deleteCharAt(parts.length()-1);}
 			mob.tell(L("@x1. Outfit: @x2.",""+showNumber,parts.toString()));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			final String newName=mob.session().prompt(L("Enter an item name to remove or\n\rthe word new and an item name to add from your inventory\n\r:"),"");
 			if(newName.length()>0)
 			{
@@ -5925,7 +6151,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genOutfit(MOB mob, CharClass E, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
 		{
 			final StringBuffer parts=new StringBuffer("");
@@ -5945,7 +6172,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(parts.toString().endsWith(", "))
 			{parts.deleteCharAt(parts.length()-1);parts.deleteCharAt(parts.length()-1);}
 			mob.tell(L("@x1. Outfit: @x2.",""+showNumber,parts.toString()));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			final String newName=mob.session().prompt(L("Enter an item name to remove or\n\rthe word new and an item name to add from your inventory\n\r:"),"");
 			if(newName.length()>0)
 			{
@@ -5998,7 +6226,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genMinimumStatQualifications(MOB mob, CharClass E, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
 		{
 			final StringBuffer parts=new StringBuffer("");
@@ -6013,7 +6242,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(parts.toString().endsWith(", "))
 			{parts.deleteCharAt(parts.length()-1);parts.deleteCharAt(parts.length()-1);}
 			mob.tell(L("@x1. Min. Stats: @x2.",""+showNumber,parts.toString()));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			String newName=mob.session().prompt(L("Enter a stat name to remove or add:"),"");
 			if(newName.length()>0)
 			{
@@ -6072,7 +6302,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genWeapon(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		final StringBuffer parts=new StringBuffer("");
 		Item I=CMClass.getItem(E.getStat("WEAPONCLASS"));
 		if(I!=null)
@@ -6082,7 +6313,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			parts.append(I.name());
 		}
 		mob.tell(L("@x1. Natural Weapon: @x2.",""+showNumber,parts.toString()));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		final String newName=mob.session().prompt(L("Enter a weapon name from your inventory to change, or 'null' for human\n\r:"),"");
 		if(newName.equalsIgnoreCase("null"))
 		{
@@ -6114,17 +6346,20 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void modifyDField(DVector fields, String fieldName, String value)
 	{
 		final int x=fields.indexOf(fieldName.toUpperCase());
-		if(x<0) return;
+		if(x<0)
+			return;
 		fields.setElementAt(x,2,value);
 	}
 
 	protected void genAgingChart(MOB mob, Race E, int showNumber, int showFlag)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 
 		mob.tell(L("@x1. Aging Chart: @x2.",""+showNumber,CMParms.toStringList(E.getAgingChart())));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
 		{
 			final String newName=mob.session().prompt(L("Enter a comma-delimited list of 9 numbers, running from infant -> ancient\n\r:"),"");
@@ -6148,7 +6383,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					}
 					highest=CMath.s_int(V.get(i));
 				}
-				if(cont) continue;
+				if(cont)
+					continue;
 				E.setStat("AGING",newName);
 				break;
 			}
@@ -6206,7 +6442,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genDynamicAbilities(MOB mob, Modifiable E, String typeName, String levelName, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
 		{
 			final StringBuffer parts=new StringBuffer("");
@@ -6243,7 +6480,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				parts.deleteCharAt(parts.length()-1);
 			}
 			mob.tell(L("@x1. @x2 Abilities: @x3.",""+showNumber,typeName,parts.toString()));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			final String newName=mob.session().prompt(L("Enter an ability name to add or remove (?)\n\r:"),"");
 			if(newName.equalsIgnoreCase("?"))
 				mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),-1).toString());
@@ -6360,7 +6598,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genDynamicEffects(MOB mob, Modifiable E, String typeName, String levelName, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
 		{
 			final StringBuffer parts=new StringBuffer("");
@@ -6587,7 +6826,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genClassAbilities(MOB mob, CharClass E, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
 			mob.tell(L("@x1. Class Abilities: [...].",""+showNumber));
@@ -6643,7 +6883,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			for(int i=0;i<=maxAbledLevel;i++)
 			{
 				final int index=levelSets.indexOf(Integer.valueOf(i));
-				if(index<0) continue;
+				if(index<0)
+					continue;
 				final List<AbilityMapper.AbilityMapping> set=(List<AbilityMapper.AbilityMapping>)levelSets.elementAt(index,2);
 				for(int s=0;s<set.size();s++)
 				{
@@ -6681,7 +6922,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							myLevelSet=lvls;
 							break;
 						}
-					if(lvlIndex>=0) break;
+					if(lvlIndex>=0)
+						break;
 				}
 				boolean updateList=false;
 				if(ableIndex<0)
@@ -6754,7 +6996,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genCulturalAbilities(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
 		{
 			final StringBuffer parts=new StringBuffer("");
@@ -6774,7 +7017,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(parts.toString().endsWith(", "))
 			{parts.deleteCharAt(parts.length()-1);parts.deleteCharAt(parts.length()-1);}
 			mob.tell(L("@x1. Cultural Abilities: @x2.",""+showNumber,parts.toString()));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			final String newName=mob.session().prompt(L("Enter an ability name to add or remove (?)\n\r:"),"");
 			if(newName.equalsIgnoreCase("?"))
 				mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),-1).toString());
@@ -6962,9 +7206,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Name","NAME",false);
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Name (Plural)","PLURALNAME",false);
 			promptStatInt(mob, me,++showNumber, showFlag,"Rank (low=better)", "RANK");
-			if((me.getRank()<0)||(me.getRank()>99)) me.setRank(0);
+			if((me.getRank()<0)||(me.getRank()>99))
+				me.setRank(0);
 			promptStatInt(mob, me,++showNumber, showFlag,"Maximum", "MAX");
-			if((me.getMax()<0)||(me.getMax()>9999)) me.setMax(Integer.MAX_VALUE);
+			if((me.getMax()<0)||(me.getMax()>9999))
+				me.setMax(Integer.MAX_VALUE);
 			promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Position Mask","INNERMASK",false);
 			promptStatBool(mob, me,++showNumber, showFlag,"Is Shown", "ISPUBLIC");
 			promptStatCommaChoices(mob, me,CMParms.toStringList(Clan.Function.values()),++showNumber, showFlag,"Powers", "FUNCTIONS",Clan.Function.values());
@@ -6982,10 +7228,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	public void clanGovernmentPositions(MOB mob, ClanGovernment me, int showNumber, int showFlag) throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		String list = CMParms.toStringList(me.getPositions());
 		mob.tell(L("@x1. Positions: @x2",""+showNumber,list));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		final String promptStr=L("Enter a position ID to edit/remove or ADD\n\r:");
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
@@ -7066,9 +7314,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me.getStat("VOTEFUNCS").length()>0)
 			{
 				promptStatInt(mob, me,++showNumber, showFlag,"Max Vote Days", "MAXVOTEDAYS");
-				if((me.getMaxVoteDays()<0)||(me.getMaxVoteDays()>999999)) me.setMaxVoteDays(10);
+				if((me.getMaxVoteDays()<0)||(me.getMaxVoteDays()>999999))
+					me.setMaxVoteDays(10);
 				promptStatInt(mob, me,++showNumber, showFlag,"Vote Quorum (Pct%)", "VOTEQUORUMPCT");
-				if((me.getVoteQuorumPct()<0)||(me.getVoteQuorumPct()>100)) me.setVoteQuorumPct(100);
+				if((me.getVoteQuorumPct()<0)||(me.getVoteQuorumPct()>100))
+					me.setVoteQuorumPct(100);
 			}
 			promptStatChoices(mob,me,CMParms.toStringList(Clan.AutoPromoteFlag.values()),++showNumber,showFlag,"Auto-Promotion","AUTOPROMOTEBY",Clan.AutoPromoteFlag.values());
 			promptStatChoices(mob,me,CMParms.toStringList(me.getPositions()),++showNumber,showFlag,"Apply Position","AUTOROLE",me.getPositions());
@@ -7300,9 +7550,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	throws IOException
 	{
 		final int setDex=set.indexOf(Field);
-		if(((showFlag>0)&&(showFlag!=showNumber))||(setDex<0)) return true;
+		if(((showFlag>0)&&(showFlag!=showNumber))||(setDex<0))
+			return true;
 		mob.tell(showNumber+". "+FieldDisp+": '"+((String)set.elementAt(setDex,2)+"'."));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return true;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return true;
 		String newName=mob.session().prompt(L("Enter a new one\n\r:"),"");
 		if(newName.trim().length()==0)
 		{
@@ -7316,7 +7568,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mob.tell(help);
 			return genText(mob,set,choices,help,showNumber,showFlag,FieldDisp,Field);
 		}
-		if(newName.equalsIgnoreCase("null")) newName="";
+		if(newName.equalsIgnoreCase("null"))
+			newName="";
 		if((choices==null)||(choices.length==0))
 		{
 			set.setElementAt(setDex,2,newName);
@@ -7343,7 +7596,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	throws IOException
 	{
 		final DVector decoded=CMLib.ableMapper().getAbilityComponentDecodedDVector(comp);
-		if(mob.isMonster()) return true;
+		if(mob.isMonster())
+			return true;
 		boolean ok=false;
 		int showFlag=-1;
 		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
@@ -7354,7 +7608,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			int showNumber=0;
 			genText(mob,decoded,(new String[]{"&&","||","X"}),choices+" &&, ||, X",++showNumber,showFlag,"Conjunction (X Deletes) (?)","ANDOR");
-			if(((String)decoded.elementAt(0,2)).equalsIgnoreCase("X")) return false;
+			if(((String)decoded.elementAt(0,2)).equalsIgnoreCase("X"))
+				return false;
 			genText(mob,decoded,(new String[]{"INVENTORY","HELD","WORN"}),choices+" INVENTORY, HELD, WORN",++showNumber,showFlag,"Component position (?)","DISPOSITION");
 			genText(mob,decoded,(new String[]{"KEPT","CONSUMED"}),choices+" KEPT, CONSUMED",++showNumber,showFlag,"Component fate (?)","FATE");
 			genText(mob,decoded,null,null,++showNumber,showFlag,"Amount of component","AMOUNT");
@@ -7391,9 +7646,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if((mob.session()!=null)&&(!mob.session().isStopped()))
 				{
 					showNumber++;
-					if((showFlag>0)&&(showFlag!=showNumber)) continue;
+					if((showFlag>0)&&(showFlag!=showNumber))
+						continue;
 					mob.tell(showNumber+": '"+CMLib.ableMapper().getAbilityComponentDesc(null,codedDV,v)+"'.");
-					if((showFlag!=showNumber)&&(showFlag>-999)) continue;
+					if((showFlag!=showNumber)&&(showFlag>-999))
+						continue;
 					if(!modifyComponent(mob,codedDV.get(v)))
 					{
 						codedDV.remove(v);
@@ -7495,7 +7752,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			showFlag=-999;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
-			if(mob.isMonster()) return;
+			if(mob.isMonster())
+				return;
 			int showNumber=0;
 			if(showFlag<0)
 				mob.tell(L("*. Class: @x1",me.ID()));
@@ -7532,8 +7790,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genGettable(mob,me,++showNumber,showFlag);
 			genReadable1(mob,me,++showNumber,showFlag);
 			genReadable2(mob,me,++showNumber,showFlag);
-			if(me instanceof Recipe) genRecipe(mob,(Recipe)me,++showNumber,showFlag);
-			if(me instanceof Light) genBurnout(mob,(Light)me,++showNumber,showFlag);
+			if(me instanceof Recipe)
+				genRecipe(mob,(Recipe)me,++showNumber,showFlag);
+			if(me instanceof Light)
+				genBurnout(mob,(Light)me,++showNumber,showFlag);
 			genRejuv(mob,me,++showNumber,showFlag);
 			if(me instanceof Coins)
 				genCoinStuff(mob,(Coins)me,++showNumber,showFlag);
@@ -7600,7 +7860,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genGettable(mob,me,++showNumber,showFlag);
 			genReadable1(mob,me,++showNumber,showFlag);
 			genReadable2(mob,me,++showNumber,showFlag);
-			if(me instanceof Light) genBurnout(mob,(Light)me,++showNumber,showFlag);
+			if(me instanceof Light)
+				genBurnout(mob,(Light)me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
@@ -7623,7 +7884,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genScripts(MOB mob, MOB E, int showNumber, int showFlag)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		String behave="NO";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
 		{
@@ -7632,12 +7894,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			for(final Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();b++)
 			{
 				final ScriptingEngine SE=e.nextElement();
-				if(SE!=null) behaviorstr+=b+":"+SE.defaultQuestName()+", ";
+				if(SE!=null)
+					behaviorstr+=b+":"+SE.defaultQuestName()+", ";
 			}
 			if(behaviorstr.length()>0)
 				behaviorstr=behaviorstr.substring(0,behaviorstr.length()-2);
 			mob.tell(L("@x1. Scripts: '@x2'.",""+showNumber,behaviorstr));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
 			behave=mob.session().prompt(L("Enter a script number to remove\n\r:"),"");
 			if(behave.length()>0)
 			{
@@ -7685,7 +7949,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genGettable(mob,(Item)me,++showNumber,showFlag);
 			genReadable1(mob,(Item)me,++showNumber,showFlag);
 			genReadable2(mob,(Item)me,++showNumber,showFlag);
-			if(me instanceof Light) genBurnout(mob,(Light)me,++showNumber,showFlag);
+			if(me instanceof Light)
+				genBurnout(mob,(Light)me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			genDisposition(mob,me.basePhyStats(),++showNumber,showFlag);
@@ -7731,7 +7996,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genDescription(mob,me,++showNumber,showFlag);
 			genReadable1(mob,me,++showNumber,showFlag);
 			genReadable2(mob,me,++showNumber,showFlag);
-			if(me instanceof Light) genBurnout(mob,(Light)me,++showNumber,showFlag);
+			if(me instanceof Light)
+				genBurnout(mob,(Light)me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
 			if(showFlag<-900){ ok=true; break;}
@@ -7866,7 +8132,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genGettable(mob,me,++showNumber,showFlag);
 			genReadable1(mob,me,++showNumber,showFlag);
 			genReadable2(mob,me,++showNumber,showFlag);
-			if(me instanceof Light) genBurnout(mob,(Light)me,++showNumber,showFlag);
+			if(me instanceof Light)
+				genBurnout(mob,(Light)me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			if(me instanceof Rideable)
@@ -7933,7 +8200,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				genReadable2(mob,me,++showNumber,showFlag);
 				genUses(mob,me,++showNumber,showFlag);
 				genMaxUses(mob,(Wand)me,++showNumber,showFlag);
-				if(me instanceof Light) genBurnout(mob,(Light)me,++showNumber,showFlag);
+				if(me instanceof Light)
+					genBurnout(mob,(Light)me,++showNumber,showFlag);
 			}
 			else
 			if(me instanceof AmmunitionWeapon)
@@ -8392,9 +8660,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		me.resetToMaxState();
 		if(!oldName.equals(me.Name()))
 		{
-			if(mob.session()!=null) mob.session().print(L("Changing player name..."));
+			if(mob.session()!=null)
+				mob.session().print(L("Changing player name..."));
 			CMLib.players().renamePlayer(me, oldName);
-			if(mob.session()!=null) mob.session().println(".");
+			if(mob.session()!=null)
+				mob.session().println(".");
 			Log.sysOut("CMGenEditor",mob.Name()+" changed user "+oldName+" to "+me.name());
 		}
 		Log.sysOut("CMGenEditor",mob.Name()+" edited user "+me.name());
@@ -8405,9 +8675,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genClanStatus(MOB mob, Clan C, int showNumber, int showFlag)
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(L("@x1. Clan Status: @x2",""+showNumber,Clan.CLANSTATUS_DESC[C.getStatus()]));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		switch(C.getStatus())
 		{
 		case Clan.CLANSTATUS_ACTIVE:
@@ -8431,9 +8703,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genClanGovt(MOB mob, Clan C, int showNumber, int showFlag)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(L("@x1. Government type: '@x2'.",""+showNumber,C.getGovernmentName()));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			final String newName=mob.session().prompt(L("Enter a new one (?)\n\r:"),"");
@@ -8473,7 +8747,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		else
 		if((!pct)&&(!CMath.isNumber(newStr)))
 			return -1.0;
-		if(pct) return CMath.s_pct(newStr);
+		if(pct)
+			return CMath.s_pct(newStr);
 		return CMath.s_double(newStr);
 	}
 
@@ -8493,9 +8768,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genClanRole(MOB mob, Clan C, int showNumber, int showFlag)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(L("@x1. Apply Role: '@x2'.",""+showNumber,C.getRoleName(C.getAutoPosition(),true,false)));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			final String newName=mob.session().prompt(L("Enter a new one (?)\n\r:"),"");
@@ -8526,12 +8803,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genClanClass(MOB mob, Clan C, int showNumber, int showFlag)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		CharClass CC=CMClass.getCharClass(C.getClanClass());
-		if(CC==null)CC=CMClass.findCharClass(C.getClanClass());
+		if(CC==null)
+			CC=CMClass.findCharClass(C.getClanClass());
 		final String clasName=(CC==null)?"NONE":CC.name();
 		mob.tell(L("@x1. Clan Auto-Class: '@x2'.",""+showNumber,clasName));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			final String newName=mob.session().prompt(L("Enter a new one (?)\n\r:"),"");
@@ -8569,9 +8849,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected String genClanRoom(MOB mob, Clan C, String oldRoomID, String promptCode, int showNumber, int showFlag)
 	throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return oldRoomID;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return oldRoomID;
 		mob.tell(showNumber+CMStrings.replaceAll(promptCode,"@x1",oldRoomID));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return oldRoomID;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return oldRoomID;
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			final String newName=mob.session().prompt(L("Enter a new one (null)\n\r:"),"");
@@ -8805,9 +9087,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genAccountExpiration(MOB mob, AccountStats A, int showNumber, int showFlag) throws IOException
 	{
-		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
 		mob.tell(L("@x1. Expires: @x2",""+showNumber,CMLib.time().date2String(A.getAccountExpiration())));
-		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
 		final String s=mob.session().prompt(L("Enter a new value\n\r:"),"");
 		if(s.length()>0)
 			A.setAccountExpiration(CMLib.time().string2Millis(s));

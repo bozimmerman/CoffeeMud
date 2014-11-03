@@ -111,7 +111,8 @@ public class GenAbility extends StdAbility
 	}
 	private static final Object V(String ID, int varNum)
 	{
-		if(vars.containsKey(ID)) return ((Object[])vars.get(ID))[varNum];
+		if(vars.containsKey(ID))
+			return ((Object[])vars.get(ID))[varNum];
 		final Object[] O=makeEmpty();
 		vars.put(ID,O);
 		return O[varNum];
@@ -249,11 +250,13 @@ public class GenAbility extends StdAbility
 			{
 			case Ability.CAN_MOBS:
 				target=super.getTarget(mob, commands, givenTarget);
-				if(target==null) return false;
+				if(target==null)
+					return false;
 				break;
 			case Ability.CAN_ITEMS:
 				target=super.getTarget(mob, mob.location(), givenTarget, commands, Wearable.FILTER_ANY);
-				if(target==null) return false;
+				if(target==null)
+					return false;
 				break;
 			case Ability.CAN_ROOMS:
 				target=mob;
@@ -274,14 +277,16 @@ public class GenAbility extends StdAbility
 					openThis=mob.location().getExitInDir(dirCode);
 				if(openThis==null)
 					openThis=mob.location().fetchFromRoomFavorItems(null, whatToOpen);
-				if((openThis==null)||(!(openThis instanceof Exit))) return false;
+				if((openThis==null)||(!(openThis instanceof Exit)))
+					return false;
 				break;
 			}
 			case 0:
 				break;
 			default:
 				target=super.getAnyTarget(mob,commands, givenTarget, Wearable.FILTER_ANY);
-				if(target==null) return false;
+				if(target==null)
+					return false;
 				break;
 			}
 		}
@@ -357,7 +362,8 @@ public class GenAbility extends StdAbility
 			}
 			if(castingQuality(mob,target)==Ability.QUALITY_MALICIOUS)
 				castCode|=CMMsg.MASK_MALICIOUS;
-			if(auto) castCode|=CMMsg.MASK_ALWAYS;
+			if(auto)
+				castCode|=CMMsg.MASK_ALWAYS;
 
 			final CMMsg msg = CMClass.getMsg(mob, target, this, castCode, (auto?(String)V(ID,V_ACST):(String)V(ID,V_CAST)));
 			final CMMsg msg2;
@@ -475,7 +481,8 @@ public class GenAbility extends StdAbility
 							if(afterCast.length()>0)
 							{
 								final Ability P=CMClass.getAbility("Prop_SpellAdder");
-								if(P!=null) P.invoke(mob,new XVector(afterCast),finalTarget,true,asLevel);
+								if(P!=null)
+									P.invoke(mob,new XVector(afterCast),finalTarget,true,asLevel);
 							}
 						}
 						if((canAffectCode()!=0)&&(finalTarget!=null)&&(finalTargetMOB.amDead()||(!CMLib.flags().isInTheGame(finalTarget, true))))
@@ -633,7 +640,8 @@ public class GenAbility extends StdAbility
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
+			if(code.equalsIgnoreCase(CODES[i]))
+				return i;
 		return -1;
 	}
 	@Override
@@ -674,7 +682,8 @@ public class GenAbility extends StdAbility
 		case 30: return ((Boolean)V(ID,V_TKAF)).toString();
 		case 31: return ((Boolean)V(ID,V_CHAN)).toString();
 		default:
-			if(code.equalsIgnoreCase("allxml")) return getAllXML();
+			if(code.equalsIgnoreCase("allxml"))
+				return getAllXML();
 			break;
 		}
 		return "";
@@ -684,7 +693,8 @@ public class GenAbility extends StdAbility
 	{
 		int num=0;
 		int numDex=code.length();
-		while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1)))) numDex--;
+		while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1))))
+			numDex--;
 		if(numDex<code.length())
 		{
 			num=CMath.s_int(code.substring(numDex));
@@ -741,7 +751,8 @@ public class GenAbility extends StdAbility
 		case 30: SV(ID,V_TKAF,Boolean.valueOf(CMath.s_bool(val))); break;
 		case 31: SV(ID,V_CHAN,Boolean.valueOf(CMath.s_bool(val))); break;
 		default:
-			if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenAbility")) parseAllXML(val);
+			if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenAbility"))
+				parseAllXML(val);
 			break;
 		}
 	}
@@ -757,7 +768,8 @@ public class GenAbility extends StdAbility
 			if(str.length()>0)
 			{
 				String sstr=str.toString();
-				if(sstr.endsWith(",")) sstr=sstr.substring(0,sstr.length()-1);
+				if(sstr.endsWith(","))
+					sstr=sstr.substring(0,sstr.length()-1);
 				return sstr;
 			}
 		}
@@ -769,7 +781,8 @@ public class GenAbility extends StdAbility
 
 	private int convertClassAndDomain(String val)
 	{
-		if(CMath.isInteger(val)) return CMath.s_int(val);
+		if(CMath.isInteger(val))
+			return CMath.s_int(val);
 		int dom=0;
 		int acod=Ability.ACODE_SKILL;
 		final List<String> V=CMParms.parseCommas(val,true);
@@ -796,7 +809,8 @@ public class GenAbility extends StdAbility
 						if(Ability.DOMAIN_DESCS[i].toUpperCase().startsWith(val.toUpperCase())
 								||Ability.DOMAIN_DESCS[i].toUpperCase().endsWith(val.toUpperCase()))
 						{ tdom=i<<5; break;}
-					if(tdom>=0) dom=tdom;
+					if(tdom>=0)
+						dom=tdom;
 				}
 			}
 			else
@@ -817,7 +831,8 @@ public class GenAbility extends StdAbility
 
 	private int convert(String[] options, String val, boolean mask)
 	{
-		if(CMath.isInteger(val)) return CMath.s_int(val);
+		if(CMath.isInteger(val))
+			return CMath.s_int(val);
 		for(int i=0;i<options.length;i++)
 			if(val.equalsIgnoreCase(options[i]))
 				return mask?(1<<i):i;
@@ -839,16 +854,20 @@ public class GenAbility extends StdAbility
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenAbility)) return false;
-		if(!((GenAbility)E).ID().equals(ID)) return false;
-		if(!((GenAbility)E).text().equals(text())) return false;
+		if(!(E instanceof GenAbility))
+			return false;
+		if(!((GenAbility)E).ID().equals(ID))
+			return false;
+		if(!((GenAbility)E).text().equals(text()))
+			return false;
 		return true;
 	}
 
 	private void parseAllXML(String xml)
 	{
 		final List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(xml);
-		if((V==null)||(V.size()==0)) return;
+		if((V==null)||(V.size()==0))
+			return;
 		for(int c=0;c<getStatCodes().length;c++)
 			if(getStatCodes()[c].equals("CLASS"))
 				ID=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(V, getStatCodes()[c]));

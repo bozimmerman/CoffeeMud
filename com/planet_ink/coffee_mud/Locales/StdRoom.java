@@ -118,7 +118,8 @@ public class StdRoom implements Room
 	@Override
 	public String name()
 	{
-		if(phyStats().newName()!=null) return phyStats().newName();
+		if(phyStats().newName()!=null)
+			return phyStats().newName();
 		return name;
 	}
 
@@ -333,8 +334,10 @@ public class StdRoom implements Room
 		if(to instanceof Room)
 			to=((Room)to).getRawExit(direction);
 
-		if(E==to) return;
-		if(E!=null) E.exitUsage((short)-1);
+		if(E==to)
+			return;
+		if(E!=null)
+			E.exitUsage((short)-1);
 
 		if(to instanceof Exit)
 		{
@@ -444,7 +447,8 @@ public class StdRoom implements Room
 	@Override
 	public Area getArea()
 	{
-		if(myArea==null) return CMClass.randomArea();
+		if(myArea==null)
+			return CMClass.randomArea();
 		return myArea;
 	}
 
@@ -453,9 +457,11 @@ public class StdRoom implements Room
 	{
 		if(newArea!=myArea)
 		{
-			if(myArea!=null) myArea.delProperRoom(this);
+			if(myArea!=null)
+				myArea.delProperRoom(this);
 			myArea=newArea;
-			if(myArea!=null) myArea.addProperRoom(this);
+			if(myArea!=null)
+				myArea.addProperRoom(this);
 		}
 	}
 
@@ -474,8 +480,10 @@ public class StdRoom implements Room
 	@Override
 	public void giveASky(int depth)
 	{
-		if(skyedYet) return;
-		if(depth>1000) return;
+		if(skyedYet)
+			return;
+		if(depth>1000)
+			return;
 
 		skyedYet=true;
 		if((roomID().length()==0)
@@ -519,13 +527,15 @@ public class StdRoom implements Room
 					{
 						sky.rawDoors()[d]=thatSky;
 						Exit xo=getRawExit(d);
-						if((xo==null)||(xo.hasADoor())) xo=dnE;
+						if((xo==null)||(xo.hasADoor()))
+							xo=dnE;
 						sky.setRawExit(d,dnE);
 						thatSky.rawDoors()[Directions.getOpDirectionCode(d)]=sky;
 						if(thatRoom!=null)
 						{
 							xo=thatRoom.getRawExit(Directions.getOpDirectionCode(d));
-							if((xo==null)||(xo.hasADoor())) xo=dnE;
+							if((xo==null)||(xo.hasADoor()))
+								xo=dnE;
 							thatSky.setRawExit(Directions.getOpDirectionCode(d),xo);
 						}
 						((GridLocale)thatSky).clearGrid(null);
@@ -641,7 +651,8 @@ public class StdRoom implements Room
 			{
 				if((gridParent!=null)&&(!gridParent.okMessage(myHost,msg)))
 					return false;
-				if(!CMLib.map().isClearableRoom(this)) return false;
+				if(!CMLib.map().isClearableRoom(this))
+					return false;
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 					final Room R2=rawDoors()[d];
@@ -929,7 +940,8 @@ public class StdRoom implements Room
 				for(final DeadBody D : deadBodies)
 				{
 					MOB M=CMLib.players().getLoadPlayer(D.mobName());
-					if(M==null) M=D.savedMOB();
+					if(M==null)
+						M=D.savedMOB();
 					if((M!=null)&&(M.getStartRoom()!=null))
 					{
 						final Room startRoom=CMLib.map().getRoom(M.getStartRoom());
@@ -1038,7 +1050,8 @@ public class StdRoom implements Room
 		tickStatus=Tickable.STATUS_START;
 		if(tickID==Tickable.TICKID_ROOM_BEHAVIOR)
 		{
-			if((numBehaviors()<=0)&&(numScripts()<=0)) return false;
+			if((numBehaviors()<=0)&&(numScripts()<=0))
+				return false;
 			tickStatus=Tickable.STATUS_BEHAVIOR;
 			eachBehavior(new EachApplicable<Behavior>(){ 
 				@Override
@@ -1239,7 +1252,8 @@ public class StdRoom implements Room
 					aligatorDex=curDex-1;
 					break;
 				}
-			if(aligatorDex >= text.length()-1) break;
+			if(aligatorDex >= text.length()-1)
+				break;
 			aligatorDex=text.indexOf('<',aligatorDex+1);
 		}
 		if(curDex < text.length())
@@ -1274,7 +1288,8 @@ public class StdRoom implements Room
 	@Override
 	public void bringMobHere(MOB mob, boolean andFollowers)
 	{
-		if(mob==null) return;
+		if(mob==null)
+			return;
 		final Room oldRoom=mob.location();
 		if(oldRoom!=null)
 			oldRoom.delInhabitant(mob);
@@ -1351,9 +1366,11 @@ public class StdRoom implements Room
 	@Override
 	public void moveItemTo(Item item, Expire expire, Move... moveFlags)
 	{
-		if(item==null) return;
+		if(item==null)
+			return;
 
-		if(item.owner()==null) return;
+		if(item.owner()==null)
+			return;
 		final Environmental o=item.owner();
 
 		List<Item> V=new Vector();
@@ -1479,7 +1496,8 @@ public class StdRoom implements Room
 		if((direction<0)||(direction>=doors.length)||(amDestroyed))
 			return null;
 		Room nextRoom=rawDoors()[direction];
-		if(gridParent!=null) nextRoom=gridParent.prepareGridLocale(this,nextRoom,direction);
+		if(gridParent!=null)
+			nextRoom=gridParent.prepareGridLocale(this,nextRoom,direction);
 		if(nextRoom!=null)
 		{
 			nextRoom=nextRoom.prepareRoomInDir(this,direction);
@@ -1803,7 +1821,8 @@ public class StdRoom implements Room
 		if(E instanceof Exit)
 		{
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-				if(getRawExit(d)==E) return true;
+				if(getRawExit(d)==E)
+					return true;
 		}
 		else
 		if(E instanceof Room)
@@ -1828,7 +1847,8 @@ public class StdRoom implements Room
 	@Override
 	public MOB fetchInhabitant(String inhabitantID)
 	{
-		if(inhabitants.size()==0) return null;
+		if(inhabitants.size()==0)
+			return null;
 		MOB mob=(MOB)CMLib.english().fetchEnvironmental(inhabitants,inhabitantID,true);
 		if(mob==null)
 			mob=(MOB)CMLib.english().fetchEnvironmental(inhabitants,inhabitantID, false);
@@ -1840,7 +1860,8 @@ public class StdRoom implements Room
 	@Override
 	public List<MOB> fetchInhabitants(String inhabitantID)
 	{
-		if(inhabitants.size()==0) return emptyMOBV;
+		if(inhabitants.size()==0)
+			return emptyMOBV;
 		List inhabs=CMLib.english().fetchEnvironmentals(inhabitants,inhabitantID,true);
 		if(inhabs.size()==0)
 			inhabs=CMLib.english().fetchEnvironmentals(inhabitants,inhabitantID, false);
@@ -1869,7 +1890,8 @@ public class StdRoom implements Room
 	public int numPCInhabitants()
 	{
 		final Set<MOB> playerInhabitants=CMLib.players().getPlayersHere(this);
-		if(playerInhabitants.size()==0) return 0;
+		if(playerInhabitants.size()==0)
+			return 0;
 		int num=0;
 		for(final MOB M : playerInhabitants)
 			if((M!=null)&&(M.session()!=null))
@@ -1904,7 +1926,8 @@ public class StdRoom implements Room
 			for(int a=0;a<inhabitants.size();a++)
 			{
 				final MOB M=inhabitants.get(a);
-				if(M!=null) applier.apply(M);
+				if(M!=null)
+					applier.apply(M);
 			}
 		}
 		catch(final ArrayIndexOutOfBoundsException e){}
@@ -1939,9 +1962,11 @@ public class StdRoom implements Room
 	@Override
 	public Item findItem(String itemID)
 	{
-		if(contents.size()==0) return null;
+		if(contents.size()==0)
+			return null;
 		Item item=(Item)CMLib.english().fetchEnvironmental(contents,itemID,true);
-		if(item==null) item=(Item)CMLib.english().fetchEnvironmental(contents,itemID,false);
+		if(item==null)
+			item=(Item)CMLib.english().fetchEnvironmental(contents,itemID,false);
 		return item;
 	}
 
@@ -1954,16 +1979,19 @@ public class StdRoom implements Room
 	@Override
 	public Item findItem(Item goodLocation, String itemID)
 	{
-		if(contents.size()==0) return null;
+		if(contents.size()==0)
+			return null;
 		Item item=CMLib.english().fetchAvailableItem(contents,itemID,goodLocation,Wearable.FILTER_ANY,true);
-		if(item==null) item=CMLib.english().fetchAvailableItem(contents,itemID,goodLocation,Wearable.FILTER_ANY,false);
+		if(item==null)
+			item=CMLib.english().fetchAvailableItem(contents,itemID,goodLocation,Wearable.FILTER_ANY,false);
 		return item;
 	}
 
 	@Override
 	public List<Item> findItems(Item goodLocation, String itemID)
 	{
-		if(contents.size()==0) return new Vector<Item>(1);
+		if(contents.size()==0)
+			return new Vector<Item>(1);
 		List<Item> items=CMLib.english().fetchAvailableItems(contents,itemID,goodLocation,Wearable.FILTER_ANY,true);
 		if(items.size()==0)
 			items=CMLib.english().fetchAvailableItems(contents,itemID,goodLocation,Wearable.FILTER_ANY,false);
@@ -1973,7 +2001,8 @@ public class StdRoom implements Room
 	@Override
 	public List<Item> findItems(String itemID)
 	{
-		if(contents.size()==0) return new Vector<Item>(1);
+		if(contents.size()==0)
+			return new Vector<Item>(1);
 		List items=CMLib.english().fetchEnvironmentals(contents,itemID,true);
 		if(items.size()==0)
 			items=CMLib.english().fetchEnvironmentals(contents,itemID, false);
@@ -2101,7 +2130,8 @@ public class StdRoom implements Room
 			for(int a=0;a<contents.size();a++)
 			{
 				final Item I=contents.get(a);
-				if(I!=null) applier.apply(I);
+				if(I!=null)
+					applier.apply(I);
 			}
 		}
 		catch(final ArrayIndexOutOfBoundsException e){}
@@ -2110,7 +2140,8 @@ public class StdRoom implements Room
 	@Override
 	public Item getRandomItem()
 	{
-		if(numItems()==0) return null;
+		if(numItems()==0)
+			return null;
 		return getItem(CMLib.dice().roll(1,numItems(),-1));
 	}
 
@@ -2131,13 +2162,15 @@ public class StdRoom implements Room
 		if(E instanceof MOB)
 		{
 			final String ctxName=CMLib.english().getContextName(inhabitants,E);
-			if(ctxName!=null) return ctxName;
+			if(ctxName!=null)
+				return ctxName;
 		}
 		else
 		if(E instanceof Item)
 		{
 			final String ctxName=CMLib.english().getContextName(contents,E);
-			if(ctxName!=null) return ctxName;
+			if(ctxName!=null)
+				return ctxName;
 		}
 		else
 		if(E!=null)
@@ -2150,9 +2183,11 @@ public class StdRoom implements Room
 	{
 		PhysicalAgent found=null;
 		String newThingName=CMLib.lang().preItemParser(thingName);
-		if(newThingName!=null) thingName=newThingName;
+		if(newThingName!=null)
+			thingName=newThingName;
 		final boolean mineOnly=(mob!=null)&&(thingName.toUpperCase().trim().startsWith("MY "));
-		if(mineOnly) thingName=thingName.trim().substring(3).trim();
+		if(mineOnly)
+			thingName=thingName.trim().substring(3).trim();
 		if((mob!=null)&&((filter!=Wearable.FILTER_WORNONLY)))
 			found=mob.fetchItem(goodLocation, new Filterer<Environmental>()
 			{
@@ -2165,9 +2200,12 @@ public class StdRoom implements Room
 		if((found==null)&&(!mineOnly))
 		{
 			found=(Exit)CMLib.english().fetchEnvironmental(Arrays.asList(exits),thingName,true);
-			if(found==null) found=CMLib.english().fetchAvailableItem(contents,thingName,goodLocation,filter,true);
-			if(found==null)	found=(Exit)CMLib.english().fetchEnvironmental(Arrays.asList(exits),thingName,false);
-			if(found==null) found=CMLib.english().fetchAvailableItem(contents,thingName,goodLocation,filter,false);
+			if(found==null)
+				found=CMLib.english().fetchAvailableItem(contents,thingName,goodLocation,filter,true);
+			if(found==null)
+				found=(Exit)CMLib.english().fetchEnvironmental(Arrays.asList(exits),thingName,false);
+			if(found==null)
+				found=CMLib.english().fetchAvailableItem(contents,thingName,goodLocation,filter,false);
 
 			if((found instanceof Item)  // the smurfy well/gate exception
 			&&(goodLocation==null)
@@ -2208,7 +2246,8 @@ public class StdRoom implements Room
 		if(found==null)
 		{
 			newThingName=CMLib.lang().failedItemParser(thingName);
-			if(newThingName!=null) return fetchFromMOBRoomItemExit(mob,goodLocation,newThingName,filter);
+			if(newThingName!=null)
+				return fetchFromMOBRoomItemExit(mob,goodLocation,newThingName,filter);
 		}
 		return found;
 	}
@@ -2218,14 +2257,21 @@ public class StdRoom implements Room
 	{
 		// def was Wearable.FILTER_UNWORNONLY;
 		String newThingName=CMLib.lang().preItemParser(thingName);
-		if(newThingName!=null) thingName=newThingName;
+		if(newThingName!=null)
+			thingName=newThingName;
 		PhysicalAgent found=null;
-		if(contents.size()>0) found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,true);
-		if(found==null) found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,true);
-		if((found==null)&&(inhabitants.size()>0)) found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,true);
-		if((found==null)&&(contents.size()>0)) found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,false);
-		if(found==null) found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,false);
-		if((found==null)&&(inhabitants.size()>0)) found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,false);
+		if(contents.size()>0)
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,true);
+		if(found==null)
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,true);
+		if((found==null)&&(inhabitants.size()>0))
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,true);
+		if((found==null)&&(contents.size()>0))
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,false);
+		if(found==null)
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,false);
+		if((found==null)&&(inhabitants.size()>0))
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,false);
 
 		if((found!=null) // the smurfy well exception
 		&&(found instanceof Item)
@@ -2240,7 +2286,8 @@ public class StdRoom implements Room
 		if(found==null)
 		{
 			newThingName=CMLib.lang().failedItemParser(thingName);
-			if(newThingName!=null) return fetchFromRoomFavorItems(goodLocation,newThingName);
+			if(newThingName!=null)
+				return fetchFromRoomFavorItems(goodLocation,newThingName);
 		}
 		return found;
 	}
@@ -2249,21 +2296,30 @@ public class StdRoom implements Room
 	public PhysicalAgent fetchFromRoomFavorExits(String thingName)
 	{
 		String newThingName=CMLib.lang().preItemParser(thingName);
-		if(newThingName!=null) thingName=newThingName;
+		if(newThingName!=null)
+			thingName=newThingName;
 		final Item goodLocation=null;
 		PhysicalAgent found=null;
 		final int dirCode = Directions.getGoodDirectionCode(thingName);
-		if(dirCode>=0) found=getRoomInDir(dirCode);
-		if(found==null) found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,true);
-		if((found==null)&&(contents.size()>0)) found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,true);
-		if((found==null)&&(inhabitants.size()>0)) found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,true);
-		if(found==null) found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,false);
-		if((found==null)&&(contents.size()>0)) found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,false);
-		if((found==null)&&(inhabitants.size()>0)) found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,false);
+		if(dirCode>=0)
+			found=getRoomInDir(dirCode);
+		if(found==null)
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,true);
+		if((found==null)&&(contents.size()>0))
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,true);
+		if((found==null)&&(inhabitants.size()>0))
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,true);
+		if(found==null)
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,false);
+		if((found==null)&&(contents.size()>0))
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,false);
+		if((found==null)&&(inhabitants.size()>0))
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,false);
 		if(found==null)
 		{
 			newThingName=CMLib.lang().failedItemParser(thingName);
-			if(newThingName!=null) return fetchFromRoomFavorMOBs(goodLocation,newThingName);
+			if(newThingName!=null)
+				return fetchFromRoomFavorMOBs(goodLocation,newThingName);
 		}
 		return found;
 	}
@@ -2273,18 +2329,26 @@ public class StdRoom implements Room
 	{
 		// def was Wearable.FILTER_UNWORNONLY;
 		String newThingName=CMLib.lang().preItemParser(thingName);
-		if(newThingName!=null) thingName=newThingName;
+		if(newThingName!=null)
+			thingName=newThingName;
 		PhysicalAgent found=null;
-		if(inhabitants.size()>0) found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,true);
-		if((found==null)&&(contents.size()>0)) found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,true);
-		if(found==null) found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,true);
-		if((found==null)&&(inhabitants.size()>0)) found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,false);
-		if((found==null)&&(contents.size()>0)) found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,false);
-		if(found==null) found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,false);
+		if(inhabitants.size()>0)
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,true);
+		if((found==null)&&(contents.size()>0))
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,true);
+		if(found==null)
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,true);
+		if((found==null)&&(inhabitants.size()>0))
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,false);
+		if((found==null)&&(contents.size()>0))
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,false);
+		if(found==null)
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,false);
 		if(found==null)
 		{
 			newThingName=CMLib.lang().failedItemParser(thingName);
-			if(newThingName!=null) return fetchFromRoomFavorMOBs(goodLocation,newThingName);
+			if(newThingName!=null)
+				return fetchFromRoomFavorMOBs(goodLocation,newThingName);
 		}
 		return found;
 	}
@@ -2305,9 +2369,11 @@ public class StdRoom implements Room
 	{
 		PhysicalAgent found=null;
 		String newThingName=CMLib.lang().preItemParser(thingName);
-		if(newThingName!=null) thingName=newThingName;
+		if(newThingName!=null)
+			thingName=newThingName;
 		final boolean mineOnly=(mob!=null)&&(thingName.toUpperCase().trim().startsWith("MY "));
-		if(mineOnly) thingName=thingName.trim().substring(3).trim();
+		if(mineOnly)
+			thingName=thingName.trim().substring(3).trim();
 		if((mob!=null)&&(favorItems)&&(filter!=Wearable.FILTER_WORNONLY))
 			found=mob.fetchItem(goodLocation, new Filterer<Environmental>()
 			{
@@ -2371,7 +2437,8 @@ public class StdRoom implements Room
 		if(found==null)
 		{
 			newThingName=CMLib.lang().failedItemParser(thingName);
-			if(newThingName!=null) return fetchFromMOBRoom(mob,goodLocation,newThingName,filter,favorItems);
+			if(newThingName!=null)
+				return fetchFromMOBRoom(mob,goodLocation,newThingName,filter,favorItems);
 		}
 		return found;
 	}
@@ -2420,10 +2487,14 @@ public class StdRoom implements Room
 	@Override
 	public void addEffect(Ability to)
 	{
-		if(to==null) return;
-		if(fetchEffect(to.ID())!=null) return;
-		if(affects==null) affects=new SVector(1);
-		if(affects.contains(to)) return;
+		if(to==null)
+			return;
+		if(fetchEffect(to.ID())!=null)
+			return;
+		if(affects==null)
+			affects=new SVector(1);
+		if(affects.contains(to))
+			return;
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
@@ -2431,9 +2502,12 @@ public class StdRoom implements Room
 	@Override
 	public void addNonUninvokableEffect(Ability to)
 	{
-		if(to==null) return;
-		if(fetchEffect(to.ID())!=null) return;
-		if(affects==null) affects=new SVector(1);
+		if(to==null)
+			return;
+		if(fetchEffect(to.ID())!=null)
+			return;
+		if(affects==null)
+			affects=new SVector(1);
 		to.makeNonUninvokable();
 		to.makeLongLasting();
 		affects.addElement(to);
@@ -2443,7 +2517,8 @@ public class StdRoom implements Room
 	@Override
 	public void delEffect(Ability to)
 	{
-		if(affects==null) return;
+		if(affects==null)
+			return;
 		if(affects.remove(to))
 		{
 			to.setAffectedOne(null);
@@ -2462,7 +2537,8 @@ public class StdRoom implements Room
 			for(int a=0;a<affects.size();a++)
 			{
 				final Ability A=affects.get(a);
-				if(A!=null) applier.apply(A);
+				if(A!=null)
+					applier.apply(A);
 			}
 		}
 		catch(final ArrayIndexOutOfBoundsException e){}
@@ -2471,13 +2547,15 @@ public class StdRoom implements Room
 	@Override
 	public void delAllEffects(boolean unInvoke)
 	{
-		if(affects==null) return;
+		if(affects==null)
+			return;
 		for(int a=numEffects()-1;a>=0;a--)
 		{
 			final Ability A=fetchEffect(a);
 			if(A!=null)
 			{
-				if(unInvoke) A.unInvoke();
+				if(unInvoke)
+					A.unInvoke();
 				A.setAffectedOne(null);
 			}
 		}
@@ -2514,7 +2592,8 @@ public class StdRoom implements Room
 	@Override
 	public Ability fetchEffect(String ID)
 	{
-		if(affects==null) return null;
+		if(affects==null)
+			return null;
 		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
@@ -2529,8 +2608,10 @@ public class StdRoom implements Room
 	@Override
 	public void addBehavior(Behavior to)
 	{
-		if(to==null) return;
-		if(behaviors==null) behaviors=new SVector(1);
+		if(to==null)
+			return;
+		if(behaviors==null)
+			behaviors=new SVector(1);
 		for(final Behavior B : behaviors)
 			if(B.ID().equals(to.ID()))
 			   return;
@@ -2543,7 +2624,8 @@ public class StdRoom implements Room
 	@Override
 	public void delBehavior(Behavior to)
 	{
-		if(behaviors==null) return;
+		if(behaviors==null)
+			return;
 		if(behaviors.remove(to))
 		{
 			if(behaviors.size()==0)
@@ -2557,7 +2639,8 @@ public class StdRoom implements Room
 	public void delAllBehaviors()
 	{
 		final boolean didSomething=(behaviors!=null)&&(behaviors.size()>0);
-		if(didSomething) behaviors.clear();
+		if(didSomething)
+			behaviors.clear();
 		behaviors=null;
 		if(didSomething && ((scripts==null)||(scripts.size()==0)))
 		  CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
@@ -2566,7 +2649,8 @@ public class StdRoom implements Room
 	@Override
 	public int numBehaviors()
 	{
-		if(behaviors==null) return 0;
+		if(behaviors==null)
+			return 0;
 		return behaviors.size();
 	}
 
@@ -2579,7 +2663,8 @@ public class StdRoom implements Room
 	@Override
 	public Behavior fetchBehavior(int index)
 	{
-		if(behaviors==null) return null;
+		if(behaviors==null)
+			return null;
 		try
 		{
 			return behaviors.elementAt(index);
@@ -2591,7 +2676,8 @@ public class StdRoom implements Room
 	@Override
 	public Behavior fetchBehavior(String ID)
 	{
-		if(behaviors==null) return null;
+		if(behaviors==null)
+			return null;
 		for(final Behavior B : behaviors)
 			if(B.ID().equalsIgnoreCase(ID))
 				return B;
@@ -2608,7 +2694,8 @@ public class StdRoom implements Room
 			for(int a=0;a<behaviors.size();a++)
 			{
 				final Behavior B=behaviors.get(a);
-				if(B!=null) applier.apply(B);
+				if(B!=null)
+					applier.apply(B);
 			}
 		}
 		catch(final ArrayIndexOutOfBoundsException e){}
@@ -2618,8 +2705,10 @@ public class StdRoom implements Room
 	@Override
 	public void addScript(ScriptingEngine S)
 	{
-		if(scripts==null) scripts=new SVector(1);
-		if(S==null) return;
+		if(scripts==null)
+			scripts=new SVector(1);
+		if(S==null)
+			return;
 		if(!scripts.contains(S))
 		{
 			for(final Enumeration<ScriptingEngine> s2=scripts();s2.hasMoreElements();)
@@ -2653,7 +2742,8 @@ public class StdRoom implements Room
 	public void delAllScripts()
 	{
 		final boolean didSomething=(scripts!=null)&&(scripts.size()>0);
-		if(didSomething) scripts.clear();
+		if(didSomething)
+			scripts.clear();
 		scripts=null;
 		if(didSomething && ((behaviors==null)||(behaviors.size()==0)))
 		  CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
@@ -2692,7 +2782,8 @@ public class StdRoom implements Room
 			for(int a=0;a<scripts.size();a++)
 			{
 				final ScriptingEngine S=scripts.get(a);
-				if(S!=null) applier.apply(S);
+				if(S!=null)
+					applier.apply(S);
 			}
 		}
 		catch(final ArrayIndexOutOfBoundsException e){}
@@ -2762,7 +2853,8 @@ public class StdRoom implements Room
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof StdRoom)) return false;
+		if(!(E instanceof StdRoom))
+			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
@@ -2772,7 +2864,8 @@ public class StdRoom implements Room
 	@Override
 	public boolean isSameRoom(Object O)
 	{
-		if(O==this) return true;
+		if(O==this)
+			return true;
 		if(O instanceof Room)
 		{
 			if(CMLib.map().getExtendedRoomID(this).equals(CMLib.map().getExtendedRoomID((Room)O)))

@@ -43,7 +43,8 @@ public class AreaNameEncoded extends StdWebMacro
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		final String last=httpReq.getUrlParameter("AREA");
-		if(last==null) return "";
+		if(last==null)
+			return "";
 		if(last.length()>0)
 		{
 			final Area A=CMLib.map().getArea(last);

@@ -385,7 +385,8 @@ public class DefaultPlayerStats implements PlayerStats
 	public SHashSet<String> getHashFrom(String str)
 	{
 		final SHashSet<String> h=new SHashSet<String>();
-		if((str==null)||(str.length()==0)) return h;
+		if((str==null)||(str.length()==0))
+			return h;
 		str=CMStrings.replaceAll(str,"<FRIENDS>","");
 		str=CMStrings.replaceAll(str,"<IGNORED>","");
 		str=CMStrings.replaceAll(str,"<INTROS>","");
@@ -396,7 +397,8 @@ public class DefaultPlayerStats implements PlayerStats
 		while(x>=0)
 		{
 			final String fi=str.substring(0,x).trim();
-			if(fi.length()>0) h.add(fi);
+			if(fi.length()>0)
+				h.add(fi);
 			str=str.substring(x+1);
 			x=str.indexOf(';');
 		}
@@ -487,7 +489,8 @@ public class DefaultPlayerStats implements PlayerStats
 
 	public String getAliasXML()
 	{
-		if(alias.size()==0) return "";
+		if(alias.size()==0)
+			return "";
 		final StringBuilder str=new StringBuilder("");
 		alias.remove("");
 		for(final String key : alias.keySet())
@@ -497,7 +500,8 @@ public class DefaultPlayerStats implements PlayerStats
 
 	public String getLegacyXML()
 	{
-		if(legacy.size()==0) return "";
+		if(legacy.size()==0)
+			return "";
 		final StringBuilder str=new StringBuilder("");
 		for(final String key : legacy.keySet())
 			str.append("<LEGACY CAT=\"").append(key).append("\" LVL=\"").append(legacy.get(key)).append("\" />");
@@ -507,7 +511,8 @@ public class DefaultPlayerStats implements PlayerStats
 	@Override
 	public String getActiveTitle()
 	{
-		if((titles==null)||(titles.size()==0)) return null;
+		if((titles==null)||(titles.size()==0))
+			return null;
 		final String s=titles.get(0);
 		if((s.length()<2)||(s.charAt(0)!='{')||(s.charAt(s.length()-1)!='}'))
 			return s;
@@ -521,11 +526,13 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 	private String getTitleXML()
 	{
-		if(titles.size()==0) return "";
+		if(titles.size()==0)
+			return "";
 		for(int t=titles.size()-1;t>=0;t--)
 		{
 			final String s=titles.get(t);
-			if(s.length()==0) titles.remove(t);
+			if(s.length()==0)
+				titles.remove(t);
 		}
 		final StringBuilder str=new StringBuilder("");
 		for(int t=0;t<titles.size();t++)
@@ -594,7 +601,8 @@ public class DefaultPlayerStats implements PlayerStats
 
 	protected String getPrivateList(final Set<String> h)
 	{
-		if((h==null)||(h.size()==0)) return "";
+		if((h==null)||(h.size()==0))
+			return "";
 		final StringBuffer list=new StringBuffer("");
 		for (final String string : h)
 			list.append((string)+";");
@@ -757,26 +765,32 @@ public class DefaultPlayerStats implements PlayerStats
 			return;
 		final XMLLibrary xmlLib=CMLib.xml();
 		final boolean debug=CMSecurity.isDebugging(CMSecurity.DbgFlag.PLAYERSTATS);
-		if(debug) Log.debugOut("XML="+xmlStr);
+		if(debug)
+			Log.debugOut("XML="+xmlStr);
 		final List<XMLLibrary.XMLpiece> xml = xmlLib.parseAllXML(xmlStr);
 		String str=xmlLib.getValFromPieces(xml,"FRIENDS");
-		if(debug) Log.debugOut("FRIENDS="+str);
+		if(debug)
+			Log.debugOut("FRIENDS="+str);
 		friends.clear();
 		friends.addAll(getHashFrom(str));
 		str=xmlLib.getValFromPieces(xml,"IGNORED");
-		if(debug) Log.debugOut("IGNORED="+str);
+		if(debug)
+			Log.debugOut("IGNORED="+str);
 		ignored.clear();
 		ignored.addAll(getHashFrom(str));
 		str=xmlLib.getValFromPieces(xml,"INTROS");
-		if(debug) Log.debugOut("INTROS="+str);
+		if(debug)
+			Log.debugOut("INTROS="+str);
 		introductions.clear();
 		introductions.addAll(getHashFrom(str));
 		str=xmlLib.getValFromPieces(xml, "THEME");
-		if(debug) Log.debugOut("THEME="+str);
+		if(debug)
+			Log.debugOut("THEME="+str);
 		if(CMath.isInteger(str))
 			theme=CMath.s_int(str);
 		str = xmlLib.getValFromPieces(xml,"ACCTEXP");
-		if(debug) Log.debugOut("ACCTEXP="+str);
+		if(debug)
+			Log.debugOut("ACCTEXP="+str);
 		if((str!=null)&&(str.length()>0))
 			setAccountExpiration(CMath.s_long(str));
 		else
@@ -786,63 +800,83 @@ public class DefaultPlayerStats implements PlayerStats
 			setAccountExpiration(C.getTimeInMillis());
 		}
 		str=xmlLib.getValFromPieces(xml,"WRAP");
-		if(debug) Log.debugOut("WRAP="+str);
+		if(debug)
+			Log.debugOut("WRAP="+str);
 		if(CMath.isInteger(str))
 			setWrap(CMath.s_int(str));
 		str=xmlLib.getValFromPieces(xml,"PAGEBREAK");
-		if(debug) Log.debugOut("PAGEBREAK="+str);
+		if(debug)
+			Log.debugOut("PAGEBREAK="+str);
 		if(CMath.isInteger(str))
 			pageBreak=CMath.s_int(str);
 		else
 			pageBreak=CMProps.getIntVar(CMProps.Int.PAGEBREAK);
 		str=xmlLib.restoreAngleBrackets(xmlLib.getValFromPieces(xml,"SECGRPS"));
-		if(debug) Log.debugOut("SECGRPS="+str);
+		if(debug)
+			Log.debugOut("SECGRPS="+str);
 		getSetSecurityFlags(str);
 		setAliasXML(xml);
 		setTitleXML(xml);
 		setLegacyXML(xml);
 		str=xmlLib.getValFromPieces(xml,"BIRTHDAY");
-		if(debug) Log.debugOut("BIRTHDAY="+str);
+		if(debug)
+			Log.debugOut("BIRTHDAY="+str);
 		setBirthday(str);
 
 		poofin=xmlLib.getValFromPieces(xml,"POOFIN");
-		if(debug) Log.debugOut("POOFIN="+poofin);
-		if(poofin==null) poofin="";
+		if(debug)
+			Log.debugOut("POOFIN="+poofin);
+		if(poofin==null)
+			poofin="";
 		poofin=xmlLib.restoreAngleBrackets(poofin);
 
 		poofout=xmlLib.getValFromPieces(xml,"POOFOUT");
-		if(debug) Log.debugOut("POOFOUT="+poofout);
-		if(poofout==null) poofout="";
+		if(debug)
+			Log.debugOut("POOFOUT="+poofout);
+		if(poofout==null)
+			poofout="";
 		poofout=xmlLib.restoreAngleBrackets(poofout);
 
 		tranpoofin=xmlLib.getValFromPieces(xml,"TRANPOOFIN");
-		if(debug) Log.debugOut("TRANPOOFIN="+tranpoofin);
-		if(tranpoofin==null) tranpoofin="";
+		if(debug)
+			Log.debugOut("TRANPOOFIN="+tranpoofin);
+		if(tranpoofin==null)
+			tranpoofin="";
 		tranpoofin=xmlLib.restoreAngleBrackets(tranpoofin);
 
 		tranpoofout=xmlLib.getValFromPieces(xml,"TRANPOOFOUT");
-		if(debug) Log.debugOut("TRANPOOFOUT="+tranpoofout);
-		if(tranpoofout==null) tranpoofout="";
+		if(debug)
+			Log.debugOut("TRANPOOFOUT="+tranpoofout);
+		if(tranpoofout==null)
+			tranpoofout="";
 		tranpoofout=xmlLib.restoreAngleBrackets(tranpoofout);
 
 		announceMsg=xmlLib.getValFromPieces(xml,"ANNOUNCE");
-		if(debug) Log.debugOut("ANNOUNCE="+announceMsg);
-		if(announceMsg==null) announceMsg="";
+		if(debug)
+			Log.debugOut("ANNOUNCE="+announceMsg);
+		if(announceMsg==null)
+			announceMsg="";
 		announceMsg=xmlLib.restoreAngleBrackets(announceMsg);
 
 		savedPose=xmlLib.getValFromPieces(xml,"POSE");
-		if(debug) Log.debugOut("POSE="+savedPose);
-		if(savedPose==null) savedPose="";
+		if(debug)
+			Log.debugOut("POSE="+savedPose);
+		if(savedPose==null)
+			savedPose="";
 		savedPose=xmlLib.restoreAngleBrackets(savedPose);
 
 		notes=xmlLib.getValFromPieces(xml,"NOTES");
-		if(debug) Log.debugOut("NOTES="+notes);
-		if(notes==null) notes="";
+		if(debug)
+			Log.debugOut("NOTES="+notes);
+		if(notes==null)
+			notes="";
 		notes=xmlLib.restoreAngleBrackets(notes);
 
 		str=xmlLib.getValFromPieces(xml,"DATES");
-		if(debug) Log.debugOut("DATES="+str);
-		if(str==null) str="";
+		if(debug)
+			Log.debugOut("DATES="+str);
+		if(str==null)
+			str="";
 		// now parse all the level date/times
 		int lastNum=Integer.MIN_VALUE;
 		levelInfo.clear();
@@ -853,7 +887,8 @@ public class DefaultPlayerStats implements PlayerStats
 			{
 				final String sStr=sets.get(ss);
 				final List<String> twin=CMParms.parseCommas(sStr,true);
-				if((twin.size()!=2)&&(twin.size()!=3))  continue;
+				if((twin.size()!=2)&&(twin.size()!=3))
+					continue;
 				if(CMath.s_int(twin.get(0))>=lastNum)
 				{
 					lastNum=CMath.s_int(twin.get(0));
@@ -866,7 +901,8 @@ public class DefaultPlayerStats implements PlayerStats
 		if(levelInfo.size()==0)
 			levelInfo.addElement(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"");
 		str = xmlLib.getValFromPieces(xml,"AREAS");
-		if(debug) Log.debugOut("AREAS="+str);
+		if(debug)
+			Log.debugOut("AREAS="+str);
 		if(str!=null)
 			roomSet().parseXML("<AREAS>"+str+"</AREAS>");
 		else
@@ -875,7 +911,8 @@ public class DefaultPlayerStats implements PlayerStats
 		for(int i=getSaveStatIndex();i<codes.length;i++)
 		{
 			str=xmlLib.getValFromPieces(xml,codes[i].toUpperCase());
-			if(str==null) str="";
+			if(str==null)
+				str="";
 			setStat(codes[i].toUpperCase(),xmlLib.restoreAngleBrackets(str));
 		}
 		final String[] nextPeriods=xmlLib.getValFromPieces(xml, "NEXTPRIDEPERIODS").split(",");
@@ -889,7 +926,8 @@ public class DefaultPlayerStats implements PlayerStats
 			}
 
 		str = xmlLib.getValFromPieces(xml,"ACCOUNT");
-		if(debug) Log.debugOut("ACCOUNT="+str);
+		if(debug)
+			Log.debugOut("ACCOUNT="+str);
 		if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
 		{
 			if((str != null)&&(str.length()>0))
@@ -1001,7 +1039,8 @@ public class DefaultPlayerStats implements PlayerStats
 	public boolean hasVisited(Area A)
 	{
 		final int numRooms=A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()];
-		if(numRooms<=0) return true;
+		if(numRooms<=0)
+			return true;
 		return roomSet().roomCount(A.Name())>0;
 	}
 
@@ -1045,12 +1084,14 @@ public class DefaultPlayerStats implements PlayerStats
 					}
 				}
 			}
-			if(totalRooms==0) return 100;
+			if(totalRooms==0)
+				return 100;
 			final double pct=CMath.div(totalVisits,totalRooms);
 			return (int)Math.round(100.0*pct);
 		}
 		final int numRooms=A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()];
-		if(numRooms<=0) return 100;
+		if(numRooms<=0)
+			return 100;
 		final double pct=CMath.div(roomSet().roomCount(A.Name()),numRooms);
 		return (int)Math.round(100.0*pct);
 	}
@@ -1124,7 +1165,8 @@ public class DefaultPlayerStats implements PlayerStats
 	public int getLegacyLevel(String category)
 	{
 		final Integer level=legacy.get(category);
-		if(level != null) return level.intValue();
+		if(level != null)
+			return level.intValue();
 		return 0;
 	}
 
@@ -1235,13 +1277,15 @@ public class DefaultPlayerStats implements PlayerStats
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
+			if(code.equalsIgnoreCase(CODES[i]))
+				return i;
 		return -1;
 	}
 	@Override
 	public boolean sameAs(PlayerStats E)
 	{
-		if(!(E instanceof DefaultPlayerStats)) return false;
+		if(!(E instanceof DefaultPlayerStats))
+			return false;
 		for(int i=0;i<getStatCodes().length;i++)
 			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
 				return false;

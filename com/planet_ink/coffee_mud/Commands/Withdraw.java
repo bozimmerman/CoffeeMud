@@ -44,7 +44,8 @@ public class Withdraw extends StdCommand
 		throws java.io.IOException
 	{
 		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Withdraw what or how much from whom?");
-		if(shopkeeper==null) return false;
+		if(shopkeeper==null)
+			return false;
 		final ShopKeeper SHOP=CMLib.coffeeShops().getShopKeeper(shopkeeper);
 		if((!(SHOP instanceof Banker))&&(!(SHOP instanceof PostOffice)))
 		{
@@ -57,7 +58,8 @@ public class Withdraw extends StdCommand
 			return false;
 		}
 		String str=CMParms.combine(commands,0);
-		if(str.equalsIgnoreCase("all")) str=""+Integer.MAX_VALUE;
+		if(str.equalsIgnoreCase("all"))
+			str=""+Integer.MAX_VALUE;
 		final long numCoins=CMLib.english().numPossibleGold(null,str);
 		final String currency=CMLib.english().numPossibleGoldCurrency(shopkeeper,str);
 		final double denomination=CMLib.english().numPossibleGoldDenomination(shopkeeper,currency,str);

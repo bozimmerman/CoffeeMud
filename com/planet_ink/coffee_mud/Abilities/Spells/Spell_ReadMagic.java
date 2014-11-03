@@ -52,7 +52,8 @@ public class Spell_ReadMagic extends Spell
 		// the target of the spell.  If no target is specified,
 		// the system will assume your combat target.
 		final Physical target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_ANY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

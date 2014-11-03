@@ -50,9 +50,12 @@ public class Poison_Firebreather extends Poison_Liquor
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID))	return false;
-		if((affected==null)||(invoker==null)) return false;
-		if(!(affected instanceof MOB)) return super.tick(ticking,tickID);
+		if(!super.tick(ticking,tickID))
+			return false;
+		if((affected==null)||(invoker==null))
+			return false;
+		if(!(affected instanceof MOB))
+			return super.tick(ticking,tickID);
 
 		final MOB mob=(MOB)affected;
 		final Room room=mob.location();

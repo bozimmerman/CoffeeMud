@@ -77,8 +77,10 @@ public class Poison extends StdAbility implements HealthCondition
 	protected boolean catchIt(MOB mob, Physical target)
 	{
 		MOB poisoner=invoker;
-		if(poisoner==null) poisoner=mob;
-		if((poisoner==null)&&(target instanceof MOB)) poisoner=(MOB)target;
+		if(poisoner==null)
+			poisoner=mob;
+		if((poisoner==null)&&(target instanceof MOB))
+			poisoner=(MOB)target;
 		if((target!=null)&&(target instanceof MOB)&&(target.fetchEffect(ID())==null))
 		{
 			final MOB targetMOB=(MOB)target;
@@ -114,13 +116,15 @@ public class Poison extends StdAbility implements HealthCondition
 			return true;
 
 		final MOB mob=(MOB)affected;
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		if((--poisonTick)<=0)
 		{
 			poisonTick=POISON_DELAY();
 			if(POISON_AFFECT().length()>0)
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,POISON_AFFECT()+CMLib.protocol().msp("poisoned.wav",10));
-			if(invoker==null) invoker=mob;
+			if(invoker==null)
+				invoker=mob;
 			if(POISON_DAMAGE()!=0)
 			{
 				CMLib.combat().postDamage(invoker,mob,this,POISON_DAMAGE(),CMMsg.MASK_ALWAYS|CMMsg.TYP_POISON,-1,null);
@@ -134,7 +138,8 @@ public class Poison extends StdAbility implements HealthCondition
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		if((affected==null)||(!ID().equals("Poison"))) return;
+		if((affected==null)||(!ID().equals("Poison")))
+			return;
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-5);
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)-5);
 		if(affectableStats.getStat(CharStats.STAT_CONSTITUTION)<=0)
@@ -165,13 +170,15 @@ public class Poison extends StdAbility implements HealthCondition
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		if(affected instanceof Item)
 		{
 			if(!processing)
 			{
 				final Item myItem=(Item)affected;
-				if(myItem.owner()==null) return;
+				if(myItem.owner()==null)
+					return;
 				processing=true;
 				if(msg.amITarget(myItem))
 					switch(msg.sourceMinor())
@@ -225,7 +232,8 @@ public class Poison extends StdAbility implements HealthCondition
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Environmental target=this.getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		boolean success=proficiencyCheck(mob,0,auto);

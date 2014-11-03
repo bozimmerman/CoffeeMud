@@ -93,7 +93,8 @@ public class Chant_SummonFlyTrap extends Chant
 		{
 			if(mob.location()!=null)
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> shrivels up and dies."));
-			if(mob.amDead()) mob.setLocation(null);
+			if(mob.amDead())
+				mob.setLocation(null);
 			mob.destroy();
 		}
 	}
@@ -170,7 +171,8 @@ public class Chant_SummonFlyTrap extends Chant
 	{
 		final MOB newMOB=CMClass.getMOB("GenMOB");
 		int level=adjustedLevel(caster,0);
-		if(level<1) level=1;
+		if(level<1)
+			level=1;
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Vine"));
 		newMOB.setName(L("a large flytrap"));

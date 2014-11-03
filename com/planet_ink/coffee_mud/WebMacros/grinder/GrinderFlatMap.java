@@ -82,7 +82,8 @@ public class GrinderFlatMap
 						if(xyxy!=null)
 						{
 							final XYVector thisXY=((GridZones)area).getRoomXY(roomID);
-							if(thisXY==null) continue;
+							if(thisXY==null)
+								continue;
 							if((thisXY.x<xyxy[0])
 							||(thisXY.y<xyxy[1])
 							||(thisXY.x>xyxy[2])
@@ -112,7 +113,8 @@ public class GrinderFlatMap
 				if(R.roomID().length()>0)
 				{
 					final XYVector thisXY=((GridZones)area).getRoomXY(R.roomID());
-					if(thisXY==null) continue;
+					if(thisXY==null)
+						continue;
 					if((thisXY.x<xyxy[0])
 					||(thisXY.y<xyxy[1])
 					||(thisXY.x>=xyxy[2])
@@ -178,7 +180,8 @@ public class GrinderFlatMap
 			{
 				final GrinderRoom room=areaMap.get(i);
 				final XYVector myxy=((GridZones)area).getRoomXY(room.roomID);
-				if(myxy==null) continue;
+				if(myxy==null)
+					continue;
 				if((myxy.x<boundsXYXY[0])||(myxy.y<boundsXYXY[1])||(myxy.x>=boundsXYXY[2])||(myxy.y>=boundsXYXY[3]))
 					areaMap.remove(room);
 				else
@@ -218,7 +221,8 @@ public class GrinderFlatMap
 			for(int i=0;i<areaMap.size();i++)
 			{
 				final GrinderRoom room=areaMap.get(i);
-				if(roomsDone.contains(room.roomID)) continue;
+				if(roomsDone.contains(room.roomID))
+					continue;
 				final List<GrinderRoom> V=scoreRoom(hashRooms, room, roomsDone,false);
 				if(bestSet==null)
 					bestSet=V;
@@ -291,7 +295,8 @@ public class GrinderFlatMap
 			for(int i=0;i<areaMap.size();i++)
 			{
 				final GrinderRoom room=areaMap.get(i);
-				if(roomsDone.contains(room.roomID)) continue;
+				if(roomsDone.contains(room.roomID))
+					continue;
 				final List<GrinderRoom> V=scoreRoomII(hashRooms, room, roomsDone);
 				if((V!=null)&&(V.size()>0))
 				{
@@ -351,11 +356,15 @@ public class GrinderFlatMap
 			for(int r=1;r<set.size();r++)
 			{
 				R=(set.get(r));
-				if(R.xy[0]<minXY[0]) minXY[0]=R.xy[0];
-				if(R.xy[1]<minXY[1]) minXY[1]=R.xy[1];
+				if(R.xy[0]<minXY[0])
+					minXY[0]=R.xy[0];
+				if(R.xy[1]<minXY[1])
+					minXY[1]=R.xy[1];
 
-				if(R.xy[0]>maxXY[0]) maxXY[0]=R.xy[0];
-				if(R.xy[1]>maxXY[1]) maxXY[1]=R.xy[1];
+				if(R.xy[0]>maxXY[0])
+					maxXY[0]=R.xy[0];
+				if(R.xy[1]>maxXY[1])
+					maxXY[1]=R.xy[1];
 			}
 			final int[] widthHeightXY=new int[2];
 			widthHeightXY[0]=maxXY[0]-minXY[0];
@@ -507,7 +516,8 @@ public class GrinderFlatMap
 					&&(!roomsDone.contains(R.doors[d].room)))
 					{
 						R2=H.get(R.doors[d].room);
-						if(R2==null) continue;
+						if(R2==null)
+							continue;
 						R2.xy=newXY(R.xy,d);
 						if(coordsDone.contains(R2.xy[0]+"/"+R2.xy[1]))
 						{
@@ -556,7 +566,8 @@ public class GrinderFlatMap
 
 		final Hashtable xys=new Hashtable();
 		int[] xy=new int[2];
-		if(finalPosition) room.xy=xy;
+		if(finalPosition)
+			room.xy=xy;
 		xys.put(room.roomID,xy);
 
 		final Vector V=new Vector();
@@ -581,12 +592,14 @@ public class GrinderFlatMap
 		 			&&(!roomsDone.contains(R.doors[d].room)))
 		 			{
 		 				final GrinderRoom R2=H.get(R.doors[d].room);
-		 				if(R2==null) continue;
+		 				if(R2==null)
+		 					continue;
 		 				final int[] xy2=newXY(xy,d);
 		 				xys.put(R2.roomID,xy2);
 		 				if(!coordsDone.contains(xy2[0]+"/"+xy2[1]))
 		 				{
-		 					if(finalPosition) R2.xy=xy2;
+		 					if(finalPosition)
+		 						R2.xy=xy2;
 			 				myRoomsDone.add(R2.roomID);
 			 				coordsDone.add(xy2[0]+"/"+xy2[1]);
 			 				V.addElement(R2);
@@ -650,8 +663,10 @@ public class GrinderFlatMap
 							buf.append("<TD><BR></TD>");
 							buf.append("<TD>"+getDoorLabelGif(Directions.NORTH,GR,httpReq)+"</TD>");
 							String alt="<BR>";
-							if(up==Directions.NORTH) alt=getDoorLabelGif(Directions.UP,GR,httpReq);
-							if(down==Directions.NORTH) alt=getDoorLabelGif(Directions.DOWN,GR,httpReq);
+							if(up==Directions.NORTH)
+								alt=getDoorLabelGif(Directions.UP,GR,httpReq);
+							if(down==Directions.NORTH)
+								alt=getDoorLabelGif(Directions.DOWN,GR,httpReq);
 							buf.append("<TD>"+alt+"</TD>");
 							buf.append("<TD>"+getDoorLabelGif(Directions.NORTHEAST,GR,httpReq)+"</TD>");
 							}
@@ -675,7 +690,8 @@ public class GrinderFlatMap
 							}
 							buf.append("<FONT SIZE=-2>("+CMClass.classID(GR.room())+")<BR>");
 							String displayText=GR.room().displayText();
-							if(displayText.length()>20)	displayText=displayText.substring(0,20)+"...";
+							if(displayText.length()>20)
+								displayText=displayText.substring(0,20)+"...";
 							buf.append(displayText+"</FONT></TD>");
 							buf.append("<TD><BR></TD>");
 							}
@@ -687,12 +703,16 @@ public class GrinderFlatMap
 						case 3: // alt e,w
 							{
 							String alt="<BR>";
-							if(up==Directions.WEST) alt=getDoorLabelGif(Directions.UP,GR,httpReq);
-							if(down==Directions.WEST) alt=getDoorLabelGif(Directions.DOWN,GR,httpReq);
+							if(up==Directions.WEST)
+								alt=getDoorLabelGif(Directions.UP,GR,httpReq);
+							if(down==Directions.WEST)
+								alt=getDoorLabelGif(Directions.DOWN,GR,httpReq);
 							buf.append("<TD>"+alt+"</TD>");
 							alt="<BR>";
-							if(up==Directions.EAST) alt=getDoorLabelGif(Directions.UP,GR,httpReq);
-							if(down==Directions.EAST) alt=getDoorLabelGif(Directions.DOWN,GR,httpReq);
+							if(up==Directions.EAST)
+								alt=getDoorLabelGif(Directions.UP,GR,httpReq);
+							if(down==Directions.EAST)
+								alt=getDoorLabelGif(Directions.DOWN,GR,httpReq);
 							buf.append("<TD>"+alt+"</TD>");
 							}
 							break;
@@ -702,8 +722,10 @@ public class GrinderFlatMap
 							buf.append("<TD><BR></TD>");
 							buf.append("<TD>"+getDoorLabelGif(Directions.SOUTH,GR,httpReq)+"</TD>");
 							String alt="<BR>";
-							if(up==Directions.SOUTH) alt=getDoorLabelGif(Directions.UP,GR,httpReq);
-							if(down==Directions.SOUTH) alt=getDoorLabelGif(Directions.DOWN,GR,httpReq);
+							if(up==Directions.SOUTH)
+								alt=getDoorLabelGif(Directions.UP,GR,httpReq);
+							if(down==Directions.SOUTH)
+								alt=getDoorLabelGif(Directions.DOWN,GR,httpReq);
 							buf.append("<TD>"+alt+"</TD>");
 							buf.append("<TD>"+getDoorLabelGif(Directions.SOUTHEAST,GR,httpReq)+"</TD>");
 							}
@@ -778,7 +800,8 @@ public class GrinderFlatMap
 		&&(xy[0]<grid.length)&&(xy[1]<grid[xy[0]].length))
 		{
 			GR=grid[xy[0]][xy[1]];
-			if(GR!=null) return GR;
+			if(GR!=null)
+				return GR;
 			xy=newXY(xy,d);
 		}
 		return null;
@@ -809,7 +832,8 @@ public class GrinderFlatMap
 		if((d==Directions.UP)||(d==Directions.DOWN))
 		{
 			final int actualDir=findRelGridDir(room,dir.room);
-			if(actualDir>=0) roomPointer=getRoomInDir(room,actualDir);
+			if(actualDir>=0)
+				roomPointer=getRoomInDir(room,actualDir);
 		}
 		else
 			roomPointer=getRoomInDir(room,d);

@@ -108,9 +108,11 @@ public class AnimalHusbandry extends CommonSkill
 							if(husbanding[0].charStats().getMyRace().canBreedWith(husbanding[1].charStats().getMyRace()))
 							{
 								Ability A=CMClass.getAbility("Chant_Fertility");
-								if(A!=null) A.startTickDown(husbandM, wifeM, 2);
+								if(A!=null)
+									A.startTickDown(husbandM, wifeM, 2);
 								A=CMClass.getAbility("Chant_Fertility");
-								if(A!=null) A.startTickDown(wifeM, husbandM, 2);
+								if(A!=null)
+									A.startTickDown(wifeM, husbandM, 2);
 							}
 							S.invoke(husbandM, new XVector<String>("MATE",wifeM.name()), wifeM, false);
 						}

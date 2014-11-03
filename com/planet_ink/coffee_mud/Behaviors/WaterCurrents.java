@@ -62,7 +62,8 @@ public class WaterCurrents extends ActiveTicker
 		for(int v=0;v<V.size();v++)
 		{
 			final int dir=Directions.getGoodDirectionCode(V.elementAt(v));
-			if(dir>=0) dirs=dirs+Directions.getDirectionChar(dir);
+			if(dir>=0)
+				dirs=dirs+Directions.getDirectionChar(dir);
 		}
 		if(dirs.length()==0)
 			dirs="NE";
@@ -320,7 +321,8 @@ public class WaterCurrents extends ActiveTicker
 		protected int getCodeNum(String code)
 		{
 			for(int i=0;i<CODES.length;i++)
-				if(code.equalsIgnoreCase(CODES[i])) return i;
+				if(code.equalsIgnoreCase(CODES[i]))
+					return i;
 			return -1;
 		}
 		@Override
@@ -345,7 +347,8 @@ public class WaterCurrents extends ActiveTicker
 		@Override
 		public boolean sameAs(Environmental E)
 		{
-			if(!(E instanceof AWaterCurrent)) return false;
+			if(!(E instanceof AWaterCurrent))
+				return false;
 			final String[] codes=getStatCodes();
 			for(int i=0;i<codes.length;i++)
 				if(!E.getStat(codes[i]).equals(getStat(codes[i])))
@@ -383,13 +386,20 @@ public class WaterCurrents extends ActiveTicker
 		@Override
 		public boolean canAffect(Physical P)
 		{
-			if((P==null)&&(canAffectCode()==0)) return true;
-			if(P==null) return false;
-			if((P instanceof MOB)&&((canAffectCode()&Ability.CAN_MOBS)>0)) return true;
-			if((P instanceof Item)&&((canAffectCode()&Ability.CAN_ITEMS)>0)) return true;
-			if((P instanceof Exit)&&((canAffectCode()&Ability.CAN_EXITS)>0)) return true;
-			if((P instanceof Room)&&((canAffectCode()&Ability.CAN_ROOMS)>0)) return true;
-			if((P instanceof Area)&&((canAffectCode()&Ability.CAN_AREAS)>0)) return true;
+			if((P==null)&&(canAffectCode()==0))
+				return true;
+			if(P==null)
+				return false;
+			if((P instanceof MOB)&&((canAffectCode()&Ability.CAN_MOBS)>0))
+				return true;
+			if((P instanceof Item)&&((canAffectCode()&Ability.CAN_ITEMS)>0))
+				return true;
+			if((P instanceof Exit)&&((canAffectCode()&Ability.CAN_EXITS)>0))
+				return true;
+			if((P instanceof Room)&&((canAffectCode()&Ability.CAN_ROOMS)>0))
+				return true;
+			if((P instanceof Area)&&((canAffectCode()&Ability.CAN_AREAS)>0))
+				return true;
 			return false;
 		}
 

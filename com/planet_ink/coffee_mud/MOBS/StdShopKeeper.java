@@ -74,7 +74,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	@Override
 	public boolean isSold(int mask)
 	{
-		if(mask==0) return whatIsSoldMask==0;
+		if(mask==0)
+			return whatIsSoldMask==0;
 		if((whatIsSoldMask&255)==mask)
 			return true;
 		return CMath.bset(whatIsSoldMask>>8, CMath.pow(2,mask-1));
@@ -130,8 +131,10 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	protected Area getStartArea()
 	{
 		Area A=CMLib.map().getStartArea(this);
-		if(A==null) CMLib.map().areaLocation(this);
-		if(A==null) A=CMLib.map().areas().nextElement();
+		if(A==null)
+			CMLib.map().areaLocation(this);
+		if(A==null)
+			A=CMLib.map().areas().nextElement();
 		return A;
 	}
 	@Override
@@ -183,7 +186,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							budgetRemaining=Long.MAX_VALUE/2;
 					}
 					s="DAY";
-					if(V.size()>1) s=V.lastElement().toUpperCase();
+					if(V.size()>1)
+						s=V.lastElement().toUpperCase();
 					if(s.startsWith("DAY"))
 						budgetTickDown=CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
 					else
@@ -273,7 +277,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					{
 						CMLib.commands().postSay(this,msg.source(),L("Yes, I will now sell @x1.",msg.tool().name()),false,false);
 						getShop().addStoreInventory(msg.tool(),1,-1);
-						if(isGeneric()) text();
+						if(isGeneric())
+							text();
 						return;
 					}
 				}
@@ -299,7 +304,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							mySession.stdPrintln(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
 						if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
 							mob.location().recoverRoomStats();
-						if(isGeneric()) text();
+						if(isGeneric())
+							text();
 					}
 				}
 				break;
@@ -325,10 +331,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					&&(location()!=null))
 					{
 						final Environmental item=getShop().getStock("$"+msg.tool().Name()+"$",mobFor);
-						if(item!=null) CMLib.coffeeShops().transactMoneyOnly(this,msg.source(),this,item,!isMonster());
+						if(item!=null)
+							CMLib.coffeeShops().transactMoneyOnly(this,msg.source(),this,item,!isMonster());
 
 						final List<Environmental> products=getShop().removeSellableProduct("$"+msg.tool().Name()+"$",mobFor);
-						if(products.size()==0) break;
+						if(products.size()==0)
+							break;
 						final Environmental product=products.get(0);
 
 						if(product instanceof Item)
@@ -384,7 +392,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	@Override
 	public String finalPrejudiceFactors()
 	{
-		if(prejudiceFactors().length()>0) return prejudiceFactors();
+		if(prejudiceFactors().length()>0)
+			return prejudiceFactors();
 		return getStartArea().finalPrejudiceFactors();
 	}
 	@Override public String prejudiceFactors(){return CMStrings.bytesToStr(miscText);}
@@ -393,7 +402,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	@Override
 	public String finalIgnoreMask()
 	{
-		if(ignoreMask().length()>0) return ignoreMask();
+		if(ignoreMask().length()>0)
+			return ignoreMask();
 		return getStartArea().finalIgnoreMask();
 	}
 	@Override public String ignoreMask(){return "";}
@@ -412,7 +422,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	@Override
 	public String finalBudget()
 	{
-		if(budget().length()>0) return budget();
+		if(budget().length()>0)
+			return budget();
 		return getStartArea().finalBudget();
 	}
 	@Override public String budget(){return budget;}
@@ -421,7 +432,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	@Override
 	public String finalDevalueRate()
 	{
-		if(devalueRate().length()>0) return devalueRate();
+		if(devalueRate().length()>0)
+			return devalueRate();
 		return getStartArea().finalDevalueRate();
 	}
 	@Override public String devalueRate(){return devalueRate;}
@@ -430,7 +442,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	@Override
 	public int finalInvResetRate()
 	{
-		if(invResetRate()!=0) return invResetRate();
+		if(invResetRate()!=0)
+			return invResetRate();
 		return getStartArea().finalInvResetRate();
 	}
 	@Override public int invResetRate(){return invResetRate;}

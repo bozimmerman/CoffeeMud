@@ -76,11 +76,14 @@ public class Spell_Hold extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
-		if(levelDiff<0) levelDiff=0;
-		if(levelDiff>6) levelDiff=6;
+		if(levelDiff<0)
+			levelDiff=0;
+		if(levelDiff>6)
+			levelDiff=6;
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

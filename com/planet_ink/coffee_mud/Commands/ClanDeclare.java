@@ -56,7 +56,8 @@ public class ClanDeclare extends StdCommand
 		String clanName="";
 
 		final boolean skipChecks=mob.getClanRole(mob.Name())!=null;
-		if(skipChecks) C=mob.getClanRole(mob.Name()).first;
+		if(skipChecks)
+			C=mob.getClanRole(mob.Name()).first;
 
 		String clan2Name=CMParms.combine(commands,1,commands.size()-1);
 		C2=CMLib.clans().findClan(clan2Name);

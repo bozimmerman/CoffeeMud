@@ -47,7 +47,8 @@ public class Spell_Telepathy extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -75,7 +76,8 @@ public class Spell_Telepathy extends Spell
 				{
 					final Behavior B=b.nextElement();
 					final String accounting=B.accountForYourself();
-					if(accounting.length()==0) continue;
+					if(accounting.length()==0)
+						continue;
 					String prefix;
 					switch(CMLib.dice().roll(1, 4, 0))
 					{

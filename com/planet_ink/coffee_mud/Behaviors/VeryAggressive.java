@@ -70,10 +70,13 @@ public class VeryAggressive extends Aggressive
 
 	public void tickVeryAggressively(Tickable ticking, int tickID, boolean wander, boolean mobKiller, boolean misBehave, String zapStr, String attackMsg)
 	{
-		if(tickID!=Tickable.TICKID_MOB) return;
-		if(!canFreelyBehaveNormal(ticking)) return;
+		if(tickID!=Tickable.TICKID_MOB)
+			return;
+		if(!canFreelyBehaveNormal(ticking))
+			return;
 		final MOB mob=(MOB)ticking;
-		if(CMLib.flags().isATrackingMonster(mob)) return;
+		if(CMLib.flags().isATrackingMonster(mob))
+			return;
 
 		// ridden things dont wander!
 		if(ticking instanceof Rideable)
@@ -85,7 +88,8 @@ public class VeryAggressive extends Aggressive
 		   return;
 
 		// let's not do this 100%
-		if(CMLib.dice().rollPercentage()>15) return;
+		if(CMLib.dice().rollPercentage()>15)
+			return;
 
 		final Room thisRoom=mob.location();
 		for(int m=0;m<thisRoom.numInhabitants();m++)
@@ -125,7 +129,8 @@ public class VeryAggressive extends Aggressive
 					}
 				}
 			}
-			if(dirCode>=0) break;
+			if(dirCode>=0)
+				break;
 		}
 		if((dirCode>=0)
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MOBILITY)))

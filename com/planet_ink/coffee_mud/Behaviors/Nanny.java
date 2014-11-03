@@ -79,7 +79,8 @@ public class Nanny extends StdBehavior
 
 	public double getPaidBy(MOB mob)
 	{
-		if(mob==null) return 0.0;
+		if(mob==null)
+			return 0.0;
 		double amt=0.0;
 		for(final Payment P : payments)
 			if(P.mommyM==mob)
@@ -89,7 +90,8 @@ public class Nanny extends StdBehavior
 
 	public boolean isDroppedOff(PhysicalAgent P)
 	{
-		if(P==null) return false;
+		if(P==null)
+			return false;
 		for(final DropOff D : dropOffs)
 			if(D.baby==P)
 				return true;
@@ -98,7 +100,8 @@ public class Nanny extends StdBehavior
 
 	public boolean isAssociated(PhysicalAgent P)
 	{
-		if(P==null) return false;
+		if(P==null)
+			return false;
 		for(final DropOff D : associations)
 			if((D.mommyM==P)||(D.baby==P))
 				return true;
@@ -107,7 +110,8 @@ public class Nanny extends StdBehavior
 
 	public void addPayment(MOB mob,double amt)
 	{
-		if(mob==null) return;
+		if(mob==null)
+			return;
 		for(final Payment P : payments)
 			if(P.mommyM==mob)
 			{
@@ -119,7 +123,8 @@ public class Nanny extends StdBehavior
 
 	public void clearTheSlate(MOB mob)
 	{
-		if(mob==null) return;
+		if(mob==null)
+			return;
 		for(final Payment P : payments)
 			if(P.mommyM==mob)
 				payments.remove(P);
@@ -139,18 +144,22 @@ public class Nanny extends StdBehavior
 
 	public double getAllOwedBy(MOB mob)
 	{
-		if(mob==null) return 0.0;
+		if(mob==null)
+			return 0.0;
 		final Room R=mob.location();
-		if(R==null) return 0.0;
+		if(R==null)
+			return 0.0;
 		final Area A=R.getArea();
-		if(A==null) return 0.0;
+		if(A==null)
+			return 0.0;
 		double amt=0.0;
 		for(final DropOff D : dropOffs)
 			if(D.mommyM==mob)
 			{
 				long t=System.currentTimeMillis()-D.dropOffTime;
 				t=Math.round(Math.ceil(CMath.div(t,CMProps.getMillisPerMudHour())));
-				if(t>0) amt+=(t*hourlyRate);
+				if(t>0)
+					amt+=(t*hourlyRate);
 			}
 		return amt;
 	}
@@ -167,7 +176,8 @@ public class Nanny extends StdBehavior
 
 	public String getPronoun(List<PhysicalAgent> V)
 	{
-		if(V.size()==0) return "your stuff";
+		if(V.size()==0)
+			return "your stuff";
 		int babies=0;
 		int friends=0;
 		int objects=0;
@@ -187,10 +197,14 @@ public class Nanny extends StdBehavior
 				friends++;
 		}
 		final Vector pros=new Vector();
-		if(babies>0) pros.addElement("little one"+((babies>1)?"s":""));
-		if(mounts>0) pros.addElement("mount"+((babies>1)?"s":""));
-		if(friends>0) pros.addElement("friend"+((babies>1)?"s":""));
-		if(objects>0) pros.addElement("thing"+((babies>1)?"s":""));
+		if(babies>0)
+			pros.addElement("little one"+((babies>1)?"s":""));
+		if(mounts>0)
+			pros.addElement("mount"+((babies>1)?"s":""));
+		if(friends>0)
+			pros.addElement("friend"+((babies>1)?"s":""));
+		if(objects>0)
+			pros.addElement("thing"+((babies>1)?"s":""));
 		final StringBuffer list=new StringBuffer("");
 		for(int p=0;p<pros.size();p++)
 		{
@@ -211,28 +225,34 @@ public class Nanny extends StdBehavior
 			{
 				long t=System.currentTimeMillis()-D.dropOffTime;
 				t=Math.round(Math.floor(CMath.div(t,CMProps.getMillisPerMudHour())));
-				if(t>0) return CMLib.beanCounter().abbreviatedPrice(currency, (t+hourlyRate))+" for watching "+P.name();
+				if(t>0)
+					return CMLib.beanCounter().abbreviatedPrice(currency, (t+hourlyRate))+" for watching "+P.name();
 			}
 		return "";
 	}
 
 	public String getAllOwedBy(String currency, MOB mob)
 	{
-		if(mob==null) return "";
+		if(mob==null)
+			return "";
 		final Room R=mob.location();
-		if(R==null) return "";
+		if(R==null)
+			return "";
 		final Area A=R.getArea();
-		if(A==null) return "";
+		if(A==null)
+			return "";
 		final StringBuffer owed=new StringBuffer("");
 		for(final DropOff D : dropOffs)
 			if(D.mommyM==mob)
 			{
 				long t=System.currentTimeMillis()-D.dropOffTime;
 				t=Math.round(Math.ceil(CMath.div(t,CMProps.getMillisPerMudHour())));
-				if(t>0) owed.append(CMLib.beanCounter().abbreviatedPrice(currency, (t*hourlyRate))+" for "+D.baby.name()+", ");
+				if(t>0)
+					owed.append(CMLib.beanCounter().abbreviatedPrice(currency, (t*hourlyRate))+" for "+D.baby.name()+", ");
 			}
 		String s=owed.toString();
-		if(s.endsWith(", "))s=s.substring(0,s.length()-2);
+		if(s.endsWith(", "))
+			s=s.substring(0,s.length()-2);
 		return s;
 	}
 
@@ -263,7 +283,8 @@ public class Nanny extends StdBehavior
 	{
 		if(!super.okMessage(host,msg))
 			return false;
-		if(dropOffs==null) return true;
+		if(dropOffs==null)
+			return true;
 		final int targMinor=msg.targetMinor();
 		if((msg.target()==host)
 		&&(targMinor==CMMsg.TYP_GIVE))
@@ -328,7 +349,8 @@ public class Nanny extends StdBehavior
 				{
 					CMLib.commands().postSay((MOB)host,msg.source(),L("Not in my @x1 you dont!",place));
 					final MOB victim=msg.source().getVictim();
-					if(victim!=null) victim.makePeace();
+					if(victim!=null)
+						victim.makePeace();
 					msg.source().makePeace();
 				}
 				else
@@ -394,11 +416,16 @@ public class Nanny extends StdBehavior
 
 	public boolean isDropOffable(Environmental E)
 	{
-		if(E==null) return false;
-		if((E instanceof MOB)&&(!((MOB)E).isMonster())) return false;
-		if((watchesBabies)&&(CMLib.flags().isBaby(E))) return true;
-		if((watchesChildren)&&(CMLib.flags().isChild(E))&&(!CMLib.flags().isBaby(E))) return true;
-		if((watchesMounts)&&(isMount(E))) return true;
+		if(E==null)
+			return false;
+		if((E instanceof MOB)&&(!((MOB)E).isMonster()))
+			return false;
+		if((watchesBabies)&&(CMLib.flags().isBaby(E)))
+			return true;
+		if((watchesChildren)&&(CMLib.flags().isChild(E))&&(!CMLib.flags().isBaby(E)))
+			return true;
+		if((watchesMounts)&&(isMount(E)))
+			return true;
 		if((watchesMOBFollowers)&&(E instanceof MOB)&&(!isMount(E))&&(!CMLib.flags().isChild(E))&&(!CMLib.flags().isBaby(E)))
 			return true;
 		if((this.watchesWagons)
@@ -515,7 +542,8 @@ public class Nanny extends StdBehavior
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
-		if(dropOffs==null) return;
+		if(dropOffs==null)
+			return;
 
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target()==CMLib.map().roomLocation(host)))
@@ -542,7 +570,8 @@ public class Nanny extends StdBehavior
 					}
 				}
 			}
-			while(H.size() > H2.size());
+			while(H.size() > H2.size())
+				;
 
 			addAssociationsIfNecessary(H);
 			final List<PhysicalAgent> myAssocs=myCurrentAssocs(msg.source());
@@ -662,14 +691,22 @@ public class Nanny extends StdBehavior
 		parms.append("RATE="+hourlyRate+" ");
 		parms.append("NAME=\""+place+"\" ");
 		parms.append("WATCHES=\"");
-		if(watchesBabies) parms.append("Babies,");
-		if(watchesChildren) parms.append("Children,");
-		if(watchesMounts) parms.append("Mounts,");
-		if(watchesWagons) parms.append("Wagons,");
-		if(watchesCars) parms.append("Cars,");
-		if(watchesBoats) parms.append("Boats,");
-		if(watchesAirCars) parms.append("AirCars,");
-		if(watchesMOBFollowers) parms.append("Followers,");
+		if(watchesBabies)
+			parms.append("Babies,");
+		if(watchesChildren)
+			parms.append("Children,");
+		if(watchesMounts)
+			parms.append("Mounts,");
+		if(watchesWagons)
+			parms.append("Wagons,");
+		if(watchesCars)
+			parms.append("Cars,");
+		if(watchesBoats)
+			parms.append("Boats,");
+		if(watchesAirCars)
+			parms.append("AirCars,");
+		if(watchesMOBFollowers)
+			parms.append("Followers,");
 		parms.append("\"");
 		if(dropOffs!=null)
 		{
@@ -699,7 +736,8 @@ public class Nanny extends StdBehavior
 	{
 		super.setParms(parms);
 		final int x=super.parms.indexOf("|~|");
-		if(x>0) dropOffs=null;
+		if(x>0)
+			dropOffs=null;
 		hourlyRate=CMParms.getParmDouble(parms,"RATE",2.0);
 		place=CMParms.getParmStr(parms,"NAME","nursery");
 		final List<String> watches=CMParms.parseCommas(CMParms.getParmStr(parms,"WATCHES","Babies,Children").toUpperCase(),true);
@@ -715,14 +753,22 @@ public class Nanny extends StdBehavior
 		for(int w=0;w<watches.size();w++)
 		{
 			watch=watches.get(w);
-			if(watch.startsWith("BAB")) watchesBabies=true;
-			if(watch.startsWith("CHI")) watchesChildren=true;
-			if(watch.startsWith("MOU")) watchesMounts=true;
-			if(watch.startsWith("WAG")) watchesWagons=true;
-			if(watch.startsWith("CAR")) watchesCars=true;
-			if(watch.startsWith("BOA")) watchesBoats=true;
-			if(watch.startsWith("AIR")) watchesAirCars=true;
-			if(watch.startsWith("FOL")) watchesMOBFollowers=true;
+			if(watch.startsWith("BAB"))
+				watchesBabies=true;
+			if(watch.startsWith("CHI"))
+				watchesChildren=true;
+			if(watch.startsWith("MOU"))
+				watchesMounts=true;
+			if(watch.startsWith("WAG"))
+				watchesWagons=true;
+			if(watch.startsWith("CAR"))
+				watchesCars=true;
+			if(watch.startsWith("BOA"))
+				watchesBoats=true;
+			if(watch.startsWith("AIR"))
+				watchesAirCars=true;
+			if(watch.startsWith("FOL"))
+				watchesMOBFollowers=true;
 		}
 	}
 
@@ -776,7 +822,8 @@ public class Nanny extends StdBehavior
 									parsedPlayers.put(oName,M);
 							}
 							PA=R.fetchInhabitant(eName);
-							if(PA==null) PA=R.findItem(eName);
+							if(PA==null)
+								PA=R.findItem(eName);
 							if(PA==null)
 								Log.errOut("Nanny","Unable to find "+eName+" for "+oName+"!!");
 							else

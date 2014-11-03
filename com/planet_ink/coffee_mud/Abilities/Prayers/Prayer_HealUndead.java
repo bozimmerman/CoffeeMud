@@ -70,7 +70,8 @@ public class Prayer_HealUndead extends Prayer implements MendingSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		final boolean undead=target.charStats().getMyRace().racialCategory().equals("Undead");
 		if((!undead)&&(!auto))

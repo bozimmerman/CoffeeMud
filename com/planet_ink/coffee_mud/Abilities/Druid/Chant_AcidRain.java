@@ -99,7 +99,8 @@ public class Chant_AcidRain extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Room target=mob.location();
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(!isRaining(target))
 		{
 			mob.tell(L("This chant requires some rain."));

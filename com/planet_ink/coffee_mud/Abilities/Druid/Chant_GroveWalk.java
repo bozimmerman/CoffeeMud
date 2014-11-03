@@ -71,7 +71,8 @@ public class Chant_GroveWalk extends Chant
 						break;
 					}
 				}
-				if(newRoom!=null) break;
+				if(newRoom!=null)
+					break;
 			}
 		}catch(final NoSuchElementException e){}
 		if(!hereok)
@@ -97,7 +98,8 @@ public class Chant_GroveWalk extends Chant
 			{
 				mob.location().send(mob,msg);
 				final Set<MOB> h=properTargets(mob,givenTarget,false);
-				if(h==null) return false;
+				if(h==null)
+					return false;
 
 				final Room thisRoom=mob.location();
 				for (final Object element : h)

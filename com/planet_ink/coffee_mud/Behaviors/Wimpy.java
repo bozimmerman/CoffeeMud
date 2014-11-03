@@ -69,7 +69,8 @@ public class Wimpy extends StdBehavior
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(tickID!=Tickable.TICKID_MOB) return true;
+		if(tickID!=Tickable.TICKID_MOB)
+			return true;
 		if(((--tickDown)<0)&&(ticking instanceof MOB))
 		{
 			tickDown=tickWait;

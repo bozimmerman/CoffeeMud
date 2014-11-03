@@ -74,7 +74,8 @@ public class Prop_LimitedItems extends Property
 				{
 					if(!myInstances.contains(I))
 					{
-						if(max==0) max++;
+						if(max==0)
+							max++;
 						int num=0;
 						for(int i=myInstances.size()-1;i>=0;i--)
 							if(!myInstances.get(i).amDestroyed())
@@ -117,7 +118,8 @@ public class Prop_LimitedItems extends Property
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return;
 
-		if(norecurse) return;
+		if(norecurse)
+			return;
 		norecurse=true;
 
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_UNLOCATABLE);
@@ -141,7 +143,8 @@ public class Prop_LimitedItems extends Property
 		if((((Item)affected).owner() instanceof MOB)
 		&&(((MOB)((Item)affected).owner()).playerStats()!=null))
 			countIfNecessary((Item)affected);
-		if(destroy) ((Item)affected).destroy();
+		if(destroy)
+			((Item)affected).destroy();
 		norecurse=false;
 	}
 }

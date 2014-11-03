@@ -53,7 +53,8 @@ public class GrinderRaces
 				if((behav.length()>0) && (new XVector<String>(adjPStats.getStatCodes()).contains(behav.toUpperCase().trim())))
 				{
 					String prof=httpReq.getUrlParameter(c+"ESTATSV"+num);
-					if(prof==null) prof="0";
+					if(prof==null)
+						prof="0";
 					if(CMath.s_int(prof)!=0)
 					{
 						adjPStats.setStat(behav.toUpperCase().trim(), prof);
@@ -112,7 +113,8 @@ public class GrinderRaces
 				if((behav.length()>0) && (new XVector<String>(adjCState.getStatCodes()).contains(behav.toUpperCase().trim())))
 				{
 					String prof=httpReq.getUrlParameter(c+"CSTATEV"+num);
-					if(prof==null) prof="0";
+					if(prof==null)
+						prof="0";
 					if(CMath.s_int(prof)!=0)
 					{
 						adjCState.setStat(behav.toUpperCase().trim(), prof);
@@ -131,7 +133,8 @@ public class GrinderRaces
 
 	public static List<Item> itemList(List<? extends Item> items, char c, HTTPRequest httpReq, boolean one)
 	{
-		if(items==null) items=new Vector();
+		if(items==null)
+			items=new Vector();
 		final Vector classes=new Vector();
 		List<Item> itemlist=null;
 		if(httpReq.isUrlParameter(c+"ITEM1"))
@@ -151,7 +154,8 @@ public class GrinderRaces
 				}
 				if(I2!=null)
 					classes.addElement(I2);
-				if(one) break;
+				if(one)
+					break;
 			}
 		}
 		return classes;
@@ -170,11 +174,14 @@ public class GrinderRaces
 				if(behav.length()>0)
 				{
 					String prof=httpReq.getUrlParameter("RABPOF"+num);
-					if(prof==null) prof="0";
+					if(prof==null)
+						prof="0";
 					String qual=httpReq.getUrlParameter("RABQUA"+num);
-					if(qual==null) qual="";
+					if(qual==null)
+						qual="";
 					String levl=httpReq.getUrlParameter("RABLVL"+num);
-					if(levl==null) levl="0";
+					if(levl==null)
+						levl="0";
 					String roles=null;
 					if(supportsRoles)
 						roles=httpReq.getUrlParameter("RABROL"+num);
@@ -211,9 +218,11 @@ public class GrinderRaces
 				if(behav.length()>0)
 				{
 					String parm=httpReq.getUrlParameter("REFPRM"+num);
-					if(parm==null) parm="";
+					if(parm==null)
+						parm="";
 					String levl=httpReq.getUrlParameter("REFLVL"+num);
-					if(levl==null) levl="0";
+					if(levl==null)
+						levl="0";
 					String roles=null;
 					if(supportsRoles)
 						roles=httpReq.getUrlParameter("REFROL"+num);
@@ -249,7 +258,8 @@ public class GrinderRaces
 				if(behav.length()>0)
 				{
 					String prof=httpReq.getUrlParameter("CABPOF"+num);
-					if(prof==null) prof="0";
+					if(prof==null)
+						prof="0";
 					theclasses.addElement(behav,prof);
 				}
 				num++;
@@ -335,8 +345,10 @@ public class GrinderRaces
 		{
 			final int lastVal=val;
 			val=CMath.s_int(httpReq.getUrlParameter("AGE"+i));
-			if(val<lastVal) val=lastVal;
-			if(i>0) commaList.append(",");
+			if(val<lastVal)
+				val=lastVal;
+			if(i>0)
+				commaList.append(",");
 			commaList.append(val);
 		}
 		R.setStat("AGING",commaList.toString());

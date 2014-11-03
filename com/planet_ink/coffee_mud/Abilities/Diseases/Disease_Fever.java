@@ -65,7 +65,8 @@ public class Disease_Fever extends Disease
 		if(mob.isInCombat())
 		{
 			final MOB newvictim=mob.location().fetchRandomInhabitant();
-			if(newvictim!=mob) mob.setVictim(newvictim);
+			if(newvictim!=mob)
+				mob.setVictim(newvictim);
 		}
 		else
 		if(CMLib.flags().aliveAwakeMobile(mob,false)

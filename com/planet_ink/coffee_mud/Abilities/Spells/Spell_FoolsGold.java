@@ -47,7 +47,8 @@ public class Spell_FoolsGold extends Spell
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!destroyOnNextTick) return super.tick(ticking,tickID);
+		if(!destroyOnNextTick)
+			return super.tick(ticking,tickID);
 		((Item)affected).destroy();
 		destroyOnNextTick=false;
 		return false;

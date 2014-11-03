@@ -114,7 +114,8 @@ public class Thief_Mark extends ThiefSkill
 			if(mark==null)
 			{
 				final int x=text().indexOf('/');
-				if(x<0) return super.tick(me,tickID);
+				if(x<0)
+					return super.tick(me,tickID);
 				final MOB M=mob.location().fetchInhabitant(text().substring(0,x));
 				if(M!=null)
 				{
@@ -174,7 +175,8 @@ public class Thief_Mark extends ThiefSkill
 			return false;
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)));
-		if(levelDiff<0) levelDiff=0;
+		if(levelDiff<0)
+			levelDiff=0;
 		levelDiff*=5;
 		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 

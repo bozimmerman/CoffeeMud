@@ -71,8 +71,10 @@ public class Chant_DeathMoon extends Chant
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
-		if(affected==null) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
 		if(affected instanceof Room)
 		{
 			final Room room=(Room)affected;
@@ -119,7 +121,8 @@ public class Chant_DeathMoon extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Room target=mob.location();
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(!target.getArea().getClimateObj().canSeeTheMoon(target,null))
 		{
 			mob.tell(L("You must be able to see the moon for this magic to work."));

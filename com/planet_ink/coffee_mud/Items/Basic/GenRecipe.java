@@ -62,10 +62,12 @@ public class GenRecipe extends GenReadable implements Recipe
 			if(getTotalRecipePages() > 1)
 			{
 				str.append( L("@x1 contains @x2 recipe(s)/schematic(s) out of @x3 total entries.\n\r",name(),""+recipeLines.length,""+getTotalRecipePages()));
-				if(A!=null) str.append( L("The following recipes are for the @x1 skill:\n\r",A.name()));
+				if(A!=null)
+					str.append( L("The following recipes are for the @x1 skill:\n\r",A.name()));
 			}
 			else
-				if(A!=null) str.append( L("The following recipe is for the @x1 skill:\n\r",A.name()));
+				if(A!=null)
+					str.append( L("The following recipe is for the @x1 skill:\n\r",A.name()));
 			if(A instanceof ItemCraftor)
 			{
 				final ItemCraftor C=(ItemCraftor)A;
@@ -153,7 +155,8 @@ public class GenRecipe extends GenReadable implements Recipe
 				final StringBuilder str=new StringBuilder("");
 				for(final String s : recipeLines)
 					str.append(s).append("\n");
-				if(str.length()==0) return "";
+				if(str.length()==0)
+					return "";
 				final String recipeStr = str.toString();
 				return recipeStr.substring(0,recipeStr.length()-1);
 			}
@@ -182,14 +185,16 @@ public class GenRecipe extends GenReadable implements Recipe
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
-			if(code.equalsIgnoreCase(MYCODES[i])) return i;
+			if(code.equalsIgnoreCase(MYCODES[i]))
+				return i;
 		return -1;
 	}
 	private static String[] codes=null;
 	@Override
 	public String[] getStatCodes()
 	{
-		if(codes!=null) return codes;
+		if(codes!=null)
+			return codes;
 		final String[] MYCODES=CMProps.getStatCodesList(GenRecipe.MYCODES,this);
 		final String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
@@ -203,7 +208,8 @@ public class GenRecipe extends GenReadable implements Recipe
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenRecipe)) return false;
+		if(!(E instanceof GenRecipe))
+			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))

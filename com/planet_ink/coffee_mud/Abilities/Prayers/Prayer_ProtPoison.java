@@ -73,8 +73,10 @@ public class Prayer_ProtPoison extends Prayer
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if(affected==null) return true;
-		if(!(affected instanceof MOB)) return true;
+		if(affected==null)
+			return true;
+		if(!(affected instanceof MOB))
+			return true;
 
 		if(msg.target()==affected)
 		{

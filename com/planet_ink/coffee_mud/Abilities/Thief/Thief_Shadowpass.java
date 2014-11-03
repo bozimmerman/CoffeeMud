@@ -79,13 +79,15 @@ public class Thief_Shadowpass extends ThiefSkill
 			}
 
 			final int direction=Directions.getGoodDirectionCode(s);
-			if(direction<0) break;
+			if(direction<0)
+				break;
 			if((R.getRoomInDir(direction)==null)||(R.getExitInDir(direction)==null))
 				break;
 			for(int i=0;i<num;i++)
 			{
 				R=R.getRoomInDir(direction);
-				if(!CMLib.flags().canAccess(mob,R)) break;
+				if(!CMLib.flags().canAccess(mob,R))
+					break;
 				trail.add(Integer.valueOf(direction));
 			}
 		}

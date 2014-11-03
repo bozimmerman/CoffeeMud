@@ -82,7 +82,8 @@ public class Chant_GrowForest extends Chant
 		if((material<0)&&(choices.size()>0))
 			material=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
 
-		if(material<0) return false;
+		if(material<0)
+			return false;
 
 		final String shortName=RawMaterial.CODES.NAME(material);
 

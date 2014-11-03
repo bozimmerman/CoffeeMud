@@ -77,7 +77,8 @@ public class ManualClasses extends StdItem implements MiscMagic,ArchonOnly
 							for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 							{
 								final CharClass C=(CharClass)c.nextElement();
-								if(thisC==null) thisC=C;
+								if(thisC==null)
+									thisC=C;
 								if((lastC!=null)&&(thisC==mob.charStats().getCurrentClass()))
 								{
 									thisC=C;

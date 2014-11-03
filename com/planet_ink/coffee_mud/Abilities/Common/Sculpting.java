@@ -135,7 +135,8 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 	@Override
 	public boolean mayICraft(final Item I)
 	{
-		if(I==null) return false;
+		if(I==null)
+			return false;
 		if(!super.mayBeCrafted(I))
 			return false;
 		if(I.material()==RawMaterial.RESOURCE_BONE)
@@ -151,7 +152,8 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
-		if(!super.canMend(mob,E,quiet)) return false;
+		if(!super.canMend(mob,E,quiet))
+			return false;
 		final Item IE=(Item)E;
 		if((IE.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK)
 		{
@@ -247,7 +249,8 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			messedUp=false;
 			final Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
-			if(!canMend(mob,buildingI,false)) return false;
+			if(!canMend(mob,buildingI,false))
+				return false;
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
@@ -314,11 +317,13 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
-			if(componentsFoundList==null) return false;
+			if(componentsFoundList==null)
+				return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
 			woodRequired=adjustWoodRequired(woodRequired,mob);
 
-			if(amount>woodRequired) woodRequired=amount;
+			if(amount>woodRequired)
+				woodRequired=amount;
 			final String misctype=foundRecipe.get(RCP_MISCTYPE);
 			bundling=misctype.equalsIgnoreCase("BUNDLE");
 			final int[] pm={RawMaterial.MATERIAL_ROCK};
@@ -328,7 +333,8 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 												bundling,
 												parsedVars.autoGenerate,
 												enhancedTypes);
-			if(data==null) return false;
+			if(data==null)
+				return false;
 			fixDataForComponents(data,componentsFoundList);
 			woodRequired=data[0][FOUND_AMT];
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
@@ -451,7 +457,8 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			final int lostValue=parsedVars.autoGenerate>0?0:
 				CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],0,buildingI)
 				+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
-			if(bundling) buildingI.setBaseValue(lostValue);
+			if(bundling)
+				buildingI.setBaseValue(lostValue);
 			buildingI.text();
 			buildingI.recoverPhyStats();
 

@@ -91,7 +91,8 @@ public class Spell_MarkerPortal extends Spell
 							break;
 						}
 					}
-				if(newRoom!=null) break;
+				if(newRoom!=null)
+					break;
 			}
 		}catch(final NoSuchElementException nse){}
 		if(newRoom==null)
@@ -120,7 +121,8 @@ public class Spell_MarkerPortal extends Spell
 			if(t!=null)
 			{
 				int adjustment=t.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
-				if(t.isMonster()) adjustment=adjustment*3;
+				if(t.isMonster())
+					adjustment=adjustment*3;
 				profNeg+=adjustment;
 			}
 		}

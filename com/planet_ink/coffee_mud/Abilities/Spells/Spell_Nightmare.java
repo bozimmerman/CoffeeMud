@@ -78,41 +78,49 @@ public class Spell_Nightmare extends Spell
 					{
 					case 1:
 						I=mob.fetchWieldedItem();
-						if(I!=null) mob.tell(mob,I,null,L("<T-NAME> rips away your flesh."));
+						if(I!=null)
+							mob.tell(mob,I,null,L("<T-NAME> rips away your flesh."));
 						break;
 					case 2:
 						I=mob.fetchWieldedItem();
-						if(I!=null) mob.tell(mob,I,null,L("<T-NAME> seems to wrap itself around you."));
+						if(I!=null)
+							mob.tell(mob,I,null,L("<T-NAME> seems to wrap itself around you."));
 						break;
 					case 3:
 						I=mob.fetchWieldedItem();
-						if(I!=null) mob.tell(mob,I,null,L("<T-NAME> seems to bend around your hands."));
+						if(I!=null)
+							mob.tell(mob,I,null,L("<T-NAME> seems to bend around your hands."));
 						break;
 					case 4:
 						mob.tell(L("You see your flesh melting away in large chunks."));
 						break;
 					case 5:
 						M=R.fetchRandomInhabitant();
-						if(M!=null) mob.tell(mob,M,null,L("<T-NAME> glare(s) at you, taking on a horrifying form."));
+						if(M!=null)
+							mob.tell(mob,M,null,L("<T-NAME> glare(s) at you, taking on a horrifying form."));
 						break;
 					case 6:
 						M=R.fetchRandomInhabitant();
-						if(M!=null) mob.tell(mob,M,null,L("<T-NAME> rip(s) open <T-HIS-HER> jaws and stuff(s) you in it."));
+						if(M!=null)
+							mob.tell(mob,M,null,L("<T-NAME> rip(s) open <T-HIS-HER> jaws and stuff(s) you in it."));
 						break;
 					case 7:
 						M=R.fetchRandomInhabitant();
-						if(M!=null) mob.tell(mob,M,null,L("<T-NAME> rip(s) up <T-HIS-HER> flesh in front of you."));
+						if(M!=null)
+							mob.tell(mob,M,null,L("<T-NAME> rip(s) up <T-HIS-HER> flesh in front of you."));
 						break;
 					case 8:
 						M=R.fetchRandomInhabitant();
-						if(M!=null) mob.tell(mob,M,null,L("<T-NAME> become(s) a horrifying image of terror."));
+						if(M!=null)
+							mob.tell(mob,M,null,L("<T-NAME> become(s) a horrifying image of terror."));
 						break;
 					case 9:
 						mob.tell(mob,null,null,L("The nightmare consumes your mind, taking you into madness."));
 						break;
 					case 10:
 						M=R.fetchRandomInhabitant();
-						if(M!=null) mob.tell(mob,M,null,L("<T-NAME> <T-IS-ARE> trying to take control of your mind."));
+						if(M!=null)
+							mob.tell(mob,M,null,L("<T-NAME> <T-IS-ARE> trying to take control of your mind."));
 						break;
 					}
 					notAgainThisRound=true;
@@ -175,7 +183,8 @@ public class Spell_Nightmare extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

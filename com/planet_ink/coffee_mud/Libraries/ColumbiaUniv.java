@@ -49,9 +49,12 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	public ExpertiseLibrary.ExpertiseDefinition addDefinition(String ID, String name, String baseName, String listMask, String finalMask, String[] costs, String[] data)
 	{
 		ExpertiseLibrary.ExpertiseDefinition def=getDefinition(ID);
-		if(def!=null) return  def;
-		if(CMSecurity.isExpertiseDisabled(ID.toUpperCase())) return null;
-		if(CMSecurity.isExpertiseDisabled("*")) return null;
+		if(def!=null)
+			return  def;
+		if(CMSecurity.isExpertiseDisabled(ID.toUpperCase()))
+			return null;
+		if(CMSecurity.isExpertiseDisabled("*"))
+			return null;
 		for(int i=1;i<ID.length();i++)
 			if(CMSecurity.isExpertiseDisabled(ID.substring(0,i).toUpperCase()+"*"))
 				return null;
@@ -67,10 +70,14 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		final int qpCost=CMath.s_int(costs[2]);
 		final int expCost=CMath.s_int(costs[3]);
 		//int timeCost=CMath.s_int(costs[0]);
-		if(practices>0) def.addCost(CostType.PRACTICE, Double.valueOf(practices));
-		if(trains>0) def.addCost(CostType.TRAIN, Double.valueOf(trains));
-		if(qpCost>0) def.addCost(CostType.QP, Double.valueOf(qpCost));
-		if(expCost>0) def.addCost(CostType.XP, Double.valueOf(expCost));
+		if(practices>0)
+			def.addCost(CostType.PRACTICE, Double.valueOf(practices));
+		if(trains>0)
+			def.addCost(CostType.TRAIN, Double.valueOf(trains));
+		if(qpCost>0)
+			def.addCost(CostType.QP, Double.valueOf(qpCost));
+		if(expCost>0)
+			def.addCost(CostType.XP, Double.valueOf(expCost));
 		//if(timeCost>0) def.addCost(CostType.PRACTICE, Double.valueOf(practices));
 		completeEduMap.put(def.ID,def);
 		baseEduSetLists.clear();
@@ -80,18 +87,22 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	@Override
 	public String getExpertiseHelp(String ID, boolean exact)
 	{
-		if(ID==null) return null;
+		if(ID==null)
+			return null;
 		ID=ID.toUpperCase();
-		if(exact) return helpMap.getProperty(ID);
+		if(exact)
+			return helpMap.getProperty(ID);
 		for(final Enumeration<Object> e = helpMap.keys();e.hasMoreElements();)
 		{
 			final String key = e.nextElement().toString();
-			if(key.startsWith(ID)) return helpMap.getProperty(key);
+			if(key.startsWith(ID))
+				return helpMap.getProperty(key);
 		}
 		for(final Enumeration<Object> e = helpMap.keys();e.hasMoreElements();)
 		{
 			final String key = e.nextElement().toString();
-			if(CMLib.english().containsString(key, ID)) return helpMap.getProperty(key);
+			if(CMLib.english().containsString(key, ID))
+				return helpMap.getProperty(key);
 		}
 		return null;
 	}
@@ -121,22 +132,27 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	public ExpertiseDefinition findDefinition(String ID, boolean exactOnly)
 	{
 		ExpertiseDefinition D=getDefinition(ID);
-		if(D!=null) return D;
+		if(D!=null)
+			return D;
 		for(final Enumeration<ExpertiseDefinition> e=definitions();e.hasMoreElements();)
 		{
 			D=e.nextElement();
-			if(D.name.equalsIgnoreCase(ID)) return D;
+			if(D.name.equalsIgnoreCase(ID))
+				return D;
 		}
-		if(exactOnly) return null;
+		if(exactOnly)
+			return null;
 		for(final Enumeration<ExpertiseDefinition> e=definitions();e.hasMoreElements();)
 		{
 			D=e.nextElement();
-			if(D.ID.startsWith(ID)) return D;
+			if(D.ID.startsWith(ID))
+				return D;
 		}
 		for(final Enumeration<ExpertiseDefinition> e=definitions();e.hasMoreElements();)
 		{
 			D=e.nextElement();
-			if(CMLib.english().containsString(D.name,ID)) return D;
+			if(CMLib.english().containsString(D.name,ID))
+				return D;
 		}
 		return null;
 	}
@@ -182,7 +198,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		while(x>=0)
 		{
 			final int y=s.indexOf('}',x);
-			if(y<0) break;
+			if(y<0)
+				break;
 			s=s.substring(0,x)+CMath.parseIntExpression(s.substring(x+1,y))+s.substring(y+1);
 			x=s.indexOf('{');
 		}
@@ -193,7 +210,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	public List<String> getStageCodes(String baseExpertiseCode)
 	{
 		String key=null;
-		if(baseExpertiseCode==null) return new ReadOnlyVector<String>(1);
+		if(baseExpertiseCode==null)
+			return new ReadOnlyVector<String>(1);
 		baseExpertiseCode=baseExpertiseCode.toUpperCase();
 		if(!baseEduSetLists.containsKey(baseExpertiseCode))
 		{
@@ -271,16 +289,19 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		List<String> skillsToRegister=null;
 		ExpertiseLibrary.ExpertiseDefinition def=null;
 		boolean didOne=false;
-		if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0)) return null;
+		if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0))
+			return null;
 		int x=row.indexOf('=');
-		if(x<0) return "Error: Invalid line! Not comment, whitespace, and does not contain an = sign!";
+		if(x<0)
+			return "Error: Invalid line! Not comment, whitespace, and does not contain an = sign!";
 		if(row.trim().toUpperCase().startsWith("DATA_"))
 		{
 			final String lastID=ID;
 			ID=row.substring(0,x).toUpperCase();
 			row=row.substring(x+1);
 			ID=ID.substring(5).toUpperCase();
-			if(ID.length()==0) ID=lastID;
+			if(ID.length()==0)
+				ID=lastID;
 			if((lastID==null)||(lastID.length()==0))
 				return "Error: No last expertise found for data: "+lastID+"="+row;
 			else
@@ -300,7 +321,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 					for(int s1=0;s1<stages.size();s1++)
 					{
 						def=getDefinition(stages.get(s1));
-						if(def==null) continue;
+						if(def==null)
+							continue;
 						def.data=CMParms.parseCommas(row,true).toArray(new String[0]);
 					}
 			}
@@ -312,7 +334,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			ID=row.substring(0,x).toUpperCase();
 			row=row.substring(x+1);
 			ID=ID.substring(5).toUpperCase();
-			if(ID.length()==0) ID=lastID;
+			if(ID.length()==0)
+				ID=lastID;
 			if((lastID==null)||(lastID.length()==0))
 				return "Error: No last expertise found for help: "+lastID+"="+row;
 			else
@@ -348,9 +371,11 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				for(int s1=0;s1<stages.size();s1++)
 				{
 					def=getDefinition(stages.get(s1));
-					if(def==null) continue;
+					if(def==null)
+						continue;
 					WKID=def.name.toUpperCase().replace(' ','_');
-					if(!helpMap.containsKey(WKID)) helpMap.put(WKID,row);
+					if(!helpMap.containsKey(WKID))
+						helpMap.put(WKID,row);
 				}
 			}
 			return null;
@@ -434,7 +459,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		{
 			final String row=V.get(v);
 			WKID=this.confirmExpertiseLine(row,ID,true);
-			if(WKID==null) continue;
+			if(WKID==null)
+				continue;
 			if(WKID.startsWith("Error: "))
 				Log.errOut("ColumbiaUniv",WKID);
 			else
@@ -457,9 +483,11 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			{
 				final String ID=msg.substring(learnStart+1,end);
 				final Ability A=CMClass.getAbility(ID);
-				if(A!=null) return A;
+				if(A!=null)
+					return A;
 				final ExpertiseDefinition X = this.findDefinition(ID, true);
-				if(X!=null) return X;
+				if(X!=null)
+					return X;
 				return CMClass.getObjectOrPrototype(ID);
 			}
 		}

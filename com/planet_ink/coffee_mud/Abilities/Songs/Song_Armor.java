@@ -44,7 +44,8 @@ public class Song_Armor extends Song
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(invoker==null) return;
+		if(invoker==null)
+			return;
 
 		affectableStats.setArmor((affectableStats.armor()
 								-invoker().charStats().getStat(CharStats.STAT_CHARISMA))

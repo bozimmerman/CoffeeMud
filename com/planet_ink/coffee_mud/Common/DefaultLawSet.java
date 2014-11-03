@@ -136,7 +136,8 @@ public class DefaultLawSet implements Law
 	@Override
 	public void changeStates(LegalWarrant W, int state)
 	{
-		if((W==null)||(W.criminal()==null)) return;
+		if((W==null)||(W.criminal()==null))
+			return;
 		if(warrants.contains(W))
 			for(int w=0;w<warrants.size();w++)
 			{
@@ -161,7 +162,8 @@ public class DefaultLawSet implements Law
 				Room R=null;
 				final String room=V.get(0);
 				String item="";
-				if(V.size()>1) item=CMParms.combine(V,1);
+				if(V.size()>1)
+					item=CMParms.combine(V,1);
 				if(!room.equalsIgnoreCase("*"))
 				{
 					treasuryR=CMLib.map().getRoom(room);
@@ -199,7 +201,8 @@ public class DefaultLawSet implements Law
 		{
 			lastMonthChecked=A.getTimeObj().getMonth();
 			double tax=CMath.s_double((String)taxLaws.get("PROPERTYTAX"));
-			if(tax==0.0) return;
+			if(tax==0.0)
+				return;
 			tax=CMath.div(tax,100.0);
 			List<LandTitle> titles=CMLib.law().getAllUniqueTitles(A.getMetroMap(),"*",false);
 			final Hashtable<String,Vector<LandTitle>> owners=new Hashtable<String,Vector<LandTitle>>();
@@ -238,7 +241,8 @@ public class DefaultLawSet implements Law
 
 				for(int p=0;p<particulars.size();p++)
 				{
-					if(p>0) properties.append(", ");
+					if(p>0)
+						properties.append(", ");
 					T=(particulars.elementAt(p));
 					propertyRooms=T.getAllTitledRooms();
 					if((propertyRooms.size()<2)
@@ -340,7 +344,8 @@ public class DefaultLawSet implements Law
 								T.updateTitle();
 							}
 						}
-						if(owed<0) owed=0;
+						if(owed<0)
+							owed=0;
 						if((treasuryR!=null)&&((owed+paid)>0))
 						{
 							final List<Coins> V=CMLib.beanCounter().makeAllCurrency(CMLib.beanCounter().getCurrency(A),owed+paid);
@@ -418,7 +423,8 @@ public class DefaultLawSet implements Law
 	@Override
 	public boolean isInternalStr(String msg)
 	{
-		if((theLaws!=null)&&(theLaws.get(msg)!=null)) return true;
+		if((theLaws!=null)&&(theLaws.get(msg)!=null))
+			return true;
 		return false;
 	}
 	@Override
@@ -489,31 +495,43 @@ public class DefaultLawSet implements Law
 
 		taxLaws.clear();
 		String taxLaw=getInternalStr("PROPERTYTAX");
-		if(taxLaw.length()>0) taxLaws.put("PROPERTYTAX",taxLaw);
+		if(taxLaw.length()>0)
+			taxLaws.put("PROPERTYTAX",taxLaw);
 		taxLaw=getInternalStr("TAXEVASION");
-		if(taxLaw.length()>0) taxLaws.put("TAXEVASION",getInternalBits(taxLaw));
+		if(taxLaw.length()>0)
+			taxLaws.put("TAXEVASION",getInternalBits(taxLaw));
 		taxLaw=getInternalStr("TREASURY");
-		if(taxLaw.length()>0) taxLaws.put("TREASURY",taxLaw);
+		if(taxLaw.length()>0)
+			taxLaws.put("TREASURY",taxLaw);
 		taxLaw=getInternalStr("SALESTAX");
-		if(taxLaw.length()>0) taxLaws.put("SALESTAX",taxLaw);
+		if(taxLaw.length()>0)
+			taxLaws.put("SALESTAX",taxLaw);
 		taxLaw=getInternalStr("CITTAX");
-		if(taxLaw.length()>0) taxLaws.put("CITTAX",taxLaw);
+		if(taxLaw.length()>0)
+			taxLaws.put("CITTAX",taxLaw);
 
 		basicCrimes.clear();
 		String basicLaw=getInternalStr("MURDER");
-		if(basicLaw.length()>0) basicCrimes.put("MURDER",getInternalBits(basicLaw));
+		if(basicLaw.length()>0)
+			basicCrimes.put("MURDER",getInternalBits(basicLaw));
 		basicLaw=getInternalStr("RESISTINGARREST");
-		if(basicLaw.length()>0) basicCrimes.put("RESISTINGARREST",getInternalBits(basicLaw));
+		if(basicLaw.length()>0)
+			basicCrimes.put("RESISTINGARREST",getInternalBits(basicLaw));
 		basicLaw=getInternalStr("NUDITY");
-		if(basicLaw.length()>0) basicCrimes.put("NUDITY",getInternalBits(basicLaw));
+		if(basicLaw.length()>0)
+			basicCrimes.put("NUDITY",getInternalBits(basicLaw));
 		basicLaw=getInternalStr("ASSAULT");
-		if(basicLaw.length()>0) basicCrimes.put("ASSAULT",getInternalBits(basicLaw));
+		if(basicLaw.length()>0)
+			basicCrimes.put("ASSAULT",getInternalBits(basicLaw));
 		basicLaw=getInternalStr("ARMED");
-		if(basicLaw.length()>0) basicCrimes.put("ARMED",getInternalBits(basicLaw));
+		if(basicLaw.length()>0)
+			basicCrimes.put("ARMED",getInternalBits(basicLaw));
 		basicLaw=getInternalStr("TRESPASSING");
-		if(basicLaw.length()>0) basicCrimes.put("TRESPASSING",getInternalBits(basicLaw));
+		if(basicLaw.length()>0)
+			basicCrimes.put("TRESPASSING",getInternalBits(basicLaw));
 		basicLaw=getInternalStr("PROPERTYROB");
-		if(basicLaw.length()>0) basicCrimes.put("PROPERTYROB",getInternalBits(basicLaw));
+		if(basicLaw.length()>0)
+			basicCrimes.put("PROPERTYROB",getInternalBits(basicLaw));
 
 		abilityCrimes.clear();
 		otherCrimes.clear();
@@ -603,7 +621,8 @@ public class DefaultLawSet implements Law
 			&&(legalDetails.isStillACrime(W2,debugging)))
 			{
 				W=W2;
-				if(pull) warrants.removeElement(W2);
+				if(pull)
+					warrants.removeElement(W2);
 				break;
 			}
 		}
@@ -675,7 +694,8 @@ public class DefaultLawSet implements Law
 			if((W2.criminal()==criminal)&&(W2.crime().equals(crime)))
 			{
 				W=W2;
-				if(pull) oldWarrants.removeElement(W2);
+				if(pull)
+					oldWarrants.removeElement(W2);
 				break;
 			}
 		}

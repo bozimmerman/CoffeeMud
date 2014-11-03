@@ -61,7 +61,8 @@ public class Spell_WellDressed extends Spell
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		if(CMath.isInteger(newText)) dressCode=CMath.s_int(newText);
+		if(CMath.isInteger(newText))
+			dressCode=CMath.s_int(newText);
 	}
 
 	@Override public String text(){return ""+dressCode;}
@@ -101,7 +102,8 @@ public class Spell_WellDressed extends Spell
 	{
 		final int newDressCode=1;
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -129,7 +131,8 @@ public class Spell_WellDressed extends Spell
 					//target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> <S-IS-ARE> very well dressed."));
 					beneficialAffect(mob,target,asLevel,0);
 					final Ability A=target.fetchEffect(ID());
-					if(A!=null) A.setMiscText(""+newDressCode);
+					if(A!=null)
+						A.setMiscText(""+newDressCode);
 				}
 			}
 		}

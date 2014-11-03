@@ -62,7 +62,8 @@ public class GTell extends StdCommand
 			else
 			{
 				int num=CMath.s_int(CMParms.combine(commands,2));
-				if(num>V.size()) num=V.size();
+				if(num>V.size())
+					num=V.size();
 				for(int i=V.size()-num;i<V.size();i++)
 					mob.tell(V.get(i));
 			}
@@ -79,7 +80,8 @@ public class GTell extends StdCommand
 			text=text.substring(1);
 			final Vector<String> V=CMParms.parse(text);
 			Social S=CMLib.socials().fetchSocial(V,true,false);
-			if(S==null) S=CMLib.socials().fetchSocial(V,false,false);
+			if(S==null)
+				S=CMLib.socials().fetchSocial(V,false,false);
 			if(S!=null)
 			{
 				tellMsg=S.makeMessage(mob,

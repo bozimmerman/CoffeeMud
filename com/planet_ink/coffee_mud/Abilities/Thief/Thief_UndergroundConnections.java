@@ -75,7 +75,8 @@ public class Thief_UndergroundConnections extends ThiefSkill
 						for(int g=0;g<theGroup.size();g++)
 						{
 							final MOB M=(MOB)theGroup.elementAt(g);
-							if(M.playerStats()!=null) M.playerStats().adjHygiene(hygieneLoss);
+							if(M.playerStats()!=null)
+								M.playerStats().adjHygiene(hygieneLoss);
 							switch(CMLib.dice().roll(1,10,0))
 							{
 							case 1: M.tell(L("You think you are being taken through '@x1'.",roomDesc)); break;
@@ -115,7 +116,8 @@ public class Thief_UndergroundConnections extends ThiefSkill
 	{
 		if(pathOut!=null)
 		{
-			if(currRoom==null) currRoom=CMLib.map().getRandomRoom();
+			if(currRoom==null)
+				currRoom=CMLib.map().getRandomRoom();
 			if(theGroup!=null)
 			for(int g=0;g<theGroup.size();g++)
 			{
@@ -130,9 +132,11 @@ public class Thief_UndergroundConnections extends ThiefSkill
 				((Room)storage.elementAt(s)).destroy();
 			pathOut=null;
 			currRoom=null;
-			if(storage!=null) storage.clear();
+			if(storage!=null)
+				storage.clear();
 			storage=null;
-			if(theGroup!=null) theGroup.clear();
+			if(theGroup!=null)
+				theGroup.clear();
 			theGroup=null;
 		}
 		super.unInvoke();
@@ -214,7 +218,8 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			return false;
 		}
 		final Room thisRoom=target.location();
-		if(thisRoom==null) return false;
+		if(thisRoom==null)
+			return false;
 
 		if((!auto)&&(thisRoom.domainType()!=Room.DOMAIN_OUTDOORS_CITY))
 		{

@@ -177,7 +177,8 @@ public class Questwins extends StdCommand
 			for(final Enumeration<ScriptingEngine> e=mob.scripts();e.hasMoreElements();)
 			{
 				final ScriptingEngine SE=e.nextElement();
-				if(SE==null) continue;
+				if(SE==null)
+					continue;
 				if((SE.defaultQuestName().length()>0)
 				&&(SE.defaultQuestName().equalsIgnoreCase(Q.name())))
 					foundS=SE;

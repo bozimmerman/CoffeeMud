@@ -114,7 +114,8 @@ public class Copy extends StdCommand
 							if(name.equalsIgnoreCase("exit"))
 							{
 								E=mob.location().getExitInDir(subDirCode);
-								if(E==null) E=mob.location().getRawExit(subDirCode);
+								if(E==null)
+									E=mob.location().getRawExit(subDirCode);
 							}
 							else
 							if(name.equalsIgnoreCase("room"))
@@ -138,9 +139,12 @@ public class Copy extends StdCommand
 				}
 			}
 		}
-		if(E==null) E=mob.location().fetchFromRoomFavorItems(srchContainer,name);
-		if(E==null) E=mob.location().fetchFromRoomFavorMOBs(srchContainer,name);
-		if(E==null)	E=mob.findItem(name);
+		if(E==null)
+			E=mob.location().fetchFromRoomFavorItems(srchContainer,name);
+		if(E==null)
+			E=mob.location().fetchFromRoomFavorMOBs(srchContainer,name);
+		if(E==null)
+			E=mob.findItem(name);
 		if((E==null)&&(srchContainer==null))
 		{
 			try
@@ -344,7 +348,8 @@ public class Copy extends StdCommand
 				for(final Enumeration<Room> r=((Area)E).getCompleteMap();r.hasMoreElements();)
 				{
 					final Room oldR=CMLib.map().getRoom(r.nextElement());
-					if(oldR==null) continue;
+					if(oldR==null)
+						continue;
 					CMLib.map().resetRoom(oldR);
 					final Room R=(Room)oldR.copyOf();
 					R.setArea(newArea); // adds the room to the area
@@ -358,7 +363,8 @@ public class Copy extends StdCommand
 				for(final Enumeration<Room> ir=newArea.getCompleteMap();ir.hasMoreElements();)
 				{
 					final Room R=CMLib.map().getRoom(ir.nextElement());
-					if(R==null) continue;
+					if(R==null)
+						continue;
 					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 					{
 						final Room dirR=R.rawDoors()[d];

@@ -68,7 +68,8 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 			final DirContext ictx = new InitialDirContext( env );
 			final Attributes attrs = ictx.getAttributes( hostName, new String[] { "MX" });
 			final Attribute attr = attrs.get( "MX" );
-			if( attr == null ) return( null );
+			if( attr == null )
+				return( null );
 			return( attr );
 		}
 		catch(final javax.naming.NamingException x)
@@ -117,12 +118,14 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		send = new PrintWriter( sock.getOutputStream() );
 		final boolean debug = CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPCLIENT);
 		String rstr = reply.readLine();
-		if(debug) Log.debugOut("SMTPclient",rstr);
+		if(debug)
+			Log.debugOut("SMTPclient",rstr);
 		if ((rstr==null)||(!rstr.startsWith("220"))) throw new ProtocolException(rstr);
 		while (rstr.indexOf('-') == 3)
 		{
 			rstr = reply.readLine();
-			if(debug) Log.debugOut("SMTPclient",rstr);
+			if(debug)
+				Log.debugOut("SMTPclient",rstr);
 			if (!rstr.startsWith("220")) throw new ProtocolException(rstr);
 		}
 	}
@@ -131,7 +134,8 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 												   BadEmailAddressException
 	{
 		int x=this.getEmailAddressError(emailAddress);
-		if(x>=0) throw new BadEmailAddressException("Malformed email address");
+		if(x>=0)
+			throw new BadEmailAddressException("Malformed email address");
 		x=emailAddress.indexOf('@');
 		final String domain=emailAddress.substring(x+1).trim();
 		final Vector<String> addys=new Vector<String>();
@@ -151,7 +155,8 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		for (String hostid : addys)
 		{
 			final int y=hostid.lastIndexOf(' ');
-			if(y>=0) hostid=hostid.substring(y+1).trim();
+			if(y>=0)
+				hostid=hostid.substring(y+1).trim();
 			try
 			{
 				sock = new Socket( hostid, DEFAULT_PORT );
@@ -160,12 +165,14 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 				send = new PrintWriter( sock.getOutputStream() );
 				final boolean debug = CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPCLIENT);
 				String rstr = reply.readLine();
-				if(debug) Log.debugOut("SMTPclient",rstr);
+				if(debug)
+					Log.debugOut("SMTPclient",rstr);
 				if ((rstr==null)||(!rstr.startsWith("220"))) throw new ProtocolException(rstr);
 				while (rstr.indexOf('-') == 3)
 				{
 					rstr = reply.readLine();
-					if(debug) Log.debugOut("SMTPclient",rstr);
+					if(debug)
+						Log.debugOut("SMTPclient",rstr);
 					if (!rstr.startsWith("220")) throw new ProtocolException(rstr);
 				}
 				connected=true;
@@ -176,7 +183,8 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 				// just try the next one.
 			}
 		}
-		if(!connected) throw new IOException("Unable to connect to '"+domain+"'.");
+		if(!connected)
+			throw new IOException("Unable to connect to '"+domain+"'.");
 	}
 
 	@Override
@@ -273,32 +281,44 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	 */
 	private int getEmailAddressError(String addy)
 	{
-		if(addy==null) return 0;
+		if(addy==null)
+			return 0;
 		final int x=addy.indexOf('@');
-		if(x<0) return addy.length();
+		if(x<0)
+			return addy.length();
 		final String localPart=addy.substring(0,x).trim();
 		final String network=addy.substring(x+1);
-		if(localPart.length()==0) return x;
-		if(network.length()==0) return addy.length();
+		if(localPart.length()==0)
+			return x;
+		if(network.length()==0)
+			return addy.length();
 		if((localPart.startsWith("\"")&&localPart.endsWith("\"")))
 		{
 			final int z=localPart.substring(1,localPart.length()-1).indexOf("\"");
-			if(z>=0) return 1+z;
+			if(z>=0)
+				return 1+z;
 		}
 		else
 		for(int l=0;l<localPart.length();l++)
 			if(EMAIL_VALID_LOCAL_CHARS.indexOf(localPart.charAt(l))<0)
 				return l;
-		if(localPart.startsWith(".")) return 0;
-		if(localPart.endsWith(".")) return x-1;
-		if(localPart.length()>64) return x;
+		if(localPart.startsWith("."))
+			return 0;
+		if(localPart.endsWith("."))
+			return x-1;
+		if(localPart.length()>64)
+			return x;
 		for(int l=0;l<network.length();l++)
 			if(EMAIL_VALID_DOMAIN_CHARS.indexOf(network.charAt(l))<0)
 				return x+1+l;
-		if(network.startsWith("-")) return x+1;
-		if(network.endsWith("-")) return addy.length();
-		if(network.startsWith(".")) return x+1;
-		if(network.length()>255) return addy.length();
+		if(network.startsWith("-"))
+			return x+1;
+		if(network.endsWith("-"))
+			return addy.length();
+		if(network.startsWith("."))
+			return x+1;
+		if(network.length()>255)
+			return addy.length();
 		return -1;
 	}
 
@@ -317,7 +337,8 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 
 	public void sendLine(boolean debug, String sstr)
 	{
-		if(debug) Log.debugOut("SMTPclient",sstr);
+		if(debug)
+			Log.debugOut("SMTPclient",sstr);
 		send.print(sstr);
 		send.print(EOL);
 		send.flush();
@@ -408,7 +429,8 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		else
 			sendLine(debug,"HELO " + host);
 		rstr = reply.readLine();
-		if(debug) Log.debugOut("SMTPclient",rstr);
+		if(debug)
+			Log.debugOut("SMTPclient",rstr);
 		if ((rstr==null)||(!rstr.startsWith("250"))) throw new ProtocolException(""+rstr);
 
 		if((auth != null) && (auth.getAuthType().length()>0))
@@ -419,7 +441,8 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 				sendLine(debug,"AUTH " + auth.getAuthType());
 			while(rstr.startsWith("250"))
 				rstr = reply.readLine();
-			if(debug) Log.debugOut("SMTPclient",rstr);
+			if(debug)
+				Log.debugOut("SMTPclient",rstr);
 			if (!rstr.startsWith("334")) throw new ProtocolException(""+rstr);
 			if(auth.getAuthType().equalsIgnoreCase("plain"))
 				sendLine(debug,auth.getPlainLogin());
@@ -427,20 +450,24 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 			if(auth.getAuthType().equalsIgnoreCase("login"))
 				sendLine(debug,auth.getPassword());
 			rstr = reply.readLine();
-			if(debug) Log.debugOut("SMTPclient",rstr);
+			if(debug)
+				Log.debugOut("SMTPclient",rstr);
 			if ((rstr==null)||(!rstr.startsWith("235"))) throw new ProtocolException(""+rstr);
 		}
 		sendLine(debug,"MAIL FROM:<" + froaddress+">");
 		rstr = reply.readLine();
-		if(debug) Log.debugOut("SMTPclient",rstr);
+		if(debug)
+			Log.debugOut("SMTPclient",rstr);
 		if ((rstr==null)||(!rstr.startsWith("250"))) throw new ProtocolException(""+rstr);
 		sendLine(debug,"RCPT TO:<" + to_address+">");
 		rstr = reply.readLine();
-		if(debug) Log.debugOut("SMTPclient",rstr);
+		if(debug)
+			Log.debugOut("SMTPclient",rstr);
 		if ((rstr==null)||(!rstr.startsWith("250"))) throw new ProtocolException(""+rstr);
 		sendLine(debug,"DATA");
 		rstr = reply.readLine();
-		if(debug) Log.debugOut("SMTPclient",rstr);
+		if(debug)
+			Log.debugOut("SMTPclient",rstr);
 		if ((rstr==null)||(!rstr.startsWith("354"))) throw new ProtocolException(""+rstr);
 		sendLine(debug,"MIME-Version: 1.0");
 		if((message.indexOf("<HTML>")>=0)&&(message.indexOf("</HTML>")>=0))
@@ -463,7 +490,8 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		sendLine(debug,".");
 
 		rstr = reply.readLine();
-		if(debug) Log.debugOut("SMTPclient",rstr);
+		if(debug)
+			Log.debugOut("SMTPclient",rstr);
 		if (!rstr.startsWith("250")) throw new ProtocolException(rstr);
 	}
 
@@ -553,9 +581,11 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		public SMTPHostAuth(String unparsedServerInfo)
 		{
 			final List<String> info=CMParms.parseCommas(unparsedServerInfo,false);
-			if(info.size()==0) return;
+			if(info.size()==0)
+				return;
 			host = info.remove(0);
-			if((info.size()==0)||(host.length()==0)) return;
+			if((info.size()==0)||(host.length()==0))
+				return;
 			final String s=info.get(0);
 			if(s.equalsIgnoreCase("plain")||s.equalsIgnoreCase("login"))
 				authType=info.remove(0).toUpperCase().trim();
@@ -563,7 +593,8 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 				authType="PLAIN";
 			if(info.size()==0){ authType=""; return;}
 			login=info.remove(0);
-			if(info.size()==0) return;
+			if(info.size()==0)
+				return;
 			password=info.remove(0);
 		}
 		private String host="";

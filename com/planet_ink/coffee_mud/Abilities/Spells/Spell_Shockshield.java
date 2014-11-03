@@ -67,13 +67,18 @@ public class Spell_Shockshield extends Spell
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if(affected==null) return;
-		if(!(affected instanceof MOB)) return;
+		if(affected==null)
+			return;
+		if(!(affected instanceof MOB))
+			return;
 		final MOB mob=(MOB)affected;
-		if(msg.target()==null) return;
-		if(msg.source()==null) return;
+		if(msg.target()==null)
+			return;
+		if(msg.source()==null)
+			return;
 		final MOB source=msg.source();
-		if(source.location()==null) return;
+		if(source.location()==null)
+			return;
 
 
 		if(msg.amITarget(mob)&&(!msg.amISource(mob)))
@@ -88,7 +93,8 @@ public class Spell_Shockshield extends Spell
 					if(source.location().okMessage(source,msg2))
 					{
 						source.location().send(mob,msg2);
-						if(invoker==null) invoker=source;
+						if(invoker==null)
+							invoker=source;
 						if(msg2.value()<=0)
 						{
 							final int damage = CMLib.dice().roll(1,(int)Math.round((invoker.phyStats().level()+super.getXLEVELLevel(invoker())+(2.0*super.getX1Level(invoker())))/3.0),1);
@@ -106,8 +112,10 @@ public class Spell_Shockshield extends Spell
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(affected==null) return;
-		if(!(affected instanceof MOB)) return;
+		if(affected==null)
+			return;
+		if(!(affected instanceof MOB))
+			return;
 		affectableStats.setArmor(affectableStats.armor()-(getXLEVELLevel(invoker())));
 	}
 
@@ -115,7 +123,8 @@ public class Spell_Shockshield extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

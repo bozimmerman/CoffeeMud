@@ -44,7 +44,8 @@ public class Ignore extends StdCommand
 		throws java.io.IOException
 	{
 		final PlayerStats pstats=mob.playerStats();
-		if(pstats==null) return false;
+		if(pstats==null)
+			return false;
 		final Set<String> h=pstats.getIgnored();
 		if((commands.size()<2)||(((String)commands.elementAt(1)).equalsIgnoreCase("list")))
 		{

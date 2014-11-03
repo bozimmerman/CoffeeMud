@@ -48,7 +48,8 @@ public class ANSI extends StdCommand
 			PlayerAccount acct = null;
 			if(mob.playerStats()!=null)
 				acct = mob.playerStats().getAccount();
-			if(acct != null) acct.setFlag(PlayerAccount.FLAG_ANSI, true);
+			if(acct != null)
+				acct.setFlag(PlayerAccount.FLAG_ANSI, true);
 			if(!mob.isAttribute(MOB.Attrib.ANSI))
 			{
 				mob.setAttribute(MOB.Attrib.ANSI,true);

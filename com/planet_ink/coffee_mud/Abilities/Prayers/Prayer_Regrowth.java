@@ -72,7 +72,8 @@ public class Prayer_Regrowth extends Prayer implements MendingSkill
 	@Override
 	public boolean supportsMending(Physical item)
 	{
-		if(!(item instanceof MOB)) return false;
+		if(!(item instanceof MOB))
+			return false;
 		return (item.fetchEffect("Amputation")!=null);
 	}
 
@@ -94,7 +95,8 @@ public class Prayer_Regrowth extends Prayer implements MendingSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null)return false;
+		if(target==null)
+			return false;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		final boolean success=proficiencyCheck(mob,0,auto);
@@ -124,7 +126,8 @@ public class Prayer_Regrowth extends Prayer implements MendingSkill
 								break;
 							}
 						}
-						if(found) break;
+						if(found)
+							break;
 					}
 					if((found)&&(missLimb!=null))
 						Amp.unamputate(target, Amp, missLimb.toLowerCase());

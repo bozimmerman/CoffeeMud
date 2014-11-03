@@ -72,7 +72,8 @@ public class Thief_RemoveTraps extends ThiefSkill
 			unlockThis=R;
 		if(unlockThis==null)
 			unlockThis=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
-		if(unlockThis==null) return false;
+		if(unlockThis==null)
+			return false;
 		final int oldProficiency=proficiency();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -82,7 +83,8 @@ public class Thief_RemoveTraps extends ThiefSkill
 											 -unlockThis.phyStats().level())*3),auto);
 		final Vector<Physical> permSetV=new Vector<Physical>();
 		Trap theTrap=CMLib.utensils().fetchMyTrap(unlockThis);
-		if(theTrap!=null) permSetV.addElement(unlockThis);
+		if(theTrap!=null)
+			permSetV.addElement(unlockThis);
 		Trap opTrap=null;
 		boolean permanent=false;
 		if((unlockThis instanceof Room)
@@ -103,10 +105,13 @@ public class Thief_RemoveTraps extends ThiefSkill
 				final Exit exit=R.getReverseExit(dirCode);
 				if(exit!=null)
 					opTrap=CMLib.utensils().fetchMyTrap(exit);
-				if(opTrap!=null) permSetV.addElement(exit);
+				if(opTrap!=null)
+					permSetV.addElement(exit);
 				Trap roomTrap=null;
-				if(nextRoom!=null) roomTrap=CMLib.utensils().fetchMyTrap(nextRoom);
-				if(roomTrap!=null) permSetV.addElement(nextRoom);
+				if(nextRoom!=null)
+					roomTrap=CMLib.utensils().fetchMyTrap(nextRoom);
+				if(roomTrap!=null)
+					permSetV.addElement(nextRoom);
 				if((theTrap!=null)&&(theTrap.disabled())&&(roomTrap!=null))
 				{
 					opTrap=null;
@@ -123,7 +128,8 @@ public class Thief_RemoveTraps extends ThiefSkill
 		final CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_ACTION,auto?L("@x1 begins to glow.",unlockThis.name()):L("<S-NAME> attempt(s) to safely deactivate a trap on @x1.",unlockThis.name()));
 		if((success)&&(!lastDone.contains(""+unlockThis)))
 		{
-			while(lastDone.size()>40) lastDone.removeElementAt(0);
+			while(lastDone.size()>40)
+				lastDone.removeElementAt(0);
 			lastDone.addElement(""+unlockThis);
 			msg.setValue(1); // this is to notify that the thief gets xp from doing this.
 		}

@@ -44,7 +44,8 @@ public class View extends StdCommand
 		throws java.io.IOException
 	{
 		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"View what merchandise from whom?");
-		if(shopkeeper==null) return false;
+		if(shopkeeper==null)
+			return false;
 		if(commands.size()==0)
 		{
 			mob.tell(L("View what merchandise?"));
@@ -77,7 +78,8 @@ public class View extends StdCommand
 			doBugFix=false;
 			final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
 			final Environmental itemToDo=SK.getShop().getStock(whatName,mob);
-			if(itemToDo==null) break;
+			if(itemToDo==null)
+				break;
 			if(CMLib.flags().canBeSeenBy(itemToDo,mob))
 				V.addElement(itemToDo);
 			if(addendum>=CMLib.coffeeShops().getShopKeeper(shopkeeper).getShop().numberInStock(itemToDo))

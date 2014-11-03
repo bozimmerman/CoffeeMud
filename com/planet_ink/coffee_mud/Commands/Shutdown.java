@@ -62,7 +62,8 @@ public class Shutdown extends StdCommand implements Tickable
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(mob.isMonster()) return false;
+		if(mob.isMonster())
+			return false;
 		boolean noPrompt=false;
 		String externalCommand=null;
 		boolean keepItDown=true;
@@ -155,7 +156,8 @@ public class Shutdown extends StdCommand implements Tickable
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		final MOB mob=shuttingDownMob;
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		if(System.currentTimeMillis() > shuttingDownCompletes)
 		{
 			startShutdown(mob);

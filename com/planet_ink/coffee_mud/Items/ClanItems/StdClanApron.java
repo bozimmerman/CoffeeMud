@@ -102,7 +102,8 @@ public class StdClanApron extends StdClanItem
 		if(fetchEffect("Merchant")==null)
 		{
 			final Ability A=CMClass.getAbility("Merchant");
-			if(A!=null) addNonUninvokableEffect(A);
+			if(A!=null)
+				addNonUninvokableEffect(A);
 		}
 		return true;
 	}

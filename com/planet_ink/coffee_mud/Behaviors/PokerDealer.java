@@ -102,7 +102,8 @@ public class PokerDealer extends StdBehavior
 	private DeckOfCards myDeck=null;
 	private synchronized DeckOfCards theDeck()
 	{
-		if(myDeck==null) myDeck=((DeckOfCards)CMClass.getMiscMagic("StdDeckOfCards")).createDeck(null);
+		if(myDeck==null)
+			myDeck=((DeckOfCards)CMClass.getMiscMagic("StdDeckOfCards")).createDeck(null);
 		return myDeck;
 	}
 
@@ -256,12 +257,14 @@ public class PokerDealer extends StdBehavior
 	// checks whether the pot is currently in balance.
 	private boolean isThePotRight()
 	{
-		if(pot.size()<2) return true;
+		if(pot.size()<2)
+			return true;
 		double amountToCall=-1;
 		for(int p=0;p<pot.size();p++)
 		{
 			final Double potAmount=(Double)pot.elementAt(p,2);
-			if(amountToCall<0.0) amountToCall=potAmount.doubleValue();
+			if(amountToCall<0.0)
+				amountToCall=potAmount.doubleValue();
 			if(potAmount.doubleValue()!=amountToCall)
 				return false;
 		}
@@ -273,7 +276,8 @@ public class PokerDealer extends StdBehavior
 	// returns -1 if the player is below the bet
 	public int getCalled0Raised1OrFolded(MOB player)
 	{
-		if(!pot.contains(player)) return -1;
+		if(!pot.contains(player))
+			return -1;
 		final Double inPot=(Double)pot.elementAt(pot.indexOf(player),2);
 		int numHigherThanPlayer=0;
 		int numEqualToPlayer=0;
@@ -344,7 +348,8 @@ public class PokerDealer extends StdBehavior
 			// in this case.
 			if((gameState&STATE_MASK)==STATE_WAITING_FOR_ANTIS)
 			{
-				if(timer<=0) timer=System.currentTimeMillis()+(TIME_SECONDSTOSTART*1000);
+				if(timer<=0)
+					timer=System.currentTimeMillis()+(TIME_SECONDSTOSTART*1000);
 				// if they havn't antied yet
 				if(inPot==null)
 				{
@@ -801,7 +806,8 @@ public class PokerDealer extends StdBehavior
 	private int determineHand(HandOfCards hand)
 	{
 		List<Item> cards=hand.getContents();
-		if(cards.size()==0) return -1;
+		if(cards.size()==0)
+			return -1;
 
 		// first check for flushes
 		int flushSuit=-1;
@@ -828,15 +834,18 @@ public class PokerDealer extends StdBehavior
 		for(int window=cards.size()-5;window>=0;window--)
 		{
 			highStraightCard=((PlayingCard)cards.get(window+4)).getBitEncodedValue();
-			if(highStraightCard==1) highStraightCard=14;
+			if(highStraightCard==1)
+				highStraightCard=14;
 			for(int c=window+1;c<window+5;c++)
 			{
 				int cardBitValue=((PlayingCard)cards.get(c)).getBitEncodedValue();
-				if(cardBitValue==1) cardBitValue=14;
+				if(cardBitValue==1)
+					cardBitValue=14;
 				if(cardBitValue!=(((PlayingCard)cards.get(c-1)).getBitEncodedValue()+1))
 					highStraightCard=-1;
 			}
-			if(highStraightCard>=0) break;
+			if(highStraightCard>=0)
+				break;
 		}
 		// then for straights with ace low
 		if((highStraightCard<0)&&(cards.size()>=5))
@@ -849,7 +858,8 @@ public class PokerDealer extends StdBehavior
 				for(int c=window+1;c<window+5;c++)
 					if(((PlayingCard)cards.get(c)).getBitEncodedValue()!=(((PlayingCard)cards.get(c-1)).getBitEncodedValue()+1))
 						highStraightCard=-1;
-				if(highStraightCard>=0) break;
+				if(highStraightCard>=0)
+					break;
 			}
 			if(highStraightCard<0)
 			{
@@ -1028,7 +1038,8 @@ public class PokerDealer extends StdBehavior
 		{
 			final MOB mob=(MOB)pot.elementAt(p,1);
 			HandOfCards hand=theDeck().getPlayerHand(mob);
-			if(hand==null) continue;
+			if(hand==null)
+				continue;
 
 			// if only the face cards count, we will pull them out,
 			// put them in their own hand, generate a score for them
@@ -1049,7 +1060,8 @@ public class PokerDealer extends StdBehavior
 				hand=faceUpHand;
 			}
 			final int score=determineHand(hand);
-			if(score<0) continue;
+			if(score<0)
+				continue;
 			unsortedScores.addElement(mob,Integer.valueOf(score));
 		}
 
@@ -1276,7 +1288,8 @@ public class PokerDealer extends StdBehavior
 							  int numberOfCards,
 							  int numberFaceUp)
 	{
-		if(player==null) return;
+		if(player==null)
+			return;
 		final Room R=CMLib.map().roomLocation(host);
 		final HandOfCards hand=theDeck().getPlayerHand(player);
 		if(hand!=null)

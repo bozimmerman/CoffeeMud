@@ -46,7 +46,8 @@ public class Prayer_Anger extends Prayer
 
 	private boolean anyoneIsFighting(Room R)
 	{
-		if(R==null) return false;
+		if(R==null)
+			return false;
 		for(int i=0;i<R.numInhabitants();i++)
 		{
 			final MOB inhab=R.fetchInhabitant(i);
@@ -101,8 +102,10 @@ public class Prayer_Anger extends Prayer
 							target=mob.location().fetchRandomInhabitant();
 							if(target!=null)
 							{
-								if(target==inhab) target=null;
-								if(target==mob) target=null;
+								if(target==inhab)
+									target=null;
+								if(target==mob)
+									target=null;
 							}
 							tries++;
 						}

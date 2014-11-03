@@ -45,10 +45,12 @@ public class QuestNext extends StdWebMacro
 		String last=httpReq.getUrlParameter("QUEST");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("QUEST");
+			if(last!=null)
+				httpReq.removeUrlParameter("QUEST");
 			return "";
 		}
-		if(last!=null) last=CMStrings.replaceAll(last,"*","@");
+		if(last!=null)
+			last=CMStrings.replaceAll(last,"*","@");
 		String lastID="";
 
 		final Vector V=new Vector();

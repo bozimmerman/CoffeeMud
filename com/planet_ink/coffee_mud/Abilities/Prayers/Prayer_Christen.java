@@ -75,7 +75,8 @@ public class Prayer_Christen extends Prayer
 		String name=((String)commands.lastElement()).trim();
 		commands.removeElementAt(commands.size()-1);
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if((!(target instanceof CagedAnimal))||(target.phyStats().ability()<=0)||(!target.isGeneric()))
 		{

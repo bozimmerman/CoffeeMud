@@ -86,7 +86,8 @@ public class Channel extends StdCommand
 			int size = CMLib.channels().getChannelQue(channelInt, 0, 5).size();
 			if(size>0)
 			{
-				if(size>5) size=5;
+				if(size>5)
+					size=5;
 				mob.tell(L("@x1 what?  Here's the last @x2 message(s):\n\r",channelName,""+size));
 				commands.add("LAST");
 				commands.add(Integer.toString(size));
@@ -131,7 +132,8 @@ public class Channel extends StdCommand
 			boolean showedAny=false;
 			if(que.size()>0)
 			{
-				if(num>que.size()) num=que.size();
+				if(num>que.size())
+					num=que.size();
 				final boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
 				long elapsedTime=0;
 				final long now=System.currentTimeMillis();

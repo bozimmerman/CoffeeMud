@@ -65,7 +65,8 @@ public class AntiVagrant extends ActiveTicker
 
 	public void wakeVagrants(MOB observer)
 	{
-		if(!canFreelyBehaveNormal(observer)) return;
+		if(!canFreelyBehaveNormal(observer))
+			return;
 		if(anywhere||(observer.location().domainType()==Room.DOMAIN_OUTDOORS_CITY))
 		{
 			if(target!=null)
@@ -131,7 +132,8 @@ public class AntiVagrant extends ActiveTicker
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Tickable.TICKID_MOB) return true;
+		if(tickID!=Tickable.TICKID_MOB)
+			return true;
 
 		// believe it or not, this is for arrest behavior.
 		if(speakDown>0)	{	speakDown--;return true;	}

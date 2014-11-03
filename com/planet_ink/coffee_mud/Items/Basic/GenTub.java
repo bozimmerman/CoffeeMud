@@ -121,14 +121,16 @@ public class GenTub extends StdTub
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
-			if(code.equalsIgnoreCase(MYCODES[i])) return i;
+			if(code.equalsIgnoreCase(MYCODES[i]))
+				return i;
 		return -1;
 	}
 	private static String[] codes=null;
 	@Override
 	public String[] getStatCodes()
 	{
-		if(codes!=null) return codes;
+		if(codes!=null)
+			return codes;
 		final String[] MYCODES=CMProps.getStatCodesList(GenTub.MYCODES,this);
 		final String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
@@ -142,7 +144,8 @@ public class GenTub extends StdTub
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenTub)) return false;
+		if(!(E instanceof GenTub))
+			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))

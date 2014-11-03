@@ -56,9 +56,12 @@ public class Disease_Asthma extends Disease
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID))	return false;
-		if(affected==null) return false;
-		if(!(affected instanceof MOB)) return true;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
+		if(!(affected instanceof MOB))
+			return true;
 
 		final MOB mob=(MOB)affected;
 		if((!mob.amDead())&&((--diseaseTick)<=0))
@@ -68,7 +71,8 @@ public class Disease_Asthma extends Disease
 			{
 				final int damage=mob.curState().getHitPoints()/2;
 				MOB diseaser=invoker;
-				if(diseaser==null) diseaser=mob;
+				if(diseaser==null)
+					diseaser=mob;
 				CMLib.combat().postDamage(diseaser,mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_DISEASE,-1,"<S-NAME> <S-HAS-HAVE> an asthma attack! It <DAMAGE> <S-NAME>!");
 			}
 			else
@@ -81,7 +85,8 @@ public class Disease_Asthma extends Disease
 	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		affectableState.setMovement(affectableState.getMovement()/4);
 	}
 }

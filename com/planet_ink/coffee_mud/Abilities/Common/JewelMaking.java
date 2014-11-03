@@ -163,7 +163,8 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 	@Override
 	public boolean mayICraft(final Item I)
 	{
-		if(I==null) return false;
+		if(I==null)
+			return false;
 		if(!super.mayBeCrafted(I))
 			return false;
 		if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
@@ -233,7 +234,8 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
-		if(!super.canMend(mob,E,quiet)) return false;
+		if(!super.canMend(mob,E,quiet))
+			return false;
 		if((!(E instanceof Item))
 		||(!mayICraft((Item)E)))
 		{
@@ -315,14 +317,16 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 					final String wood=getComponentDescription(mob,V,RCP_WOOD);
 					if(wood.length()>5)
 					{
-						if(toggler>1) buf.append("\n\r");
+						if(toggler>1)
+							buf.append("\n\r");
 						toggler=toggleTop;
 					}
 					if(((level<=xlevel(mob))||allFlag)
 					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
 						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+CMStrings.padRightPreserve(""+wood,cols[2])+((toggler!=toggleTop)?" ":"\n\r"));
-						if(++toggler>toggleTop) toggler=1;
+						if(++toggler>toggleTop)
+							toggler=1;
 					}
 				}
 			}
@@ -349,7 +353,8 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			activity = CraftingActivity.CRAFTING;
 			aborted=false;
 			messedUp=false;
-			if(fire==null) return false;
+			if(fire==null)
+				return false;
 			final String jewel=(String)commands.elementAt(1);
 			final String rest=CMParms.combine(commands,2);
 			final Environmental jewelE=mob.location().fetchFromMOBRoomFavorsItems(mob,null,jewel,Wearable.FILTER_UNWORNONLY);
@@ -432,10 +437,12 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
 			final Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
-			if(fire==null) return false;
+			if(fire==null)
+				return false;
 			final Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
-			if(!canMend(mob, buildingI,false)) return false;
+			if(!canMend(mob, buildingI,false))
+				return false;
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
@@ -450,10 +457,12 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
 			final Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
-			if(fire==null) return false;
+			if(fire==null)
+				return false;
 			final Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
-			if(buildingI==null) return false;
+			if(buildingI==null)
+				return false;
 			if(!mayICraft(mob,buildingI))
 				return false;
 			if(buildingI.phyStats().height()==0)
@@ -516,18 +525,21 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			if(!bundling)
 			{
 				final Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
-				if(fire==null) return false;
+				if(fire==null)
+					return false;
 			}
 			else
 				fireRequired=false;
 
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
-			if(componentsFoundList==null) return false;
+			if(componentsFoundList==null)
+				return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
 			woodRequired=adjustWoodRequired(woodRequired,mob);
 
-			if(amount>woodRequired) woodRequired=amount;
+			if(amount>woodRequired)
+				woodRequired=amount;
 			final String otherRequired=foundRecipe.get(RCP_EXTRAREQ);
 			final int[] pm={RawMaterial.MATERIAL_MITHRIL,RawMaterial.MATERIAL_METAL};
 			final int[][] data=fetchFoundResourceData(mob,
@@ -536,7 +548,8 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 												false,
 												parsedVars.autoGenerate,
 												enhancedTypes);
-			if(data==null) return false;
+			if(data==null)
+				return false;
 			fixDataForComponents(data,componentsFoundList);
 			woodRequired=data[0][FOUND_AMT];
 
@@ -631,7 +644,8 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				buildingI.setDisplayText(L("@x1 of @x2 is here",itemName,statue.trim()));
 				buildingI.setDescription(L("@x1 of @x2. ",itemName,statue.trim()));
 			}
-			if(bundling) buildingI.setBaseValue(lostValue);
+			if(bundling)
+				buildingI.setBaseValue(lostValue);
 			buildingI.recoverPhyStats();
 			buildingI.text();
 			buildingI.recoverPhyStats();

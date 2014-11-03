@@ -53,8 +53,10 @@ public class LinkedWeather extends StdBehavior
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(tickID!=Tickable.TICKID_AREA) return true;
-		if(!(ticking instanceof Area)) return true;
+		if(tickID!=Tickable.TICKID_AREA)
+			return true;
+		if(!(ticking instanceof Area))
+			return true;
 		if(areaName==null)
 		{
 			if(getParms().length()==0)
@@ -69,7 +71,8 @@ public class LinkedWeather extends StdBehavior
 				s=s.substring(0,x);
 			}
 			final Area A=CMLib.map().getArea(s);
-			if(A!=null) areaName=A.Name();
+			if(A!=null)
+				areaName=A.Name();
 		}
 
 		final Area A=(Area)ticking;

@@ -91,7 +91,8 @@ public abstract class CM1Command implements Runnable, Cloneable
 			if(R==null)
 			{
 				final Area A=CMLib.map().getArea(where);
-				if(A!=null) R=A.getRandomMetroRoom();
+				if(A!=null)
+					R=A.getRandomMetroRoom();
 			}
 			if(who.length()==0)
 				P=R;
@@ -99,11 +100,14 @@ public abstract class CM1Command implements Runnable, Cloneable
 		else
 		{
 			final MOB M=CMLib.players().getLoadPlayer(who);
-			if(M!=null) return M;
+			if(M!=null)
+				return M;
 		}
 		final Room R=CMLib.map().roomLocation(P);
-		if(R==null) CMLib.map().roomLocation(req.getTarget());
-		if(R==null) return null;
+		if(R==null)
+			CMLib.map().roomLocation(req.getTarget());
+		if(R==null)
+			return null;
 		P=R.fetchFromRoomFavorMOBs(null,who);
 		if((P==null)&&(req.getTarget() instanceof MOB))
 			P=R.fetchFromRoomFavorMOBs(null,who);

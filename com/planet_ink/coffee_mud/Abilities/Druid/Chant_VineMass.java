@@ -59,7 +59,8 @@ public class Chant_VineMass extends Chant_SummonVine
 		{
 			newMOB=CMClass.getMOB("GenMOB");
 			int level=adjustedLevel(caster,0);
-			if(level<1) level=1;
+			if(level<1)
+				level=1;
 			newMOB.basePhyStats().setLevel(level);
 			newMOB.basePhyStats().setAbility(newMOB.basePhyStats().ability()*2);
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Vine"));
@@ -86,7 +87,8 @@ public class Chant_VineMass extends Chant_SummonVine
 			newMOB.resetToMaxState();
 			newMOB.bringToLife(caster.location(),true);
 			CMLib.beanCounter().clearZeroMoney(newMOB,null);
-			if(victim.getVictim()!=newMOB) victim.setVictim(newMOB);
+			if(victim.getVictim()!=newMOB)
+				victim.setVictim(newMOB);
 			newMOB.setVictim(victim);
 			newMOB.setStartRoom(null); // keep before postFollow for Conquest
 			if((i+1)<limit)
@@ -96,7 +98,8 @@ public class Chant_VineMass extends Chant_SummonVine
 				if(newMOB.amFollowing()!=caster)
 				{
 					A=newMOB.fetchEffect(ID());
-					if(A!=null) A.unInvoke();
+					if(A!=null)
+						A.unInvoke();
 					return null;
 				}
 				CMLib.combat().postAttack(newMOB,victim,newMOB.fetchWieldedItem());

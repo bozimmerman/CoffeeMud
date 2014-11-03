@@ -63,7 +63,8 @@ public class Play_Dirge extends Play
 	{
 		timeOut=0;
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if((!(target instanceof DeadBody))||(target.rawSecretIdentity().toUpperCase().indexOf("FAKE")>=0))
 		{
@@ -98,7 +99,8 @@ public class Play_Dirge extends Play
 				if(R.okMessage(mob,msg))
 				{
 					final Set<MOB> h=super.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
-					if(h==null) continue;
+					if(h==null)
+						continue;
 
 					for (final Object element : h)
 					{
@@ -107,7 +109,8 @@ public class Play_Dirge extends Play
 						double exp=10.0;
 						final int levelLimit=CMProps.getIntVar(CMProps.Int.EXPRATE);
 						final int levelDiff=follower.phyStats().level()-target.phyStats().level();
-						if(levelDiff>levelLimit) exp=0.0;
+						if(levelDiff>levelLimit)
+							exp=0.0;
 						final int expGained=(int)Math.round(exp);
 
 						// malicious songs must not affect the invoker!

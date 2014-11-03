@@ -61,7 +61,8 @@ public class Expire extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(mob.session()==null) return false;
+		if(mob.session()==null)
+			return false;
 		AccountStats stats = null;
 		MOB M=null;
 		commands.removeElementAt(0);

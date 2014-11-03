@@ -57,7 +57,8 @@ public class Drowness extends StdBehavior
 	public void startBehavior(PhysicalAgent forMe)
 	{
 		super.startBehavior(forMe);
-		if(!(forMe instanceof MOB)) return;
+		if(!(forMe instanceof MOB))
+			return;
 		final MOB mob=(MOB)forMe;
 
 		mob.baseCharStats().setStat(CharStats.STAT_STRENGTH,12 + CMLib.dice().roll(1,6,0));
@@ -337,8 +338,10 @@ public class Drowness extends StdBehavior
 	@Override
 	public boolean okMessage(Environmental oking, CMMsg msg)
 	{
-		if(oking==null) return super.okMessage(oking,msg);
-		if(!(oking instanceof MOB)) return super.okMessage(oking,msg);
+		if(oking==null)
+			return super.okMessage(oking,msg);
+		if(!(oking instanceof MOB))
+			return super.okMessage(oking,msg);
 
 		final boolean retval = super.okMessage(oking, msg);
 		final MOB mob=(MOB)oking;
@@ -442,7 +445,8 @@ public class Drowness extends StdBehavior
 		else
 			dark = mob.fetchAbility(dark.ID());
 
-		if(dark!=null) dark.invoke(mob,null,false,0);
+		if(dark!=null)
+			dark.invoke(mob,null,false,0);
 		return true;
 	}
 }

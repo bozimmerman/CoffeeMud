@@ -120,7 +120,8 @@ public class Thief_KillLog extends ThiefSkill
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				final Ability A=((MOB)affected).fetchAbility(ID());
-				if(A!=null)	A.setMiscText(text());
+				if(A!=null)
+					A.setMiscText(text());
 			}
 		}
 		super.executeMsg(myHost,msg);
@@ -177,7 +178,8 @@ public class Thief_KillLog extends ThiefSkill
 				if((affected!=null)&&(affected instanceof MOB))
 				{
 					final Ability A=((MOB)affected).fetchAbility(ID());
-					if(A!=null)	A.setMiscText(text());
+					if(A!=null)
+						A.setMiscText(text());
 				}
 			}
 		}

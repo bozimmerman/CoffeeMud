@@ -57,8 +57,10 @@ public class OutFit extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(mob==null) return false;
-		if(mob.charStats()==null) return false;
+		if(mob==null)
+			return false;
+		if(mob.charStats()==null)
+			return false;
 		final CharClass C=mob.charStats().getCurrentClass();
 		final Race R=mob.charStats().getMyRace();
 		if(C!=null)
@@ -67,7 +69,8 @@ public class OutFit extends StdCommand
 			CMLib.utensils().outfit(mob,R.outfit(mob));
 		mob.tell(L("\n\r"));
 		final Command C2=CMClass.getCommand("Equipment");
-		if(C2!=null) C2.executeInternal(mob, metaFlags);
+		if(C2!=null)
+			C2.executeInternal(mob, metaFlags);
 		mob.tell(L("\n\rUseful equipment appears mysteriously out of the Java Plane."));
 		mob.recoverCharStats();
 		mob.recoverMaxState();

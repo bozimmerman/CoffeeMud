@@ -78,7 +78,8 @@ public class Spell_HearThoughts extends Spell
 				for(final MOB target : mobs)
 				{
 					final Room room=target.location();
-					if(room==null) continue;
+					if(room==null)
+						continue;
 					String adjective="";
 					if(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)>=18)
 						adjective+="massively intelligent, ";
@@ -112,7 +113,8 @@ public class Spell_HearThoughts extends Spell
 					{
 						final Behavior B=b.nextElement();
 						final String accounting=B.accountForYourself();
-						if(accounting.length()==0) continue;
+						if(accounting.length()==0)
+							continue;
 						String prefix;
 						switch(CMLib.dice().roll(1, 4, 0))
 						{

@@ -61,7 +61,8 @@ public class Skill_Resistance extends StdSkill
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(invoker==null) return;
+		if(invoker==null)
+			return;
 		final int amount=(int)Math.round(CMath.mul(CMath.div(proficiency(),100.0),affected.phyStats().level()));
 		if(resistanceCode>0)
 			affectableStats.setStat(resistanceCode,affectableStats.getStat(resistanceCode)+amount);

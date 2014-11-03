@@ -140,10 +140,13 @@ public class Chant_DruidicConnection extends Chant
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if((mob.location()==null)) return false;
+		if((mob.location()==null))
+			return false;
 		Area target=mob.location().getArea();
-		if((auto)&&(givenTarget instanceof Area)) target=(Area)givenTarget;
-		if(target==null) return false;
+		if((auto)&&(givenTarget instanceof Area))
+			target=(Area)givenTarget;
+		if(target==null)
+			return false;
 		final boolean quietly=((commands!=null)&&(commands.size()>0)&&(commands.contains("QUIETLY")));
 		if(target.fetchEffect(ID())!=null)
 		{

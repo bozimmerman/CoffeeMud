@@ -143,7 +143,8 @@ public class DrowWarrior extends DrowElf
 	public void addNaturalAbilities()
 	{
 		final Ability dark=CMClass.getAbility("Spell_Darkness");
-		if(dark==null) return;
+		if(dark==null)
+			return;
 
 
 		dark.setProficiency(100);
@@ -310,7 +311,8 @@ public class DrowWarrior extends DrowElf
 		else
 			dark=this.fetchAbility(dark.ID());
 
-		if(dark!=null) dark.invoke(this,null,false,0);
+		if(dark!=null)
+			dark.invoke(this,null,false,0);
 		return true;
 	}
 

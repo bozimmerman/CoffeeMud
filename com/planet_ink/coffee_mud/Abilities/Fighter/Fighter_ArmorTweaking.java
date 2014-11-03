@@ -110,7 +110,8 @@ public class Fighter_ArmorTweaking extends FighterSkill
 	{
 
 		final Item armor=super.getTarget(mob,null,givenTarget,null,commands,Wearable.FILTER_WORNONLY);
-		if(armor==null) return false;
+		if(armor==null)
+			return false;
 		if((!armor.amWearingAt(Wearable.WORN_ABOUT_BODY))
 		&&(!armor.amWearingAt(Wearable.WORN_ARMS))
 		&&(!armor.amWearingAt(Wearable.WORN_BACK))

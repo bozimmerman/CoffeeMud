@@ -136,7 +136,8 @@ public class Spell_AnimateWeapon extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(!(target instanceof Weapon))
 		{
 			mob.tell(L("That's not a weapon!"));

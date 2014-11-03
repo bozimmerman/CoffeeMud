@@ -294,7 +294,8 @@ public class PlayerData extends StdWebMacro
 				for(int b=0;b<flags.size();b++)
 				{
 					final String B=flags.get(b);
-					if(B!=null)	str.append(B+", ");
+					if(B!=null)
+						str.append(B+", ");
 				}
 			}
 			break;
@@ -305,7 +306,8 @@ public class PlayerData extends StdWebMacro
 				for(int b=0;b<M.playerStats().getTitles().size();b++)
 				{
 					final String B=M.playerStats().getTitles().get(b);
-					if(B!=null)	str.append(B+", ");
+					if(B!=null)
+						str.append(B+", ");
 				}
 				break;
 		}
@@ -316,7 +318,8 @@ public class PlayerData extends StdWebMacro
 				final String FID=(String)e.nextElement();
 				final Faction F=CMLib.factions().getFaction(FID);
 				final int value=M.fetchFaction(FID);
-				if(F!=null)	str.append(F.name()+" ("+value+"), ");
+				if(F!=null)
+					str.append(F.name()+" ("+value+"), ");
 			}
 			break;
 		}
@@ -356,7 +359,8 @@ public class PlayerData extends StdWebMacro
 
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("PLAYER");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		if(last.length()>0)
 		{
 			MOB M=CMLib.players().getLoadPlayer(last);
@@ -444,7 +448,8 @@ public class PlayerData extends StdWebMacro
 			if(parms.containsKey("DEITY"))
 			{
 				String old=httpReq.getUrlParameter("DEITY");
-				if(firstTime) old=M.getWorshipCharID();
+				if(firstTime)
+					old=M.getWorshipCharID();
 				str.append("<OPTION "+((old.length()==0)?"SELECTED":"")+" VALUE=\"\">Godless");
 				for(final Enumeration e=CMLib.map().deities();e.hasMoreElements();)
 				{
@@ -461,18 +466,21 @@ public class PlayerData extends StdWebMacro
 				{
 					int b=0;
 					final Vector titles=new Vector();
-					if(firstTime) titles.addAll(M.playerStats().getTitles());
+					if(firstTime)
+						titles.addAll(M.playerStats().getTitles());
 					else
 					while(httpReq.isUrlParameter("TITLE"+b))
 					{
 						final String B=httpReq.getUrlParameter("TITLE"+b);
-						if((B!=null)&&(B.trim().length()>0)) titles.addElement(B);
+						if((B!=null)&&(B.trim().length()>0))
+							titles.addElement(B);
 						b++;
 					}
 					for(b=0;b<titles.size();b++)
 					{
 						final String B=(String)titles.elementAt(b);
-						if(B!=null)	str.append("<INPUT TYPE=TEXT NAME=TITLE"+b+" SIZE="+B.length()+" VALUE=\""+CMStrings.replaceAll(B,"\"","&quot;")+"\"><BR>");
+						if(B!=null)
+							str.append("<INPUT TYPE=TEXT NAME=TITLE"+b+" SIZE="+B.length()+" VALUE=\""+CMStrings.replaceAll(B,"\"","&quot;")+"\"><BR>");
 					}
 					str.append("<INPUT TYPE=TEXT NAME=TITLE"+titles.size()+" SIZE=60 VALUE=\"\">");
 				}
@@ -497,7 +505,8 @@ public class PlayerData extends StdWebMacro
 			if(parms.containsKey("BASEGENDER"))
 			{
 				String old=httpReq.getUrlParameter("BASEGENDER");
-				if(firstTime) old=""+(char)M.baseCharStats().getStat(CharStats.STAT_GENDER);
+				if(firstTime)
+					old=""+(char)M.baseCharStats().getStat(CharStats.STAT_GENDER);
 				str.append("<OPTION VALUE=M "+((old.equalsIgnoreCase("M"))?"SELECTED":"")+">M");
 				str.append("<OPTION VALUE=F "+((old.equalsIgnoreCase("F"))?"SELECTED":"")+">F");
 				str.append("<OPTION VALUE=N "+((old.equalsIgnoreCase("N"))?"SELECTED":"")+">N");

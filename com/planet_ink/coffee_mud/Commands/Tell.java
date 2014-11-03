@@ -68,17 +68,20 @@ public class Tell extends StdCommand
 			else
 			{
 				int num=CMath.s_int(CMParms.combine(commands,1));
-				if(num>V.size()) num=V.size();
+				if(num>V.size())
+					num=V.size();
 				final Session S=mob.session();
 				try
 				{
-					if(S!=null) S.snoopSuspension(1);
+					if(S!=null)
+						S.snoopSuspension(1);
 					for(int i=V.size()-num;i<V.size();i++)
 						mob.tell(V.get(i));
 				}
 				finally
 				{
-					if(S!=null) S.snoopSuspension(-1);
+					if(S!=null)
+						S.snoopSuspension(-1);
 				}
 			}
 			return false;
@@ -87,7 +90,8 @@ public class Tell extends StdCommand
 		MOB targetM=null;
 		String targetName=((String)commands.elementAt(0)).toUpperCase();
 		targetM=CMLib.sessions().findPlayerOnline(targetName,true);
-		if(targetM==null) targetM=CMLib.sessions().findPlayerOnline(targetName,false);
+		if(targetM==null)
+			targetM=CMLib.sessions().findPlayerOnline(targetName,false);
 		for(int i=1;i<commands.size();i++)
 		{
 			final String s=(String)commands.elementAt(i);
@@ -127,12 +131,14 @@ public class Tell extends StdCommand
 		final Session ts=targetM.session();
 		try
 		{
-			if(ts!=null) ts.snoopSuspension(1);
+			if(ts!=null)
+				ts.snoopSuspension(1);
 			CMLib.commands().postSay(mob,targetM,combinedCommands,true,true);
 		}
 		finally
 		{
-			if(ts!=null) ts.snoopSuspension(-1);
+			if(ts!=null)
+				ts.snoopSuspension(-1);
 		}
 
 		if((targetM.session()!=null)&&(targetM.session().isAfk()))

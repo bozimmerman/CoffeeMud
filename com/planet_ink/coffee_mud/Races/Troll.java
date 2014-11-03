@@ -89,8 +89,10 @@ public class Troll extends StdRace
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
-		if(tickID!=Tickable.TICKID_MOB) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(tickID!=Tickable.TICKID_MOB)
+			return false;
 		if(ticking instanceof MOB)
 		{
 			final MOB M=(MOB)ticking;

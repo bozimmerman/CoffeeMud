@@ -41,7 +41,8 @@ public class BaseCharClassName extends StdWebMacro
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		final String last=httpReq.getUrlParameter("BASECLASS");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		if(last.length()>0)
 		{
 			final java.util.Map<String,String> parms=parseParms(parm);

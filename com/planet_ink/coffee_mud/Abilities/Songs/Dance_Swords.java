@@ -124,9 +124,11 @@ public class Dance_Swords extends Dance
 					}
 				}
 			}
-			if(sword==null) return true;
+			if(sword==null)
+				return true;
 			final int max=3+(super.getXLEVELLevel(invoker())/2);
-			if(num>max) return true;
+			if(num>max)
+				return true;
 			final Dance newOne=(Dance)this.copyOf();
 			newOne.invokerManaCost=-1;
 			newOne.startTickDown(M,sword,99999);
@@ -226,7 +228,8 @@ public class Dance_Swords extends Dance
 
 					// malicious dances must not affect the invoker!
 					int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
-					if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
+					if(auto)
+						affectType=affectType|CMMsg.MASK_ALWAYS;
 
 					if((CMLib.flags().canBeSeenBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 					{

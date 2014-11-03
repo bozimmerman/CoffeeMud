@@ -68,8 +68,10 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 			&&(((Item)affected).owner()!=null)
 			&&(((Item)affected).owner() instanceof MOB))
 				M=(MOB)((Item)affected).owner();
-			if(M==null) return true;
-			if(!msg.amITarget(M)) return true;
+			if(M==null)
+				return true;
+			if(!msg.amITarget(M))
+				return true;
 
 			String text=text().toUpperCase();
 
@@ -94,8 +96,10 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 			{
 				final Weapon W=(Weapon)msg.tool();
 				x=text.indexOf(Weapon.TYPE_DESCS[W.weaponType()]);
-				if(x<0) x=(CMLib.flags().isABonusItems(W))?text.indexOf("MAGIC"):-1;
-				if(x<0) x=text.indexOf(RawMaterial.CODES.NAME(W.material()));
+				if(x<0)
+					x=(CMLib.flags().isABonusItems(W))?text.indexOf("MAGIC"):-1;
+				if(x<0)
+					x=text.indexOf(RawMaterial.CODES.NAME(W.material()));
 				if(x>0)
 				{
 					if((text.charAt(x-1)=='-')&&(immune>=0))
@@ -166,12 +170,14 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 				{
 					text=text.substring(lastNumber,immune).trim();
 					x=text.indexOf(' ');
-					if(x>0) text=text.substring(0,x).trim();
+					if(x>0)
+						text=text.substring(0,x).trim();
 					if(text.endsWith("%"))
 						msg.setValue(msg.value()-(int)Math.round(CMath.mul(msg.value(),CMath.div(CMath.s_int(text.substring(0,text.length()-1)),100.0))));
 					else
 						msg.setValue(msg.value()-CMath.s_int(text));
-					if(msg.value()<0) msg.setValue(0);
+					if(msg.value()<0)
+						msg.setValue(0);
 				}
 			}
 		}

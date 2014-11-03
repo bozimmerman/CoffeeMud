@@ -69,7 +69,8 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 		if((--plagueDown)<=0)
 		{
 			plagueDown=5;
-			if(invoker==null) invoker=mob;
+			if(invoker==null)
+				invoker=mob;
 			final int dmg=((mob.phyStats().level()+(2*super.getXLEVELLevel(invoker())))/4)+1;
 			CMLib.combat().postDamage(invoker,mob,this,dmg,CMMsg.TYP_DISEASE,-1,"<T-NAME> feel(s) <T-HIS-HER> innards being consumed by worms!");
 		}
@@ -80,7 +81,8 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-1);
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)-1);
 	}
@@ -108,7 +110,8 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

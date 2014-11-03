@@ -97,10 +97,14 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 			&&(((Item)affected).owner()!=null)
 			&&(((Item)affected).owner() instanceof MOB))
 				M=(MOB)((Item)affected).owner();
-			if(M==null) return true;
-			if(!msg.amITarget(M)) return true;
-			if(msg.tool()==null) return true;
-			if(flags.size()==0) return true;
+			if(M==null)
+				return true;
+			if(!msg.amITarget(M))
+				return true;
+			if(msg.tool()==null)
+				return true;
+			if(flags.size()==0)
+				return true;
 
 			boolean immune=flags.containsKey("ALL")&&(((Character)flags.get("ALL")).charValue()=='+');
 			Character foundPlusMinus=null;
@@ -169,7 +173,8 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 				case Ability.ACODE_SONG:
 					{
 						foundPlusMinus=(Character)flags.get("MAGICSKILLS");
-						if(foundPlusMinus==null) foundPlusMinus=(Character)flags.get("MAGIC");
+						if(foundPlusMinus==null)
+							foundPlusMinus=(Character)flags.get("MAGIC");
 						if(foundPlusMinus!=null)
 						{
 							if((foundPlusMinus.charValue()=='-')&&(immune))
@@ -184,7 +189,8 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 					break;
 				}
 			}
-			if(immune) msg.setValue(0);
+			if(immune)
+				msg.setValue(0);
 		}
 		return true;
 	}

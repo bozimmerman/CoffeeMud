@@ -72,14 +72,16 @@ public class Thief_Alertness extends ThiefSkill
 					&&(CMLib.flags().canBeSeenBy(I,mob))
 					&&(I.displayText().length()==0))
 					{
-						if(choices==null) choices=new Vector();
+						if(choices==null)
+							choices=new Vector();
 						choices.addElement(I);
 					}
 				}
 				if(choices!=null)
 				{
 					int alert=getXLEVELLevel(mob);
-					if(alert<=0)alert=1;
+					if(alert<=0)
+						alert=1;
 					while((alert>0)&&(choices.size()>0))
 					{
 						final Item I=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));

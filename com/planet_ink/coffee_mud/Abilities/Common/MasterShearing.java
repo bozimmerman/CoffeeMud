@@ -46,7 +46,8 @@ public class MasterShearing extends Shearing
 	{
 		int duration=((weight/(10+getXLEVELLevel(mob))))*2;
 		duration = super.getDuration(duration, mob, 1, 25);
-		if(duration>100) duration=100;
+		if(duration>100)
+			duration=100;
 		return duration;
 	}
 	@Override protected int baseYield() { return 3; }

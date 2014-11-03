@@ -75,7 +75,8 @@ public class Purge extends StdCommand
 			deadMOB.killMeDead(false);
 			mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 vanishes in a puff of smoke.",deadMOB.name()));
 			deadMOB=mob.location().fetchInhabitant(mobID);
-			if(!allFlag) break;
+			if(!allFlag)
+				break;
 		}
 		if(!doneSomething)
 		{
@@ -136,8 +137,10 @@ public class Purge extends StdCommand
 		if(itemID.toUpperCase().endsWith(".ALL")){ allFlag=true; itemID="ALL "+itemID.substring(0,itemID.length()-4);}
 		boolean doneSomething=false;
 		Item deadItem=null;
-		if(!allFlag) deadItem=(srchMob==null)?null:srchMob.findItem(null,itemID);
-		if(deadItem==null) deadItem=(srchRoom==null)?null:srchRoom.findItem(srchContainer,itemID);
+		if(!allFlag)
+			deadItem=(srchMob==null)?null:srchMob.findItem(null,itemID);
+		if(deadItem==null)
+			deadItem=(srchRoom==null)?null:srchRoom.findItem(srchContainer,itemID);
 		while(deadItem!=null)
 		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 disintegrates!",deadItem.name()));
@@ -145,9 +148,12 @@ public class Purge extends StdCommand
 			mob.location().recoverRoomStats();
 			doneSomething=true;
 			deadItem=null;
-			if(!allFlag) deadItem=(srchMob==null)?null:srchMob.findItem(null,itemID);
-			if(deadItem==null) deadItem=(srchRoom==null)?null:srchRoom.findItem(null,itemID);
-			if(!allFlag) break;
+			if(!allFlag)
+				deadItem=(srchMob==null)?null:srchMob.findItem(null,itemID);
+			if(deadItem==null)
+				deadItem=(srchRoom==null)?null:srchRoom.findItem(null,itemID);
+			if(!allFlag)
+				break;
 		}
 		if(!doneSomething)
 		{

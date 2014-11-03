@@ -203,7 +203,8 @@ public class Skill_Chirgury extends StdSkill
 						meat.setMaterial(RawMaterial.RESOURCE_BLOOD);
 						((Drink)meat).setLiquidType(RawMaterial.RESOURCE_BLOOD);
 						amt=target.phyStats().weight()/10;
-						if(amt<1) amt=1;
+						if(amt<1)
+							amt=1;
 						meat.basePhyStats().setWeight(1);
 						((Drink)meat).setLiquidHeld(10);
 						((Drink)meat).setLiquidRemaining(10);

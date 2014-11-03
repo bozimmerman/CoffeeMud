@@ -96,7 +96,8 @@ public class DefaultPoll implements Poll
 	@Override
 	public String getOptionsXML()
 	{
-		if(options.size()==0) return "<OPTIONS />";
+		if(options.size()==0)
+			return "<OPTIONS />";
 		final StringBuffer str=new StringBuffer("<OPTIONS>");
 		PollOption PO=null;
 		for(int i=0;i<options.size();i++)
@@ -113,7 +114,8 @@ public class DefaultPoll implements Poll
 	@Override
 	public String getResultsXML()
 	{
-		if(results.size()==0) return "<RESULTS />";
+		if(results.size()==0)
+			return "<RESULTS />";
 		final StringBuffer str=new StringBuffer("<RESULTS>");
 		PollResult PR=null;
 		for(int i=0;i<results.size();i++)
@@ -132,7 +134,8 @@ public class DefaultPoll implements Poll
 	@Override
 	public PollResult getMyVote(MOB mob)
 	{
-		if(mob==null) return null;
+		if(mob==null)
+			return null;
 		CMLib.polls().loadPollIfNecessary(this);
 		PollResult R=null;
 		final Session S=mob.session();
@@ -168,7 +171,8 @@ public class DefaultPoll implements Poll
 	@Override
 	public boolean mayIVote(MOB mob)
 	{
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		if(!CMath.bset(bitmap,FLAG_ACTIVE))
 			return false;
 		if(!CMLib.masking().maskCheck(qualZapper,mob,true))
@@ -179,14 +183,16 @@ public class DefaultPoll implements Poll
 			CMLib.polls().updatePoll(name, this);
 			return false;
 		}
-		if(getMyVote(mob)!=null) return false;
+		if(getMyVote(mob)!=null)
+			return false;
 		return true;
 	}
 
 	@Override
 	public boolean mayISeeResults(MOB mob)
 	{
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		if(!CMLib.masking().maskCheck(qualZapper,mob,true))
 			return false;
 		if(CMath.bset(bitmap,FLAG_HIDERESULTS)&&(!CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.POLLS)))

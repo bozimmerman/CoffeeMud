@@ -62,7 +62,8 @@ public class Thief extends StdCharClass
 	public void initializeClass()
 	{
 		super.initializeClass();
-		if(!ID().equals(baseClass())) return;
+		if(!ID().equals(baseClass()))
+			return;
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",50,true);

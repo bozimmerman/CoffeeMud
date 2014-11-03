@@ -107,7 +107,8 @@ public class Spell_IncreaseGravity extends Spell
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg)) return false;
+		if(!super.okMessage(myHost,msg))
+			return false;
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			if((((MOB)affected).location()!=gravityRoom())
@@ -143,7 +144,8 @@ public class Spell_IncreaseGravity extends Spell
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(!(affected instanceof MOB)) return;
+		if(!(affected instanceof MOB))
+			return;
 		if(((MOB)affected).location()!=gravityRoom())
 			unInvoke();
 		else

@@ -61,7 +61,8 @@ public class Thief_SilentLoot extends ThiefSkill
 			{
 				int max=1+getXLEVELLevel((MOB)affected);
 				Item item=msg.source().fetchItem(null,Wearable.FILTER_UNWORNONLY,"all");
-				if(item==null) item=msg.source().fetchItem(null,Wearable.FILTER_WORNONLY,"all");
+				if(item==null)
+					item=msg.source().fetchItem(null,Wearable.FILTER_WORNONLY,"all");
 				while(((--max)>=0)&&(item!=null)&&(msg.source().isMine(item)))
 				{
 					item.unWear();
@@ -77,9 +78,11 @@ public class Thief_SilentLoot extends ThiefSkill
 						mob.location().send(mob,msg2);
 						CMLib.commands().postGet(mob,null,item,true);
 					}
-					if(victim!=null) mob.setVictim(victim);
+					if(victim!=null)
+						mob.setVictim(victim);
 					item=msg.source().fetchItem(null,Wearable.FILTER_UNWORNONLY,"all");
-					if(item==null) item=msg.source().fetchItem(null,Wearable.FILTER_WORNONLY,"all");
+					if(item==null)
+						item=msg.source().fetchItem(null,Wearable.FILTER_WORNONLY,"all");
 				}
 			}
 		}
@@ -104,7 +107,8 @@ public class Thief_SilentLoot extends ThiefSkill
 			mob.tell(L("You will now automatically loot items from corpses silently."));
 			beneficialAffect(mob,mob,asLevel,0);
 			final Ability A=mob.fetchEffect(ID());
-			if(A!=null) A.makeLongLasting();
+			if(A!=null)
+				A.makeLongLasting();
 		}
 		else
 			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to start silently looting items from corpses, but fail(s)."));

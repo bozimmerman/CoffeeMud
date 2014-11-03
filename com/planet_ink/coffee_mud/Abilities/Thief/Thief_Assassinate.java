@@ -74,7 +74,8 @@ public class Thief_Assassinate extends ThiefSkill
 				return true;
 
 			final Room room=mob.location();
-			if(room==null) return false;
+			if(room==null)
+				return false;
 			if(room.isInhabitant(tracking))
 			{
 				if(CMLib.flags().isHidden(mob))
@@ -221,7 +222,8 @@ public class Thief_Assassinate extends ThiefSkill
 		if(V.size()>0)
 		{
 			mob.tell(L("You stop tracking."));
-			if(commands.size()==0) return true;
+			if(commands.size()==0)
+				return true;
 		}
 
 		theTrail=null;
@@ -232,7 +234,8 @@ public class Thief_Assassinate extends ThiefSkill
 		if((!mob.isMonster())&&(mob.fetchEffect("Thief_Mark")!=null))
 		{
 			final Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
-			if(A!=null) tracking=A.mark;
+			if(A!=null)
+				tracking=A.mark;
 			if(tracking==null)
 			{
 				mob.tell(L("You'll need to Mark someone first."));

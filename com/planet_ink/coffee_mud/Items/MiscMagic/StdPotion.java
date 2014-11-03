@@ -68,8 +68,10 @@ public class StdPotion extends StdDrink implements Potion
 	@Override
 	public void setDrunk(boolean isTrue)
 	{
-		if(isTrue&&isDrunk()) return;
-		if((!isTrue)&&(!isDrunk())) return;
+		if(isTrue&&isDrunk())
+			return;
+		if((!isTrue)&&(!isDrunk()))
+			return;
 		if(isTrue)
 			setSpellList(getSpellList()+";DRUNK");
 		else

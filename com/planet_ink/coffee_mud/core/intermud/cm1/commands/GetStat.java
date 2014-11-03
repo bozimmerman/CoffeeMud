@@ -60,11 +60,16 @@ public class GetStat extends CM1Command
 
 	public char getTypeCode(Physical P)
 	{
-		if(P instanceof MOB) return ((MOB)P).isMonster()?'M':'P';
-		if(P instanceof Item) return 'I';
-		if(P instanceof Room) return 'R';
-		if(P instanceof Exit) return 'E';
-		if(P instanceof Area) return 'A';
+		if(P instanceof MOB)
+			return ((MOB)P).isMonster()?'M':'P';
+		if(P instanceof Item)
+			return 'I';
+		if(P instanceof Room)
+			return 'R';
+		if(P instanceof Exit)
+			return 'E';
+		if(P instanceof Area)
+			return 'A';
 		return ' ';
 	}
 
@@ -90,7 +95,8 @@ public class GetStat extends CM1Command
 	public Modifiable getModifiable(String type, Physical P)
 	{
 		final int x=CMParms.indexOf(STATTYPES,type.toUpperCase().trim());
-		if(x<0) return null;
+		if(x<0)
+			return null;
 		if(!isApplicableTypeCode(type,P))
 			return null;
 

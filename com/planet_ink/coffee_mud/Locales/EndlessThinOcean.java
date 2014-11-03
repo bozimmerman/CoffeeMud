@@ -82,7 +82,8 @@ public class EndlessThinOcean extends StdThinGrid
 		// the adjacent rooms created by this method should also take
 		// into account the possibility that they are on the edge.
 		// it does NOT
-		if(ox==null) ox=CMClass.getExit("Open");
+		if(ox==null)
+			ox=CMClass.getExit("Open");
 		Room R2=null;
 
 		if((y==0)&&(R.rawDoors()[Directions.NORTH]==null))

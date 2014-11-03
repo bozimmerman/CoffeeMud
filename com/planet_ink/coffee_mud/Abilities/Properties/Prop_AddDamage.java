@@ -63,7 +63,8 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 		final List<String> parms=CMParms.parse(newMiscText.toUpperCase());
 		for(String s : parms)
 		{
-			if(s.startsWith("+")) s=s.substring(1);
+			if(s.startsWith("+"))
+				s=s.substring(1);
 			if(CMath.isPct(s))
 				pctDamage=CMath.s_pct(s);
 			else
@@ -134,7 +135,8 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 	protected final int getDamage(final CMMsg msg)
 	{
 		final int dmg = (int)CMath.round(CMath.mul(msg.value(), pctDamage)) + bonusDamage;
-		if(dmg < 0) return 0;
+		if(dmg < 0)
+			return 0;
 		return dmg;
 	}
 

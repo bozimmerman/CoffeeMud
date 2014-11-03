@@ -56,7 +56,8 @@ public class Spell_Wish extends Spell
 		&&((foundThang==null)
 		   ||((foundThang.ID().equals(E.ID()))&&(foundThang.name().equals(E.name())))))
 		{
-			if(foundThang==null) foundThang=E;
+			if(foundThang==null)
+				foundThang=E;
 			foundAll.addElement(E);
 		}
 		return foundThang;
@@ -86,7 +87,8 @@ public class Spell_Wish extends Spell
 
 	public void wishDrain(MOB mob, int expLoss, boolean conLoss)
 	{
-		if(mob==null) return;
+		if(mob==null)
+			return;
 		expLoss=getXPCOSTAdjustment(mob,expLoss);
 		if(expLoss > mob.getExperience())
 			expLoss=mob.getExperience();
@@ -126,7 +128,8 @@ public class Spell_Wish extends Spell
 			mob.tell(L("You are too weak to wish."));
 			return false;
 		}
-		if(myWish.toUpperCase().trim().startsWith("FOR ")) myWish=myWish.trim().substring(3);
+		if(myWish.toUpperCase().trim().startsWith("FOR "))
+			myWish=myWish.trim().substring(3);
 		if(myWish.length()==0)
 		{
 			mob.tell(L("What would you like to wish for?"));
@@ -218,7 +221,8 @@ public class Spell_Wish extends Spell
 					final int difference=experienceRequired-mob.getExperience();
 					final double diffPct=CMath.div(difference, experienceRequired);
 					long numCoinsToLose=Math.round(CMath.mul(diffPct, newItem.getNumberOfCoins()));
-					if(numCoinsToLose<1) numCoinsToLose=1;
+					if(numCoinsToLose<1)
+						numCoinsToLose=1;
 					newItem.setNumberOfCoins(newItem.getNumberOfCoins()-numCoinsToLose);
 					experienceRequired=Math.max((int)Math.round(CMath.div(newItem.getTotalValue(),10.0)),0);
 				}
@@ -321,11 +325,15 @@ public class Spell_Wish extends Spell
 			{
 				possName=CMParms.combine(wishV,0,2);
 				target=mob.location().fetchFromRoomFavorMOBs(null,possName);
-				if(target==null) target=mob.findItem(possName);
-				if(target==null) possName=((String)wishV.elementAt(0)).trim();
+				if(target==null)
+					target=mob.findItem(possName);
+				if(target==null)
+					possName=((String)wishV.elementAt(0)).trim();
 			}
-			if(target==null) target=mob.location().fetchFromRoomFavorMOBs(null,possName);
-			if(target==null) target=mob.findItem(possName);
+			if(target==null)
+				target=mob.location().fetchFromRoomFavorMOBs(null,possName);
+			if(target==null)
+				target=mob.findItem(possName);
 			if((target==null)
 			||(possName.equalsIgnoreCase("FOR"))
 			||(possName.equalsIgnoreCase("TO"))
@@ -620,7 +628,8 @@ public class Spell_Wish extends Spell
 				wishDrain(mob,baseLoss,true);
 				int weight=((MOB)target).basePhyStats().weight();
 				weight-=50;
-				if(weight<=0) weight=1;
+				if(weight<=0)
+					weight=1;
 				((MOB)target).basePhyStats().setWeight(weight);
 				((MOB)target).recoverPhyStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 is now lighter!",target.name()));
@@ -729,14 +738,16 @@ public class Spell_Wish extends Spell
 				if(level!=0)
 				{
 					int levelsLost=level;
-					if(levelsLost<0) levelsLost=levelsLost*-1;
+					if(levelsLost<0)
+						levelsLost=levelsLost*-1;
 					int levelsGained=levelsLost;
 					levelsLost*=4;
 					if(levelsLost>=mob.basePhyStats().level())
 					{
 						levelsLost=mob.basePhyStats().level()-1;
 						levelsGained=levelsLost/4;
-						if(level>0) level=levelsGained;
+						if(level>0)
+							level=levelsGained;
 						else level=-levelsGained;
 					}
 					final int newLevel=target.basePhyStats().level()+level;
@@ -803,7 +814,8 @@ public class Spell_Wish extends Spell
 				wishDrain(mob,baseLoss,true);
 				int weight=((MOB)target).basePhyStats().height();
 				weight-=12;
-				if(weight<=0) weight=5;
+				if(weight<=0)
+					weight=5;
 				((MOB)target).basePhyStats().setHeight(weight);
 				((MOB)target).recoverPhyStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 is now shorter!",target.name()));
@@ -974,7 +986,8 @@ public class Spell_Wish extends Spell
 						A.autoInvocation(tm);
 						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 now knows @x2!",target.name(),A.name()));
 						final Ability A2=tm.fetchEffect(A.ID());
-						if(A2!=null) A2.setProficiency(100);
+						if(A2!=null)
+							A2.setProficiency(100);
 						return true;
 					}
 				}
@@ -1109,7 +1122,8 @@ public class Spell_Wish extends Spell
 					int trainsRequired=CMLib.login().getTrainingCost(mob, foundAttribute, true);
 					if(trainsRequired<0)
 						trainsRequired=-trainsRequired;
-					if(trainsRequired>100) trainsRequired=100;
+					if(trainsRequired>100)
+						trainsRequired=100;
 					baseLoss+=((CMLib.leveler().getLevelExperienceJustThisLevel(mob.basePhyStats().level())/5)*(1+trainsRequired));
 					break;
 				}

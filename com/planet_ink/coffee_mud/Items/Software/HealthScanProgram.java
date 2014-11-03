@@ -75,7 +75,8 @@ public class HealthScanProgram extends GenSoftware
 	public String getScanMsg(MOB viewerM, MOB M)
 	{
 		final Room R=CMLib.map().roomLocation(M);
-		if(R==null) return "";
+		if(R==null)
+			return "";
 		final StringBuilder str=new StringBuilder("");
 		final char gender=(char)M.charStats().getStat(CharStats.STAT_GENDER);
 		final String genderName=(gender=='M')?"male":(gender=='F')?"female":"neuter";

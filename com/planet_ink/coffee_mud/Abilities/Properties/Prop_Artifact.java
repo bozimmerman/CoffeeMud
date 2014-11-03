@@ -134,7 +134,8 @@ public class Prop_Artifact extends Property
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!(affected instanceof Item)) return false;
+		if(!(affected instanceof Item))
+			return false;
 		if((msg.targetMinor()==CMMsg.TYP_EXPIRE)
 		&&(msg.target() instanceof Room)
 		&&(((Room)msg.target()).isContent((Item)affected)))
@@ -167,7 +168,8 @@ public class Prop_Artifact extends Property
 				&&(msg.target() instanceof MOB)
 				&&(((MOB)msg.target()).location()!=null))
 					room=((MOB)msg.target()).location();
-				if(room==null) room=CMLib.map().roomLocation(affected);
+				if(room==null)
+					room=CMLib.map().roomLocation(affected);
 				if(room!=null)
 					room.showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles around @x1 and is absorbed into the air.",affected.Name()));
 				return false;
@@ -203,7 +205,8 @@ public class Prop_Artifact extends Property
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if(!(affected instanceof Item)) return;
+		if(!(affected instanceof Item))
+			return;
 		if(((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
 			||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
 		&&(getItemID()!=null))
@@ -285,7 +288,8 @@ public class Prop_Artifact extends Property
 				if((itemSet!=null)&&(itemSet.size()>0))
 				{
 					// does it already exist?
-					if(registeredArtifacts.containsKey(getItemID())) registeredArtifacts.remove(getItemID());
+					if(registeredArtifacts.containsKey(getItemID()))
+						registeredArtifacts.remove(getItemID());
 					final String data=itemSet.get(0).xml;
 					final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(data);
 					if(xml!=null)
@@ -345,19 +349,22 @@ public class Prop_Artifact extends Property
 											}
 										final Item newItemMinusArtifact=(Item)newItem.copyOf();
 										Ability A2=newItemMinusArtifact.fetchEffect(ID());
-										if(A2!=null) newItemMinusArtifact.delEffect(A2);
+										if(A2!=null)
+											newItemMinusArtifact.delEffect(A2);
 										Item I=null;
 										if(foundMOB!=null)
 										{
 											for(int i=0;i<foundMOB.numItems();i++)
 											{
 												I=foundMOB.getItem(i);
-												if(I==null) break;
+												if(I==null)
+													break;
 												if(I.Name().equals(newItemMinusArtifact.Name()))
 												{
 													I=(Item)I.copyOf();
 													A2=I.fetchEffect(ID());
-													if(A2!=null) I.delEffect(A2);
+													if(A2!=null)
+														I.delEffect(A2);
 													if(newItemMinusArtifact.sameAs(I))
 														I.destroy();
 												}
@@ -371,12 +378,14 @@ public class Prop_Artifact extends Property
 											for(int i=0;i<R.numItems();i++)
 											{
 												I=R.getItem(i);
-												if(I==null) break;
+												if(I==null)
+													break;
 												if(I.Name().equals(newItemMinusArtifact.Name()))
 												{
 													I=(Item)I.copyOf();
 													A2=I.fetchEffect(ID());
-													if(A2!=null) I.delEffect(A2);
+													if(A2!=null)
+														I.delEffect(A2);
 													if(newItemMinusArtifact.sameAs(I))
 														I.destroy();
 												}
@@ -414,7 +423,8 @@ public class Prop_Artifact extends Property
 			if(nolocate)
 				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_UNLOCATABLE);
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_UNDESTROYABLE);
-			if(((Item)affected).subjectToWearAndTear()) ((Item)affected).setUsesRemaining(100);
+			if(((Item)affected).subjectToWearAndTear())
+				((Item)affected).setUsesRemaining(100);
 			((Item)affected).setExpirationDate(0);
 		}
 	}

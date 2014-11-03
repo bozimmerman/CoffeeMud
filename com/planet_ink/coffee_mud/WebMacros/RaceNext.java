@@ -45,7 +45,8 @@ public class RaceNext extends StdWebMacro
 		final String last=httpReq.getUrlParameter("RACE");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("RACE");
+			if(last!=null)
+				httpReq.removeUrlParameter("RACE");
 			return "";
 		}
 		String lastID="";

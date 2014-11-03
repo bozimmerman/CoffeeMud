@@ -76,13 +76,15 @@ public class CMSecurity
 	{
 		super();
 		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
-		if(secs[c]==null) secs[c]=this;
+		if(secs[c]==null)
+			secs[c]=this;
 	}
 
 	public static final CMSecurity instance()
 	{
 		final CMSecurity p=i();
-		if(p==null) return new CMSecurity();
+		if(p==null)
+			return new CMSecurity();
 		return p;
 	}
 
@@ -123,7 +125,8 @@ public class CMSecurity
 	public static final void parseGroups(final Properties page)
 	{
 		clearGroups();
-		if(page==null) return;
+		if(page==null)
+			return;
 		final List<Pair<String,String>> allGroups=new LinkedList<Pair<String,String>>();
 		for(final Enumeration<Object> e=page.keys();e.hasMoreElements();)
 		{
@@ -156,7 +159,8 @@ public class CMSecurity
 				s=s.substring(5).trim();
 				isAreaOnly=true;
 			}
-			while(s.startsWith("/")) s=s.substring(1).trim();
+			while(s.startsWith("/"))
+				s=s.substring(1).trim();
 			return new SecPath(s,false,isAreaOnly);
 
 		}
@@ -170,7 +174,8 @@ public class CMSecurity
 				s=s.substring(5).trim();
 				isAreaOnly=true;
 			}
-			while(s.startsWith("/")) s=s.substring(1).trim();
+			while(s.startsWith("/"))
+				s=s.substring(1).trim();
 			return new SecPath(s,true,isAreaOnly);
 		}
 		else
@@ -189,9 +194,12 @@ public class CMSecurity
 		{
 			s=s.replace(' ','_');
 			SecFlag flag=(SecFlag)CMath.s_valueOf(SecFlag.class, s);
-			if(flag==null) flag=(SecFlag)CMath.s_valueOf(SecFlag.class, s+"S");
-			if((flag==null)&&(s.equals("POOF"))) flag=(SecFlag)CMath.s_valueOf(SecFlag.class, "GOTO");
-			if((flag==null)&&(s.equals("AREA_POOF"))) flag=(SecFlag)CMath.s_valueOf(SecFlag.class, "AREA_GOTO");
+			if(flag==null)
+				flag=(SecFlag)CMath.s_valueOf(SecFlag.class, s+"S");
+			if((flag==null)&&(s.equals("POOF")))
+				flag=(SecFlag)CMath.s_valueOf(SecFlag.class, "GOTO");
+			if((flag==null)&&(s.equals("AREA_POOF")))
+				flag=(SecFlag)CMath.s_valueOf(SecFlag.class, "AREA_GOTO");
 			if(flag==null)
 				return null;
 			else
@@ -265,8 +273,10 @@ public class CMSecurity
 
 	public static final boolean isStaff(final MOB mob)
 	{
-		if(isASysOp(mob)) return true;
-		if(mob==null) return false;
+		if(isASysOp(mob))
+			return true;
+		if(mob==null)
+			return false;
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!mob.soulMate().isAttribute(MOB.Attrib.SYSOPMSGS))))
 			return false;
@@ -280,7 +290,8 @@ public class CMSecurity
 	{
 		final List<String> DIRSV=new Vector<String>();
 		if(isASysOp(mob)){ DIRSV.add("/"); return DIRSV; }
-		if(mob==null) return DIRSV;
+		if(mob==null)
+			return DIRSV;
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!mob.soulMate().isAttribute(MOB.Attrib.SYSOPMSGS))))
 			return DIRSV;
@@ -302,10 +313,12 @@ public class CMSecurity
 				dir=dir.substring(2);
 				String path="";
 				String subPath=null;
-				while(dir.startsWith("/")) dir=dir.substring(1);
+				while(dir.startsWith("/"))
+					dir=dir.substring(1);
 				while(dir.length()>0)
 				{
-					while(dir.startsWith("/")) dir=dir.substring(1);
+					while(dir.startsWith("/"))
+						dir=dir.substring(1);
 					final int x=dir.indexOf('/');
 					subPath=dir;
 					if(x>0)
@@ -340,8 +353,10 @@ public class CMSecurity
 
 	public static final boolean hasAccessibleDir(final MOB mob, final Room room)
 	{
-		if(isASysOp(mob)) return true;
-		if(mob==null) return false;
+		if(isASysOp(mob))
+			return true;
+		if(mob==null)
+			return false;
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!mob.soulMate().isAttribute(MOB.Attrib.SYSOPMSGS))))
 			return false;
@@ -359,13 +374,16 @@ public class CMSecurity
 
 	public static final boolean canTraverseDir(MOB mob, Room room, String path)
 	{
-		if(isASysOp(mob)) return true;
-		if(mob==null) return false;
+		if(isASysOp(mob))
+			return true;
+		if(mob==null)
+			return false;
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!mob.soulMate().isAttribute(MOB.Attrib.SYSOPMSGS))))
 			return false;
 		path=CMFile.vfsifyFilename(path.trim()).toUpperCase();
-		if(path.equals("/")||path.equals(".")) path="";
+		if(path.equals("/")||path.equals("."))
+			path="";
 		final String pathSlash=path+"/";
 		final boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
 		final Iterator[] allGroups={mob.playerStats().getSecurityFlags().paths(),
@@ -386,13 +404,16 @@ public class CMSecurity
 
 	public static final boolean canAccessFile(final MOB mob, final Room room, String path, final boolean isVFS)
 	{
-		if(mob==null) return false;
-		if(isASysOp(mob)) return true;
+		if(mob==null)
+			return false;
+		if(isASysOp(mob))
+			return true;
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!mob.soulMate().isAttribute(MOB.Attrib.SYSOPMSGS))))
 			return false;
 		path=CMFile.vfsifyFilename(path.trim()).toUpperCase();
-		if(path.equals("/")||path.equals(".")) path="";
+		if(path.equals("/")||path.equals("."))
+			path="";
 		final boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
 		final Iterator[] allGroups={mob.playerStats().getSecurityFlags().paths(),
 				 mob.baseCharStats().getCurrentClass().getSecurityFlags(mob.baseCharStats().getCurrentClassLevel()).paths()};
@@ -411,7 +432,8 @@ public class CMSecurity
 
 	public static final Iterator<SecFlag> getSecurityCodes(final MOB mob, final Room room)
 	{
-		if((mob==null)||(mob.playerStats()==null)) return EMPTYSECFLAGS;
+		if((mob==null)||(mob.playerStats()==null))
+			return EMPTYSECFLAGS;
 		final MultiIterator<SecFlag> it=new MultiIterator<SecFlag>();
 		it.add(mob.playerStats().getSecurityFlags().flags());
 		it.add(mob.baseCharStats().getCurrentClass().getSecurityFlags(mob.baseCharStats().getCurrentClassLevel()).flags());
@@ -430,8 +452,10 @@ public class CMSecurity
 	public static boolean isJournalAccessAllowed(MOB mob, String journalFlagName)
 	{
 		journalFlagName=journalFlagName.trim().toUpperCase();
-		if(mob==null) return false;
-		if(isASysOp(mob)) return true;
+		if(mob==null)
+			return false;
+		if(isASysOp(mob))
+			return true;
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!mob.soulMate().isAttribute(MOB.Attrib.SYSOPMSGS))))
 			return false;
@@ -444,8 +468,10 @@ public class CMSecurity
 
 	public static final boolean isAllowedContainsAny(final MOB mob, final Room room, final SecGroup secGroup)
 	{
-		if(mob==null) return false;
-		if(isASysOp(mob)) return true;
+		if(mob==null)
+			return false;
+		if(isASysOp(mob))
+			return true;
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!mob.soulMate().isAttribute(MOB.Attrib.SYSOPMSGS))))
 			return false;
@@ -459,8 +485,10 @@ public class CMSecurity
 
 	public static final boolean isAllowed(final MOB mob, final Room room, final SecFlag flag)
 	{
-		if(mob==null) return false;
-		if(isASysOp(mob)) return true;
+		if(mob==null)
+			return false;
+		if(isASysOp(mob))
+			return true;
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!mob.soulMate().isAttribute(MOB.Attrib.SYSOPMSGS))))
 			return false;
@@ -474,8 +502,10 @@ public class CMSecurity
 
 	public static final boolean isAllowedContainsAny(final MOB mob, final SecGroup secGroup)
 	{
-		if(mob==null) return false;
-		if(isASysOp(mob)) return true;
+		if(mob==null)
+			return false;
+		if(isASysOp(mob))
+			return true;
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!mob.soulMate().isAttribute(MOB.Attrib.SYSOPMSGS))))
 			return false;
@@ -500,8 +530,10 @@ public class CMSecurity
 
 	public static final boolean isAllowedEverywhere(final MOB mob, final SecFlag flag)
 	{
-		if(mob==null) return false;
-		if(isASysOp(mob)) return true;
+		if(mob==null)
+			return false;
+		if(isASysOp(mob))
+			return true;
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!mob.soulMate().isAttribute(MOB.Attrib.SYSOPMSGS))))
 			return false;
@@ -514,8 +546,10 @@ public class CMSecurity
 
 	public static final boolean isAllowedAnywhere(final MOB mob, final SecFlag flag)
 	{
-		if(mob==null) return false;
-		if(isASysOp(mob)) return true;
+		if(mob==null)
+			return false;
+		if(isASysOp(mob))
+			return true;
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!mob.soulMate().isAttribute(MOB.Attrib.SYSOPMSGS))))
 			return false;
@@ -613,7 +647,8 @@ public class CMSecurity
 	public static final boolean isDebuggingSearch(final String key)
 	{
 		final DbgFlag flag=(DbgFlag)CMath.s_valueOf(DbgFlag.values(),key.toUpperCase().trim());
-		if(flag==null) return false;
+		if(flag==null)
+			return false;
 		return isDebugging(flag);
 	}
 
@@ -687,7 +722,8 @@ public class CMSecurity
 		else
 		{
 			final DisFlag disFlag = (DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), flag);
-			if(disFlag!=null) return isDisabled(disFlag);
+			if(disFlag!=null)
+				return isDisabled(disFlag);
 		}
 		if(CMClass.getCommand(flag)!=null)
 			set=cmdDisVars;
@@ -809,13 +845,17 @@ public class CMSecurity
 			final String str=banned.get(b);
 			if(str.length()>0)
 			{
-				if(str.equals("*")||((str.indexOf('*')<0))&&(str.equals(uplogin))) return true;
+				if(str.equals("*")||((str.indexOf('*')<0))&&(str.equals(uplogin)))
+					return true;
 				else
-				if(str.startsWith("*")&&str.endsWith("*")&&(uplogin.indexOf(str.substring(1,str.length()-1))>=0)) return true;
+				if(str.startsWith("*")&&str.endsWith("*")&&(uplogin.indexOf(str.substring(1,str.length()-1))>=0))
+					return true;
 				else
-				if(str.startsWith("*")&&(uplogin.endsWith(str.substring(1)))) return true;
+				if(str.startsWith("*")&&(uplogin.endsWith(str.substring(1))))
+					return true;
 				else
-				if(str.endsWith("*")&&(uplogin.startsWith(str.substring(0,str.length()-1)))) return true;
+				if(str.endsWith("*")&&(uplogin.startsWith(str.substring(0,str.length()-1))))
+					return true;
 			}
 		}
 		return false;
@@ -869,7 +909,8 @@ public class CMSecurity
 				return b;
 		}
 		final StringBuffer str=Resources.getFileResource("banned.ini",false);
-		if(banMe.trim().length()>0) str.append(banMe+"\n");
+		if(banMe.trim().length()>0)
+			str.append(banMe+"\n");
 		Resources.updateFileResource("::banned.ini",str);
 		return -1;
 	}
@@ -1094,7 +1135,8 @@ public class CMSecurity
 				@Override
 				public SecPath next()
 				{
-					if(hasNext()) return p.next();
+					if(hasNext())
+						return p.next();
 					throw new java.util.NoSuchElementException();
 				}
 				@Override public void remove() {}
@@ -1130,7 +1172,8 @@ public class CMSecurity
 				@Override
 				public SecFlag next()
 				{
-					if(hasNext()) return p.next();
+					if(hasNext())
+						return p.next();
 					throw new java.util.NoSuchElementException();
 				}
 				@Override public void remove() {}

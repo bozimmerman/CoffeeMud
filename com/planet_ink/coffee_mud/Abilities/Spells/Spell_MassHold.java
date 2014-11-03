@@ -85,8 +85,10 @@ public class Spell_MassHold extends Spell
 							if(msg.value()<=0)
 							{
 								int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
-								if(levelDiff<0) levelDiff=0;
-								if(levelDiff>6) levelDiff=6;
+								if(levelDiff<0)
+									levelDiff=0;
+								if(levelDiff>6)
+									levelDiff=6;
 
 								final Spell_Hold spell=new Spell_Hold();
 								spell.setProficiency(proficiency());
@@ -96,7 +98,8 @@ public class Spell_MassHold extends Spell
 										target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> become(s) perfectly still!!"));
 							}
 						}
-						if(oldVictim==null) mob.setVictim(null);
+						if(oldVictim==null)
+							mob.setVictim(null);
 					}
 					else
 						maliciousFizzle(mob,target,L("<T-NAME> seem(s) unaffected by the spell from <S-NAME>."));

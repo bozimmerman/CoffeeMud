@@ -64,7 +64,8 @@ public class Chant_SenseLife extends Chant
 
 	public boolean inhabitated(MOB mob, Room R)
 	{
-		if(R==null) return false;
+		if(R==null)
+			return false;
 		for(int i=0;i<R.numInhabitants();i++)
 		{
 			final MOB M=R.fetchInhabitant(i);

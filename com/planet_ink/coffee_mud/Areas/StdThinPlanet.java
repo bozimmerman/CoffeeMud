@@ -56,7 +56,8 @@ public class StdThinPlanet extends StdThinArea implements SpaceObject
 	public CMObject copyOf()
 	{
 		final CMObject O=super.copyOf();
-		if(O instanceof Area) ((Area)O).setTimeObj((TimeClock)CMClass.getCommon("DefaultTimeClock"));
+		if(O instanceof Area)
+			((Area)O).setTimeObj((TimeClock)CMClass.getCommon("DefaultTimeClock"));
 		return O;
 	}
 

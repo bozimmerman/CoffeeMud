@@ -129,7 +129,8 @@ public class Authenticate extends StdWebMacro
 			for(final byte b : buf)
 			{
 				String s2=Integer.toHexString(b);
-				while(s2.length()<2)s2="0"+s2;
+				while(s2.length()<2)
+					s2="0"+s2;
 				s.append(s2);
 			}
 			return s.toString();
@@ -190,7 +191,8 @@ public class Authenticate extends StdWebMacro
 		if(httpReq.getRequestObjects().get("AUTHENTICATED_USER")!=null)
 		{
 			final Object o=httpReq.getRequestObjects().get("AUTHENTICATED_USER");
-			if(!(o instanceof MOB)) return null;
+			if(!(o instanceof MOB))
+				return null;
 			return (MOB)o;
 		}
 		MOB mob=null;
@@ -266,7 +268,8 @@ public class Authenticate extends StdWebMacro
 			return login;
 		}
 		final String auth=httpReq.getUrlParameter("AUTH");
-		if(auth==null) return "";
+		if(auth==null)
+			return "";
 		final int x = auth.indexOf('-');
 		if(x>=0)
 			login=Decrypt(auth.substring(0,x));
@@ -279,7 +282,8 @@ public class Authenticate extends StdWebMacro
 		if((password!=null)&&(password.length()>0))
 			return password;
 		final String auth=httpReq.getUrlParameter("AUTH");
-		if(auth==null) return "";
+		if(auth==null)
+			return "";
 		final int x = auth.indexOf('-');
 		if(x>=0)
 			password=Decrypt(auth.substring(x+1));

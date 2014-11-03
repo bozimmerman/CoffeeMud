@@ -74,7 +74,8 @@ public class GetsAllEquipped extends ActiveTicker
 
 			final MOB mob=(MOB)ticking;
 			final Room thisRoom=mob.location();
-			if(thisRoom.numItems()==0) return true;
+			if(thisRoom.numItems()==0)
+				return true;
 
 			DoneEquipping=true;
 			final Vector stuffIHad=new Vector();

@@ -88,8 +88,10 @@ public class JRun extends StdCommand
 		public int numParms(){return (v==null)?0:v.size();}
 		public String getParm(int i)
 		{
-			if(v==null) return "";
-			if((i<0)||(i>=v.size())) return "";
+			if(v==null)
+				return "";
+			if((i<0)||(i>=v.size()))
+				return "";
 			return (String)v.elementAt(i);
 		}
 		public static String[] functions = { "mob", "numParms", "getParm", "getParms", "toJavaString"};

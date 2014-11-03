@@ -100,7 +100,8 @@ public class Song_Ode extends Song
 				if(CMath.s_int(stuff[i][0])==CMMsg.TYP_WEAPONATTACK)
 				{ wa=i; break;}
 
-			if(wa>=0) counts[wa]=counts[wa]/25;
+			if(wa>=0)
+				counts[wa]=counts[wa]/25;
 
 			final Vector V=new Vector();
 			while(V.size()<counts.length)
@@ -149,11 +150,13 @@ public class Song_Ode extends Song
 				if((chk!=null)&&(chk[1].startsWith("e")))
 				{
 					int ticks=((Integer)H.get(I)).intValue();
-					if(ticks<=0) ticks=1;
+					if(ticks<=0)
+						ticks=1;
 					switch(chk[2].charAt(0))
 					{
 					case 'a':
-						if(ticks>25) ticks=25;
+						if(ticks>25)
+							ticks=25;
 						affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+ticks+getXLEVELLevel(invoker()));
 						break;
 					default:
@@ -177,11 +180,14 @@ public class Song_Ode extends Song
 				if((chk!=null)&&(chk[1].startsWith("c")))
 				{
 					int ticks=((Integer)H.get(I)).intValue();
-					if(ticks>50) ticks=50;
-					if(ticks<=0) ticks=1;
+					if(ticks>50)
+						ticks=50;
+					if(ticks<=0)
+						ticks=1;
 					final int stat=CMath.s_int(chk[2]);
 					if(CharStats.CODES.isBASE(stat))
-						if(ticks>5) ticks=5;
+						if(ticks>5)
+							ticks=5;
 					affectableStats.setStat(stat,affectableStats.getStat(stat)+ticks+getXLEVELLevel(invoker()));
 				}
 			}
@@ -201,8 +207,10 @@ public class Song_Ode extends Song
 				if((chk!=null)&&(chk[1].startsWith("s")))
 				{
 					int ticks=((Integer)H.get(I)).intValue();
-					if(ticks>50) ticks=50;
-					if(ticks<=0) ticks=1;
+					if(ticks>50)
+						ticks=50;
+					if(ticks<=0)
+						ticks=1;
 					switch(chk[2].charAt(0))
 					{
 					case 'h': affectableStats.setHunger(affectableStats.getHunger()+ticks+getXLEVELLevel(invoker()));
@@ -241,7 +249,8 @@ public class Song_Ode extends Song
 		&&(msg.amISource(whom))
 		&&(CMLib.flags().canBeSeenBy(whom,invoker())))
 		{
-			if(trail==null) trail=new StringBuffer("");
+			if(trail==null)
+				trail=new StringBuffer("");
 			ensureCmds();
 			if(cmds.containsKey(""+msg.sourceMinor()))
 				trail.append(msg.sourceMinor()+";");
@@ -334,7 +343,8 @@ public class Song_Ode extends Song
 
 	public Hashtable getSongs()
 	{
-		if(songs!=null) return songs;
+		if(songs!=null)
+			return songs;
 		String t=miscText;
 		int x=t.indexOf("|~|");
 		songs=new Hashtable();
@@ -359,7 +369,8 @@ public class Song_Ode extends Song
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		timeOut=0;
-		if(auto) return false;
+		if(auto)
+			return false;
 
 		final Hashtable H=getSongs();
 		if(commands.size()==0)
@@ -414,7 +425,8 @@ public class Song_Ode extends Song
 		}
 
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(target==mob)
 		{
 			mob.tell(L("You may not compose an ode about yourself!"));

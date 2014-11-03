@@ -43,12 +43,15 @@ public class AreaScriptData extends AreaScriptNext
 		final java.util.Map<String,String> parms=parseParms(parm);
 
 		final String area=httpReq.getUrlParameter("AREA");
-		if((area==null)||(area.length()==0)) return "@break@";
+		if((area==null)||(area.length()==0))
+			return "@break@";
 		final String script=httpReq.getUrlParameter("AREASCRIPT");
-		if((script==null)||(script.length()==0)) return "@break@";
+		if((script==null)||(script.length()==0))
+			return "@break@";
 		final TreeMap<String,ArrayList<AreaScriptInstance>> list = getAreaScripts(httpReq,area);
 		final ArrayList<AreaScriptInstance> subList = list.get(script);
-		if(subList == null) return " @break@";
+		if(subList == null)
+			return " @break@";
 		AreaScriptInstance entry = null;
 		String last=httpReq.getUrlParameter("AREASCRIPTHOST");
 		if((last!=null)&&(last.length()>0))
@@ -70,7 +73,8 @@ public class AreaScriptData extends AreaScriptNext
 		{
 			if(parms.containsKey("RESET"))
 			{
-				if(last!=null) httpReq.removeUrlParameter("AREASCRIPTHOST");
+				if(last!=null)
+					httpReq.removeUrlParameter("AREASCRIPTHOST");
 				return "";
 			}
 			String lastID="";

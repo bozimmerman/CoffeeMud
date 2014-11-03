@@ -52,7 +52,8 @@ public class CatalogItemNext extends StdWebMacro
 
 	public static String getCataStat(Item I, CatalogLibrary.CataData data, int x, String optionalColumn)
 	{
-		if((I==null)||(data==null)) return "";
+		if((I==null)||(data==null))
+			return "";
 		final boolean dataRate=(data.getRate()>0.0);
 		switch(x)
 		{
@@ -102,7 +103,8 @@ public class CatalogItemNext extends StdWebMacro
 			optionalColumn=optCol.trim().toUpperCase();
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("ITEM");
+			if(last!=null)
+				httpReq.removeUrlParameter("ITEM");
 			for (final String element : DATA)
 				httpReq.removeUrlParameter(element);
 			if(optionalColumn.length()>0)
@@ -159,7 +161,8 @@ public class CatalogItemNext extends StdWebMacro
 			{
 				data=CMLib.catalog().getCatalogItemData(name2);
 				I=CMLib.catalog().getCatalogItem(name2);
-				if(I==null) continue;
+				if(I==null)
+					continue;
 				httpReq.addFakeUrlParameter("ITEM",name);
 				for(int d=0;d<DATA.length;d++)
 					httpReq.addFakeUrlParameter(DATA[d],getCataStat(I,data,d,null));

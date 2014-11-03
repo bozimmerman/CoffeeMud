@@ -55,8 +55,10 @@ public class Undead_EnergyDrain extends StdAbility
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(affected==null) return;
-		if(levelsDown<0) return;
+		if(affected==null)
+			return;
+		if(levelsDown<0)
+			return;
 		final int attacklevel=affectableStats.attackAdjustment()/affectableStats.level();
 		affectableStats.setLevel(affectableStats.level()-(levelsDown*direction));
 		if(affectableStats.level()<=0)
@@ -71,7 +73,8 @@ public class Undead_EnergyDrain extends StdAbility
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		final int hplevel=affectableState.getHitPoints()/affected.basePhyStats().level();
 		affectableState.setHitPoints(affectableState.getHitPoints()-(hplevel*(levelsDown*direction)));
 		final int manalevel=affectableState.getMana()/affected.basePhyStats().level();
@@ -84,9 +87,11 @@ public class Undead_EnergyDrain extends StdAbility
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		int newLevel=affected.basePhyStats().level()-(direction*(levelsDown-affectableStats.combinedSubLevels()));
-		if(newLevel<0) newLevel=0;
+		if(newLevel<0)
+			newLevel=0;
 		affectableStats.setClassLevel(affectableStats.getCurrentClass(),newLevel);
 	}
 
@@ -118,11 +123,13 @@ public class Undead_EnergyDrain extends StdAbility
 				reAffect=victim.fetchEffect("Undead_WeakEnergyDrain");
 			if(reAffect==null)
 				reAffect=victim.fetchEffect("Undead_EnergyDrain");
-			if(reAffect!=null) target=victim;
+			if(reAffect!=null)
+				target=victim;
 		}
 		if(target==null)
 			target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

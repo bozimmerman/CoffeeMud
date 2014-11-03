@@ -47,7 +47,8 @@ public class Drop extends StdCommand
 	public boolean drop(MOB mob, Environmental dropThis, boolean quiet, boolean optimize, boolean intermediate)
 	{
 		final Room R=mob.location();
-		if(R==null) return false;
+		if(R==null)
+			return false;
 		final int msgCode=(optimize?CMMsg.MASK_OPTIMIZE:0)|(intermediate?CMMsg.MASK_INTERMSG:0)|CMMsg.MSG_DROP;
 		final CMMsg msg=CMClass.getMsg(mob,dropThis,null,msgCode,quiet?null:L("<S-NAME> drop(s) <T-NAME>."));
 		if(R.okMessage(mob,msg))
@@ -120,7 +121,8 @@ public class Drop extends StdCommand
 
 
 		final int maxToDrop=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
-		if(maxToDrop<0) return false;
+		if(maxToDrop<0)
+			return false;
 
 		whatToDrop=CMParms.combine(commands,0);
 		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
@@ -167,7 +169,8 @@ public class Drop extends StdCommand
 				dropThis=null;
 			else
 			{
-				if(dropThis==null) break;
+				if(dropThis==null)
+					break;
 				if((CMLib.flags().canBeSeenBy(dropThis,mob)||(dropThis instanceof Light))
 				&&(!V.contains(dropThis)))
 					V.addElement(dropThis);

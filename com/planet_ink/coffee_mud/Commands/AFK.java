@@ -43,7 +43,8 @@ public class AFK extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(mob.session()==null) return false;
+		if(mob.session()==null)
+			return false;
 		if(mob.session().isAfk())
 			mob.session().setAfkFlag(false);
 		else

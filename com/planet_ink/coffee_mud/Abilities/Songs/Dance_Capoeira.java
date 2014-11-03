@@ -57,7 +57,8 @@ public class Dance_Capoeira extends Dance
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		if((affected instanceof MOB)&&(((MOB)affected).fetchWieldedItem()==null))
 		{
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()

@@ -105,7 +105,8 @@ public class Spell_MassSleep extends Spell
 									target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> fall(s) asleep!!"));
 							}
 						}
-						if(oldVictim==null) mob.setVictim(null);
+						if(oldVictim==null)
+							mob.setVictim(null);
 					}
 					else
 						maliciousFizzle(mob,target,L("<T-NAME> seem(s) unaffected by the Sleep spell from <S-NAME>."));

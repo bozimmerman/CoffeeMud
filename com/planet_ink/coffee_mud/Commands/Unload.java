@@ -47,7 +47,8 @@ public class Unload extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(mob==null) return true;
+		if(mob==null)
+			return true;
 		boolean tryArchon=CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LOADUNLOAD);
 		if(commands.size()<2)
 		{
@@ -108,7 +109,8 @@ public class Unload extends StdCommand
 					if(O!=null)
 					{
 						final CMClass.CMObjectType x=CMClass.getObjectType(O);
-						if(x!=null) what=x.toString();
+						if(x!=null)
+							what=x.toString();
 					}
 				}
 				final CMObjectType whatType=CMClass.findObjectType(what);
@@ -191,9 +193,11 @@ public class Unload extends StdCommand
 					{
 						if(M!=mob)
 						{
-							if(M.session()!=null) M.session().stopSession(false,false,false);
+							if(M.session()!=null)
+								M.session().stopSession(false,false,false);
 							while(M.session()!=null){try{Thread.sleep(100);}catch(final Exception e){}}
-							if(M.session()!=null) M.session().stopSession(true,true,true);
+							if(M.session()!=null)
+								M.session().stopSession(true,true,true);
 						}
 						else
 							mob.tell(L("Can't unload yourself -- a destroy is involved, which would disrupt this process."));
@@ -213,7 +217,8 @@ public class Unload extends StdCommand
 					if(M!=mob)
 					{
 						done++;
-						if(M.session()!=null) M.session().stopSession(true,true,true);
+						if(M.session()!=null)
+							M.session().stopSession(true,true,true);
 						CMLib.players().delPlayer(M);
 						M.destroy();
 					}
@@ -294,8 +299,10 @@ public class Unload extends StdCommand
 				if(!F1.exists())
 				{
 					int x=which.indexOf(':');
-					if(x<0) x=which.lastIndexOf(' ');
-					if(x>=0) F1=new CMFile(which.substring(x+1).trim(),mob,CMFile.FLAG_FORCEALLOW);
+					if(x<0)
+						x=which.lastIndexOf(' ');
+					if(x>=0)
+						F1=new CMFile(which.substring(x+1).trim(),mob,CMFile.FLAG_FORCEALLOW);
 				}
 				if(!F1.exists())
 				{
@@ -303,8 +310,10 @@ public class Unload extends StdCommand
 					if(!F1.exists())
 					{
 						int x=which.indexOf(':');
-						if(x<0) x=which.lastIndexOf(' ');
-						if(x>=0) F1=new CMFile(Resources.buildResourcePath(which.substring(x+1).trim()),mob,CMFile.FLAG_FORCEALLOW);
+						if(x<0)
+							x=which.lastIndexOf(' ');
+						if(x>=0)
+							F1=new CMFile(Resources.buildResourcePath(which.substring(x+1).trim()),mob,CMFile.FLAG_FORCEALLOW);
 					}
 				}
 				if(F1.exists())
@@ -337,8 +346,10 @@ public class Unload extends StdCommand
 				if(!F1.exists())
 				{
 					int x=str.indexOf(':');
-					if(x<0) x=str.lastIndexOf(' ');
-					if(x>=0) F1=new CMFile(str.substring(x+1).trim(),mob,CMFile.FLAG_FORCEALLOW);
+					if(x<0)
+						x=str.lastIndexOf(' ');
+					if(x>=0)
+						F1=new CMFile(str.substring(x+1).trim(),mob,CMFile.FLAG_FORCEALLOW);
 				}
 				if(!F1.exists())
 				{
@@ -346,8 +357,10 @@ public class Unload extends StdCommand
 					if(!F1.exists())
 					{
 						int x=str.indexOf(':');
-						if(x<0) x=str.lastIndexOf(' ');
-						if(x>=0) F1=new CMFile(Resources.buildResourcePath(str.substring(x+1).trim()),mob,CMFile.FLAG_FORCEALLOW);
+						if(x<0)
+							x=str.lastIndexOf(' ');
+						if(x>=0)
+							F1=new CMFile(Resources.buildResourcePath(str.substring(x+1).trim()),mob,CMFile.FLAG_FORCEALLOW);
 					}
 				}
 				if(F1.exists())

@@ -93,7 +93,8 @@ public class Thief_Arsonry extends ThiefSkill
 		else
 		{
 			final Item item=getTarget(mob,mob.location(),givenTarget,null,commands,Wearable.FILTER_UNWORNONLY);
-			if(item==null) return false;
+			if(item==null)
+				return false;
 			target=item;
 			targetRoom=mob.location();
 		}
@@ -113,7 +114,8 @@ public class Thief_Arsonry extends ThiefSkill
 			return false;
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)));
-		if(levelDiff<0) levelDiff=0;
+		if(levelDiff<0)
+			levelDiff=0;
 		levelDiff*=5;
 		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 		if(success)
@@ -123,7 +125,8 @@ public class Thief_Arsonry extends ThiefSkill
 			&&((targetRoom==mob.location())||(targetRoom.okMessage(mob,msg))))
 			{
 				mob.location().send(mob,msg);
-				if(targetRoom!=mob.location()) targetRoom.sendOthers(mob,msg);
+				if(targetRoom!=mob.location())
+					targetRoom.sendOthers(mob,msg);
 				final Ability B=CMClass.getAbility("Burning");
 				if(B!=null)
 					B.invoke(mob,target,true,CMLib.flags().burnStatus(target));

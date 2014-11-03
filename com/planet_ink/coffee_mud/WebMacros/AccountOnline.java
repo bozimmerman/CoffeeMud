@@ -45,7 +45,8 @@ public class AccountOnline extends StdWebMacro
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
 		final String last=httpReq.getUrlParameter("ACCOUNT");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		final java.util.Map<String,String> parms=parseParms(parm);
 		if(last.length()>0)
 		{
@@ -67,7 +68,8 @@ public class AccountOnline extends StdWebMacro
 				{
 					if(A==null)
 						A = CMLib.players().getLoadAccount(last);
-					if(A==null) return "false";
+					if(A==null)
+						return "false";
 					boolean canBan=false;
 					boolean canBoot=false;
 					boolean canModify=false;

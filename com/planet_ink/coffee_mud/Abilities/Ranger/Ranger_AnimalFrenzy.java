@@ -51,7 +51,8 @@ public class Ranger_AnimalFrenzy extends StdAbility
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
 		if(!(affected instanceof MOB))
 			return false;
 		if(invoker==null)
@@ -61,7 +62,8 @@ public class Ranger_AnimalFrenzy extends StdAbility
 				return true;
 			invoker=(MOB)affected;
 		}
-		if(invoker!=affected) return true;
+		if(invoker!=affected)
+			return true;
 		if(rangersGroup==null)
 			rangersGroup=new Vector();
 
@@ -79,7 +81,8 @@ public class Ranger_AnimalFrenzy extends StdAbility
 					rangersGroup.addElement(mob);
 					mob.addNonUninvokableEffect((Ability)this.copyOf());
 					final Ability A=mob.fetchEffect(ID());
-					if(A!=null)A.setSavable(false);
+					if(A!=null)
+						A.setSavable(false);
 				}
 			}
 			for(int i=rangersGroup.size()-1;i>=0;i--)

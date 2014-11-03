@@ -52,7 +52,8 @@ public class Prayer_SenseGood extends Prayer
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(invoker==null) return;
+		if(invoker==null)
+			return;
 
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_GOOD);
 	}
@@ -79,7 +80,8 @@ public class Prayer_SenseGood extends Prayer
 			return false;
 
 		Physical target=mob;
-		if((auto)&&(givenTarget!=null)) target=givenTarget;
+		if((auto)&&(givenTarget!=null))
+			target=givenTarget;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

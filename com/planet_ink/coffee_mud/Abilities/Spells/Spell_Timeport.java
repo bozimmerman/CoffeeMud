@@ -123,7 +123,8 @@ public class Spell_Timeport extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -157,7 +158,8 @@ public class Spell_Timeport extends Spell
 				CMLib.threads().suspendTicking(target,-1);
 				beneficialAffect(mob,target,asLevel,3);
 				final Ability A=target.fetchEffect(ID());
-				if(A!=null)	CMLib.threads().startTickDown(A,Tickable.TICKID_MOB,1);
+				if(A!=null)
+					CMLib.threads().startTickDown(A,Tickable.TICKID_MOB,1);
 			}
 		}
 		else

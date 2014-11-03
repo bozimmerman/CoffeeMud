@@ -46,7 +46,8 @@ public class AreaNext extends StdWebMacro
 		String last=httpReq.getUrlParameter("AREA");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("AREA");
+			if(last!=null)
+				httpReq.removeUrlParameter("AREA");
 			return "";
 		}
 		final boolean all=parms.containsKey("SPACE")||parms.containsKey("ALL");

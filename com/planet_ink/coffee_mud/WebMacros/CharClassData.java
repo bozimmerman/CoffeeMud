@@ -81,21 +81,27 @@ public class CharClassData extends StdWebMacro
 				if(behav.length()>0)
 				{
 					String prof=httpReq.getUrlParameter("CABPOF"+num);
-					if((prof==null)||(!CMath.isInteger(prof))) prof="0";
+					if((prof==null)||(!CMath.isInteger(prof)))
+						prof="0";
 					String qual=httpReq.getUrlParameter("CABQUA"+num);
 					if(qual==null) qual=""; // null means unchecked
 					String levl=httpReq.getUrlParameter("CABLVL"+num);
-					if((levl==null)||(!CMath.isInteger(levl))) levl="0";
+					if((levl==null)||(!CMath.isInteger(levl)))
+						levl="0";
 					String secr=httpReq.getUrlParameter("CABSCR"+num);
 					if(secr==null) secr=""; // null means unchecked
 					String parm=httpReq.getUrlParameter("CABPRM"+num);
-					if(parm==null) parm="";
+					if(parm==null)
+						parm="";
 					String prereqs=httpReq.getUrlParameter("CABPRE"+num);
-					if(prereqs==null) prereqs="";
+					if(prereqs==null)
+						prereqs="";
 					String mask=httpReq.getUrlParameter("CABMSK"+num);
-					if(mask==null) mask="";
+					if(mask==null)
+						mask="";
 					String maxp=httpReq.getUrlParameter("CABMPOF"+num);
-					if((maxp==null)||(!CMath.isInteger(maxp))) maxp="100";
+					if((maxp==null)||(!CMath.isInteger(maxp)))
+						maxp="100";
 					theclasses.addElement(behav,levl,prof,qual,secr,parm,prereqs,mask,maxp);
 				}
 				num++;
@@ -113,8 +119,10 @@ public class CharClassData extends StdWebMacro
 			{
 				aID=able.abilityID;
 				final int qlvl=CMLib.ableMapper().getQualifyingLevel(E.ID(), false, aID);
-				if(qlvl>maxLvl) maxLvl=qlvl;
-				if(qlvl<minLvl) minLvl=qlvl;
+				if(qlvl>maxLvl)
+					maxLvl=qlvl;
+				if(qlvl<minLvl)
+					minLvl=qlvl;
 				sortedData1.addElement(aID,Integer.valueOf(qlvl));
 			}
 			Integer qLvl=null;
@@ -139,7 +147,8 @@ public class CharClassData extends StdWebMacro
 				}
 			}
 		}
-		if(font==null) font="<FONT COLOR=WHITE><B>";
+		if(font==null)
+			font="<FONT COLOR=WHITE><B>";
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 		final String sfont=(parms.containsKey("FONT"))?("<FONT "+(parms.get("FONT"))+">"):"";
 		final String efont=(parms.containsKey("FONT"))?"</FONT>":"";
@@ -261,7 +270,8 @@ public class CharClassData extends StdWebMacro
 
 
 		String last=httpReq.getUrlParameter("CLASS");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 		if(last.length()>0)
 		{
 			if(parms.containsKey("ISGENERIC"))
@@ -292,7 +302,8 @@ public class CharClassData extends StdWebMacro
 				if(parms.containsKey("NAME"))
 				{
 					String old=httpReq.getUrlParameter("NAME");
-					if(old==null) old=C.name();
+					if(old==null)
+						old=C.name();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("NAMELIST"))
@@ -398,42 +409,52 @@ public class CharClassData extends StdWebMacro
 					else
 					{
 						CharClass pC=CMClass.getCharClass(old);
-						if(pC==null) pC=CMClass.findCharClass(old);
-						if(pC!=null) old=pC.ID();
+						if(pC==null)
+							pC=CMClass.findCharClass(old);
+						if(pC!=null)
+							old=pC.ID();
 					}
 					str.append(old+", ");
 				}
 				if(parms.containsKey("HITPOINTSFORMULA"))
 				{
 					String old=httpReq.getUrlParameter("HITPOINTSFORMULA");
-					if(old==null) old=""+C.getHitPointsFormula();
+					if(old==null)
+						old=""+C.getHitPointsFormula();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("MANAFORMULA"))
 				{
 					String old=httpReq.getUrlParameter("MANAFORMULA");
-					if(old==null) old=""+C.getManaFormula();
+					if(old==null)
+						old=""+C.getManaFormula();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("LVLPRAC"))
 				{
 					String old=httpReq.getUrlParameter("LVLPRAC");
-					if(old==null) old=""+C.getBonusPracLevel();
-					if(CMath.s_int(old)<=0) old="0";
+					if(old==null)
+						old=""+C.getBonusPracLevel();
+					if(CMath.s_int(old)<=0)
+						old="0";
 					str.append(old+", ");
 				}
 				if(parms.containsKey("LVLATT"))
 				{
 					String old=httpReq.getUrlParameter("LVLATT");
-					if(old==null) old=""+C.getBonusAttackLevel();
-					if(CMath.s_int(old)<0) old="0";
+					if(old==null)
+						old=""+C.getBonusAttackLevel();
+					if(CMath.s_int(old)<0)
+						old="0";
 					str.append(old+", ");
 				}
 				if(parms.containsKey("ATTATT"))
 				{
 					String old=httpReq.getUrlParameter("ATTATT");
-					if(old==null) old=""+C.getAttackAttribute();
-					if(CMath.s_int(old)<0) old="0";
+					if(old==null)
+						old=""+C.getAttackAttribute();
+					if(CMath.s_int(old)<0)
+						old="0";
 					for(final int i : CharStats.CODES.BASECODES())
 						str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i)));
 					str.append(", ");
@@ -441,75 +462,94 @@ public class CharClassData extends StdWebMacro
 				if(parms.containsKey("FSTTRAN"))
 				{
 					String old=httpReq.getUrlParameter("FSTTRAN");
-					if(old==null) old=""+C.getTrainsFirstLevel();
-					if(CMath.s_int(old)<0) old="0";
+					if(old==null)
+						old=""+C.getTrainsFirstLevel();
+					if(CMath.s_int(old)<0)
+						old="0";
 					str.append(old+", ");
 				}
 				if(parms.containsKey("FSTPRAC"))
 				{
 					String old=httpReq.getUrlParameter("FSTPRAC");
-					if(old==null) old=""+C.getPracsFirstLevel();
-					if(CMath.s_int(old)<0) old="0";
+					if(old==null)
+						old=""+C.getPracsFirstLevel();
+					if(CMath.s_int(old)<0)
+						old="0";
 					str.append(old+", ");
 				}
 				if(parms.containsKey("MAXNCS"))
 				{
 					String old=httpReq.getUrlParameter("MAXNCS");
-					if(old==null) old=""+C.maxNonCraftingSkills();
-					if(CMath.s_int(old)<=0) old="Unlimited";
+					if(old==null)
+						old=""+C.maxNonCraftingSkills();
+					if(CMath.s_int(old)<=0)
+						old="Unlimited";
 					str.append(old+", ");
 				}
 				if(parms.containsKey("MAXCRS"))
 				{
 					String old=httpReq.getUrlParameter("MAXCRS");
-					if(old==null) old=""+C.maxCraftingSkills();
-					if(CMath.s_int(old)<=0) old="Unlimited";
+					if(old==null)
+						old=""+C.maxCraftingSkills();
+					if(CMath.s_int(old)<=0)
+						old="Unlimited";
 					str.append(old+", ");
 				}
 				if(parms.containsKey("MONEY"))
 				{
 					String old=httpReq.getUrlParameter("MONEY");
-					if(old==null) old=C.getStartingMoney();
+					if(old==null)
+						old=C.getStartingMoney();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("MAXCMS"))
 				{
 					String old=httpReq.getUrlParameter("MAXCMS");
-					if(old==null) old=""+C.maxCommonSkills();
-					if(CMath.s_int(old)<=0) old="Unlimited";
+					if(old==null)
+						old=""+C.maxCommonSkills();
+					if(CMath.s_int(old)<=0)
+						old="Unlimited";
 					str.append(old+", ");
 				}
 				if(parms.containsKey("MAXLGS"))
 				{
 					String old=httpReq.getUrlParameter("MAXLGS");
-					if(old==null) old=""+C.maxLanguages();
-					if(CMath.s_int(old)<=0) old="Unlimited";
+					if(old==null)
+						old=""+C.maxLanguages();
+					if(CMath.s_int(old)<=0)
+						old="Unlimited";
 					str.append(old+", ");
 				}
 				if(parms.containsKey("LVLDAM"))
 				{
 					String old=httpReq.getUrlParameter("LVLDAM");
-					if(old==null) old=""+C.getLevelsPerBonusDamage();
-					if(CMath.s_int(old)<=0) old="1";
+					if(old==null)
+						old=""+C.getLevelsPerBonusDamage();
+					if(CMath.s_int(old)<=0)
+						old="1";
 					str.append(old+", ");
 				}
 				if(parms.containsKey("LEVELCAP"))
 				{
 					String old=httpReq.getUrlParameter("LEVELCAP");
-					if(old==null) old=""+C.getLevelCap();
-					if(CMath.s_int(old)<0) old="-1";
+					if(old==null)
+						old=""+C.getLevelCap();
+					if(CMath.s_int(old)<0)
+						old="-1";
 					str.append(old+", ");
 				}
 				if(parms.containsKey("MOVEMENTFORMULA"))
 				{
 					String old=httpReq.getUrlParameter("MOVEMENTFORMULA");
-					if(old==null) old=""+C.getMovementFormula();
+					if(old==null)
+						old=""+C.getMovementFormula();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("RACQUAL"))
 				{
 					String old=httpReq.getUrlParameter("RACQUAL");
-					if(old==null) old=""+CMParms.toStringList(C.getRequiredRaceList());
+					if(old==null)
+						old=""+CMParms.toStringList(C.getRequiredRaceList());
 					str.append(old+", ");
 				}
 				if(parms.containsKey("GENHELP"))
@@ -530,7 +570,8 @@ public class CharClassData extends StdWebMacro
 						C=C.makeGenCharClass();
 						old=""+C.getStat("ARMOR");
 					}
-					if(CMath.s_int(old)<=0) old="0";
+					if(CMath.s_int(old)<=0)
+						old="0";
 					for(int i=0;i<CharClass.ARMOR_LONGDESC.length;i++)
 						str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(CharClass.ARMOR_LONGDESC[i]));
 					str.append(", ");
@@ -550,13 +591,15 @@ public class CharClassData extends StdWebMacro
 				if(parms.containsKey("STRLMT"))
 				{
 					String old=httpReq.getUrlParameter("STRLMT");
-					if(old==null) old=""+C.getOtherLimitsDesc();
+					if(old==null)
+						old=""+C.getOtherLimitsDesc();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("STRBON"))
 				{
 					String old=httpReq.getUrlParameter("STRBON");
-					if(old==null) old=""+C.getOtherBonusDesc();
+					if(old==null)
+						old=""+C.getOtherBonusDesc();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("QUAL"))
@@ -641,7 +684,8 @@ public class CharClassData extends StdWebMacro
 					for(int i=0;i<Weapon.CLASS_DESCS.length;i++)
 					{
 						str.append("<OPTION VALUE="+i);
-						if(set.contains(""+i)) str.append(" SELECTED");
+						if(set.contains(""+i))
+							str.append(" SELECTED");
 						str.append(">"+Weapon.CLASS_DESCS[i]);
 					}
 					str.append(", ");
@@ -813,12 +857,14 @@ public class CharClassData extends StdWebMacro
 								set.add(httpReq.getUrlParameter("WEAPMATS"+id));
 					}
 					str.append("<OPTION VALUE=\"*\"");
-					if(set.size()==0) str.append(" SELECTED");
+					if(set.size()==0)
+						str.append(" SELECTED");
 					str.append(">ANY");
 					for(final RawMaterial.Material m : RawMaterial.Material.values())
 					{
 						str.append("<OPTION VALUE="+m.mask());
-						if(set.contains(""+m.mask())) str.append(" SELECTED");
+						if(set.contains(""+m.mask()))
+							str.append(" SELECTED");
 						str.append(">"+m.noun());
 					}
 					str.append(", ");
@@ -835,12 +881,14 @@ public class CharClassData extends StdWebMacro
 					else
 						armorMinor=CMath.s_int(old);
 					str.append("<OPTION VALUE=-1");
-					if(armorMinor<0) str.append(" SELECTED");
+					if(armorMinor<0)
+						str.append(" SELECTED");
 					str.append(">N/A");
 					for(int i=0;i<CMMsg.TYPE_DESCS.length;i++)
 					{
 						str.append("<OPTION VALUE="+i);
-						if(i==armorMinor) str.append(" SELECTED");
+						if(i==armorMinor)
+							str.append(" SELECTED");
 						str.append(">"+CMMsg.TYPE_DESCS[i]);
 					}
 					str.append(", ");
@@ -880,7 +928,8 @@ public class CharClassData extends StdWebMacro
 						if(s.toString().startsWith("<CHARCLASS>"))
 							s=new StringBuilder(s.toString().substring(11));
 						int limit=78;
-						if(parms.containsKey("LIMIT")) limit=CMath.s_int(parms.get("LIMIT"));
+						if(parms.containsKey("LIMIT"))
+							limit=CMath.s_int(parms.get("LIMIT"));
 						str.append(helpHelp(s,limit));
 					}
 				}
@@ -911,7 +960,8 @@ public class CharClassData extends StdWebMacro
 							else
 								domain=Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5];
 							Integer I=(Integer)domains.get(domain);
-							if(I==null)I=Integer.valueOf(0);
+							if(I==null)
+								I=Integer.valueOf(0);
 							I=Integer.valueOf(I.intValue()+1);
 							domains.remove(domain);
 							domains.put(domain,I);
@@ -1156,11 +1206,16 @@ public class CharClassData extends StdWebMacro
 			for(int s=0;s<set.size();s++)
 			{
 				final String able=set.get(s);
-				if(able.equalsIgnoreCase("Skill_Recall")) continue;
-				if(able.equalsIgnoreCase("Skill_Write")) continue;
-				if(able.equalsIgnoreCase("Skill_Swim")) continue;
-				if(CMLib.ableMapper().getQualifyingLevel("All",true,able)==l) continue;
-				if(seenBefore.contains(able)) continue;
+				if(able.equalsIgnoreCase("Skill_Recall"))
+					continue;
+				if(able.equalsIgnoreCase("Skill_Write"))
+					continue;
+				if(able.equalsIgnoreCase("Skill_Swim"))
+					continue;
+				if(CMLib.ableMapper().getQualifyingLevel("All",true,able)==l)
+					continue;
+				if(seenBefore.contains(able))
+					continue;
 				seenBefore.add(able);
 				int numOthers=0;
 				int numOutsiders=0;
@@ -1169,8 +1224,10 @@ public class CharClassData extends StdWebMacro
 				for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 				{
 					final CharClass C2=(CharClass)c.nextElement();
-					if(C2==C) continue;
-					if(!CMProps.isTheme(C2.availabilityCode())) continue;
+					if(C2==C)
+						continue;
+					if(!CMProps.isTheme(C2.availabilityCode()))
+						continue;
 					if(C2.baseClass().equals(C.baseClass()))
 					{
 						tlvl=CMLib.ableMapper().getQualifyingLevel(C2.ID(),true,able);
@@ -1224,17 +1281,20 @@ public class CharClassData extends StdWebMacro
 				else
 					totalqualified++;
 				final Ability A=CMClass.getAbility(able);
-				if(A==null) continue;
+				if(A==null)
+					continue;
 				if((A.abstractQuality()==Ability.QUALITY_BENEFICIAL_OTHERS)
 				   ||(A.abstractQuality()==Ability.QUALITY_BENEFICIAL_SELF))
 				{
 					beneficialSkills++;
-					if(gained) beneficialSkillsGained++;
+					if(gained)
+						beneficialSkillsGained++;
 				}
 				if(A.abstractQuality()==Ability.QUALITY_MALICIOUS)
 				{
 					maliciousSkills++;
-					if(gained) maliciousSkillsGained++;
+					if(gained)
+						maliciousSkillsGained++;
 				}
 			}
 			CMLib.leveler().level(M);

@@ -93,7 +93,8 @@ public class Fishing extends GatheringSkill
 				{
 					final int amount=CMLib.dice().roll(1,3,0)*(abilityCode());
 					String s="s";
-					if(amount==1) s="";
+					if(amount==1)
+						s="";
 					mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to catch @x1 pound@x2 of @x3.",""+amount,s,foundShortName));
 					for(int i=0;i<amount;i++)
 					{

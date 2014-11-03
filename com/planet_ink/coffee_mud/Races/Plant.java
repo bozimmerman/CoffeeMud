@@ -121,7 +121,8 @@ public class Plant extends Vine
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
 		if((tickID==Tickable.TICKID_MOB)&&(ticking instanceof MOB))
 			CMLib.combat().recoverTick((MOB)ticking);
 		return true;

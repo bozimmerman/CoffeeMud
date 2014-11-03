@@ -185,7 +185,8 @@ public class CombatAbilities extends StdBehavior
 
 	public void setCombatStats(MOB mob, int attack, int armor, int damage, int hp, int mana, int move, boolean pushDownSpeed)
 	{
-		if(this.noCombatStat) return;
+		if(this.noCombatStat)
+			return;
 		Ability A=mob.fetchEffect("Prop_CombatAdjuster");
 		if(A==null)
 		{
@@ -224,7 +225,8 @@ public class CombatAbilities extends StdBehavior
 
 	public void setCharStats(MOB mob)
 	{
-		if(this.noStat) return;
+		if(this.noStat)
+			return;
 		Ability A=mob.fetchEffect("Prop_StatAdjuster");
 		if(A==null)
 		{
@@ -237,7 +239,8 @@ public class CombatAbilities extends StdBehavior
 				for(final int stat : CharStats.CODES.BASECODES())
 					if(stats[stat]!=0)
 						numStats++;
-				if(numStats==0) return;
+				if(numStats==0)
+					return;
 				int numPoints=mob.phyStats().level();
 				if(mob.phyStats().level()>5)
 					numPoints=5+((mob.phyStats().level()-5)/8);
@@ -354,8 +357,10 @@ public class CombatAbilities extends StdBehavior
 					||(msg.source().getGroupMembers(new HashSet<MOB>()).contains(victim)))
 					{
 						int level=CMLib.ableMapper().qualifyingLevel(msg.source(),(Ability)msg.tool());
-						if(level<=0) level=CMLib.ableMapper().lowestQualifyingLevel(msg.tool().ID());
-						if(level>0) adjustAggro(mob,msg.source(),level);
+						if(level<=0)
+							level=CMLib.ableMapper().lowestQualifyingLevel(msg.tool().ID());
+						if(level>0)
+							adjustAggro(mob,msg.source(),level);
 					}
 				}
 			}
@@ -388,14 +393,16 @@ public class CombatAbilities extends StdBehavior
 			if((s.startsWith("-"))
 			&&((A=CMClass.getAbility(s.substring(1)))!=null))
 			{
-				if(skillsNever==null) skillsNever=new Vector();
+				if(skillsNever==null)
+					skillsNever=new Vector();
 				skillsNever.add(A.ID());
 			}
 			else
 			if((s.startsWith("+"))
 			&&((A=CMClass.getAbility(s.substring(1)))!=null))
 			{
-				if(skillsAlways==null) skillsAlways=new Vector();
+				if(skillsAlways==null)
+					skillsAlways=new Vector();
 				skillsAlways.add(A.ID());
 			}
 		}
@@ -553,11 +560,13 @@ public class CombatAbilities extends StdBehavior
 				else
 				{
 					int levelDiff=mob.basePhyStats().level()-qualLevel;
-					if((levelDiff>50)||(levelDiff<0)) levelDiff=50;
+					if((levelDiff>50)||(levelDiff<0))
+						levelDiff=50;
 					tryA.setProficiency(50+levelDiff);
 				}
 			}
-			if(target==null) return null;
+			if(target==null)
+				return null;
 			boolean skillUsed=tryA.invoke(mob,new XVector(target.name()),null,false,0);
 			if((combatMode==COMBAT_ONLYALWAYS)&&(!skillUsed))
 			{
@@ -589,7 +598,8 @@ public class CombatAbilities extends StdBehavior
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(ticking==null) return true;
+		if(ticking==null)
+			return true;
 		if(tickID!=Tickable.TICKID_MOB)
 		{
 			Log.errOut("CombatAbilities",ticking.name()+" wants to fight?!");
@@ -622,7 +632,8 @@ public class CombatAbilities extends StdBehavior
 			return true;
 		}
 		MOB victim=mob.getVictim();
-		if(victim==null) return true;
+		if(victim==null)
+			return true;
 
 		if(!canActAtAll(mob))
 			return true;
@@ -760,7 +771,8 @@ public class CombatAbilities extends StdBehavior
 				}
 			}
 		}
-		if(victim==null) return true;
+		if(victim==null)
+			return true;
 
 		final MOB leader=mob.amFollowing();
 
@@ -844,7 +856,8 @@ public class CombatAbilities extends StdBehavior
 	{
 		final String[] CODES=getStatCodes();
 		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
+			if(code.equalsIgnoreCase(CODES[i]))
+				return i;
 		return -1;
 	}
 	@Override
@@ -897,11 +910,13 @@ public class CombatAbilities extends StdBehavior
 			break;
 		case 5:
 			skillsAlways=CMParms.parseSemicolons(val,true);
-			if(skillsAlways.size()==0) skillsAlways=null;
+			if(skillsAlways.size()==0)
+				skillsAlways=null;
 			break;
 		case 6:
 			skillsNever=CMParms.parseSemicolons(val,true);
-			if(skillsNever.size()==0) skillsNever=null;
+			if(skillsNever.size()==0)
+				skillsNever=null;
 			break;
 		case 7:
 			if(CMath.isInteger(val))

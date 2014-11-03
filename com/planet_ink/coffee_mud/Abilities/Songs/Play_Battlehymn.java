@@ -47,7 +47,8 @@ public class Play_Battlehymn extends Play
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(invoker==null) return;
+		if(invoker==null)
+			return;
 		affectableStats.setDamage(affectableStats.damage()+1+(int)Math.round(CMath.mul(affectableStats.damage(),CMath.div(adjustedLevel(invoker(),0),100))));
 	}
 

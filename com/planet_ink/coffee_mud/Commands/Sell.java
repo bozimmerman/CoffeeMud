@@ -44,7 +44,8 @@ public class Sell extends StdCommand
 		throws java.io.IOException
 	{
 		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Sell what to whom?");
-		if(shopkeeper==null) return false;
+		if(shopkeeper==null)
+			return false;
 		if(commands.size()==0)
 		{
 			mob.tell(L("Sell what?"));
@@ -52,7 +53,8 @@ public class Sell extends StdCommand
 		}
 
 		final int maxToDo=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
-		if(maxToDo<0) return false;
+		if(maxToDo<0)
+			return false;
 
 
 		String whatName=CMParms.combine(commands,0);
@@ -67,7 +69,8 @@ public class Sell extends StdCommand
 		{
 			doBugFix=false;
 			final Item itemToDo=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,whatName+addendumStr);
-			if(itemToDo==null) break;
+			if(itemToDo==null)
+				break;
 			if((CMLib.flags().canBeSeenBy(itemToDo,mob))
 			&&(!V.contains(itemToDo)))
 				V.addElement(itemToDo);

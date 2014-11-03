@@ -72,9 +72,11 @@ public class Spell_Feeblemind extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		Room R=CMLib.map().roomLocation(target);
-		if(R==null) R=mob.location();
+		if(R==null)
+			R=mob.location();
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

@@ -102,7 +102,8 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 
 	public List<Ability> getMySpellsV()
 	{
-		if(spellV!=null) return spellV;
+		if(spellV!=null)
+			return spellV;
 		spellV=new Vector();
 		final String names=getParmString(text());
 		final List<String> set=CMParms.parseSemicolons(names,true);
@@ -201,14 +202,19 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	public MOB getInvokerMOB(Environmental source, Environmental target)
 	{
 		MOB mob=getBestInvokerMOB(affected);
-		if(mob==null) mob=getBestInvokerMOB(source);
-		if(mob==null) mob=getBestInvokerMOB(target);
-		if(mob==null) mob=invokerMOB;
+		if(mob==null)
+			mob=getBestInvokerMOB(source);
+		if(mob==null)
+			mob=getBestInvokerMOB(target);
+		if(mob==null)
+			mob=invokerMOB;
 		if(mob==null)
 		{
 			Room R=CMLib.map().roomLocation(target);
-			if(R==null) R=CMLib.map().roomLocation(target);
-			if(R==null) R=CMLib.map().getRandomRoom();
+			if(R==null)
+				R=CMLib.map().roomLocation(target);
+			if(R==null)
+				R=CMLib.map().getRandomRoom();
 			mob=CMLib.map().getFactoryMOB(R);
 			mob.setName(L("invoker"));
 			mob.basePhyStats().setLevel(affected.phyStats().level());
@@ -260,7 +266,8 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			&&(!CMLib.masking().maskCheck(compiledMask,target,true))))
 				return false;
 		final List VTOO=convertToV2(V,target);
-		if(VTOO.size()==0) return false;
+		if(VTOO.size()==0)
+			return false;
 		final MOB qualMOB=getInvokerMOB(source,target);
 		for(int v=0;v<VTOO.size();v+=2)
 		{
@@ -301,7 +308,8 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final String s=CMParms.combine(commands,0);
-		if(s.length()>0) setMiscText(s);
+		if(s.length()>0)
+			setMiscText(s);
 		if(givenTarget!=null)
 			addMeIfNeccessary(mob,givenTarget,false,asLevel,maxTicks);
 		else
@@ -336,7 +344,8 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 
 	public void removeMyAffectsFrom(Physical P)
 	{
-		if(P==null)return;
+		if(P==null)
+			return;
 
 		int x=0;
 		final Vector eff=new Vector();
@@ -393,7 +402,8 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	@Override
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
-		if(processing) return;
+		if(processing)
+			return;
 		if((affected instanceof MOB)
 		   ||(affected instanceof Item))
 		{
@@ -442,7 +452,8 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	public Ability fetchAbility(int index)
 	{
 		final List<Ability> spellsV=getMySpellsV();
-		if(spellsV.size()==0) return null;
+		if(spellsV.size()==0)
+			return null;
 		if((index<0)||(index>=spellsV.size()))
 			return null;
 		try
@@ -460,7 +471,8 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		for(final Enumeration<Ability> a=abilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if(A==null) continue;
+			if(A==null)
+				continue;
 			if(A.ID().equalsIgnoreCase(ID))
 				return A;
 		}
@@ -470,7 +482,8 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	public Ability fetchRandomAbility()
 	{
 		final List<Ability> spellsV=getMySpellsV();
-		if(spellsV.size()==0) return null;
+		if(spellsV.size()==0)
+			return null;
 		return spellsV.get(CMLib.dice().roll(1, spellsV.size(), -1));
 	}
 	@Override

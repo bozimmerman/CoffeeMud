@@ -66,8 +66,10 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID))	return false;
-		if((affected==null)||(invoker==null)) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if((affected==null)||(invoker==null))
+			return false;
 
 		final MOB mob=(MOB)affected;
 		if((--diseaseTick)<=0)
@@ -118,7 +120,8 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

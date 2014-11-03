@@ -66,8 +66,10 @@ public class RoomLoader
 			{
 				final String areaName=DBConnections.getRes(R,"CMAREA");
 				final String areaType=DBConnections.getRes(R,"CMTYPE");
-				if(A==null) A=CMClass.getAreaType(areaType);
-				if(A==null) A=CMClass.getAreaType("StdArea");
+				if(A==null)
+					A=CMClass.getAreaType(areaType);
+				if(A==null)
+					A=CMClass.getAreaType("StdArea");
 				if(A==null)
 				{
 					Log.errOut("Could not read area: "+areaName);
@@ -112,7 +114,8 @@ public class RoomLoader
 				final String areaName=DBConnections.getRes(R,"CMAREA");
 				final String areaType=DBConnections.getRes(R,"CMTYPE");
 				Area A=CMClass.getAreaType(areaType);
-				if(A==null) A=CMClass.getAreaType("StdArea");
+				if(A==null)
+					A=CMClass.getAreaType("StdArea");
 				if(A==null)
 				{
 					Log.errOut("Could not read area: "+areaName);
@@ -304,9 +307,12 @@ public class RoomLoader
 			@Override
 			public int compare(String o1, String o2)
 			{
-				if(o1==o2) return 0;
-				if(o1==null) return -1;
-				if(o2==null) return 1;
+				if(o1==o2)
+					return 0;
+				if(o1==null)
+					return -1;
+				if(o2==null)
+					return 1;
 				return o1.compareTo(o2);
 			}
 		});
@@ -468,7 +474,8 @@ public class RoomLoader
 						{
 							final Vector<String> SCE=CMParms.parse(CEs.get(ces).trim());
 							final WorldMap.CrossExit CE=new WorldMap.CrossExit();
-							if(SCE.size()<3) continue;
+							if(SCE.size()<3)
+								continue;
 							CE.x=CMath.s_int(SCE.elementAt(0));
 							CE.y=CMath.s_int(SCE.elementAt(1));
 							final int codeddir=CMath.s_int(SCE.elementAt(2));
@@ -736,7 +743,8 @@ public class RoomLoader
 			if(setStatus)
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Counting Items");
 			final ResultSet R=D.query("SELECT * FROM CMROIT"+((thisRoomID==null)?"":" WHERE CMROID='"+thisRoomID+"'"));
-			if(setStatus) recordCount=DB.getRecordCount(D,R);
+			if(setStatus)
+				recordCount=DB.getRecordCount(D,R);
 			updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
 			while(R.next())
 			{
@@ -834,7 +842,8 @@ public class RoomLoader
 			if(setStatus)
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Counting MOBS");
 			final ResultSet R=D.query("SELECT * FROM CMROCH"+((thisRoomID==null)?"":" WHERE CMROID='"+thisRoomID+"'"));
-			if(setStatus) recordCount=DB.getRecordCount(D,R);
+			if(setStatus)
+				recordCount=DB.getRecordCount(D,R);
 			updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
 			while(R.next())
 			{
@@ -936,7 +945,8 @@ public class RoomLoader
 			rooms=new STreeMap<String,Room>();
 			rooms.put(thisRoom.roomID(),thisRoom);
 		}
-		if(rooms!=null) recordCount=rooms.size();
+		if(rooms!=null)
+			recordCount=rooms.size();
 		updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
 		currentRecordPos=0;
 
@@ -1006,7 +1016,8 @@ public class RoomLoader
 			if((((++currentRecordPos)%updateBreak)==0)&&(setStatus))
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Populating Rooms ("+(currentRecordPos)+" of "+recordCount+")");
 			final Room room=entry.getValue();
-			if(debug) Log.debugOut("RoomLoader","Populating room: "+room.roomID());
+			if(debug)
+				Log.debugOut("RoomLoader","Populating room: "+room.roomID());
 			itemNums=stuff.itemNums.get("NUMSFOR"+room.roomID().toUpperCase());
 			if(itemNums!=null)
 				fixContentContainers(itemNums,stuff,room.roomID(),room,debug,makeLive);
@@ -1018,7 +1029,8 @@ public class RoomLoader
 
 	private List<Item> DBGetContents(Room room)
 	{
-		if((!room.isSavable())||(room.amDestroyed())) return new Vector<Item>();
+		if((!room.isSavable())||(room.amDestroyed()))
+			return new Vector<Item>();
 		final List<Item> contents=new Vector<Item>();
 		for(int i=0;i<room.numItems();i++)
 		{
@@ -1084,7 +1096,8 @@ public class RoomLoader
 
 	public void DBUpdateTheseItems(Room room, List<Item> items)
 	{
-		if((!room.isSavable())||(room.amDestroyed())) return;
+		if((!room.isSavable())||(room.amDestroyed()))
+			return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROIT)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Start item update for room "+room.roomID());
 		final List<DBPreparedBatchEntry> statements=new Vector<DBPreparedBatchEntry>();
@@ -1102,13 +1115,15 @@ public class RoomLoader
 
 	public void DBUpdateItems(Room room)
 	{
-		if((!room.isSavable())||(room.amDestroyed())) return;
+		if((!room.isSavable())||(room.amDestroyed()))
+			return;
 		DBUpdateTheseItems(room,DBGetContents(room));
 	}
 
 	public void DBUpdateExits(Room room)
 	{
-		if((!room.isSavable())||(room.amDestroyed())) return;
+		if((!room.isSavable())||(room.amDestroyed()))
+			return;
 
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROEX)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Starting exit update for room "+room.roomID());
@@ -1150,8 +1165,10 @@ public class RoomLoader
 			{
 				final WorldMap.CrossExit CE=i.next();
 				Room R=CMLib.map().getRoom(CE.destRoomID);
-				if(R==null) continue;
-				if(R.getGridParent()!=null) R=R.getGridParent();
+				if(R==null)
+					continue;
+				if(R.getGridParent()!=null)
+					R=R.getGridParent();
 				if((R!=null)&&(R.isSavable())&&(!done.contains(R.roomID())))
 				{
 					done.add(R.roomID());
@@ -1252,10 +1269,12 @@ public class RoomLoader
 
 	public void DBUpdateTheseMOBs(Room room, List<MOB> mobs)
 	{
-		if((!room.isSavable())||(room.amDestroyed())) return;
+		if((!room.isSavable())||(room.amDestroyed()))
+			return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROCH)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Updating mobs for room "+room.roomID());
-		if(mobs==null) mobs=new Vector<MOB>();
+		if(mobs==null)
+			mobs=new Vector<MOB>();
 		final List<DBPreparedBatchEntry> statements=new Vector<DBPreparedBatchEntry>();
 		statements.add(new DBPreparedBatchEntry("DELETE FROM CMROCH WHERE CMROID='"+room.roomID()+"'"));
 		for(int m=0;m<mobs.size();m++)
@@ -1271,7 +1290,8 @@ public class RoomLoader
 
 	public void DBUpdateMOBs(Room room)
 	{
-		if((!room.isSavable())||(room.amDestroyed())) return;
+		if((!room.isSavable())||(room.amDestroyed()))
+			return;
 		final Vector<MOB> mobs=new Vector<MOB>();
 		for(int m=0;m<room.numInhabitants();m++)
 		{
@@ -1285,7 +1305,8 @@ public class RoomLoader
 
 	public void DBUpdateAll(Room room)
 	{
-		if((!room.isSavable())||(room.amDestroyed())) return;
+		if((!room.isSavable())||(room.amDestroyed()))
+			return;
 		DBUpdateRoom(room);
 		DBUpdateMOBs(room);
 		DBUpdateExits(room);
@@ -1294,7 +1315,8 @@ public class RoomLoader
 
 	public void DBUpdateRoom(Room room)
 	{
-		if((!room.isSavable())||(room.amDestroyed())) return;
+		if((!room.isSavable())||(room.amDestroyed()))
+			return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROOM)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Start updating room "+room.roomID());
 		CMLib.map().registerWorldObjectLoaded(room.getArea(), room, room);
@@ -1316,7 +1338,8 @@ public class RoomLoader
 
 	public void DBReCreate(Room room, String oldID)
 	{
-		if((!room.isSavable())||(room.amDestroyed())) return;
+		if((!room.isSavable())||(room.amDestroyed()))
+			return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROOM)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Recreating room "+room.roomID());
 
@@ -1399,7 +1422,8 @@ public class RoomLoader
 
 	public void DBUpdate(String keyName,Area A)
 	{
-		if((A==null)||(!A.isSavable())) return;
+		if((A==null)||(!A.isSavable()))
+			return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMAREA)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Updating area "+A.name());
 		final boolean ignoreType=CMSecurity.isDisabled(CMSecurity.DisFlag.FATAREAS)||CMSecurity.isDisabled(CMSecurity.DisFlag.THINAREAS);
@@ -1422,7 +1446,8 @@ public class RoomLoader
 	public void DBDeleteRoomItem(String roomID, Item item)
 	{
 		String keyName=item.databaseID();
-		if(keyName.length()==0) keyName=""+item;
+		if(keyName.length()==0)
+			keyName=""+item;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROIT)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Done updating item "+item.name()+" in room "+roomID);
 		DB.update(
@@ -1433,7 +1458,8 @@ public class RoomLoader
 
 	public void DBUpdateRoomItem(String roomID, Item item)
 	{
-		if((roomID==null)||(!item.isSavable())||(item.amDestroyed())) return;
+		if((roomID==null)||(!item.isSavable())||(item.amDestroyed()))
+			return;
 		synchronized(roomID.toUpperCase().intern())
 		{
 			DBDeleteRoomItem(roomID,item);
@@ -1448,7 +1474,8 @@ public class RoomLoader
 	public void DBDeleteRoomMOB(String roomID, MOB mob)
 	{
 		String keyName=mob.databaseID();
-		if(keyName.length()==0) keyName=""+mob;
+		if(keyName.length()==0)
+			keyName=""+mob;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROCH)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Done updating mob "+mob.name()+" in room "+roomID);
 		DB.update(
@@ -1459,7 +1486,8 @@ public class RoomLoader
 
 	public void DBUpdateRoomMOB(String roomID, MOB mob)
 	{
-		if((roomID==null)||(!mob.isSavable())||(mob.amDestroyed())) return;
+		if((roomID==null)||(!mob.isSavable())||(mob.amDestroyed()))
+			return;
 		DBDeleteRoomMOB(roomID, mob);
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROCH)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Continue updating mob "+mob.name()+" in room "+roomID);
@@ -1470,8 +1498,10 @@ public class RoomLoader
 
 	public void DBDelete(Area A)
 	{
-		if(A==null) return;
-		if(!A.isSavable()) return;
+		if(A==null)
+			return;
+		if(!A.isSavable())
+			return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMAREA)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Destroying area "+A.name());
 		A.setAreaState(Area.State.STOPPED);
@@ -1484,7 +1514,8 @@ public class RoomLoader
 
 	public void DBCreate(Room room)
 	{
-		if(!room.isSavable()) return;
+		if(!room.isSavable())
+			return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROOM)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Creating new room "+room.roomID());
 		CMLib.map().registerWorldObjectLoaded(room.getArea(), room, room);
@@ -1510,7 +1541,8 @@ public class RoomLoader
 
 	public void DBDelete(Room room)
 	{
-		if(!room.isSavable()) return;
+		if(!room.isSavable())
+			return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROCH)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Destroying room "+room.roomID());
 		room.destroy();

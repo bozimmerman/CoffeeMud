@@ -57,9 +57,12 @@ public class Disease_Tetnus extends Disease
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID))	return false;
-		if(affected==null) return false;
-		if(!(affected instanceof MOB)) return true;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
+		if(!(affected instanceof MOB))
+			return true;
 
 		final MOB mob=(MOB)affected;
 		if((!mob.amDead())&&((--diseaseTick)<=0))
@@ -76,8 +79,10 @@ public class Disease_Tetnus extends Disease
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(affected==null) return;
-		if(dexDown<0) return;
+		if(affected==null)
+			return;
+		if(dexDown<0)
+			return;
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)-dexDown);
 		if(affectableStats.getStat(CharStats.STAT_DEXTERITY)<=0)
 		{

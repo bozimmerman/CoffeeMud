@@ -86,7 +86,8 @@ public class Spell_DispelMagic extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		Ability revokeThis=null;
 		boolean foundSomethingAtLeast=false;
@@ -128,7 +129,8 @@ public class Spell_DispelMagic extends Spell
 			return false;
 
 		int diff=revokeThis.invoker().phyStats().level()-mob.phyStats().level();
-		if(diff<0) diff=0;
+		if(diff<0)
+			diff=0;
 		else diff=diff*-20;
 
 		final boolean success=proficiencyCheck(mob,diff,auto);
@@ -139,7 +141,8 @@ public class Spell_DispelMagic extends Spell
 			||(mob==target)
 			||(mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 				affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
-			if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
+			if(auto)
+				affectType=affectType|CMMsg.MASK_ALWAYS;
 
 			final CMMsg msg=CMClass.getMsg(mob,target,this,affectType,auto?L("@x1 is dispelled from <T-NAME>.",revokeThis.name()):L("^S<S-NAME> dispel(s) @x1 from <T-NAMESELF>.^?",revokeThis.name()));
 			if(mob.location().okMessage(mob,msg))

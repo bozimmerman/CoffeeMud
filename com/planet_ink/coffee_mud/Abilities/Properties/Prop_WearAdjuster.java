@@ -62,7 +62,8 @@ public class Prop_WearAdjuster extends Prop_HaveAdjuster
 			checked=false;
 			return;
 		}
-		if(checked) return;
+		if(checked)
+			return;
 		Item I=null;
 		disabled=false;
 		for(int i=0;i<mob.numItems();i++)
@@ -116,7 +117,8 @@ public class Prop_WearAdjuster extends Prop_HaveAdjuster
 	{
 		if(!super.canApply(mob))
 			return false;
-		if(disabled&&checked) return false;
+		if(disabled&&checked)
+			return false;
 		if((!((Item)affected).amWearingAt(Wearable.IN_INVENTORY))
 		&&((!((Item)affected).amWearingAt(Wearable.WORN_FLOATING_NEARBY))||(((Item)affected).fitsOn(Wearable.WORN_FLOATING_NEARBY))))
 			return true;

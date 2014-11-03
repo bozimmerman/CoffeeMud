@@ -92,7 +92,8 @@ public class Fill extends StdCommand
 		}
 
 		final int maxToFill=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
-		if(maxToFill<0) return false;
+		if(maxToFill<0)
+			return false;
 
 		String thingToFill=CMParms.combine(commands,0);
 		int addendum=1;
@@ -106,7 +107,8 @@ public class Fill extends StdCommand
 		{
 			doBugFix=false;
 			final Item fillThis=mob.findItem(null,thingToFill+addendumStr);
-			if(fillThis==null) break;
+			if(fillThis==null)
+				break;
 			if((CMLib.flags().canBeSeenBy(fillThis,mob))
 			&&(!V.contains(fillThis)))
 				V.addElement(fillThis);

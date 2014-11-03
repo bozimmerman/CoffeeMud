@@ -134,7 +134,8 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!auto)
 		{
@@ -194,7 +195,8 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 					for (final Object element : H)
 					{
 						M=(MOB)element;
-						if(M.getVictim()==target) M.setVictim(null);
+						if(M.getVictim()==target)
+							M.setVictim(null);
 					}
 				}
 			}

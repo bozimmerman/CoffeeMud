@@ -46,7 +46,8 @@ public interface Wearable extends Environmental
 		@Override
 		public boolean passesFilter(Environmental obj)
 		{
-			if(obj instanceof Item) return !((Item)obj).amWearingAt(IN_INVENTORY);
+			if(obj instanceof Item)
+				return !((Item)obj).amWearingAt(IN_INVENTORY);
 			return false;
 		}
 	};
@@ -56,7 +57,8 @@ public interface Wearable extends Environmental
 		@Override
 		public boolean passesFilter(Environmental obj)
 		{
-			if(obj instanceof Item) return ((Item)obj).amWearingAt(IN_INVENTORY);
+			if(obj instanceof Item)
+				return ((Item)obj).amWearingAt(IN_INVENTORY);
 			return false;
 		}
 	};
@@ -435,8 +437,10 @@ public interface Wearable extends Environmental
 		{
 			super();
 			final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
-			if(insts==null) insts=new CODES[256];
-			if(insts[c]==null) insts[c]=this;
+			if(insts==null)
+				insts=new CODES[256];
+			if(insts[c]==null)
+				insts[c]=this;
 			synchronized(this)
 			{
 				final String[][] addExtra = CMProps.instance().getStrsStarting("ADDWEARLOC_");
@@ -505,7 +509,8 @@ public interface Wearable extends Environmental
 		public static CODES instance()
 		{
 			CODES c=insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];
-			if(c==null) c=new CODES();
+			if(c==null)
+				c=new CODES();
 			return c;
 		}
 		public static void reset() {
@@ -576,9 +581,11 @@ public interface Wearable extends Environmental
 		 */
 		public int findDex_ignoreCase(String rsc)
 		{
-			if(rsc==null) return -1;
+			if(rsc==null)
+				return -1;
 			final int x=CMParms.indexOfIgnoreCase(descs, rsc.toLowerCase());
-			if(x>=0) return x;
+			if(x>=0)
+				return x;
 			return -1;
 		}
 		/**
@@ -593,9 +600,11 @@ public interface Wearable extends Environmental
 		 */
 		public long find_ignoreCase(String rsc)
 		{
-			if(rsc==null) return -1;
+			if(rsc==null)
+				return -1;
 			final int x=CMParms.indexOfIgnoreCase(descs, rsc.toLowerCase());
-			if(x>=0) return allCodes[x];
+			if(x>=0)
+				return allCodes[x];
 			return -1;
 		}
 		/**
@@ -610,9 +619,11 @@ public interface Wearable extends Environmental
 		 */
 		public int findDex_endsWith(String rsc)
 		{
-			if(rsc==null) return -1;
+			if(rsc==null)
+				return -1;
 			final int x=CMParms.endsWith(descs, rsc.toLowerCase());
-			if(x>=0) return x;
+			if(x>=0)
+				return x;
 			return -1;
 		}
 		/**
@@ -627,9 +638,11 @@ public interface Wearable extends Environmental
 		 */
 		public long find_endsWith(String rsc)
 		{
-			if(rsc==null) return -1;
+			if(rsc==null)
+				return -1;
 			final int x=CMParms.endsWith(descs, rsc.toLowerCase());
-			if(x>=0) return allCodes[x];
+			if(x>=0)
+				return allCodes[x];
 			return -1;
 		}
 		/**
@@ -654,7 +667,8 @@ public interface Wearable extends Environmental
 					buf.append(descs[wornNum]+", ");
 			}
 			String buff=buf.toString();
-			if(buff.endsWith(", ")) buff=buff.substring(0,buff.length()-2).trim();
+			if(buff.endsWith(", "))
+				buff=buff.substring(0,buff.length()-2).trim();
 			return buff;
 		}
 
@@ -784,7 +798,8 @@ public interface Wearable extends Environmental
 		public synchronized void add(String desc, long dependencyMask, double armorStrength, int wornOrder,
 									 double clothWeight, double leatherWeight, double metalWeight)
 		{
-			if(allCodes.length>61) return;
+			if(allCodes.length>61)
+				return;
 			long newCode = 0;
 			if(allCodes.length>0)
 				newCode = (long)1<<(allCodes.length-1);
@@ -806,7 +821,8 @@ public interface Wearable extends Environmental
 
 		private void insertInOrder(long newCode, int wornOrder)
 		{
-			if(wornOrder<0) return;
+			if(wornOrder<0)
+				return;
 			final Vector<Long> V= new Vector<Long>();
 			for (final long element : allCodesInOrder)
 				V.add(Long.valueOf(element));
@@ -824,7 +840,8 @@ public interface Wearable extends Environmental
 		public synchronized void replace(int codeIndex, String desc, long dependencyMask, double armorStrength, int wornOrder,
 										  double clothWeight, double leatherWeight, double metalWeight)
 		{
-			if(codeIndex<=0) return;
+			if(codeIndex<=0)
+				return;
 			descs[codeIndex]=desc;
 			updescs[codeIndex]=desc.toUpperCase();
 			dependencyMasks[codeIndex]=dependencyMask;

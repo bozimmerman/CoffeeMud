@@ -142,7 +142,8 @@ public class StdSmokable extends StdContainer implements Light
 						if((CMLib.dice().roll(1,1000,0)==1)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 						{
 							final Ability A=CMClass.getAbility("Disease_Cancer");
-							if(A!=null) A.invoke(mob,mob,true,0);
+							if(A!=null)
+								A.invoke(mob,mob,true,0);
 						}
 					}
 				}
@@ -188,7 +189,8 @@ public class StdSmokable extends StdContainer implements Light
 		if(A==null)
 		{
 			A=CMClass.getAbility("Addictions");
-			if(A!=null) A.invoke(mob,item,true,0);
+			if(A!=null)
+				A.invoke(mob,item,true,0);
 		}
 	}
 
@@ -196,9 +198,11 @@ public class StdSmokable extends StdContainer implements Light
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		final MOB mob=msg.source();
-		if(mob==null) return;
+		if(mob==null)
+			return;
 		final Room room=mob.location();
-		if(room==null) return;
+		if(room==null)
+			return;
 		if(((LightSource.inTheRain(room)&&goesOutInTheRain())
 		   ||(LightSource.inTheWater(msg.source(),room)))
 		&&(isLit())

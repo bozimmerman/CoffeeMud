@@ -62,7 +62,8 @@ public class Spell_DetectWater extends Spell
 	}
 	public String waterCheck(MOB mob, Item I, Item container, StringBuffer msg)
 	{
-		if(I==null) return "";
+		if(I==null)
+			return "";
 		if(I.container()==container)
 		{
 			if(((I instanceof Drink))
@@ -79,7 +80,8 @@ public class Spell_DetectWater extends Spell
 	public String waterHere(MOB mob, Environmental E, Item container)
 	{
 		final StringBuffer msg=new StringBuffer("");
-		if(E==null) return msg.toString();
+		if(E==null)
+			return msg.toString();
 		if((E instanceof Room)&&(CMLib.flags().canBeSeenBy(E,mob)))
 		{
 			final Room room=(Room)E;

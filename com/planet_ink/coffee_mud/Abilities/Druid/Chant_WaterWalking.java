@@ -65,8 +65,10 @@ public class Chant_WaterWalking extends Chant
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg)) return false;
-		if(affected==null) return true;
+		if(!super.okMessage(myHost,msg))
+			return false;
+		if(affected==null)
+			return true;
 		final MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(mob.location()!=null)
@@ -110,7 +112,8 @@ public class Chant_WaterWalking extends Chant
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if(triggerNow)triggerNow=false;
+		if(triggerNow)
+			triggerNow=false;
 	}
 
 	@Override

@@ -77,7 +77,8 @@ public class Chant_Reabsorb extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Item target=this.getTarget(mob,mob.location(),givenTarget,null,commands,Wearable.FILTER_UNWORNONLY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		final List<DeadBody> V=CMLib.utensils().getDeadBodies(target);
 		for(int v=0;v<V.size();v++)

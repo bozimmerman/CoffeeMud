@@ -245,8 +245,10 @@ public class StdRideable extends StdMOB implements Rideable
 	@Override
 	public Set<MOB> getRideBuddies(Set<MOB> list)
 	{
-		if(list==null) return list;
-		if(!list.contains(this)) list.add(this);
+		if(list==null)
+			return list;
+		if(!list.contains(this))
+			list.add(this);
 		for(int r=0;r<numRiders();r++)
 		{
 			final Rider R=fetchRider(r);
@@ -497,8 +499,10 @@ public class StdRideable extends StdMOB implements Rideable
 				  ||(this.amRiding(msg.source()))))
 			{
 				msg.source().tell(L("You can't attack @x1 right now.",name(msg.source())));
-				if(getVictim()==msg.source()) setVictim(null);
-				if(msg.source().getVictim()==this) msg.source().setVictim(null);
+				if(getVictim()==msg.source())
+					setVictim(null);
+				if(msg.source().getVictim()==this)
+					msg.source().setVictim(null);
 				return false;
 			}
 			else
@@ -511,8 +515,10 @@ public class StdRideable extends StdMOB implements Rideable
 			{
 				final MOB targ=(MOB)msg.target();
 				tell(L("You can't attack @x1 right now.",targ.name(this)));
-				if(getVictim()==targ) setVictim(null);
-				if(targ.getVictim()==this) targ.setVictim(null);
+				if(getVictim()==targ)
+					setVictim(null);
+				if(targ.getVictim()==this)
+					targ.setVictim(null);
 				return false;
 			}
 		}

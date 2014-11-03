@@ -95,7 +95,8 @@ public class Expertises extends StdCommand
 				col=0;
 			}
 		}
-		if(!msg.toString().endsWith("\n\r")) msg.append("\n\r");
+		if(!msg.toString().endsWith("\n\r"))
+			msg.append("\n\r");
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());
 		return false;

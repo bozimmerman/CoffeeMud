@@ -66,7 +66,8 @@ public class Paladin_MountedCharge extends StdAbility
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
-			if(done) unInvoke();
+			if(done)
+				unInvoke();
 		return super.tick(ticking,tickID);
 	}
 
@@ -98,7 +99,8 @@ public class Paladin_MountedCharge extends StdAbility
 	{
 		final boolean notInCombat=!mob.isInCombat();
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if((mob.isInCombat())
 		&&(mob.rangeToTarget()<=0))

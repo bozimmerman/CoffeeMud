@@ -103,7 +103,8 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 	protected int spellLevel(MOB mob, Ability A)
 	{
 		int lvl=CMLib.ableMapper().qualifyingLevel(mob,A);
-		if(lvl<0) lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+		if(lvl<0)
+			lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 		switch(lvl)
 		{
 		case 0: return lvl;
@@ -250,11 +251,13 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(spell,mask)))
 					{
 						buf.append(CMStrings.padRight(A.name(),colWidth)+((toggler!=toggleTop)?" ":"\n\r"));
-						if(++toggler>toggleTop) toggler=1;
+						if(++toggler>toggleTop)
+							toggler=1;
 					}
 				}
 			}
-			if(toggler!=1) buf.append("\n\r");
+			if(toggler!=1)
+				buf.append("\n\r");
 			commonTell(mob,buf.toString());
 			return true;
 		}
@@ -268,7 +271,8 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 		{
 			buildingI=getTarget(mob,null,givenTarget,CMParms.parse(pos),Wearable.FILTER_UNWORNONLY);
 			commands.remove(pos);
-			if(buildingI==null) return false;
+			if(buildingI==null)
+				return false;
 			if(!mob.isMine(buildingI))
 			{
 				commonTell(mob,L("You'll need to pick that up first."));
@@ -290,7 +294,8 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 				for(final Ability A : ((Scroll)buildingI).getSpells())
 				{
 					int lvl=CMLib.ableMapper().qualifyingLevel(mob,A);
-					if(lvl<0) lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+					if(lvl<0)
+						lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 					level -= lvl;
 				}
 				if(level <= 0)
@@ -329,7 +334,8 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 					recipeName=CMParms.combine(commands,0,x);
 					String otherScrollName=CMParms.combine(commands,x+1,commands.size());
 					Item scrollFromI=getTarget(mob,null,givenTarget,CMParms.parse(otherScrollName),Wearable.FILTER_UNWORNONLY);
-					if(scrollFromI==null) return false;
+					if(scrollFromI==null)
+						return false;
 					if(!mob.isMine(scrollFromI))
 					{
 						commonTell(mob,L("You'll need to pick that up first."));
@@ -433,7 +439,8 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			}
 			
 			int duration=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5;
-			if(duration<10) duration=10;
+			if(duration<10)
+				duration=10;
 			messedUp=!proficiencyCheck(mob,0,auto);
 
 			String msgStr;

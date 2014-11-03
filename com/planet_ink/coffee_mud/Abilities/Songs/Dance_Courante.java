@@ -46,7 +46,8 @@ public class Dance_Courante extends Dance
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(invoker==null) return;
+		if(invoker==null)
+			return;
 
 		affectableStats.setSpeed(affectableStats.speed()+1.0+(CMath.mul(getXLEVELLevel(invoker()),0.25)));
 	}

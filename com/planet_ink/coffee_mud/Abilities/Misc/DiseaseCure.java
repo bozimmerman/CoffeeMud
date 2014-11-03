@@ -66,13 +66,15 @@ public class DiseaseCure extends StdAbility
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		if(affected instanceof Item)
 		{
 			if(!processing)
 			{
 				final Item myItem=(Item)affected;
-				if(myItem.owner()==null) return;
+				if(myItem.owner()==null)
+					return;
 				processing=true;
 				if(msg.amITarget(myItem))
 					switch(msg.sourceMinor())
@@ -109,7 +111,8 @@ public class DiseaseCure extends StdAbility
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

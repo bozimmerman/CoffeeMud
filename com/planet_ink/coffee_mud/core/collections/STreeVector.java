@@ -281,7 +281,8 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 	@Override
 	public synchronized T set(int index, T element)
 	{
-		if(element==null) return null;
+		if(element==null)
+			return null;
 		if(!S.containsKey(element.ID().toUpperCase()))
 		{
 			V=(Vector<T>)V.clone();
@@ -348,7 +349,8 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 	@Override
 	public synchronized void add(int index, T element)
 	{
-		if(element==null) return;
+		if(element==null)
+			return;
 		if(!S.containsKey(element.ID().toUpperCase()))
 		{
 			V=(Vector<T>)V.clone();
@@ -361,7 +363,8 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 	@Override
 	public synchronized boolean add(T e)
 	{
-		if(e==null) return false;
+		if(e==null)
+			return false;
 		if(!S.containsKey(e.ID().toUpperCase()))
 		{
 			V=(Vector<T>)V.clone();
@@ -425,7 +428,8 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 
 	public synchronized void insertElementAt(T obj, int index)
 	{
-		if(obj==null) return;
+		if(obj==null)
+			return;
 		if(index>=size())
 			add(obj);
 		else
@@ -440,7 +444,8 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 	@Override
 	public synchronized boolean remove(Object o)
 	{
-		if(!(o instanceof CMObject)) return false;
+		if(!(o instanceof CMObject))
+			return false;
 		final CMObject O=(CMObject)o;
 		final String OID=O.ID().toUpperCase();
 		if(!S.containsKey(OID))
@@ -452,10 +457,12 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 
 	private boolean removeBoth(Object o)
 	{
-		if(!(o instanceof CMObject)) return false;
+		if(!(o instanceof CMObject))
+			return false;
 		final CMObject O=(CMObject)o;
 		final String OID=O.ID().toUpperCase();
-		if(!S.containsKey(OID)) return false;
+		if(!S.containsKey(OID))
+			return false;
 		S.remove(OID);
 		return V.remove(o);
 	}
@@ -463,7 +470,8 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 	private boolean removeBoth(CMObject o)
 	{
 		final String OID=o.ID().toUpperCase();
-		if(!S.containsKey(OID)) return false;
+		if(!S.containsKey(OID))
+			return false;
 		S.remove(OID);
 		return V.remove(o);
 	}
@@ -474,7 +482,8 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 	{
 		V=(Vector<T>)V.clone();
 		final T O=V.remove(index);
-		if(O==null) return null;
+		if(O==null)
+			return null;
 		final String OID=O.ID().toUpperCase();
 		if(S.containsKey(OID))
 			S.remove(OID);
@@ -502,7 +511,8 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 
 	public T find(final String key)
 	{
-		if(key==null) return null;
+		if(key==null)
+			return null;
 		return S.get(key.toUpperCase());
 	}
 

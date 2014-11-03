@@ -112,23 +112,27 @@ public class Prayer_UndeniableFaith extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if((mob.getWorshipCharID().length()==0)
 		||(CMLib.map().getDeity(mob.getWorshipCharID())==null))
 		{
-			if(!auto) mob.tell(L("You must worship a god to use this prayer."));
+			if(!auto)
+				mob.tell(L("You must worship a god to use this prayer."));
 			return false;
 		}
 		final Deity D=CMLib.map().getDeity(mob.getWorshipCharID());
 		if((target.getWorshipCharID().length()>0)
 		&&(CMLib.map().getDeity(target.getWorshipCharID())!=null))
 		{
-			if(!auto) mob.tell(L("@x1 worships @x2, and may not be converted with this prayer.",target.name(mob),target.getWorshipCharID()));
+			if(!auto)
+				mob.tell(L("@x1 worships @x2, and may not be converted with this prayer.",target.name(mob),target.getWorshipCharID()));
 			return false;
 		}
 		if((CMLib.flags().isAnimalIntelligence(target)||CMLib.flags().isGolem(target)||(D==null)))
 		{
-			if(!auto) mob.tell(L("@x1 can not be converted with this prayer.",target.name(mob)));
+			if(!auto)
+				mob.tell(L("@x1 can not be converted with this prayer.",target.name(mob)));
 			return false;
 		}
 		if(!auto)
@@ -150,7 +154,8 @@ public class Prayer_UndeniableFaith extends Prayer
 			return false;
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
-		if(levelDiff<0) levelDiff=0;
+		if(levelDiff<0)
+			levelDiff=0;
 		final boolean success=proficiencyCheck(mob,-(levelDiff*25),auto);
 		int type=verbalCastCode(mob,target,auto);
 		int mal=CMMsg.MASK_MALICIOUS;

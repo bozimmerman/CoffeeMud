@@ -175,7 +175,8 @@ public class PlayerClass extends StdCharClass
 							int level=0;
 							if(!this.leveless() && (!CMSecurity.isDisabled(DisFlag.LEVELS)))
 								level=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
-							if(level<0) level=0;
+							if(level<0)
+								level=0;
 							CMLib.ableMapper().addCharAbilityMapping(ID(), 0, ID, 0, defaultParam, false, false, reqSet, "");
 						}
 					}

@@ -184,7 +184,8 @@ public class StdLawBook extends StdItem
 				Resources.submitResource("LAWBOOKTOC",lawProps);
 			}
 			final String s=(String)lawProps.get(tag);
-			if(s==null) return "\n\r";
+			if(s==null)
+				return "\n\r";
 			return s+"\n\r";
 		}
 		catch(final Exception e)
@@ -202,7 +203,8 @@ public class StdLawBook extends StdItem
 							 String newValue)
 	{
 		theLaw.setInternalStr(tag,newValue);
-		if(A instanceof Area) B.updateLaw((Area)A);
+		if(A instanceof Area)
+			B.updateLaw((Area)A);
 	}
 
 	public String shortLawDesc(String[] bits)
@@ -241,7 +243,8 @@ public class StdLawBook extends StdItem
 	public String[] modifyLaw(Area A, LegalBehavior B, Law theLaw, MOB mob, String[] oldLaw)
 		throws IOException
 	{
-		if(mob.session()==null) return oldLaw;
+		if(mob.session()==null)
+			return oldLaw;
 		mob.tell(getFromTOC("MODLAW"));
 		if(oldLaw==null)
 		{
@@ -270,7 +273,8 @@ public class StdLawBook extends StdItem
 			mob.session().colorOnlyPrintln(str.toString());
 			final String s=mob.session().choose(L("Enter a number to modify or RETURN: "),"123456\n","\n");
 			final int x=CMath.s_int(s);
-			if(x==0) return oldLaw;
+			if(x==0)
+				return oldLaw;
 			oldLaw=oldLaw.clone();
 			switch(x)
 			{
@@ -346,20 +350,23 @@ public class StdLawBook extends StdItem
 							for (final String element : Law.PUNISHMENTMASK_DESCS)
 							{
 								String sentence=element;
-								if(sentence.indexOf('=')>0) sentence=sentence.substring(0,sentence.indexOf('='));
+								if(sentence.indexOf('=')>0)
+									sentence=sentence.substring(0,sentence.indexOf('='));
 								msg.append(sentence.toLowerCase()+" ");
 							}
 							final StringBuffer oldFlags=new StringBuffer("");
 							for(int v=0;v<V2.size();v++)
 							{
 								t=(String)V2.elementAt(v,1);
-								if(t.equalsIgnoreCase(oldSentence)) continue;
+								if(t.equalsIgnoreCase(oldSentence))
+									continue;
 								oldFlags.append(t+((String)V2.elementAt(v,2))+" ");
 							}
 							msg.append(L("\n\rSelect a flag to toggle or RETURN (@x1): ",oldFlags.toString()));
 							int selectedMask=-1;
 							t=mob.session().prompt(msg.toString(),"");
-							if(t.length()==0) break;
+							if(t.length()==0)
+								break;
 							int indexIfExists=-1;
 							for(int i=0;i<Law.PUNISHMENTMASK_DESCS.length;i++)
 							{
@@ -536,7 +543,8 @@ public class StdLawBook extends StdItem
 	public void doIllegalEmotation(Area A, LegalBehavior B, Law theLaw, MOB mob, boolean allowedToModify)
 		throws IOException
 	{
-		if(mob.session()==null) return;
+		if(mob.session()==null)
+			return;
 		mob.tell(getFromTOC("P10"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
@@ -625,7 +633,8 @@ public class StdLawBook extends StdItem
 	public void doBannedSubstances(Area A, LegalBehavior B, Law theLaw, MOB mob, boolean allowedToModify)
 	throws IOException
 	{
-		if(mob.session()==null) return;
+		if(mob.session()==null)
+			return;
 		mob.tell(getFromTOC("P10"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
@@ -722,7 +731,8 @@ public class StdLawBook extends StdItem
 	public void doIllegalSkill(Area A, LegalBehavior B, Law theLaw, MOB mob, boolean allowedToModify)
 		throws IOException
 	{
-		if(mob.session()==null) return;
+		if(mob.session()==null)
+			return;
 		mob.tell(getFromTOC("P9"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
@@ -732,7 +742,8 @@ public class StdLawBook extends StdItem
 			for(final String key : theLaw.abilityCrimes().keySet())
 			{
 				final String[] set=theLaw.abilityCrimes().get(key);
-				if(key.startsWith("$")) continue;
+				if(key.startsWith("$"))
+					continue;
 				final Ability AB=CMClass.getAbility(key);
 				if(((AB==null)
 					&&(CMLib.flags().getAbilityType(key)<0)
@@ -766,7 +777,8 @@ public class StdLawBook extends StdItem
 				if(s.length()>0)
 				{
 					final Ability AB=CMClass.findAbility(s);
-					if(AB!=null) s=AB.ID();
+					if(AB!=null)
+						s=AB.ID();
 					if((AB==null)
 					&&(CMLib.flags().getAbilityType(s)<0)
 					&&(CMLib.flags().getAbilityDomain(s)<0))
@@ -838,7 +850,8 @@ public class StdLawBook extends StdItem
 	public void doTaxLaw(Area A, LegalBehavior B, Law theLaw, MOB mob, boolean allowedToModify)
 	throws IOException
 	{
-		if(mob.session()==null) return;
+		if(mob.session()==null)
+			return;
 		mob.tell(getFromTOC("P11"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
@@ -857,7 +870,8 @@ public class StdLawBook extends StdItem
 			else
 			{
 				room=V.get(0);
-				if(V.size()>1) item=CMParms.combine(V,1);
+				if(V.size()>1)
+					item=CMParms.combine(V,1);
 				if(room.equalsIgnoreCase("*"))
 					str.append("Any (*)");
 				else
@@ -878,7 +892,8 @@ public class StdLawBook extends StdItem
 				break;
 			String s=mob.session().prompt(L("\n\rEnter a number to modify: "),"");
 			final int x=CMath.s_int(s);
-			if(x==0) break;
+			if(x==0)
+				break;
 			switch(x)
 			{
 			case 1:
@@ -944,7 +959,8 @@ public class StdLawBook extends StdItem
 	public void doIllegalInfluence(Area A, LegalBehavior B, Law theLaw, MOB mob, boolean allowedToModify)
 		throws IOException
 	{
-		if(mob.session()==null) return;
+		if(mob.session()==null)
+			return;
 		mob.tell(getFromTOC("P8"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
@@ -954,7 +970,8 @@ public class StdLawBook extends StdItem
 			for(final String key : theLaw.abilityCrimes().keySet())
 			{
 				final String[] set=theLaw.abilityCrimes().get(key);
-				if(!key.startsWith("$")) continue;
+				if(!key.startsWith("$"))
+					continue;
 				final Ability AB=CMClass.getAbility(key.substring(1));
 				if(((AB==null)
 					&&(CMLib.flags().getAbilityType(key.substring(1))<0)
@@ -987,7 +1004,8 @@ public class StdLawBook extends StdItem
 				if(s.length()>0)
 				{
 					final Ability AB=CMClass.findAbility(s);
-					if(AB!=null)s=AB.ID();
+					if(AB!=null)
+						s=AB.ID();
 					if((AB==null)
 					&&(CMLib.flags().getAbilityType(s)<0)
 					&&(CMLib.flags().getAbilityDomain(s)<0))
@@ -1059,7 +1077,8 @@ public class StdLawBook extends StdItem
 	public void doBasicLaw(Area A, LegalBehavior B, Law theLaw, MOB mob, boolean allowedToModify)
 		throws IOException
 	{
-		if(mob.session()==null) return;
+		if(mob.session()==null)
+			return;
 		mob.tell(getFromTOC("P6"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
@@ -1114,7 +1133,8 @@ public class StdLawBook extends StdItem
 	public void doParoleAndRelease(Area A, LegalBehavior B, Law theLaw, MOB mob, boolean allowedToModify)
 		throws IOException
 	{
-		if(mob.session()==null) return;
+		if(mob.session()==null)
+			return;
 		mob.tell(getFromTOC("P5"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
@@ -1202,7 +1222,8 @@ public class StdLawBook extends StdItem
 	public void doJailPolicy(Area A, LegalBehavior B, Law theLaw, MOB mob, boolean allowedToModify)
 		throws IOException
 	{
-		if(mob.session()==null) return;
+		if(mob.session()==null)
+			return;
 		mob.tell(getFromTOC("P4"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
@@ -1290,7 +1311,8 @@ public class StdLawBook extends StdItem
 	public void doTresspassingLaw(Area A, LegalBehavior B, Law theLaw, MOB mob, boolean allowedToModify)
 		throws IOException
 	{
-		if(mob.session()==null) return;
+		if(mob.session()==null)
+			return;
 		mob.tell(getFromTOC("P7"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
@@ -1343,7 +1365,8 @@ public class StdLawBook extends StdItem
 	public void doVictimsOfCrime(Area A, LegalBehavior B, Law theLaw, MOB mob, boolean allowedToModify)
 		throws IOException
 	{
-		if(mob.session()==null) return;
+		if(mob.session()==null)
+			return;
 		mob.tell(getFromTOC("P3"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		mob.tell(L("Protected victims: @x1",CMLib.masking().maskDesc(theLaw.getInternalStr("PROTECTED"))));
 		if((theLaw.hasModifiableLaws())&&(allowedToModify))
@@ -1372,7 +1395,8 @@ public class StdLawBook extends StdItem
 									boolean allowedToModify)
 		throws IOException
 	{
-		if(mob.session()==null) return;
+		if(mob.session()==null)
+			return;
 		mob.tell(getFromTOC("P2"+(theLaw.hasModifiableLaws()?"MOD":"")+(theLaw.hasModifiableNames()?"NAM":"")));
 		String duhJudge="No Judge Found!\n\r";
 		final StringBuffer duhOfficers=new StringBuffer("");
@@ -1385,7 +1409,8 @@ public class StdLawBook extends StdItem
 				if(M!=null)
 				{
 					Room R2=M.getStartRoom();
-					if(R2==null) R2=M.location();
+					if(R2==null)
+						R2=M.location();
 					if(B.isAnyOfficer(legalO,M))
 						duhOfficers.append(M.name(mob)+" from room '"+R2.displayText(mob)+"'\n\r");
 					else
@@ -1394,12 +1419,14 @@ public class StdLawBook extends StdItem
 				}
 			}
 		}
-		if(duhOfficers.length()==0) duhOfficers.append("No Officers Found!\n\r");
+		if(duhOfficers.length()==0)
+			duhOfficers.append("No Officers Found!\n\r");
 		mob.tell(L("1. Area Judge: \n\r@x1\n\r2. Area Officers: \n\r@x2",duhJudge,duhOfficers.toString()));
 		if(theLaw.hasModifiableNames()&&theLaw.hasModifiableLaws()&&allowedToModify)
 		{
 			final int w=CMath.s_int(mob.session().choose(L("Enter one to modify, or RETURN to cancel: "),"12\n",""));
-			if(w==0) return;
+			if(w==0)
+				return;
 			final String modifiableTag=(w==1)?"JUDGE":"OFFICERS";
 			final String s=mob.session().prompt(L("Enter key words from officials name(s) [@x1]\n\r: ",theLaw.getInternalStr(modifiableTag)),theLaw.getInternalStr(modifiableTag));
 			if(!s.equals(theLaw.getInternalStr(modifiableTag)))

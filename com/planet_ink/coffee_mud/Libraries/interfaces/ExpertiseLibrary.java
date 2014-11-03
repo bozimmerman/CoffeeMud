@@ -99,7 +99,8 @@ public interface ExpertiseLibrary extends CMLibrary
 		public String allRequirements()
 		{
 			String req=uncompiledListMask;
-			if(req==null) req=""; else req=req.trim();
+			if(req==null)
+				req=""; else req=req.trim();
 			if((uncompiledFinalMask!=null)&&(uncompiledFinalMask.length()>0))
 				req=req+" "+uncompiledFinalMask;
 			return req.trim();
@@ -108,7 +109,8 @@ public interface ExpertiseLibrary extends CMLibrary
 		public String finalRequirements(){return uncompiledFinalMask;}
 		public void addListMask(String mask)
 		{
-			if((mask==null)||(mask.length()==0)) return;
+			if((mask==null)||(mask.length()==0))
+				return;
 			if(uncompiledListMask==null)
 				uncompiledListMask=mask;
 			else
@@ -117,7 +119,8 @@ public interface ExpertiseLibrary extends CMLibrary
 		}
 		public void addFinalMask(String mask)
 		{
-			if((mask==null)||(mask.length()==0)) return;
+			if((mask==null)||(mask.length()==0))
+				return;
 			if(uncompiledFinalMask==null)
 				uncompiledFinalMask=mask;
 			else
@@ -136,7 +139,8 @@ public interface ExpertiseLibrary extends CMLibrary
 			final StringBuffer costStr=new StringBuffer("");
 			for(final SkillCost cost : costs)
 				costStr.append(cost.requirements(null)).append(", ");
-			if(costStr.length()==0) return "";
+			if(costStr.length()==0)
+				return "";
 			return costStr.substring(0,costStr.length()-2);
 		}
 		public boolean meetsCostRequirements(MOB mob)

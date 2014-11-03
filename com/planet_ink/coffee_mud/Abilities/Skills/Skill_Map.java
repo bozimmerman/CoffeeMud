@@ -108,7 +108,8 @@ public class Skill_Map extends StdSkill
 			return false;
 		}
 		final Item target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_UNWORNONLY);
-		if(target==null)return false;
+		if(target==null)
+			return false;
 
 		Item item=target;
 		if(!item.isReadable())

@@ -155,7 +155,8 @@ public class Smelting extends CraftingSkill
 			return true;
 		}
 		final Item fire=getRequiredFire(mob,0);
-		if(fire==null) return false;
+		if(fire==null)
+			return false;
 		activity = CraftingActivity.CRAFTING;
 		buildingI=null;
 		messedUp=false;
@@ -213,8 +214,10 @@ public class Smelting extends CraftingSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		amountMaking=amountResource1;
-		if(amountResource2<amountResource1) amountMaking=amountResource2;
-		if((maxAmount>0)&&(amountMaking>maxAmount)) amountMaking=maxAmount;
+		if(amountResource2<amountResource1)
+			amountMaking=amountResource2;
+		if((maxAmount>0)&&(amountMaking>maxAmount))
+			amountMaking=maxAmount;
 		CMLib.materials().destroyResourcesValue(mob.location(),amountMaking,RawMaterial.CODES.GET(resourceCode1),0,null);
 		CMLib.materials().destroyResourcesValue(mob.location(),amountMaking,RawMaterial.CODES.GET(resourceCode2),0,null);
 		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),6);

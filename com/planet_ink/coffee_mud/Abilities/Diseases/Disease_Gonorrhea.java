@@ -56,9 +56,12 @@ public class Disease_Gonorrhea extends Disease
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID))	return false;
-		if(affected==null) return false;
-		if(!(affected instanceof MOB)) return true;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
+		if(!(affected instanceof MOB))
+			return true;
 
 		final MOB mob=(MOB)affected;
 		if((CMLib.dice().rollPercentage()==1)
@@ -67,7 +70,8 @@ public class Disease_Gonorrhea extends Disease
 		&&(CMLib.dice().rollPercentage()<25-mob.charStats().getStat(CharStats.STAT_CONSTITUTION)))
 		{
 			MOB diseaser=invoker;
-			if(diseaser==null) diseaser=mob;
+			if(diseaser==null)
+				diseaser=mob;
 			final Ability A=CMClass.getAbility("Disease_Arthritis");
 			A.invoke(diseaser,mob,true,0);
 		}
@@ -91,7 +95,8 @@ public class Disease_Gonorrhea extends Disease
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(affected==null) return super.okMessage(myHost,msg);
+		if(affected==null)
+			return super.okMessage(myHost,msg);
 		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;

@@ -127,7 +127,8 @@ public class BribeGateGuard extends StdBehavior
 		newNum += getBalance(mob);
 		final Coins item = CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(gateGuard),newNum);
 		delBalance(mob);
-		if(item!=null) writeBalance(item, mob);
+		if(item!=null)
+			writeBalance(item, mob);
 	}
 
 	protected boolean checkBalance(double charge, MOB mob)
@@ -240,9 +241,11 @@ public class BribeGateGuard extends StdBehavior
 		else
 		{
 			final Hashtable H=(Hashtable)notTheJournal.get(gates());
-			if(H==null) return;
+			if(H==null)
+				return;
 			final Double D=(Double)H.get(mob.Name());
-			if(D==null) return;
+			if(D==null)
+				return;
 			H.remove(mob.Name());
 		}
 	}
@@ -264,7 +267,8 @@ public class BribeGateGuard extends StdBehavior
 				notTheJournal.put(gates(),H);
 			}
 			final Double D=(Double)H.get(mob.Name());
-			if(D!=null)	H.remove(mob.Name());
+			if(D!=null)
+				H.remove(mob.Name());
 			H.put(mob.Name(),Double.valueOf(balance.getTotalValue()));
 		}
 	}

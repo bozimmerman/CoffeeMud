@@ -105,7 +105,8 @@ public class Chant_NaturalBalance extends Chant
 
 		final MOB mob=(MOB)affected;
 
-		if(tickID!=Tickable.TICKID_MOB) return true;
+		if(tickID!=Tickable.TICKID_MOB)
+			return true;
 		if(!mob.isInCombat())
 		{
 			if((System.currentTimeMillis()-lastTime)<60000)

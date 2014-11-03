@@ -103,7 +103,8 @@ public class GenLantern extends GenLightSource
 				{
 					final Drink thePuddle=(Drink)msg.tool();
 					int amountToTake=1;
-					if(!thePuddle.containsDrink()) amountToTake=0;
+					if(!thePuddle.containsDrink())
+						amountToTake=0;
 					thePuddle.setLiquidRemaining(thePuddle.liquidRemaining()-amountToTake);
 					setDuration(DURATION_TICKS);
 					setDescription("The lantern still looks like it has some oil in it.");

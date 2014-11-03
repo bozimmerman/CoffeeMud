@@ -546,8 +546,10 @@ public interface RawMaterial extends Item
 		{
 			super();
 			final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
-			if(insts==null) insts=new CODES[256];
-			if(insts[c]==null) insts[c]=this;
+			if(insts==null)
+				insts=new CODES[256];
+			if(insts[c]==null)
+				insts[c]=this;
 			synchronized(this)
 			{
 				final String[][] addExtra = CMProps.instance().getStrsStarting("ADDMATERIAL_");
@@ -626,7 +628,8 @@ public interface RawMaterial extends Item
 		public static CODES instance()
 		{
 			CODES c=insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];
-			if(c==null) c=new CODES();
+			if(c==null)
+				c=new CODES();
 			return c;
 		}
 		public static void reset() {
@@ -713,10 +716,12 @@ public interface RawMaterial extends Item
 		 */
 		public static int FIND_CaseSensitive(String rsc)
 		{
-			if(rsc==null) return -1;
+			if(rsc==null)
+				return -1;
 			final CODES C=c();
 			final int x=CMParms.indexOf(C.descs, rsc);
-			if(x>=0) return C.allCodes[x];
+			if(x>=0)
+				return C.allCodes[x];
 			return -1;
 		}
 		/**
@@ -725,10 +730,12 @@ public interface RawMaterial extends Item
 		 */
 		public static int FIND_IgnoreCase(String rsc)
 		{
-			if(rsc==null) return -1;
+			if(rsc==null)
+				return -1;
 			final CODES C=c();
 			final int x=CMParms.indexOfIgnoreCase(C.descs, rsc);
-			if(x>=0) return C.allCodes[x];
+			if(x>=0)
+				return C.allCodes[x];
 			return -1;
 		}
 		/**
@@ -737,10 +744,12 @@ public interface RawMaterial extends Item
 		 */
 		public static int FIND_StartsWith(String rsc)
 		{
-			if(rsc==null) return -1;
+			if(rsc==null)
+				return -1;
 			final CODES C=c();
 			final int x=CMParms.startsWith(C.descs, rsc.toUpperCase().trim());
-			if(x>=0) return C.allCodes[x];
+			if(x>=0)
+				return C.allCodes[x];
 			return -1;
 		}
 		/**
@@ -854,7 +863,8 @@ public interface RawMaterial extends Item
 		 */
 		public static List<Integer> COMPOSE_RESOURCES(int mat)
 		{
-			if(mat<=RESOURCE_MASK) mat=mat<<8;
+			if(mat<=RESOURCE_MASK)
+				mat=mat<<8;
 			final List<Integer> rscs=new Vector<Integer>();
 			for(final int rsc : c().allCodes)
 				if((rsc&MATERIAL_MASK)==mat)
@@ -873,11 +883,13 @@ public interface RawMaterial extends Item
 			final CODES c=c();
 			final int cd=code&RESOURCE_MASK;
 			Ability[] As = c.effectAs[cd];
-			if(As!=null) return As;
+			if(As!=null)
+				return As;
 			synchronized(c.effectAs)
 			{
 				As = c.effectAs[cd];
-				if(As!=null) return As;
+				if(As!=null)
+					return As;
 				final List<String> effectsV=CMParms.parseSafeSemicolonList(c.effect(code),true);
 				if(effectsV.size()==0)
 					c.effectAs[cd]=new Ability[0];
@@ -890,7 +902,8 @@ public interface RawMaterial extends Item
 					{
 						abilityID=e.next();
 						parms="";
-						if((abilityID==null)||(abilityID.length()==0)) continue;
+						if((abilityID==null)||(abilityID.length()==0))
+							continue;
 						if(abilityID.charAt(abilityID.length()-1)==')')
 						{
 							final int x=abilityID.indexOf('(');

@@ -45,7 +45,8 @@ public class AbilityRaceNext extends StdWebMacro
 		final String last=httpReq.getUrlParameter("ABILITY");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("ABILITY");
+			if(last!=null)
+				httpReq.removeUrlParameter("ABILITY");
 			return "";
 		}
 		final String ableType=httpReq.getUrlParameter("ABILITYTYPE");
@@ -79,7 +80,8 @@ public class AbilityRaceNext extends StdWebMacro
 				if((levelName!=null)&&(levelName.length()>0)&&(CMath.s_int(levelName)!=level))
 					okToShow=false;
 			}
-			if(parms.containsKey("NOT")) okToShow=!okToShow;
+			if(parms.containsKey("NOT"))
+				okToShow=!okToShow;
 			if(okToShow)
 			{
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!A.ID().equals(lastID))))

@@ -59,7 +59,8 @@ public class Fighter_Behead extends FighterSkill
 			if(R.bodyMask()[Race.BODY_HEAD]<=0)
 				return Ability.QUALITY_INDIFFERENT;
 			LegalBehavior B=null;
-			if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());
+			if(mob.location()!=null)
+				B=CMLib.law().getLegalBehavior(mob.location());
 			List<LegalWarrant> warrants=new Vector();
 			if(B!=null)
 				warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),(MOB)target);
@@ -84,7 +85,8 @@ public class Fighter_Behead extends FighterSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=super.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		final Race R=target.charStats().getMyRace();
 		if(R.bodyMask()[Race.BODY_HEAD]<=0)
 		{
@@ -93,7 +95,8 @@ public class Fighter_Behead extends FighterSkill
 		}
 
 		LegalBehavior B=null;
-		if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());
+		if(mob.location()!=null)
+			B=CMLib.law().getLegalBehavior(mob.location());
 		List<LegalWarrant> warrants=new Vector();
 		if(B!=null)
 			warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);
@@ -148,7 +151,8 @@ public class Fighter_Behead extends FighterSkill
 				mob.location().send(mob,msg);
 				target.curState().setHitPoints(1);
 				final Ability A2=target.fetchEffect("Injury");
-				if(A2!=null) A2.setMiscText(mob.Name()+"/head");
+				if(A2!=null)
+					A2.setMiscText(mob.Name()+"/head");
 				CMLib.combat().postDamage(mob,target,ww,Integer.MAX_VALUE/2,CMMsg.MSG_WEAPONATTACK,ww.weaponClassification(),auto?"":"^F^<FIGHT^><S-NAME> rear(s) back and behead(s) <T-NAME>!^</FIGHT^>^?"+CMLib.protocol().msp("decap.wav",30));
 				mob.location().recoverRoomStats();
 				final Item limb=CMClass.getItem("GenLimb");
@@ -182,8 +186,10 @@ public class Fighter_Behead extends FighterSkill
 			}
 			else
 				success=false;
-			if(mob.getVictim()==target) mob.makePeace();
-			if(target.getVictim()==mob) target.makePeace();
+			if(mob.getVictim()==target)
+				mob.makePeace();
+			if(target.getVictim()==mob)
+				target.makePeace();
 		}
 		else
 			maliciousFizzle(mob,target,L("<S-NAME> attempt(s) a beheading and fail(s)!"));

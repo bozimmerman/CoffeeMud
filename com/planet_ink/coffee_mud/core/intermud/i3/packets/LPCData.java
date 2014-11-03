@@ -119,7 +119,8 @@ public class LPCData {
 					{
 						data.setElementAt(cmd.substring(2,cmd.length()), 1);
 					}
-					if( !flag ) return v;
+					if( !flag )
+						return v;
 					data.setElementAt(v, 0);
 					return data;
 				}
@@ -200,7 +201,8 @@ public class LPCData {
 					x++;
 					break;
 				case '"':
-					if( !flag ) return in.toString();
+					if( !flag )
+						return in.toString();
 					data.setElementAt(in.toString(),0);
 					data.setElementAt(cmd.substring(x+1),1);
 					return data;
@@ -210,7 +212,8 @@ public class LPCData {
 					break;
 				}
 			}
-			if( !flag ) return in.toString();
+			if( !flag )
+				return in.toString();
 			data.setElementAt(in.toString(),0);
 			data.setElementAt("",1);
 			return data;

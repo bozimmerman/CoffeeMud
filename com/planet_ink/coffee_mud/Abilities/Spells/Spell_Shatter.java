@@ -100,9 +100,11 @@ public class Spell_Shatter extends Spell
 		if((target==null)&&(mobTarget==null))
 			target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		Room R=CMLib.map().roomLocation(target);
-		if(R==null) R=mob.location();
+		if(R==null)
+			R=mob.location();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

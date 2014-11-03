@@ -67,9 +67,11 @@ public class At extends StdCommand
 			return false;
 		}
 		final Room R=mob.location();
-		if(R!=room)	room.bringMobHere(mob,false);
+		if(R!=room)
+			room.bringMobHere(mob,false);
 		mob.doCommand(commands,metaFlags);
-		if(mob.location()!=R) R.bringMobHere(mob,false);
+		if(mob.location()!=R)
+			R.bringMobHere(mob,false);
 		return false;
 	}
 

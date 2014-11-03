@@ -148,7 +148,8 @@ public class Thief_Forgery extends ThiefSkill
 			return false;
 
 		int levelDiff=(mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level();
-		if(levelDiff>0) levelDiff=0;
+		if(levelDiff>0)
+			levelDiff=0;
 		levelDiff*=5;
 		final boolean success=proficiencyCheck(mob,levelDiff,auto);
 

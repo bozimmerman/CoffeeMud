@@ -46,34 +46,43 @@ public class Export extends StdCommand
 
 	public void reallyExport(MOB mob, Session S, String fileName, String xml)
 	{
-		if(fileName==null) return;
-		if(mob==null) return;
-		if(xml==null) return;
-		if(xml.length()==0) return;
+		if(fileName==null)
+			return;
+		if(mob==null)
+			return;
+		if(xml==null)
+			return;
+		if(xml.length()==0)
+			return;
 
 		if(fileName.equalsIgnoreCase("SCREEN"))
 		{
-			if(S!=null) mob.tell(L("Here it is:\n\r\n\r"));
+			if(S!=null)
+				mob.tell(L("Here it is:\n\r\n\r"));
 			xml=xml.replace('\n',' ');
 			xml=xml.replace('\r',' ');
-			if(S!=null) S.rawPrintln(xml+"\n\r\n\r");
+			if(S!=null)
+				S.rawPrintln(xml+"\n\r\n\r");
 		}
 		else
 		if(fileName.equalsIgnoreCase("EMAIL"))
 		{
 			if(!CMProps.getBoolVar(CMProps.Bool.EMAILFORWARDING))
 			{
-				if(S!=null) mob.tell(L("Mail forwarding is not enabled on this mud."));
+				if(S!=null)
+					mob.tell(L("Mail forwarding is not enabled on this mud."));
 				return;
 			}
 			if(CMProps.getVar(CMProps.Str.MAILBOX).length()==0)
 			{
-				if(S!=null) mob.tell(L("No email box has been defined."));
+				if(S!=null)
+					mob.tell(L("No email box has been defined."));
 				return;
 			}
 			if((mob.playerStats()==null)||(mob.playerStats().getEmail().length()==0))
 			{
-				if(S!=null) mob.tell(L("No email address has been defined."));
+				if(S!=null)
+					mob.tell(L("No email address has been defined."));
 				return;
 			}
 			xml=xml.replace('\n',' ');
@@ -84,15 +93,18 @@ public class Export extends StdCommand
 					mob.Name(),
 					"Exported XML",
 					xml);
-			if(S!=null) mob.tell(L("XML emailed to @x1",mob.playerStats().getEmail()));
+			if(S!=null)
+				mob.tell(L("XML emailed to @x1",mob.playerStats().getEmail()));
 		}
 		else
 		{
-			if(S!=null) mob.tell(L("Writing file..."));
+			if(S!=null)
+				mob.tell(L("Writing file..."));
 			if(fileName.indexOf('.')<0)
 				fileName=fileName+".cmare";
 			new CMFile(fileName,mob).saveText(xml);
-			if(S!=null) mob.tell(L("File '@x1' written.",fileName));
+			if(S!=null)
+				mob.tell(L("File '@x1' written.",fileName));
 		}
 	}
 
@@ -132,14 +144,16 @@ public class Export extends StdCommand
 		{
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.EXPORTPLAYERS))
 			{
-				if(S!=null) mob.tell(L("You are not allowed to export player data."));
+				if(S!=null)
+					mob.tell(L("You are not allowed to export player data."));
 				return false;
 			}
 		}
 		else
 		if(!CMSecurity.isAllowed(mob,room,CMSecurity.SecFlag.EXPORT))
 		{
-			if(S!=null) mob.tell(L("You are not allowed to export room, mob, or item data."));
+			if(S!=null)
+				mob.tell(L("You are not allowed to export room, mob, or item data."));
 			return false;
 		}
 
@@ -177,7 +191,8 @@ public class Export extends StdCommand
 
 			if(commands.size()==0)
 			{
-				if(S!=null) mob.tell(L("You must specify a file name to create, or enter 'SCREEN' to have a screen dump, or 'EMAIL' to send to your email address."));
+				if(S!=null)
+					mob.tell(L("You must specify a file name to create, or enter 'SCREEN' to have a screen dump, or 'EMAIL' to send to your email address."));
 				return false;
 			}
 			fileName=CMParms.combine(commands,0);
@@ -191,7 +206,8 @@ public class Export extends StdCommand
 			{
 				if(!CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.EXPORTFILE))
 				{
-					if(S!=null) mob.tell(L("You are not allowed to export to memory."));
+					if(S!=null)
+						mob.tell(L("You are not allowed to export to memory."));
 					return false;
 				}
 				fileNameCode=4;
@@ -200,7 +216,8 @@ public class Export extends StdCommand
 			{
 				if(!CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.EXPORTFILE))
 				{
-					if(S!=null) mob.tell(L("You are not allowed to export to a file."));
+					if(S!=null)
+						mob.tell(L("You are not allowed to export to a file."));
 					return false;
 				}
 				final CMFile F=new CMFile(fileName,mob);
@@ -212,7 +229,8 @@ public class Export extends StdCommand
 		}
 		else
 		{
-			if(S!=null) mob.tell(L("You must specify a file name to create, or enter 'SCREEN' to have a screen dump or 'EMAIL' to send to an email address."));
+			if(S!=null)
+				mob.tell(L("You must specify a file name to create, or enter 'SCREEN' to have a screen dump or 'EMAIL' to send to an email address."));
 			return false;
 		}
 		executeInternal(mob,metaFlags,commandType,subType,fileName,Integer.valueOf(fileNameCode),S,area,room);
@@ -267,7 +285,8 @@ public class Export extends StdCommand
 						x.append("</PLAYER>");
 					}
 				}
-				if(fileNameCode==2) fileName=fileName+"/player";
+				if(fileNameCode==2)
+					fileName=fileName+"/player";
 				xml=x.toString()+"</PLAYERS>";
 				if(S!=null)
 					S.rawPrintln("!");
@@ -286,7 +305,8 @@ public class Export extends StdCommand
 					x.append(CMLib.coffeeMaker().getAccountXML(A,custom,files));
 					x.append("</ACCOUNT>");
 				}
-				if(fileNameCode==2) fileName=fileName+"/account";
+				if(fileNameCode==2)
+					fileName=fileName+"/account";
 				xml=x.toString()+"</ACCOUNTS>";
 				if(S!=null)
 					S.rawPrintln("!");
@@ -295,7 +315,8 @@ public class Export extends StdCommand
 			if(commandType.equalsIgnoreCase("ROOM"))
 			{
 				xml=CMLib.coffeeMaker().getRoomXML(room,custom,files,true).toString();
-				if(fileNameCode==2) fileName=fileName+"/room";
+				if(fileNameCode==2)
+					fileName=fileName+"/room";
 			}
 			else
 			if(commandType.equalsIgnoreCase("AREA"))
@@ -317,11 +338,13 @@ public class Export extends StdCommand
 			{
 				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.EXPORT))
 				{
-					if(S!=null) mob.tell(L("You are not allowed to export world data."));
+					if(S!=null)
+						mob.tell(L("You are not allowed to export world data."));
 					return Boolean.FALSE;
 				}
 				StringBuffer buf=new StringBuffer("");
-				if(fileNameCode!=2) buf.append("<AREAS>");
+				if(fileNameCode!=2)
+					buf.append("<AREAS>");
 				for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 				{
 					final Area A=(Area)a.nextElement();
@@ -344,7 +367,8 @@ public class Export extends StdCommand
 						}
 					}
 				}
-				if(fileNameCode!=2) xml=buf.toString()+"</AREAS>";
+				if(fileNameCode!=2)
+					xml=buf.toString()+"</AREAS>";
 			}
 		}
 		else
@@ -358,7 +382,8 @@ public class Export extends StdCommand
 				x.append(CMLib.coffeeMaker().getPlayerXML(M,custom,files));
 				x.append("</PLAYER>");
 			}
-			if(fileNameCode==2) fileName=fileName+"/player";
+			if(fileNameCode==2)
+				fileName=fileName+"/player";
 			xml=x.toString()+"</PLAYERS>";
 		}
 		else
@@ -372,13 +397,15 @@ public class Export extends StdCommand
 				x.append(CMLib.coffeeMaker().getAccountXML(A,custom,files));
 				x.append("</ACCOUNT>");
 			}
-			if(fileNameCode==2) fileName=fileName+"/player";
+			if(fileNameCode==2)
+				fileName=fileName+"/player";
 			xml=x.toString()+"</ACCOUNTS>";
 		}
 		else
 		if(subType.equalsIgnoreCase("MOBS"))
 		{
-			if(fileNameCode==2) fileName=fileName+"/mobs";
+			if(fileNameCode==2)
+				fileName=fileName+"/mobs";
 			final Hashtable found=new Hashtable();
 			if(commandType.equalsIgnoreCase("ROOM"))
 				xml="<MOBS>"+CMLib.coffeeMaker().getRoomMobs(room,custom,files,found).toString()+"</MOBS>";
@@ -517,7 +544,8 @@ public class Export extends StdCommand
 			str.append("</FILES>");
 			xml+=str.toString();
 		}
-		if(fileNameCode==2) fileName=fileName+"/extras";
+		if(fileNameCode==2)
+			fileName=fileName+"/extras";
 		if(fileNameCode==4)
 			return xml;
 		reallyExport(mob,S,fileName,xml);

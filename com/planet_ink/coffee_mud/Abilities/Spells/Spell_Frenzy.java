@@ -54,7 +54,8 @@ public class Spell_Frenzy extends Spell
 			invoker=(MOB)affected;
 		final int xlvl=super.getXLEVELLevel(invoker());
 		float f=(float)0.1*xlvl;
-		if(f>5.0) f=5.0f;
+		if(f>5.0)
+			f=5.0f;
 		affectableStats.setDamage(affectableStats.damage()+(int)Math.round(CMath.div(affectableStats.damage(),6.0-f)));
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(CMath.div(affectableStats.attackAdjustment(),6.0-f)));
 		affectableStats.setArmor(affected.basePhyStats().armor()+30+(3*xlvl));
@@ -99,9 +100,11 @@ public class Spell_Frenzy extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		Room R=CMLib.map().roomLocation(target);
-		if(R==null) R=mob.location();
+		if(R==null)
+			R=mob.location();
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -129,7 +132,8 @@ public class Spell_Frenzy extends Spell
 					hpAdjustment=(int)Math.round(CMath.div(target.maxState().getHitPoints(),5.0));
 					beneficialAffect(mob,target,asLevel,0);
 					final Ability A=target.fetchEffect(ID());
-					if(A!=null) A.setMiscText(Integer.toString(hpAdjustment));
+					if(A!=null)
+						A.setMiscText(Integer.toString(hpAdjustment));
 					target.curState().setHitPoints(target.curState().getHitPoints()+hpAdjustment);
 					target.recoverMaxState();
 					target.recoverPhyStats();

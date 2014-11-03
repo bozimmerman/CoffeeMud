@@ -51,7 +51,8 @@ public class Prop_NoPurge extends Property
 				for(int i=0;i<R.numItems();i++)
 				{
 					final Item I=R.getItem(i);
-					if(I!=null) I.setExpirationDate(0);
+					if(I!=null)
+						I.setExpirationDate(0);
 				}
 			}
 			else

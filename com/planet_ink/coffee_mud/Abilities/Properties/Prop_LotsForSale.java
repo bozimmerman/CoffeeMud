@@ -82,8 +82,10 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			{
 				Ability A=null;
 				R=r.next();
-				if(R!=null) A=R.fetchEffect(ID());
-				if(A!=null) ((Prop_LotsForSale)A).uniqueLotID=uniqueID;
+				if(R!=null)
+					A=R.fetchEffect(ID());
+				if(A!=null)
+					((Prop_LotsForSale)A).uniqueLotID=uniqueID;
 			}
 		}
 		else
@@ -131,7 +133,8 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 	@Override
 	public String getUniqueLotID()
 	{
-		if(uniqueLotID==null) getConnectedPropertyRooms();
+		if(uniqueLotID==null)
+			getConnectedPropertyRooms();
 		return uniqueLotID;
 	}
 
@@ -139,7 +142,8 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 	public void updateLot(List optPlayerList)
 	{
 		final Environmental EV=affected;
-		if(!(EV instanceof Room)) return;
+		if(!(EV instanceof Room))
+			return;
 		Room R=(Room)EV;
 		boolean didAnything=false;
 		try
@@ -213,7 +217,8 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 						{
 							R2=CMClass.getLocale(CMClass.classID(R));
 							R2.setRoomID(R.getArea().getNewRoomID(R,d));
-							if(R2.roomID().length()==0) continue;
+							if(R2.roomID().length()==0)
+								continue;
 							R2.setArea(R.getArea());
 							LandTitle newTitle=CMLib.law().getLandTitle(R);
 							if((newTitle!=null)&&(CMLib.law().getLandTitle(R2)==null))

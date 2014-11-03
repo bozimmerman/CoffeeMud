@@ -109,7 +109,8 @@ public class StdCharClass implements CharClass
 	@Override
 	public String[] nameSet()
 	{
-		if(names!=null) return names;
+		if(names!=null)
+			return names;
 		names=new String[1];
 		names[0]=name();
 		return names;
@@ -346,7 +347,8 @@ public class StdCharClass implements CharClass
 		else
 		for(int i=0;i<raceList.length;i++)
 		{
-			if(i>0) str.append(", ");
+			if(i>0)
+				str.append(", ");
 			if(i==raceList.length-1)
 				str.append(L("or "));
 			str.append(CMStrings.capitalizeAndLower(raceList[i]));
@@ -382,7 +384,8 @@ public class StdCharClass implements CharClass
 	public String getRaceQualDesc()
 	{
 		final String[] raceList=getRequiredRaceList();
-		if(raceList.length==0) return "All";
+		if(raceList.length==0)
+			return "All";
 		return getRaceList(raceList).toString();
 	}
 	@Override
@@ -507,8 +510,10 @@ public class StdCharClass implements CharClass
 		{
 			boolean found=false;
 			for (final int element : set)
-				if(element==i) found=true;
-			if(!found) H.add(Integer.valueOf(i));
+				if(element==i)
+					found=true;
+			if(!found)
+				H.add(Integer.valueOf(i));
 		}
 		return H;
 	}
@@ -547,7 +552,8 @@ public class StdCharClass implements CharClass
 
 	protected boolean armorCheck(MOB mob, int sourceCode, Environmental E)
 	{
-		if(!(E instanceof Ability)) return true;
+		if(!(E instanceof Ability))
+			return true;
 		if((allowedArmorLevel()!=CharClass.ARMOR_ANY)
 		&&((requiredArmorSourceMinor()<0)||(sourceCode&CMMsg.MINOR_MASK)==requiredArmorSourceMinor())
 		&&(isQualifyingAuthority(mob,(Ability)E))
@@ -615,7 +621,8 @@ public class StdCharClass implements CharClass
 			for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
-				if(A!=null) alreadyAff.put(A.ID(),A);
+				if(A!=null)
+					alreadyAff.put(A.ID(),A);
 			}
 			for(int a=0;a<mob.numAbilities();a++)
 			{
@@ -668,7 +675,8 @@ public class StdCharClass implements CharClass
 	@Override
 	public CharClass makeGenCharClass()
 	{
-		if(isGeneric()) return this;
+		if(isGeneric())
+			return this;
 		final CharClass CR=(CharClass)CMClass.getCharClass("GenCharClass").copyOf();
 		CR.setClassParms("<CCLASS><ID>"+ID()+"</ID><NAME>"+name()+"</NAME></CCLASS>");
 		CR.setStat("BASE",baseClass());
@@ -791,7 +799,8 @@ public class StdCharClass implements CharClass
 		}
 
 		List<Item> outfit=outfit(null);
-		if(outfit==null) outfit=new Vector<Item>();
+		if(outfit==null)
+			outfit=new Vector<Item>();
 		CR.setStat("NUMOFT",""+outfit.size());
 		for(int i=0;i<outfit.size();i++)
 			CR.setStat("GETOFTID"+i,outfit.get(i).ID());
@@ -1040,12 +1049,14 @@ public class StdCharClass implements CharClass
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
+			if(code.equalsIgnoreCase(CODES[i]))
+				return i;
 		return -1;
 	}
 	public boolean sameAs(CharClass E)
 	{
-		if(!(E instanceof StdCharClass)) return false;
+		if(!(E instanceof StdCharClass))
+			return false;
 		for(int i=0;i<CODES.length;i++)
 			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
 				return false;

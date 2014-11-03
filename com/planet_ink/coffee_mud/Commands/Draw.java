@@ -146,7 +146,8 @@ public class Draw extends Get
 			containerName=(String)commands.lastElement();
 			commands.insertElementAt("all",0);
 			containers=CMLib.english().possibleContainers(mob,commands,Wearable.FILTER_WORNONLY,true);
-			if(containers.size()==0) containers=sheaths;
+			if(containers.size()==0)
+				containers=sheaths;
 			whatToGet=CMParms.combine(commands,0);
 			allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
 			if(whatToGet.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(4);}
@@ -157,7 +158,8 @@ public class Draw extends Get
 		{
 			final Vector V=new Vector();
 			Container container=null;
-			if(containers.size()>0) container=containers.get(c++);
+			if(containers.size()>0)
+				container=containers.get(c++);
 			int addendum=1;
 			String addendumStr="";
 			boolean doBugFix = true;
@@ -167,7 +169,8 @@ public class Draw extends Get
 				Environmental getThis=null;
 				if((container!=null)&&(mob.isMine(container)))
 				   getThis=mob.findItem(container,whatToGet+addendumStr);
-				if(getThis==null) break;
+				if(getThis==null)
+					break;
 				if(getThis instanceof Weapon)
 					V.addElement(getThis);
 				addendumStr="."+(++addendum);
@@ -177,7 +180,8 @@ public class Draw extends Get
 			{
 				final Item getThis=(Item)V.elementAt(i);
 				long wearCode=0;
-				if(container!=null)	wearCode=container.rawWornCode();
+				if(container!=null)
+					wearCode=container.rawWornCode();
 				if((ifNecessary)
 				&&(mob.freeWearPositions(Wearable.WORN_WIELD,(short)0,(short)0)==0)
 				&&(mob.freeWearPositions(Wearable.WORN_HELD,(short)0,(short)0)==0))
@@ -200,11 +204,13 @@ public class Draw extends Get
 						}
 					}
 				}
-				if(container!=null)	container.setRawWornCode(wearCode);
+				if(container!=null)
+					container.setRawWornCode(wearCode);
 				doneSomething=true;
 			}
 
-			if(containers.size()==0) break;
+			if(containers.size()==0)
+				break;
 		}
 		if((!doneSomething)&&(!noerrors))
 		{

@@ -57,7 +57,8 @@ public class AnimalTrading extends CommonSkill
 
 		commands.insertElementAt("SELL",0);
 		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Sell what to whom?");
-		if(shopkeeper==null) return false;
+		if(shopkeeper==null)
+			return false;
 		if(commands.size()==0)
 		{
 			commonTell(mob,L("Sell what?"));

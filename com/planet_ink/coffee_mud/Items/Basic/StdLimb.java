@@ -106,7 +106,8 @@ public class StdLimb extends StdItem implements FalseLimb
 	@Override
 	public int partNum()
 	{
-		if(partnum>=0) return partnum;
+		if(partnum>=0)
+			return partnum;
 		for(int i=0;i<Race.BODYPARTSTR.length;i++)
 			if((name().toUpperCase().endsWith(Race.BODYPARTSTR[i]))
 			||(rawSecretIdentity().toUpperCase().endsWith(Race.BODYPARTSTR[i])))
@@ -126,7 +127,8 @@ public class StdLimb extends StdItem implements FalseLimb
 	@Override
 	public long wearPlace()
 	{
-		if(wearplace>=0) return wearplace;
+		if(wearplace>=0)
+			return wearplace;
 		final int num=partNum();
 		if(num<0)
 			wearplace=0;
@@ -171,7 +173,8 @@ public class StdLimb extends StdItem implements FalseLimb
 			return super.canWear(mob,where);
 		if(where==Wearable.WORN_FLOATING_NEARBY)
 			return false;
-		if(partNum()<0) return false;
+		if(partNum()<0)
+			return false;
 		if((where!=0)&&(where!=wearPlace()))
 			return false;
 		final int numRacialTotal=mob.charStats().getMyRace().bodyMask()[partNum()];
@@ -199,7 +202,8 @@ public class StdLimb extends StdItem implements FalseLimb
 			return super.fitsOn(wornCode);
 		if(wornCode==Wearable.WORN_FLOATING_NEARBY)
 			return false;
-		if(wornCode<=0)    return true;
+		if(wornCode<=0)
+			return true;
 		return wearPlace()==wornCode;
 	}
 

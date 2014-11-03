@@ -115,7 +115,8 @@ public class GenWand extends StdWand
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenWand)) return false;
+		if(!(E instanceof GenWand))
+			return false;
 		for(int i=0;i<getStatCodes().length;i++)
 			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
 				return false;

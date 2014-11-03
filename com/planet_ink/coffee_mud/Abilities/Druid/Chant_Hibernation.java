@@ -112,8 +112,10 @@ public class Chant_Hibernation extends Chant
 
 		final MOB mob=(MOB)affected;
 
-		if(tickID!=Tickable.TICKID_MOB) return true;
-		if(!proficiencyCheck(null,0,false)) return true;
+		if(tickID!=Tickable.TICKID_MOB)
+			return true;
+		if(!proficiencyCheck(null,0,false))
+			return true;
 
 		if((!mob.isInCombat())
 		&&(CMLib.flags().isSleeping(mob)))

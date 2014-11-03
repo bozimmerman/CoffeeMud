@@ -214,8 +214,10 @@ public class GenRace extends StdRace
 
 	protected String getRaceLocatorID(Race R)
 	{
-		if(R==null) return "";
-		if(R.isGeneric()) return R.ID();
+		if(R==null)
+			return "";
+		if(R.isGeneric())
+			return R.ID();
 		if(R==CMClass.getRace(R.ID()))
 			return R.ID();
 		return R.getClass().getName();
@@ -248,24 +250,30 @@ public class GenRace extends StdRace
 		str.append(CMLib.xml().convertXMLtoTag("LEAVE",leaveStr()));
 		str.append(CMLib.xml().convertXMLtoTag("HELP",CMLib.xml().parseOutAngleBrackets(helpEntry)));
 		str.append(CMLib.xml().convertXMLtoTag("AGING",CMParms.toStringList(getAgingChart())));
-		if(adjPStats==null) str.append("<ESTATS/>");
+		if(adjPStats==null)
+			str.append("<ESTATS/>");
 		else
 			str.append(CMLib.xml().convertXMLtoTag("ESTATS",CMLib.coffeeMaker().getPhyStatsStr(adjPStats)));
-		if(adjStats==null) str.append("<ASTATS/>");
+		if(adjStats==null)
+			str.append("<ASTATS/>");
 		else
 			str.append(CMLib.xml().convertXMLtoTag("ASTATS",CMLib.coffeeMaker().getCharStatsStr(adjStats)));
-		if(setStats==null) str.append("<CSTATS/>");
+		if(setStats==null)
+			str.append("<CSTATS/>");
 		else
 			str.append(CMLib.xml().convertXMLtoTag("CSTATS",CMLib.coffeeMaker().getCharStatsStr(setStats)));
-		if(adjState==null) str.append("<ASTATE/>");
+		if(adjState==null)
+			str.append("<ASTATE/>");
 		else
 			str.append(CMLib.xml().convertXMLtoTag("ASTATE",CMLib.coffeeMaker().getCharStateStr(adjState)));
-		if(startAdjState==null) str.append("<STARTASTATE/>");
+		if(startAdjState==null)
+			str.append("<STARTASTATE/>");
 		else
 			str.append(CMLib.xml().convertXMLtoTag("STARTASTATE",CMLib.coffeeMaker().getCharStateStr(startAdjState)));
 		str.append(CMLib.xml().convertXMLtoTag("DISFLAGS",""+disableFlags));
 
-		if(myResources().size()==0)	str.append("<RESOURCES/>");
+		if(myResources().size()==0)
+			str.append("<RESOURCES/>");
 		else
 		{
 			str.append("<RESOURCES>");
@@ -278,7 +286,8 @@ public class GenRace extends StdRace
 			}
 			str.append("</RESOURCES>");
 		}
-		if((outfit(null)==null)||(outfit(null).size()==0))	str.append("<OUTFIT/>");
+		if((outfit(null)==null)||(outfit(null).size()==0))
+			str.append("<OUTFIT/>");
 		else
 		{
 			str.append("<OUTFIT>");
@@ -291,7 +300,8 @@ public class GenRace extends StdRace
 			}
 			str.append("</OUTFIT>");
 		}
-		if(naturalWeapon==null) str.append("<WEAPON/>");
+		if(naturalWeapon==null)
+			str.append("<WEAPON/>");
 		else
 		{
 			str.append("<WEAPON>");
@@ -618,7 +628,8 @@ public class GenRace extends StdRace
 	{
 		int num=0;
 		int numDex=code.length();
-		while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1)))) numDex--;
+		while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1))))
+			numDex--;
 		if(numDex<code.length())
 		{
 			num=CMath.s_int(code.substring(numDex));
@@ -738,7 +749,8 @@ public class GenRace extends StdRace
 	{
 		int num=0;
 		int numDex=code.length();
-		while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1)))) numDex--;
+		while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1))))
+			numDex--;
 		if(numDex<code.length())
 		{
 			num=CMath.s_int(code.substring(numDex));
@@ -1125,7 +1137,8 @@ public class GenRace extends StdRace
 	@Override
 	public String[] getStatCodes()
 	{
-		if(codes!=null) return codes;
+		if(codes!=null)
+			return codes;
 		codes=CMProps.getStatCodesList(CODES,this);
 		return codes;
 	}
@@ -1135,13 +1148,15 @@ public class GenRace extends StdRace
 		while((code.length()>0)&&(Character.isDigit(code.charAt(code.length()-1))))
 			code=code.substring(0,code.length()-1);
 		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
+			if(code.equalsIgnoreCase(CODES[i]))
+				return i;
 		return -1;
 	}
 	@Override
 	public boolean sameAs(Race E)
 	{
-		if(!(E instanceof GenRace)) return false;
+		if(!(E instanceof GenRace))
+			return false;
 		if(((GenRace)E).racialParms().equals(racialParms()))
 			return true;
 		return false;

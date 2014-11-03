@@ -72,9 +72,11 @@ public class Spell_Slow extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		Room R=CMLib.map().roomLocation(target);
-		if(R==null) R=mob.location();
+		if(R==null)
+			R=mob.location();
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -100,7 +102,8 @@ public class Spell_Slow extends Spell
 				{
 					R.show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> slow(s) down!"));
 					final Ability A=target.fetchEffect("Spell_MassSlow");
-					if(A!=null)A.unInvoke();
+					if(A!=null)
+						A.unInvoke();
 					success=maliciousAffect(mob,target,asLevel,0,-1)!=null;
 				}
 			}

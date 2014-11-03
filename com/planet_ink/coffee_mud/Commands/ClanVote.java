@@ -151,7 +151,8 @@ public class ClanVote extends StdCommand
 						msg=new StringBuffer("");
 						final StringBuffer prompt=new StringBuffer("");
 						String choices="";
-						if(CV.votes==null) CV.votes=new PairVector<String,Boolean>();
+						if(CV.votes==null)
+							CV.votes=new PairVector<String,Boolean>();
 						prompt.append("Y)EA N)AY ");
 						choices="YN";
 						if(CV.voteStarter.equals(mob.Name()))
@@ -216,7 +217,8 @@ public class ClanVote extends StdCommand
 								mob2.destroy();
 							}
 						}
-						if(updateVote)	C.updateVotes();
+						if(updateVote)
+							C.updateVotes();
 					}
 				}
 			}

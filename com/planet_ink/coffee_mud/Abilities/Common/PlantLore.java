@@ -114,7 +114,8 @@ public class PlantLore extends CommonSkill
 								for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 								{
 									final Room room2=room.getRoomInDir(d);
-									if(room2==R) isAdjacent=d;
+									if(room2==R)
+										isAdjacent=d;
 								}
 								if(isAdjacent>=0)
 									str.append(L("There looks like @x1 @x2.\n\r",resourceStr.toLowerCase(),Directions.getInDirectionName(isAdjacent)));

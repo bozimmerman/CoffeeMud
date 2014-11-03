@@ -86,11 +86,14 @@ public class Spell_Laughter extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
-		if(levelDiff<0) levelDiff=0;
-		if(levelDiff>5) levelDiff=5;
+		if(levelDiff<0)
+			levelDiff=0;
+		if(levelDiff>5)
+			levelDiff=5;
 
 		// if they can't hear the sleep spell, it
 		// won't happen
@@ -109,7 +112,8 @@ public class Spell_Laughter extends Spell
 			return false;
 
 
-		if(levelDiff<0) levelDiff=0;
+		if(levelDiff<0)
+			levelDiff=0;
 		boolean success=proficiencyCheck(mob,-(levelDiff*5),auto);
 
 		if(success)
@@ -129,7 +133,8 @@ public class Spell_Laughter extends Spell
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					int ticks=8-levelDiff;
-					if(ticks<=0) ticks=1;
+					if(ticks<=0)
+						ticks=1;
 					success=maliciousAffect(mob,target,asLevel,ticks,-1)!=null;
 					if(success)
 						if(target.location()==R)

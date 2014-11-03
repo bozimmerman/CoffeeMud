@@ -42,7 +42,8 @@ public class SocialTbl extends StdWebMacro
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		final StringBuffer TBL=(StringBuffer)Resources.getResource("WEB SOCIALS TBL");
-		if(TBL!=null) return TBL.toString();
+		if(TBL!=null)
+			return TBL.toString();
 
 		final List<String> socialVec=CMLib.socials().getSocialsList();
 		final StringBuffer msg=new StringBuffer("\n\r");

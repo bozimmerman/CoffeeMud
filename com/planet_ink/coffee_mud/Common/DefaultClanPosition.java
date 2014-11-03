@@ -189,7 +189,8 @@ public class DefaultClanPosition implements ClanPosition
 			for(int a=0;a<Clan.Function.values().length;a++)
 				if(functionChart[a]==Clan.Authority.CAN_DO)
 				{
-					if(str.length()>0) str.append(",");
+					if(str.length()>0)
+						str.append(",");
 					str.append(Clan.Function.values()[a]);
 				}
 			return str.toString();
@@ -221,7 +222,8 @@ public class DefaultClanPosition implements ClanPosition
 			for(final String funcName : funcs)
 			{
 				final Clan.Function func=(Clan.Function)CMath.s_valueOf(Clan.Function.values(), funcName);
-				if(func!=null) functionChart[func.ordinal()] = Clan.Authority.CAN_DO;
+				if(func!=null)
+					functionChart[func.ordinal()] = Clan.Authority.CAN_DO;
 			}
 			break;
 		}

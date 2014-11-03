@@ -169,7 +169,8 @@ public class CommonSkill extends StdAbility
 
 		final double quickPct = getXTIMELevel(mob) * 0.05;
 		ticks-=(int)Math.round(CMath.mul(ticks, quickPct));
-		if(ticks<minDuration) ticks=minDuration;
+		if(ticks<minDuration)
+			ticks=minDuration;
 		return ticks;
 	}
 
@@ -192,9 +193,12 @@ public class CommonSkill extends StdAbility
 	{
 		if(mob.isMonster()&&(mob.amFollowing()!=null))
 		{
-			if(str.startsWith("You")) str=L("I@x1",str.substring(3));
-			if(target!=null) str=CMStrings.replaceAll(str,"<T-NAME>",target.name());
-			if(tool!=null)  str=CMStrings.replaceAll(str,"<O-NAME>",tool.name());
+			if(str.startsWith("You"))
+				str=L("I@x1",str.substring(3));
+			if(target!=null)
+				str=CMStrings.replaceAll(str,"<T-NAME>",target.name());
+			if(tool!=null)
+				str=CMStrings.replaceAll(str,"<O-NAME>",tool.name());
 			CMLib.commands().postSay(mob,null,str,false,false);
 		}
 		else
@@ -205,7 +209,8 @@ public class CommonSkill extends StdAbility
 	{
 		if(mob.isMonster()&&(mob.amFollowing()!=null))
 		{
-			if(str.startsWith("You")) str=L("I@x1",str.substring(3));
+			if(str.startsWith("You"))
+				str=L("I@x1",str.substring(3));
 			CMLib.commands().postSay(mob,null,str,false,false);
 		}
 		else
@@ -363,7 +368,8 @@ public class CommonSkill extends StdAbility
 
 	public boolean confirmPossibleMaterialLocation(int resource, Room room)
 	{
-		if(room==null) return false;
+		if(room==null)
+			return false;
 		final Integer I=Integer.valueOf(resource);
 		final boolean isMaterial=(resource&RawMaterial.RESOURCE_MASK)==0;
 		final int roomResourceType=room.myResource();
@@ -439,7 +445,8 @@ public class CommonSkill extends StdAbility
 
 	public boolean isMadeOfSupportedResource(Item I)
 	{
-		if(I==null) return false;
+		if(I==null)
+			return false;
 		for(final Integer R : supportedResourcesMap())
 		{
 			if((R.intValue() & RawMaterial.MATERIAL_MASK)==0)
@@ -459,7 +466,8 @@ public class CommonSkill extends StdAbility
 	{
 		if(!super.canBeLearnedBy(teacherM,studentM))
 			return false;
-		if(studentM==null) return true;
+		if(studentM==null)
+			return true;
 		final CharClass C=studentM.charStats().getCurrentClass();
 		if(CMLib.ableMapper().getQualifyingLevel(C.ID(), false, ID())>=0)
 			return true;

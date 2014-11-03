@@ -54,11 +54,14 @@ public class SignLanguage extends StdLanguage
 	@Override
 	protected boolean processSourceMessage(CMMsg msg, String str, int numToMess)
 	{
-		if(msg.sourceMessage()==null) return true;
+		if(msg.sourceMessage()==null)
+			return true;
 		int wordStart=msg.sourceMessage().indexOf('\'');
-		if(wordStart<0) return true;
+		if(wordStart<0)
+			return true;
 		String wordsSaid=CMStrings.getSayFromMessage(msg.sourceMessage());
-		if(numToMess>0) wordsSaid=messChars(ID(),wordsSaid,numToMess);
+		if(numToMess>0)
+			wordsSaid=messChars(ID(),wordsSaid,numToMess);
 		final String fullMsgStr = CMStrings.substituteSayInMessage(msg.sourceMessage(),wordsSaid);
 		wordStart=fullMsgStr.indexOf('\'');
 		String startFullMsg=fullMsgStr.substring(0,wordStart);
@@ -97,9 +100,11 @@ public class SignLanguage extends StdLanguage
 	protected boolean processNonSourceMessages(CMMsg msg, String str, int numToMess)
 	{
 		final String fullOtherMsgStr=(msg.othersMessage()==null)?msg.targetMessage():msg.othersMessage();
-		if(fullOtherMsgStr==null) return true;
+		if(fullOtherMsgStr==null)
+			return true;
 		final int wordStart=fullOtherMsgStr.indexOf('\'');
-		if(wordStart<0) return true;
+		if(wordStart<0)
+			return true;
 		String startFullMsg=fullOtherMsgStr.substring(0,wordStart);
 		String verb = "sign(s)";
 		switch(CMLib.dice().roll(1, 20, 0))

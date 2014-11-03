@@ -70,8 +70,10 @@ public class Chant_LoveMoon extends Chant
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
-		if(affected==null) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
 		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
@@ -97,9 +99,11 @@ public class Chant_LoveMoon extends Chant
 					if(CMLib.dice().rollPercentage()==1)
 					{
 						Item I=mob.fetchFirstWornItem(Wearable.WORN_WAIST);
-						if(I!=null)	CMLib.commands().postRemove(mob,I,false);
+						if(I!=null)
+							CMLib.commands().postRemove(mob,I,false);
 						I=mob.fetchFirstWornItem(Wearable.WORN_LEGS);
-						if(I!=null)	CMLib.commands().postRemove(mob,I,false);
+						if(I!=null)
+							CMLib.commands().postRemove(mob,I,false);
 						mob.doCommand(CMParms.parse("MATE "+M.Name()),Command.METAFLAG_FORCED);
 					}
 					else
@@ -157,7 +161,8 @@ public class Chant_LoveMoon extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Room target=mob.location();
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(!target.getArea().getClimateObj().canSeeTheMoon(target,null))
 		{
 			mob.tell(L("You must be able to see the moon for this magic to work."));

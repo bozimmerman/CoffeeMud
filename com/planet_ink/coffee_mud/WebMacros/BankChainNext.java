@@ -48,15 +48,18 @@ public class BankChainNext extends StdWebMacro
 		final java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("BANKCHAIN");
 		String player=httpReq.getUrlParameter("PLAYER");
-		if((player==null)||(player.length()==0)) player=httpReq.getUrlParameter("CLAN");
+		if((player==null)||(player.length()==0))
+			player=httpReq.getUrlParameter("CLAN");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("BANKCHAIN");
+			if(last!=null)
+				httpReq.removeUrlParameter("BANKCHAIN");
 			return "";
 		}
 		String lastID="";
 		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
-		if(M==null) return " @break@";
+		if(M==null)
+			return " @break@";
 		if((player!=null)&&(player.length()>0))
 		{
 			if(((!M.Name().equalsIgnoreCase(player)))

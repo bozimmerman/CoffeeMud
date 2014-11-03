@@ -95,7 +95,8 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 	@Override
 	public boolean mayICraft(final Item I)
 	{
-		if(I==null) return false;
+		if(I==null)
+			return false;
 		if(!super.mayBeCrafted(I))
 			return false;
 		if(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)
@@ -292,11 +293,13 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 
 		final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
-		if(componentsFoundList==null) return false;
+		if(componentsFoundList==null)
+			return false;
 		int woodRequired=CMath.s_int(woodRequiredStr);
 		woodRequired=adjustWoodRequired(woodRequired,mob);
 
-		if(amount>woodRequired) woodRequired=amount;
+		if(amount>woodRequired)
+			woodRequired=amount;
 		final String misctype=foundRecipe.get(RCP_MISCTYPE);
 		final int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
 		bundling=misctype.equalsIgnoreCase("BUNDLE");
@@ -306,14 +309,16 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 											bundling,
 											parsedVars.autoGenerate,
 											enhancedTypes);
-		if(data==null) return false;
+		if(data==null)
+			return false;
 		fixDataForComponents(data,componentsFoundList);
 		woodRequired=data[0][FOUND_AMT];
 		if(!bundling)
 		{
 			fireRequired=true;
 			final Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
-			if(fire==null) return false;
+			if(fire==null)
+				return false;
 		}
 		else
 			fireRequired=false;
@@ -419,7 +424,8 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 				((Drink)buildingI).setLiquidRemaining(0);
 			}
 		}
-		if(bundling) buildingI.setBaseValue(lostValue);
+		if(bundling)
+			buildingI.setBaseValue(lostValue);
 		buildingI.recoverPhyStats();
 		buildingI.text();
 		buildingI.recoverPhyStats();

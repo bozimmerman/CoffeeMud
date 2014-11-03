@@ -87,8 +87,10 @@ public class Chant_ChargeMetal extends Chant
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if(affected==null) return true;
-		if(!(affected instanceof Item)) return true;
+		if(affected==null)
+			return true;
+		if(!(affected instanceof Item))
+			return true;
 
 		final Item I=(Item)affected;
 		if((I.owner()==null)
@@ -166,9 +168,11 @@ public class Chant_ChargeMetal extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		Item I=null;
-		if(target instanceof MOB) I=wieldingMetal((MOB)target);
+		if(target instanceof MOB)
+			I=wieldingMetal((MOB)target);
 
 		if((target instanceof Item)
 		&&(CMLib.flags().isMetal(target)))

@@ -78,7 +78,8 @@ public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 					for (final MoneyDenomination element : DV)
 					{
 						final Coins C=CMLib.beanCounter().makeBestCurrency(currency,element.value,owner(),this);
-						if(C!=null)	C.setNumberOfCoins(100);
+						if(C!=null)
+							C.setNumberOfCoins(100);
 					}
 				}
 				Item I=CMClass.getItem("GenSuperPill");

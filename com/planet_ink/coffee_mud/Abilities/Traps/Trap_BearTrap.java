@@ -50,11 +50,13 @@ public class Trap_BearTrap extends StdTrap
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
-		if(P==null) return null;
+		if(P==null)
+			return null;
 		if(mob!=null)
 		{
 			Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_METAL);
-			if(I==null) I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_MITHRIL);
+			if(I==null)
+				I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_MITHRIL);
 			if(I!=null)
 				super.destroyResources(mob.location(),I.material(),30);
 		}
@@ -72,11 +74,13 @@ public class Trap_BearTrap extends StdTrap
 	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,P)) return false;
+		if(!super.canSetTrapOn(mob,P))
+			return false;
 		if(mob!=null)
 		{
 			Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_METAL);
-			if(I==null)	I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_MITHRIL);
+			if(I==null)
+				I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_MITHRIL);
 			if((I==null)
 			||(super.findNumberOfResource(mob.location(),I.material())<30))
 			{

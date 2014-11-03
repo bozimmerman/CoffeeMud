@@ -53,11 +53,14 @@ public class FileInfo extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		String path=httpReq.getUrlParameter("PATH");
-		if(path==null) path="";
+		if(path==null)
+			path="";
 		String file=httpReq.getUrlParameter("FILE");
-		if(file==null) file="";
+		if(file==null)
+			file="";
 		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
-		if(M==null) return "[authentication error]";
+		if(M==null)
+			return "[authentication error]";
 		try
 		{
 			final String filepath=path.endsWith("/")?path+file:path+"/"+file;
@@ -81,7 +84,8 @@ public class FileInfo extends StdWebMacro
 			if(parms.containsKey("ISTEXT"))
 			{
 				final int x=F.getName().lastIndexOf('.');
-				if(x<0) return "false";
+				if(x<0)
+					return "false";
 				final String mime=MIMEType.getMIMEType(F.getName().substring(x)).getType();
 				if(mime.toUpperCase().startsWith("TEXT"))
 					return "true";
@@ -90,7 +94,8 @@ public class FileInfo extends StdWebMacro
 			if(parms.containsKey("ISBINARY"))
 			{
 				final int x=F.getName().lastIndexOf('.');
-				if(x<0) return "true";
+				if(x<0)
+					return "true";
 				final String mime=MIMEType.getMIMEType(F.getName().substring(x)).getType();
 				if(mime.toUpperCase().startsWith("TEXT"))
 					return "false";

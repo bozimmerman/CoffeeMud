@@ -33,7 +33,8 @@ public class MultiEnumeration<K> implements Enumeration<K>
 			enums.add(EmptyEnumeration.INSTANCE);
 		else
 		for(final Enumeration<K> E : esets)
-			if(E!=null) enums.add(E);
+			if(E!=null)
+				enums.add(E);
 		setup();
 	}
 
@@ -61,7 +62,8 @@ public class MultiEnumeration<K> implements Enumeration<K>
 	@Override
 	public boolean hasMoreElements()
 	{
-		if(enumer.hasMoreElements()) return true;
+		if(enumer.hasMoreElements())
+			return true;
 		while((!enumer.hasMoreElements())&&(++dex<enums.size()))
 			enumer=enums.get(dex);
 		return enumer.hasMoreElements();

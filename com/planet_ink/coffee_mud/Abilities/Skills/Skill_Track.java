@@ -305,13 +305,17 @@ public class Skill_Track extends StdSkill
 		if(mobName.length()>0)
 		{
 			final Room R=CMLib.map().getRoom(mobName);
-			if(R!=null) rooms.addElement(R);
+			if(R!=null)
+				rooms.addElement(R);
 		}
 
 		final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
-		if(!(allowAir||allowWater)) flags.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
-		if(!allowAir) flags.plus(TrackingLibrary.TrackingFlag.NOAIR);
-		if(!allowWater) flags.plus(TrackingLibrary.TrackingFlag.NOWATER);
+		if(!(allowAir||allowWater))
+			flags.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
+		if(!allowAir)
+			flags.plus(TrackingLibrary.TrackingFlag.NOAIR);
+		if(!allowWater)
+			flags.plus(TrackingLibrary.TrackingFlag.NOWATER);
 		tickStatus=Tickable.STATUS_MISC6+5;
 		if(rooms.size()<=0)
 		{

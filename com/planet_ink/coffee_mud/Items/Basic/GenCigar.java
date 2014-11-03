@@ -102,7 +102,8 @@ public class GenCigar extends StdSmokable
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenCigar)) return false;
+		if(!(E instanceof GenCigar))
+			return false;
 		for(int i=0;i<getStatCodes().length;i++)
 			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
 				return false;

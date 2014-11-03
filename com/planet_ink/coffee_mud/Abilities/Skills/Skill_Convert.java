@@ -141,7 +141,8 @@ public class Skill_Convert extends StdSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 		boolean targetMadeSave=CMLib.dice().roll(1,100,0)>(target.charStats().getSave(CharStats.STAT_FAITH));
-		if(CMSecurity.isASysOp(mob)) targetMadeSave=false;
+		if(CMSecurity.isASysOp(mob))
+			targetMadeSave=false;
 		if((!target.isMonster())&&(success)&&(targetMadeSave)&&(target.getMyDeity()!=null))
 		{
 			mob.tell(L("@x1 is worshipping @x2.  @x3 must REBUKE @x4 first.",target.name(mob),target.getMyDeity().name(),target.charStats().HeShe(),target.getMyDeity().charStats().himher()));
@@ -171,7 +172,8 @@ public class Skill_Convert extends StdSkill
 		if((success)&&((!targetMadeSave)||(target==mob)))
 		{
 			Room dRoom=D.location();
-			if(dRoom==mob.location()) dRoom=null;
+			if(dRoom==mob.location())
+				dRoom=null;
 			if(target.getMyDeity()!=null)
 			{
 				final Ability A=target.fetchEffect(ID());
@@ -180,7 +182,8 @@ public class Skill_Convert extends StdSkill
 				if((mob.location().okMessage(mob,msg2))&&((dRoom==null)||(dRoom.okMessage(mob,msg2))))
 				{
 					mob.location().send(target,msg2);
-					if(dRoom!=null) dRoom.send(target,msg2);
+					if(dRoom!=null)
+						dRoom.send(target,msg2);
 				}
 			}
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,auto?L("<T-NAME> <T-IS-ARE> converted!"):L("<S-NAME> convert(s) <T-NAMESELF> to the worship of @x1.",D.name()));
@@ -203,7 +206,8 @@ public class Skill_Convert extends StdSkill
 				{
 					beneficialAffect(mob,target,asLevel,(int)(TimeManager.MILI_HOUR/CMProps.getTickMillis()));
 					final Skill_Convert A=(Skill_Convert)target.fetchEffect(ID());
-					if(A!=null) A.priorFaith=target.getWorshipCharID();
+					if(A!=null)
+						A.priorFaith=target.getWorshipCharID();
 				}
 
 			}
@@ -213,7 +217,8 @@ public class Skill_Convert extends StdSkill
 			if((target.isMonster())&&(target.fetchEffect("Prayer_ReligiousDoubt")==null))
 			{
 				final Ability A=CMClass.getAbility("Prayer_ReligiousDoubt");
-				if(A!=null) A.invoke(mob,target,true,asLevel);
+				if(A!=null)
+					A.invoke(mob,target,true,asLevel);
 			}
 			else
 				beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to convert <T-NAMESELF>, but <S-IS-ARE> unconvincing."));

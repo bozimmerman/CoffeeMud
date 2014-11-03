@@ -86,7 +86,8 @@ public class Formation extends StdCommand
 			for(int f=0;f<mob.numFollowers();f++)
 			{
 				final MOB M=mob.fetchFollower(f);
-				if(M==null) continue;
+				if(M==null)
+					continue;
 				if(CMLib.english().containsString(M.name(),name)
 				   ||CMLib.english().containsString(M.Name(),name))
 				{who=M; break;}

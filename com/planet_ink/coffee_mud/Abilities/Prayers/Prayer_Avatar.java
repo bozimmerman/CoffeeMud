@@ -107,7 +107,8 @@ public class Prayer_Avatar extends Prayer
 			if(mob.isInCombat())
 			{
 				final MOB newvictim=mob.location().fetchRandomInhabitant();
-				if(newvictim!=mob) mob.setVictim(newvictim);
+				if(newvictim!=mob)
+					mob.setVictim(newvictim);
 			}
 			else
 			{

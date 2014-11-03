@@ -143,8 +143,10 @@ public class Addictions extends StdAbility
 	{
 		final Physical target=givenTarget;
 
-		if(target==null) return false;
-		if(target.fetchEffect(ID())!=null) return false;
+		if(target==null)
+			return false;
+		if(target.fetchEffect(ID())!=null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

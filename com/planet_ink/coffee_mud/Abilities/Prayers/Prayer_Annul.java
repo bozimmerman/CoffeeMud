@@ -50,7 +50,8 @@ public class Prayer_Annul extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(!target.isMarriedToLiege())
 		{
 			mob.tell(L("@x1 is not married!",target.name(mob)));
@@ -79,7 +80,8 @@ public class Prayer_Annul extends Prayer
 				for(int i=0;i<channels.size();i++)
 					CMLib.commands().postChannel(channels.get(i),mob.clans(),target.name()+" and "+target.getLiegeID()+" just had their marriage annulled.",true);
 				final MOB M=CMLib.players().getPlayer(target.getLiegeID());
-				if(M!=null) M.setLiegeID("");
+				if(M!=null)
+					M.setLiegeID("");
 				target.setLiegeID("");
 			}
 		}

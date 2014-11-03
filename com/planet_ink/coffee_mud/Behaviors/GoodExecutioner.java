@@ -59,12 +59,15 @@ public class GoodExecutioner  extends StdBehavior
 	@Override
 	public boolean grantsAggressivenessTo(MOB M)
 	{
-		if(norecurse) return false;
+		if(norecurse)
+			return false;
 		norecurse=true;
 		try
 		{
-			if(M==null) return false;
-			if(CMLib.flags().isBoundOrHeld(M)) return false;
+			if(M==null)
+				return false;
+			if(CMLib.flags().isBoundOrHeld(M))
+				return false;
 			if(((!M.isMonster())&&(!doPlayers)))
 				return false;
 			final List<Behavior> V=CMLib.flags().flaggedBehaviors(M,Behavior.FLAG_POTENTIALLYAGGRESSIVE);

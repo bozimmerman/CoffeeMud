@@ -49,7 +49,8 @@ public class Spell_Knock extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room R=givenTarget==null?mob.location():CMLib.map().roomLocation(givenTarget);
-		if(R==null) R=mob.location();
+		if(R==null)
+			R=mob.location();
 		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
 		{
 			commands.clear();
@@ -75,7 +76,8 @@ public class Spell_Knock extends Spell
 			openThis=R.getExitInDir(dirCode);
 		if(openThis==null)
 			openThis=getTarget(mob,R,givenTarget,commands,Wearable.FILTER_ANY);
-		if(openThis==null) return false;
+		if(openThis==null)
+			return false;
 
 		if(openThis instanceof Exit)
 		{
@@ -105,7 +107,8 @@ public class Spell_Knock extends Spell
 
 
 		int levelDiff=openThis.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
-		if(levelDiff<0) levelDiff=0;
+		if(levelDiff<0)
+			levelDiff=0;
 		final boolean success=proficiencyCheck(mob,-(levelDiff*25),auto);
 		if(!success)
 			beneficialWordsFizzle(mob,openThis,auto?L("Nothing happens to @x1.",openThis.name()):L("<S-NAME> point(s) at @x1 and shout(s) incoherently, but nothing happens.",openThis.name()));

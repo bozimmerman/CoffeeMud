@@ -176,7 +176,8 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 					beneficialAffect(mob,alarmThis,asLevel,0);
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> trigger(s) the alarm on accident!"));
 					final Trap T=(Trap)alarmThis.fetchEffect(ID());
-					if(T!=null) T.spring(mob);
+					if(T!=null)
+						T.spring(mob);
 				}
 				else
 				{

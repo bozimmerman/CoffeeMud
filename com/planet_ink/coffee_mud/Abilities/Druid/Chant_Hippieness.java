@@ -104,9 +104,11 @@ public class Chant_Hippieness extends Chant
 			}
 
 			Ability A=mob.fetchEffect("Fighter_Bezerk");
-			if(A!=null) A.unInvoke();
+			if(A!=null)
+				A.unInvoke();
 			A=mob.fetchEffect("Song_Rage");
-			if(A!=null) A.unInvoke();
+			if(A!=null)
+				A.unInvoke();
 
 			if(mob.numItems()>0)
 			{
@@ -186,7 +188,8 @@ public class Chant_Hippieness extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(CMLib.flags().isAnimalIntelligence(target))
 		{
 			mob.tell(L("@x1 is not smart enough to be a hippy.",target.name(mob)));

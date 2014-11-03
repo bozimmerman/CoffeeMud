@@ -40,7 +40,8 @@ public class IsDisabled extends StdWebMacro
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		final CMSecurity.DisFlag flag=(CMSecurity.DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.class, parm.toUpperCase().trim());
-		if(flag==null) return " @break@";
+		if(flag==null)
+			return " @break@";
 		return Boolean.toString(CMSecurity.isDisabled(flag));
 	}
 }

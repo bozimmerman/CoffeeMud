@@ -73,9 +73,12 @@ public class Disease_Leeches extends Disease
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID))	return false;
-		if(affected==null) return false;
-		if(!(affected instanceof MOB)) return true;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
+		if(!(affected instanceof MOB))
+			return true;
 
 		final MOB mob=(MOB)affected;
 		if((!mob.amDead())&&((--diseaseTick)<=0))
@@ -86,7 +89,8 @@ public class Disease_Leeches extends Disease
 				offensiveEffects.get(a).unInvoke();
 			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,DISEASE_AFFECT());
 			MOB diseaser=invoker;
-			if(diseaser==null) diseaser=mob;
+			if(diseaser==null)
+				diseaser=mob;
 			if(mob.curState().getHitPoints()>2)
 			{
 				mob.maxState().setHitPoints(mob.curState().getHitPoints()-1);
@@ -100,7 +104,8 @@ public class Disease_Leeches extends Disease
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)-4);
 		if(affectableStats.getStat(CharStats.STAT_CHARISMA)<=0)
 			affectableStats.setStat(CharStats.STAT_CHARISMA,1);
@@ -108,7 +113,8 @@ public class Disease_Leeches extends Disease
 	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		if(!affected.Name().equals(thename))
 		{
 			hp=Integer.MAX_VALUE;

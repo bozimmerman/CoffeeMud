@@ -266,7 +266,8 @@ public class OffLine extends Thread implements MudHost
 					out = new PrintWriter(new OutputStreamWriter(rawout,"iso-8859-1"));
 					in = new BufferedReader(new InputStreamReader(rawin,"iso-8859-1"));
 
-					if(offLineText!=null) out.print(offLineText);
+					if(offLineText!=null)
+						out.print(offLineText);
 					out.flush();
 					try{Thread.sleep(250);}catch(final Exception e){}
 					closeSocks(sock,in,out);
@@ -439,7 +440,8 @@ public class OffLine extends Thread implements MudHost
 			}
 			nameID=CMParms.combine(V,0);
 		}
-		if(nameID.length()==0) nameID="Unnamed CoffeeMud";
+		if(nameID.length()==0)
+			nameID="Unnamed CoffeeMud";
 		try
 		{
 			while(true)

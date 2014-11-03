@@ -75,7 +75,8 @@ public class Order extends StdCommand
 		{
 			doBugFix=false;
 			final MOB target=mob.location().fetchInhabitant(whomToOrder+addendumStr);
-			if(target==null) break;
+			if(target==null)
+				break;
 			if((CMLib.flags().canBeSeenBy(target,mob))
 			&&(target!=mob)
 			&&(!V.contains(target)))

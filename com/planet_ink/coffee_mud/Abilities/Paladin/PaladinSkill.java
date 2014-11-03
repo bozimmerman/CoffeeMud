@@ -52,10 +52,12 @@ public class PaladinSkill extends StdAbility
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
 		if(!(affected instanceof MOB))
 			return false;
-		if(invoker==null) invoker=(MOB)affected;
+		if(invoker==null)
+			invoker=(MOB)affected;
 		if(!(CMLib.flags().isGood(invoker)))
 			return false;
 		if(paladinsGroup!=null)

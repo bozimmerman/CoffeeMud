@@ -58,7 +58,8 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 	@Override
 	public void unInvoke()
 	{
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 		{
@@ -77,8 +78,10 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 		if(!super.tick(ticking,tickID))
 			return false;
 
-		if(affected==null) return false;
-		if(!(affected instanceof MOB)) return false;
+		if(affected==null)
+			return false;
+		if(!(affected instanceof MOB))
+			return false;
 		final MOB mob=(MOB)affected;
 		if(mob.location().numInhabitants()==1)
 			return true;
@@ -95,7 +98,8 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 			   &&(!A.isAutoInvoked()))
 				choices.addElement(A);
 		}
-		if(choices.size()==0) return true;
+		if(choices.size()==0)
+			return true;
 		final MOB target=mob.location().fetchRandomInhabitant();
 		final Ability thisOne=(Ability)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 		if((target==null)||(thisOne==null)||(target.fetchEffect(ID())!=null))
@@ -115,7 +119,8 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

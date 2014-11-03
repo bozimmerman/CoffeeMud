@@ -50,7 +50,8 @@ public class Fighter_ImprovedShieldDefence extends FighterSkill
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		if((!(affected instanceof MOB))||(amountOfShieldArmor<=0)) return;
+		if((!(affected instanceof MOB))||(amountOfShieldArmor<=0))
+			return;
 		affectableStats.setArmor(affectableStats.armor()-((int)Math.round(CMath.mul(amountOfShieldArmor,(CMath.div(proficiency()+(5.0*getXLEVELLevel(invoker())),100.0))))));
 	}
 

@@ -51,7 +51,8 @@ public class Spell_WardArea extends Spell implements Trap
 
 	public MOB theInvoker()
 	{
-		if(invoker()!=null) return invoker();
+		if(invoker()!=null)
+			return invoker();
 		if(text().length()>0)
 			invoker=CMLib.players().getPlayer(text());
 		return invoker();
@@ -75,7 +76,8 @@ public class Spell_WardArea extends Spell implements Trap
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(sprung) return super.okMessage(myHost,msg);
+		if(sprung)
+			return super.okMessage(myHost,msg);
 		if(!super.okMessage(myHost,msg))
 			return false;
 

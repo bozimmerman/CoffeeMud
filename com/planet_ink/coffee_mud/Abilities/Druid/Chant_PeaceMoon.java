@@ -80,7 +80,8 @@ public class Chant_PeaceMoon extends Chant
 			{
 				msg.source().tell(L("Nah, you feel too peaceful under that bright moon."));
 				final MOB victim=msg.source().getVictim();
-				if(victim!=null) victim.makePeace();
+				if(victim!=null)
+					victim.makePeace();
 				msg.source().makePeace();
 			}
 			msg.modify(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,"",CMMsg.NO_EFFECT,"",CMMsg.NO_EFFECT,"");
@@ -92,14 +93,17 @@ public class Chant_PeaceMoon extends Chant
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) return false;
-		if(affected==null) return false;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
 		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
 			if(mob.location().fetchEffect(ID())==null)
 				unInvoke();
-			if(mob.isInCombat()) mob.makePeace();
+			if(mob.isInCombat())
+				mob.makePeace();
 		}
 		else
 		if(affected instanceof Room)
@@ -125,7 +129,8 @@ public class Chant_PeaceMoon extends Chant
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Room target=mob.location();
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(!target.getArea().getClimateObj().canSeeTheMoon(target,null))
 		{
 			mob.tell(L("You must be able to see the moon for this magic to work."));

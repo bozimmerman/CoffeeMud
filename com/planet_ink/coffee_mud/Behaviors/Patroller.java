@@ -87,14 +87,16 @@ public class Patroller extends ActiveTicker
 		final Vector<String> V=new Vector<String>();
 		String path=getParms().trim();
 		int x=path.indexOf(';');
-		if(x<0) return V;
+		if(x<0)
+			return V;
 		path=path.substring(x+1).trim();
 		x=path.indexOf(';');
 		String s=null;
 		while(x>=0)
 		{
 			s=path.substring(0,x).trim();
-			if(s.length()>0) V.addElement(s);
+			if(s.length()>0)
+				V.addElement(s);
 			path=path.substring(x+1).trim();
 			x=path.indexOf(';');
 		}
@@ -104,7 +106,8 @@ public class Patroller extends ActiveTicker
 			for(int i=V.size()-1;i>=0;i--)
 			{
 				s=V.elementAt(i);
-				if(s.equalsIgnoreCase("RESTART")||s.equalsIgnoreCase("REPEAT")) break;
+				if(s.equalsIgnoreCase("RESTART")||s.equalsIgnoreCase("REPEAT"))
+					break;
 				final int dir=Directions.getGoodDirectionCode(s);
 				if(dir>=0)
 					V.addElement(Directions.getDirectionName(Directions.getOpDirectionCode(dir)));
@@ -213,7 +216,8 @@ public class Patroller extends ActiveTicker
 				return true;
 			}
 			tickStatus=Tickable.STATUS_MISC+2;
-			if((step<0)||(step>=steps.size())) step=0;
+			if((step<0)||(step>=steps.size()))
+				step=0;
 			String nxt=steps.get(step);
 
 			if((nxt.equalsIgnoreCase("RESTART")||nxt.equalsIgnoreCase("REPEAT"))&&(step>0))
@@ -283,8 +287,10 @@ public class Patroller extends ActiveTicker
 			if((direction<0)||(destinationRoomForThisStep==null))
 			{
 				Room R=CMLib.map().getRoom(nxt);
-				if(R==null) R=CMLib.map().getRoom(thisRoom.getArea()+nxt);
-				if(R==null) R=CMLib.map().getRoom(thisRoom.getArea()+"#"+nxt);
+				if(R==null)
+					R=CMLib.map().getRoom(thisRoom.getArea()+nxt);
+				if(R==null)
+					R=CMLib.map().getRoom(thisRoom.getArea()+"#"+nxt);
 				if(R!=null)
 				{
 					final boolean airOk=(((ticking instanceof Physical)&&CMLib.flags().isFlying((Physical)ticking))

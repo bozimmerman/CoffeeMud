@@ -104,7 +104,8 @@ public class LockSmith extends CraftingSkill
 			}
 			if(tickDown<=1)
 			{
-				if(buildingI==null) buildingI=getBuilding(workingOn);
+				if(buildingI==null)
+					buildingI=getBuilding(workingOn);
 				if((workingOn!=null)&&(mob.location()!=null)&&(!aborted))
 				{
 					if(workingOn instanceof Exit)
@@ -313,7 +314,8 @@ public class LockSmith extends CraftingSkill
 												false,
 												0,
 												null);
-			if(data==null) return false;
+			if(data==null)
+				return false;
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
@@ -328,9 +330,11 @@ public class LockSmith extends CraftingSkill
 			commonTell(mob,L("There's no such thing as a GenKey!!!"));
 			return false;
 		}
-		if((makeResource>=0)&&(buildingI!=null)) buildingI.setMaterial(makeResource);
+		if((makeResource>=0)&&(buildingI!=null))
+			buildingI.setMaterial(makeResource);
 		duration=getDuration(25,mob,workingOn.phyStats().level(),8);
-		if(keyFlag) duration=duration/2;
+		if(keyFlag)
+			duration=duration/2;
 		buildingI.setName(itemName);
 		startStr=L("<S-NAME> start(s) working on @x1@x2.",(keyFlag?"a key for ":""),workingOn.name());
 		displayText=L("You are working on @x1@x2",(keyFlag?"a key for ":""),workingOn.name());

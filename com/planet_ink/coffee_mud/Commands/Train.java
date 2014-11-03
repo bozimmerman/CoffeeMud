@@ -104,7 +104,8 @@ public class Train extends StdCommand
 			{
 				final CharClass C=(CharClass)c.nextElement();
 				int classLevel=mob.charStats().getClassLevel(C);
-				if(classLevel<0) classLevel=0;
+				if(classLevel<0)
+					classLevel=0;
 				if((C.name().toUpperCase().startsWith(abilityName.toUpperCase()))
 				||(C.name(classLevel).toUpperCase().startsWith(abilityName.toUpperCase())))
 				{
@@ -225,7 +226,8 @@ public class Train extends StdCommand
 		}
 		if(CMLib.flags().isSleeping(teacher)||CMLib.flags().isSitting(teacher))
 		{
-			if(teacher.isMonster()) CMLib.commands().postStand(teacher,true);
+			if(teacher.isMonster())
+				CMLib.commands().postStand(teacher,true);
 			if(CMLib.flags().isSleeping(teacher)||CMLib.flags().isSitting(teacher))
 			{
 				mob.tell(L("@x1 looks a bit too relaxed to train with you.",teacher.name()));
@@ -263,7 +265,8 @@ public class Train extends StdCommand
 				if(theClass!=null)
 				{
 					int classLevel=mob.charStats().getClassLevel(theClass);
-					if(classLevel<0) classLevel=0;
+					if(classLevel<0)
+						classLevel=0;
 					mob.tell(L("You can only learn that from another @x1.",theClass.name(classLevel)));
 				}
 				return false;
@@ -358,7 +361,8 @@ public class Train extends StdCommand
 			if(theClass!=null)
 			{
 				int classLevel=mob.charStats().getClassLevel(theClass);
-				if(classLevel<0) classLevel=0;
+				if(classLevel<0)
+					classLevel=0;
 				mob.tell(L("You have undergone @x1 training!",theClass.name(classLevel)));
 				mob.setTrains(mob.getTrains()-1);
 				mob.baseCharStats().getCurrentClass().endCharacter(mob);

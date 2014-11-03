@@ -110,7 +110,8 @@ public class Poison_Alcohol extends Poison
 			if(A==null)
 			{
 				A=CMClass.getAbility("Addictions");
-				if(A!=null) A.invoke(targetMOB,affected,true,0);
+				if(A!=null)
+					A.invoke(targetMOB,affected,true,0);
 			}
 		}
 		return caughtIt;
@@ -127,7 +128,8 @@ public class Poison_Alcohol extends Poison
 		if(disableHappiness){disableHappiness=false; return true;}
 
 		final MOB mob=(MOB)affected;
-		if(mob==null) return true;
+		if(mob==null)
+			return true;
 
 		final Room room=mob.location();
 		if((CMLib.dice().rollPercentage()<(4*drunkness))&&(CMLib.flags().aliveAwakeMobile(mob,true))&&(room!=null))

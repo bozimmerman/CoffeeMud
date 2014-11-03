@@ -69,7 +69,8 @@ public class Prayer_DeathsDoor extends Prayer
 				for(int a=mob.numEffects()-1;a>=0;a--) // personal effects
 				{
 					final Ability A=mob.fetchEffect(a);
-					if(A!=null) A.unInvoke();
+					if(A!=null)
+						A.unInvoke();
 				}
 				if((oldRoom!=startRoom) && oldRoom.isInhabitant(mob) && startRoom.isInhabitant(mob))
 					oldRoom.delInhabitant(mob); // hopefully unnecessary
@@ -97,7 +98,8 @@ public class Prayer_DeathsDoor extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

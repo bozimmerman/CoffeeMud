@@ -74,7 +74,8 @@ public class Spell_LowerResists extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -100,7 +101,8 @@ public class Spell_LowerResists extends Spell
 					}
 				}
 				amount=((mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level())*5;
-				if(amount<5) amount=5;
+				if(amount<5)
+					amount=5;
 				success=maliciousAffect(mob,target,asLevel,0,-1)!=null;
 			}
 		}

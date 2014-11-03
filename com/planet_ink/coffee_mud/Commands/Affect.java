@@ -51,13 +51,17 @@ public class Affect extends StdCommand
 			else
 			{
 				final int x=(int)(mob.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT);
-				if(x<=1) msg.append(L("^!You could use a bath.^?\n\r"));
+				if(x<=1)
+					msg.append(L("^!You could use a bath.^?\n\r"));
 				else
-				if(x<=3) msg.append(L("^!You could really use a bath.^?\n\r"));
+				if(x<=3)
+					msg.append(L("^!You could really use a bath.^?\n\r"));
 				else
-				if(x<=7) msg.append(L("^!You need to bathe, soon.^?\n\r"));
+				if(x<=7)
+					msg.append(L("^!You need to bathe, soon.^?\n\r"));
 				else
-				if(x<15) msg.append(L("^!You desperately need to bathe.^?\n\r"));
+				if(x<15)
+					msg.append(L("^!You desperately need to bathe.^?\n\r"));
 				else msg.append(L("^!Your stench is horrendous! Bathe dammit!^?\n\r"));
 			}
 		}
@@ -120,7 +124,8 @@ public class Affect extends StdCommand
 		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if(A==null) continue;
+			if(A==null)
+				continue;
 			String disp=A.displayText();
 			if(autosAlso && disp.length()==0)
 				disp=A.ID()+"+"+A.proficiency();
@@ -129,7 +134,8 @@ public class Affect extends StdCommand
 				if(disp.startsWith("(")&&disp.endsWith(")"))
 				{
 					long tr=A.expirationDate();
-					if(A.invoker()!=null) tr=tr-(System.currentTimeMillis()-A.invoker().lastTickedDateTime());
+					if(A.invoker()!=null)
+						tr=tr-(System.currentTimeMillis()-A.invoker().lastTickedDateTime());
 					if(tr<Ability.TICKS_ALMOST_FOREVER)
 						disp+=" ^.^N"+CMLib.time().date2EllapsedTime(tr, TimeUnit.SECONDS, true);
 				}
@@ -155,7 +161,8 @@ public class Affect extends StdCommand
 						colnum=0;
 					}
 					msg.append("^S"+CMStrings.padRightPreserve("^<HELPNAME NAME='"+CMStrings.removeColors(A.name())+"'^>"+disp+"^</HELPNAME^>",COL_LEN));
-					if(CMStrings.lengthMinusColors(disp)>COL_LEN) colnum=99;
+					if(CMStrings.lengthMinusColors(disp)>COL_LEN)
+						colnum=99;
 				}
 			}
 		}

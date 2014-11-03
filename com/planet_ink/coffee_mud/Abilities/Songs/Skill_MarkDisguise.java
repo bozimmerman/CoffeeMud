@@ -64,7 +64,8 @@ public class Skill_MarkDisguise extends Skill_Disguise
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Skill_Disguise A=(Skill_Disguise)mob.fetchEffect("Skill_Disguise");
-		if(A==null) A=(Skill_Disguise)mob.fetchEffect("Skill_MarkDisguise");
+		if(A==null)
+			A=(Skill_Disguise)mob.fetchEffect("Skill_MarkDisguise");
 		if(A!=null)
 		{
 			A.unInvoke();

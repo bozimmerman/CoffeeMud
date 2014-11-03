@@ -58,8 +58,10 @@ public class Trap_SporeTrap extends StdTrap
 
 	protected Item getPoison(MOB mob)
 	{
-		if(mob==null) return null;
-		if(mob.location()==null) return null;
+		if(mob==null)
+			return null;
+		if(mob.location()==null)
+			return null;
 		for(int i=0;i<mob.location().numItems();i++)
 		{
 			final Item I=mob.location().getItem(i);
@@ -77,7 +79,8 @@ public class Trap_SporeTrap extends StdTrap
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
-		if(P==null) return null;
+		if(P==null)
+			return null;
 		if(mob!=null)
 		{
 			final Item I=getPoison(mob);
@@ -98,7 +101,8 @@ public class Trap_SporeTrap extends StdTrap
 		final Vector V=new Vector();
 		final Item I=CMLib.materials().makeItemResource(RawMaterial.RESOURCE_MEAT);
 		Ability A=CMClass.getAbility(text());
-		if(A==null) A=CMClass.getAbility("Disease_Cold");
+		if(A==null)
+			A=CMClass.getAbility("Disease_Cold");
 		I.addNonUninvokableEffect(A);
 		V.addElement(I);
 		return V;
@@ -106,7 +110,8 @@ public class Trap_SporeTrap extends StdTrap
 	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,P)) return false;
+		if(!super.canSetTrapOn(mob,P))
+			return false;
 		final Item I=getPoison(mob);
 		if((I==null)
 		&&(mob!=null))
@@ -132,8 +137,10 @@ public class Trap_SporeTrap extends StdTrap
 			{
 				super.spring(target);
 				Ability A=CMClass.getAbility(text());
-				if(A==null) A=CMClass.getAbility("Disease_Cold");
-				if(A!=null) A.invoke(invoker(),target,true,0);
+				if(A==null)
+					A=CMClass.getAbility("Disease_Cold");
+				if(A!=null)
+					A.invoke(invoker(),target,true,0);
 				if((canBeUninvoked())&&(affected instanceof Item))
 					disable();
 			}

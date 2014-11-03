@@ -45,7 +45,8 @@ public class FactionNext extends StdWebMacro
 		final String last=httpReq.getUrlParameter("FACTION");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("FACTION");
+			if(last!=null)
+				httpReq.removeUrlParameter("FACTION");
 			return "";
 		}
 		String lastID="";

@@ -317,7 +317,8 @@ public class DefaultSession implements Session
 												if(file.getName().toLowerCase().startsWith("intro")
 												&&file.getName().toLowerCase().endsWith(".jpg"))
 													choices.addElement(file.getName());
-											if(choices.size()>0) introFilename=(String)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+											if(choices.size()>0)
+												introFilename=(String)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 										}
 										println("\n\r\n\r\n\r^<IMAGE '"+introFilename+"' URL='"+paths[0]+"' H=400 W=400^>\n\r\n\r");
 										if(out!=null)
@@ -451,7 +452,8 @@ public class DefaultSession implements Session
 		final byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_WILL:(byte)TELNET_WONT,(byte)telnetCode};
 		rawBytesOut(out, command);
 		out.flush();
-		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
+			Log.debugOut("Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
 	}
 
@@ -501,7 +503,8 @@ public class DefaultSession implements Session
 			rawout.flush();
 		}
 		catch(final Exception e){}
-		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
+			Log.debugOut("Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
 	}
 	public void changeTelnetModeBackwards(int telnetCode, boolean onOff) throws IOException
@@ -510,7 +513,8 @@ public class DefaultSession implements Session
 		out.flush();
 		rawBytesOut(rawout, command);
 		rawout.flush();
-		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
+			Log.debugOut("Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
 	}
 	public void changeTelnetModeBackwards(OutputStream out, int telnetCode, boolean onOff) throws IOException
@@ -518,7 +522,8 @@ public class DefaultSession implements Session
 		final byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_DO:(byte)TELNET_DONT,(byte)telnetCode};
 		rawBytesOut(out, command);
 		out.flush();
-		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
+			Log.debugOut("Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
 	}
 	@Override
@@ -540,7 +545,8 @@ public class DefaultSession implements Session
 			rawout.flush();
 		}
 		catch(final Exception e){}
-		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Negotiate-Sent: "+Session.TELNET_DESCS[telnetCode]);
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
+			Log.debugOut("Negotiate-Sent: "+Session.TELNET_DESCS[telnetCode]);
 	}
 
 	@Override
@@ -601,7 +607,8 @@ public class DefaultSession implements Session
 	@Override
 	public int getWrap()
 	{
-		if(terminalWidth>5) return terminalWidth;
+		if(terminalWidth>5)
+			return terminalWidth;
 		return ((mob!=null)&&(mob.playerStats()!=null))?mob.playerStats().getWrap():78;
 	}
 	public int getPageBreak()
@@ -609,8 +616,10 @@ public class DefaultSession implements Session
 		if(((mob!=null)&&(mob.playerStats()!=null)))
 		{
 			final int pageBreak=mob.playerStats().getPageBreak();
-			if(pageBreak <= 0) return pageBreak;
-			if(terminalHeight>3) return terminalHeight;
+			if(pageBreak <= 0)
+				return pageBreak;
+			if(terminalHeight>3)
+				return terminalHeight;
 			return pageBreak;
 		}
 		return -1;
@@ -643,7 +652,8 @@ public class DefaultSession implements Session
 	@Override
 	public boolean isBeingSnoopedBy(Session S)
 	{
-		if(S==null) return snoops.size()==0;
+		if(S==null)
+			return snoops.size()==0;
 		return(snoops.contains(S));
 	}
 	@Override
@@ -661,8 +671,10 @@ public class DefaultSession implements Session
 
 	public void setPreviousCmd(List cmds)
 	{
-		if(cmds==null) return;
-		if(cmds.size()==0) return;
+		if(cmds==null)
+			return;
+		if(cmds.size()==0)
+			return;
 		if((cmds.size()>0)&&(((String)cmds.get(0)).trim().startsWith("!")))
 			return;
 
@@ -675,7 +687,8 @@ public class DefaultSession implements Session
 	@Override
 	public void setAfkFlag(boolean truefalse)
 	{
-		if(afkFlag==truefalse) return;
+		if(afkFlag==truefalse)
+			return;
 		afkFlag=truefalse;
 		if(afkFlag)
 			println("\n\rYou are now listed as AFK.");
@@ -688,7 +701,8 @@ public class DefaultSession implements Session
 	@Override
 	public String getAfkMessage()
 	{
-		if(mob==null) return "";
+		if(mob==null)
+			return "";
 		if((afkMessage==null)||(CMStrings.removeColors(afkMessage).trim().length()==0))
 			return mob.name()+" is AFK at the moment.";
 		return afkMessage;
@@ -707,7 +721,8 @@ public class DefaultSession implements Session
 	public boolean isLockedUpWriting()
 	{
 		final long time=writeStartTime;
-		if(time==0) return false;
+		if(time==0)
+			return false;
 		return ((System.currentTimeMillis()-time)>10000);
 	}
 
@@ -831,7 +846,8 @@ public class DefaultSession implements Session
 		{
 			snoopSupportPrint(msg,noCache);
 			final String newMsg=CMLib.lang().finalTranslation(msg);
-			if(newMsg!=null) msg=newMsg;
+			if(newMsg!=null)
+				msg=newMsg;
 
 			if(msg.endsWith("\n\r")
 			&&(msg.equals(lastStr))
@@ -890,8 +906,10 @@ public class DefaultSession implements Session
 			if(!noCache)
 			for(int i=0;i<msg.length();i++)
 			{
-				if(curPrevMsg==null) curPrevMsg=new StringBuffer("");
-				if(msg.charAt(i)=='\r') continue;
+				if(curPrevMsg==null)
+					curPrevMsg=new StringBuffer("");
+				if(msg.charAt(i)=='\r')
+					continue;
 				if(msg.charAt(i)=='\n')
 				{
 					if(curPrevMsg.toString().trim().length()>0)
@@ -1078,7 +1096,8 @@ public class DefaultSession implements Session
 	{
 		promptPrint(Message);
 		final String input=blockingIn(maxTime);
-		if(input==null) return "";
+		if(input==null)
+			return "";
 		if((input.length()>0)&&(input.charAt(input.length()-1)=='\\'))
 			return input.substring(0,input.length()-1);
 		return input;
@@ -1090,7 +1109,8 @@ public class DefaultSession implements Session
 	{
 		promptPrint(Message);
 		final String input=blockingIn(-1);
-		if(input==null) return "";
+		if(input==null)
+			return "";
 		if((input.length()>0)&&(input.charAt(input.length()-1)=='\\'))
 			return input.substring(0,input.length()-1);
 		return input;
@@ -1102,11 +1122,13 @@ public class DefaultSession implements Session
 		if(clookup==null)
 			clookup=CMLib.color().standardColorLookups();
 
-		if(mob()==null) return clookup;
+		if(mob()==null)
+			return clookup;
 		PlayerStats pstats=mob().playerStats();
 		if((mob.soulMate()!=null)&&(mob.soulMate().playerStats()!=null))
 			pstats=mob.soulMate().playerStats();
-		if(pstats==null) return clookup;
+		if(pstats==null)
+			return clookup;
 
 		if(!pstats.getColorStr().equals(lastColorStr))
 		{
@@ -1217,9 +1239,11 @@ public class DefaultSession implements Session
 
 	public void handleEscape() throws IOException, InterruptedIOException
 	{
-		if((in==null)||(out==null)) return;
+		if((in==null)||(out==null))
+			return;
 		int c=readByte();
-		if((char)c!='[') return;
+		if((char)c!='[')
+			return;
 
 		boolean quote=false;
 		final StringBuffer escapeStr=new StringBuffer("");
@@ -1228,24 +1252,30 @@ public class DefaultSession implements Session
 		&&((quote)||(!Character.isLetter((char)c))))
 		{
 			escapeStr.append((char)c);
-			if(c=='"') quote=!quote;
+			if(c=='"')
+				quote=!quote;
 		}
-		if(c==-1) return;
+		if(c==-1)
+			return;
 		escapeStr.append((char)c);
 		String esc=escapeStr.toString().trim();
 		// at the moment, we only handle mxp escapes
 		// everything else is effectively EATEN
-		if(!esc.endsWith("z")) return;
+		if(!esc.endsWith("z"))
+			return;
 		esc=esc.substring(0,esc.length()-1);
-		if(!CMath.isNumber(esc)) return;
+		if(!CMath.isNumber(esc))
+			return;
 		final int escNum=CMath.s_int(esc);
 		// only LINE-based mxp escape sequences are respected
-		if(escNum>3) return;
+		if(escNum>3)
+			return;
 		sock[0].setSoTimeout(30000);
 		final StringBuffer line=new StringBuffer("");
 		while(((c=readByte())!=-1)&&(!killFlag))
 		{
-			if(c=='\n') break;
+			if(c=='\n')
+				break;
 			line.append((char)c);
 		}
 		sock[0].setSoTimeout(SOTIMEOUT);
@@ -1254,14 +1284,17 @@ public class DefaultSession implements Session
 		while(l.length()>0)
 		{
 			final int tagStart=l.indexOf('<');
-			if(tagStart<0) return;
+			if(tagStart<0)
+				return;
 			final int tagEnd=l.indexOf('>');
-			if(tagEnd<0) return;
+			if(tagEnd<0)
+				return;
 			String tag=l.substring(tagStart+1,tagEnd).trim();
 			l=l.substring(tagEnd+1).trim();
 			// now we have a tag, and its parameters (space delimited)
 			final List<String> parts=CMParms.parseSpaces(tag,true);
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Got secure MXP tag: "+tag);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
+				Log.debugOut("Got secure MXP tag: "+tag);
 			if(parts.size()>1)
 			{
 				tag=parts.get(0);
@@ -1271,7 +1304,8 @@ public class DefaultSession implements Session
 					{
 						final String pp=parts.get(p);
 						final int x=pp.indexOf('=');
-						if(x<0) continue;
+						if(x<0)
+							continue;
 						mxpVersionInfo.remove(pp.substring(0,x).trim());
 						mxpVersionInfo.put(pp.substring(0,x).trim(),pp.substring(x+1).trim());
 					}
@@ -1316,7 +1350,8 @@ public class DefaultSession implements Session
 						setKillFlag(true);
 						rawCharsOut(out,"\n\n\033[1z<Executing Shutdown...\n\n".toCharArray());
 						M.setSession(this);
-						if(C!=null) C.execute(M,cmd,0);
+						if(C!=null)
+							C.execute(M,cmd,0);
 					}
 				}
 			}
@@ -1330,7 +1365,8 @@ public class DefaultSession implements Session
 			return;
 		lastIACIn=System.currentTimeMillis();
 		int c=readByte();
-		if(c>255)c=c&0xff;
+		if(c>255)
+			c=c&0xff;
 
 		switch(c)
 		{
@@ -1342,7 +1378,8 @@ public class DefaultSession implements Session
 			CharArrayWriter subOptionStream=new CharArrayWriter();
 			final int subOptionCode = readByte();
 			int last = 0;
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Reading sub-option "+subOptionCode);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
+				Log.debugOut("Reading sub-option "+subOptionCode);
 			while(((last = readByte()) != -1)
 			&&(!killFlag))
 			{
@@ -1373,7 +1410,8 @@ public class DefaultSession implements Session
 		{
 			final int last=readByte();
 			setClientTelnetMode(last,true);
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Got DO "+Session.TELNET_DESCS[last]);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
+				Log.debugOut("Got DO "+Session.TELNET_DESCS[last]);
 			if((terminalType.equalsIgnoreCase("zmud")||terminalType.equalsIgnoreCase("cmud"))&&(last==Session.TELNET_ECHO))
 				setClientTelnetMode(Session.TELNET_ECHO,false);
 			if((last==TELNET_COMPRESS2)&&(getServerTelnetMode(last)))
@@ -1437,7 +1475,8 @@ public class DefaultSession implements Session
 		case TELNET_DONT:
 		{
 			final int last=readByte();
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Got DONT "+Session.TELNET_DESCS[last]);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
+				Log.debugOut("Got DONT "+Session.TELNET_DESCS[last]);
 			setClientTelnetMode(last,false);
 			if((last==TELNET_COMPRESS2)&&(getServerTelnetMode(last)))
 			{
@@ -1452,7 +1491,8 @@ public class DefaultSession implements Session
 		case TELNET_WILL:
 		{
 			final int last=readByte();
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Got WILL "+Session.TELNET_DESCS[last]);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
+				Log.debugOut("Got WILL "+Session.TELNET_DESCS[last]);
 			setClientTelnetMode(last,true);
 			if((terminalType.equalsIgnoreCase("zmud")||terminalType.equalsIgnoreCase("cmud"))&&(last==Session.TELNET_ECHO))
 				setClientTelnetMode(Session.TELNET_ECHO,false);
@@ -1468,7 +1508,8 @@ public class DefaultSession implements Session
 		case TELNET_WONT:
 		{
 			final int last=readByte();
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Got WONT "+Session.TELNET_DESCS[last]);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
+				Log.debugOut("Got WONT "+Session.TELNET_DESCS[last]);
 			setClientTelnetMode(last,false);
 			if((mightSupportTelnetMode(last))&&(getServerTelnetMode(last)))
 				changeTelnetModeBackwards(last,false);
@@ -1644,12 +1685,15 @@ public class DefaultSession implements Session
 				if(c>0)
 				{
 					lastKeystroke=System.currentTimeMillis();
-					if(appendInputFlag) input.append((char)c);
+					if(appendInputFlag)
+						input.append((char)c);
 					if (getClientTelnetMode(TELNET_ECHO))
 						rawCharsOut((char)c);
-					if(!appendInputFlag) return c;
+					if(!appendInputFlag)
+						return c;
 				}
-				if(rv) return 0;
+				if(rv)
+					return 0;
 			}
 		}
 		catch(final InterruptedIOException e)
@@ -1663,7 +1707,8 @@ public class DefaultSession implements Session
 	public String blockingIn(long maxTime)
 		throws IOException
 	{
-		if((in==null)||(out==null)) return "";
+		if((in==null)||(out==null))
+			return "";
 		this.input.setLength(0);
 		final long start=System.currentTimeMillis();
 		final long timeoutTime= (maxTime<=0) ? Long.MAX_VALUE : (start + maxTime);
@@ -1753,7 +1798,8 @@ public class DefaultSession implements Session
 	public boolean confirm(final String Message, String Default, long maxTime)
 	throws IOException
 	{
-		if(Default.toUpperCase().startsWith("T")) Default="Y";
+		if(Default.toUpperCase().startsWith("T"))
+			Default="Y";
 		final String YN=choose(Message,"YN",Default,maxTime);
 		if(YN.equals("Y"))
 			return true;
@@ -1763,7 +1809,8 @@ public class DefaultSession implements Session
 	public boolean confirm(final String Message, String Default)
 	throws IOException
 	{
-		if(Default.toUpperCase().startsWith("T")) Default="Y";
+		if(Default.toUpperCase().startsWith("T"))
+			Default="Y";
 		final String YN=choose(Message,"YN",Default,-1);
 		if(YN.equals("Y"))
 			return true;
@@ -1850,8 +1897,10 @@ public class DefaultSession implements Session
 	{
 		promptLastShown=System.currentTimeMillis();
 		final MOB mob=mob();
-		if(mob==null) return;
-		if(mob.playerStats()==null) return;
+		if(mob==null)
+			return;
+		if(mob.playerStats()==null)
+			return;
 		final StringBuffer buf=new StringBuffer("");
 		if(getClientTelnetMode(Session.TELNET_MXP))
 			buf.append("^<!EN Hp '"+mob().curState().getHitPoints()
@@ -1958,7 +2007,8 @@ public class DefaultSession implements Session
 		&&(mob!=null))
 		{ try{Thread.sleep(1000);}catch(final Exception e){}}
 		String name=M.Name();
-		if(name.trim().length()==0) name="Unknown";
+		if(name.trim().length()==0)
+			name="Unknown";
 		if((M.isInCombat())&&(M.location()!=null))
 		{
 			CMLib.commands().postFlee(mob,"NOWHERE");
@@ -2430,7 +2480,8 @@ public class DefaultSession implements Session
 						milliTotal+=(lastStop-lastStart);
 
 						lastStart=System.currentTimeMillis();
-						if(echoOn) rawPrintln(CMParms.combineQuoted(CMDS,0));
+						if(echoOn)
+							rawPrintln(CMParms.combineQuoted(CMDS,0));
 						final List<List<String>> MORE_CMDS=CMLib.lang().preCommandParser(CMDS);
 						for(int m=0;m<MORE_CMDS.size();m++)
 							mob.enqueCommand(MORE_CMDS.get(m),metaFlags(),0);
@@ -2492,7 +2543,8 @@ public class DefaultSession implements Session
 					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 					{
 						final Ability A=CMClass.getAbility("Disease_Blahs");
-						if(A!=null) A.invoke(mob,mob,true,0);
+						if(A!=null)
+							A.invoke(mob,mob,true,0);
 					}
 					else
 					if((CMLib.flags().isSleeping(mob))
@@ -2500,7 +2552,8 @@ public class DefaultSession implements Session
 					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 					{
 						final Ability A=CMClass.getAbility("Disease_Narcolepsy");
-						if(A!=null) A.invoke(mob,mob,true,0);
+						if(A!=null)
+							A.invoke(mob,mob,true,0);
 					}
 				}
 			}
@@ -2551,7 +2604,8 @@ public class DefaultSession implements Session
 	@Override
 	public long activeTimeMillis()
 	{
-		if(activeMillis==0) return 0;
+		if(activeMillis==0)
+			return 0;
 		return System.currentTimeMillis()-activeMillis;
 	}
 
@@ -2591,7 +2645,8 @@ public class DefaultSession implements Session
 			{
 				final CMMsg msg=CMClass.getMsg(theMOB,null,msgCode,null);
 				Room R=theMOB.location();
-				if(R!=null) skipRooms.remove(R);
+				if(R!=null)
+					skipRooms.remove(R);
 				try
 				{
 					if((R!=null)&&(theMOB.location()!=null))
@@ -2602,7 +2657,8 @@ public class DefaultSession implements Session
 						if(theMOB.location()!=null)
 							R.sendOthers(theMOB,msg);
 					}
-					if(R!=null) skipRooms.add(R);
+					if(R!=null)
+						skipRooms.add(R);
 				}catch(final Exception e){}
 			}
 		}

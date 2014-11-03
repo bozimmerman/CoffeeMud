@@ -108,7 +108,8 @@ public class Spell_WizardsChest extends Spell
 		}
 		Physical target=null;
 		target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if((!(target instanceof Container))||(!((Container)target).hasALock())||(!((Container)target).hasADoor()))
 		{

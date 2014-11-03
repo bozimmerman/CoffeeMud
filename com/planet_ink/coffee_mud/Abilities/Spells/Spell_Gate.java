@@ -118,7 +118,8 @@ public class Spell_Gate extends Spell
 
 
 		int adjustment=target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
-		if(target.isMonster()) adjustment=adjustment*3;
+		if(target.isMonster())
+			adjustment=adjustment*3;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -144,7 +145,8 @@ public class Spell_Gate extends Spell
 		{
 			mob.location().send(mob,msg);
 			final Set<MOB> h=properTargets(mob,givenTarget,false);
-			if(h==null) return false;
+			if(h==null)
+				return false;
 
 			final Room thisRoom=mob.location();
 			for (final Object element : h)

@@ -53,7 +53,8 @@ public class Prayer_FlameWeapon extends Prayer
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(affected==null) return;
+		if(affected==null)
+			return;
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BONUS);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GLOWING);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_LIGHTSOURCE);
@@ -138,7 +139,8 @@ public class Prayer_FlameWeapon extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 		if(!(target instanceof Weapon))
 		{
 			if(auto||mob.isMonster())

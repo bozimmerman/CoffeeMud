@@ -42,7 +42,8 @@ public class Dig extends StdCommand
 
 	public int getDiggingDepth(Item item)
 	{
-		if(item==null) return 1;
+		if(item==null)
+			return 1;
 		switch(item.material()&RawMaterial.MATERIAL_MASK)
 		{
 		case RawMaterial.MATERIAL_METAL:
@@ -64,7 +65,8 @@ public class Dig extends StdCommand
 
 	public boolean isOccupiedWithOtherWork(MOB mob)
 	{
-		if(mob==null) return false;
+		if(mob==null)
+			return false;
 		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
@@ -90,7 +92,8 @@ public class Dig extends StdCommand
 
 			final String msgStr=L("<S-NAME> start(s) digging a hole with <O-NAME>.");
 			Item I=mob.fetchWieldedItem();
-			if(I==null)  I=mob.myNaturalWeapon();
+			if(I==null)
+				I=mob.myNaturalWeapon();
 			final CMMsg msg=CMClass.getMsg(mob,mob.location(),I,CMMsg.MSG_DIG,msgStr);
 			msg.setValue(1);
 			if(mob.location().okMessage(mob,msg))
@@ -103,7 +106,8 @@ public class Dig extends StdCommand
 		{
 			final String msgStr=L("<S-NAME> continue(s) digging a hole with <O-NAME>.");
 			Item I=mob.fetchWieldedItem();
-			if(I==null)  I=mob.myNaturalWeapon();
+			if(I==null)
+				I=mob.myNaturalWeapon();
 			final CMMsg msg=CMClass.getMsg(mob,mob.location(),I,CMMsg.MSG_DIG,msgStr);
 			msg.setValue(getDiggingDepth(I));
 			if(mob.location().okMessage(mob,msg))

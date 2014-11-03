@@ -57,7 +57,8 @@ public class AbilityRecipeData extends StdWebMacro
 		}
 
 		final String last=httpReq.getUrlParameter("ABILITY");
-		if(last==null) return " @break@";
+		if(last==null)
+			return " @break@";
 
 		final String rownum=httpReq.getUrlParameter("ABILITYRECIPEROW");
 
@@ -176,11 +177,13 @@ public class AbilityRecipeData extends StdWebMacro
 							CMLib.ableParms().getEditors().get(dataRow.elementAt(c,1));
 						final String oldVal = (String)dataRow.elementAt(c,2);
 						String newVal = editor.webValue(httpReq,parms,oldVal,"DATA_"+row+"_"+c);
-						if(newVal != null) newVal = newVal.replace('\'', '`');
+						if(newVal != null)
+							newVal = newVal.replace('\'', '`');
 						dataRow.setElementAt(c,2,newVal);
 					}
 					final MOB M = Authenticate.getAuthenticatedMob(httpReq);
-					if(M==null) return " @break@";
+					if(M==null)
+						return " @break@";
 					final boolean saveToVFS = CMath.s_bool(httpReq.getUrlParameter("SAVETOVFS"));
 					if(CMSecurity.isAllowedAnywhere(M,CMSecurity.SecFlag.CMDRECIPES))
 						CMLib.ableParms().resaveRecipeFile(M,recipeData.recipeFilename(),recipeData.dataRows(),recipeData.columns(), saveToVFS);
@@ -196,7 +199,8 @@ public class AbilityRecipeData extends StdWebMacro
 					else
 						return " @break@";
 					final MOB M = Authenticate.getAuthenticatedMob(httpReq);
-					if(M==null) return " @break@";
+					if(M==null)
+						return " @break@";
 					final boolean saveToVFS = CMath.s_bool(httpReq.getUrlParameter("SAVETOVFS"));
 					if(CMSecurity.isAllowedAnywhere(M,CMSecurity.SecFlag.CMDRECIPES))
 						CMLib.ableParms().resaveRecipeFile(M,recipeData.recipeFilename(),recipeData.dataRows(),recipeData.columns(), saveToVFS);

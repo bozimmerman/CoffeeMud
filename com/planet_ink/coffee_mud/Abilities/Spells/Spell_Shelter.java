@@ -82,7 +82,8 @@ public class Spell_Shelter extends Spell
 				mobs.add(m.nextElement());
 			for(final MOB mob : mobs)
 			{
-				if(mob==null) break;
+				if(mob==null)
+					break;
 				mob.tell(L("You return to your previous location."));
 
 				final CMMsg enterMsg=CMClass.getMsg(mob,previousLocation,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> appears out of nowhere!"));
@@ -152,7 +153,8 @@ public class Spell_Shelter extends Spell
 			{
 				mob.location().send(mob,msg);
 				final Set<MOB> h=properTargets(mob,givenTarget,false);
-				if(h==null) return false;
+				if(h==null)
+					return false;
 
 				final Room thisRoom=mob.location();
 				previousLocation=thisRoom;

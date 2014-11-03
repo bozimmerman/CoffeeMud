@@ -47,7 +47,8 @@ public class Prayer_MoralBalance extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -83,7 +84,8 @@ public class Prayer_MoralBalance extends Prayer
 						CMLib.factions().postFactionChange(target,this, CMLib.factions().AlignID(),change);
 					}
 				}
-				if(msg2!=null) mob.location().send(mob,msg2);
+				if(msg2!=null)
+					mob.location().send(mob,msg2);
 			}
 		}
 		else

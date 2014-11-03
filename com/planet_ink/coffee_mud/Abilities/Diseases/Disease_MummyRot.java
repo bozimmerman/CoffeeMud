@@ -65,9 +65,12 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID))	return false;
-		if(affected==null) return false;
-		if(!(affected instanceof MOB)) return true;
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
+		if(!(affected instanceof MOB))
+			return true;
 
 		final MOB mob=(MOB)affected;
 		if((!mob.amDead())&&((--diseaseTick)<=0))
@@ -103,8 +106,10 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(affected==null) return;
-		if(conDown<0) return;
+		if(affected==null)
+			return;
+		if(conDown<0)
+			return;
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-conDown);
 		if(affectableStats.getStat(CharStats.STAT_CONSTITUTION)<=0)
 		{
@@ -122,7 +127,8 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

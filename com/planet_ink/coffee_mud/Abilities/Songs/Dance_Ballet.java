@@ -45,7 +45,8 @@ public class Dance_Ballet extends Dance
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(invoker==null) return;
+		if(invoker==null)
+			return;
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,
 				(affectableStats.getStat(CharStats.STAT_DEXTERITY)+(super.adjustedLevel(invoker(),0)/3)));
 	}

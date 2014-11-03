@@ -105,7 +105,8 @@ public class Sheath extends StdCommand
 		Item sheathable=null;
 		if(commands.size()==0)
 		{
-			if(item2==item1) item2=null;
+			if(item2==item1)
+				item2=null;
 			for(int i=0;i<sheaths.size();i++)
 			{
 				final Container sheath=(Container)sheaths.elementAt(i);
@@ -136,9 +137,11 @@ public class Sheath extends StdCommand
 					containers.addElement(sheath);
 				}
 			}
-			if(item1!=null)	sheathable=item1;
+			if(item1!=null)
+				sheathable=item1;
 			else
-			if(item2!=null)	sheathable=item2;
+			if(item2!=null)
+				sheathable=item2;
 		}
 		else
 		{
@@ -155,7 +158,8 @@ public class Sheath extends StdCommand
 			{
 				doBugFix=false;
 				final Item putThis=mob.fetchItem(null,Wearable.FILTER_WORNONLY,thingToPut+addendumStr);
-				if(putThis==null) break;
+				if(putThis==null)
+					break;
 				if(((putThis.amWearingAt(Wearable.WORN_WIELD))
 				   ||(putThis.amWearingAt(Wearable.WORN_HELD)))
 				   &&(putThis instanceof Weapon))

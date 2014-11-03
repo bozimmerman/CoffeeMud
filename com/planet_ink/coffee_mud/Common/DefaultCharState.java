@@ -173,7 +173,8 @@ public class DefaultCharState implements CharState
 	public int maxHunger(int baseWeight)
 	{
 		long factor=baseWeight/250;
-		if(factor==0) factor=1;
+		if(factor==0)
+			factor=1;
 		factor*=getHunger();
 		if(factor>Integer.MAX_VALUE)
 			return Integer.MAX_VALUE;
@@ -227,7 +228,8 @@ public class DefaultCharState implements CharState
 	public int maxThirst(int baseWeight)
 	{
 		long factor=baseWeight/250;
-		if(factor==0) factor=1;
+		if(factor==0)
+			factor=1;
 		factor*=getThirst();
 		if(factor>Integer.MAX_VALUE)
 			return Integer.MAX_VALUE;
@@ -307,7 +309,8 @@ public class DefaultCharState implements CharState
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
+			if(code.equalsIgnoreCase(CODES[i]))
+				return i;
 		return -1;
 	}
 	@Override

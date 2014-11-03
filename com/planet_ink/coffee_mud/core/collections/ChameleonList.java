@@ -36,7 +36,8 @@ public class ChameleonList<K> implements List<K>, SizedIterable<K>
 
 		public final synchronized void possiblyChangeMe(final ChameleonList<K> me)
 		{
-			if(!isDeprecated()) return;
+			if(!isDeprecated())
+				return;
 			rebuild(me);
 		}
 	}

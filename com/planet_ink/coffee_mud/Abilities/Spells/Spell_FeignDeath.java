@@ -69,7 +69,8 @@ public class Spell_FeignDeath extends Spell
 	public void peaceAt(MOB mob)
 	{
 		final Room room=mob.location();
-		if(room==null) return;
+		if(room==null)
+			return;
 		for(int m=0;m<room.numInhabitants();m++)
 		{
 			final MOB inhab=room.fetchInhabitant(m);
@@ -132,7 +133,8 @@ public class Spell_FeignDeath extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

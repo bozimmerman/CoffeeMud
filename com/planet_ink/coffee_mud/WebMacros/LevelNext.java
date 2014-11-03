@@ -43,7 +43,8 @@ public class LevelNext extends StdWebMacro
 		final String last=httpReq.getUrlParameter("LEVEL");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("LEVEL");
+			if(last!=null)
+				httpReq.removeUrlParameter("LEVEL");
 			return "";
 		}
 		int lastLevel=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
@@ -55,7 +56,8 @@ public class LevelNext extends StdWebMacro
 		if((last==null)||(last.length()>0))
 		{
 			int level=0;
-			if(last!=null) level=CMath.s_int(last);
+			if(last!=null)
+				level=CMath.s_int(last);
 			level++;
 			if(level<=lastLevel)
 			{
