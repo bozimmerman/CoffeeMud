@@ -1031,7 +1031,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			if((B!=null)&&(CMath.bset(B.flags(),Behavior.FLAG_TROUBLEMAKING)))
 				return true;
 		}
-		return false;
+		return (M.fetchEffect("QuestBound")!=null); // questing mobs are, by default, trouble makers
 	}
 
 	public List<Room> getRooms(Area A, List<String> V)
