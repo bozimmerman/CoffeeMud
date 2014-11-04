@@ -145,8 +145,6 @@ Base Class:
 @endif@
 <P>
 <BR>
-<BR>
-<HR>
 <CENTER><a name=BAL><H2>Cross Class Balance Chart</H2></a></CENTER><P>
 <HR>
 @if?CheckReqParm?OLDBASECLASS=ALL@
@@ -176,6 +174,47 @@ Base Class:
 @endif@
 @AddRequestParameter?BASECLASS=@@RequestParameter?OLDBASECLASS@@ @
 </FORM>
+<P><BR>
+<HR>
+<CENTER><a name=CROSS><H2>Cross Class Domains Chart</H2></a></CENTER><P>
+<HR>
+<TABLE WIDTH=100% BORDER=1>
+<TR><TD><FONT COLOR=WHITE>CLASS</FONT></TD>@AbilityDomainNext?RESET@ @loop@ @AbilityDomainNext@<TD><FONT COLOR=WHITE>@RequestParameter?DOMAIN@</FONT></TD>@back@</TR>
+@if?CheckReqParm?OLDBASECLASS=ALL@
+	@BaseCharClassNext?RESET@
+	@loop@
+	@BaseCharClassNext@
+		<TR><TD COLSPAN=90><FONT COLOR=WHITE>CLASS</FONT></TD></TR>
+		@CharClassNext?RESET@
+		@loop@
+			@CharClassNext@
+			<TR>
+				<TD><FONT COLOR=WHITE>@CharClassName@</FONT></TD>
+				@AbilityDomainNext?RESET@ 
+				@loop@ 
+				@AbilityDomainNext@
+				<TD><FONT COLOR=LTGREEN>@CrossBaseClassAbilities?DOMAINSKILLSBYCLASS&DOMAIN=@@RequestParameter?DOMAIN@@&CHARCLASS=@@CharClassID@@&NOTHINGELSE@</FONT></TD>
+				@back@
+			</TR>
+		@back@
+	@back@
+@else@
+@if?!CheckReqParm?OLDBASECLASS=@
+	<TR><TD COLSPAN=90><FONT COLOR=WHITE>CLASS</FONT></TD></TR>
+	@CharClassNext?RESET@
+	@loop@
+		@CharClassNext@
+		<TR>
+			<TD><FONT COLOR=WHITE>@CharClassName@</FONT></TD>
+			@AbilityDomainNext?RESET@ 
+			@loop@ 
+			@AbilityDomainNext@
+			<TD><FONT COLOR=LTGREEN>@CrossBaseClassAbilities?DOMAINSKILLSBYCLASS&DOMAIN=@@RequestParameter?DOMAIN@@&CHARCLASS=@@CharClassID@@&NOTHINGELSE@</FONT></TD>
+			@back@
+		</TR>
+	@back@
+@endif@
+@endif@
 </BODY>
 </HTML>
 @endif@
