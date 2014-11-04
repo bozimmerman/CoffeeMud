@@ -143,6 +143,7 @@ public class Delver extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_Homeopathy",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_FindOre",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_MagmaCannon",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_MassFungalGrowth",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Chant_FindGem",false);

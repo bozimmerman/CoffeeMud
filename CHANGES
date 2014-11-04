@@ -5,6 +5,7 @@
    3. Scroll Scribing is now available to low level mages and arcanists for limited scroll making, and new transcribing feature.
    4. Bankers can now handle deposited containers as a single deposited object.  Players can now have their safety deposit box type thingys.
    5. Weaving has gotten a little recipe love; not much, but a little.
+   6. New Delver chant: Magma Cannon
 # Build 5.8.3 Release 10/27/2014
    *. Database Schema Updated for CMCHAR.CMDESC and CMCHAR.CMCHID.  See the Installation Guide about running DBUpgrade.
    1. (FakeDB): DBUpgrade is now application independent, and can handle big tables better.  See installation guide for new recommended usage.
