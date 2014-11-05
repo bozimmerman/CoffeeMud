@@ -133,7 +133,7 @@ public class Spell_ChanneledMissiles extends Spell
 
 		if(success)
 		{
-			final int numMissiles=((int)Math.round(Math.floor(CMath.div(adjustedLevel(mob,asLevel),5)))+1);
+			final int numMissiles=((int)Math.round(Math.floor(CMath.div(adjustedLevel(mob,asLevel),10)))+1);
 			final Room R=target[0].location();
 			final CMMsg msg=CMClass.getMsg(mob,target[0],this,somanticCastCode(mob,target[0],auto),null);
 			if(R.okMessage(mob,msg))
