@@ -28,13 +28,20 @@ NON-TECH
         * Charlatan ideas: Break a Leg (breaks all legs), Blocking (move group members around), Monologue (pauses all actions in room until player stops talking)
                         *: Strike the Set (everything becomes invisible temporarily). Upstage -- force monsters to approach for 3 ticks, or until attack.
                         *: Exit Stage Left (every enemy flees west, for some number of ticks), Curtain Call (group trades half movement for mana/hp by bowing)
-                        *: Ad Lib (possess a copy of a group member to play that role)
-        *. Alterer ideas : 
-        *. Illusionist id: 
-        *. Evoker ideas  : 
-        *. Ranger ideas  :
+                        *: Ad Lib (possess a copy of a group member to play that role, destroy eq after, no casting spells that require xp, or take xp from charalatan)
+        *. Alterer ideas : +6
+                         : Polymorph Object (temp), Magic Bullet, Flame Arrow, Shape Object (ruins object by adding "shaped like a.." to end), Keen Edge, Fabricate (permanent)
+        *. Illusionist id: +6
+                         : Disguise Self, Color Spray (stun, blind, unconscious)?, Disguise Undead, Disguise Other, Simulacrum (Duplicate, with control), Invisibility Sphere (everyone in room)
+        *. Evoker ideas  : 1x+2
+                         : Invisibility Purge (whole room), Helping Hand (finds person, invites to follow, leads them to Evoker)
+        *. Abjuration    : 1x
+                         : Magic Runes (damage to those who read -- trap, can be detected, disabled)
+        *. Enchantment   : -1x
+        *. Conjuration   : -3n
+        *. Ranger ideas  : Camoflauge, Repel Vermin, Wind Wall (protect/arrow), Detect Snares/Pits, Delay Poison, Detect Poison, Calm Animals, Speak with Animals, Snare
         *. Assassin ideas:
-        *. Paladin ideas :
+        *. Paladin ideas : Align Weapon?
    *. Create Magi Robes(or whatever you wanted to call them) that would enhance his/her magic of their chosen field.
    *. Wants and Needs engine - similar to slavery system
    *. RandomQuests based off the Percolator engine -- a way to randomly generate different quests.
