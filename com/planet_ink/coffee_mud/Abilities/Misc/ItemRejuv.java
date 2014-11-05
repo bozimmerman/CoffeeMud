@@ -179,7 +179,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 			if(item instanceof Container)
 			{
 				final Container C=(Container)item;
-				final boolean locked=C.defaultsLocked();
+				final boolean locked=C.defaultsLocked() && C.hasALock() && C.defaultsClosed();
 				final boolean open=(!locked) && (!C.defaultsClosed());
 				C.setDoorsNLocks(C.hasADoor(),open,C.defaultsClosed(),C.hasALock(),locked,C.defaultsClosed());
 			}

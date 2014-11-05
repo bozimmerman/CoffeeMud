@@ -349,7 +349,7 @@ public class StdContainer extends StdItem implements Container
 	{
 		if(tickID==Tickable.TICKID_EXIT_REOPEN)
 		{
-			setDoorsNLocks(hasALid,defaultsClosed,defaultsClosed,hasALock,defaultsLocked,defaultsLocked);
+			setDoorsNLocks(hasALid,defaultsClosed,defaultsClosed,hasALock,hasALock && defaultsClosed && defaultsLocked,defaultsLocked);
 			return false;
 		}
 		return super.tick(ticking,tickID);
@@ -550,7 +550,7 @@ public class StdContainer extends StdItem implements Container
 		this.hasALock=newHasALock;
 		this.isLocked=newIsLocked;
 		this.defaultsClosed=newDefaultsClosed;
-		this.defaultsLocked=newDefaultsLocked;
+		this.defaultsLocked=newDefaultsLocked && this.hasALock && this.defaultsClosed;
 	}
 
 	@Override
