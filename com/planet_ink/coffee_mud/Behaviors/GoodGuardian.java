@@ -88,7 +88,7 @@ public class GoodGuardian extends StdBehavior
 			&&(victim.isInCombat())
 			&&(!victimVictim.amDead())
 			&&(victimVictim.isInCombat())
-			&&((!victimVictim.isMonster()))||(victimVictim.fetchEffect("QuestBound")==null))
+			&&((!victimVictim.isMonster())||(victimVictim.fetchEffect("QuestBound")==null)))
 			{
 				Aggressive.startFight(observer,victim,true,false,"PROTECT THE INNOCENT!");
 			}
