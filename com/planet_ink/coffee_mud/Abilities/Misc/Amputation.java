@@ -35,7 +35,7 @@ import java.util.*;
 */
 
 @SuppressWarnings({"unchecked","rawtypes"})
-public class Amputation extends StdAbility implements Amputator, HealthCondition
+public class Amputation extends StdAbility implements LimbDamage, HealthCondition
 {
 	@Override public String ID() { return "Amputation"; }
 	private final static String localizedName = CMLib.lang().L("Amputation");
@@ -43,14 +43,14 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 	@Override
 	public String displayText()
 	{
-		if(missingLimbNameSet().size()==0)
+		if(affectedLimbNameSet().size()==0)
 			return "";
-		return "(Missing your "+CMLib.english().toEnglishStringList(missingLimbNameSet())+")";
+		return "(Missing your "+CMLib.english().toEnglishStringList(affectedLimbNameSet())+")";
 	}
 	@Override
 	public String getHealthConditionDesc()
 	{
-		return "Missing "+CMLib.english().toEnglishStringList(missingLimbNameSet());
+		return "Missing "+CMLib.english().toEnglishStringList(affectedLimbNameSet());
 	}
 
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -115,7 +115,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 			&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 			&&(CMLib.flags().canBeSeenBy(M,msg.source())))
 			{
-				final String s=CMLib.utensils().niceCommaList(missingLimbNameSet(),true);
+				final String s=CMLib.utensils().niceCommaList(affectedLimbNameSet(),true);
 				if(s.length()>0)
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,
 												  CMMsg.MSG_OK_VISUAL,L("\n\r@x1 is missing @x2 @x3.\n\r",M.name(msg.source()),M.charStats().hisher(),s),
@@ -137,7 +137,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		missingLimbNameSet();
+		affectedLimbNameSet();
 		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
@@ -158,7 +158,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
-		missingLimbNameSet();
+		affectedLimbNameSet();
 		if(amputations[Race.BODY_LEG]<0)
 		{
 			if(affected.getWearPositions(Wearable.WORN_LEGS)==0)
@@ -179,7 +179,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		missingLimbNameSet();
+		affectedLimbNameSet();
 		for(int i=0;i<amputations.length;i++)
 			if(amputations[i]!=0)
 				affectableStats.alterBodypart(i,amputations[i]);
@@ -258,7 +258,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 	}
 
 	@Override
-	public List<String> missingLimbNameSet()
+	public List<String> affectedLimbNameSet()
 	{
 		if(missingLimbs!=null)
 			return missingLimbs;
@@ -322,14 +322,15 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 	}
 
 	@Override
-	public List<String> remainingLimbNameSet(Physical P)
+	public List<String> unaffectedLimbSet(Physical P)
 	{
-		missingLimbNameSet();
-		final Vector V=new Vector();
+		affectedLimbNameSet();
+		final List<String> V=new Vector();
 		if(!(P instanceof MOB))
 			return V;
 		final MOB M=(MOB)P;
 		final int[] limbs=new int[Race.BODY_PARTS];
+		final List<String> affected=affectedLimbNameSet();
 		for(int i=0;i<limbs.length;i++)
 		{
 			limbs[i]=M.charStats().getBodyPart(i);
@@ -338,20 +339,20 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 			{
 				if(limbs[i]-amputations[i]==1)
 				{
-					if(!missingLimbNameSet().contains(Race.BODYPARTSTR[i].toLowerCase()))
-						V.addElement(Race.BODYPARTSTR[i].toLowerCase());
+					if(!affected.contains(Race.BODYPARTSTR[i].toLowerCase()))
+						V.add(Race.BODYPARTSTR[i].toLowerCase());
 				}
 				else
 				if(limbs[i]-amputations[i]==2)
 				{
-					if(!missingLimbNameSet().contains("left "+Race.BODYPARTSTR[i].toLowerCase()))
-						V.addElement("left "+Race.BODYPARTSTR[i].toLowerCase());
-					if(!missingLimbNameSet().contains("right "+Race.BODYPARTSTR[i].toLowerCase()))
-						V.addElement("right "+Race.BODYPARTSTR[i].toLowerCase());
+					if(!affected.contains("left "+Race.BODYPARTSTR[i].toLowerCase()))
+						V.add("left "+Race.BODYPARTSTR[i].toLowerCase());
+					if(!affected.contains("right "+Race.BODYPARTSTR[i].toLowerCase()))
+						V.add("right "+Race.BODYPARTSTR[i].toLowerCase());
 				}
 				else
 				for(int ii=0;ii<limbs[i];ii++)
-					V.addElement(Race.BODYPARTSTR[i].toLowerCase());
+					V.add(Race.BODYPARTSTR[i].toLowerCase());
 			}
 		}
 		return V;
@@ -363,7 +364,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 // Reason:  Easy single limb amputation removal
 // ****************************************************************************
 	@Override
-	public void unamputate(Physical target, Amputator A, String gone)
+	public void restoreLimb(Physical target, LimbDamage A, String gone)
 	{
 		if (target != null)
 		{
@@ -379,12 +380,19 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 			}
 		}
 
-		if (A == null)return;
-		final List<String> theRest = A.missingLimbNameSet();
-		if (theRest.contains(gone))theRest.remove(gone);
+		if (A == null)
+			return;
+		final List<String> theRest = A.affectedLimbNameSet();
+		if (theRest.contains(gone))
+			theRest.remove(gone);
 		A.setMiscText("");
-		for (int i = 0; i < theRest.size(); i++)
-			A.setMiscText(A.text() + (theRest.get(i)) + ";");
+		if((theRest.size()==0)&&(target!=null))
+			target.delEffect(A);
+		else
+		{
+			for (int i = 0; i < theRest.size(); i++)
+				A.setMiscText(A.text() + (theRest.get(i)) + ";");
+		}
 	}
 
 	public static int getRacialCode(String name)
@@ -396,8 +404,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 		return -1;
 	}
 
-	@Override
-	public List<String> affectedLimbNameSet(Object O, String missing, List<String> missingLimbs)
+	public List<String> extraAffectedLimbNameSet(Object O, String missing, List<String> missingLimbs)
 	{
 		final Vector AL=new Vector();
 		final int x=getRacialCode(missing);
@@ -423,7 +430,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 	}
 
 	@Override
-	public Item amputate(Physical target, Amputator A, String gone)
+	public Item damageLimb(Physical target, LimbDamage A, String gone)
 	{
 		if(A==null)
 			return null;
@@ -506,31 +513,26 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 
 		if(!isFakeLimb)
 		{
-			final List<String> theRest=A.affectedLimbNameSet(target,gone,A.missingLimbNameSet());
+			final List<String> theRest=A.extraAffectedLimbNameSet(target,gone,A.affectedLimbNameSet());
 			if(!theRest.contains(gone))
 				theRest.add(gone);
 			for(int i=0;i<theRest.size();i++)
 				A.setMiscText(A.text()+(theRest.get(i))+";");
 		}
 
-		final Injury I=(target==null)?null:(Injury)target.fetchEffect("Injury");
-		if(I!=null)
+		if(target != null)
 		{
-			Vector V=null;
-			for(int i=0;i<I.injuries.length;i++)
+			for(Enumeration<Ability> a=target.effects();a.hasMoreElements();)
 			{
-				V=I.injuries[i];
-				if(V!=null)
-				for(int v=0;v<V.size();v++)
-					if(((String)((Object[])V.elementAt(v))[0]).equalsIgnoreCase(gone))
-					{
-						V.removeElementAt(v);
-						if(V.size()==0)
-							I.injuries[i]=null;
-						break;
-					}
+				final Ability oA=a.nextElement();
+				if((oA instanceof LimbDamage)&&(!oA.ID().equals(ID())))
+				{
+					if(((LimbDamage)oA).affectedLimbNameSet().contains(gone))
+						((LimbDamage)oA).restoreLimb(target, (LimbDamage)oA, gone);
+				}
 			}
 		}
+		
 		if((target instanceof MOB)
 		&&(CMLib.dice().roll(1,100,0)<=CMProps.getIntVar(CMProps.Int.INJBLEEDPCTCHANCE)))
 		{
@@ -660,7 +662,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 				}
 			}
 
-			final List<String> VN=A.remainingLimbNameSet(target);
+			final List<String> VN=A.unaffectedLimbSet(target);
 			if((VN.size()==0)&&(fakeLimb==null))
 			{
 				if(!auto)
@@ -702,7 +704,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 				target.location().send(target,msg);
 				if(msg.value()<=0)
 				{
-					if(amputate(target,A,gone)!=null)
+					if(damageLimb(target,A,gone)!=null)
 					{
 						if(newOne==true)
 							target.addNonUninvokableEffect(A);

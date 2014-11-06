@@ -64,10 +64,10 @@ public class Fighter_CalledStrike extends FighterSkill
 		final MOB mob=target;
 		if(mob==null)
 			return false;
-		Amputator A=(Amputator)mob.fetchEffect("Amputation");
+		LimbDamage A=(LimbDamage)mob.fetchEffect("Amputation");
 		if(A==null)
-			A=(Amputator)CMClass.getAbility("Amputation");
-		if(A.amputate(mob,A,gone)!=null)
+			A=(LimbDamage)CMClass.getAbility("Amputation");
+		if(A.damageLimb(mob,A,gone)!=null)
 		{
 			if(mob.fetchEffect(A.ID())==null)
 				mob.addNonUninvokableEffect(A);
@@ -174,11 +174,11 @@ public class Fighter_CalledStrike extends FighterSkill
 			return false;
 		}
 
-		Amputator A=(Amputator)target.fetchEffect("Amputation");
+		LimbDamage A=(LimbDamage)target.fetchEffect("Amputation");
 		if(A==null)
-			A=(Amputator)CMClass.getAbility("Amputation");
+			A=(LimbDamage)CMClass.getAbility("Amputation");
 
-		final List<String> remainingLimbList=A.remainingLimbNameSet(target);
+		final List<String> remainingLimbList=A.unaffectedLimbSet(target);
 		if(remainingLimbList.size()==0)
 		{
 			if(!auto)

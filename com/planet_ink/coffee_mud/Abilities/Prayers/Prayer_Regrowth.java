@@ -109,8 +109,8 @@ public class Prayer_Regrowth extends Prayer implements MendingSkill
 				final Ability A=target.fetchEffect("Amputation");
 				if(A!=null)
 				{
-					final Amputator Amp=(Amputator)A;
-					final List<String> missing = Amp.missingLimbNameSet();
+					final LimbDamage Amp=(LimbDamage)A;
+					final List<String> missing = Amp.affectedLimbNameSet();
 					String LookingFor = null;
 					boolean found = false;
 					String missLimb=null;
@@ -130,7 +130,7 @@ public class Prayer_Regrowth extends Prayer implements MendingSkill
 							break;
 					}
 					if((found)&&(missLimb!=null))
-						Amp.unamputate(target, Amp, missLimb.toLowerCase());
+						Amp.restoreLimb(target, Amp, missLimb.toLowerCase());
 					target.recoverCharStats();
 					target.recoverPhyStats();
 					target.recoverMaxState();

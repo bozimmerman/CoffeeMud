@@ -74,10 +74,10 @@ public class Archon_Injure extends ArchonSkill
 		final MOB target=getTargetAnywhere(mob,commands,givenTarget,false,true,true);
 		if(target==null)
 			return false;
-		Amputator A=(Amputator)target.fetchEffect("Amputation");
+		LimbDamage A=(LimbDamage)target.fetchEffect("Amputation");
 		if(A==null)
-			A=(Amputator)CMClass.getAbility("Amputation");
-		final List<String> remainingLimbList=A.remainingLimbNameSet(target);
+			A=(LimbDamage)CMClass.getAbility("Amputation");
+		final List<String> remainingLimbList=A.unaffectedLimbSet(target);
 		if(target.charStats().getBodyPart(Race.BODY_HEAD)>0)
 			remainingLimbList.add("head");
 		if(target.charStats().getBodyPart(Race.BODY_TORSO)>0)

@@ -45,7 +45,7 @@ public class Prop_SparringRoom extends Property
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if(msg.tool() instanceof Amputator)
+		if(msg.tool() instanceof LimbDamage)
 			return false;
 		if(msg.sourceMinor()==CMMsg.TYP_FLEE)
 			return false;

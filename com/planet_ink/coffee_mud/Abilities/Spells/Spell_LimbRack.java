@@ -81,12 +81,12 @@ public class Spell_LimbRack extends Spell
 					mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> has <S-HIS-HER> arms TORN OFF!"));
 				else
 					mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> has <S-HIS-HER> arms and legs TORN OFF!"));
-				Amputator A=(Amputator)mob.fetchEffect("Amputation");
+				LimbDamage A=(LimbDamage)mob.fetchEffect("Amputation");
 				if(A==null)
-					A=(Amputator)CMClass.getAbility("Amputation");
+					A=(LimbDamage)CMClass.getAbility("Amputation");
 				boolean success=true;
 				for(int i=0;i<limbsToRemove.size();i++)
-					success=success && (A.amputate(mob,A,limbsToRemove.get(i))!=null);
+					success=success && (A.damageLimb(mob,A,limbsToRemove.get(i))!=null);
 				if(success)
 				{
 					if(mob.fetchEffect(A.ID())==null)
@@ -105,10 +105,10 @@ public class Spell_LimbRack extends Spell
 		if(target==null)
 			return false;
 
-		Amputator A=(Amputator)target.fetchEffect("Amputation");
+		LimbDamage A=(LimbDamage)target.fetchEffect("Amputation");
 		if(A==null)
-			A=(Amputator)CMClass.getAbility("Amputation");
-		final List<String> remainingLimbList=A.remainingLimbNameSet(target);
+			A=(LimbDamage)CMClass.getAbility("Amputation");
+		final List<String> remainingLimbList=A.unaffectedLimbSet(target);
 		for(int i=remainingLimbList.size()-1;i>=0;i--)
 		{
 			final String gone=remainingLimbList.get(i);
