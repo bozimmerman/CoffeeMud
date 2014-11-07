@@ -66,8 +66,11 @@ public class Fighter_CalledStrike extends FighterSkill
 			return false;
 		LimbDamage A=(LimbDamage)mob.fetchEffect("Amputation");
 		if(A==null)
+		{
 			A=(LimbDamage)CMClass.getAbility("Amputation");
-		if(A.damageLimb(mob,A,gone)!=null)
+			A.setAffectedOne(mob);
+		}
+		if(A.damageLimb(gone)!=null)
 		{
 			if(mob.fetchEffect(A.ID())==null)
 				mob.addNonUninvokableEffect(A);
@@ -174,11 +177,14 @@ public class Fighter_CalledStrike extends FighterSkill
 			return false;
 		}
 
-		LimbDamage A=(LimbDamage)target.fetchEffect("Amputation");
-		if(A==null)
-			A=(LimbDamage)CMClass.getAbility("Amputation");
+		LimbDamage ampuA=(LimbDamage)target.fetchEffect("Amputation");
+		if(ampuA==null)
+		{
+			ampuA=(LimbDamage)CMClass.getAbility("Amputation");
+			ampuA.setAffectedOne(target);
+		}
 
-		final List<String> remainingLimbList=A.unaffectedLimbSet(target);
+		final List<String> remainingLimbList=ampuA.unaffectedLimbSet();
 		if(remainingLimbList.size()==0)
 		{
 			if(!auto)
@@ -242,9 +248,9 @@ public class Fighter_CalledStrike extends FighterSkill
 				mob.location().send(mob,msg);
 				invoker=mob;
 				beneficialAffect(mob,mob,asLevel,2);
-				final Ability A2=target.fetchEffect("Injury");
-				if(A2!=null)
-					A2.setMiscText(mob.Name()+"/"+gone);
+				final Ability injuryA=target.fetchEffect("Injury");
+				if(injuryA!=null)
+					injuryA.setMiscText(mob.Name()+"/"+gone);
 				mob.recoverPhyStats();
 			}
 		}

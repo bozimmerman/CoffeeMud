@@ -2176,4 +2176,5 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 		return true;
 	}
+	
 }

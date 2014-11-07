@@ -45,22 +45,19 @@ public interface LimbDamage extends Ability
 	 * Returns a fully-qualified list of those parts of the given object which
 	 * have not yet gotten damaged from it.  This would be a string set denoting the names
 	 * of the specific parts not yet damaged.
-	 * @param P the object to scrutinize
 	 * @return the set of the name of the remaining pieces.
 	 */
-	public List<String> unaffectedLimbSet(Physical P);
+	public List<String> unaffectedLimbSet();
 	/**
 	 * Performs the very dirty business of mangling the item of the given
 	 * name on the given target.  An existing instanceof of the LimbDamage
 	 * which will act as a property for the target must also be passed in.
 	 * It will generate messages if necessary, toss the piece on the ground
 	 * if that is appropriate, and do all thats needed.
-	 * @param target the thing to mangle the part on
-	 * @param A the instanceof this object to use as a marker
 	 * @param limbName the name of the limb to mangle, fully qualified.
 	 * @return the item object representing the newly damaged part, if applicable.
 	 */
-	public Item damageLimb(Physical target, LimbDamage A, String limbName);
+	public Item damageLimb(String limbName);
 	/**
 	 * The opposite of the unaffectedLimbSet method, this method returns
 	 * the list of the names of those parts which have been damaged.
@@ -68,24 +65,10 @@ public interface LimbDamage extends Ability
 	 */
 	public List<String> affectedLimbNameSet();
 	/**
-	 * Often losing or mangling one part means that other parts are instantly affected, like
-	 * removing an engine includes the spark plugs.  This method is called to
-	 * generate the list of those parts which also must go due to the parts
-	 * described by the limbName string, but which are not currently included
-	 * in the given affectedLimbs set.
-	 * @param O the mob/race/object frame of reference to use
-	 * @param limbName the name of the part that was removed
-	 * @param affectedLimbs the parts already missing from the target
-	 * @return the set of parts that are not yet damaged, but now should be.
-	 */
-	public List<String> extraAffectedLimbNameSet(Object O, String limbName, List<String> affectedLimbs);
-	/**
 	 * Restores a missing or damaged part, denoted by the given string, and managed by the
 	 * given LimbDamage property
-	 * @param target the unfortunate target
-	 * @param A the LimbDamage object managing the targets damaged stuff
 	 * @param gone the name of the part to restore.
 	 */
-	public void restoreLimb(Physical target, LimbDamage A, String gone);
+	public void restoreLimb(String gone);
 
 }

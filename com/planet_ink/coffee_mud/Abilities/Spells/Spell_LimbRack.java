@@ -81,16 +81,19 @@ public class Spell_LimbRack extends Spell
 					mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> has <S-HIS-HER> arms TORN OFF!"));
 				else
 					mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> has <S-HIS-HER> arms and legs TORN OFF!"));
-				LimbDamage A=(LimbDamage)mob.fetchEffect("Amputation");
-				if(A==null)
-					A=(LimbDamage)CMClass.getAbility("Amputation");
+				LimbDamage ampuA=(LimbDamage)mob.fetchEffect("Amputation");
+				if(ampuA==null)
+				{
+					ampuA=(LimbDamage)CMClass.getAbility("Amputation");
+					ampuA.setAffectedOne(mob);
+				}
 				boolean success=true;
 				for(int i=0;i<limbsToRemove.size();i++)
-					success=success && (A.damageLimb(mob,A,limbsToRemove.get(i))!=null);
+					success=success && (ampuA.damageLimb(limbsToRemove.get(i))!=null);
 				if(success)
 				{
-					if(mob.fetchEffect(A.ID())==null)
-						mob.addNonUninvokableEffect(A);
+					if(mob.fetchEffect(ampuA.ID())==null)
+						mob.addNonUninvokableEffect(ampuA);
 				}
 			}
 			CMLib.utensils().confirmWearability(mob);
@@ -107,8 +110,11 @@ public class Spell_LimbRack extends Spell
 
 		LimbDamage A=(LimbDamage)target.fetchEffect("Amputation");
 		if(A==null)
+		{
 			A=(LimbDamage)CMClass.getAbility("Amputation");
-		final List<String> remainingLimbList=A.unaffectedLimbSet(target);
+			A.setAffectedOne(target);
+		}
+		final List<String> remainingLimbList=A.unaffectedLimbSet();
 		for(int i=remainingLimbList.size()-1;i>=0;i--)
 		{
 			final String gone=remainingLimbList.get(i);

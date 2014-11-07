@@ -158,8 +158,11 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 				final String amount=txt.substring(x+1);
 				Amputation A=(Amputation)mob.fetchEffect("Amputation");
 				if(A==null)
+				{
 					A=new Amputation();
-				final List<String> remains=A.unaffectedLimbSet(mob);
+					A.setAffectedOne(mob);
+				}
+				final List<String> remains=A.unaffectedLimbSet();
 				if(mob.charStats().getBodyPart(Race.BODY_HEAD)>0)
 					remains.add("head");
 				if(mob.charStats().getBodyPart(Race.BODY_TORSO)>0)
@@ -245,22 +248,18 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 	}
 
 	@Override
-	public List<String> unaffectedLimbSet(Physical P)
+	public List<String> unaffectedLimbSet()
 	{
-		Amputation A=null;
-		if(P != null)
+		Amputation ampuA=(Amputation)affected.fetchEffect("Amputation");
+		if(ampuA==null)
 		{
-			final LimbDamage D = (LimbDamage)P.fetchEffect(ID());
-			if((D!=null)&&(D!=this))
-				return D.unaffectedLimbSet(P);
-			A=(Amputation)P.fetchEffect("Amputation");
+			ampuA=new Amputation();
+			ampuA.setAffectedOne(affected);
 		}
-		if(A==null)
-			A=new Amputation();
-		final List<String> remains=A.unaffectedLimbSet(P);
-		if(P instanceof MOB)
+		final List<String> remains=ampuA.unaffectedLimbSet();
+		if(affected instanceof MOB)
 		{
-			final MOB mob=(MOB)P;
+			final MOB mob=(MOB)affected;
 			if(mob.charStats().getBodyPart(Race.BODY_HEAD)>0)
 				remains.add("head");
 			if(mob.charStats().getBodyPart(Race.BODY_TORSO)>0)
@@ -277,24 +276,13 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 	}
 
 	@Override
-	public Item damageLimb(Physical target, LimbDamage A, String limbName)
+	public Item damageLimb(String limbName)
 	{
-		if((A!=null)&&(A != this)&&(target != null))
+		if(affected!=null)
 		{
-			if(target.fetchEffect(ID())==null)
+			if(affected instanceof MOB)
 			{
-				target.addNonUninvokableEffect(A);
-				A.setSavable(true);
-			}
-			else
-				A=(LimbDamage)target.fetchEffect(ID());
-			return A.damageLimb(target, A, limbName);
-		}
-		if(target!=null)
-		{
-			if(target instanceof MOB)
-			{
-				boolean success=((MOB)target).location().show(((MOB)target),A,CMMsg.MSG_OK_VISUAL,L("^G<S-YOUPOSS> @x1 is injured!^?",limbName));
+				boolean success=((MOB)affected).location().show(((MOB)affected),this,CMMsg.MSG_OK_VISUAL,L("^G<S-YOUPOSS> @x1 is injured!^?",limbName));
 				if(!success)
 					return null;
 			}
@@ -348,23 +336,8 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 	}
 
 	@Override
-	public List<String> extraAffectedLimbNameSet(Object O, String limbName, List<String> affectedLimbs)
+	public void restoreLimb(String limbName)
 	{
-		return new ArrayList<String>(1);
-	}
-
-	@Override
-	public void restoreLimb(Physical target, LimbDamage A, String limbName)
-	{
-		if((A!=null)&&(A != this)&&(target != null))
-		{
-			if(target.fetchEffect(ID())!=null)
-			{
-				A=(LimbDamage)target.fetchEffect(ID());
-				A.restoreLimb(target, A, limbName);
-				return;
-			}
-		}
 		for(int partNum=0;partNum<Race.BODY_PARTS;partNum++)
 			if(injuries[partNum]!=null)
 				for(Pair<String,Integer> part : injuries[partNum])
@@ -373,8 +346,8 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 						injuries[partNum].remove(part);
 						if(injuries[partNum].size()==0)
 							injuries[partNum]=null;
-						if((target != null)&&(A!=null)&&(A.affectedLimbNameSet().size()==0))
-							target.delEffect(A);
+						if((affected != null)&&(affectedLimbNameSet().size()==0))
+							affected.delEffect(this);
 						return;
 					}
 	}
@@ -490,10 +463,13 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 			&&(CMLib.dice().rollPercentage()<=CMProps.getIntVar(CMProps.Int.INJPCTCHANCE)))))
 		{
 			final MOB mob=(MOB)msg.target();
-			Amputation A=(Amputation)mob.fetchEffect("Amputation");
-			if(A==null)
-				A=new Amputation();
-			final List<String> remains=A.unaffectedLimbSet(mob);
+			Amputation ampuA=(Amputation)mob.fetchEffect("Amputation");
+			if(ampuA==null)
+			{
+				ampuA=new Amputation();
+				ampuA.setAffectedOne(mob);
+			}
+			final List<String> remains=ampuA.unaffectedLimbSet();
 			if(mob.charStats().getBodyPart(Race.BODY_HEAD)>0)
 				remains.add("head");
 			if(mob.charStats().getBodyPart(Race.BODY_TORSO)>0)
@@ -618,10 +594,13 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 									bodyVec.removeElement(O);
 									if(bodyVec.size()==0)
 										injuries[bodyLoc]=null;
-									if(A.damageLimb(mob,A,O.first.toLowerCase())!=null)
+									if(ampuA.damageLimb(O.first.toLowerCase())!=null)
 									{
-										if(mob.fetchEffect(A.ID())==null)
-											mob.addNonUninvokableEffect(A);
+										if(mob.fetchEffect(ampuA.ID())==null)
+										{
+											ampuA.makeLongLasting();
+											mob.addEffect(ampuA);
+										}
 									}
 								}
 							}

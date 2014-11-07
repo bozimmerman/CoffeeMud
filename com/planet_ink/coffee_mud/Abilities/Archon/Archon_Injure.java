@@ -74,10 +74,13 @@ public class Archon_Injure extends ArchonSkill
 		final MOB target=getTargetAnywhere(mob,commands,givenTarget,false,true,true);
 		if(target==null)
 			return false;
-		LimbDamage A=(LimbDamage)target.fetchEffect("Amputation");
-		if(A==null)
-			A=(LimbDamage)CMClass.getAbility("Amputation");
-		final List<String> remainingLimbList=A.unaffectedLimbSet(target);
+		LimbDamage ampuA=(LimbDamage)target.fetchEffect("Amputation");
+		if(ampuA==null)
+		{
+			ampuA=(LimbDamage)CMClass.getAbility("Amputation");
+			ampuA.setAffectedOne(target);
+		}
+		final List<String> remainingLimbList=ampuA.unaffectedLimbSet();
 		if(target.charStats().getBodyPart(Race.BODY_HEAD)>0)
 			remainingLimbList.add("head");
 		if(target.charStats().getBodyPart(Race.BODY_TORSO)>0)
@@ -110,16 +113,16 @@ public class Archon_Injure extends ArchonSkill
 			{
 				mob.location().send(mob,msg);
 				Log.sysOut("Archon_Injure",mob.Name()+" injures "+target.name()+".");
-				Ability A2=CMClass.getAbility("Injury");
-				if(A2!=null)
+				Ability injuryA=CMClass.getAbility("Injury");
+				if(injuryA!=null)
 				{
 					final int percentOff=target.maxState().getHitPoints()/5;
 					if(target.curState().getHitPoints()>(target.curState().getHitPoints()-percentOff))
 						target.curState().setHitPoints(target.curState().getHitPoints()-percentOff);
-					A2.invoke(mob,new XVector(),target,true,0);
-					A2=target.fetchEffect("Injury");
-					if(A2!=null)
-						A2.setMiscText("+"+part.toLowerCase()+"=20");
+					injuryA.invoke(mob,new XVector(),target,true,0);
+					injuryA=target.fetchEffect("Injury");
+					if(injuryA!=null)
+						injuryA.setMiscText("+"+part.toLowerCase()+"=20");
 				}
 			}
 		}

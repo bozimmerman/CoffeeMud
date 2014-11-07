@@ -151,10 +151,13 @@ public class Fighter_Gouge extends MonkSkill
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> blinded!"));
 				maliciousAffect(mob,target,asLevel,5,-1);
-				LimbDamage A=(LimbDamage)target.fetchEffect("Amputation");
-				if(A==null)
-					A=(LimbDamage)CMClass.getAbility("Amputation");
-				final List<String> remainingLimbList=A.unaffectedLimbSet(target);
+				LimbDamage ampuA=(LimbDamage)target.fetchEffect("Amputation");
+				if(ampuA==null)
+				{
+					ampuA=(LimbDamage)CMClass.getAbility("Amputation");
+					ampuA.setAffectedOne(target);
+				}
+				final List<String> remainingLimbList=ampuA.unaffectedLimbSet();
 				String gone=null;
 				for(int i=0;i<remainingLimbList.size();i++)
 					if(remainingLimbList.get(i).toUpperCase().endsWith("EYE"))
@@ -164,19 +167,19 @@ public class Fighter_Gouge extends MonkSkill
 					}
 				if(gone!=null)
 				{
-					Ability A2=CMClass.getAbility("Injury");
-					if(A2!=null)
+					Ability injuryA=CMClass.getAbility("Injury");
+					if(injuryA!=null)
 					{
-						A2.setMiscText(mob.Name()+"/"+gone);
+						injuryA.setMiscText(mob.Name()+"/"+gone);
 						final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_DAMAGE,L("<DAMAGE> <T-NAME>."));
 						msg2.setValue(target.maxState().getHitPoints()/(20-getXLEVELLevel(mob)));
-						if(!A2.invoke(mob,new XVector(msg2),target,true,0))
+						if(!injuryA.invoke(mob,new XVector(msg2),target,true,0))
 						{
-							A2=target.fetchEffect("Injury");
-							if( A2 != null )
+							injuryA=target.fetchEffect("Injury");
+							if( injuryA != null )
 							{
-							  A2.setMiscText(mob.Name()+"/"+gone);
-							  A2.okMessage(target,msg2);
+								injuryA.setMiscText(mob.Name()+"/"+gone);
+								injuryA.okMessage(target,msg2);
 							}
 						}
 					}

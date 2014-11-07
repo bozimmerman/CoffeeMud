@@ -322,21 +322,15 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 	}
 
 	@Override
-	public List<String> unaffectedLimbSet(Physical P)
+	public List<String> unaffectedLimbSet()
 	{
-		if(P != null)
-		{
-			final LimbDamage D = (LimbDamage)P.fetchEffect(ID());
-			if((D!=null)&&(D!=this))
-				return D.unaffectedLimbSet(P);
-		}
 		affectedLimbNameSet();
 		final List<String> V=new Vector();
-		if(!(P instanceof MOB))
+		if(!(affected instanceof MOB))
 			return V;
-		final MOB M=(MOB)P;
+		final MOB M=(MOB)affected;
 		final int[] limbs=new int[Race.BODY_PARTS];
-		final List<String> affected=affectedLimbNameSet();
+		final List<String> affectedList=affectedLimbNameSet();
 		for(int i=0;i<limbs.length;i++)
 		{
 			limbs[i]=M.charStats().getBodyPart(i);
@@ -345,20 +339,26 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 			{
 				if(limbs[i]-amputations[i]==1)
 				{
-					if(!affected.contains(Race.BODYPARTSTR[i].toLowerCase()))
+					if(!affectedList.contains(Race.BODYPARTSTR[i].toLowerCase()))
 						V.add(Race.BODYPARTSTR[i].toLowerCase());
 				}
 				else
 				if(limbs[i]-amputations[i]==2)
 				{
-					if(!affected.contains("left "+Race.BODYPARTSTR[i].toLowerCase()))
+					if(!affectedList.contains("left "+Race.BODYPARTSTR[i].toLowerCase()))
 						V.add("left "+Race.BODYPARTSTR[i].toLowerCase());
-					if(!affected.contains("right "+Race.BODYPARTSTR[i].toLowerCase()))
+					if(!affectedList.contains("right "+Race.BODYPARTSTR[i].toLowerCase()))
 						V.add("right "+Race.BODYPARTSTR[i].toLowerCase());
 				}
 				else
-				for(int ii=0;ii<limbs[i];ii++)
-					V.add(Race.BODYPARTSTR[i].toLowerCase());
+				{
+					int num=0;
+					for(final String affectedLimb : affectedList)
+						if(Race.BODYPARTSTR[i].equalsIgnoreCase(affectedLimb))
+							num++;
+					for(int ii=num;ii<limbs[i];ii++)
+						V.add(Race.BODYPARTSTR[i].toLowerCase());
+				}
 			}
 		}
 		return V;
@@ -370,34 +370,30 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 // Reason:  Easy single limb amputation removal
 // ****************************************************************************
 	@Override
-	public void restoreLimb(Physical target, LimbDamage A, String gone)
+	public void restoreLimb(String gone)
 	{
-		if (target != null)
+		if (affected != null)
 		{
-			if (target instanceof MOB)
+			if (affected instanceof MOB)
 			{
-				((MOB)target).location().show(((MOB)target), null, CMMsg.MSG_OK_VISUAL, L("^G<S-YOUPOSS> @x1 miraculously regrows!!^?",gone));
+				((MOB)affected).location().show(((MOB)affected), null, CMMsg.MSG_OK_VISUAL, L("^G<S-YOUPOSS> @x1 miraculously regrows!!^?",gone));
 			}
 			else
-			if ((target instanceof DeadBody)
-			&& (((Item)target).owner() instanceof Room))
+			if ((affected instanceof DeadBody)
+			&& (((Item)affected).owner() instanceof Room))
 			{
-				((Room)((Item)target).owner()).showHappens(CMMsg.MSG_OK_VISUAL, L("^G@x1's @x2 miraculously regrows!!^?",target.name(),gone));
+				((Room)((Item)affected).owner()).showHappens(CMMsg.MSG_OK_VISUAL, L("^G@x1's @x2 miraculously regrows!!^?",affected.name(),gone));
 			}
 		}
 
-		if (A == null)
-			return;
-		final List<String> theRest = A.affectedLimbNameSet();
+		final List<String> theRest = affectedLimbNameSet();
 		if (theRest.contains(gone))
 			theRest.remove(gone);
-		A.setMiscText("");
-		if((theRest.size()==0)&&(target!=null))
-			target.delEffect(A);
+		if((theRest.size()==0)&&(affected!=null))
+			affected.delEffect(this);
 		else
 		{
-			for (int i = 0; i < theRest.size(); i++)
-				A.setMiscText(A.text() + (theRest.get(i)) + ";");
+			setMiscText(CMParms.combineWith(theRest,';'));
 		}
 	}
 
@@ -410,67 +406,40 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 		return -1;
 	}
 
-	public List<String> extraAffectedLimbNameSet(Object O, String missing, List<String> missingLimbs)
-	{
-		final Vector AL=new Vector();
-		final int x=getRacialCode(missing);
-		if(x>=0)
-		{
-			final int[] aff=extraamuputees[x];
-			if((aff.length>1)||(aff[0]>=0))
-				for (final int element : aff)
-					if(((O instanceof MOB)&&(((MOB)O).charStats().getBodyPart(element)>0))
-					||((O instanceof Race)&&(((Race)O).bodyMask()[element]>0)))
-					{
-						String r=Race.BODYPARTSTR[element].toLowerCase();
-						if(missing.startsWith("left "))
-						   r="left "+r;
-						else
-						if(missing.startsWith("right "))
-						   r="right "+r;
-						if(!missingLimbs.contains(r))
-							AL.addElement(r);
-					}
-		}
-		return AL;
-	}
-
 	@Override
-	public Item damageLimb(Physical target, LimbDamage A, String gone)
+	public Item damageLimb(String gone)
 	{
-		if(A==null)
-			return null;
 		Race R=null;
-		if(target!=null)
+		if(affected!=null)
 		{
-			if(target instanceof MOB)
+			if(affected instanceof MOB)
 			{
-				R=((MOB)target).charStats().getMyRace();
+				R=((MOB)affected).charStats().getMyRace();
 				boolean success;
 				if(gone.toLowerCase().endsWith("eye"))
-					success=((MOB)target).location().show(((MOB)target),A,CMMsg.MSG_OK_VISUAL,L("^G<S-YOUPOSS> @x1 is destroyed!^?",gone));
+					success=((MOB)affected).location().show(((MOB)affected),this,CMMsg.MSG_OK_VISUAL,L("^G<S-YOUPOSS> @x1 is destroyed!^?",gone));
 				else
-					success=((MOB)target).location().show(((MOB)target),A,CMMsg.MSG_OK_VISUAL,L("^G<S-YOUPOSS> @x1 falls off!^?",gone));
+					success=((MOB)affected).location().show(((MOB)affected),this,CMMsg.MSG_OK_VISUAL,L("^G<S-YOUPOSS> @x1 falls off!^?",gone));
 				if(!success)
 					return null;
 			}
 			else
-			if((target instanceof DeadBody)
-			&&(((Item)target).owner()!=null)
-			&&(((Item)target).owner() instanceof Room))
+			if((affected instanceof DeadBody)
+			&&(((Item)affected).owner()!=null)
+			&&(((Item)affected).owner() instanceof Room))
 			{
-				R=((DeadBody)target).charStats().getMyRace();
+				R=((DeadBody)affected).charStats().getMyRace();
 				if(gone.toLowerCase().endsWith("eye"))
-					((Room)((Item)target).owner()).showHappens(CMMsg.MSG_OK_VISUAL,L("^G@x1's @x2 is destroyed!^?",target.name(),gone));
+					((Room)((Item)affected).owner()).showHappens(CMMsg.MSG_OK_VISUAL,L("^G@x1's @x2 is destroyed!^?",affected.name(),gone));
 				else
-					((Room)((Item)target).owner()).showHappens(CMMsg.MSG_OK_VISUAL,L("^G@x1's @x2 falls off!^?",target.name(),gone));
+					((Room)((Item)affected).owner()).showHappens(CMMsg.MSG_OK_VISUAL,L("^G@x1's @x2 falls off!^?",affected.name(),gone));
 			}
 		}
 		Item limb=null;
 		boolean isFakeLimb=false;
-		if(target instanceof MOB)
+		if(affected instanceof MOB)
 		{
-			final MOB tmob=(MOB)target;
+			final MOB tmob=(MOB)affected;
 			limb=findFakeLimb(tmob,gone);
 			if(limb!=null)
 			{
@@ -488,8 +457,8 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 			limb.setName(L("a @x1",gone));
 			limb.basePhyStats().setAbility(1);
 			limb.setDisplayText(L("a bloody @x1 is sitting here.",gone));
-			if(target != null)
-				limb.setSecretIdentity(target.name()+"`s bloody "+gone+".");
+			if(affected != null)
+				limb.setSecretIdentity(affected.name()+"`s bloody "+gone+".");
 			int material=RawMaterial.RESOURCE_MEAT;
 			if((R!=null)&&(R.myResources()!=null)&&(R.myResources().size()>0))
 				for(int r=0;r<R.myResources().size();r++)
@@ -509,42 +478,60 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 			limb.recoverPhyStats();
 		}
 
-		if((target instanceof MOB)&&(((MOB)target).location()!=null))
-			((MOB)target).location().addItem(limb,ItemPossessor.Expire.Monster_EQ);
+		if((affected instanceof MOB)&&(((MOB)affected).location()!=null))
+			((MOB)affected).location().addItem(limb,ItemPossessor.Expire.Monster_EQ);
 		else
-		if((target instanceof DeadBody)
-		&&(((Item)target).owner()!=null)
-		&&(((Item)target).owner() instanceof Room))
-			((Room)((Item)target).owner()).addItem(limb,ItemPossessor.Expire.Monster_EQ);
+		if((affected instanceof DeadBody)
+		&&(((Item)affected).owner()!=null)
+		&&(((Item)affected).owner() instanceof Room))
+			((Room)((Item)affected).owner()).addItem(limb,ItemPossessor.Expire.Monster_EQ);
 
 		if(!isFakeLimb)
 		{
-			final List<String> theRest=A.extraAffectedLimbNameSet(target,gone,A.affectedLimbNameSet());
+			final List<String> theRest=new Vector();
+			final int x=getRacialCode(gone);
+			if(x>=0)
+			{
+				final int[] aff=extraamuputees[x];
+				if((aff.length>1)||(aff[0]>=0))
+					for (final int element : aff)
+						if(((affected instanceof MOB)&&(((MOB)affected).charStats().getBodyPart(element)>0))
+						||((affected instanceof DeadBody)&&(((DeadBody)affected).savedMOB() != null)&&(((DeadBody)affected).savedMOB().charStats().getBodyPart(element)>0)))
+						{
+							String r=Race.BODYPARTSTR[element].toLowerCase();
+							if(gone.startsWith("left "))
+							   r="left "+r;
+							else
+							if(gone.startsWith("right "))
+							   r="right "+r;
+							if(!missingLimbs.contains(r))
+								theRest.add(r);
+						}
+			}
 			if(!theRest.contains(gone))
 				theRest.add(gone);
-			for(int i=0;i<theRest.size();i++)
-				A.setMiscText(A.text()+(theRest.get(i))+";");
+			setMiscText(CMParms.combineWith(theRest, ';'));
 		}
 
-		if(target != null)
+		if(affected != null)
 		{
-			for(Enumeration<Ability> a=target.effects();a.hasMoreElements();)
+			for(Enumeration<Ability> a=affected.effects();a.hasMoreElements();)
 			{
 				final Ability oA=a.nextElement();
 				if((oA instanceof LimbDamage)&&(!oA.ID().equals(ID())))
 				{
 					if(((LimbDamage)oA).affectedLimbNameSet().contains(gone))
-						((LimbDamage)oA).restoreLimb(target, (LimbDamage)oA, gone);
+						((LimbDamage)oA).restoreLimb(gone);
 				}
 			}
 		}
 		
-		if((target instanceof MOB)
+		if((affected instanceof MOB)
 		&&(CMLib.dice().roll(1,100,0)<=CMProps.getIntVar(CMProps.Int.INJBLEEDPCTCHANCE)))
 		{
 			final Ability A2=CMClass.getAbility("Bleeding");
 			if(A2!=null)
-				A2.invoke(((MOB)target),((MOB)target),true,0);
+				A2.invoke(((MOB)affected),((MOB)affected),true,0);
 		}
 		return limb;
 	}
@@ -644,11 +631,12 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			Amputation A=(Amputation)target.fetchEffect(ID());
+			Amputation ampuA=(Amputation)target.fetchEffect(ID());
 			boolean newOne=false;
-			if(A==null)
+			if(ampuA==null)
 			{
-				A=new Amputation();
+				ampuA=new Amputation();
+				ampuA.setAffectedOne(target);
 				newOne=true;
 			}
 
@@ -668,7 +656,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 				}
 			}
 
-			final List<String> VN=A.unaffectedLimbSet(target);
+			final List<String> VN=ampuA.unaffectedLimbSet();
 			if((VN.size()==0)&&(fakeLimb==null))
 			{
 				if(!auto)
@@ -710,10 +698,10 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 				target.location().send(target,msg);
 				if(msg.value()<=0)
 				{
-					if(damageLimb(target,A,gone)!=null)
+					if(ampuA.damageLimb(gone)!=null)
 					{
 						if(newOne==true)
-							target.addNonUninvokableEffect(A);
+							target.addNonUninvokableEffect(ampuA);
 						target.recoverCharStats();
 						target.recoverPhyStats();
 						target.recoverMaxState();
