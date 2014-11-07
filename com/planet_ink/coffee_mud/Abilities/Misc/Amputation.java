@@ -175,6 +175,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 				affectableState.setMovement(affectableState.getMovement()/2);
 		}
 	}
+	
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
@@ -185,7 +186,6 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 				affectableStats.alterBodypart(i,amputations[i]);
 		affectableStats.setWearableRestrictionsBitmap(badWearLocations);
 	}
-
 
 	@Override
 	public void unInvoke()
@@ -324,6 +324,12 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 	@Override
 	public List<String> unaffectedLimbSet(Physical P)
 	{
+		if(P != null)
+		{
+			final LimbDamage D = (LimbDamage)P.fetchEffect(ID());
+			if((D!=null)&&(D!=this))
+				return D.unaffectedLimbSet(P);
+		}
 		affectedLimbNameSet();
 		final List<String> V=new Vector();
 		if(!(P instanceof MOB))

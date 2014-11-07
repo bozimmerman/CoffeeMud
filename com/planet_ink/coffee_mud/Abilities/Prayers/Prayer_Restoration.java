@@ -57,6 +57,8 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 		caster.phyStats().setLevel(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL));
 		if(
 		  (item.fetchEffect("Amputation")!=null)
+		||(item.fetchEffect("Injury")!=null)
+		||(item.fetchEffect("BrokenLimbs")!=null)
 		||(item.fetchEffect("Fighter_AtemiStrike")!=null)
 		||(item.fetchEffect("Undead_EnergyDrain")!=null)
 		||(item.fetchEffect("Undead_WeakEnergyDrain")!=null)
@@ -122,11 +124,51 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 					target.recoverPhyStats();
 					target.recoverMaxState();
 				}
-				Ability A=target.fetchEffect("Amputation");
+				Ability A;
+				A=target.fetchEffect("Bleeding");
+				if(A!=null)
+				{
+					target.delEffect(A);
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> bleeding stops!"));
+					A=target.fetchAbility(A.ID());
+					if(A!=null)
+						target.delAbility(A);
+					target.recoverCharStats();
+					target.recoverPhyStats();
+					target.recoverMaxState();
+				}
+
+				A=target.fetchEffect("Amputation");
 				if(A!=null)
 				{
 					target.delEffect(A);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> missing parts are restored!"));
+					A=target.fetchAbility(A.ID());
+					if(A!=null)
+						target.delAbility(A);
+					target.recoverCharStats();
+					target.recoverPhyStats();
+					target.recoverMaxState();
+				}
+
+				A=target.fetchEffect("BrokenLimbs");
+				if(A!=null)
+				{
+					target.delEffect(A);
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> broken limbs mend!"));
+					A=target.fetchAbility(A.ID());
+					if(A!=null)
+						target.delAbility(A);
+					target.recoverCharStats();
+					target.recoverPhyStats();
+					target.recoverMaxState();
+				}
+
+				A=target.fetchEffect("Injury");
+				if(A!=null)
+				{
+					target.delEffect(A);
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> injuries are healed!"));
 					A=target.fetchAbility(A.ID());
 					if(A!=null)
 						target.delAbility(A);

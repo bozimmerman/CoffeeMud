@@ -120,7 +120,19 @@ public class Falling extends StdAbility
 			if(isWaterSurface(R)||isUnderWater(R))
 				R.show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> hit(s) the water.@x1",CMLib.protocol().msp("splat.wav",50)));
 			else
+			{
 				R.show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> hit(s) the ground.@x1",CMLib.protocol().msp("splat.wav",50)));
+				LimbDamage damage = (LimbDamage)mob.fetchEffect("BrokenLimbs");
+				if(damage == null)
+					damage = (LimbDamage)CMClass.getAbility("BrokenLimbs");
+				List<String> limbs = damage.unaffectedLimbSet(mob);
+				if(limbs.size()>0)
+				{
+					if(damage.affecting() == null)
+						mob.addNonUninvokableEffect(damage);
+					damage.damageLimb(mob, damage, limbs.get(CMLib.dice().roll(1, limbs.size(), -1)));
+				}
+			}
 			CMLib.combat().postDamage(mob,mob,this,damageToTake,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,-1,null);
 		}
 		mob.delEffect(this);

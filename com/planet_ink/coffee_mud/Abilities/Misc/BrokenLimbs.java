@@ -40,12 +40,30 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 	@Override public String ID() { return "BrokenLimbs"; }
 	private final static String localizedName = CMLib.lang().L("Broken Limbs");
 	@Override public String name() { return localizedName; }
+	
+	protected int HEALING_TICKS = (int)((TimeManager.MILI_MINUTE * 10) / CMProps.getTickMillis());
+	protected List<String> brokenLimbsList=null;
+	private int[] brokenParts=new int[Race.BODY_PARTS];
+	private Map<String,int[]> setBones = new STreeMap<String,int[]>();
+	
 	@Override
 	public String displayText()
 	{
-		if(affectedLimbNameSet().size()==0)
+		final List<String> affectedLimbs = affectedLimbNameSet();
+		if(affectedLimbs.size()==0)
 			return "";
-		return "(Broken "+CMLib.english().toEnglishStringList(affectedLimbNameSet())+")";
+		final List<String> limbConditionStrs = new XVector<String>(affectedLimbs);
+		for(int i=0;i<limbConditionStrs.size();i++)
+		{
+			final String limb=limbConditionStrs.get(i);
+			final int[] condition = setBones.get(limb);
+			if(condition != null)
+			{
+				final double pct = CMath.div(condition[0], HEALING_TICKS) * 100.0;
+				limbConditionStrs.set(i, limb + " (healing "+(100-Math.round(pct))+"%)");
+			}
+		}
+		return "(Broken "+CMLib.english().toEnglishStringList(limbConditionStrs)+")";
 	}
 	@Override
 	public String getHealthConditionDesc()
@@ -62,9 +80,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 	@Override public boolean canBeUninvoked(){return false;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	protected List<String> brokenLimbsList=null;
-	private int[] brokenParts=new int[Race.BODY_PARTS];
-
+	
 	public final static boolean[] validBrokens ={true,//antenea
 												 false,//eye
 												 false,//ear
@@ -96,9 +112,9 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 				final String s=CMLib.utensils().niceCommaList(affectedLimbNameSet(),true);
 				if(s.length()>0)
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,
-												  CMMsg.MSG_OK_VISUAL,L("\n\r@x1 has broken @x2 @x3.\n\r",M.name(msg.source()),M.charStats().hisher(),s),
-												  CMMsg.NO_EFFECT,null,
-												  CMMsg.NO_EFFECT,null));
+									  CMMsg.MSG_OK_VISUAL,L("\n\r@x1 has broken @x2 @x3.\n\r",M.name(msg.source()),M.charStats().hisher(),s),
+									  CMMsg.NO_EFFECT,null,
+									  CMMsg.NO_EFFECT,null));
 			}
 			if((msg.sourceMinor()==CMMsg.TYP_DEATH)&&(msg.amISource(M)))
 			{
@@ -106,6 +122,21 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 				M.recoverCharStats();
 				M.recoverPhyStats();
 				M.recoverMaxState();
+			}
+			if(msg.amITarget(M)&&(msg.targetMinor()==CMMsg.TYP_HEALING))
+			{
+				final int amount=msg.value();
+				if((amount>0)
+				&&(msg.tool() instanceof Ability)
+				&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HEALINGMAGIC))
+				&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
+				{
+					startAllLimbsHealing();
+					double healAmount = CMath.div(amount,M.maxState().getHitPoints());
+					if(healAmount < 0.05)
+						healAmount = 0.05;
+					progressLimbHealing(M, (int)Math.round(CMath.mul(HEALING_TICKS, healAmount)));
+				}
 			}
 		}
 		super.executeMsg(host,msg);
@@ -125,11 +156,18 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 					affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
 				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SITTING);
 			}
-			if((brokenParts[Race.BODY_EYE]<0)&&(mob.getWearPositions(Wearable.WORN_EYES)==0))
-				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SEE);
-			if((brokenParts[Race.BODY_EAR]<0)&&(mob.getWearPositions(Wearable.WORN_EARS)==0))
-				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_HEAR);
 		}
+	}
+
+	@Override
+	public void affectCharStats(MOB affected, CharStats affectableStats)
+	{
+		super.affectCharStats(affected,affectableStats);
+		affectedLimbNameSet();
+		for(int i=0;i<brokenParts.length;i++)
+			if((brokenParts[i]!=0)
+			&&((i==Race.BODY_ARM)||(i==Race.BODY_LEG)||(i==Race.BODY_FOOT)||(i==Race.BODY_HAND)))
+				affectableStats.alterBodypart(i,brokenParts[i]);
 	}
 
 	@Override
@@ -217,11 +255,28 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 		return target;
 	}
 
+	protected void startAllLimbsHealing()
+	{
+		for(String limb : affectedLimbNameSet())
+			if(!setBones.containsKey(limb))
+				setBones.put(limb, new int[]{HEALING_TICKS});
+	}
+	
 	@Override
 	public void setMiscText(String text)
 	{
-		super.setMiscText(text);
-		brokenLimbsList=null;
+		if(text.toUpperCase().startsWith("+"))
+		{
+			if(text.toUpperCase().startsWith("+SETBONES"))
+			{
+				startAllLimbsHealing();
+			}
+		}
+		else
+		{
+			super.setMiscText(text);
+			brokenLimbsList=null;
+		}
 	}
 
 	@Override
@@ -267,8 +322,8 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 				else
 				if(limbs[i]==2)
 				{
-						V.addElement("left "+Race.BODYPARTSTR[i].toLowerCase());
-						V.addElement("right "+Race.BODYPARTSTR[i].toLowerCase());
+					V.addElement("left "+Race.BODYPARTSTR[i].toLowerCase());
+					V.addElement("right "+Race.BODYPARTSTR[i].toLowerCase());
 				}
 				else
 				for(int ii=0;ii<limbs[i];ii++)
@@ -278,9 +333,40 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 		return V;
 	}
 
-	@Override
-	public List<String> unaffectedLimbSet(Physical P)
+	protected void progressLimbHealing(final CMObject obj, final int thisMuch)
 	{
+		for(final String limb : setBones.keySet())
+		{
+			final int[] ticksRemaining = setBones.get(limb);
+			ticksRemaining[0] -= thisMuch;
+			if(ticksRemaining[0] <= 0)
+			{
+				setBones.remove(limb);
+				if(obj instanceof MOB)
+					restoreLimb((MOB)obj, this, limb);
+			}
+		}
+	}
+	
+	@Override
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(tickID == Tickable.TICKID_MOB)
+		{
+			progressLimbHealing(ticking, 1);
+		}
+		return super.tick(ticking, tickID);
+	}
+
+	@Override
+	public List<String> unaffectedLimbSet(final Physical P)
+	{
+		if(P != null)
+		{
+			final LimbDamage D = (LimbDamage)P.fetchEffect(ID());
+			if((D!=null)&&(D!=this))
+				return D.unaffectedLimbSet(P);
+		}
 		affectedLimbNameSet();
 		final List<String> remains=new Vector();
 		if(!(P instanceof MOB))
@@ -312,7 +398,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 					remains.add(Race.BODYPARTSTR[i].toLowerCase());
 			}
 		}
-		Amputation A=(Amputation)P.fetchEffect("Amputation");
+		final Amputation A=(Amputation)P.fetchEffect("Amputation");
 		if(A!=null)
 		{
 			final List<String> missing=A.affectedLimbNameSet();
@@ -329,13 +415,13 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 		{
 			if (target instanceof MOB)
 			{
-				((MOB)target).location().show(((MOB)target), null, CMMsg.MSG_OK_VISUAL, L("^G<S-YOUPOSS> @x1 miraculously mends!!^?",gone));
+				((MOB)target).location().show(((MOB)target), null, CMMsg.MSG_OK_VISUAL, L("^G<S-YOUPOSS> @x1 is now mended.^?",gone));
 			}
 			else
 			if ((target instanceof DeadBody)
 			&& (((Item)target).owner() instanceof Room))
 			{
-				((Room)((Item)target).owner()).showHappens(CMMsg.MSG_OK_VISUAL, L("^G@x1's @x2 miraculously mends!!^?",target.name(),gone));
+				((Room)((Item)target).owner()).showHappens(CMMsg.MSG_OK_VISUAL, L("^G@x1's @x2 is now mended.^?",target.name(),gone));
 			}
 		}
 

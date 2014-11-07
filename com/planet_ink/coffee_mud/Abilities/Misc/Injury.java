@@ -247,7 +247,14 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 	@Override
 	public List<String> unaffectedLimbSet(Physical P)
 	{
-		Amputation A=(Amputation)P.fetchEffect("Amputation");
+		Amputation A=null;
+		if(P != null)
+		{
+			final LimbDamage D = (LimbDamage)P.fetchEffect(ID());
+			if((D!=null)&&(D!=this))
+				return D.unaffectedLimbSet(P);
+			A=(Amputation)P.fetchEffect("Amputation");
+		}
 		if(A==null)
 			A=new Amputation();
 		final List<String> remains=A.unaffectedLimbSet(P);

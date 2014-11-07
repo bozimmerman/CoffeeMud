@@ -257,6 +257,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 					final Ability bleed=target.fetchEffect("Bleeding"); if(bleed!=null){ bleed.unInvoke(); target.delEffect(bleed);}
 					final Ability injury=target.fetchEffect("Injury"); if(injury!=null){ injury.unInvoke(); target.delEffect(injury);}
 					final Ability ampu=target.fetchEffect("Amputation"); if(ampu!=null){ ampu.unInvoke(); target.delEffect(ampu);}
+					final Ability brok=target.fetchEffect("BrokenLimbs"); if(brok!=null){ brok.unInvoke(); target.delEffect(brok);}
 					target.recoverMaxState();
 					target.resetToMaxState();
 					target.tell(L("You feel refreshed!"));
