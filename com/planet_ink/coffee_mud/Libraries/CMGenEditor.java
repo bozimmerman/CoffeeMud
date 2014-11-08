@@ -5514,11 +5514,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		String newName=mob.session().prompt(L("Enter a body part\n\r:"),"");
 		if(newName.length()>0)
 		{
-			int partNum=-1;
-			for(int i=0;i<Race.BODYPARTSTR.length;i++)
-				if(newName.equalsIgnoreCase(Race.BODYPARTSTR[i]))
-				{ partNum=i; break;}
-			if(partNum<0)
+			Integer partNum=Race.BODYPARTHASH.get(newName.toUpperCase().trim());
+			if(partNum==null)
 			{
 				final StringBuffer str=new StringBuffer(L("That body part is invalid.  Valid parts include: "));
 				for (final String element : Race.BODYPARTSTR)
@@ -5527,9 +5524,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			else
 			{
-				newName=mob.session().prompt(L("Enter new number (@x1), 0=none\n\r:",""+E.bodyMask()[partNum]),""+E.bodyMask()[partNum]);
+				newName=mob.session().prompt(L("Enter new number (@x1), 0=none\n\r:",""+E.bodyMask()[partNum.intValue()]),""+E.bodyMask()[partNum.intValue()]);
 				if(newName.length()>0)
-					E.bodyMask()[partNum]=CMath.s_int(newName);
+					E.bodyMask()[partNum.intValue()]=CMath.s_int(newName);
 				else
 					mob.tell(L("(no change)"));
 			}

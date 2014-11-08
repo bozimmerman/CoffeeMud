@@ -399,10 +399,9 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 
 	public static int getRacialCode(String name)
 	{
-		name=name.toUpperCase();
-		for(int r=0;r<Race.BODYPARTSTR.length;r++)
-			if(name.endsWith(Race.BODYPARTSTR[r]))
-				return r;
+		final Integer code = Race.BODYPARTHASH_RL_LOWER.get(name.toLowerCase().trim());
+		if(code != null)
+			return code.intValue();
 		return -1;
 	}
 

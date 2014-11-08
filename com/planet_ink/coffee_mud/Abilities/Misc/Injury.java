@@ -172,20 +172,14 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 					return;
 				if(injuries==null)
 					injuries=new PairVector[Race.BODY_PARTS];
-				int bodyLoc=-1;
-				for(int i=0;i<Race.BODY_PARTS;i++)
-					if((" "+remains.get(chosenOne).toUpperCase()).endsWith(" "+Race.BODYPARTSTR[i]))
-					{ 
-						bodyLoc=i; 
-						break;
-					}
-				if(bodyLoc>=0)
+				Integer chosenBodyLoc=Race.BODYPARTHASH_RL_LOWER.get(remains.get(chosenOne).toLowerCase().trim());
+				if(chosenBodyLoc!=null)
 				{
-					PairVector<String,Integer> bodyVec=injuries[bodyLoc];
+					PairVector<String,Integer> bodyVec=injuries[chosenBodyLoc.intValue()];
 					if(bodyVec==null)
 					{ 
-						injuries[bodyLoc]=new PairVector(); 
-						bodyVec=injuries[bodyLoc];
+						injuries[chosenBodyLoc.intValue()]=new PairVector(); 
+						bodyVec=injuries[chosenBodyLoc.intValue()];
 					}
 					int whichInjury=-1;
 					for(int i=0;i<bodyVec.size();i++)
