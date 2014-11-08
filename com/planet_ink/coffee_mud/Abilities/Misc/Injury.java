@@ -458,7 +458,7 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 		&&(msg.target() instanceof MOB)
 		&&(msg.targetMessage()!=null)
 		&&(msg.targetMessage().indexOf("<DAMAGE>")>=0)
-		&&(super.miscText.startsWith(msg.source().Name()+"/")
+		&&(super.miscText.startsWith(msg.source().Name()+"/") // special directed damage stuff
 		   ||((CMProps.getIntVar(CMProps.Int.INJPCTHP)>=(int)Math.round(CMath.div(((MOB)msg.target()).curState().getHitPoints(),((MOB)msg.target()).maxState().getHitPoints())*100.0))
 			&&(CMLib.dice().rollPercentage()<=CMProps.getIntVar(CMProps.Int.INJPCTCHANCE)))))
 		{
@@ -476,18 +476,25 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 				remains.add("torso");
 			if(remains.size()>0)
 			{
+				if(super.miscText.startsWith(msg.source().Name()+"/"))
+				{
+					final String remainLoc=super.miscText.substring(super.miscText.indexOf('/')+1).toLowerCase();
+					if(remains.contains(remainLoc))
+					{
+						remains.clear();
+						remains.add(remainLoc);
+					}
+					else 
+						return super.okMessage(host, msg);
+				}
 				final int[] chances=new int[remains.size()];
 				int total=0;
 				for(int x=0;x<remains.size();x++)
 				{
-					int bodyPart=-1;
-					for(int i=0;i<Race.BODY_PARTS;i++)
+					final String remain=remains.get(x); // is lowercase
+					if(Race.BODYPARTHASH_RL_LOWER.containsKey(remain))
 					{
-						if((" "+remains.get(x).toUpperCase()).endsWith(" "+Race.BODYPARTSTR[i]))
-						{ bodyPart=i; break;}
-					}
-					if(bodyPart>=0)
-					{
+						final int bodyPart=Race.BODYPARTHASH_RL_LOWER.get(remain).intValue();
 						final int amount=INJURYCHANCE[bodyPart];
 						chances[x]+=amount;
 						total+=amount;
@@ -524,22 +531,16 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 					int LimbPct=BodyPct*CMProps.getIntVar(CMProps.Int.INJMULTIPLIER);
 					if(LimbPct<1)
 						LimbPct=1;
-					int bodyLoc=-1;
-					for(int i=0;i<Race.BODY_PARTS;i++)
-						if((" "+remains.get(chosenOne).toUpperCase()).endsWith(" "+Race.BODYPARTSTR[i]))
-						{ 
-							bodyLoc=i; 
-							break;
-						}
-					if(bodyLoc>=0)
+					Integer chosenBodyLoc=Race.BODYPARTHASH_RL_LOWER.get(remains.get(chosenOne));
+					if(chosenBodyLoc!=null)
 					{
 						lastMsg=msg;
 						lastLoc=remains.get(chosenOne);
-						PairVector<String,Integer> bodyVec=injuries[bodyLoc];
+						PairVector<String,Integer> bodyVec=injuries[chosenBodyLoc.intValue()];
 						if(bodyVec==null)
 						{ 
-							injuries[bodyLoc]=new PairVector(); 
-							bodyVec=injuries[bodyLoc];
+							injuries[chosenBodyLoc.intValue()]=new PairVector(); 
+							bodyVec=injuries[chosenBodyLoc.intValue()];
 						}
 						int whichInjury=-1;
 						for(int i=0;i<bodyVec.size();i++)
@@ -589,11 +590,11 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 										break;
 									}
 								}
-								if(Amputation.validamputees[bodyLoc]&&proceed)
+								if(Amputation.validamputees[chosenBodyLoc.intValue()]&&proceed)
 								{
 									bodyVec.removeElement(O);
 									if(bodyVec.size()==0)
-										injuries[bodyLoc]=null;
+										injuries[chosenBodyLoc.intValue()]=null;
 									if(ampuA.damageLimb(O.first.toLowerCase())!=null)
 									{
 										if(mob.fetchEffect(ampuA.ID())==null)

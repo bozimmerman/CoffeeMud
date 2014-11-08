@@ -29,6 +29,17 @@ public class SHashtable<K,F> implements java.util.Map<K,F>, java.io.Serializable
 		super();
 		H=new Hashtable<K,F>(size);
 	}
+	public SHashtable(Enumeration<Pair<K,F>> e)
+	{
+		super();
+		this.H=new Hashtable<K,F>();
+		if(H!=null)
+			for(;e.hasMoreElements();)
+			{
+				final Pair<K,F> p=e.nextElement();
+				put(p.first,p.second);
+			}
+	}
 	public SHashtable(Map<K,F> H)
 	{
 		super();

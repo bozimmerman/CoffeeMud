@@ -445,6 +445,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	public final static String[] BODYPARTSTR={
 		"ANTENEA","EYE","EAR","HEAD","NECK","ARM","HAND","TORSO","LEG","FOOT",
 		"NOSE","GILL","MOUTH","WAIST","TAIL","WING"};
+
 	/** constant hash of BODYPARTSTR */
 	public final static Hashtable<Object,Integer> BODYPARTHASH=CMStrings.makeNumericHash(BODYPARTSTR);
 	/** constant used to set and check the classless flag on generic races */
@@ -459,6 +460,25 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	public final static int GENFLAG_NOFERTILE=16;
 	/** constant string list naming each of the GENFLAG_* constants in the order of their value */
 	public final static String[] GENFLAG_DESCS={"CLASSLESS","LEVELLESS","EXPLESS","CHARMLESS","CHILDLESS"};
+
+	public final static Map<String,Integer> BODYPARTHASH_RL_LOWER=new SHashtable<String,Integer>(new Enumeration<Pair<String,Integer>>()
+	{
+		private int index=0;
+		private final Stack<Pair<String,Integer>> others=new Stack<Pair<String,Integer>>(); 
+		@Override public boolean hasMoreElements() { return (others.size()>0) || (index < BODYPARTSTR.length); }
+		@Override public Pair<String, Integer> nextElement()
+		{
+			if(!hasMoreElements())
+				throw new NoSuchElementException();
+			if(others.size()>0)
+				return others.pop();
+			others.push(new Pair<String,Integer>(BODYPARTSTR[index].toLowerCase(),Integer.valueOf(index)));
+			others.push(new Pair<String,Integer>("left "+BODYPARTSTR[index].toLowerCase(),Integer.valueOf(index)));
+			others.push(new Pair<String,Integer>("right "+BODYPARTSTR[index].toLowerCase(),Integer.valueOf(index)));
+			index++;
+			return others.pop();
+		}
+	});
 
 	/** array mapping worn locations to body parts, indexed by body parts. */
 	public final static long[] BODY_WEARVECTOR={
@@ -479,6 +499,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 		Wearable.WORN_BACK, // TAIL, having any of these removes that pos
 		Wearable.WORN_BACK, // WINGS, having any of these removes that pos
 	};
+
 	/** 2 dimentional array, indexed first by body_ part constant, with each row
 	 * having two values: the first being the Wearable.WORN_ location which is affected
 	 * by having or losing this body part, and then the number of such body parts
