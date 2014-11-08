@@ -73,45 +73,50 @@ public class Spell_Shelter extends Spell
 
 		if(canBeUninvoked())
 		{
+			Room shelter=this.shelter;
 			if(shelter==null)
 				shelter=M.location();
-			Room backToRoom=M.getStartRoom();
-			int i=0;
-			final LinkedList<MOB> mobs=new LinkedList<MOB>();
-			for(final Enumeration<MOB> m=shelter.inhabitants();m.hasMoreElements();)
-				mobs.add(m.nextElement());
-			for(final MOB mob : mobs)
+			if(shelter != null)
 			{
-				if(mob==null)
-					break;
-				mob.tell(L("You return to your previous location."));
+				this.shelter=null;
+				Room backToRoom=M.getStartRoom();
+				int i=0;
+				final LinkedList<MOB> mobs=new LinkedList<MOB>();
+				for(final Enumeration<MOB> m=shelter.inhabitants();m.hasMoreElements();)
+					mobs.add(m.nextElement());
+				for(final MOB mob : mobs)
+				{
+					if(mob==null)
+						break;
+					mob.tell(L("You return to your previous location."));
 
-				final CMMsg enterMsg=CMClass.getMsg(mob,previousLocation,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> appears out of nowhere!"));
-				backToRoom=getPreviousLocation(mob);
-				if(backToRoom==null)
-					backToRoom=mob.getStartRoom();
-				backToRoom.bringMobHere(mob,false);
-				backToRoom.send(mob,enterMsg);
-				CMLib.commands().postLook(mob,true);
-			}
-			final LinkedList<Item> items=new LinkedList<Item>();
-			for(final Enumeration<Item> e=shelter.items();e.hasMoreElements();)
-				items.add(e.nextElement());
-			for(final Item I : items)
-			{
-				if(I.container()==null)
+					final CMMsg enterMsg=CMClass.getMsg(mob,previousLocation,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> appears out of nowhere!"));
+					backToRoom=getPreviousLocation(mob);
+					if(backToRoom==null)
+						backToRoom=mob.getStartRoom();
+					backToRoom.bringMobHere(mob,false);
+					backToRoom.send(mob,enterMsg);
+					CMLib.commands().postLook(mob,true);
+				}
+				final LinkedList<Item> items=new LinkedList<Item>();
+				for(final Enumeration<Item> e=shelter.items();e.hasMoreElements();)
+					items.add(e.nextElement());
+				for(final Item I : items)
+				{
+					if(I.container()==null)
+						backToRoom.moveItemTo(I, Expire.Player_Drop, Move.Followers);
+				}
+				i=0;
+				while(i<shelter.numItems())
+				{
+					final Item I=shelter.getItem(i);
 					backToRoom.moveItemTo(I, Expire.Player_Drop, Move.Followers);
+					if(shelter.isContent(I))
+						i++;
+				}
+				this.shelter=null;
+				previousLocation=null;
 			}
-			i=0;
-			while(i<shelter.numItems())
-			{
-				final Item I=shelter.getItem(i);
-				backToRoom.moveItemTo(I, Expire.Player_Drop, Move.Followers);
-				if(shelter.isContent(I))
-					i++;
-			}
-			shelter=null;
-			previousLocation=null;
 		}
 		super.unInvoke();
 	}
