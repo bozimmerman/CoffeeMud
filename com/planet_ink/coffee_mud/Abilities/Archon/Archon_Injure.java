@@ -92,7 +92,7 @@ public class Archon_Injure extends ArchonSkill
 				gone=remainingLimbList.get(i);
 				break;
 			}
-		if((gone==null)||(part==null))
+		if(gone==null)
 		{
 			if(part==null)
 				mob.tell(target,null,null,L("<S-NAME> has no parts."));
@@ -122,7 +122,7 @@ public class Archon_Injure extends ArchonSkill
 					injuryA.invoke(mob,new XVector(),target,true,0);
 					injuryA=target.fetchEffect("Injury");
 					if(injuryA!=null)
-						injuryA.setMiscText("+"+part.toLowerCase()+"=20");
+						injuryA.setMiscText("+"+gone.toLowerCase()+"=20");
 				}
 			}
 		}

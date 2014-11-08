@@ -122,23 +122,26 @@ public class Falling extends StdAbility
 			else
 			{
 				R.show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> hit(s) the ground.@x1",CMLib.protocol().msp("splat.wav",50)));
-				LimbDamage damage = (LimbDamage)mob.fetchEffect("BrokenLimbs");
-				if(damage == null)
+				if(CMath.div(damageToTake, mob.maxState().getHitPoints())>0.05)
 				{
-					damage = (LimbDamage)CMClass.getAbility("BrokenLimbs");
-					damage.setAffectedOne(mob);
-				}
-				List<String> limbs = damage.unaffectedLimbSet();
-				if(limbs.size()>0)
-				{
-					if(mob.fetchEffect(damage.ID()) == null)
+					LimbDamage damage = (LimbDamage)mob.fetchEffect("BrokenLimbs");
+					if(damage == null)
 					{
-						mob.addEffect(damage);
-						damage.makeLongLasting();
+						damage = (LimbDamage)CMClass.getAbility("BrokenLimbs");
+						damage.setAffectedOne(mob);
 					}
-					damage.damageLimb(limbs.get(CMLib.dice().roll(1, limbs.size(), -1)));
+					List<String> limbs = damage.unaffectedLimbSet();
+					if(limbs.size()>0)
+					{
+						if(mob.fetchEffect(damage.ID()) == null)
+						{
+							mob.addEffect(damage);
+							damage.makeLongLasting();
+						}
+						damage.damageLimb(limbs.get(CMLib.dice().roll(1, limbs.size(), -1)));
+					}
 				}
-			}
+				}
 			CMLib.combat().postDamage(mob,mob,this,damageToTake,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,-1,null);
 		}
 		mob.delEffect(this);
