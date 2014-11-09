@@ -202,7 +202,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 			case CMMsg.TYP_STAND:
 				{
 					final MOB mob=msg.source();
-					if((brokenParts[Race.BODY_LEG]<0)&&(mob.getWearPositions(Wearable.WORN_LEGS)==0))
+					if((brokenParts[Race.BODY_LEG]<0)&&(mob.getWearPositions(Wearable.WORN_LEGS)==0)&&(!CMLib.flags().isSleeping(mob)))
 					{
 						mob.tell("Your legs are broken!");
 						return false;
@@ -212,7 +212,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 			case CMMsg.TYP_WIELD:
 			{
 				final MOB mob=msg.source();
-				if(brokenParts[Race.BODY_HAND]<0)
+				if((brokenParts[Race.BODY_HAND]<0)&&(mob.getWearPositions(Wearable.WORN_WIELD)==0))
 				{
 					mob.tell("Your weapon hand is broken!");
 					return false;
