@@ -262,7 +262,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 	{
 		if(missingLimbs!=null)
 			return missingLimbs;
-		missingLimbs=new Vector();
+		missingLimbs=new Vector<String>();
 		if(affected==null)
 			return missingLimbs;
 		if((!(affected instanceof MOB))&&(!(affected instanceof DeadBody)))
@@ -503,6 +503,8 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 							else
 							if(gone.startsWith("right "))
 							   r="right "+r;
+							if(missingLimbs == null)
+								this.affectedLimbNameSet();
 							if(!missingLimbs.contains(r))
 								theRest.add(r);
 						}
