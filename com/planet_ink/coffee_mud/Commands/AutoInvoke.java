@@ -75,9 +75,9 @@ public class AutoInvoke extends StdCommand
 			if(A!=null)
 			{
 				if(effects.contains(A.ID()))
-					str.append(L("@x1.^xACTIVE^?^.^N ",CMStrings.padRightWith(A.Name(),'.',30)));
+					str.append(L("@x1.^xACTIVE^?^.^N ",CMStrings.padRightWith(A.Name(),'.',29)));
 				else
-					str.append(L("@x1^xINACTIVE^?^.^N",CMStrings.padRightWith(A.Name(),'.',30)));
+					str.append(L("@x1^xINACTIVE^?^.^N",CMStrings.padRightWith(A.Name(),'.',29)));
 				if(++col==2)
 				{
 					col=0;

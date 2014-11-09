@@ -53,7 +53,8 @@ public class Fighter_Intimidate extends FighterSkill
 	{
 		if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
-		&&((msg.amITarget(affected))))
+		&&((msg.amITarget(affected)))
+		&&(msg.source()!=msg.target()))
 		{
 			final MOB targetM=(MOB)msg.target();
 			final MOB attackerM=msg.source();

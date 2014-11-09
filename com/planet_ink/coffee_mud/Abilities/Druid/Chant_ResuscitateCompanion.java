@@ -44,9 +44,9 @@ public class Chant_ResuscitateCompanion extends Chant implements MendingSkill
 	@Override public String displayText() { return ""; }
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public boolean isAutoInvoked() { return true; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	
 	private final List<WeakReference<DeadBody>> companionMobs=new LinkedList<WeakReference<DeadBody>>();
 
 	private boolean isCompanionBody(final DeadBody body)
