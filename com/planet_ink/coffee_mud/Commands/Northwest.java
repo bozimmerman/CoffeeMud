@@ -43,12 +43,8 @@ public class Northwest extends Go
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		standIfNecessary(mob,metaFlags);
-		if((CMLib.flags().isSitting(mob))||(CMLib.flags().isSleeping(mob)))
-		{
-			mob.tell(L("You need to stand up first."));
+		if(!standIfNecessary(mob,metaFlags, true))
 			return false;
-		}
 		if(mob.isAttribute(MOB.Attrib.AUTORUN))
 			CMLib.tracking().run(mob, Directions.NORTHWEST, false,false,false);
 		else

@@ -44,7 +44,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 	protected int HEALING_TICKS = (int)((TimeManager.MILI_MINUTE * 10) / CMProps.getTickMillis());
 	protected List<String> brokenLimbsList=null;
 	private int[] brokenParts=new int[Race.BODY_PARTS];
-	private Map<String,int[]> setBones = new STreeMap<String,int[]>();
+	private final Map<String,int[]> setBones = new STreeMap<String,int[]>();
 	
 	@Override
 	public String displayText()
@@ -189,6 +189,48 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 			else
 				affectableState.setMovement(affectableState.getMovement()/2);
 		}
+	}
+	
+	@Override
+	public boolean okMessage(Environmental host, CMMsg msg)
+	{
+		if(!super.okMessage(host, msg))
+			return false;
+		if(msg.source() == affected)
+			switch(msg.sourceMinor())
+			{
+			case CMMsg.TYP_STAND:
+				{
+					final MOB mob=msg.source();
+					if((brokenParts[Race.BODY_LEG]<0)&&(mob.getWearPositions(Wearable.WORN_LEGS)==0))
+					{
+						mob.tell("Your legs are broken!");
+						return false;
+					}
+					break;
+				}
+			case CMMsg.TYP_WIELD:
+			{
+				final MOB mob=msg.source();
+				if(brokenParts[Race.BODY_HAND]<0)
+				{
+					mob.tell("Your weapon hand is broken!");
+					return false;
+				}
+				break;
+			}
+			case CMMsg.TYP_WEAPONATTACK:
+			{
+				final MOB mob=msg.source();
+				if(((brokenParts[Race.BODY_HAND]<0)||(brokenParts[Race.BODY_ARM]<0))&&(msg.tool() == mob.fetchWieldedItem()))
+				{
+					mob.tell("Your broken limbs make the attack impossible!");
+					return false;
+				}
+				break;
+			}
+			}
+		return true;
 	}
 	
 	@Override

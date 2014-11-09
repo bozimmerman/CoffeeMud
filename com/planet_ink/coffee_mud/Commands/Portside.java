@@ -53,12 +53,8 @@ public class Portside extends Go
 			if(nextDir == Directions.SOUTH)
 				direction=Directions.SOUTHWEST;
 		}
-		standIfNecessary(mob,metaFlags);
-		if((CMLib.flags().isSitting(mob))||(CMLib.flags().isSleeping(mob)))
-		{
-			mob.tell(L("You need to stand up first."));
+		if(!standIfNecessary(mob,metaFlags, true))
 			return false;
-		}
 		if(mob.isAttribute(MOB.Attrib.AUTORUN))
 			CMLib.tracking().run(mob, direction, false,false,false);
 		else

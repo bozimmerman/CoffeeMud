@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -43,9 +42,14 @@ public class Go extends StdCommand
 
 	protected Command stander=null;
 	protected Vector ifneccvec=null;
-	public void standIfNecessary(MOB mob, int metaFlags)
+	
+
+	public boolean standIfNecessary(MOB mob, int metaFlags, boolean giveMsg)
 		throws java.io.IOException
 	{
+		if(CMLib.flags().isFlying(mob))
+			return true;
+		final boolean wasStanding = CMLib.flags().isStanding(mob) && (!CMLib.flags().isSleeping(mob));
 		if((ifneccvec==null)||(ifneccvec.size()!=2))
 		{
 			ifneccvec=new Vector();
@@ -56,13 +60,26 @@ public class Go extends StdCommand
 			stander=CMClass.getCommand("Stand");
 		if((stander!=null)&&(ifneccvec!=null))
 			stander.execute(mob,ifneccvec,metaFlags);
+		final boolean isStanding = CMLib.flags().isStanding(mob) && (!CMLib.flags().isSleeping(mob));
+		if(giveMsg && (!isStanding))
+		{
+			if(CMLib.flags().isSleeping(mob))
+				mob.tell(L("You need to wake up first."));
+			else
+			if(!wasStanding)
+				mob.tell(L("You failed to stand up. You might try crawling."));
+			else
+				mob.tell(L("You need to stand up."));
+		}
+		return isStanding;
 	}
 
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		standIfNecessary(mob,metaFlags);
+		if(!standIfNecessary(mob,metaFlags, true))
+			return false;
 		if((commands.size()>3)
 		&&(commands.firstElement() instanceof Integer))
 		{
