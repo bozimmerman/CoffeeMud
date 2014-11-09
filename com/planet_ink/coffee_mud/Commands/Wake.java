@@ -51,9 +51,15 @@ public class Wake extends StdCommand
 				mob.tell(L("You aren't sleeping!?"));
 			else
 			{
-				final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_STAND,L("<S-NAME> awake(s) and stand(s) up."));
+				final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SIT,L("<S-NAME> awake(s) and get(s) up."));
 				if(mob.location().okMessage(mob,msg))
+				{
 					mob.location().send(mob,msg);
+					msg.modify(mob, CMMsg.MSG_STAND, null);
+					if(mob.location().okMessage(mob,msg))
+						mob.location().send(mob,msg);
+				}
+				
 			}
 		}
 		else
