@@ -209,6 +209,16 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 					}
 					break;
 				}
+			case CMMsg.TYP_ADVANCE: case CMMsg.TYP_RETREAT:
+			{
+				final MOB mob=msg.source();
+				if((brokenParts[Race.BODY_LEG]<0)&&(!CMLib.flags().isSleeping(mob)))
+				{
+					mob.tell("Your broken leg made movement too painful this time.  Try again.");
+					return false;
+				}
+				break;
+			}
 			case CMMsg.TYP_WIELD:
 			{
 				final MOB mob=msg.source();
@@ -594,11 +604,14 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 				return false;
 			}
 			
-			if((choice.length()>0)&&(brokeStr==null))
+			if(choice.length()>0)
 			{
 				for(int i=0;i<healthyLimbSet.size();i++)
 					if(CMLib.english().containsString(healthyLimbSet.get(i),choice))
-					{ brokeStr=healthyLimbSet.get(i); break;}
+					{ 
+						brokeStr=healthyLimbSet.get(i); 
+						break;
+					}
 				if(brokeStr==null)
 				{
 					if(!auto)
