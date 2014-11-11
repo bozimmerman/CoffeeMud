@@ -116,7 +116,7 @@ public class Skill_AdLib extends BardSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob, commands, givenTarget);
-		if(target==null)
+		if((target==null)||(target==mob))
 			return false;
 		
 		final Room R=mob.location();
