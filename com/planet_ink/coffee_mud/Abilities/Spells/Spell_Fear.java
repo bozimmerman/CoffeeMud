@@ -42,6 +42,7 @@ public class Spell_Fear extends Spell
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	@Override public long flags(){return Ability.FLAG_TRANSPORTING;}
 
 	@Override
 	public void unInvoke()
@@ -59,6 +60,8 @@ public class Spell_Fear extends Spell
 				M.tell(M,oldI,null,L("You are no longer afraid of <T-NAMESELF>."));
 			else
 				M.tell(L("You are no longer afraid."));
+			if(M.isMonster())
+				CMLib.tracking().wanderAway(M, false, true);
 		}
 	}
 

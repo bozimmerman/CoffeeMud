@@ -220,7 +220,11 @@ public class ServiceEngine implements ThreadEngine
 		for(final TickableGroup almostTock : allTicks)
 		{
 			if(almostTock.contains(E,tickID))
+			{
+				for(final Iterator<TickClient> set=almostTock.getTickSet(E,tickID);set.hasNext();)
+					set.next().setSuspended(false);
 				return null;
+			}
 			if((tock==null)
 			&&(almostTock.getTickInterval()==tickTime)
 			&&(!almostTock.isSolitaryTicker())

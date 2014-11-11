@@ -7,6 +7,8 @@
    5. Weaving has gotten a little recipe love; not much, but a little.
    6. New Delver chant: Magma Cannon
    7. Broken limbs are now a thing.  So far the only way to break one is to fall and take damage.  Not as severe as amputation -- Bandaging and healing can help.
+   8. New Charlatan skills: Break A Leg, Monologue, Cast Blocking, Strike The Set, Upstage, Exit Stage Left, Curtain Call, Ad Lib
+   9. New Expertise: Acting
 # Build 5.8.3 Release 10/27/2014
    *. Database Schema Updated for CMCHAR.CMDESC and CMCHAR.CMCHID.  See the Installation Guide about running DBUpgrade.
    1. (FakeDB): DBUpgrade is now application independent, and can handle big tables better.  See installation guide for new recommended usage.

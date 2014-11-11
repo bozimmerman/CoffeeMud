@@ -46,7 +46,6 @@ public class Skill_Buffoonery extends BardSkill
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
 	@Override public int usageType(){return USAGE_MOVEMENT;}
 
-
 	protected Vector getFreeWearingPositions(MOB target)
 	{
 		final Vector V=new Vector();

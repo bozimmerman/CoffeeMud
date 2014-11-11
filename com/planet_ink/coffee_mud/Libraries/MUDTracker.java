@@ -636,8 +636,15 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		int tries=0;
 		while((M.location()==R)&&((++tries)<10)&&((!mindPCs)||(R.numPCInhabitants()>0)))
 			beMobile(M,true,true,false,false,false,null,null);
-		if((M.getStartRoom()!=null)&&(andGoHome))
-			M.getStartRoom().bringMobHere(M,true);
+		if(andGoHome)
+		{
+			final Room startRoom=M.getStartRoom();
+			if(startRoom!=null)
+			{
+				startRoom.showOthers(M,startRoom,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,"<S-NAME> enter(s).");
+				startRoom.bringMobHere(M,true);
+			}
+		}
 	}
 
 	@Override

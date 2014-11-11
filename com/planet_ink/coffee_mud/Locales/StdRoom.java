@@ -728,6 +728,7 @@ public class StdRoom implements Room
 				break;
 			default:
 				if(((msg.targetMajor(CMMsg.MASK_HANDS))||(msg.targetMajor(CMMsg.MASK_MOUTH)))
+				&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_MAGIC))
 				&&(msg.targetMinor()!=CMMsg.TYP_THROW))
 				{
 					mob.tell(L("You can't do that here."));
@@ -1170,7 +1171,7 @@ public class StdRoom implements Room
 		//if(phyStats().sensesMask()>0)
 		//	affectableStats.setSensesMask(affectableStats.sensesMask()|phyStats().sensesMask());
 		final int disposition=phyStats().disposition()
-			&((~(PhyStats.IS_DARK|PhyStats.IS_LIGHTSOURCE|PhyStats.IS_SLEEPING|PhyStats.IS_HIDDEN)));
+			&((~(PhyStats.IS_DARK|PhyStats.IS_LIGHTSOURCE|PhyStats.IS_SLEEPING|PhyStats.IS_HIDDEN|PhyStats.IS_NOT_SEEN)));
 		if(disposition>0)
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
 		eachEffect(new EachApplicable<Ability>(){ 

@@ -69,8 +69,11 @@ public class Skill_CenterOfAttention extends BardSkill
 		{
 			final MOB mob=(MOB)affected;
 			if((!CMLib.flags().canBeSeenBy(invoker(), mob))
-			||((invoker()!=null)&&(mob.location()!=invoker().location())))
+			||((invoker()!=null)&&(mob.location()!=invoker().location()))||(!CMLib.flags().isInTheGame(invoker(),true)))
+			{
 				unInvoke();
+				return false;
+			}
 			String verbStr;
 			String targetStr;
 			switch(CMLib.dice().roll(1, 10, 0))

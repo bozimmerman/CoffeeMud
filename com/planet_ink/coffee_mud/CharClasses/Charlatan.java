@@ -79,25 +79,28 @@ public class Charlatan extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Disguise",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Climb",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_WandUse",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_Hide",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Thief_Mark",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Song_Charm",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Fighter_Rescue",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_StrikeTheSet",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Songcraft",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Spell_ReadMagic",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Song_Detection",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Imitation",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_CastBlocking",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_Distract",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_WandUse",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Warrants",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_BreakALeg",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Skill_Dodge",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Song_Detection",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_FalseArrest",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Song_Comprehension",true);
@@ -111,27 +114,32 @@ public class Charlatan extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_Trip",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_AnalyzeMark",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Skill_Upstage",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Chantcraft",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Song_Protection",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_SummonPlants",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Song_Protection",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Skill_Shuffle",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Skill_Shuffle",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Skill_ExitStageLeft",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_SummonPlants",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_Prayercraft",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_CureLight",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Song_Mana",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Song_Knowledge",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Skill_CurtainCall",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_Detection",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_Monologue",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Song_Thanks",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Spell_LocateObject",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Skill_Parry",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Skill_AdLib",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_Con",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Song_Strength",false);

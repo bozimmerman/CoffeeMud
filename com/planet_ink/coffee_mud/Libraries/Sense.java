@@ -278,10 +278,16 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 	@Override
 	public boolean isSeen(Physical P)
-	{ return (P!=null)&&(((P.phyStats().disposition()&PhyStats.IS_NOT_SEEN)==0) || isSleeping(P)); }
+	{ 
+		return (P!=null)&&(((P.phyStats().disposition()&PhyStats.IS_NOT_SEEN)==0) || isSleeping(P)); 
+	}
+	
 	@Override
 	public boolean isCloaked(Physical P)
-	{ return (P!=null)&&((P.phyStats().disposition()&PhyStats.IS_CLOAKED)==PhyStats.IS_CLOAKED);}
+	{ 
+		return (P!=null)&&((P.phyStats().disposition()&PhyStats.IS_CLOAKED)==PhyStats.IS_CLOAKED);
+	}
+	
 	@Override
 	public boolean isHidden(Physical P)
 	{
@@ -294,13 +300,18 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return false;
 		return isInHide;
 	}
+	
 	@Override
 	public boolean isUnattackable(Physical P)
-	{ return (P!=null)&&((P.phyStats().disposition()&PhyStats.IS_UNATTACKABLE)==PhyStats.IS_UNATTACKABLE); }
+	{ 
+		return (P!=null)&&((P.phyStats().disposition()&PhyStats.IS_UNATTACKABLE)==PhyStats.IS_UNATTACKABLE); 
+	}
 	
 	@Override
 	public boolean isInvisible(Physical P)
-	{ return (P!=null)&&((P.phyStats().disposition()&PhyStats.IS_INVISIBLE)==PhyStats.IS_INVISIBLE); }
+	{ 
+		return (P!=null)&&((P.phyStats().disposition()&PhyStats.IS_INVISIBLE)==PhyStats.IS_INVISIBLE); 
+	}
 
 	@Override
 	public boolean isRejuvingItem(Item I)
@@ -791,8 +802,10 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 
 		if(!canSee(seer))
 			return false;
+
 		if(!(seen instanceof Physical))
 			return true;
+
 		final Physical seenP=(Physical)seen;
 
 		if((!isSeen(seenP))&&(seer!=null))

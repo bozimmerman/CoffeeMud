@@ -24,10 +24,6 @@ NON-TECH
    *. Fighter - Weapons Training (or Karate Training for Monks) -- non-kill way to gain xp, makes mobs slightly harder, 1 level up max.
    *. Fighter -- AUTOGUARD can start a little "Guarding" prog for, say, 10 rl minutes.
    *. Classes with insufficient unique skills: Charlatan (7), Alterer (9), Illusionist (10),  Ranger (11), Evoker (11), Assassin (12), Paladin (12),
-        * Charlatan ideas: Break a Leg (breaks all legs), Blocking (move group members around), Monologue (pauses all actions in room until player stops talking)
-                        *: Strike the Set (everything becomes invisible temporarily). Upstage -- force monsters to approach for 3 ticks, or until attack.
-                        *: Exit Stage Left (every enemy flees west, for some number of ticks), Curtain Call (group trades half movement for mana/hp by bowing)
-                        *: Ad Lib (possess a copy of a group member to play that role, destroy eq after, no casting spells that require xp, or take xp from charalatan)
         *. Alterer ideas : +6
                          : Polymorph Object (temp), Magic Bullet, Flame Arrow, Shape Object (ruins object by adding "shaped like a.." to end), Keen Edge, Fabricate (permanent)
         *. Illusionist id: +6

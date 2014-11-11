@@ -431,6 +431,9 @@ HELP_=<EXPERTISE>The ability to cast moon summoning and altering chants at a hig
 FOOLISH@x1=Foolmaking @x2,10,LEVEL|LOWCOST,-SKILLFLAG +FOOLISHNESS,-MAXCLASSLEVEL +>={22+(5*@x1)},+CHA {12+@x1} ,0,1,0,0,0
 HELP_=<EXPERTISE>The ability to use foolish skills at a higher power level, producing longer and more malicious/beneficial effects, while also reducing mana/movement cost.
 
+ACTING@x1=Acting @x2,10,LEVEL|LOWCOST,-SKILLFLAG +THEATRE,-MAXCLASSLEVEL +>={18+(5*@x1)},+CHA {12+@x1} ,0,1,0,0,0
+HELP_=<EXPERTISE>The ability to use theatre skills at a higher power level, producing longer and more malicious/beneficial effects, while also reducing mana/movement cost.
+
 SHAPING@x1=Shapeshifting @x2,10,LEVEL|X1|X2|LOWCOST,-SKILLFLAG +SHAPE_SHIFTING,-MAXCLASSLEVEL +>={23+(5*@x1)},+CON {12+@x1} ,0,1,0,0,0
 HELP_=<EXPERTISE>The ability to use shape shifting skills and chants at a higher power level, producing longer and more malicious/beneficial magic, while also reducing mana cost.
 
