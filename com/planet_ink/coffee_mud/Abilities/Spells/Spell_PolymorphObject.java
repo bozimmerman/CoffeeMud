@@ -137,7 +137,12 @@ public class Spell_PolymorphObject extends Spell
 			mob.tell(L("You don't seem to have a '@x1'.",itemName));
 			return false;
 		}
-		if((targetI instanceof DeadBody)||(!CMLib.flags().isGettable(targetI)))
+		if((targetI instanceof DeadBody)
+		||(!CMLib.flags().isGettable(targetI))
+		||(targetI instanceof ClanItem)
+		||(targetI.basePhyStats().weight() > mob.maxCarry())
+		||(CMath.bset(targetI.phyStats().sensesMask(), PhyStats.SENSE_ITEMNOWISH))
+		)
 		{
 			mob.tell(L("You can't polymorph that."));
 			return false;
