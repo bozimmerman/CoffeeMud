@@ -164,14 +164,9 @@ public class Prop_Smell extends Property
 
 	public void emoteHere(Room room, MOB emoter, String str)
 	{
-		final CMMsg msg=CMClass.getMsg(emoter,null,CMMsg.MSG_EMOTE,str);
+		final CMMsg msg=CMClass.getMsg(emoter,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_AROMA,str);
 		if(room.okMessage(emoter,msg))
-		for(int i=0;i<room.numInhabitants();i++)
-		{
-			final MOB M=room.fetchInhabitant(i);
-			if((M!=null)&&(!M.isMonster())&&(CMLib.flags().canSmell(M)))
-				M.executeMsg(M,msg);
-		}
+			room.send(emoter, msg);
 	}
 
 	@Override
