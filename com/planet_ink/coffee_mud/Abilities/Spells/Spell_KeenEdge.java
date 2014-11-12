@@ -50,7 +50,7 @@ public class Spell_KeenEdge extends Spell
 		affectableStats.setDisposition(affectableStats.disposition() | PhyStats.IS_BONUS);
 		final int xlvl=CMath.s_int(text());
 		affectableStats.setDamage(affectableStats.damage()+1+(int)Math.round(CMath.mul(affectableStats.damage(),0.2 + (0.01*xlvl))));
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+3+(int)Math.round(CMath.mul(affectableStats.attackAdjustment(),0.1 + (0.01*xlvl))));
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+3+xlvl+(int)Math.round(CMath.mul(affectableStats.attackAdjustment(),0.1)));
 	}
 
 	@Override

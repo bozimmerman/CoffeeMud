@@ -50,6 +50,8 @@ public class Spell_FlamingArrows extends Spell
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BONUS);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GLOWING);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_LIGHTSOURCE);
 	}
 
 	@Override
@@ -78,7 +80,7 @@ public class Spell_FlamingArrows extends Spell
 			&&(!(msg.tool() instanceof Wand)))
 			{
 				final int damage=msg.value() + CMath.s_int(text());
-				final String str=L("^F^<FIGHT^><S-YOUPOSS> flaming arrows <DAMAGE> <T-NAME>!^</FIGHT^>^?");
+				final String str=L("^F^<FIGHT^><S-YOUPOSS> flaming arrow <DAMAGE> <T-NAME>!^</FIGHT^>^?");
 				synchronized(this)
 				{
 					if(!norecurse)

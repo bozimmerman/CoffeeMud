@@ -214,33 +214,43 @@ public class Spell_PolymorphObject extends Spell
 			mob.tell(L("You can only polymorph an item into one no more than @x1 large.  @x2 is too big.",CMath.toPct(weightDiff),intoI.Name()));
 			return false;
 		}
+		intoI=(Item)intoI.copyOf();
 		if(intoI.material() != targetI.material())
 		{
-			intoI=(Item)intoI.copyOf();
-			while(intoI.numEffects()>0)
-			{
-				Ability A=intoI.fetchEffect(0);
-				if(A!=null)
-				{
-					A.unInvoke();
-					intoI.delEffect(A);
-				}
-			}
-			while(intoI.numBehaviors()>0)
-			{
-				Behavior B=intoI.fetchBehavior(0);
-				if(B!=null)
-					intoI.delBehavior(B);
-			}
 			intoI.setMaterial(targetI.material());
 			String oldMaterialName=RawMaterial.CODES.NAME(intoI.material());
 			String newMaterialName=RawMaterial.CODES.NAME(targetI.material()).toLowerCase();
 			intoI.setName(CMStrings.replaceWord(intoI.Name(), oldMaterialName, newMaterialName));
 			intoI.setDisplayText(CMStrings.replaceWord(intoI.displayText(), oldMaterialName, newMaterialName));
 			intoI.setDescription(CMStrings.replaceWord(intoI.description(), oldMaterialName, newMaterialName));
-			intoI.setBaseValue(0);
 		}
 		
+		while(intoI.numEffects()>0)
+		{
+			Ability A=intoI.fetchEffect(0);
+			if(A!=null)
+			{
+				A.unInvoke();
+				intoI.delEffect(A);
+			}
+		}
+		while(intoI.numBehaviors()>0)
+		{
+			Behavior B=intoI.fetchBehavior(0);
+			if(B!=null)
+				intoI.delBehavior(B);
+		}
+		intoI.basePhyStats().setAbility(0);
+		intoI.basePhyStats().setDisposition(intoI.basePhyStats().disposition() & (~PhyStats.IS_BONUS));
+		intoI.recoverPhyStats();
+		intoI.setBaseValue(0);
+		
+		// the reason this costs experience is to make it less valuable than Duplicate 
+		// but more valuable than Wish.
+		final int experienceToLose=getXPCOSTAdjustment(mob,5+intoI.basePhyStats().level());
+		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
+		mob.tell(L("The effort causes you to lose @x1 experience.",""+experienceToLose));
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,

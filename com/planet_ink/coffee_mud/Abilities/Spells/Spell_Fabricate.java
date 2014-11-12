@@ -162,10 +162,31 @@ public class Spell_Fabricate extends Spell
 			mob.tell(L("You can't fabricate @x1!",intoI.Name()));
 			return false;
 		}
+
+		intoI=(Item)intoI.copyOf();
+		while(intoI.numEffects()>0)
+		{
+			Ability A=intoI.fetchEffect(0);
+			if(A!=null)
+			{
+				A.unInvoke();
+				intoI.delEffect(A);
+			}
+		}
+		while(intoI.numBehaviors()>0)
+		{
+			Behavior B=intoI.fetchBehavior(0);
+			if(B!=null)
+				intoI.delBehavior(B);
+		}
+		intoI.basePhyStats().setAbility(0);
+		intoI.basePhyStats().setDisposition(intoI.basePhyStats().disposition() & (~PhyStats.IS_BONUS));
+		intoI.recoverPhyStats();
+		intoI.setBaseValue(0);
 		
 		// the reason this costs experience is to make it less valuable than Duplicate or Polymorph Object, 
 		// but more valuable than Wish.
-		final int experienceToLose=getXPCOSTAdjustment(mob,5+intoI.basePhyStats().level());
+		final int experienceToLose=getXPCOSTAdjustment(mob,10+(intoI.basePhyStats().level()*2));
 		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 		mob.tell(L("The effort causes you to lose @x1 experience.",""+experienceToLose));
 

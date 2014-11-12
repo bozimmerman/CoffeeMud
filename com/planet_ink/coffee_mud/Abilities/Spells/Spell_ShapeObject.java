@@ -46,7 +46,7 @@ public class Spell_ShapeObject extends Spell
 	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{
-		affectableStats.setName(affectedEnv.Name()+" shaped like "+CMLib.english().startWithAorAn(text()));
+		affectableStats.setName(affectedEnv.Name()+" shaped like "+text());
 	}
 	
 	@Override
@@ -100,7 +100,7 @@ public class Spell_ShapeObject extends Spell
 			mob.tell(mob,targetI,null,L("<T-NAME> is already shaped!"));
 			return false;
 		}
-
+		
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -127,6 +127,7 @@ public class Spell_ShapeObject extends Spell
 				Ability A=super.beneficialAffect(mob, targetI, asLevel, 0);
 				if(A!=null)
 					A.setMiscText(likeWhat);
+				targetI.recoverPhyStats();
 			}
 		}
 		else
