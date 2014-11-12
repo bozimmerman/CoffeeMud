@@ -102,12 +102,12 @@ public class Prop_Smell extends Property
 					}
 					if(s.equals("EMOTE"))
 					{
-						pct=pct&FLAG_EMOTE;
+						pct=pct|FLAG_EMOTE;
 						parsedSmell.removeElementAt(ii);
 					}
 					if(s.equals("BROADCAST"))
 					{
-						pct=pct&FLAG_EMOTE;
+						pct=pct|FLAG_BROADCAST;
 						parsedSmell.removeElementAt(ii);
 					}
 				}
