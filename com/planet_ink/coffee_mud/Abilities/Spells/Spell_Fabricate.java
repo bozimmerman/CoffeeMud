@@ -191,8 +191,8 @@ public class Spell_Fabricate extends Spell
 				mob.location().send(mob,msg);
 				if(msg.value()>0)
 					return false;
-				
 				mob.addItem(intoI);
+				beneficialAffect(mob,intoI,asLevel,0);
 				mob.location().recoverRoomStats();
 			}
 		}
