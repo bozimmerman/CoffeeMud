@@ -3094,6 +3094,9 @@ public class StdMOB implements MOB
 			&& ((!CMath.bset(msg.sourceMajor(), CMMsg.MASK_ALWAYS)) || (!(msg.tool() instanceof DiseaseAffect))))
 				CMLib.combat().makeFollowersFight(this, (MOB) msg.target(), srcM);
 
+			if((othersMinor == CMMsg.TYP_AROMA) && CMLib.flags().canSmell(this))
+				tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
+			else
 			if ((othersMinor == CMMsg.TYP_ENTER) // exceptions to movement
 			|| (othersMinor == CMMsg.TYP_FLEE)
 			|| (othersMinor == CMMsg.TYP_LEAVE))
@@ -3133,9 +3136,9 @@ public class StdMOB implements MOB
 				|| ((CMath.bset(othersMajor, CMMsg.MASK_MOUTH)) && (!CMath.bset(othersMajor, CMMsg.MASK_SOUND))))
 			&& (!asleep) && ((canseesrc) || (canhearsrc)))
 				tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
-
-			if ((msg.othersMinor() == CMMsg.TYP_DEATH)
-			&& (msg.sourceMinor() == CMMsg.TYP_DEATH)
+			
+			if ((othersMinor == CMMsg.TYP_DEATH)
+			&& (othersMinor == CMMsg.TYP_DEATH)
 			&& (location() != null))
 				CMLib.combat().handleObserveDeath(this, victim, msg);
 			else

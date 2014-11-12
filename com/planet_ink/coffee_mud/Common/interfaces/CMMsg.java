@@ -1026,6 +1026,8 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_INSTALL=115;
 	/** MINOR_MASK minor action code type, denoting a collision*/
 	public static final int TYP_COLLISION=116;
+	/** MINOR_MASK minor action code type, denoting a general unknown action*/
+	public static final int TYP_AROMA=118;
 
 	/** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -1052,7 +1054,7 @@ public interface CMMsg extends CMCommon
 		"FACTIONCHANGE", "LOGIN", "LEVEL", "EXAMINE", "ORDER","EXPIRE","BORROW","HUH",
 		"LIFE", "BID", "CLANEVENT", "UNLOAD", "DUELCHALLENGE", "LEGALWARRANT", "DIG",
 		"PREINVOKE","POSSESS","DISPOSSESS","POWERCURRENT","CONTEMPLATE","POUR","LOOKEXITS",
-		"LASER","SONIC","REPAIR","ENHANCE","INSTALL","COLLISION"
+		"LASER","SONIC","REPAIR","ENHANCE","INSTALL","COLLISION","AROMA"
 	};
 
 	/** Index string descriptions of all the MAJOR_MASK code MAKS_s */
