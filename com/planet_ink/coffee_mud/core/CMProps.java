@@ -1492,6 +1492,66 @@ public class CMProps extends Properties
 		CMSecurity.setSaveFlags(getStr("SAVE"));
 	}
 
+	public static boolean isAnyINIFiltered(String msg)
+	{
+		final Str[] filters = new Str[] {Str.EMOTEFILTER,Str.POSEFILTER,Str.SAYFILTER,Str.CHANNELFILTER};
+		for(Str filter : filters)
+			if(isINIFiltered(msg,filter))
+				return true;
+		return false;
+	}
+	
+	public static boolean isINIFiltered(String msg, Str whichFilter)
+	{
+		List<String> filter=null;
+		switch(whichFilter)
+		{
+		case EMOTEFILTER: filter=p().emoteFilter; break;
+		case POSEFILTER: filter=p().poseFilter; break;
+		case SAYFILTER: filter=p().sayFilter; break;
+		case CHANNELFILTER: filter=p().channelFilter; break;
+		default:
+			return false;
+		}
+		if((filter==null)||(filter.size()==0))
+			return false;
+
+		int fdex=0;
+		int len=0;
+		String upp=msg.toUpperCase();
+		for(final String filterStr : filter)
+		{
+			if(filterStr.length()==0)
+				continue;
+			fdex=upp.indexOf(filterStr);
+			int ctr=0;
+			while((fdex>=0)&&((++ctr)<999))
+			{
+				len=fdex+filterStr.length();
+				if(((fdex==0)
+					||(Character.isWhitespace(upp.charAt(fdex-1)))
+					||((fdex>1)&&(upp.charAt(fdex-2)=='^')))
+				&&((len==upp.length())
+					||(!Character.isLetter(upp.charAt(len)))))
+				{
+
+					for(;fdex<len;fdex++)
+					{
+						if(!Character.isWhitespace(msg.charAt(fdex)))
+							return true;
+					}
+					fdex=upp.indexOf(filterStr);
+				}
+				else
+				if(fdex<(filterStr.length()-1))
+					fdex=upp.indexOf(filterStr,fdex+1);
+				else
+					fdex=-1;
+			}
+		}
+		return false;
+	}
+	
 	public static String applyINIFilter(String msg, Str whichFilter)
 	{
 		List<String> filter=null;

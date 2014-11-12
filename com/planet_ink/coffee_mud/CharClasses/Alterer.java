@@ -45,14 +45,20 @@ public class Alterer extends SpecialistMage
 		super.initializeClass();
 		CMLib.ableMapper().delCharAbilityMapping(ID(),"Spell_Shield");
 
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_MagicBullets",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_ShapeObject",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Spell_FlamingArrows",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Spell_KeenEdge",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_MassFeatherfall",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Spell_IncreaseGravity",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_AlterSubstance",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Spell_SlowProjectiles",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Spell_MassSlow",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Spell_Timeport",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Spell_PolymorphObject",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Spell_GravitySlam",25,true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Spell_AlterSubstance",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Spell_Fabricate",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_Duplicate",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_Wish",25,true);
 	}

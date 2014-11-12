@@ -37,11 +37,11 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 	@Override public String ID() { return "Prop_AddDamage"; }
 	@Override public String name(){ return "Additional Damage";}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	int weaponType=Weapon.TYPE_NATURAL;
-	int typeOfEffect=CMMsg.TYP_WEAPONATTACK;
-	double pctDamage=0.0;
-	int bonusDamage=0;
-	volatile boolean norecurse=false;
+	protected int weaponType=Weapon.TYPE_NATURAL;
+	protected int typeOfEffect=CMMsg.TYP_WEAPONATTACK;
+	protected double pctDamage=0.0;
+	protected int bonusDamage=0;
+	protected volatile boolean norecurse=false;
 
 	@Override
 	public int triggerMask()

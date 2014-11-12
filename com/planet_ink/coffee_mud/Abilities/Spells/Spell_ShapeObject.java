@@ -34,50 +34,72 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("rawtypes")
-public class Spell_ImprovedInvisibility extends Spell
+public class Spell_ShapeObject extends Spell
 {
-	@Override public String ID() { return "Spell_ImprovedInvisibility"; }
-	private final static String localizedName = CMLib.lang().L("Improved Invisibility");
+	@Override public String ID() { return "Spell_ShapeObject"; }
+	private final static String localizedName = CMLib.lang().L("Shape Object");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Improved Invisibility)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+	@Override protected int canTargetCode(){return CAN_ITEMS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{
-		super.affectPhyStats(affected,affectableStats);
-		// when this spell is on a MOBs Affected list,
-		// it should consistantly put the mob into
-		// a sleeping state, so that nothing they do
-		// can get them out of it.
-		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_INVISIBLE);
+		affectableStats.setName(affectedEnv.Name()+" shaped like "+CMLib.english().startWithAorAn(text()));
 	}
-
+	
 	@Override
 	public void unInvoke()
 	{
-		// undo the affects of this spell
-		if(!(affected instanceof MOB))
-			return;
-		final MOB mob=(MOB)affected;
+		final Physical affected = super.affected;
 		super.unInvoke();
-
-		if(canBeUninvoked())
-			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> fade(s) back into view."));
+		if(canBeUninvoked() && (affected instanceof Item))
+		{
+			final Item item=(Item)affected;
+			if(item.owner() instanceof Room)
+				((Room)item.owner()).showHappens(CMMsg.MSG_OK_VISUAL, item, L("<S-NAME> reverts to its previous shape."));
+			else
+			if(item.owner() instanceof MOB)
+				((MOB)item.owner()).tell(((MOB)item.owner()),item,null,L("<T-NAME> reverts to its previous shape."));
+		}
 	}
-
-
-
+	
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null)
+		// add something to disable traps
+		//
+		if(commands.size()<2)
+		{
+			mob.tell(L("Shape what like what?"));
 			return false;
+		}
+		String itemName=(String)commands.get(0);
+		final Item targetI=super.getTarget(mob, null, givenTarget, new XVector<String>(itemName), Wearable.FILTER_UNWORNONLY);
+		if(targetI==null)
+		{
+			mob.tell(L("You don't seem to have a '@x1'.",itemName));
+			return false;
+		}
+		if(targetI instanceof DeadBody)
+		{
+			mob.tell(L("You can't shape that."));
+			return false;
+		}
+		String likeWhat=CMParms.combineQuoted(commands, 1);
+		
+		if(CMLib.login().isBadName(likeWhat) || CMProps.isAnyINIFiltered(likeWhat))
+		{
+			mob.tell(L("You can't shape anything like '@x1'.",likeWhat));
+			return false;
+		}
+		
+		if((targetI.name().toLowerCase().indexOf("shaped like")>0)||(targetI.fetchEffect(ID())!=null))
+		{
+			mob.tell(mob,targetI,null,L("<T-NAME> is already shaped!"));
+			return false;
+		}
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -86,24 +108,32 @@ public class Spell_ImprovedInvisibility extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		// now see if it worked
 		final boolean success=proficiencyCheck(mob,0,auto);
+
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> cast(s) a spell on <T-NAMESELF>.^?"));
+			invoker=mob;
+			final CMMsg msg=CMClass.getMsg(mob,targetI,this,verbalCastCode(mob,targetI,auto),L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAME> shaping it like @x1.^?",likeWhat));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> fade(s) from view!"));
-				beneficialAffect(mob,target,asLevel,(mob.phyStats().level()+(2*getXLEVELLevel(mob)))*3);
+
+				if(msg.value()>0)
+					return false;
+				Ability A=super.beneficialAffect(mob, targetI, asLevel, 0);
+				if(A!=null)
+					A.setMiscText(likeWhat);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> speak(s) softly to <T-NAMESELF>, but nothing more happens."));
+		{
+			
+			return beneficialWordsFizzle(mob,targetI,L("<S-NAME> attempt(s) to shape <T-NAME> like @x1, but flub(s) it.",likeWhat));
+		}
 
 		// return whether it worked
 		return success;

@@ -1580,7 +1580,7 @@ public class StdRoom implements Room
 	@Override
 	public void showHappens(int allCode, Environmental like, String allMessage)
 	{
-		final MOB everywhereMOB=CMClass.getMOB("StdMOB");
+		final MOB everywhereMOB=CMClass.getFactoryMOB();
 		everywhereMOB.setName(like.name());
 		if(like instanceof Physical)
 			everywhereMOB.setBasePhyStats(((Physical)like).phyStats());

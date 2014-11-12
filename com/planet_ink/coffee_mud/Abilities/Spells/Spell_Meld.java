@@ -402,7 +402,7 @@ public class Spell_Meld extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) @x1 and @x2, but fail(s).",itemOne.name(),itemTwo.name()));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to meld @x1 and @x2, but fail(s).",itemOne.name(),itemTwo.name()));
 
 		// return whether it worked
 		return success;
