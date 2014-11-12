@@ -212,15 +212,16 @@ public class Spell_PolymorphObject extends Spell
 			return false;
 		}
 		
-		int weightDiff = (int)Math.round(CMath.mul(targetI.basePhyStats().weight(),0.3 + (0.2 * super.getXLEVELLevel(mob))));
+		double pct= 0.3 + (0.2 * super.getXLEVELLevel(mob));
+		int weightDiff = (int)Math.round(CMath.mul(targetI.basePhyStats().weight(),pct));
 		if(intoI.basePhyStats().weight() < (targetI.basePhyStats().weight() - weightDiff))
 		{
-			mob.tell(L("You can only polymorph an item into one no more than @x1 smaller.  @x2 is too small.",CMath.toPct(weightDiff),intoI.Name()));
+			mob.tell(L("You can only polymorph an item into one no more than @x1 smaller.  @x2 is too small.",CMath.toPct(pct),intoI.Name()));
 			return false;
 		}
 		if(intoI.basePhyStats().weight() > (targetI.basePhyStats().weight() + weightDiff))
 		{
-			mob.tell(L("You can only polymorph an item into one no more than @x1 large.  @x2 is too big.",CMath.toPct(weightDiff),intoI.Name()));
+			mob.tell(L("You can only polymorph an item into one no more than @x1 large.  @x2 is too big.",CMath.toPct(pct),intoI.Name()));
 			return false;
 		}
 		intoI=(Item)intoI.copyOf();
