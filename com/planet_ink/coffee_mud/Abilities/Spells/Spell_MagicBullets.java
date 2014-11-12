@@ -78,7 +78,7 @@ public class Spell_MagicBullets extends Spell
 			&&(!(msg.tool() instanceof Wand)))
 			{
 				final int damage=msg.value() + CMath.s_int(text());
-				final String str=L("^F^<FIGHT^><S-YOUPOSS> <O-NAME> <DAMAGE> <T-NAME>!^</FIGHT^>^?");
+				final String str=L("^F^<FIGHT^><S-YOUPOSS> magic bullets <DAMAGE> <T-NAME>!^</FIGHT^>^?");
 				synchronized(this)
 				{
 					if(!norecurse)

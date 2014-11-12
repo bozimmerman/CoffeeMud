@@ -158,7 +158,7 @@ public class Spell_PolymorphObject extends Spell
 			List<List<String>> L = A.matchingRecipeNames(intoWhat, false);
 			if((L!=null)&&(L.size()>0))
 			{
-				ItemKeyPair what=A.craftAnyItem(targetI.material());
+				ItemKeyPair what=A.craftItem(L.get(0).get(0),targetI.material(),true);
 				if((what!=null)&&(what.item!=null))
 				{
 					intoI=what.item;
@@ -172,7 +172,7 @@ public class Spell_PolymorphObject extends Spell
 				List<List<String>> L = A.matchingRecipeNames(intoWhat, true);
 				if((L!=null)&&(L.size()>0))
 				{
-					ItemKeyPair what=A.craftAnyItem(targetI.material());
+					ItemKeyPair what=A.craftItem(L.get(0).get(0),targetI.material(),true);
 					if((what!=null)&&(what.item!=null))
 					{
 						intoI=what.item;
@@ -257,14 +257,14 @@ public class Spell_PolymorphObject extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,targetI,this,verbalCastCode(mob,targetI,auto),L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAME> polymorphing it into a @x1.^?",intoI.name()));
+			final CMMsg msg=CMClass.getMsg(mob,targetI,this,verbalCastCode(mob,targetI,auto),L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAME> polymorphing it into @x1.^?",intoI.name()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 
 				if(msg.value()>0)
 					return false;
-				Spell_PolymorphObject A=(Spell_PolymorphObject)super.beneficialAffect(mob, targetI, asLevel, 0);
+				Spell_PolymorphObject A=(Spell_PolymorphObject)super.beneficialAffect(mob, intoI, asLevel, 0);
 				if(A!=null)
 				{
 					final List<Item> items = new XVector<Item>();

@@ -78,7 +78,7 @@ public class Spell_FlamingArrows extends Spell
 			&&(!(msg.tool() instanceof Wand)))
 			{
 				final int damage=msg.value() + CMath.s_int(text());
-				final String str=L("^F^<FIGHT^><S-YOUPOSS> <O-NAME> <DAMAGE> <T-NAME>!^</FIGHT^>^?");
+				final String str=L("^F^<FIGHT^><S-YOUPOSS> flaming arrows <DAMAGE> <T-NAME>!^</FIGHT^>^?");
 				synchronized(this)
 				{
 					if(!norecurse)
