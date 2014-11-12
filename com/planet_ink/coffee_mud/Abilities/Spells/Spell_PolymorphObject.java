@@ -201,6 +201,12 @@ public class Spell_PolymorphObject extends Spell
 			return false;
 		}
 		
+		if(intoI.basePhyStats().level()>this.adjustedLevel(mob, asLevel))
+		{
+			mob.tell(L("You aren't experienced enough to polymorph anything into @x1?",intoI.Name()));
+			return false;
+		}
+		
 		int weightDiff = (int)Math.round(CMath.mul(targetI.basePhyStats().weight(),0.3 + (0.2 * super.getXLEVELLevel(mob))));
 		if(intoI.basePhyStats().weight() < (targetI.basePhyStats().weight() - weightDiff))
 		{
