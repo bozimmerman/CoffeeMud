@@ -90,25 +90,33 @@ public class Spell_CauseStink extends Spell
 			}
 			if(str!=null)
 			{
-				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MASK_ALWAYS|CMMsg.MASK_SOUND|CMMsg.MASK_EYES|CMMsg.TYP_GENERAL,str);
+				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MASK_ALWAYS|CMMsg.MASK_SOUND|CMMsg.MASK_EYES|CMMsg.TYP_AROMA,str);
 				if(room.okMessage(mob,msg))
-				for(int m=0;m<room.numInhabitants();m++)
 				{
-					final MOB M2=room.fetchInhabitant(m);
-					if((!M2.isMonster())&&(M2!=mob)&&(CMLib.flags().canSmell(M2)))
-						M2.executeMsg(M2,msg);
-				}
-			}
-			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-			{
-				final Room R=room.getRoomInDir(d);
-				if((R!=null)&&(R.numPCInhabitants()>0))
-					for(int i=0;i<R.numInhabitants();i++)
+					for(int m=0;m<room.numInhabitants();m++)
 					{
-						final MOB M=R.fetchInhabitant(i);
-						if((M!=null)&&(!M.isMonster())&&(CMLib.flags().canSmell(M)))
-							M.tell(L("There is a very bad smell coming from @x1.",Directions.getFromDirectionName(Directions.getOpDirectionCode(d))));
+						final MOB M=room.fetchInhabitant(m);
+						if((!M.isMonster())&&(M!=mob)&&(CMLib.flags().canSmell(M)))
+							M.executeMsg(M,msg);
 					}
+				}
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+				{
+					final Room R=room.getRoomInDir(d);
+					if((R!=null)&&(R.numPCInhabitants()>0))
+					{
+						final CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MASK_ALWAYS|CMMsg.MASK_SOUND|CMMsg.MASK_EYES|CMMsg.TYP_AROMA,L("There is a very bad smell coming from @x1.",Directions.getFromDirectionName(Directions.getOpDirectionCode(d))));
+						if(room.okMessage(mob, msg2) && R.okMessage(mob, msg2))
+						{
+							for(int i=0;i<R.numInhabitants();i++)
+							{
+								final MOB M=R.fetchInhabitant(i);
+								if((M!=null)&&(!M.isMonster())&&(CMLib.flags().canSmell(M)))
+									M.executeMsg(M, msg2);
+							}
+						}
+					}
+				}
 			}
 		}
 		return true;
