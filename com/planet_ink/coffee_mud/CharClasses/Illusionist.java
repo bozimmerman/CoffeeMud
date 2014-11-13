@@ -44,14 +44,20 @@ public class Illusionist extends SpecialistMage
 	public void initializeClass()
 	{
 		super.initializeClass();
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_DisguiseUndead",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_ColorSpray",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_DispelDivination",0,"",false,true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_Torture",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Spellcraft",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Spell_Torture",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_InvisibilitySphere",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Spell_FeignInvisibility",25,true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Spell_IllusoryDisease",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_DisguiseSelf",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Spell_IllusoryDisease",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Spell_Simulacrum",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Spell_DivineBeauty",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Spell_Phantasm",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Spell_GreaterInvisibility",25,true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Spell_DivineBeauty",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Spell_DisguiseOther",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Spell_AlternateReality",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_EndlessRoad",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_FeelTheVoid",25,true);

@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -45,35 +44,48 @@ public class Spell_SummonFlyer extends Spell
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	@Override public long flags(){return Ability.FLAG_SUMMONING;}
-	@Override protected int overrideMana(){return 50;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 
 	@Override
 	public void unInvoke()
 	{
 		final MOB mob=(MOB)affected;
+		final MOB invoker=invoker();
 		super.unInvoke();
-		if((canBeUninvoked())&&(mob!=null))
+		if((canBeUninvoked())&&(mob!=null)&&(invoker!=null))
 		{
 			if(mob.amDead())
 				mob.setLocation(null);
 			mob.destroy();
+			invoker.delEffect(this);
+			invoker.tell(L("Your simulacrum has vanished."));
 		}
+	}
+
+	@Override
+	public void affectCharStats(MOB affected, CharStats affectableStats)
+	{
+		super.affectCharStats(affected,affectableStats);
+		if((affected==null)||(invoker()==null)||(affected==invoker()))
+			return;
+		affectableStats.setRaceName(invoker().charStats().raceName());
+		affectableStats.setDisplayClassName(invoker().charStats().displayClassName());
+		affectableStats.setGenderName(invoker().charStats().genderName());
 	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((affected!=null)
-		&&(affected instanceof MOB)
-		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
-		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
+		if((affected instanceof MOB)&&(affected != invoker()))
 		{
-			unInvoke();
-			if(msg.source().playerStats()!=null)
-				msg.source().playerStats().setLastUpdated(0);
+			if((msg.amISource((MOB)affected)||msg.amISource(invoker()))
+			&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
+			{
+				unInvoke();
+				if(msg.source().playerStats()!=null)
+					msg.source().playerStats().setLastUpdated(0);
+			}
 		}
 	}
 
@@ -150,6 +162,7 @@ public class Spell_SummonFlyer extends Spell
 		// return whether it worked
 		return success;
 	}
+	
 	public MOB determineMonster(MOB caster, int level)
 	{
 

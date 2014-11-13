@@ -10,6 +10,7 @@
    8. New Charlatan skills: Break A Leg, Monologue, Cast Blocking, Strike The Set, Upstage, Exit Stage Left, Curtain Call, Ad Lib
    9. New Expertise: Acting
   10. New Alterer spells: Polymorph Object, Magic Bullet, Flame Arrow, Shape Object, Keen Edge, Fabricate
+  11. New Illusionist spells: Color Spray, Disguise Undead, Disguise Self, Disguise Other, Simulacrum, Invisibility Sphere
 # Build 5.8.3 Release 10/27/2014
    *. Database Schema Updated for CMCHAR.CMDESC and CMCHAR.CMCHID.  See the Installation Guide about running DBUpgrade.
    1. (FakeDB): DBUpgrade is now application independent, and can handle big tables better.  See installation guide for new recommended usage.

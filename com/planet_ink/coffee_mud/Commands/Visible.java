@@ -44,6 +44,7 @@ public class Visible extends StdCommand
 	public static java.util.List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
 		final MOB newMOB=CMClass.getFactoryMOB();
+		newMOB.setLocation(CMLib.map().roomLocation(fromMe));
 		final Vector offenders=new Vector();
 		for(int a=0;a<fromMe.numEffects();a++) // personal
 		{
@@ -90,6 +91,8 @@ public class Visible extends StdCommand
 		else
 		for(int v=0;v<V.size();v++)
 			((Ability)V.get(v)).unInvoke();
+		mob.location().recoverRoomStats();
+		mob.location().recoverRoomStats();
 		return false;
 	}
 	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}

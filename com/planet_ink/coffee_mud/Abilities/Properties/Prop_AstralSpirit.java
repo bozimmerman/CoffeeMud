@@ -117,8 +117,7 @@ public class Prop_AstralSpirit extends Property
 				return false;
 			}
 			else
-			if((msg.sourceMajor(CMMsg.MASK_HANDS))
-			||(msg.sourceMajor(CMMsg.MASK_MOUTH)))
+			if((msg.sourceMajor(CMMsg.MASK_HANDS))||(msg.sourceMajor(CMMsg.MASK_MOUTH)))
 			{
 				if(msg.sourceMajor(CMMsg.MASK_SOUND))
 					mob.tell(L("You are unable to make sounds in this incorporeal form."));

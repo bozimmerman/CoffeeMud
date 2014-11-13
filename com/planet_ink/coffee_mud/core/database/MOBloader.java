@@ -1249,7 +1249,7 @@ public class MOBloader
 		for(int f=0;f<mob.numFollowers();f++)
 		{
 			final MOB thisMOB=mob.fetchFollower(f);
-			if((thisMOB!=null)&&(thisMOB.isMonster())&&(!thisMOB.isPossessing()))
+			if((thisMOB!=null)&&(thisMOB.isMonster())&&(!thisMOB.isPossessing())&&(CMLib.flags().isSavable(thisMOB)))
 			{
 				CMLib.catalog().updateCatalogIntegrity(thisMOB);
 				final String sql="INSERT INTO CMCHFO (CMUSERID, CMFONM, CMFOID, CMFOTX, CMFOLV, CMFOAB"
