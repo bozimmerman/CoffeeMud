@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -45,7 +44,7 @@ public class Visible extends StdCommand
 	{
 		final MOB newMOB=CMClass.getFactoryMOB();
 		newMOB.setLocation(CMLib.map().roomLocation(fromMe));
-		final Vector offenders=new Vector();
+		final List<Ability> offenders=new Vector<Ability>();
 		for(int a=0;a<fromMe.numEffects();a++) // personal
 		{
 			final Ability A=fromMe.fetchEffect(a);
@@ -56,7 +55,7 @@ public class Visible extends StdCommand
 					newMOB.recoverPhyStats();
 					A.affectPhyStats(newMOB,newMOB.phyStats());
 					if(CMLib.flags().isInvisible(newMOB)||CMLib.flags().isHidden(newMOB))
-					  offenders.addElement(A);
+						offenders.add(A);
 				}
 				catch(final Exception e)
 				{}

@@ -1200,12 +1200,17 @@ public class CharClassData extends StdWebMacro
 		int maliciousSkillsGained=0;
 		int beneficialSkills=0;
 		int beneficialSkillsGained=0;
-		for(int l=1;l<=30;l++)
+		int levelCap=C.getLevelCap();
+		if(levelCap < 0)
+			levelCap=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
+		for(int l=1;l<=levelCap;l++)
 		{
 			final List<String> set=CMLib.ableMapper().getLevelListings(C.ID(),true,l);
 			for(int s=0;s<set.size();s++)
 			{
 				final String able=set.get(s);
+				if(CMLib.ableMapper().getSecretSkill(C.ID(), true, able))
+					continue;
 				if(able.equalsIgnoreCase("Skill_Recall"))
 					continue;
 				if(able.equalsIgnoreCase("Skill_Write"))
@@ -1216,6 +1221,7 @@ public class CharClassData extends StdWebMacro
 					continue;
 				if(seenBefore.contains(able))
 					continue;
+				final Ability A=CMClass.getAbility(able);
 				seenBefore.add(able);
 				int numOthers=0;
 				int numOutsiders=0;
@@ -1231,7 +1237,7 @@ public class CharClassData extends StdWebMacro
 					if(C2.baseClass().equals(C.baseClass()))
 					{
 						tlvl=CMLib.ableMapper().getQualifyingLevel(C2.ID(),true,able);
-						if(tlvl>0)
+						if((tlvl>0)&&(!CMLib.ableMapper().getSecretSkill(C2.ID(), true, able)))
 						{
 							if(tlvl>l)
 								thisCrossClassLevelDiffs+=(tlvl-l);
@@ -1243,7 +1249,7 @@ public class CharClassData extends StdWebMacro
 					else
 					{
 						tlvl=CMLib.ableMapper().getQualifyingLevel(C2.ID(),true,able);
-						if(tlvl>0)
+						if((tlvl>0)&&(!CMLib.ableMapper().getSecretSkill(C2.ID(), true, able)))
 						{
 							if(tlvl>l)
 								thisCrossClassLevelDiffs+=(tlvl-l);
@@ -1256,19 +1262,46 @@ public class CharClassData extends StdWebMacro
 				if((numOthers==0)&&(numOutsiders==0))
 				{
 					uniqueClassSkills++;
-					uniqueClassSkillsV.add(able+"("+l+")");
+					if((A!=null)&&(A.flags()&(Ability.FLAG_HOLY+Ability.FLAG_UNHOLY))==(Ability.FLAG_HOLY+Ability.FLAG_UNHOLY))
+						uniqueClassSkillsV.add(able+"("+l+")N");
+					else
+					if((A!=null)&&(A.flags()&(Ability.FLAG_HOLY+Ability.FLAG_UNHOLY))==(Ability.FLAG_HOLY))
+						uniqueClassSkillsV.add(able+"("+l+")G");
+					else
+					if((A!=null)&&(A.flags()&(Ability.FLAG_HOLY+Ability.FLAG_UNHOLY))==(Ability.FLAG_UNHOLY))
+						uniqueClassSkillsV.add(able+"("+l+")E");
+					else
+						uniqueClassSkillsV.add(able+"("+l+")");
 				}
 				else
 				if(numOutsiders==0)
 				{
 					uncommonClassSkills++;
-					uncommonClassSkillsV.add(able+"("+l+")");
+					if((A!=null)&&(A.flags()&(Ability.FLAG_HOLY+Ability.FLAG_UNHOLY))==(Ability.FLAG_HOLY+Ability.FLAG_UNHOLY))
+						uncommonClassSkillsV.add(able+"("+l+")N");
+					else
+					if((A!=null)&&(A.flags()&(Ability.FLAG_HOLY+Ability.FLAG_UNHOLY))==(Ability.FLAG_HOLY))
+						uncommonClassSkillsV.add(able+"("+l+")G");
+					else
+					if((A!=null)&&(A.flags()&(Ability.FLAG_HOLY+Ability.FLAG_UNHOLY))==(Ability.FLAG_UNHOLY))
+						uncommonClassSkillsV.add(able+"("+l+")E");
+					else
+						uncommonClassSkillsV.add(able+"("+l+")");
 				}
 				else
 				{
 					totalCrossClassLevelDiffs+=(thisCrossClassLevelDiffs/numOutsiders);
 					totalCrossClassSkills++;
-					totalCrossClassSkillsV.add(able+"("+l+")");
+					if((A!=null)&&(A.flags()&(Ability.FLAG_HOLY+Ability.FLAG_UNHOLY))==(Ability.FLAG_HOLY+Ability.FLAG_UNHOLY))
+						totalCrossClassSkillsV.add(able+"("+l+")N");
+					else
+					if((A!=null)&&(A.flags()&(Ability.FLAG_HOLY+Ability.FLAG_UNHOLY))==(Ability.FLAG_HOLY))
+						totalCrossClassSkillsV.add(able+"("+l+")G");
+					else
+					if((A!=null)&&(A.flags()&(Ability.FLAG_HOLY+Ability.FLAG_UNHOLY))==(Ability.FLAG_UNHOLY))
+						totalCrossClassSkillsV.add(able+"("+l+")E");
+					else
+						totalCrossClassSkillsV.add(able+"("+l+")");
 				}
 				final boolean gained=(M.fetchAbility(able)!=null);
 				if(gained)
@@ -1280,7 +1313,6 @@ public class CharClassData extends StdWebMacro
 				}
 				else
 					totalqualified++;
-				final Ability A=CMClass.getAbility(able);
 				if(A==null)
 					continue;
 				if((A.abstractQuality()==Ability.QUALITY_BENEFICIAL_OTHERS)

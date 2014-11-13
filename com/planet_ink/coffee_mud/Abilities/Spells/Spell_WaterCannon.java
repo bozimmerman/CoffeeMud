@@ -87,7 +87,7 @@ public void affectPhyStats(Physical affected, PhyStats affectableStats)
 
 				int damage = 0;
 				final int maxDie =  (adjustedLevel( mob, asLevel )+(2*super.getX1Level(mob))) / 2;
-				damage += CMLib.dice().roll(maxDie,8,15);
+				damage += CMLib.dice().roll(maxDie,8,adjustedLevel( mob, asLevel ));
 				mob.location().send(mob,msg2);
 				if((msg2.value()>0)||(msg.value()>0))
 					damage = (int)Math.round(CMath.div(damage,2.0));

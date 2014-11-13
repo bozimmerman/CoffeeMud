@@ -66,7 +66,29 @@ public class CrossBaseClassAbilities extends StdWebMacro
 			for(AbilityMapper.AbilityMapping mapping : list)
 			{
 				Ability A=(Ability)CMClass.getPrototypeByID(CMClass.CMObjectType.ABILITY, mapping.abilityID);
-				if((A.classificationCode()&Ability.ALL_DOMAINS)==domain)
+				if(((A.classificationCode()&Ability.ALL_DOMAINS)==domain)
+				&&(!CMLib.ableMapper().getSecretSkill(C.ID(), false, A.ID())))
+					ct++;
+			}
+			buf.append(Integer.toString(ct));
+		}
+		else
+		if(parms.containsKey("DOMAINSKILLSBYUNASSIGNED"))
+		{
+			final String domainStr=parms.get("DOMAIN");
+			if(domainStr==null)
+				return " @break@";
+			int domain=CMParms.indexOf(Ability.DOMAIN_DESCS, domainStr.toUpperCase().trim());
+			if(domain<0)
+				return " @break@";
+			domain = domain << 5;
+			int ct=0;
+			for(Enumeration<Ability> a= CMClass.abilities();a.hasMoreElements();)
+			{
+				Ability A=a.nextElement();
+				if(((A.classificationCode()&Ability.ALL_DOMAINS)==domain)
+				&&(!CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
+				&&(!CMLib.ableMapper().getSecretSkill(A.ID())))
 					ct++;
 			}
 			buf.append(Integer.toString(ct));
@@ -98,7 +120,7 @@ public class CrossBaseClassAbilities extends StdWebMacro
 					{
 						final Ability A=a.nextElement();
 						final int level=CMLib.ableMapper().getQualifyingLevel(className,true,A.ID());
-						if(level>=0)
+						if((level>=0)&&(!CMLib.ableMapper().getSecretSkill(className,false,A.ID())))
 						{
 							final int dex=abilities.indexOf(A.ID());
 							if(dex<0)

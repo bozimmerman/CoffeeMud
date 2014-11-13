@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -85,12 +84,11 @@ public class Spell_PrayerShield extends Spell
 		if((msg.amITarget(mob))
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 		&&(invoker!=null)
 		&&(!mob.amDead())
-		&&(CMLib.dice().rollPercentage()<35))
+		&&(CMLib.dice().rollPercentage()<(35+super.getXLEVELLevel(invoker())+adjustedLevel(invoker(),0)-((Ability)msg.tool()).adjustedLevel(msg.source(), 0))))
 		{
 			mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,L("The shield around <S-NAME> blocks off @x1!",msg.tool().name()));
 			return false;

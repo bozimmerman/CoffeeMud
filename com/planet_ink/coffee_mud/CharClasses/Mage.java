@@ -82,7 +82,6 @@ public class Mage extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_Shield",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_IronGrip",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_Erase",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_InsatiableThirst",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_MagicalAura",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_Ventriloquate",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_SpiderClimb",false);
@@ -94,7 +93,6 @@ public class Mage extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Spell_Infravision",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Spell_DetectUndead",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Spell_ObscureSelf",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Spell_LightenItem",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Spell_SummonSteed",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Spell_ResistPoison",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Spell_EnchantArrows",false);
@@ -105,7 +103,6 @@ public class Mage extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Spell_AnimateItem",false);
 		// level 3
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_KnowAlignment",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_DeadenSmell",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_DetectMetal",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_Dream",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_ResistGas",false);
@@ -117,6 +114,7 @@ public class Mage extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_Knock",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_FeatherFall",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_Sleep",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_FloatingDisc",false);
 		// level 4
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Spell_FakeFood",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Spell_FakeSpring",false);
@@ -132,7 +130,6 @@ public class Mage extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Spell_WaterBreathing",false);
 		// level 5
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_DetectMagic",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_FloatingDisc",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_DetectGold",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_WallOfStone",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_Spook",false);
@@ -160,7 +157,6 @@ public class Mage extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Spell_Darkness",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Spell_Invisibility",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Spell_GhostSound",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Spell_LightSensitivity",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Spell_Tourettes",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Spell_Refit",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Spell_ResistFire",false);
@@ -193,7 +189,6 @@ public class Mage extends StdCharClass
 		// level 10
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_LocateObject",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_Slow",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_MassSleep",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_ArcaneMark",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_PhantomHound",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_ResistArrows",false);
@@ -208,12 +203,12 @@ public class Mage extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_WallOfIce",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_AcidFog",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_HeatMetal",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_Laughter",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_Weaken",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_MirrorImage",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_ChangeSex",false);
 		// level 12
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Spell_Laughter",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Spell_Clairevoyance",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Spell_ChangeSex",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Spell_Haste",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Spell_DestroyObject",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Spell_Enlightenment",false);
@@ -232,7 +227,6 @@ public class Mage extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Spell_GiantStrength",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Spell_Frenzy",false);
 		// level 14
-		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Spell_Nondetection",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Spell_KnowValue",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Spell_Silence",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Spell_ArcanePossession",false);
@@ -241,12 +235,13 @@ public class Mage extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Spell_MassInvisibility",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Spell_Scribe",false);
 		// level 15
-		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_Advancement",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_Ensnare",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_Hold",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_FakeWeapon",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_Blink",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_Polymorph",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_Youth",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_Irritation",false);
 		// level 16
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_ChainLightening",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_Choke",false);
@@ -256,7 +251,6 @@ public class Mage extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_FreeMovement",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_PredictWeather",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_FakeArmor",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_Youth",0,"",false,true);
 		// level 17
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Spell_ClarifyScroll",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Spell_FoolsGold",false);

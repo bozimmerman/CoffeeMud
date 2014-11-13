@@ -60,7 +60,7 @@ public class Spell_Blademouth extends Spell
 		&&(msg.source().charStats().getMyRace().bodyMask()[Race.BODY_MOUTH]>=0))
 		{
 			noRecurse=true;
-			try{CMLib.combat().postDamage(invoker,msg.source(),this,msg.source().maxState().getHitPoints()/10,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_SLASHING,"The blades in <T-YOUPOSS> mouth <DAMAGE> <T-HIM-HER>!");
+			try{CMLib.combat().postDamage(invoker,msg.source(),this,msg.source().maxState().getHitPoints()/20,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_SLASHING,"The blades in <T-YOUPOSS> mouth <DAMAGE> <T-HIM-HER>!");
 			}finally{noRecurse=false;}
 		}
 		super.executeMsg(host,msg);

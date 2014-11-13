@@ -43,13 +43,14 @@ public class Abjurer extends SpecialistMage
 	public void initializeClass()
 	{
 		super.initializeClass();
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_SongShield",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_ResistBludgeoning",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Spell_MinManaShield",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Spell_SongShield",25,true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_ResistBludgeoning",25,true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Spell_MinManaShield",25,true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Spell_Counterspell",25,true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_ResistPiercing",25,true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_ManaShield",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Spell_Counterspell",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_ResistPiercing",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Spell_Nondetection",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_ManaShield",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Spell_ChantShield",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Spell_ResistSlashing",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Spell_PrayerShield",25,true);

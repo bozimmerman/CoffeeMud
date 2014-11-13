@@ -55,7 +55,7 @@ public class Spell_DispelDivination extends Spell
 			&&(A.canBeUninvoked())
 			&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_DIVINATION)
 			&&((A.invoker()==caster)
-				||(A.invoker().phyStats().level()<=caster.phyStats().level()+25)
+				||(adjustedLevel(caster,0)<=A.adjustedLevel(A.invoker(), 0)+5+CMProps.getIntVar(CMProps.Int.EXPRATE))
 				||admin))
 					offenders.add(A);
 		}

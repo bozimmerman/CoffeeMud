@@ -46,7 +46,7 @@ public class Illusionist extends SpecialistMage
 		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_DisguiseUndead",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_ColorSpray",25,true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_DispelDivination",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_DispelDivination",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Spellcraft",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Spell_Torture",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_InvisibilitySphere",25,true);

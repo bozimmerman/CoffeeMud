@@ -49,10 +49,24 @@ public class Spell_Irritation extends Spell
 	{
 		super.affectPhyStats(affected,affectableStats);
 		final int xlvl=super.getXLEVELLevel(invoker());
-		affectableStats.setArmor(affectableStats.armor()+20+(2*xlvl));
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-20-(2*xlvl));
+		affectableStats.setArmor(affectableStats.armor()+10+(2*xlvl));
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-10-(2*xlvl));
 	}
 
+	@Override
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if(affected instanceof MOB)
+		{
+			MOB M=(MOB)affected;
+			if((CMLib.dice().rollPercentage()>50)&&(CMLib.flags().isInTheGame(M, true))&&(M.location()!=null))
+				M.location().show(invoker(),M,CMMsg.MSG_OK_ACTION,L("<T-NAME> <T-IS-ARE> wincing and scratching!"));
+		}
+		return true;
+	}
+	
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

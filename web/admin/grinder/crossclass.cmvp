@@ -184,7 +184,7 @@ Base Class:
 	@BaseCharClassNext?RESET@
 	@loop@
 	@BaseCharClassNext@
-		<TR><TD COLSPAN=90><FONT COLOR=WHITE>CLASS</FONT></TD></TR>
+		<TR><TD COLSPAN=90><FONT COLOR=WHITE>Base Class: @RequestParameter?BASECLASS@</FONT></TD></TR>
 		@CharClassNext?RESET@
 		@loop@
 			@CharClassNext@
@@ -200,7 +200,6 @@ Base Class:
 	@back@
 @else@
 @if?!CheckReqParm?OLDBASECLASS=@
-	<TR><TD COLSPAN=90><FONT COLOR=WHITE>CLASS</FONT></TD></TR>
 	@CharClassNext?RESET@
 	@loop@
 		@CharClassNext@
@@ -215,6 +214,14 @@ Base Class:
 	@back@
 @endif@
 @endif@
+	<TR><TD><FONT COLOR=WHITE>Unassigned</FONT></TD>
+			@AbilityDomainNext?RESET@ 
+			@loop@ 
+			@AbilityDomainNext@
+			<TD><FONT COLOR=LTGREEN>@CrossBaseClassAbilities?DOMAINSKILLSBYUNASSIGNED&DOMAIN=@@RequestParameter?DOMAIN@@&NOTHINGELSE@</FONT></TD>
+			@back@
+	</TR>
+</TABLE>
 </BODY>
 </HTML>
 @endif@
