@@ -107,6 +107,7 @@ public class Missionary extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_HolyWind",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_Wings",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_RemoveCurse",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Etherealness",false);
 

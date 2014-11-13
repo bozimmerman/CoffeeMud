@@ -118,6 +118,7 @@ public class Shaman extends Cleric
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Tremor",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_InfuseBalance",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_SanctifyRoom",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_MajorInfusion",false);
@@ -134,13 +135,13 @@ public class Shaman extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassMobility",true,CMParms.parseSemicolons("Prayer_ProtParalyzation",true));
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_SelfResurrection",false);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_CommuneWithDead",false); // (MudChat with corpses + Mood)
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_SpeakWithAnimal",false); // (MudChat with animals + Mood)
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_SpiritHelper",false); // (Always same spirit animal, gives power)
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_Awaken",false); // (Cancels sleep spells and wakes the sleeping)
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_SummonAnimalSpirits",false); // (Summons animal spirits to fight)
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_DrunkenStupor",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_MoralBalance",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Stasis",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_CurseItem",true,CMParms.parseSemicolons("Prayer_Curse",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_Disenchant",false);

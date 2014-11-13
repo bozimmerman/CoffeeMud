@@ -30,9 +30,9 @@ NON-TECH
         *. Evoker        : +3 
                          : Produce Flame (provides you as light source, and fire damage from natural attacks)
                          : Forceful Hand (holds a target from advancing for a few ticks, and pushes them at least 1 range back)
-                         : 
+                         : Pocket (a mob or item is turned into an item and put in a container (mob is killed w/o xp so it will respawn))
         *. Conjuration   : +2 low level
-                         : Watchful Hound (wakes you up instantly if anyone enters room -- if aggressive, rescues)
+                         : Watchful Hound (wakes you up instantly if anyone enters room -- if aggressive, attacks -- can not sleep)
                          : Insect Plague (takes away any edible resource and kills farming) -- at hight levels, may sting random person?
         *. Assassin      : +6
                          : Two-Dagger Fighting (no negatives on two handed fighting), Cut Throat (crit, injury,bleeding), Double Strike (2x attacks with daggers),
@@ -42,15 +42,23 @@ NON-TECH
         *. Paladin       : +6
         *. Paladin ideas : Shared Fate (Paladin and mount share bad effects instead of only Paladin), Shared Vision (can see through
                          : mounts eyes), Death Ward (negative energy ward), Resurrect Mount, Heal Mount, Abide (prevent death for few mins),
-        *. Cleric        : +2 Neutral, +5 Good
+        *. Cleric        : +12 ( 4 of each)
                          : G Death Guard (if anyone gets below 10%, fires best heal)
+                         : E Death Knell (if anyone gets below 10%, they die)
                          : N Death Watch (always instantly know which mob in room is injured)
-                         : G Heroes Feast (food that heals, gives +x att +1 dmg)
-                         : G 
-                         : G
-                         : G
-                         : N
+                         : G Blessed Feast (food gathered or harvested heals, gives +x att +1 dmg)
+                         : E Cursed Lands (food gathered or harvested from room is spoiled and cursed -1 att -1 dmg)
+                         : N Plenty (food gathered or harvested from room -- more of it)
+                         : G Anti-Undead Field (pushes back undead from cleric -- can't advance)
+                         : E Lead the Dead (all undead in room fight for the caster)
+                         : N Hold Undead (all undead are as per Hold spell)
+                         : G Daylight (Summons Daylight for one "hour")
+                         : E Endless Night (night lasts an extra hour in the area)
+                         : N Twilight (dawn and dusk last an extra hour in the area)
         *. Purist        : +3
+                         : Judgement (Geas) - target must go around doing some nice social to other mobs before time runs out or they die.  Only works on evil/neutral.
+                         : Piety Curse - if target does or says anything negative, they take damage -- includes attacking, socials, bad words
+                         : Protection from Curses (prevents curses from affecting target)
    *. Create Magi Robes(or whatever you wanted to call them) that would enhance his/her magic of their chosen field.
    *. Wants and Needs engine - similar to slavery system
    *. RandomQuests based off the Percolator engine -- a way to randomly generate different quests.

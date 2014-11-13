@@ -68,6 +68,7 @@ public class Templar extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_InfuseUnholiness",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_CauseLight",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_Annul",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_Divorce",false);
 
@@ -86,6 +87,7 @@ public class Templar extends Cleric
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Parry",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_Heresy",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_CauseSerious",false,CMParms.parseSemicolons("Prayer_CauseLight",true));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_Curse",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_HuntGood",false);
@@ -112,6 +114,7 @@ public class Templar extends Cleric
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Specialization_Axe",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Skill_Bash",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_CauseCritical",false,CMParms.parseSemicolons("Prayer_CauseSerious",true));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_GreatCurse",true,CMParms.parseSemicolons("Prayer_Curse",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Specialization_Natural",false);
@@ -124,6 +127,7 @@ public class Templar extends Cleric
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_Tithe",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_Enervate",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_Drain",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Hellfire",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Maladiction",false);
@@ -133,6 +137,7 @@ public class Templar extends Cleric
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Corruption",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Skill_Attack2",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Harm",false,CMParms.parseSemicolons("Prayer_CauseCritical",true));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_CurseItem",true,CMParms.parseSemicolons("Prayer_Curse",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_Haunted",false);
