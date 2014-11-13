@@ -25,8 +25,6 @@ NON-TECH
    *. Fighter - Weapons Training (or Karate Training for Monks) -- non-kill way to gain xp, makes mobs slightly harder, 1 level up max.
    *. Fighter -- AUTOGUARD can start a little "Guarding" prog for, say, 10 rl minutes.
    *. Classes with insufficient unique skills: Illusionist (10),  Ranger (11), Evoker (11), Assassin (12), Paladin (12),
-        *. Illusionist id: +6
-                         : Disguise Self, Color Spray (stun, blind, unconscious)?, Disguise Undead, Disguise Other, Simulacrum (Duplicate, with control), Invisibility Sphere (everyone in room)
         *. Evoker ideas  : 1x+2
                          : Invisibility Purge (whole room), Helping Hand (finds person, invites to follow, leads them to Evoker)
         *. Abjuration    : 1x
