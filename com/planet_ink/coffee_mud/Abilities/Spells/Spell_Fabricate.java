@@ -206,7 +206,7 @@ public class Spell_Fabricate extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,intoI,this,verbalCastCode(mob,intoI,auto),L("^S<S-NAME> wave(s) <S-HIS-HER> hands around, fabricating a @x1.^?",intoI.name()));
+			final CMMsg msg=CMClass.getMsg(mob,intoI,this,somanticCastCode(mob,intoI,auto),L("^S<S-NAME> wave(s) <S-HIS-HER> hands around, fabricating a @x1.^?",intoI.name()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -218,7 +218,7 @@ public class Spell_Fabricate extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,intoI,L("<S-NAME> attempt(s) to fabricate <T-NAME>, but flub(s) it.",intoWhat));
+			return beneficialVisualFizzle(mob,intoI,L("<S-NAME> attempt(s) to fabricate <T-NAME>, but flub(s) it.",intoWhat));
 
 		// return whether it worked
 		return success;

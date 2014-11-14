@@ -170,7 +170,7 @@ public class Spell_StinkingCloud extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms around.  A horrendous cloud of green and orange gas appears!^?")))
+			if(mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms around.  A horrendous cloud of green and orange gas appears!^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -179,7 +179,7 @@ public class Spell_StinkingCloud extends Spell
 					// and add it to the affects list of the
 					// affected MOB.  Then tell everyone else
 					// what happened.
-					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+					final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),null);
 					final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_GAS|(auto?CMMsg.MASK_ALWAYS:0),null);
 					if((mob.location().okMessage(mob,msg))
 					   &&(mob.location().okMessage(mob,msg2))

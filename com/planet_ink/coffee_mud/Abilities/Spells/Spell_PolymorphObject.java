@@ -277,7 +277,7 @@ public class Spell_PolymorphObject extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,targetI,this,verbalCastCode(mob,targetI,auto),L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAME> polymorphing it into @x1.^?",intoI.name()));
+			final CMMsg msg=CMClass.getMsg(mob,targetI,this,somanticCastCode(mob,targetI,auto),L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAME> polymorphing it into @x1.^?",intoI.name()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -305,7 +305,7 @@ public class Spell_PolymorphObject extends Spell
 		else
 		{
 			
-			return beneficialWordsFizzle(mob,targetI,L("<S-NAME> attempt(s) to polymorph <T-NAME> into @x1, but flub(s) it.",intoWhat));
+			return beneficialVisualFizzle(mob,targetI,L("<S-NAME> attempt(s) to polymorph <T-NAME> into @x1, but flub(s) it.",intoWhat));
 		}
 
 		// return whether it worked

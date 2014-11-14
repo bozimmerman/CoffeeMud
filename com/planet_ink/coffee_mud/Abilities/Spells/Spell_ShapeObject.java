@@ -117,7 +117,7 @@ public class Spell_ShapeObject extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,targetI,this,verbalCastCode(mob,targetI,auto),L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAME> shaping it like @x1.^?",likeWhat));
+			final CMMsg msg=CMClass.getMsg(mob,targetI,this,somanticCastCode(mob,targetI,auto),L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAME> shaping it like @x1.^?",likeWhat));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -133,7 +133,7 @@ public class Spell_ShapeObject extends Spell
 		else
 		{
 			
-			return beneficialWordsFizzle(mob,targetI,L("<S-NAME> attempt(s) to shape <T-NAME> like @x1, but flub(s) it.",likeWhat));
+			return beneficialVisualFizzle(mob,targetI,L("<S-NAME> attempt(s) to shape <T-NAME> like @x1, but flub(s) it.",likeWhat));
 		}
 
 		// return whether it worked

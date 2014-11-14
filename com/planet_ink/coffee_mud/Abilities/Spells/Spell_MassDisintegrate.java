@@ -85,13 +85,13 @@ public class Spell_MassDisintegrate extends Spell
 		{
 			if(avgLevel <= 0)
 				avgLevel = 1;
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?L("Something is happening!"):L("^S<S-NAME> wave(s) <S-HIS-HER> arms and utter(s) a trecherous spell!^?")))
+			if(mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),auto?L("Something is happening!"):L("^S<S-NAME> wave(s) <S-HIS-HER> arms and utter(s) a trecherous spell!^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
 					if((target.phyStats().level()/avgLevel)<2)
 					{
-						final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+						final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),null);
 						if(mob.location().okMessage(mob,msg))
 						{
 							mob.location().send(mob,msg);
@@ -129,7 +129,7 @@ public class Spell_MassDisintegrate extends Spell
 				||(!((DeadBody)I).playerCorpse())
 				||(((DeadBody)I).mobName().equals(mob.Name())))
 				{
-					final CMMsg msg=CMClass.getMsg(mob,I,this,verbalCastCode(mob,I,auto),L("@x1 disintegrates!",I.name()));
+					final CMMsg msg=CMClass.getMsg(mob,I,this,somanticCastCode(mob,I,auto),L("@x1 disintegrates!",I.name()));
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);

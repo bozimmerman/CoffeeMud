@@ -18,8 +18,9 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
+
 /*
-   Copyright 2003-2014 Bo Zimmerman
+   Copyright 2001-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -34,66 +35,66 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("rawtypes")
-public class Spell_Irritation extends Spell
+public class Spell_ProduceFlame extends Spell
 {
-	@Override public String ID() { return "Spell_Irritation"; }
-	private final static String localizedName = CMLib.lang().L("Irritation");
+	@Override public String ID() { return "Spell_ProduceFlame"; }
+	private final static String localizedName = CMLib.lang().L("Produce Flame");
 	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Produce Flame)");
+	@Override public String displayText() { return localizedStaticDisplay; }
+	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectPhyStats(affected,affectableStats);
-		final int xlvl=super.getXLEVELLevel(invoker());
-		affectableStats.setArmor(affectableStats.armor()+10+(2*xlvl));
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-10-(2*xlvl));
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_LIGHTSOURCE|PhyStats.IS_GLOWING);
+		affectableStats.setDisposition(affectableStats.disposition() & ~PhyStats.IS_DARK);
+	}
+	@Override
+	public void unInvoke()
+	{
+		// undo the affects of this spell
+		final Room room=CMLib.map().roomLocation(affected);
+		if(canBeUninvoked()&&(room!=null)&&(affected instanceof MOB))
+			room.show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,L("The flames around <S-YOUPOSS> hands go out."));
+		super.unInvoke();
+		if(canBeUninvoked()&&(room!=null))
+			room.recoverRoomStats();
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
-	{
-		if(!super.tick(ticking, tickID))
-			return false;
-		if(affected instanceof MOB)
-		{
-			MOB M=(MOB)affected;
-			if((CMLib.dice().rollPercentage()>50)&&(CMLib.flags().isInTheGame(M, true))&&(M.location()!=null))
-				M.location().show(invoker(),M,CMMsg.MSG_OK_ACTION,L("<T-NAME> <T-IS-ARE> wincing and scratching!"));
-		}
-		return true;
-	}
-	
-	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null)
+		MOB target=mob;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+		if(target.fetchEffect(this.ID())!=null)
+		{
+			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> flaming hands."));
 			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		if(success)
+		final Room room=mob.location();
+		if((success)&&(room!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?"));
-			if(mob.location().okMessage(mob,msg))
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?L("^S<S-NAME> attain(s) flaming hands!"):L("^S<S-NAME> evoke(s) gold and blue flames around <S-HIS-HER> hands!^?"));
+			if(room.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> start(s) wincing and scratching!"));
-				maliciousAffect(mob,target,asLevel,0,-1);
+				room.send(mob,msg);
+				beneficialAffect(mob,target,asLevel,0);
+				room.recoverRoomStats();
 			}
 		}
 		else
-			maliciousFizzle(mob,target,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting but nothing happens."));
+			beneficialWordsFizzle(mob,mob.location(),L("<S-NAME> attempt(s) to evoke flames, but fail(s)."));
 
-
-		// return whether it worked
 		return success;
 	}
 }

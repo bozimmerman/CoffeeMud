@@ -128,7 +128,7 @@ public class Spell_Stoneskin extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a spell, but fail(s) miserably."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a spell, but fail(s) miserably."));
 
 		// return whether it worked
 		return success;

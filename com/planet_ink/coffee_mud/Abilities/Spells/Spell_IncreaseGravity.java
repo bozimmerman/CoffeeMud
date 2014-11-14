@@ -184,7 +184,7 @@ public class Spell_IncreaseGravity extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), L((auto?"G":"^S<S-NAME> speak(s) and wave(s) and g")+"ravity begins to increase!^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, somanticCastCode(mob,target,auto), L((auto?"G":"^S<S-NAME> speak(s) and wave(s) and g")+"ravity begins to increase!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -193,7 +193,7 @@ public class Spell_IncreaseGravity extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,L("<S-NAME> speak(s) heavily, but the spell fizzles."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> speak(s) heavily, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

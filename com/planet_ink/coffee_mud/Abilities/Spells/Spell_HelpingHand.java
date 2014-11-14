@@ -280,7 +280,7 @@ public class Spell_HelpingHand extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,L("<S-NAME> wave(s) <S-HIS-HER> arms around, incanting, but nothing happens."));
+			beneficialVisualFizzle(mob,target,L("<S-NAME> wave(s) <S-HIS-HER> arms around, incanting, but nothing happens."));
 
 
 		// return whether it worked

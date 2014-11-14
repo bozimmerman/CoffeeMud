@@ -64,7 +64,7 @@ public class Spell_MassSlow extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> whisper(s) and wave(s) <S-HIS-HER> arms.^?")))
+			if(mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> whisper(s) and wave(s) <S-HIS-HER> arms.^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -78,7 +78,7 @@ public class Spell_MassSlow extends Spell
 						// affected MOB.  Then tell everyone else
 						// what happened.
 						final MOB oldVictim=mob.getVictim();
-						final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+						final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),null);
 						if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 						{
 							mob.location().send(mob,msg);

@@ -64,7 +64,7 @@ public class Spell_MassFeatherfall extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) lightly.^?")))
+			if(mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) lightly.^?")))
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -73,7 +73,7 @@ public class Spell_MassFeatherfall extends Spell
 					// and add it to the affects list of the
 					// affected MOB.  Then tell everyone else
 					// what happened.
-					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+					final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),null);
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);
@@ -84,7 +84,7 @@ public class Spell_MassFeatherfall extends Spell
 				}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,L("<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) lightly, but the spell fizzles."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) lightly, but the spell fizzles."));
 
 
 		// return whether it worked

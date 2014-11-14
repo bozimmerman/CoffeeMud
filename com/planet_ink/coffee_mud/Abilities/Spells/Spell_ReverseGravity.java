@@ -181,7 +181,7 @@ public class Spell_ReverseGravity extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,L("<S-NAME> speak(s) in reverse, but the spell fizzles."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> speak(s) in reverse, but the spell fizzles."));
 
 		// return whether it worked
 		return success;
