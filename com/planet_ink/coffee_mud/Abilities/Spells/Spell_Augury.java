@@ -82,7 +82,7 @@ public class Spell_Augury extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> point(s) <S-HIS-HER> finger @x1, incanting.^?",Directions.getDirectionName(dirCode)));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> point(s) <S-HIS-HER> finger @x1, incanting.^?",Directions.getDirectionName(dirCode)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				boolean aggressiveMonster=false;
@@ -112,7 +112,7 @@ public class Spell_Augury extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,null,L("<S-NAME> point(s) <S-HIS-HER> finger @x1, incanting, but then loses concentration.",Directions.getDirectionName(dirCode)));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> point(s) <S-HIS-HER> finger @x1, incanting, but then loses concentration.",Directions.getDirectionName(dirCode)));
 
 
 		// return whether it worked

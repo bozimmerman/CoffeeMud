@@ -176,7 +176,7 @@ public class Spell_Boomerang extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF>, but fail(s) to cast a spell."));
+			beneficialVisualFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF>, but fail(s) to cast a spell."));
 
 
 		// return whether it worked
