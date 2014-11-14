@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 import java.net.*;
 import java.nio.ByteBuffer;
@@ -113,6 +114,18 @@ public class RequestHandler implements CMRunnable
 		return false;
 	}
 
+	@Override 
+	public long getStartTime()
+	{ 
+		return startTime; 
+	}
+	
+	@Override 
+	public int getGroupID() 
+	{ 
+		return Thread.currentThread().getThreadGroup().getName().charAt(0); 
+	}
+	
 	@Override
 	public void run()
 	{

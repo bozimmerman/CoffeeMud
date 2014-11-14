@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -71,12 +70,11 @@ public class Paladin_SummonMount extends StdAbility
 			if((affected!=null)&&(affected instanceof MOB)&&(invoker!=null))
 			{
 				final MOB mob=(MOB)affected;
-				if(((mob.amFollowing()==null)
+				if((mob.amFollowing()==null)
 				||(mob.amDead())
 				||(mob.location()==null)
-				||(invoker==null)
-				||(invoker.location()==null)
-				||((invoker!=null)&&(mob.location()!=invoker.location())&&(invoker.riding()!=affected))))
+				||((invoker!=null)
+					&&((mob.location()!=invoker.location())||(!CMLib.flags().isInTheGame(invoker, true))||(invoker.riding()!=affected))))
 				{
 					mob.delEffect(this);
 					if(mob.amDead())

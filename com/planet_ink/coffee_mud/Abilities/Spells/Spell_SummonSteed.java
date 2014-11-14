@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -70,29 +69,28 @@ public class Spell_SummonSteed extends Spell
 			{
 				final MOB mob=(MOB)affected;
 				if(!mob.isInCombat())
-				if(((mob.amFollowing()==null)
-				||(mob.location()==null)
-				||(mob.amDead())
-				||(invoker==null)
-				||(invoker.location()==null)
-				||((invoker!=null)&&(mob.location()!=invoker.location())&&(invoker.riding()!=affected))))
-				{
-					mob.delEffect(this);
-					if(mob.amDead())
-						mob.setLocation(null);
-					mob.destroy();
-				}
-				else
-				if((mob.amFollowing()==null)
-				&&(mob.location()!=null)
-				&&(mob.curState().getHitPoints()<((mob.maxState().getHitPoints()/10)*3)))
-				{
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> flees."));
-					mob.delEffect(this);
-					if(mob.amDead())
-						mob.setLocation(null);
-					mob.destroy();
-				}
+					if((mob.amFollowing()==null)
+					||(mob.location()==null)
+					||(mob.amDead())
+					||((invoker!=null)
+						&&((mob.location()!=invoker.location())||(!CMLib.flags().isInTheGame(invoker, true))||(invoker.riding()!=affected))))
+					{
+						mob.delEffect(this);
+						if(mob.amDead())
+							mob.setLocation(null);
+						mob.destroy();
+					}
+					else
+					if((mob.amFollowing()==null)
+					&&(mob.location()!=null)
+					&&(mob.curState().getHitPoints()<((mob.maxState().getHitPoints()/10)*3)))
+					{
+						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> flees."));
+						mob.delEffect(this);
+						if(mob.amDead())
+							mob.setLocation(null);
+						mob.destroy();
+					}
 			}
 		}
 		return super.tick(ticking,tickID);

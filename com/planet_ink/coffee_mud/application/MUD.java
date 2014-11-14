@@ -116,6 +116,18 @@ public class MUD extends Thread implements MudHost
 			sock.setSoLinger(true,3);
 		}
 
+		@Override 
+		public long getStartTime()
+		{ 
+			return startTime; 
+		}
+		
+		@Override 
+		public int getGroupID() 
+		{ 
+			return Thread.currentThread().getThreadGroup().getName().charAt(0); 
+		}
+		
 		@Override
 		public void run()
 		{

@@ -17,7 +17,7 @@ limitations under the License.
 */
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
-public class PairSVector<T,K> extends SVector<Pair<T,K>> implements List<Pair<T,K>>, SPairList<T,K>
+public class PairSVector<T,K> extends SVector<Pair<T,K>> implements List<Pair<T,K>>, PairList<T,K>
 {
 	private static final long serialVersionUID = -9175373358892311411L;
 	public Pair.FirstConverter<T,K> getFirstConverter()

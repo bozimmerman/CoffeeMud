@@ -33,12 +33,12 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("rawtypes")
-public class Spell_SummonFlyer extends Spell
+public class Spell_WatchfulHound extends Spell
 {
-	@Override public String ID() { return "Spell_SummonFlyer"; }
-	private final static String localizedName = CMLib.lang().L("Summon Flyer");
+	@Override public String ID() { return "Spell_WatchfulHound"; }
+	private final static String localizedName = CMLib.lang().L("Watchful Hound");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Summon Flyer)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Watchful Hound)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
@@ -57,7 +57,7 @@ public class Spell_SummonFlyer extends Spell
 				mob.setLocation(null);
 			else
 			if(mob.location()!=null)
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL, L("The flying mount has vanished."));
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL, L("The watchful hound runs away."));
 			mob.destroy();
 		}
 	}
@@ -68,12 +68,48 @@ public class Spell_SummonFlyer extends Spell
 		super.executeMsg(myHost,msg);
 		if(affected instanceof MOB)
 		{
-			if((msg.amISource((MOB)affected)||msg.amISource(invoker())||msg.amISource(((MOB)affected).amFollowing()))
-			&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
+			final MOB mob=(MOB)affected;
+			final MOB invoker=invoker();
+			if(invoker != null)
 			{
-				unInvoke();
-				if(msg.source().playerStats()!=null)
-					msg.source().playerStats().setLastUpdated(0);
+				if((msg.amISource(mob)||msg.amISource(invoker)||msg.amISource(mob.amFollowing())))
+				{
+					if(msg.sourceMinor()==CMMsg.TYP_QUIT)
+					{
+						unInvoke();
+						if(msg.source().playerStats()!=null)
+							msg.source().playerStats().setLastUpdated(0);
+					}
+				}
+				else
+				if((msg.targetMinor()==CMMsg.TYP_ENTER) && (msg.target() == mob.location()))
+				{
+					if((invoker.location()!=mob.location())||(!CMLib.flags().isInTheGame(invoker, true)))
+						unInvoke();
+					else
+					if(CMLib.flags().isPossiblyAggressive(msg.source()))
+					{
+						final Room R = mob.location();
+						CMLib.threads().scheduleRunnable(new Runnable(){
+							@Override
+							public void run() 
+							{
+								if(R != null)
+									R.show(mob, msg.source(), CMMsg.MSG_NOISE, "<S-NAME> start(s) barking angrily at <T-NAME>.");
+								if(CMLib.flags().isSleeping(invoker))
+									CMLib.commands().forceStandardCommand(mob, "Wake", new XVector<Object>("Wake","$" + invoker.Name() + "$"));
+							}
+						}, 1000);
+					}
+				}
+				else
+				if((!invoker.isInCombat()) && (!mob.isInCombat()) && msg.isTarget(CMMsg.MASK_MALICIOUS) && (msg.target() == invoker))
+				{
+					if((msg.source().getVictim() == invoker) || (msg.source().getVictim() == null))
+						msg.source().setVictim(mob);
+					if(mob.getVictim() == null)
+						mob.setVictim(msg.source());
+				}
 			}
 		}
 	}
@@ -86,27 +122,16 @@ public class Spell_SummonFlyer extends Spell
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				final MOB mob=(MOB)affected;
-				if(!mob.isInCombat())
-					if((mob.amFollowing()==null)
-					||(mob.location()==null)
-					||(mob.amDead())
-					||((invoker!=null)
-						&&((mob.location()!=invoker.location())||(!CMLib.flags().isInTheGame(invoker, true))||(invoker.riding()!=affected))))
-					{
-						mob.delEffect(this);
-						if(mob.amDead())
-							mob.setLocation(null);
-						mob.destroy();
-					}
-					else
-					if((mob.amFollowing()==null)&&(mob.curState().getHitPoints()<((mob.maxState().getHitPoints()/10)*3)))
-					{
-						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> flees."));
-						mob.delEffect(this);
-						if(mob.amDead())
-							mob.setLocation(null);
-						mob.destroy();
-					}
+				if((mob.location()==null)
+				||(mob.amDead())
+				||((invoker!=null)
+					&&((mob.location()!=invoker.location())||(!CMLib.flags().isInTheGame(invoker, true)))))
+				{
+					mob.delEffect(this);
+					if(mob.amDead())
+						mob.setLocation(null);
+					mob.destroy();
+				}
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -115,6 +140,12 @@ public class Spell_SummonFlyer extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(mob.isInCombat())
+		{
+			mob.tell("Not while you are fighting!");
+			return false;
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -122,30 +153,16 @@ public class Spell_SummonFlyer extends Spell
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> magically call(s) for a loyal steed.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> conjure(s) up a watchful hound.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final MOB target = determineMonster(mob, mob.phyStats().level()+((getX1Level(mob)+getXLEVELLevel(mob))/2));
-				final MOB squabble = checkPack(target, mob);
-				target.addNonUninvokableEffect( (Ability) copyOf());
-				if(squabble==null)
-				{
-					if (target.isInCombat()) target.makePeace();
-					CMLib.commands().postFollow(target,mob,true);
-					invoker=mob;
-					if (target.amFollowing() != mob)
-						mob.tell(L("@x1 seems unwilling to follow you.",target.name(mob)));
-				}
-				else
-				{
-					squabble.location().showOthers(squabble,target,CMMsg.MSG_OK_ACTION,L("^F^<FIGHT^><S-NAME> bares its teeth at <T-NAME> and begins to attack!^</FIGHT^>^?"));
-					target.setVictim(squabble);
-				}
+				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,L("<S-NAME> call(s) for a steed, but choke(s) on the words."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to conjure a watchful hound, but choke(s) it."));
 
 		// return whether it worked
 		return success;
@@ -154,27 +171,23 @@ public class Spell_SummonFlyer extends Spell
 	public MOB determineMonster(MOB caster, int level)
 	{
 
-		final MOB newMOB=CMClass.getMOB("GenRideable");
-		final Rideable ride=(Rideable)newMOB;
-		newMOB.basePhyStats().setAbility(11);
-		newMOB.basePhyStats().setDisposition(newMOB.basePhyStats().disposition()|PhyStats.IS_FLYING);
+		final MOB newMOB=CMClass.getMOB("GenMob");
+		newMOB.basePhyStats().setAbility(5);
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.basePhyStats().setWeight(500);
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
-		newMOB.baseCharStats().setMyRace(CMClass.getRace("Horse"));
+		newMOB.baseCharStats().setMyRace(CMClass.getRace("Dog"));
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		newMOB.recoverPhyStats();
 		newMOB.recoverCharStats();
 		newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
 		newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
-		newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
+		newMOB.basePhyStats().setDamage(1);
 		newMOB.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
-		newMOB.setName(L("a flying warhorse"));
-		newMOB.setDisplayText(L("a warhorse with broad powerful wings stands here"));
-		newMOB.setDescription(L("A ferocious, fleet of foot, flying friend."));
-		ride.setRideBasis(Rideable.RIDEABLE_AIR);
-		ride.setRiderCapacity(2);
+		newMOB.setName(L("a watchful hound"));
+		newMOB.setDisplayText(L("a hound dog is here watching you carefully"));
+		newMOB.setDescription(L("Those sad eyes never leave you, and those teeth look sharp."));
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();
@@ -188,18 +201,5 @@ public class Spell_SummonFlyer extends Spell
 		caster.location().recoverRoomStats();
 		newMOB.setStartRoom(null);
 		return(newMOB);
-	}
-
-	public MOB checkPack(MOB newPackmate, MOB mob)
-	{
-		for(int i=0;i<mob.numFollowers();i++)
-		{
-			final MOB possibleBitch = mob.fetchFollower(i);
-			if(newPackmate.Name().equalsIgnoreCase(possibleBitch.Name())
-			&&(possibleBitch.location()==newPackmate.location())
-			&& (CMLib.dice().rollPercentage()-mob.charStats().getStat(CharStats.STAT_CHARISMA)+newPackmate.phyStats().level() > 75))
-				return possibleBitch;
-		}
-		return null;
 	}
 }

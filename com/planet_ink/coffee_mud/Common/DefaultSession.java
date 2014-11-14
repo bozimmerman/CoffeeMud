@@ -159,6 +159,18 @@ public class DefaultSession implements Session
 	}
 
 	@Override
+	public long getStartTime()
+	{
+		return this.lastStart;
+	}
+	
+	@Override
+	public int getGroupID()
+	{
+		return this.threadGroupChar;
+	}
+	
+	@Override
 	public void initializeSession(final Socket s, final String groupName, final String introTextStr)
 	{
 		this.groupName=groupName;
@@ -2611,6 +2623,7 @@ public class DefaultSession implements Session
 
 	public static class LoginLogoutThread implements CMRunnable, Tickable
 	{
+		private final long startTime=System.currentTimeMillis();
 		@Override public String name(){return (theMOB==null)?"Dead LLThread":"LLThread for "+theMOB.Name();}
 		@Override public boolean tick(Tickable ticking, int tickID){return false;}
 		@Override public String ID(){return name();}
@@ -2619,6 +2632,9 @@ public class DefaultSession implements Session
 		@Override public CMObject copyOf(){try{return (CMObject)this.clone();}catch(final Exception e){return newInstance();}}
 		@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 		@Override public int getTickStatus(){return 0;}
+		@Override public long getStartTime(){ return startTime; }
+		@Override public int getGroupID() { return '0'; }
+		
 		private MOB theMOB=null;
 		private int msgCode=-1;
 		private final HashSet skipRooms=new HashSet();

@@ -647,7 +647,7 @@ public interface RawMaterial extends Item
 		private String[] descs = new String[0];
 		private String[] effects = new String[0];
 		private Ability[][] effectAs = new Ability[0][];
-		private SPairList<Integer,Double>[] buckets = null;
+		private PairList<Integer,Double>[] buckets = null;
 
 		/**
 		 * Returns an array of the numeric codes for the berry resources
@@ -929,7 +929,7 @@ public interface RawMaterial extends Item
 		}
 
 		@SuppressWarnings("unchecked")
-		public SPairList<Integer,Double> getValueSortedBucket(int material)
+		public PairList<Integer,Double> getValueSortedBucket(int material)
 		{
 			material=(material&RawMaterial.MATERIAL_MASK)>>8;
 			final int numMaterials=Material.values().length;
@@ -937,7 +937,7 @@ public interface RawMaterial extends Item
 				return null;
 			if(buckets == null)
 			{
-				final SPairList<Integer,Double>[] newBuckets=new SPairList[numMaterials];
+				final PairList<Integer,Double>[] newBuckets=new PairList[numMaterials];
 				for(int matIndex=0;matIndex<numMaterials;matIndex++)
 				{
 					final int matCode = Material.values()[matIndex].mask();

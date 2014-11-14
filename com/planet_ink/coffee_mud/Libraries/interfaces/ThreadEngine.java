@@ -57,6 +57,7 @@ public interface ThreadEngine extends CMLibrary, Runnable
 	public List<Tickable> getNamedTickingObjects(String name);
 	public Runnable findRunnableByThread(final Thread thread);
 	public void executeRunnable(Runnable R);
+	public void scheduleRunnable(Runnable R, long ellapsedMs);
 	public void executeRunnable(String threadGroupName, Runnable R);
 	public void debugDumpStack(final String ID, Thread theThread);
 	public long getTicksEllapsedSinceStartup();

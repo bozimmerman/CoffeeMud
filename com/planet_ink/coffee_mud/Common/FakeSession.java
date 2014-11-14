@@ -62,6 +62,8 @@ public class FakeSession implements Session
 	}
 	@Override public String getGroupName() { return Thread.currentThread().getThreadGroup().getName(); }
 	@Override public void setGroupName(String group) {}
+	@Override public long getStartTime(){ return 0; }
+	@Override public int getGroupID() { return Thread.currentThread().getThreadGroup().getName().charAt(0); }
 	@Override public boolean isLockedUpWriting(){return false;}
 	@Override public void initializeClass(){}
 	@Override public void run(){}

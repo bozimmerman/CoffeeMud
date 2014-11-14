@@ -16,7 +16,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-public class PairVector<T,K> extends Vector<Pair<T,K>> implements List<Pair<T,K>>, SPairList<T,K>
+public class PairVector<T,K> extends Vector<Pair<T,K>> implements PairList<T,K>
 {
 	/**
 	 *

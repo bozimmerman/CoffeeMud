@@ -104,6 +104,18 @@ public class StdTickGroup implements TickableGroup, Cloneable
 		return this;
 	}
 
+	@Override 
+	public long getStartTime()
+	{ 
+		return lastStart; 
+	}
+	
+	@Override 
+	public int getGroupID() 
+	{ 
+		return threadGroupName.charAt(0); 
+	}
+	
 	@Override
 	public TickClient fetchTickerByIndex(int i)
 	{

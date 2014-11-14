@@ -17,7 +17,7 @@ limitations under the License.
 */
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
-public final class PairSLinkedList<T,K> extends SLinkedList<Pair<T,K>> implements SPairList<T,K>
+public final class PairSLinkedList<T,K> extends SLinkedList<Pair<T,K>> implements PairList<T,K>
 {
 	private static final long serialVersionUID = -9175373328892311411L;
 	public final Pair.FirstConverter<T,K> getFirstConverter()

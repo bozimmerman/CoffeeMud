@@ -47,6 +47,7 @@ public class Conjurer extends SpecialistMage
 		CMLib.ableMapper().delCharAbilityMapping(ID(),"Spell_IronGrip");
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_SummonMarker",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_WatchfulHound",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_WaterCannon",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Spell_Scatter",25,true);

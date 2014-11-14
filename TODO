@@ -1,3 +1,6 @@
+BUGS
+  *. You can't 'ca' that.
+
 TECH
    *. test launch and landing
    *. interacting items of diff tech level might damage each other
@@ -21,12 +24,11 @@ TECH
    *. keep reviewing and updating the GameOverview.html doc
 
 NON-TECH
-   *. Wait/Notify for synchronous asynchronous code!
+   *. Wait/Notify for synchronous asynchronous code?
    *. Fighter - Weapons Training (or Karate Training for Monks) -- non-kill way to gain xp, makes mobs slightly harder, 1 level up max.
    *. Fighter -- AUTOGUARD can start a little "Guarding" prog for, say, 10 rl minutes.
    *. Classes with insufficient unique skills:
-        *. Conjuration   : +2 low level
-                         : Watchful Hound (wakes you up instantly if anyone enters room -- if aggressive, attacks -- can not sleep)
+        *. Conjuration   : +1 low level
                          : Insect Plague (takes away any edible resource and kills farming) -- at hight levels, may sting random person?
         *. Assassin      : +6
                          : Two-Dagger Fighting (no negatives on two handed fighting), Cut Throat (crit, injury,bleeding), Double Strike (2x attacks with daggers),

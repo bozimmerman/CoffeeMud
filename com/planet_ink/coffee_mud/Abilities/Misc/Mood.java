@@ -534,7 +534,8 @@ public class Mood extends StdAbility
 						&&(CMLib.dice().roll(1,10,0)==1)
 						&&(!msg.source().isInCombat())
 						&&(!M.isInCombat())
-						&&(M.mayPhysicallyAttack(msg.source())))
+						&&(M.mayPhysicallyAttack(msg.source()))
+						&&(CMath.abs(M.phyStats().level()-msg.source().phyStats().level())<10))
 							M.setVictim(msg.source());
 						break;
 					}

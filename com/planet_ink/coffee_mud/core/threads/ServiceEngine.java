@@ -45,15 +45,18 @@ public class ServiceEngine implements ThreadEngine
 	private static final long SHORT_TICK_TIMEOUT = (5*TimeManager.MILI_MINUTE);
 	private static final long LONG_TICK_TIMEOUT  = (120*TimeManager.MILI_MINUTE);
 
-	private Thread  					drivingThread=null;
-	private TickClient 					supportClient=null;
-	protected SLinkedList<TickableGroup>allTicks=new SLinkedList<TickableGroup>();
-	private boolean 					isSuspended=false;
-	private int 						max_objects_per_thread=0;
-	private CMThreadPoolExecutor[]		threadPools=new CMThreadPoolExecutor[256];
-	private volatile long				globalTickID=0;
-	private final long 					globalStartTime=System.currentTimeMillis();
-	private volatile CMRunnable[]		unsuspendedRunnables=null;
+	private Thread  				drivingThread		= null;
+	private TickClient 				supportClient		= null;
+	protected List<TickableGroup>	allTicks			= new SLinkedList<TickableGroup>();
+	private boolean 				isSuspended			= false;
+	private int 					max_objs_per_thread	= 0;
+	private CMThreadPoolExecutor[]	threadPools			= new CMThreadPoolExecutor[256];
+	private volatile long			globalTickID		= 0;
+	private final long 				globalStartTime		= System.currentTimeMillis();
+	private volatile CMRunnable[]	unsuspendedRunnables= null;
+
+	private volatile long			schedWaitAt			= 0;
+	private List<CMRunnable>		schedTicks			= new LinkedList<CMRunnable>();
 
 	@Override public String ID(){return "ServiceEngine";}
 	@Override public String name() { return ID();}
@@ -79,11 +82,8 @@ public class ServiceEngine implements ThreadEngine
 		initializeClass();
 	}
 
-	protected CMThreadPoolExecutor getPoolExecutor(String threadGroupName)
+	protected CMThreadPoolExecutor getPoolExecutor(final char threadGroupNum)
 	{
-		if(threadGroupName == null)
-			threadGroupName = Thread.currentThread().getThreadGroup().getName();
-		final char threadGroupNum=threadGroupName.charAt(0);
 		final CMThreadPoolExecutor pool = threadPools[threadGroupNum];
 		if(pool != null)
 			return pool;
@@ -95,6 +95,15 @@ public class ServiceEngine implements ThreadEngine
 		threadPools[threadGroupNum] = new CMThreadPoolExecutor(sessionThreadGroupName,minThreads, maxThreads, CMProps.getTickMillis()*2, TimeUnit.MILLISECONDS, (LONG_TICK_TIMEOUT/60000), 1024);
 		threadPools[threadGroupNum].setThreadFactory(new CMThreadFactory(sessionThreadGroupName));
 		return threadPools[threadGroupNum];
+	}
+
+	protected CMThreadPoolExecutor getPoolExecutor(String threadGroupName)
+	{
+		
+		if(threadGroupName == null)
+			return getPoolExecutor(Thread.currentThread().getThreadGroup().getName().charAt(0));
+		else
+			return getPoolExecutor(threadGroupName.charAt(0));
 	}
 
 	@Override
@@ -139,6 +148,35 @@ public class ServiceEngine implements ThreadEngine
 		return null;
 	}
 
+	public void scheduleRunnable(final Runnable R, long ellapsedMs)
+	{
+		try
+		{
+			synchronized(this.schedTicks)
+			{
+				final long myNextTime = System.currentTimeMillis() + ellapsedMs;
+				final char currentThreadId = Thread.currentThread().getThreadGroup().getName().charAt(0);
+				schedTicks.add(new CMRunnable(){
+					@Override public void run() { R.run(); }
+					@Override public long activeTimeMillis() { return System.currentTimeMillis() - getStartTime(); }
+					@Override public long getStartTime() { return myNextTime; }
+					@Override public int getGroupID() { return currentThreadId; }
+				});
+				if((this.schedWaitAt == 0) || (myNextTime < this.schedWaitAt))
+				{
+					this.schedWaitAt = myNextTime;
+					if(drivingThread!=null)
+						drivingThread.interrupt();
+				}
+			}
+		}
+		catch(final Exception e)
+		{
+			Log.errOut("ServiceEngine","ExecRun: "+e.getMessage());
+			Log.debugOut("ServiceEngine",e);
+		}
+	}
+	
 	@Override
 	public void executeRunnable(String threadGroupName, Runnable R)
 	{
@@ -169,12 +207,12 @@ public class ServiceEngine implements ThreadEngine
 
 	public int getMaxObjectsPerThread()
 	{
-		if(max_objects_per_thread>0)
-			return max_objects_per_thread;
-		max_objects_per_thread = CMProps.getIntVar(CMProps.Int.OBJSPERTHREAD);
-		if(max_objects_per_thread>0)
-			return max_objects_per_thread;
-		max_objects_per_thread=0;
+		if(max_objs_per_thread>0)
+			return max_objs_per_thread;
+		max_objs_per_thread = CMProps.getIntVar(CMProps.Int.OBJSPERTHREAD);
+		if(max_objs_per_thread>0)
+			return max_objs_per_thread;
+		max_objs_per_thread=0;
 		return 128;
 	}
 
@@ -946,7 +984,7 @@ public class ServiceEngine implements ThreadEngine
 		while(allTicks.size()>0)
 		{
 			//Log.sysOut("ServiceEngine","Shutting down all tick "+which+"/"+numTicks+"...");
-			final TickableGroup tock=allTicks.getFirst();
+			final TickableGroup tock=allTicks.iterator().next();
 			if(tock!=null)
 			{
 				CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...shutting down Service Engine: killing "+tock.getName()+": "+tock.getStatus());
@@ -1320,6 +1358,30 @@ public class ServiceEngine implements ThreadEngine
 				final long now=System.currentTimeMillis();
 				globalTickID = (now - globalStartTime) / CMProps.getTickMillis();
 				long nextWake=System.currentTimeMillis() + 3600000;
+				if((this.schedTicks.size() > 0) && (now > this.schedWaitAt))
+				{
+					final List<CMRunnable> runThese = new LinkedList<CMRunnable>();
+					synchronized(this.schedTicks)
+					{
+						if((this.schedTicks.size() > 0) && (now > this.schedWaitAt))
+						{
+							for(Iterator<CMRunnable> r=this.schedTicks.iterator(); r.hasNext();) 
+							{
+								final CMRunnable R=r.next();
+								if(now >= R.getStartTime())
+								{
+									runThese.add(R);
+									r.remove();
+								}
+								else
+								if(R.getStartTime() < nextWake)
+									nextWake = R.getStartTime();
+							}
+						}
+					}
+					for(CMRunnable R : runThese)
+						getPoolExecutor((char)R.getGroupID()).execute(R);
+				}
 				synchronized(allTicks)
 				{
 					for(final TickableGroup T : allTicks)
