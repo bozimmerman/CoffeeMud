@@ -139,9 +139,9 @@ public class Chant_WindGust extends Chant
 
 							final MOB victim=target.getVictim();
 							if((victim!=null)&&(target.rangeToTarget()>=0))
-								target.setAtRange(target.rangeToTarget()+(howLong/2));
+								target.setRangeToTarget(target.rangeToTarget()+(howLong/2));
 							if(target.rangeToTarget()>target.location().maxRange())
-								target.setAtRange(target.location().maxRange());
+								target.setRangeToTarget(target.location().maxRange());
 							mob.location().send(mob,msg);
 							if((!CMLib.flags().isInFlight(target))
 							&&(CMLib.dice().rollPercentage()>(((target.charStats().getStat(CharStats.STAT_DEXTERITY)*2)+target.phyStats().level()))-(5*howLong))
@@ -152,7 +152,7 @@ public class Chant_WindGust extends Chant
 								success=maliciousAffect(mob,target,asLevel,howLong,-1)!=null;
 							}
 							if(target.getVictim()!=null)
-								target.getVictim().setAtRange(target.rangeToTarget());
+								target.getVictim().setRangeToTarget(target.rangeToTarget());
 							if(mob.getVictim()==null) mob.setVictim(null); // correct range
 							if(target.getVictim()==null) target.setVictim(null); // correct range
 						}

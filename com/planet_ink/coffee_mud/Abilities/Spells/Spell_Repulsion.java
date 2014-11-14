@@ -155,14 +155,14 @@ public class Spell_Repulsion extends Spell
 									level=2;
 								target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> become(s) repelled!"));
 								if((target.getVictim()!=null)&&(target.rangeToTarget()>0))
-									target.setAtRange(target.rangeToTarget());
+									target.setRangeToTarget(target.rangeToTarget());
 								else
 								if(target.location().maxRange()<level)
-									target.setAtRange(target.location().maxRange());
+									target.setRangeToTarget(target.location().maxRange());
 								else
-									target.setAtRange(level);
+									target.setRangeToTarget(level);
 								if(target.getVictim()!=null)
-									target.getVictim().setAtRange(target.rangeToTarget());
+									target.getVictim().setRangeToTarget(target.rangeToTarget());
 								if(mob.getVictim()==null) mob.setVictim(null); // correct range
 								if(target.getVictim()==null) target.setVictim(null); // correct range
 							}

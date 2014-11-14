@@ -112,7 +112,7 @@ public class Skill_CastBlocking extends BardSkill
 							if(msg2.value()<=0)
 							{
 								M.setVictim(twoSide.get(CMLib.dice().roll(1, twoSide.size(), -1)));
-								M.setAtRange(CMLib.dice().roll(1, R.maxRange()+1,-1));
+								M.setRangeToTarget(CMLib.dice().roll(1, R.maxRange()+1,-1));
 							}
 						}
 					}
@@ -125,7 +125,7 @@ public class Skill_CastBlocking extends BardSkill
 							if(msg2.value()<=0)
 							{
 								M.setVictim(oneSide.get(CMLib.dice().roll(1, oneSide.size(), -1)));
-								M.setAtRange(CMLib.dice().roll(1, R.maxRange()+1,-1));
+								M.setRangeToTarget(CMLib.dice().roll(1, R.maxRange()+1,-1));
 							}
 						}
 					}

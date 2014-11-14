@@ -11,8 +11,9 @@
    9. New Expertise: Acting
   10. New Alterer spells: Polymorph Object, Magic Bullet, Flame Arrow, Shape Object, Keen Edge, Fabricate
   11. New Illusionist spells: Color Spray, Disguise Undead, Disguise Self, Disguise Other, Simulacrum, Invisibility Sphere
-  * . New Evoker spells: Purge Invisibility and Helping Hand **AND ONE MORE**
-  13. Beyond new spells for some, all mage specialists have had their spell lists tinkered with to make them a bit better
+  12. New Abjurer spell: Anti-Plant Shell
+   *. New Evoker spells: Purge Invisibility and Helping Hand **AND THREE MORE**
+   *. Beyond new spells for some, all mage specialists have had their spell lists tinkered with to make them a bit better
 # Build 5.8.3 Release 10/27/2014
    *. Database Schema Updated for CMCHAR.CMDESC and CMCHAR.CMCHID.  See the Installation Guide about running DBUpgrade.
    1. (FakeDB): DBUpgrade is now application independent, and can handle big tables better.  See installation guide for new recommended usage.

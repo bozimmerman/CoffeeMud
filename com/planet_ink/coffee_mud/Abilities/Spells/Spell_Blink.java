@@ -87,9 +87,9 @@ public class Spell_Blink extends Spell
 						move=0;
 					else
 					{
-						mob.setAtRange(rangeTo);
+						mob.setRangeToTarget(rangeTo);
 						if(mob.getVictim().getVictim()==mob)
-							mob.getVictim().setAtRange(rangeTo);
+							mob.getVictim().setRangeToTarget(rangeTo);
 					}
 					switch(move)
 					{

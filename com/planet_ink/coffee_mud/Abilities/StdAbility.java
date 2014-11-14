@@ -1505,6 +1505,7 @@ public class StdAbility implements Ability
 		}
 		return false;
 	}
+
 	@Override
 	public void makeNonUninvokable()
 	{

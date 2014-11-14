@@ -43,6 +43,8 @@ public class Abjurer extends SpecialistMage
 	public void initializeClass()
 	{
 		super.initializeClass();
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_AntiPlantShell",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_SongShield",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_ResistBludgeoning",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Spell_MinManaShield",25,true);

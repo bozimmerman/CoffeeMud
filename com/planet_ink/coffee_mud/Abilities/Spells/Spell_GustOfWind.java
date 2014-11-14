@@ -131,9 +131,9 @@ public class Spell_GustOfWind extends Spell
 						{
 							MOB victim=target.getVictim();
 							if((victim!=null)&&(target.rangeToTarget()>=0))
-								target.setAtRange(target.rangeToTarget()+1+(adjustedLevel(mob,asLevel)/10));
+								target.setRangeToTarget(target.rangeToTarget()+1+(adjustedLevel(mob,asLevel)/10));
 							if(target.rangeToTarget()>target.location().maxRange())
-								target.setAtRange(target.location().maxRange());
+								target.setRangeToTarget(target.location().maxRange());
 
 							R.send(mob,msg);
 							if((!CMLib.flags().isInFlight(target))
@@ -146,7 +146,7 @@ public class Spell_GustOfWind extends Spell
 							}
 							victim=target.getVictim();
 							if(victim!=null)
-								victim.setAtRange(target.rangeToTarget());
+								victim.setRangeToTarget(target.rangeToTarget());
 						}
 					}
 				}

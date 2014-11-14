@@ -126,7 +126,7 @@ public class Kill extends StdCommand
 					if(mob.rangeToTarget()>=0)
 						range+=mob.rangeToTarget();
 					if(range>=0)
-						mob.setAtRange(range);
+						mob.setRangeToTarget(range);
 				}
 				mob.tell(L("^f^<FIGHT^>You are now targeting @x1.^</FIGHT^>^?",target.name(mob)));
 				mob.setVictim(target);

@@ -74,7 +74,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public MOB getVictim();
 	public void setVictim(MOB mob);
 	public void makePeace();
-	public void setAtRange(int newRange);
+	public void setRangeToTarget(int newRange);
 	public int maxRange(Environmental using);
 	public int minRange(Environmental using);
 	public int rangeToTarget();

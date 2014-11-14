@@ -24,9 +24,7 @@ NON-TECH
    *. Wait/Notify for synchronous asynchronous code!
    *. Fighter - Weapons Training (or Karate Training for Monks) -- non-kill way to gain xp, makes mobs slightly harder, 1 level up max.
    *. Fighter -- AUTOGUARD can start a little "Guarding" prog for, say, 10 rl minutes.
-   *. Classes with insufficient unique skills: Ranger (11), Evoker (11), Assassin (12), Paladin (12), Purist (13), Cleric (14)
-        *. Abjurer       : +1 
-                         : Anti-Plant Shell
+   *. Classes with insufficient unique skills:
         *. Evoker        : +3 
                          : Produce Flame (provides you as light source, and fire damage from natural attacks)
                          : Forceful Hand (holds a target from advancing for a few ticks, and pushes them at least 1 range back)

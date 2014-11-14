@@ -1387,7 +1387,7 @@ public class StdMOB implements MOB
 	}
 
 	@Override
-	public void setAtRange(int newRange)
+	public void setRangeToTarget(int newRange)
 	{
 		atRange = newRange;
 	}
@@ -1461,7 +1461,7 @@ public class StdMOB implements MOB
 	{
 		if (mob == null)
 		{
-			setAtRange(-1);
+			setRangeToTarget(-1);
 			if (victim != null)
 				synchronized (commandQue)
 				{
@@ -1485,7 +1485,7 @@ public class StdMOB implements MOB
 				if (victim != null)
 					victim.setVictim(null);
 				victim = null;
-				setAtRange(-1);
+				setRangeToTarget(-1);
 			}
 			else
 			{
@@ -2528,14 +2528,14 @@ public class StdMOB implements MOB
 				msg.modify(this, trgM, null, CMMsg.MSG_ADVANCE, newstr + trgM.name(this), CMMsg.MSG_ADVANCE, newstr + "you", CMMsg.MSG_ADVANCE, newstr + trgM.name());
 				final boolean ok = location().okMessage(this, msg);
 				if (ok)
-					setAtRange(rangeToTarget() - 1);
+					setRangeToTarget(rangeToTarget() - 1);
 				if (victim != null)
 				{
-					victim.setAtRange(rangeToTarget());
+					victim.setRangeToTarget(rangeToTarget());
 					victim.recoverPhyStats();
 				}
 				else
-					setAtRange(-1);
+					setRangeToTarget(-1);
 				recoverPhyStats();
 				return ok;
 			}
@@ -2553,14 +2553,14 @@ public class StdMOB implements MOB
 					return false;
 				}
 				curState().adjMovement(-25, maxState());
-				setAtRange(rangeToTarget() + 1);
+				setRangeToTarget(rangeToTarget() + 1);
 				if (victim != null)
 				{
-					victim.setAtRange(rangeToTarget());
+					victim.setRangeToTarget(rangeToTarget());
 					victim.recoverPhyStats();
 				}
 				else
-					setAtRange(-1);
+					setRangeToTarget(-1);
 				recoverPhyStats();
 			}
 			else
@@ -2619,7 +2619,7 @@ public class StdMOB implements MOB
 					if (victim == this)
 					{
 						victim = null;
-						setAtRange(-1);
+						setRangeToTarget(-1);
 					}
 					return false;
 				}
@@ -2665,7 +2665,7 @@ public class StdMOB implements MOB
 					&& (srcM.rangeToTarget() == 0))
 					{
 						setVictim(srcM);
-						setAtRange(0);
+						setRangeToTarget(0);
 					}
 				}
 
@@ -2699,7 +2699,7 @@ public class StdMOB implements MOB
 			}
 
 			if ((rangeToTarget() >= 0) && (!isInCombat()))
-				setAtRange(-1);
+				setRangeToTarget(-1);
 
 			switch (msg.targetMinor())
 			{

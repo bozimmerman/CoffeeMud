@@ -300,6 +300,27 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return false;
 		return isInHide;
 	}
+
+	@Override
+	public boolean isAPlant(Item I)
+	{
+		return (I!=null) && ((I.material()&RawMaterial.MATERIAL_VEGETATION)>0);
+	}
+	
+	@Override
+	public boolean isAPlant(MOB M)
+	{
+		if(isGolem(M) && (M!=null) && (M.charStats()!=null) && (M.charStats().getMyRace()!=null))
+		{
+			final List<RawMaterial> mats = M.charStats().getMyRace().myResources();
+			for(final Item I : mats)
+				if(CMath.bset(I.material(), RawMaterial.MATERIAL_VEGETATION)
+				||CMath.bset(I.material(), RawMaterial.MATERIAL_WOODEN))
+					return true;
+			return false;
+		}
+		return false;
+	}
 	
 	@Override
 	public boolean isUnattackable(Physical P)

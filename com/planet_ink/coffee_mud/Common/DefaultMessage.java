@@ -524,7 +524,7 @@ public class DefaultMessage implements CMMsg
 
 	protected static final boolean matches(final int major, final int minor, final int code)
 	{
-		return (major == code) || (minor == code);
+		return ((major & code)==code) || (minor == code);
 	}
 	
 	protected static final boolean matches(final int major, final int minor, String code2)

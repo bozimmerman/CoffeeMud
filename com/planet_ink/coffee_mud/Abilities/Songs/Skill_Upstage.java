@@ -93,7 +93,7 @@ public class Skill_Upstage extends BardSkill
 		{
 			MOB M=(MOB)affected;
 			M.setVictim(previousVictim);
-			M.setAtRange(previousRange);
+			M.setRangeToTarget(previousRange);
 			((MOB)affected).tell(L("You are no longer upstaged."));
 		}
 	}
@@ -134,7 +134,7 @@ public class Skill_Upstage extends BardSkill
 								{
 									A.previousRange=target.rangeToTarget();
 									A.previousVictim=target.getVictim();
-									target.setAtRange(CMLib.dice().roll(1, mob.location().maxRange(), 0)+(super.getXLEVELLevel(mob)/3));
+									target.setRangeToTarget(CMLib.dice().roll(1, mob.location().maxRange(), 0)+(super.getXLEVELLevel(mob)/3));
 									target.setVictim(mob);
 								}
 							}

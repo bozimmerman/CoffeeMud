@@ -1733,7 +1733,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			if(source.riding()!=null)
 			{
 				if((target==source.riding())||(source.riding().amRiding(target)))
-					source.setAtRange(0);
+					source.setRangeToTarget(0);
 				else
 				if((source.riding() instanceof MOB)
 				   &&(((MOB)source.riding()).isInCombat())
@@ -1741,7 +1741,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				   &&(((MOB)source.riding()).rangeToTarget()>=0)
 				   &&(((MOB)source.riding()).rangeToTarget()<source.rangeToTarget()))
 				{
-					source.setAtRange(((MOB)source.riding()).rangeToTarget());
+					source.setRangeToTarget(((MOB)source.riding()).rangeToTarget());
 					source.recoverPhyStats();
 					return;
 				}
@@ -1758,7 +1758,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					   &&(otherMOB.rangeToTarget()>=0)
 					   &&(otherMOB.rangeToTarget()<source.rangeToTarget()))
 					{
-						source.setAtRange(otherMOB.rangeToTarget());
+						source.setRangeToTarget(otherMOB.rangeToTarget());
 						source.recoverPhyStats();
 						return;
 					}
@@ -1767,7 +1767,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 			final MOB follow=source.amFollowing();
 			if((target.getVictim()==source)&&(target.rangeToTarget()>=0))
-				source.setAtRange(target.rangeToTarget());
+				source.setRangeToTarget(target.rangeToTarget());
 			else
 			if((follow!=null)&&(follow.location()==source.location()))
 			{
@@ -1790,10 +1790,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				}
 				if((source.location()!=null)&&(source.location().maxRange()<newRange))
 					newRange=source.location().maxRange();
-				source.setAtRange(newRange);
+				source.setRangeToTarget(newRange);
 			}
 			else
-				source.setAtRange(source.maxRange(tool));
+				source.setRangeToTarget(source.maxRange(tool));
 			source.recoverPhyStats();
 		}
 	}
@@ -1824,10 +1824,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					if(fighter.location().okMessage(fighter,msg))
 					{
 						fighter.location().send(fighter,msg);
-						fighter.setAtRange(fighter.rangeToTarget()-1);
+						fighter.setRangeToTarget(fighter.rangeToTarget()-1);
 						if((fighter.getVictim()!=null)&&(fighter.getVictim().getVictim()==fighter))
 						{
-							fighter.getVictim().setAtRange(fighter.rangeToTarget());
+							fighter.getVictim().setRangeToTarget(fighter.rangeToTarget());
 							fighter.getVictim().recoverPhyStats();
 						}
 					}

@@ -127,7 +127,7 @@ public class Prayer_Monolith extends Prayer
 				M.setLocation(mob.location());
 				M.setName(L("The monolith of air"));
 				M.setVictim(mob);
-				M.setAtRange(mob.rangeToTarget());
+				M.setRangeToTarget(mob.rangeToTarget());
 				CMLib.combat().postWeaponDamage(M,mob,(Weapon)msg.tool(),true);
 				M.setLocation(null);
 				M.setVictim(null);

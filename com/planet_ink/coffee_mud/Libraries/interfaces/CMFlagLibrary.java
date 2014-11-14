@@ -104,6 +104,8 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isSwimmingInWater(Physical P);
 	public boolean isFalling(Physical P);
 	public boolean isBusy(Physical P);
+	public boolean isAPlant(Item I);
+	public boolean isAPlant(MOB M);
 	public boolean isUnattackable(Physical P);
 	public boolean canBeHeardMovingBy(Physical heard , MOB hearer);
 	public boolean canBeHeardSpeakingBy(Physical heard , MOB hearer);

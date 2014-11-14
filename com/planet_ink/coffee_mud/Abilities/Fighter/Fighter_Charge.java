@@ -142,8 +142,8 @@ public class Fighter_Charge extends FighterSkill
 				mob.location().send(mob,msg);
 				if(mob.getVictim()==target)
 				{
-					mob.setAtRange(0);
-					target.setAtRange(0);
+					mob.setRangeToTarget(0);
+					target.setRangeToTarget(0);
 					beneficialAffect(mob,mob,asLevel,2);
 					mob.recoverPhyStats();
 					if(notInCombat)
