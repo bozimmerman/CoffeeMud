@@ -54,6 +54,7 @@ public class Spell_Pocket extends Spell
 		}
 		final Vector<String> targetV=new XVector<String>(commands.get(0).toString());
 		final Vector<String> containerV=new XVector<String>(commands);
+		containerV.remove(0);
 		final Physical target=getAnyTarget(mob,targetV,givenTarget,Wearable.FILTER_ANY);
 		if(target==null)
 			return false;
@@ -137,6 +138,7 @@ public class Spell_Pocket extends Spell
 						return false;
 					pocketItem.setName(L("a tiny ceramic @x1",name));
 					pocketItem.setDisplayText(L("a tiny ceramic @x1 has been left here",name));
+					pocketItem.setDescription("It`s so cute!");
 					pocketItem.basePhyStats().setLevel(level);
 					pocketItem.basePhyStats().setWeight(1);
 					pocketItem.recoverPhyStats();

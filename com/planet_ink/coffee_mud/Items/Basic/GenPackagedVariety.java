@@ -76,8 +76,8 @@ public class GenPackagedVariety extends GenItem implements PackagedItems
 		itemstr.append(CMLib.xml().convertXMLtoTag("PICLASS",CMClass.classID(I)));
 		itemstr.append(CMLib.xml().convertXMLtoTag("PIDATA",CMLib.coffeeMaker().getPropertiesStr(I,true)));
 		itemstr.append("</PAKITEM>");
+		setNumberOfItemsInPackage(this.numberOfItemsInPackage() + number);
 		setPackageText(packageText() + itemstr.toString());
-		setNumberOfItemsInPackage(this.numberOfItems() + number);
 		recoverPhyStats();
 		return true;
 	}
@@ -86,14 +86,14 @@ public class GenPackagedVariety extends GenItem implements PackagedItems
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(this)
-			||((msg.tool()==this)&&(msg.target()==container())&&(container()!=null)))
+			||((msg.tool()==this)&&(msg.target() instanceof Container)))
 		&&((basePhyStats().ability()&ABILITY_MOBPROGRAMMATICALLY)==0)
 		&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_DROP)))
 		{
-			List<Item> items = unPackage(Integer.MAX_VALUE);
 			ItemPossessor possessor = owner();
 			if((msg.targetMinor()==CMMsg.TYP_DROP)&&(msg.target() instanceof Room))
 				possessor=(Room)msg.target();
+			List<Item> items = unPackage(Integer.MAX_VALUE);
 			for(Item I : items)
 				possessor.addItem(I, ItemPossessor.Expire.Player_Drop);
 			destroy();
