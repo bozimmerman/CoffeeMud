@@ -12,7 +12,7 @@
   10. New Alterer spells: Polymorph Object, Magic Bullet, Flame Arrow, Shape Object, Keen Edge, Fabricate
   11. New Illusionist spells: Color Spray, Disguise Undead, Disguise Self, Disguise Other, Simulacrum, Invisibility Sphere
   12. New Abjurer spell: Anti-Plant Shell
-   *. New Evoker spells: Purge Invisibility and Helping Hand **AND THREE MORE**
+  13. New Evoker spells: Purge Invisibility, Helping Hand, Produce Flame, Forceful Hand
    *. Beyond new spells for some, all mage specialists have had their spell lists tinkered with to make them a bit better
 # Build 5.8.3 Release 10/27/2014
    *. Database Schema Updated for CMCHAR.CMDESC and CMCHAR.CMCHID.  See the Installation Guide about running DBUpgrade.

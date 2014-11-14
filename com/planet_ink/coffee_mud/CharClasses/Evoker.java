@@ -43,8 +43,10 @@ public class Evoker extends SpecialistMage
 	public void initializeClass()
 	{
 		super.initializeClass();
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_ProduceFlame",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_HelpingHand",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_PurgeInvisibility",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Spell_ForcefulHand",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Spell_ContinualLight",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_Shockshield",25,true);

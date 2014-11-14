@@ -33,27 +33,19 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("rawtypes")
-public class Spell_AntiPlantShell extends Spell
+public class Spell_ForcefulHand extends Spell
 {
-	@Override public String ID() { return "Spell_AntiPlantShell"; }
-	private final static String localizedName = CMLib.lang().L("Anti Plant Shell");
+	@Override public String ID() { return "Spell_ForcefulHand"; }
+	private final static String localizedName = CMLib.lang().L("Forceful Hand");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Anti Plant Shell)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Forceful Hand)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
-
-	protected int pointsRemaining = 5;
 	
-	@Override
-	public void setAffectedOne(Physical affected)
-	{
-		if(super.affected != affected)
-			pointsRemaining = 3 + (adjustedLevel(invoker(),0)/5);
-		super.setAffectedOne(affected);
-	}
+	protected Item theHand=null;
 	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -61,57 +53,62 @@ public class Spell_AntiPlantShell extends Spell
 		if(!super.okMessage(myHost, msg))
 			return false;
 
+		if((theHand == null) || (theHand.amDestroyed()))
+			unInvoke();
+		
 		if((msg.target() == affected) 
 		&& msg.isTarget(CMMsg.MASK_MALICIOUS)
-		&& CMLib.flags().isAPlant(msg.source())
-		&&(affected instanceof MOB)
-		&&(pointsRemaining >= 0))
+		&&(affected instanceof MOB))
 		{
 			final MOB mob=(MOB)affected;
-			final MOB plantMOB=msg.source();
-			final Room R=plantMOB.location();
+			final MOB combatMOB=msg.source();
+			final Room R=combatMOB.location();
 			if((R!=null)&&(R==mob.location()))
 			{
-				if((msg.isSource(CMMsg.TYP_ADVANCE))
-				&& (--pointsRemaining >=0))
+				if(!R.isHere(theHand))
+					unInvoke();
+				else
+				if(msg.isSource(CMMsg.TYP_ADVANCE))
 				{
-					R.show(plantMOB, affected, CMMsg.MSG_OK_ACTION, L("<S-NAME> struggle(s) against <T-YOUPOSS> anti-plant shell."));
+					R.show(combatMOB, affected, CMMsg.MSG_OK_ACTION, L("<S-NAME> struggle(s) against a forceful hand."));
 					return false;
 				}
 				else
-				if(plantMOB.getVictim() == null)
+				if(combatMOB.getVictim() == null)
 				{
-					plantMOB.setVictim(mob);
-					if(mob.getVictim()==plantMOB)
+					combatMOB.setVictim(mob);
+					if(mob.getVictim()==combatMOB)
 					{
 						if(mob.rangeToTarget() > 0)
-							plantMOB.setRangeToTarget(mob.rangeToTarget());
+							combatMOB.setRangeToTarget(mob.rangeToTarget());
 						else
 						{
-							plantMOB.setRangeToTarget(R.maxRange());
-							mob.setRangeToTarget(R.maxRange());
+							combatMOB.setRangeToTarget(1);
+							mob.setRangeToTarget(1);
 						}
 					}
 					else
-						plantMOB.setRangeToTarget(R.maxRange());
-					R.show(plantMOB, affected, CMMsg.MSG_OK_ACTION, L("<S-NAME> <S-IS-ARE> repelled by <T-YOUPOSS> anti-plant shell."));
+						combatMOB.setRangeToTarget(1);
+					R.show(combatMOB, affected, CMMsg.MSG_OK_ACTION, L("<S-NAME> <S-IS-ARE> pushed back by a forceful hand."));
 					return false;
 				}
 				else
-				if((plantMOB.getVictim() == affected) && (plantMOB.rangeToTarget() <= 0))
+				if((combatMOB.getVictim() == affected) && (combatMOB.rangeToTarget() <= 0))
 				{
-					plantMOB.setRangeToTarget(R.maxRange());
-					if(mob.getVictim()==plantMOB)
-						mob.setRangeToTarget(R.maxRange());
-					R.show(plantMOB, affected, CMMsg.MSG_OK_ACTION, L("<S-NAME> <S-IS-ARE> repelled by <T-YOUPOSS> anti-plant shell."));
+					combatMOB.setRangeToTarget(1);
+					if(mob.getVictim()==combatMOB)
+						mob.setRangeToTarget(1);
+					R.show(combatMOB, affected, CMMsg.MSG_OK_ACTION, L("<S-NAME> <S-IS-ARE>  pushed back by a forceful hand."));
 					return false;
 				}
 				else
-				if((mob.getVictim()==plantMOB)&&(mob.rangeToTarget() <= 0))
+				if((mob.getVictim()==combatMOB) && (mob.rangeToTarget() <= 0))
 				{
-					mob.setRangeToTarget(R.maxRange());
+					mob.setRangeToTarget(1);
+					if(mob==combatMOB)
+						mob.setRangeToTarget(1);
 					if(R!=null)
-						R.show(plantMOB, affected, CMMsg.MSG_OK_ACTION, L("<S-NAME> <S-IS-ARE> repelled by <T-YOUPOSS> anti-plant shell."));
+						R.show(combatMOB, affected, CMMsg.MSG_OK_ACTION, L("<S-NAME> <S-IS-ARE>  pushed back by a forceful hand."));
 					return false;
 				}
 			}
@@ -120,8 +117,6 @@ public class Spell_AntiPlantShell extends Spell
 		if(msg.isSource(CMMsg.TYP_ADVANCE)
 		&&(msg.source() == affected)
 		&& (msg.source().getVictim()==msg.target())
-		&& (CMLib.flags().isAPlant((MOB)msg.target()))
-		&& (pointsRemaining >=0)
 		&& (msg.source().rangeToTarget() == 1))
 		{
 			final MOB plantM=msg.source().getVictim();
@@ -130,16 +125,14 @@ public class Spell_AntiPlantShell extends Spell
 				final Room R=plantM.location();
 				if(R!=null)
 				{
-					final CMMsg msg2=CMClass.getMsg(plantM,msg.source(),CMMsg.MSG_RETREAT,L("<S-NAME> <S-IS-ARE> pushed back by <T-YOUPOSS> anti-plant shell."));
+					final CMMsg msg2=CMClass.getMsg(plantM,msg.source(),CMMsg.MSG_RETREAT,L("<S-NAME> <S-IS-ARE> held back by a forceful hand."));
 					if(R.okMessage(plantM,msg2))
+					{
 						R.send(plantM,msg2);
+						return false;
+					}
 				}
 			}
-		}
-		if(pointsRemaining < 0)
-		{
-			unInvoke();
-			return true;
 		}
 		return true;
 	}
@@ -152,16 +145,32 @@ public class Spell_AntiPlantShell extends Spell
 		if(canBeUninvoked())
 		{
 			if(affected instanceof MOB)
-				((MOB)affected).tell(L("Your anti-plant shell fades."));
+				((MOB)affected).tell(L("The forceful hand vanish(es)."));
+			if(theHand != null)
+			{
+				theHand.destroy();
+				theHand=null;
+			}
 		}
 	}
 
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		final MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null)
+		MOB target=mob;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+		if(target.fetchEffect(this.ID())!=null)
+		{
+			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> a forceful hand."));
 			return false;
+		}
+		
+		if(!target.isInCombat())
+		{
+			mob.tell("This only works while in combat.");
+			return false;
+		}
 		
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -179,15 +188,34 @@ public class Spell_AntiPlantShell extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),auto?L("An anti-plant shell surrounds <T-NAME>!"):L("^S<S-NAME> cast(s) the anti-plant shell around <T-NAMESELF>!^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),auto?L("An forceful hand protects <T-NAME>!"):L("^S<S-NAME> evoke(s) a forceful hand in front of <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,asLevel,0);
+				Spell_ForcefulHand A = (Spell_ForcefulHand)beneficialAffect(mob,target,asLevel,3 + (int)Math.round(Math.sqrt(adjustedLevel(mob,asLevel))));
+				if(A!=null)
+				{
+					final Item theHand=CMClass.getBasicItem("GenItem");
+					theHand.setName(L("a forceful hand"));
+					theHand.setDisplayText(L("a forceful hand is protecting @x1",target.name()));
+					theHand.basePhyStats().setDisposition(theHand.basePhyStats().disposition()|PhyStats.IS_FLYING);
+					CMLib.flags().setGettable(theHand, false);
+					theHand.recoverPhyStats();
+					final Room R=target.location();
+					if(R!=null)
+						R.addItem(theHand);
+					A.theHand = theHand;
+					if((target.getVictim() != null) && (target.rangeToTarget() <= 0))
+					{
+						target.setRangeToTarget(1);
+						if(R!=null)
+							R.show(target, target.getVictim(), CMMsg.MSG_OK_ACTION, L("<T-NAME> <T-IS-ARE> pushed back by a forceful hand."));
+					}
+				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> cast(s) a shell at <T-NAMESELF>, but the magic fizzles."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> evoke(s), but the magic fizzles."));
 
 		// return whether it worked
 		return success;

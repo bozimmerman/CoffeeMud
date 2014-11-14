@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -45,6 +44,7 @@ public class Spell_ProduceFlame extends Spell
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+	@Override public long flags(){return Ability.FLAG_FIREBASED;}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -64,6 +64,34 @@ public class Spell_ProduceFlame extends Spell
 			room.recoverRoomStats();
 	}
 
+	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+		if(!(affected instanceof MOB))
+			return;
+		final MOB mob=(MOB)affected;
+		if(msg.amISource(mob)
+		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
+		&&(mob.location()!=null)
+		&&(msg.target() instanceof MOB)
+		&&((!(msg.tool() instanceof Weapon))||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)))
+		{
+			final CMMsg msg2=CMClass.getMsg(mob,msg.target(),this,somanticCastCode(mob,(MOB)msg.target(),true),null);
+			if(mob.location().okMessage(mob,msg2))
+			{
+				mob.location().send(mob,msg2);
+				if(msg2.value()<=0)
+				{
+					final int damage = CMLib.dice().roll(1,adjustedLevel(invoker(),0),1);
+					CMLib.combat().postDamage(mob,(MOB)msg.target(),this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The flames around <S-YOUPOSS> hands <DAMAGE> <T-NAME>!");
+				}
+			}
+		}
+		return;
+	}
+
+	
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
