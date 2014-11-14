@@ -156,7 +156,7 @@ public class Spell_FaerieFog extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),L((auto?"A ":"^S<S-NAME> speak(s) and gesture(s) and a ")+"sparkling fog envelopes the area.^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, somanticCastCode(mob,target,auto),L((auto?"A ":"^S<S-NAME> speak(s) and gesture(s) and a ")+"sparkling fog envelopes the area.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -164,7 +164,7 @@ public class Spell_FaerieFog extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,L("<S-NAME> mutter(s) about a faerie fog, but the spell fizzles."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> mutter(s) about a faerie fog, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

@@ -162,7 +162,7 @@ public class Spell_PurgeInvisibility extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,L("<S-NAME> gesture(s) for supressing magic, but the spell fizzles."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> gesture(s) for supressing magic, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

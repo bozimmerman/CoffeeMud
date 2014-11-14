@@ -140,7 +140,7 @@ public class Spell_Mirage extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), auto?"":L("^S<S-NAME> speak(s) and gesture(s) dramatically!^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, somanticCastCode(mob,target,auto), auto?"":L("^S<S-NAME> speak(s) and gesture(s) dramatically!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -162,7 +162,7 @@ public class Spell_Mirage extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,L("<S-NAME> speak(s) and gesture(s) dramatically, but the spell fizzles."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> speak(s) and gesture(s) dramatically, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

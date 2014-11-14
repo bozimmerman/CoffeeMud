@@ -110,7 +110,7 @@ public class Spell_Darkness extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), L("@x1arkness envelopes everyone.^?",(auto?"D":"^S<S-NAME> incant(s) and gesture(s) and d")));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, somanticCastCode(mob,target,auto), L("@x1arkness envelopes everyone.^?",(auto?"D":"^S<S-NAME> incant(s) and gesture(s) and d")));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -119,7 +119,7 @@ public class Spell_Darkness extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,L("<S-NAME> incant(s) darkly, but the spell fizzles."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> incant(s) darkly, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

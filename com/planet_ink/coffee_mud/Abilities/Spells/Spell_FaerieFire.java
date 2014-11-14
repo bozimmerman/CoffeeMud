@@ -110,7 +110,7 @@ public class Spell_FaerieFire extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),L((auto?"A ":"^S<S-NAME> speak(s) and gesture(s) and a ")+"twinkling fire envelopes <T-NAME>.^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, somanticCastCode(mob,target,auto),L((auto?"A ":"^S<S-NAME> speak(s) and gesture(s) and a ")+"twinkling fire envelopes <T-NAME>.^?"));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
@@ -118,7 +118,7 @@ public class Spell_FaerieFire extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,L("<S-NAME> mutter(s) about a faerie fire, but the spell fizzles."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> mutter(s) about a faerie fire, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

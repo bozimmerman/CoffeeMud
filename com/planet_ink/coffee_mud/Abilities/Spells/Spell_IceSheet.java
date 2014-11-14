@@ -156,7 +156,7 @@ public class Spell_IceSheet extends Spell
 				msgStr=L("the water freezes over!");
 			if(auto)
 				msgStr=Character.toUpperCase(msgStr.charAt(0))+msgStr.substring(1);
-			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto),L(auto?"":"^S<S-NAME> speak(s) and gesture(s) and ")+msgStr+"^?");
+			final CMMsg msg = CMClass.getMsg(mob, target, this, somanticCastCode(mob,target,auto),L(auto?"":"^S<S-NAME> speak(s) and gesture(s) and ")+msgStr+"^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -164,7 +164,7 @@ public class Spell_IceSheet extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,L("<S-NAME> speak(s) about the cold, but the spell fizzles."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> speak(s) about the cold, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

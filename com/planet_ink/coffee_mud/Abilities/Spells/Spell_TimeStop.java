@@ -164,7 +164,7 @@ public class Spell_TimeStop extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),L((auto?"T":"^S<S-NAME> speak(s) and gesture(s) and t")+"ime suddenly STOPS!^?"));
+			CMMsg msg = CMClass.getMsg(mob, target, this,somanticCastCode(mob,target,auto),L((auto?"T":"^S<S-NAME> speak(s) and gesture(s) and t")+"ime suddenly STOPS!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -188,7 +188,7 @@ public class Spell_TimeStop extends Spell
 										return false;
 								}
 								else
-									return beneficialWordsFizzle(mob,null,L("<S-NAME> incant(s) for awhile, but the spell fizzles."));
+									return beneficialVisualFizzle(mob,null,L("<S-NAME> incant(s) for awhile, but the spell fizzles."));
 							}
 						}
 					}
@@ -207,7 +207,7 @@ public class Spell_TimeStop extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,L("<S-NAME> incant(s) for awhile, but the spell fizzles."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> incant(s) for awhile, but the spell fizzles."));
 
 		// return whether it worked
 		return success;

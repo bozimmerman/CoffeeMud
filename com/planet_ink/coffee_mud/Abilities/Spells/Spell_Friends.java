@@ -96,7 +96,7 @@ public class Spell_Friends extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> speak(s) and gesture(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> speak(s) and gesture(s) to <T-NAMESELF>.^?"));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
@@ -105,7 +105,7 @@ public class Spell_Friends extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> incant(s) gracefully to <T-NAMESELF>, but nothing more happens."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> incant(s) gracefully to <T-NAMESELF>, but nothing more happens."));
 
 
 		// return whether it worked
