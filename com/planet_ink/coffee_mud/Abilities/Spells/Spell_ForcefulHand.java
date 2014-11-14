@@ -43,7 +43,7 @@ public class Spell_ForcefulHand extends Spell
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
+	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	
 	protected Item theHand=null;
 	
