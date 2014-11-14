@@ -50,36 +50,25 @@ public class Spell_SummonFlyer extends Spell
 	public void unInvoke()
 	{
 		final MOB mob=(MOB)affected;
-		final MOB invoker=invoker();
 		super.unInvoke();
-		if((canBeUninvoked())&&(mob!=null)&&(invoker!=null))
+		if((canBeUninvoked())&&(mob!=null))
 		{
-			if(mob.amDead())
+			if(mob.amDead()) 
 				mob.setLocation(null);
+			else
+			if(mob.location()!=null)
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL, L("The flying mount has vanished."));
 			mob.destroy();
-			invoker.delEffect(this);
-			invoker.tell(L("Your simulacrum has vanished."));
 		}
-	}
-
-	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
-	{
-		super.affectCharStats(affected,affectableStats);
-		if((affected==null)||(invoker()==null)||(affected==invoker()))
-			return;
-		affectableStats.setRaceName(invoker().charStats().raceName());
-		affectableStats.setDisplayClassName(invoker().charStats().displayClassName());
-		affectableStats.setGenderName(invoker().charStats().genderName());
 	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((affected instanceof MOB)&&(affected != invoker()))
+		if(affected instanceof MOB)
 		{
-			if((msg.amISource((MOB)affected)||msg.amISource(invoker()))
+			if((msg.amISource((MOB)affected)||msg.amISource(invoker())||msg.amISource(((MOB)affected).amFollowing()))
 			&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 			{
 				unInvoke();
