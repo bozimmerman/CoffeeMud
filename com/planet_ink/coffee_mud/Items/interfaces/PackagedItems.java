@@ -32,11 +32,14 @@ import java.util.*;
 */
 public interface PackagedItems extends Item
 {
+	public static final int ABILITY_MOBONPICKUP=0;
+	public static final int ABILITY_MOBPROGRAMMATICALLY=1;
+
 	public boolean packageMe(Item I, int number);
 	public boolean isPackagable(List<Item> V);
 	public List<Item> unPackage(int number);
 	public int numberOfItemsInPackage();
-	public Item getItem();
+	public Item getFirstItem();
 	public void setNumberOfItemsInPackage(int number);
 	public String packageText();
 	public void setPackageText(String text);

@@ -474,7 +474,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		if(product instanceof PackagedItems)
 		{
 			number=((PackagedItems)product).numberOfItemsInPackage();
-			product=((PackagedItems)product).getItem();
+			product=((PackagedItems)product).getFirstItem();
 		}
 		final ShopKeeper.ShopPrice val=new ShopKeeper.ShopPrice();
 		if(product==null)
@@ -889,7 +889,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		int number=1;
 		if(coreSoldItem instanceof PackagedItems)
 		{
-			coreSoldItem=((PackagedItems)rawSoldItem).getItem();
+			coreSoldItem=((PackagedItems)rawSoldItem).getFirstItem();
 			number=((PackagedItems)rawSoldItem).numberOfItemsInPackage();
 		}
 		if((coreSoldItem!=null)&&(shop.doISellThis(coreSoldItem)))
@@ -1447,7 +1447,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	public boolean doISellThis(Environmental thisThang, ShopKeeper shop)
 	{
 		if(thisThang instanceof PackagedItems)
-			thisThang=((PackagedItems)thisThang).getItem();
+			thisThang=((PackagedItems)thisThang).getFirstItem();
 		if(thisThang==null)
 			return false;
 		if((thisThang instanceof Coins)

@@ -34,7 +34,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class GenPackagedItems extends GenItem implements PackagedItems
 {
 	@Override public String ID(){ return "GenPackagedItems";}
@@ -102,7 +101,7 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 	}
 
 	@Override
-	public Item getItem()
+	public Item getFirstItem()
 	{
 		if(packageText().length()==0)
 			return null;
@@ -133,19 +132,19 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 	@Override
 	public List<Item> unPackage(int number)
 	{
-		final Vector V=new Vector();
+		final List<Item> V=new Vector<Item>();
 		if(number>=numberOfItemsInPackage())
 			number=numberOfItemsInPackage();
 		if(number<=0)
 			return V;
 		final int itemWeight=basePhyStats().weight()/numberOfItemsInPackage();
 		final int itemValue=baseGoldValue()/numberOfItemsInPackage();
-		final Item I=getItem();
+		final Item I=getFirstItem();
 		if(I==null)
 			return V;
 		I.recoverPhyStats();
 		for(int i=0;i<number;i++)
-			V.addElement(I.copyOf());
+			V.add((Item)I.copyOf());
 		setNumberOfItemsInPackage(numberOfItemsInPackage()-number);
 		if(numberOfItemsInPackage()<=0)
 		{

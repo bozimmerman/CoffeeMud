@@ -25,8 +25,6 @@ NON-TECH
    *. Fighter - Weapons Training (or Karate Training for Monks) -- non-kill way to gain xp, makes mobs slightly harder, 1 level up max.
    *. Fighter -- AUTOGUARD can start a little "Guarding" prog for, say, 10 rl minutes.
    *. Classes with insufficient unique skills:
-        *. Evoker        : +1
-                         : Pocket (a mob or item is turned into an item and put in a container (mob is killed w/o xp so it will respawn))
         *. Conjuration   : +2 low level
                          : Watchful Hound (wakes you up instantly if anyone enters room -- if aggressive, attacks -- can not sleep)
                          : Insect Plague (takes away any edible resource and kills farming) -- at hight levels, may sting random person?
