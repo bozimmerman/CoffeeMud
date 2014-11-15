@@ -133,6 +133,7 @@ public class Spell_WatchfulHound extends Spell
 						mob.setLocation(null);
 					mob.destroy();
 				}
+				mob.setFollowing(null);
 			}
 		}
 		return super.tick(ticking,tickID);
