@@ -103,7 +103,8 @@ public class Spell_WatchfulHound extends Spell
 					}
 				}
 				else
-				if((!invoker.isInCombat()) && (!mob.isInCombat()) && msg.isTarget(CMMsg.MASK_MALICIOUS) && (msg.target() == invoker))
+				if(((!invoker.isInCombat()) || (!mob.isInCombat()) || (!msg.source().isInCombat())) 
+				&& msg.isTarget(CMMsg.MASK_MALICIOUS) && (msg.target() == invoker))
 				{
 					if((msg.source().getVictim() == invoker) || (msg.source().getVictim() == null))
 						msg.source().setVictim(mob);
